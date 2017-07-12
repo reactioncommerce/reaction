@@ -53,10 +53,12 @@ class OrderTableColumn extends Component {
       );
     }
     if (columnAccessor === "_id") {
+      const id = row.original._id;
+      const truncatedId = id.substring(0, 4);
       return (
         <ClickToCopy
-          copyToClipboard={row.original._id}
-          displayText={row.original._id}
+          copyToClipboard={id}
+          displayText={truncatedId}
           i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
           tooltip="Copy Order Link"
         />
@@ -78,28 +80,32 @@ class OrderTableColumn extends Component {
       );
     }
     if (columnAccessor === "workflow.status") {
+      return (
+        <Badge
+          badgeSize="large"
+          i18nKeyLabel={`cartDrawer.${row.value}`}
+          label={row.value}
+          status={fulfillmentBadgeStatus(row.original)}
+        />
+      );
+    }
+    if (columnAccessor === "") {
       const classes = classnames({
         "rui": true,
         "btn": true,
+        "table-button": true,
         "btn-success": row.original.workflow.status === "new"
       });
+
       return (
-        <span>
-          <Badge
-            badgeSize="large"
-            i18nKeyLabel={`cartDrawer.${row.value}`}
-            label={row.value}
-            status={fulfillmentBadgeStatus(row.original)}
-          />
-          <button
-            className={classes}
-            data-event-action="startProcessingOrder"
-            style={{ backgroundColor: "transparent", float: "right" }}
-            onClick={() => handleClick(row.original)}
-          >
-            <Icon icon="fa fa-chevron-right" />
-          </button>
-        </span>
+        <button
+          className={classes}
+          data-event-action="startProcessingOrder"
+          // style={{ backgroundColor: "transparent", float: "right" }}
+          onClick={() => handleClick(row.original)}
+        >
+          <Icon icon="fa fa-chevron-right" />
+        </button>
       );
     }
     return (

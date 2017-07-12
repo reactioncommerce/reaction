@@ -156,13 +156,14 @@ class OrdersList extends Component {
     const { selectedItems, handleSelect, handleClick, multipleSelect, selectAllOrders } = this.props;
 
     const filteredFields = {
-      Name: "shipping[0].address.fullName",
-      Email: "email",
-      Date: "createdAt",
-      ID: "_id",
-      Total: "billing[0].invoice.total",
-      Shipping: "shipping[0].workflow.status",
-      Status: "workflow.status"
+      "Name": "shipping[0].address.fullName",
+      "Email": "email",
+      "Date": "createdAt",
+      "ID": "_id",
+      "Total": "billing[0].invoice.total",
+      "Shipping": "shipping[0].workflow.status",
+      "Status": "workflow.status",
+      "": ""
     };
 
     const customColumnMetadata = [];
@@ -172,12 +173,14 @@ class OrdersList extends Component {
     columnNames.forEach((columnName) => {
       let colStyle = { borderRight: "none" };
       let colHeader = undefined;
-      let headerStyle = { borderRight: "none", textAlign: "left", marginTop: 5 };
+      let headerStyle = { borderRight: "none", textAlign: "left" };
       let className = undefined;
       let headerClassName = undefined;
+      let colWidth = undefined;
 
       // Add custom styles for the column name `name`
       if (columnName === "Name") {
+        colWidth = 250;
         colStyle = { borderRight: "1px solid #e6e6e6" };
         colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}>
             <Checkbox
@@ -188,7 +191,18 @@ class OrdersList extends Component {
             />
             <span style={{ marginTop: 5 }}>{columnName}</span>
           </div>;
-        headerStyle = { borderRight: "none", textAlign: "left" };
+      }
+
+      if (columnName === "Date" || columnName === "Total" || columnName === "ID") {
+        headerStyle = { borderRight: "none", textAlign: "center" };
+        colStyle = { textAlign: "center" };
+        colWidth = 150;
+      }
+
+      if (columnName === "Shipping" || columnName === "Status") {
+        colStyle = { textAlign: "right" };
+        headerStyle = { borderRight: "none", textAlign: "right" };
+        colWidth = 200;
       }
 
       if (columnName === "Email" || columnName === "Date" || columnName === "Shipping") {
@@ -196,9 +210,13 @@ class OrdersList extends Component {
         headerClassName = "hidden-xs hidden-sm";
       }
 
-      if (columnName === "Name" || columnName === "Total") {
+      if (columnName === "ID" || columnName === "Total") {
         className = "hidden-xs";
         headerClassName = "hidden-xs";
+      }
+
+      if (columnName === "") {
+        colWidth = 50;
       }
 
       const columnMeta = {
@@ -208,6 +226,7 @@ class OrdersList extends Component {
         style: colStyle,
         headerClassName: headerClassName,
         className: className,
+        width: colWidth,
         Cell: row => (
           <OrderTableColumn
             row={row}
@@ -230,10 +249,14 @@ class OrdersList extends Component {
         externalLoadingComponent={Loading}
         filteredFields={columnNames}
         filterType="none"
-        // getTheadThProps={(state, rowInfo, column) => {
-        //   console.log("Thead th", state, rowInfo, column);
-        //   return;
-        // }}
+        getTheadProps={() => {
+          return {
+            style: {
+              borderRight: "1px solid #e6e6e6",
+              borderLeft: "1px solid #e6e6e6"
+            }
+          };
+        }}
         getTrGroupProps={() => {
           return {
             style: {
