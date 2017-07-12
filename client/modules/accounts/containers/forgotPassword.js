@@ -1,15 +1,15 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
 import { MessagesContainer } from "../helpers";
-import { Forgot } from "../../components";
+import { ForgotPassword } from "../components";
 import { LoginFormValidation } from "/lib/api";
 
 
-class ForgotContainer extends Component {
+class ForgotPasswordContainer extends Component {
   static propTypes = {
     formMessages: PropTypes.object
   }
@@ -18,7 +18,7 @@ class ForgotContainer extends Component {
     super(props);
 
     this.state = {
-      formMessages: props.formMessages,
+      formMessages: props.formMessages || {},
       isLoading: false,
       isDisabled: false
     };
@@ -112,12 +112,6 @@ class ForgotContainer extends Component {
   }
 }
 
-function composer(props, onData) {
-  const formMessages = {};
+registerComponent("ForgotPassword", ForgotPasswordContainer);
 
-  onData(null, {
-    formMessages
-  });
-}
-
-export default composeWithTracker(composer)(ForgotContainer);
+export default ForgotPasswordContainer;

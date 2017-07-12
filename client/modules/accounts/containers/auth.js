@@ -1,13 +1,14 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { mapProps } from "recompose";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Router } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
-import { SignIn, SignUp, LoginButtons } from "../../components";
+import { SignIn, SignUp, LoginButtons } from "../components";
 import { MessagesContainer } from "../helpers";
-import { ServiceConfigHelper } from "../../helpers";
+import { ServiceConfigHelper } from "../helpers";
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 import { LoginFormValidation } from "/lib/api";
 
@@ -22,7 +23,7 @@ class AuthContainer extends Component {
     super(props);
 
     this.state = {
-      formMessages: props.formMessages,
+      formMessages: props.formMessages || {},
       isLoading: false
     };
 
@@ -209,13 +210,10 @@ class AuthContainer extends Component {
   }
 }
 
-function composer(props, onData) {
-  const formMessages = {};
+const props = {
+  currentRoute: Router.current()
+};
 
-  onData(null, {
-    formMessages,
-    currentRoute: Router.current()
-  });
-}
+registerComponent("AuthContainer", AuthContainer, mapProps(props));
 
-export default composeWithTracker(composer)(AuthContainer);
+export default mapProps(props)(AuthContainer);

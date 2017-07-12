@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Reaction } from "/client/api";
 import { Button, DropDownMenu, MenuItem, Translation } from "/imports/plugins/core/ui/client/components";
-import { LoginContainer } from "../../containers/auth";
+import { LoginContainer } from "../containers";
 
 const iconStyle = {
   margin: "10px 10px 10px 6px",
@@ -101,7 +101,7 @@ class MainDropdown extends Component {
 
   render() {
     return (
-      <div>
+      <div className="accounts">
         {this.props.currentUser ?
           <div style={{ paddingRight: 5 }}>
             <DropDownMenu

@@ -1,15 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Random } from "meteor/random";
-import { composeWithTracker } from "/lib/api/compose";
-import AuthContainer from "./authContainer";
-import { ForgotContainer } from "../passwordReset";
+import AuthContainer from "./auth";
+import ForgotPassword from "./forgotPassword";
 
 class LoginContainer extends Component {
   static propTypes = {
     credentials: PropTypes.object,
     loginFormCurrentView: PropTypes.string,
     uniqueId: PropTypes.string
+  }
+
+  static defaultProps = {
+    credentials: {},
+    loginFormCurrentView: "loginFormSignInView",
+    uniqueId: Random.id()
   }
 
   constructor(props) {
@@ -62,7 +68,7 @@ class LoginContainer extends Component {
       );
     } else if (this.state.currentView === "loginFormResetPasswordView") {
       return (
-        <ForgotContainer
+        <ForgotPassword
           credentials={this.props.credentials}
           uniqueId={this.props.uniqueId}
           currentView={this.state.currentView}
@@ -73,22 +79,6 @@ class LoginContainer extends Component {
   }
 }
 
-function composer(props, onData) {
-  let startView = "loginFormSignInView";
+registerComponent("Login", LoginContainer);
 
-  if (props) {
-    if (props.startView) {
-      startView = props.startView;
-    }
-  }
-  const uniqueId = Random.id();
-  const credentials = {};
-
-  onData(null, {
-    loginFormCurrentView: startView,
-    uniqueId,
-    credentials
-  });
-}
-
-export default composeWithTracker(composer)(LoginContainer);
+export default LoginContainer;

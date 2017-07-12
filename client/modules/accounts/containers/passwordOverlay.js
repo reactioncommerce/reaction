@@ -1,11 +1,11 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Accounts } from "meteor/accounts-base";
 import { Random } from "meteor/random";
-import { composeWithTracker } from "/lib/api/compose";
 import { UpdatePasswordOverlay } from "/client/modules/accounts/components";
-import { MessagesContainer } from "/client/modules/accounts/containers/helpers";
+import Messages from "./messages";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { LoginFormValidation } from "/lib/api";
 
@@ -16,6 +16,11 @@ class UpdatePasswordOverlayContainer extends Component {
     isOpen: PropTypes.bool,
     token: PropTypes.string,
     uniqueId: PropTypes.string
+  }
+
+  static defaultProps = {
+    formMessages: {},
+    uniqueId: Random.id()
   }
 
   constructor(props) {
@@ -85,9 +90,7 @@ class UpdatePasswordOverlayContainer extends Component {
 
   formMessages = () => {
     return (
-      <MessagesContainer
-        messages={this.state.formMessages}
-      />
+      <Messages messages={this.state.formMessages} />
     );
   }
 
@@ -119,14 +122,6 @@ class UpdatePasswordOverlayContainer extends Component {
   }
 }
 
-function composer(props, onData) {
-  const uniqueId = Random.id();
-  const formMessages = {};
+registerComponent("UpdatePasswordOverlay", UpdatePasswordOverlay);
 
-  onData(null, {
-    uniqueId,
-    formMessages
-  });
-}
-
-export default composeWithTracker(composer)(UpdatePasswordOverlayContainer);
+export default UpdatePasswordOverlayContainer;

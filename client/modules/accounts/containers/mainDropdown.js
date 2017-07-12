@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import { mapProps } from "recompose";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
@@ -6,67 +7,9 @@ import { Session } from "meteor/session";
 import { Gravatar } from "meteor/jparker:gravatar";
 import { Reaction, Logger } from "/client/api";
 import { i18nextDep, i18next } from  "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
 import * as Collections from "/lib/collections";
 import { Tags } from "/lib/collections";
-import MainDropdown from "../../components/dropdown/mainDropdown";
-
-class MainDropdownContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange = (event, value) => {
-    event.preventDefault();
-
-    if (value === "logout") {
-      return Meteor.logout((error) => {
-        if (error) {
-          Logger.warn("Failed to logout.", error);
-        }
-      });
-    }
-
-    if (value.name === "createProduct") {
-      Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
-      Meteor.call("products/createProduct", (error, productId) => {
-        let currentTag;
-        let currentTagId;
-
-        if (error) {
-          throw new Meteor.Error("createProduct error", error);
-        } else if (productId) {
-          currentTagId = Session.get("currentTag");
-          currentTag = Tags.findOne(currentTagId);
-          if (currentTag) {
-            Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
-          }
-          // go to new product
-          Reaction.Router.go("product", {
-            handle: productId
-          });
-        }
-      });
-    } else if (value.name !== "account/profile") {
-      return Reaction.showActionView(value);
-    } else if (value.route || value.name) {
-      const route = value.name || value.route;
-      return Reaction.Router.go(route);
-    }
-  }
-
-  render() {
-    return (
-      <div className="accounts">
-        <MainDropdown
-          {...this.props}
-          handleChange={this.handleChange}
-        />
-      </div>
-    );
-  }
-}
+import MainDropdown from "../components/mainDropdown";
 
 function getCurrentUser() {
   const shopId = Reaction.getShopId();
@@ -139,23 +82,63 @@ function getAdminShortcutIcons() {
   };
 }
 
-const composer = (props, onData) => {
-  const currentUser = getCurrentUser();
-  const userImage = getUserGravatar(currentUser, 40);
-  const userName = displayName(currentUser);
-  const adminShortcuts = getAdminShortcutIcons();
-  const userShortcuts = {
-    provides: "userAccountDropdown",
-    enabled: true
-  };
+function handleChange(event, value) {
+  event.preventDefault();
 
-  onData(null, {
-    adminShortcuts,
-    currentUser,
-    userImage,
-    userName,
-    userShortcuts
-  });
+  if (value === "logout") {
+    return Meteor.logout((error) => {
+      if (error) {
+        Logger.warn("Failed to logout.", error);
+      }
+    });
+  }
+
+  if (value.name === "createProduct") {
+    Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
+    Meteor.call("products/createProduct", (error, productId) => {
+      let currentTag;
+      let currentTagId;
+
+      if (error) {
+        throw new Meteor.Error("createProduct error", error);
+      } else if (productId) {
+        currentTagId = Session.get("currentTag");
+        currentTag = Tags.findOne(currentTagId);
+        if (currentTag) {
+          Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
+        }
+        // go to new product
+        Reaction.Router.go("product", {
+          handle: productId
+        });
+      }
+    });
+  } else if (value.name !== "account/profile") {
+    return Reaction.showActionView(value);
+  } else if (value.route || value.name) {
+    const route = value.name || value.route;
+    return Reaction.Router.go(route);
+  }
+}
+
+const currentUser = getCurrentUser();
+const userImage = getUserGravatar(currentUser, 40);
+const userName = displayName(currentUser);
+const adminShortcuts = getAdminShortcutIcons();
+const userShortcuts = {
+  provides: "userAccountDropdown",
+  enabled: true
 };
 
-export default composeWithTracker(composer)(MainDropdownContainer);
+const props = {
+  adminShortcuts,
+  currentUser,
+  handleChange,
+  userImage,
+  userName,
+  userShortcuts
+};
+
+registerComponent("MainDropdown", MainDropdown, mapProps(props));
+
+export default mapProps(props)(MainDropdown);

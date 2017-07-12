@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { LoginFormMessages } from "../../components";
+import { registerComponent } from "@reactioncommerce/reaction-components";
+import { LoginFormMessages } from "../components";
 
 class MessagesContainer extends Component {
   static propTypes = {
@@ -36,5 +37,7 @@ class MessagesContainer extends Component {
     );
   }
 }
+
+registerComponent("LoginFormMessages", MessagesContainer);
 
 export default MessagesContainer;
