@@ -1,22 +1,18 @@
-import React, { Component } from "react";
+import { mapProps } from "recompose";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import CartPanel from "../component/cartPanel";
 
-class CartPanelContainer extends Component {
-  handleCheckout() {
+const handlers = {
+  checkout() {
     $("#cart-drawer-container").fadeOut();
     Session.set("displayCart", false);
     return Reaction.Router.go("cart/checkout");
   }
-  render() {
-    return (
-      <CartPanel
-        checkout={this.handleCheckout}
-      />
-    );
-  }
-}
+};
 
-export default CartPanelContainer;
+registerComponent("CartPanel", CartPanel, mapProps(handlers));
+
+export default mapProps(handlers)(CartPanel);
