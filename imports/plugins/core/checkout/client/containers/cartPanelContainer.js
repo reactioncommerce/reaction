@@ -3,7 +3,7 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
-import CartPanel from "../component/cartPanel";
+import CartPanel from "../components/cartPanel";
 
 const handlers = {
   checkout() {

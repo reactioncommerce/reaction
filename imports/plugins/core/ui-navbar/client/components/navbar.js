@@ -137,7 +137,7 @@ class NavBar extends Component {
         {this.renderLanguage()}
         {this.renderCurrency()}
         {this.renderMainDropdown()}
-        {/* {this.renderCartContainerAndPanel()} */}
+        {this.renderCartContainerAndPanel()}
       </div>
     );
   }
