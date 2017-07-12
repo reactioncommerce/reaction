@@ -1,12 +1,20 @@
 import React, { Component } from "react";
+import _ from "lodash";
 import PropTypes from "prop-types";
-import classnames from "classnames";
 import { getGravatar } from "../helpers/accountsHelper";
+import { MenuItem, DropDownMenu } from "@reactioncommerce/reaction-ui";
+
+const menuStyle = {
+  padding: "0px 10px 10px 10px",
+  minWidth: 220,
+  minHeight: 50
+};
 
 class AccountsTableCell extends Component {
   static propTypes = {
     columnName: PropTypes.string,
     data: PropTypes.object,
+    groups: PropTypes.array,
     headerLabel: PropTypes.string
   };
 
@@ -28,7 +36,6 @@ class AccountsTableCell extends Component {
 
   render() {
     const { data, columnName } = this.props;
-    let key = data.column.id;
 
     // TODO: Use set constant to loop through
     if (columnName === "name") {
@@ -45,7 +52,6 @@ class AccountsTableCell extends Component {
     }
 
     if (columnName === "email") {
-      console.log({ data });
       return (
         <div className="table-cell body">
           <span>{data.value}</span>
@@ -72,46 +78,23 @@ class AccountsTableCell extends Component {
     }
 
     if (columnName === "dropdown") {
-      key = `dropdown-${data.value.name}`;
-      const dropDownClassName = classnames({
-        "accounts-dropdown-list": true,
-        "active": this.state.showGroupDropdown
-      });
-
-      const dropDownToggleClassName = classnames({
-        "accounts-link": true,
-        "accounts-dropdown-toggle": true,
-        "flipped": this.state.showGroupDropdown,
-        "btn": true,
-        "btn-default": true,
-        "basic-btn": true,
-        "account-dropdown-btn": true,
-        "width-98": true
-      });
+      console.log({ pr: this.props });
 
       return (
-        <span className="reaction-nav-dropdown full-width" key={key}>
-          <button
-            className={dropDownToggleClassName}
-            data-event-action="showGroupDropdown"
-            data-i18n="accountsUI.showManager"
-            onClick={this.handleGroupDropdown}
-            key={data.index}
-          >
-            {this.props.headerLabel}
-          </button>
-          <ul className={dropDownClassName} key={key}>
-            {Object.keys([]).map((group, index) => ( //groups
-              <li
-                key={index}
-                className="drop-down list cell"
-                onClick={this.handleSelected}
-              >
-                <span>{group}</span>
-              </li>
-            ))}
-          </ul>
-        </span>
+        <DropDownMenu
+          onChange={this.handleSelected}
+          menuStyle={menuStyle}
+          attachment="bottom center"
+        >
+          {this.props.groups.map((grp, index) => (
+            <MenuItem
+              key={index} // TODO: i18n
+              label={_.startCase(grp.name)}
+              selectLabel={_.startCase(grp.name)}
+              value={grp.slug}
+            />
+          ))}
+        </DropDownMenu>
       );
     }
 

@@ -30,7 +30,7 @@ class AccountsTable extends Component {
         accessor: fieldPath[columnName],
         headerClass: { backgroundColor: "#f5f5f5", display: "flex" },
         Cell: data => {
-          return <AccountsTableCell data={data} columnName={columnName} />;
+          return <AccountsTableCell data={data} columnName={columnName} {...this.props} />;
         }
       };
       columnMetadata.push(columnMeta);
