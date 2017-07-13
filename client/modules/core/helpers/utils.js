@@ -1,5 +1,4 @@
-// client slugify only works when import minified version.
-import "transliteration/lib/browser/transliteration.js";
+import { slugify } from "transliteration";
 
 /**
  * getSlug - return a client slugified string using the "slugify"

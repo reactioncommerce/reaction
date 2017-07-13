@@ -1,3 +1,6 @@
+import { Template } from "meteor/templating";
+import { Meteor } from "meteor/meteor";
+
 Template.catalogSettings.helpers({
   checked(enabled) {
     if (enabled === true) {

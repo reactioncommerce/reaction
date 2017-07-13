@@ -133,7 +133,7 @@ class SignUp extends Component {
               value={this.state.password}
               onChange={this.handleFieldChange}
             />
-          {this.renderPasswordErrors()}
+            {this.renderPasswordErrors()}
           </div>
 
           <div className="form-group">
@@ -170,14 +170,14 @@ class SignUp extends Component {
     return (
       <div>
         <div className="loginForm-title">
-        <h2>
-          <Translation defaultValue="Create an Account" i18nKey="accountsUI.createAccount" />
-        </h2>
+          <h2>
+            <Translation defaultValue="Create an Account" i18nKey="accountsUI.createAccount" />
+          </h2>
+        </div>
+
+        {this.renderForm(emailClasses, passwordClasses)}
+
       </div>
-
-      {this.renderForm(emailClasses, passwordClasses)}
-
-    </div>
     );
   }
 }

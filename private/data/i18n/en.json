@@ -673,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "Email doesn't match the criteria.",
           "errorSendingEmail": "Error sending email, possible configuration issue.",
           "unableToSendInvitationEmail": "Unable to send invitation email.",
+          "userWithEmailAlreadyExists": "A user with this email address already exists",
           "failedToLogout": "Failed to logout.",
           "invalidLoginToken": "Invalid login token",
           "loginForbidden": "Login forbidden",

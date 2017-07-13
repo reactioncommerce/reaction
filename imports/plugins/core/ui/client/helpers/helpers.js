@@ -1,3 +1,4 @@
+import _ from "lodash";
 import classnames from "classnames";
 
 export const templateClassName = (templateInstance, defaults, key) => {

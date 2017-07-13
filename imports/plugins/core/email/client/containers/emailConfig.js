@@ -1,3 +1,5 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { useDeps } from "react-simple-di";
 import getServiceConfig from "nodemailer-wellknown";
 import { Meteor } from "meteor/meteor";
@@ -6,6 +8,53 @@ import { Loading } from "/imports/plugins/core/ui/client/components";
 import actions from "../actions";
 import EmailConfig from "../components/emailConfig";
 import { composeWithTracker, merge } from "/lib/api/compose";
+
+class EmailConfigContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      status: null,
+      error: null
+    };
+  }
+
+  componentWillMount() {
+    const { settings } = this.props;
+    const { service, host, port, user, password } = settings;
+
+    if (service && host && port && user && password) {
+      Meteor.call("email/verifySettings", (error) => {
+        if (error) {
+          this.setState({ status: "error" });
+        }
+        this.setState({ status: "valid" });
+      });
+    } else {
+      this.setState({ status: "error" });
+    }
+  }
+
+  render() {
+    const { status } = this.state;
+    return (
+      <EmailConfig {...this.props} status={status} />
+    );
+  }
+}
+
+EmailConfigContainer.propTypes = {
+  settings: PropTypes.shape({
+    host: PropTypes.string,
+    password: PropTypes.string,
+    port: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string
+    ]),
+    service: PropTypes.string,
+    user: PropTypes.string
+  })
+};
 
 const composer = ({}, onData) => {
   if (Meteor.subscribe("Packages").ready()) {
@@ -19,20 +68,7 @@ const composer = ({}, onData) => {
       settings.host = config.host || "localhost";
       settings.port = config.port;
     }
-
-    const { service, host, port, user, password } = settings;
-
-    // if all settings exist, check if they work
-    if (service && host && port && user && password) {
-      Meteor.call("email/verifySettings", (error) => {
-        if (error) {
-          return onData(null, { settings, status: "error", error: error.reason });
-        }
-        return onData(null, { settings, status: "valid", error: null });
-      });
-    } else {
-      onData(null, { settings, status: "error", error: null });
-    }
+    return onData(null, { settings });
   }
 };
 
@@ -43,4 +79,4 @@ const depsMapper = () => ({
 export default merge(
   composeWithTracker(composer, Loading),
   useDeps(depsMapper)
-)(EmailConfig);
+)(EmailConfigContainer);
