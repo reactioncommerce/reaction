@@ -103,7 +103,7 @@
     "swiper": "^3.4.2",
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
-    "transliteration": "1.6.2",
+    "transliteration": "github:reactioncommerce/transliteration",
     "twilio": "^3.4.0",
     "url": "^0.11.0",
     "velocity-animate": "^1.5.0",
