@@ -223,6 +223,12 @@ class OrdersList extends Component {
       customColumnMetadata.push(columnMeta);
     });
 
+    const selectedRowsStyle = {
+      backgroundColor: "#e8fcf6",
+      border: "solid 1px #94e8d1"
+
+    };
+
     return (
       <div>
         {this.renderBulkOrderActionsBar()}
@@ -233,6 +239,8 @@ class OrdersList extends Component {
           externalLoadingComponent={Loading}
           filteredFields={columnNames}
           filterType="none"
+          selectedRows={selectedItems}
+          selectedRowsStyle={selectedRowsStyle}
           getTrGroupProps={() => {
             return {
               style: {
@@ -245,7 +253,6 @@ class OrdersList extends Component {
       </div>
     );
   }
-
 
   renderOrderCard(order) {
     const { handleClick } = this.props;
