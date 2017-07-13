@@ -1,11 +1,11 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withProps } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Router } from "/client/api";
+import { composeWithTracker } from "/lib/api";
 import { SignIn, SignUp, LoginButtons } from "../components";
 import MessagesContainer from "./messages";
 import { ServiceConfigHelper } from "../helpers";
@@ -210,10 +210,10 @@ class AuthContainer extends Component {
   }
 }
 
-const props = {
-  currentRoute: Router.current()
-};
+function composer(props, onData) {
+  onData(null, { currentRoute: Router.current() });
+}
 
-registerComponent("AuthContainer", AuthContainer, withProps(props));
+registerComponent("AuthContainer", AuthContainer, composeWithTracker(composer));
 
-export default withProps(props)(AuthContainer);
+export default composeWithTracker(composer)(AuthContainer);
