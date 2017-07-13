@@ -47,12 +47,7 @@ Meteor.publish("Accounts", function (userId) {
   });
 });
 
-/**
- * Admin account pub
- * @params {String} userId -  id of user to find
- */
-Meteor.publish("AdminAccounts", function (userId) {
-  check(userId, Match.OneOf(String, null));
+Meteor.publish("AdminAccounts", function () {
   const shopId = Reaction.getShopId();
 
   if (this.userId === null) {

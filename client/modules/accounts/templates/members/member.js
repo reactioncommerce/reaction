@@ -139,7 +139,8 @@ Template.memberSettings.helpers({
 
   accountsDetail() {
     return {
-      component: AccountsManageContainer
+      component: AccountsManageContainer,
+      data: Template.currentData()
     };
   },
 

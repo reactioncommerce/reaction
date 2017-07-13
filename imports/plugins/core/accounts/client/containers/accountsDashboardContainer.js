@@ -15,13 +15,13 @@ class AccountsDashboardContainer extends Component {
   render() {
     const { accounts, groups } = this.props;
     return (
-      <AccountsDashboard groups={sortUsersIntoGroups(accounts, groups)} />
+      <AccountsDashboard groups={sortUsersIntoGroups(accounts, groups)} accounts={accounts} />
     );
   }
 }
 
 const composer = (props, onData) => {
-  const accSub = Meteor.subscribe("AdminAccounts", null);
+  const accSub = Meteor.subscribe("AdminAccounts");
   const grpSub = Meteor.subscribe("Groups");
 
   if (accSub.ready() && grpSub.ready()) {

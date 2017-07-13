@@ -40,12 +40,15 @@ class AccountsTable extends Component {
     );
   }
 
-  handleGroupClick() {
-    Reaction.setActionViewDetail({
-      label: "Permissions",
-      i18nKeyLabel: "admin.settings.permissionsSettingsLabel",
-      template: "memberSettings"
-    });
+  handleGroupClick(props) {
+    return () => {
+      Reaction.setActionViewDetail({
+        label: "Permissions",
+        i18nKeyLabel: "admin.settings.permissionsSettingsLabel",
+        data: props,
+        template: "memberSettings"
+      });
+    };
   }
 
   getHeader(headerName) {
@@ -93,10 +96,11 @@ class AccountsTable extends Component {
   }
 
   render() {
+    const { group, accounts } = this.props;
     return (
       <List>
-        <ListItem actionType="arrow" label={this.props.group.name} onClick={this.handleGroupClick} />
-        {this.renderTable(this.props.group.users)}
+        <ListItem actionType="arrow" label={group.name} onClick={this.handleGroupClick({ group, accounts })} />
+        {this.renderTable(group.users)}
       </List>
     );
   }
