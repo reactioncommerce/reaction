@@ -463,6 +463,12 @@
       "format": "%s%v",
       "symbol": "฿"
     },
+    "TND": {
+      "enabled": false,
+      "format": "%v %s",
+      "symbol": "DT",
+      "decimal": ","
+    },
     "TWD": {
       "enabled": false,
       "format": "%s%v",
@@ -3672,6 +3678,12 @@
       "enabled": false,
       "format": "%s%v",
       "symbol": "฿"
+    },
+    "TND": {
+      "enabled": false,
+      "format": "%v %s",
+      "symbol": "DT",
+      "decimal": ","
     },
     "TWD": {
       "enabled": false,

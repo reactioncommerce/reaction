@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import GridPublishContainer from "../../../containers/gridPublishContainer";
+import GridPublishContainer from "/imports/plugins/included/product-variant/containers/gridPublishContainer";
 
 Template.gridPublishControls.helpers({
   PublishComponent() {
