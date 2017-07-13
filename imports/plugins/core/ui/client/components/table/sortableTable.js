@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import matchSorter from "match-sorter";
 import ReactTable from "react-table";
-import { Translation } from "@reactioncommerce/reaction-ui";
 import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 
 class SortableTable extends Component {
@@ -188,6 +187,24 @@ class SortableTable extends Component {
     return null;
   }
 
+  /**
+   * renderSelectedRowsStyle() - if any rows are selected, customize them via style props (if any)
+   * @param {object} rowInfo row data passed in from ReactTable
+   * @returns {Object} object with style(s) to apply to row that is selected, or empty object if not supplied
+   */
+  renderSelectedRowsStyle(rowInfo) {
+    const { selectedRows, selectedRowsStyle } = this.props;
+    let style = {};
+
+    if (selectedRows && selectedRows.length) {
+      if (selectedRows.includes(rowInfo.row._id)) {
+        style = selectedRowsStyle;
+      }
+    }
+
+    return style;
+  }
+
 
   render() {
     const { ...otherProps } = this.props;
@@ -220,7 +237,8 @@ class SortableTable extends Component {
             return {
               onClick: e => { // eslint-disable-line no-unused-vars
                 this.handleClick(rowInfo);
-              }
+              },
+              style: this.renderSelectedRowsStyle(rowInfo)
             };
           }}
           getTrGroupProps={otherProps.getTrGroupProps}
@@ -260,6 +278,10 @@ SortableTable.propTypes = {
   publication: PropTypes.string,
   /** @type {object} query provides query for publication filtering */
   query: PropTypes.object,
+  /** @type {array} selectedRows provides selected rows in the table */
+  selectedRows: PropTypes.array,
+  /** @type {object} selectedRowsStyle provides style for selected rows */
+  selectedRowsStyle: PropTypes.object,
   /** @type {function} transform transform of collection for grid results */
   transform: PropTypes.func
 };
