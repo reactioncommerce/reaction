@@ -1,15 +1,10 @@
 <template name="accountsDashboard">
-
-
   <div>
     {{> React component=accounts }}
   </div>
 
-  <!--{{#if hasPermission 'accounts'}}
-
-    {{> memberForm}}
+  {{#if hasPermission 'accounts'}}
     <div class="container-fluid-sm">
-
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">
@@ -46,11 +41,11 @@
         </ul>
       </div>
     </div>
-  {{/if}}-->
+  {{/if}}
 </template>
 
 <template name="accountsSettings">
-  <!--{{#each service in services}}
+  {{#each service in services}}
     <div class="panel panel-default">
       <div class="panel-heading panel-heading-flex">
         <div class="panel-title">
@@ -96,5 +91,5 @@
         <div class="panel-title" data-i18n="accountsDashboardControls.noAdditionalServices">No Additional login services available</div>
       </div>
     </div>
-  {{/each}}-->
+  {{/each}}
 </template>

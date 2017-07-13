@@ -127,16 +127,14 @@ class AccountsTableCell extends Component {
 
     if (columnName === "button") {
       return (
-        <span id="accounts-btn">
+        <div>
           <Button
-            data-event-action="showMemberSettings"
-            data-i18n="accountsUI.Remove"
-            className="accounts-btn"
+            status="danger"
             onClick={this.handleGroupRemove(account)}
-          >
-            Remove
-          </Button>
-        </span>
+            bezelStyle="solid"
+            label="Remove" // TODO: i18n
+          />
+        </div>
       );
     }
     return null;
