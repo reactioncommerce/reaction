@@ -168,5 +168,6 @@ function setUserPermissions(users, permissions, shopId) {
 
 // set default admin user's account as "owner"
 Hooks.Events.add("afterCreateDefaultAdminUser", (user) => {
-  return Accounts.update({ _id: user._id }, { $set: { groups: ["owner"] } });
+  const group = Groups.findOne({ slug: "owner", shopId: Reaction.getShopId() });
+  Accounts.update({ _id: user._id  }, { $set: { groups: [group._id] } });
 });

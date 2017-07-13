@@ -2,8 +2,19 @@
 import _ from "lodash";
 import * as Collections from "/lib/collections";
 
+/**
+ * sortUsersIntoGroups - helper - client
+ * @summary puts each full user object into an array on the group they belong
+ * @param {Array} accounts - list of user account objects
+ * @param {Array} groups - list of permission groups
+ * @return {Array} - array of groups, each having a `users` field
+ */
 export default function sortUsersIntoGroups(accounts, groups) {
-  const newGroups = groups.map(group => {
+  // Review: The thought here is to use how many permissions defined for the group as a means of sorting
+  // to determine the order groups are shown in the dashboard
+  const sortedGroups = groups.sort((prev, next) => next.permissions.length - prev.permissions.length);
+
+  const newGroups = sortedGroups.map(group => {
     const matchingAccounts = accounts.map(acc => {
       if (acc.groups && acc.groups.indexOf(group._id) > -1) {
         return acc;

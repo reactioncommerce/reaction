@@ -29,7 +29,7 @@ class AccountsTable extends Component {
 
     return (
       <SortableTable
-        tableClassName="-accounts"
+        tableClassName="accounts-group-table"
         data={users}
         columnMetadata={columnMetadata}
         filteredFields={fields}

@@ -49,7 +49,7 @@
 }
 
 basic-btn {
-  margin-right: 2% !important; 
+  margin-right: 2% !important;
 }
 remove-btn {
   font-size: 16px !important;
@@ -81,24 +81,7 @@ remove-btn {
 .accounts-table .rt-td {
   display: flex;
 }
-.accounts-table .rt-tr div:nth-child(2) {
-   width: 24.5%;
-}
-.accounts-table .rt-tr div:nth-child(1) {
-   width: 19.85%;
-}
-.accounts-table .rt-tr div:nth-child(3) {
-   width: 14.02%;
-}
-.accounts-table .rt-tr div:nth-child(4) {
-   width: 11.68%;
-}
-.accounts-table .rt-tr div:nth-child(5) {
-   width: 17.52%;
-}
-.accounts-table .rt-tr div:nth-child(6) {
-   width: 12.3%;
-}
+
 .accounts-table .rt-thead .rt-tr {
   height: 39px;
   background-color: #f5f5f5;
@@ -196,7 +179,7 @@ remove-btn {
   padding: 7px;
 }
 .groups-form .rui .list-group-item {
-  background-color: #f5f5f5; 
+  background-color: #f5f5f5;
 }
 .groups-form .rui.card-toolbar div{
   span {
@@ -583,8 +566,24 @@ img.img-cell {
   }
 }
 
-.ReactTable.-accounts .rt-td {
-  border: none;
-  padding: 0 !important;
-  border-bottom: 1px solid #cccccc;
+.group-card {
+  margin-bottom: 50px;
+}
+
+.accounts-group-table {
+  .rt-noData {
+    top: 100%;
+    text-align: center;
+    background: transparent;
+    width: 100%;
+    padding: 10px 0;
+    color: inherit;
+    border-bottom: 1px solid #d9d9d9;
+    margin-top: 20px;
+  }
+  .rt-td {
+    border: none;
+    padding: 0 !important;
+    border-bottom: 1px solid #cccccc;
+  }
 }
