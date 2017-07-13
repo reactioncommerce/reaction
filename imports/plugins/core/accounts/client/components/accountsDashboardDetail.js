@@ -9,7 +9,7 @@ class AccountsDashboardDetails extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     getGroupPermissions: PropTypes.func,
-    groups: PropTypes.object,
+    groups: PropTypes.array,
     hasPermissionChecked: PropTypes.func,
     toggleGroupPermission: PropTypes.func
   }
