@@ -1,29 +1,27 @@
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import { composeWithTracker } from "/lib/api/compose";
+import { withProps } from "recompose";
 import { Reaction } from "/client/api";
 import NavBar from "../components/navbar";
 
-function composer(props, onData) {
-  const searchPackage = Reaction.Apps({ provides: "ui-search" });
-  let searchEnabled;
-  let searchTemplate;
+const searchPackage = Reaction.Apps({ provides: "ui-search" });
+let searchEnabled;
+let searchTemplate;
 
-  if (searchPackage.length) {
-    searchEnabled = true;
-    searchTemplate = searchPackage[0].template;
-  } else {
-    searchEnabled = false;
-  }
-
-  const hasProperPermission = Reaction.hasPermission("account/profile");
-
-  onData(null, {
-    searchEnabled,
-    searchTemplate,
-    hasProperPermission
-  });
+if (searchPackage.length) {
+  searchEnabled = true;
+  searchTemplate = searchPackage[0].template;
+} else {
+  searchEnabled = false;
 }
 
-registerComponent("NavBar", NavBar, composeWithTracker(composer));
+const hasProperPermission = Reaction.hasPermission("account/profile");
 
-export default composeWithTracker(composer)(NavBar);
+const props = {
+  searchEnabled,
+  searchTemplate,
+  hasProperPermission
+};
+
+registerComponent("NavBar", NavBar, withProps(props));
+
+export default withProps(props)(NavBar);

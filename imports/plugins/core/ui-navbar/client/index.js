@@ -1,2 +1,2 @@
-export { default as Brand } from "./components/brand.js";
-export { default as Navbar } from "./components/navbar.js";
+export { default as Brand } from "./components/brand";
+export { default as Navbar } from "./containers/navbar";
