@@ -262,9 +262,32 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
               ancestors: {
                 $in: productIds
               }
-            }, {
-              hashtags: {
-                $in: productFilters.tags
+            }, { $and: [
+              {
+                hashtags: {
+                  $in: productFilters.tags
+                }
+              }, {
+                _id: {
+                  $in: productIds
+                }
+              }
+            ]
+            }
+          ]
+        });
+      } else {
+        newSelector = _.omit(selector, ["hashtags"]);
+        _.extend(newSelector, {
+          $or: [
+            {
+              ancestors: {
+                $in: productIds
+              }
+            },
+            {
+              _id: {
+                $in: productIds
               }
             }
           ]
