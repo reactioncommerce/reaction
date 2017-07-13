@@ -242,6 +242,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       selector.isVisible = {
         $in: [true, false, undefined]
       };
+      selector.ancestors = [];
 
       // Get _ids of top-level products
       const productIds = Products.find(selector, {
@@ -253,7 +254,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
       // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
       if (productFilters && productFilters.tags) {
-        newSelector = _.omit(selector, ["hashtags"]);
+        newSelector = _.omit(selector, ["hashtags", "ancestors"]);
 
         // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
         _.extend(newSelector, {
@@ -277,7 +278,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           ]
         });
       } else {
-        newSelector = _.omit(selector, ["hashtags"]);
+        newSelector = _.omit(selector, ["hashtags", "ancestors"]);
         _.extend(newSelector, {
           $or: [
             {
