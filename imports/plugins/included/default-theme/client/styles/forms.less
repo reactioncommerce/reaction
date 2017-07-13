@@ -151,18 +151,17 @@
 	border-radius: 2px;
 	border: solid 2px #5e6264;
 
-  &:checked:after {
-    content: '';
-    border: 2px solid #5e6264;
-    border-top: none;
-    width: 10px;
-	  height: 6px;
-    border-right: none;
-    position: absolute;
-    transform: rotate(-45deg);
-    top: 5px;
-    left: 4px;
-    color: #99a1a7;
+  &:checked {
+    font-size: 13px;
+
+    &:after {
+      font-family: FontAwesome;
+      content: "\f00c";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      color: #5e6264;
+    }
   }
 }
 
