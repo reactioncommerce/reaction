@@ -3,7 +3,7 @@ import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import AccountsDashboardDetailsContainer from "/imports/plugins/core/accounts/client/containers/accountsDashboardDetailsContainer";
+import AccountsManageContainer from "/imports/plugins/core/accounts/client/containers/accountsManageContainer";
 
 import { $ } from "meteor/jquery";
 import { Roles } from "meteor/alanning:roles";
@@ -137,13 +137,9 @@ Template.memberSettings.helpers({
     return _.get(avalara, "settings.avalara.enabled", false);
   },
 
-  /**
-   * services
-   * @return {Array} available services
-   */
-  AccountSettings() {
+  accountsDetail() {
     return {
-      component: AccountsDashboardDetailsContainer
+      component: AccountsManageContainer
     };
   },
 

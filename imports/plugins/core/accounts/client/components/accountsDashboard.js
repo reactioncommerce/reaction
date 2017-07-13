@@ -19,7 +19,7 @@ class AccountsDashboard extends Component {
     if (Array.isArray(groups)) {
       return groups.map((group, index) => {
         return (
-          <div className="pus-table groups margin" key={index}>
+          <div key={index}>
             <AccountsTable group={group} {...this.props}/>
           </div>
         );

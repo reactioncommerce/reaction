@@ -7,7 +7,6 @@ import { Reaction, i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 import { ServiceConfigHelper } from "../../helpers/util";
 import AccountsDashboardContainer from "/imports/plugins/core/accounts/client/containers/accountsDashboardContainer";
-import AccountsDashboardDetailsContainer from "/imports/plugins/core/accounts/client/containers/accountsDashboardDetailsContainer";
 
 /**
  * Accounts helpers
@@ -85,7 +84,7 @@ Template.accountsDashboard.helpers({
     }
   },
 
-  accounts() {
+  accountsDash() {
     return AccountsDashboardContainer;
   }
 });
@@ -120,8 +119,7 @@ Template.accountsSettings.helpers({
     });
 
     return {
-      services,
-      component: AccountsDashboardDetailsContainer
+      services
     };
   },
 

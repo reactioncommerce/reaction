@@ -113,8 +113,16 @@ remove-btn {
   width: 100%;
 }
 
-.accounts-table .-pagination {
-  display: none;
+.accounts-table {
+  .-pagination {
+    display: none;
+  }
+  .list-item-content {
+    span {
+      text-transform: capitalize;
+      font-weight: bold;
+    }
+  }
 }
 
 img.img-cell {
@@ -143,16 +151,6 @@ img.img-cell {
       left: 15px;
     }
   }
-}
-
-.group-owner.header {
-  float: left;
-  height: 37px;
-  position: relative;
-  right: 120px !important;
-  top: 5px;
-  width: 200px;
-  font-size: 16px;
 }
 
 .push-table.groups.margin {
@@ -207,7 +205,7 @@ img.img-cell {
     padding: 10px 0;
     color: inherit;
     border-bottom: 1px solid #d9d9d9;
-    margin-top: 20px;
+    margin-top: 50px;
   }
   .group-dropdown {
     width: 100%;

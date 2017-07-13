@@ -51,7 +51,7 @@ class AccountsTableCell extends Component {
     return (
       <div className="group-dropdown">
         <Button label={this.props.group.name && _.startCase(this.props.group.name)}>
-          &nbsp;<i className="fa fa-caret-down" />
+          &nbsp;<i className="fa fa-chevron-down" />
         </Button>
       </div>
     );

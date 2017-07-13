@@ -51,7 +51,7 @@ class AccountsTable extends Component {
   getHeader(headerName) {
     if (headerName === "name") {
       return (
-        <div className="table-cell header">
+        <div>
           <span className="name-cell"><Checkbox /> </span>
           <span className="name-cell"> Name </span>
           <span className="name-icon-cell">
@@ -62,7 +62,7 @@ class AccountsTable extends Component {
     }
     if (headerName === "email") {
       return (
-        <div className="table-cell header">
+        <div>
           <span className="content-cell">Email</span>
           <span className="icon-cell">
             <Icon icon="chevron-down" />
@@ -72,7 +72,7 @@ class AccountsTable extends Component {
     }
     if (headerName === "createdAt") {
       return (
-        <div className="table-cell header">
+        <div>
           <span className="content-cell">Last Active</span>
           <span className="icon-cell">
             <Icon icon="chevron-down" />
@@ -82,7 +82,7 @@ class AccountsTable extends Component {
     }
     if (headerName === "twoFactor") {
       return (
-        <div className="table-cell header">
+        <div>
           <span className="content-cell">Two Factor</span>
           <span className="icon-cell">
             <Icon icon="chevron-down" />
@@ -94,12 +94,10 @@ class AccountsTable extends Component {
 
   render() {
     return (
-      <div className="group-card">
-        <List>
-          <ListItem actionType="arrow" label={this.props.group.name} onClick={this.handleGroupClick} />
-          {this.renderTable(this.props.group.users)}
-        </List>
-      </div>
+      <List>
+        <ListItem actionType="arrow" label={this.props.group.name} onClick={this.handleGroupClick} />
+        {this.renderTable(this.props.group.users)}
+      </List>
     );
   }
 }

@@ -3,60 +3,12 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { Accounts, Groups, Packages } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
-import AccountsDashboardDetails from "../components/accountsDashboardDetail";
-import sortUsersIntoGroups from "../helpers/accountsHelper";
+import AdminInviteForm from "../components/adminInviteForm";
 
-const getPermissionMap = (permissions) => {
-  const permissionMap = {};
-  _.each(permissions, function (existing) {
-    permissionMap[existing.permission] = existing.label;
-  });
-  return permissionMap;
-};
-
-class AccountsDashboardDetailsContainer extends Component {
+class AccountsManageContainer extends Component {
   static propTypes = {
     groups: PropTypes.array,
     shopUsers: PropTypes.array
-  }
-
-  toggleGroupPermission(permissionGroup, group) {
-    // TODO: Re-write this for permissions toggling
-    // Meet seun for cues on how this should be properly implemented
-
-    const permissions = [];
-
-    if (permissionGroup.name) {
-      permissions.push(permissionGroup.name);
-      for (const pkgPermissions of permissionGroup.permissions) {
-        permissions.push(pkgPermissions.permission);
-      }
-    } else {
-      permissions.push(permissionGroup.permission);
-    }
-
-    if (!this.hasPermissionChecked(permissionGroup.permissions, group)) {
-      group.groupData.ids.forEach((groupId) => { // eslint-disable-line
-        // console.log("shsh", group[index].shopId);
-        // const foundGroup = Groups.findOne({ _id: groupId });
-
-        // const updatedPermissions = foundGroup.permissions.concat(permissions);
-        // const updatedGroup = { name: foundGroup.name, permissions: updatedPermissions };
-        // Meteor.call("group/updateGroup", groupId, updatedGroup, foundGroup.shopId);
-      });
-    } else {
-      // Make another meteor call
-    }
-  }
-
-  hasPermissionChecked(permissions, group) {
-    let status = false;
-    permissions.forEach((permission) => {
-      if (group.groupData.permissions.includes(permission.permission)) {
-        status = true;
-      }
-    });
-    return status;
   }
 
   getGroupPermissions(groupShopId) {
@@ -114,16 +66,17 @@ class AccountsDashboardDetailsContainer extends Component {
     return permissionGroups;
   }
 
-  render() {
-    const { shopUsers, groups } = this.props;
+  renderAddAdminForm() {
     return (
-      <AccountsDashboardDetails
-        accounts={this.props.shopUsers}
-        groups={sortUsersIntoGroups(shopUsers, groups)}
-        // getGroupPermissions={(id) => this.getGroupPermissions(id)}
-        // hasPermissionChecked={(p, id) => this.hasPermissionChecked(p, id)}
-        // toggleGroupPermission={(pG, gD) => this.toggleGroupPermission(pG, gD)}
-      />
+      <AdminInviteForm />
+    );
+  }
+
+  render() {
+    return (
+      <div className="groups-form">
+        {this.renderAddAdminForm()}
+      </div>
     );
   }
 }
@@ -132,9 +85,10 @@ class AccountsDashboardDetailsContainer extends Component {
 const composer = (props, onData) => {
   const shopUsers = Accounts.find().fetch();
   const groups = Groups.find().fetch();
+
   onData(null, {
     shopUsers, groups
   });
 };
 
-export default composeWithTracker(composer, null)(AccountsDashboardDetailsContainer);
+export default composeWithTracker(composer, null)(AccountsManageContainer);

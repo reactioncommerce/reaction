@@ -18,8 +18,8 @@
 </template>
 
 <template name="memberSettings">
-    <div>
-    {{> React AccountSettings }}
+  <div>
+    {{> React accountsDetail }}
   </div>
   {{#if data}}
     <div class="panel">
@@ -33,7 +33,7 @@
       </div>
 
     </div>
-    
+
 
     {{#if showAvalaraTaxSettings }}
       {{> taxSettingsPanel member=this }}
