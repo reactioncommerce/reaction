@@ -22,7 +22,6 @@ Reaction.registerPackage({
     }
   },
   registry: [{
-    provides: "dashboard",
     label: "Analytics",
     description: "Analytics and tracking integrations",
     template: "reactionAnalytics",
