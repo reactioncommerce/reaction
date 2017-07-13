@@ -1,9 +1,10 @@
+import _ from "lodash";
 import { Component, Children } from "react";
 import PropTypes from "prop-types";
-import url from "url";
+import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { composeWithTracker } from "/lib/api/compose";
-import { Shops } from "/lib/collections";
+import { getShopId } from "/lib/api";
 
 class Permission extends Component {
   static propTypes = {
@@ -88,19 +89,6 @@ export function hasPermission(checkPermissions, userId = Meteor.userId(), checkG
   }
   // no specific permissions found returning false
   return false;
-}
-
-export function getShopId() {
-  const domain = url.parse(Meteor.absoluteUrl()).hostname;
-  const shop = Shops.find({
-    domains: domain
-  }, {
-    limit: 1,
-    fields: {
-      _id: 1
-    }
-  }).fetch()[0];
-  return shop && shop._id;
 }
 
 export default withPermissions()(Permission);
