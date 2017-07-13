@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Reaction } from "/client/api";
 import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
-import { Card, CardHeader, CardBody, SortableTable } from "/imports/plugins/core/ui/client/components";
+import { List, ListItem, SortableTable } from "/imports/plugins/core/ui/client/components";
 import AccountsTableCell from "./accountsTableCell";
 
 const fields = ["name", "email", "createdAt", "twoFactor", "dropdown", "button"];
@@ -38,6 +39,15 @@ class AccountsTable extends Component {
       />
     );
   }
+
+  handleGroupClick() {
+    Reaction.setActionViewDetail({
+      label: "Permissions",
+      i18nKeyLabel: "admin.settings.permissionsSettingsLabel",
+      template: "memberSettings"
+    });
+  }
+
   getHeader(headerName) {
     if (headerName === "name") {
       return (
@@ -85,17 +95,10 @@ class AccountsTable extends Component {
   render() {
     return (
       <div className="group-card">
-        <Card expanded={true}>
-          <CardHeader
-            actAsExpander={true}
-            i18nKeyTitle={this.props.group.name}
-            title={this.props.group.name}
-            id="accounts"
-          />
-          <CardBody expandable={true} id="accounts">
-            {this.renderTable(this.props.group.users)}
-          </CardBody>
-        </Card>
+        <List>
+          <ListItem actionType="arrow" label={this.props.group.name} onClick={this.handleGroupClick} />
+          {this.renderTable(this.props.group.users)}
+        </List>
       </div>
     );
   }

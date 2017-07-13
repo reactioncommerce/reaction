@@ -422,15 +422,7 @@ export default {
 
     const actionViewStack = Session.get("admin/actionView");
 
-    if (viewData.name === "accounts") {
-      actionViewStack.push(viewData);
-      Session.set("admin/actionView", actionViewStack);
-      this.setActionViewDetail({
-        label: "Permissions",
-        i18nKeyLabel: "admin.settings.permissionsSettingsLabel",
-        template: "memberSettings"
-      });
-    } else if (viewData) {
+    if (viewData) {
       actionViewStack.push(viewData);
       Session.set("admin/actionView", actionViewStack);
     } else {
