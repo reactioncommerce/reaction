@@ -115,24 +115,24 @@ function composer(props, onData) {
   if (!tag && slug) {
     return;
   }
+  const currentTag = ReactionProduct.getTag();
+
+  const sort = {
+    [`positions.${currentTag}.position`]: 1,
+    [`positions.${currentTag}.createdAt`]: 1,
+    createdAt: 1
+  };
 
   const queryParams = Object.assign({}, tags, Reaction.Router.current().queryParams);
-  const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams);
+  const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort);
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
   }
 
-  const currentTag = ReactionProduct.getTag();
   const productCursor = Products.find({
     ancestors: [],
     type: { $in: ["simple"] }
-  }, {
-    sort: {
-      [`positions.${currentTag}.position`]: 1,
-      [`positions.${currentTag}.createdAt`]: 1,
-      createdAt: 1
-    }
   });
 
   const products = productCursor.map((product) => {
