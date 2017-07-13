@@ -53,7 +53,7 @@ export default {
       let domain;
       let shop;
 
-      if (this.Subscriptions.Shops.ready()) {
+      if (this.Subscriptions.MerchantShops.ready()) {
         domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
 
         // if we don't have an active shopId, try to retreive it from the userPreferences object

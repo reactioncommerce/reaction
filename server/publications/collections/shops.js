@@ -15,7 +15,7 @@ Meteor.publish("PrimaryShop", function () {
 Meteor.publish("MerchantShops", function () {
   const domain = Reaction.getDomain();
   const settings = Reaction.getMarketplaceSettings();
-  const enabled = settings.marketplaceEnabled;
+  const enabled = settings.enabled;
 
   // If marketplace is disabled, don't return any merchant shops
   if (!enabled) {
@@ -30,6 +30,18 @@ Meteor.publish("MerchantShops", function () {
     currencies: 0
   };
 
+  if (Reaction.marketplaceCurrency) {
+    delete fields.currencies;
+  }
+
+  if (Reaction.marketplaceLanguages) {
+    delete fields.languages;
+  }
+
+  if (Reaction.marketplaceLocales) {
+    delete fields.locales;
+  }
+
   // Return all non-primary shops for this domain that are active
   return Shops.find({
     domains: domain,
@@ -40,13 +52,4 @@ Meteor.publish("MerchantShops", function () {
   }, {
     fields
   });
-});
-
-
-/**
- * Shops publication
- * @returns {Object} shop - current shop cursor
- */
-Meteor.publish("Shops", function () {
-  return Reaction.getCurrentShopCursor();
 });

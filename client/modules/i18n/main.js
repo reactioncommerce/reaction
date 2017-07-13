@@ -88,17 +88,39 @@ export const packageNamespaces = [];
 
 Meteor.startup(() => {
   Tracker.autorun(function (c) {
+    let merchantShopsReadyOrSkipped = false;
+
+    // Choose shopSubscription based on marketplace settings
+    if (Reaction.marketplaceEnabled && Reaction.merchantLanguage) {
+      merchantShopsReadyOrSkipped = Reaction.Subscriptions.MerchantShops.ready();
+    } else {
+      merchantShopsReadyOrSkipped = true;
+    }
+
     // setting local and active packageNamespaces
     // packageNamespaces are used to determine i18n namespace
-    if (Reaction.Subscriptions.Shops.ready()) {
+    if (Reaction.Subscriptions.PrimaryShop.ready() && merchantShopsReadyOrSkipped) {
+      const primaryShopId = Reaction.getPrimaryShopId();
       // every package gets a namespace, fetch them and export
-      const packages = Packages.find({}, {
+      // get packages from primaryShopId as merchant shops
+      // may not have all packages
+      const packages = Packages.find({
+        shopId: primaryShopId
+      }, {
         fields: {
           name: 1
         }
       }).fetch();
       for (const pkg of packages) {
         packageNamespaces.push(pkg.name);
+      }
+
+      // By default, use the primaryShopId to get locale
+      // If markteplace is enabled and set to use merchant currencies,
+      // get the active shopId
+      let localeShopId = primaryShopId;
+      if (Reaction.marketplaceEnabled && Reaction.merchantCurrency) {
+        localeShopId = Reaction.getShopId();
       }
 
       // use i18n detected language to getLocale info
@@ -120,7 +142,9 @@ Meteor.startup(() => {
                 const primaryCurrency = locale.locale.currency.split(",")[0];
                 localStorage.setItem("currency", primaryCurrency);
               } else {
-                const shop = Shops.findOne(Reaction.getShopId(), {
+                const shop = Shops.findOne({
+                  _id: localeShopId
+                }, {
                   fields: {
                     currency: 1
                   }

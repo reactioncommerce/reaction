@@ -9,9 +9,12 @@ Reaction.registerPackage({
     name: "Marketplace",
     enabled: true,
     public: {
-      allowGuestSellers: true,
-      allowMerchantSignup: false,
-      merchantFulfillment: true
+      allowGuestSellers: true, // TODO: Eliminate in favor of marketplace.enabled and allowMerchantSignup
+      allowMerchantSignup: false, // Merchants can sign up without an invite
+      merchantFulfillment: true, // Fulfillment comes from merchant which supplies product
+      merchantLanguage: false, // Language comes from active merchant shop
+      merchantCurrency: false, // Currency comes from active merchant shop
+      merchantTheme: false // Theme comes from active merchant shop
     }
   },
   registry: [{

@@ -175,6 +175,55 @@ export default {
     return getMailUrl();
   },
 
+  getPrimaryShop() {
+    const primaryShop = Shops.findOne({
+      shopType: "primary"
+    });
+
+    return primaryShop;
+  },
+
+  // primaryShopId is the first created shop. In a marketplace setting it's
+  // the shop that controls the marketplace and can see all other shops.
+  getPrimaryShopId() {
+    const primaryShop = this.getPrimaryShop();
+    if (primaryShop) {
+      return primaryShop._id;
+    }
+  },
+
+  getPrimaryShopName() {
+    const primaryShop = this.getPrimaryShop();
+    if (primaryShop) {
+      return primaryShop.name;
+    }
+    // If we can't find the primaryShop return an empty string
+    return "";
+  },
+
+  // Primary Shop should probably not have a prefix (or should it be /shop?)
+  getPrimaryShopPrefix() {
+    return "/" + this.getSlug(this.getPrimaryShopName().toLowerCase());
+  },
+
+  getPrimaryShopSettings() {
+    const settings = Packages.findOne({
+      name: "core",
+      shopId: this.getPrimaryShopId()
+    }) || {};
+    return settings.settings || {};
+  },
+
+  getPrimaryShopCurrency() {
+    const primaryShop = this.getPrimaryShop();
+
+    if (primaryShop && primaryShop.currency) {
+      return primaryShop.currency;
+    }
+
+    return "USD";
+  },
+
   getCurrentShopCursor() {
     const domain = this.getDomain();
     const cursor = Shops.find({

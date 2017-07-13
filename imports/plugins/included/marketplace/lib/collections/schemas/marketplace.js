@@ -39,10 +39,15 @@ export const MarketplacePackageConfig = new SimpleSchema([
       type: Object,
       optional: true
     },
-    // if true, each merchant performs their own fulfillment
-    "settings.public.merchantFulfillment": {
+    // if true, any user can create a shop
+    // if false, shop owners must be invited via Accounts panel
+    "settings.public.allowMerchantSignup": {
       type: Boolean,
-      defaultValue: true
+      defaultValue: false
+    },
+    "settings.public.allowGuestSellers": {
+      type: Boolean,
+      defaultValue: false
     },
     // if true, permit each merchant to setup their own payment provider
     "settings.public.perMerchantPaymentProviders": {
@@ -54,13 +59,23 @@ export const MarketplacePackageConfig = new SimpleSchema([
       type: Boolean,
       defaultValue: false
     },
-    // if true, any user can create a shop
-    // if false, shop owners must be invited via Accounts panel
-    "settings.public.allowMerchantSignup": {
+    // if true, each merchant sets their own currency
+    "settings.public.merchantCurrency": {
       type: Boolean,
       defaultValue: false
     },
-    "settings.public.allowGuestSellers": {
+    // if true, each merchant performs their own fulfillment
+    "settings.public.merchantFulfillment": {
+      type: Boolean,
+      defaultValue: true
+    },
+    // if true, each merchant sets their own language
+    "settings.public.merchantLanguage": {
+      type: Boolean,
+      defaultValue: false
+    },
+    // if true, each merchant sets their own currency
+    "settings.public.merchantTheme": {
       type: Boolean,
       defaultValue: false
     }
