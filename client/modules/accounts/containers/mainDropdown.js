@@ -1,5 +1,6 @@
-import { withProps } from "recompose";
+import { compose, withProps } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
+import { composeWithTracker } from "/lib/api";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
@@ -88,7 +89,7 @@ function handleChange(event, value) {
   if (value === "logout") {
     return Meteor.logout((error) => {
       if (error) {
-        Logger.warn("Failed to logout.", error);
+        Logger.error(error, "Failed to logout.");
       }
     });
   }
@@ -121,24 +122,39 @@ function handleChange(event, value) {
   }
 }
 
-const currentUser = getCurrentUser();
-const userImage = getUserGravatar(currentUser, 40);
-const userName = displayName(currentUser);
-const adminShortcuts = getAdminShortcutIcons();
-const userShortcuts = {
-  provides: "userAccountDropdown",
-  enabled: true
+const composer = (props, onData) => {
+  const currentUser = getCurrentUser();
+  const userImage = getUserGravatar(currentUser, 40);
+  const userName = displayName(currentUser);
+  const adminShortcuts = getAdminShortcutIcons();
+  const userShortcuts = {
+    provides: "userAccountDropdown",
+    enabled: true
+  };
+
+  onData(null, {
+    adminShortcuts,
+    currentUser,
+    userImage,
+    userName,
+    userShortcuts
+  });
 };
 
-const props = {
-  adminShortcuts,
-  currentUser,
+const handlers = {
   handleChange,
-  userImage,
-  userName,
-  userShortcuts
+  userShortcuts: {
+    provides: "userAccountDropdown",
+    enabled: true
+  }
 };
 
-registerComponent("MainDropdown", MainDropdown, withProps(props));
+registerComponent("MainDropdown", MainDropdown, [
+  withProps(handlers),
+  composeWithTracker(composer)
+]);
 
-export default withProps(props)(MainDropdown);
+export default compose(
+  withProps(handlers),
+  composeWithTracker(composer)
+)(MainDropdown);
