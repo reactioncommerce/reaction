@@ -5,12 +5,6 @@ import PropTypes from "prop-types";
 import { getGravatar } from "../helpers/accountsHelper";
 import { Button, MenuItem, DropDownMenu } from "@reactioncommerce/reaction-ui";
 
-const menuStyle = {
-  padding: "0px 10px 10px 10px",
-  minWidth: 220,
-  minHeight: 50
-};
-
 class AccountsTableCell extends Component {
   static propTypes = {
     account: PropTypes.object,
@@ -43,8 +37,8 @@ class AccountsTableCell extends Component {
   };
 
   handleGroupRemove = account => {
-    return (event, groupId) => {
-      Meteor.call("group/removeUser", account._id, groupId, (err) => {
+    return () => {
+      Meteor.call("group/removeUser", account._id, this.props.group._id, (err) => {
         if (err) {
           return Alerts.toast("Error updating user" + err, "error"); // TODO: Swith to React + i18n
         }
@@ -55,9 +49,11 @@ class AccountsTableCell extends Component {
 
   dropDownButton() {
     return (
-      <Button label={this.props.group.name && _.startCase(this.props.group.name)}>
-        &nbsp;<i className="fa fa-caret-down" />
-      </Button>
+      <div className="group-dropdown">
+        <Button label={this.props.group.name && _.startCase(this.props.group.name)}>
+          &nbsp;<i className="fa fa-caret-down" />
+        </Button>
+      </div>
     );
   }
 
@@ -68,12 +64,8 @@ class AccountsTableCell extends Component {
     if (columnName === "name") {
       return (
         <div className="table-cell body-first">
-          <span>
-            <img className="circular-icon accounts-field-profile img-cell" src={getGravatar(account)} />
-          </span>
-          <span className="name-cell">
-            <strong>{account.name || "Guest"}</strong>
-          </span>
+          <img className="accounts-img-tag" src={getGravatar(account)} />
+          <span>{account.name || "Guest"}</span>
         </div>
       ); // TODO: Review "Guest" default
     }
@@ -108,7 +100,6 @@ class AccountsTableCell extends Component {
     if (columnName === "dropdown") {
       return (
         <DropDownMenu
-          menuStyle={menuStyle}
           buttonElement={this.dropDownButton()}
           attachment="bottom center"
           onChange={this.handleGroupChange(account)}

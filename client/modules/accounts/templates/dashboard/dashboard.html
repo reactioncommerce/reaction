@@ -1,10 +1,9 @@
 <template name="accountsDashboard">
-  <div>
-    {{> React component=accounts }}
-  </div>
-
   {{#if hasPermission 'accounts'}}
-    <div class="container-fluid-sm">
+    <div>
+      {{> React component=accounts }}
+    </div>
+    <!--     <div class="container-fluid-sm">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">
@@ -40,7 +39,7 @@
           {{/each}}
         </ul>
       </div>
-    </div>
+    </div> -->
   {{/if}}
 </template>
 
