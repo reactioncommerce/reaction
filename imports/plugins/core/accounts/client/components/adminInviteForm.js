@@ -23,7 +23,6 @@ class AdminInviteForm extends Component {
 
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
-    // console.log("form", this.state);
   }
 
   handleSubmit(event) {
@@ -41,7 +40,7 @@ class AdminInviteForm extends Component {
         } else {
           message = `${i18next.t("accountsUI.error.errorSendingEmail")} ${error}`;
         }
-        // TODO: Use an Alert component to display error messages 
+        // TODO: Use an Alert component to display error messages
         Alerts.toast(i18next.t("accountsUI.info.errorSendingEmail", "Error sending email."), "error");
         this.setState({ name: "", email: "" });
         return false;

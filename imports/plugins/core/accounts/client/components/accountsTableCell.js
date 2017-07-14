@@ -65,7 +65,7 @@ class AccountsTableCell extends Component {
       return (
         <div className="table-cell body-first">
           <img className="accounts-img-tag" src={getGravatar(account)} />
-          <span>{account.name || "Guest"}</span>
+          <span><b>{account.name || "Guest"}</b></span>
         </div>
       ); // TODO: Review "Guest" default
     }

@@ -14,7 +14,7 @@ class AccountsManageContainer extends Component {
     return (
       <div className="groups-form">
         <AdminInviteForm />
-        <AddGroupMembers accounts={this.props.accounts} />
+        <AddGroupMembers {...this.props} />
       </div>
     );
   }

@@ -9,7 +9,9 @@ const fields = ["name", "email", "createdAt", "twoFactor", "dropdown", "button"]
 
 class AccountsTable extends Component {
   static propTypes = {
+    accounts: PropTypes.array,
     group: PropTypes.object,
+    groups: PropTypes.array,
     i18nKeyLabel: PropTypes.string
   };
 
@@ -96,10 +98,14 @@ class AccountsTable extends Component {
   }
 
   render() {
-    const { group, accounts } = this.props;
+    const { group, accounts, groups } = this.props;
     return (
       <List>
-        <ListItem actionType="arrow" label={group.name} onClick={this.handleGroupClick({ group, accounts })} />
+        <ListItem
+          actionType="arrow"
+          label={group.name}
+          onClick={this.handleGroupClick({ group, groups, accounts })}
+        />
         {this.renderTable(group.users)}
       </List>
     );
