@@ -5,7 +5,7 @@ import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
 import { List, ListItem, SortableTable } from "/imports/plugins/core/ui/client/components";
 import AccountsTableCell from "./accountsTableCell";
 
-const fields = ["name", "email", "createdAt", "twoFactor", "dropdown", "button"];
+const fields = ["name", "email", "createdAt", "dropdown", "button"];
 
 class AccountsTable extends Component {
   static propTypes = {
@@ -74,16 +74,6 @@ class AccountsTable extends Component {
       return (
         <div>
           <span className="content-cell">Last Active</span>
-          <span className="icon-cell">
-            <Icon icon="chevron-down" />
-          </span>
-        </div>
-      );
-    }
-    if (headerName === "twoFactor") {
-      return (
-        <div>
-          <span className="content-cell">Two Factor</span>
           <span className="icon-cell">
             <Icon icon="chevron-down" />
           </span>

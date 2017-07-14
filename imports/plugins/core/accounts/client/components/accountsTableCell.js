@@ -88,15 +88,6 @@ class AccountsTableCell extends Component {
       );
     }
 
-    if (columnName === "twoFactor") {
-      // TODO: What should twoFactor be?
-      return (
-        <div className="table-cell body">
-          <span>Yes</span>
-        </div>
-      );
-    }
-
     if (columnName === "dropdown") {
       return (
         <DropDownMenu
