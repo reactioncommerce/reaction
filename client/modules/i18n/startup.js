@@ -51,11 +51,7 @@ Meteor.startup(() => {
       //
       return Meteor.subscribe("Translations", language, () => {
         // fetch reaction translations
-        const translations = Translations.find({}, {
-          fields: {
-            _id: 0
-          }
-        }).fetch();
+        const translations = Translations.find({}).fetch();
 
         //
         // reduce and merge translations
