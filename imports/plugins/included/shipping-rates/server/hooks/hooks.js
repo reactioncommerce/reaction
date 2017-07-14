@@ -9,11 +9,11 @@ function getShippingRates(rates, cart) {
   const shops = [];
   const products = cart.items;
 
-  // New marketplace shipping flag.
-  // TODO: Set this in marketplace admin.
-  const marketplaceFlags = {
-    enableVendorShippingRates: false
-  };
+  let merchantShippingRates = false;
+  const marketplaceSettings = Reaction.getMarketplaceSettings();
+  if (marketplaceSettings && marketplaceSettings.enabled) {
+    merchantShippingRates = marketplaceSettings.public.merchantShippingRates;
+  }
 
   const pkgData = Packages.findOne({
     name: "reaction-shipping-rates",
@@ -24,15 +24,13 @@ function getShippingRates(rates, cart) {
     return rates;
   }
 
-  // default selector is current shop
+  // default selector is primary shop
   let selector = {
-    "shopId": Reaction.getShopId(),
+    "shopId": Reaction.getPrimaryShopId(),
     "provider.enabled": true
   };
 
-  // TODO: Create flag for marketplace admin to determine if shops configure shipping on their own or not
-
-  if (marketplaceFlags.enableVendorShippingRates) {
+  if (merchantShippingRates) {
     // create an array of shops, allowing
     // the cart to have products from multiple shops
     for (const product of products) {

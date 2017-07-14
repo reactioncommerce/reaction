@@ -355,7 +355,7 @@ export default {
     return Packages.findOne({ name: name, shopId: this.getShopId() }) || null;
   },
 
-  // TODO: Maybe move this to the marketplace plugin
+  // TODO: Maybe move this to the marketplace plugin?
   getMarketplaceSettings() {
     const marketplace = Packages.findOne({
       name: "reaction-marketplace",

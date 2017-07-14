@@ -54,11 +54,6 @@ export const MarketplacePackageConfig = new SimpleSchema([
       type: Boolean,
       defaultValue: false
     },
-    // if true, permit each merchant to setup their own shipping rates
-    "settings.public.perMerchantShippingRates": {
-      type: Boolean,
-      defaultValue: false
-    },
     // if true, each merchant sets their own currency
     "settings.public.merchantCurrency": {
       type: Boolean,
@@ -71,6 +66,11 @@ export const MarketplacePackageConfig = new SimpleSchema([
     },
     // if true, each merchant sets their own language
     "settings.public.merchantLanguage": {
+      type: Boolean,
+      defaultValue: false
+    },
+    // if true, permit each merchant to setup their own shipping rates
+    "settings.public.merchantShippingRates": {
       type: Boolean,
       defaultValue: false
     },
