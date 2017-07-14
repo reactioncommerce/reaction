@@ -1,28 +1,37 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { composeWithTracker } from "/lib/api/compose";
 import AdminInviteForm from "../components/adminInviteForm";
+import EditGroup from "../components/editGroup";
 import AddGroupMembers from "../components/addGroupMembers";
 
 class AccountsManageContainer extends Component {
   static propTypes = {
     accounts: PropTypes.array,
-    group: PropTypes.object
+    group: PropTypes.object,
+    groups: PropTypes.array
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      accounts: props.accounts
+    };
   }
 
   render() {
     return (
       <div className="groups-form">
         <AdminInviteForm />
-        <AddGroupMembers {...this.props} />
+        <EditGroup groups={this.props.groups} />
+        <AddGroupMembers
+          groups={this.props.groups}
+          accounts={this.state.accounts}
+          group={this.props.group}
+        />
       </div>
     );
   }
 }
 
-
-const composer = (props, onData) => {
-  onData(null, { ...props.data });
-};
-
-export default composeWithTracker(composer, null)(AccountsManageContainer);
+export default AccountsManageContainer;

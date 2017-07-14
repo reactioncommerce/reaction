@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { Card, CardHeader, CardBody, List, ListItem, SortableTable } from "/imports/plugins/core/ui/client/components";
+import { Card, CardHeader, CardBody, SortableTable } from "/imports/plugins/core/ui/client/components";
 import { getGravatar } from "../helpers/accountsHelper";
 
 class AddGroupMembers extends Component {
@@ -21,12 +21,6 @@ class AddGroupMembers extends Component {
     };
   }
 
-  handleMouseOver(acc) {
-    return () => {
-      this.setState({ selected: acc });
-    };
-  }
-
   isInGroup(acc) {
     const currentUserGroup = this.props.groups.find(grp => acc.groups[0] === grp._id);
     return currentUserGroup._id === this.props.group._id;
@@ -34,6 +28,20 @@ class AddGroupMembers extends Component {
 
   getCursorClass(acc) {
     return this.isInGroup(acc) ? "c-default" : "";
+  }
+
+  handleMouseOver(acc) {
+    return () => {
+      this.setState({ selected: acc });
+    };
+  }
+
+  handleMouseOut(acc) {
+    return () => {
+      if (this.state.selected === acc) {
+        this.setState({ selected: null });
+      }
+    };
   }
 
   handleOnGroupChange(acc) {
@@ -58,16 +66,7 @@ class AddGroupMembers extends Component {
     return (<span>{currentUserGroup.name}</span>);
   }
 
-  handleMouseOut(acc) {
-    return () => {
-      if (this.state.selected === acc) {
-        this.setState({ selected: null });
-      }
-    };
-  }
-
   getCellElements(data, columnName) {
-    console.log({ data });
     const acc = data.value;
     if (columnName === "name") {
       return (
@@ -88,17 +87,22 @@ class AddGroupMembers extends Component {
       );
     }
 
-    if (columnName === "email") {
+    if (columnName === "group") {
       return (
-        <div className="badge">
+        <a
+          className={`badge ${this.getCursorClass(acc)}`}
+          onMouseOver={this.handleMouseOver(acc)}
+          onMouseOut={this.handleMouseOut(acc)}
+          onClick={this.handleOnGroupChange(acc)}
+        >
           {this.renderBadge(acc)}
-        </div>
+        </a>
       );
     }
   }
 
   render() {
-    const fields = ["name", "email"];
+    const fields = ["name", "group"];
     const tableData = fields.map(columnName => ({
       Header: columnName,
       accessor: "", // sends whole object

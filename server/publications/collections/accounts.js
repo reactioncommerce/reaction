@@ -21,13 +21,7 @@ Meteor.publish("Accounts", function (userId) {
     return this.ready();
   }
 
-  const nonAnonUsers = _.map(Meteor.users.find({
-    [`roles.${shopId}`]: {
-      $nin: [ "anonymous" ]
-    }
-  }, {
-    fields: { _id: 1 }
-  }).fetch(), "_id");
+  const nonAnonUsers = getNonAnonUsers(shopId);
 
   // global admin can get all accounts
   if (Roles.userIsInRole(this.userId, ["owner"], Roles.GLOBAL_GROUP)) {
@@ -57,10 +51,12 @@ Meteor.publish("AdminAccounts", function () {
   if (!shopId) {
     return this.ready();
   }
+  const nonAnonUsers = getNonAnonUsers(shopId);
   // Review: Are these permissions check enough?
   if (Roles.userIsInRole(this.userId, ["dashboard", "accounts"], shopId)) {
     // TODO: Filter to only admins
     return Collections.Accounts.find({
+      _id: { $in: nonAnonUsers },
       shopId: shopId
     });
   }
@@ -147,3 +143,14 @@ Meteor.publish("UserProfile", function (profileUserId) {
     fields: fields
   });
 });
+
+function getNonAnonUsers(shopId) {
+  const anonUsers = Meteor.users.find({
+    [`roles.${shopId}`]: {
+      $nin: ["anonymous"]
+    }
+  }, {
+    fields: { _id: 1 }
+  }).fetch();
+  return _.map(anonUsers, "_id");
+}
