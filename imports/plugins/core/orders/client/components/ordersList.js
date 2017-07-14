@@ -272,6 +272,18 @@ class OrdersList extends Component {
             }
           };
         }}
+        getPaginationProps={() => {
+          return {
+            className: "orders-list-pagination"
+          };
+        }}
+        getTableProps={() => {
+          return {
+            style: {
+              borderBottom: "1px solid #e6e6e6"
+            }
+          };
+        }}
         showPaginationTop={true}
         paginationClassName="orders list"
       />
