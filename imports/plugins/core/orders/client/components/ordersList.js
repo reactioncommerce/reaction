@@ -184,7 +184,7 @@ class OrdersList extends Component {
         colStyle = { borderRight: "1px solid #e6e6e6" };
         colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}>
             <Checkbox
-              className="order-header-checkbox checkbox"
+              className="order-header-checkbox checkbox-large"
               checked={multipleSelect}
               name="orders-checkbox"
               onChange={() => selectAllOrders(orders, multipleSelect)}

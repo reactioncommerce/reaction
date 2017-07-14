@@ -188,13 +188,6 @@ class SortableTable extends Component {
     return null;
   }
 
-  // bla() {
-  //   return (
-  //     <SortableTablePagination />
-  //   );
-  // }
-
-
   render() {
     const { ...otherProps } = this.props;
     const defaultClassName = "-striped -highlight";
@@ -221,7 +214,6 @@ class SortableTable extends Component {
           rowsText={otherProps.rowsText}
           showPaginationTop={otherProps.showPaginationTop}
 
-          // PaginationComponent={this.bla()}
           PaginationComponent={SortableTablePagination}
 
 
