@@ -42,3 +42,54 @@ export function getGravatar(user) {
     return Gravatar.imageUrl(email, options);
   }
 }
+
+export function groupPackages(packages) {
+  return packages.map(pkg => {
+    const permissions = [];
+    if (pkg.registry && pkg.enabled) {
+      for (const registryItem of pkg.registry) {
+        if (!registryItem.route) {
+          continue;
+        }
+
+        // Get all permissions, add them to an array
+        if (registryItem.permissions) {
+          for (const permission of registryItem.permissions) {
+            // check needed because of non-object perms in the permissions array (e.g "admin", "owner")
+            if (typeof permission === "object") {
+              permission.shopId = Reaction.getShopId();
+              permissions.push(permission);
+            }
+          }
+        }
+
+        // Also create an object map of those same permissions as above
+        const permissionMap = getPermissionMap(permissions);
+        if (!permissionMap[registryItem.route]) {
+          permissions.push({
+            shopId: pkg.shopId,
+            permission: registryItem.name || pkg.name + "/" + registryItem.template,
+            icon: registryItem.icon,
+            label: registryItem.label || registryItem.provides || registryItem.route
+          });
+        }
+      }
+      // TODO review this, hardcoded WIP "reaction"
+      const label = pkg.name.replace("reaction", "").replace(/(-.)/g, x => " " + x[1].toUpperCase());
+
+      return {
+        shopId: pkg.shopId,
+        icon: pkg.icon,
+        name: pkg.name,
+        label: label,
+        permissions: _.uniq(permissions)
+      };
+    }
+  });
+}
+
+function getPermissionMap(permissions) {
+  const permissionMap = {};
+  _.each(permissions, existing => (permissionMap[existing.permission] = existing.label));
+  return permissionMap;
+}

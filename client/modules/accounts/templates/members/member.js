@@ -142,10 +142,6 @@ Template.memberSettings.helpers({
       component: AccountsManageContainer,
       ...Template.currentData()
     };
-  },
-
-  data() {
-    return this.userId ? true : false;
   }
 });
 

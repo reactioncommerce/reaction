@@ -51,7 +51,7 @@ class AddGroupMembers extends Component {
         if (err) {
           return Alerts.toast("Error updating user" + err, "error"); // TODO: Swith to React + i18n
         }
-        Alerts.toast("User changed successfully", "success"); // TODO: Swith to React + i18n
+        return Alerts.toast("User changed successfully", "success"); // TODO: Swith to React + i18n
       });
     };
   }

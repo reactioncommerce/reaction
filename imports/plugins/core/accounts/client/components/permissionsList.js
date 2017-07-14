@@ -1,8 +1,7 @@
-import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Reaction, i18next } from "/client/api";
-import { CardGroup, SettingsCard, List, ListItem } from "/imports/plugins/core/ui/client/components";
+import { CardGroup, List, ListItem } from "/imports/plugins/core/ui/client/components";
+
 class PermissionsList extends Component {
   static propTypes = {
     packages: PropTypes.array
@@ -20,7 +19,6 @@ class PermissionsList extends Component {
             if (!pkg) {
               return null;
             }
-            console.log({ pkg });
             return (
               <ListItem
                 actionType="switch"
