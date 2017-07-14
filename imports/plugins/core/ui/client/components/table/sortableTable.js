@@ -227,6 +227,7 @@ class SortableTable extends Component {
           getTrGroupProps={otherProps.getTrGroupProps}
           getTheadProps={otherProps.getTheadProps}
           getPaginationProps={otherProps.getPaginationProps}
+          onPageSizeChange={otherProps.onPageSizeChange}
         />
       </div>
     );

@@ -595,15 +595,29 @@
     }
   }
 
+  // .order-list-headers .ReactTable .rt-thead .rt-th.-sort-asc,
+  // .order-list-headers .ReactTable .rt-thead .rt-th.-sort-asc{
+  //   box-shadow: inset 0 3px 0 0 @rui-default;
+  // }
+
+  // .order-list-headers .ReactTable .rt-thead .rt-th.-sort-desc,
+  // .order-list-headers .ReactTable .rt-thead .rt-th.-sort-desc{
+  //   box-shadow: inset 0 3px 0 0 @rui-default;
+  // }
+
   .orders-list-pagination {
     border-top: none;
   }
+}
+.order-toggle-btn {
+  border: none;
+  background: transparent;
 
-  .rui-order-avatar {
-    // margin-top: 5px
+  &:focus {
+    outline: none;
   }
 }
 
-.order-toggle-btn {
-  background: transparent
+.order-toggle-btn.order-icon-toggle {
+  color: #1999dd;
 }

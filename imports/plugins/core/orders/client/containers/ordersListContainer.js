@@ -25,6 +25,8 @@ class OrdersListContainer extends Component {
     super(props);
 
     this.state = {
+      detailClassName: "",
+      listClassName: "order-icon-toggle",
       openDetail: false,
       openList: true,
       selectedItems: [],
@@ -122,6 +124,8 @@ class OrdersListContainer extends Component {
 
   handleListToggle = () => {
     this.setState({
+      detailClassName: "",
+      listClassName: "order-icon-toggle",
       openList: true,
       openDetail: false
     });
@@ -129,6 +133,8 @@ class OrdersListContainer extends Component {
 
   handleDetailToggle = () => {
     this.setState({
+      detailClassName: "order-icon-toggle",
+      listClassName: "",
       openDetail: true,
       openList: false
     });
@@ -181,6 +187,8 @@ class OrdersListContainer extends Component {
           openList={this.state.openList}
           selectAllOrders={this.selectAllOrders}
           multipleSelect={this.state.multipleSelect}
+          listClassName={this.state.listClassName}
+          detailClassName={this.state.detailClassName}
         />
     );
   }

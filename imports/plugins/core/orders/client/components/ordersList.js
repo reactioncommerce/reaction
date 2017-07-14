@@ -177,6 +177,7 @@ class OrdersList extends Component {
       let className = undefined;
       let headerClassName = undefined;
       let colWidth = undefined;
+      let resizable = true;
 
       // Add custom styles for the column name `name`
       if (columnName === "Name") {
@@ -223,6 +224,11 @@ class OrdersList extends Component {
       if (columnName === "") {
         colWidth = 50;
         className = "controls";
+        resizable = false;
+        colStyle = {
+          padding: 0,
+          height: 49
+        };
       }
 
       const columnMeta = {
@@ -230,9 +236,10 @@ class OrdersList extends Component {
         Header: colHeader ? colHeader : columnName,
         headerStyle: headerStyle,
         style: colStyle,
-        headerClassName: headerClassName,
+        headerClassName: classnames(headerClassName, "order-list-headers"),
         className: className,
         width: colWidth,
+        resizable: resizable,
         Cell: row => (
           <OrderTableColumn
             row={row}
@@ -285,7 +292,9 @@ class OrdersList extends Component {
           };
         }}
         showPaginationTop={true}
-        paginationClassName="orders list"
+        onPageSizeChange={(pageSize, pageIndex) => {
+          console.log("page manenos", pageSize, pageIndex);
+        }}
       />
     );
   }
@@ -321,8 +330,8 @@ class OrdersList extends Component {
       return (
         <div>
           <div style= {{ float: "right", padding: 10 }}>
-            <button className="rui btn order-toggle-btn" onClick={handleListToggle}> <i className="fa fa-list" /> </button>
-            <button className="rui btn order-toggle-btn" onClick={handleDetailToggle}> <i className="fa fa-list-alt" /> </button>
+            <button className={`order-toggle-btn ${this.props.detailClassName}`} onClick={handleDetailToggle}> <i className="fa fa-th-list" /> </button>
+            <button className={`order-toggle-btn ${this.props.listClassName}`} onClick={handleListToggle}> <i className="fa fa-list" /> </button>
           </div>
 
           {openList &&  <div className="container-fluid-sm">{this.renderListView(orders)}</div>}
