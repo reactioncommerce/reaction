@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AdminInviteForm from "../components/adminInviteForm";
-import EditGroup from "../components/editGroup";
+import EditGroupContainer from "./editGroupContainer";
 import AddGroupMembers from "../components/addGroupMembers";
 
 class AccountsManageContainer extends Component {
@@ -23,7 +23,7 @@ class AccountsManageContainer extends Component {
     return (
       <div className="groups-form">
         <AdminInviteForm />
-        <EditGroup groups={this.props.groups} />
+        <EditGroupContainer groups={this.props.groups} />
         <AddGroupMembers
           groups={this.props.groups}
           accounts={this.state.accounts}

@@ -4,7 +4,6 @@ import { Card, CardHeader, CardBody } from "/imports/plugins/core/ui/client/comp
 import { Reaction, i18next } from "/client/api";
 import { Meteor } from "meteor/meteor";
 
-// TODO: need to wire form up for saving...
 class AdminInviteForm extends Component {
   static propTypes = {
     accounts: PropTypes.array
