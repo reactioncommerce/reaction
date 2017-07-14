@@ -1,5 +1,5 @@
-import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
+import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
