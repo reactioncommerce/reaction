@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import EmptyCartDrawer from "../components/emptyCartDrawer";
 

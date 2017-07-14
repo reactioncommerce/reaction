@@ -1,20 +1,18 @@
+import _ from "lodash";
 import * as tz from "moment-timezone";
 import moment from "moment";
 import "moment/min/locales.min.js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Accounts } from "meteor/accounts-base";
+import { Spacebars } from "meteor/spacebars";
+import { Roles } from "meteor/alanning:roles";
 import { i18next } from "/client/api";
 import { Reaction } from "../";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { toCamelCase } from "/lib/api";
 
-/*
- *
- * Reaction Spacebars helpers
- * See: http://docs.meteor.com/#/full/template_registerhelper
- *
- */
 
 Template.registerHelper("Collections", function () {
   return Collections;
@@ -29,22 +27,22 @@ Template.registerHelper("Schemas", function () {
  * @summary overrides Meteor Package.blaze currentUser method
  * @return {[Boolean]} returns true/null if user has registered
  */
-if (Package.blaze) {
-  Package.blaze.Blaze.Template.registerHelper("currentUser", function () {
-    if (typeof Reaction === "object") {
-      const shopId = Reaction.getShopId();
-      const user = Accounts.user();
-      if (!shopId || typeof user !== "object") return null;
-      // shoppers should always be guests
-      const isGuest = Roles.userIsInRole(user, "guest", shopId);
-      // but if a user has never logged in then they are anonymous
-      const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
 
-      return isGuest && !isAnonymous ? user : null;
-    }
-    return null;
-  });
-}
+Template.registerHelper("currentUser", function () {
+  if (typeof Reaction === "object") {
+    const shopId = Reaction.getShopId();
+    const user = Accounts.user();
+    if (!shopId || typeof user !== "object") return null;
+    // shoppers should always be guests
+    const isGuest = Roles.userIsInRole(user, "guest", shopId);
+    // but if a user has never logged in then they are anonymous
+    const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
+
+    return isGuest && !isAnonymous ? user : null;
+  }
+  return null;
+});
+
 
 /**
  * registerHelper monthOptions

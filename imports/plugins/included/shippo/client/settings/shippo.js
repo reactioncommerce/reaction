@@ -1,3 +1,5 @@
+import { Meteor } from "meteor/meteor";
+import { AutoForm } from "meteor/aldeed:autoform";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
@@ -29,7 +31,7 @@ AutoForm.hooks({
     onSuccess(formType, result) {
       Alerts.removeSeen();
       const successMsg = (result.type === "delete") ? i18next.t("admin.settings.saveSuccess") :
-                                                   i18next.t("shippo.connectedAndSaved");
+        i18next.t("shippo.connectedAndSaved");
 
       return Alerts.toast(successMsg, "success", {
         autoHide: true

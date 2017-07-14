@@ -1,8 +1,9 @@
 // http://react-in-meteor.readthedocs.org/en/latest/react-template-helper/
-
 import React from "react";
 import ReactDOM from "react-dom";
 import _ from "lodash";
+import { Template } from "meteor/templating";
+import { Blaze } from "meteor/blaze";
 
 // Empty template; logic in `onRendered` below
 Template.React = new Template("Template.React", function () {

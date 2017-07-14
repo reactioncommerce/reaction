@@ -1,6 +1,8 @@
 /* eslint camelcase: 0 */
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { $ } from "meteor/jquery";
+import { AutoForm } from "meteor/aldeed:autoform";
 import Logger from "/client/modules/logger";
 import { Cart, Shops, Packages } from "/lib/collections";
 import { PaypalPayment } from "/imports/plugins/included/payments-paypal/lib/collections/schemas";
@@ -8,6 +10,7 @@ import { Reaction, i18next } from "/client/api";
 import { PayPal } from "/imports/plugins/included/payments-paypal/lib/api";
 import "./payflowForm.html";
 
+let submitting = false;
 
 function uiEnd(template, buttonText) {
   template.$(".cart-checkout-step *").removeAttr("disabled");

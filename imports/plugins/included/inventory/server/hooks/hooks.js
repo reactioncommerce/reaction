@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Cart, Products, Orders } from "/lib/collections";
 import { Logger } from "/server/api";
 import { registerInventory } from "../methods/inventory";
@@ -52,7 +53,7 @@ Products.after.remove((userId, doc) => {
       shopId: doc.shopId
     };
     Logger.debug(`remove inventory variants for variant: ${doc._id
-      }, call inventory/remove`);
+    }, call inventory/remove`);
     Meteor.call("inventory/remove", variantItem);
   }
 });

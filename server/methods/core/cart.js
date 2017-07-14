@@ -1,6 +1,8 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
+import { Roles } from "meteor/alanning:roles";
+import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
@@ -21,9 +23,9 @@ function quantityProcessing(product, variant, itemQty = 1) {
 
   if (MIN > MAX) {
     Logger.debug(`productId: ${product._id}, variantId ${variant._id
-      }: inventoryQuantity lower then minimum order`);
+    }: inventoryQuantity lower then minimum order`);
     throw new Meteor.Error(`productId: ${product._id}, variantId ${variant._id
-      }: inventoryQuantity lower then minimum order`);
+    }: inventoryQuantity lower then minimum order`);
   }
 
   // TODO: think about #152 implementation here
@@ -142,7 +144,7 @@ Meteor.methods({
 
     Logger.debug(
       `merge cart: begin merge processing of session ${
-      sessionId} into: ${currentCart._id}`
+        sessionId} into: ${currentCart._id}`
     );
     // loop through session carts and merge into user cart
     sessionCarts.forEach(sessionCart => {
@@ -198,7 +200,7 @@ Meteor.methods({
         Meteor.users.remove(sessionCart.userId);
         Logger.debug(
           `merge cart: delete cart ${
-          sessionCart._id} and user: ${sessionCart.userId}`
+            sessionCart._id} and user: ${sessionCart.userId}`
         );
       }
       Logger.debug(

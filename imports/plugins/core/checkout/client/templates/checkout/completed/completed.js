@@ -1,8 +1,10 @@
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
+import { check } from "meteor/check";
 import { Reaction, i18next } from "/client/api";
 import { Orders } from "/lib/collections";
-import { Template } from "meteor/templating";
+
 
 /**
  * cartCompleted helpers

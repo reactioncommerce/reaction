@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Shops } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { Fixture } from "/server/api/core/import";

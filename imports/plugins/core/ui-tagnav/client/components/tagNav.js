@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
 import { getTagIds } from "/lib/selectors/tags";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { Button, EditButton } from "/imports/plugins/core/ui/client/components";
@@ -91,7 +92,7 @@ class TagNav extends Component {
             </TagList>
           </DragDropProvider>
           {this.props.canEdit && this.renderEditButton()}
-          </div>
+        </div>
       </div>
     );
   }

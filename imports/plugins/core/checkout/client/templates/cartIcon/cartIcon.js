@@ -1,3 +1,4 @@
+import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 import { Template } from "meteor/templating";

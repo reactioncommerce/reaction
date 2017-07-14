@@ -1,3 +1,6 @@
+import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
+import { Roles } from "meteor/alanning:roles";
 import { Media, Products, Revisions } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
@@ -63,7 +66,7 @@ Meteor.publish("Product", function (productId) {
   selector.isDeleted = { $in: [null, false] };
 
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
-      shop._id)) {
+    shop._id)) {
     selector.isVisible = {
       $in: [true, false]
     };

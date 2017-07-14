@@ -1,3 +1,8 @@
+import _ from "lodash";
+import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
+import { Roles } from "meteor/alanning:roles";
+import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Products, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
@@ -237,6 +242,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       selector.isVisible = {
         $in: [true, false, undefined]
       };
+      selector.ancestors = [];
 
       // Get _ids of top-level products
       const productIds = Products.find(selector, {
@@ -248,7 +254,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
       // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
       if (productFilters && productFilters.tags) {
-        newSelector = _.omit(selector, ["hashtags"]);
+        newSelector = _.omit(selector, ["hashtags", "ancestors"]);
 
         // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
         _.extend(newSelector, {
@@ -257,9 +263,32 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
               ancestors: {
                 $in: productIds
               }
-            }, {
-              hashtags: {
-                $in: productFilters.tags
+            }, { $and: [
+              {
+                hashtags: {
+                  $in: productFilters.tags
+                }
+              }, {
+                _id: {
+                  $in: productIds
+                }
+              }
+            ]
+            }
+          ]
+        });
+      } else {
+        newSelector = _.omit(selector, ["hashtags", "ancestors"]);
+        _.extend(newSelector, {
+          $or: [
+            {
+              ancestors: {
+                $in: productIds
+              }
+            },
+            {
+              _id: {
+                $in: productIds
               }
             }
           ]
