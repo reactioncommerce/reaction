@@ -16,19 +16,14 @@ class AccountsTable extends Component {
   };
 
   renderTable(users) {
-    const columnMetadata = [];
-
-    fields.forEach(columnName => {
-      const columnMeta = {
-        Header: this.getHeader(columnName),
-        accessor: "", // sends whole object
-        headerClass: { backgroundColor: "#f5f5f5", display: "flex" },
-        Cell: data => {
-          return <AccountsTableCell account={data.value} columnName={columnName} {...this.props} />;
-        }
-      };
-      columnMetadata.push(columnMeta);
-    });
+    const columnMetadata = fields.map(columnName => ({
+      Header: this.getHeader(columnName),
+      accessor: "", // sends whole object
+      headerClass: { backgroundColor: "#f5f5f5", display: "flex" },
+      Cell: data => {
+        return <AccountsTableCell account={data.value} columnName={columnName} {...this.props} />;
+      }
+    }));
 
     return (
       <SortableTable

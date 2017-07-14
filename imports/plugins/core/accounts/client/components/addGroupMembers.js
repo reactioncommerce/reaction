@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { Card, CardHeader, CardBody, List, ListItem } from "/imports/plugins/core/ui/client/components";
+import { Card, CardHeader, CardBody, List, ListItem, SortableTable } from "/imports/plugins/core/ui/client/components";
 import { getGravatar } from "../helpers/accountsHelper";
 
 class AddGroupMembers extends Component {
@@ -66,35 +66,59 @@ class AddGroupMembers extends Component {
     };
   }
 
+  getCellElements(data, columnName) {
+    console.log({ data });
+    const acc = data.value;
+    if (columnName === "name") {
+      return (
+        <a
+          className={this.getCursorClass(acc)}
+          onMouseOver={this.handleMouseOver(acc)}
+          onMouseOut={this.handleMouseOut(acc)}
+          onClick={this.handleOnGroupChange(acc)}
+        >
+          <div className="name-box">
+            <img className="accounts-img-tag" src={getGravatar(acc)} />
+            <span>
+              <span className="title"><b>{acc.name || "Guest"}</b></span>
+              <span>{_.get(acc, "emails[0].address")}</span>
+            </span>
+          </div>
+        </a>
+      );
+    }
+
+    if (columnName === "email") {
+      return (
+        <div className="badge">
+          {this.renderBadge(acc)}
+        </div>
+      );
+    }
+  }
+
   render() {
+    const fields = ["name", "email"];
+    const tableData = fields.map(columnName => ({
+      Header: columnName,
+      accessor: "", // sends whole object
+      Cell: data => {
+        return this.getCellElements(data, columnName);
+      }
+    }));
     return (
       <div className="add-group-members">
         <Card expanded={true}>
           <CardHeader actAsExpander={true} data-i18n="" title={this.props.group.name} />
           <CardBody expandable={true}>
-            <List>
-              {this.state.accounts.map((acc, index) => ( // TODO: Review "Guest" default
-                <ListItem key={index}>
-                  <div
-                    className={this.getCursorClass(acc)}
-                    onMouseOver={this.handleMouseOver(acc)}
-                    onMouseOut={this.handleMouseOut(acc)}
-                    onClick={this.handleOnGroupChange(acc)}
-                  >
-                    <div className="name-box">
-                      <img className="accounts-img-tag" src={getGravatar(acc)} />
-                      <span>
-                        <span className="title"><b>{acc.name || "Guest"}</b></span>
-                        <span>{_.get(acc, "emails[0].address")}</span>
-                      </span>
-                    </div>
-                    <div className="badge">
-                      {this.renderBadge(acc)}
-                    </div>
-                  </div>
-                </ListItem>
-              ))}
-            </List>
+            <SortableTable
+              tableClassName="accounts-group-table"
+              data={this.state.accounts}
+              columnMetadata={tableData}
+              filteredFields={fields}
+              filterType="none"
+              showFilter={true}
+            />
           </CardBody>
         </Card>
       </div>
