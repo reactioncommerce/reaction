@@ -69,7 +69,7 @@ class ProductsComponent extends Component {
   render() {
     if (this.props.ready()) {
       return (
-        <div>
+        <div id="container-main">
           {this.renderProductGrid()}
           {this.renderLoadMoreProductsButton()}
           {this.renderSpinner()}
