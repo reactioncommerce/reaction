@@ -6,7 +6,7 @@ import { NotificationComponent } from "../components";
 
 const NotificationContainer = (props) => {
   return (
-     <NotificationComponent {...props}/>
+    <NotificationComponent {...props}/>
   );
 };
 

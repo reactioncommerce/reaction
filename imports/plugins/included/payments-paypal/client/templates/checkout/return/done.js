@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Tracker } from "meteor/tracker";
+import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import { Cart, Packages } from "/lib/collections";
 import Logger from "/client/modules/logger";

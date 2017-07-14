@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { IconButton } from "../";
 import { SortableItem } from "../../containers";
 
 
 class MediaItem extends Component {
-
   handleMouseEnter = (event) => {
     if (this.props.onMouseEnter) {
       this.props.onMouseEnter(event, this.props.source);
@@ -57,7 +57,7 @@ class MediaItem extends Component {
       if (!this.props.revision || this.props.revision.changeType !== "remove") {
         return (
           <div className="rui badge-container">
-          {this.renderRevision()}
+            {this.renderRevision()}
             <IconButton
               icon="fa fa-times"
               onClick={this.handleRemoveMedia}
@@ -68,9 +68,9 @@ class MediaItem extends Component {
         );
       }
       return (
-          <div className="rui badge-container">
-            {this.renderRevision()}
-          </div>
+        <div className="rui badge-container">
+          {this.renderRevision()}
+        </div>
       );
     }
     return null;

@@ -1,5 +1,7 @@
 import _ from "lodash";
 import { Template } from "meteor/templating";
+import { ReactiveDict } from "meteor/reactive-dict";
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { Reaction } from "/client/api";
 import { Orders, Shops } from "/lib/collections";
 import OrdersActionContainer from "../containers/ordersActionContainer";

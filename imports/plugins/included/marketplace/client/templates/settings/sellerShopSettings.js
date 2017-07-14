@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { AutoForm } from "meteor/aldeed:autoform";
 import { Template } from "meteor/templating";
 import { Reaction } from "/lib/api";
 import { SellerShops, Media } from "/lib/collections";

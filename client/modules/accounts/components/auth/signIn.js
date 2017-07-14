@@ -135,7 +135,7 @@ class SignIn extends Component {
               value={this.state.email}
               onChange={this.handleFieldChange}
             />
-          {this.renderEmailErrors()}
+            {this.renderEmailErrors()}
           </div>
 
           <div className={passwordClasses}>
@@ -149,7 +149,7 @@ class SignIn extends Component {
               value={this.state.password}
               onChange={this.handleFieldChange}
             />
-          {this.renderPasswordErrors()}
+            {this.renderPasswordErrors()}
           </div>
 
           <div className="form-group">

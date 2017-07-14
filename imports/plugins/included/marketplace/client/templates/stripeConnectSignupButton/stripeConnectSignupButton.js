@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 import { Reaction } from "/lib/api";
 
 // TODO: This button should be a React component.

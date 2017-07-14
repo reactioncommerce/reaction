@@ -1,3 +1,9 @@
+import React from "react";
+import Translation from "../translation";
+import { shallow } from "enzyme";
+import shallowToJSON from "enzyme-to-json";
+
+
 jest.mock("/client/api", () => {
   return {
     i18next: {
@@ -8,10 +14,6 @@ jest.mock("/client/api", () => {
   };
 });
 
-import React from "react";
-import Translation from "../translation";
-import { shallow } from "enzyme";
-import shallowToJSON from "enzyme-to-json";
 
 /**
  * Order Summary is a display only component

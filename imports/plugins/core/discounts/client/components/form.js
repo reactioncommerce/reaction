@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import debounce from "lodash/debounce";
 import { Meteor } from "meteor/meteor";
 import { Translation } from "/imports/plugins/core/ui/client/components";
@@ -22,9 +23,9 @@ export default class DiscountForm extends Component {
         if (typeof result === "object") {
           this.setState({ validationMessage: result });
         } else if (result !== 1) {
-            // if validationMessage isn't an object with i18n
-            // we will display an elliptical that's not
-            // actually done here though, just bit of foolery
+          // if validationMessage isn't an object with i18n
+          // we will display an elliptical that's not
+          // actually done here though, just bit of foolery
           this.timerId = Meteor.setTimeout(function () {
             this.setState({ validationMessage: "..." });
           }.bind(this), 2000);

@@ -104,14 +104,14 @@ class MainDropdown extends Component {
       <div>
         {this.props.currentUser ?
           <div style={{ paddingRight: 5 }}>
-              <DropDownMenu
-                buttonElement={this.buttonElement()}
-                attachment="bottom right"
-                targetAttachment="top right"
-                menuStyle={menuStyle}
-                className="accounts-li-tag"
-                onChange={this.props.handleChange}
-              >
+            <DropDownMenu
+              buttonElement={this.buttonElement()}
+              attachment="bottom right"
+              targetAttachment="top right"
+              menuStyle={menuStyle}
+              className="accounts-li-tag"
+              onChange={this.props.handleChange}
+            >
 
               {this.renderUserIcons()}
               {this.renderAdminIcons()}

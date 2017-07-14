@@ -1,21 +1,21 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
 import moment from "moment";
 import { Icon } from "/imports/plugins/core/ui/client/components";
 import { i18next } from "/client/api";
 
 class EmailTableColumn extends Component {
   static propTypes = {
-    data: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.instanceOf(Date)
-    ]),
-    metadata: PropTypes.object,
-    rowData: PropTypes.object
+    data: PropTypes.object,
+    row: PropTypes.object
   }
 
   handleAction = () => {
-    const emailId = this.props.rowData._id;
-    const emailAddress = this.props.rowData.data.to;
+    const { row } = this.props;
+
+    const emailId = row.original._id;
+    const emailAddress = row.original.data.to;
 
     Meteor.call("emails/retryFailed", emailId, (err) => {
       if (err) {
@@ -26,33 +26,38 @@ class EmailTableColumn extends Component {
   }
 
   render() {
-    const renderColumn = this.props.metadata.columnName;
+    const { row } = this.props;
+
+    const renderColumn = row.column.id;
 
     if (renderColumn === "status") {
-      if (this.props.data === "completed") {
+      if (row.value === "completed") {
         return (
           <span>
-            <Icon icon="fa fa-circle" className="pull-left valid" />
+            <Icon icon="fa fa-circle" className="valid" />
+            <span onClick={this.handleAction} title={this.props.data}>
+              <Icon icon="fa fa-retweet" className="resend-mail" />
+            </span>
           </span>
         );
       }
       return (
         <span>
-          <Icon icon="fa fa-circle" className="pull-left error" />
+          <Icon icon="fa fa-circle" className="error" />
           <span onClick={this.handleAction} title={this.props.data}>
-            <Icon icon="fa fa-share" className="pull-right" />
+            <Icon icon="fa fa-retweet" className="resend-mail" />
           </span>
         </span>
       );
     }
     if (renderColumn === "updated") {
-      const createdDate = moment(this.props.data).format("LLL");
+      const createdDate = moment(row.value).format("LLL");
       return (
         <span>{createdDate}</span>
       );
     }
     return (
-      <span>{this.props.data}</span>
+      <span>{row.value}</span>
     );
   }
 }

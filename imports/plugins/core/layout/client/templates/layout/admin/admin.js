@@ -1,6 +1,8 @@
+import _ from "lodash";
 import Drop from "tether-drop";
 import { Meteor } from "meteor/meteor";
 import { Blaze } from "meteor/blaze";
+import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";

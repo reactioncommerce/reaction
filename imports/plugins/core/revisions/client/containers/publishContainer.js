@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { composeWithTracker } from "/lib/api/compose";
 import PublishControls from "../components/publishControls";
 import { Revisions } from "/lib/collections";

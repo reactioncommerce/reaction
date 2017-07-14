@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Reaction } from "/lib/api";
+import { ReactiveVar } from "meteor/reactive-var";
+import { Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrderListContainer from "/imports/plugins/core/orders/client/containers/orderListContainer";
