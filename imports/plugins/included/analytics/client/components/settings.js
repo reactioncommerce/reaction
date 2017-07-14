@@ -10,6 +10,7 @@ import { ReactionAnalyticsPackageConfig } from "/lib/collections/schemas/analyti
 class AnalyticsSettings extends Component {
   static propTypes = {
     enabled: PropTypes.object,
+    handleToggle: PropTypes.func,
     onSave: PropTypes.func,
     packageData: PropTypes.object
   }
@@ -28,7 +29,6 @@ class AnalyticsSettings extends Component {
           ...settings
         }
       };
-      const { enabled } = this.props;
 
       return (
         <SettingsCard
@@ -37,8 +37,9 @@ class AnalyticsSettings extends Component {
           expandable={true}
           expanded={true}
           title={settings.public[provider].name}
-          name={settings.public[provider].name}
-          // enabled={enabled[`${provider.name}`]}
+          name={settings.public[provider].value}
+          enabled={settings.public[provider].enabled}
+          onSwitchChange={this.props.handleToggle}
         >
           <Form
             schema={ReactionAnalyticsPackageConfig}
@@ -47,7 +48,7 @@ class AnalyticsSettings extends Component {
             hideFields={[
               `settings.public.${provider}.enabled`
             ]}
-            name={`settings.public.${provider.name}`}
+            name={settings.public[provider].value}
             onSubmit={this.handleSubmit}
           />
         </SettingsCard>
