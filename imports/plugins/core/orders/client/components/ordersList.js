@@ -224,9 +224,7 @@ class OrdersList extends Component {
     });
 
     const selectedRowsStyle = {
-      backgroundColor: "#e8fcf6",
-      border: "solid 1px #94e8d1"
-
+      backgroundColor: "#e8fcf6"
     };
 
     return (
