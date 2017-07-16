@@ -103,6 +103,9 @@ class ListItem extends Component {
           i18nKey={this.props.i18nKeyLabel}
         />
       );
+      if (!this.props.i18nKeyLabel) {
+        content = (<span>{this.props.label}</span>);
+      }
     } else {
       content = this.props.children;
     }

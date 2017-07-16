@@ -1,5 +1,6 @@
 /* global Gravatar */
 import _ from "lodash";
+import { Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 
 /**
@@ -43,7 +44,7 @@ export function getGravatar(user) {
   }
 }
 
-export function groupPackages(packages) {
+export function groupPermissions(packages) {
   return packages.map(pkg => {
     const permissions = [];
     if (pkg.registry && pkg.enabled) {

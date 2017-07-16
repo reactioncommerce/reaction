@@ -15,15 +15,20 @@ class AccountsManageContainer extends Component {
     super(props);
 
     this.state = {
-      accounts: props.accounts
+      accounts: props.accounts,
+      group: props.group
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ group: nextProps.group });
   }
 
   render() {
     return (
       <div className="groups-form">
         <AdminInviteForm />
-        <EditGroupContainer groups={this.props.groups} />
+        <EditGroupContainer groups={this.props.groups} selectedGroup={this.props.group} />
         <AddGroupMembers
           groups={this.props.groups}
           accounts={this.state.accounts}
