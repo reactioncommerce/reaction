@@ -18,13 +18,16 @@ class EditGroupContainer extends Component {
 
   constructor(props) {
     super(props);
-    const { accounts, packages, selectedGroup } = props;
+    const { accounts, selectedGroup } = props;
 
     this.state = {
       selectedGroup: selectedGroup || null,
-      accounts,
-      packages
+      accounts
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ selectedGroup: nextProps.selectedGroup });
   }
 
   selectGroup = grp => {
@@ -61,7 +64,7 @@ class EditGroupContainer extends Component {
             <div className="settings">
               {this.renderGroups()}
               <PermissionsList
-                permissions={groupPermissions(this.state.packages)}
+                permissions={groupPermissions(this.props.packages)}
                 group={this.state.selectedGroup}
               />
             </div>
