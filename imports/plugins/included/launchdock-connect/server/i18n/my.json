@@ -1,0 +1,18 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-connect",
+  "translation": {
+    "reaction-connect": {
+      "admin": {
+        "dashboard": {
+          "connectLabel": "ဆက်",
+          "connectTitle": "ဆက်",
+          "connectDescription": "တစ်တပ်ဖြန့်ဝန်ဆောင်မှုအဖြစ်တုံ့ပြန်မှုချိတ်ဆက်ပါ"
+        },
+        "settings": {
+          "reactionConnectLabel": "တုံ့ပြန်မှု Connect ကို"
+        }
+      }
+    }
+  }
+}]

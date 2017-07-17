@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "sipariş detayları",
         "invoice": "Fatura",
+        "lineItems": "Satır Öğeleri",
         "shipmentTracking": "Sevk Takibi"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Bu adresi düzenleyin",
         "addressValidation": "Adres Doğrulama",
-        "somethingWentWrong": "Bir şeyler ters gitti: {{err}}"
+        "reviewAddress": "En iyi uyum için lütfen adresinizi onaylayın",
+        "somethingWentWrong": "Bir şeyler ters gitti: {{err}}",
+        "enteredAddress": "Girilen Adres",
+        "validatedAddress": "Adres Doğrulayın"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "E-posta kriterlere uygun değil.",
           "errorSendingEmail": "E-posta, olası yapılandırma sorunu gönderme hatası.",
           "unableToSendInvitationEmail": "davetiye e-posta göndermek için açılamıyor.",
+          "userWithEmailAlreadyExists": "Bu e-posta adresine sahip bir kullanıcı zaten mevcut",
           "failedToLogout": "çıkış için başarısız oldu.",
           "invalidLoginToken": "Geçersiz giriş anahtarı",
           "loginForbidden": "Giriş engellenmiş",
