@@ -9,6 +9,11 @@
         },
         "inventoryAlerts": {
           "adjustedQuantity": "您的产品数量进行了调整，在股票的最大数量"
+        },
+        "mediaGallery": {
+          "deleteImage": "点击删除图片",
+          "addedImage": "这是一个新的形象。发布以保存更改。",
+          "removedImage": "图片已被删除。发布以保存更改。"
         }
       },
       "availableOptions": "可用选项"

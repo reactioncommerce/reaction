@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "подробности за поръчката",
         "invoice": "фактура",
+        "lineItems": "Редните елементи",
         "shipmentTracking": "пратка проследяване"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Редактирайте адреса",
         "addressValidation": "Адрес за потвърждаване",
-        "somethingWentWrong": "Нещо се обърка: {{err}}"
+        "reviewAddress": "За най-добро съответствие, моля, потвърдете адреса си",
+        "somethingWentWrong": "Нещо се обърка: {{err}}",
+        "enteredAddress": "Въведеният адрес",
+        "validatedAddress": "Потвърдете адреса"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "Имейл адресът не покрива критериите.",
           "errorSendingEmail": "Грешка при изпращане на имейл, възможно въпрос конфигурация.",
           "unableToSendInvitationEmail": "Не може да се изпрати покана по имейл.",
+          "userWithEmailAlreadyExists": "Потребител с този имейл адрес вече съществува",
           "failedToLogout": "Неуспех да излезете.",
           "invalidLoginToken": "Невалиден вход",
           "loginForbidden": "Входът е забранен",

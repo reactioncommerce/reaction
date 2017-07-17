@@ -17,7 +17,20 @@
         "publishThemeError": "'Ni bilo mogoče objaviti temo {{themeName}}",
         "components": {
           "navbar": "Navigation Bar",
-          "button": "Button"
+          "button": "Button",
+          "sortableTable": {
+            "filterPlaceholder": "filter podatkov",
+            "tableText": {
+              "noDataMessage": "Ni zadetkov",
+              "previousText": "Prejšnja",
+              "nextText": "Naslednja",
+              "loadingText": "Nalaganje ...",
+              "noDataText": "Ni zadetkov",
+              "pageText": "stran",
+              "ofText": "za",
+              "rowsText": "vrstice"
+            }
+          }
         }
       }
     }
