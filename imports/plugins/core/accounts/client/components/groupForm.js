@@ -22,7 +22,6 @@ class GroupForm extends Component {
   }
 
   onChange = event => {
-    console.log({ event: event.target.name });
     this.setState({ [event.target.name]: event.target.value });
   };
 

@@ -35,7 +35,10 @@ class EditGroupContainer extends Component {
   }
 
   selectGroup = grp => {
-    return () => this.setState({ selectedGroup: grp });
+    return event => {
+      event.preventDefault();
+      this.setState({ selectedGroup: grp, isCreating: false });
+    };
   };
 
   groupListClass = grp => {
@@ -53,7 +56,9 @@ class EditGroupContainer extends Component {
   };
 
   showForm = (grp = {}) => {
-    return () => {
+    return e => {
+      e.preventDefault();
+      e.stopPropagation();
       this.setState({ isCreating: true, selectedGroup: grp });
     };
   };
@@ -64,7 +69,7 @@ class EditGroupContainer extends Component {
         {this.props.groups.map((grp, index) => (
           <div key={index} className={this.groupListClass(grp)}>
             <ListItem label={grp.name} onClick={this.selectGroup(grp)}>
-              <a href="" onClick={this.showForm} className="fa fa-pencil" />
+              <a href="" onClick={this.showForm(grp)} className="fa fa-pencil" />
             </ListItem>
           </div>
         ))}
