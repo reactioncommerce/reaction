@@ -4,13 +4,7 @@ import PropTypes from "prop-types";
 import { Packages } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
-import {
-  List,
-  ListItem,
-  Card,
-  CardHeader,
-  CardBody
-} from "/imports/plugins/core/ui/client/components";
+import { List, ListItem, Card, CardHeader, CardBody } from "/imports/plugins/core/ui/client/components";
 import PermissionsList from "../components/permissionsList";
 import { groupPermissions } from "../helpers/accountsHelper";
 
@@ -52,9 +46,12 @@ class EditGroupContainer extends Component {
       <List>
         {this.props.groups.map((grp, index) => (
           <div key={index} className={this.selectedClass(grp)}>
-            <ListItem actionType="arrow" label={grp.name} onClick={this.selectGroup(grp)} />
+            <ListItem label={grp.name} onClick={this.selectGroup(grp)}>
+              <a href="" onClick={this.showForm} className="fa fa-pencil" />
+            </ListItem>
           </div>
         ))}
+        <ListItem actionType="arrow" label="New Group" onClick={this.newGroup} />
       </List>
     );
   }
@@ -63,11 +60,7 @@ class EditGroupContainer extends Component {
     return (
       <div className="edit-group-container">
         <Card expanded={true}>
-          <CardHeader
-            actAsExpander={true}
-            data-i18n="accountsUI.info.editGroups"
-            title="Edit Groups"
-          />
+          <CardHeader actAsExpander={true} data-i18n="accountsUI.info.editGroups" title="Edit Groups" />
           <CardBody expandable={true}>
             <div className="settings">
               {this.renderGroups()}
