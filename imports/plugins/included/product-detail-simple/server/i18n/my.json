@@ -9,6 +9,11 @@
         },
         "inventoryAlerts": {
           "adjustedQuantity": "သင့်ရဲ့ကုန်ပစ္စည်းအရေအတွက်စတော့ရှယ်ယာအတွက် max ကိုအရေအတွက်မှချိန်ညှိထားပြီး"
+        },
+        "mediaGallery": {
+          "deleteImage": "image ကိုဖယ်ရှားပစ်ရန်ကလစ်နှိပ်ပါ",
+          "addedImage": "ဒါကအသစ်တခုပုံရိပ်ဖြစ်ပါတယ်။ အပြောင်းအလဲများကိုကယ်ဖို့ Publish ။",
+          "removedImage": "Image ကိုဖျက်ထားသည်။ အပြောင်းအလဲများကိုကယ်ဖို့ Publish ။"
         }
       },
       "availableOptions": "ရရှိနိုင် Options ကို"

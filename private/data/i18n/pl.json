@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Szczegóły zamówienia",
         "invoice": "Faktura",
+        "lineItems": "Elementy zamówienia",
         "shipmentTracking": "Śledzenie przesyłek"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Montaż tego wpisu adresu",
         "addressValidation": "adres Validation",
-        "somethingWentWrong": "Coś poszło nie tak: {{err}}"
+        "reviewAddress": "Aby uzyskać najlepszą zgodność, sprawdź swój adres",
+        "somethingWentWrong": "Coś poszło nie tak: {{err}}",
+        "enteredAddress": "Wprowadzony adres",
+        "validatedAddress": "Sprawdź poprawność adresu"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "Adres email nie spełnia kryteriów.",
           "errorSendingEmail": "Błąd wysyłania poczty elektronicznej, możliwej problem z konfiguracją.",
           "unableToSendInvitationEmail": "Nie udało się wysłać e-maila z zaproszeniem.",
+          "userWithEmailAlreadyExists": "Użytkownik z tym adresem e-mail już istnieje",
           "failedToLogout": "Nie udało się wylogować.",
           "invalidLoginToken": "Błędny token logowania",
           "loginForbidden": "Logowanie zabronione",

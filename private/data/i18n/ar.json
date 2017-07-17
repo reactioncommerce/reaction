@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "تفاصيل الطلب",
         "invoice": "فاتورة",
+        "lineItems": "بنود الخط",
         "shipmentTracking": "تتبع الشحنة"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "تعديل هذا العنوان ",
         "addressValidation": "عنوان التحقق من صحة",
-        "somethingWentWrong": "حدث خطأ ما: {{err}}"
+        "reviewAddress": "للحصول على أفضل توافق، يرجى التحقق من صحة عنوانك",
+        "somethingWentWrong": "حدث خطأ ما: {{err}}",
+        "enteredAddress": "أدخل عنوان",
+        "validatedAddress": "التحقق من العنوان"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "البريد الالكترونى لا يتوافق مع الشروط",
           "errorSendingEmail": ".خطأ في إرسال رسالة الكترونية، من المحتمل أن تكون مشكلة في التهيئة",
           "unableToSendInvitationEmail": "لا يمكن ارسال دعوات إلكترونية",
+          "userWithEmailAlreadyExists": "يوجد مستخدم لديه عنوان البريد الإلكتروني هذا بالفعل",
           "failedToLogout": "فشل في تسجيل الخروج",
           "invalidLoginToken": "رمز الدخول غير صالح",
           "loginForbidden": "تسجيل الدخول غير مسموح",

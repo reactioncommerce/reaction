@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "Không tìm thấy nhật ký",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "Ngày",
+                "type": "loại tài liệu"
+              }
+            }
+          },
           "date": "Ngày",
           "docType": "loại tài liệu"
         }
