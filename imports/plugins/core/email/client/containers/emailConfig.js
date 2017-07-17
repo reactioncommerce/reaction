@@ -57,7 +57,7 @@ EmailConfigContainer.propTypes = {
 };
 
 const composer = ({}, onData) => {
-  if (Meteor.subscribe("Packages", Reaction.getShopId()).ready()) {
+  if (Meteor.subscribe("Packages", Reaction.getPrimaryShopId()).ready()) {
     const shopSettings = Reaction.getShopSettings();
     const settings = shopSettings.mail || {};
 
