@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { isEqual } from "lodash";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
-import update from "react/lib/update";
 import { formatPriceString } from "/client/api";
 import {
   Button,
@@ -55,7 +54,7 @@ class VariantForm extends Component {
     super(props);
 
     this.state = {
-      expandedCard: this.fieldGroupForFieldName(props.editFocus),
+      expandedCard: "variantDetails",
       variant: props.variant,
       inventoryPolicy: props.variant.inventoryPolicy,
       taxable: props.variant.taxable,
@@ -74,10 +73,11 @@ class VariantForm extends Component {
         }
       }
     }
-    const cardGroupName = this.fieldGroupForFieldName(nextProps.editFocus);
 
     this.setState({
-      expandedCard: cardGroupName,
+      inventoryManagement: nextProps.variant.inventoryManagement,
+      inventoryPolicy: nextProps.variant.inventoryPolicy,
+      taxable: nextProps.variant.taxable,
       variant: nextProps.variant
     });
   }
@@ -110,9 +110,11 @@ class VariantForm extends Component {
 
     if (fieldRef) {
       const input = fieldRef.refs.input;
+      const isFieldValid = this.props.validation.isFieldValid(fieldName);
+      const flashColor = isFieldValid ? "#f0fff4" : "#ffeeef";
 
       Velocity.RunSequence([
-        { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
+        { e: input, p: { backgroundColor: flashColor }, o: { duration: 200 } },
         { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
       ]);
     }
@@ -123,51 +125,52 @@ class VariantForm extends Component {
   }
 
   handleFieldChange = (event, value, field) => {
-    const newState = update(this.state, {
+    this.setState(({ variant }) => ({
       variant: {
-        $merge: {
-          [field]: value
-        }
+        ...variant,
+        [field]: value
       }
-    });
-
-    this.setState(newState);
+    }));
   }
 
   handleFieldBlur = (event, value, field) => {
     if (this.props.onVariantFieldSave) {
-      this.props.onVariantFieldSave(this.variant._id, field, value);
+      this.props.onVariantFieldSave(this.variant._id, field, value, this.state.variant);
     }
   }
 
   handleSelectChange = (value, field) => {
-    this.handleFieldChange(event, value, field);
-
-    if (this.props.onVariantFieldSave) {
-      this.props.onVariantFieldSave(this.variant._id, field, value);
-    }
+    this.setState(({ variant }) => ({
+      variant: {
+        ...variant,
+        [field]: value
+      }
+    }), () => {
+      if (this.props.onVariantFieldSave) {
+        this.props.onVariantFieldSave(this.variant._id, field, value, this.state.variant);
+      }
+    });
   }
 
   handleCheckboxChange = (event, value, field) => {
-    this.setState({
-      [field]: value
-    });
+    this.setState(({ variant }) => ({
+      variant: {
+        ...variant,
+        [field]: value
+      }
+    }));
 
     this.handleFieldBlur(event, value, field);
   }
 
-  handleCardExpand(cardName) {
-    if (this.props.onCardExpand) {
-      this.props.onCardExpand(cardName);
+  handleCardExpand = (event, card, cardName, isExpanded) => {
+    if (typeof this.props.onCardExpand === "function") {
+      this.props.onCardExpand(isExpanded ? cardName : undefined);
     }
   }
 
-  isExpanded(groupName) {
-    if (this.state.expandedCard && this.state.expandedCard === groupName) {
-      return true;
-    }
-
-    return false;
+  isExpanded = (groupName) => {
+    return this.state.expandedCard === groupName;
   }
 
   renderTaxCodeField() {
@@ -198,6 +201,7 @@ class VariantForm extends Component {
         onBlur={this.handleFieldBlur}
         onChange={this.handleFieldChange}
         onReturnKeyDown={this.handleFieldBlur}
+        validation={this.props.validation}
       />
     );
   }
@@ -253,6 +257,7 @@ class VariantForm extends Component {
         </div>
       );
     }
+
     return (
       <div className="col-sm-6">
         <TextField
@@ -266,6 +271,7 @@ class VariantForm extends Component {
           onChange={this.handleFieldChange}
           onBlur={this.handleFieldBlur}
           onReturnKeyDown={this.handleFieldBlur}
+          validation={this.props.validation}
         />
       </div>
     );
@@ -275,8 +281,10 @@ class VariantForm extends Component {
     return (
       <CardGroup>
         <Card
+          expandable={true}
           expanded={this.isExpanded("variantDetails")}
-          onExpand={this.handleCardExpand.bind(this, "variantDetails")}
+          name="variantDetails"
+          onExpand={this.handleCardExpand}
         >
           <CardHeader
             actAsExpander={true}
@@ -304,6 +312,7 @@ class VariantForm extends Component {
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
               onReturnKeyDown={this.handleFieldBlur}
+              validation={this.props.validation}
             />
             <Select
               clearable={false}
@@ -329,6 +338,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.props.validation}
                 />
               </div>
               <div className="col-sm-6">
@@ -345,6 +355,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.props.validation}
                 />
               </div>
             </div>
@@ -362,6 +373,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.props.validation}
                 />
               </div>
               <div className="col-sm-6">
@@ -376,6 +388,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.props.validation}
                 />
               </div>
             </div>
@@ -393,6 +406,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.props.validation}
                 />
               </div>
               <div className="col-sm-6">
@@ -407,6 +421,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.props.validation}
                 />
               </div>
             </div>
@@ -416,12 +431,12 @@ class VariantForm extends Component {
         <SettingsCard
           enabled={this.state.taxable}
           expandable={true}
-          expanded={this.isExpanded("taxable")}
           i18nKeyTitle="productVariant.taxable"
           name="taxable"
+          packageName={"reaction-product-variant"}
+          saveOpenStateToPreferences={true}
           showSwitch={true}
           title="Taxable"
-          onExpand={this.handleCardExpand.bind(this, "taxable")}
           onSwitchChange={this.handleCheckboxChange}
         >
           {this.renderTaxCodeField()}
@@ -436,18 +451,19 @@ class VariantForm extends Component {
             onBlur={this.handleFieldBlur}
             onChange={this.handleFieldChange}
             onReturnKeyDown={this.handleFieldBlur}
+            validation={this.props.validation}
           />
         </SettingsCard>
 
         <SettingsCard
           enabled={this.state.inventoryManagement}
           expandable={true}
-          expanded={this.isExpanded("inventoryManagement")}
           i18nKeyTitle="productVariant.inventoryManagement"
           name="inventoryManagement"
+          packageName={"reaction-product-variant"}
+          saveOpenStateToPreferences={true}
           showSwitch={true}
           title="Inventory Tracking"
-          onExpand={this.handleCardExpand.bind(this, "inventoryManagement")}
           onSwitchChange={this.handleCheckboxChange}
         >
           <div className="row">
@@ -464,6 +480,7 @@ class VariantForm extends Component {
                 onBlur={this.handleFieldBlur}
                 onChange={this.handleFieldChange}
                 onReturnKeyDown={this.handleFieldBlur}
+                validation={this.props.validation}
               />
             </div>
           </div>
@@ -477,6 +494,7 @@ class VariantForm extends Component {
                 onLabel={"Allow Backorder"}
                 checked={this.state.inventoryPolicy}
                 onChange={this.handleCheckboxChange}
+                validation={this.props.validation}
               />
             </div>
           </div>
@@ -501,6 +519,7 @@ VariantForm.propTypes = {
   onVariantFieldSave: PropTypes.func,
   removeVariant: PropTypes.func,
   restoreVariant: PropTypes.func,
+  validation: PropTypes.object,
   variant: PropTypes.object
 };
 

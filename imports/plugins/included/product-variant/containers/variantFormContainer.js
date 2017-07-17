@@ -10,25 +10,45 @@ import { Countries } from "/client/collections";
 import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import VariantForm from "../components/variantForm";
+import { ProductVariant } from "/lib/collections/schemas/products";
+import { Validation } from "@reactioncommerce/reaction-collections";
 
 class VariantFormContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isDeleted: props.variant.isDeleted
-    };
+    this.validation = new Validation(ProductVariant);
 
-    this.isProviderEnabled = this.isProviderEnabled.bind(this);
-    this.fetchTaxCodes = this.fetchTaxCodes.bind(this);
-    this.hasChildVariants = this.hasChildVariants.bind(this);
-    this.greyDisabledFields = this.greyDisabledFields.bind(this);
-    this.removeVariant = this.removeVariant.bind(this);
-    this.restoreVariant = this.restoreVariant.bind(this);
-    this.cloneVariant = this.cloneVariant.bind(this);
-    this.handleVariantFieldSave = this.handleVariantFieldSave.bind(this);
-    this.handleCardExpand = this.handleCardExpand.bind(this);
-    this.updateQuantityIfChildVariants = this.updateQuantityIfChildVariants.bind(this);
+    this.state = {
+      variant: props.variant,
+      validationStatus: this.validation.validationStatus,
+      isDeleted: props.variant && props.variant.isDeleted
+    };
+  }
+
+  componentDidMount() {
+    this.runVariantValidation(this.state.variant);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(() => ({
+      variant: nextProps.variant
+    }), () => {
+      this.runVariantValidation(this.state.variant);
+    });
+  }
+
+  runVariantValidation(variant) {
+    if (variant) {
+      const validationStatus = this.validation.validate(variant);
+
+      this.setState(() => ({
+        validationStatus,
+        variant
+      }));
+
+      return validationStatus;
+    }
   }
 
   isProviderEnabled = () => {
@@ -157,13 +177,17 @@ class VariantFormContainer extends Component {
       });
   }
 
-  handleVariantFieldSave = (variantId, fieldName, value) => {
-    Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
-      if (error) {
-        Alerts.toast(error.message, "error");
-        this.forceUpdate();
-      }
-    });
+  handleVariantFieldSave = (variantId, fieldName, value, variant) => {
+    const validationStatus = this.runVariantValidation(variant);
+
+    if (validationStatus.isFieldValid(fieldName)) {
+      Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
+        if (error) {
+          Alerts.toast(error.message, "error");
+          this.forceUpdate();
+        }
+      });
+    }
   }
 
   handleCardExpand = (cardName) => {
@@ -178,40 +202,51 @@ class VariantFormContainer extends Component {
   }
 
   render() {
-    return (
-      <VariantForm
-        isProviderEnabled={this.isProviderEnabled}
-        fetchTaxCodes={this.fetchTaxCodes}
-        hasChildVariants={this.hasChildVariants}
-        greyDisabledFields={this.greyDisabledFields}
-        restoreVariant={this.restoreVariant}
-        removeVariant={this.removeVariant}
-        cloneVariant={this.cloneVariant}
-        onVariantFieldSave={this.handleVariantFieldSave}
-        onCardExpand={this.handleCardExpand}
-        onUpdateQuantityField={this.updateQuantityIfChildVariants}
-        isDeleted={this.state.isDeleted}
-        {...this.props}
-      />
-    );
+    if (this.state.variant) {
+      return (
+        <VariantForm
+          isProviderEnabled={this.isProviderEnabled}
+          fetchTaxCodes={this.fetchTaxCodes}
+          hasChildVariants={this.hasChildVariants}
+          greyDisabledFields={this.greyDisabledFields}
+          restoreVariant={this.restoreVariant}
+          removeVariant={this.removeVariant}
+          cloneVariant={this.cloneVariant}
+          onVariantFieldSave={this.handleVariantFieldSave}
+          onCardExpand={this.handleCardExpand}
+          onUpdateQuantityField={this.updateQuantityIfChildVariants}
+          validation={this.state.validationStatus}
+          isDeleted={this.state.isDeleted}
+          {...this.props}
+          variant={this.state.variant}
+        />
+      );
+    }
+
+    return null;
   }
 }
 
 function composer(props, onData) {
-  const countries = Countries.find({}).fetch();
+  Meteor.subscribe("TaxCodes");
 
   const productHandle = Reaction.Router.getParam("handle");
   if (!productHandle) {
     Reaction.clearActionView();
   }
 
-  Meteor.subscribe("TaxCodes");
+  const countries = Countries.find({}).fetch();
+  const variant = ReactionProduct.selectedTopVariant();
 
-  onData(null, {
-    countries,
-    variant: props.variant,
-    editFocus: Reaction.state.get("edit/focus")
-  });
+  if (variant) {
+    onData(null, {
+      countries,
+      variant: ReactionProduct.selectedTopVariant(),
+      editFocus: Reaction.state.get("edit/focus")
+    });
+  } else {
+    onData(null, { countries });
+  }
 }
 
 VariantFormContainer.propTypes = {
