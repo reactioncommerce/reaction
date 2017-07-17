@@ -11,6 +11,7 @@ Reaction.registerPackage({
     public: {
       allowGuestSellers: true, // TODO: Eliminate in favor of marketplace.enabled and allowMerchantSignup
       allowMerchantSignup: false, // Merchants can sign up without an invite
+      marketplaceNakedRoutes: true, // Routes to the primary marketplace shop should not use shop prefix
       merchantFulfillment: true, // Fulfillment comes from merchant which supplies product
       merchantLanguage: false, // Language comes from active merchant shop
       merchantCurrency: false, // Currency comes from active merchant shop

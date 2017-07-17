@@ -49,6 +49,10 @@ export const MarketplacePackageConfig = new SimpleSchema([
       type: Boolean,
       defaultValue: false
     },
+    "settings.public.marketplaceNakedRoutes": {
+      type: Boolean,
+      defaultValue: true
+    },
     // if true, permit each merchant to setup their own payment provider
     "settings.public.perMerchantPaymentProviders": {
       type: Boolean,
