@@ -325,15 +325,15 @@ class OrdersList extends Component {
 
     if (orders.length) {
       return (
-        <div>
-          <div style= {{ float: "right", padding: 10 }}>
+        <div className="container-fluid-sm">
+          <div style= {{ float: "right" }}>
             <button className={`order-toggle-btn ${this.props.detailClassName}`} onClick={handleDetailToggle}> <i className="fa fa-th-list" /> </button>
             <button className={`order-toggle-btn ${this.props.listClassName}`} onClick={handleListToggle}> <i className="fa fa-list" /> </button>
           </div>
 
-          {openList &&  <div className="container-fluid-sm">{this.renderListView(orders)}</div>}
+          {openList &&  <div>{this.renderListView(orders)}</div>}
           {openDetail &&
-            <div className="container-fluid-sm">
+            <div>
               {orders.map((order, i) => {
                 return (
                   <div key={i}>
