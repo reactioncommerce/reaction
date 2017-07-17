@@ -13,6 +13,9 @@
           "analyticsSettingsLabel": "Analytics",
           "analyticsSettingsSaved": "Analytics settings saved",
           "analyticsSettingsNotSaved": "Analytics settings not saved",
+          "segmentNotConfigured": "Segment is not configured",
+          "googleAnalyticsNotConfigured": "Google Analytics is not configured",
+          "mixpanelNotConfigured": "Mixpanel is not configured",
           "public": {
             "segmentio": {
               "api_key": "Segment Write Key"
