@@ -292,9 +292,6 @@ class OrdersList extends Component {
           };
         }}
         showPaginationTop={true}
-        onPageSizeChange={(pageSize, pageIndex) => {
-          console.log("page manenos", pageSize, pageIndex);
-        }}
       />
     );
   }
