@@ -33,7 +33,7 @@ class AnalyticsSettings extends Component {
       return (
         <SettingsCard
           key={index}
-          i18nKeyTitle={`admin.settings.public.${provider}`}
+          i18nKeyTitle={`admin.${settings.public[provider].name}.label`}
           expandable={true}
           expanded={true}
           title={settings.public[provider].name}

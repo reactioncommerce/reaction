@@ -9,19 +9,19 @@ Reaction.registerPackage({
     public: {
       segmentio: {
         enabled: false,
-        name: "Segment.io",
+        name: "segment",
         value: "segmentio",
         api_key: ""
       },
       googleAnalytics: {
         enabled: false,
-        name: "Google Analytics",
+        name: "googleAnalytics",
         value: "googleAnalytics",
         api_key: ""
       },
       mixpanel: {
         enabled: false,
-        name: "Mixpanel",
+        name: "mixpanel",
         value: "mixpanel",
         api_key: ""
       }

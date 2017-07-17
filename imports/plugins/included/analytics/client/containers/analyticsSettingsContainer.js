@@ -13,15 +13,7 @@ class AnalyticsSettingsContainer extends Component {
   }
 
   handleToggle = (event, isChecked, name) => {
-    const { enabled } = this.props;
-    if (enabled[name]) {
-      Meteor.call("reaction-analytics/updateStatus", name, "enabled", isChecked);
-    } else {
-      Alerts.toast(
-        i18next.t(`admin.settings.${name}NotConfigured`, { defaultValue: `Analytics not configured for ${name}` }),
-        "error"
-      );
-    }
+    Meteor.call("reaction-analytics/updateStatus", name, "enabled", isChecked);
   }
 
   handleSave = (settingName, values) => {

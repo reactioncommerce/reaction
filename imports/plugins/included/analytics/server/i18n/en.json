@@ -10,7 +10,20 @@
           "analyticsDescription": "Analytics and tracking integrations"
         },
         "settings": {
-          "analyticsSettingsLabel": "Analytics"
+          "analyticsSettingsLabel": "Analytics",
+          "analyticsSettingsSaved": "Analytics settings saved",
+          "analyticsSettingsNotSaved": "Analytics settings not saved",
+          "public": {
+            "segmentio": {
+              "api_key": "Segment Write Key"
+            },
+            "googleAnalytics": {
+              "api_key": "Google Analytics Tracking ID"
+            },
+            "mixpanel": {
+              "api_key": "Mixpanel Token"
+            }
+          }
         },
         "googleAnalytics": {
           "label": "Google Analytics"
