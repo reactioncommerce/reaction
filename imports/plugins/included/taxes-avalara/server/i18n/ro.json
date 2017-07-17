@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "Nu au fost găsite jurnale",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "Data",
+                "type": "Tipul documentului"
+              }
+            }
+          },
           "date": "Data",
           "docType": "Tipul documentului"
         }

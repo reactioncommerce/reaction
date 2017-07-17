@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "لا توجد سجلات",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "التاريخ",
+                "type": "نوع الوثيقة"
+              }
+            }
+          },
           "date": "التاريخ",
           "docType": "نوع الوثيقة"
         }
