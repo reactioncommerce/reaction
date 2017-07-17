@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Đặt hàng Chi tiết",
         "invoice": "Hóa đơn",
+        "lineItems": "Mục hàng",
         "shipmentTracking": "Theo dõi lô hàng"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Chỉnh sửa mục nhập địa chỉ này",
         "addressValidation": "địa chỉ Validation",
-        "somethingWentWrong": "Một cái gì đó đã đi sai: {{err}}"
+        "reviewAddress": "Để tuân thủ tốt nhất, hãy xác minh địa chỉ của bạn",
+        "somethingWentWrong": "Một cái gì đó đã đi sai: {{err}}",
+        "enteredAddress": "Địa chỉ đã nhập",
+        "validatedAddress": "Xác nhận Địa chỉ"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "Email không phù hợp.",
           "errorSendingEmail": "Lỗi gửi email, vấn đề cấu hình tốt.",
           "unableToSendInvitationEmail": "Không thể gửi email mời.",
+          "userWithEmailAlreadyExists": "Người dùng có địa chỉ email này đã tồn tại",
           "failedToLogout": "Không thể đăng xuất.",
           "invalidLoginToken": "Mã đăng nhập không đúng",
           "loginForbidden": "Đăng nhập bị cấm",

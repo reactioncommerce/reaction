@@ -17,7 +17,20 @@
         "publishThemeError": "`No se pudo publicar {{themeName}} tema",
         "components": {
           "navbar": "Barra de navegación",
-          "button": "Botón"
+          "button": "Botón",
+          "sortableTable": {
+            "filterPlaceholder": "Filtrar datos",
+            "tableText": {
+              "noDataMessage": "Sin resultados",
+              "previousText": "Anterior",
+              "nextText": "Siguiente",
+              "loadingText": "Cargando ...",
+              "noDataText": "Sin resultados",
+              "pageText": "Página",
+              "ofText": "de",
+              "rowsText": "Filas"
+            }
+          }
         }
       }
     }

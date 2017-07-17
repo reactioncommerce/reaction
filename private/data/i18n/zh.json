@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "订单详细信息",
         "invoice": "账单",
+        "lineItems": "行项目",
         "shipmentTracking": "发货跟踪"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "编辑地址",
         "addressValidation": "地址验证",
-        "somethingWentWrong": "出现了错误：{{err}}"
+        "reviewAddress": "为了达到最佳效果，请验证您的地址",
+        "somethingWentWrong": "出现了错误：{{err}}",
+        "enteredAddress": "输入地址",
+        "validatedAddress": "验证地址"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "邮箱不合格。",
           "errorSendingEmail": "发送电子邮件时出错，配置可能有问题。",
           "unableToSendInvitationEmail": "无法发送邀请电子邮件。",
+          "userWithEmailAlreadyExists": "具有此电子邮件地址的用户已存在",
           "failedToLogout": "退出失败。",
           "invalidLoginToken": "登录令牌无效。",
           "loginForbidden": "登录被禁止。",

@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "Nem találhatók naplók",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "Dátum",
+                "type": "dokumentum típus"
+              }
+            }
+          },
           "date": "Dátum",
           "docType": "dokumentum típus"
         }

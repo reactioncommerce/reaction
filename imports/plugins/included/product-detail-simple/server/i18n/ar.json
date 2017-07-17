@@ -9,6 +9,11 @@
         },
         "inventoryAlerts": {
           "adjustedQuantity": "تم تعديل كمية المنتج الخاص بك إلى الكمية القصوى في الأوراق المالية"
+        },
+        "mediaGallery": {
+          "deleteImage": "انقر لإزالة الصورة",
+          "addedImage": "هذه صورة جديدة. نشر لحفظ التغييرات.",
+          "removedImage": "تم حذف الصورة. نشر لحفظ التغييرات."
         }
       },
       "availableOptions": "خيارات متاحة"
