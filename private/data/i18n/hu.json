@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Rendelési információk",
         "invoice": "Számla",
+        "lineItems": "Sorok",
         "shipmentTracking": "szállítmány követés"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Cím szerkesztése",
         "addressValidation": "cím érvényesítése",
-        "somethingWentWrong": "Valami elromlott: {{err}}"
+        "reviewAddress": "A legjobb szabálynak megfelelően, érvényesítse a címet",
+        "somethingWentWrong": "Valami elromlott: {{err}}",
+        "enteredAddress": "Lépett Cím",
+        "validatedAddress": "érvényesítse Cím"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "Email nem felel meg a szabálynak.",
           "errorSendingEmail": "Hiba történt az e-mail, a lehetséges konfigurációs probléma.",
           "unableToSendInvitationEmail": "Nem sikerült elküldeni a meghívót e-mailben.",
+          "userWithEmailAlreadyExists": "A felhasználó e-mail cím már létezik",
           "failedToLogout": "Nem sikerült a logout.",
           "invalidLoginToken": "Érvénytelen login token",
           "loginForbidden": "Belépés megtagadva",

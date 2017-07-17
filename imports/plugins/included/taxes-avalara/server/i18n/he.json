@@ -10,6 +10,13 @@
       },
       "logGrid": {
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "תאריך"
+              }
+            }
+          },
           "date": "תאריך"
         }
       },
