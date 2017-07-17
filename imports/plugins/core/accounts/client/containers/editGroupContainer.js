@@ -53,8 +53,7 @@ class EditGroupContainer extends Component {
     this.setState({ selectedGroup: grp });
   };
 
-  createGroup = (groupData) => {
-    console.log("to create group");
+  createGroup = groupData => {
     Meteor.call("group/createGroup", groupData, Reaction.getShopId(), err => {
       if (err) {
         return Alerts.toast(i18next.t("Error creating group"), "error");
@@ -63,15 +62,15 @@ class EditGroupContainer extends Component {
     });
   };
 
-  updateGroup(groupId, groupData) {
-    console.log("to update group");
-    Meteor.call("group/updateGroup", groupId, groupData, Reaction.getShopId(), (err) => {
+  updateGroup = (groupId, groupData) => {
+    Meteor.call("group/updateGroup", groupId, groupData, Reaction.getShopId(), err => {
       if (err) {
         return Alerts.toast(i18next.t("Update failed."), "error"); // TODO: Change to <Alert>
       }
+      this.setState({ selectedGroup: groupData });
       Alerts.toast(i18next.t("Group updated"), "success"); // TODO: Change to <Alert>
     });
-  }
+  };
 
   renderGroupForm = () => {
     if (this.state.isCreating) {

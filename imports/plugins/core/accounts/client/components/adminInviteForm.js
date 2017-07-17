@@ -92,7 +92,7 @@ class AdminInviteForm extends Component {
 
   render() {
     return (
-      <Card expanded={false}>
+      <Card expanded={true}>
         <CardHeader
           actAsExpander={true}
           data-i18n="accountsUI.info.addAdminUser"

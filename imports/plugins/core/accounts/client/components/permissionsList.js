@@ -20,7 +20,6 @@ class PermissionsList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("next", nextProps);
     this.setState({ group: nextProps.group });
   }
 
@@ -28,9 +27,9 @@ class PermissionsList extends Component {
     return (event, checked) => {
       let newGroup = false;
       const groupData = Object.assign({}, this.state.group);
-      if (!groupData.permissions) {
-        groupData.permissions = [];
+      if (!this.state.group._id) {
         newGroup = true;
+        groupData.permissions = [];
       }
       const permissions = resolvePermissions(toggledPermission);
 
@@ -43,6 +42,7 @@ class PermissionsList extends Component {
       if (newGroup && this.props.createGroup) {
         return this.props.createGroup(groupData);
       }
+
       if (this.props.updateGroup) {
         this.props.updateGroup(this.state.group._id, groupData);
       }
@@ -119,7 +119,7 @@ function resolvePermissions(permission) {
       result.push(pkgPermissions.permission);
     }
   } else {
-    result.push(permission.permission);
+    result.push(permission.name);
   }
   return result;
 }
