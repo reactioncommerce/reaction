@@ -17,7 +17,20 @@
         "publishThemeError": "`Nu am putut publica tema {{themeName}}",
         "components": {
           "navbar": "Bară de navigare",
-          "button": "Buton"
+          "button": "Buton",
+          "sortableTable": {
+            "filterPlaceholder": "Filtrați datele",
+            "tableText": {
+              "noDataMessage": "Nici un rezultat gasit",
+              "previousText": "Anterior",
+              "nextText": "Următorul",
+              "loadingText": "Loading ...",
+              "noDataText": "Nici un rezultat gasit",
+              "pageText": "Pagină",
+              "ofText": "de",
+              "rowsText": "rânduri"
+            }
+          }
         }
       }
     }

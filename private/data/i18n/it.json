@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Dettagli ordine",
         "invoice": "Fattura",
+        "lineItems": "Partite singole",
         "shipmentTracking": "monitoraggio delle spedizioni"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Modificare questa voce indirizzo",
         "addressValidation": "Validazione indirizzo",
-        "somethingWentWrong": "Qualcosa è andato storto: {{err}}"
+        "reviewAddress": "Per la migliore conformità, convalidate il tuo indirizzo",
+        "somethingWentWrong": "Qualcosa è andato storto: {{err}}",
+        "enteredAddress": "Indirizzo immesso",
+        "validatedAddress": "Convalida l'indirizzo"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "L'indirizzo email non soddisfa i requisiti.",
           "errorSendingEmail": "Errore durante l'invio e-mail, eventuale problema di configurazione.",
           "unableToSendInvitationEmail": "Impossibile inviare e-mail di invito.",
+          "userWithEmailAlreadyExists": "Un utente con questo indirizzo email esiste già",
           "failedToLogout": "Impossibile il logout.",
           "invalidLoginToken": "Codice di accesso non valido",
           "loginForbidden": "Accesso non consentito",
