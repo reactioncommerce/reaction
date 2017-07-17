@@ -26,7 +26,7 @@ const composer = (props, onData) => {
 
   if (accSub.ready() && grpSub.ready()) {
     const accounts = Accounts.find().fetch();
-    const groups = Groups.find().fetch();
+    const groups = Groups.find({ slug: { $nin: ["customer", "guest"] } }).fetch();
     onData(null, { accounts, groups });
   }
 };

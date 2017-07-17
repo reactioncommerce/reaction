@@ -22,6 +22,7 @@ class AddGroupMembers extends Component {
   }
 
   isInGroup(acc) {
+    console.log({ grp: this.props.groups });
     const currentUserGroup = this.props.groups.find(grp => acc.groups[0] === grp._id);
     return currentUserGroup._id === this.props.group._id;
   }
