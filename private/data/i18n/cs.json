@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Podrobnosti o objednávce",
         "invoice": "Faktura",
+        "lineItems": "Řádkové položky",
         "shipmentTracking": "Sledování zásilky"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Úpravou tohoto zadání adresy",
         "addressValidation": "Ověření adresy",
-        "somethingWentWrong": "Něco se pokazilo: {{err}}"
+        "reviewAddress": "Pro dosažení nejlepšího souladu ověřte svou adresu",
+        "somethingWentWrong": "Něco se pokazilo: {{err}}",
+        "enteredAddress": "Zadaná adresa",
+        "validatedAddress": "Ověřte adresu"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "Email nesplňuje požadavky.",
           "errorSendingEmail": "Chyba při odesílání e-mailu, možnost konfigurace problém.",
           "unableToSendInvitationEmail": "Nelze odeslat e-mailem pozvánku.",
+          "userWithEmailAlreadyExists": "Uživatel s touto e-mailovou adresou již existuje",
           "failedToLogout": "Nepodařilo se odhlásit.",
           "invalidLoginToken": "Neplatný přihlašovací token",
           "loginForbidden": "Přihlášení je zakázáno",

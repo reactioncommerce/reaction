@@ -1,5 +1,7 @@
 /* eslint camelcase: 0 */
 import { Meteor } from "meteor/meteor";
+import { $ } from "meteor/jquery";
+import { Template } from "meteor/templating";
 import { Reaction, Logger } from "/client/api";
 import { getCardType } from "/client/modules/core/helpers/globals";
 import { Cart, Shops, Packages } from "/lib/collections";

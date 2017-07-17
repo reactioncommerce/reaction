@@ -1,10 +1,10 @@
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { Loading } from "/imports/plugins/core/ui/client/components";
+import { $ } from "meteor/jquery";
 import { Meteor } from "meteor/meteor";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Blaze } from "meteor/blaze";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Template } from "meteor/templating";
+import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 import { EmailTemplates } from "../../lib/collections/schemas";
 import { i18next } from "/client/api";
 import { Templates } from "/lib/collections";
@@ -65,20 +65,19 @@ Template.templateSettings.helpers({
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`templateGrid.columns.${field}`)
+        accessor: field, // name of field
+        Header: i18next.t(`templateGrid.columns.${field}`) // name to display
       };
       customColumnMetadata.push(columnMeta);
     });
 
     // return template Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "Templates",
       collection: Templates,
       matchingResultsCount: "templates-count",
       showFilter: true,
-      useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
       columns: filteredFields,
@@ -134,13 +133,12 @@ Template.templateSettings.events({
     });
   },
   "click .cancel, .template-grid-row .active": function () {
-    instance = Template.instance();
+    const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
       isEditing: false,
       editingId: null
     });
-    // ugly hack
     $(".template-grid-row").removeClass("active");
   }
 });

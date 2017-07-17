@@ -1,3 +1,6 @@
+import _ from "lodash";
+import { check } from "meteor/check";
+import { ServiceConfiguration } from "meteor/service-configuration";
 import { Packages } from "/lib/collections";
 import { Logger } from "/server/api";
 import { EJSON } from "meteor/ejson";
@@ -30,9 +33,10 @@ export function loadSettings(json) {
   if (!_.isArray(validatedJson[0])) {
     Logger.warn(
       "Load Settings is not an array. Failed to load settings.");
-    return;
+    return false;
   }
 
+  let result;
   // loop settings and upsert packages.
   for (const pkg of validatedJson) {
     for (const item of pkg) {
@@ -80,4 +84,5 @@ export function loadSettings(json) {
       Logger.debug(`loaded local package data: ${item.name}`);
     }
   }
+  return result;
 }

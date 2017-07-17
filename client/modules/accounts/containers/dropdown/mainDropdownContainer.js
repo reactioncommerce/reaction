@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
-import { Reaction } from "/client/api";
+import { Session } from "meteor/session";
+import { Gravatar } from "meteor/jparker:gravatar";
+import { Reaction, Logger } from "/client/api";
 import { i18nextDep, i18next } from  "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import * as Collections from "/lib/collections";
@@ -56,7 +58,7 @@ class MainDropdownContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div className="accounts">
         <MainDropdown
           {...this.props}
           handleChange={this.handleChange}

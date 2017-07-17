@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "没有找到记录",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "日期",
+                "type": "文件类型"
+              }
+            }
+          },
           "date": "日期",
           "docType": "文件类型"
         }

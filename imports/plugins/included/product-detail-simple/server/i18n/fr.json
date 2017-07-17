@@ -9,6 +9,11 @@
         },
         "inventoryAlerts": {
           "adjustedQuantity": "Votre quantité de produit a été ajustée à la quantité maximale en stock"
+        },
+        "mediaGallery": {
+          "deleteImage": "Cliquez pour supprimer l'image",
+          "addedImage": "C'est une nouvelle image. Publiez pour enregistrer les modifications.",
+          "removedImage": "L'image a été supprimée. Publiez pour enregistrer les modifications."
         }
       },
       "availableOptions": "Options disponibles"

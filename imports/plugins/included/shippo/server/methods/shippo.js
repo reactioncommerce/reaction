@@ -1,6 +1,8 @@
 /* eslint camelcase: 0 */
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
+import { Roles } from "meteor/alanning:roles";
 import { Reaction, Hooks } from "/server/api";
 import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
@@ -198,7 +200,7 @@ export const methods = {
 
     // Make sure user has proper rights to this package
     const { shopId } = Packages.findOne({ _id },
-                                        { field: { shopId: 1 } });
+      { field: { shopId: 1 } });
     if (shopId && Roles.userIsInRole(this.userId, shippingRoles, shopId)) {
       // If user wants to delete existing key
       if (modifier.hasOwnProperty("$unset")) {

@@ -1,4 +1,5 @@
 import { Template } from "meteor/templating";
+import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { StripePackageConfig } from "../../lib/collections/schemas";
@@ -37,7 +38,7 @@ AutoForm.hooks({
     onSuccess: function () {
       return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
-    onError: function () {
+    onError: function (error) {
       return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
     }
   }

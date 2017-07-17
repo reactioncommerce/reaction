@@ -1,7 +1,10 @@
+import _ from "lodash";
+import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
+import { Roles } from "meteor/alanning:roles";
 import { Packages } from "/lib/collections";
 import { Reaction } from "/server/api";
 import { translateRegistry } from "/lib/api";
-import { Roles } from "meteor/alanning:roles";
 
 /**
  * Packages contains user specific configuration

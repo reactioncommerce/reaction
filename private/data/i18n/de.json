@@ -673,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "Das Format der E-Mail-Adresse ist falsch.",
           "errorSendingEmail": "Fehler beim Senden der E-Mail, möglicherweise infolge eines Konfigurationsproblems.",
           "unableToSendInvitationEmail": "Die Einladungs-E-Mail konnte nicht gesendet werden.",
+          "userWithEmailAlreadyExists": "Ein Benutzer mit dieser E-Mail-Adresse existiert bereits",
           "failedToLogout": "Die Abmeldung ist fehlgeschlagen.",
           "invalidLoginToken": "Ungültiges Login-Token",
           "loginForbidden": "Login nicht zulässig",

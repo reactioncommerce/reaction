@@ -19,12 +19,17 @@ class UpdatePasswordOverlay extends Component {
     super();
 
     this.state = {
-      password: ""
+      password: "",
+      showSpinner: true
     };
 
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+  }
+
+  componentWillReceiveProps() {
+    this.setState({ showSpinner: false });
   }
 
   handleFieldChange = (event, value, field) => {
@@ -59,13 +64,13 @@ class UpdatePasswordOverlay extends Component {
     return (
       <span className="help-block">
         {this.props.onError(this.props.messages.errors && this.props.messages.errors.password) &&
-          this.props.messages.errors.password.map((error, i) => (
-            <Translation
-              key={i}
-              defaultValue={error.reason}
-              i18nKey={error.i18nKeyReason}
-            />
-          ))
+        this.props.messages.errors.password.map((error, i) => (
+          <Translation
+            key={i}
+            defaultValue={error.reason}
+            i18nKey={error.i18nKeyReason}
+          />
+        ))
         }
       </span>
     );
@@ -75,7 +80,7 @@ class UpdatePasswordOverlay extends Component {
     if (this.props.isDisabled === true) {
       return (
         <div className="col-sm-6" style={{ textAlign: "center" }}>
-          <i className="fa fa-spinner fa-spin" />
+          <i className="fa fa-spinner fa-spin"/>
         </div>
       );
     }
@@ -93,24 +98,33 @@ class UpdatePasswordOverlay extends Component {
     );
   }
 
+  renderSpinnerOnLoad() {
+    return (
+      <div className="spinner-container">
+        <div className="spinner"/>
+      </div>
+    );
+  }
+
   render() {
     const passwordClasses = classnames({
       "form-group": true,
       "has-error has-feedback": this.props.onError(this.props.messages.errors && this.props.messages.errors.password)
     });
+    const { showSpinner } = this.state;
 
     return (
       <div>
         {this.props.isOpen === true &&
-          <div>
-            <div className="modal-backdrop fade in" id={`modal-backdrop-${this.props.uniqueId}`} />
-            <div className="modal fade in" id={`modal-${this.props.uniqueId}`} style={{ display: "block" }}>
-              <div className="modal-dialog">
-
+        <div>
+          <div className="modal-backdrop fade in" id={`modal-backdrop-${this.props.uniqueId}`}/>
+          <div className="modal fade in" id={`modal-${this.props.uniqueId}`} style={{ display: "block" }}>
+            <div className="modal-dialog">
+              {showSpinner ? this.renderSpinnerOnLoad() :
                 <form className="modal-content" onSubmit={this.handleSubmit}>
                   <div className="modal-header">
                     <h4 className="modal-title">
-                      <Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword" />
+                      <Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword"/>
                     </h4>
                   </div>
 
@@ -120,15 +134,15 @@ class UpdatePasswordOverlay extends Component {
                       {this.renderFormMessages()}
 
                       <div className={passwordClasses}>
-                          <TextField
-                            i18nKeyLabel="accountsUI.password"
-                            label="Password"
-                            name="password"
-                            type="password"
-                            id={`password-${this.props.uniqueId}`}
-                            value={this.state.password}
-                            onChange={this.handleFieldChange}
-                          />
+                        <TextField
+                          i18nKeyLabel="accountsUI.password"
+                          label="Password"
+                          name="password"
+                          type="password"
+                          id={`password-${this.props.uniqueId}`}
+                          value={this.state.password}
+                          onChange={this.handleFieldChange}
+                        />
                         {this.renderPasswordErrors()}
                       </div>
 
@@ -153,9 +167,10 @@ class UpdatePasswordOverlay extends Component {
                   </div>
 
                 </form>
-              </div>
+              }
             </div>
-          </div>}
+          </div>
+        </div>}
       </div>
     );
   }
