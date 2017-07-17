@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
 import { Reaction } from "/client/api";
 import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
 import { List, ListItem, SortableTable } from "/imports/plugins/core/ui/client/components";
@@ -16,6 +17,13 @@ class AccountsTable extends Component {
   };
 
   renderTable(users) {
+    const tableClass = length => {
+      return classnames({
+        "accounts-group-table": true,
+        "empty-table": !Boolean(length)
+      });
+    };
+
     const columnMetadata = fields.map(columnName => ({
       Header: this.getHeader(columnName),
       accessor: "", // sends whole object
@@ -27,7 +35,7 @@ class AccountsTable extends Component {
 
     return (
       <SortableTable
-        tableClassName="accounts-group-table"
+        tableClassName={tableClass(users.length)}
         data={users}
         columnMetadata={columnMetadata}
         filteredFields={fields}
