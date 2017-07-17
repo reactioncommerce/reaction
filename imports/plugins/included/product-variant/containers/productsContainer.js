@@ -61,7 +61,11 @@ class ProductsContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     const newProducts = nextProps.products.filter(product => product.isVisible !== false);
-    this.setState({ products: newProducts });
+    if (Reaction.hasOwnerAccess()) {
+      this.setState({ products: nextProps.products });
+    } else {
+      this.setState({ products: newProducts });
+    }
   }
 
   ready = () => {
