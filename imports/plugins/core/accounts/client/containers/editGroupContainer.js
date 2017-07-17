@@ -1,11 +1,13 @@
 import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
+import classnames from "classnames";
 import PropTypes from "prop-types";
 import { Packages } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { List, ListItem, Card, CardHeader, CardBody } from "/imports/plugins/core/ui/client/components";
 import PermissionsList from "../components/permissionsList";
+import GroupForm from "../components/groupForm";
 import { groupPermissions } from "../helpers/accountsHelper";
 
 class EditGroupContainer extends Component {
@@ -22,6 +24,8 @@ class EditGroupContainer extends Component {
 
     this.state = {
       selectedGroup: selectedGroup || {},
+      newGroup: null,
+      isCreating: false,
       accounts
     };
   }
@@ -34,24 +38,39 @@ class EditGroupContainer extends Component {
     return () => this.setState({ selectedGroup: grp });
   };
 
-  selectedClass = grp => {
-    if (grp._id === this.state.selectedGroup._id) {
-      return "selected";
+  groupListClass = grp => {
+    return classnames({
+      "groups-item-selected": grp._id === this.state.selectedGroup._id,
+      "groups-list": true
+    });
+  };
+
+  renderGroupForm = () => {
+    if (this.state.isCreating) {
+      return <GroupForm group={this.state.selectedGroup} />;
     }
-    return "";
+    return null;
+  };
+
+  showForm = (grp = {}) => {
+    return () => {
+      this.setState({ isCreating: true, selectedGroup: grp });
+    };
   };
 
   renderGroups() {
     return (
       <List>
         {this.props.groups.map((grp, index) => (
-          <div key={index} className={this.selectedClass(grp)}>
+          <div key={index} className={this.groupListClass(grp)}>
             <ListItem label={grp.name} onClick={this.selectGroup(grp)}>
               <a href="" onClick={this.showForm} className="fa fa-pencil" />
             </ListItem>
           </div>
         ))}
-        <ListItem actionType="arrow" label="New Group" onClick={this.newGroup} />
+        <ListItem label="New Group" onClick={this.showForm()}>
+          <i className="fa fa-plus" />
+        </ListItem>
       </List>
     );
   }
@@ -64,6 +83,7 @@ class EditGroupContainer extends Component {
           <CardBody expandable={true}>
             <div className="settings">
               {this.renderGroups()}
+              {this.renderGroupForm()}
               <PermissionsList
                 permissions={groupPermissions(this.props.packages)}
                 group={this.state.selectedGroup}
