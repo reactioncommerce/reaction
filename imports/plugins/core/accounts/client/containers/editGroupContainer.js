@@ -1,10 +1,16 @@
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/client/api";
 import React, { Component } from "react";
-import { Packages } from "/lib/collections";
 import PropTypes from "prop-types";
+import { Packages } from "/lib/collections";
+import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
-import { List, ListItem, Card, CardHeader, CardBody } from "/imports/plugins/core/ui/client/components";
+import {
+  List,
+  ListItem,
+  Card,
+  CardHeader,
+  CardBody
+} from "/imports/plugins/core/ui/client/components";
 import PermissionsList from "../components/permissionsList";
 import { groupPermissions } from "../helpers/accountsHelper";
 
@@ -21,7 +27,7 @@ class EditGroupContainer extends Component {
     const { accounts, selectedGroup } = props;
 
     this.state = {
-      selectedGroup: selectedGroup || null,
+      selectedGroup: selectedGroup || {},
       accounts
     };
   }
@@ -34,20 +40,22 @@ class EditGroupContainer extends Component {
     return () => this.setState({ selectedGroup: grp });
   };
 
+  selectedClass = grp => {
+    if (grp._id === this.state.selectedGroup._id) {
+      return "selected";
+    }
+    return "";
+  };
+
   renderGroups() {
     return (
-      <div>
-        <List>
-          {this.props.groups.map((grp, index) => (
-            <ListItem
-              key={index}
-              actionType="arrow"
-              label={grp.name}
-              onClick={this.selectGroup(grp)}
-            />
-          ))}
-        </List>
-      </div>
+      <List>
+        {this.props.groups.map((grp, index) => (
+          <div key={index} className={this.selectedClass(grp)}>
+            <ListItem actionType="arrow" label={grp.name} onClick={this.selectGroup(grp)} />
+          </div>
+        ))}
+      </List>
     );
   }
 
