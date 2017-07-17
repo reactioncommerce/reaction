@@ -96,6 +96,7 @@
     "react-taco-table": "^0.5.0",
     "react-tether": "^0.5.6",
     "react-textarea-autosize": "^4.0.5",
+    "recompose": "^0.23.4",
     "shippo": "^1.2.0",
     "sortablejs": "^1.5.1",
     "stripe": "^4.16.0",
@@ -160,7 +161,8 @@
           "alias": {
             "underscore": "lodash",
             "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
-            "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib"
+            "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
+            "@reactioncommerce/reaction-permissions": "./imports/plugins/core/permissions/lib/permissions"
           }
         }
       ]
