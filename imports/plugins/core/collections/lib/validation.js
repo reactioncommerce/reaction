@@ -1,5 +1,3 @@
-import { forEach } from "lodash";
-
 /**
  * Validation class
  * @summary Helper to streamline getting simple-schema validation in react components
