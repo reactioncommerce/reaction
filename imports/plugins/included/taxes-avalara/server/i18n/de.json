@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "Keine Protokolle gefunden",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "Datum",
+                "type": "Dokumenttyp"
+              }
+            }
+          },
           "date": "Datum",
           "docType": "Dokumenttyp"
         }

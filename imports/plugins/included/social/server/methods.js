@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Packages } from "/lib/collections";
 import { Reaction } from "/server/api";

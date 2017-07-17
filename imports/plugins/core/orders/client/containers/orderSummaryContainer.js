@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import moment from "moment";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
@@ -113,7 +114,7 @@ class OrderSummaryContainer extends Component {
             i18nKeyTitle="admin.orderWorkflow.summary.cardTitle"
             title="Summary"
           />
-        <CardBody expandable={false}>
+          <CardBody expandable={false}>
             <OrderSummary
               {...this.props}
               dateFormat={this.dateFormat}

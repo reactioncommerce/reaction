@@ -4,12 +4,9 @@ set -e
 
 DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
 
-shopt -s nocasematch
-
-# if we're not on a deployment branch or a Docker/Release related PR branch, skip the Docker build/test
-if ! [[ "$CIRCLE_BRANCH" == "master" || "$CIRCLE_BRANCH" == "development" ||
-        "$CIRCLE_BRANCH" =~ "docker" || "$CIRCLE_BRANCH" =~ "release" ]]; then
-  echo "Not running a Docker build test branch. Skipping the build."
+# if we're not on a deployment branch or a Docker related PR branch, skip the Docker build/test
+if [[ "$CIRCLE_BRANCH" != "master" && "$CIRCLE_BRANCH" != "development" && "$CIRCLE_BRANCH" != *"docker"* ]]; then
+  echo "Not running a deployment branch. Skipping the Docker build test."
   exit 0
 fi
 

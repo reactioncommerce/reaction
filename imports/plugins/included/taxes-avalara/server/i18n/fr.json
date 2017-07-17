@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "Aucun journal trouvé",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "Date",
+                "type": "Type de document"
+              }
+            }
+          },
           "date": "Date",
           "docType": "Type de document"
         }

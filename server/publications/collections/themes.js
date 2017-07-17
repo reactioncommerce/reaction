@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Themes } from "/lib/collections";
 
 /**

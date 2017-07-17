@@ -2,8 +2,11 @@ import _ from "lodash";
 import moment from "moment";
 import path from "path";
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
+import { Roles } from "meteor/alanning:roles";
+import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
@@ -496,6 +499,64 @@ export function inviteShopMember(shopId, email, name) {
     currentUserName = "Admin";
   }
 
+  // Compile Email with SSR
+  const tpl = "accounts/inviteShopMember";
+  const subject = "accounts/inviteShopMember/subject";
+  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+
+  // Get shop logo, if available. If not, use default logo from file-system
+  let emailLogo;
+  if (Array.isArray(shop.brandAssets)) {
+    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
+    const mediaId = Media.findOne(brandAsset.mediaId);
+    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
+  } else {
+    emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+  }
+
+  const token = Random.id();
+
+  const dataForEmail = {
+    // Shop Data
+    shop: shop,
+    contactEmail: shop.emails[0].address,
+    homepage: Meteor.absoluteUrl(),
+    emailLogo: emailLogo,
+    copyrightDate: moment().format("YYYY"),
+    legalName: shop.addressBook[0].company,
+    physicalAddress: {
+      address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
+      city: shop.addressBook[0].city,
+      region: shop.addressBook[0].region,
+      postal: shop.addressBook[0].postal
+    },
+    shopName: shop.name,
+    socialLinks: {
+      display: true,
+      facebook: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+        link: "https://www.facebook.com"
+      },
+      googlePlus: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+        link: "https://plus.google.com"
+      },
+      twitter: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+        link: "https://www.twitter.com"
+      }
+    },
+    // Account Data
+    user: Meteor.user(),
+    currentUserName,
+    invitedUserName: name,
+    url: MeteorAccounts.urls.enrollAccount(token)
+  };
+
   const user = Meteor.users.findOne({
     "emails.address": email
   });
@@ -515,70 +576,12 @@ export function inviteShopMember(shopId, email, name) {
       throw new Error("Can't find user");
     }
 
-    const token = Random.id();
-
     Meteor.users.update(userId, {
       $set: {
         "services.password.reset": { token, email, when: new Date() },
         "name": name
       }
     });
-
-    // Get shop logo, if available. If not, use default logo from file-system
-    let emailLogo;
-    if (Array.isArray(shop.brandAssets)) {
-      const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-      const mediaId = Media.findOne(brandAsset.mediaId);
-      emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
-    } else {
-      emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
-    }
-
-    const dataForEmail = {
-      // Shop Data
-      shop: shop,
-      contactEmail: shop.emails[0].address,
-      homepage: Meteor.absoluteUrl(),
-      emailLogo: emailLogo,
-      copyrightDate: moment().format("YYYY"),
-      legalName: shop.addressBook[0].company,
-      physicalAddress: {
-        address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
-        city: shop.addressBook[0].city,
-        region: shop.addressBook[0].region,
-        postal: shop.addressBook[0].postal
-      },
-      shopName: shop.name,
-      socialLinks: {
-        display: true,
-        facebook: {
-          display: true,
-          icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
-          link: "https://www.facebook.com"
-        },
-        googlePlus: {
-          display: true,
-          icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
-          link: "https://plus.google.com"
-        },
-        twitter: {
-          display: true,
-          icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
-          link: "https://www.twitter.com"
-        }
-      },
-      // Account Data
-      user: Meteor.user(),
-      currentUserName,
-      invitedUserName: name,
-      url: MeteorAccounts.urls.enrollAccount(token)
-    };
-
-    // Compile Email with SSR
-    const tpl = "accounts/inviteShopMember";
-    const subject = "accounts/inviteShopMember/subject";
-    SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-    SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
     Reaction.Email.send({
       to: email,
@@ -587,12 +590,7 @@ export function inviteShopMember(shopId, email, name) {
       html: SSR.render(tpl, dataForEmail)
     });
   } else {
-    Reaction.Email.send({
-      to: email,
-      from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: SSR.render(subject, dataForEmail),
-      html: SSR.render(tpl, dataForEmail)
-    });
+    throw new Meteor.Error("409", "A user with this email address already exists");
   }
   return true;
 }
@@ -764,6 +762,22 @@ export function setUserPermissions(userId, permissions, group) {
 }
 
 /**
+ * accounts/createFallbackLoginToken
+ * @returns {String} returns a new loginToken for current user,
+ *   that can be used for special login scenarios - e.g. store the
+ *   newly created token as cookie on the browser, if the client
+ *   does not offer local storage.
+ */
+export function createFallbackLoginToken() {
+  if (this.userId) {
+    const stampedLoginToken = MeteorAccounts._generateStampedLoginToken();
+    const loginToken = stampedLoginToken.token;
+    MeteorAccounts._insertLoginToken(this.userId, stampedLoginToken);
+    return loginToken;
+  }
+}
+
+/**
  * Reaction Account Methods
  */
 Meteor.methods({
@@ -777,5 +791,6 @@ Meteor.methods({
   "accounts/sendWelcomeEmail": sendWelcomeEmail,
   "accounts/addUserPermissions": addUserPermissions,
   "accounts/removeUserPermissions": removeUserPermissions,
-  "accounts/setUserPermissions": setUserPermissions
+  "accounts/setUserPermissions": setUserPermissions,
+  "accounts/createFallbackLoginToken": createFallbackLoginToken
 });

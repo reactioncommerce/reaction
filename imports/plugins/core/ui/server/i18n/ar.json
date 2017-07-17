@@ -17,7 +17,20 @@
         "publishThemeError": "`لا يمكن نشر موضوع {{themeName}}",
         "components": {
           "navbar": "شريط التنقل",
-          "button": "زر"
+          "button": "زر",
+          "sortableTable": {
+            "filterPlaceholder": "تصفية البيانات",
+            "tableText": {
+              "noDataMessage": "لا توجد نتائج",
+              "previousText": "سابق",
+              "nextText": "التالى",
+              "loadingText": "تحميل ...",
+              "noDataText": "لا توجد نتائج",
+              "pageText": "صفحة",
+              "ofText": "من",
+              "rowsText": "الصفوف"
+            }
+          }
         }
       }
     }

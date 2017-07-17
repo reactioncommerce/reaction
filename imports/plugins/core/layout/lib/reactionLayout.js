@@ -1,5 +1,7 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Radium from "radium";
+import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import classnames from "classnames";
@@ -8,7 +10,6 @@ import { Templates } from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 
 class ReactionLayout extends Component {
-
   get layout() {
     return this.props.layout;
   }
@@ -88,9 +89,9 @@ class ReactionLayout extends Component {
 
   render() {
     return (
-        <div className="rui layout-base items flex">
-          {this.renderLayout(this.layout)}
-        </div>
+      <div className="rui layout-base items flex">
+        {this.renderLayout(this.layout)}
+      </div>
     );
   }
 }

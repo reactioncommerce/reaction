@@ -1,4 +1,5 @@
-import React, { Component } from "component";
+import React, { Component } from "react";
+import _ from "lodash";
 import { composeWithTracker } from "/lib/api/compose";
 import { QuickMenu } from "../components";
 import { Reaction } from "/client/api";

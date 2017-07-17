@@ -1,3 +1,5 @@
+import { Template } from "meteor/templating";
+import { AutoForm } from "meteor/aldeed:autoform";
 import { Packages } from "/lib/collections";
 import { i18next } from "/client/api";
 
