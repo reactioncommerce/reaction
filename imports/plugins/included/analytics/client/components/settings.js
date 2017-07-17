@@ -50,6 +50,7 @@ class AnalyticsSettings extends Component {
             ]}
             name={settings.public[provider].value}
             onSubmit={this.handleSubmit}
+            autoSave={true}
           />
         </SettingsCard>
       );

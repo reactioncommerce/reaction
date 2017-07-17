@@ -16,6 +16,7 @@
           "segmentNotConfigured": "Segment is not configured",
           "googleAnalyticsNotConfigured": "Google Analytics is not configured",
           "mixpanelNotConfigured": "Mixpanel is not configured",
+          "noApiKeyProvided": "No API Key Provided",          
           "public": {
             "segmentio": {
               "api_key": "Segment Write Key"

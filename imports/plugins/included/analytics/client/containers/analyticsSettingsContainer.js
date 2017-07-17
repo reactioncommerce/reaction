@@ -20,17 +20,10 @@ class AnalyticsSettingsContainer extends Component {
     const data = values.settings.public[settingName].api_key;
 
     if (data) {
-      Meteor.call("reaction-analytics/updateAnalyticsSettings", data, settingName, (error) => {
-        if (!error) {
-          Alerts.toast(
-            i18next.t("admin.settings.analyticsSettingsSaved", { defaultValue: "Analytics settings saved" }),
-            "success"
-          );
-        }
-      });
+      Meteor.call("reaction-analytics/updateAnalyticsSettings", data, settingName);
     } else {
       Alerts.toast(
-        i18next.t("admin.settings.analyticsSettingsNotSaved", { defaultValue: `No value provided for ${settingName} settings` }),
+        i18next.t("admin.settings.noApiKeyProvided", { defaultValue: `No value provided for ${settingName} settings` }),
         "error"
       );
     }
