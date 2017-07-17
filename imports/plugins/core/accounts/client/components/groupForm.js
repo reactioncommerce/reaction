@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 
 class GroupForm extends Component {
   static propTypes = {
-    group: PropTypes.object
+    group: PropTypes.object,
+    onChange: PropTypes.func,
+    saveGroup: PropTypes.func
   };
 
   constructor(props) {
@@ -23,6 +25,15 @@ class GroupForm extends Component {
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
+    if (this.props.onChange) {
+      this.props.onChange({ [event.target.name]: event.target.value });
+    }
+  };
+
+  onBlur = () => {
+    if (this.props.saveGroup) {
+      this.props.saveGroup();
+    }
   };
 
   handleSubmit(event) {
@@ -44,6 +55,7 @@ class GroupForm extends Component {
                 name="name"
                 placeholder="e.g Shop Manager"
                 onChange={this.onChange}
+                onBlur={this.onBlur}
                 value={this.state.name}
               />
             </div>

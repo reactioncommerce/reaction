@@ -1,14 +1,14 @@
-import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { Reaction, i18next } from "/client/api";
 import { ListItem } from "/imports/plugins/core/ui/client/components";
 
 class PermissionsList extends Component {
   static propTypes = {
+    createGroup: PropTypes.func,
     group: PropTypes.object,
-    permissions: PropTypes.array
+    permissions: PropTypes.array,
+    updateGroup: PropTypes.func
   };
 
   constructor(props) {
@@ -20,12 +20,18 @@ class PermissionsList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log("next", nextProps);
     this.setState({ group: nextProps.group });
   }
 
   togglePermission = toggledPermission => {
     return (event, checked) => {
+      let newGroup = false;
       const groupData = Object.assign({}, this.state.group);
+      if (!groupData.permissions) {
+        groupData.permissions = [];
+        newGroup = true;
+      }
       const permissions = resolvePermissions(toggledPermission);
 
       if (checked) {
@@ -34,40 +40,11 @@ class PermissionsList extends Component {
         groupData.permissions = removePermissions(groupData.permissions, permissions);
       }
 
-      Meteor.call("group/updateGroup", this.state.group._id, groupData, Reaction.getShopId(), (err, res) => {
-        if (err) {
-          Alerts.toast(i18next.t("Update failed."), "error"); // TODO: Change to <Alert>
-        }
-        Alerts.toast(i18next.t("Group updated"), "success"); // TODO: Change to <Alert>
-      });
-
-      /**
-       * resolvePermissions
-       * @summary helper to resolve toggled permission(s).
-       * It returns list of all parent and child permissions when a parent permission is toggled.
-       * @param {Object} permission - a permission object from toggle list
-       * @return {Array} -
-       */
-      function resolvePermissions(permission) {
-        const result = [];
-        if (permission.permissions && permission.permissions.length) {
-          result.push(permission.name);
-          for (const pkgPermissions of permission.permissions) {
-            result.push(pkgPermissions.permission);
-          }
-        } else {
-          result.push(permission.permission);
-        }
-        return result;
+      if (newGroup && this.props.createGroup) {
+        return this.props.createGroup(groupData);
       }
-      // helper to remove all array items in "old" from "current"
-      function removePermissions(current, old) {
-        const currentArray = [...current];
-
-        old.forEach(val => {
-          _.remove(currentArray, item => item === val);
-        });
-        return currentArray;
+      if (this.props.updateGroup) {
+        this.props.updateGroup(this.state.group._id, groupData);
       }
     };
   };
@@ -126,3 +103,32 @@ class PermissionsList extends Component {
 }
 
 export default PermissionsList;
+
+/**
+ * resolvePermissions
+ * @summary helper to resolve toggled permission(s).
+ * It returns list of all parent and child permissions when a parent permission is toggled.
+ * @param {Object} permission - a permission object from toggle list
+ * @return {Array} -
+ */
+function resolvePermissions(permission) {
+  const result = [];
+  if (permission.permissions && permission.permissions.length) {
+    result.push(permission.name);
+    for (const pkgPermissions of permission.permissions) {
+      result.push(pkgPermissions.permission);
+    }
+  } else {
+    result.push(permission.permission);
+  }
+  return result;
+}
+// helper to remove all array items in "old" from "current"
+function removePermissions(current, old) {
+  const currentArray = [...current];
+
+  old.forEach(val => {
+    _.remove(currentArray, item => item === val);
+  });
+  return currentArray;
+}
