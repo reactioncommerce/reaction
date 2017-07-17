@@ -42,6 +42,7 @@ BrowserPolicy.content.allowOriginForAll("scontent.cdninstagram.com");
 BrowserPolicy.content.allowImageOrigin("fbcdn-profile-a.akamaihd.net");
 BrowserPolicy.content.allowImageOrigin("secure.gravatar.com");
 BrowserPolicy.content.allowImageOrigin("i0.wp.com");
+BrowserPolicy.content.allowImageOrigin("*.cdninstagram.com");
 
 BrowserPolicy.content.allowFontDataUrl();
 BrowserPolicy.content.allowOriginForAll("assets.reactioncommerce.com");
