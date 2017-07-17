@@ -289,18 +289,21 @@ class OrdersList extends Component {
           <Translation
             className="selected-orders"
             defaultValue={`${selectedItems.length} Selected`}
+            i18nKey={`${selectedItems.length} order.selected`}
           />
           <Button
             status="success"
             bezelStyle="solid"
             className="capture-orders-button"
             label="Capture"
+            i18nKeyLabel="order.capture"
           />
           <Button
             status="default"
             bezelStyle="solid"
             className="bulk-actions-button"
             label="Bulk Actions"
+            i18nKeyLabel="order.bulkActions"
             icon="fa fa-chevron-down"
             iconAfter={true}
           />
