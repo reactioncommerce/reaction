@@ -10,7 +10,7 @@ class AddGroupMembers extends Component {
     accounts: PropTypes.array,
     group: PropTypes.object,
     groups: PropTypes.array
-  }
+  };
 
   constructor(props) {
     super(props);

@@ -7,7 +7,7 @@ import { Meteor } from "meteor/meteor";
 class AdminInviteForm extends Component {
   static propTypes = {
     accounts: PropTypes.array
-  }
+  };
 
   constructor(props) {
     super(props);

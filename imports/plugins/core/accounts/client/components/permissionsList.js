@@ -1,6 +1,8 @@
+import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import { Reaction, i18next } from "/client/api";
 import { ListItem } from "/imports/plugins/core/ui/client/components";
 
 class PermissionsList extends Component {
@@ -21,6 +23,62 @@ class PermissionsList extends Component {
     this.setState({ group: nextProps.group });
   }
 
+  togglePermission = toggledPermission => {
+    return (event, checked) => {
+      const groupData = Object.assign({}, this.state.group);
+      const permissions = resolvePermissions(toggledPermission);
+
+      if (checked) {
+        groupData.permissions = _.uniq([...groupData.permissions, ...permissions]);
+      } else {
+        groupData.permissions = removePermissions(groupData.permissions, permissions);
+      }
+
+      Meteor.call("group/updateGroup", this.state.group._id, groupData, Reaction.getShopId(), (err, res) => {
+        if (err) {
+          Alerts.toast(i18next.t("Update failed."), "error"); // TODO: Change to <Alert>
+        }
+        Alerts.toast(i18next.t("Group updated"), "success"); // TODO: Change to <Alert>
+      });
+
+      /**
+       * resolvePermissions
+       * @summary helper to resolve toggled permission(s).
+       * It returns list of all parent and child permissions when a parent permission is toggled.
+       * @param {Object} permission - a permission object from toggle list
+       * @return {Array} -
+       */
+      function resolvePermissions(permission) {
+        const result = [];
+        if (permission.permissions && permission.permissions.length) {
+          result.push(permission.name);
+          for (const pkgPermissions of permission.permissions) {
+            result.push(pkgPermissions.permission);
+          }
+        } else {
+          result.push(permission.permission);
+        }
+        return result;
+      }
+      // helper to remove all array items in "old" from "current"
+      function removePermissions(current, old) {
+        const currentArray = [...current];
+
+        old.forEach(val => {
+          _.remove(currentArray, item => item === val);
+        });
+        return currentArray;
+      }
+    };
+  };
+
+  checked = permission => {
+    if (_.includes(this.state.group.permissions, permission)) {
+      return true;
+    }
+    return false;
+  };
+
   renderSubPermissions(permission) {
     if (permission.permissions.length) {
       return permission.permissions.map((childPermission, index) => {
@@ -31,23 +89,13 @@ class PermissionsList extends Component {
             label={childPermission.label}
             switchOn={this.checked(childPermission.permission)}
             switchName={childPermission.permission}
-            onSwitchChange={(e, a) => {
-              console.log({ e, a });
-            }}
+            onSwitchChange={this.togglePermission(childPermission)}
           />
         );
       });
     }
     return null;
   }
-
-  checked = permission => {
-    console.log(permission);
-    if (_.includes(this.state.group.permissions, permission)) {
-      return true;
-    }
-    return false;
-  };
 
   renderPermissions(permissions) {
     const jsx = [];
@@ -59,9 +107,7 @@ class PermissionsList extends Component {
             actionType="switch"
             switchOn={this.checked(permission.name)}
             switchName={permission.name}
-            onSwitchChange={(e, a) => {
-              console.log({ e, a });
-            }}
+            onSwitchChange={this.togglePermission(permission)}
           />
           {this.renderSubPermissions(permission)}
         </div>
