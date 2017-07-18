@@ -3,11 +3,9 @@ import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import AccountsManageContainer from "/imports/plugins/core/accounts/client/containers/accountsManageContainer";
-
 import { $ } from "meteor/jquery";
 import { Roles } from "meteor/alanning:roles";
-
+import AccountsManageContainer from "/imports/plugins/core/accounts/client/containers/accountsManageContainer";
 
 const getPermissionMap = (permissions) => {
   const permissionMap = {};

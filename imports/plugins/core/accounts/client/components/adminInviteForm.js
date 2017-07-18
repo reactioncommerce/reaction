@@ -29,7 +29,7 @@ class AdminInviteForm extends Component {
     const { name, email } = this.state;
     return Meteor.call("accounts/inviteShopMember", Reaction.getShopId(), email, name, (error, result) => {
       if (error) {
-        let message; // eslint-disable-line
+        let message;
         if (error.reason === "Unable to send invitation email.") {
           message = i18next.t("accountsUI.error.unableToSendInvitationEmail");
         } else if (error.reason !== "A user with this email address already exists") {
@@ -39,12 +39,11 @@ class AdminInviteForm extends Component {
         } else {
           message = `${i18next.t("accountsUI.error.errorSendingEmail")} ${error}`;
         }
-        // TODO: Use an Alert component to display error messages
-        Alerts.toast(i18next.t("accountsUI.info.errorSendingEmail", "Error sending email."), "error");
+        Alerts.toast(i18next.t("accountsUI.info.errorSendingEmail", `Error sending email. ${message}`), "error");
         this.setState({ name: "", email: "" });
         return false;
       }
-      if (result) {
+      if (result) { // TODO: Change to <Alert>
         Alerts.toast(i18next.t("accountsUI.info.invitationSent", "Invitation sent."), "success");
         this.setState({ name: "", email: "" });
       }

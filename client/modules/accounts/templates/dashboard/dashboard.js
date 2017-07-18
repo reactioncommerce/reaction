@@ -118,9 +118,7 @@ Template.accountsSettings.helpers({
       }
     });
 
-    return {
-      services
-    };
+    return services;
   },
 
   /**
