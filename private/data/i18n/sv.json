@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Orderdetaljer",
         "invoice": "Faktura",
+        "lineItems": "Linjeposter",
         "shipmentTracking": "Leveransspårning"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Redigera den här adressen inträde",
         "addressValidation": "adress Validering",
-        "somethingWentWrong": "Något gick fel: {{err}}"
+        "reviewAddress": "För bästa överensstämmelse, bekräfta din adress",
+        "somethingWentWrong": "Något gick fel: {{err}}",
+        "enteredAddress": "Inmatad adress",
+        "validatedAddress": "Validera adress"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "E-postadressen uppfyller inte kriterierna.",
           "errorSendingEmail": "Fel att skicka e-post, kan konfigurationsproblem.",
           "unableToSendInvitationEmail": "Det går inte att skicka inbjudan e-post.",
+          "userWithEmailAlreadyExists": "En användare med den här e-postadressen finns redan",
           "failedToLogout": "Det gick inte att logga ut.",
           "invalidLoginToken": "Felaktig login-token",
           "loginForbidden": "Inloggning tillåts ej",

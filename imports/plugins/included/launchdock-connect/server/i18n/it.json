@@ -1,0 +1,18 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-connect",
+  "translation": {
+    "reaction-connect": {
+      "admin": {
+        "dashboard": {
+          "connectLabel": "Collegare",
+          "connectTitle": "Collegare",
+          "connectDescription": "Collegare reazione come un servizio distribuito"
+        },
+        "settings": {
+          "reactionConnectLabel": "reazione Connect"
+        }
+      }
+    }
+  }
+}]

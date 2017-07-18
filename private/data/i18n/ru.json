@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Детали заказа",
         "invoice": "Счёт",
+        "lineItems": "Позиции",
         "shipmentTracking": "Отслеживание посылки"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Редактирование адреса",
         "addressValidation": "Адрес Validation",
-        "somethingWentWrong": "Что-то пошло не так: {{err}}"
+        "reviewAddress": "Для обеспечения наилучшего соответствия, пожалуйста, подтвердите свой адрес",
+        "somethingWentWrong": "Что-то пошло не так: {{err}}",
+        "enteredAddress": "Введенный адрес",
+        "validatedAddress": "Проверить адрес"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "Email не соответствует критериям.",
           "errorSendingEmail": "Ошибка при отправке письма. Возможно проблемы с настройками.",
           "unableToSendInvitationEmail": "Не удалось отправить приглашение.",
+          "userWithEmailAlreadyExists": "Пользователь с этим адресом электронной почты уже существует",
           "failedToLogout": "Не удалось выйти",
           "invalidLoginToken": "Неверный токен для входа",
           "loginForbidden": "Вход запрещен",
