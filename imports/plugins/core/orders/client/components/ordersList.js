@@ -4,6 +4,7 @@ import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
+import { Orders } from "/lib/collections";
 import { Badge, ClickToCopy, Icon, Translation, SortableTable, Loading, Checkbox } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 import OrderTableColumn from "./orderTableColumn";
@@ -168,6 +169,7 @@ class OrdersList extends Component {
 
     const customColumnMetadata = [];
     const columnNames = Object.keys(filteredFields);
+    const bla = [ "email", "createdAt", "_id", "workflow.status"];
 
     // https://react-table.js.org/#/story/cell-renderers-custom-components
     columnNames.forEach((columnName) => {
@@ -257,10 +259,12 @@ class OrdersList extends Component {
     return (
       <SortableTable
         tableClassName="rui order table -highlight"
-        data={orders}
+        publication="NewPaginatedOrders"
+        collection={Orders}
+        matchingResultsCount="order-count"
         columnMetadata={customColumnMetadata}
         externalLoadingComponent={Loading}
-        filteredFields={columnNames}
+        filteredFields={bla}
         filterType="none"
         getTheadProps={() => {
           return {
@@ -313,12 +317,6 @@ class OrdersList extends Component {
     );
   }
 
-  handleClick = (event) => {
-    if (this.props.handleShowMoreClick) {
-      this.props.handleShowMoreClick(event);
-    }
-  }
-
 
   render() {
     const { orders, openDetail, openList, handleDetailToggle, handleListToggle, hasMoreOrders } = this.props;
@@ -342,15 +340,6 @@ class OrdersList extends Component {
                 );
               })}
             </div>
-          }
-          {hasMoreOrders &&
-            <button
-              className="btn btn-primary show-more-orders"
-              type="button"
-              onClick={this.handleClick}
-            >
-            <Translation defaultValue="Show More" i18nKey="order.showMore" />
-          </button>
           }
         </div>
       );

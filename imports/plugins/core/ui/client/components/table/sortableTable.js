@@ -149,6 +149,7 @@ class SortableTable extends Component {
     }
 
     const filteredData = matchSorter(originalData, filterInput, { keys: filteredFields });
+
     return filteredData;
   }
 
@@ -199,7 +200,7 @@ class SortableTable extends Component {
         <ReactTable
           className={otherProps.tableClassName || defaultClassName}
           columns={this.renderColumns()}
-          data={otherProps.data || this.renderData()}
+          data={this.renderData()}
           defaultFilterMethod={this.customFilter}
           defaultPageSize={otherProps.defaultPageSize}
           filterable={this.renderColumnFilter()}
@@ -227,7 +228,6 @@ class SortableTable extends Component {
           getTrGroupProps={otherProps.getTrGroupProps}
           getTheadProps={otherProps.getTheadProps}
           getPaginationProps={otherProps.getPaginationProps}
-          onPageSizeChange={otherProps.onPageSizeChange}
         />
       </div>
     );

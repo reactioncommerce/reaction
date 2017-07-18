@@ -43,6 +43,10 @@ class OrdersListContainer extends Component {
     this.selectAllOrders = this.selectAllOrders.bind(this);
   }
 
+  componentWillMount() {
+    this.props.hasMoreOrders();
+  }
+
   componentWillReceiveProps = (nextProps) => {
     this.setState({
       orders: nextProps.orders,
