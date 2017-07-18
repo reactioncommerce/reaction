@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import matchSorter from "match-sorter";
 import ReactTable from "react-table";
-import { Translation } from "@reactioncommerce/reaction-ui";
+// import { Translation } from "@reactioncommerce/reaction-ui";
 import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 
 class SortableTable extends Component {
@@ -139,7 +139,7 @@ class SortableTable extends Component {
    * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
    */
   renderData() {
-    const { filteredFields } = this.props;
+    const { filteredFields, filterType } = this.props;
     const { filterInput } = this.state;
 
     let originalData = [];
@@ -148,9 +148,12 @@ class SortableTable extends Component {
       originalData = this.getMeteorData().results;
     }
 
-    const filteredData = matchSorter(originalData, filterInput, { keys: filteredFields });
+    if (filterType === "both" || filterType === "table") {
+      const filteredData = matchSorter(originalData, filterInput, { keys: filteredFields });
+      return filteredData;
+    }
 
-    return filteredData;
+    return originalData;
   }
 
 

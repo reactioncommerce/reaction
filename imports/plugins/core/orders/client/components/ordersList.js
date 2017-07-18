@@ -169,7 +169,6 @@ class OrdersList extends Component {
 
     const customColumnMetadata = [];
     const columnNames = Object.keys(filteredFields);
-    const bla = [ "email", "createdAt", "_id", "workflow.status"];
 
     // https://react-table.js.org/#/story/cell-renderers-custom-components
     columnNames.forEach((columnName) => {
@@ -264,7 +263,6 @@ class OrdersList extends Component {
         matchingResultsCount="order-count"
         columnMetadata={customColumnMetadata}
         externalLoadingComponent={Loading}
-        filteredFields={bla}
         filterType="none"
         getTheadProps={() => {
           return {
