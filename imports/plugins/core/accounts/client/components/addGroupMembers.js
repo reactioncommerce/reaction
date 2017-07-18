@@ -22,8 +22,10 @@ class AddGroupMembers extends Component {
   }
 
   isInGroup(acc) {
-    console.log({ grp: this.props.groups });
     const currentUserGroup = this.props.groups.find(grp => acc.groups[0] === grp._id);
+    if (!currentUserGroup) {
+      return false;
+    }
     return currentUserGroup._id === this.props.group._id;
   }
 
@@ -47,8 +49,10 @@ class AddGroupMembers extends Component {
 
   handleOnGroupChange(acc) {
     return () => {
-      if (this.isInGroup(acc)) { return false; } // already in group; nothing to change
-      Meteor.call("group/addUser", acc._id, this.props.group._id, (err) => {
+      if (this.isInGroup(acc)) {
+        return false;
+      } // already in group; nothing to change
+      Meteor.call("group/addUser", acc._id, this.props.group._id, err => {
         if (err) {
           return Alerts.toast("Error updating user" + err, "error"); // TODO: Swith to React + i18n
         }
@@ -59,12 +63,15 @@ class AddGroupMembers extends Component {
 
   renderBadge(acc) {
     const currentUserGroup = this.props.groups.find(grp => acc.groups[0] === grp._id);
+    if (!currentUserGroup) {
+      return null;
+    }
     const isNotInGroup = currentUserGroup._id !== this.props.group._id;
     const isSelected = acc === this.state.selected;
     if (isSelected && isNotInGroup) {
-      return (<span>Make {this.props.group.name}</span>);
+      return <span>Make {this.props.group.name}</span>;
     }
-    return (<span>{currentUserGroup.name}</span>);
+    return <span>{currentUserGroup.name}</span>;
   }
 
   getCellElements(data, columnName) {
