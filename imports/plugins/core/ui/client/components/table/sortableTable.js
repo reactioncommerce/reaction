@@ -5,7 +5,7 @@ import matchSorter from "match-sorter";
 import ReactTable from "react-table";
 import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 
 class SortableTable extends Component {
   constructor(props) {
@@ -176,7 +176,7 @@ class SortableTable extends Component {
 
     if (filterType === "both" || filterType === "table") {
       return (
-        <Components.SortableTableFilter
+        <SortableTableFilter
           onChange={this.handleFilterInput}
           value={this.state.filterInput}
           name="filterInput"
@@ -212,7 +212,7 @@ class SortableTable extends Component {
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
 
-          PaginationComponent={Components.SortableTablePagination}
+          PaginationComponent={SortableTablePagination}
 
           getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
             return {
@@ -277,7 +277,5 @@ SortableTable.defaultProps = {
   ofText: "of",
   rowsText: "rows"
 };
-
-registerComponent("SortableTable", SortableTable);
 
 export default SortableTable;
