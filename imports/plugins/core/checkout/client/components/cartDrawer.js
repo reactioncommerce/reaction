@@ -7,7 +7,7 @@ const CartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, h
     <div className="cart-drawer-swiper-container">
       <div className="cart-drawer-swiper-wrapper">
         <div className="cart-drawer-swiper-slide">
-          <Components.CartSubTotals />
+          <Components.CartSubTotal />
         </div>
         {productItems.map(item => {
           return (
