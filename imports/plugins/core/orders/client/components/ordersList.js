@@ -185,7 +185,7 @@ class OrdersList extends Component {
       // Add custom styles for the column name `name`
       if (columnName === "Name") {
         colWidth = 250;
-        colStyle = { borderRight: "1px solid #e6e6e6" };
+        colStyle = { borderRight: "1px solid #e6e6e6", marginTop: 4 };
         colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}>
             <Checkbox
               className="order-header-checkbox checkbox-large"
@@ -209,7 +209,7 @@ class OrdersList extends Component {
       }
 
       if (columnName === "Shipping" || columnName === "Status") {
-        colStyle = { textAlign: "right", padding: "1%" };
+        colStyle = { textAlign: "right", marginTop: 4 };
         headerStyle = { borderRight: "none", textAlign: "center", padding: "1%" };
         colWidth = 150;
       }
