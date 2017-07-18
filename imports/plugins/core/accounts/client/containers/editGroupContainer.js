@@ -104,7 +104,7 @@ class EditGroupContainer extends Component {
             </ListItem>
           </div>
         ))}
-        <ListItem label="New Group" onClick={this.showForm()}>
+        <ListItem label="New Group" i18nKeyLabel="admin.groups.newGroup" onClick={this.showForm()}>
           <i className="fa fa-plus" />
         </ListItem>
       </List>
@@ -115,7 +115,7 @@ class EditGroupContainer extends Component {
     return (
       <div className="edit-group-container">
         <Card expanded={true}>
-          <CardHeader actAsExpander={true} data-i18n="accountsUI.info.editGroups" title="Edit Groups" />
+          <CardHeader actAsExpander={true} i18nKeyTitle="admin.groups.editGroups" title="Edit Groups" />
           <CardBody expandable={true}>
             <div className="settings">
               {this.renderGroups()}

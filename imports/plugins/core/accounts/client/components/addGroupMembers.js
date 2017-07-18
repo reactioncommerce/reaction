@@ -87,7 +87,7 @@ class AddGroupMembers extends Component {
           <div className="name-box">
             <img className="accounts-img-tag" src={getGravatar(acc)} />
             <span>
-              <span className="title"><b>{acc.name || "Guest"}</b></span>
+              <span className="title"><b>{acc.name}</b></span>
               <span>{_.get(acc, "emails[0].address")}</span>
             </span>
           </div>
@@ -121,7 +121,7 @@ class AddGroupMembers extends Component {
     return (
       <div className="add-group-members">
         <Card expanded={true}>
-          <CardHeader actAsExpander={true} data-i18n="" title={this.props.group.name} />
+          <CardHeader actAsExpander={true} title={this.props.group.name} />
           <CardBody expandable={true}>
             <SortableTable
               tableClassName="accounts-group-table"

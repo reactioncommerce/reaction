@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Translation } from "/imports/plugins/core/ui/client/components";
 
 class GroupForm extends Component {
   static propTypes = {
@@ -40,7 +41,9 @@ class GroupForm extends Component {
         <div className="panel-body">
           <form className="add-group">
             <div className="form-group">
-              <label htmlFor="name"><span>Name</span></label>
+              <label htmlFor="name">
+                <Translation defaultValue="Name" i18nKey="admin.groups.name" />
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -52,13 +55,14 @@ class GroupForm extends Component {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="description"><span>Description</span></label>
+              <label htmlFor="description">
+                <Translation defaultValue="Description" i18nKey="admin.groups.description" />
+              </label>
               <input
                 type="text"
                 className="form-control"
                 id="description"
                 name="description"
-                placeholder="e.g manages all orders etc"
                 onChange={this.onChange}
                 value={this.state.description}
               />

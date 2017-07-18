@@ -10,8 +10,7 @@ class AccountsTableCell extends Component {
     account: PropTypes.object,
     columnName: PropTypes.string,
     group: PropTypes.object, // current group in interation
-    groups: PropTypes.array, // all available groups
-    headerLabel: PropTypes.string
+    groups: PropTypes.array // all available groups
   };
 
   state = {
@@ -60,14 +59,13 @@ class AccountsTableCell extends Component {
   render() {
     const { account, columnName } = this.props;
 
-    // TODO: Use set constant to loop through
     if (columnName === "name") {
       return (
         <div className="table-cell body-first">
           <img className="accounts-img-tag" src={getGravatar(account)} />
-          <span><b>{account.name || "Guest"}</b></span>
+          <span><b>{account.name}</b></span>
         </div>
-      ); // TODO: Review "Guest" default
+      );
     }
 
     if (columnName === "email") {
@@ -97,7 +95,7 @@ class AccountsTableCell extends Component {
         >
           {this.props.groups.filter(grp => grp._id !== this.props.group._id).map((grp, index) => (
             <MenuItem
-              key={index} // TODO: i18n
+              key={index}
               label={_.startCase(grp.name)}
               selectLabel={_.startCase(grp.name)}
               value={grp._id}
@@ -114,7 +112,8 @@ class AccountsTableCell extends Component {
             status="danger"
             onClick={this.handleGroupRemove(account)}
             bezelStyle="solid"
-            label="Remove" // TODO: i18n
+            i18nKeyLabel="admin.groups.remove"
+            label="Remove"
           />
         </div>
       );

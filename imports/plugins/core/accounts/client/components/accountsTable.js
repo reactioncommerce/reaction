@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Reaction } from "/client/api";
 import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
-import { List, ListItem, SortableTable } from "/imports/plugins/core/ui/client/components";
+import { List, ListItem, SortableTable, Translation } from "/imports/plugins/core/ui/client/components";
 import AccountsTableCell from "./accountsTableCell";
 
 const fields = ["name", "email", "createdAt", "dropdown", "button"];
@@ -12,8 +12,7 @@ class AccountsTable extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     group: PropTypes.object,
-    groups: PropTypes.array,
-    i18nKeyLabel: PropTypes.string
+    groups: PropTypes.array
   };
 
   renderTable(users) {
@@ -50,8 +49,8 @@ class AccountsTable extends Component {
       Reaction.setActionViewDetail({
         label: "Permissions",
         i18nKeyLabel: "admin.settings.permissionsSettingsLabel",
-        data: props,
-        template: "memberSettings"
+        template: "memberSettings",
+        data: props
       });
     };
   }
@@ -60,8 +59,8 @@ class AccountsTable extends Component {
     if (headerName === "name") {
       return (
         <div>
-          <span className="name-cell"><Checkbox /> </span>
-          <span className="name-cell"> Name </span>
+          <span className="name-cell"><Checkbox /></span>
+          <Translation className="name-cell" defaultValue="Name" i18nKey="admin.groups.name" />
           <span className="name-icon-cell">
             <Icon icon="chevron-down" />
           </span>
@@ -71,7 +70,7 @@ class AccountsTable extends Component {
     if (headerName === "email") {
       return (
         <div>
-          <span className="content-cell">Email</span>
+          <Translation className="content-cell" defaultValue="Email" i18nKey="admin.groups.email" />
           <span className="icon-cell">
             <Icon icon="chevron-down" />
           </span>
@@ -81,7 +80,11 @@ class AccountsTable extends Component {
     if (headerName === "createdAt") {
       return (
         <div>
-          <span className="content-cell">Last Active</span>
+          <Translation
+            className="content-cell"
+            defaultValue="Last Active"
+            i18nKey="admin.groups.lastActive"
+          />
           <span className="icon-cell">
             <Icon icon="chevron-down" />
           </span>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Card, CardHeader, CardBody } from "/imports/plugins/core/ui/client/components";
+import { Card, CardHeader, CardBody, Translation } from "/imports/plugins/core/ui/client/components";
 import { Reaction, i18next } from "/client/api";
 import { Meteor } from "meteor/meteor";
 
@@ -39,11 +39,15 @@ class AdminInviteForm extends Component {
         } else {
           message = `${i18next.t("accountsUI.error.errorSendingEmail")} ${error}`;
         }
-        Alerts.toast(i18next.t("accountsUI.info.errorSendingEmail", `Error sending email. ${message}`), "error");
+        Alerts.toast(
+          i18next.t("accountsUI.info.errorSendingEmail", `Error sending email. ${message}`),
+          "error"
+        );
         this.setState({ name: "", email: "" });
         return false;
       }
-      if (result) { // TODO: Change to <Alert>
+      if (result) {
+        // TODO: Change to <Alert>
         Alerts.toast(i18next.t("accountsUI.info.invitationSent", "Invitation sent."), "success");
         this.setState({ name: "", email: "" });
       }
@@ -56,8 +60,11 @@ class AdminInviteForm extends Component {
         <div className="panel-body">
           <form className="">
             <div className="form-group">
-              <label htmlFor="member-form-name"><span data-i18n="accountsUI.name">Name</span></label>
-              <input type="text"
+              <label htmlFor="member-form-name">
+                <Translation className="content-cell" defaultValue="Name" i18nKey="accountsUI.name" />
+              </label>
+              <input
+                type="text"
                 className="form-control"
                 id="member-form-name"
                 name="name"
@@ -67,8 +74,11 @@ class AdminInviteForm extends Component {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="member-form-email"><span data-i18n="accountsUI.email">Email</span></label>
-              <input type="email"
+              <label htmlFor="member-form-email">
+                <Translation className="content-cell" defaultValue="Email" i18nKey="accountsUI.email" />
+              </label>
+              <input
+                type="email"
                 className="form-control"
                 id="member-form-email"
                 name="email"
@@ -79,7 +89,11 @@ class AdminInviteForm extends Component {
             </div>
             <div className="form-btns add-admin justify">
               <button className="btn btn-primary" onClick={this.handleSubmit}>
-                <span data-i18n="accountsUI.info.sendInvitation">Send Invitation</span>
+                <Translation
+                  className="content-cell"
+                  defaultValue="Send Invitation"
+                  i18nKey="accountsUI.info.sendInvitation"
+                />
               </button>
             </div>
           </form>
@@ -87,7 +101,6 @@ class AdminInviteForm extends Component {
       </div>
     );
   }
-
 
   render() {
     return (
