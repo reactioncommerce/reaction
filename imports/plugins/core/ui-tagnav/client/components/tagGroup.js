@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import update from "react/lib/update";
-import TagGroupBody from "./tagGroupBody";
-import TagGroupHeader from "./tagGroupHeader";
-import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { getTagIds } from "/lib/selectors/tags";
 import { Router } from "/client/api";
@@ -105,13 +103,13 @@ class TagGroup extends Component {
     if (Array.isArray(tags)) {
       return tags.map((tag) => (
         <div className={`rui grouptag ${this.className}`} data-id={tag._id} key={tag._id}>
-          <TagGroupHeader
+          <Components.TagGroupHeader
             {...this.props}
             tag={tag}
             parentTag={this.state.parentTag}
             onTagRemove={this.props.onTagRemove}
           />
-          <TagGroupBody
+          <Components.TagGroupBody
             {...this.props}
             tagGroupBodyProps={this.tagGroupBodyProps(tag)}
           />
@@ -138,7 +136,7 @@ class TagGroup extends Component {
           {this.props.editable &&
             <div className="rui grouptag create">
               <div className="header">
-                <TagItem
+                <Components.TagItem
                   blank={true}
                   tag={this.state.newTag}
                   key="newTagForm"
@@ -167,5 +165,7 @@ TagGroup.propTypes = {
   onTagRemove: PropTypes.func,
   tagGroupProps: PropTypes.object
 };
+
+registerComponent("TagGroup", TagGroup);
 
 export default TagGroup;

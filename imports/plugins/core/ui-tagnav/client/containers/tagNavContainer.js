@@ -1,13 +1,11 @@
-import debounce from "lodash/debounce";
 import _ from "lodash";
 import update from "react/lib/update";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction, Router } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { getTagIds } from "/lib/selectors/tags";
-import { Overlay } from "/imports/plugins/core/ui/client/components";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { Tags } from "/lib/collections";
 import TagNav from "../components/tagNav";
@@ -218,7 +216,7 @@ class TagNavContainer extends Component {
     // Set local state so the component does't have to wait for a round-trip
     // to the server to get the updated list of variants
     this.setState(newState, () => {
-      debounce(() => TagNavHelpers.onTagSort(this.state.tagIds), 500)(); // Save the updated positions
+      _.debounce(() => TagNavHelpers.onTagSort(this.state.tagIds), 500)(); // Save the updated positions
     });
   }
 
@@ -412,7 +410,7 @@ class TagNavContainer extends Component {
           onTagUpdate={this.handleTagUpdate}
           onTagSelect={this.onTagSelect}
         />
-        <Overlay
+        <Components.Overlay
           isVisible={this.state[NavbarStates.Visible]}
           onClick={this.props.closeNavbar}
         />

@@ -4,11 +4,12 @@ import classnames from "classnames";
 import Autosuggest from "react-autosuggest";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import { Button, Handle } from "/imports/plugins/core/ui/client/components";
 import { SortableItem } from "../../containers";
 
-class Tag extends Component {
+class TagItem extends Component {
   componentWillReceiveProps(nextProps) {
     if (this._updated && this._saved && this.refs.autoSuggestInput) {
       const input = this.refs.autoSuggestInput.input;
@@ -295,7 +296,7 @@ class Tag extends Component {
   }
 }
 
-Tag.propTypes = {
+TagItem.propTypes = {
   blank: PropTypes.bool,
   connectDragSource: PropTypes.func,
   connectDropTarget: PropTypes.func,
@@ -321,4 +322,6 @@ Tag.propTypes = {
   tag: PropTypes.object
 };
 
-export default SortableItem("tag", Tag);
+registerComponent("TagItem", SortableItem("tag", TagItem));
+
+export default SortableItem("tag", TagItem);
