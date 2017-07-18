@@ -62,6 +62,36 @@ Meteor.publish("Cart", function (sessionId, userId) {
   return Cart.find(cartId);
 });
 
+export function getCartImages(cart) {
+  const cartImages = {};
+  let productImage;
+  // determine if we use the variant image or the product image
+  for (const item of cart.items) {
+    const variantImage = Media.findOne({
+      "metadata.productId": item.variants._id,
+      "metadata.workflow": { $nin: ["archived", "unpublished"] }
+    });
+
+    if (!variantImage) {
+      productImage = Media.find({
+        "metadata.productId": item.productId,
+        "metadata.workflow": { $nin: ["archived", "unpublished"] }
+      });
+    }
+    const cartImage = variantImage ? variantImage._id : productImage._id;
+    cartImages[item.id] = cartImage;
+  }
+
+  return Media.find({
+    _id: { $in: cartImages }
+  });
+}
+
+Meteor.publish("CartImages", function (cart) {
+  check(cart, Object);
+  return getCartImages(cart);
+});
+
 Meteor.publish("CartItemImage", function (cartItem) {
   check(cartItem, Match.Optional(Object));
   const productId = cartItem.productId;
