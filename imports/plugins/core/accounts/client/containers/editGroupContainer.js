@@ -20,18 +20,20 @@ class EditGroupContainer extends Component {
 
   constructor(props) {
     super(props);
-    const { accounts, selectedGroup } = props;
+    const { accounts, selectedGroup, groups } = props;
 
     this.state = {
       selectedGroup: selectedGroup || {},
       newGroup: null,
       isCreating: false,
+      groups,
       accounts
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ selectedGroup: nextProps.selectedGroup });
+    const { selectedGroup } = nextProps;
+    this.setState({ selectedGroup, isCreating: false });
   }
 
   selectGroup = grp => {
@@ -58,7 +60,12 @@ class EditGroupContainer extends Component {
       if (err) {
         return Alerts.toast(i18next.t("Error creating group"), "error");
       }
-      Alerts.toast(i18next.t("Success creating group"), "success");
+      this.setState({
+        groups: [...this.state.groups, groupData],
+        selectedGroup: groupData,
+        isCreating: false
+      });
+      return Alerts.toast(i18next.t("Success creating group"), "success");
     });
   };
 
@@ -68,19 +75,13 @@ class EditGroupContainer extends Component {
         return Alerts.toast(i18next.t("Update failed."), "error"); // TODO: Change to <Alert>
       }
       this.setState({ selectedGroup: groupData });
-      Alerts.toast(i18next.t("Group updated"), "success"); // TODO: Change to <Alert>
+      return Alerts.toast(i18next.t("Group updated"), "success"); // TODO: Change to <Alert>
     });
   };
 
   renderGroupForm = () => {
     if (this.state.isCreating) {
-      return (
-        <GroupForm
-          group={this.state.selectedGroup}
-          onChange={this.onGroupFormChange}
-          saveGroup={this.onGroupFormBlur}
-        />
-      );
+      return <GroupForm group={this.state.selectedGroup} onChange={this.onGroupFormChange} />;
     }
     return null;
   };
@@ -96,7 +97,7 @@ class EditGroupContainer extends Component {
   renderGroups() {
     return (
       <List>
-        {this.props.groups.map((grp, index) => (
+        {this.state.groups.map((grp, index) => (
           <div key={index} className={this.groupListClass(grp)}>
             <ListItem label={grp.name} onClick={this.selectGroup(grp)}>
               <a href="" onClick={this.showForm(grp)} className="fa fa-pencil" />

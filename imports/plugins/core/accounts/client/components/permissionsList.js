@@ -119,7 +119,7 @@ function resolvePermissions(permission) {
       result.push(pkgPermissions.permission);
     }
   } else {
-    result.push(permission.name);
+    result.push(permission.permission);
   }
   return result;
 }
