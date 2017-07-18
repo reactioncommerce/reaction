@@ -10,7 +10,7 @@ class Brand extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick = (event) => {
+  handleClick(event) {
     event.preventDefault();
     Reaction.Router.go("/");
   }
@@ -20,7 +20,7 @@ class Brand extends Component {
   }
 
   getLogo() {
-    if (_.isArray(this.getShop().brandAssets)) {
+    if (Array.isArray(this.getShop().brandAssets)) {
       const brandAsset = _.find(this.getShop().brandAssets, (asset) => asset.type === "navbarBrandImage");
       return Media.findOne(brandAsset.mediaId);
     }
