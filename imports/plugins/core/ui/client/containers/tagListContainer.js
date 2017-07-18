@@ -9,6 +9,7 @@ import { composeWithTracker } from "/lib/api/compose";
 import { TagList } from "../components";
 import { Tags } from "/lib/collections";
 import { getTagIds } from "/lib/selectors/tags";
+import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
 function updateSuggestions(term, { excludeTags }) {
   const slug = Reaction.getSlug(term);
@@ -204,7 +205,7 @@ class TagListContainer extends Component {
 
   render() {
     return (
-      <Components.DragDropProvider>
+      <DragDropProvider>
         <TagList
           newTag={this.state.newTag}
           onClick={this.handleEditButtonClick}
@@ -221,7 +222,7 @@ class TagListContainer extends Component {
           tooltip="Unpublished changes"
           {...this.props}
         />
-      </Components.DragDropProvider>
+      </DragDropProvider>
     );
   }
 }
