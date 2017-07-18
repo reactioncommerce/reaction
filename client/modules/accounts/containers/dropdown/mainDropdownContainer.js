@@ -70,18 +70,21 @@ class MainDropdownContainer extends Component {
 
 function getCurrentUser() {
   const shopId = Reaction.getShopId();
-  const user = Accounts.user();
+  const user = Accounts.user() || {};
 
   if (!shopId || typeof user !== "object") {
     return null;
   }
+
 
   // shoppers should always be guests
   const isGuest = Roles.userIsInRole(user, "guest", shopId);
   // but if a user has never logged in then they are anonymous
   const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
 
-  return isGuest && !isAnonymous ? user : null;
+  const account = Collections.Accounts.findOne(user._id);
+
+  return isGuest && !isAnonymous ? account : null;
 }
 
 function getUserGravatar(currentUser, size) {

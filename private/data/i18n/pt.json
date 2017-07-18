@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Detalhes da encomenda",
         "invoice": "Fatura",
+        "lineItems": "Itens de linha",
         "shipmentTracking": "Monitorização de transporte"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Editar esta entrada de endereço",
         "addressValidation": "Validação de endereço",
-        "somethingWentWrong": "Ocorreu um erro: {{err}}"
+        "reviewAddress": "Para melhor conformidade, valide seu endereço",
+        "somethingWentWrong": "Ocorreu um erro: {{err}}",
+        "enteredAddress": "Endereço inserido",
+        "validatedAddress": "Validar endereço"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "O email não corresponde aos critérios.",
           "errorSendingEmail": "Erro ao enviar o email. Possível problema de configuração.",
           "unableToSendInvitationEmail": "Não é possível enviar email de convite.",
+          "userWithEmailAlreadyExists": "Um usuário com este endereço de e-mail já existe",
           "failedToLogout": "Falha ao terminar sessão.",
           "invalidLoginToken": "Token de início de sessão inválido",
           "loginForbidden": "Início de sessão proibido",

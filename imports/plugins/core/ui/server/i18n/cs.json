@@ -17,7 +17,20 @@
         "publishThemeError": "`Nelze zveřejnit téma {{themeName}}",
         "components": {
           "navbar": "navigační lišta",
-          "button": "Tlačítko"
+          "button": "Tlačítko",
+          "sortableTable": {
+            "filterPlaceholder": "Filtrování dat",
+            "tableText": {
+              "noDataMessage": "Nebyly nalezeny žádné výsledky",
+              "previousText": "Předchozí",
+              "nextText": "Další",
+              "loadingText": "Loading ...",
+              "noDataText": "Nebyly nalezeny žádné výsledky",
+              "pageText": "Strana",
+              "ofText": "z",
+              "rowsText": "Řádky"
+            }
+          }
         }
       }
     }
