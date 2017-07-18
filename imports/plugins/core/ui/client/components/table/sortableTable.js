@@ -138,7 +138,7 @@ class SortableTable extends Component {
    * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
    */
   renderData() {
-    const { filteredFields } = this.props;
+    const { filteredFields, filterType } = this.props;
     const { filterInput } = this.state;
 
     let originalData = [];
@@ -147,8 +147,12 @@ class SortableTable extends Component {
       originalData = this.getMeteorData().results;
     }
 
-    const filteredData = matchSorter(originalData, filterInput, { keys: filteredFields });
-    return filteredData;
+    if (filterType === "both" || filterType === "table") {
+      const filteredData = matchSorter(originalData, filterInput, { keys: filteredFields });
+      return filteredData;
+    }
+
+    return originalData;
   }
 
 
@@ -205,7 +209,6 @@ class SortableTable extends Component {
     return style;
   }
 
-
   render() {
     const { ...otherProps } = this.props;
     const defaultClassName = "-striped -highlight";
@@ -217,7 +220,7 @@ class SortableTable extends Component {
         <ReactTable
           className={otherProps.tableClassName || defaultClassName}
           columns={this.renderColumns()}
-          data={otherProps.data || this.renderData()}
+          data={this.renderData()}
           defaultFilterMethod={this.customFilter}
           defaultPageSize={otherProps.defaultPageSize}
           filterable={this.renderColumnFilter()}
@@ -230,6 +233,7 @@ class SortableTable extends Component {
           pageText={otherProps.pageText}
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
+          showPaginationTop={otherProps.showPaginationTop}
 
           PaginationComponent={SortableTablePagination}
 
@@ -241,8 +245,10 @@ class SortableTable extends Component {
               style: this.renderSelectedRowsStyle(rowInfo)
             };
           }}
+          getTableProps={otherProps.getTableProps}
           getTrGroupProps={otherProps.getTrGroupProps}
-          getTheadThProps={otherProps.getTheadThProps}
+          getTheadProps={otherProps.getTheadProps}
+          getPaginationProps={otherProps.getPaginationProps}
         />
       </div>
     );

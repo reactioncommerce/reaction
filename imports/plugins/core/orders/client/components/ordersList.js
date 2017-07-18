@@ -4,7 +4,7 @@ import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
-// import { Orders } from "/lib/collections";
+import { Orders } from "/lib/collections";
 import { Badge, ClickToCopy, Icon, Translation, SortableTable, Loading, Checkbox, Button } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 import OrderTableColumn from "./orderTableColumn";
@@ -12,6 +12,7 @@ import OrderTableColumn from "./orderTableColumn";
 class OrdersList extends Component {
 
   static propTypes = {
+    detailClassName: PropTypes.string,
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
     handleDetailToggle: PropTypes.func,
@@ -19,6 +20,7 @@ class OrdersList extends Component {
     handleSelect: PropTypes.func,
     handleShowMoreClick: PropTypes.func,
     hasMoreOrders: PropTypes.bool,
+    listClassName: PropTypes.string,
     multipleSelect: PropTypes.bool,
     openDetail: PropTypes.bool,
     openList: PropTypes.bool,
@@ -157,13 +159,14 @@ class OrdersList extends Component {
     const { selectedItems, handleSelect, handleClick, multipleSelect, selectAllOrders } = this.props;
 
     const filteredFields = {
-      Name: "shipping[0].address.fullName",
-      Email: "email",
-      Date: "createdAt",
-      ID: "_id",
-      Total: "billing[0].invoice.total",
-      Shipping: "shipping[0].workflow.status",
-      Status: "workflow.status"
+      "Name": "shipping[0].address.fullName",
+      "Email": "email",
+      "Date": "createdAt",
+      "ID": "_id",
+      "Total": "billing[0].invoice.total",
+      "Shipping": "shipping[0].workflow.status",
+      "Status": "workflow.status",
+      "": ""
     };
 
     const customColumnMetadata = [];
@@ -173,12 +176,15 @@ class OrdersList extends Component {
     columnNames.forEach((columnName) => {
       let colStyle = { borderRight: "none" };
       let colHeader = undefined;
-      let headerStyle = { borderRight: "none", textAlign: "left", marginTop: 5 };
+      let headerStyle = { borderRight: "none", textAlign: "left" };
       let className = undefined;
       let headerClassName = undefined;
+      let colWidth = undefined;
+      let resizable = true;
 
       // Add custom styles for the column name `name`
       if (columnName === "Name") {
+        colWidth = 250;
         colStyle = { borderRight: "1px solid #e6e6e6" };
         colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}>
             <Checkbox
@@ -187,9 +193,25 @@ class OrdersList extends Component {
               name="orders-checkbox"
               onChange={() => selectAllOrders(orders, multipleSelect)}
             />
-            <span style={{ marginTop: 5 }}>{columnName}</span>
+            <span style={{ marginTop: 10 }}>{columnName}</span>
           </div>;
-        headerStyle = { borderRight: "none", textAlign: "left" };
+      }
+
+      if (columnName === "Date" || columnName === "Total" || columnName === "ID") {
+        headerStyle = { borderRight: "none", textAlign: "center", padding: "1%" };
+        colStyle = { textAlign: "center", padding: "1%", marginTop: 4 };
+        colWidth = 95;
+      }
+
+      if (columnName === "Email") {
+        headerStyle = {  borderRight: "none", textAlign: "left", padding: "1%" };
+        colStyle = { padding: "1%", marginTop: 4 };
+      }
+
+      if (columnName === "Shipping" || columnName === "Status") {
+        colStyle = { textAlign: "right", padding: "1%" };
+        headerStyle = { borderRight: "none", textAlign: "center", padding: "1%" };
+        colWidth = 150;
       }
 
       if (columnName === "Email" || columnName === "Date" || columnName === "Shipping") {
@@ -197,9 +219,19 @@ class OrdersList extends Component {
         headerClassName = "hidden-xs hidden-sm";
       }
 
-      if (columnName === "Name" || columnName === "Total") {
+      if (columnName === "ID" || columnName === "Total") {
         className = "hidden-xs";
         headerClassName = "hidden-xs";
+      }
+
+      if (columnName === "") {
+        colWidth = 50;
+        className = "controls";
+        resizable = false;
+        colStyle = {
+          padding: 0,
+          height: 52
+        };
       }
 
       const columnMeta = {
@@ -207,8 +239,10 @@ class OrdersList extends Component {
         Header: colHeader ? colHeader : columnName,
         headerStyle: headerStyle,
         style: colStyle,
-        headerClassName: headerClassName,
+        headerClassName: classnames(headerClassName, "order-list-headers"),
         className: className,
+        width: colWidth,
+        resizable: resizable,
         Cell: row => (
           <OrderTableColumn
             row={row}
@@ -232,13 +266,23 @@ class OrdersList extends Component {
         {this.renderBulkOrderActionsBar()}
         <SortableTable
           tableClassName={`rui order table ${this.renderClassNameHidden()} -highlight`}
-          data={orders}
+          publication="NewPaginatedOrders"
+          collection={Orders}
+          matchingResultsCount="order-count"
           columnMetadata={customColumnMetadata}
           externalLoadingComponent={Loading}
-          filteredFields={columnNames}
           filterType="none"
           selectedRows={selectedItems}
           selectedRowsStyle={selectedRowsStyle}
+          getTheadProps={() => {
+            return {
+              style: {
+                borderTop: "1px solid #e6e6e6",
+                borderRight: "1px solid #e6e6e6",
+                borderLeft: "1px solid #e6e6e6"
+              }
+            };
+          }}
           getTrGroupProps={() => {
             return {
               style: {
@@ -247,8 +291,21 @@ class OrdersList extends Component {
               }
             };
           }}
-        />
-      </div>
+          getPaginationProps={() => {
+          return {
+            className: "orders-list-pagination"
+          };
+        }}
+        getTableProps={() => {
+          return {
+            style: {
+              borderBottom: "1px solid #e6e6e6"
+            }
+          };
+        }}
+        showPaginationTop={true}
+       />
+     </div>
     );
   }
 
@@ -322,19 +379,30 @@ class OrdersList extends Component {
   }
 
   render() {
-    const { orders, openDetail, openList, handleDetailToggle, handleListToggle, hasMoreOrders } = this.props;
+    const { orders, openDetail, openList, handleDetailToggle, handleListToggle, detailClassName, listClassName } = this.props;
 
     if (orders.length) {
       return (
-        <div>
-          <div style= {{ float: "right", padding: 10 }}>
-            <button className="rui btn order-toggle-btn" onClick={handleListToggle}> <i className="fa fa-list" /> </button>
-            <button className="rui btn order-toggle-btn" onClick={handleDetailToggle}> <i className="fa fa-list-alt" /> </button>
+        <div className="container-fluid-sm">
+          <div style= {{ float: "right" }}>
+            <button
+              className={`order-toggle-btn ${detailClassName}`}
+              onClick={handleDetailToggle}
+            >
+              <i className="fa fa-th-list" />
+            </button>
+
+            <button
+              className={`order-toggle-btn ${listClassName}`}
+              onClick={handleListToggle}
+            >
+              <i className="fa fa-list" />
+            </button>
           </div>
 
-          {openList &&  <div className="container-fluid-sm">{this.renderListView(orders)}</div>}
+          {openList &&  <div>{this.renderListView(orders)}</div>}
           {openDetail &&
-            <div className="container-fluid-sm">
+            <div>
               {orders.map((order, i) => {
                 return (
                   <div key={i}>
@@ -343,15 +411,6 @@ class OrdersList extends Component {
                 );
               })}
             </div>
-          }
-          {hasMoreOrders &&
-            <button
-              className="btn btn-primary show-more-orders"
-              type="button"
-              onClick={this.handleClick}
-            >
-            <Translation defaultValue="Show More" i18nKey="order.showMore" />
-          </button>
           }
         </div>
       );
