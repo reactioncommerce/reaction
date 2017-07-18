@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "Няма намерени трупи",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "Дата",
+                "type": "тип на документа"
+              }
+            }
+          },
           "date": "Дата",
           "docType": "тип на документа"
         }

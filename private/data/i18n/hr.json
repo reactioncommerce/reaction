@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Detalji narudžbe",
         "invoice": "Dostavnica",
+        "lineItems": "Stavke retka",
         "shipmentTracking": "praćenje pošiljke"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Uređivanje adrese",
         "addressValidation": "Adresa valjanosti",
-        "somethingWentWrong": "Nešto je pošlo po zlu: {{err}}"
+        "reviewAddress": "Za najbolju sukladnost, potvrdite svoju adresu",
+        "somethingWentWrong": "Nešto je pošlo po zlu: {{err}}",
+        "enteredAddress": "Unesena adresa",
+        "validatedAddress": "Potvrdite adresu"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "Netočna Email adresa.",
           "errorSendingEmail": "Pogreška prilikom slanja e-mail, mogući problem s konfiguracijom.",
           "unableToSendInvitationEmail": "Ne mogu poslati pozivnicu e-pošte.",
+          "userWithEmailAlreadyExists": "Korisnik s ovom adresom e-pošte već postoji",
           "failedToLogout": "Neuspješno logout.",
           "invalidLoginToken": "Nevaljan token za prijavu",
           "loginForbidden": "Prijava zabranjena",

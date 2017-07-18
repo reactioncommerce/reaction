@@ -20,16 +20,15 @@ import ProductsComponent from "../components/products";
 function loadMoreProducts() {
   let threshold;
   const target = document.querySelectorAll("#productScrollLimitLoader");
-  let scrollContainer = document.querySelectorAll("#reactionAppContainer");
-
+  let scrollContainer = document.querySelectorAll("#container-main");
   if (scrollContainer.length === 0) {
     scrollContainer = window;
   }
 
   if (target.length) {
-    threshold = scrollContainer[0].scrollTop + scrollContainer[0].offsetHeight - target[0].offsetHeight;
+    threshold = scrollContainer[0].scrollHeight - scrollContainer[0].scrollTop === scrollContainer[0].clientHeight;
 
-    if (target[0].offsetTop <= threshold) {
+    if (threshold) {
       if (!target[0].getAttribute("visible")) {
         target[0].setAttribute("productScrollLimit", true);
         Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
@@ -115,24 +114,24 @@ function composer(props, onData) {
   if (!tag && slug) {
     return;
   }
+  const currentTag = ReactionProduct.getTag();
+
+  const sort = {
+    [`positions.${currentTag}.position`]: 1,
+    [`positions.${currentTag}.createdAt`]: 1,
+    createdAt: 1
+  };
 
   const queryParams = Object.assign({}, tags, Reaction.Router.current().queryParams);
-  const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams);
+  const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort);
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
   }
 
-  const currentTag = ReactionProduct.getTag();
   const productCursor = Products.find({
     ancestors: [],
     type: { $in: ["simple"] }
-  }, {
-    sort: {
-      [`positions.${currentTag}.position`]: 1,
-      [`positions.${currentTag}.createdAt`]: 1,
-      createdAt: 1
-    }
   });
 
   const products = productCursor.map((product) => {

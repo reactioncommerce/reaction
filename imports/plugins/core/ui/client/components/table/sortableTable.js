@@ -27,7 +27,7 @@ class SortableTable extends Component {
    * @prop {String} matchingResultsCount - Send to Counts collection to get results count of sub
    * @prop {String} publication - publication to subscribe to
    * @prop {Object} collection - collection to get data from
-   * Use props to get collection, EmailTableColumn
+   * Use props to get collection
    * Use that info to call meteor and get subscription
    * Output data for table
    * @returns {Object} loading status (bool), results (object), and matchingResults (number)
