@@ -113,14 +113,17 @@ export default PermissionsList;
  */
 function resolvePermissions(permission) {
   const result = [];
-  if (permission.permissions && permission.permissions.length) {
+
+  if (permission.name) {
     result.push(permission.name);
+  }
+
+  if (permission.permissions && permission.permissions.length) {
     for (const pkgPermissions of permission.permissions) {
       result.push(pkgPermissions.permission);
     }
-  } else {
-    result.push(permission.permission);
   }
+
   return result;
 }
 // helper to remove all array items in "old" from "current"
