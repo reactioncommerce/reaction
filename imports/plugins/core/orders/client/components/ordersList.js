@@ -198,7 +198,7 @@ class OrdersList extends Component {
       if (columnName === "Date" || columnName === "Total" || columnName === "ID") {
         headerStyle = { borderRight: "none", textAlign: "center", padding: "1%" };
         colStyle = { textAlign: "center", padding: "1%" };
-        colWidth = 150;
+        colWidth = 95;
       }
 
       if (columnName === "Email") {
