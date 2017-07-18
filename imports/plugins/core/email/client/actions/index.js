@@ -1,2 +1,1 @@
-export { default as logs } from "./logs";
-export { default as settings } from "./settings";
+export { default as saveSettings } from "./settings";

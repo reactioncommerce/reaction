@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { useDeps } from "react-simple-di";
+import { compose, withProps } from "recompose";
 import getServiceConfig from "nodemailer-wellknown";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
-import { Loading } from "/imports/plugins/core/ui/client/components";
-import actions from "../actions";
+import { saveSettings } from "../actions";
 import EmailConfig from "../components/emailConfig";
-import { composeWithTracker, merge } from "/lib/api/compose";
+import { composeWithTracker } from "/lib/api/compose";
 
 class EmailConfigContainer extends Component {
   constructor(props) {
@@ -72,11 +72,14 @@ const composer = ({}, onData) => {
   }
 };
 
-const depsMapper = () => ({
-  toggleSettings: actions.settings.toggleSettings
-});
+const handlers = { saveSettings };
 
-export default merge(
-  composeWithTracker(composer, Loading),
-  useDeps(depsMapper)
+registerComponent("EmailConfig", EmailConfigContainer, [
+  composeWithTracker(composer),
+  withProps(handlers)
+]);
+
+export default compose(
+  composeWithTracker(composer),
+  withProps(handlers)
 )(EmailConfigContainer);
