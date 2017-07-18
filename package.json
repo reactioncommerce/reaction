@@ -149,30 +149,5 @@
       "^meteor/tmeasday:publish-counts": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
       "^meteor/(.*)": "<rootDir>/imports/test-utils/__mocks__/meteor/$1"
     }
-  },
-  "babel": {
-    "plugins": [
-      ["lodash", { "id": ["lodash", "recompose"] }],
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./"
-          ],
-          "alias": {
-            "underscore": "lodash",
-            "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
-			"@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
-            "@reactioncommerce/reaction-components": "./lib/api/components",
-            "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib"
-          }
-        }
-      ]
-    ],
-    "presets": [
-      "es2015",
-      "react",
-      "stage-2"
-    ]
   }
 }
