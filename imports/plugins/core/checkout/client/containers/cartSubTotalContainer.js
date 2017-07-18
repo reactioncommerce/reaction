@@ -14,8 +14,6 @@ function composer(props, onData) {
       cartTaxes: cart.cartTaxes(),
       cartTotal: cart.cartTotal()
     });
-  } else {
-    onData(null, {});
   }
 }
 

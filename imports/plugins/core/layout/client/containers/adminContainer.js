@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 
@@ -6,7 +5,7 @@ function composer(props, onData) {
   const shortcuts = Reaction.Apps({ provides: "shortcut", enabled: true });
   const items = [];
 
-  if (_.isArray(shortcuts)) {
+  if (Array.isArray(shortcuts)) {
     for (const shortcut of shortcuts) {
       if (!shortcut.container) {
         items.push({
