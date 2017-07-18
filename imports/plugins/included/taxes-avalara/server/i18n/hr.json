@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "Zapisi nisu pronađeni",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "Rok",
+                "type": "vrsta dokumenta"
+              }
+            }
+          },
           "date": "Rok",
           "docType": "vrsta dokumenta"
         }

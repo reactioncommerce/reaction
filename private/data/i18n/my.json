@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "အမိန့်အသေးစိတ်",
         "invoice": "ဝယ်ကုန်စာရင်း",
+        "lineItems": "လိုင်းအကြောင်းအရာများ",
         "shipmentTracking": "တင်ပို့ခြေရာကောက်"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "ဒီလိပ်စာ entry ကိုတည်းဖြတ်ခြင်း",
         "addressValidation": "လိပ်စာ Validation",
-        "somethingWentWrong": "တစ်ခုခုမှားသွား: {{err}}"
+        "reviewAddress": "အကောင်းဆုံးလိုက်နာမှုများအတွက်သင့်လိပ်စာမှန်ကန်ကြောင်းသက်သေပြကျေးဇူးပြုပြီး",
+        "somethingWentWrong": "တစ်ခုခုမှားသွား: {{err}}",
+        "enteredAddress": "သို့ ဝင်. လိပ်စာ",
+        "validatedAddress": "လိပ်စာမှန်ကန်ကြောင်းသက်သေပြ"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "ဤအီးမေးလ်မှာ သတ်မှတ်ချက်နှင့် မပြည့်စုံပါ",
           "errorSendingEmail": "အီးမေးလ်, ဖြစ်နိုင်သမျှ configuration ကိုပြဿနာမပို့အမှား။",
           "unableToSendInvitationEmail": "ဖိတ်ကြားချက်ကိုအီးမေးလ်ပေးပို့မရနိုင်ပါ။",
+          "userWithEmailAlreadyExists": "ဒီအီးမေးလ်လိပ်စာနှင့်အတူအသုံးပြုသူတစ်ဦးရှိထားပြီးသား",
           "failedToLogout": "ထွက်ပြီးရန်မအောင်မြင်ခဲ့ပါ။",
           "invalidLoginToken": "မမှန်ကန်သော အကောင့်တိုကင်",
           "loginForbidden": "အကောင့်ဝင်ခွင့် ပိတ်ထားပါသည်",

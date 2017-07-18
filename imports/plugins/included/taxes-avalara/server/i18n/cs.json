@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "Nebyly nalezeny žádné protokoly",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "Datum",
+                "type": "Typ dokumentu"
+              }
+            }
+          },
           "date": "Datum",
           "docType": "Typ dokumentu"
         }
