@@ -1,7 +1,9 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Roles } from "meteor/alanning:roles";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Reaction } from "/client/api";
+import { i18next } from  "/client/api";
 import * as Collections from "/lib/collections";
 
 /**
@@ -56,6 +58,30 @@ Template.accountProfile.helpers({
    */
   account() {
     return Collections.Accounts.findOne();
+  },
+
+  /**
+   * User's display name
+   * @return {String} display name
+   */
+  displayName() {
+    const userId = Meteor.userId() || {};
+    const user = Collections.Accounts.findOne(userId);
+
+    if (user) {
+      if (user.name) {
+        return user.name;
+      } else if (user.username) {
+        return user.username;
+      } else if (user.profile && user.profile.name) {
+        return user.profile.name;
+      }
+    }
+
+    if (Roles.userIsInRole(user._id || user.userId, "account/profile",
+      Reaction.getShopId())) {
+      return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
+    }
   },
 
   /**

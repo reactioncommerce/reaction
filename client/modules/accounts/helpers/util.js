@@ -10,7 +10,8 @@ function capitalize(str) {
 const providers = {
   Facebook: {},
   Google: {},
-  Twitter: {}
+  Twitter: {},
+  Instagram: {}
 };
 
 providers.Facebook.fields = function () {
@@ -31,6 +32,13 @@ providers.Twitter.fields = function () {
   return [
     { property: "consumerKey", label: "API key" },
     { property: "secret", label: "API secret" }
+  ];
+};
+
+providers.Instagram.fields = function () {
+  return [
+    { property: "clientId", label: "Client ID" },
+    { property: "secret", label: "Client secret" }
   ];
 };
 
