@@ -12,6 +12,7 @@ import OrderTableColumn from "./orderTableColumn";
 class OrdersList extends Component {
 
   static propTypes = {
+    detailClassName: PropTypes.string,
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
     handleDetailToggle: PropTypes.func,
@@ -19,6 +20,7 @@ class OrdersList extends Component {
     handleSelect: PropTypes.func,
     handleShowMoreClick: PropTypes.func,
     hasMoreOrders: PropTypes.bool,
+    listClassName: PropTypes.string,
     multipleSelect: PropTypes.bool,
     openDetail: PropTypes.bool,
     openList: PropTypes.bool,
@@ -197,17 +199,17 @@ class OrdersList extends Component {
 
       if (columnName === "Date" || columnName === "Total" || columnName === "ID") {
         headerStyle = { borderRight: "none", textAlign: "center", padding: "1%" };
-        colStyle = { textAlign: "center", padding: "1%" };
+        colStyle = { textAlign: "center", padding: "1%", marginTop: 4 };
         colWidth = 95;
       }
 
       if (columnName === "Email") {
         headerStyle = {  borderRight: "none", textAlign: "left", padding: "1%" };
-        colStyle = { padding: "1%" };
+        colStyle = { padding: "1%", marginTop: 4 };
       }
 
       if (columnName === "Shipping" || columnName === "Status") {
-        colStyle = { textAlign: "right" };
+        colStyle = { textAlign: "right", padding: "1%" };
         headerStyle = { borderRight: "none", textAlign: "center", padding: "1%" };
         colWidth = 150;
       }
@@ -228,7 +230,7 @@ class OrdersList extends Component {
         resizable = false;
         colStyle = {
           padding: 0,
-          height: 49
+          height: 52
         };
       }
 
@@ -317,14 +319,25 @@ class OrdersList extends Component {
 
 
   render() {
-    const { orders, openDetail, openList, handleDetailToggle, handleListToggle, hasMoreOrders } = this.props;
+    const { orders, openDetail, openList, handleDetailToggle, handleListToggle, detailClassName, listClassName } = this.props;
 
     if (orders.length) {
       return (
         <div className="container-fluid-sm">
           <div style= {{ float: "right" }}>
-            <button className={`order-toggle-btn ${this.props.detailClassName}`} onClick={handleDetailToggle}> <i className="fa fa-th-list" /> </button>
-            <button className={`order-toggle-btn ${this.props.listClassName}`} onClick={handleListToggle}> <i className="fa fa-list" /> </button>
+            <button
+              className={`order-toggle-btn ${detailClassName}`}
+              onClick={handleDetailToggle}
+            >
+              <i className="fa fa-th-list" />
+            </button>
+
+            <button
+              className={`order-toggle-btn ${listClassName}`}
+              onClick={handleListToggle}
+            >
+              <i className="fa fa-list" />
+            </button>
           </div>
 
           {openList &&  <div>{this.renderListView(orders)}</div>}
