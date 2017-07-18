@@ -1,4 +1,5 @@
 export { default as ForgotPassword } from "./forgotPassword";
+export { default as Login } from "./login";
 export { default as LoginButtons } from "./loginButtons";
 export { default as LoginFormMessages } from "./loginFormMessages";
 export { default as MainDropdown } from "./mainDropdown";

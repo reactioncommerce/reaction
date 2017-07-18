@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Random } from "meteor/random";
-import AuthContainer from "./auth";
-import ForgotPassword from "./forgotPassword";
 
-class LoginContainer extends Component {
+class Login extends Component {
   static propTypes = {
     credentials: PropTypes.object,
     loginFormCurrentView: PropTypes.string,
@@ -57,7 +55,7 @@ class LoginContainer extends Component {
   render() {
     if (this.state.currentView === "loginFormSignInView" || this.state.currentView === "loginFormSignUpView") {
       return (
-        <AuthContainer
+        <Components.AuthContainer
           credentials={this.props.credentials}
           uniqueId={this.props.uniqueId}
           currentView={this.state.currentView}
@@ -68,7 +66,7 @@ class LoginContainer extends Component {
       );
     } else if (this.state.currentView === "loginFormResetPasswordView") {
       return (
-        <ForgotPassword
+        <Components.ForgotPassword
           credentials={this.props.credentials}
           uniqueId={this.props.uniqueId}
           currentView={this.state.currentView}
@@ -79,6 +77,6 @@ class LoginContainer extends Component {
   }
 }
 
-registerComponent("Login", LoginContainer);
+registerComponent("Login", Login);
 
-export default LoginContainer;
+export default Login;

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import { Button, DropDownMenu, MenuItem, Translation } from "/imports/plugins/core/ui/client/components";
-import { LoginContainer } from "../containers";
+import { Translation } from "/imports/plugins/core/ui/client/components";
+import Login from "./login";
 
 const iconStyle = {
   margin: "10px 10px 10px 6px",
@@ -33,18 +34,18 @@ class MainDropdown extends Component {
 
   buttonElement() {
     return (
-      <Button containerStyle={{ color: "#000", fontWeight: "normal", letterSpacing: 0.8 }}>
+      <Components.Button containerStyle={{ color: "#000", fontWeight: "normal", letterSpacing: 0.8 }}>
         <img className="accounts-img-tag" src={this.props.userImage} />&nbsp;
         <span>{this.props.userName}</span>&nbsp;
         <i className="fa fa-caret-down" />
-      </Button>
+      </Components.Button>
     );
   }
 
   renderAdminIcons() {
     return (
       Reaction.Apps(this.props.adminShortcuts).map((shortcut) => (
-        <MenuItem
+        <Components.MenuItem
           key={shortcut.packageId}
           className="accounts-a-tag"
           label={shortcut.label}
@@ -60,7 +61,7 @@ class MainDropdown extends Component {
   renderUserIcons() {
     return (
       Reaction.Apps(this.props.userShortcuts).map((option) => (
-        <MenuItem
+        <Components.MenuItem
           key={option.packageId}
           className="accounts-a-tag"
           label={option.label}
@@ -75,7 +76,7 @@ class MainDropdown extends Component {
 
   renderSignOutButton() {
     return (
-      <MenuItem
+      <Components.MenuItem
         className="btn btn-primary btn-block accounts-btn-tag"
         label="Sign out"
         value="logout"
@@ -93,7 +94,7 @@ class MainDropdown extends Component {
           className="accounts-dialog accounts-layout dropdown-menu pull-right"
           style={{ padding: "10px 20px" }}
         >
-          <LoginContainer />
+          <Login />
         </div>
       </div>
     );
@@ -104,7 +105,7 @@ class MainDropdown extends Component {
       <div className="accounts">
         {this.props.currentUser ?
           <div style={{ paddingRight: 5 }}>
-            <DropDownMenu
+            <Components.DropDownMenu
               buttonElement={this.buttonElement()}
               attachment="bottom right"
               targetAttachment="top right"
@@ -112,12 +113,10 @@ class MainDropdown extends Component {
               className="accounts-li-tag"
               onChange={this.props.handleChange}
             >
-
               {this.renderUserIcons()}
               {this.renderAdminIcons()}
               {this.renderSignOutButton()}
-
-            </DropDownMenu>
+            </Components.DropDownMenu>
           </div>
           :
           <div className="accounts dropdown" role="menu">
