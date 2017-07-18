@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Card, CardHeader, CardBody, Translation } from "/imports/plugins/core/ui/client/components";
-import { Reaction, i18next } from "/client/api";
+import { Card, CardHeader, CardBody, Translation, Alerts } from "/imports/plugins/core/ui/client/components";
+import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 
 class AdminInviteForm extends Component {
@@ -13,6 +13,7 @@ class AdminInviteForm extends Component {
     super(props);
 
     this.state = {
+      alertArray: [],
       name: "",
       email: ""
     };
@@ -28,35 +29,39 @@ class AdminInviteForm extends Component {
     event.preventDefault();
     const { name, email } = this.state;
     return Meteor.call("accounts/inviteShopMember", Reaction.getShopId(), email, name, (error, result) => {
+      let newAlert;
       if (error) {
-        let message;
+        let messageKey;
         if (error.reason === "Unable to send invitation email.") {
-          message = i18next.t("accountsUI.error.unableToSendInvitationEmail");
+          messageKey = "accountsUI.error.unableToSendInvitationEmail";
         } else if (error.reason !== "A user with this email address already exists") {
-          message = i18next.t("accountsUI.error.userWithEmailAlreadyExists");
+          messageKey = "accountsUI.error.userWithEmailAlreadyExists";
         } else if (error.reason !== "") {
-          message = error;
+          messageKey = error.reason;
         } else {
-          message = `${i18next.t("accountsUI.error.errorSendingEmail")} ${error}`;
+          messageKey = "accountsUI.error.errorSendingEmail";
         }
-        Alerts.toast(
-          i18next.t("accountsUI.info.errorSendingEmail", `Error sending email. ${message}`),
-          "error"
-        );
-        this.setState({ name: "", email: "" });
-        return false;
+        newAlert = {
+          mode: "danger",
+          options: { autoHide: 4000, i18nKey: messageKey }
+        };
       }
+
       if (result) {
-        // TODO: Change to <Alert>
-        Alerts.toast(i18next.t("accountsUI.info.invitationSent", "Invitation sent."), "success");
-        this.setState({ name: "", email: "" });
+        newAlert = {
+          mode: "success",
+          options: { autoHide: 4000, i18nKey: "accountsUI.info.invitationSent" }
+        };
       }
+
+      return this.setState({ name: "", email: "", alertArray: [...this.state.alertArray, newAlert] });
     });
   }
 
   renderForm() {
     return (
       <div className="panel panel-default">
+        <Alerts alerts={this.state.alertArray} />
         <div className="panel-body">
           <form className="">
             <div className="form-group">

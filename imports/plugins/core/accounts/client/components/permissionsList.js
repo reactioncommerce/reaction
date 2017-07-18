@@ -104,24 +104,18 @@ class PermissionsList extends Component {
 
 export default PermissionsList;
 
-/**
- * resolvePermissions
- * @summary helper to resolve toggled permission(s).
- * It returns list of all parent and child permissions when a parent permission is toggled.
- * @param {Object} permission - a permission object from toggle list
- * @return {Array} -
- */
+// resolvePermissions - helper to resolve toggled permission(s).
+// It returns a list of all parent and child permissions when a parent permission is toggled.
 function resolvePermissions(permission) {
   const result = [];
 
   if (permission.name) {
     result.push(permission.name);
-  }
-
-  if (permission.permissions && permission.permissions.length) {
     for (const pkgPermissions of permission.permissions) {
       result.push(pkgPermissions.permission);
     }
+  } else {
+    result.push(permission.permission);
   }
 
   return result;

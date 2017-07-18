@@ -5,7 +5,14 @@ import PropTypes from "prop-types";
 import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
-import { List, ListItem, Card, CardHeader, CardBody } from "/imports/plugins/core/ui/client/components";
+import {
+  List,
+  ListItem,
+  Card,
+  CardHeader,
+  CardBody,
+  Alerts
+} from "/imports/plugins/core/ui/client/components";
 import PermissionsList from "../components/permissionsList";
 import GroupForm from "../components/groupForm";
 import { groupPermissions } from "../helpers/accountsHelper";
@@ -23,6 +30,7 @@ class EditGroupContainer extends Component {
     const { accounts, selectedGroup, groups } = props;
 
     this.state = {
+      alertArray: [],
       selectedGroup: selectedGroup || {},
       newGroup: null,
       isCreating: false,
@@ -57,33 +65,45 @@ class EditGroupContainer extends Component {
 
   createGroup = groupData => {
     Meteor.call("group/createGroup", groupData, Reaction.getShopId(), err => {
+      let newAlert;
       if (err) {
-        return Alerts.toast(i18next.t("Error creating group"), "error");
+        newAlert = {
+          message: err,
+          mode: "danger",
+          options: { autoHide: 4000, i18nKey: "accountsUI.info.errorSendingEmail" }
+        };
+        return this.setState({ alertArray: [...this.state.alertArray, newAlert] });
       }
-      this.setState({
+      newAlert = {
+        mode: "success",
+        options: { autoHide: 4000, i18nKey: "admin.groups.successCreate" }
+      };
+      return this.setState({
         groups: [...this.state.groups, groupData],
         selectedGroup: groupData,
-        isCreating: false
+        isCreating: false,
+        alertArray: [...this.state.alertArray, newAlert]
       });
-      return Alerts.toast(i18next.t("Success creating group"), "success");
     });
   };
 
   updateGroup = (groupId, groupData) => {
     Meteor.call("group/updateGroup", groupId, groupData, Reaction.getShopId(), err => {
+      let newAlert;
       if (err) {
-        return Alerts.toast(i18next.t("Update failed."), "error"); // TODO: Change to <Alert>
+        newAlert = {
+          message: err,
+          mode: "danger",
+          options: { autoHide: 4000, i18nKey: "admin.groups.errorUpdate" }
+        };
+        return this.setState({ alertArray: [...this.state.alertArray, newAlert] });
       }
-      this.setState({ selectedGroup: groupData });
-      return Alerts.toast(i18next.t("Group updated"), "success"); // TODO: Change to <Alert>
+      newAlert = {
+        mode: "success",
+        options: { autoHide: 4000, i18nKey: "admin.groups.successUpdate" }
+      };
+      this.setState({ selectedGroup: groupData, alertArray: [...this.state.alertArray, newAlert] });
     });
-  };
-
-  renderGroupForm = () => {
-    if (this.state.isCreating) {
-      return <GroupForm group={this.state.selectedGroup} onChange={this.onGroupFormChange} />;
-    }
-    return null;
   };
 
   showForm = (grp = {}) => {
@@ -92,6 +112,13 @@ class EditGroupContainer extends Component {
       e.stopPropagation();
       this.setState({ isCreating: true, selectedGroup: grp });
     };
+  };
+
+  renderGroupForm = () => {
+    if (this.state.isCreating) {
+      return <GroupForm group={this.state.selectedGroup} onChange={this.onGroupFormChange} />;
+    }
+    return null;
   };
 
   renderGroups() {
@@ -118,6 +145,7 @@ class EditGroupContainer extends Component {
           <CardHeader actAsExpander={true} i18nKeyTitle="admin.groups.editGroups" title="Edit Groups" />
           <CardBody expandable={true}>
             <div className="settings">
+              <Alerts alerts={this.state.alertArray} />
               {this.renderGroups()}
               {this.renderGroupForm()}
               <PermissionsList
