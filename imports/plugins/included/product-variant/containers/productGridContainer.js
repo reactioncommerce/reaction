@@ -7,7 +7,6 @@ import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
-import { composeWithTracker } from "/lib/api/compose";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import ProductGrid from "../components/productGrid";
 
@@ -157,9 +156,4 @@ class ProductGridContainer extends Component {
   }
 }
 
-
-function composer(props, onData) {
-  onData(null, {});
-}
-
-export default composeWithTracker(composer)(ProductGridContainer);
+export default ProductGridContainer;
