@@ -571,6 +571,17 @@
     border: solid 2px #5e6264;
   }
 
+  .orders-list-pagination-visible {
+    border-top: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .orders-list-pagination-hidden {
+    display: none;
+  }
+}
+
 .rollover-checkbox {
 
   .selected-checkbox {
@@ -595,18 +606,19 @@
   }
 }
 
-.table-header-hidden {
+.rui.order.table.table-header-hidden {
   .rt-thead {
+    border-bottom: none;
+
     .rt-tr {
       display: none;
     }
   }
 }
 
-.table-header-visible {
+.rui.order.table.table-header-visible {
   .rt-thead {
     .rt-tr {
-      padding-top: 9px;
       height: 56px;
     }
   }
@@ -617,10 +629,10 @@
 }
 
 .bulk-order-actions-bar {
-  height: 56px;
+  height: 66px;
   background-color: #f7f7f7;
-  padding-top: 11px;
-  margin-top: 34px;
+  padding-top: 17px;
+  margin-top: 78px;
 
   .orders-checkbox {
     margin-left: 10px;
@@ -649,12 +661,6 @@
   }
 }
 
-  .orders-list-pagination {
-    border-top: none;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-}
 .order-toggle-btn {
   border: none;
   background: transparent;

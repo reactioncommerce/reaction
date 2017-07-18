@@ -261,11 +261,12 @@ class OrdersList extends Component {
       backgroundColor: "#e8fcf6"
     };
 
+
     return (
       <div>
         {this.renderBulkOrderActionsBar()}
         <SortableTable
-          tableClassName={`rui order table ${this.renderClassNameHidden()} -highlight`}
+          tableClassName={`rui order table ${this.renderTableClassNameHidden()} -highlight`}
           publication="NewPaginatedOrders"
           collection={Orders}
           matchingResultsCount="order-count"
@@ -292,19 +293,19 @@ class OrdersList extends Component {
             };
           }}
           getPaginationProps={() => {
-          return {
-            className: "orders-list-pagination"
-          };
-        }}
-        getTableProps={() => {
-          return {
-            style: {
-              borderBottom: "1px solid #e6e6e6"
-            }
-          };
-        }}
-        showPaginationTop={true}
-       />
+            return {
+              className: this.renderPaginationClassNameHidden()
+            };
+          }}
+          getTableProps={() => {
+            return {
+              style: {
+                borderBottom: "1px solid #e6e6e6"
+              }
+            };
+          }}
+          showPaginationTop={true}
+        />
      </div>
     );
   }
@@ -374,8 +375,12 @@ class OrdersList extends Component {
     return selectedItems.length === orders.length ? true : multipleSelect;
   }
 
-  renderClassNameHidden() {
+  renderTableClassNameHidden() {
     return this.props.selectedItems.length > 0 ? "table-header-hidden" : "table-header-visible";
+  }
+
+  renderPaginationClassNameHidden() {
+    return this.props.selectedItems.length > 0 ? "orders-list-pagination-hidden" : "orders-list-pagination-visible";
   }
 
   render() {
