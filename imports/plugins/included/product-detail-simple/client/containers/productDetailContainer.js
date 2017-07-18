@@ -9,7 +9,6 @@ import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media, Cart } from "/lib/collections";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 import { ProductDetail, ProductNotFound } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
@@ -382,4 +381,4 @@ function composer(props, onData) {
 }
 
 // Decorate component and export
-export default composeWithTracker(composer, Loading)(ProductDetailContainer);
+export default composeWithTracker(composer)(ProductDetailContainer);

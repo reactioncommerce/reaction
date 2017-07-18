@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Reaction, Router } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 import ToolbarContainer from "/imports/plugins/core/dashboard/client/containers/toolbarContainer";
 import Toolbar from "/imports/plugins/core/dashboard/client/components/toolbar";
 import { ActionViewContainer, PackageListContainer } from "/imports/plugins/core/dashboard/client/containers";
@@ -109,4 +108,4 @@ function composer(props, onData) {
   });
 }
 
-export default composeWithTracker(composer, Loading)(App);
+export default composeWithTracker(composer)(App);

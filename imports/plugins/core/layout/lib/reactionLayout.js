@@ -7,7 +7,6 @@ import { Reaction } from "/client/api";
 import classnames from "classnames";
 import { getComponent } from "/imports/plugins/core/layout/lib/components";
 import { Templates } from "/lib/collections";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 
 class ReactionLayout extends Component {
   get layout() {
@@ -129,4 +128,4 @@ function composer(props, onData) {
   }
 }
 
-export default composeWithTracker(composer, Loading)(Radium(ReactionLayout));
+export default composeWithTracker(composer)(Radium(ReactionLayout));
