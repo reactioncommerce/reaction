@@ -355,11 +355,17 @@ export default {
     return Packages.findOne({ name: name, shopId: this.getShopId() }) || null;
   },
 
-  // TODO: Maybe move this to the marketplace plugin?
+  /**
+   * getMarketplaceSettings finds the enabled `reaction-marketplace` package for
+   * the primary shop and returns the settings
+   * @method getMarketplaceSettings
+   * @return {Object} The marketplace settings from the primary shop or undefined
+   */
   getMarketplaceSettings() {
     const marketplace = Packages.findOne({
       name: "reaction-marketplace",
-      shopId: this.getPrimaryShopId()
+      shopId: this.getPrimaryShopId(),
+      enabled: true
     });
 
     if (marketplace && marketplace.settings) {
