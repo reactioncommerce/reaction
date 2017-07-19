@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Icon } from "/imports/plugins/core/ui/client/components";
 
-class EmailTableColumn extends Component {
+class ShippoTableColumn extends Component {
   static propTypes = {
     data: PropTypes.object,
     row: PropTypes.object
@@ -33,4 +33,4 @@ class EmailTableColumn extends Component {
   }
 }
 
-export default EmailTableColumn;
+export default ShippoTableColumn;

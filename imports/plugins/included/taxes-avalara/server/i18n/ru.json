@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "Не найдено ни одного бревна",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "Дата",
+                "type": "тип документа"
+              }
+            }
+          },
           "date": "Дата",
           "docType": "тип документа"
         }

@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Détails de la commande",
         "invoice": "Facture",
+        "lineItems": "Ligne Articles",
         "shipmentTracking": "Suivi de l'expédition"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Editer cette adresse",
         "addressValidation": "Adresse validation",
-        "somethingWentWrong": "Quelque chose ne s'est pas passé comme prévu : {{err}}"
+        "reviewAddress": "Pour une meilleure conformité, validez votre adresse",
+        "somethingWentWrong": "Quelque chose ne s'est pas passé comme prévu : {{err}}",
+        "enteredAddress": "Adresse saisie",
+        "validatedAddress": "Valider l'adresse"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "L'e-mail ne remplit pas les critères.",
           "errorSendingEmail": "Erreur lors de l'envoi de l'e-mail, possible problème de configuration.",
           "unableToSendInvitationEmail": "Impossible d'envoyer l'e-mail d'invitation.",
+          "userWithEmailAlreadyExists": "Un utilisateur avec cette adresse email existe déjà",
           "failedToLogout": "Echec de la déconnexion.",
           "invalidLoginToken": "Jeton d'identification invalide",
           "loginForbidden": "Connexion impossible",
