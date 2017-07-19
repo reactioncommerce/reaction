@@ -1,17 +1,17 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import "../styles/main.less";
 import "../styles/dropdown.css";
 
-class Notification extends Component {
+class Notification extends PureComponent {
   constructor(props) {
     super(props);
 
     this.handleBtn = this.handleBtn.bind(this);
   }
 
-  handleBtn(unread) {
+  renderButton(unread) {
     if (unread) {
       return (
         <button className="btn btn-default notify-btn rui button flat">
@@ -32,7 +32,7 @@ class Notification extends Component {
     return (
       <div className="dropdown">
         <div className="notification-icon" data-toggle="dropdown">
-          {this.handleBtn(unread)}
+          {this.renderButton(unread)}
         </div>
         <div className="notify-drop dropdown-menu">
           <Components.NotificationDropdown

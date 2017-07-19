@@ -1,11 +1,11 @@
-import { withProps } from "recompose";
+import { compose, withProps } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { composeWithTracker } from "/lib/api/compose";
 import { Meteor } from "meteor/meteor";
 import { Notifications } from "/lib/collections";
 import { NotificationRoute } from "../components";
 
-const actions = {
+const handlers = {
   markAllAsRead(notificationList) {
     notificationList.map((notify) => {
       Meteor.call("notification/markOneAsRead", notify._id);
@@ -30,7 +30,10 @@ function composer(props, onData) {
 
 registerComponent("NotificationRoute", NotificationRoute, [
   composeWithTracker(composer),
-  withProps(actions)
+  withProps(handlers)
 ]);
 
-export default composeWithTracker(composer)(NotificationRoute);
+export default compose(
+  composeWithTracker(composer),
+  withProps(handlers)
+)(NotificationRoute);
