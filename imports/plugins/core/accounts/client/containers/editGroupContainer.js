@@ -109,8 +109,13 @@ class EditGroupContainer extends Component {
         mode: "success",
         options: { autoHide: 4000, i18nKey: "admin.groups.successUpdate" }
       };
+      const oldDataIndex = _.findIndex(this.state.groups, group => group._id === groupId);
+      const groups = this.state.groups.map((grp, i) => {
+        if (i === oldDataIndex) { return res.group; }
+        return grp;
+      });
       this.setState({
-        groups: [...this.state.groups, res.group],
+        groups,
         selectedGroup: groupData,
         isCreating: false,
         alertArray: [...this.state.alertArray, newAlert]

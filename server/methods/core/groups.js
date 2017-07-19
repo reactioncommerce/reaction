@@ -91,7 +91,7 @@ Meteor.methods({
 
     // 3. Return response
     if (!error) {
-      return { status: 200, group: update };
+      return { status: 200, group: Groups.findOne({ _id: groupId }) };
     }
     Logger.error(error);
     throw new Meteor.Error(500, "Update not successful");

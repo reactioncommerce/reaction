@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
 import { Card, CardHeader, CardBody, Translation, Alerts } from "/imports/plugins/core/ui/client/components";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
@@ -24,6 +25,12 @@ class AdminInviteForm extends Component {
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
+
+  removeAlert = oldAlert => {
+    return this.setState({
+      alertArray: this.state.alertArray.filter(alert => !_.isEqual(alert, oldAlert))
+    });
+  };
 
   handleSubmit(event) {
     event.preventDefault();
@@ -63,7 +70,7 @@ class AdminInviteForm extends Component {
   renderForm() {
     return (
       <div className="panel panel-default">
-        <Alerts alerts={this.state.alertArray} />
+        <Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
         <div className="panel-body">
           <form className="">
             <div className="form-group">
