@@ -12,7 +12,6 @@ class NotificationDropdown extends PureComponent {
     this.renderNoNotifications = this.renderNoNotifications.bind(this);
     this.renderDropdownHead = this.renderDropdownHead.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.handleClickViewAll = this.handleClickViewAll.bind(this);
   }
 
   renderNoNotifications(notifyArr) {

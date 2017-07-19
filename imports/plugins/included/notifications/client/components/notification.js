@@ -8,7 +8,7 @@ class Notification extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.handleBtn = this.handleBtn.bind(this);
+    this.renderButton = this.renderButton.bind(this);
   }
 
   renderButton(unread) {
