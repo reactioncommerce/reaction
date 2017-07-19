@@ -41,6 +41,11 @@ Meteor.methods({
     const shop = shopData || Collections.Shops.findOne(Reaction.getShopId());
     // if we don't have any shop data, use fixture
 
+    // Never create a second primary shop
+    if (shop.shopType === "primary") {
+      shop.shopType = "merchant";
+    }
+
     // identify a shop admin
     const userId = shopAdminUserId || currentUser._id;
     const sellerShopId = Reaction.getSellerShopId(userId);
