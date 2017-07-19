@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Reaction } from "/client/api";
 import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
 import { List, ListItem, SortableTable, Translation } from "/imports/plugins/core/ui/client/components";
 import AccountsTableCell from "./accountsTableCell";
@@ -12,7 +11,8 @@ class AccountsTable extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     group: PropTypes.object,
-    groups: PropTypes.array
+    groups: PropTypes.array,
+    onGroupSelect: PropTypes.func
   };
 
   renderTable(users) {
@@ -44,14 +44,11 @@ class AccountsTable extends Component {
     );
   }
 
-  handleGroupClick(props) {
+  handleGroupClick(group) {
     return () => {
-      Reaction.setActionViewDetail({
-        label: "Permissions",
-        i18nKeyLabel: "admin.settings.permissionsSettingsLabel",
-        template: "memberSettings",
-        data: props
-      });
+      if (this.props.onGroupSelect) {
+        this.props.onGroupSelect(group);
+      }
     };
   }
 
@@ -94,13 +91,13 @@ class AccountsTable extends Component {
   }
 
   render() {
-    const { group, accounts, groups } = this.props;
+    const { group } = this.props;
     return (
       <List>
         <ListItem
           actionType="arrow"
           label={group.name}
-          onClick={this.handleGroupClick({ group, groups, accounts })}
+          onClick={this.handleGroupClick(group)}
         />
         {this.renderTable(group.users)}
       </List>

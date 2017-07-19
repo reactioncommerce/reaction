@@ -11,11 +11,7 @@ import * as Collections from "/lib/collections";
  * @return {Array} - array of groups, each having a `users` field
  */
 export default function sortUsersIntoGroups(accounts, groups) {
-  // Review: The thought here is to use how many permissions defined for the group as a means of sorting
-  // to determine the order groups are shown in the dashboard
-  const sortedGroups = groups.sort((prev, next) => next.permissions.length - prev.permissions.length);
-
-  const newGroups = sortedGroups.map(group => {
+  const newGroups = groups.map(group => {
     const matchingAccounts = accounts.map(acc => {
       if (acc.groups && acc.groups.indexOf(group._id) > -1) {
         return acc;

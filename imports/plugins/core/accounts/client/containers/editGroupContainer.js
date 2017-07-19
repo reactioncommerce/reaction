@@ -41,8 +41,8 @@ class EditGroupContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { selectedGroup } = nextProps;
-    this.setState({ selectedGroup, isCreating: false });
+    const { groups } = nextProps;
+    this.setState({ isCreating: false, groups });
   }
 
   selectGroup = grp => {
@@ -50,6 +50,10 @@ class EditGroupContainer extends Component {
       event.preventDefault();
       this.setState({ selectedGroup: grp, isCreating: false });
     };
+  };
+
+  getGroup = group => {
+    return this.state.groups.find(grp => group._id === grp._id);
   };
 
   groupListClass = grp => {
@@ -71,7 +75,7 @@ class EditGroupContainer extends Component {
   };
 
   createGroup = groupData => {
-    Meteor.call("group/createGroup", groupData, Reaction.getShopId(), (err, res) => {
+    Meteor.call("group/createGroup", groupData, Reaction.getShopId(), err => {
       let newAlert;
       if (err) {
         newAlert = {
@@ -86,8 +90,6 @@ class EditGroupContainer extends Component {
         options: { autoHide: 4000, i18nKey: "admin.groups.successCreate" }
       };
       return this.setState({
-        groups: [...this.state.groups, res.group],
-        selectedGroup: res.group,
         isCreating: false,
         alertArray: [...this.state.alertArray, newAlert]
       });
@@ -95,7 +97,7 @@ class EditGroupContainer extends Component {
   };
 
   updateGroup = (groupId, groupData) => {
-    Meteor.call("group/updateGroup", groupId, groupData, Reaction.getShopId(), (err, res) => {
+    Meteor.call("group/updateGroup", groupId, groupData, Reaction.getShopId(), err => {
       let newAlert;
       if (err) {
         newAlert = {
@@ -109,14 +111,7 @@ class EditGroupContainer extends Component {
         mode: "success",
         options: { autoHide: 4000, i18nKey: "admin.groups.successUpdate" }
       };
-      const oldDataIndex = _.findIndex(this.state.groups, group => group._id === groupId);
-      const groups = this.state.groups.map((grp, i) => {
-        if (i === oldDataIndex) { return res.group; }
-        return grp;
-      });
       this.setState({
-        groups,
-        selectedGroup: groupData,
         isCreating: false,
         alertArray: [...this.state.alertArray, newAlert]
       });
@@ -167,7 +162,7 @@ class EditGroupContainer extends Component {
               {this.renderGroupForm()}
               <PermissionsList
                 permissions={groupPermissions(this.props.packages)}
-                group={this.state.selectedGroup}
+                group={this.getGroup(this.state.selectedGroup)}
                 createGroup={this.createGroup}
                 updateGroup={this.updateGroup}
               />
