@@ -7,9 +7,18 @@ export const ShopTypes = new SimpleSchema({
     type: String,
     defaultValue: "merchant"
   },
-  active: {
+  enabled: {
     type: Boolean,
     defaultValue: false
+  }
+});
+
+export const EnabledPackagesByShopType = new SimpleSchema({
+  shopType: {
+    type: String
+  },
+  enabledPackages: {
+    type: [String]
   }
 });
 
@@ -20,7 +29,7 @@ export const MarketplacePackageConfig = new SimpleSchema([
       blackbox: true,
       optional: true
     },
-    "settings.activeShopTypes": {
+    "settings.shops.enabledShopTypes": {
       type: [ShopTypes],
       defaultValue: [{
         shopType: "merchant",
@@ -29,6 +38,10 @@ export const MarketplacePackageConfig = new SimpleSchema([
         shopType: "affiliate",
         active: false
       }]
+    },
+    "settings.shops.enabledPackagesByShopTypes": {
+      type: [EnabledPackagesByShopType],
+      optional: true
     },
     "settings.payoutMethod": {
       type: Object,
@@ -70,6 +83,11 @@ export const MarketplacePackageConfig = new SimpleSchema([
     },
     // if true, each merchant sets their own language
     "settings.public.merchantLanguage": {
+      type: Boolean,
+      defaultValue: false
+    },
+    // if true, each merchant sets their own locale, language, and currency
+    "settings.public.merchantLocale": {
       type: Boolean,
       defaultValue: false
     },

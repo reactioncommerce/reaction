@@ -8,13 +8,50 @@ Reaction.registerPackage({
   settings: {
     name: "Marketplace",
     enabled: true,
+    shops: {
+      enabledShopTypes: [{
+        shopType: "merchant",
+        active: true
+      }, {
+        shopType: "affiliate",
+        active: false
+      }],
+      enabledPackagesByShopTypes: [{
+        shopType: "merchant",
+        enabledPackages: [
+          "reaction-dashboard",
+          "reaction-accounts",
+          "reaction-orders",
+          "reaction-product-admin",
+          "product-detail-simple",
+          "reaction-product-simple",
+          "reaction-product-variant",
+          "reaction-notification",
+          "reaction-analytics",
+          "reaction-inventory",
+          "reaction-sms",
+          "reaction-social",
+          "reaction-stripe-connect",
+          "discount-codes"]
+      }, {
+        shopType: "affiliate",
+        enabledPackages: [
+          "reaction-dashboard",
+          "reaction-product-simple",
+          "reaction-product-variant",
+          "reaction-notification",
+          "reaction-analytics",
+          "reaction-sms"]
+      }]
+    },
     public: {
       allowGuestSellers: true, // TODO: Eliminate in favor of marketplace.enabled and allowMerchantSignup
       allowMerchantSignup: false, // Merchants can sign up without an invite
       marketplaceNakedRoutes: true, // Routes to the primary marketplace shop should not use shop prefix
       merchantFulfillment: true, // Fulfillment comes from merchant which supplies product
-      merchantLanguage: false, // Language comes from active merchant shop
-      merchantCurrency: false, // Currency comes from active merchant shop
+      merchantLocale: false, // Currency and Language come from active merchant shop
+      // merchantLanguage: false, // Language comes from active merchant shop
+      // merchantCurrency: false, // Currency comes from active merchant shop
       merchantTheme: false, // Theme comes from active merchant shop
       merchantShippingRates: false // Each merchant defines their own shipping rates
     }
