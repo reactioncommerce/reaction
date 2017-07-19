@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import update from "react/lib/update";
 import _ from "lodash";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
@@ -168,6 +169,8 @@ ProductAdminContainer.propTypes = {
   product: PropTypes.object,
   tags: PropTypes.arrayOf(PropTypes.object)
 };
+
+registerComponent("ProductAdmin", ProductAdminContainer, composeWithTracker(composer));
 
 // Decorate component and export
 export default composeWithTracker(composer)(ProductAdminContainer);
