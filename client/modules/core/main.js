@@ -31,6 +31,7 @@ export default {
     // Listen for the primary shop subscription and set accordingly
     Tracker.autorun(() => {
       let shop;
+      const marketplaceSettings = this.getMarketplaceSettings();
       if (this.Subscriptions.PrimaryShop.ready()) {
         // if we've already set the primaryShopId, carry on.
         // otherwise we need to define it.
@@ -43,6 +44,37 @@ export default {
           if (shop) {
             this.primaryShopId = shop._id;
             this.primaryShopName = shop.name;
+
+            // We'll initialize locale and currency for the primary shop unless
+            // marketplace settings exist and merchantLocale is set to true
+            if (!marketplaceSettings ||
+               (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantLocale === false)) {
+              // initialize local client Countries collection
+              if (!Countries.findOne()) {
+                createCountryCollection(shop.locales.countries);
+              }
+
+              const locale = this.Locale.get() || {};
+
+              // fix for https://github.com/reactioncommerce/reaction/issues/248
+              // we need to keep an eye for rates changes
+              if (typeof locale.locale === "object" &&
+                 typeof locale.currency === "object" &&
+                 typeof locale.locale.currency === "string") {
+                const localeCurrency = locale.locale.currency.split(",")[0];
+                if (typeof shop.currencies[localeCurrency] === "object") {
+                  if (typeof shop.currencies[localeCurrency].rate === "number") {
+                    locale.currency.rate = shop.currencies[localeCurrency].rate;
+                    localeDep.changed();
+                  }
+                }
+              }
+              // we are looking for a shopCurrency changes here
+              if (typeof locale.shopCurrency === "object") {
+                locale.shopCurrency = shop.currencies[shop.currency];
+                localeDep.changed();
+              }
+            }
           }
         }
       }
@@ -52,7 +84,7 @@ export default {
     return Tracker.autorun(() => {
       let domain;
       let shop;
-
+      const marketplaceSettings = this.getMarketplaceSettings();
       if (this.Subscriptions.MerchantShops.ready()) {
         domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
 
@@ -77,30 +109,35 @@ export default {
             this.shopId = shop._id;
             this.shopName = shop.name;
           }
+
+          // We only use the active shop to setup locale if marketplace settings
+          // are enabled and merchantLocale is set to true
+          if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantLocale === true) {
           // initialize local client Countries collection
-          if (!Countries.findOne()) {
-            createCountryCollection(shop.locales.countries);
-          }
+            if (!Countries.findOne()) {
+              createCountryCollection(shop.locales.countries);
+            }
 
-          const locale = this.Locale.get() || {};
+            const locale = this.Locale.get() || {};
 
-          // fix for https://github.com/reactioncommerce/reaction/issues/248
-          // we need to keep an eye for rates changes
-          if (typeof locale.locale === "object" &&
+            // fix for https://github.com/reactioncommerce/reaction/issues/248
+            // we need to keep an eye for rates changes
+            if (typeof locale.locale === "object" &&
             typeof locale.currency === "object" &&
             typeof locale.locale.currency === "string") {
-            const localeCurrency = locale.locale.currency.split(",")[0];
-            if (typeof shop.currencies[localeCurrency] === "object") {
-              if (typeof shop.currencies[localeCurrency].rate === "number") {
-                locale.currency.rate = shop.currencies[localeCurrency].rate;
-                localeDep.changed();
+              const localeCurrency = locale.locale.currency.split(",")[0];
+              if (typeof shop.currencies[localeCurrency] === "object") {
+                if (typeof shop.currencies[localeCurrency].rate === "number") {
+                  locale.currency.rate = shop.currencies[localeCurrency].rate;
+                  localeDep.changed();
+                }
               }
             }
-          }
-          // we are looking for a shopCurrency changes here
-          if (typeof locale.shopCurrency === "object") {
-            locale.shopCurrency = shop.currencies[shop.currency];
-            localeDep.changed();
+            // we are looking for a shopCurrency changes here
+            if (typeof locale.shopCurrency === "object") {
+              locale.shopCurrency = shop.currencies[shop.currency];
+              localeDep.changed();
+            }
           }
           return this;
         }
