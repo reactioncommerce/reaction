@@ -47,6 +47,7 @@ describe("Cart Publication", function () {
         return account.userId;
       });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
+      sandbox.stub(Reaction, "getPrimaryShopId", () => shop._id);
       Collections.Cart.insert({
         sessionId: sessionId,
         userId: userId,
@@ -83,5 +84,3 @@ describe("Cart Publication", function () {
     });
   });
 });
-
-
