@@ -45,14 +45,14 @@ class AdminInviteForm extends Component {
         newAlert = {
           message,
           mode: "danger",
-          options: { autoHide: 400, i18nKey: messageKey }
+          options: { autoHide: 4000, i18nKey: messageKey }
         };
       }
 
       if (result) {
         newAlert = {
           mode: "success",
-          options: { autoHide: 400, i18nKey: "accountsUI.info.invitationSent" }
+          options: { autoHide: 4000, i18nKey: "accountsUI.info.invitationSent" }
         };
       }
 

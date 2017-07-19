@@ -27,6 +27,8 @@
         },
         "groups": {
           "appearance": "Appearance",
+          "addUserError": "Error adding user to group",
+          "addUserSuccess": "User added to group successfully",
           "connect": "Connect",
           "core": "Core",
           "name": "Name",

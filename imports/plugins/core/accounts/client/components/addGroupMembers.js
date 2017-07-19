@@ -2,12 +2,19 @@ import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { Card, CardHeader, CardBody, SortableTable } from "/imports/plugins/core/ui/client/components";
+import {
+  Alerts,
+  Card,
+  CardHeader,
+  CardBody,
+  SortableTable
+} from "/imports/plugins/core/ui/client/components";
 import { getGravatar } from "../helpers/accountsHelper";
 
 class AddGroupMembers extends Component {
   static propTypes = {
     accounts: PropTypes.array,
+    alertArray: PropTypes.array,
     group: PropTypes.object,
     groups: PropTypes.array
   };
@@ -33,6 +40,12 @@ class AddGroupMembers extends Component {
     return this.isInGroup(acc) ? "c-default" : "";
   }
 
+  removeAlert = oldAlert => {
+    return this.setState({
+      alertArray: this.state.alertArray.filter(alert => !_.isEqual(alert, oldAlert))
+    });
+  };
+
   handleMouseOver(acc) {
     return () => {
       this.setState({ selected: acc });
@@ -53,10 +66,20 @@ class AddGroupMembers extends Component {
         return false;
       } // already in group; nothing to change
       Meteor.call("group/addUser", acc._id, this.props.group._id, err => {
+        let newAlert;
         if (err) {
-          return Alerts.toast("Error updating user" + err, "error"); // TODO: Swith to React + i18n
+          newAlert = {
+            message: err.reason,
+            mode: "danger",
+            options: { autoHide: 4000, i18nKey: "admin.groups.addUserError" }
+          };
+          return this.setState({ alertArray: [...this.state.alertArray, newAlert] });
         }
-        return Alerts.toast("User changed successfully", "success"); // TODO: Swith to React + i18n
+        newAlert = {
+          mode: "success",
+          options: { autoHide: 4000, i18nKey: "admin.groups.addUserSuccess" }
+        };
+        return this.setState({ alertArray: [...this.state.alertArray, newAlert] });
       });
     };
   }
@@ -120,6 +143,7 @@ class AddGroupMembers extends Component {
     }));
     return (
       <div className="add-group-members">
+        <Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
         <Card expanded={true}>
           <CardHeader actAsExpander={true} title={this.props.group.name} />
           <CardBody expandable={true}>

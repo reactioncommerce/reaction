@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import _ from "lodash";
 import React, { Component } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
@@ -63,24 +64,30 @@ class EditGroupContainer extends Component {
     this.setState({ selectedGroup: grp });
   };
 
+  removeAlert = oldAlert => {
+    return this.setState({
+      alertArray: this.state.alertArray.filter(alert => !_.isEqual(alert, oldAlert))
+    });
+  };
+
   createGroup = groupData => {
-    Meteor.call("group/createGroup", groupData, Reaction.getShopId(), err => {
+    Meteor.call("group/createGroup", groupData, Reaction.getShopId(), (err, res) => {
       let newAlert;
       if (err) {
         newAlert = {
           message: err.reason,
           mode: "danger",
-          options: { autoHide: 400, i18nKey: "accountsUI.info.errorSendingEmail" }
+          options: { autoHide: 4000, i18nKey: "accountsUI.info.errorSendingEmail" }
         };
-        return this.setState({ alertArray: [..this.state.alertArray, newAlert] });
+        return this.setState({ alertArray: [...this.state.alertArray, newAlert] });
       }
       newAlert = {
         mode: "success",
-        options: { autoHide: 400, i18nKey: "admin.groups.successCreate" }
+        options: { autoHide: 4000, i18nKey: "admin.groups.successCreate" }
       };
       return this.setState({
-        groups: [...this.state.groups, groupData],
-        selectedGroup: groupData,
+        groups: [...this.state.groups, res.group],
+        selectedGroup: res.group,
         isCreating: false,
         alertArray: [...this.state.alertArray, newAlert]
       });
@@ -88,21 +95,26 @@ class EditGroupContainer extends Component {
   };
 
   updateGroup = (groupId, groupData) => {
-    Meteor.call("group/updateGroup", groupId, groupData, Reaction.getShopId(), err => {
+    Meteor.call("group/updateGroup", groupId, groupData, Reaction.getShopId(), (err, res) => {
       let newAlert;
       if (err) {
         newAlert = {
           message: err.reason,
           mode: "danger",
-          options: { autoHide: 400, i18nKey: "admin.groups.errorUpdate" }
+          options: { autoHide: 4000, i18nKey: "admin.groups.errorUpdate" }
         };
         return this.setState({ alertArray: [...this.state.alertArray, newAlert] });
       }
       newAlert = {
         mode: "success",
-        options: { autoHide: 400, i18nKey: "admin.groups.successUpdate" }
+        options: { autoHide: 4000, i18nKey: "admin.groups.successUpdate" }
       };
-      this.setState({ selectedGroup: groupData, alertArray: [...this.state.alertArray, newAlert] });
+      this.setState({
+        groups: [...this.state.groups, res.group],
+        selectedGroup: groupData,
+        isCreating: false,
+        alertArray: [...this.state.alertArray, newAlert]
+      });
     });
   };
 
@@ -145,7 +157,7 @@ class EditGroupContainer extends Component {
           <CardHeader actAsExpander={true} i18nKeyTitle="admin.groups.editGroups" title="Edit Groups" />
           <CardBody expandable={true}>
             <div className="settings">
-              <Alerts alerts={this.state.alertArray} />
+              <Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
               {this.renderGroups()}
               {this.renderGroupForm()}
               <PermissionsList

@@ -26,7 +26,7 @@ Meteor.methods({
     check(groupData.description, Match.Optional(String));
     check(groupData.permissions, [String]);
     check(shopId, String);
-    let res;
+    let _id;
 
     if (!Reaction.hasPermission("admin")) {
       throw new Meteor.Error(403, "Access Denied");
@@ -42,13 +42,13 @@ Meteor.methods({
       throw new Meteor.Error(409, "Group already exist for this shop");
     }
     try {
-      res = Groups.insert(newGroupData);
+      _id = Groups.insert(newGroupData);
     } catch (error) {
       Logger.error(error);
       throw new Meteor.Error(400, "Bad request");
     }
 
-    return { groupId: res, status: 200 };
+    return { status: 200, group: Groups.findOne({ _id }) };
   },
 
   /**
@@ -91,7 +91,7 @@ Meteor.methods({
 
     // 3. Return response
     if (!error) {
-      return { status: 200 };
+      return { status: 200, group: update };
     }
     Logger.error(error);
     throw new Meteor.Error(500, "Update not successful");
