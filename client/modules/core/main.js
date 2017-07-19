@@ -449,7 +449,10 @@ export default {
   },
 
   getShopPrefix() {
-    return "/" + this.getSlug(this.getShopName().toLowerCase());
+    const shopName = this.getShopName();
+    if (shopName) {
+      return "/" + this.getSlug(shopName.toLowerCase());
+    }
   },
 
   getShopSettings() {
