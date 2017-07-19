@@ -445,8 +445,17 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     const productCursor = Products.find({
       $or: [
         { _id: { $in: productIds } },
-        { ancestors: { $in: productIds } }
+        { ancestors: { $in: productIds } },
+        {
+          $and: [
+            { isVisible: true },
+            { isDeleted: false }
+          ]
+        }
       ]
+    }, {
+      sort: sort,
+      limit: productScrollLimit
     });
 
     const mediaProductIds = productCursor.fetch().map((p) => p._id);
