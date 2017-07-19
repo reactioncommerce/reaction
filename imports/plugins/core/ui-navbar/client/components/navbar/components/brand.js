@@ -15,7 +15,18 @@ class Brand extends Component {
   }
 
   getShop() {
-    return Shops.findOne(Reaction.getShopId());
+    // Default shopId is the primary shop
+    let shopId = Reaction.getPrimaryShopId();
+
+    // if marketplace is enabled and merchant theme is set to true
+    // we should use the active shop
+    const marketplaceSettings = Reaction.getMarketplaceSettings();
+    if (marketplaceSettings &&
+      marketplaceSettings.public &&
+      marketplaceSettings.public.merchantTheme) {
+      shopId = Reaction.getShopId();
+    }
+    return Shops.findOne(shopId);
   }
 
   getLogo() {
