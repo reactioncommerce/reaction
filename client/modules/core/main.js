@@ -24,14 +24,27 @@ const reactionState = new ReactiveDict();
 export default {
   _shopId: new ReactiveVar(null), // The active shop
   _primaryShopId: new ReactiveVar(null), // The first shop created
+  marketplace: { _ready: false }, // Marketplace Settings
 
   Locale: new ReactiveVar({}),
 
   init() {
+    Tracker.autorun(() => {
+      // marketplaceSettings come over on the PrimarySHopPackages subscription
+      if (this.Subscriptions.PrimaryShopPackages.ready()) {
+        if (!this.marketplace._ready) {
+          const marketplacePkgSettings = this.getMarketplaceSettingsFromDatabase();
+          if (marketplacePkgSettings && marketplacePkgSettings.public) {
+            marketplacePkgSettings._ready = true;
+            this.marketplace = marketplacePkgSettings.public;
+          }
+        }
+      }
+    });
+
     // Listen for the primary shop subscription and set accordingly
     Tracker.autorun(() => {
       let shop;
-      const marketplaceSettings = this.getMarketplaceSettings();
       if (this.Subscriptions.PrimaryShop.ready()) {
         // if we've already set the primaryShopId, carry on.
         // otherwise we need to define it.
@@ -47,8 +60,7 @@ export default {
 
             // We'll initialize locale and currency for the primary shop unless
             // marketplace settings exist and merchantLocale is set to true
-            if (!marketplaceSettings ||
-               (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantLocale === false)) {
+            if (this.marketplace.merchantLocale !== true) {
               // initialize local client Countries collection
               if (!Countries.findOne()) {
                 createCountryCollection(shop.locales.countries);
@@ -84,7 +96,6 @@ export default {
     return Tracker.autorun(() => {
       let domain;
       let shop;
-      const marketplaceSettings = this.getMarketplaceSettings();
       if (this.Subscriptions.MerchantShops.ready()) {
         domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
 
@@ -112,7 +123,7 @@ export default {
 
           // We only use the active shop to setup locale if marketplace settings
           // are enabled and merchantLocale is set to true
-          if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantLocale === true) {
+          if (this.marketplace.merchantLocale === true) {
           // initialize local client Countries collection
             if (!Countries.findOne()) {
               createCountryCollection(shop.locales.countries);
@@ -400,22 +411,6 @@ export default {
     });
 
     return shop && shop.currency || "USD";
-  },
-
-  /**
-   * getMarketplaceSettings finds the enabled `reaction-marketplace` package for
-   * the primary shop and returns the settings
-   * @method getMarketplaceSettings
-   * @return {Object} The marketplace settings from the primary shop or undefined
-   */
-  getMarketplaceSettings() {
-    const marketplaceSettings = Packages.findOne({
-      name: "reaction-marketplace",
-      shopId: this.getPrimaryShopId(), // the primary shop always owns the marketplace settings
-      enabled: true // only use the marketplace settings if marketplace is enabled
-    });
-
-    return marketplaceSettings && marketplaceSettings.settings;
   },
 
   // shopId refers to the active shop. For most shoppers this will be the same
@@ -707,6 +702,22 @@ export default {
     }
     Logger.debug("getRegistryForCurrentRoute not found", template, provides);
     return {};
+  },
+
+  /**
+   * getMarketplaceSettingsFromPackages finds the enabled `reaction-marketplace` package for
+   * the primary shop and returns the settings
+   * @method getMarketplaceSettingsFromPackages
+   * @return {Object} The marketplace settings from the primary shop or undefined
+   */
+  getMarketplaceSettingsFromDatabase() {
+    const marketplaceSettings = Packages.findOne({
+      name: "reaction-marketplace",
+      shopId: this.getPrimaryShopId(), // the primary shop always owns the marketplace settings
+      enabled: true // only use the marketplace settings if marketplace is enabled
+    });
+
+    return marketplaceSettings && marketplaceSettings.settings;
   }
 
 };
