@@ -161,7 +161,8 @@
           "alias": {
             "underscore": "lodash",
             "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
-            "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib"
+            "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
+            "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections"
           }
         }
       ]
