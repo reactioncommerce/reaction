@@ -5,10 +5,8 @@
       <div class="cart-completed-orders">
         <div class="row">
           <div class="completed-order-confirmation">
-            <h3><span data-i18n="cartCompleted.thankYou">Thank you!</span></h3>
-            <div id="order-status">
-              <p><span data-i18n="cartCompleted.yourOrderIsNow">Your order is now</span> {{orderStatus}}.</p>
-            </div>
+            <h3><span data-i18n="cartCompleted.thankYou" class="order-completed-message">Thank You!</span></h3>
+            <span class="order-info">Order ID {{order._id}}</span>
             <div>
               {{#unless email}}
               <p>
@@ -28,7 +26,7 @@
         </div>
 
         <div class="row">
-          {{> dashboardOrdersList}}
+          {{> React dashboardOrdersList}}
         </div>
       </div>
     </div>
