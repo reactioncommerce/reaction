@@ -20,10 +20,7 @@ class Brand extends Component {
 
     // if marketplace is enabled and merchant theme is set to true
     // we should use the active shop
-    const marketplaceSettings = Reaction.getMarketplaceSettings();
-    if (marketplaceSettings &&
-      marketplaceSettings.public &&
-      marketplaceSettings.public.merchantTheme) {
+    if (Reaction.marketplace.merchantTheme) {
       shopId = Reaction.getShopId();
     }
     return Shops.findOne(shopId);
