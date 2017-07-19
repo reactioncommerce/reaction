@@ -365,6 +365,22 @@ export default {
     return shop && shop.currency || "USD";
   },
 
+  /**
+   * getMarketplaceSettings finds the enabled `reaction-marketplace` package for
+   * the primary shop and returns the settings
+   * @method getMarketplaceSettings
+   * @return {Object} The marketplace settings from the primary shop or undefined
+   */
+  getMarketplaceSettings() {
+    const marketplaceSettings = Packages.findOne({
+      name: "reaction-marketplace",
+      shopId: this.getPrimaryShopId(), // the primary shop always owns the marketplace settings
+      enabled: true // only use the marketplace settings if marketplace is enabled
+    });
+
+    return marketplaceSettings && marketplaceSettings.settings;
+  },
+
   // shopId refers to the active shop. For most shoppers this will be the same
   // as the primary shop, but for administrators this will usually be the shop
   // they administer.
