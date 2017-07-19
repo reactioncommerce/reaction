@@ -68,15 +68,15 @@ class EditGroupContainer extends Component {
       let newAlert;
       if (err) {
         newAlert = {
-          message: err,
+          message: err.reason,
           mode: "danger",
-          options: { autoHide: 4000, i18nKey: "accountsUI.info.errorSendingEmail" }
+          options: { autoHide: 400, i18nKey: "accountsUI.info.errorSendingEmail" }
         };
-        return this.setState({ alertArray: [...this.state.alertArray, newAlert] });
+        return this.setState({ alertArray: [..this.state.alertArray, newAlert] });
       }
       newAlert = {
         mode: "success",
-        options: { autoHide: 4000, i18nKey: "admin.groups.successCreate" }
+        options: { autoHide: 400, i18nKey: "admin.groups.successCreate" }
       };
       return this.setState({
         groups: [...this.state.groups, groupData],
@@ -92,15 +92,15 @@ class EditGroupContainer extends Component {
       let newAlert;
       if (err) {
         newAlert = {
-          message: err,
+          message: err.reason,
           mode: "danger",
-          options: { autoHide: 4000, i18nKey: "admin.groups.errorUpdate" }
+          options: { autoHide: 400, i18nKey: "admin.groups.errorUpdate" }
         };
         return this.setState({ alertArray: [...this.state.alertArray, newAlert] });
       }
       newAlert = {
         mode: "success",
-        options: { autoHide: 4000, i18nKey: "admin.groups.successUpdate" }
+        options: { autoHide: 400, i18nKey: "admin.groups.successUpdate" }
       };
       this.setState({ selectedGroup: groupData, alertArray: [...this.state.alertArray, newAlert] });
     });

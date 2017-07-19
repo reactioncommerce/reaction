@@ -30,6 +30,7 @@ class AdminInviteForm extends Component {
     const { name, email } = this.state;
     return Meteor.call("accounts/inviteShopMember", Reaction.getShopId(), email, name, (error, result) => {
       let newAlert;
+      let message = "";
       if (error) {
         let messageKey;
         if (error.reason === "Unable to send invitation email.") {
@@ -37,20 +38,21 @@ class AdminInviteForm extends Component {
         } else if (error.reason !== "A user with this email address already exists") {
           messageKey = "accountsUI.error.userWithEmailAlreadyExists";
         } else if (error.reason !== "") {
-          messageKey = error.reason;
+          message = error.reason;
         } else {
           messageKey = "accountsUI.error.errorSendingEmail";
         }
         newAlert = {
+          message,
           mode: "danger",
-          options: { autoHide: 4000, i18nKey: messageKey }
+          options: { autoHide: 400, i18nKey: messageKey }
         };
       }
 
       if (result) {
         newAlert = {
           mode: "success",
-          options: { autoHide: 4000, i18nKey: "accountsUI.info.invitationSent" }
+          options: { autoHide: 400, i18nKey: "accountsUI.info.invitationSent" }
         };
       }
 
