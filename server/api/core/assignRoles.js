@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Roles } from "meteor/alanning:roles";
 import { Logger } from "/server/api";
 
@@ -49,7 +50,7 @@ export function assignOwnerRoles(shopId, pkgName, registry) {
   const globalRoles = defaultRoles;
 
   if (registry) {
-      // for each registry item define and push roles
+    // for each registry item define and push roles
     for (const registryItem of registry) {
       // packages don't need to define specific permission routes.,
       // the routeName will be used as default roleName for each route.
@@ -63,9 +64,9 @@ export function assignOwnerRoles(shopId, pkgName, registry) {
       // define permissions if you need to check custom permission
       if (registryItem.permissions) {
         for (const permission of registryItem.permissions) {
-      // A wrong value in permissions (ie. [String] instead of [Object] in any plugin register.js
-      // results in an undefined element in defaultRoles Array
-      // an undefined value would make Roles.getUsersInRole(defaultRoles) return ALL users
+          // A wrong value in permissions (ie. [String] instead of [Object] in any plugin register.js
+          // results in an undefined element in defaultRoles Array
+          // an undefined value would make Roles.getUsersInRole(defaultRoles) return ALL users
           if (permission && typeof permission.permission === "string" && permission.permission.length) {
             defaultRoles.push(permission.permission);
           }

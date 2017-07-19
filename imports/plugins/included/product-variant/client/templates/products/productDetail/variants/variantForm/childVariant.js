@@ -1,16 +1,37 @@
+import { $ } from "meteor/jquery";
+import { Template } from "meteor/templating";
+import { Meteor } from "meteor/meteor";
+import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction, i18next } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 import { Icon } from "/imports/plugins/core/ui/client/components";
+import { Validation } from "@reactioncommerce/reaction-collections";
+import { ProductVariant } from "/lib/collections/schemas/products";
 
 function productHandle() {
   const selectedProduct = ReactionProduct.selectedProduct();
   return selectedProduct.__published && selectedProduct.__published.handle || selectedProduct.handle;
 }
+
+Template.childVariantForm.onCreated(function () {
+  this.validation = new Validation(ProductVariant);
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    validationStatus: {}
+  });
+});
+
+
 /**
  * childVariantForm onRendered
  */
-Template.onRendered(function () {
+Template.childVariantForm.onRendered(function () {
+  const validationStatus = this.validation.validate(this.data);
+
+  this.state.set("validationStatus", validationStatus);
+  this.state.set("variant", this.data);
+
   this.autorun(() => {
     const selectedVariantId = Reaction.Router.getParam("variantId");
 
@@ -85,6 +106,26 @@ Template.childVariantForm.helpers({
     }
 
     return "panel-default";
+  },
+  hasValidationMessage(fieldName)  {
+    const instance = Template.instance();
+    const validationStatus = instance.state.get("validationStatus");
+
+    if (validationStatus && validationStatus.messages && validationStatus.messages[fieldName]) {
+      return validationStatus.messages[fieldName];
+    }
+
+    return false;
+  },
+  hasErrorClassName(fieldName)  {
+    const instance = Template.instance();
+    const validationStatus = instance.state.get("validationStatus");
+
+    if (validationStatus && validationStatus.messages && validationStatus.messages[fieldName]) {
+      return "has-error";
+    }
+
+    return false;
   }
 });
 
@@ -108,12 +149,25 @@ Template.childVariantForm.events({
     const value = Template.instance().$(event.currentTarget).val();
     const field = Template.instance().$(event.currentTarget).attr("name");
 
-    Meteor.call("products/updateProductField", variant._id, field, value,
-      error => {
-        if (error) {
-          Alerts.toast(error.message, "error");
-        }
-      });
+    const variantToValidate = template.state.get("variant") || variant;
+    const updated = {
+      ...variantToValidate,
+      [field]: value
+    };
+    const validationStatus = template.validation.validate(updated);
+
+    template.state.set("validationStatus", validationStatus);
+    template.state.set("variant", updated);
+
+    if (validationStatus.isValid === true) {
+      Meteor.call("products/updateProductField", variant._id, field, value,
+        error => {
+          if (error) {
+            Alerts.toast(error.message, "error");
+          }
+        });
+    }
+
     return ReactionProduct.setCurrentVariant(variant._id);
   },
   "click .js-child-variant-heading": function (event, instance) {

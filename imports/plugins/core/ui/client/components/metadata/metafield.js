@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
 import { TextField, Button } from "../";
 
 class Metafield extends Component {
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.metafield.key !== this.props.metafield.key) {
       const input = this.refs.keyInput.refs.input;

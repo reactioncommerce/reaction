@@ -1,6 +1,8 @@
 /* eslint camelcase: 0 */
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { AutoForm } from "meteor/aldeed:autoform";
+import { $ } from "meteor/jquery";
 import { getCardType } from "/client/modules/core/helpers/globals";
 import { Cart, Shops, Packages } from "/lib/collections";
 import { Braintree } from "../api/braintree";

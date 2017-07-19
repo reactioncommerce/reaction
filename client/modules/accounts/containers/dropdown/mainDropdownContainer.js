@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
-import { Reaction } from "/client/api";
+import { Session } from "meteor/session";
+import { Gravatar } from "meteor/jparker:gravatar";
+import { Reaction, Logger } from "/client/api";
 import { i18nextDep, i18next } from  "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import * as Collections from "/lib/collections";
@@ -68,18 +70,21 @@ class MainDropdownContainer extends Component {
 
 function getCurrentUser() {
   const shopId = Reaction.getShopId();
-  const user = Accounts.user();
+  const user = Accounts.user() || {};
 
   if (!shopId || typeof user !== "object") {
     return null;
   }
+
 
   // shoppers should always be guests
   const isGuest = Roles.userIsInRole(user, "guest", shopId);
   // but if a user has never logged in then they are anonymous
   const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
 
-  return isGuest && !isAnonymous ? user : null;
+  const account = Collections.Accounts.findOne(user._id);
+
+  return isGuest && !isAnonymous ? account : null;
 }
 
 function getUserGravatar(currentUser, size) {

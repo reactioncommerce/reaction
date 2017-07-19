@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Detalii Comandă",
         "invoice": "Factură",
+        "lineItems": "Elemente rând",
         "shipmentTracking": "Urmărirea pachetului"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Editează această adresă",
         "addressValidation": "adrese de validare",
-        "somethingWentWrong": "Ceva nu a mers bine: {{err}}"
+        "reviewAddress": "Pentru cea mai bună conformitate, vă rugăm să vă validați adresa",
+        "somethingWentWrong": "Ceva nu a mers bine: {{err}}",
+        "enteredAddress": "Adresa introdusă",
+        "validatedAddress": "Validați adresa"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "Adresa de e-mail nu corespunde criteriilor.",
           "errorSendingEmail": "Eroare la trimiterea de e-mail-ului, verificați configurarea.",
           "unableToSendInvitationEmail": "Nu se poate trimite e-mail-ul de invitație.",
+          "userWithEmailAlreadyExists": "Un utilizator cu această adresă de e-mail există deja",
           "failedToLogout": "Conectarea a eșuat.",
           "invalidLoginToken": "Jeton de conectare nevalid",
           "loginForbidden": "Intrarea interzisă",

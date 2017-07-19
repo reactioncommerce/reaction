@@ -1,9 +1,12 @@
+import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Shipping } from "/lib/collections";
 import { i18next } from "/client/api";
 import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
+import ShippoTableColumn from "./shippoTableColumn";
+import React from "react";
 
 import "./carriers.html";
 
@@ -48,9 +51,25 @@ Template.shippoCarriers.helpers({
     // add i18n handling to headers
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
+      let colWidth = undefined;
+      let colStyle = undefined;
+      let colClassName = undefined;
+
+      if (field === "enabled") {
+        colWidth = undefined;
+        colStyle = { textAlign: "center" };
+        colClassName = "shippo-carrier-status";
+      }
+
       const columnMeta = {
         accessor: field,
-        Header: i18next.t(`admin.shippingGrid.${field}`)
+        Header: i18next.t(`admin.shippingGrid.${field}`),
+        Cell: row => ( // eslint-disable-line
+          <ShippoTableColumn row={row} />
+        ),
+        className: colClassName,
+        width: colWidth,
+        style: colStyle
       };
       customColumnMetadata.push(columnMeta);
     });
@@ -110,13 +129,12 @@ Template.shippoCarriers.events({
     });
   },
   "click .cancel, .shipping-carriers-grid-row .active": function () {
-    instance = Template.instance();
+    const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
       isEditing: false,
       editingId: null
     });
-    // ugly hack
     $(".shipping-carriers-grid-row").removeClass("active");
   },
   "click .shipping-carriers-grid-row": function (event) {

@@ -33,6 +33,7 @@ class LoginButtons extends Component {
 
               {this.props.currentView === "loginFormSignInView" &&
                 <span>
+                  &nbsp;
                   <Translation defaultValue="Sign in with"  i18nKey="accountsUI.signInWith" />
                 </span>
               }
@@ -46,7 +47,7 @@ class LoginButtons extends Component {
                 &nbsp;
                 <Translation defaultValue={this.props.capitalizeName(service.name)} i18nKey={`social.${service.name}`} />
               </span>
-          </Button>
+            </Button>
           ))
         }
       </div>

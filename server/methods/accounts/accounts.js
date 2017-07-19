@@ -2,8 +2,11 @@ import _ from "lodash";
 import moment from "moment";
 import path from "path";
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
+import { Roles } from "meteor/alanning:roles";
+import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
@@ -759,6 +762,22 @@ export function setUserPermissions(userId, permissions, group) {
 }
 
 /**
+ * accounts/createFallbackLoginToken
+ * @returns {String} returns a new loginToken for current user,
+ *   that can be used for special login scenarios - e.g. store the
+ *   newly created token as cookie on the browser, if the client
+ *   does not offer local storage.
+ */
+export function createFallbackLoginToken() {
+  if (this.userId) {
+    const stampedLoginToken = MeteorAccounts._generateStampedLoginToken();
+    const loginToken = stampedLoginToken.token;
+    MeteorAccounts._insertLoginToken(this.userId, stampedLoginToken);
+    return loginToken;
+  }
+}
+
+/**
  * Reaction Account Methods
  */
 Meteor.methods({
@@ -772,5 +791,6 @@ Meteor.methods({
   "accounts/sendWelcomeEmail": sendWelcomeEmail,
   "accounts/addUserPermissions": addUserPermissions,
   "accounts/removeUserPermissions": removeUserPermissions,
-  "accounts/setUserPermissions": setUserPermissions
+  "accounts/setUserPermissions": setUserPermissions,
+  "accounts/createFallbackLoginToken": createFallbackLoginToken
 });

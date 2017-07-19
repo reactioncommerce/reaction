@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Meteor } from "meteor/meteor";

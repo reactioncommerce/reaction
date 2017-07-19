@@ -1,4 +1,6 @@
 import _ from "lodash";
+import { Accounts } from "meteor/accounts-base";
+import { ServiceConfiguration } from "meteor/service-configuration";
 
 function capitalize(str) {
   const finalString = str === null ? "" : String(str);
@@ -8,7 +10,8 @@ function capitalize(str) {
 const providers = {
   Facebook: {},
   Google: {},
-  Twitter: {}
+  Twitter: {},
+  Instagram: {}
 };
 
 providers.Facebook.fields = function () {
@@ -32,8 +35,14 @@ providers.Twitter.fields = function () {
   ];
 };
 
-export class ServiceConfigHelper {
+providers.Instagram.fields = function () {
+  return [
+    { property: "clientId", label: "Client ID" },
+    { property: "secret", label: "Client secret" }
+  ];
+};
 
+export class ServiceConfigHelper {
   availableServices() {
     const services = Package["accounts-oauth"] ? Accounts.oauth.serviceNames() : [];
     services.sort();

@@ -1,5 +1,7 @@
 import _ from "lodash";
 import moment from "moment";
+import path from "path";
+import { Random } from "meteor/random";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { SSR } from "meteor/meteorhacks:ssr";

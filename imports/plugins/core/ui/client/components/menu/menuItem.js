@@ -5,7 +5,6 @@ import Icon from "../icon/icon.jsx";
 import { Translation } from "../";
 
 class MenuItem extends Component {
-
   handleClick = (event) => {
     event.preventDefault();
     if (this.props.onClick && this.props.disabled === false) {

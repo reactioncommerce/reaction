@@ -1,3 +1,6 @@
+import { ValidatedMethod } from "meteor/mdg:validated-method";
+import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import { Random } from "meteor/random";
 
 // You should not implement ThirdPartyAPI. It is supposed to represent your third party API
 // And is called so that it can be stubbed out for testing. This would be a library

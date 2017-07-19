@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "Ni dnevniki",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "Datum",
+                "type": "Vrsta dokumenta"
+              }
+            }
+          },
           "date": "Datum",
           "docType": "Vrsta dokumenta"
         }

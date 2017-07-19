@@ -68,7 +68,6 @@ class SortableTablePagination extends Component {
         style={this.props.paginationStyle}
       >
         <div className="-center">
-         <div>
           <span className="-pageInfo">
             {this.props.pageText}{" "}
             {showPageJump
@@ -111,7 +110,6 @@ class SortableTablePagination extends Component {
                 })}
               </select>
             </span>}
-         </div>
         </div>
         <div className="-previous">
           <PreviousComponent

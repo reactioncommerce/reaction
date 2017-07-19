@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Λεπτομέρειες Παραγγελίας",
         "invoice": "Τιμολόγιο",
+        "lineItems": "Στοιχεία γραμμής",
         "shipmentTracking": "Παρακολούθηση αποστολής"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Επεξεργασία διεύθυνσης",
         "addressValidation": "διεύθυνση Επικύρωση",
-        "somethingWentWrong": "Κάτι πήγε στραβά: {{err}}"
+        "reviewAddress": "Για καλύτερη συμμόρφωση, επικυρώστε τη διεύθυνσή σας",
+        "somethingWentWrong": "Κάτι πήγε στραβά: {{err}}",
+        "enteredAddress": "Εισαγωγή Διεύθυνσης",
+        "validatedAddress": "Επικύρωση διεύθυνσης"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "Το email δεν είναι συμβατό.",
           "errorSendingEmail": "Σφάλμα κατά την αποστολή e-mail, είναι δυνατόν το ζήτημα διαμόρφωσης.",
           "unableToSendInvitationEmail": "Δεν μπορεί να στείλει email πρόσκλησης.",
+          "userWithEmailAlreadyExists": "Ένας χρήστης με αυτήν τη διεύθυνση ηλεκτρονικού ταχυδρομείου υπάρχει ήδη",
           "failedToLogout": "Αποτυχία να αποσυνδεθείτε.",
           "invalidLoginToken": "Λάθος token σύνδεσης",
           "loginForbidden": "Η σύνδεση απαγορεύεται",

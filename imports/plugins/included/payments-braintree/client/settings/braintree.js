@@ -1,4 +1,5 @@
 /* eslint no-unused-vars: 0 */
+import { AutoForm } from "meteor/aldeed:autoform";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
@@ -38,7 +39,7 @@ AutoForm.hooks({
     onSuccess: function () {
       return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
-    onError: function () {
+    onError: function (error) {
       return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
     }
   }
