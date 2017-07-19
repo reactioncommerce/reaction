@@ -71,6 +71,11 @@ export const MarketplacePackageConfig = new SimpleSchema([
       type: Boolean,
       defaultValue: false
     },
+    // if true, the cart should be different for each merchant
+    "settings.public.merchantCart": {
+      type: Boolean,
+      defaultValue: false
+    },
     // if true, each merchant sets their own currency
     "settings.public.merchantCurrency": {
       type: Boolean,
