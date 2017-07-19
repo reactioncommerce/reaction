@@ -39,6 +39,7 @@ Subscriptions.MerchantShops = Subscriptions.Manager.subscribe("MerchantShops");
 
 // Init Packages sub so we have a "ready" state
 Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages");
+Subscriptions.PrimaryShopPackages = Subscriptions.Manager.subscribe("Packages");
 
 Subscriptions.Tags = Subscriptions.Manager.subscribe("Tags");
 
@@ -83,5 +84,12 @@ Tracker.autorun(() => {
   // Reload Packages sub if shopId changes
   if (Reaction.getShopId()) {
     Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages", Reaction.getShopId());
+  }
+});
+
+Tracker.autorun(() => {
+  // Reload Packages sub if primaryShopId changes
+  if (Reaction.getPrimaryShopId()) {
+    Subscriptions.PrimaryShopPackages = Subscriptions.Manager.subscribe("Packages", Reaction.getPrimaryShopId());
   }
 });
