@@ -19,7 +19,8 @@ class Brand extends Component {
   }
 
   getLogo() {
-    if (_.isArray(this.getShop().brandAssets)) {
+    const shop = this.getShop();
+    if (shop && _.isArray(shop.brandAssets)) {
       const brandAsset = _.find(this.getShop().brandAssets, (asset) => asset.type === "navbarBrandImage");
       return Media.findOne(brandAsset.mediaId);
     }
