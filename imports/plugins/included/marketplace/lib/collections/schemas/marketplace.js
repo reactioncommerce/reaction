@@ -77,20 +77,22 @@ export const MarketplacePackageConfig = new SimpleSchema([
       defaultValue: false
     },
     // if true, each merchant sets their own currency
-    "settings.public.merchantCurrency": {
-      type: Boolean,
-      defaultValue: false
-    },
+    // TODO: REMOVE in favor of merchantLocale
+    // "settings.public.merchantCurrency": {
+    //   type: Boolean,
+    //   defaultValue: false
+    // },
     // if true, each merchant performs their own fulfillment
     "settings.public.merchantFulfillment": {
       type: Boolean,
       defaultValue: true
     },
     // if true, each merchant sets their own language
-    "settings.public.merchantLanguage": {
-      type: Boolean,
-      defaultValue: false
-    },
+    // // TODO: REMOVE in favor of merchantLocale
+    // "settings.public.merchantLanguage": { // DEPRECATED
+    //   type: Boolean,
+    //   defaultValue: false
+    // },
     // if true, each merchant sets their own locale, language, and currency
     "settings.public.merchantLocale": {
       type: Boolean,
