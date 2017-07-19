@@ -33,7 +33,7 @@ export default {
       // marketplaceSettings come over on the PrimarySHopPackages subscription
       if (this.Subscriptions.PrimaryShopPackages.ready()) {
         if (!this.marketplace._ready) {
-          const marketplacePkgSettings = this.getMarketplaceSettingsFromDatabase();
+          const marketplacePkgSettings = this.getMarketplaceSettings();
           if (marketplacePkgSettings && marketplacePkgSettings.public) {
             marketplacePkgSettings._ready = true;
             this.marketplace = marketplacePkgSettings.public;
@@ -710,7 +710,7 @@ export default {
    * @method getMarketplaceSettingsFromPackages
    * @return {Object} The marketplace settings from the primary shop or undefined
    */
-  getMarketplaceSettingsFromDatabase() {
+  getMarketplaceSettings() {
     const marketplaceSettings = Packages.findOne({
       name: "reaction-marketplace",
       shopId: this.getPrimaryShopId(), // the primary shop always owns the marketplace settings
