@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import _ from "lodash";
+import { i18next } from "/client/api";
 import PropTypes from "prop-types";
 import { getGravatar } from "../helpers/accountsHelper";
 import { Button, MenuItem, DropDownMenu } from "@reactioncommerce/reaction-ui";
@@ -28,9 +29,9 @@ class AccountsTableCell extends Component {
     return (event, groupId) => {
       Meteor.call("group/addUser", account._id, groupId, (err) => {
         if (err) {
-          return Alerts.toast("Error updating user" + err, "error"); // TODO: Swith to React + i18n
+          return Alerts.toast(i18next.t("admin.groups.addUserError", { err: err.message }), "error");
         }
-        Alerts.toast("User changed successfully", "success"); // TODO: Swith to React + i18n
+        return Alerts.toast(i18next.t("admin.groups.addUserSuccess"), "success");
       });
     };
   };
@@ -39,9 +40,9 @@ class AccountsTableCell extends Component {
     return () => {
       Meteor.call("group/removeUser", account._id, this.props.group._id, (err) => {
         if (err) {
-          return Alerts.toast("Error updating user" + err, "error"); // TODO: Swith to React + i18n
+          return Alerts.toast(i18next.t("admin.groups.removeUserError", { err: err.message }), "error");
         }
-        Alerts.toast("User removed successfully", "success"); // TODO: Swith to React + i18n
+        return Alerts.toast(i18next.t("admin.groups.removeUserSuccess"), "success");
       });
     };
   }
