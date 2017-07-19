@@ -3,14 +3,14 @@
  * creation settings cards (panels) in the dashboard.
  */
 
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class SettingsCard extends Component {
+class SettingsCard extends PureComponent {
   static defaultProps = {
     showSwitch: true
   }

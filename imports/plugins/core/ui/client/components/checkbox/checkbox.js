@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class Checkbox extends Component {
+class Checkbox extends PureComponent {
   handleChange = (event) => {
     if (this.props.onChange) {
       const isInputChecked = !this.props.checked;

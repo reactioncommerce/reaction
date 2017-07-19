@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class CardHeader extends Component {
+class CardHeader extends PureComponent {
   static defaultProps = {
     actAsExpander: false,
     expandable: false

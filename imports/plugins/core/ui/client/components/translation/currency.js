@@ -1,4 +1,6 @@
-import React, { Component, PropTypes, Children } from "react"; // eslint-disable-line
+import React from "react";
+import PropTypes from "prop-types";
+import { pure } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { formatPriceString } from "/client/api";
 
@@ -12,6 +14,6 @@ Currency.propTypes = {
   priceRange: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 
-registerComponent("Currency", Currency);
+registerComponent("Currency", Currency, pure);
 
 export default Currency;

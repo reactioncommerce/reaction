@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import update from "react/lib/update";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
@@ -33,7 +33,7 @@ function updateSuggestions(term, { excludeTags }) {
   return tags;
 }
 
-class TagListContainer extends Component {
+class TagListContainer extends PureComponent {
   constructor(props) {
     super(props);
 

@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import createFragment from "react-addons-create-fragment";
 import classnames from "classnames/dedupe";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class Button extends Component {
+class Button extends PureComponent {
   constructor(props) {
     super(props);
 

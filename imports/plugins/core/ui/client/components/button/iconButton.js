@@ -1,5 +1,6 @@
 import React from "react";
 import classnames from "classnames";
+import { pure } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import Button from "./button.jsx";
 
@@ -58,6 +59,6 @@ IconButton.defaultProps = {
   bezelStyle: "solid"
 };
 
-registerComponent("IconButton", IconButton);
+registerComponent("IconButton", IconButton, pure);
 
 export default IconButton;

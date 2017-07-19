@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { pure } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
 const ButtonToolbar = () => {
@@ -20,6 +21,6 @@ ButtonToolbar.propTypes = {
   children: PropTypes.node
 };
 
-registerComponent("ButtonToolbar", ButtonToolbar);
+registerComponent("ButtonToolbar", ButtonToolbar, pure);
 
 export default ButtonToolbar;

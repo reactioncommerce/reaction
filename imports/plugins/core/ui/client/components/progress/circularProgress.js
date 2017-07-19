@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { pure } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
 const CircularProgress = ({ indeterminate }) => (
@@ -14,6 +15,6 @@ CircularProgress.defaultProps = {
   indeterminate: true
 };
 
-registerComponent("CircularProgress", CircularProgress);
+registerComponent("CircularProgress", CircularProgress, pure);
 
 export default CircularProgress;

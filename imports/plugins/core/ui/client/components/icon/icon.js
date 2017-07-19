@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
+import { pure } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
 const Icon = ({ className, icon, style }) => {
@@ -33,6 +34,6 @@ Icon.propTypes = {
   style: PropTypes.object
 };
 
-registerComponent("Icon", Icon);
+registerComponent("Icon", Icon, pure);
 
 export default Icon;

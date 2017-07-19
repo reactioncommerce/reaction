@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
-import Icon from "../icon/icon";
+import { pure } from "recompose";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 /**
  * Handle is a special type of button used for drag handles.
@@ -15,7 +15,7 @@ import Icon from "../icon/icon";
 const Handle = (props) => {
   const handle = (
     <div className="rui drag-handle btn btn-drag-handle">
-      <Icon
+      <Components.Icon
         icon="fa fa-bars"
         {...props}
       />
@@ -33,6 +33,6 @@ Handle.propTypes = {
   connectDragSource: PropTypes.func
 };
 
-registerComponent("Handle", Handle);
+registerComponent("Handle", Handle, pure);
 
 export default Handle;

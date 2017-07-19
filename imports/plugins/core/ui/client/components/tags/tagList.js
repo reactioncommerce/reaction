@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import classnames from "classnames";
@@ -6,7 +6,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { Router } from "/client/api";
 import { PropTypes as ReactionPropTypes } from "/lib/api";
 
-class TagList extends Component {
+class TagList extends PureComponent {
   displayName = "Tag List (TagList)";
 
   handleNewTagSave = (event, tag) => {

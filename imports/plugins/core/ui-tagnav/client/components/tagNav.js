@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Components } from "@reactioncommerce/reaction-components";
@@ -6,7 +6,7 @@ import { getTagIds } from "/lib/selectors/tags";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 
-class TagNav extends Component {
+class TagNav extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
