@@ -1,0 +1,13 @@
+{
+  "name": "reaction-payments-paypal",
+  "version": "1.0.0",
+  "description": "Reaction PayPay payments",
+  "main": "register.js",
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/reactioncommerce",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactioncommerce/reaction.git"
+  }
+}
