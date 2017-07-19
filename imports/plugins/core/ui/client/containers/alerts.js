@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { compose, withProps, pure } from "recompose";
 import { composeWithTracker } from "/lib/api/compose";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Alerts } from "../components";
 import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 
-class AlertContainer extends Component {
+const handlers = {
   handleAlertRemove(alert) {
     ReactionAlerts.collection_.remove(alert._id);
-  }
+  },
 
   handleAlertSeen(alert) {
     ReactionAlerts.collection_.update(alert._id, {
@@ -16,19 +16,7 @@ class AlertContainer extends Component {
       }
     });
   }
-
-  render() {
-    return (
-      <div className="alert-container">
-        <Alerts
-          onAlertRemove={this.handleAlertRemove}
-          onAlertSeen={this.handleAlertSeen}
-          {...this.props}
-        />
-      </div>
-    );
-  }
-}
+};
 
 function composer(props, onData) {
   const alerts = ReactionAlerts.collection_.find({
@@ -39,9 +27,14 @@ function composer(props, onData) {
   onData(null, { alerts });
 }
 
-AlertContainer.propTypes = {
-  id: PropTypes.string,
-  placement: PropTypes.string
-};
+registerComponent("Alerts", Alerts, [
+  composeWithTracker(composer),
+  withProps(handlers),
+  pure
+]);
 
-export default composeWithTracker(composer)(AlertContainer);
+export default compose(
+  composeWithTracker(composer),
+  withProps(handlers),
+  pure
+)(Alerts);

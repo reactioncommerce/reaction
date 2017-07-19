@@ -21,7 +21,7 @@ import {
 } from "./containers";
 
 import {
-  AlertContainer,
+  Alerts,
   MediaGalleryContainer
 } from "/imports/plugins/core/ui/client/containers";
 
@@ -49,7 +49,7 @@ registerComponent({
 
 registerComponent({
   name: "AlertContainer",
-  component: AlertContainer
+  component: Alerts
 });
 
 registerComponent({
