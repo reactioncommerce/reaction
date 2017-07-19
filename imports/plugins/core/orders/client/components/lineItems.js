@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
@@ -7,7 +8,6 @@ import { Translation } from "/imports/plugins/core/ui/client/components";
 import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox } from "/imports/plugins/core/ui/client/components";
 
 class LineItems extends Component {
-
   static propTypes = {
     displayMedia: PropTypes.func,
     editedItems: PropTypes.array,
@@ -53,12 +53,12 @@ class LineItems extends Component {
 
           <div className="order-item-details">
             <div className="order-detail-title">
-            {uniqueItem.title} <br/><small>{uniqueItem.variants.title}</small>
+              {uniqueItem.title} <br/><small>{uniqueItem.variants.title}</small>
             </div>
           </div>
 
           <div className="order-detail-quantity">
-           {quantity || uniqueItem.quantity}
+            {quantity || uniqueItem.quantity}
           </div>
 
           <div className="order-detail-price">
@@ -66,8 +66,8 @@ class LineItems extends Component {
               <strong>{formatPriceString(uniqueItem.variants.price)}</strong>
             </div>
           </div>
+        </div>
       </div>
-    </div>
     );
   }
 

@@ -1,5 +1,7 @@
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
+import { $ } from "meteor/jquery";
+import { Meteor } from "meteor/meteor";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { DiscountRates } from "../collections/rates";
 import { DiscountRates as DiscountRateSchema } from "../../lib/collections/schemas/rates";
@@ -145,7 +147,7 @@ Template.customDiscountRates.events({
     });
   },
   "click .cancel, .discount-rates-grid-row.active": function () {
-    instance = Template.instance();
+    const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
       isEditing: false,

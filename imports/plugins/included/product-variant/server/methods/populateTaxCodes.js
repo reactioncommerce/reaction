@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 
 const taxCodes = {};

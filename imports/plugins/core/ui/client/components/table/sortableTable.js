@@ -4,6 +4,8 @@ import _ from "lodash";
 import matchSorter from "match-sorter";
 import ReactTable from "react-table";
 // import { Translation } from "@reactioncommerce/reaction-ui";
+import { Meteor } from "meteor/meteor";
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 
 class SortableTable extends Component {
@@ -26,7 +28,7 @@ class SortableTable extends Component {
    * @prop {String} matchingResultsCount - Send to Counts collection to get results count of sub
    * @prop {String} publication - publication to subscribe to
    * @prop {Object} collection - collection to get data from
-   * Use props to get collection, EmailTableColumn
+   * Use props to get collection
    * Use that info to call meteor and get subscription
    * Output data for table
    * @returns {Object} loading status (bool), results (object), and matchingResults (number)
@@ -65,7 +67,7 @@ class SortableTable extends Component {
    * custom filter searches entire string, not just from string start
    * @param {Object} filter user-typed data
    * @param {Object} row row info for associated filter
-   * @returns {String} replacement filter
+   * @returns {String|Boolean} replacement filter
    */
   customFilter = (filter, row) => {
     const id = filter.pivotId || filter.id;
@@ -82,7 +84,7 @@ class SortableTable extends Component {
    * @param {script} event onChange event when typing in filter field
    * @param {string} value text field input
    * @param {string} field input field name to watch
-   * @return {funcion} state for field value
+   * @return {function} state for field value
    */
   handleFilterInput = (event, value, field) => {
     this.setState({
@@ -94,7 +96,7 @@ class SortableTable extends Component {
   /**
    * handleClick() - Handle click on table row
    * @param {object} rowInfo row data passed in from ReactTable
-   * @return {funcion} return onRowClick function prop, or undefined if not supplied
+   * @return {function} return onRowClick function prop, or undefined if not supplied
    */
   handleClick(rowInfo) {
     const { onRowClick } = this.props;
@@ -174,7 +176,7 @@ class SortableTable extends Component {
 
   /**
    * renderTableFilter() - Uses props to determine if a Table Filter should be shown
-   * @returns {Bool} returns true or false for table filters
+   * @returns {node} returns JSX node or null
    */
   renderTableFilter() {
     const { filterType } = this.props;

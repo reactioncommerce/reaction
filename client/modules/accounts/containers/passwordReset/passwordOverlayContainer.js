@@ -2,6 +2,7 @@ import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Accounts } from "meteor/accounts-base";
+import { Random } from "meteor/random";
 import { composeWithTracker } from "/lib/api/compose";
 import { UpdatePasswordOverlay } from "/client/modules/accounts/components";
 import { MessagesContainer } from "/client/modules/accounts/containers/helpers";

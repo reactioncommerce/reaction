@@ -17,7 +17,20 @@
         "publishThemeError": "`Nie można opublikować tematu {{themeName}}",
         "components": {
           "navbar": "Pasek nawigacyjny",
-          "button": "Przycisk"
+          "button": "Przycisk",
+          "sortableTable": {
+            "filterPlaceholder": "Filtruj dane",
+            "tableText": {
+              "noDataMessage": "Nie znaleziono wyników",
+              "previousText": "Poprzedni",
+              "nextText": "Następny",
+              "loadingText": "Ładowanie ...",
+              "noDataText": "Nie znaleziono wyników",
+              "pageText": "Strona",
+              "ofText": "z",
+              "rowsText": "wydziwianie"
+            }
+          }
         }
       }
     }

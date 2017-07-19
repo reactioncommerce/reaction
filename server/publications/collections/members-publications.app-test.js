@@ -1,5 +1,7 @@
 /* eslint dot-notation: 0 */
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";

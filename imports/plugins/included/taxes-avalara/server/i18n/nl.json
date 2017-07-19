@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "Geen logs gevonden",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "Datum",
+                "type": "type document"
+              }
+            }
+          },
           "date": "Datum",
           "docType": "type document"
         }

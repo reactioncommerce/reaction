@@ -1,7 +1,10 @@
+/* global paypal */
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
+import { ReactiveDict } from "meteor/reactive-dict";
 import { Template } from "meteor/templating";
+import { i18next } from "/client/api";
 import { Cart } from "/lib/collections";
 import { PaypalClientAPI } from "../../../lib/paypalRestApi";
 import "./checkoutButton.html";
@@ -82,7 +85,7 @@ Template.paypalCheckoutButton.onRendered(function () {
         paypal.checkout.setup(expressCheckoutSettings.merchantId, {
           environment: expressCheckoutSettings.mode,
           button: element,
-           // Blank function to disable default paypal onClick functionality
+          // Blank function to disable default paypal onClick functionality
           click: function () {}
         });
         this.state.set("isLoading", false);

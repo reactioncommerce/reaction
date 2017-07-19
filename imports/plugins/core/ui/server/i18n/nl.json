@@ -17,7 +17,20 @@
         "publishThemeError": "`Kon thema {{themeName}} niet publiceren",
         "components": {
           "navbar": "Navigatiebalk",
-          "button": "Knop"
+          "button": "Knop",
+          "sortableTable": {
+            "filterPlaceholder": "Filter data",
+            "tableText": {
+              "noDataMessage": "geen resultaten gevonden",
+              "previousText": "Vorig",
+              "nextText": "Volgende",
+              "loadingText": "Laden ...",
+              "noDataText": "geen resultaten gevonden",
+              "pageText": "Pagina",
+              "ofText": "van",
+              "rowsText": "rijen"
+            }
+          }
         }
       }
     }

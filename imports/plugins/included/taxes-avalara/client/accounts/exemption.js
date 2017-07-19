@@ -1,6 +1,8 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { $ } from "meteor/jquery";
+import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { Packages, Accounts } from "/lib/collections";
 import { Accounts as AccountsSchema } from "/lib/collections/schemas/accounts";

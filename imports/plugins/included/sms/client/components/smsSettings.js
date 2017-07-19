@@ -1,4 +1,7 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
+import { Reaction } from "/client/api";
 import { Button, Card, CardHeader, CardBody, CardGroup, TextField, Select } from "/imports/plugins/core/ui/client/components";
 
 class SmsSettings extends Component {
@@ -109,7 +112,7 @@ class SmsSettings extends Component {
                 type="submit" disabled={isSaving}
               >
                 {isSaving ?
-                    <i className="fa fa-refresh fa-spin"/>
+                  <i className="fa fa-refresh fa-spin"/>
                   : <span data-i18n="app.save">Save</span>}
               </Button>
             </form>

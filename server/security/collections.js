@@ -1,3 +1,6 @@
+import _ from "lodash";
+import { Security } from "meteor/ongoworks:security";
+import { Roles } from "meteor/alanning:roles";
 import * as Collections from "/lib/collections";
 import { Reaction, Hooks } from "/server/api";
 
@@ -36,6 +39,18 @@ export default function () {
   /*
    * Define some additional rule chain methods
    */
+
+  Security.defineMethod("ifHasRoleForActiveShop", {
+    fetch: [],
+    transform: null,
+    allow(type, arg, userId) {
+      if (!arg) throw new Error("ifHasRole security rule method requires an argument");
+      if (arg.role) {
+        return Roles.userIsInRole(userId, arg.role, Reaction.getShopId());
+      }
+      return Roles.userIsInRole(userId, arg);
+    }
+  });
 
   // use this rule for collections other than Shops
   // matches this.shopId
@@ -102,8 +117,7 @@ export default function () {
     Packages,
     Templates,
     Jobs
-  ]).ifHasRole({
-    group: Reaction.getShopId(),
+  ]).ifHasRoleForActiveShop({
     role: "admin"
   }).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
 
@@ -111,8 +125,7 @@ export default function () {
    * Permissive security for users with the "admin" role for FS.Collections
    */
 
-  Security.permit(["insert", "update", "remove"]).collections([Media]).ifHasRole({
-    group: Reaction.getShopId(),
+  Security.permit(["insert", "update", "remove"]).collections([Media]).ifHasRoleForActiveShop({
     role: ["admin", "owner", "createProduct"]
   }).ifFileBelongsToShop().allowInClientCode();
 
@@ -121,8 +134,7 @@ export default function () {
    * remove their shop but may not insert one.
    */
 
-  Shops.permit(["update", "remove"]).ifHasRole({
-    group: Reaction.getShopId(),
+  Shops.permit(["update", "remove"]).ifHasRoleForActiveShop({
     role: ["admin", "owner"]
   }).ifShopIdMatchesThisId().allowInClientCode();
 
@@ -131,8 +143,7 @@ export default function () {
    * remove products, but createProduct allows just for just a product editor
    */
 
-  Products.permit(["insert", "update", "remove"]).ifHasRole({
-    group: Reaction.getShopId(),
+  Products.permit(["insert", "update", "remove"]).ifHasRoleForActiveShop({
     role: ["createProduct"]
   }).ifShopIdMatches().allowInClientCode();
 
@@ -140,8 +151,7 @@ export default function () {
    * Users with the "owner" role may remove orders for their shop
    */
 
-  Orders.permit("remove").ifHasRole({
-    group: Reaction.getShopId(),
+  Orders.permit("remove").ifHasRoleForActiveShop({
     role: ["admin", "owner"]
   }).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
 
@@ -152,16 +162,14 @@ export default function () {
    * XXX should verify session match, but doesn't seem possible? Might have to move all cart updates to server methods, too?
    */
 
-  Cart.permit(["insert", "update", "remove"]).ifHasRole({
-    group: Reaction.getShopId(),
+  Cart.permit(["insert", "update", "remove"]).ifHasRoleForActiveShop({
     role: ["anonymous", "guest"]
   }).ifShopIdMatches().ifUserIdMatches().ifSessionIdMatches().allowInClientCode();
 
   /*
    * Users may update their own account
    */
-  Collections.Accounts.permit(["insert", "update"]).ifHasRole({
-    group: Reaction.getShopId(),
+  Collections.Accounts.permit(["insert", "update"]).ifHasRoleForActiveShop({
     role: ["anonymous", "guest"]
   }).ifUserIdMatches().allowInClientCode();
 

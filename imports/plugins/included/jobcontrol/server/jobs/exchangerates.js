@@ -1,4 +1,6 @@
 import later from "later";
+import { Meteor } from "meteor/meteor";
+import { Job } from "meteor/vsivsi:job-collection";
 import { Jobs } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
 

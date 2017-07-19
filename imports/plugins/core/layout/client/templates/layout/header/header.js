@@ -1,5 +1,5 @@
-import { Reaction } from "/client/api";
-import { Tags } from "/lib/collections";
+import { Template } from "meteor/templating";
+import { $ } from "meteor/jquery";
 
 /**
  * layoutHeader events
@@ -16,37 +16,11 @@ Template.layoutHeader.events({
 });
 
 Template.layoutHeader.helpers({
-  TagNav() {
-    return ReactionUI.TagNav.Components.TagNav;
-  },
-
   coreNavProps() {
     const instance = Template.instance();
     return {
       onMenuButtonClick() {
         instance.toggleMenuCallback();
-      }
-    };
-  },
-
-  tagNavProps() {
-    const instance = Template.instance();
-
-    const tags = Tags.find({
-      isTopLevel: true
-    }, {
-      sort: {
-        position: 1
-      }
-    }).fetch();
-
-    return {
-      name: "coreHeaderNavigation",
-      editable: Reaction.hasAdminAccess(),
-      tags: tags,
-      onToggleMenu(callback) {
-        // Register the callback
-        instance.toggleMenuCallback = callback;
       }
     };
   }

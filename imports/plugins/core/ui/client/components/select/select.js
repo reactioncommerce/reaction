@@ -1,3 +1,5 @@
+import { Template } from "meteor/templating";
+import { ReactiveDict } from "meteor/reactive-dict";
 import { templateClassName } from "/imports/plugins/core/ui/client/helpers/helpers";
 
 /**

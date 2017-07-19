@@ -4,6 +4,7 @@ import accounting from "accounting-js";
 import moment from "moment";
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import { Packages } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
