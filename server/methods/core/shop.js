@@ -308,7 +308,15 @@ Meteor.methods({
   "shop/flushCurrencyRate": function () {
     this.unblock();
 
-    const shopId = Reaction.getShopId();
+    let shopId;
+    const marketplaceSettings = Reaction.getMarketplaceSettings();
+
+    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantLocale) {
+      shopId = Reaction.getShopId();
+    } else {
+      shopId = Reaction.getPrimaryShopId();
+    }
+
     const shop = Collections.Shops.findOne(shopId, {
       fields: {
         currencies: 1
