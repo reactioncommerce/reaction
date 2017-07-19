@@ -91,7 +91,6 @@
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "react-select": "^1.0.0-rc.3",
-    "react-simple-di": "^1.2.0",
     "react-table": "^6.3.0",
     "react-taco-table": "^0.5.0",
     "react-tether": "^0.5.6",
