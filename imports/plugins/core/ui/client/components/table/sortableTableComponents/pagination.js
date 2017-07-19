@@ -91,7 +91,7 @@ class SortableTablePagination extends Component {
                     }}
                   />
                 </div>
-              : <span className="-currentPage">{currentPage + 1}</span>}{" "}
+              : <span className="-currentPage">{page + 1}</span>}{" "}
             {this.props.ofText}{" "}
             <span className="-totalPages">{pages || 1}</span>
           </span>

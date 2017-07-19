@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
 import classnames from "classnames";
+import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import { formatPriceString } from "/client/api";
