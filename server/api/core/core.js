@@ -224,6 +224,13 @@ export default {
     return "USD";
   },
 
+  /**
+   * **DEPRECATED** This method has been deprecated in favor of using getShopId
+   * and getPrimaryShopId. To be removed.
+   * @deprecated
+   * @method getCurrentShopCursor
+   * @return {Cursor} cursor of shops that match the current domain
+   */
   getCurrentShopCursor() {
     const domain = this.getDomain();
     const cursor = Shops.find({
@@ -235,7 +242,13 @@ export default {
     return cursor;
   },
 
-  // TODO: Get actual current shop instead of first - not sure what this will break..
+  /**
+   * **DEPRECATED** This method has been deprecated in favor of using getShopId
+   * and getPrimaryShopId. To be removed.
+   * @deprecated
+   * @method getCurrentShop
+   * @return {Object} returns the first shop object from the shop cursor
+   */
   getCurrentShop() {
     const currentShopCursor = this.getCurrentShopCursor();
     // also, we could check in such a way: `currentShopCursor instanceof Object` but not instanceof something.Cursor
