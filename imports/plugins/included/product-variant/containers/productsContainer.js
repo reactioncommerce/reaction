@@ -51,21 +51,11 @@ class ProductsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      initialLoad: true,
-      products: props.products
+      initialLoad: true
     };
 
     this.ready = this.ready.bind(this);
     this.loadMoreProducts = this.loadMoreProducts.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const newProducts = nextProps.products.filter(product => product.isVisible !== false);
-    if (Reaction.hasOwnerAccess()) {
-      this.setState({ products: nextProps.products });
-    } else {
-      this.setState({ products: newProducts });
-    }
   }
 
   ready = () => {
@@ -98,7 +88,7 @@ class ProductsContainer extends Component {
     return (
       <ProductsComponent
         ready={this.ready}
-        products={this.state.products}
+        products={this.props.products}
         productsSubscription={this.props.productsSubscription}
         loadMoreProducts={this.loadMoreProducts}
         loadProducts={this.loadProducts}
