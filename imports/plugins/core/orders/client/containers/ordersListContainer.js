@@ -120,8 +120,6 @@ class OrdersListContainer extends Component {
       template: "coreOrderWorkflow"
     });
 
-    console.log("startWorkFlow", startWorkflow);
-
     if (startWorkflow === true) {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
       Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");

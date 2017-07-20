@@ -98,11 +98,7 @@ class OrderTableColumn extends Component {
       });
 
       return (
-        <button
-          className={classes}
-          data-event-action="startProcessingOrder"
-          onClick={() => handleClick(row.original, startWorkflow)}
-        >
+        <button className={classes} onClick={() => handleClick(row.original, startWorkflow)}>
           <Icon icon="fa fa-chevron-right" />
         </button>
       );

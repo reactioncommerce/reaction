@@ -182,6 +182,7 @@ class OrdersList extends Component {
       let headerClassName = undefined;
       let colWidth = undefined;
       let resizable = true;
+      let sortable = true;
 
       // Add custom styles for the column name `name`
       if (columnName === "Name") {
@@ -229,6 +230,7 @@ class OrdersList extends Component {
         colWidth = 50;
         className = "controls";
         resizable = false;
+        sortable = false;
         colStyle = {
           padding: 0,
           height: 52
@@ -244,12 +246,14 @@ class OrdersList extends Component {
         className: className,
         width: colWidth,
         resizable: resizable,
+        sortable: sortable,
         Cell: row => (
           <OrderTableColumn
             row={row}
             handleClick={handleClick}
             handleSelect={handleSelect}
             selectedItems={selectedItems}
+            renderOrderButton={this.renderOrderButton}
             fulfillmentBadgeStatus={this.fulfillmentBadgeStatus}
             shippingBadgeStatus={this.shippingBadgeStatus}
           />
