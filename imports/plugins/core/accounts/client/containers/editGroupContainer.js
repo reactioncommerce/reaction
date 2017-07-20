@@ -22,6 +22,7 @@ class EditGroupContainer extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     groups: PropTypes.array,
+    onChangeGroup: PropTypes.func,
     packages: PropTypes.array,
     selectedGroup: PropTypes.object
   };
@@ -33,7 +34,6 @@ class EditGroupContainer extends Component {
     this.state = {
       alertArray: [],
       selectedGroup: selectedGroup || {},
-      newGroup: null,
       isEditing: false,
       groups,
       accounts
@@ -48,7 +48,10 @@ class EditGroupContainer extends Component {
   selectGroup = grp => {
     return event => {
       event.preventDefault();
-      this.setState({ selectedGroup: grp, isEditing: false });
+      if (this.props.onChangeGroup) {
+        this.props.onChangeGroup(grp);
+      }
+      this.setState({ isEditing: false });
     };
   };
 
@@ -66,7 +69,7 @@ class EditGroupContainer extends Component {
   };
 
   createGroup = groupData => {
-    Meteor.call("group/createGroup", groupData, Reaction.getShopId(), err => {
+    Meteor.call("group/createGroup", groupData, Reaction.getShopId(), (err, res) => {
       let newAlert;
       if (err) {
         newAlert = {
@@ -80,6 +83,11 @@ class EditGroupContainer extends Component {
         mode: "success",
         options: { autoHide: 4000, i18nKey: "admin.groups.successCreate" }
       };
+
+      if (this.props.onChangeGroup) {
+        this.props.onChangeGroup(res.group);
+      }
+
       return this.setState({
         isEditing: false,
         alertArray: [...this.state.alertArray, newAlert]
@@ -102,9 +110,13 @@ class EditGroupContainer extends Component {
         mode: "success",
         options: { autoHide: 4000, i18nKey: "admin.groups.successUpdate" }
       };
+
+      if (this.props.onChangeGroup) {
+        this.props.onChangeGroup(res.group);
+      }
+
       this.setState({
         isEditing: false,
-        selectedGroup: res.group,
         alertArray: [...this.state.alertArray, newAlert]
       });
     });

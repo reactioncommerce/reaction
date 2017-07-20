@@ -28,6 +28,7 @@
         "groups": {
           "appearance": "Appearance",
           "addUserError": "Error adding user to group",
+          "addUserSuccess": "Added user to group",
           "removeUserError": "Error removing user to group",
           "removeUserSuccess": "User removed successfully",
           "connect": "Connect",

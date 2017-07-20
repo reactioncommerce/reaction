@@ -8,8 +8,9 @@ class AccountsManageContainer extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     group: PropTypes.object,
-    groups: PropTypes.array
-  }
+    groups: PropTypes.array,
+    onChangeGroup: PropTypes.func
+  };
 
   constructor(props) {
     super(props);
@@ -22,19 +23,20 @@ class AccountsManageContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ group: nextProps.group, groups: nextProps.groups });
+    const { group, groups, accounts } = nextProps;
+    this.setState({ group, groups, accounts });
   }
 
   render() {
     return (
       <div className="groups-form">
         <AdminInviteForm />
-        <EditGroupContainer groups={this.state.groups} selectedGroup={this.state.group} />
-        <AddGroupMembers
-          groups={this.props.groups}
-          accounts={this.state.accounts}
-          group={this.props.group}
+        <EditGroupContainer
+          groups={this.state.groups}
+          selectedGroup={this.state.group}
+          onChangeGroup={this.props.onChangeGroup}
         />
+        <AddGroupMembers groups={this.state.groups} accounts={this.state.accounts} group={this.state.group} />
       </div>
     );
   }

@@ -26,6 +26,24 @@ class AccountsDashboard extends Component {
     this.setState({ groups, selectedGroup });
   }
 
+  handleGroupSelect = group => {
+    this.setState({ showSideBar: true, selectedGroup: group });
+  };
+
+  tableClassName() {
+    if (this.state.showSideBar) {
+      return "col-md-9";
+    }
+    return "col-md-12";
+  }
+
+  detailDivClassName() {
+    if (this.state.showSideBar) {
+      return "col-md-3";
+    }
+    return "hide";
+  }
+
   renderGroupDetail = () => {
     if (this.state.showSideBar) {
       const { groups, accounts } = this.state;
@@ -35,14 +53,11 @@ class AccountsDashboard extends Component {
           group={this.state.selectedGroup}
           groups={groups}
           accounts={accounts}
+          onChangeGroup={this.handleGroupSelect}
         />
       );
     }
     return null;
-  };
-
-  handleGroupSelect = group => {
-    this.setState({ showSideBar: true, selectedGroup: group });
   };
 
   renderGroupsTable(groups) {
@@ -57,20 +72,6 @@ class AccountsDashboard extends Component {
     }
 
     return null;
-  }
-
-  tableClassName() {
-    if (this.state.showSideBar) {
-      return "col-md-9";
-    }
-    return "col-md-12";
-  }
-
-  detailDivClassName() {
-    if (this.state.showSideBar) {
-      return "col-md-3";
-    }
-    return "hide";
   }
 
   render() {

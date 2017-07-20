@@ -23,14 +23,24 @@ class AddGroupMembers extends Component {
     super(props);
 
     this.state = {
+      alertArray: [],
       selected: null,
-      accounts: props.accounts
+      accounts: props.accounts,
+      group: props.group,
+      groups: props.groups
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { group, groups, accounts } = nextProps;
+    this.setState({ group, groups, accounts });
   }
 
   isInGroup(acc) {
     const currentUserGroup = this.props.groups.find(grp => {
-      if (!acc.groups) { return false; }
+      if (!acc.groups) {
+        return false;
+      }
       return acc.groups[0] === grp._id;
     });
     if (!currentUserGroup) {
@@ -66,8 +76,8 @@ class AddGroupMembers extends Component {
   handleOnGroupChange(acc) {
     return () => {
       if (this.isInGroup(acc)) {
-        return false;
-      } // already in group; nothing to change
+        return false; // already in group; nothing to change
+      }
       Meteor.call("group/addUser", acc._id, this.props.group._id, err => {
         let newAlert;
         if (err) {
@@ -153,7 +163,7 @@ class AddGroupMembers extends Component {
       <div className="add-group-members">
         <Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
         <Card expanded={true}>
-          <CardHeader actAsExpander={true} title={this.props.group.name} />
+          <CardHeader actAsExpander={true} title={this.state.group.name} />
           <CardBody expandable={true}>
             <SortableTable
               tableClassName="accounts-group-table"
