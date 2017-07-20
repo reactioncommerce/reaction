@@ -272,9 +272,14 @@ function composer(props, onData) {
   Meteor.subscribe("ShopMembers");
   const siteName = getSiteName();
 
-  onData(null, {
-    siteName
-  });
+  const orderSub = Meteor.subscribe("Orders");
+  if (orderSub.ready()) {
+    const availableOrders = Collections.Orders.find().fetch();
+    onData(null, {
+      siteName,
+      availableOrders
+    });
+  }
 }
 
 export default composeWithTracker(composer)(SearchModalContainer);
