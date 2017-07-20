@@ -25,26 +25,19 @@ class PermissionsList extends Component {
 
   togglePermission = toggledPermission => {
     return (event, checked) => {
-      let newGroup = false;
       const groupData = Object.assign({}, this.state.group);
-      if (!this.state.group._id) {
-        newGroup = true;
+      const permissions = resolvePermissions(toggledPermission);
+      if (!groupData.permissions) {
         groupData.permissions = [];
       }
-      const permissions = resolvePermissions(toggledPermission);
-
       if (checked) {
         groupData.permissions = _.uniq([...groupData.permissions, ...permissions]);
       } else {
         groupData.permissions = removePermissions(groupData.permissions, permissions);
       }
 
-      if (newGroup && this.props.createGroup) {
-        return this.props.createGroup(groupData);
-      }
-
       if (this.props.updateGroup) {
-        this.props.updateGroup(this.state.group._id, groupData);
+        return this.props.updateGroup(this.state.group._id, groupData);
       }
     };
   };

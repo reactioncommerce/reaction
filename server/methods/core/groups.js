@@ -24,7 +24,7 @@ Meteor.methods({
     check(groupData, Object);
     check(groupData.name, String);
     check(groupData.description, Match.Optional(String));
-    check(groupData.permissions, [String]);
+    check(groupData.permissions,  Match.Optional([String]));
     check(shopId, String);
     let _id;
 
@@ -66,7 +66,6 @@ Meteor.methods({
     check(groupId, String);
     check(newGroupData, Object);
     check(newGroupData.name, String);
-    check(newGroupData.permissions, [String]);
     check(shopId, String);
 
     if (!Reaction.hasPermission("admin")) {
@@ -85,7 +84,7 @@ Meteor.methods({
     const users = Accounts.find({ groups: { $in: [groupId] } }).fetch();
     let error;
 
-    if (newGroupData.permissions) {
+    if (newGroupData.permissions && newGroupData.permissions.length) {
       error = setUserPermissions(users, newGroupData.permissions, shopId);
     }
 

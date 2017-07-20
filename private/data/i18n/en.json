@@ -34,6 +34,8 @@
           "core": "Core",
           "name": "Name",
           "email": "Email",
+          "create": "Create Group",
+          "update": "Update Group",
           "lastActive": "Last Active",
           "description": "Description",
           "remove": "Remove",

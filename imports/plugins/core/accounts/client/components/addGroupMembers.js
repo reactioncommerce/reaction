@@ -29,7 +29,10 @@ class AddGroupMembers extends Component {
   }
 
   isInGroup(acc) {
-    const currentUserGroup = this.props.groups.find(grp => acc.groups[0] === grp._id);
+    const currentUserGroup = this.props.groups.find(grp => {
+      if (!acc.groups) { return false; }
+      return acc.groups[0] === grp._id;
+    });
     if (!currentUserGroup) {
       return false;
     }
@@ -85,7 +88,12 @@ class AddGroupMembers extends Component {
   }
 
   renderBadge(acc) {
-    const currentUserGroup = this.props.groups.find(grp => acc.groups[0] === grp._id);
+    const currentUserGroup = this.props.groups.find(grp => {
+      if (!acc.groups) {
+        return false;
+      }
+      return acc.groups[0] === grp._id;
+    });
     if (!currentUserGroup) {
       return null;
     }

@@ -4,8 +4,10 @@ import { Translation } from "/imports/plugins/core/ui/client/components";
 
 class GroupForm extends Component {
   static propTypes = {
+    createGroup: PropTypes.func,
     group: PropTypes.object,
-    onChange: PropTypes.func
+    submitLabel: PropTypes.string,
+    updateGroup: PropTypes.func
   };
 
   constructor(props) {
@@ -20,22 +22,24 @@ class GroupForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { name, description } = nextProps.group;
-    this.setState({ name: name || "", description: description || "" });
+    this.setState({ name, description });
   }
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-    if (this.props.onChange) {
-      this.props.onChange({ [event.target.name]: event.target.value });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    if (this.props.createGroup) {
+      return this.props.createGroup(this.state);
+    }
+    if (this.props.updateGroup) {
+      return this.props.updateGroup(this.state);
     }
   };
 
-  handleSubmit(event) {
-    event.preventDefault();
-  }
-
   render() {
-    // TODO: i18n
     return (
       <div className="panel panel-default">
         <div className="panel-body">
@@ -66,6 +70,15 @@ class GroupForm extends Component {
                 onChange={this.onChange}
                 value={this.state.description}
               />
+            </div>
+            <div className="justify">
+              <button className="btn btn-primary" onClick={this.handleSubmit}>
+                <Translation
+                  className="content-cell"
+                  defaultValue={this.props.submitLabel}
+                  i18nKey="admin.groups.createGroup"
+                />
+              </button>
             </div>
           </form>
         </div>

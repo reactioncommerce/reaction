@@ -34,26 +34,21 @@ class EditGroupContainer extends Component {
       alertArray: [],
       selectedGroup: selectedGroup || {},
       newGroup: null,
-      isCreating: false,
+      isEditing: false,
       groups,
       accounts
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    const { groups } = nextProps;
-    this.setState({ isCreating: false, groups });
+    this.setState({ groups: nextProps.groups });
   }
 
   selectGroup = grp => {
     return event => {
       event.preventDefault();
-      this.setState({ selectedGroup: grp, isCreating: false });
+      this.setState({ selectedGroup: grp, isEditing: false });
     };
-  };
-
-  getGroup = group => {
-    return this.state.groups.find(grp => group._id === grp._id);
   };
 
   groupListClass = grp => {
@@ -61,11 +56,6 @@ class EditGroupContainer extends Component {
       "groups-item-selected": grp._id === this.state.selectedGroup._id,
       "groups-list": true
     });
-  };
-
-  onGroupFormChange = formData => {
-    const grp = Object.assign({}, this.state.selectedGroup, formData);
-    this.setState({ selectedGroup: grp });
   };
 
   removeAlert = oldAlert => {
@@ -90,14 +80,14 @@ class EditGroupContainer extends Component {
         options: { autoHide: 4000, i18nKey: "admin.groups.successCreate" }
       };
       return this.setState({
-        isCreating: false,
+        isEditing: false,
         alertArray: [...this.state.alertArray, newAlert]
       });
     });
   };
 
   updateGroup = (groupId, groupData) => {
-    Meteor.call("group/updateGroup", groupId, groupData, Reaction.getShopId(), err => {
+    Meteor.call("group/updateGroup", groupId, groupData, Reaction.getShopId(), (err, res) => {
       let newAlert;
       if (err) {
         newAlert = {
@@ -112,7 +102,8 @@ class EditGroupContainer extends Component {
         options: { autoHide: 4000, i18nKey: "admin.groups.successUpdate" }
       };
       this.setState({
-        isCreating: false,
+        isEditing: false,
+        selectedGroup: res.group,
         alertArray: [...this.state.alertArray, newAlert]
       });
     });
@@ -122,15 +113,31 @@ class EditGroupContainer extends Component {
     return e => {
       e.preventDefault();
       e.stopPropagation();
-      this.setState({ isCreating: true, selectedGroup: grp });
+      this.setState({ isEditing: true, selectedGroup: grp });
     };
   };
 
   renderGroupForm = () => {
-    if (this.state.isCreating) {
-      return <GroupForm group={this.state.selectedGroup} onChange={this.onGroupFormChange} />;
+    if (!this.state.isEditing) {
+      return null;
     }
-    return null;
+    if (_.isEmpty(this.state.selectedGroup)) {
+      return (
+        <GroupForm
+          submitLabel="Create Group"
+          group={this.state.selectedGroup}
+          createGroup={this.createGroup}
+        />
+      );
+    }
+    return (
+      <GroupForm
+        className="update-form"
+        submitLabel="Update Group"
+        group={this.state.selectedGroup}
+        updateGroup={this.updateGroup}
+      />
+    );
   };
 
   renderGroups() {
@@ -150,6 +157,19 @@ class EditGroupContainer extends Component {
     );
   }
 
+  renderPermissionsList = () => {
+    if (this.state.isEditing) {
+      return null;
+    }
+    return (
+      <PermissionsList
+        permissions={groupPermissions(this.props.packages)}
+        group={this.state.selectedGroup}
+        updateGroup={this.updateGroup}
+      />
+    );
+  };
+
   render() {
     return (
       <div className="edit-group-container">
@@ -160,12 +180,7 @@ class EditGroupContainer extends Component {
               <Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
               {this.renderGroups()}
               {this.renderGroupForm()}
-              <PermissionsList
-                permissions={groupPermissions(this.props.packages)}
-                group={this.getGroup(this.state.selectedGroup)}
-                createGroup={this.createGroup}
-                updateGroup={this.updateGroup}
-              />
+              {this.renderPermissionsList()}
             </div>
           </CardBody>
         </Card>
