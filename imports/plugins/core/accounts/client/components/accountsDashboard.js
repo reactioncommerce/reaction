@@ -21,9 +21,9 @@ class AccountsDashboard extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { groups } = nextProps;
+    const { groups, accounts } = nextProps;
     const selectedGroup = groups.find(grp => grp._id === (this.state.selectedGroup || {})._id);
-    this.setState({ groups, selectedGroup });
+    this.setState({ groups, accounts, selectedGroup });
   }
 
   handleGroupSelect = group => {

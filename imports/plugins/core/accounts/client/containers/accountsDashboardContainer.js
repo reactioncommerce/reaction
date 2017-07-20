@@ -29,7 +29,7 @@ class AccountsDashboardContainer extends Component {
   }
 
   render() {
-    const { accounts, groups } = this.props;
+    const { accounts, groups } = this.state;
 
     return <AccountsDashboard groups={sortUsersIntoGroups(accounts, groups)} accounts={accounts} />;
   }
