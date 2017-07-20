@@ -26,7 +26,6 @@
     "autoprefixer": "^7.1.1",
     "autosize": "^3.0.20",
     "babel-runtime": "^6.23.0",
-    "bcrypt": "^1.0.2",
     "bootstrap": "^3.3.7",
     "braintree": "^2.0.2",
     "bunyan": "^2.0.0",
