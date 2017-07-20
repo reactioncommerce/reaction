@@ -191,21 +191,21 @@ class SortableTable extends Component {
   }
 
   /**
-   * renderSelectedRowsStyle() - if any rows are selected, customize them via style props (if any)
+   * selectedRowsClassName() - if any rows are selected, give them a className of "selected-row"
    * @param {object} rowInfo row data passed in from ReactTable
-   * @returns {Object} object with style(s) to apply to row that is selected, or empty object if not supplied
+   * @returns {String} className to apply to row that is selected, or empty string if no row is selected
    */
-  renderSelectedRowsStyle(rowInfo) {
-    const { selectedRows, selectedRowsStyle } = this.props;
-    let style = {};
+  selectedRowsClassName(rowInfo) {
+    const { selectedRows } = this.props;
+    let className = "";
 
     if (selectedRows && selectedRows.length) {
       if (selectedRows.includes(rowInfo.row._id)) {
-        style = selectedRowsStyle;
+        className = "selected-row";
       }
     }
 
-    return style;
+    return className;
   }
 
   render() {
@@ -241,7 +241,7 @@ class SortableTable extends Component {
               onClick: e => { // eslint-disable-line no-unused-vars
                 this.handleClick(rowInfo);
               },
-              style: this.renderSelectedRowsStyle(rowInfo)
+              className: this.selectedRowsClassName(rowInfo)
             };
           }}
           getTableProps={otherProps.getTableProps}
@@ -285,8 +285,6 @@ SortableTable.propTypes = {
   query: PropTypes.object,
   /** @type {array} selectedRows provides selected rows in the table */
   selectedRows: PropTypes.array,
-  /** @type {object} selectedRowsStyle provides style for selected rows */
-  selectedRowsStyle: PropTypes.object,
   /** @type {function} transform transform of collection for grid results */
   transform: PropTypes.func
 };

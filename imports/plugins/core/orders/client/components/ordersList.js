@@ -262,11 +262,6 @@ class OrdersList extends Component {
       customColumnMetadata.push(columnMeta);
     });
 
-    const selectedRowsStyle = {
-      backgroundColor: "#e8fcf6"
-    };
-
-
     return (
       <div>
         {this.renderBulkOrderActionsBar()}
@@ -279,7 +274,6 @@ class OrdersList extends Component {
           externalLoadingComponent={Loading}
           filterType="none"
           selectedRows={selectedItems}
-          selectedRowsStyle={selectedRowsStyle}
           getTheadProps={() => {
             return {
               style: {
