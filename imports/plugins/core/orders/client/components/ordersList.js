@@ -4,7 +4,7 @@ import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
-import { Badge, ClickToCopy, Icon, Translation, Checkbox, Button } from "@reactioncommerce/reaction-ui";
+import { Badge, ClickToCopy, Icon, Translation, Checkbox, Button, List, ListItem } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 import OrderTable from "./orderTable";
 
@@ -25,6 +25,13 @@ class OrdersList extends Component {
     orders: PropTypes.array,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array
+  }
+
+  constructor() {
+    super();
+    this.state = {
+      renderFlowList: false
+    };
   }
 
   /**
@@ -210,8 +217,45 @@ class OrdersList extends Component {
             i18nKeyLabel="order.bulkActions"
             icon="fa fa-chevron-down"
             iconAfter={true}
+            onClick={this.toggleShippingFlowList}
           />
+          {this.renderShippingFLowList()}
         </div>
+      );
+    }
+  }
+
+  toggleShippingFlowList = () => {
+    this.setState({
+      renderFlowList: !this.state.renderFlowList
+    });
+  }
+
+  renderShippingFLowList() {
+    if (this.state.renderFlowList) {
+      return (
+        <List className="shipping-flow-list">
+          <ListItem
+            label="Picking Report"
+          >
+            <Icon icon="fa fa-circle-o"/>
+          </ListItem>
+          <ListItem
+            label="Packed"
+          >
+            <Icon icon="fa fa-circle-o"/>
+          </ListItem>
+          <ListItem
+            label="Generate Label"
+          >
+            <Icon icon="fa fa-circle-o"/>
+          </ListItem>
+          <ListItem
+            label="Shipped"
+          >
+            <Icon icon="fa fa-circle-o"/>
+          </ListItem>
+        </List>
       );
     }
   }
