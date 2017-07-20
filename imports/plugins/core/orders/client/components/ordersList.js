@@ -261,7 +261,7 @@ class OrdersList extends Component {
     return (
       <SortableTable
         tableClassName="rui order table -highlight"
-        publication="NewPaginatedOrders"
+        publication="CustomPaginatedOrders"
         collection={Orders}
         matchingResultsCount="order-count"
         columnMetadata={customColumnMetadata}
