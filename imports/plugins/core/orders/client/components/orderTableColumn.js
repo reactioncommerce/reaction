@@ -37,36 +37,40 @@ class OrderTableColumn extends Component {
               className="rui-order-avatar"
             />
           </RolloverCheckbox>
-          <strong style={{ paddingLeft: 5, marginTop: 5 }}>{row.value}</strong>
+          <strong style={{ paddingLeft: 5, marginTop: 7 }}>{row.value}</strong>
         </div>
       );
     }
     if (columnAccessor === "email") {
       return (
-        <span>{row.value}</span>
+        <div style={{ marginTop: 7 }}>{row.value}</div>
       );
     }
     if (columnAccessor === "createdAt") {
       const createdDate = moment(row.value).format("MM/D/YYYY");
       return (
-        <span>{createdDate}</span>
+        <div style={{ marginTop: 7 }}>{createdDate}</div>
       );
     }
     if (columnAccessor === "_id") {
       const id = row.original._id;
       const truncatedId = id.substring(0, 4);
       return (
-        <ClickToCopy
-          copyToClipboard={id}
-          displayText={truncatedId}
-          i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
-          tooltip="Copy Order Link"
-        />
+        <div style={{ marginTop: 7 }}>
+          <ClickToCopy
+            copyToClipboard={id}
+            displayText={truncatedId}
+            i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
+            tooltip="Copy Order Link"
+          />
+        </div>
       );
     }
     if (columnAccessor === "billing[0].invoice.total") {
       return (
-        <strong>{formatPriceString(row.original.billing[0].invoice.total)}</strong>
+        <div style={{ marginTop: 7 }}>
+          <strong>{formatPriceString(row.original.billing[0].invoice.total)}</strong>
+        </div>
       );
     }
     if (columnAccessor === "shipping[0].workflow.status") {
