@@ -50,7 +50,7 @@ class ListItem extends Component {
     if (this.props.icon) {
       return (
         <div className={iconClassName}>
-          <Icon icon={this.data.icon} />
+          <Icon icon={this.props.icon} />
         </div>
       );
     }
