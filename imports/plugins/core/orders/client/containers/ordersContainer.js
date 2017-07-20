@@ -6,7 +6,6 @@ import { Orders, Shops } from "/lib/collections";
 import OrdersListContainer from "./ordersListContainer";
 
 class OrdersContainer extends Component {
-
   constructor() {
     super();
     this.state = {

@@ -541,10 +541,138 @@
 .rui.order.table {
   border-top: none;
 
-  .controls {
+  // Table Headers
+  .order-table-header-name {
+    border-right: none;
+    text-align: left;
+
+    flex: 250 0 auto;
+    width: 250px;
+    max-width: 250px;
+  }
+  .order-table-header-email {
+    border-right: none;
+    text-align: left;
+    padding: 1%
+  }
+  .order-table-header-date {
+    border-right: none;
+    text-align: center;
+    padding: 1%;
+
+    flex: 120 0 auto;
+    width: 120px;
+    max-width: 120px;
+  }
+  .order-table-header-id {
+    border-right: none;
+    text-align: center;
+    padding: 1%;
+
+    flex: 90 0 auto;
+    width: 90px;
+    max-width: 90px;
+  }
+  .order-table-header-total {
+    border-right: none;
+    text-align: center;
+    padding: 1%;
+
+    flex: 100 0 auto;
+    width: 100px;
+    max-width: 100px;
+  }
+  .order-table-header-shipping {
+    border-right: none;
+    text-align: center;
+    padding: 1%;
+
+    flex: 100 0 auto;
+    width: 100px;
+    max-width: 100px;
+  }
+  .order-table-header-status {
+    border-right: none;
+    text-align: center;
+    padding: 1%;
+
+    flex: 150 0 auto;
+    width: 150px;
+    max-width: 150px;
+  }
+
+  .order-table-header-control {
+    flex: 50 0 auto;
+    width: 50px;
+    max-width: 50px;
+  }
+
+  // Table Columns
+  .order-table-column-name {
+    border-right: 1px solid #e6e6e6;
+    // margin-top: 4px;
+
+    flex: 250 0 auto;
+    width: 250px;
+    max-width: 250px;
+  }
+  .order-table-column-email {
+    padding: 1%;
+    margin-top: 4
+  }
+  .order-table-column-date {
+    text-align: center;
+    padding: 1%;
+    // margin-top: 4px;
+
+    flex: 120 0 auto;
+    width: 120px;
+    max-width: 120px;
+  }
+  .order-table-column-id {
+    text-align: center;
+    padding: 1%;
+    // margin-top: 4px;
+
+    flex: 90 0 auto;
+    width: 90px;
+    max-width: 90px;
+  }
+  .order-table-column-total {
+    text-align: center;
+    padding: 1%;
+    // margin-top: 4px;
+
+    flex: 100 0 auto;
+    width: 100px;
+    max-width: 100px;
+  }
+  .order-table-column-shipping {
+    text-align: right;
+    margin-top: 2px;
+
+    flex: 100 0 auto;
+    width: 100px;
+    max-width: 100px;
+  }
+  .order-table-column-status {
+    text-align: right;
+    margin-top: 2px;
+
+    flex: 150 0 auto;
+    width: 150px;
+    max-width: 150px;
+  }
+
+  .order-table-column-control {
     .display(flex);
     .flex-direction(column);
-    height: 100%;
+    // height: 100%;
+    padding: 0;
+    height: 49px;
+    flex: 50 0 auto;
+    width: 50px;
+    max-width: 50px;
     button {
       flex: 1 1 auto;
       border-radius: 0;
@@ -554,15 +682,18 @@
     }
   }
 
-  .controls .btn-success {
+  .order-table-column-control .btn-success {
     .btn-success();
     border-radius: 0;
   }
 
-  .table-name-column {
-    border-right: 1px solid @black20;
+  // Name cell display
+  .order-table-name-cell {
+    display: inline-flex;
+    padding-left: 5px
   }
 
+  // Checkbox Styling
   .order-header-checkbox {
     margin-top: 10px;
     margin-bottom: 0px;
@@ -571,13 +702,13 @@
     border: solid 2px #5e6264;
   }
 
-  .orders-list-pagination-visible {
+  .order-table-pagination-visible {
     border-top: none;
     margin-top: 10px;
     margin-bottom: 10px;
   }
 
-  .orders-list-pagination-hidden {
+  .order-table-pagination-hidden {
     display: none;
   }
 

@@ -4,10 +4,9 @@ import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
-import { Orders } from "/lib/collections";
-import { Badge, ClickToCopy, Icon, Translation, SortableTable, Loading, Checkbox, Button } from "@reactioncommerce/reaction-ui";
+import { Badge, ClickToCopy, Icon, Translation, Checkbox, Button } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
-import OrderTableColumn from "./orderTableColumn";
+import OrderTable from "./orderTable";
 
 class OrdersList extends Component {
   static propTypes = {
@@ -156,158 +155,6 @@ class OrdersList extends Component {
    * @param {Object} orders object containing info for order
    * @return {Component} SortableTable list of orders
    */
-  renderListView(orders) {
-    const { selectedItems, handleSelect, handleClick, multipleSelect, selectAllOrders } = this.props;
-
-    const filteredFields = {
-      "Name": "shipping[0].address.fullName",
-      "Email": "email",
-      "Date": "createdAt",
-      "ID": "_id",
-      "Total": "billing[0].invoice.total",
-      "Shipping": "shipping[0].workflow.status",
-      "Status": "workflow.status",
-      "": ""
-    };
-
-    const customColumnMetadata = [];
-    const columnNames = Object.keys(filteredFields);
-
-    // https://react-table.js.org/#/story/cell-renderers-custom-components
-    columnNames.forEach((columnName) => {
-      let colStyle = { borderRight: "none" };
-      let colHeader = undefined;
-      let headerStyle = { borderRight: "none", textAlign: "left" };
-      let className = undefined;
-      let headerClassName = undefined;
-      let colWidth = undefined;
-      let resizable = true;
-      let sortable = true;
-
-      // Add custom styles for the column name `name`
-      if (columnName === "Name") {
-        colWidth = 250;
-        colStyle = { borderRight: "1px solid #e6e6e6", marginTop: 4 };
-        colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}>
-          <Checkbox
-            className="order-header-checkbox checkbox-large"
-            checked={multipleSelect}
-            name="orders-checkbox"
-            onChange={() => selectAllOrders(orders, multipleSelect)}
-          />
-          <span style={{ marginTop: 10 }}>{columnName}</span>
-        </div>;
-      }
-
-      if (columnName === "Date" || columnName === "Total" || columnName === "ID") {
-        headerStyle = { borderRight: "none", textAlign: "center", padding: "1%" };
-        colStyle = { textAlign: "center", padding: "1%", marginTop: 4 };
-        colWidth = 95;
-      }
-
-      if (columnName === "Email") {
-        headerStyle = {  borderRight: "none", textAlign: "left", padding: "1%" };
-        colStyle = { padding: "1%", marginTop: 4 };
-      }
-
-      if (columnName === "Shipping" || columnName === "Status") {
-        colStyle = { textAlign: "right", marginTop: 4 };
-        headerStyle = { borderRight: "none", textAlign: "center", padding: "1%" };
-        colWidth = 150;
-      }
-
-      if (columnName === "Email" || columnName === "Date" || columnName === "Shipping") {
-        className = "hidden-xs hidden-sm";
-        headerClassName = "hidden-xs hidden-sm";
-      }
-
-      if (columnName === "ID" || columnName === "Total") {
-        className = "hidden-xs";
-        headerClassName = "hidden-xs";
-      }
-
-      if (columnName === "") {
-        colWidth = 50;
-        className = "controls";
-        resizable = false;
-        sortable = false;
-        colStyle = {
-          padding: 0,
-          height: 52
-        };
-      }
-
-      const columnMeta = {
-        accessor: filteredFields[columnName],
-        Header: colHeader ? colHeader : columnName,
-        headerStyle: headerStyle,
-        style: colStyle,
-        headerClassName: classnames(headerClassName, "order-list-headers"),
-        className: className,
-        width: colWidth,
-        resizable: resizable,
-        sortable: sortable,
-        Cell: row => (
-          <OrderTableColumn
-            row={row}
-            handleClick={handleClick}
-            handleSelect={handleSelect}
-            selectedItems={selectedItems}
-            renderOrderButton={this.renderOrderButton}
-            fulfillmentBadgeStatus={this.fulfillmentBadgeStatus}
-            shippingBadgeStatus={this.shippingBadgeStatus}
-          />
-        )
-      };
-      customColumnMetadata.push(columnMeta);
-    });
-
-    return (
-      <div>
-        {this.renderBulkOrderActionsBar()}
-        <SortableTable
-          tableClassName={`rui order table ${this.renderTableClassNameHidden()} -highlight`}
-          publication="CustomPaginatedOrders"
-          collection={Orders}
-          matchingResultsCount="order-count"
-          columnMetadata={customColumnMetadata}
-          externalLoadingComponent={Loading}
-          filterType="none"
-          selectedRows={selectedItems}
-          getTheadProps={() => {
-            return {
-              style: {
-                borderTop: "1px solid #e6e6e6",
-                borderRight: "1px solid #e6e6e6",
-                borderLeft: "1px solid #e6e6e6"
-              }
-            };
-          }}
-          getTrGroupProps={() => {
-            return {
-              style: {
-                borderRight: "1px solid #e6e6e6",
-                borderLeft: "1px solid #e6e6e6"
-              }
-            };
-          }}
-          getPaginationProps={() => {
-            return {
-              className: this.renderPaginationClassNameHidden()
-            };
-          }}
-          getTableProps={() => {
-            return {
-              style: {
-                borderBottom: "1px solid #e6e6e6"
-              }
-            };
-          }}
-          showPaginationTop={true}
-        />
-      </div>
-    );
-  }
 
   renderOrderCard(order) {
     const { handleClick } = this.props;
@@ -331,7 +178,7 @@ class OrdersList extends Component {
     }
   }
 
-  renderBulkOrderActionsBar() {
+  renderBulkOrderActionsBar = () => {
     const { orders, selectedItems, selectAllOrders } = this.props;
 
     if (selectedItems.length > 0) {
@@ -374,16 +221,23 @@ class OrdersList extends Component {
     return selectedItems.length === orders.length ? true : multipleSelect;
   }
 
-  renderTableClassNameHidden() {
-    return this.props.selectedItems.length > 0 ? "table-header-hidden" : "table-header-visible";
+  renderTableClassNameHidden = () => {
+    const { selectedItems } = this.props;
+    return selectedItems.length > 0 ? "table-header-hidden" : "table-header-visible";
   }
 
-  renderPaginationClassNameHidden() {
-    return this.props.selectedItems.length > 0 ? "orders-list-pagination-hidden" : "orders-list-pagination-visible";
+  renderPaginationClassNameHidden = () => {
+    const { selectedItems } = this.props;
+    return selectedItems.length > 0 ? "order-table-pagination-hidden" : "order-table-pagination-visible";
   }
 
   render() {
-    const { orders, openDetail, openList, handleDetailToggle, handleListToggle, detailClassName, listClassName } = this.props;
+    const {
+      orders, openDetail, openList, handleDetailToggle,
+      handleListToggle, detailClassName, listClassName,
+      selectedItems, handleSelect, handleClick, multipleSelect,
+      selectAllOrders, handleShowMoreClick, hasMoreOrders
+    } = this.props;
 
     if (orders.length) {
       return (
@@ -404,7 +258,22 @@ class OrdersList extends Component {
             </button>
           </div>
 
-          {openList &&  <div>{this.renderListView(orders)}</div>}
+          {openList &&
+            <OrderTable
+              orders={orders}
+              selectedItems={selectedItems}
+              handleSelect={handleSelect}
+              handleClick={handleClick}
+              multipleSelect={multipleSelect}
+              selectAllOrders={selectAllOrders}
+              shippingBadgeStatus={this.shippingBadgeStatus}
+              fulfillmentBadgeStatus={this.fulfillmentBadgeStatus}
+              renderBulkOrderActionsBar={this.renderBulkOrderActionsBar}
+              renderPaginationClassNameHidden={this.renderPaginationClassNameHidden}
+              renderTableClassNameHidden={this.renderTableClassNameHidden}
+            />
+          }
+
           {openDetail &&
             <div>
               {orders.map((order, i) => {
@@ -414,6 +283,7 @@ class OrdersList extends Component {
                   </div>
                 );
               })}
+              {hasMoreOrders && <button onClick={handleShowMoreClick}>Show More</button>}
             </div>
           }
         </div>
