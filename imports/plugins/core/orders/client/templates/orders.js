@@ -77,6 +77,22 @@ const OrderHelper =  {
     }
 
     return query;
+  },
+
+  getWorkflowStatus(id) {
+    let status;
+    const selectedOrder = Orders.findOne(id);
+
+    if (selectedOrder.workflow.status === "new") {
+      status = "new";
+    }
+    if (selectedOrder.workflow.status === "coreOrderWorkflow/processing") {
+      status = "processing";
+    }
+    if (selectedOrder.workflow.status === "coreOrderWorkflow/completed") {
+      status = "completed";
+    }
+    return status;
   }
 };
 
@@ -93,7 +109,9 @@ Template.orders.onCreated(function () {
   });
   this.state.set("count", 0);
 
-  const filterName = this.data && this.data.filter && this.data.filter.name || "new";
+  const id = Reaction.Router.getQueryParam("_id");
+
+  const filterName = this.data && this.data.filter && this.data.filter.name || id ? OrderHelper.getWorkflowStatus(id) : "new";
   Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filterName);
 
   this.autorun(() => {
