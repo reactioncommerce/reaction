@@ -45,7 +45,15 @@ class OrdersListContainer extends Component {
       Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
     }
 
-    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
+    const id = Reaction.Router.getQueryParam("_id");
+
+    if (id === undefined) {
+      Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
+    } else {
+      Reaction.Router.go("dashboard/orders", {}, {
+        _id: order._id
+      });
+    }
   }
 
   /**
