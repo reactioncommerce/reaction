@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Measure from "react-measure";
 import update from "react/lib/update";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
@@ -246,5 +247,7 @@ MediaGalleryContainer.propTypes = {
   media: PropTypes.arrayOf(PropTypes.object),
   placement: PropTypes.string
 };
+
+registerComponent("MediaGallery", MediaGalleryContainer, composeWithTracker(composer));
 
 export default composeWithTracker(composer)(MediaGalleryContainer);

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import Measure from "react-measure";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class MediaGallery extends Component {
   constructor() {
@@ -200,7 +200,5 @@ MediaGallery.propTypes = {
   onMoveMedia: PropTypes.func,
   onRemoveMedia: PropTypes.func
 };
-
-registerComponent("MediaGallery", MediaGallery);
 
 export default MediaGallery;
