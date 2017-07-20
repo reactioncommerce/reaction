@@ -19,17 +19,17 @@ const RolloverCheckbox = ({ children, checked, checkboxClassName, onChange, name
   }
   return (
     <div className="rollover-checkbox">
-        <div className="first-child">
-            { children }
-        </div>
-        <div className="second-child">
-            <Checkbox
-              checked={checked}
-              onChange={onChange}
-              className={checkboxClassName}
-              name={name}
-            />
-        </div>
+      <div className="first-child">
+        { children }
+      </div>
+      <div className="second-child">
+        <Checkbox
+          checked={checked}
+          onChange={onChange}
+          className={checkboxClassName}
+          name={name}
+        />
+      </div>
     </div>
   );
 };

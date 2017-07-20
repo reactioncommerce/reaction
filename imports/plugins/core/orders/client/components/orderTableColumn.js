@@ -91,18 +91,15 @@ class OrderTableColumn extends Component {
       );
     }
     if (columnAccessor === "") {
+      const startWorkflow = row.original.workflow.status === "new";
       const classes = classnames({
         "rui": true,
         "btn": true,
-        "btn-success": row.original.workflow.status === "new"
+        "btn-success": startWorkflow
       });
 
       return (
-        <button
-          className={classes}
-          data-event-action="startProcessingOrder"
-          onClick={() => handleClick(row.original)}
-        >
+        <button className={classes} onClick={() => handleClick(row.original, startWorkflow)}>
           <Icon icon="fa fa-chevron-right" />
         </button>
       );

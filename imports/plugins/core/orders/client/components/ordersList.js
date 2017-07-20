@@ -182,20 +182,21 @@ class OrdersList extends Component {
       let headerClassName = undefined;
       let colWidth = undefined;
       let resizable = true;
+      let sortable = true;
 
       // Add custom styles for the column name `name`
       if (columnName === "Name") {
         colWidth = 250;
         colStyle = { borderRight: "1px solid #e6e6e6", marginTop: 4 };
         colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}>
-            <Checkbox
-              className="order-header-checkbox checkbox-large"
-              checked={multipleSelect}
-              name="orders-checkbox"
-              onChange={() => selectAllOrders(orders, multipleSelect)}
-            />
-            <span style={{ marginTop: 10 }}>{columnName}</span>
-          </div>;
+          <Checkbox
+            className="order-header-checkbox checkbox-large"
+            checked={multipleSelect}
+            name="orders-checkbox"
+            onChange={() => selectAllOrders(orders, multipleSelect)}
+          />
+          <span style={{ marginTop: 10 }}>{columnName}</span>
+        </div>;
       }
 
       if (columnName === "Date" || columnName === "Total" || columnName === "ID") {
@@ -229,6 +230,7 @@ class OrdersList extends Component {
         colWidth = 50;
         className = "controls";
         resizable = false;
+        sortable = false;
         colStyle = {
           padding: 0,
           height: 52
@@ -244,12 +246,14 @@ class OrdersList extends Component {
         className: className,
         width: colWidth,
         resizable: resizable,
+        sortable: sortable,
         Cell: row => (
           <OrderTableColumn
             row={row}
             handleClick={handleClick}
             handleSelect={handleSelect}
             selectedItems={selectedItems}
+            renderOrderButton={this.renderOrderButton}
             fulfillmentBadgeStatus={this.fulfillmentBadgeStatus}
             shippingBadgeStatus={this.shippingBadgeStatus}
           />
@@ -268,7 +272,7 @@ class OrdersList extends Component {
         {this.renderBulkOrderActionsBar()}
         <SortableTable
           tableClassName={`rui order table ${this.renderTableClassNameHidden()} -highlight`}
-          publication="NewPaginatedOrders"
+          publication="CustomPaginatedOrders"
           collection={Orders}
           matchingResultsCount="order-count"
           columnMetadata={customColumnMetadata}
@@ -307,7 +311,7 @@ class OrdersList extends Component {
           }}
           showPaginationTop={true}
         />
-     </div>
+      </div>
     );
   }
 
