@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { Orders, Shops } from "/lib/collections";
 import OrdersListContainer from "./ordersListContainer";
 
 class OrdersContainer extends Component {
-
   constructor() {
     super();
     this.state = {

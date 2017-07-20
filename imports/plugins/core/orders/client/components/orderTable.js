@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Orders } from "/lib/collections";
 import { SortableTable, Loading, Checkbox } from "@reactioncommerce/reaction-ui";
 import OrderTableColumn from "./orderTableColumn";
@@ -27,6 +28,17 @@ const classNames = {
 };
 
 class OrderTable extends Component {
+  static propTypes = {
+    fulfillmentBadgeStatus: PropTypes.func,
+    handleClick: PropTypes.func,
+    handleSelect: PropTypes.func,
+    multipleSelect: PropTypes.bool,
+    orders: PropTypes.array,
+    selectAllOrders: PropTypes.func,
+    selectedItems: PropTypes.array,
+    shippingBadgeStatus: PropTypes.func
+  }
+
   render() {
     const {
       orders, selectedItems, handleSelect,
@@ -53,7 +65,6 @@ class OrderTable extends Component {
       let colHeader = undefined;
       let resizable = true;
       let sortable = true;
-      let colWidth = undefined;
 
       // Add custom styles for the column name `name`
       if (columnName === "Name") {
@@ -80,7 +91,6 @@ class OrderTable extends Component {
         Header: colHeader ? colHeader : columnName,
         headerClassName: classNames.headerClassNames[columnName],
         className: classNames.colClassNames[columnName],
-        width: colWidth,
         resizable: resizable,
         sortable: sortable,
         Cell: row => (

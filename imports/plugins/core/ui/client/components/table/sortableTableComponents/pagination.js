@@ -21,18 +21,20 @@ class SortableTablePagination extends Component {
     this.setState({ page: nextProps.page });
   }
 
-  getSafePage(page) {
+  getSafePage(safePage) {
+    let page = safePage;
     if (isNaN(page)) {
-      page = this.props.page; //eslint-disable-line
+      page = this.props.page;
     }
     return Math.min(Math.max(page, 0), this.props.pages - 1);
   }
 
   changePage(page) {
-    page = this.getSafePage(page);
-    this.setState({ page });
-    if (this.props.page !== page) {
-      this.props.onPageChange(page);
+    let safePage = page;
+    safePage = this.getSafePage(page);
+    this.setState({ page: safePage });
+    if (this.props.page !== safePage) {
+      this.props.onPageChange(safePage);
     }
   }
 
@@ -74,11 +76,11 @@ class SortableTablePagination extends Component {
                   type={this.state.page === "" ? "text" : "number"}
                   onChange={e => {
                     const val = e.target.value;
-                    const page = val - 1;
+                    const currentPage = val - 1;
                     if (val === "") {
                       return this.setState({ page: val });
                     }
-                    this.setState({ page: this.getSafePage(page) });
+                    this.setState({ page: this.getSafePage(currentPage) });
                   }}
                   value={this.state.page === "" ? "" : this.state.page + 1}
                   onBlur={this.applyPage}
@@ -112,8 +114,8 @@ class SortableTablePagination extends Component {
         <div className="-previous">
           <PreviousComponent
             onClick={e => { // eslint-disable-line no-unused-vars
-              if (!canPrevious) return
-              this.changePage(page - 1)
+              if (!canPrevious) return;
+              this.changePage(page - 1);
             }}
             disabled={!canPrevious}
           >
@@ -124,8 +126,8 @@ class SortableTablePagination extends Component {
         <div className="-next">
           <NextComponent
             onClick={e => { // eslint-disable-line no-unused-vars
-              if (!canNext) return
-              this.changePage(page + 1)
+              if (!canNext) return;
+              this.changePage(page + 1);
             }}
             disabled={!canNext}
           >
@@ -142,15 +144,19 @@ SortableTablePagination.propTypes = {
   PreviousComponent: PropTypes.func,
   canNext: PropTypes.bool,
   canPrevious: PropTypes.bool,
-  // className: PropTypes.,
+  className: PropTypes.string,
   nextText: PropTypes.string,
+  ofText: PropTypes.string,
   onPageChange: PropTypes.func,
   onPageSizeChange: PropTypes.func,
   page: PropTypes.number,
   pageSize: PropTypes.number,
   pageSizeOptions: PropTypes.array,
+  pageText: PropTypes.string,
   pages: PropTypes.number,
+  paginationStyle: PropTypes.object,
   previousText: PropTypes.string,
+  rowsText: PropTypes.string,
   showPageJump: PropTypes.bool,
   showPageSizeOptions: PropTypes.bool
 };
