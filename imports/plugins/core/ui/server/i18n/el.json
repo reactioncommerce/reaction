@@ -17,7 +17,20 @@
         "publishThemeError": "`Δεν ήταν δυνατή η δημοσίευση θέμα {{themeName}}",
         "components": {
           "navbar": "Μπάρα πλοήγησης",
-          "button": "Κουμπί"
+          "button": "Κουμπί",
+          "sortableTable": {
+            "filterPlaceholder": "Φιλτράρετε δεδομένα",
+            "tableText": {
+              "noDataMessage": "Δεν βρέθηκαν αποτελέσματα",
+              "previousText": "Προηγούμενος",
+              "nextText": "Επόμενος",
+              "loadingText": "Φόρτωση ...",
+              "noDataText": "Δεν βρέθηκαν αποτελέσματα",
+              "pageText": "Σελίδα",
+              "ofText": "του",
+              "rowsText": "Σειρές"
+            }
+          }
         }
       }
     }
