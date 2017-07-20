@@ -32,27 +32,6 @@ Meteor.publish("Orders", function () {
  * paginated orders
  */
 
- Meteor.publish("NewPaginatedOrders", function (query, options) {
-   check(query, Match.Optional(Object));
-   check(options, Match.Optional(Object));
-
-   if (this.userId === null) {
-     return this.ready();
-   }
-   const shopId = Reaction.getShopId(this.userId);
-   if (!shopId) {
-     return this.ready();
-   }
-   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
-     Counts.publish(this, "order-count", Orders.find({ shopId: shopId }), { noReady: true });
-     return Orders.find({ shopId: shopId });
-   }
-   return Orders.find({
-     shopId: shopId,
-     userId: this.userId
-   });
- });
-
 Meteor.publish("PaginatedOrders", function (limit) {
   check(limit, Number);
 
@@ -66,6 +45,27 @@ Meteor.publish("PaginatedOrders", function (limit) {
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
     Counts.publish(this, "order-count", Orders.find({ shopId: shopId }), { noReady: true });
     return Orders.find({ shopId: shopId }, { limit: limit });
+  }
+  return Orders.find({
+    shopId: shopId,
+    userId: this.userId
+  });
+});
+
+Meteor.publish("CustomPaginatedOrders", function (query, options) {
+  check(query, Match.Optional(Object));
+  check(options, Match.Optional(Object));
+
+  if (this.userId === null) {
+    return this.ready();
+  }
+  const shopId = Reaction.getShopId(this.userId);
+  if (!shopId) {
+    return this.ready();
+  }
+  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
+    Counts.publish(this, "order-count", Orders.find({ shopId: shopId }), { noReady: true });
+    return Orders.find({ shopId: shopId });
   }
   return Orders.find({
     shopId: shopId,
