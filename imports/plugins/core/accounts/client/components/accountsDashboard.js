@@ -13,16 +13,30 @@ class AccountsDashboard extends Component {
     super(props);
 
     this.state = {
+      accounts: props.accounts,
       groups: props.groups,
       showSideBar: false,
       selectedGroup: {}
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { groups } = nextProps;
+    const selectedGroup = groups.find(grp => grp._id === (this.state.selectedGroup || {})._id);
+    this.setState({ groups, selectedGroup });
+  }
+
   renderGroupDetail = () => {
     if (this.state.showSideBar) {
-      const { groups, accounts } = this.props;
-      return <AccountsManageContainer group={this.state.selectedGroup} groups={groups} accounts={accounts} />;
+      const { groups, accounts } = this.state;
+      return (
+        <AccountsManageContainer
+          className="accounts-manage-container"
+          group={this.state.selectedGroup}
+          groups={groups}
+          accounts={accounts}
+        />
+      );
     }
     return null;
   };
@@ -63,7 +77,7 @@ class AccountsDashboard extends Component {
     return (
       <div className="row list-group accounts-table">
         <div className={this.tableClassName()}>
-          {this.renderGroupsTable(this.props.groups)}
+          {this.renderGroupsTable(this.state.groups)}
         </div>
         <div className={this.detailDivClassName()}>
           {this.renderGroupDetail()}

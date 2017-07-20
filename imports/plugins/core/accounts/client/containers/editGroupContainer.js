@@ -41,7 +41,8 @@ class EditGroupContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ groups: nextProps.groups });
+    const { groups, selectedGroup } = nextProps;
+    this.setState({ groups, selectedGroup });
   }
 
   selectGroup = grp => {

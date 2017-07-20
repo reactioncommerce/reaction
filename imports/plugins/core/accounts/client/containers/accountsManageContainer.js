@@ -29,7 +29,7 @@ class AccountsManageContainer extends Component {
     return (
       <div className="groups-form">
         <AdminInviteForm />
-        <EditGroupContainer groups={this.state.groups} selectedGroup={this.props.group} />
+        <EditGroupContainer groups={this.state.groups} selectedGroup={this.state.group} />
         <AddGroupMembers
           groups={this.props.groups}
           accounts={this.state.accounts}

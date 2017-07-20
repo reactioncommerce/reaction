@@ -13,8 +13,24 @@ class AccountsDashboardContainer extends Component {
     groups: PropTypes.array
   };
 
+  constructor(props) {
+    super(props);
+    const { accounts, groups } = props;
+
+    this.state = {
+      accounts,
+      groups
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { accounts, groups } = nextProps;
+    this.setState({ accounts, groups });
+  }
+
   render() {
     const { accounts, groups } = this.props;
+
     return <AccountsDashboard groups={sortUsersIntoGroups(accounts, groups)} accounts={accounts} />;
   }
 }
