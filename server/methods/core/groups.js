@@ -107,11 +107,11 @@ Meteor.methods({
     check(userId, String);
     check(groupId, String);
 
-    if (!Reaction.hasPermission("admin")) {
+    const { permissions, shopId } = Groups.findOne({ _id: groupId });
+
+    if (!Reaction.hasPermission("admin", shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
-
-    const { permissions, shopId } = Groups.findOne({ _id: groupId });
 
     try {
       setUserPermissions({ _id: userId }, permissions, shopId);
