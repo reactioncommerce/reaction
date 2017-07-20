@@ -16,110 +16,31 @@ class LineItemsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notHovered: true,
-      isClosed: false,
-      isUpdating: false,
-      popOverIsOpen: false,
-      selectAllItems: false,
-      selectedItems: [],
-      editedItems: []
+      isClosed: false
     };
 
+    this.handleClick = this.handleClick.bind(this);
+    this.isExpanded = this.isExpanded.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
   }
 
-  togglePopOver = () => {
-    if (this.state.popOverIsOpen) {
-      return this.setState({
-        popOverIsOpen: false,
-        selectAllItems: false,
-        selectedItems: [],
-        editedItems: []
-      });
+  isExpanded = (itemId) => {
+    if (this.state[`item_${itemId}`]) {
+      return true;
     }
-    return this.setState({ popOverIsOpen: true });
+    return false;
   }
 
-  toggleUpdating = (isUpdating) => {
-    return this.setState({ isUpdating });
-  }
-
-  handleSelectAllItems = (e, uniqueItems) => {
-    const { selectedItems } = this.state;
-    const checked = e.target.checked;
-
-    uniqueItems.map(item => {
-      if (!selectedItems.includes(item._id)) {
-        selectedItems.push(item._id);
-      }
-    });
-
-    if (checked) {
-      return this.setState({
-        selectAllItems: true,
-        isUpdating: true,
-        selectedItems
-      });
-    }
-
-    return this.setState({
-      selectAllItems: false,
-      selectedItems: [],
-      isUpdating: true,
-      editedItems: []
+  handleClose = (itemId) => {
+    this.setState({
+      [`item_${itemId}`]: false
     });
   }
 
-  inputOnChange = (quantityValue, lineItem) => {
-    let { editedItems } = this.state;
-
-    const itemQuantity = editedItems.find(item => {
-      return item.id === lineItem._id;
-    });
-
-    const refundedQuantity = lineItem.quantity - quantityValue;
-
-    if (itemQuantity) {
-      editedItems = editedItems.filter(item => item.id !== lineItem._id);
-      itemQuantity.refundedTotal = lineItem.variants.price * refundedQuantity;
-      itemQuantity.refundedQuantity = refundedQuantity;
-      editedItems.push(itemQuantity);
-    } else {
-      editedItems.push({
-        id: lineItem._id,
-        title: lineItem.title,
-        refundedTotal: lineItem.variants.price * refundedQuantity,
-        refundedQuantity
-      });
-    }
-
-    return this.setState({ editedItems });
-  }
-
-  handleItemSelect = (itemId) => {
-    let { selectedItems, editedItems } = this.state;
-    if (!selectedItems.includes(itemId)) {
-      selectedItems.push(itemId);
-      return this.setState({
-        selectedItems,
-        isUpdating: true,
-        selectAllItems: false });
-    }
-
-    selectedItems = selectedItems.filter((id) => {
-      if (id !== itemId) {
-        return id;
-      }
-    });
-
-    // remove item from edited quantities
-    editedItems = editedItems.filter(item => item.id !== itemId);
-
-    return this.setState({
-      selectedItems,
-      isUpdating: true,
-      selectAllItems: false,
-      editedItems
+  handleClick = (itemId) => {
+    this.setState({
+      [`item_${itemId}`]: true
     });
   }
 
@@ -159,18 +80,11 @@ class LineItemsContainer extends Component {
         <LineItems
           onClose={this.handleClose}
           invoice={invoice}
-          handleSelectAllItems={this.handleSelectAllItems}
-          selectAllItems={this.state.selectAllItems}
-          selectedItems={this.state.selectedItems}
-          togglePopOver={this.togglePopOver}
-          inputOnChange={this.inputOnChange}
-          handleItemSelect={this.handleItemSelect}
-          popOverIsOpen={this.state.popOverIsOpen}
+          isClosed={this.state.isClosed}
+          isExpanded={this.isExpanded}
           displayMedia={this.handleDisplayMedia}
+          handleClick={this.handleClick}
           uniqueItems={uniqueItems}
-          editedItems={this.state.editedItems}
-          isUpdating={this.state.isUpdating}
-          toggleUpdating={this.toggleUpdating}
         />
       </TranslationProvider>
     );

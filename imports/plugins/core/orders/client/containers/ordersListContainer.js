@@ -179,23 +179,23 @@ class OrdersListContainer extends Component {
     const { handleShowMoreClick } = this.props;
 
     return (
-        <OrdersList
-          handleSelect={this.handleSelect}
-          handleShowMoreClick={handleShowMoreClick}
-          orders={this.state.orders}
-          hasMoreOrders={this.state.hasMoreOrders}
-          handleClick={this.handleClick}
-          displayMedia={this.handleDisplayMedia}
-          handleListToggle={this.handleListToggle}
-          handleDetailToggle={this.handleDetailToggle}
-          openDetail= {this.state.openDetail}
-          selectedItems={this.state.selectedItems}
-          openList={this.state.openList}
-          selectAllOrders={this.selectAllOrders}
-          multipleSelect={this.state.multipleSelect}
-          listClassName={this.state.listClassName}
-          detailClassName={this.state.detailClassName}
-        />
+      <OrdersList
+        handleSelect={this.handleSelect}
+        handleShowMoreClick={handleShowMoreClick}
+        orders={this.state.orders}
+        hasMoreOrders={this.state.hasMoreOrders}
+        handleClick={this.handleClick}
+        displayMedia={this.handleDisplayMedia}
+        handleListToggle={this.handleListToggle}
+        handleDetailToggle={this.handleDetailToggle}
+        openDetail= {this.state.openDetail}
+        selectedItems={this.state.selectedItems}
+        openList={this.state.openList}
+        selectAllOrders={this.selectAllOrders}
+        multipleSelect={this.state.multipleSelect}
+        listClassName={this.state.listClassName}
+        detailClassName={this.state.detailClassName}
+      />
     );
   }
 }

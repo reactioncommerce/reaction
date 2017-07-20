@@ -188,14 +188,14 @@ class OrdersList extends Component {
         colWidth = 250;
         colStyle = { borderRight: "1px solid #e6e6e6", marginTop: 4 };
         colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}>
-            <Checkbox
-              className="order-header-checkbox checkbox-large"
-              checked={multipleSelect}
-              name="orders-checkbox"
-              onChange={() => selectAllOrders(orders, multipleSelect)}
-            />
-            <span style={{ marginTop: 10 }}>{columnName}</span>
-          </div>;
+          <Checkbox
+            className="order-header-checkbox checkbox-large"
+            checked={multipleSelect}
+            name="orders-checkbox"
+            onChange={() => selectAllOrders(orders, multipleSelect)}
+          />
+          <span style={{ marginTop: 10 }}>{columnName}</span>
+        </div>;
       }
 
       if (columnName === "Date" || columnName === "Total" || columnName === "ID") {
