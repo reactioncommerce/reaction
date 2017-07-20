@@ -219,6 +219,11 @@ class SortableTable extends Component {
           PaginationComponent={SortableTablePagination}
 
           getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
+            if (otherProps.getTrProps) {
+              console.log("here");
+              return otherProps.getTrProps();
+            }
+
             return {
               onClick: e => { // eslint-disable-line no-unused-vars
                 this.handleClick(rowInfo);

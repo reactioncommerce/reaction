@@ -5,22 +5,24 @@ import OrderTableColumn from "./orderTableColumn";
 
 const classNames = {
   colClassNames: {
-    Name: "order-table-column-name",
-    Email: "order-table-column-email",
-    Date: "order-table-column-date",
-    ID: "order-table-column-id",
-    Total: "order-table-column-total",
-    Shipping: "order-table-column-shipping",
-    Status: "order-table-column-status"
+    "Name": "order-table-column-name",
+    "Email": "order-table-column-email hidden-xs hidden-sm",
+    "Date": "order-table-column-date hidden-xs hidden-sm",
+    "ID": "order-table-column-id hidden-xs",
+    "Total": "order-table-column-total hidden-xs",
+    "Shipping": "order-table-column-shipping hidden-xs hidden-sm",
+    "Status": "order-table-column-status",
+    "": "order-table-column-control"
   },
   headerClassNames: {
-    Name: "order-table-header-name",
-    Email: "order-table-header-email",
-    Date: "order-table-header-date",
-    ID: "order-table-header-id",
-    Total: "order-table-header-total",
-    Shipping: "order-table-header-shipping",
-    Status: "order-table-header-status"
+    "Name": "order-table-header-name",
+    "Email": "order-table-header-email hidden-xs hidden-sm",
+    "Date": "order-table-header-date hidden-xs hidden-sm",
+    "ID": "order-table-header-id hidden-xs",
+    "Total": "order-table-header-total hidden-xs",
+    "Shipping": "order-table-header-shipping hidden-xs hidden-sm",
+    "Status": "order-table-header-status",
+    "": "order-table-header-control"
   }
 };
 
@@ -49,15 +51,12 @@ class OrderTable extends Component {
     // https://react-table.js.org/#/story/cell-renderers-custom-components
     columnNames.forEach((columnName) => {
       let colHeader = undefined;
-      let className = undefined;
-      let headerClassName = undefined;
-      let colWidth = undefined;
       let resizable = true;
       let sortable = true;
+      let colWidth = undefined;
 
       // Add custom styles for the column name `name`
       if (columnName === "Name") {
-        colWidth = 250;
         colHeader = () => (
           <div className="order-table-name-cell">
             <Checkbox
@@ -71,33 +70,9 @@ class OrderTable extends Component {
         );
       }
 
-      if (columnName === "Date" || columnName === "Total" || columnName === "ID") {
-        colWidth = 95;
-      }
-
-      if (columnName === "Shipping" || columnName === "Status") {
-        colWidth = 150;
-      }
-
-      if (columnName === "Email" || columnName === "Date" || columnName === "Shipping") {
-        className = "hidden-xs hidden-sm";
-        headerClassName = "hidden-xs hidden-sm";
-      }
-
-      if (columnName === "ID" || columnName === "Total") {
-        className = "hidden-xs";
-        headerClassName = "hidden-xs";
-      }
-
       if (columnName === "") {
-        colWidth = 50;
-        className = "controls";
         resizable = false;
         sortable = false;
-        // colStyle = {
-        //   padding: 0,
-        //   height: 52
-        // };
       }
 
       const columnMeta = {
@@ -148,9 +123,17 @@ class OrderTable extends Component {
             }
           };
         }}
+        getTrProps={() => {
+          return {
+            style: {
+              height: 49,
+              maxHeight: 49
+            }
+          };
+        }}
         getPaginationProps={() => {
           return {
-            className: "orders-list-pagination"
+            className: "order-table-pagination"
           };
         }}
         getTableProps={() => {

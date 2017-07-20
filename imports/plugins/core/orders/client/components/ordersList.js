@@ -178,7 +178,7 @@ class OrdersList extends Component {
       orders, openDetail, openList, handleDetailToggle,
       handleListToggle, detailClassName, listClassName,
       selectedItems, handleSelect, handleClick, multipleSelect,
-      selectAllOrders
+      selectAllOrders, handleShowMoreClick, hasMoreOrders
     } = this.props;
 
     if (orders.length) {
@@ -222,6 +222,7 @@ class OrdersList extends Component {
                   </div>
                 );
               })}
+              {hasMoreOrders && <button onClick={handleShowMoreClick}>Show More</button>}
             </div>
           }
         </div>
