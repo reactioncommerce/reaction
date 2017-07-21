@@ -79,6 +79,7 @@ class Popover extends Component {
   }
 
   renderButtons() {
+    console.log("here", this.props.showDropdownButton);
     if (this.props.showDropdownButton) {
       return (
         <ButtonGroup>

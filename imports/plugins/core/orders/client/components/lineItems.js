@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { formatPriceString } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox } from "/imports/plugins/core/ui/client/components";
 
 class LineItems extends Component {
   static propTypes = {
@@ -10,6 +11,10 @@ class LineItems extends Component {
     isExpanded: PropTypes.func,
     onClose: PropTypes.func,
     uniqueItems: PropTypes.array
+  }
+
+  state = {
+    isOpen: false
   }
 
   calculateTotal(price, shipping, taxes) {
@@ -22,9 +27,7 @@ class LineItems extends Component {
     return (
       <div className="order-items">
         <div
-          className="invoice order-item form-group order-summary-form-group"
-          onClick={() => handleClick(uniqueItem._id)}
-          style={{ height: 70 }}
+          className="order-item form-group order-summary-form-group"
         >
 
           <div className="order-item-media" style={{ marginLeft: 15 }}>
@@ -57,91 +60,33 @@ class LineItems extends Component {
     );
   }
 
-  renderLineItemInvoice(uniqueItem) {
+  renderPopOver() {
     return (
-      <div>
-        <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></strong>
-          <div className="invoice-details">
-            {formatPriceString(uniqueItem.variants.price)}
-          </div>
-        </div>
-
-        <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
-          <div className="invoice-details">
-            {formatPriceString(uniqueItem.shipping.rate)}
-          </div>
-        </div>
-
-        <div className="order-summary-form-group">
-          <strong>Item tax</strong>
-          <div className="invoice-details">
-            {uniqueItem.taxDetail ? formatPriceString(uniqueItem.taxDetail.tax / uniqueItem.quantity) : formatPriceString(0)}
-          </div>
-        </div>
-
-        <div className="order-summary-form-group">
-          <strong>Tax code</strong>
-          <div className="invoice-details">
-            {uniqueItem.taxDetail ? uniqueItem.taxDetail.taxCode : uniqueItem.variants.taxCode}
-          </div>
-        </div>
-
-        <div className="order-summary-form-group">
-          <strong>TOTAL</strong>
-          <div className="invoice-details">
-            {uniqueItem.taxDetail ?
-              <strong>
-                {this.calculateTotal(uniqueItem.variants.price, uniqueItem.shipping.rate, uniqueItem.taxDetail.tax)}
-              </strong> :
-              <strong>
-                {this.calculateTotal(uniqueItem.variants.price, uniqueItem.shipping.rate, 0)}
-              </strong>
-            }
-          </div>
-        </div>
-        <br/>
-      </div>
+      <Popover
+        isOpen={this.state.isOpen}
+        attachment="middle center"
+        targetAttachment="middle center"
+        showDropdownButton={false}
+      >
+        <div>Heeey</div>
+      </Popover>
     );
   }
 
   render() {
-    const { uniqueItems, isExpanded, onClose } = this.props;
+    const { uniqueItems } = this.props;
     return (
-      <div>
+      <div className="invoice" onClick={() => this.setState({
+        isOpen: true
+      })}
+      >
         {uniqueItems.map((uniqueItem) => {
-          if (!isExpanded(uniqueItem._id)) {
-            return (
-              <div key={uniqueItem._id}> { this.renderLineItem(uniqueItem) } </div>
-            );
-          }
-
           return (
-            <div className="roll-up-invoice-list" key={uniqueItem._id}>
-              <div className="roll-up-content">
-
-                <div style={{ float: "right" }}>
-                  <button className="rui btn btn-default flat icon-only" onClick={() => onClose(uniqueItem._id)}>
-                    <i
-                      className="rui font-icon fa-lg fa fa-times"
-                    />
-                  </button>
-                </div>
-
-                <br/><br/>
-
-                {[...Array(uniqueItem.quantity)].map((v, i) =>
-                  <div key={i}>
-                    { this.renderLineItem(uniqueItem, 1) }
-                    { this.renderLineItemInvoice(uniqueItem) }
-                  </div>
-                )}
-
-              </div>
-            </div>
+            <div key={uniqueItem._id}> {this.renderLineItem(uniqueItem)} </div>
           );
         })}
+
+        {this.renderPopOver()}
       </div>
     );
   }
