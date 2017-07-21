@@ -25,11 +25,11 @@ class AccountsDashboard extends Component {
   componentWillReceiveProps(nextProps) {
     const { groups, accounts } = nextProps;
     const sortedGroups = sortUsersIntoGroups({ groups, accounts });
-    const selectedGroup = groups.find(grp => grp._id === (this.state.selectedGroup || {})._id);
+    const selectedGroup = groups.find((grp) => grp._id === (this.state.selectedGroup || {})._id);
     this.setState({ groups: sortedGroups, accounts, selectedGroup });
   }
 
-  handleGroupSelect = group => {
+  handleGroupSelect = (group) => {
     this.setState({ showSideBar: true, selectedGroup: group });
   };
 

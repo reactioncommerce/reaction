@@ -11,8 +11,8 @@ import * as Collections from "/lib/collections";
  * @return {Array} - array of groups, each having a `users` field
  */
 export default function sortUsersIntoGroups({ accounts, groups }) {
-  const newGroups = groups.map(group => {
-    const matchingAccounts = accounts.map(acc => {
+  const newGroups = groups.map((group) => {
+    const matchingAccounts = accounts.map((acc) => {
       if (acc.groups && acc.groups.indexOf(group._id) > -1) {
         return acc;
       }
@@ -41,7 +41,7 @@ export function getGravatar(user) {
 }
 
 export function groupPermissions(packages) {
-  return packages.map(pkg => {
+  return packages.map((pkg) => {
     const permissions = [];
     if (pkg.registry && pkg.enabled) {
       for (const registryItem of pkg.registry) {
@@ -72,7 +72,7 @@ export function groupPermissions(packages) {
         }
       }
       // TODO review this, hardcoded WIP "reaction"
-      const label = pkg.name.replace("reaction", "").replace(/(-.)/g, x => " " + x[1].toUpperCase());
+      const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (x) => " " + x[1].toUpperCase());
 
       return {
         shopId: pkg.shopId,
@@ -87,6 +87,6 @@ export function groupPermissions(packages) {
 
 function getPermissionMap(permissions) {
   const permissionMap = {};
-  permissions.forEach(existing => (permissionMap[existing.permission] = existing.label));
+  permissions.forEach((existing) => (permissionMap[existing.permission] = existing.label));
   return permissionMap;
 }

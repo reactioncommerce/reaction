@@ -7,16 +7,16 @@ import GroupHeader from "./groupHeader";
 
 const fields = ["name", "email", "createdAt", "dropdown", "button"];
 
-const GroupsTable = props => {
+const GroupsTable = (props) => {
   const { group } = props;
-  const tableClass = length => {
+  const tableClass = (length) => {
     return classnames({
       "accounts-group-table": true,
       "empty-table": !Boolean(length)
     });
   };
 
-  const handleGroupClick = grp => {
+  const handleGroupClick = (grp) => {
     return () => {
       if (props.onGroupSelect) {
         props.onGroupSelect(grp);
@@ -24,10 +24,10 @@ const GroupsTable = props => {
     };
   };
 
-  const columnMetadata = fields.map(columnName => ({
+  const columnMetadata = fields.map((columnName) => ({
     Header: <GroupHeader columnName={columnName} />,
     accessor: "",
-    Cell: data => {
+    Cell: (data) => {
       return <GroupsTableCell account={data.value} columnName={columnName} {...props} />;
     }
   }));

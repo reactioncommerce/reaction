@@ -31,7 +31,7 @@ class AddGroupMembers extends Component {
   }
 
   isInGroup(acc) {
-    const currentUserGroup = this.props.groups.find(grp => {
+    const currentUserGroup = this.props.groups.find((grp) => {
       if (!acc.groups) {
         return false;
       }
@@ -47,9 +47,9 @@ class AddGroupMembers extends Component {
     return this.isInGroup(acc) ? "c-default" : "";
   }
 
-  removeAlert = oldAlert => {
+  removeAlert = (oldAlert) => {
     return this.setState({
-      alertArray: this.state.alertArray.filter(alert => !_.isEqual(alert, oldAlert))
+      alertArray: this.state.alertArray.filter((alert) => !_.isEqual(alert, oldAlert))
     });
   };
 
@@ -72,7 +72,7 @@ class AddGroupMembers extends Component {
       if (this.isInGroup(acc)) {
         return false; // already in group; nothing to change
       }
-      Meteor.call("group/addUser", acc._id, this.props.group._id, err => {
+      Meteor.call("group/addUser", acc._id, this.props.group._id, (err) => {
         let newAlert;
         if (err) {
           newAlert = {
@@ -92,7 +92,7 @@ class AddGroupMembers extends Component {
   }
 
   renderBadge(acc) {
-    const currentUserGroup = this.props.groups.find(grp => {
+    const currentUserGroup = this.props.groups.find((grp) => {
       if (!acc.groups) {
         return false;
       }
@@ -146,10 +146,10 @@ class AddGroupMembers extends Component {
 
   render() {
     const fields = ["name", "group"];
-    const tableData = fields.map(columnName => ({
+    const tableData = fields.map((columnName) => ({
       Header: columnName,
       accessor: "", // sends whole object
-      Cell: data => {
+      Cell: (data) => {
         return this.getCellElements(data, columnName);
       }
     }));

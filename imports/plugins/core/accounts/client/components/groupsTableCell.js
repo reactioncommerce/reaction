@@ -48,7 +48,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
         onChange={handleUserGroupChange(account)}
       >
         {groups
-          .filter(grp => grp._id !== group._id)
+          .filter((grp) => grp._id !== group._id)
           .map((grp, index) => (
             <MenuItem
               key={index}

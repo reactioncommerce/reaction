@@ -38,8 +38,8 @@ class EditGroupContainer extends Component {
     this.setState({ groups, selectedGroup });
   }
 
-  selectGroup = grp => {
-    return event => {
+  selectGroup = (grp) => {
+    return (event) => {
       event.preventDefault();
       if (this.props.onChangeGroup) {
         this.props.onChangeGroup(grp);
@@ -48,20 +48,20 @@ class EditGroupContainer extends Component {
     };
   };
 
-  groupListClass = grp => {
+  groupListClass = (grp) => {
     return classnames({
       "groups-item-selected": grp._id === this.state.selectedGroup._id,
       "groups-list": true
     });
   };
 
-  removeAlert = oldAlert => {
+  removeAlert = (oldAlert) => {
     return this.setState({
-      alertArray: this.state.alertArray.filter(alert => !_.isEqual(alert, oldAlert))
+      alertArray: this.state.alertArray.filter((alert) => !_.isEqual(alert, oldAlert))
     });
   };
 
-  createGroup = groupData => {
+  createGroup = (groupData) => {
     Meteor.call("group/createGroup", groupData, Reaction.getShopId(), (err, res) => {
       let newAlert;
       if (err) {
@@ -115,8 +115,8 @@ class EditGroupContainer extends Component {
     });
   };
 
-  showForm = (grp = {}) => {
-    return e => {
+  showForm = ((grp) = {}) => {
+    return (e) => {
       e.preventDefault();
       e.stopPropagation();
       this.setState({ isEditing: true, selectedGroup: grp });

@@ -29,7 +29,7 @@ class GroupForm extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     if (this.props.createGroup) {
       return this.props.createGroup(this.state);

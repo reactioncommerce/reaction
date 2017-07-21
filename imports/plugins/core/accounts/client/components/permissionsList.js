@@ -23,7 +23,7 @@ class PermissionsList extends Component {
     this.setState({ group: nextProps.group });
   }
 
-  togglePermission = toggledPermission => {
+  togglePermission = (toggledPermission) => {
     return (event, checked) => {
       const groupData = Object.assign({}, this.state.group);
       const permissions = resolvePermissions(toggledPermission);
@@ -42,7 +42,7 @@ class PermissionsList extends Component {
     };
   };
 
-  checked = permission => {
+  checked = (permission) => {
     if (_.includes(this.state.group.permissions, permission)) {
       return true;
     }
@@ -117,8 +117,8 @@ function resolvePermissions(permission) {
 function removePermissions(current, old) {
   const currentArray = [...current];
 
-  old.forEach(val => {
-    _.remove(currentArray, item => item === val);
+  old.forEach((val) => {
+    _.remove(currentArray, (item) => item === val);
   });
   return currentArray;
 }

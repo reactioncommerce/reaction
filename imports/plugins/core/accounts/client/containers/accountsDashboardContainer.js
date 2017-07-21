@@ -8,7 +8,7 @@ import AccountsDashboard from "../components/accountsDashboard";
 const handlers = {
   handleUserGroupChange(account) {
     return (event, groupId) => {
-      Meteor.call("group/addUser", account._id, groupId, err => {
+      Meteor.call("group/addUser", account._id, groupId, (err) => {
         if (err) {
           return Alerts.toast(i18next.t("admin.groups.addUserError", { err: err.message }), "error");
         }
@@ -19,7 +19,7 @@ const handlers = {
 
   handleRemoveUserFromGroup(account) {
     return () => {
-      Meteor.call("group/removeUser", account._id, this.props.group._id, err => {
+      Meteor.call("group/removeUser", account._id, this.props.group._id, (err) => {
         if (err) {
           return Alerts.toast(i18next.t("admin.groups.removeUserError", { err: err.message }), "error");
         }
@@ -42,7 +42,7 @@ const composer = (props, onData) => {
     };
 
     const adminUsers = Meteor.users.find(adminQuery, { fields: { _id: 1 } }).fetch();
-    const ids = adminUsers.map(user => user._id);
+    const ids = adminUsers.map((user) => user._id);
     const accounts = Accounts.find({ _id: { $in: ids }, shopId: Reaction.getShopId() }).fetch();
 
     onData(null, { accounts, groups });
