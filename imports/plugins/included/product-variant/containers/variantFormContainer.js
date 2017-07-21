@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
@@ -228,7 +229,7 @@ class VariantFormContainer extends Component {
 }
 
 function composer(props, onData) {
-  Meteor.subscribe("TaxCodes");
+  Meteor.subscribe("TaxCodes").ready();
 
   const productHandle = Reaction.Router.getParam("handle");
   if (!productHandle) {
@@ -252,5 +253,7 @@ function composer(props, onData) {
 VariantFormContainer.propTypes = {
   variant: PropTypes.object
 };
+
+registerComponent("VariantForm", VariantFormContainer, composeWithTracker(composer));
 
 export default composeWithTracker(composer)(VariantFormContainer);

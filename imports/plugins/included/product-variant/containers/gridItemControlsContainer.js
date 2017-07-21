@@ -1,11 +1,12 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import GridItemControls from "../components/gridItemControls";
 
-class GridItemControlsContainer extends Component {
+class GridItemControlsContainer extends PureComponent {
   static propTypes = {
     isSelected: PropTypes.bool,
     product: PropTypes.object
@@ -23,7 +24,7 @@ class GridItemControlsContainer extends Component {
     return Reaction.hasPermission("createProduct");
   }
 
-  hasChanges =() => {
+  hasChanges = () => {
     return this.props.product.__draft ? true : false;
   }
 
@@ -57,5 +58,7 @@ function composer(props, onData) {
     isSelected
   });
 }
+
+registerComponent("GridItemControls", GridItemControlsContainer, composeWithTracker(composer));
 
 export default composeWithTracker(composer)(GridItemControlsContainer);

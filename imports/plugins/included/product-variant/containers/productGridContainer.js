@@ -1,16 +1,16 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import update from "react/lib/update";
 import _ from "lodash";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
-import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import ProductGrid from "../components/productGrid";
 
-class ProductGridContainer extends Component {
+class ProductGridContainer extends PureComponent {
   static propTypes = {
     canEdit: PropTypes.bool,
     isSearch: PropTypes.bool,
@@ -142,7 +142,7 @@ class ProductGridContainer extends Component {
 
   render() {
     return (
-      <DragDropProvider>
+      <Components.DragDropProvider>
         <ProductGrid
           products={this.products}
           onMove={this.handleProductDrag}
@@ -151,9 +151,11 @@ class ProductGridContainer extends Component {
           isSearch={this.props.isSearch}
           unmountMe={this.props.unmountMe}
         />
-      </DragDropProvider>
+      </Components.DragDropProvider>
     );
   }
 }
+
+registerComponent("ProductGrid", ProductGridContainer);
 
 export default ProductGridContainer;

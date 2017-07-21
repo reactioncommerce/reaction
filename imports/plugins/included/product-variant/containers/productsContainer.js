@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
@@ -41,7 +42,7 @@ function loadMoreProducts() {
   }
 }
 
-class ProductsContainer extends Component {
+class ProductsContainer extends PureComponent {
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
     products: PropTypes.array,
@@ -96,13 +97,14 @@ class ProductsContainer extends Component {
     );
   }
 }
+
 function composer(props, onData) {
   window.prerenderReady = false;
 
   let canLoadMoreProducts = false;
 
   const slug = Reaction.Router.getParam("slug");
-  const tag = Tags.findOne({ slug: slug }) || Tags.findOne(slug);
+  const tag = Tags.findOne({ slug }) || Tags.findOne(slug);
   const scrollLimit = Session.get("productScrollLimit");
   let tags = {}; // this could be shop default implementation needed
 
@@ -157,4 +159,7 @@ function composer(props, onData) {
     canLoadMoreProducts
   });
 }
+
+registerComponent("Products", ProductsContainer, composeWithTracker(composer));
+
 export default composeWithTracker(composer)(ProductsContainer);

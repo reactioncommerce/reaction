@@ -1,13 +1,14 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { ReactionProduct } from "/lib/api";
-import { composeWithTracker } from "/lib/api/compose";
 import GridItemNotice from "../components/gridItemNotice";
 
-class GridItemNoticeController extends Component {
+class GridItemNoticeContainer extends PureComponent {
   static propTypes = {
     product: PropTypes.object
   }
+
   constructor() {
     super();
 
@@ -58,12 +59,6 @@ class GridItemNoticeController extends Component {
   }
 }
 
-function composer(props, onData) {
-  const product = props.product;
+registerComponent("GridItemNotice", GridItemNoticeContainer);
 
-  onData(null, {
-    product
-  });
-}
-
-export default composeWithTracker(composer)(GridItemNoticeController);
+export default GridItemNoticeContainer;

@@ -1,15 +1,15 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
-import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import ProductGridItems from "../components/productGridItems";
 
-class ProductGridItemsContainer extends Component {
+class ProductGridItemsContainer extends PureComponent {
   static propTypes = {
     connectDragSource: PropTypes.func,
     connectDropTarget: PropTypes.func,
@@ -263,9 +263,6 @@ class ProductGridItemsContainer extends Component {
   }
 }
 
-function composer(props, onData) {
-  onData(null, {});
-}
+registerComponent("ProductGridItems", SortableItem("productGridItem", ProductGridItemsContainer));
 
-const container = composeWithTracker(composer)(ProductGridItemsContainer);
-export default SortableItem("productGridItem", container);
+export default SortableItem("productGridItem", ProductGridItemsContainer);
