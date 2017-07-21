@@ -124,19 +124,12 @@ class OrderTable extends Component {
           selectedRows={selectedItems}
           getTheadProps={() => {
             return {
-              style: {
-                borderTop: "1px solid #e6e6e6",
-                borderRight: "1px solid #e6e6e6",
-                borderLeft: "1px solid #e6e6e6"
-              }
+              className: "order-table-thead"
             };
           }}
           getTrGroupProps={() => {
             return {
-              style: {
-                borderRight: "1px solid #e6e6e6",
-                borderLeft: "1px solid #e6e6e6"
-              }
+              className: "order-table-tr-group"
             };
           }}
           getPaginationProps={() => {
@@ -146,9 +139,7 @@ class OrderTable extends Component {
           }}
           getTableProps={() => {
             return {
-              style: {
-                borderBottom: "1px solid #e6e6e6"
-              }
+              className: "order-table-table"
             };
           }}
           showPaginationTop={true}

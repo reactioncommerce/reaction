@@ -242,7 +242,7 @@ class OrdersList extends Component {
     if (orders.length) {
       return (
         <div className="container-fluid-sm">
-          <div style= {{ float: "right" }}>
+          <div className="order-toggle-buttons">
             <button
               className={`order-toggle-btn ${detailClassName}`}
               onClick={handleDetailToggle}
