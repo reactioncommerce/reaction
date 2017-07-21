@@ -79,7 +79,6 @@ class Popover extends Component {
   }
 
   renderButtons() {
-    console.log("here", this.props.showDropdownButton);
     if (this.props.showDropdownButton) {
       return (
         <ButtonGroup>
@@ -92,11 +91,13 @@ class Popover extends Component {
           />
         </ButtonGroup>
       );
+    } else if (this.props.buttonElement) {
+      return React.cloneElement(this.props.buttonElement, {
+        onClick: this.props.onClick
+      });
     }
 
-    return React.cloneElement(this.props.buttonElement, {
-      onClick: this.props.onClick
-    });
+    return <div />;
   }
 
   render() {

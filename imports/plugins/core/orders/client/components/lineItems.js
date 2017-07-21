@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { formatPriceString } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
-import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox } from "/imports/plugins/core/ui/client/components";
+import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox } from "@reactioncommerce/reaction-ui";
 
 class LineItems extends Component {
   static propTypes = {
@@ -68,8 +68,39 @@ class LineItems extends Component {
         targetAttachment="middle center"
         showDropdownButton={false}
       >
-        <div>Heeey</div>
+        {this.popOverContent()}
       </Popover>
+    );
+  }
+
+  popOverContent() {
+    return (
+      <div className="invoice-popover">
+        <div className="invoice-popover-controls">
+          <div className="invoice-popover-checkbox">
+            <Checkbox
+              className="checkbox"
+              checked={true}
+              onChange={() => {}}
+            />
+          </div>
+        </div>
+        <div>
+          {this.props.uniqueItems.map((uniqueItem, index) => (
+            <RolloverCheckbox
+              checkboxClassName="checkbox"
+              onChange={() => {}}
+              checked={true}
+              key={index}
+            >
+              {!this.props.displayMedia(uniqueItem) ?
+                <img src= "/resources/placeholder.gif" /> :
+                <img src={this.props.displayMedia(uniqueItem).url()} />
+              }
+            </RolloverCheckbox>
+          ))}
+        </div>
+      </div>
     );
   }
 
