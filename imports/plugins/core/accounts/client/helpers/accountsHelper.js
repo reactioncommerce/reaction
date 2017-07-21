@@ -87,6 +87,6 @@ export function groupPermissions(packages) {
 
 function getPermissionMap(permissions) {
   const permissionMap = {};
-  _.each(permissions, existing => (permissionMap[existing.permission] = existing.label));
+  permissions.forEach(existing => (permissionMap[existing.permission] = existing.label));
   return permissionMap;
 }

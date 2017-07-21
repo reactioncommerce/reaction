@@ -42,7 +42,7 @@ class SortableTable extends Component {
     const options = {};
     let skip;
 
-    const pubHandle = Meteor.subscribe(publication, this.state.query, _.extend({
+    const pubHandle = Meteor.subscribe(publication, this.state.query, _.assignIn({
       skip: skip
     }, options));
 
@@ -126,7 +126,7 @@ class SortableTable extends Component {
 
     // Add minWidth = undefined to override 100px default set by ReactTable
     const displayColumns = columnMetadata.map((element) => {
-      return _.extend({}, element, {
+      return _.assignIn({}, element, {
         minWidth: undefined
       });
     });

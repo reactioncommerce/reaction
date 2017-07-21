@@ -84,7 +84,7 @@ Template.accountsDashboard.helpers({
     }
   },
 
-  accountsDash() {
+  accountsDashboard() {
     return AccountsDashboardContainer;
   }
 });

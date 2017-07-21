@@ -28,7 +28,7 @@ Meteor.methods({
     check(shopId, String);
     let _id;
 
-    if (!Reaction.hasPermission("admin")) {
+    if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -54,7 +54,7 @@ Meteor.methods({
   /**
    * group/updateGroup
    * @summary updates a permission group for a shop
-   * updates either the name of the permission group or it list of permissions
+   * changes the details of a group (name, desc, permissions etc) to the values passed in.
    * It also goes into affected user data to modify both the groupName (using Accounts schema)
    * and group permissions (using "accounts/removeUserPermissions")
    * @param {Object} groupId - group to be updated
@@ -65,10 +65,9 @@ Meteor.methods({
   "group/updateGroup": function (groupId, newGroupData, shopId) {
     check(groupId, String);
     check(newGroupData, Object);
-    check(newGroupData.name, String);
     check(shopId, String);
 
-    if (!Reaction.hasPermission("admin")) {
+    if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -107,9 +106,9 @@ Meteor.methods({
     check(userId, String);
     check(groupId, String);
 
-    const { permissions, shopId } = Groups.findOne({ _id: groupId });
+    const { permissions, shopId } = Groups.findOne({ _id: groupId }) || {};
 
-    if (!Reaction.hasPermission("admin", shopId)) {
+    if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -134,12 +133,12 @@ Meteor.methods({
     check(userId, String);
     check(groupId, String);
 
-    if (!Reaction.hasPermission("admin")) {
+    const user = Accounts.findOne({ _id: userId });
+    const { permissions, shopId } = Groups.findOne({ _id: groupId }) || {};
+
+    if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
-
-    const user = Accounts.findOne({ _id: userId });
-    const { permissions, shopId } = Groups.findOne({ _id: groupId });
 
     if (!user) {
       throw new Meteor.Error(404, "Could not find user");
