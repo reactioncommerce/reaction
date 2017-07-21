@@ -232,40 +232,33 @@ class OrdersList extends Component {
   }
 
   render() {
-    const {
-      orders, openDetail, openList, handleDetailToggle,
-      handleListToggle, detailClassName, listClassName,
-      selectedItems, handleSelect, handleClick, multipleSelect,
-      selectAllOrders, handleShowMoreClick, hasMoreOrders
-    } = this.props;
-
-    if (orders.length) {
+    if (this.props.orders.length) {
       return (
         <div className="container-fluid-sm">
           <div className="order-toggle-buttons">
             <button
-              className={`order-toggle-btn ${detailClassName}`}
-              onClick={handleDetailToggle}
+              className={`order-toggle-btn ${this.props.detailClassName}`}
+              onClick={this.props.handleDetailToggle}
             >
               <i className="fa fa-th-list" />
             </button>
 
             <button
-              className={`order-toggle-btn ${listClassName}`}
-              onClick={handleListToggle}
+              className={`order-toggle-btn ${this.props.listClassName}`}
+              onClick={this.props.handleListToggle}
             >
               <i className="fa fa-list" />
             </button>
           </div>
 
-          {openList &&
+          {this.props.openList &&
             <OrderTable
-              orders={orders}
-              selectedItems={selectedItems}
-              handleSelect={handleSelect}
-              handleClick={handleClick}
-              multipleSelect={multipleSelect}
-              selectAllOrders={selectAllOrders}
+              orders={this.props.orders}
+              selectedItems={this.props.selectedItems}
+              handleSelect={this.props.handleSelect}
+              handleClick={this.props.handleClick}
+              multipleSelect={this.props.multipleSelect}
+              selectAllOrders={this.props.selectAllOrders}
               shippingBadgeStatus={this.shippingBadgeStatus}
               fulfillmentBadgeStatus={this.fulfillmentBadgeStatus}
               renderBulkOrderActionsBar={this.renderBulkOrderActionsBar}
@@ -274,16 +267,16 @@ class OrdersList extends Component {
             />
           }
 
-          {openDetail &&
+          {this.props.openDetail &&
             <div>
-              {orders.map((order, i) => {
+              {this.props.orders.map((order, i) => {
                 return (
                   <div key={i}>
                     {this.renderOrderCard(order)}
                   </div>
                 );
               })}
-              {hasMoreOrders && <button onClick={handleShowMoreClick}>Show More</button>}
+              {this.props.hasMoreOrders && <button onClick={this.props.handleShowMoreClick}>Show More</button>}
             </div>
           }
         </div>

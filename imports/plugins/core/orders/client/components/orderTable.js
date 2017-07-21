@@ -43,12 +43,6 @@ class OrderTable extends Component {
   }
 
   render() {
-    const {
-      orders, selectedItems, handleSelect, handleClick, multipleSelect, selectAllOrders,
-      fulfillmentBadgeStatus, shippingBadgeStatus, renderBulkOrderActionsBar, renderTableClassNameHidden,
-      renderPaginationClassNameHidden
-    } = this.props;
-
     const filteredFields = {
       "Name": "shipping[0].address.fullName",
       "Email": "email",
@@ -75,9 +69,9 @@ class OrderTable extends Component {
           <div className="order-table-name-cell">
             <Checkbox
               className="order-header-checkbox checkbox-large"
-              checked={multipleSelect}
+              checked={this.props.multipleSelect}
               name="orders-checkbox"
-              onChange={() => selectAllOrders(orders, multipleSelect)}
+              onChange={() => this.props.selectAllOrders(this.props.orders, this.props.multipleSelect)}
             />
             <span style={{ marginTop: 10 }}>{columnName}</span>
           </div>
@@ -99,11 +93,11 @@ class OrderTable extends Component {
         Cell: row => (
           <OrderTableColumn
             row={row}
-            handleClick={handleClick}
-            handleSelect={handleSelect}
-            selectedItems={selectedItems}
-            fulfillmentBadgeStatus={fulfillmentBadgeStatus}
-            shippingBadgeStatus={shippingBadgeStatus}
+            handleClick={this.props.handleClick}
+            handleSelect={this.props.handleSelect}
+            selectedItems={this.props.selectedItems}
+            fulfillmentBadgeStatus={this.props.fulfillmentBadgeStatus}
+            shippingBadgeStatus={this.props.shippingBadgeStatus}
           />
         )
       };
@@ -112,16 +106,16 @@ class OrderTable extends Component {
 
     return (
       <div>
-        {renderBulkOrderActionsBar()}
+        {this.props.renderBulkOrderActionsBar()}
         <SortableTable
-          tableClassName={`rui order table ${renderTableClassNameHidden()} -highlight`}
+          tableClassName={`rui order table ${this.props.renderTableClassNameHidden()} -highlight`}
           publication="CustomPaginatedOrders"
           collection={Orders}
           matchingResultsCount="order-count"
           columnMetadata={customColumnMetadata}
           externalLoadingComponent={Loading}
           filterType="none"
-          selectedRows={selectedItems}
+          selectedRows={this.props.selectedItems}
           getTheadProps={() => {
             return {
               className: "order-table-thead"
@@ -134,7 +128,7 @@ class OrderTable extends Component {
           }}
           getPaginationProps={() => {
             return {
-              className: renderPaginationClassNameHidden()
+              className: this.props.renderPaginationClassNameHidden()
             };
           }}
           getTableProps={() => {
