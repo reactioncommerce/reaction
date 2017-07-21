@@ -87,17 +87,7 @@ class LineItems extends Component {
         </div>
         <div>
           {this.props.uniqueItems.map((uniqueItem, index) => (
-            <RolloverCheckbox
-              checkboxClassName="checkbox"
-              onChange={() => {}}
-              checked={true}
-              key={index}
-            >
-              {!this.props.displayMedia(uniqueItem) ?
-                <img src= "/resources/placeholder.gif" /> :
-                <img src={this.props.displayMedia(uniqueItem).url()} />
-              }
-            </RolloverCheckbox>
+            <div>Hey</div>
           ))}
         </div>
       </div>
