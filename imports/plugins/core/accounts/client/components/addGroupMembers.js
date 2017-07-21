@@ -2,13 +2,7 @@ import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import {
-  Alerts,
-  Card,
-  CardHeader,
-  CardBody,
-  SortableTable
-} from "/imports/plugins/core/ui/client/components";
+import { Alerts, Card, CardHeader, CardBody, SortableTable } from "@reactioncommerce/reaction-ui";
 import { getGravatar } from "../helpers/accountsHelper";
 
 class AddGroupMembers extends Component {

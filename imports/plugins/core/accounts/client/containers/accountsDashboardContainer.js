@@ -1,44 +1,38 @@
+import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
-import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Accounts, Groups } from "/lib/collections";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import AccountsDashboard from "../components/accountsDashboard";
-import sortUsersIntoGroups from "../helpers/accountsHelper";
 
-class AccountsDashboardContainer extends Component {
-  static propTypes = {
-    accounts: PropTypes.array,
-    groups: PropTypes.array
-  };
+const handlers = {
+  handleUserGroupChange(account) {
+    return (event, groupId) => {
+      Meteor.call("group/addUser", account._id, groupId, err => {
+        if (err) {
+          return Alerts.toast(i18next.t("admin.groups.addUserError", { err: err.message }), "error");
+        }
+        return Alerts.toast(i18next.t("admin.groups.addUserSuccess"), "success");
+      });
+    };
+  },
 
-  constructor(props) {
-    super(props);
-    const { accounts, groups } = props;
-
-    this.state = {
-      accounts,
-      groups
+  handleRemoveUserFromGroup(account) {
+    return () => {
+      Meteor.call("group/removeUser", account._id, this.props.group._id, err => {
+        if (err) {
+          return Alerts.toast(i18next.t("admin.groups.removeUserError", { err: err.message }), "error");
+        }
+        return Alerts.toast(i18next.t("admin.groups.removeUserSuccess"), "success");
+      });
     };
   }
-
-  componentWillReceiveProps(nextProps) {
-    const { accounts, groups } = nextProps;
-    this.setState({ accounts, groups });
-  }
-
-  render() {
-    const { accounts, groups } = this.state;
-
-    return <AccountsDashboard groups={sortUsersIntoGroups(accounts, groups)} accounts={accounts} />;
-  }
-}
+};
 
 const composer = (props, onData) => {
   const adminUserSub = Meteor.subscribe("Accounts", null);
   const grpSub = Meteor.subscribe("Groups");
-  // TODO: Review with Spencer
+
   if (adminUserSub.ready() && grpSub.ready()) {
     const groups = Groups.find({ slug: { $nin: ["customer", "guest"] } }).fetch();
     const adminQuery = {
@@ -55,4 +49,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer)(AccountsDashboardContainer);
+export default compose(withProps(handlers), composeWithTracker(composer))(AccountsDashboard);

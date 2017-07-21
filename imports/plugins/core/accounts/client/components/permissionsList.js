@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { ListItem } from "/imports/plugins/core/ui/client/components";
+import { ListItem } from "@reactioncommerce/reaction-ui";
 
 class PermissionsList extends Component {
   static propTypes = {

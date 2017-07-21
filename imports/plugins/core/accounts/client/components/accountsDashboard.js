@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import AccountsTable from "./accountsTable";
+import GroupsTable from "./groupsTable";
 import AccountsManageContainer from "../containers/accountsManageContainer";
+import sortUsersIntoGroups from "../helpers/accountsHelper";
 
 class AccountsDashboard extends Component {
   static propTypes = {
@@ -11,10 +12,11 @@ class AccountsDashboard extends Component {
 
   constructor(props) {
     super(props);
+    const { groups, accounts } = this.props;
 
     this.state = {
-      accounts: props.accounts,
-      groups: props.groups,
+      accounts: accounts,
+      groups: sortUsersIntoGroups({ groups, accounts }),
       showSideBar: false,
       selectedGroup: {}
     };
@@ -22,8 +24,9 @@ class AccountsDashboard extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { groups, accounts } = nextProps;
+    const sortedGroups = sortUsersIntoGroups({ groups, accounts });
     const selectedGroup = groups.find(grp => grp._id === (this.state.selectedGroup || {})._id);
-    this.setState({ groups, accounts, selectedGroup });
+    this.setState({ groups: sortedGroups, accounts, selectedGroup });
   }
 
   handleGroupSelect = group => {
@@ -64,9 +67,7 @@ class AccountsDashboard extends Component {
     if (Array.isArray(groups)) {
       return groups.map((group, index) => {
         return (
-          <div key={index}>
-            <AccountsTable group={group} onGroupSelect={this.handleGroupSelect} {...this.props} />
-          </div>
+          <GroupsTable key={index} group={group} onGroupSelect={this.handleGroupSelect} {...this.props} />
         );
       });
     }

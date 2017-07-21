@@ -6,14 +6,7 @@ import PropTypes from "prop-types";
 import { Packages } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
-import {
-  List,
-  ListItem,
-  Card,
-  CardHeader,
-  CardBody,
-  Alerts
-} from "/imports/plugins/core/ui/client/components";
+import { List, ListItem, Card, CardHeader, CardBody, Alerts } from "@reactioncommerce/reaction-ui";
 import PermissionsList from "../components/permissionsList";
 import GroupForm from "../components/groupForm";
 import { groupPermissions } from "../helpers/accountsHelper";

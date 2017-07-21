@@ -1,6 +1,5 @@
 import React,  { Component } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
 import matchSorter from "match-sorter";
 import ReactTable from "react-table";
 import { Meteor } from "meteor/meteor";
@@ -40,11 +39,8 @@ class SortableTable extends Component {
     const matchingResults = Counts.get(matchingResultsCount);
 
     const options = {};
-    let skip;
 
-    const pubHandle = Meteor.subscribe(publication, this.state.query, _.assignIn({
-      skip: skip
-    }, options));
+    const pubHandle = Meteor.subscribe(publication, this.state.query, Object.assign({}, options));
 
     // optional transform of collection for grid results
     let results = collection.find(this.state.query, options).fetch();
@@ -126,7 +122,7 @@ class SortableTable extends Component {
 
     // Add minWidth = undefined to override 100px default set by ReactTable
     const displayColumns = columnMetadata.map((element) => {
-      return _.assignIn({}, element, {
+      return Object.assign({}, element, {
         minWidth: undefined
       });
     });
@@ -192,13 +188,12 @@ class SortableTable extends Component {
 
   render() {
     const { ...otherProps } = this.props;
-    const defaultClassName = "-striped -highlight";
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (
       <div>
         {this.renderTableFilter()}
         <ReactTable
-          className={otherProps.tableClassName || defaultClassName}
+          className={"-striped -highlight"}
           columns={this.renderColumns()}
           data={otherProps.data || this.renderData()}
           defaultFilterMethod={this.customFilter}

@@ -10,7 +10,7 @@ import * as Collections from "/lib/collections";
  * @param {Array} groups - list of permission groups
  * @return {Array} - array of groups, each having a `users` field
  */
-export default function sortUsersIntoGroups(accounts, groups) {
+export default function sortUsersIntoGroups({ accounts, groups }) {
   const newGroups = groups.map(group => {
     const matchingAccounts = accounts.map(acc => {
       if (acc.groups && acc.groups.indexOf(group._id) > -1) {

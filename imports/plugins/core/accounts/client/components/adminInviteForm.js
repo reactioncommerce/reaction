@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { Card, CardHeader, CardBody, Translation, Alerts } from "/imports/plugins/core/ui/client/components";
+import { Card, CardHeader, CardBody, Translation, Alerts } from "@reactioncommerce/reaction-ui";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 
