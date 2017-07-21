@@ -1,24 +1,25 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { isEmpty } from "lodash";
 import _ from "lodash";
 import { StyleRoot } from "radium";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media, Cart } from "/lib/collections";
-import { ProductDetail, ProductNotFound } from "../components";
+import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
-import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
 import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 
 class ProductDetailContainer extends Component {
   constructor(props) {
     super(props);
+
     this.animationTimeOut = null;
     this.textTimeOut = null;
+
     this.state = {
       cartQuantity: 1,
       click: 0
@@ -228,9 +229,9 @@ class ProductDetailContainer extends Component {
   }
 
   render() {
-    if (isEmpty(this.props.product)) {
+    if (_.isEmpty(this.props.product)) {
       return (
-        <ProductNotFound />
+        <Components.ProductNotFound />
       );
     }
     return (
@@ -239,7 +240,7 @@ class ProductDetailContainer extends Component {
           <StyleRoot>
             <ProductDetail
               cartQuantity={this.state.cartQuantity}
-              mediaGalleryComponent={<MediaGalleryContainer media={this.props.media} />}
+              mediaGalleryComponent={<Components.MediaGallery media={this.props.media} />}
               onAddToCart={this.handleAddToCart}
               onCartQuantityChange={this.handleCartQuantityChange}
               onViewContextChange={this.handleViewContextChange}
@@ -379,6 +380,8 @@ function composer(props, onData) {
     }
   }
 }
+
+registerComponent("ProductDetail", ProductDetailContainer, composeWithTracker(composer));
 
 // Decorate component and export
 export default composeWithTracker(composer)(ProductDetailContainer);

@@ -1,16 +1,16 @@
+import { Components } from "@reactioncommerce/reaction-components";
 import { Template } from "meteor/templating";
-import { ProductDetailContainer, PublishContainer } from "../containers";
 
 Template.productDetailSimple.helpers({
   PDC() {
-    return ProductDetailContainer;
+    return Components.ProductDetail;
   }
 });
 
 Template.productDetailSimpleToolbar.helpers({
   PublishContainerComponent() {
     return {
-      component: PublishContainer
+      component: Components.ProductPublish
     };
   }
 });

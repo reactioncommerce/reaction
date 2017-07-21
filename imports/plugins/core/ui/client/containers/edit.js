@@ -1,7 +1,7 @@
 import React, { Children, Component } from "react";
 import PropTypes from "prop-types";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import { EditButton, VisibilityButton, Translation } from "/imports/plugins/core/ui/client/components";
 import { composeWithTracker } from "/lib/api/compose";
 
 const styles = {
@@ -58,7 +58,7 @@ class EditContainer extends Component {
     if (this.props.showsVisibilityButton) {
       return (
         <span className="edit-container-item" style={styles.editContainerItem}>
-          <VisibilityButton
+          <Components.VisibilityButton
             onClick={this.handleVisibilityButtonClick}
             toggleOn={this.props.data.isVisible}
           />
@@ -94,7 +94,7 @@ class EditContainer extends Component {
 
             tooltip = (
               <span>
-                <Translation defaultValue="Unpublished Changes" i18nKey="revisions.unpublishedChanges" />
+                <Components.Translation defaultValue="Unpublished Changes" i18nKey="revisions.unpublishedChanges" />
               </span>
             );
 
@@ -107,7 +107,7 @@ class EditContainer extends Component {
 
       tooltip = (
         <span>
-          <Translation defaultValue="Unpublished Changes" i18nKey="revisions.unpublishedChanges" />
+          <Components.Translation defaultValue="Unpublished Changes" i18nKey="revisions.unpublishedChanges" />
         </span>
       );
     }
@@ -118,7 +118,7 @@ class EditContainer extends Component {
 
     return (
       <span className="edit-container-item" style={styles.editContainerItem}>
-        <EditButton
+        <Components.EditButton
           onClick={this.handleEditButtonClick}
           status={status}
           tooltip={tooltip}
@@ -187,5 +187,7 @@ function composer(props, onData) {
     hasPermission
   });
 }
+
+registerComponent("EditContainer", EditContainer, composeWithTracker(composer));
 
 export default composeWithTracker(composer)(EditContainer);
