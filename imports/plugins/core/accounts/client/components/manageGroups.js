@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import AdminInviteForm from "../components/adminInviteForm";
-import EditGroupContainer from "./editGroupContainer";
-import AddGroupMembers from "../components/addGroupMembers";
+import AdminInviteForm from "./adminInviteForm";
+import EditGroupContainer from "../containers/editGroupContainer";
+import AddGroupMembers from "./addGroupMembers";
 
-class AccountsManageContainer extends Component {
+class ManageGroups extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     group: PropTypes.object,
@@ -42,4 +42,4 @@ class AccountsManageContainer extends Component {
   }
 }
 
-export default AccountsManageContainer;
+export default ManageGroups;

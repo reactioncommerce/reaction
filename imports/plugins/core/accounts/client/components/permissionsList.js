@@ -88,7 +88,7 @@ class PermissionsList extends Component {
 
   render() {
     return (
-      <div>
+      <div className="permissions-list">
         {this.renderPermissions(_.compact(this.props.permissions))}
       </div>
     );

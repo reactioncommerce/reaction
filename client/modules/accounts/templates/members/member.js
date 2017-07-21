@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Roles } from "meteor/alanning:roles";
-import AccountsManageContainer from "/imports/plugins/core/accounts/client/containers/accountsManageContainer";
+import ManageGroups from "/imports/plugins/core/accounts/client/components/manageGroups";
 
 const getPermissionMap = (permissions) => {
   const permissionMap = {};
@@ -137,7 +137,7 @@ Template.memberSettings.helpers({
 
   accountsDetail() {
     return {
-      component: AccountsManageContainer,
+      component: ManageGroups,
       ...Template.currentData()
     };
   }

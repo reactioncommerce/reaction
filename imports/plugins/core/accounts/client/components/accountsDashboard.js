@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import GroupsTable from "./groupsTable";
-import AccountsManageContainer from "../containers/accountsManageContainer";
+import ManageGroups from "./manageGroups";
 import sortUsersIntoGroups from "../helpers/accountsHelper";
 
 class AccountsDashboard extends Component {
@@ -51,8 +51,7 @@ class AccountsDashboard extends Component {
     if (this.state.showSideBar) {
       const { groups, accounts } = this.state;
       return (
-        <AccountsManageContainer
-          className="accounts-manage-container"
+        <ManageGroups
           group={this.state.selectedGroup}
           groups={groups}
           accounts={accounts}
