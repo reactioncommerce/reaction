@@ -12,12 +12,13 @@ class Translation extends Component {
     });
 
     return (
-      <span>{translation}</span>
+      <span className={this.props.className}>{translation}</span>
     );
   }
 }
 
 Translation.propTypes = {
+  className: PropTypes.string,
   defaultValue: PropTypes.string,
   i18nKey: PropTypes.string
 };

@@ -190,6 +190,24 @@ class SortableTable extends Component {
     return null;
   }
 
+  /**
+   * selectedRowsClassName() - if any rows are selected, give them a className of "selected-row"
+   * @param {object} rowInfo row data passed in from ReactTable
+   * @returns {String} className to apply to row that is selected, or empty string if no row is selected
+   */
+  selectedRowsClassName(rowInfo) {
+    const { selectedRows } = this.props;
+    let className = "";
+
+    if (selectedRows && selectedRows.length) {
+      if (selectedRows.includes(rowInfo.row._id)) {
+        className = "selected-row";
+      }
+    }
+
+    return className;
+  }
+
   render() {
     const { ...otherProps } = this.props;
     const defaultClassName = "-striped -highlight";
@@ -226,7 +244,8 @@ class SortableTable extends Component {
             return {
               onClick: e => { // eslint-disable-line no-unused-vars
                 this.handleClick(rowInfo);
-              }
+              },
+              className: this.selectedRowsClassName(rowInfo)
             };
           }}
           getTableProps={otherProps.getTableProps}
@@ -268,6 +287,8 @@ SortableTable.propTypes = {
   publication: PropTypes.string,
   /** @type {object} query provides query for publication filtering */
   query: PropTypes.object,
+  /** @type {array} selectedRows provides selected rows in the table */
+  selectedRows: PropTypes.array,
   /** @type {function} transform transform of collection for grid results */
   transform: PropTypes.func
 };

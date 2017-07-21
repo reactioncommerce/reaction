@@ -52,6 +52,9 @@ class OrdersListContainer extends Component {
   }
 
   handleSelect = (event, isInputChecked, name) => {
+    this.setState({
+      multipleSelect: false
+    });
     const selectedItemsArray = this.state.selectedItems;
 
     if (!selectedItemsArray.includes(name)) {
@@ -66,14 +69,12 @@ class OrdersListContainer extends Component {
         }
       });
       this.setState({
-        selectedItems: updatedSelectedArray,
-        multipleSelect: false
+        selectedItems: updatedSelectedArray
       });
     }
   }
 
   selectAllOrders = (orders, areAllSelected) => {
-    const selected = this.state.selectedItems;
     if (areAllSelected) {
       // if all orders are selected, clear the selectedItems array
       // and set multipleSelect to false
@@ -82,24 +83,16 @@ class OrdersListContainer extends Component {
         multipleSelect: false
       });
     } else {
-      // if there are some orders that have been selected,
-      // but not all clear the selectedItems array
-      if (selected.length !== 0 && selected.length < orders.length) {
-        this.setState({
-          selectedItems: [],
-          multipleSelect: false
-        });
-        // if there are no selected orders, loop through the orders array and return a
-        // new array with order ids only, then set the array with the orderIds array
-      } else if (selected.length === 0) {
-        const orderIds = orders.map((order) => {
-          return order._id;
-        });
-        this.setState({
-          selectedItems: orderIds,
-          multipleSelect: true
-        });
-      }
+      // if there are no selected orders, or if there are some orders that have been
+      // selected but not all of them, loop through the orders array and return a
+      // new array with order ids only, then set the selectedItems array with the orderIds
+      const orderIds = orders.map((order) => {
+        return order._id;
+      });
+      this.setState({
+        selectedItems: orderIds,
+        multipleSelect: true
+      });
     }
   }
 

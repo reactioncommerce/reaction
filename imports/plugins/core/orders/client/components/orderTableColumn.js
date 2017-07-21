@@ -76,6 +76,7 @@ class OrderTableColumn extends Component {
     if (columnAccessor === "shipping[0].workflow.status") {
       return (
         <Badge
+          className="orders-badge"
           badgeSize="large"
           i18nKeyLabel={`cartDrawer.${row.value}`}
           label={row.value}

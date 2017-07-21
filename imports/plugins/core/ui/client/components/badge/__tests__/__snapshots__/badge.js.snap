@@ -2,7 +2,7 @@
 
 exports[`Badge snapshot test 1`] = `
 <span
-  className="rui badge"
+  className="rui badge Classes to apply"
   style={
     Object {
       "display": "inline-flex",

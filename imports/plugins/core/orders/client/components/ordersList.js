@@ -4,7 +4,7 @@ import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
-import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
+import { Badge, ClickToCopy, Icon, Translation, Checkbox, Button } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 import OrderTable from "./orderTable";
 
@@ -172,57 +172,111 @@ class OrdersList extends Component {
     );
   }
 
+  handleClick = (event) => {
+    if (this.props.handleShowMoreClick) {
+      this.props.handleShowMoreClick(event);
+    }
+  }
+
+  renderBulkOrderActionsBar = () => {
+    const { orders, selectedItems, selectAllOrders } = this.props;
+
+    if (selectedItems.length > 0) {
+      return (
+        <div className="bulk-order-actions-bar">
+          <Checkbox
+            className="checkbox-large orders-checkbox"
+            checked={this.renderCheckedStatus()}
+            name="orders-checkbox"
+            onChange={() => selectAllOrders(orders, this.renderCheckedStatus())}
+          />
+          <Translation
+            className="selected-orders"
+            defaultValue={`${selectedItems.length} Selected`}
+            i18nKey={`${selectedItems.length} order.selected`}
+          />
+          <Button
+            status="success"
+            bezelStyle="solid"
+            className="capture-orders-button"
+            label="Capture"
+            i18nKeyLabel="order.capture"
+          />
+          <Button
+            status="default"
+            bezelStyle="solid"
+            className="bulk-actions-button"
+            label="Bulk Actions"
+            i18nKeyLabel="order.bulkActions"
+            icon="fa fa-chevron-down"
+            iconAfter={true}
+          />
+        </div>
+      );
+    }
+  }
+
+  renderCheckedStatus() {
+    const { selectedItems, orders, multipleSelect } = this.props;
+    return selectedItems.length === orders.length ? true : multipleSelect;
+  }
+
+  renderTableClassNameHidden = () => {
+    const { selectedItems } = this.props;
+    return selectedItems.length > 0 ? "table-header-hidden" : "table-header-visible";
+  }
+
+  renderPaginationClassNameHidden = () => {
+    const { selectedItems } = this.props;
+    return selectedItems.length > 0 ? "order-table-pagination-hidden" : "order-table-pagination-visible";
+  }
 
   render() {
-    const {
-      orders, openDetail, openList, handleDetailToggle,
-      handleListToggle, detailClassName, listClassName,
-      selectedItems, handleSelect, handleClick, multipleSelect,
-      selectAllOrders, handleShowMoreClick, hasMoreOrders
-    } = this.props;
-
-    if (orders.length) {
+    if (this.props.orders.length) {
       return (
         <div className="container-fluid-sm">
-          <div style= {{ float: "right" }}>
+          <div className="order-toggle-buttons">
             <button
-              className={`order-toggle-btn ${detailClassName}`}
-              onClick={handleDetailToggle}
+              className={`order-toggle-btn ${this.props.detailClassName}`}
+              onClick={this.props.handleDetailToggle}
             >
               <i className="fa fa-th-list" />
             </button>
 
             <button
-              className={`order-toggle-btn ${listClassName}`}
-              onClick={handleListToggle}
+              className={`order-toggle-btn ${this.props.listClassName}`}
+              onClick={this.props.handleListToggle}
             >
               <i className="fa fa-list" />
             </button>
           </div>
 
-          {openList &&
+          {this.props.openList &&
             <OrderTable
-              orders={orders}
-              selectedItems={selectedItems}
-              handleSelect={handleSelect}
-              handleClick={handleClick}
-              multipleSelect={multipleSelect}
-              selectAllOrders={selectAllOrders}
+              orders={this.props.orders}
+              selectedItems={this.props.selectedItems}
+              handleSelect={this.props.handleSelect}
+              handleClick={this.props.handleClick}
+              multipleSelect={this.props.multipleSelect}
+              selectAllOrders={this.props.selectAllOrders}
               shippingBadgeStatus={this.shippingBadgeStatus}
               fulfillmentBadgeStatus={this.fulfillmentBadgeStatus}
+              renderBulkOrderActionsBar={this.renderBulkOrderActionsBar}
+              renderPaginationClassNameHidden={this.renderPaginationClassNameHidden}
+              renderTableClassNameHidden={this.renderTableClassNameHidden}
             />
           }
 
-          {openDetail &&
+          {this.props.openDetail &&
             <div>
-              {orders.map((order, i) => {
+              {this.props.orders.map((order, i) => {
                 return (
                   <div key={i}>
                     {this.renderOrderCard(order)}
                   </div>
                 );
               })}
-              {hasMoreOrders && <button onClick={handleShowMoreClick}>Show More</button>}
+              {this.props.hasMoreOrders && <button onClick={this.props.handleShowMoreClick}>Show More</button>}
             </div>
           }
         </div>

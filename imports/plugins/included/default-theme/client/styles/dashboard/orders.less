@@ -694,11 +694,39 @@
     border: solid 2px #5e6264;
   }
 
-  // Pagination Styling
-  .order-table-pagination {
+  .column-name-name {
+    margin-top: 10;
+  }
+
+  .order-table-pagination-visible {
     border-top: none;
     margin-top: 10px;
     margin-bottom: 10px;
+  }
+
+  .order-table-pagination-hidden {
+    display: none;
+  }
+
+  .order-table-thead {
+    border-top: 1px solid #e6e6e6;
+    border-right: 1px solid #e6e6e6;
+    border-left: 1px solid #e6e6e6;
+  }
+
+  .order-table-tr-group {
+    border-right: 1px solid #e6e6e6;
+    border-left: 1px solid #e6e6e6;
+  }
+
+  .order-table-table {
+    border-bottom: 1px solid #e6e6e6;
+  }
+
+  .rt-tbody {
+    .rt-tr.selected-row {
+      background-color: #e8fcf6;
+    }
   }
 }
 
@@ -726,6 +754,61 @@
   }
 }
 
+.rui.order.table.table-header-hidden {
+  .rt-thead {
+    border-bottom: none;
+
+    .rt-tr {
+      display: none;
+    }
+  }
+}
+
+.rui.order.table.table-header-visible {
+  .rt-thead {
+    .rt-tr {
+      height: 56px;
+    }
+  }
+}
+
+.order-toggle-btn, .badge-basic.orders-badge {
+  background: transparent;
+}
+
+.bulk-order-actions-bar {
+  height: 68px;
+  background-color: #f7f7f7;
+  padding-top: 20px;
+  margin-top: 78px;
+
+  .orders-checkbox {
+    margin-left: 11px;
+    vertical-align: -7px;
+  }
+
+  .selected-orders {
+    font-size: 15px;
+    font-weight: bold;
+    color: #1c98d4;
+    margin-left: 13px;
+    vertical-align: middle;
+  }
+
+  .capture-orders-button, .bulk-actions-button {
+    width: 161px;
+    text-align: center;
+    margin-left: 20px;
+    vertical-align: middle;
+  }
+
+  .bulk-actions-button {
+    i {
+      margin-left: 20px;
+    }
+  }
+}
+
 .order-toggle-btn {
   border: none;
   background: transparent;
@@ -742,4 +825,8 @@
 
 .order-toggle-btn.order-icon-toggle {
   color: #1999dd;
+}
+
+.order-toggle-buttons {
+  float: right;
 }
