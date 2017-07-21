@@ -30,7 +30,11 @@ class OrdersList extends Component {
   constructor() {
     super();
     this.state = {
-      renderFlowList: false
+      renderFlowList: false,
+      pickingReport: false,
+      packed: false,
+      generateLabel: false,
+      shipped: false
     };
   }
 
@@ -229,6 +233,7 @@ class OrdersList extends Component {
     this.setState({
       renderFlowList: !this.state.renderFlowList
     });
+    this.setListItemsToDefault();
   }
 
   renderShippingFLowList() {
@@ -237,26 +242,79 @@ class OrdersList extends Component {
         <List className="shipping-flow-list">
           <ListItem
             label="Picking Report"
+            value="pickingReport"
+            onClick={this.handleListItemClick}
+            listItemClassName={this.state.pickingReport ? "selected" : ""}
           >
-            <Icon icon="fa fa-circle-o"/>
+            {this.state.pickingReport ?
+              <div>
+                <Icon className="bulk-actions-icons" icon="fa fa-print"/>
+                <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
+              </div>
+              :
+              <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>}
           </ListItem>
           <ListItem
             label="Packed"
+            value="packed"
+            onClick={this.handleListItemClick}
+            listItemClassName={this.state.packed ? "selected" : ""}
           >
-            <Icon icon="fa fa-circle-o"/>
+            {this.state.packed ?
+              <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
+              :
+              <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>
+            }
           </ListItem>
           <ListItem
             label="Generate Label"
+            value="generateLabel"
+            onClick={this.handleListItemClick}
+            listItemClassName={this.state.generateLabel ? "selected" : ""}
           >
-            <Icon icon="fa fa-circle-o"/>
+            {this.state.generateLabel ?
+              <div>
+                <Icon className="bulk-actions-icons" icon="fa fa-print"/>
+                <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
+              </div>
+              :
+              <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>
+            }
           </ListItem>
           <ListItem
             label="Shipped"
+            value="shipped"
+            onClick={this.handleListItemClick}
+            listItemClassName={this.state.shipped ? "selected" : ""}
           >
-            <Icon icon="fa fa-circle-o"/>
+            {this.state.shipped ?
+              <div>
+                <Icon className="bulk-actions-icons" icon="fa fa-paper-plane-o" />
+                <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
+              </div>
+              :
+              <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>
+            }
           </ListItem>
         </List>
       );
+    }
+  }
+
+  handleListItemClick = (event, value) => {
+    this.setState({
+      [value]: true
+    });
+  }
+
+  setListItemsToDefault() {
+    if (this.state.renderFlowList === false || this.props.selectedItems.length === 0) {
+      this.setState({
+        pickingReport: false,
+        packed: false,
+        generateLabel: false,
+        shipped: false
+      });
     }
   }
 
