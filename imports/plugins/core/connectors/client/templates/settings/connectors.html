@@ -1,0 +1,21 @@
+<template name="connectorSettings">
+    {{#each reactionApps provides='connectorSettings'}}
+
+    <div class="panel panel-default">
+      <div class="panel-heading panel-heading-flex">
+        <div class="panel-title">
+          <i class="fa fa-{{name}}"></i>
+          <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
+
+        </div>
+        <div class="panel-controls">
+          <input class="checkbox-switch connector-settings" type="checkbox" name="enabled" data-id={{packageId}} data-key="{{settingsKey}}" {{checked enabled}}>
+        </div>
+      </div>
+      <div class="panel-body {{shown enabled}}">
+        {{> Template.dynamic template=template data=.}}
+      </div>
+    </div>
+    {{/each}}
+
+</template>
