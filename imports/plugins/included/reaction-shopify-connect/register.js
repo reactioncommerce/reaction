@@ -1,7 +1,7 @@
 import { Reaction } from "/server/api";
 
 Reaction.registerPackage({
-  label: "Connectors",
+  label: "Shopify Connect",
   name: "reaction-shopify-connect",
   icon: "fa fa-exchange",
   autoEnable: true,
@@ -9,14 +9,15 @@ Reaction.registerPackage({
     apiKey: "",
     password: "",
     sharedSecret: "",
-    shopifyDomaindomain: ""
+    shopifyDomain: ""
   },
   registry: [{
-    label: "Shopify Connector Settings",
+    label: "Shopify Connect Settings",
+    name: "settings/connectors/shopify",
     icon: "fa fa-exchange",
     route: "/dashboard/connectors/shopify",
     provides: "connectorSettings",
     container: "dashboard",
-    template: "reactionConnectorSettings"
+    template: "shopifyConnectSettings"
   }]
 });

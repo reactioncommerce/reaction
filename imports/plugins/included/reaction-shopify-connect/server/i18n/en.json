@@ -1,0 +1,27 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-shopify-connect",
+  "translation": {
+    "reaction-shopify-connect": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Data Connector for Shopify"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "Import Products from Shopify",
+          "editApiKey": "Edit API Key",
+          "editPassword": "Edit API Password",
+          "editSharedSecret": "Edit API Shared Secret",
+          "editShopifyDomain": "Edit Shopify Domain",
+          "productImportSuccess": "Products imported successfully.",
+          "productImportFailed": "Error importing products."
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Settings saved! Shippo API is now enabled."
+      }
+    }
+  }
+}]

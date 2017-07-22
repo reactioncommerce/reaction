@@ -1,1 +1,1 @@
-export const connectorsRoles = ["admin", "owner"];
+export const connectorsRoles = ["admin", "owner", "connectors"];
