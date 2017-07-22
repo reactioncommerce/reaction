@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
+import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
@@ -41,61 +42,63 @@ function loadMoreProducts() {
   }
 }
 
-class ProductsContainer extends PureComponent {
-  static propTypes = {
-    canLoadMoreProducts: PropTypes.bool,
-    products: PropTypes.array,
-    productsSubscription: PropTypes.object
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      initialLoad: true
+const wrapComponent = (Comp) => (
+  class ProductsContainer extends PureComponent {
+    static propTypes = {
+      canLoadMoreProducts: PropTypes.bool,
+      products: PropTypes.array,
+      productsSubscription: PropTypes.object
     };
 
-    this.ready = this.ready.bind(this);
-    this.loadMoreProducts = this.loadMoreProducts.bind(this);
-  }
+    constructor(props) {
+      super(props);
+      this.state = {
+        initialLoad: true
+      };
 
-  ready = () => {
-    const isInitialLoad = this.state.initialLoad === true;
-    const isReady = this.props.productsSubscription.ready();
-
-    if (isInitialLoad === false) {
-      return true;
+      this.ready = this.ready.bind(this);
+      this.loadMoreProducts = this.loadMoreProducts.bind(this);
     }
 
-    if (isReady) {
-      return true;
+    ready = () => {
+      const isInitialLoad = this.state.initialLoad === true;
+      const isReady = this.props.productsSubscription.ready();
+
+      if (isInitialLoad === false) {
+        return true;
+      }
+
+      if (isReady) {
+        return true;
+      }
+      return false;
     }
-    return false;
-  }
 
-  loadMoreProducts = () => {
-    return this.props.canLoadMoreProducts === true;
-  }
+    loadMoreProducts = () => {
+      return this.props.canLoadMoreProducts === true;
+    }
 
-  loadProducts = (event) => {
-    event.preventDefault();
-    this.setState({
-      initialLoad: false
-    });
-    loadMoreProducts();
-  }
+    loadProducts = (event) => {
+      event.preventDefault();
+      this.setState({
+        initialLoad: false
+      });
+      loadMoreProducts();
+    }
 
-  render() {
-    return (
-      <ProductsComponent
-        ready={this.ready}
-        products={this.props.products}
-        productsSubscription={this.props.productsSubscription}
-        loadMoreProducts={this.loadMoreProducts}
-        loadProducts={this.loadProducts}
-      />
-    );
+    render() {
+      return (
+        <Comp
+          ready={this.ready}
+          products={this.props.products}
+          productsSubscription={this.props.productsSubscription}
+          loadMoreProducts={this.loadMoreProducts}
+          loadProducts={this.loadProducts}
+        />
+      );
+    }
   }
-}
+);
 
 function composer(props, onData) {
   window.prerenderReady = false;
@@ -159,6 +162,12 @@ function composer(props, onData) {
   });
 }
 
-registerComponent("Products", ProductsContainer, composeWithTracker(composer));
+registerComponent("Products", ProductsComponent, [
+  composeWithTracker(composer),
+  wrapComponent
+]);
 
-export default composeWithTracker(composer)(ProductsContainer);
+export default compose(
+  composeWithTracker(composer),
+  wrapComponent
+)(ProductsComponent);

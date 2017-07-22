@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Measure from "react-measure";
 import update from "react/lib/update";
+import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { MediaGallery } from "../components";
+import MediaGallery from "../components/media/mediaGallery";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Media, Revisions } from "/lib/collections";
@@ -49,135 +50,144 @@ function uploadHandler(files) {
   return true;
 }
 
-class MediaGalleryContainer extends Component {
-  // Load first image as featuredImage
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      featuredMedia: props.media[0],
-      dimensions: {
-        width: -1,
-        height: -1
-      }
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      featuredMedia: nextProps.media[0],
-      media: nextProps.media
-    });
-  }
-
-  handleDrop = (files) => {
-    uploadHandler(files);
-  }
-
-  handleRemoveMedia = (media) => {
-    const imageUrl = media.url();
-    const mediaId = media._id;
-
-    Alerts.alert({
-      title: "Remove Media?",
-      type: "warning",
-      showCancelButton: true,
-      imageUrl,
-      imageHeight: 150
-    }, (isConfirm) => {
-      if (isConfirm) {
-        Media.remove({ _id: mediaId }, (error) => {
-          if (error) {
-            Alerts.toast(error.reason, "warning", {
-              autoHide: 10000
-            });
-          }
-
-          // updateImagePriorities();
-        });
-      }
-      // show media as removed (since it will not disappear until changes are published
-    });
-  }
-
-  get allowFeaturedMediaHover() {
-    if (this.state.featuredMedia) {
-      return true;
+const wrapComponent = (Comp) => (
+  class MediaGalleryContainer extends Component {
+    static propTypes = {
+      editable: PropTypes.bool,
+      id: PropTypes.string,
+      media: PropTypes.arrayOf(PropTypes.object),
+      placement: PropTypes.string
     }
-    return false;
-  }
 
-  get media() {
-    return (this.state && this.state.media) || this.props.media;
-  }
+    // Load first image as featuredImage
+    constructor(props) {
+      super(props);
 
-  handleMouseEnterMedia = (event, media) => {
-    this.setState({
-      featuredMedia: media
-    });
-  }
+      this.state = {
+        featuredMedia: props.media[0],
+        dimensions: {
+          width: -1,
+          height: -1
+        }
+      };
+    }
 
-  handleMouseLeaveMedia = () => {
-    this.setState({
-      featuredMedia: undefined
-    });
-  }
+    componentWillReceiveProps(nextProps) {
+      this.setState({
+        featuredMedia: nextProps.media[0],
+        media: nextProps.media
+      });
+    }
 
-  handleMoveMedia = (dragIndex, hoverIndex) => {
-    const media = this.props.media[dragIndex];
+    handleDrop = (files) => {
+      uploadHandler(files);
+    }
 
-    // Apply new sort order to variant list
-    const newMediaOrder = update(this.props.media, {
-      $splice: [
-        [dragIndex, 1],
-        [hoverIndex, 0, media]
-      ]
-    });
+    handleRemoveMedia = (media) => {
+      const imageUrl = media.url();
+      const mediaId = media._id;
 
-    // Set local state so the component does't have to wait for a round-trip
-    // to the server to get the updated list of variants
-    this.setState({
-      media: newMediaOrder
-    });
+      Alerts.alert({
+        title: "Remove Media?",
+        type: "warning",
+        showCancelButton: true,
+        imageUrl,
+        imageHeight: 150
+      }, (isConfirm) => {
+        if (isConfirm) {
+          Media.remove({ _id: mediaId }, (error) => {
+            if (error) {
+              Alerts.toast(error.reason, "warning", {
+                autoHide: 10000
+              });
+            }
 
-    // Save the updated positions
-    Meteor.defer(() => {
-      newMediaOrder.forEach((mediaItem, index) => {
-        Media.update(mediaItem._id, {
-          $set: {
-            "metadata.priority": index
-          }
+            // updateImagePriorities();
+          });
+        }
+        // show media as removed (since it will not disappear until changes are published
+      });
+    }
+
+    get allowFeaturedMediaHover() {
+      if (this.state.featuredMedia) {
+        return true;
+      }
+      return false;
+    }
+
+    get media() {
+      return (this.state && this.state.media) || this.props.media;
+    }
+
+    handleMouseEnterMedia = (event, media) => {
+      this.setState({
+        featuredMedia: media
+      });
+    }
+
+    handleMouseLeaveMedia = () => {
+      this.setState({
+        featuredMedia: undefined
+      });
+    }
+
+    handleMoveMedia = (dragIndex, hoverIndex) => {
+      const media = this.props.media[dragIndex];
+
+      // Apply new sort order to variant list
+      const newMediaOrder = update(this.props.media, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, media]
+        ]
+      });
+
+      // Set local state so the component does't have to wait for a round-trip
+      // to the server to get the updated list of variants
+      this.setState({
+        media: newMediaOrder
+      });
+
+      // Save the updated positions
+      Meteor.defer(() => {
+        newMediaOrder.forEach((mediaItem, index) => {
+          Media.update(mediaItem._id, {
+            $set: {
+              "metadata.priority": index
+            }
+          });
         });
       });
-    });
-  }
+    }
 
-  render() {
-    const { width, height } = this.state.dimensions;
+    render() {
+      const { width, height } = this.state.dimensions;
 
-    return (
-      <Measure
-        onMeasure={(dimensions) => {
-          this.setState({ dimensions });
-        }}
-      >
-        <MediaGallery
-          allowFeaturedMediaHover={this.allowFeaturedMediaHover}
-          featuredMedia={this.state.featuredMedia}
-          onDrop={this.handleDrop}
-          onMouseEnterMedia={this.handleMouseEnterMedia}
-          onMouseLeaveMedia={this.handleMouseLeaveMedia}
-          onMoveMedia={this.handleMoveMedia}
-          onRemoveMedia={this.handleRemoveMedia}
-          {...this.props}
-          media={this.media}
-          mediaGalleryHeight={height}
-          mediaGalleryWidth={width}
-        />
-      </Measure>
-    );
+      return (
+        <Measure
+          onMeasure={(dimensions) => {
+            this.setState({ dimensions });
+          }}
+        >
+          <Comp
+            allowFeaturedMediaHover={this.allowFeaturedMediaHover}
+            featuredMedia={this.state.featuredMedia}
+            onDrop={this.handleDrop}
+            onMouseEnterMedia={this.handleMouseEnterMedia}
+            onMouseLeaveMedia={this.handleMouseLeaveMedia}
+            onMoveMedia={this.handleMoveMedia}
+            onRemoveMedia={this.handleRemoveMedia}
+            {...this.props}
+            media={this.media}
+            mediaGalleryHeight={height}
+            mediaGalleryWidth={width}
+          />
+        </Measure>
+      );
+    }
   }
-}
+);
 
 function fetchMediaRevisions() {
   const productId = ReactionProduct.selectedProductId();
@@ -240,13 +250,12 @@ function composer(props, onData) {
   });
 }
 
-MediaGalleryContainer.propTypes = {
-  editable: PropTypes.bool,
-  id: PropTypes.string,
-  media: PropTypes.arrayOf(PropTypes.object),
-  placement: PropTypes.string
-};
+registerComponent("MediaGallery", MediaGallery, [
+  composeWithTracker(composer),
+  wrapComponent
+]);
 
-registerComponent("MediaGallery", MediaGalleryContainer, composeWithTracker(composer));
-
-export default composeWithTracker(composer)(MediaGalleryContainer);
+export default compose(
+  composeWithTracker(composer),
+  wrapComponent
+)(MediaGallery);

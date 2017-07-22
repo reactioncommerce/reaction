@@ -1,127 +1,128 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Accounts } from "meteor/accounts-base";
 import { Random } from "meteor/random";
 import { UpdatePasswordOverlay } from "/client/modules/accounts/components";
-import Messages from "./messages";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { LoginFormValidation } from "/lib/api";
 
-class UpdatePasswordOverlayContainer extends Component {
-  static propTypes = {
-    callback: PropTypes.func,
-    formMessages: PropTypes.object,
-    isOpen: PropTypes.bool,
-    token: PropTypes.string,
-    uniqueId: PropTypes.string
-  }
-
-  static defaultProps = {
-    formMessages: {},
-    uniqueId: Random.id()
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      formMessages: props.formMessages,
-      isOpen: props.isOpen,
-      isDisabled: false
-    };
-
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.handleFormCancel = this.handleFormCancel.bind(this);
-    this.formMessages = this.formMessages.bind(this);
-    this.hasError = this.hasError.bind(this);
-  }
-
-  handleFormSubmit = (event, passwordValue) => {
-    event.preventDefault();
-
-    this.setState({
-      isDisabled: true
-    });
-
-    const password = passwordValue.trim();
-    const validatedPassword = LoginFormValidation.password(password);
-    const errors = {};
-
-    if (validatedPassword !== true) {
-      errors.password = validatedPassword;
+const wrapComponent = (Comp) => (
+  class UpdatePasswordOverlayContainer extends Component {
+    static propTypes = {
+      callback: PropTypes.func,
+      formMessages: PropTypes.object,
+      isOpen: PropTypes.bool,
+      token: PropTypes.string,
+      uniqueId: PropTypes.string
     }
 
-    if (_.isEmpty(errors) === false) {
+    static defaultProps = {
+      formMessages: {},
+      uniqueId: Random.id()
+    }
+
+    constructor(props) {
+      super(props);
+
+      this.state = {
+        formMessages: props.formMessages,
+        isOpen: props.isOpen,
+        isDisabled: false
+      };
+
+      this.handleFormSubmit = this.handleFormSubmit.bind(this);
+      this.handleFormCancel = this.handleFormCancel.bind(this);
+      this.formMessages = this.formMessages.bind(this);
+      this.hasError = this.hasError.bind(this);
+    }
+
+    handleFormSubmit = (event, passwordValue) => {
+      event.preventDefault();
+
       this.setState({
-        isDisabled: false,
-        formMessages: {
-          errors: errors
-        }
+        isDisabled: true
       });
-      return;
-    }
 
-    Accounts.resetPassword(this.props.token, password, (error) => {
-      if (error) {
+      const password = passwordValue.trim();
+      const validatedPassword = LoginFormValidation.password(password);
+      const errors = {};
+
+      if (validatedPassword !== true) {
+        errors.password = validatedPassword;
+      }
+
+      if (_.isEmpty(errors) === false) {
         this.setState({
           isDisabled: false,
           formMessages: {
-            alerts: [error]
+            errors: errors
           }
         });
-      } else {
-        this.props.callback();
-
-        this.setState({
-          isOpen: !this.state.isOpen
-        });
+        return;
       }
-    });
-  }
 
-  handleFormCancel = (event) => {
-    event.preventDefault();
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  }
+      Accounts.resetPassword(this.props.token, password, (error) => {
+        if (error) {
+          this.setState({
+            isDisabled: false,
+            formMessages: {
+              alerts: [error]
+            }
+          });
+        } else {
+          this.props.callback();
 
-  formMessages = () => {
-    return (
-      <Messages messages={this.state.formMessages} />
-    );
-  }
-
-  hasError = (error) => {
-    // True here means the field is valid
-    // We're checking if theres some other message to display
-    if (error !== true && typeof error !== "undefined") {
-      return true;
+          this.setState({
+            isOpen: !this.state.isOpen
+          });
+        }
+      });
     }
 
-    return false;
+    handleFormCancel = (event) => {
+      event.preventDefault();
+      this.setState({
+        isOpen: !this.state.isOpen
+      });
+    }
+
+    formMessages = () => {
+      return (
+        <Components.Messages messages={this.state.formMessages} />
+      );
+    }
+
+    hasError = (error) => {
+      // True here means the field is valid
+      // We're checking if theres some other message to display
+      if (error !== true && typeof error !== "undefined") {
+        return true;
+      }
+
+      return false;
+    }
+
+    render() {
+      return (
+        <TranslationProvider>
+          <Comp
+            uniqueId={this.props.uniqueId}
+            loginFormMessages={this.formMessages}
+            onError={this.hasError}
+            messages={this.state.formMessages}
+            onFormSubmit={this.handleFormSubmit}
+            onCancel={this.handleFormCancel}
+            isOpen={this.state.isOpen}
+            isDisabled={this.state.isDisabled}
+          />
+        </TranslationProvider>
+      );
+    }
   }
+);
 
-  render() {
-    return (
-      <TranslationProvider>
-        <UpdatePasswordOverlay
-          uniqueId={this.props.uniqueId}
-          loginFormMessages={this.formMessages}
-          onError={this.hasError}
-          messages={this.state.formMessages}
-          onFormSubmit={this.handleFormSubmit}
-          onCancel={this.handleFormCancel}
-          isOpen={this.state.isOpen}
-          isDisabled={this.state.isDisabled}
-        />
-      </TranslationProvider>
-    );
-  }
-}
+registerComponent("UpdatePasswordOverlay", UpdatePasswordOverlay, wrapComponent);
 
-registerComponent("UpdatePasswordOverlay", UpdatePasswordOverlay);
-
-export default UpdatePasswordOverlayContainer;
+export default wrapComponent(UpdatePasswordOverlay);

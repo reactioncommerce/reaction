@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import update from "react/lib/update";
 import _ from "lodash";
+import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
@@ -10,104 +11,110 @@ import { Tags, Media, Templates } from "/lib/collections";
 import { Countries } from "/client/collections";
 import { ProductAdmin } from "../components";
 
-class ProductAdminContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      newMetafield: {
-        key: "",
-        value: ""
-      }
-    };
-  }
-
-  handleCardExpand = (cardName) => {
-    Reaction.state.set("edit/focus", cardName);
-  }
-
-  handleDeleteProduct = (product) => {
-    ReactionProduct.archiveProduct(product || this.product);
-  }
-
-  handleProductFieldSave = (productId, fieldName, value) => {
-    let updateValue = value;
-    // special case, slugify handles.
-    if (fieldName === "handle") {
-      updateValue = Reaction.getSlug(value);
+const wrapComponent = (Comp) => (
+  class ProductAdminContainer extends Component {
+    static propTypes = {
+      product: PropTypes.object,
+      tags: PropTypes.arrayOf(PropTypes.object)
     }
-    Meteor.call("products/updateProductField", productId, fieldName, updateValue, (error) => {
-      if (error) {
-        Alerts.toast(error.message, "error");
-        this.forceUpdate();
-      }
-    });
-  }
 
+    constructor(props) {
+      super(props);
 
-  handleMetaChange = (metafield, index) => {
-    let newState = {};
-
-    if (index >= 0) {
-      newState = update(this.state, {
-        product: {
-          metafields: {
-            [index]: {
-              $set: metafield
-            }
-          }
+      this.state = {
+        newMetafield: {
+          key: "",
+          value: ""
         }
-      });
-    } else {
-      newState = {
-        newMetafield: metafield
       };
     }
 
-    this.setState(newState);
-  }
-
-  handleMetafieldSave = (productId, metafield, index) => {
-    // update existing metafield
-    if (index >= 0) {
-      Meteor.call("products/updateMetaFields", productId, metafield, index);
-    } else if (metafield.key && metafield.value) {
-      Meteor.call("products/updateMetaFields", productId, metafield);
+    handleCardExpand = (cardName) => {
+      Reaction.state.set("edit/focus", cardName);
     }
 
-    this.setState({
-      newMetafield: {
-        key: "",
-        value: ""
+    handleDeleteProduct = (product) => {
+      ReactionProduct.archiveProduct(product || this.product);
+    }
+
+    handleProductFieldSave = (productId, fieldName, value) => {
+      let updateValue = value;
+      // special case, slugify handles.
+      if (fieldName === "handle") {
+        updateValue = Reaction.getSlug(value);
       }
-    });
-  }
+      Meteor.call("products/updateProductField", productId, fieldName, updateValue, (error) => {
+        if (error) {
+          Alerts.toast(error.message, "error");
+          this.forceUpdate();
+        }
+      });
+    }
 
-  handleMetaRemove = (productId, metafield) => {
-    Meteor.call("products/removeMetaFields", productId, metafield);
-  }
 
-  handleProductRestore = (product) => {
-    Meteor.call("products/updateProductField", product._id, "isDeleted", false);
-  }
+    handleMetaChange = (metafield, index) => {
+      let newState = {};
 
-  render() {
-    return (
-      <ProductAdmin
-        newMetafield={this.state.newMetafield}
-        onCardExpand={this.handleCardExpand}
-        onDeleteProduct={this.handleDeleteProduct}
-        onMetaChange={this.handleMetaChange}
-        onMetaRemove={this.handleMetaRemove}
-        onMetaSave={this.handleMetafieldSave}
-        onProductFieldSave={this.handleProductFieldSave}
-        onRestoreProduct={this.handleProductRestore}
-        {...this.props}
-      />
-    );
-  }
-}
+      if (index >= 0) {
+        newState = update(this.state, {
+          product: {
+            metafields: {
+              [index]: {
+                $set: metafield
+              }
+            }
+          }
+        });
+      } else {
+        newState = {
+          newMetafield: metafield
+        };
+      }
 
+      this.setState(newState);
+    }
+
+    handleMetafieldSave = (productId, metafield, index) => {
+      // update existing metafield
+      if (index >= 0) {
+        Meteor.call("products/updateMetaFields", productId, metafield, index);
+      } else if (metafield.key && metafield.value) {
+        Meteor.call("products/updateMetaFields", productId, metafield);
+      }
+
+      this.setState({
+        newMetafield: {
+          key: "",
+          value: ""
+        }
+      });
+    }
+
+    handleMetaRemove = (productId, metafield) => {
+      Meteor.call("products/removeMetaFields", productId, metafield);
+    }
+
+    handleProductRestore = (product) => {
+      Meteor.call("products/updateProductField", product._id, "isDeleted", false);
+    }
+
+    render() {
+      return (
+        <Comp
+          newMetafield={this.state.newMetafield}
+          onCardExpand={this.handleCardExpand}
+          onDeleteProduct={this.handleDeleteProduct}
+          onMetaChange={this.handleMetaChange}
+          onMetaRemove={this.handleMetaRemove}
+          onMetaSave={this.handleMetafieldSave}
+          onProductFieldSave={this.handleProductFieldSave}
+          onRestoreProduct={this.handleProductRestore}
+          {...this.props}
+        />
+      );
+    }
+  }
+);
 
 function composer(props, onData) {
   const product = ReactionProduct.selectedProduct();
@@ -164,12 +171,13 @@ function composer(props, onData) {
   }
 }
 
-ProductAdminContainer.propTypes = {
-  product: PropTypes.object,
-  tags: PropTypes.arrayOf(PropTypes.object)
-};
-
-registerComponent("ProductAdmin", ProductAdminContainer, composeWithTracker(composer));
+registerComponent("ProductAdmin", ProductAdmin, [
+  composeWithTracker(composer),
+  wrapComponent
+]);
 
 // Decorate component and export
-export default composeWithTracker(composer)(ProductAdminContainer);
+export default compose(
+  composeWithTracker(composer),
+  wrapComponent
+)(ProductAdmin);

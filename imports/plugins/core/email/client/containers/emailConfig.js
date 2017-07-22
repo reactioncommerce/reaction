@@ -8,52 +8,54 @@ import { Reaction } from "/client/api";
 import { saveSettings } from "../actions";
 import EmailConfig from "../components/emailConfig";
 
-class EmailConfigContainer extends Component {
-  constructor(props) {
-    super(props);
+const wrapComponent = (Comp) => (
+  class EmailConfigContainer extends Component {
+    static propTypes = {
+      settings: PropTypes.shape({
+        host: PropTypes.string,
+        password: PropTypes.string,
+        port: PropTypes.oneOfType([
+          PropTypes.number,
+          PropTypes.string
+        ]),
+        service: PropTypes.string,
+        user: PropTypes.string
+      })
+    }
 
-    this.state = {
-      status: null,
-      error: null
-    };
-  }
+    constructor(props) {
+      super(props);
 
-  componentWillMount() {
-    const { settings } = this.props;
-    const { service, host, port, user, password } = settings;
+      this.state = {
+        status: null,
+        error: null
+      };
+    }
 
-    if (service && host && port && user && password) {
-      Meteor.call("email/verifySettings", (error) => {
-        if (error) {
-          this.setState({ status: "error" });
-        }
-        this.setState({ status: "valid" });
-      });
-    } else {
-      this.setState({ status: "error" });
+    componentWillMount() {
+      const { settings } = this.props;
+      const { service, host, port, user, password } = settings;
+
+      if (service && host && port && user && password) {
+        Meteor.call("email/verifySettings", (error) => {
+          if (error) {
+            this.setState({ status: "error" });
+          }
+          this.setState({ status: "valid" });
+        });
+      } else {
+        this.setState({ status: "error" });
+      }
+    }
+
+    render() {
+      const { status } = this.state;
+      return (
+        <Comp {...this.props} status={status} />
+      );
     }
   }
-
-  render() {
-    const { status } = this.state;
-    return (
-      <EmailConfig {...this.props} status={status} />
-    );
-  }
-}
-
-EmailConfigContainer.propTypes = {
-  settings: PropTypes.shape({
-    host: PropTypes.string,
-    password: PropTypes.string,
-    port: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string
-    ]),
-    service: PropTypes.string,
-    user: PropTypes.string
-  })
-};
+);
 
 const composer = ({}, onData) => {
   if (Meteor.subscribe("Packages").ready()) {
@@ -73,12 +75,14 @@ const composer = ({}, onData) => {
 
 const handlers = { saveSettings };
 
-registerComponent("EmailConfig", EmailConfigContainer, [
+registerComponent("EmailConfig", EmailConfig, [
   composeWithTracker(composer),
-  withProps(handlers)
+  withProps(handlers),
+  wrapComponent
 ]);
 
 export default compose(
   composeWithTracker(composer),
-  withProps(handlers)
-)(EmailConfigContainer);
+  withProps(handlers),
+  wrapComponent
+)(EmailConfig);
