@@ -1,7 +1,6 @@
 import { compose, withProps } from "recompose";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { composeWithTracker } from "/lib/api/compose";
 import { Sms } from "/lib/collections";
 import actions from "../actions";
 import SmsSettings from "../components/smsSettings";

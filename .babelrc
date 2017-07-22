@@ -12,7 +12,7 @@
         "underscore": "lodash",
         "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
         "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
-        "@reactioncommerce/reaction-components": "./lib/api/components",
+        "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib",
         "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib"
       }
     }]

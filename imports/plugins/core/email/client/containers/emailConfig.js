@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose, withProps } from "recompose";
 import getServiceConfig from "nodemailer-wellknown";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { saveSettings } from "../actions";
 import EmailConfig from "../components/emailConfig";
-import { composeWithTracker } from "/lib/api/compose";
 
 class EmailConfigContainer extends Component {
   constructor(props) {

@@ -1,6 +1,5 @@
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Cart } from "/lib/collections";
-import { composeWithTracker } from "/lib/api/compose";
 import CartSubTotal from "../components/cartSubTotal";
 
 function composer(props, onData) {

@@ -1,11 +1,6 @@
-/**
- * Wrapper around react-komposer v2 to provide some backwars compatability
- * for features from v1.
- */
 import { compose } from "react-komposer";
 import React from "react";
-export * from "react-komposer";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "./components";
 import { Tracker } from "meteor/tracker";
 
 /**
@@ -44,3 +39,5 @@ export function composeWithTracker(reactiveMapper, LoadingComponent) {
   };
   return compose(getTrackerLoader(reactiveMapper), options);
 }
+
+export * from "react-komposer";

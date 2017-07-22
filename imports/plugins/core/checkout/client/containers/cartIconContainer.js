@@ -1,8 +1,7 @@
 import Velocity from "velocity-animate";
 import { compose, withProps } from "recompose";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Cart } from "/lib/collections";
-import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import CartIcon from "../components/cartIcon";
 

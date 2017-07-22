@@ -1,8 +1,8 @@
 import React from "react";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Roles } from "meteor/alanning:roles";
-import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 

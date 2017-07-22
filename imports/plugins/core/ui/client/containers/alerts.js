@@ -1,6 +1,5 @@
 import { compose, withProps, pure } from "recompose";
-import { composeWithTracker } from "/lib/api/compose";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Alerts } from "../components";
 import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 

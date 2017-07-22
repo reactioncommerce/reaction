@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { composeWithTracker } from "/lib/api/compose";
 import { Media } from "/lib/collections";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import LineItems from "../components/lineItems.js";

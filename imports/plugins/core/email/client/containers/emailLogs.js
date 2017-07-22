@@ -1,10 +1,9 @@
 import { compose, withProps } from "recompose";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
 import EmailLogs from "../components/emailLogs";
 import { Jobs } from "/lib/collections";
-import { composeWithTracker } from "/lib/api/compose";
 
 const composer = ({}, onData) => {
   if (Meteor.subscribe("Emails").ready()) {

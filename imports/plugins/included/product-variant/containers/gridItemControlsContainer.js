@@ -1,8 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
-import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import GridItemControls from "../components/gridItemControls";
 

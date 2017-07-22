@@ -1,11 +1,10 @@
 import { compose, withProps } from "recompose";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Cart, Media } from "/lib/collections";
 import { Reaction } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
 import CartDrawer from "../components/cartDrawer";
 
 // event handlers to pass in as props

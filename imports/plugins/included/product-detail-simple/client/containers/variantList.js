@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next } from "/client/api";
 import { VariantList } from "../components";

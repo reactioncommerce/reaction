@@ -1,11 +1,10 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Router } from "/client/api";
-import { composeWithTracker } from "/lib/api";
 import { SignIn, SignUp, LoginButtons } from "../components";
 import MessagesContainer from "./messages";
 import { ServiceConfigHelper } from "../helpers";
