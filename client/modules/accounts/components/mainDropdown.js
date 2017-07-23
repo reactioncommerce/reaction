@@ -21,7 +21,7 @@ const menuStyle = {
 class MainDropdown extends Component {
   static propTypes = {
     adminShortcuts: PropTypes.object,
-    currentUser: PropTypes.oneOfType(
+    currentAccount: PropTypes.oneOfType(
       [PropTypes.bool, PropTypes.object]
     ),
     handleChange: PropTypes.func,
@@ -103,7 +103,7 @@ class MainDropdown extends Component {
   render() {
     return (
       <div className="accounts">
-        {this.props.currentUser ?
+        {this.props.currentAccount ?
           <div style={{ paddingRight: 5 }}>
             <Components.DropDownMenu
               buttonElement={this.buttonElement()}

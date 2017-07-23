@@ -1,5 +1,5 @@
 import { compose, withProps } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker, withCurrentAccount } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
@@ -10,25 +10,6 @@ import { i18nextDep, i18next } from  "/client/api";
 import * as Collections from "/lib/collections";
 import { Tags } from "/lib/collections";
 import MainDropdown from "../components/mainDropdown";
-
-function getCurrentUser() {
-  const shopId = Reaction.getShopId();
-  const user = Accounts.user() || {};
-
-  if (!shopId || typeof user !== "object") {
-    return null;
-  }
-
-
-  // shoppers should always be guests
-  const isGuest = Roles.userIsInRole(user, "guest", shopId);
-  // but if a user has never logged in then they are anonymous
-  const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
-
-  const account = Collections.Accounts.findOne(user._id);
-
-  return isGuest && !isAnonymous ? account : null;
-}
 
 function getUserGravatar(currentUser, size) {
   const options = {
@@ -124,22 +105,15 @@ function handleChange(event, value) {
   }
 }
 
-const composer = (props, onData) => {
-  const currentUser = getCurrentUser();
-  const userImage = getUserGravatar(currentUser, 40);
-  const userName = displayName(currentUser);
+const composer = ({ currentAccount }, onData) => {
+  const userImage = getUserGravatar(currentAccount, 40);
+  const userName = displayName(currentAccount);
   const adminShortcuts = getAdminShortcutIcons();
-  const userShortcuts = {
-    provides: "userAccountDropdown",
-    enabled: true
-  };
 
   onData(null, {
     adminShortcuts,
-    currentUser,
     userImage,
-    userName,
-    userShortcuts
+    userName
   });
 };
 
@@ -152,11 +126,13 @@ const handlers = {
 };
 
 registerComponent("MainDropdown", MainDropdown, [
+  withCurrentAccount,
   withProps(handlers),
   composeWithTracker(composer)
 ]);
 
 export default compose(
+  withCurrentAccount,
   withProps(handlers),
   composeWithTracker(composer)
 )(MainDropdown);
