@@ -161,7 +161,7 @@ const wrapComponent = (Comp) => (
       });
     }
 
-    cloneVariant =  (variant) => {
+    cloneVariant = (variant) => {
       const title = variant.title || i18next.t("productDetailEdit.thisVariant");
       const productId = ReactionProduct.selectedProductId();
       if (!productId) {
