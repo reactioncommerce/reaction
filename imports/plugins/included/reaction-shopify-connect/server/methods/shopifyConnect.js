@@ -73,8 +73,34 @@ export const methods = {
         const products = await shopify.product.list(opts);
 
         products.forEach((product) => {
+          let productVariants = [];
+          let variantLabel;
+
+          // Get variant and option details
+          if (product.options && Array.isArray(product.options)) {
+            if (product.options.length > 2) {
+              throw new Meteor.Error(
+                `This importer cannot currently handle more than two product options.
+                Shopify product with ID: ${product.id} not imported`
+              );
+            }
+            // This product has variants
+            if (product.options.length > 0) {
+              productVariants = product.options[0].values;
+              variantLabel = product.options[0].name;
+            }
+
+            // This product has options
+            if (product.options.length > 1) {
+              // nest options underneath variants.
+            } else {
+              // variants exist under product
+            }
+          }
+
+
           // Setup reaction product
-          const prod = {};
+          const prod = { ...defaultProduct };
           prod.title = product.title;
           prod.pageTitle = product.pageTitle;
           prod.description = product.body_html.replace(/(<([^>]+)>)/ig, "");
@@ -83,8 +109,13 @@ export const methods = {
           prod.handle = product.handle;
           prod.hashtags = product.tags.split(",");
           prod.metafields = [];
-          prod.metafields.shopifyId = product.id.toString(); // keep shopifyId for future use.
-        });
+          // keep shopifyId for future use.
+          prod.metafields.push({
+            scope: "shopify",
+            key: "shopifyId",
+            value: product.id.toString(),
+            namespace: "shopifyProperties"
+          });
 
         // console.log(products[15]);
         // console.log(products[15].variants[0]);
