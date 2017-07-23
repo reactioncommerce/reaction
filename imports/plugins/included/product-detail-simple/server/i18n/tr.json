@@ -9,6 +9,11 @@
         },
         "inventoryAlerts": {
           "adjustedQuantity": "Ürününüz miktar stok maksimum miktara ayarlandı"
+        },
+        "mediaGallery": {
+          "deleteImage": "Resmi kaldırmak için tıklayın",
+          "addedImage": "Bu yeni bir görüntü. Değişiklikleri kaydetmek için yayınla.",
+          "removedImage": "Resim silindi. Değişiklikleri kaydetmek için yayınla."
         }
       },
       "availableOptions": "mevcut seçenekler"

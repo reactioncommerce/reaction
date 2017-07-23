@@ -26,6 +26,14 @@
       "logGrid": {
         "noLogsFound": "Hiçbir günlükleri bulundu",
         "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "Tarih",
+                "type": "Belge Türü"
+              }
+            }
+          },
           "date": "Tarih",
           "docType": "Belge Türü"
         }

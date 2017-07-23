@@ -73,7 +73,7 @@
               </div>
 
             <div class="rui item half">
-              <div class="form-group">
+              <div class="rui textfield form-group {{hasErrorClassName 'optionTitle'}}">
                 <label for="option-{{childVariantFormId}}" data-i18n="productVariant.optionTitle">Option Title</label>
                 <input
                   id="option-{{childVariantFormId}}"
@@ -83,11 +83,14 @@
                   name="optionTitle"
                   placeholder="Add option title"
                   />
+                {{#with hasValidationMessage 'optionTitle'}}
+                  <span class="help-block">{{message}}</span>
+                {{/with}}
               </div>
             </div>
 
             <div class="rui item half">
-              <div class="form-group">
+              <div class="rui textfield form-group {{hasErrorClassName 'title'}}">
                 <label for="label-{{childVariantFormId}}" data-i18n="productVariant.title">Cart / Checkout Label</label>
                 <input
                   id="label-{{childVariantFormId}}"
@@ -97,11 +100,14 @@
                   name="title"
                   placeholder="Add cart label"
                   />
+                {{#with hasValidationMessage 'title'}}
+                  <span class="help-block">{{message}}</span>
+                {{/with}}
               </div>
             </div>
 
             <div class="rui item half">
-              <div class="form-group">
+              <div class="rui textfield form-group {{hasErrorClassName 'inventoryQuantity'}}">
                 <label for="quantity-{{childVariantFormId}}" data-i18n="productVariant.inventoryQuantity">Quantity</label>
                 <input
                   id="quantity-{{childVariantFormId}}"
@@ -111,11 +117,14 @@
                   name="inventoryQuantity"
                   placeholder="QTY"
                   />
+                {{#with hasValidationMessage 'inventoryQuantity'}}
+                  <span class="help-block">{{message}}</span>
+                {{/with}}
               </div>
             </div>
 
             <div class="rui item half">
-              <div class="form-group">
+              <div class="rui textfield form-group {{hasErrorClassName 'price'}}">
                 <label for="price-{{childVariantFormId}}" data-i18n="productVariant.price" class="column-price">Price</label>
                 <input
                   id="price-{{childVariantFormId}}"
@@ -126,6 +135,9 @@
                   name="price"
                   placeholder="Add price"
                   />
+                {{#with hasValidationMessage 'price'}}
+                  <span class="help-block">{{message}}</span>
+                {{/with}}
               </div>
             </div>
           </div>

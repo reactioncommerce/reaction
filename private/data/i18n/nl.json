@@ -387,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Bestel Details",
         "invoice": "Factuur",
+        "lineItems": "Line Items",
         "shipmentTracking": "Verzending volgen"
       },
       "cartCheckout": {
@@ -433,7 +434,10 @@
       "addressBookEdit": {
         "editAddress": "Dit adres bewerken",
         "addressValidation": "Address Validation",
-        "somethingWentWrong": "Er is iets misgegaan: {{err}}"
+        "reviewAddress": "Bevestig uw adres voor de beste naleving",
+        "somethingWentWrong": "Er is iets misgegaan: {{err}}",
+        "enteredAddress": "Ingevoerd adres",
+        "validatedAddress": "Validate Address"
       },
       "corePackageConfig": {
         "settings": {
@@ -669,6 +673,7 @@
           "emailDoesntMatchTheCriteria": "E-mailadres komt niet overeen met de criteria.",
           "errorSendingEmail": "Fout bij het verzenden van e-mail, mogelijke configuratie probleem.",
           "unableToSendInvitationEmail": "Kan geen uitnodiging e-mail.",
+          "userWithEmailAlreadyExists": "Een gebruiker met dit e-mailadres bestaat al",
           "failedToLogout": "Nagelaten om uit te loggen.",
           "invalidLoginToken": "Ongeldig inlog-token",
           "loginForbidden": "Login verboden",
