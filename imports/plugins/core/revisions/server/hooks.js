@@ -64,7 +64,7 @@ export const ProductRevision = {
 
   getVariantPriceRange(variantId) {
     const children = this.getVariants(variantId);
-    const visibleChildren = children.filter(child => child.isVisible);
+    const visibleChildren = children.filter(child => child.isVisible && !child.isDeleted);
 
     switch (visibleChildren.length) {
       case 0:
