@@ -96,6 +96,7 @@
     "react-taco-table": "^0.5.0",
     "react-tether": "^0.5.6",
     "react-textarea-autosize": "^4.0.5",
+    "recompose": "^0.24.0",
     "shippo": "^1.2.0",
     "sortablejs": "^1.5.1",
     "stripe": "^4.16.0",
@@ -151,7 +152,8 @@
   },
   "babel": {
     "plugins": [
-      "lodash", [
+      "lodash",
+      [
         "module-resolver",
         {
           "root": [

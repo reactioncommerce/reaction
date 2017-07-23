@@ -1,23 +1,13 @@
-import React, { Component } from "react";
+import { compose, withProps } from "recompose";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { Orders } from "/lib/collections";
-import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
-
+import { composeWithTracker } from "/lib/api/compose";
 import CompletedOrder from "../components/completedOrder";
 
-class CompletedOrderContainer extends Component {
 
-
-  render() {
-    return (
-      <div>
-        <CompletedOrder order={this.props.order} />
-      </div>
-    );
-  }
-}
+const handlers = {};
 
 function composer(props, onData) {
   const order = Orders.findOne({
@@ -34,4 +24,7 @@ CompletedOrder.propTypes  = {
   order: PropTypes.object
 };
 
-export default composeWithTracker(composer)(CompletedOrderContainer);
+export default compose(
+  withProps(handlers),
+  composeWithTracker(composer)
+)(CompletedOrder);
