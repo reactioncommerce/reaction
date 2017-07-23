@@ -489,12 +489,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             _id: {
               $in: productIds
             }
-          },
-          {
-            $and: [
-              { isVisible: true },
-              { isDeleted: { $in: [null, false] } }
-            ]
           }
         ]
       });
