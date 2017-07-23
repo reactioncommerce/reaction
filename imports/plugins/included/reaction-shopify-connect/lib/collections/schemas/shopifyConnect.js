@@ -18,9 +18,9 @@ export const ShopifyConnectPackageConfig = new SimpleSchema([
       label: "API Shared Secret",
       optional: true
     },
-    "settings.shopifyDomain": {
+    "settings.shopName": {
       type: String,
-      label: "Shopify Domain (e.g. my-store.myshopify.com)",
+      label: "Handelized Shop Name",
       optional: true
     }
   }

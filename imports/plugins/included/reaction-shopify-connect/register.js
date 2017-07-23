@@ -9,7 +9,7 @@ Reaction.registerPackage({
     apiKey: "",
     password: "",
     sharedSecret: "",
-    shopifyDomain: ""
+    shopName: ""
   },
   registry: [{
     label: "Shopify Connect Settings",

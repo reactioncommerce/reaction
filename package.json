@@ -97,6 +97,7 @@
     "react-tether": "^0.5.6",
     "react-textarea-autosize": "^4.0.5",
     "shippo": "^1.2.0",
+    "shopify-api-node": "^2.7.0",
     "sortablejs": "^1.5.1",
     "stripe": "^4.16.0",
     "sweetalert2": "^6.4.4",

@@ -22,7 +22,12 @@ Template.shopifyConnectSettings.helpers({
 Template.shopifyProductImport.events({
   "click [data-event-action=importProductsFromShopify]"(event) {
     event.preventDefault();
-    Meteor.call("shopifyConnect/importProducts");
+    Meteor.call("shopifyConnect/getProductsCount", (err, res) => {
+      if (!res.error) {
+        return Alerts.toast(`Success ${res}`, "success");
+      }
+      return Alerts.toast(`failure ${err}`, "error");
+    });
   }
 });
 
