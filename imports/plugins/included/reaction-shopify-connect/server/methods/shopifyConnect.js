@@ -117,14 +117,15 @@ export const methods = {
             namespace: "shopifyProperties"
           });
 
-        // console.log(products[15]);
-        // console.log(products[15].variants[0]);
-        // console.log(products[15].options[0]);
-        // console.log(products[15].images[0]);
-        opts.since_id = products[products.length - 1].id;
-        ids = [...ids, ...products.map(p => p.id)];
+          // console.log(products[15]);
+          // console.log(products[15].variants[0]);
+          // console.log(products[15].options[0]);
+          // console.log(products[15].images[0]);
+          opts.since_id = products[products.length - 1].id;
+          ids = [...ids, ...products.map(p => p.id)];
+        });
+        return ids;
       }
-      return ids;
     } catch (error) {
       Logger.error(`Something went wrong! ${error}`);
     }
