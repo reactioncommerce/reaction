@@ -811,12 +811,36 @@
   .shipping-flow-list {
     position: relative;
     z-index: 1;
-    width: 282px;
-    margin-left: 257px;
-    margin-top: 14px;
+    width: 274px;
+    margin-left: 264px;
+    margin-top: 15px;
+    border: solid 1px #98afbc;
+    border-radius: 3px;
+
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      display: block;
+      border-style: solid;
+      left: 82.5%;
+      z-index: 100;
+    }
+
+    &:before {
+      top: -21px;
+      border-color: transparent transparent #98afbc transparent;
+      border-width: 10px;
+    }
+
+    &:after {
+      top: -19px;
+      border-color: transparent transparent #ffffff transparent;
+      border-width: 10px;
+    }
 
     .list-group-item {
       background-color: #ebf7fc;
+      height:47px;
     }
 
     .list-group-item.selected {
@@ -836,7 +860,7 @@
     }
 
     i.bulk-actions-icons-select {
-      margin-left: 15px;
+      margin-left: 10px;
     }
 
     i.fa-check {
