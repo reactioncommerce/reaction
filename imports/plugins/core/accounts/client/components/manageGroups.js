@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
 import AdminInviteForm from "./adminInviteForm";
 import EditGroupContainer from "../containers/editGroupContainer";
 import AddGroupMembers from "./addGroupMembers";
@@ -27,10 +28,24 @@ class ManageGroups extends Component {
     this.setState({ group, groups, accounts });
   }
 
+  get defaultInviteGroup() {
+    let defaultInviteGroup = {};
+    const groups = _.compact(this.state.groups.map((grp) => {
+      if (grp.slug !== "owner") {
+        return grp;
+      }
+    }));
+
+    if (groups && groups.length > 0) {
+      defaultInviteGroup = groups[0];
+    }
+    return defaultInviteGroup;
+  }
+
   render() {
     return (
       <div className="groups-form">
-        <AdminInviteForm groups={this.state.groups} />
+        <AdminInviteForm groups={this.state.groups} defaultInviteGroup={this.defaultInviteGroup} />
         <EditGroupContainer
           groups={this.state.groups}
           selectedGroup={this.state.group}

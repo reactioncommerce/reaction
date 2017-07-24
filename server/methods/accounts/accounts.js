@@ -455,7 +455,7 @@ export function addressBookRemove(addressId, accountUserId) {
   });
 }
 
-  /**
+/**
    * inviteShopMember
    * invite new admin users
    * (not consumers) to secure access in the dashboard
@@ -467,10 +467,13 @@ export function addressBookRemove(addressId, accountUserId) {
    * @param {String} options.name - name of invitee
    * @returns {Boolean} returns true
    */
-export function inviteShopMember({ shopId, email, name, groupId }) {
+export function inviteShopMember(options) {
+  const { shopId, email, name, groupId } = options;
+  check(options, Object);
   check(shopId, String);
   check(email, String);
   check(name, String);
+  check(groupId, Match.Optional(String));
 
   this.unblock();
 
@@ -565,11 +568,10 @@ export function inviteShopMember({ shopId, email, name, groupId }) {
 
   if (!user) {
     const userId = MeteorAccounts.createUser({
-      email: email,
-      name: name,
-      profile: {
-        invited: true
-      }
+      email,
+      name,
+      groupId,
+      profile: { invited: true }
     });
 
     const newUser = Meteor.users.findOne(userId);
@@ -583,7 +585,6 @@ export function inviteShopMember({ shopId, email, name, groupId }) {
         "services.password.reset": { token, email, when: new Date() },
         "name": name
       }
-      // update the roles to have the group's permissions
     });
 
     Reaction.Email.send({
