@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import { formatPriceString } from "/client/api";
-import { Popover, Checkbox, NumberTypeInput, RolloverCheckbox } from "/imports/plugins/core/ui/client/components";
+import { Popover, Checkbox, NumberTypeInput, RolloverCheckbox, Translation } from "/imports/plugins/core/ui/client/components";
 
 class LineItems extends Component {
   static propTypes = {
@@ -100,6 +100,52 @@ class LineItems extends Component {
     );
   }
 
+  renderLineItemInvoice(uniqueItem) {
+    return (
+      <div className="invoive-order-items">
+        <div className="invoice-order-item-shipping">
+          <b className="pull-left">
+            <Translation
+              defaultValue="Shipping"
+              i18nKey="cartSubTotals.shipping"
+            />
+          </b>
+          <span className="pull-right">{formatPriceString(uniqueItem.variants.price)}</span>
+        </div>
+        <div className="invoice-order-item-tax">
+          <b>
+            <Translation
+              defaultValue="Tax"
+              i18nKey="cartSubTotals.tax"
+            />
+          </b>
+          <div className="tax-code">
+            <span>
+              {uniqueItem.taxDetail ? uniqueItem.taxDetail.taxCode : uniqueItem.variants.taxCode}
+            </span>
+          </div>
+          <div className="tax-cost">
+            <span>
+              {uniqueItem.taxDetail ?
+                formatPriceString(uniqueItem.taxDetail.tax / uniqueItem.quantity) :
+                formatPriceString(0)
+              }
+            </span>
+          </div>
+        </div>
+        <div className="invoice-order-item-subtotal">
+          <b className="pull-left">
+            <Translation
+              defaultValue="Subtotal"
+              i18nKey="cartSubTotals.subtotal"
+            />
+          </b>
+          <b className="pull-right">{formatPriceString(uniqueItem.variants.price)}</b>
+        </div>
+      </div>
+    );
+  }
+
   renderPopOver() {
     return (
       <Popover
@@ -129,6 +175,7 @@ class LineItems extends Component {
           {this.props.uniqueItems.map((uniqueItem, index) => (
             <div key={index}>
               {this.renderLineItem(uniqueItem)}
+              {this.renderLineItemInvoice(uniqueItem)}
             </div>
           ))}
         </div>
