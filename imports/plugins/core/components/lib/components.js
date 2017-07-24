@@ -1,19 +1,5 @@
 import { compose, setDisplayName } from "recompose";
 
-import React from "react";
-import { Meteor } from "meteor/meteor";
-// importing css on the server apparently isn't supported
-// TODO: get rid of this Meteor dependency
-if (Meteor.isClient) {
-  require("./components.css");
-}
-// eslint-disable-next-line react/display-name
-export const withNameWrapper = (name) => (Component) => (props) => (
-  <span className="rui-component-wrapper">
-    <span className="rui-component-wrapper-label">{name}</span>
-    <Component {...props} />
-  </span>
-);
 
 export const Components = {}; // populated with final wrapped components
 export const ComponentsTable = {}; // storage for separate elements of each component
@@ -103,7 +89,7 @@ export function getComponent(name) {
 
   const hocs = component.hocs.map((hoc) => Array.isArray(hoc) ? hoc[0](hoc[1]) : hoc);
 
-  return compose(...hocs, setDisplayName(`Reaction(${name})`, withNameWrapper(name)))(component.rawComponent);
+  return compose(...hocs, setDisplayName(`Reaction(${name})`))(component.rawComponent);
 }
 
 
