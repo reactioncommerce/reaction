@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
+import _ from "lodash";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction, Logger, Hooks } from "/server/api";
 import { Accounts, Groups } from "/lib/collections";
@@ -32,9 +33,17 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
+    const defaultCustomerGroup = Groups.findOne({ slug: "customer", shopId }) || {};
+    const defaultAdminPermissions = (defaultCustomerGroup.permissions || []).concat("dashboard");
     const newGroupData = Object.assign({}, groupData, {
       slug: getSlug(groupData.name), shopId
     });
+
+    if (!newGroupData.permissions) {
+      newGroupData.permissions = [];
+    }
+
+    newGroupData.permissions = _.uniq([...newGroupData.permissions, ...defaultAdminPermissions]);
 
     // ensure one group type per shop
     const groupExists = Groups.findOne({ slug: newGroupData.slug, shopId });
