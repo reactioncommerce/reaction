@@ -53,7 +53,7 @@ class AdminInviteForm extends Component {
       return this.setState({
         alertArray: [{
           mode: "danger",
-          options: { autoHide: 4000, i18nKey: "accountsUI.info.groupRequired" }
+          options: { autoHide: 4000, i18nKey: "accountsUI.error.groupRequired" }
         }]
       });
     }
@@ -94,7 +94,7 @@ class AdminInviteForm extends Component {
   renderDropDownButton() {
     const { defaultInviteGroup, group } = this.state;
     const buttonGroup = group || defaultInviteGroup;
-    if (!buttonGroup) {
+    if (!buttonGroup._id) {
       return null;
     }
     const buttonElement = (

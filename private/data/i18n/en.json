@@ -678,7 +678,7 @@
         },
         "error": {
           "emailRequired": "Email is required.",
-          "groupRequired": "A group other than the default group is required.",
+          "groupRequired": "A group other than the default owner group is required.",
           "passwordRequired": "Password is required.",
           "passwordMustBeAtLeast6CharactersLong": "Password must be at least 6 characters long.",
           "passwordMustContainRequirements": "Password must contain at least one number or symbol.",
