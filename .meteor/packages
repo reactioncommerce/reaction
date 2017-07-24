@@ -47,11 +47,13 @@ twitter-config-ui@1.0.0
 
 
 # Community Packages
+abernix:standard-minifier-js
 alanning:roles
 aldeed:autoform
 aldeed:collection2
 aldeed:schema-index
 aldeed:template-extension
+bozhao:accounts-instagram
 cfs:filesystem
 cfs:graphicsmagick
 cfs:gridfs
@@ -92,5 +94,3 @@ johanbrook:publication-collector
 # meteorhacks:sikka                         # additional ddp, login security
 
 # Custom Packages
-abernix:standard-minifier-js@2.1.0-beta.0
-bozhao:accounts-instagram
