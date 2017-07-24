@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { Card, CardHeader, CardBody, Translation, Alerts } from "@reactioncommerce/reaction-ui";
+import { Button, Card, CardHeader, CardBody, DropDownMenu, MenuItem, Translation, Alerts } from "@reactioncommerce/reaction-ui";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 
 class AdminInviteForm extends Component {
   static propTypes = {
-    accounts: PropTypes.array
+    groups: PropTypes.array
   };
 
   constructor(props) {
@@ -15,8 +15,10 @@ class AdminInviteForm extends Component {
 
     this.state = {
       alertArray: [],
+      groups: props.groups,
       name: "",
-      email: ""
+      email: "",
+      groupId: ""
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,6 +26,11 @@ class AdminInviteForm extends Component {
 
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
+  }
+
+  handleGroupSelect(event, groupId) {
+    console.log({ groupId });
+    this.setState({ groupId });
   }
 
   removeAlert = (oldAlert) => {
@@ -34,8 +41,10 @@ class AdminInviteForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { name, email } = this.state;
-    return Meteor.call("accounts/inviteShopMember", Reaction.getShopId(), email, name, (error, result) => {
+    const { name, email, groupId } = this.state;
+    const options = { shopId: Reaction.getShopId(), email, name, groupId };
+
+    return Meteor.call("accounts/inviteShopMember", options, (error, result) => {
       let newAlert;
       let message = "";
       if (error) {
@@ -68,6 +77,7 @@ class AdminInviteForm extends Component {
   }
 
   renderForm() {
+    const button = (<Button bezelStyle="flat" i18nKeyLabel="admin.groups.selectGroup" label="Select Group" />);
     return (
       <div className="panel panel-default">
         <Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
@@ -101,6 +111,21 @@ class AdminInviteForm extends Component {
                 value={this.state.email}
               />
             </div>
+            <DropDownMenu
+              buttonElement={button}
+              attachment="bottom center"
+              onChange={this.handleGroupSelect}
+            >
+              {this.state.groups
+                .map((grp, index) => (
+                  <MenuItem
+                    key={index}
+                    label={_.startCase(grp.name)}
+                    selectLabel={_.startCase(grp.name)}
+                    value={grp._id}
+                  />
+                ))}
+            </DropDownMenu>
             <div className="form-btns add-admin justify">
               <button className="btn btn-primary" onClick={this.handleSubmit}>
                 <Translation

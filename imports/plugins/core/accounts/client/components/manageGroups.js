@@ -30,7 +30,7 @@ class ManageGroups extends Component {
   render() {
     return (
       <div className="groups-form">
-        <AdminInviteForm />
+        <AdminInviteForm groups={this.state.groups} />
         <EditGroupContainer
           groups={this.state.groups}
           selectedGroup={this.state.group}

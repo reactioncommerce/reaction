@@ -455,17 +455,19 @@ export function addressBookRemove(addressId, accountUserId) {
   });
 }
 
-/**
+  /**
    * inviteShopMember
    * invite new admin users
    * (not consumers) to secure access in the dashboard
    * to permissions as specified in packages/roles
-   * @param {String} shopId - shop to invite user
-   * @param {String} email - email of invitee
-   * @param {String} name - name to address email
+   * @param {Object} options -
+   * @param {String} options.shopId - shop to invite user
+   * @param {String} options.groupId - groupId to invite user
+   * @param {String} options.email - email of invitee
+   * @param {String} options.name - name of invitee
    * @returns {Boolean} returns true
    */
-export function inviteShopMember(shopId, email, name) {
+export function inviteShopMember({ shopId, email, name, groupId }) {
   check(shopId, String);
   check(email, String);
   check(name, String);
@@ -581,6 +583,7 @@ export function inviteShopMember(shopId, email, name) {
         "services.password.reset": { token, email, when: new Date() },
         "name": name
       }
+      // update the roles to have the group's permissions
     });
 
     Reaction.Email.send({

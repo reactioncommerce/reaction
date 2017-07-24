@@ -41,6 +41,7 @@
           "description": "Description",
           "remove": "Remove",
           "newGroup": "New Group",
+          "selectGroup": "Select Group",
           "editGroups": "Edit Groups",
           "dashboard": "Dashboard",
           "errorCreate": "Error creating group",

@@ -123,7 +123,7 @@ Meteor.methods({
 
     try {
       setUserPermissions({ _id: userId }, permissions, shopId);
-      Accounts.update({ _id: userId }, { $set: { groups: [groupId] } });
+      Accounts.update({ _id: userId }, { $addToSet: { groups: groupId } });
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -134,7 +134,7 @@ Meteor.methods({
   /**
    * group/removeUser
    * @summary removes a user from a group for a shop, and adds them to the default customer group.
-   * It updates the user's permission list to reflect. (NB: At this time, a user only belongs to one group per time)
+   * It updates the user's permission list to reflect. (NB: At this time, a user only belongs to only one group per shop)
    * @param {String} userId - current data of the group to be updated
    * @param {String} groupId - name of the group
    * @return {Object} - object.status of 200 on success or Error object on failure
@@ -157,7 +157,7 @@ Meteor.methods({
 
     try {
       setUserPermissions(user, defaultCustomerGroupForShop.permissions, shopId);
-      Accounts.update({ _id: userId }, { $set: { groups: [defaultCustomerGroupForShop._id] } });
+      Accounts.update({ _id: userId, groups: groupId }, { $set: { "groups.$": defaultCustomerGroupForShop._id } }); // replace the old id with new id
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
