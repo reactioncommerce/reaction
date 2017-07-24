@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from "react";
-import classnames from "classnames";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import { formatPriceString } from "/client/api";
-import { Translation } from "/imports/plugins/core/ui/client/components";
-import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox } from "/imports/plugins/core/ui/client/components";
+import { Popover, Checkbox, NumberTypeInput, RolloverCheckbox } from "/imports/plugins/core/ui/client/components";
 
 class LineItems extends Component {
   static propTypes = {
@@ -159,7 +159,11 @@ class LineItems extends Component {
           );
         })}
 
-        {this.renderPopOver()}
+        {
+          Roles.userIsInRole(Meteor.userId(), ["orders", "dashboard/orders"], Reaction.getShopId()) ?
+            this.renderPopOver() :
+            null
+        }
       </div>
     );
   }
