@@ -7,7 +7,7 @@ import { Logger } from "/server/api";
 
 // import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/server/api";
-import { Packages } from "/lib/collections";
+import { Packages, Tags } from "/lib/collections";
 
 // get Shopify Api Key, Password and Domain from the Shopify Connect package with the supplied shopId or alternatly the active shopId
 function getApiInfo(shopId = Reaction.getShopId()) {
@@ -51,6 +51,18 @@ export const methods = {
       limit: limit
     };
 
+    // Cache all tags as we discover or create them so we only ever have to look up a tag once
+    // We should never have to look up a tag we've created during this import
+    //
+    // Start by caching all existing tags to memory in a {slug => id} tuple
+    // This may need to be optimized if there are an enormous number of tags existing
+    const tags = Tags.find({}).fetch().reduce((cache, tag) => {
+      if (!cache[tag.slug]) {
+        cache[tag.slug] = tag._id;
+      }
+      return cache;
+    }, {});
+
     const defaultProduct = {
       shopId: shopId, // set shopId to active shopId;
       isVisible: false,
@@ -68,13 +80,51 @@ export const methods = {
 
     try {
       // const productCount = await shopify.product.count();
-      const pages = 1; // Math.ceil(productCount / limit);
-      for (let i = 0; i < pages; i++) {
+      const pages = [...Array(1)]; // Math.ceil(productCount / limit);
+      pages.forEach(async () => {
         const products = await shopify.product.list(opts);
 
         products.forEach((product) => {
           let productVariants = [];
           let variantLabel;
+          const productHashtags = [];
+
+          // Get and lookup or register tags
+          // We can't load all tags beforehand because Shopify doesn't have a tags API
+          product.tags.split(",").forEach((tag) => {
+            const normalizedTag = {
+              name: tag,
+              slug: Reaction.getSlug(tag),
+              shopId: shopId,
+              isTopLevel: false,
+              updatedAt: new Date(),
+              createdAt: new Date()
+            };
+
+
+            // If we have a cached tag for this slug, we can skip the db check
+            // otherwise we need to check the Tags db to see if it exists
+            if (!tags[normalizedTag.slug]) {
+              const tagExists = Tags.findOne({
+                slug: normalizedTag.slug
+              });
+
+              if (tagExists) {
+                // Tag found it database - add it to cache and push _id to productHashtags
+                tags[normalizedTag.slug] = tagExists._id;
+                productHashtags.push(tagExists._id);
+              } else {
+                // this tag doesn't exist, we need to:
+                // create it, add it's id to our tags cache, and push _id to productHashtags
+                normalizedTag._id = Tags.insert(normalizedTag);
+                tags[normalizedTag.slug] = normalizedTag._id;
+              }
+            } else {
+              // Cache hit, push the tags _id into productHashtags
+              productHashtags.push(tags[normalizedTag.slug]);
+            }
+          });
+
 
           // Get variant and option details
           if (product.options && Array.isArray(product.options)) {
@@ -107,7 +157,7 @@ export const methods = {
           prod.vendor = product.vendor;
           prod.productType = product.product_type;
           prod.handle = product.handle;
-          prod.hashtags = product.tags.split(",");
+          prod.hashtags = productHashtags;
           prod.metafields = [];
           // keep shopifyId for future use.
           prod.metafields.push({
@@ -125,7 +175,7 @@ export const methods = {
           ids = [...ids, ...products.map(p => p.id)];
         });
         return ids;
-      }
+      });
     } catch (error) {
       Logger.error(`Something went wrong! ${error}`);
     }
