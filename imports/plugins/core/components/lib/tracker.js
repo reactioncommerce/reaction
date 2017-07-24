@@ -1,7 +1,7 @@
-import { compose } from "./composer";
 import React from "react";
-import { Components } from "./components";
 import { Tracker } from "meteor/tracker";
+import { Components } from "./components";
+import { compose } from "./composer";
 
 /**
  * getTrackerLoader creates a Meteor Tracker to watch dep updates from
