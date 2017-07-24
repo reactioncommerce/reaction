@@ -1,4 +1,4 @@
-import { compose } from "react-komposer";
+import { compose } from "./composer";
 import React from "react";
 import { Components } from "./components";
 import { Tracker } from "meteor/tracker";
@@ -39,5 +39,3 @@ export function composeWithTracker(reactiveMapper, LoadingComponent) {
   };
   return compose(getTrackerLoader(reactiveMapper), options);
 }
-
-export * from "react-komposer";
