@@ -33,8 +33,8 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    const defaultCustomerGroup = Groups.findOne({ slug: "customer", shopId }) || {};
-    const defaultAdminPermissions = (defaultCustomerGroup.permissions || []).concat("dashboard");
+    const defaultCustomerGroupForShop = Groups.findOne({ slug: "customer", shopId }) || {};
+    const defaultAdminPermissions = (defaultCustomerGroupForShop.permissions || []).concat("dashboard");
     const newGroupData = Object.assign({}, groupData, {
       slug: getSlug(groupData.name), shopId
     });
@@ -133,7 +133,8 @@ Meteor.methods({
 
   /**
    * group/removeUser
-   * @summary removes a user from a group for a shop, and updates the user's permission list
+   * @summary removes a user from a group for a shop, and adds them to the default customer group.
+   * It updates the user's permission list to reflect. (NB: At this time, a user only belongs to one group per time)
    * @param {String} userId - current data of the group to be updated
    * @param {String} groupId - name of the group
    * @return {Object} - object.status of 200 on success or Error object on failure
@@ -143,7 +144,8 @@ Meteor.methods({
     check(groupId, String);
 
     const user = Accounts.findOne({ _id: userId });
-    const { permissions, shopId } = Groups.findOne({ _id: groupId }) || {};
+    const { shopId } = Groups.findOne({ _id: groupId }) || {};
+    const defaultCustomerGroupForShop = Groups.findOne({ slug: "customer", shopId }) || {};
 
     if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access Denied");
@@ -154,8 +156,8 @@ Meteor.methods({
     }
 
     try {
-      Meteor.call("accounts/removeUserPermissions", userId, permissions, shopId);
-      Accounts.update({ _id: userId }, { $pull: { groups: groupId } });
+      setUserPermissions(user, defaultCustomerGroupForShop.permissions, shopId);
+      Accounts.update({ _id: userId }, { $set: { groups: [defaultCustomerGroupForShop._id] } });
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -170,7 +172,7 @@ function setUserPermissions(users, permissions, shopId) {
     affectedUsers = [users];
   }
 
-  return affectedUsers.forEach(user => Roles.setUserRoles(user._id, permissions, shopId));
+  return affectedUsers.forEach((user) => Roles.setUserRoles(user._id, permissions, shopId));
 }
 
 // set default admin user's account as "owner"

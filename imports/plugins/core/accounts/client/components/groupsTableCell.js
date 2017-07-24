@@ -66,7 +66,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
       <div>
         <Button
           status="danger"
-          onClick={handleRemoveUserFromGroup(account)}
+          onClick={handleRemoveUserFromGroup(account, group._id)}
           bezelStyle="solid"
           i18nKeyLabel="admin.groups.remove"
           label="Remove"
