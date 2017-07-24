@@ -44,30 +44,27 @@ class LineItemsContainer extends Component {
     return this.setState({ isUpdating });
   }
 
-  handleSelectAllItems = (e, uniqueItems) => {
-    const { selectedItems } = this.state;
-    const checked = e.target.checked;
-
-    uniqueItems.map(item => {
-      if (!selectedItems.includes(item._id)) {
-        selectedItems.push(item._id);
-      }
-    });
-
-    if (checked) {
-      return this.setState({
+  handleSelectAllItems = (uniqueItems) => {
+    if (this.state.selectAllItems) {
+      // if all items are selected, clear the selectedItems array
+      // and set selectAllItems to false
+      this.setState({
+        selectedItems: [],
+        selectAllItems: false
+      });
+    } else {
+      // if there are no selected items, or if there are some items that have been
+      // selected but not all of them, loop through the items array and return a
+      // new array with item ids only, then set the selectedItems array with the itemIds
+      const itemIds = uniqueItems.map((item) => {
+        return item._id;
+      });
+      this.setState({
+        selectedItems: itemIds,
         selectAllItems: true,
-        isUpdating: true,
-        selectedItems
+        isUpdating: true
       });
     }
-
-    return this.setState({
-      selectAllItems: false,
-      selectedItems: [],
-      isUpdating: true,
-      editedItems: []
-    });
   }
 
   inputOnChange = (quantityValue, lineItem) => {
@@ -97,30 +94,32 @@ class LineItemsContainer extends Component {
   }
 
   handleItemSelect = (itemId) => {
-    let { selectedItems, editedItems } = this.state;
+    const { selectedItems, editedItems } = this.state;
+
     if (!selectedItems.includes(itemId)) {
       selectedItems.push(itemId);
-      return this.setState({
+      this.setState({
         selectedItems,
         isUpdating: true,
-        selectAllItems: false });
+        selectAllItems: false
+      });
+    } else {
+      // remove item from selected items
+      const updatedSelectedArray = selectedItems.filter((id) => {
+        if (id !== itemId) {
+          return id;
+        }
+      });
+      // remove item from edited quantities
+      const updatedEditedItems = editedItems.filter(item => item.id !== itemId);
+
+      this.setState({
+        selectedItems: updatedSelectedArray,
+        isUpdating: true,
+        selectAllItems: false,
+        editedItems: updatedEditedItems
+      });
     }
-
-    selectedItems = selectedItems.filter((id) => {
-      if (id !== itemId) {
-        return id;
-      }
-    });
-
-    // remove item from edited quantities
-    editedItems = editedItems.filter(item => item.id !== itemId);
-
-    return this.setState({
-      selectedItems,
-      isUpdating: true,
-      selectAllItems: false,
-      editedItems
-    });
   }
 
   /**

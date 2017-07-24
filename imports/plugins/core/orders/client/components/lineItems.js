@@ -59,8 +59,8 @@ class LineItems extends Component {
             {this.state.isOpen ?
               <RolloverCheckbox
                 checkboxClassName="checkbox-avatar checkbox-large"
-                onChange={() =>  {}}
-                checked={false}
+                onChange={() => this.props.handleItemSelect(uniqueItem._id)}
+                checked={this.props.selectedItems.includes(uniqueItem._id)}
               >
                 {this.displayMedia(uniqueItem)}
               </RolloverCheckbox>
@@ -165,8 +165,8 @@ class LineItems extends Component {
         <div className="invoice-popover-controls">
           <Checkbox
             className="checkbox-large"
-            checked={true}
-            onChange={() => {}}
+            checked={this.props.selectAllItems || this.props.selectedItems.length === this.props.uniqueItems.length}
+            onChange={() => this.props.handleSelectAllItems(this.props.uniqueItems)}
           />
           <div className="invoice-popover-close">
             <Button
@@ -186,6 +186,7 @@ class LineItems extends Component {
               {this.renderLineItemInvoice(uniqueItem)}
             </div>
           ))}
+
         </div>
         <div className="invoice-actions">
           <div className="invoice-action-cancel">
