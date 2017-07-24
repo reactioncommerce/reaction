@@ -1,15 +1,26 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component, PropTypes } from "react";
+import classnames from "classnames";
+import { Roles } from "meteor/alanning:roles";
+import { Reaction } from "/client/api";
 import { formatPriceString } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
-import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox } from "@reactioncommerce/reaction-ui";
+import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox } from "/imports/plugins/core/ui/client/components";
 
 class LineItems extends Component {
   static propTypes = {
     displayMedia: PropTypes.func,
-    handleClick: PropTypes.func,
-    isExpanded: PropTypes.func,
-    onClose: PropTypes.func,
+    editedItems: PropTypes.array,
+    handleItemSelect: PropTypes.func,
+    handleSelectAllItems: PropTypes.func,
+    inputOnChange: PropTypes.func,
+    invoice: PropTypes.object,
+    isHovered: PropTypes.func,
+    isUpdating: PropTypes.bool,
+    popOverIsOpen: PropTypes.bool,
+    selectAllItems: PropTypes.bool,
+    selectedItems: PropTypes.array,
+    togglePopOver: PropTypes.func,
+    toggleUpdating: PropTypes.func,
     uniqueItems: PropTypes.array
   }
 
@@ -21,9 +32,12 @@ class LineItems extends Component {
     return formatPriceString(price + shipping + taxes);
   }
 
-  renderLineItem(uniqueItem, quantity) {
-    const { handleClick, displayMedia } = this.props;
+  handleInputOnchange(value, uniqueItem) {
+    return this.props.inputOnChange(value, uniqueItem);
+  }
 
+  renderLineItem(uniqueItem, quantity) {
+    const { displayMedia } = this.props;
     return (
       <div className="order-items">
         <div
@@ -79,7 +93,7 @@ class LineItems extends Component {
         <div className="invoice-popover-controls">
           <div className="invoice-popover-checkbox">
             <Checkbox
-              className="checkbox"
+              className="checkbox-large"
               checked={true}
               onChange={() => {}}
             />
@@ -87,7 +101,45 @@ class LineItems extends Component {
         </div>
         <div>
           {this.props.uniqueItems.map((uniqueItem, index) => (
-            <div>Hey</div>
+            <div
+              className="order-item form-group order-summary-form-group"
+            >
+              <div className="invoice-order-line-media">
+                <RolloverCheckbox
+                  checkboxClassName="checkbox-avatar checkbox-large"
+                  onChange={() =>  {}}
+                  checked={false}
+                  key={index}
+                >
+                  { !this.props.displayMedia(uniqueItem) ?
+                    <img src= "/resources/placeholder.gif" /> :
+                    <img src={this.props.displayMedia(uniqueItem).url()}/>
+                  }
+                </RolloverCheckbox>
+              </div>
+
+              <div className="order-item-details">
+                <div className="order-detail-title">
+                  {uniqueItem.title}
+                </div>
+              </div>
+
+              <div className="order-detail-quantity">
+                <NumberTypeInput
+                  minValue={0}
+                  onChange={() => {}}
+                  defaultValue={uniqueItem.quantity}
+                  maxValue={uniqueItem.quantity}
+                />
+              </div>
+
+              <div className="order-detail-price">
+                <div className="invoice-details" style={{ marginRight: 15 }}>
+                  <strong>{formatPriceString(uniqueItem.variants.price)}</strong>
+                </div>
+              </div>
+
+            </div>
           ))}
         </div>
       </div>

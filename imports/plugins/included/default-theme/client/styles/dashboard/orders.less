@@ -134,15 +134,194 @@
 
 .order-items {
   list-style-type: none;
+  margin-bottom: 0px;
+  padding-top: 10px;
+  cursor: pointer;
+
+  &.invoice-item {
+    padding-top: 8px;
+    height: 56px;
+    margin-bottom: 10px;
+  }
+
+  &.selected {
+    background-color: #edfdf8;
+  }
 }
 
 .order-item {
   .display(flex);
 }
 
-.invoice .invoice:hover, .invoice:hover {
+.invoice-line-items:hover {
   background-color: @list-group-hover-bg;
   cursor: pointer;
+}
+
+.invoice-popover {
+  width: 416px;
+  height: auto;
+  margin-left: -10px;
+  padding-top: 0px;
+  padding: 10px;
+  padding-bottom: 30px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.16);
+  border: solid 1px #7894a4;
+}
+
+.invoice-popover-checkbox {
+  padding-left: 10px;
+  -webkit-flex: 1;
+  flex: 0;
+  border: 1px
+}
+
+.invoice-popover-controls {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  width: 100%;
+  height: 30px;
+
+  .invoice-popover-selected {
+    flex: 7;
+    padding-top: 2px;
+    padding-left: 10px;
+
+    i {
+      font-size: 18px;
+    }
+
+    span {
+      font-size: 16px;
+      left: 5px;
+      position: relative;
+      top: 0px;
+    }
+  }
+
+  .invoice-popover-close {
+    flex: 1;
+  }
+}
+
+.invoice-order-line-media {
+  flex: 0 0 auto;
+  width: 40px;
+
+  img {
+    width: 100%;
+  }
+}
+
+.invoive-order-items {
+  margin-bottom: 10px;
+  height: 84px;
+  padding: 10px;
+  background-color: #f7f7f7;
+
+  .invoice-order-item-tax {
+    display: flex;
+    width: 100%;
+    div {
+      flex: 1;
+
+      &.tax-code {
+        text-align: right;
+      }
+
+      &.tax-cost {
+        text-align: right;
+      }
+    }
+  }
+}
+
+.invoice-actions {
+  display: flex;
+  div {
+    &.invoice-action-cancel {
+      flex: 2;
+      margin-right: 10px;
+    }
+    &.invoice-action-refund {
+      flex: 1;
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.invoice-refund-edited {
+  width: 100%;
+  padding-bottom: 10px;
+
+  .refund-header {
+    display: flex;
+    border-bottom: 1px solid #bfbfbf;
+    padding: 10px;
+
+    div {
+      flex: 1;
+
+      &:first-child {
+        flex: 2;
+      }
+
+      &:last-child {
+        text-align: right;
+      }
+
+      span {
+        color: @rui-danger;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .refund-body {
+    margin-top: 10px;
+    .refund-item {
+      padding: 10px;
+      margin-bottom: 4px;
+      display: flex;
+      background: @rui-danger-bg;
+
+      div {
+        flex: 1;
+
+        &:first-child {
+          flex: 2
+        }
+
+        &:last-child {
+          text-align: right;
+        }
+      }
+
+      &.return {
+        span {
+          color: @rui-danger
+        }
+      }
+    }
+  }
+
+  .refund-include-shipping {
+    height: 30px;
+
+    input {
+      margin-right: 8px;
+    }
+
+    span {
+      top: -5px;
+      position: relative;
+    }
+  }
 }
 
 .invoice {
@@ -187,10 +366,6 @@
 
 .order-shipments {
   list-style-type: none;
-}
-
-.order-shipment-item {
-
 }
 
 // Order form summary
@@ -410,5 +585,38 @@
 
   .invoice-popover-close {
     flex: 1;
+  }
+}
+
+.invoice-order-line-media {
+  flex: 0 0 auto;
+  width: 40px;
+
+  img {
+    width: 100%;
+  }
+}
+
+.rollover-checkbox {
+
+  .selected-checkbox {
+    padding-right: 6px;
+
+    .checkbox-avatar {
+      margin-left: -6px;
+      border-radius: 2px;
+      border: solid 2px #5e6264;
+      background: transparent;
+    }
+  }
+
+  .second-child {
+    padding-right: 6px;
+
+    .checkbox-avatar {
+      margin-left: -6px;
+      border-radius: 2px;
+      border: solid 2px #5e6264;
+    }
   }
 }
