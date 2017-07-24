@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import { formatPriceString } from "/client/api";
-import { Popover, Checkbox, NumberTypeInput, RolloverCheckbox, Translation } from "/imports/plugins/core/ui/client/components";
+import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox, Translation } from  "@reactioncommerce/reaction-ui";
 
 class LineItems extends Component {
   static propTypes = {
@@ -49,7 +49,7 @@ class LineItems extends Component {
     );
   }
 
-  renderLineItem(uniqueItem, quantity) {
+  renderLineItem(uniqueItem) {
     return (
       <div className="order-items">
         <div
@@ -85,7 +85,7 @@ class LineItems extends Component {
                 defaultValue={uniqueItem.quantity}
                 maxValue={uniqueItem.quantity}
               /> :
-              <div>{quantity || uniqueItem.quantity}</div>
+              <div>{uniqueItem.quantity}</div>
             }
           </div>
 
@@ -163,11 +163,19 @@ class LineItems extends Component {
     return (
       <div className="invoice-popover">
         <div className="invoice-popover-controls">
-          <div className="invoice-popover-checkbox">
-            <Checkbox
-              className="checkbox-large"
-              checked={true}
-              onChange={() => {}}
+          <Checkbox
+            className="checkbox-large"
+            checked={true}
+            onChange={() => {}}
+          />
+          <div className="invoice-popover-close">
+            <Button
+              className="rui btn btn-default flat icon-only pull-right"
+              icon="fa-2x fa fa-times"
+              bezelStyle="flat"
+              onClick={() => this.setState({
+                isOpen: false
+              })}
             />
           </div>
         </div>
@@ -179,6 +187,25 @@ class LineItems extends Component {
             </div>
           ))}
         </div>
+        <div className="invoice-actions">
+          <div className="invoice-action-cancel">
+            <Button
+              className="pull-right"
+              bezelStyle="solid"
+              status="default"
+              label="Cancel"
+              onClick={() => {}}
+            />
+          </div>
+          <div className="invoice-action-refund">
+            <Button
+              className="pull-right"
+              bezelStyle="solid"
+              status="primary"
+              label="Refund Items"
+            />
+          </div>
+        </div>
       </div>
     );
   }
@@ -186,7 +213,7 @@ class LineItems extends Component {
   render() {
     const { uniqueItems } = this.props;
     return (
-      <div className="invoice" onClick={() => this.setState({
+      <div className="invoice invoice-line-items" onClick={() => this.setState({
         isOpen: true
       })}
       >
