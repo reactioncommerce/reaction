@@ -36,20 +36,38 @@ class LineItems extends Component {
     return this.props.inputOnChange(value, uniqueItem);
   }
 
-  renderLineItem(uniqueItem, quantity) {
+  displayMedia(uniqueItem) {
     const { displayMedia } = this.props;
+
+    if (displayMedia(uniqueItem)) {
+      return (
+        <img src={displayMedia(uniqueItem).url()}/>
+      );
+    }
+    return (
+      <img src= "/resources/placeholder.gif" />
+    );
+  }
+
+  renderLineItem(uniqueItem, quantity) {
     return (
       <div className="order-items">
         <div
           className="order-item form-group order-summary-form-group"
         >
-
-          <div className="order-item-media" style={{ marginLeft: 15 }}>
-            { !displayMedia(uniqueItem) ?
-              <img src= "/resources/placeholder.gif" /> :
-              <img
-                src={displayMedia(uniqueItem).url()}
-              />
+          <div className="order-item-media">
+            {this.state.isOpen ?
+              <RolloverCheckbox
+                checkboxClassName="checkbox-avatar checkbox-large"
+                onChange={() =>  {}}
+                checked={false}
+              >
+                {this.displayMedia(uniqueItem)}
+              </RolloverCheckbox>
+              :
+              <div style={{ marginLeft: 15 }}>
+                {this.displayMedia(uniqueItem)}
+              </div>
             }
           </div>
 
@@ -60,7 +78,15 @@ class LineItems extends Component {
           </div>
 
           <div className="order-detail-quantity">
-            {quantity || uniqueItem.quantity}
+            {this.state.isOpen ?
+              <NumberTypeInput
+                minValue={0}
+                onChange={() => {}}
+                defaultValue={uniqueItem.quantity}
+                maxValue={uniqueItem.quantity}
+              /> :
+              <div>{quantity || uniqueItem.quantity}</div>
+            }
           </div>
 
           <div className="order-detail-price">
@@ -101,44 +127,8 @@ class LineItems extends Component {
         </div>
         <div>
           {this.props.uniqueItems.map((uniqueItem, index) => (
-            <div
-              className="order-item form-group order-summary-form-group"
-            >
-              <div className="invoice-order-line-media">
-                <RolloverCheckbox
-                  checkboxClassName="checkbox-avatar checkbox-large"
-                  onChange={() =>  {}}
-                  checked={false}
-                  key={index}
-                >
-                  { !this.props.displayMedia(uniqueItem) ?
-                    <img src= "/resources/placeholder.gif" /> :
-                    <img src={this.props.displayMedia(uniqueItem).url()}/>
-                  }
-                </RolloverCheckbox>
-              </div>
-
-              <div className="order-item-details">
-                <div className="order-detail-title">
-                  {uniqueItem.title}
-                </div>
-              </div>
-
-              <div className="order-detail-quantity">
-                <NumberTypeInput
-                  minValue={0}
-                  onChange={() => {}}
-                  defaultValue={uniqueItem.quantity}
-                  maxValue={uniqueItem.quantity}
-                />
-              </div>
-
-              <div className="order-detail-price">
-                <div className="invoice-details" style={{ marginRight: 15 }}>
-                  <strong>{formatPriceString(uniqueItem.variants.price)}</strong>
-                </div>
-              </div>
-
+            <div key={index}>
+              {this.renderLineItem(uniqueItem)}
             </div>
           ))}
         </div>
