@@ -55,4 +55,4 @@ function OrdersActionContainer(props) {
   );
 }
 
-export default composeWithTracker(composer, null)(OrdersActionContainer);
+export default composeWithTracker(composer)(OrdersActionContainer);

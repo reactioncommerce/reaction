@@ -27,15 +27,28 @@ function getTrackerLoader(reactiveMapper) {
 }
 
 /**
- * Re-implementation of composeWithTracker from v1.x
+ * A higher order component to wrap a reactive function with Meteor's Tracker
  * @param {Function} reactiveMapper data fetching function to bind to a tracker
- * @param {React.Component} LoadingComponent react component for a custom loading screen
+ * @param {React.Component} options react component for a custom loading screen
  * @return {Function} composed function
  */
-export function composeWithTracker(reactiveMapper, LoadingComponent) {
-  const options = {
+export function composeWithTracker(reactiveMapper, options) {
+  let composeOptions = {};
+
+  if (typeof options === "undefined") {
     // eslint-disable-next-line react/display-name
-    loadingHandler: () => typeof LoadingComponent !== "undefined" ? <LoadingComponent /> : <Components.Loading />
-  };
-  return compose(getTrackerLoader(reactiveMapper), options);
+    composeOptions.loadingHandler = () => <Components.Loading />;
+  }
+
+  if (typeof options === "function") {
+    const CustomLoader = options;
+    // eslint-disable-next-line
+    composeOptions.loadingHandler = () => <CustomLoader />;
+  }
+
+  if (typeof options === "object") {
+    composeOptions = options;
+  }
+
+  return compose(getTrackerLoader(reactiveMapper), composeOptions);
 }

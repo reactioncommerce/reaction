@@ -108,5 +108,5 @@ export default function ToolbarContainer(Comp) {
     );
   }
 
-  return composeWithTracker(composer, null)(CompositeComponent);
+  return composeWithTracker(composer)(CompositeComponent);
 }
