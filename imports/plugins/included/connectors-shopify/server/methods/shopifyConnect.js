@@ -160,6 +160,7 @@ export const methods = {
 
         products.forEach((product) => {
           Logger.info(`Importing ${product.title}`);
+          const price = { min: null, max: null, range: "0.00" };
           let productVariants = [];
           let variantLabel;
           let productOptions = [];
@@ -352,9 +353,18 @@ export const methods = {
                       ids.push(reactionOptionId);
                       Logger.info(`Imported ${product.title} ${variant}/${option}`);
 
-                      const optionImages = findVariantImages(shopifyOption.id, product.images);
+                      // Update Max Price
+                      if (price.max === null || price.max < reactionOption.price) {
+                        price.max = reactionOption.price;
+                      }
+
+                      // Update Min Price
+                      if (price.min === null || price.min > reactionOption.price) {
+                        price.min = reactionOption.price;
+                      }
 
                       // Save all relevant variant images to our option
+                      const optionImages = findVariantImages(shopifyOption.id, product.images);
                       optionImages.forEach((imageObj) => {
                         saveImage(imageObj.src, {
                           ownerId: Meteor.userId(),
@@ -368,7 +378,17 @@ export const methods = {
                     }
                   });
                 } else {
-                  // Product does not have options, just variants
+                // Product does not have options, just variants
+                  // Update Max Price
+                  if (price.max === null || price.max < reactionVariant.price) {
+                    price.max = reactionVariant.price;
+                  }
+
+                  // Update Min Price
+                  if (price.min === null || price.min > reactionVariant.price) {
+                    price.min = reactionVariant.price;
+                  }
+
                   // Save all relevant variant images to our variant.
                   const variantImages = findVariantImages(shopifyVariant.id, product.images);
                   variantImages.forEach((imageObj) => {
@@ -386,6 +406,14 @@ export const methods = {
               }
             });
           }
+
+          // Set final product price
+          if (price.min !== price.max) {
+            price.range = `${price.min} - ${price.max}`;
+          } else {
+            price.range = `${price.max}`;
+          }
+          Products.update({ _id: productId }, { $set: { price: price } }, { selector: { type: "simple" } });
         }); // End product loop
 
         // Update the API pagination with the last productId we fetched
