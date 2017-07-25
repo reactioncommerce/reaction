@@ -1,12 +1,11 @@
-import debounce from "lodash/debounce";
 import _ from "lodash";
 import update from "react/lib/update";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { compose } from "recompose";
+import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, Router } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
 import { getTagIds } from "/lib/selectors/tags";
-import { Overlay } from "/imports/plugins/core/ui/client/components";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { Tags } from "/lib/collections";
 import TagNav from "../components/tagNav";
@@ -80,356 +79,358 @@ const TagNavHelpers = {
   }
 };
 
-class TagNavContainer extends Component {
-  constructor(props) {
-    super(props);
+const wrapComponent = (Comp) => (
+  class TagNavContainer extends Component {
+    static propTypes = {
+      closeNavbar: PropTypes.func,
+      editButton: PropTypes.node,
+      editable: PropTypes.bool,
+      hasEditRights: PropTypes.bool,
+      isVisible: PropTypes.bool,
+      tagIds: PropTypes.arrayOf(PropTypes.string),
+      tagsAsArray: PropTypes.arrayOf(PropTypes.object),
+      tagsByKey: PropTypes.object
+    }
 
-    this.state = {
-      attachedBodyListener: false,
-      editable: false,
-      tagIds: props.tagIds || [],
-      tagsByKey: props.tagsByKey || {},
-      selectedTag: null,
-      suggestions: [],
-      [NavbarStates.Visible]: props.isVisible,
-      newTag: {
-        name: ""
-      }
-    };
+    constructor(props) {
+      super(props);
 
-    this.onWindowResize = this.onWindowResize.bind(this);
-  }
+      this.state = {
+        attachedBodyListener: false,
+        editable: false,
+        tagIds: props.tagIds || [],
+        tagsByKey: props.tagsByKey || {},
+        selectedTag: null,
+        suggestions: [],
+        [NavbarStates.Visible]: props.isVisible,
+        newTag: {
+          name: ""
+        }
+      };
 
-  componentDidMount() {
-    window.addEventListener("resize", this.onWindowResize);
-    this.onWindowResize();
-  }
+      this.onWindowResize = this.onWindowResize.bind(this);
+    }
 
-  componentWillReceiveProps(nextProps) {
-    let selectedTag = {};
-    const previousEdit = this.state.editable;
-    nextProps.tagsAsArray.map((tag) => {
-      if (this.isSelected(tag)) {
-        selectedTag = tag;
-      }
-    });
+    componentDidMount() {
+      window.addEventListener("resize", this.onWindowResize);
+      this.onWindowResize();
+    }
 
-    const { tagIds, tagsByKey, isVisible } = nextProps;
-    this.setState({
-      [NavbarStates.Visible]: isVisible,
-      editable: previousEdit && this.canEdit,
-      tagIds,
-      tagsByKey,
-      selectedTag
-    });
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.onWindowResize);
-  }
-
-  onWindowResize = () => {
-    const matchQuery = window.matchMedia("(max-width: 991px)");
-    if (matchQuery.matches) {
-      this.setState({
-        [NavbarStates.Orientation]: NavbarOrientation.Vertical,
-        [NavbarStates.Position]: NavbarPosition.Fixed,
-        [NavbarStates.Anchor]: NavbarAnchor.Left
+    componentWillReceiveProps(nextProps) {
+      let selectedTag = {};
+      const previousEdit = this.state.editable;
+      nextProps.tagsAsArray.map((tag) => {
+        if (this.isSelected(tag)) {
+          selectedTag = tag;
+        }
       });
-    } else {
+
+      const { tagIds, tagsByKey, isVisible } = nextProps;
       this.setState({
-        [NavbarStates.Orientation]: NavbarOrientation.Horizontal,
-        [NavbarStates.Position]: NavbarPosition.Static,
-        [NavbarStates.Anchor]: NavbarAnchor.None,
-        [NavbarStates.Visible]: false
+        [NavbarStates.Visible]: isVisible,
+        editable: previousEdit && this.canEdit,
+        tagIds,
+        tagsByKey,
+        selectedTag
       });
     }
-  }
 
-  canSaveTag(tag) {
-    // Blank tags cannot be saved
-    if (typeof tag.name === "string" && tag.name.trim().length === 0) {
+    componentWillUnmount() {
+      window.removeEventListener("resize", this.onWindowResize);
+    }
+
+    onWindowResize = () => {
+      const matchQuery = window.matchMedia("(max-width: 991px)");
+      if (matchQuery.matches) {
+        this.setState({
+          [NavbarStates.Orientation]: NavbarOrientation.Vertical,
+          [NavbarStates.Position]: NavbarPosition.Fixed,
+          [NavbarStates.Anchor]: NavbarAnchor.Left
+        });
+      } else {
+        this.setState({
+          [NavbarStates.Orientation]: NavbarOrientation.Horizontal,
+          [NavbarStates.Position]: NavbarPosition.Static,
+          [NavbarStates.Anchor]: NavbarAnchor.None,
+          [NavbarStates.Visible]: false
+        });
+      }
+    }
+
+    canSaveTag(tag) {
+      // Blank tags cannot be saved
+      if (typeof tag.name === "string" && tag.name.trim().length === 0) {
+        return false;
+      }
+
+      // If the tag does not have an id, then allow the save
+      if (!tag._id) {
+        return true;
+      }
+
+      // Get the original tag from the props
+      // Tags from props are not mutated, and come from an outside source
+      const originalTag = this.props.tagsByKey[tag._id];
+
+      if (originalTag && originalTag.name !== tag.name) {
+        return true;
+      }
+
       return false;
     }
 
-    // If the tag does not have an id, then allow the save
-    if (!tag._id) {
-      return true;
+    handleNewTagSave = (tag, parentTag) => {
+      if (this.canSaveTag(tag)) {
+        TagNavHelpers.onTagCreate(tag.name, parentTag);
+        this.setState({ newTag: { name: "" } });
+      }
     }
 
-    // Get the original tag from the props
-    // Tags from props are not mutated, and come from an outside source
-    const originalTag = this.props.tagsByKey[tag._id];
-
-    if (originalTag && originalTag.name !== tag.name) {
-      return true;
+    handleNewTagUpdate = (tag) => { // updates the current tag state being edited
+      this.setState({
+        newTag: tag
+      });
     }
 
-    return false;
-  }
-
-  handleNewTagSave = (tag, parentTag) => {
-    if (this.canSaveTag(tag)) {
-      TagNavHelpers.onTagCreate(tag.name, parentTag);
-      this.setState({ newTag: { name: "" } });
+    handleTagRemove = (tag, parentTag) => {
+      TagNavHelpers.onTagRemove(tag, parentTag);
     }
-  }
 
-  handleNewTagUpdate = (tag) => { // updates the current tag state being edited
-    this.setState({
-      newTag: tag
-    });
-  }
+    handleTagUpdate = (tag) => {
+      const newState = update(this.state, {
+        tagsByKey: {
+          [tag._id]: {
+            $set: tag
+          }
+        }
+      });
 
-  handleTagRemove = (tag, parentTag) => {
-    TagNavHelpers.onTagRemove(tag, parentTag);
-  }
+      this.setState(newState);
+    }
 
-  handleTagUpdate = (tag) => {
-    const newState = update(this.state, {
-      tagsByKey: {
-        [tag._id]: {
-          $set: tag
+    handleTagSave = (tag) => {
+      TagNavHelpers.onUpdateTag(tag._id, tag.name);
+    }
+
+    handleMoveTag = (dragIndex, hoverIndex) => {
+      const tag = this.state.tagIds[dragIndex];
+
+      // Apply new sort order to variant list
+      const newState = update(this.state, {
+        tagIds: {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, tag]
+          ]
+        }
+      });
+
+      // Set local state so the component does't have to wait for a round-trip
+      // to the server to get the updated list of variants
+      this.setState(newState, () => {
+        _.debounce(() => TagNavHelpers.onTagSort(this.state.tagIds), 500)(); // Save the updated positions
+      });
+    }
+
+    handleGetSuggestions = (suggestionUpdateRequest) => {
+      const suggestions = TagNavHelpers.updateSuggestions(
+        suggestionUpdateRequest.value,
+        { excludeTags: this.state.tagIds }
+      );
+
+      this.setState({ suggestions });
+    }
+
+    handleClearSuggestions = () => {
+      this.setState({ suggestions: [] });
+    }
+
+    get canEdit() {
+      return this.props.hasEditRights && Reaction.isPreview() === false;
+    }
+
+    attachBodyListener = () => {
+      document.body.addEventListener("mouseover", this.closeDropdown);
+      this.setState({ attachedBodyListener: true });
+    }
+
+    detachhBodyListener = () => {
+      document.body.removeEventListener("mouseover", this.closeDropdown);
+      this.setState({ attachedBodyListener: false });
+    }
+
+    closeDropdown = (event) => {
+      const closestNavItem = event.target.closest(".navbar-item");
+
+      // on mouseover an element outside of tags, close dropdown
+      if (!closestNavItem) {
+        this.closeDropdownTimeout = setTimeout(() => {
+          this.setState({ selectedTag: null });
+          this.detachhBodyListener();
+        }, 500);
+      } else {
+        if (this.closeDropdownTimeout) {
+          clearTimeout(this.closeDropdownTimeout);
         }
       }
-    });
+    }
 
-    this.setState(newState);
-  }
+    get navbarOrientation() {
+      return this.state[NavbarStates.Orientation];
+    }
 
-  handleTagSave = (tag) => {
-    TagNavHelpers.onUpdateTag(tag._id, tag.name);
-  }
+    get navbarPosition() {
+      return this.state[NavbarStates.Position];
+    }
 
-  handleMoveTag = (dragIndex, hoverIndex) => {
-    const tag = this.state.tagIds[dragIndex];
+    get navbarAnchor() {
+      return this.state[NavbarStates.Anchor];
+    }
 
-    // Apply new sort order to variant list
-    const newState = update(this.state, {
-      tagIds: {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, tag]
-        ]
+    get navbarVisibility() {
+      const isVisible = this.state[NavbarStates.Visible] === true;
+
+      if (isVisible) {
+        return "open";
       }
-    });
+      return "closed";
+    }
 
-    // Set local state so the component does't have to wait for a round-trip
-    // to the server to get the updated list of variants
-    this.setState(newState, () => {
-      debounce(() => TagNavHelpers.onTagSort(this.state.tagIds), 500)(); // Save the updated positions
-    });
-  }
-
-  handleGetSuggestions = (suggestionUpdateRequest) => {
-    const suggestions = TagNavHelpers.updateSuggestions(
-      suggestionUpdateRequest.value,
-      { excludeTags: this.state.tagIds }
-    );
-
-    this.setState({ suggestions });
-  }
-
-  handleClearSuggestions = () => {
-    this.setState({ suggestions: [] });
-  }
-
-  get canEdit() {
-    return this.props.hasEditRights && Reaction.isPreview() === false;
-  }
-
-  attachBodyListener = () => {
-    document.body.addEventListener("mouseover", this.closeDropdown);
-    this.setState({ attachedBodyListener: true });
-  }
-
-  detachhBodyListener = () => {
-    document.body.removeEventListener("mouseover", this.closeDropdown);
-    this.setState({ attachedBodyListener: false });
-  }
-
-  closeDropdown = (event) => {
-    const closestNavItem = event.target.closest(".navbar-item");
-
-    // on mouseover an element outside of tags, close dropdown
-    if (!closestNavItem) {
-      this.closeDropdownTimeout = setTimeout(() => {
+    onTagSelect = (currentSelectedTag) => {
+      if (_.isEqual(currentSelectedTag, this.state.selectedTag)) {
         this.setState({ selectedTag: null });
-        this.detachhBodyListener();
-      }, 500);
-    } else {
-      if (this.closeDropdownTimeout) {
-        clearTimeout(this.closeDropdownTimeout);
+      } else {
+        this.setState({ selectedTag: currentSelectedTag });
       }
     }
-  }
 
-  get navbarOrientation() {
-    return this.state[NavbarStates.Orientation];
-  }
-
-  get navbarPosition() {
-    return this.state[NavbarStates.Position];
-  }
-
-  get navbarAnchor() {
-    return this.state[NavbarStates.Anchor];
-  }
-
-  get navbarVisibility() {
-    const isVisible = this.state[NavbarStates.Visible] === true;
-
-    if (isVisible) {
-      return "open";
-    }
-    return "closed";
-  }
-
-  onTagSelect = (currentSelectedTag) => {
-    if (_.isEqual(currentSelectedTag, this.state.selectedTag)) {
-      this.setState({ selectedTag: null });
-    } else {
-      this.setState({ selectedTag: currentSelectedTag });
-    }
-  }
-
-  isSelected(tag) {
-    let isSelected = false;
-    if (this.state.selectedTag && tag) {
-      isSelected = this.state.selectedTag._id === tag._id;
-    }
-    return isSelected;
-  }
-
-  handleTagMouseOver = (event, tag) => {
-    const tagId = tag._id;
-    const tags = this.props.tagsAsArray;
-
-    if (TagNavHelpers.isMobile()) {
-      return;
-    }
-    // While in edit mode, don't trigger the hover hide/show menu
-    if (this.state.editable === false) {
-      // User mode
-      // Don't show dropdown if there are no subtags
-      if (TagNavHelpers.hasSubTags(tagId, tags) === false) {
-        this.setState({ selectedTag: null });
-        return;
+    isSelected(tag) {
+      let isSelected = false;
+      if (this.state.selectedTag && tag) {
+        isSelected = this.state.selectedTag._id === tag._id;
       }
-
-      // Otherwise, show the menu
-      // And Attach an event listener to the document body
-      // This will check to see if the dropdown should be closed if the user
-      // leaves the tag nav bar
-      this.attachBodyListener();
-      this.setState({ selectedTag: TagNavHelpers.tagById(tagId, tags) });
+      return isSelected;
     }
-  }
 
-  handleTagClick = (event, tag) => {
-    if (TagNavHelpers.isMobile()) {
+    handleTagMouseOver = (event, tag) => {
       const tagId = tag._id;
       const tags = this.props.tagsAsArray;
-      const selectedTag = this.state.selectedTag;
-      const hasSubTags = TagNavHelpers.hasSubTags(tagId, tags);
 
-      if (hasSubTags === false) {
-        // click close button to make navbar left disappear
-        this.props.closeNavbar();
-      } else {
-        event.preventDefault();
+      if (TagNavHelpers.isMobile()) {
+        return;
       }
+      // While in edit mode, don't trigger the hover hide/show menu
+      if (this.state.editable === false) {
+        // User mode
+        // Don't show dropdown if there are no subtags
+        if (TagNavHelpers.hasSubTags(tagId, tags) === false) {
+          this.setState({ selectedTag: null });
+          return;
+        }
 
-      if (selectedTag && selectedTag._id === tagId) {
-        this.setState({ selectedTag: null });
-      } else if (hasSubTags) {
+        // Otherwise, show the menu
+        // And Attach an event listener to the document body
+        // This will check to see if the dropdown should be closed if the user
+        // leaves the tag nav bar
+        this.attachBodyListener();
         this.setState({ selectedTag: TagNavHelpers.tagById(tagId, tags) });
       }
     }
-    Router.go("tag", { slug: tag.slug });
-  }
 
-  handleEditButtonClick = () => {
-    this.setState({ editable: !this.state.editable });
-  }
+    handleTagClick = (event, tag) => {
+      if (TagNavHelpers.isMobile()) {
+        const tagId = tag._id;
+        const tags = this.props.tagsAsArray;
+        const selectedTag = this.state.selectedTag;
+        const hasSubTags = TagNavHelpers.hasSubTags(tagId, tags);
 
-  hasDropdownClassName(tag) {
-    if (Array.isArray(tag.relatedTagIds)) {
-      return "has-dropdown";
-    }
-    return "";
-  }
+        if (hasSubTags === false) {
+          // click close button to make navbar left disappear
+          this.props.closeNavbar();
+        } else {
+          event.preventDefault();
+        }
 
-  navbarSelectedClassName = (tag) => {
-    const currentSelectedTag = this.state.selectedTag;
-
-    if (currentSelectedTag) {
-      if (currentSelectedTag._id === tag._id) {
-        return "selected";
+        if (selectedTag && selectedTag._id === tagId) {
+          this.setState({ selectedTag: null });
+        } else if (hasSubTags) {
+          this.setState({ selectedTag: TagNavHelpers.tagById(tagId, tags) });
+        }
       }
-    }
-    return "";
-  }
-
-  get tags() {
-    if (this.state.editable) {
-      return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
+      Router.go("tag", { slug: tag.slug });
     }
 
-    return this.props.tagsAsArray;
-  }
+    handleEditButtonClick = () => {
+      this.setState({ editable: !this.state.editable });
+    }
 
-  render() {
-    return (
-      <div>
-        <TagNav
-          {...this.props}
-          {...TagNavHelpers}
-          navbarOrientation={this.navbarOrientation}
-          navbarPosition={this.navbarPosition}
-          navbarAnchor={this.navbarAnchor}
-          navbarVisibility={this.navbarVisibility}
-          tags={this.tags}
-          canEdit={this.canEdit}
-          newTag={this.state.newTag}
-          selectedTag={this.state.selectedTag}
-          navButtonStyles={navButtonStyles}
-          editable={this.state.editable}
-          hasDropdownClassName={this.hasDropdownClassName}
-          navbarSelectedClassName={this.navbarSelectedClassName}
-          suggestions={this.state.suggestions}
-          onClearSuggestions={this.handleClearSuggestions}
-          onGetSuggestions={this.handleGetSuggestions}
-          onEditButtonClick={this.handleEditButtonClick}
-          onMoveTag={this.handleMoveTag}
-          onNewTagSave={this.handleNewTagSave}
-          onNewTagUpdate={this.handleNewTagUpdate}
-          onTagClick={this.handleTagClick}
-          onTagMouseOver={this.handleTagMouseOver}
-          onTagRemove={this.handleTagRemove}
-          onTagSave={this.handleTagSave}
-          onTagUpdate={this.handleTagUpdate}
-          onTagSelect={this.onTagSelect}
-        />
-        <Overlay
-          isVisible={this.state[NavbarStates.Visible]}
-          onClick={this.props.closeNavbar}
-        />
-      </div>
-    );
-  }
-}
+    hasDropdownClassName(tag) {
+      if (Array.isArray(tag.relatedTagIds)) {
+        return "has-dropdown";
+      }
+      return "";
+    }
 
-TagNavContainer.propTypes = {
-  closeNavbar: PropTypes.func,
-  editButton: PropTypes.node,
-  editable: PropTypes.bool,
-  hasEditRights: PropTypes.bool,
-  isVisible: PropTypes.bool,
-  tagIds: PropTypes.arrayOf(PropTypes.string),
-  tagsAsArray: PropTypes.arrayOf(PropTypes.object),
-  tagsByKey: PropTypes.object
-};
+    navbarSelectedClassName = (tag) => {
+      const currentSelectedTag = this.state.selectedTag;
+
+      if (currentSelectedTag) {
+        if (currentSelectedTag._id === tag._id) {
+          return "selected";
+        }
+      }
+      return "";
+    }
+
+    get tags() {
+      if (this.state.editable) {
+        return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
+      }
+
+      return this.props.tagsAsArray;
+    }
+
+    render() {
+      return (
+        <div>
+          <Comp
+            {...this.props}
+            {...TagNavHelpers}
+            navbarOrientation={this.navbarOrientation}
+            navbarPosition={this.navbarPosition}
+            navbarAnchor={this.navbarAnchor}
+            navbarVisibility={this.navbarVisibility}
+            tags={this.tags}
+            canEdit={this.canEdit}
+            newTag={this.state.newTag}
+            selectedTag={this.state.selectedTag}
+            navButtonStyles={navButtonStyles}
+            editable={this.state.editable}
+            hasDropdownClassName={this.hasDropdownClassName}
+            navbarSelectedClassName={this.navbarSelectedClassName}
+            suggestions={this.state.suggestions}
+            onClearSuggestions={this.handleClearSuggestions}
+            onGetSuggestions={this.handleGetSuggestions}
+            onEditButtonClick={this.handleEditButtonClick}
+            onMoveTag={this.handleMoveTag}
+            onNewTagSave={this.handleNewTagSave}
+            onNewTagUpdate={this.handleNewTagUpdate}
+            onTagClick={this.handleTagClick}
+            onTagMouseOver={this.handleTagMouseOver}
+            onTagRemove={this.handleTagRemove}
+            onTagSave={this.handleTagSave}
+            onTagUpdate={this.handleTagUpdate}
+            onTagSelect={this.onTagSelect}
+          />
+          <Components.Overlay
+            isVisible={this.state[NavbarStates.Visible]}
+            onClick={this.props.closeNavbar}
+          />
+        </div>
+      );
+    }
+  }
+);
 
 const composer = (props, onData) => {
   let tags = Tags.find({ isTopLevel: true }, { sort: { position: 1 } }).fetch();
@@ -453,4 +454,12 @@ const composer = (props, onData) => {
   });
 };
 
-export default composeWithTracker(composer, null)(TagNavContainer);
+registerComponent("TagNav", TagNav, [
+  composeWithTracker(composer),
+  wrapComponent
+]);
+
+export default compose(
+  composeWithTracker(composer),
+  wrapComponent
+)(TagNav);

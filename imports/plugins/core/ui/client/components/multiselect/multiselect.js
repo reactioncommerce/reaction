@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Select from "react-select";
-import { Translation } from "../translation";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 
 class MultiSelect extends Component {
@@ -26,7 +26,7 @@ class MultiSelect extends Component {
     if (this.props.label) {
       return (
         <label>
-          <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+          <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
         </label>
       );
     }
@@ -68,5 +68,7 @@ class MultiSelect extends Component {
     );
   }
 }
+
+registerComponent("MultiSelect", MultiSelect);
 
 export default MultiSelect;
