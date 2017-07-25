@@ -19,7 +19,7 @@ class MultiSelect extends Component {
     onChange: PropTypes.func,
     options: PropTypes.array,
     placeholder: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.array, PropTypes.string])
+    value: PropTypes.any
   }
 
   renderLabel() {
