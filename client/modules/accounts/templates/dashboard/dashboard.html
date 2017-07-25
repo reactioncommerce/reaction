@@ -1,44 +1,7 @@
 <template name="accountsDashboard">
   {{#if hasPermission 'accounts'}}
-
-    {{> memberForm}}
-    <div class="container-fluid-sm">
-
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <span data-i18n="accounts.shopMembers">Shop Members</span>
-          </h3>
-        </div>
-
-        <ul class="list-group">
-          {{#each members}}
-            {{#if isShopMember}}
-              <li class="list-group-item flex">
-                {{> member}}
-              </li>
-            {{/if}}
-          {{/each}}
-        </ul>
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <span data-i18n="accounts.guests">Guests</span>
-          </h3>
-        </div>
-
-        <ul class="list-group">
-          {{#each members}}
-            {{#if isShopGuest}}
-              <li class="list-group-item flex">
-                {{> member}}
-              </li>
-            {{/if}}
-          {{/each}}
-        </ul>
-      </div>
+    <div>
+      {{> React component=accountsDashboard }}
     </div>
   {{/if}}
 </template>
