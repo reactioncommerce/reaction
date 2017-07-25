@@ -139,6 +139,6 @@ MediaItem.propTypes = {
   source: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
 
-registerComponent("MediaItem", SortableItem("media", MediaItem));
+registerComponent("MediaItem", MediaItem, SortableItem("media"));
 
-export default SortableItem("media", MediaItem);
+export default SortableItem("media")(MediaItem);

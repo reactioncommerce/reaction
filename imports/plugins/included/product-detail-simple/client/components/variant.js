@@ -143,6 +143,6 @@ Variant.propTypes = {
   visibilityButton: PropTypes.node
 };
 
-registerComponent("Variant", SortableItem("product-variant", Variant));
+registerComponent("Variant", Variant, SortableItem("product-variant"));
 
-export default SortableItem("product-variant", Variant);
+export default SortableItem("product-variant")(Variant);

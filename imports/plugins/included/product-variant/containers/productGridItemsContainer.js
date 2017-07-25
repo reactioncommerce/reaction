@@ -263,6 +263,6 @@ class ProductGridItemsContainer extends PureComponent {
   }
 }
 
-registerComponent("ProductGridItems", SortableItem("productGridItem", ProductGridItemsContainer));
+registerComponent("ProductGridItems", ProductGridItemsContainer, SortableItem("productGridItem"));
 
-export default SortableItem("productGridItem", ProductGridItemsContainer);
+export default SortableItem("productGridItem")(ProductGridItemsContainer);

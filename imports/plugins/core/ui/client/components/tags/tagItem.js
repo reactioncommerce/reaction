@@ -322,6 +322,6 @@ TagItem.propTypes = {
   tag: PropTypes.object
 };
 
-registerComponent("TagItem", SortableItem("tag", TagItem));
+registerComponent("TagItem", TagItem, SortableItem("tag"));
 
-export default SortableItem("tag", TagItem);
+export default SortableItem("tag")(TagItem);
