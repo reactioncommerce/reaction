@@ -1,6 +1,7 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Radium from "radium";
+import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
@@ -8,7 +9,7 @@ import classnames from "classnames";
 import { getComponent } from "/imports/plugins/core/layout/lib/components";
 import { Templates } from "/lib/collections";
 
-class ReactionLayout extends PureComponent {
+class ReactionLayout extends Component {
   get layout() {
     return this.props.layout;
   }
@@ -128,6 +129,12 @@ function composer(props, onData) {
   }
 }
 
-registerComponent("ReactionLayout", Radium(ReactionLayout), composeWithTracker(composer));
+registerComponent("ReactionLayout", ReactionLayout, [
+  composeWithTracker(composer),
+  Radium
+]);
 
-export default composeWithTracker(composer)(Radium(ReactionLayout));
+export default compose(
+  composeWithTracker(composer),
+  Radium
+)(ReactionLayout);
