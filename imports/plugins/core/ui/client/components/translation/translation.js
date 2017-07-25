@@ -1,7 +1,6 @@
 import { camelCase } from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
-import { pure } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 
@@ -19,6 +18,6 @@ Translation.propTypes = {
   i18nKey: PropTypes.string
 };
 
-registerComponent("Translation", Translation, pure);
+registerComponent("Translation", Translation);
 
 export default Translation;
