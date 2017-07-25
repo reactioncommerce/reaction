@@ -78,6 +78,8 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
   return null;
 };
 
+GroupsTableCell.displayName = "GroupsTableCell";
+
 GroupsTableCell.propTypes = {
   account: PropTypes.object,
   columnName: PropTypes.string,

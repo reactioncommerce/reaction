@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { List, ListItem, SortableTable } from "@reactioncommerce/reaction-ui";
@@ -7,46 +7,53 @@ import GroupHeader from "./groupHeader";
 
 const fields = ["name", "email", "createdAt", "dropdown", "button"];
 
-const GroupsTable = (props) => {
-  const { group } = props;
-  const tableClass = (length) => {
+class GroupsTable extends Component {
+  get group() {
+    return this.props.group;
+  }
+
+  tableClass = (length) => {
     return classnames({
       "accounts-group-table": true,
       "empty-table": !Boolean(length)
     });
   };
 
-  const handleGroupClick = (grp) => {
+  handleGroupClick = (grp) => {
     return () => {
-      if (props.onGroupSelect) {
-        props.onGroupSelect(grp);
+      if (this.props.onGroupSelect) {
+        this.props.onGroupSelect(grp);
       }
     };
   };
 
-  const columnMetadata = fields.map((columnName) => ({
-    Header: <GroupHeader columnName={columnName} />,
-    accessor: "",
-    Cell: (data) => {
-      return <GroupsTableCell account={data.value} columnName={columnName} {...props} />;
-    }
-  }));
+  get columnMetadata() {
+    return fields.map((columnName) => ({
+      Header: <GroupHeader columnName={columnName} />,
+      accessor: "",
+      Cell: (data) => {
+        return <GroupsTableCell account={data.value} columnName={columnName} {...this.props} />;
+      }
+    }));
+  }
 
-  return (
-    <List className="group-table">
-      <ListItem actionType="arrow" label={group.name} onClick={handleGroupClick(group)} />
-      <div className={tableClass(group.users.length)}>
-        <SortableTable
-          data={group.users}
-          columnMetadata={columnMetadata}
-          filteredFields={fields}
-          filterType="none"
-          showFilter={true}
-        />
-      </div>
-    </List>
-  );
-};
+  render() {
+    return (
+      <List className="group-table">
+        <ListItem actionType="arrow" label={this.group.name} onClick={this.handleGroupClick(this.group)} />
+        <div className={this.tableClass(this.group.users.length)}>
+          <SortableTable
+            data={this.group.users}
+            columnMetadata={this.columnMetadata}
+            filteredFields={fields}
+            filterType="none"
+            showFilter={true}
+          />
+        </div>
+      </List>
+    );
+  }
+}
 
 GroupsTable.propTypes = {
   accounts: PropTypes.array,
