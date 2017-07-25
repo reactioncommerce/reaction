@@ -473,7 +473,7 @@ export function inviteShopMember(options) {
   check(shopId, String);
   check(email, String);
   check(name, String);
-  check(groupId, Match.Optional(String));
+  check(groupId, String);
 
   this.unblock();
 

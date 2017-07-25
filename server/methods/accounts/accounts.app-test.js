@@ -495,14 +495,16 @@ describe("Account Meteor method ", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       const createUserSpy = sandbox.spy(MeteorAccount, "createUser");
       // create user
-      expect(() => Meteor.call("accounts/inviteShopMember", shopId,
-        fakeUser.emails[0].address,
-        fakeUser.profile.addressBook[0].fullName)).to.throw(Meteor.Error, /Access denied/);
+      expect(() =>
+        Meteor.call("accounts/inviteShopMember", {
+          shopId,
+          groupId: Random.id(),
+          email: fakeUser.emails[0].address,
+          name: fakeUser.profile.addressBook[0].fullName
+        })
+      ).to.throw(Meteor.Error, /Access denied/);
       // expect that createUser shouldnt have run
       expect(createUserSpy).to.not.have.been.called;
-      // expect(createUserSpy).to.not.have.been.called.with({
-      //   username: fakeUser.profile.addressBook[0].fullName
-      // });
     });
 
     it("should let a Owner invite a user to the shop", function (done) {
@@ -511,12 +513,14 @@ describe("Account Meteor method ", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       // TODO checking this is failing, even though we can see it happening in the log.
       // spyOn(Email, "send");
-      expect(function () {
-        return Meteor.call("accounts/inviteShopMember",
+      expect(() =>
+        Meteor.call("accounts/inviteShopMember", {
           shopId,
-          fakeUser.emails[0].address,
-          fakeUser.profile.addressBook[0].fullName);
-      }).to.not.throw(Meteor.Error, /Access denied/);
+          groupId: Random.id(),
+          email: fakeUser.emails[0].address,
+          name: fakeUser.profile.addressBook[0].fullName
+        })
+      ).to.not.throw(Meteor.Error, /Access denied/);
       // expect(Email.send).toHaveBeenCalled();
       return done();
     });
