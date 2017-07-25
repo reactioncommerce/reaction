@@ -511,8 +511,8 @@ describe("Account Meteor method ", function () {
       this.timeout(20000);
       this.retries(3);
       sandbox.stub(Reaction, "hasPermission", () => true);
-      // TODO checking this is failing, even though we can see it happening in the log.
-      // spyOn(Email, "send");
+      // TODO: Need to udpate this test to properly check the account created
+      // there's currently an error with Media branding asset when trying to do that
       expect(() =>
         Meteor.call("accounts/inviteShopMember", {
           shopId,
@@ -521,7 +521,6 @@ describe("Account Meteor method ", function () {
           name: fakeUser.profile.addressBook[0].fullName
         })
       ).to.not.throw(Meteor.Error, /Access denied/);
-      // expect(Email.send).toHaveBeenCalled();
       return done();
     });
   });

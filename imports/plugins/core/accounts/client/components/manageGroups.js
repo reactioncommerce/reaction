@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
 import AdminInviteForm from "./adminInviteForm";
 import EditGroupContainer from "../containers/editGroupContainer";
 import AddGroupMembers from "./addGroupMembers";
@@ -30,11 +29,12 @@ class ManageGroups extends Component {
 
   get defaultInviteGroup() {
     let defaultInviteGroup = {};
-    const groups = _.compact(this.state.groups.map((grp) => {
+    const groups = [];
+    this.state.groups.forEach((grp) => {
       if (grp.slug !== "owner") {
-        return grp;
+        groups.push(grp);
       }
-    }));
+    });
 
     if (groups && groups.length > 0) {
       defaultInviteGroup = groups[0];
