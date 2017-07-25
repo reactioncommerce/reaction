@@ -2,7 +2,7 @@ import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
-import { saveSettings } from "../actions";
+import actions from "../actions";
 import EmailSettings from "../components/emailSettings";
 
 const providers = Object.keys(require("nodemailer-wellknown/services.json"));
@@ -21,7 +21,7 @@ const composer = ({}, onData) => {
   }
 };
 
-const handlers = { saveSettings };
+const handlers = { saveSettings: actions.settings.saveSettings };
 
 registerComponent("EmailSettings", EmailSettings, [
   composeWithTracker(composer),

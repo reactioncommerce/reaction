@@ -5,7 +5,7 @@ import getServiceConfig from "nodemailer-wellknown";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
-import { saveSettings } from "../actions";
+import actions from "../actions";
 import EmailConfig from "../components/emailConfig";
 
 const wrapComponent = (Comp) => (
@@ -73,7 +73,7 @@ const composer = ({}, onData) => {
   }
 };
 
-const handlers = { saveSettings };
+const handlers = { saveSettings: actions.settings.saveSettings };
 
 registerComponent("EmailConfig", EmailConfig, [
   composeWithTracker(composer),
