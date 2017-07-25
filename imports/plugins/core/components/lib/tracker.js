@@ -29,7 +29,7 @@ function getTrackerLoader(reactiveMapper) {
 /**
  * A higher order component to wrap a reactive function with Meteor's Tracker
  * @param {Function} reactiveMapper data fetching function to bind to a tracker
- * @param {React.Component} options react component for a custom loading screen
+ * @param {React.Component|Boolean|Object} options can be a custom loader, false (to disable), or a full options object
  * @return {Function} composed function
  */
 export function composeWithTracker(reactiveMapper, options) {
