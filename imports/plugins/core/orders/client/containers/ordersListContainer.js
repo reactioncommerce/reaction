@@ -42,6 +42,7 @@ class OrdersListContainer extends Component {
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.selectAllOrders = this.selectAllOrders.bind(this);
+    this.setShippingStatus = this.setShippingStatus.bind(this);
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -164,13 +165,61 @@ class OrdersListContainer extends Component {
     return false;
   }
 
-  render() {
-    const { handleShowMoreClick } = this.props;
+  setShippingStatus = (status, selectedOrdersIds) => {
+    const selectedOrders = this.state.orders.filter((order) => {
+      return selectedOrdersIds.includes(order._id);
+    });
 
+    if (status === "packed") {
+      selectedOrders.forEach((order) => {
+        if (order.shipping[0].packed === false) {
+          Meteor.call("orders/shipmentPacked", order, order.shipping[0], true, (err) => {
+            if (err) {
+              Alerts.toast("Error", "error");
+            } else {
+              Alerts.toast(`Order with id ${order._id} shipping status set to packed`, "success");
+            }
+          });
+        }
+      });
+    }
+
+    if (status === "shipped") {
+      selectedOrders.forEach((order) => {
+        if (order.shipping[0].packed && order.shipping[0].shipped === false) {
+          Meteor.call("orders/shipmentShipped", order, order.shipping[0], (err) => {
+            if (err) {
+              Alerts.toast("Error", "error");
+            } else {
+              Alerts.toast(`Order with id ${order._id} shipping status set to shipped`, "success");
+            }
+          });
+        } else if (order.shipping[0].packed === false) {
+          Alerts.alert({
+            text: `You've requested that order ${order._id} be set to the "Shipped" status, but it is not in the "Packed"
+                  state and would skip all steps leading up to the "Shipped" state. Are you sure you want to do this?`,
+            type: "warning",
+            showCancelButton: true,
+            showCloseButton: true,
+            confirmButtonText: "Yes, Set All Selected Orders"
+          }, (isConfirm) => {
+            if (isConfirm) {
+              Alerts.alert({
+                title: "Set",
+                type: "success"
+              });
+            }
+          });
+        }
+      });
+    }
+  }
+
+  render() {
     return (
       <OrdersList
         handleSelect={this.handleSelect}
-        handleShowMoreClick={handleShowMoreClick}
+        handleShowMoreClick={this.props.handleShowMoreClick}
         orders={this.state.orders}
         hasMoreOrders={this.state.hasMoreOrders}
         handleClick={this.handleClick}
@@ -184,6 +233,7 @@ class OrdersListContainer extends Component {
         multipleSelect={this.state.multipleSelect}
         listClassName={this.state.listClassName}
         detailClassName={this.state.detailClassName}
+        setShippingStatus={this.setShippingStatus}
       />
     );
   }

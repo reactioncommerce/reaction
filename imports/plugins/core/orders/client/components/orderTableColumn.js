@@ -12,12 +12,11 @@ class OrderTableColumn extends Component {
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
     row: PropTypes.object,
-    selectedItems: PropTypes.array,
-    shippingBadgeStatus: PropTypes.func
+    selectedItems: PropTypes.array
   }
 
   render() {
-    const { row, selectedItems, handleClick, handleSelect, fulfillmentBadgeStatus, shippingBadgeStatus } = this.props;
+    const { row, selectedItems, handleClick, handleSelect, fulfillmentBadgeStatus } = this.props;
     const columnAccessor = row.column.id;
 
     if (columnAccessor === "shipping[0].address.fullName") {
@@ -80,7 +79,7 @@ class OrderTableColumn extends Component {
           badgeSize="large"
           i18nKeyLabel={`cartDrawer.${row.value}`}
           label={row.value}
-          status={shippingBadgeStatus()}
+          status="basic"
         />
       );
     }

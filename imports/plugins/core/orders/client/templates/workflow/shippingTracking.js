@@ -193,6 +193,6 @@ Template.coreOrderShippingTracking.helpers({
     const order = Template.instance().order;
     const shipment = order.shipping[0];
 
-    return shipment.packed && shipment.tracking;
+    return (shipment.packed && shipment.tracking) || shipment.packed;
   }
 });

@@ -24,7 +24,8 @@ class OrdersList extends Component {
     openList: PropTypes.bool,
     orders: PropTypes.array,
     selectAllOrders: PropTypes.func,
-    selectedItems: PropTypes.array
+    selectedItems: PropTypes.array,
+    setShippingStatus: PropTypes.func
   }
 
   constructor() {
@@ -57,15 +58,6 @@ class OrdersList extends Component {
     }
 
     return "default";
-  }
-
-  /**
-   * Shipping Badge
-   * TODO: any logic here, we don't have shipping status changes at the moment
-   * @return {string} A string containing the type of Badge
-   */
-  shippingBadgeStatus() {
-    return "basic";
   }
 
   renderOrderButton(order) {
@@ -148,7 +140,7 @@ class OrdersList extends Component {
             badgeSize="large"
             i18nKeyLabel={`cartDrawer.${order.shipping[0].workflow.status}`}
             label={order.shipping[0].workflow.status}
-            status={this.shippingBadgeStatus(order)}
+            status="basic"
           />
           <Badge
             badgeSize="large"
@@ -302,6 +294,9 @@ class OrdersList extends Component {
   }
 
   handleListItemClick = (event, value) => {
+    if (this.props.setShippingStatus) {
+      this.props.setShippingStatus(value, this.props.selectedItems);
+    }
     this.setState({
       [value]: true
     });
@@ -361,7 +356,6 @@ class OrdersList extends Component {
               handleClick={this.props.handleClick}
               multipleSelect={this.props.multipleSelect}
               selectAllOrders={this.props.selectAllOrders}
-              shippingBadgeStatus={this.shippingBadgeStatus}
               fulfillmentBadgeStatus={this.fulfillmentBadgeStatus}
               renderBulkOrderActionsBar={this.renderBulkOrderActionsBar}
               renderPaginationClassNameHidden={this.renderPaginationClassNameHidden}
