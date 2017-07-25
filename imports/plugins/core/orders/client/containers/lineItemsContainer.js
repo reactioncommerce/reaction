@@ -67,30 +67,34 @@ class LineItemsContainer extends Component {
     }
   }
 
-  inputOnChange = (quantityValue, lineItem) => {
-    let { editedItems } = this.state;
+  // inputOnChange = (quantityValue, lineItem) => {
+  //   let { editedItems } = this.state;
 
-    const itemQuantity = editedItems.find(item => {
-      return item.id === lineItem._id;
-    });
+  //   const itemQuantity = editedItems.find(item => {
+  //     return item.id === lineItem._id;
+  //   });
 
-    const refundedQuantity = lineItem.quantity - quantityValue;
+  //   const refundedQuantity = lineItem.quantity - quantityValue;
 
-    if (itemQuantity) {
-      editedItems = editedItems.filter(item => item.id !== lineItem._id);
-      itemQuantity.refundedTotal = lineItem.variants.price * refundedQuantity;
-      itemQuantity.refundedQuantity = refundedQuantity;
-      editedItems.push(itemQuantity);
-    } else {
-      editedItems.push({
-        id: lineItem._id,
-        title: lineItem.title,
-        refundedTotal: lineItem.variants.price * refundedQuantity,
-        refundedQuantity
-      });
-    }
+  //   if (itemQuantity) {
+  //     editedItems = editedItems.filter(item => item.id !== lineItem._id);
+  //     itemQuantity.refundedTotal = lineItem.variants.price * refundedQuantity;
+  //     itemQuantity.refundedQuantity = refundedQuantity;
+  //     editedItems.push(itemQuantity);
+  //   } else {
+  //     editedItems.push({
+  //       id: lineItem._id,
+  //       title: lineItem.title,
+  //       refundedTotal: lineItem.variants.price * refundedQuantity,
+  //       refundedQuantity
+  //     });
+  //   }
 
-    return this.setState({ editedItems });
+  //   return this.setState({ editedItems });
+  // }
+
+  inputOnChange = (event, value) => {
+    console.log("input on change value", bla);
   }
 
   handleItemSelect = (itemId) => {

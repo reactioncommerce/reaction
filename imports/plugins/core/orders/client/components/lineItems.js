@@ -32,9 +32,9 @@ class LineItems extends Component {
     return formatPriceString(price + shipping + taxes);
   }
 
-  handleInputOnchange(value, uniqueItem) {
-    return this.props.inputOnChange(value, uniqueItem);
-  }
+  // handleInputOnchange(value, uniqueItem) {
+  //   return this.props.inputOnChange(value, uniqueItem);
+  // }
 
   displayMedia(uniqueItem) {
     const { displayMedia } = this.props;
@@ -81,7 +81,7 @@ class LineItems extends Component {
             {this.state.isOpen ?
               <NumberTypeInput
                 minValue={0}
-                onChange={() => {}}
+                onChange={this.props.inputOnChange}
                 defaultValue={uniqueItem.quantity}
                 maxValue={uniqueItem.quantity}
               /> :

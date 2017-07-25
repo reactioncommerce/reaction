@@ -52,7 +52,10 @@ class NumberTypeInput extends Component {
       this.edited();
       this.setState({ inputValue: value });
     }
-    return this.props.onChange(value);
+
+    if (this.props.onChange) {
+      return this.props.onChange(event, value);
+    }
   }
 
   render() {
