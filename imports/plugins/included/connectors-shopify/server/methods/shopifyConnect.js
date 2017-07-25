@@ -23,7 +23,7 @@ function saveImage(url, metadata) {
 // get Shopify Api Key, Password and Domain from the Shopify Connect package with the supplied shopId or alternatly the active shopId
 function getApiInfo(shopId = Reaction.getShopId()) {
   const { settings } = Packages.findOne({
-    name: "reaction-shopify-connect",
+    name: "reaction-connectors-shopify",
     shopId
   });
 

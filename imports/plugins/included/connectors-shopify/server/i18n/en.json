@@ -1,8 +1,8 @@
 [{
   "i18n": "en",
-  "ns": "reaction-shopify-connect",
+  "ns": "reaction-connectors-shopify",
   "translation": {
-    "reaction-shopify-connect": {
+    "reaction-connectors-shopify": {
       "admin": {
         "dashboard": {
           "shopifyConnectLabel": "Shopify Connect",

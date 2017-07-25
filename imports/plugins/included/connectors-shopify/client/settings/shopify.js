@@ -10,7 +10,7 @@ import "./shopify.html";
 Template.shopifyConnectSettings.helpers({
   packageData() {
     return Packages.findOne({
-      name: "reaction-shopify-connect",
+      name: "reaction-connectors-shopify",
       shopId: Reaction.getShopId()
     });
   },

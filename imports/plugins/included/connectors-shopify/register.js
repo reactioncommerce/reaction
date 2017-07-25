@@ -2,7 +2,7 @@ import { Reaction } from "/server/api";
 
 Reaction.registerPackage({
   label: "Shopify Connect",
-  name: "reaction-shopify-connect",
+  name: "reaction-connectors-shopify",
   icon: "fa fa-exchange",
   autoEnable: true,
   settings: {
