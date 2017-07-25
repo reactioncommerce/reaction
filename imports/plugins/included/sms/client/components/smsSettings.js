@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Components } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
-import { Button, Card, CardHeader, CardBody, CardGroup, TextField, Select } from "/imports/plugins/core/ui/client/components";
 
 class SmsSettings extends Component {
   constructor(props) {
@@ -58,18 +58,18 @@ class SmsSettings extends Component {
     }];
 
     return (
-      <CardGroup>
-        <Card
+      <Components.CardGroup>
+        <Components.Card
           expanded={true}
         >
-          <CardHeader
+          <Components.CardHeader
             actAsExpander={true}
             i18nKeyTitle="admin.settings.smsProvider"
             title="SMS Provider"
           />
-          <CardBody expandable={true}>
+          <Components.CardBody expandable={true}>
             <form onSubmit={this.handleSubmit}>
-              <Select
+              <Components.Select
                 clearable={false}
                 label="Provider Name"
                 i18nKeyLabel="admin.settings.providerName"
@@ -81,7 +81,7 @@ class SmsSettings extends Component {
                 value={settings.smsProvider || ""}
               />
               <hr/>
-              <TextField
+              <Components.TextField
                 label="SMS Phone Number"
                 type="text"
                 i18nKeyLabel="admin.settings.phoneNumber"
@@ -89,7 +89,7 @@ class SmsSettings extends Component {
                 value={settings.smsPhone || ""}
                 onChange={this.handleStateChange}
               />
-              <TextField
+              <Components.TextField
                 label="API Key"
                 type="password"
                 i18nKeyLabel="admin.settings.apiKey"
@@ -97,7 +97,7 @@ class SmsSettings extends Component {
                 value={settings.apiKey || ""}
                 onChange={this.handleStateChange}
               />
-              <TextField
+              <Components.TextField
                 label="API Token/Secret"
                 type="password"
                 i18nKeyLabel="admin.settings.apiToken"
@@ -105,7 +105,7 @@ class SmsSettings extends Component {
                 value={settings.apiToken || ""}
                 onChange={this.handleStateChange}
               />
-              <Button
+              <Components.Button
                 bezelStyle="solid"
                 status="primary"
                 className="pull-right"
@@ -114,11 +114,11 @@ class SmsSettings extends Component {
                 {isSaving ?
                   <i className="fa fa-refresh fa-spin"/>
                   : <span data-i18n="app.save">Save</span>}
-              </Button>
+              </Components.Button>
             </form>
-          </CardBody>
-        </Card>
-      </CardGroup>
+          </Components.CardBody>
+        </Components.Card>
+      </Components.CardGroup>
     );
   }
 }

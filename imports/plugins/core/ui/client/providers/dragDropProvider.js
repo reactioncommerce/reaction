@@ -1,6 +1,7 @@
 import React, { Component, PropTypes, Children } from "react"; // eslint-disable-line
 import { DragDropManager } from "dnd-core";
 import HTML5Backend from "react-dnd-html5-backend";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 const defaultManager = new DragDropManager(HTML5Backend);
 
@@ -41,5 +42,7 @@ DragDropProvider.childContextTypes = {
 DragDropProvider.propTypes = {
   children: PropTypes.node
 };
+
+registerComponent("DragDropProvider", DragDropProvider);
 
 export default DragDropProvider;

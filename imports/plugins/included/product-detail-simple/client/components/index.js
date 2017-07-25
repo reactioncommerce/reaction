@@ -1,4 +1,5 @@
 export { default as ProductDetail } from "./productDetail";
+export { default as Variant } from "./variant";
 export { default as VariantList } from "./variantList";
 export { default as ChildVariant } from "./childVariant";
 export { default as AddToCartButton } from "./addToCartButton";

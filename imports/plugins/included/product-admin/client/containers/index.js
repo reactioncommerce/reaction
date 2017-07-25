@@ -1,1 +1,1 @@
-export { default as ProductAdminContainer } from "./productAdminContainer";
+export { default as ProductAdmin } from "./productAdmin";
