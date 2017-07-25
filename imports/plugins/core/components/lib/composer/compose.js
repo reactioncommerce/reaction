@@ -1,7 +1,8 @@
 import React from "react";
 import shallowEqual from "shallowequal";
+import hoistStatics from "hoist-non-react-statics";
 import _ from "lodash";
-import { inheritStatics } from "./utils";
+import { getDisplayName } from "recompose";
 
 export default function compose(dataLoader, options = {}) {
   return function (Child) {
@@ -133,7 +134,9 @@ export default function compose(dataLoader, options = {}) {
       options
     };
 
-    inheritStatics(Container, Child);
+    Container.displayName = `Tracker(${getDisplayName(Child)})`;
+
+    hoistStatics(Container, Child);
 
     return Container;
   };

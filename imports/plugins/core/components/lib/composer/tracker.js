@@ -1,11 +1,12 @@
 import React from "react";
 import { Tracker } from "meteor/tracker";
-import { Components } from "./components";
-import { compose } from "./composer";
+import { Components } from "../components";
+import compose from "./compose";
+
 
 /**
  * getTrackerLoader creates a Meteor Tracker to watch dep updates from
- * passed in reactiveMapper funtion
+ * the passed in reactiveMapper function
  * @param  {Function} reactiveMapper data fetching function to bind to a tracker
  * @return {Function} composed function
  */
@@ -25,6 +26,7 @@ function getTrackerLoader(reactiveMapper) {
     };
   };
 }
+
 
 /**
  * A higher order component to wrap a reactive function with Meteor's Tracker

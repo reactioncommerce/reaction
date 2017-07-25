@@ -1,4 +1,4 @@
-import { composeWithTracker } from "./tracker";
+import { composeWithTracker } from "./composer";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts } from "/lib/collections";
