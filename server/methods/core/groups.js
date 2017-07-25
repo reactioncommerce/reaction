@@ -107,6 +107,7 @@ Meteor.methods({
    * group/addUser
    * @summary adds a user to a permission group
    * It updates the user's list of permissions/roles with the defined the list defined for the group
+   * (NB: At this time, a user only belongs to only one group per shop)
    * @param {String} userId - current data of the group to be updated
    * @param {String} groupId - id of the group
    * @return {Object} - object.status of 200 on success or Error object on failure
@@ -120,10 +121,20 @@ Meteor.methods({
     if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
+    // make sure user only belongs to one group per shop
+    const allGroupsInShop = Groups.find({ shopId }).fetch().map((grp) => grp._id);
+    const currentUserGroups = Accounts.findOne({ _id: userId }).groups || [];
+    let newGroups = [];
+    currentUserGroups.forEach((grp) => {
+      if (allGroupsInShop.indexOf(grp) < 0) {
+        newGroups.push(grp);
+      }
+    });
+    newGroups = newGroups.concat(groupId);
 
     try {
       setUserPermissions({ _id: userId }, permissions, shopId);
-      Accounts.update({ _id: userId }, { $addToSet: { groups: groupId } });
+      Accounts.update({ _id: userId }, { $set: { groups: newGroups } });
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
