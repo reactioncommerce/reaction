@@ -13,6 +13,27 @@ import { Logger } from "/server/api";
 import { Reaction } from "/server/api";
 import { Packages, Products, Tags, Media } from "/lib/collections";
 
+/**
+ * Finds the images associated with a particular shopify variant
+ * @method findVariantImages
+ * @param  {Number} shopifyVariantId The variant `id` from shopify
+ * @param  {Array} images An array of images from a Shopify product
+ * @return {Array} Returns an array of images that match the passed shopifyVariantId
+ */
+function findVariantImages(shopifyVariantId, images) {
+  return images.filter((imageObj) => {
+    return imageObj.variant_ids.indexOf(shopifyVariantId) !== -1;
+  });
+}
+
+
+/**
+ * [saveImage description]
+ * @method saveImage
+ * @param  {[type]}  url      [description]
+ * @param  {[type]}  metadata [description]
+ * @return {[type]}           [description]
+ */
 function saveImage(url, metadata) {
   const fileObj = new FS.File();
   fileObj.attachData(url);
@@ -20,7 +41,14 @@ function saveImage(url, metadata) {
   Media.insert(fileObj);
 }
 
+
 // get Shopify Api Key, Password and Domain from the Shopify Connect package with the supplied shopId or alternatly the active shopId
+/**
+ * [getApiInfo description]
+ * @method getApiInfo
+ * @param  {[type]}   [shopId=Reaction.getShopId(] [description]
+ * @return {[type]}                                [description]
+ */
 function getApiInfo(shopId = Reaction.getShopId()) {
   const { settings } = Packages.findOne({
     name: "reaction-connectors-shopify",
@@ -34,11 +62,18 @@ function getApiInfo(shopId = Reaction.getShopId()) {
   };
 }
 
+/**
+ * [normalizeWeight description]
+ * @method normalizeWeight
+ * @param  {[type]}        weight [description]
+ * @return {[type]}               [description]
+ */
 function normalizeWeight(weight) {
   // TODO: get store unitsOfMeasure
   // convert weight in grams to store unitsOfMeasure
   return weight;
 }
+
 
 export const methods = {
   async "shopifyConnect/getProductsCount"() {
@@ -56,7 +91,7 @@ export const methods = {
     const apiCreds = getApiInfo();
     const shopify = new Shopify(apiCreds);
     const shopId = Reaction.getShopId();
-    const limit = 2;
+    const limit = 20;
     const opts = {
       published_status: "published",
       limit: limit
@@ -231,12 +266,13 @@ export const methods = {
           ids.push(productId);
 
           Logger.info("importing product image");
-          saveImage(product.images[0].src, {
+          saveImage(product.image.src, {
             ownerId: Meteor.userId(),
             productId: productId,
             variantId: productId,
             shopId: shopId,
-            priority: 1
+            priority: 0,
+            toGrid: 1
           });
 
           // If variantLabel exists, we have at least one variant
@@ -315,9 +351,36 @@ export const methods = {
                       const reactionOptionId = Products.insert(reactionOption, { type: "variant" });
                       ids.push(reactionOptionId);
                       Logger.info(`Imported ${product.title} ${variant}/${option}`);
+
+                      const optionImages = findVariantImages(shopifyOption.id, product.images);
+
+                      // Save all relevant variant images to our option
+                      optionImages.forEach((imageObj) => {
+                        saveImage(imageObj.src, {
+                          ownerId: Meteor.userId(),
+                          productId: productId,
+                          variantId: reactionOptionId,
+                          shopId: shopId,
+                          priority: 1,
+                          toGrid: 0
+                        });
+                      });
                     }
                   });
                 } else {
+                  // Product does not have options, just variants
+                  // Save all relevant variant images to our variant.
+                  const variantImages = findVariantImages(shopifyVariant.id, product.images);
+                  variantImages.forEach((imageObj) => {
+                    saveImage(imageObj.src, {
+                      ownerId: Meteor.userId(),
+                      productId: productId,
+                      variantId: reactionVariantId,
+                      shopId: shopId,
+                      priority: 1,
+                      toGrid: 0
+                    });
+                  });
                   Logger.info(`Imported ${product.title} ${variant}`);
                 }
               }
@@ -328,7 +391,7 @@ export const methods = {
         // Update the API pagination with the last productId we fetched
         opts.since_id = products[products.length - 1].id;
       } // End pages loop
-
+      Logger.info("Shopify Import Finished");
       return ids;
     } catch (error) {
       Logger.error(`Something went wrong! ${error}`);
