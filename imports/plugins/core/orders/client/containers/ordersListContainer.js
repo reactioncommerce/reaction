@@ -33,7 +33,9 @@ class OrdersListContainer extends Component {
       selectedItems: [],
       orders: props.orders,
       hasMoreOrders: props.hasMoreOrders(),
-      multipleSelect: false
+      multipleSelect: false,
+      packed: false,
+      shipped: false
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -179,6 +181,14 @@ class OrdersListContainer extends Component {
             } else {
               Alerts.toast(`Order with id ${order._id} shipping status set to packed`, "success");
             }
+
+            this.setState({
+              packed: true
+            });
+          });
+        } else {
+          Alerts.alert({
+            text: "Order is already in the packed state"
           });
         }
       });
@@ -193,6 +203,9 @@ class OrdersListContainer extends Component {
             } else {
               Alerts.toast(`Order with id ${order._id} shipping status set to shipped`, "success");
             }
+            this.setState({
+              shipped: true
+            });
           });
         } else if (order.shipping[0].packed === false) {
           Alerts.alert({
@@ -209,6 +222,10 @@ class OrdersListContainer extends Component {
                 type: "success"
               });
             }
+          });
+        } else {
+          Alerts.alert({
+            text: "Order is already in the shipped state"
           });
         }
       });
@@ -234,6 +251,8 @@ class OrdersListContainer extends Component {
         listClassName={this.state.listClassName}
         detailClassName={this.state.detailClassName}
         setShippingStatus={this.setShippingStatus}
+        shipped={this.state.shipped}
+        packed={this.state.packed}
       />
     );
   }

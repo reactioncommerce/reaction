@@ -23,20 +23,29 @@ class OrdersList extends Component {
     openDetail: PropTypes.bool,
     openList: PropTypes.bool,
     orders: PropTypes.array,
+    packed: PropTypes.bool,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
-    setShippingStatus: PropTypes.func
+    setShippingStatus: PropTypes.func,
+    shipped: PropTypes.bool
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       renderFlowList: false,
       pickingReport: false,
-      packed: false,
+      packed: props.packed,
       generateLabel: false,
-      shipped: false
+      shipped: props.shipped
     };
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    this.setState({
+      packed: nextProps.packed,
+      shipped: nextProps.shipped
+    });
   }
 
   /**
@@ -297,9 +306,9 @@ class OrdersList extends Component {
     if (this.props.setShippingStatus) {
       this.props.setShippingStatus(value, this.props.selectedItems);
     }
-    this.setState({
-      [value]: true
-    });
+    // this.setState({
+    //   [value]: true
+    // });
   }
 
   setListItemsToDefault() {

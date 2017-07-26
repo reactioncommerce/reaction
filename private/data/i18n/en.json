@@ -306,7 +306,9 @@
         "coreOrderWorkflow/created": "Created",
         "coreOrderWorkflow/processing": "Processing",
         "coreOrderWorkflow/completed": "Completed",
-        "coreOrderWorkflow/canceled": "Canceled"
+        "coreOrderWorkflow/canceled": "Canceled",
+        "packed": "Packed",
+        "shipped": "Shipped"
       },
       "cartSubTotals": {
         "discount": "Discount",

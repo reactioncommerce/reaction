@@ -87,7 +87,10 @@ export const methods = {
         "shipping._id": shipment._id
       }, {
         $set: {
-          "shipping.$.packed": packed
+          "shipping.$.packed": packed,
+          "shipping.$.workflow.status": "packed"
+        }, $push: {
+          "shipping.$.workflow.workflow": "packed"
         }
       });
 
@@ -329,7 +332,10 @@ export const methods = {
       "shipping._id": shipment._id
     }, {
       $set: {
-        "shipping.$.shipped": true
+        "shipping.$.shipped": true,
+        "shipping.$.workflow.status": "shipped"
+      }, $push: {
+        "shipping.$.workflow.workflow": "shipped"
       }
     });
 
@@ -385,7 +391,10 @@ export const methods = {
       "shipping._id": shipment._id
     }, {
       $set: {
-        "shipping.$.delivered": true
+        "shipping.$.delivered": true,
+        "shipping.$.workflow.status": "delivered"
+      }, $push: {
+        "shipping.$.workflow.workflow": "delivered"
       }
     });
 
