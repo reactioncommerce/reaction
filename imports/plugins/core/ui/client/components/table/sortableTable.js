@@ -14,7 +14,6 @@ class SortableTable extends Component {
       currentPage: 0,
       filterInput: "",
       maxPages: 0,
-      renderPaginationBottom: true,
       query: this.props.query || {}
     };
 
@@ -114,18 +113,6 @@ class SortableTable extends Component {
 
 
   /**
-   * handleShowPagination() - Update state when result count is changed
-   * @param {bool} value true / false
-   * @return {function} state for field value
-   */
-  handleShowPagination = (value) => {
-    this.setState({
-      renderPaginationBottom: value
-    });
-  }
-
-
-  /**
    * renderColumns() - Absorb columnMetadata information from props, output columns to display
    * @prop {String} columnMetadata - Object of data field, column header
    * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
@@ -218,9 +205,6 @@ class SortableTable extends Component {
 
 
   render() {
-    console.log("data", this.getMeteorData());
-    console.log("data2", this.setMinRows);
-    console.log("data3", this.setMinRows());
     const { ...otherProps } = this.props;
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (
@@ -238,7 +222,7 @@ class SortableTable extends Component {
           previousText={otherProps.previousText}
           nextText={otherProps.nextText}
           loadingText={otherProps.loadingText}
-          noDataText={() => <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>} // Supports JSX / React Components
+          noDataText={() => <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>}
           pageText={otherProps.pageText}
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
