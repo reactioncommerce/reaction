@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { Button, Card, CardHeader, CardBody, DropDownMenu, MenuItem, Translation, Alerts } from "@reactioncommerce/reaction-ui";
+import { Button, Card, CardHeader, CardBody, DropDownMenu, MenuItem, TextField, Alerts } from "@reactioncommerce/reaction-ui";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 
@@ -125,43 +125,39 @@ class AdminInviteForm extends Component {
         <div className="panel-body">
           <form className="">
             <div className="form-group">
-              <label htmlFor="member-form-name">
-                <Translation className="content-cell" defaultValue="Name" i18nKey="accountsUI.name" />
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="member-form-name"
+              <TextField
+                i18nKeyLabel="accountsUI.name"
+                label="Name"
                 name="name"
-                placeholder="John Smith"
-                onChange={this.onChange}
+                id="member-form-name"
+                type="text"
+                i18nKeyPlaceholder="admin.groupsInvite.name"
                 value={this.state.name}
+                onChange={this.onChange}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="member-form-email">
-                <Translation className="content-cell" defaultValue="Email" i18nKey="accountsUI.email" />
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="member-form-email"
+              <TextField
+                i18nKeyLabel="accountsUI.email"
+                label="Email"
                 name="email"
-                placeholder="johnsmith@reactioncommerce.com"
-                onChange={this.onChange}
+                id="member-form-email"
+                type="text"
+                i18nKeyPlaceholder="admin.groupsInvite.email"
                 value={this.state.email}
+                onChange={this.onChange}
               />
             </div>
             <div className="form-group action-select">
               {this.renderDropDownButton()}
               <div className="form-btns add-admin justify">
-                <button className="btn btn-primary" onClick={this.handleSubmit}>
-                  <Translation
-                    className="content-cell"
-                    defaultValue="Send Invitation"
-                    i18nKey="accountsUI.info.sendInvitation"
-                  />
-                </button>
+                <Button
+                  status="primary"
+                  onClick={this.handleSubmit}
+                  bezelStyle="solid"
+                  i18nKeyLabel="accountsUI.info.sendInvitation"
+                  label="Send Invitation"
+                />
               </div>
             </div>
           </form>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Translation } from "@reactioncommerce/reaction-ui";
+import { Button, TextField } from "@reactioncommerce/reaction-ui";
 
 class GroupForm extends Component {
   static propTypes = {
@@ -47,30 +47,27 @@ class GroupForm extends Component {
         <div className="panel-body">
           <form className="add-group">
             <div className="form-group">
-              <label htmlFor="name">
-                <Translation defaultValue="Name" i18nKey="admin.groups.name" />
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="name"
+              <TextField
+                i18nKeyLabel="admin.groups.name"
+                label="Name"
                 name="name"
-                placeholder="e.g Shop Manager"
-                onChange={this.onChange}
+                id="add-group-name"
+                type="text"
+                tabIndex="1"
                 value={this.state.name}
+                onChange={this.onChange}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="description">
-                <Translation defaultValue="Description" i18nKey="admin.groups.description" />
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="description"
+              <TextField
+                i18nKeyLabel="admin.groups.description"
+                label="Description"
                 name="description"
-                onChange={this.onChange}
+                id="add-group-description"
+                type="text"
+                tabIndex="2"
                 value={this.state.description}
+                onChange={this.onChange}
               />
             </div>
             <div className="justify">
