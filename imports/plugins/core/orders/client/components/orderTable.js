@@ -8,7 +8,7 @@ import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
-import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
+import { Badge, ClickToCopy, Icon, Translation, Button } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 
 const classNames = {
@@ -49,7 +49,7 @@ class OrderTable extends Component {
     shippingBadgeStatus: PropTypes.func
   }
 
-    /**
+  /**
    * Fullfilment Badge
    * @param  {Object} order object containing info for order and coreOrderWorkflow
    * @return {string} A string containing the type of Badge
@@ -194,10 +194,63 @@ class OrderTable extends Component {
     );
   }
 
-  render() {
-    let customColumnMetadata = [];
+  renderBulkOrderActionsBar = () => {
+    const { orders, selectedItems, selectAllOrders } = this.props;
 
-    if (!this.props.isOpen) {
+    if (selectedItems.length > 0) {
+      return (
+        <div className="bulk-order-actions-bar">
+          <Checkbox
+            className="checkbox-large orders-checkbox"
+            checked={this.renderCheckedStatus()}
+            name="orders-checkbox"
+            onChange={() => selectAllOrders(orders, this.renderCheckedStatus())}
+          />
+          <Translation
+            className="selected-orders"
+            defaultValue={`${selectedItems.length} Selected`}
+            i18nKey={`${selectedItems.length} order.selected`}
+          />
+          <Button
+            status="success"
+            bezelStyle="solid"
+            className="capture-orders-button"
+            label="Capture"
+            i18nKeyLabel="order.capture"
+          />
+          <Button
+            status="default"
+            bezelStyle="solid"
+            className="bulk-actions-button"
+            label="Bulk Actions"
+            i18nKeyLabel="order.bulkActions"
+            icon="fa fa-chevron-down"
+            iconAfter={true}
+          />
+        </div>
+      );
+    }
+  }
+
+  renderCheckedStatus() {
+    const { selectedItems, orders, multipleSelect } = this.props;
+    return selectedItems.length === orders.length ? true : multipleSelect;
+  }
+
+  renderTableClassNameHidden = () => {
+    const { selectedItems } = this.props;
+    return selectedItems.length > 0 ? "table-header-hidden" : "table-header-visible";
+  }
+
+  renderPaginationClassNameHidden = () => {
+    const { selectedItems } = this.props;
+    return selectedItems.length > 0 ? "order-table-pagination-hidden" : "order-table-pagination-visible";
+  }
+
+  render() {
+    const customColumnMetadata = [];
+
+    if (this.props.isOpen) {
       const filteredFields = {
         "Name": "shipping[0].address.fullName",
         "Email": "email",
@@ -250,8 +303,8 @@ class OrderTable extends Component {
               handleClick={this.props.handleClick}
               handleSelect={this.props.handleSelect}
               selectedItems={this.props.selectedItems}
-              fulfillmentBadgeStatus={this.props.fulfillmentBadgeStatus}
-              shippingBadgeStatus={this.props.shippingBadgeStatus}
+              fulfillmentBadgeStatus={this.fulfillmentBadgeStatus}
+              shippingBadgeStatus={this.shippingBadgeStatus}
             />
           )
         };
@@ -267,9 +320,9 @@ class OrderTable extends Component {
 
     return (
       <div>
-        {this.props.renderBulkOrderActionsBar()}
+        {this.renderBulkOrderActionsBar()}
         <SortableTable
-          tableClassName={`rui order table ${this.props.renderTableClassNameHidden()} -highlight`}
+          tableClassName={`rui order table ${this.renderTableClassNameHidden()} -highlight`}
           publication="CustomPaginatedOrders"
           collection={Orders}
           matchingResultsCount="order-count"
@@ -289,7 +342,7 @@ class OrderTable extends Component {
           }}
           getPaginationProps={() => {
             return {
-              className: this.props.renderPaginationClassNameHidden()
+              className: this.renderPaginationClassNameHidden()
             };
           }}
           getTableProps={() => {

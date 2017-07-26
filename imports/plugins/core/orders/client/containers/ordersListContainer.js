@@ -5,7 +5,7 @@ import { composeWithTracker } from "/lib/api/compose";
 import { Media } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
-import OrdersList from "../components/ordersList.js";
+import OrdersList from "../components/orderList.js";
 import {
   PACKAGE_NAME,
   ORDER_LIST_FILTERS_PREFERENCE_NAME,
@@ -26,10 +26,6 @@ class OrdersListContainer extends Component {
     super(props);
 
     this.state = {
-      detailClassName: "",
-      listClassName: "order-icon-toggle",
-      openDetail: false,
-      openList: true,
       selectedItems: [],
       orders: props.orders,
       hasMoreOrders: props.hasMoreOrders(),
@@ -37,8 +33,6 @@ class OrdersListContainer extends Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
-    this.handleListToggle = this.handleListToggle.bind(this);
-    this.handleDetailToggle = this.handleDetailToggle.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.selectAllOrders = this.selectAllOrders.bind(this);
@@ -117,24 +111,6 @@ class OrdersListContainer extends Component {
     Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
   }
 
-  handleListToggle = () => {
-    this.setState({
-      detailClassName: "",
-      listClassName: "order-icon-toggle",
-      openList: true,
-      openDetail: false
-    });
-  }
-
-  handleDetailToggle = () => {
-    this.setState({
-      detailClassName: "order-icon-toggle",
-      listClassName: "",
-      openDetail: true,
-      openList: false
-    });
-  }
-
   /**
    * Media - find media based on a product/variant
    * @param  {Object} item object containing a product and variant id
@@ -172,18 +148,11 @@ class OrdersListContainer extends Component {
         handleSelect={this.handleSelect}
         handleShowMoreClick={handleShowMoreClick}
         orders={this.state.orders}
-        hasMoreOrders={this.state.hasMoreOrders}
         handleClick={this.handleClick}
         displayMedia={this.handleDisplayMedia}
-        handleListToggle={this.handleListToggle}
-        handleDetailToggle={this.handleDetailToggle}
-        openDetail= {this.state.openDetail}
         selectedItems={this.state.selectedItems}
-        openList={this.state.openList}
         selectAllOrders={this.selectAllOrders}
         multipleSelect={this.state.multipleSelect}
-        listClassName={this.state.listClassName}
-        detailClassName={this.state.detailClassName}
       />
     );
   }
