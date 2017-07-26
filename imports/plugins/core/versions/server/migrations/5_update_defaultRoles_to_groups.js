@@ -7,12 +7,13 @@ import { Accounts, Groups, Shops } from "/lib/collections";
 Migrations.add({
   version: 5,
   up() {
-    const allGroups = Groups.find({}).fetch();
     const shops = Shops.find({}).fetch();
+    Groups.remove({});
 
     if (shops && shops.length) {
       shops.forEach((shop) => createGroupsForShop(shop));
     }
+
     function createGroupsForShop(shop) {
       const { defaultRoles, defaultVisitorRole } = shop;
       const roles = {
@@ -22,28 +23,46 @@ Migrations.add({
       };
 
       Object.keys(roles).forEach((groupKeys) => {
-        const groupExists = allGroups.find((grp) => grp.slug === groupKeys && grp.shopId === shop._id);
-        if (!groupExists) {
-          Logger.debug(`creating group ${groupKeys} for shop ${shop.name}`);
-          const groupId = Groups.insert({
-            name: groupKeys,
-            slug: groupKeys,
-            permissions: roles[groupKeys],
-            shopId: shop._id
-          });
-          console.log({ newgroup: groupId });
-          updateAccountsBelongingToGroup({ shopId: shop._id, permissions: roles[groupKeys], groupId });
-        }
+        Logger.info(`creating group ${groupKeys} for shop ${shop.name}`);
+        const groupId = Groups.insert({
+          name: groupKeys,
+          slug: groupKeys,
+          permissions: roles[groupKeys],
+          shopId: shop._id
+        });
+        Logger.info(`new group "${groupKeys}" created with id ${groupId}"`);
+        return updateAccountsBelongingToGroup({ shopId: shop._id, permissions: roles[groupKeys], groupId });
       });
     }
 
     function updateAccountsBelongingToGroup({ shopId, permissions, groupId }) {
-      const query = { [`roles.${shopId}`]: permissions };
+      const query = { [`roles.${shopId}`]: { $all: permissions } };
       const matchingUserIds = Meteor.users.find(query).fetch().map((user) => user._id);
-      Accounts.update({ _id: { $in: matchingUserIds } }, { $set: { groups: [groupId] } });
+      if (matchingUserIds.length) {
+        Logger.info(`updating following matching Accounts to new group: ${matchingUserIds}`);
+      }
+      Accounts.update({ _id: { $in: matchingUserIds }, shopId }, { $addToSet: { groups: groupId } });
     }
   },
   down() {
+    const shops = Shops.find({}).fetch();
 
+    if (shops && shops.length) {
+      shops.forEach((shop) => removeGroupsForShop(shop));
+    }
+    function removeGroupsForShop(shop) {
+      const shopGroups = Groups.find({ shopId: shop._id }).fetch();
+
+      const keys = {
+        customer: "defaultRoles",
+        guest: "defaultVisitorRole"
+      };
+
+      shopGroups.forEach((group) => {
+        const shopkey = keys[group.slug];
+        Shops.update({ _id: shop._id }, { $set: { [shopkey]: group.permissions } });
+        Accounts.update({ shopId: shop._id }, { $unset: { groups: "" } });
+      });
+    }
   }
 });
