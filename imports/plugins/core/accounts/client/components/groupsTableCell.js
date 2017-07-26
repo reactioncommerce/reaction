@@ -63,7 +63,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
 
   if (columnName === "button") {
     return (
-      <div>
+      <div className="group-table-button">
         <Button
           status="danger"
           onClick={handleRemoveUserFromGroup(account, group._id)}

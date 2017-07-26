@@ -131,6 +131,7 @@ class EditGroupContainer extends Component {
       return (
         <GroupForm
           submitLabel="Create Group"
+          i18nKeyLabel="admin.groups.create"
           group={this.state.selectedGroup}
           createGroup={this.createGroup}
         />
@@ -140,6 +141,7 @@ class EditGroupContainer extends Component {
       <GroupForm
         className="update-form"
         submitLabel="Update Group"
+        i18nKeyLabel="admin.groups.update"
         group={this.state.selectedGroup}
         updateGroup={this.updateGroup}
       />

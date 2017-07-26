@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Translation } from "@reactioncommerce/reaction-ui";
+import { Button, Translation } from "@reactioncommerce/reaction-ui";
 
 class GroupForm extends Component {
   static propTypes = {
     createGroup: PropTypes.func,
     group: PropTypes.object,
+    i18nKeyLabel: PropTypes.string,
     submitLabel: PropTypes.string,
     updateGroup: PropTypes.func
   };
@@ -21,6 +22,7 @@ class GroupForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log({ a: nextProps.group });
     const { name, description } = nextProps.group;
     this.setState({ name, description });
   }
@@ -72,13 +74,13 @@ class GroupForm extends Component {
               />
             </div>
             <div className="justify">
-              <button className="btn btn-primary" onClick={this.handleSubmit}>
-                <Translation
-                  className="content-cell"
-                  defaultValue={this.props.submitLabel}
-                  i18nKey="admin.groups.createGroup"
-                />
-              </button>
+              <Button
+                status="primary"
+                onClick={this.handleSubmit}
+                bezelStyle="solid"
+                i18nKeyLabel={this.props.i18nKeyLabel}
+                label={this.props.submitLabel}
+              />
             </div>
           </form>
         </div>
