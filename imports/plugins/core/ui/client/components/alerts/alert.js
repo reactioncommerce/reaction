@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Translation } from "../translation";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class Alert extends Component {
   componentDidMount() {
     if (this.props.alert) {
-      const {
-        options
-      } = this.props.alert;
+      const { options } = this.props.alert;
 
       if (this.props.onAlertSeen) {
         this.props.onAlertSeen(this.props.alert);
@@ -25,7 +23,7 @@ class Alert extends Component {
   }
 
   render() {
-    // If we have an alert object, most likely form the global alert system,
+    // If we have an alert object, most likely from the global alert system,
     // then display a standard alert
     if (this.props.alert) {
       const {
@@ -41,7 +39,7 @@ class Alert extends Component {
 
       return (
         <div className={alertClassName}>
-          <Translation defaultValue={message} i18nKey={options.i18nKey} />
+          <Components.Translation defaultValue={message} i18nKey={options.i18nKey} />
           {this.props.children}
         </div>
       );
@@ -69,5 +67,7 @@ Alert.propTypes = {
   onAlertRemove: PropTypes.func,
   onAlertSeen: PropTypes.func
 };
+
+registerComponent("Alert", Alert);
 
 export default Alert;

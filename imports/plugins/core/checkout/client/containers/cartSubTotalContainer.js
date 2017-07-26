@@ -1,18 +1,6 @@
-import React, { Component } from "react";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Cart } from "/lib/collections";
-import { composeWithTracker } from "/lib/api/compose";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 import CartSubTotal from "../components/cartSubTotal";
-
-class CartSubTotalContainer extends Component {
-  render() {
-    return (
-      <CartSubTotal
-        {...this.props}
-      />
-    );
-  }
-}
 
 function composer(props, onData) {
   const cart = Cart.findOne();
@@ -25,9 +13,9 @@ function composer(props, onData) {
       cartTaxes: cart.cartTaxes(),
       cartTotal: cart.cartTotal()
     });
-  } else {
-    onData(null, {});
   }
 }
 
-export default composeWithTracker(composer, Loading)(CartSubTotalContainer);
+registerComponent("CartSubTotal", CartSubTotal, composeWithTracker(composer));
+
+export default composeWithTracker(composer)(CartSubTotal);

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
-import Icon from "../icon/icon.jsx";
-import { Translation } from "../";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class MenuItem extends Component {
   handleClick = (event) => {
@@ -15,7 +14,7 @@ class MenuItem extends Component {
   renderIcon() {
     if (this.props.icon) {
       return (
-        <Icon icon={this.props.icon} style={this.props.iconStyle}/>
+        <Components.Icon icon={this.props.icon} style={this.props.iconStyle}/>
       );
     }
     return null;
@@ -24,7 +23,7 @@ class MenuItem extends Component {
   renderLabel() {
     if (this.props.label) {
       return (
-        <Translation
+        <Components.Translation
           defaultValue={this.props.label}
           i18nKey={this.props.i18nKeyLabel}
         />
@@ -75,5 +74,7 @@ MenuItem.propTypes = {
 MenuItem.defaultProps = {
   disabled: false
 };
+
+registerComponent("MenuItem", MenuItem);
 
 export default MenuItem;

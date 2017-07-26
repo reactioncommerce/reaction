@@ -1,17 +1,17 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import NotificationDropdown from "./notificationDropdown.js";
+import { Components } from "@reactioncommerce/reaction-components";
 import "../styles/main.less";
 import "../styles/dropdown.css";
 
-class NotificationComponent extends Component {
+class Notification extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.handleBtn = this.handleBtn.bind(this);
+    this.renderButton = this.renderButton.bind(this);
   }
 
-  handleBtn(unread) {
+  renderButton(unread) {
     if (unread) {
       return (
         <button className="btn btn-default notify-btn rui button flat">
@@ -32,10 +32,10 @@ class NotificationComponent extends Component {
     return (
       <div className="dropdown">
         <div className="notification-icon" data-toggle="dropdown">
-          { this.handleBtn(unread) }
+          {this.renderButton(unread)}
         </div>
         <div className="notify-drop dropdown-menu">
-          <NotificationDropdown
+          <Components.NotificationDropdown
             notificationList={notificationList}
             unread={unread}
             handleDelete={handleDelete}
@@ -48,7 +48,7 @@ class NotificationComponent extends Component {
   }
 }
 
-NotificationComponent.propTypes = {
+Notification.propTypes = {
   handleDelete: PropTypes.func,
   markAllAsRead: PropTypes.func,
   markOneAsRead: PropTypes.func,
@@ -56,4 +56,4 @@ NotificationComponent.propTypes = {
   unread: PropTypes.number
 };
 
-export default NotificationComponent;
+export default Notification;
