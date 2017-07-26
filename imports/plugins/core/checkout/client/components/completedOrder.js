@@ -75,9 +75,6 @@ const CompletedOrder = (order) => {
       {/* This is the right side / side content, with the background: #ff00ff; */}
       </div>
 
-
-
-
     </div>
   );
 };
