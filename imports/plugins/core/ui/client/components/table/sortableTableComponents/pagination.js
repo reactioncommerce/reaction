@@ -43,7 +43,6 @@ class SortableTablePagination extends Component {
   }
 
   render() {
-    console.log("this.props aaaaa", this.props);
     const {
       // Computed
       pages,
