@@ -13,6 +13,119 @@ import { Logger } from "/server/api";
 import { Reaction } from "/server/api";
 import { Packages, Products, Tags, Media } from "/lib/collections";
 
+
+/**
+ * Transforms a Shopify product into a Reaction product.
+ * @method createReactionProductFromShopifyProduct
+ * @param  {object} options { shopifyProduct, shopId, hashtags }
+ * @return {[type]} An object that fits the `Product` schema
+ */
+function createReactionProductFromShopifyProduct(options) {
+  const { shopifyProduct, shopId, hashtags } = options;
+  const reactionProduct = {
+    ancestors: [],
+    createdAt: new Date(),
+    description: shopifyProduct.body_html.replace(/(<([^>]+)>)/ig, ""), // Strip HTML
+    handle: shopifyProduct.handle,
+    hashtags: hashtags,
+    isDeleted: false,
+    isVisible: false,
+    metafields: [{
+      scope: "shopify",
+      key: "shopifyId",
+      value: shopifyProduct.id.toString(),
+      namespace: "shopifyProperties"
+    }],
+    pageTitle: shopifyProduct.pageTitle,
+    productType: shopifyProduct.product_type,
+    requiresShipping: true,
+    shopId: shopId, // set shopId to active shopId;
+    template: "productDetailSimple",
+    title: shopifyProduct.title,
+    type: "simple",
+    updatedAt: new Date(),
+    vendor: shopifyProduct.vendor,
+    workflow: {
+      status: "synced",
+      workflow: ["imported from Shopify"]
+    }
+  };
+
+  // Add shopify options to meta fields as is.
+  if (Array.isArray(shopifyProduct.options)) {
+    shopifyProduct.options.forEach((option) => {
+      reactionProduct.metafields.push({
+        scope: "shopify",
+        key: option.name,
+        value: option.values.join(", "),
+        namespace: "options"
+      });
+    });
+  }
+
+  return reactionProduct;
+}
+
+/**
+ * Transforms a Shopify variant into a Reaction variant.
+ * @method createReactionVariantFromShopifyVariant
+ * @param  {object} options { shopifyVariant, variant, index, ancestors, shopId }
+ * @return {[type]} An object that fits the `ProductVariant` schema
+ */
+function createReactionVariantFromShopifyVariant(options) {
+  const { shopifyVariant, variant, index, ancestors, shopId } = options;
+  const reactionVariant = {
+    ancestors: ancestors,
+    barcode: shopifyVariant.barcode,
+    compareAtPrice: shopifyVariant.compare_at_price,
+    createdAt: new Date(),
+    height: 0,
+    index: index,
+    inventoryManagement: true,
+    inventoryPolicy: shopifyVariant.inventory_policy === "deny",
+    inventoryQuantity: shopifyVariant.inventory_quantity,
+    isDeleted: false,
+    isVisible: true,
+    length: 0,
+    lowInventoryWarningThreshold: 0,
+    metafields: [{
+      scope: "shopify",
+      key: "shopifyId",
+      value: shopifyVariant.id.toString(),
+      namespace: "shopifyProperties"
+    }, {
+      scope: "shopify",
+      key: "shopifyProductId",
+      value: shopifyVariant.product_id.toString(),
+      namespace: "shopifyProperties"
+    }],
+    optionTitle: variant,
+    price: parseFloat(shopifyVariant.price),
+    requiresShipping: shopifyVariant.requires_shipping,
+    shopId: shopId,
+    sku: shopifyVariant.sku,
+    taxable: true,
+    taxCode: "0000",
+    title: variant,
+    type: "variant",
+    updatedAt: new Date(),
+    weight: normalizeWeight(shopifyVariant.grams),
+    weightInGrams: shopifyVariant.grams,
+    width: 0,
+    workflow: {
+      status: "synced",
+      workflow: ["imported from Shopify"]
+    }
+  };
+
+  if (shopifyVariant.inventory_management === null) {
+    reactionVariant.inventoryQuantity = 0;
+    reactionVariant.inventoryManagement = false;
+  }
+
+  return reactionVariant;
+}
+
 /**
  * Finds the images associated with a particular shopify variant
  * @method findVariantImages
@@ -26,28 +139,11 @@ function findVariantImages(shopifyVariantId, images) {
   });
 }
 
-
 /**
- * [saveImage description]
- * @method saveImage
- * @param  {[type]}  url      [description]
- * @param  {[type]}  metadata [description]
- * @return {[type]}           [description]
- */
-function saveImage(url, metadata) {
-  const fileObj = new FS.File();
-  fileObj.attachData(url);
-  fileObj.metadata = metadata;
-  Media.insert(fileObj);
-}
-
-
-// get Shopify Api Key, Password and Domain from the Shopify Connect package with the supplied shopId or alternatly the active shopId
-/**
- * [getApiInfo description]
+ * get Shopify Api Key, Password and Domain from the Shopify Connect package with the supplied shopId or alternatly the active shopId
  * @method getApiInfo
- * @param  {[type]}   [shopId=Reaction.getShopId(] [description]
- * @return {[type]}                                [description]
+ * @param  {string} [shopId=Reaction.getShopId()] The shopId to get the API info for. Defaults to current shop.
+ * @return {object} shopify API connection information
  */
 function getApiInfo(shopId = Reaction.getShopId()) {
   const { settings } = Packages.findOne({
@@ -62,11 +158,47 @@ function getApiInfo(shopId = Reaction.getShopId()) {
   };
 }
 
+
 /**
- * [normalizeWeight description]
+ * Finds and returns arrays of option values for each of Shopify's option layers
+ * returns an object consisting of the following three values:
+ * shopifyVariants representing the first option on the shopify product (`option1` in the variant)
+ * shopifyOptions representing the second option on the shopify product (`option2` in the variant)
+ * shopifyTernary representing the third option on the shopify product (`option3` in the variant)
+ * any of these will return undefined if the product does not have an option at that layer.
+ * @method getShopifyVariantsAndOptions
+ * @param  {object} shopifyProduct The shopify product we are importing
+ * @return {object} returns an object consisting of shopifyVariants, shopifyOptions, and shopifyTernaryOptions
+ */
+function getShopifyVariantsAndOptions(shopifyProduct) {
+  let shopifyVariants;
+  let shopifyOptions;
+  let shopifyTernaryOptions;
+  // Get variant and option details
+  if (shopifyProduct.options && Array.isArray(shopifyProduct.options)) {
+    // This product has variants
+    if (shopifyProduct.options.length > 0) {
+      shopifyVariants = [...shopifyProduct.options[0].values];
+    }
+
+    // This product has options
+    if (shopifyProduct.options.length > 1) {
+      shopifyOptions = [...shopifyProduct.options[1].values];
+    }
+
+    if (shopifyProduct.options.length > 2) {
+      shopifyTernaryOptions = [...shopifyProduct.options[2].values];
+    }
+  }
+  return { shopifyVariants, shopifyOptions, shopifyTernaryOptions };
+}
+
+
+/**
+ * Transforms a weight in grams to a weight in the shop's default unitsOfMeasure
  * @method normalizeWeight
- * @param  {[type]}        weight [description]
- * @return {[type]}               [description]
+ * @param  {number} weight weight of the product in grams
+ * @return {number} weight of the product in the shop's default unitsOfMeasure
  */
 function normalizeWeight(weight) {
   // TODO: get store unitsOfMeasure
@@ -74,6 +206,19 @@ function normalizeWeight(weight) {
   return weight;
 }
 
+/**
+ * Saves an image from a url to the Collection FS image storage location (default: Mongo GridFS)
+ * @method saveImage
+ * @param  {string}  url url of the image to save
+ * @param  {object}  metadata metadata to save with the image
+ * @return {void}
+ */
+function saveImage(url, metadata) {
+  const fileObj = new FS.File();
+  fileObj.attachData(url);
+  fileObj.metadata = metadata;
+  Media.insert(fileObj);
+}
 
 export const methods = {
   async "shopifyConnect/getProductsCount"() {
@@ -102,51 +247,13 @@ export const methods = {
     //
     // Start by caching all existing tags to memory in a {slug => id} tuple
     // This may need to be optimized if there are an enormous number of tags existing
-    const tags = Tags.find({}).fetch().reduce((cache, tag) => {
+    const tagCache = Tags.find({}).fetch().reduce((cache, tag) => {
       if (!cache[tag.slug]) {
         cache[tag.slug] = tag._id;
       }
       return cache;
     }, {});
 
-    const defaultProduct = {
-      shopId: shopId, // set shopId to active shopId;
-      isVisible: false,
-      type: "simple",
-      ancestors: [],
-      requiresShipping: true,
-      isDeleted: false,
-      template: "productDetailSimple",
-      workflow: {
-        status: "synced",
-        workflow: ["imported from Shopify"]
-      },
-      updatedAt: new Date(),
-      createdAt: new Date()
-    };
-
-    const defaultVariant = {
-      shopId: shopId,
-      isVisible: true,
-      type: "variant",
-      inventoryManagement: true,
-      inventoryPolicy: true,
-      metafields: [],
-      taxable: true,
-      isDeleted: false,
-      compareAtPrice: 0,
-      length: 0,
-      height: 0,
-      width: 0,
-      lowInventoryWarningThreshold: 0,
-      taxCode: "0000",
-      workflow: {
-        status: "synced",
-        workflow: ["imported from Shopify"]
-      },
-      updatedAt: new Date(),
-      createdAt: new Date()
-    };
     const ids = [];
 
     try {
@@ -156,20 +263,16 @@ export const methods = {
       Logger.info(`Preparing to import ${productCount} products`);
       for (const page of pages) {
         Logger.info(`Importing page ${page} of ${numPages}`);
-        const products = await shopify.product.list(opts);
+        const shopifyProducts = await shopify.product.list(opts);
 
-        products.forEach((product) => {
-          Logger.info(`Importing ${product.title}`);
+        shopifyProducts.forEach((shopifyProduct) => {
+          Logger.info(`Importing ${shopifyProduct.title}`);
           const price = { min: null, max: null, range: "0.00" };
-          let productVariants = [];
-          let variantLabel;
-          let productOptions = [];
-          let optionLabel;
-          const productHashtags = [];
+          const hashtags = [];
 
           // Get and lookup or register tags
           // We can't load all tags beforehand because Shopify doesn't have a tags API
-          product.tags.split(",").forEach((tag) => {
+          shopifyProduct.tags.split(",").forEach((tag) => {
             const normalizedTag = {
               name: tag,
               slug: Reaction.getSlug(tag),
@@ -179,179 +282,78 @@ export const methods = {
               createdAt: new Date()
             };
 
-
-              // If we have a cached tag for this slug, we can skip the db check
-              // otherwise we need to check the Tags db to see if it exists
-            if (!tags[normalizedTag.slug]) {
-              const tagExists = Tags.findOne({
-                slug: normalizedTag.slug
-              });
-
-              if (tagExists) {
-                // Tag found it database - add it to cache and push _id to productHashtags
-                tags[normalizedTag.slug] = tagExists._id;
-                productHashtags.push(tagExists._id);
-              } else {
-                // this tag doesn't exist, we need to:
-                // create it, add it's id to our tags cache, and push _id to productHashtags
-                normalizedTag._id = Tags.insert(normalizedTag);
-                tags[normalizedTag.slug] = normalizedTag._id;
-              }
-            } else {
-              // Cache hit, push the tags _id into productHashtags
-              productHashtags.push(tags[normalizedTag.slug]);
+            // If we have a cached tag for this slug, we don't need to create a new one
+            if (!tagCache[normalizedTag.slug]) {
+              // this tag doesn't exist, create it, add it to our tag cache
+              normalizedTag._id = Tags.insert(normalizedTag);
+              tagCache[normalizedTag.slug] = normalizedTag._id;
             }
+            // push the tag's _id into hashtags from the cache
+            hashtags.push(tagCache[normalizedTag.slug]);
           });
 
-          // Get variant and option details
-          if (product.options && Array.isArray(product.options)) {
-            if (product.options.length > 2) {
-              // TODO: Import _AND_ throw error
-              throw new Meteor.Error(
-                `This importer cannot currently handle more than two product options.
-                  Shopify product with ID: ${product.id} not imported`
-              );
-            }
-            // This product has variants
-            if (product.options.length > 0) {
-              productVariants = [...product.options[0].values];
-              variantLabel = product.options[0].name;
-            }
-
-            // This product has options
-            if (product.options.length > 1) {
-              productOptions = [...product.options[1].values];
-              optionLabel = product.options[1].name;
-            }
-          }
+          const { shopifyVariants, shopifyOptions, shopifyTernaryOptions } = getShopifyVariantsAndOptions(shopifyProduct);
 
           // Setup reaction product
-          const prod = { ...defaultProduct };
-          prod.title = product.title;
-          prod.pageTitle = product.pageTitle;
-          prod.description = product.body_html.replace(/(<([^>]+)>)/ig, "");
-          prod.vendor = product.vendor;
-          prod.productType = product.product_type;
-          prod.handle = product.handle;
-          prod.hashtags = productHashtags;
-          prod.metafields = [];
-          // keep shopifyId for future use.
-          prod.metafields.push({
-            scope: "shopify",
-            key: "shopifyId",
-            value: product.id.toString(),
-            namespace: "shopifyProperties"
-          });
-
-          if (variantLabel) {
-            prod.metafields.push({
-              scope: "shopify",
-              key: variantLabel,
-              value: productVariants.join(", "),
-              namespace: "variants"
-            });
-          }
-
-          if (optionLabel) {
-            prod.metafields.push({
-              scope: "shopify",
-              key: optionLabel,
-              value: productOptions.join(", "),
-              namespace: "options"
-            });
-          }
+          const reactionProduct = createReactionProductFromShopifyProduct({ shopifyProduct, shopId, hashtags });
 
           // Insert product, save id
-          const productId = Products.insert(prod, { type: "simple" });
-          Logger.info(`Importing ${product.title}`);
-          ids.push(productId);
+          const reactionProductId = Products.insert(reactionProduct, { selector: { type: "simple" } });
+          Logger.info(`Importing ${shopifyProduct.title}`);
+          ids.push(reactionProductId);
 
           Logger.info("importing product image");
-          saveImage(product.image.src, {
+          saveImage(shopifyProduct.image.src, {
             ownerId: Meteor.userId(),
-            productId: productId,
-            variantId: productId,
+            productId: reactionProductId,
+            variantId: reactionProductId,
             shopId: shopId,
             priority: 0,
             toGrid: 1
           });
 
           // If variantLabel exists, we have at least one variant
-          if (variantLabel) {
-            Logger.info(`Importing ${product.title} ${variantLabel} variants`);
-            // Init productVariant
-            productVariants.forEach((variant, i) => {
-              const shopifyVariant = product.variants.find((v) => v.option1 === variant);
+          if (shopifyVariants) {
+            Logger.info(`Importing ${shopifyProduct.title} variants`);
+
+            shopifyVariants.forEach((variant, i) => {
+              const shopifyVariant = shopifyProduct.variants.find((v) => v.option1 === variant);
 
               if (shopifyVariant) {
-                const reactionVariant = { ...defaultVariant };
-                reactionVariant.ancestors = [productId];
-                reactionVariant.index = i;
-                reactionVariant.weightInGrams = shopifyVariant.grams;
-                reactionVariant.weight = normalizeWeight(shopifyVariant.grams);
-                reactionVariant.compareAtPrice = shopifyVariant.compare_at_price;
-                reactionVariant.sku = shopifyVariant.sku;
-                reactionVariant.inventoryQuantity = shopifyVariant.inventory_quantity;
-                reactionVariant.price = parseFloat(shopifyVariant.price);
-                reactionVariant.barcode = shopifyVariant.barcode;
-                reactionVariant.requiresShipping = shopifyVariant.requires_shipping;
-                reactionVariant.metafields.push({
-                  scope: "shopify",
-                  key: "shopifyId",
-                  value: shopifyVariant.id.toString(),
-                  namespace: "shopifyProperties"
+                // create the Reaction variant
+                const reactionVariant = createReactionVariantFromShopifyVariant({
+                  shopifyVariant,
+                  variant,
+                  index: i,
+                  ancestors: [reactionProductId],
+                  shopId
                 });
-                reactionVariant.metafields.push({
-                  scope: "shopify",
-                  key: "shopifyProductId",
-                  value: shopifyVariant.product_id.toString(),
-                  namespace: "shopifyProperties"
-                });
-                reactionVariant.title = variant;
-                reactionVariant.optionTitle = variant;
 
+                // insert the Reaction variant
                 const reactionVariantId = Products.insert(reactionVariant, { type: "variant" });
                 ids.push(reactionVariantId);
 
-                // If optionLabel exists, we have at least one option
-                if (optionLabel) {
-                  Logger.info(`Importing ${product.title} ${variant} ${optionLabel} options`);
-                  productOptions.forEach((option, j) => {
+                // If we have shopify options, create reaction options
+                if (shopifyOptions) {
+                  Logger.info(`Importing ${shopifyProduct.title} ${variant} options`);
+                  shopifyOptions.forEach((option, j) => {
                     // Find the option that nests under our current variant.
-                    const shopifyOption = product.variants.find((o) => {
+                    const shopifyOption = shopifyProduct.variants.find((o) => {
                       return o.option1 === variant && o.option2 === option;
                     });
 
                     if (shopifyOption) {
-                      const reactionOption = { ...defaultVariant };
-                      reactionOption.ancestors = [productId, reactionVariantId];
-                      reactionOption.index = j;
-                      reactionOption.weightInGrams = shopifyOption.grams;
-                      reactionOption.weight = normalizeWeight(shopifyOption.grams);
-                      reactionOption.compareAtPrice = shopifyOption.compare_at_price;
-                      reactionOption.sku = shopifyOption.sku;
-                      reactionOption.inventoryQuantity = shopifyOption.inventory_quantity;
-                      reactionOption.price = parseFloat(shopifyOption.price);
-                      reactionOption.barcode = shopifyOption.barcode;
-                      reactionOption.requiresShipping = shopifyOption.requires_shipping;
-                      reactionOption.metafields.push({
-                        scope: "shopify",
-                        key: "shopifyId",
-                        value: shopifyOption.id.toString(),
-                        namespace: "shopifyProperties"
+                      const reactionOption = createReactionVariantFromShopifyVariant({
+                        shopifyVariant: shopifyOption,
+                        variant: option,
+                        index: j,
+                        ancestors: [reactionProductId, reactionVariantId],
+                        shopId
                       });
-                      reactionOption.metafields.push({
-                        scope: "shopify",
-                        key: "shopifyProductId",
-                        value: shopifyOption.product_id.toString(),
-                        namespace: "shopifyProperties"
-                      });
-                      reactionOption.title = option;
-                      reactionOption.optionTitle = option;
 
                       const reactionOptionId = Products.insert(reactionOption, { type: "variant" });
                       ids.push(reactionOptionId);
-                      Logger.info(`Imported ${product.title} ${variant}/${option}`);
+                      Logger.info(`Imported ${shopifyProduct.title} ${variant}/${option}`);
 
                       // Update Max Price
                       if (price.max === null || price.max < reactionOption.price) {
@@ -364,17 +366,68 @@ export const methods = {
                       }
 
                       // Save all relevant variant images to our option
-                      const optionImages = findVariantImages(shopifyOption.id, product.images);
+                      const optionImages = findVariantImages(shopifyOption.id, shopifyProduct.images);
                       optionImages.forEach((imageObj) => {
                         saveImage(imageObj.src, {
                           ownerId: Meteor.userId(),
-                          productId: productId,
+                          productId: reactionProductId,
                           variantId: reactionOptionId,
                           shopId: shopId,
                           priority: 1,
                           toGrid: 0
                         });
                       });
+
+                      // THIS LOOP INSERTS PRODUCTS A LEVEL DEEPER THAN THE REACTION
+                      // UI CURRENTLY SUPPORTS. IF YOUR SHOPIFY STORE USES THREE OPTION
+                      // LEVELS, YOU WILL NEED TO BUILD UI SUPPORT FOR THAT.
+                      if (shopifyTernaryOptions) {
+                        Logger.warn("Importing shopify product with 3 options. The Reaction UI does not currently support this.");
+                        Logger.info(`Importing ${shopifyProduct.title} ${variant} ${option} options`);
+                        shopifyTernaryOptions.forEach((ternaryOption, k) => {
+                          // Find the option that nests under our current variant.
+                          const shopifyTernaryOption = shopifyProduct.variants.find((o) => {
+                            return o.option1 === variant && o.option2 === option && o.option3 === ternaryOption;
+                          });
+
+                          if (shopifyTernaryOption) {
+                            const reactionTernaryOption = createReactionVariantFromShopifyVariant({
+                              shopifyVariant: shopifyTernaryOption,
+                              variant: ternaryOption,
+                              index: k,
+                              ancestors: [reactionProductId, reactionVariantId, reactionOptionId],
+                              shopId
+                            });
+
+                            const reactionTernaryOptionId = Products.insert(reactionTernaryOption, { type: "variant" });
+                            ids.push(reactionTernaryOptionId);
+                            Logger.info(`Imported ${shopifyProduct.title} ${variant}/${option}/${ternaryOption}`);
+
+                            // Update Max Price
+                            if (price.max === null || price.max < reactionTernaryOption.price) {
+                              price.max = reactionTernaryOption.price;
+                            }
+
+                            // Update Min Price
+                            if (price.min === null || price.min > reactionTernaryOption.price) {
+                              price.min = reactionTernaryOption.price;
+                            }
+
+                            // Save all relevant variant images to our option
+                            const ternaryOptionImages = findVariantImages(shopifyOption.id, shopifyProduct.images);
+                            ternaryOptionImages.forEach((imageObj) => {
+                              saveImage(imageObj.src, {
+                                ownerId: Meteor.userId(),
+                                productId: reactionProductId,
+                                variantId: reactionOptionId,
+                                shopId: shopId,
+                                priority: 1,
+                                toGrid: 0
+                              });
+                            });
+                          }
+                        }); // So many close parens and brackets. Don't get lost.
+                      }
                     }
                   });
                 } else {
@@ -390,18 +443,18 @@ export const methods = {
                   }
 
                   // Save all relevant variant images to our variant.
-                  const variantImages = findVariantImages(shopifyVariant.id, product.images);
+                  const variantImages = findVariantImages(shopifyVariant.id, shopifyProduct.images);
                   variantImages.forEach((imageObj) => {
                     saveImage(imageObj.src, {
                       ownerId: Meteor.userId(),
-                      productId: productId,
+                      productId: reactionProductId,
                       variantId: reactionVariantId,
                       shopId: shopId,
                       priority: 1,
                       toGrid: 0
                     });
                   });
-                  Logger.info(`Imported ${product.title} ${variant}`);
+                  Logger.info(`Imported ${shopifyProduct.title} ${variant}`);
                 }
               }
             });
@@ -413,11 +466,11 @@ export const methods = {
           } else {
             price.range = `${price.max}`;
           }
-          Products.update({ _id: productId }, { $set: { price: price } }, { selector: { type: "simple" } });
+          Products.update({ _id: reactionProductId }, { $set: { price: price } }, { selector: { type: "simple" } });
         }); // End product loop
 
         // Update the API pagination with the last productId we fetched
-        opts.since_id = products[products.length - 1].id;
+        opts.since_id = shopifyProducts[shopifyProducts.length - 1].id;
       } // End pages loop
       Logger.info("Shopify Import Finished");
       return ids;
