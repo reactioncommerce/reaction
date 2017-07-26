@@ -17,7 +17,7 @@ const CompletedOrder = (order) => {
         <h4>Shoe Box</h4>
         <div>Free Shipping - estimated delivery 06/17/16</div>
       </div>
-      <div className="row order-completed-item-box">
+      <div className="order-details-item-box">
         <div className="order-completed-line-item">
           <div className="order-item-media"><img src="/resources/placeholder.gif" /></div>
           <div className="order-details-title">Air Max</div>
