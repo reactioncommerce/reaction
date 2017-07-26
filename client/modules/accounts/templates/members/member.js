@@ -5,6 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Roles } from "meteor/alanning:roles";
+import ManageGroups from "/imports/plugins/core/accounts/client/components/manageGroups";
 
 const getPermissionMap = (permissions) => {
   const permissionMap = {};
@@ -115,7 +116,6 @@ Template.memberSettings.helpers({
         });
       }
     });
-
     return permissionGroups;
   },
 
@@ -133,6 +133,13 @@ Template.memberSettings.helpers({
     });
 
     return _.get(avalara, "settings.avalara.enabled", false);
+  },
+
+  accountsDetail() {
+    return {
+      component: ManageGroups,
+      ...Template.currentData()
+    };
   }
 });
 
