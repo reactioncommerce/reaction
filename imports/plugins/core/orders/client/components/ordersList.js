@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
+import { Orders } from "/lib/collections";
 import { formatPriceString } from "/client/api";
-import { Badge, ClickToCopy, Icon, Translation, Checkbox, Button } from "@reactioncommerce/reaction-ui";
+import { Badge, ClickToCopy, Icon, Translation, Checkbox, Button, SortableTable, Loading } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 import OrderTable from "./orderTable";
 
@@ -157,15 +158,15 @@ class OrdersList extends Component {
    */
 
   renderOrderCard(order) {
-    const { handleClick } = this.props;
+    // const { handleClick } = this.props;
 
     return (
       <div className="rui card order">
-        <div className="content" onClick={() => handleClick(order, false)}>
+        <div className="content" onClick={() => this.props.handleClick(order, false)}>
           {this.renderShipmentInfo(order)}
           {this.renderOrderInfo(order)}
         </div>
-        <div className="controls" onClick={() => handleClick(order)}>
+        <div className="controls" onClick={() => this.props.handleClick(order)}>
           {this.renderOrderButton(order)}
         </div>
       </div>
@@ -230,6 +231,10 @@ class OrdersList extends Component {
     const { selectedItems } = this.props;
     return selectedItems.length > 0 ? "order-table-pagination-hidden" : "order-table-pagination-visible";
   }
+  // renderDetailsTable() {
+  //   // add i18n handling to headers
+  //   const customColumnMetadata =  ;
+  // }
 
   render() {
     if (this.props.orders.length) {
@@ -264,19 +269,48 @@ class OrdersList extends Component {
               renderBulkOrderActionsBar={this.renderBulkOrderActionsBar}
               renderPaginationClassNameHidden={this.renderPaginationClassNameHidden}
               renderTableClassNameHidden={this.renderTableClassNameHidden}
+              renderOrderCard={this.renderOrderCard}
+              isOpen={false}
             />
           }
 
           {this.props.openDetail &&
             <div>
-              {this.props.orders.map((order, i) => {
+              {/* {this.props.orders.map((order, i) => {
                 return (
                   <div key={i}>
                     {this.renderOrderCard(order)}
                   </div>
                 );
               })}
-              {this.props.hasMoreOrders && <button onClick={this.props.handleShowMoreClick}>Show More</button>}
+              {this.props.hasMoreOrders && <button onClick={this.props.handleShowMoreClick}>Show More</button>} */}
+               {/* <SortableTable
+                publication="CustomPaginatedOrders"
+                collection={Orders}
+                matchingResultsCount="order-count"
+                columnMetadata={{
+                  Cell: row => (
+                    <div>{this.renderOrderCard(row.original)}</div>
+                  )
+                }}
+                externalLoadingComponent={Loading}
+              /> */}
+              <OrderTable
+                orders={this.props.orders}
+                selectedItems={this.props.selectedItems}
+                handleSelect={this.props.handleSelect}
+                handleClick={this.props.handleClick}
+                multipleSelect={this.props.multipleSelect}
+                selectAllOrders={this.props.selectAllOrders}
+                shippingBadgeStatus={this.shippingBadgeStatus}
+                fulfillmentBadgeStatus={this.fulfillmentBadgeStatus}
+                renderBulkOrderActionsBar={this.renderBulkOrderActionsBar}
+                renderPaginationClassNameHidden={this.renderPaginationClassNameHidden}
+                renderTableClassNameHidden={this.renderTableClassNameHidden}
+                renderOrderCard={this.renderOrderCard}
+                isOpen={true}
+                displayMedia={this.props.displayMedia}
+              />
             </div>
           }
         </div>

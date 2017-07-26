@@ -4,6 +4,13 @@ import { Orders } from "/lib/collections";
 import { SortableTable, Loading, Checkbox } from "@reactioncommerce/reaction-ui";
 import OrderTableColumn from "./orderTableColumn";
 
+import classnames from "classnames/dedupe";
+import Avatar from "react-avatar";
+import moment from "moment";
+import { formatPriceString } from "/client/api";
+import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
+import ProductImage from "./productImage";
+
 const classNames = {
   colClassNames: {
     "Name": "order-table-column-name",
@@ -42,67 +49,221 @@ class OrderTable extends Component {
     shippingBadgeStatus: PropTypes.func
   }
 
-  render() {
-    const filteredFields = {
-      "Name": "shipping[0].address.fullName",
-      "Email": "email",
-      "Date": "createdAt",
-      "ID": "_id",
-      "Total": "billing[0].invoice.total",
-      "Shipping": "shipping[0].workflow.status",
-      "Status": "workflow.status",
-      "": ""
-    };
+    /**
+   * Fullfilment Badge
+   * @param  {Object} order object containing info for order and coreOrderWorkflow
+   * @return {string} A string containing the type of Badge
+   */
+  fulfillmentBadgeStatus(order) {
+    const orderStatus = order.workflow.status;
 
-    const customColumnMetadata = [];
-    const columnNames = Object.keys(filteredFields);
+    if (orderStatus === "new") {
+      return "info";
+    } else if (orderStatus === "coreOrderWorkflow/processing") {
+      return "success";
+    } else if (orderStatus === "coreOrderWorkflow/canceled") {
+      return "danger";
+    } else if (orderStatus === "coreOrderWorkflow/completed") {
+      return "primary";
+    }
 
-    // https://react-table.js.org/#/story/cell-renderers-custom-components
-    columnNames.forEach((columnName) => {
-      let colHeader = undefined;
-      let resizable = true;
-      let sortable = true;
+    return "default";
+  }
 
-      // Add custom styles for the column name `name`
-      if (columnName === "Name") {
-        colHeader = () => (
-          <div className="order-table-name-cell">
-            <Checkbox
-              className="order-header-checkbox checkbox-large"
-              checked={this.props.multipleSelect}
-              name="orders-checkbox"
-              onChange={() => this.props.selectAllOrders(this.props.orders, this.props.multipleSelect)}
-            />
-            <span style={{ marginTop: 10 }}>{columnName}</span>
-          </div>
-        );
-      }
+  /**
+   * Shipping Badge
+   * TODO: any logic here, we don't have shipping status changes at the moment
+   * @return {string} A string containing the type of Badge
+   */
+  shippingBadgeStatus() {
+    return "basic";
+  }
 
-      if (columnName === "") {
-        resizable = false;
-        sortable = false;
-      }
-
-      const columnMeta = {
-        accessor: filteredFields[columnName],
-        Header: colHeader ? colHeader : columnName,
-        headerClassName: classNames.headerClassNames[columnName],
-        className: classNames.colClassNames[columnName],
-        resizable: resizable,
-        sortable: sortable,
-        Cell: row => (
-          <OrderTableColumn
-            row={row}
-            handleClick={this.props.handleClick}
-            handleSelect={this.props.handleSelect}
-            selectedItems={this.props.selectedItems}
-            fulfillmentBadgeStatus={this.props.fulfillmentBadgeStatus}
-            shippingBadgeStatus={this.props.shippingBadgeStatus}
-          />
-        )
-      };
-      customColumnMetadata.push(columnMeta);
+  renderOrderButton(order) {
+    const startWorkflow = order.workflow.status === "new";
+    const classes = classnames({
+      "rui": true,
+      "btn": true,
+      "btn-success": startWorkflow
     });
+
+    return (
+      <button className={classes} onClick={() => this.props.handleClick(order, startWorkflow)}>
+        <Icon icon="fa fa-chevron-right" />
+      </button>
+    );
+  }
+
+  renderOrderInfo(order) {
+    const { displayMedia } = this.props;
+
+    return (
+      <div className="order-info">
+        <div className="order-totals">
+          <span className="order-data order-data-date">
+            <strong>Date: </strong>
+            {moment(order.createdAt).fromNow()} | {moment(order.createdAt).format("MM/D/YYYY")}
+          </span>
+
+          <span className="order-data order-data-id">
+            <strong>Order ID: </strong>
+            <ClickToCopy
+              copyToClipboard={order._id}
+              displayText={order._id}
+              i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
+              tooltip="Copy Order Link"
+            />
+          </span>
+
+          <span className="order-data order-data-total">
+            <strong>Total: {formatPriceString(order.billing[0].invoice.total)}</strong>
+          </span>
+        </div>
+
+        <div className="order-items">
+          {order.items.map((item, i) => {
+            return (
+              <div className="order-item" key={i}>
+                <div className="order-item-media">
+                  <ProductImage
+                    item={item}
+                    displayMedia={displayMedia}
+                    size="small"
+                    badge={true}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  renderShipmentInfo(order) {
+    const emailAddress = order.email || <Translation defaultValue={"Email not availabe"} i18nKey={"admin.orderWorkflow.ordersList.emailNotFound"} />;
+    return (
+      <div className="shipment-info">
+        <div className="customer-info">
+          <Avatar
+            email={order.email}
+            round={true}
+            name={order.shipping[0].address.fullName}
+            size={30}
+            className="rui-order-avatar"
+          />
+          <strong>{order.shipping[0].address.fullName}</strong> | {emailAddress}
+        </div>
+        <div className="workflow-info">
+          <Badge
+            badgeSize="large"
+            i18nKeyLabel={`cartDrawer.${order.shipping[0].workflow.status}`}
+            label={order.shipping[0].workflow.status}
+            status={this.shippingBadgeStatus(order)}
+          />
+          <Badge
+            badgeSize="large"
+            i18nKeyLabel={`cartDrawer.${order.workflow.status}`}
+            label={order.workflow.status}
+            status={this.fulfillmentBadgeStatus(order)}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  /**
+   * Render Sortable Table for the list view for orders
+   * @param {Object} orders object containing info for order
+   * @return {Component} SortableTable list of orders
+   */
+
+  renderOrderCard(order) {
+    // const { handleClick } = this.props;
+
+    return (
+      <div className="rui card order">
+        <div className="content" onClick={() => this.props.handleClick(order, false)}>
+          {this.renderShipmentInfo(order)}
+          {this.renderOrderInfo(order)}
+        </div>
+        <div className="controls" onClick={() => this.props.handleClick(order)}>
+          {this.renderOrderButton(order)}
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    let customColumnMetadata = [];
+
+    if (!this.props.isOpen) {
+      const filteredFields = {
+        "Name": "shipping[0].address.fullName",
+        "Email": "email",
+        "Date": "createdAt",
+        "ID": "_id",
+        "Total": "billing[0].invoice.total",
+        "Shipping": "shipping[0].workflow.status",
+        "Status": "workflow.status",
+        "": ""
+      };
+
+      const columnNames = Object.keys(filteredFields);
+
+      // https://react-table.js.org/#/story/cell-renderers-custom-components
+      columnNames.forEach((columnName) => {
+        let colHeader = undefined;
+        let resizable = true;
+        let sortable = true;
+
+        // Add custom styles for the column name `name`
+        if (columnName === "Name") {
+          colHeader = () => (
+            <div className="order-table-name-cell">
+              <Checkbox
+                className="order-header-checkbox checkbox-large"
+                checked={this.props.multipleSelect}
+                name="orders-checkbox"
+                onChange={() => this.props.selectAllOrders(this.props.orders, this.props.multipleSelect)}
+              />
+              <span style={{ marginTop: 10 }}>{columnName}</span>
+            </div>
+          );
+        }
+
+        if (columnName === "") {
+          resizable = false;
+          sortable = false;
+        }
+
+        const columnMeta = {
+          accessor: filteredFields[columnName],
+          Header: colHeader ? colHeader : columnName,
+          headerClassName: classNames.headerClassNames[columnName],
+          className: classNames.colClassNames[columnName],
+          resizable: resizable,
+          sortable: sortable,
+          Cell: row => (
+            <OrderTableColumn
+              row={row}
+              handleClick={this.props.handleClick}
+              handleSelect={this.props.handleSelect}
+              selectedItems={this.props.selectedItems}
+              fulfillmentBadgeStatus={this.props.fulfillmentBadgeStatus}
+              shippingBadgeStatus={this.props.shippingBadgeStatus}
+            />
+          )
+        };
+        customColumnMetadata.push(columnMeta);
+      });
+    } else {
+      const columnMeta = {
+        Cell: row => (<div>{this.renderOrderCard(row.original)}</div>)
+      };
+
+      customColumnMetadata.push(columnMeta);
+    }
 
     return (
       <div>
