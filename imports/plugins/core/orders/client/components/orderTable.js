@@ -176,8 +176,6 @@ class OrderTable extends Component {
    */
 
   renderOrderCard(order) {
-    // const { handleClick } = this.props;
-
     return (
       <div className="rui card order">
         <div className="content" onClick={() => this.props.handleClick(order, false)}>
@@ -201,7 +199,7 @@ class OrderTable extends Component {
             className="checkbox-large orders-checkbox"
             checked={selectedItems.length === orders.length || multipleSelect}
             name="orders-checkbox"
-            onChange={() => selectAllOrders(orders, this.renderCheckedStatus())}
+            onChange={() => selectAllOrders(orders, (selectedItems.length === orders.length || multipleSelect))}
           />
           <Translation
             className="selected-orders"
