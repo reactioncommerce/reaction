@@ -1,6 +1,7 @@
 import React, { Children, Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 class Card extends Component {
   constructor(props) {
@@ -71,5 +72,7 @@ Card.propTypes = {
   onExpand: PropTypes.func,
   style: PropTypes.object
 };
+
+registerComponent("Card", Card);
 
 export default Card;

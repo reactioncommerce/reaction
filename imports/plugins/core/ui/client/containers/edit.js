@@ -1,9 +1,7 @@
 import React, { Children, Component } from "react";
 import PropTypes from "prop-types";
-import { Meteor } from "meteor/meteor";
+import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import { EditButton, VisibilityButton, Translation } from "/imports/plugins/core/ui/client/components";
-import { composeWithTracker } from "/lib/api/compose";
 
 const styles = {
   editContainerItem: {
@@ -59,7 +57,7 @@ class EditContainer extends Component {
     if (this.props.showsVisibilityButton) {
       return (
         <span className="edit-container-item" style={styles.editContainerItem}>
-          <VisibilityButton
+          <Components.VisibilityButton
             onClick={this.handleVisibilityButtonClick}
             toggleOn={this.props.data.isVisible}
           />
@@ -95,7 +93,7 @@ class EditContainer extends Component {
 
             tooltip = (
               <span>
-                <Translation defaultValue="Unpublished Changes" i18nKey="revisions.unpublishedChanges" />
+                <Components.Translation defaultValue="Unpublished Changes" i18nKey="revisions.unpublishedChanges" />
               </span>
             );
 
@@ -108,7 +106,7 @@ class EditContainer extends Component {
 
       tooltip = (
         <span>
-          <Translation defaultValue="Unpublished Changes" i18nKey="revisions.unpublishedChanges" />
+          <Components.Translation defaultValue="Unpublished Changes" i18nKey="revisions.unpublishedChanges" />
         </span>
       );
     }
@@ -119,7 +117,7 @@ class EditContainer extends Component {
 
     return (
       <span className="edit-container-item" style={styles.editContainerItem}>
-        <EditButton
+        <Components.EditButton
           onClick={this.handleEditButtonClick}
           status={status}
           tooltip={tooltip}
@@ -181,12 +179,14 @@ function composer(props, onData) {
   if (props.disabled === true || viewAs === "customer") {
     hasPermission = false;
   } else {
-    hasPermission = Reaction.hasPermission(props.permissions, Meteor.userId(), props.data.shopId);
+    hasPermission = Reaction.hasPermission(props.permissions);
   }
 
   onData(null, {
     hasPermission
   });
 }
+
+registerComponent("EditContainer", EditContainer, composeWithTracker(composer));
 
 export default composeWithTracker(composer)(EditContainer);

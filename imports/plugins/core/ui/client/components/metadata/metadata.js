@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Metafield from "./metafield";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class Metadata extends Component {
   /**
@@ -57,7 +57,7 @@ class Metadata extends Component {
     if (this.props.metafields) {
       return this.props.metafields.map((metadata, index) => {
         return (
-          <Metafield
+          <Components.Metafield
             index={index}
             key={index}
             metafield={metadata}
@@ -74,7 +74,7 @@ class Metadata extends Component {
 
   renderMetadataCreateForm() {
     return (
-      <Metafield
+      <Components.Metafield
         blank={true}
         metafield={this.props.newMetafield}
         onBlur={this.handleMetaSave}
@@ -121,5 +121,7 @@ Metadata.propTypes = {
   onMetaRemove: PropTypes.func,
   onMetaSave: PropTypes.func
 };
+
+registerComponent("Metadata", Metadata);
 
 export default Metadata;

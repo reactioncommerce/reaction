@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Icon, Switch, Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class ListItem extends Component {
   static propTypes = {
@@ -50,7 +50,7 @@ class ListItem extends Component {
     if (this.props.icon) {
       return (
         <div className={iconClassName}>
-          <Icon icon={this.data.icon} />
+          <Components.Icon icon={this.data.icon} />
         </div>
       );
     }
@@ -68,7 +68,7 @@ class ListItem extends Component {
     if (this.props.actionType === "switch") {
       return (
         <div className={actionClassName}>
-          <Switch
+          <Components.Switch
             checked={this.props.switchOn}
             name={this.props.switchName}
             onChange={this.handleSwitchChange}
@@ -80,7 +80,7 @@ class ListItem extends Component {
     if (this.props.actionType) {
       return (
         <div className={actionClassName}>
-          <Icon icon="fa fa-angle-right" />
+          <Components.Icon icon="fa fa-angle-right" />
         </div>
       );
     }
@@ -98,7 +98,7 @@ class ListItem extends Component {
 
     if (this.props.label) {
       content = (
-        <Translation
+        <Components.Translation
           defaultValue={this.props.label}
           i18nKey={this.props.i18nKeyLabel}
         />
@@ -152,5 +152,7 @@ class ListItem extends Component {
     );
   }
 }
+
+registerComponent("ListItem", ListItem);
 
 export default ListItem;

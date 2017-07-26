@@ -1,14 +1,12 @@
-import React, { Component } from "react";
-import CircularProgress from "../progress/circularProgress";
+import React from "react";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class Loading extends Component {
-  render() {
-    return (
-      <div className="spinner-container spinner-container-lg">
-        <CircularProgress indeterminate={true} />
-      </div>
-    );
-  }
-}
+const Loading = () => (
+  <div className="spinner-container spinner-container-lg">
+    <Components.CircularProgress indeterminate={true} />
+  </div>
+);
+
+registerComponent("Loading", Loading);
 
 export default Loading;

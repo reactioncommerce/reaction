@@ -40,8 +40,8 @@ export const Express = {
       password: getSettings(settings, ref, "password"),
       signature: getSettings(settings, ref, "signature"),
       merchantId: getSettings(settings, ref, "merchantId"),
-      return_url: Reaction.getAbsoluteUrl("/paypal/done"),
-      cancel_url: Reaction.getAbsoluteUrl("/paypal/cancel")
+      return_url: Reaction.getAbsoluteUrl("paypal/done"),
+      cancel_url: Reaction.getAbsoluteUrl("paypal/cancel")
     };
     if (options.mode === "sandbox") {
       options.url = "https://api-3t.sandbox.paypal.com/nvp";

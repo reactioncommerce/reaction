@@ -1,9 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, Translation } from "/imports/plugins/core/ui/client/components";
+import { $ } from "meteor/jquery";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Reaction } from "/client/api";
 
+function handleKeepShopping(event) {
+  event.stopPropagation();
+  event.preventDefault();
+  return $("#cart-drawer-container").fadeOut(300, function () {
+    return Reaction.toggleSession("displayCart");
+  });
+}
 
-const EmptyCartDrawer = ({ keepShopping }) => {
+const EmptyCartDrawer = () => {
   return (
     <div className="cart-drawer" id="cart-drawer">
       <div className="cart-drawer-empty">
@@ -12,17 +21,17 @@ const EmptyCartDrawer = ({ keepShopping }) => {
             <i className="fa fa-frown-o fa-lg" />
           </p>
           <p className="text-align">
-            <Translation defaultValue="We're sad. Your cart is empty." i18nKey="cartDrawer.empty" />
+            <Components.Translation defaultValue="We're sad. Your cart is empty." i18nKey="cartDrawer.empty" />
           </p>
         </div>
         <div className="row">
-          <Button
+          <Components.Button
             id="btn-keep-shopping"
             bezelStyle="solid"
             className="btn-lg btn-block"
             i18nKeyLabel="cartDrawer.keepShopping"
             label="Keep on shopping"
-            onClick={keepShopping}
+            onClick={handleKeepShopping}
             status="warning"
           />
         </div>
@@ -34,5 +43,7 @@ const EmptyCartDrawer = ({ keepShopping }) => {
 EmptyCartDrawer.propTypes = {
   keepShopping: PropTypes.func
 };
+
+registerComponent("EmptyCartDrawer", EmptyCartDrawer);
 
 export default EmptyCartDrawer;
