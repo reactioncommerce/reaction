@@ -14,6 +14,7 @@ class SortableTable extends Component {
       currentPage: 0,
       filterInput: "",
       maxPages: 0,
+      renderPaginationBottom: true,
       query: this.props.query || {}
     };
 
@@ -113,6 +114,18 @@ class SortableTable extends Component {
 
 
   /**
+   * handleShowPagination() - Update state when result count is changed
+   * @param {bool} value true / false
+   * @return {function} state for field value
+   */
+  handleShowPagination = (value) => {
+    this.setState({
+      renderPaginationBottom: value
+    });
+  }
+
+
+  /**
    * renderColumns() - Absorb columnMetadata information from props, output columns to display
    * @prop {String} columnMetadata - Object of data field, column header
    * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
@@ -172,21 +185,42 @@ class SortableTable extends Component {
   renderTableFilter() {
     const { filterType } = this.props;
 
-    if (filterType === "both" || filterType === "table") {
-      return (
-        <SortableTableFilter
-          onChange={this.handleFilterInput}
-          value={this.state.filterInput}
-          name="filterInput"
-        />
-      );
+    if (this.getMeteorData().matchingResults !== 0) {
+      if (filterType === "both" || filterType === "table") {
+        return (
+          <SortableTableFilter
+            onChange={this.handleFilterInput}
+            value={this.state.filterInput}
+            name="filterInput"
+          />
+        );
+      }
     }
 
     return null;
   }
 
+  renderPaginationBottom = () => {
+    if (this.getMeteorData().matchingResults === 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  setMinRows = () => {
+    if (this.getMeteorData().matchingResults === 0) {
+      return 3;
+    }
+
+    return 0;
+  }
+
 
   render() {
+    console.log("data", this.getMeteorData());
+    console.log("data2", this.setMinRows);
+    console.log("data3", this.setMinRows());
     const { ...otherProps } = this.props;
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (
@@ -199,15 +233,17 @@ class SortableTable extends Component {
           defaultFilterMethod={this.customFilter}
           defaultPageSize={otherProps.defaultPageSize}
           filterable={this.renderColumnFilter()}
-          minRows={otherProps.minRows}
+          minRows={this.setMinRows()
+          }
           previousText={otherProps.previousText}
           nextText={otherProps.nextText}
           loadingText={otherProps.loadingText}
-          noDataText={otherProps.noDataText}
+          noDataText={() => <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>} // Supports JSX / React Components
           pageText={otherProps.pageText}
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
           PaginationComponent={SortableTablePagination}
+          showPaginationBottom={this.renderPaginationBottom()}
           getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
             return {
               onClick: e => { // eslint-disable-line no-unused-vars
