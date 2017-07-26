@@ -4,6 +4,7 @@ import { Template } from "meteor/templating";
 import { check } from "meteor/check";
 import { Reaction, i18next } from "/client/api";
 import { Orders } from "/lib/collections";
+import CompletedOrderContainer from "/imports/plugins/core/checkout/client/containers/completedOrderContainer";
 
 
 /**
@@ -48,6 +49,10 @@ Template.cartCompleted.helpers({
       });
     }
     return {};
+  },
+
+  completedOrder: function () {
+    return { component: CompletedOrderContainer };
   }
 });
 

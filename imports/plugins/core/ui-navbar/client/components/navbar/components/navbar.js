@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FlatButton, Button } from "/imports/plugins/core/ui/client/components";
 import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
-import CartIconContainer from "/imports/plugins/core/checkout/client/container/cartIconContainer";
+import CartIconContainer from "/imports/plugins/core/checkout/client/containers/cartIconContainer";
 import CartPanel from "/imports/plugins/core/checkout/client/templates/cartPanel/container/cartPanelContainer";
 import MainDropdown from "/client/modules/accounts/containers/dropdown/mainDropdownContainer";
 import LanguageContainer from "/client/modules/i18n/templates/header/containers/i18nContainer";

@@ -3,8 +3,8 @@ import { Cart } from "/lib/collections";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import Swiper from "swiper";
-import CartDrawerContainer from "../../container/cartDrawerContainer";
-import EmptyCartDrawer from "../../container/emptyCartContainer";
+import CartDrawerContainer from "../../containers/cartDrawerContainer";
+import EmptyCartDrawer from "../../containers/emptyCartContainer";
 /**
  * cartDrawer helpers
  *

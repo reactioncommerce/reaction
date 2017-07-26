@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CartSubTotals from "../container/cartSubTotalContainer";
+import CartSubTotals from "../containers/cartSubTotalContainer";
 import CartItems from "./cartItems";
 
 const cartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, handleImage, handleLowInventory, handleShowProduct }) => {
