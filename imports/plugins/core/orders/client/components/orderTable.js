@@ -36,17 +36,14 @@ const classNames = {
 
 class OrderTable extends Component {
   static propTypes = {
-    fulfillmentBadgeStatus: PropTypes.func,
+    displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
+    isOpen: PropTypes.bool,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
-    renderBulkOrderActionsBar: PropTypes.func,
-    renderPaginationClassNameHidden: PropTypes.func,
-    renderTableClassNameHidden: PropTypes.func,
     selectAllOrders: PropTypes.func,
-    selectedItems: PropTypes.array,
-    shippingBadgeStatus: PropTypes.func
+    selectedItems: PropTypes.array
   }
 
   /**
@@ -195,14 +192,14 @@ class OrderTable extends Component {
   }
 
   renderBulkOrderActionsBar = () => {
-    const { orders, selectedItems, selectAllOrders } = this.props;
+    const { orders, multipleSelect, selectedItems, selectAllOrders } = this.props;
 
     if (selectedItems.length > 0) {
       return (
         <div className="bulk-order-actions-bar">
           <Checkbox
             className="checkbox-large orders-checkbox"
-            checked={this.renderCheckedStatus()}
+            checked={selectedItems.length === orders.length || multipleSelect}
             name="orders-checkbox"
             onChange={() => selectAllOrders(orders, this.renderCheckedStatus())}
           />
@@ -232,25 +229,16 @@ class OrderTable extends Component {
     }
   }
 
-  renderCheckedStatus() {
-    const { selectedItems, orders, multipleSelect } = this.props;
-    return selectedItems.length === orders.length ? true : multipleSelect;
-  }
-
-  renderTableClassNameHidden = () => {
-    const { selectedItems } = this.props;
-    return selectedItems.length > 0 ? "table-header-hidden" : "table-header-visible";
-  }
-
-  renderPaginationClassNameHidden = () => {
-    const { selectedItems } = this.props;
-    return selectedItems.length > 0 ? "order-table-pagination-hidden" : "order-table-pagination-visible";
-  }
-
   render() {
+    let getTrProps = undefined;
+    let getTheadProps = undefined;
+    let getTrGroupProps = undefined;
+    let getTableProps = undefined;
+
     const customColumnMetadata = [];
 
     if (this.props.isOpen) {
+      // Render order list column/row data
       const filteredFields = {
         "Name": "shipping[0].address.fullName",
         "Email": "email",
@@ -263,6 +251,24 @@ class OrderTable extends Component {
       };
 
       const columnNames = Object.keys(filteredFields);
+
+      getTheadProps = () => {
+        return {
+          className: "order-table-thead"
+        };
+      };
+
+      getTrGroupProps = () => {
+        return {
+          className: "order-table-tr-group"
+        };
+      };
+
+      getTableProps = () => {
+        return {
+          className: "order-table-list"
+        };
+      };
 
       // https://react-table.js.org/#/story/cell-renderers-custom-components
       columnNames.forEach((columnName) => {
@@ -311,18 +317,47 @@ class OrderTable extends Component {
         customColumnMetadata.push(columnMeta);
       });
     } else {
+      // Render order detail column/row dat
+
       const columnMeta = {
         Cell: row => (<div>{this.renderOrderCard(row.original)}</div>)
       };
 
       customColumnMetadata.push(columnMeta);
+
+      getTheadProps = () => {
+        return {
+          className: "hidden"
+        };
+      };
+
+      getTrGroupProps = () => {
+        return {
+          className: "order-table-details-tr-group"
+        };
+      };
+
+      getTableProps = () => {
+        return {
+          className: "order-table-detail"
+        };
+      };
+
+      getTrProps = () => {
+        return {
+          className: "order-table-detail-tr"
+        };
+      };
     }
 
     return (
       <div>
         {this.renderBulkOrderActionsBar()}
         <SortableTable
-          tableClassName={`rui order table ${this.renderTableClassNameHidden()} -highlight`}
+          tableClassName={`rui order table -highlight ${this.props.selectedItems.length > 0 ?
+            "table-header-hidden" :
+            "table-header-visible"}`
+          }
           publication="CustomPaginatedOrders"
           collection={Orders}
           matchingResultsCount="order-count"
@@ -330,26 +365,17 @@ class OrderTable extends Component {
           externalLoadingComponent={Loading}
           filterType="none"
           selectedRows={this.props.selectedItems}
-          getTheadProps={() => {
-            return {
-              className: "order-table-thead"
-            };
-          }}
-          getTrGroupProps={() => {
-            return {
-              className: "order-table-tr-group"
-            };
-          }}
+          getTheadProps={getTheadProps}
+          getTrProps={getTrProps}
+          getTrGroupProps={getTrGroupProps}
           getPaginationProps={() => {
             return {
-              className: this.renderPaginationClassNameHidden()
+              className: this.props.selectedItems.length > 0 ?
+                "order-table-pagination-hidden" :
+                "order-table-pagination-visible"
             };
           }}
-          getTableProps={() => {
-            return {
-              className: "order-table-table"
-            };
-          }}
+          getTableProps={getTableProps}
           showPaginationTop={true}
         />
       </div>
