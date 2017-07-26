@@ -24,11 +24,10 @@ class OrdersContainer extends Component {
   componentDidMount() {
     Tracker.autorun(() => {
       this.dep.depend();
-      const limit = this.state.limit;
-      this.subscription = Meteor.subscribe("PaginatedOrders", limit);
+      this.subscription = Meteor.subscribe("CustomPaginatedOrders");
 
       if (this.subscription.ready()) {
-        const orders = Orders.find({}, { limit: limit }).fetch();
+        const orders = Orders.find().fetch();
         this.setState({
           orders: orders,
           count: Counts.get("order-count"),
