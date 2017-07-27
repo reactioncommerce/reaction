@@ -113,7 +113,7 @@ export default {
 
     let permissions = ["owner"];
     let id = "";
-    const userId = checkUserId || this.userId || Meteor.userId();
+    const userId = checkUserId || Meteor.userId();
     //
     // local roleCheck function
     // is the bulk of the logic

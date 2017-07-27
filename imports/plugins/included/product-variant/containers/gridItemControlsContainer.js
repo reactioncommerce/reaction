@@ -1,47 +1,50 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { compose } from "recompose";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
-import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import GridItemControls from "../components/gridItemControls";
 
-class GridItemControlsContainer extends Component {
-  static propTypes = {
-    isSelected: PropTypes.bool,
-    product: PropTypes.object
-  }
+const wrapComponent = (Comp) => (
+  class GridItemControlsContainer extends Component {
+    static propTypes = {
+      isSelected: PropTypes.bool,
+      product: PropTypes.object
+    }
 
-  constructor() {
-    super();
+    constructor() {
+      super();
 
-    this.hasCreateProductPermission = this.hasCreateProductPermission.bind(this);
-    this.hasChanges = this.hasChanges.bind(this);
-    this.checked = this.checked.bind(this);
-  }
+      this.hasCreateProductPermission = this.hasCreateProductPermission.bind(this);
+      this.hasChanges = this.hasChanges.bind(this);
+      this.checked = this.checked.bind(this);
+    }
 
-  hasCreateProductPermission = () => {
-    return Reaction.hasPermission("createProduct");
-  }
+    hasCreateProductPermission = () => {
+      return Reaction.hasPermission("createProduct");
+    }
 
-  hasChanges =() => {
-    return this.props.product.__draft ? true : false;
-  }
+    hasChanges = () => {
+      return this.props.product.__draft ? true : false;
+    }
 
-  checked = () => {
-    return this.props.isSelected === true;
-  }
+    checked = () => {
+      return this.props.isSelected === true;
+    }
 
-  render() {
-    return (
-      <GridItemControls
-        product={this.props.product}
-        hasCreateProductPermission={this.hasCreateProductPermission}
-        hasChanges={this.hasChanges}
-        checked={this.checked}
-      />
-    );
+    render() {
+      return (
+        <Comp
+          product={this.props.product}
+          hasCreateProductPermission={this.hasCreateProductPermission}
+          hasChanges={this.hasChanges}
+          checked={this.checked}
+        />
+      );
+    }
   }
-}
+);
 
 function composer(props, onData) {
   const product = props.product;
@@ -58,4 +61,12 @@ function composer(props, onData) {
   });
 }
 
-export default composeWithTracker(composer)(GridItemControlsContainer);
+registerComponent("GridItemControls", GridItemControls, [
+  composeWithTracker(composer),
+  wrapComponent
+]);
+
+export default compose(
+  composeWithTracker(composer),
+  wrapComponent
+)(GridItemControls);

@@ -1,10 +1,10 @@
+import { Components } from "@reactioncommerce/reaction-components";
 import { Template } from "meteor/templating";
-import GridPublishContainer from "/imports/plugins/included/product-variant/containers/gridPublishContainer";
 
 Template.gridPublishControls.helpers({
   PublishComponent() {
     return {
-      component: GridPublishContainer
+      component: Components.GridProductPublish
     };
   }
 });

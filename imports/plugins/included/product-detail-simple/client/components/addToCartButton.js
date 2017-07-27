@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Alert, Translation } from "/imports/plugins/core/ui/client/components";
-
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class AddToCartButton extends Component {
   get hasVariants() {
     return Array.isArray(this.props.variants) && this.props.variants.length > 0;
   }
+
   handleCartQuantityChange = (event) => {
     if (this.props.onCartQuantityChange) {
       this.props.onCartQuantityChange(event, event.target.value);
@@ -31,7 +31,7 @@ class AddToCartButton extends Component {
             data-i18n="productDetail.addToCart"
             onClick={this.props.onClick || this.props.onAddToCart}
           >
-            <Translation defaultValue="Add to cart" i18nKey="productDetail.addToCart" />
+            <Components.Translation defaultValue="Add to cart" i18nKey="productDetail.addToCart" />
           </button>
         </div>
       );
@@ -39,9 +39,9 @@ class AddToCartButton extends Component {
 
     if (this.props.editable && this.hasVariants === false) {
       return (
-        <Alert>
-          <Translation defaultValue="Add options to enable 'Add to Cart' button" i18nkey="productVariant.addVariantOptions" />
-        </Alert>
+        <Components.Alert>
+          <Components.Translation defaultValue="Add options to enable 'Add to Cart' button" i18nkey="productVariant.addVariantOptions" />
+        </Components.Alert>
       );
     }
     return null;
@@ -56,5 +56,7 @@ AddToCartButton.propTypes = {
   onClick: PropTypes.func,
   variants: PropTypes.arrayOf(PropTypes.object)
 };
+
+registerComponent("AddToCartButton", AddToCartButton);
 
 export default AddToCartButton;

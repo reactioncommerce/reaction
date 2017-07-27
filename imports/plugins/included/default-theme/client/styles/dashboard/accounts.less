@@ -2,38 +2,21 @@
 //   cursor: pointer;
 // }
 //
-
 @black05: darken(#fff, 5%);
-
 .shop-member-groups {
-
-  ul {
-
-    // border: none;
-  }
   label {
     font-weight: normal;
     text-transform: capitalize;
   }
-  li {
-    // border: none !important;
-  }
-
   .permission-toggle {
     background-color: @black05;
     padding: 5px 7px;
-
-    &.collapsed {
-
-    }
   }
 }
-
 .shop-member-group {
   display: inline-block;
   padding: 10px;
 }
-
 .member-list-item {
   .display(flex);
   border-bottom: @border-thin;
@@ -41,41 +24,129 @@
     padding: 20px;
   }
 }
-
 .member-list-item-image {
   .flex(0 0 auto);
 }
-
 .member-list-item-profile {
   .display(flex);
   .flex(1 1 auto);
   .align-items(center);
-  padding-right: 20px;
-  padding-left: 20px;
 }
-
 .member-list-item-controls {
   .flex(0 0 auto);
 }
-
-
 .shop-member-row {
-  margin-bottom: 20px;
-  padding-bottom: 20px;
   border-bottom: 1px solid @black05;
 }
-
 .shop-permission-header {
   background-color: @navbar-default-bg;
 }
 
-.permission-toggle {
-
+.accounts-table {
+  .-pagination {
+    display: none;
+  }
+  .list-item-content {
+    span {
+      text-transform: capitalize;
+    }
+  }
+  .col-md-9 {
+    .alert-container {
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+    border-right: 1px solid #ccc;
+  }
+  .col-md-3 {
+    .alert-container {
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+    border-left: 1px solid #ccc;
+  }
 }
 
-.shop-member-permission {
-  label {
-    .padding-left(20px);
-    // .flex(1 1 auto);
+.accounts-group-table {
+  .title {
+    text-transform: capitalize;
+  }
+  .rt-noData {
+    top: 100%;
+    text-align: center;
+    background: transparent;
+    width: 100%;
+    padding: 10px 0;
+    color: inherit;
+    border-bottom: 1px solid #d9d9d9;
+    margin-top: 20px;
+  }
+  .group-dropdown {
+    width: 100%;
+    display: inherit;
+  }
+}
+
+.accounts-group-table.empty-table {
+  margin-bottom: 100px;
+}
+
+.add-group-members {
+  .c-default {
+    cursor: default;
+  }
+  .rt-resizable-header-content {
+    text-transform: capitalize;
+  }
+  .badge {
+    float: right;
+    line-height: 40px;
+    text-transform: capitalize;
+    background-color: transparent;
+    color: #000;
+  }
+  .name-box {
+    display: inline-block;
+    .title {
+      text-transform: capitalize;
+    }
+    >span {
+      display: inline-block;
+      span {
+        display: block;
+      }
+    }
+  }
+  .accounts-img-tag {
+    margin: 0 5px;
+    width: 45px;
+    height: 45px;
+    vertical-align: bottom;
+  }
+}
+
+.add-group-members {
+  position: relative;
+}
+
+.edit-group-container {
+  position: relative;
+  .groups-item-selected {
+    font-weight: bold;
+  }
+  .groups-list {
+    .rui.list-group-item {
+      .list-item-content {
+        display: inline-block;
+        flex: none;
+        width: auto;
+        margin-right: 10px;
+      }
+    }
+  }
+  .list-item-content {
+    text-transform: capitalize;
   }
 }

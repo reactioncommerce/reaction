@@ -5,6 +5,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Nouislider from "react-nouislider";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 class Slider extends Component {
   render() {
@@ -50,5 +51,7 @@ Slider.defaultProps = {
   margin: 0,
   padding: 0
 };
+
+registerComponent("Slider", Slider);
 
 export default Slider;

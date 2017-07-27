@@ -1,6 +1,5 @@
 import React,  { Component } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
 import matchSorter from "match-sorter";
 import ReactTable from "react-table";
 import { Meteor } from "meteor/meteor";
@@ -41,7 +40,7 @@ class SortableTable extends Component {
 
     const options = {};
 
-    const pubHandle = Meteor.subscribe(publication, this.state.query, _.assignIn({}, options));
+    const pubHandle = Meteor.subscribe(publication, this.state.query, Object.assign({}, options));
 
     // optional transform of collection for grid results
     let results = collection.find(this.state.query, options).fetch();
@@ -123,7 +122,7 @@ class SortableTable extends Component {
 
     // Add minWidth = undefined to override 100px default set by ReactTable
     const displayColumns = columnMetadata.map((element) => {
-      return _.assignIn({}, element, {
+      return Object.assign({}, element, {
         minWidth: undefined
       });
     });
@@ -147,7 +146,6 @@ class SortableTable extends Component {
     }
 
     const filteredData = matchSorter(originalData, filterInput, { keys: filteredFields });
-
     return filteredData;
   }
 
@@ -190,7 +188,6 @@ class SortableTable extends Component {
 
   render() {
     const { ...otherProps } = this.props;
-
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (
       <div>
@@ -198,12 +195,11 @@ class SortableTable extends Component {
         <ReactTable
           className={"-striped -highlight"}
           columns={this.renderColumns()}
-          data={this.renderData()}
+          data={otherProps.data || this.renderData()}
           defaultFilterMethod={this.customFilter}
           defaultPageSize={otherProps.defaultPageSize}
           filterable={this.renderColumnFilter()}
           minRows={otherProps.minRows}
-
           previousText={otherProps.previousText}
           nextText={otherProps.nextText}
           loadingText={otherProps.loadingText}
@@ -211,9 +207,7 @@ class SortableTable extends Component {
           pageText={otherProps.pageText}
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
-
           PaginationComponent={SortableTablePagination}
-
           getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
             return {
               onClick: e => { // eslint-disable-line no-unused-vars
@@ -267,7 +261,6 @@ SortableTable.defaultProps = {
   isResizeable: true,
   isSortable: true,
   minRows: 0,
-  // Text props where translations are needed
   noDataMessage: "No results found",
   previousText: "Previous",
   nextText: "Next",

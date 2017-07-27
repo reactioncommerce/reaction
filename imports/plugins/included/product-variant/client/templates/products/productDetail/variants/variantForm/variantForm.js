@@ -1,3 +1,4 @@
+import { Components } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Session } from "meteor/session";
@@ -6,7 +7,6 @@ import { Reaction, i18next } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Products } from "/lib/collections";
-import VariantFormContainer from "/imports/plugins/included/product-variant/containers/variantFormContainer";
 
 Template.variantForm.onCreated(function () {
   this.state = new ReactiveDict();
@@ -31,7 +31,7 @@ Template.variantForm.onCreated(function () {
 
 Template.variantForm.helpers({
   variantFormComponent() {
-    return VariantFormContainer;
+    return Components.VariantForm;
   },
   variant() {
     const instance = Template.instance();

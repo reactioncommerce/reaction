@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { Components } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Roles } from "meteor/alanning:roles";
@@ -81,6 +82,10 @@ Template.accountsDashboard.helpers({
         });
       }
     }
+  },
+
+  accountsDashboard() {
+    return Components.AccountsDashboard;
   }
 });
 
