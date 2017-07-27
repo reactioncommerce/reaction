@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class Switch extends Component {
   static defaultProps = {
@@ -38,15 +38,15 @@ class Switch extends Component {
 
     if (this.props.checked === false && this.props.label) {
       labelElement = (
-        <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+        <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
       );
     } else if (this.props.checked === true && this.props.onLabel) {
       labelElement = (
-        <Translation defaultValue={this.props.onLabel} i18nKey={this.props.i18nKeyOnLabel} />
+        <Components.Translation defaultValue={this.props.onLabel} i18nKey={this.props.i18nKeyOnLabel} />
       );
     } else if (this.props.label) {
       labelElement = (
-        <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+        <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
       );
     }
 
@@ -90,5 +90,7 @@ class Switch extends Component {
     );
   }
 }
+
+registerComponent("Switch", Switch);
 
 export default Switch;

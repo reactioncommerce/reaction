@@ -1,18 +1,7 @@
-import React, { Component } from "react";
 import _ from "lodash";
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { QuickMenu } from "../components";
 import { Reaction } from "/client/api";
-
-class QuickMenuContainer extends Component {
-  render() {
-    return (
-      <QuickMenu
-        {...this.props}
-      />
-    );
-  }
-}
 
 function composer(props, onData) {
   const shortcuts = Reaction.Apps({ provides: "shortcut", enabled: true });
@@ -48,4 +37,4 @@ function composer(props, onData) {
   });
 }
 
-export default composeWithTracker(composer)(QuickMenuContainer);
+export default composeWithTracker(composer)(QuickMenu);

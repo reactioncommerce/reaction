@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import PublishControls from "../components/publishControls";
 import { Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
@@ -148,4 +148,4 @@ function composer(props, onData) {
   });
 }
 
-export default composeWithTracker(composer, null)(PublishContainer);
+export default composeWithTracker(composer)(PublishContainer);

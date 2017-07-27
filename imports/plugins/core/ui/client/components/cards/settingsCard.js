@@ -7,8 +7,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Reaction } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
-import { Card, CardHeader, CardBody } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 
 class SettingsCard extends Component {
   static defaultProps = {
@@ -71,13 +70,13 @@ class SettingsCard extends Component {
 
   render() {
     return (
-      <Card
+      <Components.Card
         expandable={true}
         onExpand={this.handleExpand}
         expanded={this.isExpanded}
         name={this.props.name}
       >
-        <CardHeader
+        <Components.CardHeader
           i18nKeyTitle={this.props.i18nKeyTitle}
           icon={this.props.icon}
           title={this.props.title}
@@ -88,10 +87,10 @@ class SettingsCard extends Component {
           expandOnSwitchOn={true}
           onSwitchChange={this.handleSwitchChange}
         />
-        <CardBody expandable={true} padded={this.props.padded}>
+        <Components.CardBody expandable={true} padded={this.props.padded}>
           {this.renderCardBody()}
-        </CardBody>
-      </Card>
+        </Components.CardBody>
+      </Components.Card>
     );
   }
 }
@@ -99,15 +98,14 @@ class SettingsCard extends Component {
 function composer(props, onData) {
   if (props.packageName && props.saveOpenStateToPreferences) {
     const preferences = Reaction.getUserPreferences(props.packageName, "settingsCards", {});
-
-    onData(null, {
-      preferences
-    });
+    onData(null, { preferences });
   } else {
     onData(null, {});
   }
 }
 
 const decoratedComponent = composeWithTracker(composer)(SettingsCard);
+
+registerComponent("SettingsCard", SettingsCard, composeWithTracker(composer));
 
 export default decoratedComponent;

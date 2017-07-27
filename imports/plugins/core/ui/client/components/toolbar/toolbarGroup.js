@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 /**
  * Toobar Text
@@ -28,5 +29,7 @@ ToolbarGroup.propTypes = {
   lastChild: PropTypes.bool,
   visibleOnMobile: PropTypes.bool
 };
+
+registerComponent("ToolbarGroup", ToolbarGroup);
 
 export default ToolbarGroup;

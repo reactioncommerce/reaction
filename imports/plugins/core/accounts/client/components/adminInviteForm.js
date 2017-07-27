@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { Button, Card, CardHeader, CardBody, DropDownMenu, MenuItem, TextField, Alerts } from "@reactioncommerce/reaction-ui";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 
@@ -14,6 +14,7 @@ class AdminInviteForm extends Component {
   constructor(props) {
     super(props);
     const { defaultInviteGroup, groups } = props;
+
     this.state = {
       groups,
       defaultInviteGroup,
@@ -22,6 +23,7 @@ class AdminInviteForm extends Component {
       group: "",
       alertArray: []
     };
+
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -98,34 +100,35 @@ class AdminInviteForm extends Component {
       return null;
     }
     const buttonElement = (
-      <Button bezelStyle="solid" label={buttonGroup.name && _.startCase(buttonGroup.name)} >
+      <Components.Button bezelStyle="solid" label={buttonGroup.name && _.startCase(buttonGroup.name)} >
         &nbsp;<i className="fa fa-chevron-down" />
-      </Button>
+      </Components.Button>
     );
     return (
-      <DropDownMenu buttonElement={buttonElement} attachment="bottom center" onChange={this.handleGroupSelect}>
+      <Components.DropDownMenu buttonElement={buttonElement} attachment="bottom center" onChange={this.handleGroupSelect}>
         {this.state.groups
           .filter((grp) => grp._id !== buttonGroup._id)
           .map((grp, index) => (
-            <MenuItem
+            <Components.MenuItem
               key={index}
               label={_.startCase(grp.name)}
               selectLabel={_.startCase(grp.name)}
               value={grp}
             />
           ))}
-      </DropDownMenu>
+      </Components.DropDownMenu>
     );
   }
+
 
   renderForm() {
     return (
       <div className="panel panel-default admin-invite-form">
-        <Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
+        <Components.Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
         <div className="panel-body">
           <form className="">
             <div className="form-group">
-              <TextField
+              <Components.TextField
                 i18nKeyLabel="accountsUI.name"
                 label="Name"
                 name="name"
@@ -137,7 +140,7 @@ class AdminInviteForm extends Component {
               />
             </div>
             <div className="form-group">
-              <TextField
+              <Components.TextField
                 i18nKeyLabel="accountsUI.email"
                 label="Email"
                 name="email"
@@ -151,7 +154,7 @@ class AdminInviteForm extends Component {
             <div className="form-group action-select">
               {this.renderDropDownButton()}
               <div className="form-btns add-admin justify">
-                <Button
+                <Components.Button
                   status="primary"
                   onClick={this.handleSubmit}
                   bezelStyle="solid"
@@ -168,19 +171,21 @@ class AdminInviteForm extends Component {
 
   render() {
     return (
-      <Card expanded={true}>
-        <CardHeader
+      <Components.Card expanded={true}>
+        <Components.CardHeader
           actAsExpander={true}
           data-i18n="accountsUI.info.addAdminUser"
           title="Add Admin User"
           id="accounts"
         />
-        <CardBody expandable={true}>
+        <Components.CardBody expandable={true}>
           {this.renderForm()}
-        </CardBody>
-      </Card>
+        </Components.CardBody>
+      </Components.Card>
     );
   }
 }
+
+registerComponent("AdminInviteForm", AdminInviteForm);
 
 export default AdminInviteForm;

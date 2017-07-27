@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { VelocityTransitionGroup } from "velocity-react";
 import Radium from "radium";
 import classnames from "classnames";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 const styles = {
   base: {
@@ -68,5 +69,7 @@ class Overlay extends Component {
     );
   }
 }
+
+registerComponent("Overlay", Overlay, Radium);
 
 export default Radium(Overlay);

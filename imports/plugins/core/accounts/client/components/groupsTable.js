@@ -1,59 +1,52 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { List, ListItem, SortableTable } from "@reactioncommerce/reaction-ui";
-import GroupsTableCell from "./groupsTableCell";
-import GroupHeader from "./groupHeader";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { SortableTable } from "/imports/plugins/core/ui/client/components";
 
 const fields = ["name", "email", "createdAt", "dropdown", "button"];
 
-class GroupsTable extends Component {
-  get group() {
-    return this.props.group;
-  }
-
-  tableClass = (length) => {
+const GroupsTable = (props) => {
+  const { group } = props;
+  const tableClass = (length) => {
     return classnames({
       "accounts-group-table": true,
       "empty-table": !Boolean(length)
     });
   };
 
-  handleGroupClick = (grp) => {
+  const handleGroupClick = (grp) => {
     return () => {
-      if (this.props.onGroupSelect) {
-        this.props.onGroupSelect(grp);
+      if (props.onGroupSelect) {
+        props.onGroupSelect(grp);
       }
     };
   };
 
-  get columnMetadata() {
-    return fields.map((columnName) => ({
-      Header: <GroupHeader columnName={columnName} />,
-      accessor: "",
-      Cell: (data) => {
-        return <GroupsTableCell account={data.value} columnName={columnName} {...this.props} />;
-      }
-    }));
-  }
+  const columnMetadata = fields.map((columnName) => ({
+    Header: <Components.GroupHeader columnName={columnName} />,
+    accessor: "",
+    // TODO: Review this line - copied disable line from shippo carriers.js
+    Cell: (data) => { // eslint-disable-line
+      return <Components.GroupsTableCell account={data.value} columnName={columnName} {...props} />;
+    }
+  }));
 
-  render() {
-    return (
-      <List className="group-table">
-        <ListItem actionType="arrow" label={this.group.name} onClick={this.handleGroupClick(this.group)} />
-        <div className={this.tableClass(this.group.users.length)}>
-          <SortableTable
-            data={this.group.users}
-            columnMetadata={this.columnMetadata}
-            filteredFields={fields}
-            filterType="none"
-            showFilter={true}
-          />
-        </div>
-      </List>
-    );
-  }
-}
+  return (
+    <Components.List className="group-table">
+      <Components.ListItem actionType="arrow" label={group.name} onClick={handleGroupClick(group)} />
+      <div className={tableClass(group.users.length)}>
+        <SortableTable
+          data={group.users}
+          columnMetadata={columnMetadata}
+          filteredFields={fields}
+          filterType="none"
+          showFilter={true}
+        />
+      </div>
+    </Components.List>
+  );
+};
 
 GroupsTable.propTypes = {
   accounts: PropTypes.array,
@@ -61,5 +54,7 @@ GroupsTable.propTypes = {
   groups: PropTypes.array,
   onGroupSelect: PropTypes.func
 };
+
+registerComponent("GroupsTable", GroupsTable);
 
 export default GroupsTable;

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, TextField } from "@reactioncommerce/reaction-ui";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class GroupForm extends Component {
   static propTypes = {
@@ -22,7 +22,6 @@ class GroupForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log({ a: nextProps.group });
     const { name, description } = nextProps.group;
     this.setState({ name, description });
   }
@@ -47,7 +46,7 @@ class GroupForm extends Component {
         <div className="panel-body">
           <form className="add-group">
             <div className="form-group">
-              <TextField
+              <Components.TextField
                 i18nKeyLabel="admin.groups.name"
                 label="Name"
                 name="name"
@@ -59,7 +58,7 @@ class GroupForm extends Component {
               />
             </div>
             <div className="form-group">
-              <TextField
+              <Components.TextField
                 i18nKeyLabel="admin.groups.description"
                 label="Description"
                 name="description"
@@ -71,7 +70,7 @@ class GroupForm extends Component {
               />
             </div>
             <div className="justify">
-              <Button
+              <Components.Button
                 status="primary"
                 onClick={this.handleSubmit}
                 bezelStyle="solid"
@@ -85,5 +84,7 @@ class GroupForm extends Component {
     );
   }
 }
+
+registerComponent("GroupForm", GroupForm);
 
 export default GroupForm;

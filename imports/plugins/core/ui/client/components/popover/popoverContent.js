@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import onclickOutside from "react-onclickoutside";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 class PopoverContent extends Component {
   handleClickOutside(event) {
@@ -22,5 +23,7 @@ PopoverContent.propTypes = {
   children: PropTypes.node,
   onClickOutside: PropTypes.func
 };
+
+registerComponent("PopoverContent", onclickOutside(PopoverContent));
 
 export default onclickOutside(PopoverContent);

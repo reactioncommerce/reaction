@@ -1,43 +1,43 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Template } from "meteor/templating";
 
-class CoreLayout extends Component {
-  static propTypes = {
-    actionViewIsOpen: PropTypes.bool,
-    data: PropTypes.object,
-    structure: PropTypes.object
-  }
+const CoreLayout = ({ actionViewIsOpen, structure }) => {
+  const { layoutFooter, template } = structure || {};
 
-  render() {
-    const { layoutHeader, layoutFooter, template } = this.props.structure || {};
-    const pageClassName = classnames({
-      "page": true,
-      "show-settings": this.props.actionViewIsOpen
-    });
+  const pageClassName = classnames({
+    "page": true,
+    "show-settings": actionViewIsOpen
+  });
 
-    return (
-      <div className={pageClassName} id="reactionAppContainer">
-        { Template[layoutHeader] &&
-          <Blaze template={layoutHeader} className="reaction-navigation-header" />
-        }
+  return (
+    <div className={pageClassName} id="reactionAppContainer">
+      <Components.NavBar />
 
-        <Blaze template="cartDrawer" className="reaction-cart-drawer" />
+      <Blaze template="cartDrawer" className="reaction-cart-drawer" />
 
-        { Template[template] &&
-          <main>
-            <Blaze template={template} />
-          </main>
-        }
+      { Template[template] &&
+        <main>
+          <Blaze template={template} />
+        </main>
+      }
 
-        { Template[layoutFooter] &&
-          <Blaze template={layoutFooter} className="reaction-navigation-footer footer-default" />
-        }
-      </div>
-    );
-  }
-}
+      { Template[layoutFooter] &&
+        <Blaze template={layoutFooter} className="reaction-navigation-footer footer-default" />
+      }
+    </div>
+  );
+};
+
+CoreLayout.propTypes = {
+  actionViewIsOpen: PropTypes.bool,
+  data: PropTypes.object,
+  structure: PropTypes.object
+};
+
+registerComponent("CoreLayout", CoreLayout);
 
 export default CoreLayout;

@@ -1,8 +1,8 @@
 import React from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { getGravatar } from "../helpers/accountsHelper";
-import { Button, MenuItem, DropDownMenu } from "@reactioncommerce/reaction-ui";
 
 const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserFromGroup, handleUserGroupChange }) => {
   if (columnName === "name") {
@@ -35,14 +35,14 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
   if (columnName === "dropdown") {
     const dropDownButton = (
       <div className="group-dropdown">
-        <Button label={group.name && _.startCase(group.name)}>
+        <Components.Button label={group.name && _.startCase(group.name)}>
           &nbsp;<i className="fa fa-chevron-down" />
-        </Button>
+        </Components.Button>
       </div>
     );
 
     return (
-      <DropDownMenu
+      <Components.DropDownMenu
         buttonElement={dropDownButton}
         attachment="bottom center"
         onChange={handleUserGroupChange(account)}
@@ -50,21 +50,21 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
         {groups
           .filter((grp) => grp._id !== group._id)
           .map((grp, index) => (
-            <MenuItem
+            <Components.MenuItem
               key={index}
               label={_.startCase(grp.name)}
               selectLabel={_.startCase(grp.name)}
               value={grp._id}
             />
           ))}
-      </DropDownMenu>
+      </Components.DropDownMenu>
     );
   }
 
   if (columnName === "button") {
     return (
       <div className="group-table-button">
-        <Button
+        <Components.Button
           status="danger"
           onClick={handleRemoveUserFromGroup(account, group._id)}
           bezelStyle="solid"
@@ -78,8 +78,6 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
   return null;
 };
 
-GroupsTableCell.displayName = "GroupsTableCell";
-
 GroupsTableCell.propTypes = {
   account: PropTypes.object,
   columnName: PropTypes.string,
@@ -88,5 +86,7 @@ GroupsTableCell.propTypes = {
   handleRemoveUserFromGroup: PropTypes.func,
   handleUserGroupChange: PropTypes.func
 };
+
+registerComponent("GroupsTableCell", GroupsTableCell);
 
 export default GroupsTableCell;
