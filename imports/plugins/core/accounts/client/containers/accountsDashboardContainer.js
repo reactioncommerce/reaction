@@ -2,7 +2,7 @@ import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Groups } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import AccountsDashboard from "../components/accountsDashboard";
 
 const handlers = {

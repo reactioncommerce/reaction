@@ -5,7 +5,7 @@ import classnames from "classnames";
 import PropTypes from "prop-types";
 import { Packages } from "/lib/collections";
 import { Reaction } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from  "@reactioncommerce/reaction-components";
 import { List, ListItem, Card, CardHeader, CardBody, Alerts } from "@reactioncommerce/reaction-ui";
 import PermissionsList from "../components/permissionsList";
 import GroupForm from "../components/groupForm";
