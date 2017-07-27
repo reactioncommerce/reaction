@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import { Translation } from "/imports/plugins/core/ui/client/components";
 import Login from "./login";
 
 const iconStyle = {
@@ -88,7 +87,7 @@ class MainDropdown extends Component {
     return (
       <div className="accounts-dropdown">
         <div className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
-          <span><Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" /></span><b className="caret" />
+          <span><Components.Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" /></span><b className="caret" />
         </div>
         <div
           className="accounts-dialog accounts-layout dropdown-menu pull-right"

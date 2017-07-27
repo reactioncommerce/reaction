@@ -2,7 +2,8 @@ import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { Alerts, Card, CardHeader, CardBody, SortableTable } from "@reactioncommerce/reaction-ui";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { SortableTable } from "/imports/plugins/core/ui/client/components";
 import { getGravatar } from "../helpers/accountsHelper";
 
 class AddGroupMembers extends Component {
@@ -155,10 +156,10 @@ class AddGroupMembers extends Component {
     }));
     return (
       <div className="add-group-members">
-        <Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
-        <Card expanded={true}>
-          <CardHeader actAsExpander={true} title={this.state.group.name} />
-          <CardBody expandable={true}>
+        <Components.Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
+        <Components.Card expanded={true}>
+          <Components.CardHeader actAsExpander={true} title={this.state.group.name} />
+          <Components.CardBody expandable={true}>
             <SortableTable
               tableClassName="accounts-group-table"
               data={this.state.accounts}
@@ -167,11 +168,13 @@ class AddGroupMembers extends Component {
               filterType="none"
               showFilter={true}
             />
-          </CardBody>
-        </Card>
+          </Components.CardBody>
+        </Components.Card>
       </div>
     );
   }
 }
+
+registerComponent("AddGroupMembers", AddGroupMembers);
 
 export default AddGroupMembers;

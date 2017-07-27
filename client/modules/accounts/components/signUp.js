@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Button, TextField, Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class SignUp extends Component {
   static propTypes = {
@@ -44,7 +44,7 @@ class SignUp extends Component {
     if (this.props.onError(this.props.messages.errors && this.props.messages.errors.email)) {
       return (
         <span className="help-block">
-          <Translation
+          <Components.Translation
             defaultValue={this.props.messages.errors.email.reason}
             i18nKey={this.props.messages.errors.email.i18nKeyReason}
           />
@@ -58,7 +58,7 @@ class SignUp extends Component {
       <span className="help-block">
         {this.props.onError(this.props.messages.errors && this.props.messages.errors.password) &&
           this.props.messages.errors.password.map((error, i) => (
-            <Translation
+            <Components.Translation
               key={i}
               defaultValue={error.reason}
               i18nKey={error.i18nKeyReason}
@@ -88,7 +88,7 @@ class SignUp extends Component {
       );
     }
     return (
-      <Button
+      <Components.Button
         className="btn-block"
         primary={true}
         bezelStyle="solid"
@@ -109,7 +109,7 @@ class SignUp extends Component {
           {this.renderFormMessages()}
 
           <div className={emailClasses}>
-            <TextField
+            <Components.TextField
               i18nKeyLabel="accountsUI.emailAddress"
               label="Email"
               name="email"
@@ -123,7 +123,7 @@ class SignUp extends Component {
           </div>
 
           <div className={passwordClasses}>
-            <TextField
+            <Components.TextField
               i18nKeyLabel="accountsUI.password"
               label="Password"
               name="password"
@@ -147,7 +147,7 @@ class SignUp extends Component {
               data-event-category="accounts"
               onClick={this.props.onSignInClick}
             >
-              <Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" />
+              <Components.Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" />
             </a>
           </div>
         </form>
@@ -171,7 +171,7 @@ class SignUp extends Component {
       <div>
         <div className="loginForm-title">
           <h2>
-            <Translation defaultValue="Create an Account" i18nKey="accountsUI.createAccount" />
+            <Components.Translation defaultValue="Create an Account" i18nKey="accountsUI.createAccount" />
           </h2>
         </div>
 
@@ -181,5 +181,7 @@ class SignUp extends Component {
     );
   }
 }
+
+registerComponent("SignUp", SignUp);
 
 export default SignUp;

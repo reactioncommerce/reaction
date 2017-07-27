@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { Card, CardHeader, CardBody, Translation, Alerts } from "@reactioncommerce/reaction-ui";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 
@@ -70,12 +70,12 @@ class AdminInviteForm extends Component {
   renderForm() {
     return (
       <div className="panel panel-default">
-        <Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
+        <Components.Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
         <div className="panel-body">
           <form className="">
             <div className="form-group">
               <label htmlFor="member-form-name">
-                <Translation className="content-cell" defaultValue="Name" i18nKey="accountsUI.name" />
+                <Components.Translation className="content-cell" defaultValue="Name" i18nKey="accountsUI.name" />
               </label>
               <input
                 type="text"
@@ -89,7 +89,7 @@ class AdminInviteForm extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="member-form-email">
-                <Translation className="content-cell" defaultValue="Email" i18nKey="accountsUI.email" />
+                <Components.Translation className="content-cell" defaultValue="Email" i18nKey="accountsUI.email" />
               </label>
               <input
                 type="email"
@@ -103,7 +103,7 @@ class AdminInviteForm extends Component {
             </div>
             <div className="form-btns add-admin justify">
               <button className="btn btn-primary" onClick={this.handleSubmit}>
-                <Translation
+                <Components.Translation
                   className="content-cell"
                   defaultValue="Send Invitation"
                   i18nKey="accountsUI.info.sendInvitation"
@@ -118,19 +118,21 @@ class AdminInviteForm extends Component {
 
   render() {
     return (
-      <Card expanded={true}>
-        <CardHeader
+      <Components.Card expanded={true}>
+        <Components.CardHeader
           actAsExpander={true}
           data-i18n="accountsUI.info.addAdminUser"
           title="Add Admin User"
           id="accounts"
         />
-        <CardBody expandable={true}>
+        <Components.CardBody expandable={true}>
           {this.renderForm()}
-        </CardBody>
-      </Card>
+        </Components.CardBody>
+      </Components.Card>
     );
   }
 }
+
+registerComponent("AdminInviteForm", AdminInviteForm);
 
 export default AdminInviteForm;

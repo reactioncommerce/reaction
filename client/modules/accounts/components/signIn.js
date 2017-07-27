@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Button, TextField, Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class SignIn extends Component {
   static propTypes = {
@@ -44,7 +44,7 @@ class SignIn extends Component {
     if (this.props.onError(this.props.messages.errors && this.props.messages.errors.email)) {
       return (
         <span className="help-block">
-          <Translation
+          <Components.Translation
             defaultValue={this.props.messages.errors.email.reason}
             i18nKey={this.props.messages.errors.email.i18nKeyReason}
           />
@@ -58,7 +58,7 @@ class SignIn extends Component {
       <span className="help-block">
         {this.props.onError(this.props.messages.errors && this.props.messages.errors.password) &&
           this.props.messages.errors.password.map((error, i) => (
-            <Translation
+            <Components.Translation
               key={i}
               defaultValue={error.reason}
               i18nKey={error.i18nKeyReason}
@@ -88,7 +88,7 @@ class SignIn extends Component {
       );
     }
     return (
-      <Button
+      <Components.Button
         className="btn-block"
         primary={true}
         bezelStyle="solid"
@@ -116,7 +116,7 @@ class SignIn extends Component {
       <div>
         <div className="loginForm-title">
           <h2>
-            <Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" />
+            <Components.Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" />
           </h2>
         </div>
 
@@ -125,7 +125,7 @@ class SignIn extends Component {
           {this.renderFormMessages()}
 
           <div className={emailClasses}>
-            <TextField
+            <Components.TextField
               i18nKeyLabel="accountsUI.emailAddress"
               label="Email"
               name="email"
@@ -139,7 +139,7 @@ class SignIn extends Component {
           </div>
 
           <div className={passwordClasses}>
-            <TextField
+            <Components.TextField
               i18nKeyLabel="accountsUI.password"
               label="Password"
               name="password"
@@ -162,14 +162,14 @@ class SignIn extends Component {
               tabIndex="4"
               onClick={this.props.onForgotPasswordClick}
             >
-              <Translation defaultValue="Reset Password" i18nKey="accountsUI.forgotPassword" />
+              <Components.Translation defaultValue="Reset Password" i18nKey="accountsUI.forgotPassword" />
             </a>
             <a
               href="#"
               tabIndex="5"
               onClick={this.props.onSignUpClick}
             >
-              <Translation defaultValue="Register" i18nKey="accountsUI.signUp" />
+              <Components.Translation defaultValue="Register" i18nKey="accountsUI.signUp" />
             </a>
           </div>
 
@@ -178,5 +178,7 @@ class SignIn extends Component {
     );
   }
 }
+
+registerComponent("SignIn", SignIn);
 
 export default SignIn;

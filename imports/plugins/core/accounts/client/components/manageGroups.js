@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import AdminInviteForm from "./adminInviteForm";
-import EditGroupContainer from "../containers/editGroupContainer";
-import AddGroupMembers from "./addGroupMembers";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class ManageGroups extends Component {
   static propTypes = {
@@ -30,16 +28,18 @@ class ManageGroups extends Component {
   render() {
     return (
       <div className="groups-form">
-        <AdminInviteForm />
-        <EditGroupContainer
+        <Components.AdminInviteForm />
+        <Components.EditGroup
           groups={this.state.groups}
           selectedGroup={this.state.group}
           onChangeGroup={this.props.onChangeGroup}
         />
-        <AddGroupMembers groups={this.state.groups} accounts={this.state.accounts} group={this.state.group} />
+        <Components.AddGroupMembers groups={this.state.groups} accounts={this.state.accounts} group={this.state.group} />
       </div>
     );
   }
 }
+
+registerComponent("ManageGroups", ManageGroups);
 
 export default ManageGroups;

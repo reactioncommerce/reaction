@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { List, ListItem, SortableTable } from "@reactioncommerce/reaction-ui";
-import GroupsTableCell from "./groupsTableCell";
-import GroupHeader from "./groupHeader";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { SortableTable } from "/imports/plugins/core/ui/client/components";
 
 const fields = ["name", "email", "createdAt", "dropdown", "button"];
 
@@ -25,17 +24,17 @@ const GroupsTable = (props) => {
   };
 
   const columnMetadata = fields.map((columnName) => ({
-    Header: <GroupHeader columnName={columnName} />,
+    Header: <Components.GroupHeader columnName={columnName} />,
     accessor: "",
     // TODO: Review this line - copied disable line from shippo carriers.js
     Cell: (data) => { // eslint-disable-line
-      return <GroupsTableCell account={data.value} columnName={columnName} {...props} />;
+      return <Components.GroupsTableCell account={data.value} columnName={columnName} {...props} />;
     }
   }));
 
   return (
-    <List className="group-table">
-      <ListItem actionType="arrow" label={group.name} onClick={handleGroupClick(group)} />
+    <Components.List className="group-table">
+      <Components.ListItem actionType="arrow" label={group.name} onClick={handleGroupClick(group)} />
       <div className={tableClass(group.users.length)}>
         <SortableTable
           data={group.users}
@@ -45,7 +44,7 @@ const GroupsTable = (props) => {
           showFilter={true}
         />
       </div>
-    </List>
+    </Components.List>
   );
 };
 
@@ -55,5 +54,7 @@ GroupsTable.propTypes = {
   groups: PropTypes.array,
   onGroupSelect: PropTypes.func
 };
+
+registerComponent("GroupsTable", GroupsTable);
 
 export default GroupsTable;

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Divider, Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class LoginButtons extends Component {
   static propTypes = {
@@ -20,7 +20,7 @@ class LoginButtons extends Component {
       <div>
         {this.props.loginServices &&
           enabledServices.map((service) => (
-            <Button
+            <Components.Button
               key={service._id}
               className={`btn-block provider-${service.name}`}
               primary={true}
@@ -34,20 +34,20 @@ class LoginButtons extends Component {
               {this.props.currentView === "loginFormSignInView" &&
                 <span>
                   &nbsp;
-                  <Translation defaultValue="Sign in with"  i18nKey="accountsUI.signInWith" />
+                  <Components.Translation defaultValue="Sign in with"  i18nKey="accountsUI.signInWith" />
                 </span>
               }
               {this.props.currentView === "loginFormSignUpView" &&
                 <span>
-                  <Translation defaultValue="Sign up with" i18nKey="accountsUI.signUpWith" />
+                  <Components.Translation defaultValue="Sign up with" i18nKey="accountsUI.signUpWith" />
                 </span>
               }
 
               <span>
                 &nbsp;
-                <Translation defaultValue={this.props.capitalizeName(service.name)} i18nKey={`social.${service.name}`} />
+                <Components.Translation defaultValue={this.props.capitalizeName(service.name)} i18nKey={`social.${service.name}`} />
               </span>
-            </Button>
+            </Components.Button>
           ))
         }
       </div>
@@ -58,7 +58,7 @@ class LoginButtons extends Component {
     if (this.props.onSeparator()) {
       return (
         <div className="loginForm-seperator">
-          <Divider id="auth-divider" label="or" i18nKeyLabel="accountsUI.or" />
+          <Components.Divider id="auth-divider" label="or" i18nKeyLabel="accountsUI.or" />
         </div>
       );
     }
@@ -73,5 +73,7 @@ class LoginButtons extends Component {
     );
   }
 }
+
+registerComponent("LoginButtons", LoginButtons);
 
 export default LoginButtons;
