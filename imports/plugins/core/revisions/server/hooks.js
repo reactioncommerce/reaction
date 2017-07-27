@@ -275,6 +275,11 @@ Products.before.insert((userId, product) => {
     return true;
   }
 
+  if (product.workflow && Array.isArray(product.workflow.workflow) && product.workflow.workflow.indexOf("imported") !== -1) {
+    // Mark imported products as published by default.
+    return true;
+  }
+
   const productRevision = Revisions.findOne({
     "documentId": product._id,
     "workflow.status": {
