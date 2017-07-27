@@ -170,6 +170,11 @@ Media.files.before.insert((userid, media) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
+  if (media.metadata.workflow === "published") {
+    // Skip by setting metadata.workflow.status to published
+    return true;
+  }
+
   if (media.metadata.productId) {
     const revisionMetadata = Object.assign({}, media.metadata);
     revisionMetadata.workflow = "published";
