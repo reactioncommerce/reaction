@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Translation } from "@reactioncommerce/reaction-ui";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class GroupForm extends Component {
   static propTypes = {
@@ -46,7 +46,7 @@ class GroupForm extends Component {
           <form className="add-group">
             <div className="form-group">
               <label htmlFor="name">
-                <Translation defaultValue="Name" i18nKey="admin.groups.name" />
+                <Components.Translation defaultValue="Name" i18nKey="admin.groups.name" />
               </label>
               <input
                 type="text"
@@ -60,7 +60,7 @@ class GroupForm extends Component {
             </div>
             <div className="form-group">
               <label htmlFor="description">
-                <Translation defaultValue="Description" i18nKey="admin.groups.description" />
+                <Components.Translation defaultValue="Description" i18nKey="admin.groups.description" />
               </label>
               <input
                 type="text"
@@ -73,7 +73,7 @@ class GroupForm extends Component {
             </div>
             <div className="justify">
               <button className="btn btn-primary" onClick={this.handleSubmit}>
-                <Translation
+                <Components.Translation
                   className="content-cell"
                   defaultValue={this.props.submitLabel}
                   i18nKey="admin.groups.createGroup"
@@ -86,5 +86,7 @@ class GroupForm extends Component {
     );
   }
 }
+
+registerComponent("GroupForm", GroupForm);
 
 export default GroupForm;

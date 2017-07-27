@@ -1,117 +1,201 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import _ from "lodash";
-import { Template } from "meteor/templating";
-import Sortable from "sortablejs";
+import classnames from "classnames";
+import { Components } from "@reactioncommerce/reaction-components";
+import { Router } from "/client/api";
+import { PropTypes as ReactionPropTypes } from "/lib/api";
 
-Template.tagList.onCreated(function () {
-  this.moveItem = (array, fromIndex, toIndex) => {
-    array.splice(toIndex, 0, array.splice(fromIndex, 1)[0]);
+class TagList extends Component {
+  displayName = "Tag List (TagList)";
 
-    return array;
-  };
-});
-
-Template.tagList.onRendered(() => {
-  const instance = Template.instance();
-  const list = instance.$(".rui.tags")[0];
-
-  instance._sortable = Sortable.create(list, {
-    group: "tags",
-    draggable: ".rui.item.draggable",
-    // filter: ".rui.tag.edit.create",
-    onSort(event) {
-      const tagIds = instance.data.tags.map(item => {
-        if (item) {
-          return item._id;
-        }
-      });
-
-      const newTagsOrder = instance.moveItem(tagIds, event.oldIndex, event.newIndex);
-
-      if (newTagsOrder) {
-        if (instance.data.onTagSort) {
-          instance.data.onTagSort(newTagsOrder, instance.data.parentTag);
-        }
-      }
-    },
-
-    // On add from another list
-    onAdd(event) {
-      const toListId = event.to.dataset.id;
-      const movedTagId = event.item.dataset.id;
-      const tagIds = instance.data.tags.map(item => {
-        if (item) {
-          return item._id;
-        }
-      });
-
-      if (instance.data.onTagDragAdd) {
-        instance.data.onTagDragAdd(movedTagId, toListId, event.newIndex, tagIds);
-      }
-    },
-
-    // Tag removed from list becuase it was dragged to a different list
-    onRemove(event) {
-      const movedTagId = event.item.dataset.id;
-
-      if (instance.data.onTagRemove) {
-        const foundTag = _.find(instance.data.tags, (tag) => {
-          return tag._id === movedTagId;
-        });
-
-        instance.data.onTagRemove(foundTag, instance.data.parentTag);
-      }
+  handleNewTagSave = (event, tag) => {
+    event.preventDefault();
+    if (this.props.onNewTagSave) {
+      this.props.onNewTagSave(tag, this.props.parentTag);
     }
-  });
-});
+  }
 
-Template.tagList.helpers({
-  isEditing() {
-    return Template.instance().data.isEditing;
-  },
-
-  tagProps(tag) {
-    const instance = Template.instance();
-    let isSelected = false;
-    if (instance.data.selectedTag && tag) {
-      isSelected = instance.data.selectedTag._id === tag._id;
+  handleNewTagUpdate = (event, tag) => {
+    if (this.props.onNewTagUpdate) {
+      this.props.onNewTagUpdate(tag, this.props.parentTag);
     }
+  }
 
-    return {
-      tag,
-      isEditing: instance.data.isEditing,
-      selectable: instance.data.selectable,
-      controls: instance.data.controls,
-      isSelected,
-      onTagSelect: instance.data.onTagSelect,
-      onTagRemove(tagToRemove) {
-        // Pass the tag back up to the parent component for removal
-        // -- include the parent tag
-        if (instance.data.onTagCreate) {
-          instance.data.onTagRemove(tagToRemove, instance.data.parentTag);
-        }
-      },
-      onTagUpdate(tagId, tagName) {
-        // Pass the tagId and tagName back up to the parent component for updating
-        if (instance.data.onTagUpdate) {
-          instance.data.onTagUpdate(tagId, tagName);
-        }
-      }
-    };
-  },
+  handleTagSave = (event, tag) => {
+    if (this.props.onTagSave) {
+      this.props.onTagSave(tag, this.props.parentTag);
+    }
+  }
+
+  handleTagRemove = (tag) => {
+    if (this.props.onTagRemove) {
+      this.props.onTagRemove(tag, this.props.parentTag);
+    }
+  }
 
   /**
-   * Arguments (Props) to pass into the blank tag for creating new tags
-   * @return {Object} An object containing props
+   * Handle tag mouse out events and pass them up the component chain
+   * @param  {Event} event Event object
+   * @param  {Tag} tag Reaction.Schemas.Tag - a tag object
+   * @return {void} no return value
    */
-  tagBlankProps() {
-    const instance = Template.instance();
-    return {
-      blank: true,
-      onTagCreate(tagName) {
-        if (instance.data.onTagCreate) {
-          instance.data.onTagCreate(tagName, instance.data.parentTag);
-        }
-      }
-    };
+  handleTagMouseOut = (event, tag) => {
+    if (this.props.onTagMouseOut) {
+      this.props.onTagMouseOut(event, tag, this.props.parentTag);
+    }
   }
-});
+
+  /**
+   * Handle tag mouse over events and pass them up the component chain
+   * @param  {Event} event Event object
+   * @param  {Tag} tag Reaction.Schemas.Tag - a tag object
+   * @return {void} no return value
+   */
+  handleTagMouseOver = (event, tag) => {
+    if (this.props.onTagMouseOver) {
+      this.props.onTagMouseOver(event, tag, this.props.parentTag);
+    }
+  }
+
+  handleTagUpdate = (event, tag) => {
+    if (this.props.onTagUpdate) {
+      this.props.onTagUpdate(tag, this.props.parentTag);
+    }
+  }
+
+  handleTagClick = (event, tag) => {
+    Router.go("tag", { slug: tag.slug });
+  }
+
+  hasDropdownClassName = (tag) => {
+    if (this.props.hasDropdownClassName) {
+      return this.props.hasDropdownClassName(tag);
+    }
+    return "";
+  }
+
+  navbarSelectedClassName = (tag) => {
+    if (this.props.navbarSelectedClassName) {
+      return this.props.navbarSelectedClassName(tag);
+    }
+    return "";
+  }
+
+  renderTags() {
+    const classes = (tag = {}) => classnames({
+      "navbar-item": this.props.isTagNav,
+      [this.navbarSelectedClassName(tag)]: this.props.isTagNav,
+      [this.hasDropdownClassName(tag)]: this.props.isTagNav
+    });
+
+    if (Array.isArray(this.props.tags)) {
+      const arrayProps = _.compact(this.props.tags);
+      const tags = arrayProps.map((tag, index) => {
+        return (
+          <div className={classes(tag)} key={index}>
+            <Components.TagItem
+              {...this.props}
+              data-id={tag._id}
+              index={index}
+              key={index}
+              tag={tag}
+              onMove={this.props.onMoveTag}
+              draggable={this.props.draggable}
+              onTagInputBlur={this.handleTagSave}
+              onTagMouseOut={this.handleTagMouseOut}
+              onTagMouseOver={this.handleTagMouseOver}
+              onTagRemove={this.handleTagRemove}
+              onTagSave={this.handleTagSave}
+              onTagUpdate={this.handleTagUpdate}
+              onTagClick={this.handleTagClick}
+            />
+            {this.props.children}
+          </div>
+        );
+      });
+
+      // Render an blank tag for creating new tags
+      if (this.props.editable && this.props.enableNewTagForm) {
+        tags.push(
+          <div className={classes()} key="newTagForm">
+            <Components.TagItem
+              {...this.props}
+              blank={true}
+              key="newTagForm"
+              tag={this.props.newTag}
+              inputPlaceholder="Add Tag"
+              i18nKeyInputPlaceholder="tags.addTag"
+              onTagInputBlur={this.handleNewTagSave}
+              onTagSave={this.handleNewTagSave}
+              onTagUpdate={this.handleNewTagUpdate}
+            />
+          </div>
+        );
+      }
+
+      return tags;
+    }
+
+    return null;
+  }
+
+  render() {
+    if (this.props.isTagNav) {
+      return (
+        <div className="tag-group">
+          {this.renderTags()}
+        </div>
+      );
+    }
+
+    const classes = classnames({
+      rui: true,
+      tags: true,
+      edit: this.props.editable
+    });
+
+    return (
+      <div
+        className={classes}
+        data-id={this.props.parentTag._id}
+        ref="tags"
+      >
+        {this.renderTags()}
+      </div>
+    );
+  }
+}
+
+TagList.defaultProps = {
+  parentTag: {}
+};
+
+TagList.propTypes = {
+  children: PropTypes.node,
+  draggable: PropTypes.bool,
+  editable: PropTypes.bool,
+  enableNewTagForm: PropTypes.bool,
+  hasDropdownClassName: PropTypes.func,
+  isTagNav: PropTypes.bool,
+  navbarSelectedClassName: PropTypes.func,
+  newTag: PropTypes.object,
+  onClearSuggestions: PropTypes.func,
+  onGetSuggestions: PropTypes.func,
+  onMoveTag: PropTypes.func,
+  onNewTagSave: PropTypes.func,
+  onNewTagUpdate: PropTypes.func,
+  onTagClick: PropTypes.func,
+  onTagMouseOut: PropTypes.func,
+  onTagMouseOver: PropTypes.func,
+  onTagRemove: PropTypes.func,
+  onTagSave: PropTypes.func,
+  onTagSort: PropTypes.func,
+  onTagUpdate: PropTypes.func,
+  parentTag: ReactionPropTypes.Tag,
+  showBookmark: PropTypes.bool,
+  suggestions: PropTypes.arrayOf(PropTypes.object),
+  tags: ReactionPropTypes.arrayOfTags
+};
+
+export default TagList;

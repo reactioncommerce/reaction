@@ -1,3 +1,4 @@
+import { Components } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
@@ -5,7 +6,6 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction, i18next } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
-import { Icon } from "/imports/plugins/core/ui/client/components";
 import { Validation } from "@reactioncommerce/reaction-collections";
 import { ProductVariant } from "/lib/collections/schemas/products";
 
@@ -47,7 +47,7 @@ Template.childVariantForm.onRendered(function () {
 
 Template.childVariantForm.helpers({
   Icon() {
-    return Icon;
+    return Components.Icon;
   },
   childVariantFormId: function () {
     return "child-variant-form-" + this._id;

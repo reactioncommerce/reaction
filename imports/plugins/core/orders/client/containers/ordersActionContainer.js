@@ -1,8 +1,8 @@
 import React from "react";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Reaction, i18next } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
 import OrderActions from "../components/orderActions";
 import * as Constants from "../../lib/constants";
 
@@ -55,4 +55,4 @@ function OrdersActionContainer(props) {
   );
 }
 
-export default composeWithTracker(composer, null)(OrdersActionContainer);
+export default composeWithTracker(composer)(OrdersActionContainer);

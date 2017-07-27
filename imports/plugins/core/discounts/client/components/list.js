@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { Translation, IconButton } from "/imports/plugins/core/ui/client/components";
 import DiscountForm from "./form";
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 
 class DiscountList extends Component {

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 class CartItems extends Component {
   static propTypes = {
@@ -68,5 +69,7 @@ class CartItems extends Component {
     );
   }
 }
+
+registerComponent("CartItems", CartItems);
 
 export default CartItems;

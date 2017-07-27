@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import GroupsTable from "./groupsTable";
-import ManageGroups from "./manageGroups";
+import { Components } from "@reactioncommerce/reaction-components";
 import sortUsersIntoGroups from "../helpers/accountsHelper";
 
 class AccountsDashboard extends Component {
@@ -51,7 +50,7 @@ class AccountsDashboard extends Component {
     if (this.state.showSideBar) {
       const { groups, accounts } = this.state;
       return (
-        <ManageGroups
+        <Components.ManageGroups
           group={this.state.selectedGroup}
           groups={groups}
           accounts={accounts}
@@ -66,7 +65,7 @@ class AccountsDashboard extends Component {
     if (Array.isArray(groups)) {
       return groups.map((group, index) => {
         return (
-          <GroupsTable key={index} group={group} onGroupSelect={this.handleGroupSelect} {...this.props} />
+          <Components.GroupsTable key={index} group={group} onGroupSelect={this.handleGroupSelect} {...this.props} />
         );
       });
     }

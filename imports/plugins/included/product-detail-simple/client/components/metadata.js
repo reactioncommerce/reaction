@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Metadata, Translation } from "/imports/plugins/core/ui/client/components/";
-import { EditContainer } from "/imports/plugins/core/ui/client/containers";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class ProductMetadata extends Component {
   get metafields() {
@@ -17,7 +16,7 @@ class ProductMetadata extends Component {
     if (this.showEditControls) {
       return (
         <span className="edit-button">
-          <EditContainer
+          <Components.EditContainer
             data={this.props.product}
             disabled={this.props.editable === false}
             editTypes={["edit"]}
@@ -45,10 +44,10 @@ class ProductMetadata extends Component {
       return (
         <div className="pdp product-metadata">
           <h3 className={headerClassName}>
-            <Translation defaultValue="Details" i18nKey="productDetail.details" />
+            <Components.Translation defaultValue="Details" i18nKey="productDetail.details" />
             {this.renderEditButton()}
           </h3>
-          <Metadata editable={false} metafields={this.metafields} />
+          <Components.Metadata editable={false} metafields={this.metafields} />
         </div>
       );
     }
@@ -63,5 +62,7 @@ ProductMetadata.propTypes = {
   metafields: PropTypes.arrayOf(PropTypes.object),
   product: PropTypes.object
 };
+
+registerComponent("ProductMetadata", ProductMetadata);
 
 export default ProductMetadata;

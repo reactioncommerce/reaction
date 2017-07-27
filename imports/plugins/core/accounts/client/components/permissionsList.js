@@ -1,7 +1,33 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { ListItem } from "@reactioncommerce/reaction-ui";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+// resolvePermissions - helper to resolve toggled permission(s).
+// It returns a list of all parent and child permissions when a parent permission is toggled.
+function resolvePermissions(permission) {
+  const result = [];
+
+  if (permission.name) {
+    result.push(permission.name);
+    for (const pkgPermissions of permission.permissions) {
+      result.push(pkgPermissions.permission);
+    }
+  } else {
+    result.push(permission.permission);
+  }
+
+  return result;
+}
+// helper to remove all array items in "old" from "current"
+function removePermissions(current, old) {
+  const currentArray = [...current];
+
+  old.forEach((val) => {
+    _.remove(currentArray, (item) => item === val);
+  });
+  return currentArray;
+}
 
 class PermissionsList extends Component {
   static propTypes = {
@@ -53,7 +79,7 @@ class PermissionsList extends Component {
     if (permission.permissions.length) {
       return permission.permissions.map((childPermission, index) => {
         return (
-          <ListItem
+          <Components.ListItem
             key={`${childPermission.name}-${index + 1}`}
             actionType="switch"
             label={childPermission.label}
@@ -72,7 +98,7 @@ class PermissionsList extends Component {
     permissions.forEach((permission, key) => {
       jsx.push(
         <div key={`${permission.name}-${key}`}>
-          <ListItem
+          <Components.ListItem
             label={permission.label}
             actionType="switch"
             switchOn={this.checked(permission.name)}
@@ -95,30 +121,6 @@ class PermissionsList extends Component {
   }
 }
 
+registerComponent("PermissionsList", PermissionsList);
+
 export default PermissionsList;
-
-// resolvePermissions - helper to resolve toggled permission(s).
-// It returns a list of all parent and child permissions when a parent permission is toggled.
-function resolvePermissions(permission) {
-  const result = [];
-
-  if (permission.name) {
-    result.push(permission.name);
-    for (const pkgPermissions of permission.permissions) {
-      result.push(pkgPermissions.permission);
-    }
-  } else {
-    result.push(permission.permission);
-  }
-
-  return result;
-}
-// helper to remove all array items in "old" from "current"
-function removePermissions(current, old) {
-  const currentArray = [...current];
-
-  old.forEach((val) => {
-    _.remove(currentArray, (item) => item === val);
-  });
-  return currentArray;
-}

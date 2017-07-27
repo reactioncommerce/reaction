@@ -423,30 +423,80 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     let newSelector = selector;
 
     // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
-    if (productFilters && productFilters.tags) {
-      newSelector = _.omit(selector, ["hashtags"]);
+    if (productFilters) {
+      newSelector = _.omit(selector, ["hashtags", "ancestors"]);
 
-      // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
+      if (productFilters.tags) {
+        // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
+        _.extend(newSelector, {
+          $or: [
+            {
+              ancestors: {
+                $in: productIds
+              }
+            },
+            { $and: [
+              {
+                hashtags: {
+                  $in: productFilters.tags
+                }
+              }, {
+                _id: {
+                  $in: productIds
+                }
+              }
+            ]
+            }
+          ]
+        });
+      }
+      // filter by query
+      if (productFilters.query) {
+        const cond = {
+          $regex: productFilters.query,
+          $options: "i"
+        };
+        _.extend(newSelector, {
+          $or: [{
+            title: cond
+          }, {
+            pageTitle: cond
+          }, {
+            description: cond
+          }, {
+            ancestors: {
+              $in: productIds
+            }
+          },
+          {
+            _id: {
+              $in: productIds
+            }
+          }]
+        });
+      }
+    } else {
+      newSelector = _.omit(selector, ["hashtags", "ancestors"]);
+
       _.extend(newSelector, {
         $or: [
           {
             ancestors: {
               $in: productIds
             }
-          }, {
-            hashtags: {
-              $in: productFilters.tags
+          },
+          {
+            _id: {
+              $in: productIds
             }
           }
         ]
       });
     }
     // Returning Complete product tree for top level products to avoid sold out warning.
-    const productCursor = Products.find({
-      $or: [
-        { _id: { $in: productIds } },
-        { ancestors: { $in: productIds } }
-      ]
+    const productCursor = Products.find(newSelector, {
+      sort: sort,
+      limit: productScrollLimit
     });
 
     const mediaProductIds = productCursor.fetch().map((p) => p._id);

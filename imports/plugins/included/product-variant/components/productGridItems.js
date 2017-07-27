@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Components } from "@reactioncommerce/reaction-components";
 import { formatPriceString } from "/client/api";
-import GridItemNoticeContainer from "../containers/gridItemNoticeContainer";
-import GridItemControlsContainer from "../containers/gridItemControlsContainer";
 
 class ProductGridItems extends Component {
   static propTypes = {
@@ -80,8 +79,8 @@ class ProductGridItems extends Component {
   renderNotices() {
     return (
       <div className="grid-alerts">
-        <GridItemNoticeContainer product={this.props.product} />
-        <GridItemControlsContainer product={this.props.product} />
+        <Components.GridItemNotice product={this.props.product} />
+        <Components.GridItemControls product={this.props.product} />
       </div>
 
     );
