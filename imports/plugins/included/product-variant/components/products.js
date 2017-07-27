@@ -1,10 +1,10 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { getTagIds as getIds } from "/lib/selectors/tags";
 
-class Products extends PureComponent {
+class Products extends Component {
   static propTypes = {
     loadMoreProducts: PropTypes.func,
     loadProducts: PropTypes.func,

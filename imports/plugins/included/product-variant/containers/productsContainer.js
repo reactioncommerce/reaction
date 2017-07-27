@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
@@ -43,7 +43,7 @@ function loadMoreProducts() {
 }
 
 const wrapComponent = (Comp) => (
-  class ProductsContainer extends PureComponent {
+  class ProductsContainer extends Component {
     static propTypes = {
       canLoadMoreProducts: PropTypes.bool,
       products: PropTypes.array,

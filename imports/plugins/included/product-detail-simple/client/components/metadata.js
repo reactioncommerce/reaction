@@ -1,9 +1,9 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class ProductMetadata extends PureComponent {
+class ProductMetadata extends Component {
   get metafields() {
     return this.props.metafields || this.props.product.metafields;
   }

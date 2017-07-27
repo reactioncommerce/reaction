@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { compose } from "recompose";
@@ -11,7 +11,7 @@ import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import ProductGridItems from "../components/productGridItems";
 
 const wrapComponent = (Comp) => (
-  class ProductGridItemsContainer extends PureComponent {
+  class ProductGridItemsContainer extends Component {
     static propTypes = {
       connectDragSource: PropTypes.func,
       connectDropTarget: PropTypes.func,

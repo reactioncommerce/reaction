@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
@@ -7,7 +7,7 @@ import { Reaction } from "/client/api";
 import GridItemControls from "../components/gridItemControls";
 
 const wrapComponent = (Comp) => (
-  class GridItemControlsContainer extends PureComponent {
+  class GridItemControlsContainer extends Component {
     static propTypes = {
       isSelected: PropTypes.bool,
       product: PropTypes.object

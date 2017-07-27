@@ -1,8 +1,8 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 
-class ProductGrid extends PureComponent {
+class ProductGrid extends Component {
   static propTypes = {
     products: PropTypes.array
   }

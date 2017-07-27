@@ -1,8 +1,8 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 
-class GridItemControls extends PureComponent {
+class GridItemControls extends Component {
   static propTypes = {
     checked: PropTypes.func,
     hasChanges: PropTypes.func,

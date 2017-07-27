@@ -1,10 +1,10 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import "../styles/main.less";
 import "../styles/dropdown.css";
 
-class Notification extends PureComponent {
+class Notification extends Component {
   constructor(props) {
     super(props);
 

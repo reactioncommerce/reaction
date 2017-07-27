@@ -1,10 +1,10 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import _ from "lodash";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { Media, Shops } from "/lib/collections";
 
-class Brand extends PureComponent {
+class Brand extends Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);

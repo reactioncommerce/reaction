@@ -1,8 +1,8 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class AddToCartButton extends PureComponent {
+class AddToCartButton extends Component {
   get hasVariants() {
     return Array.isArray(this.props.variants) && this.props.variants.length > 0;
   }

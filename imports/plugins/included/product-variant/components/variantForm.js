@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { isEqual } from "lodash";
 import Velocity from "velocity-animate";
@@ -38,7 +38,7 @@ const fieldGroups = {
   lowInventoryWarningThreshold: { group: "inventoryManagement" }
 };
 
-class VariantForm extends PureComponent {
+class VariantForm extends Component {
   constructor(props) {
     super(props);
 

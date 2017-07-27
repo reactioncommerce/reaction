@@ -1,10 +1,10 @@
 import _ from "lodash";
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import update from "react/lib/update";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class TagGroupBody extends PureComponent {
+class TagGroupBody extends Component {
   constructor(props) {
     super(props);
 

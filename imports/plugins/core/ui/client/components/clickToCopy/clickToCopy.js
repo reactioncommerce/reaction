@@ -1,9 +1,9 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class ClickToCopy extends PureComponent {
+class ClickToCopy extends Component {
   constructor(props) {
     super(props);
 

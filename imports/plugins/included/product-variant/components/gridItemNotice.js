@@ -1,8 +1,8 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 
-class GridItemNotice extends PureComponent {
+class GridItemNotice extends Component {
   static propTypes = {
     isBackorder: PropTypes.func,
     isLowQuantity: PropTypes.func,

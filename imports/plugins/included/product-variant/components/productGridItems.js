@@ -1,9 +1,9 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { formatPriceString } from "/client/api";
 
-class ProductGridItems extends PureComponent {
+class ProductGridItems extends Component {
   static propTypes = {
     additionalMedia: PropTypes.func,
     canEdit: PropTypes.bool,

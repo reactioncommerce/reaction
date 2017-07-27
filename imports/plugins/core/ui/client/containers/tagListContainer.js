@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import update from "react/lib/update";
@@ -34,7 +34,7 @@ function updateSuggestions(term, { excludeTags }) {
 }
 
 const wrapComponent = (Comp) => (
-  class TagListContainer extends PureComponent {
+  class TagListContainer extends Component {
     static propTypes = {
       children: PropTypes.node,
       editable: PropTypes.bool,

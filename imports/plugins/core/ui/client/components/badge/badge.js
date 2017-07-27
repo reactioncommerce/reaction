@@ -1,9 +1,9 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class Badge extends PureComponent {
+class Badge extends Component {
   renderLabel() {
     if (this.props.label) {
       if (typeof this.props.label === "string") {

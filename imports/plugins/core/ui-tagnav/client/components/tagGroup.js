@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
@@ -7,7 +7,7 @@ import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { getTagIds } from "/lib/selectors/tags";
 import { Router } from "/client/api";
 
-class TagGroup extends PureComponent {
+class TagGroup extends Component {
   constructor(props) {
     super(props);
 

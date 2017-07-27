@@ -1,11 +1,11 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Link } from "@reactioncommerce/reaction-router";
 import { Reaction } from "/client/api";
 
-class NotificationDropdown extends PureComponent {
+class NotificationDropdown extends Component {
   constructor(props) {
     super(props);
     this.prefix = Reaction.getShopPrefix();

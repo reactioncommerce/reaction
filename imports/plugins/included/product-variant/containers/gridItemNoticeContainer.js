@@ -1,11 +1,11 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { ReactionProduct } from "/lib/api";
 import GridItemNotice from "../components/gridItemNotice";
 
 const wrapComponent = (Comp) => (
-  class GridItemNoticeContainer extends PureComponent {
+  class GridItemNoticeContainer extends Component {
     static propTypes = {
       product: PropTypes.object
     }

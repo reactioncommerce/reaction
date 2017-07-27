@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import accounting from "accounting-js";
@@ -18,7 +18,7 @@ function setCaretPosition(ctrl, pos) {
   }
 }
 
-class NumericInput extends PureComponent {
+class NumericInput extends Component {
   constructor(props) {
     super(props);
 

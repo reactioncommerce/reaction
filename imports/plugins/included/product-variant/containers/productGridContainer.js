@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import update from "react/lib/update";
 import _ from "lodash";
@@ -11,7 +11,7 @@ import { ReactionProduct } from "/lib/api";
 import ProductGrid from "../components/productGrid";
 
 const wrapComponent = (Comp) => (
-  class ProductGridContainer extends PureComponent {
+  class ProductGridContainer extends Component {
     static propTypes = {
       canEdit: PropTypes.bool,
       isSearch: PropTypes.bool,
