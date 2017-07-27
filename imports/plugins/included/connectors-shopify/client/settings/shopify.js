@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Template } from "meteor/templating";
+import { $ } from "meteor/jquery";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { ShopifyConnectPackageConfig } from "../../lib/collections/schemas";
@@ -22,11 +23,16 @@ Template.shopifyConnectSettings.helpers({
 Template.shopifyProductImport.events({
   "click [data-event-action=importProductsFromShopify]"(event) {
     event.preventDefault();
-    Meteor.call("shopifyConnect/getProductsCount", (err, res) => {
-      if (!res.error) {
-        return Alerts.toast(`Success ${res}`, "success");
+    $(event.currentTarget).html("<i class='fa fa-circle-o-notch fa-spin'></i> Importing ... This could take a little while.");
+    event.currentTarget.disabled = true;
+
+    Meteor.call("shopifyConnect/importProducts", (err) => {
+      $(event.currentTarget).html("<i class='fa fa-cloud-download'></i> Import Products");
+      event.currentTarget.disabled = false;
+
+      if (!err) {
+        return Alerts.toast("Successfully imported products", "success");
       }
-      return Alerts.toast(`failure ${err}`, "error");
     });
   }
 });
