@@ -27,7 +27,8 @@ const GroupsTable = (props) => {
   const columnMetadata = fields.map((columnName) => ({
     Header: <GroupHeader columnName={columnName} />,
     accessor: "",
-    Cell: (data) => {
+    // TODO: Review this line - copied disable line from shippo carriers.js
+    Cell: (data) => { // eslint-disable-line
       return <GroupsTableCell account={data.value} columnName={columnName} {...props} />;
     }
   }));
