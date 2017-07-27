@@ -1,5 +1,5 @@
-export { default as EditContainer } from "./editContainer";
-export { default as TagListContainer } from "./tagListContainer";
-export { default as AlertContainer } from "./alertContainer";
+export { default as EditContainer } from "./edit";
+export { default as Alerts } from "./alerts";
 export { default as SortableItem } from "./sortableItem";
-export { default as MediaGalleryContainer } from "./mediaGalleryContainer";
+export { default as MediaGalleryContainer } from "./mediaGallery";
+export { default as TagListContainer } from "./tagListContainer";

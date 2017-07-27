@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Select, TextField } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class EmailSettings extends Component {
   constructor(props) {
@@ -48,7 +48,7 @@ class EmailSettings extends Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <Select
+        <Components.Select
           clearable={false}
           label="Service"
           i18nKeyLabel="admin.settings.providerName"
@@ -61,7 +61,7 @@ class EmailSettings extends Component {
         />
         {settings.service === "custom" &&
           <div>
-            <TextField
+            <Components.TextField
               label="Host"
               i18nKeyLabel="admin.settings.host"
               type="text"
@@ -69,7 +69,7 @@ class EmailSettings extends Component {
               value={settings.host}
               onChange={this.handleStateChange}
             />
-            <TextField
+            <Components.TextField
               label="Port"
               i18nKeyLabel="admin.settings.port"
               type="text"
@@ -79,7 +79,7 @@ class EmailSettings extends Component {
             />
           </div>
         }
-        <TextField
+        <Components.TextField
           label="User"
           i18nKeyLabel="admin.settings.user"
           type="text"
@@ -87,7 +87,7 @@ class EmailSettings extends Component {
           value={settings.user}
           onChange={this.handleStateChange}
         />
-        <TextField
+        <Components.TextField
           label="Password"
           i18nKeyLabel="admin.settings.password"
           type="password"
@@ -95,7 +95,7 @@ class EmailSettings extends Component {
           value={settings.password}
           onChange={this.handleStateChange}
         />
-        <Button
+        <Components.Button
           primary={true}
           bezelStyle="solid"
           className="pull-right"
@@ -105,7 +105,7 @@ class EmailSettings extends Component {
           {isSaving ?
             <i className="fa fa-refresh fa-spin"/>
             : <span data-i18n="app.save">Save</span>}
-        </Button>
+        </Components.Button>
       </form>
     );
   }

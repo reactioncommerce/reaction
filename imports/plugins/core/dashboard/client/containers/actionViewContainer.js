@@ -1,10 +1,9 @@
 import React from "react";
 import { StyleRoot } from "radium";
 import _ from "lodash";
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { TranslationProvider, AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 
 
 function handleActionViewBack() {
@@ -86,5 +85,5 @@ export default function ActionViewContainer(Comp) {
     );
   }
 
-  return composeWithTracker(composer, Loading)(CompositeComponent);
+  return composeWithTracker(composer)(CompositeComponent);
 }

@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Radium from "radium";
+import { compose } from "recompose";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import classnames from "classnames";
 import { getComponent } from "/imports/plugins/core/layout/lib/components";
 import { Templates } from "/lib/collections";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 
 class ReactionLayout extends Component {
   get layout() {
@@ -129,4 +129,12 @@ function composer(props, onData) {
   }
 }
 
-export default composeWithTracker(composer, Loading)(Radium(ReactionLayout));
+registerComponent("ReactionLayout", ReactionLayout, [
+  composeWithTracker(composer),
+  Radium
+]);
+
+export default compose(
+  composeWithTracker(composer),
+  Radium
+)(ReactionLayout);

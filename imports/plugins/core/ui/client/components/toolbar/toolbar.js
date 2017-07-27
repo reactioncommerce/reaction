@@ -1,15 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
-class Toolbar extends Component {
-  render() {
-    return (
-      <nav className="rui toolbar navbar-inverse">
-        {this.props.children}
-      </nav>
-    );
-  }
-}
+const Toolbar = ({ children }) => (
+  <nav className="rui toolbar navbar-inverse">
+    {children}
+  </nav>
+);
 
 Toolbar.propTypes = {
   attachment: PropTypes.string,
@@ -19,5 +16,7 @@ Toolbar.propTypes = {
 Toolbar.defaultProps = {
   attachment: "top"
 };
+
+registerComponent("Toolbar", Toolbar);
 
 export default Toolbar;

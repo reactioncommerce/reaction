@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Currency, Translation } from "/imports/plugins/core/ui/client/components/";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class CartSubTotal extends Component {
   static propTypes = {
@@ -16,8 +16,8 @@ class CartSubTotal extends Component {
     if (Number(this.props.cartDiscount) > 0) {
       return (
         <tr>
-          <td><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount" /></td>
-          <td><Currency amount={this.props.cartDiscount} /></td>
+          <td><Components.Translation defaultValue="Discount" i18nKey="cartSubTotals.discount" /></td>
+          <td><Components.Currency amount={this.props.cartDiscount} /></td>
         </tr>
       );
     }
@@ -26,8 +26,8 @@ class CartSubTotal extends Component {
     if (Number(this.props.cartShipping) > 0) {
       return (
         <tr>
-          <td><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping" /></td>
-          <td><Currency amount={this.props.cartShipping} /></td>
+          <td><Components.Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping" /></td>
+          <td><Components.Currency amount={this.props.cartShipping} /></td>
         </tr>
       );
     }
@@ -36,8 +36,8 @@ class CartSubTotal extends Component {
     if (Number(this.props.cartTaxes) > 0) {
       return (
         <tr>
-          <td><Translation defaultValue="Tax" i18nKey="cartSubTotals.tax" /></td>
-          <td><Currency amount={this.props.cartTaxes} /></td>
+          <td><Components.Translation defaultValue="Tax" i18nKey="cartSubTotals.tax" /></td>
+          <td><Components.Currency amount={this.props.cartTaxes} /></td>
         </tr>
       );
     }
@@ -48,23 +48,23 @@ class CartSubTotal extends Component {
         <div className="cart-totals">
           <table className="table table-condensed">
             <thead>
-              <tr><th><Translation defaultValue="Your cart" i18nKey="cartSubTotals.head" /></th></tr>
+              <tr><th><Components.Translation defaultValue="Your cart" i18nKey="cartSubTotals.head" /></th></tr>
             </thead>
             <tbody>
               <tr>
-                <td><Translation defaultValue="Items in cart" i18nKey="cartSubTotals.items" /></td>
+                <td><Components.Translation defaultValue="Items in cart" i18nKey="cartSubTotals.items" /></td>
                 <td>{this.props.cartCount}</td>
               </tr>
               <tr>
-                <td><Translation defaultValue="Sub total" i18nKey="cartSubTotals.subtotal" /></td>
-                <td><Currency amount={this.props.cartSubTotal} /></td>
+                <td><Components.Translation defaultValue="Sub total" i18nKey="cartSubTotals.subtotal" /></td>
+                <td><Components.Currency amount={this.props.cartSubTotal} /></td>
               </tr>
               {this.validateDiscount()}
               {this.validateShipping()}
               {this.validateTaxes()}
               <tr>
-                <td><Translation defaultValue="Total" i18nKey="cartSubTotals.total" /></td>
-                <td><Currency amount={this.props.cartTotal} /></td>
+                <td><Components.Translation defaultValue="Total" i18nKey="cartSubTotals.total" /></td>
+                <td><Components.Currency amount={this.props.cartTotal} /></td>
               </tr>
             </tbody>
           </table>

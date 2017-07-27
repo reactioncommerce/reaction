@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
-import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
 import PublishContainer from "/imports/plugins/core/revisions/client/containers/publishContainer";
 
-class GridProductPublishContainer extends Component {
+class GridProductPublishContainer extends PureComponent {
   static propTypes = {
     documentIds: PropTypes.arrayOf(PropTypes.string),
     documents: PropTypes.arrayOf(PropTypes.object)
@@ -63,6 +63,8 @@ function composer(props, onData) {
     onData(null, {});
   }
 }
+
+registerComponent("GridProductPublish", GridProductPublishContainer, composeWithTracker(composer));
 
 // Decorate component and export
 export default composeWithTracker(composer)(GridProductPublishContainer);
