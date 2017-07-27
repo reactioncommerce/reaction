@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import { Shops } from "/lib/collections";
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import Language from "../components/i18n";
 
 class LanguageDropdownContainer extends Component {

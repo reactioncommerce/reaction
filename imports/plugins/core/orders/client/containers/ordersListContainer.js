@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { composeWithTracker } from "/lib/api/compose";
 import { Media } from "/lib/collections";
 import { Reaction } from "/client/api";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrdersList from "../components/ordersList.js";
 import {
   PACKAGE_NAME,
@@ -100,4 +99,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, Loading)(OrdersListContainer);
+export default composeWithTracker(composer)(OrdersListContainer);

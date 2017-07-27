@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import moment from "moment-timezone";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
 import { Countries } from "/client/collections";
 import { Shops } from "/lib/collections";
 import LocalizationSettings from "../components/localizationSettings";

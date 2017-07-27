@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Card, CardHeader, CardBody, CardGroup, Icon, Translation } from "/imports/plugins/core/ui/client/components";
-import EmailSettings from "../containers/emailSettings";
-
+import { Components } from "@reactioncommerce/reaction-components";
+import { Translation } from "/imports/plugins/core/ui/client/components";
 
 class EmailConfig extends Component {
   constructor(props) {
@@ -40,7 +39,7 @@ class EmailConfig extends Component {
     return (
       <div>
         <div className="pull-right">
-          <a onClick={this.toggleSettings}><Icon icon="gear"/></a>
+          <a onClick={this.toggleSettings}><Components.Icon icon="gear"/></a>
         </div>
         <div className="email-config-status">
           <strong><Translation defaultValue={"Status"} i18nKey={"admin.settings.status"} /></strong>: {status ?
@@ -92,7 +91,7 @@ class EmailConfig extends Component {
               i18nKey={"admin.settings.editSettings"}
             />
           </h4>
-          <EmailSettings showSettings={showSettings} />
+          <Components.EmailSettings showSettings={showSettings} />
         </div>
       );
     }
@@ -102,21 +101,19 @@ class EmailConfig extends Component {
 
   render() {
     return (
-      <CardGroup>
-        <Card
-          expanded={true}
-        >
-          <CardHeader
+      <Components.CardGroup>
+        <Components.Card expanded={true}>
+          <Components.CardHeader
             actAsExpander={true}
             i18nKeyTitle="admin.settings.mailProvider"
             title="Mail Provider"
           />
-          <CardBody expandable={true}>
+          <Components.CardBody expandable={true}>
             {this.renderSettingsDisplay()}
             {this.renderSettingsUpdate()}
-          </CardBody>
-        </Card>
-      </CardGroup>
+          </Components.CardBody>
+        </Components.Card>
+      </Components.CardGroup>
     );
   }
 }
