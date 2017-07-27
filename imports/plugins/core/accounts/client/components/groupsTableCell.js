@@ -33,6 +33,11 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
   }
 
   if (columnName === "dropdown") {
+    if (groups.length === 1) {
+      return (
+        <p>{_.startCase(groups[0].name)}</p>
+      );
+    }
     const dropDownButton = (
       <div className="group-dropdown">
         <Components.Button label={group.name && _.startCase(group.name)}>
