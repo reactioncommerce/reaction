@@ -1,4 +1,8 @@
 export * from "./helpers/helpers";
+export * from "./components";
+export * from "./containers";
+export * from "./providers";
+
 import "./helpers/react-template-helper";
 
 import "./templates/dashboard/dashboard.html";
@@ -21,11 +25,6 @@ import "./components/numericInput/numericInput.js";
 
 import "./components/select/select.html";
 import "./components/select/select.js";
-
-import "./components/tags/tagItem.html";
-import "./components/tags/tagItem.js";
-import "./components/tags/tagList.html";
-import "./components/tags/tagList.js";
 
 import "./components/textfield/textfield.html";
 

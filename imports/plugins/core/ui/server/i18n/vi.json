@@ -17,7 +17,20 @@
         "publishThemeError": "`Không thể xuất bản chủ đề {{themeName}}",
         "components": {
           "navbar": "Thanh điều hướng",
-          "button": "nút"
+          "button": "nút",
+          "sortableTable": {
+            "filterPlaceholder": "Lọc dữ liệu",
+            "tableText": {
+              "noDataMessage": "không có kết quả nào được tìm thấy",
+              "previousText": "Trước",
+              "nextText": "Kế tiếp",
+              "loadingText": "Tải...",
+              "noDataText": "không có kết quả nào được tìm thấy",
+              "pageText": "Trang",
+              "ofText": "Của",
+              "rowsText": "Hàng"
+            }
+          }
         }
       }
     }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Translation } from "@reactioncommerce/reaction-ui";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class GridItemNotice extends Component {
   static propTypes = {
@@ -14,19 +14,19 @@ class GridItemNotice extends Component {
       if (this.props.isBackorder()) {
         return (
           <span className="variant-qty-sold-out badge">
-            <Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
+            <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
           </span>
         );
       }
       return (
         <span className="variant-qty-sold-out badge badge-danger">
-          <Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
+          <Components.Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
         </span>
       );
     } else if (this.props.isLowQuantity()) {
       return (
         <div className="badge badge-low-inv-warning" title="">
-          <Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
+          <Components.Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
         </div>
       );
     }

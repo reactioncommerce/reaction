@@ -1,6 +1,7 @@
 import React, { Children, Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 class Menu extends Component {
   handleChange = (event, value, menuItem) => {
@@ -46,5 +47,7 @@ Menu.propTypes = {
 Menu.defaultProps = {
   attachment: "top"
 };
+
+registerComponent("Menu", Menu);
 
 export default Menu;

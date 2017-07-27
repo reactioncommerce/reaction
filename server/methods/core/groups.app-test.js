@@ -132,18 +132,18 @@ describe("Group test", function () {
     spyOnMethod("addUser", shop._id);
     spyOnMethod("updateGroup", shop._id);
 
-    const groupId = Meteor.call("group/createGroup", sampleGroup, shop._id).groupId;
-    const group2Id = Meteor.call(
+    const response = Meteor.call("group/createGroup", sampleGroup, shop._id);
+    const res = Meteor.call(
       "group/createGroup",
       { name: "Managers", permissions: ["sample-role3"] },
       shop._id
-    ).groupId;
+    );
 
-    Meteor.call("group/addUser", user._id, groupId);
+    Meteor.call("group/addUser", user._id, response.group._id);
     let updatedUser = Meteor.users.findOne({ _id: user._id });
     expect(updatedUser.roles[shop._id]).to.include.members(sampleGroup.permissions);
 
-    Meteor.call("group/addUser", user._id, group2Id);
+    Meteor.call("group/addUser", user._id, res.group._id);
     updatedUser = Meteor.users.findOne({ _id: user._id });
 
     expect(updatedUser.roles[shop._id]).to.not.include.members(sampleGroup.permissions);

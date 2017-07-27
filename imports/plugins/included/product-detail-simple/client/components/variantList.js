@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Variant from "./variant";
-import { EditContainer } from "/imports/plugins/core/ui/client/containers";
-import { Divider, IconButton } from "/imports/plugins/core/ui/client/components";
-import { ChildVariant } from "./";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class VariantList extends Component {
   handleVariantEditClick = (event, editButtonProps) => {
@@ -49,7 +46,7 @@ class VariantList extends Component {
       addButton = (
         <div className="rui items flex">
           <div className="rui item full justify center">
-            <IconButton
+            <Components.IconButton
               i18nKeyTooltip="variantList.createVariant"
               icon="fa fa-plus"
               primary={true}
@@ -66,7 +63,7 @@ class VariantList extends Component {
         const displayPrice = this.props.displayPrice && this.props.displayPrice(variant._id);
 
         return (
-          <EditContainer
+          <Components.EditContainer
             data={variant}
             disabled={this.props.editable === false}
             editView="variantForm"
@@ -78,7 +75,7 @@ class VariantList extends Component {
             permissions={["createProduct"]}
             showsVisibilityButton={true}
           >
-            <Variant
+            <Components.Variant
               displayPrice={displayPrice}
               editable={this.props.editable}
               index={index}
@@ -88,7 +85,7 @@ class VariantList extends Component {
               soldOut={this.isSoldOut(variant)}
               variant={variant}
             />
-          </EditContainer>
+          </Components.EditContainer>
         );
       });
     }
@@ -104,7 +101,7 @@ class VariantList extends Component {
       return variantList;
     } else if (variants.length > 1 || variants.length === 0) {
       return [
-        <Divider
+        <Components.Divider
           i18nKeyLabel="productDetail.options"
           key="dividerWithLabel"
           label="Options"
@@ -113,7 +110,7 @@ class VariantList extends Component {
       ];
     } else if (variants.length === 1) {
       return [
-        <Divider key="divider" />,
+        <Components.Divider key="divider" />,
         variantList
       ];
     }
@@ -134,7 +131,7 @@ class VariantList extends Component {
         });
 
         return (
-          <EditContainer
+          <Components.EditContainer
             data={childVariant}
             disabled={this.props.editable === false}
             editView="variantForm"
@@ -146,20 +143,20 @@ class VariantList extends Component {
             permissions={["createProduct"]}
             showsVisibilityButton={true}
           >
-            <ChildVariant
+            <Components.ChildVariant
               isSelected={this.props.variantIsSelected(childVariant._id)}
               media={media}
               onClick={this.handleChildVariantClick}
               variant={childVariant}
             />
-          </EditContainer>
+          </Components.EditContainer>
         );
       });
     }
 
     if (childVariants.length) {
       return [
-        <Divider
+        <Components.Divider
           key="availableOptionsDivider"
           i18nKeyLabel="availableOptions"
           label="Available Options"

@@ -38,9 +38,8 @@ jobs:
           name: Restoring Meteor dev_bundle cache
           key: dev_bundle
 
-      - run: npm test
+      # - run: npm test
       - run: reaction test
-
 
       - save_cache:
           name: Saving Meteor dev_bundle to cache
@@ -48,7 +47,9 @@ jobs:
           paths:
             - /home/reaction/.meteor/local
 
-      - run: .circleci/build.sh
+      - run:
+          command: .circleci/build.sh
+          no_output_timeout: 30m
 
       # deploy the build (if on a deployment branch)
       - deploy:

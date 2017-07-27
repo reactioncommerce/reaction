@@ -9,6 +9,11 @@
         },
         "inventoryAlerts": {
           "adjustedQuantity": "Váš množství produktu byla upravena tak, aby max množství na skladě"
+        },
+        "mediaGallery": {
+          "deleteImage": "Klepnutím odeberete obrázek",
+          "addedImage": "Toto je nový obrázek. Publikujte, chcete-li uložit změny.",
+          "removedImage": "Obrázek byl smazán. Publikujte, chcete-li uložit změny."
         }
       },
       "availableOptions": "dostupné možnosti"

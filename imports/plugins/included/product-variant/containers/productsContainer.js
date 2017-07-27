@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { compose } from "recompose";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { ReactionProduct } from "/lib/api";
-import { composeWithTracker } from "/lib/api/compose";
 import { applyProductRevision } from "/lib/api/products";
 import { Products, Tags } from "/lib/collections";
 import ProductsComponent from "../components/products";
@@ -20,16 +21,15 @@ import ProductsComponent from "../components/products";
 function loadMoreProducts() {
   let threshold;
   const target = document.querySelectorAll("#productScrollLimitLoader");
-  let scrollContainer = document.querySelectorAll("#reactionAppContainer");
-
+  let scrollContainer = document.querySelectorAll("#container-main");
   if (scrollContainer.length === 0) {
     scrollContainer = window;
   }
 
   if (target.length) {
-    threshold = scrollContainer[0].scrollTop + scrollContainer[0].offsetHeight - target[0].offsetHeight;
+    threshold = scrollContainer[0].scrollHeight - scrollContainer[0].scrollTop === scrollContainer[0].clientHeight;
 
-    if (target[0].offsetTop <= threshold) {
+    if (threshold) {
       if (!target[0].getAttribute("visible")) {
         target[0].setAttribute("productScrollLimit", true);
         Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
@@ -42,68 +42,71 @@ function loadMoreProducts() {
   }
 }
 
-class ProductsContainer extends Component {
-  static propTypes = {
-    canLoadMoreProducts: PropTypes.bool,
-    products: PropTypes.array,
-    productsSubscription: PropTypes.object
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      initialLoad: true
+const wrapComponent = (Comp) => (
+  class ProductsContainer extends Component {
+    static propTypes = {
+      canLoadMoreProducts: PropTypes.bool,
+      products: PropTypes.array,
+      productsSubscription: PropTypes.object
     };
 
-    this.ready = this.ready.bind(this);
-    this.loadMoreProducts = this.loadMoreProducts.bind(this);
-  }
+    constructor(props) {
+      super(props);
+      this.state = {
+        initialLoad: true
+      };
 
-  ready = () => {
-    const isInitialLoad = this.state.initialLoad === true;
-    const isReady = this.props.productsSubscription.ready();
-
-    if (isInitialLoad === false) {
-      return true;
+      this.ready = this.ready.bind(this);
+      this.loadMoreProducts = this.loadMoreProducts.bind(this);
     }
 
-    if (isReady) {
-      return true;
+    ready = () => {
+      const isInitialLoad = this.state.initialLoad === true;
+      const isReady = this.props.productsSubscription.ready();
+
+      if (isInitialLoad === false) {
+        return true;
+      }
+
+      if (isReady) {
+        return true;
+      }
+      return false;
     }
-    return false;
-  }
 
-  loadMoreProducts = () => {
-    return this.props.canLoadMoreProducts === true;
-  }
+    loadMoreProducts = () => {
+      return this.props.canLoadMoreProducts === true;
+    }
 
-  loadProducts = (event) => {
-    event.preventDefault();
-    this.setState({
-      initialLoad: false
-    });
-    loadMoreProducts();
-  }
+    loadProducts = (event) => {
+      event.preventDefault();
+      this.setState({
+        initialLoad: false
+      });
+      loadMoreProducts();
+    }
 
-  render() {
-    return (
-      <ProductsComponent
-        ready={this.ready}
-        products={this.props.products}
-        productsSubscription={this.props.productsSubscription}
-        loadMoreProducts={this.loadMoreProducts}
-        loadProducts={this.loadProducts}
-      />
-    );
+    render() {
+      return (
+        <Comp
+          ready={this.ready}
+          products={this.props.products}
+          productsSubscription={this.props.productsSubscription}
+          loadMoreProducts={this.loadMoreProducts}
+          loadProducts={this.loadProducts}
+        />
+      );
+    }
   }
-}
+);
+
 function composer(props, onData) {
   window.prerenderReady = false;
 
   let canLoadMoreProducts = false;
 
   const slug = Reaction.Router.getParam("slug");
-  const tag = Tags.findOne({ slug: slug }) || Tags.findOne(slug);
+  const tag = Tags.findOne({ slug }) || Tags.findOne(slug);
   const scrollLimit = Session.get("productScrollLimit");
   let tags = {}; // this could be shop default implementation needed
 
@@ -115,24 +118,24 @@ function composer(props, onData) {
   if (!tag && slug) {
     return;
   }
+  const currentTag = ReactionProduct.getTag();
+
+  const sort = {
+    [`positions.${currentTag}.position`]: 1,
+    [`positions.${currentTag}.createdAt`]: 1,
+    createdAt: 1
+  };
 
   const queryParams = Object.assign({}, tags, Reaction.Router.current().queryParams);
-  const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams);
+  const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort);
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
   }
 
-  const currentTag = ReactionProduct.getTag();
   const productCursor = Products.find({
     ancestors: [],
     type: { $in: ["simple"] }
-  }, {
-    sort: {
-      [`positions.${currentTag}.position`]: 1,
-      [`positions.${currentTag}.createdAt`]: 1,
-      createdAt: 1
-    }
   });
 
   const products = productCursor.map((product) => {
@@ -158,4 +161,13 @@ function composer(props, onData) {
     canLoadMoreProducts
   });
 }
-export default composeWithTracker(composer)(ProductsContainer);
+
+registerComponent("Products", ProductsComponent, [
+  composeWithTracker(composer),
+  wrapComponent
+]);
+
+export default compose(
+  composeWithTracker(composer),
+  wrapComponent
+)(ProductsComponent);

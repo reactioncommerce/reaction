@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import TextareaAutosize from "react-textarea-autosize";
-import { Translation } from "../translation";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 
 class TextField extends Component {
@@ -12,6 +12,32 @@ class TextField extends Component {
    */
   get value() {
     return this.props.value || "";
+  }
+
+  /**
+   * Getter: isValid
+   * @return {Boolean} true/false if field is valid from props.isValid or props.valitation[this.props.name].isValid
+   */
+  get isValid() {
+    const { isValid } = this.props;
+
+    if (typeof isValid === "boolean") {
+      return isValid;
+    } else if (this.validationMessage) {
+      return false;
+    }
+
+    return undefined;
+  }
+
+  get validationMessage() {
+    const { name, validation } = this.props;
+
+    if (typeof validation === "object" && validation.messages && validation.messages[name]) {
+      return validation.messages[name];
+    }
+
+    return undefined;
   }
 
   /**
@@ -121,11 +147,15 @@ class TextField extends Component {
     return this.renderSingleLineInput();
   }
 
+  /**
+   * Render the label for the text field if one is provided in props
+   * @return {ReactNode|null} react node or null
+   */
   renderLabel() {
     if (this.props.label) {
       return (
         <label>
-          <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+          <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
         </label>
       );
     }
@@ -133,11 +163,24 @@ class TextField extends Component {
     return null;
   }
 
+  /**
+   * Render help text or validation message
+   * @return {ReactNode|null} react node or null
+   */
   renderHelpText() {
-    if (this.props.helpText) {
+    const message = this.validationMessage;
+    let helpText = this.props.helpText;
+    let i18nKey = this.props.i18nKeyHelpText;
+
+    if (this.isValid === false && message) {
+      helpText = message.message;
+      i18nKey = message.i18nKeyMessage;
+    }
+
+    if (helpText) {
       return (
         <span className="help-block">
-          <Translation defaultValue={this.props.helpText} i18nKey={this.props.i18nKeyHelpText} />
+          <Components.Translation defaultValue={this.props.helpText} i18nKey={i18nKey} />
         </span>
       );
     }
@@ -155,6 +198,8 @@ class TextField extends Component {
       "rui": true,
       "textfield": true,
       "form-group": true,
+      "has-error": this.isValid === false,
+      "has-success": this.isValid === true,
 
       // Alignment
       "center": this.props.align === "center",
@@ -173,10 +218,6 @@ class TextField extends Component {
   }
 }
 
-TextField.defaultProps = {
-
-};
-
 TextField.propTypes = {
   align: PropTypes.oneOf(["left", "center", "right", "justify"]),
   className: PropTypes.string,
@@ -186,6 +227,7 @@ TextField.propTypes = {
   i18nKeyLabel: PropTypes.string,
   i18nKeyPlaceholder: PropTypes.string,
   id: PropTypes.string,
+  isValid: PropTypes.bool,
   label: PropTypes.string,
   multiline: PropTypes.bool,
   name: PropTypes.string,
@@ -197,7 +239,10 @@ TextField.propTypes = {
   style: PropTypes.object,
   textFieldStyle: PropTypes.object,
   type: PropTypes.string,
+  validation: PropTypes.object,
   value: PropTypes.any
 };
+
+registerComponent("TextField", TextField);
 
 export default TextField;
