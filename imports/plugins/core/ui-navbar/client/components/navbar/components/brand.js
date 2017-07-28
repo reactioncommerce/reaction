@@ -15,11 +15,20 @@ class Brand extends Component {
   }
 
   getShop() {
-    return Shops.findOne(Reaction.getShopId());
+    // Default shopId is the primary shop
+    let shopId = Reaction.getPrimaryShopId();
+
+    // if marketplace is enabled and merchant theme is set to true
+    // we should use the active shop
+    if (Reaction.marketplace.merchantTheme) {
+      shopId = Reaction.getShopId();
+    }
+    return Shops.findOne(shopId);
   }
 
   getLogo() {
-    if (_.isArray(this.getShop().brandAssets)) {
+    const shop = this.getShop();
+    if (shop && _.isArray(shop.brandAssets)) {
       const brandAsset = _.find(this.getShop().brandAssets, (asset) => asset.type === "navbarBrandImage");
       return Media.findOne(brandAsset.mediaId);
     }

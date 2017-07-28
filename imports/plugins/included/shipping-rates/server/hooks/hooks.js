@@ -9,6 +9,12 @@ function getShippingRates(rates, cart) {
   const shops = [];
   const products = cart.items;
 
+  let merchantShippingRates = false;
+  const marketplaceSettings = Reaction.getMarketplaceSettings();
+  if (marketplaceSettings && marketplaceSettings.enabled) {
+    merchantShippingRates = marketplaceSettings.public.merchantShippingRates;
+  }
+
   const pkgData = Packages.findOne({
     name: "reaction-shipping-rates",
     shopId: Reaction.getShopId()
@@ -18,27 +24,30 @@ function getShippingRates(rates, cart) {
     return rates;
   }
 
-  // default selector is current shop
+  // default selector is primary shop
   let selector = {
-    "shopId": Reaction.getShopId(),
+    "shopId": Reaction.getPrimaryShopId(),
     "provider.enabled": true
   };
 
-  // create an array of shops, allowing
-  // the cart to have products from multiple shops
-  for (const product of products) {
-    if (product.shopId) {
-      shops.push(product.shopId);
+  if (merchantShippingRates) {
+    // create an array of shops, allowing
+    // the cart to have products from multiple shops
+    for (const product of products) {
+      if (product.shopId) {
+        shops.push(product.shopId);
+      }
     }
-  }
-  // if we have multiple shops in cart
-  if ((shops !== null ? shops.length : void 0) > 0) {
-    selector = {
-      "shopId": {
-        $in: shops
-      },
-      "provider.enabled": true
-    };
+
+    // if we have multiple shops in cart
+    if ((shops !== null ? shops.length : void 0) > 0) {
+      selector = {
+        "shopId": {
+          $in: shops
+        },
+        "provider.enabled": true
+      };
+    }
   }
 
   const shippingCollection = Shipping.find(selector);

@@ -1,5 +1,7 @@
 [{
   "_id": "J8Bhq3uTtdgwZx3rz",
+  "shopType": "primary",
+  "active": true,
   "currencies": {
     "AED": {
       "enabled": false,
@@ -508,99 +510,101 @@
     }
   },
   "currency": "USD",
-  "languages": [{
-    "label": "العربية",
-    "i18n": "ar",
-    "enabled": true
-  }, {
-    "label": "Български",
-    "i18n": "bg",
-    "enabled": false
-  }, {
-    "label": "中文(简体)",
-    "i18n": "zh",
-    "enabled": true
-  }, {
-    "label": "České",
-    "i18n": "cs",
-    "enabled": false
-  }, {
-    "label": "Deutsch",
-    "i18n": "de",
-    "enabled": true
-  }, {
-    "label": "English",
-    "i18n": "en",
-    "enabled": true
-  }, {
-    "label": "Ελληνικά",
-    "i18n": "el",
-    "enabled": true
-  }, {
-    "label": "Español",
-    "i18n": "es",
-    "enabled": true
-  }, {
-    "label": "Français",
-    "i18n": "fr",
-    "enabled": true
-  }, {
-    "label": "עברית",
-    "i18n": "he",
-    "enabled": true
-  }, {
-    "label": "Hrvatski",
-    "i18n": "hr",
-    "enabled": false
-  }, {
-    "label": "မြန်မာဘာသာ",
-    "i18n": "my",
-    "enabled": false
-  }, {
-    "label": "Italiano",
-    "i18n": "it",
-    "enabled": false
-  }, {
-    "label": "Nederlands",
-    "i18n": "nl",
-    "enabled": false
-  }, {
-    "label": "Norsk bokmål",
-    "i18n": "nb",
-    "enabled": false
-  }, {
-    "label": "Polski",
-    "i18n": "pl",
-    "enabled": false
-  }, {
-    "label": "Português",
-    "i18n": "pt",
-    "enabled": true
-  }, {
-    "label": "Русский",
-    "i18n": "ru",
-    "enabled": true
-  }, {
-    "label": "Română",
-    "i18n": "ro",
-    "enabled": true
-  }, {
-    "label": "Slovenščina",
-    "i18n": "sl",
-    "enabled": false
-  }, {
-    "label": "Svenska",
-    "i18n": "sv",
-    "enabled": false
-  }, {
-    "label": "Türkçe",
-    "i18n": "tr",
-    "enabled": false
-  }, {
-    "label": "tiếng Việt",
-    "i18n": "vi",
-    "enabled": false
-  }],
+  "languages": [
+    {
+      "label": "العربية",
+      "i18n": "ar",
+      "enabled": true
+    }, {
+      "label": "Български",
+      "i18n": "bg",
+      "enabled": false
+    }, {
+      "label": "中文(简体)",
+      "i18n": "zh",
+      "enabled": true
+    }, {
+      "label": "České",
+      "i18n": "cs",
+      "enabled": false
+    }, {
+      "label": "Deutsch",
+      "i18n": "de",
+      "enabled": true
+    }, {
+      "label": "English",
+      "i18n": "en",
+      "enabled": true
+    }, {
+      "label": "Ελληνικά",
+      "i18n": "el",
+      "enabled": true
+    }, {
+      "label": "Español",
+      "i18n": "es",
+      "enabled": true
+    }, {
+      "label": "Français",
+      "i18n": "fr",
+      "enabled": true
+    }, {
+      "label": "עברית",
+      "i18n": "he",
+      "enabled": true
+    }, {
+      "label": "Hrvatski",
+      "i18n": "hr",
+      "enabled": false
+    }, {
+      "label": "မြန်မာဘာသာ",
+      "i18n": "my",
+      "enabled": false
+    }, {
+      "label": "Italiano",
+      "i18n": "it",
+      "enabled": false
+    }, {
+      "label": "Nederlands",
+      "i18n": "nl",
+      "enabled": false
+    }, {
+      "label": "Norsk bokmål",
+      "i18n": "nb",
+      "enabled": false
+    }, {
+      "label": "Polski",
+      "i18n": "pl",
+      "enabled": false
+    }, {
+      "label": "Português",
+      "i18n": "pt",
+      "enabled": true
+    }, {
+      "label": "Русский",
+      "i18n": "ru",
+      "enabled": true
+    }, {
+      "label": "Română",
+      "i18n": "ro",
+      "enabled": true
+    }, {
+      "label": "Slovenščina",
+      "i18n": "sl",
+      "enabled": false
+    }, {
+      "label": "Svenska",
+      "i18n": "sv",
+      "enabled": false
+    }, {
+      "label": "Türkçe",
+      "i18n": "tr",
+      "enabled": false
+    }, {
+      "label": "tiếng Việt",
+      "i18n": "vi",
+      "enabled": false
+    }
+  ],
   "locales": {
     "continents": {
       "AF": "Africa",
@@ -3160,7 +3164,7 @@
       }
     }
   },
-  "name": "REACTION",
+  "name": "Reaction",
   "taxes": [{
     "taxesIncluded": null,
     "taxShipping": null,
