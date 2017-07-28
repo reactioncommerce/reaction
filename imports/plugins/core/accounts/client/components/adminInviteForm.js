@@ -7,24 +7,39 @@ import { Meteor } from "meteor/meteor";
 
 class AdminInviteForm extends Component {
   static propTypes = {
-    accounts: PropTypes.array
+    defaultInviteGroup: PropTypes.object,
+    groups: PropTypes.array
   };
 
   constructor(props) {
     super(props);
+    const { defaultInviteGroup, groups } = props;
 
     this.state = {
-      alertArray: [],
+      groups,
+      defaultInviteGroup,
       name: "",
-      email: ""
+      email: "",
+      group: "",
+      alertArray: []
     };
+
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { groups, defaultInviteGroup } = nextProps;
+    this.setState({ groups, defaultInviteGroup });
   }
 
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
+
+  handleGroupSelect = (event, group) => {
+    this.setState({ group });
+  };
 
   removeAlert = (oldAlert) => {
     return this.setState({
@@ -34,8 +49,19 @@ class AdminInviteForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { name, email } = this.state;
-    return Meteor.call("accounts/inviteShopMember", Reaction.getShopId(), email, name, (error, result) => {
+    const { name, email, group, defaultInviteGroup } = this.state;
+
+    if (!group._id && !defaultInviteGroup._id) {
+      return this.setState({
+        alertArray: [{
+          mode: "danger",
+          options: { autoHide: 4000, i18nKey: "accountsUI.error.groupRequired" }
+        }]
+      });
+    }
+    const finalGroupId = group._id || defaultInviteGroup._id;
+    const options = { email, name, shopId: Reaction.getShopId(), groupId: finalGroupId };
+    return Meteor.call("accounts/inviteShopMember", options, (error, result) => {
       let newAlert;
       let message = "";
       if (error) {
@@ -67,48 +93,75 @@ class AdminInviteForm extends Component {
     });
   }
 
+  renderDropDownButton() {
+    const { defaultInviteGroup, group } = this.state;
+    const buttonGroup = group || defaultInviteGroup;
+    if (!buttonGroup._id) {
+      return null;
+    }
+    const buttonElement = (
+      <Components.Button bezelStyle="solid" label={buttonGroup.name && _.startCase(buttonGroup.name)} >
+        &nbsp;<i className="fa fa-chevron-down" />
+      </Components.Button>
+    );
+    return (
+      <Components.DropDownMenu buttonElement={buttonElement} attachment="bottom center" onChange={this.handleGroupSelect}>
+        {this.state.groups
+          .filter((grp) => grp._id !== buttonGroup._id)
+          .map((grp, index) => (
+            <Components.MenuItem
+              key={index}
+              label={_.startCase(grp.name)}
+              selectLabel={_.startCase(grp.name)}
+              value={grp}
+            />
+          ))}
+      </Components.DropDownMenu>
+    );
+  }
+
+
   renderForm() {
     return (
-      <div className="panel panel-default">
+      <div className="panel panel-default admin-invite-form">
         <Components.Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
         <div className="panel-body">
           <form className="">
             <div className="form-group">
-              <label htmlFor="member-form-name">
-                <Components.Translation className="content-cell" defaultValue="Name" i18nKey="accountsUI.name" />
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="member-form-name"
+              <Components.TextField
+                i18nKeyLabel="accountsUI.name"
+                label="Name"
                 name="name"
-                placeholder="John Smith"
-                onChange={this.onChange}
+                id="member-form-name"
+                type="text"
+                i18nKeyPlaceholder="admin.groupsInvite.name"
                 value={this.state.name}
+                onChange={this.onChange}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="member-form-email">
-                <Components.Translation className="content-cell" defaultValue="Email" i18nKey="accountsUI.email" />
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="member-form-email"
+              <Components.TextField
+                i18nKeyLabel="accountsUI.email"
+                label="Email"
                 name="email"
-                placeholder="johnsmith@reactioncommerce.com"
-                onChange={this.onChange}
+                id="member-form-email"
+                type="text"
+                i18nKeyPlaceholder="admin.groupsInvite.email"
                 value={this.state.email}
+                onChange={this.onChange}
               />
             </div>
-            <div className="form-btns add-admin justify">
-              <button className="btn btn-primary" onClick={this.handleSubmit}>
-                <Components.Translation
-                  className="content-cell"
-                  defaultValue="Send Invitation"
-                  i18nKey="accountsUI.info.sendInvitation"
+            <div className="form-group action-select">
+              {this.renderDropDownButton()}
+              <div className="form-btns add-admin justify">
+                <Components.Button
+                  status="primary"
+                  onClick={this.handleSubmit}
+                  bezelStyle="solid"
+                  i18nKeyLabel="accountsUI.info.sendInvitation"
+                  label="Send Invitation"
                 />
-              </button>
+              </div>
             </div>
           </form>
         </div>

@@ -6,6 +6,7 @@ class GroupForm extends Component {
   static propTypes = {
     createGroup: PropTypes.func,
     group: PropTypes.object,
+    i18nKeyLabel: PropTypes.string,
     submitLabel: PropTypes.string,
     updateGroup: PropTypes.func
   };
@@ -45,40 +46,37 @@ class GroupForm extends Component {
         <div className="panel-body">
           <form className="add-group">
             <div className="form-group">
-              <label htmlFor="name">
-                <Components.Translation defaultValue="Name" i18nKey="admin.groups.name" />
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="name"
+              <Components.TextField
+                i18nKeyLabel="admin.groups.name"
+                label="Name"
                 name="name"
-                placeholder="e.g Shop Manager"
-                onChange={this.onChange}
+                id="add-group-name"
+                type="text"
+                tabIndex="1"
                 value={this.state.name}
+                onChange={this.onChange}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="description">
-                <Components.Translation defaultValue="Description" i18nKey="admin.groups.description" />
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="description"
+              <Components.TextField
+                i18nKeyLabel="admin.groups.description"
+                label="Description"
                 name="description"
-                onChange={this.onChange}
+                id="add-group-description"
+                type="text"
+                tabIndex="2"
                 value={this.state.description}
+                onChange={this.onChange}
               />
             </div>
             <div className="justify">
-              <button className="btn btn-primary" onClick={this.handleSubmit}>
-                <Components.Translation
-                  className="content-cell"
-                  defaultValue={this.props.submitLabel}
-                  i18nKey="admin.groups.createGroup"
-                />
-              </button>
+              <Components.Button
+                status="primary"
+                onClick={this.handleSubmit}
+                bezelStyle="solid"
+                i18nKeyLabel={this.props.i18nKeyLabel}
+                label={this.props.submitLabel}
+              />
             </div>
           </form>
         </div>

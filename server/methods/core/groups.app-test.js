@@ -20,6 +20,11 @@ describe("Group test", function () {
     permissions: ["sample-role1", "sample-role2"]
   };
 
+  const sampleCustomerGroup = {
+    name: "Customer",
+    permissions: ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"]
+  };
+
   before(function () {
     methods = {
       createGroup: Meteor.server.method_handlers["group/createGroup"],
@@ -109,13 +114,14 @@ describe("Group test", function () {
     expect(updatedUser.roles[shop._id]).to.include.members(sampleGroup.permissions);
   });
 
-  it("should remove a user from a group and update user's permissions", function () {
+  it("should remove a user from a group and update user's permissions to default customer", function () {
     sandbox.stub(Reaction, "hasPermission", () => true);
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
     spyOnMethod("removeUser", shop._id);
 
     Meteor.call("group/createGroup", sampleGroup, shop._id);
+    Meteor.call("group/createGroup", sampleCustomerGroup, shop._id);
     const group = Groups.findOne({ shopId: shop._id });
     Meteor.call("group/addUser", user._id, group._id);
     let updatedUser = Meteor.users.findOne({ _id: user._id });
@@ -123,7 +129,7 @@ describe("Group test", function () {
 
     Meteor.call("group/removeUser", user._id, group._id);
     updatedUser = Meteor.users.findOne({ _id: user._id });
-    expect(updatedUser.roles[shop._id]).to.not.include.members(sampleGroup.permissions);
+    expect(updatedUser.roles[shop._id]).to.include.members(sampleCustomerGroup.permissions);
   });
 
   it("should ensure a user's permissions does not include roles from previous group", function () {
