@@ -10,17 +10,15 @@
           "shopifyConnectDescription": "Data Connector for Shopify"
         },
         "shopifyConnectSettings": {
-          "importProducts": "Import Products from Shopify",
+          "importProducts": "Import Products",
+          "importing": "Importing ... This could take a little while.",
           "editApiKey": "Edit API Key",
           "editPassword": "Edit API Password",
           "editSharedSecret": "Edit API Shared Secret",
           "editShopifyDomain": "Edit Shopify Domain",
-          "productImportSuccess": "Products imported successfully.",
-          "productImportFailed": "Error importing products."
+          "importSuccess": "Products imported successfully.",
+          "importFailed": "Error importing products."
         }
-      },
-      "shippo": {
-        "connectedAndSaved": "Settings saved! Shippo API is now enabled."
       }
     }
   }

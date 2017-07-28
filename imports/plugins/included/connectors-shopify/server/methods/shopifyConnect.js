@@ -280,210 +280,214 @@ export const methods = {
         const shopifyProducts = await shopify.product.list({ ...opts, page: page });
 
         for (const shopifyProduct of shopifyProducts) {
-          Logger.debug(`Importing ${shopifyProduct.title}`);
-          const price = { min: null, max: null, range: "0.00" };
+          if (!Products.findOne({ shopifyId: shopifyProduct.id }, { fields: { _id: 1 } })) {
+            Logger.debug(`Importing ${shopifyProduct.title}`);
+            const price = { min: null, max: null, range: "0.00" };
 
-          // Get tags from shopify and register them if they don't exist.
-          // push tag Id's into our hashtags array for use in the product
-          // We can't load all tags beforehand because Shopify doesn't have a tags API
-          const hashtags = [];
-          const shopifyTags = shopifyProduct.tags.split(",");
-          for (const tag of shopifyTags) {
-            if (tag !== "") {
-              const normalizedTag = {
-                name: tag,
-                slug: Reaction.getSlug(tag),
-                shopId: shopId,
-                isTopLevel: false,
-                updatedAt: new Date(),
-                createdAt: new Date()
-              };
+            // Get tags from shopify and register them if they don't exist.
+            // push tag Id's into our hashtags array for use in the product
+            // We can't load all tags beforehand because Shopify doesn't have a tags API
+            const hashtags = [];
+            const shopifyTags = shopifyProduct.tags.split(",");
+            for (const tag of shopifyTags) {
+              if (tag !== "") {
+                const normalizedTag = {
+                  name: tag,
+                  slug: Reaction.getSlug(tag),
+                  shopId: shopId,
+                  isTopLevel: false,
+                  updatedAt: new Date(),
+                  createdAt: new Date()
+                };
 
-              // If we have a cached tag for this slug, we don't need to create a new one
-              if (!tagCache[normalizedTag.slug]) {
-                // this tag doesn't exist, create it, add it to our tag cache
-                normalizedTag._id = Tags.insert(normalizedTag);
-                tagCache[normalizedTag.slug] = normalizedTag._id;
+                // If we have a cached tag for this slug, we don't need to create a new one
+                if (!tagCache[normalizedTag.slug]) {
+                  // this tag doesn't exist, create it, add it to our tag cache
+                  normalizedTag._id = Tags.insert(normalizedTag);
+                  tagCache[normalizedTag.slug] = normalizedTag._id;
+                }
+                // push the tag's _id into hashtags from the cache
+                hashtags.push(tagCache[normalizedTag.slug]);
               }
-              // push the tag's _id into hashtags from the cache
-              hashtags.push(tagCache[normalizedTag.slug]);
             }
-          }
 
-          // Get Shopify variants, options and ternary options
-          const { shopifyVariants, shopifyOptions, shopifyTernaryOptions } = getShopifyVariantsAndOptions(shopifyProduct);
+            // Get Shopify variants, options and ternary options
+            const { shopifyVariants, shopifyOptions, shopifyTernaryOptions } = getShopifyVariantsAndOptions(shopifyProduct);
 
-          // Setup reaction product
-          const reactionProduct = createReactionProductFromShopifyProduct({ shopifyProduct, shopId, hashtags });
+            // Setup reaction product
+            const reactionProduct = createReactionProductFromShopifyProduct({ shopifyProduct, shopId, hashtags });
 
-          // Insert product, save id
-          const reactionProductId = Products.insert(reactionProduct, { selector: { type: "simple" }, publish: true });
-          ids.push(reactionProductId);
+            // Insert product, save id
+            const reactionProductId = Products.insert(reactionProduct, { selector: { type: "simple" }, publish: true });
+            ids.push(reactionProductId);
 
-          saveImage(shopifyProduct.image.src, {
-            ownerId: Meteor.userId(),
-            productId: reactionProductId,
-            variantId: reactionProductId,
-            shopId: shopId,
-            priority: 0,
-            toGrid: 1
-          });
+            saveImage(shopifyProduct.image.src, {
+              ownerId: Meteor.userId(),
+              productId: reactionProductId,
+              variantId: reactionProductId,
+              shopId: shopId,
+              priority: 0,
+              toGrid: 1
+            });
 
-          // If variantLabel exists, we have at least one variant
-          if (shopifyVariants) {
-            Logger.debug(`Importing ${shopifyProduct.title} variants`);
+            // If variantLabel exists, we have at least one variant
+            if (shopifyVariants) {
+              Logger.debug(`Importing ${shopifyProduct.title} variants`);
 
-            shopifyVariants.forEach((variant, i) => {
-              const shopifyVariant = shopifyProduct.variants.find((v) => v.option1 === variant);
+              shopifyVariants.forEach((variant, i) => {
+                const shopifyVariant = shopifyProduct.variants.find((v) => v.option1 === variant);
 
-              if (shopifyVariant) {
-                // create the Reaction variant
-                const reactionVariant = createReactionVariantFromShopifyVariant({
-                  shopifyVariant,
-                  variant,
-                  index: i,
-                  ancestors: [reactionProductId],
-                  shopId
-                });
+                if (shopifyVariant) {
+                  // create the Reaction variant
+                  const reactionVariant = createReactionVariantFromShopifyVariant({
+                    shopifyVariant,
+                    variant,
+                    index: i,
+                    ancestors: [reactionProductId],
+                    shopId
+                  });
 
-                // insert the Reaction variant
-                const reactionVariantId = Products.insert(reactionVariant, { publish: true });
-                ids.push(reactionVariantId);
+                  // insert the Reaction variant
+                  const reactionVariantId = Products.insert(reactionVariant, { publish: true });
+                  ids.push(reactionVariantId);
 
-                // If we have shopify options, create reaction options
-                if (shopifyOptions) {
-                  Logger.debug(`Importing ${shopifyProduct.title} ${variant} options`);
-                  shopifyOptions.forEach((option, j) => {
-                    // Find the option that nests under our current variant.
-                    const shopifyOption = shopifyProduct.variants.find((o) => {
-                      return o.option1 === variant && o.option2 === option;
-                    });
-
-                    if (shopifyOption) {
-                      const reactionOption = createReactionVariantFromShopifyVariant({
-                        shopifyVariant: shopifyOption,
-                        variant: option,
-                        index: j,
-                        ancestors: [reactionProductId, reactionVariantId],
-                        shopId
+                  // If we have shopify options, create reaction options
+                  if (shopifyOptions) {
+                    Logger.debug(`Importing ${shopifyProduct.title} ${variant} options`);
+                    shopifyOptions.forEach((option, j) => {
+                      // Find the option that nests under our current variant.
+                      const shopifyOption = shopifyProduct.variants.find((o) => {
+                        return o.option1 === variant && o.option2 === option;
                       });
 
-                      const reactionOptionId = Products.insert(reactionOption, { type: "variant" });
-                      ids.push(reactionOptionId);
-                      Logger.debug(`Imported ${shopifyProduct.title} ${variant}/${option}`);
-
-                      // Update Max Price
-                      if (price.max === null || price.max < reactionOption.price) {
-                        price.max = reactionOption.price;
-                      }
-
-                      // Update Min Price
-                      if (price.min === null || price.min > reactionOption.price) {
-                        price.min = reactionOption.price;
-                      }
-
-                      // Save all relevant variant images to our option
-                      const optionImages = findVariantImages(shopifyOption.id, shopifyProduct.images);
-                      for (const optionImage of optionImages) {
-                        saveImage(optionImage.src, {
-                          ownerId: Meteor.userId(),
-                          productId: reactionProductId,
-                          variantId: reactionOptionId,
-                          shopId: shopId,
-                          priority: 1,
-                          toGrid: 0
+                      if (shopifyOption) {
+                        const reactionOption = createReactionVariantFromShopifyVariant({
+                          shopifyVariant: shopifyOption,
+                          variant: option,
+                          index: j,
+                          ancestors: [reactionProductId, reactionVariantId],
+                          shopId
                         });
-                      }
 
-                      // THIS LOOP INSERTS PRODUCTS A LEVEL DEEPER THAN THE REACTION
-                      // UI CURRENTLY SUPPORTS. IF YOUR SHOPIFY STORE USES THREE OPTION
-                      // LEVELS, YOU WILL NEED TO BUILD UI SUPPORT FOR THAT.
-                      if (shopifyTernaryOptions) {
-                        Logger.warn("Importing shopify product with 3 options. The Reaction UI does not currently support this.");
-                        Logger.debug(`Importing ${shopifyProduct.title} ${variant} ${option} options`);
-                        shopifyTernaryOptions.forEach((ternaryOption, k) => {
-                          // Find the option that nests under our current variant.
-                          const shopifyTernaryOption = shopifyProduct.variants.find((o) => {
-                            return o.option1 === variant && o.option2 === option && o.option3 === ternaryOption;
+                        const reactionOptionId = Products.insert(reactionOption, { type: "variant" });
+                        ids.push(reactionOptionId);
+                        Logger.debug(`Imported ${shopifyProduct.title} ${variant}/${option}`);
+
+                        // Update Max Price
+                        if (price.max === null || price.max < reactionOption.price) {
+                          price.max = reactionOption.price;
+                        }
+
+                        // Update Min Price
+                        if (price.min === null || price.min > reactionOption.price) {
+                          price.min = reactionOption.price;
+                        }
+
+                        // Save all relevant variant images to our option
+                        const optionImages = findVariantImages(shopifyOption.id, shopifyProduct.images);
+                        for (const optionImage of optionImages) {
+                          saveImage(optionImage.src, {
+                            ownerId: Meteor.userId(),
+                            productId: reactionProductId,
+                            variantId: reactionOptionId,
+                            shopId: shopId,
+                            priority: 1,
+                            toGrid: 0
                           });
+                        }
 
-                          if (shopifyTernaryOption) {
-                            const reactionTernaryOption = createReactionVariantFromShopifyVariant({
-                              shopifyVariant: shopifyTernaryOption,
-                              variant: ternaryOption,
-                              index: k,
-                              ancestors: [reactionProductId, reactionVariantId, reactionOptionId],
-                              shopId
+                        // THIS LOOP INSERTS PRODUCTS A LEVEL DEEPER THAN THE REACTION
+                        // UI CURRENTLY SUPPORTS. IF YOUR SHOPIFY STORE USES THREE OPTION
+                        // LEVELS, YOU WILL NEED TO BUILD UI SUPPORT FOR THAT.
+                        if (shopifyTernaryOptions) {
+                          Logger.warn("Importing shopify product with 3 options. The Reaction UI does not currently support this.");
+                          Logger.debug(`Importing ${shopifyProduct.title} ${variant} ${option} options`);
+                          shopifyTernaryOptions.forEach((ternaryOption, k) => {
+                            // Find the option that nests under our current variant.
+                            const shopifyTernaryOption = shopifyProduct.variants.find((o) => {
+                              return o.option1 === variant && o.option2 === option && o.option3 === ternaryOption;
                             });
 
-                            const reactionTernaryOptionId = Products.insert(reactionTernaryOption, { type: "variant" });
-                            ids.push(reactionTernaryOptionId);
-                            Logger.info(`Imported ${shopifyProduct.title} ${variant}/${option}/${ternaryOption}`);
-
-                            // Update Max Price
-                            if (price.max === null || price.max < reactionTernaryOption.price) {
-                              price.max = reactionTernaryOption.price;
-                            }
-
-                            // Update Min Price
-                            if (price.min === null || price.min > reactionTernaryOption.price) {
-                              price.min = reactionTernaryOption.price;
-                            }
-
-                            // Save all relevant variant images to our option
-                            const ternaryOptionImages = findVariantImages(shopifyTernaryOption.id, shopifyProduct.images);
-                            for (const ternaryOptionImage of ternaryOptionImages) {
-                              saveImage(ternaryOptionImage.src, {
-                                ownerId: Meteor.userId(),
-                                productId: reactionProductId,
-                                variantId: reactionOptionId,
-                                shopId: shopId,
-                                priority: 1,
-                                toGrid: 0
+                            if (shopifyTernaryOption) {
+                              const reactionTernaryOption = createReactionVariantFromShopifyVariant({
+                                shopifyVariant: shopifyTernaryOption,
+                                variant: ternaryOption,
+                                index: k,
+                                ancestors: [reactionProductId, reactionVariantId, reactionOptionId],
+                                shopId
                               });
-                            } // So many close parens and brackets. Don't get lost.
-                          }
-                        }); // End shopifyTernaryOptions forEach loop
+
+                              const reactionTernaryOptionId = Products.insert(reactionTernaryOption, { type: "variant" });
+                              ids.push(reactionTernaryOptionId);
+                              Logger.info(`Imported ${shopifyProduct.title} ${variant}/${option}/${ternaryOption}`);
+
+                              // Update Max Price
+                              if (price.max === null || price.max < reactionTernaryOption.price) {
+                                price.max = reactionTernaryOption.price;
+                              }
+
+                              // Update Min Price
+                              if (price.min === null || price.min > reactionTernaryOption.price) {
+                                price.min = reactionTernaryOption.price;
+                              }
+
+                              // Save all relevant variant images to our option
+                              const ternaryOptionImages = findVariantImages(shopifyTernaryOption.id, shopifyProduct.images);
+                              for (const ternaryOptionImage of ternaryOptionImages) {
+                                saveImage(ternaryOptionImage.src, {
+                                  ownerId: Meteor.userId(),
+                                  productId: reactionProductId,
+                                  variantId: reactionOptionId,
+                                  shopId: shopId,
+                                  priority: 1,
+                                  toGrid: 0
+                                });
+                              } // So many close parens and brackets. Don't get lost.
+                            }
+                          }); // End shopifyTernaryOptions forEach loop
+                        }
                       }
+                    }); // End shopifyOptions forEach loop
+                  } else {
+                    // Product does not have options, just variants
+                    // Update Max Price
+                    if (price.max === null || price.max < reactionVariant.price) {
+                      price.max = reactionVariant.price;
                     }
-                  }); // End shopifyOptions forEach loop
-                } else {
-                // Product does not have options, just variants
-                  // Update Max Price
-                  if (price.max === null || price.max < reactionVariant.price) {
-                    price.max = reactionVariant.price;
-                  }
 
-                  // Update Min Price
-                  if (price.min === null || price.min > reactionVariant.price) {
-                    price.min = reactionVariant.price;
-                  }
+                    // Update Min Price
+                    if (price.min === null || price.min > reactionVariant.price) {
+                      price.min = reactionVariant.price;
+                    }
 
-                  // Save all relevant variant images to our variant.
-                  const variantImages = findVariantImages(shopifyVariant.id, shopifyProduct.images);
-                  for (const variantImage of variantImages) {
-                    saveImage(variantImage.src, {
-                      ownerId: Meteor.userId(),
-                      productId: reactionProductId,
-                      variantId: reactionVariantId,
-                      shopId: shopId,
-                      priority: 1,
-                      toGrid: 0
-                    });
+                    // Save all relevant variant images to our variant.
+                    const variantImages = findVariantImages(shopifyVariant.id, shopifyProduct.images);
+                    for (const variantImage of variantImages) {
+                      saveImage(variantImage.src, {
+                        ownerId: Meteor.userId(),
+                        productId: reactionProductId,
+                        variantId: reactionVariantId,
+                        shopId: shopId,
+                        priority: 1,
+                        toGrid: 0
+                      });
+                    }
+                    Logger.debug(`Imported ${shopifyProduct.title} ${variant}`);
                   }
-                  Logger.debug(`Imported ${shopifyProduct.title} ${variant}`);
                 }
-              }
-            });
-          }
+              });
+            }
 
-          // Set final product price
-          if (price.min !== price.max) {
-            price.range = `${price.min} - ${price.max}`;
-          } else {
-            price.range = `${price.max}`;
+            // Set final product price
+            if (price.min !== price.max) {
+              price.range = `${price.min} - ${price.max}`;
+            } else {
+              price.range = `${price.max}`;
+            }
+            Products.update({ _id: reactionProductId }, { $set: { price: price } }, { selector: { type: "simple" }, publish: true });
+          } else { // product already exists check
+            Logger.debug(`Product ${shopifyProduct.title} already exists`);
           }
-          Products.update({ _id: reactionProductId }, { $set: { price: price } }, { selector: { type: "simple" }, publish: true });
         } // End product loop
       } // End pages loop
       Logger.info(`Reaction Shopify Connector has finished importing ${ids.length} products`);
