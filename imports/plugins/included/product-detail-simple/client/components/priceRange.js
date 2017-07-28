@@ -1,12 +1,15 @@
 import React from "react";
-import { Currency } from "/imports/plugins/core/ui/client/components/";
+import { pure } from "recompose";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 const PriceRange = (props) => {
   return (
     <div className="pdp price-range">
-      <Currency {...props} />
+      <Components.Currency {...props} />
     </div>
   );
 };
+
+registerComponent("PriceRange", PriceRange, pure);
 
 export default PriceRange;

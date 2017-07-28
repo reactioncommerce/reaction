@@ -23,7 +23,7 @@ Meteor.publish("Accounts", function (userId) {
 
   const adminGroups = Collections.Groups.find({
     name: {
-      $nin: ["customer", "guest"]
+      $in: ["customer", "guest"]
     }
   }, {
     fields: { _id: 1 }
@@ -32,13 +32,13 @@ Meteor.publish("Accounts", function (userId) {
   // global admin can get all accounts
   if (Roles.userIsInRole(this.userId, ["owner"], Roles.GLOBAL_GROUP)) {
     return Collections.Accounts.find({
-      groups: { $in: adminGroups }
+      groups: { $nin: adminGroups }
     });
 
   // shop admin gets accounts for just this shop
   } else if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
     return Collections.Accounts.find({
-      groups: { $in: adminGroups },
+      groups: { $nin: adminGroups },
       shopId: shopId
     });
   }

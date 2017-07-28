@@ -1,23 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
-class FormActions extends Component {
-  static propTypes = {
-    children: PropTypes.node
-  }
+const FormActions = ({ children }) => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "flex-end"
+    }}
+  >
+    {children}
+  </div>
+);
 
-  render() {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end"
-        }}
-      >
-        {this.props.children}
-      </div>
-    );
-  }
-}
+FormActions.propTypes = {
+  children: PropTypes.node
+};
+
+registerComponent("FormActions", FormActions);
 
 export default FormActions;

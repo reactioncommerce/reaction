@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
+import _ from "lodash";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction, Logger, Hooks } from "/server/api";
 import { Accounts, Groups } from "/lib/collections";
@@ -32,9 +33,17 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
+    const defaultCustomerGroupForShop = Groups.findOne({ slug: "customer", shopId }) || {};
+    const defaultAdminPermissions = (defaultCustomerGroupForShop.permissions || []).concat("dashboard");
     const newGroupData = Object.assign({}, groupData, {
       slug: getSlug(groupData.name), shopId
     });
+
+    if (!newGroupData.permissions) {
+      newGroupData.permissions = [];
+    }
+
+    newGroupData.permissions = _.uniq([...newGroupData.permissions, ...defaultAdminPermissions]);
 
     // ensure one group type per shop
     const groupExists = Groups.findOne({ slug: newGroupData.slug, shopId });
@@ -98,6 +107,7 @@ Meteor.methods({
    * group/addUser
    * @summary adds a user to a permission group
    * It updates the user's list of permissions/roles with the defined the list defined for the group
+   * (NB: At this time, a user only belongs to only one group per shop)
    * @param {String} userId - current data of the group to be updated
    * @param {String} groupId - id of the group
    * @return {Object} - object.status of 200 on success or Error object on failure
@@ -111,10 +121,20 @@ Meteor.methods({
     if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
+    // make sure user only belongs to one group per shop
+    const allGroupsInShop = Groups.find({ shopId }).fetch().map((grp) => grp._id);
+    const currentUserGroups = Accounts.findOne({ _id: userId }).groups || [];
+    let newGroups = [];
+    currentUserGroups.forEach((grp) => {
+      if (allGroupsInShop.indexOf(grp) < 0) {
+        newGroups.push(grp);
+      }
+    });
+    newGroups = newGroups.concat(groupId);
 
     try {
       setUserPermissions({ _id: userId }, permissions, shopId);
-      Accounts.update({ _id: userId }, { $set: { groups: [groupId] } });
+      Accounts.update({ _id: userId }, { $set: { groups: newGroups } });
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -124,7 +144,8 @@ Meteor.methods({
 
   /**
    * group/removeUser
-   * @summary removes a user from a group for a shop, and updates the user's permission list
+   * @summary removes a user from a group for a shop, and adds them to the default customer group.
+   * It updates the user's permission list to reflect. (NB: At this time, a user only belongs to only one group per shop)
    * @param {String} userId - current data of the group to be updated
    * @param {String} groupId - name of the group
    * @return {Object} - object.status of 200 on success or Error object on failure
@@ -134,7 +155,8 @@ Meteor.methods({
     check(groupId, String);
 
     const user = Accounts.findOne({ _id: userId });
-    const { permissions, shopId } = Groups.findOne({ _id: groupId }) || {};
+    const { shopId } = Groups.findOne({ _id: groupId }) || {};
+    const defaultCustomerGroupForShop = Groups.findOne({ slug: "customer", shopId }) || {};
 
     if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access Denied");
@@ -145,8 +167,8 @@ Meteor.methods({
     }
 
     try {
-      Meteor.call("accounts/removeUserPermissions", userId, permissions, shopId);
-      Accounts.update({ _id: userId }, { $pull: { groups: groupId } });
+      setUserPermissions(user, defaultCustomerGroupForShop.permissions, shopId);
+      Accounts.update({ _id: userId, groups: groupId }, { $set: { "groups.$": defaultCustomerGroupForShop._id } }); // replace the old id with new id
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -161,7 +183,7 @@ function setUserPermissions(users, permissions, shopId) {
     affectedUsers = [users];
   }
 
-  return affectedUsers.forEach(user => Roles.setUserRoles(user._id, permissions, shopId));
+  return affectedUsers.forEach((user) => Roles.setUserRoles(user._id, permissions, shopId));
 }
 
 // set default admin user's account as "owner"

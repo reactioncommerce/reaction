@@ -13,6 +13,10 @@
           "accountsSettingsLabel": "Accounts",
           "accountsSettingsTitle": "Accounts",
           "accountsSettingsDescription": "Account Settings"
+        },
+        "groupsInvite": {
+          "name" :"John Smith",
+          "email": "johnsmith@reactioncommerce.com"
         }
       }
     }

@@ -1,11 +1,11 @@
+import { Components } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
-import ProductsContainer from "/imports/plugins/included/product-variant/containers/productsContainer";
 
 Template.products.helpers({
   component() {
-    return ProductsContainer;
+    return Components.Products;
   }
 });
 
