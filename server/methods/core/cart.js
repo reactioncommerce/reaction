@@ -524,45 +524,58 @@ Meteor.methods({
   "cart/copyCartToOrder": function (cartId) {
     check(cartId, String);
     const cart = Collections.Cart.findOne(cartId);
-    // security check
+
+    // security check - method can only be called on own cart
     if (cart.userId !== this.userId) {
       throw new Meteor.Error(403, "Access Denied");
     }
+
+    // Init new order object from existing cart
     const order = Object.assign({}, cart);
+
+    // get sessionId from cart while cart is fresh
     const sessionId = cart.sessionId;
 
+    // If there are no order items, throw an error. We won't create an empty order
     if (!order.items || order.items.length === 0) {
       const msg = "An error occurred saving the order. Missing cart items.";
       Logger.error(msg);
       throw new Meteor.Error("no-cart-items", msg);
     }
 
+    // Debug only message to identify the current cartId
     Logger.debug("cart/copyCartToOrder", cartId);
-    // reassign the id, we'll get a new orderId
+
+    // Set our new order's cartId to existing cart._id
+    // We'll get a new _id for our order
     order.cartId = cart._id;
 
-    // a helper for guest login, we let guest add email afterwords
-    // for ease, we'll also add automatically for logged in users
+    // This block assigns an existing user's email associated with their account to this order
+    // We copied order from cart, so this userId and email are coming from the existing cart
     if (order.userId && !order.email) {
-      const user = Collections.Accounts.findOne(order.userId);
-      // we could have a use case here when email is not defined by some reason,
-      // we could throw an error, but it's not pretty clever, so let it go w/o
-      // email
-      if (typeof user === "object" && user.emails) {
-        for (const email of user.emails) {
-          // alternate order email address
+      // If we have a userId, but do _not_ have an email associated with this order
+      // we need to go find the account associated with this userId
+      const account = Collections.Accounts.findOne(order.userId);
+
+      // Check to make sure that the account exists and has an emails field
+      if (typeof account === "object" && account.emails) {
+        for (const email of account.emails) {
+          // If a user has specified an alternate "order" email address, use that
           if (email.provides === "orders") {
             order.email = email.address;
+          // Otherwise, check to see if the user has a "default" email address
           } else if (email.provides === "default") {
             order.email = email.address;
           }
+          // If we can't find any relevant email addresses for the user, we'll
+          // let them assign an email address to this order after the checkout
         }
       }
     }
 
-    // schema should provide order defaults
-    // so we'll delete the cart autovalues
-    delete order.createdAt; // autovalues
+    // The schema will provide default values for these fields in our new order
+    // so we'll delete the values copied from the cart
+    delete order.createdAt; // autovalues from cart
     delete order.updatedAt;
     delete order.cartCount;
     delete order.cartShipping;
@@ -572,7 +585,8 @@ Meteor.methods({
     delete order.cartTotal;
     delete order._id;
 
-    // `order.shipping` is array ?
+    // TODO: update this to handle multiple shipments instead of hardcoding to
+    // first element in `order.shipping` array
     if (Array.isArray(order.shipping)) {
       if (order.shipping.length > 0) {
         order.shipping[0].paymentId = order.billing[0]._id;
@@ -586,7 +600,7 @@ Meteor.methods({
     }
 
     // Add current exchange rate into order.billing.currency
-    // If user currenct === shop currency, exchange rate = 1.0
+    // If user currency === shop currency, exchange rate = 1.0
     const currentUser = Meteor.user();
     let userCurrency = Reaction.getShopCurrency();
     let exchangeRate = "1.00";
@@ -608,12 +622,34 @@ Meteor.methods({
 
     if (!order.billing[0].currency) {
       order.billing[0].currency = {
+        // userCurrency is shopCurrency unless user has selected a different currency than the shop
         userCurrency: userCurrency
       };
     }
 
+    order.items = order.items.map(item => {
+      item.shippingMethod = order.shipping[order.shipping.length - 1];
+      item.workflow = {
+        status: "new",
+        workflow: ["coreOrderWorkflow/created"]
+      };
+
+      return item;
+    });
+
+    // TODO: update this to assign each item to the correct shipment based on
+    // which fulfillment provider is serving that item.
     _.each(order.items, (item) => {
+      // TODO: Loop through items based on fulfillment provider / payment / shopID
+      // TODO: Set each order item workflow to new
+      // TODO: Set each order item workflow workflow to "created"
+      // TODO: Assign correct shipment to order item
+      // TODO: Assign correct payment to order item (perhaps in a different part of code)
+
+      // If the shipment exists
       if (order.shipping[0].items) {
+        // Assign each item in the order to the correct shipment
+        // TODO: We should also be assigning the correct shipment to each order item here
         order.shipping[0].items.push({
           _id: item._id,
           productId: item.productId,
@@ -623,6 +659,9 @@ Meteor.methods({
       }
     });
 
+    // TODO: Set all shipping statuses to false. Consider eliminating in favor
+    // of order item workflow status.
+    // Set shipping statuses to false
     order.shipping[0].items.packed = false;
     order.shipping[0].items.shipped = false;
     order.shipping[0].items.delivered = false;
@@ -1057,6 +1096,18 @@ Meteor.methods({
     let update;
     // temp hack until we build out multiple billing handlers
     // if we have an existing item update it, otherwise add to set.
+
+    // TODO: Marketplace Payments - Add support for multiple billing handlers here
+    if (cart.items) {
+      // TODO: Needs to be improved to consider which transaction goes with which item
+      // For now just attach the transaction to each item in the cart
+      const cartItemsWithPayment = cart.items.map(item => {
+        item.transaction = paymentMethod.transactions[paymentMethod.transactions.length - 1];
+        return item;
+      });
+      cart.items = cartItemsWithPayment;
+    }
+
     if (cart.billing) {
       selector = {
         "_id": cartId,
@@ -1065,7 +1116,8 @@ Meteor.methods({
       update = {
         $set: {
           "billing.$.paymentMethod": paymentMethod,
-          "billing.$.invoice": invoice
+          "billing.$.invoice": invoice,
+          "items": cart.items
         }
       };
     } else {
@@ -1076,6 +1128,9 @@ Meteor.methods({
         $addToSet: {
           "billing.paymentMethod": paymentMethod,
           "billing.invoice": invoice
+        },
+        $set: {
+          items: cart.items
         }
       };
     }
