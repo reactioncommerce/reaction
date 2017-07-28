@@ -23,14 +23,14 @@ Migrations.add({
       };
 
       Object.keys(roles).forEach((groupKeys) => {
-        Logger.info(`creating group ${groupKeys} for shop ${shop.name}`);
+        Logger.debug(`creating group ${groupKeys} for shop ${shop.name}`);
         const groupId = Groups.insert({
           name: groupKeys,
           slug: groupKeys,
           permissions: roles[groupKeys],
           shopId: shop._id
         });
-        Logger.info(`new group "${groupKeys}" created with id ${groupId}"`);
+        Logger.debug(`new group "${groupKeys}" created with id ${groupId}"`);
         return updateAccountsBelongingToGroup({ shopId: shop._id, permissions: roles[groupKeys], groupId });
       });
     }
@@ -39,7 +39,7 @@ Migrations.add({
       const query = { [`roles.${shopId}`]: { $all: permissions } };
       const matchingUserIds = Meteor.users.find(query).fetch().map((user) => user._id);
       if (matchingUserIds.length) {
-        Logger.info(`updating following matching Accounts to new group: ${matchingUserIds}`);
+        Logger.debug(`updating following matching Accounts to new group: ${matchingUserIds}`);
       }
       Accounts.update({ _id: { $in: matchingUserIds }, shopId }, { $addToSet: { groups: groupId } });
     }
