@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class Checkbox extends Component {
   handleChange = (event) => {
@@ -19,7 +19,7 @@ class Checkbox extends Component {
           ref="checkbox"
           type="checkbox"
         />
-        <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+        <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
       </label>
     );
   }
@@ -36,5 +36,7 @@ Checkbox.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func
 };
+
+registerComponent("Checkbox", Checkbox);
 
 export default Checkbox;

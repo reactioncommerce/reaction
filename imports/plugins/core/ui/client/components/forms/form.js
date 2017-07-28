@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { map, update, set, at, isEqual } from "lodash";
 import classnames from "classnames";
-import { Switch, Button, TextField, Select, FormActions } from "../";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class Form extends Component {
   static defaultProps = {
@@ -151,7 +151,7 @@ class Form extends Component {
     switch (field.type) {
       case "boolean":
         fieldElement = (
-          <Switch
+          <Components.Switch
             {...sharedProps}
             onChange={this.handleChange}
             checked={this.valueForField(field.name)}
@@ -160,7 +160,7 @@ class Form extends Component {
         break;
       case "string":
         fieldElement = (
-          <TextField
+          <Components.TextField
             {...sharedProps}
             onChange={this.handleChange}
             value={this.valueForField(field.name)}
@@ -169,7 +169,7 @@ class Form extends Component {
         break;
       case "select":
         fieldElement = (
-          <Select
+          <Components.Select
             {...sharedProps}
             onChange={this.handleSelectChange}
             options={field.options}
@@ -275,15 +275,15 @@ class Form extends Component {
   renderFormActions() {
     if (this.props.autoSave === false) {
       return (
-        <FormActions>
-          <Button
+        <Components.FormActions>
+          <Components.Button
             label={"Save Changes"}
             i18nKeyLabel={"app.saveChanges"}
             bezelStyle={"solid"}
             primary={true}
             type="submit"
           />
-        </FormActions>
+        </Components.FormActions>
       );
     }
   }
@@ -297,5 +297,7 @@ class Form extends Component {
     );
   }
 }
+
+registerComponent("Form", Form);
 
 export default Form;

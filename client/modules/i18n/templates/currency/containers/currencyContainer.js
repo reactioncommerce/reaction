@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { Match } from "meteor/check";
 import { Reaction } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Cart, Shops } from "/lib/collections";
 import Currency from "../components/currency";
 

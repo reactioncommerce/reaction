@@ -38,7 +38,7 @@ jobs:
           name: Restoring Meteor dev_bundle cache
           key: dev_bundle
 
-      - run: npm test
+      # - run: npm test
       - run: reaction test
 
       - save_cache:

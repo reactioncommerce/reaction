@@ -1,5 +1,5 @@
+import { Components } from "@reactioncommerce/reaction-components";
 import { Template } from "meteor/templating";
-import { ProductAdminContainer } from "../containers";
 
 Template.ProductAdmin.helpers({
   component() {
@@ -7,7 +7,7 @@ Template.ProductAdmin.helpers({
 
     return {
       ...currentData,
-      component: ProductAdminContainer
+      component: Components.ProductAdmin
     };
   }
 });

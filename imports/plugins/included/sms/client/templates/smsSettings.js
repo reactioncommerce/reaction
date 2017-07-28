@@ -1,10 +1,10 @@
 import { Template } from "meteor/templating";
-import SmsSettings from "../containers/smsSettingsContainer";
+import { Components } from "@reactioncommerce/reaction-components";
 
 Template.smsSettings.helpers({
   SmsSettings() {
     return {
-      component: SmsSettings
+      component: Components.SmsSettings
     };
   }
 });

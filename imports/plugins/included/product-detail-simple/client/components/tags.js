@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Translation } from "/imports/plugins/core/ui/client/components/";
-import { TagListContainer, EditContainer } from "/imports/plugins/core/ui/client/containers";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class ProductTags extends Component {
   get tags() {
@@ -17,7 +16,7 @@ class ProductTags extends Component {
     if (this.showEditControls) {
       return (
         <span className="edit-button">
-          <EditContainer
+          <Components.EditContainer
             data={this.props.product}
             disabled={this.props.editable === false}
             editView="ProductAdmin"
@@ -43,10 +42,10 @@ class ProductTags extends Component {
       return (
         <div className="pdp product-tags">
           <h3 className={headerClassName}>
-            <Translation defaultValue="Tags" i18nKey="productDetail.tags" />
+            <Components.Translation defaultValue="Tags" i18nKey="productDetail.tags" />
             {this.renderEditButton()}
           </h3>
-          <TagListContainer
+          <Components.TagList
             editable={false}
             product={this.props.product}
             tags={this.tags}
@@ -64,5 +63,7 @@ ProductTags.propTypes = {
   product: PropTypes.object,
   tags: PropTypes.arrayOf(PropTypes.object)
 };
+
+registerComponent("ProductTags", ProductTags);
 
 export default ProductTags;
