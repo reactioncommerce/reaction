@@ -552,18 +552,7 @@ export function inviteShopMember(options) {
   }
 
   const currentUser = Meteor.users.findOne(this.userId);
-
-  let currentUserName;
-
-  if (currentUser) {
-    if (currentUser.profile) {
-      currentUserName = currentUser.profile.name || currentUser.username;
-    } else {
-      currentUserName = currentUser.username;
-    }
-  } else {
-    currentUserName = "Admin";
-  }
+  const currentUserName = getCurrentUserName(currentUser);
 
   // Compile Email with SSR
   const tpl = "accounts/inviteShopMember";
@@ -571,57 +560,9 @@ export function inviteShopMember(options) {
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
-  // Get shop logo, if available. If not, use default logo from file-system
-  let emailLogo;
-  if (Array.isArray(shop.brandAssets)) {
-    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-    const mediaId = Media.findOne(brandAsset.mediaId);
-    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
-  } else {
-    emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
-  }
-
+  const emailLogo = getEmailLogo(shop);
   const token = Random.id();
-
-  const dataForEmail = {
-    // Shop Data
-    shop: shop,
-    contactEmail: shop.emails[0].address,
-    homepage: Meteor.absoluteUrl(),
-    emailLogo: emailLogo,
-    copyrightDate: moment().format("YYYY"),
-    legalName: shop.addressBook[0].company,
-    physicalAddress: {
-      address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
-      city: shop.addressBook[0].city,
-      region: shop.addressBook[0].region,
-      postal: shop.addressBook[0].postal
-    },
-    shopName: shop.name,
-    socialLinks: {
-      display: true,
-      facebook: {
-        display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
-        link: "https://www.facebook.com"
-      },
-      googlePlus: {
-        display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
-        link: "https://plus.google.com"
-      },
-      twitter: {
-        display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
-        link: "https://www.twitter.com"
-      }
-    },
-    // Account Data
-    user: Meteor.user(),
-    currentUserName,
-    invitedUserName: name,
-    url: MeteorAccounts.urls.enrollAccount(token)
-  };
+  const dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
 
   const user = Meteor.users.findOne({
     "emails.address": email
@@ -826,6 +767,74 @@ export function setUserPermissions(userId, permissions, group) {
   }
 }
 
+// Get shop logo, if available. If not, use default logo from file-system
+function getEmailLogo(shop) {
+  let emailLogo;
+  if (Array.isArray(shop.brandAssets)) {
+    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
+    const mediaId = Media.findOne(brandAsset.mediaId);
+    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
+  } else {
+    emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+  }
+  return emailLogo;
+}
+
+function getCurrentUserName(currentUser) {
+  let currentUserName;
+  if (currentUser) {
+    if (currentUser.profile) {
+      currentUserName = currentUser.profile.name || currentUser.username;
+    } else {
+      currentUserName = currentUser.username;
+    }
+  } else {
+    currentUserName = "Admin";
+  }
+  return currentUserName;
+}
+
+function getDataForEmail(options) {
+  const { shop, currentUserName, token, emailLogo, name } = options;
+  return {
+    shop: shop, // Shop Data
+    contactEmail: _.get(shop, "emails[0].address"),
+    homepage: Meteor.absoluteUrl(),
+    emailLogo: emailLogo,
+    copyrightDate: moment().format("YYYY"),
+    legalName: _.get(shop, "addressBook[0].company"),
+    physicalAddress: {
+      address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
+      city: _.get(shop, "addressBook[0].city"),
+      region: _.get(shop, "addressBook[0].region"),
+      postal: _.get(shop, "addressBook[0].postal")
+    },
+    shopName: shop.name,
+    socialLinks: {
+      display: true,
+      facebook: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+        link: "https://www.facebook.com"
+      },
+      googlePlus: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+        link: "https://plus.google.com"
+      },
+      twitter: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+        link: "https://www.twitter.com"
+      }
+    },
+    user: Meteor.user(), // Account Data
+    currentUserName,
+    invitedUserName: name,
+    url: MeteorAccounts.urls.enrollAccount(token)
+  };
+}
+
 /**
  * accounts/createFallbackLoginToken
  * @returns {String} returns a new loginToken for current user,
@@ -853,6 +862,7 @@ Meteor.methods({
   "accounts/addressBookUpdate": addressBookUpdate,
   "accounts/addressBookRemove": addressBookRemove,
   "accounts/inviteShopMember": inviteShopMember,
+  "accounts/inviteShopOwner": inviteShopOwner,
   "accounts/sendWelcomeEmail": sendWelcomeEmail,
   "accounts/addUserPermissions": addUserPermissions,
   "accounts/removeUserPermissions": removeUserPermissions,
