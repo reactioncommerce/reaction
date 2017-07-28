@@ -60,9 +60,16 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name] = packageInfo;
     return registeredPackage;
   },
-  createDefaultGroups() {
+  createDefaultGroups(options) {
+    const { shopId } = options;
     const allGroups = Groups.find({}).fetch();
-    const shops = Shops.find({}).fetch();
+    const query = {};
+
+    if (shopId) {
+      query._id = shopId;
+    }
+
+    const shops = Shops.find(query).fetch();
     const roles = {
       customer: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
       guest: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
