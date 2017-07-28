@@ -127,6 +127,7 @@ class EditGroup extends Component {
       return (
         <Components.GroupForm
           submitLabel="Create Group"
+          i18nKeyLabel="admin.groups.create"
           group={this.state.selectedGroup}
           createGroup={this.createGroup}
         />
@@ -136,6 +137,7 @@ class EditGroup extends Component {
       <Components.GroupForm
         className="update-form"
         submitLabel="Update Group"
+        i18nKeyLabel="admin.groups.update"
         group={this.state.selectedGroup}
         updateGroup={this.updateGroup}
       />

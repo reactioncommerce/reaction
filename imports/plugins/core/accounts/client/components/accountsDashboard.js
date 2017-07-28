@@ -12,12 +12,13 @@ class AccountsDashboard extends Component {
   constructor(props) {
     super(props);
     const { groups, accounts } = this.props;
+    const sortedGroups = sortUsersIntoGroups({ groups, accounts }) || [];
+    const defaultSelectedGroup = sortedGroups[0];
 
     this.state = {
       accounts: accounts,
-      groups: sortUsersIntoGroups({ groups, accounts }),
-      showSideBar: false,
-      selectedGroup: {}
+      groups: sortedGroups,
+      selectedGroup: defaultSelectedGroup
     };
   }
 
@@ -29,36 +30,19 @@ class AccountsDashboard extends Component {
   }
 
   handleGroupSelect = (group) => {
-    this.setState({ showSideBar: true, selectedGroup: group });
+    this.setState({ selectedGroup: group });
   };
 
-  tableClassName() {
-    if (this.state.showSideBar) {
-      return "col-md-9";
-    }
-    return "col-md-12";
-  }
-
-  detailDivClassName() {
-    if (this.state.showSideBar) {
-      return "col-md-3";
-    }
-    return "hide";
-  }
-
   renderGroupDetail = () => {
-    if (this.state.showSideBar) {
-      const { groups, accounts } = this.state;
-      return (
-        <Components.ManageGroups
-          group={this.state.selectedGroup}
-          groups={groups}
-          accounts={accounts}
-          onChangeGroup={this.handleGroupSelect}
-        />
-      );
-    }
-    return null;
+    const { groups, accounts } = this.state;
+    return (
+      <Components.ManageGroups
+        group={this.state.selectedGroup}
+        groups={groups}
+        accounts={accounts}
+        onChangeGroup={this.handleGroupSelect}
+      />
+    );
   };
 
   renderGroupsTable(groups) {
@@ -76,10 +60,10 @@ class AccountsDashboard extends Component {
   render() {
     return (
       <div className="row list-group accounts-table">
-        <div className={this.tableClassName()}>
+        <div className="col-md-9">
           {this.renderGroupsTable(this.state.groups)}
         </div>
-        <div className={this.detailDivClassName()}>
+        <div className="col-md-3">
           {this.renderGroupDetail()}
         </div>
       </div>
