@@ -82,7 +82,7 @@ class LineItems extends Component {
               <NumberTypeInput
                 minValue={0}
                 onChange={this.props.inputOnChange}
-                defaultValue={uniqueItem.quantity}
+                value={uniqueItem.quantity}
                 maxValue={uniqueItem.quantity}
               /> :
               <div>{uniqueItem.quantity}</div>

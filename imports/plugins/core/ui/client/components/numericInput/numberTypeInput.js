@@ -1,73 +1,82 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Button } from "/imports/plugins/core/ui/client/components";
-
 
 class NumberTypeInput extends Component {
   static propTypes = {
     defaultValue: PropTypes.number,
     maxValue: PropTypes.number,
     minValue: PropTypes.number,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    value: PropTypes.number
   }
 
-  state = {
-    inputValue: this.props.defaultValue || 4,
-    inputClassNames: classnames({ "number-field": true })
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: props.value,
+      className: {}
+    };
+
+    this.handleIncrementButton = this.handleIncrementButton.bind(this);
+    this.handleDecrementButton = this.handleDecrementButton.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  incrementButton = () => {
-    const { maxValue } = this.props;
-    const { inputValue } = this.state;
-    const newValue = Number(inputValue) + 1;
-    if (newValue <= maxValue) {
-      this.edited();
-      this.props.onChange(newValue);
-      return this.setState({ inputValue: newValue });
+  /**
+   * update state when component receives props
+   * @param  {Object} nextProps new props
+   * @return {undefined}
+   */
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      value: nextProps.value
+    });
+  }
+
+  handleIncrementButton = () => {
+    const newValue = this.state.value + 1;
+
+    if (newValue <= this.props.maxValue) {
+      this.setState({
+        value: newValue,
+        className: { edited: true }
+      });
     }
   }
 
-  decrementButton = () => {
-    const { minValue } = this.props;
-    const { inputValue } = this.state;
-    const newValue = Number(inputValue) - 1;
-    if (newValue >= minValue) {
-      this.edited();
-      this.props.onChange(newValue);
-      return this.setState({ inputValue: newValue.toString() });
+  handleDecrementButton = () => {
+    const newValue = this.state.value - 1;
+
+    if (newValue >= this.props.minValue) {
+      this.setState({
+        value: newValue,
+        className: { edited: true }
+      });
     }
   }
 
-  edited() {
-    this.setState({ inputClassNames: classnames({ "number-field": true, "edited": true }) });
-  }
-
-  handleChange = (e) => {
-    const { minValue, maxValue } = this.props;
-    const value = Number(e.target.value);
-    if (maxValue && value <= maxValue) {
-      this.edited();
-      this.setState({ inputValue: value });
-    } else if (minValue && value >= maxValue) {
-      this.edited();
-      this.setState({ inputValue: value });
-    }
-
+  handleChange = (event, value) => {
     if (this.props.onChange) {
-      return this.props.onChange(event, value);
+      this.props.onChange(event, value);
     }
   }
 
   render() {
-    const { minValue, maxValue } = this.props;
-    const { inputValue, inputClassNames } = this.state;
+    const fieldClassName = classnames({
+      "number-input-field": true,
+      ...(this.state.className)
+    });
+
     return (
-      <div className="number-input">
+      <div className="rui number-input">
         <input
-          className={inputClassNames}
-          min={minValue.toString() || ""}
-          max={maxValue.toString() || ""}
-          value={inputValue.toString()}
+          className={fieldClassName}
+          min={this.props.minValue || 0}
+          max={this.props.maxValue || undefined}
+          value={this.state.value}
           onChange={this.handleChange}
           type="number"
         />
@@ -75,13 +84,13 @@ class NumberTypeInput extends Component {
           <Button
             className="button"
             icon="fa fa-chevron-up"
-            onClick={() => this.incrementButton()}
+            onClick={this.handleIncrementButton}
           />
           <br/>
           <Button
             className="button"
             icon="fa fa-chevron-down"
-            onClick={() => this.decrementButton()}
+            onClick={this.handleDecrementButton}
           />
         </div>
       </div>

@@ -93,8 +93,8 @@ class LineItemsContainer extends Component {
   //   return this.setState({ editedItems });
   // }
 
-  inputOnChange = (event, value) => {
-    console.log("input on change value", bla);
+  inputOnChange = () => {
+
   }
 
   handleItemSelect = (itemId) => {
