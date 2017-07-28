@@ -456,6 +456,67 @@ export function addressBookRemove(addressId, accountUserId) {
 }
 
 /**
+ * inviteShopOwner
+ * invite a new user as owner of a new shop
+ * @param {Object} options -
+ * @param {String} options.email - email of invitee
+ * @param {String} options.name - name of invitee
+ * @returns {Boolean} returns true
+ */
+export function inviteShopOwner(options) {
+  check(options, Object);
+  check(options.email, String);
+  check(options.name, String);
+  const { name, email } = options;
+
+  if (!Reaction.hasPermission("admin")) {
+    throw new Meteor.Error("access-denied", "Access denied");
+  }
+  const user = Meteor.users.findOne({ "emails.address": email });
+  if (user) {
+    throw new Meteor.Error("409", "A user with this email address already exists");
+  }
+
+  const userId = MeteorAccounts.createUser({
+    email: email,
+    name: name,
+    profile: { invited: true }
+  });
+
+  const { shopId } = Meteor.call("shop/createShop", userId) || {};
+  const shop = Shops.findOne(shopId);
+
+  // Compile Email with SSR
+  const tpl = "accounts/inviteShopOwner";
+  const subject = "accounts/inviteShopOwner/subject";
+
+  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+
+  const emailLogo = getEmailLogo(shop);
+  const token = Random.id();
+  const currentUser = Meteor.users.findOne(this.userId);
+  const currentUserName = getCurrentUserName(currentUser);
+  const dataForEmail = getDataForEmail({ shop, currentUserName, name, token, emailLogo });
+
+  Meteor.users.update(userId, {
+    $set: {
+      "services.password.reset": { token, email, when: new Date() },
+      "name": name
+    }
+  });
+
+  Reaction.Email.send({
+    to: email,
+    from: `${shop.name} <${_.get(shop, "emails[0].address")}>`,
+    subject: SSR.render(subject, dataForEmail),
+    html: SSR.render(tpl, dataForEmail)
+  });
+
+  return true;
+}
+
+/**
    * inviteShopMember
    * invite new admin users
    * (not consumers) to secure access in the dashboard
