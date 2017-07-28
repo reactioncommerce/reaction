@@ -22,6 +22,8 @@ Reaction.registerPackage({
           "reaction-dashboard",
           "reaction-accounts",
           "reaction-orders",
+          "reaction-connectors",
+          "reaction-connectors-shopify",
           "reaction-product-admin",
           "product-detail-simple",
           "reaction-product-simple",
