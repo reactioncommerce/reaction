@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { composeWithTracker } from "/lib/api/compose";
-import { Media } from "/lib/collections";
+import { Orders, Shops, Media } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
-import OrdersList from "../components/ordersList.js";
+import OrdersList from "../components/orderList.js";
 import {
   PACKAGE_NAME,
   ORDER_LIST_FILTERS_PREFERENCE_NAME,
@@ -15,8 +15,6 @@ import {
 
 class OrdersListContainer extends Component {
   static propTypes = {
-    handleShowMoreClick: PropTypes.func,
-    hasMoreOrders: PropTypes.func,
     invoice: PropTypes.object,
     orders: PropTypes.array,
     uniqueItems: PropTypes.array
@@ -26,21 +24,14 @@ class OrdersListContainer extends Component {
     super(props);
 
     this.state = {
-      detailClassName: "",
-      listClassName: "order-icon-toggle",
-      openDetail: false,
-      openList: true,
       selectedItems: [],
       orders: props.orders,
-      hasMoreOrders: props.hasMoreOrders(),
       multipleSelect: false,
       packed: false,
       shipped: false
     };
 
     this.handleClick = this.handleClick.bind(this);
-    this.handleListToggle = this.handleListToggle.bind(this);
-    this.handleDetailToggle = this.handleDetailToggle.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.selectAllOrders = this.selectAllOrders.bind(this);
@@ -49,8 +40,7 @@ class OrdersListContainer extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     this.setState({
-      orders: nextProps.orders,
-      hasMoreOrders: nextProps.hasMoreOrders()
+      orders: nextProps.orders
     });
   }
 
@@ -118,24 +108,6 @@ class OrdersListContainer extends Component {
     }
 
     Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
-  }
-
-  handleListToggle = () => {
-    this.setState({
-      detailClassName: "",
-      listClassName: "order-icon-toggle",
-      openList: true,
-      openDetail: false
-    });
-  }
-
-  handleDetailToggle = () => {
-    this.setState({
-      detailClassName: "order-icon-toggle",
-      listClassName: "",
-      openDetail: true,
-      openList: false
-    });
   }
 
   /**
@@ -236,20 +208,12 @@ class OrdersListContainer extends Component {
     return (
       <OrdersList
         handleSelect={this.handleSelect}
-        handleShowMoreClick={this.props.handleShowMoreClick}
         orders={this.state.orders}
-        hasMoreOrders={this.state.hasMoreOrders}
         handleClick={this.handleClick}
         displayMedia={this.handleDisplayMedia}
-        handleListToggle={this.handleListToggle}
-        handleDetailToggle={this.handleDetailToggle}
-        openDetail= {this.state.openDetail}
         selectedItems={this.state.selectedItems}
-        openList={this.state.openList}
         selectAllOrders={this.selectAllOrders}
         multipleSelect={this.state.multipleSelect}
-        listClassName={this.state.listClassName}
-        detailClassName={this.state.detailClassName}
         setShippingStatus={this.setShippingStatus}
         shipped={this.state.shipped}
         packed={this.state.packed}
@@ -259,11 +223,18 @@ class OrdersListContainer extends Component {
 }
 
 const composer = (props, onData) => {
-  const subscription = Meteor.subscribe("Media");
-  if (subscription.ready()) {
+  const mediaSubscription = Meteor.subscribe("Media");
+  const ordersSubscription = Meteor.subscribe("CustomPaginatedOrders");
+
+  if (mediaSubscription.ready() && ordersSubscription.ready()) {
+    const orders = Orders.find().fetch();
+    const shop = Shops.findOne({});
+
     onData(null, {
       uniqueItems: props.items,
-      invoice: props.invoice
+      invoice: props.invoice,
+      orders: orders,
+      currency: shop.currencies[shop.currency]
     });
   }
 };

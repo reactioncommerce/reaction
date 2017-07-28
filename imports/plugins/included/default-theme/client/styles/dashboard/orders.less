@@ -545,6 +545,7 @@
   .order-table-header-name {
     border-right: none;
     text-align: left;
+    padding-top: 8px;
 
     flex: 250 0 auto;
     width: 250px;
@@ -553,12 +554,12 @@
   .order-table-header-email {
     border-right: none;
     text-align: left;
-    margin-top: 10px;
+    padding-top: 19px;
   }
   .order-table-header-date {
     border-right: none;
     text-align: center;
-    margin-top: 10px;
+    padding-top: 19px;
 
     flex: 120 0 auto;
     width: 120px;
@@ -567,7 +568,7 @@
   .order-table-header-id {
     border-right: none;
     text-align: center;
-    margin-top: 10px;
+    padding-top: 19px;
 
     flex: 90 0 auto;
     width: 90px;
@@ -576,7 +577,7 @@
   .order-table-header-total {
     border-right: none;
     text-align: center;
-    margin-top: 10px;
+    padding-top: 19px;
 
     flex: 100 0 auto;
     width: 100px;
@@ -585,7 +586,7 @@
   .order-table-header-shipping {
     border-right: none;
     text-align: center;
-    margin-top: 10px;
+    padding-top: 19px;
 
     flex: 100 0 auto;
     width: 100px;
@@ -594,7 +595,7 @@
   .order-table-header-status {
     border-right: none;
     text-align: center;
-    margin-top: 10px;
+    padding-top: 19px;
 
     flex: 150 0 auto;
     width: 150px;
@@ -615,9 +616,7 @@
     width: 250px;
     max-width: 250px;
   }
-  // .order-table-column-email {
-    // margin-top: 5px
-  // }
+
   .order-table-column-date {
     text-align: center;
 
@@ -714,13 +713,27 @@
     border-left: 1px solid #e6e6e6;
   }
 
+  .order-table-details-tr-group {
+    border-right: none;
+    border-left: none;
+    border-bottom: none;
+  }
+
+  .rt-tr.order-table-detail-tr:hover {
+    background: transparent
+  }
+
   .order-table-tr-group {
     border-right: 1px solid #e6e6e6;
     border-left: 1px solid #e6e6e6;
   }
 
-  .order-table-table {
+  .order-table-list {
     border-bottom: 1px solid #e6e6e6;
+  }
+
+  .order-table-detail {
+    border-bottom: none;
   }
 
   .rt-tbody {

@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { getTagIds as getIds } from "/lib/selectors/tags";
-import { Translation } from "@reactioncommerce/reaction-ui";
-import ProductGridContainer from "../containers/productGridContainer";
 
-class ProductsComponent extends Component {
+class Products extends Component {
   static propTypes = {
     loadMoreProducts: PropTypes.func,
     loadProducts: PropTypes.func,
@@ -32,7 +31,7 @@ class ProductsComponent extends Component {
     }
 
     return (
-      <ProductGridContainer
+      <Components.ProductGrid
         productsByKey={productsByKey || {}}
         productIds={getIds({ tags: products })}
         canEdit={Reaction.hasPermission("createProduct")}
@@ -59,7 +58,7 @@ class ProductsComponent extends Component {
             className="btn btn-inverse btn-block btn-lg"
             onClick={this.handleClick}
           >
-            <Translation defaultValue="Load more products" i18nKey="app.loadMoreProducts" />
+            <Components.Translation defaultValue="Load more products" i18nKey="app.loadMoreProducts" />
           </button>
         </div>
       );
@@ -84,4 +83,4 @@ class ProductsComponent extends Component {
   }
 }
 
-export default ProductsComponent;
+export default Products;

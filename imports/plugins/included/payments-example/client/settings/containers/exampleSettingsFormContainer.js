@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { composeWithTracker } from "/lib/api/compose";
 import { Packages } from "/lib/collections";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { Reaction, i18next } from "/client/api";
 import { ExampleSettingsForm } from "../components";
@@ -81,4 +80,4 @@ const composer = ({}, onData) => {
   }
 };
 
-export default composeWithTracker(composer, Loading)(ExampleSettingsFormContainer);
+export default composeWithTracker(composer)(ExampleSettingsFormContainer);

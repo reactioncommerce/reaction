@@ -1,5 +1,6 @@
-import React, { Component, PropTypes, Children } from "react"; // eslint-disable-line
-import { composeWithTracker } from "/lib/api/compose";
+import React, { Component, Children } from "react"; // eslint-disable-line
+import PropTypes from "prop-types";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 
 class AdminContextProvider extends Component {
   static childContextTypes = {

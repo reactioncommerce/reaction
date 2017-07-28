@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { IconButton, Translation } from "@reactioncommerce/reaction-ui";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class GridItemControls extends Component {
   static propTypes = {
@@ -14,7 +14,7 @@ class GridItemControls extends Component {
     if (this.props.product.isDeleted) {
       return (
         <span className="badge badge-danger">
-          <Translation defaultValue="Archived" i18nKey="app.archived" />
+          <Components.Translation defaultValue="Archived" i18nKey="app.archived" />
         </span>
       );
     }
@@ -24,7 +24,7 @@ class GridItemControls extends Component {
     if (this.props.hasChanges()) {
       return (
         <div>
-          <IconButton
+          <Components.IconButton
             icon=""
             onIcon=""
             status="info"

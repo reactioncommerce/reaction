@@ -1,7 +1,7 @@
 import "./review.html";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import CartSubTotals from "../../../container/cartSubTotalContainer";
+import CartSubTotals from "../../../containers/cartSubTotalContainer";
 
 /**
 * review status

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Translation } from "/imports/plugins/core/ui/client/components";
-import { MediaItem } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class ChildVariant extends Component {
   handleClick = (event) => {
@@ -34,14 +33,14 @@ class ChildVariant extends Component {
       if (inventoryPolicy) {
         return (
           <span className="variant-qty-sold-out badge badge-danger">
-            <Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
+            <Components.Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
           </span>
         );
       }
 
       return (
         <span className="variant-qty-sold-out badge badge-info">
-          <Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
+          <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
         </span>
       );
     }
@@ -53,7 +52,7 @@ class ChildVariant extends Component {
     if (this.props.variant.isDeleted) {
       return (
         <span className="badge badge-danger">
-          <Translation defaultValue="Archived" i18nKey="app.archived" />
+          <Components.Translation defaultValue="Archived" i18nKey="app.archived" />
         </span>
       );
     }
@@ -66,7 +65,7 @@ class ChildVariant extends Component {
       const media = this.primaryMediaItem;
 
       return (
-        <MediaItem source={media.url()} />
+        <Components.MediaItem source={media.url()} />
       );
     }
 
@@ -108,11 +107,12 @@ ChildVariant.propTypes = {
   editButton: PropTypes.node,
   isSelected: PropTypes.bool,
   media: PropTypes.arrayOf(PropTypes.object),
-  onClick: PropTypes.func,
+  onClick: PropTypes.func.isRequired,
   soldOut: PropTypes.bool,
   variant: PropTypes.object,
   visibilityButton: PropTypes.node
 };
 
+registerComponent("ChildVariant", ChildVariant);
 
 export default ChildVariant;

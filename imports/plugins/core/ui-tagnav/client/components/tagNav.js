@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import { Components } from "@reactioncommerce/reaction-components";
 import { getTagIds } from "/lib/selectors/tags";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
-import { Button, EditButton } from "/imports/plugins/core/ui/client/components";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
-import { TagList } from "/imports/plugins/core/ui/client/components/tags/";
-import TagGroup from "./tagGroup";
 
 class TagNav extends Component {
   constructor(props) {
@@ -24,7 +22,7 @@ class TagNav extends Component {
     const { editContainerItem } = this.props.navButtonStyles;
     return (
       <span className="navbar-item edit-button" style={editContainerItem}>
-        <EditButton
+        <Components.EditButton
           onClick={this.props.onEditButtonClick}
           bezelStyle="solid"
           primary={true}
@@ -60,7 +58,7 @@ class TagNav extends Component {
     return (
       <div className={`rui tagnav ${navbarOrientation} ${navbarPosition} ${navbarAnchor} ${navbarVisibility}`}>
         <div className="navbar-header">
-          <Button
+          <Components.Button
             primary={true}
             icon="times"
             status="default"
@@ -71,14 +69,14 @@ class TagNav extends Component {
         </div>
         <div className="navbar-items">
           <DragDropProvider>
-            <TagList
+            <Components.TagList
               {...this.props}
               isTagNav={true}
               draggable={true}
               enableNewTagForm={true}
             >
               <div className="dropdown-container">
-                <TagGroup
+                <Components.TagGroup
                   {...this.props}
                   editable={this.props.editable === true}
                   tagGroupProps={this.tagGroupProps(this.state.selectedTag || {})}
@@ -89,7 +87,7 @@ class TagNav extends Component {
                   onTagSave={this.handleTagSave}
                 />
               </div>
-            </TagList>
+            </Components.TagList>
           </DragDropProvider>
           {this.props.canEdit && this.renderEditButton()}
         </div>

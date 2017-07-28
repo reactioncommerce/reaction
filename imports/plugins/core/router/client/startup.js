@@ -1,3 +1,4 @@
+import { loadRegisteredComponents } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Accounts } from "meteor/accounts-base";
@@ -6,6 +7,8 @@ import { initBrowserRouter } from "./browserRouter";
 import { Router } from "../lib";
 
 Meteor.startup(function () {
+  loadRegisteredComponents();
+
   Tracker.autorun(function () {
     // initialize client routing
 
