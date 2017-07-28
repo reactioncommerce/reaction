@@ -25,4 +25,20 @@
   {{/autoForm}}
 
   {{schema}}
+
+  {{> inviteUser }}
+</template>
+
+<template name="inviteUser">
+  <div class="panel-body marketplace-invite-user">
+    <label for="owner-name">Name</label>
+    <input id="owner-name" type="text" name="owner-name" class="form-control">
+  </div>
+  <div class="panel-body">
+    <label for="owner-email">Email</label>
+    <input id="owner-email" type="text" name="owner-email" class="form-control">
+  </div>
+  <div class="form-group">
+    <button type="submit" data-event-action="inviteUser" class="btn btn-primary">Invite</button>
+  </div>
 </template>
