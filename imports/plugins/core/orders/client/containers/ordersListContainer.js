@@ -27,6 +27,7 @@ class OrdersListContainer extends Component {
       selectedItems: [],
       orders: props.orders,
       multipleSelect: false,
+      renderFlowList: false,
       packed: false,
       shipped: false
     };
@@ -46,7 +47,8 @@ class OrdersListContainer extends Component {
 
   handleSelect = (event, isInputChecked, name) => {
     this.setState({
-      multipleSelect: false
+      multipleSelect: false,
+      renderFlowList: false
     });
     const selectedItemsArray = this.state.selectedItems;
 
@@ -217,6 +219,7 @@ class OrdersListContainer extends Component {
         setShippingStatus={this.setShippingStatus}
         shipped={this.state.shipped}
         packed={this.state.packed}
+        renderFlowList={this.state.renderFlowList}
       />
     );
   }

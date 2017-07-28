@@ -41,6 +41,7 @@ class OrderTable extends Component {
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
     packed: PropTypes.bool,
+    renderFlowList: PropTypes.bool,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,
@@ -50,10 +51,10 @@ class OrderTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      renderFlowList: false,
-      pickingReport: false,
+      renderFlowList: props.renderFlowList,
+      picked: false,
       packed: props.packed,
-      generateLabel: false,
+      labeled: false,
       shipped: props.shipped
     };
   }
@@ -61,7 +62,8 @@ class OrderTable extends Component {
   componentWillReceiveProps = (nextProps) => {
     this.setState({
       packed: nextProps.packed,
-      shipped: nextProps.shipped
+      shipped: nextProps.shipped,
+      renderFlowList: nextProps.renderFlowList
     });
   }
 
@@ -251,12 +253,12 @@ class OrderTable extends Component {
       return (
         <List className="shipping-flow-list">
           <ListItem
-            label="Picking Report"
-            value="pickingReport"
+            label={this.state.picked ? "Generate Picking Report" : "Picked"}
+            value="picked"
             onClick={this.handleListItemClick}
-            listItemClassName={this.state.pickingReport ? "selected" : ""}
+            listItemClassName={this.state.picked ? "selected" : ""}
           >
-            {this.state.pickingReport ?
+            {this.state.picked ?
               <div>
                 <Icon className="bulk-actions-icons" icon="fa fa-print"/>
                 <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
@@ -277,12 +279,12 @@ class OrderTable extends Component {
             }
           </ListItem>
           <ListItem
-            label="Generate Label"
-            value="generateLabel"
+            label={this.state.labeled ? "Generate Label" : "Labeled"}
+            value="labeled"
             onClick={this.handleListItemClick}
-            listItemClassName={this.state.generateLabel ? "selected" : ""}
+            listItemClassName={this.state.labeled ? "selected" : ""}
           >
-            {this.state.generateLabel ?
+            {this.state.labeled ?
               <div>
                 <Icon className="bulk-actions-icons" icon="fa fa-print"/>
                 <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
@@ -315,17 +317,17 @@ class OrderTable extends Component {
     if (this.props.setShippingStatus) {
       this.props.setShippingStatus(value, this.props.selectedItems);
     }
-    // this.setState({
-    //   [value]: true
-    // });
+    this.setState({
+      [value]: true
+    });
   }
 
   setListItemsToDefault() {
-    if (this.state.renderFlowList === false || this.props.selectedItems.length === 0) {
+    if (this.state.renderFlowList === false) {
       this.setState({
-        pickingReport: false,
+        picked: false,
         packed: false,
-        generateLabel: false,
+        labeled: false,
         shipped: false
       });
     }
