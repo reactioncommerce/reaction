@@ -241,7 +241,14 @@ Meteor.methods({
     check(userId, String);
     check(sessionId, String);
 
-    const shopId = Reaction.getShopId();
+    const marketplaceSettings = Reaction.getMarketplaceSettings();
+    let shopId;
+    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.merchantCarts) {
+      shopId = Reaction.getShopId();
+    } else {
+      shopId = Reaction.getPrimaryShopId();
+    }
+
     // check if user has `anonymous` role.( this is a visitor)
     const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
     const sessionCartCount = getSessionCarts(userId, sessionId, shopId).length;

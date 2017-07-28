@@ -175,6 +175,62 @@ export default {
     return getMailUrl();
   },
 
+  getPrimaryShop() {
+    const primaryShop = Shops.findOne({
+      shopType: "primary"
+    });
+
+    return primaryShop;
+  },
+
+  // primaryShopId is the first created shop. In a marketplace setting it's
+  // the shop that controls the marketplace and can see all other shops.
+  getPrimaryShopId() {
+    const primaryShop = this.getPrimaryShop();
+    if (primaryShop) {
+      return primaryShop._id;
+    }
+  },
+
+  getPrimaryShopName() {
+    const primaryShop = this.getPrimaryShop();
+    if (primaryShop) {
+      return primaryShop.name;
+    }
+    // If we can't find the primaryShop return an empty string
+    return "";
+  },
+
+  // Primary Shop should probably not have a prefix (or should it be /shop?)
+  getPrimaryShopPrefix() {
+    return "/" + this.getSlug(this.getPrimaryShopName().toLowerCase());
+  },
+
+  getPrimaryShopSettings() {
+    const settings = Packages.findOne({
+      name: "core",
+      shopId: this.getPrimaryShopId()
+    }) || {};
+    return settings.settings || {};
+  },
+
+  getPrimaryShopCurrency() {
+    const primaryShop = this.getPrimaryShop();
+
+    if (primaryShop && primaryShop.currency) {
+      return primaryShop.currency;
+    }
+
+    return "USD";
+  },
+
+  /**
+   * **DEPRECATED** This method has been deprecated in favor of using getShopId
+   * and getPrimaryShopId. To be removed.
+   * @deprecated
+   * @method getCurrentShopCursor
+   * @return {Cursor} cursor of shops that match the current domain
+   */
   getCurrentShopCursor() {
     const domain = this.getDomain();
     const cursor = Shops.find({
@@ -186,7 +242,13 @@ export default {
     return cursor;
   },
 
-  // TODO: Get actual current shop instead of first - not sure what this will break..
+  /**
+   * **DEPRECATED** This method has been deprecated in favor of using getShopId
+   * and getPrimaryShopId. To be removed.
+   * @deprecated
+   * @method getCurrentShop
+   * @return {Object} returns the first shop object from the shop cursor
+   */
   getCurrentShop() {
     const currentShopCursor = this.getCurrentShopCursor();
     // also, we could check in such a way: `currentShopCursor instanceof Object` but not instanceof something.Cursor
@@ -306,6 +368,25 @@ export default {
     return Packages.findOne({ name: name, shopId: this.getShopId() }) || null;
   },
 
+  /**
+   * getMarketplaceSettings finds the enabled `reaction-marketplace` package for
+   * the primary shop and returns the settings
+   * @method getMarketplaceSettings
+   * @return {Object} The marketplace settings from the primary shop or undefined
+   */
+  getMarketplaceSettings() {
+    const marketplace = Packages.findOne({
+      name: "reaction-marketplace",
+      shopId: this.getPrimaryShopId(),
+      enabled: true
+    });
+
+    if (marketplace && marketplace.settings) {
+      return marketplace.settings;
+    }
+    return {};
+  },
+
   // options:  {packageName, preference, defaultValue}
   getUserPreferences(options) {
     const { userId, packageName, preference, defaultValue } = options;
@@ -330,7 +411,7 @@ export default {
    *  insert Reaction packages into Packages collection registry for a new shop
    *  Assigns owner roles for new packages
    *  Imports layouts from packages
-   *  @param {String} shopId - the shopId you need to create packages for
+   *  @param {String} shopId - the shopId to create packages for
    *  @return {String} returns insert result
    */
   insertPackagesForShop(shopId) {
@@ -338,6 +419,25 @@ export default {
     if (!shopId) {
       return [];
     }
+
+    // Check to see what packages should be enabled
+    const shop = Shops.findOne({ _id: shopId });
+    const marketplaceSettings = this.getMarketplaceSettings();
+    let enabledPackages;
+
+    // Unless we have marketplace settings and an enabledPackagesByShopTypes Array
+    // we will skip this
+    if (marketplaceSettings &&
+        marketplaceSettings.shops &&
+        Array.isArray(marketplaceSettings.shops.enabledPackagesByShopTypes)) {
+      // Find the correct packages list for this shopType
+      const matchingShopType = marketplaceSettings.shops.enabledPackagesByShopTypes.find(
+        EnabledPackagesByShopType => EnabledPackagesByShopType.shopType === shop.shopType);
+      if (matchingShopType) {
+        enabledPackages = matchingShopType.enabledPackages;
+      }
+    }
+
     const packages = this.Packages;
     // for each shop, we're loading packages in a unique registry
     // Object.keys(pkgConfigs).forEach((pkgName) => {
@@ -358,6 +458,12 @@ export default {
             if (template && template.layout) {
               layouts.push(template);
             }
+          }
+        }
+
+        if (enabledPackages && Array.isArray(enabledPackages)) {
+          if (enabledPackages.indexOf(pkg.name) === -1) {
+            pkg.enabled = false;
           }
         }
         Packages.insert(pkg);
