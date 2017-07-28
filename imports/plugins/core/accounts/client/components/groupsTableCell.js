@@ -63,10 +63,10 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
 
   if (columnName === "button") {
     return (
-      <div>
+      <div className="group-table-button">
         <Components.Button
           status="danger"
-          onClick={handleRemoveUserFromGroup(account)}
+          onClick={handleRemoveUserFromGroup(account, group._id)}
           bezelStyle="solid"
           i18nKeyLabel="admin.groups.remove"
           label="Remove"

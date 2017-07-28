@@ -17,9 +17,9 @@ const handlers = {
     };
   },
 
-  handleRemoveUserFromGroup(account) {
+  handleRemoveUserFromGroup(account, groupId) {
     return () => {
-      Meteor.call("group/removeUser", account._id, this.props.group._id, (err) => {
+      Meteor.call("group/removeUser", account._id, groupId, (err) => {
         if (err) {
           return Alerts.toast(i18next.t("admin.groups.removeUserError", { err: err.message }), "error");
         }
