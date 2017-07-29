@@ -4,23 +4,28 @@ import { Migrations } from "/imports/plugins/core/versions";
 import { Logger } from "/server/api";
 import { Accounts, Groups, Shops } from "/lib/collections";
 
+/**
+ * Migration file created for moving from previous admin permission management to permission groups
+ * On up, it creates the default groups for all shops in the app, then update accounts belonging to the
+ * default groups. It also creates custom groups for every unique set of permission and assigns accounts
+ * with such permissions to the custom group they belong.
+ */
 Migrations.add({
   version: 5,
   up() {
     const shops = Shops.find({}).fetch();
-    Groups.remove({});
+    Groups.remove({}); // needed to ensure restart in case of a migration that failed before finishing
 
     if (shops && shops.length) {
       shops.forEach((shop) => {
         const defaultGroupAccounts = createDefaultGroupsForShop(shop);
-
+        // retrieves remaining permission sets that doesn't fit the default sets
         const customPermissions = Meteor.users
           .find({ _id: { $nin: defaultGroupAccounts } })
           .fetch()
           .map(user => user.roles[shop._id]);
-
+        // sorts the array of permission sets to contain only unique sets to avoid creating groups with same permissions
         const permissionsArray = sortUniqueArray(customPermissions);
-
         permissionsArray.forEach((permissions, index) => {
           Logger.info(`creating custom group for shop ${shop.name}`);
           const groupId = Groups.insert({
@@ -66,6 +71,7 @@ Migrations.add({
       return defaultGroupAccounts;
     }
 
+    // finds all accounts with a permission set and assigns them to matching group
     function updateAccountsInGroup({ shopId, permissions, groupId }) {
       const query = { [`roles.${shopId}`]: { $size: permissions.length, $all: permissions } };
       const matchingUserIds = Meteor.users.find(query).fetch().map((user) => user._id);
@@ -98,12 +104,24 @@ Migrations.add({
       shopGroups.forEach((group) => {
         const shopkey = keys[group.slug];
         Shops.update({ _id: shop._id }, { $set: { [shopkey]: group.permissions } });
-        Accounts.update({ shopId: shop._id }, { $unset: { groups: "" } });
+        Accounts.update({ shopId: shop._id }, { $unset: { groups: "" } }, { multi: true });
       });
     }
   }
 });
 
+/*
+ * helper func created to limit the permission sets available to unique values without duplicates.
+ * It takes a two dimentional array like this:
+ * [
+ *   ["tag", "product"],
+ *   ["product", "tag"],
+ *   ["tag", "product", "shop"],
+ *   ["tag", "shop"],
+ *   ["shop", "tag"]
+ * ]
+ * and returns this: [["product", "tag"], ["product", "shop", "tag"], ["shop", "tag"]]
+ */
 function sortUniqueArray(multiArray) {
   const sorted = multiArray.map(x => {
     if (!x) { return []; }
