@@ -64,7 +64,6 @@ Migrations.add({
           permissions: roles[groupKeys],
           shopId: shop._id
         });
-
         Logger.debug(`new group "${groupKeys}" created with id "${groupId}"`);
         const updatedAccounts = updateAccountsInGroup({
           shopId: shop._id,

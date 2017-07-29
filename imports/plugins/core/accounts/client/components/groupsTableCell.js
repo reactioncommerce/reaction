@@ -8,6 +8,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
   const email = _.get(account, "emails[0].address");
 
   if (columnName === "name") {
+    // use first part of email, if account has no name
     const name = account.name || email.split("@")[0];
     return (
       <div className="table-cell body-first">
