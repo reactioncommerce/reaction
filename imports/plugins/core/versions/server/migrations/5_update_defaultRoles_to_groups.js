@@ -23,10 +23,11 @@ Migrations.add({
         const customPermissions = Meteor.users
           .find({ _id: { $nin: defaultGroupAccounts } })
           .fetch()
-          .map(user => user.roles[shop._id]);
+          .map(user => user.roles && user.roles[shop._id]);
         // sorts the array of permission sets to contain only unique sets to avoid creating groups with same permissions
         const permissionsArray = sortUniqueArray(customPermissions);
         permissionsArray.forEach((permissions, index) => {
+          if (!permissions) { return null; }
           Logger.info(`creating custom group for shop ${shop.name}`);
           const groupId = Groups.insert({
             name: `custom ${index + 1}`,
@@ -72,7 +73,7 @@ Migrations.add({
     }
 
     // finds all accounts with a permission set and assigns them to matching group
-    function updateAccountsInGroup({ shopId, permissions, groupId }) {
+    function updateAccountsInGroup({ shopId, permissions = [], groupId }) {
       const query = { [`roles.${shopId}`]: { $size: permissions.length, $all: permissions } };
       const matchingUserIds = Meteor.users.find(query).fetch().map((user) => user._id);
 
