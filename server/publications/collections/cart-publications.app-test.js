@@ -47,6 +47,7 @@ describe("Cart Publication", function () {
         return account.userId;
       });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
+      sandbox.stub(Reaction, "getPrimaryShopId", () => shop._id);
       Collections.Cart.insert({
         sessionId: sessionId,
         userId: userId,
@@ -60,6 +61,7 @@ describe("Cart Publication", function () {
 
     it("should return only one cart in cursor", function () {
       sandbox.stub(Reaction, "getShopId", () => shop._id);
+      sandbox.stub(Reaction, "getPrimaryShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => user._id);
       const user2 = Factory.create("registeredUser");
       Collections.Cart.insert({
@@ -83,5 +85,3 @@ describe("Cart Publication", function () {
     });
   });
 });
-
-
