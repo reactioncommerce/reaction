@@ -28,7 +28,7 @@ Migrations.add({
         const permissionsArray = sortUniqueArray(customPermissions);
         permissionsArray.forEach((permissions, index) => {
           if (!permissions) { return null; }
-          Logger.info(`creating custom group for shop ${shop.name}`);
+          Logger.debug(`creating custom group for shop ${shop.name}`);
           const groupId = Groups.insert({
             name: `custom ${index + 1}`,
             slug: `custom${index + 1}`,
@@ -54,14 +54,14 @@ Migrations.add({
       };
 
       Object.keys(roles).forEach((groupKeys) => {
-        Logger.info(`creating group ${groupKeys} for shop ${shop.name}`);
+        Logger.debug(`creating group ${groupKeys} for shop ${shop.name}`);
         const groupId = Groups.insert({
           name: groupKeys,
           slug: groupKeys,
           permissions: roles[groupKeys],
           shopId: shop._id
         });
-        Logger.info(`new group "${groupKeys}" created with id "${groupId}"`);
+        Logger.debug(`new group "${groupKeys}" created with id "${groupId}"`);
         const updatedAccounts = updateAccountsInGroup({
           shopId: shop._id,
           permissions: roles[groupKeys],
@@ -78,7 +78,7 @@ Migrations.add({
       const matchingUserIds = Meteor.users.find(query).fetch().map((user) => user._id);
 
       if (matchingUserIds.length) {
-        Logger.info(`updating following matching Accounts to new group: ${matchingUserIds}`);
+        Logger.debug(`updating following matching Accounts to new group: ${matchingUserIds}`);
       }
       Accounts.update(
         { _id: { $in: matchingUserIds }, shopId },
