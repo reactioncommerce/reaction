@@ -326,8 +326,32 @@ function selectLayout(layout, setLayout, setWorkflow) {
  */
 export function ReactionLayout(options = {}) {
   // Find a workflow layout to render
-  // Get the current shop data
-  const shop = Shops.findOne(Router.Reaction.getShopId());
+
+  // By default we'll use the primary shop for layouts
+  let shopId = Router.Reaction.getPrimaryShopId();
+
+  // We'll check the marketplace settings too so that we can use the active shopId
+  // if merchantTemplates is enabled
+  // XXX: using merchantTemplates is not ready for production and has not been tested! Use at your own risk.
+  let marketplaceSettings;
+
+  if (Meteor.isClient) { // If we're on the client, use the cached marketplace settings
+    marketplaceSettings = Router.Reaction.marketplace;
+  } else { // if we're on the server, go get the settings from the db with this method
+    marketplaceSettings = Router.Reaction.getMarketplaceSettings();
+    if (marketplaceSettings && marketplaceSettings.public) {
+      // We're only interested in the public settings here
+      marketplaceSettings = marketplaceSettings.public;
+    }
+  }
+
+  // If merchantTemplates is enabled, use the active shopId
+  if (marketplaceSettings && marketplaceSettings.merchantTemplates === true) {
+    shopId = Router.Reaction.getShopId();
+  }
+
+  // Get the shop data
+  const shop = Shops.findOne(shopId);
 
   // get the layout & workflow from options if they exist
   // Otherwise get them from the Session. this is set in `/client/config/defaults`

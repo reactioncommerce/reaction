@@ -109,6 +109,31 @@
       </div>
     </div>
 
+    {{#each reactionApps provides='shopSettings'}}
+      <div class="panel panel-default">
+        <div class="panel-heading panel-heading-flex">
+          <div class="panel-title">
+            <a
+              href="#collapsable-{{name}}"
+              aria-controls="collapsable-{{name}}"
+              role="button"
+              data-toggle="collapse"
+              data-parent="#shopSettingsAccordian">
+              <i class="{{icon}}"></i>
+              <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
+            </a>
+          </div>
+          <div class="panel-controls">
+            <input class="checkbox-switch" type="checkbox" name="enabled" data-id={{packageId}} data-key="{{settingsKey}}" {{checked enabled}}>
+          </div>
+        </div>
+        <div id="collapsable-{{name}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapsable-{{name}}">
+          <div class="panel-body {{shown enabled}}">
+            {{> Template.dynamic template=template data=.}}
+          </div>
+        </div>
+      </div>
+    {{/each}}
   </div>
 </template>
 
