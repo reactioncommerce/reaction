@@ -63,10 +63,13 @@ export default {
   createDefaultGroups() {
     const allGroups = Groups.find({}).fetch();
     const shops = Shops.find({}).fetch();
+    const ownerRoles = Roles.getAllRoles().fetch().map(role => role.name);
+    const shopManagerRoles = ownerRoles.filter(role => role !== "owner");
     const roles = {
-      customer: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
-      guest: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
-      owner: Roles.getAllRoles().fetch().map(role => role.name)
+      "shop manager": shopManagerRoles,
+      "customer": [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
+      "guest": ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
+      "owner": ownerRoles
     };
 
     if (shops && shops.length) {

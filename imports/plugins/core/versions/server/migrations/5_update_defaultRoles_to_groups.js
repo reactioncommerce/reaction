@@ -47,10 +47,13 @@ Migrations.add({
     function createDefaultGroupsForShop(shop) {
       let defaultGroupAccounts = [];
       const { defaultRoles, defaultVisitorRole } = shop;
+      const ownerRoles = Roles.getAllRoles().fetch().map(role => role.name);
+      const shopManagerRoles = ownerRoles.filter(role => role !== "owner");
       const roles = {
-        customer: defaultRoles || [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
-        guest: defaultVisitorRole || ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
-        owner: Roles.getAllRoles().fetch().map((role) => role.name)
+        "shop manager": shopManagerRoles,
+        "customer": defaultRoles || [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
+        "guest": defaultVisitorRole || ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
+        "owner": ownerRoles
       };
 
       Object.keys(roles).forEach((groupKeys) => {
