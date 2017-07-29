@@ -48,7 +48,6 @@ Meteor.methods({
 
     // identify a shop admin
     const userId = shopAdminUserId || currentUser._id;
-    const sellerShopId = Reaction.getSellerShopId(userId);
 
     // ensure unique id and shop name
     shop._id = Random.id();

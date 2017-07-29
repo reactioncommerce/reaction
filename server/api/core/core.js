@@ -60,7 +60,7 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name] = packageInfo;
     return registeredPackage;
   },
-  createDefaultGroups(options) {
+  createDefaultGroups(options = {}) {
     const { shopId } = options;
     const allGroups = Groups.find({}).fetch();
     const query = {};
