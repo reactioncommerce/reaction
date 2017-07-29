@@ -41,6 +41,11 @@ Meteor.methods({
     const shop = shopData || Collections.Shops.findOne(Reaction.getShopId());
     // if we don't have any shop data, use fixture
 
+    // Never create a second primary shop
+    if (shop.shopType === "primary") {
+      shop.shopType = "merchant";
+    }
+
     // identify a shop admin
     const userId = shopAdminUserId || currentUser._id;
     const sellerShopId = Reaction.getSellerShopId(userId);
@@ -303,7 +308,15 @@ Meteor.methods({
   "shop/flushCurrencyRate": function () {
     this.unblock();
 
-    const shopId = Reaction.getShopId();
+    let shopId;
+    const marketplaceSettings = Reaction.getMarketplaceSettings();
+
+    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantLocale) {
+      shopId = Reaction.getShopId();
+    } else {
+      shopId = Reaction.getPrimaryShopId();
+    }
+
     const shop = Collections.Shops.findOne(shopId, {
       fields: {
         currencies: 1

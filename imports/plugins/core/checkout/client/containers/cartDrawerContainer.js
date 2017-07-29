@@ -72,7 +72,10 @@ const handlers = {
 // reactive Tracker wrapped function
 function composer(props, onData) {
   const userId = Meteor.userId();
-  const shopId = Reaction.getShopId();
+  let shopId = Reaction.getPrimaryShopId();
+  if (Reaction.marketplace.merchantCarts) {
+    shopId = Reaction.getShopId();
+  }
   let productItems = Cart.findOne({ userId, shopId }).items;
   let defaultImage;
 

@@ -22,17 +22,81 @@ const reactionState = new ReactiveDict();
  * Global reaction shop permissions methods and shop initialization
  */
 export default {
-  _shopId: new ReactiveVar(null),
+  _shopId: new ReactiveVar(null), // The active shop
+  _primaryShopId: new ReactiveVar(null), // The first shop created
+  marketplace: { _ready: false }, // Marketplace Settings
 
   Locale: new ReactiveVar({}),
 
   init() {
-    // keep an eye out for shop change
+    Tracker.autorun(() => {
+      // marketplaceSettings come over on the PrimarySHopPackages subscription
+      if (this.Subscriptions.PrimaryShopPackages.ready()) {
+        if (!this.marketplace._ready) {
+          const marketplacePkgSettings = this.getMarketplaceSettings();
+          if (marketplacePkgSettings && marketplacePkgSettings.public) {
+            marketplacePkgSettings._ready = true;
+            this.marketplace = marketplacePkgSettings.public;
+          }
+        }
+      }
+    });
+
+    // Listen for the primary shop subscription and set accordingly
+    Tracker.autorun(() => {
+      let shop;
+      if (this.Subscriptions.PrimaryShop.ready()) {
+        // if we've already set the primaryShopId, carry on.
+        // otherwise we need to define it.
+        if (!this.primaryShopId) {
+          // There should only ever be one "primary" shop
+          shop = Shops.findOne({
+            shopType: "primary"
+          });
+
+          if (shop) {
+            this.primaryShopId = shop._id;
+            this.primaryShopName = shop.name;
+
+            // We'll initialize locale and currency for the primary shop unless
+            // marketplace settings exist and merchantLocale is set to true
+            if (this.marketplace.merchantLocale !== true) {
+              // initialize local client Countries collection
+              if (!Countries.findOne()) {
+                createCountryCollection(shop.locales.countries);
+              }
+
+              const locale = this.Locale.get() || {};
+
+              // fix for https://github.com/reactioncommerce/reaction/issues/248
+              // we need to keep an eye for rates changes
+              if (typeof locale.locale === "object" &&
+                 typeof locale.currency === "object" &&
+                 typeof locale.locale.currency === "string") {
+                const localeCurrency = locale.locale.currency.split(",")[0];
+                if (typeof shop.currencies[localeCurrency] === "object") {
+                  if (typeof shop.currencies[localeCurrency].rate === "number") {
+                    locale.currency.rate = shop.currencies[localeCurrency].rate;
+                    localeDep.changed();
+                  }
+                }
+              }
+              // we are looking for a shopCurrency changes here
+              if (typeof locale.shopCurrency === "object") {
+                locale.shopCurrency = shop.currencies[shop.currency];
+                localeDep.changed();
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Listen for active shop change
     return Tracker.autorun(() => {
       let domain;
       let shop;
-
-      if (this.Subscriptions.Shops.ready()) {
+      if (this.Subscriptions.MerchantShops.ready()) {
         domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
 
         // if we don't have an active shopId, try to retreive it from the userPreferences object
@@ -56,30 +120,35 @@ export default {
             this.shopId = shop._id;
             this.shopName = shop.name;
           }
+
+          // We only use the active shop to setup locale if marketplace settings
+          // are enabled and merchantLocale is set to true
+          if (this.marketplace.merchantLocale === true) {
           // initialize local client Countries collection
-          if (!Countries.findOne()) {
-            createCountryCollection(shop.locales.countries);
-          }
+            if (!Countries.findOne()) {
+              createCountryCollection(shop.locales.countries);
+            }
 
-          const locale = this.Locale.get() || {};
+            const locale = this.Locale.get() || {};
 
-          // fix for https://github.com/reactioncommerce/reaction/issues/248
-          // we need to keep an eye for rates changes
-          if (typeof locale.locale === "object" &&
+            // fix for https://github.com/reactioncommerce/reaction/issues/248
+            // we need to keep an eye for rates changes
+            if (typeof locale.locale === "object" &&
             typeof locale.currency === "object" &&
             typeof locale.locale.currency === "string") {
-            const localeCurrency = locale.locale.currency.split(",")[0];
-            if (typeof shop.currencies[localeCurrency] === "object") {
-              if (typeof shop.currencies[localeCurrency].rate === "number") {
-                locale.currency.rate = shop.currencies[localeCurrency].rate;
-                localeDep.changed();
+              const localeCurrency = locale.locale.currency.split(",")[0];
+              if (typeof shop.currencies[localeCurrency] === "object") {
+                if (typeof shop.currencies[localeCurrency].rate === "number") {
+                  locale.currency.rate = shop.currencies[localeCurrency].rate;
+                  localeDep.changed();
+                }
               }
             }
-          }
-          // we are looking for a shopCurrency changes here
-          if (typeof locale.shopCurrency === "object") {
-            locale.shopCurrency = shop.currencies[shop.currency];
-            localeDep.changed();
+            // we are looking for a shopCurrency changes here
+            if (typeof locale.shopCurrency === "object") {
+              locale.shopCurrency = shop.currencies[shop.currency];
+              localeDep.changed();
+            }
           }
           return this;
         }
@@ -295,6 +364,58 @@ export default {
     });
   },
 
+  // primaryShopId is the first created shop. In a marketplace setting it's
+  // the shop that controls the marketplace and can see all other shops.
+  get primaryShopId() {
+    return this._primaryShopId.get();
+  },
+
+  set primaryShopId(shopId) {
+    this._primaryShopId.set(shopId);
+  },
+
+  getPrimaryShopId() {
+    return this.primaryShopId;
+  },
+
+  getPrimaryShopName() {
+    const shopId = this.getPrimaryShopId();
+    const shop = Shops.findOne({
+      _id: shopId
+    });
+
+    if (shop && shop.name) {
+      return shop.name;
+    }
+
+    // If we can't find the primaryShop return an empty string
+    return "";
+  },
+
+  // Primary Shop should probably not have a prefix (or should it be /shop?)
+  getPrimaryShopPrefix() {
+    return "/" + this.getSlug(this.getPrimaryShopName().toLowerCase());
+  },
+
+  getPrimaryShopSettings() {
+    const settings = Packages.findOne({
+      name: "core",
+      shopId: this.getPrimaryShopId()
+    }) || {};
+    return settings.settings || {};
+  },
+
+  getPrimaryShopCurrency() {
+    const shop = Shops.findOne({
+      _id: this.getPrimaryShopId()
+    });
+
+    return shop && shop.currency || "USD";
+  },
+
+  // shopId refers to the active shop. For most shoppers this will be the same
+  // as the primary shop, but for administrators this will usually be the shop
+  // they administer.
   get shopId() {
     return this._shopId.get();
   },
@@ -323,7 +444,10 @@ export default {
   },
 
   getShopPrefix() {
-    return "/" + this.getSlug(this.getShopName().toLowerCase());
+    const shopName = this.getShopName();
+    if (shopName) {
+      return "/" + this.getSlug(shopName.toLowerCase());
+    }
   },
 
   getShopSettings() {
@@ -578,6 +702,22 @@ export default {
     }
     Logger.debug("getRegistryForCurrentRoute not found", template, provides);
     return {};
+  },
+
+  /**
+   * getMarketplaceSettingsFromPackages finds the enabled `reaction-marketplace` package for
+   * the primary shop and returns the settings
+   * @method getMarketplaceSettingsFromPackages
+   * @return {Object} The marketplace settings from the primary shop or undefined
+   */
+  getMarketplaceSettings() {
+    const marketplaceSettings = Packages.findOne({
+      name: "reaction-marketplace",
+      shopId: this.getPrimaryShopId(), // the primary shop always owns the marketplace settings
+      enabled: true // only use the marketplace settings if marketplace is enabled
+    });
+
+    return marketplaceSettings && marketplaceSettings.settings;
   }
 
 };
