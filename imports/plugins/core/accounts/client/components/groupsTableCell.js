@@ -37,11 +37,16 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
   }
 
   if (columnName === "dropdown") {
+    const groupName = <p>{_.startCase(groups[0].name)}</p>;
+
     if (groups.length === 1) {
-      return (
-        <p>{_.startCase(groups[0].name)}</p>
-      );
+      return groupName;
     }
+
+    if (group.slug === "owner") {
+      return groupName;
+    }
+
     const dropDownButton = (
       <div className="group-dropdown">
         <Components.Button label={group.name && _.startCase(group.name)}>
@@ -51,26 +56,33 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
     );
 
     return (
-      <Components.DropDownMenu
-        buttonElement={dropDownButton}
-        attachment="bottom center"
-        onChange={handleUserGroupChange(account)}
-      >
-        {groups
-          .filter((grp) => grp._id !== group._id)
-          .map((grp, index) => (
-            <Components.MenuItem
-              key={index}
-              label={_.startCase(grp.name)}
-              selectLabel={_.startCase(grp.name)}
-              value={grp._id}
-            />
-          ))}
-      </Components.DropDownMenu>
+      <div className="group-dropdown">
+        <Components.DropDownMenu
+          className="dropdown-item"
+          buttonElement={dropDownButton}
+          attachment="bottom right"
+          targetAttachment="top right"
+          onChange={handleUserGroupChange(account)}
+        >
+          {groups
+            .filter((grp) => grp._id !== group._id)
+            .map((grp, index) => (
+              <Components.MenuItem
+                key={index}
+                label={_.startCase(grp.name)}
+                selectLabel={_.startCase(grp.name)}
+                value={grp._id}
+              />
+            ))}
+        </Components.DropDownMenu>
+      </div>
     );
   }
 
   if (columnName === "button") {
+    if (group.slug === "owner") {
+      return null;
+    }
     return (
       <div className="group-table-button">
         <Components.Button
