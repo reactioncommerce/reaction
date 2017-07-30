@@ -55,9 +55,11 @@ Meteor.publish("Product", function (productId) {
     return this.ready();
   }
   let _id;
-  const shop = Reaction.getCurrentShop();
-  // verify that shop is ready
-  if (typeof shop !== "object") {
+
+  // REVIEW: Should we consider having an admin publication and a customer/primary shop pub?
+  const shopId = Reaction.getShopId();
+
+  if (!shopId) {
     return this.ready();
   }
 
@@ -66,7 +68,7 @@ Meteor.publish("Product", function (productId) {
   selector.isDeleted = { $in: [null, false] };
 
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
-    shop._id)) {
+    shopId)) {
     selector.isVisible = {
       $in: [true, false]
     };
@@ -106,7 +108,7 @@ Meteor.publish("Product", function (productId) {
 
   // Authorized content curators for the shop get special publication of the product
   // all all relevant revisions all is one package
-  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shopId)) {
     selector.isVisible = {
       $in: [true, false, undefined]
     };

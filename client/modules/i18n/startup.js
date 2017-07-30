@@ -40,8 +40,21 @@ Meteor.startup(() => {
   // this only runs on initial page loaded
   // and when user.profile.lang updates
   Tracker.autorun(function () {
-    if (Reaction.Subscriptions.Shops.ready() && Meteor.user()) {
-      const shop = Shops.findOne(Reaction.getShopId());
+    if (Reaction.Subscriptions.PrimaryShop.ready() &&
+        Reaction.Subscriptions.MerchantShops.ready() &&
+        Meteor.user()) {
+      let shopId;
+
+      // Choose shop to get language from
+      if (Reaction.marketplaceEnabled && Reaction.merchantLanguage) {
+        shopId = Reaction.getShopId();
+      } else {
+        shopId = Reaction.getPrimaryShopId();
+      }
+
+      const shop = Shops.findOne({
+        _id: shopId
+      });
       let language = shop.language;
       if (Meteor.user() && Meteor.user().profile && Meteor.user().profile.lang) {
         language = Meteor.user().profile.lang;
@@ -113,7 +126,9 @@ Meteor.startup(() => {
   // althought it is also triggered when profile updates ( meaning .lang )
   Tracker.autorun(function () {
     const user = Meteor.user();
-    if (Reaction.Subscriptions.Shops.ready() && user) {
+
+    if (Reaction.Subscriptions.PrimaryShop.ready() &&
+        Reaction.Subscriptions.MerchantShops.ready() && user) {
       if (user.profile && user.profile.currency) {
         const localStorageCurrency = localStorage.getItem("currency");
         if (localStorageCurrency !== user.profile.currency) {

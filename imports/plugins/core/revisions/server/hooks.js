@@ -170,6 +170,11 @@ Media.files.before.insert((userid, media) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
+  if (media.metadata.workflow === "published") {
+    // Skip by setting metadata.workflow.status to published
+    return true;
+  }
+
   if (media.metadata.productId) {
     const revisionMetadata = Object.assign({}, media.metadata);
     revisionMetadata.workflow = "published";
@@ -272,6 +277,11 @@ Media.files.before.remove((userId, media) => {
 
 Products.before.insert((userId, product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
+    return true;
+  }
+
+  if (product.workflow && Array.isArray(product.workflow.workflow) && product.workflow.workflow.indexOf("imported") !== -1) {
+    // Mark imported products as published by default.
     return true;
   }
 

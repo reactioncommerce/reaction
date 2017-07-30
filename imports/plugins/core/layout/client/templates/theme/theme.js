@@ -81,9 +81,19 @@ Router.Hooks.onEnter(addBodyClasses);
 
 Meteor.startup(() => {
   Tracker.autorun(() => {
-    const subscription = Reaction.Subscriptions.Shops;
-    if (subscription.ready()) {
-      const shop = Shops.findOne({});
+    if (Reaction.Subscriptions.PrimaryShop.ready() && Reaction.Subscriptions.MerchantShops.ready()) {
+      let shopId;
+
+      // Choose shop to get theme from
+      if (Reaction.marketplaceEnabled && Reaction.merchantTheme) {
+        shopId = Reaction.getShopId();
+      } else {
+        shopId = Reaction.getPrimaryShopId();
+      }
+
+      const shop = Shops.findOne({
+        _id: shopId
+      });
 
       if (shop) {
         if (shop.theme) {

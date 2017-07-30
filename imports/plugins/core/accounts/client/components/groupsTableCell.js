@@ -5,11 +5,15 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 import { getGravatar } from "../helpers/accountsHelper";
 
 const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserFromGroup, handleUserGroupChange }) => {
+  const email = _.get(account, "emails[0].address");
+
   if (columnName === "name") {
+    // use first part of email, if account has no name
+    const name = account.name || email.split("@")[0];
     return (
       <div className="table-cell body-first">
         <img className="accounts-img-tag" src={getGravatar(account)} />
-        <span><b>{account.name}</b></span>
+        <span><b>{name}</b></span>
       </div>
     );
   }
@@ -17,7 +21,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
   if (columnName === "email") {
     return (
       <div className="table-cell body">
-        <span>{_.get(account, "emails[0].address")}</span>
+        <span>{email}</span>
       </div>
     );
   }
@@ -33,6 +37,11 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
   }
 
   if (columnName === "dropdown") {
+    if (groups.length === 1) {
+      return (
+        <p>{_.startCase(groups[0].name)}</p>
+      );
+    }
     const dropDownButton = (
       <div className="group-dropdown">
         <Components.Button label={group.name && _.startCase(group.name)}>
