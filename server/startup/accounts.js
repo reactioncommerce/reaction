@@ -80,7 +80,7 @@ export default function () {
    * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
    */
   Accounts.onCreateUser((options, user) => {
-    const shopId = Reaction.getPrimaryShopId();
+    const shopId = Reaction.getShopId(); // current shop; not primary shop
     const groupToAddUser = options.groupId;
     const defaultVisitorRole =  ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
     const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];

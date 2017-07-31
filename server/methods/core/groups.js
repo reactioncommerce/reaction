@@ -144,8 +144,10 @@ Meteor.methods({
       setUserPermissions({ _id: userId }, permissions, shopId);
       Accounts.update({ _id: userId }, { $set: { groups: newGroups } });
 
-      if (slug === "owner") {
-        // remove current owner after setting another admin as the new owner
+      const isMarketPlaceOwner = Meteor.user().roles[Reaction.getPrimaryShopId()].indexOf("owner") > -1;
+      console.log({ isMarketPlaceOwner });
+      // remove current owner after setting another admin as the new owner
+      if (slug === "owner" && !isMarketPlaceOwner) { // exclude if it's performed by marketplace owner
         Meteor.call("group/addUser", Meteor.userId(), currentUserGrpInShop);
       }
 
