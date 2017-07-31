@@ -1,0 +1,23 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Deveniți un vânzător",
+        "errorCannotCreateShop": "Nu s-a putut crea magazin pentru utilizatorul curent {{user}}",
+        "yourShopIsReady": "Magazinul dvs. este acum gata!"
+      },
+      "app": {
+        "shops": "Magazine",
+        "myShop": "Magazinul meu"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Setările pentru Marketplace au fost salvate cu succes!",
+          "dashboardMarketplaceSettingsFailed": "Setările Marketplace nu au putut fi salvate"
+        }
+      }
+    }
+  }
+}]

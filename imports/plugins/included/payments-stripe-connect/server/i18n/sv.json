@@ -10,13 +10,16 @@
         },
         "dashboard": {
           "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "rand betalningar"
+          "stripeConnectDescription": "Stripe Connect-betalningar"
         },
         "paymentSettings": {
           "stripeConnectLabel": "Stripe Connect",
           "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Inte ha en rand API-klient-ID?",
+          "stripeConnectSettingsDescription": "Har du inte ett Stripe Connect API Client ID?",
           "stripeConnectSettingsGetItHere": "Få det här"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Kommer automatiskt omdirigera om några sekunder eller klicka här."
         }
       }
     }

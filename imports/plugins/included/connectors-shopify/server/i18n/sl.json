@@ -1,0 +1,25 @@
+[{
+  "i18n": "sl",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Podatkovni priključek za Shopify"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "Uvoz izdelkov",
+          "importing": "Uvažanje ... To lahko traja nekaj časa.",
+          "editApiKey": "Uredi API Key",
+          "editPassword": "Uredite geslo API",
+          "editSharedSecret": "Urejanje tajnosti v skupni rabi API",
+          "editShopifyDomain": "Uredi domeno trgovine",
+          "importSuccess": "Uvozi izdelke uspešno.",
+          "importFailed": "Napaka pri uvažanju izdelkov."
+        }
+      }
+    }
+  }
+}]

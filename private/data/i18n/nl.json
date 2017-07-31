@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Uiterlijk",
+          "addUserError": "Fout bij toevoegen van gebruiker om te groeperen",
+          "addUserSuccess": "Toegevoegd gebruiker om te groeperen",
+          "removeUserError": "Fout bij verwijderen van gebruiker om te groeperen",
+          "removeUserSuccess": "De gebruiker is succesvol verwijderd",
           "connect": "Aansluiten",
           "core": "Kern",
+          "name": "Naam",
+          "email": "E-mailinstellingen",
+          "create": "Groep maken",
+          "update": "Update Group",
+          "lastActive": "Laatst actief",
+          "description": "Voeg een productomschrijving toe",
+          "remove": "Verwijderen",
+          "newGroup": "Nieuwe groep",
+          "selectGroup": "Selecteer Groep",
+          "editGroups": "Groepen bewerken",
           "dashboard": "Dashboard",
+          "errorCreate": "Fout bij het maken van een groep",
+          "successCreate": "Groep is succesvol opgericht",
+          "errorUpdate": "Fout bij het bijwerken van de groep",
+          "successUpdate": "Groep is succesvol bijgewerkt",
           "misc": "Misc",
           "paymentMethod": "betaling Providers",
-          "utilities": "nutsbedrijven"
+          "utilities": "nutsbedrijven",
+          "marketplace": "Marktplaats"
         },
         "settings": {
           "accountSettingsLabel": "Account instellingen",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Shop lokalisatie instellingen opgeslagen.",
         "shopLocalizationSettingsFailed": "Shop-update lokalisatie instellingen is mislukt.",
         "shopPaymentMethodsSaved": "Shop betalingsmethoden instellingen opgeslagen.",
-        "shopPaymentMethodsFailed": "Shop-update betalingsmethoden instellingen is mislukt."
+        "shopPaymentMethodsFailed": "Shop-update betalingsmethoden instellingen is mislukt.",
+        "shopBrandAssetsSaved": "Bijgewerkt merk asset",
+        "shopBrandAssetsFailed": "Kan het merk asset niet updaten"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "E-mail is vereist.",
+          "groupRequired": "Een andere groep dan de standaard eigenaar groep is verplicht.",
           "passwordRequired": "Een wachtwoord is verplicht.",
           "passwordMustBeAtLeast6CharactersLong": "Wachtwoord moet minsters 6 karakters lang zijn.",
           "passwordMustContainRequirements": "Wachtwoord moet ten minste één cijfer of symbool bevatten.",

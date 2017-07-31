@@ -1,0 +1,23 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "ရောင်းသူတစ်ဦးဖြစ်လာ",
+        "errorCannotCreateShop": "လက်ရှိအသုံးပြုသူများအတွက်ဆိုင်ကိုမဖန်တီးနိုင်ခဲ့ {{user}}",
+        "yourShopIsReady": "သင့်ရဲ့ဆိုင်ယခုအဆင်သင့်ပါ!"
+      },
+      "app": {
+        "shops": "စျေးဆိုင်",
+        "myShop": "အကြှနျုပျ၏ဆိုင်"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Marketplace setting များကိုအောင်မြင်စွာကယ်တင်ခြင်းသို့ရောက်ရ၏,",
+          "dashboardMarketplaceSettingsFailed": "Marketplace setting များကိုကယ်တင်ရန်မအောင်မြင်ခဲ့ပါ"
+        }
+      }
+    }
+  }
+}]

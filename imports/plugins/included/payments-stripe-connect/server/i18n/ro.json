@@ -10,13 +10,16 @@
         },
         "dashboard": {
           "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "plăţile Stripe Connect"
+          "stripeConnectDescription": "Conectați plățile Stripe"
         },
         "paymentSettings": {
           "stripeConnectLabel": "Stripe Connect",
           "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Nu aveți un ID client Stripe Connect API?",
+          "stripeConnectSettingsDescription": "Nu aveți un ID de client API Stripe Connect?",
           "stripeConnectSettingsGetItHere": "Adu-o aici"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Va redirecționa automat în câteva secunde sau dați clic aici."
         }
       }
     }

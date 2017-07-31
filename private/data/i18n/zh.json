@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "外观",
+          "addUserError": "将用户添加到组中时出错",
+          "addUserSuccess": "将用户添加到组",
+          "removeUserError": "将用户删除到组时出错",
+          "removeUserSuccess": "用户删除成功",
           "connect": "连接",
           "core": "核心",
+          "name": "姓名",
+          "email": "电子邮件设置",
+          "create": "创建组",
+          "update": "更新组",
+          "lastActive": "最后活动",
+          "description": "产品描述",
+          "remove": "删除款式",
+          "newGroup": "新集团",
+          "selectGroup": "选择组",
+          "editGroups": "编辑群组",
           "dashboard": "仪表板",
+          "errorCreate": "创建组时出错",
+          "successCreate": "组创建成功",
+          "errorUpdate": "更新组时出错",
+          "successUpdate": "组更新成功",
           "misc": "杂项",
           "paymentMethod": "支付服务提供商",
-          "utilities": "实用程序"
+          "utilities": "实用程序",
+          "marketplace": "市井"
         },
         "settings": {
           "accountSettingsLabel": "账户设置",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "商店位置设置已保存。",
         "shopLocalizationSettingsFailed": "商店位置设置更新失败。",
         "shopPaymentMethodsSaved": "商店付款方式设置已保存。",
-        "shopPaymentMethodsFailed": "商店付款方式设置更新失败。"
+        "shopPaymentMethodsFailed": "商店付款方式设置更新失败。",
+        "shopBrandAssetsSaved": "更新品牌资产",
+        "shopBrandAssetsFailed": "无法更新品牌资产"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "需要邮箱地址。",
+          "groupRequired": "除默认所有者组之外的组是必需的。",
           "passwordRequired": "需要输入密码。",
           "passwordMustBeAtLeast6CharactersLong": "密码最少包含6个字符。",
           "passwordMustContainRequirements": "密码至少要含有一个数字或符号。",

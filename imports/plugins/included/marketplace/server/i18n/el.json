@@ -1,0 +1,23 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Γίνετε πωλητής",
+        "errorCannotCreateShop": "Δεν ήταν δυνατή η δημιουργία καταστήματος για τον τρέχοντα χρήστη {{user}}",
+        "yourShopIsReady": "Το κατάστημα σας είναι έτοιμο!"
+      },
+      "app": {
+        "shops": "Καταστήματα",
+        "myShop": "Το κατάστημά μου"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Οι ρυθμίσεις του Marketplace αποθηκεύτηκαν με επιτυχία!",
+          "dashboardMarketplaceSettingsFailed": "Αποτυχία αποθήκευσης των ρυθμίσεων του Marketplace"
+        }
+      }
+    }
+  }
+}]

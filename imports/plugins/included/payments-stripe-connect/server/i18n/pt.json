@@ -10,13 +10,16 @@
         },
         "dashboard": {
           "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "pagamentos listra"
+          "stripeConnectDescription": "Compensação dos pagamentos do Stripe Connect"
         },
         "paymentSettings": {
           "stripeConnectLabel": "Stripe Connect",
           "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Não temos uma listra API ID do cliente?",
+          "stripeConnectSettingsDescription": "Não tem uma identificação do cliente Stripe Connect API?",
           "stripeConnectSettingsGetItHere": "Venha aqui"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Redirecionará automaticamente em alguns segundos ou clique aqui."
         }
       }
     }

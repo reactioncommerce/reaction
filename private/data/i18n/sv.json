@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Utseende",
+          "addUserError": "Ett fel med att lägga till användaren att gruppera",
+          "addUserSuccess": "Tillagt användare att gruppera",
+          "removeUserError": "Det gick inte att ta bort användaren att gruppera",
+          "removeUserSuccess": "Användaren har tagits bort",
           "connect": "Ansluta",
           "core": "Kärna",
+          "name": "Namn",
+          "email": "e-postinställningar",
+          "create": "Skapa grupp",
+          "update": "Uppdatera grupp",
+          "lastActive": "Senast aktiv",
+          "description": "Beskrivning",
+          "remove": "Avlägsna",
+          "newGroup": "Ny grupp",
+          "selectGroup": "Välj grupp",
+          "editGroups": "Redigera grupper",
           "dashboard": "Instrumentbräda",
+          "errorCreate": "Det gick inte att skapa en grupp",
+          "successCreate": "Grupp skapades framgångsrikt",
+          "errorUpdate": "Det gick inte att uppdatera gruppen",
+          "successUpdate": "Grupp uppdaterad framgångsrikt",
           "misc": "misc",
           "paymentMethod": "betalnings~~POS=TRUNC",
-          "utilities": "verktyg"
+          "utilities": "verktyg",
+          "marketplace": "Marknad"
         },
         "settings": {
           "accountSettingsLabel": "Kontoinställningar",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Shop lokaliserings inställningar sparas.",
         "shopLocalizationSettingsFailed": "Shop lokaliseringsinställningar uppdatering misslyckades.",
         "shopPaymentMethodsSaved": "Shop Betalning inställningar sparas.",
-        "shopPaymentMethodsFailed": "Shop Betalning inställningar uppdatering misslyckades."
+        "shopPaymentMethodsFailed": "Shop Betalning inställningar uppdatering misslyckades.",
+        "shopBrandAssetsSaved": "Uppdaterad varumärke tillgång",
+        "shopBrandAssetsFailed": "Det gick inte att uppdatera varumärkets tillgång"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "Det krävs ett lösenord.",
+          "groupRequired": "En annan grupp än standardägargruppen krävs.",
           "passwordRequired": "Lösenord krävs.",
           "passwordMustBeAtLeast6CharactersLong": "Lösenordet måste vara minst 6 bokstäver långt.",
           "passwordMustContainRequirements": "Lösenord måste innehålla minst en siffra eller symbol.",

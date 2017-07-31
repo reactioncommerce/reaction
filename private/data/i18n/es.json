@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Aspecto",
+          "addUserError": "Error al agregar usuario al grupo",
+          "addUserSuccess": "Agregado al grupo",
+          "removeUserError": "Error al quitar usuario al grupo",
+          "removeUserSuccess": "Usuario eliminado correctamente",
           "connect": "Conectar",
           "core": "Core",
+          "name": "Nombre",
+          "email": "Ajustes del correo electrónico",
+          "create": "Crea un grupo",
+          "update": "Actualizar Grupo",
+          "lastActive": "Último Activo",
+          "description": "Descripción",
+          "remove": "Eliminar",
+          "newGroup": "Nuevo grupo",
+          "selectGroup": "Seleccionar grupo",
+          "editGroups": "Editar grupos",
           "dashboard": "Panel principal",
+          "errorCreate": "Error al crear grupo",
+          "successCreate": "Grupo creado correctamente",
+          "errorUpdate": "Error al actualizar el grupo",
+          "successUpdate": "Grupo actualizado con éxito",
           "misc": "Variado",
           "paymentMethod": "Proveedores de pagos",
-          "utilities": "Herramientas"
+          "utilities": "Herramientas",
+          "marketplace": "Mercado"
         },
         "settings": {
           "accountSettingsLabel": "Opciones de cuenta",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Opciones de ubicación de tienda guardadas.",
         "shopLocalizationSettingsFailed": "Actualización de las opciones de localización de la tienda fallida. ",
         "shopPaymentMethodsSaved": "Opciones de métodos de pago guardadas.",
-        "shopPaymentMethodsFailed": "Actualización de las opciones de métodos de pago fallida."
+        "shopPaymentMethodsFailed": "Actualización de las opciones de métodos de pago fallida.",
+        "shopBrandAssetsSaved": "Activo actualizado de la marca",
+        "shopBrandAssetsFailed": "No se pudo actualizar el activo de la marca"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "Se necesita una dirección de correo electrónico.",
+          "groupRequired": "Se requiere un grupo que no sea el grupo de propietarios predeterminado.",
           "passwordRequired": "Se necesita una contraseña.",
           "passwordMustBeAtLeast6CharactersLong": "La contraseña debe tener como mínimo 6 caracteres.",
           "passwordMustContainRequirements": "La contraseña debe contener al menos un número o un símbolo.",

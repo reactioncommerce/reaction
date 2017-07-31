@@ -1,0 +1,25 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Data Connector för Shopify"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "Importera produkter",
+          "importing": "Importerar ... Det kan ta lite tid.",
+          "editApiKey": "Redigera API-nyckel",
+          "editPassword": "Redigera API-lösenordet",
+          "editSharedSecret": "Redigera API Delad hemlighet",
+          "editShopifyDomain": "Redigera Shopify Domain",
+          "importSuccess": "Produkter importeras framgångsrikt.",
+          "importFailed": "Fel vid import av produkter."
+        }
+      }
+    }
+  }
+}]

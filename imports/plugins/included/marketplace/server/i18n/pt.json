@@ -1,0 +1,23 @@
+[{
+  "i18n": "pt",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Torne-se um vendedor",
+        "errorCannotCreateShop": "Não foi possível criar uma loja para o usuário atual {{user}}",
+        "yourShopIsReady": "Sua loja já está pronta!"
+      },
+      "app": {
+        "shops": "Lojas",
+        "myShop": "Minha loja"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "As configurações do Marketplace foram salvas com sucesso!",
+          "dashboardMarketplaceSettingsFailed": "Falha ao salvar as configurações do Marketplace"
+        }
+      }
+    }
+  }
+}]
