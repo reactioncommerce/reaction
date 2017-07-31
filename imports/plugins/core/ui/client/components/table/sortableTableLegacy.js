@@ -15,10 +15,7 @@ class SortableTableLegacy extends Component {
   }
 
   render() {
-    const {
-      data,
-      columns
-    } = this.props;
+    const { data, columns } = this.props;
 
     return (
       <TacoTable

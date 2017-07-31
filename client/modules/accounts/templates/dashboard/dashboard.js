@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { Components } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Roles } from "meteor/alanning:roles";
@@ -6,7 +7,6 @@ import { ServiceConfiguration } from "meteor/service-configuration";
 import { Reaction, i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 import { ServiceConfigHelper } from "../../helpers/util";
-import AccountsDashboardContainer from "/imports/plugins/core/accounts/client/containers/accountsDashboardContainer";
 
 /**
  * Accounts helpers
@@ -85,7 +85,7 @@ Template.accountsDashboard.helpers({
   },
 
   accountsDashboard() {
-    return AccountsDashboardContainer;
+    return Components.AccountsDashboard;
   }
 });
 

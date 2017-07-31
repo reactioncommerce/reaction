@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Roles } from "meteor/alanning:roles";
 import _ from "lodash";
 import { Reaction } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
 import * as Collections from "/lib/collections";
 import SearchModal from "../components/searchModal";
 

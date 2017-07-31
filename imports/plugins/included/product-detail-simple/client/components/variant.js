@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Currency, Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 
 class Variant extends Component {
@@ -26,14 +26,14 @@ class Variant extends Component {
       if (inventoryPolicy) {
         return (
           <span className="variant-qty-sold-out badge badge-danger">
-            <Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
+            <Components.Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
           </span>
         );
       }
 
       return (
         <span className="variant-qty-sold-out badge badge-info">
-          <Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
+          <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
         </span>
       );
     }
@@ -43,14 +43,14 @@ class Variant extends Component {
       if (inventoryPolicy) {
         return (
           <span className="variant-qty-sold-out badge badge-warning">
-            <Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
+            <Components.Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
           </span>
         );
       }
 
       return (
         <span className="variant-qty-sold-out badge badge-info">
-          <Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
+          <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
         </span>
       );
     }
@@ -62,7 +62,7 @@ class Variant extends Component {
     if (this.props.variant.isDeleted) {
       return (
         <span className="badge badge-danger">
-          <Translation defaultValue="Archived" i18nKey="app.archived" />
+          <Components.Translation defaultValue="Archived" i18nKey="app.archived" />
         </span>
       );
     }
@@ -86,7 +86,7 @@ class Variant extends Component {
       );
     } else {
       variantTitleElement = (
-        <Translation defaultValue="Label" i18nKey="productVariant.title" />
+        <Components.Translation defaultValue="Label" i18nKey="productVariant.title" />
       );
     }
 
@@ -104,7 +104,7 @@ class Variant extends Component {
 
           <div className="actions">
             <span className="variant-price">
-              <Currency amount={this.price} editable={this.props.editable}/>
+              <Components.Currency amount={this.price} editable={this.props.editable}/>
             </span>
           </div>
 
@@ -143,4 +143,6 @@ Variant.propTypes = {
   visibilityButton: PropTypes.node
 };
 
-export default SortableItem("product-variant", Variant);
+registerComponent("Variant", Variant, SortableItem("product-variant"));
+
+export default SortableItem("product-variant")(Variant);

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import moment from "moment";
-import { Icon } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 
 class EmailTableColumn extends Component {
@@ -34,18 +34,18 @@ class EmailTableColumn extends Component {
       if (row.value === "completed") {
         return (
           <span>
-            <Icon icon="fa fa-circle" className="valid" />
+            <Components.Icon icon="fa fa-circle" className="valid" />
             <span onClick={this.handleAction} title={this.props.data}>
-              <Icon icon="fa fa-retweet" className="resend-mail" />
+              <Components.Icon icon="fa fa-retweet" className="resend-mail" />
             </span>
           </span>
         );
       }
       return (
         <span>
-          <Icon icon="fa fa-circle" className="error" />
+          <Components.Icon icon="fa fa-circle" className="error" />
           <span onClick={this.handleAction} title={this.props.data}>
-            <Icon icon="fa fa-retweet" className="resend-mail" />
+            <Components.Icon icon="fa fa-retweet" className="resend-mail" />
           </span>
         </span>
       );
@@ -61,5 +61,7 @@ class EmailTableColumn extends Component {
     );
   }
 }
+
+registerComponent("EmailTableColumn", EmailTableColumn);
 
 export default EmailTableColumn;

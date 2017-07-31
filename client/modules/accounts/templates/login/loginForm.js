@@ -1,5 +1,5 @@
+import { Components } from "@reactioncommerce/reaction-components";
 import { Template } from "meteor/templating";
-import { LoginContainer, MessagesContainer } from "../../containers";
 
 Template.loginForm.helpers({
   component() {
@@ -7,7 +7,7 @@ Template.loginForm.helpers({
 
     return {
       ...currentData,
-      component: LoginContainer
+      component: Components.Login
     };
   }
 });
@@ -17,7 +17,7 @@ Template.loginFormMessages.helpers({
     const currentData = Template.currentData() || {};
     return {
       ...currentData,
-      component: MessagesContainer
+      component: Components.LoginFormMessages
     };
   }
 });

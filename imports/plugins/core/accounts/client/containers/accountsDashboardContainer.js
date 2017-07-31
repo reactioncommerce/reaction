@@ -1,8 +1,8 @@
 import { compose, withProps } from "recompose";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Groups } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
 import AccountsDashboard from "../components/accountsDashboard";
 
 const handlers = {
@@ -17,9 +17,9 @@ const handlers = {
     };
   },
 
-  handleRemoveUserFromGroup(account) {
+  handleRemoveUserFromGroup(account, groupId) {
     return () => {
-      Meteor.call("group/removeUser", account._id, this.props.group._id, (err) => {
+      Meteor.call("group/removeUser", account._id, groupId, (err) => {
         if (err) {
           return Alerts.toast(i18next.t("admin.groups.removeUserError", { err: err.message }), "error");
         }
@@ -49,4 +49,12 @@ const composer = (props, onData) => {
   }
 };
 
-export default compose(withProps(handlers), composeWithTracker(composer))(AccountsDashboard);
+registerComponent("AccountsDashboard", AccountsDashboard, [
+  composeWithTracker(composer),
+  withProps(handlers)
+]);
+
+export default compose(
+  composeWithTracker(composer),
+  withProps(handlers)
+)(AccountsDashboard);

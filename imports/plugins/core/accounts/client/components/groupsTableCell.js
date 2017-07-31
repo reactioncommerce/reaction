@@ -1,15 +1,19 @@
 import React from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { getGravatar } from "../helpers/accountsHelper";
-import { Button, MenuItem, DropDownMenu } from "@reactioncommerce/reaction-ui";
 
 const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserFromGroup, handleUserGroupChange }) => {
+  const email = _.get(account, "emails[0].address");
+
   if (columnName === "name") {
+    // use first part of email, if account has no name
+    const name = account.name || email.split("@")[0];
     return (
       <div className="table-cell body-first">
         <img className="accounts-img-tag" src={getGravatar(account)} />
-        <span><b>{account.name}</b></span>
+        <span><b>{name}</b></span>
       </div>
     );
   }
@@ -17,7 +21,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
   if (columnName === "email") {
     return (
       <div className="table-cell body">
-        <span>{_.get(account, "emails[0].address")}</span>
+        <span>{email}</span>
       </div>
     );
   }
@@ -33,16 +37,21 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
   }
 
   if (columnName === "dropdown") {
+    if (groups.length === 1) {
+      return (
+        <p>{_.startCase(groups[0].name)}</p>
+      );
+    }
     const dropDownButton = (
       <div className="group-dropdown">
-        <Button label={group.name && _.startCase(group.name)}>
+        <Components.Button label={group.name && _.startCase(group.name)}>
           &nbsp;<i className="fa fa-chevron-down" />
-        </Button>
+        </Components.Button>
       </div>
     );
 
     return (
-      <DropDownMenu
+      <Components.DropDownMenu
         buttonElement={dropDownButton}
         attachment="bottom center"
         onChange={handleUserGroupChange(account)}
@@ -50,23 +59,23 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
         {groups
           .filter((grp) => grp._id !== group._id)
           .map((grp, index) => (
-            <MenuItem
+            <Components.MenuItem
               key={index}
               label={_.startCase(grp.name)}
               selectLabel={_.startCase(grp.name)}
               value={grp._id}
             />
           ))}
-      </DropDownMenu>
+      </Components.DropDownMenu>
     );
   }
 
   if (columnName === "button") {
     return (
-      <div>
-        <Button
+      <div className="group-table-button">
+        <Components.Button
           status="danger"
-          onClick={handleRemoveUserFromGroup(account)}
+          onClick={handleRemoveUserFromGroup(account, group._id)}
           bezelStyle="solid"
           i18nKeyLabel="admin.groups.remove"
           label="Remove"
@@ -86,5 +95,7 @@ GroupsTableCell.propTypes = {
   handleRemoveUserFromGroup: PropTypes.func,
   handleUserGroupChange: PropTypes.func
 };
+
+registerComponent("GroupsTableCell", GroupsTableCell);
 
 export default GroupsTableCell;

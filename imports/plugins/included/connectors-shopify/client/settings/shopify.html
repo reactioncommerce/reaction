@@ -1,0 +1,22 @@
+<template name="shopifyConnectSettings">
+    <div class="panel-group">
+      {{#autoForm collection=Collections.Packages schema=ShopifyConnectPackageConfig doc=packageData type="update" id="shopify-connect-update-form"}}
+        {{> afQuickField name="settings.apiKey" class='form-control'}}
+        {{> afQuickField name="settings.password" class='form-control'}}
+        {{> afQuickField name="settings.sharedSecret" class='form-control'}}
+        {{> afQuickField name="settings.shopName" class='form-control'}}
+        {{> shopSettingsSubmitButton}}
+      {{/autoForm}}
+    </div>
+  {{#if packageData.settings.apiKey}}
+    <div class="panel-group">
+      {{> shopifyProductImport}}
+    </div>
+  {{/if}}
+</template>
+
+<template name="shopifyProductImport">
+  <button class="btn btn-default" data-event-action="importProductsFromShopify">
+    <i class="fa fa-cloud-download"></i><span data-i18n="admin.shopifyConnectSettings.importProducts">Import Products</span>
+  </button>
+</template>

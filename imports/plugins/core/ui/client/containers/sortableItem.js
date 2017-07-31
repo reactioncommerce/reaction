@@ -51,26 +51,26 @@ const cardTarget = {
   }
 };
 
-export default function ComposeSortableItem(itemType, SortableItemComponent) {
-  const SortableItem = (props) => {
-    return <SortableItemComponent {...props} />;
+export default function ComposeSortableItem(itemType) {
+  return function (SortableItemComponent) {
+    const SortableItem = (props) => <SortableItemComponent {...props} />;
+
+    SortableItem.contextTypes = {
+      dragDropManager: PropTypes.object.isRequired
+    };
+
+    SortableItem.propTypes = {
+      // Injected by React DnD:
+      connectDragPreview: PropTypes.func.isRequired,
+      connectDragSource: PropTypes.func.isRequired,
+      connectDropTarget: PropTypes.func.isRequired,
+      isDragging: PropTypes.bool.isRequired
+    };
+
+    let decoratedComponent = SortableItem;
+    decoratedComponent = DragSource(itemType, cardSource, collectDropSource)(decoratedComponent);
+    decoratedComponent = DropTarget(itemType, cardTarget, collectDropTarget)(decoratedComponent);
+
+    return decoratedComponent;
   };
-
-  SortableItem.contextTypes = {
-    dragDropManager: PropTypes.object.isRequired
-  };
-
-  SortableItem.propTypes = {
-    // Injected by React DnD:
-    connectDragPreview: PropTypes.func.isRequired,
-    connectDragSource: PropTypes.func.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
-    isDragging: PropTypes.bool.isRequired
-  };
-
-  let decoratedComponent = SortableItem;
-  decoratedComponent = DragSource(itemType, cardSource, collectDropSource)(decoratedComponent);
-  decoratedComponent = DropTarget(itemType, cardTarget, collectDropTarget)(decoratedComponent);
-
-  return decoratedComponent;
 }
