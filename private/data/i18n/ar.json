@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "مظهر",
+          "addUserError": "حدث خطأ أثناء إضافة المستخدم إلى المجموعة",
+          "addUserSuccess": "تمت إضافة مستخدم إلى المجموعة",
+          "removeUserError": "حدث خطأ أثناء إزالة المستخدم إلى المجموعة",
+          "removeUserSuccess": "تمت إزالة المستخدم بنجاح",
           "connect": "توصيل",
           "core": "جوهر",
+          "name": "الأسم",
+          "email": "إعدادات البريد الإلكتروني",
+          "create": "إنشاء مجموعة",
+          "update": "تحديث المجموعة",
+          "lastActive": "آخر نشاط",
+          "description": "مواصفات",
+          "remove": "إزالة",
+          "newGroup": "مجموعة جديدة",
+          "selectGroup": "حدد المجموعة",
+          "editGroups": "تعديل المجموعات",
           "dashboard": "لوحة المعلومات",
+          "errorCreate": "حدث خطأ أثناء إنشاء المجموعة",
+          "successCreate": "تم إنشاء المجموعة بنجاح",
+          "errorUpdate": "حدث خطأ أثناء تحديث المجموعة",
+          "successUpdate": "تم تحديث المجموعة بنجاح",
           "misc": "متنوع",
           "paymentMethod": "مزود الدفعة",
-          "utilities": "أدوات مساعدة"
+          "utilities": "أدوات مساعدة",
+          "marketplace": "السوق"
         },
         "settings": {
           "accountSettingsLabel": "إعدادات الحساب",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": ".تم حفظ إعدادات توطين المتجر",
         "shopLocalizationSettingsFailed": ".فشل تحديث إعدادات توطين المتجر ",
         "shopPaymentMethodsSaved": ".تم حفظ إعدادات طريقة الدفع",
-        "shopPaymentMethodsFailed": ".تحديث إعدادات طريقة الدفع للشراء فشلت"
+        "shopPaymentMethodsFailed": ".تحديث إعدادات طريقة الدفع للشراء فشلت",
+        "shopBrandAssetsSaved": "أصل العلامة التجارية المحدثة",
+        "shopBrandAssetsFailed": "تعذر تحديث مادة عرض العلامة التجارية"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "البريد الالكترونى مطلوب",
+          "groupRequired": "مطلوب مجموعة أخرى غير مجموعة المالك الافتراضية.",
           "passwordRequired": ".الرقم السري مطلوب",
           "passwordMustBeAtLeast6CharactersLong": ".يجب أن يكون الرقم السري 6 أحرف على الأقل",
           "passwordMustContainRequirements": "يجب أن تحتوي كلمة المرور على رقم أو عنصر واحد على الأقل.",

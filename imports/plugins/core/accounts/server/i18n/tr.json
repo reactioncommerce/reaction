@@ -13,6 +13,10 @@
           "accountsSettingsLabel": "Hesaplar",
           "accountsSettingsTitle": "Hesaplar",
           "accountsSettingsDescription": "Hesap Ayarları"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "johnsmith@reactioncommerce.com"
         }
       }
     }

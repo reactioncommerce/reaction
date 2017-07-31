@@ -1,0 +1,23 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Légy eladó",
+        "errorCannotCreateShop": "Nem sikerült létrehozni az aktuális felhasználó {{user}} boltját",
+        "yourShopIsReady": "Boltja készen áll!"
+      },
+      "app": {
+        "shops": "Üzletek",
+        "myShop": "A boltom"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Piaci beállítások sikeresen mentve!",
+          "dashboardMarketplaceSettingsFailed": "A Marketplace beállításainak mentése sikertelen"
+        }
+      }
+    }
+  }
+}]

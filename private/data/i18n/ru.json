@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Внешний вид",
+          "addUserError": "Ошибка добавления пользователя в группу",
+          "addUserSuccess": "Добавлен пользователь в группу",
+          "removeUserError": "Ошибка удаления пользователя в группу",
+          "removeUserSuccess": "Пользователь удален успешно удален",
           "connect": "Connect",
           "core": "Ядро",
+          "name": "Имя",
+          "email": "Настройки электронной почты",
+          "create": "Создать группу",
+          "update": "Обновить группу",
+          "lastActive": "Последнее посещение",
+          "description": "Добавьте описание товара",
+          "remove": "Удалить",
+          "newGroup": "Новая группа",
+          "selectGroup": "Выбрать группу",
+          "editGroups": "Редактировать группы",
           "dashboard": "Панель управления",
+          "errorCreate": "Ошибка создания группы",
+          "successCreate": "Группа успешно создана",
+          "errorUpdate": "Группа обновления ошибок",
+          "successUpdate": "Группа успешно обновлена",
           "misc": "Разное",
           "paymentMethod": "Платёжные системы",
-          "utilities": "Утилиты"
+          "utilities": "Утилиты",
+          "marketplace": "базарная площадь"
         },
         "settings": {
           "accountSettingsLabel": "Настройки учетных записей",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Настройки локализации обновлены.",
         "shopLocalizationSettingsFailed": "Не удалось изменить настройки локализации. ",
         "shopPaymentMethodsSaved": "Настройки платёжных систем обновлены.",
-        "shopPaymentMethodsFailed": "Не удалось изменить настройки платёжных систем. "
+        "shopPaymentMethodsFailed": "Не удалось изменить настройки платёжных систем. ",
+        "shopBrandAssetsSaved": "Обновленный актив бренда",
+        "shopBrandAssetsFailed": "Не удалось обновить брэнд-активы"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "Email обязателен.",
+          "groupRequired": "Требуется группа, отличная от группы владельцев по умолчанию.",
           "passwordRequired": "Пароль обязателен.",
           "passwordMustBeAtLeast6CharactersLong": "Пароль должен быть не короче 6 символов.",
           "passwordMustContainRequirements": "Пароль должен содержать хотя бы одну цифру или символ.",

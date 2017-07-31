@@ -1,0 +1,23 @@
+[{
+  "i18n": "de",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Werden Sie ein Verkäufer",
+        "errorCannotCreateShop": "Konnte kein Geschäft für den aktuellen Benutzer {{user}} erstellen",
+        "yourShopIsReady": "Ihr Shop ist jetzt fertig!"
+      },
+      "app": {
+        "shops": "Geschäfte",
+        "myShop": "Mein Geschäft"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Marktplatzeinstellungen erfolgreich gespeichert!",
+          "dashboardMarketplaceSettingsFailed": "Fehler beim Speichern der Marketplace-Einstellungen"
+        }
+      }
+    }
+  }
+}]

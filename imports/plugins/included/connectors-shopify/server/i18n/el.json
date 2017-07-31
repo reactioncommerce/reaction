@@ -1,0 +1,25 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Υποδοχή δεδομένων για Shopify"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "Εισαγωγή προϊόντων",
+          "importing": "Εισαγωγή ... Αυτό μπορεί να διαρκέσει λίγο.",
+          "editApiKey": "Επεξεργασία API Key",
+          "editPassword": "Επεξεργασία κωδικού πρόσβασης API",
+          "editSharedSecret": "Επεξεργασία μυστικού κοινόχρηστου API",
+          "editShopifyDomain": "Επεξεργασία τομέα εξαγοράς",
+          "importSuccess": "Προϊόντα που έχουν εισαχθεί με επιτυχία.",
+          "importFailed": "Σφάλμα κατά την εισαγωγή προϊόντων."
+        }
+      }
+    }
+  }
+}]

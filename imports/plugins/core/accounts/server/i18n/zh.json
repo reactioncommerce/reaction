@@ -13,6 +13,10 @@
           "accountsSettingsLabel": "帐户",
           "accountsSettingsTitle": "帐户",
           "accountsSettingsDescription": "帐号设定"
+        },
+        "groupsInvite": {
+          "name": "约翰·史密斯",
+          "email": "johnsmith@reactioncommerce.com"
         }
       }
     }

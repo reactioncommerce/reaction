@@ -1,0 +1,23 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Postanite prodavač",
+        "errorCannotCreateShop": "Ne mogu stvoriti trgovinu za trenutni korisnik {{user}}",
+        "yourShopIsReady": "Vaša trgovina je sada spremna!"
+      },
+      "app": {
+        "shops": "trgovine",
+        "myShop": "Moj dućan"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Postavke tržišta uspješno su spremljene!",
+          "dashboardMarketplaceSettingsFailed": "Spremanje postavki tržišta nije uspjelo"
+        }
+      }
+    }
+  }
+}]

@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Wygląd",
+          "addUserError": "Błąd dodawania użytkownika do grupy",
+          "addUserSuccess": "Dodano użytkownika do grupy",
+          "removeUserError": "Wystąpił błąd podczas usuwania użytkownika do grupy",
+          "removeUserSuccess": "Usunięto pomyślnie użytkownika",
           "connect": "Połączyć",
           "core": "Rdzeń",
+          "name": "Nazwa",
+          "email": "Ustawienia poczty e-mail",
+          "create": "Stworzyć grupę",
+          "update": "Aktualizuj Grupę",
+          "lastActive": "Ostatnio aktywny",
+          "description": "Opis",
+          "remove": "Usunąć",
+          "newGroup": "Nowa grupa",
+          "selectGroup": "Wybierz grupę",
+          "editGroups": "Edytuj grupy",
           "dashboard": "Dashboard",
+          "errorCreate": "Wystąpił błąd podczas tworzenia grupy",
+          "successCreate": "Grupa została pomyślnie utworzona",
+          "errorUpdate": "Wystąpił błąd podczas aktualizowania grupy",
+          "successUpdate": "Grupa została zaktualizowana",
           "misc": "Rożne",
           "paymentMethod": "dostawców płatności",
-          "utilities": "Użytkowe"
+          "utilities": "Użytkowe",
+          "marketplace": "Rynek"
         },
         "settings": {
           "accountSettingsLabel": "Ustawienia konta",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Ustawienia lokalizacji Shop zapisane.",
         "shopLocalizationSettingsFailed": "Sklep ustawienia lokalizacyjne aktualizacja nie powiodła się.",
         "shopPaymentMethodsSaved": "Sklep ustawienia Metody płatności zapisane.",
-        "shopPaymentMethodsFailed": "Sklep ustawienia Metody płatności aktualizacja nie powiodła się."
+        "shopPaymentMethodsFailed": "Sklep ustawienia Metody płatności aktualizacja nie powiodła się.",
+        "shopBrandAssetsSaved": "Zaktualizowany zasób marki",
+        "shopBrandAssetsFailed": "Nie można zaktualizować zasobu marki"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "Wymagany jest adres email.",
+          "groupRequired": "Wymagana jest grupa innej niż domyślna grupa właścicieli.",
           "passwordRequired": "Wymagane jest hasło.",
           "passwordMustBeAtLeast6CharactersLong": "Hasło musi mieć co najmniej 6 znaków.",
           "passwordMustContainRequirements": "Hasło musi zawierać co najmniej jedną cyfrę lub symbol.",

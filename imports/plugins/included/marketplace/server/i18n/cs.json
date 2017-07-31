@@ -1,0 +1,23 @@
+[{
+  "i18n": "cs",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Staňte se prodejcem",
+        "errorCannotCreateShop": "Nelze vytvořit obchod pro aktuálního uživatele {{user}}",
+        "yourShopIsReady": "Váš obchod je nyní připraven!"
+      },
+      "app": {
+        "shops": "Obchody",
+        "myShop": "Můj obchod"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Nastavení tržiště bylo úspěšně uloženo!",
+          "dashboardMarketplaceSettingsFailed": "Nepodařilo se uložit nastavení Marketplace"
+        }
+      }
+    }
+  }
+}]

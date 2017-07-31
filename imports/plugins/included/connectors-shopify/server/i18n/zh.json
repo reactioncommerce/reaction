@@ -1,0 +1,25 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "数据连接器Shopify"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "进口产品",
+          "importing": "导入...这可能需要一点时间。",
+          "editApiKey": "编辑API密钥",
+          "editPassword": "编辑API密码",
+          "editSharedSecret": "编辑API共享密码",
+          "editShopifyDomain": "编辑Shopify域",
+          "importSuccess": "产品进口成功。",
+          "importFailed": "导入产品时出错"
+        }
+      }
+    }
+  }
+}]

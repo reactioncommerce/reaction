@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Xuất hiện",
+          "addUserError": "Lỗi khi thêm người dùng vào nhóm",
+          "addUserSuccess": "Đã thêm người dùng vào nhóm",
+          "removeUserError": "Lỗi khi xóa người dùng vào nhóm",
+          "removeUserSuccess": "Đã xoá thành công",
           "connect": "Kết nối",
           "core": "Cốt lõi",
+          "name": "Tên",
+          "email": "Cài đặt email",
+          "create": "Tạo nhóm",
+          "update": "Cập nhật Nhóm",
+          "lastActive": "Hoạt động lần cuối",
+          "description": "Sự miêu tả",
+          "remove": "Tẩy",
+          "newGroup": "Nhóm mới",
+          "selectGroup": "Chọn Nhóm",
+          "editGroups": "Chỉnh sửa nhóm",
           "dashboard": "bảng điều khiển",
+          "errorCreate": "Lỗi khi tạo nhóm",
+          "successCreate": "Nhóm thành công",
+          "errorUpdate": "Lỗi khi cập nhật nhóm",
+          "successUpdate": "Nhóm được cập nhật thành công",
           "misc": "misc",
           "paymentMethod": "Nhà cung cấp thanh toán",
-          "utilities": "tiện ích"
+          "utilities": "tiện ích",
+          "marketplace": "Thương trường"
         },
         "settings": {
           "accountSettingsLabel": "Thiết lập tài khoản",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "thiết lập địa hóa cửa hàng lưu.",
         "shopLocalizationSettingsFailed": "Cửa hàng thiết lập địa hóa cập nhật thất bại.",
         "shopPaymentMethodsSaved": "Cửa hàng thiết lập Phương thức thanh toán lưu.",
-        "shopPaymentMethodsFailed": "Cửa hàng Phương thức thanh toán thiết lập cập nhật thất bại."
+        "shopPaymentMethodsFailed": "Cửa hàng Phương thức thanh toán thiết lập cập nhật thất bại.",
+        "shopBrandAssetsSaved": "Tài sản thương hiệu đã cập nhật",
+        "shopBrandAssetsFailed": "Không thể cập nhật nội dung thương hiệu"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "Email phải có.",
+          "groupRequired": "Một nhóm khác với nhóm chủ sở hữu mặc định là bắt buộc.",
           "passwordRequired": "Mật khẩu là bắt buộc.",
           "passwordMustBeAtLeast6CharactersLong": "Mật khẩu phải có độ dài ít nhất 6 ký tự.",
           "passwordMustContainRequirements": "Mật khẩu phải chứa ít nhất một số hoặc biểu tượng.",

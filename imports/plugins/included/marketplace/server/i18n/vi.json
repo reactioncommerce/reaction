@@ -1,0 +1,23 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Trở thành một người bán",
+        "errorCannotCreateShop": "Không thể tạo cửa hàng cho người dùng hiện tại {{user}}",
+        "yourShopIsReady": "Cửa hàng của bạn đã sẵn sàng!"
+      },
+      "app": {
+        "shops": "Cửa hàng",
+        "myShop": "Cửa hàng của tôi"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Cài đặt Marketplace đã được lưu thành công!",
+          "dashboardMarketplaceSettingsFailed": "Không thể lưu cài đặt Marketplace"
+        }
+      }
+    }
+  }
+}]

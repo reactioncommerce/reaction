@@ -13,6 +13,10 @@
           "accountsSettingsLabel": "Računi",
           "accountsSettingsTitle": "Računi",
           "accountsSettingsDescription": "Postavke računa"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "johnsmith@reactioncommerce.com"
         }
       }
     }
