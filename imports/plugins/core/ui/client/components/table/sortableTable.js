@@ -224,7 +224,7 @@ class SortableTable extends Component {
 
     return 0;
   }
-  
+
   render() {
     const { ...otherProps } = this.props;
     const defaultClassName = "-striped -highlight";
