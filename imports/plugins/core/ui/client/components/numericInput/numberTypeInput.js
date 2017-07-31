@@ -17,6 +17,8 @@ class NumberTypeInput extends Component {
 
     this.state = {
       value: props.value || props.defaultValue,
+      minValue: props.minValue || 0,
+      maxValue: props.maxValue || undefined,
       className: {}
     };
 
@@ -37,26 +39,26 @@ class NumberTypeInput extends Component {
   }
 
   handleIncrementButton = (event) => {
-    const newValue = this.state.value + 1;
+    const value = this.state.value + 1;
 
-    if (newValue <= this.props.maxValue) {
+    if (this.state.maxValue && value <= this.state.maxValue) {
       this.setState({
-        value: newValue,
+        value,
         className: { edited: true }
       });
-      this.handleChange(event, newValue);
+      this.handleChange(event, value);
     }
   }
 
   handleDecrementButton = (event) => {
-    const newValue = this.state.value - 1;
+    const value = this.state.value - 1;
 
-    if (newValue >= this.props.minValue) {
+    if (value >= this.state.minValue) {
       this.setState({
-        value: newValue,
+        value,
         className: { edited: true }
       });
-      this.handleChange(event, newValue);
+      this.handleChange(event, value);
     }
   }
 
@@ -76,8 +78,8 @@ class NumberTypeInput extends Component {
       <div className="rui number-input">
         <input
           className={fieldClassName}
-          min={this.props.minValue || 0}
-          max={this.props.maxValue || undefined}
+          min={this.state.minValue}
+          max={this.state.maxValue}
           value={this.state.value}
           onChange={this.handleChange}
           type="number"

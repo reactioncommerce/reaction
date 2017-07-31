@@ -69,7 +69,6 @@ class LineItemsContainer extends Component {
   }
 
   inputOnChange = (event, value, lineItem) => {
-    console.log("---->", value);
     let { editedItems } = this.state;
 
     // console.log("uniqItem-->", lineItem);
@@ -159,7 +158,6 @@ class LineItemsContainer extends Component {
   }
 
   render() {
-    console.log("container", this.state.value);
     const { invoice, uniqueItems } = this.props;
     return (
       <TranslationProvider>
