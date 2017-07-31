@@ -243,7 +243,7 @@ class OrdersListContainer extends Component {
             labeled: true
           });
         });
-      } else if (order.shipping[0].picked === false || order.shipping[0].picked === false) {
+      } else if (order.shipping[0].picked === false || order.shipping[0].packed === false) {
         Alerts.alert({
           text: `You've requested that order ${order._id} be set to the "Labeled" status, but it is not in the "Picked"
                 state and would skip all steps leading up to the "Labeled" state. Are you sure you want to do this?`,
@@ -280,7 +280,7 @@ class OrdersListContainer extends Component {
 
   shippedShippingStatus = (selectedOrders) => {
     selectedOrders.forEach((order) => {
-      if (order.shipping[0].packed && order.shipping[0].picked && order.shipping[0].labeled && order.shipping[0].shipped === false) {
+      if (order.shipping[0].picked && order.shipping[0].packed && order.shipping[0].labeled && order.shipping[0].shipped === false) {
         Meteor.call("orders/shipmentShipped", order, order.shipping[0], (err) => {
           if (err) {
             Alerts.toast("Error", "error");
@@ -295,7 +295,7 @@ class OrdersListContainer extends Component {
             shipped: true
           });
         });
-      } else if (order.shipping[0].packed === false || order.shipping[0].picked === false || order.shipping[0].labeled === false) {
+      } else if (order.shipping[0].picked === false || order.shipping[0].packed === false || order.shipping[0].labeled === false) {
         Alerts.alert({
           text: `You've requested that order ${order._id} be set to the "Shipped" status, but it is not in the "Packed"
                 state and would skip all steps leading up to the "Shipped" state. Are you sure you want to do this?`,
