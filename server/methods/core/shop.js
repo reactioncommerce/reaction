@@ -32,6 +32,7 @@ Meteor.methods({
     // this.unblock();
     const count = Collections.Shops.find().count() || "";
     const currentUser = Meteor.user();
+    const currentAccount = Collections.Accounts.findOne({ _id: currentUser._id });
 
     if (!currentUser) {
       throw new Meteor.Error("Unable to create shop with specified user");
@@ -66,9 +67,13 @@ Meteor.methods({
 
       // add user info for new shop
       shop.emails = currentUser.emails;
-      // TODO: Review source of default address for shop from user
+
+
       // Reaction currently stores addressBook in Accounts collection not users
-      shop.addressBook = currentUser.profile && currentUser.profile.addressBook;
+      if (currentAccount && currentAccount.addressBook && Array.isArray(currentAccount.addressBook)) {
+        shop.addressBook = currentAccount.addressBook;
+      }
+
 
       // clean up new shop
       delete shop.createdAt;
