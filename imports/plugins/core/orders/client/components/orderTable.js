@@ -350,7 +350,7 @@ class OrderTable extends Component {
 
     return (
       <div>
-        {this.renderBulkOrderActionsBar()}
+        {this.props.isOpen && this.renderBulkOrderActionsBar()}
         <SortableTable
           tableClassName={`rui order table -highlight ${this.props.selectedItems.length > 0 ?
             "table-header-hidden" :
@@ -368,7 +368,7 @@ class OrderTable extends Component {
           getTrGroupProps={getTrGroupProps}
           getPaginationProps={() => {
             return {
-              className: this.props.selectedItems.length > 0 ?
+              className: this.props.isOpen && this.props.selectedItems.length > 0 ?
                 "order-table-pagination-hidden" :
                 "order-table-pagination-visible"
             };
