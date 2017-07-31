@@ -189,12 +189,23 @@ class OrdersListContainer extends Component {
             type: "warning",
             showCancelButton: true,
             showCloseButton: true,
-            confirmButtonText: "Yes, Set All Selected Orders"
-          }, (isConfirm) => {
-            if (isConfirm) {
-              Alerts.alert({
-                title: "Set",
-                type: "success"
+            confirmButtonText: "Yes, Set All Selected Orders",
+            cancelButtonText: "No, Cancel"
+          }, (setSelected) => {
+            if (setSelected) {
+              Meteor.call("orders/shipmentPacked", order, order.shipping[0], true, (err) => {
+                if (err) {
+                  Alerts.toast("Error", "error");
+                } else {
+                  Alerts.alert({
+                    text: `Order with id ${order._id} shipping status set to packed`,
+                    type: "success"
+                  });
+                }
+
+                this.setState({
+                  packed: true
+                });
               });
             }
           });
@@ -228,11 +239,21 @@ class OrdersListContainer extends Component {
             showCancelButton: true,
             showCloseButton: true,
             confirmButtonText: "Yes, Set All Selected Orders"
-          }, (isConfirm) => {
-            if (isConfirm) {
-              Alerts.alert({
-                title: "Set",
-                type: "success"
+          }, (setSelected) => {
+            if (setSelected) {
+              Meteor.call("orders/shipmentLabeled", order, order.shipping[0], true, (err) => {
+                if (err) {
+                  Alerts.toast("Error", "error");
+                } else {
+                  Alerts.alert({
+                    text: `Order with id ${order._id} shipping status set to labeled`,
+                    type: "success"
+                  });
+                }
+
+                this.setState({
+                  labeled: true
+                });
               });
             }
           });
@@ -265,11 +286,20 @@ class OrdersListContainer extends Component {
             showCancelButton: true,
             showCloseButton: true,
             confirmButtonText: "Yes, Set All Selected Orders"
-          }, (isConfirm) => {
-            if (isConfirm) {
-              Alerts.alert({
-                title: "Set",
-                type: "success"
+          }, (setSelected) => {
+            if (setSelected) {
+              Meteor.call("orders/shipmentShipped", order, order.shipping[0], (err) => {
+                if (err) {
+                  Alerts.toast("Error", "error");
+                } else {
+                  Alerts.alert({
+                    text: `Order with id ${order._id} shipping status set to shipped`,
+                    type: "success"
+                  });
+                }
+                this.setState({
+                  shipped: true
+                });
               });
             }
           });
