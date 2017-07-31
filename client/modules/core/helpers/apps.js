@@ -49,6 +49,7 @@ export function Apps(optionHash) {
   let key;
   const reactionApps = [];
   let options = {};
+  let shopType;
 
   // allow for object or option.hash
   if (optionHash) {
@@ -66,7 +67,10 @@ export function Apps(optionHash) {
 
   // Get the shop to determine shopType
   const shop = Shops.findOne({ _id: options.shopId });
-  const shopType = shop.shopType;
+  if (shop) {
+    shopType = shop.shopType;
+  }
+
 
   // remove audience permissions for owner (still needed here for older/legacy calls)
   if (Reaction.hasOwnerAccess() && options.audience) {
