@@ -64,7 +64,8 @@ Reaction.registerPackage({
     icon: "fa fa-globe",
     provides: "shopSettings",
     container: "dashboard",
-    template: "marketplaceShopSettings"
+    template: "marketplaceShopSettings",
+    showForShopTypes: ["primary"]
   }, {
     route: "shop/:shopId",
     name: "shop",
@@ -83,5 +84,13 @@ Reaction.registerPackage({
     container: "dashboard",
     audience: ["seller"],
     priority: 1
+  }, {
+    // This provides the settings container for marketplaceMerchantSettings
+    label: "My Shop Settings",
+    icon: "fa fa-briefcase",
+    provides: "shopSettings",
+    container: "dashboard",
+    template: "marketplaceMerchantSettings",
+    hideForShopTypes: ["primary"]
   }]
 });
