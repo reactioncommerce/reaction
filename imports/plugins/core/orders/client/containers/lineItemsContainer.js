@@ -22,7 +22,8 @@ class LineItemsContainer extends Component {
       popOverIsOpen: false,
       selectAllItems: false,
       selectedItems: [],
-      editedItems: []
+      editedItems: [],
+      value: undefined
     };
 
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
@@ -67,34 +68,36 @@ class LineItemsContainer extends Component {
     }
   }
 
-  // inputOnChange = (quantityValue, lineItem) => {
-  //   let { editedItems } = this.state;
+  inputOnChange = (event, value, lineItem) => {
+    console.log("---->", value);
+    let { editedItems } = this.state;
 
-  //   const itemQuantity = editedItems.find(item => {
-  //     return item.id === lineItem._id;
-  //   });
+    // console.log("uniqItem-->", lineItem);
+    const isEdited = editedItems.find(item => {
+      return item.id === lineItem._id;
+    });
 
-  //   const refundedQuantity = lineItem.quantity - quantityValue;
+    // console.log("isEdited--->", isEdited);
 
-  //   if (itemQuantity) {
-  //     editedItems = editedItems.filter(item => item.id !== lineItem._id);
-  //     itemQuantity.refundedTotal = lineItem.variants.price * refundedQuantity;
-  //     itemQuantity.refundedQuantity = refundedQuantity;
-  //     editedItems.push(itemQuantity);
-  //   } else {
-  //     editedItems.push({
-  //       id: lineItem._id,
-  //       title: lineItem.title,
-  //       refundedTotal: lineItem.variants.price * refundedQuantity,
-  //       refundedQuantity
-  //     });
-  //   }
+    const refundedQuantity = lineItem.quantity - value;
 
-  //   return this.setState({ editedItems });
-  // }
-
-  inputOnChange = () => {
-
+    if (isEdited) {
+      editedItems = editedItems.filter(item => item.id !== lineItem._id);
+      isEdited.refundedTotal = lineItem.variants.price * refundedQuantity;
+      isEdited.refundedQuantity = refundedQuantity;
+      editedItems.push(isEdited);
+    } else {
+      editedItems.push({
+        id: lineItem._id,
+        title: lineItem.title,
+        refundedTotal: lineItem.variants.price * refundedQuantity,
+        refundedQuantity
+      });
+    }
+    this.setState({
+      value,
+      editedItems
+    });
   }
 
   handleItemSelect = (itemId) => {
@@ -156,12 +159,14 @@ class LineItemsContainer extends Component {
   }
 
   render() {
+    console.log("container", this.state.value);
     const { invoice, uniqueItems } = this.props;
     return (
       <TranslationProvider>
         <LineItems
           onClose={this.handleClose}
           invoice={invoice}
+          value={this.state.value}
           handleSelectAllItems={this.handleSelectAllItems}
           selectAllItems={this.state.selectAllItems}
           selectedItems={this.state.selectedItems}

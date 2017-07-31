@@ -16,7 +16,7 @@ class NumberTypeInput extends Component {
     super(props);
 
     this.state = {
-      value: props.value,
+      value: props.value || props.defaultValue,
       className: {}
     };
 
@@ -36,7 +36,7 @@ class NumberTypeInput extends Component {
     });
   }
 
-  handleIncrementButton = () => {
+  handleIncrementButton = (event) => {
     const newValue = this.state.value + 1;
 
     if (newValue <= this.props.maxValue) {
@@ -44,10 +44,11 @@ class NumberTypeInput extends Component {
         value: newValue,
         className: { edited: true }
       });
+      this.handleChange(event, newValue);
     }
   }
 
-  handleDecrementButton = () => {
+  handleDecrementButton = (event) => {
     const newValue = this.state.value - 1;
 
     if (newValue >= this.props.minValue) {
@@ -55,6 +56,7 @@ class NumberTypeInput extends Component {
         value: newValue,
         className: { edited: true }
       });
+      this.handleChange(event, newValue);
     }
   }
 
