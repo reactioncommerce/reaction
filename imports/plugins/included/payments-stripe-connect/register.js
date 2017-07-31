@@ -10,7 +10,7 @@ Reaction.registerPackage({
     "mode": false,
     "api_key": "",
     "reaction-stripe-connect": {
-      enabled: false
+      enabled: true
     },
     "stripe-redirect-url": "stripe-connect-redirect",
     "transactionFee": {
@@ -38,6 +38,16 @@ Reaction.registerPackage({
     {
       template: "stripeConnectRedirect",
       route: "/stripe-connect-redirect"
+    },
+
+    // Payment Signup for Merchants
+    {
+      label: "Setup Stripe Merchant Account",
+      icon: "fa fa-cc-stripe",
+      container: "dashboard",
+      provides: "marketplaceMerchantSettings",
+      template: "stripeConnectMerchantSignup",
+      hideForShopTypes: ["primary"]
     }
   ]
 });
