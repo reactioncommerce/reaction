@@ -38,10 +38,11 @@ class OrderTable extends Component {
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
     isOpen: PropTypes.bool,
+    labeled: PropTypes.bool,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
     packed: PropTypes.bool,
-    renderFlowList: PropTypes.bool,
+    picked: PropTypes.bool,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,
@@ -51,19 +52,20 @@ class OrderTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      renderFlowList: props.renderFlowList,
-      picked: false,
+      renderFlowList: false,
+      picked: props.picked,
       packed: props.packed,
-      labeled: false,
+      labeled: props.labeled,
       shipped: props.shipped
     };
   }
 
   componentWillReceiveProps = (nextProps) => {
     this.setState({
+      picked: nextProps.picked,
       packed: nextProps.packed,
-      shipped: nextProps.shipped,
-      renderFlowList: nextProps.renderFlowList
+      labeled: nextProps.labeled,
+      shipped: nextProps.shipped
     });
   }
 
@@ -317,9 +319,6 @@ class OrderTable extends Component {
     if (this.props.setShippingStatus) {
       this.props.setShippingStatus(value, this.props.selectedItems);
     }
-    this.setState({
-      [value]: true
-    });
   }
 
   setListItemsToDefault() {

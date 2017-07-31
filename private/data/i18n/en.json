@@ -325,7 +325,9 @@
         "coreOrderWorkflow/processing": "Processing",
         "coreOrderWorkflow/completed": "Completed",
         "coreOrderWorkflow/canceled": "Canceled",
+        "picked": "Picked",
         "packed": "Packed",
+        "labeled": "Labeled",
         "shipped": "Shipped"
       },
       "cartSubTotals": {

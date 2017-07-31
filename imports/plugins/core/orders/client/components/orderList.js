@@ -8,9 +8,11 @@ class OrdersList extends Component {
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
+    labeled: PropTypes.bool,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
     packed: PropTypes.bool,
+    picked: PropTypes.bool,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,
@@ -70,7 +72,9 @@ class OrdersList extends Component {
               selectAllOrders={this.props.selectAllOrders}
               displayMedia={this.props.displayMedia}
               isOpen={this.state.openList}
+              picked={this.props.picked}
               packed={this.props.packed}
+              labeled={this.props.labeled}
               shipped={this.props.shipped}
               setShippingStatus={this.props.setShippingStatus}
             />

@@ -27,8 +27,9 @@ class OrdersListContainer extends Component {
       selectedItems: [],
       orders: props.orders,
       multipleSelect: false,
-      renderFlowList: false,
+      picked: false,
       packed: false,
+      labeled: false,
       shipped: false
     };
 
@@ -47,8 +48,7 @@ class OrdersListContainer extends Component {
 
   handleSelect = (event, isInputChecked, name) => {
     this.setState({
-      multipleSelect: false,
-      renderFlowList: false
+      multipleSelect: false
     });
     const selectedItemsArray = this.state.selectedItems;
 
@@ -146,9 +146,31 @@ class OrdersListContainer extends Component {
       return selectedOrdersIds.includes(order._id);
     });
 
+    if (status === "picked") {
+      selectedOrders.forEach((order) => {
+        if (order.shipping[0].picked === false) {
+          Meteor.call("orders/shipmentPicked", order, order.shipping[0], true, (err) => {
+            if (err) {
+              Alerts.toast("Error", "error");
+            } else {
+              Alerts.toast(`Order with id ${order._id} shipping status set to picked`, "success");
+            }
+
+            this.setState({
+              picked: true
+            });
+          });
+        } else {
+          Alerts.alert({
+            text: "Order is already in the picked state"
+          });
+        }
+      });
+    }
+
     if (status === "packed") {
       selectedOrders.forEach((order) => {
-        if (order.shipping[0].packed === false) {
+        if (order.shipping[0].picked && order.shipping[0].packed === false) {
           Meteor.call("orders/shipmentPacked", order, order.shipping[0], true, (err) => {
             if (err) {
               Alerts.toast("Error", "error");
@@ -160,6 +182,22 @@ class OrdersListContainer extends Component {
               packed: true
             });
           });
+        } else if (order.shipping[0].picked === false) {
+          Alerts.alert({
+            text: `You've requested that order ${order._id} be set to the "Packed" status, but it is not in the "Picked"
+                  state and would skip all steps leading up to the "Packed" state. Are you sure you want to do this?`,
+            type: "warning",
+            showCancelButton: true,
+            showCloseButton: true,
+            confirmButtonText: "Yes, Set All Selected Orders"
+          }, (isConfirm) => {
+            if (isConfirm) {
+              Alerts.alert({
+                title: "Set",
+                type: "success"
+              });
+            }
+          });
         } else {
           Alerts.alert({
             text: "Order is already in the packed state"
@@ -168,9 +206,47 @@ class OrdersListContainer extends Component {
       });
     }
 
+    if (status === "labeled") {
+      selectedOrders.forEach((order) => {
+        if (order.shipping[0].picked && order.shipping[0].packed && order.shipping[0].labeled === false) {
+          Meteor.call("orders/shipmentLabeled", order, order.shipping[0], true, (err) => {
+            if (err) {
+              Alerts.toast("Error", "error");
+            } else {
+              Alerts.toast(`Order with id ${order._id} shipping status set to labeled`, "success");
+            }
+
+            this.setState({
+              labeled: true
+            });
+          });
+        } else if (order.shipping[0].picked === false || order.shipping[0].picked === false) {
+          Alerts.alert({
+            text: `You've requested that order ${order._id} be set to the "Labeled" status, but it is not in the "Picked"
+                  state and would skip all steps leading up to the "Labeled" state. Are you sure you want to do this?`,
+            type: "warning",
+            showCancelButton: true,
+            showCloseButton: true,
+            confirmButtonText: "Yes, Set All Selected Orders"
+          }, (isConfirm) => {
+            if (isConfirm) {
+              Alerts.alert({
+                title: "Set",
+                type: "success"
+              });
+            }
+          });
+        } else {
+          Alerts.alert({
+            text: "Order is already in the labeled state"
+          });
+        }
+      });
+    }
+
     if (status === "shipped") {
       selectedOrders.forEach((order) => {
-        if (order.shipping[0].packed && order.shipping[0].shipped === false) {
+        if (order.shipping[0].packed && order.shipping[0].picked && order.shipping[0].labeled && order.shipping[0].shipped === false) {
           Meteor.call("orders/shipmentShipped", order, order.shipping[0], (err) => {
             if (err) {
               Alerts.toast("Error", "error");
@@ -181,7 +257,7 @@ class OrdersListContainer extends Component {
               shipped: true
             });
           });
-        } else if (order.shipping[0].packed === false) {
+        } else if (order.shipping[0].packed === false || order.shipping[0].picked === false || order.shipping[0].labeled === false) {
           Alerts.alert({
             text: `You've requested that order ${order._id} be set to the "Shipped" status, but it is not in the "Packed"
                   state and would skip all steps leading up to the "Shipped" state. Are you sure you want to do this?`,
@@ -219,7 +295,8 @@ class OrdersListContainer extends Component {
         setShippingStatus={this.setShippingStatus}
         shipped={this.state.shipped}
         packed={this.state.packed}
-        renderFlowList={this.state.renderFlowList}
+        labeled={this.state.labeled}
+        picked={this.state.picked}
       />
     );
   }

@@ -62,6 +62,56 @@ export function ordersInventoryAdjust(orderId) {
  */
 export const methods = {
   /**
+   * orders/shipmentPicked
+   *
+   * @summary update picking status
+   * @param {Object} order - order object
+   * @param {Object} shipment - shipment object
+   * @param {Boolean} picked - picked status
+   * @return {Object} return workflow result
+   */
+  "orders/shipmentPicked": function (order, shipment, picked) {
+    check(order, Object);
+    check(shipment, Object);
+    check(picked, Boolean);
+
+    if (!Reaction.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
+    if (order) {
+      Orders.update({
+        "_id": order._id,
+        "shipping._id": shipment._id
+      }, {
+        $set: {
+          "shipping.$.picked": picked,
+          "shipping.$.workflow.status": "picked"
+        }, $push: {
+          "shipping.$.workflow.workflow": "picked"
+        }
+      });
+
+      // Set the status of the items as picked
+      const itemIds = shipment.items.map((item) => {
+        return item._id;
+      });
+
+      const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/picked", order, itemIds);
+      if (result === 1) {
+        return Orders.update({
+          "_id": order._id,
+          "shipping._id": shipment._id
+        }, {
+          $set: {
+            "shipping.$.picked": picked
+          }
+        });
+      }
+      return result;
+    }
+  },
+  /**
    * orders/shipmentPacked
    *
    * @summary update packing status
@@ -107,6 +157,57 @@ export const methods = {
         }, {
           $set: {
             "shipping.$.packed": packed
+          }
+        });
+      }
+      return result;
+    }
+  },
+
+  /**
+   * orders/shipmentLabeled
+   *
+   * @summary update labeling status
+   * @param {Object} order - order object
+   * @param {Object} shipment - shipment object
+   * @param {Boolean} labeled - labeled status
+   * @return {Object} return workflow result
+   */
+  "orders/shipmentLabeled": function (order, shipment, labeled) {
+    check(order, Object);
+    check(shipment, Object);
+    check(labeled, Boolean);
+
+    if (!Reaction.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
+    if (order) {
+      Orders.update({
+        "_id": order._id,
+        "shipping._id": shipment._id
+      }, {
+        $set: {
+          "shipping.$.labeled": labeled,
+          "shipping.$.workflow.status": "labeled"
+        }, $push: {
+          "shipping.$.workflow.workflow": "labeled"
+        }
+      });
+
+      // Set the status of the items as labeled
+      const itemIds = shipment.items.map((item) => {
+        return item._id;
+      });
+
+      const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/labeled", order, itemIds);
+      if (result === 1) {
+        return Orders.update({
+          "_id": order._id,
+          "shipping._id": shipment._id
+        }, {
+          $set: {
+            "shipping.$.labeled": labeled
           }
         });
       }
