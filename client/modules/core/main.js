@@ -487,6 +487,11 @@ export default {
     return Packages.findOne(query);
   },
 
+  getPackageSettingsWithOptions(options) {
+    const query = options;
+    return Packages.findOne(query);
+  },
+
   allowGuestCheckout() {
     let allowGuest = false;
     const settings = this.getShopSettings();
