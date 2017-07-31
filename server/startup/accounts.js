@@ -80,8 +80,7 @@ export default function () {
    * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
    */
   Accounts.onCreateUser((options, user) => {
-    const shop = Reaction.getCurrentShop();
-    const shopId = shop._id;
+    const shopId = Reaction.getPrimaryShopId();
     const groupToAddUser = options.groupId;
     const defaultVisitorRole =  ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
     const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
@@ -93,7 +92,7 @@ export default function () {
     if (!user.emails) user.emails = [];
     // init default user roles
     // we won't create users unless we have a shop.
-    if (shop) {
+    if (shopId) {
       // retain language when user has defined a language
       // perhaps should be treated as additionals
       // or in onLogin below, or in the anonymous method options
