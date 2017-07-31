@@ -17,6 +17,9 @@
           "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Don't have a Stripe API Client ID?",
           "stripeSettingsGetItHere": "Get it here"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Will auto redirect in a couple seconds or click here."
         }
       }
     }

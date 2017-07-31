@@ -15,7 +15,12 @@ export const StripePackageConfig = new SimpleSchema([
     },
     "settings.api_key": {
       type: String,
-      label: "API Client ID"
+      label: "API Secret Key"
+    },
+    "settings.client_id": {
+      type: String,
+      label: "Client ID",
+      optional: true
     },
     "settings.reaction-stripe.support": {
       type: Array,

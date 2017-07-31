@@ -9,8 +9,6 @@ import { Cart, SellerShops, Packages } from "/lib/collections";
 import { Stripe } from "../../lib/api";
 import { StripePayment } from "../../lib/collections/schemas";
 
-import "./stripe.html";
-
 let submitting = false;
 
 //

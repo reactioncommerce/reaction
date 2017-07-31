@@ -32,6 +32,22 @@ Reaction.registerPackage({
       template: "stripePaymentForm",
       provides: "paymentMethod",
       icon: "fa fa-cc-stripe"
+    },
+
+    // Redirect for Stripe Connect Sign-In
+    {
+      template: "stripeConnectRedirect",
+      route: "/stripe-connect-redirect"
+    },
+
+    // Payment Signup for Merchants
+    {
+      label: "Setup Stripe Merchant Account",
+      icon: "fa fa-cc-stripe",
+      container: "dashboard",
+      provides: "marketplaceMerchantSettings",
+      template: "stripeConnectMerchantSignup",
+      hideForShopTypes: ["primary"]
     }
   ]
 });
