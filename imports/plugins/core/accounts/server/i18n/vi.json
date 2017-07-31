@@ -13,6 +13,10 @@
           "accountsSettingsLabel": "tài khoản",
           "accountsSettingsTitle": "tài khoản",
           "accountsSettingsDescription": "Thiết lập tài khoản"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "Johnsmith@reactioncommerce.com"
         }
       }
     }

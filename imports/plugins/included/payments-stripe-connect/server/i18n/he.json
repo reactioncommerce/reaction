@@ -5,17 +5,7 @@
   "translation": {
     "reaction-payments": {
       "admin": {
-        "shortcut": {
-          "stripeConnectLabel": "Stripe Connect"
-        },
-        "dashboard": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "תשלומי Stripe Connect"
-        },
         "paymentSettings": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "אין לך מזהה לקוח Stripe Connect API?",
           "stripeConnectSettingsGetItHere": "קבל אותו/ה כאן"
         }
       }

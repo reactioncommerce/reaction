@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Erscheinungsbild",
+          "addUserError": "Fehler beim Hinzufügen von Benutzer zu Gruppe",
+          "addUserSuccess": "Benutzer zur Gruppe hinzugefügt",
+          "removeUserError": "Fehler beim Entfernen des Benutzers zur Gruppe",
+          "removeUserSuccess": "Benutzer wurde erfolgreich entfernt",
           "connect": "Verbinden",
           "core": "Kern",
+          "name": "Name",
+          "email": "E-Mail-Einstellungen",
+          "create": "Gruppe erstellen",
+          "update": "Gruppe aktualisieren",
+          "lastActive": "letzte Aktivität",
+          "description": "Produktbeschreibung hinzufügen",
+          "remove": "Entfernen",
+          "newGroup": "Neue Gruppe",
+          "selectGroup": "Gruppe auswählen",
+          "editGroups": "Gruppen bearbeiten",
           "dashboard": "Dashboard",
+          "errorCreate": "Fehler beim Erstellen der Gruppe",
+          "successCreate": "Gruppe erfolgreich erstellt",
+          "errorUpdate": "Fehler beim Aktualisieren der Gruppe",
+          "successUpdate": "Gruppe erfolgreich aktualisiert",
           "misc": "Verschiedenes",
           "paymentMethod": "Zahlungs-Anbieter",
-          "utilities": "Dienstprogramme"
+          "utilities": "Dienstprogramme",
+          "marketplace": "Marktplatz"
         },
         "settings": {
           "accountSettingsLabel": "Kontoeinstellungen",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Die Lokalisierungs-Einstellungen des Geschäfts wurden gespeichert.",
         "shopLocalizationSettingsFailed": "Die Aktualisierung der Lokalisierungseinstellungen des Geschäfts ist fehlgeschlagen.",
         "shopPaymentMethodsSaved": "Die Zahlungsarten-Einstellungen des Geschäfts wurden gespeichert.",
-        "shopPaymentMethodsFailed": "Die Aktualisierung der Zahlungsarten-Einstellung des Geschäfts ist fehlgeschlagen."
+        "shopPaymentMethodsFailed": "Die Aktualisierung der Zahlungsarten-Einstellung des Geschäfts ist fehlgeschlagen.",
+        "shopBrandAssetsSaved": "Aktualisiertes Marken-Asset",
+        "shopBrandAssetsFailed": "Konnte das Marken-Asset nicht aktualisieren"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "Es muss eine E-Mail-Adressen angegeben werden.",
+          "groupRequired": "Eine andere Gruppe als die Standard-Besitzergruppe ist erforderlich.",
           "passwordRequired": "Das Passwort ist erforderlich.",
           "passwordMustBeAtLeast6CharactersLong": "Das Passwort muss mindestens aus 6 Zeichen bestehen.",
           "passwordMustContainRequirements": "Das Passwort muss mindestens eine Ziffer oder ein Symbol enthalten.",

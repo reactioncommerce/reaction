@@ -6,17 +6,20 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "Stripe Connect"
+          "stripeConnectLabel": "Şerit Bağlama"
         },
         "dashboard": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "şerit ödemeleri"
+          "stripeConnectLabel": "Şerit Bağlama",
+          "stripeConnectDescription": "Şerit Bağlantı ödemeleri"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Bir şerit API İstemci Kimliği yok mu?",
+          "stripeConnectLabel": "Şerit Bağlama",
+          "stripeConnectSettingsLabel": "Şerit Bağlama",
+          "stripeConnectSettingsDescription": "Bir Stripe Connect API İstemcisi Kimliği yok mu?",
           "stripeConnectSettingsGetItHere": "Burada Get it"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Otomatik birkaç saniye içinde yönlendirecektir veya buraya tıklayın."
         }
       }
     }

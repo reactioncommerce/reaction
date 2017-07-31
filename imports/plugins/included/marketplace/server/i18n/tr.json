@@ -1,0 +1,23 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Satıcı ol",
+        "errorCannotCreateShop": "Geçerli kullanıcı için mağaza oluşturulamadı {{user}}",
+        "yourShopIsReady": "Dükkanınız hazır!"
+      },
+      "app": {
+        "shops": "Mağazalar",
+        "myShop": "Benim dükkanım"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Pazar yeri ayarları başarıyla kaydedildi!",
+          "dashboardMarketplaceSettingsFailed": "Marketplace ayarlarını kaydetmek başarısız oldu"
+        }
+      }
+    }
+  }
+}]

@@ -353,6 +353,8 @@
     -ms-flex: 0;
     flex: 0;
     text-align: center;
+    display: flex;
+    justify-content: center;
 
     .sortableTable-pagination {
       padding-left: 2px;
@@ -366,7 +368,7 @@
     -ms-flex: 0;
     flex: 0;
     text-align: center;
-    padding-top: 8px;
+    padding-top: 17px;
     color: @black20;
 }
 
@@ -394,7 +396,11 @@
 
 .ReactTable .-pagination .-pageInfo {
     display: inline-block;
-    margin: 3px 10px;
+    // margin: 3px 10px;
+    margin-left: 0px;
+    margin-right: 3px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     white-space: nowrap;
 }
 
@@ -412,19 +418,30 @@
 }
 
 .ReactTable .rt-noData {
+    width: 100%;
+    height: 100%;
     display: block;
     position: absolute;
     left: 50%;
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.60);
     -webkit-transition: all .3s ease;
     transition: all .3s ease;
     z-index: 1;
     pointer-events: none;
     padding: 20px;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.9);
+
+    .sortableTable-noDataText {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
 }
 
 .ReactTable .-loading {
@@ -497,7 +514,7 @@
 
 .ReactTable .select-wrap select {
     padding: 5px 15px 5px 7px;
-    min-width: 100px;
+    // min-width: 100px;
 }
 
 .ReactTable .select-wrap:after {

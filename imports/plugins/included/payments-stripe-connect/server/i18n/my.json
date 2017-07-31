@@ -6,17 +6,20 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "Stripe Connect"
+          "stripeConnectLabel": "အစင်း Connect ကို"
         },
         "dashboard": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "အစင်းငွေပေးချေမှု"
+          "stripeConnectLabel": "အစင်း Connect ကို",
+          "stripeConnectDescription": "အစင်း Connect ကိုငွေပေးချေမှု"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "တစ်ဦး Stripe Connect ဟာ API ကိုလိုင်း ID ကိုရှိသည်မဟုတ်သလား?",
+          "stripeConnectLabel": "အစင်း Connect ကို",
+          "stripeConnectSettingsLabel": "အစင်း Connect ကို",
+          "stripeConnectSettingsDescription": "တစ်ဦး Stripe ဟာ Connect ကို API ကိုလိုင်း ID ကိုရှိသည်မဟုတ်လော",
           "stripeConnectSettingsGetItHere": "ဒီမှာရယူပါ"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "အော်တိုစုံတွဲတစ်တွဲစက္ကန့်အတွင်း redirect သို့မဟုတ်ဒီနေရာကိုနှိပ်ပါပါလိမ့်မယ်။"
         }
       }
     }

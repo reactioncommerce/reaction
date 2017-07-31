@@ -1,0 +1,25 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Коннектор данных для Shopify"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "Импортные продукты",
+          "importing": "Импорт ... Это может занять некоторое время.",
+          "editApiKey": "Изменить ключ API",
+          "editPassword": "Изменить пароль API",
+          "editSharedSecret": "Редактировать общий доступ к API API",
+          "editShopifyDomain": "Изменить домен",
+          "importSuccess": "Продукты импортированы успешно.",
+          "importFailed": "Ошибка при импорте продуктов."
+        }
+      }
+    }
+  }
+}]

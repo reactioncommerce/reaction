@@ -6,17 +6,20 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "Stripe Connect"
+          "stripeConnectLabel": "شريط الاتصال"
         },
         "dashboard": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "المدفوعات شريط"
+          "stripeConnectLabel": "شريط الاتصال",
+          "stripeConnectDescription": "المدفوعات ربط الشريط"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "لم يكن لديك معرف العميل الشريط API؟",
+          "stripeConnectLabel": "شريط الاتصال",
+          "stripeConnectSettingsLabel": "شريط الاتصال",
+          "stripeConnectSettingsDescription": "ليس لديك معرف عميل واجهة برمجة التطبيقات للاتصال بالشريط؟",
           "stripeConnectSettingsGetItHere": "أحضره هنا"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "سوف السيارات إعادة توجيه في بضع ثوان أو انقر هنا."
         }
       }
     }

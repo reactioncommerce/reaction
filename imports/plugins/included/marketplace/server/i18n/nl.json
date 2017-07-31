@@ -1,0 +1,23 @@
+[{
+  "i18n": "nl",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Word een verkoper",
+        "errorCannotCreateShop": "Kon geen winkel voor huidige gebruiker {{user}} maken",
+        "yourShopIsReady": "Uw winkel is nu klaar!"
+      },
+      "app": {
+        "shops": "winkels",
+        "myShop": "Mijn winkel"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Marktplaatsinstellingen zijn succesvol opgeslagen!",
+          "dashboardMarketplaceSettingsFailed": "Marktinstellingen zijn niet opgeslagen"
+        }
+      }
+    }
+  }
+}]

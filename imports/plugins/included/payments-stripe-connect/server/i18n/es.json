@@ -6,17 +6,20 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "Stripe Connect"
+          "stripeConnectLabel": "Conectarse a la banda"
         },
         "dashboard": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "pagos de la raya"
+          "stripeConnectLabel": "Conectarse a la banda",
+          "stripeConnectDescription": "Pagos de Stripe Connect"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "No tener un ID de cliente de API de la raya?",
+          "stripeConnectLabel": "Conectarse a la banda",
+          "stripeConnectSettingsLabel": "Conectarse a la banda",
+          "stripeConnectSettingsDescription": "¿No tiene un ID de cliente de API de Stripe Connect?",
           "stripeConnectSettingsGetItHere": "Consiguelo aqui"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Se redirigirá automáticamente en un par de segundos o haga clic aquí."
         }
       }
     }

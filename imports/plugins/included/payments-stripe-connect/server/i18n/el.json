@@ -6,17 +6,20 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "Stripe Connect"
+          "stripeConnectLabel": "Σύνδεση με ταινία"
         },
         "dashboard": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "πληρωμές stripeConnect"
+          "stripeConnectLabel": "Σύνδεση με ταινία",
+          "stripeConnectDescription": "Συνδέσεις Stripe Connect"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Δεν έχετε Stripe Connect API αναγνωριστικό πελάτη;",
+          "stripeConnectLabel": "Σύνδεση με ταινία",
+          "stripeConnectSettingsLabel": "Σύνδεση με ταινία",
+          "stripeConnectSettingsDescription": "Δεν έχετε αναγνωριστικό πελάτη API Stripe Connect;",
           "stripeConnectSettingsGetItHere": "Αποκτήστε το εδώ"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Θα ανακατευθύνει αυτόματα σε μερικά δευτερόλεπτα ή κάντε κλικ εδώ."
         }
       }
     }

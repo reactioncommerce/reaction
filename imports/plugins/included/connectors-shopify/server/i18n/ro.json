@@ -1,0 +1,25 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Conector de date pentru magazin"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "Produse de import",
+          "importing": "Importarea ... Ar putea dura ceva timp.",
+          "editApiKey": "Edita Cheie API",
+          "editPassword": "Editați parola API",
+          "editSharedSecret": "Editați secretul partajat API",
+          "editShopifyDomain": "Editați Domeniul de cumpărături",
+          "importSuccess": "Produsele importate cu succes.",
+          "importFailed": "Eroare la importul produselor."
+        }
+      }
+    }
+  }
+}]

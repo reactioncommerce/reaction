@@ -1,22 +1,25 @@
 [{
   "language": "Bulgarian",
   "i18n": "bg",
-  "ns": "reaction-stripeConnect",
+  "ns": "reaction-stripe-connect",
   "translation": {
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "Stripe Connect"
+          "stripeConnectLabel": "Свържете лентата"
         },
         "dashboard": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "плащания Stripe Connect"
+          "stripeConnectLabel": "Свържете лентата",
+          "stripeConnectDescription": "Свържете плащанията с лентата"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Не трябва Stripe Connect API Client ID а?",
+          "stripeConnectLabel": "Свържете лентата",
+          "stripeConnectSettingsLabel": "Свържете лентата",
+          "stripeConnectSettingsDescription": "Нямате клиентски идентификационен номер на клиентски интерфейс за API за Stripe Connect?",
           "stripeConnectSettingsGetItHere": "Вземете го от тук"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Ще се пренасочи автоматично след няколко секунди или щракнете тук."
         }
       }
     }
