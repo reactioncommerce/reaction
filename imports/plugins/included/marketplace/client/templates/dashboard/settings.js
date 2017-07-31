@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import $ from "jquery";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
