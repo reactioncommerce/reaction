@@ -15,6 +15,8 @@ import {
 
 class OrdersListContainer extends Component {
   static propTypes = {
+    handleShowMoreClick: PropTypes.func,
+    hasMoreOrders: PropTypes.func,
     invoice: PropTypes.object,
     orders: PropTypes.array,
     uniqueItems: PropTypes.array
