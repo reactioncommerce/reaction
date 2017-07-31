@@ -467,6 +467,11 @@ export default {
         if (enabledPackages && Array.isArray(enabledPackages)) {
           if (enabledPackages.indexOf(pkg.name) === -1) {
             pkg.enabled = false;
+          } else {
+            // Enable "soft switch" for package.
+            if (pkg.settings && pkg.settings[packageName]) {
+              pkg.settings[packageName].enabled = true;
+            }
           }
         }
         Packages.insert(pkg);

@@ -24,7 +24,8 @@ Reaction.registerPackage({
       label: "Stripe",
       provides: "paymentSettings",
       container: "dashboard",
-      template: "stripeSettings"
+      template: "stripeSettings",
+      hideForShopTypes: ["merchant", "affiliate"]
     },
 
     // Payment form for checkout
@@ -36,8 +37,8 @@ Reaction.registerPackage({
 
     // Redirect for Stripe Connect Sign-In
     {
-      template: "stripeConnectRedirect",
-      route: "/stripe-connect-redirect"
+      route: "/stripe/connect/authorize",
+      template: "stripeConnectAuthorize"
     },
 
     // Payment Signup for Merchants

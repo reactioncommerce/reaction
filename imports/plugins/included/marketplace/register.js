@@ -29,11 +29,12 @@ Reaction.registerPackage({
           "reaction-product-simple",
           "reaction-product-variant",
           "reaction-notification",
+          "reaction-marketplace",
           "reaction-analytics",
           "reaction-inventory",
           "reaction-sms",
           "reaction-social",
-          "reaction-stripe-connect",
+          "reaction-stripe",
           "discount-codes"]
       }, {
         shopType: "affiliate",

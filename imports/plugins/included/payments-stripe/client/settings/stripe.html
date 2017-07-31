@@ -10,12 +10,16 @@
     <div>
       {{#autoForm collection=Collections.Packages schema=StripePackageConfig doc=packageData type="update" id="stripe-update-form"}}
         {{>afQuickField name='settings.api_key'}}
-        {{>afQuickField name='settings.client_id'}}
+
+        <span data-i18n="admin.paymentSettings.stripeClientIdWarning">The Client ID is a <strong>PUBLIC</strong> field. Please ensure you're using the `client_id` found on the </span>
+        <a target="_blank" href="https://dashboard.stripe.com/account/applications/settings">
+          <span data-i18n="admin.paymentSettings.stripeClientIDLink">Stripe Connect Settings</span>
+        </a>
+        {{>afQuickField name='settings.public.client_id'}}
         {{>afQuickField name="settings.reaction-stripe.support" options="allowed" noselect=true}}
         <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
       {{/autoForm}}
     </div>
-
 </template>
 
 
@@ -58,4 +62,8 @@
       </div>
     </div>
   </div>
+</template>
+
+<template name="stripeConnectRedirect">
+  <p>Stripe Connect Redirect</p>
 </template>
