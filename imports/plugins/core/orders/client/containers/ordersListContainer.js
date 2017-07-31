@@ -153,7 +153,11 @@ class OrdersListContainer extends Component {
             if (err) {
               Alerts.toast("Error", "error");
             } else {
-              Alerts.toast(`Order with id ${order._id} shipping status set to picked`, "success");
+              Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "picked");
+              Alerts.alert({
+                text: `Order with id ${order._id} shipping status set to picked`,
+                type: "success"
+              });
             }
 
             this.setState({
@@ -175,7 +179,11 @@ class OrdersListContainer extends Component {
             if (err) {
               Alerts.toast("Error", "error");
             } else {
-              Alerts.toast(`Order with id ${order._id} shipping status set to packed`, "success");
+              Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "packed");
+              Alerts.alert({
+                text: `Order with id ${order._id} shipping status set to packed`,
+                type: "success"
+              });
             }
 
             this.setState({
@@ -197,6 +205,7 @@ class OrdersListContainer extends Component {
                 if (err) {
                   Alerts.toast("Error", "error");
                 } else {
+                  Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "packed");
                   Alerts.alert({
                     text: `Order with id ${order._id} shipping status set to packed`,
                     type: "success"
@@ -224,7 +233,11 @@ class OrdersListContainer extends Component {
             if (err) {
               Alerts.toast("Error", "error");
             } else {
-              Alerts.toast(`Order with id ${order._id} shipping status set to labeled`, "success");
+              Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "labeled");
+              Alerts.alert({
+                text: `Order with id ${order._id} shipping status set to labeled`,
+                type: "success"
+              });
             }
 
             this.setState({
@@ -245,6 +258,7 @@ class OrdersListContainer extends Component {
                 if (err) {
                   Alerts.toast("Error", "error");
                 } else {
+                  Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "labeled");
                   Alerts.alert({
                     text: `Order with id ${order._id} shipping status set to labeled`,
                     type: "success"
@@ -272,7 +286,11 @@ class OrdersListContainer extends Component {
             if (err) {
               Alerts.toast("Error", "error");
             } else {
-              Alerts.toast(`Order with id ${order._id} shipping status set to shipped`, "success");
+              Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "shipped");
+              Alerts.alert({
+                text: `Order with id ${order._id} shipping status set to shipped`,
+                type: "success"
+              });
             }
             this.setState({
               shipped: true
@@ -292,6 +310,7 @@ class OrdersListContainer extends Component {
                 if (err) {
                   Alerts.toast("Error", "error");
                 } else {
+                  Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "shipped");
                   Alerts.alert({
                     text: `Order with id ${order._id} shipping status set to shipped`,
                     type: "success"
