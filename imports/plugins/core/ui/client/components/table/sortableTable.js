@@ -172,17 +172,35 @@ class SortableTable extends Component {
   renderTableFilter() {
     const { filterType } = this.props;
 
-    if (filterType === "both" || filterType === "table") {
-      return (
-        <SortableTableFilter
-          onChange={this.handleFilterInput}
-          value={this.state.filterInput}
-          name="filterInput"
-        />
-      );
+    if (this.getMeteorData().matchingResults !== 0) {
+      if (filterType === "both" || filterType === "table") {
+        return (
+          <SortableTableFilter
+            onChange={this.handleFilterInput}
+            value={this.state.filterInput}
+            name="filterInput"
+          />
+        );
+      }
     }
 
     return null;
+  }
+
+  renderPaginationBottom = () => {
+    if (this.getMeteorData().matchingResults === 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  setMinRows = () => {
+    if (this.getMeteorData().matchingResults === 0) {
+      return 3;
+    }
+
+    return 0;
   }
 
 
@@ -199,15 +217,17 @@ class SortableTable extends Component {
           defaultFilterMethod={this.customFilter}
           defaultPageSize={otherProps.defaultPageSize}
           filterable={this.renderColumnFilter()}
-          minRows={otherProps.minRows}
+          minRows={this.setMinRows()
+          }
           previousText={otherProps.previousText}
           nextText={otherProps.nextText}
           loadingText={otherProps.loadingText}
-          noDataText={otherProps.noDataText}
+          noDataText={() => <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>}
           pageText={otherProps.pageText}
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
           PaginationComponent={SortableTablePagination}
+          showPaginationBottom={this.renderPaginationBottom()}
           getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
             return {
               onClick: e => { // eslint-disable-line no-unused-vars
