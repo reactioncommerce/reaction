@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Button, TextField, Translation } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class UpdatePasswordOverlay extends Component {
   static propTypes = {
@@ -65,7 +65,7 @@ class UpdatePasswordOverlay extends Component {
       <span className="help-block">
         {this.props.onError(this.props.messages.errors && this.props.messages.errors.password) &&
         this.props.messages.errors.password.map((error, i) => (
-          <Translation
+          <Components.Translation
             key={i}
             defaultValue={error.reason}
             i18nKey={error.i18nKeyReason}
@@ -86,7 +86,7 @@ class UpdatePasswordOverlay extends Component {
     }
     return (
       <div className="col-sm-6">
-        <Button
+        <Components.Button
           className="btn-block"
           primary={true}
           bezelStyle="solid"
@@ -124,7 +124,7 @@ class UpdatePasswordOverlay extends Component {
                 <form className="modal-content" onSubmit={this.handleSubmit}>
                   <div className="modal-header">
                     <h4 className="modal-title">
-                      <Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword"/>
+                      <Components.Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword"/>
                     </h4>
                   </div>
 
@@ -134,7 +134,7 @@ class UpdatePasswordOverlay extends Component {
                       {this.renderFormMessages()}
 
                       <div className={passwordClasses}>
-                        <TextField
+                        <Components.TextField
                           i18nKeyLabel="accountsUI.password"
                           label="Password"
                           name="password"
@@ -153,7 +153,7 @@ class UpdatePasswordOverlay extends Component {
                     {this.renderSpinnerOnWait()}
 
                     <div className="col-sm-6">
-                      <Button
+                      <Components.Button
                         className="btn-block"
                         status="danger"
                         bezelStyle="solid"
