@@ -116,61 +116,57 @@ class UpdatePasswordOverlay extends Component {
     return (
       <div>
         {this.props.isOpen === true &&
-        <div>
-          <div className="modal-backdrop fade in" id={`modal-backdrop-${this.props.uniqueId}`}/>
-          <div className="modal fade in" id={`modal-${this.props.uniqueId}`} style={{ display: "block" }}>
-            <div className="modal-dialog">
-              {showSpinner ? this.renderSpinnerOnLoad() :
-                <form className="modal-content" onSubmit={this.handleSubmit}>
-                  <div className="modal-header">
-                    <h4 className="modal-title">
-                      <Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword"/>
-                    </h4>
-                  </div>
+          <div>
+            <div className="modal-backdrop fade in" id={`modal-backdrop-${this.props.uniqueId}`}/>
+            <div className="modal fade in" id={`modal-${this.props.uniqueId}`} style={{ display: "block" }}>
+              <div className="modal-dialog">
+                {showSpinner ? this.renderSpinnerOnLoad() :
+                  <form className="modal-content" onSubmit={this.handleSubmit}>
+                    <div className="modal-header">
+                      <h4 className="modal-title">
+                        <Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword"/>
+                      </h4>
+                    </div>
 
-                  <div className="modal-body">
-                    <div className="login-form">
-
-                      {this.renderFormMessages()}
-
-                      <div className={passwordClasses}>
-                        <TextField
-                          i18nKeyLabel="accountsUI.password"
-                          label="Password"
-                          name="password"
-                          type="password"
-                          id={`password-${this.props.uniqueId}`}
-                          value={this.state.password}
-                          onChange={this.handleFieldChange}
-                        />
-                        {this.renderPasswordErrors()}
+                    <div className="modal-body">
+                      <div className="login-form">
+                        {this.renderFormMessages()}
+                        <div className={passwordClasses}>
+                          <TextField
+                            i18nKeyLabel="accountsUI.password"
+                            label="Password"
+                            name="password"
+                            type="password"
+                            id={`password-${this.props.uniqueId}`}
+                            value={this.state.password}
+                            onChange={this.handleFieldChange}
+                          />
+                          {this.renderPasswordErrors()}
+                        </div>
                       </div>
-
                     </div>
-                  </div>
 
-                  <div className="modal-footer">
-                    {this.renderSpinnerOnWait()}
-
-                    <div className="col-sm-6">
-                      <Button
-                        className="btn-block"
-                        status="danger"
-                        bezelStyle="solid"
-                        i18nKeyLabel="app.cancel"
-                        label="Cancel"
-                        type="button"
-                        onClick={this.handleCancel}
-                        disabled={this.props.isDisabled}
-                      />
+                    <div className="modal-footer">
+                      {this.renderSpinnerOnWait()}
+                      <div className="col-sm-6">
+                        <Button
+                          className="btn-block"
+                          status="danger"
+                          bezelStyle="solid"
+                          i18nKeyLabel="app.cancel"
+                          label="Cancel"
+                          type="button"
+                          onClick={this.handleCancel}
+                          disabled={this.props.isDisabled}
+                        />
+                      </div>
                     </div>
-                  </div>
-
-                </form>
-              }
+                  </form>
+                }
+              </div>
             </div>
           </div>
-        </div>}
+        }
       </div>
     );
   }
