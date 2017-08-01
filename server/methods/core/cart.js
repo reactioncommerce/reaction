@@ -110,8 +110,8 @@ Meteor.methods({
    */
   "cart/mergeCart": function (cartId, currentSessionId) {
     check(cartId, String);
-    // TODO: Review this. SessionId call sometimes come in as false. e.g from Accounts.onLogin
-    check(currentSessionId, Match.OneOf(String, Boolean));
+    // TODO: Review this. currentSessionId sometimes come in as false. e.g from Accounts.onLogin
+    check(currentSessionId, Match.Optional(String));
 
     // we don't process current cart, but merge into it.
     const currentCart = Collections.Cart.findOne(cartId);
