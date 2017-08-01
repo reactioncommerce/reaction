@@ -10,13 +10,16 @@
         },
         "dashboard": {
           "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "pagamenti Stripe Connect"
+          "stripeConnectDescription": "Pagamenti con Stripe Connect"
         },
         "paymentSettings": {
           "stripeConnectLabel": "Stripe Connect",
           "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Non hai ancora un ID client Stripe Connect API?",
+          "stripeConnectSettingsDescription": "Non hai un ID Client API API di Stripe?",
           "stripeConnectSettingsGetItHere": "Prendilo qui"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Verrà reindirizzato automaticamente in un paio di secondi o clicca qui."
         }
       }
     }

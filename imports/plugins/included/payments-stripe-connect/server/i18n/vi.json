@@ -6,17 +6,20 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "Stripe Connect"
+          "stripeConnectLabel": "Kết nối Sọc"
         },
         "dashboard": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "thanh toán sọc"
+          "stripeConnectLabel": "Kết nối Sọc",
+          "stripeConnectDescription": "Thanh toán bằng Sọc nối"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Không có một ID Khách hàng sọc API?",
+          "stripeConnectLabel": "Kết nối Sọc",
+          "stripeConnectSettingsLabel": "Kết nối Sọc",
+          "stripeConnectSettingsDescription": "Bạn không có ID Khách hàng Kết nối API Sọc?",
           "stripeConnectSettingsGetItHere": "Lấy nó ở đây"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Sẽ tự động chuyển hướng trong vài giây hoặc nhấp vào đây."
         }
       }
     }

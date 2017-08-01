@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Izgled",
+          "addUserError": "Pogreška prilikom dodavanja korisnika u grupu",
+          "addUserSuccess": "Dodan je korisnik u grupu",
+          "removeUserError": "Pogreška prilikom uklanjanja korisnika za grupiranje",
+          "removeUserSuccess": "Korisnik je uspješno uklonjen",
           "connect": "Spojiti",
           "core": "srž",
+          "name": "Ime",
+          "email": "Postavke e-pošte",
+          "create": "Izradi grupu",
+          "update": "Ažuriraj grupu",
+          "lastActive": "Zadnji aktivan",
+          "description": "Dodaj opis proizvoda",
+          "remove": "Ukloniti",
+          "newGroup": "Nova grupa",
+          "selectGroup": "Odaberite Grupu",
+          "editGroups": "Uređivanje grupa",
           "dashboard": "kontrolna ploča",
+          "errorCreate": "Pogreška pri izradi grupe",
+          "successCreate": "Grupa je uspješno izrađena",
+          "errorUpdate": "Pogreška prilikom ažuriranja grupe",
+          "successUpdate": "Grupa je uspješno ažurirana",
           "misc": "Razno",
           "paymentMethod": "Pružatelji usluga plaćanja",
-          "utilities": "komunalne usluge"
+          "utilities": "komunalne usluge",
+          "marketplace": "tržište"
         },
         "settings": {
           "accountSettingsLabel": "Postavke računa",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Postavke Shop lokalizaciju spasio.",
         "shopLocalizationSettingsFailed": "Trgovina Postavke za lokalizaciju ažuriranje nije uspjelo.",
         "shopPaymentMethodsSaved": "Shop Načini plaćanja postavke spremljene.",
-        "shopPaymentMethodsFailed": "Trgovina Načini plaćanja postavke ažuriranje nije uspjelo."
+        "shopPaymentMethodsFailed": "Trgovina Načini plaćanja postavke ažuriranje nije uspjelo.",
+        "shopBrandAssetsSaved": "Ažurirana imovina robne marke",
+        "shopBrandAssetsFailed": "Nije bilo moguće ažurirati imovinu robne marke"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "Email adresa je obavezna.",
+          "groupRequired": "Potrebna je grupa koja nije zadana vlasnička grupa.",
           "passwordRequired": "Potrebna je lozinka.",
           "passwordMustBeAtLeast6CharactersLong": "Lozinka mora imati minimalno 6 znakova.",
           "passwordMustContainRequirements": "Lozinka mora sadržavati barem jedan broj ili simbol.",

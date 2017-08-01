@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Vzhled",
+          "addUserError": "Chyba přidání uživatele do skupiny",
+          "addUserSuccess": "Přidán uživatel do skupiny",
+          "removeUserError": "Chyba při odebírání uživatele do skupiny",
+          "removeUserSuccess": "Uživatel byl úspěšně odstraněn",
           "connect": "Připojit",
           "core": "Jádro",
+          "name": "Název",
+          "email": "Email",
+          "create": "Vytvořit skupinu",
+          "update": "Aktualizovat skupinu",
+          "lastActive": "Naposledy aktivní",
+          "description": "Popis",
+          "remove": "Odstranit",
+          "newGroup": "Nová skupina",
+          "selectGroup": "Vyberte možnost Skupina",
+          "editGroups": "Upravit skupiny",
           "dashboard": "přístrojová deska",
+          "errorCreate": "Chyba při vytváření skupiny",
+          "successCreate": "Skupina byla úspěšně vytvořena",
+          "errorUpdate": "Při aktualizaci skupiny došlo k chybě",
+          "successUpdate": "Skupina byla úspěšně aktualizována",
           "misc": "Různé",
           "paymentMethod": "Platební Poskytovatelé",
-          "utilities": "Utility"
+          "utilities": "Utility",
+          "marketplace": "Trh"
         },
         "settings": {
           "accountSettingsLabel": "Nastavení účtu",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Nastavení Shop lokalizační uložena.",
         "shopLocalizationSettingsFailed": "Obchod aktualizace nastavení lokalizace nezdařila.",
         "shopPaymentMethodsSaved": "Shop nastavení Platební metody uložena.",
-        "shopPaymentMethodsFailed": "Obchod aktualizace nastavení Platební metody selhaly."
+        "shopPaymentMethodsFailed": "Obchod aktualizace nastavení Platební metody selhaly.",
+        "shopBrandAssetsSaved": "Aktualizované aktivum značky",
+        "shopBrandAssetsFailed": "Nelze aktualizovat aktivitu značky"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "Email je povinný.",
+          "groupRequired": "Je vyžadována jiná skupina, než je výchozí skupina vlastníků.",
           "passwordRequired": "je vyžadováno heslo.",
           "passwordMustBeAtLeast6CharactersLong": "Heslo musí být dlouhé nejméně 6 znaků.",
           "passwordMustContainRequirements": "Heslo musí obsahovat alespoň jednu číslici nebo symbol.",

@@ -10,13 +10,16 @@
         },
         "dashboard": {
           "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "Stripe Connect kifizetések"
+          "stripeConnectDescription": "Stripe Connect fizetések"
         },
         "paymentSettings": {
           "stripeConnectLabel": "Stripe Connect",
           "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Nincs még egy csík API ügyfél azonosító?",
+          "stripeConnectSettingsDescription": "Nincsenek Stripe Connect API ügyfél-azonosítója?",
           "stripeConnectSettingsGetItHere": "Szerezd meg itt"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Néhány másodperc alatt automatikusan átirányít vagy kattintson ide."
         }
       }
     }

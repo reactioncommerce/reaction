@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "videz",
+          "addUserError": "Napaka pri dodajanju uporabnika v skupino",
+          "addUserSuccess": "Dodan uporabnik v skupino",
+          "removeUserError": "Napaka pri odstranjevanju uporabnika v skupino",
+          "removeUserSuccess": "Uporabnik je bil uspešno odstranjen",
           "connect": "Poveži",
           "core": "Core",
+          "name": "Name",
+          "email": "E-naslov",
+          "create": "Ustvari skupino",
+          "update": "Posodobi skupino",
+          "lastActive": "Zadnji aktiven",
+          "description": "Opis",
+          "remove": "Odstraniti",
+          "newGroup": "Nova skupina",
+          "selectGroup": "Izberite Skupino",
+          "editGroups": "Urejanje skupin",
           "dashboard": "Nadzorna plošča",
+          "errorCreate": "Napaka pri ustvarjanju skupine",
+          "successCreate": "Skupina je uspešno ustvarila",
+          "errorUpdate": "Napaka pri posodabljanju skupine",
+          "successUpdate": "Skupina je bila uspešno posodobljena",
           "misc": "Razno",
           "paymentMethod": "Ponudniki plačilnih",
-          "utilities": "Pripomočki"
+          "utilities": "Pripomočki",
+          "marketplace": "Tržnica"
         },
         "settings": {
           "accountSettingsLabel": "Nastavitve računa",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Nastavitve Shop lokalizacijo shranjene.",
         "shopLocalizationSettingsFailed": "Trgovina nastavitve lokalizacijo posodobitev ni uspela.",
         "shopPaymentMethodsSaved": "Trgovina nastavitve Načini plačila shranjene.",
-        "shopPaymentMethodsFailed": "Trgovina nastavitve Načini plačila posodobitev ni uspela."
+        "shopPaymentMethodsFailed": "Trgovina nastavitve Načini plačila posodobitev ni uspela.",
+        "shopBrandAssetsSaved": "Posodobljeno blagovno znamko",
+        "shopBrandAssetsFailed": "Sredstva blagovne znamke ni bilo mogoče posodobiti"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "Email je obvezen vnos.",
+          "groupRequired": "Potrebna je skupina, ki ni privzeta skupina lastnikov.",
           "passwordRequired": "je potrebno geslo.",
           "passwordMustBeAtLeast6CharactersLong": "Geslo mora biti dolgo vsaj 6 znakov.",
           "passwordMustContainRequirements": "Geslo mora vsebovati vsaj eno številko ali simbol.",

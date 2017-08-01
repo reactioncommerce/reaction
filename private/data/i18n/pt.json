@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Aspeto",
+          "addUserError": "Erro ao adicionar o usuário ao grupo",
+          "addUserSuccess": "Usuário adicionado ao grupo",
+          "removeUserError": "Erro ao remover o usuário no grupo",
+          "removeUserSuccess": "Usuário removido com sucesso",
           "connect": "Conectar",
           "core": "Núcleo",
+          "name": "Nome",
+          "email": "Configurações de e-mail",
+          "create": "Criar grupo",
+          "update": "Atualizar Grupo",
+          "lastActive": "ativo pela última vez",
+          "description": "Descrição",
+          "remove": "Remover",
+          "newGroup": "Novo grupo",
+          "selectGroup": "Selecione Grupo",
+          "editGroups": "Editar grupos",
           "dashboard": "Painel de controlo",
+          "errorCreate": "Grupo de criação de erros",
+          "successCreate": "Grupo criado com sucesso",
+          "errorUpdate": "Grupo de atualização de erros",
+          "successUpdate": "Grupo atualizado com sucesso",
           "misc": "Vários",
           "paymentMethod": "Fornecedores de pagamento",
-          "utilities": "Utilitários"
+          "utilities": "Utilitários",
+          "marketplace": "Mercado"
         },
         "settings": {
           "accountSettingsLabel": "Definições da conta",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Definições de localização da loja guardadas.",
         "shopLocalizationSettingsFailed": "Falha ao atualizar as definições de localização da loja.",
         "shopPaymentMethodsSaved": "Definições dos métodos de pagamento da loja guardadas.",
-        "shopPaymentMethodsFailed": "Falha ao atualizar as definições dos métodos de pagamento da loja."
+        "shopPaymentMethodsFailed": "Falha ao atualizar as definições dos métodos de pagamento da loja.",
+        "shopBrandAssetsSaved": "Ativo de marca atualizado",
+        "shopBrandAssetsFailed": "Não foi possível atualizar o recurso da marca"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "O email é obrigatório.",
+          "groupRequired": "Um grupo diferente do grupo proprietário padrão é necessário.",
           "passwordRequired": "A palavra-passe é obrigatória.",
           "passwordMustBeAtLeast6CharactersLong": "A palavra-passe tem de ter pelo menos 6 carateres.",
           "passwordMustContainRequirements": "A palavra-passe deve conter pelo menos um número ou símbolo.",

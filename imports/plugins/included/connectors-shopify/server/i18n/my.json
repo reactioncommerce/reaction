@@ -1,0 +1,25 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect ကို",
+          "shopifyConnectTitle": "Shopify Connect ကို",
+          "shopifyConnectDescription": "Shopify အတွက်ဒေတာ Connector"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "သွင်းကုန်ထုတ်ကုန်များ",
+          "importing": "တင်သွင်းခြင်း ... ဒီခဏယူနိုင်ဘူး။",
+          "editApiKey": "Edit ကို API ကို Key ကို",
+          "editPassword": "Edit ကို API ကို Password ကို",
+          "editSharedSecret": "Edit ကို API ကို Shared Secret ကို",
+          "editShopifyDomain": "Edit ကို Shopify ဒိုမိန်း",
+          "importSuccess": "ကုန်ပစ္စည်းများအားအောင်မြင်စွာတင်သွင်းခဲ့သည်။",
+          "importFailed": "ထုတ်ကုန်တင်သွင်းမှုမှားယွင်းနေသည်။"
+        }
+      }
+    }
+  }
+}]

@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "ပုံပန်းသဏ္ဍာန်",
+          "addUserError": "မှားယွင်းနေသည်အုပ်စုအသုံးပြုသူထည့်သွင်း",
+          "addUserSuccess": "အုပ်စုအသုံးပြုသူ Added",
+          "removeUserError": "အုပ်စုအသုံးပြုသူကိုဖယ်ရှားမှားယွင်းနေသည်",
+          "removeUserSuccess": "အသုံးပြုသူကိုအောင်မြင်စွာဖယ်ရှား",
           "connect": "ဆက်",
           "core": "core",
+          "name": "နာမကိုအမှီ",
+          "email": "အီးမေးလ်က",
+          "create": "Group မှ Create",
+          "update": "Update ကိုအုပ်စု",
+          "lastActive": "နောက်ဆုံး Active ကို",
+          "description": "ဖေါ်ပြချက်",
+          "remove": "Remove",
+          "newGroup": "နယူး Group မှ",
+          "selectGroup": "Group မှကို Select လုပ်ပါ",
+          "editGroups": "Edit ကိုအဖွဲ့များ",
           "dashboard": "dashboard ကို",
+          "errorCreate": "ဖန်တီးမှုအမှားအုပ်စုတစ်စု",
+          "successCreate": "အောင်မြင်စွာဖန်တီး Group မှ",
+          "errorUpdate": "မှားယွင်းနေသည်မွမ်းမံအုပ်စုတစ်စု",
+          "successUpdate": "Group မှအောင်မြင်စွာ updated",
           "misc": "Misc",
           "paymentMethod": "ငွေပေးချေမှုရမည့် Providers",
-          "utilities": "အသုံးအဆောင်များ"
+          "utilities": "အသုံးအဆောင်များ",
+          "marketplace": "Marketplace"
         },
         "settings": {
           "accountSettingsLabel": "အကောင့်ဆက်တင်များ",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "ဆိုင်ဒေသခံ settings ကိုကယ်လွှတ်တော်မူ၏။",
         "shopLocalizationSettingsFailed": "ဆိုင်ဒေသခံ setting များကို update ကိုပျက်ကွက်ခဲ့သည်။",
         "shopPaymentMethodsSaved": "ဆိုင်ငွေပေးချေမှုရမည့်နည်းလမ်းများ settings ကိုကယ်လွှတ်တော်မူ၏။",
-        "shopPaymentMethodsFailed": "ဆိုင်ငွေပေးချေမှုရမည့်နည်းလမ်းများ setting များကို update ကိုပျက်ကွက်ခဲ့သည်။"
+        "shopPaymentMethodsFailed": "ဆိုင်ငွေပေးချေမှုရမည့်နည်းလမ်းများ setting များကို update ကိုပျက်ကွက်ခဲ့သည်။",
+        "shopBrandAssetsSaved": "နောက်ဆုံးရေးသားချိန်အမှတ်တံဆိပ်ပိုင်ဆိုင်မှု",
+        "shopBrandAssetsFailed": "အမှတ်တံဆိပ်ပိုင်ဆိုင်မှုမွမ်းမံမပေးနိုင်ခဲ့ပါ"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "အီးမေးလ်လိုအပ်ပါသည်",
+          "groupRequired": "ကို default ပိုင်ရှင်အုပ်စုကိုထက်အခြားတစ်ဦးကအုပ်စုတစ်စုလိုအပ်ပါသည်။",
           "passwordRequired": "Password ကိုလိုအပ်ပါသည်။",
           "passwordMustBeAtLeast6CharactersLong": "Password ကိုအနည်းဆုံး 6 ဇာတ်ကောင်ရှည်လျားဖြစ်ရပါမည်။",
           "passwordMustContainRequirements": "Password ကိုအနည်းဆုံးအရေအတွက်သို့မဟုတ်သင်္ကေတဆံ့ရပါမည်။",

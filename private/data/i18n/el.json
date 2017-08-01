@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Εμφάνιση",
+          "addUserError": "Σφάλμα κατά την προσθήκη του χρήστη στην ομάδα",
+          "addUserSuccess": "Προστέθηκε χρήστης στην ομάδα",
+          "removeUserError": "Σφάλμα κατάργησης του χρήστη να ομαδοποιηθεί",
+          "removeUserSuccess": "Ο χρήστης αφαιρέθηκε με επιτυχία",
           "connect": "Συνδέω",
           "core": "Πυρήνας",
+          "name": "Όνομα",
+          "email": "Ρυθμίσεις email",
+          "create": "Δημιουργησε ΟΜΑΔΑ",
+          "update": "Ενημέρωση ομάδας",
+          "lastActive": "Τελευταία ενεργή",
+          "description": "Πρόσθεσε περιγραφή προϊόντος",
+          "remove": "Αφαιρώ",
+          "newGroup": "Νέα ομάδα",
+          "selectGroup": "Επιλέξτε Ομάδα",
+          "editGroups": "Επεξεργασία ομάδων",
           "dashboard": "Ταμπλό",
+          "errorCreate": "Σφάλμα στη δημιουργία ομάδας",
+          "successCreate": "Η ομάδα δημιουργήθηκε με επιτυχία",
+          "errorUpdate": "Σφάλμα κατά την ενημέρωση της ομάδας",
+          "successUpdate": "Η ομάδα ενημερώθηκε με επιτυχία",
           "misc": "Διάφορα",
           "paymentMethod": "οι πάροχοι υπηρεσιών πληρωμών",
-          "utilities": "Utilities"
+          "utilities": "Utilities",
+          "marketplace": "Αγορά"
         },
         "settings": {
           "accountSettingsLabel": "Ρυθμίσεις λογαριασμού",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Ρυθμίσεις κατάστημα εντοπισμού σωθεί.",
         "shopLocalizationSettingsFailed": "Κατάστημα ενημέρωση ρυθμίσεις εντοπισμού απέτυχε.",
         "shopPaymentMethodsSaved": "Κατάστημα ρυθμίσεις Τρόποι Πληρωμής σωθεί.",
-        "shopPaymentMethodsFailed": "Κατάστημα ενημέρωση ρυθμίσεις Τρόποι Πληρωμής απέτυχε."
+        "shopPaymentMethodsFailed": "Κατάστημα ενημέρωση ρυθμίσεις Τρόποι Πληρωμής απέτυχε.",
+        "shopBrandAssetsSaved": "Ενημερωμένο στοιχείο επωνυμίας",
+        "shopBrandAssetsFailed": "Δεν ήταν δυνατή η ενημέρωση του στοιχείου επωνυμίας"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "Το Email είναι υποχρεωτικό.",
+          "groupRequired": "Απαιτείται ομάδα διαφορετική από την προεπιλεγμένη ομάδα κατόχου.",
           "passwordRequired": "Απαιτείται κωδικός.",
           "passwordMustBeAtLeast6CharactersLong": "Ο κωδικός πρέπει να είναι τουλάχιστον 6 χαρακτήρες.",
           "passwordMustContainRequirements": "Ο κωδικός πρόσβασης πρέπει να περιέχει τουλάχιστον έναν αριθμό ή σύμβολο.",

@@ -10,13 +10,16 @@
         },
         "dashboard": {
           "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "platby Stripe Connect"
+          "stripeConnectDescription": "Stripe Connect payments"
         },
         "paymentSettings": {
           "stripeConnectLabel": "Stripe Connect",
           "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Nemáte Stripe Connect API ID klienta?",
+          "stripeConnectSettingsDescription": "Nemáte klientské ID rozhraní Stripe Connect API?",
           "stripeConnectSettingsGetItHere": "Získat ji zde"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Bude automatické přesměrování během několika vteřin nebo zde klikněte."
         }
       }
     }

@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Apparence",
+          "addUserError": "Erreur lors de l'ajout d'un utilisateur au groupe",
+          "addUserSuccess": "Utilisateur ajouté au groupe",
+          "removeUserError": "Erreur lors de la suppression de l'utilisateur pour le groupe",
+          "removeUserSuccess": "Utilisateur supprimé avec succès",
           "connect": "Se connecter",
           "core": "Coeur",
+          "name": "Nom",
+          "email": "Paramètres de messagerie",
+          "create": "Créer un groupe",
+          "update": "Groupe de mise à jour",
+          "lastActive": "Dernière activité",
+          "description": "Description",
+          "remove": "Supprimer",
+          "newGroup": "Nouveau groupe",
+          "selectGroup": "Sélectionnez le groupe",
+          "editGroups": "Modifier les groupes",
           "dashboard": "Tableau de bord",
+          "errorCreate": "Erreur lors de la création du groupe",
+          "successCreate": "Groupe créé avec succès",
+          "errorUpdate": "Groupe de mise à jour d'erreur",
+          "successUpdate": "Groupe mis à jour avec succès",
           "misc": "Divers",
           "paymentMethod": "Prestataires de paiement",
-          "utilities": "Services"
+          "utilities": "Services",
+          "marketplace": "marché"
         },
         "settings": {
           "accountSettingsLabel": "Paramètres du compte",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Paramètres de localisation du magasin enregistrés.",
         "shopLocalizationSettingsFailed": "Echec de la mise à jour des paramètres de localisation du magasin.",
         "shopPaymentMethodsSaved": "Modalités de paiement enregistrées.",
-        "shopPaymentMethodsFailed": "Echec de la mise à jour des paramètres de mode de paiement du magasin."
+        "shopPaymentMethodsFailed": "Echec de la mise à jour des paramètres de mode de paiement du magasin.",
+        "shopBrandAssetsSaved": "Actif de marque mis à jour",
+        "shopBrandAssetsFailed": "Impossible de mettre à jour l'actif"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "L'email est requis.",
+          "groupRequired": "Un groupe autre que le groupe de propriétaires par défaut est requis.",
           "passwordRequired": "Le mot de passe est requis.",
           "passwordMustBeAtLeast6CharactersLong": "Le mot de passe doit contenir au minimum 6 caractères.",
           "passwordMustContainRequirements": "Le mot de passe doit contenir au moins un chiffre ou un symbole.",

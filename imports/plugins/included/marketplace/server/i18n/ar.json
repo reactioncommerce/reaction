@@ -1,0 +1,23 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "تصبح البائع",
+        "errorCannotCreateShop": "تعذر إنشاء متجر للمستخدم الحالي {{user}}",
+        "yourShopIsReady": "متجرك الآن جاهز!"
+      },
+      "app": {
+        "shops": "محلات",
+        "myShop": "متجري"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "تم حفظ إعدادات ماركتبليس بنجاح!",
+          "dashboardMarketplaceSettingsFailed": "أخفق حفظ إعدادات ماركتبليس"
+        }
+      }
+    }
+  }
+}]

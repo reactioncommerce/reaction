@@ -136,7 +136,7 @@ class SortableTable extends Component {
    * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
    */
   renderData() {
-    const { filteredFields } = this.props;
+    const { filteredFields, filterType } = this.props;
     const { filterInput } = this.state;
 
     let originalData = [];
@@ -145,8 +145,12 @@ class SortableTable extends Component {
       originalData = this.getMeteorData().results;
     }
 
-    const filteredData = matchSorter(originalData, filterInput, { keys: filteredFields });
-    return filteredData;
+    if (filterType === "both" || filterType === "table") {
+      const filteredData = matchSorter(originalData, filterInput, { keys: filteredFields });
+      return filteredData;
+    }
+
+    return originalData;
   }
 
 
@@ -172,49 +176,99 @@ class SortableTable extends Component {
   renderTableFilter() {
     const { filterType } = this.props;
 
-    if (filterType === "both" || filterType === "table") {
-      return (
-        <SortableTableFilter
-          onChange={this.handleFilterInput}
-          value={this.state.filterInput}
-          name="filterInput"
-        />
-      );
+    if (this.getMeteorData().matchingResults !== 0) {
+      if (filterType === "both" || filterType === "table") {
+        return (
+          <SortableTableFilter
+            onChange={this.handleFilterInput}
+            value={this.state.filterInput}
+            name="filterInput"
+          />
+        );
+      }
     }
 
     return null;
   }
 
+  /**
+   * selectedRowsClassName() - if any rows are selected, give them a className of "selected-row"
+   * @param {object} rowInfo row data passed in from ReactTable
+   * @returns {String} className to apply to row that is selected, or empty string if no row is selected
+   */
+  selectedRowsClassName(rowInfo) {
+    const { selectedRows } = this.props;
+    let className = "";
+
+    if (selectedRows && selectedRows.length) {
+      if (selectedRows.includes(rowInfo.row._id)) {
+        className = "selected-row";
+      }
+    }
+
+    return className;
+  }
+
+  renderPaginationBottom = () => {
+    if (this.getMeteorData().matchingResults === 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  setMinRows = () => {
+    if (this.getMeteorData().matchingResults === 0) {
+      return 3;
+    }
+
+    return 0;
+  }
 
   render() {
     const { ...otherProps } = this.props;
+    const defaultClassName = "-striped -highlight";
+
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (
       <div>
         {this.renderTableFilter()}
         <ReactTable
-          className={"-striped -highlight"}
+          className={otherProps.tableClassName || defaultClassName}
           columns={this.renderColumns()}
           data={otherProps.data || this.renderData()}
           defaultFilterMethod={this.customFilter}
           defaultPageSize={otherProps.defaultPageSize}
           filterable={this.renderColumnFilter()}
-          minRows={otherProps.minRows}
+          minRows={this.setMinRows()
+          }
           previousText={otherProps.previousText}
           nextText={otherProps.nextText}
           loadingText={otherProps.loadingText}
-          noDataText={otherProps.noDataText}
+          noDataText={() => <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>}
           pageText={otherProps.pageText}
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
+          showPaginationTop={otherProps.showPaginationTop}
+
           PaginationComponent={SortableTablePagination}
+          showPaginationBottom={this.renderPaginationBottom()}
           getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
+            if (otherProps.getTrProps) {
+              return otherProps.getTrProps();
+            }
+
             return {
               onClick: e => { // eslint-disable-line no-unused-vars
                 this.handleClick(rowInfo);
-              }
+              },
+              className: this.selectedRowsClassName(rowInfo)
             };
           }}
+          getTableProps={otherProps.getTableProps}
+          getTrGroupProps={otherProps.getTrGroupProps}
+          getTheadProps={otherProps.getTheadProps}
+          getPaginationProps={otherProps.getPaginationProps}
         />
       </div>
     );
@@ -250,6 +304,8 @@ SortableTable.propTypes = {
   publication: PropTypes.string,
   /** @type {object} query provides query for publication filtering */
   query: PropTypes.object,
+  /** @type {array} selectedRows provides selected rows in the table */
+  selectedRows: PropTypes.array,
   /** @type {function} transform transform of collection for grid results */
   transform: PropTypes.func
 };
@@ -269,6 +325,14 @@ SortableTable.defaultProps = {
   pageText: "Page",
   ofText: "of",
   rowsText: "rows"
+  // noDataMessage: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.noDataMessage"} />,
+  // previousText: <Translation defaultValue="Previous" i18nKey={"reactionUI.components.sortableTable.tableText.previousText"} />,
+  // nextText: <Translation defaultValue="Next" i18nKey={"reactionUI.components.sortableTable.tableText.nextText"} />,
+  // loadingText: <Translation defaultValue="Loading..." i18nKey={"reactionUI.components.sortableTable.tableText.loadingText"} />,
+  // noDataText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.noDataText"} />,
+  // pageText: <Translation defaultValue="Page" i18nKey={"reactionUI.components.sortableTable.tableText.pageText"} />,
+  // ofText: <Translation defaultValue="of" i18nKey={"reactionUI.components.sortableTable.tableText.ofText"} />,
+  // rowsText: <Translation defaultValue="rows" i18nKey={"reactionUI.components.sortableTable.tableText.rowsText"} />
 };
 
 export default SortableTable;
