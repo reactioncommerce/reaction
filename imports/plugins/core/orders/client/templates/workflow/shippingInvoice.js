@@ -538,7 +538,6 @@ Template.coreOrderShippingInvoice.helpers({
   order() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-
     return order;
   },
 

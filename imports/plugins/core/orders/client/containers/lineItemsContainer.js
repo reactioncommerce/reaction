@@ -27,6 +27,7 @@ class LineItemsContainer extends Component {
     };
 
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
+    this.applyRefund = this.applyRefund.bind(this);
   }
 
   togglePopOver = () => {
@@ -156,14 +157,29 @@ class LineItemsContainer extends Component {
     return false;
   }
 
+  applyRefund = () => {
+    console.log("Order Id----?", this.props.order._id);
+    const paymentMethod = orderCreditMethod(this.props.order).paymentMethod;
+    const amount = this.getRefundedItemsInfo().total;
+    const quantity = this.getRefundedItemsInfo().quantity;
+    console.log("paymentMethod ---->", paymentMethod);
+    Meteor.call("orders/refunds/create", this.props.order._id, paymentMethod, amount, quantity);
+  }
+
+  getRefundedItemsInfo = () => {
+    const { editedItems } = this.state;
+    return {
+      quantity: editedItems.reduce((acc, item) => acc + item.refundedQuantity, 0),
+      total: editedItems.reduce((acc, item) => acc + item.refundedTotal, 0)
+    };
+  }
+
   render() {
-    const { invoice, uniqueItems } = this.props;
+    const { uniqueItems } = this.props;
     return (
       <TranslationProvider>
         <LineItems
           onClose={this.handleClose}
-          invoice={invoice}
-          value={this.state.value}
           handleSelectAllItems={this.handleSelectAllItems}
           selectAllItems={this.state.selectAllItems}
           selectedItems={this.state.selectedItems}
@@ -176,10 +192,19 @@ class LineItemsContainer extends Component {
           editedItems={this.state.editedItems}
           isUpdating={this.state.isUpdating}
           toggleUpdating={this.toggleUpdating}
+          applyRefund={this.applyRefund}
+          getRefundedItemsInfo={this.getRefundedItemsInfo}
         />
       </TranslationProvider>
     );
   }
+}
+
+// helper to return the order payment object
+// the first credit paymentMethod on the order
+// returns entire payment method
+function orderCreditMethod(order) {
+  return order.billing.filter(value => value.paymentMethod.method ===  "credit")[0];
 }
 
 const composer = (props, onData) => {
@@ -187,7 +212,7 @@ const composer = (props, onData) => {
   if (subscription.ready()) {
     onData(null, {
       uniqueItems: props.items,
-      invoice: props.invoice
+      order: props.order
     });
   }
 };

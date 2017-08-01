@@ -14,7 +14,6 @@ class LineItems extends Component {
     handleItemSelect: PropTypes.func,
     handleSelectAllItems: PropTypes.func,
     inputOnChange: PropTypes.func,
-    invoice: PropTypes.object,
     isHovered: PropTypes.func,
     isUpdating: PropTypes.bool,
     popOverIsOpen: PropTypes.bool,
@@ -146,6 +145,7 @@ class LineItems extends Component {
 
   renderLineItemRefund() {
     const { editedItems } = this.props;
+
     return (
       <div className="invoice-refund-edited">
         <div className="refund-header">
@@ -181,12 +181,12 @@ class LineItems extends Component {
             </div>
             <div>
               <span>
-                {editedItems.reduce((acc, item) => acc + item.refundedQuantity, 0)}
+                {this.props.getRefundedItemsInfo().quantity}
               </span>
             </div>
             <div>
               <span>
-                {formatPriceString(editedItems.reduce((acc, item) => acc + item.refundedTotal, 0))}
+                {formatPriceString(this.props.getRefundedItemsInfo().total)}
               </span>
             </div>
           </div>
@@ -264,6 +264,7 @@ class LineItems extends Component {
               bezelStyle="solid"
               status="primary"
               label="Refund Items"
+              onClick={this.props.applyRefund}
             />
           </div>
         </div>

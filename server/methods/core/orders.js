@@ -835,11 +835,13 @@ export const methods = {
    * @param {Number} amount - Amount of the refund, as a positive number
    * @return {null} no return value
    */
-  "orders/refunds/create": function (orderId, paymentMethod, amount) {
+  "orders/refunds/create": function (orderId, paymentMethod, amount, quantity) {
     check(orderId, String);
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
+    check(quantity, Match.Optional(Number));
 
+    console.log("quantity---->", quantity);
     // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
@@ -867,6 +869,7 @@ export const methods = {
           "billing.$.paymentMethod.transactions": result
         }
       };
+      console.log("result---->", result);
       // Send email to notify cuustomer of a refund
       Meteor.call("orders/sendNotification", order);
       if (result.saved === false) {
@@ -881,12 +884,15 @@ export const methods = {
         }
       };
       // Send email to notify cuustomer of a refund
+      console.log("results on capture ---->", results);
       Meteor.call("orders/sendNotification", order, "refunded");
       if (result.saved === false) {
         Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
         throw new Meteor.Error("Attempt to refund transaction failed", result.error);
       }
     }
+
+    console.log("orders update", order);
 
     Orders.update({
       "_id": orderId,
