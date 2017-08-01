@@ -480,7 +480,7 @@ Meteor.methods({
           }
         }
       }, {
-        getAutoValues: false
+        getAutoValues: false // See https://github.com/aldeed/meteor-collection2/issues/245
       }, (error, result) => {
         if (error) {
           Logger.error(error);
