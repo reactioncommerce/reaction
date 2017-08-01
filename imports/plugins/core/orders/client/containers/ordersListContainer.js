@@ -147,180 +147,79 @@ class OrdersListContainer extends Component {
     return false;
   }
 
-  pickedShippingStatus = (selectedOrders) => {
+  shippingStatusUpdateCall = (selectedOrders, status) => {
+    const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
+
+    selectedOrders.forEach((order) => {
+      Meteor.call(`orders/shipment${capitalizeStatus}`, order, order.shipping[0], true, (err) => {
+        if (err) {
+          Alerts.toast("Error", "error");
+        } else {
+          Meteor.call("orders/updateHistory", order._id, "State set by bulk action", status);
+        }
+        this.setState({
+          [status]: true
+        });
+      });
+    });
+    Alerts.alert({
+      text: `${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} set to ${status}`,
+      type: "success"
+    });
+  }
+
+  pickedShippingStatus = (selectedOrders, status) => {
     let falsePickedStatuses = 0;
 
-    if (selectedOrders.length > 1) {
-      selectedOrders.forEach((order) => {
-        if (order.shipping[0].picked === false) {
-          falsePickedStatuses++;
-
-          Meteor.call("orders/shipmentPicked", order, order.shipping[0], true, (err) => {
-            if (err) {
-              Alerts.toast("Error", "error");
-            } else {
-              Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "picked");
-            }
-
-            this.setState({
-              picked: true
-            });
-          });
-        }
-      });
-      if (falsePickedStatuses === 0) {
-        Alerts.alert({
-          text: "Orders are already in picked state"
-        });
-      } else {
-        Alerts.alert({
-          text: `${falsePickedStatuses} orders statuses set to picked`,
-          type: "success"
-        });
-      }
-    } else {
-      const order = selectedOrders[0];
+    selectedOrders.forEach((order) => {
       if (order.shipping[0].picked === false) {
-        Meteor.call("orders/shipmentPicked", order, order.shipping[0], true, (err) => {
-          if (err) {
-            Alerts.toast("Error", "error");
-          } else {
-            Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "picked");
-            Alerts.alert({
-              text: `Order with id ${order._id} shipping status set to picked`,
-              type: "success"
-            });
-          }
-
-          this.setState({
-            picked: true
-          });
-        });
-      } else {
-        Alerts.alert({
-          text: "Order is already in the picked state"
-        });
+        falsePickedStatuses++;
       }
+    });
+
+    if (falsePickedStatuses === 0) {
+      Alerts.alert({
+        text: `${selectedOrders.length > 1 ? "Orders are" : "Order is"} already in picked state`
+      });
+    } else {
+      this.shippingStatusUpdateCall(selectedOrders, status);
     }
   }
 
-  packedShippingStatus = (selectedOrders) => {
+  packedShippingStatus = (selectedOrders, status) => {
     let falsePackedStatuses = 0;
     let falsePickedAndPackedStatuses = 0;
 
-    if (selectedOrders.length > 1) {
-      selectedOrders.forEach((order) => {
-        if (order.shipping[0].picked && order.shipping[0].packed === false) {
-          falsePackedStatuses++;
-        } else if (order.shipping[0].picked === false && order.shipping[0].packed === false) {
-          falsePickedAndPackedStatuses++;
+    selectedOrders.forEach((order) => {
+      if (order.shipping[0].picked && order.shipping[0].packed === false) {
+        falsePackedStatuses++;
+      } else if (order.shipping[0].picked === false && order.shipping[0].packed === false) {
+        falsePickedAndPackedStatuses++;
+      }
+    });
+
+    if (falsePickedAndPackedStatuses) {
+      Alerts.alert({
+        text: `You've requested that ${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} be set to the "Packed"
+              status, but ${falsePickedAndPackedStatuses} of these orders ${falsePickedAndPackedStatuses === 1 ? "is" : "are"} not in
+              the "Picked" state and would skip all steps leading up to the "Packed" state. Are you sure you want to do this?`,
+        type: "warning",
+        showCancelButton: true,
+        showCloseButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: "Yes, Set All Selected Orders",
+        cancelButtonText: "No, Cancel"
+      }, (setSelected) => {
+        if (setSelected) {
+          this.shippingStatusUpdateCall(selectedOrders, status);
         }
       });
-
-      if (falsePickedAndPackedStatuses) {
-        Alerts.alert({
-          text: `You've requested that ${selectedOrders.length} orders be set to the "Packed" status, but
-                ${falsePickedAndPackedStatuses} of these orders ${falsePickedAndPackedStatuses === 1 ? "is" : "are"} not in
-                the "Picked" state and would skip all steps leading up to the "Packed" state. Are you sure you want to do this?`,
-          type: "warning",
-          showCancelButton: true,
-          showCloseButton: true,
-          allowOutsideClick: false,
-          confirmButtonText: "Yes, Set All Selected Orders",
-          cancelButtonText: "No, Cancel"
-        }, (setSelected) => {
-          if (setSelected) {
-            selectedOrders.forEach((order) => {
-              Meteor.call("orders/shipmentPacked", order, order.shipping[0], true, (err) => {
-                if (err) {
-                  Alerts.toast("Error", "error");
-                } else {
-                  Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "packed");
-                }
-                this.setState({
-                  packed: true
-                });
-              });
-              Alerts.alert({
-                text: `${selectedOrders.length} shipping status set to packed`,
-                type: "success"
-              });
-            });
-          }
-        });
-      } else if (falsePackedStatuses === 0 && falsePickedAndPackedStatuses === 0) {
-        Alerts.alert({
-          text: "Orders are already in packed state"
-        });
-      } else if (falsePackedStatuses && falsePickedAndPackedStatuses === 0) {
-        selectedOrders.forEach((order) => {
-          Meteor.call("orders/shipmentPacked", order, order.shipping[0], true, (err) => {
-            if (err) {
-              Alerts.toast("Error", "error");
-            } else {
-              Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "packed");
-            }
-            this.setState({
-              packed: true
-            });
-          });
-          Alerts.alert({
-            text: `${selectedOrders.length} shipping status set to packed`,
-            type: "success"
-          });
-        });
-      }
-    } else {
-      const order = selectedOrders[0];
-      if (order.shipping[0].picked && order.shipping[0].packed === false) {
-        Meteor.call("orders/shipmentPacked", order, order.shipping[0], true, (err) => {
-          if (err) {
-            Alerts.toast("Error", "error");
-          } else {
-            Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "packed");
-            Alerts.alert({
-              text: `Order with id ${order._id} shipping status set to packed`,
-              type: "success"
-            });
-          }
-
-          this.setState({
-            packed: true
-          });
-        });
-      } else if (order.shipping[0].picked === false && order.shipping[0].packed === false) {
-        Alerts.alert({
-          text: `You've requested that order ${order._id} be set to the "Packed" status, but it is not in the "Picked"
-                state and would skip all steps leading up to the "Packed" state. Are you sure you want to do this?`,
-          type: "warning",
-          showCancelButton: true,
-          showCloseButton: true,
-          confirmButtonText: "Yes, Set All Selected Orders",
-          cancelButtonText: "No, Cancel"
-        }, (setSelected) => {
-          if (setSelected) {
-            Meteor.call("orders/shipmentPacked", order, order.shipping[0], true, (err) => {
-              if (err) {
-                Alerts.toast("Error", "error");
-              } else {
-                Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "packed");
-                Alerts.alert({
-                  text: `Order with id ${order._id} shipping status set to packed`,
-                  type: "success"
-                });
-              }
-
-              this.setState({
-                packed: true
-              });
-            });
-          }
-        });
-      } else {
-        Alerts.alert({
-          text: "Order is already in the packed state"
-        });
-      }
+    } else if (falsePackedStatuses === 0 && falsePickedAndPackedStatuses === 0) {
+      Alerts.alert({
+        text: `${selectedOrders.length > 1 ? "Orders are" : "Order is"} already in packed state`
+      });
+    } else if (falsePackedStatuses && falsePickedAndPackedStatuses === 0) {
+      this.shippingStatusUpdateCall(selectedOrders, status);
     }
   }
 
@@ -434,11 +333,11 @@ class OrdersListContainer extends Component {
     });
 
     if (status === "picked") {
-      this.pickedShippingStatus(selectedOrders);
+      this.pickedShippingStatus(selectedOrders, status);
     }
 
     if (status === "packed") {
-      this.packedShippingStatus(selectedOrders);
+      this.packedShippingStatus(selectedOrders, status);
     }
 
     if (status === "labeled") {
