@@ -11,7 +11,6 @@ Meteor.methods({
     check(shopId, String);
     check(authCode, String);
 
-    console.log("stripe/connect/authorizeMerchant called", shopId, authCode);
     if (!Reaction.hasPermission(["owner", "admin", "reaction-stripe"], Meteor.userId(), shopId)) {
       Logger.warn(`user: ${Meteor.userId()} attempted to authorize merchant account
         for shopId ${shopId} but was denied access due to insufficient privileges.`);
@@ -44,8 +43,6 @@ Meteor.methods({
           grant_type: "authorization_code" // eslint-disable-line camelcase
         }
       });
-
-      console.log("Stripe auth result", result);
 
       if (result.error) {
         throw new Meteor.Error("There was a problem authorizing stripe connect", result.error, result.error_description);

@@ -47,7 +47,7 @@ Reaction.registerPackage({
 
     // Payment Signup for Merchants
     {
-      label: "Setup Stripe Merchant Account",
+      label: "Stripe Merchant Account",
       icon: "fa fa-cc-stripe",
       container: "dashboard",
       provides: "marketplaceMerchantSettings",
