@@ -110,7 +110,7 @@ Meteor.methods({
    */
   "cart/mergeCart": function (cartId, currentSessionId) {
     check(cartId, String);
-    check(currentSessionId, Match.Optional(String));
+    check(currentSessionId, Match.OneOf(String, Boolean));
 
     // we don't process current cart, but merge into it.
     const currentCart = Collections.Cart.findOne(cartId);
