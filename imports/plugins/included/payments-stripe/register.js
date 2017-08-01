@@ -16,7 +16,11 @@ Reaction.registerPackage({
         "Capture",
         "Refund"
       ]
-    }
+    },
+    "public": {
+      client_id: ""
+    },
+    "connectAuth": {}
   },
   registry: [
     // Settings panel

@@ -46,7 +46,7 @@ Template.stripeConnectSignupButton.events({
     const state = shop.addressBook[0].state;
     const zip = shop.addressBook[0].postal;
 
-    const stripeConnectAuthorizeUrl = `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${clientId}&scope=read_write`;
+    const stripeConnectAuthorizeUrl = `https://connect.stripe.com/oauth/authorize?response_type=code&state=${shopId}&client_id=${clientId}&scope=read_write`;
     const autofillParams = `&stripe_user[email]=${email}&stripe_user[country]=${country}&stripe_user[phone_number]=${phoneNumber}&stripe_user[business_name]=${businessName}&stripe_user[street_address]=${streetAddress}&stripe_user[city]=${city}&stripe_user[state]=${state}&stripe_user[zip]=${zip}`; // eslint-disable-line max-len
     window.open(stripeConnectAuthorizeUrl + autofillParams, "_blank");
   }
