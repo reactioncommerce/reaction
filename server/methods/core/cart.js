@@ -479,7 +479,9 @@ Meteor.methods({
             _id: itemId
           }
         }
-      }, {getAutoValues: false}, (error, result) => {
+      }, {
+        getAutoValues: false
+      }, (error, result) => {
         if (error) {
           Logger.error(error);
           Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(),
