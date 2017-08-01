@@ -34,16 +34,6 @@ class OrdersListContainer extends Component {
       labeled: false,
       shipped: false
     };
-
-    this.handleClick = this.handleClick.bind(this);
-    this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
-    this.selectAllOrders = this.selectAllOrders.bind(this);
-    this.pickedShippingStatus = this.pickedShippingStatus.bind(this);
-    this.packedShippingStatus = this.packedShippingStatus.bind(this);
-    this.labeledShippingStatus = this.labeledShippingStatus.bind(this);
-    this.shippedShippingStatus = this.shippedShippingStatus.bind(this);
-    this.setShippingStatus = this.setShippingStatus.bind(this);
   }
 
   componentWillReceiveProps = (nextProps) => {
