@@ -70,7 +70,7 @@ class LineItemsContainer extends Component {
 
   inputOnChange = (event, value, lineItem) => {
     let { editedItems } = this.state;
-
+    console.log("value---->", value);
     // console.log("uniqItem-->", lineItem);
     const isEdited = editedItems.find(item => {
       return item.id === lineItem._id;
@@ -94,7 +94,6 @@ class LineItemsContainer extends Component {
       });
     }
     this.setState({
-      value,
       editedItems
     });
   }

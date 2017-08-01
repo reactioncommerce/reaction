@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
+import { isEmpty } from "lodash";
 import { Reaction } from "/client/api";
 import { formatPriceString } from "/client/api";
 import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox, Translation } from  "@reactioncommerce/reaction-ui";
@@ -79,7 +80,7 @@ class LineItems extends Component {
                 minValue={0}
                 defaultValue={uniqueItem.quantity}
                 onChange={(event, value) => this.props.inputOnChange(event, value, uniqueItem)}
-                value={this.props.value}
+                // value={this.props.value}
                 maxValue={uniqueItem.quantity}
               /> :
               <div>{uniqueItem.quantity}</div>
@@ -143,6 +144,66 @@ class LineItems extends Component {
     );
   }
 
+  renderLineItemRefund() {
+    const { editedItems } = this.props;
+    return (
+      <div className="invoice-refund-edited">
+        <div className="refund-header">
+          <div>
+            <Translation defaultValue="For Refund" i18nKey=""/>
+          </div>
+          <div>
+            <Translation defaultValue="Items" i18nKey=""/>
+          </div>
+          <div>
+            <Translation defaultValue="Total" i18nKey=""/>
+          </div>
+        </div>
+        <div className="refund-body">
+          {editedItems.map((item, index) => {
+            return (
+              <div className="refund-item" key={index}>
+                <div>
+                  <span>{item.title}</span>
+                </div>
+                <div>
+                  <span>{item.refundedQuantity}</span>
+                </div>
+                <div>
+                  <span>{formatPriceString(item.refundedTotal)}</span>
+                </div>
+              </div>
+            );
+          })}
+          <div className="refund-item return">
+            <div>
+              <b><Translation defaultValue="RETURN TOTAL" i18nKey=""/></b>
+            </div>
+            <div>
+              <span>
+                {editedItems.reduce((acc, item) => acc + item.refundedQuantity, 0)}
+              </span>
+            </div>
+            <div>
+              <span>
+                {formatPriceString(editedItems.reduce((acc, item) => acc + item.refundedTotal, 0))}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="refund-include-shipping">
+          <div className="pull-right">
+            <Checkbox
+              className="checkbox-large"
+              label="Include Shipping"
+              checked={true}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderPopOver() {
     return (
       <Popover
@@ -183,7 +244,9 @@ class LineItems extends Component {
               {this.renderLineItemInvoice(uniqueItem)}
             </div>
           ))}
-
+        </div>
+        <div>
+          {!isEmpty(this.props.editedItems) && this.renderLineItemRefund()}
         </div>
         <div className="invoice-actions">
           <div className="invoice-action-cancel">

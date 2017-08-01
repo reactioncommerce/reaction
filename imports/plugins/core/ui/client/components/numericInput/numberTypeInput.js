@@ -16,7 +16,7 @@ class NumberTypeInput extends Component {
     super(props);
 
     this.state = {
-      value: props.value || props.defaultValue,
+      value: props.defaultValue,
       minValue: props.minValue || 0,
       maxValue: props.maxValue || undefined,
       className: {}
@@ -25,17 +25,6 @@ class NumberTypeInput extends Component {
     this.handleIncrementButton = this.handleIncrementButton.bind(this);
     this.handleDecrementButton = this.handleDecrementButton.bind(this);
     this.handleChange = this.handleChange.bind(this);
-  }
-
-  /**
-   * update state when component receives props
-   * @param  {Object} nextProps new props
-   * @return {undefined}
-   */
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      value: nextProps.value
-    });
   }
 
   handleIncrementButton = (event) => {
