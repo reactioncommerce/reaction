@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Button, TextField, Translation } from "@reactioncommerce/reaction-ui";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class UpdatePasswordOverlay extends Component {
   static propTypes = {
@@ -65,7 +65,7 @@ class UpdatePasswordOverlay extends Component {
       <span className="help-block">
         {this.props.onError(this.props.messages.errors && this.props.messages.errors.password) &&
         this.props.messages.errors.password.map((error, i) => (
-          <Translation
+          <Components.Translation
             key={i}
             defaultValue={error.reason}
             i18nKey={error.i18nKeyReason}
@@ -86,7 +86,7 @@ class UpdatePasswordOverlay extends Component {
     }
     return (
       <div className="col-sm-6">
-        <Button
+        <Components.Button
           className="btn-block"
           primary={true}
           bezelStyle="solid"
@@ -116,57 +116,61 @@ class UpdatePasswordOverlay extends Component {
     return (
       <div>
         {this.props.isOpen === true &&
-          <div>
-            <div className="modal-backdrop fade in" id={`modal-backdrop-${this.props.uniqueId}`}/>
-            <div className="modal fade in" id={`modal-${this.props.uniqueId}`} style={{ display: "block" }}>
-              <div className="modal-dialog">
-                {showSpinner ? this.renderSpinnerOnLoad() :
-                  <form className="modal-content" onSubmit={this.handleSubmit}>
-                    <div className="modal-header">
-                      <h4 className="modal-title">
-                        <Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword"/>
-                      </h4>
-                    </div>
+        <div>
+          <div className="modal-backdrop fade in" id={`modal-backdrop-${this.props.uniqueId}`}/>
+          <div className="modal fade in" id={`modal-${this.props.uniqueId}`} style={{ display: "block" }}>
+            <div className="modal-dialog">
+              {showSpinner ? this.renderSpinnerOnLoad() :
+                <form className="modal-content" onSubmit={this.handleSubmit}>
+                  <div className="modal-header">
+                    <h4 className="modal-title">
+                      <Components.Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword"/>
+                    </h4>
+                  </div>
 
-                    <div className="modal-body">
-                      <div className="login-form">
-                        {this.renderFormMessages()}
-                        <div className={passwordClasses}>
-                          <TextField
-                            i18nKeyLabel="accountsUI.password"
-                            label="Password"
-                            name="password"
-                            type="password"
-                            id={`password-${this.props.uniqueId}`}
-                            value={this.state.password}
-                            onChange={this.handleFieldChange}
-                          />
-                          {this.renderPasswordErrors()}
-                        </div>
-                      </div>
-                    </div>
+                  <div className="modal-body">
+                    <div className="login-form">
 
-                    <div className="modal-footer">
-                      {this.renderSpinnerOnWait()}
-                      <div className="col-sm-6">
-                        <Button
-                          className="btn-block"
-                          status="danger"
-                          bezelStyle="solid"
-                          i18nKeyLabel="app.cancel"
-                          label="Cancel"
-                          type="button"
-                          onClick={this.handleCancel}
-                          disabled={this.props.isDisabled}
+                      {this.renderFormMessages()}
+
+                      <div className={passwordClasses}>
+                        <Components.TextField
+                          i18nKeyLabel="accountsUI.password"
+                          label="Password"
+                          name="password"
+                          type="password"
+                          id={`password-${this.props.uniqueId}`}
+                          value={this.state.password}
+                          onChange={this.handleFieldChange}
                         />
+                        {this.renderPasswordErrors()}
                       </div>
+
                     </div>
-                  </form>
-                }
-              </div>
+                  </div>
+
+                  <div className="modal-footer">
+                    {this.renderSpinnerOnWait()}
+
+                    <div className="col-sm-6">
+                      <Components.Button
+                        className="btn-block"
+                        status="danger"
+                        bezelStyle="solid"
+                        i18nKeyLabel="app.cancel"
+                        label="Cancel"
+                        type="button"
+                        onClick={this.handleCancel}
+                        disabled={this.props.isDisabled}
+                      />
+                    </div>
+                  </div>
+
+                </form>
+              }
             </div>
           </div>
-        }
+        </div>}
       </div>
     );
   }
