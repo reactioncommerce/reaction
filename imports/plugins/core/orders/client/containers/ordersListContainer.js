@@ -143,9 +143,9 @@ class OrdersListContainer extends Component {
     selectedOrders.forEach((order) => {
       Meteor.call(`orders/shipment${capitalizeStatus}`, order, order.shipping[0], true, (err) => {
         if (err) {
-          Alerts.toast("Error", "error");
+          Alerts.toast(`An error occured while setting the status: ${err}`, "error");
         } else {
-          Meteor.call("orders/updateHistory", order._id, "State set by bulk action", status);
+          Meteor.call("orders/updateHistory", order._id, "Shipping state set by bulk operation", status);
         }
         this.setState({
           [status]: true
@@ -257,55 +257,51 @@ class OrdersListContainer extends Component {
     }
   }
 
-  shippedShippingStatus = (selectedOrders) => {
+  shippedShippingStatus = (selectedOrders, status) => {
+    let falseShippedStatuses = 0;
+    let falsePreviousStatuses = 0;
+    let whichFalseState = "";
+
     selectedOrders.forEach((order) => {
+      if (order.shipping[0].picked === false) {
+        whichFalseState = "Picked";
+      } else if (order.shipping[0].packed === false) {
+        whichFalseState = "Packed";
+      } else if (order.shipping[0].labeled === false) {
+        whichFalseState = "Labeled";
+      } else if (order.shipping[0].picked === false && order.shipping[0].packed === false && order.shipping[0].labeled === false) {
+        whichFalseState = "Picked";
+      }
+
       if (order.shipping[0].picked && order.shipping[0].packed && order.shipping[0].labeled && order.shipping[0].shipped === false) {
-        Meteor.call("orders/shipmentShipped", order, order.shipping[0], (err) => {
-          if (err) {
-            Alerts.toast("Error", "error");
-          } else {
-            Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "shipped");
-            Alerts.alert({
-              text: `Order with id ${order._id} shipping status set to shipped`,
-              type: "success"
-            });
-          }
-          this.setState({
-            shipped: true
-          });
-        });
-      } else if (order.shipping[0].picked === false || order.shipping[0].packed === false || order.shipping[0].labeled === false) {
-        Alerts.alert({
-          text: `You've requested that order ${order._id} be set to the "Shipped" status, but it is not in the "Packed"
-                state and would skip all steps leading up to the "Shipped" state. Are you sure you want to do this?`,
-          type: "warning",
-          showCancelButton: true,
-          showCloseButton: true,
-          confirmButtonText: "Yes, Set All Selected Orders"
-        }, (setSelected) => {
-          if (setSelected) {
-            Meteor.call("orders/shipmentShipped", order, order.shipping[0], (err) => {
-              if (err) {
-                Alerts.toast("Error", "error");
-              } else {
-                Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "shipped");
-                Alerts.alert({
-                  text: `Order with id ${order._id} shipping status set to shipped`,
-                  type: "success"
-                });
-              }
-              this.setState({
-                shipped: true
-              });
-            });
-          }
-        });
-      } else {
-        Alerts.alert({
-          text: "Order is already in the shipped state"
-        });
+        falseShippedStatuses++;
+      } else if ((order.shipping[0].picked === false || order.shipping[0].packed === false ||
+        order.shipping[0].labeled === false) && order.shipping[0].shipped === false) {
+        falsePreviousStatuses++;
       }
     });
+
+    if (falsePreviousStatuses) {
+      Alerts.alert({
+        text: `You've requested that ${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} be
+          set to the "Shipped" status, but ${falsePreviousStatuses} of these orders ${falsePreviousStatuses === 1 ? "is" : "are"}
+          not in the "${whichFalseState}" state and would skip all steps leading up to the "Shipped" state. Are you sure you want to do this?`,
+        type: "warning",
+        showCancelButton: true,
+        showCloseButton: true,
+        confirmButtonText: "Yes, Set All Selected Orders"
+      }, (setSelected) => {
+        if (setSelected) {
+          this.shippingStatusUpdateCall(selectedOrders, status);
+        }
+      });
+    } else if (falseShippedStatuses === 0 && falsePreviousStatuses === 0) {
+      Alerts.alert({
+        text: `${selectedOrders.length > 1 ? "Orders are" : "Order is"} already in shipped state`
+      });
+    } else if (falseShippedStatuses && falsePreviousStatuses === 0) {
+      this.shippingStatusUpdateCall(selectedOrders, status);
+    }
   }
 
   setShippingStatus = (status, selectedOrdersIds) => {
@@ -326,7 +322,7 @@ class OrdersListContainer extends Component {
     }
 
     if (status === "shipped") {
-      this.shippedShippingStatus(selectedOrders);
+      this.shippedShippingStatus(selectedOrders, status);
     }
   }
 
