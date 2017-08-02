@@ -2,7 +2,7 @@
 .fileStorage/
 .vscode
 .idea
-.c9/
+.c9
 *.csv
 *.dat
 *.gz
