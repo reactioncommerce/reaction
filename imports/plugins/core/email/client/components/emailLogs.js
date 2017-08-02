@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Card, CardHeader, CardBody, CardGroup, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
-import EmailTableColumn from "./emailTableColumn";
+import { Components } from "@reactioncommerce/reaction-components";
+import { SortableTable } from "/imports/plugins/core/ui/client/components";
 import { Jobs } from "/lib/collections";
 import { i18next } from "/client/api";
 
@@ -35,8 +35,8 @@ class EmailLogs extends Component {
       const columnMeta = {
         accessor: field,
         Header: i18next.t(`admin.logs.headers.${field}`),
-        Cell: row => (
-          <EmailTableColumn row={row} />
+        Cell: (row) => (
+          <Components.EmailTableColumn row={row} />
         ),
         className: colClassName,
         width: colWidth,
@@ -56,27 +56,27 @@ class EmailLogs extends Component {
         filteredFields={filteredFields}
         noDataMessage={noDataMessage}
         columnMetadata={customColumnMetadata}
-        externalLoadingComponent={Loading}
+        externalLoadingComponent={Components.Loading}
       />
     );
   }
 
   render() {
     return (
-      <CardGroup>
-        <Card
+      <Components.CardGroup>
+        <Components.Card
           expanded={true}
         >
-          <CardHeader
+          <Components.CardHeader
             actAsExpander={true}
             i18nKeyTitle="admin.logs.headers.emailLogs"
             title="Email Logs"
           />
-          <CardBody expandable={true}>
+          <Components.CardBody expandable={true}>
             {this.renderEmailsTable()}
-          </CardBody>
-        </Card>
-      </CardGroup>
+          </Components.CardBody>
+        </Components.Card>
+      </Components.CardGroup>
     );
   }
 }

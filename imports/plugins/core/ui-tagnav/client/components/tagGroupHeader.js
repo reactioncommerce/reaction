@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class TagGroupHeader extends Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class TagGroupHeader extends Component {
   render() {
     return (
       <div className="header">
-        <TagItem
+        <Components.TagItem
           tag={this.state.tag}
           parentTag={this.props.parentTag}
           selectable={true}
@@ -68,5 +68,7 @@ TagGroupHeader.propTypes = {
   tag: PropTypes.object,
   updateSuggestions: PropTypes.func
 };
+
+registerComponent("TagGroupHeader", TagGroupHeader);
 
 export default TagGroupHeader;

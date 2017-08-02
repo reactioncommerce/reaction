@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { IconButton } from "../";
 import { SortableItem } from "../../containers";
-
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class MediaItem extends Component {
   handleMouseEnter = (event) => {
@@ -29,7 +28,7 @@ class MediaItem extends Component {
     if (this.props.revision) {
       if (this.props.revision.changeType === "remove") {
         return (
-          <IconButton
+          <Components.IconButton
             icon="fa"
             status="danger"
             i18nKeyTooltip="admin.mediaGallery.removedImage"
@@ -39,7 +38,7 @@ class MediaItem extends Component {
         );
       }
       return (
-        <IconButton
+        <Components.IconButton
           icon="fa"
           status="info"
           i18nKeyTooltip="admin.mediaGallery.addedImage"
@@ -58,7 +57,7 @@ class MediaItem extends Component {
         return (
           <div className="rui badge-container">
             {this.renderRevision()}
-            <IconButton
+            <Components.IconButton
               icon="fa fa-times"
               onClick={this.handleRemoveMedia}
               i18nKeyTooltip="admin.mediaGallery.deleteImage"
@@ -140,4 +139,6 @@ MediaItem.propTypes = {
   source: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
 
-export default SortableItem("media", MediaItem);
+registerComponent("MediaItem", MediaItem, SortableItem("media"));
+
+export default SortableItem("media")(MediaItem);

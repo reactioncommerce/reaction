@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import MultiSelect from "../multiselect/multiselect";
+import React, { PureComponent } from "react";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class Select extends Component {
+class Select extends PureComponent {
   render() {
     return (
-      <MultiSelect
+      <Components.MultiSelect
         multi={false}
         clearable={false}
         {...this.props}
@@ -12,5 +12,7 @@ class Select extends Component {
     );
   }
 }
+
+registerComponent("Select", Select);
 
 export default Select;

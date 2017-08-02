@@ -3,18 +3,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardGroup,
-  Metadata,
-  TextField,
-  Translation,
-  Select
-} from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 import { Router } from "/client/api";
-import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
 import update from "react/lib/update";
 
 const fieldNames = [
@@ -205,12 +195,12 @@ class ProductAdmin extends Component {
   renderProductVisibilityLabel() {
     if (this.product.isVisible) {
       return (
-        <Translation defaultValue="Product is visible" i18nKey="productDetailEdit.productIsVisible" />
+        <Components.Translation defaultValue="Product is visible" i18nKey="productDetailEdit.productIsVisible" />
       );
     }
 
     return (
-      <Translation defaultValue="Product is not visible" i18nKey="productDetailEdit.productIsNotVisible" />
+      <Components.Translation defaultValue="Product is not visible" i18nKey="productDetailEdit.productIsNotVisible" />
     );
   }
 
@@ -224,19 +214,19 @@ class ProductAdmin extends Component {
 
   render() {
     return (
-      <CardGroup>
-        <Card
+      <Components.CardGroup>
+        <Components.Card
           expanded={this.isExpanded("productDetails")}
           onExpand={this.handleCardExpand.bind(this, "productDetails")}
         >
-          <CardHeader
+          <Components.CardHeader
             actAsExpander={true}
             i18nKeyTitle="productDetailEdit.productSettings"
             title="Product Settings"
             onChange={this.handleFieldChange}
           />
-          <CardBody expandable={true}>
-            <Select
+          <Components.CardBody expandable={true}>
+            <Components.Select
               clearable={false}
               i18nKeyLabel="productDetailEdit.template"
               i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
@@ -247,7 +237,7 @@ class ProductAdmin extends Component {
               placeholder="Select a template"
               value={this.product.template}
             />
-            <TextField
+            <Components.TextField
               i18nKeyLabel="productDetailEdit.title"
               i18nKeyPlaceholder="productDetailEdit.title"
               label="Title"
@@ -259,7 +249,7 @@ class ProductAdmin extends Component {
               ref="titleInput"
               value={this.product.title}
             />
-            <TextField
+            <Components.TextField
               helpText={this.permalink}
               i18nKeyLabel="productDetailEdit.permalink"
               i18nKeyPlaceholder="productDetailEdit.permalink"
@@ -272,7 +262,7 @@ class ProductAdmin extends Component {
               ref="handleInput"
               value={this.product.handle}
             />
-            <TextField
+            <Components.TextField
               i18nKeyLabel="productDetailEdit.pageTitle"
               i18nKeyPlaceholder="productDetailEdit.pageTitle"
               label="Subtitle"
@@ -284,7 +274,7 @@ class ProductAdmin extends Component {
               ref="subtitleInput"
               value={this.product.pageTitle}
             />
-            <TextField
+            <Components.TextField
               i18nKeyLabel="productDetailEdit.vendor"
               i18nKeyPlaceholder="productDetailEdit.vendor"
               label="Vendor"
@@ -296,7 +286,7 @@ class ProductAdmin extends Component {
               ref="vendorInput"
               value={this.product.vendor}
             />
-            <TextField
+            <Components.TextField
               i18nKeyLabel="productDetailEdit.description"
               i18nKeyPlaceholder="productDetailEdit.description"
               label="Description"
@@ -308,7 +298,7 @@ class ProductAdmin extends Component {
               ref="descriptionInput"
               value={this.product.description}
             />
-            <Select
+            <Components.Select
               clearable={false}
               i18nKeyLabel="productDetailEdit.originCountry"
               i18nKeyPlaceholder="productDetailEdit.originCountry"
@@ -320,19 +310,19 @@ class ProductAdmin extends Component {
               value={this.product.originCountry}
               options={this.props.countries}
             />
-          </CardBody>
-        </Card>
-        <Card
+          </Components.CardBody>
+        </Components.Card>
+        <Components.Card
           expanded={this.isExpanded("social")}
           onExpand={this.handleCardExpand.bind(this, "social")}
         >
-          <CardHeader
+          <Components.CardHeader
             actAsExpander={true}
             i18nKeyTitle="social.socialTitle"
             title="Social"
           />
-          <CardBody expandable={true}>
-            <TextField
+          <Components.CardBody expandable={true}>
+            <Components.TextField
               i18nKeyLabel="productDetailEdit.facebookMsg"
               label="Facebook Message"
               multiline={true}
@@ -342,7 +332,7 @@ class ProductAdmin extends Component {
               ref="facebookMsgInput"
               value={this.product.facebookMsg}
             />
-            <TextField
+            <Components.TextField
               i18nKeyLabel="productDetailEdit.twitterMsg"
               label="Twitter Message"
               multiline={true}
@@ -352,7 +342,7 @@ class ProductAdmin extends Component {
               ref="twitterMsgInput"
               value={this.product.twitterMsg}
             />
-            <TextField
+            <Components.TextField
               i18nKeyLabel="productDetailEdit.pinterestMsg"
               label="Pinterest Message"
               multiline={true}
@@ -362,7 +352,7 @@ class ProductAdmin extends Component {
               ref="pinterestMsgInput"
               value={this.product.pinterestMsg}
             />
-            <TextField
+            <Components.TextField
               i18nKeyLabel="productDetailEdit.googleplusMsg"
               label="Google+ Message"
               multiline={true}
@@ -372,49 +362,49 @@ class ProductAdmin extends Component {
               ref="googleplusMsgInput"
               value={this.product.googleplusMsg}
             />
-          </CardBody>
-        </Card>
+          </Components.CardBody>
+        </Components.Card>
 
-        <Card
+        <Components.Card
           expanded={this.isExpanded("hashtags")}
           onExpand={this.handleCardExpand.bind(this, "hashtags")}
         >
-          <CardHeader
+          <Components.CardHeader
             actAsExpander={true}
             i18nKeyTitle="productDetail.tags"
             title="Tags"
           />
-          <CardBody expandable={true}>
-            <TagListContainer
+          <Components.CardBody expandable={true}>
+            <Components.TagList
               enableNewTagForm={true}
               product={this.product}
               tagProps={{
                 fullWidth: true
               }}
             />
-          </CardBody>
-        </Card>
+          </Components.CardBody>
+        </Components.Card>
 
-        <Card
+        <Components.Card
           expanded={this.isExpanded("metafields")}
           onExpand={this.handleCardExpand.bind(this, "metafields")}
         >
-          <CardHeader
+          <Components.CardHeader
             actAsExpander={true}
             i18nKeyTitle="productDetailEdit.details"
             title="Details"
           />
-          <CardBody expandable={true}>
-            <Metadata
+          <Components.CardBody expandable={true}>
+            <Components.Metadata
               metafields={this.product.metafields}
               newMetafield={this.props.newMetafield}
               onMetaChange={this.handleMetaChange}
               onMetaRemove={this.handleMetaRemove}
               onMetaSave={this.handleMetaSave}
             />
-          </CardBody>
-        </Card>
-      </CardGroup>
+          </Components.CardBody>
+        </Components.Card>
+      </Components.CardGroup>
     );
   }
 }

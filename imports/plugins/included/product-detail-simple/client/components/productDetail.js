@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { AlertContainer } from "/imports/plugins/core/ui/client/containers";
+import { Components } from "@reactioncommerce/reaction-components";
 import { ReactionLayout } from "/imports/plugins/core/layout/lib";
 
 class ProductDetail extends Component {
@@ -21,7 +21,7 @@ class ProductDetail extends Component {
       <div className="pdp" style={{ position: "relative" }}>
         <div className="container-main pdp-container" itemScope itemType="http://schema.org/Product">
           <div className="row">
-            <AlertContainer placement="productManagement" />
+            <Components.Alerts placement="productManagement" />
             <ReactionLayout
               context={this}
               layoutName={this.props.layout}

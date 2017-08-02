@@ -93,7 +93,9 @@ Template.orders.onCreated(function () {
   });
   this.state.set("count", 0);
 
-  const filterName = this.data && this.data.filter && this.data.filter.name || "new";
+  const status = Reaction.Router.getQueryParam("status");
+
+  const filterName = this.data && this.data.filter && this.data.filter.name || status;
   Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filterName);
 
   this.autorun(() => {

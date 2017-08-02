@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 class TabItem extends Component {
   static propTypes = {
@@ -46,5 +47,7 @@ class TabItem extends Component {
     );
   }
 }
+
+registerComponent("TabItem", TabItem);
 
 export default TabItem;

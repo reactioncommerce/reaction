@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import Measure from "react-measure";
-import MediaItem from "./media";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class MediaGallery extends Component {
   constructor() {
@@ -78,7 +78,7 @@ class MediaGallery extends Component {
                 this.setState({ dimensions });
               }}
             >
-              <MediaItem
+              <Components.MediaItem
                 editable={this.props.editable}
                 index={index}
                 key={index}
@@ -100,7 +100,7 @@ class MediaGallery extends Component {
     }
 
     return (
-      <MediaItem />
+      <Components.MediaItem />
     );
   }
 
@@ -108,7 +108,7 @@ class MediaGallery extends Component {
     if (this.hasMedia) {
       return this.props.media.map((media, index) => {
         return (
-          <MediaItem
+          <Components.MediaItem
             editable={this.props.editable}
             index={index}
             key={index}
