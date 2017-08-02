@@ -242,7 +242,9 @@ class OrdersListContainer extends Component {
         type: "warning",
         showCancelButton: true,
         showCloseButton: true,
-        confirmButtonText: "Yes, Set All Selected Orders"
+        allowOutsideClick: false,
+        confirmButtonText: "Yes, Set All Selected Orders",
+        cancelButtonText: "No, Cancel"
       }, (setSelected) => {
         if (setSelected) {
           this.shippingStatusUpdateCall(selectedOrders, status);
@@ -289,7 +291,9 @@ class OrdersListContainer extends Component {
         type: "warning",
         showCancelButton: true,
         showCloseButton: true,
-        confirmButtonText: "Yes, Set All Selected Orders"
+        allowOutsideClick: false,
+        confirmButtonText: "Yes, Set All Selected Orders",
+        cancelButtonText: "No, Cancel"
       }, (setSelected) => {
         if (setSelected) {
           this.shippingStatusUpdateCall(selectedOrders, status);
