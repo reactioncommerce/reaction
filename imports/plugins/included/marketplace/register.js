@@ -35,6 +35,7 @@ Reaction.registerPackage({
           "reaction-sms",
           "reaction-social",
           "reaction-stripe",
+          "reaction-taxes",
           "discount-codes"]
       }, {
         shopType: "affiliate",
