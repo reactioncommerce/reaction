@@ -86,7 +86,7 @@ export const methods = {
       taxRatesByShop: Object,
       itemsWithTax: [Object],
       cartTaxRate: Number,
-      cartTaxData: Match.Maybe(Array)
+      cartTaxData: Match.OneOf([Object], undefined, null)
     });
 
     const { cartTaxData, cartTaxRate, itemsWithTax, taxRatesByShop } = options;
@@ -111,7 +111,7 @@ export const methods = {
     const cartToCalc = Cart.findOne(cartId);
     const cartShopId = cartToCalc.shopId;
     let cartTaxRate = 0;
-    let cartShopTaxData;
+    let cartTaxData;
     // TODO: update for marketplace
     // TODO: REVIEW with Aaron
 
@@ -194,6 +194,9 @@ export const methods = {
 
           // calculate line item taxes
           const itemsWithTax = cartToCalc.items.map((item) => {
+            // init rate to 0
+            item.taxRate = 0;
+            item.taxData = undefined;
             // only process taxble products
             if (item.variants.taxable === true) {
               const shopTaxRate = taxRatesByShop[item.shopId];
@@ -219,21 +222,21 @@ export const methods = {
             const cartShopTaxRates = taxRatesByShop[cartShopId];
             if (Array.isArray(cartShopTaxRates) && cartShopTaxRates.length > 0) {
               cartTaxRate = cartShopTaxRates[0].rate;
-              cartShopTaxData = cartShopTaxRates;
+              cartTaxData = cartShopTaxRates;
             }
           }
 
           // store tax rates on cart
 
           // Legacy
-          // Meteor.call("taxes/setRate", cartToCalc._id, cartTaxRate, cartShopTaxData);
+          // Meteor.call("taxes/setRate", cartToCalc._id, cartTaxRate, cartTaxData);
 
           // Marketplace Compatible
           Meteor.call("taxes/setRateByShopAndItem", cartToCalc._id, {
             taxRatesByShop,
             itemsWithTax,
             cartTaxRate,
-            cartShopTaxData
+            cartTaxData
           });
         } // end custom rates
       } // end shippingAddress calculation
