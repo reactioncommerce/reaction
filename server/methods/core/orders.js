@@ -384,11 +384,13 @@ export const methods = {
    * @summary trigger shipmentShipped status and workflow update
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
+   * @param {Boolean} shipped - shipped status
    * @return {Object} return results of several operations
    */
-  "orders/shipmentShipped": function (order, shipment) {
+  "orders/shipmentShipped": function (order, shipment, shipped) {
     check(order, Object);
     check(shipment, Object);
+    check(shipped, Match.Maybe(Boolean));
 
     // TODO: Who should have access to ship shipments in a marketplace setting
     // Should be anyone who has product in an order.
@@ -433,7 +435,7 @@ export const methods = {
       "shipping._id": shipment._id
     }, {
       $set: {
-        "shipping.$.shipped": true,
+        "shipping.$.shipped": shipped || true,
         "shipping.$.workflow.status": "shipped"
       }, $push: {
         "shipping.$.workflow.workflow": "shipped"
