@@ -8,7 +8,6 @@ Template.stripeConnectMerchantSignup.helpers({
       shopId: Reaction.getShopId(),
       name: "reaction-stripe"
     });
-    console.log(stripe);
-    return stripe && stripe.settings && stripe.settings.connectAuth;
+    return stripe && stripe.settings && stripe.settings.connectAuth && stripe.settings.connectAuth.access_token;
   }
 });
