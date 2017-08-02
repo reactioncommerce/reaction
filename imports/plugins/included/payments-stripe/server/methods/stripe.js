@@ -1,4 +1,5 @@
 import accounting from "accounting-js";
+import stripeNpm from "stripe";
 /* eslint camelcase: 0 */
 // meteor modules
 import { Meteor } from "meteor/meteor";
@@ -6,6 +7,8 @@ import { check, Match } from "meteor/check";
 // reaction modules
 import { Reaction, Logger } from "/server/api";
 import { StripeApi } from "./stripeapi";
+
+import { Cart } from "/lib/collections";
 
 function luhnValid(x) {
   return [...x].reverse().reduce((sum, c, i) => {
@@ -171,6 +174,94 @@ Meteor.methods({
       throw new Meteor.Error("error", e.message);
     }
   },
+
+  "stripe/payment/createMultipleCharges": function (transactionType, cardData, cartId, currency) {
+    check(transactionType, String);
+    check(cardData, { name: String, number: ValidCardNumber, expire_month: ValidExpireMonth, expire_year: ValidExpireYear, cvv2: ValidCVV, type: String });
+    check(cartId, String);
+    check(currency, String);
+
+    const stripePkg = Reaction.getPackageSettingsWithOptions({
+      shopId: Reaction.getPrimaryShopId(),
+      name: "reaction-stripe"
+    });
+
+    const card = parseCardData(cardData);
+
+    if (!stripePkg || !stripePkg.settings || !stripePkg.settings.api_key) {
+      // Fail if we can't find a Stripe API key
+      throw new Meteor.Error("Attempted to create multiple stripe charges, but stripe was not configured properly.");
+    }
+
+    const cart = Cart.findOne({ _id: cartId });
+    if (cart) {
+      cart.email = "test@example.com";
+    }
+
+
+    // Initialize stripe api lib
+    const stripeApiKey = stripePkg.settings.api_key;
+    const stripe = stripeNpm(stripeApiKey);
+
+    // console.log(stripe);
+    const shopIds = cart.items.reduce((uniqueShopIds, item) => {
+      if (uniqueShopIds.indexOf(item.shopId) === -1) {
+        uniqueShopIds.push(item.shopId);
+      }
+      return uniqueShopIds;
+    }, []);
+
+    if (!cart.email) {
+      // TODO: Is it okay to create random email here if anonymous?
+      throw new Meteor.Error("Email is required for marketplace checkouts.");
+    }
+
+    try {
+      const customer = Promise.await(stripe.customers.create({
+        email: cart.email
+      }).then(function (cust) {
+        return stripe.customers.createSource(cust.id, { source: { ...card, object: "card" } });
+      }));
+      console.log("customer", customer);
+
+      const cartTotals = cart.cartTotalByShop();
+
+      shopIds.forEach((shopId) => {
+        console.log("type:", typeof cartTotals[shopId]);
+        const charge = Promise.await(stripe.charges.create({
+          amount: formatForStripe(cartTotals[shopId]),
+          currency: currency,
+          customer: customer.customer
+        }));
+
+        console.log("charge", charge);
+        // get shop's stripe connect key
+        // aggregate products in cart
+        // create single charge for items in cart
+      });
+      // const chargeObj = {
+      //   amount: "",
+      //   currency: "",
+      //   card: {},
+      //   capture: false
+      // };
+      //
+      // if (transactionType === "capture") {
+      //   chargeObj.capture = true;
+      // }
+      //
+      // chargeObj.card = parseCardData(cardData);
+      // chargeObj.amount = formatForStripe(paymentData.total);
+      // chargeObj.currency = paymentData.currency;
+      //
+      // let result;
+      // let chargeResult;
+    } catch (error) {
+      console.log("error", error);
+      throw new Meteor.Error("Error creating multiple stripe charges", error);
+    }
+  },
+
 
   /**
    * Capture a Stripe charge
