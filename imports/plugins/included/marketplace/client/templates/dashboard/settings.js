@@ -1,10 +1,9 @@
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { MarketplacePackageConfig } from "../../../lib/collections/schemas";
-import { InviteOwner } from "../../components/inviteOwner";
+import { Components } from "@reactioncommerce/reaction-components";
 
 /**
  * marketplaceSettings helpers
@@ -22,8 +21,7 @@ Template.marketplaceSettings.helpers({
     });
   },
   inviteOwner() {
-    console.log(InviteOwner);
-    return InviteOwner;
+    return Components.InviteOwner;
   }
 });
 

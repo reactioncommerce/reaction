@@ -1,20 +1,21 @@
 import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
-import { Components } from "@reactioncommerce/reaction-components";
+import { registerComponent, Components } from "@reactioncommerce/reaction-components";
+import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 
 class InviteOwner extends Component {
   constructor() {
     super();
-
     this.state = {
+      alertId: "admin-invite-form",
       name: "",
       email: "",
       group: "",
-      alertArray: []
+      isLoading: false
     };
   }
 
-  onChange(event) {
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   }
 
@@ -24,12 +25,14 @@ class InviteOwner extends Component {
     });
   };
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
-    const { name, email } = this.state;
+    this.setState({ isLoading: true });
+    const { name, email, alertId } = this.state;
+    const alertOptions = { placement: alertId, id: alertId, autoHide: 4000 };
 
     Meteor.call("accounts/inviteShopOwner", { name, email }, (error, result) => {
-      let newAlert;
+      this.setState({ isLoading: false });
       let message = "";
       if (error) {
         let messageKey;
@@ -40,31 +43,48 @@ class InviteOwner extends Component {
         } else {
           messageKey = "accountsUI.error.errorSendingEmail";
         }
-        newAlert = {
-          message,
-          mode: "danger",
-          options: { autoHide: 4000, i18nKey: messageKey }
-        };
+        ReactionAlerts.add(message, "danger", Object.assign({}, alertOptions, { i18nKey: messageKey }));
       }
 
       if (result) {
         this.setState({ name: "", email: "" });
-        newAlert = {
-          mode: "success",
-          options: { autoHide: 4000, i18nKey: "accountsUI.info.invitationSent" }
-        };
+        ReactionAlerts.add(
+          null,
+          "success",
+          Object.assign({}, alertOptions, { i18nKey: "accountsUI.info.invitationSent" })
+        );
       }
-
-      return this.setState({ alertArray: [...this.state.alertArray, newAlert] });
     });
+  }
+
+  renderSpinnerButton() {
+    if (this.state.isLoading) {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <i className="fa fa-spinner fa-spin" />
+        </div>
+      );
+    }
+    return (
+      <Components.Button
+        status="primary"
+        onClick={this.handleSubmit}
+        bezelStyle="solid"
+        buttonType="submit"
+        i18nKeyLabel="accountsUI.info.sendInvitation"
+        label="Send Invitation"
+      />
+    );
   }
 
   render() {
     return (
       <div className="panel panel-default admin-invite-form">
-        <Components.Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
+        <Components.Divider />
+        <h4 style={{ textAlign: "center" }}>Invite Owner Form</h4>
+        <Components.Alerts placement={this.state.alertId} id={this.state.alertId} onAlertRemove={this.removeAlert} />
         <div className="panel-body">
-          <form className="invite-owner">
+          <form className="invite-owner" onSubmit={this.handleSubmit}>
             <div className="form-group">
               <Components.TextField
                 i18nKeyLabel="accountsUI.name"
@@ -91,13 +111,7 @@ class InviteOwner extends Component {
             </div>
             <div className="form-group action-select">
               <div className="form-btns add-admin justify">
-                <Components.Button
-                  status="primary"
-                  onClick={this.handleSubmit}
-                  bezelStyle="solid"
-                  i18nKeyLabel="accountsUI.info.sendInvitation"
-                  label="Send Invitation"
-                />
+                {this.renderSpinnerButton()}
               </div>
             </div>
           </form>
@@ -106,5 +120,7 @@ class InviteOwner extends Component {
     );
   }
 }
+
+registerComponent("InviteOwner", InviteOwner);
 
 export default InviteOwner;
