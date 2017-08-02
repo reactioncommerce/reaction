@@ -835,13 +835,11 @@ export const methods = {
    * @param {Number} amount - Amount of the refund, as a positive number
    * @return {null} no return value
    */
-  "orders/refunds/create": function (orderId, paymentMethod, amount, quantity) {
+  "orders/refunds/create": function (orderId, paymentMethod, amount) {
     check(orderId, String);
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
-    check(quantity, Match.Optional(Number));
 
-    console.log("quantity---->", quantity);
     // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
@@ -869,7 +867,6 @@ export const methods = {
           "billing.$.paymentMethod.transactions": result
         }
       };
-      console.log("result---->", result);
       // Send email to notify cuustomer of a refund
       Meteor.call("orders/sendNotification", order);
       if (result.saved === false) {
@@ -884,7 +881,6 @@ export const methods = {
         }
       };
       // Send email to notify cuustomer of a refund
-      console.log("results on capture ---->", results);
       Meteor.call("orders/sendNotification", order, "refunded");
       if (result.saved === false) {
         Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
@@ -892,14 +888,130 @@ export const methods = {
       }
     }
 
-    console.log("orders update", order);
-
     Orders.update({
       "_id": orderId,
       "billing.paymentMethod.transactionId": transactionId
     }, {
       $set: {
         "billing.$.paymentMethod.status": "refunded"
+      },
+      query
+    });
+
+    Hooks.Events.run("onOrderRefundCreated", orderId);
+  },
+
+  /**
+   * orders/refund/create
+   *
+   * @summary Apply a refund to an already captured order
+   * @param {String} orderId - order object
+   * @param {Object} paymentMethod - paymentMethod object
+   * @param {Number} amount - Amount of the refund, as a positive number
+   * @param {Number} quantity - Quantity of items to return
+   * @param {Array} returnItems - Information about items to return
+   * @return {null} no return value
+   */
+  "orders/refunds/returnItems": function (orderId, paymentMethod, returnItems) {
+    check(orderId, String);
+    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    // check(amount, Number);
+    // check(quantity, Number);
+    check(returnItems, Array);
+
+    // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
+    if (!Reaction.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    const processor = paymentMethod.processor.toLowerCase();
+    const order = Orders.findOne(orderId);
+    const transactionId = paymentMethod.transactionId;
+
+    const packageId = paymentMethod.paymentPackageId;
+    const settingsKey = paymentMethod.paymentSettingsKey;
+    // check if payment provider supports de-authorize
+    const checkSupportedMethods = Packages.findOne({
+      _id: packageId,
+      shopId: Reaction.getShopId()
+    }).settings[settingsKey].support;
+
+    const orderMode = paymentMethod.mode;
+    const amount = returnItems.reduce((acc, item) => acc + item.refundedTotal, 0);
+    const quantity = returnItems.reduce((acc, item) => acc + item.refundedQuantity, 0);
+    const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
+
+    let result;
+    let query = {};
+    if (_.includes(checkSupportedMethods, "De-authorize")) {
+      result = Meteor.call(`${processor}/payment/deAuthorize`, paymentMethod, amount);
+      query = {
+        $push: {
+          "billing.$.paymentMethod.transactions": result
+        }
+      };
+      // Send email to notify cuustomer of a refund
+      Meteor.call("orders/sendNotification", order);
+      if (result.saved === false) {
+        Logger.fatal("Attempt for de-authorize transaction failed", order._id, paymentMethod.transactionId, result.error);
+        throw new Meteor.Error("Attempt to de-authorize transaction failed", result.error);
+      }
+    } else if (orderMode === "capture") {
+      result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
+      query = {
+        $push: {
+          "billing.$.paymentMethod.transactions": result
+        }
+      };
+      // Send email to notify cuustomer of a refund
+      Meteor.call("orders/sendNotification", order, "refunded");
+      if (result.saved === false) {
+        Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
+        throw new Meteor.Error("Attempt to refund transaction failed", result.error);
+      }
+    }
+
+    let refundedStatus = "refunded";
+
+    if (quantity < originalQuantity) {
+      refundedStatus = "partialRefund";
+    }
+
+    console.log("returnItems--->", returnItems);
+    console.log("orders--->", order);
+
+    returnItems.forEach(refundedItem => {
+      order.items.forEach((or) => {
+        console.log("Instance whatever", or._id === refundedItem.id);
+        if (or._id === refundedItem.id) {
+          const blah = or._id;
+          console.log("blah-->", or._id, refundedItem.refundedQuantity);
+          const newQuantity = or.quantity - refundedItem.refundedQuantity;
+
+          Orders.update(
+            {
+              "_id": orderId,
+              "items": { $elemMatch: { "_id": blah } }
+            }, { $set:
+              { "items.$.quantity": newQuantity }
+            }, query
+          );
+        }
+      });
+    });
+
+    // const invoice = Object.assign({}, order.billing[0].invoice, {
+    //   totalItems: _.sumBy(order.items, (o) => o.quantity)
+    // });
+
+    Orders.update({
+      "_id": orderId,
+      "billing.paymentMethod.transactionId": transactionId
+      // "billing.$.invoice.totalItems":
+
+      // "items": { $elemMatch: {id: }}
+    }, {
+      $set: {
+        "billing.$.paymentMethod.status": refundedStatus
       },
       query
     });

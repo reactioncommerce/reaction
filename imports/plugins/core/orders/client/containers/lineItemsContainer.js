@@ -163,7 +163,9 @@ class LineItemsContainer extends Component {
     const amount = this.getRefundedItemsInfo().total;
     const quantity = this.getRefundedItemsInfo().quantity;
     console.log("paymentMethod ---->", paymentMethod);
-    Meteor.call("orders/refunds/create", this.props.order._id, paymentMethod, amount, quantity);
+    console.log("editedItems", this.state.editedItems);
+    const editedItems = this.state.editedItems;
+    Meteor.call("orders/refunds/returnItems", this.props.order._id, paymentMethod, editedItems);
   }
 
   getRefundedItemsInfo = () => {
