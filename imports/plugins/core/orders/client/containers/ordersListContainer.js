@@ -137,6 +137,14 @@ class OrdersListContainer extends Component {
     return false;
   }
 
+  /**
+   * shippingStatusUpdateCall
+   *
+   * @summary set selected order(s) to the provided shipping state
+   * @param {Array} selectedOrders - array of selected orders
+   * @param {String} status - the shipping status to be set
+   * @return {null} no return value
+   */
   shippingStatusUpdateCall = (selectedOrders, status) => {
     const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
 
@@ -161,16 +169,20 @@ class OrdersListContainer extends Component {
   pickedShippingStatus = (selectedOrders, status) => {
     let falsePickedStatuses = 0;
 
+    // check if any of the selected order(s) have false 'Picked' status
     selectedOrders.forEach((order) => {
       if (order.shipping[0].picked === false) {
         falsePickedStatuses++;
       }
     });
 
+    // if any of the selected order(s) don't have a false 'Picked' status,
+    // show an alert that the order(s) are already in the picked state
     if (falsePickedStatuses === 0) {
       Alerts.alert({
         text: `${selectedOrders.length > 1 ? "Orders are" : "Order is"} already in picked state`
       });
+    // if any of the orders have a false status of picked, set it to true
     } else {
       this.shippingStatusUpdateCall(selectedOrders, status);
     }
@@ -180,6 +192,8 @@ class OrdersListContainer extends Component {
     let falsePackedStatuses = 0;
     let falsePickedAndPackedStatuses = 0;
 
+    // check if any of the selected order(s) have false 'Picked'
+    // or 'Packed' status, or have them both as false
     selectedOrders.forEach((order) => {
       if (order.shipping[0].picked && order.shipping[0].packed === false) {
         falsePackedStatuses++;
@@ -188,6 +202,8 @@ class OrdersListContainer extends Component {
       }
     });
 
+    // if any of the selected order(s) have both 'Picked' and 'Packed' as false,
+    // display modal that asks if the user wants to proceed with the operation
     if (falsePickedAndPackedStatuses) {
       Alerts.alert({
         text: `You've requested that ${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} be set to the "Packed"
@@ -204,10 +220,12 @@ class OrdersListContainer extends Component {
           this.shippingStatusUpdateCall(selectedOrders, status);
         }
       });
+      // if neither status is false, alert that order(s) are already in the 'Packed' state
     } else if (falsePackedStatuses === 0 && falsePickedAndPackedStatuses === 0) {
       Alerts.alert({
         text: `${selectedOrders.length > 1 ? "Orders are" : "Order is"} already in packed state`
       });
+      // if only 'Packed' is false, proced to set it to true
     } else if (falsePackedStatuses && falsePickedAndPackedStatuses === 0) {
       this.shippingStatusUpdateCall(selectedOrders, status);
     }
@@ -219,6 +237,7 @@ class OrdersListContainer extends Component {
     let whichFalseState = "";
 
     selectedOrders.forEach((order) => {
+      // set the variable 'whichFalseState' with the relevant false shipping status to display in the below modal
       if (order.shipping[0].picked === false) {
         whichFalseState = "Picked";
       } else if (order.shipping[0].packed === false) {
@@ -227,6 +246,7 @@ class OrdersListContainer extends Component {
         whichFalseState = "Picked";
       }
 
+      // check if any of the selected order(s) have either 'Picked', 'Packed' or 'Labeled' status as false, or have them all as false.
       if (order.shipping[0].picked && order.shipping[0].packed && order.shipping[0].labeled === false) {
         falseLabeledStatuses++;
       } else if ((order.shipping[0].picked === false || order.shipping[0].packed === false) && order.shipping[0].labeled === false) {
@@ -234,6 +254,8 @@ class OrdersListContainer extends Component {
       }
     });
 
+    // if any of the selected order(s) have 'Picked', 'Packed' and 'Labeled' as false,
+    // display modal that asks if the user wants to proceed with the operation
     if (falsePickedAndPackedAndLabeledStatuses) {
       Alerts.alert({
         text: `You've requested that ${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} be set to the "Labeled" status, but
@@ -250,10 +272,12 @@ class OrdersListContainer extends Component {
           this.shippingStatusUpdateCall(selectedOrders, status);
         }
       });
+      // if none of the three statuses are false, alert that order(s) are already in the 'Labeled' state
     } else if (falseLabeledStatuses === 0 && falsePickedAndPackedAndLabeledStatuses === 0) {
       Alerts.alert({
         text: `${selectedOrders.length > 1 ? "Orders are" : "Order is"} already in labeled state`
       });
+      // if only 'Labeled' is false, proced to set it to true
     } else if (falseLabeledStatuses && falsePickedAndPackedAndLabeledStatuses === 0) {
       this.shippingStatusUpdateCall(selectedOrders, status);
     }
@@ -265,6 +289,7 @@ class OrdersListContainer extends Component {
     let whichFalseState = "";
 
     selectedOrders.forEach((order) => {
+      // set the variable 'whichFalseState' with the relevant false shipping status to display in the below modal
       if (order.shipping[0].picked === false) {
         whichFalseState = "Picked";
       } else if (order.shipping[0].packed === false) {
@@ -275,6 +300,8 @@ class OrdersListContainer extends Component {
         whichFalseState = "Picked";
       }
 
+      // check if any of the selected order(s) have either 'Picked', 'Packed', 'Labeled' or
+      // 'Shipped' status as false, or have them all as false.
       if (order.shipping[0].picked && order.shipping[0].packed && order.shipping[0].labeled && order.shipping[0].shipped === false) {
         falseShippedStatuses++;
       } else if ((order.shipping[0].picked === false || order.shipping[0].packed === false ||
@@ -283,6 +310,8 @@ class OrdersListContainer extends Component {
       }
     });
 
+    // if any of the selected order(s) have 'Picked', 'Packed', 'Labeled' and 'Shipped' as
+    // false, display modal that asks if the user wants to proceed with the operation
     if (falsePreviousStatuses) {
       Alerts.alert({
         text: `You've requested that ${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} be
@@ -299,15 +328,25 @@ class OrdersListContainer extends Component {
           this.shippingStatusUpdateCall(selectedOrders, status);
         }
       });
+      // if none of the four statuses are false, alert that order(s) are already in the 'Shipped' state
     } else if (falseShippedStatuses === 0 && falsePreviousStatuses === 0) {
       Alerts.alert({
         text: `${selectedOrders.length > 1 ? "Orders are" : "Order is"} already in shipped state`
       });
+      // if only 'Shipped' is false, proced to set it to true
     } else if (falseShippedStatuses && falsePreviousStatuses === 0) {
       this.shippingStatusUpdateCall(selectedOrders, status);
     }
   }
 
+  /**
+   * setShippingStatus
+   *
+   * @summary call the relevant method based on the provided shipping status
+   * @param {String} status - the selected shipping status to be set
+   * @param {Array} selectedOrdersIds - array of ids of the selected orders
+   * @return {null} no return value
+   */
   setShippingStatus = (status, selectedOrdersIds) => {
     const selectedOrders = this.state.orders.filter((order) => {
       return selectedOrdersIds.includes(order._id);
