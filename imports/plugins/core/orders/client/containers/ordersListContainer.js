@@ -213,57 +213,48 @@ class OrdersListContainer extends Component {
     }
   }
 
-  labeledShippingStatus = (selectedOrders) => {
+  labeledShippingStatus = (selectedOrders, status) => {
+    let falseLabeledStatuses = 0;
+    let falsePickedAndPackedAndLabeledStatuses = 0;
+    let whichFalseState = "";
+
     selectedOrders.forEach((order) => {
+      if (order.shipping[0].picked === false) {
+        whichFalseState = "Picked";
+      } else if (order.shipping[0].packed === false) {
+        whichFalseState = "Packed";
+      } else if (order.shipping[0].picked === false && order.shipping[0].packed === false) {
+        whichFalseState = "Picked";
+      }
+
       if (order.shipping[0].picked && order.shipping[0].packed && order.shipping[0].labeled === false) {
-        Meteor.call("orders/shipmentLabeled", order, order.shipping[0], true, (err) => {
-          if (err) {
-            Alerts.toast("Error", "error");
-          } else {
-            Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "labeled");
-            Alerts.alert({
-              text: `Order with id ${order._id} shipping status set to labeled`,
-              type: "success"
-            });
-          }
-
-          this.setState({
-            labeled: true
-          });
-        });
-      } else if (order.shipping[0].picked === false || order.shipping[0].packed === false) {
-        Alerts.alert({
-          text: `You've requested that order ${order._id} be set to the "Labeled" status, but it is not in the "Picked"
-                state and would skip all steps leading up to the "Labeled" state. Are you sure you want to do this?`,
-          type: "warning",
-          showCancelButton: true,
-          showCloseButton: true,
-          confirmButtonText: "Yes, Set All Selected Orders"
-        }, (setSelected) => {
-          if (setSelected) {
-            Meteor.call("orders/shipmentLabeled", order, order.shipping[0], true, (err) => {
-              if (err) {
-                Alerts.toast("Error", "error");
-              } else {
-                Meteor.call("orders/updateHistory", order._id, "State set by bulk action", "labeled");
-                Alerts.alert({
-                  text: `Order with id ${order._id} shipping status set to labeled`,
-                  type: "success"
-                });
-              }
-
-              this.setState({
-                labeled: true
-              });
-            });
-          }
-        });
-      } else {
-        Alerts.alert({
-          text: "Order is already in the labeled state"
-        });
+        falseLabeledStatuses++;
+      } else if ((order.shipping[0].picked === false || order.shipping[0].packed === false) && order.shipping[0].labeled === false) {
+        falsePickedAndPackedAndLabeledStatuses++;
       }
     });
+
+    if (falsePickedAndPackedAndLabeledStatuses) {
+      Alerts.alert({
+        text: `You've requested that ${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} be set to the "Labeled" status, but
+              ${falsePickedAndPackedAndLabeledStatuses} of these orders ${falsePickedAndPackedAndLabeledStatuses === 1 ? "is" : "are"} not in
+              the "${whichFalseState}" state and would skip all steps leading up to the "Labeled" state. Are you sure you want to do this?`,
+        type: "warning",
+        showCancelButton: true,
+        showCloseButton: true,
+        confirmButtonText: "Yes, Set All Selected Orders"
+      }, (setSelected) => {
+        if (setSelected) {
+          this.shippingStatusUpdateCall(selectedOrders, status);
+        }
+      });
+    } else if (falseLabeledStatuses === 0 && falsePickedAndPackedAndLabeledStatuses === 0) {
+      Alerts.alert({
+        text: `${selectedOrders.length > 1 ? "Orders are" : "Order is"} already in labeled state`
+      });
+    } else if (falseLabeledStatuses && falsePickedAndPackedAndLabeledStatuses === 0) {
+      this.shippingStatusUpdateCall(selectedOrders, status);
+    }
   }
 
   shippedShippingStatus = (selectedOrders) => {
@@ -331,7 +322,7 @@ class OrdersListContainer extends Component {
     }
 
     if (status === "labeled") {
-      this.labeledShippingStatus(selectedOrders);
+      this.labeledShippingStatus(selectedOrders, status);
     }
 
     if (status === "shipped") {
