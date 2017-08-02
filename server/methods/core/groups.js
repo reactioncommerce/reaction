@@ -119,7 +119,7 @@ Meteor.methods({
     }
 
     if (slug === "owner") {
-      // if adding a user to the owner group, check that the request is by the current owner
+      // if adding a user to the owner group, check that the request is done by current owner
       if (!Reaction.hasPermission("owner", Meteor.userId(), shopId)) {
         throw new Meteor.Error(403, "Access Denied");
       }
@@ -144,10 +144,8 @@ Meteor.methods({
       setUserPermissions({ _id: userId }, permissions, shopId);
       Accounts.update({ _id: userId }, { $set: { groups: newGroups } });
 
-      const isMarketPlaceOwner = Meteor.user().roles[Reaction.getPrimaryShopId()].indexOf("owner") > -1;
-      console.log({ isMarketPlaceOwner });
       // remove current owner after setting another admin as the new owner
-      if (slug === "owner" && !isMarketPlaceOwner) { // exclude if it's performed by marketplace owner
+      if (slug === "owner") {
         Meteor.call("group/addUser", Meteor.userId(), currentUserGrpInShop);
       }
 

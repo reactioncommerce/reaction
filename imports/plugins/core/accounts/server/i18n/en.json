@@ -10,6 +10,9 @@
           "accountsDescription": "Account Settings"
         },
         "settings": {
+          "continue": "Continue",
+          "changeOwner": "Change Owner",
+          "changeOwnerWarn": "You are about to change the shop owner. The current owner will be replaced",
           "accountsSettingsLabel": "Accounts",
           "accountsSettingsTitle": "Accounts",
           "accountsSettingsDescription": "Account Settings"

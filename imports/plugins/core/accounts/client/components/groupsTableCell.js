@@ -38,6 +38,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
 
   if (columnName === "dropdown") {
     const groupName = <p>{_.startCase(groups[0].name)}</p>;
+    const ownerGroup = groups.find((grp) => grp.slug === "owner") || {};
 
     if (groups.length === 1) {
       return groupName;
@@ -62,7 +63,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
           buttonElement={dropDownButton}
           attachment="bottom right"
           targetAttachment="top right"
-          onChange={handleUserGroupChange(account)}
+          onChange={handleUserGroupChange(account, ownerGroup._id)}
         >
           {groups
             .filter((grp) => grp._id !== group._id)

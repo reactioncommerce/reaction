@@ -1,4 +1,5 @@
 import { compose, withProps } from "recompose";
+import Alert from "sweetalert2";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Groups } from "/lib/collections";
@@ -6,15 +7,35 @@ import { Reaction, i18next } from "/client/api";
 import AccountsDashboard from "../components/accountsDashboard";
 
 const handlers = {
-  handleUserGroupChange(account) {
+  handleUserGroupChange(account, ownerGrpId) {
     return (event, groupId) => {
-      Meteor.call("group/addUser", account._id, groupId, (err) => {
-        if (err) {
-          return Alerts.toast(i18next.t("admin.groups.addUserError", { err: err.message }), "error");
-        }
-        return Alerts.toast(i18next.t("admin.groups.addUserSuccess"), "success");
-      });
+      alertConfirm(groupId)
+        .then(() => {
+          return Meteor.call("group/addUser", account._id, groupId, (err) => {
+            if (err) {
+              return Alerts.toast(i18next.t("admin.groups.addUserError", { err: err.message }), "error");
+            }
+            return Alerts.toast(i18next.t("admin.groups.addUserSuccess"), "success");
+          });
+        })
+        .catch(() => false);
     };
+
+    function alertConfirm(groupId) {
+      if (groupId !== ownerGrpId) {
+        return true;
+      }
+      const popUpOpt = {
+        title: i18next.t("admin.settings.changeOwner"),
+        text: i18next.t("admin.settings.changeOwnerWarn"),
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonText: i18next.t("app.cancel"),
+        confirmButtonText: i18next.t("admin.settings.continue")
+      };
+
+      return Alert(popUpOpt);
+    }
   },
 
   handleRemoveUserFromGroup(account, groupId) {
