@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 import Avatar from "react-avatar";
 import moment from "moment";
 import classnames from "classnames/dedupe";
-import { Badge, ClickToCopy, Icon, Translation, Checkbox, Button, List, ListItem, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
+import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
 import { Orders } from "/lib/collections";
 import OrderTableColumn from "./orderTableColumn";
+import OrderBulkActionsBar from "./orderBulkActionsBar";
 import { formatPriceString } from "/client/api";
 import ProductImage from "./productImage";
 
@@ -47,26 +48,6 @@ class OrderTable extends Component {
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,
     shipped: PropTypes.bool
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      renderFlowList: false,
-      picked: props.picked,
-      packed: props.packed,
-      labeled: props.labeled,
-      shipped: props.shipped
-    };
-  }
-
-  componentWillReceiveProps = (nextProps) => {
-    this.setState({
-      picked: nextProps.picked,
-      packed: nextProps.packed,
-      labeled: nextProps.labeled,
-      shipped: nextProps.shipped
-    });
   }
 
   /**
@@ -203,135 +184,6 @@ class OrderTable extends Component {
     );
   }
 
-  renderBulkOrderActionsBar = () => {
-    const { orders, multipleSelect, selectedItems, selectAllOrders } = this.props;
-
-    if (selectedItems.length > 0) {
-      return (
-        <div className="bulk-order-actions-bar">
-          <Checkbox
-            className="checkbox-large orders-checkbox"
-            checked={selectedItems.length === orders.length || multipleSelect}
-            name="orders-checkbox"
-            onChange={() => selectAllOrders(orders, (selectedItems.length === orders.length || multipleSelect))}
-          />
-          <Translation
-            className="selected-orders"
-            defaultValue={`${selectedItems.length} Selected`}
-            i18nKey={`${selectedItems.length} order.selected`}
-          />
-          <Button
-            status="success"
-            bezelStyle="solid"
-            className="capture-orders-button"
-            label="Capture"
-            i18nKeyLabel="order.capture"
-          />
-          <Button
-            status="default"
-            bezelStyle="solid"
-            className="bulk-actions-button"
-            label="Bulk Actions"
-            i18nKeyLabel="order.bulkActions"
-            icon="fa fa-chevron-down"
-            iconAfter={true}
-            onClick={this.toggleShippingFlowList}
-          />
-          {this.renderShippingFLowList()}
-        </div>
-      );
-    }
-  }
-
-  toggleShippingFlowList = () => {
-    this.setState({
-      renderFlowList: !this.state.renderFlowList
-    });
-    this.setListItemsToDefault();
-  }
-
-  renderShippingFLowList() {
-    if (this.state.renderFlowList) {
-      return (
-        <List className="shipping-flow-list">
-          <ListItem
-            label={this.state.picked ? "Generate Picking Report" : "Picked"}
-            value="picked"
-            onClick={this.handleListItemClick}
-            listItemClassName={this.state.picked ? "selected" : ""}
-          >
-            {this.state.picked ?
-              <div>
-                <Icon className="bulk-actions-icons" icon="fa fa-print"/>
-                <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
-              </div>
-              :
-              <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>}
-          </ListItem>
-          <ListItem
-            label="Packed"
-            value="packed"
-            onClick={this.handleListItemClick}
-            listItemClassName={this.state.packed ? "selected" : ""}
-          >
-            {this.state.packed ?
-              <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
-              :
-              <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>
-            }
-          </ListItem>
-          <ListItem
-            label={this.state.labeled ? "Generate Label" : "Labeled"}
-            value="labeled"
-            onClick={this.handleListItemClick}
-            listItemClassName={this.state.labeled ? "selected" : ""}
-          >
-            {this.state.labeled ?
-              <div>
-                <Icon className="bulk-actions-icons" icon="fa fa-print"/>
-                <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
-              </div>
-              :
-              <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>
-            }
-          </ListItem>
-          <ListItem
-            label="Shipped"
-            value="shipped"
-            onClick={this.handleListItemClick}
-            listItemClassName={this.state.shipped ? "selected" : ""}
-          >
-            {this.state.shipped ?
-              <div>
-                <Icon className="bulk-actions-icons" icon="fa fa-paper-plane-o" />
-                <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
-              </div>
-              :
-              <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>
-            }
-          </ListItem>
-        </List>
-      );
-    }
-  }
-
-  handleListItemClick = (event, value) => {
-    if (this.props.setShippingStatus) {
-      this.props.setShippingStatus(value, this.props.selectedItems);
-    }
-  }
-
-  setListItemsToDefault() {
-    if (this.state.renderFlowList === false) {
-      this.setState({
-        picked: false,
-        packed: false,
-        labeled: false,
-        shipped: false
-      });
-    }
-  }
-
   render() {
     let getTrProps = undefined;
     let getTheadProps = undefined;
@@ -454,7 +306,19 @@ class OrderTable extends Component {
 
     return (
       <div>
-        {this.props.isOpen && this.renderBulkOrderActionsBar()}
+        {this.props.isOpen &&
+          <OrderBulkActionsBar
+            picked={this.props.picked}
+            packed={this.props.packed}
+            labeled={this.props.labeled}
+            shipped={this.props.labeled}
+            multipleSelect={this.props.multipleSelect}
+            orders={this.props.orders}
+            selectAllOrders={this.props.selectAllOrders}
+            selectedItems={this.props.selectedItems}
+            setShippingStatus={this.props.setShippingStatus}
+          />
+        }
         <SortableTable
           tableClassName={`rui order table -highlight ${this.props.selectedItems.length > 0 ?
             "table-header-hidden" :
