@@ -34,7 +34,10 @@ const composer = (props, onData) => {
   const grpSub = Meteor.subscribe("Groups");
 
   if (adminUserSub.ready() && grpSub.ready()) {
-    const groups = Groups.find({ slug: { $nin: ["customer", "guest"] } }).fetch();
+    const groups = Groups.find({
+      slug: { $nin: ["customer", "guest"] },
+      shopId: Reaction.getShopId()
+    }).fetch();
     const adminQuery = {
       [`roles.${Reaction.getShopId()}`]: {
         $in: ["dashboard"]

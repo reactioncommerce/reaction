@@ -88,7 +88,7 @@ Meteor.methods({
     Reaction.createDefaultGroups({ shopId: shop._id });
     const ownerGroup = Collections.Groups.findOne({ slug: "owner", shopId: shop._id });
     Roles.addUsersToRoles([currentUser, userId], ownerGroup.permissions, shop._id);
-    Collections.Accounts.update({ _id: currentUser._id }, {
+    Collections.Accounts.update({ _id: userId }, {
       $set: {
         shopId: shop._id
       },

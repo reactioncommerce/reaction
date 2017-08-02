@@ -32,7 +32,6 @@ class InviteOwner extends Component {
     const alertOptions = { placement: alertId, id: alertId, autoHide: 4000 };
 
     Meteor.call("accounts/inviteShopOwner", { name, email }, (error, result) => {
-      this.setState({ isLoading: false });
       let message = "";
       if (error) {
         let messageKey;
@@ -45,6 +44,8 @@ class InviteOwner extends Component {
         }
         ReactionAlerts.add(message, "danger", Object.assign({}, alertOptions, { i18nKey: messageKey }));
       }
+
+      this.setState({ isLoading: false });
 
       if (result) {
         this.setState({ name: "", email: "" });
@@ -80,7 +81,6 @@ class InviteOwner extends Component {
   render() {
     return (
       <div className="panel panel-default admin-invite-form">
-        <Components.Divider />
         <h4 style={{ textAlign: "center" }}>Invite Owner Form</h4>
         <Components.Alerts placement={this.state.alertId} id={this.state.alertId} onAlertRemove={this.removeAlert} />
         <div className="panel-body">

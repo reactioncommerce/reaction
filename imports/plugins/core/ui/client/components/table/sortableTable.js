@@ -170,7 +170,7 @@ class SortableTable extends Component {
 
 
   /**
-   * getTableData() - Checks is JSON data is passed vs publication data
+   * getTableData() - Checks if JSON data is passed vs publication data
    * @returns {Number} returns number of available data
    */
   getTableData() {
