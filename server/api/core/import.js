@@ -388,7 +388,7 @@ Import.object = function (collection, key, object) {
   // https://docs.mongodb.com/manual/reference/method/Bulk.find.upsert/
   if (Object.keys(defaultValuesObject).length === 0) {
     find.upsert().update({
-      $set: importObject
+      $setOnInsert: importObject
     });
   } else {
     find.upsert().update({
