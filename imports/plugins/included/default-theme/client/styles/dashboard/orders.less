@@ -1,4 +1,4 @@
-
+darken(#fff, 3%)
 // TODO: Once reaction ui is enabled, use `rui button success`
 .rui.card.order .controls .btn-success {
   .btn-success();
@@ -145,7 +145,7 @@
   }
 
   &.selected {
-    background-color: #edfdf8;
+    background-color: @rui-info;
   }
 }
 
@@ -166,7 +166,7 @@
   padding: 10px;
   padding-bottom: 30px;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: @white;
   box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.16);
   border: solid 1px #7894a4;
 }
@@ -220,7 +220,7 @@
   margin-bottom: 10px;
   height: 84px;
   padding: 10px;
-  background-color: #f7f7f7;
+  background-color: @black25;
 
   .invoice-order-item-tax {
     display: flex;
@@ -261,7 +261,7 @@
 
   .refund-header {
     display: flex;
-    border-bottom: 1px solid #bfbfbf;
+    border-bottom: 1px solid @black25;
     padding: 10px;
 
     div {
@@ -610,7 +610,7 @@
 
   // Table Columns
   .order-table-column-name {
-    border-right: 1px solid #e6e6e6;
+    border-right: 1px solid @black10;
 
     flex: 250 0 auto;
     width: 250px;
@@ -690,7 +690,7 @@
     margin-bottom: 0px;
     margin-right: 10px;
     border-radius: 2px;
-    border: solid 2px #5e6264;
+    border: solid 2px @black65;
   }
 
   .column-name-name {
@@ -708,9 +708,9 @@
   }
 
   .order-table-thead {
-    border-top: 1px solid #e6e6e6;
-    border-right: 1px solid #e6e6e6;
-    border-left: 1px solid #e6e6e6;
+    border-top: 1px solid @black10;
+    border-right: 1px solid @black10;
+    border-left: 1px solid @black10;
   }
 
   .order-table-details-tr-group {
@@ -724,12 +724,12 @@
   }
 
   .order-table-tr-group {
-    border-right: 1px solid #e6e6e6;
-    border-left: 1px solid #e6e6e6;
+    border-right: 1px solid @black10;
+    border-left: 1px solid @black10;
   }
 
   .order-table-list {
-    border-bottom: 1px solid #e6e6e6;
+    border-bottom: 1px solid @black10;
   }
 
   .order-table-detail {
@@ -751,7 +751,7 @@
     .checkbox-avatar {
       margin-left: -6px;
       border-radius: 2px;
-      border: solid 2px #5e6264;
+      border: solid 2px @black65;
       background: transparent;
     }
   }
@@ -762,7 +762,7 @@
     .checkbox-avatar {
       margin-left: -6px;
       border-radius: 2px;
-      border: solid 2px #5e6264;
+      border: solid 2px @black65;
     }
   }
 }
@@ -791,7 +791,7 @@
 
 .bulk-order-actions-bar {
   height: 68px;
-  background-color: #f7f7f7;
+  background-color: darken(#fff, 3%);
   padding-top: 20px;
   margin-top: 92px;
 
@@ -803,7 +803,7 @@
   .selected-orders {
     font-size: 15px;
     font-weight: bold;
-    color: #1c98d4;
+    color: @rui-brand;
     margin-left: 20px;
     vertical-align: middle;
   }
@@ -827,9 +827,9 @@
     width: 274px;
     margin-left: 265px;
     margin-top: 14px;
-    border: solid 1px #98afbc;
+    border: solid 1px @rui-default;
     border-radius: 3px;
-    background-color: #ffffff;
+    background-color: @white;
 
     &:before, &:after {
       content: '';
@@ -842,37 +842,37 @@
 
     &:before {
       top: -21px;
-      border-color: transparent transparent #98afbc transparent;
+      border-color: transparent transparent @rui-default transparent;
       border-width: 10px;
     }
 
     &:after {
       top: -19px;
-      border-color: transparent transparent #ffffff transparent;
+      border-color: transparent transparent @white transparent;
       border-width: 10px;
     }
 
     .list-group-item {
-      background-color: #ebf7fc;
+      background-color: @rui-default-bg;
       height:47px;
       border: none;
       margin-bottom: 2px;
     }
 
     .list-group-item.selected {
-      background-color: #f7f7f7;
+      background-color: darken(#fff, 3%);
     }
 
     .list-item-content {
       font-size: 15px;
       font-weight: 600;
-      color: #343434;
+      color: @black80;
       letter-spacing: 0.3px;
     }
 
     i.bulk-actions-icons, i.bulk-actions-icons-select {
       font-size: 20px;
-	    color: #343434;
+	    color: @black80;
     }
 
     i.bulk-actions-icons-select {
@@ -880,7 +880,7 @@
     }
 
     i.fa-check {
-      color: #5cde86;
+      color: @rui-success;
     }
   }
 }
@@ -900,7 +900,7 @@
 }
 
 .order-toggle-btn.order-icon-toggle {
-  color: #1999dd;
+  color: @rui-brand;
 }
 
 .order-toggle-buttons {
