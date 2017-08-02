@@ -90,7 +90,7 @@ const wrapComponent = (Comp) => (
 
     formMessages = () => {
       return (
-        <Components.Messages messages={this.state.formMessages} />
+        <Components.LoginFormMessages messages={this.state.formMessages} />
       );
     }
 

@@ -1,0 +1,23 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Стать продавцом",
+        "errorCannotCreateShop": "Не удалось создать магазин для текущего пользователя {{user}}",
+        "yourShopIsReady": "Теперь ваш магазин готов!"
+      },
+      "app": {
+        "shops": "Магазины",
+        "myShop": "Мой магазин"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Настройки магазина сохранены успешно!",
+          "dashboardMarketplaceSettingsFailed": "Не удалось сохранить настройки Marketplace"
+        }
+      }
+    }
+  }
+}]

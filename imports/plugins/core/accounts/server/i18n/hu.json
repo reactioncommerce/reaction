@@ -13,6 +13,10 @@
           "accountsSettingsLabel": "Fiókok",
           "accountsSettingsTitle": "Fiókok",
           "accountsSettingsDescription": "Fiók beállítások"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "johnsmith@reactioncommerce.com"
         }
       }
     }

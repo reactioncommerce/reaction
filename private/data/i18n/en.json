@@ -383,7 +383,10 @@
           "canceled": "Canceled",
           "refunded": "Refunded"
         },
-        "showMore": "Show More"
+        "showMore": "Show More",
+        "capture": "Capture",
+        "bulkActions": "Bulk Actions",
+        "selected": "Selected"
       },
       "orderShipping": {
         "shipTo": "Ship To",

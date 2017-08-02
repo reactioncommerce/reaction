@@ -1,0 +1,18 @@
+[{
+  "i18n": "fr",
+  "ns": "reaction-connect",
+  "translation": {
+    "reaction-connect": {
+      "admin": {
+        "dashboard": {
+          "connectLabel": "Relier",
+          "connectTitle": "Relier",
+          "connectDescription": "Connectez réaction en tant que service déployé"
+        },
+        "settings": {
+          "reactionConnectLabel": "réaction Connect"
+        }
+      }
+    }
+  }
+}]

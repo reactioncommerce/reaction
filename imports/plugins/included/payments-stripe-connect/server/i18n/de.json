@@ -15,8 +15,11 @@
         "paymentSettings": {
           "stripeConnectLabel": "Stripe Connect",
           "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Verwenden Sie keine Stripe Connect-API-Client-ID?",
+          "stripeConnectSettingsDescription": "Habe keine Stripe Connect API Client ID?",
           "stripeConnectSettingsGetItHere": "Holen Sie sich hier"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Wird automatisch in ein paar Sekunden umgeleitet oder hier klicken."
         }
       }
     }

@@ -25,7 +25,7 @@ class Badge extends Component {
   }
 
   render() {
-    const { status, badgeSize } = this.props;
+    const { status, badgeSize, className } = this.props;
 
     const classes = classnames({
       "rui": true,
@@ -40,7 +40,7 @@ class Badge extends Component {
       "badge-primary": status === "primary",
       "badge-success": status === "success",
       "badge-warning": status ===  "warning"
-    });
+    }, className);
 
     return (
       <span className={classes} style={{ display: "inline-flex" }}>

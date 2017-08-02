@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Aspetto",
+          "addUserError": "Errore nell'aggiungere l'utente in gruppo",
+          "addUserSuccess": "Aggiunto utente al gruppo",
+          "removeUserError": "Errore durante la rimozione dell'utente in gruppo",
+          "removeUserSuccess": "L'utente è stato rimosso correttamente",
           "connect": "Collegare",
           "core": "Nucleo",
+          "name": "Nome",
+          "email": "Impostazioni e-mail",
+          "create": "Creare un gruppo",
+          "update": "Aggiorna gruppo",
+          "lastActive": "Ultimo attivo",
+          "description": "Aggiungi una descrizione del prodotto",
+          "remove": "Rimuovi",
+          "newGroup": "Nuovo gruppo",
+          "selectGroup": "Seleziona gruppo",
+          "editGroups": "Modifica gruppi",
           "dashboard": "Cruscotto",
+          "errorCreate": "Errore durante la creazione del gruppo",
+          "successCreate": "Il gruppo è stato creato correttamente",
+          "errorUpdate": "Errore durante l'aggiornamento del gruppo",
+          "successUpdate": "Il gruppo è stato aggiornato correttamente",
           "misc": "Varie",
           "paymentMethod": "Provider di pagamento",
-          "utilities": "Utilità"
+          "utilities": "Utilità",
+          "marketplace": "Mercato"
         },
         "settings": {
           "accountSettingsLabel": "Impostazioni dell 'account",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "impostazioni negozio di localizzazione salvate.",
         "shopLocalizationSettingsFailed": "Negozio aggiornamento impostazioni di localizzazione non è riuscito.",
         "shopPaymentMethodsSaved": "Negozio impostazioni Metodi di Pagamento salvate.",
-        "shopPaymentMethodsFailed": "Negozio aggiornamento impostazioni dei metodi di pagamento non è riuscita."
+        "shopPaymentMethodsFailed": "Negozio aggiornamento impostazioni dei metodi di pagamento non è riuscita.",
+        "shopBrandAssetsSaved": "Aggiornato asset di marca",
+        "shopBrandAssetsFailed": "Impossibile aggiornare l'asset di marca"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "L'email è obbligatoria.",
+          "groupRequired": "È necessario un gruppo diverso dal gruppo proprietario predefinito.",
           "passwordRequired": "E 'richiesta la password.",
           "passwordMustBeAtLeast6CharactersLong": "La password deve essere lunga almeno 6 caratteri.",
           "passwordMustContainRequirements": "La password deve contenere almeno un numero o un simbolo.",

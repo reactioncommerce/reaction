@@ -1,0 +1,23 @@
+[{
+  "i18n": "sl",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Postanite prodajalec",
+        "errorCannotCreateShop": "Trgovca ni bilo mogoče ustvariti za trenutnega uporabnika {{user}}",
+        "yourShopIsReady": "Vaša trgovina je zdaj pripravljena!"
+      },
+      "app": {
+        "shops": "Trgovine",
+        "myShop": "Moja trgovina"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Nastavitve tržnice so uspešno shranjene!",
+          "dashboardMarketplaceSettingsFailed": "Nastavitev Marketplace ni bilo mogoče shraniti"
+        }
+      }
+    }
+  }
+}]

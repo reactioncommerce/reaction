@@ -10,13 +10,16 @@
         },
         "dashboard": {
           "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "нашивки платежи"
+          "stripeConnectDescription": "Платные платежи"
         },
         "paymentSettings": {
           "stripeConnectLabel": "Stripe Connect",
           "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Не имеют нашивки API идентификатор клиента?",
+          "stripeConnectSettingsDescription": "У вас нет идентификатора клиента API Stripe Connect?",
           "stripeConnectSettingsGetItHere": "Получи это здесь"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Будет автоматически перенаправляться через пару секунд или нажмите здесь."
         }
       }
     }

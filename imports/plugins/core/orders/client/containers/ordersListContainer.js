@@ -4,7 +4,8 @@ import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Media } from "/lib/collections";
 import { Reaction } from "/client/api";
-import OrdersList from "../components/ordersList.js";
+import { Loading } from "/imports/plugins/core/ui/client/components";
+import OrdersList from "../components/orderList.js";
 import {
   PACKAGE_NAME,
   ORDER_LIST_FILTERS_PREFERENCE_NAME,
@@ -14,6 +15,8 @@ import {
 
 class OrdersListContainer extends Component {
   static propTypes = {
+    handleShowMoreClick: PropTypes.func,
+    hasMoreOrders: PropTypes.func,
     invoice: PropTypes.object,
     orders: PropTypes.array,
     uniqueItems: PropTypes.array
@@ -22,8 +25,69 @@ class OrdersListContainer extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      selectedItems: [],
+      orders: props.orders,
+      hasMoreOrders: props.hasMoreOrders(),
+      multipleSelect: false
+    };
+
     this.handleClick = this.handleClick.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
+    this.selectAllOrders = this.selectAllOrders.bind(this);
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    this.setState({
+      orders: nextProps.orders,
+      hasMoreOrders: nextProps.hasMoreOrders()
+    });
+  }
+
+  handleSelect = (event, isInputChecked, name) => {
+    this.setState({
+      multipleSelect: false
+    });
+    const selectedItemsArray = this.state.selectedItems;
+
+    if (!selectedItemsArray.includes(name)) {
+      selectedItemsArray.push(name);
+      this.setState({
+        selectedItems: selectedItemsArray
+      });
+    } else {
+      const updatedSelectedArray = selectedItemsArray.filter((id) => {
+        if (id !== name) {
+          return id;
+        }
+      });
+      this.setState({
+        selectedItems: updatedSelectedArray
+      });
+    }
+  }
+
+  selectAllOrders = (orders, areAllSelected) => {
+    if (areAllSelected) {
+      // if all orders are selected, clear the selectedItems array
+      // and set multipleSelect to false
+      this.setState({
+        selectedItems: [],
+        multipleSelect: false
+      });
+    } else {
+      // if there are no selected orders, or if there are some orders that have been
+      // selected but not all of them, loop through the orders array and return a
+      // new array with order ids only, then set the selectedItems array with the orderIds
+      const orderIds = orders.map((order) => {
+        return order._id;
+      });
+      this.setState({
+        selectedItems: orderIds,
+        multipleSelect: true
+      });
+    }
   }
 
   handleClick = (order, startWorkflow = false) => {
@@ -77,13 +141,18 @@ class OrdersListContainer extends Component {
   }
 
   render() {
-    const { orders } = this.props;
+    const { handleShowMoreClick } = this.props;
 
     return (
       <OrdersList
-        orders={orders}
+        handleSelect={this.handleSelect}
+        handleShowMoreClick={handleShowMoreClick}
+        orders={this.state.orders}
         handleClick={this.handleClick}
         displayMedia={this.handleDisplayMedia}
+        selectedItems={this.state.selectedItems}
+        selectAllOrders={this.selectAllOrders}
+        multipleSelect={this.state.multipleSelect}
       />
     );
   }
@@ -99,4 +168,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer)(OrdersListContainer);
+export default composeWithTracker(composer, Loading)(OrdersListContainer);

@@ -110,6 +110,7 @@ Meteor.methods({
    */
   "cart/mergeCart": function (cartId, currentSessionId) {
     check(cartId, String);
+    // TODO: Review this. currentSessionId sometimes come in as false. e.g from Accounts.onLogin
     check(currentSessionId, Match.Optional(String));
 
     // we don't process current cart, but merge into it.
@@ -366,6 +367,7 @@ Meteor.methods({
     if (cartVariantExists) {
       return Collections.Cart.update({
         "_id": cart._id,
+        "items.product._id": productId,
         "items.variants._id": variantId
       }, {
         $inc: {
@@ -402,6 +404,7 @@ Meteor.methods({
           shopId: product.shopId,
           productId: productId,
           quantity: quantity,
+          product: product,
           variants: variant,
           title: product.title,
           type: product.type,
@@ -477,6 +480,8 @@ Meteor.methods({
             _id: itemId
           }
         }
+      }, {
+        getAutoValues: false // See https://github.com/aldeed/meteor-collection2/issues/245
       }, (error, result) => {
         if (error) {
           Logger.error(error);

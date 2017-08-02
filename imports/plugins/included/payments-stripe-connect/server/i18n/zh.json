@@ -6,17 +6,20 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "Stripe Connect"
+          "stripeConnectLabel": "条纹连接"
         },
         "dashboard": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "条纹支付"
+          "stripeConnectLabel": "条纹连接",
+          "stripeConnectDescription": "条纹连接付款"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "不要有条纹API客户端ID？",
+          "stripeConnectLabel": "条纹连接",
+          "stripeConnectSettingsLabel": "条纹连接",
+          "stripeConnectSettingsDescription": "没有Stripe Connect API客户端ID？",
           "stripeConnectSettingsGetItHere": "在这里获得"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "将在几秒钟内自动重定向或点击此处。"
         }
       }
     }

@@ -4,16 +4,17 @@ import PropTypes from "prop-types";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 
-const Translation = ({ i18nKey, defaultValue }) => {
+const Translation = ({ i18nKey, defaultValue, className }) => {
   const key = i18nKey || camelCase(defaultValue);
   const translation = i18next.t(key, { defaultValue });
 
   return (
-    <span>{translation}</span>
+    <span className={className}>{translation}</span>
   );
 };
 
 Translation.propTypes = {
+  className: PropTypes.string,
   defaultValue: PropTypes.string,
   i18nKey: PropTypes.string
 };

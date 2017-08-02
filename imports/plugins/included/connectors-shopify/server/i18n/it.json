@@ -1,0 +1,25 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Connettore dati per Shopify"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "Prodotti di importazione",
+          "importing": "Importazione ... Questo potrebbe richiedere un po 'di tempo.",
+          "editApiKey": "Modifica API Key",
+          "editPassword": "Modifica password API",
+          "editSharedSecret": "Modifica API Segreto condiviso",
+          "editShopifyDomain": "Modifica il dominio Shopify",
+          "importSuccess": "Prodotti importati con successo.",
+          "importFailed": "Errore durante l'importazione di prodotti."
+        }
+      }
+    }
+  }
+}]
