@@ -51,5 +51,4 @@ export default function () {
     //
     Fixture.flush();
   }
-
 }
