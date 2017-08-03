@@ -147,6 +147,7 @@ class OrdersListContainer extends Component {
    */
   shippingStatusUpdateCall = (selectedOrders, status) => {
     const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
+    let orderCount = 0;
 
     selectedOrders.forEach((order) => {
       Meteor.call(`orders/shipment${capitalizeStatus}`, order, order.shipping[0], true, (err) => {
@@ -155,14 +156,17 @@ class OrdersListContainer extends Component {
         } else {
           Meteor.call("orders/updateHistory", order._id, "Shipping state set by bulk operation", status);
         }
-        this.setState({
-          [status]: true
-        });
+        orderCount++;
+        if (orderCount === selectedOrders.length) {
+          Alerts.alert({
+            text: `${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} set to ${status}`,
+            type: "success"
+          });
+          this.setState({
+            [status]: true
+          });
+        }
       });
-    });
-    Alerts.alert({
-      text: `${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} set to ${status}`,
-      type: "success"
     });
   }
 
