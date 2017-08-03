@@ -1,7 +1,9 @@
+import { Meteor } from "meteor/meteor";
 import React from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Reaction } from "/client/api";
 import { getGravatar } from "../helpers/accountsHelper";
 
 const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserFromGroup, handleUserGroupChange, ...props }) => {
@@ -39,6 +41,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
   if (columnName === "dropdown") {
     const groupName = <p>{_.startCase(groups[0].name)}</p>;
     const ownerGroup = groups.find((grp) => grp.slug === "owner") || {};
+    const hasOwnerAccess = Reaction.hasPermission("owner", Meteor.userId(), Reaction.getShopId());
 
     if (groups.length === 1) {
       return groupName;
@@ -48,26 +51,33 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
       return groupName;
     }
 
-    const dropDownButton = (
+    const { onMethodDone, onMethodLoad } = props;
+    const dropDownButton = (opt) => ( // eslint-disable-line
       <div className="group-dropdown">
         <Components.Button bezelStyle="solid" label={group.name && _.startCase(group.name)}>
-          &nbsp;<i className="fa fa-chevron-down" />
+          &nbsp;
+          {opt && opt.length > 1 && // add icon only if there's more than the current group
+            <i className="fa fa-chevron-down" />
+          }
         </Components.Button>
       </div>
     );
-    const { onMethodDone, onMethodLoad } = props;
+
+    // permission check. Remove owner option, if user is not current owner
+    const dropOptions = groups.filter(grp => (grp.slug === "owner" && !hasOwnerAccess) ? false : true) || [];
+    if (dropOptions.length < 2) { return dropDownButton(); } // do not use dropdown if only one option
 
     return (
       <div className="group-dropdown">
         <Components.DropDownMenu
           className="dropdown-item"
-          buttonElement={dropDownButton}
+          buttonElement={dropDownButton(groups)}
           attachment="bottom right"
           targetAttachment="top right"
           onChange={handleUserGroupChange({ account, ownerGrpId: ownerGroup._id, onMethodDone, onMethodLoad })}
         >
-          {groups
-            .filter((grp) => grp._id !== group._id)
+          {dropOptions
+            .filter(grp => grp._id !== group._id)
             .map((grp, index) => (
               <Components.MenuItem
                 key={index}

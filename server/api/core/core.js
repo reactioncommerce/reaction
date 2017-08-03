@@ -503,7 +503,6 @@ export default {
     const shopId = this.getPrimaryShopId();
 
     // if an admin user has already been created, we'll exit
-    console.log({ OwnersCount: Roles.getUsersInRole("owner", shopId).count() });
     if (Roles.getUsersInRole("owner", shopId).count() !== 0) {
       Logger.debug("Not creating default admin user, already exists");
       return ""; // this default admin has already been created for this shop.
