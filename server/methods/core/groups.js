@@ -3,7 +3,7 @@ import { check, Match } from "meteor/check";
 import _ from "lodash";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction, Logger, Hooks } from "/server/api";
-import { Accounts, Groups, Packages } from "/lib/collections";
+import { Accounts, Groups } from "/lib/collections";
 import { getSlug } from "/lib/api";
 
 /**
@@ -145,10 +145,8 @@ Meteor.methods({
       Accounts.update({ _id: userId }, { $set: { groups: newGroups } });
 
       if (slug === "owner") {
-        Roles.setUserRoles(userId, permissions, Roles.GLOBAL_GROUP);
-
         if (shopId === Reaction.getPrimaryShopId()) {
-          changeMarketplaceOwner(shopId);
+          changeMarketplaceOwner({ userId, permissions });
         }
         // remove current shop owner after setting another admin as the new owner
         Meteor.call("group/addUser", Meteor.userId(), currentUserGrpInShop);
@@ -196,17 +194,12 @@ Meteor.methods({
   }
 });
 
-function changeMarketplaceOwner(shopId) {
-  console.log('changeMarketplaceOwner------');
+function changeMarketplaceOwner({ userId, permissions }) {
+  // give global marketplace role to new owner
+  Roles.setUserRoles(userId, permissions, Roles.GLOBAL_GROUP);
+
   // remove global from previous owner
   Meteor.users.update({ _id: Meteor.userId() }, { $unset: { [`roles.${Roles.GLOBAL_GROUP}`]: "" } });
-  // Roles.removeUsersFromRoles(Meteor.userId(), [], Roles.GLOBAL_GROUP);
-
-  // Add all shop package permissions, and GLOBAL_GROUP for new Marketplace owner
-  const packages = Packages.find().fetch();
-  for (const pkg of packages) {
-    Reaction.assignOwnerRoles(shopId, pkg.name, pkg.registry);
-  }
 }
 
 function setUserPermissions(users, permissions, shopId) {

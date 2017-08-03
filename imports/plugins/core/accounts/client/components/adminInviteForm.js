@@ -169,6 +169,7 @@ class AdminInviteForm extends Component {
               <div className="form-btns add-admin justify">
                 <Components.Button
                   status="primary"
+                  buttonType="submit"
                   onClick={this.handleSubmit}
                   bezelStyle="solid"
                   i18nKeyLabel="accountsUI.info.sendInvitation"
