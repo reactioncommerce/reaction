@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { formatPriceString } from "/client/api";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Translation, CardGroup, Card, CardBody, CardHeader } from "/imports/plugins/core/ui/client/components";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
+import LineItems from "./lineItems";
+import InvoiceActions from "./invoiceActions";
 
 class Invoice extends Component {
   static propTypes = {
@@ -98,7 +100,7 @@ class Invoice extends Component {
     );
   }
 
-  render() {
+  renderInvoice() {
     const { invoice, discounts, handleClick } = this.props;
 
     return (
@@ -145,6 +147,53 @@ class Invoice extends Component {
         }
         {this.renderConditionalDisplay()}
       </div>
+    )
+  }
+
+  render() {
+    return (
+      <CardGroup>
+        <Card
+          expanded={true}
+        >
+          <CardHeader
+            actAsExpander={false}
+            i18nKeyTitle="admin.orderWorkflow.invoice.cardTitle"
+            title="Invoice"
+          />
+          <CardBody expandable={false}>
+            <LineItems
+              onClose={this.props.handleClose}
+              handleSelectAllItems={this.props.handleSelectAllItems}
+              selectAllItems={this.props.selectAllItems}
+              selectedItems={this.props.selectedItems}
+              togglePopOver={this.props.togglePopOver}
+              inputOnChange={this.props.inputOnChange}
+              handleItemSelect={this.props.handleItemSelect}
+              popOverIsOpen={this.props.popOverIsOpen}
+              displayMedia={this.props.displayMedia}
+              uniqueItems={this.props.uniqueItems}
+              editedItems={this.props.editedItems}
+              isUpdating={this.props.isUpdating}
+              toggleUpdating={this.props.toggleUpdating}
+              applyRefund={this.props.applyRefund}
+              getRefundedItemsInfo={this.props.getRefundedItemsInfo}
+            />
+            <div className="invoice-container">
+              {this.renderInvoice()}
+            </div>
+            <InvoiceActions
+              isAdjusted={this.props.isAdjusted}
+              paymentCaptured={this.props.paymentCaptured}
+              adjustedTotal={this.props.adjustedTotal}
+              invoice={this.props.invoice}
+              paymentPendingApproval={this.props.paymentPendingApproval}
+              paymentApproved={this.props.paymentApproved}
+              capturedDisabled={this.props.capturedDisabled}
+            />
+          </CardBody>
+        </Card>
+      </CardGroup>
     );
   }
 }

@@ -160,8 +160,8 @@ class LineItemsContainer extends Component {
   applyRefund = () => {
     console.log("Order Id----?", this.props.order._id);
     const paymentMethod = orderCreditMethod(this.props.order).paymentMethod;
-    const amount = this.getRefundedItemsInfo().total;
-    const quantity = this.getRefundedItemsInfo().quantity;
+    // const amount = this.getRefundedItemsInfo().total;
+    // const quantity = this.getRefundedItemsInfo().quantity;
     console.log("paymentMethod ---->", paymentMethod);
     console.log("editedItems", this.state.editedItems);
     const editedItems = this.state.editedItems;
