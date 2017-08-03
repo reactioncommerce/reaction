@@ -10,14 +10,18 @@ export default function () {
      */
     Logger.info("Load default data from /private/data/");
 
-    try {
-      Logger.debug("Loading Shop Data");
-      Reaction.Import.process(Assets.getText("data/Shops.json"), ["name"], Reaction.Import.shop);
-      // ensure Shops are loaded first.
-      Reaction.Import.flush(Shops);
-    } catch (error) {
-      Logger.error(error, "Bypassing loading Shop default data");
+    // Since import overwrites, only import Shops when none exist
+    if (!Reaction.getShopId()) {
+      try {
+        Logger.debug("Loading Shop Data");
+        Reaction.Import.process(Assets.getText("data/Shops.json"), ["name"], Reaction.Import.shop);
+        // ensure Shops are loaded first.
+        Reaction.Import.flush(Shops);
+      } catch (error) {
+        Logger.error(error, "Bypassing loading Shop default data");
+      }
     }
+
 
     // make sure the default shop has been created before going further
     while (!Reaction.getShopId()) {
