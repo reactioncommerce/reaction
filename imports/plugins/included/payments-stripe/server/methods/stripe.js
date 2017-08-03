@@ -198,12 +198,17 @@ Meteor.methods({
       cart.email = "test@example.com";
     }
 
+    if (!cart.email) {
+      // TODO: Is it okay to create random email here if anonymous?
+      throw new Meteor.Error("Email is required for marketplace checkouts.");
+    }
 
     // Initialize stripe api lib
     const stripeApiKey = stripePkg.settings.api_key;
     const stripe = stripeNpm(stripeApiKey);
 
-    // console.log(stripe);
+
+    // get array of shopIds that exist in this cart
     const shopIds = cart.items.reduce((uniqueShopIds, item) => {
       if (uniqueShopIds.indexOf(item.shopId) === -1) {
         uniqueShopIds.push(item.shopId);
@@ -211,53 +216,60 @@ Meteor.methods({
       return uniqueShopIds;
     }, []);
 
-    if (!cart.email) {
-      // TODO: Is it okay to create random email here if anonymous?
-      throw new Meteor.Error("Email is required for marketplace checkouts.");
-    }
+    const chargesByShopId = {};
 
     try {
+      // Creates a customer object, adds a source via the card data
+      // and waits for the promise to resolve
       const customer = Promise.await(stripe.customers.create({
         email: cart.email
       }).then(function (cust) {
         return stripe.customers.createSource(cust.id, { source: { ...card, object: "card" } });
       }));
-      console.log("customer", customer);
 
+      // Get cart totals for each Shop
       const cartTotals = cart.cartTotalByShop();
 
+      // Loop through all shopIds represented in cart
       shopIds.forEach((shopId) => {
-        console.log("type:", typeof cartTotals[shopId]);
+        // get stripe package for this shopId
+        const merchantStripePkg = Reaction.getPackageSettingsWithOptions({
+          shopId: shopId,
+          name: "reaction-stripe"
+        });
+
+        // If this merchant doesn't have stripe setup, fail.
+        // We should _never_ get to this point, because
+        // this will not roll back the entire transaction
+        if (!merchantStripePkg ||
+            !merchantStripePkg.settings ||
+            !merchantStripePkg.settings.connectAuth ||
+            !merchantStripePkg.settings.connectAuth.stripe_user_id) {
+          throw new Meteor.Error(`Error processing payment for merchant with shopId ${shopId}`);
+        }
+
+        // get stripe account for this shop
+        const stripeAccount = merchantStripePkg.settings.connectAuth.stripe_user_id;
+
+        // Create token from our customer object to use with merchant shop
+        const token = Promise.await(stripe.tokens.create({
+          customer: customer.customer
+        }, {
+          stripe_account: stripeAccount
+        }));
+
+        // Charge the token we just created
         const charge = Promise.await(stripe.charges.create({
           amount: formatForStripe(cartTotals[shopId]),
           currency: currency,
-          customer: customer.customer
+          source: token.id
+        }, {
+          stripe_account: stripeAccount
         }));
 
-        console.log("charge", charge);
-        // get shop's stripe connect key
-        // aggregate products in cart
-        // create single charge for items in cart
+        chargesByShopId[shopId] = charge;
       });
-      // const chargeObj = {
-      //   amount: "",
-      //   currency: "",
-      //   card: {},
-      //   capture: false
-      // };
-      //
-      // if (transactionType === "capture") {
-      //   chargeObj.capture = true;
-      // }
-      //
-      // chargeObj.card = parseCardData(cardData);
-      // chargeObj.amount = formatForStripe(paymentData.total);
-      // chargeObj.currency = paymentData.currency;
-      //
-      // let result;
-      // let chargeResult;
     } catch (error) {
-      console.log("error", error);
       throw new Meteor.Error("Error creating multiple stripe charges", error);
     }
   },
