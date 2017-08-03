@@ -26,11 +26,13 @@ const handlers = {
 
     function updateMethodCall(groupId) {
       Meteor.call("group/addUser", account._id, groupId, (err) => {
-        if (onMethodDone) { onMethodDone(); }
         if (err) {
-          return Alerts.toast(i18next.t("admin.groups.addUserError", { err: err.message }), "error");
+          Alerts.toast(i18next.t("admin.groups.addUserError", { err: err.message }), "error");
         }
-        return Alerts.toast(i18next.t("admin.groups.addUserSuccess"), "success");
+        if (!err) {
+          Alerts.toast(i18next.t("admin.groups.addUserSuccess"), "success");
+        }
+        if (onMethodDone) { onMethodDone(); }
       });
     }
 

@@ -63,7 +63,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
       </div>
     );
 
-    // permission check. Remove owner option, if user is not current owner
+    // Permission check. Remove owner option, if user is not current owner
     const dropOptions = groups.filter(grp => (grp.slug === "owner" && !hasOwnerAccess) ? false : true) || [];
     if (dropOptions.length < 2) { return dropDownButton(); } // do not use dropdown if only one option
 
