@@ -335,10 +335,15 @@
 .order-item-media {
   .flex(0 0 auto);
   width: 40px;
+  margin-left: 15px;
 
-    img {
-      width: 100%;
-    }
+  &.popover-mode {
+    margin-left: 0;
+  }
+
+  img {
+    width: 100%;
+  }
 }
 
 .order-item-details {
@@ -561,7 +566,7 @@
   height: 30px;
 
   .checkbox-large {
-    margin-left: 4px;
+    margin-left: 10px;
   }
 
   .invoice-popover-selected {
@@ -587,25 +592,30 @@
 }
 
 .rollover-checkbox {
+    &.order-invoice-rollover {
+      .selected-checkbox {
+        padding-right: 6px;
+        padding-left: 17px;
+        padding-top: 5px;
 
-  .selected-checkbox {
-    padding-right: 6px;
+        .checkbox-avatar {
+          margin-left: -6px;
+          border-radius: 2px;
+          border: solid 2px #5e6264;
+          background: transparent;
+        }
+      }
 
-    .checkbox-avatar {
-      margin-left: -6px;
-      border-radius: 2px;
-      border: solid 2px #5e6264;
-      background: transparent;
+      .second-child {
+        padding-right: 6px;
+        padding-left: 17px;
+        padding-top: 5px;
+
+        .checkbox-avatar {
+          margin-left: -6px;
+          border-radius: 2px;
+          border: solid 2px #5e6264;
+        }
+      }
     }
   }
-
-  .second-child {
-    padding-right: 6px;
-
-    .checkbox-avatar {
-      margin-left: -6px;
-      border-radius: 2px;
-      border: solid 2px #5e6264;
-    }
-  }
-}

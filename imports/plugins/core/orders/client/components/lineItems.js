@@ -58,9 +58,14 @@ class LineItems extends Component {
         <div
           className="order-item form-group order-summary-form-group"
         >
-          <div className="order-item-media">
+          <div className={classnames({
+            "order-item-media": true,
+            "popover-mode": this.state.isOpen
+          })}
+          >
             {this.state.isOpen ?
               <RolloverCheckbox
+                className="order-invoice-rollover"
                 checkboxClassName="checkbox-avatar checkbox-large"
                 onChange={() => this.props.handleItemSelect(uniqueItem._id)}
                 checked={this.props.selectedItems.includes(uniqueItem._id)}
@@ -68,7 +73,7 @@ class LineItems extends Component {
                 {this.displayMedia(uniqueItem)}
               </RolloverCheckbox>
               :
-              <div style={{ marginLeft: 15 }}>
+              <div>
                 {this.displayMedia(uniqueItem)}
               </div>
             }
