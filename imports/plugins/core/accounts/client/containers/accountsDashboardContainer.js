@@ -35,9 +35,13 @@ const handlers = {
     }
 
     function alertConfirm() {
+      let changeOwnerWarn = "changeShopOwnerWarn";
+      if (Reaction.getShopId() === Reaction.getPrimaryShopId()) {
+        changeOwnerWarn = "changeMktOwnerWarn";
+      }
       return Alert({
         title: i18next.t("admin.settings.changeOwner"),
-        text: i18next.t("admin.settings.changeOwnerWarn"),
+        text: i18next.t(`admin.settings.${changeOwnerWarn}`),
         type: "warning",
         showCancelButton: true,
         cancelButtonText: i18next.t("app.cancel"),
