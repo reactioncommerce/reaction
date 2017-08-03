@@ -311,7 +311,7 @@ class OrderTable extends Component {
             picked={this.props.picked}
             packed={this.props.packed}
             labeled={this.props.labeled}
-            shipped={this.props.labeled}
+            shipped={this.props.shipped}
             multipleSelect={this.props.multipleSelect}
             orders={this.props.orders}
             selectAllOrders={this.props.selectAllOrders}
