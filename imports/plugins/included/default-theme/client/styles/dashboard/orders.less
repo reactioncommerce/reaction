@@ -501,6 +501,16 @@
       margin-bottom: 30px;
       height: 40px;
 
+      &.invoice-item {
+        padding-top: 8px;
+        height: 56px;
+        margin-bottom: 10px;
+      }
+
+      &.selected {
+        background-color: @rui-info-bg;
+      }
+
       .order-item {
         flex: 0 0 auto;
         position: relative;
@@ -549,6 +559,10 @@
   display: flex;
   width: 100%;
   height: 30px;
+
+  .checkbox-large {
+    margin-left: 4px;
+  }
 
   .invoice-popover-selected {
     flex: 7;

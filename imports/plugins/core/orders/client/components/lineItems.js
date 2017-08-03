@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { isEmpty } from "lodash";
@@ -46,8 +47,14 @@ class LineItems extends Component {
   }
 
   renderLineItem(uniqueItem) {
+    const className = classnames({
+      "order-items": true,
+      "invoice-item": true,
+      "selected": this.props.selectedItems.includes(uniqueItem._id)
+    });
+
     return (
-      <div className="order-items">
+      <div className={className}>
         <div
           className="order-item form-group order-summary-form-group"
         >

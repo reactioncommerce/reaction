@@ -452,6 +452,7 @@ Template.coreOrderShippingInvoice.helpers({
     const instance = Template.instance();
     const order = instance.state.get("order");
     const orderStatus = orderCreditMethod(order).paymentMethod.status;
+    console.log("orderStatus--->", orderStatus);
     return orderStatus === "completed";
   },
 
@@ -467,7 +468,7 @@ Template.coreOrderShippingInvoice.helpers({
     const order = instance.state.get("order");
     const orderStatus = orderCreditMethod(order).paymentMethod.status;
     const orderMode = orderCreditMethod(order).paymentMethod.mode;
-    return orderStatus === "completed" || (orderStatus === "refunded" && orderMode === "capture");
+    return orderStatus === "completed" || (orderStatus === "refunded" && orderMode === "capture") || (orderStatus === "partialRefund" && orderMode === "capture");
   },
 
   refundTransactions() {

@@ -940,6 +940,7 @@ export const methods = {
     const quantity = returnItems.reduce((acc, item) => acc + item.refundedQuantity, 0);
     const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
 
+    console.log("message", _.includes(checkSupportedMethods, "De-authorize"));
     let result;
     let query = {};
     if (_.includes(checkSupportedMethods, "De-authorize")) {
