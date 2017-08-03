@@ -50,7 +50,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
 
     const dropDownButton = (
       <div className="group-dropdown">
-        <Components.Button label={group.name && _.startCase(group.name)}>
+        <Components.Button bezelStyle="solid" label={group.name && _.startCase(group.name)}>
           &nbsp;<i className="fa fa-chevron-down" />
         </Components.Button>
       </div>

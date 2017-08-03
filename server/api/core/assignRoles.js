@@ -46,6 +46,7 @@ function getRouteName(packageName, registryItem) {
  */
 
 export function assignOwnerRoles(shopId, pkgName, registry) {
+  console.log('assignOwnerRoles-------------', shopId);
   const defaultRoles = ["owner", "admin", "createProduct", "guest", pkgName];
   const globalRoles = defaultRoles;
 
@@ -81,6 +82,8 @@ export function assignOwnerRoles(shopId, pkgName, registry) {
   // get existing shop owners to add new roles to
   const owners = [];
   const shopOwners = Roles.getUsersInRole(defaultOwnerRoles).fetch();
+  console.log(`defaultOwnerRoles ${defaultOwnerRoles}`);
+  console.log({ shopOwners: shopOwners.length, name: shopOwners[0].name });
   // just a nice warning. something is misconfigured.
   if (!shopOwners) {
     Logger.warn("Cannot assign roles without existing owner users.");

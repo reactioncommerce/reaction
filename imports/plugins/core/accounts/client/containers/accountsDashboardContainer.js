@@ -16,7 +16,9 @@ const handlers = {
           .then(() => {
             return updateMethodCall(groupId);
           })
-          .catch(() => false);
+          .catch(() => {
+            if (onMethodDone) { onMethodDone(); }
+          });
       }
 
       return updateMethodCall(groupId);
