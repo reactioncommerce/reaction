@@ -7,11 +7,13 @@ import { Reaction, i18next } from "/client/api";
 import AccountsDashboard from "../components/accountsDashboard";
 
 const handlers = {
-  handleUserGroupChange(account, ownerGrpId) {
+  handleUserGroupChange({ account, ownerGrpId, onLoading, onDone }) {
     return (event, groupId) => {
+      if (onLoading) { onLoading(); }
       alertConfirm(groupId)
         .then(() => {
           return Meteor.call("group/addUser", account._id, groupId, (err) => {
+            if (onDone) { onDone(); }
             if (err) {
               return Alerts.toast(i18next.t("admin.groups.addUserError", { err: err.message }), "error");
             }

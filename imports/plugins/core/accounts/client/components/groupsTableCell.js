@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { getGravatar } from "../helpers/accountsHelper";
 
-const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserFromGroup, handleUserGroupChange }) => {
+const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserFromGroup, handleUserGroupChange, ...props }) => {
   const email = _.get(account, "emails[0].address");
 
   if (columnName === "name") {
@@ -55,6 +55,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
         </Components.Button>
       </div>
     );
+    const { onDone, onLoading } = props;
 
     return (
       <div className="group-dropdown">
@@ -63,7 +64,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
           buttonElement={dropDownButton}
           attachment="bottom right"
           targetAttachment="top right"
-          onChange={handleUserGroupChange(account, ownerGroup._id)}
+          onChange={handleUserGroupChange({ account, ownerGrpId: ownerGroup._id, onDone, onLoading })}
         >
           {groups
             .filter((grp) => grp._id !== group._id)
@@ -106,7 +107,9 @@ GroupsTableCell.propTypes = {
   group: PropTypes.object, // current group in interation
   groups: PropTypes.array, // all available groups
   handleRemoveUserFromGroup: PropTypes.func,
-  handleUserGroupChange: PropTypes.func
+  handleUserGroupChange: PropTypes.func,
+  onDone: PropTypes.func,
+  onLoading: PropTypes.func
 };
 
 registerComponent("GroupsTableCell", GroupsTableCell);
