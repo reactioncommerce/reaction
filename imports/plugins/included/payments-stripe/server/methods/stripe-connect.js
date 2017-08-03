@@ -33,6 +33,14 @@ Meteor.methods({
       name: "reaction-stripe"
     });
 
+    if (merchantStripePkg &&
+        merchantStripePkg.settings &&
+        merchantStripePkg.settings.connectAuth &&
+        typeof merchantStripePkg.settings.connectAuth.stripe_user_id === "string") {
+      return true;
+    }
+
+
     const apiKey = stripePkg.settings.api_key;
     const stripeAuthUrl = "https://connect.stripe.com/oauth/token";
     try {
