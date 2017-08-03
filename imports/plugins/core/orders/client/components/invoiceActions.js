@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { formatPriceString } from "/client/api";
-import { IconButton, NumericInput, Translation, ButtonSelect } from "/imports/plugins/core/ui/client/components";
+import { Button, NumericInput, Translation, ButtonSelect } from "/imports/plugins/core/ui/client/components";
 
 class InvoiceActions extends Component {
   static propTypes = {
@@ -9,6 +9,10 @@ class InvoiceActions extends Component {
     handleActionViewBack: PropTypes.func,
     invoice: PropTypes.object,
     isAdjusted: PropTypes.func
+  }
+
+  state = {
+    value: 0
   }
 
   renderCapturedTotal() {
@@ -33,7 +37,7 @@ class InvoiceActions extends Component {
     return (
       <div className="invoice-summary">
         <span className="invoice-label adjusted-total">
-          <strong><Translation defaultValue="Adjusted Total" i18nKey="admin.invoice.adjustedTotal"/></strong>
+          <strong><Translation defaultValue="Adjusted Total" data-i18n="admin.invoice.adjustedTotal"/></strong>
         </span>
 
         <div className="invoice-details">
@@ -42,33 +46,49 @@ class InvoiceActions extends Component {
       </div>
     );
   }
+
   renderRefundForm() {
     const { adjustedTotal } = this.props;
 
     return (
-      <div className="invoice-summary">
-        <span  className="invoice-label refund">
-          <strong><Translation defaultValue="Refund" i18nKey="admin.invoice.refund"/></strong>
-        </span>
-
-        <div className="invoice-details">
-          <span className="refundAmount">
+      <div className="flex refund-container">
+        <div className="form-group order-summary-form-group">
+          <div className="invoice-details">
             <NumericInput
               numericType="currency"
-              value="0"
+              value={this.state.value}
               maxValue={adjustedTotal}
-              classNames="amount"
+              format={this.props.currency}
+              classNames={{
+                input: {
+                  amount: true
+                }
+              }}
+              onChange={(event, data)=>{
+                this.setState({
+                  value: data.numberValue
+                });
+              }}
             />
-          </span>
-          <span className="refundSubmit">
-            <IconButton
-              bezelStyle={"flat"}
-              icon="fa fa-arrow-circle-o-right"
-              onClick={this.props.handleActionViewBack}
-            />
-            <span id="btn-refund-payment">-></span>
-          </span>
+          </div>
+
         </div>
+        <Button
+          className="flex-item-fill refund-button"
+          type="button"
+          status="primary"
+          bezelStyle="solid"
+          // data-event-action="applyRefund"
+          onClick={(event) => {
+            this.props.handleRefund(event, this.state.value);
+            this.setState({
+              value: 0
+            });
+          }}
+        >
+          <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
+          {/* <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i> */}
+        </Button>
       </div>
     );
   }
@@ -106,7 +126,12 @@ class InvoiceActions extends Component {
 
     if (this.props.paymentApproved) {
       return (
-        <button className="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment" disabled={this.props.capturedDisabled}>
+        <button
+          className="btn btn-success flex-item-fill"
+          type="button" data-event-action="capturePayment"
+          disabled={this.props.capturedDisabled}
+          onClick = {this.props.handleCapturePayment}
+        >
           <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
           {/* <i class="fa fa-spinner fa-spin {{#unless isCapturing}}hidden{{/unless}}" id="btn-processing"></i> */}
         </button>
@@ -118,16 +143,20 @@ class InvoiceActions extends Component {
     const { isAdjusted } = this.props;
 
     return (
-      <div className="flex" style={{ marginBottom: 15 }}>
-        {this.renderApproval()}
-        {this.props.paymentCaptured &&
-          <div>
-            {this.renderCapturedTotal()}
-            {isAdjusted() && this.renderAdjustedTotal()}
-          </div>
-        }
-        {/* {this.renderRefundForm()} */}
-      </div>
+      <form onSubmit={this.props.handleApprove}>
+
+        <div style={{ marginBottom: 15, marginTop: 15 }}>
+          {this.renderApproval()}
+          {this.props.paymentCaptured &&
+            <div className="total-container">
+              {this.renderCapturedTotal()}
+              {isAdjusted() && this.renderAdjustedTotal()}
+              {this.renderRefundForm()}
+            </div>
+          }
+        </div>
+      </form>
+
     );
   }
 }

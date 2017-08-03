@@ -55,6 +55,10 @@ Template.coreOrderShippingInvoice.onCreated(function () {
 });
 
 Template.coreOrderShippingInvoice.helpers({
+  currentData() {
+    const currentData = Template.currentData();
+    return currentData;
+  },
   isCapturing() {
     const instance = Template.instance();
     if (instance.state.get("isCapturing")) {
@@ -190,62 +194,6 @@ Template.coreOrderShippingInvoice.events({
       }
     });
   },
-  /**
-   * Submit form
-   * @param  {Event} event - Event object
-   * @param  {Template} instance - Blaze Template
-   * @return {void}
-   */
-  "submit form[name=capture]": (event, instance) => {
-    event.preventDefault();
-    const state = instance.state;
-    const order = state.get("order");
-
-    const paymentMethod = orderCreditMethod(order);
-    const orderTotal = accounting.toFixed(
-      paymentMethod.invoice.subtotal
-      + paymentMethod.invoice.shipping
-      + paymentMethod.invoice.taxes
-      , 2);
-
-    const discount = state.get("field-discount") || order.discount;
-    // TODO: review Discount cannot be greater than original total price
-    // logic is probably not valid any more. Discounts aren't valid below 0 order.
-    if (discount > orderTotal) {
-      Alerts.inline("Discount cannot be greater than original total price", "error", {
-        placement: "coreOrderShippingInvoice",
-        i18nKey: "order.invalidDiscount",
-        autoHide: 10000
-      });
-    } else if (orderTotal === accounting.toFixed(discount, 2)) {
-      Alerts.alert({
-        title: i18next.t("order.fullDiscountWarning"),
-        showCancelButton: true,
-        confirmButtonText: i18next.t("order.applyDiscount")
-      }, (isConfirm) => {
-        if (isConfirm) {
-          Meteor.call("orders/approvePayment", order, (error) => {
-            if (error) {
-              Logger.warn(error);
-            }
-          });
-        }
-      });
-    } else {
-      Meteor.call("orders/approvePayment", order, (error) => {
-        if (error) {
-          Logger.warn(error);
-          if (error.error === "orders/approvePayment.discount-amount") {
-            Alerts.inline("Discount cannot be greater than original total price", "error", {
-              placement: "coreOrderShippingInvoice",
-              i18nKey: "order.invalidDiscount",
-              autoHide: 10000
-            });
-          }
-        }
-      });
-    }
-  },
 
   /**
    * Submit form
@@ -253,61 +201,61 @@ Template.coreOrderShippingInvoice.events({
    * @param  {Template} instance - Blaze Template
    * @return {void}
    */
-  "click [data-event-action=applyRefund]": (event, instance) => {
-    event.preventDefault();
+  // "click [data-event-action=applyRefund]": (event, instance) => {
+  //   event.preventDefault();
 
-    const { state } = Template.instance();
-    const currencySymbol = state.get("currency").symbol;
-    const order = instance.state.get("order");
-    const paymentMethod = orderCreditMethod(order).paymentMethod;
-    const orderTotal = paymentMethod.amount;
-    const discounts = paymentMethod.discounts;
-    const refund = state.get("field-refund") || 0;
-    const refunds = Template.instance().refunds.get();
-    let refundTotal = 0;
-    _.each(refunds, function (item) {
-      refundTotal += parseFloat(item.amount);
-    });
+  //   const { state } = Template.instance();
+  //   const currencySymbol = state.get("currency").symbol;
+  //   const order = instance.state.get("order");
+  //   const paymentMethod = orderCreditMethod(order).paymentMethod;
+  //   const orderTotal = paymentMethod.amount;
+  //   const discounts = paymentMethod.discounts;
+  //   const refund = state.get("field-refund") || 0;
+  //   const refunds = Template.instance().refunds.get();
+  //   let refundTotal = 0;
+  //   _.each(refunds, function (item) {
+  //     refundTotal += parseFloat(item.amount);
+  //   });
 
-    let adjustedTotal;
+  //   let adjustedTotal;
 
-    // TODO extract Stripe specific fullfilment payment handling out of core.
-    // Stripe counts discounts as refunds, so we need to re-add the discount to not "double discount" in the adjustedTotal
-    if (paymentMethod.processor === "Stripe") {
-      adjustedTotal = accounting.toFixed(orderTotal + discounts - refundTotal, 2);
-    } else {
-      adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
-    }
+  //   // TODO extract Stripe specific fullfilment payment handling out of core.
+  //   // Stripe counts discounts as refunds, so we need to re-add the discount to not "double discount" in the adjustedTotal
+  //   if (paymentMethod.processor === "Stripe") {
+  //     adjustedTotal = accounting.toFixed(orderTotal + discounts - refundTotal, 2);
+  //   } else {
+  //     adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
+  //   }
 
-    if (refund > adjustedTotal) {
-      Alerts.inline("Refund(s) total cannot be greater than adjusted total", "error", {
-        placement: "coreOrderRefund",
-        i18nKey: "order.invalidRefund",
-        autoHide: 10000
-      });
-    } else {
-      Alerts.alert({
-        title: i18next.t("order.applyRefundToThisOrder", { refund: refund, currencySymbol: currencySymbol }),
-        showCancelButton: true,
-        confirmButtonText: i18next.t("order.applyRefund")
-      }, (isConfirm) => {
-        if (isConfirm) {
-          state.set("isRefunding", true);
-          Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error, result) => {
-            if (error) {
-              Alerts.alert(error.reason);
-            }
-            if (result) {
-              Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
-            }
-            $("#btn-refund-payment").text(i18next.t("order.applyRefund"));
-            state.set("field-refund", 0);
-            state.set("isRefunding", false);
-          });
-        }
-      });
-    }
-  },
+  //   if (refund > adjustedTotal) {
+  //     Alerts.inline("Refund(s) total cannot be greater than adjusted total", "error", {
+  //       placement: "coreOrderRefund",
+  //       i18nKey: "order.invalidRefund",
+  //       autoHide: 10000
+  //     });
+  //   } else {
+  //     Alerts.alert({
+  //       title: i18next.t("order.applyRefundToThisOrder", { refund: refund, currencySymbol: currencySymbol }),
+  //       showCancelButton: true,
+  //       confirmButtonText: i18next.t("order.applyRefund")
+  //     }, (isConfirm) => {
+  //       if (isConfirm) {
+  //         state.set("isRefunding", true);
+  //         Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error, result) => {
+  //           if (error) {
+  //             Alerts.alert(error.reason);
+  //           }
+  //           if (result) {
+  //             Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
+  //           }
+  //           $("#btn-refund-payment").text(i18next.t("order.applyRefund"));
+  //           state.set("field-refund", 0);
+  //           state.set("isRefunding", false);
+  //         });
+  //       }
+  //     });
+  //   }
+  // },
 
   "click [data-event-action=makeAdjustments]": (event, instance) => {
     event.preventDefault();

@@ -190,6 +190,10 @@ class Invoice extends Component {
               paymentPendingApproval={this.props.paymentPendingApproval}
               paymentApproved={this.props.paymentApproved}
               capturedDisabled={this.props.capturedDisabled}
+              handleApprove={this.props.handleApprove}
+              handleCapturePayment={this.props.handleCapturePayment}
+              currency={this.props.currency}
+              handleRefund={this.props.handleRefund}
             />
           </CardBody>
         </Card>

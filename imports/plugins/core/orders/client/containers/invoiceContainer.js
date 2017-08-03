@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import accounting from "accounting-js";
+import _ from "lodash";
+import { i18next, Logger, Reaction } from "/client/api";
+import { Tracker } from "meteor/tracker";
 import { Meteor } from "meteor/meteor";
-import { Media } from "/lib/collections";
+import { Media, Shops, Orders } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
@@ -32,12 +36,50 @@ class InvoiceContainer extends Component {
       selectAllItems: false,
       selectedItems: [],
       editedItems: [],
-      value: undefined
+      value: undefined,
+      isCapturing: false,
+      currency: {},
+      refunds: [],
+      isFetching: true,
+      order: {},
+      shop: {},
+      isRefunding: false,
+      refundValue: 0
     };
     this.handleClick = this.handleClick.bind(this);
     this.dateFormat = this.dateFormat.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
     this.applyRefund = this.applyRefund.bind(this);
+    this.handleRefund = this.handleRefund.bind(this);
+    this.dep = new Tracker.Dependency;
+  }
+
+  componentDidMount() {
+    console.log("here");
+    Tracker.autorun(() => {
+      console.log("bla");
+      this.dep.depend();
+
+      const order = Orders.findOne(this.props.currentData.orderId);
+      console.log("Order", order);
+      const shop = Shops.findOne({});
+
+      this.setState({
+        order,
+        shop,
+        currency: shop.currencies[shop.currency]
+      });
+
+      if (order) {
+        Meteor.call("orders/refunds/list", order, (error, result) => {
+          if (error) Logger.warn(error);
+          this.setState({
+            refunds: result,
+            isFetching: false
+          });
+        });
+      }
+    });
   }
 
   dateFormat = (context, block) => {
@@ -180,14 +222,14 @@ class InvoiceContainer extends Component {
   }
 
   applyRefund = () => {
-    console.log("Order Id----?", this.props.order._id);
-    const paymentMethod = orderCreditMethod(this.props.order).paymentMethod;
+    console.log("Order Id----?", this.state.order._id);
+    const paymentMethod = orderCreditMethod(this.state.order).paymentMethod;
     // const amount = this.getRefundedItemsInfo().total;
     // const quantity = this.getRefundedItemsInfo().quantity;
     console.log("paymentMethod ---->", paymentMethod);
     console.log("editedItems", this.state.editedItems);
     const editedItems = this.state.editedItems;
-    Meteor.call("orders/refunds/returnItems", this.props.order._id, paymentMethod, editedItems);
+    Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, editedItems);
   }
 
   getRefundedItemsInfo = () => {
@@ -205,6 +247,141 @@ class InvoiceContainer extends Component {
       return false;
     }
     return true;
+  }
+
+  handleCapturePayment = (event) => {
+    event.preventDefault();
+
+    this.setState({
+      isCapturing: true
+    });
+
+    const order = this.state.order;
+    Meteor.call("orders/capturePayments", order._id);
+
+    if (order.workflow.status === "new") {
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+
+      Reaction.Router.setQueryParams({
+        filter: "processing",
+        _id: order._id
+      });
+    }
+  }
+
+  handleApprove = (event) => {
+    event.preventDefault();
+    const order = this.state.order;
+
+    const paymentMethod = orderCreditMethod(order);
+    const orderTotal = accounting.toFixed(
+      paymentMethod.invoice.subtotal
+      + paymentMethod.invoice.shipping
+      + paymentMethod.invoice.taxes
+      , 2);
+
+    const discount = order.discount;
+    // TODO: review Discount cannot be greater than original total price
+    // logic is probably not valid any more. Discounts aren't valid below 0 order.
+    if (discount > orderTotal) {
+      Alerts.inline("Discount cannot be greater than original total price", "error", {
+        placement: "coreOrderShippingInvoice",
+        i18nKey: "order.invalidDiscount",
+        autoHide: 10000
+      });
+    } else if (orderTotal === accounting.toFixed(discount, 2)) {
+      Alerts.alert({
+        title: i18next.t("order.fullDiscountWarning"),
+        showCancelButton: true,
+        confirmButtonText: i18next.t("order.applyDiscount")
+      }, (isConfirm) => {
+        if (isConfirm) {
+          Meteor.call("orders/approvePayment", order, (error) => {
+            if (error) {
+              Logger.warn(error);
+            }
+          });
+        }
+      });
+    } else {
+      Meteor.call("orders/approvePayment", order, (error) => {
+        if (error) {
+          Logger.warn(error);
+          if (error.error === "orders/approvePayment.discount-amount") {
+            Alerts.inline("Discount cannot be greater than original total price", "error", {
+              placement: "coreOrderShippingInvoice",
+              i18nKey: "order.invalidDiscount",
+              autoHide: 10000
+            });
+          }
+        }
+      });
+    }
+  }
+
+  handleRefund = (event, value) => {
+    event.preventDefault();
+
+    console.log("Heeere");
+    const currencySymbol = this.state.currency.symbol;
+    const order = this.state.order;
+    const paymentMethod = orderCreditMethod(order).paymentMethod;
+    const orderTotal = paymentMethod.amount;
+    const discounts = paymentMethod.discounts;
+    console.log("value", value);
+    const refund = value;
+    const refunds = this.state.refunds;
+    let refundTotal = 0;
+    _.each(refunds, function (item) {
+      refundTotal += parseFloat(item.amount);
+    });
+
+    let adjustedTotal;
+
+    // TODO extract Stripe specific fullfilment payment handling out of core.
+    // Stripe counts discounts as refunds, so we need to re-add the discount to not "double discount" in the adjustedTotal
+    if (paymentMethod.processor === "Stripe") {
+      adjustedTotal = accounting.toFixed(orderTotal + discounts - refundTotal, 2);
+    } else {
+      adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
+    }
+
+    if (refund > adjustedTotal) {
+      Alerts.inline("Refund(s) total cannot be greater than adjusted total", "error", {
+        placement: "coreOrderRefund",
+        i18nKey: "order.invalidRefund",
+        autoHide: 10000
+      });
+    } else {
+      Alerts.alert({
+        title: i18next.t("order.applyRefundToThisOrder", { refund: refund, currencySymbol: currencySymbol }),
+        showCancelButton: true,
+        confirmButtonText: i18next.t("order.applyRefund")
+      }, (isConfirm) => {
+        if (isConfirm) {
+          this.setState({
+            isRefunding: true
+          }, () => {
+            this.dep.changed();
+          });
+          Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error, result) => {
+            if (error) {
+              Alerts.alert(error.reason);
+            }
+            if (result) {
+              Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
+            }
+            $("#btn-refund-payment").text(i18next.t("order.applyRefund"));
+            this.setState({
+              refundValue: 0,
+              isRefunding: false
+            }, () => {
+              this.dep.changed();
+            });
+          });
+        }
+      });
+    }
   }
 
   render() {
@@ -246,6 +423,11 @@ class InvoiceContainer extends Component {
           paymentPendingApproval={this.props.paymentPendingApproval}
           paymentApproved={this.props.paymentApproved}
           capturedDisabled={this.props.capturedDisabled}
+          handleApprove={this.handleApprove}
+          isAdjusted={this.isAdjusted}
+          handleCapturePayment={this.handleCapturePayment}
+          currency={this.state.currency}
+          handleRefund={this.handleRefund}
         />
       </TranslationProvider>
     );
@@ -260,7 +442,9 @@ function orderCreditMethod(order) {
 }
 
 const composer = (props, onData) => {
+  console.log("props", props);
   onData(null, {
+    currentData: props.currentData,
     canMakeAdjustments: props.canMakeAdjustments,
     paymentCaptured: props.paymentCaptured,
     discounts: props.discounts,
@@ -270,7 +454,6 @@ const composer = (props, onData) => {
     isFetching: props.isFetching,
     collection: props.collection,
     uniqueItems: props.items,
-    order: props.order,
     paymentPendingApproval: props.paymentPendingApproval,
     paymentApproved: props.paymentApproved,
     capturedDisabled: props.capturedDisabled,

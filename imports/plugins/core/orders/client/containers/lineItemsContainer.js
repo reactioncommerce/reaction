@@ -196,6 +196,7 @@ class LineItemsContainer extends Component {
           toggleUpdating={this.toggleUpdating}
           applyRefund={this.applyRefund}
           getRefundedItemsInfo={this.getRefundedItemsInfo}
+          handleApprove={this.handleApprove}
         />
       </TranslationProvider>
     );
