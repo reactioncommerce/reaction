@@ -12,7 +12,7 @@ const handlers = {
       if (onMethodLoad) { onMethodLoad(); }
 
       if (groupId === ownerGrpId) {
-        alertConfirm(groupId)
+        return alertConfirm()
           .then(() => {
             return updateMethodCall(groupId);
           })
@@ -33,16 +33,14 @@ const handlers = {
     }
 
     function alertConfirm() {
-      const popUpOpt = {
+      return Alert({
         title: i18next.t("admin.settings.changeOwner"),
         text: i18next.t("admin.settings.changeOwnerWarn"),
         type: "warning",
         showCancelButton: true,
         cancelButtonText: i18next.t("app.cancel"),
         confirmButtonText: i18next.t("admin.settings.continue")
-      };
-
-      return Alert(popUpOpt);
+      });
     }
   },
 
