@@ -109,6 +109,7 @@ export default function () {
         shopId: product.shopId,
         productId: product._id,
         quantity: 1,
+        product: product,
         variants: selectedOption,
         workflow: {
           status: "new"
@@ -119,6 +120,7 @@ export default function () {
         shopId: product2.shopId,
         productId: product2._id,
         quantity: 1,
+        product: product2,
         variants: selectedOption2,
         workflow: {
           status: "new"
