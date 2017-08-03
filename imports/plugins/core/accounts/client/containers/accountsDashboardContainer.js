@@ -7,26 +7,32 @@ import { Reaction, i18next } from "/client/api";
 import AccountsDashboard from "../components/accountsDashboard";
 
 const handlers = {
-  handleUserGroupChange({ account, ownerGrpId, onLoading, onDone }) {
+  handleUserGroupChange({ account, ownerGrpId, onMethodLoad, onMethodDone }) {
     return (event, groupId) => {
-      if (onLoading) { onLoading(); }
-      alertConfirm(groupId)
-        .then(() => {
-          return Meteor.call("group/addUser", account._id, groupId, (err) => {
-            if (onDone) { onDone(); }
-            if (err) {
-              return Alerts.toast(i18next.t("admin.groups.addUserError", { err: err.message }), "error");
-            }
-            return Alerts.toast(i18next.t("admin.groups.addUserSuccess"), "success");
-          });
-        })
-        .catch(() => false);
+      if (onMethodLoad) { onMethodLoad(); }
+
+      if (groupId === ownerGrpId) {
+        alertConfirm(groupId)
+          .then(() => {
+            return updateMethodCall(groupId);
+          })
+          .catch(() => false);
+      }
+
+      return updateMethodCall(groupId);
     };
 
-    function alertConfirm(groupId) {
-      if (groupId !== ownerGrpId) {
-        return true;
-      }
+    function updateMethodCall(groupId) {
+      Meteor.call("group/addUser", account._id, groupId, (err) => {
+        if (onMethodDone) { onMethodDone(); }
+        if (err) {
+          return Alerts.toast(i18next.t("admin.groups.addUserError", { err: err.message }), "error");
+        }
+        return Alerts.toast(i18next.t("admin.groups.addUserSuccess"), "success");
+      });
+    }
+
+    function alertConfirm() {
       const popUpOpt = {
         title: i18next.t("admin.settings.changeOwner"),
         text: i18next.t("admin.settings.changeOwnerWarn"),

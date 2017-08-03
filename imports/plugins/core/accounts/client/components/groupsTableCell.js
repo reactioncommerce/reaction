@@ -55,7 +55,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
         </Components.Button>
       </div>
     );
-    const { onDone, onLoading } = props;
+    const { onMethodDone, onMethodLoad } = props;
 
     return (
       <div className="group-dropdown">
@@ -64,7 +64,7 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
           buttonElement={dropDownButton}
           attachment="bottom right"
           targetAttachment="top right"
-          onChange={handleUserGroupChange({ account, ownerGrpId: ownerGroup._id, onDone, onLoading })}
+          onChange={handleUserGroupChange({ account, ownerGrpId: ownerGroup._id, onMethodDone, onMethodLoad })}
         >
           {groups
             .filter((grp) => grp._id !== group._id)
@@ -108,8 +108,8 @@ GroupsTableCell.propTypes = {
   groups: PropTypes.array, // all available groups
   handleRemoveUserFromGroup: PropTypes.func,
   handleUserGroupChange: PropTypes.func,
-  onDone: PropTypes.func,
-  onLoading: PropTypes.func
+  onMethodDone: PropTypes.func,
+  onMethodLoad: PropTypes.func
 };
 
 registerComponent("GroupsTableCell", GroupsTableCell);
