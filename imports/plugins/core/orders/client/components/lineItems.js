@@ -50,7 +50,7 @@ class LineItems extends Component {
     const className = classnames({
       "order-items": true,
       "invoice-item": true,
-      "selected": this.props.selectedItems.includes(uniqueItem._id)
+      "selected": this.props.selectedItems.includes(uniqueItem._id) && this.state.isOpen
     });
 
     return (
