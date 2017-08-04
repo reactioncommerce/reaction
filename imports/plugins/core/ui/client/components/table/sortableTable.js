@@ -170,13 +170,25 @@ class SortableTable extends Component {
 
 
   /**
+   * getTableData() - Checks if JSON data is passed vs publication data
+   * @returns {Number} returns number of available data
+   */
+  getTableData() {
+    if (this.props.data) {
+      return this.props.data.length;
+    }
+
+    return this.getMeteorData().matchingResults;
+  }
+
+  /**
    * renderTableFilter() - Uses props to determine if a Table Filter should be shown
    * @returns {node} returns JSX node or null
    */
   renderTableFilter() {
     const { filterType } = this.props;
 
-    if (this.getMeteorData().matchingResults !== 0) {
+    if (this.getTableData() !== 0) {
       if (filterType === "both" || filterType === "table") {
         return (
           <SortableTableFilter
@@ -210,7 +222,7 @@ class SortableTable extends Component {
   }
 
   renderPaginationBottom = () => {
-    if (this.getMeteorData().matchingResults === 0) {
+    if (this.getTableData() === 0) {
       return false;
     }
 
@@ -218,7 +230,7 @@ class SortableTable extends Component {
   }
 
   setMinRows = () => {
-    if (this.getMeteorData().matchingResults === 0) {
+    if (this.getTableData() === 0) {
       return 3;
     }
 
@@ -240,8 +252,7 @@ class SortableTable extends Component {
           defaultFilterMethod={this.customFilter}
           defaultPageSize={otherProps.defaultPageSize}
           filterable={this.renderColumnFilter()}
-          minRows={this.setMinRows()
-          }
+          minRows={this.setMinRows()}
           previousText={otherProps.previousText}
           nextText={otherProps.nextText}
           loadingText={otherProps.loadingText}
@@ -280,6 +291,8 @@ SortableTable.propTypes = {
   collection: PropTypes.object,
   /** @type {array} columnMetadata provides filtered columns with i18n headers */
   columnMetadata: PropTypes.array,
+  /** @type {array} data provides array of objects to be used in place of publication data */
+  data: PropTypes.array,
   /** @type {number} defaultPageSize how many results per page */
   defaultPageSize: PropTypes.number,
   /** @type {bool} filterType filter by table, column, or both */
