@@ -9,20 +9,25 @@ Reaction.registerPackage({
     public: {
       segmentio: {
         enabled: false,
+        name: "segment",
+        value: "segmentio",
         api_key: ""
       },
       googleAnalytics: {
         enabled: false,
+        name: "googleAnalytics",
+        value: "googleAnalytics",
         api_key: ""
       },
       mixpanel: {
         enabled: false,
+        name: "mixpanel",
+        value: "mixpanel",
         api_key: ""
       }
     }
   },
   registry: [{
-    provides: "dashboard",
     label: "Analytics",
     description: "Analytics and tracking integrations",
     template: "reactionAnalytics",
