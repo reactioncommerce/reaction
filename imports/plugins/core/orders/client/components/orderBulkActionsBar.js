@@ -48,7 +48,7 @@ class OrderBulkActionsBar extends Component {
           <List className="shipping-flow-list">
             <ListItem
               label={this.state.picked ? "Generate Picking Report" : "Picked"}
-              i18nLabel={this.state.picked ? "order.generatePickingReport" : "order.picked"}
+              i18nKeyLabel={this.state.picked ? "order.generatePickingReport" : "order.picked"}
               value="picked"
               onClick={this.handleListItemClick}
               listItemClassName={this.state.picked ? "selected" : ""}
@@ -63,7 +63,7 @@ class OrderBulkActionsBar extends Component {
             </ListItem>
             <ListItem
               label="Packed"
-              i18nLabel="order.packed"
+              i18nKeyLabel="order.packed"
               value="packed"
               onClick={this.handleListItemClick}
               listItemClassName={this.state.packed ? "selected" : ""}
@@ -76,7 +76,7 @@ class OrderBulkActionsBar extends Component {
             </ListItem>
             <ListItem
               label={this.state.labeled ? "Generate Label" : "Labeled"}
-              i18nLabel={this.state.labeled ? "order.generateLabel" : "order.labeled"}
+              i18nKeyLabel={this.state.labeled ? "order.generateLabel" : "order.labeled"}
               value="labeled"
               onClick={this.handleListItemClick}
               listItemClassName={this.state.labeled ? "selected" : ""}
@@ -92,7 +92,7 @@ class OrderBulkActionsBar extends Component {
             </ListItem>
             <ListItem
               label="Shipped"
-              i18nLabel="order.shipped"
+              i18nKeyLabel="order.shipped"
               value="shipped"
               onClick={this.handleListItemClick}
               listItemClassName={this.state.shipped ? "selected" : ""}
