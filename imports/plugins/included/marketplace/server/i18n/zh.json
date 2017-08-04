@@ -1,0 +1,23 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "成为卖家",
+        "errorCannotCreateShop": "无法为当前用户{{user}}创建商店",
+        "yourShopIsReady": "你的商店现在准备好了！"
+      },
+      "app": {
+        "shops": "商店",
+        "myShop": "我的店铺"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "市场设置已成功保存！",
+          "dashboardMarketplaceSettingsFailed": "无法保存市场设置"
+        }
+      }
+    }
+  }
+}]

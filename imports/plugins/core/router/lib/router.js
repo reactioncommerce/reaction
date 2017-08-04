@@ -458,7 +458,27 @@ Router.initPackageRoutes = (options) => {
   Router.routes = [];
 
   const pkgs = Packages.find().fetch();
-  const prefix = Router.Reaction.getShopPrefix();
+  const shops = Shops.find({}, { fields: { _id: 1, name: 1, shopType: 1 } }).fetch();
+
+  const shopPrefixes = shops.reduce((prefixesByShopId, shop) => {
+    const shopName = shop.name;
+    const shopSlug = Router.Reaction.getSlug(shopName.toLowerCase());
+
+    // If this is the primary shop
+    if (shop.shopType === "primary") {
+      // If naked routes is turned off, use the shop slug for our primary shop routes
+      if (Router.Reaction.marketplace && Router.Reaction.marketplace.marketplaceNakedRoutes === false) {
+        prefixesByShopId[shop._id] = `/${shopSlug}`;
+      } else {
+        prefixesByShopId[shop._id] = "";
+      }
+    } else {
+      // If this is not the primary shop, use the shop slug in routes for this shop
+      prefixesByShopId[shop._id] = `/${shopSlug}`;
+    }
+    return prefixesByShopId;
+  }, {});
+
   const routeDefinitions = [];
 
   // prefixing isnt necessary if we only have one shop
@@ -558,6 +578,7 @@ Router.initPackageRoutes = (options) => {
             } else if (shopCount <= 1) {
               route.group.prefix = "";
             } else {
+              const prefix = shopPrefixes[pkg.shopId];
               route.group.prefix = prefix;
               route.route = `${prefix}${route.route}`;
             }

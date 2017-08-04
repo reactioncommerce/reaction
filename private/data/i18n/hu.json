@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Kinézet",
+          "addUserError": "Hiba történt a felhasználó csoportosításához",
+          "addUserSuccess": "Hozzáadta a felhasználót a csoporthoz",
+          "removeUserError": "Hiba történt a felhasználó csoportjának eltávolításakor",
+          "removeUserSuccess": "A felhasználó sikeresen eltávolítva",
           "connect": "Csatlakozás",
           "core": "Mag",
+          "name": "Név",
+          "email": "E-mail",
+          "create": "Csoport létrehozása",
+          "update": "Csoport frissítése",
+          "lastActive": "Utoljára aktív",
+          "description": "Adj hozzá termékleírást",
+          "remove": "Távolítsuk",
+          "newGroup": "Új csoport",
+          "selectGroup": "Válasszon csoportot",
+          "editGroups": "Csoportok szerkesztése",
           "dashboard": "Műszerfal",
+          "errorCreate": "Hiba történt a csoport létrehozásában",
+          "successCreate": "A csoport sikeresen létrehozva",
+          "errorUpdate": "Hiba történt a csoport frissítésével",
+          "successUpdate": "A csoport sikeresen frissült",
           "misc": "Egyéb",
           "paymentMethod": "fizetési szolgáltatók",
-          "utilities": "segédprogramok"
+          "utilities": "segédprogramok",
+          "marketplace": "Piactér"
         },
         "settings": {
           "accountSettingsLabel": "Fiók beállítások",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Shop lokalizációs beállítások mentve.",
         "shopLocalizationSettingsFailed": "Shop lokalizációs beállítások frissítése nem sikerült.",
         "shopPaymentMethodsSaved": "Shop Fizetési módok beállításai mentve.",
-        "shopPaymentMethodsFailed": "Shop Fizetési módok beállításait sikertelen volt."
+        "shopPaymentMethodsFailed": "Shop Fizetési módok beállításait sikertelen volt.",
+        "shopBrandAssetsSaved": "Frissített márkaeszköz",
+        "shopBrandAssetsFailed": "Nem sikerült frissíteni a márkaelemet"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "Email megadása kötelező.",
+          "groupRequired": "Az alapértelmezett tulajdonoscsoporttól eltérő csoportra van szükség.",
           "passwordRequired": "Jelszó szükséges.",
           "passwordMustBeAtLeast6CharactersLong": "A jelszónak legalább 6 karakterből kell állnia.",
           "passwordMustContainRequirements": "A jelszónak tartalmaznia kell legalább egy számot vagy szimbólumot.",

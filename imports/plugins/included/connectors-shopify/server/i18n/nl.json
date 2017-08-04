@@ -1,0 +1,25 @@
+[{
+  "i18n": "nl",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Data Connector voor Shopify"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "Import Producten",
+          "importing": "Importeren ... Dit kan even duren.",
+          "editApiKey": "Bewerken API Key",
+          "editPassword": "Bewerk het API-wachtwoord",
+          "editSharedSecret": "Bewerk geheim gedeelde geheim API",
+          "editShopifyDomain": "Edit Shopify Domain",
+          "importSuccess": "Producten met succes geïmporteerd.",
+          "importFailed": "Fout bij het importeren van producten."
+        }
+      }
+    }
+  }
+}]

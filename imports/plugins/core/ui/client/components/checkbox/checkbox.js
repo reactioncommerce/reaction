@@ -16,8 +16,10 @@ class Checkbox extends Component {
         <input
           checked={this.props.checked}
           onChange={this.handleChange}
+          className={this.props.className}
           ref="checkbox"
           type="checkbox"
+          onMouseOut={this.props.onMouseOut}
         />
         <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
       </label>
@@ -31,10 +33,12 @@ Checkbox.defaultProps = {
 
 Checkbox.propTypes = {
   checked: PropTypes.bool,
+  className: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onMouseOut: PropTypes.func
 };
 
 registerComponent("Checkbox", Checkbox);

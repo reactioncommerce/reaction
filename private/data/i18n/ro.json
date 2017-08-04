@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Aspect",
+          "addUserError": "Eroare la adăugarea utilizatorului la grup",
+          "addUserSuccess": "Adăugat utilizator la grup",
+          "removeUserError": "Eroare la eliminarea utilizatorului în grup",
+          "removeUserSuccess": "Utilizatorul a fost eliminat cu succes",
           "connect": "Conectați",
           "core": "Miez",
+          "name": "Nume",
+          "email": "Email",
+          "create": "Creați grup",
+          "update": "Actualizați grupul",
+          "lastActive": "Ultima data activ",
+          "description": "Adăugați o descriere produs",
+          "remove": "Elimină",
+          "newGroup": "Grup nou",
+          "selectGroup": "Selectați Grup",
+          "editGroups": "Editați grupurile",
           "dashboard": "Bord",
+          "errorCreate": "Eroare la crearea grupului",
+          "successCreate": "Grupul a fost creat cu succes",
+          "errorUpdate": "Eroare la actualizarea grupului",
+          "successUpdate": "Grupul a fost actualizat cu succes",
           "misc": "Diverse",
           "paymentMethod": "Furnizorii plăți",
-          "utilities": "Utilitare"
+          "utilities": "Utilitare",
+          "marketplace": "Piata de desfacere"
         },
         "settings": {
           "accountSettingsLabel": "Setările contului",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "Actualizarea setărileor de localizare ale magazinului au fost salvate.",
         "shopLocalizationSettingsFailed": "Actualizarea setărilor de localizare ale magazinului au fost au eșuat.",
         "shopPaymentMethodsSaved": "Setările modalități de plată au fost salvate.",
-        "shopPaymentMethodsFailed": "Actualizarea setărilor modalități de plată au eșuat."
+        "shopPaymentMethodsFailed": "Actualizarea setărilor modalități de plată au eșuat.",
+        "shopBrandAssetsSaved": "Efectul de marcă actualizat",
+        "shopBrandAssetsFailed": "Imposibil de actualizat activul mărcii"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": "Este necesară adresa de e-mail.",
+          "groupRequired": "Este necesar un alt grup decât grupul de proprietar implicit.",
           "passwordRequired": "Parola este necesară.",
           "passwordMustBeAtLeast6CharactersLong": "Parola trebuie să fie de cel puțin 6 caractere.",
           "passwordMustContainRequirements": "Parola trebuie să conțină cel puțin un număr sau un simbol.",

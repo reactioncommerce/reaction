@@ -1,0 +1,25 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Bağlantıyı izle",
+          "shopifyConnectTitle": "Bağlantıyı izle",
+          "shopifyConnectDescription": "Shopify için Veri Bağlayıcı"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "İthalat Ürünleri",
+          "importing": "İthalat ... Bu biraz zaman alabilir.",
+          "editApiKey": "Düzenleme API Anahtarı",
+          "editPassword": "API Şifresini Düzenle",
+          "editSharedSecret": "API Paylaşılan Gizliliğini Düzenle",
+          "editShopifyDomain": "Shopify Etki Alanını Düzenle",
+          "importSuccess": "Ürünler başarıyla ithal edildi.",
+          "importFailed": "Ürünler içe aktarılırken hata oluştu."
+        }
+      }
+    }
+  }
+}]

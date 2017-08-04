@@ -27,12 +27,31 @@
         },
         "groups": {
           "appearance": "Външен вид",
+          "addUserError": "Грешка при добавяне на потребител към група",
+          "addUserSuccess": "Добавен потребител към групата",
+          "removeUserError": "Грешка при премахването на потребителя за групиране",
+          "removeUserSuccess": "Потребителят бе премахнат успешно",
           "connect": "Свържете",
           "core": "сърцевина",
+          "name": "Име",
+          "email": "Email настройки",
+          "create": "Създаване на група",
+          "update": "Актуализиране на групата",
+          "lastActive": "Последно активен",
+          "description": "Добавете описание на продукта",
+          "remove": "Премахни",
+          "newGroup": "Нова група",
+          "selectGroup": "Изберете Група",
+          "editGroups": "Редактиране на групи",
           "dashboard": "Табло",
+          "errorCreate": "Грешка при създаване на група",
+          "successCreate": "Групата е създадена успешно",
+          "errorUpdate": "Грешка при актуализирането на групата",
+          "successUpdate": "Групата бе актуализирана успешно",
           "misc": "Разни",
           "paymentMethod": "доставчици на платежни",
-          "utilities": "комунални услуги"
+          "utilities": "комунални услуги",
+          "marketplace": "пазар"
         },
         "settings": {
           "accountSettingsLabel": "Настройки на профила",
@@ -127,7 +146,9 @@
         "shopLocalizationSettingsSaved": "настройки Shop локализация спасени.",
         "shopLocalizationSettingsFailed": "Магазин актуализация на настройките за локализация провали.",
         "shopPaymentMethodsSaved": "Магазин Методи на плащане настройки, запаметени.",
-        "shopPaymentMethodsFailed": "Магазин актуализация Методи на плащане настройки провали."
+        "shopPaymentMethodsFailed": "Магазин актуализация Методи на плащане настройки провали.",
+        "shopBrandAssetsSaved": "Актуализиран актив на марката",
+        "shopBrandAssetsFailed": "Не може да се актуализира активът на марката"
       },
       "notifications": {
         "body": {
@@ -657,6 +678,7 @@
         },
         "error": {
           "emailRequired": " Изисква си имейл.",
+          "groupRequired": "Необходима е група, различна от групата на собственика по подразбиране.",
           "passwordRequired": "Изисква се парола.",
           "passwordMustBeAtLeast6CharactersLong": "Паролата трябва за е дълга поне 6 знака.",
           "passwordMustContainRequirements": "Паролата трябва да съдържа поне една цифра или един символ.",

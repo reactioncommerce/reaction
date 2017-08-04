@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Accounts } from "meteor/accounts-base";
 import { Random } from "meteor/random";
+import { Reaction } from "/client/api";
 import { UpdatePasswordOverlay } from "/client/modules/accounts/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { LoginFormValidation } from "/lib/api";
@@ -77,6 +78,9 @@ const wrapComponent = (Comp) => (
           this.setState({
             isOpen: !this.state.isOpen
           });
+
+          const shopId = Reaction.getUserPreferences("reaction", "activeShopId");
+          Reaction.setShopId(shopId);
         }
       });
     }
@@ -90,7 +94,7 @@ const wrapComponent = (Comp) => (
 
     formMessages = () => {
       return (
-        <Components.Messages messages={this.state.formMessages} />
+        <Components.LoginFormMessages messages={this.state.formMessages} />
       );
     }
 
