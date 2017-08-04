@@ -38,11 +38,11 @@ class InvoiceContainer extends Component {
       editedItems: [],
       value: undefined,
       isCapturing: false,
-      currency: {},
+      currency: props.currency,
       refunds: [],
       isFetching: true,
-      order: {},
-      shop: {},
+      order: props.order,
+      shop: props.shop,
       isRefunding: false,
       refundValue: 0
     };
@@ -55,21 +55,9 @@ class InvoiceContainer extends Component {
   }
 
   componentDidMount() {
-    console.log("here");
     Tracker.autorun(() => {
-      console.log("bla");
       this.dep.depend();
-
-      const order = Orders.findOne(this.props.currentData.orderId);
-      console.log("Order", order);
-      const shop = Shops.findOne({});
-
-      this.setState({
-        order,
-        shop,
-        currency: shop.currencies[shop.currency]
-      });
-
+      const order = this.state.order;
       if (order) {
         Meteor.call("orders/refunds/list", order, (error, result) => {
           if (error) Logger.warn(error);
@@ -322,13 +310,11 @@ class InvoiceContainer extends Component {
   handleRefund = (event, value) => {
     event.preventDefault();
 
-    console.log("Heeere");
     const currencySymbol = this.state.currency.symbol;
     const order = this.state.order;
     const paymentMethod = orderCreditMethod(order).paymentMethod;
     const orderTotal = paymentMethod.amount;
     const discounts = paymentMethod.discounts;
-    console.log("value", value);
     const refund = value;
     const refunds = this.state.refunds;
     let refundTotal = 0;
@@ -384,6 +370,23 @@ class InvoiceContainer extends Component {
     }
   }
 
+  adjustedTotal = () => {
+    const order = this.state.order;
+    const paymentMethod = orderCreditMethod(order).paymentMethod;
+    const discounts = orderCreditMethod(order).invoice.discounts;
+    const refunds = this.state.refunds;
+    let refundTotal = 0;
+
+    _.each(refunds, function (item) {
+      refundTotal += parseFloat(item.amount);
+    });
+
+    if (paymentMethod.processor === "Stripe") {
+      return Math.abs(paymentMethod.amount + discounts - refundTotal);
+    }
+    return Math.abs(paymentMethod.amount - refundTotal);
+  }
+
   render() {
     const {
       canMakeAdjustments, paymentCaptured,
@@ -428,6 +431,7 @@ class InvoiceContainer extends Component {
           handleCapturePayment={this.handleCapturePayment}
           currency={this.state.currency}
           handleRefund={this.handleRefund}
+          adjustedTotal={this.adjustedTotal}
         />
       </TranslationProvider>
     );
@@ -443,6 +447,11 @@ function orderCreditMethod(order) {
 
 const composer = (props, onData) => {
   console.log("props", props);
+  const order = Orders.findOne(props.currentData.orderId);
+  const shop = Shops.findOne({});
+  const currency = shop.currencies[shop.currency];
+  console.log("order", order);
+
   onData(null, {
     currentData: props.currentData,
     canMakeAdjustments: props.canMakeAdjustments,
@@ -457,7 +466,10 @@ const composer = (props, onData) => {
     paymentPendingApproval: props.paymentPendingApproval,
     paymentApproved: props.paymentApproved,
     capturedDisabled: props.capturedDisabled,
-    adjustedTotal: props.adjustedTotal
+    currency,
+    shop,
+    order
+    // adjustedTotal: props.adjustedTotal
   });
 };
 

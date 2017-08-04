@@ -5,7 +5,7 @@ import { Button, NumericInput, Translation, ButtonSelect } from "/imports/plugin
 
 class InvoiceActions extends Component {
   static propTypes = {
-    adjustedTotal: PropTypes.number,
+    adjustedTotal: PropTypes.func,
     handleActionViewBack: PropTypes.func,
     invoice: PropTypes.object,
     isAdjusted: PropTypes.func
@@ -41,7 +41,7 @@ class InvoiceActions extends Component {
         </span>
 
         <div className="invoice-details">
-          <strong>{formatPriceString(adjustedTotal)}</strong>
+          <strong>{formatPriceString(adjustedTotal())}</strong>
         </div>
       </div>
     );
@@ -57,7 +57,7 @@ class InvoiceActions extends Component {
             <NumericInput
               numericType="currency"
               value={this.state.value}
-              maxValue={adjustedTotal}
+              maxValue={adjustedTotal()}
               format={this.props.currency}
               classNames={{
                 input: {
@@ -126,15 +126,18 @@ class InvoiceActions extends Component {
 
     if (this.props.paymentApproved) {
       return (
-        <button
-          className="btn btn-success flex-item-fill"
-          type="button" data-event-action="capturePayment"
-          disabled={this.props.capturedDisabled}
-          onClick = {this.props.handleCapturePayment}
-        >
-          <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
-          {/* <i class="fa fa-spinner fa-spin {{#unless isCapturing}}hidden{{/unless}}" id="btn-processing"></i> */}
-        </button>
+        <div className="flex">
+          <button
+            className="btn btn-success flex-item-fill"
+            type="button"
+            data-event-action="capturePayment"
+            disabled={this.props.capturedDisabled}
+            onClick = {this.props.handleCapturePayment}
+          >
+            <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
+            {/* <i class="fa fa-spinner fa-spin {{#unless isCapturing}}hidden{{/unless}}" id="btn-processing"></i> */}
+          </button>
+        </div>
       );
     }
   }

@@ -195,89 +195,9 @@ Template.coreOrderShippingInvoice.events({
     });
   },
 
-  /**
-   * Submit form
-   * @param  {Event} event - Event object
-   * @param  {Template} instance - Blaze Template
-   * @return {void}
-   */
-  // "click [data-event-action=applyRefund]": (event, instance) => {
-  //   event.preventDefault();
-
-  //   const { state } = Template.instance();
-  //   const currencySymbol = state.get("currency").symbol;
-  //   const order = instance.state.get("order");
-  //   const paymentMethod = orderCreditMethod(order).paymentMethod;
-  //   const orderTotal = paymentMethod.amount;
-  //   const discounts = paymentMethod.discounts;
-  //   const refund = state.get("field-refund") || 0;
-  //   const refunds = Template.instance().refunds.get();
-  //   let refundTotal = 0;
-  //   _.each(refunds, function (item) {
-  //     refundTotal += parseFloat(item.amount);
-  //   });
-
-  //   let adjustedTotal;
-
-  //   // TODO extract Stripe specific fullfilment payment handling out of core.
-  //   // Stripe counts discounts as refunds, so we need to re-add the discount to not "double discount" in the adjustedTotal
-  //   if (paymentMethod.processor === "Stripe") {
-  //     adjustedTotal = accounting.toFixed(orderTotal + discounts - refundTotal, 2);
-  //   } else {
-  //     adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
-  //   }
-
-  //   if (refund > adjustedTotal) {
-  //     Alerts.inline("Refund(s) total cannot be greater than adjusted total", "error", {
-  //       placement: "coreOrderRefund",
-  //       i18nKey: "order.invalidRefund",
-  //       autoHide: 10000
-  //     });
-  //   } else {
-  //     Alerts.alert({
-  //       title: i18next.t("order.applyRefundToThisOrder", { refund: refund, currencySymbol: currencySymbol }),
-  //       showCancelButton: true,
-  //       confirmButtonText: i18next.t("order.applyRefund")
-  //     }, (isConfirm) => {
-  //       if (isConfirm) {
-  //         state.set("isRefunding", true);
-  //         Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error, result) => {
-  //           if (error) {
-  //             Alerts.alert(error.reason);
-  //           }
-  //           if (result) {
-  //             Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
-  //           }
-  //           $("#btn-refund-payment").text(i18next.t("order.applyRefund"));
-  //           state.set("field-refund", 0);
-  //           state.set("isRefunding", false);
-  //         });
-  //       }
-  //     });
-  //   }
-  // },
-
   "click [data-event-action=makeAdjustments]": (event, instance) => {
     event.preventDefault();
     Meteor.call("orders/makeAdjustmentsToInvoice", instance.state.get("order"));
-  },
-
-  "click [data-event-action=capturePayment]": (event, instance) => {
-    event.preventDefault();
-
-    instance.state.set("isCapturing", true);
-
-    const order = instance.state.get("order");
-    Meteor.call("orders/capturePayments", order._id);
-
-    if (order.workflow.status === "new") {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
-
-      Reaction.Router.setQueryParams({
-        filter: "processing",
-        _id: order._id
-      });
-    }
   },
 
   "change input[name=refund_amount], keyup input[name=refund_amount]": (event, instance) => {
@@ -290,63 +210,6 @@ Template.coreOrderShippingInvoice.events({
  * coreOrderShippingInvoice helpers
  */
 Template.coreOrderShippingInvoice.helpers({
-  NumericInput() {
-    return NumericInput;
-  },
-
-  numericInputProps(fieldName, value = 0, enabled = true) {
-    const { state } = Template.instance();
-    const order = state.get("order");
-    const paymentMethod = orderCreditMethod(order);
-    const status = paymentMethod.status;
-    const isApprovedAmount = (status === "approved" || status === "completed");
-
-    return {
-      component: NumericInput,
-      numericType: "currency",
-      value: value,
-      disabled: !enabled,
-      isEditing: !isApprovedAmount, // Dont allow editing if its approved
-      format: state.get("currency"),
-      classNames: {
-        input: { amount: true },
-        text: {
-          "text-success": status === "completed"
-        }
-      },
-      onChange(event, data) {
-        state.set(`field-${fieldName}`, data.numberValue);
-      }
-    };
-  },
-
-  refundInputProps() {
-    const { state } = Template.instance();
-    const order = state.get("order");
-    const paymentMethod = orderCreditMethod(order).paymentMethod;
-    const refunds = Template.instance().refunds.get();
-
-    let refundTotal = 0;
-    _.each(refunds, function (item) {
-      refundTotal += parseFloat(item.amount);
-    });
-    const adjustedTotal = paymentMethod.amount - refundTotal;
-
-    return {
-      component: NumericInput,
-      numericType: "currency",
-      value: state.get("field-refund") || 0,
-      maxValue: adjustedTotal,
-      format: state.get("currency"),
-      classNames: {
-        input: { amount: true }
-      },
-      onChange(event, data) {
-        state.set("field-refund", data.numberValue);
-      }
-    };
-  },
-
   refundAmount() {
     return Template.instance().refundAmount;
   },
