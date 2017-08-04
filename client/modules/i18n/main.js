@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
-import { Shops, Packages } from "/lib/collections";
+import { Shops } from "/lib/collections";
 
 //
 // Reaction i18n Translations, RTL and Currency Exchange Support
@@ -84,7 +84,6 @@ export function getMessagesFor() {
 export const i18nextDep = new Tracker.Dependency();
 export const localeDep = new Tracker.Dependency();
 export const currencyDep = new Tracker.Dependency();
-export const packageNamespaces = [];
 
 Meteor.startup(() => {
   Tracker.autorun(function (c) {
@@ -104,16 +103,6 @@ Meteor.startup(() => {
       // every package gets a namespace, fetch them and export
       // get packages from primaryShopId as merchant shops
       // may not have all packages
-      const packages = Packages.find({
-        shopId: primaryShopId
-      }, {
-        fields: {
-          name: 1
-        }
-      }).fetch();
-      for (const pkg of packages) {
-        packageNamespaces.push(pkg.name);
-      }
 
       // By default, use the primaryShopId to get locale
       // If markteplace is enabled and set to use merchant currencies,
