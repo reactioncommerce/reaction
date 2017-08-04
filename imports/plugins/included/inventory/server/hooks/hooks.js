@@ -102,6 +102,7 @@ function markInventoryShipped(doc) {
       shopId: orderItem.shopId,
       quantity: orderItem.quantity,
       productId: orderItem.productId,
+      product: orderItem.product,
       variants: orderItem.variants,
       title: orderItem.title
     };
@@ -120,6 +121,7 @@ function markInventorySold(doc) {
       shopId: orderItem.shopId,
       quantity: orderItem.quantity,
       productId: orderItem.productId,
+      product: orderItem.product,
       variants: orderItem.variants,
       title: orderItem.title
     };
