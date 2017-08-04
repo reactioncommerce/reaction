@@ -8,9 +8,9 @@ import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
-import { Shops, Translations } from "/lib/collections";
+import { Shops, Translations, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import i18next, { packageNamespaces, getLabelsFor, getMessagesFor, i18nextDep, currencyDep } from "./main";
+import i18next, { getLabelsFor, getMessagesFor, i18nextDep, currencyDep } from "./main";
 import { mergeDeep } from "/lib/api";
 
 //
@@ -51,6 +51,20 @@ Meteor.startup(() => {
       } else {
         shopId = Reaction.getPrimaryShopId();
       }
+
+      const packageNamespaces = [];
+
+      const packages = Packages.find({
+        shopId: shopId
+      }, {
+        fields: {
+          name: 1
+        }
+      }).fetch();
+      for (const pkg of packages) {
+        packageNamespaces.push(pkg.name);
+      }
+
 
       const shop = Shops.findOne({
         _id: shopId
