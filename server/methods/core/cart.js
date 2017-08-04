@@ -244,7 +244,7 @@ Meteor.methods({
 
     const marketplaceSettings = Reaction.getMarketplaceSettings();
     let shopId;
-    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.merchantCarts) {
+    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantCart) {
       shopId = Reaction.getShopId();
     } else {
       shopId = Reaction.getPrimaryShopId();
