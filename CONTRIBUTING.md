@@ -17,7 +17,7 @@ Explore the interface and the code to give you a good overview of the product an
 
 **Step 3:**
 
-Explore the [GitHub issues already open on our main repo](https://waffle.io/reactioncommerce/reaction). If you find something you want to work on, let us know right there in the comments. [`Pull Requests Encouraged`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aissue+is%3Aopen+label%3Apull-requests-encouraged) and [`Verified Reproducible`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aopen+is%3Aissue+label%3Averified-reproducible) labeled issues are a great place to start.
+Explore the [GitHub issues already open on our main repo](https://github.com/reactioncommerce/reaction/issues) and our [GitHub project boards](https://github.com/reactioncommerce/reaction/projects). If you find something you want to work on, let us know right there in the comments. [`Pull Requests Encouraged`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aissue+is%3Aopen+label%3Apull-requests-encouraged) and [`Verified Reproducible`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aopen+is%3Aissue+label%3Averified-reproducible) labeled issues are a great place to start.
 
 If you are interested in a specific aspect of the project but aren't sure where to begin, feel free to ask. Start small and open up a dialogue with us. This will help to get your contributions accepted easily.
 
