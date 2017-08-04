@@ -188,6 +188,53 @@ class OrdersListContainer extends Component {
     return orderText;
   }
 
+  displayAlert = (selectedOrders, falsePreviousStatuses, falseCurrentState, status, whichFalseState) => {
+    const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
+    let orderText = "";
+    let skippedOrdersText = "";
+
+    if (selectedOrders.length > 1) {
+      orderText = "orders";
+    } else {
+      orderText = "order";
+    }
+
+    if (falsePreviousStatuses > 1) {
+      skippedOrdersText = "are";
+    } else {
+      skippedOrdersText = "is";
+    }
+
+    // if any of the selected order(s) have falsePreviousStatuses,
+    // display modal that asks if the user wants to proceed with the operation
+    if (falsePreviousStatuses) {
+      Alerts.alert({
+        text: i18next.t("order.skippedBulkOrdersAlert", {
+          selectedOrders: selectedOrders.length, orderText: orderText, status: capitalizeStatus,
+          numberOfSkippedOrders: falsePreviousStatuses, skippedOrdersText: skippedOrdersText, skippedState: whichFalseState
+        }),
+        type: "warning",
+        showCancelButton: true,
+        showCloseButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: i18next.t("order.approveBulkOrderAction"),
+        cancelButtonText: i18next.t("order.cancelBulkOrderAction")
+      }, (setSelected) => {
+        if (setSelected) {
+          this.shippingStatusUpdateCall(selectedOrders, status);
+        }
+      });
+      // if neither status is false, alert that order(s) are already in the 'status' state
+    } else if (falseCurrentState === 0 && falsePreviousStatuses === 0) {
+      Alerts.alert({
+        text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
+      });
+      // if only falseCurrentState is false, proced to set it to true
+    } else if (falseCurrentState && falsePreviousStatuses === 0) {
+      this.shippingStatusUpdateCall(selectedOrders, status);
+    }
+  }
+
   pickedShippingStatus = (selectedOrders, status) => {
     let falsePickedStatuses = 0;
 
@@ -213,6 +260,7 @@ class OrdersListContainer extends Component {
   packedShippingStatus = (selectedOrders, status) => {
     let falsePackedStatuses = 0;
     let falsePickedAndPackedStatuses = 0;
+    const whichFalseState = "Picked";
 
     // check if any of the selected order(s) have false 'Picked'
     // or 'Packed' status, or have them both as false
@@ -224,33 +272,7 @@ class OrdersListContainer extends Component {
       }
     });
 
-    // if any of the selected order(s) have both 'Picked' and 'Packed' as false,
-    // display modal that asks if the user wants to proceed with the operation
-    if (falsePickedAndPackedStatuses) {
-      Alerts.alert({
-        text: `You've requested that ${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} be set to the "Packed"
-              status, but ${falsePickedAndPackedStatuses} of these orders ${falsePickedAndPackedStatuses === 1 ? "is" : "are"} not in
-              the "Picked" state and would skip all steps leading up to the "Packed" state. Are you sure you want to do this?`,
-        type: "warning",
-        showCancelButton: true,
-        showCloseButton: true,
-        allowOutsideClick: false,
-        confirmButtonText: i18next.t("order.approveBulkOrderAction"),
-        cancelButtonText: i18next.t("order.cancelBulkOrderAction")
-      }, (setSelected) => {
-        if (setSelected) {
-          this.shippingStatusUpdateCall(selectedOrders, status);
-        }
-      });
-      // if neither status is false, alert that order(s) are already in the 'Packed' state
-    } else if (falsePackedStatuses === 0 && falsePickedAndPackedStatuses === 0) {
-      Alerts.alert({
-        text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
-      });
-      // if only 'Packed' is false, proced to set it to true
-    } else if (falsePackedStatuses && falsePickedAndPackedStatuses === 0) {
-      this.shippingStatusUpdateCall(selectedOrders, status);
-    }
+    this.displayAlert(selectedOrders, falsePickedAndPackedStatuses, falsePackedStatuses, status, whichFalseState);
   }
 
   labeledShippingStatus = (selectedOrders, status) => {
@@ -276,33 +298,7 @@ class OrdersListContainer extends Component {
       }
     });
 
-    // if any of the selected order(s) have 'Picked', 'Packed' and 'Labeled' as false,
-    // display modal that asks if the user wants to proceed with the operation
-    if (falsePickedAndPackedAndLabeledStatuses) {
-      Alerts.alert({
-        text: `You've requested that ${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} be set to the "Labeled" status, but
-              ${falsePickedAndPackedAndLabeledStatuses} of these orders ${falsePickedAndPackedAndLabeledStatuses === 1 ? "is" : "are"} not in
-              the "${whichFalseState}" state and would skip all steps leading up to the "Labeled" state. Are you sure you want to do this?`,
-        type: "warning",
-        showCancelButton: true,
-        showCloseButton: true,
-        allowOutsideClick: false,
-        confirmButtonText: i18next.t("order.approveBulkOrderAction"),
-        cancelButtonText: i18next.t("order.cancelBulkOrderAction")
-      }, (setSelected) => {
-        if (setSelected) {
-          this.shippingStatusUpdateCall(selectedOrders, status);
-        }
-      });
-      // if none of the three statuses are false, alert that order(s) are already in the 'Labeled' state
-    } else if (falseLabeledStatuses === 0 && falsePickedAndPackedAndLabeledStatuses === 0) {
-      Alerts.alert({
-        text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
-      });
-      // if only 'Labeled' is false, proced to set it to true
-    } else if (falseLabeledStatuses && falsePickedAndPackedAndLabeledStatuses === 0) {
-      this.shippingStatusUpdateCall(selectedOrders, status);
-    }
+    this.displayAlert(selectedOrders, falsePickedAndPackedAndLabeledStatuses, falseLabeledStatuses, status, whichFalseState);
   }
 
   shippedShippingStatus = (selectedOrders, status) => {
@@ -332,33 +328,7 @@ class OrdersListContainer extends Component {
       }
     });
 
-    // if any of the selected order(s) have 'Picked', 'Packed', 'Labeled' and 'Shipped' as
-    // false, display modal that asks if the user wants to proceed with the operation
-    if (falsePreviousStatuses) {
-      Alerts.alert({
-        text: `You've requested that ${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} be
-          set to the "Shipped" status, but ${falsePreviousStatuses} of these orders ${falsePreviousStatuses === 1 ? "is" : "are"}
-          not in the "${whichFalseState}" state and would skip all steps leading up to the "Shipped" state. Are you sure you want to do this?`,
-        type: "warning",
-        showCancelButton: true,
-        showCloseButton: true,
-        allowOutsideClick: false,
-        confirmButtonText: i18next.t("order.approveBulkOrderAction"),
-        cancelButtonText: i18next.t("order.cancelBulkOrderAction")
-      }, (setSelected) => {
-        if (setSelected) {
-          this.shippingStatusUpdateCall(selectedOrders, status);
-        }
-      });
-      // if none of the four statuses are false, alert that order(s) are already in the 'Shipped' state
-    } else if (falseShippedStatuses === 0 && falsePreviousStatuses === 0) {
-      Alerts.alert({
-        text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
-      });
-      // if only 'Shipped' is false, proced to set it to true
-    } else if (falseShippedStatuses && falsePreviousStatuses === 0) {
-      this.shippingStatusUpdateCall(selectedOrders, status);
-    }
+    this.displayAlert(selectedOrders, falsePreviousStatuses, falseShippedStatuses, status, whichFalseState);
   }
 
   /**
