@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Orders, Shops, Media } from "/lib/collections";
-import { Reaction } from "/client/api";
+import { i18next, Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrdersList from "../components/orderList.js";
 import {
@@ -146,6 +146,13 @@ class OrdersListContainer extends Component {
    * @return {null} no return value
    */
   shippingStatusUpdateCall = (selectedOrders, status) => {
+    let orderText;
+
+    if (selectedOrders.length > 1) {
+      orderText = "orders";
+    } else {
+      orderText = "order";
+    }
     const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
     let orderCount = 0;
 
@@ -159,7 +166,7 @@ class OrdersListContainer extends Component {
         orderCount++;
         if (orderCount === selectedOrders.length) {
           Alerts.alert({
-            text: `${selectedOrders.length} ${selectedOrders.length > 1 ? "orders" : "order"} set to ${status}`,
+            text: i18next.t("order.orderSetToState", { orderNumber: selectedOrders.length, orderText: orderText, status: status }),
             type: "success"
           });
           this.setState({
@@ -168,6 +175,17 @@ class OrdersListContainer extends Component {
         }
       });
     });
+  }
+
+  displayOrderText = (selectedOrders) => {
+    let orderText = "";
+    if (selectedOrders.length > 1) {
+      orderText = "Orders are";
+    } else {
+      orderText = "Order is";
+    }
+
+    return orderText;
   }
 
   pickedShippingStatus = (selectedOrders, status) => {
@@ -184,7 +202,7 @@ class OrdersListContainer extends Component {
     // show an alert that the order(s) are already in the picked state
     if (falsePickedStatuses === 0) {
       Alerts.alert({
-        text: `${selectedOrders.length > 1 ? "Orders are" : "Order is"} already in picked state`
+        text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
       });
     // if any of the orders have a false status of picked, set it to true
     } else {
@@ -217,8 +235,8 @@ class OrdersListContainer extends Component {
         showCancelButton: true,
         showCloseButton: true,
         allowOutsideClick: false,
-        confirmButtonText: "Yes, Set All Selected Orders",
-        cancelButtonText: "No, Cancel"
+        confirmButtonText: i18next.t("order.approveBulkOrderAction"),
+        cancelButtonText: i18next.t("order.cancelBulkOrderAction")
       }, (setSelected) => {
         if (setSelected) {
           this.shippingStatusUpdateCall(selectedOrders, status);
@@ -227,7 +245,7 @@ class OrdersListContainer extends Component {
       // if neither status is false, alert that order(s) are already in the 'Packed' state
     } else if (falsePackedStatuses === 0 && falsePickedAndPackedStatuses === 0) {
       Alerts.alert({
-        text: `${selectedOrders.length > 1 ? "Orders are" : "Order is"} already in packed state`
+        text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
       });
       // if only 'Packed' is false, proced to set it to true
     } else if (falsePackedStatuses && falsePickedAndPackedStatuses === 0) {
@@ -269,8 +287,8 @@ class OrdersListContainer extends Component {
         showCancelButton: true,
         showCloseButton: true,
         allowOutsideClick: false,
-        confirmButtonText: "Yes, Set All Selected Orders",
-        cancelButtonText: "No, Cancel"
+        confirmButtonText: i18next.t("order.approveBulkOrderAction"),
+        cancelButtonText: i18next.t("order.cancelBulkOrderAction")
       }, (setSelected) => {
         if (setSelected) {
           this.shippingStatusUpdateCall(selectedOrders, status);
@@ -279,7 +297,7 @@ class OrdersListContainer extends Component {
       // if none of the three statuses are false, alert that order(s) are already in the 'Labeled' state
     } else if (falseLabeledStatuses === 0 && falsePickedAndPackedAndLabeledStatuses === 0) {
       Alerts.alert({
-        text: `${selectedOrders.length > 1 ? "Orders are" : "Order is"} already in labeled state`
+        text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
       });
       // if only 'Labeled' is false, proced to set it to true
     } else if (falseLabeledStatuses && falsePickedAndPackedAndLabeledStatuses === 0) {
@@ -325,8 +343,8 @@ class OrdersListContainer extends Component {
         showCancelButton: true,
         showCloseButton: true,
         allowOutsideClick: false,
-        confirmButtonText: "Yes, Set All Selected Orders",
-        cancelButtonText: "No, Cancel"
+        confirmButtonText: i18next.t("order.approveBulkOrderAction"),
+        cancelButtonText: i18next.t("order.cancelBulkOrderAction")
       }, (setSelected) => {
         if (setSelected) {
           this.shippingStatusUpdateCall(selectedOrders, status);
@@ -335,7 +353,7 @@ class OrdersListContainer extends Component {
       // if none of the four statuses are false, alert that order(s) are already in the 'Shipped' state
     } else if (falseShippedStatuses === 0 && falsePreviousStatuses === 0) {
       Alerts.alert({
-        text: `${selectedOrders.length > 1 ? "Orders are" : "Order is"} already in shipped state`
+        text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
       });
       // if only 'Shipped' is false, proced to set it to true
     } else if (falseShippedStatuses && falsePreviousStatuses === 0) {

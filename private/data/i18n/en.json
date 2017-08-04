@@ -390,7 +390,17 @@
         "showMore": "Show More",
         "capture": "Capture",
         "bulkActions": "Bulk Actions",
-        "selected": "Selected"
+        "selected": "Selected",
+        "picked": "Picked",
+        "Packed": "Packed",
+        "labeled": "Labeled",
+        "shipped": "Shipped",
+        "generatePickingReport": "Generate Picking Report",
+        "generateLabel": "Generate Label",
+        "approveBulkOrderAction": "Yes, Select All Orders",
+        "cancelBulkOrderAction": "No, Cancel",
+        "orderAlreadyInState": "{{orderText}} already in {{status}} state",
+        "orderSetToState": "{{orderNumber}} {{orderText}} set to {{status}}"
       },
       "orderShipping": {
         "shipTo": "Ship To",
