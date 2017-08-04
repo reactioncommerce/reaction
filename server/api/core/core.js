@@ -500,7 +500,7 @@ export default {
    * @returns {String} return userId
    */
   createDefaultAdminUser() {
-    const shopId = this.getShopId();
+    const shopId = this.getPrimaryShopId();
 
     // if an admin user has already been created, we'll exit
     if (Roles.getUsersInRole("owner", shopId).count() !== 0) {

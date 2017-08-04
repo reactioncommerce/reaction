@@ -33,6 +33,14 @@ class AccountsDashboard extends Component {
     this.setState({ selectedGroup: group });
   };
 
+  handleMethodLoad = () => {
+    this.setState({ loading: true });
+  };
+
+  handleMethodDone = () => {
+    this.setState({ loading: false });
+  };
+
   renderGroupDetail = () => {
     const { groups, accounts } = this.state;
     return (
@@ -47,11 +55,23 @@ class AccountsDashboard extends Component {
 
   renderGroupsTable(groups) {
     if (Array.isArray(groups)) {
-      return groups.map((group, index) => {
-        return (
-          <Components.GroupsTable key={index} group={group} onGroupSelect={this.handleGroupSelect} {...this.props} />
-        );
-      });
+      return (
+        <div className="group-container">
+          {this.state.loading && <Components.Loading />}
+          {groups.map((group, index) => {
+            return (
+              <Components.GroupsTable
+                key={index}
+                group={group}
+                onMethodLoad={this.handleMethodLoad}
+                onMethodDone={this.handleMethodDone}
+                onGroupSelect={this.handleGroupSelect}
+                {...this.props}
+              />
+            );
+          })}
+        </div>
+      );
     }
 
     return null;
