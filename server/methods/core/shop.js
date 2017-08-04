@@ -64,7 +64,9 @@ Meteor.methods({
       shop.emails = currentUser.emails;
       // TODO: Review source of default address for shop from user
       // Reaction currently stores addressBook in Accounts collection not users
-      shop.addressBook = [currentUser.profile && currentUser.profile.addressBook];
+      if (currentUser.profile && currentUser.profile.addressBook) {
+        shop.addressBook = [currentUser.profile && currentUser.profile.addressBook];
+      }
 
       // clean up new shop
       delete shop.createdAt;

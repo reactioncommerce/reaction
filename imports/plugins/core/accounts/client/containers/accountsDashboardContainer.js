@@ -46,7 +46,7 @@ const handlers = {
         text: i18next.t(`admin.settings.${changeOwnerWarn}`),
         type: "warning",
         showCancelButton: true,
-        cancelButtonText: i18next.t("app.cancel"),
+        cancelButtonText: i18next.t("admin.settings.cancel"),
         confirmButtonText: i18next.t("admin.settings.continue")
       });
     }
