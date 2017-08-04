@@ -4,7 +4,7 @@ import { Logger, Reaction } from "/server/api";
 import { Fixture } from "/server/api/core/import";
 
 export default function () {
-  if (!process.env.SKIP_IMPORT) {
+  if (!process.env.SKIP_FIXTURES) {
     /**
      * Hook to setup core additional imports during Reaction init (shops process first)
      */
