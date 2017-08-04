@@ -16,6 +16,7 @@
           "accountsLabel": "Accounts"
         },
         "dashboard": {
+          "coreTitle": "Dashboard",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Internationalization utilities",
