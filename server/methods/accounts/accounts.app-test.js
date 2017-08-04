@@ -524,4 +524,48 @@ describe("Account Meteor method ", function () {
       return done();
     });
   });
+
+  describe.only("accounts/inviteShopOwner", function () {
+    beforeEach(function () {
+      sandbox.stub(Meteor, "user", function () {
+        return fakeUser;
+      });
+    });
+
+    it("should ensure only admin can invite as shop owner", function () {
+      sandbox.stub(Reaction, "hasPermission", () => false);
+      const createUserSpy = sandbox.spy(MeteorAccount, "createUser");
+      expect(() =>
+        Meteor.call("accounts/inviteShopOwner", {
+          email: fakeUser.emails[0].address,
+          name: fakeUser.profile.addressBook[0].fullName
+        })
+      ).to.throw(Meteor.Error, /Access denied/);
+      expect(createUserSpy).to.not.have.been.called;
+    });
+
+    it("should confirm if email already exists before creating", function (done) {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      expect(() =>
+        Meteor.call("accounts/inviteShopOwner", {
+          email: fakeUser.emails[0].address,
+          name: fakeUser.profile.addressBook[0].fullName
+        })
+      ).to.not.throw(Meteor.Error, /Access denied/);
+
+      return done();
+    });
+
+    it("should let admin invite a user to manage a shop", function (done) {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      expect(() =>
+        Meteor.call("accounts/inviteShopOwner", {
+          email: "custom@email.co",
+          name: "custom name"
+        })
+      ).to.not.throw(Meteor.Error, /Access denied/);
+
+      return done();
+    });
+  });
 });

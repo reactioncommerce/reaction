@@ -1,10 +1,9 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
-import { MessagesContainer } from "../helpers";
 import { ForgotPassword } from "../components";
 import { LoginFormValidation } from "/lib/api";
 
@@ -81,7 +80,7 @@ class ForgotPasswordContainer extends Component {
 
   formMessages = () => {
     return (
-      <MessagesContainer
+      <Components.LoginFormMessages
         messages={this.state.formMessages}
       />
     );
