@@ -294,7 +294,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           ]
         });
       }
-
       if (RevisionApi.isRevisionControlEnabled()) {
         const productCursor = Products.find(newSelector);
         const handle = productCursor.observeChanges({
@@ -351,8 +350,17 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             }
 
             if (product) {
-              this.added("Products", product._id, product);
-              this.added("Revisions", revision._id, revision);
+              // if we are filtering by tag, only add products with that tag
+              if (productFilters && productFilters.tags) {
+                const productHashtags = [].concat(product.hashtags, revision.documentData.hashtags);
+                if (_.intersection(productHashtags, productFilters.tags).length) {
+                  this.added("Products", product._id, product);
+                  this.added("Revisions", revision._id, revision);
+                }
+              } else {
+                this.added("Products", product._id, product);
+                this.added("Revisions", revision._id, revision);
+              }
             }
           },
           changed: (revision) => {
@@ -363,9 +371,19 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
               product = Products.findOne(revision.parentDocument);
             }
             if (product) {
-              product.__revisions = [revision];
-              this.changed("Products", product._id, product);
-              this.changed("Revisions", revision._id, revision);
+              // if we are filtering by tag, only add products with that tag
+              if (productFilters && productFilters.tags) {
+                const productHashtags = [].concat(product.hashtags, revision.documentData.hashtags);
+                if (_.intersection(productHashtags, productFilters.tags).length) {
+                  product.__revisions = [revision];
+                  this.changed("Products", product._id, product);
+                  this.changed("Revisions", revision._id, revision);
+                }
+              } else {
+                product.__revisions = [revision];
+                this.changed("Products", product._id, product);
+                this.changed("Revisions", revision._id, revision);
+              }
             }
           },
           removed: (revision) => {
@@ -373,7 +391,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
             if (!revision.documentType || revision.documentType === "product") {
               product = Products.findOne(revision.documentId);
-            } else if (revision.docuentType === "image" || revision.documentType === "tag") {
+            } else if (revision.documentType === "image" || revision.documentType === "tag") {
               product = Products.findOne(revision.parentDocument);
             }
             if (product) {
@@ -404,7 +422,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       });
       const mediaProductIds = productCursor.fetch().map((p) => p._id);
       const mediaCursor = findProductMedia(this, mediaProductIds);
-
       return [
         productCursor,
         mediaCursor
