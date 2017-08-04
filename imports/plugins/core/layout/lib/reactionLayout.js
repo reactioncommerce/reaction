@@ -6,7 +6,7 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import classnames from "classnames";
-import { getComponent } from "/imports/plugins/core/layout/lib/components";
+import { getComponent } from "@reactioncommerce/reaction-components";
 import { Templates } from "/lib/collections";
 
 class ReactionLayout extends Component {
@@ -44,15 +44,19 @@ class ReactionLayout extends Component {
           if (this.checkElementPermissions(child)) {
             let component = child.component;
 
-            if (typeof child.component === "string") {
-              component = getComponent(child.component);
-            }
+            try {
+              if (typeof child.component === "string") {
+                component = getComponent(child.component);
+              }
 
-            return React.createElement(component, {
-              key: childIndex,
-              ...(child.props || {}),
-              ...this.props.layoutProps
-            });
+              return React.createElement(component, {
+                key: childIndex,
+                ...(child.props || {}),
+                ...this.props.layoutProps
+              });
+            } catch (e) {
+              return null;
+            }
           }
 
           return null;

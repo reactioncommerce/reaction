@@ -78,7 +78,7 @@ export function registerHOC(name, hocs = []) {
 /**
  * Get a component registered with registerComponent(name, component, ...hocs).
  * @param {String} name The name of the component to get.
- * @return {Function|React.Component} A (wrapped) React component
+ * @return {Function|React.Component|null} A (wrapped) React component
  */
 export function getComponent(name) {
   const component = ComponentsTable[name];

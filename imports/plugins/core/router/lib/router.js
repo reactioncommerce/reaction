@@ -13,7 +13,7 @@ import { Session } from "meteor/session";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Tracker } from "meteor/tracker";
 import { Packages, Shops } from "/lib/collections";
-import { getComponent } from "/imports/plugins/core/layout/lib/components";
+import { getComponent } from "@reactioncommerce/reaction-components/components";
 import BlazeLayout from "/imports/plugins/core/layout/lib/blazeLayout";
 import Hooks from "./hooks";
 
@@ -401,7 +401,15 @@ export function ReactionLayout(options = {}) {
 
   // If there is no Blaze Template (Template[]) or React Component (getComponent)
   // Then use the notFound template instead
-  if (!Template[layoutStructure.template] && !getComponent(layoutStructure.template)) {
+  let hasReactComponent = true;
+
+  try {
+    getComponent(layoutStructure.template);
+  } catch (e) {
+    hasReactComponent = false;
+  }
+
+  if (!Template[layoutStructure.template] && !hasReactComponent) {
     return (
       <Blaze template={layoutStructure.notFound} />
     );
@@ -423,20 +431,25 @@ export function ReactionLayout(options = {}) {
         structure.template = "unauthorized";
       }
 
-      if (getComponent(layoutName)) {
+      try {
+        // Try to create a React component if defined
         return React.createElement(getComponent(layoutName), {
           ...props,
           structure: structure
         });
-      } else if (Template[layoutName]) {
-        return (
-          <BlazeLayout
-            {...structure}
-            blazeTemplate={layoutName}
-          />
-        );
+      } catch (e) {
+        // Otherwise fallback to a blaze template
+        if (Template[layoutName]) {
+          return (
+            <BlazeLayout
+              {...structure}
+              blazeTemplate={layoutName}
+            />
+          );
+        }
       }
 
+      // If all else fails, render a not found page
       return <Blaze template={structure.notFound} />;
     }
   };
