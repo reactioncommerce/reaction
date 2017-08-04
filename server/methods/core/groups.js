@@ -113,9 +113,15 @@ Meteor.methods({
     check(groupId, String);
 
     const { permissions, shopId, slug } = Groups.findOne({ _id: groupId }) || {};
+    const loggedInUserId = Meteor.userId();
+    const canInvite = canInviteToGroup({ groupId, loggedInUserId });
 
-    if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
-      throw new Meteor.Error(403, "Access Denied");
+    // Owners can invite to any group.
+    if (!Reaction.hasPermission("owner", loggedInUserId, shopId)) {
+      // Admins can invite to only groups they belong
+      if (!canInvite) {
+        throw new Meteor.Error(403, "Access Denied");
+      }
     }
 
     if (slug === "owner") {
@@ -193,6 +199,25 @@ Meteor.methods({
     }
   }
 });
+
+/**
+ * canInviteToGroup
+ * @summary checks if the user making the request is allowed to make invitation to that group
+ * @param {Object} options -
+ * @param {String} options.groupId - ID of group to invite to
+ * @param {String} options.loggedInUserId - ID of loggedIn user
+ * @return {Boolean} -
+ */
+function canInviteToGroup(options) {
+  const { groupId, loggedInUserId } = options;
+  const user = Accounts.findOne({ _id: loggedInUserId });
+  if (user && user.groups) {
+    if (user.groups.indexOf(groupId) > -1) {
+      return true;
+    }
+  }
+  return false;
+}
 
 function changeMarketplaceOwner({ userId, permissions }) {
   // give global marketplace role to new owner
