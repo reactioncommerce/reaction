@@ -75,14 +75,14 @@ const composer = (props, onData) => {
       shopId: Reaction.getShopId()
     }).fetch();
     const adminQuery = {
-      [`roles.${Reaction.getShopId()}`]: {
+      [`roles.${shopId}`]: {
         $in: ["dashboard"]
       }
     };
 
     const adminUsers = Meteor.users.find(adminQuery, { fields: { _id: 1 } }).fetch();
     const ids = adminUsers.map((user) => user._id);
-    const accounts = Accounts.find({ _id: { $in: ids }, shopId }).fetch();
+    const accounts = Accounts.find({ _id: { $in: ids } }).fetch();
 
     onData(null, { accounts, groups });
   }
