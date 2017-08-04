@@ -33,7 +33,7 @@ Meteor.publish("Cart", function (sessionId, userId) {
   // shopId is also required.
   let shopId = Reaction.getPrimaryShopId();
   const marketplaceSettings = Reaction.getMarketplaceSettings();
-  if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantCarts === true) {
+  if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantCart === true) {
     shopId = Reaction.getShopId();
   }
 

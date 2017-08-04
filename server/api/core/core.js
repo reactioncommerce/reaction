@@ -60,11 +60,19 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name] = packageInfo;
     return registeredPackage;
   },
-  createDefaultGroups() {
+  createDefaultGroups(options = {}) {
+    const { shopId } = options;
     const allGroups = Groups.find({}).fetch();
-    const shops = Shops.find({}).fetch();
+    const query = {};
+
+    if (shopId) {
+      query._id = shopId;
+    }
+
+    const shops = Shops.find(query).fetch();
     const ownerRoles = Roles.getAllRoles().fetch().map(role => role.name);
     const shopManagerRoles = ownerRoles.filter(role => role !== "owner");
+
     const roles = {
       "shop manager": shopManagerRoles,
       "customer": [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
