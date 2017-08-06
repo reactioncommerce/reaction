@@ -67,21 +67,20 @@
     }
     border-left: 1px solid #ccc;
   }
+  .group-container {
+    position: relative;
+    .spinner-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 9999;
+    }
+  }
 }
 
 .accounts-group-table {
   .title {
     text-transform: capitalize;
-  }
-  .rt-noData {
-    top: 100%;
-    text-align: center;
-    background: transparent;
-    width: 100%;
-    padding: 10px 0;
-    color: inherit;
-    border-bottom: 1px solid #d9d9d9;
-    margin-top: 20px;
   }
   .group-dropdown {
     width: 100%;

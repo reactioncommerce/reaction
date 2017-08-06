@@ -72,6 +72,7 @@ class GroupForm extends Component {
             <div className="justify">
               <Components.Button
                 status="primary"
+                buttonType="submit"
                 onClick={this.handleSubmit}
                 bezelStyle="solid"
                 i18nKeyLabel={this.props.i18nKeyLabel}
