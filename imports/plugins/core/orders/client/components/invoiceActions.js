@@ -5,7 +5,7 @@ import { Button, NumericInput, Translation, ButtonSelect } from "/imports/plugin
 
 class InvoiceActions extends Component {
   static propTypes = {
-    adjustedTotal: PropTypes.func,
+    adjustedTotal: PropTypes.number,
     handleActionViewBack: PropTypes.func,
     invoice: PropTypes.object,
     isAdjusted: PropTypes.func
@@ -41,7 +41,7 @@ class InvoiceActions extends Component {
         </span>
 
         <div className="invoice-details">
-          <strong>{formatPriceString(adjustedTotal())}</strong>
+          <strong>{formatPriceString(adjustedTotal)}</strong>
         </div>
       </div>
     );
@@ -57,7 +57,7 @@ class InvoiceActions extends Component {
             <NumericInput
               numericType="currency"
               value={this.state.value}
-              maxValue={adjustedTotal()}
+              maxValue={adjustedTotal}
               format={this.props.currency}
               classNames={{
                 input: {
@@ -73,12 +73,13 @@ class InvoiceActions extends Component {
           </div>
 
         </div>
+
         <Button
           className="flex-item-fill refund-button"
           type="button"
           status="primary"
           bezelStyle="solid"
-          // data-event-action="applyRefund"
+          disabled={this.props.isRefunding || this.state.value === 0}
           onClick={(event) => {
             this.props.handleRefund(event, this.state.value);
             this.setState({
@@ -87,13 +88,36 @@ class InvoiceActions extends Component {
           }}
         >
           <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
-          {/* <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i> */}
+          {this.props.isRefunding && <i className="fa fa-spinner fa-spin" />}
         </Button>
+
+        {this.props.showAfterPaymentCaptured &&
+          <Button
+            className="btn btn-danger"
+            bezelStyle="solid"
+            type="button"
+            data-event-action="cancelOrder"
+            style={{ marginBottom: 10 }}
+            data-i18n="order.cancelOrderLabel"
+          >
+            Cancel Order
+          </Button>
+        }
+
+        <a
+          className="btn btn-default btn-block"
+          href={this.props.printOrder()}
+          target="_blank"
+          data-i18n="app.printInvoice"
+        >
+          Print Invoice
+        </a>
       </div>
     );
   }
 
   renderApproval() {
+    console.log("---->", this.props.paymentPendingApproval, this.props.paymentApproved);
     if (this.props.paymentPendingApproval) {
       return (
         <div className="btn-block">
@@ -127,6 +151,15 @@ class InvoiceActions extends Component {
     if (this.props.paymentApproved) {
       return (
         <div className="flex">
+          <a
+            className="btn btn-link"
+            href={this.props.printOrder()}
+            target="_blank"
+            data-i18n="app.print"
+          >
+            Print
+          </a>
+
           <button
             className="btn btn-success flex-item-fill"
             type="button"
@@ -134,8 +167,13 @@ class InvoiceActions extends Component {
             disabled={this.props.capturedDisabled}
             onClick = {this.props.handleCapturePayment}
           >
-            <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
-            {/* <i class="fa fa-spinner fa-spin {{#unless isCapturing}}hidden{{/unless}}" id="btn-processing"></i> */}
+
+            {this.props.isCapturing ?
+              <span id="btn-capture-payment">
+                Capturing <i className="fa fa-spinner fa-spin" id="btn-processing" />
+              </span> :
+              <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
+            }
           </button>
         </div>
       );

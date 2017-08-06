@@ -9,7 +9,6 @@ import InvoiceActions from "./invoiceActions";
 class Invoice extends Component {
   static propTypes = {
     canMakeAdjustments: PropTypes.bool,
-    collection: PropTypes.string,
     dateFormat: PropTypes.func,
     discounts: PropTypes.bool,
     handleClick: PropTypes.func,
@@ -22,7 +21,7 @@ class Invoice extends Component {
   }
 
   renderDiscountForm() {
-    const { isOpen, orderId, collection } = this.props;
+    const { isOpen, order } = this.props;
 
     return (
       <div>
@@ -30,8 +29,8 @@ class Invoice extends Component {
           <div>
             <hr/>
             <DiscountList
-              id={orderId}
-              collection={collection}
+              id={order._id}
+              collection="Orders"
               validatedInput={true}
             />
             <hr/>
@@ -147,7 +146,7 @@ class Invoice extends Component {
         }
         {this.renderConditionalDisplay()}
       </div>
-    )
+    );
   }
 
   render() {
@@ -183,6 +182,7 @@ class Invoice extends Component {
               {this.renderInvoice()}
             </div>
             <InvoiceActions
+              isCapturing={this.props.isCapturing}
               isAdjusted={this.props.isAdjusted}
               paymentCaptured={this.props.paymentCaptured}
               adjustedTotal={this.props.adjustedTotal}
@@ -194,6 +194,9 @@ class Invoice extends Component {
               handleCapturePayment={this.props.handleCapturePayment}
               currency={this.props.currency}
               handleRefund={this.props.handleRefund}
+              showAfterPaymentCaptured={this.props.showAfterPaymentCaptured}
+              printOrder={this.props.printOrder}
+              isRefunding={this.props.isRefunding}
             />
           </CardBody>
         </Card>

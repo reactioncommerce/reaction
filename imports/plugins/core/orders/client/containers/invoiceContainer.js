@@ -38,11 +38,13 @@ class InvoiceContainer extends Component {
       editedItems: [],
       value: undefined,
       isCapturing: false,
+      // currency: {},
       currency: props.currency,
-      refunds: [],
+      refunds: props.refunds,
       isFetching: true,
+      // order: {},
       order: props.order,
-      shop: props.shop,
+      // shop: props.shop,
       isRefunding: false,
       refundValue: 0
     };
@@ -54,19 +56,58 @@ class InvoiceContainer extends Component {
     this.dep = new Tracker.Dependency;
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps !== this.props) {
+      this.setState({
+        order: nextProps.order,
+        currency: nextProps.currency,
+        refunds: nextProps.refunds
+      });
+    }
+  }
+
+  // componentWillUnmount() {
+  //   this.subscription.stop();
+  // }
+
   componentDidMount() {
+    console.log("Whats up");
     Tracker.autorun(() => {
       this.dep.depend();
-      const order = this.state.order;
-      if (order) {
-        Meteor.call("orders/refunds/list", order, (error, result) => {
-          if (error) Logger.warn(error);
-          this.setState({
-            refunds: result,
-            isFetching: false
-          });
-        });
-      }
+
+      // this.subscription = Meteor.subscribe("Orders");
+      // console.log("sub", this.subscription);
+      // if (this.subscription) {
+      //   console.log("Here");
+      //   const order = Orders.findOne(this.props.currentData.orderId);
+      //   const shop = Shops.findOne({});
+      //   const currency = shop.currencies[shop.currency];
+      //   this.setState({
+      //     currency,
+      //     order
+      //   });
+      //   console.log("order====>", order);
+      //   if (order) {
+      //     Meteor.call("orders/refunds/list", order, (error, result) => {
+      //       if (error) Logger.warn(error);
+      //       this.setState({
+      //         refunds: result,
+      //         isFetching: false
+      //       });
+      //     });
+      //   }
+      // }
+      // });
+      // const order = this.state.order;
+      // if (order) {
+      //   Meteor.call("orders/refunds/list", order, (error, result) => {
+      //     if (error) Logger.warn(error);
+      //     this.setState({
+      //       refunds: result,
+      //       isFetching: false
+      //     });
+      //   });
+      // }
     });
   }
 
@@ -229,7 +270,9 @@ class InvoiceContainer extends Component {
   }
 
   isAdjusted = () => {
-    const { adjustedTotal, invoice } = this.props;
+    // const { adjustedTotal, invoice } = this.props;
+    const invoice = this.invoice();
+    const adjustedTotal = this.adjustedTotal();
 
     if (invoice.total === adjustedTotal) {
       return false;
@@ -246,7 +289,6 @@ class InvoiceContainer extends Component {
 
     const order = this.state.order;
     Meteor.call("orders/capturePayments", order._id);
-
     if (order.workflow.status === "new") {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
 
@@ -255,6 +297,7 @@ class InvoiceContainer extends Component {
         _id: order._id
       });
     }
+    this.dep.changed();
   }
 
   handleApprove = (event) => {
@@ -305,6 +348,7 @@ class InvoiceContainer extends Component {
         }
       });
     }
+    this.dep.changed();
   }
 
   handleRefund = (event, value) => {
@@ -387,28 +431,130 @@ class InvoiceContainer extends Component {
     return Math.abs(paymentMethod.amount - refundTotal);
   }
 
+  showAfterPaymentCaptured = () => {
+    const order = this.state.order;
+    const orderStatus = orderCreditMethod(order).paymentMethod.status;
+    return orderStatus === "completed";
+  }
+
+  printOrder = () => {
+    const order = this.state.order;
+    const currentData = this.props.currentData;
+    return Reaction.Router.pathFor("dashboard/pdf/orders", {
+      hash: {
+        id: order._id,
+        shipment: currentData.fulfillment._id
+      }
+    });
+  }
+
+  discounts() {
+    const enabledPaymentsArr = [];
+    const apps = Reaction.Apps({
+      provides: "paymentMethod",
+      enabled: true
+    });
+    for (const app of apps) {
+      if (app.enabled === true) enabledPaymentsArr.push(app);
+    }
+    let discount = false;
+
+    for (const enabled of enabledPaymentsArr) {
+      if (enabled.packageName === "discount-codes") {
+        discount = true;
+        break;
+      }
+    }
+    return discount;
+  }
+
+  invoice() {
+    const order = this.state.order;
+
+    const invoice = Object.assign({}, order.billing[0].invoice, {
+      totalItems: _.sumBy(order.items, (o) => o.quantity)
+    });
+    return invoice;
+  }
+
+  paymentPendingApproval() {
+    const order = this.state.order;
+    const status = orderCreditMethod(order).paymentMethod.status;
+    console.log("paymentPendingApproval", status === "created" || status === "adjustments" || status === "error");
+    return status === "created" || status === "adjustments" || status === "error";
+  }
+
+  canMakeAdjustments() {
+    const order = this.state.order;
+    const status = orderCreditMethod(order).paymentMethod.status;
+
+    if (status === "approved" || status === "completed" || status === "refunded") {
+      return false;
+    }
+    return true;
+  }
+
+  paymentApproved() {
+    const order = this.state.order;
+    console.log("paymentPending", order.billing[0].paymentMethod.status === "approved");
+
+    return order.billing[0].paymentMethod.status === "approved";
+  }
+
+  paymentCaptured() {
+    const order = this.state.order;
+    const orderStatus = orderCreditMethod(order).paymentMethod.status;
+    const orderMode = orderCreditMethod(order).paymentMethod.mode;
+    return orderStatus === "completed" || (orderStatus === "refunded" && orderMode === "capture") || (orderStatus === "partialRefund" && orderMode === "capture");
+  }
+
+  items() {
+    const order = this.state.order;
+    const currentData = this.props.currentData;
+    const shipment = currentData.fulfillment;
+
+    // returns order items with shipping detail
+    const returnItems = _.map(order.items, (item) => {
+      const shipping = shipment.shipmentMethod;
+      return _.extend(item, { shipping });
+    });
+
+    let items;
+
+
+    // if avalara tax has been enabled it adds a "taxDetail" field for every item
+    if (order.taxes !== undefined) {
+      const taxes = order.taxes.slice(0, -1);
+
+      items = _.map(returnItems, (item) => {
+        const taxDetail = _.find(taxes, {
+          lineNumber: item._id
+        });
+        return _.extend(item, { taxDetail });
+      });
+    } else {
+      items = returnItems;
+    }
+    return items;
+  }
+
   render() {
-    const {
-      canMakeAdjustments, paymentCaptured,
-      discounts, invoice, orderId, refunds,
-      isFetching, collection, uniqueItems
-    } = this.props;
+    const { isFetching } = this.props;
 
     return (
       <TranslationProvider>
         <Invoice
-          canMakeAdjustments={canMakeAdjustments}
-          paymentCaptured={paymentCaptured}
+          canMakeAdjustments={this.canMakeAdjustments()}
+          paymentCaptured={this.paymentCaptured()}
           isOpen={this.state.isOpen}
-          discounts={discounts}
+          discounts={this.discounts()}
           handleClick={this.handleClick}
-          invoice={invoice}
-          orderId={orderId}
-          refunds={refunds}
+          invoice={this.invoice()}
+          refunds={this.state.refunds}
           dateFormat={this.dateFormat}
           isFetching={isFetching}
-          collection={collection}
           onClose={this.handleClose}
+          isCapturing={this.state.isCapturing}
           handleSelectAllItems={this.handleSelectAllItems}
           selectAllItems={this.state.selectAllItems}
           selectedItems={this.state.selectedItems}
@@ -417,21 +563,24 @@ class InvoiceContainer extends Component {
           handleItemSelect={this.handleItemSelect}
           popOverIsOpen={this.state.popOverIsOpen}
           displayMedia={this.handleDisplayMedia}
-          uniqueItems={uniqueItems}
+          uniqueItems={this.items()}
           editedItems={this.state.editedItems}
           isUpdating={this.state.isUpdating}
           toggleUpdating={this.toggleUpdating}
           applyRefund={this.applyRefund}
           getRefundedItemsInfo={this.getRefundedItemsInfo}
-          paymentPendingApproval={this.props.paymentPendingApproval}
-          paymentApproved={this.props.paymentApproved}
+          paymentPendingApproval={this.paymentPendingApproval()}
+          paymentApproved={this.paymentApproved()}
           capturedDisabled={this.props.capturedDisabled}
           handleApprove={this.handleApprove}
           isAdjusted={this.isAdjusted}
           handleCapturePayment={this.handleCapturePayment}
           currency={this.state.currency}
           handleRefund={this.handleRefund}
-          adjustedTotal={this.adjustedTotal}
+          adjustedTotal={this.adjustedTotal()}
+          showAfterPaymentCaptured={this.showAfterPaymentCaptured}
+          printOrder={this.printOrder}
+          isRefunding={this.state.isRefunding}
         />
       </TranslationProvider>
     );
@@ -447,29 +596,17 @@ function orderCreditMethod(order) {
 
 const composer = (props, onData) => {
   console.log("props", props);
-  const order = Orders.findOne(props.currentData.orderId);
-  const shop = Shops.findOne({});
-  const currency = shop.currencies[shop.currency];
-  console.log("order", order);
+  // const order = Orders.findOne(props.currentData.orderId);
+  // const shop = Shops.findOne({});
+  // const currency = shop.currencies[shop.currency];
+  // console.log("order", order);
 
   onData(null, {
     currentData: props.currentData,
-    canMakeAdjustments: props.canMakeAdjustments,
-    paymentCaptured: props.paymentCaptured,
-    discounts: props.discounts,
-    invoice: props.invoice,
-    orderId: props.orderId,
-    refunds: props.refunds,
     isFetching: props.isFetching,
-    collection: props.collection,
-    uniqueItems: props.items,
-    paymentPendingApproval: props.paymentPendingApproval,
-    paymentApproved: props.paymentApproved,
-    capturedDisabled: props.capturedDisabled,
-    currency,
-    shop,
-    order
-    // adjustedTotal: props.adjustedTotal
+    currency: props.currency,
+    order: props.order,
+    refunds: props.refunds
   });
 };
 

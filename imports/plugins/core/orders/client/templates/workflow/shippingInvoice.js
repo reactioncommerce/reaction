@@ -59,6 +59,25 @@ Template.coreOrderShippingInvoice.helpers({
     const currentData = Template.currentData();
     return currentData;
   },
+  order() {
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+    console.log("order", order);
+    return order;
+  },
+  currency() {
+    const instance = Template.instance();
+    const currency = instance.state.get("currency");
+    return currency;
+  },
+  refunds() {
+    const refunds = Template.instance().refunds.get();
+    if (_.isArray(refunds)) {
+      return refunds.reverse();
+    }
+
+    return refunds;
+  },
   isCapturing() {
     const instance = Template.instance();
     if (instance.state.get("isCapturing")) {
@@ -83,50 +102,9 @@ Template.coreOrderShippingInvoice.helpers({
     }
     return false;
   },
-  DiscountList() {
-    return DiscountList;
-  },
+
   InvoiceContainer() {
     return InvoiceContainer;
-  },
-  InvoiceActionsContainer() {
-    return InvoiceActionsContainer;
-  },
-  buttonSelectComponent() {
-    return {
-      component: ButtonSelect,
-      buttons: [
-        {
-          name: "Approve",
-          i18nKeyLabel: "order.approveInvoice",
-          active: true,
-          status: "success",
-          eventAction: "approveInvoice",
-          bgColor: "bg-success",
-          buttonType: "submit"
-        }, {
-          name: "Cancel",
-          i18nKeyLabel: "order.cancelInvoice",
-          active: false,
-          status: "danger",
-          eventAction: "cancelOrder",
-          bgColor: "bg-danger",
-          buttonType: "button"
-        }
-      ]
-    };
-  },
-  LineItemsContainer() {
-    return LineItemsContainer;
-  },
-  TotalActionsContainer() {
-    return TotalActionsContainer;
-  },
-  orderId() {
-    const instance = Template.instance();
-    const state = instance.state;
-    const order = state.get("order");
-    return order._id;
   }
 });
 
@@ -214,20 +192,6 @@ Template.coreOrderShippingInvoice.helpers({
     return Template.instance().refundAmount;
   },
 
-  invoice() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-
-    const invoice = Object.assign({}, order.billing[0].invoice, {
-      totalItems: _.sumBy(order.items, (o) => o.quantity)
-    });
-    return invoice;
-  },
-
-  money(amount) {
-    return formatNumber(amount);
-  },
-
   disabled() {
     const instance = Template.instance();
     const order = instance.state.get("order");
@@ -238,89 +202,6 @@ Template.coreOrderShippingInvoice.helpers({
     }
 
     return "";
-  },
-
-  paymentPendingApproval() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    const status = orderCreditMethod(order).paymentMethod.status;
-
-    return status === "created" || status === "adjustments" || status === "error";
-  },
-
-  canMakeAdjustments() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    const status = orderCreditMethod(order).paymentMethod.status;
-
-    if (status === "approved" || status === "completed" || status === "refunded") {
-      return false;
-    }
-    return true;
-  },
-
-  showAfterPaymentCaptured() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    const orderStatus = orderCreditMethod(order).paymentMethod.status;
-    console.log("orderStatus--->", orderStatus);
-    return orderStatus === "completed";
-  },
-
-  paymentApproved() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-
-    return order.billing[0].paymentMethod.status === "approved";
-  },
-
-  paymentCaptured() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    const orderStatus = orderCreditMethod(order).paymentMethod.status;
-    const orderMode = orderCreditMethod(order).paymentMethod.mode;
-    return orderStatus === "completed" || (orderStatus === "refunded" && orderMode === "capture") || (orderStatus === "partialRefund" && orderMode === "capture");
-  },
-
-  refundTransactions() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    const transactions = orderCreditMethod(order).paymentMethod.transactions;
-
-    return _.filter(transactions, (transaction) => {
-      return transaction.type === "refund";
-    });
-  },
-
-  refunds() {
-    const refunds = Template.instance().refunds.get();
-    if (_.isArray(refunds)) {
-      return refunds.reverse();
-    }
-
-    return refunds;
-  },
-
-  /**
-   * Get the total after all refunds
-   * @return {Number} the amount after all refunds
-   */
-  adjustedTotal() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    const paymentMethod = orderCreditMethod(order).paymentMethod;
-    const discounts = orderCreditMethod(order).invoice.discounts;
-    const refunds = Template.instance().refunds.get();
-    let refundTotal = 0;
-
-    _.each(refunds, function (item) {
-      refundTotal += parseFloat(item.amount);
-    });
-
-    if (paymentMethod.processor === "Stripe") {
-      return Math.abs(paymentMethod.amount + discounts - refundTotal);
-    }
-    return Math.abs(paymentMethod.amount - refundTotal);
   },
 
   capturedDisabled() {
@@ -341,18 +222,6 @@ Template.coreOrderShippingInvoice.helpers({
     return null;
   },
 
-  /**
-   * Order
-   * @summary find a single order using the order id spplied with the template
-   * data context
-   * @return {Object} A single order
-   */
-  order() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    return order;
-  },
-
   shipment() {
     const instance = Template.instance();
     const order = instance.state.get("order");
@@ -360,56 +229,5 @@ Template.coreOrderShippingInvoice.helpers({
     const shipment = _.filter(order.shipping, { _id: currentData.fulfillment._id })[0];
 
     return shipment;
-  },
-
-  discounts() {
-    const enabledPaymentsArr = [];
-    const apps = Reaction.Apps({
-      provides: "paymentMethod",
-      enabled: true
-    });
-    for (const app of apps) {
-      if (app.enabled === true) enabledPaymentsArr.push(app);
-    }
-    let discount = false;
-
-    for (const enabled of enabledPaymentsArr) {
-      if (enabled.packageName === "discount-codes") {
-        discount = true;
-        break;
-      }
-    }
-    return discount;
-  },
-
-  items() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    const currentData = Template.currentData();
-    const shipment = currentData.fulfillment;
-
-    // returns order items with shipping detail
-    const returnItems = _.map(order.items, (item) => {
-      const shipping = shipment.shipmentMethod;
-      return _.extend(item, { shipping });
-    });
-
-    let items;
-
-
-    // if avalara tax has been enabled it adds a "taxDetail" field for every item
-    if (order.taxes !== undefined) {
-      const taxes = order.taxes.slice(0, -1);
-
-      items = _.map(returnItems, (item) => {
-        const taxDetail = _.find(taxes, {
-          lineNumber: item._id
-        });
-        return _.extend(item, { taxDetail });
-      });
-    } else {
-      items = returnItems;
-    }
-    return items;
   }
 });
