@@ -392,7 +392,7 @@
         "bulkActions": "Bulk Actions",
         "selected": "Selected",
         "picked": "Picked",
-        "Packed": "Packed",
+        "packed": "Packed",
         "labeled": "Labeled",
         "shipped": "Shipped",
         "generatePickingReport": "Generate Picking Report",
