@@ -85,9 +85,9 @@ export const methods = {
     }, {
       $set: {
         "shipping.$.picked": picked,
-        "shipping.$.workflow.status": "picked"
+        "shipping.$.workflow.status": "coreOrderWorkflow/picked"
       }, $push: {
-        "shipping.$.workflow.workflow": "picked"
+        "shipping.$.workflow.workflow": "coreOrderWorkflow/picked"
       }
     });
 
@@ -135,9 +135,9 @@ export const methods = {
     }, {
       $set: {
         "shipping.$.packed": packed,
-        "shipping.$.workflow.status": "packed"
+        "shipping.$.workflow.status": "coreOrderWorkflow/packed"
       }, $push: {
-        "shipping.$.workflow.workflow": "packed"
+        "shipping.$.workflow.workflow": "coreOrderWorkflow/packed"
       }
     });
 
@@ -184,9 +184,9 @@ export const methods = {
     }, {
       $set: {
         "shipping.$.labeled": labeled,
-        "shipping.$.workflow.status": "labeled"
+        "shipping.$.workflow.status": "coreOrderWorkflow/labeled"
       }, $push: {
-        "shipping.$.workflow.workflow": "labeled"
+        "shipping.$.workflow.workflow": "coreOrderWorkflow/labeled"
       }
     });
 
@@ -430,9 +430,9 @@ export const methods = {
     }, {
       $set: {
         "shipping.$.shipped": shipped || true,
-        "shipping.$.workflow.status": "shipped"
+        "shipping.$.workflow.status": "coreOrderWorkflow/shipped"
       }, $push: {
-        "shipping.$.workflow.workflow": "shipped"
+        "shipping.$.workflow.workflow": "coreOrderWorkflow/shipped"
       }
     });
 

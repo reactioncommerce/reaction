@@ -325,10 +325,10 @@
         "coreOrderWorkflow/processing": "Processing",
         "coreOrderWorkflow/completed": "Completed",
         "coreOrderWorkflow/canceled": "Canceled",
-        "picked": "Picked",
-        "packed": "Packed",
-        "labeled": "Labeled",
-        "shipped": "Shipped"
+        "coreOrderWorkflow/picked": "Picked",
+        "coreOrderWorkflow/packed": "Packed",
+        "coreOrderWorkflow/labeled": "Labeled",
+        "coreOrderWorkflow/shipped": "Shipped"
       },
       "cartSubTotals": {
         "discount": "Discount",
