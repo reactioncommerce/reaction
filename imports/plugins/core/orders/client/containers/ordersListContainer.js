@@ -6,11 +6,7 @@ import { Orders, Shops, Media } from "/lib/collections";
 import { i18next, Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrdersList from "../components/orderList.js";
-import {
-  PACKAGE_NAME,
-  ORDER_LIST_FILTERS_PREFERENCE_NAME,
-  ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME
-} from "../../lib/constants";
+import { PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, shippingStates } from "../../lib/constants";
 
 
 class OrdersListContainer extends Component {
@@ -260,7 +256,7 @@ class OrdersListContainer extends Component {
   packedShippingStatus = (selectedOrders, status) => {
     let falsePackedStatuses = 0;
     let falsePickedAndPackedStatuses = 0;
-    const whichFalseState = "Picked";
+    const whichFalseState = shippingStates.picked;
 
     // check if any of the selected order(s) have false 'Picked'
     // or 'Packed' status, or have them both as false
@@ -283,11 +279,11 @@ class OrdersListContainer extends Component {
     selectedOrders.forEach((order) => {
       // set the variable 'whichFalseState' with the relevant false shipping status to display in the below modal
       if (order.shipping[0].picked === false) {
-        whichFalseState = "Picked";
+        whichFalseState = shippingStates.picked;
       } else if (order.shipping[0].packed === false) {
-        whichFalseState = "Packed";
+        whichFalseState = shippingStates.packed;
       } else if (order.shipping[0].picked === false && order.shipping[0].packed === false) {
-        whichFalseState = "Picked";
+        whichFalseState = shippingStates.picked;
       }
 
       // check if any of the selected order(s) have either 'Picked', 'Packed' or 'Labeled' status as false, or have them all as false.
@@ -309,13 +305,13 @@ class OrdersListContainer extends Component {
     selectedOrders.forEach((order) => {
       // set the variable 'whichFalseState' with the relevant false shipping status to display in the below modal
       if (order.shipping[0].picked === false) {
-        whichFalseState = "Picked";
+        whichFalseState = shippingStates.picked;
       } else if (order.shipping[0].packed === false) {
-        whichFalseState = "Packed";
+        whichFalseState = shippingStates.packed;
       } else if (order.shipping[0].labeled === false) {
-        whichFalseState = "Labeled";
+        whichFalseState = shippingStates.labeled;
       } else if (order.shipping[0].picked === false && order.shipping[0].packed === false && order.shipping[0].labeled === false) {
-        whichFalseState = "Picked";
+        whichFalseState = shippingStates.picked;
       }
 
       // check if any of the selected order(s) have either 'Picked', 'Packed', 'Labeled' or
