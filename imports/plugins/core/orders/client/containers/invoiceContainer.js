@@ -34,11 +34,6 @@ class InvoiceContainer extends Component {
       selectedItems: [],
       editedItems: []
     };
-
-    this.handleClick = this.handleClick.bind(this);
-    this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
-    this.applyRefund = this.applyRefund.bind(this);
-    this.handleRefund = this.handleRefund.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -56,22 +51,6 @@ class InvoiceContainer extends Component {
     this.setState({
       isOpen: true
     });
-  }
-
-  togglePopOver = () => {
-    if (this.state.popOverIsOpen) {
-      return this.setState({
-        popOverIsOpen: false,
-        selectAllItems: false,
-        selectedItems: [],
-        editedItems: []
-      });
-    }
-    return this.setState({ popOverIsOpen: true });
-  }
-
-  toggleUpdating = (isUpdating) => {
-    return this.setState({ isUpdating });
   }
 
   handleSelectAllItems = (uniqueItems) => {
@@ -97,7 +76,7 @@ class InvoiceContainer extends Component {
     }
   }
 
-  inputOnChange = (event, value, lineItem) => {
+  handleInputChange = (event, value, lineItem) => {
     let { editedItems } = this.state;
 
     const isEdited = editedItems.find(item => {
@@ -124,31 +103,54 @@ class InvoiceContainer extends Component {
     });
   }
 
-  handleItemSelect = (itemId) => {
-    const { selectedItems, editedItems } = this.state;
+  handleItemSelect = (lineItem) => {
+    let { selectedItems, editedItems } = this.state;
 
-    if (!selectedItems.includes(itemId)) {
-      selectedItems.push(itemId);
+    // if item is not in the selectedItems array
+    if (!selectedItems.includes(lineItem._id)) {
+      // include it in the array
+      selectedItems.push(lineItem._id);
+
+      // Add every quantity in the row to be refunded
+      const isEdited = editedItems.find(item => {
+        return item.id === lineItem._id;
+      });
+
+      if (isEdited) {
+        editedItems = editedItems.filter(item => item.id !== lineItem._id);
+        isEdited.refundedTotal = lineItem.variants.price * lineItem.quantity;
+        isEdited.refundedQuantity = lineItem.quantity;
+        editedItems.push(isEdited);
+      } else {
+        editedItems.push({
+          id: lineItem._id,
+          title: lineItem.title,
+          refundedTotal: lineItem.variants.price * lineItem.quantity,
+          refundedQuantity: lineItem.quantity
+        });
+      }
+
       this.setState({
+        editedItems,
         selectedItems,
         isUpdating: true,
         selectAllItems: false
       });
     } else {
       // remove item from selected items
-      const updatedSelectedArray = selectedItems.filter((id) => {
-        if (id !== itemId) {
+      selectedItems = selectedItems.filter((id) => {
+        if (id !== lineItem._id) {
           return id;
         }
       });
       // remove item from edited quantities
-      const updatedEditedItems = editedItems.filter(item => item.id !== itemId);
+      editedItems = editedItems.filter(item => item.id !== lineItem._id);
 
       this.setState({
-        selectedItems: updatedSelectedArray,
+        editedItems,
+        selectedItems,
         isUpdating: true,
-        selectAllItems: false,
-        editedItems: updatedEditedItems
+        selectAllItems: false
       });
     }
   }
@@ -345,6 +347,8 @@ class InvoiceContainer extends Component {
   }
 
   render() {
+    console.log("selectedItems", this.state.selectedItems);
+    console.log("editedItems", this.state.editedItems);
     return (
       <TranslationProvider>
         <Invoice
@@ -354,7 +358,7 @@ class InvoiceContainer extends Component {
           handleSelectAllItems={this.handleSelectAllItems}
           onClose={this.handleClose}
           togglePopOver={this.togglePopOver}
-          inputOnChange={this.inputOnChange}
+          handleInputChange={this.handleInputChange}
           handleItemSelect={this.handleItemSelect}
           displayMedia={this.handleDisplayMedia}
           toggleUpdating={this.toggleUpdating}
@@ -398,7 +402,9 @@ const composer = (props, onData) => {
   const orderDiscounts = orderCreditMethod(order).invoice.discounts;
 
   const paymentApproved = order.billing[0].paymentMethod.status === "approved";
-  const paymentCaptured = orderStatus === "completed" || (orderStatus === "refunded" && orderMode === "capture") || (orderStatus === "partialRefund" && orderMode === "capture");
+  const paymentCaptured = orderStatus === "completed" ||
+    (orderStatus === "refunded" && orderMode === "capture") ||
+    (orderStatus === "partialRefund" && orderMode === "capture");
   const paymentPendingApproval = orderStatus === "created" || orderStatus === "adjustments" || orderStatus === "error";
   const showAfterPaymentCaptured = orderStatus === "completed";
 

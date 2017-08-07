@@ -10,18 +10,16 @@ import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox, Translati
 
 class LineItems extends Component {
   static propTypes = {
+    applyRefund: PropTypes.func,
     displayMedia: PropTypes.func,
     editedItems: PropTypes.array,
+    getRefundedItemsInfo: PropTypes.func,
+    handleInputChange: PropTypes.func,
     handleItemSelect: PropTypes.func,
     handleSelectAllItems: PropTypes.func,
-    inputOnChange: PropTypes.func,
-    isHovered: PropTypes.func,
-    isUpdating: PropTypes.bool,
-    popOverIsOpen: PropTypes.bool,
+    isRefunding: PropTypes.bool,
     selectAllItems: PropTypes.bool,
     selectedItems: PropTypes.array,
-    togglePopOver: PropTypes.func,
-    toggleUpdating: PropTypes.func,
     uniqueItems: PropTypes.array
   }
 
@@ -67,7 +65,7 @@ class LineItems extends Component {
               <RolloverCheckbox
                 className="order-invoice-rollover"
                 checkboxClassName="checkbox-avatar checkbox-large"
-                onChange={() => this.props.handleItemSelect(uniqueItem._id)}
+                onChange={() => this.props.handleItemSelect(uniqueItem)}
                 checked={this.props.selectedItems.includes(uniqueItem._id)}
               >
                 {this.displayMedia(uniqueItem)}
@@ -90,8 +88,7 @@ class LineItems extends Component {
               <NumberTypeInput
                 minValue={0}
                 defaultValue={uniqueItem.quantity}
-                onChange={(event, value) => this.props.inputOnChange(event, value, uniqueItem)}
-                // value={this.props.value}
+                onChange={(event, value) => this.props.handleInputChange(event, value, uniqueItem)}
                 maxValue={uniqueItem.quantity}
               /> :
               <div>{uniqueItem.quantity}</div>
@@ -267,7 +264,11 @@ class LineItems extends Component {
               bezelStyle="solid"
               status="default"
               label="Cancel"
-              onClick={() => {}}
+              onClick={() => {
+                this.setState({
+                  isOpen: false
+                });
+              }}
             />
           </div>
           <div className="invoice-action-refund">
@@ -276,6 +277,7 @@ class LineItems extends Component {
               bezelStyle="solid"
               status="primary"
               label="Refund Items"
+              disabled={this.props.isRefunding || this.props.selectedItems.length === 0}
               onClick={this.props.applyRefund}
             />
           </div>

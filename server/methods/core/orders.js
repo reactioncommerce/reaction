@@ -848,7 +848,6 @@ export const methods = {
         future.return(error);
       } else {
         check(result, [Schemas.Refund]);
-        console.log("refund list ----->", result);
         future.return(result);
       }
     });
@@ -937,8 +936,6 @@ export const methods = {
    * @summary Apply a refund to an already captured order
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object
-   * @param {Number} amount - Amount of the refund, as a positive number
-   * @param {Number} quantity - Quantity of items to return
    * @param {Array} returnItems - Information about items to return
    * @return {null} no return value
    */
@@ -960,8 +957,6 @@ export const methods = {
 
     const packageId = paymentMethod.paymentPackageId;
     const settingsKey = paymentMethod.paymentSettingsKey;
-    console.log("before approve", paymentMethod.mode);
-    console.log("mess", paymentMethod.status);
 
     // Check if payment is yet to be captured
     if (paymentMethod.mode === "authorize") {
@@ -977,9 +972,6 @@ export const methods = {
         }
       });
     }
-
-    console.log("after that stuff", paymentMethod.mode);
-    console.log("message", paymentMethod.status);
 
     // check if payment provider supports de-authorize
     const checkSupportedMethods = Packages.findOne({

@@ -41,7 +41,6 @@ Template.coreOrderShippingInvoice.onCreated(function () {
     if (order) {
       Meteor.call("orders/refunds/list", order, (error, result) => {
         if (error) Logger.warn(error);
-        console.log("result-->", result);
         this.refunds.set(result);
         this.state.set("isFetching", false);
       });
