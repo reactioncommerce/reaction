@@ -8,7 +8,7 @@ import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
 import { StripeApi } from "./stripeapi";
 
-import { Cart } from "/lib/collections";
+import { Cart, Shops, Accounts } from "/lib/collections";
 
 function luhnValid(x) {
   return [...x].reverse().reduce((sum, c, i) => {
@@ -175,11 +175,11 @@ Meteor.methods({
     }
   },
 
-  "stripe/payment/createMultipleCharges": function (transactionType, cardData, cartId, currency) {
+  "stripe/payment/createCharges": async function (transactionType, cardData, cartId) {
     check(transactionType, String);
     check(cardData, { name: String, number: ValidCardNumber, expire_month: ValidExpireMonth, expire_year: ValidExpireYear, cvv2: ValidCVV, type: String });
     check(cartId, String);
-    check(currency, String);
+
 
     const stripePkg = Reaction.getPackageSettingsWithOptions({
       shopId: Reaction.getPrimaryShopId(),
@@ -193,14 +193,23 @@ Meteor.methods({
       throw new Meteor.Error("Attempted to create multiple stripe charges, but stripe was not configured properly.");
     }
 
+
+    // Must have an email
     const cart = Cart.findOne({ _id: cartId });
-    if (cart) {
-      cart.email = "test@example.com";
+    const customerAccount = Accounts.findOne({ _id: cart.userId });
+    let customerEmail;
+
+    if (!customerAccount || !Array.isArray(customerAccount.emails)) {
+      // TODO: Is it okay to create random email here if anonymous?
+      Logger.Error("cart email missing!");
+      throw new Meteor.Error("Email is required for marketplace checkouts.");
     }
 
-    if (!cart.email) {
-      // TODO: Is it okay to create random email here if anonymous?
-      throw new Meteor.Error("Email is required for marketplace checkouts.");
+    const defaultEmail = customerAccount.emails.find((email) => email.provides === "default");
+    if (defaultEmail) {
+      customerEmail = defaultEmail.address;
+    } else {
+      throw new Meteor.Error("Customer does not have default email");
     }
 
     // Initialize stripe api lib
@@ -216,15 +225,23 @@ Meteor.methods({
       return uniqueShopIds;
     }, []);
 
+
     const chargesByShopId = {};
+
+    // TODO: If there is only one chargesByShopId and the shopId is primaryShopId -
+    // Create a standard charge and bypass creating a customer for this charge
+    const primaryShop = Shops.findOne({ _id: Reaction.getPrimaryShopId() });
+    const currency = primaryShop.currency;
+
 
     try {
       // Creates a customer object, adds a source via the card data
       // and waits for the promise to resolve
       const customer = Promise.await(stripe.customers.create({
-        email: cart.email
+        email: customerEmail
       }).then(function (cust) {
-        return stripe.customers.createSource(cust.id, { source: { ...card, object: "card" } });
+        const customerCard = stripe.customers.createSource(cust.id, { source: { ...card, object: "card" } });
+        return customerCard;
       }));
 
       // Get cart totals for each Shop
@@ -232,6 +249,9 @@ Meteor.methods({
 
       // Loop through all shopIds represented in cart
       shopIds.forEach((shopId) => {
+        // TODO: If shopId is primaryShopId - create a non-connect charge with the
+        // stripe customer object
+
         // get stripe package for this shopId
         const merchantStripePkg = Reaction.getPackageSettingsWithOptions({
           shopId: shopId,
@@ -269,6 +289,13 @@ Meteor.methods({
 
         chargesByShopId[shopId] = charge;
       });
+      // If successful, call cart/submitPayment and return success back to client.
+      //
+      // If unsuccessful, return censored failure back to client
+
+      // Return an object where the object keys represent the shops involved in this order and the
+      // values are the charges made for that shop.
+      return chargesByShopId;
     } catch (error) {
       throw new Meteor.Error("Error creating multiple stripe charges", error);
     }
