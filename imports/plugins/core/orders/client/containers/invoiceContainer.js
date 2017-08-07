@@ -38,13 +38,10 @@ class InvoiceContainer extends Component {
       editedItems: [],
       value: undefined,
       isCapturing: false,
-      // currency: {},
       currency: props.currency,
       refunds: props.refunds,
       isFetching: true,
-      // order: {},
       order: props.order,
-      // shop: props.shop,
       isRefunding: false,
       refundValue: 0
     };
@@ -56,22 +53,11 @@ class InvoiceContainer extends Component {
     this.dep = new Tracker.Dependency;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps !== this.props) {
-      this.setState({
-        order: nextProps.order,
-        currency: nextProps.currency,
-        refunds: nextProps.refunds
-      });
-    }
-  }
-
   // componentWillUnmount() {
   //   this.subscription.stop();
   // }
 
   componentDidMount() {
-    console.log("Whats up");
     Tracker.autorun(() => {
       this.dep.depend();
 
@@ -109,6 +95,16 @@ class InvoiceContainer extends Component {
       //   });
       // }
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps !== this.props) {
+      this.setState({
+        order: nextProps.order,
+        currency: nextProps.currency,
+        refunds: nextProps.refunds
+      });
+    }
   }
 
   dateFormat = (context, block) => {
@@ -164,13 +160,10 @@ class InvoiceContainer extends Component {
 
   inputOnChange = (event, value, lineItem) => {
     let { editedItems } = this.state;
-    console.log("value---->", value);
-    // console.log("uniqItem-->", lineItem);
+
     const isEdited = editedItems.find(item => {
       return item.id === lineItem._id;
     });
-
-    // console.log("isEdited--->", isEdited);
 
     const refundedQuantity = lineItem.quantity - value;
 
@@ -251,14 +244,32 @@ class InvoiceContainer extends Component {
   }
 
   applyRefund = () => {
-    console.log("Order Id----?", this.state.order._id);
     const paymentMethod = orderCreditMethod(this.state.order).paymentMethod;
-    // const amount = this.getRefundedItemsInfo().total;
-    // const quantity = this.getRefundedItemsInfo().quantity;
-    console.log("paymentMethod ---->", paymentMethod);
-    console.log("editedItems", this.state.editedItems);
     const editedItems = this.state.editedItems;
-    Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, editedItems);
+
+    Alerts.alert({
+      title: "Return selected Items",
+      showCancelButton: true,
+      confirmButtonText: i18next.t("order.applyRefund")
+    }, (isConfirm) => {
+      if (isConfirm) {
+        this.setState({
+          isRefunding: true
+        });
+        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, editedItems, (error, result) => {
+          if (error) {
+            Alerts.alert(error.reason);
+          }
+          if (result) {
+            Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
+          }
+          this.setState({
+            refundValue: 0,
+            isRefunding: false
+          });
+        });
+      }
+    });
   }
 
   getRefundedItemsInfo = () => {
@@ -297,7 +308,6 @@ class InvoiceContainer extends Component {
         _id: order._id
       });
     }
-    this.dep.changed();
   }
 
   handleApprove = (event) => {
@@ -348,7 +358,6 @@ class InvoiceContainer extends Component {
         }
       });
     }
-    this.dep.changed();
   }
 
   handleRefund = (event, value) => {
@@ -391,8 +400,6 @@ class InvoiceContainer extends Component {
         if (isConfirm) {
           this.setState({
             isRefunding: true
-          }, () => {
-            this.dep.changed();
           });
           Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error, result) => {
             if (error) {
@@ -401,12 +408,9 @@ class InvoiceContainer extends Component {
             if (result) {
               Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
             }
-            $("#btn-refund-payment").text(i18next.t("order.applyRefund"));
             this.setState({
               refundValue: 0,
               isRefunding: false
-            }, () => {
-              this.dep.changed();
             });
           });
         }
@@ -480,7 +484,6 @@ class InvoiceContainer extends Component {
   paymentPendingApproval() {
     const order = this.state.order;
     const status = orderCreditMethod(order).paymentMethod.status;
-    console.log("paymentPendingApproval", status === "created" || status === "adjustments" || status === "error");
     return status === "created" || status === "adjustments" || status === "error";
   }
 
@@ -496,7 +499,6 @@ class InvoiceContainer extends Component {
 
   paymentApproved() {
     const order = this.state.order;
-    console.log("paymentPending", order.billing[0].paymentMethod.status === "approved");
 
     return order.billing[0].paymentMethod.status === "approved";
   }
@@ -595,7 +597,6 @@ function orderCreditMethod(order) {
 }
 
 const composer = (props, onData) => {
-  console.log("props", props);
   // const order = Orders.findOne(props.currentData.orderId);
   // const shop = Shops.findOne({});
   // const currency = shop.currencies[shop.currency];

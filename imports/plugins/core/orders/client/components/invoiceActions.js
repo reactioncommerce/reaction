@@ -117,7 +117,6 @@ class InvoiceActions extends Component {
   }
 
   renderApproval() {
-    console.log("---->", this.props.paymentPendingApproval, this.props.paymentApproved);
     if (this.props.paymentPendingApproval) {
       return (
         <div className="btn-block">

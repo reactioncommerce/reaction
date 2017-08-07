@@ -56,6 +56,35 @@ export function ordersInventoryAdjust(orderId) {
   });
 }
 
+export function orderQuantityAdjust(orderId, refundedItem) {
+  check(orderId, String);
+
+  if (!Reaction.hasPermission("orders")) {
+    throw new Meteor.Error(403, "Access Denied");
+  }
+
+  const order = Orders.findOne(orderId);
+  order.items.forEach((item) => {
+    if (item._id === refundedItem.id) {
+      const itemId = item._id;
+      const newQuantity = item.quantity - refundedItem.refundedQuantity;
+
+      Orders.update(
+        {
+          "_id": orderId,
+          "items": { $elemMatch:
+            {
+              "_id": itemId
+            }
+          }
+        }, { $set:
+          { "items.$.quantity": newQuantity }
+        }
+      );
+    }
+  });
+}
+
 
 /**
  * Reaction Order Methods
@@ -923,12 +952,26 @@ export const methods = {
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
+
     const processor = paymentMethod.processor.toLowerCase();
     const order = Orders.findOne(orderId);
     const transactionId = paymentMethod.transactionId;
 
     const packageId = paymentMethod.paymentPackageId;
     const settingsKey = paymentMethod.paymentSettingsKey;
+
+    Meteor.call("orders/approvePayment", order, (err) => {
+      if (err) {
+        throw new Meteor.Error("Attempt to approve transaction failed on return", err);
+      }
+    });
+
+    Meteor.call("orders/capturePayments", orderId, (err) => {
+      if (err) {
+        throw new Meteor.Error("Attempt to capture transaction failed on return", err);
+      }
+    });
+
     // check if payment provider supports de-authorize
     const checkSupportedMethods = Packages.findOne({
       _id: packageId,
@@ -940,7 +983,7 @@ export const methods = {
     const quantity = returnItems.reduce((acc, item) => acc + item.refundedQuantity, 0);
     const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
 
-    console.log("message", _.includes(checkSupportedMethods, "De-authorize"));
+
     let result;
     let query = {};
     if (_.includes(checkSupportedMethods, "De-authorize")) {
@@ -977,39 +1020,13 @@ export const methods = {
       refundedStatus = "partialRefund";
     }
 
-    console.log("returnItems--->", returnItems);
-    console.log("orders--->", order);
-
     returnItems.forEach(refundedItem => {
-      order.items.forEach((or) => {
-        console.log("Instance whatever", or._id === refundedItem.id);
-        if (or._id === refundedItem.id) {
-          const blah = or._id;
-          console.log("blah-->", or._id, refundedItem.refundedQuantity);
-          const newQuantity = or.quantity - refundedItem.refundedQuantity;
-
-          Orders.update(
-            {
-              "_id": orderId,
-              "items": { $elemMatch: { "_id": blah } }
-            }, { $set:
-              { "items.$.quantity": newQuantity }
-            }, query
-          );
-        }
-      });
+      orderQuantityAdjust(orderId, refundedItem);
     });
-
-    // const invoice = Object.assign({}, order.billing[0].invoice, {
-    //   totalItems: _.sumBy(order.items, (o) => o.quantity)
-    // });
 
     Orders.update({
       "_id": orderId,
       "billing.paymentMethod.transactionId": transactionId
-      // "billing.$.invoice.totalItems":
-
-      // "items": { $elemMatch: {id: }}
     }, {
       $set: {
         "billing.$.paymentMethod.status": refundedStatus
