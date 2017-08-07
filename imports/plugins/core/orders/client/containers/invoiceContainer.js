@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
 import accounting from "accounting-js";
 import _ from "lodash";
 import { i18next, Logger, Reaction } from "/client/api";
-import { Tracker } from "meteor/tracker";
 import { Meteor } from "meteor/meteor";
-import { Media, Shops, Orders } from "/lib/collections";
+import { Media } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
@@ -15,86 +13,32 @@ import Invoice from "../components/invoice.js";
 
 class InvoiceContainer extends Component {
   static propTypes = {
-    canMakeAdjustments: PropTypes.bool,
-    collection: PropTypes.string,
-    discounts: PropTypes.bool,
-    invoice: PropTypes.object,
-    isFetching: PropTypes.bool,
-    orderId: PropTypes.string,
-    paymentCaptured: PropTypes.bool,
+    currency: PropTypes.object,
+    order: PropTypes.object,
     refunds: PropTypes.array
   }
 
   constructor(props) {
     super(props);
     this.state = {
+      currency: props.currency,
+      refunds: props.refunds,
+      order: props.order,
       isOpen: false,
-      notHovered: true,
-      isClosed: false,
       isUpdating: false,
+      isCapturing: false,
+      isFetching: true,
+      isRefunding: false,
       popOverIsOpen: false,
       selectAllItems: false,
       selectedItems: [],
-      editedItems: [],
-      value: undefined,
-      isCapturing: false,
-      currency: props.currency,
-      refunds: props.refunds,
-      isFetching: true,
-      order: props.order,
-      isRefunding: false,
-      refundValue: 0
+      editedItems: []
     };
+
     this.handleClick = this.handleClick.bind(this);
-    this.dateFormat = this.dateFormat.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
     this.applyRefund = this.applyRefund.bind(this);
     this.handleRefund = this.handleRefund.bind(this);
-    this.dep = new Tracker.Dependency;
-  }
-
-  // componentWillUnmount() {
-  //   this.subscription.stop();
-  // }
-
-  componentDidMount() {
-    Tracker.autorun(() => {
-      this.dep.depend();
-
-      // this.subscription = Meteor.subscribe("Orders");
-      // console.log("sub", this.subscription);
-      // if (this.subscription) {
-      //   console.log("Here");
-      //   const order = Orders.findOne(this.props.currentData.orderId);
-      //   const shop = Shops.findOne({});
-      //   const currency = shop.currencies[shop.currency];
-      //   this.setState({
-      //     currency,
-      //     order
-      //   });
-      //   console.log("order====>", order);
-      //   if (order) {
-      //     Meteor.call("orders/refunds/list", order, (error, result) => {
-      //       if (error) Logger.warn(error);
-      //       this.setState({
-      //         refunds: result,
-      //         isFetching: false
-      //       });
-      //     });
-      //   }
-      // }
-      // });
-      // const order = this.state.order;
-      // if (order) {
-      //   Meteor.call("orders/refunds/list", order, (error, result) => {
-      //     if (error) Logger.warn(error);
-      //     this.setState({
-      //       refunds: result,
-      //       isFetching: false
-      //     });
-      //   });
-      // }
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -105,11 +49,6 @@ class InvoiceContainer extends Component {
         refunds: nextProps.refunds
       });
     }
-  }
-
-  dateFormat = (context, block) => {
-    const f = block || "MMM DD, YYYY hh:mm:ss A";
-    return moment(context).format(f);
   }
 
   handleClick = (event) => {
@@ -264,7 +203,6 @@ class InvoiceContainer extends Component {
             Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
           }
           this.setState({
-            refundValue: 0,
             isRefunding: false
           });
         });
@@ -278,17 +216,6 @@ class InvoiceContainer extends Component {
       quantity: editedItems.reduce((acc, item) => acc + item.refundedQuantity, 0),
       total: editedItems.reduce((acc, item) => acc + item.refundedTotal, 0)
     };
-  }
-
-  isAdjusted = () => {
-    // const { adjustedTotal, invoice } = this.props;
-    const invoice = this.invoice();
-    const adjustedTotal = this.adjustedTotal();
-
-    if (invoice.total === adjustedTotal) {
-      return false;
-    }
-    return true;
   }
 
   handleCapturePayment = (event) => {
@@ -409,7 +336,6 @@ class InvoiceContainer extends Component {
               Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
             }
             this.setState({
-              refundValue: 0,
               isRefunding: false
             });
           });
@@ -418,171 +344,37 @@ class InvoiceContainer extends Component {
     }
   }
 
-  adjustedTotal = () => {
-    const order = this.state.order;
-    const paymentMethod = orderCreditMethod(order).paymentMethod;
-    const discounts = orderCreditMethod(order).invoice.discounts;
-    const refunds = this.state.refunds;
-    let refundTotal = 0;
-
-    _.each(refunds, function (item) {
-      refundTotal += parseFloat(item.amount);
-    });
-
-    if (paymentMethod.processor === "Stripe") {
-      return Math.abs(paymentMethod.amount + discounts - refundTotal);
-    }
-    return Math.abs(paymentMethod.amount - refundTotal);
-  }
-
-  showAfterPaymentCaptured = () => {
-    const order = this.state.order;
-    const orderStatus = orderCreditMethod(order).paymentMethod.status;
-    return orderStatus === "completed";
-  }
-
-  printOrder = () => {
-    const order = this.state.order;
-    const currentData = this.props.currentData;
-    return Reaction.Router.pathFor("dashboard/pdf/orders", {
-      hash: {
-        id: order._id,
-        shipment: currentData.fulfillment._id
-      }
-    });
-  }
-
-  discounts() {
-    const enabledPaymentsArr = [];
-    const apps = Reaction.Apps({
-      provides: "paymentMethod",
-      enabled: true
-    });
-    for (const app of apps) {
-      if (app.enabled === true) enabledPaymentsArr.push(app);
-    }
-    let discount = false;
-
-    for (const enabled of enabledPaymentsArr) {
-      if (enabled.packageName === "discount-codes") {
-        discount = true;
-        break;
-      }
-    }
-    return discount;
-  }
-
-  invoice() {
-    const order = this.state.order;
-
-    const invoice = Object.assign({}, order.billing[0].invoice, {
-      totalItems: _.sumBy(order.items, (o) => o.quantity)
-    });
-    return invoice;
-  }
-
-  paymentPendingApproval() {
-    const order = this.state.order;
-    const status = orderCreditMethod(order).paymentMethod.status;
-    return status === "created" || status === "adjustments" || status === "error";
-  }
-
-  canMakeAdjustments() {
-    const order = this.state.order;
-    const status = orderCreditMethod(order).paymentMethod.status;
-
-    if (status === "approved" || status === "completed" || status === "refunded" || status === "partialRefund") {
-      return false;
-    }
-    return true;
-  }
-
-  paymentApproved() {
-    const order = this.state.order;
-
-    return order.billing[0].paymentMethod.status === "approved";
-  }
-
-  paymentCaptured() {
-    const order = this.state.order;
-    const orderStatus = orderCreditMethod(order).paymentMethod.status;
-    const orderMode = orderCreditMethod(order).paymentMethod.mode;
-    return orderStatus === "completed" || (orderStatus === "refunded" && orderMode === "capture") || (orderStatus === "partialRefund" && orderMode === "capture");
-  }
-
-  items() {
-    const order = this.state.order;
-    const currentData = this.props.currentData;
-    const shipment = currentData.fulfillment;
-
-    // returns order items with shipping detail
-    const returnItems = _.map(order.items, (item) => {
-      const shipping = shipment.shipmentMethod;
-      return _.extend(item, { shipping });
-    });
-
-    let items;
-
-
-    // if avalara tax has been enabled it adds a "taxDetail" field for every item
-    if (order.taxes !== undefined) {
-      const taxes = order.taxes.slice(0, -1);
-
-      items = _.map(returnItems, (item) => {
-        const taxDetail = _.find(taxes, {
-          lineNumber: item._id
-        });
-        return _.extend(item, { taxDetail });
-      });
-    } else {
-      items = returnItems;
-    }
-    return items;
-  }
-
   render() {
-    const { isFetching } = this.props;
-
     return (
       <TranslationProvider>
         <Invoice
-          canMakeAdjustments={this.canMakeAdjustments()}
-          paymentCaptured={this.paymentCaptured()}
-          isOpen={this.state.isOpen}
-          discounts={this.discounts()}
+          {...this.props}
+
           handleClick={this.handleClick}
-          invoice={this.invoice()}
-          refunds={this.state.refunds}
-          dateFormat={this.dateFormat}
-          isFetching={isFetching}
-          onClose={this.handleClose}
-          isCapturing={this.state.isCapturing}
           handleSelectAllItems={this.handleSelectAllItems}
-          selectAllItems={this.state.selectAllItems}
-          selectedItems={this.state.selectedItems}
+          onClose={this.handleClose}
           togglePopOver={this.togglePopOver}
           inputOnChange={this.inputOnChange}
           handleItemSelect={this.handleItemSelect}
-          popOverIsOpen={this.state.popOverIsOpen}
           displayMedia={this.handleDisplayMedia}
-          uniqueItems={this.items()}
-          editedItems={this.state.editedItems}
-          isUpdating={this.state.isUpdating}
           toggleUpdating={this.toggleUpdating}
           applyRefund={this.applyRefund}
           getRefundedItemsInfo={this.getRefundedItemsInfo}
-          paymentPendingApproval={this.paymentPendingApproval()}
-          paymentApproved={this.paymentApproved()}
-          capturedDisabled={this.props.capturedDisabled}
           handleApprove={this.handleApprove}
           isAdjusted={this.isAdjusted}
           handleCapturePayment={this.handleCapturePayment}
-          currency={this.state.currency}
           handleRefund={this.handleRefund}
-          adjustedTotal={this.adjustedTotal()}
-          showAfterPaymentCaptured={this.showAfterPaymentCaptured}
-          printOrder={this.printOrder}
+
+          isOpen={this.state.isOpen}
+          refunds={this.state.refunds}
+          isCapturing={this.state.isCapturing}
+          selectAllItems={this.state.selectAllItems}
+          selectedItems={this.state.selectedItems}
+          currency={this.state.currency}
           isRefunding={this.state.isRefunding}
+          popOverIsOpen={this.state.popOverIsOpen}
+          editedItems={this.state.editedItems}
+          isUpdating={this.state.isUpdating}
         />
       </TranslationProvider>
     );
@@ -597,12 +389,109 @@ function orderCreditMethod(order) {
 }
 
 const composer = (props, onData) => {
-  // const order = Orders.findOne(props.currentData.orderId);
-  // const shop = Shops.findOne({});
-  // const currency = shop.currencies[shop.currency];
-  // console.log("order", order);
+  const order = props.order;
+  const refunds = props.refunds;
+
+  const paymentMethod = orderCreditMethod(order).paymentMethod;
+  const orderStatus = orderCreditMethod(order).paymentMethod.status;
+  const orderMode = orderCreditMethod(order).paymentMethod.mode;
+  const orderDiscounts = orderCreditMethod(order).invoice.discounts;
+
+  const paymentApproved = order.billing[0].paymentMethod.status === "approved";
+  const paymentCaptured = orderStatus === "completed" || (orderStatus === "refunded" && orderMode === "capture") || (orderStatus === "partialRefund" && orderMode === "capture");
+  const paymentPendingApproval = orderStatus === "created" || orderStatus === "adjustments" || orderStatus === "error";
+  const showAfterPaymentCaptured = orderStatus === "completed";
+
+  // get whether adjustments can be made
+  let canMakeAdjustments;
+
+  if (orderStatus === "approved" || orderStatus === "completed" || orderStatus === "refunded" || orderStatus === "partialRefund") {
+    canMakeAdjustments = false;
+  } else {
+    canMakeAdjustments = true;
+  }
+
+  // get adjusted Total
+  let adjustedTotal;
+  let refundTotal = 0;
+
+  _.each(refunds, function (item) {
+    refundTotal += parseFloat(item.amount);
+  });
+
+  if (paymentMethod.processor === "Stripe") {
+    adjustedTotal = Math.abs(paymentMethod.amount + orderDiscounts - refundTotal);
+  }
+  adjustedTotal = Math.abs(paymentMethod.amount - refundTotal);
+
+  // get invoice
+  const invoice = Object.assign({}, order.billing[0].invoice, {
+    totalItems: _.sumBy(order.items, (o) => o.quantity)
+  });
+
+  // get discounts
+  const enabledPaymentsArr = [];
+  const apps = Reaction.Apps({
+    provides: "paymentMethod",
+    enabled: true
+  });
+  for (const app of apps) {
+    if (app.enabled === true) enabledPaymentsArr.push(app);
+  }
+  let discounts = false;
+
+  for (const enabled of enabledPaymentsArr) {
+    if (enabled.packageName === "discount-codes") {
+      discounts = true;
+      break;
+    }
+  }
+
+  // get unique lineItems
+  const shipment = props.currentData.fulfillment;
+
+  // returns order items with shipping detail
+  const returnItems = _.map(order.items, (item) => {
+    const shipping = shipment.shipmentMethod;
+    return _.extend(item, { shipping });
+  });
+
+  let uniqueItems;
+
+  // if avalara tax has been enabled it adds a "taxDetail" field for every item
+  if (order.taxes !== undefined) {
+    const taxes = order.taxes.slice(0, -1);
+
+    uniqueItems = _.map(returnItems, (item) => {
+      const taxDetail = _.find(taxes, {
+        lineNumber: item._id
+      });
+      return _.extend(item, { taxDetail });
+    });
+  } else {
+    uniqueItems = returnItems;
+  }
+
+  // print order
+  const printOrder = Reaction.Router.pathFor("dashboard/pdf/orders", {
+    hash: {
+      id: props.order._id,
+      shipment: props.currentData.fulfillment._id
+    }
+  });
 
   onData(null, {
+    uniqueItems,
+    invoice,
+    discounts,
+    adjustedTotal,
+    paymentCaptured,
+    paymentPendingApproval,
+    paymentApproved,
+    canMakeAdjustments,
+    showAfterPaymentCaptured,
+    printOrder,
+
     currentData: props.currentData,
     isFetching: props.isFetching,
     currency: props.currency,

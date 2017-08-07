@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import { formatPriceString } from "/client/api";
 import { Translation, CardGroup, Card, CardBody, CardHeader } from "/imports/plugins/core/ui/client/components";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
@@ -9,15 +10,19 @@ import InvoiceActions from "./invoiceActions";
 class Invoice extends Component {
   static propTypes = {
     canMakeAdjustments: PropTypes.bool,
-    dateFormat: PropTypes.func,
     discounts: PropTypes.bool,
     handleClick: PropTypes.func,
     invoice: PropTypes.object,
     isFetching: PropTypes.bool,
     isOpen: PropTypes.bool,
-    orderId: PropTypes.string,
+    order: PropTypes.object,
     paymentCaptured: PropTypes.bool,
     refunds: PropTypes.array
+  }
+
+  dateFormat(context, block) {
+    const f = block || "MMM DD, YYYY hh:mm:ss A";
+    return moment(context).format(f);
   }
 
   renderDiscountForm() {
@@ -41,8 +46,7 @@ class Invoice extends Component {
   }
 
   renderRefundsInfo() {
-    const { isFetching, refunds, dateFormat } = this.props;
-    console.log("refunds refundInfo", refunds);
+    const { isFetching, refunds } = this.props;
     return (
       <div>
         {isFetching &&
@@ -56,7 +60,7 @@ class Invoice extends Component {
 
         {refunds && refunds.map((refund) => (
           <div className="order-summary-form-group text-danger" key={refund.created} style={{ marginBottom: 15 }}>
-            <strong>Refunded on: {dateFormat(refund.created, "MM/D/YYYY")}</strong>
+            <strong>Refunded on: {this.dateFormat(refund.created, "MM/D/YYYY")}</strong>
             <div className="invoice-details"><strong>{formatPriceString(refund.amount)}</strong></div>
           </div>
         ))}
@@ -80,7 +84,6 @@ class Invoice extends Component {
 
   renderConditionalDisplay() {
     const { canMakeAdjustments, paymentCaptured } = this.props;
-    console.log("paymentCaptured, canMakeAdjustments", paymentCaptured, canMakeAdjustments);
     return (
       <div>
         {canMakeAdjustments ?
@@ -161,43 +164,13 @@ class Invoice extends Component {
             title="Invoice"
           />
           <CardBody expandable={false}>
-            <LineItems
-              onClose={this.props.handleClose}
-              handleSelectAllItems={this.props.handleSelectAllItems}
-              selectAllItems={this.props.selectAllItems}
-              selectedItems={this.props.selectedItems}
-              togglePopOver={this.props.togglePopOver}
-              inputOnChange={this.props.inputOnChange}
-              handleItemSelect={this.props.handleItemSelect}
-              popOverIsOpen={this.props.popOverIsOpen}
-              displayMedia={this.props.displayMedia}
-              uniqueItems={this.props.uniqueItems}
-              editedItems={this.props.editedItems}
-              isUpdating={this.props.isUpdating}
-              toggleUpdating={this.props.toggleUpdating}
-              applyRefund={this.props.applyRefund}
-              getRefundedItemsInfo={this.props.getRefundedItemsInfo}
-            />
+            <LineItems {...this.props}/>
+
             <div className="invoice-container">
               {this.renderInvoice()}
             </div>
-            <InvoiceActions
-              isCapturing={this.props.isCapturing}
-              isAdjusted={this.props.isAdjusted}
-              paymentCaptured={this.props.paymentCaptured}
-              adjustedTotal={this.props.adjustedTotal}
-              invoice={this.props.invoice}
-              paymentPendingApproval={this.props.paymentPendingApproval}
-              paymentApproved={this.props.paymentApproved}
-              capturedDisabled={this.props.capturedDisabled}
-              handleApprove={this.props.handleApprove}
-              handleCapturePayment={this.props.handleCapturePayment}
-              currency={this.props.currency}
-              handleRefund={this.props.handleRefund}
-              showAfterPaymentCaptured={this.props.showAfterPaymentCaptured}
-              printOrder={this.props.printOrder}
-              isRefunding={this.props.isRefunding}
-            />
+
+            <InvoiceActions {...this.props}/>
           </CardBody>
         </Card>
       </CardGroup>

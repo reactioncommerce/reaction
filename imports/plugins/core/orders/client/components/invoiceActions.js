@@ -6,9 +6,18 @@ import { Button, NumericInput, Translation, ButtonSelect } from "/imports/plugin
 class InvoiceActions extends Component {
   static propTypes = {
     adjustedTotal: PropTypes.number,
-    handleActionViewBack: PropTypes.func,
+    currency: PropTypes.object,
+    handleApprove: PropTypes.func,
+    handleCapturePayment: PropTypes.func,
+    handleRefund: PropTypes.func,
     invoice: PropTypes.object,
-    isAdjusted: PropTypes.func
+    isCapturing: PropTypes.bool,
+    isRefunding: PropTypes.bool,
+    paymentApproved: PropTypes.bool,
+    paymentCaptured: PropTypes.bool,
+    paymentPendingApproval: PropTypes.bool,
+    printOrder: PropTypes.string,
+    showAfterPaymentCaptured: PropTypes.bool
   }
 
   state = {
@@ -106,7 +115,7 @@ class InvoiceActions extends Component {
 
         <a
           className="btn btn-default btn-block"
-          href={this.props.printOrder()}
+          href={this.props.printOrder}
           target="_blank"
           data-i18n="app.printInvoice"
         >
@@ -152,7 +161,7 @@ class InvoiceActions extends Component {
         <div className="flex">
           <a
             className="btn btn-link"
-            href={this.props.printOrder()}
+            href={this.props.printOrder}
             target="_blank"
             data-i18n="app.print"
           >
@@ -163,7 +172,7 @@ class InvoiceActions extends Component {
             className="btn btn-success flex-item-fill"
             type="button"
             data-event-action="capturePayment"
-            disabled={this.props.capturedDisabled}
+            disabled={this.props.isCapturing}
             onClick = {this.props.handleCapturePayment}
           >
 
@@ -180,8 +189,6 @@ class InvoiceActions extends Component {
   }
 
   render() {
-    const { isAdjusted } = this.props;
-
     return (
       <form onSubmit={this.props.handleApprove}>
 
@@ -190,7 +197,7 @@ class InvoiceActions extends Component {
           {this.props.paymentCaptured &&
             <div className="total-container">
               {this.renderCapturedTotal()}
-              {isAdjusted() && this.renderAdjustedTotal()}
+              {this.props.invoice.total !== this.props.adjustedTotal && this.renderAdjustedTotal()}
               {this.renderRefundForm()}
             </div>
           }
