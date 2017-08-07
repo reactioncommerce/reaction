@@ -6,14 +6,8 @@ import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
-import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Orders, Shops, Packages } from "/lib/collections";
-import { ButtonSelect } from "../../../../ui/client/components/button";
-import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
-import InvoiceActionsContainer from "../../containers/invoiceActionsContainer.js";
-import LineItemsContainer from "../../containers/lineItemsContainer.js";
-import TotalActionsContainer from "../../containers/totalActionsContainer.js";
 
 
 // helper to return the order payment object
@@ -62,7 +56,6 @@ Template.coreOrderShippingInvoice.helpers({
   order() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-    console.log("order", order);
     return order;
   },
   currency() {
