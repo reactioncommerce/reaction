@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import React from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
+import moment from "moment";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { getGravatar } from "../helpers/accountsHelper";
@@ -30,16 +31,16 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
 
   if (columnName === "createdAt") {
     return (
-      <div className="table-cell body">
+      <div className="table-cell body created-at">
         <span>
-          {account.createdAt && account.createdAt.toDateString()}
+          {moment(account.createdAt).format("MMM Do")}
         </span>
       </div>
     );
   }
 
   if (columnName === "dropdown") {
-    const groupName = <p>{_.startCase(groups[0].name)}</p>;
+    const groupName = <span>{_.startCase(groups[0].name)}</span>;
     const ownerGroup = groups.find((grp) => grp.slug === "owner") || {};
     const hasOwnerAccess = Reaction.hasPermission("owner", Meteor.userId(), Reaction.getShopId());
 

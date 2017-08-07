@@ -136,7 +136,7 @@ class AdminInviteForm extends Component {
 
   renderForm() {
     return (
-      <div className="panel panel-default admin-invite-form">
+      <div className="admin-invite-form">
         <Components.Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
         <div className="panel-body">
           <form className="">

@@ -24,7 +24,7 @@ const GroupHeader = ({ columnName, numberOfRows }) => {
   }
   if (columnName === "createdAt") {
     return (
-      <div className="group-header-createdAt">
+      <div className="group-header created-at">
         <Components.Translation className="content-cell" defaultValue="Last Active" i18nKey="admin.groups.lastActive" />
         {showSortItems && <Components.Icon icon="chevron-down" />}
       </div>

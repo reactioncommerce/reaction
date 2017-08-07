@@ -67,30 +67,61 @@
     }
     border-left: 1px solid #ccc;
   }
+
   .group-container {
     position: relative;
+    .list-group {
+      margin-bottom: 50px;
+    }
     .spinner-container {
       position: absolute;
       top: 50%;
       left: 50%;
       z-index: 9999;
     }
+    .list-group-item {
+      background: @rui-brand-bg;
+      font-weight: 700;
+    }
+    .accounts-group-table {
+      .title {
+        text-transform: capitalize;
+      }
+      .group-dropdown {
+        width: 100%;
+        display: inherit;
+      }
+      .accounts-img-tag {
+        margin: 0 15px 0 20px;
+      }
+      .-odd {
+        background: transparent;
+      }
+      .rt-td {
+        span {
+          line-height: 2;
+        }
+        .btn {
+          padding: 0 20px;
+          fa {
+            padding-left: 10px;
+          }
+        }
+      }
+      .created-at {
+        text-align: center;
+      }
+      .rt-thead.-header {
+        .rt-th {
+          text-align: left;
+          margin-left: 20px;
+          line-height: 2;
+        }
+      }
+    }
   }
 }
 
-.accounts-group-table {
-  .title {
-    text-transform: capitalize;
-  }
-  .group-dropdown {
-    width: 100%;
-    display: inherit;
-  }
-}
-
-.accounts-group-table.empty-table {
-  margin-bottom: 100px;
-}
 
 .add-group-members {
   .c-default {
