@@ -54,6 +54,8 @@ class InvoiceContainer extends Component {
   }
 
   handleSelectAllItems = (uniqueItems) => {
+    let editedItems = this.state.editedItems;
+
     if (this.state.selectAllItems) {
       // if all items are selected, clear the selectedItems array
       // and set selectAllItems to false
@@ -66,9 +68,27 @@ class InvoiceContainer extends Component {
       // selected but not all of them, loop through the items array and return a
       // new array with item ids only, then set the selectedItems array with the itemIds
       const itemIds = uniqueItems.map((item) => {
+        const isEdited = editedItems.find(editedItem => {
+          return editedItem.id === item._id;
+        });
+
+        if (isEdited) {
+          editedItems = editedItems.filter(editedItem => editedItem.id !== item._id);
+          isEdited.refundedTotal = item.variants.price * item.quantity;
+          isEdited.refundedQuantity = item.quantity;
+          editedItems.push(isEdited);
+        } else {
+          editedItems.push({
+            id: item._id,
+            title: item.title,
+            refundedTotal: item.variants.price * item.quantity,
+            refundedQuantity: item.quantity
+          });
+        }
         return item._id;
       });
       this.setState({
+        editedItems,
         selectedItems: itemIds,
         selectAllItems: true,
         isUpdating: true
@@ -347,8 +367,6 @@ class InvoiceContainer extends Component {
   }
 
   render() {
-    console.log("selectedItems", this.state.selectedItems);
-    console.log("editedItems", this.state.editedItems);
     return (
       <TranslationProvider>
         <Invoice
