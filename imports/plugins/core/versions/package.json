@@ -1,7 +1,7 @@
 {
-  "name": "reaction-versions",
-  "version": "1.0.0",
-  "description": "Reaction Versioning",
+  "name": "reaction-migration-versions",
+  "version": "1.0.5",
+  "description": "Reaction Migration Versions",
   "main": "register.js",
   "author": "Reaction Commerce <hello@reactioncommerce.com>",
   "license": "GPL-3.0",

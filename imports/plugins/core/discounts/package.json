@@ -9,5 +9,20 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/reaction.git"
+  },
+  "babel": {
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./"
+          ],
+          "alias": {
+            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
+          }
+        }
+      ]
+    ]
   }
 }

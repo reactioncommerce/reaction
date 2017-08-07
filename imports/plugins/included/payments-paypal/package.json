@@ -1,7 +1,7 @@
 {
   "name": "reaction-payments-paypal",
   "version": "1.0.0",
-  "description": "Reaction PayPay payments",
+  "description": "Reaction PayPal payments",
   "main": "register.js",
   "author": "Reaction Commerce <hello@reactioncommerce.com>",
   "license": "GPL-3.0",
@@ -9,5 +9,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/reaction.git"
+  },
+  "dependencies": {
+    "paypal-rest-sdk": "^1.7.1"
   }
 }

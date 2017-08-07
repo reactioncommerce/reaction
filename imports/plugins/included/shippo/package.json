@@ -9,5 +9,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/reaction.git"
+  },
+  "dependencies": {
+    "shippo": "^1.3.0"
   }
 }

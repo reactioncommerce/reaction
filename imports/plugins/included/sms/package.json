@@ -9,5 +9,24 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/reaction.git"
+  },
+  "dependencies": {
+    "nexmo": "^2.0.2",
+    "twilio": "^3.5.0"
+  },
+  "babel": {
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./"
+          ],
+          "alias": {
+            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
+          }
+        }
+      ]
+    ]
   }
 }

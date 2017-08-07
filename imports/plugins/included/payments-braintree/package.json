@@ -9,5 +9,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/reaction.git"
+  },
+  "dependencies": {
+    "braintree": "^2.2.0"
   }
 }
