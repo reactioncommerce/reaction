@@ -79,37 +79,35 @@ export const methods = {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    if (order) {
-      Orders.update({
+    Orders.update({
+      "_id": order._id,
+      "shipping._id": shipment._id
+    }, {
+      $set: {
+        "shipping.$.picked": picked,
+        "shipping.$.workflow.status": "picked"
+      }, $push: {
+        "shipping.$.workflow.workflow": "picked"
+      }
+    });
+
+    // Set the status of the items as picked
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
+
+    const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/picked", order, itemIds);
+    if (result === 1) {
+      return Orders.update({
         "_id": order._id,
         "shipping._id": shipment._id
       }, {
         $set: {
-          "shipping.$.picked": picked,
-          "shipping.$.workflow.status": "picked"
-        }, $push: {
-          "shipping.$.workflow.workflow": "picked"
+          "shipping.$.picked": picked
         }
       });
-
-      // Set the status of the items as picked
-      const itemIds = shipment.items.map((item) => {
-        return item._id;
-      });
-
-      const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/picked", order, itemIds);
-      if (result === 1) {
-        return Orders.update({
-          "_id": order._id,
-          "shipping._id": shipment._id
-        }, {
-          $set: {
-            "shipping.$.picked": picked
-          }
-        });
-      }
-      return result;
     }
+    return result;
   },
   /**
    * orders/shipmentPacked
@@ -131,37 +129,35 @@ export const methods = {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    if (order) {
-      Orders.update({
+    Orders.update({
+      "_id": order._id,
+      "shipping._id": shipment._id
+    }, {
+      $set: {
+        "shipping.$.packed": packed,
+        "shipping.$.workflow.status": "packed"
+      }, $push: {
+        "shipping.$.workflow.workflow": "packed"
+      }
+    });
+
+    // Set the status of the items as packed
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
+
+    const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
+    if (result === 1) {
+      return Orders.update({
         "_id": order._id,
         "shipping._id": shipment._id
       }, {
         $set: {
-          "shipping.$.packed": packed,
-          "shipping.$.workflow.status": "packed"
-        }, $push: {
-          "shipping.$.workflow.workflow": "packed"
+          "shipping.$.packed": packed
         }
       });
-
-      // Set the status of the items as packed
-      const itemIds = shipment.items.map((item) => {
-        return item._id;
-      });
-
-      const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
-      if (result === 1) {
-        return Orders.update({
-          "_id": order._id,
-          "shipping._id": shipment._id
-        }, {
-          $set: {
-            "shipping.$.packed": packed
-          }
-        });
-      }
-      return result;
     }
+    return result;
   },
 
   /**
@@ -182,37 +178,35 @@ export const methods = {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    if (order) {
-      Orders.update({
+    Orders.update({
+      "_id": order._id,
+      "shipping._id": shipment._id
+    }, {
+      $set: {
+        "shipping.$.labeled": labeled,
+        "shipping.$.workflow.status": "labeled"
+      }, $push: {
+        "shipping.$.workflow.workflow": "labeled"
+      }
+    });
+
+    // Set the status of the items as labeled
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
+
+    const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/labeled", order, itemIds);
+    if (result === 1) {
+      return Orders.update({
         "_id": order._id,
         "shipping._id": shipment._id
       }, {
         $set: {
-          "shipping.$.labeled": labeled,
-          "shipping.$.workflow.status": "labeled"
-        }, $push: {
-          "shipping.$.workflow.workflow": "labeled"
+          "shipping.$.labeled": labeled
         }
       });
-
-      // Set the status of the items as labeled
-      const itemIds = shipment.items.map((item) => {
-        return item._id;
-      });
-
-      const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/labeled", order, itemIds);
-      if (result === 1) {
-        return Orders.update({
-          "_id": order._id,
-          "shipping._id": shipment._id
-        }, {
-          $set: {
-            "shipping.$.labeled": labeled
-          }
-        });
-      }
-      return result;
     }
+    return result;
   },
 
   /**
