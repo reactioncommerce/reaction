@@ -11,9 +11,7 @@ import * as Collections from "/lib/collections";
  * @return {Array} - array of groups, each having a `users` field
  */
 export default function sortUsersIntoGroups({ accounts, groups }) {
-  // sort to display higher permission groups at the top
-  const sortedGroups = groups.sort((prev, next) => next.permissions.length - prev.permissions.length);
-  const newGroups = sortedGroups.map((group) => {
+  const newGroups = groups.map((group) => {
     const matchingAccounts = accounts.map((acc) => {
       if (acc.groups && acc.groups.indexOf(group._id) > -1) {
         return acc;
@@ -23,6 +21,11 @@ export default function sortUsersIntoGroups({ accounts, groups }) {
     return group;
   });
   return newGroups;
+}
+
+// sort to display higher permission groups at the top
+export function sortGroups(groups) {
+  return groups.sort((prev, next) => next.permissions.length - prev.permissions.length);
 }
 
 export function getGravatar(user) {

@@ -71,9 +71,9 @@ const composer = (props, onData) => {
 
   if (adminUserSub.ready() && grpSub.ready()) {
     const groups = Groups.find({
-      slug: { $nin: ["customer", "guest"] },
       shopId: Reaction.getShopId()
     }).fetch();
+
     const adminQuery = {
       [`roles.${shopId}`]: {
         $in: ["dashboard"]
@@ -83,8 +83,14 @@ const composer = (props, onData) => {
     const adminUsers = Meteor.users.find(adminQuery, { fields: { _id: 1 } }).fetch();
     const ids = adminUsers.map((user) => user._id);
     const accounts = Accounts.find({ _id: { $in: ids } }).fetch();
+    const adminGroups = [];
+    groups.forEach(group => {
+      if (group.slug !== "customer" && group.slug !== "guest") {
+        adminGroups.push(group);
+      }
+    });
 
-    onData(null, { accounts, groups });
+    onData(null, { accounts, groups, adminGroups });
   }
 };
 

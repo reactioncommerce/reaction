@@ -7,9 +7,9 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 import { Reaction } from "/client/api";
 import { getGravatar } from "../helpers/accountsHelper";
 
-const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserFromGroup, handleUserGroupChange, ...props }) => {
+const GroupsTableCell = ({ account, columnName, group, adminGroups, handleRemoveUserFromGroup, handleUserGroupChange, ...props }) => {
   const email = _.get(account, "emails[0].address");
-
+  const groups = adminGroups;
   if (columnName === "name") {
     // use first part of email, if account has no name
     const name = account.name || email.split("@")[0];
@@ -113,9 +113,9 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
 
 GroupsTableCell.propTypes = {
   account: PropTypes.object,
+  adminGroups: PropTypes.array, // all admin groups
   columnName: PropTypes.string,
   group: PropTypes.object, // current group in interation
-  groups: PropTypes.array, // all available groups
   handleRemoveUserFromGroup: PropTypes.func,
   handleUserGroupChange: PropTypes.func,
   onMethodDone: PropTypes.func,

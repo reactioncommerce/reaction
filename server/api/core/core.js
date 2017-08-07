@@ -64,6 +64,8 @@ export default {
     const { shopId } = options;
     const allGroups = Groups.find({}).fetch();
     const query = {};
+    const defaultCustomerRoles = [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
+    const defaultVisitorRoles = ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
 
     if (shopId) {
       query._id = shopId;
@@ -75,8 +77,8 @@ export default {
 
     const roles = {
       "shop manager": shopManagerRoles,
-      "customer": [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
-      "guest": ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
+      "customer": defaultCustomerRoles,
+      "guest": defaultVisitorRoles,
       "owner": ownerRoles
     };
 
@@ -87,11 +89,13 @@ export default {
       Object.keys(roles).forEach(groupKeys => {
         const groupExists = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === shop._id);
         if (!groupExists) { // create group only if it doesn't exist before
+          // use roles of default groups from primary shop; if not found use app defaults
+          const permissions = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === this.getPrimaryShopId());
           Logger.debug(`creating group ${groupKeys} for shop ${shop.name}`);
           Groups.insert({
             name: groupKeys,
             slug: groupKeys,
-            permissions: roles[groupKeys],
+            permissions: permissions || roles[groupKeys],
             shopId: shop._id
           });
         }

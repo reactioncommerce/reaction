@@ -5,6 +5,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 class ManageGroups extends Component {
   static propTypes = {
     accounts: PropTypes.array,
+    adminGroups: PropTypes.array,
     group: PropTypes.object,
     groups: PropTypes.array,
     onChangeGroup: PropTypes.func
@@ -15,20 +16,21 @@ class ManageGroups extends Component {
 
     this.state = {
       accounts: props.accounts,
+      adminGroups: props.adminGroups,
       group: props.group,
       groups: props.groups
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    const { group, groups, accounts } = nextProps;
-    this.setState({ group, groups, accounts });
+    const { group, groups, adminGroups, accounts } = nextProps;
+    this.setState({ group, groups, accounts, adminGroups });
   }
 
   get defaultInviteGroup() {
     let defaultInviteGroup = {};
     const groups = [];
-    this.state.groups.forEach((grp) => {
+    this.state.adminGroups.forEach((grp) => {
       if (grp.slug !== "owner") {
         groups.push(grp);
       }
@@ -43,13 +45,13 @@ class ManageGroups extends Component {
   render() {
     return (
       <div className="groups-form">
-        <Components.AdminInviteForm groups={this.state.groups} defaultInviteGroup={this.defaultInviteGroup} />
+        <Components.AdminInviteForm groups={this.state.adminGroups} defaultInviteGroup={this.defaultInviteGroup} />
         <Components.EditGroup
           groups={this.state.groups}
           selectedGroup={this.state.group}
           onChangeGroup={this.props.onChangeGroup}
         />
-        <Components.AddGroupMembers groups={this.state.groups} accounts={this.state.accounts} group={this.state.group} />
+        <Components.AddGroupMembers groups={this.state.adminGroups} accounts={this.state.accounts} group={this.state.group} />
       </div>
     );
   }
