@@ -1,0 +1,32 @@
+{
+  "name": "reaction-sms",
+  "version": "1.0.0",
+  "description": "Reaction SMS",
+  "main": "register.js",
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/reactioncommerce",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactioncommerce/reaction.git"
+  },
+  "dependencies": {
+    "nexmo": "^2.0.2",
+    "twilio": "^3.5.0"
+  },
+  "babel": {
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./"
+          ],
+          "alias": {
+            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
+          }
+        }
+      ]
+    ]
+  }
+}

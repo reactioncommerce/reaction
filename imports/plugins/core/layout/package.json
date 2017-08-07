@@ -1,0 +1,28 @@
+{
+  "name": "reaction-layout",
+  "version": "1.0.0",
+  "description": "Reaction Layout",
+  "main": "register.js",
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/reactioncommerce",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactioncommerce/reaction.git"
+  },
+  "babel": {
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./"
+          ],
+          "alias": {
+            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
+          }
+        }
+      ]
+    ]
+  }
+}
