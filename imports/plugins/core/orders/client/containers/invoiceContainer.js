@@ -491,7 +491,7 @@ class InvoiceContainer extends Component {
     const order = this.state.order;
     const status = orderCreditMethod(order).paymentMethod.status;
 
-    if (status === "approved" || status === "completed" || status === "refunded") {
+    if (status === "approved" || status === "completed" || status === "refunded" || status === "partialRefund") {
       return false;
     }
     return true;

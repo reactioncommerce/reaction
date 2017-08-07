@@ -42,6 +42,7 @@ class Invoice extends Component {
 
   renderRefundsInfo() {
     const { isFetching, refunds, dateFormat } = this.props;
+    console.log("refunds refundInfo", refunds);
     return (
       <div>
         {isFetching &&
@@ -79,6 +80,7 @@ class Invoice extends Component {
 
   renderConditionalDisplay() {
     const { canMakeAdjustments, paymentCaptured } = this.props;
+    console.log("paymentCaptured, canMakeAdjustments", paymentCaptured, canMakeAdjustments);
     return (
       <div>
         {canMakeAdjustments ?

@@ -848,6 +848,7 @@ export const methods = {
         future.return(error);
       } else {
         check(result, [Schemas.Refund]);
+        console.log("refund list ----->", result);
         future.return(result);
       }
     });
@@ -959,18 +960,26 @@ export const methods = {
 
     const packageId = paymentMethod.paymentPackageId;
     const settingsKey = paymentMethod.paymentSettingsKey;
+    console.log("before approve", paymentMethod.mode);
+    console.log("mess", paymentMethod.status);
 
-    Meteor.call("orders/approvePayment", order, (err) => {
-      if (err) {
-        throw new Meteor.Error("Attempt to approve transaction failed on return", err);
-      }
-    });
+    // Check if payment is yet to be captured
+    if (paymentMethod.mode === "authorize") {
+      Meteor.call("orders/approvePayment", order, (err) => {
+        if (err) {
+          throw new Meteor.Error("Attempt to approve transaction failed on return", err);
+        }
+      });
 
-    Meteor.call("orders/capturePayments", orderId, (err) => {
-      if (err) {
-        throw new Meteor.Error("Attempt to capture transaction failed on return", err);
-      }
-    });
+      Meteor.call("orders/capturePayments", orderId, (err) => {
+        if (err) {
+          throw new Meteor.Error("Attempt to capture transaction failed on return", err);
+        }
+      });
+    }
+
+    console.log("after that stuff", paymentMethod.mode);
+    console.log("message", paymentMethod.status);
 
     // check if payment provider supports de-authorize
     const checkSupportedMethods = Packages.findOne({

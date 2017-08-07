@@ -5,7 +5,7 @@ import $ from "jquery";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { ReactiveDict } from "meteor/reactive-dict";
-import { i18next, Logger, formatNumber, Reaction } from "/client/api";
+import { i18next, Logger, Reaction } from "/client/api";
 import { Orders, Shops, Packages } from "/lib/collections";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
 
@@ -41,6 +41,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
     if (order) {
       Meteor.call("orders/refunds/list", order, (error, result) => {
         if (error) Logger.warn(error);
+        console.log("result-->", result);
         this.refunds.set(result);
         this.state.set("isFetching", false);
       });
@@ -203,24 +204,5 @@ Template.coreOrderShippingInvoice.helpers({
       return "disabled";
     }
     return null;
-  },
-
-  refundSubmitDisabled() {
-    const amount = Template.instance().state.get("field-refund") || 0;
-    const isLoading = Template.instance().state.get("isRefunding");
-    if (amount === 0 || isLoading) {
-      return "disabled";
-    }
-
-    return null;
-  },
-
-  shipment() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    const currentData = Template.currentData();
-    const shipment = _.filter(order.shipping, { _id: currentData.fulfillment._id })[0];
-
-    return shipment;
   }
 });
