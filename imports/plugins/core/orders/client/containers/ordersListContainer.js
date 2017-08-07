@@ -229,7 +229,7 @@ class OrdersListContainer extends Component {
       Alerts.alert({
         text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
       });
-      // if only falseCurrentState is false, proced to set it to true
+      // if only falseCurrentState is false, proceed to set it to true
     } else if (falseCurrentState && falsePreviousStatuses === 0) {
       this.shippingStatusUpdateCall(selectedOrders, status);
     }
