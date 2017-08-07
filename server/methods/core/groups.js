@@ -81,11 +81,7 @@ Meteor.methods({
     }
 
     // 1. Update the group data
-    let update = newGroupData;
-    if (newGroupData.name) {
-      update = Object.assign({}, newGroupData, { slug: getSlug(newGroupData.name) });
-    }
-
+    const update = newGroupData;
     Groups.update({ _id: groupId, shopId }, { $set: update });
 
     // 2. Check & Modify users in the group that changed
@@ -116,18 +112,30 @@ Meteor.methods({
     check(userId, String);
     check(groupId, String);
 
-    const { permissions, shopId } = Groups.findOne({ _id: groupId }) || {};
+    const { permissions, shopId, slug } = Groups.findOne({ _id: groupId }) || {};
 
     if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
+
+    if (slug === "owner") {
+      // if adding a user to the owner group, check that the request is done by current owner
+      if (!Reaction.hasPermission("owner", Meteor.userId(), shopId)) {
+        throw new Meteor.Error(403, "Access Denied");
+      }
+    }
+
     // make sure user only belongs to one group per shop
     const allGroupsInShop = Groups.find({ shopId }).fetch().map((grp) => grp._id);
-    const currentUserGroups = Accounts.findOne({ _id: userId }).groups || [];
+    const user = Accounts.findOne({ _id: userId }) || {};
+    const currentUserGroups = user.groups || [];
     let newGroups = [];
+    let currentUserGrpInShop;
     currentUserGroups.forEach((grp) => {
       if (allGroupsInShop.indexOf(grp) < 0) {
         newGroups.push(grp);
+      } else {
+        currentUserGrpInShop = grp;
       }
     });
     newGroups = newGroups.concat(groupId);
@@ -135,6 +143,15 @@ Meteor.methods({
     try {
       setUserPermissions({ _id: userId }, permissions, shopId);
       Accounts.update({ _id: userId }, { $set: { groups: newGroups } });
+
+      if (slug === "owner") {
+        if (shopId === Reaction.getPrimaryShopId()) {
+          changeMarketplaceOwner({ userId, permissions });
+        }
+        // remove current shop owner after setting another admin as the new owner
+        Meteor.call("group/addUser", Meteor.userId(), currentUserGrpInShop);
+      }
+
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -176,6 +193,21 @@ Meteor.methods({
     }
   }
 });
+
+/**
+ * changeMarketplaceOwner
+ * @summary checks if the user making the request is allowed to make invitation to that group
+ * @param {Object} options -
+ * @param {String} options.userId - userID
+ * @param {String} options.permissions - permissions
+* @return {null} -
+ */
+function changeMarketplaceOwner({ userId, permissions }) {
+  // give global marketplace role to new owner
+  Roles.setUserRoles(userId, permissions, Roles.GLOBAL_GROUP);
+  // remove global from previous owner
+  Meteor.users.update({ _id: Meteor.userId() }, { $unset: { [`roles.${Roles.GLOBAL_GROUP}`]: "" } });
+}
 
 function setUserPermissions(users, permissions, shopId) {
   let affectedUsers = users;

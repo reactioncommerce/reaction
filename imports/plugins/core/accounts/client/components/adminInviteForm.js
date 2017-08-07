@@ -14,9 +14,10 @@ class AdminInviteForm extends Component {
   constructor(props) {
     super(props);
     const { defaultInviteGroup, groups } = props;
+    const groupsInvitable = groups.filter((grp) => grp.slug !== "owner");
 
     this.state = {
-      groups,
+      groups: groupsInvitable,
       defaultInviteGroup,
       name: "",
       email: "",
@@ -30,7 +31,8 @@ class AdminInviteForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { groups, defaultInviteGroup } = nextProps;
-    this.setState({ groups, defaultInviteGroup });
+    const groupsInvitable = groups.filter((grp) => grp.slug !== "owner");
+    this.setState({ groups: groupsInvitable, defaultInviteGroup });
   }
 
   onChange(event) {
@@ -99,15 +101,27 @@ class AdminInviteForm extends Component {
     if (!buttonGroup._id) {
       return null;
     }
-    const buttonElement = (
+    const buttonElement = (opt) => (
       <Components.Button bezelStyle="solid" label={buttonGroup.name && _.startCase(buttonGroup.name)} >
-        &nbsp;<i className="fa fa-chevron-down" />
+        &nbsp;
+        {opt && opt.length && // add icon only if there's a list of options
+          <i className="fa fa-chevron-down" />
+        }
       </Components.Button>
     );
+
+    // current selected option and "owner" should not show in list options
+    const dropOptions = this.state.groups.filter((grp) => grp._id !== buttonGroup._id);
+    if (!dropOptions.length) { return buttonElement(); } // do not use dropdown if only one option
+
     return (
-      <Components.DropDownMenu buttonElement={buttonElement} attachment="bottom center" onChange={this.handleGroupSelect}>
-        {this.state.groups
-          .filter((grp) => grp._id !== buttonGroup._id)
+      <Components.DropDownMenu
+        buttonElement={buttonElement(dropOptions)}
+        onChange={this.handleGroupSelect}
+        attachment="bottom right"
+        targetAttachment="top right"
+      >
+        {dropOptions
           .map((grp, index) => (
             <Components.MenuItem
               key={index}
@@ -119,7 +133,6 @@ class AdminInviteForm extends Component {
       </Components.DropDownMenu>
     );
   }
-
 
   renderForm() {
     return (
@@ -156,6 +169,7 @@ class AdminInviteForm extends Component {
               <div className="form-btns add-admin justify">
                 <Components.Button
                   status="primary"
+                  buttonType="submit"
                   onClick={this.handleSubmit}
                   bezelStyle="solid"
                   i18nKeyLabel="accountsUI.info.sendInvitation"

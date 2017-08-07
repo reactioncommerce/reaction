@@ -110,6 +110,7 @@ Meteor.methods({
    */
   "cart/mergeCart": function (cartId, currentSessionId) {
     check(cartId, String);
+    // TODO: Review this. currentSessionId sometimes come in as false. e.g from Accounts.onLogin
     check(currentSessionId, Match.Optional(String));
 
     // we don't process current cart, but merge into it.
@@ -243,7 +244,7 @@ Meteor.methods({
 
     const marketplaceSettings = Reaction.getMarketplaceSettings();
     let shopId;
-    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.merchantCarts) {
+    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantCart) {
       shopId = Reaction.getShopId();
     } else {
       shopId = Reaction.getPrimaryShopId();
