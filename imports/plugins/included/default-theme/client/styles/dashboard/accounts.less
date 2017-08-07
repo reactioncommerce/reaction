@@ -70,6 +70,7 @@
 
   .group-container {
     position: relative;
+    padding: 20px;
     .list-group {
       margin-bottom: 50px;
     }
@@ -97,13 +98,16 @@
       .-odd {
         background: transparent;
       }
+      .rt-tr-group:last-child {
+        border-bottom: 1px solid @rui-default-disabled;
+      }
       .rt-td {
         span {
           line-height: 2;
         }
         .btn {
           padding: 0 20px;
-          fa {
+          .fa {
             padding-left: 10px;
           }
         }

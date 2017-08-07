@@ -71,7 +71,6 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
     return (
       <div className="group-dropdown">
         <Components.DropDownMenu
-          className="dropdown-item"
           buttonElement={dropDownButton(groups)}
           attachment="bottom right"
           targetAttachment="top right"

@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const GroupHeader = ({ columnName, numberOfRows }) => {
-  const showSortItems = numberOfRows > 1;
+const GroupHeader = ({ columnName }) => {
+  const showSortItems = false; // to be used to show sort icons
 
   if (columnName === "name") {
     return (

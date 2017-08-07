@@ -7,7 +7,6 @@ import { SortableTable } from "/imports/plugins/core/ui/client/components";
 
 const GroupsTable = (props) => {
   const { group } = props;
-  const isSortable = group.users && group.users.length > 1;
   const fields = {
     name: { width: 30 },
     email: { width: 30 },
@@ -51,7 +50,7 @@ const GroupsTable = (props) => {
           filteredFields={Object.keys(fields)}
           filterType="none"
           showFilter={true}
-          isSortable={isSortable}
+          isSortable={false}
         />
       </div>
     </Components.List>
