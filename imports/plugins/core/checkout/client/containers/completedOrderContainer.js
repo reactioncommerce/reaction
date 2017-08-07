@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { Orders } from "/lib/collections";
 import { Reaction } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import CompletedOrder from "../components/completedOrder";
 
 
