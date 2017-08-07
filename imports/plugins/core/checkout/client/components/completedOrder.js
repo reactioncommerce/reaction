@@ -1,43 +1,34 @@
 import React from "react";
 import PropTypes from "prop-types";
+import CompletedOrderItem from "./completedOrderItem";
 
 
-const CompletedOrder = (order) => {
-
+const CompletedOrder = ({ order, items }) => {
+  const hasEmail = !!order.email;
   return (
     <div className="container order-completed">
       <div className="order-details-header">
-        {/* This is the left side / main content, with the background: #00ff00; */}
+        {/* This is the left side / main content */}
         <h3><span data-i18n="cartCompleted.thankYou">Thank You!</span></h3>
+        <p><strong>Order ID </strong>{order._id}</p>
+        {hasEmail && <p>Order updates will be sent to {order.email}</p>}
 
-        <p>Order updates will be sent to ryan@reactioncommerce.com</p>
         <h4>Your Items</h4>
-        {/* This is the left side / main content, with the background: #00ff00; */}
+        {/* This is the left side / main content*/}
       </div>
 
       <div className="order-details-main">
         {/* This is the left side / main content, with the background: #ff0000; */}
         <div className="order-details-info-box">
-          {/* class "order-details-info-box" has the background #0000ff; */}
           <h4 className="order-details-store-title">Shoe Box</h4>
           <div>Free Shipping - estimated delivery 06/17/16</div>
-          {/* class "order-details-info-box" has the background #0000ff; */}
+        </div>
+        <div className="order-details-info-box">
+          {items.map(function (item) {
+            <CompletedOrderItem item={item} />
+          })}
         </div>
 
-        <div className="order-details-info-box">
-          <div className="row order-details-line">
-            <div className="order-details-line order-details-media"><img src="/resources/placeholder.gif" /></div>
-            <div className="order-details-line order-details-title">Air Max</div>
-            <div className="order-details-line order-details-quantity">2</div>
-            <div className="order-details-line order-details-price">$250.00</div>
-          </div>
-          <div className="row order-details-line">
-            <div className="order-details-line order-details-media"><img src="/resources/placeholder.gif" /></div>
-            <div className="order-details-line order-details-title">Air Max</div>
-            <div className="order-details-line order-details-quantity">2</div>
-            <div className="order-details-line order-details-price">$250.00</div>
-          </div>
-        </div>
         {/* This is the left side / main content, with the background: #ff0000; */}
       </div>
 
@@ -87,7 +78,9 @@ const CompletedOrder = (order) => {
 };
 
 CompletedOrder.propTypes = {
+  items: PropTypes.array,
   order: PropTypes.object
+
 };
 
 export default CompletedOrder;

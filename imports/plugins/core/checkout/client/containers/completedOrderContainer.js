@@ -1,5 +1,6 @@
 import { compose, withProps } from "recompose";
 import PropTypes from "prop-types";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Orders } from "/lib/collections";
 import { Reaction } from "/client/api";
@@ -10,19 +11,33 @@ import CompletedOrder from "../components/completedOrder";
 const handlers = {};
 
 function composer(props, onData) {
-  const order = Orders.findOne({
-    userId: Meteor.userId(),
-    cartId: Reaction.Router.getQueryParam("_id")
-  });
+  const orderSub = Meteor.subscribe("Orders");
 
-  onData(null, {
-    order
-  });
+  if (orderSub.ready()) {
+    const order = Orders.findOne({
+      userId: Meteor.userId(),
+      cartId: Reaction.Router.getQueryParam("_id")
+    });
+
+    const itemsByShop = _.sortBy(order.items, function (o) { return o.shopID; });
+    console.log("itemsByShop", itemsByShop);
+    onData(null, {
+      order,
+      items: itemsByShop
+    });
+  }
+
 }
 
 CompletedOrder.propTypes  = {
+  items: PropTypes.array,
   order: PropTypes.object
 };
+
+registerComponent("CompletedOrder", CompletedOrder, [
+  withProps(handlers),
+  composeWithTracker(composer)
+]);
 
 export default compose(
   withProps(handlers),
