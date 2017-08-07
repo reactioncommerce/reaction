@@ -219,10 +219,17 @@ function canInviteToGroup(options) {
   return false;
 }
 
+/**
+ * changeMarketplaceOwner
+ * @summary checks if the user making the request is allowed to make invitation to that group
+ * @param {Object} options -
+ * @param {String} options.userId - userID
+ * @param {String} options.permissions - permissions
+ * @return {null} -
+ */
 function changeMarketplaceOwner({ userId, permissions }) {
   // give global marketplace role to new owner
   Roles.setUserRoles(userId, permissions, Roles.GLOBAL_GROUP);
-
   // remove global from previous owner
   Meteor.users.update({ _id: Meteor.userId() }, { $unset: { [`roles.${Roles.GLOBAL_GROUP}`]: "" } });
 }

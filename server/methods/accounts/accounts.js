@@ -565,7 +565,6 @@ export function inviteShopMember(options) {
 
   const emailLogo = getEmailLogo(shop);
   const token = Random.id();
-
   const dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
 
   const user = Meteor.users.findOne({
