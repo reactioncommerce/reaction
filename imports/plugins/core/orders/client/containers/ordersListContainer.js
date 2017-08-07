@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { Orders, Shops, Media } from "/lib/collections";
+import { Orders, Media } from "/lib/collections";
 import { i18next, Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrdersList from "../components/orderList.js";
@@ -383,13 +383,11 @@ const composer = (props, onData) => {
 
   if (mediaSubscription.ready() && ordersSubscription.ready()) {
     const orders = Orders.find().fetch();
-    const shop = Shops.findOne({});
 
     onData(null, {
       uniqueItems: props.items,
       invoice: props.invoice,
-      orders: orders,
-      currency: shop.currencies[shop.currency]
+      orders: orders
     });
   }
 };
