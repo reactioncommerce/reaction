@@ -176,9 +176,9 @@ class OrdersListContainer extends Component {
   displayOrderText = (selectedOrders) => {
     let orderText = "";
     if (selectedOrders.length > 1) {
-      orderText = "Orders are";
+      orderText = "Orders have";
     } else {
-      orderText = "Order is";
+      orderText = "Order has";
     }
 
     return orderText;
@@ -220,7 +220,7 @@ class OrdersListContainer extends Component {
           this.shippingStatusUpdateCall(selectedOrders, status);
         }
       });
-      // if neither status is false, alert that order(s) are already in the 'status' state
+      // if neither status is false, alert that order(s) have already been moved to 'status' state
     } else if (falseCurrentState === 0 && falsePreviousStatuses === 0) {
       Alerts.alert({
         text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
@@ -242,7 +242,7 @@ class OrdersListContainer extends Component {
     });
 
     // if any of the selected order(s) don't have a false 'Picked' status,
-    // show an alert that the order(s) are already in the picked state
+    // show an alert that the order(s) have already been picked
     if (falsePickedStatuses === 0) {
       Alerts.alert({
         text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
