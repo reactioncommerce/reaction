@@ -8,6 +8,8 @@ const fields = ["name", "email", "createdAt", "dropdown", "button"];
 
 const GroupsTable = (props) => {
   const { group } = props;
+  const isSortable = group.users && group.users.length > 1;
+
   const tableClass = (length) => {
     return classnames({
       "accounts-group-table": true,
@@ -24,7 +26,7 @@ const GroupsTable = (props) => {
   };
 
   const columnMetadata = fields.map((columnName) => ({
-    Header: <Components.GroupHeader columnName={columnName} />,
+    Header: <Components.GroupHeader columnName={columnName} numberOfRows={group.users && group.users.length} />,
     accessor: "",
     // TODO: Review this line - copied disable line from shippo carriers.js
     Cell: (data) => { // eslint-disable-line
@@ -42,6 +44,7 @@ const GroupsTable = (props) => {
           filteredFields={fields}
           filterType="none"
           showFilter={true}
+          isSortable={isSortable}
         />
       </div>
     </Components.List>
