@@ -255,6 +255,7 @@ Meteor.methods({
       throw new Meteor.Error("Attempted to create multiple stripe charges, but stripe was not configured properly.");
     }
 
+    const capture = transactionType === "capture";
 
     // Must have an email
     const cart = Cart.findOne({ _id: cartId });
@@ -344,7 +345,10 @@ Meteor.methods({
         const charge = Promise.await(stripe.charges.create({
           amount: formatForStripe(cartTotals[shopId]),
           currency: currency,
-          source: token.id
+          source: token.id,
+          capture: capture
+          // TODO: Add description to charge in Stripe
+          // TODO: Add product metadata
         }, {
           stripe_account: stripeAccount
         }));
@@ -360,8 +364,7 @@ Meteor.methods({
 
       // TODO: Make sure that stripe is throwing errors properly to client
       // If unsuccessful, return censored failure back to client
-
-      return transactionsByShopId;
+      return { success: true, transactions: transactionsByShopId };
     } catch (error) {
       throw new Meteor.Error("Error creating multiple stripe charges", error);
     }
