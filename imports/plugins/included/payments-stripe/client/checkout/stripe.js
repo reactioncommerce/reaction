@@ -28,16 +28,42 @@ function hidePaymentAlert() {
 }
 
 function handleStripeSubmitError(error) {
-  // Match eror on card number. Not submitted to stripe
+  // Match error on card number. Not submitted to stripe
   if (error && error.reason && error.reason === "Match failed") {
     const message = "Your card number is invalid. Please check the number and try again";
     return paymentAlert(message);
   }
 
   // this is a server message with a client-sanitized message
-  if (error && error.details) {
-    return paymentAlert(error.details);
+  if (error && error.message) {
+    return paymentAlert(error.message);
   }
+}
+
+// Validation helpers
+function luhnValid(x) {
+  return [...x].reverse().reduce((sum, c, i) => {
+    let d = parseInt(c, 10);
+    if (i % 2 !== 0) { d *= 2; }
+    if (d > 9) { d -= 9; }
+    return sum + d;
+  }, 0) % 10 === 0;
+}
+
+function validCardNumber(x) {
+  return /^[0-9]{13,16}$/.test(x) && luhnValid(x);
+}
+
+function validExpireMonth(x) {
+  return /^[0-9]{1,2}$/.test(x);
+}
+
+function validExpireYear(x) {
+  return /^[0-9]{4}$/.test(x);
+}
+
+function validCVV(x) {
+  return /^[0-9]{3,4}$/.test(x);
 }
 
 //
@@ -58,6 +84,34 @@ AutoForm.addHooks("stripe-payment-form", {
     hidePaymentAlert();
     const template = this.template;
     const cart = Cart.findOne({ userId: Meteor.userId() });
+
+    // validate card data
+    // also validated on server
+    if (!validCardNumber(doc.cardNumber)) {
+      submitting = false;
+      const error = { message: "Your card number is incorrect" };
+      handleStripeSubmitError(error);
+      uiEnd(template, "Resubmit payment");
+      return false;
+    }
+
+    if (!validExpireMonth(doc.expireMonth) || !validExpireYear(doc.expireYear)) {
+      submitting = false;
+      const error = { message: "Your expiration date is incorrect" };
+      handleStripeSubmitError(error);
+      uiEnd(template, "Resubmit payment");
+      return false;
+    }
+
+    if (!validCVV(doc.cvv)) {
+      submitting = false;
+      const error = { message: "Your cvv is incorrect" };
+      handleStripeSubmitError(error);
+      uiEnd(template, "Resubmit payment");
+      return false;
+    }
+
+
     const cardData = {
       name: doc.payerName,
       number: doc.cardNumber,
