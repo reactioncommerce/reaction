@@ -10,7 +10,8 @@ class Products extends Component {
     loadProducts: PropTypes.func,
     products: PropTypes.array,
     productsSubscription: PropTypes.object,
-    ready: PropTypes.func
+    ready: PropTypes.func,
+    showNotFound: PropTypes.bool
   };
 
   handleClick = (event) => {
@@ -43,9 +44,7 @@ class Products extends Component {
   renderSpinner() {
     if (this.props.productsSubscription.ready() === false) {
       return (
-        <div className="spinner-container">
-          <div className="spinner" />
-        </div>
+        <Components.Loading />
       );
     }
   }
@@ -66,7 +65,15 @@ class Products extends Component {
   }
 
   render() {
-    if (this.props.ready()) {
+    if (this.props.showNotFound) {
+      return (
+        <Components.NotFound
+          i18nKeyTitle="productGrid.noProductsFound"
+          icon="fa fa-barcode"
+          title="No Products Found"
+        />
+      );
+    } else if (this.props.ready()) {
       return (
         <div id="container-main">
           {this.renderProductGrid()}
@@ -75,10 +82,9 @@ class Products extends Component {
         </div>
       );
     }
+
     return (
-      <div className="spinner-container spinner-container-lg">
-        <div className="spinner" />
-      </div>
+      <Components.Loading />
     );
   }
 }
