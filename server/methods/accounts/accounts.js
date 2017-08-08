@@ -835,7 +835,7 @@ function getDataForEmail(options) {
   };
 
   function getEmailUrl(userToken) {
-    if (token) {
+    if (userToken) {
       return MeteorAccounts.urls.enrollAccount(userToken);
     }
     return Meteor.absoluteUrl();
