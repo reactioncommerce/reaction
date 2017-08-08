@@ -12,7 +12,26 @@
   },
   "dependencies": {
     "copy-to-clipboard": "^3.0.6",
-    "react-copy-to-clipboard": "^5.0.0"
+    "react-copy-to-clipboard": "^5.0.0",
+    "dnd-core": "^2.4.0",
+    "nouislider-algolia-fork": "^10.0.0",
+    "react-textarea-autosize": "^5.0.7",
+    "react-addons-create-fragment": "15.6.0",
+    "react-autosuggest": "^9.3.1",
+    "react-dnd": "^2.4.0",
+    "react-dnd-html5-backend": "^2.4.1",
+    "react-dropzone": "^3.13.3",
+    "react-measure": "^1.4.7",
+    "react-nouislider": "^2.0.0",
+    "react-onclickoutside": "^6.4.0",
+    "react-table": "^6.5.1",
+    "react-tether": "^0.5.7",
+    "tether-drop": "^1.4.2",
+    "tether-tooltip": "^1.2.0"
+  },
+  "peerDependencies": {
+    "react": "^0.14.0 || ^15.0.0-0 || ^16.0.0-0",
+    "react-dom": "^15.0.0-0"
   },
   "babel": {
     "plugins": [
