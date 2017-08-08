@@ -565,42 +565,39 @@ export function inviteShopMember(options) {
 
   const emailLogo = getEmailLogo(shop);
   const token = Random.id();
-  const dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
+  const user = Meteor.users.findOne({ "emails.address": email });
+  let dataForEmail;
+  let userId;
 
-  const user = Meteor.users.findOne({
-    "emails.address": email
-  });
-
-  if (!user) {
-    const userId = MeteorAccounts.createUser({
+  if (user) {
+    userId = user._id; // since user exists, we promote the account
+    Meteor.call("group/addUser", userId, groupId);
+    // send email that they've been promoted to admin
+    dataForEmail = getDataForEmail({ shop, name, currentUserName, emailLogo });
+  } else {
+    userId = MeteorAccounts.createUser({
+      profile: { invited: true },
       email,
       name,
-      groupId,
-      profile: { invited: true }
+      groupId
     });
-
-    const newUser = Meteor.users.findOne(userId);
-
-    if (!newUser) {
-      throw new Error("Can't find user");
-    }
-
-    Meteor.users.update(userId, {
-      $set: {
-        "services.password.reset": { token, email, when: new Date() },
-        "name": name
-      }
-    });
-
-    Reaction.Email.send({
-      to: email,
-      from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: SSR.render(subject, dataForEmail),
-      html: SSR.render(tpl, dataForEmail)
-    });
-  } else {
-    throw new Meteor.Error("409", "A user with this email address already exists");
+    // set token to be used for first login for the new account
+    const tokenUpdate = {
+      "services.password.reset": { token, email, when: new Date() },
+      name
+    };
+    Meteor.users.update(userId, { $set: tokenUpdate });
+    // adds token to url in email sent
+    dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
   }
+
+  Reaction.Email.send({
+    to: email,
+    from: `${shop.name} <${shop.emails[0].address}>`,
+    subject: SSR.render(subject, dataForEmail),
+    html: SSR.render(tpl, dataForEmail)
+  });
+
   return true;
 }
 
@@ -834,8 +831,15 @@ function getDataForEmail(options) {
     user: Meteor.user(), // Account Data
     currentUserName,
     invitedUserName: name,
-    url: MeteorAccounts.urls.enrollAccount(token)
+    url: getEmailUrl(token)
   };
+
+  function getEmailUrl(userToken) {
+    if (token) {
+      return MeteorAccounts.urls.enrollAccount(userToken);
+    }
+    return Meteor.absoluteUrl();
+  }
 }
 
 /**
