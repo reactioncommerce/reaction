@@ -25,7 +25,7 @@ const CompletedOrder = ({ order, items }) => {
         </div>
         <div className="order-details-info-box">
           {items.map(function (item) {
-            <CompletedOrderItem item={item} />
+            return <CompletedOrderItem item={item} key={item._id} />
           })}
         </div>
 
