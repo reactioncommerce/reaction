@@ -13,7 +13,7 @@ import {
   Translation,
   Overlay
 } from "/imports/plugins/core/ui/client/components";
-import { getComponent } from "/imports/plugins/core/layout/lib/components";
+import { getComponent } from "@reactioncommerce/reaction-components";
 
 
 const getStyles = (props) => {
@@ -194,24 +194,24 @@ class ActionView extends Component {
   renderControlComponent() {
     if (this.props.actionView && typeof this.props.actionView.template === "string") {
       // Render a react component if one has been registered by name
-      const component = getComponent(this.props.actionView.template);
+      try {
+        const component = getComponent(this.props.actionView.template);
 
-      if (component) {
         return (
           <div style={this.styles.masterView} className="master">
             {React.createElement(component, this.props.actionView.data)}
           </div>
         );
+      } catch (e) {
+        return (
+          <div style={this.styles.masterView} className="master">
+            <Blaze
+              {...this.props.actionView.data}
+              template={this.props.actionView.template}
+            />
+          </div>
+        );
       }
-
-      return (
-        <div style={this.styles.masterView} className="master">
-          <Blaze
-            {...this.props.actionView.data}
-            template={this.props.actionView.template}
-          />
-        </div>
-      );
     }
 
     return null;
