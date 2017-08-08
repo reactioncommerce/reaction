@@ -239,7 +239,7 @@ Meteor.methods({
 
   "stripe/payment/createCharges": async function (transactionType, cardData, cartId) {
     check(transactionType, String);
-    check(cardData, { name: String, number: ValidCardNumber, expire_month: ValidExpireMonth, expire_year: ValidExpireYear, cvv2: ValidCVV, type: String });
+    check(cardData, { name: String, number: String, expire_month: String, expire_year: String, cvv2: String, type: String });
     check(cartId, String);
 
 
@@ -366,7 +366,21 @@ Meteor.methods({
       // If unsuccessful, return censored failure back to client
       return { success: true, transactions: transactionsByShopId };
     } catch (error) {
-      throw new Meteor.Error("Error creating multiple stripe charges", error);
+      if (error.rawType === "card_error") {
+        return {
+          success: false,
+          error: {
+            message: error.message,
+            code: error.code,
+            type: error.type,
+            rawType: error.rawType,
+            detail: error.detail
+          }
+        };
+      }
+      Logger.error("Received unexpected error type: " + error.rawType);
+      Logger.error(error);
+      throw new Meteor.Error("Error creating multiple stripe charges", "An unexpected error occurred");
     }
   },
 
