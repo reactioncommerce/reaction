@@ -11,7 +11,8 @@
     "url": "git+https://github.com/reactioncommerce/reaction.git"
   },
   "dependencies": {
-    "autosize": "^4.0.0"
+    "autosize": "^4.0.0",
+    "sortablejs": "^1.6.0"
   },
   "babel": {
     "plugins": [
