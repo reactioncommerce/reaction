@@ -1,7 +1,7 @@
 import { compose, withProps } from "recompose";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Orders, Media } from "/lib/collections";
+import { Orders, Media, Shops } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import CompletedOrder from "../components/completedOrder";
@@ -36,15 +36,21 @@ handlers.handleDisplayMedia = (item) => {
 function composer(props, onData) {
   const orderId = Reaction.Router.getQueryParam("_id");
   const orderSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), orderId);
+  const shopSub = Meteor.subscribe("Shops");
 
-  if (orderSub.ready()) {
+  if (orderSub.ready() && shopSub.ready()) {
     const order = Orders.findOne({
       userId: Meteor.userId(),
       cartId: orderId
     });
     const imageSub = Meteor.subscribe("CartImages", order.items);
 
-    const itemsByShop = _.sortBy(order.items, function (o) { return o.shopID; });
+    let itemsByShop = _.sortBy(order.items, function (o) { return o.shopID; });
+    itemsByShop = itemsByShop.map(function (item) {
+      item.shopName = Shops.findOne(item.shopId).name;
+      return item;
+    });
+    console.log("itemsByShop", itemsByShop);
     const orderSummary = {
       quantityTotal: order.orderCount(),
       subtotal: order.orderSubTotal(),
@@ -54,17 +60,18 @@ function composer(props, onData) {
       total: order.orderTotal()
     };
 
-    let productImages;
     if (imageSub.ready()) {
-      productImages = Media.find().fetch();
+      const productImages = Media.find().fetch();
+
+      onData(null, {
+        items: itemsByShop,
+        order,
+        orderSummary,
+        productImages
+      });
     }
 
-    onData(null, {
-      items: itemsByShop,
-      order,
-      orderSummary,
-      productImages
-    });
+
   }
 }
 

@@ -2,8 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const CompletedOrderItem = ({ item, handleDisplayMedia }) => {
-  const image = handleDisplayMedia(item).url();
-  console.log("image", image);
+  let image;
+
+  if (handleDisplayMedia(item)) {
+    image = handleDisplayMedia(item).url();
+  } else {
+    image = "/resources/placeholder.gif";
+  }
+
   return (
     <div className="row order-details-line">
       <div className="order-details-media"><img src={image} /></div>
