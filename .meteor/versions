@@ -103,7 +103,7 @@ logging@1.1.17
 matb33:collection-hooks@0.8.4
 mdg:validated-method@1.1.0
 mdg:validation-error@0.5.1
-meteor@1.7.0
+meteor@1.7.1
 meteor-base@1.1.0
 meteorhacks:ssr@2.2.0
 meteorhacks:subs-manager@1.6.4
