@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/reaction.git"
   },
+  "dependencies": {
+    "autosize": "^4.0.0"
+  },
   "babel": {
     "plugins": [
       [

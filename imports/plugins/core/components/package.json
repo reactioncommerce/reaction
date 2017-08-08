@@ -1,7 +1,7 @@
 {
-  "name": "reaction-payments-stripe",
+  "name": "reaction-composer-components",
   "version": "1.0.0",
-  "description": "Reaction Stripe payments",
+  "description": "Reaction Composer Component",
   "main": "register.js",
   "author": "Reaction Commerce <hello@reactioncommerce.com>",
   "license": "GPL-3.0",
@@ -11,6 +11,7 @@
     "url": "git+https://github.com/reactioncommerce/reaction.git"
   },
   "dependencies": {
-    "stripe": "^4.23.1"
+    "hoist-non-react-statics": "^2.2.0",
+    "shallowequal": "^1.0.2"
   }
 }

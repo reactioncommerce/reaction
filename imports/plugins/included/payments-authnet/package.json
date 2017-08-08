@@ -9,5 +9,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/reaction.git"
+  },
+  "dependencies": {
+    "@reactioncommerce/authorize-net": "^1.0.8"
   }
 }

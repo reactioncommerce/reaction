@@ -15,6 +15,7 @@
     "url": "git+https://github.com/reactioncommerce/reaction.git"
   },
   "dependencies": {
-    "shopify-api-node": "^2.7.0"
+    "shopify-api-node": "^2.7.0",
+    "electron": "^1.6.11"
   }
 }
