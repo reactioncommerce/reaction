@@ -583,7 +583,7 @@ export function inviteShopMember(options) {
     // adds token to url in email sent
     dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
   }
-
+  console.log(JSON.stringify({ dataForEmail }, null, 4));
   // Compile Email with SSR
   const tpl = "accounts/inviteShopAdmin";
   const subject = "accounts/inviteShopMember/subject";
@@ -780,17 +780,19 @@ function getEmailLogo(shop) {
 }
 
 function getCurrentUserName(currentUser) {
-  let currentUserName;
-  if (currentUser) {
-    if (currentUser.profile) {
-      currentUserName = currentUser.profile.name || currentUser.username;
-    } else {
-      currentUserName = currentUser.username;
-    }
-  } else {
-    currentUserName = "Admin";
+  if (currentUser && currentUser.profile && currentUser.profile.name) {
+    return currentUser.profile.name;
   }
-  return currentUserName;
+
+  if (currentUser.name) {
+    return currentUser.name;
+  }
+
+  if (currentUser.username) {
+    return currentUser.username;
+  }
+
+  return "Admin";
 }
 
 function getDataForEmail(options) {
