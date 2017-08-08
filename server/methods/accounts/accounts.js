@@ -565,7 +565,6 @@ export function inviteShopMember(options) {
   if (user) {
     userId = user._id; // since user exists, we promote the account
     Meteor.call("group/addUser", userId, groupId);
-    // send email that they've been promoted to admin
     dataForEmail = getDataForEmail({ shop, name, currentUserName, emailLogo });
   } else {
     userId = MeteorAccounts.createUser({
@@ -583,7 +582,7 @@ export function inviteShopMember(options) {
     // adds token to url in email sent
     dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
   }
-  console.log(JSON.stringify({ dataForEmail }, null, 4));
+
   // Compile Email with SSR
   const tpl = "accounts/inviteShopAdmin";
   const subject = "accounts/inviteShopMember/subject";
