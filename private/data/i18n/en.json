@@ -429,7 +429,15 @@
         "registerGuest": "Hello! Add an email and receive order updates.",
         "trackYourDelivery": "Order updates will be sent to",
         "noOrdersFound": "No orders found.",
-        "adminMessage": "You are viewing orders as an administrator"
+        "adminMessage": "You are viewing orders as an administrator",
+        "yourItems": "Your Items",
+        "shippingAddress": "Shipping Address",
+        "paymentMethod": "Payment Method",
+        "quantityTotal": "Quantity Total",
+        "orderSubtotal": "Subtotal",
+        "orderShipping": "Shipping",
+        "orderTax": "Tax",
+        "orderTotal": "Captured Total"
       },
       "checkoutLogin": {
         "welcome": "Welcome, it's so good to see you.",

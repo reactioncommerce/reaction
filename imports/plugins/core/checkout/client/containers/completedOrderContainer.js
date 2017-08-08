@@ -1,5 +1,4 @@
 import { compose, withProps } from "recompose";
-import PropTypes from "prop-types";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Orders } from "/lib/collections";
@@ -11,28 +10,34 @@ import CompletedOrder from "../components/completedOrder";
 const handlers = {};
 
 function composer(props, onData) {
-  const orderSub = Meteor.subscribe("Orders");
+  const orderId = Reaction.Router.getQueryParam("_id");
+  const orderSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), orderId);
 
   if (orderSub.ready()) {
     const order = Orders.findOne({
       userId: Meteor.userId(),
-      cartId: Reaction.Router.getQueryParam("_id")
+      cartId: orderId
     });
 
     const itemsByShop = _.sortBy(order.items, function (o) { return o.shopID; });
-    console.log("itemsByShop", itemsByShop);
+    const orderSummary = {
+      quantityTotal: order.orderCount(),
+      subtotal: order.orderSubTotal(),
+      shipping: order.orderShipping(),
+      tax: order.orderTaxes(),
+      discounts: order.orderDiscounts(),
+      total: order.orderTotal()
+    };
+
     onData(null, {
+      items: itemsByShop,
       order,
-      items: itemsByShop
+      orderSummary
     });
   }
 
 }
 
-CompletedOrder.propTypes  = {
-  items: PropTypes.array,
-  order: PropTypes.object
-};
 
 registerComponent("CompletedOrder", CompletedOrder, [
   withProps(handlers),
