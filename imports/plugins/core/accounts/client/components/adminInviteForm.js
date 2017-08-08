@@ -70,9 +70,11 @@ class AdminInviteForm extends Component {
         let messageKey;
         if (error.reason === "Unable to send invitation email.") {
           messageKey = "accountsUI.error.unableToSendInvitationEmail";
-        } else if (error.reason !== "A user with this email address already exists") {
+        } else if (error.reason === "A user with this email address already exists") {
           messageKey = "accountsUI.error.userWithEmailAlreadyExists";
-        } else if (error.reason !== "") {
+        } else if (error.reason === "cannot directly invite owner") {
+          messageKey = "admin.groupsInvite.inviteOwnerError";
+        } else if (error.reason === "") {
           message = error.reason;
         } else {
           messageKey = "accountsUI.error.errorSendingEmail";

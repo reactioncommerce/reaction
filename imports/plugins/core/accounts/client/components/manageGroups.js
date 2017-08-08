@@ -51,7 +51,6 @@ class ManageGroups extends Component {
           selectedGroup={this.state.group}
           onChangeGroup={this.props.onChangeGroup}
         />
-        <Components.AddGroupMembers groups={this.state.adminGroups} accounts={this.state.accounts} group={this.state.group} />
       </div>
     );
   }

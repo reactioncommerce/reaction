@@ -1,5 +1,4 @@
 export { default as AccountsDashboard } from "./components/accountsDashboard";
-export { default as AddGroupMember } from "./components/addGroupMembers";
 export { default as AdminInviteForm } from "./components/adminInviteForm";
 export { default as EditGroup } from "./components/editGroup";
 export { default as GroupForm } from "./components/groupForm";
