@@ -8,7 +8,7 @@ import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
 import { StripeApi } from "./stripeapi";
 
-import { Cart, Shops, Accounts } from "/lib/collections";
+import { Cart, Shops, Accounts, Packages } from "/lib/collections";
 
 function luhnValid(x) {
   return [...x].reverse().reduce((sum, c, i) => {
@@ -86,6 +86,97 @@ function stripeCaptureCharge(paymentMethod) {
   return result;
 }
 
+/**
+ * normalizes the status of a transaction
+ * @method normalizeStatus
+ * @param  {object} transaction - The transaction that we need to normalize
+ * @return {string} normalized status string - either failed, settled, or created
+ */
+function normalizeStatus(transaction) {
+  if (!transaction) {
+    throw new Meteor.Error("normalizeStatus requires a transaction");
+  }
+
+  // if this transaction failed, mode is "failed"
+  if (transaction.failure_code) {
+    return "failed";
+  }
+
+  // if this transaction was captured, status is "settled"
+  if (transaction.captured) { // Transaction was authorized but not captured
+    return "settled";
+  }
+
+  // Otherwise status is "created"
+  return "created";
+}
+
+/**
+ * normalizes the mode of a transaction
+ * @method normalizeMode
+ * @param  {object} transaction The transaction that we need to normalize
+ * @return {string} normalized status string - either failed, capture, or authorize
+ */
+function normalizeMode(transaction) {
+  if (!transaction) {
+    throw new Meteor.Error("normalizeMode requires a transaction");
+  }
+
+  // if this transaction failed, mode is "failed"
+  if (transaction.failure_code) {
+    return "failed";
+  }
+
+  // If this transaction was captured, mode is "capture"
+  if (transaction.captured) {
+    return "capture";
+  }
+
+  // Anything else, mode is "authorize"
+  return "authorize";
+}
+
+
+function buildPaymentMethods(options) {
+  const { cardData, transactions } = options;
+  if (!transactions) {
+    throw new Meteor.Error("Creating a payment method log requries transaction data");
+  }
+
+  const shopIds = Object.keys(transactions);
+  const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + cardData.number.slice(-4);
+  const packageData = Packages.findOne({
+    name: "reaction-stripe",
+    shopId: Reaction.getPrimaryShopId()
+  });
+
+  const paymentMethods = [];
+
+  shopIds.forEach((shopId) => {
+    if (transactions[shopId]) {
+      const paymentMethod = {
+        processor: "Stripe",
+        storedCard: storedCard,
+        method: "credit",
+        paymentPackageId: packageData._id,
+        // TODO: REVIEW WITH AARON - why is paymentSettings key important
+        // and why is it just defined on the client?
+        paymentSettingsKey: packageData.name.split("/").splice(-1)[0],
+        transactionId: transactions[shopId].id,
+        amount: transactions[shopId].amount * 0.01,
+        status: normalizeStatus(transactions[shopId]),
+        mode: normalizeMode(transactions[shopId]),
+        createdAt: new Date(transactions[shopId].created),
+        transactions: []
+      };
+      paymentMethod.transactions.push(transactions[shopId]);
+      paymentMethods.push(paymentMethod);
+    }
+  });
+
+  return paymentMethods;
+}
+
 
 Meteor.methods({
   "stripeSubmit": function (transactionType, cardData, paymentData) {
@@ -112,31 +203,7 @@ Meteor.methods({
       capture: true
     };
 
-    // check if this is a seller shop for destination and transaction fee logic
     // TODO: Add transaction fee to Stripe chargeObj when stripeConnect is in use.
-
-    // Where is sellerShops coming from here?
-    // const sellerShop = sellerShops.findOne(paymentData.shopId);
-    //
-    // if (sellerShop && sellerShop.stripeConnectSettings) {
-    //   const chargeObj = {
-    //     chargeData: {
-    //       amount: "",
-    //       currency: "",
-    //       transactionFee: 0,
-    //       card: {},
-    //       capture: true
-    //     },
-    //     stripe_account: sellerShop.stripeConnectSettings.stripe_user_id
-    //   };
-    // } else {
-    //   const chargeObj = {
-    //     amount: "",
-    //     currency: "",
-    //     card: {},
-    //     capture: true
-    //   };
-    // }
 
     if (transactionType === "authorize") {
       chargeObj.capture = false;
@@ -146,11 +213,6 @@ Meteor.methods({
     chargeObj.currency = paymentData.currency;
 
     // TODO: Check for a transaction fee and apply
-    // const stripeConnectSettings = Reaction.getPackageSettings("reaction-stripe-connect").settings;
-    // if (sellerShop.stripeConnectSettings && stripeConnectSettings.transactionFee.enabled) {
-    //   chargeObj.transactionFee = chargeObj.amount * stripeConnectSettings.transactionFee.percentage;
-    // }
-
     let result;
     let chargeResult;
 
@@ -216,7 +278,6 @@ Meteor.methods({
     const stripeApiKey = stripePkg.settings.api_key;
     const stripe = stripeNpm(stripeApiKey);
 
-
     // get array of shopIds that exist in this cart
     const shopIds = cart.items.reduce((uniqueShopIds, item) => {
       if (uniqueShopIds.indexOf(item.shopId) === -1) {
@@ -226,9 +287,9 @@ Meteor.methods({
     }, []);
 
 
-    const chargesByShopId = {};
+    const transactionsByShopId = {};
 
-    // TODO: If there is only one chargesByShopId and the shopId is primaryShopId -
+    // TODO: If there is only one transactionsByShopId and the shopId is primaryShopId -
     // Create a standard charge and bypass creating a customer for this charge
     const primaryShop = Shops.findOne({ _id: Reaction.getPrimaryShopId() });
     const currency = primaryShop.currency;
@@ -278,6 +339,7 @@ Meteor.methods({
           stripe_account: stripeAccount
         }));
 
+        // TODO: Add connect application fee to this charge
         // Charge the token we just created
         const charge = Promise.await(stripe.charges.create({
           amount: formatForStripe(cartTotals[shopId]),
@@ -287,15 +349,19 @@ Meteor.methods({
           stripe_account: stripeAccount
         }));
 
-        chargesByShopId[shopId] = charge;
+
+        transactionsByShopId[shopId] = charge;
       });
+
       // If successful, call cart/submitPayment and return success back to client.
-      //
+      const paymentMethods = buildPaymentMethods({ cardData, transactions: transactionsByShopId });
+      Meteor.call("cart/submitPayment", paymentMethods, transactionsByShopId);
+
+
+      // TODO: Make sure that stripe is throwing errors properly to client
       // If unsuccessful, return censored failure back to client
 
-      // Return an object where the object keys represent the shops involved in this order and the
-      // values are the charges made for that shop.
-      return chargesByShopId;
+      return transactionsByShopId;
     } catch (error) {
       throw new Meteor.Error("Error creating multiple stripe charges", error);
     }
