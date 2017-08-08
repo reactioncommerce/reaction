@@ -32,7 +32,7 @@ if (Meteor.isClient) {
   history = createMemoryHistory();
 }
 
-// Base router class (static)
+/** Class representing a static base router */
 class Router {
   /**
    * history
@@ -66,7 +66,7 @@ class Router {
 
   /**
    * Routes array
-   * @type {[Array]}
+   * @type {Array}
    * @param {Array} value An array of objects
    */
   static set _routes(value) {
@@ -178,7 +178,7 @@ class Router {
 
   /**
    * Watch path change. Is Reactive.
-   * @return {[type]} [description]
+   * @return {undefined}
    */
   static watchPathChange() {
     routerChangeDependency.depend();
