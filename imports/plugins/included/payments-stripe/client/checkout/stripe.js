@@ -4,9 +4,9 @@ import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { $ } from "meteor/jquery";
 import { getCardType } from "/client/modules/core/helpers/globals";
-import { Reaction } from "/client/api";
-import { Cart, SellerShops, Packages } from "/lib/collections";
-import { Stripe } from "../../lib/api";
+// import { Reaction } from "/client/api";
+import { Cart } from "/lib/collections";
+// import { Stripe } from "../../lib/api";
 import { StripePayment } from "../../lib/collections/schemas";
 
 let submitting = false;
@@ -56,8 +56,9 @@ Template.stripePaymentForm.helpers({
 AutoForm.addHooks("stripe-payment-form", {
   onSubmit(doc) {
     submitting = true;
-    const template = this.template;
     hidePaymentAlert();
+    const template = this.template;
+    const cart = Cart.findOne({ userId: Meteor.userId() });
     const cardData = {
       name: doc.payerName,
       number: doc.cardNumber,
@@ -66,69 +67,87 @@ AutoForm.addHooks("stripe-payment-form", {
       cvv2: doc.cvv,
       type: getCardType(doc.cardNumber)
     };
-    const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + doc.cardNumber.slice(-4);
-    Stripe.authorize(cardData, {
-      total: Cart.findOne().cartTotal(),
-      currency: SellerShops.findOne().currency
-      // Commenting this out because it causes tests to fail and isn't fully implemented.
-      // shopId: SellerShops.findOne()._id // TODO: Implement Marketplace Payments
-    }, function (error, transaction) {
+
+    // TODO: Move storedCard to server
+    // const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + doc.cardNumber.slice(-4);
+
+    Meteor.call("stripe/payment/createCharges", "authorize", cardData, cart._id,  (error, result) => {
       submitting = false;
       if (error) {
         handleStripeSubmitError(error);
         uiEnd(template, "Resubmit payment");
       } else {
-        if (transaction.saved === true) {
-          const normalizedStatus = (function () {
-            switch (false) {
-              case !(!transaction.response.captured && !transaction.response.failure_code):
-                return "created";
-              case !(transaction.response.captured === true && !transaction.response.failure_code):
-                return "settled";
-              case !transaction.response.failure_code:
-                return "failed";
-              default:
-                return "failed";
-            }
-          })();
-          const normalizedMode = (function () {
-            switch (false) {
-              case !(!transaction.response.captured && !transaction.response.failure_code):
-                return "authorize";
-              case !transaction.response.captured:
-                return "capture";
-              default:
-                return "capture";
-            }
-          })();
-          Meteor.subscribe("Packages", Reaction.getShopId());
-          const packageData = Packages.findOne({
-            name: "reaction-stripe",
-            shopId: Reaction.getShopId()
-          });
-
-          submitting = false;
-          const paymentMethod = {
-            processor: "Stripe",
-            storedCard: storedCard,
-            method: "credit",
-            paymentPackageId: packageData._id,
-            paymentSettingsKey: packageData.registry[0].settingsKey,
-            transactionId: transaction.response.id,
-            amount: transaction.response.amount * 0.01,
-            status: normalizedStatus,
-            mode: normalizedMode,
-            createdAt: new Date(transaction.response.created),
-            transactions: []
-          };
-          paymentMethod.transactions.push(transaction.response);
-          Meteor.call("cart/submitPayment", paymentMethod);
+        if (result.success) {
+          // handle success
         } else {
-          handleStripeSubmitError(transaction.error);
+          handleStripeSubmitError(result.error);
           uiEnd(template, "Resubmit payment");
         }
       }
     });
+
+    // LEGACY submit
+    //
+    // Stripe.authorize(cardData, {
+    //   total: Cart.findOne().cartTotal(),
+    //   currency: SellerShops.findOne().currency
+    // }, function (error, transaction) {
+    //   submitting = false;
+    //   if (error) {
+    //     handleStripeSubmitError(error);
+    //     uiEnd(template, "Resubmit payment");
+    //   } else {
+    //     if (transaction.saved === true) {
+    //       const normalizedStatus = (function () {
+    //         switch (false) {
+    //           case !(!transaction.response.captured && !transaction.response.failure_code):
+    //             return "created";
+    //           case !(transaction.response.captured === true && !transaction.response.failure_code):
+    //             return "settled";
+    //           case !transaction.response.failure_code:
+    //             return "failed";
+    //           default:
+    //             return "failed";
+    //         }
+    //       })();
+    //       const normalizedMode = (function () {
+    //         switch (false) {
+    //           case !(!transaction.response.captured && !transaction.response.failure_code):
+    //             return "authorize";
+    //           case !transaction.response.captured:
+    //             return "capture";
+    //           default:
+    //             return "capture";
+    //         }
+    //       })();
+    //       Meteor.subscribe("Packages", Reaction.getShopId());
+    //       const packageData = Packages.findOne({
+    //         name: "reaction-stripe",
+    //         shopId: Reaction.getShopId()
+    //       });
+    //
+    //       submitting = false;
+    //       const paymentMethod = {
+    //         processor: "Stripe",
+    //         storedCard: storedCard,
+    //         method: "credit",
+    //         paymentPackageId: packageData._id,
+    //         paymentSettingsKey: packageData.registry[0].settingsKey,
+    //         transactionId: transaction.response.id,
+    //         amount: transaction.response.amount * 0.01,
+    //         status: normalizedStatus,
+    //         mode: normalizedMode,
+    //         createdAt: new Date(transaction.response.created),
+    //         transactions: []
+    //       };
+    //       paymentMethod.transactions.push(transaction.response);
+    //       Meteor.call("cart/submitPayment", paymentMethod);
+    //     } else {
+    //       handleStripeSubmitError(transaction.error);
+    //       uiEnd(template, "Resubmit payment");
+    //     }
+    //   }
+    // });
     return false;
   },
   beginSubmit() {
