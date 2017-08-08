@@ -7,7 +7,7 @@ import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
+import { Accounts, Cart, Groups, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
@@ -552,6 +552,11 @@ export function inviteShopMember(options) {
   if (!Reaction.hasPermission("reaction-accounts", this.userId, shopId)) {
     Logger.error(`User ${this.userId} does not have reaction-accounts permissions`);
     throw new Meteor.Error("access-denied", "Access denied");
+  }
+
+  const group = Groups.findOne({ _id: groupId }) || {};
+  if (group.slug === "owner") {
+    throw new Meteor.Error(400, "cannot directly invite owner");
   }
 
   const currentUser = Meteor.users.findOne(this.userId);
