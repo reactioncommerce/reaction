@@ -1072,73 +1072,118 @@ Meteor.methods({
    * @summary saves a submitted payment to cart, triggers workflow
    * and adds "paymentSubmitted" to cart workflow
    * Note: this method also has a client stub, that forwards to cartCompleted
-   * @param {Object} paymentMethod - paymentMethod object
+   * @param {Object|Array} paymentMethods - an array of paymentMethods (deprecated: or a single paymentMethod object)
+   * @param {Object} transactionsByShopId - Dict of transactions keyed by shopId
    * directly within this method, just throw down though hooks
    * @return {String} returns update result
    */
-  "cart/submitPayment": function (paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+  "cart/submitPayment": function (paymentMethods, transactionsByShopId) {
+    console.log("cart/submitPayment called", paymentMethods[0]);
+    check(paymentMethods, [Reaction.Schemas.PaymentMethod]);
+    check(transactionsByShopId, Match.Maybe(Object));
+    // Marketplace ready payment methods pass in an object with transactions listed
+    // by shopId
 
-    const checkoutCart = Collections.Cart.findOne({
+    const cart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
 
-    const cart = _.clone(checkoutCart);
     const cartId = cart._id;
-    const invoice = {
-      shipping: cart.cartShipping(),
-      subtotal: cart.cartSubTotal(),
-      taxes: cart.cartTaxes(),
-      discounts: cart.cartDiscounts(),
-      total: cart.cartTotal()
-    };
+    const items = [...cart.items];
+
+    const cartShipping = cart.cartShipping();
+    const cartSubTotal = cart.cartSubTotal();
+    const cartSubTotalByShop = cart.cartSubTotalByShop();
+    const cartTaxes = cart.cartTaxes();
+    const cartTaxesByShop = cart.cartSubTotalByShop();
+    const cartDiscounts = cart.cartDiscounts();
+    const cartTotal = cart.cartTotal();
+    const cartTotalByShop = cart.cartTotal();
 
     // we won't actually close the order at this stage.
     // we'll just update the workflow and billing data where
     // method-hooks can process the workflow update.
 
-    let selector;
-    let update;
-    // temp hack until we build out multiple billing handlers
-    // if we have an existing item update it, otherwise add to set.
+    const payments = [];
+    let paymentAddress;
+    let itemsWithPaymentDetails;
 
-    // TODO: Marketplace Payments - Add support for multiple billing handlers here
-    if (cart.items) {
-      // TODO: Needs to be improved to consider which transaction goes with which item
-      // For now just attach the transaction to each item in the cart
-      const cartItemsWithPayment = cart.items.map(item => {
-        item.transaction = paymentMethod.transactions[paymentMethod.transactions.length - 1];
+    if (Array.isArray(cart.billing) && cart.billing[0]) {
+      paymentAddress = cart.billing[0].address;
+    }
+
+    const shopIds = Object.keys(transactionsByShopId);
+    // Payment plugins which have been updated for marketplace are passing an array as paymentMethods
+    if (Array.isArray(paymentMethods)) {
+      shopIds.forEach((shopId) => {
+        const invoice = {
+          shipping: cartShipping,
+          subtotal: cartSubTotalByShop[shopId],
+          taxes: cartTaxesByShop[shopId],
+          discounts: cartDiscounts,
+          total: cartTotalByShop[shopId]
+        };
+
+        const transaction = transactionsByShopId[shopId];
+        const paymentMethod = paymentMethods.find((pm) => {
+          // Find the transaction that was successful
+          const successfulTransaction = pm.transactions.find((tx) => tx.status === "succeeded");
+          // we've got the right payment method if the successful transaction has the same id
+          // as the transaction that we got from our transactionsByShopId
+          return successfulTransaction.id === transaction.id;
+        });
+
+        payments.push({
+          paymentMethod: paymentMethod,
+          invoice: invoice,
+          address: paymentAddress,
+          shopId: shopId
+        });
+      });
+
+      // Based on the shopId of each item in the cart and each transaction
+      // add the correct transaction to each item in the cart
+      itemsWithPaymentDetails = items.map(item => {
+        item.transaction = transactionsByShopId[item.shopId];
         return item;
       });
-      cart.items = cartItemsWithPayment;
+    } else {
+      // Legacy payment integration - transactions are not split by shop
+      // Create an invoice based on cart totals.
+      const invoice = {
+        shipping: cartShipping,
+        subtotal: cartSubTotal,
+        taxes: cartTaxes,
+        discounts: cartDiscounts,
+        total: cartTotal
+      };
+
+      // Legacy payment plugins are passing in a single paymentMethod object
+      payments.push({
+        paymentMethod: paymentMethods,
+        invoice: invoice,
+        address: paymentAddress
+      });
+
+      // Add the successful transaction to each item in cart
+      itemsWithPaymentDetails = items.map(item => {
+        // We're searching for the succeeded transaction here as we should be storing
+        // all transactions, successful and unsuccessful on the transactions object
+        item.transaction = paymentMethods.transactions.find((tx) => tx.status === "succeeded");
+        return item;
+      });
     }
 
-    if (cart.billing) {
-      selector = {
-        "_id": cartId,
-        "billing._id": cart.billing[0]._id
-      };
-      update = {
-        $set: {
-          "billing.$.paymentMethod": paymentMethod,
-          "billing.$.invoice": invoice,
-          "items": cart.items
-        }
-      };
-    } else {
-      selector = {
-        _id: cartId
-      };
-      update = {
-        $addToSet: {
-          "billing.paymentMethod": paymentMethod,
-          "billing.invoice": invoice
-        },
-        $set: {
-          items: cart.items
-        }
-      };
-    }
+    const selector = {
+      _id: cartId
+    };
+
+    const update = {
+      $set: {
+        items: itemsWithPaymentDetails,
+        billing: payments
+      }
+    };
 
     try {
       Collections.Cart.update(selector, update);
