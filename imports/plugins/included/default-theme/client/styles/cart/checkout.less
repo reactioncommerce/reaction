@@ -168,35 +168,12 @@
 
 .order-details-line {
   display: flex;
+  flex: 1 1 auto;
   margin: 10px 10px 10px 0;
-}
-
-.order-details-line-item {
-  display: flex;
-  flex: 30px;
-  align-items: flex-start;
-}
-
-.order-details-title {
-  display: flex;
-  flex: 1 1 auto;
-  margin-top: 10px;
-}
-
-.order-details-quantity {
-  display: flex;
-  flex: 1 1 auto;
-  margin-top: 10px;
-}
-
-.order-details-price {
-  display: flex;
-  flex: 1 1 auto;
-  font-weight: bold;
+  justify-content: flex-start;
 }
 
 .order-details-media {
-  .flex(0 0 auto);
   width: 40px;
   height: 40px;
   border: solid 1px #cccccc;
@@ -207,19 +184,44 @@
   }
 }
 
-.order-summary-title {
+.order-details-title {
+  flex: 1 1 auto;
+  text-align: left;
   font-weight: bold;
+  margin-top: 15px;
 }
 
+.order-details-quantity {
+  text-align: right;
+  font-weight: bold;
+  margin-top: 15px;
+
+}
+
+.order-details-price {
+  font-weight: bold;
+  text-align: right;
+}
+
+
+.order-summary-title {
+  font-weight: bold;
+  flex: 1 1 auto;
+}
+
+.order-summary-value {
+  font-weight: bold;
+  text-align: right;
+}
+
+
 .order-summary-total-title {
+  flex: 1 1 auto;
   font-weight: bold;
 }
 
 .order-summary-total-value {
   font-weight: bold;
+  text-align: right;
 }
 
-.order-summary-value {
-  font-weight: bold;
-  flex: 1 1 auto;
-}
