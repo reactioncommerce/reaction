@@ -1,4 +1,4 @@
-import { Migrations } from "/imports/plugins/core/versions";
+import { Migrations } from "meteor/percolate:migrations";
 import { Packages } from "/lib/collections";
 
 // Add keys to search so that stock search is enabled by default

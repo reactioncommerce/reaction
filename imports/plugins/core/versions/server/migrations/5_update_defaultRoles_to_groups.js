@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
-import { Migrations } from "/imports/plugins/core/versions";
+import { Migrations } from "meteor/percolate:migrations";
 import { Logger } from "/server/api";
 import { Accounts, Groups, Shops } from "/lib/collections";
 
