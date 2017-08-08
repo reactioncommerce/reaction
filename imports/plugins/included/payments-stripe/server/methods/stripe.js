@@ -446,8 +446,28 @@ Meteor.methods({
   "stripe/refund/list": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     let result;
+
+    // XXX: EXPIRIMENTAL UPDATE to `stripe/refunds/list` WIP
+    const stripePkg = Reaction.getPackageSettingsWithOptions({
+      shopId: Reaction.getPrimaryShopId(),
+      name: "reaction-stripe"
+    });
+
+    if (!stripePkg || !stripePkg.settings || !stripePkg.settings.api_key) {
+      // Fail if we can't find a Stripe API key
+      throw new Meteor.Error("Attempted to list stripe refunds, but stripe was not configured properly.");
+    }
+
+    // Initialize stripe api lib
+    const stripeApiKey = stripePkg.settings.api_key;
+    const stripe = stripeNpm(stripeApiKey);
+
+
     try {
-      const refunds = StripeApi.methods.listRefunds.call({ transactionId: paymentMethod.transactionId });
+      const refunds = Promise.await(stripe.refunds.list({
+        charge: paymentMethod.transactionId
+      }));
+
       result = [];
       for (const refund of refunds.data) {
         result.push({
