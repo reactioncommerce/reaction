@@ -489,7 +489,7 @@ export function inviteShopOwner(options) {
   const shop = Shops.findOne(shopId);
 
   // Compile Email with SSR
-  const tpl = "accounts/inviteShopOwner";
+  const tpl = "accounts/inviteShopAdmin";
   const subject = "accounts/inviteShopOwner/subject";
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
@@ -556,13 +556,6 @@ export function inviteShopMember(options) {
 
   const currentUser = Meteor.users.findOne(this.userId);
   const currentUserName = getCurrentUserName(currentUser);
-
-  // Compile Email with SSR
-  const tpl = "accounts/inviteShopMember";
-  const subject = "accounts/inviteShopMember/subject";
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
-
   const emailLogo = getEmailLogo(shop);
   const token = Random.id();
   const user = Meteor.users.findOne({ "emails.address": email });
@@ -590,6 +583,12 @@ export function inviteShopMember(options) {
     // adds token to url in email sent
     dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
   }
+
+  // Compile Email with SSR
+  const tpl = "accounts/inviteShopAdmin";
+  const subject = "accounts/inviteShopMember/subject";
+  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
   Reaction.Email.send({
     to: email,
