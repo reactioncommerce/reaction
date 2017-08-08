@@ -112,8 +112,7 @@ export const methods = {
     const cartShopId = cartToCalc.shopId;
     let cartTaxRate = 0;
     let cartTaxData;
-    // TODO: update for marketplace
-    // TODO: REVIEW with Aaron
+    // TODO: Calculate shipping taxes for regions that require it
 
     // get all tax packages
     //
@@ -207,10 +206,6 @@ export const methods = {
                 item.taxRate = shopTaxRate[0].rate;
                 item.subtotal = item.variants.price * item.quantity;
                 item.tax = item.subtotal * (item.taxRate / 100);
-
-                // Add tax to cartTotalTax
-                // TODO: REVIEW Why don't we set tax on the cart?
-                // cartTotalTax += item.tax;
               }
             }
 

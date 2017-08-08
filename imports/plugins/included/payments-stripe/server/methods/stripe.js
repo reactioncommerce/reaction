@@ -462,7 +462,6 @@ Meteor.methods({
     const stripeApiKey = stripePkg.settings.api_key;
     const stripe = stripeNpm(stripeApiKey);
 
-
     try {
       const refunds = Promise.await(stripe.refunds.list({
         charge: paymentMethod.transactionId

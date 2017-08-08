@@ -412,7 +412,7 @@ export const methods = {
     check(order, Object);
     check(action, Match.OneOf(String, undefined));
 
-    // REVIEW: SECURITY this only checks to see if a userId exists
+    // TODO: REVIEW: SECURITY this only checks to see if a userId exists
     if (!this.userId) {
       Logger.error("orders/sendNotification: Access denied");
       throw new Meteor.Error("access-denied", "Access Denied");
