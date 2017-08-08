@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Cart, Media } from "/lib/collections";
@@ -65,6 +66,32 @@ Meteor.publish("Cart", function (sessionId, userId) {
   const cartId = Meteor.call("cart/createCart", this.userId, sessionId);
 
   return Cart.find(cartId);
+});
+
+
+Meteor.publish("CartImages", function (cartItems) {
+  check(cartItems, Array);
+  const productIds = _.uniq(cartItems.map(function (item) {
+    return item.product._id;
+  }));
+
+  const variantIds = _.uniq(cartItems.map(function (item) {
+    return item.variants._id;
+  }));
+  const productImages = Media.find(
+    { "$or":
+      [{
+        "metadata.productId": { $in: productIds }
+      },
+      {
+        "metadata.productId": { $in: variantIds }
+      }
+      ],
+    "metadata.workflow": { $nin: ["archived", "unpublished"] }
+    }
+  );
+
+  return productImages;
 });
 
 Meteor.publish("CartItemImage", function (cartItem) {

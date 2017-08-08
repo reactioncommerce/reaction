@@ -4,7 +4,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 import CompletedOrderItem from "./completedOrderItem";
 
 
-const CompletedOrder = ({ order, items, orderSummary }) => {
+const CompletedOrder = ({ order, items, orderSummary, handleDisplayMedia }) => {
   const shippingAddress = order.shipping[0].address;
   const hasEmail = !!order.email;
   return (
@@ -28,7 +28,7 @@ const CompletedOrder = ({ order, items, orderSummary }) => {
         </div>
         <div className="order-details-info-box">
           {items.map(function (item) {
-            return <CompletedOrderItem item={item} key={item._id} />;
+            return <CompletedOrderItem item={item} key={item._id} handleDisplayMedia={handleDisplayMedia} />;
           })}
         </div>
 
@@ -103,6 +103,7 @@ const CompletedOrder = ({ order, items, orderSummary }) => {
 };
 
 CompletedOrder.propTypes = {
+  handleDisplayMedia: PropTypes.func,
   items: PropTypes.array,
   order: PropTypes.object,
   orderSummary: PropTypes.object
