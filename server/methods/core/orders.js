@@ -434,12 +434,14 @@ export const methods = {
     }
 
     const billing = orderCreditMethod(order);
-    const refundResult = Meteor.call("orders/refunds/list", order);
-    let refundTotal = 0;
+    // TODO: Update */refunds/list for marketplace
+    // const refundResult = Meteor.call("orders/refunds/list", order);
+    const refundTotal = 0;
 
-    _.each(refundResult, function (item) {
-      refundTotal += parseFloat(item.amount);
-    });
+    // TODO: We should use reduce here
+    // _.each(refundResult, function (item) {
+    //   refundTotal += parseFloat(item.amount);
+    // });
 
     // Get user currency formatting from shops collection, remove saved rate
     const userCurrencyFormatting = _.omit(shop.currencies[billing.currency.userCurrency], ["enabled", "rate"]);
