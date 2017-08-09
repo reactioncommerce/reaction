@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { map } from "lodash";
 import { Card, CardHeader, CardBody, CardGroup, ListItem } from "/imports/plugins/core/ui/client/components";
-import { getComponent } from "/imports/plugins/core/layout/lib/components";
+import { getComponent } from "@reactioncommerce/reaction-components";
 
 class PackageList extends Component {
   static propTypes = {
@@ -64,17 +64,24 @@ class PackageList extends Component {
             );
 
             // Look for a registered component_ActionDashboard component
-            const actionComponent = getComponent(`${packageData.template}_ActionDashboard`);
 
-            // If one exists, add it to the list of elements
-            if (actionComponent) {
-              elements.push(
-                <Card expandable={true} key={`action-${index}`}>
-                  <CardBody>
-                    {React.createElement(actionComponent)}
-                  </CardBody>
-                </Card>
-              );
+            let actionComponent;
+
+            try {
+              actionComponent = getComponent(`${packageData.template}_ActionDashboard`);
+            } catch (e) {
+              actionComponent = null;
+            } finally {
+              // If one exists, add it to the list of elements
+              if (actionComponent) {
+                elements.push(
+                  <Card expandable={true} key={`action-${index}`}>
+                    <CardBody>
+                      {React.createElement(actionComponent)}
+                    </CardBody>
+                  </Card>
+                );
+              }
             }
 
             return elements;
