@@ -1,6 +1,6 @@
 import "./templates/productDetailSimple.html";
 import "./templates/productDetailSimple.js";
-import { registerComponent } from "/imports/plugins/core/layout/lib/components";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 import {
   ProductField,
@@ -8,7 +8,8 @@ import {
   ProductMetadata,
   PriceRange,
   AddToCartButton,
-  ProductNotFound
+  ProductNotFound,
+  ProductDetail
 } from "./components";
 
 import {
@@ -27,57 +28,15 @@ import {
 
 
 // Register PDP components and some others
-registerComponent({
-  name: "ProductField",
-  component: ProductField
-});
-
-registerComponent({
-  name: "ProductTags",
-  component: ProductTags
-});
-
-registerComponent({
-  name: "ProductMetadata",
-  component: ProductMetadata
-});
-
-registerComponent({
-  name: "PriceRange",
-  component: PriceRange
-});
-
-registerComponent({
-  name: "AlertContainer",
-  component: Alerts
-});
-
-registerComponent({
-  name: "MediaGalleryContainer",
-  component: MediaGalleryContainer
-});
-
-registerComponent({
-  name: "SocialContainer",
-  component: SocialContainer
-});
-
-registerComponent({
-  name: "VariantListContainer",
-  component: VariantListContainer
-});
-
-registerComponent({
-  name: "AddToCartButton",
-  component: AddToCartButton
-});
-
-registerComponent({
-  name: "Divider",
-  component: Divider
-});
-
-registerComponent({
-  name: "ProductNotFound",
-  component: ProductNotFound
-});
+registerComponent("productDetail", ProductDetail);
+registerComponent("ProductField", ProductField);
+registerComponent("ProductTags", ProductTags);
+registerComponent("ProductMetadata", ProductMetadata);
+registerComponent("PriceRange", PriceRange);
+registerComponent("AlertContainer", Alerts);
+registerComponent("MediaGalleryContainer", MediaGalleryContainer);
+registerComponent("SocialContainer", SocialContainer);
+registerComponent("VariantListContainer", VariantListContainer);
+registerComponent("AddToCartButton", AddToCartButton);
+registerComponent("Divider", Divider);
+registerComponent("ProductNotFound", ProductNotFound);

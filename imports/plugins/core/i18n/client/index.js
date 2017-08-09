@@ -1,7 +1,4 @@
 import LocalizationSettingsContainer from "./containers/localizationSettingsContainer";
-import { registerComponent } from "/imports/plugins/core/layout/lib/components";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
-registerComponent({
-  name: "i18nSettings",
-  component: LocalizationSettingsContainer
-});
+registerComponent("i18nSettings", LocalizationSettingsContainer);
