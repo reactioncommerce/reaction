@@ -26,8 +26,9 @@ const CompletedOrder = ({ order, shops, orderSummary, handleDisplayMedia }) => {
           shopName={shop[shopKey].name}
           items={shop[shopKey].items}
           key={shop}
+          order={order}
           handleDisplayMedia={handleDisplayMedia}
-        />
+        />;
       })};
 
       <div className="order-details-side">
@@ -37,8 +38,8 @@ const CompletedOrder = ({ order, shops, orderSummary, handleDisplayMedia }) => {
         </div>
         <div className="order-details-info-box">
           <div className="order-details-info-box-content">
-            <p>{shippingAddress.address1}</p>
-            <p>{shippingAddress.city}, {shippingAddress.region} {shippingAddress.postal} {shippingAddress.country}</p>
+            <p>{shippingAddress.address1}<br />
+            {shippingAddress.city}, {shippingAddress.region} {shippingAddress.postal} {shippingAddress.country}</p>
           </div>
         </div>
 
@@ -50,13 +51,13 @@ const CompletedOrder = ({ order, shops, orderSummary, handleDisplayMedia }) => {
         </div>
 
         <div className="order-details-info-box">
-          <div className="order-details-line">
+          <div className="order-summary-line">
             <div className="order-summary-title">
               <Components.Translation defaultValue="Quantity Total" i18nKey={"cartCompleted.quantityTotal"}/>
             </div>
             <div className="order-summary-value">{orderSummary.quantityTotal}</div>
           </div>
-          <div className="order-details-line">
+          <div className="order-summary-line">
             <div className="order-summary-title">
               <Components.Translation defaultValue="Subtotal" i18nKey={"cartCompleted.orderSubtotal"} />
             </div>
@@ -64,7 +65,7 @@ const CompletedOrder = ({ order, shops, orderSummary, handleDisplayMedia }) => {
               <Components.Currency amount={orderSummary.subtotal} />
             </div>
           </div>
-          <div className="order-details-line">
+          <div className="order-summary-line">
             <div className="order-summary-title">
               <Components.Translation defaultValue="Shipping" i18nKey={"cartCompleted.orderShipping"} />
             </div>
@@ -72,7 +73,7 @@ const CompletedOrder = ({ order, shops, orderSummary, handleDisplayMedia }) => {
               <Components.Currency amount={orderSummary.shipping} />
             </div>
           </div>
-          <div className="order-details-line">
+          <div className="order-summary-line">
             <div className="order-summary-title">
               <Components.Translation defaultValue="Tax" i18nKey={"cartCompleted.orderTax"} />
             </div>
@@ -81,7 +82,7 @@ const CompletedOrder = ({ order, shops, orderSummary, handleDisplayMedia }) => {
             </div>
           </div>
           <hr/>
-          <div className="order-details-line">
+          <div className="order-summary-line">
             <div className="order-summary-total-title">
               <Components.Translation defaultValue="Captured Total" i18nKey={"cartCompleted.orderTotal"} />
             </div>

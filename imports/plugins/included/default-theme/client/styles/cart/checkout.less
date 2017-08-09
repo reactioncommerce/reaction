@@ -120,12 +120,13 @@
   color: #1c98d4;
   font-size: 48px;
   font-weight: bold;
-  font-family: "Source Sans Pro";
+  font-family: @font-family-sans-serif;
 }
 
 .order-details-header {
   .flex(0 0 100%);
-  //background: #00ff00; // TODO: Remove this line
+  margin-bottom: 40px;
+  font-size: 16px;
 }
 
 .order-details-main {
@@ -135,18 +136,21 @@
   @media screen and (max-width: @screen-xs-max) {
     .margin-right(0);
   }
-    //background: #ff0000; // TODO: Remove this line
+}
+
+.order-details-main h4 {
+  font-size: 16px;
 }
 
 .order-details-side {
   .flex(1 0 auto);
+  font-size: 16px;
   min-width: 300px;
   max-width: 30%;
   @media screen and (max-width: @screen-xs-max) {
     min-width: 100%;
     max-width: 100%;
   }
-  //background: #ff00ff; // TODO: Remove this line
 }
 
 .order-details-info-box {
@@ -155,15 +159,29 @@
   margin-bottom: 20px;
   border: solid 1px #ccc;
   padding: 10px;
-  //background: #0000ff;  // TODO: Remove this line
 }
 
 .order-details-store-title {
   font-weight: bold;
+  display: flex;
+  flex: 1 1 auto;
+  margin-left: 5px;
+}
+
+.order-details-shipping-name {
+  color: #8c8c8c;
+  text-align: right;
+  font-weight: normal;
 }
 
 .order-details-content-title {
   font-weight: bold;
+  margin-bottom: 15px;
+  margin-top: 25px;
+}
+
+.order-details-info-box-content {
+  margin: 10px;
 }
 
 .order-details-line {
@@ -188,19 +206,34 @@
   flex: 1 1 auto;
   text-align: left;
   font-weight: bold;
-  margin-top: 15px;
+  margin-top: 5px;
+  margin-left: 10px;
+  color: #343434;
+  font-size: 16px;
+}
+
+.order-details-title p {
+  font-weight: 600;
+  font-size: 14px;
+  color: #bbbbbb;
 }
 
 .order-details-quantity {
-  text-align: right;
-  font-weight: bold;
-  margin-top: 15px;
-
+  margin-top: 5px;
+  padding-right: 155px;
 }
 
 .order-details-price {
-  font-weight: bold;
   text-align: right;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+
+.order-summary-line {
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: flex-start;
 }
 
 
