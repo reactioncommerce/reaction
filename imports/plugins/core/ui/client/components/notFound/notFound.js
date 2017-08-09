@@ -4,6 +4,11 @@ import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Icon } from "../icon";
 
+/**
+ * React component for displaying a not-found view
+ * @param {props} props React props
+ * @return {Node} React node containing not-found view
+ */
 const NotFound = (props) => {
   // ClassName for base wrapper,
   // If one is provied in props, the default is not used
