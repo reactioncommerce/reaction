@@ -1,4 +1,5 @@
 import { compose, withProps } from "recompose";
+import _ from "lodash";
 import Alert from "sweetalert2";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
@@ -61,6 +62,23 @@ const handlers = {
         return Alerts.toast(i18next.t("admin.groups.removeUserSuccess"), "success");
       });
     };
+  },
+  canInviteToGroup(options) {
+    const { group, user } = options;
+    const userPermissions = user.roles[group.shopId];
+    const groupPermissions = group.permissions;
+
+    if (Reaction.hasPermission("owner", Meteor.userId(), group.shopId)) {
+      return false;
+    }
+    // check that userPermissions array contains all groupPermissions
+    // _.difference(subset, superset).length === 0
+    // https://github.com/lodash/lodash/issues/1743#issuecomment-170598139
+    if (_.difference(groupPermissions, userPermissions).length === 0) {
+      return true;
+    }
+
+    return false;
   }
 };
 

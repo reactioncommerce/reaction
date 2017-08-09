@@ -111,10 +111,10 @@ Meteor.methods({
   "group/addUser": function (userId, groupId) {
     check(userId, String);
     check(groupId, String);
-
-    const { permissions, shopId, slug } = Groups.findOne({ _id: groupId }) || {};
+    const group = Groups.findOne({ _id: groupId }) || {};
+    const { permissions, shopId, slug } = group;
     const loggedInUserId = Meteor.userId();
-    const canInvite = canInviteToGroup({ groupId, loggedInUserId });
+    const canInvite = canInviteToGroup({ group, user: Meteor.user() });
 
     // Owners can invite to any group.
     if (!Reaction.hasPermission("owner", loggedInUserId, shopId)) {
@@ -204,18 +204,22 @@ Meteor.methods({
  * canInviteToGroup
  * @summary checks if the user making the request is allowed to make invitation to that group
  * @param {Object} options -
- * @param {String} options.groupId - ID of group to invite to
+ * @param {String} options.group - group to invite to
  * @param {String} options.loggedInUserId - ID of loggedIn user
  * @return {Boolean} -
  */
 function canInviteToGroup(options) {
-  const { groupId, loggedInUserId } = options;
-  const user = Accounts.findOne({ _id: loggedInUserId });
-  if (user && user.groups) {
-    if (user.groups.indexOf(groupId) > -1) {
-      return true;
-    }
+  const { group, user } = options;
+  const userPermissions = user.roles[group.shopId];
+  const groupPermissions = group.permissions;
+
+  // check that userPermissions array contains all groupPermissions
+  // _.difference(subset, superset).length === 0
+  // https://github.com/lodash/lodash/issues/1743#issuecomment-170598139
+  if (_.difference(groupPermissions, userPermissions).length === 0) {
+    return true;
   }
+
   return false;
 }
 
