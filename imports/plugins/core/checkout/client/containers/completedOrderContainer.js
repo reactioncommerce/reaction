@@ -31,26 +31,34 @@ handlers.handleDisplayMedia = (item) => {
     return defaultImage;
   }
   return false;
-}
+};
 
 function composer(props, onData) {
   const orderId = Reaction.Router.getQueryParam("_id");
   const orderSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), orderId);
-  const shopSub = Meteor.subscribe("Shops");
 
-  if (orderSub.ready() && shopSub.ready()) {
+  if (orderSub.ready()) {
     const order = Orders.findOne({
       userId: Meteor.userId(),
       cartId: orderId
     });
     const imageSub = Meteor.subscribe("CartImages", order.items);
 
+    // massage items into an object by Shop
     let itemsByShop = _.sortBy(order.items, function (o) { return o.shopID; });
-    itemsByShop = itemsByShop.map(function (item) {
-      item.shopName = Shops.findOne(item.shopId).name;
-      return item;
+    itemsByShop = _.groupBy(itemsByShop, function (item) {
+      return item.shopId;
     });
-    console.log("itemsByShop", itemsByShop);
+
+    const shopObjects = Object.keys(itemsByShop).map(function (shop) {
+      return {
+        [shop]: {
+          name: Shops.findOne(shop).name,
+          items: itemsByShop[shop]
+        }
+      };
+    });
+
     const orderSummary = {
       quantityTotal: order.orderCount(),
       subtotal: order.orderSubTotal(),
@@ -64,14 +72,12 @@ function composer(props, onData) {
       const productImages = Media.find().fetch();
 
       onData(null, {
-        items: itemsByShop,
+        shops: shopObjects,
         order,
         orderSummary,
         productImages
       });
     }
-
-
   }
 }
 

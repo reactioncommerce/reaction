@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import CompletedOrderItem from "./completedOrderItem";
+import CompletedShopOrders from "./completedShoporders";
 
 
-const CompletedOrder = ({ order, items, orderSummary, handleDisplayMedia }) => {
+const CompletedOrder = ({ order, shops, orderSummary, handleDisplayMedia }) => {
   const shippingAddress = order.shipping[0].address;
   const hasEmail = !!order.email;
   return (
@@ -20,20 +20,15 @@ const CompletedOrder = ({ order, items, orderSummary, handleDisplayMedia }) => {
         {/* This is the left side / main content*/}
       </div>
 
-      <div className="order-details-main">
-        {/* This is the left side / main content */}
-        <div className="order-details-info-box">
-          <h4 className="order-details-store-title">Shoe Box</h4>
-          <div>Free Shipping - estimated delivery 06/17/16</div>
-        </div>
-        <div className="order-details-info-box">
-          {items.map(function (item) {
-            return <CompletedOrderItem item={item} key={item._id} handleDisplayMedia={handleDisplayMedia} />;
-          })}
-        </div>
-
-        {/* This is the left side / main content */}
-      </div>
+      {shops.map(function (shop) {
+        const shopKey = Object.keys(shop);
+        return <CompletedShopOrders
+          shopName={shop[shopKey].name}
+          items={shop[shopKey].items}
+          key={shop}
+          handleDisplayMedia={handleDisplayMedia}
+        />
+      })};
 
       <div className="order-details-side">
         {/* This is the right side / side content */}
@@ -42,7 +37,7 @@ const CompletedOrder = ({ order, items, orderSummary, handleDisplayMedia }) => {
         </div>
         <div className="order-details-info-box">
           <div className="order-details-info-box-content">
-            <p>{shippingAddress.address1}.</p>
+            <p>{shippingAddress.address1}</p>
             <p>{shippingAddress.city}, {shippingAddress.region} {shippingAddress.postal} {shippingAddress.country}</p>
           </div>
         </div>
@@ -104,9 +99,9 @@ const CompletedOrder = ({ order, items, orderSummary, handleDisplayMedia }) => {
 
 CompletedOrder.propTypes = {
   handleDisplayMedia: PropTypes.func,
-  items: PropTypes.array,
   order: PropTypes.object,
-  orderSummary: PropTypes.object
+  orderSummary: PropTypes.object,
+  shops: PropTypes.array
 };
 
 export default CompletedOrder;
