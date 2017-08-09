@@ -7,7 +7,7 @@ import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
+import { Accounts, Cart, Groups, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
@@ -489,7 +489,7 @@ export function inviteShopOwner(options) {
   const shop = Shops.findOne(shopId);
 
   // Compile Email with SSR
-  const tpl = "accounts/inviteShopOwner";
+  const tpl = "accounts/inviteShopAdmin";
   const subject = "accounts/inviteShopOwner/subject";
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
@@ -554,53 +554,53 @@ export function inviteShopMember(options) {
     throw new Meteor.Error("access-denied", "Access denied");
   }
 
+  const group = Groups.findOne({ _id: groupId }) || {};
+  if (group.slug === "owner") {
+    throw new Meteor.Error(400, "cannot directly invite owner");
+  }
+
   const currentUser = Meteor.users.findOne(this.userId);
   const currentUserName = getCurrentUserName(currentUser);
+  const emailLogo = getEmailLogo(shop);
+  const token = Random.id();
+  const user = Meteor.users.findOne({ "emails.address": email });
+  let dataForEmail;
+  let userId;
+
+  if (user) {
+    userId = user._id; // since user exists, we promote the account
+    Meteor.call("group/addUser", userId, groupId);
+    dataForEmail = getDataForEmail({ shop, name, currentUserName, emailLogo });
+  } else {
+    userId = MeteorAccounts.createUser({
+      profile: { invited: true },
+      email,
+      name,
+      groupId
+    });
+    // set token to be used for first login for the new account
+    const tokenUpdate = {
+      "services.password.reset": { token, email, when: new Date() },
+      name
+    };
+    Meteor.users.update(userId, { $set: tokenUpdate });
+    // adds token to url in email sent
+    dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
+  }
 
   // Compile Email with SSR
-  const tpl = "accounts/inviteShopMember";
+  const tpl = "accounts/inviteShopAdmin";
   const subject = "accounts/inviteShopMember/subject";
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
-  const emailLogo = getEmailLogo(shop);
-  const token = Random.id();
-  const dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
-
-  const user = Meteor.users.findOne({
-    "emails.address": email
+  Reaction.Email.send({
+    to: email,
+    from: `${shop.name} <${shop.emails[0].address}>`,
+    subject: SSR.render(subject, dataForEmail),
+    html: SSR.render(tpl, dataForEmail)
   });
 
-  if (!user) {
-    const userId = MeteorAccounts.createUser({
-      email,
-      name,
-      groupId,
-      profile: { invited: true }
-    });
-
-    const newUser = Meteor.users.findOne(userId);
-
-    if (!newUser) {
-      throw new Error("Can't find user");
-    }
-
-    Meteor.users.update(userId, {
-      $set: {
-        "services.password.reset": { token, email, when: new Date() },
-        "name": name
-      }
-    });
-
-    Reaction.Email.send({
-      to: email,
-      from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: SSR.render(subject, dataForEmail),
-      html: SSR.render(tpl, dataForEmail)
-    });
-  } else {
-    throw new Meteor.Error("409", "A user with this email address already exists");
-  }
   return true;
 }
 
@@ -784,17 +784,19 @@ function getEmailLogo(shop) {
 }
 
 function getCurrentUserName(currentUser) {
-  let currentUserName;
-  if (currentUser) {
-    if (currentUser.profile) {
-      currentUserName = currentUser.profile.name || currentUser.username;
-    } else {
-      currentUserName = currentUser.username;
-    }
-  } else {
-    currentUserName = "Admin";
+  if (currentUser && currentUser.profile && currentUser.profile.name) {
+    return currentUser.profile.name;
   }
-  return currentUserName;
+
+  if (currentUser.name) {
+    return currentUser.name;
+  }
+
+  if (currentUser.username) {
+    return currentUser.username;
+  }
+
+  return "Admin";
 }
 
 function getDataForEmail(options) {
@@ -834,8 +836,15 @@ function getDataForEmail(options) {
     user: Meteor.user(), // Account Data
     currentUserName,
     invitedUserName: name,
-    url: MeteorAccounts.urls.enrollAccount(token)
+    url: getEmailUrl(token)
   };
+
+  function getEmailUrl(userToken) {
+    if (userToken) {
+      return MeteorAccounts.urls.enrollAccount(userToken);
+    }
+    return Meteor.absoluteUrl();
+  }
 }
 
 /**

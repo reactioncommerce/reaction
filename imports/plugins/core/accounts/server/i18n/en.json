@@ -21,7 +21,8 @@
         },
         "groupsInvite": {
           "name": "John Smith",
-          "email": "johnsmith@reactioncommerce.com"
+          "email": "example@localhost",
+          "inviteOwnerError": "You cannot directly invite a user as Owner. Promote an existing admin"
         }
       }
     }
