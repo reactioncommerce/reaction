@@ -39,7 +39,7 @@ const CompletedOrder = ({ order, shops, orderSummary, handleDisplayMedia }) => {
         <div className="order-details-info-box">
           <div className="order-details-info-box-content">
             <p>{shippingAddress.address1}<br />
-            {shippingAddress.city}, {shippingAddress.region} {shippingAddress.postal} {shippingAddress.country}</p>
+              {shippingAddress.city}, {shippingAddress.region} {shippingAddress.postal} {shippingAddress.country}</p>
           </div>
         </div>
 
