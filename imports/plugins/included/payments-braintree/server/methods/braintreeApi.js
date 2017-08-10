@@ -49,8 +49,8 @@ function getAccountOptions(isPayment) {
     queryConditions.enabled = true;
   }
 
+  const { settings } = Packages.findOne(queryConditions);
   let environment;
-  const settings = Packages.findOne(queryConditions).settings;
   if (typeof settings !== "undefined" && settings !== null ? settings.mode : undefined === true) {
     environment = "production";
   } else {
