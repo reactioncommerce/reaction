@@ -153,7 +153,7 @@ class OrdersListContainer extends Component {
     let orderCount = 0;
 
     selectedOrders.forEach((order) => {
-      Meteor.call(`orders/shipment${capitalizeStatus}`, order, order.shipping[0], true, (err) => {
+      Meteor.call(`orders/shipment${capitalizeStatus}`, order, order.shipping[0], (err) => {
         if (err) {
           Alerts.toast(`An error occured while setting the status: ${err}`, "error");
         } else {

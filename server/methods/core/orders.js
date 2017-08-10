@@ -67,29 +67,15 @@ export const methods = {
    * @summary update picking status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
-   * @param {Boolean} picked - picked status
    * @return {Object} return workflow result
    */
-  "orders/shipmentPicked": function (order, shipment, picked) {
+  "orders/shipmentPicked": function (order, shipment) {
     check(order, Object);
     check(shipment, Object);
-    check(picked, Boolean);
 
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-
-    Orders.update({
-      "_id": order._id,
-      "shipping._id": shipment._id
-    }, {
-      $set: {
-        "shipping.$.picked": picked,
-        "shipping.$.workflow.status": "coreOrderWorkflow/picked"
-      }, $push: {
-        "shipping.$.workflow.workflow": "coreOrderWorkflow/picked"
-      }
-    });
 
     // Set the status of the items as picked
     const itemIds = shipment.items.map((item) => {
@@ -103,7 +89,9 @@ export const methods = {
         "shipping._id": shipment._id
       }, {
         $set: {
-          "shipping.$.picked": picked
+          "shipping.$.workflow.status": "coreOrderWorkflow/picked"
+        }, $push: {
+          "shipping.$.workflow.workflow": "coreOrderWorkflow/picked"
         }
       });
     }
@@ -115,31 +103,17 @@ export const methods = {
    * @summary update packing status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
-   * @param {Boolean} packed - packed status
    * @return {Object} return workflow result
    */
-  "orders/shipmentPacked": function (order, shipment, packed) {
+  "orders/shipmentPacked": function (order, shipment) {
     check(order, Object);
     check(shipment, Object);
-    check(packed, Boolean);
 
     // REVIEW: who should have permission to do this in a marketplace setting?
     // Do we need to update the order schema to reflect multiple packers / shipments?
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-
-    Orders.update({
-      "_id": order._id,
-      "shipping._id": shipment._id
-    }, {
-      $set: {
-        "shipping.$.packed": packed,
-        "shipping.$.workflow.status": "coreOrderWorkflow/packed"
-      }, $push: {
-        "shipping.$.workflow.workflow": "coreOrderWorkflow/packed"
-      }
-    });
 
     // Set the status of the items as packed
     const itemIds = shipment.items.map((item) => {
@@ -153,7 +127,9 @@ export const methods = {
         "shipping._id": shipment._id
       }, {
         $set: {
-          "shipping.$.packed": packed
+          "shipping.$.workflow.status": "coreOrderWorkflow/packed"
+        }, $push: {
+          "shipping.$.workflow.workflow": "coreOrderWorkflow/packed"
         }
       });
     }
@@ -166,29 +142,15 @@ export const methods = {
    * @summary update labeling status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
-   * @param {Boolean} labeled - labeled status
    * @return {Object} return workflow result
    */
-  "orders/shipmentLabeled": function (order, shipment, labeled) {
+  "orders/shipmentLabeled": function (order, shipment) {
     check(order, Object);
     check(shipment, Object);
-    check(labeled, Boolean);
 
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-
-    Orders.update({
-      "_id": order._id,
-      "shipping._id": shipment._id
-    }, {
-      $set: {
-        "shipping.$.labeled": labeled,
-        "shipping.$.workflow.status": "coreOrderWorkflow/labeled"
-      }, $push: {
-        "shipping.$.workflow.workflow": "coreOrderWorkflow/labeled"
-      }
-    });
 
     // Set the status of the items as labeled
     const itemIds = shipment.items.map((item) => {
@@ -202,7 +164,9 @@ export const methods = {
         "shipping._id": shipment._id
       }, {
         $set: {
-          "shipping.$.labeled": labeled
+          "shipping.$.workflow.status": "coreOrderWorkflow/labeled"
+        }, $push: {
+          "shipping.$.workflow.workflow": "coreOrderWorkflow/labeled"
         }
       });
     }
@@ -378,13 +342,11 @@ export const methods = {
    * @summary trigger shipmentShipped status and workflow update
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
-   * @param {Boolean} shipped - shipped status
    * @return {Object} return results of several operations
    */
-  "orders/shipmentShipped": function (order, shipment, shipped) {
+  "orders/shipmentShipped": function (order, shipment) {
     check(order, Object);
     check(shipment, Object);
-    check(shipped, Match.Maybe(Boolean));
 
     // TODO: Who should have access to ship shipments in a marketplace setting
     // Should be anyone who has product in an order.
@@ -429,7 +391,6 @@ export const methods = {
       "shipping._id": shipment._id
     }, {
       $set: {
-        "shipping.$.shipped": shipped || true,
         "shipping.$.workflow.status": "coreOrderWorkflow/shipped"
       }, $push: {
         "shipping.$.workflow.workflow": "coreOrderWorkflow/shipped"
@@ -488,10 +449,9 @@ export const methods = {
       "shipping._id": shipment._id
     }, {
       $set: {
-        "shipping.$.delivered": true,
-        "shipping.$.workflow.status": "delivered"
+        "shipping.$.workflow.status": "coreOrderWorkflow/delivered"
       }, $push: {
-        "shipping.$.workflow.workflow": "delivered"
+        "shipping.$.workflow.workflow": "coreOrderWorkflow/delivered"
       }
     });
 
