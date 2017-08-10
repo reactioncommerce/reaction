@@ -34,7 +34,7 @@ class AdminInviteForm extends Component {
     const { groups } = nextProps;
     const groupsInvitable = groups
       .filter((grp) => grp.slug !== "owner")
-      .filter(grp => !nextProps.canInviteToGroup({ group: grp, user: Meteor.user() })) || [];
+      .filter(grp => !nextProps.canInviteToGroup({ group: grp, user: Meteor.user() })) || [{}];
 
     this.setState({ groups: groupsInvitable, group: groupsInvitable[0] });
   }
