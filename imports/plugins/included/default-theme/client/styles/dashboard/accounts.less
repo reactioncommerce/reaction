@@ -83,14 +83,23 @@
     .list-group-item {
       background: @rui-brand-bg;
       font-weight: 700;
+      .fa {
+        font-size: large;
+        font-weight: @badge-font-weight;
+      }
     }
     .accounts-group-table {
       .title {
         text-transform: capitalize;
       }
-      .group-dropdown {
+      .group-dropdown, .group-table-button {
         width: 100%;
+        font-weight: @badge-font-weight;
         display: inherit;
+        text-align: center;
+      }
+      .btn {
+        width: 80%;
       }
       .accounts-img-tag {
         margin: 0 15px 0 20px;

@@ -13,8 +13,10 @@
           "continue": "Continue",
           "cancel": "Cancel",
           "changeOwner": "Change Owner",
+          "removeUser": "Remove User",
           "changeShopOwnerWarn": "You are about to change the Shop owner. The current owner will be replaced",
           "changeMktOwnerWarn": "You are about to change the Marketplace owner. The current owner will be replaced",
+          "removeUserWarn": "You are about to remove a user grom a group. The user will lose associated permissions",
           "accountsSettingsLabel": "Accounts",
           "accountsSettingsTitle": "Accounts",
           "accountsSettingsDescription": "Account Settings"

@@ -55,13 +55,32 @@ const handlers = {
 
   handleRemoveUserFromGroup(account, groupId) {
     return () => {
-      Meteor.call("group/removeUser", account._id, groupId, (err) => {
-        if (err) {
-          return Alerts.toast(i18next.t("admin.groups.removeUserError", { err: err.message }), "error");
-        }
-        return Alerts.toast(i18next.t("admin.groups.removeUserSuccess"), "success");
-      });
+      alertConfirm()
+        .then(() => {
+          return removeMethodCall();
+        })
+        .catch(() => false);
+
+      function removeMethodCall() {
+        Meteor.call("group/removeUser", account._id, groupId, (err) => {
+          if (err) {
+            return Alerts.toast(i18next.t("admin.groups.removeUserError", { err: err.message }), "error");
+          }
+          return Alerts.toast(i18next.t("admin.groups.removeUserSuccess"), "success");
+        });
+      }
     };
+
+    function alertConfirm() {
+      return Alert({
+        title: i18next.t("admin.settings.removeUser"),
+        text: i18next.t("admin.settings.removeUserWarn"),
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonText: i18next.t("admin.settings.cancel"),
+        confirmButtonText: i18next.t("admin.settings.continue")
+      });
+    }
   },
   canInviteToGroup(options) {
     const { group, user } = options;

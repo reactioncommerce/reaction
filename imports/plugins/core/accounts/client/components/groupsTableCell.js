@@ -40,7 +40,7 @@ const GroupsTableCell = ({ account, columnName, group, adminGroups, handleRemove
   }
 
   if (columnName === "dropdown") {
-    const groupName = <span>{_.startCase(groups[0].name)}</span>;
+    const groupName = <span className="group-dropdown">{_.startCase(groups[0].name)}</span>;
     const ownerGroup = groups.find((grp) => grp.slug === "owner") || {};
     const hasOwnerAccess = Reaction.hasPermission("owner", Meteor.userId(), Reaction.getShopId());
 
