@@ -555,6 +555,11 @@ export function inviteShopMember(options) {
   }
 
   const group = Groups.findOne({ _id: groupId }) || {};
+
+  if (!Reaction.canInviteToGroup({ group, user: Meteor.user() })) {
+    throw new Meteor.Error("access-denied", "Access denied");
+  }
+
   if (group.slug === "owner") {
     throw new Meteor.Error(400, "cannot directly invite owner");
   }

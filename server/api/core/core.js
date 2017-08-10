@@ -103,6 +103,28 @@ export default {
     }
   },
   /**
+   * canInviteToGroup
+   * @summary checks if the user making the request is allowed to make invitation to that group
+   * @param {Object} options -
+   * @param {Object} options.group - group to invite to
+   * @param {Object} options.user - user object  making the invite (Meteor.user())
+   * @return {Boolean} -
+   */
+  canInviteToGroup(options) {
+    const { group, user } = options;
+    const userPermissions = user.roles[group.shopId];
+    const groupPermissions = group.permissions;
+
+    // check that userPermissions array contains all groupPermissions
+    // _.difference(subset, superset).length === 0
+    // https://github.com/lodash/lodash/issues/1743#issuecomment-170598139
+    if (_.difference(groupPermissions, userPermissions).length === 0) {
+      return true;
+    }
+
+    return false;
+  },
+  /**
    * registerTemplate
    * registers Templates into the Templates Collection
    * @return {function} Registers template

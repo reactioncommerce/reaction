@@ -27,25 +27,13 @@ class ManageGroups extends Component {
     this.setState({ group, groups, accounts, adminGroups });
   }
 
-  get defaultInviteGroup() {
-    let defaultInviteGroup = {};
-    const groups = [];
-    this.state.adminGroups.forEach((grp) => {
-      if (grp.slug !== "owner") {
-        groups.push(grp);
-      }
-    });
-
-    if (groups && groups.length > 0) {
-      defaultInviteGroup = groups[0];
-    }
-    return defaultInviteGroup;
-  }
-
   render() {
     return (
       <div className="groups-form">
-        <Components.AdminInviteForm groups={this.state.adminGroups} defaultInviteGroup={this.defaultInviteGroup} />
+        <Components.AdminInviteForm
+          {...this.props}
+          groups={this.state.adminGroups}
+        />
         <Components.EditGroup
           groups={this.state.groups.filter(grp => grp.slug !== "owner")}
           selectedGroup={this.state.group}

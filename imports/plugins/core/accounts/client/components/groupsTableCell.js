@@ -68,7 +68,7 @@ const GroupsTableCell = ({ account, columnName, group, adminGroups, handleRemove
     // Also remove groups user does not have roles to manage
     const dropOptions = groups
       .filter(grp => (grp.slug === "owner" && !hasOwnerAccess) ? false : true)
-      .filter(grp => !props.canInviteToGroup({ group: grp, user: Meteor.user() })) || [];
+      .filter(grp => props.canInviteToGroup({ group: grp, user: Meteor.user() })) || [];
 
     if (dropOptions.length < 2) { return dropDownButton(); } // do not use dropdown if only one option
 

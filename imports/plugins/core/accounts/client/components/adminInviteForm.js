@@ -7,21 +7,22 @@ import { Meteor } from "meteor/meteor";
 
 class AdminInviteForm extends Component {
   static propTypes = {
-    defaultInviteGroup: PropTypes.object,
+    canInviteToGroup: PropTypes.func,
     groups: PropTypes.array
   };
 
   constructor(props) {
     super(props);
-    const { defaultInviteGroup, groups } = props;
-    const groupsInvitable = groups.filter((grp) => grp.slug !== "owner");
-
+    const { groups } = props;
+    const groupsInvitable = groups
+      .filter((grp) => grp.slug !== "owner")
+      .filter(grp => props.canInviteToGroup({ group: grp, user: Meteor.user() })) || [{}];
+    console.log({ groupsInvitable });
     this.state = {
       groups: groupsInvitable,
-      defaultInviteGroup,
       name: "",
       email: "",
-      group: "",
+      group: groupsInvitable[0],
       alertArray: []
     };
 
@@ -30,9 +31,12 @@ class AdminInviteForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { groups, defaultInviteGroup } = nextProps;
-    const groupsInvitable = groups.filter((grp) => grp.slug !== "owner");
-    this.setState({ groups: groupsInvitable, defaultInviteGroup });
+    const { groups } = nextProps;
+    const groupsInvitable = groups
+      .filter((grp) => grp.slug !== "owner")
+      .filter(grp => !nextProps.canInviteToGroup({ group: grp, user: Meteor.user() })) || [];
+
+    this.setState({ groups: groupsInvitable, group: groupsInvitable[0] });
   }
 
   onChange(event) {
@@ -51,9 +55,9 @@ class AdminInviteForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { name, email, group, defaultInviteGroup } = this.state;
+    const { name, email, group } = this.state;
 
-    if (!group._id && !defaultInviteGroup._id) {
+    if (!group._id) {
       return this.setState({
         alertArray: [{
           mode: "danger",
@@ -61,8 +65,8 @@ class AdminInviteForm extends Component {
         }]
       });
     }
-    const finalGroupId = group._id || defaultInviteGroup._id;
-    const options = { email, name, shopId: Reaction.getShopId(), groupId: finalGroupId };
+
+    const options = { email, name, shopId: Reaction.getShopId(), groupId: group._id  };
     return Meteor.call("accounts/inviteShopMember", options, (error, result) => {
       let newAlert;
       let message = "";
@@ -98,13 +102,13 @@ class AdminInviteForm extends Component {
   }
 
   renderDropDownButton() {
-    const { defaultInviteGroup, group } = this.state;
-    const buttonGroup = group || defaultInviteGroup;
-    if (!buttonGroup._id) {
+    const { group } = this.state;
+
+    if (!group._id) {
       return null;
     }
     const buttonElement = (opt) => (
-      <Components.Button bezelStyle="solid" label={buttonGroup.name && _.startCase(buttonGroup.name)} >
+      <Components.Button bezelStyle="solid" label={group.name && _.startCase(group.name)} >
         &nbsp;
         {opt && opt.length && // add icon only if there's a list of options
           <i className="fa fa-chevron-down" />
@@ -113,7 +117,7 @@ class AdminInviteForm extends Component {
     );
 
     // current selected option and "owner" should not show in list options
-    const dropOptions = this.state.groups.filter((grp) => grp._id !== buttonGroup._id);
+    const dropOptions = this.state.groups.filter((grp) => grp._id !== group._id);
     if (!dropOptions.length) { return buttonElement(); } // do not use dropdown if only one option
 
     return (

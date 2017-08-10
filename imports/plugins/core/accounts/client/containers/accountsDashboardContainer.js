@@ -88,7 +88,7 @@ const handlers = {
     const groupPermissions = group.permissions;
 
     if (Reaction.hasPermission("owner", Meteor.userId(), group.shopId)) {
-      return false;
+      return true;
     }
     // check that userPermissions array contains all groupPermissions
     // _.difference(subset, superset).length === 0
@@ -96,7 +96,7 @@ const handlers = {
     if (_.difference(groupPermissions, userPermissions).length === 0) {
       return true;
     }
-
+    console.log({ group: groupPermissions.length, user: userPermissions.length });
     return false;
   }
 };

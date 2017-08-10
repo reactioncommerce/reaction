@@ -52,6 +52,7 @@ class AccountsDashboard extends Component {
     const { groups, adminGroups, accounts } = this.state;
     return (
       <Components.ManageGroups
+        {...this.props}
         group={this.state.selectedGroup}
         groups={groups}
         adminGroups={adminGroups}
@@ -69,12 +70,12 @@ class AccountsDashboard extends Component {
           {groups.map((group, index) => {
             return (
               <Components.GroupsTable
+                {...this.props}
                 key={index}
                 group={group}
                 onMethodLoad={this.handleMethodLoad}
                 onMethodDone={this.handleMethodDone}
                 onGroupSelect={this.handleGroupSelect}
-                {...this.props}
               />
             );
           })}
