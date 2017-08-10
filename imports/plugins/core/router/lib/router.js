@@ -17,7 +17,6 @@ import { getComponent } from "@reactioncommerce/reaction-components/components";
 import BlazeLayout from "/imports/plugins/core/layout/lib/blazeLayout";
 import Hooks from "./hooks";
 
-
 export let history;
 
 // Private vars
@@ -33,14 +32,43 @@ if (Meteor.isClient) {
   history = createMemoryHistory();
 }
 
-// Base router class (static)
+/** Class representing a static base router */
 class Router {
+  /**
+   * history
+   * @type {history}
+   */
   static history = history
+
+  /**
+   * Hooks
+   * @type {Hooks}
+   */
   static Hooks = Hooks
+
+  /**
+   * Registered route definitions
+   * @type {Array}
+   */
   static routes = []
+
+  /**
+   * Router initialization state
+   * @type {Boolean}
+   */
   static _initialized = false;
+
+  /**
+   * Active classname for active routes
+   * @type {String}
+   */
   static activeClassName = "active";
 
+  /**
+   * Routes array
+   * @type {Array}
+   * @param {Array} value An array of objects
+   */
   static set _routes(value) {
     Router.routes = value;
   }
@@ -49,34 +77,64 @@ class Router {
     return Router.routes;
   }
 
+  /**
+   * Triggers reactively on router ready state changed
+   * @return {Boolean} Router initalization state
+   */
   static ready() {
     routerReadyDependency.depend();
     return Router._initialized;
   }
 
+  /**
+   * Re-triggers router ready dependency
+   * @return {undefined}
+   */
   static triggerRouterReady() {
     routerReadyDependency.changed();
   }
 
+  /**
+   * Hooks
+   * @type {Hooks}
+   */
   static get triggers() {
     return Hooks;
   }
 
+  /**
+   * Get the current route date. Not reactive.
+   * @return {Object} Object containing route data
+   */
   static current() {
     return currentRoute.toJS();
   }
 
+  /**
+   * Set current route data. Is reactive.
+   * @param {Object} routeData Object containing route data
+   * @return {undefined}
+   */
   static setCurrentRoute(routeData) {
     currentRoute = Immutable.Map(routeData);
     routerChangeDependency.changed();
   }
 
+  /**
+   * Get the name of the current route. Is reactive.
+   * @return {String} Name of current route
+   */
   static getRouteName() {
     const current = Router.current();
 
     return current.route && current.route.name || "";
   }
 
+  /**
+   * Get param by name. Is reactive.
+   * @param  {String} name Param name
+   * @return {String|undefined} String value or undefined
+   */
   static getParam(name) {
     routerChangeDependency.depend();
     const current = Router.current();
@@ -84,6 +142,11 @@ class Router {
     return current.params && current.params[name] || undefined;
   }
 
+  /**
+   * Get query param by name
+   * @param  {String} name Query param name. Is reactive.
+   * @return {String|undefined} String value or undefined
+   */
   static getQueryParam(name) {
     routerChangeDependency.depend();
     const current = Router.current();
@@ -91,19 +154,32 @@ class Router {
     return current.query && current.query[name] || undefined;
   }
 
+  /**
+   * Merge new query params with current params
+   * @param {Object} newParams Object containing params
+   * @return {undefined}
+   */
   static setQueryParams(newParams) {
     const current = Router.current();
+
+    // Merge current and new params
     const queryParams = Object.assign({}, current.query, newParams);
 
+    // Any param marked as null or undefined will be removed
     for (const key in queryParams) {
       if (queryParams[key] === null || queryParams[key] === undefined) {
         delete queryParams[key];
       }
     }
 
+    // Update route
     Router.go(current.route.name, current.params, queryParams);
   }
 
+  /**
+   * Watch path change. Is Reactive.
+   * @return {undefined}
+   */
   static watchPathChange() {
     routerChangeDependency.depend();
   }
@@ -117,16 +193,6 @@ class Router {
  * @return {String} returns current router path
  */
 Router.pathFor = (path, options = {}) => {
-  // const params = options.hash || {};
-  // const query = params.query ? Router._qs.parse(params.query) : {};
-  // // prevent undefined param error
-  // for (const i in params) {
-  //   if (params[i] === null || params[i] === undefined) {
-  //     params[i] = "/";
-  //   }
-  // }
-  // return Router.path(path, params, query);
-
   const foundPath = Router.routes.find((pathObject) => {
     if (pathObject.options.name === path) {
       return true;
@@ -164,7 +230,13 @@ Router.pathFor = (path, options = {}) => {
   return "/";
 };
 
-
+/**
+ * Navigate to path with params and query
+ * @param  {String} path Path string
+ * @param  {Object} params Route params object
+ * @param  {Object} query Query params object
+ * @return {undefined} undefined
+ */
 Router.go = (path, params, query) => {
   let actualPath;
 
@@ -185,7 +257,7 @@ Router.go = (path, params, query) => {
     }
   };
 
-  // if Router is in a non ready/initialized state yet ,wait until it is
+  // if Router is in a non ready/initialized state yet, wait until it is
   if (!Router.ready()) {
     Tracker.autorun(routerReadyWaitFor => {
       if (Router.ready()) {
@@ -200,6 +272,13 @@ Router.go = (path, params, query) => {
   routerGo();
 };
 
+/**
+ * Replace location
+ * @param  {String} path Path string
+ * @param  {Object} params Route params object
+ * @param  {Object} query Query params object
+ * @return {undefined} undefined
+ */
 Router.replace = (path, params, query) => {
   const actualPath = Router.pathFor(path, {
     hash: {
@@ -213,6 +292,10 @@ Router.replace = (path, params, query) => {
   }
 };
 
+/**
+ * Reload router
+ * @return {undefined} undefined
+ */
 Router.reload = () => {
   const current = Router.current();
 
@@ -259,6 +342,7 @@ Router.isActiveClassName = (routeName) => {
 /**
  * hasRoutePermission
  * check if user has route permissions
+ * @access private
  * @param  {Object} route - route context
  * @return {Boolean} returns `true` if route is autoriized, `false` otherwise
  */
@@ -302,6 +386,7 @@ function getRegistryRouteName(packageName, registryItem) {
 
 /**
  * selectLayout
+ * @access private
  * @param {Object} layout - element of shops.layout array
  * @param {Object} setLayout - layout
  * @param {Object} setWorkflow - workflow
@@ -319,6 +404,7 @@ function selectLayout(layout, setLayout, setWorkflow) {
 /**
  * ReactionLayout
  * sets and returns reaction layout structure
+ * @access public
  * @param {Object} options - this router context
  * @param {String} options.layout - string of shop.layout.layout (defaults to coreLayout)
  * @param {String} options.workflow - string of shop.layout.workflow (defaults to coreLayout)
@@ -521,7 +607,7 @@ Router.initPackageRoutes = (options) => {
         }
       });
 
-      // Not found route
+      // Not-found route
       routeDefinitions.push({
         route: "/not-found",
         name: "not-found",
@@ -620,10 +706,22 @@ Router.initPackageRoutes = (options) => {
         );
       });
 
+      // Last route, if no other route is matched, this one will be the not-found view
+      // Note: This is last becuase all other routes must at-least attempt a match
+      // before falling back to this not-found route.
+      reactRouterRoutes.push(
+        <Route
+          key="not-found"
+          render={notFoundLayout.component}
+        />
+      );
+
+      // Finish initialization
       Router._initialized = true;
       Router.reactComponents = reactRouterRoutes;
       Router._routes = uniqRoutes;
 
+      // Trigger a reactive refresh to re-render routes
       routerReadyDependency.changed();
     }
   });
