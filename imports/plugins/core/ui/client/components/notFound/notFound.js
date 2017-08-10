@@ -6,7 +6,7 @@ import { Icon } from "../icon";
 
 /**
  * React component for displaying a not-found view
- * @param {props} props React props
+ * @param {Object} props React props
  * @return {Node} React node containing not-found view
  */
 const NotFound = (props) => {
@@ -17,7 +17,7 @@ const NotFound = (props) => {
   }, props.className);
 
   // ClassName for content wrapper
-  // If one is provied in props, the default is not used
+  // If one is provided in props, the default is not used
   const contentClassName = classnames({
     "empty-view-message": typeof props.contentClassName === "undefined"
   }, props.contentClassName);
@@ -46,20 +46,20 @@ const NotFound = (props) => {
 NotFound.propTypes = {
   /**
    * Children
-   * @type {ReactNode}
+   * @type {Node}
    */
   children: PropTypes.node,
 
   /**
-   * Baase wrapper className
-   * @summary String className of `classnames` compatable object for the base wrapper
+   * Base wrapper className
+   * @summary String className or `classnames` compatable object for the base wrapper
    * @type {String|Object}
    */
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
   /**
    * Content className
-   * @summary String className of `classnames` compatable object for the content wrapper
+   * @summary String className or `classnames` compatable object for the content wrapper
    * @type {String|Object}
    */
   contentClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
