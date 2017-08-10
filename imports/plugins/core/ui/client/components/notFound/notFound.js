@@ -52,14 +52,14 @@ NotFound.propTypes = {
 
   /**
    * Base wrapper className
-   * @summary String className or `classnames` compatable object for the base wrapper
+   * @summary String className or `classnames` compatible object for the base wrapper
    * @type {String|Object}
    */
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
   /**
    * Content className
-   * @summary String className or `classnames` compatable object for the content wrapper
+   * @summary String className or `classnames` compatible object for the content wrapper
    * @type {String|Object}
    */
   contentClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
