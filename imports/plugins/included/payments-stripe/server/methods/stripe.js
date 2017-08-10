@@ -1,10 +1,9 @@
 import accounting from "accounting-js";
 import stripeNpm from "stripe";
-/* eslint camelcase: 0 */
-// meteor modules
+
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-// reaction modules
+
 import { Reaction, Logger } from "/server/api";
 import { StripeApi } from "./stripeapi";
 
@@ -40,8 +39,8 @@ function parseCardData(data) {
     number: data.number,
     name: data.name,
     cvc: data.cvv2,
-    exp_month: data.expire_month,
-    exp_year: data.expire_year
+    exp_month: data.expire_month, // eslint-disable-line camelcase
+    exp_year: data.expire_year // eslint-disable-line camelcase
   };
 }
 
@@ -138,12 +137,12 @@ function normalizeMode(transaction) {
 
 
 function buildPaymentMethods(options) {
-  const { cardData, transactions } = options;
-  if (!transactions) {
+  const { cardData, cartItemsByShop, transactionsByShopId } = options;
+  if (!transactionsByShopId) {
     throw new Meteor.Error("Creating a payment method log requries transaction data");
   }
 
-  const shopIds = Object.keys(transactions);
+  const shopIds = Object.keys(transactionsByShopId);
   const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + cardData.number.slice(-4);
   const packageData = Packages.findOne({
     name: "reaction-stripe",
@@ -152,8 +151,19 @@ function buildPaymentMethods(options) {
 
   const paymentMethods = [];
 
+
   shopIds.forEach((shopId) => {
-    if (transactions[shopId]) {
+    if (transactionsByShopId[shopId]) {
+      const cartItems = cartItemsByShop[shopId].map((item) => {
+        return {
+          _id: item._id,
+          productId: item.productId,
+          variantId: item.variants._id,
+          shopId: shopId,
+          quantity: item.quantity
+        };
+      });
+
       const paymentMethod = {
         processor: "Stripe",
         storedCard: storedCard,
@@ -162,14 +172,16 @@ function buildPaymentMethods(options) {
         // TODO: REVIEW WITH AARON - why is paymentSettings key important
         // and why is it just defined on the client?
         paymentSettingsKey: packageData.name.split("/").splice(-1)[0],
-        transactionId: transactions[shopId].id,
-        amount: transactions[shopId].amount * 0.01,
-        status: normalizeStatus(transactions[shopId]),
-        mode: normalizeMode(transactions[shopId]),
-        createdAt: new Date(transactions[shopId].created),
-        transactions: []
+        transactionId: transactionsByShopId[shopId].id,
+        amount: transactionsByShopId[shopId].amount * 0.01,
+        status: normalizeStatus(transactionsByShopId[shopId]),
+        mode: normalizeMode(transactionsByShopId[shopId]),
+        createdAt: new Date(transactionsByShopId[shopId].created),
+        transactions: [],
+        items: cartItems,
+        shopId: shopId
       };
-      paymentMethod.transactions.push(transactions[shopId]);
+      paymentMethod.transactions.push(transactionsByShopId[shopId]);
       paymentMethods.push(paymentMethod);
     }
   });
@@ -184,16 +196,14 @@ Meteor.methods({
     check(cardData, {
       name: String,
       number: ValidCardNumber,
-      expire_month: ValidExpireMonth,
-      expire_year: ValidExpireYear,
+      expire_month: ValidExpireMonth, // eslint-disable-line camelcase
+      expire_year: ValidExpireYear, // eslint-disable-line camelcase
       cvv2: ValidCVV,
       type: String
     });
     check(paymentData, {
       total: String,
       currency: String
-      // Commenting this out because it causes tests to fail and isn't fully implemented.
-      // shopId: String // TODO: Implement Marketplace Payment - perhaps including shopId
     });
 
     const chargeObj = {
@@ -239,7 +249,14 @@ Meteor.methods({
 
   "stripe/payment/createCharges": async function (transactionType, cardData, cartId) {
     check(transactionType, String);
-    check(cardData, { name: String, number: String, expire_month: String, expire_year: String, cvv2: String, type: String });
+    check(cardData, {
+      name: String,
+      number: String,
+      expire_month: String, // eslint-disable-line camelcase
+      expire_year: String, // eslint-disable-line camelcase
+      cvv2: String,
+      type: String
+    });
     check(cartId, String);
 
 
@@ -337,7 +354,7 @@ Meteor.methods({
         const token = Promise.await(stripe.tokens.create({
           customer: customer.customer
         }, {
-          stripe_account: stripeAccount
+          stripe_account: stripeAccount // eslint-disable-line camelcase
         }));
 
         // TODO: Add connect application fee to this charge
@@ -350,22 +367,26 @@ Meteor.methods({
           // TODO: Add description to charge in Stripe
           // TODO: Add product metadata
         }, {
-          stripe_account: stripeAccount
+          stripe_account: stripeAccount // eslint-disable-line camelcase
         }));
 
 
         transactionsByShopId[shopId] = charge;
       });
 
+
+      // get cartItemsByShop to build paymentMethods
+      const cartItemsByShop = cart.cartItemsByShop();
+
+      // Build paymentMethods from transactions, card data and cart items
+      const paymentMethods = buildPaymentMethods({ cardData, cartItemsByShop, transactionsByShopId });
+
       // If successful, call cart/submitPayment and return success back to client.
-      const paymentMethods = buildPaymentMethods({ cardData, transactions: transactionsByShopId });
-      Meteor.call("cart/submitPayment", paymentMethods, transactionsByShopId);
-
-
-      // TODO: Make sure that stripe is throwing errors properly to client
-      // If unsuccessful, return censored failure back to client
+      Meteor.call("cart/submitPayment", paymentMethods);
       return { success: true, transactions: transactionsByShopId };
     } catch (error) {
+      // If unsuccessful
+      // return failure back to client if error is a standard stripe card error
       if (error.rawType === "card_error") {
         return {
           success: false,
@@ -378,6 +399,7 @@ Meteor.methods({
           }
         };
       }
+      // If we get an unexpected error, log and return a censored error message
       Logger.error("Received unexpected error type: " + error.rawType);
       Logger.error(error);
       throw new Meteor.Error("Error creating multiple stripe charges", "An unexpected error occurred");

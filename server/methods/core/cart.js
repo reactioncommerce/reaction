@@ -702,8 +702,10 @@ Meteor.methods({
       // to block because of notification errors
 
       if (order.email) {
+        console.log("sending email", order.email);
         Meteor.call("orders/sendNotification", Collections.Orders.findOne(orderId), (err) => {
           if (err) {
+            console.log("had an error", err);
             Logger.error(err, `Error in orders/sendNotification for order ${orderId}`);
           }
         });
@@ -1072,24 +1074,23 @@ Meteor.methods({
    * @summary saves a submitted payment to cart, triggers workflow
    * and adds "paymentSubmitted" to cart workflow
    * Note: this method also has a client stub, that forwards to cartCompleted
-   * @param {Object|Array} paymentMethods - an array of paymentMethods (deprecated: or a single paymentMethod object)
-   * @param {Object} transactionsByShopId - Dict of transactions keyed by shopId
-   * directly within this method, just throw down though hooks
+   * @param {Object|Array} paymentMethods - an array of paymentMethods or (deprecated) a single paymentMethod object
    * @return {String} returns update result
    */
-  "cart/submitPayment": function (paymentMethods, transactionsByShopId) {
-    console.log("cart/submitPayment called", paymentMethods[0]);
-    check(paymentMethods, [Reaction.Schemas.PaymentMethod]);
-    check(transactionsByShopId, Match.Maybe(Object));
-    // Marketplace ready payment methods pass in an object with transactions listed
-    // by shopId
+  "cart/submitPayment": function (paymentMethods) {
+    // check(paymentMethods, [Reaction.Schemas.PaymentMethod]);
+    if (Array.isArray((paymentMethods))) {
+      check(paymentMethods, [Reaction.Schemas.PaymentMethod]);
+    } else {
+      check(paymentMethods, Reaction.Schemas.PaymentMethod);
+    }
+
 
     const cart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
 
     const cartId = cart._id;
-    const items = [...cart.items];
 
     const cartShipping = cart.cartShipping();
     const cartSubTotal = cart.cartSubTotal();
@@ -1106,16 +1107,17 @@ Meteor.methods({
 
     const payments = [];
     let paymentAddress;
-    let itemsWithPaymentDetails;
 
+    // Find the payment address associated that the user input during the
+    // checkout process
     if (Array.isArray(cart.billing) && cart.billing[0]) {
       paymentAddress = cart.billing[0].address;
     }
 
-    const shopIds = Object.keys(transactionsByShopId);
     // Payment plugins which have been updated for marketplace are passing an array as paymentMethods
     if (Array.isArray(paymentMethods)) {
-      shopIds.forEach((shopId) => {
+      paymentMethods.forEach((paymentMethod) => {
+        const shopId = paymentMethod.shopId;
         const invoice = {
           shipping: cartShipping,
           subtotal: cartSubTotalByShop[shopId],
@@ -1124,28 +1126,12 @@ Meteor.methods({
           total: cartTotalByShop[shopId]
         };
 
-        const transaction = transactionsByShopId[shopId];
-        const paymentMethod = paymentMethods.find((pm) => {
-          // Find the transaction that was successful
-          const successfulTransaction = pm.transactions.find((tx) => tx.status === "succeeded");
-          // we've got the right payment method if the successful transaction has the same id
-          // as the transaction that we got from our transactionsByShopId
-          return successfulTransaction.id === transaction.id;
-        });
-
         payments.push({
           paymentMethod: paymentMethod,
           invoice: invoice,
           address: paymentAddress,
           shopId: shopId
         });
-      });
-
-      // Based on the shopId of each item in the cart and each transaction
-      // add the correct transaction to each item in the cart
-      itemsWithPaymentDetails = items.map(item => {
-        item.transaction = transactionsByShopId[item.shopId];
-        return item;
       });
     } else {
       // Legacy payment integration - transactions are not split by shop
@@ -1162,15 +1148,8 @@ Meteor.methods({
       payments.push({
         paymentMethod: paymentMethods,
         invoice: invoice,
-        address: paymentAddress
-      });
-
-      // Add the successful transaction to each item in cart
-      itemsWithPaymentDetails = items.map(item => {
-        // We're searching for the succeeded transaction here as we should be storing
-        // all transactions, successful and unsuccessful on the transactions object
-        item.transaction = paymentMethods.transactions.find((tx) => tx.status === "succeeded");
-        return item;
+        address: paymentAddress,
+        shopId: Reaction.getPrimaryShopId()
       });
     }
 
@@ -1180,12 +1159,12 @@ Meteor.methods({
 
     const update = {
       $set: {
-        items: itemsWithPaymentDetails,
         billing: payments
       }
     };
 
     try {
+      console.log("selector/update", selector, update);
       Collections.Cart.update(selector, update);
     } catch (e) {
       Logger.error(e);
