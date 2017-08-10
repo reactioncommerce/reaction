@@ -44,20 +44,7 @@ function composer(props, onData) {
     });
     const imageSub = Meteor.subscribe("CartImages", order.items);
 
-    // massage items into an object by Shop
-    let itemsByShop = _.sortBy(order.items, function (o) { return o.shopID; });
-    itemsByShop = _.groupBy(itemsByShop, function (item) {
-      return item.shopId;
-    });
 
-    const shopObjects = Object.keys(itemsByShop).map(function (shop) {
-      return {
-        [shop]: {
-          name: Shops.findOne(shop).name,
-          items: itemsByShop[shop]
-        }
-      };
-    });
 
     const orderSummary = {
       quantityTotal: order.orderCount(),
@@ -75,7 +62,7 @@ function composer(props, onData) {
       const productImages = Media.find().fetch();
 
       onData(null, {
-        shops: shopObjects,
+        shops: order.itemsByShop(),
         order,
         orderId,
         orderSummary,
