@@ -13,7 +13,7 @@ class LineItems extends Component {
     applyRefund: PropTypes.func,
     displayMedia: PropTypes.func,
     editedItems: PropTypes.array,
-    getRefundedItemsInfo: PropTypes.func,
+    getSelectedItemsInfo: PropTypes.func,
     handleInputChange: PropTypes.func,
     handleItemSelect: PropTypes.func,
     handleSelectAllItems: PropTypes.func,
@@ -116,7 +116,7 @@ class LineItems extends Component {
               i18nKey="cartSubTotals.shipping"
             />
           </b>
-          <span className="pull-right">{formatPriceString(uniqueItem.variants.price)}</span>
+          <span className="pull-right">{formatPriceString(uniqueItem.shipping.rate)}</span>
         </div>
         <div className="invoice-order-item-tax">
           <b>
@@ -154,59 +154,61 @@ class LineItems extends Component {
 
   renderLineItemRefund() {
     const { editedItems } = this.props;
-
     return (
-      <div className="invoice-refund-edited">
-        <div className="refund-header">
-          <div>
-            <Translation defaultValue="For Refund" i18nKey=""/>
+      <div>
+
+        <div className="invoice-refund-edited">
+          <div className="refund-header">
+            <div>
+              <Translation defaultValue="For Refund" i18nKey=""/>
+            </div>
+            <div>
+              <Translation defaultValue="Items" i18nKey=""/>
+            </div>
+            <div>
+              <Translation defaultValue="Total" i18nKey=""/>
+            </div>
           </div>
-          <div>
-            <Translation defaultValue="Items" i18nKey=""/>
-          </div>
-          <div>
-            <Translation defaultValue="Total" i18nKey=""/>
-          </div>
-        </div>
-        <div className="refund-body">
-          {editedItems.map((item, index) => {
-            return (
-              <div className="refund-item" key={index}>
-                <div>
-                  <span>{item.title}</span>
+          <div className="refund-body">
+            {editedItems.map((item, index) => (
+              this.props.selectedItems.includes(item.id) &&
+                <div className="refund-item" key={index}>
+                  <div>
+                    <span>{item.title}</span>
+                  </div>
+                  <div>
+                    <span>{item.refundedQuantity}</span>
+                  </div>
+                  <div>
+                    <span>{formatPriceString(item.refundedTotal)}</span>
+                  </div>
                 </div>
-                <div>
-                  <span>{item.refundedQuantity}</span>
-                </div>
-                <div>
-                  <span>{formatPriceString(item.refundedTotal)}</span>
-                </div>
+            )
+            )}
+            <div className="refund-item return">
+              <div>
+                <b><Translation defaultValue="RETURN TOTAL" i18nKey=""/></b>
               </div>
-            );
-          })}
-          <div className="refund-item return">
-            <div>
-              <b><Translation defaultValue="RETURN TOTAL" i18nKey=""/></b>
-            </div>
-            <div>
-              <span>
-                {this.props.getRefundedItemsInfo().quantity}
-              </span>
-            </div>
-            <div>
-              <span>
-                {formatPriceString(this.props.getRefundedItemsInfo().total)}
-              </span>
+              <div>
+                <span>
+                  {this.props.getSelectedItemsInfo().quantity}
+                </span>
+              </div>
+              <div>
+                <span>
+                  {formatPriceString(this.props.getSelectedItemsInfo().total)}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="refund-include-shipping">
-          <div className="pull-right">
-            <Checkbox
-              className="checkbox-large"
-              label="Include Shipping"
-              checked={true}
-            />
+          <div className="refund-include-shipping">
+            <div className="pull-right">
+              <Checkbox
+                className="checkbox-large"
+                label="Include Shipping"
+                checked={true}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -255,7 +257,7 @@ class LineItems extends Component {
           ))}
         </div>
         <div>
-          {!isEmpty(this.props.editedItems) && this.renderLineItemRefund()}
+          {!isEmpty(this.props.selectedItems) && this.renderLineItemRefund()}
         </div>
         <div className="invoice-actions">
           <div className="invoice-action-cancel">
@@ -276,10 +278,16 @@ class LineItems extends Component {
               className="pull-right"
               bezelStyle="solid"
               status="primary"
-              label="Refund Items"
+              // label="Refund Items"
               disabled={this.props.isRefunding || this.props.selectedItems.length === 0}
-              onClick={this.props.applyRefund}
-            />
+              onClick={(event) => {
+                this.props.applyRefund(event);
+              }}
+            >
+              {this.props.isRefunding ? <span>Refunding <i className="fa fa-spinner" /></span> :
+                <span>Refund Items</span>
+              }
+            </Button>
           </div>
         </div>
       </div>
@@ -300,9 +308,8 @@ class LineItems extends Component {
         })}
 
         {
-          Roles.userIsInRole(Meteor.userId(), ["orders", "dashboard/orders"], Reaction.getShopId()) ?
-            this.renderPopOver() :
-            null
+          Roles.userIsInRole(Meteor.userId(), ["orders", "dashboard/orders"], Reaction.getShopId()) &&
+          this.renderPopOver()
         }
       </div>
     );

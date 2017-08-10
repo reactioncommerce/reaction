@@ -4,7 +4,7 @@ import accounting from "accounting-js";
 import _ from "lodash";
 import { i18next, Logger, Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
-import { Media } from "/lib/collections";
+import { Media, Packages } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
@@ -15,7 +15,8 @@ class InvoiceContainer extends Component {
   static propTypes = {
     currency: PropTypes.object,
     order: PropTypes.object,
-    refunds: PropTypes.array
+    refunds: PropTypes.array,
+    uniqueItems: PropTypes.array
   }
 
   constructor(props) {
@@ -32,7 +33,8 @@ class InvoiceContainer extends Component {
       popOverIsOpen: false,
       selectAllItems: false,
       selectedItems: [],
-      editedItems: []
+      editedItems: [],
+      value: undefined
     };
   }
 
@@ -51,6 +53,60 @@ class InvoiceContainer extends Component {
     this.setState({
       isOpen: true
     });
+  }
+
+  handleItemSelect = (lineItem) => {
+    let { selectedItems, editedItems } = this.state;
+
+    // if item is not in the selectedItems array
+    if (!selectedItems.includes(lineItem._id)) {
+      // include it in the array
+      selectedItems.push(lineItem._id);
+
+      // Add every quantity in the row to be refunded
+      const isEdited = editedItems.find(item => {
+        return item.id === lineItem._id;
+      });
+
+      const adjustedQuantity = lineItem.quantity - this.state.value;
+
+      if (isEdited) {
+        editedItems = editedItems.filter(item => item.id !== lineItem._id);
+        isEdited.refundedTotal = lineItem.variants.price * adjustedQuantity;
+        isEdited.refundedQuantity = adjustedQuantity;
+        editedItems.push(isEdited);
+      } else {
+        editedItems.push({
+          id: lineItem._id,
+          title: lineItem.title,
+          refundedTotal: lineItem.variants.price * lineItem.quantity,
+          refundedQuantity: lineItem.quantity
+        });
+      }
+
+      this.setState({
+        editedItems,
+        selectedItems,
+        isUpdating: true,
+        selectAllItems: false
+      });
+    } else {
+      // remove item from selected items
+      selectedItems = selectedItems.filter((id) => {
+        if (id !== lineItem._id) {
+          return id;
+        }
+      });
+      // remove item from edited quantities
+      editedItems = editedItems.filter(item => item.id !== lineItem._id);
+
+      this.setState({
+        editedItems,
+        selectedItems,
+        isUpdating: true,
+        selectAllItems: false
+      });
+    }
   }
 
   handleSelectAllItems = (uniqueItems) => {
@@ -72,12 +128,16 @@ class InvoiceContainer extends Component {
           return editedItem.id === item._id;
         });
 
+        const adjustedQuantity = item.quantity - this.state.value;
+
         if (isEdited) {
+          // if the line item was changed onSelect keep the refunded quantity that had been previously input
           editedItems = editedItems.filter(editedItem => editedItem.id !== item._id);
-          isEdited.refundedTotal = item.variants.price * item.quantity;
-          isEdited.refundedQuantity = item.quantity;
+          isEdited.refundedTotal = item.variants.price * adjustedQuantity;
+          isEdited.refundedQuantity = adjustedQuantity;
           editedItems.push(isEdited);
         } else {
+          // if the line item wasn't changed on select the refunded quantity should be all existing items
           editedItems.push({
             id: item._id,
             title: item.title,
@@ -119,60 +179,9 @@ class InvoiceContainer extends Component {
       });
     }
     this.setState({
-      editedItems
+      editedItems,
+      value
     });
-  }
-
-  handleItemSelect = (lineItem) => {
-    let { selectedItems, editedItems } = this.state;
-
-    // if item is not in the selectedItems array
-    if (!selectedItems.includes(lineItem._id)) {
-      // include it in the array
-      selectedItems.push(lineItem._id);
-
-      // Add every quantity in the row to be refunded
-      const isEdited = editedItems.find(item => {
-        return item.id === lineItem._id;
-      });
-
-      if (isEdited) {
-        editedItems = editedItems.filter(item => item.id !== lineItem._id);
-        isEdited.refundedTotal = lineItem.variants.price * lineItem.quantity;
-        isEdited.refundedQuantity = lineItem.quantity;
-        editedItems.push(isEdited);
-      } else {
-        editedItems.push({
-          id: lineItem._id,
-          title: lineItem.title,
-          refundedTotal: lineItem.variants.price * lineItem.quantity,
-          refundedQuantity: lineItem.quantity
-        });
-      }
-
-      this.setState({
-        editedItems,
-        selectedItems,
-        isUpdating: true,
-        selectAllItems: false
-      });
-    } else {
-      // remove item from selected items
-      selectedItems = selectedItems.filter((id) => {
-        if (id !== lineItem._id) {
-          return id;
-        }
-      });
-      // remove item from edited quantities
-      editedItems = editedItems.filter(item => item.id !== lineItem._id);
-
-      this.setState({
-        editedItems,
-        selectedItems,
-        isUpdating: true,
-        selectAllItems: false
-      });
-    }
   }
 
   /**
@@ -204,32 +213,38 @@ class InvoiceContainer extends Component {
     return false;
   }
 
-  applyRefund = () => {
+  applyRefund = (event) => {
     const paymentMethod = orderCreditMethod(this.state.order).paymentMethod;
     const editedItems = this.state.editedItems;
+    const uniqueItems = this.props.uniqueItems;
+    const originalQuanity = uniqueItems.reduce((acc, item) => acc + item.quantity, 0);
 
-    Alerts.alert({
-      title: "Return selected Items",
-      showCancelButton: true,
-      confirmButtonText: i18next.t("order.applyRefund")
-    }, (isConfirm) => {
-      if (isConfirm) {
-        this.setState({
-          isRefunding: true
-        });
-        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, editedItems, (error, result) => {
-          if (error) {
-            Alerts.alert(error.reason);
-          }
-          if (result) {
-            Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
-          }
+    if (this.getRefundedItemsInfo().quantity === originalQuanity) {
+      this.handleCancelPayment(event);
+    } else {
+      Alerts.alert({
+        title: "Return selected Items",
+        showCancelButton: true,
+        confirmButtonText: i18next.t("order.applyRefund")
+      }, (isConfirm) => {
+        if (isConfirm) {
           this.setState({
-            isRefunding: false
+            isRefunding: true
           });
-        });
-      }
-    });
+          Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, editedItems, (error, result) => {
+            if (error) {
+              Alerts.alert(error.reason);
+            }
+            if (result) {
+              Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
+            }
+            this.setState({
+              isRefunding: false
+            });
+          });
+        }
+      });
+    }
   }
 
   getRefundedItemsInfo = () => {
@@ -238,6 +253,86 @@ class InvoiceContainer extends Component {
       quantity: editedItems.reduce((acc, item) => acc + item.refundedQuantity, 0),
       total: editedItems.reduce((acc, item) => acc + item.refundedTotal, 0)
     };
+  }
+
+  getSelectedItemsInfo = () => {
+    const { editedItems } = this.state;
+    const quantity = editedItems.reduce((acc, item) => {
+      let calcQuantity;
+      if (this.state.selectedItems.includes(item.id)) {
+        calcQuantity = acc + item.refundedQuantity;
+      } else {
+        calcQuantity = acc;
+      }
+      return calcQuantity;
+    }, 0);
+
+    const total = editedItems.reduce((acc, item) => {
+      let calcTotal;
+      if (this.state.selectedItems.includes(item.id)) {
+        calcTotal = acc + item.refundedTotal;
+      } else {
+        calcTotal = acc;
+      }
+      return calcTotal;
+    }, 0);
+
+    return { quantity, total };
+  }
+
+  handleCancelPayment = (event) =>{
+    event.preventDefault();
+    const order = this.state.order;
+    const invoiceTotal = order.billing[0].invoice.total;
+    const currencySymbol = this.state.currency.symbol;
+
+    Meteor.subscribe("Packages", Reaction.getShopId());
+    const packageId = order.billing[0].paymentMethod.paymentPackageId;
+    const settingsKey = order.billing[0].paymentMethod.paymentSettingsKey;
+    // check if payment provider supports de-authorize
+    const checkSupportedMethods = Packages.findOne({
+      _id: packageId,
+      shopId: Reaction.getShopId()
+    }).settings[settingsKey].support;
+
+    const orderStatus = order.billing[0].paymentMethod.status;
+    const orderMode = order.billing[0].paymentMethod.mode;
+
+    let alertText;
+    if (_.includes(checkSupportedMethods, "de-authorize") ||
+      (orderStatus === "completed" && orderMode === "capture")) {
+      alertText = i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal });
+    }
+
+    Alerts.alert({
+      title: i18next.t("order.cancelOrder"),
+      text: alertText,
+      type: "warning",
+      showCancelButton: true,
+      showCloseButton: true,
+      confirmButtonColor: "#98afbc",
+      cancelButtonColor: "#98afbc",
+      confirmButtonText: i18next.t("order.cancelOrderNoRestock"),
+      cancelButtonText: i18next.t("order.cancelOrderThenRestock")
+    }, (isConfirm, cancel)=> {
+      let returnToStock;
+      if (isConfirm) {
+        returnToStock = false;
+        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
+          if (err) {
+            // $(".alert").removeClass("hidden").text(err.message);
+          }
+        });
+      }
+      if (cancel === "cancel") {
+        returnToStock = true;
+        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
+          if (err) {
+            // $(".alert").removeClass("hidden").text(err.message);
+          }
+        });
+      }
+    });
   }
 
   handleCapturePayment = (event) => {
@@ -372,6 +467,7 @@ class InvoiceContainer extends Component {
         <Invoice
           {...this.props}
 
+          getSelectedItemsInfo={this.getSelectedItemsInfo}
           handleClick={this.handleClick}
           handleSelectAllItems={this.handleSelectAllItems}
           onClose={this.handleClose}
