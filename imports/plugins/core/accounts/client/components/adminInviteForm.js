@@ -17,7 +17,7 @@ class AdminInviteForm extends Component {
     const groupsInvitable = groups
       .filter((grp) => grp.slug !== "owner")
       .filter(grp => props.canInviteToGroup({ group: grp, user: Meteor.user() })) || [{}];
-    console.log({ groupsInvitable });
+
     this.state = {
       groups: groupsInvitable,
       name: "",

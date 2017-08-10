@@ -96,7 +96,7 @@ const handlers = {
     if (_.difference(groupPermissions, userPermissions).length === 0) {
       return true;
     }
-    console.log({ group: groupPermissions.length, user: userPermissions.length });
+
     return false;
   }
 };
