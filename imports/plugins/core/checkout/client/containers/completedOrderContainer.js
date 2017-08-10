@@ -53,8 +53,7 @@ function composer(props, onData) {
       discounts: order.orderDiscounts(),
       total: order.orderTotal(),
       shippingMethod: order.shipping[0].shipmentMethod.carrier,
-      shippingAddress: order.shipping[0].address,
-      paymentMethod: "Visa 4111"
+      shippingAddress: order.shipping[0].address
     };
 
     if (imageSub.ready()) {
@@ -65,6 +64,7 @@ function composer(props, onData) {
         order,
         orderId,
         orderSummary,
+        paymentMethods: order.paymentMethods(),
         productImages
       });
     }
