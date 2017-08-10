@@ -67,6 +67,9 @@ class OrderTable extends Component {
     return "default";
   }
 
+  riskAssessmentBadge(riskLabel) {
+    return riskLabel && "danger"; // testing;
+  }
   /**
    * Shipping Badge
    * TODO: any logic here, we don't have shipping status changes at the moment
@@ -138,6 +141,7 @@ class OrderTable extends Component {
   }
 
   renderShipmentInfo(order) {
+    const orderRisk = "high risk"; // testing. to be replaced
     const emailAddress = order.email || <Translation defaultValue={"Email not availabe"} i18nKey={"admin.orderWorkflow.ordersList.emailNotFound"} />;
     return (
       <div className="shipment-info">
@@ -150,6 +154,14 @@ class OrderTable extends Component {
             className="rui-order-avatar"
           />
           <strong>{order.shipping[0].address.fullName}</strong> | {emailAddress}
+        </div>
+        <div className="risk-assessment-info">
+          <Badge
+            badgeSize="large"
+            i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
+            label={orderRisk}
+            status={this.riskAssessmentBadge(orderRisk)}
+          />
         </div>
         <div className="workflow-info">
           <Badge

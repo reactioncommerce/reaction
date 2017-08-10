@@ -7,6 +7,9 @@
         "shortcut": {
           "ordersLabel": "Orders"
         },
+        "orderRisk": {
+          "high": "High Risk"
+        },
         "dashboard": {
           "ordersLabel": "Orders",
           "ordersTitle": "Orders",
