@@ -2,9 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import CompletedShopOrders from "./completedShoporders";
+import CompletedOrderPaymentMethod from "./completedOrderPaymentMethods";
 
 
-const CompletedOrder = ({ order, orderId, shops, orderSummary, handleDisplayMedia }) => {
+const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, handleDisplayMedia }) => {
   const { shippingAddress } = orderSummary;
   const hasEmail = !!order.email;
   return (
@@ -49,11 +50,10 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, handleDisplayMedi
         <div className="order-details-content-title">
           <Components.Translation defaultValue="Payment Method" i18nKey={"cartCompleted.paymentMethod"} />
         </div>
-        <div className="order-details-info-box">
-          <div className="order-details-info-box-content">
-            <p className="order-details-payment-method">{orderSummary.paymentMethod}</p>
-          </div>
-        </div>
+        {paymentMethods.map(function (paymentMethod) {
+          return <CompletedOrderPaymentMethod key={paymentMethod.transactionId} paymentMethod={paymentMethod} />;
+        })}
+
 
         <div className="order-details-info-box">
           <div className="order-details-info-box-content">
@@ -110,6 +110,7 @@ CompletedOrder.propTypes = {
   order: PropTypes.object,
   orderId: PropTypes.string,
   orderSummary: PropTypes.object,
+  paymentMethods: PropTypes.array,
   shops: PropTypes.array
 };
 
