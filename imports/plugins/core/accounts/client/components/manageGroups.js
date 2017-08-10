@@ -47,7 +47,7 @@ class ManageGroups extends Component {
       <div className="groups-form">
         <Components.AdminInviteForm groups={this.state.adminGroups} defaultInviteGroup={this.defaultInviteGroup} />
         <Components.EditGroup
-          groups={this.state.groups}
+          groups={this.state.groups.filter(grp => grp.slug !== "owner")}
           selectedGroup={this.state.group}
           onChangeGroup={this.props.onChangeGroup}
         />

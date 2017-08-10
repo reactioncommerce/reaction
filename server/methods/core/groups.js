@@ -68,6 +68,7 @@ Meteor.methods({
    * and group permissions (using "accounts/removeUserPermissions")
    * @param {Object} groupId - group to be updated
    * @param {Object} newGroupData - updated group info (similar to current group data)
+   * slug remains untouched; used as key in querying
    * @param {String} shopId - id of the shop the group belongs to
    * @return {Object} - object.status of 200 on success or Error object on failure
    */
@@ -82,6 +83,14 @@ Meteor.methods({
 
     // 1. Update the group data
     const update = newGroupData;
+    delete update.slug; // slug remains constant; used as key in querying
+
+    const group = Groups.findOne({ _id: groupId }) || {};
+
+    if (group.slug === "owner") { // prevent edits on owner
+      throw new Meteor.Error(400, "Invalid request");
+    }
+
     Groups.update({ _id: groupId, shopId }, { $set: update });
 
     // 2. Check & Modify users in the group that changed
