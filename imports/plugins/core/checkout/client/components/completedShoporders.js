@@ -6,8 +6,8 @@ const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMeth
   return (
     <div>
       {/* This is the left side / main content */}
-      <div className="order-details-info-box store-detail-box">
-        <div>
+      <div className="order-details-info-box">
+        <div className="store-detail-box">
           <span className="order-details-store-title">{shopName}</span>
           <span className="order-details-shipping-name">{shippingMethod}</span>
         </div>
