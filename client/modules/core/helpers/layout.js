@@ -16,6 +16,10 @@ import { Template } from "meteor/templating";
  * @returns {Array} returns an array with labels, templates that match workflow
  */
 Template.registerHelper("reactionTemplate", function (options) {
+  const grpSub = Meteor.subscribe("Groups");
+  if (!grpSub.ready()) {
+    return [];
+  }
   const shopId = options.hash.shopId || Reaction.getShopId();
   // get shop info, defaults to current
   const Shop = Collections.Shops.findOne(shopId);
