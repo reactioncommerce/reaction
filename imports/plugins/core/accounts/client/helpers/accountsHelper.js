@@ -23,9 +23,12 @@ export default function sortUsersIntoGroups({ accounts, groups }) {
   return newGroups;
 }
 
-// sort to display higher permission groups at the top
+// sort to display higher permission groups and "owner" at the top
 export function sortGroups(groups) {
-  return groups.sort((prev, next) => next.permissions.length - prev.permissions.length);
+  return groups.sort((prev, next) => {
+    if (next.slug === "owner") { return 1; } // owner tops
+    return next.permissions.length - prev.permissions.length;
+  });
 }
 
 export function getGravatar(user) {
