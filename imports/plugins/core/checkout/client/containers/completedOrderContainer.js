@@ -1,7 +1,8 @@
 import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import { Orders, Media } from "/lib/collections";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import CompletedOrder from "../components/completedOrder";
 
@@ -31,6 +32,23 @@ handlers.handleDisplayMedia = (item) => {
   }
   return false;
 };
+
+handlers.addEmail = (email) => {
+  check(email, String);
+  const cartId = Reaction.Router.getQueryParam("_id");
+
+  return Meteor.call("orders/addOrderEmail", cartId, email, (err) => {
+    if (err) {
+      Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
+    } else {
+      const order = Orders.findOne({
+        userId: Meteor.userId(),
+        cartId: Reaction.Router.getQueryParam("_id")
+      });
+      Meteor.call("orders/sendNotification", order);
+    }
+  });
+}
 
 function composer(props, onData) {
   const orderId = Reaction.Router.getQueryParam("_id");
