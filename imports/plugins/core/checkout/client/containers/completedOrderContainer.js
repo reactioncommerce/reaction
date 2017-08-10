@@ -65,7 +65,10 @@ function composer(props, onData) {
       shipping: order.orderShipping(),
       tax: order.orderTaxes(),
       discounts: order.orderDiscounts(),
-      total: order.orderTotal()
+      total: order.orderTotal(),
+      shippingMethod: order.shipping[0].shipmentMethod.carrier,
+      shippingAddress: order.shipping[0].address,
+      paymentMethod: "Visa 4111"
     };
 
     if (imageSub.ready()) {
@@ -74,6 +77,7 @@ function composer(props, onData) {
       onData(null, {
         shops: shopObjects,
         order,
+        orderId,
         orderSummary,
         productImages
       });

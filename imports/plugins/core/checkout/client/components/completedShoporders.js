@@ -2,13 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import CompletedOrderItem from "./completedOrderItem";
 
-const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, order }) => {
-  const shippingMethod = order.shipping[0].shipmentMethod.carrier;
+const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMethod }) => {
   return (
-    <div className="order-details-main">
+    <div>
       {/* This is the left side / main content */}
-      <div className="order-details-info-box">
-        <div className="order-details-store-title">{shopName}<span className="order-details-shipping-name">{shippingMethod}</span>
+      <div className="order-details-info-box store-detail-box">
+        <div>
+          <span className="order-details-store-title">{shopName}</span>
+          <span className="order-details-shipping-name">{shippingMethod}</span>
         </div>
       </div>
       <div className="order-details-info-box">
@@ -26,6 +27,7 @@ CompletedShopOrders.propTypes = {
   handleDisplayMedia: PropTypes.func,
   items: PropTypes.array,
   order: PropTypes.object,
+  shippingMethod: PropTypes.string,
   shopName: PropTypes.string
 };
 
