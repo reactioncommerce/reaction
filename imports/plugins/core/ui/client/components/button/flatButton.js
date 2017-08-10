@@ -35,7 +35,7 @@ const FlatButton = ({ icon, onIcon, ...otherProps }) => {
   );
 };
 
-FlatButton.propTypes = Object.assign({}, Button.propTypes);
+FlatButton.propTypes = { ...Button.propTypes };
 
 FlatButton.defaultProps = {
   bezelStyle: "flat"
