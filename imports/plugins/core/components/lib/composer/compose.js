@@ -77,6 +77,15 @@ export default function compose(dataLoader, options = {}) {
           }
 
           const payload = { error, data };
+
+          if (!this._mounted) {
+            this.state = { // eslint-disable-line react/no-direct-mutation-state
+              ...this.state,
+              ...payload
+            };
+            return;
+          }
+
           this.setState(payload);
         };
 
