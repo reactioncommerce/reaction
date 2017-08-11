@@ -4,11 +4,11 @@ import { Components } from "@reactioncommerce/reaction-components";
 import CompletedShopOrders from "./completedShoporders";
 import CompletedOrderPaymentMethod from "./completedOrderPaymentMethods";
 import CompletedOrderSummary from "./completedOrderSummary";
+import AddEmail from "./addEmail";
 
 
-const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, handleDisplayMedia }) => {
+const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, handleDisplayMedia, handleEmailSubmit }) => {
   const { shippingAddress } = orderSummary;
-  const hasEmail = !!order.email;
   return (
     <div className="container order-completed">
       <div className="order-details-header">
@@ -16,8 +16,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
         <h3><Components.Translation defaultValue="Thank You" i18nKey={"cartCompleted.thankYou"} /></h3>
         <p><strong>Order ID </strong>{orderId}</p>
         {/* show a different message depending on whether we have an email or not */}
-        {hasEmail && <p><Components.Translation defaultValue="Order updates will be sent to" i18nKey={"cartCompleted.trackYourDelivery"} /> <strong>{order.email}</strong></p>}
-        {!hasEmail && <p><Components.Translation defaultValue="Hello! Add an email and receive order updates." i18nKey={"cartCompleted.registerGuest"} /></p>}
+        <AddEmail handleEmailSubmit={handleEmailSubmit} orderEmail={order.email} />
         {/* This is the left side / main content*/}
       </div>
 
@@ -64,6 +63,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
 
 CompletedOrder.propTypes = {
   handleDisplayMedia: PropTypes.func,
+  handleEmailSubmit: PropTypes.func,
   order: PropTypes.object,
   orderId: PropTypes.string,
   orderSummary: PropTypes.object,

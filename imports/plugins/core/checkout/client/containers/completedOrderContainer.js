@@ -33,7 +33,7 @@ handlers.handleDisplayMedia = (item) => {
   return false;
 };
 
-handlers.addEmail = (email) => {
+handlers.handleEmailSubmit = (email) => {
   check(email, String);
   const cartId = Reaction.Router.getQueryParam("_id");
 
