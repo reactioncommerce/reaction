@@ -5,6 +5,7 @@ import moment from "moment";
 import { formatPriceString } from "/client/api";
 import Avatar from "react-avatar";
 import { Badge, ClickToCopy, Icon, RolloverCheckbox } from "@reactioncommerce/reaction-ui";
+import { riskBadgeStatus } from "../helpers";
 
 class OrderTableColumn extends Component {
   static propTypes = {
@@ -85,13 +86,26 @@ class OrderTableColumn extends Component {
       );
     }
     if (columnAccessor === "workflow.status") {
+      const orderRisk = "high risk";
+
       return (
-        <Badge
-          badgeSize="large"
-          i18nKeyLabel={`cartDrawer.${row.value}`}
-          label={row.value}
-          status={fulfillmentBadgeStatus(row.original)}
-        />
+        <div className="status-info">
+          <Badge
+            badgeSize="large"
+            i18nKeyLabel={`cartDrawer.${row.value}`}
+            label={row.value}
+            status={fulfillmentBadgeStatus(row.original)}
+          />
+          {orderRisk &&
+            <Badge
+              badgeSize="large"
+              className="risk-info"
+              i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
+              label={orderRisk}
+              status={riskBadgeStatus(orderRisk)}
+            />
+          }
+        </div>
       );
     }
     if (columnAccessor === "") {

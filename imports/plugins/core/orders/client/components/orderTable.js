@@ -10,6 +10,7 @@ import moment from "moment";
 import { formatPriceString } from "/client/api";
 import { Badge, ClickToCopy, Icon, Translation, Button } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
+import { riskBadgeStatus } from "../helpers";
 
 const classNames = {
   colClassNames: {
@@ -67,9 +68,6 @@ class OrderTable extends Component {
     return "default";
   }
 
-  riskAssessmentBadge(riskLabel) {
-    return riskLabel && "danger"; // testing;
-  }
   /**
    * Shipping Badge
    * TODO: any logic here, we don't have shipping status changes at the moment
@@ -155,14 +153,6 @@ class OrderTable extends Component {
           />
           <strong>{order.shipping[0].address.fullName}</strong> | {emailAddress}
         </div>
-        <div className="risk-assessment-info">
-          <Badge
-            badgeSize="large"
-            i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
-            label={orderRisk}
-            status={this.riskAssessmentBadge(orderRisk)}
-          />
-        </div>
         <div className="workflow-info">
           <Badge
             badgeSize="large"
@@ -175,6 +165,14 @@ class OrderTable extends Component {
             i18nKeyLabel={`cartDrawer.${order.workflow.status}`}
             label={order.workflow.status}
             status={this.fulfillmentBadgeStatus(order)}
+          />
+        </div>
+        <div className="risk-info">
+          <Badge
+            badgeSize="large"
+            i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
+            label={orderRisk}
+            status={riskBadgeStatus(orderRisk)}
           />
         </div>
       </div>
