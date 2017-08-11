@@ -19,6 +19,7 @@ class AdminInviteForm extends Component {
       .filter(grp => props.canInviteToGroup({ group: grp, user: Meteor.user() })) || [{}];
 
     this.state = {
+      alertId: "admin-invite-form",
       groups: groupsInvitable,
       name: "",
       email: "",
@@ -34,7 +35,7 @@ class AdminInviteForm extends Component {
     const { groups } = nextProps;
     const groupsInvitable = groups
       .filter((grp) => grp.slug !== "owner")
-      .filter(grp => !nextProps.canInviteToGroup({ group: grp, user: Meteor.user() })) || [{}];
+      .filter(grp => nextProps.canInviteToGroup({ group: grp, user: Meteor.user() })) || [{}];
 
     this.setState({ groups: groupsInvitable, group: groupsInvitable[0] });
   }
@@ -67,6 +68,7 @@ class AdminInviteForm extends Component {
     }
 
     const options = { email, name, shopId: Reaction.getShopId(), groupId: group._id  };
+
     return Meteor.call("accounts/inviteShopMember", options, (error, result) => {
       let newAlert;
       let message = "";
@@ -143,7 +145,7 @@ class AdminInviteForm extends Component {
   renderForm() {
     return (
       <div className="admin-invite-form">
-        <Components.Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
+        <Components.Alerts placement={this.state.alertId} id={this.state.alertId} onAlertRemove={this.removeAlert} />
         <div className="panel-body">
           <form className="">
             <div className="form-group">

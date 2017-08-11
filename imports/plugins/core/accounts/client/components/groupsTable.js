@@ -22,14 +22,6 @@ const GroupsTable = (props) => {
     });
   };
 
-  const handleGroupClick = (grp) => {
-    return () => {
-      if (props.onGroupSelect) {
-        props.onGroupSelect(grp);
-      }
-    };
-  };
-
   const columnMetadata = Object.keys(fields).map((columnName) => ({
     Header: <Components.GroupHeader columnName={columnName} numberOfRows={group.users && group.users.length} />,
     accessor: "",
@@ -42,7 +34,7 @@ const GroupsTable = (props) => {
 
   return (
     <Components.List>
-      <Components.ListItem actionType="arrow" label={group.name} onClick={handleGroupClick(group)} />
+      <Components.ListItem label={group.name} />
       <div className={tableClass(group.users.length)}>
         <SortableTable
           data={group.users}

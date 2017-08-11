@@ -60,25 +60,30 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name] = packageInfo;
     return registeredPackage;
   },
+  defaultCustomerRoles: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
+  defaultVisitorRoles: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
   createDefaultGroups(options = {}) {
+    const self = this;
     const { shopId } = options;
     const allGroups = Groups.find({}).fetch();
     const query = {};
-    const defaultCustomerRoles = [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
-    const defaultVisitorRoles = ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
 
     if (shopId) {
       query._id = shopId;
     }
 
     const shops = Shops.find(query).fetch();
-    const ownerRoles = Roles.getAllRoles().fetch().map(role => role.name);
-    const shopManagerRoles = ownerRoles.filter(role => role !== "owner");
+    let ownerRoles = Roles.getAllRoles().fetch().map(role => role.name);
 
+    // join all other roles with package roles for owner. Owner has all roles
+    ownerRoles = ownerRoles.concat(this.defaultCustomerRoles, this.defaultVisitorRoles);
+    ownerRoles = _.uniq(ownerRoles);
+
+    const shopManagerRoles = ownerRoles.filter(role => role !== "owner");
     const roles = {
       "shop manager": shopManagerRoles,
-      "customer": defaultCustomerRoles,
-      "guest": defaultVisitorRoles,
+      "customer": this.defaultCustomerRoles,
+      "guest": this.defaultVisitorRoles,
       "owner": ownerRoles
     };
 
@@ -90,12 +95,14 @@ export default {
         const groupExists = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === shop._id);
         if (!groupExists) { // create group only if it doesn't exist before
           // use roles of default groups from primary shop; if not found use app defaults
-          const permissions = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === this.getPrimaryShopId());
+          const primaryShopGroup = allGroups.find(
+            grp => grp.slug === groupKeys && grp.shopId === self.getPrimaryShopId()
+          );
           Logger.debug(`creating group ${groupKeys} for shop ${shop.name}`);
           Groups.insert({
             name: groupKeys,
             slug: groupKeys,
-            permissions: permissions || roles[groupKeys],
+            permissions: primaryShopGroup && primaryShopGroup.permissions || roles[groupKeys],
             shopId: shop._id
           });
         }
@@ -644,10 +651,13 @@ export default {
     // Set Default Roles
     //
     const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
+    let ownerRoles = defaultAdminRoles.concat(this.defaultCustomerRoles, this.defaultVisitorRoles);
+    ownerRoles = _.uniq(ownerRoles);
+
     // we don't use accounts/addUserPermissions here because we may not yet have permissions
-    Roles.setUserRoles(accountId, defaultAdminRoles, shopId);
+    Roles.setUserRoles(accountId, ownerRoles, shopId);
     // // the reaction owner has permissions to all sites by default
-    Roles.setUserRoles(accountId, defaultAdminRoles, Roles.GLOBAL_GROUP);
+    Roles.setUserRoles(accountId, ownerRoles, Roles.GLOBAL_GROUP);
     // initialize package permissions we don't need to do any further permission configuration it is taken care of in the
     // assignOwnerRoles
     const packages = Packages.find().fetch();
