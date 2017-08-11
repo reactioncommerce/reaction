@@ -1,0 +1,17 @@
+{
+  "name": "reaction-composer-components",
+  "version": "1.0.0",
+  "description": "Reaction Composer Component",
+  "main": "register.js",
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/reactioncommerce",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactioncommerce/reaction.git"
+  },
+  "dependencies": {
+    "hoist-non-react-statics": "^2.2.0",
+    "shallowequal": "^1.0.2"
+  }
+}

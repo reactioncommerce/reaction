@@ -1,0 +1,34 @@
+{
+  "name": "reaction-social",
+  "version": "1.0.0",
+  "description": "Reaction Social Sharing",
+  "main": "register.js",
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/reactioncommerce",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactioncommerce/reaction.git"
+  },
+  "dependencies": {
+    "react-helmet": "^5.1.3"
+  },
+  "peerDependencies": {
+    "react": "^0.14.0 || ^15.0.0-0 || ^16.0.0-0"
+  },
+  "babel": {
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./"
+          ],
+          "alias": {
+            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
+          }
+        }
+      ]
+    ]
+  }
+}

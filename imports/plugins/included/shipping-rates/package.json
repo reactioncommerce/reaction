@@ -1,13 +1,9 @@
 {
-  "name": "reaction-connectors",
+  "name": "reaction-shipping-rates",
   "version": "1.0.0",
-  "description": "base connectors plugin for reaction commerce",
+  "description": "Reaction Flat Shipping Rates",
   "main": "register.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "Spencer Norman",
+  "author": "Reaction Commerce <hello@reactioncommerce.com>",
   "license": "GPL-3.0",
   "homepage": "https://github.com/reactioncommerce",
   "repository": {
