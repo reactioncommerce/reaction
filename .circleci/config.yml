@@ -8,7 +8,7 @@ jobs:
       - image: node:8
 
     environment:
-      - DOCKER_VERSION: 17.06.0-ce
+      - DOCKER_VERSION: 17.05.0-ce
       - DOCKER_COMPOSE_VERSION: 1.15.0
       - METEOR_ALLOW_SUPERUSER: true
 
