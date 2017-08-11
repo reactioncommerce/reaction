@@ -16,7 +16,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
         <h3><Components.Translation defaultValue="Thank You" i18nKey={"cartCompleted.thankYou"} /></h3>
         <p><strong>Order ID </strong>{orderId}</p>
         {/* show a different message depending on whether we have an email or not */}
-        <AddEmail handleEmailSubmit={handleEmailSubmit} orderEmail={order.email} />
+        <AddEmail order={order} orderEmail={order.email} />
         {/* This is the left side / main content*/}
       </div>
 

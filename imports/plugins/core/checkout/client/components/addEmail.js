@@ -1,5 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
+import { Orders } from "/lib/collections";
+import { Reaction, i18next } from "/client/api";
 import { Components } from "@reactioncommerce/reaction-components";
 
 
@@ -7,7 +10,8 @@ class AddEmail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasEmail: !!this.props.orderEmail
+      hasEmail: !!this.props.orderEmail,
+      order: this.props.order
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,9 +26,28 @@ class AddEmail extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (this.props.handleEmailSubmit) {
-      this.props.handleEmailSubmit(this.state.email);
-    }
+    const cartId = Reaction.Router.getQueryParam("_id");
+
+    Meteor.call("orders/addOrderEmail", cartId, this.state.email, (err, results) => {
+      if (err) {
+        Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
+      } else {
+        // we need to re-grab order here so it has the email
+        const order = Orders.findOne({
+          userId: Meteor.userId(),
+          cartId
+        });
+        Meteor.call("orders/sendNotification", order, (error) => {
+          if (!error) {
+            Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
+            this.setState({
+              hasEmail: true
+            });
+          }
+        });
+      }
+      return results;
+    });
   }
 
   render() {
@@ -38,16 +61,16 @@ class AddEmail extends React.Component {
     }
     return (
       <form onSubmit={this.handleSubmit} className="add-email-input">
+        <Components.Translation defaultValue="Hello! Add an email and receive order updates" i18bnKey="{cartCompleted.registerGuest}" />
         <div className="input-group">
           <Components.TextField
-            label="Email"
             name="email"
             type="email"
             tabIndex="1"
             value={this.state.email}
             onChange={this.handleFieldChange}
           />
-          <input type="submit" className="input-group-addon" id="update-order" data-i18n="app.submit" />
+          <input type="submit" id="update-order" data-i18n="app.submit" />
         </div>
       </form>
     );
@@ -56,6 +79,7 @@ class AddEmail extends React.Component {
 
 AddEmail.propTypes = {
   handleEmailSubmit: PropTypes.func,
+  order: PropTypes.object,
   orderEmail: PropTypes.string
 };
 
