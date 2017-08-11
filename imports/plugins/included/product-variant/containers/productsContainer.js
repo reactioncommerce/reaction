@@ -47,7 +47,8 @@ const wrapComponent = (Comp) => (
     static propTypes = {
       canLoadMoreProducts: PropTypes.bool,
       products: PropTypes.array,
-      productsSubscription: PropTypes.object
+      productsSubscription: PropTypes.object,
+      showNotFound: PropTypes.bool
     };
 
     constructor(props) {
@@ -61,6 +62,10 @@ const wrapComponent = (Comp) => (
     }
 
     ready = () => {
+      if (this.props.showNotFound === true) {
+        return false;
+      }
+
       const isInitialLoad = this.state.initialLoad === true;
       const isReady = this.props.productsSubscription.ready();
 
@@ -71,6 +76,7 @@ const wrapComponent = (Comp) => (
       if (isReady) {
         return true;
       }
+
       return false;
     }
 
@@ -94,6 +100,7 @@ const wrapComponent = (Comp) => (
           productsSubscription={this.props.productsSubscription}
           loadMoreProducts={this.loadMoreProducts}
           loadProducts={this.loadProducts}
+          showNotFound={this.props.showNotFound}
         />
       );
     }
@@ -116,8 +123,13 @@ function composer(props, onData) {
 
   // if we get an invalid slug, don't return all products
   if (!tag && slug) {
+    onData(null, {
+      showNotFound: true
+    });
+
     return;
   }
+
   const currentTag = ReactionProduct.getTag();
 
   const sort = {
