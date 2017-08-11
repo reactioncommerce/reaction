@@ -46,8 +46,9 @@ Meteor.methods({
       shop.shopType = "merchant";
     }
 
-    // identify a shop admin
+    // identify a shop owner
     const userId = shopAdminUserId || currentUser._id;
+    const shopOwner = Meteor.users.findOne(userId);
 
     // ensure unique id and shop name
     shop._id = Random.id();
@@ -61,11 +62,11 @@ Meteor.methods({
     // admin or marketplace needs to be on and guests allowed to create shops
     if (currentUser && Reaction.hasMarketplaceAccess("guest")) {
       // add user info for new shop
-      shop.emails = currentUser.emails;
+      shop.emails = shopOwner.emails;
       // TODO: Review source of default address for shop from user
       // Reaction currently stores addressBook in Accounts collection not users
-      if (currentUser.profile && currentUser.profile.addressBook) {
-        shop.addressBook = [currentUser.profile && currentUser.profile.addressBook];
+      if (shopOwner.profile && shopOwner.profile.addressBook) {
+        shop.addressBook = [shopOwner.profile && shopOwner.profile.addressBook];
       }
 
       // clean up new shop
