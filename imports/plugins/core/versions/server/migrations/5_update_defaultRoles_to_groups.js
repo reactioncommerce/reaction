@@ -14,7 +14,10 @@ Migrations.add({
   version: 5,
   up() {
     const shops = Shops.find({}).fetch();
-    Groups.remove({}); // needed to ensure restart in case of a migration that failed before finishing
+
+    // needed to ensure restart in case of a migration that failed before finishing
+    Groups.remove({});
+    Accounts.update({}, { $set: { groups: [] } }, { multi: true });
 
     if (shops && shops.length) {
       shops.forEach((shop) => {
