@@ -326,7 +326,6 @@ Meteor.methods({
         return customerCard;
       }));
 
-      console.log("customer", customer);
       // Get cart totals for each Shop
       const cartTotals = cart.cartTotalByShop();
 
