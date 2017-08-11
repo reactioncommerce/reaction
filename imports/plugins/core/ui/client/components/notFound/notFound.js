@@ -6,6 +6,7 @@ import { Icon } from "../icon";
 
 /**
  * @summary React component for displaying a not-found view
+ * @param {Object} props - React PropTypes
  * @property {String|Object} className - String className or `classnames` compatible object for the base wrapper
  * @property {String|Object} contentClassName - String className or `classnames` compatible object for the content wrapper
  * @property {String} i18nKeyMessage - i18n key for message
@@ -17,7 +18,7 @@ import { Icon } from "../icon";
  */
 const NotFound = (props) => {
   // ClassName for base wrapper,
-  // If one is provied in props, the default is not used
+  // If one is provided in props, the default is not used
   const baseClassName = classnames({
     "container-fluid-sm": typeof props.className === "undefined"
   }, props.className);

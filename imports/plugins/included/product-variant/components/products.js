@@ -25,7 +25,7 @@ class Products extends Component {
   };
 
   /**
-   * Checks and returns a Boolean if the `protucts` array from props is not empty.
+   * Checks and returns a Boolean if the `products` array from props is not empty.
    * @return {Boolean} Boolean value `true` if products are available, `false` otherwise.
    */
   get hasProducts() {
