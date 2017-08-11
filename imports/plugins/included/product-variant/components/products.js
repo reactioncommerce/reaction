@@ -4,43 +4,23 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { getTagIds as getIds } from "/lib/selectors/tags";
 
-/** Class representing the Products React component */
+/** Class representing the Products React component
+ * @summary PropTypes for Product React component
+ * @property {Function} loadMoreProducts - load more products callback
+ * @property {Function} loadProducts - Load products callback
+ * @property {Array} products - Array of products
+ * @property {Object} products - Products subscription
+ * @property {Function} ready - Ready state check helper
+ * @property {Boolean} showNotFound - Force show not-found view
+*/
+
 class Products extends Component {
   static propTypes = {
-    /**
-     * Load more products callback
-     * @type {Function}
-     */
     loadMoreProducts: PropTypes.func,
-
-    /**
-     * Load products callback
-     * @type {Function}
-     */
     loadProducts: PropTypes.func,
-
-    /**
-     * Array of products
-     * @type {Array}
-     */
     products: PropTypes.array,
-
-    /**
-     * Products subscription
-     * @type {Object}
-     */
     productsSubscription: PropTypes.object,
-
-    /**
-     * Ready state check helper
-     * @type {Function}
-     */
     ready: PropTypes.func,
-
-    /**
-     * Force show not-found view
-     * @type {Boolean}
-     */
     showNotFound: PropTypes.bool
   };
 
