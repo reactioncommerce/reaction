@@ -1,5 +1,5 @@
 {
-  "name": "reaction-sms",
+  "name": "@reaction/sms",
   "version": "1.0.0",
   "description": "Reaction SMS",
   "main": "register.js",
@@ -13,20 +13,5 @@
   "dependencies": {
     "nexmo": "^2.0.2",
     "twilio": "^3.5.0"
-  },
-  "babel": {
-    "plugins": [
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./"
-          ],
-          "alias": {
-            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
-          }
-        }
-      ]
-    ]
   }
 }

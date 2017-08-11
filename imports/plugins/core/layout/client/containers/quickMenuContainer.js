@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { composeWithTracker } from "@reaction/components";
 import { QuickMenu } from "../components";
 import { Reaction } from "/client/api";
 

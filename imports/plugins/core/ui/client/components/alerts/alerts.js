@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 
 const Alerts = ({ alerts, handleAlertRemove, handleAlertSeen }) => (
   Array.isArray(alerts) &&

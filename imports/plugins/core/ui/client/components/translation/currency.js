@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 import { formatPriceString } from "/client/api";
 
 const Currency = ({ amount, priceRange, editable }) => (

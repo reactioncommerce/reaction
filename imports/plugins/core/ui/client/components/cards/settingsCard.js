@@ -7,7 +7,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Reaction } from "/client/api";
-import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent, composeWithTracker } from "@reaction/components";
 
 class SettingsCard extends Component {
   static defaultProps = {

@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 
 Template.smsSettings.helpers({
   SmsSettings() {

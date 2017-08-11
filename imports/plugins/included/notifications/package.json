@@ -1,5 +1,5 @@
 {
-  "name": "reaction-notifications",
+  "name": "@reaction/notifications",
   "version": "1.0.0",
   "description": "Reaction Notifications",
   "main": "register.js",
@@ -9,21 +9,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/reaction.git"
-  },
-  "babel": {
-    "plugins": [
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./"
-          ],
-          "alias": {
-            "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
-            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
-          }
-        }
-      ]
-    ]
   }
 }

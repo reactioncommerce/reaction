@@ -1,6 +1,6 @@
 import React from "react";
 import { pure } from "recompose";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 import IconButton from "./iconButton";
 
 /**

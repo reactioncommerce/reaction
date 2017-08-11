@@ -1,4 +1,4 @@
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { composeWithTracker } from "@reaction/components";
 import { Reaction } from "/client/api";
 
 function composer(props, onData) {

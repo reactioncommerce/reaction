@@ -1,7 +1,7 @@
 import React, { Children, Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 
 class Card extends Component {
   constructor(props) {

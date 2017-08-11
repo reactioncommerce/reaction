@@ -1,5 +1,5 @@
 {
-  "name": "reaction-catalog",
+  "name": "@reaction/catalog",
   "version": "1.0.0",
   "description": "Reaction Catalog",
   "main": "register.js",

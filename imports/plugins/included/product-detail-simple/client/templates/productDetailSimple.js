@@ -1,4 +1,4 @@
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import { Template } from "meteor/templating";
 
 Template.productDetailSimple.helpers({

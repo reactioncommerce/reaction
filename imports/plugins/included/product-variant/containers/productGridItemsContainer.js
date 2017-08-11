@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { compose } from "recompose";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";

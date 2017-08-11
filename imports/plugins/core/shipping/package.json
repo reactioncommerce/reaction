@@ -1,5 +1,5 @@
 {
-  "name": "reaction-shipping",
+  "name": "@reaction/shipping",
   "version": "1.0.0",
   "description": "Reaction Shipping",
   "main": "register.js",

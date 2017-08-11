@@ -1,5 +1,5 @@
 {
-  "name": "reaction-composer-components",
+  "name": "@reaction/components",
   "version": "1.0.0",
   "description": "Reaction Composer Component",
   "main": "register.js",

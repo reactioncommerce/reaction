@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reaction/components";
 
 class TagGroupHeader extends Component {
   constructor(props) {

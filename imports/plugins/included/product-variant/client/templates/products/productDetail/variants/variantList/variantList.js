@@ -1,5 +1,5 @@
 import Sortable from "sortablejs";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
 import { Meteor } from "meteor/meteor";

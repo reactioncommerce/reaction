@@ -1,5 +1,5 @@
 {
-  "name": "reaction-taxjar",
+  "name": "@reaction/taxjar",
   "version": "1.0.0",
   "description": "Reaction TaxJar",
   "main": "register.js",

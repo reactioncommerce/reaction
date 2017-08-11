@@ -4,7 +4,7 @@ import classnames from "classnames/dedupe";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
 import Avatar from "react-avatar";
-import { Badge, ClickToCopy, Icon, RolloverCheckbox } from "@reactioncommerce/reaction-ui";
+import { Badge, ClickToCopy, Icon, RolloverCheckbox } from "@reaction/ui";
 
 class OrderTableColumn extends Component {
   static propTypes = {

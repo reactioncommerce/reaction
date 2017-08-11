@@ -1,6 +1,6 @@
 import "./templates/productDetailSimple.html";
 import "./templates/productDetailSimple.js";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 
 import {
   ProductField,

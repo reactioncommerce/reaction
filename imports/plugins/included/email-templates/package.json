@@ -1,5 +1,5 @@
 {
-  "name": "reaction-email-templates",
+  "name": "@reaction/email-templates",
   "version": "1.0.0",
   "description": "Reaction Email Templates",
   "main": "register.js",

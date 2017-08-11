@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Select from "react-select";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reaction/components";
 import { i18next } from "/client/api";
 
 class MultiSelect extends Component {

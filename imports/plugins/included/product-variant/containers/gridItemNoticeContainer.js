@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 import { ReactionProduct } from "/lib/api";
 import GridItemNotice from "../components/gridItemNotice";
 

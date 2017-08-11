@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import createFragment from "react-addons-create-fragment";
 import classnames from "classnames/dedupe";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reaction/components";
 
 class Button extends Component {
   constructor(props) {

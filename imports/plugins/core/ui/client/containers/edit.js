@@ -1,6 +1,6 @@
 import React, { Children, Component } from "react";
 import PropTypes from "prop-types";
-import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent, composeWithTracker } from "@reaction/components";
 import { Reaction } from "/client/api";
 
 const styles = {

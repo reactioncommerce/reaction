@@ -13,7 +13,7 @@ import { Session } from "meteor/session";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Tracker } from "meteor/tracker";
 import { Packages, Shops } from "/lib/collections";
-import { getComponent } from "@reactioncommerce/reaction-components/components";
+import { getComponent } from "/imports/plugins/core/components/lib";
 import BlazeLayout from "/imports/plugins/core/layout/lib/blazeLayout";
 import Hooks from "./hooks";
 

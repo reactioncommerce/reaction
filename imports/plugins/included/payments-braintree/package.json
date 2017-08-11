@@ -1,5 +1,5 @@
 {
-  "name": "reaction-payments-braintree",
+  "name": "@reaction/payments-braintree",
   "version": "1.0.0",
   "description": "Reaction Braintree payments",
   "main": "register.js",

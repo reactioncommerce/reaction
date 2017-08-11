@@ -1,5 +1,5 @@
 {
-  "name": "reaction-router",
+  "name": "@reaction/router",
   "version": "1.0.0",
   "description": "Reaction Router",
   "main": "register.js",
@@ -19,20 +19,5 @@
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0-0 || ^16.0.0-0",
     "react-dom": "15.6.1"
-  },
-  "babel": {
-    "plugins": [
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./"
-          ],
-          "alias": {
-            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
-          }
-        }
-      ]
-    ]
   }
 }

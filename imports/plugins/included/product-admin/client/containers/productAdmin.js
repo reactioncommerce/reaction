@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import update from "react/lib/update";
 import _ from "lodash";
 import { compose } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reaction/components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";

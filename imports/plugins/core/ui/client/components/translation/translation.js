@@ -1,7 +1,7 @@
 import { camelCase } from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 import { i18next } from "/client/api";
 
 const Translation = ({ i18nKey, defaultValue, className }) => {

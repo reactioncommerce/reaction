@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { composeWithTracker } from "@reaction/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import Invoice from "../components/invoice.js";
 

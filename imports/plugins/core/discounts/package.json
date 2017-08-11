@@ -1,7 +1,7 @@
 {
-  "name": "reaction-checkout",
+  "name": "@reaction/discounts",
   "version": "1.0.0",
-  "description": "Reaction Checkout",
+  "description": "Reaction Discounts",
   "main": "register.js",
   "author": "Reaction Commerce <hello@reactioncommerce.com>",
   "license": "GPL-3.0",
@@ -9,20 +9,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/reaction.git"
-  },
-  "babel": {
-    "plugins": [
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./"
-          ],
-          "alias": {
-            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
-          }
-        }
-      ]
-    ]
   }
 }

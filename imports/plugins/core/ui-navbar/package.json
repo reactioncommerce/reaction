@@ -1,5 +1,5 @@
 {
-  "name": "reaction-ui-navbar",
+  "name": "@reaction/ui-navbar",
   "version": "1.0.0",
   "description": "Reaction UI Navbar",
   "main": "register.js",
@@ -9,20 +9,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/reaction.git"
-  },
-  "babel": {
-    "plugins": [
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./"
-          ],
-          "alias": {
-            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
-          }
-        }
-      ]
-    ]
   }
 }

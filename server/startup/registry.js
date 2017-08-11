@@ -1,9 +1,7 @@
 import { Shops } from "/lib/collections";
 import { Reaction } from "/server/api";
-import initRegistry from "./registry/index";
 
 export default function () {
-  initRegistry();
 
   // initialize shop registry when a new shop is added
   Shops.find().observe({

@@ -1,5 +1,5 @@
 import { compose, withProps } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reaction/components";
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
 import EmailLogs from "../components/emailLogs";

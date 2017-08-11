@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Reaction } from "/client/api";
-import { TextField, Button, IconButton, SortableTableLegacy } from "@reactioncommerce/reaction-ui";
+import { TextField, Button, IconButton, SortableTableLegacy } from "@reaction/ui";
 import ProductGridContainer from "/imports/plugins/included/product-variant/containers/productGridContainer";
 import { accountsTable, ordersTable } from "../helpers";
 

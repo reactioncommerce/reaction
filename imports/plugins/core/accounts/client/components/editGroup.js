@@ -3,7 +3,7 @@ import _ from "lodash";
 import React, { Component } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import { Reaction } from "/client/api";
 import { groupPermissions } from "../helpers/accountsHelper";
 

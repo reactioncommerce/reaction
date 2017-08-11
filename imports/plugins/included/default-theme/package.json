@@ -1,5 +1,5 @@
 {
-  "name": "reaction-default-themes",
+  "name": "@reaction/default-themes",
   "version": "1.0.0",
   "description": "Reaction default theme",
   "main": "register.js",

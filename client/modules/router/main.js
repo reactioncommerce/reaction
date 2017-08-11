@@ -1,3 +1,3 @@
-import { Router } from "@reactioncommerce/reaction-router";
+import { Router } from "@reaction/router";
 
 export default Router;

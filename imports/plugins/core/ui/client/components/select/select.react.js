@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reaction/components";
 
 class Select extends Component {
   render() {

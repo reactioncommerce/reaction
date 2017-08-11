@@ -1,5 +1,5 @@
 {
-  "name": "reaction-product-variant",
+  "name": "@reaction/product-variant",
   "version": "1.0.0",
   "description": "Reaction PDP options and variants",
   "main": "register.js",
@@ -13,21 +13,5 @@
   "dependencies": {
     "autosize": "^4.0.0",
     "sortablejs": "^1.6.0"
-  },
-  "babel": {
-    "plugins": [
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./"
-          ],
-          "alias": {
-            "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
-            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
-          }
-        }
-      ]
-    ]
   }
 }

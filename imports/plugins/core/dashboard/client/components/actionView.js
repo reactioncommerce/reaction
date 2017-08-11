@@ -13,7 +13,7 @@ import {
   Translation,
   Overlay
 } from "/imports/plugins/core/ui/client/components";
-import { getComponent } from "@reactioncommerce/reaction-components";
+import { getComponent } from "@reaction/components";
 
 
 const getStyles = (props) => {

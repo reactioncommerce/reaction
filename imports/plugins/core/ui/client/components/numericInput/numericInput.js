@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import accounting from "accounting-js";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 
 function setCaretPosition(ctrl, pos) {
   if (ctrl.setSelectionRange) {

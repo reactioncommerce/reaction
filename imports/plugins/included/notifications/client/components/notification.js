@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import "../styles/main.less";
 import "../styles/dropdown.css";
 

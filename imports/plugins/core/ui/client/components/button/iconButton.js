@@ -1,7 +1,7 @@
 import React from "react";
 import classnames from "classnames";
 import { pure } from "recompose";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 import Button from "./button.jsx";
 
 const IconButton = ({ icon, onIcon, ...otherProps }) => {

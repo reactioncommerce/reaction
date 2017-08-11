@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { composeWithTracker } from "@reaction/components";
 import { Reaction } from "/client/api";
 import { SocialButtons } from "../components";
 import { createSocialSettings } from "../../lib/helpers";

@@ -1,5 +1,5 @@
 {
-  "name": "reaction-migration-versions",
+  "name": "@reaction/migration-versions",
   "version": "1.0.5",
   "description": "Reaction Migration Versions",
   "main": "register.js",

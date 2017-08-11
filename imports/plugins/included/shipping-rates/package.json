@@ -1,5 +1,5 @@
 {
-  "name": "reaction-shipping-rates",
+  "name": "@reaction/shipping-rates",
   "version": "1.0.0",
   "description": "Reaction Flat Shipping Rates",
   "main": "register.js",

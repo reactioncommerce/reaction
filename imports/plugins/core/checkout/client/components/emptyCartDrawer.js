@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { $ } from "meteor/jquery";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reaction/components";
 import { Reaction } from "/client/api";
 
 function handleKeepShopping(event) {

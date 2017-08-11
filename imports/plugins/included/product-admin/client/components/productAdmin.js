@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import { Router } from "/client/api";
 import update from "react/lib/update";
 

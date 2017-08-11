@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import onclickOutside from "react-onclickoutside";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 
 class PopoverContent extends Component {
   handleClickOutside(event) {

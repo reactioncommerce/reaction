@@ -3,7 +3,7 @@ import {
   Components,
   getComponent as newGetComponent,
   registerComponent as newRegisterComponent
-} from "@reactioncommerce/reaction-components/components";
+} from "@reaction/components";
 
 
 export function registerComponent(componentInfo) {

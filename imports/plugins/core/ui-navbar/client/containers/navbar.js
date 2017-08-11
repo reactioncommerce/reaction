@@ -1,4 +1,4 @@
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reaction/components";
 import { Reaction } from "/client/api";
 import NavBar from "../components/navbar";
 

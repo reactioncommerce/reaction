@@ -1,4 +1,4 @@
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import { Meteor } from "meteor/meteor";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Session } from "meteor/session";

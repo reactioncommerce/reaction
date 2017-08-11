@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { composeWithTracker } from "@reaction/components";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Roles } from "meteor/alanning:roles";

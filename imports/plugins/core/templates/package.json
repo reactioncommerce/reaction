@@ -1,5 +1,5 @@
 {
-  "name": "reaction-templates",
+  "name": "@reaction/templates",
   "version": "1.0.0",
   "description": "Reaction Templates",
   "main": "register.js",

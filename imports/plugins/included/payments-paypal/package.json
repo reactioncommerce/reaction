@@ -1,5 +1,5 @@
 {
-  "name": "reaction-payments-paypal",
+  "name": "@reaction/payments-paypal",
   "version": "1.0.0",
   "description": "Reaction PayPal payments",
   "main": "register.js",

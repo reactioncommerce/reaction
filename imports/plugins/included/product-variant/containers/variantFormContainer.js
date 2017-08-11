@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { compose } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reaction/components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { ReactionProduct } from "/lib/api";
@@ -12,7 +12,7 @@ import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import VariantForm from "../components/variantForm";
 import { ProductVariant } from "/lib/collections/schemas/products";
-import { Validation } from "@reactioncommerce/reaction-collections";
+import { Validation } from "/imports/plugins/core/collections";
 
 const wrapComponent = (Comp) => (
   class VariantFormContainer extends Component {

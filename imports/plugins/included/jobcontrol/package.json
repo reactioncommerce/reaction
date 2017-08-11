@@ -1,5 +1,5 @@
 {
-  "name": "reaction-job-control",
+  "name": "@reaction/job-control",
   "version": "1.0.0",
   "description": "Reaction Job Control",
   "main": "register.js",

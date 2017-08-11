@@ -1,4 +1,4 @@
-import { loadRegisteredComponents } from "@reactioncommerce/reaction-components";
+import { loadRegisteredComponents } from "@reaction/components";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Accounts } from "meteor/accounts-base";

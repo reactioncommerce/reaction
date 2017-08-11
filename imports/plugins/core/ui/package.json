@@ -1,5 +1,5 @@
 {
-  "name": "reaction-ui",
+  "name": "@reaction/ui",
   "version": "1.0.0",
   "description": "Reaction UI Components",
   "main": "register.js",
@@ -32,21 +32,5 @@
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0-0 || ^16.0.0-0",
     "react-dom": "^15.0.0-0"
-  },
-  "babel": {
-    "plugins": [
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./"
-          ],
-          "alias": {
-            "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
-            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
-          }
-        }
-      ]
-    ]
   }
 }

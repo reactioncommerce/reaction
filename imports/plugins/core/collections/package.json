@@ -1,5 +1,5 @@
 {
-  "name": "reaction-collections",
+  "name": "@reaction/collections",
   "version": "1.0.0",
   "description": "Reaction Collections",
   "main": "register.js",

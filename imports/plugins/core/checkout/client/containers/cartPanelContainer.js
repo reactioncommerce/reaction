@@ -1,5 +1,5 @@
 import { withProps } from "recompose";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";

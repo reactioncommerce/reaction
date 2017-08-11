@@ -2,7 +2,7 @@ import _ from "lodash";
 import React, { Component } from "react";
 import update from "react/lib/update";
 import PropTypes from "prop-types";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reaction/components";
 
 class TagGroupBody extends Component {
   constructor(props) {

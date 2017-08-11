@@ -1,5 +1,5 @@
 {
-  "name": "reaction-inventory",
+  "name": "@reaction/inventory",
   "version": "1.0.0",
   "description": "Reaction Inventory",
   "main": "register.js",

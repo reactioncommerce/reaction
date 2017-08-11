@@ -1,5 +1,5 @@
 {
-  "name": "reaction",
+  "name": "@reaction/core",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "version": "2.0.0",
   "main": "main.js",
@@ -71,23 +71,6 @@
     "velocity-animate": "^1.5.0",
     "velocity-react": "^1.3.3"
   },
-  "devDependencies": {
-    "babel-eslint": "^7.2.3",
-    "babel-jest": "^20.0.3",
-    "babel-plugin-lodash": "^3.2.11",
-    "babel-plugin-module-resolver": "^2.7.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "chai": "^4.1.0",
-    "enzyme": "^2.9.1",
-    "enzyme-to-json": "^1.5.1",
-    "eslint": "^4.3.0",
-    "eslint-plugin-react": "^7.1.0",
-    "jest": "^20.0.4",
-    "js-yaml": "^3.9.0",
-    "react-addons-test-utils": "15.6.0"
-  },
   "postcss": {
     "plugins": {
       "autoprefixer": {
@@ -99,39 +82,6 @@
   },
   "scripts": {
     "test": "jest"
-  },
-  "babel": {
-    "plugins": [
-      [
-        "lodash",
-        {
-          "id": [
-            "lodash",
-            "recompose"
-          ]
-        }
-      ],
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./"
-          ],
-          "alias": {
-            "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
-            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib",
-            "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
-            "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
-            "underscore": "lodash"
-          }
-        }
-      ]
-    ],
-    "presets": [
-      "es2015",
-      "react",
-      "stage-2"
-    ]
   },
   "jest": {
     "moduleNameMapper": {

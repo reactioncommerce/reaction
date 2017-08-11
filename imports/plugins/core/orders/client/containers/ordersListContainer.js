@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { composeWithTracker } from "@reaction/components";
 import { Meteor } from "meteor/meteor";
 import { Media } from "/lib/collections";
 import { Reaction } from "/client/api";

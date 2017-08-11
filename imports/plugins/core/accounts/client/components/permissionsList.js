@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reaction/components";
 
 // resolvePermissions - helper to resolve toggled permission(s).
 // It returns a list of all parent and child permissions when a parent permission is toggled.

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { composeWithTracker } from "@reaction/components";
 import { ReactionProduct } from "/lib/api";
 import SocialButtons from "/imports/plugins/included/social/client/components/socialButtons";
 import { createSocialSettings } from "/imports/plugins/included/social/lib/helpers";

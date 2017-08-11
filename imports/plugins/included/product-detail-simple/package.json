@@ -1,5 +1,5 @@
 {
-  "name": "reaction-product-detail-simple",
+  "name": "@reaction/product-detail-simple",
   "version": "1.0.0",
   "description": "Reaction Simple PDP",
   "main": "register.js",
@@ -9,20 +9,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reactioncommerce/reaction.git"
-  },
-  "babel": {
-    "plugins": [
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./"
-          ],
-          "alias": {
-            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
-          }
-        }
-      ]
-    ]
   }
 }

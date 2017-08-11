@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 
 const CardGroup = ({ children }) => (
   <div className="panel-group">

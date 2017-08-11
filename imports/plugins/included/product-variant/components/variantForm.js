@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { isEqual } from "lodash";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import { formatPriceString } from "/client/api";
 
 const fieldNames = [

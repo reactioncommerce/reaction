@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import { Meteor } from "meteor/meteor";
 import LanguageContainer from "/client/modules/i18n/templates/header/containers/i18nContainer";
 import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";

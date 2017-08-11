@@ -3,7 +3,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { MarketplacePackageConfig } from "../../../lib/collections/schemas";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 
 /**
  * marketplaceSettings helpers

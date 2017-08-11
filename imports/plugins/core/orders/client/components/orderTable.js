@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Orders } from "/lib/collections";
-import { SortableTable, Loading, Checkbox } from "@reactioncommerce/reaction-ui";
+import { SortableTable, Loading, Checkbox } from "@reaction/ui";
 import OrderTableColumn from "./orderTableColumn";
 
 import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
-import { Badge, ClickToCopy, Icon, Translation, Button } from "@reactioncommerce/reaction-ui";
+import { Badge, ClickToCopy, Icon, Translation, Button } from "@reaction/ui";
 import ProductImage from "./productImage";
 
 const classNames = {

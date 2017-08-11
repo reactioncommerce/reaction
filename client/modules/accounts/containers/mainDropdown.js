@@ -1,5 +1,5 @@
 import { compose, withProps } from "recompose";
-import { registerComponent, composeWithTracker, withCurrentAccount } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker, withCurrentAccount } from "@reaction/components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";

@@ -1,4 +1,4 @@
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Session } from "meteor/session";

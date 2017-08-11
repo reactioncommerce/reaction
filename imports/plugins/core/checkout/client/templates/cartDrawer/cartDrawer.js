@@ -1,5 +1,5 @@
 import Swiper from "swiper";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import { $ } from "meteor/jquery";
 import { Cart } from "/lib/collections";
 import { Session } from "meteor/session";

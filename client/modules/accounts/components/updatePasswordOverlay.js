@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 
 class UpdatePasswordOverlay extends Component {
   static propTypes = {

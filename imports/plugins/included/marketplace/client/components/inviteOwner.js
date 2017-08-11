@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
-import { registerComponent, Components } from "@reactioncommerce/reaction-components";
+import { registerComponent, Components } from "@reaction/components";
 import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 
 class InviteOwner extends Component {

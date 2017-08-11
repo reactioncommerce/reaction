@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { StyleRoot } from "radium";
 import { compose } from "recompose";
-import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent, composeWithTracker } from "@reaction/components";
 import { $ } from "meteor/jquery";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";

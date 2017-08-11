@@ -1,5 +1,5 @@
 {
-  "name": "reaction-taxes-taxcloud",
+  "name": "@reaction/taxes-taxcloud",
   "version": "1.0.0",
   "description": "Reaction TaxCloud",
   "main": "register.js",

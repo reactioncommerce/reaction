@@ -1,5 +1,5 @@
 import React from "react";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reaction/components";
 
 const Loading = () => (
   <div className="spinner-container spinner-container-lg">

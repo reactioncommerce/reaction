@@ -1,5 +1,5 @@
 {
-  "name": "reaction-connectors",
+  "name": "@reaction/connectors",
   "version": "1.0.0",
   "description": "base connectors plugin for reaction commerce",
   "main": "register.js",

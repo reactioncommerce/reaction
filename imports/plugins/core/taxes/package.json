@@ -1,5 +1,5 @@
 {
-  "name": "reaction-taxes",
+  "name": "@reaction/taxes",
   "version": "1.0.0",
   "description": "Reaction Taxes",
   "main": "register.js",

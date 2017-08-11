@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reaction/components";
 import { SortableTable } from "/imports/plugins/core/ui/client/components";
 
 const fields = ["name", "email", "createdAt", "dropdown", "button"];

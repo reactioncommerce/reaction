@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { pure } from "recompose";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reaction/components";
 
 const CardTitle = (props) => {
   const { element, ...rest } = props;

@@ -1,5 +1,5 @@
 {
-  "name": "reaction-payments",
+  "name": "@reaction/payments",
   "version": "1.0.0",
   "description": "Reaction Payments",
   "main": "register.js",

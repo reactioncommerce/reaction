@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import { ReactionLayout } from "/imports/plugins/core/layout/lib";
 
 class ProductDetail extends Component {

@@ -1,5 +1,5 @@
 {
-  "name": "reaction-search-mongo",
+  "name": "@reaction/search-mongo",
   "version": "1.0.0",
   "description": "Reaction Mongo Search",
   "main": "register.js",

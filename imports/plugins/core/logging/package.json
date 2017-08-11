@@ -1,5 +1,5 @@
 {
-  "name": "reaction-logging",
+  "name": "@reaction/logging",
   "version": "1.0.0",
   "description": "Reaction Logging",
   "main": "register.js",

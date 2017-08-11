@@ -1,5 +1,5 @@
 {
-  "name": "reaction-taxes-avalara",
+  "name": "@reaction/taxes-avalara",
   "version": "1.0.0",
   "description": "Reaction Avalara",
   "main": "register.js",

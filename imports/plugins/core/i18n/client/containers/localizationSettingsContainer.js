@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment-timezone";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { composeWithTracker } from "@reaction/components";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { Countries } from "/client/collections";

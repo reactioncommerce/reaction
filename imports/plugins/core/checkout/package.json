@@ -1,5 +1,5 @@
 {
-  "name": "reaction-checkout",
+  "name": "@reaction/checkout",
   "version": "1.0.0",
   "description": "Reaction Checkout",
   "main": "register.js",
@@ -12,20 +12,5 @@
   },
   "dependencies": {
     "swiper": "^3.4.2"
-  },
-  "babel": {
-    "plugins": [
-      [
-        "module-resolver",
-        {
-          "root": [
-            "./"
-          ],
-          "alias": {
-            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib"
-          }
-        }
-      ]
-    ]
   }
 }

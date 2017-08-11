@@ -1,4 +1,4 @@
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reaction/components";
 import { Cart } from "/lib/collections";
 import CartSubTotal from "../components/cartSubTotal";
 

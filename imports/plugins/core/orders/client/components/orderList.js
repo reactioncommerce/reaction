@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Icon, Translation } from "@reactioncommerce/reaction-ui";
+import { Icon, Translation } from "@reaction/ui";
 import OrderTable from "./orderTable";
 
 class OrdersList extends Component {

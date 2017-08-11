@@ -3,7 +3,7 @@ import update from "react/lib/update";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
-import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent, composeWithTracker } from "@reaction/components";
 import { Reaction, Router } from "/client/api";
 import { getTagIds } from "/lib/selectors/tags";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";

@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reaction/components";
 import { Accounts } from "meteor/accounts-base";
 import { Random } from "meteor/random";
 import { Reaction } from "/client/api";

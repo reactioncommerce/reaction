@@ -1,6 +1,6 @@
 import React from "react";
 import { pure } from "recompose";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reaction/components";
 
 const PriceRange = (props) => {
   return (

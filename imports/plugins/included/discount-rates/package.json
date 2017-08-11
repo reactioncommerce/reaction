@@ -1,5 +1,5 @@
 {
-  "name": "reaction-discount-rates",
+  "name": "@reaction/discount-rates",
   "version": "1.0.0",
   "description": "Reaction Discount Rates",
   "main": "register.js",

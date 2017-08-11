@@ -1,5 +1,5 @@
 {
-  "name": "reaction-payments-authnet",
+  "name": "@reaction/payments-authnet",
   "version": "1.0.0",
   "description": "Reaction Authorize.net",
   "main": "register.js",

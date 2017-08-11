@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reaction/components";
 
 const Items = ({ children }) => (
   <div className="rui items">

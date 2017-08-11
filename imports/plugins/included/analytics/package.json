@@ -1,5 +1,5 @@
 {
-  "name": "reaction-analytics",
+  "name": "@reaction/analytics",
   "version": "1.0.0",
   "description": "Reaction Analytics",
   "main": "register.js",

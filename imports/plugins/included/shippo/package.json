@@ -1,5 +1,5 @@
 {
-  "name": "reaction-shippo",
+  "name": "@reaction/shippo",
   "version": "1.0.0",
   "description": "Reaction Shippo",
   "main": "register.js",

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import classnames from "classnames";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import { Router } from "/client/api";
 import { PropTypes as ReactionPropTypes } from "/lib/api";
 

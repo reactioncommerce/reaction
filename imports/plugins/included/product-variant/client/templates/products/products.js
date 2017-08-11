@@ -1,4 +1,4 @@
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reaction/components";
 import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";

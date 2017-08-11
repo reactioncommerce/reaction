@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { TextField } from "@reactioncommerce/reaction-ui";
+import { TextField } from "@reaction/ui";
 
 
 class SortableTableFilter extends Component {

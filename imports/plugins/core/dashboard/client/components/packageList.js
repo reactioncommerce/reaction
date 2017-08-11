@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { map } from "lodash";
 import { Card, CardHeader, CardBody, CardGroup, ListItem } from "/imports/plugins/core/ui/client/components";
-import { getComponent } from "@reactioncommerce/reaction-components";
+import { getComponent } from "@reaction/components";
 
 class PackageList extends Component {
   static propTypes = {

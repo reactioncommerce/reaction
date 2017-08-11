@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Measure from "react-measure";
 import update from "react/lib/update";
 import { compose } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reaction/components";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import MediaGallery from "../components/media/mediaGallery";
