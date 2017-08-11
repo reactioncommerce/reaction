@@ -73,23 +73,6 @@
               </div>
 
             <div class="rui item half">
-              <div class="rui textfield form-group {{hasErrorClassName 'optionTitle'}}">
-                <label for="option-{{childVariantFormId}}" data-i18n="productVariant.optionTitle">Option Title</label>
-                <input
-                  id="option-{{childVariantFormId}}"
-                  type="text"
-                  class="form-control input-sm child-variant-input"
-                  value="{{optionTitle}}"
-                  name="optionTitle"
-                  placeholder="Add option title"
-                  />
-                {{#with hasValidationMessage 'optionTitle'}}
-                  <span class="help-block">{{message}}</span>
-                {{/with}}
-              </div>
-            </div>
-
-            <div class="rui item half">
               <div class="rui textfield form-group {{hasErrorClassName 'title'}}">
                 <label for="label-{{childVariantFormId}}" data-i18n="productVariant.title">Cart / Checkout Label</label>
                 <input
@@ -101,6 +84,23 @@
                   placeholder="Add cart label"
                   />
                 {{#with hasValidationMessage 'title'}}
+                  <span class="help-block">{{message}}</span>
+                {{/with}}
+              </div>
+            </div>
+
+            <div class="rui item half">
+              <div class="rui textfield form-group {{hasErrorClassName 'optionTitle'}}">
+                <label for="option-{{childVariantFormId}}" data-i18n="productVariant.optionTitle">Option Title</label>
+                <input
+                  id="option-{{childVariantFormId}}"
+                  type="text"
+                  class="form-control input-sm child-variant-input"
+                  value="{{optionTitle}}"
+                  name="optionTitle"
+                  placeholder="Add option title"
+                  />
+                {{#with hasValidationMessage 'optionTitle'}}
                   <span class="help-block">{{message}}</span>
                 {{/with}}
               </div>
