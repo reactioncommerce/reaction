@@ -53,6 +53,7 @@ const NotFound = (props) => {
 NotFound.propTypes = {
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  contentClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   i18nKeyMessage: PropTypes.string,
   i18nKeyTitle: PropTypes.string,
   icon: PropTypes.string,
