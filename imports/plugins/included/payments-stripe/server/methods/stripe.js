@@ -3,6 +3,7 @@ import stripeNpm from "stripe";
 
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
+import { Random } from "meteor/random";
 
 import { Reaction, Logger } from "/server/api";
 import { StripeApi } from "./stripeapi";
@@ -260,8 +261,10 @@ Meteor.methods({
     check(cartId, String);
 
 
+    const primaryShopId = Reaction.getPrimaryShopId();
+
     const stripePkg = Reaction.getPackageSettingsWithOptions({
-      shopId: Reaction.getPrimaryShopId(),
+      shopId: primaryShopId,
       name: "reaction-stripe"
     });
 
@@ -309,7 +312,7 @@ Meteor.methods({
 
     // TODO: If there is only one transactionsByShopId and the shopId is primaryShopId -
     // Create a standard charge and bypass creating a customer for this charge
-    const primaryShop = Shops.findOne({ _id: Reaction.getPrimaryShopId() });
+    const primaryShop = Shops.findOne({ _id: primaryShopId });
     const currency = primaryShop.currency;
 
 
@@ -323,6 +326,7 @@ Meteor.methods({
         return customerCard;
       }));
 
+      console.log("customer", customer);
       // Get cart totals for each Shop
       const cartTotals = cart.cartTotalByShop();
 
@@ -331,45 +335,65 @@ Meteor.methods({
         // TODO: If shopId is primaryShopId - create a non-connect charge with the
         // stripe customer object
 
-        // get stripe package for this shopId
-        const merchantStripePkg = Reaction.getPackageSettingsWithOptions({
-          shopId: shopId,
-          name: "reaction-stripe"
-        });
+        const isPrimaryShop = shopId === primaryShopId;
 
-        // If this merchant doesn't have stripe setup, fail.
-        // We should _never_ get to this point, because
-        // this will not roll back the entire transaction
-        if (!merchantStripePkg ||
+        let merchantStripePkg;
+        // Initialize options - this is where idempotency_key
+        // and, if using connect, stripe_account go
+        const stripeOptions = {};
+        const stripeCharge = {
+          amount: formatForStripe(cartTotals[shopId]),
+          capture: capture,
+          currency: currency
+          // TODO: add product metadata to stripe charge
+        };
+
+        if (isPrimaryShop) {
+          // If this is the primary shop, we can make a direct charge to the
+          // customer object we just created.
+          stripeCharge.customer = customer.customer;
+        } else {
+          // If this is a merchant shop, we need to tokenize the customer
+          // and charge the token with the merchant id
+          merchantStripePkg = Reaction.getPackageSettingsWithOptions({
+            shopId: shopId,
+            name: "reaction-stripe"
+          });
+
+          // If this merchant doesn't have stripe setup, fail.
+          // We should _never_ get to this point, because
+          // this will not roll back the entire transaction
+          if (!merchantStripePkg ||
             !merchantStripePkg.settings ||
             !merchantStripePkg.settings.connectAuth ||
             !merchantStripePkg.settings.connectAuth.stripe_user_id) {
-          throw new Meteor.Error(`Error processing payment for merchant with shopId ${shopId}`);
+            throw new Meteor.Error(`Error processing payment for merchant with shopId ${shopId}`);
+          }
+
+          // get stripe account for this shop
+          const stripeUserId = merchantStripePkg.settings.connectAuth.stripe_user_id;
+          stripeOptions.stripe_account = stripeUserId; // eslint-disable-line camelcase
+
+          // Create idempotency_key for generating a token
+          // stripeOptions.idempotency_key = `${cartId}${merchantStripePkg._id}`; // eslint-disable-line camelcase
+
+
+          // Create token from our customer object to use with merchant shop
+          const token = Promise.await(stripe.tokens.create({
+            customer: customer.customer
+          }, stripeOptions));
+
+          // TODO: Add description to charge in Stripe
+          stripeCharge.source = token.id;
+          stripeCharge.application_fee = 0; // eslint-disable-line camelcase
+          // Get new idempotency_key
         }
 
-        // get stripe account for this shop
-        const stripeAccount = merchantStripePkg.settings.connectAuth.stripe_user_id;
+        // We should only do this once per shop per cart
+        stripeOptions.idempotency_key = `${shopId}${cart._id}${Random.id()}`; // eslint-disable-line camelcase
 
-        // Create token from our customer object to use with merchant shop
-        const token = Promise.await(stripe.tokens.create({
-          customer: customer.customer
-        }, {
-          stripe_account: stripeAccount // eslint-disable-line camelcase
-        }));
-
-        // TODO: Add connect application fee to this charge
-        // Charge the token we just created
-        const charge = Promise.await(stripe.charges.create({
-          amount: formatForStripe(cartTotals[shopId]),
-          currency: currency,
-          source: token.id,
-          capture: capture
-          // TODO: Add description to charge in Stripe
-          // TODO: Add product metadata
-        }, {
-          stripe_account: stripeAccount // eslint-disable-line camelcase
-        }));
-
+        // Create a charge with the options set above
+        const charge = Promise.await(stripe.charges.create(stripeCharge, stripeOptions));
 
         transactionsByShopId[shopId] = charge;
       });

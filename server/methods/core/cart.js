@@ -1164,7 +1164,6 @@ Meteor.methods({
     };
 
     try {
-      console.log("selector/update", selector, update);
       Collections.Cart.update(selector, update);
     } catch (e) {
       Logger.error(e);
