@@ -1,8 +1,7 @@
 import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
 import { Orders, Media } from "/lib/collections";
-import { Reaction, i18next } from "/client/api";
+import { Reaction } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import CompletedOrder from "../components/completedOrder";
 

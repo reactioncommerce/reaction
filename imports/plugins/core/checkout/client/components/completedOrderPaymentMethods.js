@@ -9,7 +9,6 @@ const creditCardClasses = {
 };
 
 const CompletedOrderPaymentMethod = ({ paymentMethod }) => {
-
   if (paymentMethod.method === "credit") {
     const creditCardType = paymentMethod.storedCard.substring(0, 4);
     const creditCardClass = creditCardClasses[creditCardType];

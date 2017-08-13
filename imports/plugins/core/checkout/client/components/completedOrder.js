@@ -7,7 +7,7 @@ import CompletedOrderSummary from "./completedOrderSummary";
 import AddEmail from "./addEmail";
 
 
-const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, handleDisplayMedia, handleEmailSubmit }) => {
+const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, handleDisplayMedia }) => {
   const { shippingAddress } = orderSummary;
   return (
     <div className="container order-completed">
@@ -63,7 +63,6 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
 
 CompletedOrder.propTypes = {
   handleDisplayMedia: PropTypes.func,
-  handleEmailSubmit: PropTypes.func,
   order: PropTypes.object,
   orderId: PropTypes.string,
   orderSummary: PropTypes.object,
