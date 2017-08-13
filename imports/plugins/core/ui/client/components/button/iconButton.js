@@ -53,7 +53,11 @@ const IconButton = ({ icon, onIcon, ...otherProps }) => {
   );
 };
 
-IconButton.propTypes = Object.assign({}, Button.propTypes);
+IconButton.propTypes = {
+  ...Button.propTypes,
+  icon: Button.propTypes.icon,
+  onIcon: Button.propTypes.onIcon
+};
 
 IconButton.defaultProps = {
   bezelStyle: "solid"
