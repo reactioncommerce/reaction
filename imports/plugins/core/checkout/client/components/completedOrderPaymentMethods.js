@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 const creditCardClasses = {
   VISA: "fa fa-cc-visa",
@@ -28,5 +29,7 @@ const CompletedOrderPaymentMethod = ({ paymentMethod }) => {
 CompletedOrderPaymentMethod.propTypes = {
   paymentMethod: PropTypes.object
 };
+
+registerComponent("CompletedOrderPaymentMethod", CompletedOrderPaymentMethod);
 
 export default CompletedOrderPaymentMethod;

@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
+
 import CompletedOrderItem from "./completedOrderItem";
 
 const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMethod }) => {
@@ -30,5 +32,7 @@ CompletedShopOrders.propTypes = {
   shippingMethod: PropTypes.string,
   shopName: PropTypes.string
 };
+
+registerComponent("CompletedShopOrders", CompletedShopOrders);
 
 export default CompletedShopOrders;

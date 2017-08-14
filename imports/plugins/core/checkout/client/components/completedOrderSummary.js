@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 
 const CompletedOrderSummary = ({ orderSummary }) => {
@@ -52,5 +52,7 @@ const CompletedOrderSummary = ({ orderSummary }) => {
 CompletedOrderSummary.propTypes = {
   orderSummary: PropTypes.object
 };
+
+registerComponent("CompletedOrderSummary", CompletedOrderSummary);
 
 export default CompletedOrderSummary;

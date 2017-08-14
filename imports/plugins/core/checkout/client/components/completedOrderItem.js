@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 const CompletedOrderItem = ({ item, handleDisplayMedia }) => {
   let image;
@@ -24,5 +24,7 @@ CompletedOrderItem.propTypes = {
   handleDisplayMedia: PropTypes.func,
   item: PropTypes.object
 };
+
+registerComponent("CompletedOrderItem", CompletedOrderItem);
 
 export default CompletedOrderItem;
