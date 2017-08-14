@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import TextareaAutosize from "react-textarea-autosize";
-import { Translation } from "../translation";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 
 class TextField extends Component {
@@ -155,7 +155,7 @@ class TextField extends Component {
     if (this.props.label) {
       return (
         <label>
-          <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+          <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
         </label>
       );
     }
@@ -180,7 +180,7 @@ class TextField extends Component {
     if (helpText) {
       return (
         <span className="help-block">
-          <Translation defaultValue={helpText} i18nKey={i18nKey} />
+          <Components.Translation defaultValue={this.props.helpText} i18nKey={i18nKey} />
         </span>
       );
     }
@@ -218,10 +218,6 @@ class TextField extends Component {
   }
 }
 
-TextField.defaultProps = {
-
-};
-
 TextField.propTypes = {
   align: PropTypes.oneOf(["left", "center", "right", "justify"]),
   className: PropTypes.string,
@@ -246,5 +242,7 @@ TextField.propTypes = {
   validation: PropTypes.object,
   value: PropTypes.any
 };
+
+registerComponent("TextField", TextField);
 
 export default TextField;

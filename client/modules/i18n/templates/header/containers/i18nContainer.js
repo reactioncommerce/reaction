@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import { Shops } from "/lib/collections";
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import Language from "../components/i18n";
 
 class LanguageDropdownContainer extends Component {
@@ -24,8 +24,22 @@ class LanguageDropdownContainer extends Component {
 const composer = (props, onData) => {
   const languages = [];
   let currentLanguage = "";
-  if (Reaction.Subscriptions.Shops.ready() && Meteor.user()) {
-    const shop = Shops.findOne();
+
+  if (Reaction.Subscriptions.PrimaryShop.ready() &&
+      Reaction.Subscriptions.MerchantShops.ready() && Meteor.user()) {
+    let shopId;
+
+    // Choose shop to get language from
+    if (Reaction.marketplaceEnabled && Reaction.merchantLanguage) {
+      shopId = Reaction.getShopId();
+    } else {
+      shopId = Reaction.getPrimaryShopId();
+    }
+
+    const shop = Shops.findOne({
+      _id: shopId
+    });
+
     if (typeof shop === "object" && shop.languages) {
       for (const language of shop.languages) {
         if (language.enabled === true) {

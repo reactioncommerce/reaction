@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class Checkbox extends Component {
   handleChange = (event) => {
@@ -13,7 +13,7 @@ class Checkbox extends Component {
   renderLabel() {
     const { label, i18nKeyLabel } = this.props;
     if (label || i18nKeyLabel) {
-      return (<Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />);
+      return (<Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />);
     }
     return null;
   }
@@ -29,7 +29,7 @@ class Checkbox extends Component {
           type="checkbox"
           onMouseOut={this.props.onMouseOut}
         />
-        {this.renderLabel()}
+        <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
       </label>
     );
   }
@@ -48,5 +48,7 @@ Checkbox.propTypes = {
   onChange: PropTypes.func,
   onMouseOut: PropTypes.func
 };
+
+registerComponent("Checkbox", Checkbox);
 
 export default Checkbox;

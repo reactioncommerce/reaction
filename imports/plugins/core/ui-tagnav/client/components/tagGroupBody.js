@@ -1,9 +1,8 @@
-import debounce from "lodash/debounce";
 import _ from "lodash";
 import React, { Component } from "react";
 import update from "react/lib/update";
 import PropTypes from "prop-types";
-import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class TagGroupBody extends Component {
   constructor(props) {
@@ -82,7 +81,7 @@ class TagGroupBody extends Component {
     // Set local state so the component does't have to wait for a round-trip
     // to the server to get the updated list of variants
     this.setState(newState, () => {
-      debounce(() => this.props.onTagSort(this.state.tagIds, this.state.parentTag), 500)();
+      _.debounce(() => this.props.onTagSort(this.state.tagIds, this.state.parentTag), 500)();
     });
   }
 
@@ -104,7 +103,7 @@ class TagGroupBody extends Component {
     if (Array.isArray(tags)) {
       return tags.map((tag, index) => {
         return (
-          <TagItem
+          <Components.TagItem
             tag={tag}
             index={index}
             key={index}
@@ -139,7 +138,7 @@ class TagGroupBody extends Component {
           {this.genTagsList(_.compact(this.tags), this.state.parentTag)}
           {this.props.editable &&
             <div className="rui item create">
-              <TagItem
+              <Components.TagItem
                 blank={true}
                 key="newTagForm"
                 tag={this.state.newTag}
@@ -171,5 +170,7 @@ TagGroupBody.propTypes = {
   tagGroupBodyProps: PropTypes.object,
   updateSuggestions: PropTypes.func
 };
+
+registerComponent("TagGroupBody", TagGroupBody);
 
 export default TagGroupBody;

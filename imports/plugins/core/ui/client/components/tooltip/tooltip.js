@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import TetherComponent from "react-tether";
 import classnames from "classnames";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 class Tooltip extends Component {
   /**
@@ -58,5 +59,7 @@ Tooltip.propTypes = {
 Tooltip.defaultProps = {
   attachment: "bottom center"
 };
+
+registerComponent("Tooltip", Tooltip);
 
 export default Tooltip;

@@ -5,8 +5,8 @@ import Checkbox from "./checkbox";
 
 const RolloverCheckbox = ({ children, checked, checkboxClassName, onChange, name, className }) => {
   const extendedClassName = classnames({
-    "rollover-checkbox": true,
-  }, className)
+    "rollover-checkbox": true
+  }, className);
 
   if (checked) {
     return (

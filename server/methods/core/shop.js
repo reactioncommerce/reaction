@@ -41,10 +41,14 @@ Meteor.methods({
     const shop = shopData || Collections.Shops.findOne(Reaction.getShopId());
     // if we don't have any shop data, use fixture
 
-    // identify a shop admin
+    // Never create a second primary shop
+    if (shop.shopType === "primary") {
+      shop.shopType = "merchant";
+    }
+
+    // identify a shop owner
     const userId = shopAdminUserId || currentUser._id;
-    const sellerShopId = Reaction.getSellerShopId(userId);
-    let adminRoles = Roles.getRolesForUser(userId, sellerShopId);
+    const shopOwner = Meteor.users.findOne(userId);
 
     // ensure unique id and shop name
     shop._id = Random.id();
@@ -57,13 +61,13 @@ Meteor.methods({
 
     // admin or marketplace needs to be on and guests allowed to create shops
     if (currentUser && Reaction.hasMarketplaceAccess("guest")) {
-      adminRoles = shop.defaultSellerRoles;
-
       // add user info for new shop
-      shop.emails = currentUser.emails;
+      shop.emails = shopOwner.emails;
       // TODO: Review source of default address for shop from user
       // Reaction currently stores addressBook in Accounts collection not users
-      shop.addressBook = currentUser.profile && currentUser.profile.addressBook;
+      if (shopOwner.profile && shopOwner.profile.addressBook) {
+        shop.addressBook = [shopOwner.profile && shopOwner.profile.addressBook];
+      }
 
       // clean up new shop
       delete shop.createdAt;
@@ -84,10 +88,15 @@ Meteor.methods({
 
     // update user
     Reaction.insertPackagesForShop(shop._id);
-    Roles.addUsersToRoles([currentUser, userId], adminRoles, shop._id);
-    Collections.Accounts.update({ _id: currentUser._id }, {
+    Reaction.createDefaultGroups({ shopId: shop._id });
+    const ownerGroup = Collections.Groups.findOne({ slug: "owner", shopId: shop._id });
+    Roles.addUsersToRoles([currentUser, userId], ownerGroup.permissions, shop._id);
+    Collections.Accounts.update({ _id: userId }, {
       $set: {
         shopId: shop._id
+      },
+      $addToSet: {
+        groups: ownerGroup._id
       }
     });
 
@@ -303,7 +312,15 @@ Meteor.methods({
   "shop/flushCurrencyRate": function () {
     this.unblock();
 
-    const shopId = Reaction.getShopId();
+    let shopId;
+    const marketplaceSettings = Reaction.getMarketplaceSettings();
+
+    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantLocale) {
+      shopId = Reaction.getShopId();
+    } else {
+      shopId = Reaction.getPrimaryShopId();
+    }
+
     const shop = Collections.Shops.findOne(shopId, {
       fields: {
         currencies: 1

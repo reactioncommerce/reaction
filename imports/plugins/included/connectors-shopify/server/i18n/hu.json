@@ -1,0 +1,25 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Adatcsatlakozó Shopify számára"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "Termékek importálása",
+          "importing": "Importálás ... Ez eltarthat egy kicsit.",
+          "editApiKey": "Szerkesztés API-kulcs",
+          "editPassword": "API-jelszó szerkesztése",
+          "editSharedSecret": "API megosztott titka szerkesztése",
+          "editShopifyDomain": "Shopify Domain szerkesztése",
+          "importSuccess": "A sikeresen importált termékek.",
+          "importFailed": "Hiba történt a termékek importálásakor."
+        }
+      }
+    }
+  }
+}]

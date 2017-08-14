@@ -1,10 +1,9 @@
-import { useDeps } from "react-simple-di";
+import { compose, withProps } from "recompose";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import actions from "../actions";
+import { i18next } from "/client/api";
 import EmailLogs from "../components/emailLogs";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 import { Jobs } from "/lib/collections";
-import { composeWithTracker, merge } from "/lib/api/compose";
 
 const composer = ({}, onData) => {
   if (Meteor.subscribe("Emails").ready()) {
@@ -13,11 +12,28 @@ const composer = ({}, onData) => {
   }
 };
 
-const depsMapper = () => ({
-  resend: actions.logs.resend
-});
+const handlers = {
+  /**
+   * Restart a failed or cancelled email job
+   * @param {Object} email - the email job object
+   * @return {null} triggers an alert
+   */
+  resend(email) {
+    Meteor.call("emails/retryFailed", email._id, (err) => {
+      if (err) {
+        return Alerts.toast(i18next.t("app.error", { error: err.reason }), "error");
+      }
+      return Alerts.toast(i18next.t("mail.alerts.resendSuccess", { email: email.data.to }), "success");
+    });
+  }
+};
 
-export default merge(
-  composeWithTracker(composer, Loading),
-  useDeps(depsMapper)
+registerComponent("EmailLogs", EmailLogs, [
+  composeWithTracker(composer),
+  withProps(handlers)
+]);
+
+export default compose(
+  composeWithTracker(composer),
+  withProps(handlers)
 )(EmailLogs);

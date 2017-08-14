@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import TotalActions from "../components/totalActions";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 
 class TotalActionsContaner extends Component {
   static propTypes = {
@@ -48,4 +47,4 @@ const composer = (props, onData) => {
   });
 };
 
-export default composeWithTracker(composer, Loading)(TotalActionsContaner);
+export default composeWithTracker(composer)(TotalActionsContaner);

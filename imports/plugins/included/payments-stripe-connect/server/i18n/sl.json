@@ -10,13 +10,16 @@
         },
         "dashboard": {
           "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "plačila trak"
+          "stripeConnectDescription": "Plačila Stripe Connect"
         },
         "paymentSettings": {
           "stripeConnectLabel": "Stripe Connect",
           "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Še nimate Stripe Connect API ID odjemalca je?",
+          "stripeConnectSettingsDescription": "Nimate ID-ja stranke API-ja Stripe Connect?",
           "stripeConnectSettingsGetItHere": "Dobite ga tukaj"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Ali se bo samodejno preusmerilo v nekaj sekundah ali kliknite tukaj."
         }
       }
     }

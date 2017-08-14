@@ -13,6 +13,10 @@
           "accountsSettingsLabel": "Buchhaltung",
           "accountsSettingsTitle": "Buchhaltung",
           "accountsSettingsDescription": "Kontoeinstellungen"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "Johnsmith@reactioncommerce.com"
         }
       }
     }

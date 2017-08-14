@@ -1,4 +1,6 @@
 import React from "react";
+import { pure } from "recompose";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import IconButton from "./iconButton";
 
 /**
@@ -23,5 +25,7 @@ const VisibilityButton = (props) => {
     />
   );
 };
+
+registerComponent("VisibilityButton", VisibilityButton, pure);
 
 export default VisibilityButton;

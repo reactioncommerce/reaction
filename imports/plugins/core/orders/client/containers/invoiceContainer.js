@@ -5,8 +5,7 @@ import _ from "lodash";
 import { i18next, Logger, Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import { Media, Packages } from "/lib/collections";
-import { composeWithTracker } from "/lib/api/compose";
-import { Loading } from "/imports/plugins/core/ui/client/components";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import Invoice from "../components/invoice.js";
 
@@ -611,4 +610,4 @@ const composer = (props, onData) => {
   });
 };
 
-export default composeWithTracker(composer, Loading)(InvoiceContainer);
+export default composeWithTracker(composer)(InvoiceContainer);

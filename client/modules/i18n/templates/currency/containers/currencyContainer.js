@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { Match } from "meteor/check";
 import { Reaction } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Cart, Shops } from "/lib/collections";
 import Currency from "../components/currency";
 
@@ -45,8 +45,20 @@ const composer = (props, onData) => {
   let currentCurrency = "USD $";
   const currencies = [];
 
-  if (Reaction.Subscriptions.Shops.ready() && Meteor.user()) {
-    const shop = Shops.findOne(Reaction.getShopId(), {
+  if (Reaction.Subscriptions.PrimaryShop.ready() &&
+      Reaction.Subscriptions.MerchantShops.ready() && Meteor.user()) {
+    let shopId;
+
+    // Choose shop to get language from
+    if (Reaction.marketplaceEnabled && Reaction.merchantCurrency) {
+      shopId = Reaction.getShopId();
+    } else {
+      shopId = Reaction.getPrimaryShopId();
+    }
+
+    const shop = Shops.findOne({
+      _id: shopId
+    }, {
       fields: {
         currencies: 1,
         currency: 1

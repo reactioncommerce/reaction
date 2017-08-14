@@ -27,9 +27,27 @@
         },
         "groups": {
           "appearance": "Appearance",
+          "addUserError": "Error adding user to group",
+          "addUserSuccess": "Added user to group",
+          "removeUserError": "Error removing user to group",
+          "removeUserSuccess": "User removed successfully",
           "connect": "Connect",
           "core": "Core",
+          "name": "Name",
+          "email": "Email",
+          "create": "Create Group",
+          "update": "Update Group",
+          "lastActive": "Last Active",
+          "description": "Description",
+          "remove": "Remove",
+          "newGroup": "New Group",
+          "selectGroup": "Select Group",
+          "editGroups": "Edit Groups",
           "dashboard": "Dashboard",
+          "errorCreate": "Error creating group",
+          "successCreate": "Group created successfully",
+          "errorUpdate": "Error updating group",
+          "successUpdate": "Group updated successfully",
           "misc": "Misc",
           "paymentMethod": "Payment Providers",
           "utilities": "Utilities",
@@ -365,7 +383,10 @@
           "canceled": "Canceled",
           "refunded": "Refunded"
         },
-        "showMore": "Show More"
+        "showMore": "Show More",
+        "capture": "Capture",
+        "bulkActions": "Bulk Actions",
+        "selected": "Selected"
       },
       "orderShipping": {
         "shipTo": "Ship To",
@@ -660,6 +681,7 @@
         },
         "error": {
           "emailRequired": "Email is required.",
+          "groupRequired": "A group other than the default owner group is required.",
           "passwordRequired": "Password is required.",
           "passwordMustBeAtLeast6CharactersLong": "Password must be at least 6 characters long.",
           "passwordMustContainRequirements": "Password must contain at least one number or symbol.",

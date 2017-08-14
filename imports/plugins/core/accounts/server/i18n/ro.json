@@ -13,6 +13,10 @@
           "accountsSettingsLabel": "Conturi",
           "accountsSettingsTitle": "Conturi",
           "accountsSettingsDescription": "Setările contului"
+        },
+        "groupsInvite": {
+          "name": "John Smith",
+          "email": "johnsmith@reactioncommerce.com"
         }
       }
     }

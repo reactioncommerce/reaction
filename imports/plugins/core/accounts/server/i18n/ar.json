@@ -13,6 +13,10 @@
           "accountsSettingsLabel": "الحسابات",
           "accountsSettingsTitle": "الحسابات",
           "accountsSettingsDescription": "إعدادت الحساب"
+        },
+        "groupsInvite": {
+          "name": "جون سميث",
+          "email": "johnsmith@reactioncommerce.com"
         }
       }
     }

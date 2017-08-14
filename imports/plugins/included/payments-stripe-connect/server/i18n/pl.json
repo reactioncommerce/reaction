@@ -10,13 +10,16 @@
         },
         "dashboard": {
           "stripeConnectLabel": "Stripe Connect",
-          "stripeConnectDescription": "płatności stripeConnect"
+          "stripeConnectDescription": "Stripe Connect płatności"
         },
         "paymentSettings": {
           "stripeConnectLabel": "Stripe Connect",
           "stripeConnectSettingsLabel": "Stripe Connect",
-          "stripeConnectSettingsDescription": "Nie masz Stripe Connect API identyfikator klienta?",
+          "stripeConnectSettingsDescription": "Nie masz identyfikatora klienta API programu Stripe Connect?",
           "stripeConnectSettingsGetItHere": "Pobierz go tutaj"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Czy przekieruje auto w ciągu kilku sekund lub kliknij tutaj."
         }
       }
     }

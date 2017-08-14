@@ -1,0 +1,25 @@
+[{
+  "i18n": "cs",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Datový konektor pro nakupování"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "Import produktů",
+          "importing": "Importovat ... To může chvíli trvat.",
+          "editApiKey": "Editace API",
+          "editPassword": "Upravit heslo API",
+          "editSharedSecret": "Upravit sdílené tajné rozhraní API",
+          "editShopifyDomain": "Upravit doménu",
+          "importSuccess": "Produkty byly úspěšně importovány.",
+          "importFailed": "Při importu produktů došlo k chybě."
+        }
+      }
+    }
+  }
+}]

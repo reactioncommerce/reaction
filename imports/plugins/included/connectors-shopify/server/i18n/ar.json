@@ -1,0 +1,25 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "شوبيفي الاتصال",
+          "shopifyConnectTitle": "شوبيفي الاتصال",
+          "shopifyConnectDescription": "بيانات موصل ل شوبيفي"
+        },
+        "shopifyConnectSettings": {
+          "importProducts": "استيراد المنتجات",
+          "importing": "استيراد ... قد يستغرق هذا بعض الوقت.",
+          "editApiKey": "تحرير مفتاح API",
+          "editPassword": "تحرير كلمة مرور واجهة برمجة التطبيقات",
+          "editSharedSecret": "تحرير سر مشترك لواجهة برمجة التطبيقات",
+          "editShopifyDomain": "تحرير شوبيفي النطاق",
+          "importSuccess": "تم استيراد المنتجات بنجاح.",
+          "importFailed": "حدث خطأ أثناء استيراد المنتجات."
+        }
+      }
+    }
+  }
+}]
