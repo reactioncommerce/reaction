@@ -36,7 +36,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
           return <CompletedShopOrders
             shopName={shop[shopKey].name}
             items={shop[shopKey].items}
-            key={shop}
+            key={shopKey}
             shippingMethod={orderSummary.shippingMethod}
             handleDisplayMedia={handleDisplayMedia}
           />;
