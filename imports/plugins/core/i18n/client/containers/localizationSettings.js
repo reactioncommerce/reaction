@@ -142,7 +142,7 @@ function composer(props, onData) {
   });
 }
 
-registerComponent("LocalizationSettings", LocalizationSettings, [
+registerComponent("i18nSettings", LocalizationSettings, [
   composeWithTracker(composer),
   wrapComponent
 ]);
