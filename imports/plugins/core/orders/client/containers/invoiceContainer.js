@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Meteor } from "meteor/meteor";
 import accounting from "accounting-js";
 import _ from "lodash";
+import { Meteor } from "meteor/meteor";
 import { i18next, Logger, Reaction } from "/client/api";
 import { Media, Packages } from "/lib/collections";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";

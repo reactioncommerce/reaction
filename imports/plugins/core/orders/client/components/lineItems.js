@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { isEmpty } from "lodash";
 import classnames from "classnames";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
-import { isEmpty } from "lodash";
 import { Reaction } from "/client/api";
 import { formatPriceString } from "/client/api";
 import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox, Translation } from  "@reactioncommerce/reaction-ui";
@@ -159,13 +159,13 @@ class LineItems extends Component {
         <div className="invoice-refund-edited">
           <div className="refund-header">
             <div>
-              <Translation defaultValue="For Refund" i18nKey=""/>
+              <Translation defaultValue="For Refund" i18nKey="admin.invoice.refundLabel"/>
             </div>
             <div>
-              <Translation defaultValue="Items" i18nKey=""/>
+              <Translation defaultValue="Items" i18nKey="admin.invoice.refundItems"/>
             </div>
             <div>
-              <Translation defaultValue="Total" i18nKey=""/>
+              <Translation defaultValue="Total" i18nKey="admin.invoice.refundItemAmount"/>
             </div>
           </div>
           <div className="refund-body">
@@ -186,7 +186,7 @@ class LineItems extends Component {
             )}
             <div className="refund-item return">
               <div>
-                <b><Translation defaultValue="RETURN TOTAL" i18nKey=""/></b>
+                <b><Translation defaultValue="RETURN TOTAL" i18nKey="admin.invoice.refundTotal"/></b>
               </div>
               <div>
                 <span>
