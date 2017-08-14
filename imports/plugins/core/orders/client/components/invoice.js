@@ -164,7 +164,7 @@ class Invoice extends Component {
             title="Invoice"
           />
           <CardBody expandable={false}>
-            <LineItems {...this.props}/>
+            <LineItems {...this.props} />
 
             <div className="invoice-container">
               {this.renderInvoice()}

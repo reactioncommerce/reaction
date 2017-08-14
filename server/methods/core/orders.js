@@ -70,12 +70,8 @@ export function orderQuantityAdjust(orderId, refundedItem) {
       const newQuantity = item.quantity - refundedItem.refundedQuantity;
 
       Orders.update({
-        "_id": orderId,
-        "items": { $elemMatch:
-          {
-            "_id": itemId
-          }
-        }
+        _id: orderId,
+        items: { $elemMatch: { _id: itemId } }
       }, { $set:
         { "items.$.quantity": newQuantity }
       }

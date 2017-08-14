@@ -212,37 +212,31 @@ class InvoiceContainer extends Component {
     return false;
   }
 
-  handleReturnItems = (event) => {
+  handleReturnItems = () => {
     const paymentMethod = orderCreditMethod(this.state.order).paymentMethod;
     const editedItems = this.state.editedItems;
-    const uniqueItems = this.props.uniqueItems;
-    const originalQuanity = uniqueItems.reduce((acc, item) => acc + item.quantity, 0);
 
-    if (this.getRefundedItemsInfo().quantity === originalQuanity) {
-      this.handleCancelPayment(event);
-    } else {
-      Alerts.alert({
-        title: "Return selected Items",
-        showCancelButton: true,
-        confirmButtonText: i18next.t("order.applyRefund")
-      }, (isConfirm) => {
-        if (isConfirm) {
+    Alerts.alert({
+      title: "Return selected Items",
+      showCancelButton: true,
+      confirmButtonText: i18next.t("order.applyRefund")
+    }, (isConfirm) => {
+      if (isConfirm) {
+        this.setState({
+          isRefunding: true
+        });
+
+        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, editedItems, this.getSelectedItemsInfo(), (error) => {
+          if (error) {
+            Alerts.alert(error.reason);
+          }
+          Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
           this.setState({
-            isRefunding: true
+            isRefunding: false
           });
-
-          Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, editedItems, this.getSelectedItemsInfo(), (error) => {
-            if (error) {
-              Alerts.alert(error.reason);
-            }
-            Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
-            this.setState({
-              isRefunding: false
-            });
-          });
-        }
-      });
-    }
+        });
+      }
+    });
   }
 
   getRefundedItemsInfo = () => {
