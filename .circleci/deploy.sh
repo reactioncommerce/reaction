@@ -31,7 +31,7 @@ if [[ "$CIRCLE_BRANCH" == "development" ]]; then
   docker tag $DOCKER_NAMESPACE:latest $DOCKER_NAMESPACE_DEV:latest
   docker tag $DOCKER_NAMESPACE_DEV:latest $DOCKER_NAMESPACE_DEV:$CIRCLE_BUILD_NUM
 
-  docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  docker login -u $DOCKER_USER -p $DOCKER_PASS
 
   docker push $DOCKER_NAMESPACE_DEV:$CIRCLE_BUILD_NUM
   docker push $DOCKER_NAMESPACE_DEV:latest
