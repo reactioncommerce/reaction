@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import LanguageContainer from "/client/modules/i18n/templates/header/containers/i18nContainer";
-import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";
 
 // TODO: Delete this, and do it the react way - Mike M.
 async function openSearchModalLegacy(props) {
@@ -47,7 +45,7 @@ class NavBar extends Component {
   renderLanguage() {
     return (
       <div className="languages hidden-xs">
-        <LanguageContainer />
+        <Components.LanguageDropdown />
       </div>
     );
   }
@@ -55,7 +53,7 @@ class NavBar extends Component {
   renderCurrency() {
     return (
       <div className="currencies hidden-xs">
-        <CurrencyContainer />
+        <Components.CurrencyDropdown />
       </div>
     );
   }
