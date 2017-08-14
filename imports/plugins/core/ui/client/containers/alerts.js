@@ -1,4 +1,4 @@
-import { compose, withProps, pure } from "recompose";
+import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Alerts } from "../components";
 import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
@@ -28,12 +28,10 @@ function composer(props, onData) {
 
 registerComponent("Alerts", Alerts, [
   composeWithTracker(composer),
-  withProps(handlers),
-  pure
+  withProps(handlers)
 ]);
 
 export default compose(
   composeWithTracker(composer),
-  withProps(handlers),
-  pure
+  withProps(handlers)
 )(Alerts);
