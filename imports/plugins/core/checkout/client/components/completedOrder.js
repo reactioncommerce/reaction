@@ -8,6 +8,15 @@ import AddEmail from "./addEmail";
 
 
 const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, handleDisplayMedia }) => {
+  if (!order) {
+    return (
+      <Components.NotFound
+        i18nKeyTitle="order.notFound"
+        icon="fa fa-barcode"
+        title="Order Not Found"
+      />
+    );
+  }
   const { shippingAddress } = orderSummary;
   return (
     <div className="container order-completed">

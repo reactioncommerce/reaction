@@ -41,29 +41,36 @@ function composer(props, onData) {
       userId: Meteor.userId(),
       cartId: orderId
     });
-    const imageSub = Meteor.subscribe("CartImages", order.items);
 
-    const orderSummary = {
-      quantityTotal: order.orderCount(),
-      subtotal: order.orderSubTotal(),
-      shipping: order.orderShipping(),
-      tax: order.orderTaxes(),
-      discounts: order.orderDiscounts(),
-      total: order.orderTotal(),
-      shippingMethod: order.shipping[0].shipmentMethod.carrier,
-      shippingAddress: order.shipping[0].address
-    };
+    if (order) {
+      const imageSub = Meteor.subscribe("CartImages", order.items);
 
-    if (imageSub.ready()) {
-      const productImages = Media.find().fetch();
+      const orderSummary = {
+        quantityTotal: order.orderCount(),
+        subtotal: order.orderSubTotal(),
+        shipping: order.orderShipping(),
+        tax: order.orderTaxes(),
+        discounts: order.orderDiscounts(),
+        total: order.orderTotal(),
+        shippingMethod: order.shipping[0].shipmentMethod.carrier,
+        shippingAddress: order.shipping[0].address
+      };
 
+      if (imageSub.ready()) {
+        const productImages = Media.find().fetch();
+
+        onData(null, {
+          shops: order.itemsByShop(),
+          order,
+          orderId,
+          orderSummary,
+          paymentMethods: order.paymentMethods(),
+          productImages
+        });
+      }
+    } else {
       onData(null, {
-        shops: order.itemsByShop(),
         order,
-        orderId,
-        orderSummary,
-        paymentMethods: order.paymentMethods(),
-        productImages
       });
     }
   }
