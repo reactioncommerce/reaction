@@ -43,6 +43,8 @@ class AddEmail extends React.Component {
             this.setState({
               hasEmail: true
             });
+          } else {
+            Alerts.toast(i18next.t("mail.alerts.addOrderEmailFailed"), "error");
           }
         });
       }
@@ -62,7 +64,7 @@ class AddEmail extends React.Component {
     return (
       <form onSubmit={this.handleSubmit} className="add-email-input">
         <Components.Translation defaultValue="Hello! Add an email and receive order updates" i18bnKey="{cartCompleted.registerGuest}" />
-        <div className="input-group">
+        <div>
           <Components.TextField
             name="email"
             type="email"
@@ -70,7 +72,12 @@ class AddEmail extends React.Component {
             value={this.state.email}
             onChange={this.handleFieldChange}
           />
-          <input type="submit" id="update-order" data-i18n="app.submit" />
+          <Components.Button
+            type="submit"
+            label="Add Email"
+            bezelStyle={"solid"}
+            onClick={this.handleSubmit}
+          />
         </div>
       </form>
     );
@@ -78,7 +85,6 @@ class AddEmail extends React.Component {
 }
 
 AddEmail.propTypes = {
-  handleEmailSubmit: PropTypes.func,
   order: PropTypes.object,
   orderEmail: PropTypes.string
 };
