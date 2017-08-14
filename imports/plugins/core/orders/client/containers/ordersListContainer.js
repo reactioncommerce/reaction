@@ -184,7 +184,7 @@ class OrdersListContainer extends Component {
     return orderText;
   }
 
-  displayAlert = (selectedOrders, falsePreviousStatuses, falseCurrentState, status, whichFalseState) => {
+  displayAlert = (selectedOrders, status, whichFalseState, falsePreviousStatuses, falseCurrentState, trueCurrentState) => {
     const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
     let orderText = "";
     let skippedOrdersText = "";
@@ -201,8 +201,6 @@ class OrdersListContainer extends Component {
       skippedOrdersText = "is";
     }
 
-    // if any of the selected order(s) have falsePreviousStatuses,
-    // display modal that asks if the user wants to proceed with the operation
     if (falsePreviousStatuses) {
       Alerts.alert({
         text: i18next.t("order.skippedBulkOrdersAlert", {
@@ -220,14 +218,12 @@ class OrdersListContainer extends Component {
           this.shippingStatusUpdateCall(selectedOrders, status);
         }
       });
-      // if neither status is false, alert that order(s) have already been moved to 'status' state
-    } else if (falseCurrentState === 0 && falsePreviousStatuses === 0) {
+    } else if (!falsePreviousStatuses && falseCurrentState) {
+      this.shippingStatusUpdateCall(selectedOrders, status);
+    } else if (!falsePreviousStatuses && !falseCurrentState && trueCurrentState) {
       Alerts.alert({
         text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
       });
-      // if only falseCurrentState is false, proceed to set it to true
-    } else if (falseCurrentState && falsePreviousStatuses === 0) {
-      this.shippingStatusUpdateCall(selectedOrders, status);
     }
   }
 
@@ -254,70 +250,78 @@ class OrdersListContainer extends Component {
   }
 
   packedShippingStatus = (selectedOrders, status) => {
-    let isPacked = false;
+    let isNotPicked = 0;
+    let isNotPacked = 0;
+    let isPacked = 0;
+    const whichFalseState = shippingStates.picked;
 
     selectedOrders.forEach((order) => {
-      if (!order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/packed")) {
-        if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
-          isPacked = false;
-        }
+      if (order.shipping[0].workflow.status === "new") {
+        isNotPicked++;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+        isNotPacked++;
       } else {
         if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
-          isPacked = true;
+          isPacked++;
         }
       }
     });
 
-    if (isPacked) {
-      Alerts.alert({
-        text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
-      });
-    } else this.shippingStatusUpdateCall(selectedOrders, status);
+    this.displayAlert(selectedOrders, status, whichFalseState, isNotPicked, isNotPacked, isPacked);
   }
 
   labeledShippingStatus = (selectedOrders, status) => {
-    let isLabeled = false;
+    let isNotPacked = 0;
+    let isNotLabeled = 0;
+    let isLabeled = 0;
+    let whichFalseState = "";
 
     selectedOrders.forEach((order) => {
-      if (!order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/labeled")) {
-        if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
-          isLabeled = false;
-        }
+      if (order.shipping[0].workflow.status === "new") {
+        isNotPacked++;
+        whichFalseState = shippingStates.picked;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+        isNotPacked++;
+        whichFalseState = shippingStates.packed;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
+        isNotLabeled++;
       } else {
         if (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled") {
-          isLabeled = true;
+          isLabeled++;
         }
       }
     });
 
-    if (isLabeled) {
-      Alerts.alert({
-        text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
-      });
-    } else this.shippingStatusUpdateCall(selectedOrders, status);
+    this.displayAlert(selectedOrders, status, whichFalseState, isNotPacked, isNotLabeled, isLabeled);
   }
 
 
   shippedShippingStatus = (selectedOrders, status) => {
-    let isShipped = false;
+    let isNotLabeled = 0;
+    let isNotShipped = 0;
+    let isShipped = 0;
+    let whichFalseState = "";
 
     selectedOrders.forEach((order) => {
-      if (!order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/shipped")) {
-        if (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled") {
-          isShipped = false;
-        }
+      if (order.shipping[0].workflow.status === "new") {
+        isNotLabeled++;
+        whichFalseState = shippingStates.picked;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+        isNotLabeled++;
+        whichFalseState = shippingStates.packed;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
+        isNotLabeled++;
+        whichFalseState = shippingStates.labeled;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled") {
+        isNotShipped++;
       } else {
         if (order.shipping[0].workflow.status === "coreOrderWorkflow/shipped") {
-          isShipped = true;
+          isShipped++;
         }
       }
     });
 
-    if (isShipped) {
-      Alerts.alert({
-        text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
-      });
-    } else this.shippingStatusUpdateCall(selectedOrders, status);
+    this.displayAlert(selectedOrders, status, whichFalseState, isNotLabeled, isNotShipped, isShipped);
   }
 
   /**
