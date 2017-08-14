@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Loading } from "@reactioncommerce/reaction-ui";
 import { Orders, Media } from "/lib/collections";
 import { i18next, Reaction } from "/client/api";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrdersList from "../components/orderList.js";
 import { PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, shippingStates } from "../../lib/constants";
 
