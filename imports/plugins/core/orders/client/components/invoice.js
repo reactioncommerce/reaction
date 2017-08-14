@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
-import { Translation, CardGroup, Card, CardBody, CardHeader } from "/imports/plugins/core/ui/client/components";
-import DiscountList from "/imports/plugins/core/discounts/client/components/list";
+import { Translation, CardGroup, Card, CardBody, CardHeader, DiscountList } from "@reactioncommerce/reaction-ui";
 import LineItems from "./lineItems";
 import InvoiceActions from "./invoiceActions";
 

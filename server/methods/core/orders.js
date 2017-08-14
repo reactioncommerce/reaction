@@ -926,7 +926,7 @@ export const methods = {
   },
 
   /**
-   * orders/refund/create
+   * orders/refunds/returnItems
    *
    * @summary Apply a refund to an already captured order
    * @param {String} orderId - order object

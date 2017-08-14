@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { formatPriceString } from "/client/api";
-import { Button, NumericInput, Translation, ButtonSelect } from "/imports/plugins/core/ui/client/components";
+import { Button, NumericInput, Translation, ButtonSelect } from "@reactioncommerce/reaction-ui";
 
 class InvoiceActions extends Component {
   static propTypes = {
@@ -46,7 +46,7 @@ class InvoiceActions extends Component {
     return (
       <div className="invoice-summary">
         <span className="invoice-label adjusted-total">
-          <strong><Translation defaultValue="Adjusted Total" data-i18n="admin.invoice.adjustedTotal"/></strong>
+          <strong><Translation defaultValue="Adjusted Total" i18nKey="admin.invoice.adjustedTotal"/></strong>
         </span>
 
         <div className="invoice-details">
