@@ -93,7 +93,7 @@ class NotificationDropdown extends Component {
           })}
         </ul>
         <div className="dropdown-footer text-center">
-          <Link to={`${this.prefix}/notifications`} data-i18n="notifications.body.viewAll">View All</Link>
+          <Link to="/notifications" data-i18n="notifications.body.viewAll">View All</Link>
         </div>
       </div>
     );
