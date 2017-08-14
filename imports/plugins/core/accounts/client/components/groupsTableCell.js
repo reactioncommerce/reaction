@@ -65,7 +65,7 @@ const GroupsTableCell = ({ account, columnName, group, adminGroups, handleRemove
     );
 
     // Permission check. Remove owner option, if user is not current owner.
-    // Also remove groups user does not have roles to manage
+    // Also remove groups user does not have roles to manage. This is also checked on the server
     const dropOptions = groups
       .filter(grp => (grp.slug === "owner" && !hasOwnerAccess) ? false : true)
       .filter(grp => props.canInviteToGroup({ group: grp, user: Meteor.user() })) || [];

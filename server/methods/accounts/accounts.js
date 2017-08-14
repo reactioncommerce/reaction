@@ -556,7 +556,7 @@ export function inviteShopMember(options) {
   const group = Groups.findOne({ _id: groupId }) || {};
 
   if (!Reaction.canInviteToGroup({ group, user: Meteor.user() })) {
-    throw new Meteor.Error(403, "Access denied");
+    throw new Meteor.Error(403, "cannot invite to group");
   }
 
   if (group.slug === "owner") {

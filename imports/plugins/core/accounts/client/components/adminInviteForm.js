@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
+import { getInvitableGroups } from "../helpers/accountsHelper";
 
 class AdminInviteForm extends Component {
   static propTypes = {
@@ -14,9 +16,7 @@ class AdminInviteForm extends Component {
   constructor(props) {
     super(props);
     const { groups } = props;
-    const groupsInvitable = groups
-      .filter((grp) => grp.slug !== "owner")
-      .filter(grp => props.canInviteToGroup({ group: grp, user: Meteor.user() })) || [{}];
+    const groupsInvitable = getInvitableGroups(groups, this.props.canInviteToGroup);
 
     this.state = {
       alertId: "admin-invite-form",
@@ -33,9 +33,7 @@ class AdminInviteForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { groups } = nextProps;
-    const groupsInvitable = groups
-      .filter((grp) => grp.slug !== "owner")
-      .filter(grp => nextProps.canInviteToGroup({ group: grp, user: Meteor.user() })) || [{}];
+    const groupsInvitable = getInvitableGroups(groups, this.props.canInviteToGroup);
 
     this.setState({ groups: groupsInvitable, group: groupsInvitable[0] });
   }
@@ -56,8 +54,9 @@ class AdminInviteForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { name, email, group } = this.state;
+    const { name, email, group, alertId } = this.state;
 
+    // if no group is select, show alert that group is required to send invitation
     if (!group._id) {
       return this.setState({
         alertArray: [{
@@ -68,9 +67,9 @@ class AdminInviteForm extends Component {
     }
 
     const options = { email, name, shopId: Reaction.getShopId(), groupId: group._id  };
+    const alertOptions = { placement: alertId, id: alertId, autoHide: 4000 };
 
     return Meteor.call("accounts/inviteShopMember", options, (error, result) => {
-      let newAlert;
       let message = "";
       if (error) {
         let messageKey;
@@ -80,26 +79,24 @@ class AdminInviteForm extends Component {
           messageKey = "accountsUI.error.userWithEmailAlreadyExists";
         } else if (error.reason === "cannot directly invite owner") {
           messageKey = "admin.groupsInvite.inviteOwnerError";
+        } else if (error.reason === "cannot invite to group") {
+          messageKey = "admin.groupsInvite.cannotInvite";
         } else if (error.reason === "") {
           message = error.reason;
         } else {
           messageKey = "accountsUI.error.errorSendingEmail";
         }
-        newAlert = {
-          message,
-          mode: "danger",
-          options: { autoHide: 4000, i18nKey: messageKey }
-        };
+        ReactionAlerts.add(message, "danger", Object.assign({}, alertOptions, { i18nKey: messageKey }));
       }
 
       if (result) {
-        newAlert = {
-          mode: "success",
-          options: { autoHide: 4000, i18nKey: "accountsUI.info.invitationSent" }
-        };
+        this.setState({ name: "", email: "" });
+        ReactionAlerts.add(
+          null,
+          "success",
+          Object.assign({}, alertOptions, { i18nKey: "accountsUI.info.invitationSent" })
+        );
       }
-
-      return this.setState({ name: "", email: "", alertArray: [...this.state.alertArray, newAlert] });
     });
   }
 

@@ -90,14 +90,9 @@ const handlers = {
     if (Reaction.hasPermission("owner", Meteor.userId(), group.shopId)) {
       return true;
     }
-    // check that userPermissions array contains all groupPermissions
-    // _.difference(subset, superset).length === 0
-    // https://github.com/lodash/lodash/issues/1743#issuecomment-170598139
-    if (_.difference(groupPermissions, userPermissions).length === 0) {
-      return true;
-    }
 
-    return false;
+    // checks that userPermissions includes all elements from groupPermissions
+    return _.difference(groupPermissions, userPermissions).length === 0;
   }
 };
 
@@ -120,12 +115,12 @@ const composer = (props, onData) => {
     const adminUsers = Meteor.users.find(adminQuery, { fields: { _id: 1 } }).fetch();
     const ids = adminUsers.map((user) => user._id);
     const accounts = Accounts.find({ _id: { $in: ids } }).fetch();
-    const adminGroups = [];
-    groups.forEach(group => {
+    const adminGroups = groups.reduce((admGrps, group) => {
       if (group.slug !== "customer" && group.slug !== "guest") {
-        adminGroups.push(group);
+        admGrps.push(group);
       }
-    });
+      return admGrps;
+    }, []);
 
     onData(null, { accounts, groups, adminGroups });
   }

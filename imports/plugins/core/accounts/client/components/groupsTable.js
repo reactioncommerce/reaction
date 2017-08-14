@@ -7,13 +7,7 @@ import { SortableTable } from "/imports/plugins/core/ui/client/components";
 
 const GroupsTable = (props) => {
   const { group } = props;
-  const fields = {
-    name: { width: 30 },
-    email: { width: 30 },
-    createdAt: { width: 10 },
-    dropdown: { width: 20 },
-    button: { width: 10 }
-  };
+  const fields = ["name", "email", "createdAt", "dropdown", "button"];
 
   const tableClass = (length) => {
     return classnames({
@@ -22,14 +16,13 @@ const GroupsTable = (props) => {
     });
   };
 
-  const columnMetadata = Object.keys(fields).map((columnName) => ({
+  const columnMetadata = fields.map((columnName) => ({
     Header: <Components.GroupHeader columnName={columnName} numberOfRows={group.users && group.users.length} />,
     accessor: "",
     // TODO: Review this line - copied disable line from shippo carriers.js
     Cell: (data) => { // eslint-disable-line
       return <Components.GroupsTableCell account={data.value} columnName={columnName} {...props} />;
-    },
-    width: `${fields[columnName].width}%`
+    }
   }));
 
   return (
@@ -39,7 +32,7 @@ const GroupsTable = (props) => {
         <SortableTable
           data={group.users}
           columnMetadata={columnMetadata}
-          filteredFields={Object.keys(fields)}
+          filteredFields={fields}
           filterType="none"
           showFilter={true}
           isSortable={false}

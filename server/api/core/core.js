@@ -73,12 +73,22 @@ export default {
     }
 
     const shops = Shops.find(query).fetch();
-    let ownerRoles = Roles.getAllRoles().fetch().map(role => role.name);
 
-    // join all other roles with package roles for owner. Owner has all roles
-    ownerRoles = ownerRoles.concat(this.defaultCustomerRoles, this.defaultVisitorRoles);
+    /* Get all defined roles from the DB minus "anonymous" because that gets removed from a user on register
+     * if it's not removed, it causes mismatch between roles in user (i.e Meteor.user().roles[shopId]) vs that in
+     * the user's group (Group.find(usergroup).permissions)
+     */
+    let ownerRoles = Roles
+      .getAllRoles().fetch()
+      .map(role => role.name)
+      .filter(role => role !== "anonymous"); // see comment above
+
+    // Join all other roles with package roles for owner. Owner should have all roles
+    // this is needed because of default roles defined in the app that are not in Roles.getAllRoles
+    ownerRoles = ownerRoles.concat(this.defaultCustomerRoles);
     ownerRoles = _.uniq(ownerRoles);
 
+    // we're making a Shop Manager default group that have all roles minue the owner role
     const shopManagerRoles = ownerRoles.filter(role => role !== "owner");
     const roles = {
       "shop manager": shopManagerRoles,
@@ -122,14 +132,8 @@ export default {
     const userPermissions = user.roles[group.shopId];
     const groupPermissions = group.permissions;
 
-    // check that userPermissions array contains all groupPermissions
-    // _.difference(subset, superset).length === 0
-    // https://github.com/lodash/lodash/issues/1743#issuecomment-170598139
-    if (_.difference(groupPermissions, userPermissions).length === 0) {
-      return true;
-    }
-
-    return false;
+    // checks that userPermissions includes all elements from groupPermissions
+    return _.difference(groupPermissions, userPermissions).length === 0;
   },
   /**
    * registerTemplate
@@ -651,7 +655,7 @@ export default {
     // Set Default Roles
     //
     const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
-    let ownerRoles = defaultAdminRoles.concat(this.defaultCustomerRoles, this.defaultVisitorRoles);
+    let ownerRoles = defaultAdminRoles.concat(this.defaultCustomerRoles);
     ownerRoles = _.uniq(ownerRoles);
 
     // we don't use accounts/addUserPermissions here because we may not yet have permissions

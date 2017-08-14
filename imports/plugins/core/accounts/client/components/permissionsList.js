@@ -82,7 +82,7 @@ class PermissionsList extends Component {
           {permission.permissions.map((childPermission, index) => {
             return (
               <Components.ListItem
-                key={`${childPermission.name}-${index + 1}`}
+                key={`${childPermission.name}-${index}`}
                 actionType="switch"
                 label={childPermission.label}
                 switchOn={this.checked(childPermission.permission)}
