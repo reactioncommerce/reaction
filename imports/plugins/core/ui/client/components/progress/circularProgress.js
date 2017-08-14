@@ -14,6 +14,6 @@ CircularProgress.defaultProps = {
   indeterminate: true
 };
 
-registerComponent("CircularProgress", CircularProgress;
+registerComponent("CircularProgress", CircularProgress);
 
 export default CircularProgress;
