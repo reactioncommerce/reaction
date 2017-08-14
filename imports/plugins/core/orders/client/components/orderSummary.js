@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { Badge, ClickToCopy } from "/imports/plugins/core/ui/client/components";
-import { riskBadgeStatus } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus } from "../helpers";
 
 class OrderSummary extends Component {
   static propTypes = {
@@ -44,7 +44,8 @@ class OrderSummary extends Component {
 
   render() {
     const { dateFormat, tracking, order, profileShippingAddress, printableLabels } = this.props;
-    const orderRisk = "high risk"; // testing
+    const orderRisk = getOrderRiskStatus(order);
+
     return (
       <div>
         <div className="order-summary-form-group bg-info" style={{ lineHeight: 3, marginTop: -15, marginRight: -15, marginLeft: -15 }}>
@@ -63,13 +64,15 @@ class OrderSummary extends Component {
                 label={order.workflow.status}
                 status={this.badgeStatus()}
               />
-              <Badge
-                badgeSize="large"
-                className="risk-info"
-                i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
-                label={orderRisk}
-                status={riskBadgeStatus(orderRisk)}
-              />
+              {orderRisk &&
+                <Badge
+                  badgeSize="large"
+                  className="risk-info"
+                  i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
+                  label={orderRisk}
+                  status={getOrderRiskBadge(orderRisk)}
+                />
+              }
             </div>
 
             <div className="order-summary-form-group">

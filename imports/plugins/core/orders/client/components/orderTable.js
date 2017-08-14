@@ -10,7 +10,7 @@ import moment from "moment";
 import { formatPriceString } from "/client/api";
 import { Badge, ClickToCopy, Icon, Translation, Button } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
-import { riskBadgeStatus } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus } from "../helpers";
 
 const classNames = {
   colClassNames: {
@@ -139,8 +139,9 @@ class OrderTable extends Component {
   }
 
   renderShipmentInfo(order) {
-    const orderRisk = "high risk"; // testing. to be replaced
     const emailAddress = order.email || <Translation defaultValue={"Email not availabe"} i18nKey={"admin.orderWorkflow.ordersList.emailNotFound"} />;
+    const orderRisk = getOrderRiskStatus(order);
+
     return (
       <div className="shipment-info">
         <div className="customer-info">
@@ -172,7 +173,7 @@ class OrderTable extends Component {
             badgeSize="large"
             i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
             label={orderRisk}
-            status={riskBadgeStatus(orderRisk)}
+            status={getOrderRiskBadge(orderRisk)}
           />
         </div>
       </div>

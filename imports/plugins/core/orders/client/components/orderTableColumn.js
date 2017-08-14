@@ -5,7 +5,7 @@ import moment from "moment";
 import { formatPriceString } from "/client/api";
 import Avatar from "react-avatar";
 import { Badge, ClickToCopy, Icon, RolloverCheckbox } from "@reactioncommerce/reaction-ui";
-import { riskBadgeStatus } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus } from "../helpers";
 
 class OrderTableColumn extends Component {
   static propTypes = {
@@ -86,7 +86,7 @@ class OrderTableColumn extends Component {
       );
     }
     if (columnAccessor === "workflow.status") {
-      const orderRisk = "high risk";
+      const orderRisk = getOrderRiskStatus(row.original);
 
       return (
         <div className="status-info">
@@ -102,7 +102,7 @@ class OrderTableColumn extends Component {
               className="risk-info"
               i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
               label={orderRisk}
-              status={riskBadgeStatus(orderRisk)}
+              status={getOrderRiskBadge(orderRisk)}
             />
           }
         </div>

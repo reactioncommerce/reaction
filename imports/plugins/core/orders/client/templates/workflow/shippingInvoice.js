@@ -14,7 +14,8 @@ import InvoiceContainer from "../../containers/invoiceContainer.js";
 import InvoiceActionsContainer from "../../containers/invoiceActionsContainer.js";
 import LineItemsContainer from "../../containers/lineItemsContainer.js";
 import TotalActionsContainer from "../../containers/totalActionsContainer.js";
-
+import { getOrderRiskStatus } from "../../helpers";
+import swal from "sweetalert2";
 
 // helper to return the order payment object
 // the first credit paymentMethod on the order
@@ -316,18 +317,40 @@ Template.coreOrderShippingInvoice.events({
 
   "click [data-event-action=capturePayment]": (event, instance) => {
     event.preventDefault();
-
-    instance.state.set("isCapturing", true);
-
     const order = instance.state.get("order");
-    Meteor.call("orders/capturePayments", order._id);
 
-    if (order.workflow.status === "new") {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+    // if there's a payment risk on order; alert admin before capture
+    if (getOrderRiskStatus(order)) {
+      alertConfirm()
+        .then(() => capturePay())
+        .catch(() => false);
+    } else {
+      capturePay();
+    }
 
-      Reaction.Router.setQueryParams({
-        filter: "processing",
-        _id: order._id
+    function capturePay() {
+      instance.state.set("isCapturing", true);
+
+      Meteor.call("orders/capturePayments", order._id);
+
+      if (order.workflow.status === "new") {
+        Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+
+        Reaction.Router.setQueryParams({
+          filter: "processing",
+          _id: order._id
+        });
+      }
+    }
+
+    function alertConfirm() {
+      return swal({
+        title: i18next.t("admin.orderRisk.riskCapture"),
+        text: i18next.t("admin.settings.riskCaptureWarn"),
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonText: i18next.t("admin.settings.cancel"),
+        confirmButtonText: i18next.t("admin.settings.continue")
       });
     }
   },
