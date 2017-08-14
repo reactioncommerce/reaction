@@ -761,8 +761,13 @@ Meteor.methods({
   "products/archiveProduct": function (productId) {
     check(productId, Match.OneOf(Array, String));
 
+    let extractedProductId;
+    if (Array.isArray(productId)) {
+      extractedProductId = productId[0];
+    }
+
     // Check first if Product exists and then if user has the right to delete it
-    const product = Products.findOne(productId);
+    const product = Products.findOne(extractedProductId || productId);
     if (!product) {
       throw new Meteor.Error("Product not found");
     } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
