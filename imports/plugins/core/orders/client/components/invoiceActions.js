@@ -96,8 +96,10 @@ class InvoiceActions extends Component {
             });
           }}
         >
-          <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
-          {this.props.isRefunding && <i className="fa fa-spinner fa-spin" />}
+          {this.props.isRefunding ?
+            <span id="btn-refund-payment" data-i18n="order.applyRefund">Refunding <i className="fa fa-spinner fa-spin" /></span> :
+            <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
+          }
         </Button>
 
         {this.props.showAfterPaymentCaptured &&

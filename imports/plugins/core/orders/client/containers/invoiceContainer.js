@@ -213,7 +213,7 @@ class InvoiceContainer extends Component {
     return false;
   }
 
-  applyRefund = (event) => {
+  handleReturnItems = (event) => {
     const paymentMethod = orderCreditMethod(this.state.order).paymentMethod;
     const editedItems = this.state.editedItems;
     const uniqueItems = this.props.uniqueItems;
@@ -231,13 +231,12 @@ class InvoiceContainer extends Component {
           this.setState({
             isRefunding: true
           });
-          Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, editedItems, (error, result) => {
+
+          Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, editedItems, this.getSelectedItemsInfo(), (error) => {
             if (error) {
               Alerts.alert(error.reason);
             }
-            if (result) {
-              Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
-            }
+            Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
             this.setState({
               isRefunding: false
             });
@@ -280,7 +279,7 @@ class InvoiceContainer extends Component {
     return { quantity, total };
   }
 
-  handleCancelPayment = (event) =>{
+  handleCancelPayment = (event) => {
     event.preventDefault();
     const order = this.state.order;
     const invoiceTotal = order.billing[0].invoice.total;
@@ -318,19 +317,11 @@ class InvoiceContainer extends Component {
       let returnToStock;
       if (isConfirm) {
         returnToStock = false;
-        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
-          if (err) {
-            // $(".alert").removeClass("hidden").text(err.message);
-          }
-        });
+        return Meteor.call("orders/cancelOrder", order, returnToStock);
       }
       if (cancel === "cancel") {
         returnToStock = true;
-        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
-          if (err) {
-            // $(".alert").removeClass("hidden").text(err.message);
-          }
-        });
+        return Meteor.call("orders/cancelOrder", order, returnToStock);
       }
     });
   }
@@ -476,7 +467,7 @@ class InvoiceContainer extends Component {
           handleItemSelect={this.handleItemSelect}
           displayMedia={this.handleDisplayMedia}
           toggleUpdating={this.toggleUpdating}
-          applyRefund={this.applyRefund}
+          handleReturnItems={this.handleReturnItems}
           getRefundedItemsInfo={this.getRefundedItemsInfo}
           handleApprove={this.handleApprove}
           isAdjusted={this.isAdjusted}

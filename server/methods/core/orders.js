@@ -69,17 +69,16 @@ export function orderQuantityAdjust(orderId, refundedItem) {
       const itemId = item._id;
       const newQuantity = item.quantity - refundedItem.refundedQuantity;
 
-      Orders.update(
-        {
-          "_id": orderId,
-          "items": { $elemMatch:
-            {
-              "_id": itemId
-            }
+      Orders.update({
+        "_id": orderId,
+        "items": { $elemMatch:
+          {
+            "_id": itemId
           }
-        }, { $set:
-          { "items.$.quantity": newQuantity }
         }
+      }, { $set:
+        { "items.$.quantity": newQuantity }
+      }
       );
     }
   });
@@ -936,15 +935,15 @@ export const methods = {
    * @summary Apply a refund to an already captured order
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object
-   * @param {Array} returnItems - Information about items to return
+   * @param {Array} returnItems - items to return
+   * @param {Object} returnItemsInfo - info about return items
    * @return {null} no return value
    */
-  "orders/refunds/returnItems": function (orderId, paymentMethod, returnItems) {
+  "orders/refunds/returnItems": function (orderId, paymentMethod, returnItems, returnItemsInfo) {
     check(orderId, String);
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    // check(amount, Number);
-    // check(quantity, Number);
     check(returnItems, Array);
+    check(returnItemsInfo, Object);
 
     // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
     if (!Reaction.hasPermission("orders")) {
@@ -954,65 +953,40 @@ export const methods = {
     const processor = paymentMethod.processor.toLowerCase();
     const order = Orders.findOne(orderId);
     const transactionId = paymentMethod.transactionId;
+    const orderMode = paymentMethod.mode;
+    const amount = returnItemsInfo.total;
+    const quantity = returnItemsInfo.quantity;
+    const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
 
-    const packageId = paymentMethod.paymentPackageId;
-    const settingsKey = paymentMethod.paymentSettingsKey;
+    let query = {};
 
     // Check if payment is yet to be captured
-    if (paymentMethod.mode === "authorize") {
-      Meteor.call("orders/approvePayment", order, (err) => {
-        if (err) {
-          throw new Meteor.Error("Attempt to approve transaction failed on return", err);
-        }
-      });
 
-      Meteor.call("orders/capturePayments", orderId, (err) => {
-        if (err) {
-          throw new Meteor.Error("Attempt to capture transaction failed on return", err);
+    if (orderMode === "authorize") {
+      Meteor.call("orders/approvePayment", order, (error) => {
+        if (error) {
+          Logger.warn(error);
         }
+        Meteor.call("orders/capturePayments", orderId, (err) => {
+          if (err) {
+            Logger.warn(err);
+          }
+        });
       });
     }
 
-    // check if payment provider supports de-authorize
-    const checkSupportedMethods = Packages.findOne({
-      _id: packageId,
-      shopId: Reaction.getShopId()
-    }).settings[settingsKey].support;
+    const result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
 
-    const orderMode = paymentMethod.mode;
-    const amount = returnItems.reduce((acc, item) => acc + item.refundedTotal, 0);
-    const quantity = returnItems.reduce((acc, item) => acc + item.refundedQuantity, 0);
-    const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
-
-
-    let result;
-    let query = {};
-    if (_.includes(checkSupportedMethods, "De-authorize")) {
-      result = Meteor.call(`${processor}/payment/deAuthorize`, paymentMethod, amount);
-      query = {
-        $push: {
-          "billing.$.paymentMethod.transactions": result
-        }
-      };
-      // Send email to notify cuustomer of a refund
-      Meteor.call("orders/sendNotification", order);
-      if (result.saved === false) {
-        Logger.fatal("Attempt for de-authorize transaction failed", order._id, paymentMethod.transactionId, result.error);
-        throw new Meteor.Error("Attempt to de-authorize transaction failed", result.error);
+    query = {
+      $push: {
+        "billing.$.paymentMethod.transactions": result
       }
-    } else if (orderMode === "capture") {
-      result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
-      query = {
-        $push: {
-          "billing.$.paymentMethod.transactions": result
-        }
-      };
-      // Send email to notify cuustomer of a refund
-      Meteor.call("orders/sendNotification", order, "refunded");
-      if (result.saved === false) {
-        Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
-        throw new Meteor.Error("Attempt to refund transaction failed", result.error);
-      }
+    };
+    // Send email to notify customer of a refund
+    Meteor.call("orders/sendNotification", order, "refunded");
+    if (result.saved === false) {
+      Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
+      throw new Meteor.Error("Attempt to refund transaction failed", result.error);
     }
 
     let refundedStatus = "refunded";

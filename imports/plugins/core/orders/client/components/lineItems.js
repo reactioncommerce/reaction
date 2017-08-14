@@ -10,12 +10,12 @@ import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox, Translati
 
 class LineItems extends Component {
   static propTypes = {
-    applyRefund: PropTypes.func,
     displayMedia: PropTypes.func,
     editedItems: PropTypes.array,
     getSelectedItemsInfo: PropTypes.func,
     handleInputChange: PropTypes.func,
     handleItemSelect: PropTypes.func,
+    handleReturnItems: PropTypes.func,
     handleSelectAllItems: PropTypes.func,
     isRefunding: PropTypes.bool,
     selectAllItems: PropTypes.bool,
@@ -156,7 +156,6 @@ class LineItems extends Component {
     const { editedItems } = this.props;
     return (
       <div>
-
         <div className="invoice-refund-edited">
           <div className="refund-header">
             <div>
@@ -278,13 +277,10 @@ class LineItems extends Component {
               className="pull-right"
               bezelStyle="solid"
               status="primary"
-              // label="Refund Items"
               disabled={this.props.isRefunding || this.props.selectedItems.length === 0}
-              onClick={(event) => {
-                this.props.applyRefund(event);
-              }}
+              onClick={this.props.handleReturnItems}
             >
-              {this.props.isRefunding ? <span>Refunding <i className="fa fa-spinner" /></span> :
+              {this.props.isRefunding ? <span>Refunding <i className="fa fa-spinner fa-spin" /></span> :
                 <span>Refund Items</span>
               }
             </Button>
