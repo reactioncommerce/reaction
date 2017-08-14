@@ -33,13 +33,15 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
         <h4><strong><Components.Translation defaultValue="Your Items" i18nKey={"cartCompleted.yourItems"} /></strong></h4>
         {shops.map(function (shop) {
           const shopKey = Object.keys(shop);
-          return <CompletedShopOrders
-            shopName={shop[shopKey].name}
-            items={shop[shopKey].items}
-            key={shopKey}
-            shippingMethod={orderSummary.shippingMethod}
-            handleDisplayMedia={handleDisplayMedia}
-          />;
+          return (
+            <CompletedShopOrders
+              shopName={shop[shopKey].name}
+              items={shop[shopKey].items}
+              key={shopKey}
+              shippingMethod={orderSummary.shippingMethod}
+              handleDisplayMedia={handleDisplayMedia}
+            />
+          );
         })}
       </div>
 

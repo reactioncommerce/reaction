@@ -70,7 +70,7 @@ function composer(props, onData) {
       }
     } else {
       onData(null, {
-        order,
+        order
       });
     }
   }
