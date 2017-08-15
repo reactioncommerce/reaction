@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Divider, DropDownMenu, MenuItem } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class LanguageDropDown extends Component {
   static propTypes = {
@@ -15,10 +15,10 @@ class LanguageDropDown extends Component {
 
   buttonElement() {
     return (
-      <Button containerStyle={{ color: "#000" }}>
+      <Components.Button containerStyle={{ color: "#000" }}>
         <i className="fa fa-language fa-lg"/>&nbsp;
         <i className="fa fa-caret-down"/>
-      </Button>
+      </Components.Button>
     );
   }
   onChange = (event, value) => {
@@ -34,27 +34,27 @@ class LanguageDropDown extends Component {
       <div>
         {this.props.languages.length > 1 &&
           <div className="dropdown-toggle">
-            <DropDownMenu
+            <Components.DropDownMenu
               buttonElement={this.buttonElement()}
               value={this.props.currentLanguage || this.state.value}
               onChange={this.onChange}
               menuStyle={{ maxHeight: 500, overflow: "auto" }}
             >
-              <MenuItem
+              <Components.MenuItem
                 label="Select Currency"
                 i18nKeyLabel="languages.select"
                 disabled={true}
               />
-              <Divider />
+              <Components.Divider />
               {this.props.languages.map((language) => (
-                <MenuItem
+                <Components.MenuItem
                   key={language.i18n}
                   label={language.label}
                   i18nKeyLabel={language.translation}
                   value={language.i18n}
                 />
               ))}
-            </DropDownMenu>
+            </Components.DropDownMenu>
           </div>
         }
       </div>

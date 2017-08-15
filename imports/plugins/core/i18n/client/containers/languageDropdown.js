@@ -1,25 +1,15 @@
-import React, { Component } from "react";
+import { compose, withProps } from "recompose";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import { Shops } from "/lib/collections";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import Language from "../components/i18n";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import LanguageDropdown from "../components/languageDropdown";
 
-class LanguageDropdownContainer extends Component {
-  handleChange = (value) => {
+const handlers = {
+  handleChange(value) {
     Meteor.users.update(Meteor.userId(), { $set: { "profile.lang": value } });
   }
-  render() {
-    return (
-      <div>
-        <Language
-          {...this.props}
-          handleChange={this.handleChange}
-        />
-      </div>
-    );
-  }
-}
+};
 
 const composer = (props, onData) => {
   const languages = [];
@@ -61,10 +51,15 @@ const composer = (props, onData) => {
       }
     }
   }
-  onData(null, {
-    languages: languages,
-    currentLanguage: currentLanguage
-  });
+  onData(null, { languages, currentLanguage });
 };
 
-export default composeWithTracker(composer)(LanguageDropdownContainer);
+registerComponent("LanguageDropdown", LanguageDropdown, [
+  composeWithTracker(composer),
+  withProps(handlers)
+]);
+
+export default compose(
+  composeWithTracker(composer),
+  withProps(handlers)
+)(LanguageDropdown);
