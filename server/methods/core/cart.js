@@ -1096,10 +1096,10 @@ Meteor.methods({
     const cartSubTotal = cart.cartSubTotal();
     const cartSubTotalByShop = cart.cartSubTotalByShop();
     const cartTaxes = cart.cartTaxes();
-    const cartTaxesByShop = cart.cartSubTotalByShop();
+    const cartTaxesByShop = cart.cartTaxesByShop();
     const cartDiscounts = cart.cartDiscounts();
     const cartTotal = cart.cartTotal();
-    const cartTotalByShop = cart.cartTotal();
+    const cartTotalByShop = cart.cartTotalByShop();
 
     // we won't actually close the order at this stage.
     // we'll just update the workflow and billing data where
