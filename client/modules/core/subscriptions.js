@@ -37,8 +37,14 @@ Subscriptions.PrimaryShop = Subscriptions.Manager.subscribe("PrimaryShop");
 // Additional shop subscriptions
 Subscriptions.MerchantShops = Subscriptions.Manager.subscribe("MerchantShops");
 
-// Init Packages sub so we have a "ready" state
+// This Packages subscription is used for the Active shop's packages
+// // Init sub here so we have a "ready" state
 Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages");
+
+// This packages subscription is used for the Primary Shop's packages
+// The Packages publication defaults to returning the primaryShopId's packages,
+// so this subscription shouldn't ever need to be changed
+// TODO: Consider how to handle routes for several shops which are all active at once
 Subscriptions.PrimaryShopPackages = Subscriptions.Manager.subscribe("Packages");
 
 Subscriptions.Tags = Subscriptions.Manager.subscribe("Tags");
@@ -84,12 +90,5 @@ Tracker.autorun(() => {
   // Reload Packages sub if shopId changes
   if (Reaction.getShopId()) {
     Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages", Reaction.getShopId());
-  }
-});
-
-Tracker.autorun(() => {
-  // Reload Packages sub if primaryShopId changes
-  if (Reaction.getPrimaryShopId()) {
-    Subscriptions.PrimaryShopPackages = Subscriptions.Manager.subscribe("Packages", Reaction.getPrimaryShopId());
   }
 });
