@@ -8,6 +8,7 @@
           "dashboardLabel": "Dashboard"
         },
         "dashboard": {
+          "coreTitle": "Dashboard",
           "packageGroupActionsLabel": "Acties",
           "packageGroupSettingsLabel": "Instellingen"
         },
