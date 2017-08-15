@@ -9,15 +9,13 @@ class OrdersList extends Component {
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
     isLoading: PropTypes.object,
-    labeled: PropTypes.bool,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
-    packed: PropTypes.bool,
-    picked: PropTypes.bool,
+    renderFlowList: PropTypes.bool,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,
-    shipped: PropTypes.bool
+    shipping: PropTypes.object
 
   }
 
@@ -73,12 +71,10 @@ class OrdersList extends Component {
               selectAllOrders={this.props.selectAllOrders}
               displayMedia={this.props.displayMedia}
               isOpen={this.state.openList}
-              picked={this.props.picked}
-              packed={this.props.packed}
-              labeled={this.props.labeled}
-              shipped={this.props.shipped}
+              shipping={this.props.shipping}
               setShippingStatus={this.props.setShippingStatus}
               isLoading={this.props.isLoading}
+              renderFlowList={this.props.renderFlowList}
             />
           </div>
         </div>

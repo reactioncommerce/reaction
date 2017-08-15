@@ -5,36 +5,29 @@ import { Translation, Checkbox, Button, Icon, List, ListItem } from "@reactionco
 class OrderBulkActionsBar extends Component {
     static propTypes = {
       isLoading: PropTypes.object,
-      labeled: PropTypes.bool,
       multipleSelect: PropTypes.bool,
       orders: PropTypes.array,
-      packed: PropTypes.bool,
-      picked: PropTypes.bool,
+      renderFlowList: PropTypes.bool,
       selectAllOrders: PropTypes.func,
       selectedItems: PropTypes.array,
       setShippingStatus: PropTypes.func,
-      shipped: PropTypes.bool
+      shipping: PropTypes.object
     };
 
     constructor(props) {
       super(props);
       this.state = {
-        renderFlowList: false,
-        picked: props.picked,
-        packed: props.packed,
-        labeled: props.labeled,
-        shipped: props.shipped,
+        renderFlowList: props.renderFlowList,
+        shipping: props.shipping,
         isLoading: props.isLoading
       };
     }
 
     componentWillReceiveProps = (nextProps) => {
       this.setState({
-        picked: nextProps.picked,
-        packed: nextProps.packed,
-        labeled: nextProps.labeled,
-        shipped: nextProps.shipped,
-        isLoading: nextProps.isLoading
+        shipping: nextProps.shipping,
+        isLoading: nextProps.isLoading,
+        renderFlowList: nextProps.renderFlowList
       });
     }
 
@@ -57,13 +50,13 @@ class OrderBulkActionsBar extends Component {
         return (
           <List className="shipping-flow-list">
             <ListItem
-              label={this.state.picked ? "Generate Picking Report" : "Picked"}
-              i18nKeyLabel={this.state.picked ? "order.generatePickingReport" : "order.picked"}
+              label={this.state.shipping.picked ? "Generate Picking Report" : "Picked"}
+              i18nKeyLabel={this.state.shipping.picked ? "order.generatePickingReport" : "order.picked"}
               value="picked"
               onClick={this.handleListItemClick}
-              listItemClassName={this.state.picked ? "selected" : ""}
+              listItemClassName={this.state.shipping.picked ? "selected" : ""}
             >
-              {this.state.picked ?
+              {this.state.shipping.picked ?
                 <div>
                   <Icon className="bulk-actions-icons" icon="fa fa-print"/>
                   <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
@@ -77,22 +70,22 @@ class OrderBulkActionsBar extends Component {
               i18nKeyLabel="order.packed"
               value="packed"
               onClick={this.handleListItemClick}
-              listItemClassName={this.state.packed ? "selected" : ""}
+              listItemClassName={this.state.shipping.packed ? "selected" : ""}
             >
-              {this.state.packed ?
+              {this.state.shipping.packed ?
                 <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
                 :
                 this.renderLoadingSpinner("packed")
               }
             </ListItem>
             <ListItem
-              label={this.state.labeled ? "Generate Label" : "Labeled"}
-              i18nKeyLabel={this.state.labeled ? "order.generateLabel" : "order.labeled"}
+              label={this.state.shipping.labeled ? "Generate Label" : "Labeled"}
+              i18nKeyLabel={this.state.shipping.labeled ? "order.generateLabel" : "order.labeled"}
               value="labeled"
               onClick={this.handleListItemClick}
-              listItemClassName={this.state.labeled ? "selected" : ""}
+              listItemClassName={this.state.shipping.labeled ? "selected" : ""}
             >
-              {this.state.labeled ?
+              {this.state.shipping.labeled ?
                 <div>
                   <Icon className="bulk-actions-icons" icon="fa fa-print"/>
                   <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
@@ -106,9 +99,9 @@ class OrderBulkActionsBar extends Component {
               i18nKeyLabel="order.shipped"
               value="shipped"
               onClick={this.handleListItemClick}
-              listItemClassName={this.state.shipped ? "selected" : ""}
+              listItemClassName={this.state.shipping.shipped ? "selected" : ""}
             >
-              {this.state.shipped ?
+              {this.state.shipping.shipped ?
                 <div>
                   <Icon className="bulk-actions-icons" icon="fa fa-paper-plane-o" />
                   <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
@@ -131,10 +124,12 @@ class OrderBulkActionsBar extends Component {
     setListItemsToDefault() {
       if (this.state.renderFlowList === false) {
         this.setState({
-          picked: false,
-          packed: false,
-          labeled: false,
-          shipped: false
+          shipping: {
+            picked: false,
+            packed: false,
+            labeled: false,
+            shipped: false
+          }
         });
       }
     }

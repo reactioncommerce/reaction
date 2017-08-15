@@ -8,6 +8,8 @@ import { i18next, Reaction } from "/client/api";
 import OrdersList from "../components/orderList.js";
 import { PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, shippingStates } from "../../lib/constants";
 
+const shippingStrings = ["picked", "packed", "labeled", "shipped"];
+
 
 class OrdersListContainer extends Component {
   static propTypes = {
@@ -25,10 +27,13 @@ class OrdersListContainer extends Component {
       selectedItems: [],
       orders: props.orders,
       multipleSelect: false,
-      picked: false,
-      packed: false,
-      labeled: false,
-      shipped: false,
+      shipping: {
+        picked: false,
+        packed: false,
+        labeled: false,
+        shipped: false
+      },
+      renderFlowList: false,
       isLoading: {
         picked: false,
         packed: false,
@@ -46,7 +51,15 @@ class OrdersListContainer extends Component {
 
   handleSelect = (event, isInputChecked, name) => {
     this.setState({
-      multipleSelect: false
+      multipleSelect: false,
+      renderFlowList: false
+    });
+    shippingStrings.forEach((string) => {
+      this.setState({
+        shipping: {
+          [string]: false
+        }
+      });
     });
     const selectedItemsArray = this.state.selectedItems;
 
@@ -68,6 +81,16 @@ class OrdersListContainer extends Component {
   }
 
   selectAllOrders = (orders, areAllSelected) => {
+    this.setState({
+      renderFlowList: false
+    });
+    shippingStrings.forEach((string) => {
+      this.setState({
+        shipping: {
+          [string]: false
+        }
+      });
+    });
     if (areAllSelected) {
       // if all orders are selected, clear the selectedItems array
       // and set multipleSelect to false
@@ -172,15 +195,18 @@ class OrdersListContainer extends Component {
         }
         orderCount++;
         if (orderCount === selectedOrders.length) {
-          Alerts.alert({
-            text: i18next.t("order.orderSetToState", { orderNumber: selectedOrders.length, orderText: orderText, status: status }),
-            type: "success"
-          });
           this.setState({
-            [status]: true,
+            shipping: {
+              [status]: true
+            },
             isLoading: {
               [status]: false
             }
+          });
+          Alerts.alert({
+            text: i18next.t("order.orderSetToState", { orderNumber: selectedOrders.length, orderText: orderText, status: status }),
+            type: "success",
+            allowOutsideClick: false
           });
         }
       });
@@ -347,6 +373,9 @@ class OrdersListContainer extends Component {
    * @return {null} no return value
    */
   setShippingStatus = (status, selectedOrdersIds) => {
+    this.setState({
+      renderFlowList: true
+    });
     const selectedOrders = this.state.orders.filter((order) => {
       return selectedOrdersIds.includes(order._id);
     });
@@ -379,11 +408,9 @@ class OrdersListContainer extends Component {
         selectAllOrders={this.selectAllOrders}
         multipleSelect={this.state.multipleSelect}
         setShippingStatus={this.setShippingStatus}
-        shipped={this.state.shipped}
-        packed={this.state.packed}
-        labeled={this.state.labeled}
-        picked={this.state.picked}
+        shipping={this.state.shipping}
         isLoading={this.state.isLoading}
+        renderFlowList={this.state.renderFlowList}
       />
     );
   }

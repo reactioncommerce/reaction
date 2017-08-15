@@ -40,15 +40,13 @@ class OrderTable extends Component {
     handleSelect: PropTypes.func,
     isLoading: PropTypes.object,
     isOpen: PropTypes.bool,
-    labeled: PropTypes.bool,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
-    packed: PropTypes.bool,
-    picked: PropTypes.bool,
+    renderFlowList: PropTypes.bool,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,
-    shipped: PropTypes.bool
+    shipping: PropTypes.object
   }
 
   /**
@@ -309,16 +307,14 @@ class OrderTable extends Component {
       <div>
         {this.props.isOpen &&
           <OrderBulkActionsBar
-            picked={this.props.picked}
-            packed={this.props.packed}
-            labeled={this.props.labeled}
-            shipped={this.props.shipped}
+            shipping={this.props.shipping}
             multipleSelect={this.props.multipleSelect}
             orders={this.props.orders}
             selectAllOrders={this.props.selectAllOrders}
             selectedItems={this.props.selectedItems}
             setShippingStatus={this.props.setShippingStatus}
             isLoading={this.props.isLoading}
+            renderFlowList={this.props.renderFlowList}
           />
         }
         <SortableTable
