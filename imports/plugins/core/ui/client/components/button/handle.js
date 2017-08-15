@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { pure } from "recompose";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 /**
@@ -33,6 +32,6 @@ Handle.propTypes = {
   connectDragSource: PropTypes.func
 };
 
-registerComponent("Handle", Handle, pure);
+registerComponent("Handle", Handle);
 
 export default Handle;

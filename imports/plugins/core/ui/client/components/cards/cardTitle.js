@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { pure } from "recompose";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 const CardTitle = (props) => {
@@ -25,6 +24,6 @@ CardTitle.propTypes = {
   title: PropTypes.string
 };
 
-registerComponent("CardTitle", CardTitle, pure);
+registerComponent("CardTitle", CardTitle);
 
 export default CardTitle;
