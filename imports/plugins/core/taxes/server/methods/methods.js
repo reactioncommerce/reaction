@@ -111,13 +111,8 @@ export const methods = {
     const cartToCalc = Cart.findOne(cartId);
     const cartShopId = cartToCalc.shopId;
     let cartTaxRate = 0;
-    let cartTaxData;
-    // TODO: Calculate shipping taxes for regions that require it
 
-    // get all tax packages
-    //
-    // TODO FIND IN LAYOUT/REGISTRY
-    //
+    // TODO: Calculate shipping taxes for regions that require it
     const pkg = Packages.findOne({
       shopId: cartShopId,
       name: "reaction-taxes"
@@ -135,6 +130,7 @@ export const methods = {
 
       if (typeof cartToCalc.shipping !== "undefined" && typeof cartToCalc.items !== "undefined") {
         const shippingAddress = cartToCalc.shipping[0].address;
+        let totalTax = 0;
 
         // custom rates that match shipping info
         // high chance this needs more review as
@@ -145,10 +141,10 @@ export const methods = {
         // back to a regional tax.
         if (shippingAddress) {
           // Get tax rates by shop
-          const taxRatesByShop = cartToCalc.items.reduce((uniqueShopTaxRates, item) => {
+          const taxDataByShop = cartToCalc.items.reduce((uniqueShopTaxRates, item) => {
             // lookup custom tax rate for each shop once
             if (!uniqueShopTaxRates[item.shopId]) {
-              uniqueShopTaxRates[item.shopId] = Taxes.find({
+              uniqueShopTaxRates[item.shopId] = Taxes.findOne({
                 $and: [{
                   $or: [{
                     postal: shippingAddress.postal
@@ -164,32 +160,18 @@ export const methods = {
                 }, {
                   shopId: item.shopId
                 }]
-              }, { sort: { postal: -1 } }).fetch();
+              }, { sort: { postal: -1 } });
             }
 
             return uniqueShopTaxRates;
           }, {});
 
-          // If we don't have a tax rate for the cart owning shop, get it.
-          if (!taxRatesByShop[cartShopId]) {
-            taxRatesByShop[cartShopId] = Taxes.find({
-              $and: [{
-                $or: [{
-                  postal: shippingAddress.postal
-                }, {
-                  postal: { $exists: false },
-                  region: shippingAddress.region,
-                  country: shippingAddress.country
-                }, {
-                  postal: { $exists: false },
-                  region: { $exists: false },
-                  country: shippingAddress.country
-                }]
-              }, {
-                shopId: cartShopId
-              }]
-            }, { sort: { postal: -1 } }).fetch();
-          }
+          const taxRatesByShop = Object.keys(taxDataByShop).reduce((ratesByShop, shopId) => {
+            if (taxDataByShop[shopId]) {
+              ratesByShop[shopId] = taxDataByShop[shopId].rate / 100;
+            }
+            return ratesByShop;
+          }, {});
 
           // calculate line item taxes
           const itemsWithTax = cartToCalc.items.map((item) => {
@@ -198,40 +180,34 @@ export const methods = {
             item.taxData = undefined;
             // only process taxble products
             if (item.variants.taxable === true) {
-              const shopTaxRate = taxRatesByShop[item.shopId];
+              const shopTaxData = taxDataByShop[item.shopId];
+              const shopTaxRate = shopTaxData.rate / 100;
 
               // If we have tax rates for this shop
-              if (Array.isArray(shopTaxRate) && shopTaxRate.length > 0) {
-                item.taxData = shopTaxRate;
-                item.taxRate = shopTaxRate[0].rate;
+              if (shopTaxData && shopTaxRate) {
+                item.taxData = shopTaxData;
+                item.taxRate = shopTaxRate;
                 item.subtotal = item.variants.price * item.quantity;
-                item.tax = item.subtotal * (item.taxRate / 100);
+                item.tax = item.subtotal * item.taxRate;
               }
+              totalTax += item.tax;
             }
 
             // add the item to our new array
             return item;
           });
 
-          if (taxRatesByShop[cartShopId]) {
-            const cartShopTaxRates = taxRatesByShop[cartShopId];
-            if (Array.isArray(cartShopTaxRates) && cartShopTaxRates.length > 0) {
-              cartTaxRate = cartShopTaxRates[0].rate;
-              cartTaxData = cartShopTaxRates;
-            }
+          if (totalTax > 0) {
+            cartTaxRate = totalTax / cartToCalc.cartSubTotal();
           }
-
-          // store tax rates on cart
-
-          // Legacy
-          // Meteor.call("taxes/setRate", cartToCalc._id, cartTaxRate, cartTaxData);
 
           // Marketplace Compatible
           Meteor.call("taxes/setRateByShopAndItem", cartToCalc._id, {
             taxRatesByShop,
             itemsWithTax,
             cartTaxRate,
-            cartTaxData
+            cartTaxData: undefined
+            // not setting cartTaxData here to disguise actual tax rate from client
           });
         } // end custom rates
       } // end shippingAddress calculation
