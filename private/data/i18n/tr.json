@@ -7,164 +7,31 @@
       "languages": {
         "select": "Dil Seçimi"
       },
-      "currencies": {
-        "select": "Seçin Döviz"
-      },
       "admin": {
-        "shortcut": {
-          "addProductLabel": "Ürün ekle",
-          "accountsLabel": "Hesaplar"
-        },
-        "dashboard": {
-          "i18NLabel": "i18n",
-          "i18NTitle": "i18n",
-          "i18NDescription": "uluslararasılaşma yarar",
-          "routingLabel": "yönlendirme",
-          "routingTitle": "yönlendirme",
-          "routingDescription": "yönlendirme yarar",
-          "filtrationLabel": "süzme",
-          "filtrationDescription": "Reaksiyon için ürünler filtreleme"
-        },
         "groups": {
-          "appearance": "Görünüm",
-          "addUserError": "Gruba kullanıcı eklenirken hata oluştu",
-          "addUserSuccess": "Gruba kullanıcı eklendi",
-          "removeUserError": "Grubu kullanıcıya kaldırma hatası",
-          "removeUserSuccess": "Kullanıcı başarıyla kaldırıldı",
-          "connect": "Bağlamak",
-          "core": "çekirdek",
-          "name": "Isim",
           "email": "E-posta",
-          "create": "Grup oluştur",
-          "update": "Grubu Güncelle",
-          "lastActive": "Son aktif",
           "description": "Ürün açıklması ekle",
-          "remove": "Sil",
-          "newGroup": "Yeni Grup",
-          "selectGroup": "Grubu Seç",
-          "editGroups": "Grupları Düzenle",
-          "dashboard": "Gösterge paneli",
-          "errorCreate": "Grup oluşturulurken hata oluştu",
-          "successCreate": "Grup başarıyla oluşturuldu",
-          "errorUpdate": "Grubu güncelleme hatası",
-          "successUpdate": "Grup başarıyla güncellendi",
-          "misc": "Çeşitli",
-          "paymentMethod": "Ödeme Sağlayıcıları",
-          "utilities": "Kamu hizmetleri",
-          "marketplace": "Pazaryeri"
-        },
-        "settings": {
-          "accountSettingsLabel": "Hesap Ayarları",
-          "accountSettingsTitle": "Giriş Hizmetleri",
-          "accountSettingsDescription": "sosyal sağlayıcılar aracılığıyla kimlik doğrulama",
-          "saveSuccess": "Ayarlar güncellendi.",
-          "saveFailed": "ayarları güncellenemedi.",
-          "addShopMemberLabel": "Mağaza Üye Ekle",
-          "permissionsSettingsLabel": "İzinler",
-          "localizationAndI18NLabel": "Yerelleştirme ve i18n"
-        },
-        "userAccountDropdown": {
-          "profileLabel": "Profil"
+          "remove": "Sil"
         }
       },
-      "accounts": {
-        "addMember": "Üye ekle",
-        "shopMembers": "alışveriş Üyeler",
-        "guests": "Misafir"
-      },
       "app": {
-        "add": "Eklemek",
-        "editMode": "Düzenleme modu",
-        "administratorView": "yönetici görüntüle",
-        "customerView": "Müşteri Bilgileri",
-        "createContent": "İçerik oluşturma",
-        "auto": "Oto",
         "save": "Kaydet",
         "saveAndContinue": "Kaydet ve devam et",
-        "saveChanges": "Değişiklikleri Kaydet",
-        "selectOne": "(Birini seç)",
         "cancel": "Vazgeç",
-        "success": "Başarı",
-        "error": "Hata",
         "submit": "Gönder",
         "delete": "Sil",
-        "deleted": "Silinen",
-        "archive": "Arşiv",
-        "archived": "arşivlenen",
         "create": "Ekle",
         "close": "Kapat",
         "settings": "Ayarlar",
         "loading": "Yükleniyor",
         "toggle": "Değiştir",
-        "toggleEditMode": "Geçiş Düzenleme Modu",
         "warning": "Hata!",
         "unauthorizedMessage": "Bu içeriği görüntüleme yetkiniz yok.",
-        "updateSettings": "Ayarları güncelle",
         "monthOptions": "Ay seçin",
         "yearOptions": "Yıl seçin",
         "shopSettings": "Mağaza ayarları",
         "dashboard": "Yönetim",
-        "print": "Baskı",
-        "notFound": "Bu sayfa bulunamadı.",
-        "pageNotFound": "Bu sayfa bulunamadı.",
-        "notFoundTitle": "Oops!",
-        "notFoundError": "Sayfa bulunamadı.",
-        "productNotFound": "Bu ürün bulunamadı.",
-        "loadMoreProducts": "Daha fazla ürün yükle",
-        "noProductsFound": "Hiçbir ürün bulundu.",
-        "private": "Özel",
-        "public": "halka açık",
-        "shortcut": {
-          "addProductLabel": "Ürün ekle",
-          "accountsLabel": "Hesaplar"
-        }
-      },
-      "searchSettings": {
-        "productSearchSettings": {
-          "panelTitle": "Ürün Arama",
-          "includeTitle": "başlığı",
-          "includeDescription": "açıklama ekleyin",
-          "includePageTitle": "Sayfa başlığı",
-          "includeDetails": "ayrıntıları içerir",
-          "includeVendor": "satıcı ekleyin"
-        },
-        "orderSearchSettings": {
-          "panelTitle": "Sipariş Arama Ayarları"
-        },
-        "accountSearchSettings": {
-          "panelTitle": "Hesap Arama Ayarları"
-        },
-        "noSettings": "mevcut ayar yok",
-        "settingsSaved": "Arama ayarları kaydedildi",
-        "settingsfailed": "Arama ayarları güncellemesi başarısız"
-      },
-      "shopSettings": {
-        "localization": "yerelleştirme",
-        "options": "Seçenekler",
-        "paymentMethods": "Ödeme Yöntemleri",
-        "externalServices": "dış Hizmetler",
-        "shopLocalizationSettingsSaved": "Mağaza yerelleştirme ayarları kaydedildi.",
-        "shopLocalizationSettingsFailed": "Mağaza yerelleştirme ayarları güncellemesi başarısız oldu.",
-        "shopPaymentMethodsSaved": "Mağaza Ödeme Yöntemleri ayarları kaydedildi.",
-        "shopPaymentMethodsFailed": "Mağaza Ödeme Yöntemleri ayarları güncellemesi başarısız oldu.",
-        "shopBrandAssetsSaved": "Güncellenmiş marka varlığı",
-        "shopBrandAssetsFailed": "Marka varlığı güncellenemedi"
-      },
-      "notifications": {
-        "body": {
-          "noNotifications": "Henüz bildirimler",
-          "markAllAsRead": "Tümünü işaretle okundu olarak",
-          "recent": "Son",
-          "viewAll": "Hepsini Gör"
-        },
-        "messages": {
-          "orderCancelled": "Siparişiniz iptal edildi.",
-          "newOrder": "Siparişiniz işleniyor.",
-          "forAdmin": "Yeni bir düzen var.",
-          "orderDelivered": "Siparişiniz teslim edildi.",
-          "orderProcessing": "Siparişiniz işleniyor.",
-          "orderShipped": "Siparişiniz kargolandı."
-        }
+        "print": "Baskı"
       },
       "header": {
         "tagsAdd": "Etiket ekle",
@@ -175,10 +42,6 @@
         "whenYouAreDone": "düzenlemenizi bitirdikten sonra.",
         "tags": "Etiketler",
         "tagsAdd": "Etiket ekle",
-        "tagsEdit": "Düzenleme etiketleri",
-        "tagExists": "Etiket zaten var, ya da boş.",
-        "tagInUse": "Etiket kullanımda ve silinemez.",
-        "dropFiles": "yüklemek için açılan dosyaları",
         "addInventory": "Stok ekle",
         "barcode": "Barkod",
         "confirmDeleteBarcode": "Barkodu silmek istediğinizden emin misiniz?",
@@ -192,8 +55,6 @@
         "addToCart": "Sepete ekle",
         "chooseOptions": "Sepete eklemeden önce lütfen seçenekleri işaretleyiniz",
         "outOfStock": "Üzgünüm, bu ürün stoklarda kalmadı!",
-        "productArchiveError": "arşivlerine {{product}} gönderilirken bir hata oluştu.",
-        "archiveErrorTheProduct": "ürün",
         "publishFirst": "Ürünü sepete eklemeden önce görünür yapın.",
         "quantityAbbreviation": "Adet",
         "selectOption": "Sepete eklemeden önce bir seçenek işaretleyiniz.",
@@ -204,117 +65,36 @@
         "limitedSupply": "Sınırlı stok",
         "publishProductVisible": " artık görünür",
         "publishProductHidden": " artık gizli",
-        "clonedAlert": "klonlanmış {{product}}",
-        "clonedAlert_plural": "klonlanmış {{product}}",
-        "archivedAlert": "Arşivlenen {{product}}",
-        "archivedAlert_plural": "Arşivlenen {{product}}",
-        "theProduct": "ürün",
-        "theSelectedProducts": "seçilen ürünler",
         "startTracking": "Takip Et",
         "addBarcode": "Barkod Ekle",
         "quantity": "Miktar",
-        "quantityGreaterThanZero": "Hata: Miktar sıfırdan büyük olmalıdır",
-        "notFoundTitle": "Oops!",
-        "notFoundError": "Bu aradığını ürün değildir."
-      },
-      "tags": {
-        "tagName": "Etiket adı",
-        "addTag": "Etiket ekle",
-        "updateTag": "güncelleme Etiketi",
-        "addGroupTag": "Grup Etiket Ekle",
-        "addSubTag": "Alt Etiket Ekle",
-        "removeTag": "Etiketi kaldır",
-        "createTag": "Etiket oluşturma"
+        "quantityGreaterThanZero": "Hata: Miktar sıfırdan büyük olmalıdır"
       },
       "productDetailEdit": {
-        "editOption": "düzenleme seçeneği",
-        "productSettings": "Ürün Ayarları",
-        "product": "Ürün",
-        "size": "Boyut",
         "title": "Ürün ismi",
-        "untitledProduct": "Başlıksız Ürün",
-        "parmalink": "Kalıcı",
         "pageTitle": "Ürün sayfa başlığı",
         "vendor": "Üretici",
         "description": "Ürün açıklması ekle",
-        "originCountry": "Anavatan",
         "facebookMsg": "Facebook Mesaj",
         "twitterMsg": "Twitter Mesaj",
         "pinterestMsg": "Pinterest Mesaj",
         "googleplusMsg": "Google+ Mesaj",
-        "editVariant": "Düzenleme Varyant",
-        "variantOptions": "varyant Seçenekler",
-        "variantDetails": "varyant Detayları",
         "duplicateVariant": "Kopyala",
         "addVariantOption": "Seçenek ekle",
-        "addVariantFail": "{{title}} için varyantı oluşturulamıyor.",
-        "cloneVariantFail": "{{title}} için varyantı klonlamak için açılamıyor.",
         "removeVariant": "Sil",
-        "removeVariantConfirm": "Eğer {{title}} silmek istediğinizden emin misiniz",
-        "restoreVariantConfirm": "Eğer çöp kutusundan {{title}} geri yüklemek istediğiniz emin misiniz?",
-        "restoreVariantFail": "{{title}} geri yüklenemedi.",
-        "archiveVariantConfirm": "Eğer {{title}} arşivlemek istediğiniz emin misiniz",
-        "thisVariant": "bu varyant",
-        "thisOption": "Bu seçenek,",
         "duplicateProduct": "Ürünü Kopyala",
         "pinProduct": "Ürünü Sabitle",
         "toggleSize": "Boyut Değiştir",
-        "archiveProduct": "Arşiv Ürün",
-        "restoreProduct": "Çöp Kutusundan Ürünü Restore",
-        "archiveThisProduct": "Bu ürünü arşivle?",
-        "archiveSelectedProducts": "Arşiv Seçili ürünleri?",
         "publish": "Görünür Yap",
-        "moreOptions": "Daha çok seçenek",
-        "details": "Ayrıntılar",
-        "noSelectedProducts": "Hiçbir ürün seçilmedi. Kullan",
-        "orShiftCtrlCmd": " veya vardiya | ctrl | cmd + birden seçmek için ürünler tıklayın. vardiya ile ürün bitişik aralığı seçebilirsiniz.",
-        "makeVisible": "Görünür olun",
-        "hideProduct": "gizle Ürün",
-        "productIsVisible": "Ürün görünür",
-        "productIsNotVisible": "Ürün görünmüyorsa"
-      },
-      "productVariant": {
-        "addVariantOptions": "'Sepete ekle' sağlamak için seçenekleri eklemek butto",
-        "inventoryQuantity": "miktar",
-        "title": "Etiket",
-        "price": "Fiyat",
-        "optionTitle": "seçenek",
-        "barcode": "Barkod",
-        "compareAtPrice": "Fiyat (MSRP)",
-        "fulfillmentService": "Yerine Getirme hizmet",
-        "weight": "Ağırlık",
-        "length": "uzunluk",
-        "width": "genişlik",
-        "height": "Yükseklik",
-        "taxable": "vergiye tabi",
-        "taxCode": "vergi Kodları",
-        "taxDescription": "vergi Açıklama",
-        "inventoryManagement": "stok takibi",
-        "inventoryManagementLabel": "envanter sisteminde ürününüzü kaydedin ve durumunu izlemek",
-        "inventoryPolicy": "zaman stokta inkar",
-        "inventoryPolicyLabel": "o stokta değil, ürün varyantı satmıyoruz",
-        "lowInventoryWarningThreshold": "uyar @",
-        "lowInventoryWarningThresholdLabel": "miktarı bir sonraki düzeye ulaştığında ürünün tükendi yakın olacağı müşterileri uyarmak",
-        "originCountry": "Anavatan",
-        "selectTaxCode": "Vergi Kanunu seçin"
+        "moreOptions": "Daha çok seçenek"
       },
       "variantList": {
         "moreOptions": "Bu seçim için daha çok seçenek mevcut.",
         "createVariant": "Benzerini Oluştur"
       },
       "gridPackage": {
-        "enable": "Enable",
-        "errorDisabling": "Paketi devre dışı Hata:",
-        "errorEnabling": "Paketi sağlayan Hata:",
-        "details": "Ayrıntılar",
-        "disable": "devre dışı bırakmak",
-        "disableConfirm": "Eğer {{app}} devre dışı bırakmak istediğiniz emin misiniz?",
         "pkgEnabled": " şu anda etkin.",
         "pkgDisabled": " şu anda etkin değil."
-      },
-      "gridSettingsPanel": {
-        "title": "Izgara Ayarları",
-        "selected": "Seçilmiş"
       },
       "cartDrawer": {
         "empty": "Üzgünüz. Sepetiniz boş.",
@@ -322,12 +102,10 @@
         "checkout": "Ödemeye geç",
         "new": "Yeni",
         "coreOrderWorkflow/created": "oluşturuldu",
-        "coreOrderWorkflow/processing": "Işleme",
         "coreOrderWorkflow/completed": "Tamamlanan",
         "coreOrderWorkflow/canceled": "Iptal edildi"
       },
       "cartSubTotals": {
-        "discount": "İndirim",
         "head": "Sepetiniz",
         "items": "Ürün sepetinizde",
         "subtotal": "Alt Toplam",
@@ -345,75 +123,34 @@
         "invoice": "Fatura",
         "ordersNotFound": "Hiçbir emir bulunamadı",
         "approveInvoice": "onaylamak",
-        "cancelOrderLabel": "Siparişi iptal et",
         "makeAdjustments": "Düzenlemeler yapmak",
         "capturePayment": "yakalama Ödeme",
         "paymentCaptured": "Ödeme Yakalanan",
         "capturedTotal": "yakalanan Toplam",
         "canceledLabel": "Iptal edildi",
         "refundAmount": "İade Tutarı",
-        "cancelOrder": "Bu emri iptal etmek istiyor musunuz?",
-        "applyRefundToThisOrder": "Bu düzene {{currencySymbol}}{{refund}} iadesi uygulayın?",
-        "applyRefundDuringCancelOrder": "Bu, sipariş toplamını {{currencySymbol}}{{invoiceTotal}} tutarında iade edecektir",
-        "cancelOrderThenRestock": "Evet ve yeniden yerleştirme",
-        "cancelOrderNoRestock": "Evet, ama restocking yok",
         "applyRefund": "İade uygula",
-        "refunding": "Geri ödeme yapılıyor",
-        "applyDiscount": "İndirim uygula",
         "adjustedTotal": "Düzeltilmiş Toplam",
-        "invalidDiscount": "İndirim orijinal toplam fiyattan daha büyük olamaz",
-        "fullDiscountWarning": "geçersiz olacaktır% 100 indirim uygulayarak / ödeme sağlayıcısı ile bu siparişi iptal",
-        "invalidRefund": "İade (lar) toplam düzeltilmiş toplam daha büyük olamaz",
         "processor": "İşlemci",
-        "placed": "Yerleştirilmiş",
-        "on": "üzerinde",
-        "status": "Durum",
-        "completed": "Tamamlanan",
-        "processing": "Işleme",
-        "destination": "Varış yeri",
-        "shipment": "yükleme",
-        "payment": "Ödeme",
-        "itemsFrom": "kalem (ler) den",
         "filter": {
           "new": "Yeni",
           "captured": "Ödeme Yakalanan",
-          "processing": "Işleme",
           "shipped": "gönderilen",
           "completed": "Tamamlanan",
           "canceled": "Iptal edildi",
           "refunded": "iade"
-        },
-        "showMore": "Daha Fazla Göster"
+        }
       },
       "orderShipping": {
         "shipTo": "Alıcı",
         "notShipped": "Henuz gonderilmedi",
         "noTracking": "İzleme yok",
         "tracking": "Takip",
-        "printLabels": "baskı Etiketleri",
-        "printShippingLabel": "Nakliye",
-        "printCustomsLabel": "Gümrük",
-        "generateTracking": "Etiket ve Takip oluşturmak",
-        "labelError": "Oluşturma hatası gönderim etiketi {{err}}",
-        "carrier": "Taşıyıcı",
-        "addTracking": "İzleme ekle",
-        "itemsHaveBeenShipped": "Öğeler sevk edilmiştir",
         "shipmentEmpty": "Bu gönderi hiç ürün bulunmuyor",
         "shipmentPacked": "Tüm Ürünleri Paketli",
         "shipped": "gönderilen",
-        "delivered": "teslim",
         "shippingNotifyCustomer": "kendi ürün yakında nakliye olacak müşteri haberdar.",
         "resendNotification": "Yeniden Gönder Gönderi Bildirimi"
-      },
-      "orderWorkflow": {
-        "orderDetails": "sipariş detayları",
-        "invoice": "Fatura",
-        "lineItems": "Satır Öğeleri",
-        "shipmentTracking": "Sevk Takibi"
-      },
-      "cartCheckout": {
-        "surprise": "Woah!",
-        "emptyCheckoutCart": "senin sepetiniz boş gibi görünüyor!"
       },
       "cartCompleted": {
         "thankYou": "Teşekkürler!",
@@ -421,8 +158,6 @@
         "yourOrderIsNow": "Siparişiniz şu anda",
         "summaryMessage": "Siparişiniz için teşekkürler.",
         "submitted": "gönderildi",
-        "processing": "işleme",
-        "completed": "tamamlandı",
         "registerGuest": "Merhaba! Bir e-posta ekleyin ve sipariş güncellemelerini alın.",
         "trackYourDelivery": "Sipariş güncellemeleri şu adrese gönderilecek",
         "noOrdersFound": "Hiçbir sipariş bulunamadı.",
@@ -440,87 +175,15 @@
         "addAddress": "Adres Ekle",
         "chooseAddress": "Teslimat ve Fatura adresi seçin",
         "createDefault": "Varsayılan adresinizi oluşturun",
-        "edit": "Düzenle",
-        "removeAddress": "Adres kaldır",
         "selectShippingAddress": "Bir teslimat adresi seçin",
-        "selectBillingAddress": "Bir fatura adresi seçin",
-        "cantRemoveThisAddress": "Bu adresi kaldırılamıyor: {{err}}"
+        "selectBillingAddress": "Bir fatura adresi seçin"
       },
       "addressBookAdd": {
         "addAddress": "Yeni bir adres ekleyin",
-        "createAddress": "Adresinizi oluşturun",
-        "failedToAddAddress": "adresi eklemek için başarısız oldu: {{err}}",
-        "validatedAddress": "adresinize yapılan değişiklikler doğrulama dayalı. Bu doğru olduğundan emin olun"
+        "createAddress": "Adresinizi oluşturun"
       },
       "addressBookEdit": {
-        "editAddress": "Bu adresi düzenleyin",
-        "addressValidation": "Adres Doğrulama",
-        "reviewAddress": "En iyi uyum için lütfen adresinizi onaylayın",
-        "somethingWentWrong": "Bir şeyler ters gitti: {{err}}",
-        "enteredAddress": "Girilen Adres",
-        "validatedAddress": "Adres Doğrulayın"
-      },
-      "corePackageConfig": {
-        "settings": {
-          "public": {
-            "allowGuestCheckout": "İzin Misafir Ödeme"
-          },
-          "openexchangerates": {
-            "appId": "Açık Kurlar App Kimliği",
-            "refreshPeriod": "Açık Döviz Kurları dönemi yenileme",
-            "refreshPeriodPlaceholder": "yani her 1 saat"
-          },
-          "google": {
-            "clientId": "Google Müşteri Kimliği",
-            "apiKey": "Google API Anahtarı"
-          }
-        }
-      },
-      "shop": {
-        "defaultPaymentMethod": "Standart Ödeme Yöntemi",
-        "name": "Isim",
-        "namePlaceholder": "Mağaza Adı",
-        "description": "Tanım",
-        "descriptionPlaceholder": "SEO için alışveriş açıklayın",
-        "descriptionTooltip": "SEO için Meta Açıklaması",
-        "email": "E-posta",
-        "emailPlaceholder": "Birincil İletişim E-posta",
-        "keywords": "Anahtar Kelimeler",
-        "keywordsPlaceholder": "SEO için Meta anahtar kelimeler",
-        "language": "baz Dili",
-        "addressBook": {
-          "company": "Şirket",
-          "companyPlaceholder": "Bu işletme adı",
-          "country": "Ülke",
-          "fullName": "Ad Soyad",
-          "fullNamePlaceholder": "Sizin organizasyon adı",
-          "address1": "Adres",
-          "address1Placeholder": "Kuruluşunuz adresi",
-          "address1Tooltip": "Bu adres ziyaretçiler için görünür olacak",
-          "address2": "Adres 2",
-          "address2Placeholder": "Ek adres",
-          "postal": "Posta Kodu",
-          "city": "Şehir",
-          "region": "Bölge",
-          "phone": "Telefon",
-          "isShippingDefault": "Bu varsayılan teslimat adresiniz mi?",
-          "isBillingDefault": "Bu varsayılan fatura adresiniz mi?",
-          "isCommercial": "Bu ticari bir adres."
-        }
-      },
-      "revisions": {
-        "isDisabled": "Revizyon kontrolü devre dışı bırakılır. Herhangi bir değişiklik derhal yayınlanacaktır.",
-        "isEnabled": "Revizyon kontrol Ürünleri etkindir. Herhangi bir değişiklik müşterilere görünür olmak önce yayınlanmış gerekir edilecektir.",
-        "unpublishedChanges": "yayınlanmamış değişiklikler",
-        "publishChanges": "Değişiklikleri Yayınla",
-        "showChanges": "Değişiklikleri göster",
-        "hideChanges": "gizle değişiklikler",
-        "discardChanges": "Değişiklikleri gözardı et",
-        "changedPublished": "Değişiklikler başarıyla yayınlandı",
-        "changesDiscarded": "Değişiklikler başarıyla atılır",
-        "noChanges": "Değişiklik yok",
-        "noChangesPublished": "yayımlamak için herhangi bir değişiklik bulunmamaktadır",
-        "noChangesDiscarded": "atmak için herhangi bir değişiklik bulunmamaktadır"
+        "editAddress": "Bu adresi düzenleyin"
       },
       "address": {
         "country": "Ülke",
@@ -535,9 +198,6 @@
         "isBillingDefault": "Bu varsayılan fatura adresiniz mi?",
         "isCommercial": "Bu ticari bir adres."
       },
-      "i18nSettings": {
-        "enabledLanguages": "Diller"
-      },
       "checkoutProgressBar": {
         "login": "Hesap",
         "shippingBilling": "Adres Bilgileri",
@@ -548,12 +208,6 @@
       "checkoutReview": {
         "review": "Yorum"
       },
-      "uom": {
-        "OZ": "ons",
-        "LB": "pound",
-        "GR": "gram",
-        "KG": "kilogram"
-      },
       "consoleIcon": {
         "iconTitle": "Konsolu Göster",
         "text": "Konsol"
@@ -563,59 +217,15 @@
         "text": "Oluştur"
       },
       "social": {
-        "socialTitle": "Sosyal",
         "facebook": "Facebook",
         "google": "Google",
         "github": "GitHub",
-        "instagram": "Instagram",
         "meetup": "Meetup",
-        "ok": "Tamam",
         "twitter": "Twitter",
-        "vk": "VK",
         "weibo": "Weibo"
-      },
-      "search": {
-        "clearSearch": "Açık",
-        "noProductsFound": "Hiçbir ürün bulundu.",
-        "noOrdersFound": "Hiçbir emir bulunamadı.",
-        "noAccountsFound": "Hiçbir hesap bulunamadı.",
-        "searchInputLabel": "Arama Tepki",
-        "suggestedTags": "önerilen etiketler",
-        "searchTypeProducts": "Ürünler",
-        "searchTypeAccounts": "Hesaplar",
-        "searchTypeOrders": "Emirler",
-        "accountSearchResults": {
-          "accountId": "hesap kimliği",
-          "shopId": "Mağaza kimliği",
-          "firstName": "İsim",
-          "lastName": "Soyadı",
-          "phone": "Telefon",
-          "emails": "E-posta"
-        },
-        "orderSearchResults": {
-          "orderId": "Sipariş Kimliği",
-          "shopId": "Mağaza kimliği",
-          "shippingAddress": "Adres",
-          "shippingCity": "Şehir",
-          "shippingRegion": "bölge",
-          "shippingCountry": "Ülke",
-          "shippingPhone": "Telefon",
-          "shippingName": "Isim",
-          "shippingStatus": "Durum",
-          "billingAddress": "Adres",
-          "billingCity": "Şehir",
-          "billingRegion": "bölge",
-          "billingCountry": "Ülke",
-          "billingPhone": "Telefon",
-          "billingStatus": "Durum",
-          "userEmails": "E-posta",
-          "orderDate": "Tarih",
-          "orderTotal": "Toplam"
-        }
       },
       "accountsUI": {
         "members": "ÜyelerMembers",
-        "manage": "Yönet",
         "guest": "Misafir",
         "addMember": "Üye ekle",
         "add": "ekle",
@@ -633,7 +243,6 @@
         "emailResetLink": "E-posta sıfırlama bağlantısı",
         "forgotPassword": "Şifremi Unuttum",
         "ifYouAlreadyHaveAnAccount": "Eğer bir hesabınız varsa",
-        "name": "Isim",
         "newPassword": "Yeni Şifre",
         "newPasswordAgain": "Yeni Şifre(tekrar)",
         "optional": "İsteğe bağlı",
@@ -646,27 +255,22 @@
         "setPassword": "Şifreyi Ayarla",
         "sign": "Kayıt",
         "signIn": "Giriş Yap",
-        "signInService": "Oturum {{service}}",
         "signin": "giriş yap",
         "signInWith": "Bağlan",
         "signUpWith": "Giriş yap",
         "signedIn": "Giriş yaptınız.",
         "signOut": "Çıkış Yap",
         "signUp": "Kaydol",
-        "signUpButton": "Kayıt",
         "signupCode": "Kayıt Kodu",
         "signUpWithYourEmailAddress": "E-posta adresinizle kayıt olun",
         "terms": "Kullanım Koşulları",
         "updateYourPassword": "Şifrenizi güncelleyin",
         "updatePasswordAndContinue": "Güncelle ve devam et",
-        "updatedServiceConfiguration": "{{service}} için güncelleştirilmiş hizmeti yapılandırma",
         "username": "Kullanıcı Adı",
         "usernameOrEmail": "Kullanıcı Adı veya E-posta",
         "with": "ile",
         "checkoutAsGuest": "Kaydolmadan ödeme yap",
         "role": "Rol",
-        "yourOrders": "Senin emirlerin",
-        "addressBook": "Adres defteri",
         "info": {
           "emailSent": "E-posta gönderildi",
           "emailVerified": "E-posta doğrulandı",
@@ -678,11 +282,9 @@
         },
         "error": {
           "emailRequired": "E-posta gerekli.",
-          "groupRequired": "Varsayılan sahip grubu dışındaki bir grup gereklidir.",
           "passwordRequired": "Şifre gerekli.",
           "passwordMustBeAtLeast6CharactersLong": "Şifre en az 6 karakterden oluşmalıdır.",
           "passwordMustContainRequirements": "Şifre en az bir sayı yada sembol içermelidir",
-          "usernameMinLength": "Kullanıcı adı en az 3 karakter uzunluğunda olmalıdır",
           "minChar": "En az 6 karakter.",
           "pwdsDontMatch": "Şifreler uyuşmuyor",
           "pwOneDigit": "Şifre en az bir sayı içermelidir.",
@@ -694,10 +296,6 @@
           "usernameRequired": "Kullanıcı Adı gerekli.",
           "emailAlreadyExists": "E-pos önceden kullanılmış.",
           "emailDoesntMatchTheCriteria": "E-posta kriterlere uygun değil.",
-          "errorSendingEmail": "E-posta, olası yapılandırma sorunu gönderme hatası.",
-          "unableToSendInvitationEmail": "davetiye e-posta göndermek için açılamıyor.",
-          "userWithEmailAlreadyExists": "Bu e-posta adresine sahip bir kullanıcı zaten mevcut",
-          "failedToLogout": "çıkış için başarısız oldu.",
           "invalidLoginToken": "Geçersiz giriş anahtarı",
           "loginForbidden": "Giriş engellenmiş",
           "serviceUnknown": "Bilinmeyen Servis",
@@ -726,18 +324,6 @@
           "matchFailed": "Eşleştirme başarısız",
           "unknownError": "Bilinmeyen Hata"
         }
-      },
-      "loginServices": {
-        "appId": "Uygulama kimliği",
-        "secret": "Gizli",
-        "clientId": "Müşteri Kimliği",
-        "consumerKey": "API Anahtarı"
-      },
-      "error": {
-        "nameRequired": "Adı gereklidir.",
-        "isRequired": "{{field}} gereklidir.",
-        "mustBeNumber": "{{field}} bir sayı olmalıdır.",
-        "variantFieldIsRequired": "Varyant {{number}} {{field}} gereklidir."
       }
     }
   }

@@ -10,13 +10,19 @@
           "accountsDescription": "Настройки аккаунта"
         },
         "settings": {
+          "continue": "Продолжать",
+          "cancel": "Отмена",
+          "changeOwner": "Изменить владельца",
+          "changeShopOwnerWarn": "Вы собираетесь изменить владельца магазина. Текущий владелец будет заменен",
+          "changeMktOwnerWarn": "Вы собираетесь изменить владельца Marketplace. Текущий владелец будет заменен",
           "accountsSettingsLabel": "Счета",
           "accountsSettingsTitle": "Счета",
           "accountsSettingsDescription": "Настройки аккаунта"
         },
         "groupsInvite": {
           "name": "Джон Смит",
-          "email": "johnsmith@reactioncommerce.com"
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Вы не можете напрямую приглашать пользователя в качестве владельца. Продвигать существующего администратора"
         }
       }
     }
