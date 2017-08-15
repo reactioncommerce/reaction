@@ -4,6 +4,8 @@ import { Tracker } from "meteor/tracker";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Orders, Shops } from "/lib/collections";
 import OrdersListContainer from "./ordersListContainer";
+import OrdersActionContainer from "./ordersActionContainer";
+
 
 class OrdersContainer extends Component {
   constructor() {
@@ -68,12 +70,18 @@ class OrdersContainer extends Component {
   render() {
     if (this.state.ready) {
       return (
-        <OrdersListContainer
-          orders={this.state.orders}
-          ready={this.state.ready}
-          hasMoreOrders={this.hasMoreOrders}
-          handleShowMoreClick={this.showMoreOrders}
-        />
+        <div>
+          <div className="orders-list-tabs">
+            <OrdersActionContainer />
+          </div>
+          <OrdersListContainer
+            orders={this.state.orders}
+            ready={this.state.ready}
+            hasMoreOrders={this.hasMoreOrders}
+            handleShowMoreClick={this.showMoreOrders}
+          />
+        </div>
+
       );
     }
     return null;
