@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { pure } from "recompose";
+// import { pure } from "recompose"; // See comment on `registerComponent()`
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 const Divider = (props) => {
@@ -39,6 +39,12 @@ Divider.propTypes = {
   label: PropTypes.string
 };
 
-registerComponent("Divider", Divider, pure);
+// This cannot be a pure component, as the i18nKey never changes,
+// even with a language switch, it's still an `i18nKey` like `app.public`.
+// Since the key stays the same, the props don't change, the text doesn't update.
+// We can revisit this in React 16
+// - EK 8/2/17
+// registerComponent("Divider", Divider, pure);
+registerComponent("Divider", Divider);
 
 export default Divider;

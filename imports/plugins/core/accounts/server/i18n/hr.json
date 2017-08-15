@@ -10,13 +10,19 @@
           "accountsDescription": "Postavke računa"
         },
         "settings": {
+          "continue": "Nastaviti",
+          "cancel": "Prekini",
+          "changeOwner": "Promijeni vlasnika",
+          "changeShopOwnerWarn": "Namjeravate promijeniti vlasnika trgovine. Sadašnji vlasnik bit će zamijenjen",
+          "changeMktOwnerWarn": "Namjeravate promijeniti vlasnika tržišta. Sadašnji vlasnik bit će zamijenjen",
           "accountsSettingsLabel": "Računi",
           "accountsSettingsTitle": "Računi",
           "accountsSettingsDescription": "Postavke računa"
         },
         "groupsInvite": {
           "name": "John Smith",
-          "email": "johnsmith@reactioncommerce.com"
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Ne možete izravno pozvati korisnika kao vlasnika. Promicanje postojećeg administratora"
         }
       }
     }

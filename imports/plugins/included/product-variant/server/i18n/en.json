@@ -3,11 +3,6 @@
   "ns": "reaction-product-variant",
   "translation": {
     "reaction-product-variant": {
-      "admin": {
-        "shortcut": {},
-        "dashboard": {},
-        "settings": {}
-      },
       "productGrid": {
         "noProductsFound": "No Products Found"
       }
