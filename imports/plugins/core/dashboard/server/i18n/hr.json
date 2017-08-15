@@ -8,6 +8,7 @@
           "dashboardLabel": "kontrolna ploča"
         },
         "dashboard": {
+          "coreTitle": "kontrolna ploča",
           "packageGroupActionsLabel": "Akcije",
           "packageGroupSettingsLabel": "Postavke"
         },

@@ -10,13 +10,19 @@
           "accountsDescription": "إعدادت الحساب"
         },
         "settings": {
+          "continue": "استمر",
+          "cancel": "إلغاء",
+          "changeOwner": "تغير المالك",
+          "changeShopOwnerWarn": "أنت على وشك تغيير مالك المحل. سيتم استبدال المالك الحالي",
+          "changeMktOwnerWarn": "أنت على وشك تغيير مالك ماركتبليس. سيتم استبدال المالك الحالي",
           "accountsSettingsLabel": "الحسابات",
           "accountsSettingsTitle": "الحسابات",
           "accountsSettingsDescription": "إعدادت الحساب"
         },
         "groupsInvite": {
           "name": "جون سميث",
-          "email": "johnsmith@reactioncommerce.com"
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "لا يمكنك دعوة مستخدم بشكل مباشر كمالك. الترويج للمشرف الحالي"
         }
       }
     }

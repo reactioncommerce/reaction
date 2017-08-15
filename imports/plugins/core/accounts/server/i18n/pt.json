@@ -10,13 +10,19 @@
           "accountsDescription": "Configurações da conta"
         },
         "settings": {
+          "continue": "Continuar",
+          "cancel": "Cancelar",
+          "changeOwner": "Alterar proprietário",
+          "changeShopOwnerWarn": "Você está prestes a mudar o proprietário da loja. O proprietário atual será substituído",
+          "changeMktOwnerWarn": "Você está prestes a mudar o proprietário do Marketplace. O proprietário atual será substituído",
           "accountsSettingsLabel": "Contas",
           "accountsSettingsTitle": "Contas",
           "accountsSettingsDescription": "Configurações da conta"
         },
         "groupsInvite": {
           "name": "John Smith",
-          "email": "Johnsmith@reactioncommerce.com"
+          "email": "Johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Você não pode convidar diretamente um usuário como proprietário. Promover um administrador existente"
         }
       }
     }

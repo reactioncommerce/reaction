@@ -10,13 +10,19 @@
           "accountsDescription": "Настройки на профила"
         },
         "settings": {
+          "continue": "Продължавам",
+          "cancel": "Отмени",
+          "changeOwner": "Промяна на собственика",
+          "changeShopOwnerWarn": "На път сте да промените собственика на магазина. Сегашният собственик ще бъде заменен",
+          "changeMktOwnerWarn": "На път сте да промените собственика на Marketplace. Сегашният собственик ще бъде заменен",
           "accountsSettingsLabel": "Профили",
           "accountsSettingsTitle": "Профили",
           "accountsSettingsDescription": "Настройки на профила"
         },
         "groupsInvite": {
           "name": "Джон Смит",
-          "email": "johnsmith@reactioncommerce.com"
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Не можете директно да каните потребител като собственик. Насърчаване на съществуващ администратор"
         }
       }
     }
