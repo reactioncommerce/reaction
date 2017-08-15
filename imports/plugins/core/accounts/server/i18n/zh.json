@@ -10,13 +10,19 @@
           "accountsDescription": "帐号设定"
         },
         "settings": {
+          "continue": "继续",
+          "cancel": "取消",
+          "changeOwner": "更改所有者",
+          "changeShopOwnerWarn": "您即将改变店主。当前所有者将被替换",
+          "changeMktOwnerWarn": "您即将更改Marketplace所有者。当前所有者将被替换",
           "accountsSettingsLabel": "帐户",
           "accountsSettingsTitle": "帐户",
           "accountsSettingsDescription": "帐号设定"
         },
         "groupsInvite": {
           "name": "约翰·史密斯",
-          "email": "johnsmith@reactioncommerce.com"
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "您不能直接邀请用户作为所有者。推广现有的管理员"
         }
       }
     }

@@ -10,13 +10,19 @@
           "accountsDescription": "Nastavení účtu"
         },
         "settings": {
+          "continue": "Pokračovat",
+          "cancel": "Zrušit",
+          "changeOwner": "Změnit majitele",
+          "changeShopOwnerWarn": "Chystáte se změnit majitele obchodu. Aktuální majitel bude nahrazen",
+          "changeMktOwnerWarn": "Chystáte se změnit majitele Marketplace. Aktuální majitel bude nahrazen",
           "accountsSettingsLabel": "účty",
           "accountsSettingsTitle": "účty",
           "accountsSettingsDescription": "Nastavení účtu"
         },
         "groupsInvite": {
           "name": "John Smith",
-          "email": "Johnsmith@reactioncommerce.com"
+          "email": "Johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Nemůžete přímo pozvat uživatele jako vlastníka. Propagujte existujícího administrátora"
         }
       }
     }
