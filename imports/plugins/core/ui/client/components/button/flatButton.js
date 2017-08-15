@@ -18,6 +18,7 @@ const FlatButton = (props) => {
   );
 };
 
+FlatButton.propTypes = { ...Button.propTypes };
 FlatButton.defaultProps = {
   bezelStyle: "flat"
 };

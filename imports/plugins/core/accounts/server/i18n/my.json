@@ -10,13 +10,19 @@
           "accountsDescription": "အကောင့်ဆက်တင်များ"
         },
         "settings": {
+          "continue": "ဆက်လက်",
+          "cancel": "ပယ်ဖျက်ပါ",
+          "changeOwner": "ပြောင်းလဲမှုကိုပိုင်ရှင်",
+          "changeShopOwnerWarn": "သင်ကဆိုင်ပိုင်ရှင်တစ်ဦးကိုပြောင်းလဲခန့်ရှိပါသည်။ လက်ရှိပိုင်ရှင်အစားထိုးသွားမည်",
+          "changeMktOwnerWarn": "သင်က Marketplace ပိုင်ရှင်ပြောင်းပေးဖို့အကြောင်းကိုဖြစ်ကြသည်။ လက်ရှိပိုင်ရှင်အစားထိုးသွားမည်",
           "accountsSettingsLabel": "ငွေစာရင်း",
           "accountsSettingsTitle": "ငွေစာရင်း",
           "accountsSettingsDescription": "အကောင့်ဆက်တင်များ"
         },
         "groupsInvite": {
           "name": "John Smith",
-          "email": "johnsmith@reactioncommerce.com"
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "သငျသညျကိုတိုက်ရိုက်ပိုင်ရှင်အဖြစ်အသုံးပြုသူတစ်ဦးကိုဖိတ်ခေါ်လို့မရပါဘူး။ ရှိပြီးသား admin ရဲ့မြှင့်တင်ရန်"
         }
       }
     }

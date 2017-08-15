@@ -33,7 +33,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
   this.state.setDefault({
     isCapturing: false,
     isRefunding: false,
-    isFetching: true
+    isFetching: false
   });
 
   this.autorun(() => {
@@ -43,6 +43,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
 
     this.state.set("order", order);
     this.state.set("currency", shop.currencies[shop.currency]);
+    this.state.set("isFetching", true);
 
     if (order) {
       Meteor.call("orders/refunds/list", order, (error, result) => {
@@ -600,5 +601,15 @@ Template.coreOrderShippingInvoice.helpers({
       items = returnItems;
     }
     return items;
+  },
+
+  hasRefundingEnabled() {
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+    const paymentMethodId = order.billing[0].paymentMethod.paymentPackageId;
+    const paymentMethod = Packages.findOne({ _id: paymentMethodId });
+    const paymentMethodName = paymentMethod.name;
+    const isRefundable = paymentMethod.settings[paymentMethodName].support.includes("Refund");
+    return isRefundable;
   }
 });

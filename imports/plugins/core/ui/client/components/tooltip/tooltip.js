@@ -37,7 +37,7 @@ class Tooltip extends Component {
           "tooltip-theme-arrows": true
         })}
         constraints={[{
-          to: "scrollParent",
+          to: "window",
           attachment: "together"
         }]}
       >
