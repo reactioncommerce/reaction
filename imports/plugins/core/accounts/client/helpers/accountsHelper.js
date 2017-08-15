@@ -36,7 +36,7 @@ export function sortGroups(groups) {
  * getInvitableGroups - helper - client
  * @summary puts each full user object into an array on the group they belong
  * This generates a list of groups the user can invite to.
- * It filters out the owner group (Invitation can not be done to the owner group)
+ * It filters out the owner group (because you cannot invite directly to an existing shop as owner)
  * It also filters out groups that the user does not have needed permissions to invite to.
  * All these are also checked by the Meteor method, so this is done to prevent trying to invite and getting error
  * @param {Array} groups - list of user account objects
@@ -49,12 +49,19 @@ export function getInvitableGroups(groups, canInviteToGroup) {
     .filter(grp => canInviteToGroup({ group: grp, user: Meteor.user() })) || [{}];
 }
 
-export function getDefaultUserInviteGroup(groups, user) {
+// user's default invite groups is the group they belong
+// exception is the owner group (because you cannot invite directly to an existing shop as owner). For that case,
+// it defaults to shop manager
+export function getDefaultUserInviteGroup(groups) {
   let result;
-  result = groups.find(grp => user.groups.indexOf(grp._id) > -1);
-  if (result.slug === "owner") {
+  const user = Collections.Accounts.findOne({ userId: Meteor.userId() });
+  result = groups.find(grp => user && user.groups.indexOf(grp._id) > -1);
+
+  if (result && result.slug === "owner") {
     result = groups.find(grp => grp.slug === "shop manager");
   }
+
+  return result;
 }
 
 export function getGravatar(user) {

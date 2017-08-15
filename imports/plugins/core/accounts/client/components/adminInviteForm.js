@@ -23,7 +23,7 @@ class AdminInviteForm extends Component {
       groups: groupsInvitable,
       name: "",
       email: "",
-      group: getDefaultUserInviteGroup(groupsInvitable),
+      group: getDefaultUserInviteGroup(groups),
       alertArray: []
     };
 
@@ -35,7 +35,7 @@ class AdminInviteForm extends Component {
     const { groups } = nextProps;
     const groupsInvitable = getInvitableGroups(groups, this.props.canInviteToGroup);
 
-    this.setState({ groups: groupsInvitable, group: getDefaultUserInviteGroup(groupsInvitable) });
+    this.setState({ groups: groupsInvitable, group: getDefaultUserInviteGroup(groups) });
   }
 
   onChange(event) {
