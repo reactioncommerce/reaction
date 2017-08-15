@@ -384,8 +384,9 @@ Meteor.methods({
 
           // TODO: Add description to charge in Stripe
           stripeCharge.source = token.id;
-          stripeCharge.application_fee = 0; // eslint-disable-line camelcase
-          // Get new idempotency_key
+
+          // Demo 20% application fee
+          stripeCharge.application_fee = formatForStripe(cartTotals[shopId] * 0.2); // eslint-disable-line camelcase
         }
 
         // We should only do this once per shop per cart
