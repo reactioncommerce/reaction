@@ -6,7 +6,7 @@ import Button from "./button.jsx";
 
 const IconButton = ({ icon, onIcon, ...otherProps }) => {
   // otherProps.buttonKind === 'flat'
-  // default should be default, flat is new css that makes the bakcground tarnsparent
+  // default should be default, flat is new css that makes the background transparent.
   let buttonClassName;
 
   if (otherProps.kind === "flat") {
@@ -53,11 +53,7 @@ const IconButton = ({ icon, onIcon, ...otherProps }) => {
   );
 };
 
-IconButton.propTypes = {
-  ...Button.propTypes,
-  icon: Button.propTypes.icon,
-  onIcon: Button.propTypes.onIcon
-};
+IconButton.propTypes = { ...Button.propTypes };
 
 IconButton.defaultProps = {
   bezelStyle: "solid"
