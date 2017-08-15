@@ -22,7 +22,8 @@
                       orderId=orderId
                       refunds=refunds
                       isFetching=isFetching
-                      collection="Orders"}}
+                      collection="Orders"
+                      hasRefundingEnabled=hasRefundingEnabled}}
           </div>
         </div>
 
@@ -59,36 +60,37 @@
           </div>
           <div>
             {{#if paymentCaptured}}
-              <div class="flex refund-container">
-              <div class="form-group order-summary-form-group">
-                <div class="invoice-details">
-                  {{> React refundInputProps}}
+              {{#if hasRefundingEnabled}}
+                <div class="flex refund-container">
+                <div class="form-group order-summary-form-group">
+                  <div class="invoice-details">
+                    {{> React refundInputProps}}
+                  </div>
+
                 </div>
-
-              </div>
-              <button
-                class="btn btn-primary flex-item-fill refund-button"
-                type="button"
-                data-event-action="applyRefund"
-                {{refundSubmitDisabled}}
-              >
-                <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
-                <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i>
-              </button>
-            </div>
-
-            {{#if showAfterPaymentCaptured}}
                 <button
-                  class="btn btn-danger"
+                  class="btn btn-primary flex-item-fill refund-button"
                   type="button"
-                  data-event-action="cancelOrder"
-                  style="margin-bottom: 10px"
-                  data-i18n="order.cancelOrderLabel"
+                  data-event-action="applyRefund"
+                  {{refundSubmitDisabled}}
                 >
-                  Cancel Order
+                  <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
+                  <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i>
                 </button>
-            {{/if}}
-            <div class="alert alert-danger hidden">Oh! Snap</div>
+              </div>
+              {{/if}}
+
+              {{#if showAfterPaymentCaptured}}
+                  <button
+                    class="btn btn-danger cancel-order-btn"
+                    type="button"
+                    data-event-action="cancelOrder"
+                    data-i18n="order.cancelOrderLabel"
+                  >
+                    Cancel Order
+                  </button>
+              {{/if}}
+              <div class="alert alert-danger hidden">Oh! Snap</div>
 
 
             {{/if}}

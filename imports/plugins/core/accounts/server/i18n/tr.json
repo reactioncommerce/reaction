@@ -10,13 +10,19 @@
           "accountsDescription": "Hesap Ayarları"
         },
         "settings": {
+          "continue": "Devam etmek",
+          "cancel": "Vazgeç",
+          "changeOwner": "Sahibi Değiştir",
+          "changeShopOwnerWarn": "Dükkan sahibini değiştirmek üzeresin. Geçerli sahib değiştirilecek",
+          "changeMktOwnerWarn": "Marketplace sahibini değiştirmek üzeresiniz. Geçerli sahib değiştirilecek",
           "accountsSettingsLabel": "Hesaplar",
           "accountsSettingsTitle": "Hesaplar",
           "accountsSettingsDescription": "Hesap Ayarları"
         },
         "groupsInvite": {
           "name": "John Smith",
-          "email": "johnsmith@reactioncommerce.com"
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Bir kullanıcıyı doğrudan Sahibin olarak davet edemezsiniz. Mevcut bir yöneticiyi tanıtın"
         }
       }
     }

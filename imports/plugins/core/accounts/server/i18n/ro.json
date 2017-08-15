@@ -10,13 +10,19 @@
           "accountsDescription": "Setările contului"
         },
         "settings": {
+          "continue": "Continua",
+          "cancel": "Anulează",
+          "changeOwner": "Schimbați proprietarul",
+          "changeShopOwnerWarn": "Sunteți pe punctul de a schimba proprietarul magazinului. Actualul proprietar va fi înlocuit",
+          "changeMktOwnerWarn": "Sunteți pe punctul de a schimba proprietarul Marketplace. Actualul proprietar va fi înlocuit",
           "accountsSettingsLabel": "Conturi",
           "accountsSettingsTitle": "Conturi",
           "accountsSettingsDescription": "Setările contului"
         },
         "groupsInvite": {
           "name": "John Smith",
-          "email": "johnsmith@reactioncommerce.com"
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Nu puteți invita direct un utilizator ca proprietar. Promovați un administrator existent"
         }
       }
     }

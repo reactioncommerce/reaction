@@ -10,13 +10,19 @@
           "accountsDescription": "Ρυθμίσεις λογαριασμού"
         },
         "settings": {
+          "continue": "Συνεχίζω",
+          "cancel": "Ακύρωση",
+          "changeOwner": "Αλλαγή ιδιοκτήτη",
+          "changeShopOwnerWarn": "Πρόκειται να αλλάξετε τον ιδιοκτήτη του καταστήματος. Ο τρέχων κάτοχος θα αντικατασταθεί",
+          "changeMktOwnerWarn": "Πρόκειται να αλλάξετε τον κάτοχο του Marketplace. Ο τρέχων κάτοχος θα αντικατασταθεί",
           "accountsSettingsLabel": "λογαριασμοί",
           "accountsSettingsTitle": "λογαριασμοί",
           "accountsSettingsDescription": "Ρυθμίσεις λογαριασμού"
         },
         "groupsInvite": {
           "name": "Τζον Σμιθ",
-          "email": "Johnsmith@reactioncommerce.com"
+          "email": "Johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Δεν μπορείτε να καλέσετε απευθείας έναν χρήστη ως κάτοχο. Προωθήστε έναν υπάρχοντα διαχειριστή"
         }
       }
     }

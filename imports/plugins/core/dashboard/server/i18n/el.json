@@ -8,6 +8,7 @@
           "dashboardLabel": "Ταμπλό"
         },
         "dashboard": {
+          "coreTitle": "Ταμπλό",
           "packageGroupActionsLabel": "Δράσεις",
           "packageGroupSettingsLabel": "Ρυθμίσεις"
         },
