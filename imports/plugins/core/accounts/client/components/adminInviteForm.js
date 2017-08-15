@@ -23,8 +23,7 @@ class AdminInviteForm extends Component {
       groups: groupsInvitable,
       name: "",
       email: "",
-      group: getDefaultUserInviteGroup(groups),
-      alertArray: []
+      group: getDefaultUserInviteGroup(groups)
     };
 
     this.onChange = this.onChange.bind(this);
