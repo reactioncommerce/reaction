@@ -88,7 +88,9 @@ Tracker.autorun(() => {
 
 Tracker.autorun(() => {
   // Reload Packages sub if shopId changes
-  if (Reaction.getShopId()) {
+  // We have a persistent subscription to the primary shop's packages,
+  // so don't refresh sub if we're updating to primaryShopId sub
+  if (Reaction.getShopId() && Reaction.getShopId() !== Reaction.getPrimaryShopId()) {
     Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages", Reaction.getShopId());
   }
 });
