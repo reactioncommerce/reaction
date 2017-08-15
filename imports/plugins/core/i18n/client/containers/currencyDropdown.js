@@ -1,18 +1,13 @@
-import React, { Component } from "react";
+import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Match } from "meteor/check";
 import { Reaction } from "/client/api";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Cart, Shops } from "/lib/collections";
-import Currency from "../components/currency";
+import CurrencyDropdown from "../components/currencyDropdown";
 
-class CurrencyContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange = (value) => {
+const handlers = {
+  handleChange(value) {
     const currency = value.split(" ");
     const currencyName = currency[0];
     //
@@ -28,25 +23,13 @@ class CurrencyContainer extends Component {
     // Attach changed currency to this users cart
     Meteor.call("cart/setUserCurrency", cart._id, currencyName);
   }
-
-  render() {
-    return (
-      <div>
-        <Currency
-          {...this.props}
-          handleChange={this.handleChange}
-        />
-      </div>
-    );
-  }
-}
+};
 
 const composer = (props, onData) => {
   let currentCurrency = "USD $";
   const currencies = [];
 
-  if (Reaction.Subscriptions.PrimaryShop.ready() &&
-      Reaction.Subscriptions.MerchantShops.ready() && Meteor.user()) {
+  if (Reaction.Subscriptions.PrimaryShop.ready() && Reaction.Subscriptions.MerchantShops.ready() && Meteor.user()) {
     let shopId;
 
     // Choose shop to get language from
@@ -56,14 +39,13 @@ const composer = (props, onData) => {
       shopId = Reaction.getPrimaryShopId();
     }
 
-    const shop = Shops.findOne({
-      _id: shopId
-    }, {
+    const shop = Shops.findOne(shopId, {
       fields: {
         currencies: 1,
         currency: 1
       }
     });
+
     if (Match.test(shop, Object) && shop.currency) {
       const localStorageCurrency = localStorage.getItem("currency");
       const locale = Reaction.Locale.get();
@@ -99,10 +81,15 @@ const composer = (props, onData) => {
     }
   }
 
-  onData(null, {
-    currentCurrency: currentCurrency,
-    currencies: currencies
-  });
+  onData(null, { currentCurrency, currencies });
 };
 
-export default composeWithTracker(composer)(CurrencyContainer);
+registerComponent("CurrencyDropdown", CurrencyDropdown, [
+  composeWithTracker(composer),
+  withProps(handlers)
+]);
+
+export default compose(
+  composeWithTracker(composer),
+  withProps(handlers)
+)(CurrencyDropdown);
