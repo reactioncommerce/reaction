@@ -5,7 +5,7 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 const creditCardClasses = {
   VISA: "fa fa-cc-visa",
   MAST: "fa fa-cc-mastercard",
-  DISC: "fa a-cc-discover",
+  DISC: "fa fa-cc-discover",
   AMEX: "fa fa-cc-amex"
 };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { Orders } from "/lib/collections";
@@ -6,7 +6,7 @@ import { Reaction, i18next } from "/client/api";
 import { Components } from "@reactioncommerce/reaction-components";
 
 
-class AddEmail extends React.Component {
+class AddEmail extends Component {
   constructor(props) {
     super(props);
     this.state = {
