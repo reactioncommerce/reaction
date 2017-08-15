@@ -267,72 +267,119 @@ class OrdersListContainer extends Component {
     }
   }
 
+  displayRegressionAlert = (selectedOrders, ordersToRegress, status, whichFalseState, falsePreviousStatuses, falseCurrentState, trueCurrentState) => {
+    const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
+    let orderText = "";
+
+    if (ordersToRegress > 1) {
+      orderText = "orders";
+    } else {
+      orderText = "order";
+    }
+
+    Alerts.alert({
+      text: i18next.t("order.bulkOrdersRegressionAlert", { ordersToRegress: ordersToRegress, orderText: orderText, status: capitalizeStatus }),
+      type: "warning",
+      showCancelButton: true,
+      showCloseButton: true,
+      allowOutsideClick: false,
+      confirmButtonText: i18next.t("order.approveBulkOrderActionRegression"),
+      cancelButtonText: i18next.t("order.cancelBulkOrderAction")
+    }, (regress) => {
+      if (regress) {
+        if (falsePreviousStatuses) {
+          this.displayAlert(selectedOrders, status, whichFalseState, falsePreviousStatuses, falseCurrentState, trueCurrentState);
+        } else {
+          this.shippingStatusUpdateCall(selectedOrders, status);
+        }
+      }
+    });
+  }
+
   pickedShippingStatus = (selectedOrders, status) => {
-    let isPicked = false;
+    let isNotPicked = 0;
+    let isPicked = 0;
+    let ordersToRegress = 0;
 
     selectedOrders.forEach((order) => {
       if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/picked")) {
-        if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
-          isPicked = true;
-        } else {
-          isPicked = false;
-        }
+        ordersToRegress++;
       } else {
-        isPicked = false;
+        if (order.shipping[0].workflow.status === "new") {
+          isNotPicked++;
+        } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+          isPicked++;
+        }
       }
     });
 
-    if (isPicked) {
-      Alerts.alert({
-        text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
-      });
-    } else this.shippingStatusUpdateCall(selectedOrders, status);
+    if (ordersToRegress) {
+      this.displayRegressionAlert(selectedOrders, ordersToRegress, status);
+    } else {
+      if (isNotPicked) {
+        this.shippingStatusUpdateCall(selectedOrders, status);
+      } else if (!isNotPicked && isPicked) {
+        Alerts.alert({
+          text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
+        });
+      }
+    }
   }
 
   packedShippingStatus = (selectedOrders, status) => {
     let isNotPicked = 0;
     let isNotPacked = 0;
     let isPacked = 0;
+    let ordersToRegress = 0;
     const whichFalseState = shippingStates.picked;
 
     selectedOrders.forEach((order) => {
-      if (order.shipping[0].workflow.status === "new") {
-        isNotPicked++;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
-        isNotPacked++;
+      if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/packed")) {
+        ordersToRegress++;
       } else {
-        if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
+        if (order.shipping[0].workflow.status === "new") {
+          isNotPicked++;
+        } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+          isNotPacked++;
+        } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
           isPacked++;
         }
       }
     });
 
-    this.displayAlert(selectedOrders, status, whichFalseState, isNotPicked, isNotPacked, isPacked);
+    if (ordersToRegress) {
+      this.displayRegressionAlert(selectedOrders, ordersToRegress, status, whichFalseState, isNotPicked, isNotPacked, isPacked);
+    } else this.displayAlert(selectedOrders, status, whichFalseState, isNotPicked, isNotPacked, isPacked);
   }
 
   labeledShippingStatus = (selectedOrders, status) => {
     let isNotPacked = 0;
     let isNotLabeled = 0;
     let isLabeled = 0;
+    let ordersToRegress = 0;
     let whichFalseState = "";
 
     selectedOrders.forEach((order) => {
-      if (order.shipping[0].workflow.status === "new") {
-        isNotPacked++;
-        whichFalseState = shippingStates.picked;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
-        isNotPacked++;
-        whichFalseState = shippingStates.packed;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
-        isNotLabeled++;
+      if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/labeled")) {
+        ordersToRegress++;
       } else {
-        if (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled") {
+        if (order.shipping[0].workflow.status === "new") {
+          isNotPacked++;
+          whichFalseState = shippingStates.picked;
+        } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+          isNotPacked++;
+          whichFalseState = shippingStates.packed;
+        } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
+          isNotLabeled++;
+        } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled") {
           isLabeled++;
         }
       }
     });
 
-    this.displayAlert(selectedOrders, status, whichFalseState, isNotPacked, isNotLabeled, isLabeled);
+    if (ordersToRegress) {
+      this.displayRegressionAlert(selectedOrders, ordersToRegress, status, whichFalseState, isNotPacked, isNotLabeled, isLabeled);
+    } else this.displayAlert(selectedOrders, status, whichFalseState, isNotPacked, isNotLabeled, isLabeled);
   }
 
 
@@ -354,10 +401,8 @@ class OrdersListContainer extends Component {
         whichFalseState = shippingStates.labeled;
       } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled") {
         isNotShipped++;
-      } else {
-        if (order.shipping[0].workflow.status === "coreOrderWorkflow/shipped") {
-          isShipped++;
-        }
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/shipped") {
+        isShipped++;
       }
     });
 

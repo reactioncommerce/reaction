@@ -154,11 +154,13 @@
         "shipped": "Shipped",
         "generatePickingReport": "Generate Picking Report",
         "generateLabel": "Generate Label",
-        "approveBulkOrderAction": "Yes, Select All Orders",
+        "approveBulkOrderAction": "Yes, Set All Select All Orders",
+        "approveBulkOrderActionRegression": "Yes, Regress All Selected Orders",
         "cancelBulkOrderAction": "No, Cancel",
         "orderAlreadyInState": "{{orderText}} already been {{status}}",
         "orderSetToState": "{{orderNumber}} {{orderText}} set to {{status}}",
-        "skippedBulkOrdersAlert": "You've requested that {{selectedOrders}} {{orderText}} be set to the '{{status}}' status, but {{numberOfSkippedOrders}} of these orders {{skippedOrdersText}} not in the '{{skippedState}}' state and would skip all steps leading up to the '{{status}}' state. Are you sure you want to do this?"
+        "skippedBulkOrdersAlert": "You've requested that {{selectedOrders}} {{orderText}} be set to the '{{status}}' status, but {{numberOfSkippedOrders}} of these orders {{skippedOrdersText}} not in the '{{skippedState}}' state and would skip all steps leading up to the '{{status}}' state. Are you sure you want to do this?",
+        "bulkOrdersRegressionAlert": "You're about to regress {{ordersToRegress}} {{orderText}} back to the '{{status}}' state. Are you sure you want to continue with this operation?"
       },
       "orderShipping": {
         "shipTo": "Ship To",
