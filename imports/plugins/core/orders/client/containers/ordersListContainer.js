@@ -28,7 +28,13 @@ class OrdersListContainer extends Component {
       picked: false,
       packed: false,
       labeled: false,
-      shipped: false
+      shipped: false,
+      isLoading: {
+        picked: false,
+        packed: false,
+        labeled: false,
+        shipped: false
+      }
     };
   }
 
@@ -142,6 +148,11 @@ class OrdersListContainer extends Component {
    * @return {null} no return value
    */
   shippingStatusUpdateCall = (selectedOrders, status) => {
+    this.setState({
+      isLoading: {
+        [status]: true
+      }
+    });
     let orderText;
 
     if (selectedOrders.length > 1) {
@@ -166,7 +177,10 @@ class OrdersListContainer extends Component {
             type: "success"
           });
           this.setState({
-            [status]: true
+            [status]: true,
+            isLoading: {
+              [status]: false
+            }
           });
         }
       });
@@ -369,6 +383,7 @@ class OrdersListContainer extends Component {
         packed={this.state.packed}
         labeled={this.state.labeled}
         picked={this.state.picked}
+        isLoading={this.state.isLoading}
       />
     );
   }

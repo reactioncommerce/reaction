@@ -8,6 +8,7 @@ class OrdersList extends Component {
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
+    isLoading: PropTypes.object,
     labeled: PropTypes.bool,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
@@ -77,6 +78,7 @@ class OrdersList extends Component {
               labeled={this.props.labeled}
               shipped={this.props.shipped}
               setShippingStatus={this.props.setShippingStatus}
+              isLoading={this.props.isLoading}
             />
           </div>
         </div>

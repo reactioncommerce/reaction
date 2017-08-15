@@ -38,6 +38,7 @@ class OrderTable extends Component {
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
+    isLoading: PropTypes.object,
     isOpen: PropTypes.bool,
     labeled: PropTypes.bool,
     multipleSelect: PropTypes.bool,
@@ -317,6 +318,7 @@ class OrderTable extends Component {
             selectAllOrders={this.props.selectAllOrders}
             selectedItems={this.props.selectedItems}
             setShippingStatus={this.props.setShippingStatus}
+            isLoading={this.props.isLoading}
           />
         }
         <SortableTable

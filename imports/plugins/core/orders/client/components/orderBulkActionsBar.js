@@ -4,6 +4,7 @@ import { Translation, Checkbox, Button, Icon, List, ListItem } from "@reactionco
 
 class OrderBulkActionsBar extends Component {
     static propTypes = {
+      isLoading: PropTypes.object,
       labeled: PropTypes.bool,
       multipleSelect: PropTypes.bool,
       orders: PropTypes.array,
@@ -22,7 +23,8 @@ class OrderBulkActionsBar extends Component {
         picked: props.picked,
         packed: props.packed,
         labeled: props.labeled,
-        shipped: props.shipped
+        shipped: props.shipped,
+        isLoading: props.isLoading
       };
     }
 
@@ -31,7 +33,8 @@ class OrderBulkActionsBar extends Component {
         picked: nextProps.picked,
         packed: nextProps.packed,
         labeled: nextProps.labeled,
-        shipped: nextProps.shipped
+        shipped: nextProps.shipped,
+        isLoading: nextProps.isLoading
       });
     }
 
@@ -40,6 +43,13 @@ class OrderBulkActionsBar extends Component {
         renderFlowList: !this.state.renderFlowList
       });
       this.setListItemsToDefault();
+    }
+
+    renderLoadingSpinner(status) {
+      return this.state.isLoading[status] ?
+        <Icon className="bulk-actions-icons-select" icon="fa fa-spinner fa-pulse" />
+        :
+        <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>;
     }
 
     renderShippingFLowList() {
@@ -59,7 +69,8 @@ class OrderBulkActionsBar extends Component {
                   <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
                 </div>
                 :
-                <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>}
+                this.renderLoadingSpinner("picked")
+              }
             </ListItem>
             <ListItem
               label="Packed"
@@ -71,7 +82,7 @@ class OrderBulkActionsBar extends Component {
               {this.state.packed ?
                 <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
                 :
-                <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>
+                this.renderLoadingSpinner("packed")
               }
             </ListItem>
             <ListItem
@@ -87,7 +98,7 @@ class OrderBulkActionsBar extends Component {
                   <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
                 </div>
                 :
-                <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>
+                this.renderLoadingSpinner("labeled")
               }
             </ListItem>
             <ListItem
@@ -103,7 +114,7 @@ class OrderBulkActionsBar extends Component {
                   <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
                 </div>
                 :
-                <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>
+                this.renderLoadingSpinner("shipped")
               }
             </ListItem>
           </List>
