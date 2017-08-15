@@ -555,6 +555,7 @@ export function inviteShopMember(options) {
 
   const group = Groups.findOne({ _id: groupId }) || {};
 
+  // check to ensure that invitee has roles required to perform the invitation
   if (!Reaction.canInviteToGroup({ group, user: Meteor.user() })) {
     throw new Meteor.Error(403, "cannot invite to group");
   }

@@ -24,7 +24,11 @@
         "groupsInvite": {
           "name": "John Smith",
           "email": "example@localhost",
-          "inviteOwnerError": "You cannot directly invite a user as Owner. Promote an existing admin"
+          "inviteOwnerError": "You cannot directly invite a user as Owner. Owner role can only be transferred to existing admin",
+          "groupRequired": "A group is required to invite an admin",
+          "cannotInvite": "You cannot invite to group",
+          "unableToSendInvitationEmail": "Unable to send invitation email",
+          "errorSendingInvite": "An error occured while sending invite"
         }
       }
     }

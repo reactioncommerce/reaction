@@ -55,44 +55,38 @@ class AdminInviteForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const { name, email, group, alertId } = this.state;
+    const alertOptions = { placement: alertId, id: alertId, autoHide: 4000 };
 
-    // if no group is select, show alert that group is required to send invitation
+    // if no group is selected, show alert that group is required to send invitation
     if (!group._id) {
-      return this.setState({
-        alertArray: [{
-          mode: "danger",
-          options: { autoHide: 4000, i18nKey: "accountsUI.error.groupRequired" }
-        }]
-      });
+      return ReactionAlerts.add(
+        "A group is required to invite an admin",
+        "danger",
+        Object.assign({}, alertOptions, { i18nKey: "admin.groupsInvite.groupRequired" })
+      );
     }
 
     const options = { email, name, shopId: Reaction.getShopId(), groupId: group._id  };
-    const alertOptions = { placement: alertId, id: alertId, autoHide: 4000 };
-
     return Meteor.call("accounts/inviteShopMember", options, (error, result) => {
-      let message = "";
       if (error) {
         let messageKey;
+        // switching to use of package i18n keys (groupsInvite. namespace)
         if (error.reason === "Unable to send invitation email.") {
-          messageKey = "accountsUI.error.unableToSendInvitationEmail";
-        } else if (error.reason === "A user with this email address already exists") {
-          messageKey = "accountsUI.error.userWithEmailAlreadyExists";
+          messageKey = "admin.groupsInvite.unableToSendInvitationEmail";
         } else if (error.reason === "cannot directly invite owner") {
           messageKey = "admin.groupsInvite.inviteOwnerError";
         } else if (error.reason === "cannot invite to group") {
           messageKey = "admin.groupsInvite.cannotInvite";
-        } else if (error.reason === "") {
-          message = error.reason;
         } else {
-          messageKey = "accountsUI.error.errorSendingEmail";
+          messageKey = "admin.groupsInvite.errorSendingInvite";
         }
-        ReactionAlerts.add(message, "danger", Object.assign({}, alertOptions, { i18nKey: messageKey }));
+        ReactionAlerts.add(error.reason, "danger", Object.assign({}, alertOptions, { i18nKey: messageKey }));
       }
 
       if (result) {
         this.setState({ name: "", email: "" });
         ReactionAlerts.add(
-          null,
+          "Invite Successful",
           "success",
           Object.assign({}, alertOptions, { i18nKey: "accountsUI.info.invitationSent" })
         );

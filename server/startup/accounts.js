@@ -110,6 +110,7 @@ export default function () {
       if (!user.services) {
         const group = Collections.Groups.findOne({ slug: "guest", shopId });
         const defaultGuestRoles = group.permissions;
+        // if no defaultGuestRoles retrieved from DB, use the default Reaction set
         roles[shopId] = defaultGuestRoles || Reaction.defaultVisitorRoles;
         additionals.groups = [group._id];
       } else {
@@ -119,6 +120,7 @@ export default function () {
         } else {
           group = Collections.Groups.findOne({ slug: "customer", shopId });
         }
+        // if no group or customer permissions retrieved from DB, use the default Reaction customer set
         roles[shopId] = group.permissions || Reaction.defaultCustomerRoles;
         additionals.groups = [group._id];
         // also add services with email defined to user.emails[]

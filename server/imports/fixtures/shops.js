@@ -125,7 +125,7 @@ export function createShopFactory() {
     ],
     timezone: "US/Pacific",
     metafields: [],
-    // One shop in marketplace is set as default shop. This is used to control marketplace settings.
+    // one shop in the marketplace is required as default shop. This is used to control marketplace settings.
     // Not having a primary shop will cause test failures
     shopType: "primary",
     createdAt: new Date,

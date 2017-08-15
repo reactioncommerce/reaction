@@ -76,8 +76,7 @@ export default {
 
     /* Get all defined roles from the DB minus "anonymous" because that gets removed from a user on register
      * if it's not removed, it causes mismatch between roles in user (i.e Meteor.user().roles[shopId]) vs that in
-     * the user's group (Group.find(usergroup).permissions)
-     */
+     * the user's group (Group.find(usergroup).permissions) */
     let ownerRoles = Roles
       .getAllRoles().fetch()
       .map(role => role.name)
@@ -104,10 +103,8 @@ export default {
       Object.keys(roles).forEach(groupKeys => {
         const groupExists = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === shop._id);
         if (!groupExists) { // create group only if it doesn't exist before
-          // use roles of default groups from primary shop; if not found use app defaults
-          const primaryShopGroup = allGroups.find(
-            grp => grp.slug === groupKeys && grp.shopId === self.getPrimaryShopId()
-          );
+          // get roles from the default groups of the primary shop; we try to use this first before using default roles
+          const primaryShopGroup = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === self.getPrimaryShopId());
           Logger.debug(`creating group ${groupKeys} for shop ${shop.name}`);
           Groups.insert({
             name: groupKeys,
@@ -651,10 +648,10 @@ export default {
       sendVerificationEmail(accountId);
     }
 
-    //
-    // Set Default Roles
-    //
+    // Set default owner roles
     const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
+    // Join other roles with defaultAdminRoles for owner.
+    // this is needed as owner should not just have "owner" but all other defined roles
     let ownerRoles = defaultAdminRoles.concat(this.defaultCustomerRoles);
     ownerRoles = _.uniq(ownerRoles);
 

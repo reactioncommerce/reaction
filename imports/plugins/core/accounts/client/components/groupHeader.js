@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 const GroupHeader = ({ columnName }) => {
-  const showSortItems = false; // to be used to show sort icons. when filters fields are available, we'll show icons
+  const showSortItems = false; // to be used to show sort icons. When filters fields are available, we'll show icons
 
   if (columnName === "name") {
     return (

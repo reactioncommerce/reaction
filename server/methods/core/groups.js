@@ -83,11 +83,12 @@ Meteor.methods({
 
     // 1. Update the group data
     const update = newGroupData;
-    delete update.slug; // slug remains constant; used as key in querying
+    delete update.slug; // slug remains constant because it's used as key in querying. So we remove it if it was passed
 
     const group = Groups.findOne({ _id: groupId }) || {};
 
-    if (group.slug === "owner") { // prevent edits on owner
+    // prevent edits on owner. Owner groups is the default containing all roles, and as such should be untouched
+    if (group.slug === "owner") {
       throw new Meteor.Error(400, "Invalid request");
     }
 

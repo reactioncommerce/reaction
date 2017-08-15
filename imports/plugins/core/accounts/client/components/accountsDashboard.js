@@ -6,8 +6,8 @@ import { default as sortUsersIntoGroups, sortGroups } from "../helpers/accountsH
 class AccountsDashboard extends Component {
   static propTypes = {
     accounts: PropTypes.array,
-    adminGroups: PropTypes.array,
-    groups: PropTypes.array
+    adminGroups: PropTypes.array, // only admin groups
+    groups: PropTypes.array // all groups including non-admin default groups
   };
 
   constructor(props) {
