@@ -125,6 +125,7 @@ export function createShopFactory() {
     ],
     timezone: "US/Pacific",
     metafields: [],
+    shopType: "primary",
     createdAt: new Date,
     updatedAt: new Date()
   });
