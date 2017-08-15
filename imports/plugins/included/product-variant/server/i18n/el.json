@@ -1,0 +1,11 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "productGrid": {
+        "noProductsFound": "Δεν βρέθηκαν προϊόντα"
+      }
+    }
+  }
+}]

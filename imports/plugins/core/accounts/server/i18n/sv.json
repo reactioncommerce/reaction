@@ -10,13 +10,19 @@
           "accountsDescription": "Kontoinställningar"
         },
         "settings": {
+          "continue": "Fortsätta",
+          "cancel": "Avboka",
+          "changeOwner": "Byt ägare",
+          "changeShopOwnerWarn": "Du håller på att byta affärsägare. Nuvarande ägare kommer att ersättas",
+          "changeMktOwnerWarn": "Du håller på att ändra marknadsplatsägaren. Nuvarande ägare kommer att ersättas",
           "accountsSettingsLabel": "Konton",
           "accountsSettingsTitle": "Konton",
           "accountsSettingsDescription": "Kontoinställningar"
         },
         "groupsInvite": {
           "name": "John Smith",
-          "email": "johnsmith@reactioncommerce.com"
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Du kan inte direkt bjuda in en användare som ägare. Främja en befintlig admin"
         }
       }
     }
