@@ -1,61 +1,64 @@
 import React, { Component } from "react";
+import { compose } from "recompose";
 import moment from "moment-timezone";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { Countries } from "/client/collections";
 import { Shops } from "/lib/collections";
 import LocalizationSettings from "../components/localizationSettings";
 
-class LocalizationSettingsContainer extends Component {
-  static propTypes = LocalizationSettings.propTypes
+const wrapComponent = (Comp) => (
+  class LocalizationSettingsContainer extends Component {
+    static propTypes = LocalizationSettings.propTypes
 
-  handleUpdateLanguageConfiguration = (event, isChecked, name) => {
-    const language = this.props.languages.find((l) => l.value === name);
+    handleUpdateLanguageConfiguration = (event, isChecked, name) => {
+      const language = this.props.languages.find((l) => l.value === name);
 
-    if (language) {
-      Meteor.call("shop/updateLanguageConfiguration", language.value, isChecked);
+      if (language) {
+        Meteor.call("shop/updateLanguageConfiguration", language.value, isChecked);
+      }
+    }
+
+    handleUpdateCurrencyConfiguration = (event, isChecked, name) => {
+      Meteor.call("shop/updateCurrencyConfiguration", name, isChecked);
+    }
+
+    handleSubmit = (doc) => {
+      Shops.update({
+        _id: doc._id
+      }, {
+        $set: {
+          timezone: doc.timezone,
+          currency: doc.currency,
+          baseUOM: doc.baseUOM,
+          language: doc.language
+        }
+      });
+    }
+
+    handleEnableAllLanguages = (isEnabled) => {
+      Meteor.call("shop/updateLanguageConfiguration", "all", isEnabled);
+    }
+
+    handleEnableAllCurrencies = (isEnabled) => {
+      Meteor.call("shop/updateCurrencyConfiguration", "all", isEnabled);
+    }
+
+    render() {
+      return (
+        <Comp
+          {...this.props}
+          onEnableAllCurrencies={this.handleEnableAllCurrencies}
+          onEnableAllLanguages={this.handleEnableAllLanguages}
+          onUpdateCurrencyConfiguration={this.handleUpdateCurrencyConfiguration}
+          onUpdateLanguageConfiguration={this.handleUpdateLanguageConfiguration}
+          onUpdateLocalization={this.handleSubmit}
+        />
+      );
     }
   }
-
-  handleUpdateCurrencyConfiguration = (event, isChecked, name) => {
-    Meteor.call("shop/updateCurrencyConfiguration", name, isChecked);
-  }
-
-  handleSubmit = (doc) => {
-    Shops.update({
-      _id: doc._id
-    }, {
-      $set: {
-        timezone: doc.timezone,
-        currency: doc.currency,
-        baseUOM: doc.baseUOM,
-        language: doc.language
-      }
-    });
-  }
-
-  handleEnableAllLanguages = (isEnabled) => {
-    Meteor.call("shop/updateLanguageConfiguration", "all", isEnabled);
-  }
-
-  handleEnableAllCurrencies = (isEnabled) => {
-    Meteor.call("shop/updateCurrencyConfiguration", "all", isEnabled);
-  }
-
-  render() {
-    return (
-      <LocalizationSettings
-        {...this.props}
-        onEnableAllCurrencies={this.handleEnableAllCurrencies}
-        onEnableAllLanguages={this.handleEnableAllLanguages}
-        onUpdateCurrencyConfiguration={this.handleUpdateCurrencyConfiguration}
-        onUpdateLanguageConfiguration={this.handleUpdateLanguageConfiguration}
-        onUpdateLocalization={this.handleSubmit}
-      />
-    );
-  }
-}
+);
 
 function composer(props, onData) {
   const languages = [];
@@ -139,6 +142,12 @@ function composer(props, onData) {
   });
 }
 
-const decoratedComponent = composeWithTracker(composer)(LocalizationSettingsContainer);
+registerComponent("i18nSettings", LocalizationSettings, [
+  composeWithTracker(composer),
+  wrapComponent
+]);
 
-export default decoratedComponent;
+export default compose(
+  composeWithTracker(composer),
+  wrapComponent
+)(LocalizationSettings);

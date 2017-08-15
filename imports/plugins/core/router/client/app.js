@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { Switch } from "react-router-dom";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, Router } from "/client/api";
 import ToolbarContainer from "/imports/plugins/core/dashboard/client/containers/toolbarContainer";
@@ -67,7 +68,9 @@ class App extends Component {
             <ConnectedToolbarComponent data={routeData} />
           </div>
           <div style={styles.scrollableContainer}>
-            {this.props.children}
+            <Switch>
+              {this.props.children}
+            </Switch>
           </div>
         </div>
         {this.props.hasDashboardAccess && <ConnectedAdminViewComponent />}
@@ -83,7 +86,7 @@ class App extends Component {
     });
 
     const currentRoute = this.props.currentRoute;
-    const layout = currentRoute.route.options.layout;
+    const layout = currentRoute && currentRoute.route && currentRoute.route.options &&  currentRoute.route.options.layout;
 
     if (this.isAdminApp && layout !== "printLayout") {
       return this.renderAdminApp();
@@ -94,7 +97,9 @@ class App extends Component {
         className={pageClassName}
         style={styles.customerApp}
       >
-        {this.props.children}
+        <Switch>
+          {this.props.children}
+        </Switch>
       </div>
     );
   }

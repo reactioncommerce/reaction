@@ -1,19 +1,33 @@
-import Immutable from "immutable";
+/* eslint-disable no-console */
+import {
+  Components,
+  getComponent as newGetComponent,
+  registerComponent as newRegisterComponent
+} from "@reactioncommerce/reaction-components/components";
 
-let registeredComponents = Immutable.Map();
 
 export function registerComponent(componentInfo) {
-  registeredComponents = registeredComponents.set(
-    componentInfo.name,
-    componentInfo
-  );
+  console.warn("DEPRECATED registerComponent(). Use new implementation. see: https://docs.reactioncommerce.com/reaction-docs/master/components-api");
+
+  newRegisterComponent(componentInfo.name, componentInfo.component);
 }
 
 export function getComponent(name) {
-  const componentInfo = registeredComponents.get(name);
-  return componentInfo && componentInfo.component || null;
+  console.warn("DEPRECATED getComponent(). Use new implementation. see: https://docs.reactioncommerce.com/reaction-docs/master/components-api");
+
+  let component = null;
+
+  try {
+    component = newGetComponent(name);
+  } catch (e) {
+    component = null;
+  } finally {
+    return component;
+  }
 }
 
 export function getAllComponents() {
-  return registeredComponents.toObject();
+  console.warn("DEPRECATED getAllComponents(). Use new implementation. see: https://docs.reactioncommerce.com/reaction-docs/master/components-api");
+
+  return Components;
 }

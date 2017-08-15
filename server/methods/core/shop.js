@@ -47,7 +47,7 @@ Meteor.methods({
       shop.shopType = "merchant";
     }
 
-    // identify a shop admin
+    // identify a shop owner
     const userId = shopAdminUserId || currentUser._id;
 
     // ensure unique id and shop name

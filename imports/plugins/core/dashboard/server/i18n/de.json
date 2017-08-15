@@ -8,6 +8,7 @@
           "dashboardLabel": "Armaturenbrett"
         },
         "dashboard": {
+          "coreTitle": "Armaturenbrett",
           "packageGroupActionsLabel": "Aktionen",
           "packageGroupSettingsLabel": "Einstellungen"
         },

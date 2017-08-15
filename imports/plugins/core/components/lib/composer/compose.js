@@ -21,12 +21,10 @@ export default function compose(dataLoader, options = {}) {
         super(props, ...args);
         this.state = {};
         this.propsCache = {};
-
-        this._subscribe(props);
       }
 
-      componentDidMount() {
-        this._mounted = true;
+      componentWillMount() {
+        this._subscribe(this.props);
       }
 
       componentWillReceiveProps(props) {
@@ -79,15 +77,6 @@ export default function compose(dataLoader, options = {}) {
           }
 
           const payload = { error, data };
-
-          if (!this._mounted) {
-            this.state = {
-              ...this.state,
-              ...payload
-            };
-            return;
-          }
-
           this.setState(payload);
         };
 
