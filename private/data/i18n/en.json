@@ -159,7 +159,6 @@
         "orderAlreadyInState": "{{orderText}} already been {{status}}",
         "orderSetToState": "{{orderNumber}} {{orderText}} set to {{status}}",
         "skippedBulkOrdersAlert": "You've requested that {{selectedOrders}} {{orderText}} be set to the '{{status}}' status, but {{numberOfSkippedOrders}} of these orders {{skippedOrdersText}} not in the '{{skippedState}}' state and would skip all steps leading up to the '{{status}}' state. Are you sure you want to do this?"
-        }
       },
       "orderShipping": {
         "shipTo": "Ship To",
