@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Cart, Media } from "/lib/collections";
@@ -71,13 +70,14 @@ Meteor.publish("Cart", function (sessionId, userId) {
 
 Meteor.publish("CartImages", function (cartItems) {
   check(cartItems, Array);
-  const productIds = _.uniq(cartItems.map(function (item) {
-    return item.product._id;
-  }));
 
-  const variantIds = _.uniq(cartItems.map(function (item) {
+  const productIds = [...new Set(cartItems.map(function (item) {
+    return item.product._id;
+  }))];
+
+  const variantIds = [...new Set(cartItems.map(function (item) {
     return item.variants._id;
-  }));
+  }))];
   const productImages = Media.find(
     { "$or":
       [{
