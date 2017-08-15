@@ -1,5 +1,13 @@
 [{
   "i18n": "he",
   "ns": "reaction-accounts",
-  "translation": { }
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "settings": {
+          "cancel": "בטל"
+        }
+      }
+    }
+  }
 }]
