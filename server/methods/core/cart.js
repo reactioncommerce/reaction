@@ -702,10 +702,8 @@ Meteor.methods({
       // to block because of notification errors
 
       if (order.email) {
-        console.log("sending email", order.email);
         Meteor.call("orders/sendNotification", Collections.Orders.findOne(orderId), (err) => {
           if (err) {
-            console.log("had an error", err);
             Logger.error(err, `Error in orders/sendNotification for order ${orderId}`);
           }
         });
@@ -1078,7 +1076,6 @@ Meteor.methods({
    * @return {String} returns update result
    */
   "cart/submitPayment": function (paymentMethods) {
-    // check(paymentMethods, [Reaction.Schemas.PaymentMethod]);
     if (Array.isArray((paymentMethods))) {
       check(paymentMethods, [Reaction.Schemas.PaymentMethod]);
     } else {

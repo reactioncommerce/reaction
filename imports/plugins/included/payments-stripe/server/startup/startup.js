@@ -4,6 +4,6 @@ Hooks.Events.add("afterCoreInit", () => {
   Reaction.addRolesToGroups({
     allShops: true,
     groups: ["customer", "guest"],
-    roles: ["stripe/connect/authorize", "stripe/connect/authorize"]
+    roles: ["stripe/connect/authorize"]
   });
 });
