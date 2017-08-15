@@ -334,13 +334,11 @@ class OrderTable extends Component {
           getTrGroupProps={getTrGroupProps}
           getPaginationProps={() => {
             return {
-              className: this.props.isOpen && this.props.selectedItems.length > 0 ?
-                "order-table-pagination-hidden" :
-                "order-table-pagination-visible"
+              className: "order-table-pagination-visible"
             };
           }}
           getTableProps={getTableProps}
-          showPaginationTop={true}
+          showPaginationTop={this.props.selectedItems.length ? false : true}
         />
       </div>
     );
