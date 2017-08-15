@@ -10,13 +10,19 @@
           "accountsDescription": "Kontoeinstellungen"
         },
         "settings": {
+          "continue": "Fortsetzen",
+          "cancel": "Abbrechen",
+          "changeOwner": "Besitzer wechseln",
+          "changeShopOwnerWarn": "Sie sind dabei, den Ladenbesitzer zu wechseln. Der derzeitige Besitzer wird ersetzt",
+          "changeMktOwnerWarn": "Sie sind dabei, den Marktbesitzer zu wechseln. Der derzeitige Besitzer wird ersetzt",
           "accountsSettingsLabel": "Buchhaltung",
           "accountsSettingsTitle": "Buchhaltung",
           "accountsSettingsDescription": "Kontoeinstellungen"
         },
         "groupsInvite": {
           "name": "John Smith",
-          "email": "Johnsmith@reactioncommerce.com"
+          "email": "Johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Sie können einen Benutzer nicht direkt als Besitzer einladen. Fördern Sie einen vorhandenen Admin"
         }
       }
     }

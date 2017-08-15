@@ -10,13 +10,19 @@
           "accountsDescription": "Thiết lập tài khoản"
         },
         "settings": {
+          "continue": "Tiếp tục",
+          "cancel": "Hủy bỏ",
+          "changeOwner": "Chủ sở hữu thay đổi",
+          "changeShopOwnerWarn": "Bạn sắp thay đổi chủ cửa hàng. Chủ sở hữu hiện tại sẽ được thay thế",
+          "changeMktOwnerWarn": "Bạn sắp thay đổi chủ sở hữu Thị trường. Chủ sở hữu hiện tại sẽ được thay thế",
           "accountsSettingsLabel": "tài khoản",
           "accountsSettingsTitle": "tài khoản",
           "accountsSettingsDescription": "Thiết lập tài khoản"
         },
         "groupsInvite": {
           "name": "John Smith",
-          "email": "Johnsmith@reactioncommerce.com"
+          "email": "Johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "Bạn không thể trực tiếp mời người dùng làm chủ sở hữu. Quảng bá một quản trị viên hiện có"
         }
       }
     }

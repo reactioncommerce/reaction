@@ -11,6 +11,7 @@ class Invoice extends Component {
     canMakeAdjustments: PropTypes.bool,
     discounts: PropTypes.bool,
     handleClick: PropTypes.func,
+    hasRefundingEnabled: PropTypes.bool,
     invoice: PropTypes.object,
     isFetching: PropTypes.bool,
     isOpen: PropTypes.bool,
@@ -45,10 +46,11 @@ class Invoice extends Component {
   }
 
   renderRefundsInfo() {
-    const { isFetching, refunds } = this.props;
+    const { hasRefundingEnabled, isFetching, refunds } = this.props;
+
     return (
       <div>
-        {isFetching &&
+        {(hasRefundingEnabled && isFetching) &&
           <div className="form-group order-summary-form-group">
             <strong>Loading Refunds</strong>
             <div className="invoice-details">

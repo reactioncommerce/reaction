@@ -10,6 +10,7 @@ class InvoiceActions extends Component {
     handleApprove: PropTypes.func,
     handleCapturePayment: PropTypes.func,
     handleRefund: PropTypes.func,
+    hasRefundingEnabled: PropTypes.bool,
     invoice: PropTypes.object,
     isCapturing: PropTypes.bool,
     isRefunding: PropTypes.bool,
@@ -60,47 +61,51 @@ class InvoiceActions extends Component {
     const { adjustedTotal } = this.props;
 
     return (
-      <div className="flex refund-container">
-        <div className="form-group order-summary-form-group">
-          <div className="invoice-details">
-            <NumericInput
-              numericType="currency"
-              value={this.state.value}
-              maxValue={adjustedTotal}
-              format={this.props.currency}
-              classNames={{
-                input: {
-                  amount: true
-                }
-              }}
-              onChange={(event, data)=>{
+      <div>
+        {this.props.hasRefundingEnabled &&
+          <div className="flex refund-container">
+            <div className="form-group order-summary-form-group">
+              <div className="invoice-details">
+                <NumericInput
+                  numericType="currency"
+                  value={this.state.value}
+                  maxValue={adjustedTotal}
+                  format={this.props.currency}
+                  classNames={{
+                    input: {
+                      amount: true
+                    }
+                  }}
+                  onChange={(event, data)=>{
+                    this.setState({
+                      value: data.numberValue
+                    });
+                  }}
+                />
+              </div>
+
+            </div>
+
+            <Button
+              className="flex-item-fill refund-button"
+              type="button"
+              status="primary"
+              bezelStyle="solid"
+              disabled={this.props.isRefunding || this.state.value === 0}
+              onClick={(event) => {
+                this.props.handleRefund(event, this.state.value);
                 this.setState({
-                  value: data.numberValue
+                  value: 0
                 });
               }}
-            />
+            >
+              {this.props.isRefunding ?
+                <span id="btn-refund-payment" data-i18n="order.applyRefund">Refunding <i className="fa fa-spinner fa-spin" /></span> :
+                <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
+              }
+            </Button>
           </div>
-
-        </div>
-
-        <Button
-          className="flex-item-fill refund-button"
-          type="button"
-          status="primary"
-          bezelStyle="solid"
-          disabled={this.props.isRefunding || this.state.value === 0}
-          onClick={(event) => {
-            this.props.handleRefund(event, this.state.value);
-            this.setState({
-              value: 0
-            });
-          }}
-        >
-          {this.props.isRefunding ?
-            <span id="btn-refund-payment" data-i18n="order.applyRefund">Refunding <i className="fa fa-spinner fa-spin" /></span> :
-            <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
-          }
-        </Button>
+        }
 
         {this.props.showAfterPaymentCaptured &&
           <Button

@@ -27,7 +27,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
   this.state.setDefault({
     isCapturing: false,
     isRefunding: false,
-    isFetching: true
+    isFetching: false
   });
 
   this.autorun(() => {
@@ -37,6 +37,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
 
     this.state.set("order", order);
     this.state.set("currency", shop.currencies[shop.currency]);
+    this.state.set("isFetching", true);
 
     if (order) {
       Meteor.call("orders/refunds/list", order, (error, result) => {

@@ -246,6 +246,14 @@ class InvoiceContainer extends Component {
       total: editedItems.reduce((acc, item) => acc + item.refundedTotal, 0)
     };
   }
+  hasRefundingEnabled() {
+    const order = this.state.order;
+    const paymentMethodId = order.billing[0].paymentMethod.paymentPackageId;
+    const paymentMethod = Packages.findOne({ _id: paymentMethodId });
+    const paymentMethodName = paymentMethod.name;
+    const isRefundable = paymentMethod.settings[paymentMethodName].support.includes("Refund");
+    return isRefundable;
+  }
 
   getSelectedItemsInfo = () => {
     const { editedItems } = this.state;
@@ -466,6 +474,7 @@ class InvoiceContainer extends Component {
           isAdjusted={this.isAdjusted}
           handleCapturePayment={this.handleCapturePayment}
           handleRefund={this.handleRefund}
+          hasRefundingEnabled={this.hasRefundingEnabled()}
 
           isOpen={this.state.isOpen}
           refunds={this.state.refunds}
