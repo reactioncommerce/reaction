@@ -49,6 +49,14 @@ export function getInvitableGroups(groups, canInviteToGroup) {
     .filter(grp => canInviteToGroup({ group: grp, user: Meteor.user() })) || [{}];
 }
 
+export function getDefaultUserInviteGroup(groups, user) {
+  let result;
+  result = groups.find(grp => user.groups.indexOf(grp._id) > -1);
+  if (result.slug === "owner") {
+    result = groups.find(grp => grp.slug === "shop manager");
+  }
+}
+
 export function getGravatar(user) {
   const options = {
     secure: true,

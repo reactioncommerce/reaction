@@ -92,6 +92,7 @@ describe("Group test", function () {
 
   it("should add a user to a group successfully and reference the id on the user account", function () {
     sandbox.stub(Reaction, "hasPermission", () => true);
+    sandbox.stub(Reaction, "canInviteToGroup", () => true);
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
 
@@ -104,6 +105,7 @@ describe("Group test", function () {
 
   it("should add a user to a group and update user's permissions", function () {
     sandbox.stub(Reaction, "hasPermission", () => true);
+    sandbox.stub(Reaction, "canInviteToGroup", () => true);
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
 
@@ -117,6 +119,7 @@ describe("Group test", function () {
 
   it("should remove a user from a group and update user's permissions to default customer", function () {
     sandbox.stub(Reaction, "hasPermission", () => true);
+    sandbox.stub(Reaction, "canInviteToGroup", () => true);
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
     spyOnMethod("removeUser", shop._id);
@@ -135,6 +138,7 @@ describe("Group test", function () {
 
   it("should ensure a user's permissions does not include roles from previous group", function () {
     sandbox.stub(Reaction, "hasPermission", () => true);
+    sandbox.stub(Reaction, "canInviteToGroup", () => true);
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
     spyOnMethod("updateGroup", shop._id);
@@ -158,6 +162,7 @@ describe("Group test", function () {
 
   it("should ensure a user's permissions get updated when the group permissions changes", function () {
     sandbox.stub(Reaction, "hasPermission", () => true);
+    sandbox.stub(Reaction, "canInviteToGroup", () => true);
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
     spyOnMethod("updateGroup", shop._id);
@@ -178,6 +183,7 @@ describe("Group test", function () {
   it("should add permissions for users in a group when roles are added", function () {
     this.timeout(10000);
     sandbox.stub(Reaction, "hasPermission", () => true);
+    sandbox.stub(Reaction, "canInviteToGroup", () => true);
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
 
@@ -195,6 +201,7 @@ describe("Group test", function () {
   it("should add permissions for users in a group when roles are added to all shops", function () {
     this.timeout(10000);
     sandbox.stub(Reaction, "hasPermission", () => true);
+    sandbox.stub(Reaction, "canInviteToGroup", () => true);
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
 

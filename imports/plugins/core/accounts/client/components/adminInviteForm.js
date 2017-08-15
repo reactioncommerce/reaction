@@ -5,7 +5,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
-import { getInvitableGroups } from "../helpers/accountsHelper";
+import { getInvitableGroups, getDefaultUserInviteGroup } from "../helpers/accountsHelper";
 
 class AdminInviteForm extends Component {
   static propTypes = {
@@ -23,7 +23,7 @@ class AdminInviteForm extends Component {
       groups: groupsInvitable,
       name: "",
       email: "",
-      group: groupsInvitable[0],
+      group: getDefaultUserInviteGroup(groupsInvitable),
       alertArray: []
     };
 
@@ -35,7 +35,7 @@ class AdminInviteForm extends Component {
     const { groups } = nextProps;
     const groupsInvitable = getInvitableGroups(groups, this.props.canInviteToGroup);
 
-    this.setState({ groups: groupsInvitable, group: groupsInvitable[0] });
+    this.setState({ groups: groupsInvitable, group: getDefaultUserInviteGroup(groupsInvitable) });
   }
 
   onChange(event) {
