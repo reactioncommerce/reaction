@@ -845,20 +845,19 @@
 }
 
 .tab-list-dropdown {
-  position: relative;
-  z-index: 1;
+  position: relative !important;
   width: 274px;
-  margin-left: 16%;
-  margin-top: 10px;
   border: solid 1px @rui-default;
   border-radius: 3px;
   background-color: @white;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.16);
+
   &:before, &:after {
     content: '';
     position: absolute;
     display: block;
     border-style: solid;
-    left: 82.5%;
+    left: 88.5%;
     z-index: 100;
   }
   &:before {
@@ -870,6 +869,23 @@
     top: -19px;
     border-color: transparent transparent @white transparent;
     border-width: 10px;
+  }
+
+  .active {
+    a {
+      margin-bottom: 5px;
+      margin-top: 5px;
+      color: @rui-default-text;
+      text-decoration: none;
+      outline: none;
+      background-color: transparent;
+      font-size: 15px;
+    }
+
+    a:hover {
+      background-color: #f7f7f7;
+      color: @rui-default-text;
+    }
   }
 }
 
@@ -914,5 +930,9 @@
 
   .order-filter-button:focus {
     outline: none;
+  }
+
+  order-menu-item-dropdown {
+    background-color: transparent;
   }
 }

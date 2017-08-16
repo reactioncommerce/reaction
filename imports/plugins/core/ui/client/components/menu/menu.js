@@ -27,8 +27,14 @@ class Menu extends Component {
   }
 
   render() {
+    const className = classnames({
+      "rui": true,
+      "menu": true,
+      "dropdown-menu": true
+    }, this.props.menuClassName);
+
     return (
-      <ul className="rui menu dropdown-menu" style={this.props.style}>
+      <ul className={className} style={this.props.style}>
         {this.renderMenuItems()}
       </ul>
     );

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, List, ListItem } from "@reactioncommerce/reaction-ui";
+import { Button, List, ListItem, DropDownMenu, MenuItem } from "@reactioncommerce/reaction-ui";
 
 class OrderActions extends Component {
   static propTypes = {
@@ -21,7 +21,8 @@ class OrderActions extends Component {
 
   buttonElement() {
     return (
-      <Button className="order-filter-button" style={{ flex: "0 1 auto", marginLeft: "auto" }}
+      <Button
+        className="order-filter-button"
         onClick={() => {
           this.setState({
             isOpen: !this.state.isOpen
@@ -38,9 +39,14 @@ class OrderActions extends Component {
     if (this.state.isOpen) {
       return (
         <List className="tab-list-dropdown">
-          <ListItem label="Capture"/>
-          <ListItem label="Approve"/>
-          <ListItem label="New"/>
+          <ListItem
+            label="Approved"
+            onClick={this}
+          />
+          <ListItem label="Captured"/>
+          <ListItem label="Processing"/>
+          <ListItem label="Completed"/>
+          <ListItem label="Canceled"/>
         </List>
       );
     }
@@ -57,7 +63,19 @@ class OrderActions extends Component {
           <div className="order-filter-label">
             <span className="order-filter-name"> New </span>
 
-            {this.buttonElement()}
+            <DropDownMenu
+              buttonElement={this.buttonElement()}
+              menuClassName="tab-list-dropdown"
+              className="order-menu-item-dropdown"
+              attachment="bottom right"
+              targetAttachment="top right"
+            >
+              <MenuItem label="Approved"/>
+              <MenuItem label="Captured"/>
+              <MenuItem label="Processing"/>
+              <MenuItem label="Completed"/>
+              <MenuItem label="Canceled"/>
+            </DropDownMenu>
           </div>
 
 
@@ -84,7 +102,8 @@ class OrderActions extends Component {
 
 
         </div>
-        {this.renderList()}
+
+        {/* {this.renderList()} */}
       </div>
     );
   }

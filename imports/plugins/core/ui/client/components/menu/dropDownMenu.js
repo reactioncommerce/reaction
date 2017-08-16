@@ -98,6 +98,7 @@ class DropDownMenu extends Component {
       >
         <Components.Menu
           className={this.props.className}
+          menuClassName={this.props.menuClassName}
           value={this.props.value}
           onChange={this.handleMenuItemChange}
           style={this.props.menuStyle}
