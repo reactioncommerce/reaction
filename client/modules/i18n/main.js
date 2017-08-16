@@ -119,7 +119,7 @@ Meteor.startup(() => {
           locale.language = getBrowserLanguage();
           moment.locale(locale.language);
           // flag in case the locale currency isn't enabled
-          locale.currencyEnabled = locale.shopCurrency.enabled;
+          locale.currencyEnabled = locale.currencyEnabled;
           const user = Meteor.user();
           if (user && user.profile && user.profile.currency) {
             localStorage.setItem("currency", user.profile.currency);
@@ -138,7 +138,9 @@ Meteor.startup(() => {
                     currency: 1
                   }
                 });
-                localStorage.setItem("currency", shop.currency);
+                if (shop) {
+                  localStorage.setItem("currency", shop.currency);
+                }
               }
             }
           }
