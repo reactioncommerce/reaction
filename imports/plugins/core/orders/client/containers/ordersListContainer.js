@@ -241,6 +241,7 @@ class OrdersListContainer extends Component {
       skippedOrdersText = "is";
     }
 
+    // if the order(s) want to skip the previous states, display alert
     if (falsePreviousStatuses) {
       Alerts.alert({
         text: i18next.t("order.skippedBulkOrdersAlert", {
@@ -255,11 +256,14 @@ class OrdersListContainer extends Component {
         cancelButtonText: i18next.t("order.cancelBulkOrderAction")
       }, (setSelected) => {
         if (setSelected) {
+          // set status of order(s) if this action is confirmed
           this.shippingStatusUpdateCall(selectedOrders, status);
         }
       });
+      // if the order(s) are following proper flow, set the status
     } else if (!falsePreviousStatuses && falseCurrentState) {
       this.shippingStatusUpdateCall(selectedOrders, status);
+      // display alert if order(s) are already in this state
     } else if (!falsePreviousStatuses && !falseCurrentState && trueCurrentState) {
       Alerts.alert({
         text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
@@ -287,9 +291,11 @@ class OrdersListContainer extends Component {
       cancelButtonText: i18next.t("order.cancelBulkOrderAction")
     }, (regress) => {
       if (regress) {
+        // if some of the order(s) want to skip the previous state, display warning alert for skipping states
         if (falsePreviousStatuses) {
           this.displayAlert(selectedOrders, status, whichFalseState, falsePreviousStatuses, falseCurrentState, trueCurrentState);
         } else {
+          // set status of order(s) if this action is confirmed
           this.shippingStatusUpdateCall(selectedOrders, status);
         }
       }
@@ -302,9 +308,11 @@ class OrdersListContainer extends Component {
     let ordersToRegress = 0;
 
     selectedOrders.forEach((order) => {
+      // check if the selected order(s) are being regressed back to this state
       if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/picked") || order.shipping[0].workflow.status !== "new") {
         ordersToRegress++;
       } else {
+        // check if the order(s) are in this state already or in the previous state
         if (order.shipping[0].workflow.status === "new") {
           isNotPicked++;
         } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
@@ -313,11 +321,15 @@ class OrdersListContainer extends Component {
       }
     });
 
+    // display regression alert if order(s) are being regressed
     if (ordersToRegress) {
       this.displayRegressionAlert(selectedOrders, ordersToRegress, status);
     } else {
+      // set status to 'picked' if order(s) are in the previous state
       if (isNotPicked) {
         this.shippingStatusUpdateCall(selectedOrders, status);
+
+        // display alert if order(s) are already in this state
       } else if (!isNotPicked && isPicked) {
         Alerts.alert({
           text: i18next.t("order.orderAlreadyInState", { orderText: this.displayOrderText(selectedOrders), status: status })
@@ -334,12 +346,14 @@ class OrdersListContainer extends Component {
     const whichFalseState = shippingStates.picked;
 
     selectedOrders.forEach((order) => {
+      // check if the selected order(s) are being regressed back to this state
       if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/packed")) {
         ordersToRegress++;
       } else if (!order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/packed") &&
       (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled" || order.shipping[0].workflow.status === "coreOrderWorkflow/shipped")) {
         ordersToRegress++;
       } else {
+        // check if the order(s) are in this state already or in one of the previous states
         if (order.shipping[0].workflow.status === "new") {
           isNotPicked++;
         } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
@@ -350,8 +364,11 @@ class OrdersListContainer extends Component {
       }
     });
 
+    // display regression alert if order(s) are being regressed
     if (ordersToRegress) {
       this.displayRegressionAlert(selectedOrders, ordersToRegress, status, whichFalseState, isNotPicked, isNotPacked, isPacked);
+
+      // display proper alert if the order(s) are in this state already or want to skip the previous states
     } else this.displayAlert(selectedOrders, status, whichFalseState, isNotPicked, isNotPacked, isPacked);
   }
 
@@ -363,9 +380,11 @@ class OrdersListContainer extends Component {
     let whichFalseState = "";
 
     selectedOrders.forEach((order) => {
+      // check if the selected order(s) are being regressed back to this state
       if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/labeled") || order.shipping[0].workflow.status === "coreOrderWorkflow/shipped") {
         ordersToRegress++;
       } else {
+        // check if the order(s) are in this state already or in one of the previous states
         if (order.shipping[0].workflow.status === "new") {
           isNotPacked++;
           whichFalseState = shippingStates.picked;
@@ -380,8 +399,11 @@ class OrdersListContainer extends Component {
       }
     });
 
+    // display regression alert if order(s) are being regressed
     if (ordersToRegress) {
       this.displayRegressionAlert(selectedOrders, ordersToRegress, status, whichFalseState, isNotPacked, isNotLabeled, isLabeled);
+
+      // display proper alert if the order(s) are in this state already or want to skip the previous states
     } else this.displayAlert(selectedOrders, status, whichFalseState, isNotPacked, isNotLabeled, isLabeled);
   }
 
@@ -393,6 +415,7 @@ class OrdersListContainer extends Component {
     let whichFalseState = "";
 
     selectedOrders.forEach((order) => {
+      // check if the order(s) are in this state already or in one of the previous states
       if (order.shipping[0].workflow.status === "new") {
         isNotLabeled++;
         whichFalseState = shippingStates.picked;
@@ -409,6 +432,7 @@ class OrdersListContainer extends Component {
       }
     });
 
+    // display proper alert if the order(s) are in this state already or want to skip the previous states
     this.displayAlert(selectedOrders, status, whichFalseState, isNotLabeled, isNotShipped, isShipped);
   }
 
