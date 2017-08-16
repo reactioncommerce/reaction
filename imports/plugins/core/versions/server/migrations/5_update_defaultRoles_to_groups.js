@@ -1,7 +1,8 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Migrations } from "/imports/plugins/core/versions";
-import { Logger } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 import { Accounts, Groups, Shops } from "/lib/collections";
 
 /**
@@ -14,7 +15,10 @@ Migrations.add({
   version: 5,
   up() {
     const shops = Shops.find({}).fetch();
-    Groups.remove({}); // needed to ensure restart in case of a migration that failed before finishing
+
+    // needed to ensure restart in case of a migration that failed before finishing
+    Groups.remove({});
+    Accounts.update({}, { $set: { groups: [] } }, { multi: true });
 
     if (shops && shops.length) {
       shops.forEach((shop) => {
@@ -47,12 +51,17 @@ Migrations.add({
     function createDefaultGroupsForShop(shop) {
       let defaultGroupAccounts = [];
       const { defaultRoles, defaultVisitorRole } = shop;
-      const ownerRoles = Roles.getAllRoles().fetch().map(role => role.name);
+      let ownerRoles = Roles.getAllRoles().fetch().map(role => role.name);
+
+      // See detailed comment in Reaction.createDefaultGroups. The code here follows similar pattern.
+      ownerRoles = ownerRoles.concat(Reaction.defaultCustomerRoles);
+      ownerRoles = _.uniq(ownerRoles);
+
       const shopManagerRoles = ownerRoles.filter(role => role !== "owner");
       const roles = {
         "shop manager": shopManagerRoles,
-        "customer": defaultRoles || [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
-        "guest": defaultVisitorRole || ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
+        "customer": defaultRoles || Reaction.defaultCustomerRoles,
+        "guest": defaultVisitorRole || Reaction.defaultVisitorRoles,
         "owner": ownerRoles
       };
 
