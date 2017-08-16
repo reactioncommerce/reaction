@@ -49,9 +49,11 @@ Template.childVariantForm.helpers({
   Icon() {
     return Components.Icon;
   },
+
   childVariantFormId: function () {
     return "child-variant-form-" + this._id;
   },
+
   media: function () {
     const media = Media.find({
       "metadata.variantId": this._id
@@ -63,6 +65,7 @@ Template.childVariantForm.helpers({
 
     return media;
   },
+
   featuredMedia: function () {
     const media = Media.findOne({
       "metadata.variantId": this._id
@@ -78,6 +81,7 @@ Template.childVariantForm.helpers({
 
     return false;
   },
+
   handleFileUpload() {
     const ownerId = Meteor.userId();
     const productId = ReactionProduct.selectedProductId();
@@ -98,6 +102,7 @@ Template.childVariantForm.helpers({
       }
     };
   },
+
   active() {
     const variantId = ReactionProduct.selectedVariantId();
 
@@ -107,6 +112,7 @@ Template.childVariantForm.helpers({
 
     return "panel-default";
   },
+
   hasValidationMessage(fieldName)  {
     const instance = Template.instance();
     const validationStatus = instance.state.get("validationStatus");
@@ -117,6 +123,7 @@ Template.childVariantForm.helpers({
 
     return false;
   },
+
   hasErrorClassName(fieldName)  {
     const instance = Template.instance();
     const validationStatus = instance.state.get("validationStatus");
@@ -144,6 +151,7 @@ Template.childVariantForm.events({
 
     return ReactionProduct.setCurrentVariant(template.data._id);
   },
+
   "change .child-variant-input": function (event, template) {
     const variant = template.data;
     const value = Template.instance().$(event.currentTarget).val();
@@ -159,17 +167,17 @@ Template.childVariantForm.events({
     template.state.set("validationStatus", validationStatus);
     template.state.set("variant", updated);
 
-    if (validationStatus.isValid === true) {
-      Meteor.call("products/updateProductField", variant._id, field, value,
-        error => {
-          if (error) {
-            Alerts.toast(error.message, "error");
-          }
-        });
-    }
+    Meteor.call("products/updateProductField", variant._id, field, value,
+      error => {
+        if (error) {
+          Alerts.toast(error.message, "error");
+        }
+      }
+    );
 
     return ReactionProduct.setCurrentVariant(variant._id);
   },
+
   "click .js-child-variant-heading": function (event, instance) {
     const variantId = instance.data._id;
 
