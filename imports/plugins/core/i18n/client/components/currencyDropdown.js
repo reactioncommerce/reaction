@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Divider, DropDownMenu, MenuItem } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class Currency extends Component {
   static propTypes = {
@@ -29,12 +29,12 @@ class Currency extends Component {
 
   buttonElement() {
     return (
-      <Button
+      <Components.Button
         label={this.props.currentCurrency || this.state.value}
         containerStyle={{ color: "#000", fontWeight: "normal", letterSpacing: 0.8 }}
       >
         &nbsp;<i className="fa fa-caret-down" />
-      </Button>
+      </Components.Button>
     );
   }
 
@@ -42,28 +42,28 @@ class Currency extends Component {
     return (
       <div>
         {this.props.currencies.length > 1 &&
-          <DropDownMenu
+          <Components.DropDownMenu
             buttonElement={this.buttonElement()}
             onChange={this.onChange}
             value={this.props.currentCurrency || this.state.value}
             menuStyle={{ maxHeight: 500, overflow: "auto" }}
           >
-            <MenuItem
+            <Components.MenuItem
               label="Select Currency"
               i18nKeyLabel="currencies.select"
               disabled={true}
             />
 
-            <Divider />
+            <Components.Divider />
 
             {this.props.currencies.map((currency) => (
-              <MenuItem
+              <Components.MenuItem
                 key={currency.currency}
                 label={this.currencyDisplay(currency.currency, currency.symbol)}
                 value={this.currencyDisplay(currency.currency, currency.symbol)}
               />
             ))}
-          </DropDownMenu>
+          </Components.DropDownMenu>
         }
       </div>
     );

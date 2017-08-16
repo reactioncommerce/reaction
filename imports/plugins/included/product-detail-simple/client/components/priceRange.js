@@ -1,5 +1,4 @@
 import React from "react";
-import { pure } from "recompose";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 const PriceRange = (props) => {
@@ -10,6 +9,6 @@ const PriceRange = (props) => {
   );
 };
 
-registerComponent("PriceRange", PriceRange, pure);
+registerComponent("PriceRange", PriceRange);
 
 export default PriceRange;
