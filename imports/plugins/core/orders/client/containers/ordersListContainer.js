@@ -302,7 +302,7 @@ class OrdersListContainer extends Component {
     let ordersToRegress = 0;
 
     selectedOrders.forEach((order) => {
-      if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/picked")) {
+      if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/picked") || order.shipping[0].workflow.status !== "new") {
         ordersToRegress++;
       } else {
         if (order.shipping[0].workflow.status === "new") {
@@ -336,6 +336,9 @@ class OrdersListContainer extends Component {
     selectedOrders.forEach((order) => {
       if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/packed")) {
         ordersToRegress++;
+      } else if (!order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/packed") &&
+      (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled" || order.shipping[0].workflow.status === "coreOrderWorkflow/shipped")) {
+        ordersToRegress++;
       } else {
         if (order.shipping[0].workflow.status === "new") {
           isNotPicked++;
@@ -360,7 +363,7 @@ class OrdersListContainer extends Component {
     let whichFalseState = "";
 
     selectedOrders.forEach((order) => {
-      if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/labeled")) {
+      if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/labeled") || order.shipping[0].workflow.status === "coreOrderWorkflow/shipped") {
         ordersToRegress++;
       } else {
         if (order.shipping[0].workflow.status === "new") {
