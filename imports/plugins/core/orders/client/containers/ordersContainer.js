@@ -71,9 +71,6 @@ class OrdersContainer extends Component {
     if (this.state.ready) {
       return (
         <div>
-          <div className="orders-list-tabs">
-            <OrdersActionContainer />
-          </div>
           <OrdersListContainer
             orders={this.state.orders}
             ready={this.state.ready}

@@ -1,40 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Radium from "radium";
-import { Button, Icon, DropDownMenu, MenuItem, TabList, TabItem } from "@reactioncommerce/reaction-ui";
-
-const styles = {
-  list: {
-    display: "flex",
-    height: 51
-  },
-  item: {
-    display: "flex",
-    flex: "1 1 auto",
-    width: "33%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  title: {
-    fontSize: 24,
-    display: "block"
-  },
-  stat: {
-    display: "flex",
-    flexDirection: "row",
-    height: "100%",
-    width: "100%",
-    // justifyContent: "center",
-    alignItems: "center"
-  }
-};
+import { Button, List, ListItem } from "@reactioncommerce/reaction-ui";
 
 class OrderActions extends Component {
   static propTypes = {
     filters: PropTypes.arrayOf(PropTypes.object),
     onActionClick: PropTypes.func,
     selectedIndex: PropTypes.number
+  }
+
+  state = {
+    isOpen: false
   }
 
   handleActionClick = (event, value) => {
@@ -45,46 +21,73 @@ class OrderActions extends Component {
 
   buttonElement() {
     return (
-      <Button style={{ flex: "0 1 auto", marginLeft: "auto" }}>
+      <Button className="order-filter-button" style={{ flex: "0 1 auto", marginLeft: "auto" }}
+        onClick={() => {
+          this.setState({
+            isOpen: !this.state.isOpen
+          });
+        }}
+      >
         <i className="fa fa-filter" /> &nbsp;
         <i className="fa fa-chevron-down" />
       </Button>
     );
   }
 
-  renderAction() {
-    if (Array.isArray(this.props.filters)) {
-      return this.props.filters.map((filter, index) => {
-        return (
-          <TabItem
-            className="admin"
-            key={index}
-            style={styles.item}
-            onClick={this.handleActionClick}
-            value={filter}
-          >
-            <div style={styles.stat}>
-
-              <span className="tab-item-title" style={{ fontSize: 16 }}>{filter.label}</span>
-              {this.buttonElement()}
-            </div>
-
-
-          </TabItem>
-        );
-      });
+  renderList() {
+    if (this.state.isOpen) {
+      return (
+        <List className="tab-list-dropdown">
+          <ListItem label="Capture"/>
+          <ListItem label="Approve"/>
+          <ListItem label="New"/>
+        </List>
+      );
     }
-
-    return null;
   }
 
   render() {
     return (
-      <TabList style={styles.list} className="admin" selectedTab={this.props.selectedIndex}>
-        {this.renderAction()}
-      </TabList>
+      <div className="order-filter-bar">
+
+        <div
+          className="order-filter-item"
+          onClick={() => {}}
+        >
+          <div className="order-filter-label">
+            <span className="order-filter-name"> New </span>
+
+            {this.buttonElement()}
+          </div>
+
+
+        </div>
+        <div
+          className="order-filter-item"
+          onClick={() => {}}
+        >
+          <div className="order-filter-label">
+            <span className="order-filter-name"> This Week </span>
+
+            {this.buttonElement()}
+          </div>
+        </div>
+        <div
+          className="order-filter-item"
+          onClick={() => {}}
+        >
+          <div className="order-filter-label">
+            <span className="order-filter-name">  Shipping Status </span>
+
+            {this.buttonElement()}
+          </div>
+
+
+        </div>
+        {this.renderList()}
+      </div>
     );
   }
 }
 
-export default Radium(OrderActions);
+export default OrderActions;
