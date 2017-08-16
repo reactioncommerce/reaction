@@ -34,7 +34,7 @@ export function ordersInventoryAdjust(orderId) {
   check(orderId, String);
 
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error(403, "Access Denied");
+    throw new Meteor.Error("access-denied", "Access Denied");
   }
 
   // REVIEW: Why are we waiting until someone with orders permissions does something to reduce quantity of ordered items
@@ -74,7 +74,7 @@ export const methods = {
     check(shipment, Object);
 
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     // Set the status of the items as picked
@@ -112,7 +112,7 @@ export const methods = {
     // REVIEW: who should have permission to do this in a marketplace setting?
     // Do we need to update the order schema to reflect multiple packers / shipments?
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     // Set the status of the items as packed
@@ -149,7 +149,7 @@ export const methods = {
     check(shipment, Object);
 
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     // Set the status of the items as labeled
@@ -184,7 +184,7 @@ export const methods = {
     check(order, Object);
 
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     this.unblock(); // REVIEW: Why unblock here?
@@ -213,7 +213,7 @@ export const methods = {
     // REVIEW: Who should have access to do this for a marketplace?
     // Do we have/need a shopId on each order?
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     this.unblock(); // REVIEW: why unblock here?
@@ -259,7 +259,7 @@ export const methods = {
     // REVIEW: Only marketplace admins should be able to cancel entire order?
     // Unless order is entirely contained in a single shop? Do we need a switch on marketplace owner dashboard?
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     if (!returnToStock) {
@@ -315,7 +315,7 @@ export const methods = {
     // REVIEW: Who should have access to process payment in marketplace?
     // Probably just the shop owner for now?
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     this.unblock();
@@ -416,7 +416,7 @@ export const methods = {
 
     // REVIEW: this should be callable from the server via callback from Shippo or other webhook
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     this.unblock();
@@ -703,7 +703,7 @@ export const methods = {
 
     // REVIEW: This method should be callable from a webhook (e.g. Shippo)
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     return Orders.update({
@@ -733,7 +733,7 @@ export const methods = {
     */
 
     if (!Meteor.userId()) {
-      throw new Meteor.Error(403, "Access Denied. You are not connected.");
+      throw new Meteor.Error("access-denied", "Access Denied. You are not connected.");
     }
 
     return Orders.update({
@@ -761,7 +761,7 @@ export const methods = {
     // REVIEW: For marketplace implementations
     // This should be possible for anyone with permission to act on the order
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     return Orders.update(orderId, {
@@ -792,7 +792,7 @@ export const methods = {
     // REVIEW: For marketplace implmentations who should be able to capture payments?
     // Probably just the marketplace and not shops/vendors?
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     const order = Orders.findOne(orderId);
@@ -872,7 +872,7 @@ export const methods = {
     const paymentMethod = orderCreditMethod(order).paymentMethod;
 
     if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     this.unblock();
@@ -908,7 +908,7 @@ export const methods = {
 
     // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     const processor = paymentMethod.processor.toLowerCase();
     const order = Orders.findOne(orderId);
