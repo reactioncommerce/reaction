@@ -4,10 +4,11 @@ import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { SortableTable } from "/imports/plugins/core/ui/client/components";
 
-const fields = ["name", "email", "createdAt", "dropdown", "button"];
 
 const GroupsTable = (props) => {
   const { group } = props;
+  const fields = ["name", "email", "createdAt", "dropdown", "button"];
+
   const tableClass = (length) => {
     return classnames({
       "accounts-group-table": true,
@@ -15,16 +16,8 @@ const GroupsTable = (props) => {
     });
   };
 
-  const handleGroupClick = (grp) => {
-    return () => {
-      if (props.onGroupSelect) {
-        props.onGroupSelect(grp);
-      }
-    };
-  };
-
   const columnMetadata = fields.map((columnName) => ({
-    Header: <Components.GroupHeader columnName={columnName} />,
+    Header: <Components.GroupHeader columnName={columnName} numberOfRows={group.users && group.users.length} />,
     accessor: "",
     // TODO: Review this line - copied disable line from shippo carriers.js
     Cell: (data) => { // eslint-disable-line
@@ -33,8 +26,8 @@ const GroupsTable = (props) => {
   }));
 
   return (
-    <Components.List className="group-table">
-      <Components.ListItem actionType="arrow" label={group.name} onClick={handleGroupClick(group)} />
+    <Components.List>
+      <Components.ListItem label={group.name} />
       <div className={tableClass(group.users.length)}>
         <SortableTable
           data={group.users}
@@ -42,6 +35,7 @@ const GroupsTable = (props) => {
           filteredFields={fields}
           filterType="none"
           showFilter={true}
+          isSortable={false}
         />
       </div>
     </Components.List>
