@@ -38,12 +38,13 @@ class OrderActions extends Component {
               buttonElement={this.buttonElement()}
               menuClassName="tab-list-dropdown"
               className="order-menu-item-dropdown"
+              onChange={this.props.handleMenuClick}
               attachment="bottom right"
               targetAttachment="top right"
             >
               <MenuItem
                 label="Approved"
-                onClick={this.props.handleMenuClick("Approved")}
+                value="approved"
               />
               <MenuItem label="Captured"/>
               <MenuItem label="Processing"/>

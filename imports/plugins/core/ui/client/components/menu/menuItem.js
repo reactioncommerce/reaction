@@ -6,6 +6,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 class MenuItem extends Component {
   handleClick = (event) => {
     event.preventDefault();
+    console.log("menuItem", this.props.onClick && this.props.disabled === false);
     if (this.props.onClick && this.props.disabled === false) {
       this.props.onClick(event, this.props.value, this);
     }

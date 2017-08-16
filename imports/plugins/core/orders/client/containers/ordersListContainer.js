@@ -141,30 +141,38 @@ class OrdersListContainer extends Component {
   }
 
   handleMenuClick = (bla) => {
-    console.log("message", bla, this.state.orders);
-    const orders = this.state.orders;
-    const listToShow = orders.filter(order => {
-      return order.billing[0].paymentMethod.status === "approved";
-    });
+    console.log("Heeere", bla);
+    // console.log("message", bla, this.state.orders);
+    // const orders = this.state.orders;
+    // const listToShow = orders.filter(order => {
+    //   return order.billing[0].paymentMethod.status === "approved";
+    // });
+    // const status = Reaction.Router.getQueryParam("status");
+    // console.log("status", status);
+    // Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
+    // Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, null);
     // this.setState({
-    //   orders: listToShow
+    //   bla: bla
+    // }, () => {
+    //   this.dep.changed();
     // });
   }
 
   render() {
-    const { handleShowMoreClick } = this.props;
+    // const { handleShowMoreClick } = this.props;
+    console.log("this.props", this.props);
 
     return (
       <OrdersList
         handleSelect={this.handleSelect}
-        handleShowMoreClick={handleShowMoreClick}
+        handleShowMoreClick={this.props.handleShowMoreClick}
         orders={this.state.orders}
         handleClick={this.handleClick}
         displayMedia={this.handleDisplayMedia}
         selectedItems={this.state.selectedItems}
         selectAllOrders={this.selectAllOrders}
         multipleSelect={this.state.multipleSelect}
-        handleMenuClick={this.handleMenuClick}
+        handleMenuClick={this.props.handleMenuClick}
       />
     );
   }
@@ -172,10 +180,10 @@ class OrdersListContainer extends Component {
 
 const composer = (props, onData) => {
   const subscription = Meteor.subscribe("Media");
+  console.log(props);
   if (subscription.ready()) {
     onData(null, {
-      uniqueItems: props.items,
-      invoice: props.invoice
+      ...props
     });
   }
 };
