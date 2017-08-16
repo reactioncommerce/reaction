@@ -315,7 +315,11 @@ class OrdersListContainer extends Component {
         isPicked++;
       } else {
         // check if the selected order(s) are being regressed back to this state
-        if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/picked") || order.shipping[0].workflow.status !== "new") {
+        if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/picked")) {
+          ordersToRegress++;
+        } else if (!order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/picked") &&
+        (order.shipping[0].workflow.status === "coreOrderWorkflow/packed" || order.shipping[0].workflow.status === "coreOrderWorkflow/labeled" ||
+        order.shipping[0].workflow.status === "coreOrderWorkflow/shipped")) {
           ordersToRegress++;
         }
       }
