@@ -27,6 +27,7 @@ Reaction.registerPackage({
     label: "Account Settings",
     icon: "fa fa-sign-in",
     provides: "settings",
+    description: "Manage account login and signup services",
     route: "/dashboard/account/settings",
     container: "accounts",
     workflow: "coreAccountsWorkflow",

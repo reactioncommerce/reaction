@@ -68,26 +68,31 @@ const GroupsTableCell = ({ account, columnName, group, groups, handleRemoveUserF
     if (dropOptions.length < 2) { return dropDownButton(); } // do not use dropdown if only one option
 
     return (
-      <div className="group-dropdown">
-        <Components.DropDownMenu
-          className="dropdown-item"
-          buttonElement={dropDownButton(groups)}
-          attachment="bottom right"
-          targetAttachment="top right"
-          onChange={handleUserGroupChange({ account, ownerGrpId: ownerGroup._id, onMethodDone, onMethodLoad })}
-        >
-          {dropOptions
-            .filter(grp => grp._id !== group._id)
-            .map((grp, index) => (
-              <Components.MenuItem
-                key={index}
-                label={_.startCase(grp.name)}
-                selectLabel={_.startCase(grp.name)}
-                value={grp._id}
-              />
-            ))}
-        </Components.DropDownMenu>
-      </div>
+      <Components.Permission
+        roles={["account/verify"]}
+        group="tazers"
+      >
+        <div className="group-dropdown">
+          <Components.DropDownMenu
+            className="dropdown-item"
+            buttonElement={dropDownButton(groups)}
+            attachment="bottom right"
+            targetAttachment="top right"
+            onChange={handleUserGroupChange({ account, ownerGrpId: ownerGroup._id, onMethodDone, onMethodLoad })}
+          >
+            {dropOptions
+              .filter(grp => grp._id !== group._id)
+              .map((grp, index) => (
+                <Components.MenuItem
+                  key={index}
+                  label={_.startCase(grp.name)}
+                  selectLabel={_.startCase(grp.name)}
+                  value={grp._id}
+                />
+              ))}
+          </Components.DropDownMenu>
+        </div>
+      </Components.Permission>
     );
   }
 
