@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import Permission from "/imports/plugins/core/ui/client/components/permission";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 
@@ -187,17 +188,19 @@ class AdminInviteForm extends Component {
 
   render() {
     return (
-      <Components.Card expanded={true}>
-        <Components.CardHeader
-          actAsExpander={true}
-          data-i18n="accountsUI.info.addAdminUser"
-          title="Add Admin User"
-          id="accounts"
-        />
-        <Components.CardBody expandable={true}>
-          {this.renderForm()}
-        </Components.CardBody>
-      </Components.Card>
+      <Permission roles={["reaction-accounts"]}>
+        <Components.Card expanded={true}>
+          <Components.CardHeader
+            actAsExpander={true}
+            data-i18n="accountsUI.info.addAdminUser"
+            title="Add Admin User"
+            id="accounts"
+          />
+          <Components.CardBody expandable={true}>
+            {this.renderForm()}
+          </Components.CardBody>
+        </Components.Card>
+      </Permission>
     );
   }
 }

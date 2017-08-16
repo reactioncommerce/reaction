@@ -35,3 +35,4 @@ export * from "./tabs";
 export { default as Select } from "./select/select.react";
 export { default as ClickToCopy } from "./clickToCopy/clickToCopy";
 export * from "./notFound";
+export * from "./permission";
