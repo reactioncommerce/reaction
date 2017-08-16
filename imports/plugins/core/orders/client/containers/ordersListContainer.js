@@ -140,6 +140,17 @@ class OrdersListContainer extends Component {
     return false;
   }
 
+  handleMenuClick = (bla) => {
+    console.log("message", bla, this.state.orders);
+    const orders = this.state.orders;
+    const listToShow = orders.filter(order => {
+      return order.billing[0].paymentMethod.status === "approved";
+    });
+    // this.setState({
+    //   orders: listToShow
+    // });
+  }
+
   render() {
     const { handleShowMoreClick } = this.props;
 
@@ -153,6 +164,7 @@ class OrdersListContainer extends Component {
         selectedItems={this.state.selectedItems}
         selectAllOrders={this.selectAllOrders}
         multipleSelect={this.state.multipleSelect}
+        handleMenuClick={this.handleMenuClick}
       />
     );
   }

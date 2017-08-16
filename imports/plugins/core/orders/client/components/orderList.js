@@ -40,7 +40,9 @@ class OrdersList extends Component {
   render() {
     return (
       <div>
-        <OrderActions />
+        <OrderActions
+          handleMenuClick={this.props.handleMenuClick}
+        />
         {this.props.orders.length ?
           <div className="container-fluid-sm">
             <div className="order-toggle-buttons">

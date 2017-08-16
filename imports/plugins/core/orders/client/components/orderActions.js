@@ -1,22 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, List, ListItem, DropDownMenu, MenuItem } from "@reactioncommerce/reaction-ui";
+import { Button, DropDownMenu, MenuItem } from "@reactioncommerce/reaction-ui";
 
 class OrderActions extends Component {
   static propTypes = {
-    filters: PropTypes.arrayOf(PropTypes.object),
-    onActionClick: PropTypes.func,
-    selectedIndex: PropTypes.number
-  }
-
-  state = {
-    isOpen: false
-  }
-
-  handleActionClick = (event, value) => {
-    if (typeof this.props.onActionClick === "function") {
-      this.props.onActionClick(value);
-    }
+    handleMenuClick: PropTypes.func
   }
 
   buttonElement() {
@@ -33,23 +21,6 @@ class OrderActions extends Component {
         <i className="fa fa-chevron-down" />
       </Button>
     );
-  }
-
-  renderList() {
-    if (this.state.isOpen) {
-      return (
-        <List className="tab-list-dropdown">
-          <ListItem
-            label="Approved"
-            onClick={this}
-          />
-          <ListItem label="Captured"/>
-          <ListItem label="Processing"/>
-          <ListItem label="Completed"/>
-          <ListItem label="Canceled"/>
-        </List>
-      );
-    }
   }
 
   render() {
@@ -70,7 +41,10 @@ class OrderActions extends Component {
               attachment="bottom right"
               targetAttachment="top right"
             >
-              <MenuItem label="Approved"/>
+              <MenuItem
+                label="Approved"
+                onClick={this.props.handleMenuClick("Approved")}
+              />
               <MenuItem label="Captured"/>
               <MenuItem label="Processing"/>
               <MenuItem label="Completed"/>
@@ -102,8 +76,6 @@ class OrderActions extends Component {
 
 
         </div>
-
-        {/* {this.renderList()} */}
       </div>
     );
   }

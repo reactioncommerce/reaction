@@ -1,6 +1,3 @@
-import { registerComponent } from "@reactioncommerce/reaction-components";
-
-
 import "./templates/list/items.html";
 import "./templates/list/items.js";
 import "./templates/list/ordersList.html";
@@ -27,8 +24,3 @@ import "./templates/workflow/workflow.js";
 
 import "./templates/orders.html";
 import "./templates/orders.js";
-
-import OrdersActionContainer from "./containers/ordersActionContainer";
-
-// Register PDP components and some others
-registerComponent("orders_ActionDashboard", OrdersActionContainer);

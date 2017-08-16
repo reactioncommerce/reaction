@@ -4,8 +4,72 @@ import { Tracker } from "meteor/tracker";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Orders, Shops } from "/lib/collections";
 import OrdersListContainer from "./ordersListContainer";
-import OrdersActionContainer from "./ordersActionContainer";
 
+const OrderHelper =  {
+  makeQuery(filter) {
+    let query = {};
+
+    switch (filter) {
+      // New orders
+      case "new":
+        query = {
+          "workflow.status": "new"
+        };
+        break;
+
+      // Orders that have yet to be captured & shipped
+      case "processing":
+        query = {
+          "workflow.status": "coreOrderWorkflow/processing"
+        };
+        break;
+
+      // Orders that have been shipped, based on if the items have been shipped
+      case "shipped":
+        query = {
+          "items.workflow.status": "coreOrderItemWorkflow/shipped"
+        };
+        break;
+
+      // Orders that are complete, including all items with complete status
+      case "completed":
+        query = {
+          "workflow.status": {
+            $in: ["coreOrderWorkflow/completed", "coreOrderWorkflow/canceled"]
+          },
+          "items.workflow.status": {
+            $in: ["coreOrderItemWorkflow/completed", "coreOrderItemWorkflow/canceled"]
+          }
+        };
+        break;
+
+      // Orders that have been captured, but not yet shipped
+      case "captured":
+        query = {
+          "billing.paymentMethod.status": "completed",
+          "shipping.shipped": false
+        };
+        break;
+
+      case "canceled":
+        query = {
+          "workflow.status": "coreOrderWorkflow/canceled"
+        };
+        break;
+
+      // Orders that have been refunded partially or fully
+      case "refunded":
+        query = {
+          "billing.paymentMethod.status": "captured",
+          "shipping.shipped": true
+        };
+        break;
+      default:
+    }
+
+    return query;
+  }
+};
 
 class OrdersContainer extends Component {
   constructor() {
