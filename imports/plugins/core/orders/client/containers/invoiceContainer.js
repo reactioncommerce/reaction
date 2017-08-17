@@ -109,22 +109,23 @@ class InvoiceContainer extends Component {
   }
 
   handleSelectAllItems = (uniqueItems) => {
-    const editedItems = this.state.editedItems;
-
     if (this.state.selectAllItems) {
       // if all items are selected, clear the selectedItems array
       // and set selectAllItems to false
       this.setState({
         selectedItems: [],
+        editedItems: [],
         selectAllItems: false
       });
     } else {
       // if there are no selected items, or if there are some items that have been
       // selected but not all of them, loop through the items array and return a
       // new array with item ids only, then set the selectedItems array with the itemIds
+      const updateEditedItems = [];
+
       const itemIds = uniqueItems.map((item) => {
         // on select all refunded quantity should be all existing items
-        editedItems.push({
+        updateEditedItems.push({
           id: item._id,
           title: item.title,
           refundedTotal: item.variants.price * item.quantity,
@@ -133,7 +134,7 @@ class InvoiceContainer extends Component {
         return item._id;
       });
       this.setState({
-        editedItems,
+        editedItems: updateEditedItems,
         selectedItems: itemIds,
         selectAllItems: true,
         isUpdating: true
