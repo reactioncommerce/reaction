@@ -3,7 +3,6 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
-      "notFound": "Bestelling niet gevonden",
       "admin": {
         "shortcut": {
           "ordersLabel": "orders"
