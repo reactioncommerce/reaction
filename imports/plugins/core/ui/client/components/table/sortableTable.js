@@ -261,7 +261,7 @@ class SortableTable extends Component {
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
           showPaginationTop={otherProps.showPaginationTop}
-
+          sortable={otherProps.isSortable}
           PaginationComponent={SortableTablePagination}
           showPaginationBottom={this.renderPaginationBottom()}
           getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars

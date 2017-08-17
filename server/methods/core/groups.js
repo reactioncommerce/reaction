@@ -68,6 +68,7 @@ Meteor.methods({
    * and group permissions (using "accounts/removeUserPermissions")
    * @param {Object} groupId - group to be updated
    * @param {Object} newGroupData - updated group info (similar to current group data)
+   * slug remains untouched; used as key in querying
    * @param {String} shopId - id of the shop the group belongs to
    * @return {Object} - object.status of 200 on success or Error object on failure
    */
@@ -82,6 +83,15 @@ Meteor.methods({
 
     // 1. Update the group data
     const update = newGroupData;
+    delete update.slug; // slug remains constant because it's used as key in querying. So we remove it if it was passed
+
+    const group = Groups.findOne({ _id: groupId }) || {};
+
+    // prevent edits on owner. Owner groups is the default containing all roles, and as such should be untouched
+    if (group.slug === "owner") {
+      throw new Meteor.Error(400, "Invalid request");
+    }
+
     Groups.update({ _id: groupId, shopId }, { $set: update });
 
     // 2. Check & Modify users in the group that changed
@@ -111,11 +121,17 @@ Meteor.methods({
   "group/addUser": function (userId, groupId) {
     check(userId, String);
     check(groupId, String);
+    const group = Groups.findOne({ _id: groupId }) || {};
+    const { permissions, shopId, slug } = group;
+    const loggedInUserId = Meteor.userId();
+    const canInvite = Reaction.canInviteToGroup({ group, user: Meteor.user() });
 
-    const { permissions, shopId, slug } = Groups.findOne({ _id: groupId }) || {};
-
-    if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
-      throw new Meteor.Error(403, "Access Denied");
+    // Owners can invite to any group.
+    if (!Reaction.hasPermission("owner", loggedInUserId, shopId)) {
+      // Admins can invite to only groups they belong
+      if (!canInvite) {
+        throw new Meteor.Error(403, "Access Denied");
+      }
     }
 
     if (slug === "owner") {
@@ -200,7 +216,7 @@ Meteor.methods({
  * @param {Object} options -
  * @param {String} options.userId - userID
  * @param {String} options.permissions - permissions
-* @return {null} -
+ * @return {null} -
  */
 function changeMarketplaceOwner({ userId, permissions }) {
   // give global marketplace role to new owner
