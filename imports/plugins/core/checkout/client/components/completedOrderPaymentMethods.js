@@ -11,7 +11,7 @@ const creditCardClasses = {
 
 const CompletedOrderPaymentMethod = ({ paymentMethod }) => {
   if (paymentMethod.method === "credit") {
-    const creditCardType = paymentMethod.storedCard.substring(0, 4);
+    const creditCardType = paymentMethod.storedCard.substring(0, 4).toUpperCase();
     const creditCardClass = creditCardClasses[creditCardType];
     return <div className="order-details-info-box">
       <div className="order-details-info-box-content">
