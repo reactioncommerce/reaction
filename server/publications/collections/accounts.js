@@ -35,7 +35,7 @@ Meteor.publish("Accounts", function (userId) {
     });
 
   // shop admin gets accounts for just this shop
-  } else if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+  } else if (Roles.userIsInRole(this.userId, ["admin", "owner", "reaction-accounts"], shopId)) {
     return Collections.Accounts.find({
       groups: { $nin: nonAdminGroups },
       shopId: shopId

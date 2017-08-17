@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 import { Reaction } from "/client/api";
 import { groupPermissions } from "../helpers/accountsHelper";
 
@@ -19,9 +20,10 @@ class EditGroup extends Component {
   constructor(props) {
     super(props);
     const { accounts, selectedGroup, groups } = props;
+    const alertId = "edit-group-comp";
 
     this.state = {
-      alertArray: [],
+      alertOptions: { placement: alertId, id: alertId, autoHide: 4000 },
       selectedGroup: selectedGroup || {},
       isEditing: false,
       groups,
@@ -59,55 +61,49 @@ class EditGroup extends Component {
 
   createGroup = (groupData) => {
     Meteor.call("group/createGroup", groupData, Reaction.getShopId(), (err, res) => {
-      let newAlert;
       if (err) {
-        newAlert = {
-          message: err.reason,
-          mode: "danger",
-          options: { autoHide: 4000, i18nKey: "accountsUI.info.errorSendingEmail" }
-        };
-        return this.setState({ alertArray: [...this.state.alertArray, newAlert] });
+        return ReactionAlerts.add(
+          err.reason,
+          "danger",
+          Object.assign({}, this.state.alertOptions, { i18nKey: "admin.settings.createGroupError" })
+        );
       }
-      newAlert = {
-        mode: "success",
-        options: { autoHide: 4000, i18nKey: "admin.groups.successCreate" }
-      };
 
       if (this.props.onChangeGroup) {
         this.props.onChangeGroup(res.group);
       }
 
-      return this.setState({
-        isEditing: false,
-        alertArray: [...this.state.alertArray, newAlert]
-      });
+      ReactionAlerts.add(
+        "Created successfully",
+        "success",
+        Object.assign({}, this.state.alertOptions, { i18nKey: "admin.settings.createGroupSuccess" })
+      );
+
+      this.setState({ isEditing: false });
     });
   };
 
   updateGroup = (groupId, groupData) => {
     Meteor.call("group/updateGroup", groupId, groupData, Reaction.getShopId(), (err, res) => {
-      let newAlert;
       if (err) {
-        newAlert = {
-          message: err.reason,
-          mode: "danger",
-          options: { autoHide: 4000, i18nKey: "admin.groups.errorUpdate" }
-        };
-        return this.setState({ alertArray: [...this.state.alertArray, newAlert] });
+        return ReactionAlerts.add(
+          err.reason,
+          "danger",
+          Object.assign({}, this.state.alertOptions, { i18nKey: "admin.settings.updateGroupError" })
+        );
       }
-      newAlert = {
-        mode: "success",
-        options: { autoHide: 4000, i18nKey: "admin.groups.successUpdate" }
-      };
 
       if (this.props.onChangeGroup) {
         this.props.onChangeGroup(res.group);
       }
 
-      this.setState({
-        isEditing: false,
-        alertArray: [...this.state.alertArray, newAlert]
-      });
+      ReactionAlerts.add(
+        "Created successfully",
+        "success",
+        Object.assign({}, this.state.alertOptions, { i18nKey: "admin.settings.updateGroupSuccess" })
+      );
+
+      this.setState({ isEditing: false });
     });
   };
 
@@ -175,13 +171,14 @@ class EditGroup extends Component {
   };
 
   render() {
+    const alertId = this.state.alertOptions.id;
     return (
       <div className="edit-group-container">
         <Components.Card expanded={true}>
           <Components.CardHeader actAsExpander={true} i18nKeyTitle="admin.groups.editGroups" title="Edit Groups" />
           <Components.CardBody expandable={true}>
             <div className="settings">
-              <Components.Alerts alerts={this.state.alertArray} onAlertRemove={this.removeAlert} />
+              <Components.Alerts placement={alertId} id={alertId} onAlertRemove={this.removeAlert} />
               {this.renderGroups()}
               {this.renderGroupForm()}
               {this.renderPermissionsList()}

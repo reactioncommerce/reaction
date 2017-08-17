@@ -5,6 +5,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 class ManageGroups extends Component {
   static propTypes = {
     accounts: PropTypes.array,
+    adminGroups: PropTypes.array,
     group: PropTypes.object,
     groups: PropTypes.array,
     onChangeGroup: PropTypes.func
@@ -15,37 +16,27 @@ class ManageGroups extends Component {
 
     this.state = {
       accounts: props.accounts,
+      adminGroups: props.adminGroups,
       group: props.group,
       groups: props.groups
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    const { group, groups, accounts } = nextProps;
-    this.setState({ group, groups, accounts });
-  }
-
-  get defaultInviteGroup() {
-    let defaultInviteGroup = {};
-    const groups = [];
-    this.state.groups.forEach((grp) => {
-      if (grp.slug !== "owner") {
-        groups.push(grp);
-      }
-    });
-
-    if (groups && groups.length > 0) {
-      defaultInviteGroup = groups[0];
-    }
-    return defaultInviteGroup;
+    const { group, groups, adminGroups, accounts } = nextProps;
+    this.setState({ group, groups, accounts, adminGroups });
   }
 
   render() {
     return (
       <div className="groups-form">
-        <Components.AdminInviteForm groups={this.state.groups} defaultInviteGroup={this.defaultInviteGroup} />
+        <Components.AdminInviteForm
+          {...this.props}
+          groups={this.state.adminGroups}
+        />
         <Components.EditGroup
-          groups={this.state.groups}
+          // filter out owner group from editable groups. The edit group meteor method also prevents editing owner group
+          groups={this.state.groups.filter(grp => grp.slug !== "owner")}
           selectedGroup={this.state.group}
           onChangeGroup={this.props.onChangeGroup}
         />
