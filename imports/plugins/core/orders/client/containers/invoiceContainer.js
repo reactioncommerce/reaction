@@ -212,33 +212,6 @@ class InvoiceContainer extends Component {
     return false;
   }
 
-  handleReturnItems = () => {
-    const paymentMethod = orderCreditMethod(this.state.order).paymentMethod;
-    const editedItems = this.state.editedItems;
-
-    Alerts.alert({
-      title: "Return selected Items",
-      showCancelButton: true,
-      confirmButtonText: i18next.t("order.applyRefund")
-    }, (isConfirm) => {
-      if (isConfirm) {
-        this.setState({
-          isRefunding: true
-        });
-
-        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, editedItems, this.getSelectedItemsInfo(), (error) => {
-          if (error) {
-            Alerts.alert(error.reason);
-          }
-          Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
-          this.setState({
-            isRefunding: false
-          });
-        });
-      }
-    });
-  }
-
   getRefundedItemsInfo = () => {
     const { editedItems } = this.state;
     return {
@@ -246,6 +219,7 @@ class InvoiceContainer extends Component {
       total: editedItems.reduce((acc, item) => acc + item.refundedTotal, 0)
     };
   }
+
   hasRefundingEnabled() {
     const order = this.state.order;
     const paymentMethodId = order.billing[0].paymentMethod.paymentPackageId;
@@ -278,6 +252,24 @@ class InvoiceContainer extends Component {
     }, 0);
 
     return { quantity, total };
+  }
+
+  handleApprove = (event) => {
+    event.preventDefault();
+
+    const order = this.state.order;
+    approvePayment(order);
+  }
+
+  handleCapturePayment = (event) => {
+    event.preventDefault();
+
+    this.setState({
+      isCapturing: true
+    });
+
+    const order = this.state.order;
+    capturePayments(order);
   }
 
   handleCancelPayment = (event) => {
@@ -325,75 +317,6 @@ class InvoiceContainer extends Component {
         return Meteor.call("orders/cancelOrder", order, returnToStock);
       }
     });
-  }
-
-  handleCapturePayment = (event) => {
-    event.preventDefault();
-
-    this.setState({
-      isCapturing: true
-    });
-
-    const order = this.state.order;
-    Meteor.call("orders/capturePayments", order._id);
-    if (order.workflow.status === "new") {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
-
-      Reaction.Router.setQueryParams({
-        filter: "processing",
-        _id: order._id
-      });
-    }
-  }
-
-  handleApprove = (event) => {
-    event.preventDefault();
-    const order = this.state.order;
-
-    const paymentMethod = orderCreditMethod(order);
-    const orderTotal = accounting.toFixed(
-      paymentMethod.invoice.subtotal
-      + paymentMethod.invoice.shipping
-      + paymentMethod.invoice.taxes
-      , 2);
-
-    const discount = order.discount;
-    // TODO: review Discount cannot be greater than original total price
-    // logic is probably not valid any more. Discounts aren't valid below 0 order.
-    if (discount > orderTotal) {
-      Alerts.inline("Discount cannot be greater than original total price", "error", {
-        placement: "coreOrderShippingInvoice",
-        i18nKey: "order.invalidDiscount",
-        autoHide: 10000
-      });
-    } else if (orderTotal === accounting.toFixed(discount, 2)) {
-      Alerts.alert({
-        title: i18next.t("order.fullDiscountWarning"),
-        showCancelButton: true,
-        confirmButtonText: i18next.t("order.applyDiscount")
-      }, (isConfirm) => {
-        if (isConfirm) {
-          Meteor.call("orders/approvePayment", order, (error) => {
-            if (error) {
-              Logger.warn(error);
-            }
-          });
-        }
-      });
-    } else {
-      Meteor.call("orders/approvePayment", order, (error) => {
-        if (error) {
-          Logger.warn(error);
-          if (error.error === "orders/approvePayment.discount-amount") {
-            Alerts.inline("Discount cannot be greater than original total price", "error", {
-              placement: "coreOrderShippingInvoice",
-              i18nKey: "order.invalidDiscount",
-              autoHide: 10000
-            });
-          }
-        }
-      });
-    }
   }
 
   handleRefund = (event, value) => {
@@ -453,6 +376,81 @@ class InvoiceContainer extends Component {
     }
   }
 
+  handleReturnItems = () => {
+    const paymentMethod = orderCreditMethod(this.state.order).paymentMethod;
+    const orderMode = paymentMethod.mode;
+    const order = this.state.order;
+
+    // Check if payment is yet to be captured approve and capture first before return
+    if (orderMode === "authorize") {
+      Alerts.alert({
+        title: "Return selected Items",
+        type: "warning",
+        text: "You are about to return ____ items but have yet to approve or capture ____ payment on you're order. Would you like to approve now?",
+        showCancelButton: true,
+        confirmButtonText: i18next.t("order.approveInvoice")
+      }, (isConfirm) => {
+        if (isConfirm) {
+          approvePayment(order);
+          this.alertToCapture(order);
+        }
+      });
+    } else {
+      this.alertToRefund(order);
+    }
+  }
+
+  alertToCapture = (order) => {
+    Alerts.alert({
+      title: "Return selected Items",
+      text: "Capture payment?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: i18next.t("order.capturePayment")
+    }, (isConfirm) => {
+      if (isConfirm) {
+        capturePayments(order);
+        this.alertToRefund(order);
+      }
+    });
+  }
+
+  alertToRefund = (order) => {
+    const paymentMethod = orderCreditMethod(order).paymentMethod;
+    const editedItems = this.state.editedItems;
+
+    Alerts.alert({
+      title: "Return selected Items",
+      text: "Return these items?",
+      showCancelButton: true,
+      confirmButtonText: i18next.t("order.applyRefund")
+    }, (isConfirm) => {
+      if (isConfirm) {
+        this.setState({
+          isRefunding: true
+        });
+
+        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, editedItems, this.getSelectedItemsInfo(), (error) => {
+          if (error) {
+            Alerts.alert(error.reason);
+          }
+
+          Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
+
+          Alerts.alert({
+            text: "Items have successfully been returned and refund initiated",
+            type: "success",
+            allowOutsideClick: false
+          });
+
+          this.setState({
+            isRefunding: false
+          });
+        });
+      }
+    });
+  }
+
   render() {
     return (
       <TranslationProvider>
@@ -497,6 +495,67 @@ class InvoiceContainer extends Component {
 // returns entire payment method
 function orderCreditMethod(order) {
   return order.billing.filter(value => value.paymentMethod.method ===  "credit")[0];
+}
+
+// helper method to approve payments
+function approvePayment(order) {
+  const paymentMethod = orderCreditMethod(order);
+  const orderTotal = accounting.toFixed(
+    paymentMethod.invoice.subtotal
+    + paymentMethod.invoice.shipping
+    + paymentMethod.invoice.taxes
+    , 2);
+
+  const discount = order.discount;
+  // TODO: review Discount cannot be greater than original total price
+  // logic is probably not valid any more. Discounts aren't valid below 0 order.
+  if (discount > orderTotal) {
+    Alerts.inline("Discount cannot be greater than original total price", "error", {
+      placement: "coreOrderShippingInvoice",
+      i18nKey: "order.invalidDiscount",
+      autoHide: 10000
+    });
+  } else if (orderTotal === accounting.toFixed(discount, 2)) {
+    Alerts.alert({
+      title: i18next.t("order.fullDiscountWarning"),
+      showCancelButton: true,
+      confirmButtonText: i18next.t("order.applyDiscount")
+    }, (isConfirm) => {
+      if (isConfirm) {
+        Meteor.call("orders/approvePayment", order, (error) => {
+          if (error) {
+            Logger.warn(error);
+          }
+        });
+      }
+    });
+  } else {
+    Meteor.call("orders/approvePayment", order, (error) => {
+      if (error) {
+        Logger.warn(error);
+        if (error.error === "orders/approvePayment.discount-amount") {
+          Alerts.inline("Discount cannot be greater than original total price", "error", {
+            placement: "coreOrderShippingInvoice",
+            i18nKey: "order.invalidDiscount",
+            autoHide: 10000
+          });
+        }
+      }
+    });
+  }
+}
+
+// helper method to capture payments
+function capturePayments(order) {
+  Meteor.call("orders/capturePayments", order._id);
+  if (order.workflow.status === "new") {
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+
+    Reaction.Router.setQueryParams({
+      filter: "processing",
+      _id: order._id
+    });
+  }
 }
 
 const composer = (props, onData) => {

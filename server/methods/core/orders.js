@@ -949,27 +949,11 @@ export const methods = {
     const processor = paymentMethod.processor.toLowerCase();
     const order = Orders.findOne(orderId);
     const transactionId = paymentMethod.transactionId;
-    const orderMode = paymentMethod.mode;
     const amount = returnItemsInfo.total;
     const quantity = returnItemsInfo.quantity;
     const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
 
     let query = {};
-
-    // Check if payment is yet to be captured
-
-    if (orderMode === "authorize") {
-      Meteor.call("orders/approvePayment", order, (error) => {
-        if (error) {
-          Logger.warn(error);
-        }
-        Meteor.call("orders/capturePayments", orderId, (err) => {
-          if (err) {
-            Logger.warn(err);
-          }
-        });
-      });
-    }
 
     const result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
 
@@ -978,6 +962,7 @@ export const methods = {
         "billing.$.paymentMethod.transactions": result
       }
     };
+
     // Send email to notify customer of a refund
     Meteor.call("orders/sendNotification", order, "refunded");
     if (result.saved === false) {
