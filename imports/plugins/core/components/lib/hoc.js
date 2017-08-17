@@ -1,7 +1,9 @@
 import { composeWithTracker } from "./composer";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
-import { Accounts } from "/lib/collections";
+import _ from "lodash";
+import { Accounts, Groups } from "/lib/collections";
+
 
 let Reaction;
 
@@ -61,6 +63,38 @@ export function withIsAdmin(component) {
   return composeWithTracker((props, onData) => {
     onData(null, { isAdmin: Reaction.hasAdminAccess() });
   })(component);
+}
+
+/**
+ * A wrapper to reactively inject a user's permission based on group or roles
+ * Group access is given to users at that group level and above
+ * @param  {Array|String} roles String or array of strings of permissions to check. default: roles=["guest", "anonymous"]
+ * @param  {String} group Slug title of a group to check against. Group option supercedes roles option. default: group="customer".
+ * @return {Function} the new wrapped component with a "hasPermission" prop
+ */
+export function withPermissions(roles = ["guest", "anonymous"], group = "customer") {
+  return function (component) {
+    return composeWithTracker((props, onData) => {
+      const grpSub = Meteor.subscribe("Groups");
+
+      if (grpSub.ready()) {
+        let hasPermission = false;
+        hasPermission = Reaction.hasPermission(roles);
+        const grp = Groups.findOne({ slug: group });
+
+        if (grp) {
+          const user = Meteor.user();
+          const permissions = user.roles[Reaction.getShopId()] || [];
+          if (grp && grp.permissions) {
+            // checks that userPermissions includes all elements from groupPermissions
+            hasPermission = _.difference(grp.permissions, permissions).length === 0;
+          }
+        }
+
+        onData(null, { hasPermission });
+      }
+    })(component);
+  };
 }
 
 

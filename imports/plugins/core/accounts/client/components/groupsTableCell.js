@@ -3,7 +3,7 @@ import React from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent, withPermissions } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { getGravatar } from "../helpers/accountsHelper";
 
@@ -127,6 +127,6 @@ GroupsTableCell.propTypes = {
   onMethodLoad: PropTypes.func
 };
 
-registerComponent("GroupsTableCell", GroupsTableCell);
+registerComponent("GroupsTableCell", GroupsTableCell, withPermissions());
 
 export default GroupsTableCell;
