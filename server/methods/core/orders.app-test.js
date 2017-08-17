@@ -502,7 +502,7 @@ describe("orders test", function () {
     });
   });
 
-  describe.only("orders/refunds/returnItems", function () {
+  describe("orders/refunds/returnItems", function () {
     beforeEach(function () {
       sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
         check(arguments, [Match.Any]);
