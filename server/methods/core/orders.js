@@ -931,14 +931,12 @@ export const methods = {
    * @summary Apply a refund to an already captured order
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object
-   * @param {Array} returnItems - items to return
    * @param {Object} returnItemsInfo - info about return items
    * @return {null} no return value
    */
-  "orders/refunds/returnItems": function (orderId, paymentMethod, returnItems, returnItemsInfo) {
+  "orders/refunds/returnItems": function (orderId, paymentMethod, returnItemsInfo) {
     check(orderId, String);
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    check(returnItems, Array);
     check(returnItemsInfo, Object);
 
     // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
@@ -951,6 +949,7 @@ export const methods = {
     const transactionId = paymentMethod.transactionId;
     const amount = returnItemsInfo.total;
     const quantity = returnItemsInfo.quantity;
+    const returnItems = returnItemsInfo.items;
     const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
 
     let query = {};
@@ -976,8 +975,8 @@ export const methods = {
       refundedStatus = "partialRefund";
     }
 
-    returnItems.forEach(refundedItem => {
-      orderQuantityAdjust(orderId, refundedItem);
+    returnItems.forEach(returnedItem => {
+      orderQuantityAdjust(orderId, returnedItem);
     });
 
     Orders.update({

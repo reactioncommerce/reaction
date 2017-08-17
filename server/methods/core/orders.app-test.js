@@ -34,6 +34,7 @@ describe("orders test", function () {
       "capturePayments": Meteor.server.method_handlers["orders/capturePayments"],
       "refunds/list": Meteor.server.method_handlers["orders/refunds/list"],
       "refunds/create": Meteor.server.method_handlers["orders/refunds/create"],
+      "refunds/returnItems": Meteor.server.method_handlers["orders/refunds/returnItems"],
       "example/payment/capture": Meteor.server.method_handlers["example/payment/capture"]
     };
 
@@ -496,6 +497,57 @@ describe("orders test", function () {
       spyOnMethod("refunds/create", order.userId);
       const amount = 5.20;
       Meteor.call("orders/refunds/create", order._id, order.billing[0].paymentMethod, amount);
+      const updateOrder = Orders.findOne({ _id: order._id });
+      expect(updateOrder.billing[0].paymentMethod.status).to.equal("refunded");
+    });
+  });
+
+  describe.only("orders/refunds/returnItems", function () {
+    beforeEach(function () {
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
+        check(arguments, [Match.Any]);
+      });
+    });
+
+    it("should return error if user does not have admin permissions", function () {
+      sandbox.stub(Reaction, "hasPermission", () => false);
+      spyOnMethod("refunds/returnItems", order.userId);
+      function returnItems() {
+        const returnItemsInfo = {
+          total: 9.90,
+          quantity: 2,
+          items: [{}, {}]
+        };
+        return Meteor.call("orders/refunds/returnItems", order._id, order.billing[0].paymentMethod, returnItemsInfo);
+      }
+      expect(returnItems).to.throw(Meteor.error, /Access Denied/);
+    });
+
+    it("should update the order as partially refunded if not all of items in the order are returned", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      spyOnMethod("refunds/returnItems", order.userId);
+      const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
+      const quantity = originalQuantity - 1;
+      const returnItemsInfo = {
+        total: 3.99,
+        quantity: quantity,
+        items: [{}, {}]
+      };
+      Meteor.call("orders/refunds/returnItems", order._id, order.billing[0].paymentMethod, returnItemsInfo);
+      const updateOrder = Orders.findOne({ _id: order._id });
+      expect(updateOrder.billing[0].paymentMethod.status).to.equal("partialRefund");
+    });
+
+    it("should update the order as refunded if all items in the order are returned", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      spyOnMethod("refunds/returnItems", order.userId);
+      const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
+      const returnItemsInfo = {
+        total: 9.90,
+        quantity: originalQuantity,
+        items: [{}, {}]
+      };
+      Meteor.call("orders/refunds/returnItems", order._id, order.billing[0].paymentMethod, returnItemsInfo);
       const updateOrder = Orders.findOne({ _id: order._id });
       expect(updateOrder.billing[0].paymentMethod.status).to.equal("refunded");
     });

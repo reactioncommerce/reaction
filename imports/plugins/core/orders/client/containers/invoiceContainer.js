@@ -212,13 +212,13 @@ class InvoiceContainer extends Component {
     return false;
   }
 
-  getRefundedItemsInfo = () => {
-    const { editedItems } = this.state;
-    return {
-      quantity: editedItems.reduce((acc, item) => acc + item.refundedQuantity, 0),
-      total: editedItems.reduce((acc, item) => acc + item.refundedTotal, 0)
-    };
-  }
+  // getRefundedItemsInfo = () => {
+  //   const { editedItems } = this.state;
+  //   return {
+  //     quantity: editedItems.reduce((acc, item) => acc + item.refundedQuantity, 0),
+  //     total: editedItems.reduce((acc, item) => acc + item.refundedTotal, 0)
+  //   };
+  // }
 
   hasRefundingEnabled() {
     const order = this.state.order;
@@ -251,7 +251,11 @@ class InvoiceContainer extends Component {
       return calcTotal;
     }, 0);
 
-    return { quantity, total };
+    const items = editedItems.filter((editedItem) => {
+      return this.state.selectedItems.includes(editedItem.id);
+    });
+
+    return { quantity, total, items };
   }
 
   handleApprove = (event) => {
@@ -417,7 +421,6 @@ class InvoiceContainer extends Component {
 
   alertToRefund = (order) => {
     const paymentMethod = orderCreditMethod(order).paymentMethod;
-    const editedItems = this.state.editedItems;
 
     Alerts.alert({
       title: "Return selected Items",
@@ -430,7 +433,7 @@ class InvoiceContainer extends Component {
           isRefunding: true
         });
 
-        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, editedItems, this.getSelectedItemsInfo(), (error) => {
+        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, this.getSelectedItemsInfo(), (error) => {
           if (error) {
             Alerts.alert(error.reason);
           }
