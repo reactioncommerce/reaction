@@ -121,6 +121,7 @@ class LineItems extends Component {
   }
 
   renderLineItemInvoice(uniqueItem) {
+    console.log("uniqueItem", uniqueItem);
     return (
       <div className="invoive-order-items">
         <div className="invoice-order-item-shipping">
@@ -160,7 +161,7 @@ class LineItems extends Component {
               i18nKey="cartSubTotals.subtotal"
             />
           </b>
-          <b className="pull-right">{formatPriceString(uniqueItem.variants.price)}</b>
+          <b className="pull-right">{formatPriceString(uniqueItem.variants.price * uniqueItem.quantity)}</b>
         </div>
       </div>
     );
