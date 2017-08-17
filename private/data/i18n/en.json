@@ -102,6 +102,7 @@
         "checkout": "Checkout now",
         "new": "New",
         "coreOrderWorkflow/created": "Created",
+        "coreOrderWorkflow/processing": "Processing",
         "coreOrderWorkflow/completed": "Completed",
         "coreOrderWorkflow/canceled": "Canceled",
         "coreOrderWorkflow/picked": "Picked",
