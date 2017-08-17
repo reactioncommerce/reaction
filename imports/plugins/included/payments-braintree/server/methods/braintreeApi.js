@@ -40,13 +40,17 @@ function getSettings(settings, ref, valueName) {
   return undefined;
 }
 
-function getAccountOptions() {
-  let environment;
-  const settings = Packages.findOne({
+function getAccountOptions(isPayment) {
+  const queryConditions = {
     name: "reaction-braintree",
-    shopId: Reaction.getShopId(),
-    enabled: true
-  }).settings;
+    shopId: Reaction.getShopId()
+  };
+  if (isPayment) {
+    queryConditions.enabled = true;
+  }
+
+  const { settings } = Packages.findOne(queryConditions);
+  let environment;
   if (typeof settings !== "undefined" && settings !== null ? settings.mode : undefined === true) {
     environment = "production";
   } else {
@@ -66,8 +70,8 @@ function getAccountOptions() {
   return options;
 }
 
-function getGateway() {
-  const accountOptions = getAccountOptions();
+function getGateway(isNewPayment) {
+  const accountOptions = getAccountOptions(isNewPayment);
   if (accountOptions.environment === "production") {
     accountOptions.environment = Braintree.Environment.Production;
   } else {
@@ -87,7 +91,8 @@ function getRefundDetails(refundId) {
 
 
 BraintreeApi.apiCall.paymentSubmit = function (paymentSubmitDetails) {
-  const gateway = getGateway();
+  const isNewPayment = true;
+  const gateway = getGateway(isNewPayment);
   const paymentObj = getPaymentObj();
   if (paymentSubmitDetails.transactionType === "authorize") {
     paymentObj.options.submitForSettlement = false;

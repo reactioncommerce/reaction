@@ -357,7 +357,7 @@ class ActionView extends Component {
             <h3 className="title" style={this.styles.title}>
               <Translation
                 defaultValue={actionView.label || "Dashboard"}
-                i18nKey={actionView.i18nKeyLabel || "dashboard.coreTitle"}
+                i18nKey={actionView.i18nKeyLabel || "admin.dashboard.coreTitle"}
               />
             </h3>
           </div>

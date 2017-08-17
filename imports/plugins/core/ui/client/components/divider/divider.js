@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { pure } from "recompose";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 const Divider = (props) => {
@@ -39,6 +38,6 @@ Divider.propTypes = {
   label: PropTypes.string
 };
 
-registerComponent("Divider", Divider, pure);
+registerComponent("Divider", Divider);
 
 export default Divider;

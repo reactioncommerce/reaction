@@ -77,18 +77,22 @@ class PermissionsList extends Component {
 
   renderSubPermissions(permission) {
     if (permission.permissions.length) {
-      return permission.permissions.map((childPermission, index) => {
-        return (
-          <Components.ListItem
-            key={`${childPermission.name}-${index + 1}`}
-            actionType="switch"
-            label={childPermission.label}
-            switchOn={this.checked(childPermission.permission)}
-            switchName={childPermission.permission}
-            onSwitchChange={this.togglePermission(childPermission)}
-          />
-        );
-      });
+      return (
+        <div className="child-item">
+          {permission.permissions.map((childPermission, index) => {
+            return (
+              <Components.ListItem
+                key={`${childPermission.name}-${index}`}
+                actionType="switch"
+                label={childPermission.label}
+                switchOn={this.checked(childPermission.permission)}
+                switchName={childPermission.permission}
+                onSwitchChange={this.togglePermission(childPermission)}
+              />
+            );
+          })}
+        </div>
+      );
     }
     return null;
   }
@@ -97,7 +101,7 @@ class PermissionsList extends Component {
     const jsx = [];
     permissions.forEach((permission, key) => {
       jsx.push(
-        <div key={`${permission.name}-${key}`}>
+        <div className="permission-item" key={`${permission.name}-${key}`}>
           <Components.ListItem
             label={permission.label}
             actionType="switch"

@@ -1,4 +1,3 @@
-import LocalizationSettingsContainer from "./containers/localizationSettingsContainer";
-import { registerComponent } from "@reactioncommerce/reaction-components";
-
-registerComponent("i18nSettings", LocalizationSettingsContainer);
+export { default as CurrencyDropdown } from "./containers/currencyDropdown";
+export { default as LanguageDropdown } from "./containers/languageDropdown";
+export { default as LocalizationSettings } from "./containers/localizationSettings";
