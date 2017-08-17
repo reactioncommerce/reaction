@@ -80,8 +80,7 @@
           "saveSuccess": "pošte spremljene.",
           "saveFailed": "Neuspjelo spremanje postavki pošte. {{error}}",
           "cantSendEmail": "Pogreška poslužitelja: Ne mogu poslati e-mail obavijesti.",
-          "emailSent": "poslao e-mail obavijesti.",
-          "addOrderEmailFailed": "Dodavanje e-pošte na narudžbu nije uspjelo"
+          "emailSent": "poslao e-mail obavijesti."
         }
       }
     }

@@ -80,8 +80,7 @@
           "saveSuccess": "Nastavení pošty uložena.",
           "saveFailed": "Nepodařilo se uložit nastavení pošty. {{error}}",
           "cantSendEmail": "Chyba serveru: Nelze odeslat e-mailové oznámení.",
-          "emailSent": "Upozornění na e-mail odeslán.",
-          "addOrderEmailFailed": "Přidání e-mailu na objednávku selhalo"
+          "emailSent": "Upozornění na e-mail odeslán."
         }
       }
     }
