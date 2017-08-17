@@ -3,111 +3,94 @@ import PropTypes from "prop-types";
 import { Translation, Checkbox, Button, Icon, List, ListItem } from "@reactioncommerce/reaction-ui";
 
 class OrderBulkActionsBar extends Component {
-    static propTypes = {
-      isLoading: PropTypes.object,
-      multipleSelect: PropTypes.bool,
-      orders: PropTypes.array,
-      renderFlowList: PropTypes.bool,
-      selectAllOrders: PropTypes.func,
-      selectedItems: PropTypes.array,
-      setShippingStatus: PropTypes.func,
-      shipping: PropTypes.object,
-      toggleShippingFlowList: PropTypes.func
-    };
+  static propTypes = {
+    isLoading: PropTypes.object,
+    multipleSelect: PropTypes.bool,
+    orders: PropTypes.array,
+    renderFlowList: PropTypes.bool,
+    selectAllOrders: PropTypes.func,
+    selectedItems: PropTypes.array,
+    setShippingStatus: PropTypes.func,
+    shipping: PropTypes.object,
+    toggleShippingFlowList: PropTypes.func
+  };
 
-    constructor(props) {
-      super(props);
-      this.state = {
-        renderFlowList: props.renderFlowList,
-        shipping: props.shipping,
-        isLoading: props.isLoading
-      };
-    }
+  renderLoadingSpinner(status) {
+    return this.props.isLoading[status] ?
+      <Icon className="bulk-actions-icons-select" icon="fa fa-spinner fa-pulse" />
+      :
+      <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>;
+  }
 
-    componentWillReceiveProps = (nextProps) => {
-      this.setState({
-        shipping: nextProps.shipping,
-        isLoading: nextProps.isLoading,
-        renderFlowList: nextProps.renderFlowList
-      });
-    }
-
-    renderLoadingSpinner(status) {
-      return this.state.isLoading[status] ?
-        <Icon className="bulk-actions-icons-select" icon="fa fa-spinner fa-pulse" />
-        :
-        <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>;
-    }
-
-    renderShippingFLowList() {
-      if (this.state.renderFlowList) {
-        return (
-          <List className="shipping-flow-list">
-            <ListItem
-              label={this.state.shipping.picked ? "Generate Picking Report" : "Picked"}
-              i18nKeyLabel={this.state.shipping.picked ? "order.generatePickingReport" : "order.picked"}
-              value="picked"
-              onClick={this.handleListItemClick}
-              listItemClassName={this.state.shipping.picked ? "selected" : ""}
-            >
-              {this.state.shipping.picked ?
-                <div>
-                  <Icon className="bulk-actions-icons" icon="fa fa-print"/>
-                  <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
-                </div>
-                :
-                this.renderLoadingSpinner("picked")
-              }
-            </ListItem>
-            <ListItem
-              label="Packed"
-              i18nKeyLabel="order.packed"
-              value="packed"
-              onClick={this.handleListItemClick}
-              listItemClassName={this.state.shipping.packed ? "selected" : ""}
-            >
-              {this.state.shipping.packed ?
+  renderShippingFLowList() {
+    if (this.props.renderFlowList) {
+      return (
+        <List className="shipping-flow-list">
+          <ListItem
+            label={this.props.shipping.picked ? "Generate Picking Report" : "Picked"}
+            i18nKeyLabel={this.props.shipping.picked ? "order.generatePickingReport" : "order.picked"}
+            value="picked"
+            onClick={this.handleListItemClick}
+            listItemClassName={this.props.shipping.picked ? "selected" : ""}
+          >
+            {this.props.shipping.picked ?
+              <div>
+                <Icon className="bulk-actions-icons" icon="fa fa-print"/>
                 <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
-                :
-                this.renderLoadingSpinner("packed")
-              }
-            </ListItem>
-            <ListItem
-              label={this.state.shipping.labeled ? "Generate Label" : "Labeled"}
-              i18nKeyLabel={this.state.shipping.labeled ? "order.generateLabel" : "order.labeled"}
-              value="labeled"
-              onClick={this.handleListItemClick}
-              listItemClassName={this.state.shipping.labeled ? "selected" : ""}
-            >
-              {this.state.shipping.labeled ?
-                <div>
-                  <Icon className="bulk-actions-icons" icon="fa fa-print"/>
-                  <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
-                </div>
-                :
-                this.renderLoadingSpinner("labeled")
-              }
-            </ListItem>
-            <ListItem
-              label="Shipped"
-              i18nKeyLabel="order.shipped"
-              value="shipped"
-              onClick={this.handleListItemClick}
-              listItemClassName={this.state.shipping.shipped ? "selected" : ""}
-            >
-              {this.state.shipping.shipped ?
-                <div>
-                  <Icon className="bulk-actions-icons" icon="fa fa-paper-plane-o" />
-                  <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
-                </div>
-                :
-                this.renderLoadingSpinner("shipped")
-              }
-            </ListItem>
-          </List>
-        );
-      }
+              </div>
+              :
+              this.renderLoadingSpinner("picked")
+            }
+          </ListItem>
+          <ListItem
+            label="Packed"
+            i18nKeyLabel="order.packed"
+            value="packed"
+            onClick={this.handleListItemClick}
+            listItemClassName={this.props.shipping.packed ? "selected" : ""}
+          >
+            {this.props.shipping.packed ?
+              <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
+              :
+              this.renderLoadingSpinner("packed")
+            }
+          </ListItem>
+          <ListItem
+            label={this.props.shipping.labeled ? "Generate Label" : "Labeled"}
+            i18nKeyLabel={this.props.shipping.labeled ? "order.generateLabel" : "order.labeled"}
+            value="labeled"
+            onClick={this.handleListItemClick}
+            listItemClassName={this.props.shipping.labeled ? "selected" : ""}
+          >
+            {this.props.shipping.labeled ?
+              <div>
+                <Icon className="bulk-actions-icons" icon="fa fa-print"/>
+                <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
+              </div>
+              :
+              this.renderLoadingSpinner("labeled")
+            }
+          </ListItem>
+          <ListItem
+            label="Shipped"
+            i18nKeyLabel="order.shipped"
+            value="shipped"
+            onClick={this.handleListItemClick}
+            listItemClassName={this.props.shipping.shipped ? "selected" : ""}
+          >
+            {this.props.shipping.shipped ?
+              <div>
+                <Icon className="bulk-actions-icons" icon="fa fa-paper-plane-o" />
+                <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
+              </div>
+              :
+              this.renderLoadingSpinner("shipped")
+            }
+          </ListItem>
+        </List>
+      );
     }
+  }
 
     handleListItemClick = (event, value) => {
       if (this.props.setShippingStatus) {
