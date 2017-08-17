@@ -69,27 +69,30 @@ export function withIsAdmin(component) {
  * Group access is given to users at that group level and above
  * @param  {Array|String} roles String or array of strings of permissions to check. default: roles=["guest", "anonymous"]
  * @param  {String} group Slug title of a group to check against. Group option supercedes roles option. default: group="customer".
- * @return {Function} the new wrapped component with a "hasPermission" prop
+ * @return {Function} the new wrapped component with a "hasPermissions" prop
  */
-export function withPermissions(roles = ["guest", "anonymous"], group = "customer") {
+export function withPermissions({ roles = ["guest", "anonymous"], group }) {
   return composeWithTracker((props, onData) => {
+    let hasPermissions = Reaction.hasPermission(roles);
+
+    if (!group) {
+      return onData(null, { hasPermissions });
+    }
+
+    // if group is passed, use group access instead
     const grpSub = Meteor.subscribe("Groups");
 
     if (grpSub.ready()) {
-      let hasPermission = false;
-      hasPermission = Reaction.hasPermission(roles);
       const grp = Groups.findOne({ slug: group });
 
-      if (grp) {
+      if (grp && grp.permissions) {
         const user = Meteor.user();
         const permissions = user.roles[Reaction.getShopId()] || [];
-        if (grp && grp.permissions) {
-          // checks that userPermissions includes all elements from groupPermissions
-          hasPermission = _.difference(grp.permissions, permissions).length === 0;
-        }
+        // checks that userPermissions includes all elements from groupPermissions
+        hasPermissions = _.difference(grp.permissions, permissions).length === 0;
       }
 
-      onData(null, { hasPermission });
+      onData(null, { hasPermissions });
     }
   });
 }
