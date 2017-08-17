@@ -525,7 +525,7 @@ describe("Account Meteor method ", function () {
     });
   });
 
-  describe.only("accounts/inviteShopOwner", function () {
+  describe("accounts/inviteShopOwner", function () {
     beforeEach(function () {
       sandbox.stub(Meteor, "user", function () {
         return fakeUser;

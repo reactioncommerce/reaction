@@ -67,67 +67,69 @@
     }
     border-left: 1px solid #ccc;
   }
+
   .group-container {
     position: relative;
+    padding: 20px;
+    .list-group {
+      margin-bottom: 50px;
+    }
     .spinner-container {
       position: absolute;
       top: 50%;
       left: 50%;
       z-index: 9999;
     }
-  }
-}
-
-.accounts-group-table {
-  .title {
-    text-transform: capitalize;
-  }
-  .group-dropdown {
-    width: 100%;
-    display: inherit;
-  }
-}
-
-.accounts-group-table.empty-table {
-  margin-bottom: 100px;
-}
-
-.add-group-members {
-  .c-default {
-    cursor: default;
-  }
-  .rt-resizable-header-content {
-    text-transform: capitalize;
-  }
-  .badge {
-    float: right;
-    line-height: 40px;
-    text-transform: capitalize;
-    background-color: transparent;
-    color: #000;
-  }
-  .name-box {
-    display: inline-block;
-    .title {
-      text-transform: capitalize;
+    .list-group-item {
+      background: @rui-brand-bg;
+      font-weight: 700;
+      .fa {
+        font-size: large;
+        font-weight: @badge-font-weight;
+      }
     }
-    >span {
-      display: inline-block;
-      span {
-        display: block;
+    .accounts-group-table {
+      .title {
+        text-transform: capitalize;
+      }
+      .group-dropdown, .group-table-button {
+        width: 100%;
+        font-weight: @badge-font-weight;
+        display: inherit;
+        text-align: center;
+      }
+      .btn {
+        width: 80%;
+      }
+      .accounts-img-tag {
+        margin: 0 15px 0 20px;
+      }
+      .-odd {
+        background: transparent;
+      }
+      .rt-tr-group:last-child {
+        border-bottom: 1px solid @rui-default-disabled;
+      }
+      .rt-td {
+        span {
+          line-height: 2;
+        }
+        .btn {
+          padding: 0 5%;
+        }
+      }
+      .created-at {
+        text-align: center;
+      }
+      .rt-thead.-header {
+        .rt-th {
+          text-align: left;
+          margin-left: 20px;
+          line-height: 2;
+        }
       }
     }
   }
-  .accounts-img-tag {
-    margin: 0 5px;
-    width: 45px;
-    height: 45px;
-    vertical-align: bottom;
-  }
-}
-
-.add-group-members {
-  position: relative;
 }
 
 .admin-invite-form {
@@ -149,6 +151,13 @@
         flex: none;
         width: auto;
         margin-right: 10px;
+      }
+    }
+  }
+  .permissions-list {
+    .permission-item {
+      .child-item .list-group-item {
+        padding: 10px 20px 10px 40px;
       }
     }
   }
