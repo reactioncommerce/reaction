@@ -188,15 +188,10 @@ Meteor.methods({
     check(groupId, String);
 
     const user = Accounts.findOne({ _id: userId });
-    const { shopId, slug } = Groups.findOne({ _id: groupId }) || {};
+    const { shopId } = Groups.findOne({ _id: groupId }) || {};
     const defaultCustomerGroupForShop = Groups.findOne({ slug: "customer", shopId }) || {};
 
     if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    if (slug === "owner") {
-      // owner should not be remove, but transferred using groups/addUser
       throw new Meteor.Error(403, "Access Denied");
     }
 
