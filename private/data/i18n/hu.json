@@ -31,7 +31,8 @@
         "yearOptions": "Válasszon évet",
         "shopSettings": "Bolt beállítások",
         "dashboard": "Műszerfal",
-        "print": "Nyomtatás"
+        "print": "Nyomtatás",
+        "auto": "kocsi"
       },
       "header": {
         "tagsAdd": "Címke hozzáadása",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "revisions": {
+        "isDisabled": "Revision szabályozás ki van kapcsolva. A módosításokat haladéktalanul közzé kell tenni.",
+        "isEnabled": "Revision szabályozás engedélyezve a termékek. A módosításokat közzé kell tenni, mielőtt láthatóvá az ügyfelek számára."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Alapértelmezett fizetési mód",
+        "name": "Név",
+        "namePlaceholder": "Bolt neve",
+        "description": "Leírás",
+        "descriptionPlaceholder": "Írja le bolt SEO",
+        "descriptionTooltip": "Meta Leírás SEO",
+        "email": "E-mail",
+        "emailPlaceholder": "Elsődleges kapcsolattartó e-mail",
+        "keywords": "Kulcsszavak",
+        "keywordsPlaceholder": "Meta kulcsszavak SEO",
+        "language": "alapnyelv",
+        "addressBook": {
+          "company": "Vállalat",
+          "companyPlaceholder": "Ez az üzlet neve",
+          "country": "Ország",
+          "fullName": "Teljes név",
+          "fullNamePlaceholder": "A szervezet neve",
+          "address1": "Cím 1",
+          "address1Placeholder": "A szervezet címe",
+          "address1Tooltip": "Ez a cím lesz látható a látogatók",
+          "address2": "Cím 2",
+          "address2Placeholder": "további cím",
+          "postal": "Postai",
+          "city": "Város",
+          "region": "Megye",
+          "phone": "Telefon",
+          "isShippingDefault": "Ez legyen az elsődleges szállítási címed?",
+          "isBillingDefault": "Ez legyen az elsődleges számlázási címed?",
+          "isCommercial": "Céges cím."
+        }
       },
       "accountsUI": {
         "members": "Belépés",

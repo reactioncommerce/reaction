@@ -31,7 +31,8 @@
         "yearOptions": "Alegeți anul",
         "shopSettings": "Setări Magazin",
         "dashboard": "Bord",
-        "print": "Imprimare"
+        "print": "Imprimare",
+        "auto": "Auto"
       },
       "header": {
         "tagsAdd": "Adăugaţi o etichetă",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "revisions": {
+        "isDisabled": "Opțiunea „Revision control” este dezactivată. Orice schimbare va fi imediat publicată.",
+        "isEnabled": "Controlul revizie este activat pentru produse. Toate modificările vor fi trebui să fie publicate înainte de a fi vizibile pentru clienți."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Metoda de plată Implicită",
+        "name": "Nume",
+        "namePlaceholder": "Nume Magazin",
+        "description": "Descriere",
+        "descriptionPlaceholder": "Descrie magazin pentru SEO (optimizare motoare cautare)",
+        "descriptionTooltip": "Acest câmp este utilizat de meta description tag. El permite motoarelor de căutare să găsească a descrierea magazinului",
+        "email": "E-mail",
+        "emailPlaceholder": "Contact E-mail implicit",
+        "keywords": "Cuvinte cheie",
+        "keywordsPlaceholder": "Cuvinte cheie (meta keywords) pentru SEO",
+        "language": "Limba de bază",
+        "addressBook": {
+          "company": "Companie",
+          "companyPlaceholder": "Această organizație",
+          "country": "Țară",
+          "fullName": "Numele complet",
+          "fullNamePlaceholder": "Numele organizației dumneavoastră",
+          "address1": "Adresă",
+          "address1Placeholder": "Adresa organizației dumneavoastră",
+          "address1Tooltip": "Această adresă va fi vizibilă pentru vizitatori",
+          "address2": "continuare Adresă",
+          "address2Placeholder": "Adresa aditională",
+          "postal": "Poştal",
+          "city": "Oraș",
+          "region": "Regiune",
+          "phone": "Telefon",
+          "isShippingDefault": "Doriți să faceți aceasta adresă de expediere implicită?",
+          "isBillingDefault": "Doriți să faceți aceasta adresă de facturare implicită?",
+          "isCommercial": "Aceasta este o adresă comercială."
+        }
       },
       "accountsUI": {
         "members": "Membrii",

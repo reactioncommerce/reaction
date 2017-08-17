@@ -224,6 +224,42 @@
         "twitter": "Twitter",
         "weibo": "Weibo"
       },
+      "revisions": {
+        "isDisabled": "έλεγχος αναθεώρηση είναι απενεργοποιημένη. Οποιεσδήποτε αλλαγές θα δημοσιεύονται αμέσως.",
+        "isEnabled": "ελέγχου αναθεώρησης είναι ενεργοποιημένη για Προϊόντα. Οποιεσδήποτε αλλαγές θα πρέπει να δημοσιεύονται πριν να είναι ορατή στους πελάτες."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Προεπιλεγμένη μέθοδο πληρωμής",
+        "name": "Όνομα",
+        "namePlaceholder": "κατάστημα Όνομα",
+        "description": "Περιγραφή",
+        "descriptionPlaceholder": "Περιγράψτε το κατάστημά σας για SEO",
+        "descriptionTooltip": "Meta Περιγραφή για SEO",
+        "email": "E-mail",
+        "emailPlaceholder": "Πρωτοβάθμια Επικοινωνία Email",
+        "keywords": "Λέξεις-κλειδιά",
+        "keywordsPlaceholder": "Meta λέξεις-κλειδιά για SEO",
+        "language": "βάση Γλώσσα",
+        "addressBook": {
+          "company": "Εταιρεία",
+          "companyPlaceholder": "Αυτή η εταιρική επωνυμία",
+          "country": "Χώρα",
+          "fullName": "Ονοματεπώνυμο",
+          "fullNamePlaceholder": "όνομα του οργανισμού σας",
+          "address1": "Διεύθυνση 1",
+          "address1Placeholder": "διευθύνσεων της εταιρείας σας",
+          "address1Tooltip": "Αυτή η διεύθυνση θα είναι ορατή στους επισκέπτες",
+          "address2": "Διεύθυνση 2",
+          "address2Placeholder": "πρόσθετες διεύθυνση",
+          "postal": "Τ.Κ.",
+          "city": "Πόλη",
+          "region": "Περιοχή",
+          "phone": "Τηλέφωνο",
+          "isShippingDefault": "Είναι η προεπιλεγμένη διεύθυνση αποστολής;",
+          "isBillingDefault": "Είναι η προεπιλεγμένη διεύθυνση πληρωμής;",
+          "isCommercial": "Είναι εμπορική διεύθυνση;"
+        }
+      },
       "accountsUI": {
         "members": "μέλη",
         "guest": "Επισκέπτης",

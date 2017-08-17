@@ -31,7 +31,8 @@
         "yearOptions": "Sélectionner une année",
         "shopSettings": "Paramètres du magasin",
         "dashboard": "Tableau de bord",
-        "print": "Imprimer"
+        "print": "Imprimer",
+        "auto": "Auto"
       },
       "header": {
         "tagsAdd": "Ajouter une balise",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "revisions": {
+        "isDisabled": "La gestion de version est désactivée. Toute modification sera immédiatement publiée.",
+        "isEnabled": "le contrôle de révision est activée pour les produits. Toute modification sera doivent être publiés avant d'être visible pour les clients."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Méthode de paiement par défaut",
+        "name": "Nom",
+        "namePlaceholder": "Nom du magasin",
+        "description": "Description",
+        "descriptionPlaceholder": "Décrivez votre magasin en tenant compte du SEO",
+        "descriptionTooltip": "Ce champ est utilisé par une métabalise de description. Les moteurs de recherche sont autorisés à décrire votre magasin",
+        "email": "E-mail",
+        "emailPlaceholder": "E-mail du contact principal",
+        "keywords": "Mots clés",
+        "keywordsPlaceholder": "Mots-clés méta",
+        "language": "Langue de référence",
+        "addressBook": {
+          "company": "Entreprise",
+          "companyPlaceholder": "Nom de l'entreprise",
+          "country": "Pays",
+          "fullName": "Nom complet",
+          "fullNamePlaceholder": "Le nom de votre entreprise",
+          "address1": "Adresse",
+          "address1Placeholder": "Adresse de votre entreprise",
+          "address1Tooltip": "Cette adresse sera visible par les visiteurs",
+          "address2": "Adresse",
+          "address2Placeholder": "Adresse supplémentaire",
+          "postal": "Postal",
+          "city": "Ville",
+          "region": "Région",
+          "phone": "Téléphone",
+          "isShippingDefault": "Utiliser cette adresse comme adresse de livraison par défaut ?",
+          "isBillingDefault": "Utiliser cette adresse comme adresse de facturation ?",
+          "isCommercial": "Il s'agit d'une adresse commerciale."
+        }
       },
       "accountsUI": {
         "members": "Membres",

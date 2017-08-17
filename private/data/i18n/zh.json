@@ -31,7 +31,8 @@
         "yearOptions": "选择年份",
         "shopSettings": "商店设置",
         "dashboard": "控制台",
-        "print": "打印"
+        "print": "打印",
+        "auto": "自动"
       },
       "header": {
         "tagsAdd": "添加标签",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "微博"
+      },
+      "revisions": {
+        "isDisabled": "版本控制已禁用。将立即发布任何更改。",
+        "isEnabled": "版本控制产品启用。任何更改都将是需要看到客户之前公布。"
+      },
+      "shop": {
+        "defaultPaymentMethod": "默认付款方式",
+        "name": "姓名",
+        "namePlaceholder": "商店名称",
+        "description": "描述",
+        "descriptionPlaceholder": "向SEO描述您的商店",
+        "descriptionTooltip": "此字段由描述元标记使用。可用搜索引擎描述您的商店",
+        "email": "电子邮件",
+        "emailPlaceholder": "主联系人电子邮件",
+        "keywords": "关键字",
+        "keywordsPlaceholder": "SEO 元关键字",
+        "language": "基本语言",
+        "addressBook": {
+          "company": "公司",
+          "companyPlaceholder": "此公司名称",
+          "country": "国家/地区",
+          "fullName": "全名",
+          "fullNamePlaceholder": "您的单位名称",
+          "address1": "地址",
+          "address1Placeholder": "您的单位地址",
+          "address1Tooltip": "此地址将向访客显示",
+          "address2": "地址",
+          "address2Placeholder": "其他地址",
+          "postal": "邮编",
+          "city": "城市",
+          "region": "区域",
+          "phone": "电话",
+          "isShippingDefault": "是否将其设为您的默认发货地址？",
+          "isBillingDefault": "是否将其设为您的默认账单邮寄地址？",
+          "isCommercial": "这是商业地址。"
+        }
       },
       "accountsUI": {
         "members": "会员",

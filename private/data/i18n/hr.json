@@ -31,7 +31,8 @@
         "yearOptions": "Odaberite godinu",
         "shopSettings": "Postavke Shop",
         "dashboard": "kontrolna ploča",
-        "print": "otisak"
+        "print": "otisak",
+        "auto": "Auto"
       },
       "header": {
         "tagsAdd": "Dodaj oznaku",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "revisions": {
+        "isDisabled": "kontrola Revizija je onemogućen. Sve promjene bit će odmah objavljena.",
+        "isEnabled": "kontrola Revizija je omogućena za proizvode. Sve promjene bit će morati biti objavljena prije nego što je vidljivo na kupce."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Zadani način plaćanja",
+        "name": "Ime",
+        "namePlaceholder": "Naziv Shop",
+        "description": "Opis",
+        "descriptionPlaceholder": "Opišite svoj dućan za SEO",
+        "descriptionTooltip": "Meta opis za SEO",
+        "email": "E-mail",
+        "emailPlaceholder": "Primarni kontakt Email",
+        "keywords": "ključne riječi",
+        "keywordsPlaceholder": "Meta ključne riječi za SEO",
+        "language": "Baza Jezik",
+        "addressBook": {
+          "company": "Društvo",
+          "companyPlaceholder": "Ovaj naziv tvrtke",
+          "country": "Država",
+          "fullName": "Puno ime",
+          "fullNamePlaceholder": "Vaše ime organizacija",
+          "address1": "Adresa 1",
+          "address1Placeholder": "Vaša organizacija adresa",
+          "address1Tooltip": "Ova adresa neće biti vidljive posjetiteljima",
+          "address2": "Adresa 2",
+          "address2Placeholder": "Dodatna adresa",
+          "postal": "Poštanski broj",
+          "city": "Grad",
+          "region": "Regija",
+          "phone": "Telefon",
+          "isShippingDefault": "Postavi kao zadanu adresu dostave?",
+          "isBillingDefault": "Postavi kao zadanu adresu naplate?",
+          "isCommercial": "Ovo je adresa tvrtke."
+        }
       },
       "accountsUI": {
         "members": "članovi",

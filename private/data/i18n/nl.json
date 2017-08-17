@@ -31,7 +31,8 @@
         "yearOptions": "Kies jaar",
         "shopSettings": "Shop Instellingen",
         "dashboard": "Dashboard",
-        "print": "Afdruk"
+        "print": "Afdruk",
+        "auto": "Auto"
       },
       "header": {
         "tagsAdd": "Tag toevoegen",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "revisions": {
+        "isDisabled": "Revisie controle is uitgeschakeld. Eventuele wijzigingen zullen onmiddellijk worden gepubliceerd.",
+        "isEnabled": "Revisie controle is ingeschakeld voor producten. Eventuele wijzigingen zullen nodig hebben voordat ze zichtbaar zijn voor klanten om te worden gepubliceerd."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Standaardbetaalmethode",
+        "name": "Naam",
+        "namePlaceholder": "Shop Naam",
+        "description": "Beschrijving",
+        "descriptionPlaceholder": "Beschrijf uw winkel voor SEO",
+        "descriptionTooltip": "Meta Beschrijving voor SEO",
+        "email": "Email",
+        "emailPlaceholder": "Primaire Contact E-mail",
+        "keywords": "trefwoorden",
+        "keywordsPlaceholder": "Meta keywords voor SEO",
+        "language": "Base Taal",
+        "addressBook": {
+          "company": "Bedrijf",
+          "companyPlaceholder": "Deze bedrijfsnaam",
+          "country": "Land",
+          "fullName": "Volledige naam",
+          "fullNamePlaceholder": "Naam van uw organisatie",
+          "address1": "Addresregel 1",
+          "address1Placeholder": "Uw organisatie adres",
+          "address1Tooltip": "Dit adres is zichtbaar voor bezoekers",
+          "address2": "Addresregel 2",
+          "address2Placeholder": "Extra Adres",
+          "postal": "Postcode",
+          "city": "Stad",
+          "region": "Province",
+          "phone": "Telefoon",
+          "isShippingDefault": "Wilt u hiervan uw standaardverzendadres maken?",
+          "isBillingDefault": "Wilt u hiervan uw standaardfactuuradres maken?",
+          "isCommercial": "Dit is een zakelijk adres."
+        }
       },
       "accountsUI": {
         "members": "Gebruikers",

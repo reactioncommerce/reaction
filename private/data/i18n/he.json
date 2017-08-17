@@ -31,7 +31,8 @@
         "yearOptions": "בחר שנה",
         "shopSettings": "הגדרות חנות",
         "dashboard": "לוח מחוונים",
-        "print": "הדפס"
+        "print": "הדפס",
+        "auto": "אוטומטי"
       },
       "header": {
         "tagsAdd": "הוספת תגית",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "revisions": {
+        "isDisabled": "ניהול הגרסאות מושבת. כל השינויים יפורסמו באופן מידי.",
+        "isEnabled": "ניהול גרסאות מופעל עבור המוצרים. יש לפרסם את כל השינויים לפני שיהפכו להיות גלויים עבור הלקוחות."
+      },
+      "shop": {
+        "defaultPaymentMethod": "ברירת מחדל לשיטת תשלום",
+        "name": "שם",
+        "namePlaceholder": "שם החנות",
+        "description": "תיאור",
+        "descriptionPlaceholder": "תאר את החנות שלך ל- SEO",
+        "descriptionTooltip": "שדה זה נמצא בשימוש על ידי תגית מטא-תיאור. הוא מאפשר למנועי חיפוש לתאר את חנותך",
+        "email": "דוא\"ל",
+        "emailPlaceholder": "דוא\"ל עקרי ליצירת קשר",
+        "keywords": "מילות מפתח",
+        "keywordsPlaceholder": "מילות מפתח-מטא ל- SEO",
+        "language": "שפת בסיס",
+        "addressBook": {
+          "company": "חברה",
+          "companyPlaceholder": "שם עסק זה",
+          "country": "ארץ",
+          "fullName": "שם פרטי ומשפחה",
+          "fullNamePlaceholder": "שם הארגון שלך",
+          "address1": "כתובת 1",
+          "address1Placeholder": "כתובת הארגון שלך",
+          "address1Tooltip": "כתובת זו תהיה גלויה למבקרים",
+          "address2": "כתובת 2",
+          "address2Placeholder": "כתובת נוספת",
+          "postal": "מיקוד",
+          "city": "יישוב",
+          "region": "אזור",
+          "phone": "טלפון",
+          "isShippingDefault": "האם לבחור בכתובת זו כברירת המחדל עבור משלוח?",
+          "isBillingDefault": "האם לבחור בכתובת זו כברירת המחדל עבור חשבונית?",
+          "isCommercial": "האם זו כתובת מסחרית?"
+        }
       },
       "accountsUI": {
         "members": "חברים",

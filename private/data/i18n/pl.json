@@ -31,7 +31,8 @@
         "yearOptions": "Wybierz rok",
         "shopSettings": "Ustawienia Shop",
         "dashboard": "Dashboard",
-        "print": "Wydrukować"
+        "print": "Wydrukować",
+        "auto": "Auto"
       },
       "header": {
         "tagsAdd": "Dodaj etykietke",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "revisions": {
+        "isDisabled": "kontroli wersji jest wyłączona. Wszelkie zmiany będą publikowane natychmiast.",
+        "isEnabled": "kontroli wersji jest włączona dla Produktów. Wszelkie zmiany będą muszą być opublikowane, zanim będzie widoczna dla klientów."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Domyślna metoda płatności",
+        "name": "Nazwa",
+        "namePlaceholder": "Nazwa Sklepu",
+        "description": "Opis",
+        "descriptionPlaceholder": "Opisz swój sklep dla SEO",
+        "descriptionTooltip": "Meta Description dla SEO",
+        "email": "E-mail",
+        "emailPlaceholder": "Główny kontakt email",
+        "keywords": "Słowa kluczowe",
+        "keywordsPlaceholder": "Meta słów kluczowych dla SEO",
+        "language": "Język bazowy",
+        "addressBook": {
+          "company": "Firma",
+          "companyPlaceholder": "Ta nazwa firmy",
+          "country": "Kraj",
+          "fullName": "Pełne imię i nazwisko",
+          "fullNamePlaceholder": "Twoja nazwa organizacji",
+          "address1": "Adres",
+          "address1Placeholder": "Twój adres organizacji",
+          "address1Tooltip": "Ten adres będzie widoczny dla użytkowników",
+          "address2": "Adres",
+          "address2Placeholder": "Dodatkowy adres",
+          "postal": "Pocztowy",
+          "city": "Miasto",
+          "region": "Region",
+          "phone": "Telefon",
+          "isShippingDefault": "Ustaw jako domyślny adres wysyłki?",
+          "isBillingDefault": "Ustaw jako domyślny adres rozliczeniowy?",
+          "isCommercial": "Ten adres handlowych."
+        }
       },
       "accountsUI": {
         "members": "Użytkownicy",

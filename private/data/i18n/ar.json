@@ -31,7 +31,8 @@
         "yearOptions": "اختر السنة",
         "shopSettings": "إعدادات المتجر",
         "dashboard": "لوحة المعلومات",
-        "print": "طباعة"
+        "print": "طباعة",
+        "auto": "تلقائي"
       },
       "header": {
         "tagsAdd": "إضافة علامة",
@@ -223,6 +224,42 @@
         "meetup": "ميتوب",
         "twitter": "تويتر",
         "weibo": "ويبو"
+      },
+      "revisions": {
+        "isDisabled": ".مراجعة المراقبة  غير مفعل .أي تغيير سوف يتم نشره فوراً",
+        "isEnabled": "يتم تمكين مراجعة مراقبة للمنتجات. سوف يحتاج أي تغييرات على أن تنشر قبل أن يكون مرئيا للعملاء."
+      },
+       "shop": {
+        "defaultPaymentMethod": "طريقة الدفع الإفتراضية",
+        "name": "الأسم",
+        "namePlaceholder": "اسم المتجر",
+        "description": "مواصفات",
+        "descriptionPlaceholder": "قم بوصف  متجرك من أجل الظهور في محركات البحث",
+        "descriptionTooltip": ".هذا الحقل يستخدم في وصف العلامة الوصفية إنه يسمح لمحركات البحث  لوصف متجرك",
+        "email": "بريد إلكتروني",
+        "emailPlaceholder": "البريد الإلكتروني لجهة الاتصال الأساسية",
+        "keywords": "الكلمات الدالة",
+        "keywordsPlaceholder": "الكلمات المفتاحية للظهور في محركات البحث",
+        "language": "اللغة الأساسية",
+        "addressBook": {
+          "company": "شركة",
+          "companyPlaceholder": "اسم العمل",
+          "country": "البلد",
+          "fullName": "الأسم الكامل",
+          "fullNamePlaceholder": "اسم مؤسستك",
+          "address1": "عناويين",
+          "address1Placeholder": "عنوان مؤسستك",
+          "address1Tooltip": "هذا العنوان سيكون مرئي للزائرين",
+          "address2": "العناوين",
+          "address2Placeholder": "عنوان إضافي",
+          "postal": "بريدي",
+          "city": "مدينة",
+          "region": "منطقة",
+          "phone": "هاتف ",
+          "isShippingDefault": "جعل هذا عنوانك الإفتراضي للشحن؟",
+          "isBillingDefault": "أجعل هذا عنوانك للفواتير ؟",
+          "isCommercial": "هذه عناوين تجارية"
+        }
       },
       "accountsUI": {
         "members": "أعضاء",

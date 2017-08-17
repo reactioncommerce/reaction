@@ -31,7 +31,8 @@
         "yearOptions": "Выберите год",
         "shopSettings": "Настройки магазина",
         "dashboard": "Панель управления",
-        "print": "Распечатать"
+        "print": "Распечатать",
+        "auto": "Автоматически"
       },
       "header": {
         "tagsAdd": "Добавить метку",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "revisions": {
+        "isDisabled": "Управление версиями отключено. Любые изменения будут немедленно опубликованы.",
+        "isEnabled": "Контроль версий включена для продуктов. Любые изменения будут должны быть опубликованы до быть видимым для клиентов."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Платёжная система по умолчанию",
+        "name": "Название",
+        "namePlaceholder": "Название магазина",
+        "description": "Описание",
+        "descriptionPlaceholder": "Опишите свой магазин для SEO",
+        "descriptionTooltip": "Это поле необходимо для тегов мета-дескрипторов. Оно позволяет поисковым машинам находить ваш магазин",
+        "email": "Email",
+        "emailPlaceholder": "Основной email магазина",
+        "keywords": "Ключевые слова",
+        "keywordsPlaceholder": "Ключевые слова для SEO",
+        "language": "Основной язык",
+        "addressBook": {
+          "company": "Компания",
+          "companyPlaceholder": "Название компании",
+          "country": "Страна",
+          "fullName": "Название организации",
+          "fullNamePlaceholder": "Название вашей организации",
+          "address1": "Адрес",
+          "address1Placeholder": "Адрес вашей организации",
+          "address1Tooltip": "Этот адрес будет виден посетителям",
+          "address2": "Адрес (доп.)",
+          "address2Placeholder": "Например, номер офиса",
+          "postal": "Почтовый индекс",
+          "city": "Город",
+          "region": "Область/Край",
+          "phone": "Телефон",
+          "isShippingDefault": "Сделать адресом доставки по умолчанию?",
+          "isBillingDefault": "Сделать платёжным адресом по умолчанию?",
+          "isCommercial": "Это юридический адрес"
+        }
       },
       "accountsUI": {
         "members": "Сотрудники",

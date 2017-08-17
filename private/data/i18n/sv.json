@@ -31,7 +31,8 @@
         "yearOptions": "Välj år",
         "shopSettings": "butiks Inställningar",
         "dashboard": "Instrumentbräda",
-        "print": "Skriv"
+        "print": "Skriv",
+        "auto": "Bil"
       },
       "header": {
         "tagsAdd": "Lägg till tagg",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "revisions": {
+        "isDisabled": "Versionskontroll är inaktiverad. Eventuella ändringar kommer att publiceras omedelbart.",
+        "isEnabled": "Versionskontroll har aktiverats för produkter. Eventuella ändringar kommer att behöva publiceras innan de synliga för kunderna."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Standardbetalningsmetod",
+        "name": "Namn",
+        "namePlaceholder": "Shop Namn",
+        "description": "Beskrivning",
+        "descriptionPlaceholder": "Beskriv din butik för SEO",
+        "descriptionTooltip": "Meta Beskrivning för SEO",
+        "email": "E-post",
+        "emailPlaceholder": "Primär Kontakt E-post",
+        "keywords": "Nyckelord",
+        "keywordsPlaceholder": "Meta sökord för SEO",
+        "language": "Base språk",
+        "addressBook": {
+          "company": "Företag",
+          "companyPlaceholder": "Denna firma",
+          "country": "Land",
+          "fullName": "Fullständiga namn",
+          "fullNamePlaceholder": "Organisationens namn",
+          "address1": "Adress",
+          "address1Placeholder": "Din organisation adress",
+          "address1Tooltip": "Denna adress kommer att vara synlig för besökare",
+          "address2": "Adress",
+          "address2Placeholder": "ytterligare en adress",
+          "postal": "Post",
+          "city": "Stad",
+          "region": "Område",
+          "phone": "Telefon",
+          "isShippingDefault": "Gör detta till din standardleveransadress?",
+          "isBillingDefault": "Gör detta till din standardfaktureringsadress?",
+          "isCommercial": "Detta är en kommersiell adress."
+        }
       },
       "accountsUI": {
         "members": "Medlemmar",

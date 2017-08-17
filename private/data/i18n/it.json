@@ -31,7 +31,8 @@
         "yearOptions": "Scegli anno",
         "shopSettings": "Impostazioni negozio",
         "dashboard": "Cruscotto",
-        "print": "Stampa"
+        "print": "Stampa",
+        "auto": "Automobile"
       },
       "header": {
         "tagsAdd": "Aggiungi tag",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "revisions": {
+        "isDisabled": "controllo di revisione è disabilitato. Eventuali modifiche saranno pubblicate immediatamente.",
+        "isEnabled": "controllo di revisione è abilitato per i prodotti. saranno bisogno di alcuna modifica per essere pubblicato prima di essere visibile ai clienti."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Metodo di pagamento predefinito",
+        "name": "Nome",
+        "namePlaceholder": "Shop Name",
+        "description": "Descrizione",
+        "descriptionPlaceholder": "Descrivi la tua negozio per SEO",
+        "descriptionTooltip": "Descrizione Meta per SEO",
+        "email": "Email",
+        "emailPlaceholder": "Contatto principale Email",
+        "keywords": "parole",
+        "keywordsPlaceholder": "Meta parole chiave per SEO",
+        "language": "Lingua Base",
+        "addressBook": {
+          "company": "Società",
+          "companyPlaceholder": "Questo nome commerciale",
+          "country": "Nazione",
+          "fullName": "Nome e cognome",
+          "fullNamePlaceholder": "Il tuo nome dell'organizzazione",
+          "address1": "Indirizzo",
+          "address1Placeholder": "Il tuo indirizzo e organizzazione",
+          "address1Tooltip": "Questo indirizzo sarà visibile per i visitatori",
+          "address2": "Indirizzo",
+          "address2Placeholder": "Indirizzo aggiuntivo",
+          "postal": "postale",
+          "city": "Città",
+          "region": "Regione",
+          "phone": "Telefono",
+          "isShippingDefault": "Fai di questo vostro indirizzo di trasporto predefinito?",
+          "isBillingDefault": "Fai di questo tuo indirizzo di fatturazione di default?",
+          "isCommercial": "Questo è un indirizzo commerciale."
+        }
       },
       "accountsUI": {
         "members": "Membri",

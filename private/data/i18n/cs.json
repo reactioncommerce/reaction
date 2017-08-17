@@ -31,7 +31,8 @@
         "yearOptions": "Zvolte rok",
         "shopSettings": "Nastavení Shop",
         "dashboard": "přístrojová deska",
-        "print": "Tisk"
+        "print": "Tisk",
+        "auto": "Auto"
       },
       "header": {
         "tagsAdd": "Přidat značku",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "revisions": {
+        "isDisabled": "Ovládání revize je zakázáno. Jakékoli změny budou zveřejněny okamžitě.",
+        "isEnabled": "Ovládání revize je povoleno za produkty. bude muset případné změny, které mají být zveřejněny dříve, než jsou viditelné pro zákazníky."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Výchozí způsob platby",
+        "name": "Název",
+        "namePlaceholder": "Obchod Name",
+        "description": "Popis",
+        "descriptionPlaceholder": "Popište svůj obchod pro SEO",
+        "descriptionTooltip": "Meta Popis pro SEO",
+        "email": "Email",
+        "emailPlaceholder": "Primární Kontaktní e-mail",
+        "keywords": "Klíčová slova",
+        "keywordsPlaceholder": "Meta klíčová slova pro SEO",
+        "language": "základna Language",
+        "addressBook": {
+          "company": "Firma",
+          "companyPlaceholder": "Tento obchodní jméno",
+          "country": "Země",
+          "fullName": "Celé jméno",
+          "fullNamePlaceholder": "Vaše organizace název",
+          "address1": "Adresa",
+          "address1Placeholder": "Vaše organizace adresa",
+          "address1Tooltip": "Tato adresa bude viditelný pro návštěvníky",
+          "address2": "Adresa",
+          "address2Placeholder": "dodatečné adresa",
+          "postal": "Poštovní",
+          "city": "Město",
+          "region": "Kraj",
+          "phone": "Telefon",
+          "isShippingDefault": "Aby tento výchozí dodací adresu?",
+          "isBillingDefault": "Aby tento výchozí fakturační adresu?",
+          "isCommercial": "Jedná se o obchodní adresu."
+        }
       },
       "accountsUI": {
         "members": "Členové",

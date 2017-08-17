@@ -31,7 +31,8 @@
         "yearOptions": "Chọn năm",
         "shopSettings": "cửa hàng Cài đặt",
         "dashboard": "bảng điều khiển",
-        "print": "In"
+        "print": "In",
+        "auto": "Tự động"
       },
       "header": {
         "tagsAdd": "Thêm thẻ",
@@ -223,6 +224,42 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "revisions": {
+        "isDisabled": "kiểm soát sửa đổi được vô hiệu hóa. Mọi thay đổi sẽ được công bố ngay lập tức.",
+        "isEnabled": "kiểm soát sửa đổi được kích hoạt cho sản phẩm. Mọi thay đổi sẽ cần phải được công bố trước khi được rõ cho khách hàng."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Phương thức thanh toán mặc định",
+        "name": "Tên",
+        "namePlaceholder": "cửa hàng Tên",
+        "description": "Sự miêu tả",
+        "descriptionPlaceholder": "Mô tả cửa hàng của bạn cho SEO",
+        "descriptionTooltip": "Meta Description cho SEO",
+        "email": "E-mail",
+        "emailPlaceholder": "Tiểu học Liên hệ Email",
+        "keywords": "Từ khóa",
+        "keywordsPlaceholder": "Meta từ khóa cho SEO",
+        "language": "cơ sở Ngôn ngữ",
+        "addressBook": {
+          "company": "Công ty",
+          "companyPlaceholder": "tên doanh nghiệp này",
+          "country": "Quốc gia",
+          "fullName": "Họ và tên",
+          "fullNamePlaceholder": "tên tổ chức của bạn",
+          "address1": "Địa chỉ nhà",
+          "address1Placeholder": "địa chỉ tổ chức của bạn",
+          "address1Tooltip": "Địa chỉ này sẽ được hiển thị cho khách",
+          "address2": "Địa chỉ nhà",
+          "address2Placeholder": "Địa chỉ bổ sung",
+          "postal": "bưu chính",
+          "city": "Thành thị",
+          "region": "Khu vực",
+          "phone": "Điện thoại",
+          "isShippingDefault": "Hãy địa chỉ giao hàng mặc định của bạn?",
+          "isBillingDefault": "Hãy địa chỉ thanh toán mặc định của bạn?",
+          "isCommercial": "Đây là địa chỉ thương mại."
+        }
       },
       "accountsUI": {
         "members": "Thành viên",
