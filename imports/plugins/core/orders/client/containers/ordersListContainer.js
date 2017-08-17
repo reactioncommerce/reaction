@@ -53,6 +53,25 @@ class OrdersListContainer extends Component {
     });
   }
 
+  toggleShippingFlowList = () => {
+    this.setState({
+      renderFlowList: !this.state.renderFlowList
+    });
+    this.setListItemsToDefault();
+  }
+
+  setListItemsToDefault() {
+    if (this.state.renderFlowList === false) {
+      shippingStrings.forEach((value) => {
+        this.setState({
+          shipping: {
+            [value]: false
+          }
+        });
+      });
+    }
+  }
+
   handleSelect = (event, isInputChecked, name) => {
     this.setState({
       multipleSelect: false,
@@ -516,6 +535,7 @@ class OrdersListContainer extends Component {
         shipping={this.state.shipping}
         isLoading={this.state.isLoading}
         renderFlowList={this.state.renderFlowList}
+        toggleShippingFlowList={this.toggleShippingFlowList}
       />
     );
   }

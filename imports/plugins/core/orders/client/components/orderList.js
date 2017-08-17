@@ -15,7 +15,8 @@ class OrdersList extends Component {
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,
-    shipping: PropTypes.object
+    shipping: PropTypes.object,
+    toggleShippingFlowList: PropTypes.func
 
   }
 
@@ -75,6 +76,7 @@ class OrdersList extends Component {
               setShippingStatus={this.props.setShippingStatus}
               isLoading={this.props.isLoading}
               renderFlowList={this.props.renderFlowList}
+              toggleShippingFlowList={this.props.toggleShippingFlowList}
             />
           </div>
         </div>

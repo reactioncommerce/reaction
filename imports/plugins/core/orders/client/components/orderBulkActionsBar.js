@@ -11,7 +11,8 @@ class OrderBulkActionsBar extends Component {
       selectAllOrders: PropTypes.func,
       selectedItems: PropTypes.array,
       setShippingStatus: PropTypes.func,
-      shipping: PropTypes.object
+      shipping: PropTypes.object,
+      toggleShippingFlowList: PropTypes.func
     };
 
     constructor(props) {
@@ -29,13 +30,6 @@ class OrderBulkActionsBar extends Component {
         isLoading: nextProps.isLoading,
         renderFlowList: nextProps.renderFlowList
       });
-    }
-
-    toggleShippingFlowList = () => {
-      this.setState({
-        renderFlowList: !this.state.renderFlowList
-      });
-      this.setListItemsToDefault();
     }
 
     renderLoadingSpinner(status) {
@@ -121,19 +115,6 @@ class OrderBulkActionsBar extends Component {
       }
     }
 
-    setListItemsToDefault() {
-      if (this.state.renderFlowList === false) {
-        this.setState({
-          shipping: {
-            picked: false,
-            packed: false,
-            labeled: false,
-            shipped: false
-          }
-        });
-      }
-    }
-
     render() {
       const { orders, multipleSelect, selectedItems, selectAllOrders } = this.props;
 
@@ -166,7 +147,7 @@ class OrderBulkActionsBar extends Component {
               i18nKeyLabel="order.bulkActions"
               icon="fa fa-chevron-down"
               iconAfter={true}
-              onClick={this.toggleShippingFlowList}
+              onClick={this.props.toggleShippingFlowList}
             />
             {this.renderShippingFLowList()}
           </div>
