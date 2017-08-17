@@ -30,7 +30,9 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
       </div>
 
       <div className="order-details-main">
-        <h4><strong><Components.Translation defaultValue="Your Items" i18nKey={"cartCompleted.yourItems"} /></strong></h4>
+        <div className="order-details-content-title">
+          <Components.Translation defaultValue="Your Items" i18nKey={"cartCompleted.yourItems"} />
+        </div>
         {shops.map(function (shop) {
           const shopKey = Object.keys(shop);
           return (
