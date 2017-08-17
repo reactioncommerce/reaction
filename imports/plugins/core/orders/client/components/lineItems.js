@@ -12,6 +12,7 @@ class LineItems extends Component {
   static propTypes = {
     displayMedia: PropTypes.func,
     editedItems: PropTypes.array,
+    getRefundedItemsInfo: PropTypes.func,
     getSelectedItemsInfo: PropTypes.func,
     handleInputChange: PropTypes.func,
     handleItemSelect: PropTypes.func,
@@ -41,6 +42,27 @@ class LineItems extends Component {
     }
     return (
       <img src= "/resources/placeholder.gif" />
+    );
+  }
+
+  displayQuantity(uniqueItem) {
+    if (this.state.isOpen) {
+      return (
+        <div>
+          {!this.props.selectedItems.includes(uniqueItem._id) ?
+            <NumberTypeInput
+              minValue={0}
+              defaultValue={uniqueItem.quantity}
+              onChange={(event, value) => this.props.handleInputChange(event, value, uniqueItem)}
+              maxValue={uniqueItem.quantity}
+            /> :
+            <div>0</div>
+          }
+        </div>
+      );
+    }
+    return (
+      <div>{uniqueItem.quantity}</div>
     );
   }
 
@@ -84,15 +106,7 @@ class LineItems extends Component {
           </div>
 
           <div className="order-detail-quantity">
-            {this.state.isOpen ?
-              <NumberTypeInput
-                minValue={0}
-                defaultValue={uniqueItem.quantity}
-                onChange={(event, value) => this.props.handleInputChange(event, value, uniqueItem)}
-                maxValue={uniqueItem.quantity}
-              /> :
-              <div>{uniqueItem.quantity}</div>
-            }
+            {this.displayQuantity(uniqueItem)}
           </div>
 
           <div className="order-detail-price">
@@ -170,18 +184,17 @@ class LineItems extends Component {
           </div>
           <div className="refund-body">
             {editedItems.map((item, index) => (
-              this.props.selectedItems.includes(item.id) &&
-                <div className="refund-item" key={index}>
-                  <div>
-                    <span>{item.title}</span>
-                  </div>
-                  <div>
-                    <span>{item.refundedQuantity}</span>
-                  </div>
-                  <div>
-                    <span>{formatPriceString(item.refundedTotal)}</span>
-                  </div>
+              <div className="refund-item" key={index}>
+                <div>
+                  <span>{item.title}</span>
                 </div>
+                <div>
+                  <span>{item.refundedQuantity}</span>
+                </div>
+                <div>
+                  <span>{formatPriceString(item.refundedTotal)}</span>
+                </div>
+              </div>
             )
             )}
             <div className="refund-item return">
@@ -190,12 +203,12 @@ class LineItems extends Component {
               </div>
               <div>
                 <span>
-                  {this.props.getSelectedItemsInfo().quantity}
+                  {this.props.getRefundedItemsInfo().quantity}
                 </span>
               </div>
               <div>
                 <span>
-                  {formatPriceString(this.props.getSelectedItemsInfo().total)}
+                  {formatPriceString(this.props.getRefundedItemsInfo().total)}
                 </span>
               </div>
             </div>
@@ -256,7 +269,7 @@ class LineItems extends Component {
           ))}
         </div>
         <div>
-          {!isEmpty(this.props.selectedItems) && this.renderLineItemRefund()}
+          {!isEmpty(this.props.editedItems) && this.renderLineItemRefund()}
         </div>
         <div className="invoice-actions">
           <div className="invoice-action-cancel">
@@ -277,7 +290,7 @@ class LineItems extends Component {
               className="pull-right"
               bezelStyle="solid"
               status="primary"
-              disabled={this.props.isRefunding || this.props.selectedItems.length === 0}
+              disabled={this.props.isRefunding || this.props.editedItems.length === 0}
               onClick={this.props.handleReturnItems}
             >
               {this.props.isRefunding ? <span>Refunding <i className="fa fa-spinner fa-spin" /></span> :

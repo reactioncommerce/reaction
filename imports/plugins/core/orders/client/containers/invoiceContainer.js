@@ -109,7 +109,7 @@ class InvoiceContainer extends Component {
   }
 
   handleSelectAllItems = (uniqueItems) => {
-    let editedItems = this.state.editedItems;
+    const editedItems = this.state.editedItems;
 
     if (this.state.selectAllItems) {
       // if all items are selected, clear the selectedItems array
@@ -123,27 +123,13 @@ class InvoiceContainer extends Component {
       // selected but not all of them, loop through the items array and return a
       // new array with item ids only, then set the selectedItems array with the itemIds
       const itemIds = uniqueItems.map((item) => {
-        const isEdited = editedItems.find(editedItem => {
-          return editedItem.id === item._id;
+        // on select all refunded quantity should be all existing items
+        editedItems.push({
+          id: item._id,
+          title: item.title,
+          refundedTotal: item.variants.price * item.quantity,
+          refundedQuantity: item.quantity
         });
-
-        const adjustedQuantity = item.quantity - this.state.value;
-
-        if (isEdited) {
-          // if the line item was changed onSelect keep the refunded quantity that had been previously input
-          editedItems = editedItems.filter(editedItem => editedItem.id !== item._id);
-          isEdited.refundedTotal = item.variants.price * adjustedQuantity;
-          isEdited.refundedQuantity = adjustedQuantity;
-          editedItems.push(isEdited);
-        } else {
-          // if the line item wasn't changed on select the refunded quantity should be all existing items
-          editedItems.push({
-            id: item._id,
-            title: item.title,
-            refundedTotal: item.variants.price * item.quantity,
-            refundedQuantity: item.quantity
-          });
-        }
         return item._id;
       });
       this.setState({
@@ -212,13 +198,14 @@ class InvoiceContainer extends Component {
     return false;
   }
 
-  // getRefundedItemsInfo = () => {
-  //   const { editedItems } = this.state;
-  //   return {
-  //     quantity: editedItems.reduce((acc, item) => acc + item.refundedQuantity, 0),
-  //     total: editedItems.reduce((acc, item) => acc + item.refundedTotal, 0)
-  //   };
-  // }
+  getRefundedItemsInfo = () => {
+    const { editedItems } = this.state;
+    return {
+      quantity: editedItems.reduce((acc, item) => acc + item.refundedQuantity, 0),
+      total: editedItems.reduce((acc, item) => acc + item.refundedTotal, 0),
+      items: editedItems
+    };
+  }
 
   hasRefundingEnabled() {
     const order = this.state.order;
@@ -433,7 +420,7 @@ class InvoiceContainer extends Component {
           isRefunding: true
         });
 
-        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, this.getSelectedItemsInfo(), (error) => {
+        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, this.getRefundedItemsInfo(), (error) => {
           if (error) {
             Alerts.alert(error.reason);
           }
