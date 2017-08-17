@@ -58,10 +58,10 @@ class OrdersListContainer extends Component {
       multipleSelect: false,
       renderFlowList: false
     });
-    shippingStrings.forEach((string) => {
+    shippingStrings.forEach((value) => {
       this.setState({
         shipping: {
-          [string]: false
+          [value]: false
         }
       });
     });
