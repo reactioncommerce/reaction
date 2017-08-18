@@ -178,9 +178,10 @@ export const methods = {
             // init rate to 0
             item.taxRate = 0;
             item.taxData = undefined;
-            // only process taxble products
-            if (item.variants.taxable === true) {
-              const shopTaxData = taxDataByShop[item.shopId];
+            const shopTaxData = taxDataByShop[item.shopId];
+
+            // only process taxble products and skip if there is no shopTaxData
+            if (shopTaxData && item.variants.taxable === true) {
               const shopTaxRate = shopTaxData.rate / 100;
 
               // If we have tax rates for this shop
