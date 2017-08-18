@@ -217,35 +217,6 @@ class InvoiceContainer extends Component {
     return isRefundable;
   }
 
-  getSelectedItemsInfo = () => {
-    const { editedItems } = this.state;
-    const quantity = editedItems.reduce((acc, item) => {
-      let calcQuantity;
-      if (this.state.selectedItems.includes(item.id)) {
-        calcQuantity = acc + item.refundedQuantity;
-      } else {
-        calcQuantity = acc;
-      }
-      return calcQuantity;
-    }, 0);
-
-    const total = editedItems.reduce((acc, item) => {
-      let calcTotal;
-      if (this.state.selectedItems.includes(item.id)) {
-        calcTotal = acc + item.refundedTotal;
-      } else {
-        calcTotal = acc;
-      }
-      return calcTotal;
-    }, 0);
-
-    const items = editedItems.filter((editedItem) => {
-      return this.state.selectedItems.includes(editedItem.id);
-    });
-
-    return { quantity, total, items };
-  }
-
   handleApprove = (event) => {
     event.preventDefault();
 
@@ -321,10 +292,7 @@ class InvoiceContainer extends Component {
     const discounts = paymentMethod.discounts;
     const refund = value;
     const refunds = this.state.refunds;
-    let refundTotal = 0;
-    _.each(refunds, function (item) {
-      refundTotal += parseFloat(item.amount);
-    });
+    const refundTotal = refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
 
     let adjustedTotal;
 
@@ -376,9 +344,12 @@ class InvoiceContainer extends Component {
     // Check if payment is yet to be captured approve and capture first before return
     if (orderMode === "authorize") {
       Alerts.alert({
-        title: "Return selected Items",
+        title: i18next.t("order.returnItemsTitle"),
         type: "warning",
-        text: "You are about to return ____ items but have yet to approve or capture ____ payment on you're order. Would you like to approve now?",
+        text: i18next.t("order.returnItemsApproveAlert", {
+          returnItemsQuantity: this.getRefundedItemsInfo().quantity,
+          totalAmount: order.billing[0].invoice.total
+        }),
         showCancelButton: true,
         confirmButtonText: i18next.t("order.approveInvoice")
       }, (isConfirm) => {
@@ -394,8 +365,11 @@ class InvoiceContainer extends Component {
 
   alertToCapture = (order) => {
     Alerts.alert({
-      title: "Return selected Items",
-      text: "Capture payment?",
+      title: i18next.t("order.returnItemsTitle"),
+      text: i18next.t("order.returnItemsCaptureAlert", {
+        returnItemsQuantity: this.getRefundedItemsInfo().quantity,
+        totalAmount: order.billing[0].invoice.total
+      }),
       type: "warning",
       showCancelButton: true,
       confirmButtonText: i18next.t("order.capturePayment")
@@ -409,19 +383,23 @@ class InvoiceContainer extends Component {
 
   alertToRefund = (order) => {
     const paymentMethod = orderCreditMethod(order).paymentMethod;
+    const refundInfo = this.getRefundedItemsInfo();
 
     Alerts.alert({
-      title: "Return selected Items",
-      text: "Return these items?",
+      title: i18next.t("order.returnItemsTitle"),
+      text: i18next.t("order.returnItemsAlert", {
+        returnItemsQuantity: refundInfo.quantity,
+        returnItemsTotal: refundInfo.total
+      }),
       showCancelButton: true,
-      confirmButtonText: i18next.t("order.applyRefund")
+      confirmButtonText: i18next.t("order.refundAmount")
     }, (isConfirm) => {
       if (isConfirm) {
         this.setState({
           isRefunding: true
         });
 
-        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, this.getRefundedItemsInfo(), (error) => {
+        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, refundInfo, (error) => {
           if (error) {
             Alerts.alert(error.reason);
           }
@@ -448,7 +426,6 @@ class InvoiceContainer extends Component {
         <Invoice
           {...this.props}
 
-          getSelectedItemsInfo={this.getSelectedItemsInfo}
           handleClick={this.handleClick}
           handleSelectAllItems={this.handleSelectAllItems}
           onClose={this.handleClose}
@@ -602,9 +579,9 @@ const composer = (props, onData) => {
 
   // returns order items with shipping detail
   const returnItems = order.items.map((item) => {
-    const tax = order.tax;
     const shipping = shipment.shipmentMethod;
-    return _.extend(item, { shipping, tax });
+    item.shipping = shipping;
+    return item;
   });
 
   let uniqueItems;

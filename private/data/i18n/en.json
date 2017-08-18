@@ -131,6 +131,7 @@
         "canceledLabel": "Canceled",
         "refundAmount": "Refund Amount",
         "applyRefund": "Apply Refund",
+        "returnItems": "Return Items",
         "adjustedTotal": "Adjusted Total",
         "processor": "Processor",
         "filter": {
@@ -140,7 +141,11 @@
           "completed": "Completed",
           "canceled": "Canceled",
           "refunded": "Refunded"
-        }
+        },
+        "returnItemsTitle": "Return selected items",
+        "returnItemsApproveAlert": "You are about to return {{returnItemsQuantity}} items but have yet to approve or capture {{totalAmount}} payment on your order. Would you like to approve now?",
+        "returnItemsCaptureAlert": "Capture payment for total amount {{totalAmount}}?",
+        "returnItemsAlert": "Return {{returnItemsQuantity}} item(s), total return amount {{returnItemsTotal}}?"
       },
       "orderShipping": {
         "shipTo": "Ship To",
