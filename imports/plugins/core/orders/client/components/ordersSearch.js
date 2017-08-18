@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 
-class OrderSearch extends Component {
+class OrdersSearch extends Component {
   static propTypes = {
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
@@ -32,4 +32,4 @@ class OrderSearch extends Component {
   }
 }
 
-export default OrderSearch;
+export default OrdersSearch;

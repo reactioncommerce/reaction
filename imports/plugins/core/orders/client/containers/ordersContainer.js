@@ -4,6 +4,7 @@ import { Tracker } from "meteor/tracker";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Orders, Shops } from "/lib/collections";
 import OrdersListContainer from "./ordersListContainer";
+import OrdersSearch from "../components/ordersSearch";
 
 class OrdersContainer extends Component {
   constructor() {
@@ -53,6 +54,10 @@ class OrdersContainer extends Component {
     return this.state.count > this.state.limit;
   }
 
+  handleSearchChange = (e) => {
+    console.log("a");
+  }
+
   showMoreOrders = (event) => {
     event.preventDefault();
     let limit = this.state.limit;
@@ -69,7 +74,7 @@ class OrdersContainer extends Component {
     if (this.state.ready) {
       return (
         <div>
-          <OrderSearch />
+          <OrdersSearch handleChange={this.handleSearchChange} />
           <OrdersListContainer
             orders={this.state.orders}
             ready={this.state.ready}
