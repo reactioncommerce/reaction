@@ -82,8 +82,6 @@ export default function () {
   Accounts.onCreateUser((options, user) => {
     const shopId = Reaction.getShopId(); // current shop; not primary shop
     const groupToAddUser = options.groupId;
-    const defaultVisitorRole =  ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
-    const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
     const roles = {};
     const additionals = {
       name: options && options.name,
@@ -108,12 +106,12 @@ export default function () {
           }
         }
       }
-
       // if we don't have user.services we're an anonymous user
       if (!user.services) {
         const group = Collections.Groups.findOne({ slug: "guest", shopId });
         const defaultGuestRoles = group.permissions;
-        roles[shopId] = defaultGuestRoles || defaultVisitorRole;
+        // if no defaultGuestRoles retrieved from DB, use the default Reaction set
+        roles[shopId] = defaultGuestRoles || Reaction.defaultVisitorRoles;
         additionals.groups = [group._id];
       } else {
         let group;
@@ -122,7 +120,8 @@ export default function () {
         } else {
           group = Collections.Groups.findOne({ slug: "customer", shopId });
         }
-        roles[shopId] = group.permissions || defaultRoles;
+        // if no group or customer permissions retrieved from DB, use the default Reaction customer set
+        roles[shopId] = group.permissions || Reaction.defaultCustomerRoles;
         additionals.groups = [group._id];
         // also add services with email defined to user.emails[]
         for (const service in user.services) {
