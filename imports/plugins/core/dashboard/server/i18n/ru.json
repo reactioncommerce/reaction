@@ -8,7 +8,6 @@
           "dashboardLabel": "Панель приборов"
         },
         "dashboard": {
-          "coreTitle": "Панель приборов",
           "packageGroupActionsLabel": "Действия",
           "packageGroupSettingsLabel": "Настройки"
         },

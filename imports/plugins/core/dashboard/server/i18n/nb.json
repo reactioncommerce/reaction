@@ -4,9 +4,6 @@
   "translation": {
     "reaction-dashboard": {
       "admin": {
-        "dashboard": {
-          "coreTitle": "Dashboard"
-        },
         "settings": {
           "address": {
             "label": "Adresselinje2"

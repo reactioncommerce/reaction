@@ -8,7 +8,6 @@
           "dashboardLabel": "仪表盘"
         },
         "dashboard": {
-          "coreTitle": "仪表盘",
           "packageGroupActionsLabel": "行动",
           "packageGroupSettingsLabel": "设置"
         },

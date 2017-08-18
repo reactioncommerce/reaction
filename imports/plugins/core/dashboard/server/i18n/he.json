@@ -4,9 +4,6 @@
   "translation": {
     "reaction-dashboard": {
       "admin": {
-        "dashboard": {
-          "coreTitle": "לוח מחוונים"
-        },
         "settings": {
           "import": "ייבוא",
           "general": {

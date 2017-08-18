@@ -1,13 +1,5 @@
 [{
   "i18n": "nb",
   "ns": "reaction-accounts",
-  "translation": {
-    "reaction-accounts": {
-      "admin": {
-        "settings": {
-          "cancel": "Avbryt"
-        }
-      }
-    }
-  }
+  "translation": { }
 }]

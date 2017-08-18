@@ -8,7 +8,6 @@
           "dashboardLabel": "Tableau de bord"
         },
         "dashboard": {
-          "coreTitle": "Tableau de bord",
           "packageGroupActionsLabel": "Actes",
           "packageGroupSettingsLabel": "Paramètres"
         },
