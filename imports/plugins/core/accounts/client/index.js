@@ -5,6 +5,7 @@ export { default as GroupForm } from "./components/groupForm";
 export { default as GroupHeader } from "./components/groupHeader";
 export { default as GroupsTable } from "./components/groupsTable";
 export { default as GroupsTableCell } from "./components/groupsTableCell";
+export { default as GroupsTableButton } from "./components/groupsTableButton";
 export { default as ManageGroups } from "./components/manageGroups";
 export { default as PermissionsList } from "./components/permissionsList";
 
