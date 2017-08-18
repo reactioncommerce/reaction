@@ -135,7 +135,7 @@ export default function () {
    */
 
   Shops.permit(["update", "remove"]).ifHasRoleForActiveShop({
-    role: ["admin", "owner"]
+    role: ["admin", "owner", "shopSettings"]
   }).ifShopIdMatchesThisId().allowInClientCode();
 
   /*
