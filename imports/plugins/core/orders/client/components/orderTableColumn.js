@@ -8,7 +8,8 @@ import { Badge, ClickToCopy, Icon, RolloverCheckbox } from "@reactioncommerce/re
 
 class OrderTableColumn extends Component {
   static propTypes = {
-    fulfillmentBadgeStatus: PropTypes.func,
+    fulfillmentStatus: PropTypes.func,
+    fulfillmentStatusBadge: PropTypes.func,
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
     row: PropTypes.object,
@@ -17,7 +18,7 @@ class OrderTableColumn extends Component {
   }
 
   render() {
-    const { row, selectedItems, handleClick, handleSelect, fulfillmentBadgeStatus, shippingBadgeStatus } = this.props;
+    const { row, selectedItems, handleClick, handleSelect, fulfillmentStatus, fulfillmentStatusBadge, shippingBadgeStatus } = this.props;
     const columnAccessor = row.column.id;
 
     if (columnAccessor === "shipping[0].address.fullName") {
@@ -89,8 +90,8 @@ class OrderTableColumn extends Component {
         <Badge
           badgeSize="large"
           i18nKeyLabel={`cartDrawer.${row.value}`}
-          label={row.value}
-          status={fulfillmentBadgeStatus(row.original)}
+          label={fulfillmentStatus(row.value)}
+          status={fulfillmentStatusBadge(row.original)}
         />
       );
     }
