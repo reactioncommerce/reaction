@@ -68,12 +68,15 @@ class OrdersContainer extends Component {
   render() {
     if (this.state.ready) {
       return (
-        <OrdersListContainer
-          orders={this.state.orders}
-          ready={this.state.ready}
-          hasMoreOrders={this.hasMoreOrders}
-          handleShowMoreClick={this.showMoreOrders}
-        />
+        <div>
+          <OrderSearch />
+          <OrdersListContainer
+            orders={this.state.orders}
+            ready={this.state.ready}
+            hasMoreOrders={this.hasMoreOrders}
+            handleShowMoreClick={this.showMoreOrders}
+          />
+        </div>
       );
     }
     return null;
