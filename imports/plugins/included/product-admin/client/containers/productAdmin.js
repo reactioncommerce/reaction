@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import update from "react/lib/update";
 import _ from "lodash";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
@@ -52,24 +51,10 @@ const wrapComponent = (Comp) => (
     }
 
 
-    handleMetaChange = (metafield, index) => {
-      let newState = {};
-
-      if (index >= 0) {
-        newState = update(this.state, {
-          product: {
-            metafields: {
-              [index]: {
-                $set: metafield
-              }
-            }
-          }
-        });
-      } else {
-        newState = {
-          newMetafield: metafield
-        };
-      }
+    handleMetaChange = (metafield) => {
+      const newState = {
+        newMetafield: metafield
+      };
 
       this.setState(newState);
     }
