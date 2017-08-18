@@ -15,11 +15,8 @@ import {
 
 class OrdersListContainer extends Component {
   static propTypes = {
-    handleShowMoreClick: PropTypes.func,
-    hasMoreOrders: PropTypes.func,
-    invoice: PropTypes.object,
-    orders: PropTypes.array,
-    uniqueItems: PropTypes.array
+    handleMenuClick: PropTypes.func,
+    orders: PropTypes.array
   }
 
   constructor(props) {
@@ -28,7 +25,6 @@ class OrdersListContainer extends Component {
     this.state = {
       selectedItems: [],
       orders: props.orders,
-      hasMoreOrders: props.hasMoreOrders(),
       multipleSelect: false
     };
 
@@ -40,8 +36,7 @@ class OrdersListContainer extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     this.setState({
-      orders: nextProps.orders,
-      hasMoreOrders: nextProps.hasMoreOrders()
+      orders: nextProps.orders
     });
   }
 
@@ -140,32 +135,10 @@ class OrdersListContainer extends Component {
     return false;
   }
 
-  handleMenuClick = (bla) => {
-    console.log("Heeere", bla);
-    // console.log("message", bla, this.state.orders);
-    // const orders = this.state.orders;
-    // const listToShow = orders.filter(order => {
-    //   return order.billing[0].paymentMethod.status === "approved";
-    // });
-    // const status = Reaction.Router.getQueryParam("status");
-    // console.log("status", status);
-    // Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
-    // Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, null);
-    // this.setState({
-    //   bla: bla
-    // }, () => {
-    //   this.dep.changed();
-    // });
-  }
-
   render() {
-    // const { handleShowMoreClick } = this.props;
-    console.log("this.props", this.props);
-
     return (
       <OrdersList
         handleSelect={this.handleSelect}
-        handleShowMoreClick={this.props.handleShowMoreClick}
         orders={this.state.orders}
         handleClick={this.handleClick}
         displayMedia={this.handleDisplayMedia}
@@ -180,7 +153,6 @@ class OrdersListContainer extends Component {
 
 const composer = (props, onData) => {
   const subscription = Meteor.subscribe("Media");
-  console.log(props);
   if (subscription.ready()) {
     onData(null, {
       ...props

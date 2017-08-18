@@ -8,6 +8,7 @@ class OrdersList extends Component {
   static propTypes = {
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
+    handleMenuClick: PropTypes.func,
     handleSelect: PropTypes.func,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,

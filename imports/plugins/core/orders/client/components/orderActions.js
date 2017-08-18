@@ -46,10 +46,23 @@ class OrderActions extends Component {
                 label="Approved"
                 value="approved"
               />
-              <MenuItem label="Captured"/>
-              <MenuItem label="Processing"/>
-              <MenuItem label="Completed"/>
-              <MenuItem label="Canceled"/>
+              <MenuItem
+                label="Captured"
+                value="captured"
+
+              />
+              <MenuItem
+                label="Processing"
+                value="processing"
+              />
+              <MenuItem
+                label="Completed"
+                value="completed"
+              />
+              <MenuItem
+                label="Canceled"
+                value="canceled"
+              />
             </DropDownMenu>
           </div>
 

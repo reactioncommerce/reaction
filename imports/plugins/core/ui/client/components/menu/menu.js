@@ -45,6 +45,7 @@ Menu.propTypes = {
   attachment: PropTypes.string,
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  menuClassName: PropTypes.string,
   onChange: PropTypes.func,
   style: PropTypes.object,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number])
