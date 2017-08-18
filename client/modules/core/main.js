@@ -528,8 +528,7 @@ export default {
 
       Session.set("admin/actionView", viewStack);
     } else {
-      const registryItem = this.getRegistryForCurrentRoute(
-        "settings");
+      const registryItem = this.getRegistryForCurrentRoute("settings");
 
       if (registryItem) {
         this.setActionView(registryItem);
