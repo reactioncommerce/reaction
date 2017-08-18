@@ -159,7 +159,7 @@
           ],
           "alias": {
             "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
-            "@reactioncommerce/reaction-components": "/imports/plugins/core/components/lib",
+            "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
             "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
             "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
             "underscore": "lodash"
