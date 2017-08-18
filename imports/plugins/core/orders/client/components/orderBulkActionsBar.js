@@ -15,6 +15,13 @@ class OrderBulkActionsBar extends Component {
     toggleShippingFlowList: PropTypes.func
   };
 
+  constructor() {
+    super();
+    this.state = {
+      printed: false
+    };
+  }
+
   renderLoadingSpinner(status) {
     return this.props.isLoading[status] ?
       <Icon className="bulk-actions-icons-select" icon="fa fa-spinner fa-pulse" />
@@ -22,13 +29,35 @@ class OrderBulkActionsBar extends Component {
       <Icon className="bulk-actions-icons-select" icon="fa fa-circle-o"/>;
   }
 
+  onClick = (event, value) => {
+    this.setState({
+      [value]: true
+    });
+  }
+
   renderShippingFLowList() {
     if (this.props.renderFlowList) {
       return (
         <List className="shipping-flow-list">
           <ListItem
-            label={this.props.shipping.picked ? "Generate Picking Report" : "Picked"}
-            i18nKeyLabel={this.props.shipping.picked ? "order.generatePickingReport" : "order.picked"}
+            label="Print Invoice and Pick Sheet"
+            i18nKeyLabel="order.printInvoiceAndPickSheet"
+            value="printed"
+            onClick={this.onClick}
+            listItemClassName={this.state.printed ? "selected" : ""}
+          >
+            {this.state.printed ?
+              <div>
+                <Icon className="bulk-actions-icons" icon="fa fa-print"/>
+                <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
+              </div>
+              :
+              <Icon className="bulk-actions-icons-select" icon="fa fa-print"/>
+            }
+          </ListItem>
+          <ListItem
+            label="Picked"
+            i18nKeyLabel="order.picked"
             value="picked"
             onClick={this.handleListItemClick}
             listItemClassName={this.props.shipping.picked ? "selected" : ""}

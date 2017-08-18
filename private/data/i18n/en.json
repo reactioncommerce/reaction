@@ -153,7 +153,7 @@
         "packed": "Packed",
         "labeled": "Labeled",
         "shipped": "Shipped",
-        "generatePickingReport": "Generate Picking Report",
+        "printInvoiceAndPickSheet": "Print Invoice and Pick Sheet",
         "generateLabel": "Generate Label",
         "approveBulkOrderAction": "Yes, Set All Select All Orders",
         "approveBulkOrderActionRegression": "Yes, Regress All Selected Orders",
