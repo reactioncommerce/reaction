@@ -70,7 +70,7 @@ AutoForm.addHooks("stripe-payment-form", {
     };
     const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + doc.cardNumber.slice(-4);
     Stripe.authorize(cardData, {
-      total: Cart.findOne().cartTotal(),
+      total: Cart.findOne().getTotal(),
       currency: SellerShops.findOne().currency
       // Commenting this out because it causes tests to fail and isn't fully implemented.
       // shopId: SellerShops.findOne()._id // TODO: Implement Marketplace Payments
