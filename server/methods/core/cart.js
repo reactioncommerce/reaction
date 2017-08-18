@@ -582,12 +582,12 @@ Meteor.methods({
     // so we'll delete the values copied from the cart
     delete order.createdAt; // autovalues from cart
     delete order.updatedAt;
-    delete order.cartCount;
-    delete order.cartShipping;
-    delete order.cartSubTotal;
-    delete order.cartTaxes;
-    delete order.cartDiscounts;
-    delete order.cartTotal;
+    delete order.count;
+    delete order.shipping;
+    delete order.subTotal;
+    delete order.taxes;
+    delete order.discounts;
+    delete order.total;
     delete order._id;
 
     // TODO: update this to handle multiple shipments instead of hardcoding to
@@ -1086,11 +1086,11 @@ Meteor.methods({
     const cart = _.clone(checkoutCart);
     const cartId = cart._id;
     const invoice = {
-      shipping: cart.cartShipping(),
-      subtotal: cart.cartSubTotal(),
-      taxes: cart.cartTaxes(),
-      discounts: cart.cartDiscounts(),
-      total: cart.cartTotal()
+      shipping: cart.shipping(),
+      subtotal: cart.subTotal(),
+      taxes: cart.taxes(),
+      discounts: cart.discounts(),
+      total: cart.total()
     };
 
     // we won't actually close the order at this stage.

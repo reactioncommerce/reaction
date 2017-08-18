@@ -17,10 +17,10 @@ Meteor.methods({
     const cartId = cart._id;
     const invoice = {
       shipping: cart.cartShipping(),
-      subtotal: cart.cartSubTotal(),
-      taxes: cart.cartTaxes(),
-      discounts: cart.cartDiscounts(),
-      total: cart.cartTotal()
+      subtotal: cart.subTotal(),
+      taxes: cart.taxes(),
+      discounts: cart.discounts(),
+      total: cart.total()
     };
     // we won't actually close the order at this stage.
     // we'll just update the workflow and billing data where
