@@ -142,7 +142,7 @@ class SearchModalContainer extends Component {
       Reaction.showActionView({
         label: "Order Details",
         i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: event,
+        data: { order: event },
         props: {
           size: "large"
         },
