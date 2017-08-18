@@ -12,6 +12,9 @@
           "email": "E-posta",
           "description": "Ürün açıklması ekle",
           "remove": "Sil"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Yerelleştirme ve i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "İzin Misafir Ödeme"
+          },
+          "openexchangerates": {
+            "appId": "Açık Kurlar App Kimliği",
+            "refreshPeriod": "Açık Döviz Kurları dönemi yenileme",
+            "refreshPeriodPlaceholder": "yani her 1 saat"
+          },
+          "google": {
+            "clientId": "Google Müşteri Kimliği",
+            "apiKey": "Google API Anahtarı"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "Revizyon kontrolü devre dışı bırakılır. Herhangi bir değişiklik derhal yayınlanacaktır.",

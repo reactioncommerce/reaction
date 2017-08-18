@@ -12,6 +12,9 @@
           "email": "Email",
           "description": "Adăugați o descriere produs",
           "remove": "Elimină"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Localizare si i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Permiteti să finalizeze comanda și cei fără autentificare"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates App Id",
+            "refreshPeriod": "Perioada de improspătare a cursului prin Open Exchange Rates",
+            "refreshPeriodPlaceholder": "e.g. la fiecare 1 oră"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Google API Key"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "Opțiunea „Revision control” este dezactivată. Orice schimbare va fi imediat publicată.",

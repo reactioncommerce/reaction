@@ -12,6 +12,9 @@
           "email": "דוא\"ל",
           "description": "הוספת תיאור מוצר",
           "remove": "הסר"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "מיקום ו- i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "הרשה לאורחים לעבור לקופה"
+          },
+          "openexchangerates": {
+            "appId": "מזהה אפליקציית Open Exchange Rates",
+            "refreshPeriod": "Open Exchange Rates - תקופת רענון",
+            "refreshPeriodPlaceholder": "למשל כל שעה"
+          },
+          "google": {
+            "clientId": "מזהה לקוח Google",
+            "apiKey": "מפתח אישי (API Key) של Google"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "ניהול הגרסאות מושבת. כל השינויים יפורסמו באופן מידי.",

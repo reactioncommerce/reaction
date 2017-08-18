@@ -12,6 +12,9 @@
           "email": "电子邮件设置",
           "description": "产品描述",
           "remove": "删除款式"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "本地化与国际化"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "微博"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "允许访客结账"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates 应用 ID",
+            "refreshPeriod": "Open Exchange Rates 刷新周期",
+            "refreshPeriodPlaceholder": "即每 1 小时"
+          },
+          "google": {
+            "clientId": "Google 客户端 ID",
+            "apiKey": "Google API 密钥"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "版本控制已禁用。将立即发布任何更改。",

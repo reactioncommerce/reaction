@@ -12,6 +12,9 @@
           "email": "Ajustes del correo electrónico",
           "description": "Descripción",
           "remove": "Eliminar"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Localización y L10n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Permitir proceso de compra como invitado"
+          },
+          "openexchangerates": {
+            "appId": "ID de la app de tipo de cambio abierto",
+            "refreshPeriod": "Período de actualización del tipo de cambio abierto",
+            "refreshPeriodPlaceholder": "p. ej. cada hora"
+          },
+          "google": {
+            "clientId": "ID de cliente de Google",
+            "apiKey": "Clave de API de Google"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "El control de revisión está deshabilitado Todos los cambios se publicarán de imediato.",

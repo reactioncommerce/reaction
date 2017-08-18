@@ -12,6 +12,9 @@
           "email": "Configurações de e-mail",
           "description": "Descrição",
           "remove": "Remover"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Localização e i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Permitir finalização da compra do cliente"
+          },
+          "openexchangerates": {
+            "appId": "ID da aplicação de taxas de câmbio abertas",
+            "refreshPeriod": "Período de atualização de taxas de câmbio abertas",
+            "refreshPeriodPlaceholder": "i.e. a cada 1 hora"
+          },
+          "google": {
+            "clientId": "ID de cliente Google",
+            "apiKey": "Chave da API do Google"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "O controlo da revisão está desativado. As alterações serão publicadas de imediato.",

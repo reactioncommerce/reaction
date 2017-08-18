@@ -12,6 +12,9 @@
           "email": "Cài đặt email",
           "description": "Sự miêu tả",
           "remove": "Tẩy"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Nội địa hóa và i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Cho phép Guest Checkout"
+          },
+          "openexchangerates": {
+            "appId": "Id App giá mở Exchange",
+            "refreshPeriod": "Tỷ giá hối đoái mở làm mới thời gian",
+            "refreshPeriodPlaceholder": "nghĩa là mỗi 1 giờ"
+          },
+          "google": {
+            "clientId": "ID khách hàng của Google",
+            "apiKey": "Key Google API"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "kiểm soát sửa đổi được vô hiệu hóa. Mọi thay đổi sẽ được công bố ngay lập tức.",

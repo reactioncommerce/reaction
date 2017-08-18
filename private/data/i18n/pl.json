@@ -12,6 +12,9 @@
           "email": "Ustawienia poczty e-mail",
           "description": "Opis",
           "remove": "Usunąć"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Lokalizacja i i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Pozwól gości Zamówienie"
+          },
+          "openexchangerates": {
+            "appId": "Otwórz Exchange Rates App Id",
+            "refreshPeriod": "Otwarte ceny walut okres odświeżania",
+            "refreshPeriodPlaceholder": "czyli każdy 1 godzina"
+          },
+          "google": {
+            "clientId": "Identyfikator klienta Google",
+            "apiKey": "Klucz API Google"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "kontroli wersji jest wyłączona. Wszelkie zmiany będą publikowane natychmiast.",

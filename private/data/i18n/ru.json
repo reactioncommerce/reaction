@@ -12,6 +12,9 @@
           "email": "Настройки электронной почты",
           "description": "Добавьте описание товара",
           "remove": "Удалить"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Локализация и i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Разрешить заказывать незарегистрированным пользователям"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates App Id",
+            "refreshPeriod": "Период обновления Open Exchange Rates",
+            "refreshPeriodPlaceholder": "например: every 1 hour"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Ключ Google API"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "Управление версиями отключено. Любые изменения будут немедленно опубликованы.",

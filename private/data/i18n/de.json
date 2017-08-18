@@ -12,6 +12,9 @@
           "email": "E-Mail-Einstellungen",
           "description": "Produktbeschreibung hinzufügen",
           "remove": "Entfernen"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Lokalisierung und i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Gäste zur Kasse zulassen"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates Anwendungs-ID",
+            "refreshPeriod": "Open Exchange Rates Aktualisierungsperiode",
+            "refreshPeriodPlaceholder": "z. B. jede 1 Stunde"
+          },
+          "google": {
+            "clientId": "Google Kunden-ID",
+            "apiKey": "Google API-Schlüssel"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "Die Revisionsverwaltung ist deaktiviert. Jegliche Änderungen werden sofort veröffentlicht.",

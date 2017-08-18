@@ -12,6 +12,9 @@
           "email": "Ρυθμίσεις email",
           "description": "Πρόσθεσε περιγραφή προϊόντος",
           "remove": "Αφαιρώ"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Εντοπισμό και i18n"
         }
       },
       "app": {
@@ -223,6 +226,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Επιτρέψτε επισκεπτών Ταμείο"
+          },
+          "openexchangerates": {
+            "appId": "Ανοικτή Τιμές Συναλλάγματος App Id",
+            "refreshPeriod": "Ανοικτή Τιμές Συναλλάγματος ανανεώσετε περίοδο",
+            "refreshPeriodPlaceholder": "δηλαδή κάθε 1 ώρα"
+          },
+          "google": {
+            "clientId": "Αναγνωριστικό πελάτη Google",
+            "apiKey": "Κλειδί API Google"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "έλεγχος αναθεώρηση είναι απενεργοποιημένη. Οποιεσδήποτε αλλαγές θα δημοσιεύονται αμέσως.",

@@ -12,6 +12,9 @@
           "email": "إعدادات البريد الإلكتروني",
           "description": "مواصفات",
           "remove": "إزالة"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "التحويل و i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "ميتوب",
         "twitter": "تويتر",
         "weibo": "ويبو"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "السماح للضيف بالخروج"
+          },
+          "openexchangerates": {
+            "appId": "فتح  تبادل معدلات رقم التطبيق",
+            "refreshPeriod": "فتح فترة تجديد معدلات التبادل ",
+            "refreshPeriodPlaceholder": "أي كل ساعة"
+          },
+          "google": {
+            "clientId": "هوية العميل على جوجل",
+            "apiKey": " لجوجل  API مفتاح "
+          }
+        }
       },
       "revisions": {
         "isDisabled": ".مراجعة المراقبة  غير مفعل .أي تغيير سوف يتم نشره فوراً",

@@ -12,6 +12,9 @@
           "email": "E-mail",
           "description": "Adj hozzá termékleírást",
           "remove": "Távolítsuk"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Lokalizáció és i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Hagyjuk Guest Pénztár"
+          },
+          "openexchangerates": {
+            "appId": "Nyílt Árfolyamok alkalmazás azonosítója",
+            "refreshPeriod": "Nyílt Árfolyamok frissítési idő",
+            "refreshPeriodPlaceholder": "vagyis minden 1 óra"
+          },
+          "google": {
+            "clientId": "Google ügyfél-azonosító",
+            "apiKey": "Google API-kulcs"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "Revision szabályozás ki van kapcsolva. A módosításokat haladéktalanul közzé kell tenni.",

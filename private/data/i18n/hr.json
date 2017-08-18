@@ -12,6 +12,9 @@
           "email": "Postavke e-pošte",
           "description": "Dodaj opis proizvoda",
           "remove": "Ukloniti"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Lokalizacija i i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Dopusti Ocjene Blagajna"
+          },
+          "openexchangerates": {
+            "appId": "ID aplikacije Otvoreno Tečaj",
+            "refreshPeriod": "Otvorene Tečaj osvježiti razdoblje",
+            "refreshPeriodPlaceholder": "tj svakih 1 sat"
+          },
+          "google": {
+            "clientId": "ID Google klijenta",
+            "apiKey": "Google API ključ"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "kontrola Revizija je onemogućen. Sve promjene bit će odmah objavljena.",

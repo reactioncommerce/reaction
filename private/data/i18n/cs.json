@@ -12,6 +12,9 @@
           "email": "Email",
           "description": "Popis",
           "remove": "Odstranit"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Lokalizace a i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Povolit Guest Pokladna"
+          },
+          "openexchangerates": {
+            "appId": "Id App Ceny otevřený Exchange",
+            "refreshPeriod": "Otevřené Kurzovní lístek obnovovací perioda",
+            "refreshPeriodPlaceholder": "tj. každý 1 hodina"
+          },
+          "google": {
+            "clientId": "Google ID klienta",
+            "apiKey": "Klíč Google API"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "Ovládání revize je zakázáno. Jakékoli změny budou zveřejněny okamžitě.",

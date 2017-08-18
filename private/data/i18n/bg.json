@@ -12,6 +12,9 @@
           "email": "Email настройки",
           "description": "Добавете описание на продукта",
           "remove": "Премахни"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Локализация и i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Оставя гости Checkout"
+          },
+          "openexchangerates": {
+            "appId": "Id Open Валутни курсове на App",
+            "refreshPeriod": "Отворени валутни курсове освежават период",
+            "refreshPeriodPlaceholder": "т.е. всеки един часа"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Google API Key"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "контрол на контрол е забранено. Всички промени ще бъдат публикувани веднага.",

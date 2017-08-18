@@ -12,6 +12,9 @@
           "email": "အီးမေးလ်က",
           "description": "ဖေါ်ပြချက်",
           "remove": "Remove"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "ပြည်တွင်းနှင့် i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "တွစ်တာ",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "ဧည့်သည် Checkout Allow"
+          },
+          "openexchangerates": {
+            "appId": "ပွင့်လင်းချိန်းနှုန်း App ကို Id",
+            "refreshPeriod": "ပွင့်လင်းချိန်းနှုန်းကာလ refresh",
+            "refreshPeriodPlaceholder": "တနည်း, တိုင်း 1 နာရီ"
+          },
+          "google": {
+            "clientId": "Google ကလိုင်းယင့် ID ကို",
+            "apiKey": "Google က API ကို Key ကို"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "တည်းဖြတ်မူထိန်းချုပ်မှုကိုပိတ်ထားသည်။ မဆိုအပြောင်းအလဲများချက်ချင်းပုံနှိပ်ထုတ်ဝေပါလိမ့်မည်။",

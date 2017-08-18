@@ -12,6 +12,9 @@
           "email": "Email",
           "description": "Description",
           "remove": "Remove"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Localization and i18n"
         }
       },
       "app": {
@@ -224,6 +227,22 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Allow Guest Checkout"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates App Id",
+            "refreshPeriod": "Open Exchange Rates refresh period",
+            "refreshPeriodPlaceholder": "i.e. every 1 hour"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Google API Key"
+          }
+        }
       },
       "revisions": {
         "isDisabled": "Revision control is disabled. Any changes will be published immediately.",
