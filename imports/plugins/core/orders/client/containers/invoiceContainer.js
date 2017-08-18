@@ -555,32 +555,19 @@ const composer = (props, onData) => {
 
   const paymentMethod = orderCreditMethod(order).paymentMethod;
   const orderStatus = orderCreditMethod(order).paymentMethod.status;
-  const orderMode = orderCreditMethod(order).paymentMethod.mode;
   const orderDiscounts = orderCreditMethod(order).invoice.discounts;
 
-  const paymentApproved = order.billing[0].paymentMethod.status === "approved";
-  const paymentCaptured = orderStatus === "completed" ||
-    (orderStatus === "refunded" && orderMode === "capture") ||
-    (orderStatus === "partialRefund" && orderMode === "capture");
-  const paymentPendingApproval = orderStatus === "created" || orderStatus === "adjustments" || orderStatus === "error";
+  const paymentApproved = orderStatus === "approved";
   const showAfterPaymentCaptured = orderStatus === "completed";
+  const paymentCaptured = _.includes(["completed", "refunded", "partialRefund"], orderStatus);
+  const paymentPendingApproval = _.includes(["created", "adjustments", "error"], orderStatus);
 
   // get whether adjustments can be made
-  let canMakeAdjustments;
-
-  if (orderStatus === "approved" || orderStatus === "completed" || orderStatus === "refunded" || orderStatus === "partialRefund") {
-    canMakeAdjustments = false;
-  } else {
-    canMakeAdjustments = true;
-  }
+  const canMakeAdjustments =  !_.includes(["approved", "completed", "refunded", "partialRefund"], orderStatus);
 
   // get adjusted Total
   let adjustedTotal;
-  let refundTotal = 0;
-
-  _.each(refunds, function (item) {
-    refundTotal += parseFloat(item.amount);
-  });
+  const refundTotal = refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
 
   if (paymentMethod.processor === "Stripe") {
     adjustedTotal = Math.abs(paymentMethod.amount + orderDiscounts - refundTotal);

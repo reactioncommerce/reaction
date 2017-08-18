@@ -121,9 +121,8 @@ class LineItems extends Component {
   }
 
   renderLineItemInvoice(uniqueItem) {
-    console.log("uniqueItem", uniqueItem);
     return (
-      <div className="invoive-order-items">
+      <div className="invoice-order-items">
         <div className="invoice-order-item-shipping">
           <b className="pull-left">
             <Translation
