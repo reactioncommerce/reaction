@@ -491,7 +491,7 @@ function orderToSalesInvoice(order) {
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
-  const orderShipping = order.shipping();
+  const orderShipping = order.getShippingTotal();
   const orderDate = moment(order.createdAt).format();
   const lineItems = order.items.map((item) => {
     if (item.variants.taxable) {

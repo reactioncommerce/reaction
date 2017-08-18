@@ -6,12 +6,12 @@ function composer(props, onData) {
   const cart = Cart.findOne();
   if (cart) {
     onData(null, {
-      cartSubTotal: cart.subTotal(),
-      cartCount: cart.count(),
-      cartShipping: cart.shipping(),
-      cartDiscount: cart.discounts(),
-      cartTaxes: cart.taxes(),
-      cartTotal: cart.total()
+      cartSubTotal: cart.getSubTotal(),
+      cartCount: cart.getCount(),
+      cartShipping: cart.getShippingTotal(),
+      cartDiscount: cart.getDiscounts(),
+      cartTaxes: cart.getTaxTotal(),
+      cartTotal: cart.getTotal()
     });
   }
 }
