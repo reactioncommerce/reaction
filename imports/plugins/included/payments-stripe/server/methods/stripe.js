@@ -190,8 +190,7 @@ function buildPaymentMethods(options) {
   return paymentMethods;
 }
 
-
-Meteor.methods({
+export const methods = {
   "stripeSubmit": function (transactionType, cardData, paymentData) {
     check(transactionType, String);
     check(cardData, {
@@ -215,7 +214,6 @@ Meteor.methods({
     };
 
     // TODO: Add transaction fee to Stripe chargeObj when stripeConnect is in use.
-
     if (transactionType === "authorize") {
       chargeObj.capture = false;
     }
@@ -546,4 +544,6 @@ Meteor.methods({
     }
     return result;
   }
-});
+};
+
+Meteor.methods(methods);
