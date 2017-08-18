@@ -29,6 +29,32 @@ class OrderSummary extends Component {
     return "default";
   }
 
+  fulfillmentStatus(orderStatus) {
+    let readableStatus;
+    switch (orderStatus) {
+      case "new":
+        readableStatus = "New";
+        break;
+
+      case "coreOrderWorkflow/processing":
+        readableStatus = "Processing";
+        break;
+
+      case "coreOrderWorkflow/canceled":
+        readableStatus = "Cancelled";
+        break;
+
+      case "coreOrderWorkflow/completed":
+        readableStatus = "Completed";
+        break;
+
+      default:
+        readableStatus = orderStatus;
+    }
+
+    return readableStatus;
+  }
+
   orderLink() {
     const orderId = this.props.order._id;
     return orderId;
@@ -59,7 +85,7 @@ class OrderSummary extends Component {
               <Badge
                 badgeSize="large"
                 i18nKeyLabel={`cartDrawer.${order.workflow.status}`}
-                label={order.workflow.status}
+                label={this.fulfillmentStatus(order.workflow.status)}
                 status={this.badgeStatus()}
               />
             </div>
