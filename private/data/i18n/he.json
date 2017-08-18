@@ -79,6 +79,9 @@
         "twitterMsg": "הודעת טוויטר",
         "pinterestMsg": "הודעת פינטרסט",
         "googleplusMsg": "הודעת Google+",
+        "editVariant": "ערוך גרסת מוצר",
+        "variantOptions": "אפשרויות גרסת מוצר",
+        "variantDetails": "פרטי גרסת מוצר",
         "duplicateVariant": "שכפל",
         "addVariantOption": "הוסף אפשרות",
         "removeVariant": "הסר",
@@ -86,7 +89,27 @@
         "pinProduct": "סמן מוצר",
         "toggleSize": "החלף מידה/גודל",
         "publish": "פרסום",
-        "moreOptions": "עוד אפשרויות"
+        "moreOptions": "עוד אפשרויות",
+        "details": "פרטים"
+      },
+      "productVariant": {
+        "addVariantOptions": "הוסף אפשרויות כדי להפעיל  את הלחצן \"הוסף לעגלה\"",
+        "inventoryQuantity": "כמות",
+        "title": "תווית",
+        "price": "מחיר",
+        "optionTitle": "אפשרות",
+        "barcode": "ברקוד",
+        "compareAtPrice": "מחיר (MSRP)",
+        "fulfillmentService": "שירות ביצוע",
+        "weight": "משקל",
+        "taxable": "חייב במס",
+        "taxCode": "קוד מס",
+        "inventoryManagement": "מעקב אחר מלאי",
+        "inventoryManagementLabel": "רשום מוצר במערכת המלאי ועקוב אחרי הסטטוס שלו",
+        "inventoryPolicy": "מנע כאשר אזל מהמלאי",
+        "inventoryPolicyLabel": "אל תמכור גרסה אחרת של המוצר כאשר הוא אינו במלאי",
+        "lowInventoryWarningThreshold": "הזהר @",
+        "lowInventoryWarningThresholdLabel": "שלח התראה ללקוחות שהמוצר עומד לאזול כאשר הכמות תגיע לסף הבא"
       },
       "variantList": {
         "moreOptions": "יש עוד אפשרויות זמינות עבור בחירה זו.",
