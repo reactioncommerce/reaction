@@ -1,0 +1,11 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "productGrid": {
+        "noProductsFound": "Không tìm thấy sản phẩm"
+      }
+    }
+  }
+}]

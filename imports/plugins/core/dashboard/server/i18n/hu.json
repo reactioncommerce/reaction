@@ -8,6 +8,7 @@
           "dashboardLabel": "Műszerfal"
         },
         "dashboard": {
+          "coreTitle": "Műszerfal",
           "packageGroupActionsLabel": "Hozzászólások",
           "packageGroupSettingsLabel": "Beállítások"
         },

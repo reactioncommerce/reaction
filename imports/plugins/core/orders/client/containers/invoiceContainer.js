@@ -10,6 +10,7 @@ class InvoiceContainer extends Component {
     canMakeAdjustments: PropTypes.bool,
     collection: PropTypes.string,
     discounts: PropTypes.bool,
+    hasRefundingEnabled: PropTypes.bool,
     invoice: PropTypes.object,
     isFetching: PropTypes.bool,
     orderId: PropTypes.string,
@@ -42,7 +43,7 @@ class InvoiceContainer extends Component {
     const {
       canMakeAdjustments, paymentCaptured,
       discounts, invoice, orderId, refunds,
-      isFetching, collection
+      isFetching, collection, hasRefundingEnabled
     } = this.props;
 
     return (
@@ -59,6 +60,7 @@ class InvoiceContainer extends Component {
           dateFormat={this.dateFormat}
           isFetching={isFetching}
           collection={collection}
+          hasRefundingEnabled={hasRefundingEnabled}
         />
       </TranslationProvider>
     );
