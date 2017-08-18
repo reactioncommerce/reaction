@@ -54,7 +54,7 @@ StripeApi.methods.getApiKey = new ValidatedMethod({
     if (stripePkg || stripePkg.settings && stripePkg.settings.api_key) {
       return stripePkg.settings.api_key;
     }
-    throw new Meteor.Error("403", "Invalid Stripe Credentials");
+    throw new Meteor.Error("access-denied", "Invalid Stripe Credentials");
   }
 });
 
