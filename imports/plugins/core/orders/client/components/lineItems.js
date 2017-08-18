@@ -147,8 +147,8 @@ class LineItems extends Component {
           <div className="tax-cost">
             <span>
               {uniqueItem.taxDetail ?
-                formatPriceString(uniqueItem.taxDetail.tax / uniqueItem.quantity) :
-                formatPriceString(0)
+                formatPriceString(uniqueItem.taxDetail.tax) :
+                formatPriceString(uniqueItem.tax)
               }
             </span>
           </div>

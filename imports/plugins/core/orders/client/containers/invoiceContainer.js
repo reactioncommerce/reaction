@@ -601,22 +601,35 @@ const composer = (props, onData) => {
   const shipment = props.currentData.fulfillment;
 
   // returns order items with shipping detail
-  const returnItems = _.map(order.items, (item) => {
+  const returnItems = order.items.map((item) => {
+    const tax = order.tax;
     const shipping = shipment.shipmentMethod;
-    return _.extend(item, { shipping });
+    return _.extend(item, { shipping, tax });
   });
 
   let uniqueItems;
 
-  // if avalara tax has been enabled it adds a "taxDetail" field for every item
   if (order.taxes !== undefined) {
     const taxes = order.taxes.slice(0, -1);
 
-    uniqueItems = _.map(returnItems, (item) => {
-      const taxDetail = _.find(taxes, {
-        lineNumber: item._id
-      });
-      return _.extend(item, { taxDetail });
+    uniqueItems = returnItems.map((item) => {
+      let taxDetail;
+      // if avalara tax has been enabled it adds a "taxDetail" field for every item
+      if (taxes.length !== 0) {
+        taxDetail = taxes.find((tax) => {
+          return tax.lineNumber === item._id;
+        });
+        item.taxDetail = taxDetail;
+      } else {
+        // if another tax has been enabled add taxDetail
+        const taxAmount = order.tax;
+        taxDetail = order.taxes.find((tax) => {
+          return tax.shopId === item.shopId;
+        });
+        taxDetail.tax = taxAmount;
+        item.taxDetail = taxDetail;
+      }
+      return item;
     });
   } else {
     uniqueItems = returnItems;
