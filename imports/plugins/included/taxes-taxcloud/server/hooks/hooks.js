@@ -107,7 +107,7 @@ MethodHooks.after("taxes/calculate", function (options) {
                 }
                 // don't run this calculation if there isn't tax.
                 if (totalTax > 0) {
-                  taxRate = (totalTax / cartToCalc.cartSubTotal());
+                  taxRate = (totalTax / cartToCalc.getSubTotal());
                 }
                 // we should consider if we want percentage and dollar
                 // as this is assuming that subTotal actually contains everything

@@ -151,7 +151,7 @@ export const methods = {
           }
           // calculate overall cart rate
           if (totalTax > 0) {
-            taxRate = (totalTax / cartToCalc.cartSubTotal());
+            taxRate = (totalTax / cartToCalc.getSubTotal());
           }
           // store tax on cart
           Meteor.call("taxes/setRate", cartToCalc._id, taxRate, addressTaxData);
