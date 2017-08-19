@@ -325,7 +325,7 @@ Meteor.methods({
 
     // Copy additionalOptions into an options object to use througout the method
     const options = {
-      overriteExistingMetafields: false, // Allows updating of metafields on quantity change
+      overwriteExistingMetafields: false, // Allows updating of metafields on quantity change
       metafields: undefined, // Array of MetaFields to set on the CartItem
       ...additionalOptions || {}
     };
@@ -377,7 +377,7 @@ Meteor.methods({
       let modifier = {};
 
       // Allows for updating metafields on an existing item when the quantity also changes
-      if (options.overriteExistingMetafields) {
+      if (options.overwriteExistingMetafields) {
         modifier = {
           $set: {
             "items.$.metafields": options.metafields
