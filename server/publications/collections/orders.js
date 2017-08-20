@@ -63,7 +63,7 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
   if (!shopId) {
     return this.ready();
   }
-  if (Roles.  (this.userId, ["admin", "owner", "orders"], shopId)) {
+  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
     Counts.publish(this, "order-count", Orders.find({ shopId: shopId }), { noReady: true });
     return Orders.find({ shopId: shopId });
   }

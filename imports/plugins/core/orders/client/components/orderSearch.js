@@ -24,12 +24,14 @@ class OrderSearch extends Component {
 
   render() {
     return (
-      <div>
+      <div className="order-search">
         <Components.TextField
           className="search-input"
           onChange={this.handleChange}
           value={this.state.query}
+          i18nKeyPlaceholder="admin.dashboard.searchLabel"
         />
+        <i className="fa fa-search fa-fw"/>
         <Components.Button
           className="search-clear"
           i18nKeyLabel="search.clearSearch"
