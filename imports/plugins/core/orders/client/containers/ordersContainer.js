@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Counts } from "meteor/tmeasday:publish-counts";
-import { Orders, Shops } from "/lib/collections";
+import { Orders, OrderSearch as OrderSearchCollection, Shops } from "/lib/collections";
 import OrdersListContainer from "./ordersListContainer";
-import OrdersSearch from "../components/ordersSearch";
+import OrderSearch from "../components/orderSearch";
 
 class OrdersContainer extends Component {
   constructor() {
@@ -13,6 +13,7 @@ class OrdersContainer extends Component {
       orders: [],
       count: 0,
       limit: 10,
+      searchQuery: "",
       currency: {},
       ready: false
     };
@@ -26,6 +27,12 @@ class OrdersContainer extends Component {
     Tracker.autorun(() => {
       this.dep.depend();
       this.subscription = Meteor.subscribe("CustomPaginatedOrders");
+      this.searchSub = Meteor.subscribe("SearchResults", "orders", this.state.searchQuery);
+
+      if (this.searchSub.ready()) {
+        const orderResults = OrderSearchCollection.find().fetch();
+        console.log({ orderResults });
+      }
 
       if (this.subscription.ready()) {
         const orders = Orders.find().fetch();
@@ -54,8 +61,10 @@ class OrdersContainer extends Component {
     return this.state.count > this.state.limit;
   }
 
-  handleSearchChange = (e) => {
-    console.log("a");
+  handleSearchChange = (value) => {
+    this.setState({ searchQuery: value }, () => {
+      this.dep.changed();
+    });
   }
 
   showMoreOrders = (event) => {
@@ -73,8 +82,8 @@ class OrdersContainer extends Component {
   render() {
     if (this.state.ready) {
       return (
-        <div>
-          <OrdersSearch handleChange={this.handleSearchChange} />
+        <div className="orders-container">
+          <OrderSearch handleChange={this.handleSearchChange} />
           <OrdersListContainer
             orders={this.state.orders}
             ready={this.state.ready}

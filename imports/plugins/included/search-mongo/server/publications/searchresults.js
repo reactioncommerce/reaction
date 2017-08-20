@@ -79,6 +79,7 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
       ] }
     ] };
   if (Reaction.hasPermission("orders", userId)) {
+    console.log({ searchTerm });
     orderResults = OrderSearch.find(findTerm, { limit: maxResults });
     Logger.debug(`Found ${orderResults.count()} orders searching for ${searchTerm}`);
   }
@@ -127,7 +128,7 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets, maxRes
   }));
   check(searchTerm, Match.Optional(String));
   check(facets, Match.OneOf(Array, undefined));
-  Logger.debug(`Returning search results on ${collection}. SearchTerm: |${searchTerm}|. Facets: |${facets}|.`);
+  Logger.info(`Returning search results on ${collection}. SearchTerm: |${searchTerm}|. Facets: |${facets}|.`);
   if (!searchTerm) {
     return this.ready();
   }

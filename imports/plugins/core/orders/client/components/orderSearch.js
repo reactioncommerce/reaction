@@ -2,13 +2,24 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 
-class OrdersSearch extends Component {
+class OrderSearch extends Component {
   static propTypes = {
-    displayMedia: PropTypes.func,
-    handleClick: PropTypes.func,
-    isExpanded: PropTypes.func,
-    onClose: PropTypes.func,
-    uniqueItems: PropTypes.array
+    handleChange: PropTypes.func,
+    handleClear: PropTypes.func
+  };
+
+  constructor() {
+    super();
+
+    this.state = { query: "" };
+  }
+
+  handleChange = (event, value) => {
+    this.setState({ query: value });
+
+    if (this.props.handleChange) {
+      this.props.handleChange(value);
+    }
   };
 
   render() {
@@ -16,20 +27,19 @@ class OrdersSearch extends Component {
       <div>
         <Components.TextField
           className="search-input"
-          textFieldStyle={{ marginBottom: 0 }}
-          onChange={this.props.handleChange}
-          value={this.props.value}
+          onChange={this.handleChange}
+          value={this.state.query}
         />
         <Components.Button
           className="search-clear"
           i18nKeyLabel="search.clearSearch"
           label="Clear"
           containerStyle={{ fontWeight: "normal" }}
-          onClick={this.props.handleClick}
+          onClick={this.props.handleClear}
         />
       </div>
     );
   }
 }
 
-export default OrdersSearch;
+export default OrderSearch;
