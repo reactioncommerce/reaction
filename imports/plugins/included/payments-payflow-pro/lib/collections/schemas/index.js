@@ -1,1 +1,1 @@
-export * from "./paypal";
+export * from "./payflow";

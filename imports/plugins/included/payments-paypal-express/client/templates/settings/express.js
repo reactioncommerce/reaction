@@ -18,7 +18,7 @@ Template.paypalExpressSettings.helpers({
 });
 
 AutoForm.hooks({
-  "paypal-update-form": {
+  "express-update-form": {
     onSuccess: function () {
       return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },

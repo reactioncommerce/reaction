@@ -1,32 +1,29 @@
 /* eslint camelcase: 0 */
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Template } from "meteor/templating";
+import { i18next } from "/client/api";
 import { Packages } from "/lib/collections";
-import { PaypalPackageConfig } from "../../../lib/collections/schemas";
+import { PayflowProPackageConfig } from "../../../lib/collections/schemas";
 import "./payflow.html";
 
 Template.paypalPayFlowSettings.helpers({
-  PaypalPackageConfig: function () {
-    return PaypalPackageConfig;
+  PayflowProPackageConfig: function () {
+    return PayflowProPackageConfig;
   },
   packageData: function () {
     return Packages.findOne({
-      name: "reaction-paypal"
+      name: "reaction-payflow-pro"
     });
   }
 });
 
 AutoForm.hooks({
-  "paypal-update-form": {
+  "payflow-update-form": {
     onSuccess: function () {
-      Alerts.removeSeen();
-      return Alerts.add("Paypal settings saved.", "success", {
-        autoHide: true
-      });
+      return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
-    onError: function (operation, error) {
-      Alerts.removeSeen();
-      return Alerts.add("Paypal settings update failed. " + error, "danger");
+    onError: function (error) {
+      return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
     }
   }
 });

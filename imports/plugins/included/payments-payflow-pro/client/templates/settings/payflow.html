@@ -9,15 +9,15 @@
   {{/unless}}
   {{#autoForm
     collection=Collections.Packages
-    schema=PaypalPackageConfig
+    schema=PayflowProPackageConfig
     doc=packageData
     type="update"
-    id="paypal-update-form-payflow"
+    id="payflow-update-form"
     }}
     {{>afQuickField name='settings.client_id'}}
     {{>afQuickField name='settings.client_secret' type="password"}}
-    {{>afQuickField name="settings.payflow.support" options="allowed" noselect=true}}
-    {{>afQuickField name='settings.payflow_mode' type="boolean-select" trueLabel="Live - Production Mode" falseLabel="Testing - Sandbox Mode"}}
+    {{>afQuickField name="settings.reaction-payflow-pro.support" options="allowed" noselect=true}}
+    {{>afQuickField name='settings.mode' type="boolean-select" trueLabel="Live - Production Mode" falseLabel="Testing - Sandbox Mode"}}
     <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
   {{/autoForm}}
 </template>

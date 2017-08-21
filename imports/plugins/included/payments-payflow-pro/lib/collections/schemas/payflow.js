@@ -1,54 +1,17 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 
-export const PaypalPackageConfig = new SimpleSchema([
+export const PayflowProPackageConfig = new SimpleSchema([
   PackageConfig, {
-    "settings.express_auth_and_capture": {
-      type: Boolean,
-      label: "Capture at time of Auth",
-      defaultValue: false
-    },
-    "settings.express.support": {
+    "settings.reaction-payflow-pro.support": {
       type: Array,
       label: "Payment provider supported methods"
     },
-    "settings.express.support.$": {
-      type: String,
-      allowedValues: ["authorize", "de-authorize", "capture", "refund"]
-    },
-    "settings.payflow.support": {
-      type: Array,
-      label: "Payment provider supported methods"
-    },
-    "settings.payflow.support.$": {
+    "settings.reaction-payflow-pro.support.$": {
       type: String,
       allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
     },
-    "settings.merchantId": {
-      type: String,
-      label: "Merchant ID",
-      optional: true
-    },
-    "settings.username": {
-      type: String,
-      label: "Username",
-      optional: true
-    },
-    "settings.password": {
-      type: String,
-      label: "Password",
-      optional: true
-    },
-    "settings.signature": {
-      type: String,
-      label: "Signature",
-      optional: true
-    },
-    "settings.express_mode": {
-      type: Boolean,
-      defaultValue: false
-    },
-    "settings.payflow_enabled": {
+    "settings.reaction-payflow-pro.enabled": {
       type: Boolean,
       defaultValue: true
     },
@@ -64,7 +27,7 @@ export const PaypalPackageConfig = new SimpleSchema([
       min: 60,
       optional: true
     },
-    "settings.payflow_mode": {
+    "settings.mode": {
       type: Boolean,
       defaultValue: false
     }
