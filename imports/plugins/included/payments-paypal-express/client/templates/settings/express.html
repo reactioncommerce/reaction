@@ -1,0 +1,29 @@
+<template name="paypalExpressSettings">
+  {{#unless packageData.settings.merchantId}}
+  <div class="alert alert-info">
+    <span data-i18n="admin.paymentSettings.paypalExpressCredentials">Don't have a PayPal username, password and signature?</span>
+    <a href="https://developer.paypal.com/webapps/developer/applications/accounts" target="_blank">
+      <span data-i18n="admin.paymentSettings.paypalExpressGetCredentialsHere">Get one here.</span>
+    </a>
+  </div>
+  {{/unless}}
+
+  {{#autoForm
+    collection=Collections.Packages
+    schema=PaypalPackageConfig
+    doc=packageData
+    type="update"
+    id="paypal-update-form-express"
+    }}
+
+    {{>afQuickField name='settings.merchantId'}}
+    {{>afQuickField name='settings.username'}}
+    {{>afQuickField name='settings.password' type="password"}}
+    {{>afQuickField name='settings.signature'}}
+    {{>afQuickField name="settings.express.support" options="allowed" noselect=true}}
+    {{>afQuickField name="settings.express_auth_and_capture" type="boolean-select" trueLabel="Authorize, Capture immediately." falseLabel="Authorize, Capture on complete." }}
+    {{>afQuickField name='settings.express_mode' type="boolean-select" trueLabel="Live - Production Mode" falseLabel="Testing - Sandbox Mode"}}
+
+    <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
+  {{/autoForm}}
+</template>

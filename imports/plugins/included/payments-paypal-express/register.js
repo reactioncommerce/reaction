@@ -2,19 +2,11 @@ import { Reaction } from "/server/api";
 
 Reaction.registerPackage({
   label: "PayPal",
-  name: "reaction-paypal",
+  name: "reaction-paypal-express",
   icon: "fa fa-paypal",
   autoEnable: true,
   settings: {
     express: {
-      enabled: false,
-      support: [
-        "authorize",
-        "capture",
-        "refund"
-      ]
-    },
-    payflow: {
       enabled: false,
       support: [
         "Authorize",
@@ -31,12 +23,6 @@ Reaction.registerPackage({
       icon: "fa fa-paypal",
       template: "paypalExpressSettings"
     }, {
-      label: "PayPal PayFlow",
-      provides: "paymentSettings",
-      name: "paypal/settings/payflow",
-      icon: "fa fa-cc-paypal",
-      template: "paypalPayFlowSettings"
-    }, {
       route: "/paypal/done",
       template: "paypalDone",
       workflow: "coreWorkflow"
@@ -51,12 +37,6 @@ Reaction.registerPackage({
       provides: "paymentMethod",
       icon: "fa fa-paypal",
       priority: 1
-    }, {
-      template: "paypalPayflowForm",
-      label: "Credit Card",
-      name: "payment/method/payflow",
-      provides: "paymentMethod",
-      icon: "fa fa-cc-paypal"
     }
   ]
 });
