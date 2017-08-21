@@ -358,6 +358,7 @@ class OrderTable extends Component {
           }
           publication="CustomPaginatedOrders"
           collection={Orders}
+          data={this.props.orders}
           matchingResultsCount="order-count"
           columnMetadata={customColumnMetadata}
           externalLoadingComponent={Loading}

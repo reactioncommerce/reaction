@@ -37,7 +37,6 @@ class OrdersList extends Component {
   }
 
   render() {
-    console.log({ "this.props.orders": this.props.orders });
     if (this.props.orders.length) {
       return (
         <div className="container-fluid-sm">

@@ -37,21 +37,18 @@ class OrdersContainer extends Component {
         if (this.searchSub.ready()) {
           const orderSearchResults = OrderSearchCollection.find().fetch();
           orderSearchResultsIds = orderSearchResults.map(orderSearch => orderSearch._id);
-          console.log({ orderSearchResults, orderSearchResultsIds });
-        }
 
-        if (orderSearchResultsIds && orderSearchResultsIds.length) {
-          // pick orders that are in search results (orderSearchResultsIds)
-          // orders = orders.filter(order => orderSearchResultsIds.indexOf(order._id) < 0);
-          orders = [orders[0]];
-          console.log({ orders });
+          if (orderSearchResultsIds && orderSearchResultsIds.length) {
+            // pick orders that are in search results (orderSearchResultsIds)
+            orders = orders.filter(order => orderSearchResultsIds.indexOf(order._id) < 0);
+          }
+
+          this.setState({
+            orders: orders,
+            count: Counts.get("order-count"),
+            ready: true
+          });
         }
-        console.log('setting state');
-        this.setState({
-          orders: orders,
-          count: Counts.get("order-count"),
-          ready: true
-        });
       }
 
       const shop = Shops.findOne({});
