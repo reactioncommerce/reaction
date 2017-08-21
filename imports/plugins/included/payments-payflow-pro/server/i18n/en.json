@@ -2,5 +2,12 @@
   "language": "English",
   "i18n": "en",
   "ns": "reaction-payflow-pro",
-  "translation": {}
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "Your settings have been saved",
+        "saveFailed": "There was a problem saving your settings"
+      }
+    }
+  }
 }]

@@ -1,9 +1,9 @@
 [{
   "language": "English",
   "i18n": "en",
-  "ns": "reaction-paypal",
+  "ns": "reaction-paypal-express",
   "translation": {
-    "reaction-payments": {
+    "reaction-paypal-express": {
       "admin": {
         "shortcut": {
           "paypalLabel": "PayPal"
@@ -24,6 +24,10 @@
           "paypalExpressGetCredentialsHere": "Get one here.",
           "paypalPayflowCredentials": "Don't have a PayPal client ID and secret",
           "paypalPayflowGetCredentialsHere": "Get them here."
+        },
+        "settings": {
+          "saveSuccess": "Your settings have been saved",
+          "saveFailed": "There was a problem saving your settings"
         }
       },
       "checkout": {
