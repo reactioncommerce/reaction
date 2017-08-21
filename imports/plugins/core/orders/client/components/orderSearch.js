@@ -1,8 +1,14 @@
 import React, { Component } from "react";
+import { compose } from "recompose";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components, withPermissions } from "@reactioncommerce/reaction-components";
 
-// TODO: jsdoc
+/**
+ * Class representing the Products React component
+ * @summary PropTypes for Product React component
+ * @property {Function} handleChange - load more products callback
+ * @property {Function} handleClear - load more products callback
+ */
 class OrderSearch extends Component {
   static propTypes = {
     handleChange: PropTypes.func,
@@ -15,6 +21,12 @@ class OrderSearch extends Component {
     this.state = { query: "" };
   }
 
+  /**
+   * handleChange - handler to call onchange of search input
+   * @param {string} event - event object
+   * @param {string} value - current value of the search input
+   * @return {null} -
+   */
   handleChange = (event, value) => {
     this.setState({ query: value });
 
@@ -45,4 +57,4 @@ class OrderSearch extends Component {
   }
 }
 
-export default OrderSearch;
+export default compose(withPermissions({ roles: ["orders"] }))(OrderSearch);
