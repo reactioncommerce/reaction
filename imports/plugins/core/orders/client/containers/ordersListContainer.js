@@ -6,10 +6,6 @@ import { Media, Orders } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrdersList from "../components/orderList.js";
-import {
-  PACKAGE_NAME,
-  ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME
-} from "../../lib/constants";
 
 const OrderHelper =  {
   makeQuery(filter) {
@@ -166,16 +162,6 @@ class OrdersListContainer extends Component {
     if (startWorkflow === true) {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
     }
-
-    // const id = Reaction.Router.getQueryParam("_id");
-
-    // if (id === undefined) {
-    //   Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
-    // } else {
-    //   Reaction.Router.go("dashboard/orders", {}, {
-    //     _id: order._id
-    //   });
-    // }
   }
 
   /**
