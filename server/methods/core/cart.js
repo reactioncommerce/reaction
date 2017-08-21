@@ -314,12 +314,21 @@ Meteor.methods({
    *  @param {String} productId - productId to add to Cart
    *  @param {String} variantId - product variant _id
    *  @param {Number} [itemQty] - qty to add to cart
+   *  @param {Object} [additionalOptions] - object containing additional options and fields for cart item
    *  @return {Number|Object} Mongo insert response
    */
-  "cart/addToCart": function (productId, variantId, itemQty) {
+  "cart/addToCart": function (productId, variantId, itemQty, additionalOptions) {
     check(productId, String);
     check(variantId, String);
     check(itemQty, Match.Optional(Number));
+    check(additionalOptions, Match.Optional(Object));
+
+    // Copy additionalOptions into an options object to use througout the method
+    const options = {
+      overwriteExistingMetafields: false, // Allows updating of metafields on quantity change
+      metafields: undefined, // Array of MetaFields to set on the CartItem
+      ...additionalOptions || {}
+    };
 
     const cart = Collections.Cart.findOne({ userId: this.userId });
     if (!cart) {
@@ -365,6 +374,17 @@ Meteor.methods({
       .some(item => item.variants._id === variantId);
 
     if (cartVariantExists) {
+      let modifier = {};
+
+      // Allows for updating metafields on an existing item when the quantity also changes
+      if (options.overwriteExistingMetafields) {
+        modifier = {
+          $set: {
+            "items.$.metafields": options.metafields
+          }
+        };
+      }
+
       return Collections.Cart.update({
         "_id": cart._id,
         "items.product._id": productId,
@@ -372,7 +392,8 @@ Meteor.methods({
       }, {
         $inc: {
           "items.$.quantity": quantity
-        }
+        },
+        ...modifier
       }, function (error, result) {
         if (error) {
           Logger.warn("error adding to cart",
@@ -406,6 +427,7 @@ Meteor.methods({
           quantity: quantity,
           product: product,
           variants: variant,
+          metafields: options.metafields,
           title: product.title,
           type: product.type,
           parcel: product.parcel || null
