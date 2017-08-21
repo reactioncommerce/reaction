@@ -37,6 +37,25 @@
         "print": "Stampa",
         "auto": "Automobile"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Ricerca prodotto",
+          "includeTitle": "Includi titolo",
+          "includeDescription": "Includi descrizione",
+          "includePageTitle": "Includi titolo della pagina",
+          "includeDetails": "includere i dettagli",
+          "includeVendor": "Includi fornitore"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Impostazioni Ordine di ricerca"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Impostazioni account di ricerca"
+        },
+        "noSettings": "Nessuna impostazione attualmente disponibili",
+        "settingsSaved": "Impostazioni di ricerca salvate",
+        "settingsfailed": "aggiornamento Impostazioni di ricerca non è riuscita"
+      },
       "header": {
         "tagsAdd": "Aggiungi tag",
         "search": "Cerca prodotti..."
@@ -72,7 +91,8 @@
         "startTracking": "Inizio di monitoraggio",
         "addBarcode": "Aggiungi codice a barre",
         "quantity": "Quantità",
-        "quantityGreaterThanZero": "Errore: la quantità dev'essere maggiore di zero"
+        "quantityGreaterThanZero": "Errore: la quantità dev'essere maggiore di zero",
+        "dropFiles": "Drop dei file da caricare"
       },
       "productDetailEdit": {
         "title": "Titolo prodotto",

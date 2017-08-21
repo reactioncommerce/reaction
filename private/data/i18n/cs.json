@@ -37,6 +37,25 @@
         "print": "Tisk",
         "auto": "Auto"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Hledání výrobku",
+          "includeTitle": "zahrnout název",
+          "includeDescription": "obsahovat popis",
+          "includePageTitle": "Zahrnout název stránky",
+          "includeDetails": "obsahovat podrobnosti",
+          "includeVendor": "zahrnují dodavatele"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Nastavení pořadí hledání"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Nastavení účtu Hledání"
+        },
+        "noSettings": "Žádná nastavení v současné době k dispozici",
+        "settingsSaved": "Nastavení vyhledávání uloženo",
+        "settingsfailed": "Aktualizace nastavení vyhledávání se nezdařilo"
+      },
       "header": {
         "tagsAdd": "Přidat značku",
         "search": "Vyhledávání výrobků ..."
@@ -72,7 +91,8 @@
         "startTracking": "Začátek Tracking",
         "addBarcode": "Přidejte čárového kódu",
         "quantity": "Množství",
-        "quantityGreaterThanZero": "Chyba: Množství musí být větší než nula"
+        "quantityGreaterThanZero": "Chyba: Množství musí být větší než nula",
+        "dropFiles": "Drop soubory nahrát"
       },
       "productDetailEdit": {
         "title": "Nadpis",

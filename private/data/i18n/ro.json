@@ -37,6 +37,25 @@
         "print": "Imprimare",
         "auto": "Auto"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Caută produs",
+          "includeTitle": "Includeți titlul",
+          "includeDescription": "Includeți descrierea",
+          "includePageTitle": "Includeți titlul paginii",
+          "includeDetails": "Includeți detalii",
+          "includeVendor": "Includeți furnizor"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Setări Căutare Comenzi"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Setări Căutare Cont"
+        },
+        "noSettings": "Nu există setări disponibile în prezent",
+        "settingsSaved": "S-au salvat setările de cautare",
+        "settingsfailed": "Actualizarea setărilor de căutare a eșuat"
+      },
       "header": {
         "tagsAdd": "Adăugaţi o etichetă",
         "search": "Caută produse ..."
@@ -72,7 +91,8 @@
         "startTracking": "Porniți urmărirea",
         "addBarcode": "Adăugați coduri de bare",
         "quantity": "Cantitate",
-        "quantityGreaterThanZero": "Eroare: Cantitatea trebuie sa fie mai mare decât zero"
+        "quantityGreaterThanZero": "Eroare: Cantitatea trebuie sa fie mai mare decât zero",
+        "dropFiles": "Dați drumul la fișiere pentru a le încărca"
       },
       "productDetailEdit": {
         "title": "Denumirea produsului",

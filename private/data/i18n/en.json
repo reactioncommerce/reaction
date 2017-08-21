@@ -37,6 +37,25 @@
         "print": "Print",
         "auto": "Auto"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Product Search",
+          "includeTitle": "Include title",
+          "includeDescription": "Include description",
+          "includePageTitle": "Include page title",
+          "includeDetails": "Include details",
+          "includeVendor": "Include vendor"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Order Search Settings"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Account Search Settings"
+        },
+        "noSettings": "No settings currently available",
+        "settingsSaved": "Search settings saved",
+        "settingsfailed": "Search settings update failed"
+      },
       "header": {
         "tagsAdd": "Add tag",
         "search": "Search products..."
@@ -72,7 +91,8 @@
         "startTracking": "Start Tracking",
         "addBarcode": "Add Barcode",
         "quantity": "Quantity",
-        "quantityGreaterThanZero": "Error: Quantity must be greater than zero"
+        "quantityGreaterThanZero": "Error: Quantity must be greater than zero",
+        "dropFiles": "Drop files to upload"
       },
       "productDetailEdit": {
         "title": "Title",

@@ -37,6 +37,25 @@
         "print": "Skriv",
         "auto": "Bil"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Sök produkt",
+          "includeTitle": "inkluderar titel",
+          "includeDescription": "inkluderar beskrivning",
+          "includePageTitle": "Inkludera sidtitel",
+          "includeDetails": "innehålla uppgifter",
+          "includeVendor": "inkluderar försäljaren"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "För Sökinställningar"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Konto Sökinställningar"
+        },
+        "noSettings": "Inga inställningar för närvarande tillgängliga",
+        "settingsSaved": "Sökinställningar sparas",
+        "settingsfailed": "Sökinställningar gick inte att uppdatera"
+      },
       "header": {
         "tagsAdd": "Lägg till tagg",
         "search": "Sök produkter ..."
@@ -72,7 +91,8 @@
         "startTracking": "Starta Tracking",
         "addBarcode": "Lägg Streckkod",
         "quantity": "Kvantitet",
-        "quantityGreaterThanZero": "Fel: Antal måste vara större än noll"
+        "quantityGreaterThanZero": "Fel: Antal måste vara större än noll",
+        "dropFiles": "Släpp filer att ladda upp"
       },
       "productDetailEdit": {
         "title": "Titel",

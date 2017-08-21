@@ -37,6 +37,25 @@
         "print": "Drucken",
         "auto": "Automatisch"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Produktsuche",
+          "includeTitle": "Titel mit einschließen",
+          "includeDescription": "Beschreibung mit einschließen",
+          "includePageTitle": "Seitentitel mit einschließen",
+          "includeDetails": "Details mit einschließen",
+          "includeVendor": "Anbieter mit einschließen"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Bestellungs-Sucheinstellungen"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Konto-Sucheinstellungen"
+        },
+        "noSettings": "Aktuell sind keine Einstellungen verfügbar",
+        "settingsSaved": "Die Sucheinstellungen wurden gespeichert",
+        "settingsfailed": "Die Aktualisierung der Sucheinstellungen ist fehlgeschlagen"
+      },
       "header": {
         "tagsAdd": "Tag hinzufügen",
         "search": "Suche in Produkten..."
@@ -72,7 +91,8 @@
         "startTracking": "Tracking starten",
         "addBarcode": "Barcode hinzufügen",
         "quantity": "Menge",
-        "quantityGreaterThanZero": "Fehler: Die Menge muss über Null sein"
+        "quantityGreaterThanZero": "Fehler: Die Menge muss über Null sein",
+        "dropFiles": "Dateien zum Hochladen hierherziehen"
       },
       "productDetailEdit": {
         "title": "Produkttitle",

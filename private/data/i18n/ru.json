@@ -37,6 +37,25 @@
         "print": "Распечатать",
         "auto": "Автоматически"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Поиск товара",
+          "includeTitle": "Указывать заголовок",
+          "includeDescription": "Указывать описание",
+          "includePageTitle": "Указывать заголовок страницы",
+          "includeDetails": "Указывать подробное описание",
+          "includeVendor": "Указывать продавца"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Настройки поиска заказа"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Настройки поиска учетной записи"
+        },
+        "noSettings": "В данный момент настройки недоступны",
+        "settingsSaved": "Настройки поиска сохранены",
+        "settingsfailed": "Не удалось обновить настройки поиска"
+      },
       "header": {
         "tagsAdd": "Добавить метку",
         "search": "Искать товары..."
@@ -72,7 +91,8 @@
         "startTracking": "Начать слежение",
         "addBarcode": "Добавить штрих-код",
         "quantity": "Количество",
-        "quantityGreaterThanZero": "Ошибка: Количество должно быть больше нуля"
+        "quantityGreaterThanZero": "Ошибка: Количество должно быть больше нуля",
+        "dropFiles": "Бросьте сюда файлы для их загрузки"
       },
       "productDetailEdit": {
         "title": "Название товара",

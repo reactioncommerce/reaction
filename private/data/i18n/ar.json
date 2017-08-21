@@ -37,6 +37,25 @@
         "print": "طباعة",
         "auto": "تلقائي"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "بحث المنتج",
+          "includeTitle": "شمل العنوان",
+          "includeDescription": "شمل الوصف",
+          "includePageTitle": "شمل عنوان الصفحة",
+          "includeDetails": "شامل التفاصيل",
+          "includeVendor": "شمل البائعين"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "إعدادات طلب البحث"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "اعدادات بحث الحساب "
+        },
+        "noSettings": "لا يوجد إعدادات متاحة حالياً",
+        "settingsSaved": "البحث عن الإعدادات المحفوظة",
+        "settingsfailed": "فشل تحديث إعدادات البحث"
+      },
       "header": {
         "tagsAdd": "إضافة علامة",
         "search": "ابحث عن منتج..."
@@ -72,7 +91,8 @@
         "startTracking": "بدء التتبع",
         "addBarcode": "إضافة الباركود",
         "quantity": "كمية",
-        "quantityGreaterThanZero": "خطأ: الكمية يجب أن تكون أكثر من صفر"
+        "quantityGreaterThanZero": "خطأ: الكمية يجب أن تكون أكثر من صفر",
+        "dropFiles": "وضع الملفات للتحميل"        
       },
       "productDetailEdit": {
         "title": "عنوان",

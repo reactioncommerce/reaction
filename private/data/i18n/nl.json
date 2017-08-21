@@ -37,6 +37,25 @@
         "print": "Afdruk",
         "auto": "Auto"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "product zoeken",
+          "includeTitle": "Inclusief titel",
+          "includeDescription": "Inclusief beschrijving",
+          "includePageTitle": "Inclusief paginatitel",
+          "includeDetails": "bijzonderheden",
+          "includeVendor": "omvatten vendor"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Zoeken Instellingen"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Account zoekinstellingen"
+        },
+        "noSettings": "Geen instellingen die momenteel beschikbaar",
+        "settingsSaved": "Zoekinstellingen opgeslagen",
+        "settingsfailed": "updaten zoekinstellingen is mislukt"
+      },
       "header": {
         "tagsAdd": "Tag toevoegen",
         "search": "Producten zoeken..."
@@ -72,7 +91,8 @@
         "startTracking": "Start Tracking",
         "addBarcode": "Streepjescode toevoegen",
         "quantity": "Aantal",
-        "quantityGreaterThanZero": "Fout: aantal moet hoger zijn dan nul"
+        "quantityGreaterThanZero": "Fout: aantal moet hoger zijn dan nul",
+        "dropFiles": "Drop bestanden te uploaden"
       },
       "productDetailEdit": {
         "title": "Producttitel",

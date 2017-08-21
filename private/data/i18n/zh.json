@@ -37,6 +37,25 @@
         "print": "打印",
         "auto": "自动"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "产品搜索",
+          "includeTitle": "包括标题",
+          "includeDescription": "包括描述",
+          "includePageTitle": "包括页面标题",
+          "includeDetails": "包括详细信息",
+          "includeVendor": "包括供应商"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "订单搜索设置"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "帐户搜索设置"
+        },
+        "noSettings": "当前无可用的设置",
+        "settingsSaved": "搜索设置已保存",
+        "settingsfailed": "搜索设置更新失败"
+      },
       "header": {
         "tagsAdd": "添加标签",
         "search": "搜索产品"
@@ -72,7 +91,8 @@
         "startTracking": "开始跟踪",
         "addBarcode": "添加条形码",
         "quantity": "数量",
-        "quantityGreaterThanZero": "错误: 数量必须大于0。"
+        "quantityGreaterThanZero": "错误: 数量必须大于0。",
+        "dropFiles": "拖放文件以上传"
       },
       "productDetailEdit": {
         "title": "产品标题",

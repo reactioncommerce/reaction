@@ -37,6 +37,25 @@
         "print": "Wydrukować",
         "auto": "Auto"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Wyszukiwarka produktów",
+          "includeTitle": "Dołącz tytuł",
+          "includeDescription": "zawierać opis",
+          "includePageTitle": "Dołącz tytuł strony",
+          "includeDetails": "zawierać szczegóły",
+          "includeVendor": "Dołącz sprzedawcą"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Zamówienie Ustawienia wyszukiwania"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Konto Ustawienia wyszukiwania"
+        },
+        "noSettings": "Brak ustawienia aktualnie dostępne",
+        "settingsSaved": "Ustawienia wyszukiwania zapamiętanych",
+        "settingsfailed": "Ustawienia wyszukiwania aktualizacja nie powiodła się"
+      },
       "header": {
         "tagsAdd": "Dodaj etykietke",
         "search": "Szukaj produktów ..."
@@ -72,7 +91,8 @@
         "startTracking": "Rozpocznij śledzenie",
         "addBarcode": "Dodaj kreskowy",
         "quantity": "Ilość",
-        "quantityGreaterThanZero": "Błąd: Ilość musi być większa od zera"
+        "quantityGreaterThanZero": "Błąd: Ilość musi być większa od zera",
+        "dropFiles": "Upuścić pliki do przesłania"
       },
       "productDetailEdit": {
         "title": "Tytuł",

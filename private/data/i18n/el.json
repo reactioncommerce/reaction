@@ -36,6 +36,25 @@
         "dashboard": "Ταμπλό",
         "print": "Αποτύπωμα"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Αναζήτηση προϊόντων",
+          "includeTitle": "Συμπεριλάβετε τίτλο",
+          "includeDescription": "περιλαμβάνουν περιγραφή",
+          "includePageTitle": "Συμπεριλάβετε τίτλο της σελίδας",
+          "includeDetails": "περιλαμβάνουν λεπτομέρειες",
+          "includeVendor": "περιλαμβάνουν πωλητή"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Ρυθμίσεις Παραγγελία Αναζήτηση"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Ρυθμίσεις λογαριασμού Αναζήτηση"
+        },
+        "noSettings": "Δεν ρυθμίσεις που διατίθενται σήμερα",
+        "settingsSaved": "Ρυθμίσεις αναζήτησης αποθηκεύονται",
+        "settingsfailed": "ενημέρωση ρυθμίσεις αναζήτησης απέτυχε"
+      },
       "header": {
         "tagsAdd": "Προσθήκη ετικέτας",
         "search": "Αναζήτηση προϊόντων..."
@@ -71,7 +90,8 @@
         "startTracking": "έναρξη Παρακολούθηση",
         "addBarcode": "Προσθήκη Barcode",
         "quantity": "Ποσότητα",
-        "quantityGreaterThanZero": "Σφάλμα: Ποσότητα θα πρέπει να είναι μεγαλύτερη από το μηδέν"
+        "quantityGreaterThanZero": "Σφάλμα: Ποσότητα θα πρέπει να είναι μεγαλύτερη από το μηδέν",
+        "dropFiles": "Drop τα αρχεία να ανεβάσετε"        
       },
       "productDetailEdit": {
         "title": "Τίτλος προϊόντος",

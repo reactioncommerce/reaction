@@ -24,7 +24,7 @@ Template.upload.helpers({
     return {
       className: "btn-block",
       label: instance.data.label || "Drop file to upload",
-      i18nLabel: instance.data.i18nLabel || "productDetail.dropFiles",
+      i18nKeyLabel: instance.data.i18nKeyLabel || "productDetail.dropFiles",
       onClick() {
         instance.$("input[name=files]").click();
       }

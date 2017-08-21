@@ -37,6 +37,25 @@
         "print": "הדפס",
         "auto": "אוטומטי"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "חיפוש מוצר",
+          "includeTitle": "כלול כותרת",
+          "includeDescription": "כלול תיאור",
+          "includePageTitle": "כלול כותרת עמוד",
+          "includeDetails": "כלול פרטים",
+          "includeVendor": "כלול ספק"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "הגדרות חיפוש הזמנה"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "הגדרות חיפוש חשבון"
+        },
+        "noSettings": "אין הגדרות זמינות כרגע",
+        "settingsSaved": "הגדרות חיפוש נשמרו",
+        "settingsfailed": "עדכון הגדרות חיפוש נכשל."
+      },
       "header": {
         "tagsAdd": "הוספת תגית",
         "search": "חיפוש מוצרים..."
@@ -72,7 +91,8 @@
         "startTracking": "התחל מעקב",
         "addBarcode": "הוסף ברקוד",
         "quantity": "כמות",
-        "quantityGreaterThanZero": "שגיאה: הכמות חייבת להיות גדולה מאפס"
+        "quantityGreaterThanZero": "שגיאה: הכמות חייבת להיות גדולה מאפס",
+        "dropFiles": "שחרר קבצים כדי להעלות"
       },
       "productDetailEdit": {
         "title": "כותרת המוצר",

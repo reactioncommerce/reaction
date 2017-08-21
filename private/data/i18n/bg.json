@@ -37,6 +37,25 @@
         "print": "Принтирай",
         "auto": "Автоматичен"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Търсене на продукт",
+          "includeTitle": "Включи заглавие",
+          "includeDescription": "Включи описание",
+          "includePageTitle": "Включване на заглавие на страница",
+          "includeDetails": "Включване на детайли",
+          "includeVendor": "Включи продавач"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Поръчка Настройки за търсенето"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Сметка Настройки за търсенето"
+        },
+        "noSettings": "Не настройки наличните в момента",
+        "settingsSaved": "Настройки за търсенето спасени",
+        "settingsfailed": "актуализация Настройки за търсенето провали"
+      },
       "header": {
         "tagsAdd": "Добави етикет",
         "search": "Търси продукт..."
@@ -72,7 +91,8 @@
         "startTracking": "Проследяване",
         "addBarcode": "Добави баркод",
         "quantity": "Количество",
-        "quantityGreaterThanZero": "Грешка: Количеството трябва да е повече от 0"
+        "quantityGreaterThanZero": "Грешка: Количеството трябва да е повече от 0",
+        "dropFiles": "Капка файлове за качване"
       },
       "productDetailEdit": {
         "title": "Заглавие на продукта",

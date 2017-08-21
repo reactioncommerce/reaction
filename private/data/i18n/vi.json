@@ -37,6 +37,25 @@
         "print": "In",
         "auto": "Tự động"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Tìm kiếm sản phẩm",
+          "includeTitle": "Bao gồm tiêu đề",
+          "includeDescription": "Bao gồm mô tả",
+          "includePageTitle": "Bao gồm các tiêu đề trang",
+          "includeDetails": "Bao gồm thông tin chi tiết",
+          "includeVendor": "Bao gồm các nhà cung cấp"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Để cài đặt tìm kiếm"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Tài khoản Tìm kiếm Cài đặt"
+        },
+        "noSettings": "Không có cài đặt hiện có",
+        "settingsSaved": "Cài đặt tìm kiếm cứu",
+        "settingsfailed": "Cài đặt tìm kiếm cập nhật thất bại"
+      },
       "header": {
         "tagsAdd": "Thêm thẻ",
         "search": "Tìm kiếm các sản phẩm ..."
@@ -72,7 +91,8 @@
         "startTracking": "Bắt đầu theo dõi",
         "addBarcode": "Thêm mã vạch",
         "quantity": "Số lượng, lượng",
-        "quantityGreaterThanZero": "Lỗi: Số lượng phải lớn hơn không"
+        "quantityGreaterThanZero": "Lỗi: Số lượng phải lớn hơn không",
+        "dropFiles": "Thả file để tải lên"
       },
       "productDetailEdit": {
         "title": "Chức vụ",

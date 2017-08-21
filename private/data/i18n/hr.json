@@ -37,6 +37,25 @@
         "print": "otisak",
         "auto": "Auto"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "pretraživanje proizvoda",
+          "includeTitle": "Uključi naslov",
+          "includeDescription": "Uključi opis",
+          "includePageTitle": "Uključi naslov stranice",
+          "includeDetails": "Uključi detalje",
+          "includeVendor": "Uključi dobavljaču"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Postavke Red pretraživanje"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Postavke računa pretraživanje"
+        },
+        "noSettings": "Nema postavki trenutno dostupni",
+        "settingsSaved": "Postavke pretraživanja spremaju",
+        "settingsfailed": "Ažuriranje postavki za pretraživanje nije uspjelo"
+      },
       "header": {
         "tagsAdd": "Dodaj oznaku",
         "search": "Pretraži proizvode..."
@@ -72,7 +91,8 @@
         "startTracking": "Početak praćenja",
         "addBarcode": "Dodaj Barkod",
         "quantity": "Količina",
-        "quantityGreaterThanZero": "Greška: Količina mora biti veći od nule"
+        "quantityGreaterThanZero": "Greška: Količina mora biti veći od nule",
+        "dropFiles": "Ispustiti datoteke za upload"
       },
       "productDetailEdit": {
         "title": "Naslov proizvoda",

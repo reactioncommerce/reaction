@@ -37,6 +37,25 @@
         "print": "ပုံနှိပ်",
         "auto": "အော်တို"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "ကုန်ပစ္စည်းရှာရန်",
+          "includeTitle": "ခေါင်းစဉ်တို့ပါဝင်သည်",
+          "includeDescription": "ဖော်ပြချက် Include",
+          "includePageTitle": "စာမျက်နှာခေါင်းစဉ်ကိုပါဝင်စေ",
+          "includeDetails": "အသေးစိတျမြားပါဝငျ",
+          "includeVendor": "ရောင်းချသူ Include"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "အမိန့်ရှာရန်ချိန်ညှိ"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "အကောင့်ရှာရန်ချိန်ညှိ"
+        },
+        "noSettings": "အဘယ်သူမျှမ settings ကိုလက်ရှိရရှိနိုင်",
+        "settingsSaved": "ရှာဖွေမှုဆက်တင်များသည်ကယ်တင်ခြင်းသို့ရောက်",
+        "settingsfailed": "ရှာဖွေမှုဆက်တင်များရှုံးနိမ့်ခဲ့ရကို update"
+      },
       "header": {
         "tagsAdd": "tag ကို Add",
         "search": "ရှာရန်ထုတ်ကုန် ..."
@@ -72,7 +91,8 @@
         "startTracking": "ခြေရာကောက် Start",
         "addBarcode": "ဘားကုဒ် Add",
         "quantity": "အရေအတွက်",
-        "quantityGreaterThanZero": "အမှား: ပမာဏသုညထက်ကြီးမြတ်သူဖြစ်ရမည်"
+        "quantityGreaterThanZero": "အမှား: ပမာဏသုညထက်ကြီးမြတ်သူဖြစ်ရမည်",
+        "dropFiles": "upload ဖိုင်များကို drop"
       },
       "productDetailEdit": {
         "title": "ခေါင်းစဥ်",

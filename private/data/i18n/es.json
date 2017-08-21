@@ -37,6 +37,25 @@
         "print": "Imprimir",
         "auto": "Auto"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Búsqueda de producto",
+          "includeTitle": "Incluir título",
+          "includeDescription": "Incluir descripción",
+          "includePageTitle": "Incluir título de la página",
+          "includeDetails": "Incluir información",
+          "includeVendor": "Incluir proveedor"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Opciones de búsqueda de pédido"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Opciones de búsqueda de la cuenta"
+        },
+        "noSettings": "Ninguna configuración disponible",
+        "settingsSaved": "Parámetros de búsqueda guardados",
+        "settingsfailed": "Actualización de opciones de búsqueda fallida"
+      },
       "header": {
         "tagsAdd": "Añadir etiqueta",
         "search": "Buscar productos..."
@@ -72,7 +91,8 @@
         "startTracking": "Empezar seguimiento",
         "addBarcode": "Añadir código de barras",
         "quantity": "Cantidad",
-        "quantityGreaterThanZero": "Error: la cantidad debe ser superior a 0"
+        "quantityGreaterThanZero": "Error: la cantidad debe ser superior a 0",
+        "dropFiles": "Arrastrar archivos para subirlos"
       },
       "productDetailEdit": {
         "title": "Título",

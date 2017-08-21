@@ -37,6 +37,25 @@
         "print": "Tiskanje",
         "auto": "Auto"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Iskanje",
+          "includeTitle": "vključi naslov",
+          "includeDescription": "Vključite opis",
+          "includePageTitle": "Vključi naslov strani",
+          "includeDetails": "vključuje podrobnosti",
+          "includeVendor": "vključi prodajalca"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Nastavitve naročilo Iskanje"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Nastavitve računa iskanja"
+        },
+        "noSettings": "Ni nastavitve trenutno na voljo",
+        "settingsSaved": "Nastavitve iskanja shranjene",
+        "settingsfailed": "Nastavitve iskanja posodobitev ni uspela"
+      },
       "header": {
         "tagsAdd": "Dodaj oznako",
         "search": "Iskanje izdelkov ..."
@@ -72,7 +91,8 @@
         "startTracking": "Začni sledenje",
         "addBarcode": "Dodajte črtne kode",
         "quantity": "količina",
-        "quantityGreaterThanZero": "Napaka: Količina mora biti večji od nič"
+        "quantityGreaterThanZero": "Napaka: Količina mora biti večji od nič",
+        "dropFiles": "Spusti datoteke za nalaganje"
       },
       "productDetailEdit": {
         "title": "Naslov",

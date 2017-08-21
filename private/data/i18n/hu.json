@@ -37,6 +37,25 @@
         "print": "Nyomtatás",
         "auto": "kocsi"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "termék keresés",
+          "includeTitle": "cím felvétele",
+          "includeDescription": "Tartalmazza leírás",
+          "includePageTitle": "Tartalmazza oldal címe",
+          "includeDetails": "részletként",
+          "includeVendor": "Tartalmazza az eladóval"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Rendelési Keresési beállítások"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Fiók Keresési beállítások"
+        },
+        "noSettings": "Nem beállításokat a jelenleg rendelkezésre álló",
+        "settingsSaved": "Keresési beállítások mentve",
+        "settingsfailed": "Keresési beállítások frissítése sikertelen"
+      },
       "header": {
         "tagsAdd": "Címke hozzáadása",
         "search": "Termék keresés..."
@@ -72,7 +91,8 @@
         "startTracking": "Indítás követés",
         "addBarcode": "Add Vonalkód",
         "quantity": "Mennyiség",
-        "quantityGreaterThanZero": "Hiba: Mennyiség nagyobb kell legyen, mint nulla"
+        "quantityGreaterThanZero": "Hiba: Mennyiség nagyobb kell legyen, mint nulla",
+        "dropFiles": "Drop fájlokat feltölteni"
       },
       "productDetailEdit": {
         "title": "Termék neve",

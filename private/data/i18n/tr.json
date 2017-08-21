@@ -37,6 +37,25 @@
         "print": "Baskı",
         "auto": "Oto"
       },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Ürün Arama",
+          "includeTitle": "başlığı",
+          "includeDescription": "açıklama ekleyin",
+          "includePageTitle": "Sayfa başlığı",
+          "includeDetails": "ayrıntıları içerir",
+          "includeVendor": "satıcı ekleyin"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Sipariş Arama Ayarları"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Hesap Arama Ayarları"
+        },
+        "noSettings": "mevcut ayar yok",
+        "settingsSaved": "Arama ayarları kaydedildi",
+        "settingsfailed": "Arama ayarları güncellemesi başarısız"
+      },
       "header": {
         "tagsAdd": "Etiket ekle",
         "search": "Ürün ara..."
@@ -72,7 +91,8 @@
         "startTracking": "Takip Et",
         "addBarcode": "Barkod Ekle",
         "quantity": "Miktar",
-        "quantityGreaterThanZero": "Hata: Miktar sıfırdan büyük olmalıdır"
+        "quantityGreaterThanZero": "Hata: Miktar sıfırdan büyük olmalıdır",
+        "dropFiles": "yüklemek için açılan dosyaları"
       },
       "productDetailEdit": {
         "title": "Ürün ismi",
