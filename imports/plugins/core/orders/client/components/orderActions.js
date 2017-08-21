@@ -43,6 +43,10 @@ class OrderActions extends Component {
               targetAttachment="top right"
             >
               <MenuItem
+                label="Created"
+                value="created"
+              />
+              <MenuItem
                 label="Approved"
                 value="approved"
               />

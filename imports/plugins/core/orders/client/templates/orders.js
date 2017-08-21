@@ -1,6 +1,6 @@
 import { Template } from "meteor/templating";
 // import { Reaction } from "/client/api";
-import OrdersContainer from "../containers/ordersContainer";
+import OrdersListContainer from "../containers/ordersListContainer";
 // import {
 //   PACKAGE_NAME,
 //   ORDER_LIST_FILTERS_PREFERENCE_NAME,
@@ -24,7 +24,7 @@ import OrdersContainer from "../containers/ordersContainer";
 Template.orders.helpers({
   ordersComponent() {
     return {
-      component: OrdersContainer
+      component: OrdersListContainer
     };
   }
 });

@@ -12,6 +12,7 @@ class OrdersList extends Component {
     handleSelect: PropTypes.func,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
+    query: PropTypes.object,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array
   }
@@ -19,7 +20,18 @@ class OrdersList extends Component {
   state = {
     detailClassName: "",
     listClassName: "order-icon-toggle",
-    openList: true
+    openList: true,
+    orders: this.props.orders,
+    query: this.props.query
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps !== this.props) {
+      this.setState({
+        orders: nextProps.orders,
+        query: nextProps.query
+      });
+    }
   }
 
   handleListToggle = () => {
@@ -44,7 +56,7 @@ class OrdersList extends Component {
         <OrderActions
           handleMenuClick={this.props.handleMenuClick}
         />
-        {this.props.orders.length ?
+        {this.state.orders.length ?
           <div className="container-fluid-sm">
             <div className="order-toggle-buttons">
               <button
@@ -64,7 +76,8 @@ class OrdersList extends Component {
 
             <div>
               <OrderTable
-                orders={this.props.orders}
+                orders={this.state.orders}
+                query={this.state.query}
                 selectedItems={this.props.selectedItems}
                 handleSelect={this.props.handleSelect}
                 handleClick={this.props.handleClick}
