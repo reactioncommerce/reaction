@@ -7,7 +7,35 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { Factory } from "meteor/dburles:factory";
 import { check, Match } from "meteor/check";
 
+import { Reaction } from "/server/api";
 import { methods } from "./stripe.js";
+
+
+const testStripePkg = {
+  _id: "dLubvXeAciAY3ECD9",
+  name: "reaction-stripe",
+  shopId: "DFzmTo27eFS97tfSW",
+  enabled: true,
+  settings: {
+    "mode": false,
+    "api_key": "sk_test_testkey",
+    "reaction-stripe": {
+      enabled: false,
+      support: [
+        "Authorize",
+        "Capture",
+        "Refund"
+      ]
+    },
+    "public": {
+      client_id: ""
+    },
+    "connectAuth": {
+      stripe_user_id: "ca_testid"
+    },
+    "client_id": "ca_AY0QPPR9xdwlF7OHa3mxIZkMiVCMBKgE"
+  }
+};
 
 const stripeCustomerResponse = {
   id: "cus_testcust",
@@ -159,7 +187,7 @@ describe("stripe/payment/createCharges", function () {
   });
 
   it("should call stripe/payment/createCharges with the proper parameters and create an order", function (done) {
-    this.timeout(5000);
+    this.timeout(10000);
     // This is a pretty full payment => order integration test currently.
     // This test should probably be split into multiple parts
     // Each part should probably isolate downstream methods that get called
@@ -173,6 +201,10 @@ describe("stripe/payment/createCharges", function () {
     // Set Meteor userId to the cart userId
     sandbox.stub(Meteor, "userId", function () {
       return cart.userId;
+    });
+
+    sandbox.stub(Reaction, "getPackageSettingsWithOptions", function () {
+      return testStripePkg;
     });
 
     sandbox.stub(Meteor.server.method_handlers, "cart/createCart", function () {
