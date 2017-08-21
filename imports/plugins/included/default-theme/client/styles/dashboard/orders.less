@@ -894,15 +894,14 @@
 }
 
 .order-filter-bar {
-  display: block;
+  display: flex;
   height: 51px;
 
   .order-filter-item {
-    display: inline-block;
-    // flex: 1 1 auto;
+    display: flex;
+    flex: 1 1 auto;
     width: 33%;
     height: 100%;
-    // justify-content: center;
     align-items: center;
     background-color: #f7f7f7;
     margin: 0 .5px 0 .5px;
@@ -917,6 +916,22 @@
     width: 100%;
     justify-content: center;
     align-items: center;
+  }
+
+  .order-filter-status-icon {
+    padding-left: 15px;
+
+    &.status-active {
+      color: @rui-brand
+    }
+  }
+
+  .order-filter-status-icon:focus {
+    outline: none;
+  }
+
+  .order-filter-icon {
+    padding-left: 15px;
   }
 
   .order-filter-name {

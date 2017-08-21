@@ -6,6 +6,7 @@ import OrderActions from "./orderActions";
 
 class OrdersList extends Component {
   static propTypes = {
+    clearFilter: PropTypes.func,
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
     handleMenuClick: PropTypes.func,
@@ -55,6 +56,7 @@ class OrdersList extends Component {
       <div>
         <OrderActions
           handleMenuClick={this.props.handleMenuClick}
+          clearFilter={this.props.clearFilter}
         />
         {this.state.orders.length ?
           <div className="container-fluid-sm">

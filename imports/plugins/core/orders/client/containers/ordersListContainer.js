@@ -87,15 +87,18 @@ class OrdersListContainer extends Component {
       ready: false,
       query: {}
     };
-
-    this.handleClick = this.handleClick.bind(this);
-    this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
-    this.selectAllOrders = this.selectAllOrders.bind(this);
   }
 
   handleMenuClick = (event, value) => {
     const query = OrderHelper.makeQuery(value);
+
+    this.setState({
+      query
+    });
+  }
+
+  clearFilter = () => {
+    const query = OrderHelper.makeQuery("");
 
     this.setState({
       query
@@ -210,6 +213,7 @@ class OrdersListContainer extends Component {
         handleSelect={this.handleSelect}
         orders={this.state.orders}
         query={this.state.query}
+        clearFilter={this.clearFilter}
         handleClick={this.handleClick}
         displayMedia={this.handleDisplayMedia}
         selectedItems={this.state.selectedItems}
