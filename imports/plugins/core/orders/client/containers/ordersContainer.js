@@ -40,7 +40,7 @@ class OrdersContainer extends Component {
 
           if (orderSearchResultsIds && orderSearchResultsIds.length) {
             // pick orders that are in search results (orderSearchResultsIds)
-            orders = orders.filter(order => orderSearchResultsIds.indexOf(order._id) < 0);
+            orders = orders.filter(order => orderSearchResultsIds.indexOf(order._id) > -1);
           }
 
           this.setState({

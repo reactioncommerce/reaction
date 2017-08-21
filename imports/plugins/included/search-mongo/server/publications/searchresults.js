@@ -55,7 +55,10 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
     $and: [
       { shopId: shopId },
       { $or: [
-        { _id: searchTerm },
+        { _id: {
+          $regex: searchTerm,
+          $options: "i"
+        } },
         { userEmails: {
           $regex: searchTerm,
           $options: "i"
@@ -82,6 +85,7 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
     orderResults = OrderSearch.find(findTerm, { limit: maxResults });
     Logger.debug(`Found ${orderResults.count()} orders searching for ${searchTerm}`);
   }
+  console.log({ results: orderResults.fetch(), length: orderResults.fetch().length });
   return orderResults;
 };
 
