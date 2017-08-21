@@ -4,7 +4,7 @@ import { check } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
 import { Packages } from "/lib/collections";
 
-Meteor.methods({
+export const methods = {
   // separate url into params
   // save params into sellerShop collection
   "stripe/connect/authorizeMerchant": function (shopId, authCode) {
@@ -70,4 +70,6 @@ Meteor.methods({
     }
     return result;
   }
-});
+};
+
+Meteor.methods(methods);
