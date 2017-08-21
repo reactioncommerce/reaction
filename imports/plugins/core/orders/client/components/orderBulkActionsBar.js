@@ -4,6 +4,7 @@ import { Translation, Checkbox, Button, Icon, List, ListItem } from "@reactionco
 
 class OrderBulkActionsBar extends Component {
   static propTypes = {
+    handleBulkPaymentCapture: PropTypes.func,
     isLoading: PropTypes.object,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
@@ -127,6 +128,12 @@ class OrderBulkActionsBar extends Component {
       }
     }
 
+    handlePaymentClick = () => {
+      if (this.props.handleBulkPaymentCapture) {
+        this.props.handleBulkPaymentCapture(this.props.selectedItems);
+      }
+    }
+
     render() {
       const { orders, multipleSelect, selectedItems, selectAllOrders } = this.props;
 
@@ -148,8 +155,11 @@ class OrderBulkActionsBar extends Component {
               status="success"
               bezelStyle="solid"
               className="capture-orders-button"
-              label="Capture"
-              i18nKeyLabel="order.capture"
+              label={this.props.isLoading.capturePayment ? "Capturing" : "Capture"}
+              i18nKeyLabel={this.props.isLoading.capturePayment ? "order.capturing" : "order.capture"}
+              icon={this.props.isLoading.capturePayment ? "fa fa-spinner fa-pulse" : ""}
+              iconAfter={true}
+              onClick={this.handlePaymentClick}
             />
             <Button
               status="default"

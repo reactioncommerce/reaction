@@ -36,6 +36,7 @@ const classNames = {
 class OrderTable extends Component {
   static propTypes = {
     displayMedia: PropTypes.func,
+    handleBulkPaymentCapture: PropTypes.func,
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
     isLoading: PropTypes.object,
@@ -317,6 +318,7 @@ class OrderTable extends Component {
             isLoading={this.props.isLoading}
             renderFlowList={this.props.renderFlowList}
             toggleShippingFlowList={this.props.toggleShippingFlowList}
+            handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
           />
         }
         <SortableTable

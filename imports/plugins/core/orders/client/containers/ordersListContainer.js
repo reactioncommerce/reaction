@@ -42,7 +42,8 @@ class OrdersListContainer extends Component {
         picked: false,
         packed: false,
         labeled: false,
-        shipped: false
+        shipped: false,
+        capturePayment: false
       }
     };
   }
@@ -521,6 +522,51 @@ class OrdersListContainer extends Component {
     }
   }
 
+  handleBulkPaymentCapture = (selectedOrdersIds) => {
+    this.setState({
+      isLoading: {
+        capturePayment: true
+      }
+    });
+    const selectedOrders = this.state.orders.filter((order) => {
+      return selectedOrdersIds.includes(order._id);
+    });
+
+    let orderCount = 0;
+
+    selectedOrders.forEach((order) => {
+      Meteor.call("orders/approvePayment", order, (err) => {
+        if (err) {
+          Alerts.toast(`An error occured while approving the payment: ${err}`, "error");
+        } else {
+          Meteor.call("orders/capturePayments", order._id, (error) => {
+            if (error) {
+              Alerts.toast(`An error occured while capturing the payment: ${error}`, "error");
+            }
+
+            if (order.workflow.status === "new") {
+              Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+            }
+
+            orderCount++;
+            if (orderCount === selectedOrders.length) {
+              this.setState({
+                isLoading: {
+                  capturePayment: false
+                }
+              });
+              Alerts.alert({
+                text: i18next.t("order.paymentCaptureSuccess"),
+                type: "success",
+                allowOutsideClick: false
+              });
+            }
+          });
+        }
+      });
+    });
+  }
+
   render() {
     return (
       <OrdersList
@@ -536,6 +582,7 @@ class OrdersListContainer extends Component {
         isLoading={this.state.isLoading}
         renderFlowList={this.state.renderFlowList}
         toggleShippingFlowList={this.toggleShippingFlowList}
+        handleBulkPaymentCapture={this.handleBulkPaymentCapture}
       />
     );
   }
