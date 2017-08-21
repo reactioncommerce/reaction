@@ -27,14 +27,15 @@ const OrderHelper =  {
       case "approved":
         query = {
           "workflow.status": "coreOrderWorkflow/processing",
-          "billing[0].paymentMethod.status": "approved"
+          "billing.paymentMethod.status": "approved"
         };
         break;
 
       // Orders that have been captured
       case "captured":
         query = {
-          "billing[0].paymentMethod.status": "captured"
+          "billing.paymentMethod.status": "completed",
+          "shipping.shipped": false
         };
         break;
 
