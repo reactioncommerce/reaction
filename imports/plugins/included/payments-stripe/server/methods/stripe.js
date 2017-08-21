@@ -2,38 +2,13 @@ import accounting from "accounting-js";
 import stripeNpm from "stripe";
 
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
+import { check } from "meteor/check";
 import { Random } from "meteor/random";
 
 import { Reaction, Logger } from "/server/api";
 import { StripeApi } from "./stripeapi";
 
 import { Cart, Shops, Accounts, Packages } from "/lib/collections";
-
-function luhnValid(x) {
-  return [...x].reverse().reduce((sum, c, i) => {
-    let d = parseInt(c, 10);
-    if (i % 2 !== 0) { d *= 2; }
-    if (d > 9) { d -= 9; }
-    return sum + d;
-  }, 0) % 10 === 0;
-}
-
-const ValidCardNumber = Match.Where(function (x) {
-  return /^[0-9]{13,16}$/.test(x) && luhnValid(x);
-});
-
-const ValidExpireMonth = Match.Where(function (x) {
-  return /^[0-9]{1,2}$/.test(x);
-});
-
-const ValidExpireYear = Match.Where(function (x) {
-  return /^[0-9]{4}$/.test(x);
-});
-
-const ValidCVV = Match.Where(function (x) {
-  return /^[0-9]{3,4}$/.test(x);
-});
 
 function parseCardData(data) {
   return {
@@ -191,61 +166,6 @@ function buildPaymentMethods(options) {
 }
 
 export const methods = {
-  "stripeSubmit": function (transactionType, cardData, paymentData) {
-    check(transactionType, String);
-    check(cardData, {
-      name: String,
-      number: ValidCardNumber,
-      expire_month: ValidExpireMonth, // eslint-disable-line camelcase
-      expire_year: ValidExpireYear, // eslint-disable-line camelcase
-      cvv2: ValidCVV,
-      type: String
-    });
-    check(paymentData, {
-      total: String,
-      currency: String
-    });
-
-    const chargeObj = {
-      amount: "",
-      currency: "",
-      card: {},
-      capture: true
-    };
-
-    // TODO: Add transaction fee to Stripe chargeObj when stripeConnect is in use.
-    if (transactionType === "authorize") {
-      chargeObj.capture = false;
-    }
-    chargeObj.card = parseCardData(cardData);
-    chargeObj.amount = formatForStripe(paymentData.total);
-    chargeObj.currency = paymentData.currency;
-
-    // TODO: Check for a transaction fee and apply
-    let result;
-    let chargeResult;
-
-    try {
-      chargeResult = StripeApi.methods.createCharge.call({ chargeObj });
-      if (chargeResult && chargeResult.status && chargeResult.status === "succeeded") {
-        result = {
-          saved: true,
-          response: chargeResult
-        };
-      } else {
-        Logger.error("Stripe Call succeeded but charge failed");
-        result = {
-          saved: false,
-          error: chargeResult.error
-        };
-      }
-      return result;
-    } catch (e) {
-      Logger.error(e);
-      throw new Meteor.Error("error", e.message);
-    }
-  },
-
   "stripe/payment/createCharges": async function (transactionType, cardData, cartId) {
     check(transactionType, String);
     check(cardData, {
@@ -257,7 +177,6 @@ export const methods = {
       type: String
     });
     check(cartId, String);
-
 
     const primaryShopId = Reaction.getPrimaryShopId();
 
@@ -305,14 +224,12 @@ export const methods = {
       return uniqueShopIds;
     }, []);
 
-
     const transactionsByShopId = {};
 
     // TODO: If there is only one transactionsByShopId and the shopId is primaryShopId -
     // Create a standard charge and bypass creating a customer for this charge
     const primaryShop = Shops.findOne({ _id: primaryShopId });
     const currency = primaryShop.currency;
-
 
     try {
       // Creates a customer object, adds a source via the card data
@@ -371,10 +288,6 @@ export const methods = {
           const stripeUserId = merchantStripePkg.settings.connectAuth.stripe_user_id;
           stripeOptions.stripe_account = stripeUserId; // eslint-disable-line camelcase
 
-          // Create idempotency_key for generating a token
-          // stripeOptions.idempotency_key = `${cartId}${merchantStripePkg._id}`; // eslint-disable-line camelcase
-
-
           // Create token from our customer object to use with merchant shop
           const token = Promise.await(stripe.tokens.create({
             customer: customer.customer
@@ -428,7 +341,7 @@ export const methods = {
     }
   },
 
-
+  // TODO: Update this method to support connect captures
   /**
    * Capture a Stripe charge
    * @see https://stripe.com/docs/api#capture_charge
@@ -453,6 +366,7 @@ export const methods = {
     return stripeCaptureCharge(paymentMethod);
   },
 
+  // TODO: Update this method to support connect
   /**
    * Issue a refund against a previously captured transaction
    * @see https://stripe.com/docs/api#refunds
@@ -499,6 +413,7 @@ export const methods = {
     return result;
   },
 
+  // Update this method to support connect
   /**
    * List refunds
    * @param  {Object} paymentMethod object

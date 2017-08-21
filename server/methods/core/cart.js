@@ -531,7 +531,7 @@ Meteor.methods({
     const cart = Collections.Cart.findOne(cartId);
 
     // security check - method can only be called on own cart
-    if (cart.userId !== this.userId) {
+    if (cart.userId !== Meteor.userId()) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
