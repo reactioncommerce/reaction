@@ -31,9 +31,9 @@ const testStripePkg = {
       client_id: ""
     },
     "connectAuth": {
-      stripe_user_id: "ca_testid"
+      stripe_user_id: "ca_testconnectid"
     },
-    "client_id": "ca_AY0QPPR9xdwlF7OHa3mxIZkMiVCMBKgE"
+    "client_id": "ca_testclientid"
   }
 };
 
@@ -133,7 +133,7 @@ const stripeCustomerResponseWithSource = {
 // };
 
 const stripeChargeResult = {
-  id: "ch_17hA8DBXXkbZQs3xENUmN9bZ",
+  id: "ch_testcharge",
   object: "charge",
   amount: 2298,
   amount_refunded: 0,
@@ -203,16 +203,23 @@ describe("stripe/payment/createCharges", function () {
       return cart.userId;
     });
 
-    sandbox.stub(Reaction, "getPackageSettingsWithOptions", function () {
-      return testStripePkg;
-    });
-
     sandbox.stub(Meteor.server.method_handlers, "cart/createCart", function () {
       check(arguments, [Match.Any]);
     });
 
     sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
       check(arguments, [Match.Any]);
+    });
+
+    // This stub causes the the charge to go through as the primary shop charge
+    // and skip the application_fee and customer tokenization that is required
+    // for charging multiple shops
+    sandbox.stub(Reaction, "getPrimaryShopId", function () {
+      return cart.shopId;
+    });
+
+    sandbox.stub(Reaction, "getPackageSettingsWithOptions", function () {
+      return testStripePkg;
     });
 
     const cardData = {
@@ -250,27 +257,38 @@ describe("stripe/payment/createCharges", function () {
     // This Stack Overflow answer was helpful to me when I was getting started with nock.
     // https://stackoverflow.com/questions/22645216/stubbing-stripe-with-sinon-using-stub-yields/22662511#22662511
 
+    // Disable any HTTP connection during test
+    // nock.disableNetConnect();
+
+    // Stripe Create Customer Nock
     nock("https://api.stripe.com:443", { encodedQueryParams: true })
       .post("/v1/customers", "email=test%40example.com")
-      .reply(200, stripeCustomerResponse);
-    // .log(console.log);
+      .reply(200, stripeCustomerResponse); // .log(console.log);
 
+    // Card data for adding a card source to a customer
     const number = "source%5Bnumber%5D=4242424242424242";
     const name = "source%5Bname%5D=Test%20User";
     const cvc = "source%5Bcvc%5D=345";
     const expiry = "source%5Bexp_month%5D=4&source%5Bexp_year%5D=2022";
     const source = "source%5Bobject%5D=card";
 
+    // Stripe Add Source To Customer Nock
     nock("https://api.stripe.com:443", { encodedQueryParams: true })
       .post(`/v1/customers/${stripeCustomerResponse.id}/sources`, `${number}&${name}&${cvc}&${expiry}&${source}`)
-      .reply(200, stripeCustomerResponseWithSource);
-    // .log(console.log);
+      .reply(200, stripeCustomerResponseWithSource); // .log(console.log);
+
+    // If we were testing a multi-shop order, we'd need to nock the tokens API
+    // and update our /v1/charges nock to use a source (token) instead of the
+    // customer=customerId as used in the charge nock below
+    // Stripe Token Nock
+    // nock("https://api.stripe.com:443", { encodedQueryParams: true })
+    //   .post("/v1/tokens", `customer=${stripeCustomerResponse.id}`)
+    //   .reply(200, chargeResult).log(console.log);
 
     // Stripe Charge Nock
     nock("https://api.stripe.com:443", { encodedQueryParams: true })
       .post("/v1/charges", `amount=${cart.cartTotal() * 100}&capture=false&currency=USD&customer=${stripeCustomerResponse.id}`)
-      .reply(200, chargeResult);
-    // .log(console.log);
+      .reply(200, chargeResult); // .log(console.log);
 
     methods["stripe/payment/createCharges"]("authorize", cardData, cart._id).then((res) => {
       const transactionIds = Object.keys(res.transactions);
