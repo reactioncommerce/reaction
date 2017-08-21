@@ -18,6 +18,8 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
       currency: 1
     }
   });
+
+  const shopCurrency = shop.currency;
   const localStorageCurrencyName = localStorage.getItem("currency");
   if (typeof shop === "object" && shop.currencies && localStorageCurrencyName) {
     let localStorageCurrency = {};
@@ -30,9 +32,11 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
         localStorageCurrency.exchangeRate = shop.currencies[localStorageCurrencyName].rate;
       }
     }
+
     return localStorageCurrency;
   }
-  return defaultCurrency;
+
+  return shopCurrency;
 }
 
 /**
