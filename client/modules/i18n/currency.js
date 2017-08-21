@@ -11,6 +11,7 @@ import { currencyDep } from "./main";
  * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
  * @return  {Object}  localStorageCurrency The localStorage currency
  */
+
 function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   const shop = Shops.findOne(Reaction.getShopId(), {
     fields: {
@@ -32,10 +33,8 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
         localStorageCurrency.exchangeRate = shop.currencies[localStorageCurrencyName].rate;
       }
     }
-
     return localStorageCurrency;
   }
-
   return shopCurrency;
 }
 
