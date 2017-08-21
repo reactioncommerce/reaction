@@ -167,15 +167,15 @@ class OrdersListContainer extends Component {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
     }
 
-    const id = Reaction.Router.getQueryParam("_id");
+    // const id = Reaction.Router.getQueryParam("_id");
 
-    if (id === undefined) {
-      Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
-    } else {
-      Reaction.Router.go("dashboard/orders", {}, {
-        _id: order._id
-      });
-    }
+    // if (id === undefined) {
+    //   Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
+    // } else {
+    //   Reaction.Router.go("dashboard/orders", {}, {
+    //     _id: order._id
+    //   });
+    // }
   }
 
   /**
