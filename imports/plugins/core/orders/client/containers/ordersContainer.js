@@ -37,8 +37,8 @@ class OrdersContainer extends Component {
         if (this.searchSub.ready()) {
           const orderSearchResults = OrderSearchCollection.find().fetch();
           orderSearchResultsIds = orderSearchResults.map(orderSearch => orderSearch._id);
-
-          if (orderSearchResultsIds && orderSearchResultsIds.length) {
+          // checking to ensure search was made and no results came back
+          if (this.state.searchQuery && Array.isArray(orderSearchResultsIds)) {
             // pick orders that are in search results (orderSearchResultsIds)
             orders = orders.filter(order => orderSearchResultsIds.indexOf(order._id) > -1);
           }

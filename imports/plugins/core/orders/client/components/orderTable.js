@@ -46,6 +46,14 @@ class OrderTable extends Component {
     selectedItems: PropTypes.array
   }
 
+  componentWillReceiveProps(nextProps) {
+    // If there is exactly one order as a match, the matching order should be opened in the action view panel
+    if (nextProps.orders.length === 1) {
+      const order = nextProps.orders.find(singleOrder => singleOrder);
+      this.props.handleClick(order);
+    }
+  }
+
   /**
    * Fullfilment Badge
    * @param  {Object} order object containing info for order and coreOrderWorkflow

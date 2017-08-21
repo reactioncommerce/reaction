@@ -85,7 +85,6 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
     orderResults = OrderSearch.find(findTerm, { limit: maxResults });
     Logger.debug(`Found ${orderResults.count()} orders searching for ${searchTerm}`);
   }
-  console.log({ results: orderResults.fetch(), length: orderResults.fetch().length });
   return orderResults;
 };
 
