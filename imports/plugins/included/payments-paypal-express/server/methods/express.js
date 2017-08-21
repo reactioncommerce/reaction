@@ -88,7 +88,7 @@ export const methods = {
     const shop = Shops.findOne(cart.shopId);
     const currency = shop.currency;
     const options = PayPal.expressCheckoutAccountOptions();
-    const captureAtAuth = getSetting(cart.shopId, "express_auth_and_capture");
+    const captureAtAuth = getSetting(cart.shopId, "auth_and_capture");
     let paymentAction;
     if (captureAtAuth) {
       paymentAction = "Sale";
@@ -377,7 +377,7 @@ function parseRefundReponse(response) {
 
 function getSetting(shopId, parameter) {
   const settings = Packages.findOne({
-    name: "reaction-paypal",
+    name: "reaction-paypal-express",
     shopId: shopId,
     enabled: true
   }).settings;
