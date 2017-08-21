@@ -6,7 +6,6 @@ Reaction.registerPackage({
   icon: "fa fa-paypal",
   autoEnable: true,
   settings: {
-
     "reaction-paypal-express": {
       enabled: false,
       support: [
