@@ -28,14 +28,25 @@ class OrdersContainer extends Component {
       this.dep.depend();
       this.subscription = Meteor.subscribe("CustomPaginatedOrders");
       this.searchSub = Meteor.subscribe("SearchResults", "orders", this.state.searchQuery);
+      let orderSearchResultsIds;
 
-      if (this.searchSub.ready()) {
-        const orderResults = OrderSearchCollection.find().fetch();
-        console.log({ orderResults });
-      }
 
       if (this.subscription.ready()) {
-        const orders = Orders.find().fetch();
+        let orders = Orders.find().fetch();
+
+        if (this.searchSub.ready()) {
+          const orderSearchResults = OrderSearchCollection.find().fetch();
+          orderSearchResultsIds = orderSearchResults.map(orderSearch => orderSearch._id);
+          console.log({ orderSearchResults, orderSearchResultsIds });
+        }
+
+        if (orderSearchResultsIds && orderSearchResultsIds.length) {
+          // pick orders that are in search results (orderSearchResultsIds)
+          // orders = orders.filter(order => orderSearchResultsIds.indexOf(order._id) < 0);
+          orders = [orders[0]];
+          console.log({ orders });
+        }
+        console.log('setting state');
         this.setState({
           orders: orders,
           count: Counts.get("order-count"),

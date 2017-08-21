@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 
+// TODO: jsdoc
 class OrderSearch extends Component {
   static propTypes = {
     handleChange: PropTypes.func,
