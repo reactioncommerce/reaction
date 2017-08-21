@@ -1,15 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-  CardGroup,
-  CardToolbar,
-  FlatButton,
-  Form,
-  List,
-  ListItem,
-  SettingsCard
-} from "/imports/plugins/core/ui/client/components";
-
+import { Components } from "@reactioncommerce/reaction-components";
 import { Shop as ShopSchema } from "/lib/collections/schemas/shops";
 
 const PACKAGE_NAME = "reaction-i18n";
@@ -33,7 +24,7 @@ class LocalizationSettings extends Component {
   renderCurrencies() {
     return this.props.currencies.map((currency, key) => {
       return (
-        <ListItem
+        <Components.ListItem
           actionType={"switch"}
           key={key}
           label={currency.label}
@@ -48,7 +39,7 @@ class LocalizationSettings extends Component {
   renderLanguages() {
     return this.props.languages.map((language, key) => {
       return (
-        <ListItem
+        <Components.ListItem
           actionType={"switch"}
           key={key}
           label={language.label}
@@ -92,28 +83,28 @@ class LocalizationSettings extends Component {
 
   renderListControls(name) {
     return (
-      <CardToolbar>
-        <FlatButton
+      <Components.CardToolbar>
+        <Components.FlatButton
           i18nKeyLabel={"admin.i18nSettings.allOn"}
           label="All On"
           value={name}
           onClick={this.handleAllOn}
         />
         { "|" }
-        <FlatButton
+        <Components.FlatButton
           i18nKeyLabel={"admin.i18nSettings.allOff"}
           label="All Off"
           value={name}
           onClick={this.handleAllOff}
         />
-      </CardToolbar>
+      </Components.CardToolbar>
     );
   }
 
   render() {
     return (
-      <CardGroup>
-        <SettingsCard
+      <Components.CardGroup>
+        <Components.SettingsCard
           i18nKeyTitle="admin.i18nSettings.shopLocalization"
           name="localization"
           packageName={PACKAGE_NAME}
@@ -121,7 +112,7 @@ class LocalizationSettings extends Component {
           showSwitch={false}
           title="Shop Localization"
         >
-          <Form
+          <Components.Form
             autoSave={true}
             schema={ShopSchema}
             doc={this.props.shop}
@@ -146,8 +137,8 @@ class LocalizationSettings extends Component {
             name="localization"
             onSubmit={this.handleSubmit}
           />
-        </SettingsCard>
-        <SettingsCard
+        </Components.SettingsCard>
+        <Components.SettingsCard
           i18nKeyTitle="admin.i18nSettings.enabledLanguages"
           name="languages"
           padded={false}
@@ -157,11 +148,11 @@ class LocalizationSettings extends Component {
           title="Languages"
         >
           {this.renderListControls("language")}
-          <List>
+          <Components.List>
             {this.renderLanguages()}
-          </List>
-        </SettingsCard>
-        <SettingsCard
+          </Components.List>
+        </Components.SettingsCard>
+        <Components.SettingsCard
           i18nKeyTitle="admin.i18nSettings.enabledCurrencies"
           padded={false}
           packageName={PACKAGE_NAME}
@@ -171,11 +162,11 @@ class LocalizationSettings extends Component {
           title="Currencies"
         >
           {this.renderListControls("currency")}
-          <List>
+          <Components.List>
             {this.renderCurrencies()}
-          </List>
-        </SettingsCard>
-      </CardGroup>
+          </Components.List>
+        </Components.SettingsCard>
+      </Components.CardGroup>
     );
   }
 }

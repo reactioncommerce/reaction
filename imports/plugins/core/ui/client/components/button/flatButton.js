@@ -1,6 +1,5 @@
 import React from "react";
 import classnames from "classnames";
-import { pure } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import Button from "./button.jsx";
 
@@ -23,6 +22,6 @@ FlatButton.defaultProps = {
   bezelStyle: "flat"
 };
 
-registerComponent("FlatButton", FlatButton, pure);
+registerComponent("FlatButton", FlatButton);
 
 export default FlatButton;

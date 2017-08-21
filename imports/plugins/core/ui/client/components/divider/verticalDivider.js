@@ -1,5 +1,4 @@
 import React from "react";
-import { pure } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
 const VerticalDivider = () => (
@@ -13,6 +12,6 @@ const VerticalDivider = () => (
   />
 );
 
-registerComponent("VerticalDivider", VerticalDivider, pure);
+registerComponent("VerticalDivider", VerticalDivider);
 
 export default VerticalDivider;
