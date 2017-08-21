@@ -10,7 +10,8 @@ class OrderActions extends Component {
   }
 
   state = {
-    className: ""
+    className: "",
+    isOpen: false
   }
 
   buttonElement() {
@@ -65,27 +66,33 @@ class OrderActions extends Component {
             >
               <MenuItem
                 label="Created"
+                i18nKeyLabel="order.filter.created"
                 value="created"
               />
               <MenuItem
                 label="Approved"
+                i18nKeyLabel="order.filter.approved"
                 value="approved"
               />
               <MenuItem
                 label="Captured"
+                i18nKeyLabel="order.filter.captured"
                 value="captured"
 
               />
               <MenuItem
                 label="Processing"
+                i18nKeyLabel="order.filter.processing"
                 value="processing"
               />
               <MenuItem
                 label="Completed"
+                i18nKeyLabel="order.filter.completed"
                 value="completed"
               />
               <MenuItem
                 label="Canceled"
+                i18nKeyLabel="order.filter.canceled"
                 value="canceled"
               />
             </DropDownMenu>

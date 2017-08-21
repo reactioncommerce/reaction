@@ -164,7 +164,11 @@
         "processor": "Processor",
         "filter": {
           "new": "New",
-          "captured": "Payment Captured",
+          "thisWeek": "This Week",
+          "shippingStatus": "Shipping Status",
+          "created": "Created",
+          "approved": "Approved",
+          "captured": "Captured",
           "shipped": "Shipped",
           "completed": "Completed",
           "canceled": "Canceled",
