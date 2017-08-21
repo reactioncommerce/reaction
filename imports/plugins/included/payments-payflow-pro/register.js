@@ -6,7 +6,7 @@ Reaction.registerPackage({
   icon: "fa fa-paypal",
   autoEnable: true,
   settings: {
-    payflow: {
+    "reaction-payflow-pro": {
       enabled: false,
       support: [
         "Authorize",

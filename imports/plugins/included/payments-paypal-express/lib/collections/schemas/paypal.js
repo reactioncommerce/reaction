@@ -1,26 +1,18 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 
-export const PaypalPackageConfig = new SimpleSchema([
+export const PaypalExpressPackageConfig = new SimpleSchema([
   PackageConfig, {
-    "settings.express_auth_and_capture": {
+    "settings.auth_and_capture": {
       type: Boolean,
       label: "Capture at time of Auth",
       defaultValue: false
     },
-    "settings.express.support": {
+    "settings.reaction-paypal-express.support": {
       type: Array,
       label: "Payment provider supported methods"
     },
-    "settings.express.support.$": {
-      type: String,
-      allowedValues: ["authorize", "de-authorize", "capture", "refund"]
-    },
-    "settings.payflow.support": {
-      type: Array,
-      label: "Payment provider supported methods"
-    },
-    "settings.payflow.support.$": {
+    "settings.reaction-paypal-express.support.$": {
       type: String,
       allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
     },
@@ -48,10 +40,6 @@ export const PaypalPackageConfig = new SimpleSchema([
       type: Boolean,
       defaultValue: false
     },
-    "settings.payflow_enabled": {
-      type: Boolean,
-      defaultValue: true
-    },
     "settings.client_id": {
       type: String,
       label: "API Client ID",
@@ -63,10 +51,6 @@ export const PaypalPackageConfig = new SimpleSchema([
       label: "API Secret",
       min: 60,
       optional: true
-    },
-    "settings.payflow_mode": {
-      type: Boolean,
-      defaultValue: false
     }
   }
 ]);

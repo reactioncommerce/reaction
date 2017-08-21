@@ -1,4 +1,4 @@
-import { Reaction } from "/server/api";
+import {Reaction} from "/server/api";
 
 Reaction.registerPackage({
   label: "PayPal",
@@ -6,7 +6,8 @@ Reaction.registerPackage({
   icon: "fa fa-paypal",
   autoEnable: true,
   settings: {
-    express: {
+
+    "reaction-paypal-express": {
       enabled: false,
       support: [
         "Authorize",
