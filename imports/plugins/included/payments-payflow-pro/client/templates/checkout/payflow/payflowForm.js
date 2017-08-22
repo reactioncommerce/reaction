@@ -135,7 +135,7 @@ AutoForm.addHooks("paypal-payment-form", {
           }
           Meteor.subscribe("Packages", Reaction.getShopId());
           const packageData = Packages.findOne({
-            name: "reaction-paypal",
+            name: "reaction-payflow-pro",
             shopId: Reaction.getShopId()
           });
 
