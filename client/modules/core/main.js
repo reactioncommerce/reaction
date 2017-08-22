@@ -587,6 +587,7 @@ export default {
     Session.set("admin/showActionViewDetail", typeof open === "boolean" ? open : true);
 
     if (viewData) {
+      // console.log({ open });
       Session.set("admin/detailView", [viewData]);
     }
   },
