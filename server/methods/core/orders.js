@@ -412,7 +412,7 @@ export const methods = {
     check(order, Object);
     check(action, Match.OneOf(String, undefined));
 
-    // REVIEW: SECURITY this only checks to see if a userId exists
+    // TODO: REVIEW: SECURITY this only checks to see if a userId exists
     if (!this.userId) {
       Logger.error("orders/sendNotification: Access denied");
       throw new Meteor.Error("access-denied", "Access Denied");
@@ -434,12 +434,14 @@ export const methods = {
     }
 
     const billing = orderCreditMethod(order);
-    const refundResult = Meteor.call("orders/refunds/list", order);
-    let refundTotal = 0;
+    // TODO: Update */refunds/list for marketplace
+    // const refundResult = Meteor.call("orders/refunds/list", order);
+    const refundTotal = 0;
 
-    _.each(refundResult, function (item) {
-      refundTotal += parseFloat(item.amount);
-    });
+    // TODO: We should use reduce here
+    // _.each(refundResult, function (item) {
+    //   refundTotal += parseFloat(item.amount);
+    // });
 
     // Get user currency formatting from shops collection, remove saved rate
     const userCurrencyFormatting = _.omit(shop.currencies[billing.currency.userCurrency], ["enabled", "rate"]);
