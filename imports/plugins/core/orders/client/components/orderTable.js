@@ -7,7 +7,7 @@ import OrderTableColumn from "./orderTableColumn";
 import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
-import { formatPriceString } from "/client/api";
+import { Reaction, formatPriceString } from "/client/api";
 import { Badge, ClickToCopy, Icon, Translation, Button } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 
@@ -51,8 +51,15 @@ class OrderTable extends Component {
     // If there is exactly one order as a match, the matching order should be opened in the action view panel
     if (nextProps.orders.length === 1) {
       const order = nextProps.orders.find(singleOrder => singleOrder);
-      this.props.handleClick(order);
+      return Reaction.setActionViewDetail({
+        label: "Order Details",
+        i18nKeyLabel: "orderWorkflow.orderDetails",
+        data: { order: order },
+        props: { size: "large" },
+        template: "coreOrderWorkflow"
+      });
     }
+    Reaction.hideActionViewDetail();
   }
 
   /**
