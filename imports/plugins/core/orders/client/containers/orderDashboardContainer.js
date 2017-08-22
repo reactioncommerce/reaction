@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Media, Orders } from "/lib/collections";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
-import OrdersList from "../components/orderList.js";
+import OrderDashboard from "../components/orderDashboard.js";
 
 const OrderHelper =  {
   makeQuery(filter) {
@@ -13,7 +13,7 @@ const OrderHelper =  {
 
     switch (filter) {
       // New orders
-      case "created":
+      case "new":
         query = {
           "workflow.status": "new"
         };
@@ -67,7 +67,7 @@ const OrderHelper =  {
   }
 };
 
-class OrdersListContainer extends Component {
+class OrderDashboardContainer extends Component {
   static propTypes = {
     handleMenuClick: PropTypes.func,
     orders: PropTypes.array
@@ -81,7 +81,9 @@ class OrdersListContainer extends Component {
       orders: props.orders,
       multipleSelect: false,
       ready: false,
-      query: {}
+      query: {},
+      filter: i18next.t("order.filter.status"),
+      className: ""
     };
   }
 
@@ -89,7 +91,9 @@ class OrdersListContainer extends Component {
     const query = OrderHelper.makeQuery(value);
 
     this.setState({
-      query
+      query,
+      filter: i18next.t(`order.filter.${value}`),
+      className: "active"
     });
   }
 
@@ -97,7 +101,9 @@ class OrdersListContainer extends Component {
     const query = OrderHelper.makeQuery("");
 
     this.setState({
-      query
+      query,
+      filter: i18next.t("order.filter.status"),
+      className: ""
     });
   }
 
@@ -195,10 +201,12 @@ class OrdersListContainer extends Component {
 
   render() {
     return (
-      <OrdersList
+      <OrderDashboard
         handleSelect={this.handleSelect}
         orders={this.state.orders}
         query={this.state.query}
+        filter={this.state.filter}
+        className={this.state.className}
         clearFilter={this.clearFilter}
         handleClick={this.handleClick}
         displayMedia={this.handleDisplayMedia}
@@ -224,4 +232,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, Loading)(OrdersListContainer);
+export default composeWithTracker(composer, Loading)(OrderDashboardContainer);

@@ -8,10 +8,12 @@ import OrderActions from "./orderActions";
 import { OrderSearch as OrderSearchCollection } from "/lib/collections";
 import OrderSearch from "../components/orderSearch";
 
-class OrdersList extends Component {
+class OrderDashboard extends Component {
   static propTypes = {
+    className: PropTypes.string,
     clearFilter: PropTypes.func,
     displayMedia: PropTypes.func,
+    filter: PropTypes.string,
     handleClick: PropTypes.func,
     handleMenuClick: PropTypes.func,
     handleSelect: PropTypes.func,
@@ -115,6 +117,8 @@ class OrdersList extends Component {
         <OrderActions
           handleMenuClick={this.props.handleMenuClick}
           clearFilter={this.props.clearFilter}
+          filter={this.props.filter}
+          className={this.props.className}
         />
         {this.state.orders.length ?
           <div className="container-fluid-sm">
@@ -138,6 +142,7 @@ class OrdersList extends Component {
               <OrderTable
                 orders={this.state.orders}
                 query={this.state.query}
+                className={this.state.className}
                 selectedItems={this.props.selectedItems}
                 handleSelect={this.props.handleSelect}
                 handleClick={this.props.handleClick}
@@ -160,4 +165,4 @@ class OrdersList extends Component {
   }
 }
 
-export default OrdersList;
+export default OrderDashboard;
