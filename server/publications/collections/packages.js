@@ -97,7 +97,7 @@ Meteor.publish("Packages", function (shopId) {
     };
 
     if (!shopId) {
-      myShopId = Reaction.getShopId();
+      myShopId = Reaction.getPrimaryShopId();
     }
 
     // we should always have a shop

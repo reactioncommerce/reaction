@@ -4,12 +4,9 @@ import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { $ } from "meteor/jquery";
 import { getCardType } from "/client/modules/core/helpers/globals";
-import { Reaction } from "/client/api";
-import { Cart, SellerShops, Packages } from "/lib/collections";
-import { Stripe } from "../../lib/api";
+import { Router } from "/client/api";
+import { Cart } from "/lib/collections";
 import { StripePayment } from "../../lib/collections/schemas";
-
-import "./stripe.html";
 
 let submitting = false;
 
@@ -31,16 +28,42 @@ function hidePaymentAlert() {
 }
 
 function handleStripeSubmitError(error) {
-  // Match eror on card number. Not submitted to stripe
+  // Match error on card number. Not submitted to stripe
   if (error && error.reason && error.reason === "Match failed") {
     const message = "Your card number is invalid. Please check the number and try again";
     return paymentAlert(message);
   }
 
   // this is a server message with a client-sanitized message
-  if (error && error.details) {
-    return paymentAlert(error.details);
+  if (error && error.message) {
+    return paymentAlert(error.message);
   }
+}
+
+// Validation helpers
+function luhnValid(x) {
+  return [...x].reverse().reduce((sum, c, i) => {
+    let d = parseInt(c, 10);
+    if (i % 2 !== 0) { d *= 2; }
+    if (d > 9) { d -= 9; }
+    return sum + d;
+  }, 0) % 10 === 0;
+}
+
+function validCardNumber(x) {
+  return /^[0-9]{13,16}$/.test(x) && luhnValid(x);
+}
+
+function validExpireMonth(x) {
+  return /^[0-9]{1,2}$/.test(x);
+}
+
+function validExpireYear(x) {
+  return /^[0-9]{4}$/.test(x);
+}
+
+function validCVV(x) {
+  return /^[0-9]{3,4}$/.test(x);
 }
 
 //
@@ -58,8 +81,37 @@ Template.stripePaymentForm.helpers({
 AutoForm.addHooks("stripe-payment-form", {
   onSubmit(doc) {
     submitting = true;
-    const template = this.template;
     hidePaymentAlert();
+    const template = this.template;
+    const cart = Cart.findOne({ userId: Meteor.userId() });
+
+    // validate card data
+    // also validated on server
+    if (!validCardNumber(doc.cardNumber)) {
+      submitting = false;
+      const error = { message: "Your card number is incorrect" };
+      handleStripeSubmitError(error);
+      uiEnd(template, "Resubmit payment");
+      return false;
+    }
+
+    if (!validExpireMonth(doc.expireMonth) || !validExpireYear(doc.expireYear)) {
+      submitting = false;
+      const error = { message: "Your expiration date is incorrect" };
+      handleStripeSubmitError(error);
+      uiEnd(template, "Resubmit payment");
+      return false;
+    }
+
+    if (!validCVV(doc.cvv)) {
+      submitting = false;
+      const error = { message: "Your cvv is incorrect" };
+      handleStripeSubmitError(error);
+      uiEnd(template, "Resubmit payment");
+      return false;
+    }
+
+
     const cardData = {
       name: doc.payerName,
       number: doc.cardNumber,
@@ -68,66 +120,24 @@ AutoForm.addHooks("stripe-payment-form", {
       cvv2: doc.cvv,
       type: getCardType(doc.cardNumber)
     };
-    const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + doc.cardNumber.slice(-4);
-    Stripe.authorize(cardData, {
-      total: Cart.findOne().cartTotal(),
-      currency: SellerShops.findOne().currency
-      // Commenting this out because it causes tests to fail and isn't fully implemented.
-      // shopId: SellerShops.findOne()._id // TODO: Implement Marketplace Payments
-    }, function (error, transaction) {
-      submitting = false;
-      if (error) {
-        handleStripeSubmitError(error);
-        uiEnd(template, "Resubmit payment");
-      } else {
-        if (transaction.saved === true) {
-          const normalizedStatus = (function () {
-            switch (false) {
-              case !(!transaction.response.captured && !transaction.response.failure_code):
-                return "created";
-              case !(transaction.response.captured === true && !transaction.response.failure_code):
-                return "settled";
-              case !transaction.response.failure_code:
-                return "failed";
-              default:
-                return "failed";
-            }
-          })();
-          const normalizedMode = (function () {
-            switch (false) {
-              case !(!transaction.response.captured && !transaction.response.failure_code):
-                return "authorize";
-              case !transaction.response.captured:
-                return "capture";
-              default:
-                return "capture";
-            }
-          })();
-          Meteor.subscribe("Packages", Reaction.getShopId());
-          const packageData = Packages.findOne({
-            name: "reaction-stripe",
-            shopId: Reaction.getShopId()
-          });
 
-          submitting = false;
-          const paymentMethod = {
-            processor: "Stripe",
-            storedCard: storedCard,
-            method: "credit",
-            paymentPackageId: packageData._id,
-            paymentSettingsKey: packageData.registry[0].settingsKey,
-            transactionId: transaction.response.id,
-            amount: transaction.response.amount * 0.01,
-            status: normalizedStatus,
-            mode: normalizedMode,
-            createdAt: new Date(transaction.response.created),
-            transactions: []
-          };
-          paymentMethod.transactions.push(transaction.response);
-          Meteor.call("cart/submitPayment", paymentMethod);
-        } else {
-          handleStripeSubmitError(transaction.error);
+    // Use apply instead of call here to prevent the flash of "your cart is empty"
+    // that happens when we wait for the cart subscription to update before forwarding
+    Meteor.apply("stripe/payment/createCharges", ["authorize", cardData, cart._id], {
+      onResultReceived: (error, result) => {
+        submitting = false;
+        if (error) {
+          handleStripeSubmitError(error);
           uiEnd(template, "Resubmit payment");
+        } else {
+          if (result.success) {
+            Router.go("cart/completed", {}, {
+              _id: cart._id
+            });
+          } else {
+            handleStripeSubmitError(result.error);
+            uiEnd(template, "Resubmit payment");
+          }
         }
       }
     });
