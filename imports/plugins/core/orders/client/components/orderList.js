@@ -39,24 +39,26 @@ class OrdersList extends Component {
   render() {
     if (this.props.orders.length) {
       return (
-        <div className="container-fluid-sm">
-          <div className="order-toggle-buttons">
-            <button
-              className={`order-toggle-btn ${this.state.detailClassName}`}
-              onClick={this.handleDetailToggle}
-            >
-              <i className="fa fa-th-list" />
-            </button>
+        <div className="container-fluid-sm orders-table-container">
+          <div className="order-toggle-buttons-container">
+            <div className="order-toggle-buttons">
+              <button
+                className={`order-toggle-btn ${this.state.detailClassName}`}
+                onClick={this.handleDetailToggle}
+              >
+                <i className="fa fa-th-list" />
+              </button>
 
-            <button
-              className={`order-toggle-btn ${this.state.listClassName}`}
-              onClick={this.handleListToggle}
-            >
-              <i className="fa fa-list" />
-            </button>
+              <button
+                className={`order-toggle-btn ${this.state.listClassName}`}
+                onClick={this.handleListToggle}
+              >
+                <i className="fa fa-list" />
+              </button>
+            </div>
           </div>
 
-          <div>
+          <div className="order-details-list-container">
             <OrderTable
               orders={this.props.orders}
               selectedItems={this.props.selectedItems}
