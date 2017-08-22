@@ -147,6 +147,17 @@ export default function () {
           } else if (user.services[service].profile_picture) {
             additionals.profile.picture = user.services[service].profile_picture;
           }
+          
+          // Correctly map Instagram profile data to Meteor user / Accounts
+          if (user.services.instagram) {
+            user.username = user.services[service].username;
+            user.name = user.services[service].full_name;
+            additionals.name = user.services[service].full_name;
+            additionals.profile.picture = user.services[service].profile_picture;
+            additionals.profile.bio = user.services[service].bio;
+            additionals.profile.name = user.services[service].full_name;
+            additionals.profile.username = user.services[service].username;
+          }
         }
       }
       // clone before adding roles
