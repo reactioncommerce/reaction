@@ -38,20 +38,34 @@ class OrdersList extends Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount');
+    this.setupTracker();
+  }
 
+  componentWillReceiveProps(nextProps) {
+    this.setupTracker();
+    if (JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
+      this.setState({
+        orders: nextProps.orders,
+        query: nextProps.query
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.subscription.stop();
+  }
+
+  // Extracted Tracker logic for the search subscription, to allow calling in both
+  // componentDidMount and componentWillReceiveProps
+  setupTracker = () => {
     Tracker.autorun(() => {
-      console.log('start of autorun');
       this.dep.depend();
       this.subscription = Meteor.subscribe("SearchResults", "orders", this.state.searchQuery);
       let orderSearchResultsIds;
 
-      console.log({ "this.state.searchQuery": this.state.searchQuery });
       if (this.subscription.ready()) {
-        console.log({ "sub ready for": this.state.searchQuery });
         const orderSearchResults = OrderSearchCollection.find().fetch();
         orderSearchResultsIds = orderSearchResults.map(orderSearch => orderSearch._id);
-        console.log({ "orderSearchResults after sub ready": orderSearchResultsIds.length });
         // checking to ensure search was made and no results came back
         if (this.state.searchQuery && Array.isArray(orderSearchResultsIds)) {
           // pick and show only orders that are in search results (orderSearchResultsIds)
@@ -67,21 +81,6 @@ class OrdersList extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log("receiving next props");
-    if (JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
-      this.setState({
-        orders: nextProps.orders,
-        query: nextProps.query
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    console.log('componentWillUnmount');
-    this.subscription.stop();
-  }
-
   /**
    * handleSearchChange - handler called on search query change
    * @param  {String} value - search field current value
@@ -89,7 +88,6 @@ class OrdersList extends Component {
    */
   handleSearchChange = (value) => {
     this.setState({ searchQuery: value }, () => {
-      console.log('calling dep changed');
       this.dep.changed();
     });
   }
