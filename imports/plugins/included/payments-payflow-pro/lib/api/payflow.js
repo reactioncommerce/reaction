@@ -10,7 +10,7 @@ import { Reaction } from "/lib/api";
 export const PayFlow = {
   payflowAccountOptions: function () {
     const settings = Packages.findOne({
-      name: "reaction-flow-pro",
+      name: "reaction-payflow-pro",
       shopId: Reaction.getShopId(),
       enabled: true
     }).settings;
