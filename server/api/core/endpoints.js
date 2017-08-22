@@ -3,6 +3,8 @@
 import _ from "lodash";
 import Fiber from "fibers";
 import connect from "connect";
+import bodyParser from "body-parser";
+import query from "connect-query";
 import connectRoute from "connect-route";
 
 import { Meteor } from "meteor/meteor";
@@ -10,9 +12,9 @@ import { WebApp } from "meteor/webapp";
 
 const Endpoints = {};
 
-WebApp.connectHandlers.use(connect.urlencoded({ limit: "50mb" })); // Override default request size
-WebApp.connectHandlers.use(connect.json({ limit: "50mb" })); // Override default request size
-WebApp.connectHandlers.use(connect.query());
+WebApp.connectHandlers.use(bodyParser.urlencoded({ limit: "50mb", extended: true })); // Override default request size
+WebApp.connectHandlers.use(bodyParser.json({ limit: "50mb", extended: true })); // Override default request size
+WebApp.connectHandlers.use(query());
 
 // Handler for adding middleware before an endpoint (Endpoints.middleWare
 // is just for legacy reasons). Also serves as a namespace for middleware
@@ -94,8 +96,9 @@ Endpoints.add = function (method, path, handler) {
 
   connectRouter[method.toLowerCase()](path, function (req, res, next) {
     // Set headers on response
-    responseHeaders.forEach((value, key) => {
-      res.setHeader(key, value);
+    const headerKeys = Object.keys(responseHeaders);
+    headerKeys.forEach((key) => {
+      res.setHeader(key, responseHeaders[key]);
     });
 
     Fiber(function () {
@@ -129,8 +132,9 @@ Endpoints.sendResult = function (res, options = {}) {
   // We've already set global headers on response, but if they
   // pass in more here, we set those.
   if (options.headers) {
-    options.headers.forEach((value, key) => {
-      res.setHeader(key, value);
+    const headerKeys = Object.keys(options.headers);
+    headerKeys.forEach((key) => {
+      res.setHeader(key, options.headers[key]);
     });
   }
 
