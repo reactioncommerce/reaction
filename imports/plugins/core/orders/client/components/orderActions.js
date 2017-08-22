@@ -25,7 +25,7 @@ class OrderActions extends Component {
         }}
       >
         <i className="fa fa-filter" /> &nbsp;
-        <i className="fa fa-chevron-down" />
+        <i className="fa fa-angle-down" />
       </Button>
     );
   }

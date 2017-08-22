@@ -1,0 +1,12 @@
+<template name="stripeConnectMerchantSignup">
+  {{#if stripeConnectIsConnected}}
+    {{> stripeConnectAccountDetails}}
+  {{else}}
+    {{> stripeConnectSignupButton}}
+  {{/if}}
+</template>
+
+<template name="stripeConnectAccountDetails">
+  <i class="fa fa-check"></i> Your Stripe Account is Connected<br>
+  To check recent transactions, view your <a href="https://dashboard.stripe.com/test/dashboard" target="_blank">Stripe Account dashboard</a>.
+</template>
