@@ -114,8 +114,8 @@
         <div class="panel-heading panel-heading-flex">
           <div class="panel-title">
             <a
-              href="#collapsable-{{name}}"
-              aria-controls="collapsable-{{name}}"
+              href="#collapsable-{{template}}"
+              aria-controls="collapsable-{{template}}"
               role="button"
               data-toggle="collapse"
               data-parent="#shopSettingsAccordian">
@@ -123,11 +123,13 @@
               <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
             </a>
           </div>
+          {{#if showAppSwitch}}
           <div class="panel-controls">
             <input class="checkbox-switch" type="checkbox" name="enabled" data-id={{packageId}} data-key="{{settingsKey}}" {{checked enabled}}>
           </div>
+          {{/if}}
         </div>
-        <div id="collapsable-{{name}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapsable-{{name}}">
+        <div id="collapsable-{{template}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapsable-{{template}}">
           <div class="panel-body {{shown enabled}}">
             {{> Template.dynamic template=template data=.}}
           </div>
