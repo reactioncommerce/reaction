@@ -22,7 +22,6 @@ Template.childVariantForm.onCreated(function () {
   });
 });
 
-
 /**
  * childVariantForm onRendered
  */
@@ -44,7 +43,6 @@ Template.childVariantForm.onRendered(function () {
 /**
  * childVariantForm helpers
  */
-
 Template.childVariantForm.helpers({
   Icon() {
     return Components.Icon;
@@ -132,7 +130,6 @@ Template.childVariantForm.helpers({
 /**
  * childVariantForm events
  */
-
 Template.childVariantForm.events({
   "click .child-variant-form :input, click li": function (event, template) {
     const variantId = template.data._id;
@@ -159,14 +156,13 @@ Template.childVariantForm.events({
     template.state.set("validationStatus", validationStatus);
     template.state.set("variant", updated);
 
-    if (validationStatus.isValid === true) {
-      Meteor.call("products/updateProductField", variant._id, field, value,
-        error => {
-          if (error) {
-            Alerts.toast(error.message, "error");
-          }
-        });
-    }
+    Meteor.call("products/updateProductField", variant._id, field, value,
+      error => {
+        if (error) {
+          Alerts.toast(error.message, "error");
+        }
+      }
+    );
 
     return ReactionProduct.setCurrentVariant(variant._id);
   },
@@ -178,7 +174,6 @@ Template.childVariantForm.events({
       variantId: variantId
     });
   },
-
   "click .js-remove-child-variant": function (event, instance) {
     event.stopPropagation();
     event.preventDefault();
@@ -200,7 +195,6 @@ Template.childVariantForm.events({
       }
     });
   },
-
   "click .js-restore-child-variant": function (event, instance) {
     event.stopPropagation();
     event.preventDefault();
