@@ -153,6 +153,15 @@ Template.shopSettings.helpers({
       _id: Reaction.getShopId()
     }).addressBook;
     return address[0];
+  },
+  showAppSwitch() {
+    if (Reaction.getMarketplaceSettings()) {
+      // if marketplace is enabled, only the primary shop can switch apps on and off.
+      return Reaction.getShopId() === Reaction.getPrimaryShopId();
+    }
+
+    // If marketplace is disabled, every shop can switch apps
+    return true;
   }
 });
 
