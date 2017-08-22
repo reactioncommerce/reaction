@@ -1138,11 +1138,11 @@ Meteor.methods({
       paymentMethods.forEach((paymentMethod) => {
         const shopId = paymentMethod.shopId;
         const invoice = {
-          shipping: cartShipping,
-          subtotal: cartSubTotalByShop[shopId],
-          taxes: cartTaxesByShop[shopId],
-          discounts: cartDiscounts,
-          total: cartTotalByShop[shopId]
+          shipping: parseFloat(cartShipping),
+          subtotal: parseFloat(cartSubTotalByShop[shopId]),
+          taxes: parseFloat(cartTaxesByShop[shopId]),
+          discounts: parseFloat(cartDiscounts),
+          total: parseFloat(cartTotalByShop[shopId])
         };
 
         payments.push({
