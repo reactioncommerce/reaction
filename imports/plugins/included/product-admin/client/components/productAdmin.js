@@ -154,7 +154,16 @@ class ProductAdmin extends Component {
 
   handleMetaChange = (event, metafield, index) => {
     if (this.props.onMetaChange) {
-      this.props.onMetaChange(metafield, index);
+      if (index >= 0) {
+        const { product } = this.state;
+        product.metafields[index] = metafield;
+
+        this.setState({
+          product
+        });
+      } else {
+        this.props.onMetaChange(metafield);
+      }
     }
   }
 

@@ -538,7 +538,6 @@ export function inviteShopMember(options) {
   check(email, String);
   check(name, String);
   check(groupId, String);
-
   this.unblock();
 
   const shop = Shops.findOne(shopId);
@@ -555,6 +554,12 @@ export function inviteShopMember(options) {
   }
 
   const group = Groups.findOne({ _id: groupId }) || {};
+
+  // check to ensure that invitee has roles required to perform the invitation
+  if (!Reaction.canInviteToGroup({ group, user: Meteor.user() })) {
+    throw new Meteor.Error(403, "cannot invite to group");
+  }
+
   if (group.slug === "owner") {
     throw new Meteor.Error(400, "cannot directly invite owner");
   }

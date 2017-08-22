@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { pure } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
 const CardToolbar = ({ children }) => (
@@ -14,6 +13,6 @@ CardToolbar.propTypes = {
   children: PropTypes.node
 };
 
-registerComponent("CardToolbar", CardToolbar, pure);
+registerComponent("CardToolbar", CardToolbar);
 
 export default CardToolbar;
