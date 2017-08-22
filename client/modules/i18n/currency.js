@@ -13,7 +13,7 @@ import { currencyDep } from "./main";
  */
 
 function findCurrency(defaultCurrency, useDefaultShopCurrency) {
-  const shop = Shops.findOne(Reaction.getShopId(), {
+  const shop = Shops.findOne(Reaction.getPrimaryShopId(), {
     fields: {
       currencies: 1,
       currency: 1
