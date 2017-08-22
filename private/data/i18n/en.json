@@ -186,6 +186,7 @@
         "details": "Details",
         "detailsName": "Detail name",
         "detailsInfo": "Detail information",
+        "dropFiles": "Drop file to upload",
         "generate": "Generate",
         "generateBarcodes": "Generate Barcodes",
         "hideBarcodes": "Hide Barcodes",
@@ -272,10 +273,11 @@
         "makeVisible": "Make Visible",
         "hideProduct": "Hide Product",
         "productIsVisible": "Product is visible",
-        "productIsNotVisible": "Product is not visible"
+        "productIsNotVisible": "Product is not visible" 
       },
       "productVariant": {
-        "addVariantOptions": "Add options to enable 'Add to Cart' butto",
+        "addVariantOptions": "Add options to enable 'Add to Cart' button",
+        "details": "Details"
         "inventoryQuantity": "Quantity",
         "title": "Label",
         "price": "Price",
