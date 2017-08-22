@@ -130,7 +130,7 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets, maxRes
   }));
   check(searchTerm, Match.Optional(String));
   check(facets, Match.OneOf(Array, undefined));
-  Logger.info(`Returning search results on ${collection}. SearchTerm: |${searchTerm}|. Facets: |${facets}|.`);
+  Logger.debug(`Returning search results on ${collection}. SearchTerm: |${searchTerm}|. Facets: |${facets}|.`);
   if (!searchTerm) {
     return this.ready();
   }
