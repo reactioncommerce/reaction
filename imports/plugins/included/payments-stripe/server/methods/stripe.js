@@ -1,44 +1,22 @@
 import accounting from "accounting-js";
-/* eslint camelcase: 0 */
-// meteor modules
+import stripeNpm from "stripe";
+
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
-// reaction modules
+import { check } from "meteor/check";
+import { Random } from "meteor/random";
+
 import { Reaction, Logger } from "/server/api";
 import { StripeApi } from "./stripeapi";
 
-function luhnValid(x) {
-  return [...x].reverse().reduce((sum, c, i) => {
-    let d = parseInt(c, 10);
-    if (i % 2 !== 0) { d *= 2; }
-    if (d > 9) { d -= 9; }
-    return sum + d;
-  }, 0) % 10 === 0;
-}
-
-const ValidCardNumber = Match.Where(function (x) {
-  return /^[0-9]{13,16}$/.test(x) && luhnValid(x);
-});
-
-const ValidExpireMonth = Match.Where(function (x) {
-  return /^[0-9]{1,2}$/.test(x);
-});
-
-const ValidExpireYear = Match.Where(function (x) {
-  return /^[0-9]{4}$/.test(x);
-});
-
-const ValidCVV = Match.Where(function (x) {
-  return /^[0-9]{3,4}$/.test(x);
-});
+import { Cart, Shops, Accounts, Packages } from "/lib/collections";
 
 function parseCardData(data) {
   return {
     number: data.number,
     name: data.name,
     cvc: data.cvv2,
-    exp_month: data.expire_month,
-    exp_year: data.expire_year
+    exp_month: data.expire_month, // eslint-disable-line camelcase
+    exp_year: data.expire_year // eslint-disable-line camelcase
   };
 }
 
@@ -83,95 +61,287 @@ function stripeCaptureCharge(paymentMethod) {
   return result;
 }
 
+/**
+ * normalizes the status of a transaction
+ * @method normalizeStatus
+ * @param  {object} transaction - The transaction that we need to normalize
+ * @return {string} normalized status string - either failed, settled, or created
+ */
+function normalizeStatus(transaction) {
+  if (!transaction) {
+    throw new Meteor.Error("normalizeStatus requires a transaction");
+  }
 
-Meteor.methods({
-  "stripeSubmit": function (transactionType, cardData, paymentData) {
+  // if this transaction failed, mode is "failed"
+  if (transaction.failure_code) {
+    return "failed";
+  }
+
+  // if this transaction was captured, status is "settled"
+  if (transaction.captured) { // Transaction was authorized but not captured
+    return "settled";
+  }
+
+  // Otherwise status is "created"
+  return "created";
+}
+
+/**
+ * normalizes the mode of a transaction
+ * @method normalizeMode
+ * @param  {object} transaction The transaction that we need to normalize
+ * @return {string} normalized status string - either failed, capture, or authorize
+ */
+function normalizeMode(transaction) {
+  if (!transaction) {
+    throw new Meteor.Error("normalizeMode requires a transaction");
+  }
+
+  // if this transaction failed, mode is "failed"
+  if (transaction.failure_code) {
+    return "failed";
+  }
+
+  // If this transaction was captured, mode is "capture"
+  if (transaction.captured) {
+    return "capture";
+  }
+
+  // Anything else, mode is "authorize"
+  return "authorize";
+}
+
+
+function buildPaymentMethods(options) {
+  const { cardData, cartItemsByShop, transactionsByShopId } = options;
+  if (!transactionsByShopId) {
+    throw new Meteor.Error("Creating a payment method log requries transaction data");
+  }
+
+  const shopIds = Object.keys(transactionsByShopId);
+  const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + cardData.number.slice(-4);
+  const packageData = Packages.findOne({
+    name: "reaction-stripe",
+    shopId: Reaction.getPrimaryShopId()
+  });
+
+  const paymentMethods = [];
+
+
+  shopIds.forEach((shopId) => {
+    if (transactionsByShopId[shopId]) {
+      const cartItems = cartItemsByShop[shopId].map((item) => {
+        return {
+          _id: item._id,
+          productId: item.productId,
+          variantId: item.variants._id,
+          shopId: shopId,
+          quantity: item.quantity
+        };
+      });
+
+      const paymentMethod = {
+        processor: "Stripe",
+        storedCard: storedCard,
+        method: "credit",
+        paymentPackageId: packageData._id,
+        // TODO: REVIEW WITH AARON - why is paymentSettings key important
+        // and why is it just defined on the client?
+        paymentSettingsKey: packageData.name.split("/").splice(-1)[0],
+        transactionId: transactionsByShopId[shopId].id,
+        amount: transactionsByShopId[shopId].amount * 0.01,
+        status: normalizeStatus(transactionsByShopId[shopId]),
+        mode: normalizeMode(transactionsByShopId[shopId]),
+        createdAt: new Date(transactionsByShopId[shopId].created),
+        transactions: [],
+        items: cartItems,
+        shopId: shopId
+      };
+      paymentMethod.transactions.push(transactionsByShopId[shopId]);
+      paymentMethods.push(paymentMethod);
+    }
+  });
+
+  return paymentMethods;
+}
+
+export const methods = {
+  "stripe/payment/createCharges": async function (transactionType, cardData, cartId) {
     check(transactionType, String);
     check(cardData, {
       name: String,
-      number: ValidCardNumber,
-      expire_month: ValidExpireMonth,
-      expire_year: ValidExpireYear,
-      cvv2: ValidCVV,
+      number: String,
+      expire_month: String, // eslint-disable-line camelcase
+      expire_year: String, // eslint-disable-line camelcase
+      cvv2: String,
       type: String
     });
-    check(paymentData, {
-      total: String,
-      currency: String
-      // Commenting this out because it causes tests to fail and isn't fully implemented.
-      // shopId: String // TODO: Implement Marketplace Payment - perhaps including shopId
+    check(cartId, String);
+
+    const primaryShopId = Reaction.getPrimaryShopId();
+
+    const stripePkg = Reaction.getPackageSettingsWithOptions({
+      shopId: primaryShopId,
+      name: "reaction-stripe"
     });
 
-    const chargeObj = {
-      amount: "",
-      currency: "",
-      card: {},
-      capture: true
-    };
+    const card = parseCardData(cardData);
 
-    // check if this is a seller shop for destination and transaction fee logic
-    // TODO: Add transaction fee to Stripe chargeObj when stripeConnect is in use.
-
-    // Where is sellerShops coming from here?
-    // const sellerShop = sellerShops.findOne(paymentData.shopId);
-    //
-    // if (sellerShop && sellerShop.stripeConnectSettings) {
-    //   const chargeObj = {
-    //     chargeData: {
-    //       amount: "",
-    //       currency: "",
-    //       transactionFee: 0,
-    //       card: {},
-    //       capture: true
-    //     },
-    //     stripe_account: sellerShop.stripeConnectSettings.stripe_user_id
-    //   };
-    // } else {
-    //   const chargeObj = {
-    //     amount: "",
-    //     currency: "",
-    //     card: {},
-    //     capture: true
-    //   };
-    // }
-
-    if (transactionType === "authorize") {
-      chargeObj.capture = false;
+    if (!stripePkg || !stripePkg.settings || !stripePkg.settings.api_key) {
+      // Fail if we can't find a Stripe API key
+      throw new Meteor.Error("Attempted to create multiple stripe charges, but stripe was not configured properly.");
     }
-    chargeObj.card = parseCardData(cardData);
-    chargeObj.amount = formatForStripe(paymentData.total);
-    chargeObj.currency = paymentData.currency;
 
-    // TODO: Check for a transaction fee and apply
-    // const stripeConnectSettings = Reaction.getPackageSettings("reaction-stripe-connect").settings;
-    // if (sellerShop.stripeConnectSettings && stripeConnectSettings.transactionFee.enabled) {
-    //   chargeObj.transactionFee = chargeObj.amount * stripeConnectSettings.transactionFee.percentage;
-    // }
+    const capture = transactionType === "capture";
 
-    let result;
-    let chargeResult;
+    // Must have an email
+    const cart = Cart.findOne({ _id: cartId });
+    const customerAccount = Accounts.findOne({ _id: cart.userId });
+    let customerEmail;
+
+    if (!customerAccount || !Array.isArray(customerAccount.emails)) {
+      // TODO: Is it okay to create random email here if anonymous?
+      Logger.Error("cart email missing!");
+      throw new Meteor.Error("Email is required for marketplace checkouts.");
+    }
+
+    const defaultEmail = customerAccount.emails.find((email) => email.provides === "default");
+    if (defaultEmail) {
+      customerEmail = defaultEmail.address;
+    } else {
+      throw new Meteor.Error("Customer does not have default email");
+    }
+
+    // Initialize stripe api lib
+    const stripeApiKey = stripePkg.settings.api_key;
+    const stripe = stripeNpm(stripeApiKey);
+
+    // get array of shopIds that exist in this cart
+    const shopIds = cart.items.reduce((uniqueShopIds, item) => {
+      if (uniqueShopIds.indexOf(item.shopId) === -1) {
+        uniqueShopIds.push(item.shopId);
+      }
+      return uniqueShopIds;
+    }, []);
+
+    const transactionsByShopId = {};
+
+    // TODO: If there is only one transactionsByShopId and the shopId is primaryShopId -
+    // Create a standard charge and bypass creating a customer for this charge
+    const primaryShop = Shops.findOne({ _id: primaryShopId });
+    const currency = primaryShop.currency;
 
     try {
-      chargeResult = StripeApi.methods.createCharge.call({ chargeObj });
-      if (chargeResult && chargeResult.status && chargeResult.status === "succeeded") {
-        result = {
-          saved: true,
-          response: chargeResult
+      // Creates a customer object, adds a source via the card data
+      // and waits for the promise to resolve
+      const customer = Promise.await(stripe.customers.create({
+        email: customerEmail
+      }).then(function (cust) {
+        const customerCard = stripe.customers.createSource(cust.id, { source: { ...card, object: "card" } });
+        return customerCard;
+      }));
+
+      // Get cart totals for each Shop
+      const cartTotals = cart.cartTotalByShop();
+
+      // Loop through all shopIds represented in cart
+      shopIds.forEach((shopId) => {
+        // TODO: If shopId is primaryShopId - create a non-connect charge with the
+        // stripe customer object
+
+        const isPrimaryShop = shopId === primaryShopId;
+
+        let merchantStripePkg;
+        // Initialize options - this is where idempotency_key
+        // and, if using connect, stripe_account go
+        const stripeOptions = {};
+        const stripeCharge = {
+          amount: formatForStripe(cartTotals[shopId]),
+          capture: capture,
+          currency: currency
+          // TODO: add product metadata to stripe charge
         };
-      } else {
-        Logger.error("Stripe Call succeeded but charge failed");
-        result = {
-          saved: false,
-          error: chargeResult.error
+
+        if (isPrimaryShop) {
+          // If this is the primary shop, we can make a direct charge to the
+          // customer object we just created.
+          stripeCharge.customer = customer.customer;
+        } else {
+          // If this is a merchant shop, we need to tokenize the customer
+          // and charge the token with the merchant id
+          merchantStripePkg = Reaction.getPackageSettingsWithOptions({
+            shopId: shopId,
+            name: "reaction-stripe"
+          });
+
+          // If this merchant doesn't have stripe setup, fail.
+          // We should _never_ get to this point, because
+          // this will not roll back the entire transaction
+          if (!merchantStripePkg ||
+            !merchantStripePkg.settings ||
+            !merchantStripePkg.settings.connectAuth ||
+            !merchantStripePkg.settings.connectAuth.stripe_user_id) {
+            throw new Meteor.Error(`Error processing payment for merchant with shopId ${shopId}`);
+          }
+
+          // get stripe account for this shop
+          const stripeUserId = merchantStripePkg.settings.connectAuth.stripe_user_id;
+          stripeOptions.stripe_account = stripeUserId; // eslint-disable-line camelcase
+
+          // Create token from our customer object to use with merchant shop
+          const token = Promise.await(stripe.tokens.create({
+            customer: customer.customer
+          }, stripeOptions));
+
+          // TODO: Add description to charge in Stripe
+          stripeCharge.source = token.id;
+
+          // Demo 20% application fee
+          stripeCharge.application_fee = formatForStripe(cartTotals[shopId] * 0.2); // eslint-disable-line camelcase
+        }
+
+        // We should only do this once per shop per cart
+        stripeOptions.idempotency_key = `${shopId}${cart._id}${Random.id()}`; // eslint-disable-line camelcase
+
+        // Create a charge with the options set above
+        const charge = Promise.await(stripe.charges.create(stripeCharge, stripeOptions));
+
+        transactionsByShopId[shopId] = charge;
+      });
+
+
+      // get cartItemsByShop to build paymentMethods
+      const cartItemsByShop = cart.cartItemsByShop();
+
+      // Build paymentMethods from transactions, card data and cart items
+      const paymentMethods = buildPaymentMethods({ cardData, cartItemsByShop, transactionsByShopId });
+
+      // If successful, call cart/submitPayment and return success back to client.
+      Meteor.call("cart/submitPayment", paymentMethods);
+      return { success: true, transactions: transactionsByShopId };
+    } catch (error) {
+      // If unsuccessful
+      // return failure back to client if error is a standard stripe card error
+      if (error.rawType === "card_error") {
+        return {
+          success: false,
+          error: {
+            message: error.message,
+            code: error.code,
+            type: error.type,
+            rawType: error.rawType,
+            detail: error.detail
+          }
         };
       }
-      return result;
-    } catch (e) {
-      Logger.error(e);
-      throw new Meteor.Error("error", e.message);
+      // If we get an unexpected error, log and return a censored error message
+      Logger.error("Received unexpected error type: " + error.rawType);
+      Logger.error(error);
+      throw new Meteor.Error("Error creating multiple stripe charges", "An unexpected error occurred");
     }
   },
 
+  // TODO: Update this method to support connect captures
   /**
    * Capture a Stripe charge
    * @see https://stripe.com/docs/api#capture_charge
@@ -196,6 +366,7 @@ Meteor.methods({
     return stripeCaptureCharge(paymentMethod);
   },
 
+  // TODO: Update this method to support connect
   /**
    * Issue a refund against a previously captured transaction
    * @see https://stripe.com/docs/api#refunds
@@ -242,6 +413,7 @@ Meteor.methods({
     return result;
   },
 
+  // Update this method to support connect
   /**
    * List refunds
    * @param  {Object} paymentMethod object
@@ -268,4 +440,6 @@ Meteor.methods({
     }
     return result;
   }
-});
+};
+
+Meteor.methods(methods);

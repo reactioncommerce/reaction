@@ -7,6 +7,9 @@ import { Cart } from "/lib/collections";
 // Client Cart Methods
 // Stubs with matching server methods.
 Meteor.methods({
+  // Not used for stripe connect integration
+  // Under consideration for deprecation and migrating other payment Packages
+  // to payments-stripe style methods
   "cart/submitPayment": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     const checkoutCart = Cart.findOne({
