@@ -1,0 +1,10 @@
+<template name="marketplaceMerchantSettings">
+  <div class="marketplaceMerchantSettings">
+  {{#each reactionApps provides='marketplaceMerchantSettings'}}
+    <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
+    <div class="{{shown enabled}}">
+      {{> Template.dynamic template=template data=.}}
+    </div>
+  {{/each}}
+  </div>
+</template>

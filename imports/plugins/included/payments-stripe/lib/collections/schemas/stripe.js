@@ -7,6 +7,30 @@ import { PackageConfig } from "/lib/collections/schemas/registry";
  *  see: https://stripe.com/docs/api
  */
 
+const StripeConnectAuthorizationCredentials = new SimpleSchema({
+  token_type: { // eslint-disable-line camelcase
+    type: String
+  },
+  stripe_publishable_key: { // eslint-disable-line camelcase
+    type: String
+  },
+  scope: {
+    type: String
+  },
+  livemode: {
+    type: Boolean
+  },
+  stripe_user_id: { // eslint-disable-line camelcase
+    type: String
+  },
+  refresh_token: { // eslint-disable-line camelcase
+    type: String
+  },
+  access_token: { // eslint-disable-line camelcase
+    type: String
+  }
+});
+
 export const StripePackageConfig = new SimpleSchema([
   PackageConfig, {
     "settings.mode": {
@@ -15,7 +39,12 @@ export const StripePackageConfig = new SimpleSchema([
     },
     "settings.api_key": {
       type: String,
-      label: "API Client ID"
+      label: "API Secret Key"
+    },
+    "settings.connectAuth": {
+      type: StripeConnectAuthorizationCredentials,
+      label: "Connect Authorization Credentials",
+      optional: true
     },
     "settings.reaction-stripe.support": {
       type: Array,
@@ -24,6 +53,13 @@ export const StripePackageConfig = new SimpleSchema([
     "settings.reaction-stripe.support.$": {
       type: String,
       allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+    },
+
+    // Public Settings
+    "settings.public.client_id": {
+      type: String,
+      label: "Public Client ID",
+      optional: true
     }
   }
 ]);
