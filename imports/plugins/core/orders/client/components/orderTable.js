@@ -48,18 +48,22 @@ class OrderTable extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // If there is exactly one order as a match, the matching order should be opened in the action view panel
-    if (nextProps.orders.length === 1) {
-      const order = nextProps.orders.find(singleOrder => singleOrder);
-      return Reaction.setActionViewDetail({
-        label: "Order Details",
-        i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: { order: order },
-        props: { size: "large" },
-        template: "coreOrderWorkflow"
-      });
+    // opening action view causes re-render here. This is to check to ensure following lines do not run if nothing changed
+    if (JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
+      // If there is just one order as a match, the matching order should be opened in the action view panel
+      if (nextProps.orders.length === 1) {
+        const order = nextProps.orders.find(singleOrder => singleOrder);
+        Reaction.setActionViewDetail({
+          label: "Order Details",
+          i18nKeyLabel: "orderWorkflow.orderDetails",
+          data: { order: order },
+          props: { size: "large" },
+          template: "coreOrderWorkflow"
+        });
+      } else {
+        Reaction.hideActionViewDetail();
+      }
     }
-    Reaction.hideActionViewDetail();
   }
 
   /**
