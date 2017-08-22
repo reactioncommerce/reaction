@@ -875,15 +875,16 @@
     border-width: 10px;
   }
 
-  .active {
+  .order-menu-item-dropdown {
     a {
       margin-bottom: 5px;
       margin-top: 5px;
-      color: @rui-default-text;
       text-decoration: none;
       outline: none;
       background-color: transparent;
-      font-size: 15px;
+      font-size: 16px;
+      line-height: 1.9;
+      color: @rui-default-text;
     }
 
     a:hover {
@@ -918,22 +919,6 @@
     align-items: center;
   }
 
-  .order-filter-status-icon {
-    padding-left: 15px;
-
-    &.status-active {
-      color: @rui-brand
-    }
-  }
-
-  .order-filter-status-icon:focus {
-    outline: none;
-  }
-
-  .order-filter-icon {
-    padding-left: 15px;
-  }
-
   .order-filter-name {
     font-size: 16px;
     flex: 0 1 auto;
@@ -942,16 +927,28 @@
     transform: translateX(-50%);
   }
 
-  .order-filter-button {
+  .order-filter-icons {
     flex: 0 1 auto;
     margin-left: auto;
   }
 
-  .order-filter-button:focus {
+  .order-filter-button {
+    padding: 0;
+
+    &.active {
+      color: @rui-brand
+    }
+  }
+
+  .order-filter-dropdown-button {
+    padding-left: 0
+  }
+
+  .order-filter-dropdown-button:focus {
     outline: none;
   }
 
-  order-menu-item-dropdown {
-    background-color: transparent;
+  .order-filter-button:focus {
+    outline: none;
   }
 }

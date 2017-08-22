@@ -6,8 +6,10 @@ import OrderActions from "./orderActions";
 
 class OrdersList extends Component {
   static propTypes = {
+    className: PropTypes.string,
     clearFilter: PropTypes.func,
     displayMedia: PropTypes.func,
+    filter: PropTypes.string,
     handleClick: PropTypes.func,
     handleMenuClick: PropTypes.func,
     handleSelect: PropTypes.func,
@@ -27,12 +29,10 @@ class OrdersList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps !== this.props) {
-      this.setState({
-        orders: nextProps.orders,
-        query: nextProps.query
-      });
-    }
+    this.setState({
+      orders: nextProps.orders,
+      query: nextProps.query
+    });
   }
 
   handleListToggle = () => {
@@ -57,6 +57,8 @@ class OrdersList extends Component {
         <OrderActions
           handleMenuClick={this.props.handleMenuClick}
           clearFilter={this.props.clearFilter}
+          filter={this.props.filter}
+          className={this.props.className}
         />
         {this.state.orders.length ?
           <div className="container-fluid-sm">
@@ -80,6 +82,7 @@ class OrdersList extends Component {
               <OrderTable
                 orders={this.state.orders}
                 query={this.state.query}
+                className={this.state.className}
                 selectedItems={this.props.selectedItems}
                 handleSelect={this.props.handleSelect}
                 handleClick={this.props.handleClick}
