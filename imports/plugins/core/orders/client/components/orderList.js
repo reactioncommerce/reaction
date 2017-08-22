@@ -2,14 +2,18 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Icon, Translation } from "@reactioncommerce/reaction-ui";
 import OrderTable from "./orderTable";
+import OrderActions from "./orderActions";
 
 class OrdersList extends Component {
   static propTypes = {
+    clearFilter: PropTypes.func,
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
+    handleMenuClick: PropTypes.func,
     handleSelect: PropTypes.func,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
+    query: PropTypes.object,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array
   }
@@ -17,7 +21,18 @@ class OrdersList extends Component {
   state = {
     detailClassName: "",
     listClassName: "order-icon-toggle",
-    openList: true
+    openList: true,
+    orders: this.props.orders,
+    query: this.props.query
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps !== this.props) {
+      this.setState({
+        orders: nextProps.orders,
+        query: nextProps.query
+      });
+    }
   }
 
   handleListToggle = () => {
@@ -37,47 +52,51 @@ class OrdersList extends Component {
   }
 
   render() {
-    if (this.props.orders.length) {
-      return (
-        <div className="container-fluid-sm">
-          <div className="order-toggle-buttons">
-            <button
-              className={`order-toggle-btn ${this.state.detailClassName}`}
-              onClick={this.handleDetailToggle}
-            >
-              <i className="fa fa-th-list" />
-            </button>
-
-            <button
-              className={`order-toggle-btn ${this.state.listClassName}`}
-              onClick={this.handleListToggle}
-            >
-              <i className="fa fa-list" />
-            </button>
-          </div>
-
-          <div>
-            <OrderTable
-              orders={this.props.orders}
-              selectedItems={this.props.selectedItems}
-              handleSelect={this.props.handleSelect}
-              handleClick={this.props.handleClick}
-              multipleSelect={this.props.multipleSelect}
-              selectAllOrders={this.props.selectAllOrders}
-              displayMedia={this.props.displayMedia}
-              isOpen={this.state.openList}
-            />
-          </div>
-        </div>
-      );
-    }
-
     return (
-      <div className="container-fluid-sm">
-        <div className="empty-view-message">
-          <Icon icon="fa fa-sun-o" />
-          <Translation defaultValue={"No orders found"} i18nKey={"order.ordersNotFound"} />
-        </div>
+      <div>
+        <OrderActions
+          handleMenuClick={this.props.handleMenuClick}
+          clearFilter={this.props.clearFilter}
+        />
+        {this.state.orders.length ?
+          <div className="container-fluid-sm">
+            <div className="order-toggle-buttons">
+              <button
+                className={`order-toggle-btn ${this.state.detailClassName}`}
+                onClick={this.handleDetailToggle}
+              >
+                <i className="fa fa-th-list" />
+              </button>
+
+              <button
+                className={`order-toggle-btn ${this.state.listClassName}`}
+                onClick={this.handleListToggle}
+              >
+                <i className="fa fa-list" />
+              </button>
+            </div>
+
+            <div>
+              <OrderTable
+                orders={this.state.orders}
+                query={this.state.query}
+                selectedItems={this.props.selectedItems}
+                handleSelect={this.props.handleSelect}
+                handleClick={this.props.handleClick}
+                multipleSelect={this.props.multipleSelect}
+                selectAllOrders={this.props.selectAllOrders}
+                displayMedia={this.props.displayMedia}
+                isOpen={this.state.openList}
+              />
+            </div>
+          </div> :
+          <div className="container-fluid-sm">
+            <div className="empty-view-message">
+              <Icon icon="fa fa-sun-o" />
+              <Translation defaultValue={"No orders found"} i18nKey={"order.ordersNotFound"} />
+            </div>
+          </div>
+        }
       </div>
     );
   }

@@ -42,6 +42,7 @@ class OrderTable extends Component {
     isOpen: PropTypes.bool,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
+    query: PropTypes.object,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array
   }
@@ -368,6 +369,7 @@ class OrderTable extends Component {
           collection={Orders}
           data={this.props.orders}
           matchingResultsCount="order-count"
+          query={this.props.query}
           columnMetadata={customColumnMetadata}
           externalLoadingComponent={Loading}
           filterType="none"

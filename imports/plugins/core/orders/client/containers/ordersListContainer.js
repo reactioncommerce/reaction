@@ -2,24 +2,75 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { Media } from "/lib/collections";
+import { Media, Orders } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrdersList from "../components/orderList.js";
-import {
-  PACKAGE_NAME,
-  ORDER_LIST_FILTERS_PREFERENCE_NAME,
-  ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME
-} from "../../lib/constants";
 
+const OrderHelper =  {
+  makeQuery(filter) {
+    let query = {};
+
+    switch (filter) {
+      // New orders
+      case "created":
+        query = {
+          "workflow.status": "new"
+        };
+        break;
+
+      // Orders that have been approved
+      case "approved":
+        query = {
+          "workflow.status": "coreOrderWorkflow/processing",
+          "billing.paymentMethod.status": "approved"
+        };
+        break;
+
+      // Orders that have been captured
+      case "captured":
+        query = {
+          "billing.paymentMethod.status": "completed",
+          "shipping.shipped": false
+        };
+        break;
+
+      // Orders that are being processed
+      case "processing":
+        query = {
+          "workflow.status": "coreOrderWorkflow/processing"
+        };
+        break;
+
+      // Orders that are complete, including all items with complete status
+      case "completed":
+        query = {
+          "workflow.status": {
+            $in: ["coreOrderWorkflow/completed", "coreOrderWorkflow/canceled"]
+          },
+          "items.workflow.status": {
+            $in: ["coreOrderItemWorkflow/completed", "coreOrderItemWorkflow/canceled"]
+          }
+        };
+        break;
+
+      case "canceled":
+        query = {
+          "workflow.status": "coreOrderWorkflow/canceled"
+        };
+        break;
+
+      default:
+    }
+
+    return query;
+  }
+};
 
 class OrdersListContainer extends Component {
   static propTypes = {
-    handleShowMoreClick: PropTypes.func,
-    hasMoreOrders: PropTypes.func,
-    invoice: PropTypes.object,
-    orders: PropTypes.array,
-    uniqueItems: PropTypes.array
+    handleMenuClick: PropTypes.func,
+    orders: PropTypes.array
   }
 
   constructor(props) {
@@ -28,20 +79,25 @@ class OrdersListContainer extends Component {
     this.state = {
       selectedItems: [],
       orders: props.orders,
-      hasMoreOrders: props.hasMoreOrders(),
-      multipleSelect: false
+      multipleSelect: false,
+      ready: false,
+      query: {}
     };
-
-    this.handleClick = this.handleClick.bind(this);
-    this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
-    this.selectAllOrders = this.selectAllOrders.bind(this);
   }
 
-  componentWillReceiveProps = (nextProps) => {
+  handleMenuClick = (event, value) => {
+    const query = OrderHelper.makeQuery(value);
+
     this.setState({
-      orders: nextProps.orders,
-      hasMoreOrders: nextProps.hasMoreOrders()
+      query
+    });
+  }
+
+  clearFilter = () => {
+    const query = OrderHelper.makeQuery("");
+
+    this.setState({
+      query
     });
   }
 
@@ -105,10 +161,7 @@ class OrdersListContainer extends Component {
 
     if (startWorkflow === true) {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
-      Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
     }
-
-    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
   }
 
   /**
@@ -141,29 +194,32 @@ class OrdersListContainer extends Component {
   }
 
   render() {
-    const { handleShowMoreClick } = this.props;
-
     return (
       <OrdersList
         handleSelect={this.handleSelect}
-        handleShowMoreClick={handleShowMoreClick}
         orders={this.state.orders}
+        query={this.state.query}
+        clearFilter={this.clearFilter}
         handleClick={this.handleClick}
         displayMedia={this.handleDisplayMedia}
         selectedItems={this.state.selectedItems}
         selectAllOrders={this.selectAllOrders}
         multipleSelect={this.state.multipleSelect}
+        handleMenuClick={this.handleMenuClick}
       />
     );
   }
 }
 
 const composer = (props, onData) => {
-  const subscription = Meteor.subscribe("Media");
-  if (subscription.ready()) {
+  const mediaSubscription = Meteor.subscribe("Media");
+  const ordersSubscription = Meteor.subscribe("CustomPaginatedOrders");
+
+  if (mediaSubscription.ready() && ordersSubscription.ready()) {
+    const orders = Orders.find().fetch();
+
     onData(null, {
-      uniqueItems: props.items,
-      invoice: props.invoice
+      orders
     });
   }
 };
