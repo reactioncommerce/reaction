@@ -56,7 +56,7 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
       { shopId: shopId },
       { $or: [
         { _id: {
-          $regex: searchTerm,
+          $regex: `^${searchTerm}`,
           $options: "i"
         } },
         { userEmails: {

@@ -29,8 +29,7 @@ class OrdersContainer extends Component {
       this.subscription = Meteor.subscribe("CustomPaginatedOrders");
       this.searchSub = Meteor.subscribe("SearchResults", "orders", this.state.searchQuery);
       let orderSearchResultsIds;
-
-
+      console.log({ "this.state.searchQuery": this.state.searchQuery });
       if (this.subscription.ready()) {
         let orders = Orders.find().fetch();
 
