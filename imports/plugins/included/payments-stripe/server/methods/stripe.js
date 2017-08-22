@@ -311,7 +311,7 @@ export const methods = {
 
 
       // get cartItemsByShop to build paymentMethods
-      const cartItemsByShop = cart.cartItemsByShop();
+      const cartItemsByShop = cart.getItemsByShop();
 
       // Build paymentMethods from transactions, card data and cart items
       const paymentMethods = buildPaymentMethods({ cardData, cartItemsByShop, transactionsByShopId });
