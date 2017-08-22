@@ -4,7 +4,7 @@ import { Icon, Translation } from "@reactioncommerce/reaction-ui";
 import OrderTable from "./orderTable";
 import OrderActions from "./orderActions";
 
-class OrdersList extends Component {
+class OrderDashboard extends Component {
   static propTypes = {
     className: PropTypes.string,
     clearFilter: PropTypes.func,
@@ -105,4 +105,4 @@ class OrdersList extends Component {
   }
 }
 
-export default OrdersList;
+export default OrderDashboard;

@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Media, Orders } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
-import OrdersList from "../components/orderList.js";
+import OrderDashboard from "../components/orderDashboard.js";
 
 const OrderHelper =  {
   makeQuery(filter) {
@@ -67,7 +67,7 @@ const OrderHelper =  {
   }
 };
 
-class OrdersListContainer extends Component {
+class OrderDashboardContainer extends Component {
   static propTypes = {
     handleMenuClick: PropTypes.func,
     orders: PropTypes.array
@@ -201,7 +201,7 @@ class OrdersListContainer extends Component {
 
   render() {
     return (
-      <OrdersList
+      <OrderDashboard
         handleSelect={this.handleSelect}
         orders={this.state.orders}
         query={this.state.query}
@@ -232,4 +232,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, Loading)(OrdersListContainer);
+export default composeWithTracker(composer, Loading)(OrderDashboardContainer);
