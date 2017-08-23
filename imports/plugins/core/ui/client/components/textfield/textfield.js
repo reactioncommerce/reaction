@@ -91,7 +91,7 @@ class TextField extends Component {
 
     return (
       <TextareaAutosize
-        className="{this.props.name}-edit-input"
+        className={`${this.props.name}-edit-input`}
         onBlur={this.onBlur}
         onChange={this.onChange}
         placeholder={placeholder}

@@ -3,7 +3,7 @@ import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
-import { Packages } from "/lib/collections";
+import { Packages, Shops } from "/lib/collections";
 
 
 /**
@@ -49,6 +49,7 @@ export function Apps(optionHash) {
   let key;
   const reactionApps = [];
   let options = {};
+  let shopType;
 
   // allow for object or option.hash
   if (optionHash) {
@@ -63,6 +64,13 @@ export function Apps(optionHash) {
   if (!options.shopId) {
     options.shopId = Reaction.getShopId();
   }
+
+  // Get the shop to determine shopType
+  const shop = Shops.findOne({ _id: options.shopId });
+  if (shop) {
+    shopType = shop.shopType;
+  }
+
 
   // remove audience permissions for owner (still needed here for older/legacy calls)
   if (Reaction.hasOwnerAccess() && options.audience) {
@@ -128,6 +136,20 @@ export function Apps(optionHash) {
 
         // safe to clean up now, and isMatch can ignore audience
         delete itemFilter.audience;
+      }
+
+      // Check that shopType matches showForShopType if option is present
+      if (item.showForShopTypes &&
+          Array.isArray(item.showForShopTypes) &&
+          item.showForShopTypes.indexOf(shopType) === -1) {
+        return false;
+      }
+
+      // Check that shopType does not match hideForShopType if option is present
+      if (item.hideForShopTypes &&
+          Array.isArray(item.hideForShopTypes) &&
+          item.hideForShopTypes.indexOf(shopType) !== -1) {
+        return false;
       }
 
       return _.isMatch(item, itemFilter);

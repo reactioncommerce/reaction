@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "katalog~~POS=TRUNC",
           "catalogSettingsTitle": "katalog~~POS=TRUNC",
           "catalogSettingsDescription": "Marknads Catalog"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "produkt~~POS=TRUNC Revideringar"
         }
       }
     }

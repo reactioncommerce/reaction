@@ -12,6 +12,9 @@
           "email": "Email",
           "description": "Description",
           "remove": "Remove"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Localization and i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "Choose year",
         "shopSettings": "Shop Settings",
         "dashboard": "Dashboard",
-        "print": "Print"
+        "print": "Print",
+        "auto": "Auto"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Product Search",
+          "includeTitle": "Include title",
+          "includeDescription": "Include description",
+          "includePageTitle": "Include page title",
+          "includeDetails": "Include details",
+          "includeVendor": "Include vendor"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Order Search Settings"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Account Search Settings"
+        },
+        "noSettings": "No settings currently available",
+        "settingsSaved": "Search settings saved",
+        "settingsfailed": "Search settings update failed"
       },
       "header": {
         "tagsAdd": "Add tag",
@@ -68,7 +91,8 @@
         "startTracking": "Start Tracking",
         "addBarcode": "Add Barcode",
         "quantity": "Quantity",
-        "quantityGreaterThanZero": "Error: Quantity must be greater than zero"
+        "quantityGreaterThanZero": "Error: Quantity must be greater than zero",
+        "dropFiles": "Drop files to upload"
       },
       "productDetailEdit": {
         "title": "Title",
@@ -79,6 +103,9 @@
         "twitterMsg": "Twitter Message",
         "pinterestMsg": "Pinterest Message",
         "googleplusMsg": "Google+ Message",
+        "editVariant": "Edit Variant",
+        "variantOptions": "Variant Options",
+        "variantDetails": "Variant Details",
         "duplicateVariant": "Duplicate",
         "addVariantOption": "Add Option",
         "removeVariant": "Remove",
@@ -86,7 +113,33 @@
         "pinProduct": "Pin Product",
         "toggleSize": "Toggle Size",
         "publish": "Publish",
-        "moreOptions": "More Options"
+        "moreOptions": "More Options",
+        "details": "Details"
+      },
+      "productVariant": {
+        "addVariantOptions": "Add options to enable 'Add to Cart' button",
+        "inventoryQuantity": "Quantity",
+        "title": "Label",
+        "price": "Price",
+        "optionTitle": "Option",
+        "barcode": "Barcode",
+        "compareAtPrice": "MSRP",
+        "fulfillmentService": "Fulfillment service",
+        "weight": "Weight",
+        "length": "Length",
+        "width": "Width",
+        "height": "Height",
+        "taxable": "Taxable",
+        "taxCode": "Tax Code",
+        "taxDescription": "Tax Description",
+        "inventoryManagement": "Inventory Tracking",
+        "inventoryManagementLabel": "Register product in inventory system and track its status",
+        "inventoryPolicy": "Allow Backorder",
+        "inventoryPolicyLabel": "Do not sell the product variant when it is not in stock",
+        "lowInventoryWarningThreshold": "Warn At",
+        "lowInventoryWarningThresholdLabel": "Warn customers that the product will be close to sold out when the quantity reaches the next threshold",
+        "originCountry": "Origin Country",
+        "selectTaxCode": "Select Tax Code"
       },
       "variantList": {
         "moreOptions": "There are more options available for this selection.",
@@ -223,6 +276,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Allow Guest Checkout"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates App Id",
+            "refreshPeriod": "Open Exchange Rates refresh period",
+            "refreshPeriodPlaceholder": "i.e. every 1 hour"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Google API Key"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "Revision control is disabled. Any changes will be published immediately.",
+        "isEnabled": "Revision control is enabled for Products. Any changes will be need to be published before being visible to customers."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Default Payment Method",
+        "name": "Name",
+        "namePlaceholder": "Shop Name",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe your shop for SEO",
+        "descriptionTooltip": "Meta Description for SEO",
+        "email": "Email",
+        "emailPlaceholder": "Primary Contact Email",
+        "keywords": "Keywords",
+        "keywordsPlaceholder": "Meta keywords for SEO",
+        "language": "Base Language",
+        "addressBook": {
+          "company": "Company",
+          "companyPlaceholder": "This business name",
+          "country": "Country",
+          "fullName": "Full name",
+          "fullNamePlaceholder": "Your organization name",
+          "address1": "Address",
+          "address1Placeholder": "Your organization address",
+          "address1Tooltip": "This address will be visible to visitors",
+          "address2": "Address",
+          "address2Placeholder": "Additional address",
+          "postal": "Postal",
+          "city": "City",
+          "region": "Region",
+          "phone": "Phone",
+          "isShippingDefault": "Make this your default shipping address?",
+          "isBillingDefault": "Make this your default billing address?",
+          "isCommercial": "This is a commercial address."
+        }
       },
       "accountsUI": {
         "members": "Members",

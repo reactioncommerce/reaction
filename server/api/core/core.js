@@ -414,6 +414,17 @@ export default {
   },
 
   /**
+   * Takes options in the form of a query object. Returns a package that matches.
+   * @method getPackageSettingsWithOptions
+   * @param  {object} options Options object, forms the query for Packages.findOne
+   * @return {object} Returns the first package found with the provided options
+   */
+  getPackageSettingsWithOptions(options) {
+    const query = options;
+    return Packages.findOne(query);
+  },
+
+  /**
    * getMarketplaceSettings finds the enabled `reaction-marketplace` package for
    * the primary shop and returns the settings
    * @method getMarketplaceSettings
@@ -509,6 +520,11 @@ export default {
         if (enabledPackages && Array.isArray(enabledPackages)) {
           if (enabledPackages.indexOf(pkg.name) === -1) {
             pkg.enabled = false;
+          } else {
+            // Enable "soft switch" for package.
+            if (pkg.settings && pkg.settings[packageName]) {
+              pkg.settings[packageName].enabled = true;
+            }
           }
         }
         Packages.insert(pkg);

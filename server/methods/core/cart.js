@@ -314,12 +314,21 @@ Meteor.methods({
    *  @param {String} productId - productId to add to Cart
    *  @param {String} variantId - product variant _id
    *  @param {Number} [itemQty] - qty to add to cart
+   *  @param {Object} [additionalOptions] - object containing additional options and fields for cart item
    *  @return {Number|Object} Mongo insert response
    */
-  "cart/addToCart": function (productId, variantId, itemQty) {
+  "cart/addToCart": function (productId, variantId, itemQty, additionalOptions) {
     check(productId, String);
     check(variantId, String);
     check(itemQty, Match.Optional(Number));
+    check(additionalOptions, Match.Optional(Object));
+
+    // Copy additionalOptions into an options object to use througout the method
+    const options = {
+      overwriteExistingMetafields: false, // Allows updating of metafields on quantity change
+      metafields: undefined, // Array of MetaFields to set on the CartItem
+      ...additionalOptions || {}
+    };
 
     const cart = Collections.Cart.findOne({ userId: this.userId });
     if (!cart) {
@@ -365,6 +374,17 @@ Meteor.methods({
       .some(item => item.variants._id === variantId);
 
     if (cartVariantExists) {
+      let modifier = {};
+
+      // Allows for updating metafields on an existing item when the quantity also changes
+      if (options.overwriteExistingMetafields) {
+        modifier = {
+          $set: {
+            "items.$.metafields": options.metafields
+          }
+        };
+      }
+
       return Collections.Cart.update({
         "_id": cart._id,
         "items.product._id": productId,
@@ -372,7 +392,8 @@ Meteor.methods({
       }, {
         $inc: {
           "items.$.quantity": quantity
-        }
+        },
+        ...modifier
       }, function (error, result) {
         if (error) {
           Logger.warn("error adding to cart",
@@ -406,6 +427,7 @@ Meteor.methods({
           quantity: quantity,
           product: product,
           variants: variant,
+          metafields: options.metafields,
           title: product.title,
           type: product.type,
           parcel: product.parcel || null
@@ -531,7 +553,7 @@ Meteor.methods({
     const cart = Collections.Cart.findOne(cartId);
 
     // security check - method can only be called on own cart
-    if (cart.userId !== this.userId) {
+    if (cart.userId !== Meteor.userId()) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -1072,73 +1094,93 @@ Meteor.methods({
    * @summary saves a submitted payment to cart, triggers workflow
    * and adds "paymentSubmitted" to cart workflow
    * Note: this method also has a client stub, that forwards to cartCompleted
-   * @param {Object} paymentMethod - paymentMethod object
-   * directly within this method, just throw down though hooks
+   * @param {Object|Array} paymentMethods - an array of paymentMethods or (deprecated) a single paymentMethod object
    * @return {String} returns update result
    */
-  "cart/submitPayment": function (paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+  "cart/submitPayment": function (paymentMethods) {
+    if (Array.isArray((paymentMethods))) {
+      check(paymentMethods, [Reaction.Schemas.PaymentMethod]);
+    } else {
+      check(paymentMethods, Reaction.Schemas.PaymentMethod);
+    }
 
-    const checkoutCart = Collections.Cart.findOne({
+
+    const cart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
 
-    const cart = _.clone(checkoutCart);
     const cartId = cart._id;
-    const invoice = {
-      shipping: cart.cartShipping(),
-      subtotal: cart.cartSubTotal(),
-      taxes: cart.cartTaxes(),
-      discounts: cart.cartDiscounts(),
-      total: cart.cartTotal()
-    };
+
+    const cartShipping = cart.cartShipping();
+    const cartSubTotal = cart.cartSubTotal();
+    const cartSubTotalByShop = cart.cartSubTotalByShop();
+    const cartTaxes = cart.cartTaxes();
+    const cartTaxesByShop = cart.cartTaxesByShop();
+    const cartDiscounts = cart.cartDiscounts();
+    const cartTotal = cart.cartTotal();
+    const cartTotalByShop = cart.cartTotalByShop();
 
     // we won't actually close the order at this stage.
     // we'll just update the workflow and billing data where
     // method-hooks can process the workflow update.
 
-    let selector;
-    let update;
-    // temp hack until we build out multiple billing handlers
-    // if we have an existing item update it, otherwise add to set.
+    const payments = [];
+    let paymentAddress;
 
-    // TODO: Marketplace Payments - Add support for multiple billing handlers here
-    if (cart.items) {
-      // TODO: Needs to be improved to consider which transaction goes with which item
-      // For now just attach the transaction to each item in the cart
-      const cartItemsWithPayment = cart.items.map(item => {
-        item.transaction = paymentMethod.transactions[paymentMethod.transactions.length - 1];
-        return item;
+    // Find the payment address associated that the user input during the
+    // checkout process
+    if (Array.isArray(cart.billing) && cart.billing[0]) {
+      paymentAddress = cart.billing[0].address;
+    }
+
+    // Payment plugins which have been updated for marketplace are passing an array as paymentMethods
+    if (Array.isArray(paymentMethods)) {
+      paymentMethods.forEach((paymentMethod) => {
+        const shopId = paymentMethod.shopId;
+        const invoice = {
+          shipping: parseFloat(cartShipping),
+          subtotal: parseFloat(cartSubTotalByShop[shopId]),
+          taxes: parseFloat(cartTaxesByShop[shopId]),
+          discounts: parseFloat(cartDiscounts),
+          total: parseFloat(cartTotalByShop[shopId])
+        };
+
+        payments.push({
+          paymentMethod: paymentMethod,
+          invoice: invoice,
+          address: paymentAddress,
+          shopId: shopId
+        });
       });
-      cart.items = cartItemsWithPayment;
+    } else {
+      // Legacy payment integration - transactions are not split by shop
+      // Create an invoice based on cart totals.
+      const invoice = {
+        shipping: cartShipping,
+        subtotal: cartSubTotal,
+        taxes: cartTaxes,
+        discounts: cartDiscounts,
+        total: cartTotal
+      };
+
+      // Legacy payment plugins are passing in a single paymentMethod object
+      payments.push({
+        paymentMethod: paymentMethods,
+        invoice: invoice,
+        address: paymentAddress,
+        shopId: Reaction.getPrimaryShopId()
+      });
     }
 
-    if (cart.billing) {
-      selector = {
-        "_id": cartId,
-        "billing._id": cart.billing[0]._id
-      };
-      update = {
-        $set: {
-          "billing.$.paymentMethod": paymentMethod,
-          "billing.$.invoice": invoice,
-          "items": cart.items
-        }
-      };
-    } else {
-      selector = {
-        _id: cartId
-      };
-      update = {
-        $addToSet: {
-          "billing.paymentMethod": paymentMethod,
-          "billing.invoice": invoice
-        },
-        $set: {
-          items: cart.items
-        }
-      };
-    }
+    const selector = {
+      _id: cartId
+    };
+
+    const update = {
+      $set: {
+        billing: payments
+      }
+    };
 
     try {
       Collections.Cart.update(selector, update);

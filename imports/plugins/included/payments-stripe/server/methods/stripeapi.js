@@ -47,15 +47,14 @@ StripeApi.methods.getApiKey = new ValidatedMethod({
   name: "StripeApi.methods.getApiKey",
   validate: null,
   run() {
-    const settings = Reaction.getPackageSettings("reaction-stripe").settings;
-    // TODO: We should merge Stripe Connect plugin with reaction-stripe
-    // or fully separate them, but we shouldn't be checking package settings for a package
-    // we don't require.
-    const stripeConnectSettings = Reaction.getPackageSettings("reaction-stripe-connect").settings;
-    if (!settings.api_key && !stripeConnectSettings.api_key) {
-      throw new Meteor.Error("403", "Invalid Stripe Credentials");
+    const stripePkg = Reaction.getPackageSettingsWithOptions({
+      shopId: Reaction.getPrimaryShopId(),
+      name: "reaction-stripe"
+    });
+    if (stripePkg || stripePkg.settings && stripePkg.settings.api_key) {
+      return stripePkg.settings.api_key;
     }
-    return stripeConnectSettings.api_key || settings.api_key;
+    throw new Meteor.Error("access-denied", "Invalid Stripe Credentials");
   }
 });
 

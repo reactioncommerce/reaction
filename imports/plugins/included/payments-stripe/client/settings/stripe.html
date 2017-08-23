@@ -1,7 +1,7 @@
 <template name="stripeSettings">
     {{#unless packageData.settings.api_key}}
     <div class="alert alert-info">
-      <span data-i18n="admin.paymentSettings.stripeSettingsDescription">Don't have a Stripe API Client ID?</span>
+      <span data-i18n="admin.paymentSettings.stripeSettingsDescription">Don't have a Stripe API Secret Key?</span>
       <a href="https://dashboard.stripe.com/account/apikeys" target="_blank">
         <span data-i18n="admin.paymentSettings.stripeSettingsGetItHere">Get it here.</span>
       </a>
@@ -10,11 +10,16 @@
     <div>
       {{#autoForm collection=Collections.Packages schema=StripePackageConfig doc=packageData type="update" id="stripe-update-form"}}
         {{>afQuickField name='settings.api_key'}}
+
+        <span data-i18n="admin.paymentSettings.stripeClientIdWarning">The Client ID is a <strong>PUBLIC</strong> field. Please ensure you're using the `client_id` found on the </span>
+        <a target="_blank" href="https://dashboard.stripe.com/account/applications/settings">
+          <span data-i18n="admin.paymentSettings.stripeClientIDLink">Stripe Connect Settings</span>
+        </a>
+        {{>afQuickField name='settings.public.client_id'}}
         {{>afQuickField name="settings.reaction-stripe.support" options="allowed" noselect=true}}
         <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
       {{/autoForm}}
     </div>
-
 </template>
 
 
@@ -28,9 +33,9 @@
         <div class="list-group">
           <div class="list-group-item">
             {{#if packageData.settings.api_key}}
-              <span>API Client ID: <button type="button" class="btn btn-link" data-event-action="showStripeSettings">**********</button></span>
+              <span>API Secret Key: <button type="button" class="btn btn-link" data-event-action="showStripeSettings">**********</button></span>
             {{else}}
-              <span>API Client ID: <button type="button" class="btn btn-link" data-event-action="showStripeSettings">Configure Now</button></span>
+              <span>API Secret Key: <button type="button" class="btn btn-link" data-event-action="showStripeSettings">Configure Now</button></span>
             {{/if}}
           </div>
         </div>
@@ -57,4 +62,8 @@
       </div>
     </div>
   </div>
+</template>
+
+<template name="stripeConnectRedirect">
+  <p>Stripe Connect Redirect</p>
 </template>

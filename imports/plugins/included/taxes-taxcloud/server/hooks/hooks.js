@@ -48,7 +48,7 @@ MethodHooks.after("taxes/calculate", function (options) {
         if (!apiKey || !apiLoginId) {
           Logger.warn("TaxCloud API Key is required.");
         }
-        if (typeof cartToCalc.shipping !== "undefined" && cartToCalc.items) {
+        if (Array.isArray(cartToCalc.shipping) && cartToCalc.shipping.length > 0 && cartToCalc.items) {
           const shippingAddress = cartToCalc.shipping[0].address;
 
           if (shippingAddress) {
