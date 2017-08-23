@@ -78,6 +78,18 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
         { shippingPhone: {
           $regex: `^${searchPhone}$`,
           $options: "i"
+        } },
+        { "product.title": {
+          $regex: searchTerm,
+          $options: "i"
+        } },
+        { "variants.title": {
+          $regex: searchTerm,
+          $options: "i"
+        } },
+        { "variants.optionTitle": {
+          $regex: searchTerm,
+          $options: "i"
         } }
       ] }
     ] };
