@@ -7,7 +7,7 @@ import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { Accounts, Cart, Groups, Media, Shops, Packages } from "/lib/collections";
+import { Accounts, Cart, Groups, Media, Shops, Packages, Notifications } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
@@ -41,18 +41,18 @@ export function verifyAccount(email, token) {
         "_id": account._id,
         "emails.address": account.emails[0].address
       }, {
-        $set: {
-          "emails.$.verified": true
-        }
-      });
+          $set: {
+            "emails.$.verified": true
+          }
+        });
       Accounts.update({
         "userId": account._id,
         "emails.address": account.emails[0].address
       }, {
-        $set: {
-          "emails.$.verified": true
-        }
-      });
+          $set: {
+            "emails.$.verified": true
+          }
+        });
     }
     return true;
   }
@@ -270,20 +270,20 @@ export function addressBookAdd(address, accountUserId) {
         "userId": userId,
         "profile.addressBook.isShippingDefault": true
       }, {
-        $set: {
-          "profile.addressBook.$.isShippingDefault": false
-        }
-      });
+          $set: {
+            "profile.addressBook.$.isShippingDefault": false
+          }
+        });
     }
     if (address.isBillingDefault) {
       Accounts.update({
         "userId": userId,
         "profile.addressBook.isBillingDefault": true
       }, {
-        $set: {
-          "profile.addressBook.$.isBillingDefault": false
-        }
-      });
+          $set: {
+            "profile.addressBook.$.isBillingDefault": false
+          }
+        });
     }
   }
 
@@ -297,14 +297,14 @@ export function addressBookAdd(address, accountUserId) {
   return Accounts.upsert({
     userId: userId
   }, {
-    $set: {
-      name: address.fullName,
-      userId: userId
-    },
-    $addToSet: {
-      "profile.addressBook": address
-    }
-  });
+      $set: {
+        name: address.fullName,
+        userId: userId
+      },
+      $addToSet: {
+        "profile.addressBook": address
+      }
+    });
 }
 
 /**
@@ -365,10 +365,10 @@ export function addressBookUpdate(address, accountUserId, type) {
           "userId": userId,
           "profile.addressBook.isShippingDefault": true
         }, {
-          $set: {
-            "profile.addressBook.$.isShippingDefault": false
-          }
-        });
+            $set: {
+              "profile.addressBook.$.isShippingDefault": false
+            }
+          });
       } else {
         // if new `isShippingDefault` state is false, then we need to remove
         // this address from `cart.shipping`
@@ -387,10 +387,10 @@ export function addressBookUpdate(address, accountUserId, type) {
           "userId": userId,
           "profile.addressBook.isBillingDefault": true
         }, {
-          $set: {
-            "profile.addressBook.$.isBillingDefault": false
-          }
-        });
+            $set: {
+              "profile.addressBook.$.isBillingDefault": false
+            }
+          });
       } else {
         Meteor.call("cart/unsetAddresses", address._id, userId, "billing");
       }
@@ -411,11 +411,11 @@ export function addressBookUpdate(address, accountUserId, type) {
     "userId": userId,
     "profile.addressBook._id": address._id
   }, {
-    $set: {
-      "name": address.fullName,
-      "profile.addressBook.$": address
-    }
-  });
+      $set: {
+        "name": address.fullName,
+        "profile.addressBook.$": address
+      }
+    });
 }
 
 /**
@@ -447,12 +447,12 @@ export function addressBookRemove(addressId, accountUserId) {
     "userId": userId,
     "profile.addressBook._id": addressId
   }, {
-    $pull: {
-      "profile.addressBook": {
-        _id: addressId
+      $pull: {
+        "profile.addressBook": {
+          _id: addressId
+        }
       }
-    }
-  });
+    });
 }
 
 /**
@@ -598,6 +598,21 @@ export function inviteShopMember(options) {
   const subject = "accounts/inviteShopMember/subject";
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+
+  if (user) {
+    userId = user._id;
+    const value = {
+      timeSent: new Date(),
+      status: "unread",
+      url: "newshopmembernotification",
+      type: "en",
+      message: `You have been invited to be a ${group.name}`,
+      to: userId,
+      hasDetails: true,
+      details: "details"
+    };
+    Notifications.insert(value);
+  }
 
   Reaction.Email.send({
     to: email,
