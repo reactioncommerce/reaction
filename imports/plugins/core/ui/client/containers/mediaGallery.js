@@ -24,7 +24,7 @@ function uploadHandler(files) {
       autoHide: true
     });
   }
-  const variantId = variant.ancestors[0];
+  const variantId = variant._id;
   const shopId = ReactionProduct.selectedProduct().shopId || Reaction.getShopId();
   const userId = Meteor.userId();
   let count = Media.find({
