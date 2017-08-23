@@ -8,6 +8,12 @@ const ShopOrderSummary = ({ shopSummary }) => {
   return (
     <div className="order-details-info-box-content">
       <div className="order-summary-line">
+        <div className="order-summary-header-line"> </div>
+        <div className="order-summary-store-name">
+          <Components.Translation defaultValue="Order placed by" i18nKey={"cartCompleted.orderPlacedBy"}/> {shopSummaryData.name}
+        </div>
+      </div>
+      <div className="order-summary-line">
         <div className="order-summary-title">
           <Components.Translation defaultValue="Quantity Total" i18nKey={"cartCompleted.quantityTotal"}/>
         </div>

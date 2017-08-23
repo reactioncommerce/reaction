@@ -16,7 +16,7 @@ const CompletedOrderSummary = ({ shops, orderSummary }) => {
         })}
         <div className="order-summary-line">
           <div className="order-summary-total-title">
-            <Components.Translation defaultValue="Captured Total" i18nKey={"cartCompleted.orderTotal"}/>
+            <Components.Translation defaultValue="Order Total" i18nKey={"cartCompleted.orderTotal"}/>
           </div>
           <div className="order-summary-total-value">
             <Components.Currency amount={orderSummary.total}/>
