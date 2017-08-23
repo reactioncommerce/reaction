@@ -12,6 +12,9 @@
           "email": "Email",
           "description": "Adăugați o descriere produs",
           "remove": "Elimină"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Localizare si i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "Alegeți anul",
         "shopSettings": "Setări Magazin",
         "dashboard": "Bord",
-        "print": "Imprimare"
+        "print": "Imprimare",
+        "auto": "Auto"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Caută produs",
+          "includeTitle": "Includeți titlul",
+          "includeDescription": "Includeți descrierea",
+          "includePageTitle": "Includeți titlul paginii",
+          "includeDetails": "Includeți detalii",
+          "includeVendor": "Includeți furnizor"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Setări Căutare Comenzi"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Setări Căutare Cont"
+        },
+        "noSettings": "Nu există setări disponibile în prezent",
+        "settingsSaved": "S-au salvat setările de cautare",
+        "settingsfailed": "Actualizarea setărilor de căutare a eșuat"
       },
       "header": {
         "tagsAdd": "Adăugaţi o etichetă",
@@ -68,7 +91,8 @@
         "startTracking": "Porniți urmărirea",
         "addBarcode": "Adăugați coduri de bare",
         "quantity": "Cantitate",
-        "quantityGreaterThanZero": "Eroare: Cantitatea trebuie sa fie mai mare decât zero"
+        "quantityGreaterThanZero": "Eroare: Cantitatea trebuie sa fie mai mare decât zero",
+        "dropFiles": "Dați drumul la fișiere pentru a le încărca"
       },
       "productDetailEdit": {
         "title": "Denumirea produsului",
@@ -252,6 +276,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Permiteti să finalizeze comanda și cei fără autentificare"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates App Id",
+            "refreshPeriod": "Perioada de improspătare a cursului prin Open Exchange Rates",
+            "refreshPeriodPlaceholder": "e.g. la fiecare 1 oră"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Google API Key"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "Opțiunea „Revision control” este dezactivată. Orice schimbare va fi imediat publicată.",
+        "isEnabled": "Controlul revizie este activat pentru produse. Toate modificările vor fi trebui să fie publicate înainte de a fi vizibile pentru clienți."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Metoda de plată Implicită",
+        "name": "Nume",
+        "namePlaceholder": "Nume Magazin",
+        "description": "Descriere",
+        "descriptionPlaceholder": "Descrie magazin pentru SEO (optimizare motoare cautare)",
+        "descriptionTooltip": "Acest câmp este utilizat de meta description tag. El permite motoarelor de căutare să găsească a descrierea magazinului",
+        "email": "E-mail",
+        "emailPlaceholder": "Contact E-mail implicit",
+        "keywords": "Cuvinte cheie",
+        "keywordsPlaceholder": "Cuvinte cheie (meta keywords) pentru SEO",
+        "language": "Limba de bază",
+        "addressBook": {
+          "company": "Companie",
+          "companyPlaceholder": "Această organizație",
+          "country": "Țară",
+          "fullName": "Numele complet",
+          "fullNamePlaceholder": "Numele organizației dumneavoastră",
+          "address1": "Adresă",
+          "address1Placeholder": "Adresa organizației dumneavoastră",
+          "address1Tooltip": "Această adresă va fi vizibilă pentru vizitatori",
+          "address2": "continuare Adresă",
+          "address2Placeholder": "Adresa aditională",
+          "postal": "Poştal",
+          "city": "Oraș",
+          "region": "Regiune",
+          "phone": "Telefon",
+          "isShippingDefault": "Doriți să faceți aceasta adresă de expediere implicită?",
+          "isBillingDefault": "Doriți să faceți aceasta adresă de facturare implicită?",
+          "isCommercial": "Aceasta este o adresă comercială."
+        }
       },
       "accountsUI": {
         "members": "Membrii",

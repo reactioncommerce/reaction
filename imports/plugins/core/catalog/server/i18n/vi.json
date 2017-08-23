@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Cài đặt Catalog",
           "catalogSettingsTitle": "Cài đặt Catalog",
           "catalogSettingsDescription": "Marketplace Catalog"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Sửa đổi sản phẩm"
         }
       }
     }

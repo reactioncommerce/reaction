@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Ustawienia katalogu",
           "catalogSettingsTitle": "Ustawienia katalogu",
           "catalogSettingsDescription": "Giełda katalogowy"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Wersje produktu"
         }
       }
     }

@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Katalogeinstellungen",
           "catalogSettingsTitle": "Katalogeinstellungen",
           "catalogSettingsDescription": "Marktplatz Katalog"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Produkt Revisions"
         }
       }
     }
