@@ -60,11 +60,11 @@ function composer(props, onData) {
         const productImages = Media.find().fetch();
 
         onData(null, {
-          shops: order.itemsByShop(),
+          shops: order.shopSummary(),
           order,
           orderId,
           orderSummary,
-          paymentMethods: order.paymentMethods(),
+          paymentMethods: order.getPaymentMethods(),
           productImages
         });
       }

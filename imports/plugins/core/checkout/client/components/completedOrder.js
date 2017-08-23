@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import CompletedShopOrders from "./completedShoporders";
+import CompletedShopOrders from "./completedShopOrders";
 import CompletedOrderPaymentMethod from "./completedOrderPaymentMethods";
 import CompletedOrderSummary from "./completedOrderSummary";
 import AddEmail from "./addEmail";
