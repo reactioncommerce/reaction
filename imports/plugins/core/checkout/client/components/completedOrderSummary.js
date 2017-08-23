@@ -12,7 +12,8 @@ const CompletedOrderSummary = ({ shops, orderSummary }) => {
       </div>
       <div className="order-details-info-box">
         {shops.map((shop) => {
-          return <ShopOrderSummary shopSummary={shop} key={shop._id} />;
+          const shopKey = Object.keys(shop);
+          return <ShopOrderSummary shopSummary={shop[shopKey]} key={shopKey} />;
         })}
         <div className="order-summary-line">
           <div className="order-summary-total-title">
