@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "catalog က Settings",
           "catalogSettingsTitle": "catalog က Settings",
           "catalogSettingsDescription": "Marketplace Catalog"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "ကုန်ပစ္စည်းပြင်ဆင်ချက်များကို"
         }
       }
     }
