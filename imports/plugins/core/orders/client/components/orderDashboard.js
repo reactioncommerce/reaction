@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Icon, Translation } from "@reactioncommerce/reaction-ui";
 import OrderTable from "./orderTable";
 
-class OrdersList extends Component {
+class OrderDashboard extends Component {
   static propTypes = {
     displayMedia: PropTypes.func,
     handleBulkPaymentCapture: PropTypes.func,
@@ -96,4 +96,4 @@ class OrdersList extends Component {
   }
 }
 
-export default OrdersList;
+export default OrderDashboard;

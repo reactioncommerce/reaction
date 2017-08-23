@@ -5,7 +5,7 @@ import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Loading } from "@reactioncommerce/reaction-ui";
 import { Orders, Media } from "/lib/collections";
 import { i18next, Reaction } from "/client/api";
-import OrdersList from "../components/orderList.js";
+import OrderDashboard from "../components/orderDashboard.js";
 import { PACKAGE_NAME,
   ORDER_LIST_FILTERS_PREFERENCE_NAME,
   ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME,
@@ -15,7 +15,7 @@ import { PACKAGE_NAME,
 const shippingStrings = ["picked", "packed", "labeled", "shipped"];
 
 
-class OrdersListContainer extends Component {
+class OrderDashboardContainer extends Component {
   static propTypes = {
     handleShowMoreClick: PropTypes.func,
     hasMoreOrders: PropTypes.func,
@@ -579,7 +579,7 @@ class OrdersListContainer extends Component {
 
   render() {
     return (
-      <OrdersList
+      <OrderDashboard
         handleSelect={this.handleSelect}
         orders={this.state.orders}
         handleClick={this.handleClick}
@@ -613,4 +613,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, Loading)(OrdersListContainer);
+export default composeWithTracker(composer, Loading)(OrderDashboardContainer);
