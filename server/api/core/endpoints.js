@@ -131,7 +131,7 @@ Endpoints.setResponseHeaders = function (headers) {
  *   If `undefined`, there will be no response body.
  * @return {void}
  */
-Endpoints.sendResult = function (res, options = {}) {
+Endpoints.sendResponse = function (res, options = {}) {
   // We've already set global headers on response, but if they
   // pass in more here, we set those.
   if (options.headers) {
