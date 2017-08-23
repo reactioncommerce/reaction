@@ -537,10 +537,20 @@ class OrdersListContainer extends Component {
     selectedOrders.forEach((order) => {
       Meteor.call("orders/approvePayment", order, (err) => {
         if (err) {
+          this.setState({
+            isLoading: {
+              capturePayment: false
+            }
+          });
           Alerts.toast(`An error occured while approving the payment: ${err}`, "error");
         } else {
           Meteor.call("orders/capturePayments", order._id, (error) => {
             if (error) {
+              this.setState({
+                isLoading: {
+                  capturePayment: false
+                }
+              });
               Alerts.toast(`An error occured while capturing the payment: ${error}`, "error");
             }
 
