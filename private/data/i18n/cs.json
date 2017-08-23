@@ -7,117 +7,35 @@
       "languages": {
         "select": "Zvolte jazyk"
       },
-      "currencies": {
-        "select": "Výběr měny"
-      },
       "admin": {
-        "shortcut": {
-          "addProductLabel": "Přidat produkt",
-          "accountsLabel": "účty"
-        },
-        "dashboard": {
-          "i18NLabel": "i18n",
-          "i18NTitle": "i18n",
-          "i18NDescription": "internacionalizace pomůcky",
-          "routingLabel": "směrování",
-          "routingTitle": "směrování",
-          "routingDescription": "směrování pomůcky",
-          "filtrationLabel": "Filtrace",
-          "filtrationDescription": "filtrace Produkty pro Reaction"
-        },
         "groups": {
-          "appearance": "Vzhled",
-          "addUserError": "Chyba přidání uživatele do skupiny",
-          "addUserSuccess": "Přidán uživatel do skupiny",
-          "removeUserError": "Chyba při odebírání uživatele do skupiny",
-          "removeUserSuccess": "Uživatel byl úspěšně odstraněn",
-          "connect": "Připojit",
-          "core": "Jádro",
-          "name": "Název",
           "email": "Email",
-          "create": "Vytvořit skupinu",
-          "update": "Aktualizovat skupinu",
-          "lastActive": "Naposledy aktivní",
           "description": "Popis",
-          "remove": "Odstranit",
-          "newGroup": "Nová skupina",
-          "selectGroup": "Vyberte možnost Skupina",
-          "editGroups": "Upravit skupiny",
-          "dashboard": "přístrojová deska",
-          "errorCreate": "Chyba při vytváření skupiny",
-          "successCreate": "Skupina byla úspěšně vytvořena",
-          "errorUpdate": "Při aktualizaci skupiny došlo k chybě",
-          "successUpdate": "Skupina byla úspěšně aktualizována",
-          "misc": "Různé",
-          "paymentMethod": "Platební Poskytovatelé",
-          "utilities": "Utility",
-          "marketplace": "Trh"
+          "remove": "Odstranit"
         },
         "settings": {
-          "accountSettingsLabel": "Nastavení účtu",
-          "accountSettingsTitle": "Přihlášení Služby",
-          "accountSettingsDescription": "Ověřování prostřednictvím sociálních poskytovatelů",
-          "saveSuccess": "Nastavení aktualizována.",
-          "saveFailed": "Nepodařilo se aktualizovat nastavení.",
-          "addShopMemberLabel": "Přidat e-shop člena",
-          "permissionsSettingsLabel": "Oprávnění",
           "localizationAndI18NLabel": "Lokalizace a i18n"
-        },
-        "userAccountDropdown": {
-          "profileLabel": "Profil"
         }
       },
-      "accounts": {
-        "addMember": "Přidat člena",
-        "shopMembers": "Obchod Členové",
-        "guests": "Hosté"
-      },
       "app": {
-        "add": "Přidat",
-        "editMode": "režim úprav",
-        "administratorView": "Zobrazit správce",
-        "customerView": "Customer View",
-        "createContent": "Vytvořit obsah",
-        "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Uložit a pokračovat",
-        "saveChanges": "Uložit změny",
-        "selectOne": "(Vyber jeden)",
         "cancel": "Zrušit",
-        "success": "Úspěch",
-        "error": "Chyba",
         "submit": "Předložit",
         "delete": "Vymazat",
-        "deleted": "Smazané",
-        "archive": "Archiv",
-        "archived": "archivovány",
         "create": "Vytvořit",
         "close": "Zavřít",
         "settings": "Nastavení",
         "loading": "Nahrávám",
         "toggle": "toggle",
-        "toggleEditMode": "Přepnout režim Edit",
         "warning": "Jejda!",
         "unauthorizedMessage": "Nemáte oprávnění k zobrazení tohoto obsahu.",
-        "updateSettings": "Nastavení aktualizace",
         "monthOptions": "vyberte si měsíc",
         "yearOptions": "Zvolte rok",
         "shopSettings": "Nastavení Shop",
         "dashboard": "přístrojová deska",
         "print": "Tisk",
-        "notFound": "Tato stránka nebyla nalezena.",
-        "pageNotFound": "Tato stránka nebyla nalezena.",
-        "notFoundTitle": "Jejda!",
-        "notFoundError": "Stránka nenalezena.",
-        "productNotFound": "Tento produkt nebyl nalezen.",
-        "loadMoreProducts": "Načíst další produkty",
-        "noProductsFound": "Nebyly nalezeny žádné produkty.",
-        "private": "soukromý",
-        "public": "Veřejnost",
-        "shortcut": {
-          "addProductLabel": "Přidat produkt",
-          "accountsLabel": "účty"
-        }
+        "auto": "Auto"
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -138,34 +56,6 @@
         "settingsSaved": "Nastavení vyhledávání uloženo",
         "settingsfailed": "Aktualizace nastavení vyhledávání se nezdařilo"
       },
-      "shopSettings": {
-        "localization": "lokalizace",
-        "options": "Možnosti",
-        "paymentMethods": "platební metody",
-        "externalServices": "Externí služby",
-        "shopLocalizationSettingsSaved": "Nastavení Shop lokalizační uložena.",
-        "shopLocalizationSettingsFailed": "Obchod aktualizace nastavení lokalizace nezdařila.",
-        "shopPaymentMethodsSaved": "Shop nastavení Platební metody uložena.",
-        "shopPaymentMethodsFailed": "Obchod aktualizace nastavení Platební metody selhaly.",
-        "shopBrandAssetsSaved": "Aktualizované aktivum značky",
-        "shopBrandAssetsFailed": "Nelze aktualizovat aktivitu značky"
-      },
-      "notifications": {
-        "body": {
-          "noNotifications": "Zatím žádné oznámení",
-          "markAllAsRead": "označit vše jako přečtené",
-          "recent": "Nedávný",
-          "viewAll": "Zobrazit vše"
-        },
-        "messages": {
-          "orderCancelled": "Vaše objednávka byla zrušena.",
-          "newOrder": "Vaše objednávka se zpracovává.",
-          "forAdmin": "Máte novou objednávku.",
-          "orderDelivered": "Vaše objednávka byla doručena.",
-          "orderProcessing": "Vaše objednávka se zpracovává.",
-          "orderShipped": "Vaše objednávka byla odeslána."
-        }
-      },
       "header": {
         "tagsAdd": "Přidat značku",
         "search": "Vyhledávání výrobků ..."
@@ -175,10 +65,6 @@
         "whenYouAreDone": "Při dokončení úprav.",
         "tags": "Štítky",
         "tagsAdd": "Přidat značku",
-        "tagsEdit": "Edit tags",
-        "tagExists": "Tag již existuje, nebo je prázdný.",
-        "tagInUse": "Tag je používán a nemůže být odstraněn.",
-        "dropFiles": "Drop soubory nahrát",
         "addInventory": "Přidat Inventory",
         "barcode": "čárový kód",
         "confirmDeleteBarcode": "Jste si jisti, že chcete smazat čárový kód",
@@ -192,8 +78,6 @@
         "addToCart": "Přidat do košíku",
         "chooseOptions": "Prosím, vyberte možnosti, před přidáním do košíku",
         "outOfStock": "Je nám líto, tato položka je vyprodán!",
-        "productArchiveError": "Došlo k chybě při odesílání {{product}} do archivu.",
-        "archiveErrorTheProduct": "produkt",
         "publishFirst": "Publikování produktu před přidáním do košíku.",
         "quantityAbbreviation": "POČET",
         "selectOption": "Před přidáním do košíku vyberte jednu z možností",
@@ -204,40 +88,17 @@
         "limitedSupply": "Limited Supply",
         "publishProductVisible": "{{product}} je nyní viditelný",
         "publishProductHidden": "{{product}} je nyní skryt",
-        "clonedAlert": "Cloned {{product}}",
-        "clonedAlert_plural": "Cloned {{product}}",
-        "archivedAlert": "archivované {{product}}",
-        "archivedAlert_plural": "archivované {{product}}",
-        "theProduct": "produkt",
-        "theSelectedProducts": "vybrané produkty",
         "startTracking": "Začátek Tracking",
         "addBarcode": "Přidejte čárového kódu",
         "quantity": "Množství",
         "quantityGreaterThanZero": "Chyba: Množství musí být větší než nula",
-        "notFoundTitle": "Jejda!",
-        "notFoundError": "Nejedná se o produkt, který jste hledali."
-      },
-      "tags": {
-        "tagName": "tag Name",
-        "addTag": "Přidat tag",
-        "updateTag": "aktualizace Tag",
-        "addGroupTag": "Přidejte značky skupiny",
-        "addSubTag": "Přidejte Sub Tag",
-        "removeTag": "Odstraňte Tag",
-        "createTag": "Vytvořit značku"
+        "dropFiles": "Drop soubory nahrát"
       },
       "productDetailEdit": {
-        "editOption": "editovat volba",
-        "productSettings": "Nastavení produktu",
-        "product": "Produkt",
-        "size": "Velikost",
         "title": "Nadpis",
-        "untitledProduct": "názvu produktu",
-        "parmalink": "Trvalý",
         "pageTitle": "podtitul",
         "vendor": "Prodejce",
         "description": "Popis",
-        "originCountry": "původ Země",
         "facebookMsg": "Facebook Message",
         "twitterMsg": "Twitter Message",
         "pinterestMsg": "Pinterest Message",
@@ -247,31 +108,13 @@
         "variantDetails": "Variant Podrobnosti",
         "duplicateVariant": "Duplikát",
         "addVariantOption": "Přidat Option",
-        "addVariantFail": "Nelze vytvořit variantu pro {{title}}.",
-        "cloneVariantFail": "Nelze klonovat variantu pro {{title}}.",
         "removeVariant": "Odstranit",
-        "removeVariantConfirm": "Jste si jisti, že chcete smazat {{title}}",
-        "restoreVariantConfirm": "Jste si jisti, že chcete obnovit {{title}} z koše?",
-        "restoreVariantFail": "Nepodařilo se obnovit {{title}}.",
-        "archiveVariantConfirm": "Jste si jisti, že chcete archivovat {{title}}",
-        "thisVariant": "tato varianta",
-        "thisOption": "tato možnost",
         "duplicateProduct": "duplicitní zboží",
         "pinProduct": "pin zboží",
         "toggleSize": "toggle Velikost",
-        "archiveProduct": "Archiv produktů",
-        "restoreProduct": "Obnovit produkt z koše",
-        "archiveThisProduct": "Archivovat tento produkt?",
-        "archiveSelectedProducts": "Archiv vybrané produkty?",
         "publish": "Publikovat",
         "moreOptions": "Více možností",
-        "details": "Podrobnosti",
-        "noSelectedProducts": "Žádné vybrané produkty. Použití",
-        "orShiftCtrlCmd": " nebo shift | ctrl | cmd + klik na výrobky pro volbu násobek. S posunem můžete vybrat souvislou řadu výrobků.",
-        "makeVisible": "zviditelnit",
-        "hideProduct": "Skrýt Product",
-        "productIsVisible": "je vidět produkt",
-        "productIsNotVisible": "Výrobek není viditelná"
+        "details": "Podrobnosti"
       },
       "productVariant": {
         "addVariantOptions": "Přidat možností k tomu, aby \"Přidat do košíku\" Butto",
@@ -303,18 +146,8 @@
         "createVariant": "Vytvořit Variant"
       },
       "gridPackage": {
-        "enable": "Aktivovat",
-        "errorDisabling": "Chyba deaktivace balíčku:",
-        "errorEnabling": "Chyba umožňuje balíček:",
-        "details": "Podrobnosti",
-        "disable": "Zakázat",
-        "disableConfirm": "Jste si jisti, že chcete zakázat {{app}}?",
         "pkgEnabled": "{{app}} je nyní povolena.",
         "pkgDisabled": "{{app}} je nyní zakázána."
-      },
-      "gridSettingsPanel": {
-        "title": "Nastavení Grid",
-        "selected": "Vybraný"
       },
       "cartDrawer": {
         "empty": "Jsme smutní. Tvůj vozík je prázdný.",
@@ -322,12 +155,10 @@
         "checkout": "Zkontrolovat teď",
         "new": "Nový",
         "coreOrderWorkflow/created": "Vytvořeno",
-        "coreOrderWorkflow/processing": "zpracování",
         "coreOrderWorkflow/completed": "Dokončeno",
         "coreOrderWorkflow/canceled": "Zrušeno"
       },
       "cartSubTotals": {
-        "discount": "Sleva",
         "head": "Váš nákupní košík",
         "items": "Položek v košíku",
         "subtotal": "mezisoučet",
@@ -345,75 +176,34 @@
         "invoice": "Faktura",
         "ordersNotFound": "Nebyly nalezeny žádné objednávky",
         "approveInvoice": "Schvalovat",
-        "cancelOrderLabel": "Zrušit objednávku",
         "makeAdjustments": "provést úpravy",
         "capturePayment": "Zachycení platby",
         "paymentCaptured": "platba Zachycená",
         "capturedTotal": "zajatý Total",
         "canceledLabel": "Zrušeno",
         "refundAmount": "vrácená částka",
-        "cancelOrder": "Chcete tuto objednávku zrušit?",
-        "applyRefundToThisOrder": "Uplatňovat vrácení {{currencySymbol}}{{refund}} na tomto pořadí?",
-        "applyRefundDuringCancelOrder": "Tím bude vrácena celková objednávka {{currencySymbol}}{{invoiceTotal}}",
-        "cancelOrderThenRestock": "Ano, a znovu",
-        "cancelOrderNoRestock": "Ano, ale žádné doplňování",
         "applyRefund": "Použít refundaci",
-        "refunding": "vrácení",
-        "applyDiscount": "Použít slevu",
         "adjustedTotal": "Upravený Total",
-        "invalidDiscount": "Sleva nemůže být větší než původní celkové ceny",
-        "fullDiscountWarning": "Uplatnění 100% slevu povede ke zrušení / zrušit objednávku u svého poskytovatele platebních",
-        "invalidRefund": "Náhrada (y) celkový nemůže být větší než očištěných celkových",
         "processor": "Procesor",
-        "placed": "umístěny",
-        "on": "na",
-        "status": "Postavení",
-        "completed": "Dokončeno",
-        "processing": "zpracování",
-        "destination": "Cíl",
-        "shipment": "Zásilka",
-        "payment": "Platba",
-        "itemsFrom": "položka (y) z",
         "filter": {
           "new": "Nový",
           "captured": "platba Zachycená",
-          "processing": "zpracování",
           "shipped": "Posíláme",
           "completed": "Dokončeno",
           "canceled": "Zrušeno",
           "refunded": "vrácena"
-        },
-        "showMore": "Zobrazit více"
+        }
       },
       "orderShipping": {
         "shipTo": "Dopravit do",
         "notShipped": "Ne přesto Posíláme",
         "noTracking": "No Tracking",
         "tracking": "Sledování",
-        "printLabels": "tisk štítků",
-        "printShippingLabel": "lodní",
-        "printCustomsLabel": "Celní",
-        "generateTracking": "Generovat Label a Tracking",
-        "labelError": "Chyba při vytváření přepravní štítek {{err}}",
-        "carrier": "Dopravce",
-        "addTracking": "Přidat Tracking",
-        "itemsHaveBeenShipped": "Předměty byly odeslány",
         "shipmentEmpty": "Tato zásilka neobsahuje žádné položky",
         "shipmentPacked": "Všechny položky Balíčky",
         "shipped": "Posíláme",
-        "delivered": "dodáno",
         "shippingNotifyCustomer": "Upozornit zákazníka, že jejich zboží bude brzy dopravě.",
         "resendNotification": "Znovu poslat zásilky Oznámení"
-      },
-      "orderWorkflow": {
-        "orderDetails": "Podrobnosti o objednávce",
-        "invoice": "Faktura",
-        "lineItems": "Řádkové položky",
-        "shipmentTracking": "Sledování zásilky"
-      },
-      "cartCheckout": {
-        "surprise": "Woah!",
-        "emptyCheckoutCart": "vypadá váš košík je prázdný!"
       },
       "cartCompleted": {
         "thankYou": "Děkuji!",
@@ -421,8 +211,6 @@
         "yourOrderIsNow": "Vaše objednávka je nyní",
         "summaryMessage": "Děkuji za Vaši objednávku.",
         "submitted": "předloženy",
-        "processing": "zpracování",
-        "completed": "dokončený",
         "registerGuest": "Ahoj! Přidat e-mail a přijímat aktualizace pořadí.",
         "trackYourDelivery": "Aktualizace objednávka bude zaslána",
         "noOrdersFound": "Nebyly nalezeny žádné objednávky.",
@@ -440,25 +228,54 @@
         "addAddress": "Přidat adresu",
         "chooseAddress": "Vyberte si Doprava a fakturační adresu",
         "createDefault": "Vytvořte si svůj výchozí adresu",
-        "edit": "Edit",
-        "removeAddress": "Odebrat adresy",
         "selectShippingAddress": "Zvolte doručovací adresu",
-        "selectBillingAddress": "Vyberte fakturační adresu",
-        "cantRemoveThisAddress": "Nelze odstranit tuto adresu: {{err}}"
+        "selectBillingAddress": "Vyberte fakturační adresu"
       },
       "addressBookAdd": {
         "addAddress": "Přidat nový záznam adresy",
-        "createAddress": "Vytvořte si svůj výchozí adresu",
-        "failedToAddAddress": "Nepodařilo se přidat adresu: {{err}}",
-        "validatedAddress": "Provedli změny adresy založené na validaci. Ujistěte se prosím, toto je správná"
+        "createAddress": "Vytvořte si svůj výchozí adresu"
       },
       "addressBookEdit": {
-        "editAddress": "Úpravou tohoto zadání adresy",
-        "addressValidation": "Ověření adresy",
-        "reviewAddress": "Pro dosažení nejlepšího souladu ověřte svou adresu",
-        "somethingWentWrong": "Něco se pokazilo: {{err}}",
-        "enteredAddress": "Zadaná adresa",
-        "validatedAddress": "Ověřte adresu"
+        "editAddress": "Úpravou tohoto zadání adresy"
+      },
+      "address": {
+        "country": "Země",
+        "fullName": "Celé jméno",
+        "address1": "Adresa",
+        "address2": "Adresa",
+        "postal": "Poštovní",
+        "city": "Město",
+        "region": "Kraj",
+        "phone": "Telefon",
+        "isShippingDefault": "Aby tento výchozí dodací adresu?",
+        "isBillingDefault": "Aby tento výchozí fakturační adresu?",
+        "isCommercial": "Jedná se o obchodní adresu."
+      },
+      "checkoutProgressBar": {
+        "login": "Účet",
+        "shippingBilling": "Adresa Podrobnosti",
+        "shippingOptions": "Možnosti doprava",
+        "reviewPayment": "Recenze",
+        "complete": "Kompletní"
+      },
+      "checkoutReview": {
+        "review": "Recenze"
+      },
+      "consoleIcon": {
+        "iconTitle": "pohled Console",
+        "text": "Konzole"
+      },
+      "createProductIcon": {
+        "iconTitle": "Vytvořit produkt",
+        "text": "Vytvořit"
+      },
+      "social": {
+        "facebook": "Facebook",
+        "google": "Google",
+        "github": "GitHub",
+        "meetup": "Meetup",
+        "twitter": "Twitter",
+        "weibo": "Weibo"
       },
       "corePackageConfig": {
         "settings": {
@@ -475,6 +292,10 @@
             "apiKey": "Klíč Google API"
           }
         }
+      },
+      "revisions": {
+        "isDisabled": "Ovládání revize je zakázáno. Jakékoli změny budou zveřejněny okamžitě.",
+        "isEnabled": "Ovládání revize je povoleno za produkty. bude muset případné změny, které mají být zveřejněny dříve, než jsou viditelné pro zákazníky."
       },
       "shop": {
         "defaultPaymentMethod": "Výchozí způsob platby",
@@ -508,114 +329,8 @@
           "isCommercial": "Jedná se o obchodní adresu."
         }
       },
-      "revisions": {
-        "isDisabled": "Ovládání revize je zakázáno. Jakékoli změny budou zveřejněny okamžitě.",
-        "isEnabled": "Ovládání revize je povoleno za produkty. bude muset případné změny, které mají být zveřejněny dříve, než jsou viditelné pro zákazníky.",
-        "unpublishedChanges": "nepublikované Změny",
-        "publishChanges": "Publish changes",
-        "showChanges": "Zobrazit změny",
-        "hideChanges": "skrýt Změny",
-        "discardChanges": "Zrušit změny",
-        "changedPublished": "Změny úspěšně publikován",
-        "changesDiscarded": "Změny úspěšně zlikvidovat",
-        "noChanges": "Žádné změny",
-        "noChangesPublished": "Nejsou žádné změny publikovat",
-        "noChangesDiscarded": "Nejsou žádné změny k vyhazování"
-      },
-      "address": {
-        "country": "Země",
-        "fullName": "Celé jméno",
-        "address1": "Adresa",
-        "address2": "Adresa",
-        "postal": "Poštovní",
-        "city": "Město",
-        "region": "Kraj",
-        "phone": "Telefon",
-        "isShippingDefault": "Aby tento výchozí dodací adresu?",
-        "isBillingDefault": "Aby tento výchozí fakturační adresu?",
-        "isCommercial": "Jedná se o obchodní adresu."
-      },
-      "i18nSettings": {
-        "enabledLanguages": "Jazyky"
-      },
-      "checkoutProgressBar": {
-        "login": "Účet",
-        "shippingBilling": "Adresa Podrobnosti",
-        "shippingOptions": "Možnosti doprava",
-        "reviewPayment": "Recenze",
-        "complete": "Kompletní"
-      },
-      "checkoutReview": {
-        "review": "Recenze"
-      },
-      "uom": {
-        "OZ": "unce",
-        "LB": "Pounds",
-        "GR": "gramů",
-        "KG": "Kilogramy"
-      },
-      "consoleIcon": {
-        "iconTitle": "pohled Console",
-        "text": "Konzole"
-      },
-      "createProductIcon": {
-        "iconTitle": "Vytvořit produkt",
-        "text": "Vytvořit"
-      },
-      "social": {
-        "socialTitle": "Sociální",
-        "facebook": "Facebook",
-        "google": "Google",
-        "github": "GitHub",
-        "instagram": "Instagram",
-        "meetup": "Meetup",
-        "ok": "Dobře",
-        "twitter": "Twitter",
-        "vk": "VK",
-        "weibo": "Weibo"
-      },
-      "search": {
-        "clearSearch": "Jasný",
-        "noProductsFound": "Nebyly nalezeny žádné produkty.",
-        "noOrdersFound": "Nebyly nalezeny žádné objednávky.",
-        "noAccountsFound": "Nebyly nalezeny žádné účty.",
-        "searchInputLabel": "Vyhledávání Reaction",
-        "suggestedTags": "Navrhované tagy",
-        "searchTypeProducts": "produkty",
-        "searchTypeAccounts": "účty",
-        "searchTypeOrders": "objednávky",
-        "accountSearchResults": {
-          "accountId": "Číslo účtu",
-          "shopId": "Shop ID",
-          "firstName": "Jméno",
-          "lastName": "Příjmení",
-          "phone": "Telefon",
-          "emails": "Email"
-        },
-        "orderSearchResults": {
-          "orderId": "Číslo objednávky",
-          "shopId": "Shop ID",
-          "shippingAddress": "Adresa",
-          "shippingCity": "Město",
-          "shippingRegion": "Kraj",
-          "shippingCountry": "Země",
-          "shippingPhone": "Telefon",
-          "shippingName": "Název",
-          "shippingStatus": "Postavení",
-          "billingAddress": "Adresa",
-          "billingCity": "Město",
-          "billingRegion": "Kraj",
-          "billingCountry": "Země",
-          "billingPhone": "Telefon",
-          "billingStatus": "Postavení",
-          "userEmails": "Email",
-          "orderDate": "Datum",
-          "orderTotal": "Celkem"
-        }
-      },
       "accountsUI": {
         "members": "Členové",
-        "manage": "Spravovat",
         "guest": "Host",
         "addMember": "Přidat člena",
         "add": "přidat",
@@ -633,7 +348,6 @@
         "emailResetLink": "Odkaz na reset emailu",
         "forgotPassword": "Zapomenuté heslo?",
         "ifYouAlreadyHaveAnAccount": "Pokud již máte účet",
-        "name": "Název",
         "newPassword": "Nové heslo",
         "newPasswordAgain": "Nové heslo (zopakovat)",
         "optional": "Volitelný",
@@ -646,27 +360,22 @@
         "setPassword": "Nastavit heslo",
         "sign": "Přihlášení",
         "signIn": "Přihlásit se",
-        "signInService": "{{service}} Přihlášení",
         "signin": "přihlásit se",
         "signInWith": "Přihlásit se přes",
         "signUpWith": "Zaregistrujte se",
         "signedIn": "Jste přihlášeni.",
         "signOut": "Odhlásit se",
         "signUp": "Registrovat",
-        "signUpButton": "Registrovat",
         "signupCode": "Registrační kód",
         "signUpWithYourEmailAddress": "Registrovat se emailovou adresou",
         "terms": "Podmínky použití",
         "updateYourPassword": "Aktualizujte si své heslo",
         "updatePasswordAndContinue": "Aktualizovat a pokračovat",
-        "updatedServiceConfiguration": "Aktualizovaný konfigurace servis pro {{service}}",
         "username": "Uživatelské jméno",
         "usernameOrEmail": "Uživatelské jméno nebo email",
         "with": "s",
         "checkoutAsGuest": "Pokladna bez uživatelského účtu",
         "role": "Role",
-        "yourOrders": "Vaše objednávky",
-        "addressBook": "Adresář",
         "info": {
           "emailSent": "Email odeslán",
           "emailVerified": "Email ověřen",
@@ -678,11 +387,9 @@
         },
         "error": {
           "emailRequired": "Email je povinný.",
-          "groupRequired": "Je vyžadována jiná skupina, než je výchozí skupina vlastníků.",
           "passwordRequired": "je vyžadováno heslo.",
           "passwordMustBeAtLeast6CharactersLong": "Heslo musí být dlouhé nejméně 6 znaků.",
           "passwordMustContainRequirements": "Heslo musí obsahovat alespoň jednu číslici nebo symbol.",
-          "usernameMinLength": "Uživatelské jméno musí mít alespoň 3 znaky",
           "minChar": "minimální délka hesla je 6 znaků.",
           "pwdsDontMatch": "Hesla nesouhlasí",
           "pwOneDigit": "Heslo musí obsahovat alespoň jednu číslici.",
@@ -694,10 +401,6 @@
           "usernameRequired": "Uživatelské jméno je povinné.",
           "emailAlreadyExists": "Email již existuje.",
           "emailDoesntMatchTheCriteria": "Email nesplňuje požadavky.",
-          "errorSendingEmail": "Chyba při odesílání e-mailu, možnost konfigurace problém.",
-          "unableToSendInvitationEmail": "Nelze odeslat e-mailem pozvánku.",
-          "userWithEmailAlreadyExists": "Uživatel s touto e-mailovou adresou již existuje",
-          "failedToLogout": "Nepodařilo se odhlásit.",
           "invalidLoginToken": "Neplatný přihlašovací token",
           "loginForbidden": "Přihlášení je zakázáno",
           "serviceUnknown": "Neznámá služba",
@@ -726,18 +429,6 @@
           "matchFailed": "Nesouhlasí",
           "unknownError": "Neznámá chyba"
         }
-      },
-      "loginServices": {
-        "appId": "ID aplikace",
-        "secret": "Tajný",
-        "clientId": "ID klienta",
-        "consumerKey": "klíč API"
-      },
-      "error": {
-        "nameRequired": "je nutné názvu.",
-        "isRequired": "je nutné {{field}}.",
-        "mustBeNumber": "{{field}} musí být číslo.",
-        "variantFieldIsRequired": "je nutné varianta {{number}} {{field}}."
       }
     }
   }

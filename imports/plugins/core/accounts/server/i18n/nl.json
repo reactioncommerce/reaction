@@ -10,13 +10,19 @@
           "accountsDescription": "Account instellingen"
         },
         "settings": {
+          "continue": "Voortzetten",
+          "cancel": "Annuleren",
+          "changeOwner": "Wijzig eigenaar",
+          "changeShopOwnerWarn": "U gaat op de hoogte van de Winkel eigenaar. De huidige eigenaar wordt vervangen",
+          "changeMktOwnerWarn": "Je staat op het punt om de Marketplace-eigenaar te veranderen. De huidige eigenaar wordt vervangen",
           "accountsSettingsLabel": "Rekeningen",
           "accountsSettingsTitle": "Rekeningen",
           "accountsSettingsDescription": "Account instellingen"
         },
         "groupsInvite": {
           "name": "John Smith",
-          "email": "johnsmith@reactioncommerce.com"
+          "email": "johnsmith@reactioncommerce.com",
+          "inviteOwnerError": "U kunt geen gebruiker als eigenaar uitnodigen. Bevorder een bestaande admin"
         }
       }
     }

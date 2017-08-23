@@ -7,117 +7,35 @@
       "languages": {
         "select": "Elegir idioma"
       },
-      "currencies": {
-        "select": "Seleccionar moneda"
-      },
       "admin": {
-        "shortcut": {
-          "addProductLabel": "Añadir producto",
-          "accountsLabel": "Cuentas"
-        },
-        "dashboard": {
-          "i18NLabel": "L10n",
-          "i18NTitle": " L10n",
-          "i18NDescription": "Herramientas de internacionalización",
-          "routingLabel": "Ruta",
-          "routingTitle": "Ruta",
-          "routingDescription": "Herramientas de ruta",
-          "filtrationLabel": "Filtración",
-          "filtrationDescription": "Filtro de productos para reacción"
-        },
         "groups": {
-          "appearance": "Aspecto",
-          "addUserError": "Error al agregar usuario al grupo",
-          "addUserSuccess": "Agregado al grupo",
-          "removeUserError": "Error al quitar usuario al grupo",
-          "removeUserSuccess": "Usuario eliminado correctamente",
-          "connect": "Conectar",
-          "core": "Core",
-          "name": "Nombre",
           "email": "Ajustes del correo electrónico",
-          "create": "Crea un grupo",
-          "update": "Actualizar Grupo",
-          "lastActive": "Último Activo",
           "description": "Descripción",
-          "remove": "Eliminar",
-          "newGroup": "Nuevo grupo",
-          "selectGroup": "Seleccionar grupo",
-          "editGroups": "Editar grupos",
-          "dashboard": "Panel principal",
-          "errorCreate": "Error al crear grupo",
-          "successCreate": "Grupo creado correctamente",
-          "errorUpdate": "Error al actualizar el grupo",
-          "successUpdate": "Grupo actualizado con éxito",
-          "misc": "Variado",
-          "paymentMethod": "Proveedores de pagos",
-          "utilities": "Herramientas",
-          "marketplace": "Mercado"
+          "remove": "Eliminar"
         },
         "settings": {
-          "accountSettingsLabel": "Opciones de cuenta",
-          "accountSettingsTitle": "Iniciar sesión Servicios",
-          "accountSettingsDescription": "De autenticación a través de proveedores sociales",
-          "saveSuccess": "Ajustes actualizan.",
-          "saveFailed": "Error al actualizar la configuración.",
-          "addShopMemberLabel": "Añadir miembro de la tienda",
-          "permissionsSettingsLabel": "Permisos",
           "localizationAndI18NLabel": "Localización y L10n"
-        },
-        "userAccountDropdown": {
-          "profileLabel": "Perfil"
         }
       },
-      "accounts": {
-        "addMember": "Añadir miembro",
-        "shopMembers": "Miembros de la tienda",
-        "guests": "Invitados"
-      },
       "app": {
-        "add": "Añadir",
-        "editMode": "Modo edición",
-        "administratorView": "administrador del Ver",
-        "customerView": "Ver al cliente",
-        "createContent": "Crear contenido",
-        "auto": "Auto",
         "save": "Guardar",
         "saveAndContinue": "Guardar y continuar",
-        "saveChanges": "Guardar cambios",
-        "selectOne": "(Seleccionar uno)",
         "cancel": "Cancelar",
-        "success": "Éxito",
-        "error": "Error",
         "submit": "Enviar",
         "delete": "Eliminar",
-        "deleted": "Eliminado",
-        "archive": "Archivar",
-        "archived": "Archivado",
         "create": "Crear",
         "close": "Cerrar",
         "settings": "Opciones",
         "loading": "Cargando",
         "toggle": "Palanca",
-        "toggleEditMode": "Palanca de modo edición",
         "warning": "¡Vaya!",
         "unauthorizedMessage": "No tienes permiso para ver este contenido.",
-        "updateSettings": "Actualizar opciones",
         "monthOptions": "Elegir mes",
         "yearOptions": "Elegir año",
         "shopSettings": "Opciones de la tienda",
         "dashboard": "Panel principal",
         "print": "Imprimir",
-        "notFound": "No se ha encontrado la página.",
-        "pageNotFound": "No se ha podido encontrar la página.",
-        "notFoundTitle": "¡Vaya!",
-        "notFoundError": "No se encuentra la página.",
-        "productNotFound": "No se ha encontrado este producto.",
-        "loadMoreProducts": "Cargar más productos",
-        "noProductsFound": "No se han encontrado productos.",
-        "private": "Privado",
-        "public": "Público",
-        "shortcut": {
-          "addProductLabel": "Agregar producto",
-          "accountsLabel": "Cuentas"
-        }
+        "auto": "Auto"
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -138,34 +56,6 @@
         "settingsSaved": "Parámetros de búsqueda guardados",
         "settingsfailed": "Actualización de opciones de búsqueda fallida"
       },
-      "shopSettings": {
-        "localization": "Ubicación",
-        "options": "Opciones",
-        "paymentMethods": "Métodos de pago",
-        "externalServices": "Servicios externos",
-        "shopLocalizationSettingsSaved": "Opciones de ubicación de tienda guardadas.",
-        "shopLocalizationSettingsFailed": "Actualización de las opciones de localización de la tienda fallida. ",
-        "shopPaymentMethodsSaved": "Opciones de métodos de pago guardadas.",
-        "shopPaymentMethodsFailed": "Actualización de las opciones de métodos de pago fallida.",
-        "shopBrandAssetsSaved": "Activo actualizado de la marca",
-        "shopBrandAssetsFailed": "No se pudo actualizar el activo de la marca"
-      },
-      "notifications": {
-        "body": {
-          "noNotifications": "No hay notificaciones aún",
-          "markAllAsRead": "Marcar todo como leído",
-          "recent": "Recientes",
-          "viewAll": "Ver todos"
-        },
-        "messages": {
-          "orderCancelled": "Su pedido fue cancelado.",
-          "newOrder": "Su pedido se está procesando.",
-          "forAdmin": "Tienes un nuevo orden.",
-          "orderDelivered": "Su pedido ha sido entregado.",
-          "orderProcessing": "Tu pedido está siendo procesado.",
-          "orderShipped": "Su pedido ha sido enviado."
-        }
-      },
       "header": {
         "tagsAdd": "Añadir etiqueta",
         "search": "Buscar productos..."
@@ -175,10 +65,6 @@
         "whenYouAreDone": "cuando termines de editar.",
         "tags": "Etiquetas",
         "tagsAdd": "Añadir etiqueta",
-        "tagsEdit": "Editar etiquetas",
-        "tagExists": "La etiqueta ya existe o está vacía.",
-        "tagInUse": "La etiqueta está en uso y no se puede borrar.",
-        "dropFiles": "Arrastrar archivos para subirlos",
         "addInventory": "Añadir inventario",
         "barcode": "Código de barras",
         "confirmDeleteBarcode": "¿Seguro que quieres borrar el código de barras?",
@@ -192,8 +78,6 @@
         "addToCart": "Añadir al carrito",
         "chooseOptions": "Elige las opciones antes de añadir al carrito",
         "outOfStock": "Lo sentimos, este producto está agotado.",
-        "productArchiveError": "Se produjo un error al enviar el {{product}} a los archivos.",
-        "archiveErrorTheProduct": "el producto",
         "publishFirst": "Publica el producto antes de añadirlo al carrito.",
         "quantityAbbreviation": "Cant.",
         "selectOption": "Selecciona una opción antes de añadir al carrito",
@@ -204,40 +88,17 @@
         "limitedSupply": "Oferta limitada",
         "publishProductVisible": "{{product}} está ahora visible",
         "publishProductHidden": "{{product}} está ahora oculto",
-        "clonedAlert": "{{producto}} clonado",
-        "clonedAlert_plural": "{{product}} clonado",
-        "archivedAlert": "Se ha archivado {{product}}",
-        "archivedAlert_plural": "Se ha archivado {{product}}",
-        "theProduct": "el producto",
-        "theSelectedProducts": "los productos seleccionados",
         "startTracking": "Empezar seguimiento",
         "addBarcode": "Añadir código de barras",
         "quantity": "Cantidad",
         "quantityGreaterThanZero": "Error: la cantidad debe ser superior a 0",
-        "notFoundTitle": "¡Vaya!",
-        "notFoundError": "Este no es el producto que estabas buscando."
-      },
-      "tags": {
-        "tagName": "Nombre de etiqueta",
-        "addTag": "Añadir etiqueta",
-        "updateTag": "Actualizar tag",
-        "addGroupTag": "Añadir etiqueta de grupo",
-        "addSubTag": "Añadir subetiqueta",
-        "removeTag": "Eliminar etiquetas",
-        "createTag": "Crear etiqueta"
+        "dropFiles": "Arrastrar archivos para subirlos"
       },
       "productDetailEdit": {
-        "editOption": "Opción editar",
-        "productSettings": "Opciones de producto",
-        "product": "Producto",
-        "size": "Tamaño",
         "title": "Título",
-        "untitledProduct": "Producto sin título",
-        "parmalink": "Permalink",
         "pageTitle": "Subtítulo",
         "vendor": "Proveedor",
         "description": "Descripción",
-        "originCountry": "País de origen",
         "facebookMsg": "Mensaje de Facebook",
         "twitterMsg": "TwitterMensaje",
         "pinterestMsg": "Mensaje en Pinterest",
@@ -247,31 +108,13 @@
         "variantDetails": "Información de variantes",
         "duplicateVariant": "Duplicado",
         "addVariantOption": "Añadir opción",
-        "addVariantFail": "No se puede crear variante para {{title}}.",
-        "cloneVariantFail": "No es posible clonar variante para {{title}}.",
         "removeVariant": "Eliminar",
-        "removeVariantConfirm": "¿Seguro que quieres eliminar {{title}}?",
-        "restoreVariantConfirm": "¿Seguro que quieres recuperar {{title}} desde la papelera?",
-        "restoreVariantFail": "No se puede restaurar {{title}}.",
-        "archiveVariantConfirm": "¿Seguro que quieres archivar {{title}}?",
-        "thisVariant": "esta variante",
-        "thisOption": "esta opción",
         "duplicateProduct": "Producto duplicado",
         "pinProduct": "Fijar producto",
         "toggleSize": "Tamaño de la palanca",
-        "archiveProduct": "archivo de productos",
-        "restoreProduct": "Recuperar el producto desde la papelera",
-        "archiveThisProduct": "¿Archivar este producto?",
-        "archiveSelectedProducts": "¿Archivar los productos seleccionados?",
         "publish": "Publicar",
         "moreOptions": "Más opciones",
-        "details": "Información",
-        "noSelectedProducts": "No se han seleccionado productos. Usar el ",
-        "orShiftCtrlCmd": " o shift|ctrl|cmd + clic en el producto para realizar selección múltiple. Con \"shift\" puedes seleccionar un rango de productos contiguo.",
-        "makeVisible": "Hacer visible",
-        "hideProduct": "Ocultar producto",
-        "productIsVisible": "El producto es visible",
-        "productIsNotVisible": "El producto no es visible"
+        "details": "Información"
       },
       "productVariant": {
         "addVariantOptions": "Añadir opciones para activar 'Agregar al carrito' butto",
@@ -303,18 +146,8 @@
         "createVariant": "Crear variante"
       },
       "gridPackage": {
-        "enable": "Habilitar",
-        "errorDisabling": "Error al deshabilitar el paquete: ",
-        "errorEnabling": "Error habilitando el paquete: ",
-        "details": "Información",
-        "disable": "Deshabilitar",
-        "disableConfirm": "¿Seguro que quieres deshabilitar {{app}}?",
         "pkgEnabled": "{{app}} está ahora permitida.",
         "pkgDisabled": "{{app}} está deshabilitada."
-      },
-      "gridSettingsPanel": {
-        "title": "Configuración de cuadrícula",
-        "selected": "Seleccionado"
       },
       "cartDrawer": {
         "empty": "Estamos tristes. Tu carrito está vacío.",
@@ -322,12 +155,10 @@
         "checkout": "Pagar ahora",
         "new": "Nuevo",
         "coreOrderWorkflow/created": "Creado",
-        "coreOrderWorkflow/processing": "Procesando",
         "coreOrderWorkflow/completed": "Completado",
         "coreOrderWorkflow/canceled": "Cancelado"
       },
       "cartSubTotals": {
-        "discount": "Descuento",
         "head": "Tu carrito",
         "items": "Artículos en el carrito",
         "subtotal": "Subtotal",
@@ -345,75 +176,34 @@
         "invoice": "Factura",
         "ordersNotFound": "No se han encontrado pedidos",
         "approveInvoice": "Aprobar",
-        "cancelOrderLabel": "Cancelar orden",
         "makeAdjustments": "Hacer ajustes",
         "capturePayment": "Registrar pago",
         "paymentCaptured": "Pago registrado",
         "capturedTotal": "Total registrado",
         "canceledLabel": "Cancelado",
         "refundAmount": "Importe de reembolso",
-        "cancelOrder": "¿Desea cancelar este pedido?",
-        "applyRefundToThisOrder": "¿Aplicar reembolso de {{refund}} {{currencySymbol}} a este pedido?",
-        "applyRefundDuringCancelOrder": "Esto le devolverá el total de la orden de {{currencySymbol}}{{invoiceTotal}}",
-        "cancelOrderThenRestock": "Sí, y reabastecer",
-        "cancelOrderNoRestock": "Sí, pero no hay reabastecimiento",
         "applyRefund": "Aplicar reembolso",
-        "refunding": "Reembolso",
-        "applyDiscount": "Aplicar descuento",
         "adjustedTotal": "Total ajustado",
-        "invalidDiscount": "El descuento no puede ser mayor que el precio total original",
-        "fullDiscountWarning": "Aplicar un descuento del 100% evitará/cancelará este pedido con tu proveedor de servicios de pago",
-        "invalidRefund": "El total del reembolso (o reembolsos) no puede ser mayor que el total ajustado",
         "processor": "Procesador",
-        "placed": "Realizado",
-        "on": "en",
-        "status": "Estado",
-        "completed": "Completado",
-        "processing": "Procesando",
-        "destination": "Destino",
-        "shipment": "Envío",
-        "payment": "Pago",
-        "itemsFrom": "Artículo(s) de",
         "filter": {
           "new": "Nuevo",
           "captured": "Pago registrado",
-          "processing": "Procesando",
           "shipped": "Enviado",
           "completed": "Completado",
           "canceled": "Cancelado",
           "refunded": "Reembolsado"
-        },
-        "showMore": "Mostrar Más"
+        }
       },
       "orderShipping": {
         "shipTo": "Enviar a",
         "notShipped": "No se ha enviado todavía",
         "noTracking": "Sin seguimiento",
         "tracking": "Seguimiento",
-        "printLabels": "Imprimir etiquetas",
-        "printShippingLabel": "Envío",
-        "printCustomsLabel": "aduana",
-        "generateTracking": "Generar etiquetas y Seguimiento",
-        "labelError": "Error al crear el envío {{err}} etiqueta",
-        "carrier": "Carrier",
-        "addTracking": "Añadir seguimiento",
-        "itemsHaveBeenShipped": "Se han enviado los artículos",
         "shipmentEmpty": "Este envío no incluye ningún artículo",
         "shipmentPacked": "Todos los productos empaquetados",
         "shipped": "Enviado",
-        "delivered": "Entregado",
         "shippingNotifyCustomer": "Notificar al cliente que se le enviarán sus productos pronto.",
         "resendNotification": "Reenviar aviso de envío"
-      },
-      "orderWorkflow": {
-        "orderDetails": "Información de envío",
-        "invoice": "Factura",
-        "lineItems": "Artículos de línea",
-        "shipmentTracking": "Seguimiento de envío"
-      },
-      "cartCheckout": {
-        "surprise": "¡Caramba!",
-        "emptyCheckoutCart": "¡parece que tu carrito está vacío!"
       },
       "cartCompleted": {
         "thankYou": "¡Gracias!",
@@ -421,8 +211,6 @@
         "yourOrderIsNow": "Tu pedido está ahora",
         "summaryMessage": "Gracias por tu pedido.",
         "submitted": "enviado",
-        "processing": "tratamiento",
-        "completed": "terminado",
         "registerGuest": "¡Hola! Añadir un correo electrónico y recibir actualizaciones sobre pedidos.",
         "trackYourDelivery": "Las actualizaciones sobre pedidos se enviarán a",
         "noOrdersFound": "No se han encontrado pedidos.",
@@ -440,25 +228,54 @@
         "addAddress": "Añadir dirección",
         "chooseAddress": "Elegir envío y dirección de facturación",
         "createDefault": "Crear tu dirección predeterminada",
-        "edit": "Editar",
-        "removeAddress": "Eliminar dirección",
         "selectShippingAddress": "Seleccionar una dirección de envío",
-        "selectBillingAddress": "Selecciona una dirección de facturación",
-        "cantRemoveThisAddress": "No se puede eliminar esta dirección: {{err}}"
+        "selectBillingAddress": "Selecciona una dirección de facturación"
       },
       "addressBookAdd": {
         "addAddress": "Añade una nueva dirección",
-        "createAddress": "Crea tu dirección predeterminada",
-        "failedToAddAddress": "No se ha podido acceder: {{err}}",
-        "validatedAddress": "Los cambios realizados en su dirección basan en la validación. Por favor asegúrese de que esto es correcto"
+        "createAddress": "Crea tu dirección predeterminada"
       },
       "addressBookEdit": {
-        "editAddress": "Editar esta dirección",
-        "addressValidation": "La validación de direcciones",
-        "reviewAddress": "Para obtener el mejor cumplimiento, valide su dirección",
-        "somethingWentWrong": "Algo ha salido mal: {{err}}",
-        "enteredAddress": "Dirección introducida",
-        "validatedAddress": "Validar dirección"
+        "editAddress": "Editar esta dirección"
+      },
+      "address": {
+        "country": "País",
+        "fullName": "Nombre completo",
+        "address1": "Dirección",
+        "address2": "Dirección",
+        "postal": "Postal",
+        "city": "Ciudad",
+        "region": "Región",
+        "phone": "Teléfono",
+        "isShippingDefault": "¿Quieres que esta sea tu dirección de facturación?",
+        "isBillingDefault": "¿Quieres que esta sea tu dirección de facturación predeterminada?",
+        "isCommercial": "Esta es una dirección comercial."
+      },
+      "checkoutProgressBar": {
+        "login": "Cuenta",
+        "shippingBilling": "Datos de dirección",
+        "shippingOptions": "Opciones de envío",
+        "reviewPayment": "Revisar",
+        "complete": "Completar"
+      },
+      "checkoutReview": {
+        "review": "Revisar"
+      },
+      "consoleIcon": {
+        "iconTitle": "Ver consola",
+        "text": "Consola"
+      },
+      "createProductIcon": {
+        "iconTitle": "Crear producto",
+        "text": "Crear"
+      },
+      "social": {
+        "facebook": "Facebook",
+        "google": "Google",
+        "github": "GitHub",
+        "meetup": "Meetup",
+        "twitter": "Twitter",
+        "weibo": "Weibo"
       },
       "corePackageConfig": {
         "settings": {
@@ -475,6 +292,10 @@
             "apiKey": "Clave de API de Google"
           }
         }
+      },
+      "revisions": {
+        "isDisabled": "El control de revisión está deshabilitado Todos los cambios se publicarán de imediato.",
+        "isEnabled": "Revisión de control está habilitada para los productos. Se necesitan cualquier cambio que se publicará antes de ser visibles para los clientes."
       },
       "shop": {
         "defaultPaymentMethod": "Método de pago predeterminado",
@@ -508,114 +329,8 @@
           "isCommercial": "Esta es una dirección comercial"
         }
       },
-      "revisions": {
-        "isDisabled": "El control de revisión está deshabilitado Todos los cambios se publicarán de imediato.",
-        "isEnabled": "Revisión de control está habilitada para los productos. Se necesitan cualquier cambio que se publicará antes de ser visibles para los clientes.",
-        "unpublishedChanges": "Cambios sin publicar",
-        "publishChanges": "Publicar cambios",
-        "showChanges": "Mostrar cambios",
-        "hideChanges": "Ocultar cambios",
-        "discardChanges": "Descartar cambios",
-        "changedPublished": "Cambios publicados correctamente",
-        "changesDiscarded": "Los cambios se han descartado",
-        "noChanges": "Sin cambios",
-        "noChangesPublished": "No hay cambios para publicar",
-        "noChangesDiscarded": "No hay cambios que descartar"
-      },
-      "address": {
-        "country": "País",
-        "fullName": "Nombre completo",
-        "address1": "Dirección",
-        "address2": "Dirección",
-        "postal": "Postal",
-        "city": "Ciudad",
-        "region": "Región",
-        "phone": "Teléfono",
-        "isShippingDefault": "¿Quieres que esta sea tu dirección de facturación?",
-        "isBillingDefault": "¿Quieres que esta sea tu dirección de facturación predeterminada?",
-        "isCommercial": "Esta es una dirección comercial."
-      },
-      "i18nSettings": {
-        "enabledLanguages": "Idiomas"
-      },
-      "checkoutProgressBar": {
-        "login": "Cuenta",
-        "shippingBilling": "Datos de dirección",
-        "shippingOptions": "Opciones de envío",
-        "reviewPayment": "Revisar",
-        "complete": "Completar"
-      },
-      "checkoutReview": {
-        "review": "Revisar"
-      },
-      "uom": {
-        "OZ": "Onzas",
-        "LB": "Libras",
-        "GR": "Gramos",
-        "KG": "Kilogramos"
-      },
-      "consoleIcon": {
-        "iconTitle": "Ver consola",
-        "text": "Consola"
-      },
-      "createProductIcon": {
-        "iconTitle": "Crear producto",
-        "text": "Crear"
-      },
-      "social": {
-        "socialTitle": "Social",
-        "facebook": "Facebook",
-        "google": "Google",
-        "github": "GitHub",
-        "instagram": "Instagram",
-        "meetup": "Meetup",
-        "ok": "OK",
-        "twitter": "Twitter",
-        "vk": "VK",
-        "weibo": "Weibo"
-      },
-      "search": {
-        "clearSearch": "Borrar",
-        "noProductsFound": "No se encontraron productos",
-        "noOrdersFound": "No hay pedidos",
-        "noAccountsFound": "No hay cuentas.",
-        "searchInputLabel": "Buscar reacción ",
-        "suggestedTags": "Etiquetas sugeridas",
-        "searchTypeProducts": "Productos",
-        "searchTypeAccounts": "Cuentas",
-        "searchTypeOrders": "Pedidos",
-        "accountSearchResults": {
-          "accountId": "ID de cuenta",
-          "shopId": "ID de tienda",
-          "firstName": "Nombre",
-          "lastName": "Apellido",
-          "phone": "Teléfono",
-          "emails": "Correo electrónico"
-        },
-        "orderSearchResults": {
-          "orderId": "ID de pedido",
-          "shopId": "ID de tienda",
-          "shippingAddress": "Dirección",
-          "shippingCity": "Ciudad",
-          "shippingRegion": "Región",
-          "shippingCountry": "País",
-          "shippingPhone": "Teléfono",
-          "shippingName": "Nombre",
-          "shippingStatus": "Estado",
-          "billingAddress": "Dirección",
-          "billingCity": "Ciudad\n",
-          "billingRegion": "Región",
-          "billingCountry": "País",
-          "billingPhone": "Teléfono",
-          "billingStatus": "Estado",
-          "userEmails": "Correo electrónico",
-          "orderDate": "Fecha",
-          "orderTotal": "Total"
-        }
-      },
       "accountsUI": {
         "members": "Miembros",
-        "manage": "Gestionar",
         "guest": "Invitado",
         "addMember": "Añadir un miembro",
         "add": "añadir",
@@ -633,7 +348,6 @@
         "emailResetLink": "Link de restablecer contraseña",
         "forgotPassword": "Restablecer contraseña",
         "ifYouAlreadyHaveAnAccount": "Si ya tienes una cuenta",
-        "name": "Nombre",
         "newPassword": "Nueva contraseña",
         "newPasswordAgain": "Contraseña nueva (repetir)",
         "optional": "Opcional",
@@ -646,27 +360,22 @@
         "setPassword": "Establecer contraseña",
         "sign": "Firmar",
         "signIn": "Iniciar sesión",
-        "signInService": "Iniciar sesión en {{service}}",
         "signin": "iniciar sesión",
         "signInWith": "Iniciar sesión con",
         "signUpWith": "Iniciar sesión con",
         "signedIn": "Has iniciado sesión.",
         "signOut": "Cerrar sesión",
         "signUp": "Registrar",
-        "signUpButton": "Registrar",
         "signupCode": "Código de registro",
         "signUpWithYourEmailAddress": "Regístrate con tu dirección de correo electrónico",
         "terms": "Condiciones de uso",
         "updateYourPassword": "Actualiza tu contraseña",
         "updatePasswordAndContinue": "Actualizar y continuar",
-        "updatedServiceConfiguration": "Configuración de servicio actualizado para {{service}}",
         "username": "Nombre de usuario",
         "usernameOrEmail": "Nombre de usuario o correo electrónico",
         "with": "con",
         "checkoutAsGuest": "Realizar la compra sin cuenta de usuario",
         "role": "Función",
-        "yourOrders": "Tus pedidos",
-        "addressBook": "Libro de direcciones",
         "info": {
           "emailSent": "Correo electrónico enviado",
           "emailVerified": "Correo electrónico comprobado",
@@ -678,11 +387,9 @@
         },
         "error": {
           "emailRequired": "Se necesita una dirección de correo electrónico.",
-          "groupRequired": "Se requiere un grupo que no sea el grupo de propietarios predeterminado.",
           "passwordRequired": "Se necesita una contraseña.",
           "passwordMustBeAtLeast6CharactersLong": "La contraseña debe tener como mínimo 6 caracteres.",
           "passwordMustContainRequirements": "La contraseña debe contener al menos un número o un símbolo.",
-          "usernameMinLength": "El nombre de usuario debe tener al menos 3 caracteres",
           "minChar": "Contraseña de 6 caracteres como mínimo",
           "pwdsDontMatch": "Las contraseñas no coinciden",
           "pwOneDigit": "La contraseña debe tener al menos un dígito.",
@@ -694,10 +401,6 @@
           "usernameRequired": "Se necesita un nombre de usuario.",
           "emailAlreadyExists": "El correo electrónico ya existe.",
           "emailDoesntMatchTheCriteria": "El correo electrónico no se ajusta a los criterios.",
-          "errorSendingEmail": "Error al enviar el correo electrónico, posible fallo de configuración.",
-          "unableToSendInvitationEmail": "No se ha podido enviar la invitación por correo electrónico.",
-          "userWithEmailAlreadyExists": "Ya existe un usuario con esta dirección de correo electrónico.",
-          "failedToLogout": "No se pudo cerrar la sesión.",
           "invalidLoginToken": "Token de inicio de sesión no válido",
           "loginForbidden": "Se ha impedido el inicio de sesión",
           "serviceUnknown": "Servicio desconocido",
@@ -726,18 +429,6 @@
           "matchFailed": "Coincidencia fallida",
           "unknownError": "Error desconocido"
         }
-      },
-      "loginServices": {
-        "appId": "ID de la aplicación",
-        "secret": "Secreto",
-        "clientId": "Identificación del cliente",
-        "consumerKey": "Clave API"
-      },
-      "error": {
-        "nameRequired": "Se necesita un nombre.",
-        "isRequired": "{{field}} es un campo obligatorio.",
-        "mustBeNumber": "{{field}} debe ser un número.",
-        "variantFieldIsRequired": "Se necesita el {{field}} de la variante {{number}}."
       }
     }
   }

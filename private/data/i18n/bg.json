@@ -7,117 +7,35 @@
       "languages": {
         "select": "Избери език"
       },
-      "currencies": {
-        "select": "Изберете Валута"
-      },
       "admin": {
-        "shortcut": {
-          "addProductLabel": "Добави продукта",
-          "accountsLabel": "Профили"
-        },
-        "dashboard": {
-          "i18NLabel": "i18n",
-          "i18NTitle": "i18n",
-          "i18NDescription": "Интернационализация комунални услуги",
-          "routingLabel": "Routing",
-          "routingTitle": "Routing",
-          "routingDescription": "маршрутизиране комунални услуги",
-          "filtrationLabel": "филтриране",
-          "filtrationDescription": "Продукти филтрация за реакция"
-        },
         "groups": {
-          "appearance": "Външен вид",
-          "addUserError": "Грешка при добавяне на потребител към група",
-          "addUserSuccess": "Добавен потребител към групата",
-          "removeUserError": "Грешка при премахването на потребителя за групиране",
-          "removeUserSuccess": "Потребителят бе премахнат успешно",
-          "connect": "Свържете",
-          "core": "сърцевина",
-          "name": "Име",
           "email": "Email настройки",
-          "create": "Създаване на група",
-          "update": "Актуализиране на групата",
-          "lastActive": "Последно активен",
           "description": "Добавете описание на продукта",
-          "remove": "Премахни",
-          "newGroup": "Нова група",
-          "selectGroup": "Изберете Група",
-          "editGroups": "Редактиране на групи",
-          "dashboard": "Табло",
-          "errorCreate": "Грешка при създаване на група",
-          "successCreate": "Групата е създадена успешно",
-          "errorUpdate": "Грешка при актуализирането на групата",
-          "successUpdate": "Групата бе актуализирана успешно",
-          "misc": "Разни",
-          "paymentMethod": "доставчици на платежни",
-          "utilities": "комунални услуги",
-          "marketplace": "пазар"
+          "remove": "Премахни"
         },
         "settings": {
-          "accountSettingsLabel": "Настройки на профила",
-          "accountSettingsTitle": "Вход за Услуги",
-          "accountSettingsDescription": "Удостоверяване чрез социални доставчици",
-          "saveSuccess": "Настройки актуализирани.",
-          "saveFailed": "Неуспешно актуализиране на настройките.",
-          "addShopMemberLabel": "Добави Shop държава",
-          "permissionsSettingsLabel": "Permissions",
           "localizationAndI18NLabel": "Локализация и i18n"
-        },
-        "userAccountDropdown": {
-          "profileLabel": "Профил"
         }
       },
-      "accounts": {
-        "addMember": "Добави държава",
-        "shopMembers": "магазин Потребители",
-        "guests": "Гости"
-      },
       "app": {
-        "add": "Добави",
-        "editMode": "режим на редактиране",
-        "administratorView": "Administrator View",
-        "customerView": "Преглед на клиенти",
-        "createContent": "Създаване на съдържание",
-        "auto": "Автоматичен",
         "save": "Запиши",
         "saveAndContinue": "Запиши и продължи",
-        "saveChanges": "Запазите промените",
-        "selectOne": "(Избери един)",
         "cancel": "Отмени",
-        "success": "Успех",
-        "error": "Грешка",
         "submit": "Предай",
         "delete": "Изтрий",
-        "deleted": "Изтрити",
-        "archive": "Архив",
-        "archived": "Архив",
         "create": "Създай",
         "close": "Затвори",
         "settings": "Опции",
         "loading": "Зареждане...",
         "toggle": "Превключване",
-        "toggleEditMode": "Toggle Edit Mode",
         "warning": "Опа..!",
         "unauthorizedMessage": "Нямате разрешение да видите това съдържание.",
-        "updateSettings": "Настройки за актуализация",
         "monthOptions": "Изберете месец",
         "yearOptions": "Изберете година",
         "shopSettings": "Настройки на магазина",
         "dashboard": "Табло",
         "print": "Принтирай",
-        "notFound": "Тази страница не е намерена.",
-        "pageNotFound": "Тази страница не е намерена.",
-        "notFoundTitle": "Ами сега!",
-        "notFoundError": "Страницата не е намерена.",
-        "productNotFound": "Този продукт не е намерен.",
-        "loadMoreProducts": "Зареждане на още продукти",
-        "noProductsFound": "Няма намерени продукти.",
-        "private": "частен",
-        "public": "обществен",
-        "shortcut": {
-          "addProductLabel": "Добави продукта",
-          "accountsLabel": "Профили"
-        }
+        "auto": "Автоматичен"
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -138,34 +56,6 @@
         "settingsSaved": "Настройки за търсенето спасени",
         "settingsfailed": "актуализация Настройки за търсенето провали"
       },
-      "shopSettings": {
-        "localization": "Локализация",
-        "options": "Настроики",
-        "paymentMethods": "Методи на плащане",
-        "externalServices": "външни услуги",
-        "shopLocalizationSettingsSaved": "настройки Shop локализация спасени.",
-        "shopLocalizationSettingsFailed": "Магазин актуализация на настройките за локализация провали.",
-        "shopPaymentMethodsSaved": "Магазин Методи на плащане настройки, запаметени.",
-        "shopPaymentMethodsFailed": "Магазин актуализация Методи на плащане настройки провали.",
-        "shopBrandAssetsSaved": "Актуализиран актив на марката",
-        "shopBrandAssetsFailed": "Не може да се актуализира активът на марката"
-      },
-      "notifications": {
-        "body": {
-          "noNotifications": "Все още няма уведомления",
-          "markAllAsRead": "маркирай всички като прочетени",
-          "recent": "скорошен",
-          "viewAll": "Виж всички"
-        },
-        "messages": {
-          "orderCancelled": "Вашата цел е отменен.",
-          "newOrder": "Вашата поръчка се обработва.",
-          "forAdmin": "Имате нов ред.",
-          "orderDelivered": "Вашата цел е бил доставен.",
-          "orderProcessing": "Вашата поръчка се обработва.",
-          "orderShipped": "Вашата поръчка е изпратена."
-        }
-      },
       "header": {
         "tagsAdd": "Добави етикет",
         "search": "Търси продукт..."
@@ -175,10 +65,6 @@
         "whenYouAreDone": "Когато редакцията свърши.",
         "tags": "Ключови думи",
         "tagsAdd": "Добави ключова дума",
-        "tagsEdit": "Редактиране на тагове",
-        "tagExists": "Tag вече съществува, или е празен.",
-        "tagInUse": "Tag е в употреба и не може да бъде изтрита.",
-        "dropFiles": "Капка файлове за качване",
         "addInventory": "Добави инвентар",
         "barcode": "Баркод",
         "confirmDeleteBarcode": "Are you sure you want to delete barcode",
@@ -192,8 +78,6 @@
         "addToCart": "Добави в количката",
         "chooseOptions": "Моля изберете опции преди да добавите в количката",
         "outOfStock": "Съжеляваме! Този продукт не е в наличност.",
-        "productArchiveError": "Възникна грешка при изпращането на {{product}} до архивите.",
-        "archiveErrorTheProduct": "продуктът",
         "publishFirst": "Публикувайте продуктът, преди да го добавите в количката!",
         "quantityAbbreviation": "Кол.",
         "selectOption": "Изберете опция преди добавяне в количката.",
@@ -204,40 +88,17 @@
         "limitedSupply": "Ограничени количества",
         "publishProductVisible": "{{product}}Продуктът e видим",
         "publishProductHidden": "{{product}}Продуктът е видим",
-        "clonedAlert": "клонирани {{product}}",
-        "clonedAlert_plural": "клонирани {{product}}",
-        "archivedAlert": "Архив {{product}}",
-        "archivedAlert_plural": "Архив {{product}}",
-        "theProduct": "продуктът",
-        "theSelectedProducts": "избраните продукти",
         "startTracking": "Проследяване",
         "addBarcode": "Добави баркод",
         "quantity": "Количество",
         "quantityGreaterThanZero": "Грешка: Количеството трябва да е повече от 0",
-        "notFoundTitle": "Ами сега!",
-        "notFoundError": "Това не е продукт, което търсите."
-      },
-      "tags": {
-        "tagName": "Tag Име",
-        "addTag": "Добави Tag",
-        "updateTag": "Актуализация Tag",
-        "addGroupTag": "Добави Група Tag",
-        "addSubTag": "Добави Sub Tag",
-        "removeTag": "Премахване на маркера",
-        "createTag": "Създаване Tag"
+        "dropFiles": "Капка файлове за качване"
       },
       "productDetailEdit": {
-        "editOption": "Edit опция",
-        "productSettings": "Настройки за продукта",
-        "product": "продукт",
-        "size": "размер",
         "title": "Заглавие на продукта",
-        "untitledProduct": "Untitled Каталог",
-        "parmalink": "Permalink",
         "pageTitle": "Заглавие на страницата на продукта",
         "vendor": "Доставчик на продукта",
         "description": "Добавете описание на продукта",
-        "originCountry": "произход Страна",
         "facebookMsg": "Facebook съобщение",
         "twitterMsg": "Twitter съобщение ",
         "pinterestMsg": "Pinterest съобщение ",
@@ -247,31 +108,13 @@
         "variantDetails": "Вариант Детайли",
         "duplicateVariant": "Дубликат",
         "addVariantOption": "Добавяне на опция",
-        "addVariantFail": "Не може да се създаде вариант за {{title}}.",
-        "cloneVariantFail": "Не може да се клонира вариант за {{title}}.",
         "removeVariant": "Премахни",
-        "removeVariantConfirm": "Сигурни ли сте, че искате да изтриете {{title}}",
-        "restoreVariantConfirm": "Сигурни ли сте че искате да възстановите {{title}} от боклука?",
-        "restoreVariantFail": "Не може да се възстанови {{title}}.",
-        "archiveVariantConfirm": "Сигурни ли сте че искате да архивирате {{title}}",
-        "thisVariant": "този вариант",
-        "thisOption": "тази опция",
         "duplicateProduct": "Дублиране на продукта",
         "pinProduct": "Запомнете продукта",
         "toggleSize": "Изберете размер",
-        "archiveProduct": "Архив на продукта",
-        "restoreProduct": "Възстановяване на продукция от кошчето",
-        "archiveThisProduct": "Архивиране този продукт?",
-        "archiveSelectedProducts": "Архив избрани продукти?",
         "publish": "Публикуване",
         "moreOptions": "Още настройки",
-        "details": "Детайли",
-        "noSelectedProducts": "Няма избран продукти. Използвай",
-        "orShiftCtrlCmd": " или смяна | Ctrl | Cmd + щракнете върху продукти, за да изберете многократно. С промяна можете да изберете съседни гама от продукти.",
-        "makeVisible": "Направи Видим",
-        "hideProduct": "Hide Каталог",
-        "productIsVisible": "Продуктът е видима",
-        "productIsNotVisible": "Продуктът не се вижда"
+        "details": "Детайли"
       },
       "productVariant": {
         "addVariantOptions": "Добави опции, за да се даде възможност на \"Добави в количката\" butto",
@@ -303,18 +146,8 @@
         "createVariant": "Създаване на вариант"
       },
       "gridPackage": {
-        "enable": "Активиране",
-        "errorDisabling": "Грешка деактивирането пакет:",
-        "errorEnabling": "Грешка позволява пакет:",
-        "details": "Детайли",
-        "disable": "правя неспособен",
-        "disableConfirm": "Сигурни ли сте че искате да забраните {{app}}?",
         "pkgEnabled": "{{app}}е включен.",
         "pkgDisabled": "{{app}}е изключен."
-      },
-      "gridSettingsPanel": {
-        "title": "Настройки грид",
-        "selected": "подбран"
       },
       "cartDrawer": {
         "empty": "За съжаление кошницата Ви е празна.",
@@ -322,12 +155,10 @@
         "checkout": "Към кошницата",
         "new": "Нов",
         "coreOrderWorkflow/created": "Създадено",
-        "coreOrderWorkflow/processing": "обработване",
         "coreOrderWorkflow/completed": "завършен",
         "coreOrderWorkflow/canceled": "отменен"
       },
       "cartSubTotals": {
-        "discount": "отстъпка",
         "head": "Вашата кошница",
         "items": "Продукти в кошницата",
         "subtotal": "Обща сума без ДДС",
@@ -345,75 +176,34 @@
         "invoice": "Фактура",
         "ordersNotFound": "Няма заявки",
         "approveInvoice": "Одобрено плащане",
-        "cancelOrderLabel": "Отмяна на поръчката",
         "makeAdjustments": "Направи промени",
         "capturePayment": "Одобри плащане",
         "paymentCaptured": "Плащането е одобрено",
         "capturedTotal": "Одобрена сума",
         "canceledLabel": "отменен",
         "refundAmount": "Възстановена сума",
-        "cancelOrder": "Искате ли да анулирате тази поръчка?",
-        "applyRefundToThisOrder": "Нанесете възстановяване на {{currencySymbol}}{{refund}} до тази цел?",
-        "applyRefundDuringCancelOrder": "Това ще възстанови общата сума на поръчката на {{currencySymbol}}{{invoiceTotal}}",
-        "cancelOrderThenRestock": "Да, и отново",
-        "cancelOrderNoRestock": "Да, но без зареждане",
         "applyRefund": "Издай възстановяване",
-        "refunding": "Сумата се възстановява",
-        "applyDiscount": "Прилагане на отстъпка",
         "adjustedTotal": "Корегирана сума",
-        "invalidDiscount": "Отстъпка не може да бъде по-голям от оригиналния крайна цена",
-        "fullDiscountWarning": "Прилагане на 100% отстъпка ще анулира / отмени тази заповед с вашия доставчик на платежни",
-        "invalidRefund": "Възстановяване на сума (и) общо не може да бъде по-голяма от увеличената обща",
         "processor": "Начин за плащане",
-        "placed": "Изиграни",
-        "on": "за",
-        "status": "Статус",
-        "completed": "завършен",
-        "processing": "обработване",
-        "destination": "Дестинация",
-        "shipment": "пратка",
-        "payment": "плащане",
-        "itemsFrom": "продукт (а) от",
         "filter": {
           "new": "Нов",
           "captured": "Плащането Заснето",
-          "processing": "обработване",
           "shipped": "Доставят",
           "completed": "завършен",
           "canceled": "отменен",
           "refunded": "Възстановява"
-        },
-        "showMore": "Показване на още"
+        }
       },
       "orderShipping": {
         "shipTo": "Изпрати до",
         "notShipped": "Още не е изпратено",
         "noTracking": "Без проследяване",
         "tracking": "Проследяване",
-        "printLabels": "Печат на етикети",
-        "printShippingLabel": "Доставка",
-        "printCustomsLabel": "митница",
-        "generateTracking": "Генериране Label и проследяване",
-        "labelError": "Грешка при създаване на корабоплаването {{err}} етикет",
-        "carrier": "носител",
-        "addTracking": "Добави за проследяване",
-        "itemsHaveBeenShipped": "Предмети, са били изпратени",
         "shipmentEmpty": "В поръчката няма продукти",
         "shipmentPacked": "Всички продукти са опаковани",
         "shipped": "Изпратено",
-        "delivered": "Доставени",
         "shippingNotifyCustomer": "Съобщи на потребителя, че поръчката ще им бъде изпратена.",
         "resendNotification": "Изпрати съобщението за поръчката отново"
-      },
-      "orderWorkflow": {
-        "orderDetails": "подробности за поръчката",
-        "invoice": "фактура",
-        "lineItems": "Редните елементи",
-        "shipmentTracking": "пратка проследяване"
-      },
-      "cartCheckout": {
-        "surprise": "Woah!",
-        "emptyCheckoutCart": "Как изглежда вашата количка е празна!"
       },
       "cartCompleted": {
         "thankYou": "Благодарим Ви!",
@@ -421,8 +211,6 @@
         "yourOrderIsNow": "Поръчката Ви се обработва",
         "summaryMessage": "Благодарим Ви за поръчката.",
         "submitted": "Изпратена",
-        "processing": "обработване",
-        "completed": "завършен",
         "registerGuest": "Добавете и-мейл, за да получавате известия за поръчката.",
         "trackYourDelivery": "Информация за пратката",
         "noOrdersFound": "Не е намерена поръчка.",
@@ -440,25 +228,54 @@
         "addAddress": "Добавете адрес",
         "chooseAddress": "Изберете адрес за доставки и плащане.",
         "createDefault": "Изберете подразбиращия се адрес",
-        "edit": "Редактирам",
-        "removeAddress": "Премахване Адрес",
         "selectShippingAddress": "Изберете адрес за доставки.",
-        "selectBillingAddress": "Изберете адрес за плащане.",
-        "cantRemoveThisAddress": "не може да се премахне този адрес: {{err}}"
+        "selectBillingAddress": "Изберете адрес за плащане."
       },
       "addressBookAdd": {
         "addAddress": "Добавете адрес",
-        "createAddress": "Създайте адрес по подразбиране",
-        "failedToAddAddress": "Неуспешно добавяне на адрес: {{err}}",
-        "validatedAddress": "Направени промени в адреса си въз основа на валидирането. Моля, уверете се че това е правилната"
+        "createAddress": "Създайте адрес по подразбиране"
       },
       "addressBookEdit": {
-        "editAddress": "Редактирайте адреса",
-        "addressValidation": "Адрес за потвърждаване",
-        "reviewAddress": "За най-добро съответствие, моля, потвърдете адреса си",
-        "somethingWentWrong": "Нещо се обърка: {{err}}",
-        "enteredAddress": "Въведеният адрес",
-        "validatedAddress": "Потвърдете адреса"
+        "editAddress": "Редактирайте адреса"
+      },
+      "address": {
+        "country": "Държава",
+        "fullName": "Пълно име",
+        "address1": "Адрес 1",
+        "address2": "Адрес 2",
+        "postal": "Поща",
+        "city": "Град",
+        "region": "Регион",
+        "phone": "Телефон",
+        "isShippingDefault": "Сигурни ли сте, че искате да направите този адрес за доставка подразбиращ се?",
+        "isBillingDefault": "Сигурни ли сте, че искате да направите този адрес за плащане подразбиращ се?",
+        "isCommercial": "Това е търговски адрес."
+      },
+      "checkoutProgressBar": {
+        "login": "Акаунт",
+        "shippingBilling": "Допълнителни адресни данни",
+        "shippingOptions": "Опции за доставка",
+        "reviewPayment": "Преглед",
+        "complete": "Завършено"
+      },
+      "checkoutReview": {
+        "review": "Преглед"
+      },
+      "consoleIcon": {
+        "iconTitle": "Преглед на конзолата",
+        "text": "Конзола"
+      },
+      "createProductIcon": {
+        "iconTitle": "Създайте продукт",
+        "text": "Създай"
+      },
+      "social": {
+        "facebook": "Facebook",
+        "google": "Google",
+        "github": "GitHub",
+        "meetup": "Meetup",
+        "twitter": "Twitter",
+        "weibo": "Weibo"
       },
       "corePackageConfig": {
         "settings": {
@@ -475,6 +292,10 @@
             "apiKey": "Google API Key"
           }
         }
+      },
+      "revisions": {
+        "isDisabled": "контрол на контрол е забранено. Всички промени ще бъдат публикувани веднага.",
+        "isEnabled": "контрол на контрол е активиран за продукти. ще се нуждае от никакви промени, за да бъдат публикувани преди да бъдат видими за клиентите."
       },
       "shop": {
         "defaultPaymentMethod": "Default Начин на плащане",
@@ -508,114 +329,8 @@
           "isCommercial": "Това е търговски адрес."
         }
       },
-      "revisions": {
-        "isDisabled": "контрол на контрол е забранено. Всички промени ще бъдат публикувани веднага.",
-        "isEnabled": "контрол на контрол е активиран за продукти. ще се нуждае от никакви промени, за да бъдат публикувани преди да бъдат видими за клиентите.",
-        "unpublishedChanges": "Непубликувани промени",
-        "publishChanges": "Публикуване на промените",
-        "showChanges": "Показване на промените",
-        "hideChanges": "Скриване на промените",
-        "discardChanges": "Отхвърлите промените",
-        "changedPublished": "Промени публикувани успешно",
-        "changesDiscarded": "Промени изхвърли успешно",
-        "noChanges": "Няма промени",
-        "noChangesPublished": "Няма промени за публикуване",
-        "noChangesDiscarded": "Няма промени, за да изхвърли"
-      },
-      "address": {
-        "country": "Държава",
-        "fullName": "Пълно име",
-        "address1": "Адрес 1",
-        "address2": "Адрес 2",
-        "postal": "Поща",
-        "city": "Град",
-        "region": "Регион",
-        "phone": "Телефон",
-        "isShippingDefault": "Сигурни ли сте, че искате да направите този адрес за доставка подразбиращ се?",
-        "isBillingDefault": "Сигурни ли сте, че искате да направите този адрес за плащане подразбиращ се?",
-        "isCommercial": "Това е търговски адрес."
-      },
-      "i18nSettings": {
-        "enabledLanguages": "Езици"
-      },
-      "checkoutProgressBar": {
-        "login": "Акаунт",
-        "shippingBilling": "Допълнителни адресни данни",
-        "shippingOptions": "Опции за доставка",
-        "reviewPayment": "Преглед",
-        "complete": "Завършено"
-      },
-      "checkoutReview": {
-        "review": "Преглед"
-      },
-      "uom": {
-        "OZ": "Унции",
-        "LB": "лири",
-        "GR": "грама",
-        "KG": "Килограми"
-      },
-      "consoleIcon": {
-        "iconTitle": "Преглед на конзолата",
-        "text": "Конзола"
-      },
-      "createProductIcon": {
-        "iconTitle": "Създайте продукт",
-        "text": "Създай"
-      },
-      "social": {
-        "socialTitle": "социален",
-        "facebook": "Facebook",
-        "google": "Google",
-        "github": "GitHub",
-        "instagram": "Instagram",
-        "meetup": "Meetup",
-        "ok": "Добре",
-        "twitter": "Twitter",
-        "vk": "VK",
-        "weibo": "Weibo"
-      },
-      "search": {
-        "clearSearch": "ясно",
-        "noProductsFound": "Няма намерени продукти.",
-        "noOrdersFound": "Няма намерени поръчки.",
-        "noAccountsFound": "Няма намерени профили.",
-        "searchInputLabel": "Търсене реакция",
-        "suggestedTags": "Предложени тагове",
-        "searchTypeProducts": "Продукти",
-        "searchTypeAccounts": "Профили",
-        "searchTypeOrders": "Поръчки",
-        "accountSearchResults": {
-          "accountId": "Account ID",
-          "shopId": "Магазин ID",
-          "firstName": "Първо име",
-          "lastName": "Фамилия",
-          "phone": "Телефон",
-          "emails": "електронна поща"
-        },
-        "orderSearchResults": {
-          "orderId": "Поръчка ID",
-          "shopId": "Магазин ID",
-          "shippingAddress": "адрес",
-          "shippingCity": "град",
-          "shippingRegion": "област",
-          "shippingCountry": "Държава",
-          "shippingPhone": "Телефон",
-          "shippingName": "Име",
-          "shippingStatus": "Статус",
-          "billingAddress": "адрес",
-          "billingCity": "град",
-          "billingRegion": "област",
-          "billingCountry": "Държава",
-          "billingPhone": "Телефон",
-          "billingStatus": "Статус",
-          "userEmails": "електронна поща",
-          "orderDate": "Дата",
-          "orderTotal": "Общо"
-        }
-      },
       "accountsUI": {
         "members": "Участници",
-        "manage": "Управлявам",
         "guest": "Гост",
         "addMember": "Добави участник",
         "add": "добави",
@@ -633,7 +348,6 @@
         "emailResetLink": "линк за нулиране на акаунта",
         "forgotPassword": "забравих си паролата",
         "ifYouAlreadyHaveAnAccount": "Ако имате акаунт",
-        "name": "Име",
         "newPassword": "Нова парола",
         "newPasswordAgain": "Нова парола (още веднъж)",
         "optional": "Незадължително",
@@ -646,27 +360,22 @@
         "setPassword": "избери парола",
         "sign": "подпис",
         "signIn": "Впиши се",
-        "signInService": "{{service}} Вход",
         "signin": "Впиши се",
         "signInWith": "Впиши се със",
         "signUpWith": "Регистрирай се с",
         "signedIn": "Вписани сте.",
         "signOut": "Отписване ",
         "signUp": "Регистрация",
-        "signUpButton": "Регистрирам",
         "signupCode": "Регистрационен код",
         "signUpWithYourEmailAddress": "Регистрирайте се с вашия имейл адрес",
         "terms": "Условия за ползване",
         "updateYourPassword": "Обновете паролата си",
         "updatePasswordAndContinue": "Обновете и продължете",
-        "updatedServiceConfiguration": "Обновено конфигурация услуга за {{service}}",
         "username": "Потребителско име",
         "usernameOrEmail": "Потребителско име имейл",
         "with": "с",
         "checkoutAsGuest": "Завършете поръчката без профил",
         "role": "Роля",
-        "yourOrders": "Вашите поръчки",
-        "addressBook": "Address Book",
         "info": {
           "emailSent": "Имейлът е изпратен.",
           "emailVerified": "Имейлът е потвърден",
@@ -678,11 +387,9 @@
         },
         "error": {
           "emailRequired": " Изисква си имейл.",
-          "groupRequired": "Необходима е група, различна от групата на собственика по подразбиране.",
           "passwordRequired": "Изисква се парола.",
           "passwordMustBeAtLeast6CharactersLong": "Паролата трябва за е дълга поне 6 знака.",
           "passwordMustContainRequirements": "Паролата трябва да съдържа поне една цифра или един символ.",
-          "usernameMinLength": "Потребителското име трябва да е дълга поне 3 символа",
           "minChar": "6 знака са необходими в паролата.",
           "pwdsDontMatch": "Паролите не са еднакви",
           "pwOneDigit": "Паролата трябва да съдържа поне една цифра.",
@@ -694,10 +401,6 @@
           "usernameRequired": "Необходимо е потребителско име.",
           "emailAlreadyExists": "Имейлът е зает.",
           "emailDoesntMatchTheCriteria": "Имейл адресът не покрива критериите.",
-          "errorSendingEmail": "Грешка при изпращане на имейл, възможно въпрос конфигурация.",
-          "unableToSendInvitationEmail": "Не може да се изпрати покана по имейл.",
-          "userWithEmailAlreadyExists": "Потребител с този имейл адрес вече съществува",
-          "failedToLogout": "Неуспех да излезете.",
           "invalidLoginToken": "Невалиден вход",
           "loginForbidden": "Входът е забранен",
           "serviceUnknown": "Неизвестна услуга ",
@@ -726,18 +429,6 @@
           "matchFailed": "Не съвпада",
           "unknownError": "Неизвестна грешка"
         }
-      },
-      "loginServices": {
-        "appId": "ID на приложението",
-        "secret": "Тайна",
-        "clientId": "Клиентски идентификационен номер",
-        "consumerKey": "API Key"
-      },
-      "error": {
-        "nameRequired": "се изисква име.",
-        "isRequired": "се изисква {{field}}.",
-        "mustBeNumber": "{{field}} трябва да е число.",
-        "variantFieldIsRequired": "се изисква Variant {{number}} {{field}}."
       }
     }
   }

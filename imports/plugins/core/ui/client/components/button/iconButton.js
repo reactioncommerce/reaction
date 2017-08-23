@@ -1,12 +1,11 @@
 import React from "react";
 import classnames from "classnames";
-import { pure } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import Button from "./button.jsx";
 
 const IconButton = ({ icon, onIcon, ...otherProps }) => {
   // otherProps.buttonKind === 'flat'
-  // default should be default, flat is new css that makes the bakcground tarnsparent
+  // default should be default, flat is new css that makes the background transparent.
   let buttonClassName;
 
   if (otherProps.kind === "flat") {
@@ -53,12 +52,12 @@ const IconButton = ({ icon, onIcon, ...otherProps }) => {
   );
 };
 
-IconButton.propTypes = Object.assign({}, Button.propTypes);
+IconButton.propTypes = { ...Button.propTypes };
 
 IconButton.defaultProps = {
   bezelStyle: "solid"
 };
 
-registerComponent("IconButton", IconButton, pure);
+registerComponent("IconButton", IconButton);
 
 export default IconButton;

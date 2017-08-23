@@ -7,117 +7,35 @@
       "languages": {
         "select": "Selectează limba"
       },
-      "currencies": {
-        "select": "Selectați valuta"
-      },
       "admin": {
-        "shortcut": {
-          "addProductLabel": "Adăugare produs",
-          "accountsLabel": "Conturi"
-        },
-        "dashboard": {
-          "i18NLabel": "i18n",
-          "i18NTitle": "i18n",
-          "i18NDescription": "Utilitare pentru internaționalizare",
-          "routingLabel": "Rutare",
-          "routingTitle": "Rutare",
-          "routingDescription": "Utilitare de rutare",
-          "filtrationLabel": "Filtrare",
-          "filtrationDescription": "Filtrarea produselor pentru reaction"
-        },
         "groups": {
-          "appearance": "Aspect",
-          "addUserError": "Eroare la adăugarea utilizatorului la grup",
-          "addUserSuccess": "Adăugat utilizator la grup",
-          "removeUserError": "Eroare la eliminarea utilizatorului în grup",
-          "removeUserSuccess": "Utilizatorul a fost eliminat cu succes",
-          "connect": "Conectați",
-          "core": "Miez",
-          "name": "Nume",
           "email": "Email",
-          "create": "Creați grup",
-          "update": "Actualizați grupul",
-          "lastActive": "Ultima data activ",
           "description": "Adăugați o descriere produs",
-          "remove": "Elimină",
-          "newGroup": "Grup nou",
-          "selectGroup": "Selectați Grup",
-          "editGroups": "Editați grupurile",
-          "dashboard": "Bord",
-          "errorCreate": "Eroare la crearea grupului",
-          "successCreate": "Grupul a fost creat cu succes",
-          "errorUpdate": "Eroare la actualizarea grupului",
-          "successUpdate": "Grupul a fost actualizat cu succes",
-          "misc": "Diverse",
-          "paymentMethod": "Furnizorii plăți",
-          "utilities": "Utilitare",
-          "marketplace": "Piata de desfacere"
+          "remove": "Elimină"
         },
         "settings": {
-          "accountSettingsLabel": "Setările contului",
-          "accountSettingsTitle": "Servicii de conectare",
-          "accountSettingsDescription": "Autentificarea prin intermediul furnizorilor sociale",
-          "saveSuccess": "Setările aduse la zi.",
-          "saveFailed": "Nu s-au putut actualiza setările.",
-          "addShopMemberLabel": "Adaugă membru magazin",
-          "permissionsSettingsLabel": "Permisiuni",
           "localizationAndI18NLabel": "Localizare si i18n"
-        },
-        "userAccountDropdown": {
-          "profileLabel": "Profil"
         }
       },
-      "accounts": {
-        "addMember": "Adăugă membru",
-        "shopMembers": "Membri magazin",
-        "guests": "Fără autentificare"
-      },
       "app": {
-        "add": "Adăuga",
-        "editMode": "Mod editare",
-        "administratorView": "administrator View",
-        "customerView": "Vezi de client",
-        "createContent": "Creați conținut",
-        "auto": "Auto",
         "save": "Salvați",
         "saveAndContinue": "Salvează si continuă",
-        "saveChanges": "Salvează modificările",
-        "selectOne": "(Alege unul)",
         "cancel": "Anulează",
-        "success": "Succes",
-        "error": "Eroare",
         "submit": "Acceptă",
         "delete": "Șterge",
-        "deleted": "Șters",
-        "archive": "Arhivă",
-        "archived": "Arhivat",
         "create": "Crează",
         "close": "Închide",
         "settings": "Setări",
         "loading": "Se încarcă",
         "toggle": "Comută",
-        "toggleEditMode": "Comută modul editare",
         "warning": "Văleu!",
         "unauthorizedMessage": "Nu aveți permisiunea de a vizualiza acest conținut.",
-        "updateSettings": "Actualizați setările",
         "monthOptions": "Alegeți luna",
         "yearOptions": "Alegeți anul",
         "shopSettings": "Setări Magazin",
         "dashboard": "Bord",
         "print": "Imprimare",
-        "notFound": "Această pagină nu a fost găsită.",
-        "pageNotFound": "Această pagină nu a fost găsită.",
-        "notFoundTitle": "Oops!",
-        "notFoundError": "Pagina nu a fost gasita.",
-        "productNotFound": "Acest produs nu a fost găsit.",
-        "loadMoreProducts": "Încărcați mai multe produse",
-        "noProductsFound": "Nu s-au găsit produse.",
-        "private": "Privat",
-        "public": "Public",
-        "shortcut": {
-          "addProductLabel": "Adăugare produs",
-          "accountsLabel": "Conturi"
-        }
+        "auto": "Auto"
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -138,34 +56,6 @@
         "settingsSaved": "S-au salvat setările de cautare",
         "settingsfailed": "Actualizarea setărilor de căutare a eșuat"
       },
-      "shopSettings": {
-        "localization": "Localizare",
-        "options": "Opțiuni",
-        "paymentMethods": "Metode de plata",
-        "externalServices": "Servicii externe",
-        "shopLocalizationSettingsSaved": "Actualizarea setărileor de localizare ale magazinului au fost salvate.",
-        "shopLocalizationSettingsFailed": "Actualizarea setărilor de localizare ale magazinului au fost au eșuat.",
-        "shopPaymentMethodsSaved": "Setările modalități de plată au fost salvate.",
-        "shopPaymentMethodsFailed": "Actualizarea setărilor modalități de plată au eșuat.",
-        "shopBrandAssetsSaved": "Efectul de marcă actualizat",
-        "shopBrandAssetsFailed": "Imposibil de actualizat activul mărcii"
-      },
-      "notifications": {
-        "body": {
-          "noNotifications": "Notificări nu încă",
-          "markAllAsRead": "Marcheaza toate ca citite",
-          "recent": "Recente",
-          "viewAll": "Vezi toate"
-        },
-        "messages": {
-          "orderCancelled": "Comanda dvs a fost anulat.",
-          "newOrder": "Comanda dumneavoastră este în curs de procesare.",
-          "forAdmin": "Ai o noua ordine.",
-          "orderDelivered": "Comanda dumneavoastra a fost emis.",
-          "orderProcessing": "Comanda dvs. este in curs de procesare.",
-          "orderShipped": "Comanda dumneavoastra a fost expediat."
-        }
-      },
       "header": {
         "tagsAdd": "Adăugaţi o etichetă",
         "search": "Caută produse ..."
@@ -175,10 +65,6 @@
         "whenYouAreDone": "când ați terminat editarea.",
         "tags": "Etichete",
         "tagsAdd": "Adăugaţi o etichetă",
-        "tagsEdit": "Editați etichete",
-        "tagExists": "Eticheta există deja, sau este goală.",
-        "tagInUse": "Tag-ul este în curs de utilizare și nu poate fi șters.",
-        "dropFiles": "Dați drumul la fișiere pentru a le încărca",
         "addInventory": "Adăuga stocuri",
         "barcode": "Cod de bare",
         "confirmDeleteBarcode": "Sunteți sigur că doriți să ștergeți codul de bare",
@@ -192,8 +78,6 @@
         "addToCart": "Adaugă în coș",
         "chooseOptions": "Vă rugăm să alegeți o opțiune înainte de a adăuga în coș",
         "outOfStock": "Din păcate, acest produs este din stoc!",
-        "productArchiveError": "A apărut o eroare în timpul trimiterii {{product}} la arhive.",
-        "archiveErrorTheProduct": "produsul",
         "publishFirst": "Publicați produsul înainte de a-l adăuga în coș.",
         "quantityAbbreviation": "CANT",
         "selectOption": "Selectați o opțiune înainte de a adăuga în coș",
@@ -204,40 +88,17 @@
         "limitedSupply": "Oferta limitată",
         "publishProductVisible": "{{product}} este acum vizibil",
         "publishProductHidden": "{{product}} este acum ascuns",
-        "clonedAlert": "Clonat {{product}}",
-        "clonedAlert_plural": "Clonat {{product}}",
-        "archivedAlert": "{{product}} arhivat",
-        "archivedAlert_plural": "{{product}} arhivat",
-        "theProduct": "produsul",
-        "theSelectedProducts": "produsele selectate",
         "startTracking": "Porniți urmărirea",
         "addBarcode": "Adăugați coduri de bare",
         "quantity": "Cantitate",
         "quantityGreaterThanZero": "Eroare: Cantitatea trebuie sa fie mai mare decât zero",
-        "notFoundTitle": "Văleu!",
-        "notFoundError": "Acesta nu este produsul pe care îl căutați."
-      },
-      "tags": {
-        "tagName": "Nume etichetă",
-        "addTag": "Adăugaţi etichetă",
-        "updateTag": "Actualizați eticheta",
-        "addGroupTag": "Adăugați un grup de etichete",
-        "addSubTag": "Sub-etichetă",
-        "removeTag": "Eliminaţi eticheta",
-        "createTag": "Creați etichetă"
+        "dropFiles": "Dați drumul la fișiere pentru a le încărca"
       },
       "productDetailEdit": {
-        "editOption": "Editaţi opțiunea",
-        "productSettings": "Setări produs",
-        "product": "Produs",
-        "size": "Mărime",
         "title": "Denumirea produsului",
-        "untitledProduct": "Produs fără titlu",
-        "parmalink": "Link permanent",
         "pageTitle": "Titlul paginii produs",
         "vendor": "Furnizor de produse",
         "description": "Adăugați o descriere produs",
-        "originCountry": "Țară de origine",
         "facebookMsg": "Mesaj Facebook",
         "twitterMsg": "Mesaj Twitter",
         "pinterestMsg": "Mesaj Pinterest ",
@@ -247,31 +108,13 @@
         "variantDetails": "Detalii variantă",
         "duplicateVariant": "Duplică",
         "addVariantOption": "Adaugă o optiune",
-        "addVariantFail": "Nu se poate crea varianta pentru {{title}}.",
-        "cloneVariantFail": "Nu se poate clona varianta pentru {{title}}.",
         "removeVariant": "Elimină",
-        "removeVariantConfirm": "Sunteți sigur că doriți să ștergeți {{title}}",
-        "restoreVariantConfirm": "Sunteți sigur(ă) că doriți să recuperați {{title}} din coșul de gunoi?",
-        "restoreVariantFail": "Nu se poate restabili {{title}}.",
-        "archiveVariantConfirm": "Sigur doriți să arhivați {{title}}",
-        "thisVariant": "această variantă",
-        "thisOption": "această opțiune",
         "duplicateProduct": "Duplică produs",
         "pinProduct": "Fixează produsului",
         "toggleSize": "Dimensiune comutare",
-        "archiveProduct": "Arhiva produse",
-        "restoreProduct": "Recuperare produs din coșul de gunoi",
-        "archiveThisProduct": "Arhivați acest produs?",
-        "archiveSelectedProducts": "Arhivați produsele selectate?",
         "publish": "Publică",
         "moreOptions": "Mai multe opțiuni",
-        "details": "Detalii",
-        "noSelectedProducts": "Nici un produs selectat. Folosește",
-        "orShiftCtrlCmd": "sau apăsați shift|ctrl|cmd + clic pe produse pentru a selecta mai multe. Cu shift puteți selecta o gamă de produse învecinate.",
-        "makeVisible": "Expunere",
-        "hideProduct": "Ascundere produs",
-        "productIsVisible": "Produsul este vizibil",
-        "productIsNotVisible": "Produsul nu este vizibil"
+        "details": "Detalii"
       },
       "productVariant": {
         "addVariantOptions": "Adăugați opțiuni pentru a permite 'Adauga in cos' butto",
@@ -303,18 +146,8 @@
         "createVariant": "Creați Variantă"
       },
       "gridPackage": {
-        "enable": "Permite",
-        "errorDisabling": "Eroare la dezactivarea pachetului:",
-        "errorEnabling": "Eroare la activarea pachetului:",
-        "details": "Detalii",
-        "disable": "Dezactivați",
-        "disableConfirm": "Sunteți sigur că doriți să dezactivați {{app}}?",
         "pkgEnabled": "{{app}} este acum activată.",
         "pkgDisabled": "{{app}} este acum dezactivată."
-      },
-      "gridSettingsPanel": {
-        "title": "Setări de rețea",
-        "selected": "Selectat"
       },
       "cartDrawer": {
         "empty": "Suntem triști. Coșul dumneavoastră este gol.",
@@ -322,12 +155,10 @@
         "checkout": "Finalizează comanda",
         "new": "Nou",
         "coreOrderWorkflow/created": "Creată",
-        "coreOrderWorkflow/processing": "Prelucrare",
         "coreOrderWorkflow/completed": "Completă",
         "coreOrderWorkflow/canceled": "Anulată"
       },
       "cartSubTotals": {
-        "discount": "Reducere",
         "head": "Coșul dumneavoastră",
         "items": "Articole în coș",
         "subtotal": "Subtotal",
@@ -345,75 +176,34 @@
         "invoice": "Factură",
         "ordersNotFound": "Nu au fost găsite comenzi",
         "approveInvoice": "Aprobă",
-        "cancelOrderLabel": "Anulați comanda",
         "makeAdjustments": "Faceți modificări",
         "capturePayment": "Capturarea plății",
         "paymentCaptured": "Plată capturată",
         "capturedTotal": "Totalul capturat",
         "canceledLabel": "Anulată",
         "refundAmount": "Rambursează suma",
-        "cancelOrder": "Doriți să anulați această comandă?",
-        "applyRefundToThisOrder": "Aplică restituirea de {{currencySymbol}}{{refund}} la această comandă?",
-        "applyRefundDuringCancelOrder": "Aceasta va restitui suma totală a comenzii {{currencySymbol}}{{invoiceTotal}}",
-        "cancelOrderThenRestock": "Da, și restock",
-        "cancelOrderNoRestock": "Da, dar fără repopulare",
         "applyRefund": "Aplicati rambursarea",
-        "refunding": "Returnarea",
-        "applyDiscount": "Aplicați o reducere",
         "adjustedTotal": "Totalul ajustat",
-        "invalidDiscount": "Reducerea nu poate fi mai mare decât prețul total inițial",
-        "fullDiscountWarning": "Aplicând o reducere de 100% va anula / anula acest ordin cu furnizorul de plată",
-        "invalidRefund": "Totalul restituirilor nu poate fi mai mare decât totalul ajustat",
         "processor": "Procesator",
-        "placed": "Plasată",
-        "on": "pe",
-        "status": "Stare",
-        "completed": "Completă",
-        "processing": "Prelucrare",
-        "destination": "Destinaţie",
-        "shipment": "Expediere",
-        "payment": "Plată",
-        "itemsFrom": "produs(e) din",
         "filter": {
           "new": "Nou",
           "captured": "Plată Capturată",
-          "processing": "Prelucrare",
           "shipped": "Trimis",
           "completed": "Completă",
           "canceled": "Anulată",
           "refunded": "Rambursată"
-        },
-        "showMore": "Arată mai multe"
+        }
       },
       "orderShipping": {
         "shipTo": "Trimite spre",
         "notShipped": "Inca neexpediată",
         "noTracking": "Nici un număr urmărire a pachetului",
         "tracking": "Număr urmărire",
-        "printLabels": "Etichete de imprimare",
-        "printShippingLabel": "livrare",
-        "printCustomsLabel": "Obiceiuri",
-        "generateTracking": "Generarea de etichete și de urmărire",
-        "labelError": "Eroare etichetă crearea de transport maritim {{err}}",
-        "carrier": "Purtător",
-        "addTracking": "Adăugaţi număr urmărire a pachetului",
-        "itemsHaveBeenShipped": "Articole au fost expediate",
         "shipmentEmpty": "Acest transport nu are elemente",
         "shipmentPacked": "Toate produsele ambalate",
         "shipped": "Expediat",
-        "delivered": "Livrat",
         "shippingNotifyCustomer": "Anunțați clientul că produsele lor vor fi de transporte în curând.",
         "resendNotification": "Retrimitere Notificarea de Transport"
-      },
-      "orderWorkflow": {
-        "orderDetails": "Detalii Comandă",
-        "invoice": "Factură",
-        "lineItems": "Elemente rând",
-        "shipmentTracking": "Urmărirea pachetului"
-      },
-      "cartCheckout": {
-        "surprise": "Uau!",
-        "emptyCheckoutCart": "aparent cosul tau este gol!"
       },
       "cartCompleted": {
         "thankYou": "Vă mulțumim!",
@@ -421,8 +211,6 @@
         "yourOrderIsNow": "Comanda dvs. este acum",
         "summaryMessage": "Vă mulțumim pentru comanda dumneavoastră.",
         "submitted": "transmisă",
-        "processing": "prelucrare",
-        "completed": "terminat",
         "registerGuest": "Buna! Pentru a fi in orice moment la curent cu progresul comenzii, puteți să adăugați o adresă de e-mail.",
         "trackYourDelivery": "Actualizările comenzii vor fi trimise la",
         "noOrdersFound": "Nu au fost găsite comenzi.",
@@ -440,25 +228,54 @@
         "addAddress": "Adăugaţi o adresă",
         "chooseAddress": "Alegeți adresa de expediere și adresa de facturare",
         "createDefault": "Creați adresa prestabilită",
-        "edit": "Editați",
-        "removeAddress": "Eliminaţi adresa",
         "selectShippingAddress": "Selectati o adresa de livrare",
-        "selectBillingAddress": "Selectați o adresă de facturare",
-        "cantRemoveThisAddress": "Nu se poate elimina această adresă: {{err}}"
+        "selectBillingAddress": "Selectați o adresă de facturare"
       },
       "addressBookAdd": {
         "addAddress": "Adăuga o nouă adresă",
-        "createAddress": "Creați adresa prestabilită",
-        "failedToAddAddress": "Nu s-a putut adăuga adresa: {{err}}",
-        "validatedAddress": "Modificări aduse la adresa ta bazată pe validare. Asigurați-vă că acest lucru este corect"
+        "createAddress": "Creați adresa prestabilită"
       },
       "addressBookEdit": {
-        "editAddress": "Editează această adresă",
-        "addressValidation": "adrese de validare",
-        "reviewAddress": "Pentru cea mai bună conformitate, vă rugăm să vă validați adresa",
-        "somethingWentWrong": "Ceva nu a mers bine: {{err}}",
-        "enteredAddress": "Adresa introdusă",
-        "validatedAddress": "Validați adresa"
+        "editAddress": "Editează această adresă"
+      },
+      "address": {
+        "country": "Țară",
+        "fullName": "Numele complet",
+        "address1": "Adresă",
+        "address2": "continuare Adresă",
+        "postal": "Poştal",
+        "city": "Oraș",
+        "region": "Regiune",
+        "phone": "Telefon",
+        "isShippingDefault": "Doriți să faceți aceasta adresă de expediere implicită?",
+        "isBillingDefault": "Doriți să faceți aceasta adresă de facturare implicită?",
+        "isCommercial": "Aceasta este o adresă comercială."
+      },
+      "checkoutProgressBar": {
+        "login": "Cont",
+        "shippingBilling": "Detalii adrese",
+        "shippingOptions": "Optiuni de expediere",
+        "reviewPayment": "Revizuire",
+        "complete": "Complet"
+      },
+      "checkoutReview": {
+        "review": "Revizuire"
+      },
+      "consoleIcon": {
+        "iconTitle": "Vizualizare Consolă",
+        "text": "Consolă"
+      },
+      "createProductIcon": {
+        "iconTitle": "Creați produs",
+        "text": "Creați"
+      },
+      "social": {
+        "facebook": "Facebook",
+        "google": "Google",
+        "github": "GitHub",
+        "meetup": "Meetup",
+        "twitter": "Twitter",
+        "weibo": "Weibo"
       },
       "corePackageConfig": {
         "settings": {
@@ -475,6 +292,10 @@
             "apiKey": "Google API Key"
           }
         }
+      },
+      "revisions": {
+        "isDisabled": "Opțiunea „Revision control” este dezactivată. Orice schimbare va fi imediat publicată.",
+        "isEnabled": "Controlul revizie este activat pentru produse. Toate modificările vor fi trebui să fie publicate înainte de a fi vizibile pentru clienți."
       },
       "shop": {
         "defaultPaymentMethod": "Metoda de plată Implicită",
@@ -508,114 +329,8 @@
           "isCommercial": "Aceasta este o adresă comercială."
         }
       },
-      "revisions": {
-        "isDisabled": "Opțiunea „Revision control” este dezactivată. Orice schimbare va fi imediat publicată.",
-        "isEnabled": "Controlul revizie este activat pentru produse. Toate modificările vor fi trebui să fie publicate înainte de a fi vizibile pentru clienți.",
-        "unpublishedChanges": "Schimbări nepublicate",
-        "publishChanges": "Publicare schimbări",
-        "showChanges": "Expunere schimbări",
-        "hideChanges": "Ascundere modificări",
-        "discardChanges": "Eliminare schimbări",
-        "changedPublished": "Schimbările au fost publicate cu succes.",
-        "changesDiscarded": "Schimbări eliminate cu succes",
-        "noChanges": "Nicio schimbare",
-        "noChangesPublished": "Nu există modificări pentru publicare",
-        "noChangesDiscarded": "Nu există nicio schimbare de eliminat"
-      },
-      "address": {
-        "country": "Țară",
-        "fullName": "Numele complet",
-        "address1": "Adresă",
-        "address2": "continuare Adresă",
-        "postal": "Poştal",
-        "city": "Oraș",
-        "region": "Regiune",
-        "phone": "Telefon",
-        "isShippingDefault": "Doriți să faceți aceasta adresă de expediere implicită?",
-        "isBillingDefault": "Doriți să faceți aceasta adresă de facturare implicită?",
-        "isCommercial": "Aceasta este o adresă comercială."
-      },
-      "i18nSettings": {
-        "enabledLanguages": "Limbi"
-      },
-      "checkoutProgressBar": {
-        "login": "Cont",
-        "shippingBilling": "Detalii adrese",
-        "shippingOptions": "Optiuni de expediere",
-        "reviewPayment": "Revizuire",
-        "complete": "Complet"
-      },
-      "checkoutReview": {
-        "review": "Revizuire"
-      },
-      "uom": {
-        "OZ": "uncii",
-        "LB": "lire sterline",
-        "GR": "grame",
-        "KG": "kilograme"
-      },
-      "consoleIcon": {
-        "iconTitle": "Vizualizare Consolă",
-        "text": "Consolă"
-      },
-      "createProductIcon": {
-        "iconTitle": "Creați produs",
-        "text": "Creați"
-      },
-      "social": {
-        "socialTitle": "Social",
-        "facebook": "Facebook",
-        "google": "Google",
-        "github": "GitHub",
-        "instagram": "Instagram",
-        "meetup": "Meetup",
-        "ok": "O.K.",
-        "twitter": "Twitter",
-        "vk": "VK",
-        "weibo": "Weibo"
-      },
-      "search": {
-        "clearSearch": "Ștergeți",
-        "noProductsFound": "Nu s-au găsit produse",
-        "noOrdersFound": "Nu s-a găsit nicio comandă.",
-        "noAccountsFound": "Nu s-a găsit niciun cont.",
-        "searchInputLabel": "Căutare Reaction ",
-        "suggestedTags": "Etichete sugerate",
-        "searchTypeProducts": "Produse",
-        "searchTypeAccounts": "Conturi",
-        "searchTypeOrders": "Comenzi",
-        "accountSearchResults": {
-          "accountId": "ID cont",
-          "shopId": "ID magazin",
-          "firstName": "Prenume",
-          "lastName": "Nume",
-          "phone": "Telefon",
-          "emails": "E-mail"
-        },
-        "orderSearchResults": {
-          "orderId": "ID comandă",
-          "shopId": "ID magazin",
-          "shippingAddress": "Adresă",
-          "shippingCity": "Oraș",
-          "shippingRegion": "Regiune",
-          "shippingCountry": "Țară",
-          "shippingPhone": "Telefon",
-          "shippingName": "Nume",
-          "shippingStatus": "Stare",
-          "billingAddress": "Adresă",
-          "billingCity": "Oraș",
-          "billingRegion": "Regiune",
-          "billingCountry": "Țară",
-          "billingPhone": "Telefon",
-          "billingStatus": "Stare",
-          "userEmails": "E-mail",
-          "orderDate": "Dată",
-          "orderTotal": "Total"
-        }
-      },
       "accountsUI": {
         "members": "Membrii",
-        "manage": "Administrează",
         "guest": "Fără autentificare",
         "addMember": "Adăuga un membru",
         "add": "adăugă",
@@ -633,7 +348,6 @@
         "emailResetLink": "Timimte prin E-mail link-ul de resetare",
         "forgotPassword": "Resetează parola",
         "ifYouAlreadyHaveAnAccount": "Dacă aveți un cont deja",
-        "name": "Nume",
         "newPassword": "Noua Parolă",
         "newPasswordAgain": "Repetați noua Parolă",
         "optional": "Optional",
@@ -646,27 +360,22 @@
         "setPassword": "Seteaza parola",
         "sign": "Conectare",
         "signIn": "Autentificare",
-        "signInService": "Autentificare {{service}}",
         "signin": "autentificare",
         "signInWith": "Intră în cont cu",
         "signUpWith": "Înregistrează-te cu",
         "signedIn": "Sunteți conectat.",
         "signOut": "Deconectare",
         "signUp": "Înregistrează-te",
-        "signUpButton": "Înregistrează-te",
         "signupCode": "Cod de înregistrare",
         "signUpWithYourEmailAddress": "Înregistrează-te cu adresa de e-mail",
         "terms": "Termeni de utilizare",
         "updateYourPassword": "Actualizati parola",
         "updatePasswordAndContinue": "Actualizează și continuă",
-        "updatedServiceConfiguration": "S-a actualizat configuratia serviciului {{service}}",
         "username": "Nume de utilizator",
         "usernameOrEmail": "Nume de utilizator sau email",
         "with": "cu",
         "checkoutAsGuest": "Finalizare comandă fără cont de utilizator",
         "role": "Rol",
-        "yourOrders": "Comenzile dvs.",
-        "addressBook": "Carte de adrese",
         "info": {
           "emailSent": "Email trimis",
           "emailVerified": "E-mail verificat",
@@ -678,11 +387,9 @@
         },
         "error": {
           "emailRequired": "Este necesară adresa de e-mail.",
-          "groupRequired": "Este necesar un alt grup decât grupul de proprietar implicit.",
           "passwordRequired": "Parola este necesară.",
           "passwordMustBeAtLeast6CharactersLong": "Parola trebuie să fie de cel puțin 6 caractere.",
           "passwordMustContainRequirements": "Parola trebuie să conțină cel puțin un număr sau un simbol.",
-          "usernameMinLength": "Numele de utilizator trebuie să fie de cel puțin 3 caractere",
           "minChar": "parola trebuie să aibă minim 6 caractere.",
           "pwdsDontMatch": "Parolele nu se potrivesc",
           "pwOneDigit": "Parola trebuie să conțină cel puțin o cifră.",
@@ -694,10 +401,6 @@
           "usernameRequired": "Vă rugăm completați numele de utilizator.",
           "emailAlreadyExists": "Această adresă de e-mail există deja.",
           "emailDoesntMatchTheCriteria": "Adresa de e-mail nu corespunde criteriilor.",
-          "errorSendingEmail": "Eroare la trimiterea de e-mail-ului, verificați configurarea.",
-          "unableToSendInvitationEmail": "Nu se poate trimite e-mail-ul de invitație.",
-          "userWithEmailAlreadyExists": "Un utilizator cu această adresă de e-mail există deja",
-          "failedToLogout": "Conectarea a eșuat.",
           "invalidLoginToken": "Jeton de conectare nevalid",
           "loginForbidden": "Intrarea interzisă",
           "serviceUnknown": "Serviciu necunoscut",
@@ -726,18 +429,6 @@
           "matchFailed": "potrivirea nu a reușit",
           "unknownError": "Eroare necunoscută"
         }
-      },
-      "loginServices": {
-        "appId": "ID-ul aplicației",
-        "secret": "Secret",
-        "clientId": "ID Client",
-        "consumerKey": "API-cheie"
-      },
-      "error": {
-        "nameRequired": "Este necesar numele.",
-        "isRequired": "{{field}} este obligatoriu.",
-        "mustBeNumber": "{{field}} trebuie să fie un număr.",
-        "variantFieldIsRequired": "Este necesară varianta {{number}} {{field}}."
       }
     }
   }

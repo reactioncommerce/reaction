@@ -60,7 +60,10 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name] = packageInfo;
     return registeredPackage;
   },
+  defaultCustomerRoles: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
+  defaultVisitorRoles: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
   createDefaultGroups(options = {}) {
+    const self = this;
     const { shopId } = options;
     const allGroups = Groups.find({}).fetch();
     const query = {};
@@ -70,13 +73,26 @@ export default {
     }
 
     const shops = Shops.find(query).fetch();
-    const ownerRoles = Roles.getAllRoles().fetch().map(role => role.name);
-    const shopManagerRoles = ownerRoles.filter(role => role !== "owner");
 
+    /* Get all defined roles from the DB minus "anonymous" because that gets removed from a user on register
+     * if it's not removed, it causes mismatch between roles in user (i.e Meteor.user().roles[shopId]) vs that in
+     * the user's group (Group.find(usergroup).permissions) */
+    let ownerRoles = Roles
+      .getAllRoles().fetch()
+      .map(role => role.name)
+      .filter(role => role !== "anonymous"); // see comment above
+
+    // Join all other roles with package roles for owner. Owner should have all roles
+    // this is needed because of default roles defined in the app that are not in Roles.getAllRoles
+    ownerRoles = ownerRoles.concat(this.defaultCustomerRoles);
+    ownerRoles = _.uniq(ownerRoles);
+
+    // we're making a Shop Manager default group that have all roles minue the owner role
+    const shopManagerRoles = ownerRoles.filter(role => role !== "owner");
     const roles = {
       "shop manager": shopManagerRoles,
-      "customer": [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
-      "guest": ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
+      "customer": this.defaultCustomerRoles,
+      "guest": this.defaultVisitorRoles,
       "owner": ownerRoles
     };
 
@@ -87,16 +103,34 @@ export default {
       Object.keys(roles).forEach(groupKeys => {
         const groupExists = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === shop._id);
         if (!groupExists) { // create group only if it doesn't exist before
+          // get roles from the default groups of the primary shop; we try to use this first before using default roles
+          const primaryShopGroup = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === self.getPrimaryShopId());
           Logger.debug(`creating group ${groupKeys} for shop ${shop.name}`);
           Groups.insert({
             name: groupKeys,
             slug: groupKeys,
-            permissions: roles[groupKeys],
+            permissions: primaryShopGroup && primaryShopGroup.permissions || roles[groupKeys],
             shopId: shop._id
           });
         }
       });
     }
+  },
+  /**
+   * canInviteToGroup
+   * @summary checks if the user making the request is allowed to make invitation to that group
+   * @param {Object} options -
+   * @param {Object} options.group - group to invite to
+   * @param {Object} options.user - user object  making the invite (Meteor.user())
+   * @return {Boolean} -
+   */
+  canInviteToGroup(options) {
+    const { group, user } = options;
+    const userPermissions = user.roles[group.shopId];
+    const groupPermissions = group.permissions;
+
+    // checks that userPermissions includes all elements from groupPermissions
+    return _.difference(groupPermissions, userPermissions).length === 0;
   },
   /**
    * registerTemplate
@@ -380,6 +414,17 @@ export default {
   },
 
   /**
+   * Takes options in the form of a query object. Returns a package that matches.
+   * @method getPackageSettingsWithOptions
+   * @param  {object} options Options object, forms the query for Packages.findOne
+   * @return {object} Returns the first package found with the provided options
+   */
+  getPackageSettingsWithOptions(options) {
+    const query = options;
+    return Packages.findOne(query);
+  },
+
+  /**
    * getMarketplaceSettings finds the enabled `reaction-marketplace` package for
    * the primary shop and returns the settings
    * @method getMarketplaceSettings
@@ -475,6 +520,11 @@ export default {
         if (enabledPackages && Array.isArray(enabledPackages)) {
           if (enabledPackages.indexOf(pkg.name) === -1) {
             pkg.enabled = false;
+          } else {
+            // Enable "soft switch" for package.
+            if (pkg.settings && pkg.settings[packageName]) {
+              pkg.settings[packageName].enabled = true;
+            }
           }
         }
         Packages.insert(pkg);
@@ -614,14 +664,17 @@ export default {
       sendVerificationEmail(accountId);
     }
 
-    //
-    // Set Default Roles
-    //
+    // Set default owner roles
     const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
+    // Join other roles with defaultAdminRoles for owner.
+    // this is needed as owner should not just have "owner" but all other defined roles
+    let ownerRoles = defaultAdminRoles.concat(this.defaultCustomerRoles);
+    ownerRoles = _.uniq(ownerRoles);
+
     // we don't use accounts/addUserPermissions here because we may not yet have permissions
-    Roles.setUserRoles(accountId, defaultAdminRoles, shopId);
+    Roles.setUserRoles(accountId, ownerRoles, shopId);
     // // the reaction owner has permissions to all sites by default
-    Roles.setUserRoles(accountId, defaultAdminRoles, Roles.GLOBAL_GROUP);
+    Roles.setUserRoles(accountId, ownerRoles, Roles.GLOBAL_GROUP);
     // initialize package permissions we don't need to do any further permission configuration it is taken care of in the
     // assignOwnerRoles
     const packages = Packages.find().fetch();

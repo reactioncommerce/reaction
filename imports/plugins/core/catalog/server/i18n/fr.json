@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Paramètres du catalogue",
           "catalogSettingsTitle": "Paramètres du catalogue",
           "catalogSettingsDescription": "Catalogue du marché"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Révisions du produit"
         }
       }
     }

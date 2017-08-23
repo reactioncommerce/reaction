@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Katalog Ayarları",
           "catalogSettingsTitle": "Katalog Ayarları",
           "catalogSettingsDescription": "Pazaryeri Kataloğu"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Ürün Düzeltmeler"
         }
       }
     }

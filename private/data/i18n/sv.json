@@ -7,117 +7,35 @@
       "languages": {
         "select": "Välj språk"
       },
-      "currencies": {
-        "select": "Välj valuta"
-      },
       "admin": {
-        "shortcut": {
-          "addProductLabel": "Lägg Produkt",
-          "accountsLabel": "Konton"
-        },
-        "dashboard": {
-          "i18NLabel": "i18n",
-          "i18NTitle": "i18n",
-          "i18NDescription": "internationaliseringsverktyg",
-          "routingLabel": "routing",
-          "routingTitle": "routing",
-          "routingDescription": "routing verktyg",
-          "filtrationLabel": "Filtrering",
-          "filtrationDescription": "Produkter filtrering för Reaction"
-        },
         "groups": {
-          "appearance": "Utseende",
-          "addUserError": "Ett fel med att lägga till användaren att gruppera",
-          "addUserSuccess": "Tillagt användare att gruppera",
-          "removeUserError": "Det gick inte att ta bort användaren att gruppera",
-          "removeUserSuccess": "Användaren har tagits bort",
-          "connect": "Ansluta",
-          "core": "Kärna",
-          "name": "Namn",
           "email": "e-postinställningar",
-          "create": "Skapa grupp",
-          "update": "Uppdatera grupp",
-          "lastActive": "Senast aktiv",
           "description": "Beskrivning",
-          "remove": "Avlägsna",
-          "newGroup": "Ny grupp",
-          "selectGroup": "Välj grupp",
-          "editGroups": "Redigera grupper",
-          "dashboard": "Instrumentbräda",
-          "errorCreate": "Det gick inte att skapa en grupp",
-          "successCreate": "Grupp skapades framgångsrikt",
-          "errorUpdate": "Det gick inte att uppdatera gruppen",
-          "successUpdate": "Grupp uppdaterad framgångsrikt",
-          "misc": "misc",
-          "paymentMethod": "betalnings~~POS=TRUNC",
-          "utilities": "verktyg",
-          "marketplace": "Marknad"
+          "remove": "Avlägsna"
         },
         "settings": {
-          "accountSettingsLabel": "Kontoinställningar",
-          "accountSettingsTitle": "Login Tjänster",
-          "accountSettingsDescription": "Autentisering genom sociala leverantörer",
-          "saveSuccess": "Inställningar uppdaterade.",
-          "saveFailed": "Det gick inte att uppdatera inställningarna.",
-          "addShopMemberLabel": "Lägg Shop Medlem",
-          "permissionsSettingsLabel": "Behörigheter",
           "localizationAndI18NLabel": "Lokalisering och i18n"
-        },
-        "userAccountDropdown": {
-          "profileLabel": "Profil"
         }
       },
-      "accounts": {
-        "addMember": "Lägg till medlem",
-        "shopMembers": "Shop Medlemmar",
-        "guests": "gäster"
-      },
       "app": {
-        "add": "Lägga till",
-        "editMode": "redigeringsläge",
-        "administratorView": "administratör View",
-        "customerView": "kund~~POS=TRUNC View",
-        "createContent": "Skapa innehåll",
-        "auto": "Bil",
         "save": "Spara",
         "saveAndContinue": "Spara och fortsätt",
-        "saveChanges": "Spara ändringar",
-        "selectOne": "(Välj en)",
         "cancel": "Avboka",
-        "success": "Framgång",
-        "error": "Fel",
         "submit": "Skicka",
         "delete": "Radera",
-        "deleted": "Utgår",
-        "archive": "arkiv",
-        "archived": "arkiveras",
         "create": "Skapa",
         "close": "Stänga",
         "settings": "Inställningar",
         "loading": "Läser in",
         "toggle": "toggle",
-        "toggleEditMode": "Växla redigeringsläge",
         "warning": "hoppsan!",
         "unauthorizedMessage": "Du har inte behörighet att se detta innehåll.",
-        "updateSettings": "Uppdatera inställningar",
         "monthOptions": "Välj månad",
         "yearOptions": "Välj år",
         "shopSettings": "butiks Inställningar",
         "dashboard": "Instrumentbräda",
         "print": "Skriv",
-        "notFound": "Denna sida kunde inte hittas.",
-        "pageNotFound": "Denna sida kunde inte hittas.",
-        "notFoundTitle": "hoppsan!",
-        "notFoundError": "Sidan hittas inte.",
-        "productNotFound": "Denna produkt hittades inte.",
-        "loadMoreProducts": "Ladda fler produkter",
-        "noProductsFound": "Inga produkter hittades.",
-        "private": "Privat",
-        "public": "offentlig",
-        "shortcut": {
-          "addProductLabel": "Lägg Produkt",
-          "accountsLabel": "Konton"
-        }
+        "auto": "Bil"
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -138,34 +56,6 @@
         "settingsSaved": "Sökinställningar sparas",
         "settingsfailed": "Sökinställningar gick inte att uppdatera"
       },
-      "shopSettings": {
-        "localization": "Localization",
-        "options": "Val",
-        "paymentMethods": "Betalningsmetoder",
-        "externalServices": "externa tjänster",
-        "shopLocalizationSettingsSaved": "Shop lokaliserings inställningar sparas.",
-        "shopLocalizationSettingsFailed": "Shop lokaliseringsinställningar uppdatering misslyckades.",
-        "shopPaymentMethodsSaved": "Shop Betalning inställningar sparas.",
-        "shopPaymentMethodsFailed": "Shop Betalning inställningar uppdatering misslyckades.",
-        "shopBrandAssetsSaved": "Uppdaterad varumärke tillgång",
-        "shopBrandAssetsFailed": "Det gick inte att uppdatera varumärkets tillgång"
-      },
-      "notifications": {
-        "body": {
-          "noNotifications": "Inga anmälningar ännu",
-          "markAllAsRead": "Markera alla som lästa",
-          "recent": "Nyligen",
-          "viewAll": "Se alla"
-        },
-        "messages": {
-          "orderCancelled": "Din beställning har annullerats.",
-          "newOrder": "Din beställning behandlas.",
-          "forAdmin": "Du har en ny beställning.",
-          "orderDelivered": "Din beställning har levererats.",
-          "orderProcessing": "Din beställning behandlas.",
-          "orderShipped": "Din beställning har skickats."
-        }
-      },
       "header": {
         "tagsAdd": "Lägg till tagg",
         "search": "Sök produkter ..."
@@ -175,10 +65,6 @@
         "whenYouAreDone": "när du är klar med redigeringen.",
         "tags": "Taggar",
         "tagsAdd": "Lägg till tagg",
-        "tagsEdit": "redigera taggar",
-        "tagExists": "Tag redan existerar, eller är tom.",
-        "tagInUse": "Tag används och kan inte tas bort.",
-        "dropFiles": "Släpp filer att ladda upp",
         "addInventory": "Lägg Inventory",
         "barcode": "Streckkod",
         "confirmDeleteBarcode": "Är du säker på att du vill radera streckkod",
@@ -192,8 +78,6 @@
         "addToCart": "Lägg till i kundvagn",
         "chooseOptions": "Välj alternativ innan du lägger till i kundvagnen",
         "outOfStock": "Tyvärr är denna punkt slut!",
-        "productArchiveError": "Det uppstod ett fel när du skickar {{product}} till arkivet.",
-        "archiveErrorTheProduct": "produkten",
         "publishFirst": "Publicera produkten innan du lägger till i kundvagnen.",
         "quantityAbbreviation": "ANTAL",
         "selectOption": "Välj ett alternativ innan du lägger till i kundvagnen",
@@ -204,40 +88,17 @@
         "limitedSupply": "Limited Supply",
         "publishProductVisible": "{{product}} är nu synlig",
         "publishProductHidden": "{{product}} nu gömd",
-        "clonedAlert": "klonade {{product}}",
-        "clonedAlert_plural": "klonade {{product}}",
-        "archivedAlert": "arkiverad {{product}}",
-        "archivedAlert_plural": "arkiverad {{product}}",
-        "theProduct": "produkten",
-        "theSelectedProducts": "de utvalda produkterna",
         "startTracking": "Starta Tracking",
         "addBarcode": "Lägg Streckkod",
         "quantity": "Kvantitet",
         "quantityGreaterThanZero": "Fel: Antal måste vara större än noll",
-        "notFoundTitle": "hoppsan!",
-        "notFoundError": "Detta är inte den produkt du söker efter."
-      },
-      "tags": {
-        "tagName": "Taggnamn",
-        "addTag": "Lägg till tagg",
-        "updateTag": "uppdatering Tag",
-        "addGroupTag": "Lägg till grupp Tag",
-        "addSubTag": "Lägga Sub Tag",
-        "removeTag": "Ta bort tagg",
-        "createTag": "Skapa tagg"
+        "dropFiles": "Släpp filer att ladda upp"
       },
       "productDetailEdit": {
-        "editOption": "Redigera alternativ",
-        "productSettings": "produkt~~POS=TRUNC",
-        "product": "Produkt",
-        "size": "Storlek",
         "title": "Titel",
-        "untitledProduct": "untitled Produkt",
-        "parmalink": "permalink",
         "pageTitle": "Undertext",
         "vendor": "Försäljare",
         "description": "Beskrivning",
-        "originCountry": "Ursprungsland",
         "facebookMsg": "Facebook Meddelande",
         "twitterMsg": "Twitter Meddelande",
         "pinterestMsg": "Pinterest Meddelande",
@@ -247,31 +108,13 @@
         "variantDetails": "variant Detaljer",
         "duplicateVariant": "Duplicera",
         "addVariantOption": "Lägg Alternativ",
-        "addVariantFail": "Det går inte att skapa variant för {{title}}.",
-        "cloneVariantFail": "Det går inte att klona variant för {{title}}.",
         "removeVariant": "Avlägsna",
-        "removeVariantConfirm": "Är du säker på att du vill radera {{title}}",
-        "restoreVariantConfirm": "Är du säker på att du vill återställa {{title}} från papperskorgen?",
-        "restoreVariantFail": "Det går inte att återställa {{title}}.",
-        "archiveVariantConfirm": "Är du säker på att du vill arkivera {{title}}",
-        "thisVariant": "denna variant",
-        "thisOption": "detta alternativ",
         "duplicateProduct": "duplikat Produkt",
         "pinProduct": "pin Produkt",
         "toggleSize": "toggle Storlek",
-        "archiveProduct": "arkiv Produkt",
-        "restoreProduct": "Återställ produkten från papperskorgen",
-        "archiveThisProduct": "Arkivera den här produkten?",
-        "archiveSelectedProducts": "Arkiv valda produkter?",
         "publish": "Publicera",
         "moreOptions": "Fler alternativ",
-        "details": "Detaljer",
-        "noSelectedProducts": "Ingen valda produkter. Använd",
-        "orShiftCtrlCmd": " eller skift | ctrl | cmd + klicka på produkter att välja flera. Med skift kan du välja ett sammanhängande utbud av produkter.",
-        "makeVisible": "synliggöra",
-        "hideProduct": "hide Produkt",
-        "productIsVisible": "Produkten är synlig",
-        "productIsNotVisible": "Produkten är inte synlig"
+        "details": "Detaljer"
       },
       "productVariant": {
         "addVariantOptions": "Lägg alternativ för att göra det möjligt för \"Lägg i varukorgen\" butto",
@@ -303,18 +146,8 @@
         "createVariant": "skapa Variant"
       },
       "gridPackage": {
-        "enable": "Gör det möjligt",
-        "errorDisabling": "Fel inaktivera paket:",
-        "errorEnabling": "Fel möjliggör paket:",
-        "details": "Detaljer",
-        "disable": "inaktivera",
-        "disableConfirm": "Är du säker på att du vill inaktivera {{app}}?",
         "pkgEnabled": "{{app}} har nu aktiverats.",
         "pkgDisabled": "{{app}} är nu inaktiverad."
-      },
-      "gridSettingsPanel": {
-        "title": "galler Inställningar",
-        "selected": "Vald"
       },
       "cartDrawer": {
         "empty": "Vi är ledsna. Din vagn är tom.",
@@ -322,12 +155,10 @@
         "checkout": "kassan nu",
         "new": "Ny",
         "coreOrderWorkflow/created": "Skapad",
-        "coreOrderWorkflow/processing": "bearbetning",
         "coreOrderWorkflow/completed": "Avslutad",
         "coreOrderWorkflow/canceled": "Avbrutet"
       },
       "cartSubTotals": {
-        "discount": "Rabatt",
         "head": "din kundvagn",
         "items": "Artiklar i kundvagnen",
         "subtotal": "Delsumma",
@@ -345,75 +176,34 @@
         "invoice": "Faktura",
         "ordersNotFound": "Inga beställningar hittades",
         "approveInvoice": "Godkänna",
-        "cancelOrderLabel": "Avbryt beställning",
         "makeAdjustments": "gör justeringar",
         "capturePayment": "capture Betalning",
         "paymentCaptured": "betalning Tagna",
         "capturedTotal": "fångade Totalt",
         "canceledLabel": "Avbrutet",
         "refundAmount": "återbetalnings~~POS=TRUNC",
-        "cancelOrder": "Vill du avbryta denna order?",
-        "applyRefundToThisOrder": "Applicera återbetalning av {{currencySymbol}}{{refund}} till denna order?",
-        "applyRefundDuringCancelOrder": "Detta kommer att återbetala orderingången för {{currencySymbol}}{{invoiceTotal}}",
-        "cancelOrderThenRestock": "Ja, och återuppta",
-        "cancelOrderNoRestock": "Ja, men ingen återhämtning",
         "applyRefund": "tillämpas återbetalning",
-        "refunding": "återbetalning",
-        "applyDiscount": "Applicera rabatt",
         "adjustedTotal": "justerat Total",
-        "invalidDiscount": "Rabatten kan inte vara större än ursprungliga totalpris",
-        "fullDiscountWarning": "Tillämpa en 100% rabatt ogiltig / avbryta denna order med din betalningstjänst",
-        "invalidRefund": "Återbetalning (s) totalt kan inte vara större än justerade totala",
         "processor": "processor",
-        "placed": "Placerad",
-        "on": "på",
-        "status": "Status",
-        "completed": "Avslutad",
-        "processing": "bearbetning",
-        "destination": "Destination",
-        "shipment": "Sändning",
-        "payment": "Betalning",
-        "itemsFrom": "produkt (er) från",
         "filter": {
           "new": "Ny",
           "captured": "betalning Tagna",
-          "processing": "bearbetning",
           "shipped": "skeppas",
           "completed": "Avslutad",
           "canceled": "Avbrutet",
           "refunded": "återbetalas"
-        },
-        "showMore": "Visa mer"
+        }
       },
       "orderShipping": {
         "shipTo": "Frakta till",
         "notShipped": "Not yet Sänt",
         "noTracking": "Ingen spårning",
         "tracking": "spårning",
-        "printLabels": "Skriv ut etiketter",
-        "printShippingLabel": "Frakt",
-        "printCustomsLabel": "Tull",
-        "generateTracking": "Skapa etikett och spårning",
-        "labelError": "Fel skapa fraktetikett {{err}}",
-        "carrier": "Bärare",
-        "addTracking": "Lägg Tracking",
-        "itemsHaveBeenShipped": "Objekten har sänts",
         "shipmentEmpty": "Denna sändning har inga artiklar",
         "shipmentPacked": "Alla artiklar Packad",
         "shipped": "skeppas",
-        "delivered": "levereras",
         "shippingNotifyCustomer": "Meddela kunden att deras varor kommer att sjöfart snart.",
         "resendNotification": "Återsänd sändning Anmälan"
-      },
-      "orderWorkflow": {
-        "orderDetails": "Orderdetaljer",
-        "invoice": "Faktura",
-        "lineItems": "Linjeposter",
-        "shipmentTracking": "Leveransspårning"
-      },
-      "cartCheckout": {
-        "surprise": "Woah!",
-        "emptyCheckoutCart": "ser ut din kundvagn är tom!"
       },
       "cartCompleted": {
         "thankYou": "Tack!",
@@ -421,8 +211,6 @@
         "yourOrderIsNow": "Din beställning är nu",
         "summaryMessage": "Tack för din beställning.",
         "submitted": "lämnats",
-        "processing": "bearbetning",
-        "completed": "avslutad",
         "registerGuest": "Hallå! Lägg till ett e-post och ta emot uppdateringar order.",
         "trackYourDelivery": "Order uppdateringar kommer att skickas till",
         "noOrdersFound": "Inga order hittades.",
@@ -440,25 +228,54 @@
         "addAddress": "Lägg till adress",
         "chooseAddress": "Välj sändnings & faktureringsadress",
         "createDefault": "Skapa din standardadress",
-        "edit": "Redigera",
-        "removeAddress": "avlägsna Adress",
         "selectShippingAddress": "Välj en leveransadress",
-        "selectBillingAddress": "Välj en faktureringsadress",
-        "cantRemoveThisAddress": "Det går inte att ta bort den här adressen: {{err}}"
+        "selectBillingAddress": "Välj en faktureringsadress"
       },
       "addressBookAdd": {
         "addAddress": "Lägg till en ny adresspost",
-        "createAddress": "Skapa din standardadress",
-        "failedToAddAddress": "Det gick inte att lägga till adress: {{err}}",
-        "validatedAddress": "Gjort ändringar i din adress baserad på validering. Se detta är korrekt"
+        "createAddress": "Skapa din standardadress"
       },
       "addressBookEdit": {
-        "editAddress": "Redigera den här adressen inträde",
-        "addressValidation": "adress Validering",
-        "reviewAddress": "För bästa överensstämmelse, bekräfta din adress",
-        "somethingWentWrong": "Något gick fel: {{err}}",
-        "enteredAddress": "Inmatad adress",
-        "validatedAddress": "Validera adress"
+        "editAddress": "Redigera den här adressen inträde"
+      },
+      "address": {
+        "country": "Land",
+        "fullName": "Fullständiga namn",
+        "address1": "Adress",
+        "address2": "Adress",
+        "postal": "Post",
+        "city": "Stad",
+        "region": "Område",
+        "phone": "Telefon",
+        "isShippingDefault": "Gör detta till din standardleveransadress?",
+        "isBillingDefault": "Gör detta till din standardfaktureringsadress?",
+        "isCommercial": "Detta är en kommersiell adress."
+      },
+      "checkoutProgressBar": {
+        "login": "Konto",
+        "shippingBilling": "adressuppgifter",
+        "shippingOptions": "Leveransalternativ",
+        "reviewPayment": "Recension",
+        "complete": "Komplett"
+      },
+      "checkoutReview": {
+        "review": "Recension"
+      },
+      "consoleIcon": {
+        "iconTitle": "vy Console",
+        "text": "Trösta"
+      },
+      "createProductIcon": {
+        "iconTitle": "Skapa produkt",
+        "text": "Skapa"
+      },
+      "social": {
+        "facebook": "Facebook",
+        "google": "Google",
+        "github": "GitHub",
+        "meetup": "Meetup",
+        "twitter": "Twitter",
+        "weibo": "Weibo"
       },
       "corePackageConfig": {
         "settings": {
@@ -475,6 +292,10 @@
             "apiKey": "Googles API Key"
           }
         }
+      },
+      "revisions": {
+        "isDisabled": "Versionskontroll är inaktiverad. Eventuella ändringar kommer att publiceras omedelbart.",
+        "isEnabled": "Versionskontroll har aktiverats för produkter. Eventuella ändringar kommer att behöva publiceras innan de synliga för kunderna."
       },
       "shop": {
         "defaultPaymentMethod": "Standardbetalningsmetod",
@@ -508,114 +329,8 @@
           "isCommercial": "Detta är en kommersiell adress."
         }
       },
-      "revisions": {
-        "isDisabled": "Versionskontroll är inaktiverad. Eventuella ändringar kommer att publiceras omedelbart.",
-        "isEnabled": "Versionskontroll har aktiverats för produkter. Eventuella ändringar kommer att behöva publiceras innan de synliga för kunderna.",
-        "unpublishedChanges": "opublicerade Förändringar",
-        "publishChanges": "publicera ändringar",
-        "showChanges": "visar förändringar",
-        "hideChanges": "Göm Ändringar",
-        "discardChanges": "Ignorera ändringar",
-        "changedPublished": "Förändringar publicerade framgångsrikt",
-        "changesDiscarded": "Förändringar kastades bort framgångsrikt",
-        "noChanges": "Inga förändringar",
-        "noChangesPublished": "Det finns inga ändringar att publicera",
-        "noChangesDiscarded": "Det finns inga ändringar att göra sig"
-      },
-      "address": {
-        "country": "Land",
-        "fullName": "Fullständiga namn",
-        "address1": "Adress",
-        "address2": "Adress",
-        "postal": "Post",
-        "city": "Stad",
-        "region": "Område",
-        "phone": "Telefon",
-        "isShippingDefault": "Gör detta till din standardleveransadress?",
-        "isBillingDefault": "Gör detta till din standardfaktureringsadress?",
-        "isCommercial": "Detta är en kommersiell adress."
-      },
-      "i18nSettings": {
-        "enabledLanguages": "språk"
-      },
-      "checkoutProgressBar": {
-        "login": "Konto",
-        "shippingBilling": "adressuppgifter",
-        "shippingOptions": "Leveransalternativ",
-        "reviewPayment": "Recension",
-        "complete": "Komplett"
-      },
-      "checkoutReview": {
-        "review": "Recension"
-      },
-      "uom": {
-        "OZ": "uns",
-        "LB": "pounds",
-        "GR": "gram",
-        "KG": "kilogram"
-      },
-      "consoleIcon": {
-        "iconTitle": "vy Console",
-        "text": "Trösta"
-      },
-      "createProductIcon": {
-        "iconTitle": "Skapa produkt",
-        "text": "Skapa"
-      },
-      "social": {
-        "socialTitle": "Socialt",
-        "facebook": "Facebook",
-        "google": "Google",
-        "github": "GitHub",
-        "instagram": "Instagram",
-        "meetup": "Meetup",
-        "ok": "Ok",
-        "twitter": "Twitter",
-        "vk": "VK",
-        "weibo": "Weibo"
-      },
-      "search": {
-        "clearSearch": "Klar",
-        "noProductsFound": "Inga produkter hittades.",
-        "noOrdersFound": "Inga order hittades.",
-        "noAccountsFound": "Inga konton hittades.",
-        "searchInputLabel": "sökning Reaktion",
-        "suggestedTags": "föreslagna taggar",
-        "searchTypeProducts": "Produkter",
-        "searchTypeAccounts": "Konton",
-        "searchTypeOrders": "Order",
-        "accountSearchResults": {
-          "accountId": "konto-ID",
-          "shopId": "Shop ID",
-          "firstName": "Förnamn",
-          "lastName": "Efternamn",
-          "phone": "Telefon",
-          "emails": "E-post"
-        },
-        "orderSearchResults": {
-          "orderId": "För ID",
-          "shopId": "Shop ID",
-          "shippingAddress": "Adress",
-          "shippingCity": "Stad",
-          "shippingRegion": "Område",
-          "shippingCountry": "Land",
-          "shippingPhone": "Telefon",
-          "shippingName": "Namn",
-          "shippingStatus": "Status",
-          "billingAddress": "Adress",
-          "billingCity": "Stad",
-          "billingRegion": "Område",
-          "billingCountry": "Land",
-          "billingPhone": "Telefon",
-          "billingStatus": "Status",
-          "userEmails": "E-post",
-          "orderDate": "Datum",
-          "orderTotal": "Totalt"
-        }
-      },
       "accountsUI": {
         "members": "Medlemmar",
-        "manage": "Hantera",
         "guest": "Gäst",
         "addMember": "Lägg till en medlem",
         "add": "lägg till",
@@ -633,7 +348,6 @@
         "emailResetLink": "E-post återställningslänk",
         "forgotPassword": "Glömt din e-postadress?",
         "ifYouAlreadyHaveAnAccount": "Om du redan har ett konto",
-        "name": "Namn",
         "newPassword": "Nytt lösenord",
         "newPasswordAgain": "Nytt lösenord (upprepa)",
         "optional": "Valfri",
@@ -646,27 +360,22 @@
         "setPassword": "Sätt ett lösenord",
         "sign": "Logga",
         "signIn": "Logga in",
-        "signInService": "{{service}} Logga in",
         "signin": "logga in",
         "signInWith": "Logga in med",
         "signUpWith": "Registrera dig med",
         "signedIn": "Du är inloggad.",
         "signOut": "Logga ut",
         "signUp": "Skapa konto",
-        "signUpButton": "Register",
         "signupCode": "Registreringskod",
         "signUpWithYourEmailAddress": "Skapa ett konto med din e-postadress",
         "terms": "användarvilkor",
         "updateYourPassword": "Uppdatera ditt lösenord",
         "updatePasswordAndContinue": "Uppdatera och fortsätt",
-        "updatedServiceConfiguration": "konfiguration uppdaterade tjänsten för {{service}}",
         "username": "Användarnamn",
         "usernameOrEmail": "Användarnamn eller e-postadress",
         "with": "med",
         "checkoutAsGuest": "Kassan utan användarkonto",
         "role": "Roll",
-        "yourOrders": "Dina beställningar",
-        "addressBook": "Adressbok",
         "info": {
           "emailSent": "E-post skickades",
           "emailVerified": "E-post verifierades",
@@ -678,11 +387,9 @@
         },
         "error": {
           "emailRequired": "Det krävs ett lösenord.",
-          "groupRequired": "En annan grupp än standardägargruppen krävs.",
           "passwordRequired": "Lösenord krävs.",
           "passwordMustBeAtLeast6CharactersLong": "Lösenordet måste vara minst 6 bokstäver långt.",
           "passwordMustContainRequirements": "Lösenord måste innehålla minst en siffra eller symbol.",
-          "usernameMinLength": "Användarnamn måste vara minst 3 tecken lång",
           "minChar": "Det krävs minst 6 tecken i ditt lösenord.",
           "pwdsDontMatch": "Lösenorden matchar inte.",
           "pwOneDigit": "Lösenordet måste ha minst 1 siffra.",
@@ -694,10 +401,6 @@
           "usernameRequired": "Det krävs ett användarnamn.",
           "emailAlreadyExists": "E-postadressen finns redan.",
           "emailDoesntMatchTheCriteria": "E-postadressen uppfyller inte kriterierna.",
-          "errorSendingEmail": "Fel att skicka e-post, kan konfigurationsproblem.",
-          "unableToSendInvitationEmail": "Det går inte att skicka inbjudan e-post.",
-          "userWithEmailAlreadyExists": "En användare med den här e-postadressen finns redan",
-          "failedToLogout": "Det gick inte att logga ut.",
           "invalidLoginToken": "Felaktig login-token",
           "loginForbidden": "Inloggning tillåts ej",
           "serviceUnknown": "Okänd service",
@@ -726,18 +429,6 @@
           "matchFailed": "Matchning misslyckades",
           "unknownError": "Okänt fel"
         }
-      },
-      "loginServices": {
-        "appId": "App ID",
-        "secret": "Hemlighet",
-        "clientId": "Klient ID",
-        "consumerKey": "API-nyckel"
-      },
-      "error": {
-        "nameRequired": "Namn krävs.",
-        "isRequired": "{{field}} krävs.",
-        "mustBeNumber": "{{field}} måste vara ett tal.",
-        "variantFieldIsRequired": "Variant {{number}} {{field}} krävs."
       }
     }
   }

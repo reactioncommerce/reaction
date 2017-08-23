@@ -1,0 +1,11 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "productGrid": {
+        "noProductsFound": "Nu găsiți produse"
+      }
+    }
+  }
+}]

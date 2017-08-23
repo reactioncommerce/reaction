@@ -7,117 +7,35 @@
       "languages": {
         "select": "Taalselectie"
       },
-      "currencies": {
-        "select": "selecteer valuta"
-      },
       "admin": {
-        "shortcut": {
-          "addProductLabel": "Product toevoegen",
-          "accountsLabel": "Rekeningen"
-        },
-        "dashboard": {
-          "i18NLabel": "i18n",
-          "i18NTitle": "i18n",
-          "i18NDescription": "internationalisering utilities",
-          "routingLabel": "routing",
-          "routingTitle": "routing",
-          "routingDescription": "routing utilities",
-          "filtrationLabel": "Filtratie",
-          "filtrationDescription": "Producten voor filtratie Reaction"
-        },
         "groups": {
-          "appearance": "Uiterlijk",
-          "addUserError": "Fout bij toevoegen van gebruiker om te groeperen",
-          "addUserSuccess": "Toegevoegd gebruiker om te groeperen",
-          "removeUserError": "Fout bij verwijderen van gebruiker om te groeperen",
-          "removeUserSuccess": "De gebruiker is succesvol verwijderd",
-          "connect": "Aansluiten",
-          "core": "Kern",
-          "name": "Naam",
           "email": "E-mailinstellingen",
-          "create": "Groep maken",
-          "update": "Update Group",
-          "lastActive": "Laatst actief",
           "description": "Voeg een productomschrijving toe",
-          "remove": "Verwijderen",
-          "newGroup": "Nieuwe groep",
-          "selectGroup": "Selecteer Groep",
-          "editGroups": "Groepen bewerken",
-          "dashboard": "Dashboard",
-          "errorCreate": "Fout bij het maken van een groep",
-          "successCreate": "Groep is succesvol opgericht",
-          "errorUpdate": "Fout bij het bijwerken van de groep",
-          "successUpdate": "Groep is succesvol bijgewerkt",
-          "misc": "Misc",
-          "paymentMethod": "betaling Providers",
-          "utilities": "nutsbedrijven",
-          "marketplace": "Marktplaats"
+          "remove": "Verwijderen"
         },
         "settings": {
-          "accountSettingsLabel": "Account instellingen",
-          "accountSettingsTitle": "Inloggen Services",
-          "accountSettingsDescription": "Authenticatie via sociale providers",
-          "saveSuccess": "Instellingen bijgewerkt.",
-          "saveFailed": "Kan instellingen bij te werken.",
-          "addShopMemberLabel": "Voeg Shop Lid",
-          "permissionsSettingsLabel": "Machtigingen",
           "localizationAndI18NLabel": "Lokalisatie en i18n"
-        },
-        "userAccountDropdown": {
-          "profileLabel": "Profiel"
         }
       },
-      "accounts": {
-        "addMember": "Lid toevoegen",
-        "shopMembers": "Shop leden",
-        "guests": "gasten"
-      },
       "app": {
-        "add": "Toevoegen",
-        "editMode": "Bewerkingsmodus",
-        "administratorView": "Administrator View",
-        "customerView": "Customer View",
-        "createContent": "Inhoud aanmaken",
-        "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Opslaan en doorgaan",
-        "saveChanges": "Wijzigingen opslaan",
-        "selectOne": "(Kies een)",
         "cancel": "Annuleren",
-        "success": "Succes",
-        "error": "Fout",
         "submit": "Verzenden",
         "delete": "Verwijderen",
-        "deleted": "Verwijderde",
-        "archive": "Archief",
-        "archived": "gearchiveerd",
         "create": "Aanmaken",
         "close": "Sluiten",
         "settings": "Instellingen",
         "loading": "Laden",
         "toggle": "Omwisselen",
-        "toggleEditMode": "Toggle Edit Mode",
         "warning": "Oeps!",
         "unauthorizedMessage": "U hebt geen toestemming om de inhoud te bekijken",
-        "updateSettings": "Update-instellingen",
         "monthOptions": "Kies maand",
         "yearOptions": "Kies jaar",
         "shopSettings": "Shop Instellingen",
         "dashboard": "Dashboard",
         "print": "Afdruk",
-        "notFound": "Deze pagina is niet gevonden.",
-        "pageNotFound": "Deze pagina is niet gevonden.",
-        "notFoundTitle": "Oeps!",
-        "notFoundError": "Pagina niet gevonden.",
-        "productNotFound": "Dit artikel is niet gevonden.",
-        "loadMoreProducts": "Laad meer producten",
-        "noProductsFound": "Geen producten gevonden.",
-        "private": "Privaat",
-        "public": "Openbaar",
-        "shortcut": {
-          "addProductLabel": "Product toevoegen",
-          "accountsLabel": "Rekeningen"
-        }
+        "auto": "Auto"
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -138,34 +56,6 @@
         "settingsSaved": "Zoekinstellingen opgeslagen",
         "settingsfailed": "updaten zoekinstellingen is mislukt"
       },
-      "shopSettings": {
-        "localization": "Localization",
-        "options": "opties",
-        "paymentMethods": "Betaalmethoden",
-        "externalServices": "externe Services",
-        "shopLocalizationSettingsSaved": "Shop lokalisatie instellingen opgeslagen.",
-        "shopLocalizationSettingsFailed": "Shop-update lokalisatie instellingen is mislukt.",
-        "shopPaymentMethodsSaved": "Shop betalingsmethoden instellingen opgeslagen.",
-        "shopPaymentMethodsFailed": "Shop-update betalingsmethoden instellingen is mislukt.",
-        "shopBrandAssetsSaved": "Bijgewerkt merk asset",
-        "shopBrandAssetsFailed": "Kan het merk asset niet updaten"
-      },
-      "notifications": {
-        "body": {
-          "noNotifications": "Er zijn nog geen meldingen",
-          "markAllAsRead": "Alles als gelezen markeren",
-          "recent": "Recent",
-          "viewAll": "Bekijk alles"
-        },
-        "messages": {
-          "orderCancelled": "Uw bestelling is geannuleerd.",
-          "newOrder": "Je bestelling wordt verwerkt.",
-          "forAdmin": "U heeft een nieuwe bestelling.",
-          "orderDelivered": "Uw bestelling is afgeleverd.",
-          "orderProcessing": "Je bestelling wordt verwerkt.",
-          "orderShipped": "Je bestelling is verzonden."
-        }
-      },
       "header": {
         "tagsAdd": "Tag toevoegen",
         "search": "Producten zoeken..."
@@ -175,10 +65,6 @@
         "whenYouAreDone": "zodra u klaar bent met bewerken.",
         "tags": "Tags",
         "tagsAdd": "Tag toevoegen",
-        "tagsEdit": "Tags bewerken",
-        "tagExists": "Tag bestaat al of is leeg.",
-        "tagInUse": "Tag is in gebruik en kan niet worden verwijderd.",
-        "dropFiles": "Drop bestanden te uploaden",
         "addInventory": "Voorraad ophogen",
         "barcode": "Streepjescode",
         "confirmDeleteBarcode": "Weet u zeker dat u de streepjescode wilt verwijderen?",
@@ -192,8 +78,6 @@
         "addToCart": "Aan winkelwagen toevoegen",
         "chooseOptions": "Kies één van de opties voordat u het aan de winkelwagen toevoegt",
         "outOfStock": "Sorry, dit product is niet op voorraad!",
-        "productArchiveError": "Er is een fout opgetreden tijdens het verzenden van {{product}} naar het archief.",
-        "archiveErrorTheProduct": "het product",
         "publishFirst": "Product publiceren voor het toevoegen aan de winkelwagen.",
         "quantityAbbreviation": "aant.",
         "selectOption": "Kies een optie voordat u het aan de winkelwagen toevoegt",
@@ -204,40 +88,17 @@
         "limitedSupply": "Beperkte voorraad",
         "publishProductVisible": "is nu zichtbaar",
         "publishProductHidden": "is nu verborgen",
-        "clonedAlert": "gekloonde {{product}}",
-        "clonedAlert_plural": "gekloonde {{product}}",
-        "archivedAlert": "gearchiveerd {{product}}",
-        "archivedAlert_plural": "gearchiveerd {{product}}",
-        "theProduct": "het product",
-        "theSelectedProducts": "de geselecteerde producten",
         "startTracking": "Start Tracking",
         "addBarcode": "Streepjescode toevoegen",
         "quantity": "Aantal",
         "quantityGreaterThanZero": "Fout: aantal moet hoger zijn dan nul",
-        "notFoundTitle": "Oeps!",
-        "notFoundError": "Dit is niet het product dat u naar op zoek waren."
-      },
-      "tags": {
-        "tagName": "tag Naam",
-        "addTag": "Tag toevoegen",
-        "updateTag": "Tag-update",
-        "addGroupTag": "Groep toevoegen Tag",
-        "addSubTag": "Voeg Sub Tag",
-        "removeTag": "Verwijder label",
-        "createTag": "Maak Tag"
+        "dropFiles": "Drop bestanden te uploaden"
       },
       "productDetailEdit": {
-        "editOption": "optie bewerken",
-        "productSettings": "productinstellingen",
-        "product": "Artikel",
-        "size": "Grootte",
         "title": "Producttitel",
-        "untitledProduct": "Untitled Product",
-        "parmalink": "permalink",
         "pageTitle": "Titel productpagina",
         "vendor": "Merk",
         "description": "Voeg een productomschrijving toe",
-        "originCountry": "herkomst Land",
         "facebookMsg": "Facebookbericht",
         "twitterMsg": "Twitterbericht",
         "pinterestMsg": "Pinterest-bericht",
@@ -247,31 +108,13 @@
         "variantDetails": "variant Details",
         "duplicateVariant": "Dupliceren",
         "addVariantOption": "Optie toevoegen",
-        "addVariantFail": "Kan geen variant te creëren voor {{title}}.",
-        "cloneVariantFail": "Kan geen variant klonen voor {{title}}.",
         "removeVariant": "Verwijderen",
-        "removeVariantConfirm": "Bent u zeker dat u wilt verwijderen {{title}}",
-        "restoreVariantConfirm": "Bent u zeker dat u wilt {{title}} herstellen uit de prullenbak?",
-        "restoreVariantFail": "Kan geen {{title}} herstellen.",
-        "archiveVariantConfirm": "Bent u zeker dat u wilt archiveren {{title}}",
-        "thisVariant": "deze variant",
-        "thisOption": "deze optie",
         "duplicateProduct": "Product dupliceren",
         "pinProduct": "Product vastzetten",
         "toggleSize": "Grootte wisselen",
-        "archiveProduct": "archief Product",
-        "restoreProduct": "Product te herstellen uit de prullenbak",
-        "archiveThisProduct": "Archiveer dit product?",
-        "archiveSelectedProducts": "Archief geselecteerde producten?",
         "publish": "publiceren",
         "moreOptions": "Meer opties",
-        "details": "Details",
-        "noSelectedProducts": "Geen geselecteerde producten. Gebruik de",
-        "orShiftCtrlCmd": " of shift | ctrl | cmd + klik op producten meerdere te selecteren. Met shift kunt u een aaneengesloten reeks van producten te selecteren.",
-        "makeVisible": "Make Visible",
-        "hideProduct": "Hide Product",
-        "productIsVisible": "Product is zichtbaar",
-        "productIsNotVisible": "Het product is niet zichtbaar"
+        "details": "Details"
       },
       "productVariant": {
         "addVariantOptions": "opties Voeg inschakelen 'In Winkelwagen' butto",
@@ -303,18 +146,8 @@
         "createVariant": "Variant aanmaken"
       },
       "gridPackage": {
-        "enable": "In staat stellen",
-        "errorDisabling": "Fout uitschakelen pakket:",
-        "errorEnabling": "Fout waardoor pakket:",
-        "details": "Details",
-        "disable": "onbruikbaar maken",
-        "disableConfirm": "Bent u zeker dat u wilt {{app}} uitschakelen?",
         "pkgEnabled": " is nu ingeschakeld.",
         "pkgDisabled": " is nu uitgeschakeld."
-      },
-      "gridSettingsPanel": {
-        "title": "Grid-instellingen",
-        "selected": "Gekozen"
       },
       "cartDrawer": {
         "empty": "Uw winkelwagen is leeg.",
@@ -322,12 +155,10 @@
         "checkout": "Nu betalen",
         "new": "Nieuw",
         "coreOrderWorkflow/created": "Gemaakt",
-        "coreOrderWorkflow/processing": "verwerking",
         "coreOrderWorkflow/completed": "Voltooid",
         "coreOrderWorkflow/canceled": "Geannuleerd"
       },
       "cartSubTotals": {
-        "discount": "Korting",
         "head": "Uw winkelwagen",
         "items": "Items in winkelwagen",
         "subtotal": "Subtotaal",
@@ -345,75 +176,34 @@
         "invoice": "Factuur",
         "ordersNotFound": "Geen bestellingen gevonden",
         "approveInvoice": "Goedkeuren",
-        "cancelOrderLabel": "Annuleer bestelling",
         "makeAdjustments": "maak aanpassingen",
         "capturePayment": "Capture Betaling",
         "paymentCaptured": "betaling Gevangen",
         "capturedTotal": "gevangen Totaal",
         "canceledLabel": "Geannuleerd",
         "refundAmount": "restitutiebedrag",
-        "cancelOrder": "Wilt u deze bestelling annuleren?",
-        "applyRefundToThisOrder": "Solliciteer terugbetaling van {{currencySymbol}}{{refund}} deze bestelling?",
-        "applyRefundDuringCancelOrder": "Dit zal het bestelbedrag van {{currencySymbol}}{{invoiceTotal}} terugbetalen",
-        "cancelOrderThenRestock": "Ja, en opnieuw",
-        "cancelOrderNoRestock": "Ja, maar geen restocking",
         "applyRefund": "Solliciteer Refund",
-        "refunding": "terugbetaling",
-        "applyDiscount": "Solliciteer Discount",
         "adjustedTotal": "aangepaste Total",
-        "invalidDiscount": "Korting kan niet groter zijn dan de oorspronkelijke totale prijs",
-        "fullDiscountWarning": "Het aanbrengen van een 100% korting vervalt / deze bestelling te annuleren met uw betaling provider",
-        "invalidRefund": "Terugbetaling (en) kan niet groter zijn dan aangepaste totaalscore",
         "processor": "bewerker",
-        "placed": "geplaatst",
-        "on": "op",
-        "status": "Toestand",
-        "completed": "Voltooid",
-        "processing": "verwerking",
-        "destination": "Bestemming",
-        "shipment": "Verzending",
-        "payment": "Betaling",
-        "itemsFrom": "artikel (en) van",
         "filter": {
           "new": "Nieuw",
           "captured": "betaling Gevangen",
-          "processing": "verwerking",
           "shipped": "verzonden",
           "completed": "Voltooid",
           "canceled": "Geannuleerd",
           "refunded": "terugbetaald"
-        },
-        "showMore": "Laat meer zien"
+        }
       },
       "orderShipping": {
         "shipTo": "Verzend naar",
         "notShipped": "Nog niet verzonden",
         "noTracking": "Geen volgen",
         "tracking": "Tracking",
-        "printLabels": "Print Labels",
-        "printShippingLabel": "Verzenden",
-        "printCustomsLabel": "Douane",
-        "generateTracking": "Genereer Label en Tracking",
-        "labelError": "Fout bij het maken verzendlabel {{err}}",
-        "carrier": "Carrier",
-        "addTracking": "Tracking toevoegen",
-        "itemsHaveBeenShipped": "Punten zijn verscheept",
         "shipmentEmpty": "Deze zending heeft geen items",
         "shipmentPacked": "Alle producten verpakt",
         "shipped": "verzonden",
-        "delivered": "geleverd",
         "shippingNotifyCustomer": "Houd de klant dat hun punten binnenkort zal de scheepvaart.",
         "resendNotification": "Opnieuw verzenden Shipment Notification"
-      },
-      "orderWorkflow": {
-        "orderDetails": "Bestel Details",
-        "invoice": "Factuur",
-        "lineItems": "Line Items",
-        "shipmentTracking": "Verzending volgen"
-      },
-      "cartCheckout": {
-        "surprise": "Woah!",
-        "emptyCheckoutCart": "lijkt erop dat uw winkelwagentje is leeg!"
       },
       "cartCompleted": {
         "thankYou": "Bedankt.",
@@ -421,8 +211,6 @@
         "yourOrderIsNow": "Uw bestelling is nu",
         "summaryMessage": "Bedankt voor uw bestelling.",
         "submitted": "verzonden",
-        "processing": "verwerken",
-        "completed": "voltooid",
         "registerGuest": "Hallo! Voeg een e-mailadres toe en ontvang updates over de bestelling",
         "trackYourDelivery": "De updates worden verzonden naar",
         "noOrdersFound": "Geen bestellingen gevonden.",
@@ -440,25 +228,54 @@
         "addAddress": "Adres toevoegen",
         "chooseAddress": "Kies verzend- en factuuradres",
         "createDefault": "Maak een standaardadres aan",
-        "edit": "Uitgeven",
-        "removeAddress": "Verwijder Adres",
         "selectShippingAddress": "Kies een verzendadres",
-        "selectBillingAddress": "Kies een factuuradres",
-        "cantRemoveThisAddress": "Kan dit adres niet verwijderen: {{err}}"
+        "selectBillingAddress": "Kies een factuuradres"
       },
       "addressBookAdd": {
         "addAddress": "Nieuw adres toevoegen",
-        "createAddress": "Maak een standaardadres aan",
-        "failedToAddAddress": "Mislukt adres toe te voegen: {{err}}",
-        "validatedAddress": "Wijzigingen in uw adres op basis van validatie. Zorg ervoor dat dit correct is"
+        "createAddress": "Maak een standaardadres aan"
       },
       "addressBookEdit": {
-        "editAddress": "Dit adres bewerken",
-        "addressValidation": "Address Validation",
-        "reviewAddress": "Bevestig uw adres voor de beste naleving",
-        "somethingWentWrong": "Er is iets misgegaan: {{err}}",
-        "enteredAddress": "Ingevoerd adres",
-        "validatedAddress": "Validate Address"
+        "editAddress": "Dit adres bewerken"
+      },
+      "address": {
+        "country": "Land",
+        "fullName": "Volledige naam",
+        "address1": "Addresregel 1",
+        "address2": "Addresregel 2",
+        "postal": "Postcode",
+        "city": "Stad",
+        "region": "Provincie",
+        "phone": "Telefoon",
+        "isShippingDefault": "Wilt u hiervan uw standaardverzendadres maken?",
+        "isBillingDefault": "Wilt u hiervan uw standaardfactuuradres maken?",
+        "isCommercial": "Dit is een zakelijk adres."
+      },
+      "checkoutProgressBar": {
+        "login": "Login",
+        "shippingBilling": "Adresdetails",
+        "shippingOptions": "Verzendopties",
+        "reviewPayment": "Controleren",
+        "complete": "Voltooid"
+      },
+      "checkoutReview": {
+        "review": "Controleren"
+      },
+      "consoleIcon": {
+        "iconTitle": "Administratiepaneel bekijken",
+        "text": "Administratiepaneel"
+      },
+      "createProductIcon": {
+        "iconTitle": "Product aanmaken",
+        "text": "Aanmaken"
+      },
+      "social": {
+        "facebook": "Facebook",
+        "google": "Google",
+        "github": "GitHub",
+        "meetup": "Meetup",
+        "twitter": "Twitter",
+        "weibo": "Weibo"
       },
       "corePackageConfig": {
         "settings": {
@@ -475,6 +292,10 @@
             "apiKey": "Google API Key"
           }
         }
+      },
+      "revisions": {
+        "isDisabled": "Revisie controle is uitgeschakeld. Eventuele wijzigingen zullen onmiddellijk worden gepubliceerd.",
+        "isEnabled": "Revisie controle is ingeschakeld voor producten. Eventuele wijzigingen zullen nodig hebben voordat ze zichtbaar zijn voor klanten om te worden gepubliceerd."
       },
       "shop": {
         "defaultPaymentMethod": "Standaardbetaalmethode",
@@ -508,114 +329,8 @@
           "isCommercial": "Dit is een zakelijk adres."
         }
       },
-      "revisions": {
-        "isDisabled": "Revisie controle is uitgeschakeld. Eventuele wijzigingen zullen onmiddellijk worden gepubliceerd.",
-        "isEnabled": "Revisie controle is ingeschakeld voor producten. Eventuele wijzigingen zullen nodig hebben voordat ze zichtbaar zijn voor klanten om te worden gepubliceerd.",
-        "unpublishedChanges": "ongepubliceerde Wijzigingen",
-        "publishChanges": "Wijzigingen publiceren",
-        "showChanges": "Wijzigingen weergeven",
-        "hideChanges": "verbergen Wijzigingen",
-        "discardChanges": "Veranderingen ongedaan maken",
-        "changedPublished": "Wijzigingen met succes gepubliceerd",
-        "changesDiscarded": "Wijzigingen met succes verwijderd",
-        "noChanges": "Geen veranderingen",
-        "noChangesPublished": "Er zijn geen wijzigingen te publiceren",
-        "noChangesDiscarded": "Er zijn geen wijzigingen te ontdoen"
-      },
-      "address": {
-        "country": "Land",
-        "fullName": "Volledige naam",
-        "address1": "Addresregel 1",
-        "address2": "Addresregel 2",
-        "postal": "Postcode",
-        "city": "Stad",
-        "region": "Provincie",
-        "phone": "Telefoon",
-        "isShippingDefault": "Wilt u hiervan uw standaardverzendadres maken?",
-        "isBillingDefault": "Wilt u hiervan uw standaardfactuuradres maken?",
-        "isCommercial": "Dit is een zakelijk adres."
-      },
-      "i18nSettings": {
-        "enabledLanguages": "Talen"
-      },
-      "checkoutProgressBar": {
-        "login": "Login",
-        "shippingBilling": "Adresdetails",
-        "shippingOptions": "Verzendopties",
-        "reviewPayment": "Controleren",
-        "complete": "Voltooid"
-      },
-      "checkoutReview": {
-        "review": "Controleren"
-      },
-      "uom": {
-        "OZ": "ounces",
-        "LB": "Pond",
-        "GR": "gram",
-        "KG": "Kilogram"
-      },
-      "consoleIcon": {
-        "iconTitle": "Administratiepaneel bekijken",
-        "text": "Administratiepaneel"
-      },
-      "createProductIcon": {
-        "iconTitle": "Product aanmaken",
-        "text": "Aanmaken"
-      },
-      "social": {
-        "socialTitle": "sociaal",
-        "facebook": "Facebook",
-        "google": "Google",
-        "github": "GitHub",
-        "instagram": "Instagram",
-        "meetup": "Meetup",
-        "ok": "OK",
-        "twitter": "Twitter",
-        "vk": "VK",
-        "weibo": "Weibo"
-      },
-      "search": {
-        "clearSearch": "Duidelijk",
-        "noProductsFound": "Geen producten gevonden.",
-        "noOrdersFound": "Geen bestellingen gevonden.",
-        "noAccountsFound": "Geen accounts gevonden.",
-        "searchInputLabel": "zoeken Reaction",
-        "suggestedTags": "voorgestelde tags",
-        "searchTypeProducts": "producten",
-        "searchTypeAccounts": "Rekeningen",
-        "searchTypeOrders": "orders",
-        "accountSearchResults": {
-          "accountId": "Account ID",
-          "shopId": "Shop ID",
-          "firstName": "Voornaam",
-          "lastName": "Achternaam",
-          "phone": "Telefoon",
-          "emails": "Email"
-        },
-        "orderSearchResults": {
-          "orderId": "Order ID",
-          "shopId": "Shop ID",
-          "shippingAddress": "Adres",
-          "shippingCity": "Stad",
-          "shippingRegion": "Regio",
-          "shippingCountry": "Land",
-          "shippingPhone": "Telefoon",
-          "shippingName": "Naam",
-          "shippingStatus": "Toestand",
-          "billingAddress": "Adres",
-          "billingCity": "Stad",
-          "billingRegion": "Regio",
-          "billingCountry": "Land",
-          "billingPhone": "Telefoon",
-          "billingStatus": "Toestand",
-          "userEmails": "Email",
-          "orderDate": "Datum",
-          "orderTotal": "Totaal"
-        }
-      },
       "accountsUI": {
         "members": "Gebruikers",
-        "manage": "beheren",
         "guest": "Gast",
         "addMember": "Gebruiker toevoegen",
         "add": "toevoegen",
@@ -633,7 +348,6 @@
         "emailResetLink": "Wachtwoordherstel-mail toesturen",
         "forgotPassword": "Wachtwoord herstellen",
         "ifYouAlreadyHaveAnAccount": "Als u al een account heeft",
-        "name": "Naam",
         "newPassword": "Nieuw wachtwoord",
         "newPasswordAgain": "Nieuw wachtwoord (opnieuw)",
         "optional": "Optioneel",
@@ -646,27 +360,22 @@
         "setPassword": "Wachtwoord instellen",
         "sign": "Login",
         "signIn": "Inloggen",
-        "signInService": "{{service}} Inloggen",
         "signin": "inloggen",
         "signInWith": "Inloggen met",
         "signUpWith": "Meld aan met",
         "signedIn": "U bent ingelogd.",
         "signOut": "Uitloggen",
         "signUp": "Registreren",
-        "signUpButton": "Register",
         "signupCode": "Registratiecode",
         "signUpWithYourEmailAddress": "Registreer met uw e-mailadres",
         "terms": "Algemene gebruiksvoorwaarden",
         "updateYourPassword": "Uw wachtwoord bijwerken",
         "updatePasswordAndContinue": "Update en doorgaan",
-        "updatedServiceConfiguration": "Bijgewerkt dienst configuratie voor {{service}}",
         "username": "Gebruikersnaam",
         "usernameOrEmail": "Gebruikersnaam of e-mail",
         "with": "met",
         "checkoutAsGuest": "Betalen zonder klantaccount",
         "role": "rol",
-        "yourOrders": "Jouw bestellingen",
-        "addressBook": "Adresboek",
         "info": {
           "emailSent": "E-mail verzonden",
           "emailVerified": "E-mailadres geverifieerd",
@@ -678,11 +387,9 @@
         },
         "error": {
           "emailRequired": "E-mail is vereist.",
-          "groupRequired": "Een andere groep dan de standaard eigenaar groep is verplicht.",
           "passwordRequired": "Een wachtwoord is verplicht.",
           "passwordMustBeAtLeast6CharactersLong": "Wachtwoord moet minsters 6 karakters lang zijn.",
           "passwordMustContainRequirements": "Wachtwoord moet ten minste één cijfer of symbool bevatten.",
-          "usernameMinLength": "Gebruikersnaam moet minstens 3 tekens lang zijn",
           "minChar": "6 karakters minimum wachtwoordlengte.",
           "pwdsDontMatch": "Wachtwoorden komen niet overeen",
           "pwOneDigit": "Wachtwoord moet op zijn minst 1 cijfer bevatten.",
@@ -694,10 +401,6 @@
           "usernameRequired": "Gebruikersnaam is vereist.",
           "emailAlreadyExists": "E-mailadres is al in gebruik.",
           "emailDoesntMatchTheCriteria": "E-mailadres komt niet overeen met de criteria.",
-          "errorSendingEmail": "Fout bij het verzenden van e-mail, mogelijke configuratie probleem.",
-          "unableToSendInvitationEmail": "Kan geen uitnodiging e-mail.",
-          "userWithEmailAlreadyExists": "Een gebruiker met dit e-mailadres bestaat al",
-          "failedToLogout": "Nagelaten om uit te loggen.",
           "invalidLoginToken": "Ongeldig inlog-token",
           "loginForbidden": "Login verboden",
           "serviceUnknown": "Service onbekend",
@@ -726,18 +429,6 @@
           "matchFailed": "Geen match gevonden",
           "unknownError": "Onbekende fout"
         }
-      },
-      "loginServices": {
-        "appId": "App ID",
-        "secret": "Geheim",
-        "clientId": "Client ID",
-        "consumerKey": "API Key"
-      },
-      "error": {
-        "nameRequired": "Naam is verplicht.",
-        "isRequired": "{{field}} vereist.",
-        "mustBeNumber": "{{field}} moet een getal zijn.",
-        "variantFieldIsRequired": "Variant {{number}} {{field}} is vereist."
       }
     }
   }

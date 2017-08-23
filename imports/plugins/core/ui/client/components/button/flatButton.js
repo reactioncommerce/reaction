@@ -1,46 +1,27 @@
 import React from "react";
 import classnames from "classnames";
-import { pure } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import Button from "./button.jsx";
 
-const FlatButton = ({ icon, onIcon, ...otherProps }) => {
+const FlatButton = (props) => {
   const buttonClassName = classnames({
     rui: true,
     button: true
   });
 
-  let iconClassName;
-  let onIconClassName;
-
-  if (icon) {
-    iconClassName = classnames({
-      [icon]: true
-    });
-  }
-
-  if (onIcon) {
-    onIconClassName = classnames({
-      [onIcon]: true
-    });
-  }
-
   return (
     <Button
       className={buttonClassName}
-      icon={iconClassName}
-      onIcon={onIconClassName}
-      {...otherProps}
+      {...props}
     />
   );
 };
 
-FlatButton.propTypes = Object.assign({}, Button.propTypes);
-
+FlatButton.propTypes = { ...Button.propTypes };
 FlatButton.defaultProps = {
   bezelStyle: "flat"
 };
 
-registerComponent("FlatButton", FlatButton, pure);
+registerComponent("FlatButton", FlatButton);
 
 export default FlatButton;
