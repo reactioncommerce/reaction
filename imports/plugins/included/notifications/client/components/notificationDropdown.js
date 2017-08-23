@@ -36,6 +36,12 @@ class NotificationDropdown extends Component {
         provides: "dashboard"
       });
       Reaction.showActionView(actionViewData);
+    } else if (notify.url === "newshopmembernotification") {
+      Reaction.showActionView({
+        i18nKeyTitle: "dashboard.coreTitle",
+        title: "Dashboard",
+        template: "dashboardPackages"
+      });
     } else {
       Reaction.Router.go(notify.url);
     }
