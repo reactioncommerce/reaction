@@ -60,7 +60,7 @@ function composer(props, onData) {
         const productImages = Media.find().fetch();
 
         onData(null, {
-          shops: order.shopSummary(),
+          shops: order.getShopSummary(),
           order,
           orderId,
           orderSummary,

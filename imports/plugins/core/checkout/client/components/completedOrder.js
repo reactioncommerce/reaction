@@ -66,7 +66,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
         {paymentMethods.map(function (paymentMethod) {
           return <CompletedOrderPaymentMethod key={paymentMethod.transactionId} paymentMethod={paymentMethod} />;
         })}
-        <CompletedOrderSummary orderSummary={orderSummary} />
+        <CompletedOrderSummary shops={shops} orderSummary={orderSummary} />
         {/* This is the right side / side content */}
       </div>
 
