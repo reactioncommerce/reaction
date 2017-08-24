@@ -12,6 +12,9 @@
           "email": "E-mail",
           "description": "Adj hozzá termékleírást",
           "remove": "Távolítsuk"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Lokalizáció és i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "Válasszon évet",
         "shopSettings": "Bolt beállítások",
         "dashboard": "Műszerfal",
-        "print": "Nyomtatás"
+        "print": "Nyomtatás",
+        "auto": "kocsi"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "termék keresés",
+          "includeTitle": "cím felvétele",
+          "includeDescription": "Tartalmazza leírás",
+          "includePageTitle": "Tartalmazza oldal címe",
+          "includeDetails": "részletként",
+          "includeVendor": "Tartalmazza az eladóval"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Rendelési Keresési beállítások"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Fiók Keresési beállítások"
+        },
+        "noSettings": "Nem beállításokat a jelenleg rendelkezésre álló",
+        "settingsSaved": "Keresési beállítások mentve",
+        "settingsfailed": "Keresési beállítások frissítése sikertelen"
       },
       "header": {
         "tagsAdd": "Címke hozzáadása",
@@ -68,7 +91,8 @@
         "startTracking": "Indítás követés",
         "addBarcode": "Add Vonalkód",
         "quantity": "Mennyiség",
-        "quantityGreaterThanZero": "Hiba: Mennyiség nagyobb kell legyen, mint nulla"
+        "quantityGreaterThanZero": "Hiba: Mennyiség nagyobb kell legyen, mint nulla",
+        "dropFiles": "Drop fájlokat feltölteni"
       },
       "productDetailEdit": {
         "title": "Termék neve",
@@ -252,6 +276,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Hagyjuk Guest Pénztár"
+          },
+          "openexchangerates": {
+            "appId": "Nyílt Árfolyamok alkalmazás azonosítója",
+            "refreshPeriod": "Nyílt Árfolyamok frissítési idő",
+            "refreshPeriodPlaceholder": "vagyis minden 1 óra"
+          },
+          "google": {
+            "clientId": "Google ügyfél-azonosító",
+            "apiKey": "Google API-kulcs"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "Revision szabályozás ki van kapcsolva. A módosításokat haladéktalanul közzé kell tenni.",
+        "isEnabled": "Revision szabályozás engedélyezve a termékek. A módosításokat közzé kell tenni, mielőtt láthatóvá az ügyfelek számára."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Alapértelmezett fizetési mód",
+        "name": "Név",
+        "namePlaceholder": "Bolt neve",
+        "description": "Leírás",
+        "descriptionPlaceholder": "Írja le bolt SEO",
+        "descriptionTooltip": "Meta Leírás SEO",
+        "email": "E-mail",
+        "emailPlaceholder": "Elsődleges kapcsolattartó e-mail",
+        "keywords": "Kulcsszavak",
+        "keywordsPlaceholder": "Meta kulcsszavak SEO",
+        "language": "alapnyelv",
+        "addressBook": {
+          "company": "Vállalat",
+          "companyPlaceholder": "Ez az üzlet neve",
+          "country": "Ország",
+          "fullName": "Teljes név",
+          "fullNamePlaceholder": "A szervezet neve",
+          "address1": "Cím 1",
+          "address1Placeholder": "A szervezet címe",
+          "address1Tooltip": "Ez a cím lesz látható a látogatók",
+          "address2": "Cím 2",
+          "address2Placeholder": "további cím",
+          "postal": "Postai",
+          "city": "Város",
+          "region": "Megye",
+          "phone": "Telefon",
+          "isShippingDefault": "Ez legyen az elsődleges szállítási címed?",
+          "isBillingDefault": "Ez legyen az elsődleges számlázási címed?",
+          "isCommercial": "Céges cím."
+        }
       },
       "accountsUI": {
         "members": "Belépés",

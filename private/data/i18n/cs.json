@@ -12,6 +12,9 @@
           "email": "Email",
           "description": "Popis",
           "remove": "Odstranit"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Lokalizace a i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "Zvolte rok",
         "shopSettings": "Nastavení Shop",
         "dashboard": "přístrojová deska",
-        "print": "Tisk"
+        "print": "Tisk",
+        "auto": "Auto"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Hledání výrobku",
+          "includeTitle": "zahrnout název",
+          "includeDescription": "obsahovat popis",
+          "includePageTitle": "Zahrnout název stránky",
+          "includeDetails": "obsahovat podrobnosti",
+          "includeVendor": "zahrnují dodavatele"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Nastavení pořadí hledání"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Nastavení účtu Hledání"
+        },
+        "noSettings": "Žádná nastavení v současné době k dispozici",
+        "settingsSaved": "Nastavení vyhledávání uloženo",
+        "settingsfailed": "Aktualizace nastavení vyhledávání se nezdařilo"
       },
       "header": {
         "tagsAdd": "Přidat značku",
@@ -68,7 +91,8 @@
         "startTracking": "Začátek Tracking",
         "addBarcode": "Přidejte čárového kódu",
         "quantity": "Množství",
-        "quantityGreaterThanZero": "Chyba: Množství musí být větší než nula"
+        "quantityGreaterThanZero": "Chyba: Množství musí být větší než nula",
+        "dropFiles": "Drop soubory nahrát"
       },
       "productDetailEdit": {
         "title": "Nadpis",
@@ -252,6 +276,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Povolit Guest Pokladna"
+          },
+          "openexchangerates": {
+            "appId": "Id App Ceny otevřený Exchange",
+            "refreshPeriod": "Otevřené Kurzovní lístek obnovovací perioda",
+            "refreshPeriodPlaceholder": "tj. každý 1 hodina"
+          },
+          "google": {
+            "clientId": "Google ID klienta",
+            "apiKey": "Klíč Google API"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "Ovládání revize je zakázáno. Jakékoli změny budou zveřejněny okamžitě.",
+        "isEnabled": "Ovládání revize je povoleno za produkty. bude muset případné změny, které mají být zveřejněny dříve, než jsou viditelné pro zákazníky."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Výchozí způsob platby",
+        "name": "Název",
+        "namePlaceholder": "Obchod Name",
+        "description": "Popis",
+        "descriptionPlaceholder": "Popište svůj obchod pro SEO",
+        "descriptionTooltip": "Meta Popis pro SEO",
+        "email": "Email",
+        "emailPlaceholder": "Primární Kontaktní e-mail",
+        "keywords": "Klíčová slova",
+        "keywordsPlaceholder": "Meta klíčová slova pro SEO",
+        "language": "základna Language",
+        "addressBook": {
+          "company": "Firma",
+          "companyPlaceholder": "Tento obchodní jméno",
+          "country": "Země",
+          "fullName": "Celé jméno",
+          "fullNamePlaceholder": "Vaše organizace název",
+          "address1": "Adresa",
+          "address1Placeholder": "Vaše organizace adresa",
+          "address1Tooltip": "Tato adresa bude viditelný pro návštěvníky",
+          "address2": "Adresa",
+          "address2Placeholder": "dodatečné adresa",
+          "postal": "Poštovní",
+          "city": "Město",
+          "region": "Kraj",
+          "phone": "Telefon",
+          "isShippingDefault": "Aby tento výchozí dodací adresu?",
+          "isBillingDefault": "Aby tento výchozí fakturační adresu?",
+          "isCommercial": "Jedná se o obchodní adresu."
+        }
       },
       "accountsUI": {
         "members": "Členové",
