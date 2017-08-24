@@ -39,6 +39,7 @@ export default {
     if (process.env.VERBOSE_JOBS) {
       Jobs.setLogStream(process.stdout);
     }
+
     this.loadPackages();
     // process imports from packages and any hooked imports
     this.Import.flush();

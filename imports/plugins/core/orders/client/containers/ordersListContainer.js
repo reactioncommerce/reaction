@@ -4,7 +4,6 @@ import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Media } from "/lib/collections";
 import { Reaction } from "/client/api";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrdersList from "../components/orderList.js";
 import {
   PACKAGE_NAME,
@@ -168,4 +167,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, Loading)(OrdersListContainer);
+export default composeWithTracker(composer)(OrdersListContainer);
