@@ -1,6 +1,6 @@
+import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Meteor } from "meteor/meteor";
 import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
