@@ -11,6 +11,7 @@ class ListItem extends Component {
     icon: PropTypes.string,
     isAdmin: PropTypes.bool,
     label: PropTypes.string,
+    listItemClassName: PropTypes.string,
     onClick: PropTypes.func,
     onSwitchChange: PropTypes.func,
     switchName: PropTypes.string,
@@ -50,7 +51,7 @@ class ListItem extends Component {
     if (this.props.icon) {
       return (
         <div className={iconClassName}>
-          <Components.Icon icon={this.data.icon} />
+          <Components.Icon icon={this.props.icon} />
         </div>
       );
     }
@@ -140,7 +141,7 @@ class ListItem extends Component {
       "rui": true,
       "admin": this.props.isAdmin,
       "list-group-item": true
-    });
+    }, this.props.listItemClassName);
 
     return (
       <div className={listItemClassName} onClick={this.handleClick}>

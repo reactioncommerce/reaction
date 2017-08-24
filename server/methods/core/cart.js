@@ -693,6 +693,11 @@ Meteor.methods({
     order.shipping[0].items.shipped = false;
     order.shipping[0].items.delivered = false;
 
+    // begin a new shipping workflow for the order
+    order.shipping[0].workflow = {
+      status: "new",
+      workflow: ["coreOrderWorkflow/notStarted"]
+    };
     order.billing[0].currency.exchangeRate = exchangeRate;
     order.workflow.status = "new";
     order.workflow.workflow = ["coreOrderWorkflow/created"];
