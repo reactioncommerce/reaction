@@ -15,7 +15,7 @@ const Translation = ({ i18nKey, defaultValue, ...rest }) => {
 
 Translation.propTypes = {
   defaultValue: PropTypes.string,
-  i18nKey: PropTypes.string.isRequired
+  i18nKey: PropTypes.string
 };
 
 registerComponent("Translation", Translation);

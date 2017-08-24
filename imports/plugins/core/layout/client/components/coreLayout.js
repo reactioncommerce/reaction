@@ -38,6 +38,6 @@ CoreLayout.propTypes = {
   structure: PropTypes.object
 };
 
-registerComponent("CoreLayout", CoreLayout);
+registerComponent("coreLayout", CoreLayout);
 
 export default CoreLayout;
