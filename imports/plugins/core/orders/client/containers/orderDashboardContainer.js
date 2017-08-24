@@ -45,12 +45,7 @@ const OrderHelper =  {
       // Orders that are complete, including all items with complete status
       case "completed":
         query = {
-          "workflow.status": {
-            $in: ["coreOrderWorkflow/completed", "coreOrderWorkflow/canceled"]
-          },
-          "items.workflow.status": {
-            $in: ["coreOrderItemWorkflow/completed", "coreOrderItemWorkflow/canceled"]
-          }
+          "workflow.status": "coreOrderWorkflow/completed"
         };
         break;
 
