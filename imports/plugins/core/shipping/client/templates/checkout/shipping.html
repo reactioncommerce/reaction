@@ -9,14 +9,14 @@
     </div>
     {{#if isReady}}
       <div class="panel-body">
-        {{#if hasQueriedShipmentMethods}}
-          <ul class="checkout-shipping list-group">
-            {{#each shipmentQuotes}}
-              <li class="list-group-item {{isSelected ..}}" data-carrier="{{carrier}}" data-method="{{method}}">
-                <span class="text-left">{{method.carrier}} - {{method.label}}</span>
-                <span class="pull-right">{{formatPrice rate}}</span>
-              </li>
-            {{else}}
+        <ul class="checkout-shipping list-group">
+          {{#each shipmentQuotes}}
+            <li class="list-group-item {{isSelected ..}}" data-carrier="{{carrier}}" data-method="{{method}}">
+              <span class="text-left">{{method.carrier}} - {{method.label}}</span>
+              <span class="pull-right">{{formatPrice rate}}</span>
+            </li>
+          {{else}}
+            {{#if hasQueriedShipmentMethods}}
               <div class="panel-body">
                 {{#if isAdmin}}
                   <div class="alert alert-danger">
@@ -32,18 +32,18 @@
                   </div>
                 {{/if}}
               </div>
-            {{/each}}
-          </ul>
-        {{else}}
-          <div>
-            <h4>
-              Loading shipping methods... Please wait...
-            </h4>
-            <div class="spinner-container">
-              <div class="spinner"></div>
-            </div>
-          </div>
-        {{/if}}
+            {{else}}
+              <div>
+                <h4>
+                  Loading shipping methods... Please wait...
+                </h4>
+                <div class="spinner-container">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+            {{/if}}
+          {{/each}}
+        </ul>
       </div>
     {{else}}
       <div class="spinner-container">
