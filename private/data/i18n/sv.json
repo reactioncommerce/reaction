@@ -31,7 +31,8 @@
         "yearOptions": "Välj år",
         "shopSettings": "butiks Inställningar",
         "dashboard": "Instrumentbräda",
-        "print": "Skriv"
+        "print": "Skriv",
+        "editMode": "redigeringsläge"
       },
       "header": {
         "tagsAdd": "Lägg till tagg",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} har nu aktiverats.",
         "pkgDisabled": "{{app}} är nu inaktiverad."
+      },
+      "gridSettingsPanel": {
+        "title": "galler Inställningar",
+        "selected": "Vald"
       },
       "cartDrawer": {
         "empty": "Vi är ledsna. Din vagn är tom.",

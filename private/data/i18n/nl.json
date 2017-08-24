@@ -31,7 +31,8 @@
         "yearOptions": "Kies jaar",
         "shopSettings": "Shop Instellingen",
         "dashboard": "Dashboard",
-        "print": "Afdruk"
+        "print": "Afdruk",
+        "editMode": "Bewerkingsmodus"
       },
       "header": {
         "tagsAdd": "Tag toevoegen",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": " is nu ingeschakeld.",
         "pkgDisabled": " is nu uitgeschakeld."
+      },
+      "gridSettingsPanel": {
+        "title": "Grid-instellingen",
+        "selected": "Gekozen"
       },
       "cartDrawer": {
         "empty": "Uw winkelwagen is leeg.",

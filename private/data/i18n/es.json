@@ -31,7 +31,8 @@
         "yearOptions": "Elegir año",
         "shopSettings": "Opciones de la tienda",
         "dashboard": "Panel principal",
-        "print": "Imprimir"
+        "print": "Imprimir",
+        "editMode": "Modo edición"
       },
       "header": {
         "tagsAdd": "Añadir etiqueta",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} está ahora permitida.",
         "pkgDisabled": "{{app}} está deshabilitada."
+      },
+      "gridSettingsPanel": {
+        "title": "Configuración de cuadrícula",
+        "selected": "Seleccionado"
       },
       "cartDrawer": {
         "empty": "Estamos tristes. Tu carrito está vacío.",

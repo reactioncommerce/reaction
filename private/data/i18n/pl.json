@@ -31,7 +31,8 @@
         "yearOptions": "Wybierz rok",
         "shopSettings": "Ustawienia Shop",
         "dashboard": "Dashboard",
-        "print": "Wydrukować"
+        "print": "Wydrukować",
+        "editMode": "Tryb edycji"
       },
       "header": {
         "tagsAdd": "Dodaj etykietke",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} jest teraz włączona.",
         "pkgDisabled": "{{app}} jest obecnie wyłączona."
+      },
+      "gridSettingsPanel": {
+        "title": "Ustawienia siatki",
+        "selected": "Wybrany"
       },
       "cartDrawer": {
         "empty": "Jesteśmy smutni. Twój koszyk jest pusty.",

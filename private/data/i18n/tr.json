@@ -31,7 +31,8 @@
         "yearOptions": "Yıl seçin",
         "shopSettings": "Mağaza ayarları",
         "dashboard": "Yönetim",
-        "print": "Baskı"
+        "print": "Baskı",
+        "editMode": "Düzenleme modu"
       },
       "header": {
         "tagsAdd": "Etiket ekle",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": " şu anda etkin.",
         "pkgDisabled": " şu anda etkin değil."
+      },
+      "gridSettingsPanel": {
+        "title": "Izgara Ayarları",
+        "selected": "Seçilmiş"
       },
       "cartDrawer": {
         "empty": "Üzgünüz. Sepetiniz boş.",

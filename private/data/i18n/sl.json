@@ -31,7 +31,8 @@
         "yearOptions": "Izberite leto",
         "shopSettings": "trgovina Nastavitve",
         "dashboard": "Nadzorna plošča",
-        "print": "Tiskanje"
+        "print": "Tiskanje",
+        "editMode": "način urejanja"
       },
       "header": {
         "tagsAdd": "Dodaj oznako",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} je sedaj omogočeno.",
         "pkgDisabled": "{{app}} je zdaj onemogočeno."
+      },
+      "gridSettingsPanel": {
+        "title": "Nastavitve Grid",
+        "selected": "Izbrano"
       },
       "cartDrawer": {
         "empty": "Mi smo žalostni. Košara je prazna.",

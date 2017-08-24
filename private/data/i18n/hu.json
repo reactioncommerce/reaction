@@ -31,7 +31,8 @@
         "yearOptions": "Válasszon évet",
         "shopSettings": "Bolt beállítások",
         "dashboard": "Műszerfal",
-        "print": "Nyomtatás"
+        "print": "Nyomtatás",
+        "editMode": "Szerkesztés módban"
       },
       "header": {
         "tagsAdd": "Címke hozzáadása",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": " most engedélyezett.",
         "pkgDisabled": " most nem engedélyezett."
+      },
+      "gridSettingsPanel": {
+        "title": "rács beállításai",
+        "selected": "Kiválasztott"
       },
       "cartDrawer": {
         "empty": "Szomorúan vesszük tudomásul, hogy üres a kosarad.",

@@ -31,7 +31,8 @@
         "yearOptions": "Zvolte rok",
         "shopSettings": "Nastavení Shop",
         "dashboard": "přístrojová deska",
-        "print": "Tisk"
+        "print": "Tisk",
+        "editMode": "režim úprav"
       },
       "header": {
         "tagsAdd": "Přidat značku",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} je nyní povolena.",
         "pkgDisabled": "{{app}} je nyní zakázána."
+      },
+      "gridSettingsPanel": {
+        "title": "Nastavení Grid",
+        "selected": "Vybraný"
       },
       "cartDrawer": {
         "empty": "Jsme smutní. Tvůj vozík je prázdný.",

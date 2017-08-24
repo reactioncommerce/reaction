@@ -31,7 +31,8 @@
         "yearOptions": "Odaberite godinu",
         "shopSettings": "Postavke Shop",
         "dashboard": "kontrolna ploča",
-        "print": "otisak"
+        "print": "otisak",
+        "editMode": "način uređivanja"
       },
       "header": {
         "tagsAdd": "Dodaj oznaku",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": " je sada dostupan.",
         "pkgDisabled": " je sada onemogućen."
+      },
+      "gridSettingsPanel": {
+        "title": "Postavke Grid",
+        "selected": "Odabran"
       },
       "cartDrawer": {
         "empty": "Nažalost, vaša košarica je prazna.",

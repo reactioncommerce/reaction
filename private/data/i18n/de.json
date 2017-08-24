@@ -31,7 +31,8 @@
         "yearOptions": "Jahr wählen",
         "shopSettings": "Shop-Einstellungen",
         "dashboard": "Dashboard",
-        "print": "Drucken"
+        "print": "Drucken",
+        "editMode": "Bearbeitungs-Modus"
       },
       "header": {
         "tagsAdd": "Tag hinzufügen",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": " {{app}} wurde aktiviert.",
         "pkgDisabled": "  {{app}} wurde deaktiviert."
+      },
+      "gridSettingsPanel": {
+        "title": "Rastereinstellungen",
+        "selected": "Ausgewählt"
       },
       "cartDrawer": {
         "empty": "Ihr Warenkorb ist leer.",

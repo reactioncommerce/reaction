@@ -31,7 +31,8 @@
         "yearOptions": "Επιλέξτε το έτος",
         "shopSettings": "Ρυθμίσεις Shop",
         "dashboard": "Ταμπλό",
-        "print": "Αποτύπωμα"
+        "print": "Αποτύπωμα",
+        "editMode": "κατάσταση επεξεργασίας"
       },
       "header": {
         "tagsAdd": "Προσθήκη ετικέτας",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": " τώρα ενεργοποιήθηκε.",
         "pkgDisabled": " τώρα απενεργοποιήθηκε."
+      },
+      "gridSettingsPanel": {
+        "title": "Ρυθμίσεις πλέγματος",
+        "selected": "επιλεγμένα"
       },
       "cartDrawer": {
         "empty": "Λυπούμαστε. Το καλάθι σου είναι άδειο.",

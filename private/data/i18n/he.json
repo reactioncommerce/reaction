@@ -31,7 +31,8 @@
         "yearOptions": "בחר שנה",
         "shopSettings": "הגדרות חנות",
         "dashboard": "לוח מחוונים",
-        "print": "הדפס"
+        "print": "הדפס",
+        "editMode": "מצב עריכה"
       },
       "header": {
         "tagsAdd": "הוספת תגית",

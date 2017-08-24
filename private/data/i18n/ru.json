@@ -31,7 +31,8 @@
         "yearOptions": "Выберите год",
         "shopSettings": "Настройки магазина",
         "dashboard": "Панель управления",
-        "print": "Распечатать"
+        "print": "Распечатать",
+        "editMode": "Режим редактирования"
       },
       "header": {
         "tagsAdd": "Добавить метку",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": "Пакет \"{{app}}\" подключен",
         "pkgDisabled": "Пакет \"{{app}}\" отключен"
+      },
+      "gridSettingsPanel": {
+        "title": "Настройки сетки",
+        "selected": "выбранный"
       },
       "cartDrawer": {
         "empty": "Очень жаль, ваша корзина пуста",

@@ -31,7 +31,8 @@
         "yearOptions": "Изберете година",
         "shopSettings": "Настройки на магазина",
         "dashboard": "Табло",
-        "print": "Принтирай"
+        "print": "Принтирай",
+        "editMode": "режим на редактиране"
       },
       "header": {
         "tagsAdd": "Добави етикет",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}}е включен.",
         "pkgDisabled": "{{app}}е изключен."
+      },
+      "gridSettingsPanel": {
+        "title": "Настройки грид",
+        "selected": "подбран"
       },
       "cartDrawer": {
         "empty": "За съжаление кошницата Ви е празна.",

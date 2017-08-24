@@ -31,7 +31,8 @@
         "yearOptions": "တစ်နှစ် Choose",
         "shopSettings": "ဆိုင်က Settings",
         "dashboard": "dashboard ကို",
-        "print": "ပုံနှိပ်"
+        "print": "ပုံနှိပ်",
+        "editMode": "Edit ကို mode ကို"
       },
       "header": {
         "tagsAdd": "tag ကို Add",
@@ -124,6 +125,10 @@
       "gridPackage": {
         "pkgEnabled": " သည် အလုပ်လုပ်နေသည်။",
         "pkgDisabled": " သည် အလုပ်လုပ် မနေပါ။"
+      },
+      "gridSettingsPanel": {
+        "title": "grid က Settings",
+        "selected": "Selected"
       },
       "cartDrawer": {
         "empty": "စျေးခြင်းတောင်းတွင် ဘာမှ ရှိမနေပါ :(",
