@@ -46,7 +46,7 @@ export function sortGroups(groups) {
 export function getInvitableGroups(groups, canInviteToGroup) {
   return groups
     .filter(grp => grp.slug !== "owner")
-    .filter(grp => canInviteToGroup({ group: grp, user: Meteor.user() })) || [{}];
+    .filter(grp => canInviteToGroup({ group: grp, user: Meteor.user() }));
 }
 
 // user's default invite groups is the group they belong
@@ -59,6 +59,10 @@ export function getDefaultUserInviteGroup(groups) {
 
   if (result && result.slug === "owner") {
     result = groups.find(grp => grp.slug === "shop manager");
+  }
+
+  if (!result) {
+    result = groups.find(firstGroup => firstGroup);
   }
 
   return result;
