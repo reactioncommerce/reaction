@@ -38,7 +38,6 @@ CoreLayout.propTypes = {
   structure: PropTypes.object
 };
 
-// lowercased to match the legacy blaze "coreLayout"
 registerComponent("coreLayout", CoreLayout);
 
 export default CoreLayout;
