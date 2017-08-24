@@ -15,6 +15,7 @@ const CompletedOrderSummary = ({ shops, orderSummary }) => {
           const shopKey = Object.keys(shop);
           return <ShopOrderSummary shopSummary={shop[shopKey]} key={shopKey} />;
         })}
+        <hr />
         <div className="order-summary-line">
           <div className="order-summary-total-title">
             <Components.Translation defaultValue="Order Total" i18nKey={"cartCompleted.orderTotal"}/>

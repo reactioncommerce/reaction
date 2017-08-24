@@ -6,7 +6,7 @@ const ShopOrderSummary = ({ shopSummary }) => {
   return (
     <div className="order-details-info-box-content">
       <div className="order-summary-line">
-        <div className="order-summary-header-line"> <hr /></div>
+        <div className="order-summary-header-line"> </div>
         <div className="order-summary-store-name">
           <Components.Translation defaultValue="Order placed by" i18nKey={"cartCompleted.orderPlacedBy"}/> {shopSummary.name.toLowerCase()}
         </div>
@@ -41,7 +41,6 @@ const ShopOrderSummary = ({ shopSummary }) => {
           <Components.Currency amount={shopSummary.taxes}/>
         </div>
       </div>
-      <hr/>
     </div>
   );
 };
