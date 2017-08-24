@@ -133,7 +133,8 @@ ShippoApi.methods.createShipment = new ValidatedMethod({
       return shipment;
     } catch (error) {
       Logger.error(error.message);
-      throw new Meteor.Error(error.message);
+      // throw new Meteor.Error(error.message);
+      return {};
     }
   }
 });

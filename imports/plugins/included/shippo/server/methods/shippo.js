@@ -410,6 +410,11 @@ export const methods = {
         carrierAccounts,
         apiKey
       });
+
+      if (_.isEqual({}, shippoShipment)) {
+        return [];
+      }
+
       const shippoRates = shippoShipment.rates_list;
       const reactionRates = ratesParser(shippoRates, shippoDocs);
 
