@@ -157,7 +157,7 @@ Template.childVariantForm.events({
     template.state.set("variant", updated);
 
     Meteor.call("products/updateProductField", variant._id, field, value,
-      error => {
+      (error) => {
         if (error) {
           Alerts.toast(error.message, "error");
         }

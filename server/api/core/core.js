@@ -8,13 +8,15 @@ import { Random } from "meteor/random";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
-import { Jobs, Packages, Shops, Groups } from "/lib/collections";
+import * as Collections from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
 import { registerTemplate } from "./templates";
 import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
 
+// Unpack the named Collections we use.
+const { Jobs, Packages, Shops, Groups } = Collections;
 
 export default {
 
@@ -37,6 +39,7 @@ export default {
     if (process.env.VERBOSE_JOBS) {
       Jobs.setLogStream(process.stdout);
     }
+
     this.loadPackages();
     // process imports from packages and any hooked imports
     this.Import.flush();
@@ -811,5 +814,53 @@ export default {
     const version = packageJson.version;
     Logger.info(`Reaction Version: ${version}`);
     Shops.update({}, { $set: { appVersion: version } }, { multi: true });
+  },
+
+  // TODO: Remove collectionSchema method in favor of simpl-schema
+  /**
+   * Method for getting all schemas attached to a given collection
+   * @deprecated by simpl-schema
+   * @private
+   * @method collectionSchema
+   * @param  {string} collection The mongo collection to get schemas for
+   * @param  {Object} [selector] Optional selector for multi schema collections
+   * @return {Object} Returns a simpleSchema that is a combination of all schemas
+   *                  that have been attached to the collection or false if
+   *                  the collection or schema could not be found
+   */
+  collectionSchema(collection, selector) {
+    let selectorErrMsg = "";
+    if (selector) {
+      selectorErrMsg = `and selector ${selector}`;
+    }
+    const errMsg = `Reaction.collectionSchema could not find schemas for ${collection} collection ${selectorErrMsg}`;
+
+    if (!Collections[collection] || !Collections[collection]._c2) {
+      Logger.warn(errMsg);
+      // Return false so we don't pass a check that uses a non-existant schema
+      return false;
+    }
+
+    const c2 = Collections[collection]._c2;
+
+    // if we have `_simpleSchemas` (plural), then this is a selector based schema
+    if (c2._simpleSchemas) {
+      const selectorKeys = Object.keys(selector);
+      const selectorSchema = c2._simpleSchemas.find((schema) => {
+        // Make sure that every key:value in our selector matches the key:value in the schema selector
+        return selectorKeys.every((key) => selector[key] === schema.selector[key]);
+      });
+
+      if (!selectorSchema) {
+        Logger.warn(errMsg);
+        // Return false so we don't pass a check that uses a non-existant schema
+        return false;
+      }
+
+      // return a copy of the selector schema we found
+      return selectorSchema.schema;
+    }
+
+    return c2._simpleSchema;
   }
 };

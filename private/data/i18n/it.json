@@ -12,6 +12,9 @@
           "email": "Impostazioni e-mail",
           "description": "Aggiungi una descrizione del prodotto",
           "remove": "Rimuovi"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Localizzazione e i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "Scegli anno",
         "shopSettings": "Impostazioni negozio",
         "dashboard": "Cruscotto",
-        "print": "Stampa"
+        "print": "Stampa",
+        "auto": "Automobile"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Ricerca prodotto",
+          "includeTitle": "Includi titolo",
+          "includeDescription": "Includi descrizione",
+          "includePageTitle": "Includi titolo della pagina",
+          "includeDetails": "includere i dettagli",
+          "includeVendor": "Includi fornitore"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Impostazioni Ordine di ricerca"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Impostazioni account di ricerca"
+        },
+        "noSettings": "Nessuna impostazione attualmente disponibili",
+        "settingsSaved": "Impostazioni di ricerca salvate",
+        "settingsfailed": "aggiornamento Impostazioni di ricerca non è riuscita"
       },
       "header": {
         "tagsAdd": "Aggiungi tag",
@@ -68,7 +91,8 @@
         "startTracking": "Inizio di monitoraggio",
         "addBarcode": "Aggiungi codice a barre",
         "quantity": "Quantità",
-        "quantityGreaterThanZero": "Errore: la quantità dev'essere maggiore di zero"
+        "quantityGreaterThanZero": "Errore: la quantità dev'essere maggiore di zero",
+        "dropFiles": "Drop dei file da caricare"
       },
       "productDetailEdit": {
         "title": "Titolo prodotto",
@@ -252,6 +276,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Consentire Ospite Checkout"
+          },
+          "openexchangerates": {
+            "appId": "Aprire Tassi di cambio App Id",
+            "refreshPeriod": "Open scambio frequenze di aggiornamento periodo",
+            "refreshPeriodPlaceholder": "cioè ogni 1 ora"
+          },
+          "google": {
+            "clientId": "Google client ID",
+            "apiKey": "Google API Key"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "controllo di revisione è disabilitato. Eventuali modifiche saranno pubblicate immediatamente.",
+        "isEnabled": "controllo di revisione è abilitato per i prodotti. saranno bisogno di alcuna modifica per essere pubblicato prima di essere visibile ai clienti."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Metodo di pagamento predefinito",
+        "name": "Nome",
+        "namePlaceholder": "Shop Name",
+        "description": "Descrizione",
+        "descriptionPlaceholder": "Descrivi la tua negozio per SEO",
+        "descriptionTooltip": "Descrizione Meta per SEO",
+        "email": "Email",
+        "emailPlaceholder": "Contatto principale Email",
+        "keywords": "parole",
+        "keywordsPlaceholder": "Meta parole chiave per SEO",
+        "language": "Lingua Base",
+        "addressBook": {
+          "company": "Società",
+          "companyPlaceholder": "Questo nome commerciale",
+          "country": "Nazione",
+          "fullName": "Nome e cognome",
+          "fullNamePlaceholder": "Il tuo nome dell'organizzazione",
+          "address1": "Indirizzo",
+          "address1Placeholder": "Il tuo indirizzo e organizzazione",
+          "address1Tooltip": "Questo indirizzo sarà visibile per i visitatori",
+          "address2": "Indirizzo",
+          "address2Placeholder": "Indirizzo aggiuntivo",
+          "postal": "postale",
+          "city": "Città",
+          "region": "Regione",
+          "phone": "Telefono",
+          "isShippingDefault": "Fai di questo vostro indirizzo di trasporto predefinito?",
+          "isBillingDefault": "Fai di questo tuo indirizzo di fatturazione di default?",
+          "isCommercial": "Questo è un indirizzo commerciale."
+        }
       },
       "accountsUI": {
         "members": "Membri",
