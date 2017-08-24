@@ -10,6 +10,7 @@ import connectRoute from "connect-route";
 import { Meteor } from "meteor/meteor";
 import { WebApp } from "meteor/webapp";
 
+// TODO: Add a rate limiter to our HTTP endpoint module
 
 // This becomes Reaction.Endpoints and can be used in any server side code that imports { Reaction } from "/server/api"
 // Exported as default at the bottom of this file.
