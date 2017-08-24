@@ -4,8 +4,20 @@ import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 
-// cartShippingQuotes
-// returns multiple methods
+let hasQueriedForShippingMethods = false;
+function setHasQueriedForShippingMethods(status) {
+  hasQueriedForShippingMethods = status;
+}
+
+/**
+ * cartShippingQuotes - returns a list of all the shipping costs/quotations
+ * of each available shipping carrier like UPS, Fedex etc.
+ * @param {Object} currentCart - The current cart that's about
+ * to be checked out.
+ * @returns {Array} - an array of the quotations of multiple shipping
+ * carriers.
+ * 
+ */
 function cartShippingQuotes(currentCart) {
   const cart = currentCart || Cart.findOne();
   const shipmentQuotes = [];
@@ -21,13 +33,21 @@ function cartShippingQuotes(currentCart) {
       }
     }
   }
+
+  // TODO: Until I find a way to update this template *when* the
+  // call to Shippo's API fails, this is my best guess.
+  setHasQueriedForShippingMethods(shipmentQuotes.length > 0);
+
   return shipmentQuotes;
 }
-// cartShipmentMethods to get current shipment method
-// this returns multiple methods, if more than one carrier
-// has been chosen
-function cartShipmentMethods(currentCart) {
-  const cart = currentCart || Cart.findOne();
+
+/**
+ * cartShipmentMethods - gets current shipment methods.
+ * @return {Array} - Returns multiple methods if more than one
+ * carrier has been chosen.
+ */
+function cartShipmentMethods() {
+  const cart = Cart.findOne();
   const shipmentMethods = [];
 
   if (cart) {
@@ -75,6 +95,10 @@ Template.coreCheckoutShipping.onCreated(function () {
 });
 
 Template.coreCheckoutShipping.helpers({
+  hasQueriedShipmentMethods() {
+    return hasQueriedForShippingMethods;
+  },
+
   // retrieves current rates and updates shipping rates
   // in the users cart collection (historical, and prevents repeated rate lookup)
   shipmentQuotes: function () {
