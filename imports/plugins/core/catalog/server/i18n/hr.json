@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Postavke Katalog",
           "catalogSettingsTitle": "Postavke Katalog",
           "catalogSettingsDescription": "Tržište Katalog"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Izmjene proizvoda"
         }
       }
     }

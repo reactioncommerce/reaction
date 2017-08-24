@@ -12,6 +12,9 @@
           "email": "Ρυθμίσεις email",
           "description": "Πρόσθεσε περιγραφή προϊόντος",
           "remove": "Αφαιρώ"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Εντοπισμό και i18n"
         }
       },
       "app": {
@@ -32,6 +35,25 @@
         "shopSettings": "Ρυθμίσεις Shop",
         "dashboard": "Ταμπλό",
         "print": "Αποτύπωμα"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Αναζήτηση προϊόντων",
+          "includeTitle": "Συμπεριλάβετε τίτλο",
+          "includeDescription": "περιλαμβάνουν περιγραφή",
+          "includePageTitle": "Συμπεριλάβετε τίτλο της σελίδας",
+          "includeDetails": "περιλαμβάνουν λεπτομέρειες",
+          "includeVendor": "περιλαμβάνουν πωλητή"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Ρυθμίσεις Παραγγελία Αναζήτηση"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Ρυθμίσεις λογαριασμού Αναζήτηση"
+        },
+        "noSettings": "Δεν ρυθμίσεις που διατίθενται σήμερα",
+        "settingsSaved": "Ρυθμίσεις αναζήτησης αποθηκεύονται",
+        "settingsfailed": "ενημέρωση ρυθμίσεις αναζήτησης απέτυχε"
       },
       "header": {
         "tagsAdd": "Προσθήκη ετικέτας",
@@ -68,7 +90,8 @@
         "startTracking": "έναρξη Παρακολούθηση",
         "addBarcode": "Προσθήκη Barcode",
         "quantity": "Ποσότητα",
-        "quantityGreaterThanZero": "Σφάλμα: Ποσότητα θα πρέπει να είναι μεγαλύτερη από το μηδέν"
+        "quantityGreaterThanZero": "Σφάλμα: Ποσότητα θα πρέπει να είναι μεγαλύτερη από το μηδέν",
+        "dropFiles": "Drop τα αρχεία να ανεβάσετε"        
       },
       "productDetailEdit": {
         "title": "Τίτλος προϊόντος",
@@ -252,6 +275,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Επιτρέψτε επισκεπτών Ταμείο"
+          },
+          "openexchangerates": {
+            "appId": "Ανοικτή Τιμές Συναλλάγματος App Id",
+            "refreshPeriod": "Ανοικτή Τιμές Συναλλάγματος ανανεώσετε περίοδο",
+            "refreshPeriodPlaceholder": "δηλαδή κάθε 1 ώρα"
+          },
+          "google": {
+            "clientId": "Αναγνωριστικό πελάτη Google",
+            "apiKey": "Κλειδί API Google"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "έλεγχος αναθεώρηση είναι απενεργοποιημένη. Οποιεσδήποτε αλλαγές θα δημοσιεύονται αμέσως.",
+        "isEnabled": "ελέγχου αναθεώρησης είναι ενεργοποιημένη για Προϊόντα. Οποιεσδήποτε αλλαγές θα πρέπει να δημοσιεύονται πριν να είναι ορατή στους πελάτες."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Προεπιλεγμένη μέθοδο πληρωμής",
+        "name": "Όνομα",
+        "namePlaceholder": "κατάστημα Όνομα",
+        "description": "Περιγραφή",
+        "descriptionPlaceholder": "Περιγράψτε το κατάστημά σας για SEO",
+        "descriptionTooltip": "Meta Περιγραφή για SEO",
+        "email": "E-mail",
+        "emailPlaceholder": "Πρωτοβάθμια Επικοινωνία Email",
+        "keywords": "Λέξεις-κλειδιά",
+        "keywordsPlaceholder": "Meta λέξεις-κλειδιά για SEO",
+        "language": "βάση Γλώσσα",
+        "addressBook": {
+          "company": "Εταιρεία",
+          "companyPlaceholder": "Αυτή η εταιρική επωνυμία",
+          "country": "Χώρα",
+          "fullName": "Ονοματεπώνυμο",
+          "fullNamePlaceholder": "όνομα του οργανισμού σας",
+          "address1": "Διεύθυνση 1",
+          "address1Placeholder": "διευθύνσεων της εταιρείας σας",
+          "address1Tooltip": "Αυτή η διεύθυνση θα είναι ορατή στους επισκέπτες",
+          "address2": "Διεύθυνση 2",
+          "address2Placeholder": "πρόσθετες διεύθυνση",
+          "postal": "Τ.Κ.",
+          "city": "Πόλη",
+          "region": "Περιοχή",
+          "phone": "Τηλέφωνο",
+          "isShippingDefault": "Είναι η προεπιλεγμένη διεύθυνση αποστολής;",
+          "isBillingDefault": "Είναι η προεπιλεγμένη διεύθυνση πληρωμής;",
+          "isCommercial": "Είναι εμπορική διεύθυνση;"
+        }
       },
       "accountsUI": {
         "members": "μέλη",

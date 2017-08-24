@@ -113,9 +113,10 @@ class SortableTablePagination extends Component {
         </div>
         <div className="-previous">
           <PreviousComponent
-            onClick={e => { // eslint-disable-line no-unused-vars
-              if (!canPrevious) return;
-              this.changePage(page - 1);
+            onClick={(e) => { // eslint-disable-line no-unused-vars
+              if (!canPrevious) {
+                return this.changePage(page - 1);
+              }
             }}
             disabled={!canPrevious}
           >
@@ -125,9 +126,10 @@ class SortableTablePagination extends Component {
         <span className="-divider">|</span>
         <div className="-next">
           <NextComponent
-            onClick={e => { // eslint-disable-line no-unused-vars
-              if (!canNext) return;
-              this.changePage(page + 1);
+            onClick={(e) => { // eslint-disable-line no-unused-vars
+              if (!canNext) {
+                return this.changePage(page + 1);
+              }
             }}
             disabled={!canNext}
           >

@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Katalog Nastavitve",
           "catalogSettingsTitle": "Katalog Nastavitve",
           "catalogSettingsDescription": "Marketplace Katalog"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Revizije izdelka"
         }
       }
     }
