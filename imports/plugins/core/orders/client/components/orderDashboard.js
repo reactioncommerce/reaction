@@ -10,14 +10,20 @@ class OrderDashboard extends Component {
     clearFilter: PropTypes.func,
     displayMedia: PropTypes.func,
     filter: PropTypes.string,
+    handleBulkPaymentCapture: PropTypes.func,
     handleClick: PropTypes.func,
     handleMenuClick: PropTypes.func,
     handleSelect: PropTypes.func,
+    isLoading: PropTypes.object,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
     query: PropTypes.object,
+    renderFlowList: PropTypes.bool,
     selectAllOrders: PropTypes.func,
-    selectedItems: PropTypes.array
+    selectedItems: PropTypes.array,
+    setShippingStatus: PropTypes.func,
+    shipping: PropTypes.object,
+    toggleShippingFlowList: PropTypes.func
   }
 
   state = {
@@ -80,9 +86,8 @@ class OrderDashboard extends Component {
 
             <div>
               <OrderTable
-                orders={this.state.orders}
+                orders={this.props.orders}
                 query={this.state.query}
-                className={this.state.className}
                 selectedItems={this.props.selectedItems}
                 handleSelect={this.props.handleSelect}
                 handleClick={this.props.handleClick}
@@ -90,6 +95,12 @@ class OrderDashboard extends Component {
                 selectAllOrders={this.props.selectAllOrders}
                 displayMedia={this.props.displayMedia}
                 isOpen={this.state.openList}
+                shipping={this.props.shipping}
+                setShippingStatus={this.props.setShippingStatus}
+                isLoading={this.props.isLoading}
+                renderFlowList={this.props.renderFlowList}
+                toggleShippingFlowList={this.props.toggleShippingFlowList}
+                handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
               />
             </div>
           </div> :
