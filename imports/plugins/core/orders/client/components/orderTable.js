@@ -164,14 +164,16 @@ class OrderTable extends Component {
             status={this.fulfillmentBadgeStatus(order)}
           />
         </div>
-        <div className="risk-info">
-          <Badge
-            badgeSize="large"
-            i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
-            label={orderRisk}
-            status={getOrderRiskBadge(orderRisk)}
-          />
-        </div>
+        {orderRisk &&
+          <div className="risk-info">
+            <Badge
+              badgeSize="large"
+              i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
+              label={orderRisk}
+              status={getOrderRiskBadge(orderRisk)}
+            />
+          </div>
+        }
       </div>
     );
   }

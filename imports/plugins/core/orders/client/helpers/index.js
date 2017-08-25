@@ -10,7 +10,7 @@ import { Reaction } from "/client/api";
 export function getOrderRiskBadge(riskLevel) {
   let label;
   switch (riskLevel) {
-    case "highest":
+    case "high":
       label = "danger";
       break;
     case "elevated":
@@ -22,14 +22,27 @@ export function getOrderRiskBadge(riskLevel) {
   return label;
 }
 
+/*
+ * getOrderRiskStatus - helper - client
+ * gets the risk label on the paymentMethod object for a shop on an order
+ * An empty string is returned if the value is "normal". We don't flag a normal charge
+ * @param {Object} order - order object
+ * @return {String} label - risklevel value (if risklevel is not normal)
+ */
 export function getOrderRiskStatus(order) {
+  let riskLevel;
   const billingForShop = order.billing.find(
     billing => billing.shopId === Reaction.getShopId()
   );
 
   if (billingForShop.paymentMethod && billingForShop.paymentMethod.riskLevel) {
-    return billingForShop.paymentMethod.riskLevel;
+    riskLevel = billingForShop.paymentMethod.riskLevel;
   }
 
-  return "";
+  // normal transactions do not need to be flagged
+  if (riskLevel === "normal") {
+    return "";
+  }
+
+  return riskLevel;
 }
