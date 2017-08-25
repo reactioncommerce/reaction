@@ -46,7 +46,8 @@ function enabledShipping() {
   const enabledShippingArr = [];
   const apps = Reaction.Apps({
     provides: "shippingSettings",
-    enabled: true
+    enabled: true,
+    shopId: Reaction.getPrimaryShopId()
   });
   for (const app of apps) {
     if (app.enabled === true) enabledShippingArr.push(app);
@@ -65,7 +66,8 @@ Template.coreCheckoutShipping.onCreated(function () {
   const shippingOpts = {
     provides: "settings",
     name: "settings/shipping",
-    template: "shippingSettings"
+    template: "shippingSettings",
+    shopId: Reaction.getPrimaryShopId()
   };
 
   // If shipping not set, show shipping settings dashboard
