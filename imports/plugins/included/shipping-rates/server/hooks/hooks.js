@@ -17,7 +17,7 @@ function getShippingRates(rates, cart) {
 
   const pkgData = Packages.findOne({
     name: "reaction-shipping-rates",
-    shopId: Reaction.getShopId()
+    shopId: Reaction.getPrimaryShopId()
   });
 
   if (!pkgData || !cart.items || pkgData.settings.flatRates.enabled !== true) {
