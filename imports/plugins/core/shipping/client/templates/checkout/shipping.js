@@ -66,8 +66,7 @@ Template.coreCheckoutShipping.onCreated(function () {
   const shippingOpts = {
     provides: "settings",
     name: "settings/shipping",
-    template: "shippingSettings",
-    shopId: Reaction.getPrimaryShopId()
+    template: "shippingSettings"
   };
 
   // If shipping not set, show shipping settings dashboard
