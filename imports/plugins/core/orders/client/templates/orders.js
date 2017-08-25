@@ -1,10 +1,10 @@
 import { Template } from "meteor/templating";
-import OrdersContainer from "../containers/ordersContainer";
+import OrderDashboardContainer from "../containers/orderDashboardContainer";
 
 Template.orders.helpers({
   ordersComponent() {
     return {
-      component: OrdersContainer
+      component: OrderDashboardContainer
     };
   }
 });

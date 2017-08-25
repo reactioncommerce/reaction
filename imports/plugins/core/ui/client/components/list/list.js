@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
-const List = ({ children, isAdmin }) => {
+const List = ({ children, isAdmin, className }) => {
   const listClassName = classnames({
     "rui": true,
     "admin": isAdmin,
     "list-group": true
-  });
+  }, className);
 
   return (
     <div className={listClassName}>
@@ -19,6 +19,7 @@ const List = ({ children, isAdmin }) => {
 
 List.propTypes = {
   children: PropTypes.node,
+  className: PropTypes.string,
   isAdmin: PropTypes.bool
 };
 
