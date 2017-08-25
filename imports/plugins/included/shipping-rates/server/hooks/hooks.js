@@ -15,6 +15,7 @@ function getShippingRates(rates, cart) {
     merchantShippingRates = marketplaceSettings.public.merchantShippingRates;
   }
 
+  // TODO: Check to see if the merchantShippingRates flag is set in marketplace and get rates from the correct shop
   const pkgData = Packages.findOne({
     name: "reaction-shipping-rates",
     shopId: Reaction.getPrimaryShopId()
