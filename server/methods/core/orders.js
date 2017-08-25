@@ -34,7 +34,7 @@ export function ordersInventoryAdjust(orderId) {
   check(orderId, String);
 
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error(403, "Access Denied");
+    throw new Meteor.Error("access-denied", "Access Denied");
   }
 
   // REVIEW: Why are we waiting until someone with orders permissions does something to reduce quantity of ordered items
@@ -62,53 +62,115 @@ export function ordersInventoryAdjust(orderId) {
  */
 export const methods = {
   /**
+   * orders/shipmentPicked
+   *
+   * @summary update picking status
+   * @param {Object} order - order object
+   * @param {Object} shipment - shipment object
+   * @return {Object} return workflow result
+   */
+  "orders/shipmentPicked": function (order, shipment) {
+    check(order, Object);
+    check(shipment, Object);
+
+    if (!Reaction.hasPermission("orders")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    // Set the status of the items as picked
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
+
+    const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/picked", order, itemIds);
+    if (result === 1) {
+      return Orders.update({
+        "_id": order._id,
+        "shipping._id": shipment._id
+      }, {
+        $set: {
+          "shipping.$.workflow.status": "coreOrderWorkflow/picked"
+        }, $push: {
+          "shipping.$.workflow.workflow": "coreOrderWorkflow/picked"
+        }
+      });
+    }
+    return result;
+  },
+  /**
    * orders/shipmentPacked
    *
    * @summary update packing status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
-   * @param {Boolean} packed - packed status
    * @return {Object} return workflow result
    */
-  "orders/shipmentPacked": function (order, shipment, packed) {
+  "orders/shipmentPacked": function (order, shipment) {
     check(order, Object);
     check(shipment, Object);
-    check(packed, Boolean);
 
     // REVIEW: who should have permission to do this in a marketplace setting?
     // Do we need to update the order schema to reflect multiple packers / shipments?
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    if (order) {
-      Orders.update({
+    // Set the status of the items as packed
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
+
+    const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
+    if (result === 1) {
+      return Orders.update({
         "_id": order._id,
         "shipping._id": shipment._id
       }, {
         $set: {
-          "shipping.$.packed": packed
+          "shipping.$.workflow.status": "coreOrderWorkflow/packed"
+        }, $push: {
+          "shipping.$.workflow.workflow": "coreOrderWorkflow/packed"
         }
       });
-
-      // Set the status of the items as packed
-      const itemIds = shipment.items.map((item) => {
-        return item._id;
-      });
-
-      const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
-      if (result === 1) {
-        return Orders.update({
-          "_id": order._id,
-          "shipping._id": shipment._id
-        }, {
-          $set: {
-            "shipping.$.packed": packed
-          }
-        });
-      }
-      return result;
     }
+    return result;
+  },
+
+  /**
+   * orders/shipmentLabeled
+   *
+   * @summary update labeling status
+   * @param {Object} order - order object
+   * @param {Object} shipment - shipment object
+   * @return {Object} return workflow result
+   */
+  "orders/shipmentLabeled": function (order, shipment) {
+    check(order, Object);
+    check(shipment, Object);
+
+    if (!Reaction.hasPermission("orders")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    // Set the status of the items as labeled
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
+
+    const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/labeled", order, itemIds);
+    if (result === 1) {
+      return Orders.update({
+        "_id": order._id,
+        "shipping._id": shipment._id
+      }, {
+        $set: {
+          "shipping.$.workflow.status": "coreOrderWorkflow/labeled"
+        }, $push: {
+          "shipping.$.workflow.workflow": "coreOrderWorkflow/labeled"
+        }
+      });
+    }
+    return result;
   },
 
   /**
@@ -122,7 +184,7 @@ export const methods = {
     check(order, Object);
 
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     this.unblock(); // REVIEW: Why unblock here?
@@ -151,7 +213,7 @@ export const methods = {
     // REVIEW: Who should have access to do this for a marketplace?
     // Do we have/need a shopId on each order?
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     this.unblock(); // REVIEW: why unblock here?
@@ -163,7 +225,7 @@ export const methods = {
     const taxes = invoice.taxes;
     const discount = invoice.discounts;
     const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
-    const total = accounting.toFixed(discountTotal + shipping + taxes, 2);
+    const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
 
     // Updates flattened inventory count on variants in Products collection
     ordersInventoryAdjust(order._id);
@@ -197,7 +259,7 @@ export const methods = {
     // REVIEW: Only marketplace admins should be able to cancel entire order?
     // Unless order is entirely contained in a single shop? Do we need a switch on marketplace owner dashboard?
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     if (!returnToStock) {
@@ -253,7 +315,7 @@ export const methods = {
     // REVIEW: Who should have access to process payment in marketplace?
     // Probably just the shop owner for now?
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     this.unblock();
@@ -329,7 +391,9 @@ export const methods = {
       "shipping._id": shipment._id
     }, {
       $set: {
-        "shipping.$.shipped": true
+        "shipping.$.workflow.status": "coreOrderWorkflow/shipped"
+      }, $push: {
+        "shipping.$.workflow.workflow": "coreOrderWorkflow/shipped"
       }
     });
 
@@ -352,7 +416,7 @@ export const methods = {
 
     // REVIEW: this should be callable from the server via callback from Shippo or other webhook
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     this.unblock();
@@ -385,7 +449,9 @@ export const methods = {
       "shipping._id": shipment._id
     }, {
       $set: {
-        "shipping.$.delivered": true
+        "shipping.$.workflow.status": "coreOrderWorkflow/delivered"
+      }, $push: {
+        "shipping.$.workflow.workflow": "coreOrderWorkflow/delivered"
       }
     });
 
@@ -639,7 +705,7 @@ export const methods = {
 
     // REVIEW: This method should be callable from a webhook (e.g. Shippo)
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     return Orders.update({
@@ -669,7 +735,7 @@ export const methods = {
     */
 
     if (!Meteor.userId()) {
-      throw new Meteor.Error(403, "Access Denied. You are not connected.");
+      throw new Meteor.Error("access-denied", "Access Denied. You are not connected.");
     }
 
     return Orders.update({
@@ -697,7 +763,7 @@ export const methods = {
     // REVIEW: For marketplace implementations
     // This should be possible for anyone with permission to act on the order
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     return Orders.update(orderId, {
@@ -728,7 +794,7 @@ export const methods = {
     // REVIEW: For marketplace implmentations who should be able to capture payments?
     // Probably just the marketplace and not shops/vendors?
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     const order = Orders.findOne(orderId);
@@ -808,7 +874,7 @@ export const methods = {
     const paymentMethod = orderCreditMethod(order).paymentMethod;
 
     if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     this.unblock();
@@ -844,7 +910,7 @@ export const methods = {
 
     // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     const processor = paymentMethod.processor.toLowerCase();
     const order = Orders.findOne(orderId);
