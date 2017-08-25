@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Ρυθμίσεις Κατάλογος",
           "catalogSettingsTitle": "Ρυθμίσεις Κατάλογος",
           "catalogSettingsDescription": "Marketplace Κατάλογος"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "αναθεωρήσεις του προϊόντος"
         }
       }
     }

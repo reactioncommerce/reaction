@@ -26,7 +26,7 @@ Meteor.publish("Accounts", function (userId) {
     shopId
   }, {
     fields: { _id: 1 }
-  }).fetch().map(group => group._id);
+  }).fetch().map((group) => group._id);
 
   // global admin can get all accounts
   if (Roles.userIsInRole(this.userId, ["owner"], Roles.GLOBAL_GROUP)) {

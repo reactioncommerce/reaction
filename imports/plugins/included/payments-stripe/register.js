@@ -16,7 +16,11 @@ Reaction.registerPackage({
         "Capture",
         "Refund"
       ]
-    }
+    },
+    "public": {
+      client_id: ""
+    },
+    "connectAuth": {}
   },
   registry: [
     // Settings panel
@@ -24,7 +28,8 @@ Reaction.registerPackage({
       label: "Stripe",
       provides: "paymentSettings",
       container: "dashboard",
-      template: "stripeSettings"
+      template: "stripeSettings",
+      hideForShopTypes: ["merchant", "affiliate"]
     },
 
     // Payment form for checkout
@@ -32,6 +37,22 @@ Reaction.registerPackage({
       template: "stripePaymentForm",
       provides: "paymentMethod",
       icon: "fa fa-cc-stripe"
+    },
+
+    // Redirect for Stripe Connect Sign-In
+    {
+      route: "/stripe/connect/authorize",
+      template: "stripeConnectAuthorize"
+    },
+
+    // Payment Signup for Merchants
+    {
+      label: "Stripe Merchant Account",
+      icon: "fa fa-cc-stripe",
+      container: "dashboard",
+      provides: "marketplaceMerchantSettings",
+      template: "stripeConnectMerchantSignup",
+      hideForShopTypes: ["primary"]
     }
   ]
 });
