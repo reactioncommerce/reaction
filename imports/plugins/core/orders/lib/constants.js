@@ -37,3 +37,15 @@ export const orderFilters = [{
   name: "completed",
   label: "Completed"
 }];
+
+/**
+ * Order shipping states
+ * @type {String}
+ */
+export const shippingStates = {
+  picked: "Picked",
+  packed: "Packed",
+  labeled: "Labeled",
+  shipped: "Shipped",
+  delivered: "Delivered"
+};

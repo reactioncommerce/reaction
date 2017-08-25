@@ -6,6 +6,10 @@ import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 
+// SortableTable is a wrapper around ReactTable.
+// Anything that works in ReactTable should work in SortableTable OOTB (although it may not be styled).
+// ReactTable docs are available here: https://react-table.js.org/#/story/readme
+
 class SortableTable extends Component {
   constructor(props) {
     super(props);

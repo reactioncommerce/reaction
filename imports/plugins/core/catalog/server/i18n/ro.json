@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Setări catalog",
           "catalogSettingsTitle": "Setări catalog",
           "catalogSettingsDescription": "Piata Catalog"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Revizuiri produsului"
         }
       }
     }

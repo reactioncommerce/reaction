@@ -189,6 +189,7 @@ export function buildOrderSearchRecord(orderId) {
   orderSearch.orderTotal = order.billing[0].invoice.total;
   orderSearch.orderDate = moment(order.createdAt).format("YYYY/MM/DD");
   orderSearch.billingStatus = order.billing[0].paymentMethod.status;
+  orderSearch.currentWorkflowStatus = order.workflow.status;
   if (order.shipping[0].shipped) {
     orderSearch.shippingStatus = "Shipped";
   } else if (order.shipping[0].packed) {
