@@ -12,6 +12,9 @@
           "email": "Cài đặt email",
           "description": "Sự miêu tả",
           "remove": "Tẩy"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Nội địa hóa và i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "Chọn năm",
         "shopSettings": "cửa hàng Cài đặt",
         "dashboard": "bảng điều khiển",
-        "print": "In"
+        "print": "In",
+        "auto": "Tự động"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Tìm kiếm sản phẩm",
+          "includeTitle": "Bao gồm tiêu đề",
+          "includeDescription": "Bao gồm mô tả",
+          "includePageTitle": "Bao gồm các tiêu đề trang",
+          "includeDetails": "Bao gồm thông tin chi tiết",
+          "includeVendor": "Bao gồm các nhà cung cấp"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Để cài đặt tìm kiếm"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Tài khoản Tìm kiếm Cài đặt"
+        },
+        "noSettings": "Không có cài đặt hiện có",
+        "settingsSaved": "Cài đặt tìm kiếm cứu",
+        "settingsfailed": "Cài đặt tìm kiếm cập nhật thất bại"
       },
       "header": {
         "tagsAdd": "Thêm thẻ",
@@ -68,7 +91,8 @@
         "startTracking": "Bắt đầu theo dõi",
         "addBarcode": "Thêm mã vạch",
         "quantity": "Số lượng, lượng",
-        "quantityGreaterThanZero": "Lỗi: Số lượng phải lớn hơn không"
+        "quantityGreaterThanZero": "Lỗi: Số lượng phải lớn hơn không",
+        "dropFiles": "Thả file để tải lên"
       },
       "productDetailEdit": {
         "title": "Chức vụ",
@@ -252,6 +276,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Cho phép Guest Checkout"
+          },
+          "openexchangerates": {
+            "appId": "Id App giá mở Exchange",
+            "refreshPeriod": "Tỷ giá hối đoái mở làm mới thời gian",
+            "refreshPeriodPlaceholder": "nghĩa là mỗi 1 giờ"
+          },
+          "google": {
+            "clientId": "ID khách hàng của Google",
+            "apiKey": "Key Google API"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "kiểm soát sửa đổi được vô hiệu hóa. Mọi thay đổi sẽ được công bố ngay lập tức.",
+        "isEnabled": "kiểm soát sửa đổi được kích hoạt cho sản phẩm. Mọi thay đổi sẽ cần phải được công bố trước khi được rõ cho khách hàng."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Phương thức thanh toán mặc định",
+        "name": "Tên",
+        "namePlaceholder": "cửa hàng Tên",
+        "description": "Sự miêu tả",
+        "descriptionPlaceholder": "Mô tả cửa hàng của bạn cho SEO",
+        "descriptionTooltip": "Meta Description cho SEO",
+        "email": "E-mail",
+        "emailPlaceholder": "Tiểu học Liên hệ Email",
+        "keywords": "Từ khóa",
+        "keywordsPlaceholder": "Meta từ khóa cho SEO",
+        "language": "cơ sở Ngôn ngữ",
+        "addressBook": {
+          "company": "Công ty",
+          "companyPlaceholder": "tên doanh nghiệp này",
+          "country": "Quốc gia",
+          "fullName": "Họ và tên",
+          "fullNamePlaceholder": "tên tổ chức của bạn",
+          "address1": "Địa chỉ nhà",
+          "address1Placeholder": "địa chỉ tổ chức của bạn",
+          "address1Tooltip": "Địa chỉ này sẽ được hiển thị cho khách",
+          "address2": "Địa chỉ nhà",
+          "address2Placeholder": "Địa chỉ bổ sung",
+          "postal": "bưu chính",
+          "city": "Thành thị",
+          "region": "Khu vực",
+          "phone": "Điện thoại",
+          "isShippingDefault": "Hãy địa chỉ giao hàng mặc định của bạn?",
+          "isBillingDefault": "Hãy địa chỉ thanh toán mặc định của bạn?",
+          "isCommercial": "Đây là địa chỉ thương mại."
+        }
       },
       "accountsUI": {
         "members": "Thành viên",

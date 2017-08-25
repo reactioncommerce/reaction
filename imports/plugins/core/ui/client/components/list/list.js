@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
-const List = ({ children, className, isAdmin }) => {
+const List = ({ children, isAdmin, className }) => {
   const listClassName = classnames({
     "rui": true,
     "admin": isAdmin,

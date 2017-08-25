@@ -26,11 +26,15 @@ class OrderActions extends Component {
       "order-filter-button": true
     }, this.props.className);
 
+    const labelClassName = classnames({
+      "order-filter-name": true
+    }, this.props.className);
+
     return (
       <div className="order-filter-bar">
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span className="order-filter-name"> {this.props.filter}</span>
+            <span className={labelClassName}> {this.props.filter}</span>
             <div className="order-filter-icons">
               <Button
                 className={filterClassName}

@@ -1,5 +1,6 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Products } from "/lib/collections";
+
 export const ShopifyProduct = new SimpleSchema({
   shopifyId: {
     type: Number,
@@ -8,3 +9,4 @@ export const ShopifyProduct = new SimpleSchema({
 });
 
 Products.attachSchema(ShopifyProduct, { selector: { type: "simple" } });
+Products.attachSchema(ShopifyProduct, { selector: { type: "variant" } });

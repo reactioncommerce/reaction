@@ -12,6 +12,9 @@
           "email": "Настройки электронной почты",
           "description": "Добавьте описание товара",
           "remove": "Удалить"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Локализация и i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "Выберите год",
         "shopSettings": "Настройки магазина",
         "dashboard": "Панель управления",
-        "print": "Распечатать"
+        "print": "Распечатать",
+        "auto": "Автоматически"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Поиск товара",
+          "includeTitle": "Указывать заголовок",
+          "includeDescription": "Указывать описание",
+          "includePageTitle": "Указывать заголовок страницы",
+          "includeDetails": "Указывать подробное описание",
+          "includeVendor": "Указывать продавца"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Настройки поиска заказа"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Настройки поиска учетной записи"
+        },
+        "noSettings": "В данный момент настройки недоступны",
+        "settingsSaved": "Настройки поиска сохранены",
+        "settingsfailed": "Не удалось обновить настройки поиска"
       },
       "header": {
         "tagsAdd": "Добавить метку",
@@ -68,7 +91,8 @@
         "startTracking": "Начать слежение",
         "addBarcode": "Добавить штрих-код",
         "quantity": "Количество",
-        "quantityGreaterThanZero": "Ошибка: Количество должно быть больше нуля"
+        "quantityGreaterThanZero": "Ошибка: Количество должно быть больше нуля",
+        "dropFiles": "Бросьте сюда файлы для их загрузки"
       },
       "productDetailEdit": {
         "title": "Название товара",
@@ -252,6 +276,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Разрешить заказывать незарегистрированным пользователям"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates App Id",
+            "refreshPeriod": "Период обновления Open Exchange Rates",
+            "refreshPeriodPlaceholder": "например: every 1 hour"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Ключ Google API"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "Управление версиями отключено. Любые изменения будут немедленно опубликованы.",
+        "isEnabled": "Контроль версий включена для продуктов. Любые изменения будут должны быть опубликованы до быть видимым для клиентов."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Платёжная система по умолчанию",
+        "name": "Название",
+        "namePlaceholder": "Название магазина",
+        "description": "Описание",
+        "descriptionPlaceholder": "Опишите свой магазин для SEO",
+        "descriptionTooltip": "Это поле необходимо для тегов мета-дескрипторов. Оно позволяет поисковым машинам находить ваш магазин",
+        "email": "Email",
+        "emailPlaceholder": "Основной email магазина",
+        "keywords": "Ключевые слова",
+        "keywordsPlaceholder": "Ключевые слова для SEO",
+        "language": "Основной язык",
+        "addressBook": {
+          "company": "Компания",
+          "companyPlaceholder": "Название компании",
+          "country": "Страна",
+          "fullName": "Название организации",
+          "fullNamePlaceholder": "Название вашей организации",
+          "address1": "Адрес",
+          "address1Placeholder": "Адрес вашей организации",
+          "address1Tooltip": "Этот адрес будет виден посетителям",
+          "address2": "Адрес (доп.)",
+          "address2Placeholder": "Например, номер офиса",
+          "postal": "Почтовый индекс",
+          "city": "Город",
+          "region": "Область/Край",
+          "phone": "Телефон",
+          "isShippingDefault": "Сделать адресом доставки по умолчанию?",
+          "isBillingDefault": "Сделать платёжным адресом по умолчанию?",
+          "isCommercial": "Это юридический адрес"
+        }
       },
       "accountsUI": {
         "members": "Сотрудники",

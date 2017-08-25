@@ -3,6 +3,7 @@ import * as Accounts from "./accounts";
 import * as AddDefaultRoles from "./addDefaultRoles";
 import * as AssignRoles from "./assignRoles";
 import * as Email from "./email";
+import Endpoints from "./endpoints";
 import * as Import from "./import";
 import * as LoadSettings from "./loadSettings";
 import Log from "../logger";
@@ -25,6 +26,7 @@ const Reaction = Object.assign({},
   AssignRoles,
   { Collections },
   { Email },
+  { Endpoints },
   Import,
   LoadSettings,
   { Log },
