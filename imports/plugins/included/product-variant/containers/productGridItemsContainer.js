@@ -132,7 +132,8 @@ const wrapComponent = (Comp) => (
         "metadata.productId": this.props.product._id,
         "metadata.variantId": {
           $in: variantIds
-        }
+        },
+        "metadata.workflow": { $nin: ["archived", "unpublished"] }
       }, { limit: 3 });
 
       return mediaArray.count() > 1 ? mediaArray : false;
