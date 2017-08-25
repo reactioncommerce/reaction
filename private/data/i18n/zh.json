@@ -12,6 +12,9 @@
           "email": "电子邮件设置",
           "description": "产品描述",
           "remove": "删除款式"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "本地化与国际化"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "选择年份",
         "shopSettings": "商店设置",
         "dashboard": "控制台",
-        "print": "打印"
+        "print": "打印",
+        "auto": "自动"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "产品搜索",
+          "includeTitle": "包括标题",
+          "includeDescription": "包括描述",
+          "includePageTitle": "包括页面标题",
+          "includeDetails": "包括详细信息",
+          "includeVendor": "包括供应商"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "订单搜索设置"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "帐户搜索设置"
+        },
+        "noSettings": "当前无可用的设置",
+        "settingsSaved": "搜索设置已保存",
+        "settingsfailed": "搜索设置更新失败"
       },
       "header": {
         "tagsAdd": "添加标签",
@@ -68,7 +91,8 @@
         "startTracking": "开始跟踪",
         "addBarcode": "添加条形码",
         "quantity": "数量",
-        "quantityGreaterThanZero": "错误: 数量必须大于0。"
+        "quantityGreaterThanZero": "错误: 数量必须大于0。",
+        "dropFiles": "拖放文件以上传"
       },
       "productDetailEdit": {
         "title": "产品标题",
@@ -252,6 +276,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "微博"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "允许访客结账"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates 应用 ID",
+            "refreshPeriod": "Open Exchange Rates 刷新周期",
+            "refreshPeriodPlaceholder": "即每 1 小时"
+          },
+          "google": {
+            "clientId": "Google 客户端 ID",
+            "apiKey": "Google API 密钥"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "版本控制已禁用。将立即发布任何更改。",
+        "isEnabled": "版本控制产品启用。任何更改都将是需要看到客户之前公布。"
+      },
+      "shop": {
+        "defaultPaymentMethod": "默认付款方式",
+        "name": "姓名",
+        "namePlaceholder": "商店名称",
+        "description": "描述",
+        "descriptionPlaceholder": "向SEO描述您的商店",
+        "descriptionTooltip": "此字段由描述元标记使用。可用搜索引擎描述您的商店",
+        "email": "电子邮件",
+        "emailPlaceholder": "主联系人电子邮件",
+        "keywords": "关键字",
+        "keywordsPlaceholder": "SEO 元关键字",
+        "language": "基本语言",
+        "addressBook": {
+          "company": "公司",
+          "companyPlaceholder": "此公司名称",
+          "country": "国家/地区",
+          "fullName": "全名",
+          "fullNamePlaceholder": "您的单位名称",
+          "address1": "地址",
+          "address1Placeholder": "您的单位地址",
+          "address1Tooltip": "此地址将向访客显示",
+          "address2": "地址",
+          "address2Placeholder": "其他地址",
+          "postal": "邮编",
+          "city": "城市",
+          "region": "区域",
+          "phone": "电话",
+          "isShippingDefault": "是否将其设为您的默认发货地址？",
+          "isBillingDefault": "是否将其设为您的默认账单邮寄地址？",
+          "isCommercial": "这是商业地址。"
+        }
       },
       "accountsUI": {
         "members": "会员",

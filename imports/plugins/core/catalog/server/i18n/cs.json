@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Nastavení Katalog",
           "catalogSettingsTitle": "Nastavení Katalog",
           "catalogSettingsDescription": "Trh Catalog"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Revize produktu"
         }
       }
     }
