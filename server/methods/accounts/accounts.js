@@ -538,6 +538,7 @@ export function inviteShopMember(options) {
   check(email, String);
   check(name, String);
   check(groupId, String);
+
   this.unblock();
 
   const shop = Shops.findOne(shopId);

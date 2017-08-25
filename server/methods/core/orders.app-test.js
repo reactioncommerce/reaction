@@ -22,7 +22,9 @@ describe("orders test", function () {
   before(function (done) {
     methods = {
       "cancelOrder": Meteor.server.method_handlers["orders/cancelOrder"],
+      "shipmentPicked": Meteor.server.method_handlers["orders/shipmentPicked"],
       "shipmentPacked": Meteor.server.method_handlers["orders/shipmentPacked"],
+      "shipmentLabeled": Meteor.server.method_handlers["orders/shipmentLabeled"],
       "makeAdjustmentsToInvoice": Meteor.server.method_handlers["orders/makeAdjustmentsToInvoice"],
       "approvePayment": Meteor.server.method_handlers["orders/approvePayment"],
       "shipmentShipped": Meteor.server.method_handlers["orders/shipmentShipped"],
@@ -146,37 +148,96 @@ describe("orders test", function () {
     });
   });
 
+  describe("orders/shipmentPicked", function () {
+    it("should throw an error if user is not admin", function () {
+      sandbox.stub(Reaction, "hasPermission", () => false);
+      const shipment = order.shipping[0];
+      spyOnMethod("shipmentPicked", order, shipment);
+
+      function shipmentPicked() {
+        return Meteor.call("orders/shipmentPicked", order, shipment);
+      }
+      expect(shipmentPicked).to.throw(Meteor.Error, /Access Denied/);
+    });
+
+    it("should update the order item workflow status to coreOrderItemWorkflow/picked", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      const shipment = order.shipping[0];
+      spyOnMethod("shipmentPicked", order.userId);
+      Meteor.call("orders/shipmentPicked", order, shipment);
+      const orderItem = Orders.findOne({ _id: order._id }).items[0];
+      expect(orderItem.workflow.status).to.equal("coreOrderItemWorkflow/picked");
+    });
+
+    it("should update the shipment workflow status to coreOrderWorkflow/picked", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      const shipment = order.shipping[0];
+      spyOnMethod("shipmentPicked", order.userId);
+      Meteor.call("orders/shipmentPicked", order, shipment);
+      const orderShipment = Orders.findOne({ _id: order._id }).shipping[0];
+      expect(orderShipment.workflow.status).to.equal("coreOrderWorkflow/picked");
+    });
+  });
+
   describe("orders/shipmentPacked", function () {
     it("should throw an error if user is not admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       const shipment = order.shipping[0];
-      const packed = true;
-      spyOnMethod("shipmentPacked", order, shipment, packed);
+      spyOnMethod("shipmentPacked", order, shipment);
 
       function shipmentPacked() {
-        return Meteor.call("orders/shipmentPacked", order, shipment, packed);
+        return Meteor.call("orders/shipmentPacked", order, shipment);
       }
       expect(shipmentPacked).to.throw(Meteor.Error, /Access Denied/);
     });
 
-    it("should update the order item workflow to coreOrderItemWorkflow/packed", function () {
+    it("should update the order item workflow status to coreOrderItemWorkflow/packed", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const shipment = order.shipping[0];
-      const packed = true;
       spyOnMethod("shipmentPacked", order.userId);
-      Meteor.call("orders/shipmentPacked", order, shipment, packed);
+      Meteor.call("orders/shipmentPacked", order, shipment);
       const orderItem = Orders.findOne({ _id: order._id }).items[0];
       expect(orderItem.workflow.status).to.equal("coreOrderItemWorkflow/packed");
     });
 
-    it("should update the shipment as packed", function () {
+    it("should update the shipment workflow status to coreOrderWorkflow/packed", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const shipment = order.shipping[0];
-      const packed = true;
       spyOnMethod("shipmentPacked", order.userId);
-      Meteor.call("orders/shipmentPacked", order, shipment, packed);
+      Meteor.call("orders/shipmentPacked", order, shipment);
       const orderShipment = Orders.findOne({ _id: order._id }).shipping[0];
-      expect(orderShipment.packed).to.equal(packed);
+      expect(orderShipment.workflow.status).to.equal("coreOrderWorkflow/packed");
+    });
+  });
+
+  describe("orders/shipmentLabeled", function () {
+    it("should throw an error if user is not admin", function () {
+      sandbox.stub(Reaction, "hasPermission", () => false);
+      const shipment = order.shipping[0];
+      spyOnMethod("shipmentLabeled", order, shipment);
+
+      function shipmentLabeled() {
+        return Meteor.call("orders/shipmentLabeled", order, shipment);
+      }
+      expect(shipmentLabeled).to.throw(Meteor.Error, /Access Denied/);
+    });
+
+    it("should update the order item workflow status to coreOrderItemWorkflow/labeled", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      const shipment = order.shipping[0];
+      spyOnMethod("shipmentLabeled", order.userId);
+      Meteor.call("orders/shipmentLabeled", order, shipment);
+      const orderItem = Orders.findOne({ _id: order._id }).items[0];
+      expect(orderItem.workflow.status).to.equal("coreOrderItemWorkflow/labeled");
+    });
+
+    it("should update the shipment workflow status to coreOrderWorkflow/labeled", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      const shipment = order.shipping[0];
+      spyOnMethod("shipmentLabeled", order.userId);
+      Meteor.call("orders/shipmentLabeled", order, shipment);
+      const orderShipment = Orders.findOne({ _id: order._id }).shipping[0];
+      expect(orderShipment.workflow.status).to.equal("coreOrderWorkflow/labeled");
     });
   });
 
@@ -261,15 +322,15 @@ describe("orders test", function () {
       expect(orderStatus).to.equal("coreOrderWorkflow/completed");
     });
 
-    it("should update the order shipping status", function () {
+    it("should update the order shipping workflow status to coreOrderWorkflow/shipped", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
         check(arguments, [Match.Any]);
       });
       spyOnMethod("shipmentShipped", order.userId);
       Meteor.call("orders/shipmentShipped", order, order.shipping[0]);
-      const orderShipped = Orders.findOne({ _id: order._id }).shipping[0].shipped;
-      expect(orderShipped).to.equal(true);
+      const orderShipped = Orders.findOne({ _id: order._id }).shipping[0];
+      expect(orderShipped.workflow.status).to.equal("coreOrderWorkflow/shipped");
     });
   });
 
@@ -289,7 +350,7 @@ describe("orders test", function () {
       expect(shipmentDelivered).to.throw(Meteor.Error, /Access Denied/);
     });
 
-    it("should update the order item workflow to coreOrderItemWorkflow/completed", function () {
+    it("should update the order item workflow status to coreOrderItemWorkflow/completed", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("shipmentDelivered", order.userId);
       Meteor.call("orders/shipmentDelivered", order);
@@ -297,12 +358,12 @@ describe("orders test", function () {
       expect(orderItemWorkflow.status).to.equal("coreOrderItemWorkflow/completed");
     });
 
-    it("should update the delivered status to true", function () {
+    it("should update the order shipping workflow status to coreOrderWorkflow/delivered", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("shipmentDelivered", order.userId);
       Meteor.call("orders/shipmentDelivered", order);
       const orderShipping = Orders.findOne({ _id: order._id }).shipping[0];
-      expect(orderShipping.delivered).to.equal(true);
+      expect(orderShipping.workflow.status).to.equal("coreOrderWorkflow/delivered");
     });
 
     it("should update the order workflow status to processing", function () {

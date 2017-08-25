@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Orders } from "/lib/collections";
-import { SortableTable, Loading, Checkbox } from "@reactioncommerce/reaction-ui";
-import OrderTableColumn from "./orderTableColumn";
-
-import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
+import classnames from "classnames/dedupe";
+import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
+import { Orders } from "/lib/collections";
+import OrderTableColumn from "./orderTableColumn";
+import OrderBulkActionsBar from "./orderBulkActionsBar";
 import { formatPriceString } from "/client/api";
-import { Badge, ClickToCopy, Icon, Translation, Button } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 import { getOrderRiskBadge, getOrderRiskStatus } from "../helpers";
 
@@ -38,13 +37,19 @@ const classNames = {
 class OrderTable extends Component {
   static propTypes = {
     displayMedia: PropTypes.func,
+    handleBulkPaymentCapture: PropTypes.func,
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
+    isLoading: PropTypes.object,
     isOpen: PropTypes.bool,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
+    renderFlowList: PropTypes.bool,
     selectAllOrders: PropTypes.func,
-    selectedItems: PropTypes.array
+    selectedItems: PropTypes.array,
+    setShippingStatus: PropTypes.func,
+    shipping: PropTypes.object,
+    toggleShippingFlowList: PropTypes.func
   }
 
   /**
@@ -66,15 +71,6 @@ class OrderTable extends Component {
     }
 
     return "default";
-  }
-
-  /**
-   * Shipping Badge
-   * TODO: any logic here, we don't have shipping status changes at the moment
-   * @return {string} A string containing the type of Badge
-   */
-  shippingBadgeStatus() {
-    return "basic";
   }
 
   renderOrderButton(order) {
@@ -159,7 +155,7 @@ class OrderTable extends Component {
             badgeSize="large"
             i18nKeyLabel={`cartDrawer.${order.shipping[0].workflow.status}`}
             label={order.shipping[0].workflow.status}
-            status={this.shippingBadgeStatus(order)}
+            status="basic"
           />
           <Badge
             badgeSize="large"
@@ -198,44 +194,6 @@ class OrderTable extends Component {
         </div>
       </div>
     );
-  }
-
-  renderBulkOrderActionsBar = () => {
-    const { orders, multipleSelect, selectedItems, selectAllOrders } = this.props;
-
-    if (selectedItems.length > 0) {
-      return (
-        <div className="bulk-order-actions-bar">
-          <Checkbox
-            className="checkbox-large orders-checkbox"
-            checked={selectedItems.length === orders.length || multipleSelect}
-            name="orders-checkbox"
-            onChange={() => selectAllOrders(orders, (selectedItems.length === orders.length || multipleSelect))}
-          />
-          <Translation
-            className="selected-orders"
-            defaultValue={`${selectedItems.length} Selected`}
-            i18nKey={`${selectedItems.length} order.selected`}
-          />
-          <Button
-            status="success"
-            bezelStyle="solid"
-            className="capture-orders-button"
-            label="Capture"
-            i18nKeyLabel="order.capture"
-          />
-          <Button
-            status="default"
-            bezelStyle="solid"
-            className="bulk-actions-button"
-            label="Bulk Actions"
-            i18nKeyLabel="order.bulkActions"
-            icon="fa fa-chevron-down"
-            iconAfter={true}
-          />
-        </div>
-      );
-    }
   }
 
   render() {
@@ -319,7 +277,6 @@ class OrderTable extends Component {
               handleSelect={this.props.handleSelect}
               selectedItems={this.props.selectedItems}
               fulfillmentBadgeStatus={this.fulfillmentBadgeStatus}
-              shippingBadgeStatus={this.shippingBadgeStatus}
             />
           )
         };
@@ -361,7 +318,20 @@ class OrderTable extends Component {
 
     return (
       <div>
-        {this.props.isOpen && this.renderBulkOrderActionsBar()}
+        {this.props.isOpen &&
+          <OrderBulkActionsBar
+            shipping={this.props.shipping}
+            multipleSelect={this.props.multipleSelect}
+            orders={this.props.orders}
+            selectAllOrders={this.props.selectAllOrders}
+            selectedItems={this.props.selectedItems}
+            setShippingStatus={this.props.setShippingStatus}
+            isLoading={this.props.isLoading}
+            renderFlowList={this.props.renderFlowList}
+            toggleShippingFlowList={this.props.toggleShippingFlowList}
+            handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
+          />
+        }
         <SortableTable
           tableClassName={`rui order table -highlight ${this.props.selectedItems.length > 0 ?
             "table-header-hidden" :
@@ -379,13 +349,11 @@ class OrderTable extends Component {
           getTrGroupProps={getTrGroupProps}
           getPaginationProps={() => {
             return {
-              className: this.props.isOpen && this.props.selectedItems.length > 0 ?
-                "order-table-pagination-hidden" :
-                "order-table-pagination-visible"
+              className: "order-table-pagination-visible"
             };
           }}
           getTableProps={getTableProps}
-          showPaginationTop={true}
+          showPaginationTop={this.props.selectedItems.length ? false : true}
         />
       </div>
     );

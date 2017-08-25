@@ -4,7 +4,7 @@ import classnames from "classnames/dedupe";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
 import Avatar from "react-avatar";
-import { Badge, ClickToCopy, Icon, RolloverCheckbox } from "@reactioncommerce/reaction-ui";
+import { Badge, ClickToCopy, Icon, RolloverCheckbox, Checkbox } from "@reactioncommerce/reaction-ui";
 import { getOrderRiskBadge, getOrderRiskStatus } from "../helpers";
 
 class OrderTableColumn extends Component {
@@ -13,48 +13,64 @@ class OrderTableColumn extends Component {
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
     row: PropTypes.object,
-    selectedItems: PropTypes.array,
-    shippingBadgeStatus: PropTypes.func
+    selectedItems: PropTypes.array
+  }
+
+  renderCheckboxOnSelect(row) {
+    if (this.props.selectedItems.length) {
+      return (
+        <div className="all-checkboxes">
+          <Checkbox
+            className="checkbox-large checkbox-avatar"
+            name={row.original._id}
+            onChange={this.props.handleSelect}
+            checked={this.props.selectedItems.includes(row.original._id)}
+          />
+        </div>
+      );
+    }
+    return (
+      <RolloverCheckbox
+        checkboxClassName="checkbox-avatar checkbox-large"
+        name={row.original._id}
+        onChange={this.props.handleSelect}
+        checked={this.props.selectedItems.includes(row.original._id)}
+      >
+        <Avatar
+          email={row.original.email}
+          round={true}
+          name={row.value}
+          size={30}
+          className="rui-order-avatar"
+        />
+      </RolloverCheckbox>
+    );
   }
 
   render() {
-    const { row, selectedItems, handleClick, handleSelect, fulfillmentBadgeStatus, shippingBadgeStatus } = this.props;
-    const columnAccessor = row.column.id;
+    const columnAccessor = this.props.row.column.id;
 
     if (columnAccessor === "shipping[0].address.fullName") {
       return (
         <div style={{ display: "inline-flex" }}>
-          <RolloverCheckbox
-            checkboxClassName="checkbox-avatar checkbox-large"
-            name={row.original._id}
-            onChange={handleSelect}
-            checked={selectedItems.includes(row.original._id)}
-          >
-            <Avatar
-              email={row.original.email}
-              round={true}
-              name={row.value}
-              size={30}
-              className="rui-order-avatar"
-            />
-          </RolloverCheckbox>
-          <strong style={{ paddingLeft: 5, marginTop: 7 }}>{row.value}</strong>
+          {this.renderCheckboxOnSelect(this.props.row)}
+          <strong style={{ paddingLeft: 5, marginTop: 7 }}>{this.props.row.value}</strong>
         </div>
       );
     }
     if (columnAccessor === "email") {
       return (
-        <div style={{ marginTop: 7 }}>{row.value}</div>
+        <div style={{ marginTop: 7 }}>{this.props.row.value}</div>
       );
     }
     if (columnAccessor === "createdAt") {
-      const createdDate = moment(row.value).format("MM/D/YYYY");
+      const createdDate = moment(this.props.row.value).format("MM/D/YYYY");
       return (
         <div style={{ marginTop: 7 }}>{createdDate}</div>
       );
     }
     if (columnAccessor === "_id") {
-      const id = row.original._id;
+      const id = this.props.row.original._id;
       const truncatedId = id.substring(0, 4);
       return (
         <div style={{ marginTop: 7 }}>
@@ -70,7 +86,7 @@ class OrderTableColumn extends Component {
     if (columnAccessor === "billing[0].invoice.total") {
       return (
         <div style={{ marginTop: 7 }}>
-          <strong>{formatPriceString(row.original.billing[0].invoice.total)}</strong>
+          <strong>{formatPriceString(this.props.row.original.billing[0].invoice.total)}</strong>
         </div>
       );
     }
@@ -79,22 +95,22 @@ class OrderTableColumn extends Component {
         <Badge
           className="orders-badge"
           badgeSize="large"
-          i18nKeyLabel={`cartDrawer.${row.value}`}
-          label={row.value}
-          status={shippingBadgeStatus()}
+          i18nKeyLabel={`cartDrawer.${this.props.row.value}`}
+          label={this.props.row.value}
+          status="basic"
         />
       );
     }
     if (columnAccessor === "workflow.status") {
-      const orderRisk = getOrderRiskStatus(row.original);
+      const orderRisk = getOrderRiskStatus(this.props.row.original);
 
       return (
         <div className="status-info">
           <Badge
             badgeSize="large"
-            i18nKeyLabel={`cartDrawer.${row.value}`}
-            label={row.value}
-            status={fulfillmentBadgeStatus(row.original)}
+            i18nKeyLabel={`cartDrawer.${this.props.row.value}`}
+            label={this.props.row.value}
+            status={this.props.fulfillmentBadgeStatus(this.props.row.original)}
           />
           {orderRisk &&
             <Badge
@@ -109,7 +125,7 @@ class OrderTableColumn extends Component {
       );
     }
     if (columnAccessor === "") {
-      const startWorkflow = row.original.workflow.status === "new";
+      const startWorkflow = this.props.row.original.workflow.status === "new";
       const classes = classnames({
         "rui": true,
         "btn": true,
@@ -117,13 +133,13 @@ class OrderTableColumn extends Component {
       });
 
       return (
-        <button className={classes} onClick={() => handleClick(row.original, startWorkflow)}>
+        <button className={classes} onClick={() => this.props.handleClick(this.props.row.original, startWorkflow)}>
           <Icon icon="fa fa-chevron-right" />
         </button>
       );
     }
     return (
-      <span>{row.value}</span>
+      <span>{this.props.row.value}</span>
     );
   }
 }
