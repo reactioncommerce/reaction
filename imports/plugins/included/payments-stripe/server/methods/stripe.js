@@ -111,6 +111,31 @@ function normalizeMode(transaction) {
   return "authorize";
 }
 
+/**
+ * normalizes the mode of a transaction
+ * @method normalizeMode
+ * @param  {object} transaction The transaction that we need to normalize
+ * @return {string} normalized status string - either failed, capture, or authorize
+ */
+function normalizeRiskLevel(transaction) {
+  if (!transaction) {
+    throw new Meteor.Error("normalizeRiskLevel requires a transaction");
+  }
+
+  const outcome = transaction.outcome && transaction.outcome.risk_level;
+
+  if (outcome === "elevated") {
+    return "elevated";
+  }
+
+  if (outcome === "highest") {
+    return "high";
+  }
+
+  // default to normal if no other flagged
+  return "normal";
+}
+
 
 function buildPaymentMethods(options) {
   const { cardData, cartItemsByShop, transactionsByShopId } = options;
@@ -152,6 +177,7 @@ function buildPaymentMethods(options) {
         amount: transactionsByShopId[shopId].amount * 0.01,
         status: normalizeStatus(transactionsByShopId[shopId]),
         mode: normalizeMode(transactionsByShopId[shopId]),
+        riskLevel: normalizeRiskLevel(transactionsByShopId[shopId]),
         createdAt: new Date(transactionsByShopId[shopId].created),
         transactions: [],
         items: cartItems,
