@@ -304,8 +304,19 @@ export default {
     return this.hasPermission(ownerPermissions);
   },
 
-  hasAdminAccess() {
+  /**
+   * Checks to see if the user has admin permissions. If a shopId is optionally
+   * passed in, we check for that shopId, otherwise we check against the default
+   * @method hasAdminAccess
+   * @param  {string} [shopId] Optional shopId to check access against
+   * @return {Boolean} true if the user has admin or owner permission,
+   *                   otherwise false
+   */
+  hasAdminAccess(shopId) {
     const adminPermissions = ["owner", "admin"];
+    if (shopId) {
+      return this.hasPermission(adminPermissions, Meteor.userId(), shopId);
+    }
     return this.hasPermission(adminPermissions);
   },
 
