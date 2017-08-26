@@ -186,7 +186,7 @@ describe("stripe/payment/createCharges", function () {
     sandbox.restore();
   });
 
-  it.only("should call stripe/payment/createCharges with the proper parameters and create an order", function (done) {
+  it("should call stripe/payment/createCharges with the proper parameters and create an order", function (done) {
     this.timeout(10000);
     // This is a pretty full payment => order integration test currently.
     // This test should probably be split into multiple parts
