@@ -242,7 +242,7 @@ export const methods = {
       }));
 
       // Get cart totals for each Shop
-      const cartTotals = cart.cartTotalByShop();
+      const cartTotals = cart.getTotalByShop();
 
       // Loop through all shopIds represented in cart
       shopIds.forEach((shopId) => {

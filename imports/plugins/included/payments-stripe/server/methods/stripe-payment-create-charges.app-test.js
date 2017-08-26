@@ -186,7 +186,7 @@ describe("stripe/payment/createCharges", function () {
     sandbox.restore();
   });
 
-  it("should call stripe/payment/createCharges with the proper parameters and create an order", function (done) {
+  it.only("should call stripe/payment/createCharges with the proper parameters and create an order", function (done) {
     this.timeout(10000);
     // This is a pretty full payment => order integration test currently.
     // This test should probably be split into multiple parts
@@ -232,6 +232,7 @@ describe("stripe/payment/createCharges", function () {
     };
 
     // create a charge result object that has the cart total in stripe format (cents)
+    console.log("getTotal", cart.getTotal());
     const chargeResult = Object.assign({}, stripeChargeResult, { amount: cart.getTotal() * 100 });
 
     // Testing stripe using the npm Nock lib available here:
