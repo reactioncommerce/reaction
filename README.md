@@ -52,15 +52,24 @@ Multiple branches, release documentation is found at <https://docs.reactioncomme
 
 The Reaction documentation source is located in the [reaction-docs](https://github.com/reactioncommerce/reaction-docs) repository, while the documentation site is the [reactioncommerce/redoc](https://github.com/reactioncommerce/redoc) application.
 
+### Community
+
+There are many ways to get connected with the Reaction core team and community:
+
+- [Reaction Commece Gitter chat](https://gitter.im/reactioncommerce/reaction)
+- [Reaction Commerce forum](https://forums.reactioncommerce.com/)
+- [Reaction Community calls](http://getrxn.io/2rcCal): Join our biweekly community calls every other Wednesday at 7AM PST/10AM EST. Subscribe to our [Reaction Community Google Calendar](http://getrxn.io/2rcCal) to RSVP to the next call and check out the [agenda](https://docs.google.com/document/d/1PwenrammgQJpQfFoUUJZ96i_JJYCM_4glAjB1_ZzgwA/edit?usp=sharing).
+- [Reaction Action](https://www.crowdcast.io/reactioncommerce): Follow us on [Crowdcast](https://www.crowdcast.io/reactioncommerce) to RSVP for the monthly Reaction Action livestreams.
+
+Our [community guidelines](https://docs.reactioncommerce.com/reaction-docs/master/guidelines) can be found in our [documentation](https://docs.reactioncommerce.com/).
+
 ### Contributing
 
 Star us on GitHub, it helps!
 
-If you are interested in participating in the development of Reaction, that's really great!  
+If you are interested in participating in the development of Reaction, that's  great! Check out the [issues](https://github.com/reactioncommerce/reaction/issues) page, starting with the [`Pull Requests Encouraged`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aissue+is%3Aopen+label%3Apull-requests-encouraged) and [`Verified Reproducible`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aopen+is%3Aissue+label%3Averified-reproducible) labeled issues. If you find something you want to work on, let us know in the issue comments.
 
-The [Reaction Gitter channel](https://gitter.im/reactioncommerce/reaction) and [forum](https://forums.reactioncommerce.com/) are good places to engage with core contributors, the community, and to get familiar with Reaction. Our [community guidelines](https://docs.reactioncommerce.com/reaction-docs/master/guidelines) can be found in our [documentation](https://docs.reactioncommerce.com/).
-
-Check out the [issues](https://github.com/reactioncommerce/reaction/issues) page, and if you find something you want to work on, let us know in the comments. If you're interested in a particular [project](https://github.com/reactioncommerce/reaction/projects) and you aren’t sure where to begin, feel free to ask. Start small!
+If you're interested in a particular [project](https://github.com/reactioncommerce/reaction/projects), like [Marketplace](https://github.com/reactioncommerce/reaction/projects/9) and you aren’t sure where to begin, feel free to ask a core team member in the corresponding project [forum](https://gitter.im/reactioncommerce/home).
 
 If your contribution doesn't fit with an existing issue, go ahead and [create an issue](https://github.com/reactioncommerce/reaction/issues/new) before submitting a [Pull Request](https://help.github.com/articles/about-pull-requests/). This will allow the Reaction team to give feedback if necessary.
 

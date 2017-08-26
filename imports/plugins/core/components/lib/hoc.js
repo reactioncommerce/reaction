@@ -1,8 +1,8 @@
-import { composeWithTracker } from "./composer";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
-import _ from "lodash";
 import { Accounts, Groups } from "/lib/collections";
+import { composeWithTracker } from "./composer";
 
 let Reaction;
 

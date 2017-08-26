@@ -2,7 +2,6 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Catalog } from "/lib/api";
 import { Inventory } from "/lib/collections";
-import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
 /**
@@ -12,17 +11,22 @@ import { Logger, Reaction } from "/server/api";
  * @return {Number} - returns the total amount of new inventory created
  */
 export function registerInventory(product) {
-  check(product, Match.OneOf(Schemas.ProductVariant, Schemas.Product));
+  // Retrieve schemas
+  // TODO: Permit product type registration and iterate through product types and schemas
+  const simpleProductSchema = Reaction.collectionSchema("Products", { type: "simple" });
+  const variantProductSchema = Reaction.collectionSchema("Products", { type: "variant" });
+  check(product, Match.OneOf(simpleProductSchema, variantProductSchema));
   let type;
   switch (product.type) {
     case "variant":
-      check(product, Schemas.ProductVariant);
+      check(product, variantProductSchema);
       type = "variant";
       break;
     default:
-      check(product, Schemas.Product);
+      check(product, simpleProductSchema);
       type = "simple";
   }
+
   let totalNewInventory = 0;
   const productId = type === "variant" ? product.ancestors[0] : product._id;
   const variants = Catalog.getVariants(productId);
@@ -85,16 +89,18 @@ export function registerInventory(product) {
 function adjustInventory(product, userId) {
   // TODO: This can fail even if updateVariant succeeds.
   // Should probably look at making these two more atomic
+  const simpleProductSchema = Reaction.collectionSchema("Products", { type: "simple" });
+  const variantProductSchema = Reaction.collectionSchema("Products", { type: "variant" });
   let type;
   let results;
   // adds or updates inventory collection with this product
   switch (product.type) {
     case "variant":
-      check(product, Schemas.ProductVariant);
+      check(product, variantProductSchema);
       type = "variant";
       break;
     default:
-      check(product, Schemas.Product);
+      check(product, simpleProductSchema);
       type = "simple";
   }
 
@@ -157,7 +163,9 @@ Meteor.methods({
     registerInventory(product);
   },
   "inventory/adjust": function (product) { // TODO: this should be variant
-    check(product, Match.OneOf(Schemas.Product, Schemas.ProductVariant));
+    const simpleProductSchema = Reaction.collectionSchema("Products", { type: "simple" });
+    const variantProductSchema = Reaction.collectionSchema("Products", { type: "variant" });
+    check(product, Match.OneOf(simpleProductSchema, variantProductSchema));
     adjustInventory(product, this.userId);
   }
 });

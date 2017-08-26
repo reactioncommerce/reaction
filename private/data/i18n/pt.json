@@ -12,6 +12,9 @@
           "email": "Configurações de e-mail",
           "description": "Descrição",
           "remove": "Remover"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Localização e i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "Escolher ano",
         "shopSettings": "Definições da loja",
         "dashboard": "Painel de controlo",
-        "print": "Imprimir"
+        "print": "Imprimir",
+        "auto": "Automático"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Pesquisa de produtos",
+          "includeTitle": "Incluir título",
+          "includeDescription": "Incluir descrição",
+          "includePageTitle": "Incluir título da página",
+          "includeDetails": "Incluir detalhes",
+          "includeVendor": "Incluir fornecedor"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Definições de pesquisa de encomendas"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Definições de pesquisa da conta"
+        },
+        "noSettings": "Sem definições atualmente disponíveis",
+        "settingsSaved": "Definições de pesquisa guardadas",
+        "settingsfailed": "Falha ao atualizar definições de pesquisa"
       },
       "header": {
         "tagsAdd": "Adicionar etiqueta",
@@ -68,7 +91,8 @@
         "startTracking": "Iniciar a monitorização",
         "addBarcode": "Adicionar código de barras",
         "quantity": "Quantidade",
-        "quantityGreaterThanZero": "Erro: a quantidade tem de ser superior a zero"
+        "quantityGreaterThanZero": "Erro: a quantidade tem de ser superior a zero",
+        "dropFiles": "Largar ficheiros para carregar"
       },
       "productDetailEdit": {
         "title": "Título",
@@ -252,6 +276,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Permitir finalização da compra do cliente"
+          },
+          "openexchangerates": {
+            "appId": "ID da aplicação de taxas de câmbio abertas",
+            "refreshPeriod": "Período de atualização de taxas de câmbio abertas",
+            "refreshPeriodPlaceholder": "i.e. a cada 1 hora"
+          },
+          "google": {
+            "clientId": "ID de cliente Google",
+            "apiKey": "Chave da API do Google"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "O controlo da revisão está desativado. As alterações serão publicadas de imediato.",
+        "isEnabled": "controle de revisão está habilitado para os produtos. será preciso qualquer alteração a ser publicado antes de ser visível para os clientes."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Método de pagamento predefinido",
+        "name": "Nome",
+        "namePlaceholder": "Nome da loja",
+        "description": "Descrição",
+        "descriptionPlaceholder": "Descrever a sua loja para SEO",
+        "descriptionTooltip": "Este campo é utilizado pela etiqueta de metadescrição. É permitido procurar em motores de busca para descrever a sua loja",
+        "email": "Email",
+        "emailPlaceholder": "Email do contacto principal",
+        "keywords": "Palavras-chave",
+        "keywordsPlaceholder": "Meta palavras-chave para SEO",
+        "language": "Idioma base",
+        "addressBook": {
+          "company": "Empresa",
+          "companyPlaceholder": "Nome desta empresa",
+          "country": "País",
+          "fullName": "Nome completo",
+          "fullNamePlaceholder": "Nome da sua organização",
+          "address1": "Endereço",
+          "address1Placeholder": "Endereço da sua organização",
+          "address1Tooltip": "Este endereço será visível para os visitantes",
+          "address2": "Endereço",
+          "address2Placeholder": "Endereço adicional",
+          "postal": "Postal",
+          "city": "Cidade",
+          "region": "Região",
+          "phone": "Telefone",
+          "isShippingDefault": "Tornar este o seu endereço de envio predefinido?",
+          "isBillingDefault": "Tornar este endereço o seu endereço de faturação predefinido?",
+          "isCommercial": "Trata-se de um endereço comercial."
+        }
       },
       "accountsUI": {
         "members": "Membros",
