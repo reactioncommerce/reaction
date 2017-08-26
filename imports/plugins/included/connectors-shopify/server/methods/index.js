@@ -1,1 +1,2 @@
 import "./shopifyConnect";
+import "./registerWebhook";
