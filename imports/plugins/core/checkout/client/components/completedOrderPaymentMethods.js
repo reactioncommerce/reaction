@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 const creditCardClasses = {
   VISA: "fa fa-cc-visa",
@@ -10,7 +10,10 @@ const creditCardClasses = {
 };
 
 const CompletedOrderPaymentMethod = ({ paymentMethod }) => {
-  if (paymentMethod.method === "credit") {
+  // allow i18n override for "processor" label
+  const i18nKey = "checkout.paymentMethod." + paymentMethod.processor;
+  // display stored card methods
+  if (paymentMethod.method === "credit" && paymentMethod.storedCard) {
     const creditCardType = paymentMethod.storedCard.substring(0, 4).toUpperCase();
     const creditCardClass = creditCardClasses[creditCardType];
     return <div className="order-details-info-box">
@@ -21,7 +24,9 @@ const CompletedOrderPaymentMethod = ({ paymentMethod }) => {
   }
   return <div className="order-details-info-box">
     <div className="order-details-info-box-content">
-      <p className="order-details-payment-method">{paymentMethod.method}</p>
+      <p className="order-details-payment-method">
+        <Components.Translation defaultValue={paymentMethod.processor} i18nKey={i18nKey} />
+      </p>
     </div>
   </div>;
 };
