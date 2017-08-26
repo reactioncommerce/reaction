@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import getServiceConfig from "nodemailer-wellknown";
 import { Components } from "@reactioncommerce/reaction-components";
 
 class EmailSettings extends Component {
@@ -33,6 +34,9 @@ class EmailSettings extends Component {
   handleSelect(e) {
     const { settings } = this.state;
     settings.service = e;
+    const config = getServiceConfig(settings.service);
+    settings.host = config.host;
+    settings.port = config.port;
     this.setState({ settings });
   }
 
