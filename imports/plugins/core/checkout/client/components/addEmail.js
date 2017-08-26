@@ -63,7 +63,7 @@ class AddEmail extends Component {
     }
     return (
       <form onSubmit={this.handleSubmit} className="add-email-input">
-        <Components.Translation defaultValue="Hello! Add an email and receive order updates" i18bnKey="{cartCompleted.registerGuest}" />
+        <Components.Translation defaultValue="Hello! Add an email and receive order updates" i18nKey="{cartCompleted.registerGuest}" />
         <div>
           <Components.TextField
             name="email"
