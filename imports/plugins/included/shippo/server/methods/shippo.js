@@ -338,13 +338,22 @@ export const methods = {
   },
 
   /**
-   * Returns the available Shippo Methods/Rates for a selected cart, in the same form shipping/getShippingRates
-   * returns them.
+   * Returns the available Shippo Methods/Rates for a selected cart,
+   * in the same form shipping/getShippingRates returns them.
    * @param {String} cartId - The id of the cart that rates are to be supplied.
-   * @param {Object} shippoDocs - Contains all the Enabled Shipping Objects with provider.shippoProvider property.
-   * Each property has as key the Shippo's carrierAccountId and as value the corresponding document of shipping
+   * @param {Object} shippoDocs - Contains all the enabled shipping objects with
+   * provider.shippoProvider property. Each property has as key the Shippo's
+   * carrierAccountId and as value the corresponding document of shipping
    * collection.
-   * @return {Array} rates - The rates of the enabled and available Shippo carriers.
+   * @return {Array} errorDetails - In case a call to Shippo's API
+   * fails, this method returns an array containing a single object,
+   * which contains details of the error.
+   * @return {Array} noShippingMethods - If the call to Shippo's API
+   * is successful BUT it returns an empty list of shipping methods,
+   * this method returns an array containing a single object with
+   * any appropriate details.
+   * @return {Array} rates - The rates of the enabled and available
+   * Shippo carriers.
    * */
   "shippo/getShippingRatesForCart"(cartId, shippoDocs) {
     check(cartId, String);
@@ -402,17 +411,34 @@ export const methods = {
         return [];
       }
       const carrierAccounts = Object.keys(shippoDocs);
-      const shippoShipment = ShippoApi.methods.createShipment.call({
-        shippoAddressFrom,
-        shippoAddressTo,
-        shippoParcel,
-        purpose,
-        carrierAccounts,
-        apiKey
-      });
+      let shippoShipment;
+      try {
+        shippoShipment = ShippoApi.methods.createShipment.call({
+          shippoAddressFrom,
+          shippoAddressTo,
+          shippoParcel,
+          purpose,
+          carrierAccounts,
+          apiKey
+        });
+      } catch (error) {
+        const errorDetails = {
+          requestStatus: "error",
+          shippingProvider: "shippo",
+          // TODO: add some retrial logic.
+          numOfRetries: 0,
+          message: error.message
+        };
+        return [errorDetails];
+      }
 
-      if (_.isEqual({}, shippoShipment)) {
-        return [];
+      if (Object.keys(shippoShipment).length === 0) {
+        const noShippingMethods = {
+          requestStatus: "success",
+          shippingProvider: "shippo",
+          numOfShippingMethodsFound: 0
+        };
+        return [noShippingMethods];
       }
 
       const shippoRates = shippoShipment.rates_list;
