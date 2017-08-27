@@ -232,7 +232,6 @@ describe("stripe/payment/createCharges", function () {
     };
 
     // create a charge result object that has the cart total in stripe format (cents)
-    console.log("getTotal", cart.getTotal());
     const chargeResult = Object.assign({}, stripeChargeResult, { amount: cart.getTotal() * 100 });
 
     // Testing stripe using the npm Nock lib available here:
