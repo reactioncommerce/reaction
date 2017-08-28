@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 
 import { Reaction, Logger } from "/server/api";
+import { Packages } from "/lib/collections";
 
 export const methods = {
   /**
@@ -42,10 +43,25 @@ export const methods = {
     const host = options.absoluteUrl || Meteor.absoluteUrl();
     const webhookAddress = `${host}webhooks/shopify/${options.topic.replace(/\//g, "-")}?shopId=${Reaction.getShopId()}`;
     try {
-      const webhook = await shopify.webhook.create({
+      // Create webhook on Shopify
+      const webhookResponse = await shopify.webhook.create({
         topic: options.topic,
         address: webhookAddress,
         format: "json"
+      });
+
+      const webhook = {
+        shopifyId: webhookResponse.id,
+        topic: options.topic,
+        address: webhookAddress,
+        format: "json"
+      };
+
+      // Add webhook to webhooks array in Shop specific connectors-shopify pkg
+      Packages.update({ _id: shopifyPkg._id }, {
+        $addToSet: {
+          "settings.webhooks": webhook
+        }
       });
       Logger.info("webhook", webhook);
     } catch (error) {
