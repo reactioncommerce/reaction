@@ -25,10 +25,14 @@ class EmailSettings extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { saveSettings } = this.props;
+    const { saveSettings, providers } = this.props;
     const { settings } = this.state;
+    let newSettings = settings;
+    if (settings.service !== "custom") {
+      newSettings = Object.assign({}, settings, providers[settings.service]);
+    }
     this.setState({ isSaving: true });
-    saveSettings(settings, () => this.setState({ isSaving: false }));
+    saveSettings(newSettings, () => this.setState({ isSaving: false }));
   }
 
   handleSelect(e) {
@@ -39,9 +43,11 @@ class EmailSettings extends Component {
 
   render() {
     const { providers } = this.props;
-    const { settings, isSaving } = this.state;
+    const { settings, hasAuth, isSaving } = this.state;
 
-    const emailProviders = providers.map((name) => (
+    const providerNames = Object.keys(providers);
+
+    const emailProviders = providerNames.map((name) => (
       { label: name, value: name }
     ));
 
@@ -117,7 +123,7 @@ class EmailSettings extends Component {
 }
 
 EmailSettings.propTypes = {
-  providers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  providers: PropTypes.object.isRequired,
   saveSettings: PropTypes.func.isRequired,
   settings: PropTypes.shape({
     service: PropTypes.string,
