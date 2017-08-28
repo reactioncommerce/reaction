@@ -147,7 +147,6 @@ export default function () {
           } else if (user.services[service].profile_picture) {
             additionals.profile.picture = user.services[service].profile_picture;
           }
-          
           // Correctly map Instagram profile data to Meteor user / Accounts
           if (user.services.instagram) {
             user.username = user.services[service].username;

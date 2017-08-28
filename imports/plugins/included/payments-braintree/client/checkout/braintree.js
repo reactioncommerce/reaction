@@ -54,7 +54,7 @@ function submitToBrainTree(doc, template) {
     cvv2: doc.cvv,
     type: getCardType(doc.cardNumber)
   };
-  const cartTotal = Cart.findOne().cartTotal();
+  const cartTotal = Cart.findOne().getTotal();
   const currencyCode = Shops.findOne().currency;
 
   Braintree.authorize(cardData, {
