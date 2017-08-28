@@ -77,6 +77,11 @@ class OrderDashboard extends Component {
         // checking to ensure search was made and no results came back
         if (this.state.searchQuery && Array.isArray(orderSearchResultsIds)) {
           // pick and show only orders that are in search results (orderSearchResultsIds)
+          console.log({
+            orders: this.props.orders.filter(
+              order => orderSearchResultsIds.indexOf(order._id) > -1
+            )
+          });
           return this.setState({
             orders: this.props.orders.filter(
               order => orderSearchResultsIds.indexOf(order._id) > -1
@@ -146,7 +151,7 @@ class OrderDashboard extends Component {
 
             <div>
               <OrderTable
-                orders={this.props.orders}
+                orders={this.state.orders}
                 query={this.state.query}
                 selectedItems={this.props.selectedItems}
                 handleSelect={this.props.handleSelect}
