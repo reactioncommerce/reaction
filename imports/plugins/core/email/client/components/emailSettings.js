@@ -8,6 +8,7 @@ class EmailSettings extends Component {
 
     this.state = {
       settings: props.settings,
+      hasAuth: !(props.settings.service === "Maildev"),
       isSaving: false
     };
 
@@ -33,7 +34,7 @@ class EmailSettings extends Component {
   handleSelect(e) {
     const { settings } = this.state;
     settings.service = e;
-    this.setState({ settings });
+    this.setState({ settings, hasAuth: !(settings.service === "Maildev") });
   }
 
   render() {
@@ -79,22 +80,26 @@ class EmailSettings extends Component {
             />
           </div>
         }
-        <Components.TextField
-          label="User"
-          i18nKeyLabel="admin.settings.user"
-          type="text"
-          name="user"
-          value={settings.user}
-          onChange={this.handleStateChange}
-        />
-        <Components.TextField
-          label="Password"
-          i18nKeyLabel="admin.settings.password"
-          type="password"
-          name="password"
-          value={settings.password}
-          onChange={this.handleStateChange}
-        />
+        {hasAuth &&
+          <div>
+            <Components.TextField
+              label="User"
+              i18nKeyLabel="admin.settings.user"
+              type="text"
+              name="user"
+              value={settings.user}
+              onChange={this.handleStateChange}
+            />
+            <Components.TextField
+              label="Password"
+              i18nKeyLabel="admin.settings.password"
+              type="password"
+              name="password"
+              value={settings.password}
+              onChange={this.handleStateChange}
+            />
+          </div>
+        }
         <Components.Button
           primary={true}
           bezelStyle="solid"
