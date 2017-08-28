@@ -33,14 +33,14 @@ export function getMailUrl() {
 
   // create a mail url from well-known provider settings (if they exist)
   // https://github.com/nodemailer/nodemailer-wellknown
-  if (service && service !== "custom" && user && password) {
+  if (service && service !== "custom") {
     const conf = getServiceConfig(service);
 
     if (conf) {
       // account for local test providers like Maildev
       if (!conf.host) {
         mailString = `smtp://localhost:${conf.port}`;
-      } else {
+      } else if (user && password) {
         mailString = `smtp://${encodeURIComponent(user)}:${password}@${conf.host}:${conf.port}`;
       }
     }
@@ -116,7 +116,7 @@ export function getMailConfig() {
 
   // if a service provider preset was chosen, return a Nodemailer config for it
   // https://github.com/nodemailer/nodemailer-wellknown
-  if (service && service !== "custom" && user && password) {
+  if (service && service !== "custom") {
     Logger.debug(`Using ${service} to send email`);
 
     // get the config from nodemailer-wellknown
@@ -128,7 +128,9 @@ export function getMailConfig() {
     }
 
     // add the credentials to the config
-    conf.auth = { user, pass: password };
+    if (user && password) {
+      conf.auth = { user, pass: password };
+    }
 
     return conf;
   }

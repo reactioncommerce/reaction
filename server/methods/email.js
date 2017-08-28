@@ -29,10 +29,13 @@ Meteor.methods({
       if (service === "custom" && host && port && user && password) {
         // create a custom Nodemailer config
         config = { host, port, auth: { user, pass: password } };
-      } else if (service && user && password) {
+      } else if (service) {
         // create a Nodemailer config from the nodemailer-wellknown services
         config = getServiceConfig(service) || {};
-        config.auth = { user, pass: password };
+
+        if (user && password) {
+          config.auth = { user, pass: password };
+        }
       }
     }
 
@@ -62,8 +65,8 @@ Meteor.methods({
       service: String,
       host: Match.Optional(String),
       port: Match.Optional(Number),
-      user: String,
-      password: String
+      user: Match.Optional(String),
+      password: Match.Optional(String)
     });
 
     Packages.update({ name: "core", shopId: Reaction.getShopId() }, {
