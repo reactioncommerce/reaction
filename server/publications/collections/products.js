@@ -122,7 +122,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     _.extend(selector, {
       isDeleted: { $in: [null, false] },
       ancestors: []
-      // TODO: REVIEW WITH AARON - subscribing to all shops products
     });
   }
 
