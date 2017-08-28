@@ -12,8 +12,8 @@ Meteor.publish("Tags", function () {
     return this.ready();
   }
   return Tags.find({
-    shopId: {
-      $in: [shopId, primaryShopId]
-    }
+    // shopId: {
+    //   $in: [shopId, primaryShopId]
+    // }
   });
 });
