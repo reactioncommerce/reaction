@@ -26,16 +26,20 @@ Meteor.methods({
     if (typeof settings === "object") {
       const { service, host, port, user, password } = settings;
 
-      if (service === "custom" && host && port && user && password) {
+      if (service === "custom" && host && port) {
         // create a custom Nodemailer config
-        config = { host, port, auth: { user, pass: password } };
+        config = { host, port };
+
+        if (host === "localhost") {
+          config.ignoreTLS = true;
+        }
       } else if (service) {
         // create a Nodemailer config from the nodemailer-wellknown services
         config = getServiceConfig(service) || {};
+      }
 
-        if (user && password) {
-          config.auth = { user, pass: password };
-        }
+      if (user && password) {
+        config.auth = { user, pass: password };
       }
     }
 

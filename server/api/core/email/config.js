@@ -100,6 +100,11 @@ export function getMailConfig() {
       };
     }
 
+    // don't enforce checking TLS on localhost
+    if (parsedUrl.hostname === "localhost") {
+      config.ignoreTLS = true;
+    }
+
     return config;
   }
 
@@ -127,7 +132,7 @@ export function getMailConfig() {
       return conf;
     }
 
-    // add the credentials to the config
+    // add any credentials to the config
     if (user && password) {
       conf.auth = { user, pass: password };
     }
@@ -137,16 +142,27 @@ export function getMailConfig() {
 
   // if a custom config was chosen and all necessary fields exist in the database,
   // return the custom Nodemailer config
-  if ((!service || service === "custom") && user && password && host && port) {
-    Logger.debug(`Using ${host} to send email`);
-
-    return {
+  if ((!service || service === "custom") && host && port) {
+    const conf = {
       host,
       port,
       secure: port === 465,
-      auth: { user, pass: password },
       logger: process.env.EMAIL_DEBUG === "true"
     };
+
+    // don't enforce checking TLS on localhost
+    if (conf.host === "localhost") {
+      conf.ignoreTLS = true;
+    }
+
+    // add any credentials to the config
+    if (user && password) {
+      conf.auth = { user, pass: password };
+    }
+
+    Logger.debug(`Using ${host} to send email`);
+
+    return conf;
   }
 
   // else, return the direct mail config and a warning
