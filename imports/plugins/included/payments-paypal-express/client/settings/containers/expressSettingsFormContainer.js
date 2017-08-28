@@ -5,9 +5,9 @@ import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { Reaction, i18next } from "/client/api";
-import { ExampleSettingsForm } from "../components";
+import { ExpressSettingsForm } from "../components";
 
-class ExampleSettingsFormContainer extends Component {
+class ExpressSettingsFormContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -55,7 +55,7 @@ class ExampleSettingsFormContainer extends Component {
     const settingsKey = this.props.packageData.registry[0].settingsKey;
     return (
       <TranslationProvider>
-        <ExampleSettingsForm
+        <ExpressSettingsForm
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
           settings={this.props.packageData.settings[settingsKey]}
@@ -65,7 +65,7 @@ class ExampleSettingsFormContainer extends Component {
   }
 }
 
-ExampleSettingsFormContainer.propTypes = {
+ExpressSettingsFormContainer.propTypes = {
   packageData: PropTypes.object
 };
 
@@ -73,11 +73,11 @@ const composer = ({}, onData) => {
   const subscription = Meteor.subscribe("Packages", Reaction.getShopId());
   if (subscription.ready()) {
     const packageData = Packages.findOne({
-      name: "example-paymentmethod",
+      name: "reaction-paypal-express",
       shopId: Reaction.getShopId()
     });
     onData(null, { packageData });
   }
 };
 
-export default composeWithTracker(composer)(ExampleSettingsFormContainer);
+export default composeWithTracker(composer)(ExpressSettingsFormContainer);

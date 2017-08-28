@@ -1,6 +1,6 @@
-import "./templates/checkout/return";
-import "./templates/checkout/express";
+import "./checkout/templates/return";
+import "./checkout//templates/express";
 
-import "./templates/settings/express";
+import "./settings/templates/express";
 
 import "./paypal.less";
