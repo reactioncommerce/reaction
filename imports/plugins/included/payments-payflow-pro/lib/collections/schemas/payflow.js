@@ -1,37 +1,8 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 
-/**
- *  Meteor.settings.braintree =
- *    mode: false  #sandbox
- *    merchant_id: ""
- *    public_key: ""
- *    private_key: ""
- *  see: https://developers.braintreepayments.com/javascript+node/reference
- */
-
-export const BraintreePackageConfig = new SimpleSchema([
-  PackageConfig,
-  {
-    "settings.mode": {
-      type: Boolean,
-      defaultValue: false
-    },
-    "settings.merchant_id": {
-      type: String,
-      label: "Merchant ID",
-      optional: false
-    },
-    "settings.public_key": {
-      type: String,
-      label: "Public Key",
-      optional: false
-    },
-    "settings.private_key": {
-      type: String,
-      label: "Private Key",
-      optional: false
-    },
+export const PayflowProPackageConfig = new SimpleSchema([
+  PackageConfig, {
     "settings.support": {
       type: Array,
       label: "Payment provider supported methods"
@@ -39,11 +10,27 @@ export const BraintreePackageConfig = new SimpleSchema([
     "settings.support.$": {
       type: String,
       allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+    },
+    "settings.client_id": {
+      type: String,
+      label: "API Client ID",
+      min: 60,
+      optional: true
+    },
+    "settings.client_secret": {
+      type: String,
+      label: "API Secret",
+      min: 60,
+      optional: true
+    },
+    "settings.mode": {
+      type: Boolean,
+      defaultValue: false
     }
   }
 ]);
 
-export const BraintreePayment = new SimpleSchema({
+export const PaypalPayment = new SimpleSchema({
   payerName: {
     type: String,
     label: "Cardholder name"
