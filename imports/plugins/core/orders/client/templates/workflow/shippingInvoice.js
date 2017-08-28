@@ -14,7 +14,7 @@ import InvoiceContainer from "../../containers/invoiceContainer.js";
 import InvoiceActionsContainer from "../../containers/invoiceActionsContainer.js";
 import LineItemsContainer from "../../containers/lineItemsContainer.js";
 import TotalActionsContainer from "../../containers/totalActionsContainer.js";
-import { getOrderRiskStatus } from "../../helpers";
+import { getOrderRiskStatus, getOrderRiskBadge } from "../../helpers";
 import swal from "sweetalert2";
 
 // helper to return the order payment object
@@ -345,10 +345,17 @@ Template.coreOrderShippingInvoice.events({
     }
 
     function alertConfirm() {
+      let alertType = "warning";
+      const riskBadge = getOrderRiskBadge(getOrderRiskStatus(order));
+      // show different alert type depending on risk level
+      if (riskBadge === "danger") {
+        alertType = "error";
+      }
+
       return swal({
         title: i18next.t("admin.orderRisk.riskCapture"),
         text: i18next.t("admin.settings.riskCaptureWarn"),
-        type: "warning",
+        type: alertType,
         showCancelButton: true,
         cancelButtonText: i18next.t("admin.settings.cancel"),
         confirmButtonText: i18next.t("admin.settings.continue")
