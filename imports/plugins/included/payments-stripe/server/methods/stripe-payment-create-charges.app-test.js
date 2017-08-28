@@ -232,7 +232,7 @@ describe("stripe/payment/createCharges", function () {
     };
 
     // create a charge result object that has the cart total in stripe format (cents)
-    const chargeResult = Object.assign({}, stripeChargeResult, { amount: cart.cartTotal() * 100 });
+    const chargeResult = Object.assign({}, stripeChargeResult, { amount: cart.getTotal() * 100 });
 
     // Testing stripe using the npm Nock lib available here:
     // NPM: https://www.npmjs.com/package/nock
@@ -287,14 +287,14 @@ describe("stripe/payment/createCharges", function () {
 
     // Stripe Charge Nock
     nock("https://api.stripe.com:443", { encodedQueryParams: true })
-      .post("/v1/charges", `amount=${cart.cartTotal() * 100}&capture=false&currency=USD&customer=${stripeCustomerResponse.id}`)
+      .post("/v1/charges", `amount=${cart.getTotal() * 100}&capture=false&currency=USD&customer=${stripeCustomerResponse.id}`)
       .reply(200, chargeResult); // .log(console.log);
 
     methods["stripe/payment/createCharges"]("authorize", cardData, cart._id).then((res) => {
       const transactionIds = Object.keys(res.transactions);
       const txId = transactionIds[0];
       expect(res.success).to.equal(true);
-      expect(res.transactions[txId].amount).to.equal(cart.cartTotal() * 100);
+      expect(res.transactions[txId].amount).to.equal(cart.getTotal() * 100);
     }).then(() => done(), done);
   });
 });
