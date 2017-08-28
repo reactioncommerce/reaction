@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Katalógus beállítások",
           "catalogSettingsTitle": "Katalógus beállítások",
           "catalogSettingsDescription": "Piac Katalógus"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "termék Változatok"
         }
       }
     }

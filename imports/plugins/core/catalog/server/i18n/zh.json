@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "目录设置",
           "catalogSettingsTitle": "目录设置",
           "catalogSettingsDescription": "市场目录"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "产品修订"
         }
       }
     }

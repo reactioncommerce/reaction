@@ -46,12 +46,13 @@ export function sortGroups(groups) {
 export function getInvitableGroups(groups, canInviteToGroup) {
   return groups
     .filter(grp => grp.slug !== "owner")
-    .filter(grp => canInviteToGroup({ group: grp, user: Meteor.user() })) || [{}];
+    .filter(grp => canInviteToGroup({ group: grp, user: Meteor.user() }));
 }
 
 // user's default invite groups is the group they belong
-// exception is the owner group (because you cannot invite directly to an existing shop as owner). For that case,
-// it defaults to shop manager
+// if the user belongs to owner group, it defaults to shop manager (because you cannot invite directly
+// to an existing shop as owner). If no match still, use the first of the groups passed (e.g in case of Marketplace
+// owner accessing a merchant shop)
 export function getDefaultUserInviteGroup(groups) {
   let result;
   const user = Collections.Accounts.findOne({ userId: Meteor.userId() });
@@ -59,6 +60,10 @@ export function getDefaultUserInviteGroup(groups) {
 
   if (result && result.slug === "owner") {
     result = groups.find(grp => grp.slug === "shop manager");
+  }
+
+  if (!result) {
+    result = groups.find(firstGroup => firstGroup);
   }
 
   return result;

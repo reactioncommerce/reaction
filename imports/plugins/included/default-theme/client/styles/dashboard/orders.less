@@ -1,4 +1,3 @@
-
 // TODO: Once reaction ui is enabled, use `rui button success`
 .rui.card.order .controls .btn-success {
   .btn-success();
@@ -145,7 +144,7 @@
   }
 
   &.selected {
-    background-color: #edfdf8;
+    background-color: @rui-info;
   }
 }
 
@@ -166,7 +165,7 @@
   padding: 10px;
   padding-bottom: 30px;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: @white;
   box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.16);
   border: solid 1px #7894a4;
 }
@@ -220,7 +219,7 @@
   margin-bottom: 10px;
   height: 84px;
   padding: 10px;
-  background-color: #f7f7f7;
+  background-color: @black25;
 
   .invoice-order-item-tax {
     display: flex;
@@ -261,7 +260,7 @@
 
   .refund-header {
     display: flex;
-    border-bottom: 1px solid #bfbfbf;
+    border-bottom: 1px solid @black25;
     padding: 10px;
 
     div {
@@ -614,7 +613,7 @@
 
   // Table Columns
   .order-table-column-name {
-    border-right: 1px solid #e6e6e6;
+    border-right: 1px solid @black10;
 
     flex: 250 0 auto;
     width: 250px;
@@ -694,7 +693,7 @@
     margin-bottom: 0px;
     margin-right: 10px;
     border-radius: 2px;
-    border: solid 2px #5e6264;
+    border: solid 2px @black65;
   }
 
   .column-name-name {
@@ -707,14 +706,10 @@
     margin-bottom: 10px;
   }
 
-  .order-table-pagination-hidden {
-    display: none;
-  }
-
   .order-table-thead {
-    border-top: 1px solid #e6e6e6;
-    border-right: 1px solid #e6e6e6;
-    border-left: 1px solid #e6e6e6;
+    border-top: 1px solid @black10;
+    border-right: 1px solid @black10;
+    border-left: 1px solid @black10;
   }
 
   .order-table-details-tr-group {
@@ -728,12 +723,12 @@
   }
 
   .order-table-tr-group {
-    border-right: 1px solid #e6e6e6;
-    border-left: 1px solid #e6e6e6;
+    border-right: 1px solid @black10;
+    border-left: 1px solid @black10;
   }
 
   .order-table-list {
-    border-bottom: 1px solid #e6e6e6;
+    border-bottom: 1px solid @black10;
   }
 
   .order-table-detail {
@@ -749,25 +744,25 @@
 
 .rollover-checkbox {
 
-  .selected-checkbox {
-    padding-right: 6px;
-
-    .checkbox-avatar {
-      margin-left: -6px;
-      border-radius: 2px;
-      border: solid 2px #5e6264;
-      background: transparent;
-    }
-  }
-
   .second-child {
     padding-right: 6px;
 
     .checkbox-avatar {
       margin-left: -6px;
       border-radius: 2px;
-      border: solid 2px #5e6264;
+      border: solid 2px @black65;
     }
+  }
+}
+
+.all-checkboxes {
+  padding-right: 6px;
+
+  .checkbox-avatar {
+    margin-left: 4px;
+    border-radius: 2px;
+    border: solid 2px @black65;
+    background: transparent;
   }
 }
 
@@ -795,9 +790,9 @@
 
 .bulk-order-actions-bar {
   height: 68px;
-  background-color: #f7f7f7;
+  background-color: darken(#fff, 3%);
   padding-top: 20px;
-  margin-top: 78px;
+  margin-top: 92px;
 
   .orders-checkbox {
     margin-left: 11px;
@@ -807,21 +802,85 @@
   .selected-orders {
     font-size: 15px;
     font-weight: bold;
-    color: #1c98d4;
-    margin-left: 13px;
+    color: @rui-brand;
+    margin-left: 20px;
     vertical-align: middle;
   }
 
   .capture-orders-button, .bulk-actions-button {
-    width: 161px;
+    width: 176px;
     text-align: center;
-    margin-left: 20px;
+    margin-left: 30px;
     vertical-align: middle;
   }
 
   .bulk-actions-button {
     i {
-      margin-left: 20px;
+      margin-left: 25px;
+    }
+  }
+
+  .shipping-flow-list {
+    position: relative;
+    z-index: 1;
+    width: 286px;
+    margin-left: 254px;
+    margin-top: 14px;
+    border: solid 1px @rui-default;
+    border-radius: 3px;
+    background-color: @white;
+
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      display: block;
+      border-style: solid;
+      left: 82.5%;
+      z-index: 100;
+    }
+
+    &:before {
+      top: -21px;
+      border-color: transparent transparent @rui-default transparent;
+      border-width: 10px;
+    }
+
+    &:after {
+      top: -19px;
+      border-color: transparent transparent @white transparent;
+      border-width: 10px;
+    }
+
+    .list-group-item {
+      background-color: @rui-default-bg;
+      height:47px;
+      border: none;
+      margin-bottom: 2px;
+    }
+
+    .list-group-item.selected {
+      background-color: darken(#fff, 3%);
+    }
+
+    .list-item-content {
+      font-size: 15px;
+      font-weight: 600;
+      color: @black80;
+      letter-spacing: 0.3px;
+    }
+
+    i.bulk-actions-icons, i.bulk-actions-icons-select {
+      font-size: 20px;
+	    color: @black80;
+    }
+
+    i.bulk-actions-icons-select {
+      margin-left: 10px;
+      margin-right: -8px;
+    }
+
+    i.fa-check {
+      color: @rui-success;
     }
   }
 }
@@ -841,7 +900,7 @@
 }
 
 .order-toggle-btn.order-icon-toggle {
-  color: #1999dd;
+  color: @rui-brand;
 }
 
 .order-toggle-buttons {

@@ -46,7 +46,8 @@ function enabledShipping() {
   const enabledShippingArr = [];
   const apps = Reaction.Apps({
     provides: "shippingSettings",
-    enabled: true
+    enabled: true,
+    shopId: Reaction.getPrimaryShopId()
   });
   for (const app of apps) {
     if (app.enabled === true) enabledShippingArr.push(app);
@@ -111,8 +112,19 @@ Template.coreCheckoutShipping.helpers({
     return false;
   },
 
+  /**
+   * Template helper that checks to see if the user has permissions for the shop
+   * responsible for shipping rates. This is the primary shop unless
+   * `merchantShippingRates` is enabled in marketplace
+   * @method isAdmin
+   * @return {Boolean} true if the user has admin access, otherwise false
+   */
   isAdmin() {
-    return Reaction.hasAdminAccess();
+    const marketplaceSettings = Reaction.marketplace;
+    if (marketplaceSettings && marketplaceSettings.merchantShippingRates) {
+      Reaction.hasAdminAccess();
+    }
+    return Reaction.hasAdminAccess(Reaction.getPrimaryShopId());
   }
 });
 

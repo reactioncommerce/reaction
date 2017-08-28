@@ -1,11 +1,11 @@
+import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 import { Reaction } from "/client/api";
-import { Meteor } from "meteor/meteor";
-import { getInvitableGroups, getDefaultUserInviteGroup } from "../helpers/accountsHelper";
+import { getDefaultUserInviteGroup } from "../helpers/accountsHelper";
 
 class AdminInviteForm extends Component {
   static propTypes = {
@@ -16,11 +16,10 @@ class AdminInviteForm extends Component {
   constructor(props) {
     super(props);
     const { groups } = props;
-    const groupsInvitable = getInvitableGroups(groups, this.props.canInviteToGroup);
 
     this.state = {
       alertId: "admin-invite-form",
-      groups: groupsInvitable,
+      groups,
       name: "",
       email: "",
       group: getDefaultUserInviteGroup(groups)
@@ -32,9 +31,7 @@ class AdminInviteForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { groups } = nextProps;
-    const groupsInvitable = getInvitableGroups(groups, this.props.canInviteToGroup);
-
-    this.setState({ groups: groupsInvitable, group: getDefaultUserInviteGroup(groups) });
+    this.setState({ groups, group: getDefaultUserInviteGroup(groups) });
   }
 
   onChange(event) {

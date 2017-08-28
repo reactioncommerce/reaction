@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "إعدادات كتالوج",
           "catalogSettingsTitle": "إعدادات كتالوج",
           "catalogSettingsDescription": "السوق كتالوج"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "مراجعات المنتج"
         }
       }
     }

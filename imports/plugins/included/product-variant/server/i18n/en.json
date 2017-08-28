@@ -5,6 +5,9 @@
     "reaction-product-variant": {
       "productGrid": {
         "noProductsFound": "No Products Found"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Variant Details"
       }
     }
   }

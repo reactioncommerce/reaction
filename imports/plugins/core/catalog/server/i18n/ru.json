@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Настройки каталога",
           "catalogSettingsTitle": "Настройки каталога",
           "catalogSettingsDescription": "Торговая площадка Каталог"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Ревизии продукта"
         }
       }
     }

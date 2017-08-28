@@ -19,7 +19,10 @@ Template.checkoutLogin.helpers({
       const guestUser = Reaction.hasPermission("guest", Meteor.userId(), Reaction.getShopId());
       const anonUser = Reaction.hasPermission("anonymous", Meteor.userId(), Reaction.getShopId());
 
-      // ensure that user is not anonymous
+      // ensure that user is not anonymous.
+      // for some reason, user can be both guest and anonymous.
+      // this ensures that they are guest and not anonymous before
+      // they can proceed to next steps.
       if (anonUser === true && guestUser === false) {
         return false;
       }
