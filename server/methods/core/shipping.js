@@ -25,43 +25,61 @@ export const methods = {
     const cart = Cart.findOne(cartId);
     check(cart, CartSchema);
 
+    /*
+    Try to figure out which of the multiple callbacks run by
+    `Hooks.Events.run("onGetShippingRates", rates, cart);`
+    failed, and run that one again. Conversely, another option
+    is to have each callback change a `successfulCallbacks` callback
+    to include their package and name IF they are successful.
+    So, when this guy notices an error and runs `shipping/getShippingRates`
+    again, each method checks that its package + name is not in
+    successfulCallbacks BEFORE it makes an API call or however it
+    retrieves a list of shipping methods.
+    */
+
     if (cart) {
       const rates = Meteor.call("shipping/getShippingRates", cart);
       let selector;
       let update;
 
-      if (rates.length === 1 && rates[0].requestStatus === "error") {
-        const errorDetails = rates[0];
-        selector = { _id: cartId };
-        // TODO: Maybe use $set and $push as appropriate?
-        update = {
-          $set: {
-            "shipping.0.shipmentQuotesQueryStatus": {
-              requestStatus: errorDetails.requestStatus,
-              shippingProvider: errorDetails.shippingProvider,
-              retriesCount: errorDetails.numOfRetries
-            }
-          }
-        };
-      }
-
-      if (rates.length === 1 && rates[0].requestStatus === "success" && rates[0].numOfShippingMethodsFound === 0) {
-        const noShippingMethods = rates[0];
+      // Temp hack until we build out multiple shipment handlers.
+      // If we have an existing item update it, otherwise add to set.
+      if (cart.shipping) {
         selector = { _id: cartId };
         update = {
           $set: {
             "shipping.0.shipmentQuotesQueryStatus": {
-              requestStatus: noShippingMethods.requestStatus,
-              shippingProvider: noShippingMethods.shippingProvider,
-              numOfShippingMethodsFound: noShippingMethods.numOfShippingMethodsFound
+              requestStatus: "pending"
             }
           }
         };
-      }
 
-      if (rates.length > 0 && rates[0].requestStatus === undefined) {
-      // temp hack until we build out multiple shipment handlers if we have an existing item update it, otherwise add to set.
-        if (cart.shipping) {
+        if (rates.length === 1 && rates[0].requestStatus === "error") {
+          const errorDetails = rates[0];
+          update = {
+            $set: {
+              "shipping.0.shipmentQuotesQueryStatus": {
+                requestStatus: errorDetails.requestStatus,
+                shippingProvider: errorDetails.shippingProvider
+              }
+            }
+          };
+        }
+
+        if (rates.length === 1 && rates[0].requestStatus === "success" && rates[0].numOfShippingMethodsFound === 0) {
+          const noShippingMethods = rates[0];
+          update = {
+            $set: {
+              "shipping.0.shipmentQuotesQueryStatus": {
+                requestStatus: noShippingMethods.requestStatus,
+                shippingProvider: noShippingMethods.shippingProvider,
+                numOfShippingMethodsFound: noShippingMethods.numOfShippingMethodsFound
+              }
+            }
+          };
+        }
+
+        if (rates.length > 0 && rates[0].requestStatus === undefined) {
           selector = {
             "_id": cartId,
             "shipping._id": cart.shipping[0]._id
@@ -71,22 +89,62 @@ export const methods = {
               "shipping.$.shipmentQuotes": rates,
               "shipping.$.shipmentQuotesQueryStatus": {
                 requestStatus: "success",
-                retriesCount: 0,
                 numOfShippingMethodsFound: rates.length
               }
             }
           };
-        } else {
-          selector = {
-            _id: cartId
+        }
+      } else {
+        selector = { _id: cartId };
+        update = {
+          $push: {
+            shipping: {
+              shipmentQuotes: rates,
+              shipmentQuotesQueryStatus: {
+                requestStatus: "pending"
+              }
+            }
+          }
+        };
+
+        if (rates.length === 1 && rates[0].requestStatus === "error") {
+          const errorDetails = rates[0];
+          update = {
+            $push: {
+              shipping: {
+                shipmentQuotes: rates,
+                shipmentQuotesQueryStatus: {
+                  requestStatus: errorDetails.requestStatus,
+                  shippingProvider: errorDetails.shippingProvider
+                }
+              }
+            }
           };
+        }
+
+        if (rates.length === 1 && rates[0].requestStatus === "success" && rates[0].numOfShippingMethodsFound === 0) {
+          const noShippingMethods = rates[0];
+          update = {
+            $push: {
+              shipping: {
+                shipmentQuotes: rates,
+                shipmentQuotesQueryStatus: {
+                  requestStatus: noShippingMethods.requestStatus,
+                  shippingProvider: noShippingMethods.shippingProvider,
+                  numOfShippingMethodsFound: noShippingMethods.numOfShippingMethodsFound
+                }
+              }
+            }
+          };
+        }
+
+        if (rates.length > 0 && rates[0].requestStatus === undefined) {
           update = {
             $push: {
               shipping: {
                 shipmentQuotes: rates,
                 shipmentQuotesQueryStatus: {
                   requestStatus: "success",
-                  retriesCount: 0,
                   numOfShippingMethodsFound: rates.length
                 }
               }
