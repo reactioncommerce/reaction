@@ -3,17 +3,13 @@ import { PackageConfig } from "/lib/collections/schemas/registry";
 
 export const PayflowProPackageConfig = new SimpleSchema([
   PackageConfig, {
-    "settings.reaction-payflow-pro.support": {
+    "settings.support": {
       type: Array,
       label: "Payment provider supported methods"
     },
-    "settings.reaction-payflow-pro.support.$": {
+    "settings.support.$": {
       type: String,
       allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
-    },
-    "settings.reaction-payflow-pro.enabled": {
-      type: Boolean,
-      defaultValue: true
     },
     "settings.client_id": {
       type: String,
