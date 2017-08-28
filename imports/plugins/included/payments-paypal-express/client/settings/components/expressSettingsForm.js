@@ -10,21 +10,12 @@ class ExpressSettingsForm extends Component {
     };
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    return this.props.onSubmit(this.state.settings);
-  }
-
-
   render() {
-    const { packageConfig } = this.props;
-
     return (
       <Components.Form
-        schema={packageConfig}
-        doc={doc}
-        docPath={`settings.public.apps.${provider.name}`}
-        name={`settings.public.apps.${provider.name}`}
+        schema={this.props.packageSchema}
+        doc={this.props.packageConfig}
+        docPath={"settings"}
         onSubmit={this.handleSubmit}
       />
     );
@@ -32,9 +23,8 @@ class ExpressSettingsForm extends Component {
 }
 
 ExpressSettingsForm.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  packageConfig: PropTypes.object.isRequired
+  packageConfig: PropTypes.object.isRequired,
+  packageSchema: PropTypes.object.isRequired
 };
 
 export default ExpressSettingsForm;

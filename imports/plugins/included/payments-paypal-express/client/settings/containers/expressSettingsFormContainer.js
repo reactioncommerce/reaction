@@ -1,33 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { compose, withProps } from "recompose";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
-import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { Reaction, i18next } from "/client/api";
 import { ExpressSettingsForm } from "../components";
+import { PaypalExpressPackageConfig } from "/imports/plugins/included/payments-paypal-express/lib/collections/schemas/paypal";
 
-class ExpressSettingsFormContainer extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      apiKey: ""
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.saveUpdate = this.saveUpdate.bind(this);
-  }
-
+const handlers = {
   handleChange(e) {
     e.preventDefault();
     this.setState({ apiKey: e.target.value });
-  }
-
+  },
   handleSubmit(settings) {
-    // e.preventDefault();
-
     const packageId = this.props.packageData._id;
     const settingsKey = this.props.packageData.registry[0].settingsKey;
 
@@ -40,8 +25,7 @@ class ExpressSettingsFormContainer extends Component {
     }];
 
     this.saveUpdate(fields, packageId, settingsKey);
-  }
-
+  },
   saveUpdate(fields, id, settingsKey) {
     Meteor.call("registry/update", id, settingsKey, fields, (err) => {
       if (err) {
@@ -50,24 +34,8 @@ class ExpressSettingsFormContainer extends Component {
       return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     });
   }
-
-  render() {
-    const settingsKey = this.props.packageData.registry[0].settingsKey;
-    return (
-      <TranslationProvider>
-        <ExpressSettingsForm
-          onChange={this.handleChange}
-          onSubmit={this.handleSubmit}
-          settings={this.props.packageData.settings[settingsKey]}
-        />
-      </TranslationProvider>
-    );
-  }
-}
-
-ExpressSettingsFormContainer.propTypes = {
-  packageData: PropTypes.object
 };
+
 
 const composer = ({}, onData) => {
   const subscription = Meteor.subscribe("Packages", Reaction.getShopId());
@@ -76,8 +44,14 @@ const composer = ({}, onData) => {
       name: "reaction-paypal-express",
       shopId: Reaction.getShopId()
     });
-    onData(null, { packageData });
+    onData(null, {
+      packageSchema: PaypalExpressPackageConfig,
+      packageData
+    });
   }
 };
 
-export default composeWithTracker(composer)(ExpressSettingsFormContainer);
+export default compose(
+  withProps(handlers),
+  composeWithTracker(composer)
+)(ExpressSettingsForm);
