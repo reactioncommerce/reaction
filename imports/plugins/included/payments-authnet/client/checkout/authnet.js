@@ -69,7 +69,7 @@ AutoForm.addHooks("authnet-payment-form", {
       cvv2: doc.cvv
     };
     const paymentInfo = {
-      total: Cart.findOne().cartTotal(),
+      total: Cart.findOne().getTotal(),
       currency: Shops.findOne().currency
     };
 

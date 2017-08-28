@@ -135,48 +135,48 @@ class OrderBulkActionsBar extends Component {
     }
 
     render() {
-      const { orders, multipleSelect, selectedItems, selectAllOrders } = this.props;
+    const { orders, multipleSelect, selectedItems, selectAllOrders } = this.props;
 
-      if (selectedItems.length > 0) {
-        return (
-          <div className="bulk-order-actions-bar">
-            <Checkbox
-              className="checkbox-large orders-checkbox"
-              checked={selectedItems.length === orders.length || multipleSelect}
-              name="orders-checkbox"
-              onChange={() => selectAllOrders(orders, (selectedItems.length === orders.length || multipleSelect))}
-            />
-            <Translation
-              className="selected-orders"
-              defaultValue={`${selectedItems.length} Selected`}
-              i18nKey={`${selectedItems.length} order.selected`}
-            />
-            <Button
-              status="success"
-              bezelStyle="solid"
-              className="capture-orders-button"
-              label={this.props.isLoading.capturePayment ? "Capturing" : "Capture"}
-              i18nKeyLabel={this.props.isLoading.capturePayment ? "order.capturing" : "order.capture"}
-              icon={this.props.isLoading.capturePayment ? "fa fa-spinner fa-pulse" : ""}
-              iconAfter={true}
-              onClick={this.handlePaymentClick}
-            />
-            <Button
-              status="default"
-              bezelStyle="solid"
-              className="bulk-actions-button"
-              label="Bulk Actions"
-              i18nKeyLabel="order.bulkActions"
-              icon="fa fa-chevron-down"
-              iconAfter={true}
-              onClick={this.props.toggleShippingFlowList}
-            />
-            {this.renderShippingFLowList()}
-          </div>
-        );
-      }
-      return null;
+    if (selectedItems.length > 0) {
+      return (
+        <div className="bulk-order-actions-bar">
+          <Checkbox
+            className="checkbox-large orders-checkbox"
+            checked={selectedItems.length === orders.length || multipleSelect}
+            name="orders-checkbox"
+            onChange={() => selectAllOrders(orders, (selectedItems.length === orders.length || multipleSelect))}
+          />
+          <Translation
+            className="selected-orders"
+            defaultValue={`${selectedItems.length} Selected`}
+            i18nKey={`${selectedItems.length} order.selected`}
+          />
+          <Button
+            status="success"
+            bezelStyle="solid"
+            className="capture-orders-button"
+            label={this.props.isLoading.capturePayment ? "Capturing" : "Capture"}
+            i18nKeyLabel={this.props.isLoading.capturePayment ? "order.capturing" : "order.capture"}
+            icon={this.props.isLoading.capturePayment ? "fa fa-spinner fa-pulse" : ""}
+            iconAfter={true}
+            onClick={this.handlePaymentClick}
+          />
+          <Button
+            status="default"
+            bezelStyle="solid"
+            className="bulk-actions-button"
+            label="Bulk Actions"
+            i18nKeyLabel="order.bulkActions"
+            icon="fa fa-chevron-down"
+            iconAfter={true}
+            onClick={this.props.toggleShippingFlowList}
+          />
+          {this.renderShippingFLowList()}
+        </div>
+      );
     }
+    return null;
+  }
 }
 
 export default OrderBulkActionsBar;
