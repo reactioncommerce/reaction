@@ -49,12 +49,24 @@ class OrderTableColumn extends Component {
 
   render() {
     const columnAccessor = this.props.row.column.id;
+    const orderRisk = getOrderRiskStatus(this.props.row.original);
 
     if (columnAccessor === "shipping[0].address.fullName") {
       return (
         <div style={{ display: "inline-flex" }}>
           {this.renderCheckboxOnSelect(this.props.row)}
-          <strong style={{ paddingLeft: 5, marginTop: 7 }}>{this.props.row.value}</strong>
+          <strong style={{ paddingLeft: 5, marginTop: 7 }}>
+            {this.props.row.value}
+          </strong>
+          {orderRisk &&
+            <Badge
+              badgeSize="large"
+              className="risk-info"
+              i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
+              label={orderRisk}
+              status={getOrderRiskBadge(orderRisk)}
+            />
+          }
         </div>
       );
     }
@@ -102,8 +114,6 @@ class OrderTableColumn extends Component {
       );
     }
     if (columnAccessor === "workflow.status") {
-      const orderRisk = getOrderRiskStatus(this.props.row.original);
-
       return (
         <div className="status-info">
           <Badge
@@ -112,15 +122,6 @@ class OrderTableColumn extends Component {
             label={this.props.row.value}
             status={this.props.fulfillmentBadgeStatus(this.props.row.original)}
           />
-          {orderRisk &&
-            <Badge
-              badgeSize="large"
-              className="risk-info"
-              i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
-              label={orderRisk}
-              status={getOrderRiskBadge(orderRisk)}
-            />
-          }
         </div>
       );
     }

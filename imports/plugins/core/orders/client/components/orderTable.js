@@ -149,6 +149,16 @@ class OrderTable extends Component {
             className="rui-order-avatar"
           />
           <strong>{order.shipping[0].address.fullName}</strong> | {emailAddress}
+          {orderRisk &&
+            <div className="risk-info">
+              <Badge
+                badgeSize="large"
+                i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
+                label={orderRisk}
+                status={getOrderRiskBadge(orderRisk)}
+              />
+            </div>
+          }
         </div>
         <div className="workflow-info">
           <Badge
@@ -164,16 +174,6 @@ class OrderTable extends Component {
             status={this.fulfillmentBadgeStatus(order)}
           />
         </div>
-        {orderRisk &&
-          <div className="risk-info">
-            <Badge
-              badgeSize="large"
-              i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
-              label={orderRisk}
-              status={getOrderRiskBadge(orderRisk)}
-            />
-          </div>
-        }
       </div>
     );
   }
