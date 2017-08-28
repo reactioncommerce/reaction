@@ -23,7 +23,7 @@ export default {
       return callback();
     }
 
-    if (service === "custom" && (!host || !port || !user || !password)) {
+    if (service === "custom" && (!host || !port)) {
       Alert(i18next.t("app.error"), i18next.t("mail.alerts.allFieldsRequired"), "error");
       return callback();
     }
