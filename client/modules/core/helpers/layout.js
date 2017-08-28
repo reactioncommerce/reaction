@@ -19,7 +19,13 @@ Template.registerHelper("reactionTemplate", function (options) {
   const shopId = options.hash.shopId || Reaction.getShopId();
   // get shop info, defaults to current
   const Shop = Collections.Shops.findOne(shopId);
-  const defaultRoles = Collections.Groups.findOne({ slug: "customer", shopId }).permissions;
+  const groupSub = Meteor.subscribe("Groups", { shopId });
+  let defaultRoles;
+  if (groupSub.ready()) {
+    const groups = Collections.Groups.findOne({ slug: "customer", shopId });
+    defaultRoles = groups.permissions;
+  }
+
   const reactionTemplates = [];
   // fetch collection from shop.layout configuration
   let layout = _.find(Shop.layout, {
