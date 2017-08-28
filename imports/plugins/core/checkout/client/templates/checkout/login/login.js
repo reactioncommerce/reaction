@@ -17,10 +17,11 @@ Template.checkoutLogin.helpers({
     const cart = Cart.findOne();
     if (cart && cart.workflow) {
       const currentStatus = cart.workflow.status;
-      const guestUser = Reaction.hasPermission("guest", Meteor.user());
-      const anonUser = Roles.userIsInRole("anonymous", Meteor.user(), Reaction.getShopId());
+      const guestUser = Reaction.hasPermission("guest", Meteor.userId(), Reaction.getShopId());
+      const anonUser = Reaction.hasPermission("anonymous", Meteor.userId(), Reaction.getShopId());
 
-      if (currentStatus !== self.template && guestUser === true && anonUser === false) {
+      // when user is guest, they are also anonymous.
+      if (currentStatus !== self.template && guestUser === true && anonUser === true) {
         return true;
       }
     }
