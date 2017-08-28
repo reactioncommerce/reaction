@@ -1,6 +1,5 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 
@@ -20,8 +19,12 @@ Template.checkoutLogin.helpers({
       const guestUser = Reaction.hasPermission("guest", Meteor.userId(), Reaction.getShopId());
       const anonUser = Reaction.hasPermission("anonymous", Meteor.userId(), Reaction.getShopId());
 
-      // when user is guest, they are also anonymous.
-      if (currentStatus !== self.template && guestUser === true && anonUser === true) {
+      // ensure that user is not anonymous
+      if (anonUser === true && guestUser === false) {
+        return false;
+      }
+
+      if (currentStatus !== self.template && guestUser === true) {
         return true;
       }
     }
