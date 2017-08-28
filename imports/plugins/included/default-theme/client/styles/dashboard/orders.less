@@ -908,6 +908,24 @@
 }
 
 .risk-info {
-  margin: 0 5px;
   text-transform: capitalize;
+  padding: @padding-small-vertical;
+  vertical-align: top;
+  &.risk-info-detail {
+    margin: 0 5px;
+    border-radius: @border-radius-large;
+    padding: @padding-small-vertical @padding-small-horizontal;
+    height: auto;
+    vertical-align: middle;
+  }
+  &.elevated {
+    background-color: fade(@rui-warning, 10%);
+    border: 1px solid @rui-warning;
+    color: darken(@rui-warning, 30%);
+  }
+  &.high {
+    background-color: fade(@rui-danger, 10%);
+    border: 1px solid @rui-danger;
+    color: darken(@rui-danger, 30%);
+  }
 }

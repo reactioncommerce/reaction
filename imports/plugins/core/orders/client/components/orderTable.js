@@ -150,14 +150,11 @@ class OrderTable extends Component {
           />
           <strong>{order.shipping[0].address.fullName}</strong> | {emailAddress}
           {orderRisk &&
-            <div className="risk-info">
-              <Badge
-                badgeSize="large"
-                i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
-                label={orderRisk}
-                status={getOrderRiskBadge(orderRisk)}
-              />
-            </div>
+            <Badge
+              className="risk-info"
+              i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
+              status={getOrderRiskBadge(orderRisk)}
+            />
           }
         </div>
         <div className="workflow-info">

@@ -67,7 +67,7 @@ class OrderSummary extends Component {
               {orderRisk &&
                 <Badge
                   badgeSize="large"
-                  className="risk-info"
+                  className={`risk-info risk-info-detail ${orderRisk}`}
                   i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
                   label={orderRisk}
                   status={getOrderRiskBadge(orderRisk)}

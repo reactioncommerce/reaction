@@ -57,16 +57,14 @@ class OrderTableColumn extends Component {
           {this.renderCheckboxOnSelect(this.props.row)}
           <strong style={{ paddingLeft: 5, marginTop: 7 }}>
             {this.props.row.value}
+            {orderRisk &&
+              <Badge
+                className="risk-info"
+                i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
+                status={getOrderRiskBadge(orderRisk)}
+              />
+            }
           </strong>
-          {orderRisk &&
-            <Badge
-              badgeSize="large"
-              className="risk-info"
-              i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
-              label={orderRisk}
-              status={getOrderRiskBadge(orderRisk)}
-            />
-          }
         </div>
       );
     }
