@@ -3,15 +3,22 @@ import PropTypes from "prop-types";
 import { Icon, Translation } from "@reactioncommerce/reaction-ui";
 import OrderTable from "./orderTable";
 
-class OrdersList extends Component {
+class OrderDashboard extends Component {
   static propTypes = {
     displayMedia: PropTypes.func,
+    handleBulkPaymentCapture: PropTypes.func,
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
+    isLoading: PropTypes.object,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
+    renderFlowList: PropTypes.bool,
     selectAllOrders: PropTypes.func,
-    selectedItems: PropTypes.array
+    selectedItems: PropTypes.array,
+    setShippingStatus: PropTypes.func,
+    shipping: PropTypes.object,
+    toggleShippingFlowList: PropTypes.func
+
   }
 
   state = {
@@ -66,6 +73,12 @@ class OrdersList extends Component {
               selectAllOrders={this.props.selectAllOrders}
               displayMedia={this.props.displayMedia}
               isOpen={this.state.openList}
+              shipping={this.props.shipping}
+              setShippingStatus={this.props.setShippingStatus}
+              isLoading={this.props.isLoading}
+              renderFlowList={this.props.renderFlowList}
+              toggleShippingFlowList={this.props.toggleShippingFlowList}
+              handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
             />
           </div>
         </div>
@@ -83,4 +96,4 @@ class OrdersList extends Component {
   }
 }
 
-export default OrdersList;
+export default OrderDashboard;

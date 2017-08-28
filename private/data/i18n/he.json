@@ -12,6 +12,9 @@
           "email": "דוא\"ל",
           "description": "הוספת תיאור מוצר",
           "remove": "הסר"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "מיקום ו- i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "בחר שנה",
         "shopSettings": "הגדרות חנות",
         "dashboard": "לוח מחוונים",
-        "print": "הדפס"
+        "print": "הדפס",
+        "auto": "אוטומטי"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "חיפוש מוצר",
+          "includeTitle": "כלול כותרת",
+          "includeDescription": "כלול תיאור",
+          "includePageTitle": "כלול כותרת עמוד",
+          "includeDetails": "כלול פרטים",
+          "includeVendor": "כלול ספק"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "הגדרות חיפוש הזמנה"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "הגדרות חיפוש חשבון"
+        },
+        "noSettings": "אין הגדרות זמינות כרגע",
+        "settingsSaved": "הגדרות חיפוש נשמרו",
+        "settingsfailed": "עדכון הגדרות חיפוש נכשל."
       },
       "header": {
         "tagsAdd": "הוספת תגית",
@@ -68,7 +91,8 @@
         "startTracking": "התחל מעקב",
         "addBarcode": "הוסף ברקוד",
         "quantity": "כמות",
-        "quantityGreaterThanZero": "שגיאה: הכמות חייבת להיות גדולה מאפס"
+        "quantityGreaterThanZero": "שגיאה: הכמות חייבת להיות גדולה מאפס",
+        "dropFiles": "שחרר קבצים כדי להעלות"
       },
       "productDetailEdit": {
         "title": "כותרת המוצר",
@@ -246,6 +270,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "הרשה לאורחים לעבור לקופה"
+          },
+          "openexchangerates": {
+            "appId": "מזהה אפליקציית Open Exchange Rates",
+            "refreshPeriod": "Open Exchange Rates - תקופת רענון",
+            "refreshPeriodPlaceholder": "למשל כל שעה"
+          },
+          "google": {
+            "clientId": "מזהה לקוח Google",
+            "apiKey": "מפתח אישי (API Key) של Google"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "ניהול הגרסאות מושבת. כל השינויים יפורסמו באופן מידי.",
+        "isEnabled": "ניהול גרסאות מופעל עבור המוצרים. יש לפרסם את כל השינויים לפני שיהפכו להיות גלויים עבור הלקוחות."
+      },
+      "shop": {
+        "defaultPaymentMethod": "ברירת מחדל לשיטת תשלום",
+        "name": "שם",
+        "namePlaceholder": "שם החנות",
+        "description": "תיאור",
+        "descriptionPlaceholder": "תאר את החנות שלך ל- SEO",
+        "descriptionTooltip": "שדה זה נמצא בשימוש על ידי תגית מטא-תיאור. הוא מאפשר למנועי חיפוש לתאר את חנותך",
+        "email": "דוא\"ל",
+        "emailPlaceholder": "דוא\"ל עקרי ליצירת קשר",
+        "keywords": "מילות מפתח",
+        "keywordsPlaceholder": "מילות מפתח-מטא ל- SEO",
+        "language": "שפת בסיס",
+        "addressBook": {
+          "company": "חברה",
+          "companyPlaceholder": "שם עסק זה",
+          "country": "ארץ",
+          "fullName": "שם פרטי ומשפחה",
+          "fullNamePlaceholder": "שם הארגון שלך",
+          "address1": "כתובת 1",
+          "address1Placeholder": "כתובת הארגון שלך",
+          "address1Tooltip": "כתובת זו תהיה גלויה למבקרים",
+          "address2": "כתובת 2",
+          "address2Placeholder": "כתובת נוספת",
+          "postal": "מיקוד",
+          "city": "יישוב",
+          "region": "אזור",
+          "phone": "טלפון",
+          "isShippingDefault": "האם לבחור בכתובת זו כברירת המחדל עבור משלוח?",
+          "isBillingDefault": "האם לבחור בכתובת זו כברירת המחדל עבור חשבונית?",
+          "isCommercial": "האם זו כתובת מסחרית?"
+        }
       },
       "accountsUI": {
         "members": "חברים",
