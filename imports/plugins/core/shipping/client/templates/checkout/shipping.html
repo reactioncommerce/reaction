@@ -16,7 +16,7 @@
               <span class="pull-right">{{formatPrice rate}}</span>
             </li>
           {{else}}
-            {{#if hasQueriedShipmentMethods}}
+            {{#if either hasQueriedShipmentMethods noShippingProviderEnabled}}
               <div class="panel-body">
                 {{#if isAdmin}}
                   <div class="alert alert-danger">

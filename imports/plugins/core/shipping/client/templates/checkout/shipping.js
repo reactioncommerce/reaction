@@ -149,6 +149,27 @@ Template.coreCheckoutShipping.helpers({
       Reaction.hasAdminAccess();
     }
     return Reaction.hasAdminAccess(Reaction.getPrimaryShopId());
+  },
+
+  /**
+   * Checks if there is no shipping provider enabled (e.g flat
+   * rate shipping, Shippo etc) during checkout.
+   * @return {Boolean} - returns true if no shipping methods are
+   * enabled, and false if at least one is enabled.
+   */
+  noShippingProviderEnabled() {
+    return enabledShipping().length === 0;
+  },
+
+  /**
+   * Performs logic equivalent to that of the logical OR.
+   * @param {Boolean} a - a Boolean value. 
+   * @param {Boolean} b - a Boolean value.
+   * @return {Boolean} - returns true if at least one of the parameters
+   * is true and false if they are both false.
+   */
+  either(a, b) {
+    return a || b;
   }
 });
 
