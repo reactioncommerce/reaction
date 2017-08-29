@@ -906,3 +906,112 @@
 .order-toggle-buttons {
   float: right;
 }
+
+.tab-list-dropdown {
+  position: relative !important;
+  width: 274px;
+  border: solid 1px @rui-default;
+  border-radius: 3px;
+  background-color: @white;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.16);
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    display: block;
+    border-style: solid;
+    left: 90%;
+    z-index: 100;
+  }
+  &:before {
+    top: -21px;
+    border-color: transparent transparent @rui-default transparent;
+    border-width: 10px;
+  }
+  &:after {
+    top: -19px;
+    border-color: transparent transparent @white transparent;
+    border-width: 10px;
+  }
+
+  .order-menu-item-dropdown {
+    a {
+      margin-bottom: 5px;
+      margin-top: 5px;
+      text-decoration: none;
+      outline: none;
+      background-color: transparent;
+      font-size: 16px;
+      line-height: 1.9;
+      color: @rui-default-text;
+    }
+
+    a:hover {
+      background-color: #f7f7f7;
+      color: @rui-default-text;
+    }
+  }
+}
+
+.order-filter-bar {
+  display: flex;
+  height: 51px;
+
+  .order-filter-item {
+    display: flex;
+    flex: 1 1 auto;
+    width: 33%;
+    height: 100%;
+    align-items: center;
+    background-color: #f7f7f7;
+    margin: 0 .5px 0 .5px;
+    justify-content: flex-start;
+    position: relative;
+  }
+
+  .order-filter-label {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .order-filter-name {
+    font-size: 16px;
+    flex: 0 1 auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &.active {
+      color: @rui-brand
+    }
+  }
+
+  .order-filter-icons {
+    flex: 0 1 auto;
+    margin-left: auto;
+  }
+
+  .order-filter-button {
+    padding: 0;
+
+    &.active {
+      color: @rui-brand
+    }
+  }
+
+  .order-filter-dropdown-button {
+    padding-left: 0
+  }
+
+  .order-filter-dropdown-button:focus {
+    outline: none;
+  }
+
+  .order-filter-button:focus {
+    outline: none;
+  }
+}
