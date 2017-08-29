@@ -604,12 +604,12 @@ Meteor.methods({
     // so we'll delete the values copied from the cart
     delete order.createdAt; // autovalues from cart
     delete order.updatedAt;
-    delete order.cartCount;
-    delete order.cartShipping;
-    delete order.cartSubTotal;
-    delete order.cartTaxes;
-    delete order.cartDiscounts;
-    delete order.cartTotal;
+    delete order.getCount;
+    delete order.getShippingTotal;
+    delete order.getSubTotal;
+    delete order.getTaxTotal;
+    delete order.getDiscounts;
+    delete order.getTotal;
     delete order._id;
 
     // TODO: update this to handle multiple shipments instead of hardcoding to
@@ -1116,14 +1116,14 @@ Meteor.methods({
 
     const cartId = cart._id;
 
-    const cartShipping = cart.cartShipping();
-    const cartSubTotal = cart.cartSubTotal();
-    const cartSubTotalByShop = cart.cartSubTotalByShop();
-    const cartTaxes = cart.cartTaxes();
-    const cartTaxesByShop = cart.cartTaxesByShop();
-    const cartDiscounts = cart.cartDiscounts();
-    const cartTotal = cart.cartTotal();
-    const cartTotalByShop = cart.cartTotalByShop();
+    const cartShipping = cart.getShippingTotal();
+    const cartSubTotal = cart.getSubTotal();
+    const cartSubTotalByShop = cart.getSubTotalByShop();
+    const cartTaxes = cart.getTaxTotal();
+    const cartTaxesByShop = cart.getTaxesByShop();
+    const cartDiscounts = cart.getDiscounts();
+    const cartTotal = cart.getTotal();
+    const cartTotalByShop = cart.getTotalByShop();
 
     // we won't actually close the order at this stage.
     // we'll just update the workflow and billing data where

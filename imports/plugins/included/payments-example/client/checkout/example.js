@@ -62,7 +62,7 @@ AutoForm.addHooks("example-payment-form", {
       shopId: Reaction.getShopId()
     });
     Example.authorize(form, {
-      total: Cart.findOne().cartTotal(),
+      total: Cart.findOne().getTotal(),
       currency: Shops.findOne().currency
     }, function (error, transaction) {
       submitting = false;
