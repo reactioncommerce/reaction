@@ -188,6 +188,11 @@ const wrapComponent = (Comp) => (
         });
       }
 
+      window.onpopstate = function () {
+        const selectedProduct = ReactionProduct.selectedProduct();
+        Reaction.Router.go("product", { handle: selectedProduct.handle });
+      };
+
       return null;
     }
 
