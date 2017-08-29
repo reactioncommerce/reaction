@@ -84,10 +84,10 @@ class OrderTable extends Component {
   }
 
   /**
-   * Fullfillment tatusBadge
-   * @param  {Object} order - An object containing info about an order
+   * FullfillmentStatusBadge
+   * @param {Object} order - An object containing info about an order
    * and its coreOrderWorkflow.
-   * @return {string} A string containing the type of badge to display
+   * @return {String} A string containing the type of badge to display
    * based on the order's coreOrderWorkflow.
    */
   fulfillmentStatusBadge(order) {
