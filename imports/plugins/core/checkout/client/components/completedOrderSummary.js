@@ -5,6 +5,7 @@ import ShopOrderSummary from "./shopOrderSummary";
 
 
 const CompletedOrderSummary = ({ shops, orderSummary }) => {
+  console.log("orderSummary", orderSummary);
   return (
     <div>
       <div className="order-details-content-title">
@@ -16,6 +17,16 @@ const CompletedOrderSummary = ({ shops, orderSummary }) => {
           return <ShopOrderSummary shopSummary={shop[shopKey]} key={shopKey} />;
         })}
         <hr />
+        {orderSummary.discounts > 0 &&
+        <div className="order-summary-line">
+          <div className="order-summary-total-title">
+            <Components.Translation defaultValue="Order Total" i18nKey={"cartCompleted.orderTotal"}/>
+          </div>
+          <div className="order-summary-total-value">
+            <Components.Currency amount={orderSummary.total}/>
+          </div>
+        </div>
+        }
         <div className="order-summary-line">
           <div className="order-summary-total-title">
             <Components.Translation defaultValue="Order Total" i18nKey={"cartCompleted.orderTotal"}/>
