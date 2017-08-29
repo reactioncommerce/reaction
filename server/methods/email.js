@@ -26,20 +26,31 @@ Meteor.methods({
     if (typeof settings === "object") {
       const { service, host, port, user, password } = settings;
 
-      if (service === "custom" && host && port && user && password) {
+      if (service === "custom" && host && port) {
         // create a custom Nodemailer config
-        config = { host, port, auth: { user, pass: password } };
-      } else if (service && user && password) {
+        config = { host, port };
+
+        if (host === "localhost") {
+          config.ignoreTLS = true;
+        }
+      } else if (service) {
         // create a Nodemailer config from the nodemailer-wellknown services
         config = getServiceConfig(service) || {};
+      }
+
+      if (user && password) {
         config.auth = { user, pass: password };
       }
     }
 
     const { Email } = Reaction;
 
+    const conf = config || Email.getMailConfig();
+
+    Logger.debug(conf, "Verifying email config settings");
+
     try {
-      return Meteor.wrapAsync(Email.verifyConfig)(config || Email.getMailConfig());
+      return Meteor.wrapAsync(Email.verifyConfig)(conf);
     } catch (e) {
       Logger.error(e);
       throw new Meteor.Error(e.responseCode, e.response);
@@ -62,8 +73,8 @@ Meteor.methods({
       service: String,
       host: Match.Optional(String),
       port: Match.Optional(Number),
-      user: String,
-      password: String
+      user: Match.Optional(String),
+      password: Match.Optional(String)
     });
 
     Packages.update({ name: "core", shopId: Reaction.getShopId() }, {
