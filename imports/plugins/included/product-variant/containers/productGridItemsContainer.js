@@ -126,12 +126,14 @@ const wrapComponent = (Comp) => (
     }
 
     additionalProductMedia = () => {
+      const variants = ReactionProduct.getVariants(this.props.product._id);
+      const variantIds = variants.map(variant => variant._id);
       const mediaArray = Media.find({
         "metadata.productId": this.props.product._id,
-        "metadata.priority": {
-          $gt: 0
+        "metadata.variantId": {
+          $in: variantIds
         },
-        "metadata.toGrid": 1
+        "metadata.workflow": { $nin: ["archived", "unpublished"] }
       }, { limit: 3 });
 
       return mediaArray.count() > 1 ? mediaArray : false;
