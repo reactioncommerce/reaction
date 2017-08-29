@@ -33,14 +33,14 @@ export function getMailUrl() {
 
   // create a mail url from well-known provider settings (if they exist)
   // https://github.com/nodemailer/nodemailer-wellknown
-  if (service && service !== "custom" && user && password) {
+  if (service && service !== "custom") {
     const conf = getServiceConfig(service);
 
     if (conf) {
       // account for local test providers like Maildev
       if (!conf.host) {
         mailString = `smtp://localhost:${conf.port}`;
-      } else {
+      } else if (user && password) {
         mailString = `smtp://${encodeURIComponent(user)}:${password}@${conf.host}:${conf.port}`;
       }
     }
@@ -100,6 +100,11 @@ export function getMailConfig() {
       };
     }
 
+    // don't enforce checking TLS on localhost
+    if (parsedUrl.hostname === "localhost") {
+      config.ignoreTLS = true;
+    }
+
     return config;
   }
 
@@ -116,7 +121,7 @@ export function getMailConfig() {
 
   // if a service provider preset was chosen, return a Nodemailer config for it
   // https://github.com/nodemailer/nodemailer-wellknown
-  if (service && service !== "custom" && user && password) {
+  if (service && service !== "custom") {
     Logger.debug(`Using ${service} to send email`);
 
     // get the config from nodemailer-wellknown
@@ -127,24 +132,37 @@ export function getMailConfig() {
       return conf;
     }
 
-    // add the credentials to the config
-    conf.auth = { user, pass: password };
+    // add any credentials to the config
+    if (user && password) {
+      conf.auth = { user, pass: password };
+    }
 
     return conf;
   }
 
   // if a custom config was chosen and all necessary fields exist in the database,
   // return the custom Nodemailer config
-  if ((!service || service === "custom") && user && password && host && port) {
-    Logger.debug(`Using ${host} to send email`);
-
-    return {
+  if ((!service || service === "custom") && host && port) {
+    const conf = {
       host,
       port,
       secure: port === 465,
-      auth: { user, pass: password },
       logger: process.env.EMAIL_DEBUG === "true"
     };
+
+    // don't enforce checking TLS on localhost
+    if (conf.host === "localhost") {
+      conf.ignoreTLS = true;
+    }
+
+    // add any credentials to the config
+    if (user && password) {
+      conf.auth = { user, pass: password };
+    }
+
+    Logger.debug(`Using ${host} to send email`);
+
+    return conf;
   }
 
   // else, return the direct mail config and a warning
