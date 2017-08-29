@@ -25,6 +25,7 @@ const ShopOrderSummary = ({ shopSummary }) => {
           <Components.Currency amount={shopSummary.subTotal}/>
         </div>
       </div>
+      {shopSummary.shipping > 0 &&
       <div className="order-summary-line">
         <div className="order-summary-title">
           <Components.Translation defaultValue="Shipping" i18nKey={"cartCompleted.orderShipping"}/>
@@ -33,6 +34,8 @@ const ShopOrderSummary = ({ shopSummary }) => {
           <Components.Currency amount={shopSummary.shipping}/>
         </div>
       </div>
+      }
+      {shopSummary.taxes > 0 &&
       <div className="order-summary-line">
         <div className="order-summary-title">
           <Components.Translation defaultValue="Tax" i18nKey={"cartCompleted.orderTax"}/>
@@ -41,6 +44,7 @@ const ShopOrderSummary = ({ shopSummary }) => {
           <Components.Currency amount={shopSummary.taxes}/>
         </div>
       </div>
+      }
     </div>
   );
 };
