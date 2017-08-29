@@ -561,13 +561,17 @@
     padding-top: 8px;
 
     flex: 250 0 auto;
-    width: 250px;
-    max-width: 250px;
+    min-width: 20%;
+    max-width: 100%;
   }
   .order-table-header-email {
     border-right: none;
-    text-align: left;
+    text-align: center;
     padding-top: 19px;
+
+    flex: 200 0 auto;
+    min-width: 15%;
+    max-width: 100%;
   }
   .order-table-header-date {
     border-right: none;
@@ -575,8 +579,8 @@
     padding-top: 19px;
 
     flex: 120 0 auto;
-    width: 120px;
-    max-width: 120px;
+    min-width: 10%;
+    max-width: 100%;
   }
   .order-table-header-id {
     border-right: none;
@@ -584,8 +588,8 @@
     padding-top: 19px;
 
     flex: 90 0 auto;
-    width: 90px;
-    max-width: 90px;
+    min-width: 5%;
+    max-width: 50%;
   }
   .order-table-header-total {
     border-right: none;
@@ -593,8 +597,8 @@
     padding-top: 19px;
 
     flex: 100 0 auto;
-    width: 100px;
-    max-width: 100px;
+    min-width: 15%;
+    max-width: 50%;
   }
   .order-table-header-shipping {
     border-right: none;
@@ -602,8 +606,8 @@
     padding-top: 19px;
 
     flex: 100 0 auto;
-    width: 100px;
-    max-width: 100px;
+    min-width: 15%;
+    max-width: 100%;
   }
   .order-table-header-status {
     border-right: none;
@@ -611,14 +615,14 @@
     padding-top: 19px;
 
     flex: 150 0 auto;
-    width: 150px;
-    max-width: 150px;
+    min-width: 15%;
+    max-width: 100%;
   }
 
   .order-table-header-control {
     flex: 50 0 auto;
-    width: 50px;
-    max-width: 50px;
+    min-width: 5%;
+    max-width: 50%;
   }
 
   // Table Columns
@@ -626,46 +630,51 @@
     border-right: 1px solid @black10;
 
     flex: 250 0 auto;
-    width: 250px;
-    max-width: 250px;
+    min-width: 20%;
+    max-width: 100%;
   }
-
+  .order-table-column-email {
+    text-align: center;
+    flex: 200 0 auto;
+    min-width: 15%;
+    max-width: 100%;
+  }
   .order-table-column-date {
     text-align: center;
 
     flex: 120 0 auto;
-    width: 120px;
-    max-width: 120px;
+    min-width: 10%;
+    max-width: 100%;
   }
   .order-table-column-id {
     text-align: center;
 
     flex: 90 0 auto;
-    width: 90px;
-    max-width: 90px;
+    min-width: 5%;
+    max-width: 50%;
   }
   .order-table-column-total {
     text-align: center;
 
     flex: 100 0 auto;
-    width: 100px;
-    max-width: 100px;
+    min-width: 15%;
+    max-width: 50%;
   }
   .order-table-column-shipping {
-    text-align: right;
+    text-align: center;
     margin-top: 2px;
 
     flex: 100 0 auto;
-    width: 100px;
-    max-width: 100px;
+    min-width: 15%;
+    max-width: 100%;
   }
   .order-table-column-status {
-    text-align: right;
+    text-align: center;
     margin-top: 2px;
 
     flex: 150 0 auto;
-    width: 150px;
-    max-width: 150px;
+    min-width: 15%;
+    max-width: 100%;
   }
 
   .order-table-column-control {
@@ -675,8 +684,8 @@
     padding: 0;
     height: 49px;
     flex: 50 0 auto;
-    width: 50px;
-    max-width: 50px;
+    min-width: 5%;
+    max-width: 50%;
     button {
       flex: 1 1 auto;
       border-radius: 0;
@@ -1060,3 +1069,10 @@
 .order-details-list-container {
   display: flex;
 }
+
+.order-details-table {
+  width: 95%;
+  margin: 0 auto;
+}
+
+// Make .order-details-table have a larger width on big screens.
