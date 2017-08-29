@@ -71,6 +71,10 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
           $regex: searchTerm,
           $options: "i"
         } },
+        { billingCard: {
+          $regex: searchTerm,
+          $options: "i"
+        } },
         // if parsed phone is empty, default to original, otherwise quering returns false matches
         { billingPhone: {
           $regex: searchPhone || searchTerm,

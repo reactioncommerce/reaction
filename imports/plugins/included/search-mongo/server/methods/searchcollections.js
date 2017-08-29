@@ -198,6 +198,7 @@ export function buildOrderSearchRecord(orderId) {
   orderSearch.orderTotal = shopBilling.invoice && shopBilling.invoice.total;
   orderSearch.orderDate = moment(order.createdAt).format("YYYY/MM/DD");
   orderSearch.billingStatus = shopBilling.paymentMethod && shopBilling.paymentMethod.status;
+  orderSearch.billingCard = shopBilling.paymentMethod && shopBilling.paymentMethod.storedCard;
   orderSearch.currentWorkflowStatus = order.workflow.status;
   if (shopShipping.shipped) {
     orderSearch.shippingStatus = "Shipped";
