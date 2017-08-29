@@ -45,8 +45,12 @@ Meteor.methods({
 
     const { Email } = Reaction;
 
+    const conf = config || Email.getMailConfig();
+
+    Logger.debug(conf, "Verifying email config settings");
+
     try {
-      return Meteor.wrapAsync(Email.verifyConfig)(config || Email.getMailConfig());
+      return Meteor.wrapAsync(Email.verifyConfig)(conf);
     } catch (e) {
       Logger.error(e);
       throw new Meteor.Error(e.responseCode, e.response);
