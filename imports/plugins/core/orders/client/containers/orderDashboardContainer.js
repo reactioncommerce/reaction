@@ -6,6 +6,11 @@ import { Reaction, i18next } from "/client/api";
 import { Media, Orders } from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrderDashboard from "../components/orderDashboard.js";
+import {
+  PACKAGE_NAME,
+  ORDER_LIST_FILTERS_PREFERENCE_NAME,
+  ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME
+} from "../../lib/constants";
 
 const OrderHelper =  {
   makeQuery(filter) {
@@ -162,6 +167,17 @@ class OrderDashboardContainer extends Component {
 
     if (startWorkflow === true) {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+      Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
+    }
+
+    const id = Reaction.Router.getQueryParam("_id");
+
+    if (id === undefined) {
+      Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
+    } else {
+      Reaction.Router.go("dashboard/orders", {}, {
+        _id: order._id
+      });
     }
   }
 

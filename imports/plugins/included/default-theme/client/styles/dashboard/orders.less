@@ -64,21 +64,19 @@
   flex: 0 0 auto;
 }
 
-.order-item-details .order-detail-title {
-  flex: 1 1 auto;
-}
-
-.order-item-details .order-detail-quantity {
-  flex: 0 0 auto;
-}
-
-.order-item-details .order-detail-price {
-  flex: 1 1 auto;
-  margin-right: 20px;
+.order-item-details {
+  flex: 4;
+  margin-left: 20px;
+  align-items: center;
 }
 
 .order-detail-quantity {
-  margin-right: 30px;
+  flex: 1;
+}
+
+.order-detail-price {
+  flex: 1;
+  margin-left: 15px
 }
 
 
@@ -207,16 +205,18 @@
   .invoice-order-item-tax {
     display: flex;
     width: 100%;
-    div {
+
+    b {
+      flex: 4;
+    }
+
+    .tax-code {
+      flex: 1
+    }
+
+    .tax-cost {
+      text-align: right;
       flex: 1;
-
-      &.tax-code {
-        text-align: right;
-      }
-
-      &.tax-cost {
-        text-align: right;
-      }
     }
   }
 }
@@ -350,12 +350,10 @@
   }
 }
 
-.order-item-details {
-  .display(flex);
-  .flex(1 1 auto);
-  .margin-left(20px);
-  align-items: center;
-}
+// .order-item-details {
+//   .display(flex);
+//   .flex(1 1 auto);
+// }
 
 .order-shipments {
   list-style-type: none;
@@ -405,15 +403,10 @@
     border-right: solid 1px @rui-default-disabled;
   }
 
-
-
-
   > .invoice-details {
     flex: 1;
     .text-align(right);
     padding-right: 15px;
-
-
 
     > .refundAmount {
       .text-align(left);
@@ -423,7 +416,6 @@
       flex: 1;
     }
   }
-
 
     .captured-total {
       background-color: @rui-success-bg;
