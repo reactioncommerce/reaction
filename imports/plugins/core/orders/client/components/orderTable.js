@@ -7,7 +7,7 @@ import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable
 import { Orders } from "/lib/collections";
 import OrderTableColumn from "./orderTableColumn";
 import OrderBulkActionsBar from "./orderBulkActionsBar";
-import { Reaction, formatPriceString } from "/client/api";
+import { formatPriceString } from "/client/api";
 import ProductImage from "./productImage";
 
 const classNames = {

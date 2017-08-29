@@ -35,6 +35,18 @@ class OrderSearch extends Component {
     }
   };
 
+  /**
+   * handleClear - handler called onclick of search clear text
+   * @return {null} -
+   */
+  handleClear = () => {
+    this.setState({ query: "" });
+
+    if (this.props.handleChange) {
+      this.props.handleChange("");
+    }
+  };
+
   render() {
     return (
       <div className="order-search">
@@ -50,7 +62,7 @@ class OrderSearch extends Component {
           i18nKeyLabel="search.clearSearch"
           label="Clear"
           containerStyle={{ fontWeight: "normal" }}
-          onClick={this.props.handleClear}
+          onClick={this.handleClear}
         />
       </div>
     );

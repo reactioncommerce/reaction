@@ -63,6 +63,7 @@ class OrderDashboard extends Component {
 
   // Extracted Tracker logic for the search subscription, to allow calling in both
   // componentDidMount and componentWillReceiveProps
+  // This tracker is setup in the component because we need to re-subscribe when search input changes
   setupTracker = () => {
     Tracker.autorun(() => {
       this.dep.depend();
@@ -71,14 +72,17 @@ class OrderDashboard extends Component {
 
       if (this.subscription.ready()) {
         const orderSearchResults = OrderSearchCollection.find().fetch();
+        const query = this.state.query;
         orderSearchResultsIds = orderSearchResults.map(orderSearch => orderSearch._id);
-        // checking to ensure search was made and no results came back
+        // checking to ensure search was made and search results are returned
         if (this.state.searchQuery && Array.isArray(orderSearchResultsIds)) {
-          // pick and show only orders that are in search results (orderSearchResultsIds)
-          const query = this.state.query;
+          // add matching results from search to query passed to Sortable
           query._id = { $in: orderSearchResultsIds };
-          this.setState({ query: query });
+          return this.setState({ query: query });
         }
+        // being here means no search text is inputed or search was cleared, so reset any previous match
+        delete query._id;
+        this.setState({ query: query });
       }
     });
   }
