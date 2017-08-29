@@ -347,11 +347,10 @@ export const methods = {
    * collection.
    * @return {Array} errorDetails - In case a call to Shippo's API
    * fails, this method returns an array containing a single object,
-   * which contains details of the error.
-   * @return {Array} noShippingMethods - If the call to Shippo's API
-   * is successful BUT it returns an empty list of shipping methods,
-   * this method returns an array containing a single object with
-   * any appropriate details.
+   * which contains details of the error. Similarly, if the call to Shippo's API
+   * is successful BUT it returns an empty list of shipping methods, the
+   * situation is categorized as an error and this method returns an array
+   * containing an object with the details.
    * @return {Array} rates - The rates of the enabled and available
    * Shippo carriers.
    * */
@@ -425,18 +424,16 @@ export const methods = {
         const errorDetails = {
           requestStatus: "error",
           shippingProvider: "shippo",
-          // TODO: add some retrial logic.
-          numOfRetries: 0,
           message: error.message
         };
         return [errorDetails];
       }
 
-      if (Object.keys(shippoShipment).length === 0) {
+      if (!shippoShipment.rates_list || shippoShipment.rates_list.length === 0) {
         const noShippingMethods = {
-          requestStatus: "success",
+          requestStatus: "error",
           shippingProvider: "shippo",
-          numOfShippingMethodsFound: 0
+          message: "Couldn't find any shipping methods. Try using another address."
         };
         return [noShippingMethods];
       }

@@ -16,7 +16,16 @@
               <span class="pull-right">{{formatPrice rate}}</span>
             </li>
           {{else}}
-            {{#if either hasQueriedShipmentMethods noShippingProviderEnabled}}
+            {{#if hasShippingMethods}}
+              <div>
+                <h4>
+                  Loading shipping methods... Please wait...
+                </h4>
+                <div class="spinner-container">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+            {{else}}
               <div class="panel-body">
                 {{#if isAdmin}}
                   <div class="alert alert-danger">
@@ -31,15 +40,6 @@
                     <span data-i18n="checkoutShipping.contactAdmin">Please contact the store administrator.</span>
                   </div>
                 {{/if}}
-              </div>
-            {{else}}
-              <div>
-                <h4>
-                  Loading shipping methods... Please wait...
-                </h4>
-                <div class="spinner-container">
-                  <div class="spinner"></div>
-                </div>
               </div>
             {{/if}}
           {{/each}}

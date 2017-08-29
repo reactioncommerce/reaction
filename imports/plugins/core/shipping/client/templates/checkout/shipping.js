@@ -1,13 +1,9 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
-
-let hasQueriedForShippingMethods = false;
-function setHasQueriedForShippingMethods(status) {
-  hasQueriedForShippingMethods = status;
-}
 
 /**
  * cartShippingQuotes - returns a list of all the shipping costs/quotations
@@ -34,11 +30,24 @@ function cartShippingQuotes(currentCart) {
     }
   }
 
-  // TODO: Until I find a way to update this template *when* the
-  // call to Shippo's API fails, this is my best guess.
-  setHasQueriedForShippingMethods(shipmentQuotes.length > 0);
-
   return shipmentQuotes;
+}
+
+function shippingMethodsQueryStatus(currentCart) {
+  const cart = currentCart || Cart.findOne();
+  let queryStatus;
+
+  if (cart) {
+    if (cart.shipping) {
+      for (const shipping of cart.shipping) {
+        if (shipping.shipmentQuotesQueryStatus) {
+          queryStatus = shipping.shipmentQuotesQueryStatus.requestStatus;
+        }
+      }
+    }
+  }
+
+  return queryStatus;
 }
 
 /**
@@ -75,10 +84,14 @@ function enabledShipping() {
   return enabledShippingArr;
 }
 
-// ensure new quotes are
 Template.coreCheckoutShipping.onCreated(function () {
   this.autorun(() => {
     this.subscribe("Shipping");
+  });
+
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    isLoadingShippingMethods: true
   });
 
   const enabled = enabledShipping();
@@ -96,19 +109,35 @@ Template.coreCheckoutShipping.onCreated(function () {
 });
 
 Template.coreCheckoutShipping.helpers({
-  hasQueriedShipmentMethods() {
-    return hasQueriedForShippingMethods;
-  },
-
   // retrieves current rates and updates shipping rates
   // in the users cart collection (historical, and prevents repeated rate lookup)
   shipmentQuotes: function () {
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
       const cart = Cart.findOne();
-      return cartShippingQuotes(cart);
+
+      // isLoadingShippingMethods is updated here because, when this template
+      // reacts to a change in data, this method is called before hasShippingMethods().
+      const isLoadingShippingMethods = shippingMethodsQueryStatus() === "pending";
+      instance.state.set("isLoadingShippingMethods", isLoadingShippingMethods);
+
+      const shippingQuotes = cartShippingQuotes(cart);
+      return shippingQuotes;
     }
   },
+
+  hasShippingMethods() {
+    const hasEnabledShippingProviders = enabledShipping().length > 0;
+    if (!hasEnabledShippingProviders) {
+      return false;
+    }
+
+    const instance = Template.instance();
+    const isLoadingShippingMethods = instance.state.get("isLoadingShippingMethods");
+
+    return isLoadingShippingMethods;
+  },
+
   // helper to display currently selected shipmentMethod
   isSelected: function () {
     const self = this;
@@ -149,27 +178,6 @@ Template.coreCheckoutShipping.helpers({
       Reaction.hasAdminAccess();
     }
     return Reaction.hasAdminAccess(Reaction.getPrimaryShopId());
-  },
-
-  /**
-   * Checks if there is no shipping provider enabled (e.g flat
-   * rate shipping, Shippo etc) during checkout.
-   * @return {Boolean} - returns true if no shipping methods are
-   * enabled, and false if at least one is enabled.
-   */
-  noShippingProviderEnabled() {
-    return enabledShipping().length === 0;
-  },
-
-  /**
-   * Performs logic equivalent to that of the logical OR.
-   * @param {Boolean} a - a Boolean value. 
-   * @param {Boolean} b - a Boolean value.
-   * @return {Boolean} - returns true if at least one of the parameters
-   * is true and false if they are both false.
-   */
-  either(a, b) {
-    return a || b;
   }
 });
 

@@ -60,20 +60,8 @@ export const methods = {
             $set: {
               "shipping.0.shipmentQuotesQueryStatus": {
                 requestStatus: errorDetails.requestStatus,
-                shippingProvider: errorDetails.shippingProvider
-              }
-            }
-          };
-        }
-
-        if (rates.length === 1 && rates[0].requestStatus === "success" && rates[0].numOfShippingMethodsFound === 0) {
-          const noShippingMethods = rates[0];
-          update = {
-            $set: {
-              "shipping.0.shipmentQuotesQueryStatus": {
-                requestStatus: noShippingMethods.requestStatus,
-                shippingProvider: noShippingMethods.shippingProvider,
-                numOfShippingMethodsFound: noShippingMethods.numOfShippingMethodsFound
+                shippingProvider: errorDetails.shippingProvider,
+                message: errorDetails.message
               }
             }
           };
@@ -115,23 +103,8 @@ export const methods = {
                 shipmentQuotes: rates,
                 shipmentQuotesQueryStatus: {
                   requestStatus: errorDetails.requestStatus,
-                  shippingProvider: errorDetails.shippingProvider
-                }
-              }
-            }
-          };
-        }
-
-        if (rates.length === 1 && rates[0].requestStatus === "success" && rates[0].numOfShippingMethodsFound === 0) {
-          const noShippingMethods = rates[0];
-          update = {
-            $push: {
-              shipping: {
-                shipmentQuotes: rates,
-                shipmentQuotesQueryStatus: {
-                  requestStatus: noShippingMethods.requestStatus,
-                  shippingProvider: noShippingMethods.shippingProvider,
-                  numOfShippingMethodsFound: noShippingMethods.numOfShippingMethodsFound
+                  shippingProvider: errorDetails.shippingProvider,
+                  message: errorDetails.message
                 }
               }
             }
