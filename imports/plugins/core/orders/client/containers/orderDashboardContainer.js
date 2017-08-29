@@ -274,13 +274,16 @@ class OrderDashboardContainer extends Component {
         [status]: true
       }
     });
-    let orderText;
+    let orderText = "order";
 
     if (selectedOrders.length > 1) {
       orderText = "orders";
-    } else {
-      orderText = "order";
     }
+
+    // capitalize the first letter of the shipping status passed in
+    // e.g. 'shipped' becomes 'Shipped'.
+    // status[0].toUpperCase() capitalizes the first letter of the string
+    // status.substr(1).toLowerCase() converts every other letter to lower case
     const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
     let orderCount = 0;
 
@@ -315,43 +318,33 @@ class OrderDashboardContainer extends Component {
     });
   }
 
-  displayOrderText = (selectedOrders) => {
-    let orderText = "";
-    if (selectedOrders.length > 1) {
-      orderText = "Orders have";
-    } else {
-      orderText = "Order has";
-    }
-
-    return orderText;
-  }
-
-  displayAlert = (
-    selectedOrders, status, whichFalseState, falsePreviousStatuses, falseCurrentState, trueCurrentState
-  ) => {
+  displayAlert = (selectedOrders, status, options) => {
+    // capitalize the first letter of the shipping status passed in
+    // e.g. 'shipped' becomes 'Shipped'.
+    // status[0].toUpperCase() capitalizes the first letter of the string
+    // status.substr(1).toLowerCase() converts every other letter to lower case
     const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
-    let orderText = "";
-    let skippedOrdersText = "";
+    const alertOptions = options || {};
+    let orderText = "order";
+    let skippedOrdersText = "is";
+    let orderAlreadyInStateText = "Order has";
 
     if (selectedOrders.length > 1) {
       orderText = "orders";
-    } else {
-      orderText = "order";
+      orderAlreadyInStateText = "Orders have";
     }
 
-    if (falsePreviousStatuses > 1) {
+    if (alertOptions.falsePreviousStatuses > 1) {
       skippedOrdersText = "are";
-    } else {
-      skippedOrdersText = "is";
     }
 
     // if the order(s) want to skip the previous states, display alert
-    if (falsePreviousStatuses) {
+    if (alertOptions.falsePreviousStatuses) {
       Alerts.alert({
         text: i18next.t("order.skippedBulkOrdersAlert", {
           selectedOrders: selectedOrders.length, orderText: orderText, status: capitalizeStatus,
-          numberOfSkippedOrders: falsePreviousStatuses, skippedOrdersText: skippedOrdersText,
-          skippedState: whichFalseState
+          numberOfSkippedOrders: alertOptions.falsePreviousStatuses, skippedOrdersText: skippedOrdersText,
+          skippedState: alertOptions.whichFalseState
         }),
         type: "warning",
         showCancelButton: true,
@@ -365,30 +358,33 @@ class OrderDashboardContainer extends Component {
           this.shippingStatusUpdateCall(selectedOrders, status);
         }
       });
+
       // if the order(s) are following proper flow, set the status
-    } else if (!falsePreviousStatuses && falseCurrentState) {
+    } else if (!alertOptions.falsePreviousStatuses && alertOptions.falseCurrentState) {
       this.shippingStatusUpdateCall(selectedOrders, status);
       // display alert if order(s) are already in this state
-    } else if (!falsePreviousStatuses && !falseCurrentState && trueCurrentState) {
+    } else if (!alertOptions.falsePreviousStatuses && !alertOptions.falseCurrentState &&
+      alertOptions.trueCurrentState) {
       Alerts.alert({
         text: i18next.t("order.orderAlreadyInState", {
-          orderText: this.displayOrderText(selectedOrders),
+          orderText: orderAlreadyInStateText,
           status: status
         })
       });
     }
   }
 
-  displayRegressionAlert = (
-    selectedOrders, ordersToRegress, status, whichFalseState, falsePreviousStatuses, falseCurrentState,
-    trueCurrentState) => {
+  displayRegressionAlert = (selectedOrders, ordersToRegress, status, options) => {
+    // capitalize the first letter of the shipping status passed in
+    // e.g. 'shipped' becomes 'Shipped'.
+    // status[0].toUpperCase() capitalizes the first letter of the string
+    // status.substr(1).toLowerCase() converts every other letter to lower case
     const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
-    let orderText = "";
+    const alertOptions = options || {};
+    let orderText = "order";
 
     if (ordersToRegress > 1) {
       orderText = "orders";
-    } else {
-      orderText = "order";
     }
 
     Alerts.alert({
@@ -404,9 +400,15 @@ class OrderDashboardContainer extends Component {
     }, (regress) => {
       if (regress) {
         // if some of the order(s) want to skip the previous state, display warning alert for skipping states
-        if (falsePreviousStatuses) {
+        if (alertOptions.falsePreviousStatuses) {
           this.displayAlert(
-            selectedOrders, status, whichFalseState, falsePreviousStatuses, falseCurrentState, trueCurrentState
+            selectedOrders, status,
+            {
+              whichFalseState: alertOptions.whichFalseState,
+              falsePreviousStatuses: alertOptions.falsePreviousStatuses,
+              falseCurrentState: alertOptions.falseCurrentState,
+              trueCurrentState: alertOptions.trueCurrentState
+            }
           );
         } else {
           // set status of order(s) if this action is confirmed
@@ -443,19 +445,15 @@ class OrderDashboardContainer extends Component {
     // display regression alert if order(s) are being regressed
     if (ordersToRegress) {
       this.displayRegressionAlert(selectedOrders, ordersToRegress, status);
-    } else {
-      // set status to 'picked' if order(s) are in the previous state
-      if (isNotPicked) {
-        this.shippingStatusUpdateCall(selectedOrders, status);
 
-        // display alert if order(s) are already in this state
-      } else if (!isNotPicked && isPicked) {
-        Alerts.alert({
-          text: i18next.t("order.orderAlreadyInState", {
-            orderText: this.displayOrderText(selectedOrders), status: status
-          })
-        });
-      }
+      // set status to 'picked' if order(s) are in the previous state OR
+      // display alert if order(s) are already in this state
+    } else {
+      this.displayAlert(selectedOrders, status,
+        { falseCurrentState: isNotPicked,
+          trueCurrentState: isPicked
+        }
+      );
     }
   }
 
@@ -488,12 +486,24 @@ class OrderDashboardContainer extends Component {
 
     // display regression alert if order(s) are being regressed
     if (ordersToRegress) {
-      this.displayRegressionAlert(
-        selectedOrders, ordersToRegress, status, whichFalseState, isNotPicked, isNotPacked, isPacked
+      this.displayRegressionAlert(selectedOrders, ordersToRegress, status,
+        { whichFalseState,
+          falsePreviousStatuses: isNotPicked,
+          falseCurrentState: isNotPacked,
+          trueCurrentState: isPacked
+        }
       );
 
       // display proper alert if the order(s) are in this state already or want to skip the previous states
-    } else this.displayAlert(selectedOrders, status, whichFalseState, isNotPicked, isNotPacked, isPacked);
+    } else {
+      this.displayAlert(selectedOrders, status,
+        { whichFalseState,
+          falsePreviousStatuses: isNotPicked,
+          falseCurrentState: isNotPacked,
+          trueCurrentState: isPacked
+        }
+      );
+    }
   }
 
   labeledShippingStatus = (selectedOrders, status) => {
@@ -527,11 +537,23 @@ class OrderDashboardContainer extends Component {
     // display regression alert if order(s) are being regressed
     if (ordersToRegress) {
       this.displayRegressionAlert(
-        selectedOrders, ordersToRegress, status, whichFalseState, isNotPacked, isNotLabeled, isLabeled
+        selectedOrders, ordersToRegress, status,
+        { whichFalseState,
+          falsePreviousStatuses: isNotPacked,
+          falseCurrentState: isNotLabeled,
+          trueCurrentState: isLabeled }
       );
 
       // display proper alert if the order(s) are in this state already or want to skip the previous states
-    } else this.displayAlert(selectedOrders, status, whichFalseState, isNotPacked, isNotLabeled, isLabeled);
+    } else {
+      this.displayAlert(selectedOrders, status,
+        { whichFalseState,
+          falsePreviousStatuses: isNotPacked,
+          falseCurrentState: isNotLabeled,
+          trueCurrentState: isLabeled
+        }
+      );
+    }
   }
 
 
@@ -560,7 +582,13 @@ class OrderDashboardContainer extends Component {
     });
 
     // display proper alert if the order(s) are in this state already or want to skip the previous states
-    this.displayAlert(selectedOrders, status, whichFalseState, isNotLabeled, isNotShipped, isShipped);
+    this.displayAlert(selectedOrders, status,
+      { whichFalseState,
+        falsePreviousStatuses: isNotLabeled,
+        falseCurrentState: isNotShipped,
+        trueCurrentState: isShipped
+      }
+    );
   }
 
   /**
