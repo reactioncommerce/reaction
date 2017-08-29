@@ -53,11 +53,45 @@ class OrderTable extends Component {
   }
 
   /**
-   * Fullfilment Badge
-   * @param  {Object} order object containing info for order and coreOrderWorkflow
-   * @return {string} A string containing the type of Badge
+   * Returns an easy-to-read fullfillment status based on an
+   * order's coreOrderWorkflow.
+   * @param {String} orderStatus - Info about an order's coreOrderWorkflow.
+   * @return {String} - A string containing the type of Badge.
    */
-  fulfillmentBadgeStatus(order) {
+  fulfillmentStatus(orderStatus) {
+    let readableStatus;
+    switch (orderStatus) {
+      case "new":
+        readableStatus = "New";
+        break;
+
+      case "coreOrderWorkflow/processing":
+        readableStatus = "Processing";
+        break;
+
+      case "coreOrderWorkflow/canceled":
+        readableStatus = "Cancelled";
+        break;
+
+      case "coreOrderWorkflow/completed":
+        readableStatus = "Completed";
+        break;
+
+      default:
+        readableStatus = orderStatus;
+    }
+
+    return readableStatus;
+  }
+
+  /**
+   * FullfillmentStatusBadge
+   * @param {Object} order - An object containing info about an order
+   * and its coreOrderWorkflow.
+   * @return {String} A string containing the type of badge to display
+   * based on the order's coreOrderWorkflow.
+   */
+  fulfillmentStatusBadge(order) {
     const orderStatus = order.workflow.status;
 
     if (orderStatus === "new") {
@@ -158,8 +192,8 @@ class OrderTable extends Component {
           <Badge
             badgeSize="large"
             i18nKeyLabel={`cartDrawer.${order.workflow.status}`}
-            label={order.workflow.status}
-            status={this.fulfillmentBadgeStatus(order)}
+            label={this.fulfillmentStatus(order.workflow.status)}
+            status={this.fulfillmentStatusBadge(order)}
           />
         </div>
       </div>
@@ -266,7 +300,9 @@ class OrderTable extends Component {
               handleClick={this.props.handleClick}
               handleSelect={this.props.handleSelect}
               selectedItems={this.props.selectedItems}
-              fulfillmentBadgeStatus={this.fulfillmentBadgeStatus}
+              fulfillmentStatus={this.fulfillmentStatus}
+              fulfillmentStatusBadge={this.fulfillmentStatusBadge}
+              shippingBadgeStatus={this.shippingBadgeStatus}
             />
           )
         };
