@@ -307,7 +307,7 @@ class OrderTable extends Component {
     }
 
     return (
-      <div>
+      <div className="order-details-table">
         {this.props.isOpen &&
           <OrderBulkActionsBar
             shipping={this.props.shipping}
