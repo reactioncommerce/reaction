@@ -12,6 +12,9 @@
           "email": "E-mailinstellingen",
           "description": "Voeg een productomschrijving toe",
           "remove": "Verwijderen"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Lokalisatie en i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "Kies jaar",
         "shopSettings": "Shop Instellingen",
         "dashboard": "Dashboard",
-        "print": "Afdruk"
+        "print": "Afdruk",
+        "auto": "Auto"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "product zoeken",
+          "includeTitle": "Inclusief titel",
+          "includeDescription": "Inclusief beschrijving",
+          "includePageTitle": "Inclusief paginatitel",
+          "includeDetails": "bijzonderheden",
+          "includeVendor": "omvatten vendor"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Zoeken Instellingen"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Account zoekinstellingen"
+        },
+        "noSettings": "Geen instellingen die momenteel beschikbaar",
+        "settingsSaved": "Zoekinstellingen opgeslagen",
+        "settingsfailed": "updaten zoekinstellingen is mislukt"
       },
       "header": {
         "tagsAdd": "Tag toevoegen",
@@ -68,7 +91,8 @@
         "startTracking": "Start Tracking",
         "addBarcode": "Streepjescode toevoegen",
         "quantity": "Aantal",
-        "quantityGreaterThanZero": "Fout: aantal moet hoger zijn dan nul"
+        "quantityGreaterThanZero": "Fout: aantal moet hoger zijn dan nul",
+        "dropFiles": "Drop bestanden te uploaden"
       },
       "productDetailEdit": {
         "title": "Producttitel",
@@ -252,6 +276,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Laat Gast Afrekenen"
+          },
+          "openexchangerates": {
+            "appId": "Open Wisselkoersen App Id",
+            "refreshPeriod": "Open Wisselkoersen vernieuwen periode",
+            "refreshPeriodPlaceholder": "d.w.z. elk 1 uur"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Google API Key"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "Revisie controle is uitgeschakeld. Eventuele wijzigingen zullen onmiddellijk worden gepubliceerd.",
+        "isEnabled": "Revisie controle is ingeschakeld voor producten. Eventuele wijzigingen zullen nodig hebben voordat ze zichtbaar zijn voor klanten om te worden gepubliceerd."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Standaardbetaalmethode",
+        "name": "Naam",
+        "namePlaceholder": "Shop Naam",
+        "description": "Beschrijving",
+        "descriptionPlaceholder": "Beschrijf uw winkel voor SEO",
+        "descriptionTooltip": "Meta Beschrijving voor SEO",
+        "email": "Email",
+        "emailPlaceholder": "Primaire Contact E-mail",
+        "keywords": "trefwoorden",
+        "keywordsPlaceholder": "Meta keywords voor SEO",
+        "language": "Base Taal",
+        "addressBook": {
+          "company": "Bedrijf",
+          "companyPlaceholder": "Deze bedrijfsnaam",
+          "country": "Land",
+          "fullName": "Volledige naam",
+          "fullNamePlaceholder": "Naam van uw organisatie",
+          "address1": "Addresregel 1",
+          "address1Placeholder": "Uw organisatie adres",
+          "address1Tooltip": "Dit adres is zichtbaar voor bezoekers",
+          "address2": "Addresregel 2",
+          "address2Placeholder": "Extra Adres",
+          "postal": "Postcode",
+          "city": "Stad",
+          "region": "Province",
+          "phone": "Telefoon",
+          "isShippingDefault": "Wilt u hiervan uw standaardverzendadres maken?",
+          "isBillingDefault": "Wilt u hiervan uw standaardfactuuradres maken?",
+          "isCommercial": "Dit is een zakelijk adres."
+        }
       },
       "accountsUI": {
         "members": "Gebruikers",

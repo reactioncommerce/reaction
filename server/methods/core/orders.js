@@ -86,18 +86,52 @@ export function orderQuantityAdjust(orderId, refundedItem) {
  */
 export const methods = {
   /**
+   * orders/shipmentPicked
+   *
+   * @summary update picking status
+   * @param {Object} order - order object
+   * @param {Object} shipment - shipment object
+   * @return {Object} return workflow result
+   */
+  "orders/shipmentPicked": function (order, shipment) {
+    check(order, Object);
+    check(shipment, Object);
+
+    if (!Reaction.hasPermission("orders")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    // Set the status of the items as picked
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
+
+    const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/picked", order, itemIds);
+    if (result === 1) {
+      return Orders.update({
+        "_id": order._id,
+        "shipping._id": shipment._id
+      }, {
+        $set: {
+          "shipping.$.workflow.status": "coreOrderWorkflow/picked"
+        }, $push: {
+          "shipping.$.workflow.workflow": "coreOrderWorkflow/picked"
+        }
+      });
+    }
+    return result;
+  },
+  /**
    * orders/shipmentPacked
    *
    * @summary update packing status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
-   * @param {Boolean} packed - packed status
    * @return {Object} return workflow result
    */
-  "orders/shipmentPacked": function (order, shipment, packed) {
+  "orders/shipmentPacked": function (order, shipment) {
     check(order, Object);
     check(shipment, Object);
-    check(packed, Boolean);
 
     // REVIEW: who should have permission to do this in a marketplace setting?
     // Do we need to update the order schema to reflect multiple packers / shipments?
@@ -105,34 +139,62 @@ export const methods = {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    if (order) {
-      Orders.update({
+    // Set the status of the items as packed
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
+
+    const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
+    if (result === 1) {
+      return Orders.update({
         "_id": order._id,
         "shipping._id": shipment._id
       }, {
         $set: {
-          "shipping.$.packed": packed
+          "shipping.$.workflow.status": "coreOrderWorkflow/packed"
+        }, $push: {
+          "shipping.$.workflow.workflow": "coreOrderWorkflow/packed"
         }
       });
-
-      // Set the status of the items as packed
-      const itemIds = shipment.items.map((item) => {
-        return item._id;
-      });
-
-      const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
-      if (result === 1) {
-        return Orders.update({
-          "_id": order._id,
-          "shipping._id": shipment._id
-        }, {
-          $set: {
-            "shipping.$.packed": packed
-          }
-        });
-      }
-      return result;
     }
+    return result;
+  },
+
+  /**
+   * orders/shipmentLabeled
+   *
+   * @summary update labeling status
+   * @param {Object} order - order object
+   * @param {Object} shipment - shipment object
+   * @return {Object} return workflow result
+   */
+  "orders/shipmentLabeled": function (order, shipment) {
+    check(order, Object);
+    check(shipment, Object);
+
+    if (!Reaction.hasPermission("orders")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    // Set the status of the items as labeled
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
+
+    const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/labeled", order, itemIds);
+    if (result === 1) {
+      return Orders.update({
+        "_id": order._id,
+        "shipping._id": shipment._id
+      }, {
+        $set: {
+          "shipping.$.workflow.status": "coreOrderWorkflow/labeled"
+        }, $push: {
+          "shipping.$.workflow.workflow": "coreOrderWorkflow/labeled"
+        }
+      });
+    }
+    return result;
   },
 
   /**
@@ -187,7 +249,7 @@ export const methods = {
     const taxes = invoice.taxes;
     const discount = invoice.discounts;
     const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
-    const total = accounting.toFixed(discountTotal + shipping + taxes, 2);
+    const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
 
     // Updates flattened inventory count on variants in Products collection
     ordersInventoryAdjust(order._id);
@@ -353,7 +415,9 @@ export const methods = {
       "shipping._id": shipment._id
     }, {
       $set: {
-        "shipping.$.shipped": true
+        "shipping.$.workflow.status": "coreOrderWorkflow/shipped"
+      }, $push: {
+        "shipping.$.workflow.workflow": "coreOrderWorkflow/shipped"
       }
     });
 
@@ -409,7 +473,9 @@ export const methods = {
       "shipping._id": shipment._id
     }, {
       $set: {
-        "shipping.$.delivered": true
+        "shipping.$.workflow.status": "coreOrderWorkflow/delivered"
+      }, $push: {
+        "shipping.$.workflow.workflow": "coreOrderWorkflow/delivered"
       }
     });
 
@@ -436,7 +502,7 @@ export const methods = {
     check(order, Object);
     check(action, Match.OneOf(String, undefined));
 
-    // REVIEW: SECURITY this only checks to see if a userId exists
+    // TODO: REVIEW: SECURITY this only checks to see if a userId exists
     if (!this.userId) {
       Logger.error("orders/sendNotification: Access denied");
       throw new Meteor.Error("access-denied", "Access Denied");
@@ -458,12 +524,14 @@ export const methods = {
     }
 
     const billing = orderCreditMethod(order);
-    const refundResult = Meteor.call("orders/refunds/list", order);
-    let refundTotal = 0;
+    // TODO: Update */refunds/list for marketplace
+    // const refundResult = Meteor.call("orders/refunds/list", order);
+    const refundTotal = 0;
 
-    _.each(refundResult, function (item) {
-      refundTotal += parseFloat(item.amount);
-    });
+    // TODO: We should use reduce here
+    // _.each(refundResult, function (item) {
+    //   refundTotal += parseFloat(item.amount);
+    // });
 
     // Get user currency formatting from shops collection, remove saved rate
     const userCurrencyFormatting = _.omit(shop.currencies[billing.currency.userCurrency], ["enabled", "rate"]);

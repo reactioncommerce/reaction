@@ -32,8 +32,20 @@ export const orderFilters = [{
   label: "New"
 }, {
   name: "processing",
-  label: "Processing"
+  label: "This Week"
 }, {
   name: "completed",
-  label: "Completed"
+  label: "Shipping Status"
 }];
+
+/**
+ * Order shipping states
+ * @type {String}
+ */
+export const shippingStates = {
+  picked: "Picked",
+  packed: "Packed",
+  labeled: "Labeled",
+  shipped: "Shipped",
+  delivered: "Delivered"
+};

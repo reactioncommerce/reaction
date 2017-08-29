@@ -12,6 +12,9 @@
           "email": "Email настройки",
           "description": "Добавете описание на продукта",
           "remove": "Премахни"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Локализация и i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "Изберете година",
         "shopSettings": "Настройки на магазина",
         "dashboard": "Табло",
-        "print": "Принтирай"
+        "print": "Принтирай",
+        "auto": "Автоматичен"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Търсене на продукт",
+          "includeTitle": "Включи заглавие",
+          "includeDescription": "Включи описание",
+          "includePageTitle": "Включване на заглавие на страница",
+          "includeDetails": "Включване на детайли",
+          "includeVendor": "Включи продавач"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Поръчка Настройки за търсенето"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Сметка Настройки за търсенето"
+        },
+        "noSettings": "Не настройки наличните в момента",
+        "settingsSaved": "Настройки за търсенето спасени",
+        "settingsfailed": "актуализация Настройки за търсенето провали"
       },
       "header": {
         "tagsAdd": "Добави етикет",
@@ -68,7 +91,8 @@
         "startTracking": "Проследяване",
         "addBarcode": "Добави баркод",
         "quantity": "Количество",
-        "quantityGreaterThanZero": "Грешка: Количеството трябва да е повече от 0"
+        "quantityGreaterThanZero": "Грешка: Количеството трябва да е повече от 0",
+        "dropFiles": "Капка файлове за качване"
       },
       "productDetailEdit": {
         "title": "Заглавие на продукта",
@@ -252,6 +276,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Оставя гости Checkout"
+          },
+          "openexchangerates": {
+            "appId": "Id Open Валутни курсове на App",
+            "refreshPeriod": "Отворени валутни курсове освежават период",
+            "refreshPeriodPlaceholder": "т.е. всеки един часа"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Google API Key"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "контрол на контрол е забранено. Всички промени ще бъдат публикувани веднага.",
+        "isEnabled": "контрол на контрол е активиран за продукти. ще се нуждае от никакви промени, за да бъдат публикувани преди да бъдат видими за клиентите."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Default Начин на плащане",
+        "name": "Име",
+        "namePlaceholder": "Магазин Наименование",
+        "description": "описание",
+        "descriptionPlaceholder": "Опишете вашия магазин за SEO",
+        "descriptionTooltip": "Мета Описание за SEO",
+        "email": "електронна поща",
+        "emailPlaceholder": "Основно място за контакт Email",
+        "keywords": "Ключови думи",
+        "keywordsPlaceholder": "Мета ключови думи за SEO",
+        "language": "Base Език",
+        "addressBook": {
+          "company": "Компания",
+          "companyPlaceholder": "Това име на фирма",
+          "country": "Държава",
+          "fullName": "Пълно име",
+          "fullNamePlaceholder": "Вашето име на организация",
+          "address1": "Адрес 1",
+          "address1Placeholder": "Вашата организация адрес",
+          "address1Tooltip": "Този адрес ще бъде видим за посетителите",
+          "address2": "Адрес 2",
+          "address2Placeholder": "Допълнителна адрес",
+          "postal": "Поща",
+          "city": "Град",
+          "region": "Регион",
+          "phone": "Телефон",
+          "isShippingDefault": "Сигурни ли сте, че искате да направите този адрес за доставка подразбиращ се?",
+          "isBillingDefault": "Сигурни ли сте, че искате да направите този адрес за плащане подразбиращ се?",
+          "isCommercial": "Това е търговски адрес."
+        }
       },
       "accountsUI": {
         "members": "Участници",

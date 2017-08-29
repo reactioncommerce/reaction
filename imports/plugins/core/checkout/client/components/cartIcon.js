@@ -6,7 +6,7 @@ const CartIcon = ({ handleClick, cart }) => (
     <span data-event-category="cart">
       <i className="fa fa-shopping-cart fa-2x" />
     </span>
-    <div className="badge">{cart ? cart.cartCount() : 0}</div>
+    <div className="badge">{cart ? cart.getCount() : 0}</div>
   </div>
 );
 

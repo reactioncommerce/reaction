@@ -12,6 +12,9 @@
           "email": "E-Mail-Einstellungen",
           "description": "Produktbeschreibung hinzufügen",
           "remove": "Entfernen"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Lokalisierung und i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "Jahr wählen",
         "shopSettings": "Shop-Einstellungen",
         "dashboard": "Dashboard",
-        "print": "Drucken"
+        "print": "Drucken",
+        "auto": "Automatisch"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Produktsuche",
+          "includeTitle": "Titel mit einschließen",
+          "includeDescription": "Beschreibung mit einschließen",
+          "includePageTitle": "Seitentitel mit einschließen",
+          "includeDetails": "Details mit einschließen",
+          "includeVendor": "Anbieter mit einschließen"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Bestellungs-Sucheinstellungen"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Konto-Sucheinstellungen"
+        },
+        "noSettings": "Aktuell sind keine Einstellungen verfügbar",
+        "settingsSaved": "Die Sucheinstellungen wurden gespeichert",
+        "settingsfailed": "Die Aktualisierung der Sucheinstellungen ist fehlgeschlagen"
       },
       "header": {
         "tagsAdd": "Tag hinzufügen",
@@ -68,7 +91,8 @@
         "startTracking": "Tracking starten",
         "addBarcode": "Barcode hinzufügen",
         "quantity": "Menge",
-        "quantityGreaterThanZero": "Fehler: Die Menge muss über Null sein"
+        "quantityGreaterThanZero": "Fehler: Die Menge muss über Null sein",
+        "dropFiles": "Dateien zum Hochladen hierherziehen"
       },
       "productDetailEdit": {
         "title": "Produkttitle",
@@ -252,6 +276,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Gäste zur Kasse zulassen"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates Anwendungs-ID",
+            "refreshPeriod": "Open Exchange Rates Aktualisierungsperiode",
+            "refreshPeriodPlaceholder": "z. B. jede 1 Stunde"
+          },
+          "google": {
+            "clientId": "Google Kunden-ID",
+            "apiKey": "Google API-Schlüssel"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "Die Revisionsverwaltung ist deaktiviert. Jegliche Änderungen werden sofort veröffentlicht.",
+        "isEnabled": "Revisionskontrolle für Produkte aktiviert. Alle Änderungen werden müssen, bevor sie an den Kunden sichtbar veröffentlicht."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Standard-Zahlungsart",
+        "name": "Name",
+        "namePlaceholder": "Name des Geschäfts",
+        "description": "Beschreibung",
+        "descriptionPlaceholder": "Beschreiben Sie Ihr Geschäft für die SEO",
+        "descriptionTooltip": "Dieses Feld wird von einem Meta-Beschreibungs-Tag verwendet. Es ermöglicht es Suchmaschinen, Ihr Geschäft zu beschreiben",
+        "email": "E-Mail",
+        "emailPlaceholder": "Primäre Kontakt-E-Mail",
+        "keywords": "Schlüsselwörter",
+        "keywordsPlaceholder": "Meta-Schlüsselwörter für die SEO",
+        "language": "Grund-Sprache",
+        "addressBook": {
+          "company": "Firma",
+          "companyPlaceholder": "Dieser Firmenname",
+          "country": "Land",
+          "fullName": "Vor- und Zuname",
+          "fullNamePlaceholder": "Name Ihrer Organisation",
+          "address1": "Adresse 1",
+          "address1Placeholder": "Die Adresse Ihrer Organisation",
+          "address1Tooltip": "Diese Adresse wird für Besucher sichtbar sein",
+          "address2": "Adresse 2",
+          "address2Placeholder": "Zusätzliche Adresse",
+          "postal": "PLZ",
+          "city": "Stadt",
+          "region": "Region",
+          "phone": "Telefon",
+          "isShippingDefault": "Make this your default shipping address?",
+          "isBillingDefault": "Make this your default billing address?",
+          "isCommercial": "This is a commercial address."
+        }
       },
       "accountsUI": {
         "members": "Mitglieder",

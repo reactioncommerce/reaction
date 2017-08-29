@@ -12,6 +12,9 @@
           "email": "Email",
           "description": "Description",
           "remove": "Remove"
+        },
+        "settings": {
+          "localizationAndI18NLabel": "Localization and i18n"
         }
       },
       "app": {
@@ -31,7 +34,27 @@
         "yearOptions": "Choose year",
         "shopSettings": "Shop Settings",
         "dashboard": "Dashboard",
-        "print": "Print"
+        "print": "Print",
+        "auto": "Auto"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Product Search",
+          "includeTitle": "Include title",
+          "includeDescription": "Include description",
+          "includePageTitle": "Include page title",
+          "includeDetails": "Include details",
+          "includeVendor": "Include vendor"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Order Search Settings"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Account Search Settings"
+        },
+        "noSettings": "No settings currently available",
+        "settingsSaved": "Search settings saved",
+        "settingsfailed": "Search settings update failed"
       },
       "header": {
         "tagsAdd": "Add tag",
@@ -48,7 +71,6 @@
         "details": "Details",
         "detailsName": "Detail name",
         "detailsInfo": "Detail information",
-        "dropFiles": "Drop file to upload",
         "generate": "Generate",
         "generateBarcodes": "Generate Barcodes",
         "hideBarcodes": "Hide Barcodes",
@@ -69,7 +91,8 @@
         "startTracking": "Start Tracking",
         "addBarcode": "Add Barcode",
         "quantity": "Quantity",
-        "quantityGreaterThanZero": "Error: Quantity must be greater than zero"
+        "quantityGreaterThanZero": "Error: Quantity must be greater than zero",
+        "dropFiles": "Drop files to upload"
       },
       "productDetailEdit": {
         "title": "Title",
@@ -134,7 +157,11 @@
         "coreOrderWorkflow/created": "Created",
         "coreOrderWorkflow/processing": "Processing",
         "coreOrderWorkflow/completed": "Completed",
-        "coreOrderWorkflow/canceled": "Canceled"
+        "coreOrderWorkflow/canceled": "Canceled",
+        "coreOrderWorkflow/picked": "Picked",
+        "coreOrderWorkflow/packed": "Packed",
+        "coreOrderWorkflow/labeled": "Labeled",
+        "coreOrderWorkflow/shipped": "Shipped"
       },
       "cartSubTotals": {
         "head": "Your cart",
@@ -165,8 +192,13 @@
         "adjustedTotal": "Adjusted Total",
         "processor": "Processor",
         "filter": {
+          "status": "Status",
+          "thisWeek": "This Week",
+          "shippingStatus": "Shipping Status",
           "new": "New",
-          "captured": "Payment Captured",
+          "approved": "Approved",
+          "captured": "Captured",
+          "processing": "Processing",
           "shipped": "Shipped",
           "completed": "Completed",
           "canceled": "Canceled",
@@ -175,7 +207,25 @@
         "returnItemsTitle": "Return selected items",
         "returnItemsApproveAlert": "You are about to return {{returnItemsQuantity}} items but have yet to approve or capture {{totalAmount}} payment on your order. Would you like to approve now?",
         "returnItemsCaptureAlert": "Capture payment for total amount {{totalAmount}}?",
-        "returnItemsAlert": "Return {{returnItemsQuantity}} item(s), total return amount {{returnItemsTotal}}?"
+        "returnItemsAlert": "Return {{returnItemsQuantity}} item(s), total return amount {{returnItemsTotal}}?",
+        "capture": "Capture",
+        "capturing": "Capturing",
+        "bulkActions": "Bulk Actions",
+        "selected": "Selected",
+        "picked": "Picked",
+        "packed": "Packed",
+        "labeled": "Labeled",
+        "shipped": "Shipped",
+        "printInvoiceAndPickSheet": "Print Invoice and Pick Sheet",
+        "generateLabel": "Generate Label",
+        "approveBulkOrderAction": "Yes, Set All Select All Orders",
+        "approveBulkOrderActionRegression": "Yes, Regress All Selected Orders",
+        "cancelBulkOrderAction": "No, Cancel",
+        "orderAlreadyInState": "{{orderText}} already been {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} set to {{status}}",
+        "skippedBulkOrdersAlert": "You've requested that {{selectedOrders}} {{orderText}} be set to the '{{status}}' status, but {{numberOfSkippedOrders}} of these orders {{skippedOrdersText}} not in the '{{skippedState}}' state and would skip all steps leading up to the '{{status}}' state. Are you sure you want to do this?",
+        "bulkOrdersRegressionAlert": "You're about to regress {{ordersToRegress}} {{orderText}} back to the '{{status}}' state. Are you sure you want to continue with this operation?",
+        "paymentCaptureSuccess": "Payments successfully captured"
       },
       "orderShipping": {
         "shipTo": "Ship To",
@@ -259,6 +309,58 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Allow Guest Checkout"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates App Id",
+            "refreshPeriod": "Open Exchange Rates refresh period",
+            "refreshPeriodPlaceholder": "i.e. every 1 hour"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Google API Key"
+          }
+        }
+      },
+      "revisions": {
+        "isDisabled": "Revision control is disabled. Any changes will be published immediately.",
+        "isEnabled": "Revision control is enabled for Products. Any changes will be need to be published before being visible to customers."
+      },
+      "shop": {
+        "defaultPaymentMethod": "Default Payment Method",
+        "name": "Name",
+        "namePlaceholder": "Shop Name",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe your shop for SEO",
+        "descriptionTooltip": "Meta Description for SEO",
+        "email": "Email",
+        "emailPlaceholder": "Primary Contact Email",
+        "keywords": "Keywords",
+        "keywordsPlaceholder": "Meta keywords for SEO",
+        "language": "Base Language",
+        "addressBook": {
+          "company": "Company",
+          "companyPlaceholder": "This business name",
+          "country": "Country",
+          "fullName": "Full name",
+          "fullNamePlaceholder": "Your organization name",
+          "address1": "Address",
+          "address1Placeholder": "Your organization address",
+          "address1Tooltip": "This address will be visible to visitors",
+          "address2": "Address",
+          "address2Placeholder": "Additional address",
+          "postal": "Postal",
+          "city": "City",
+          "region": "Region",
+          "phone": "Phone",
+          "isShippingDefault": "Make this your default shipping address?",
+          "isBillingDefault": "Make this your default billing address?",
+          "isCommercial": "This is a commercial address."
+        }
       },
       "accountsUI": {
         "members": "Members",

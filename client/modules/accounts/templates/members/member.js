@@ -116,6 +116,7 @@ Template.memberSettings.helpers({
         });
       }
     });
+
     return permissionGroups;
   },
 
