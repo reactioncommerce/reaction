@@ -35,10 +35,8 @@ class EmailSettings extends Component {
     saveSettings(newSettings, () => this.setState({ isSaving: false }));
   }
 
-  handleSelect(e) {
-    const { settings } = this.state;
-    settings.service = e;
-    this.setState({ settings, hasAuth: !(settings.service === "Maildev") });
+  handleSelect(service) {
+    this.setState({ settings: { service }, hasAuth: !(service === "Maildev") });
   }
 
   render() {
