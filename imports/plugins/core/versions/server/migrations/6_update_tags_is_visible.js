@@ -9,5 +9,12 @@ Migrations.add({
         isVisible: true
       }
     }, { multi: true });
+  },
+  down() {
+    Tags.update({}, {
+      $unset: {
+        isVisible: null
+      }
+    }, { multi: true });
   }
 });
