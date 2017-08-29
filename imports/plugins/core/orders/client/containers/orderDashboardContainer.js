@@ -181,6 +181,16 @@ class OrderDashboardContainer extends Component {
   }
 
   selectAllOrders = (orders, areAllSelected) => {
+    this.setState({
+      renderFlowList: false
+    });
+    shippingStrings.forEach((string) => {
+      this.setState({
+        shipping: {
+          [string]: false
+        }
+      });
+    });
     if (areAllSelected) {
       // if all orders are selected, clear the selectedItems array
       // and set multipleSelect to false
