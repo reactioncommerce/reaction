@@ -73,10 +73,31 @@ const filters = new SimpleSchema({
  * @param {Array} shops - array of shopId to retrieve product from.
  * @return {Object} return product cursor
  */
-Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}) {
+Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, adminSubscription) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, Object));
   check(sort, Match.OneOf(undefined, Object));
+  check(adminSubscription, Match.Maybe(Boolean));
+
+  // Active shop
+  const shopId = Reaction.getShopId();
+  const primaryShopId = Reaction.getPrimaryShopId();
+
+  let isAdmin = false;
+
+  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shopId)) {
+    isAdmin = true;
+  }
+
+  // Don't publish if we're missing an active or primary shopId
+  if (!shopId || !primaryShopId) {
+    return this.ready();
+  }
+
+  // Don't publish admin subscriptions to non-admins
+  if (adminSubscription && isAdmin) {
+    return this.ready();
+  }
 
   // if there are filter/params that don't match the schema
   // validate, catch except but return no results
@@ -87,23 +108,20 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     return this.ready();
   }
 
-  const shopId = Reaction.getShopId();
-  if (!shopId) {
-    return this.ready();
-  }
-
+  // Init empty selector
   const selector = {};
-  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shopId)) {
+
+  // If this is an admin subscribing to admin products, publish deleted and child products
+  if (isAdmin && adminSubscription) {
     _.extend(selector, {
       isDeleted: { $in: [null, false] },
       ancestors: { $exists: true },
       shopId: shopId
     });
-  } else { // Changing the selector for non admin users only. To get top-level products.
+  } else { // Changing the selector for non admin users only. To get top-level products for all shops.
     _.extend(selector, {
       isDeleted: { $in: [null, false] },
-      ancestors: [],
-      shopId: shopId
+      ancestors: []
     });
   }
 

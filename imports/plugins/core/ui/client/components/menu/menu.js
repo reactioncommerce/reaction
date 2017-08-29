@@ -27,8 +27,14 @@ class Menu extends Component {
   }
 
   render() {
+    const className = classnames({
+      "rui": true,
+      "menu": true,
+      "dropdown-menu": true
+    }, this.props.menuClassName);
+
     return (
-      <ul className="rui menu dropdown-menu" style={this.props.style}>
+      <ul className={className} style={this.props.style}>
         {this.renderMenuItems()}
       </ul>
     );
@@ -39,6 +45,7 @@ Menu.propTypes = {
   attachment: PropTypes.string,
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  menuClassName: PropTypes.string,
   onChange: PropTypes.func,
   style: PropTypes.object,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number])
