@@ -260,7 +260,9 @@ function composer(props, onData) {
 
   if (Array.isArray(tags)) {
     for (const tag of tags) {
-      tagsByKey[tag._id] = tag;
+      if (tag) {
+        tagsByKey[tag._id] = tag;
+      }
     }
   }
 
