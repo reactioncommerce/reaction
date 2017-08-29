@@ -16,7 +16,7 @@ Template.checkoutLogin.helpers({
     const cart = Cart.findOne();
     if (cart && cart.workflow) {
       const currentStatus = cart.workflow.status;
-      const guestUser = Reaction.hasPermission("guest", Meteor.userId(), Reaction.getShopId());
+      const guestUser = Reaction.hasPermission("guest", Meteor.user());
 
       if (currentStatus !== self.template && guestUser === true) {
         return true;
