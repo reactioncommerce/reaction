@@ -38,7 +38,9 @@ export default function () {
         upsert: true
       });
 
-      if (!Reaction.Email.getMailUrl()) {
+      const config = Reaction.Email.getMailConfig();
+
+      if (config.direct) {
         Emails.update({ jobId }, {
           $set: {
             status: "failed"
@@ -49,7 +51,6 @@ export default function () {
         return job.fail(msg);
       }
 
-      const config = Reaction.Email.getMailConfig();
       Logger.debug(config, "Sending email with config");
 
       const transport = nodemailer.createTransport(config);

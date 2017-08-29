@@ -5,7 +5,7 @@ import { Reaction } from "/client/api";
 import actions from "../actions";
 import EmailSettings from "../components/emailSettings";
 
-const providers = Object.keys(require("nodemailer-wellknown/services.json"));
+const providers = require("nodemailer-wellknown/services.json");
 
 const composer = ({}, onData) => {
   if (Meteor.subscribe("Packages", Reaction.getShopId()).ready()) {
