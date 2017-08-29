@@ -46,12 +46,12 @@ function composer(props, onData) {
       const imageSub = Meteor.subscribe("CartImages", order.items);
 
       const orderSummary = {
-        quantityTotal: order.orderCount(),
-        subtotal: order.orderSubTotal(),
-        shipping: order.orderShipping(),
-        tax: order.orderTaxes(),
-        discounts: order.orderDiscounts(),
-        total: order.orderTotal(),
+        quantityTotal: order.getCount(),
+        subtotal: order.getSubTotal(),
+        shipping: order.getShippingTotal(),
+        tax: order.getTaxTotal(),
+        discounts: order.getDiscounts(),
+        total: order.getTotal(),
         shippingMethod: order.shipping[0].shipmentMethod.carrier,
         shippingAddress: order.shipping[0].address
       };
