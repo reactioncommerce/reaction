@@ -1,11 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Media, Orders } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrderDashboard from "../components/orderDashboard.js";
+import {
+  PACKAGE_NAME,
+  ORDER_LIST_FILTERS_PREFERENCE_NAME,
+  ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME,
+  shippingStates
+} from "../../lib/constants";
+
+const shippingStrings = ["picked", "packed", "labeled", "shipped"];
 
 const OrderHelper =  {
   makeQuery(filter) {
@@ -75,11 +83,50 @@ class OrderDashboardContainer extends Component {
       selectedItems: [],
       orders: props.orders,
       multipleSelect: false,
+      shipping: {
+        picked: false,
+        packed: false,
+        labeled: false,
+        shipped: false
+      },
+      renderFlowList: false,
+      isLoading: {
+        picked: false,
+        packed: false,
+        labeled: false,
+        shipped: false,
+        capturePayment: false
+      },
       ready: false,
       query: {},
       filter: i18next.t("order.filter.status"),
       className: ""
     };
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    this.setState({
+      orders: nextProps.orders
+    });
+  }
+
+  toggleShippingFlowList = () => {
+    this.setState({
+      renderFlowList: !this.state.renderFlowList
+    });
+    this.setListItemsToDefault();
+  }
+
+  setListItemsToDefault() {
+    if (this.state.renderFlowList === false) {
+      shippingStrings.forEach((value) => {
+        this.setState({
+          shipping: {
+            [value]: false
+          }
+        });
+      });
+    }
   }
 
   handleMenuClick = (event, value) => {
@@ -104,7 +151,15 @@ class OrderDashboardContainer extends Component {
 
   handleSelect = (event, isInputChecked, name) => {
     this.setState({
-      multipleSelect: false
+      multipleSelect: false,
+      renderFlowList: false
+    });
+    shippingStrings.forEach((value) => {
+      this.setState({
+        shipping: {
+          [value]: false
+        }
+      });
     });
     const selectedItemsArray = this.state.selectedItems;
 
@@ -162,6 +217,17 @@ class OrderDashboardContainer extends Component {
 
     if (startWorkflow === true) {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+      Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
+    }
+
+    const id = Reaction.Router.getQueryParam("_id");
+
+    if (id === undefined) {
+      Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
+    } else {
+      Reaction.Router.go("dashboard/orders", {}, {
+        _id: order._id
+      });
     }
   }
 
@@ -194,6 +260,397 @@ class OrderDashboardContainer extends Component {
     return false;
   }
 
+  /**
+   * shippingStatusUpdateCall
+   *
+   * @summary set selected order(s) to the provided shipping state
+   * @param {Array} selectedOrders - array of selected orders
+   * @param {String} status - the shipping status to be set
+   * @return {null} no return value
+   */
+  shippingStatusUpdateCall = (selectedOrders, status) => {
+    this.setState({
+      isLoading: {
+        [status]: true
+      }
+    });
+    let orderText;
+
+    if (selectedOrders.length > 1) {
+      orderText = "orders";
+    } else {
+      orderText = "order";
+    }
+    const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
+    let orderCount = 0;
+
+    selectedOrders.forEach((order) => {
+      Meteor.call(`orders/shipment${capitalizeStatus}`, order, order.shipping[0], (err) => {
+        if (err) {
+          Alerts.toast(`An error occured while setting the status: ${err}`, "error");
+        } else {
+          Meteor.call("orders/updateHistory", order._id, "Shipping state set by bulk operation", status);
+        }
+        orderCount++;
+        if (orderCount === selectedOrders.length) {
+          this.setState({
+            shipping: {
+              [status]: true
+            },
+            isLoading: {
+              [status]: false
+            }
+          });
+          Alerts.alert({
+            text: i18next.t("order.orderSetToState", {
+              orderNumber: selectedOrders.length,
+              orderText: orderText,
+              status: status
+            }),
+            type: "success",
+            allowOutsideClick: false
+          });
+        }
+      });
+    });
+  }
+
+  displayOrderText = (selectedOrders) => {
+    let orderText = "";
+    if (selectedOrders.length > 1) {
+      orderText = "Orders have";
+    } else {
+      orderText = "Order has";
+    }
+
+    return orderText;
+  }
+
+  displayAlert = (
+    selectedOrders, status, whichFalseState, falsePreviousStatuses, falseCurrentState, trueCurrentState
+  ) => {
+    const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
+    let orderText = "";
+    let skippedOrdersText = "";
+
+    if (selectedOrders.length > 1) {
+      orderText = "orders";
+    } else {
+      orderText = "order";
+    }
+
+    if (falsePreviousStatuses > 1) {
+      skippedOrdersText = "are";
+    } else {
+      skippedOrdersText = "is";
+    }
+
+    // if the order(s) want to skip the previous states, display alert
+    if (falsePreviousStatuses) {
+      Alerts.alert({
+        text: i18next.t("order.skippedBulkOrdersAlert", {
+          selectedOrders: selectedOrders.length, orderText: orderText, status: capitalizeStatus,
+          numberOfSkippedOrders: falsePreviousStatuses, skippedOrdersText: skippedOrdersText,
+          skippedState: whichFalseState
+        }),
+        type: "warning",
+        showCancelButton: true,
+        showCloseButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: i18next.t("order.approveBulkOrderAction"),
+        cancelButtonText: i18next.t("order.cancelBulkOrderAction")
+      }, (setSelected) => {
+        if (setSelected) {
+          // set status of order(s) if this action is confirmed
+          this.shippingStatusUpdateCall(selectedOrders, status);
+        }
+      });
+      // if the order(s) are following proper flow, set the status
+    } else if (!falsePreviousStatuses && falseCurrentState) {
+      this.shippingStatusUpdateCall(selectedOrders, status);
+      // display alert if order(s) are already in this state
+    } else if (!falsePreviousStatuses && !falseCurrentState && trueCurrentState) {
+      Alerts.alert({
+        text: i18next.t("order.orderAlreadyInState", {
+          orderText: this.displayOrderText(selectedOrders),
+          status: status
+        })
+      });
+    }
+  }
+
+  displayRegressionAlert = (
+    selectedOrders, ordersToRegress, status, whichFalseState, falsePreviousStatuses, falseCurrentState,
+    trueCurrentState) => {
+    const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
+    let orderText = "";
+
+    if (ordersToRegress > 1) {
+      orderText = "orders";
+    } else {
+      orderText = "order";
+    }
+
+    Alerts.alert({
+      text: i18next.t("order.bulkOrdersRegressionAlert", {
+        ordersToRegress: ordersToRegress, orderText: orderText, status: capitalizeStatus
+      }),
+      type: "warning",
+      showCancelButton: true,
+      showCloseButton: true,
+      allowOutsideClick: false,
+      confirmButtonText: i18next.t("order.approveBulkOrderActionRegression"),
+      cancelButtonText: i18next.t("order.cancelBulkOrderAction")
+    }, (regress) => {
+      if (regress) {
+        // if some of the order(s) want to skip the previous state, display warning alert for skipping states
+        if (falsePreviousStatuses) {
+          this.displayAlert(
+            selectedOrders, status, whichFalseState, falsePreviousStatuses, falseCurrentState, trueCurrentState
+          );
+        } else {
+          // set status of order(s) if this action is confirmed
+          this.shippingStatusUpdateCall(selectedOrders, status);
+        }
+      }
+    });
+  }
+
+  pickedShippingStatus = (selectedOrders, status) => {
+    let isNotPicked = 0;
+    let isPicked = 0;
+    let ordersToRegress = 0;
+
+    selectedOrders.forEach((order) => {
+      // check if the order(s) are in this state already or in the previous state
+      if (order.shipping[0].workflow.status === "new") {
+        isNotPicked++;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+        isPicked++;
+      } else {
+        // check if the selected order(s) are being regressed back to this state
+        if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/picked")) {
+          ordersToRegress++;
+        } else if (!order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/picked") &&
+        (order.shipping[0].workflow.status === "coreOrderWorkflow/packed" ||
+        order.shipping[0].workflow.status === "coreOrderWorkflow/labeled" ||
+        order.shipping[0].workflow.status === "coreOrderWorkflow/shipped")) {
+          ordersToRegress++;
+        }
+      }
+    });
+
+    // display regression alert if order(s) are being regressed
+    if (ordersToRegress) {
+      this.displayRegressionAlert(selectedOrders, ordersToRegress, status);
+    } else {
+      // set status to 'picked' if order(s) are in the previous state
+      if (isNotPicked) {
+        this.shippingStatusUpdateCall(selectedOrders, status);
+
+        // display alert if order(s) are already in this state
+      } else if (!isNotPicked && isPicked) {
+        Alerts.alert({
+          text: i18next.t("order.orderAlreadyInState", {
+            orderText: this.displayOrderText(selectedOrders), status: status
+          })
+        });
+      }
+    }
+  }
+
+  packedShippingStatus = (selectedOrders, status) => {
+    let isNotPicked = 0;
+    let isNotPacked = 0;
+    let isPacked = 0;
+    let ordersToRegress = 0;
+    const whichFalseState = shippingStates.picked;
+
+    selectedOrders.forEach((order) => {
+      // check if the order(s) are in this state already or in one of the previous states
+      if (order.shipping[0].workflow.status === "new") {
+        isNotPicked++;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+        isNotPacked++;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
+        isPacked++;
+      } else {
+        // check if the selected order(s) are being regressed back to this state
+        if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/packed")) {
+          ordersToRegress++;
+        } else if (!order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/packed") &&
+          (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled" ||
+          order.shipping[0].workflow.status === "coreOrderWorkflow/shipped")) {
+          ordersToRegress++;
+        }
+      }
+    });
+
+    // display regression alert if order(s) are being regressed
+    if (ordersToRegress) {
+      this.displayRegressionAlert(
+        selectedOrders, ordersToRegress, status, whichFalseState, isNotPicked, isNotPacked, isPacked
+      );
+
+      // display proper alert if the order(s) are in this state already or want to skip the previous states
+    } else this.displayAlert(selectedOrders, status, whichFalseState, isNotPicked, isNotPacked, isPacked);
+  }
+
+  labeledShippingStatus = (selectedOrders, status) => {
+    let isNotPacked = 0;
+    let isNotLabeled = 0;
+    let isLabeled = 0;
+    let ordersToRegress = 0;
+    let whichFalseState = "";
+
+    selectedOrders.forEach((order) => {
+      // check if the order(s) are in this state already or in one of the previous states
+      if (order.shipping[0].workflow.status === "new") {
+        isNotPacked++;
+        whichFalseState = shippingStates.picked;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+        isNotPacked++;
+        whichFalseState = shippingStates.packed;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
+        isNotLabeled++;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled") {
+        isLabeled++;
+      } else {
+        // check if the selected order(s) are being regressed back to this state
+        if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/labeled") ||
+        order.shipping[0].workflow.status === "coreOrderWorkflow/shipped") {
+          ordersToRegress++;
+        }
+      }
+    });
+
+    // display regression alert if order(s) are being regressed
+    if (ordersToRegress) {
+      this.displayRegressionAlert(
+        selectedOrders, ordersToRegress, status, whichFalseState, isNotPacked, isNotLabeled, isLabeled
+      );
+
+      // display proper alert if the order(s) are in this state already or want to skip the previous states
+    } else this.displayAlert(selectedOrders, status, whichFalseState, isNotPacked, isNotLabeled, isLabeled);
+  }
+
+
+  shippedShippingStatus = (selectedOrders, status) => {
+    let isNotLabeled = 0;
+    let isNotShipped = 0;
+    let isShipped = 0;
+    let whichFalseState = "";
+
+    selectedOrders.forEach((order) => {
+      // check if the order(s) are in this state already or in one of the previous states
+      if (order.shipping[0].workflow.status === "new") {
+        isNotLabeled++;
+        whichFalseState = shippingStates.picked;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+        isNotLabeled++;
+        whichFalseState = shippingStates.packed;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
+        isNotLabeled++;
+        whichFalseState = shippingStates.labeled;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled") {
+        isNotShipped++;
+      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/shipped") {
+        isShipped++;
+      }
+    });
+
+    // display proper alert if the order(s) are in this state already or want to skip the previous states
+    this.displayAlert(selectedOrders, status, whichFalseState, isNotLabeled, isNotShipped, isShipped);
+  }
+
+  /**
+   * setShippingStatus
+   *
+   * @summary call the relevant method based on the provided shipping status
+   * @param {String} status - the selected shipping status to be set
+   * @param {Array} selectedOrdersIds - array of ids of the selected orders
+   * @return {null} no return value
+   */
+  setShippingStatus = (status, selectedOrdersIds) => {
+    this.setState({
+      renderFlowList: true
+    });
+    const selectedOrders = this.state.orders.filter((order) => {
+      return selectedOrdersIds.includes(order._id);
+    });
+
+    if (status === "picked") {
+      this.pickedShippingStatus(selectedOrders, status);
+    }
+
+    if (status === "packed") {
+      this.packedShippingStatus(selectedOrders, status);
+    }
+
+    if (status === "labeled") {
+      this.labeledShippingStatus(selectedOrders, status);
+    }
+
+    if (status === "shipped") {
+      this.shippedShippingStatus(selectedOrders, status);
+    }
+  }
+
+  handleBulkPaymentCapture = (selectedOrdersIds) => {
+    this.setState({
+      isLoading: {
+        capturePayment: true
+      }
+    });
+    const selectedOrders = this.state.orders.filter((order) => {
+      return selectedOrdersIds.includes(order._id);
+    });
+
+    let orderCount = 0;
+
+    selectedOrders.forEach((order) => {
+      Meteor.call("orders/approvePayment", order, (err) => {
+        if (err) {
+          this.setState({
+            isLoading: {
+              capturePayment: false
+            }
+          });
+          Alerts.toast(`An error occured while approving the payment: ${err}`, "error");
+        } else {
+          Meteor.call("orders/capturePayments", order._id, (error) => {
+            if (error) {
+              this.setState({
+                isLoading: {
+                  capturePayment: false
+                }
+              });
+              Alerts.toast(`An error occured while capturing the payment: ${error}`, "error");
+            }
+
+            if (order.workflow.status === "new") {
+              Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+            }
+
+            orderCount++;
+            if (orderCount === selectedOrders.length) {
+              this.setState({
+                isLoading: {
+                  capturePayment: false
+                }
+              });
+              Alerts.alert({
+                text: i18next.t("order.paymentCaptureSuccess"),
+                type: "success",
+                allowOutsideClick: false
+              });
+            }
+          });
+        }
+      });
+    });
+  }
+
   render() {
     return (
       <OrderDashboard
@@ -209,6 +666,12 @@ class OrderDashboardContainer extends Component {
         selectAllOrders={this.selectAllOrders}
         multipleSelect={this.state.multipleSelect}
         handleMenuClick={this.handleMenuClick}
+        setShippingStatus={this.setShippingStatus}
+        shipping={this.state.shipping}
+        isLoading={this.state.isLoading}
+        renderFlowList={this.state.renderFlowList}
+        toggleShippingFlowList={this.toggleShippingFlowList}
+        handleBulkPaymentCapture={this.handleBulkPaymentCapture}
       />
     );
   }
