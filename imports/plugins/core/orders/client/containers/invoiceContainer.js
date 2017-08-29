@@ -217,7 +217,7 @@ class InvoiceContainer extends Component {
 
   hasRefundingEnabled() {
     const order = this.state.order;
-    const paymentMethodId = order.billing[0].paymentMethod.paymentPackageId;
+    const paymentMethodId = getBillingInfo(order).paymentMethod.paymentPackageId;
     const paymentMethod = Packages.findOne({ _id: paymentMethodId });
     const paymentMethodName = paymentMethod.name;
     const isRefundable = paymentMethod.settings[paymentMethodName].support.includes("Refund");
@@ -245,20 +245,20 @@ class InvoiceContainer extends Component {
   handleCancelPayment = (event) => {
     event.preventDefault();
     const order = this.state.order;
-    const invoiceTotal = order.billing[0].invoice.total;
+    const invoiceTotal = getBillingInfo(order).invoice.total;
     const currencySymbol = this.state.currency.symbol;
 
     Meteor.subscribe("Packages", Reaction.getShopId());
-    const packageId = order.billing[0].paymentMethod.paymentPackageId;
-    const settingsKey = order.billing[0].paymentMethod.paymentSettingsKey;
+    const packageId = getBillingInfo(order).paymentMethod.paymentPackageId;
+    const settingsKey = getBillingInfo(order).paymentMethod.paymentSettingsKey;
     // check if payment provider supports de-authorize
     const checkSupportedMethods = Packages.findOne({
       _id: packageId,
       shopId: Reaction.getShopId()
     }).settings[settingsKey].support;
 
-    const orderStatus = order.billing[0].paymentMethod.status;
-    const orderMode = order.billing[0].paymentMethod.mode;
+    const orderStatus = getBillingInfo(order).paymentMethod.status;
+    const orderMode = getBillingInfo(order).paymentMethod.mode;
 
     let alertText;
     if (_.includes(checkSupportedMethods, "de-authorize") ||
@@ -355,7 +355,7 @@ class InvoiceContainer extends Component {
         type: "warning",
         text: i18next.t("order.returnItemsApproveAlert", {
           returnItemsQuantity: this.getRefundedItemsInfo().quantity,
-          totalAmount: order.billing[0].invoice.total
+          totalAmount: getBillingInfo(order).invoice.total
         }),
         showCancelButton: true,
         confirmButtonText: i18next.t("order.approveInvoice")
@@ -375,7 +375,7 @@ class InvoiceContainer extends Component {
       title: i18next.t("order.returnItemsTitle"),
       text: i18next.t("order.returnItemsCaptureAlert", {
         returnItemsQuantity: this.getRefundedItemsInfo().quantity,
-        totalAmount: order.billing[0].invoice.total
+        totalAmount: getBillingInfo(order).invoice.total
       }),
       type: "warning",
       showCancelButton: true,
@@ -467,6 +467,13 @@ class InvoiceContainer extends Component {
   }
 }
 
+// helper function to get appropriate billing info
+function getBillingInfo(order) {
+  return order.billing.find(
+    billing => billing.shopId === Reaction.getShopId()
+  ) || {};
+}
+
 // helper to return the order payment object
 // the first credit paymentMethod on the order
 // returns entire payment method
@@ -539,6 +546,8 @@ const composer = (props, onData) => {
   const order = props.order;
   const refunds = props.refunds;
 
+  const shopBilling = getBillingInfo(order);
+
   const paymentMethod = orderCreditMethod(order).paymentMethod;
   const orderStatus = orderCreditMethod(order).paymentMethod.status;
   const orderDiscounts = orderCreditMethod(order).invoice.discounts;
@@ -561,7 +570,7 @@ const composer = (props, onData) => {
   adjustedTotal = Math.abs(paymentMethod.amount - refundTotal);
 
   // get invoice
-  const invoice = Object.assign({}, order.billing[0].invoice, {
+  const invoice = Object.assign({}, shopBilling.invoice, {
     totalItems: _.sumBy(order.items, (o) => o.quantity)
   });
 
