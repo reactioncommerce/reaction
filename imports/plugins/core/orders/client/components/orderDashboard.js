@@ -77,14 +77,10 @@ class OrderDashboard extends Component {
         // checking to ensure search was made and no results came back
         if (this.state.searchQuery && Array.isArray(orderSearchResultsIds)) {
           // pick and show only orders that are in search results (orderSearchResultsIds)
-          return this.setState({
-            orders: this.props.orders.filter(
-              order => orderSearchResultsIds.indexOf(order._id) > -1
-            )
-          });
+          const query = this.state.query;
+          query._id = { $in: orderSearchResultsIds };
+          this.setState({ query: query });
         }
-        // no search query applied, so show all current orders
-        this.setState({ orders: this.props.orders });
       }
     });
   }
@@ -145,7 +141,7 @@ class OrderDashboard extends Component {
 
             <div>
               <OrderTable
-                orders={this.state.orders}
+                orders={this.props.orders}
                 query={this.state.query}
                 selectedItems={this.props.selectedItems}
                 handleSelect={this.props.handleSelect}

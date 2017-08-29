@@ -52,25 +52,6 @@ class OrderTable extends Component {
     toggleShippingFlowList: PropTypes.func
   }
 
-  componentWillReceiveProps(nextProps) {
-    // opening action view causes re-render here. This is to check to ensure following lines do not run if nothing changed
-    if (JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
-      // If there is just one order as a match, the matching order should be opened in the action view panel
-      if (nextProps.orders.length === 1) {
-        const order = nextProps.orders.find(singleOrder => singleOrder);
-        Reaction.setActionViewDetail({
-          label: "Order Details",
-          i18nKeyLabel: "orderWorkflow.orderDetails",
-          data: { order: order },
-          props: { size: "large" },
-          template: "coreOrderWorkflow"
-        });
-      } else {
-        Reaction.hideActionViewDetail();
-      }
-    }
-  }
-
   /**
    * Fullfilment Badge
    * @param  {Object} order object containing info for order and coreOrderWorkflow
@@ -348,7 +329,6 @@ class OrderTable extends Component {
           }
           publication="CustomPaginatedOrders"
           collection={Orders}
-          data={this.props.orders}
           matchingResultsCount="order-count"
           query={this.props.query}
           columnMetadata={customColumnMetadata}
