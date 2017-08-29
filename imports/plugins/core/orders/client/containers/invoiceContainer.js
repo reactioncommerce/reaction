@@ -399,18 +399,19 @@ class InvoiceContainer extends Component {
           isRefunding: true
         });
 
-        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, refundInfo, (error) => {
+        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, refundInfo, (error, result) => {
           if (error) {
             Alerts.alert(error.reason);
           }
+          if (result) {
+            Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
 
-          Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
-
-          Alerts.alert({
-            text: "Items have successfully been returned and refund initiated",
-            type: "success",
-            allowOutsideClick: false
-          });
+            Alerts.alert({
+              text: "Items have successfully been returned and refund initiated",
+              type: "success",
+              allowOutsideClick: false
+            });
+          }
 
           this.setState({
             isRefunding: false

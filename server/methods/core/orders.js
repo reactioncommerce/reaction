@@ -1014,27 +1014,51 @@ export const methods = {
 
     const processor = paymentMethod.processor.toLowerCase();
     const order = Orders.findOne(orderId);
+    const orderMode = paymentMethod.mode;
     const transactionId = paymentMethod.transactionId;
     const amount = returnItemsInfo.total;
     const quantity = returnItemsInfo.quantity;
     const returnItems = returnItemsInfo.items;
     const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
 
+    const packageId = paymentMethod.paymentPackageId;
+    const settingsKey = paymentMethod.paymentSettingsKey;
+
+    // check if payment provider supports de-authorize
+    const checkSupportedMethods = Packages.findOne({
+      _id: packageId,
+      shopId: Reaction.getShopId()
+    }).settings[settingsKey].support;
+
+    let result;
     let query = {};
 
-    const result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
-
-    query = {
-      $push: {
-        "billing.$.paymentMethod.transactions": result
+    if (_.includes(checkSupportedMethods, "De-authorize")) {
+      result = Meteor.call(`${processor}/payment/deAuthorize`, paymentMethod, amount);
+      query = {
+        $push: {
+          "billing.$.paymentMethod.transactions": result
+        }
+      };
+      // Send email to notify cuustomer of a refund
+      Meteor.call("orders/sendNotification", order);
+      if (result.saved === false) {
+        Logger.fatal("Attempt for de-authorize transaction failed", order._id, paymentMethod.transactionId, result.error);
+        throw new Meteor.Error("Attempt to de-authorize transaction failed", result.error);
       }
-    };
-
-    // Send email to notify customer of a refund
-    Meteor.call("orders/sendNotification", order, "refunded");
-    if (result.saved === false) {
-      Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
-      throw new Meteor.Error("Attempt to refund transaction failed", result.error);
+    } else if (orderMode === "capture") {
+      result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
+      query = {
+        $push: {
+          "billing.$.paymentMethod.transactions": result
+        }
+      };
+      // Send email to notify cuustomer of a refund
+      Meteor.call("orders/sendNotification", order, "refunded");
+      if (result.saved === false) {
+        Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
+        throw new Meteor.Error("Attempt to refund transaction failed", result.error);
+      }
     }
 
     let refundedStatus = "refunded";

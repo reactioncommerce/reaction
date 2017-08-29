@@ -77,6 +77,7 @@ class NumberTypeInput extends Component {
           <Button
             className="button"
             icon="fa fa-chevron-up"
+            disabled={this.state.maxValue === this.state.value}
             onClick={this.handleIncrementButton}
           />
           <br/>
