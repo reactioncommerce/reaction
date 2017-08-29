@@ -1048,6 +1048,7 @@ export const methods = {
       }
     } else if (orderMode === "capture") {
       result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
+
       query = {
         $push: {
           "billing.$.paymentMethod.transactions": result

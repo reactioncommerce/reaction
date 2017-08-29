@@ -54,6 +54,13 @@ class InvoiceContainer extends Component {
     });
   }
 
+  handleClearRefunds = () => {
+    this.setState({
+      editedItems: [],
+      selectedItems: []
+    });
+  };
+
   handleItemSelect = (lineItem) => {
     let { selectedItems, editedItems } = this.state;
 
@@ -428,6 +435,7 @@ class InvoiceContainer extends Component {
           {...this.props}
 
           handleClick={this.handleClick}
+          clearRefunds={this.handleClearRefunds}
           handleSelectAllItems={this.handleSelectAllItems}
           onClose={this.handleClose}
           togglePopOver={this.togglePopOver}

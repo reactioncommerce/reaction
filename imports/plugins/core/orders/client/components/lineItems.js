@@ -10,6 +10,7 @@ import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox, Translati
 
 class LineItems extends Component {
   static propTypes = {
+    clearRefunds: PropTypes.func,
     displayMedia: PropTypes.func,
     editedItems: PropTypes.array,
     getRefundedItemsInfo: PropTypes.func,
@@ -254,9 +255,12 @@ class LineItems extends Component {
               className="rui btn btn-default flat icon-only pull-right"
               icon="fa-2x fa fa-times"
               bezelStyle="flat"
-              onClick={() => this.setState({
-                isOpen: false
-              })}
+              onClick={() => {
+                this.setState({
+                  isOpen: false
+                });
+                this.props.clearRefunds();
+              }}
             />
           </div>
         </div>
@@ -282,6 +286,7 @@ class LineItems extends Component {
                 this.setState({
                   isOpen: false
                 });
+                this.props.clearRefunds();
               }}
             />
           </div>
