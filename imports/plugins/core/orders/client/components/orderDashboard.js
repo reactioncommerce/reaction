@@ -51,12 +51,10 @@ class OrderDashboard extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setupTracker();
-    if (JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
-      this.setState({
-        orders: nextProps.orders,
-        query: nextProps.query
-      });
-    }
+    this.setState({
+      orders: nextProps.orders,
+      query: nextProps.query
+    });
   }
 
   componentWillUnmount() {

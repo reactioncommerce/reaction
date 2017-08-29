@@ -200,7 +200,6 @@ export function buildOrderSearchRecord(orderId) {
   orderSearch.product = {};
   orderSearch.variants = {};
   orderSearch.product.title = order.items.map(item => item.product.title);
-  orderSearch.product.title = order.items.map(item => item.product.title);
   orderSearch.variants.title = order.items.map(item => item.variants.title);
   orderSearch.variants.optionTitle = order.items.map(item => item.variants.optionTitle);
 
