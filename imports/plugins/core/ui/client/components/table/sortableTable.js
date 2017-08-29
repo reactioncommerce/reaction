@@ -18,10 +18,18 @@ class SortableTable extends Component {
       currentPage: 0,
       filterInput: "",
       maxPages: 0,
-      query: this.props.query || {}
+      query: props.query || {}
     };
 
     this.handleFilterInput = this.handleFilterInput.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.query !== this.props.query) {
+      this.setState({
+        query: nextProps.query
+      });
+    }
   }
 
 
