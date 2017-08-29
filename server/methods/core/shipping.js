@@ -38,9 +38,13 @@ export const methods = {
     */
 
     if (cart) {
-      const rates = Meteor.call("shipping/getShippingRates", cart);
+      let rates = Meteor.call("shipping/getShippingRates", cart);
       let selector;
       let update;
+
+      if (rates.length === 1 && rates[0].requestStatus === "error") {
+        rates = Meteor.call("shipping/getShippingRates", cart);
+      }
 
       // Temp hack until we build out multiple shipment handlers.
       // If we have an existing item update it, otherwise add to set.
