@@ -135,7 +135,6 @@ class OrderDashboard extends Component {
               >
                 <i className="fa fa-th-list" />
               </button>
-
               <button
                 className={`order-toggle-btn ${this.state.listClassName}`}
                 onClick={this.handleListToggle}
