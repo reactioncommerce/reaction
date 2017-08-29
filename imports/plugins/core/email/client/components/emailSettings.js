@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import getServiceConfig from "nodemailer-wellknown";
 import { Components } from "@reactioncommerce/reaction-components";
 
 class EmailSettings extends Component {
