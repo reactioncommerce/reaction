@@ -3,7 +3,7 @@ import { Tags } from "/lib/collections";
 
 Migrations.add({
   version: 6,
-  up: function () {
+  up() {
     Tags.update({}, {
       $set: {
         isVisible: true
