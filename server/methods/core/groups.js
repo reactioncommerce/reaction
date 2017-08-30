@@ -128,7 +128,7 @@ Meteor.methods({
     const group = Groups.findOne({ _id: groupId }) || {};
     const { permissions, shopId, slug } = group;
     const loggedInUserId = Meteor.userId();
-    const canInvite = Reaction.canInviteToGroup({ group, user: Meteor.user() });
+    const canInvite = Reaction.canInviteToGroup({ group });
 
     // we are limiting group method actions to only users with admin roles
     // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP

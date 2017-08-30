@@ -44,7 +44,7 @@ export function sortGroups(groups) {
 export function getInvitableGroups(groups) {
   return groups
     .filter(grp => grp.slug !== "owner")
-    .filter(grp => Reaction.canInviteToGroup({ group: grp, user: Meteor.user() }));
+    .filter(grp => Reaction.canInviteToGroup({ group: grp }));
 }
 
 // user's default invite groups is the group they belong

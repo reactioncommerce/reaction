@@ -522,7 +522,11 @@ export default {
    * @return {Boolean} -
    */
   canInviteToGroup(options) {
-    const { group, user } = options;
+    const { group } = options;
+    let { user } = options;
+    if (!user) {
+      user = Meteor.user();
+    }
     const userPermissions = user.roles[group.shopId];
     const groupPermissions = group.permissions;
 
@@ -532,6 +536,7 @@ export default {
     }
 
     // checks that userPermissions includes all elements from groupPermissions
+    // we are not using Reaction.hasPermission here because it returns true if the user has at least one
     return _.difference(groupPermissions, userPermissions).length === 0;
   },
   /**
