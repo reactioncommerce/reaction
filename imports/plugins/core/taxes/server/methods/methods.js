@@ -199,7 +199,7 @@ export const methods = {
           });
 
           if (totalTax > 0) {
-            cartTaxRate = totalTax / cartToCalc.cartSubTotal();
+            cartTaxRate = totalTax / cartToCalc.getSubTotal();
           }
 
           // Marketplace Compatible
