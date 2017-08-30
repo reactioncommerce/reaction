@@ -68,20 +68,22 @@ class OrderDashboard extends Component {
         />
         {this.state.orders.length ?
           <div className="container-fluid-sm order-details-list-container">
-            <div className="order-toggle-buttons">
-              <button
-                className={`order-toggle-btn ${this.state.detailClassName}`}
-                onClick={this.handleDetailToggle}
-              >
-                <i className="fa fa-th-list" />
-              </button>
+            <div className="order-toggle-buttons-container">
+              <div className="order-toggle-buttons">
+                <button
+                  className={`order-toggle-btn ${this.state.detailClassName}`}
+                  onClick={this.handleDetailToggle}
+                >
+                  <i className="fa fa-th-list" />
+                </button>
 
-              <button
-                className={`order-toggle-btn ${this.state.listClassName}`}
-                onClick={this.handleListToggle}
-              >
-                <i className="fa fa-list" />
-              </button>
+                <button
+                  className={`order-toggle-btn ${this.state.listClassName}`}
+                  onClick={this.handleListToggle}
+                >
+                  <i className="fa fa-list" />
+                </button>
+              </div>
             </div>
 
             <div>
