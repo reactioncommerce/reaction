@@ -548,18 +548,24 @@
   width: auto;
 
   @media only screen and (max-width: 740px) {
-      max-width: 95%;
+      max-width: 100%;
       > div {
         margin: 0 auto;
       }
   }
+
+  @media screen and (max-width: 745px) and (min-width: 710px) {
+    div[data-radium] {
+      display: none;
+    }
+  }
+
   // Table Headers
   .order-table-header-name {
     border-right: none;
     text-align: left;
     padding-top: 8px;
 
-    flex: 250 0 auto;
     min-width: 20%;
     max-width: 100%;
   }
@@ -568,7 +574,6 @@
     text-align: center;
     padding-top: 19px;
 
-    flex: 200 0 auto;
     min-width: 15%;
     max-width: 100%;
   }
@@ -577,7 +582,6 @@
     text-align: center;
     padding-top: 19px;
 
-    flex: 120 0 auto;
     min-width: 10%;
     max-width: 100%;
   }
@@ -586,7 +590,6 @@
     text-align: center;
     padding-top: 19px;
 
-    flex: 90 0 auto;
     min-width: 5%;
     max-width: 50%;
   }
@@ -595,7 +598,6 @@
     text-align: center;
     padding-top: 19px;
 
-    flex: 100 0 auto;
     min-width: 15%;
     max-width: 50%;
   }
@@ -604,7 +606,6 @@
     text-align: center;
     padding-top: 19px;
 
-    flex: 100 0 auto;
     min-width: 15%;
     max-width: 100%;
   }
@@ -613,13 +614,11 @@
     text-align: center;
     padding-top: 19px;
 
-    flex: 150 0 auto;
     min-width: 15%;
     max-width: 100%;
   }
 
   .order-table-header-control {
-    flex: 50 0 auto;
     min-width: 5%;
     max-width: 50%;
   }
@@ -628,34 +627,29 @@
   .order-table-column-name {
     border-right: 1px solid @black10;
 
-    flex: 250 0 auto;
     min-width: 20%;
     max-width: 100%;
   }
   .order-table-column-email {
     text-align: center;
-    flex: 200 0 auto;
     min-width: 15%;
     max-width: 100%;
   }
   .order-table-column-date {
     text-align: center;
 
-    flex: 120 0 auto;
     min-width: 10%;
     max-width: 100%;
   }
   .order-table-column-id {
     text-align: center;
 
-    flex: 90 0 auto;
     min-width: 5%;
     max-width: 50%;
   }
   .order-table-column-total {
     text-align: center;
 
-    flex: 100 0 auto;
     min-width: 15%;
     max-width: 50%;
   }
@@ -663,7 +657,6 @@
     text-align: center;
     margin-top: 2px;
 
-    flex: 100 0 auto;
     min-width: 15%;
     max-width: 100%;
   }
@@ -671,7 +664,6 @@
     text-align: center;
     margin-top: 2px;
 
-    flex: 150 0 auto;
     min-width: 15%;
     max-width: 100%;
   }
@@ -682,7 +674,6 @@
     // height: 100%;
     padding: 0;
     height: 49px;
-    flex: 50 0 auto;
     min-width: 5%;
     max-width: 50%;
     button {
@@ -1056,10 +1047,6 @@
   }
 }
 
-.all-orders-panel {
-  width: 50%;
-}
-
 .orders-table-container {
   display: flex;
   flex-direction: column;
@@ -1070,7 +1057,7 @@
 }
 
 .order-details-table {
-  width: 95%;
+  width: 100%;
   margin: 0 auto;
 }
 
