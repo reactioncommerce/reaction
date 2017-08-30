@@ -25,26 +25,10 @@ export const methods = {
     const cart = Cart.findOne(cartId);
     check(cart, CartSchema);
 
-    /*
-    Try to figure out which of the multiple callbacks run by
-    `Hooks.Events.run("onGetShippingRates", rates, cart);`
-    failed, and run that one again. Conversely, another option
-    is to have each callback change a `successfulCallbacks` callback
-    to include their package and name IF they are successful.
-    So, when this guy notices an error and runs `shipping/getShippingRates`
-    again, each method checks that its package + name is not in
-    successfulCallbacks BEFORE it makes an API call or however it
-    retrieves a list of shipping methods.
-    */
-
     if (cart) {
-      let rates = Meteor.call("shipping/getShippingRates", cart);
+      const rates = Meteor.call("shipping/getShippingRates", cart);
       let selector;
       let update;
-
-      if (rates.length === 1 && rates[0].requestStatus === "error") {
-        rates = Meteor.call("shipping/getShippingRates", cart);
-      }
 
       // Temp hack until we build out multiple shipment handlers.
       // If we have an existing item update it, otherwise add to set.
@@ -150,13 +134,24 @@ export const methods = {
   "shipping/getShippingRates": function (cart) {
     check(cart, CartSchema);
     const rates = [];
+    const retrialTargets = [];
     // must have items to calculate shipping
     if (!cart.items) {
       return rates;
     }
     // hooks for other shipping rate events
     // all callbacks should return rates
-    Hooks.Events.run("onGetShippingRates", rates, cart);
+    Hooks.Events.run("onGetShippingRates", [rates, retrialTargets], cart);
+
+    // Try once more.
+    if (retrialTargets.length > 0) {
+      Hooks.Events.run("onGetShippingRates", [rates, retrialTargets], cart);
+
+      if (retrialTargets.length > 0) {
+        Logger.warn("Failed to get shipping methods from these packages:", retrialTargets);
+      }
+    }
+
     Logger.debug("getShippingRates returning rates", rates);
     return rates;
   }

@@ -345,18 +345,38 @@ export const methods = {
    * provider.shippoProvider property. Each property has as key the Shippo's
    * carrierAccountId and as value the corresponding document of shipping
    * collection.
-   * @return {Array} errorDetails - In case a call to Shippo's API
-   * fails, this method returns an array containing a single object,
-   * which contains details of the error. Similarly, if the call to Shippo's API
-   * is successful BUT it returns an empty list of shipping methods, the
-   * situation is categorized as an error and this method returns an array
-   * containing an object with the details.
+   * @param {Array} retrialTargets - An array with the details of which
+   * methods for getting shipping methods failed in the most recent
+   * query of Shippo's API.
+   * @return {Array} errorDetailsAndRetryInfo - Details of any error that
+   * occurred while querying Shippo's API, and info about this package so
+   * as to know if this specific query is to be retried.
    * @return {Array} rates - The rates of the enabled and available
-   * Shippo carriers.
-   * */
-  "shippo/getShippingRatesForCart"(cartId, shippoDocs) {
+   * Shippo carriers, and an empty array.
+   */
+  "shippo/getShippingRatesForCart"(cartId, shippoDocs, retrialTargets) {
     check(cartId, String);
     check(shippoDocs, Object);
+    check(retrialTargets, Array);
+
+    const currentMethodInfo = {
+      packageName: "shippo",
+      fileName: "shippo.js"
+    };
+    let isRetry;
+    if (retrialTargets.length > 0) {
+      const isNotAmongFailedRequests = retrialTargets.every((target) =>
+        target.packageName !== currentMethodInfo.packageName &&
+        target.fileName !== currentMethodInfo.fileName
+      );
+
+      if (isNotAmongFailedRequests) {
+        return [[], []];
+      }
+
+      isRetry = true;
+    }
+
     const cart = Cart.findOne(cartId);
     if (cart && cart.userId === this.userId) { // confirm user has the right
       let shippoAddressTo;
@@ -420,13 +440,19 @@ export const methods = {
           carrierAccounts,
           apiKey
         });
+        // throw new Error("Failed to get data from Shippp.");
       } catch (error) {
         const errorDetails = {
           requestStatus: "error",
           shippingProvider: "shippo",
           message: error.message
         };
-        return [errorDetails];
+
+        if (isRetry) {
+          return [[], []];
+        }
+
+        return [[errorDetails], [currentMethodInfo]];
       }
 
       if (!shippoShipment.rates_list || shippoShipment.rates_list.length === 0) {
@@ -435,13 +461,18 @@ export const methods = {
           shippingProvider: "shippo",
           message: "Couldn't find any shipping methods. Try using another address."
         };
-        return [noShippingMethods];
+
+        if (isRetry) {
+          return [[], []];
+        }
+
+        return [[noShippingMethods], [currentMethodInfo]];
       }
 
       const shippoRates = shippoShipment.rates_list;
       const reactionRates = ratesParser(shippoRates, shippoDocs);
 
-      return reactionRates;
+      return [reactionRates, []];
     }
 
     return false;
