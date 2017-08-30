@@ -39,7 +39,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
               shopName={shop[shopKey].name}
               items={shop[shopKey].items}
               key={shopKey}
-              shippingMethod={orderSummary.shippingMethod}
+              shippingMethod={shop[shopKey].shippingMethod}
               handleDisplayMedia={handleDisplayMedia}
             />
           );
