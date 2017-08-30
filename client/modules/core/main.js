@@ -514,7 +514,7 @@ export default {
     return allowGuest;
   },
   /**
-   * canInviteToGroup
+   * canInviteToGroup - client (similar to server/api canInviteToGroup)
    * @summary checks if the user making the request is allowed to make invitation to that group
    * @param {Object} options -
    * @param {Object} options.group - group to invite to
@@ -526,7 +526,8 @@ export default {
     const userPermissions = user.roles[group.shopId];
     const groupPermissions = group.permissions;
 
-    if (this.hasPermission(["owner", "admin"], Meteor.userId(), group.shopId)) {
+    // granting invitation right for user with `owner` role in a shop
+    if (this.hasPermission(["owner"], Meteor.userId(), group.shopId)) {
       return true;
     }
 
