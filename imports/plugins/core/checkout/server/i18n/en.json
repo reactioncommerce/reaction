@@ -7,6 +7,11 @@
         "shortcut": {},
         "dashboard": {},
         "settings": {}
+      },
+      "cartCompleted": {
+        "yourCart": "Your Cart",
+        "discountTotal": "Discount Total",
+        "orderTotal": "Order Total"
       }
     }
   }
