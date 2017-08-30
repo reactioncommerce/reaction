@@ -83,6 +83,7 @@ class OrderDashboardContainer extends Component {
       selectedItems: [],
       orders: props.orders,
       multipleSelect: false,
+      // TODO: model this with the assumption that there may be different stages to workflows
       shipping: {
         picked: false,
         packed: false,
@@ -90,6 +91,7 @@ class OrderDashboardContainer extends Component {
         shipped: false
       },
       renderFlowList: false,
+      // TODO: model this with the assumption that there may be different stages to workflows
       isLoading: {
         picked: false,
         packed: false,
