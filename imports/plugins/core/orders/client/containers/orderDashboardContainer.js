@@ -436,8 +436,11 @@ class OrderDashboardContainer extends Component {
     let ordersToRegress = 0;
 
     selectedOrders.forEach((order) => {
+      // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
       const orderWorkflow = order.shipping[0].workflow;
       // check if the order(s) are in this state already or in the previous state
+
+      // TODO: model this with the assumption that there may be different workflows depending on the type of shop or product that a shop is selling.
       if (orderWorkflow.status === "new") {
         isNotPicked++;
       } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
@@ -481,8 +484,11 @@ class OrderDashboardContainer extends Component {
     let ordersToRegress = 0;
 
     selectedOrders.forEach((order) => {
+      // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
       const orderWorkflow = order.shipping[0].workflow;
       // check if the order(s) are in this state already or in one of the previous states
+
+      // TODO: model this with the assumption that there may be different workflows depending on the type of shop or product that a shop is selling.
       if (orderWorkflow.status === "new") {
         isNotPicked++;
       } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
@@ -534,8 +540,11 @@ class OrderDashboardContainer extends Component {
     let ordersToRegress = 0;
 
     selectedOrders.forEach((order) => {
+      // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
       const orderWorkflow = order.shipping[0].workflow;
       // check if the order(s) are in this state already or in one of the previous states
+
+      // TODO: model this with the assumption that there may be different workflows depending on the type of shop or product that a shop is selling.
       if (orderWorkflow.status === "new") {
         isNotPacked++;
         whichFalseState = shippingStates.picked;
@@ -588,8 +597,11 @@ class OrderDashboardContainer extends Component {
     let isShipped = 0;
 
     selectedOrders.forEach((order) => {
+      // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
       const orderWorkflow = order.shipping[0].workflow.status;
       // check if the order(s) are in this state already or in one of the previous states
+
+      // TODO: model this with the assumption that there may be different workflows depending on the type of shop or product that a shop is selling.
       if (orderWorkflow === "new") {
         isNotLabeled++;
         whichFalseState = shippingStates.picked;
