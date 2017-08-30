@@ -8,7 +8,7 @@ const ShopOrderSummary = ({ shopSummary }) => {
       <div className="order-summary-line">
         <div className="order-summary-header-line"> </div>
         <div className="order-summary-store-name">
-          <Components.Translation defaultValue="Order placed by" i18nKey={"cartCompleted.orderPlacedBy"}/> {shopSummary.name.toLowerCase()}
+          <Components.Translation defaultValue="Fulfilled by" i18nKey={"cartCompleted.fulfilledBy"}/> {shopSummary.name}
         </div>
       </div>
       <div className="order-summary-line">
