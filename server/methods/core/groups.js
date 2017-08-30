@@ -30,6 +30,7 @@ Meteor.methods({
     let _id;
 
     // we are limiting group method actions to only users with admin roles
+    // this also include shop owners, since they have the global roles
     if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
@@ -79,6 +80,7 @@ Meteor.methods({
     check(shopId, String);
 
     // we are limiting group method actions to only users with admin roles
+    // this also include shop owners, since they have the global roles
     if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
@@ -129,11 +131,12 @@ Meteor.methods({
     const canInvite = Reaction.canInviteToGroup({ group, user: Meteor.user() });
 
     // we are limiting group method actions to only users with admin roles
+    // this also include shop owners, since they have the global roles
     if (!Reaction.hasPermission("admin", loggedInUserId, shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    // Users with `owner` and/or `admin` roles can invite to any group.
+    // Users with `owner` and/or `admin` roles can invite to any group
     // Also a user with `admin` can invite to only groups they have permissions that are a superset of
     // See details of canInvite method in core (i.e Reaction.canInviteToGroup)
     if (!canInvite) {
@@ -198,6 +201,7 @@ Meteor.methods({
     const defaultCustomerGroupForShop = Groups.findOne({ slug: "customer", shopId }) || {};
 
     // we are limiting group method actions to only users with admin roles
+    // this also include shop owners, since they have the global roles
     if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }

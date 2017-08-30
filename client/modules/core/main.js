@@ -527,7 +527,6 @@ export default {
     const groupPermissions = group.permissions;
 
     if (this.hasPermission(["owner", "admin"], Meteor.userId(), group.shopId)) {
-      console.log("has these roles [owner, admin]", "allow invitation");
       return true;
     }
 

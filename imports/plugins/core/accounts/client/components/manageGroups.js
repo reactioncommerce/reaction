@@ -30,6 +30,7 @@ class ManageGroups extends Component {
 
   render() {
     // this gets a list of groups the user can invite to, we show only those in the dropdown
+    // see doc for getInvitableGroups in helpers/accountsHelper.js
     const groupsInvitable = getInvitableGroups(this.state.adminGroups);
 
     return (
