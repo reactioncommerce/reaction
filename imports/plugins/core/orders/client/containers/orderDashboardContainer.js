@@ -693,10 +693,6 @@ class OrderDashboardContainer extends Component {
               Alerts.toast(`An error occured while capturing the payment: ${error}`, "error");
             }
 
-            if (order.workflow.status === "new") {
-              Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
-            }
-
             orderCount++;
             if (orderCount === selectedOrders.length) {
               this.setState({
