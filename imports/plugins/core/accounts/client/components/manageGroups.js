@@ -7,7 +7,6 @@ class ManageGroups extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     adminGroups: PropTypes.array,
-    canInviteToGroup: PropTypes.func,
     group: PropTypes.object,
     groups: PropTypes.array,
     onChangeGroup: PropTypes.func
@@ -30,7 +29,8 @@ class ManageGroups extends Component {
   }
 
   render() {
-    const groupsInvitable = getInvitableGroups(this.state.adminGroups, this.props.canInviteToGroup);
+    // this gets a list of groups the user can invite to, we show only those in the dropdown
+    const groupsInvitable = getInvitableGroups(this.state.adminGroups);
 
     return (
       <div className="groups-form">

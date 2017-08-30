@@ -132,6 +132,11 @@ export default {
     const userPermissions = user.roles[group.shopId];
     const groupPermissions = group.permissions;
 
+    if (this.hasPermission(["owner", "admin"], Meteor.userId(), group.shopId)) {
+      console.log("has these roles [owner, admin]", "allow invitation");
+      return true;
+    }
+
     // checks that userPermissions includes all elements from groupPermissions
     return _.difference(groupPermissions, userPermissions).length === 0;
   },
