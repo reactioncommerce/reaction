@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { i18next, Logger, Reaction } from "/client/api";
+import { i18next, Logger, Reaction, formatPriceString } from "/client/api";
 import { Media, Packages } from "/lib/collections";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
@@ -355,7 +355,7 @@ class InvoiceContainer extends Component {
         type: "warning",
         text: i18next.t("order.returnItemsApproveAlert", {
           returnItemsQuantity: this.getRefundedItemsInfo().quantity,
-          totalAmount: getBillingInfo(order).invoice.total
+          totalAmount: formatPriceString(getBillingInfo(order).invoice.total)
         }),
         showCancelButton: true,
         confirmButtonText: i18next.t("order.approveInvoice")
@@ -375,7 +375,7 @@ class InvoiceContainer extends Component {
       title: i18next.t("order.returnItemsTitle"),
       text: i18next.t("order.returnItemsCaptureAlert", {
         returnItemsQuantity: this.getRefundedItemsInfo().quantity,
-        totalAmount: getBillingInfo(order).invoice.total
+        totalAmount: formatPriceString(getBillingInfo(order).invoice.total)
       }),
       type: "warning",
       showCancelButton: true,
@@ -396,7 +396,7 @@ class InvoiceContainer extends Component {
       title: i18next.t("order.returnItemsTitle"),
       text: i18next.t("order.returnItemsAlert", {
         returnItemsQuantity: refundInfo.quantity,
-        returnItemsTotal: refundInfo.total
+        returnItemsTotal: formatPriceString(refundInfo.total)
       }),
       showCancelButton: true,
       confirmButtonText: i18next.t("order.refundAmount")
@@ -414,7 +414,7 @@ class InvoiceContainer extends Component {
             Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
 
             Alerts.alert({
-              text: "Items have successfully been returned and refund initiated",
+              text: i18next.t("order.returnItemsSuccess"),
               type: "success",
               allowOutsideClick: false
             });

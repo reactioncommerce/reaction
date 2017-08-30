@@ -208,6 +208,7 @@
         "returnItemsApproveAlert": "You are about to return {{returnItemsQuantity}} items but have yet to approve or capture {{totalAmount}} payment on your order. Would you like to approve now?",
         "returnItemsCaptureAlert": "Capture payment for total amount {{totalAmount}}?",
         "returnItemsAlert": "Return {{returnItemsQuantity}} item(s), total return amount {{returnItemsTotal}}?",
+        "returnItemsSuccess": "Items have successfully been returned and refund initiated",
         "capture": "Capture",
         "capturing": "Capturing",
         "bulkActions": "Bulk Actions",
