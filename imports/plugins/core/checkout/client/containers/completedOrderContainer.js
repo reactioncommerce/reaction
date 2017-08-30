@@ -48,12 +48,11 @@ function composer(props, onData) {
       const orderSummary = {
         quantityTotal: order.getCount(),
         subtotal: order.getSubTotal(),
-        shipping: order.getShippingTotal(),
+        shippingTotal: order.getShippingTotal(),
         tax: order.getTaxTotal(),
         discounts: order.getDiscounts(),
         total: order.getTotal(),
-        shippingMethod: order.shipping[0].shipmentMethod.carrier,
-        shippingAddress: order.shipping[0].address
+        shipping: order.shipping
       };
 
       if (imageSub.ready()) {

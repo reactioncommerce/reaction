@@ -17,7 +17,6 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
       />
     );
   }
-  const { shippingAddress } = orderSummary;
   return (
     <div className="container order-completed">
       <div className="order-details-header">
@@ -53,12 +52,16 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
         <div className="order-details-content-title">
           <Components.Translation defaultValue="Shipping Address" i18nKey={"cartCompleted.shippingAddress"} />
         </div>
-        <div className="order-details-info-box">
-          <div className="order-details-info-box-content">
-            <p>{shippingAddress.address1}<br />
-              {shippingAddress.city}, {shippingAddress.region} {shippingAddress.postal} {shippingAddress.country}</p>
+        {orderSummary.shipping.map((shipment) => {
+          return <div className="order-details-info-box" key={shipment._id}>
+            <div className="order-details-info-box-content">
+              <p>
+                {shipment.address.address1}<br/>
+                {shipment.address.city}, {shipment.address.region} {shipment.address.postal} {shipment.address.country}
+              </p>
+            </div>
           </div>
-        </div>
+        })}
 
         <div className="order-details-content-title">
           <Components.Translation defaultValue="Payment Method" i18nKey={"cartCompleted.paymentMethod"} />
