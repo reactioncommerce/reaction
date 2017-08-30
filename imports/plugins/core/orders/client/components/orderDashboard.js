@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import { Meteor } from "meteor/meteor";
-import { Tracker } from "meteor/tracker";
 import PropTypes from "prop-types";
 import { Icon, Translation } from "@reactioncommerce/reaction-ui";
 import OrderTable from "./orderTable";
 import OrderActions from "./orderActions";
-import { OrderSearch as OrderSearchCollection } from "/lib/collections";
-import OrderSearch from "../components/orderSearch";
 
 class OrderDashboard extends Component {
   static propTypes = {
@@ -30,71 +26,18 @@ class OrderDashboard extends Component {
     toggleShippingFlowList: PropTypes.func
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      detailClassName: "",
-      listClassName: "order-icon-toggle",
-      openList: true,
-      orders: this.props.orders,
-      query: this.props.query,
-      searchQuery: ""
-    };
-
-    this.dep = new Tracker.Dependency;
-  }
-
-  componentDidMount() {
-    this.setupTracker();
+  state = {
+    detailClassName: "",
+    listClassName: "order-icon-toggle",
+    openList: true,
+    orders: this.props.orders,
+    query: this.props.query
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setupTracker();
     this.setState({
       orders: nextProps.orders,
       query: nextProps.query
-    });
-  }
-
-  componentWillUnmount() {
-    this.subscription.stop();
-  }
-
-  // Extracted Tracker logic for the search subscription, to allow calling in both
-  // componentDidMount and componentWillReceiveProps
-  // This tracker is setup in the component because we need to re-subscribe when search input changes
-  setupTracker = () => {
-    Tracker.autorun(() => {
-      this.dep.depend();
-      this.subscription = Meteor.subscribe("SearchResults", "orders", this.state.searchQuery);
-      let orderSearchResultsIds;
-
-      if (this.subscription.ready()) {
-        const orderSearchResults = OrderSearchCollection.find().fetch();
-        const query = this.state.query;
-        orderSearchResultsIds = orderSearchResults.map(orderSearch => orderSearch._id);
-        // checking to ensure search was made and search results are returned
-        if (this.state.searchQuery && Array.isArray(orderSearchResultsIds)) {
-          // add matching results from search to query passed to Sortable
-          query._id = { $in: orderSearchResultsIds };
-          return this.setState({ query: query });
-        }
-        // being here means no search text is inputed or search was cleared, so reset any previous match
-        delete query._id;
-        this.setState({ query: query });
-      }
-    });
-  }
-
-  /**
-   * handleSearchChange - handler called on search query change
-   * @param  {String} value - search field current value
-   * @return {null} -
-   */
-  handleSearchChange = (value) => {
-    this.setState({ searchQuery: value }, () => {
-      this.dep.changed();
     });
   }
 
@@ -116,8 +59,7 @@ class OrderDashboard extends Component {
 
   render() {
     return (
-      <div className="order-list">
-        <OrderSearch handleChange={this.handleSearchChange} />
+      <div>
         <OrderActions
           handleMenuClick={this.props.handleMenuClick}
           clearFilter={this.props.clearFilter}
@@ -133,6 +75,7 @@ class OrderDashboard extends Component {
               >
                 <i className="fa fa-th-list" />
               </button>
+
               <button
                 className={`order-toggle-btn ${this.state.listClassName}`}
                 onClick={this.handleListToggle}
