@@ -429,6 +429,8 @@ class OrderDashboardContainer extends Component {
   }
 
   pickedShippingStatus = (selectedOrders, status) => {
+    // counters to keep track of how many orders are not picked,
+    // are already picked, and how many are being regressed
     let isNotPicked = 0;
     let isPicked = 0;
     let ordersToRegress = 0;
@@ -469,11 +471,14 @@ class OrderDashboardContainer extends Component {
   }
 
   packedShippingStatus = (selectedOrders, status) => {
+    // if an order state wants to skip to packed, this is the state being skipped
+    const whichFalseState = shippingStates.picked;
+    // counters to keep track of how many orders are not picked/packed,
+    // are already packed, and how many are being regressed
     let isNotPicked = 0;
     let isNotPacked = 0;
     let isPacked = 0;
     let ordersToRegress = 0;
-    const whichFalseState = shippingStates.picked;
 
     selectedOrders.forEach((order) => {
       const orderWorkflow = order.shipping[0].workflow;
@@ -519,11 +524,14 @@ class OrderDashboardContainer extends Component {
   }
 
   labeledShippingStatus = (selectedOrders, status) => {
+    // string that will hold the state being skipped
+    let whichFalseState = "";
+    // counters to keep track of how many orders are not picked/packed/labeled,
+    // are already labeled, and how many are being regressed
     let isNotPacked = 0;
     let isNotLabeled = 0;
     let isLabeled = 0;
     let ordersToRegress = 0;
-    let whichFalseState = "";
 
     selectedOrders.forEach((order) => {
       const orderWorkflow = order.shipping[0].workflow;
@@ -571,10 +579,13 @@ class OrderDashboardContainer extends Component {
 
 
   shippedShippingStatus = (selectedOrders, status) => {
+    // string that will hold the state being skipped
+    let whichFalseState = "";
+    // counters to keep track of how many orders are not picked/packed/labeled/shipped,
+    // are already shipped, and how many are being regressed
     let isNotLabeled = 0;
     let isNotShipped = 0;
     let isShipped = 0;
-    let whichFalseState = "";
 
     selectedOrders.forEach((order) => {
       const orderWorkflow = order.shipping[0].workflow.status;
