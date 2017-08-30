@@ -17,16 +17,14 @@ class LineItems extends Component {
     getSelectedItemsInfo: PropTypes.func,
     handleInputChange: PropTypes.func,
     handleItemSelect: PropTypes.func,
+    handlePopOverOpen: PropTypes.func,
     handleReturnItems: PropTypes.func,
     handleSelectAllItems: PropTypes.func,
     isRefunding: PropTypes.bool,
+    popOverIsOpen: PropTypes.bool,
     selectAllItems: PropTypes.bool,
     selectedItems: PropTypes.array,
     uniqueItems: PropTypes.array
-  }
-
-  state = {
-    isOpen: false
   }
 
   calculateTotal(price, shipping, taxes) {
@@ -47,7 +45,7 @@ class LineItems extends Component {
   }
 
   displayQuantity(uniqueItem) {
-    if (this.state.isOpen) {
+    if (this.props.popOverIsOpen) {
       return (
         <div>
           {!this.props.selectedItems.includes(uniqueItem._id) ?
@@ -71,7 +69,7 @@ class LineItems extends Component {
     const className = classnames({
       "order-items": true,
       "invoice-item": true,
-      "selected": this.props.selectedItems.includes(uniqueItem._id) && this.state.isOpen
+      "selected": this.props.selectedItems.includes(uniqueItem._id) && this.props.popOverIsOpen
     });
 
     return (
@@ -81,10 +79,10 @@ class LineItems extends Component {
         >
           <div className={classnames({
             "order-item-media": true,
-            "popover-mode": this.state.isOpen
+            "popover-mode": this.props.popOverIsOpen
           })}
           >
-            {this.state.isOpen ?
+            {this.props.popOverIsOpen ?
               <RolloverCheckbox
                 className="order-invoice-rollover"
                 checkboxClassName="checkbox-avatar checkbox-large"
@@ -231,7 +229,7 @@ class LineItems extends Component {
   renderPopOver() {
     return (
       <Popover
-        isOpen={this.state.isOpen}
+        isOpen={this.props.popOverIsOpen}
         attachment="middle center"
         targetAttachment="middle center"
         showDropdownButton={false}
@@ -255,12 +253,7 @@ class LineItems extends Component {
               className="rui btn btn-default flat icon-only pull-right"
               icon="fa-2x fa fa-times"
               bezelStyle="flat"
-              onClick={() => {
-                this.setState({
-                  isOpen: false
-                });
-                this.props.clearRefunds();
-              }}
+              onClick={this.props.clearRefunds}
             />
           </div>
         </div>
@@ -282,12 +275,7 @@ class LineItems extends Component {
               bezelStyle="solid"
               status="default"
               label="Cancel"
-              onClick={() => {
-                this.setState({
-                  isOpen: false
-                });
-                this.props.clearRefunds();
-              }}
+              onClick={this.props.clearRefunds}
             />
           </div>
           <div className="invoice-action-refund">
@@ -311,10 +299,7 @@ class LineItems extends Component {
   render() {
     const { uniqueItems } = this.props;
     return (
-      <div className="invoice invoice-line-items" onClick={() => this.setState({
-        isOpen: true
-      })}
-      >
+      <div className="invoice invoice-line-items" onClick={this.props.handlePopOverOpen}>
         {uniqueItems.map((uniqueItem) => {
           return (
             <div key={uniqueItem._id}> {this.renderLineItem(uniqueItem)} </div>

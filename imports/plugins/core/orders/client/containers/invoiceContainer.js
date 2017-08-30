@@ -54,10 +54,18 @@ class InvoiceContainer extends Component {
     });
   }
 
+  handlePopOverOpen = (event) => {
+    event.preventDefault();
+    this.setState({
+      popOverIsOpen: true
+    });
+  }
+
   handleClearRefunds = () => {
     this.setState({
       editedItems: [],
-      selectedItems: []
+      selectedItems: [],
+      popOverIsOpen: false
     });
   };
 
@@ -421,7 +429,10 @@ class InvoiceContainer extends Component {
           }
 
           this.setState({
-            isRefunding: false
+            isRefunding: false,
+            popOverIsOpen: false,
+            editedItems: [],
+            selectedItems: []
           });
         });
       }
@@ -436,6 +447,7 @@ class InvoiceContainer extends Component {
 
           handleClick={this.handleClick}
           clearRefunds={this.handleClearRefunds}
+          handlePopOverOpen={this.handlePopOverOpen}
           handleSelectAllItems={this.handleSelectAllItems}
           onClose={this.handleClose}
           togglePopOver={this.togglePopOver}
