@@ -434,19 +434,20 @@ class OrderDashboardContainer extends Component {
     let ordersToRegress = 0;
 
     selectedOrders.forEach((order) => {
+      const orderWorkflow = order.shipping[0].workflow;
       // check if the order(s) are in this state already or in the previous state
-      if (order.shipping[0].workflow.status === "new") {
+      if (orderWorkflow.status === "new") {
         isNotPicked++;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+      } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
         isPicked++;
       } else {
         // check if the selected order(s) are being regressed back to this state
-        if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/picked")) {
+        if (orderWorkflow.workflow.includes("coreOrderWorkflow/picked")) {
           ordersToRegress++;
-        } else if (!order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/picked") &&
-        (order.shipping[0].workflow.status === "coreOrderWorkflow/packed" ||
-        order.shipping[0].workflow.status === "coreOrderWorkflow/labeled" ||
-        order.shipping[0].workflow.status === "coreOrderWorkflow/shipped")) {
+        } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/picked") &&
+        (orderWorkflow.status === "coreOrderWorkflow/packed" ||
+        orderWorkflow.status === "coreOrderWorkflow/labeled" ||
+        orderWorkflow.status === "coreOrderWorkflow/shipped")) {
           ordersToRegress++;
         }
       }
@@ -475,20 +476,21 @@ class OrderDashboardContainer extends Component {
     const whichFalseState = shippingStates.picked;
 
     selectedOrders.forEach((order) => {
+      const orderWorkflow = order.shipping[0].workflow;
       // check if the order(s) are in this state already or in one of the previous states
-      if (order.shipping[0].workflow.status === "new") {
+      if (orderWorkflow.status === "new") {
         isNotPicked++;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+      } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
         isNotPacked++;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
+      } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
         isPacked++;
       } else {
         // check if the selected order(s) are being regressed back to this state
-        if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/packed")) {
+        if (orderWorkflow.workflow.includes("coreOrderWorkflow/packed")) {
           ordersToRegress++;
-        } else if (!order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/packed") &&
-          (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled" ||
-          order.shipping[0].workflow.status === "coreOrderWorkflow/shipped")) {
+        } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/packed") &&
+          (orderWorkflow.status === "coreOrderWorkflow/labeled" ||
+          orderWorkflow.status === "coreOrderWorkflow/shipped")) {
           ordersToRegress++;
         }
       }
@@ -524,21 +526,22 @@ class OrderDashboardContainer extends Component {
     let whichFalseState = "";
 
     selectedOrders.forEach((order) => {
+      const orderWorkflow = order.shipping[0].workflow;
       // check if the order(s) are in this state already or in one of the previous states
-      if (order.shipping[0].workflow.status === "new") {
+      if (orderWorkflow.status === "new") {
         isNotPacked++;
         whichFalseState = shippingStates.picked;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+      } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
         isNotPacked++;
         whichFalseState = shippingStates.packed;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
+      } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
         isNotLabeled++;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled") {
+      } else if (orderWorkflow.status === "coreOrderWorkflow/labeled") {
         isLabeled++;
       } else {
         // check if the selected order(s) are being regressed back to this state
-        if (order.shipping[0].workflow.workflow.includes("coreOrderWorkflow/labeled") ||
-        order.shipping[0].workflow.status === "coreOrderWorkflow/shipped") {
+        if (orderWorkflow.workflow.includes("coreOrderWorkflow/labeled") ||
+        orderWorkflow.status === "coreOrderWorkflow/shipped") {
           ordersToRegress++;
         }
       }
@@ -574,19 +577,20 @@ class OrderDashboardContainer extends Component {
     let whichFalseState = "";
 
     selectedOrders.forEach((order) => {
+      const orderWorkflow = order.shipping[0].workflow.status;
       // check if the order(s) are in this state already or in one of the previous states
-      if (order.shipping[0].workflow.status === "new") {
+      if (orderWorkflow === "new") {
         isNotLabeled++;
         whichFalseState = shippingStates.picked;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/picked") {
+      } else if (orderWorkflow === "coreOrderWorkflow/picked") {
         isNotLabeled++;
         whichFalseState = shippingStates.packed;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/packed") {
+      } else if (orderWorkflow === "coreOrderWorkflow/packed") {
         isNotLabeled++;
         whichFalseState = shippingStates.labeled;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/labeled") {
+      } else if (orderWorkflow === "coreOrderWorkflow/labeled") {
         isNotShipped++;
-      } else if (order.shipping[0].workflow.status === "coreOrderWorkflow/shipped") {
+      } else if (orderWorkflow === "coreOrderWorkflow/shipped") {
         isShipped++;
       }
     });
