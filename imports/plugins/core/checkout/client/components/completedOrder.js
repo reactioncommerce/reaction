@@ -67,7 +67,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
           <Components.Translation defaultValue="Payment Method" i18nKey={"cartCompleted.paymentMethod"} />
         </div>
         {paymentMethods.map(function (paymentMethod) {
-          return <CompletedOrderPaymentMethod key={paymentMethod.transactionId} paymentMethod={paymentMethod} />;
+          return <CompletedOrderPaymentMethod key={paymentMethod.key} paymentMethod={paymentMethod} />;
         })}
         <CompletedOrderSummary shops={shops} orderSummary={orderSummary} />
         {/* This is the right side / side content */}

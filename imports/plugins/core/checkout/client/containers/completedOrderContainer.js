@@ -63,7 +63,7 @@ function composer(props, onData) {
           order,
           orderId,
           orderSummary,
-          paymentMethods: order.getPaymentMethods(),
+          paymentMethods: order.getUniquePaymentMethods(),
           productImages
         });
       }
