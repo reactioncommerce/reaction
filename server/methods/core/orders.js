@@ -1013,20 +1013,15 @@ export const methods = {
     }
 
     const fut = new Future();
-    const processor = paymentMethod.processor.toLowerCase();
     const order = Orders.findOne(orderId);
-    const orderMode = paymentMethod.mode;
     const transactionId = paymentMethod.transactionId;
     const amount = returnItemsInfo.total;
     const quantity = returnItemsInfo.quantity;
     const returnItems = returnItemsInfo.items;
     const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
 
-    let returnValue;
     // refund payment to customer
     Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(amount), (error, result) => {
-      console.log("error -------->", error);
-      console.log("result ------->", result);
       if (error) {
         Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, error);
         // throw new Meteor.Error("Attempt to refund transaction failed", error);
@@ -1039,6 +1034,22 @@ export const methods = {
         returnItems.forEach(returnedItem => {
           orderQuantityAdjust(orderId, returnedItem);
         });
+
+        let refundedStatus = "refunded";
+
+        if (quantity < originalQuantity) {
+          refundedStatus = "partialRefund";
+        }
+
+        Orders.update({
+          "_id": orderId,
+          "billing.paymentMethod.transactionId": transactionId
+        }, {
+          $set: {
+            "billing.$.paymentMethod.status": refundedStatus
+          }
+        });
+
         fut.return({
           refund: true,
           result: result
@@ -1046,24 +1057,7 @@ export const methods = {
       }
     });
 
-    console.log("returnValue", returnValue);
-
     return fut.wait();
-
-
-    // let refundedStatus = "refunded";
-
-    // if (quantity < originalQuantity) {
-    //   refundedStatus = "partialRefund";
-    // }
-    // Orders.update({
-    //   "_id": orderId,
-    //   "billing.paymentMethod.transactionId": transactionId
-    // }, {
-    //   $set: {
-    //     "billing.$.paymentMethod.status": refundedStatus
-    //   }
-    // });
   }
 };
 
