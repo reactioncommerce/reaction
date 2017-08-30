@@ -328,6 +328,8 @@ class InvoiceContainer extends Component {
             isRefunding: true
           });
           Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error, result) => {
+            console.log("result on client side handleRefund", result);
+            console.log("error on client side handleRefund", error);
             if (error) {
               Alerts.alert(error.reason);
             }
@@ -407,10 +409,12 @@ class InvoiceContainer extends Component {
         });
 
         Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, refundInfo, (error, result) => {
-          if (error) {
-            Alerts.alert(error.reason);
+          console.log("result on client side", result);
+          console.log("call client side error", error);
+          if (result.refund === false) {
+            Alerts.alert(result.error.reason);
           }
-          if (result) {
+          if (result.refund === true) {
             Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
 
             Alerts.alert({

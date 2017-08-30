@@ -72,5 +72,6 @@ MethodHooks.after("orders/refunds/create", (options) => {
       }
     });
   }
+
   return options;
 });
