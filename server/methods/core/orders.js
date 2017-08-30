@@ -804,6 +804,10 @@ export const methods = {
 
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
+    if (order.workflow.status === "new") {
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+    }
+
     // process order..payment.paymentMethod
     _.each(order.billing, function (billing) {
       const paymentMethod = billing.paymentMethod;
