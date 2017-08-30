@@ -297,6 +297,10 @@ class OrderDashboardContainer extends Component {
     const capitalizeStatus = status[0].toUpperCase() + status.substr(1).toLowerCase();
     let orderCount = 0;
 
+    // TODO: send these orders in batch as an array. This would entail re-writing the Meteor calls to update the
+    // different shipping statuses to receive an array of objects(orders) as a param
+
+    // TODO: rethink this type of flow for updating shipping statuses
     selectedOrders.forEach((order) => {
       Meteor.call(`orders/shipment${capitalizeStatus}`, order, order.shipping[0], (err) => {
         if (err) {
@@ -435,6 +439,9 @@ class OrderDashboardContainer extends Component {
     let isPicked = 0;
     let ordersToRegress = 0;
 
+    // loop through selected orders array to determine the current shipping workflow
+    // status of each order in regard to the other statuses
+    // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
       // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
       const orderWorkflow = order.shipping[0].workflow;
@@ -483,6 +490,9 @@ class OrderDashboardContainer extends Component {
     let isPacked = 0;
     let ordersToRegress = 0;
 
+    // loop through selected orders array to determine the current shipping workflow
+    // status of each order in regard to the other statuses
+    // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
       // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
       const orderWorkflow = order.shipping[0].workflow;
@@ -539,6 +549,9 @@ class OrderDashboardContainer extends Component {
     let isLabeled = 0;
     let ordersToRegress = 0;
 
+    // loop through selected orders array to determine the current shipping workflow
+    // status of each order in regard to the other statuses
+    // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
       // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
       const orderWorkflow = order.shipping[0].workflow;
@@ -596,6 +609,9 @@ class OrderDashboardContainer extends Component {
     let isNotShipped = 0;
     let isShipped = 0;
 
+    // loop through selected orders array to determine the current shipping workflow
+    // status of each order in regard to the other statuses
+    // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
       // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
       const orderWorkflow = order.shipping[0].workflow.status;
@@ -673,6 +689,8 @@ class OrderDashboardContainer extends Component {
 
     let orderCount = 0;
 
+    // TODO: send these orders in batch as an array. This would entail re-writing the
+    // "orders/approvePayment" method to receive an array of orders as a param.
     selectedOrders.forEach((order) => {
       Meteor.call("orders/approvePayment", order, (err) => {
         if (err) {
@@ -683,6 +701,8 @@ class OrderDashboardContainer extends Component {
           });
           Alerts.toast(`An error occured while approving the payment: ${err}`, "error");
         } else {
+          // TODO: send these orders in batch as an array. This would entail re-writing the
+          // "orders/capturePayments" method to receive an array of orders as a param.
           Meteor.call("orders/capturePayments", order._id, (error) => {
             if (error) {
               this.setState({
