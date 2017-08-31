@@ -396,7 +396,7 @@ export const methods = {
       const apiKey = getApiKey(cart.shopId);
       // If for a weird reason Shop hasn't a Shippo Api key anymore return no-rates.
       if (!apiKey) {
-        return [];
+        return [[], []];
       }
       // TODO create a shipping address book record for shop.
       const shippoAddressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
@@ -407,7 +407,7 @@ export const methods = {
         // so we put CM...
         shippoParcel = createShippoParcel(cart.items[0].parcel, unitOfMeasure, "CM");
       } else {
-        return [];
+        return [[], []];
       }
 
       const buyer = Accounts.findOne({
@@ -427,7 +427,7 @@ export const methods = {
         }
         shippoAddressTo = createShippoAddress(cart.shipping[0].address, email, purpose);
       } else {
-        return [];
+        return [[], []];
       }
       const carrierAccounts = Object.keys(shippoDocs);
       let shippoShipment;
@@ -474,7 +474,7 @@ export const methods = {
       return [reactionRates, []];
     }
 
-    return false;
+    return [[], []];
   },
 
   /**
