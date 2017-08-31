@@ -7,13 +7,6 @@ import { Components } from "@reactioncommerce/reaction-components";
 class UpdateEmail extends Component {
   static propTypes = {
     email: PropTypes.string,
-    isDisabled: PropTypes.bool,
-    isOpen: PropTypes.bool,
-    loginFormMessages: PropTypes.func,
-    messages: PropTypes.object,
-    onCancel: PropTypes.func,
-    onError: PropTypes.func,
-    onFormSubmit: PropTypes.func,
     uniqueId: PropTypes.string
   }
 
