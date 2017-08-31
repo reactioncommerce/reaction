@@ -154,7 +154,6 @@ export default {
   hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getShopId()) {
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
     // Match.Optional(String));
-
     let permissions;
     // default group to the shop or global if shop isn't defined for some reason.
     let group;
@@ -198,6 +197,7 @@ export default {
    * @method getShopsWithRoles
    * @param  {[string]} roles an array of roles to check. Will return a shopId if the user has _any_ of the roles
    * @param  {string} [userId=Meteor.userId()] Optional userId, defaults to Meteor.userId()
+   *                                           Must pass this.userId from publications to avoid error!
    * @return {[string]} Array of shopIds that the user has at least one of the given set of roles for
    */
   getShopsWithRoles(roles, userId = Meteor.userId()) {

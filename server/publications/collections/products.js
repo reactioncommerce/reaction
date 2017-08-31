@@ -84,7 +84,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   const primaryShopId = Reaction.getPrimaryShopId();
 
   // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
-  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"]);
+  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId);
 
   // Don't publish if we're missing an active or primary shopId
   if (!shopId || !primaryShopId) {

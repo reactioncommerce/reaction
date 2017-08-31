@@ -59,13 +59,17 @@ Meteor.publish("Product", function (productIdOrHandle) {
     Logger.debug("ignoring null request on Product subscription");
     return this.ready();
   }
-  let _id;
 
+  // TODO review for REGEX / DOS vulnerabilities.
   const product = Products.findOne({
-    $or: [
-      { _id: productIdOrHandle },
-      { handle: productIdOrHandle }
-    ]
+    $or: [{
+      _id: productIdOrHandle
+    }, {
+      handle: {
+        $regex: productIdOrHandle,
+        $options: "i"
+      }
+    }]
   });
 
   if (!product) {
@@ -73,54 +77,20 @@ Meteor.publish("Product", function (productIdOrHandle) {
     return this.ready();
   }
 
-  let selector = {};
-  selector.isVisible = true;
-  selector.isDeleted = { $in: [null, false] };
+  const _id = product._id;
 
-  // Check to see if the user has owner or createProduct permissions for this product
-  if (Reaction.hasPermission(["owner", "createProduct"], Meteor.userId(), product.shopId)) {
-    selector.isVisible = {
-      $in: [true, false]
-    };
-  }
-  // TODO review for REGEX / DOS vulnerabilities.
-  if (productIdOrHandle.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
-    selector._id = productIdOrHandle;
-    // TODO try/catch here because we can have product handle passed by such regex
-    _id = productIdOrHandle;
-  } else {
-    selector.handle = {
-      $regex: productIdOrHandle,
-      $options: "i"
-    };
-    const products = Products.find(selector).fetch();
-    if (products.length > 0) {
-      _id = products[0]._id;
-    } else {
-      return this.ready();
-    }
-  }
-
-  // Selector for hih?
-  selector = {
+  const selector = {
     isVisible: true,
     isDeleted: { $in: [null, false] },
     $or: [
-      { handle: _id },
       { _id: _id },
-      {
-        ancestors: {
-          $in: [_id]
-        }
-      }
+      { ancestors: _id }
     ]
   };
 
   // Authorized content curators for the shop get special publication of the product
   // all all relevant revisions all is one package
-
-
-  if (Reaction.hasPermission(["owner", "createProduct"], Meteor.userId(), product.shopId)) {
+  if (Reaction.hasPermission(["owner", "createProduct"], this.userId, product.shopId)) {
     selector.isVisible = {
       $in: [true, false, undefined]
     };
