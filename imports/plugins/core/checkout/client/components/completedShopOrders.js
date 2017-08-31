@@ -22,7 +22,7 @@ const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMeth
           <span className="order-details-shipping-name">{shippingMethod.carrier} - {shippingMethod.label}</span>
         </div>
       </div>
-      <div className="order-details-info-box">
+      <div className="order-details-info-box-topless">
         {items.map(function (item) {
           return <CompletedOrderItem item={item} key={item._id} handleDisplayMedia={handleDisplayMedia} />;
         })}
