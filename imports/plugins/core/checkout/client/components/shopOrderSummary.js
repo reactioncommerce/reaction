@@ -2,6 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
+/**
+ * @summary Displays the order summary for each shop
+ * @param {Object} props - React PropTypes
+ * @property {Object} shopSummary - An object representing the summary information for this Shop
+ * @return {Node} React node containing the summary information for each shop
+ */
 const ShopOrderSummary = ({ shopSummary }) => {
   return (
     <div className="order-details-info-box-content">

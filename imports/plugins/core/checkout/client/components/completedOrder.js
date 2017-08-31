@@ -6,7 +6,17 @@ import CompletedOrderPaymentMethod from "./completedOrderPaymentMethods";
 import CompletedOrderSummary from "./completedOrderSummary";
 import AddEmail from "./addEmail";
 
-
+/**
+ * @summary Displays a summary/information about the order the user has just completed
+ * @param {Object} props - React PropTypes
+ * @property {Object} order - An object representing the order
+ * @property {String} orderID - the unique identifier of the order
+ * @property {Array} shops - An Array contains information broken down by shop
+ * @property {Object} orderSummary - An object containing the items making up the order summary
+ * @property {Array} paymentMethod - An array of paymentMethod objects
+ * @property {Function} handleDisplayMedia - A function for displaying the p
+ * @return {Node} React node containing the top-level component for displaying the completed order/receipt page
+ */
 const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, handleDisplayMedia }) => {
   if (!order) {
     return (

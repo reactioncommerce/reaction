@@ -4,6 +4,14 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 
 import CompletedOrderItem from "./completedOrderItem";
 
+/**
+ * @summary Displays the order breakdown for each Shop
+ * @param {Object} props - React PropTypes
+ * @property {String} shopName - The name of the shop
+ * @property {Array} items - an array of individual items for this shop
+ * @property {Function} handleDisplayMedia - A function for displaying product images
+ * @return {Node} React node containing the break down of the order by Shop
+ */
 const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMethod }) => {
   return (
     <div>

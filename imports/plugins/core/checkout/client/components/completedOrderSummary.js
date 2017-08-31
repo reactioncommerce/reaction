@@ -4,6 +4,13 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 import ShopOrderSummary from "./shopOrderSummary";
 
 
+/**
+ * @summary Display the summary/total information for an order
+ * @param {Object} props - React PropTypes
+ * @property {Array} shops - An array of summary information broken down by shop
+ * @property {Object} orderSummary - An object representing the "bottom line" summary for the order
+ * @return {Node} React node containing the order summary broken down by shop
+ */
 const CompletedOrderSummary = ({ shops, orderSummary }) => {
   return (
     <div>

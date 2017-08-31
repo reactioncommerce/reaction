@@ -2,6 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
+/**
+ * @summary Shows the individual line items for a completed order
+ * @param {Object} props - React PropTypes
+ * @property {Object} item - An object representing each item on the order
+ * @property {Function} handleDisplayMedia - a function for displaying the proper product image
+ * @return {Node} React node containing each line item on an order
+ */
 const CompletedOrderItem = ({ item, handleDisplayMedia }) => {
   let image;
   if (handleDisplayMedia(item)) {
