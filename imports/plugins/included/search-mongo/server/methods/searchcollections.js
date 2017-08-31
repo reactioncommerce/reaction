@@ -175,7 +175,7 @@ export function buildOrderSearchRecord(orderId) {
   orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
   orderSearch.billingPhone = _.replace(shopBilling.address && shopBilling.address.phone, /\D/g, "");
   // TODO: All the order.shipping[0] references below needs to be updated when we update shipping to contain
-  // shopId proper multi-shop scenario
+  // shopId proper multi-shop scenario..... similar to what we have for shopBilling
   orderSearch.shippingName = order.shipping[0].address.fullName;
   orderSearch.shippingPhone = _.replace(order.shipping[0].address.phone, /\D/g, "");
   orderSearch.billingAddress = {
