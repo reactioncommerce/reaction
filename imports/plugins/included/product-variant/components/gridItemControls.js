@@ -27,7 +27,7 @@ class GridItemControls extends Component {
           <Components.IconButton
             icon=""
             onIcon=""
-            status="info"
+            status="danger"
           />
         </div>
       );
