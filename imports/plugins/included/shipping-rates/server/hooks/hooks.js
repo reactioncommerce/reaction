@@ -3,7 +3,17 @@ import { Shipping, Packages } from "/lib/collections";
 import { Logger, Reaction, Hooks } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
-// callback ran on getShippingRates hook
+/**
+ * getShippingRates - Returns a list of shipping rates based on the
+ * items in a cart.
+ * @param {Array} rates - an array of shipping rates. Might be non-empty
+ * because some shipping rates have been fetched before.
+ * @param {Object} cart - details about the purchase a user wants to make.
+ * @return {Array} - an array that contains two arrays: the first array will
+ * be an updated list of shipping rates, and the second will contain info for
+ * retrying this specific package if any errors occurred while retrieving the
+ * shipping rates.
+ */
 function getShippingRates(rates, cart) {
   check(cart, CartSchema);
   const shops = [];
@@ -84,9 +94,6 @@ function getShippingRates(rates, cart) {
   });
 
   Logger.debug("Flat rate onGetShippingRates", rates);
-  // This is the format expected by clients of this hook. The second
-  // element is supposed to be an array with details of any errors
-  // that occurred in this method.
   return [rates, []];
 }
 // run getShippingRates when the onGetShippingRates event runs

@@ -4,7 +4,6 @@ import { Logger, Reaction, Hooks } from "/server/api";
 
 // callback ran on getShippingRates hook
 function getShippingRates(previousQueryResults, cart) {
-  // For some strange reason, the third parameter is always undefined.
   const [rates, retrialTargets] = previousQueryResults;
   const shops = [];
   const products = cart.items;

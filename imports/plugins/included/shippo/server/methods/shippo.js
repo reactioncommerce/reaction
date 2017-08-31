@@ -440,7 +440,6 @@ export const methods = {
           carrierAccounts,
           apiKey
         });
-        // throw new Error("Failed to get data from Shippp.");
       } catch (error) {
         const errorDetails = {
           requestStatus: "error",
