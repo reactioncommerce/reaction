@@ -59,6 +59,55 @@ export function verifyAccount(email, token) {
   return false;
 }
 
+
+/**
+ * updateEmailAddress
+ * @summary update a users email address
+ * @param {String} email - user email
+ * @returns {Boolean} - returns boolean
+ */
+export function updateEmailAddress(email) {
+  check(email, String);
+
+  // Get users current Email address
+  const user = Meteor.user();
+  const oldEmails = user.emails;
+
+  if (oldEmails !== null) {
+    const oldEmail = oldEmails[0].address;
+
+    // Nothing has changed, tell the user that nothing has changed
+    if (oldEmail === email) {
+      console.log("nothing has changed, what are you doing?!");
+    }
+
+    // This is a new email address. Remove the original, and then add the new one.
+    MeteorAccounts.addEmail(user._id, email);
+
+    return true;
+  }
+}
+
+
+/**
+ * removeEmailAddress
+ * @summary revmoe a users email address
+ * @param {String} email - user email
+ * @returns {Boolean} - returns boolean
+ */
+export function removeEmailAddress(email) {
+  check(email, String);
+
+  // Get users current Email address
+  const user = Meteor.user();
+
+  // Remove email address from user
+  MeteorAccounts.removeEmail(user._id, email);
+
+  return true;
+}
+
+
 /**
  * @summary Returns the name of the geocoder method to use
  * @returns {string} Name of the Geocoder method to use
@@ -885,5 +934,7 @@ Meteor.methods({
   "accounts/addUserPermissions": addUserPermissions,
   "accounts/removeUserPermissions": removeUserPermissions,
   "accounts/setUserPermissions": setUserPermissions,
-  "accounts/createFallbackLoginToken": createFallbackLoginToken
+  "accounts/createFallbackLoginToken": createFallbackLoginToken,
+  "accounts/updateEmailAddress": updateEmailAddress,
+  "accounts/removeEmailAddress": removeEmailAddress
 });

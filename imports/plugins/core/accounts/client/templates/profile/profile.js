@@ -5,6 +5,8 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { Reaction } from "/client/api";
 import { i18next } from  "/client/api";
 import * as Collections from "/lib/collections";
+import UpdateEmail from "/imports/plugins/core/accounts/client/components/email/updateEmail";
+
 
 /**
  * onCreated: Account Profile View
@@ -25,6 +27,15 @@ Template.accountProfile.onCreated(() => {
  * Helpers: Account Profile View
  */
 Template.accountProfile.helpers({
+
+  UpdateEmail() {
+    const user = Collections.Accounts.findOne(Meteor.userId());
+    const emailAddress = user.emails[0].address;
+    return {
+      component: UpdateEmail,
+      email: emailAddress
+    };
+  },
 
   /**
    * User has password
