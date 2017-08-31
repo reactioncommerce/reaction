@@ -4,6 +4,71 @@ import { Cart } from "/lib/collections";
 import { Logger, Hooks } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
+function createShippingRecordByShop(cart, rates) {
+  const cartId = cart._id;
+  const itemsByShop = cart.getItemsByShop();
+  const shops = Object.keys(itemsByShop);
+  const selector = { _id: cartId };
+  shops.map((shopId) => {
+    const update = {
+      $push: {
+        shipping: {
+          shipmentQuotes: rates,
+          shopId: shopId
+        }
+      }
+    };
+    return Cart.update(selector, update, (error) => {
+      if (error) {
+        Logger.warn(`Error adding rates to cart ${cartId}`, error);
+        return;
+      }
+      Logger.debug(`Success adding rates to cart ${cartId}`, rates);
+    });
+  });
+}
+
+function updateShippingRecordByShop(cart, rates) {
+  const cartId = cart._id;
+  const itemsByShop = cart.getItemsByShop();
+  const shops = Object.keys(itemsByShop);
+  let update;
+  let selector;
+  shops.map((shopId) => {
+    selector = {
+      "_id": cartId,
+      "shipping.shopId": shopId
+    };
+    const shippingRecord = Cart.findOne(selector);
+    // we may have added a new shop since the last time we did this, if so we need to add a new record
+
+    if (shippingRecord) {
+      update = {
+        $set: {
+          "shipping.$.shipmentQuotes": rates
+        }
+      };
+    } else {
+      selector = { _id: cartId };
+      update = {
+        $push: {
+          shipping: {
+            shipmentQuotes: rates,
+            shopId: shopId
+          }
+        }
+      };
+    }
+    Cart.update(selector, update, function (error) {
+      if (error) {
+        Logger.warn(`Error updating rates for cart ${cartId}`, error);
+        return;
+      }
+      Logger.debug(`Success updating rates for cart ${cartId}`, rates);
+    });
+  });
+
+}
 /*
  * Reaction Shipping Methods
  * methods typically used for checkout (shipping, taxes, etc)
@@ -27,39 +92,11 @@ export const methods = {
 
     if (cart) {
       const rates = Meteor.call("shipping/getShippingRates", cart);
-      let selector;
-      let update;
-      // temp hack until we build out multiple shipment handlers if we have an existing item update it, otherwise add to set.
       if (cart.shipping) {
-        selector = {
-          "_id": cartId,
-          "shipping._id": cart.shipping[0]._id
-        };
-        update = {
-          $set: {
-            "shipping.$.shipmentQuotes": rates
-          }
-        };
+        updateShippingRecordByShop(cart, rates)
       } else {
-        selector = {
-          _id: cartId
-        };
-        update = {
-          $push: {
-            shipping: {
-              shipmentQuotes: rates
-            }
-          }
-        };
+        createShippingRecordByShop(cart, rates);
       }
-      // add quotes to the cart
-      Cart.update(selector, update, function (error) {
-        if (error) {
-          Logger.warn(`Error adding rates to cart ${cartId}`, error);
-          return;
-        }
-        Logger.debug(`Success adding rates to cart ${cartId}`, rates);
-      });
     }
   },
 
