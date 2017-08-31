@@ -12,7 +12,7 @@ const ShopOrderSummary = ({ shopSummary }) => {
   return (
     <div className="order-details-info-box-content">
       <div className="order-summary-line">
-        <div className="order-summary-header-line"> </div>
+        <div className="order-summary-header-line" />
         <div className="order-summary-store-name">
           <Components.Translation defaultValue="Fulfilled by" i18nKey={"cartCompleted.fulfilledBy"}/> {shopSummary.name}
         </div>
