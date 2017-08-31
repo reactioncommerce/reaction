@@ -25,10 +25,10 @@ const CompletedOrderSummary = ({ shops, orderSummary }) => {
         <hr />
         {orderSummary.discounts > 0 &&
         <div className="order-summary-line">
-          <div className="order-summary-total-title">
+          <div className="order-summary-discount-title">
             <Components.Translation defaultValue="Discount Total" i18nKey={"cartCompleted.discountTotal"}/>
           </div>
-          <div className="order-summary-total-value">
+          <div className="order-summary-discount-value">
             <Components.Currency amount={orderSummary.discounts}/>
           </div>
         </div>
