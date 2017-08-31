@@ -55,26 +55,29 @@ class UpdateEmail extends Component {
 
     const { email } = this.state;
 
-    Meteor.call("accounts/validation/email", email, (error, result) => {
-      if (error) {
-        Alerts.toast(i18next.t("accountsUI.error.invalidEmail", { err: error.message }), "error");
+    Meteor.call("accounts/validation/email", email, false, (result, error) => {
+      if (error.error) {
+        Alerts.toast(i18next.t("accountsUI.error.invalidEmail", { err: error.reaston }), "error");
+        this.setState({ showSpinner: false });
+        return null;
       }
-      if (result) {
-        Meteor.call("accounts/updateEmailAddress", email, (error) => {
-          if (error) {
-            Alerts.toast(i18next.t("accountsUI.error.emailAlreadyExists", { err: error.message }), "error");
+
+      Meteor.call("accounts/updateEmailAddress", email, (err) => {
+        if (err) {
+          Alerts.toast(i18next.t("accountsUI.error.emailAlreadyExists", { err: error.message }), "error");
+          this.setState({ showSpinner: false });
+        }
+        // Email changed, remove original email
+        if (!err) {
+          Meteor.call("accounts/removeEmailAddress", this.props.email, () => {
+            Alerts.toast(i18next.t("accountsUI.info.emailUpdated"), "success");
             this.setState({ showSpinner: false });
-          }
-          // Email changed, remove original email
-          if (!error) {
-            Meteor.call("accounts/removeEmailAddress", this.props.email, () => {
-              Alerts.toast(i18next.t("accountsUI.info.emailUpdated"), "success");
-              this.setState({ showSpinner: false });
-            });
-          }
-        });
-      }
+          });
+        }
+      });
     });
+
+    return null;
   }
 
   renderSubmitButton() {
