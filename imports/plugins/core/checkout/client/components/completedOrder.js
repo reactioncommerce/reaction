@@ -70,7 +70,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
                 {shipment.address.city}, {shipment.address.region} {shipment.address.postal} {shipment.address.country}
               </p>
             </div>
-          </div>
+          </div>;
         })}
 
         <div className="order-details-content-title">

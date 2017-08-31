@@ -89,7 +89,7 @@ class AddEmail extends Component {
             </div>
           </form>
         </div>
-        <div className="order-details-email-box-side"> </div>
+        <div className="order-details-email-box-side" />
       </div>
     );
   }
