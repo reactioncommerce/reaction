@@ -75,13 +75,12 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
           $regex: searchTerm,
           $options: "i"
         } },
-        // if parsed phone is empty, default to original, otherwise quering returns false matches
         { billingPhone: {
-          $regex: searchPhone || searchTerm,
+          $regex: searchPhone,
           $options: "i"
         } },
         { shippingPhone: {
-          $regex: searchPhone || searchTerm,
+          $regex: searchPhone,
           $options: "i"
         } },
         { "product.title": {
