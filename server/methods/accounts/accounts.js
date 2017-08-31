@@ -10,6 +10,7 @@ import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts, Cart, Groups, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
+import { sendUpdatedVerificationEmail } from "/server/api/core/accounts";
 
 
 /**
@@ -79,6 +80,7 @@ export function updateEmailAddress(email) {
     // Nothing has changed, tell the user that nothing has changed
     if (oldEmail === email) {
       console.log("nothing has changed, what are you doing?!");
+      error.push({name: "message", type: "exist"});
     }
 
     // This is a new email address. Remove the original, and then add the new one.
@@ -98,11 +100,40 @@ export function updateEmailAddress(email) {
 export function removeEmailAddress(email) {
   check(email, String);
 
-  // Get users current Email address
+  // Get user
   const user = Meteor.user();
 
   // Remove email address from user
   MeteorAccounts.removeEmail(user._id, email);
+
+  // Verify new address
+  sendUpdatedVerificationEmail(user._id);
+
+  // Sync users and accounts collections
+  syncUsersAndAccounts();
+
+  return true;
+}
+
+
+/**
+ * syncUsersAndAccounts
+ * @summary syncs emails associated with profile between Users and Accounts collections
+ * @returns {Boolean} - returns boolean
+ */
+export function syncUsersAndAccounts() {
+  // Get user
+  const user = Meteor.user();
+
+  Accounts.update({
+    _id: user._id
+  }, {
+    $set: {
+      emails: [
+        user.emails[0]
+      ]
+    }
+  });
 
   return true;
 }
