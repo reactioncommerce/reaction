@@ -23,7 +23,7 @@ class UpdateEmail extends Component {
     this.state = {
       email: props.email,
       newEmail: false,
-      showSpinner: true
+      showSpinner: false
     };
 
     this.handleFieldChange = this.handleFieldChange.bind(this);
@@ -51,80 +51,53 @@ class UpdateEmail extends Component {
   handleSubmit = (event) => {
     event.preventDefault;
 
+    this.setState({ showSpinner: true });
+
     const { email } = this.state;
 
     Meteor.call("accounts/updateEmailAddress", email, (error) => {
       if (error) {
         Alerts.toast(i18next.t("accountsUI.error.emailAlreadyExists", { err: error.message }), "error");
+        this.setState({ showSpinner: false });
       }
       // Email changed, remove original email
       if (!error) {
         Meteor.call("accounts/removeEmailAddress", this.props.email, () => {
           Alerts.toast(i18next.t("accountsUI.info.emailUpdated"), "success");
+          this.setState({ showSpinner: false });
         });
       }
     });
   }
 
-  // renderFormMessages() {
-  //   if (this.props.loginFormMessages) {
-  //     return (
-  //       <div>
-  //         {this.props.loginFormMessages()}
-  //       </div>
-  //     );
-  //   }
-  // }
+  renderSubmitButton() {
+    if (this.state.showSpinner === true) {
+      return (
+        <Components.Button
+          bezelStyle={"solid"}
+          i18nKeyLabel={"accountsUI.updatingEmailAddress"}
+          icon={"fa fa-spin fa-circle-o-notch"}
+          label={"Updating Email Address"}
+          status={"primary"}
+          onClick={this.handleSubmit}
+          disabled={!this.emailUpdate()}
+        />
+      );
+    }
 
-  // renderPasswordErrors() {
-  //   return (
-  //     <span className="help-block">
-  //       {this.props.onError(this.props.messages.errors && this.props.messages.errors.password) &&
-  //       this.props.messages.errors.password.map((error, i) => (
-  //         <Components.Translation
-  //           key={i}
-  //           defaultValue={error.reason}
-  //           i18nKey={error.i18nKeyReason}
-  //         />
-  //       ))
-  //       }
-  //     </span>
-  //   );
-  // }
-
-  // renderSpinnerOnWait() {
-  //   if (this.props.isDisabled === true) {
-  //     return (
-  //       <div className="col-sm-6" style={{ textAlign: "center" }}>
-  //         <i className="fa fa-spinner fa-spin"/>
-  //       </div>
-  //     );
-  //   }
-  //   return (
-  //     <div className="col-sm-6">
-  //       <Components.Button
-  //         className="btn-block"
-  //         primary={true}
-  //         bezelStyle="solid"
-  //         i18nKeyLabel="accountsUI.updatePasswordAndContinue"
-  //         label="Update and continue"
-  //         type="submit"
-  //       />
-  //     </div>
-  //   );
-  // }
-  //
-  // renderSpinnerOnLoad() {
-  //   return (
-  //     <div className="spinner-container">
-  //       <div className="spinner"/>
-  //     </div>
-  //   );
-  // }
+    return (
+      <Components.Button
+        bezelStyle={"solid"}
+        i18nKeyLabel={"accountsUI.updateEmailAddress"}
+        label={"Update Email Address"}
+        status={"primary"}
+        onClick={this.handleSubmit}
+        disabled={!this.emailUpdate()}
+      />
+    );
+  }
 
   render() {
-    const { showSpinner } = this.state;
-
     return (
       <div>
         <Components.TextField
@@ -136,15 +109,7 @@ class UpdateEmail extends Component {
           value={this.state.email}
           onChange={this.handleFieldChange}
         />
-        <Components.Button
-          bezelStyle={"solid"}
-          i18nKeyLabel={"accountsUI.updateEmailAddress"}
-          label={"Update Email Address"}
-          status={"primary"}
-          onClick={this.handleSubmit}
-          disabled={!this.emailUpdate()}
-        />
-        {/* {this.renderPasswordErrors()} */}
+        {this.renderSubmitButton()}
       </div>
     );
   }
