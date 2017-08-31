@@ -22,6 +22,7 @@ class UpdateEmail extends Component {
 
     this.state = {
       email: props.email,
+      newEmail: false,
       showSpinner: true
     };
 
@@ -31,6 +32,14 @@ class UpdateEmail extends Component {
 
   componentWillReceiveProps() {
     this.setState({ showSpinner: false });
+  }
+
+  emailUpdate() {
+    if (this.state.email === this.props.email) {
+      return false;
+    }
+
+    return true;
   }
 
   handleFieldChange = (event, value, field) => {
@@ -133,6 +142,7 @@ class UpdateEmail extends Component {
           label={"Update Email Address"}
           status={"primary"}
           onClick={this.handleSubmit}
+          disabled={!this.emailUpdate()}
         />
         {/* {this.renderPasswordErrors()} */}
       </div>
