@@ -6,6 +6,7 @@ import { Reaction } from "/client/api";
 import { i18next } from  "/client/api";
 import * as Collections from "/lib/collections";
 import UpdateEmail from "/imports/plugins/core/accounts/client/components/email/updateEmail";
+import { Components } from "@reactioncommerce/reaction-components";
 
 
 /**
@@ -33,6 +34,15 @@ Template.accountProfile.helpers({
     const emailAddress = user.emails[0].address;
     return {
       component: UpdateEmail,
+      email: emailAddress
+    };
+  },
+
+  ReactionAvatar() {
+    const user = Collections.Accounts.findOne(Meteor.userId());
+    const emailAddress = user.emails[0].address;
+    return {
+      component: Components.ReactionAvatar,
       email: emailAddress
     };
   },
