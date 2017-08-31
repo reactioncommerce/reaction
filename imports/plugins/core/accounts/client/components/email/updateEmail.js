@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
+import { i18next } from "/client/api";
 import { Components } from "@reactioncommerce/reaction-components";
 
 class UpdateEmail extends Component {
@@ -39,28 +40,18 @@ class UpdateEmail extends Component {
   }
 
   handleSubmit = (event) => {
-    event.preventDefault
-    ;
+    event.preventDefault;
+
     const { email } = this.state;
 
     Meteor.call("accounts/updateEmailAddress", email, (error) => {
       if (error) {
-        Alerts.toast(
-          <Components.Translation
-            defaultValue={`Email not updated: ${error}`} i18nKey="accountsUI.resetYourPasswor"
-          />,
-          "error"
-        );
+        Alerts.toast(i18next.t("accountsUI.error.emailAlreadyExists", { err: error.message }), "error");
       }
       // Email changed, remove original email
       if (!error) {
         Meteor.call("accounts/removeEmailAddress", this.props.email, () => {
-          Alerts.toast(
-            <Components.Translation
-              defaultValue={"Email successfully changed"} i18nKey={"accountsUI.resetYourPasswor"}
-            />,
-            "successs"
-          );
+          Alerts.toast(i18next.t("accountsUI.info.emailUpdated"), "success");
         });
       }
     });
@@ -138,7 +129,7 @@ class UpdateEmail extends Component {
         />
         <Components.Button
           bezelStyle={"solid"}
-          // i18nKeyLabel={"accountsUI.email"}
+          i18nKeyLabel={"accountsUI.email"}
           label={"Update Email Address"}
           status={"primary"}
           onClick={this.handleSubmit}

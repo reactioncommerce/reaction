@@ -406,6 +406,7 @@
         "role": "Role",
         "info": {
           "emailSent": "Email Sent",
+          "emailUpdated": "Email Updated",
           "emailVerified": "Email verified",
           "passwordChanged": "Password changed",
           "passwordReset": "Password reset",
