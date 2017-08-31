@@ -68,24 +68,29 @@ class AddEmail extends Component {
       );
     }
     return (
-      <form onSubmit={this.handleSubmit} className="add-email-input">
-        <Components.Translation defaultValue="Hello! Add an email and receive order updates" i18nKey="{cartCompleted.registerGuest}" />
-        <div>
-          <Components.TextField
-            name="email"
-            type="email"
-            tabIndex="1"
-            value={this.state.email}
-            onChange={this.handleFieldChange}
-          />
-          <Components.Button
-            type="submit"
-            label="Add Email"
-            bezelStyle={"solid"}
-            onClick={this.handleSubmit}
-          />
+      <div className="order-details-email-box-container">
+        <div className="order-details-email-box">
+          <form onSubmit={this.handleSubmit} className="add-email-input">
+            <Components.Translation defaultValue="Hello! Add an email and receive order updates" i18nKey="{cartCompleted.registerGuest}" />
+            <div>
+              <Components.TextField
+                name="email"
+                type="email"
+                tabIndex="1"
+                value={this.state.email}
+                onChange={this.handleFieldChange}
+              />
+              <Components.Button
+                type="submit"
+                label="Add Email"
+                bezelStyle={"solid"}
+                onClick={this.handleSubmit}
+              />
+            </div>
+          </form>
         </div>
-      </form>
+        <div className="order-details-email-box-side"> </div>
+      </div>
     );
   }
 }

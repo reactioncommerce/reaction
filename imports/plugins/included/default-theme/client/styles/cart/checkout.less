@@ -160,6 +160,7 @@
   }
 }
 
+
 .order-details-info-box {
   width: 100%;
   height: auto;
@@ -314,6 +315,50 @@
   margin-right: 10px;
 }
 
+.order-details-email-box-container {
+  display: flex;
+  .flex();
+}
+
+.order-details-email-box {
+  height: auto;
+  border: solid 1px #ccc;
+  padding: 10px;
+  background-color: @white;
+  .flex(1 1 auto);
+  max-width: 100%;
+  .margin-right(3rem);
+  @media screen and (max-width: @screen-xs-max) {
+    .margin-right(0);
+  }
+}
+
+.order-details-email-box-side {
+  .flex(1 0 auto);
+  min-width: 300px;
+  max-width: 30%;
+  @media screen and (max-width: @screen-xs-max) {
+    min-width: 100%;
+    max-width: 100%;
+  }
+}
+
 .add-email-input {
-  width: 40%;
+  font-size: 14px;
+  padding-top: 20px;
+  color: #343434;
+  flex: 1 1 auto;
+
+  input {
+    background-color: #fafafa;
+    margin-top: 10px;
+    width: 322px;
+  }
+
+  button {
+    background-color: #1999dd;
+    color: @white;
+    width: 162px;
+    font-weight: 600;
+  }
 }
