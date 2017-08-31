@@ -25,104 +25,115 @@ export const methods = {
     const cart = Cart.findOne(cartId);
     check(cart, CartSchema);
 
-    if (cart) {
-      const rates = Meteor.call("shipping/getShippingRates", cart);
-      let selector;
-      let update;
+    const rates = Meteor.call("shipping/getShippingRates", cart);
+    let selector = { _id: cartId };
+    let update;
 
-      // Temp hack until we build out multiple shipment handlers.
-      // If we have an existing item update it, otherwise add to set.
-      if (cart.shipping) {
-        selector = { _id: cartId };
+    // Temp hack until we build out multiple shipment handlers.
+    // If we have an existing item update it, otherwise add to set.
+    if (cart && cart.shipping) {
+      update = {
+        $set: {
+          "shipping.0.shipmentQuotesQueryStatus": {
+            requestStatus: "pending"
+          }
+        }
+      };
+      Cart.update(selector, update, function (error) {
+        if (error) {
+          Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
+          return;
+        }
+        Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
+      });
+
+      if (rates.length === 1 && rates[0].requestStatus === "error") {
+        const errorDetails = rates[0];
         update = {
           $set: {
+            "shipping.0.shipmentQuotes": [],
             "shipping.0.shipmentQuotesQueryStatus": {
-              requestStatus: "pending"
+              requestStatus: errorDetails.requestStatus,
+              shippingProvider: errorDetails.shippingProvider,
+              message: errorDetails.message
             }
           }
         };
+      }
 
-        if (rates.length === 1 && rates[0].requestStatus === "error") {
-          const errorDetails = rates[0];
-          update = {
-            $set: {
-              "shipping.0.shipmentQuotesQueryStatus": {
+      if (rates.length > 0 && rates[0].requestStatus === undefined) {
+        selector = {
+          "_id": cartId,
+          "shipping._id": cart.shipping[0]._id
+        };
+        update = {
+          $set: {
+            "shipping.$.shipmentQuotes": rates,
+            "shipping.$.shipmentQuotesQueryStatus": {
+              requestStatus: "success",
+              numOfShippingMethodsFound: rates.length
+            }
+          }
+        };
+      }
+    } else {
+      update = {
+        $push: {
+          shipping: {
+            shipmentQuotes: rates,
+            shipmentQuotesQueryStatus: {
+              requestStatus: "pending"
+            }
+          }
+        }
+      };
+      Cart.update(selector, update, function (error) {
+        if (error) {
+          Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
+          return;
+        }
+        Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
+      });
+
+      if (rates.length === 1 && rates[0].requestStatus === "error") {
+        const errorDetails = rates[0];
+        update = {
+          $push: {
+            shipping: {
+              shipmentQuotes: [],
+              shipmentQuotesQueryStatus: {
                 requestStatus: errorDetails.requestStatus,
                 shippingProvider: errorDetails.shippingProvider,
                 message: errorDetails.message
               }
             }
-          };
-        }
+          }
+        };
+      }
 
-        if (rates.length > 0 && rates[0].requestStatus === undefined) {
-          selector = {
-            "_id": cartId,
-            "shipping._id": cart.shipping[0]._id
-          };
-          update = {
-            $set: {
-              "shipping.$.shipmentQuotes": rates,
-              "shipping.$.shipmentQuotesQueryStatus": {
-                requestStatus: "success",
-                numOfShippingMethodsFound: rates.length
-              }
-            }
-          };
-        }
-      } else {
-        selector = { _id: cartId };
+      if (rates.length > 0 && rates[0].requestStatus === undefined) {
         update = {
           $push: {
             shipping: {
               shipmentQuotes: rates,
               shipmentQuotesQueryStatus: {
-                requestStatus: "pending"
+                requestStatus: "success",
+                numOfShippingMethodsFound: rates.length
               }
             }
           }
         };
-
-        if (rates.length === 1 && rates[0].requestStatus === "error") {
-          const errorDetails = rates[0];
-          update = {
-            $push: {
-              shipping: {
-                shipmentQuotes: rates,
-                shipmentQuotesQueryStatus: {
-                  requestStatus: errorDetails.requestStatus,
-                  shippingProvider: errorDetails.shippingProvider,
-                  message: errorDetails.message
-                }
-              }
-            }
-          };
-        }
-
-        if (rates.length > 0 && rates[0].requestStatus === undefined) {
-          update = {
-            $push: {
-              shipping: {
-                shipmentQuotes: rates,
-                shipmentQuotesQueryStatus: {
-                  requestStatus: "success",
-                  numOfShippingMethodsFound: rates.length
-                }
-              }
-            }
-          };
-        }
       }
-
-      // add quotes to the cart
-      Cart.update(selector, update, function (error) {
-        if (error) {
-          Logger.warn(`Error adding rates to cart ${cartId}`, error);
-          return;
-        }
-        Logger.debug(`Success adding rates to cart ${cartId}`, rates);
-      });
     }
+
+    // add quotes to the cart
+    Cart.update(selector, update, function (error) {
+      if (error) {
+        Logger.warn(`Error adding rates to cart ${cartId}`, error);
+        return;
+      }
+      Logger.debug(`Success adding rates to cart ${cartId}`, rates);
+    });
   },
 
   /**
