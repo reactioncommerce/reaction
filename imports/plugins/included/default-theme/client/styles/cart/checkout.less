@@ -349,9 +349,21 @@
   color: #343434;
   flex: 1 1 auto;
 
+  .form-group {
+    display: inline-block;
+    &.textfield {
+      width: 70%;
+      padding-right: 10px;
+    }
+    &.submit {
+      width: 20%;
+    }
+  }
+
   input {
     background-color: #fafafa;
     margin-top: 10px;
+    padding-right: 10px;
     width: 322px;
   }
 
@@ -362,3 +374,4 @@
     font-weight: 600;
   }
 }
+
