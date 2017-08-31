@@ -400,6 +400,7 @@ class InvoiceContainer extends Component {
 
   alertToRefund = (order) => {
     const paymentMethod = orderCreditMethod(order).paymentMethod;
+    const orderMode = paymentMethod.mode;
     const refundInfo = this.getRefundedItemsInfo();
 
     Alerts.alert({
@@ -415,6 +416,14 @@ class InvoiceContainer extends Component {
         this.setState({
           isRefunding: true
         });
+
+        if (orderMode !== "capture") {
+          Alerts.alert("order.returnItemsWait");
+          this.setState({
+            isRefunding: false
+          });
+          return;
+        }
 
         Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, refundInfo, (error, result) => {
           if (result.refund === false) {
