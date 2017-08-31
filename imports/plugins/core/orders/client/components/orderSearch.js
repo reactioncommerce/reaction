@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 import { compose } from "recompose";
 import PropTypes from "prop-types";
-import { Components, withPermissions } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent, withPermissions } from "@reactioncommerce/reaction-components";
 
 /**
- * Class representing the Products React component
- * @summary PropTypes for Product React component
- * @property {Function} handleChange - load more products callback
- * @property {Function} handleClear - load more products callback
+ * React class for Search bar on Order Dashboard
+ * @summary horizontal search bar on the order dashboard. can be replaced with registerComponent as "OrderSearch"
+ * @property {Function} handleChange - function called to update state field on parent after search input text changes
  */
 class OrderSearch extends Component {
   static propTypes = {
-    handleChange: PropTypes.func,
-    handleClear: PropTypes.func
+    handleChange: PropTypes.func
   };
 
   constructor() {
@@ -59,7 +57,7 @@ class OrderSearch extends Component {
         <i className="fa fa-search fa-fw"/>
         <Components.Button
           className="search-clear"
-          i18nKeyLabel="search.clearSearch"
+          i18nKeyLabel="admin.dashboard.clearSearch"
           label="Clear"
           containerStyle={{ fontWeight: "normal" }}
           onClick={this.handleClear}
@@ -68,5 +66,7 @@ class OrderSearch extends Component {
     );
   }
 }
+
+registerComponent("OrderSearch", OrderSearch, withPermissions({ roles: ["orders"] }));
 
 export default compose(withPermissions({ roles: ["orders"] }))(OrderSearch);
