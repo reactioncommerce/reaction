@@ -16,7 +16,9 @@
         "quantityTotal": "Quantity Total",
         "orderSubtotal": "Subtotal",
         "orderShipping": "Shipping",
-        "orderTax": "Tax"
+        "orderTax": "Tax",
+        "trackYourDelivery": "Order updates will be sent to",
+        "registerGuest": "Hello! Add an email and receive order updates"
       }
     }
   }
