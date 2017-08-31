@@ -178,27 +178,7 @@ export default {
     permissions = _.uniq(permissions);
 
     // return if user has permissions in the group
-    if (Roles.userIsInRole(userId, permissions, group)) {
-      return true;
-    }
-
-    // global roles check
-    const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
-
-    // we're looking for seller permissions.
-    if (sellerShopPermissions) {
-      // loop through shops roles and check permissions
-      for (const key in sellerShopPermissions) {
-        if (key) {
-          const shop = sellerShopPermissions[key];
-          if (Roles.userIsInRole(userId, permissions, shop)) {
-            return true;
-          }
-        }
-      }
-    }
-    // no specific permissions found returning false
-    return false;
+    return Roles.userIsInRole(userId, permissions, group);
   },
 
   hasOwnerAccess() {
