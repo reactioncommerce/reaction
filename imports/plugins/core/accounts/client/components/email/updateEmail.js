@@ -128,7 +128,7 @@ class UpdateEmail extends Component {
     return (
       <div>
         <Components.TextField
-          i18nKeyLabel="accountsUI.email"
+          i18nKeyLabel="accountsUI.emailAddress"
           label="Email Address"
           name="email"
           type="email"
@@ -138,7 +138,7 @@ class UpdateEmail extends Component {
         />
         <Components.Button
           bezelStyle={"solid"}
-          i18nKeyLabel={"accountsUI.email"}
+          i18nKeyLabel={"accountsUI.updateEmailAddress"}
           label={"Update Email Address"}
           status={"primary"}
           onClick={this.handleSubmit}
