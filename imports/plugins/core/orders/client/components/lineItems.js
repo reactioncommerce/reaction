@@ -217,7 +217,7 @@ class LineItems extends Component {
               <Checkbox
                 className="checkbox-large"
                 label="Include Shipping"
-                checked={true}
+                checked={false}
               />
             </div>
           </div>
