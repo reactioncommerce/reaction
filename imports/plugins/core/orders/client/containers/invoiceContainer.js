@@ -65,6 +65,7 @@ class InvoiceContainer extends Component {
     this.setState({
       editedItems: [],
       selectedItems: [],
+      selectAllItems: false,
       popOverIsOpen: false
     });
   };

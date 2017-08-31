@@ -44,58 +44,16 @@ class LineItems extends Component {
     );
   }
 
-  displayQuantity(uniqueItem) {
-    if (this.props.popOverIsOpen) {
-      return (
-        <div>
-          {!this.props.selectedItems.includes(uniqueItem._id) ?
-            <NumberTypeInput
-              minValue={0}
-              defaultValue={uniqueItem.quantity}
-              onChange={(event, value) => this.props.handleInputChange(event, value, uniqueItem)}
-              maxValue={uniqueItem.quantity}
-            /> :
-            <div>0</div>
-          }
-        </div>
-      );
-    }
-    return (
-      <div>{uniqueItem.quantity}</div>
-    );
-  }
-
   renderLineItem(uniqueItem) {
-    const className = classnames({
-      "order-items": true,
-      "invoice-item": true,
-      "selected": this.props.selectedItems.includes(uniqueItem._id) && this.props.popOverIsOpen
-    });
-
     return (
-      <div className={className}>
+      <div className="order-items invoice-item">
         <div
           className="order-item form-group order-summary-form-group"
         >
-          <div className={classnames({
-            "order-item-media": true,
-            "popover-mode": this.props.popOverIsOpen
-          })}
-          >
-            {this.props.popOverIsOpen ?
-              <RolloverCheckbox
-                className="order-invoice-rollover"
-                checkboxClassName="checkbox-avatar checkbox-large"
-                onChange={() => this.props.handleItemSelect(uniqueItem)}
-                checked={this.props.selectedItems.includes(uniqueItem._id)}
-              >
-                {this.displayMedia(uniqueItem)}
-              </RolloverCheckbox>
-              :
-              <div>
-                {this.displayMedia(uniqueItem)}
-              </div>
-            }
+          <div className="order-item-media">
+            <div>
+              {this.displayMedia(uniqueItem)}
+            </div>
           </div>
 
           <div className="order-item-details">
@@ -105,7 +63,59 @@ class LineItems extends Component {
           </div>
 
           <div className="order-detail-quantity">
-            {this.displayQuantity(uniqueItem)}
+            <div>{uniqueItem.quantity}</div>
+          </div>
+
+          <div className="order-detail-price">
+            <div className="invoice-details" style={{ marginRight: 15 }}>
+              <strong>{formatPriceString(uniqueItem.variants.price)}</strong>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  renderPopOverLineItem(uniqueItem) {
+    const className = classnames({
+      "order-items": true,
+      "invoice-item": true,
+      "selected": this.props.selectedItems.includes(uniqueItem._id)
+    });
+
+    return (
+      <div className={className}>
+        <div
+          className="order-item form-group order-summary-form-group"
+        >
+          <div className="order-item-media popover-mode">
+            <RolloverCheckbox
+              className="order-invoice-rollover"
+              checkboxClassName="checkbox-avatar checkbox-large"
+              onChange={() => this.props.handleItemSelect(uniqueItem)}
+              checked={this.props.selectedItems.includes(uniqueItem._id)}
+            >
+              {this.displayMedia(uniqueItem)}
+            </RolloverCheckbox>
+          </div>
+
+          <div className="order-item-details">
+            <div className="order-detail-title">
+              {uniqueItem.title} <br/><small>{uniqueItem.variants.title}</small>
+            </div>
+          </div>
+
+          <div className="order-detail-quantity">
+            {!this.props.selectedItems.includes(uniqueItem._id) ?
+              <NumberTypeInput
+                minValue={0}
+                defaultValue={uniqueItem.quantity}
+                onChange={(event, value) => this.props.handleInputChange(event, value, uniqueItem)}
+                maxValue={uniqueItem.quantity}
+              /> :
+              <div>0</div>
+            }
           </div>
 
           <div className="order-detail-price">
@@ -260,7 +270,7 @@ class LineItems extends Component {
         <div>
           {this.props.uniqueItems.map((uniqueItem, index) => (
             <div key={index}>
-              {this.renderLineItem(uniqueItem)}
+              {this.renderPopOverLineItem(uniqueItem)}
               {this.renderLineItemInvoice(uniqueItem)}
             </div>
           ))}
