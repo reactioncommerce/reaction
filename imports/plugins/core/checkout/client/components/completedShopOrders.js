@@ -14,7 +14,7 @@ import CompletedOrderItem from "./completedOrderItem";
  */
 const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMethod }) => {
   return (
-    <div>
+    <div className="order-details-shop-breakdown">
       {/* This is the left side / main content */}
       <div className="order-details-info-box">
         <div className="store-detail-box">
