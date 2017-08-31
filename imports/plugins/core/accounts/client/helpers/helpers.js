@@ -1,7 +1,5 @@
 import { Template } from "meteor/templating";
-
-import _ from "lodash";
-import { Reaction } from "/client/api";
+import { Gravatar } from "meteor/jparker:gravatar";
 import * as Collections from "/lib/collections";
 
 export const LoginFormSharedHelpers = {
