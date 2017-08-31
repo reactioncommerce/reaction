@@ -193,6 +193,33 @@ export default {
     return this.hasPermission(["owner", "admin", "dashboard"]);
   },
 
+  /**
+   * Finds all shops that a user has a given set of roles for
+   * @method getShopsWithRoles
+   * @param  {[string]} roles an array of roles to check. Will return a shopId if the user has _any_ of the roles
+   * @param  {string} [userId=Meteor.userId()] Optional userId, defaults to Meteor.userId()
+   * @return {[string]} Array of shopIds that the user has at least one of the given set of roles for
+   */
+  getShopsWithRoles(roles, userId = Meteor.userId()) {
+    // Owner permission for a shop superceeds grantable permissions, so we always check for owner permissions as well
+    roles.push("owner");
+
+    // Reducer that returns a unique list of shopIds that results from calling getGroupsForUser for each role
+    return roles.reduce((shopIds, role) => {
+      // getGroupsForUser will return a list of shops for which this user has the supplied role for
+      const shopIdsUserHasRoleFor = Roles.getGroupsForUser(userId, role);
+
+      // If we have new shopIds found, add them to the list
+      if (Array.isArray(shopIdsUserHasRoleFor) && shopIdsUserHasRoleFor.length > 0) {
+        // Create unique array from existing shopIds array and the shops
+        return [...new Set([...shopIds, ...shopIdsUserHasRoleFor])];
+      }
+
+      // IF we don't have any shopIds returned, keep our existing list
+      return shopIds;
+    }, []);
+  },
+
   getSellerShopId() {
     return Roles.getGroupsForUser(this.userId, "admin");
   },
