@@ -24,12 +24,24 @@ class AddEmail extends Component {
     this.handleFieldChange = this.handleFieldChange.bind(this);
   }
 
+  /**
+   * @summary handle setting state whenever the field on the form change
+   * @param {Event} event - the event that fired
+   * @param {String} value - the new value for the field
+   * @param {String} field - which field to modify it's value
+   * @return {null} null
+   */
   handleFieldChange = (event, value, field) => {
     this.setState({
       [field]: value
     });
   };
 
+  /**
+   * @summary Handle submitting the email form
+   * @param {Event} event - the event that fired
+   * @returns {null} null
+   */
   handleSubmit(event) {
     event.preventDefault();
     const cartId = Reaction.Router.getQueryParam("_id");
