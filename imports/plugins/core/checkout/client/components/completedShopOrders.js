@@ -11,7 +11,7 @@ const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMeth
       <div className="order-details-info-box">
         <div className="store-detail-box">
           <span className="order-details-store-title">{shopName}</span>
-          <span className="order-details-shipping-name">{shippingMethod}</span>
+          <span className="order-details-shipping-name">{shippingMethod.carrier} - {shippingMethod.label}</span>
         </div>
       </div>
       <div className="order-details-info-box">
@@ -29,7 +29,7 @@ CompletedShopOrders.propTypes = {
   handleDisplayMedia: PropTypes.func,
   items: PropTypes.array,
   order: PropTypes.object,
-  shippingMethod: PropTypes.string,
+  shippingMethod: PropTypes.object,
   shopName: PropTypes.string
 };
 
