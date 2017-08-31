@@ -71,13 +71,11 @@ Meteor.publish("Cart", function (sessionId, userId) {
 Meteor.publish("CartImages", function (cartItems) {
   check(cartItems, Array);
 
-  const productIds = [...new Set(cartItems.map(function (item) {
-    return item.product._id;
-  }))];
+  // Ensure each of these are unique
+  const productIds = [...new Set(cartItems.map((item) => item.product._id))];
+  const variantIds = [...new Set(cartItems.map((item) => item.variants._id))];
 
-  const variantIds = [...new Set(cartItems.map(function (item) {
-    return item.variants._id;
-  }))];
+  // return image for each the top level product or the variant and let the client code decide which to display
   const productImages = Media.find(
     { "$or":
       [{
