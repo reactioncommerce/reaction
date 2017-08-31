@@ -168,7 +168,7 @@ class OrderDashboardContainer extends Component {
 
   // Extracted Tracker logic for the search subscription, to allow calling in both
   // componentDidMount and componentWillReceiveProps
-  // This tracker is setup in the class itself because we need to re-subscribe when search input changes
+  // TODO: Find a way to move this to a wrapper container
   setupTracker = () => {
     Tracker.autorun(() => {
       this.dep.depend();
