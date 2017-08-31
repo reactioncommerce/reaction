@@ -170,7 +170,9 @@ class InvoiceContainer extends Component {
       editedItems = editedItems.filter(item => item.id !== lineItem._id);
       isEdited.refundedTotal = lineItem.variants.price * refundedQuantity;
       isEdited.refundedQuantity = refundedQuantity;
-      editedItems.push(isEdited);
+      if (refundedQuantity !== 0) {
+        editedItems.push(isEdited);
+      }
     } else {
       editedItems.push({
         id: lineItem._id,
