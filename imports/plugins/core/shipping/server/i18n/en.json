@@ -18,7 +18,8 @@
         "noShippingMethods": "No shipping methods are configured.",
         "contactAdmin": "Please contact the store administrator.",
         "configureNow": "Configure now.",
-        "shipping": "Shipping"
+        "shipping": "Shipping",
+        "loadingShippingMethods": "Loading shipping methods... Please wait..."
       },
       "shipping": {
         "addShippingProvider": "Add shipping provider",
