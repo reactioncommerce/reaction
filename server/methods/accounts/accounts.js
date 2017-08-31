@@ -72,22 +72,11 @@ export function updateEmailAddress(email) {
 
   // Get users current Email address
   const user = Meteor.user();
-  const oldEmails = user.emails;
 
-  if (oldEmails !== null) {
-    const oldEmail = oldEmails[0].address;
+  // Add email to user account
+  MeteorAccounts.addEmail(user._id, email);
 
-    // Nothing has changed, tell the user that nothing has changed
-    if (oldEmail === email) {
-      console.log("nothing has changed, what are you doing?!");
-      error.push({name: "message", type: "exist"});
-    }
-
-    // This is a new email address. Remove the original, and then add the new one.
-    MeteorAccounts.addEmail(user._id, email);
-
-    return true;
-  }
+  return true;
 }
 
 
