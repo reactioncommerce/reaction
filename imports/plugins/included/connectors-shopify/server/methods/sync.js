@@ -34,8 +34,19 @@ export const methods = {
       // return the one with the longest list of ancestors
       const variant = findBottomVariant(variantsWithShopifyId);
 
-      // productVariant is the reaction variant we need to adjust inventory for.
-      Products.update({ _id: variant._id }, { $inc: { inventoryQuantity: (lineItem.quantity * -1) } }, { selector: { type: "variant" } });
+      // adjust inventory for variant and push an event into the eventLog
+      Products.update({
+        _id: variant._id
+      }, {
+        $inc: { inventoryQuantity: (lineItem.quantity * -1) },
+        $push: {
+          eventLog: {
+            title: "Product inventory updated by Shopify webhook",
+            type: "update-webhook",
+            description: `Shopify order created which caused inventory to be reduced by ${lineItem.quantity}`
+          }
+        }
+      }, { selector: { type: "variant" } });
     });
   }
 };
