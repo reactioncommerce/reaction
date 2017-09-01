@@ -21,6 +21,7 @@ class LineItems extends Component {
     handleReturnItems: PropTypes.func,
     handleSelectAllItems: PropTypes.func,
     isRefunding: PropTypes.bool,
+    order: PropTypes.object,
     popOverIsOpen: PropTypes.bool,
     selectAllItems: PropTypes.bool,
     selectedItems: PropTypes.array,
