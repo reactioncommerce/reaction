@@ -2,9 +2,10 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Cart } from "/lib/collections";
 import { Logger, Hooks } from "/server/api";
-import { Cart as CartSchema } from "/lib/collections/schemas";
+import { Cart as CartSchema, ShippingMethod as ShippingMethodSchema } from "/lib/collections/schemas";
 
 function createShippingRecordByShop(cart, rates) {
+  check(rates, ShippingMethodSchema);
   const cartId = cart._id;
   const itemsByShop = cart.getItemsByShop();
   const shops = Object.keys(itemsByShop);
@@ -20,7 +21,7 @@ function createShippingRecordByShop(cart, rates) {
     };
     return Cart.update(selector, update, (error) => {
       if (error) {
-        Logger.warn(`Error adding rates to cart ${cartId}`, error);
+        Logger.warn(`Error adding rates to cart from createShippingRecordByShop ${cartId}`);
         return;
       }
       Logger.debug(`Success adding rates to cart ${cartId}`, rates);
@@ -29,6 +30,7 @@ function createShippingRecordByShop(cart, rates) {
 }
 
 function updateShippingRecordByShop(cart, rates) {
+  check(rates, ShippingMethodSchema);
   const cartId = cart._id;
   const itemsByShop = cart.getItemsByShop();
   const shops = Object.keys(itemsByShop);
