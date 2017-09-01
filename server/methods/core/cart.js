@@ -612,15 +612,22 @@ Meteor.methods({
     delete order.getTotal;
     delete order._id;
 
-    // TODO: update this to handle multiple shipments instead of hardcoding to
-    // first element in `order.shipping` array
+
+    // Create a shipping record for each shop on the order
     if (Array.isArray(order.shipping)) {
       if (order.shipping.length > 0) {
-        order.shipping[0].paymentId = order.billing[0]._id;
-
-        if (!Array.isArray(order.shipping[0].items)) {
-          order.shipping[0].items = [];
-        }
+        const shippingRecords = [];
+        order.shipping.map((shippingRecord) => {
+          const billingRecord = order.billing.find(billing => billing.shopId === shippingRecord.shopId);
+          shippingRecord.paymentId = billingRecord._id;
+          shippingRecord.items = [];
+          shippingRecord.items.packed = false;
+          shippingRecord.items.shipped = false;
+          shippingRecord.items.delivered = false;
+          shippingRecord.workflow = { status: "new",  workflow: ["coreOrderWorkflow/notStarted"] };
+          shippingRecords.push(shippingRecord);
+        });
+        order.shipping = shippingRecords;
       }
     } else { // if not - create it
       order.shipping = [];
@@ -686,18 +693,6 @@ Meteor.methods({
       }
     });
 
-    // TODO: Set all shipping statuses to false. Consider eliminating in favor
-    // of order item workflow status.
-    // Set shipping statuses to false
-    order.shipping[0].items.packed = false;
-    order.shipping[0].items.shipped = false;
-    order.shipping[0].items.delivered = false;
-
-    // begin a new shipping workflow for the order
-    order.shipping[0].workflow = {
-      status: "new",
-      workflow: ["coreOrderWorkflow/notStarted"]
-    };
     order.billing[0].currency.exchangeRate = exchangeRate;
     order.workflow.status = "new";
     order.workflow.workflow = ["coreOrderWorkflow/created"];
