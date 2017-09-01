@@ -225,15 +225,6 @@ class LineItems extends Component {
               </div>
             </div>
           </div>
-          <div className="refund-include-shipping">
-            <div className="pull-right">
-              <Checkbox
-                className="checkbox-large"
-                label="Include Shipping"
-                checked={false}
-              />
-            </div>
-          </div>
         </div>
       </div>
     );
