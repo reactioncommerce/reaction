@@ -155,12 +155,14 @@ export default function () {
     shipping: [
       {
         _id: Random.id(),
+        shopId: getShop()._id,
         address: addressForOrder
       }
     ],
     billing: [
       {
         _id: Random.id(),
+        shopId: getShop()._id,
         address: addressForOrder
       }
     ],
