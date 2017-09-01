@@ -157,8 +157,9 @@ class OrderDashboardContainer extends Component {
   }
 
   handleMenuClick = (event, value) => {
-    const query = OrderHelper.makeQuery(value);
-
+    let query = OrderHelper.makeQuery(value);
+    // ensure other fields (e.g ids) on query are kept
+    query = Object.assign({}, this.state.query, query);
     this.setState({
       query,
       filter: i18next.t(`order.filter.${value}`),
