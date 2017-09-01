@@ -29,16 +29,17 @@ function cartShippingQuotes(currentCart) {
 function cartShipmentMethods(currentCart) {
   const cart = currentCart || Cart.findOne();
   const shipmentMethods = [];
-
+  const primaryShopId = Reaction.getPrimaryShopId();
   if (cart) {
     if (cart.shipping) {
       for (const shipping of cart.shipping) {
-        if (shipping.shipmentMethod) {
+        if (shipping.shipmentMethod && shipping.shopId === primaryShopId) {
           shipmentMethods.push(shipping.shipmentMethod);
         }
       }
     }
   }
+  console.log("shipmentMethod", shipmentMethods);
   return shipmentMethods;
 }
 
