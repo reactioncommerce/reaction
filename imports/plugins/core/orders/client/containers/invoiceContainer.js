@@ -418,6 +418,7 @@ class InvoiceContainer extends Component {
           isRefunding: true
         });
 
+        // Set warning if order is not yet captured
         if (orderMode !== "capture") {
           Alerts.alert("order.returnItemsWait");
           this.setState({
