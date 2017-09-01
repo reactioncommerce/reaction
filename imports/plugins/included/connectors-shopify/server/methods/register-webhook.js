@@ -63,7 +63,7 @@ export const methods = {
           "settings.webhooks": webhook
         }
       });
-      Logger.info("webhook", webhook);
+      Logger.debug("webhook", webhook);
     } catch (error) {
       throw new Meteor.Error("unknown-error", `Shopify API Error creating new webhook: ${error.message}`);
     }

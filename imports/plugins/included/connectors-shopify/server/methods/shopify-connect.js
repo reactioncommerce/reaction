@@ -485,8 +485,9 @@ export const methods = {
               price.range = `${price.max}`;
             }
             Products.update({ _id: reactionProductId }, { $set: { price: price } }, { selector: { type: "simple" }, publish: true });
+            Logger.info("product added");
           } else { // product already exists check
-            Logger.debug(`Product ${shopifyProduct.title} already exists`);
+            Logger.info(`Product ${shopifyProduct.title} already exists`);
           }
         } // End product loop
       } // End pages loop
