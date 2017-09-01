@@ -628,27 +628,17 @@ const composer = (props, onData) => {
 
   let uniqueItems;
 
+  // if avalara tax has been enabled it adds a "taxDetail" field for every item
   if (order.taxes !== undefined) {
     const taxes = order.taxes.slice(0, -1);
 
     uniqueItems = returnItems.map((item) => {
-      let taxDetail;
-      // if avalara tax has been enabled it adds a "taxDetail" field for every item
       if (taxes.length !== 0) {
-        taxDetail = taxes.find((tax) => {
+        const taxDetail = taxes.find((tax) => {
           return tax.lineNumber === item._id;
         });
         item.taxDetail = taxDetail;
-      } else {
-        // if another tax has been enabled add taxDetail
-        const taxAmount = order.tax;
-        taxDetail = order.taxes.find((tax) => {
-          return tax.shopId === item.shopId;
-        });
-        taxDetail.tax = taxAmount;
-        item.taxDetail = taxDetail;
       }
-      return item;
     });
   } else {
     uniqueItems = returnItems;

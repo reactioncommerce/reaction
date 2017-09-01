@@ -133,43 +133,45 @@ class LineItems extends Component {
     return (
       <div className="invoice-order-items">
         <div className="invoice-order-item-shipping">
-          <b className="pull-left">
+          <b>
             <Translation
               defaultValue="Shipping"
               i18nKey="cartSubTotals.shipping"
             />
           </b>
-          <span className="pull-right">{formatPriceString(uniqueItem.shipping.rate)}</span>
+          <span>{formatPriceString(uniqueItem.shipping.rate)}</span>
         </div>
-        <div className="invoice-order-item-tax">
-          <b>
-            <Translation
-              defaultValue="Tax"
-              i18nKey="cartSubTotals.tax"
-            />
-          </b>
-          <div className="tax-code">
-            <span>
-              {uniqueItem.taxDetail ? uniqueItem.taxDetail.taxCode : uniqueItem.variants.taxCode}
-            </span>
+        {this.props.order.taxes &&
+          <div className="invoice-order-item-tax">
+            <b>
+              <Translation
+                defaultValue="Tax"
+                i18nKey="cartSubTotals.tax"
+              />
+            </b>
+            <div className="tax-code">
+              <span>
+                {uniqueItem.taxDetail ? uniqueItem.taxDetail.taxCode : uniqueItem.variants.taxCode}
+              </span>
+            </div>
+            <div className="tax-cost">
+              <span>
+                {uniqueItem.taxDetail ?
+                  formatPriceString(uniqueItem.taxDetail.tax) :
+                  formatPriceString(0)
+                }
+              </span>
+            </div>
           </div>
-          <div className="tax-cost">
-            <span>
-              {uniqueItem.taxDetail ?
-                formatPriceString(uniqueItem.taxDetail.tax) :
-                formatPriceString(uniqueItem.tax)
-              }
-            </span>
-          </div>
-        </div>
+        }
         <div className="invoice-order-item-subtotal">
-          <b className="pull-left">
+          <b>
             <Translation
               defaultValue="Subtotal"
               i18nKey="cartSubTotals.subtotal"
             />
           </b>
-          <b className="pull-right">{formatPriceString(uniqueItem.variants.price * uniqueItem.quantity)}</b>
+          <span><b>{formatPriceString(uniqueItem.variants.price * uniqueItem.quantity)}</b></span>
         </div>
       </div>
     );
