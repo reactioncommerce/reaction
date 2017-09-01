@@ -557,19 +557,24 @@ Meteor.methods({
         "Cart not found for user with such id");
     }
 
-    // temp hack until we build out multiple shipping handlers
+    // Sets all shipping methods to the one selected
+    // TODO: Accept an object of shopId to method map to ship via different methods per shop
     let selector;
     let update;
-    // temp hack until we build out multiple shipment handlers
     // if we have an existing item update it, otherwise add to set.
     if (cart.shipping) {
+      const updatedShipping = [];
+      cart.shipping.map((shipRecord) => {
+        shipRecord.shipmentMethod = method;
+        updatedShipping.push(shipRecord);
+      });
+
       selector = {
-        "_id": cartId,
-        "shipping._id": cart.shipping[0]._id
+        _id: cartId
       };
       update = {
         $set: {
-          "shipping.$.shipmentMethod": method
+          shipping: updatedShipping
         }
       };
     } else {
@@ -579,7 +584,8 @@ Meteor.methods({
       update = {
         $addToSet: {
           shipping: {
-            shipmentMethod: method
+            shipmentMethod: method,
+            shopId: cart.shopId
           }
         }
       };
