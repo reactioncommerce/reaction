@@ -4,6 +4,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 
 class GridItemControls extends Component {
   static propTypes = {
+    checkLabelValidation: PropTypes.func,
     checked: PropTypes.func,
     hasChanges: PropTypes.func,
     hasCreateProductPermission: PropTypes.func,
@@ -22,6 +23,22 @@ class GridItemControls extends Component {
 
   renderVisibilityButton() {
     if (this.props.hasChanges()) {
+      return (
+        <div>
+          <Components.IconButton
+            icon=""
+            onIcon=""
+            status="info"
+          />
+        </div>
+      );
+    }
+  }
+
+  // renders red button when the product is missing the variant label
+  renderLabelButton() {
+    const checkVariantLabel = this.props.checkLabelValidation();
+    if (checkVariantLabel.length > 0) {
       return (
         <div>
           <Components.IconButton
@@ -51,6 +68,7 @@ class GridItemControls extends Component {
 
           {this.renderArchived()}
           {this.renderVisibilityButton()}
+          {this.renderLabelButton()}
         </div>
       );
     }

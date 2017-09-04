@@ -4,6 +4,7 @@ import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
+import { ReactionProduct } from "/lib/api";
 import GridItemControls from "../components/gridItemControls";
 
 const wrapComponent = (Comp) => (
@@ -13,12 +14,13 @@ const wrapComponent = (Comp) => (
       product: PropTypes.object
     }
 
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
 
       this.hasCreateProductPermission = this.hasCreateProductPermission.bind(this);
       this.hasChanges = this.hasChanges.bind(this);
       this.checked = this.checked.bind(this);
+      this.checkLabelValidation = this.checkLabelValidation.bind(this);
     }
 
     hasCreateProductPermission = () => {
@@ -33,6 +35,16 @@ const wrapComponent = (Comp) => (
       return this.props.isSelected === true;
     }
 
+    // checks whether the product variant has a Label
+    checkLabelValidation = () => {
+      const variants = ReactionProduct.getVariants(this.props.product._id);
+      const noLabel = variants.filter((variant) => {
+        return variant.title.length === 0;
+      });
+
+      return noLabel;
+    }
+
     render() {
       return (
         <Comp
@@ -40,6 +52,7 @@ const wrapComponent = (Comp) => (
           hasCreateProductPermission={this.hasCreateProductPermission}
           hasChanges={this.hasChanges}
           checked={this.checked}
+          checkLabelValidation={this.checkLabelValidation}
         />
       );
     }
