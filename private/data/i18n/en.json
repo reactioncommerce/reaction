@@ -209,7 +209,7 @@
         "returnItemsCaptureAlert": "Capture payment for total amount {{totalAmount}}?",
         "returnItemsAlert": "Return {{returnItemsQuantity}} item(s), total return amount {{returnItemsTotal}}?",
         "returnItemsSuccess": "Items have successfully been returned and refund initiated",
-        "returnItemsWait": "Payment capture taking time try again in a few minutes",
+        "returnItemsWait": "Payment capture is taking too long. Try again in a few minutes",
         "capture": "Capture",
         "capturing": "Capturing",
         "bulkActions": "Bulk Actions",
