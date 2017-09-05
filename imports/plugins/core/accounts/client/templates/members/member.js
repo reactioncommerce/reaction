@@ -146,11 +146,8 @@ Template.memberSettings.helpers({
   },
 
   ReactionAvatar() {
-    const user = Accounts.findOne(Meteor.userId());
-    const emailAddress = user.emails[0].address;
     return {
-      component: Components.ReactionAvatar,
-      email: emailAddress
+      component: Components.ReactionAvatar
     };
   }
 });

@@ -15,7 +15,7 @@ export { default as ManageGroups } from "./components/manageGroups";
 export { default as PermissionsList } from "./components/permissionsList";
 export { default as SignIn } from "./components/signIn";
 export { default as SignUp } from "./components/signUp";
-export { default as UpdateEmail } from "./components/email/updateEmail";
+export { default as UpdateEmail } from "./containers/updateEmail";
 export { default as UpdatePasswordOverlay } from "./components/updatePasswordOverlay";
 
 export { default as AccountsDashboardContainer } from "./containers/accountsDashboardContainer";

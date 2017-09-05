@@ -1,42 +1,39 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Avatar from "react-avatar";
 import classnames from "classnames/dedupe";
-import { registerComponent } from "@reactioncommerce/reaction-components";
 
-class ReactionAvatar extends Component {
-  render() {
-    const { className, email, name, size, src, style } = this.props;
+const ReactionAvatar = (props) => {
+  const { className, email, name, size, src, style } = props;
 
-    const classes = classnames({
-      "rui": true,
-      "rui-avatar": true
-    }, className);
+  const classes = classnames({
+    "rui": true,
+    "rui-avatar": true
+  }, className);
 
-    return (
-      <Avatar
-        className={classes}
-        email={email}
-        name={name}
-        size={size}
-        src={src}
-        style={style}
-        // Below props usually aren't passed, and will use defaults
-        color={this.props.color}
-        facebookId={this.props.facebookId}
-        fgColor={this.props.fgColor}
-        googleId={this.props.googleId}
-        md5Email={this.props.md5Email}
-        round={this.props.round}
-        skypeId={this.props.skypeId}
-        textSizeRatio={this.props.textSizeRatio}
-        twitterHandle={this.props.twitterHandle}
-        value={this.props.value}
-        vkontakteId={this.props.vkontakteId}
-      />
-    );
-  }
-}
+  return (
+    <Avatar
+      className={classes}
+      email={email}
+      name={name}
+      size={size}
+      src={src}
+      style={style}
+      // Below props usually aren't passed, and will use defaults
+      color={props.color}
+      facebookId={props.facebookId}
+      fgColor={props.fgColor}
+      googleId={props.googleId}
+      md5Email={props.md5Email}
+      round={props.round}
+      skypeId={props.skypeId}
+      textSizeRatio={props.textSizeRatio}
+      twitterHandle={props.twitterHandle}
+      value={props.value}
+      vkontakteId={props.vkontakteId}
+    />
+  );
+};
 
 ReactionAvatar.propTypes = {
   className: PropTypes.string,
@@ -77,7 +74,5 @@ ReactionAvatar.defaultProps = {
   value: null,
   vkontakteId: null
 };
-
-registerComponent("ReactionAvatar", ReactionAvatar);
 
 export default ReactionAvatar;

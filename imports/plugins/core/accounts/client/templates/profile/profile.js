@@ -5,7 +5,6 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { Reaction } from "/client/api";
 import { i18next } from  "/client/api";
 import * as Collections from "/lib/collections";
-import UpdateEmail from "/imports/plugins/core/accounts/client/components/email/updateEmail";
 import { Components } from "@reactioncommerce/reaction-components";
 
 
@@ -30,20 +29,14 @@ Template.accountProfile.onCreated(() => {
 Template.accountProfile.helpers({
 
   UpdateEmail() {
-    const user = Collections.Accounts.findOne(Meteor.userId());
-    const emailAddress = user.emails[0].address;
     return {
-      component: UpdateEmail,
-      email: emailAddress
+      component: Components.UpdateEmail
     };
   },
 
   ReactionAvatar() {
-    const user = Collections.Accounts.findOne(Meteor.userId());
-    const emailAddress = user.emails[0].address;
     return {
-      component: Components.ReactionAvatar,
-      email: emailAddress
+      component: Components.ReactionAvatar
     };
   },
 
