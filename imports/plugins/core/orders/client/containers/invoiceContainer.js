@@ -8,7 +8,6 @@ import { Media, Packages } from "/lib/collections";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import Invoice from "../components/invoice.js";
 
-
 class InvoiceContainer extends Component {
   static propTypes = {
     currency: PropTypes.object,
@@ -411,7 +410,10 @@ class InvoiceContainer extends Component {
 
         // Set warning if order is not yet captured
         if (orderMode !== "capture") {
-          Alerts.alert(i18next.t("order.returnItemsWait"));
+          Alerts.alert({
+            text: i18next.t("order.returnItemsWait"),
+            type: "warning"
+          });
           this.setState({
             isRefunding: false
           });
