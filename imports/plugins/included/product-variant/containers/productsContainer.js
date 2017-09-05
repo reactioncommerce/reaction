@@ -101,7 +101,7 @@ function composer(props, onData) {
 
   let canLoadMoreProducts = false;
 
-  const slug = Reaction.Router.getParam("slug");
+  const slug = Reaction.Router.getParam("slug").toLowerCase();
   const tag = Tags.findOne({ slug: slug }) || Tags.findOne(slug);
   const scrollLimit = Session.get("productScrollLimit");
   let tags = {}; // this could be shop default implementation needed
@@ -130,6 +130,7 @@ function composer(props, onData) {
   }
 
   const productCursor = Products.find({
+    hashtags: { $in: tags.tags },
     ancestors: [],
     type: { $in: ["simple"] }
   });
