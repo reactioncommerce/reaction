@@ -79,7 +79,7 @@ export const methods = {
    * @param {number} shopifyWebhookId The shopifyId of the webhook to delete
    * @returns {number} the number of Packages updated (either 1 or 0)
    */
-  async "connectors/shopify/deleteWebhook"(shopifyWebhookId) {
+  async "connectors/shopify/webhook/delete"(shopifyWebhookId) {
     check(shopifyWebhookId, Number);
 
     // Check for permissions
@@ -128,6 +128,62 @@ export const methods = {
       // If there is another error, throw it.
       throw new Meteor.Error("api-error", `Shopify API Error, error deleting webhook: ${error}`);
     }
+  },
+  async "connectors/shopify/webhooks/deleteAll"() {
+    // Check for permissions
+    if (!Reaction.hasPermission(["owner", "settings/connectors", "settings/connectors/shopify"])) {
+      throw new Meteor.error("access-denied", "Access denied");
+    }
+
+    const shopifyPkg = Reaction.getPackageSettingsWithOptions({
+      shopId: Reaction.getShopId(),
+      name: "reaction-connectors-shopify"
+    });
+
+    if (!shopifyPkg) {
+      throw new Meteor.Error("server-error", `No shopify package found for shop ${Reaction.getShopId()}`);
+    }
+
+    const settings = shopifyPkg.settings;
+    const shopify = new Shopify({
+      apiKey: settings.apiKey,
+      password: settings.password,
+      shopName: settings.shopName
+    });
+
+    const registeredShopifyWebhooks = settings.webhooks;
+
+    // Exit early if no Shopify webhooks registered
+    if (!Array.isArray(registeredShopifyWebhooks) || registeredShopifyWebhooks.length <= 0) {
+      return Logger.debug("No Shopify webhooks registered. Exiting.");
+    }
+
+    const responses = [];
+    // Start all asynchronous operations immediately.
+    for (const webhook of registeredShopifyWebhooks) {
+      responses.push(shopify.webhook.delete(webhook.shopifyId));
+    }
+
+    try {
+      const results = await Promise.all(responses);
+      Logger.debug("results", results);
+    } catch (error) {
+      if (error.statusCode === 404) {
+        Logger.warn("api-warning", "At least one of the webhooks registered in Reaction was not found on Shopify");
+      } else {
+        // TODO: Implement retry queue with exponential back-off for requests which are rejected
+        // because of too many requests
+        // In that case, we may need to resolve promises one-by-one instead of using Promise.all
+        Logger.error("api-error", "There was an error deleting webhooks on Shopify.", error);
+      }
+    }
+
+    // Remove all registered webhooks
+    return Packages.update({ _id: shopifyPkg._id }, {
+      $set: {
+        "settings.webhooks": []
+      }
+    });
   }
 };
 
