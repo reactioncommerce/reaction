@@ -14,7 +14,7 @@ import AddEmail from "./addEmail";
  * @property {Array} shops - An Array contains information broken down by shop
  * @property {Object} orderSummary - An object containing the items making up the order summary
  * @property {Array} paymentMethod - An array of paymentMethod objects
- * @property {Function} handleDisplayMedia - A function for displaying the p
+ * @property {Function} handleDisplayMedia - A function for displaying the product image
  * @return {Node} React node containing the top-level component for displaying the completed order/receipt page
  */
 const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, handleDisplayMedia }) => {
