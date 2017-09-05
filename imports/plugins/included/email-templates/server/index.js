@@ -77,7 +77,7 @@ Reaction.registerTemplate({
   name: TemplatePaths.verifyUpdatedEmailTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.verifyUpdatedEmailTemplate),
-  subject: "{{shopName}}: Please verify your email address"
+  subject: "Verify your new email address"
 });
 
 
