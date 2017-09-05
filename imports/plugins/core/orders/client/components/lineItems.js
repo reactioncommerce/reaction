@@ -8,6 +8,27 @@ import { Reaction } from "/client/api";
 import { formatPriceString } from "/client/api";
 import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox, Translation } from  "@reactioncommerce/reaction-ui";
 
+/**
+  * @summary React component for displaying the actionable data on the invoice section on the orders sideview
+  * @param {Object} props - React PropTypes
+  * @property {Object} order - An object represnting an order
+  * @property {Object} uniqueItems - An object representing a line item
+  * @property {Array} editedItems - An array/list of line items that have been edited/modified
+  * @property {Array} selectedItems - An array of all the line items  that have been selected
+  * @property {Function} displayMedia - A function to display line items images
+  * @property {Function} clearRefunds - A function to clear edited/selected items
+  * @property {Function} getRefundedItemsInfo - A function that returns an object containing refunded items info
+  * @property {Function} getSelectedItemsInfo - A function that returns an object containing selected items info
+  * @property {Function} handleInputChange - A function to handle numeric input change
+  * @property {Function} handleItemSelect - A function to handle selecting an item via chekbox
+  * @property {Function} handlePopOverOpen - A function to handle the popover open and close
+  * @property {Function} handleReturnItems - A function to handle items return
+  * @property {Function} handleSelectAllItems - A function to handle selecting of all items
+  * @property {Bool} selectAllItems - A boolean indicating whether all items have been selected
+  * @property {Bool} isRefunding - A boolean indicating whether payment is being refunded
+  * @property {Bool} popOverIsOpen - A boolean indicating whether popover is open
+  * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
+  */
 class LineItems extends Component {
   static propTypes = {
     clearRefunds: PropTypes.func,
@@ -26,10 +47,6 @@ class LineItems extends Component {
     selectAllItems: PropTypes.bool,
     selectedItems: PropTypes.array,
     uniqueItems: PropTypes.array
-  }
-
-  calculateTotal(price, shipping, taxes) {
-    return formatPriceString(price + shipping + taxes);
   }
 
   displayMedia(uniqueItem) {

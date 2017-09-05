@@ -13,6 +13,7 @@ import Invoice from "../components/invoice.js";
 class InvoiceContainer extends Component {
   static propTypes = {
     currency: PropTypes.object,
+    isFetching: PropTypes.bool,
     order: PropTypes.object,
     refunds: PropTypes.array,
     uniqueItems: PropTypes.array
@@ -24,10 +25,8 @@ class InvoiceContainer extends Component {
       currency: props.currency,
       refunds: props.refunds,
       order: props.order,
-      isOpen: false,
       isUpdating: false,
       isCapturing: false,
-      isFetching: true,
       isRefunding: false,
       popOverIsOpen: false,
       selectAllItems: false,
@@ -45,13 +44,6 @@ class InvoiceContainer extends Component {
         refunds: nextProps.refunds
       });
     }
-  }
-
-  handleClick = (event) => {
-    event.preventDefault();
-    this.setState({
-      isOpen: true
-    });
   }
 
   handlePopOverOpen = (event) => {
@@ -458,7 +450,6 @@ class InvoiceContainer extends Component {
         <Invoice
           {...this.props}
 
-          handleClick={this.handleClick}
           clearRefunds={this.handleClearRefunds}
           handlePopOverOpen={this.handlePopOverOpen}
           handleSelectAllItems={this.handleSelectAllItems}
@@ -476,7 +467,6 @@ class InvoiceContainer extends Component {
           handleRefund={this.handleRefund}
           hasRefundingEnabled={this.hasRefundingEnabled()}
 
-          isOpen={this.state.isOpen}
           refunds={this.state.refunds}
           isCapturing={this.state.isCapturing}
           selectAllItems={this.state.selectAllItems}
@@ -666,8 +656,8 @@ const composer = (props, onData) => {
     printOrder,
 
     currentData: props.currentData,
-    isFetching: props.isFetching,
     currency: props.currency,
+    isFetching: props.isFetching,
     order: props.order,
     refunds: props.refunds
   });

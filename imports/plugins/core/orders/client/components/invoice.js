@@ -6,35 +6,70 @@ import { Translation, CardGroup, Card, CardBody, CardHeader, DiscountList } from
 import LineItems from "./lineItems";
 import InvoiceActions from "./invoiceActions";
 
+/**
+  * @summary React component for displaying the `invoice` section on the orders sideview
+  * @param {Object} props - React PropTypes
+  * @property {Object} invoice - An object representing an invoice
+  * @property {Object} order - An object representing an order
+  * @property {Bool} discounts - A boolean indicating whether discounts are enabled
+  * @property {Array} refunds - An array/list of refunds
+  * @property {Bool} paymentCaptured - A boolean indicating whether payment has been captured
+  * @property {Bool} canMakeAdjustments - A boolean indicating whether adjustments could be made on total payment
+  * @property {Bool} hasRefundingEnabled - A boolean indicating whether payment supports refunds
+  * @property {Bool} isFetching - A boolean indicating whether refund list is being loaded
+  * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
+  */
 class Invoice extends Component {
   static propTypes = {
     canMakeAdjustments: PropTypes.bool,
     discounts: PropTypes.bool,
-    handleClick: PropTypes.func,
     hasRefundingEnabled: PropTypes.bool,
     invoice: PropTypes.object,
     isFetching: PropTypes.bool,
-    isOpen: PropTypes.bool,
     order: PropTypes.object,
     paymentCaptured: PropTypes.bool,
     refunds: PropTypes.array
   }
 
-  dateFormat(context, block) {
-    const f = block || "MMM DD, YYYY hh:mm:ss A";
-    return moment(context).format(f);
+  state = {
+    isOpen: false
   }
 
-  renderDiscountForm() {
-    const { isOpen, order } = this.props;
+  /**
+    * @summary Formats dates
+    * @param {Number} context - the date to be formatted
+    * @param {String} block - the preferred format
+    * @returns {String} formatted date
+    */
+  formatDate(context, block) {
+    const dateFormat = block || "MMM DD, YYYY hh:mm:ss A";
+    return moment(context).format(dateFormat);
+  }
 
+  /**
+    * @summary Handle clicking the add discount link
+    * @param {Event} event - the event that fired
+    * @returns {null} null
+    */
+  handleClick = (event) => {
+    event.preventDefault();
+    this.setState({
+      isOpen: true
+    });
+  }
+
+  /**
+    * @summary Displays the discount form
+    * @returns {null} null
+    */
+  renderDiscountForm() {
     return (
       <div>
-        {isOpen &&
+        {this.state.isOpen &&
           <div>
             <hr/>
             <DiscountList
-              id={order._id}
+              id={this.props.order._id}
               collection="Orders"
               validatedInput={true}
             />
@@ -45,9 +80,12 @@ class Invoice extends Component {
     );
   }
 
+  /**
+    * @summary Displays the refund information after the order payment breakdown on the invoice
+    * @returns {null} null
+    */
   renderRefundsInfo() {
     const { hasRefundingEnabled, isFetching, refunds } = this.props;
-
     return (
       <div>
         {(hasRefundingEnabled && isFetching) &&
@@ -61,7 +99,7 @@ class Invoice extends Component {
 
         {refunds && refunds.map((refund) => (
           <div className="order-summary-form-group text-danger" key={refund.created} style={{ marginBottom: 15 }}>
-            <strong>Refunded on: {this.dateFormat(refund.created, "MM/D/YYYY")}</strong>
+            <strong>Refunded on: {this.formatDate(refund.created, "MM/D/YYYY")}</strong>
             <div className="invoice-details"><strong>{formatPriceString(refund.amount)}</strong></div>
           </div>
         ))}
@@ -69,20 +107,26 @@ class Invoice extends Component {
     );
   }
 
+  /**
+    * @summary Displays the total payment form
+    * @returns {null} null
+    */
   renderTotal() {
-    const { invoice } = this.props;
-
     return (
       <div className="order-summary-form-group">
         <hr/>
         <strong>TOTAL</strong>
         <div className="invoice-details">
-          <strong>{formatPriceString(invoice.total)}</strong>
+          <strong>{formatPriceString(this.props.invoice.total)}</strong>
         </div>
       </div>
     );
   }
 
+  /**
+    * @summary Displays either refunds info or the total payment form
+    * @returns {null} null
+    */
   renderConditionalDisplay() {
     const { canMakeAdjustments, paymentCaptured } = this.props;
     return (
@@ -103,8 +147,12 @@ class Invoice extends Component {
     );
   }
 
+  /**
+    * @summary Displays the invoice form with broken down payment info
+    * @returns {null} null
+    */
   renderInvoice() {
-    const { invoice, discounts, handleClick } = this.props;
+    const { invoice, discounts } = this.props;
 
     return (
       <div>
@@ -142,7 +190,7 @@ class Invoice extends Component {
               <strong><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
               <div className="invoice-details">
                 <i className="fa fa-tag fa-lg" style={{ marginRight: 2 }}/>
-                <a className="btn-link" onClick={handleClick}>Add Discount</a>
+                <a className="btn-link" onClick={this.handleClick}>Add Discount</a>
               </div>
             </div>
             {this.renderDiscountForm()}

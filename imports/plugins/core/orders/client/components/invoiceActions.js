@@ -3,6 +3,26 @@ import PropTypes from "prop-types";
 import { formatPriceString } from "/client/api";
 import { Button, NumericInput, Translation, ButtonSelect } from "@reactioncommerce/reaction-ui";
 
+/**
+  * @summary React component for displaying the actionable data on the invoice section on the orders sideview
+  * @param {Object} props - React PropTypes
+  * @property {Object} invoice - An object representing an invoice
+  * @property {Array} refunds - An array/list of refunds
+  * @property {Function} handleApprove - A function for approving payments
+  * @property {Function} handleCapturePayment - A function for capturing payments
+  * @property {Function} handleRefund - A function for refunding payments
+  * @property {Object} currency - A object represting current shop currency details
+  * @property {String} printOrder - A string representing the route/path for printed order
+  * @property {Number} adjustedTotal - The calculated adjusted total after refunds/discounts
+  * @property {Bool} paymentCaptured - A boolean indicating whether payment has been captured
+  * @property {Bool} hasRefundingEnabled - A boolean indicating whether payment supports refunds
+  * @property {Bool} paymentApproved - A boolean indicating whether payment has been approved
+  * @property {Bool} paymentPendingApproval - A boolean indicating whether payment is yet to be approved
+  * @property {Bool} showAfterPaymentCaptured - A boolean indicating that status of the order is completed
+  * @property {Bool} isCapturing - A boolean indicating whether payment is being captured
+  * @property {Bool} isRefunding - A boolean indicating whether payment is being refunded
+  * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
+  */
 class InvoiceActions extends Component {
   static propTypes = {
     adjustedTotal: PropTypes.number,
