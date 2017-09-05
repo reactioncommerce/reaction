@@ -1,3 +1,3 @@
-import "./shopify-connect.js";
-import "./register-webhook.js";
+import "./import-products.js";
 import "./sync.js";
+import "./sync-orders.js";

@@ -107,9 +107,6 @@ function adjustInventory(product, userId, context) {
   // calledByServer is only true if this method was triggered by the server, such as from a webhook.
   // there will be a null connection and no userId.
   const calledByServer = (context && context.connection === null && !Meteor.userId());
-
-  console.log("calledByServer", calledByServer);
-
   // if this method is calledByServer, skip permission check.
   // user needs createProduct permission to adjust inventory
   // REVIEW: Should this be checking shop permission instead?

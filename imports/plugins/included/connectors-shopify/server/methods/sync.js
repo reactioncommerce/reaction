@@ -1,53 +1,127 @@
+import Shopify from "shopify-api-node";
+
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Products } from "/lib/collections";
 
+import { Reaction, Logger } from "/server/api";
+import { Packages } from "/lib/collections";
 
-/**
- * Given a list of variants in an ancestor chain, finds the bottommost variant
- * @private
- * @method findBottomVariant
- * @param  {[Object]} variants Array of variant objects
- * @return {Object} Bottommost variant object
- */
-function findBottomVariant(variants) {
-  return variants.reduce((bottomVariant, variant) => {
-    if (!bottomVariant.ancestors || !Array.isArray(bottomVariant.ancestors)) {
-      return variant;
-    }
-    if (Array.isArray(variant.ancestors)) {
-      if (variant.ancestors.length > bottomVariant.ancestors.length) {
-        return variant;
-      }
-    }
-    return bottomVariant;
-  });
-}
+// connectors-shopify/server/methods/sync.js
+// contains methods for setting up and tearing down
+// synchronization between a Shopify store and a Reaction shop
 
 export const methods = {
-  "shopify/sync/orders/created": (lineItems) => {
-    check(lineItems, [Object]);
-    lineItems.forEach((lineItem) => {
-      const variantsWithShopifyId = Products.find({ shopifyId: lineItem.variant_id }).fetch();
+  /**
+   * Meteor method for creating a shopify webhook for the active shop
+   * See: https://help.shopify.com/api/reference/webhook for list of valid topics
+   * @async
+   * @method connectors/shopify/createWebhook
+   * @param {Object} options Options object
+   * @param {string} options.topic - the shopify topic to subscribe to
+   * @param {string} [options.absoluteUrl] - Url to send webhook requests
+   * @return {void}
+   */
+  async "connectors/shopify/createWebhook"(options) {
+    check(options, Object);
 
-      // iterate through the variants that match this shopifyId
-      // return the one with the longest list of ancestors
-      const variant = findBottomVariant(variantsWithShopifyId);
+    // Check for permissions
+    if (!Reaction.hasPermission(["owner", "settings/connectors", "settings/connectors/shopify"])) {
+      throw new Meteor.error("access-denied", "Access denied");
+    }
 
-      // adjust inventory for variant and push an event into the eventLog
-      Products.update({
-        _id: variant._id
-      }, {
-        $inc: { inventoryQuantity: (lineItem.quantity * -1) },
-        $push: {
-          eventLog: {
-            title: "Product inventory updated by Shopify webhook",
-            type: "update-webhook",
-            description: `Shopify order created which caused inventory to be reduced by ${lineItem.quantity}`
-          }
-        }
-      }, { selector: { type: "variant" } });
+    const shopifyPkg = Reaction.getPackageSettingsWithOptions({
+      shopId: Reaction.getShopId(),
+      name: "reaction-connectors-shopify"
     });
+
+    if (!shopifyPkg) {
+      throw new Meteor.Error("server-error", `No shopify package found for shop ${Reaction.getShopId()}`);
+    }
+
+    const settings = shopifyPkg.settings;
+    const shopify = new Shopify({
+      apiKey: settings.apiKey,
+      password: settings.password,
+      shopName: settings.shopName
+    });
+
+    const host = options.absoluteUrl || Meteor.absoluteUrl();
+    const webhookAddress = `${host}webhooks/shopify/${options.topic.replace(/\//g, "-")}?shopId=${Reaction.getShopId()}`;
+    try {
+      // Create webhook on Shopify
+      const webhookResponse = await shopify.webhook.create({
+        topic: options.topic,
+        address: webhookAddress,
+        format: "json"
+      });
+
+      const webhook = {
+        shopifyId: webhookResponse.id,
+        topic: options.topic,
+        address: webhookAddress,
+        format: "json"
+      };
+
+      // Add webhook to webhooks array in Shop specific connectors-shopify pkg
+      Packages.update({ _id: shopifyPkg._id }, {
+        $addToSet: {
+          "settings.webhooks": webhook
+        }
+      });
+      Logger.debug("webhook", webhook);
+    } catch (error) {
+      throw new Meteor.Error("unknown-error", `Shopify API Error creating new webhook: ${error.message}`);
+    }
+  },
+  /**
+   * Given a shopifyWebhookId, attempts to delete that webhook via the Shopify API
+   * @async
+   * @method
+   * @param {number} shopifyWebhookId The shopifyId of the webhook to delete
+   * @returns {number} the number of Packages updated (either 1 or 0)
+   */
+  async "connectors/shopify/deleteWebhook"(shopifyWebhookId) {
+    check(shopifyWebhookId, Number);
+
+    // Check for permissions
+    if (!Reaction.hasPermission(["owner", "settings/connectors", "settings/connectors/shopify"])) {
+      throw new Meteor.error("access-denied", "Access denied");
+    }
+
+    const shopifyPkg = Reaction.getPackageSettingsWithOptions({
+      shopId: Reaction.getShopId(),
+      name: "reaction-connectors-shopify"
+    });
+
+    if (!shopifyPkg) {
+      throw new Meteor.Error("server-error", `No shopify package found for shop ${Reaction.getShopId()}`);
+    }
+
+    const settings = shopifyPkg.settings;
+    const shopify = new Shopify({
+      apiKey: settings.apiKey,
+      password: settings.password,
+      shopName: settings.shopName
+    });
+
+    try {
+      // Create webhook on Shopify
+      const apiResponse = await shopify.webhook.delete(shopifyWebhookId);
+
+      if (!apiResponse) {
+        // If no API response, webhook does not exist
+        Logger.warn("api-error", "Shopify API Error, error deleting webhook, webhook does not exist.");
+      }
+
+      // Remove webhook from webhooks array in Shop specific connectors-shopify pkg
+      return Packages.update({ _id: shopifyPkg._id }, {
+        $pull: {
+          "settings.webhooks": { shopifyId: shopifyWebhookId }
+        }
+      });
+    } catch (error) {
+      throw new Meteor.Error("unknown-error", `Shopify API Error, error deleting webhook: ${error.message}`);
+    }
   }
 };
 
