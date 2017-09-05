@@ -1,5 +1,4 @@
 import { compose, withProps } from "recompose";
-import _ from "lodash";
 import Alert from "sweetalert2";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
@@ -81,18 +80,6 @@ const handlers = {
         confirmButtonText: i18next.t("admin.settings.continue")
       });
     }
-  },
-  canInviteToGroup(options) {
-    const { group, user } = options;
-    const userPermissions = user.roles[group.shopId];
-    const groupPermissions = group.permissions;
-
-    if (Reaction.hasPermission("owner", Meteor.userId(), group.shopId)) {
-      return true;
-    }
-
-    // checks that userPermissions includes all elements from groupPermissions
-    return _.difference(groupPermissions, userPermissions).length === 0;
   }
 };
 
