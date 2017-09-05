@@ -68,7 +68,6 @@ export const methods = {
           "settings.webhooks": webhook
         }
       });
-      Logger.debug("webhook", webhook);
     } catch (error) {
       throw new Meteor.Error("unknown-error", `Shopify API Error creating new webhook: ${error.message}`);
     }
@@ -105,13 +104,8 @@ export const methods = {
     });
 
     try {
-      // Create webhook on Shopify
-      const apiResponse = await shopify.webhook.delete(shopifyWebhookId);
-
-      if (!apiResponse) {
-        // If no API response, webhook does not exist
-        Logger.warn("api-error", "Shopify API Error, error deleting webhook, webhook does not exist.");
-      }
+      // delete webhook on Shopify
+      await shopify.webhook.delete(shopifyWebhookId);
 
       // Remove webhook from webhooks array in Shop specific connectors-shopify pkg
       return Packages.update({ _id: shopifyPkg._id }, {
@@ -120,7 +114,19 @@ export const methods = {
         }
       });
     } catch (error) {
-      throw new Meteor.Error("unknown-error", `Shopify API Error, error deleting webhook: ${error.message}`);
+      // If Shopify returns a 404, it means this webhook doesn't exist
+      if (error.statusCode === 404) {
+        Logger.warn("api-error", "Shopify API Error, error deleting webhook, webhook not found.");
+
+        // In this case, we need to delete the webhook from our database anyway
+        return Packages.update({ _id: shopifyPkg._id }, {
+          $pull: {
+            "settings.webhooks": { shopifyId: shopifyWebhookId }
+          }
+        });
+      }
+      // If there is another error, throw it.
+      throw new Meteor.Error("api-error", `Shopify API Error, error deleting webhook: ${error}`);
     }
   }
 };
