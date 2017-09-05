@@ -162,7 +162,7 @@ describe("Account Meteor method ", function () {
     });
 
     it("should disable isShipping/BillingDefault properties inside sibling" +
-      " address if we enable themwhile adding",
+      " address if we enable them while adding",
     function (done) {
       const account = Factory.create("account");
       sandbox.stub(Meteor, "userId", function () {

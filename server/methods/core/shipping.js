@@ -67,7 +67,6 @@ function updateShippingRecordByShop(cart, rates) {
       Logger.debug(`Success updating rates for cart ${cartId}`, rates);
     });
   });
-
 }
 /*
  * Reaction Shipping Methods
