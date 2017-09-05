@@ -482,21 +482,39 @@ class InvoiceContainer extends Component {
   }
 }
 
-// helper function to get appropriate billing info
+/**
+ * @method getBillingInfo
+ * @summary helper method to get appropriate billing info
+ * @param {Object} order - object representing an order
+ * @return {Object} object representing the order billing info
+ */
 function getBillingInfo(order) {
   return order.billing.find(
     billing => billing.shopId === Reaction.getShopId()
   ) || {};
 }
 
-// helper to return the order payment object
-// the first credit paymentMethod on the order
-// returns entire payment method
+
+/**
+ * @method orderCreditMethod
+ * @summary helper method to return the order payment object
+ * @param {Object} order - object representing an order
+ * @return {Object} object representing entire payment method
+ */
 function orderCreditMethod(order) {
-  return order.billing.filter(value => value.paymentMethod.method ===  "credit")[0];
+  const billingInfo = getBillingInfo(order);
+
+  if (billingInfo.paymentMethod.method ===  "credit") {
+    return billingInfo;
+  }
 }
 
-// helper method to approve payments
+/**
+ * @method approvePayment
+ * @summary helper method to approve payment
+ * @param {Object} order - object representing an order
+ * @return {null} null
+ */
 function approvePayment(order) {
   const paymentMethod = orderCreditMethod(order);
   const orderTotal = accounting.toFixed(
@@ -544,7 +562,12 @@ function approvePayment(order) {
   }
 }
 
-// helper method to capture payments
+/**
+ * @method capturePayments
+ * @summary helper method to capture payments
+ * @param {Object} order - object representing an order
+ * @return {null} null
+ */
 function capturePayments(order) {
   Meteor.call("orders/capturePayments", order._id);
   if (order.workflow.status === "new") {
