@@ -68,7 +68,7 @@ const filters = new SimpleSchema({
 
 /**
  * products publication
- * @param {Number} productScrollLimit - optional, defaults to 24
+ * @param {Number} [productScrollLimit] - optional, defaults to 24
  * @param {Array} shops - array of shopId to retrieve product from.
  * @return {Object} return product cursor
  */
