@@ -39,7 +39,6 @@ function cartShipmentMethods(currentCart) {
       }
     }
   }
-  console.log("shipmentMethod", shipmentMethods);
   return shipmentMethods;
 }
 
