@@ -6,7 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import { formatPriceString } from "/client/api";
-import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox, Translation } from  "@reactioncommerce/reaction-ui";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 /**
   * @summary React component for displaying the actionable data on the invoice section on the orders sideview
@@ -108,14 +108,14 @@ class LineItems extends Component {
           className="order-item form-group order-summary-form-group"
         >
           <div className="order-item-media popover-mode">
-            <RolloverCheckbox
+            <Components.RolloverCheckbox
               className="order-invoice-rollover"
               checkboxClassName="checkbox-avatar checkbox-large"
               onChange={() => this.props.handleItemSelect(uniqueItem)}
               checked={this.props.selectedItems.includes(uniqueItem._id)}
             >
               {this.displayMedia(uniqueItem)}
-            </RolloverCheckbox>
+            </Components.RolloverCheckbox>
           </div>
 
           <div className="order-item-details">
@@ -126,7 +126,7 @@ class LineItems extends Component {
 
           <div className="order-detail-quantity">
             {!this.props.selectedItems.includes(uniqueItem._id) ?
-              <NumberTypeInput
+              <Components.NumberTypeInput
                 minValue={0}
                 defaultValue={uniqueItem.quantity}
                 onChange={(event, value) => this.props.handleInputChange(event, value, uniqueItem)}
@@ -153,7 +153,7 @@ class LineItems extends Component {
         {this.props.order.taxes &&
           <div className="invoice-order-item-tax">
             <b>
-              <Translation
+              <Components.Translation
                 defaultValue="Tax"
                 i18nKey="cartSubTotals.tax"
               />
@@ -175,7 +175,7 @@ class LineItems extends Component {
         }
         <div className="invoice-order-item-subtotal">
           <b>
-            <Translation
+            <Components.Translation
               defaultValue="Subtotal"
               i18nKey="cartSubTotals.subtotal"
             />
@@ -193,13 +193,13 @@ class LineItems extends Component {
         <div className="invoice-refund-edited">
           <div className="refund-header">
             <div>
-              <Translation defaultValue="For Refund" i18nKey="admin.invoice.refundLabel"/>
+              <Components.Translation defaultValue="For Refund" i18nKey="admin.invoice.refundLabel"/>
             </div>
             <div>
-              <Translation defaultValue="Items" i18nKey="admin.invoice.refundItems"/>
+              <Components.Translation defaultValue="Items" i18nKey="admin.invoice.refundItems"/>
             </div>
             <div>
-              <Translation defaultValue="Total" i18nKey="admin.invoice.refundItemAmount"/>
+              <Components.Translation defaultValue="Total" i18nKey="admin.invoice.refundItemAmount"/>
             </div>
           </div>
           <div className="refund-body">
@@ -219,7 +219,7 @@ class LineItems extends Component {
             )}
             <div className="refund-item return">
               <div>
-                <b><Translation defaultValue="RETURN TOTAL" i18nKey="admin.invoice.refundTotal"/></b>
+                <b><Components.Translation defaultValue="RETURN TOTAL" i18nKey="admin.invoice.refundTotal"/></b>
               </div>
               <div>
                 <span>
@@ -240,7 +240,7 @@ class LineItems extends Component {
 
   renderPopOver() {
     return (
-      <Popover
+      <Components.Popover
         isOpen={this.props.popOverIsOpen}
         attachment="middle center"
         targetAttachment="middle center"
@@ -257,7 +257,7 @@ class LineItems extends Component {
         showDropdownButton={false}
       >
         {this.popOverContent()}
-      </Popover>
+      </Components.Popover>
     );
   }
 
@@ -265,13 +265,13 @@ class LineItems extends Component {
     return (
       <div className="invoice-popover">
         <div className="invoice-popover-controls">
-          <Checkbox
+          <Components.Checkbox
             className="checkbox-large"
             checked={this.props.selectAllItems || this.props.selectedItems.length === this.props.uniqueItems.length}
             onChange={() => this.props.handleSelectAllItems(this.props.uniqueItems)}
           />
           <div className="invoice-popover-close">
-            <Button
+            <Components.Button
               className="rui btn btn-default flat icon-only pull-right"
               icon="fa-2x fa fa-times"
               bezelStyle="flat"
@@ -292,7 +292,7 @@ class LineItems extends Component {
         </div>
         <div className="invoice-actions">
           <div className="invoice-action-cancel">
-            <Button
+            <Components.Button
               className="pull-right"
               bezelStyle="solid"
               status="default"
@@ -301,7 +301,7 @@ class LineItems extends Component {
             />
           </div>
           <div className="invoice-action-refund">
-            <Button
+            <Components.Button
               className="pull-right"
               bezelStyle="solid"
               status="primary"
@@ -311,7 +311,7 @@ class LineItems extends Component {
               {this.props.isRefunding ? <span>Refunding <i className="fa fa-spinner fa-spin" /></span> :
                 <span>Refund Items</span>
               }
-            </Button>
+            </Components.Button>
           </div>
         </div>
       </div>
@@ -336,5 +336,7 @@ class LineItems extends Component {
     );
   }
 }
+
+registerComponent("LineItems", LineItems);
 
 export default LineItems;

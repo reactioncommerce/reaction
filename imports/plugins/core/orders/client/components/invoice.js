@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
-import { Translation, CardGroup, Card, CardBody, CardHeader, DiscountList } from "@reactioncommerce/reaction-ui";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import LineItems from "./lineItems";
 import InvoiceActions from "./invoiceActions";
 
@@ -68,7 +68,7 @@ class Invoice extends Component {
         {this.state.isOpen &&
           <div>
             <hr/>
-            <DiscountList
+            <Components.DiscountList
               id={this.props.order._id}
               collection="Orders"
               validatedInput={true}
@@ -164,21 +164,21 @@ class Invoice extends Component {
         </div>
 
         <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></strong>
+          <strong><Components.Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></strong>
           <div className="invoice-details">
             {formatPriceString(invoice.subtotal)}
           </div>
         </div>
 
         <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
+          <strong><Components.Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
           <div className="invoice-details">
             {formatPriceString(invoice.shipping)}
           </div>
         </div>
 
         <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Tax" i18nKey="cartSubTotals.tax"/></strong>
+          <strong><Components.Translation defaultValue="Tax" i18nKey="cartSubTotals.tax"/></strong>
           <div className="invoice-details">
             {formatPriceString(invoice.taxes)}
           </div>
@@ -187,7 +187,7 @@ class Invoice extends Component {
         {discounts &&
           <div>
             <div className="order-summary-form-group">
-              <strong><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
+              <strong><Components.Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
               <div className="invoice-details">
                 <i className="fa fa-tag fa-lg" style={{ marginRight: 2 }}/>
                 <a className="btn-link" onClick={this.handleClick}>Add Discount</a>
@@ -203,16 +203,16 @@ class Invoice extends Component {
 
   render() {
     return (
-      <CardGroup>
-        <Card
+      <Components.CardGroup>
+        <Components.Card
           expanded={true}
         >
-          <CardHeader
+          <Components.CardHeader
             actAsExpander={false}
             i18nKeyTitle="admin.orderWorkflow.invoice.cardTitle"
             title="Invoice"
           />
-          <CardBody expandable={false}>
+          <Components.CardBody expandable={false}>
             <LineItems {...this.props} />
 
             <div className="invoice-container">
@@ -220,11 +220,13 @@ class Invoice extends Component {
             </div>
 
             <InvoiceActions {...this.props}/>
-          </CardBody>
-        </Card>
-      </CardGroup>
+          </Components.CardBody>
+        </Components.Card>
+      </Components.CardGroup>
     );
   }
 }
+
+registerComponent("Invoice", Invoice);
 
 export default Invoice;

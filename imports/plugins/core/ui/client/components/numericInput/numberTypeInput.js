@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Button } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class NumberTypeInput extends Component {
   static propTypes = {
@@ -74,14 +74,14 @@ class NumberTypeInput extends Component {
           type="number"
         />
         <div className="stacked-buttons">
-          <Button
+          <Components.Button
             className="button"
             icon="fa fa-chevron-up"
             disabled={this.state.maxValue === this.state.value}
             onClick={this.handleIncrementButton}
           />
           <br/>
-          <Button
+          <Components.Button
             className="button"
             icon="fa fa-chevron-down"
             onClick={this.handleDecrementButton}
@@ -91,5 +91,7 @@ class NumberTypeInput extends Component {
     );
   }
 }
+
+registerComponent("NumberTypeInput", NumberTypeInput);
 
 export default NumberTypeInput;

@@ -5,8 +5,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { i18next, Logger, Reaction, formatPriceString } from "/client/api";
 import { Media, Packages } from "/lib/collections";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import Invoice from "../components/invoice.js";
 
 
@@ -446,38 +445,36 @@ class InvoiceContainer extends Component {
 
   render() {
     return (
-      <TranslationProvider>
-        <Invoice
-          {...this.props}
+      <Invoice
+        {...this.props}
 
-          clearRefunds={this.handleClearRefunds}
-          handlePopOverOpen={this.handlePopOverOpen}
-          handleSelectAllItems={this.handleSelectAllItems}
-          onClose={this.handleClose}
-          togglePopOver={this.togglePopOver}
-          handleInputChange={this.handleInputChange}
-          handleItemSelect={this.handleItemSelect}
-          displayMedia={this.handleDisplayMedia}
-          toggleUpdating={this.toggleUpdating}
-          handleReturnItems={this.handleReturnItems}
-          getRefundedItemsInfo={this.getRefundedItemsInfo}
-          handleApprove={this.handleApprove}
-          isAdjusted={this.isAdjusted}
-          handleCapturePayment={this.handleCapturePayment}
-          handleRefund={this.handleRefund}
-          hasRefundingEnabled={this.hasRefundingEnabled()}
+        clearRefunds={this.handleClearRefunds}
+        handlePopOverOpen={this.handlePopOverOpen}
+        handleSelectAllItems={this.handleSelectAllItems}
+        onClose={this.handleClose}
+        togglePopOver={this.togglePopOver}
+        handleInputChange={this.handleInputChange}
+        handleItemSelect={this.handleItemSelect}
+        displayMedia={this.handleDisplayMedia}
+        toggleUpdating={this.toggleUpdating}
+        handleReturnItems={this.handleReturnItems}
+        getRefundedItemsInfo={this.getRefundedItemsInfo}
+        handleApprove={this.handleApprove}
+        isAdjusted={this.isAdjusted}
+        handleCapturePayment={this.handleCapturePayment}
+        handleRefund={this.handleRefund}
+        hasRefundingEnabled={this.hasRefundingEnabled()}
 
-          refunds={this.state.refunds}
-          isCapturing={this.state.isCapturing}
-          selectAllItems={this.state.selectAllItems}
-          selectedItems={this.state.selectedItems}
-          currency={this.state.currency}
-          isRefunding={this.state.isRefunding}
-          popOverIsOpen={this.state.popOverIsOpen}
-          editedItems={this.state.editedItems}
-          isUpdating={this.state.isUpdating}
-        />
-      </TranslationProvider>
+        refunds={this.state.refunds}
+        isCapturing={this.state.isCapturing}
+        selectAllItems={this.state.selectAllItems}
+        selectedItems={this.state.selectedItems}
+        currency={this.state.currency}
+        isRefunding={this.state.isRefunding}
+        popOverIsOpen={this.state.popOverIsOpen}
+        editedItems={this.state.editedItems}
+        isUpdating={this.state.isUpdating}
+      />
     );
   }
 }
@@ -685,5 +682,7 @@ const composer = (props, onData) => {
     refunds: props.refunds
   });
 };
+
+registerComponent("InvoiceContainer", InvoiceContainer, composeWithTracker(composer));
 
 export default composeWithTracker(composer)(InvoiceContainer);

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { formatPriceString } from "/client/api";
-import { Button, NumericInput, Translation, ButtonSelect } from "@reactioncommerce/reaction-ui";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 /**
   * @summary React component for displaying the actionable data on the invoice section on the orders sideview
@@ -51,7 +51,7 @@ class InvoiceActions extends Component {
     return (
       <div className="invoice-summary">
         <span  className="invoice-label captured-total">
-          <strong><Translation defaultValue="Captured Total" i18nKey="admin.invoice.capturedTotal"/></strong>
+          <strong><Components.Translation defaultValue="Captured Total" i18nKey="admin.invoice.capturedTotal"/></strong>
         </span>
 
         <div className="invoice-details">
@@ -67,7 +67,7 @@ class InvoiceActions extends Component {
     return (
       <div className="invoice-summary">
         <span className="invoice-label adjusted-total">
-          <strong><Translation defaultValue="Adjusted Total" i18nKey="admin.invoice.adjustedTotal"/></strong>
+          <strong><Components.Translation defaultValue="Adjusted Total" i18nKey="admin.invoice.adjustedTotal"/></strong>
         </span>
 
         <div className="invoice-details">
@@ -86,7 +86,7 @@ class InvoiceActions extends Component {
           <div className="flex refund-container">
             <div className="form-group order-summary-form-group">
               <div className="invoice-details">
-                <NumericInput
+                <Components.NumericInput
                   numericType="currency"
                   value={this.state.value}
                   maxValue={adjustedTotal}
@@ -106,7 +106,7 @@ class InvoiceActions extends Component {
 
             </div>
 
-            <Button
+            <Components.Button
               className="flex-item-fill refund-button"
               type="button"
               status="primary"
@@ -123,12 +123,12 @@ class InvoiceActions extends Component {
                 <span id="btn-refund-payment" data-i18n="order.applyRefund">Refunding <i className="fa fa-spinner fa-spin" /></span> :
                 <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
               }
-            </Button>
+            </Components.Button>
           </div>
         }
 
         {this.props.showAfterPaymentCaptured &&
-          <Button
+          <Components.Button
             className="btn btn-danger"
             bezelStyle="solid"
             type="button"
@@ -137,7 +137,7 @@ class InvoiceActions extends Component {
             data-i18n="order.cancelOrderLabel"
           >
             Cancel Order
-          </Button>
+          </Components.Button>
         }
 
         <a
@@ -157,7 +157,7 @@ class InvoiceActions extends Component {
       return (
         <div className="btn-block">
           <div>
-            <ButtonSelect
+            <Components.ButtonSelect
               buttons= {[
                 {
                   name: "Approve",
@@ -234,5 +234,7 @@ class InvoiceActions extends Component {
     );
   }
 }
+
+registerComponent("InvoiceActions", InvoiceActions);
 
 export default InvoiceActions;
