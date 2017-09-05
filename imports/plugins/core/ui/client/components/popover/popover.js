@@ -109,7 +109,7 @@ class Popover extends Component {
           "popover-open": true,
           "popover-theme-arrows": this.props.showArrow || false
         })}
-        constraints={[{
+        constraints={this.props.constraints || [{
           to: "scrollParent",
           attachment: "together"
         }]}
@@ -126,6 +126,7 @@ Popover.propTypes = {
   attachment: PropTypes.string,
   buttonElement: PropTypes.node,
   children: PropTypes.node,
+  constraints: PropTypes.array,
   isOpen: PropTypes.bool,
   onClick: PropTypes.func,
   onDisplayButtonClick: PropTypes.func,

@@ -227,6 +227,16 @@ class LineItems extends Component {
         isOpen={this.props.popOverIsOpen}
         attachment="middle center"
         targetAttachment="middle center"
+        constraints={[
+          {
+            to: "scrollParent",
+            pin: true
+          },
+          {
+            to: "window",
+            attachment: "together"
+          }
+        ]}
         showDropdownButton={false}
       >
         {this.popOverContent()}
