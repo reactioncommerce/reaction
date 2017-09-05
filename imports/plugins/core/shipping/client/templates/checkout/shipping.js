@@ -9,13 +9,15 @@ import { Cart } from "/lib/collections";
 function cartShippingQuotes(currentCart) {
   const cart = currentCart || Cart.findOne();
   const shipmentQuotes = [];
-
+  const primaryShopId = Reaction.getPrimaryShopId();
   if (cart) {
     if (cart.shipping) {
       for (const shipping of cart.shipping) {
         if (shipping.shipmentQuotes) {
           for (const quote of shipping.shipmentQuotes) {
-            shipmentQuotes.push(quote);
+            if (shipping.shopId === primaryShopId) {
+              shipmentQuotes.push(quote);
+            }
           }
         }
       }
