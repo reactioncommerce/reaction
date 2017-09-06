@@ -80,7 +80,8 @@
           "saveSuccess": "Mail beállítások mentve.",
           "saveFailed": "Nem sikerült menteni mail beállításokat. {{error}}",
           "cantSendEmail": "Szerver hiba: Nem lehet elküldeni e-mail értesítést.",
-          "emailSent": "E-mail értesítést küldeni."
+          "emailSent": "E-mail értesítést küldeni.",
+          "addOrderEmailFailed": "E-mail hozzáadása megrendeléshez nem sikerült"
         }
       }
     }

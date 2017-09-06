@@ -3,6 +3,7 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Zamówienie nie zostało znalezione",
       "admin": {
         "shortcut": {
           "ordersLabel": "Święcenia"
