@@ -1,5 +1,6 @@
 import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
 import { Orders, Media } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
@@ -33,6 +34,8 @@ handlers.handleDisplayMedia = (item) => {
 };
 
 function composer(props, onData) {
+  const sessionId = Session.get("sessionId");
+  Reaction.Subscriptions.Cart = Reaction.Subscriptions.Manager.subscribe("Cart", sessionId, Meteor.userId());
   const orderId = Reaction.Router.getQueryParam("_id");
   const orderSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), orderId);
 
