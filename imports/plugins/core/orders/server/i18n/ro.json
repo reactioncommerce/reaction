@@ -3,6 +3,7 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Comanda nu a fost găsită",
       "admin": {
         "shortcut": {
           "ordersLabel": "Istoric comenzi"

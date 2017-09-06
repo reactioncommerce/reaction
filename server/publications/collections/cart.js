@@ -67,6 +67,31 @@ Meteor.publish("Cart", function (sessionId, userId) {
   return Cart.find(cartId);
 });
 
+
+Meteor.publish("CartImages", function (cartItems) {
+  check(cartItems, Array);
+
+  // Ensure each of these are unique
+  const productIds = [...new Set(cartItems.map((item) => item.product._id))];
+  const variantIds = [...new Set(cartItems.map((item) => item.variants._id))];
+
+  // return image for each the top level product or the variant and let the client code decide which to display
+  const productImages = Media.find(
+    { "$or":
+      [{
+        "metadata.productId": { $in: productIds }
+      },
+      {
+        "metadata.productId": { $in: variantIds }
+      }
+      ],
+    "metadata.workflow": { $nin: ["archived", "unpublished"] }
+    }
+  );
+
+  return productImages;
+});
+
 Meteor.publish("CartItemImage", function (cartItem) {
   check(cartItem, Match.Optional(Object));
   const productId = cartItem.productId;
