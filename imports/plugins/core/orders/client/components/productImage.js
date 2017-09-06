@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Badge } from "/imports/plugins/core/ui/client/components";
+import { Badge } from "@reactioncommerce/reaction-ui";
 
 
 class ProductImage extends Component {
