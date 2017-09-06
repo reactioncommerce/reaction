@@ -22,21 +22,6 @@ class GridItemControls extends Component {
   }
 
   renderVisibilityButton() {
-    if (this.props.hasChanges()) {
-      return (
-        <div>
-          <Components.IconButton
-            icon=""
-            onIcon=""
-            status="info"
-          />
-        </div>
-      );
-    }
-  }
-
-  // renders red button when the product is missing the variant label
-  renderLabelButton() {
     const checkVariantLabel = this.props.checkLabelValidation();
     if (checkVariantLabel.length > 0) {
       return (
@@ -45,6 +30,16 @@ class GridItemControls extends Component {
             icon=""
             onIcon=""
             status="danger"
+          />
+        </div>
+      );
+    } else if (this.props.hasChanges()) {
+      return (
+        <div>
+          <Components.IconButton
+            icon=""
+            onIcon=""
+            status="info"
           />
         </div>
       );
@@ -68,7 +63,6 @@ class GridItemControls extends Component {
 
           {this.renderArchived()}
           {this.renderVisibilityButton()}
-          {this.renderLabelButton()}
         </div>
       );
     }
