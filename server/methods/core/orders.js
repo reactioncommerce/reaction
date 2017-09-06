@@ -976,6 +976,7 @@ export const methods = {
           "billing.$.paymentMethod.transactions": result
         }
       };
+      // TODO: Revisit email to reflect refunds
       // Send email to notify cuustomer of a refund
       Meteor.call("orders/sendNotification", order, "refunded");
       if (result.saved === false) {
@@ -998,18 +999,18 @@ export const methods = {
   },
 
   /**
-   * orders/refunds/returnItems
+   * orders/refunds/refundItems
    *
-   * @summary Apply a refund to an already captured order
+   * @summary Apply a refund to line items
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object
-   * @param {Object} returnItemsInfo - info about return items
+   * @param {Object} refundItemsInfo - info about return items
    * @return {Object} refund boolean and result/error value
    */
-  "orders/refunds/returnItems": function (orderId, paymentMethod, returnItemsInfo) {
+  "orders/refunds/refundItems": function (orderId, paymentMethod, refundItemsInfo) {
     check(orderId, String);
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    check(returnItemsInfo, Object);
+    check(refundItemsInfo, Object);
 
     // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
     if (!Reaction.hasPermission("orders")) {
@@ -1019,16 +1020,15 @@ export const methods = {
     const fut = new Future();
     const order = Orders.findOne(orderId);
     const transactionId = paymentMethod.transactionId;
-    const amount = returnItemsInfo.total;
-    const quantity = returnItemsInfo.quantity;
-    const returnItems = returnItemsInfo.items;
+    const amount = refundItemsInfo.total;
+    const quantity = refundItemsInfo.quantity;
+    const returnItems = refundItemsInfo.items;
     const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
 
     // refund payment to customer
     Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(amount), (error, result) => {
       if (error) {
         Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, error);
-        // throw new Meteor.Error("Attempt to refund transaction failed", error);
         fut.return({
           refund: false,
           error: error
@@ -1054,6 +1054,7 @@ export const methods = {
           }
         });
 
+        // TODO: Add custom email for return items
         fut.return({
           refund: true,
           result: result
