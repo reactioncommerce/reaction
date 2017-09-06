@@ -1004,7 +1004,7 @@ export const methods = {
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object
    * @param {Object} returnItemsInfo - info about return items
-   * @return {null} no return value
+   * @return {Object} refund boolean and result/error value
    */
   "orders/refunds/returnItems": function (orderId, paymentMethod, returnItemsInfo) {
     check(orderId, String);
@@ -1060,7 +1060,6 @@ export const methods = {
         });
       }
     });
-
     return fut.wait();
   }
 };

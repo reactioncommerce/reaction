@@ -233,6 +233,7 @@ class OrderDashboardContainer extends Component {
     }
 
     const id = Reaction.Router.getQueryParam("_id");
+    console.log("This is being called", id);
 
     if (id === undefined) {
       Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);

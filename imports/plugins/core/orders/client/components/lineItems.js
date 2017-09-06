@@ -125,7 +125,7 @@ class LineItems extends Component {
           </div>
 
           <div className="order-detail-quantity">
-            {!this.props.selectedItems.includes(uniqueItem._id) ?
+            {!this.props.selectedItems.includes(uniqueItem._id) && uniqueItem.quantity > 0 ?
               <Components.NumberTypeInput
                 minValue={0}
                 defaultValue={uniqueItem.quantity}

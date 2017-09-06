@@ -422,7 +422,7 @@ class InvoiceContainer extends Component {
 
         Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, refundInfo, (error, result) => {
           if (result.refund === false) {
-            Alerts.alert(result.error.reason);
+            Alerts.alert(result.error.reason || result.error.error);
           }
           if (result.refund === true) {
             Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
@@ -467,6 +467,7 @@ class InvoiceContainer extends Component {
         handleRefund={this.handleRefund}
         hasRefundingEnabled={this.hasRefundingEnabled()}
 
+        value={this.state.value}
         refunds={this.state.refunds}
         isCapturing={this.state.isCapturing}
         selectAllItems={this.state.selectAllItems}
