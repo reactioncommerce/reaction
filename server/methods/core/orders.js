@@ -1022,7 +1022,7 @@ export const methods = {
     const transactionId = paymentMethod.transactionId;
     const amount = refundItemsInfo.total;
     const quantity = refundItemsInfo.quantity;
-    const returnItems = refundItemsInfo.items;
+    const refundItems = refundItemsInfo.items;
     const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
 
     // refund payment to customer
@@ -1035,8 +1035,8 @@ export const methods = {
         });
       }
       if (result) {
-        returnItems.forEach(returnedItem => {
-          orderQuantityAdjust(orderId, returnedItem);
+        refundItems.forEach(refundItem => {
+          orderQuantityAdjust(orderId, refundItem);
         });
 
         let refundedStatus = "refunded";
