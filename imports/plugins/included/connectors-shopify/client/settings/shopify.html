@@ -2,7 +2,7 @@
     <div class="panel-group">
       {{#autoForm collection=Collections.Packages schema=ShopifyConnectPackageConfig doc=packageData type="update" id="shopify-connect-update-form"}}
         {{> afQuickField name="settings.apiKey" class='form-control'}}
-        {{> afQuickField name="settings.password" class='form-control'}}
+        {{> afQuickField name="settings.password" class='form-control' type="password"}}
         {{> afQuickField name="settings.sharedSecret" class='form-control'}}
         {{> afQuickField name="settings.shopName" class='form-control'}}
         {{> shopSettingsSubmitButton}}
