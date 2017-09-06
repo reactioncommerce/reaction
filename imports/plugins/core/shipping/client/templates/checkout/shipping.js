@@ -12,7 +12,6 @@ import { Cart } from "/lib/collections";
  * to be checked out.
  * @returns {Array} - an array of the quotations of multiple shipping
  * carriers.
- * 
  */
 function cartShippingQuotes(currentCart) {
   const cart = currentCart || Cart.findOne();
