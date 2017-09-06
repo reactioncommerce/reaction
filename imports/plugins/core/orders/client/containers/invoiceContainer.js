@@ -344,7 +344,7 @@ class InvoiceContainer extends Component {
     }
   }
 
-  handleReturnItems = () => {
+  handleRefundItems = () => {
     const paymentMethod = orderCreditMethod(this.state.order).paymentMethod;
     const orderMode = paymentMethod.mode;
     const order = this.state.order;
@@ -352,10 +352,10 @@ class InvoiceContainer extends Component {
     // Check if payment is yet to be captured approve and capture first before return
     if (orderMode === "authorize") {
       Alerts.alert({
-        title: i18next.t("order.returnItemsTitle"),
+        title: i18next.t("order.refundItemsTitle"),
         type: "warning",
-        text: i18next.t("order.returnItemsApproveAlert", {
-          returnItemsQuantity: this.getRefundedItemsInfo().quantity,
+        text: i18next.t("order.refundItemsApproveAlert", {
+          refundItemsQuantity: this.getRefundedItemsInfo().quantity,
           totalAmount: formatPriceString(getBillingInfo(order).invoice.total)
         }),
         showCancelButton: true,
@@ -373,9 +373,9 @@ class InvoiceContainer extends Component {
 
   alertToCapture = (order) => {
     Alerts.alert({
-      title: i18next.t("order.returnItemsTitle"),
-      text: i18next.t("order.returnItemsCaptureAlert", {
-        returnItemsQuantity: this.getRefundedItemsInfo().quantity,
+      title: i18next.t("order.refundItemsTitle"),
+      text: i18next.t("order.refundItemsCaptureAlert", {
+        refundItemsQuantity: this.getRefundedItemsInfo().quantity,
         totalAmount: formatPriceString(getBillingInfo(order).invoice.total)
       }),
       type: "warning",
@@ -395,10 +395,10 @@ class InvoiceContainer extends Component {
     const refundInfo = this.getRefundedItemsInfo();
 
     Alerts.alert({
-      title: i18next.t("order.returnItemsTitle"),
-      text: i18next.t("order.returnItemsAlert", {
-        returnItemsQuantity: refundInfo.quantity,
-        returnItemsTotal: formatPriceString(refundInfo.total)
+      title: i18next.t("order.refundItemsTitle"),
+      text: i18next.t("order.refundItemsAlert", {
+        refundItemsQuantity: refundInfo.quantity,
+        refundItemsTotal: formatPriceString(refundInfo.total)
       }),
       showCancelButton: true,
       confirmButtonText: i18next.t("order.refundAmount")
@@ -411,7 +411,7 @@ class InvoiceContainer extends Component {
         // Set warning if order is not yet captured
         if (orderMode !== "capture") {
           Alerts.alert({
-            text: i18next.t("order.returnItemsWait"),
+            text: i18next.t("order.refundItemsWait"),
             type: "warning"
           });
           this.setState({
@@ -420,7 +420,7 @@ class InvoiceContainer extends Component {
           return;
         }
 
-        Meteor.call("orders/refunds/returnItems", this.state.order._id, paymentMethod, refundInfo, (error, result) => {
+        Meteor.call("orders/refunds/refundItems", this.state.order._id, paymentMethod, refundInfo, (error, result) => {
           if (result.refund === false) {
             Alerts.alert(result.error.reason || result.error.error);
           }
@@ -428,7 +428,7 @@ class InvoiceContainer extends Component {
             Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
 
             Alerts.alert({
-              text: i18next.t("order.returnItemsSuccess"),
+              text: i18next.t("order.refundItemsSuccess"),
               type: "success",
               allowOutsideClick: false
             });
@@ -459,7 +459,7 @@ class InvoiceContainer extends Component {
         handleItemSelect={this.handleItemSelect}
         displayMedia={this.handleDisplayMedia}
         toggleUpdating={this.toggleUpdating}
-        handleReturnItems={this.handleReturnItems}
+        handleRefundItems={this.handleRefundItems}
         getRefundedItemsInfo={this.getRefundedItemsInfo}
         handleApprove={this.handleApprove}
         isAdjusted={this.isAdjusted}

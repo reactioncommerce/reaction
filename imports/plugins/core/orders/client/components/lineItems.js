@@ -22,7 +22,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
   * @property {Function} handleInputChange - A function to handle numeric input change
   * @property {Function} handleItemSelect - A function to handle selecting an item via chekbox
   * @property {Function} handlePopOverOpen - A function to handle the popover open and close
-  * @property {Function} handleReturnItems - A function to handle items return
+  * @property {Function} handleRefundItems - A function to handle items return
   * @property {Function} handleSelectAllItems - A function to handle selecting of all items
   * @property {Bool} selectAllItems - A boolean indicating whether all items have been selected
   * @property {Bool} isRefunding - A boolean indicating whether payment is being refunded
@@ -39,7 +39,7 @@ class LineItems extends Component {
     handleInputChange: PropTypes.func,
     handleItemSelect: PropTypes.func,
     handlePopOverOpen: PropTypes.func,
-    handleReturnItems: PropTypes.func,
+    handleRefundItems: PropTypes.func,
     handleSelectAllItems: PropTypes.func,
     isRefunding: PropTypes.bool,
     order: PropTypes.object,
@@ -306,7 +306,7 @@ class LineItems extends Component {
               bezelStyle="solid"
               status="primary"
               disabled={this.props.isRefunding || this.props.editedItems.length === 0}
-              onClick={this.props.handleReturnItems}
+              onClick={this.props.handleRefundItems}
             >
               {this.props.isRefunding ? <span>Refunding <i className="fa fa-spinner fa-spin" /></span> :
                 <span>Refund Items</span>
