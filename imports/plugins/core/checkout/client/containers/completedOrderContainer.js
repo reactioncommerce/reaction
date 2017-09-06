@@ -34,6 +34,10 @@ handlers.handleDisplayMedia = (item) => {
 };
 
 function composer(props, onData) {
+  // The Cart subscription does not update when you delete the original record
+  // but don't change parameters so we need to re-init that subscription here.
+  // (possibly because the oplog is tied to the original id?)
+  // I think this is a bug in SubscriptionManager but that should be revisited later
   const sessionId = Session.get("sessionId");
   Reaction.Subscriptions.Cart = Reaction.Subscriptions.Manager.subscribe("Cart", sessionId, Meteor.userId());
   const orderId = Reaction.Router.getQueryParam("_id");
