@@ -584,7 +584,7 @@ describe("orders test", function () {
       expect(refundItems).to.throw(Meteor.error, /Access Denied/);
     });
 
-    it("should update the order as partially refunded if not all of items in the order are returned", function () {
+    it("should update the order as partially refunded if not all of items in the order are refunded", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("refunds/refundItems", order.userId);
       const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
@@ -599,7 +599,7 @@ describe("orders test", function () {
       expect(updateOrder.billing[0].paymentMethod.status).to.equal("partialRefund");
     });
 
-    it("should update the order as refunded if all items in the order are returned", function () {
+    it("should update the order as refunded if all items in the order are refunded", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("refunds/refundItems", order.userId);
       const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);

@@ -32,7 +32,7 @@
             "refundLabel": "For Refund",
             "refundItem": "Items",
             "refundItemAmount": "Total",
-            "refundTotal": "Return Total"
+            "refundTotal": "Refund Total"
           },
           "fulfillment": "Fulfillment",
           "orderDetails": "Order Details",

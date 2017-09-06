@@ -1007,7 +1007,7 @@ export const methods = {
    * @summary Apply a refund to line items
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object
-   * @param {Object} refundItemsInfo - info about return items
+   * @param {Object} refundItemsInfo - info about refund items
    * @return {Object} refund boolean and result/error value
    */
   "orders/refunds/refundItems": function (orderId, paymentMethod, refundItemsInfo) {
