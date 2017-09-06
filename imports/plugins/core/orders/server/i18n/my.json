@@ -3,6 +3,7 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "အမိန့်တွေ့မ",
       "admin": {
         "shortcut": {
           "ordersLabel": "အမိန့်"

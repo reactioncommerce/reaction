@@ -242,7 +242,13 @@
         "registerGuest": "Hello! Add an email and receive order updates.",
         "trackYourDelivery": "Order updates will be sent to",
         "noOrdersFound": "No orders found.",
-        "adminMessage": "You are viewing orders as an administrator"
+        "adminMessage": "You are viewing orders as an administrator",
+        "yourCart": "Your Cart",
+        "orderPlacedBy": "Order placed by",
+        "orderSubtotal": "Subtotal",
+        "orderShipping": "Shipping",
+        "orderTax": "Tax",
+        "quantityTotal": "Quantity Total"
       },
       "checkoutLogin": {
         "welcome": "Welcome, it's so good to see you.",
