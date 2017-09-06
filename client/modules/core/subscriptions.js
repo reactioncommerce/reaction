@@ -82,7 +82,7 @@ Tracker.autorun(() => {
   Tracker.nonreactive(() => {
     sessionId = Session.get("sessionId");
   });
-  Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, Meteor.userId());
+  Subscriptions.Cart = Subscriptions.Manager.subscribe("Cart", sessionId, Meteor.userId());
   Subscriptions.UserProfile = Meteor.subscribe("UserProfile", Meteor.userId());
 });
 
