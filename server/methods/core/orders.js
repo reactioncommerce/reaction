@@ -1057,7 +1057,6 @@ export const methods = {
           }
         });
 
-        // TODO: Add custom email for return items
         Meteor.call("orders/sendNotification", order, "itemRefund");
 
         fut.return({
