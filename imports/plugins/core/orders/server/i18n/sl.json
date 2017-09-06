@@ -3,6 +3,7 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Naročilo ni bilo mogoče najti",
       "admin": {
         "shortcut": {
           "ordersLabel": "naročila"

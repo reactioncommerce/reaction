@@ -3,6 +3,7 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Red nije pronađen",
       "admin": {
         "shortcut": {
           "ordersLabel": "Narudžbe"

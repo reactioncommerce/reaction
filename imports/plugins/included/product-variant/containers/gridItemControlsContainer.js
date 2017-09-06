@@ -6,21 +6,34 @@ import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import GridItemControls from "../components/gridItemControls";
+import { ProductVariant } from "/lib/collections/schemas/products";
+import { Validation } from "@reactioncommerce/reaction-collections";
+
 
 const wrapComponent = (Comp) => (
   class GridItemControlsContainer extends Component {
     static propTypes = {
       isSelected: PropTypes.bool,
-      product: PropTypes.object
+      product: PropTypes.object,
+      variant: PropTypes.object
     }
 
-    constructor(props) {
-      super(props);
+    constructor() {
+      super();
+
+      this.validation = new Validation(ProductVariant);
+
+      this.state = {
+        inValidVariant: []
+      };
 
       this.hasCreateProductPermission = this.hasCreateProductPermission.bind(this);
       this.hasChanges = this.hasChanges.bind(this);
       this.checked = this.checked.bind(this);
-      this.checkLabelValidation = this.checkLabelValidation.bind(this);
+    }
+
+    componentWillMount() {
+      this.checkLabelValidation();
     }
 
     hasCreateProductPermission = () => {
@@ -38,11 +51,18 @@ const wrapComponent = (Comp) => (
     // checks whether the product variant has a Label
     checkLabelValidation = () => {
       const variants = ReactionProduct.getVariants(this.props.product._id);
-      const noLabel = variants.filter((variant) => {
-        return variant.title.length === 0;
-      });
+      let validationStatus;
+      let inValidVariant;
+      if (variants) {
+        validationStatus = variants.map((variant) => {
+          return this.validation.validate(variant);
+        });
 
-      return noLabel;
+        inValidVariant = validationStatus.filter(status => status.isValid === false);
+      }
+      this.setState({
+        inValidVariant
+      });
     }
 
     render() {
@@ -52,7 +72,7 @@ const wrapComponent = (Comp) => (
           hasCreateProductPermission={this.hasCreateProductPermission}
           hasChanges={this.hasChanges}
           checked={this.checked}
-          checkLabelValidation={this.checkLabelValidation}
+          inValidVariant={this.state.inValidVariant}
         />
       );
     }

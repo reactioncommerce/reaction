@@ -4,10 +4,10 @@ import { Components } from "@reactioncommerce/reaction-components";
 
 class GridItemControls extends Component {
   static propTypes = {
-    checkLabelValidation: PropTypes.func,
     checked: PropTypes.func,
     hasChanges: PropTypes.func,
     hasCreateProductPermission: PropTypes.func,
+    inValidVariant: PropTypes.array,
     product: PropTypes.object
   }
 
@@ -22,8 +22,7 @@ class GridItemControls extends Component {
   }
 
   renderVisibilityButton() {
-    const checkVariantLabel = this.props.checkLabelValidation();
-    if (checkVariantLabel.length > 0) {
+    if (this.props.inValidVariant.length) {
       return (
         <div>
           <Components.IconButton
