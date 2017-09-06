@@ -34,19 +34,17 @@ export function sortGroups(groups) {
 
 /**
  * getInvitableGroups - helper - client
- * @summary puts each full user object into an array on the group they belong
- * This generates a list of groups the user can invite to.
+ * @summary This generates a list of groups the user can invite to.
  * It filters out the owner group (because you cannot invite directly to an existing shop as owner)
  * It also filters out groups that the user does not have needed permissions to invite to.
  * All these are also checked by the Meteor method, so this is done to prevent trying to invite and getting error
  * @param {Array} groups - list of user account objects
- * @param {Func} canInviteToGroup - func determining user group rights
  * @return {Array} - array of groups or empty object
  */
-export function getInvitableGroups(groups, canInviteToGroup) {
+export function getInvitableGroups(groups) {
   return groups
     .filter(grp => grp.slug !== "owner")
-    .filter(grp => canInviteToGroup({ group: grp, user: Meteor.user() }));
+    .filter(grp => Reaction.canInviteToGroup({ group: grp }));
 }
 
 // user's default invite groups is the group they belong

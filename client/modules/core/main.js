@@ -513,7 +513,32 @@ export default {
     }
     return allowGuest;
   },
+  /**
+   * canInviteToGroup - client (similar to server/api canInviteToGroup)
+   * @summary checks if the user making the request is allowed to make invitation to that group
+   * @param {Object} options -
+   * @param {Object} options.group - group to invite to
+   * @param {Object} options.user - user object  making the invite (Meteor.user())
+   * @return {Boolean} -
+   */
+  canInviteToGroup(options) {
+    const { group } = options;
+    let { user } = options;
+    if (!user) {
+      user = Meteor.user();
+    }
+    const userPermissions = user.roles[group.shopId];
+    const groupPermissions = group.permissions;
 
+    // granting invitation right for user with `owner` role in a shop
+    if (this.hasPermission(["owner"], Meteor.userId(), group.shopId)) {
+      return true;
+    }
+
+    // checks that userPermissions includes all elements from groupPermissions
+    // we are not using Reaction.hasPermission here because it returns true if the user has at least one
+    return _.difference(groupPermissions, userPermissions).length === 0;
+  },
   /**
    * @description showActionView
    *
