@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import Avatar from "react-avatar";
 import moment from "moment";
 import classnames from "classnames/dedupe";
-import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
+import { Reaction } from "/client/api";
 import { Orders } from "/lib/collections";
+import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
 import OrderTableColumn from "./orderTableColumn";
 import OrderBulkActionsBar from "./orderBulkActionsBar";
 import { formatPriceString } from "/client/api";
@@ -50,6 +51,13 @@ class OrderTable extends Component {
     setShippingStatus: PropTypes.func,
     shipping: PropTypes.object,
     toggleShippingFlowList: PropTypes.func
+  }
+
+  // helper function to get appropriate billing info
+  getBillingInfo(order) {
+    return order.billing.find(
+      billing => billing.shopId === Reaction.getShopId()
+    ) || {};
   }
 
   /**
@@ -110,7 +118,7 @@ class OrderTable extends Component {
           </span>
 
           <span className="order-data order-data-total">
-            <strong>Total: {formatPriceString(order.billing[0].invoice.total)}</strong>
+            <strong>Total: {formatPriceString(this.getBillingInfo(order).invoice.total)}</strong>
           </span>
         </div>
 
