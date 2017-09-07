@@ -223,7 +223,6 @@ class InvoiceContainer extends Component {
     const paymentMethodName = orderBillingInfo.paymentMethod.paymentSettingsKey;
     const paymentMethod = Packages.findOne({ _id: paymentMethodId });
     const isRefundable = paymentMethod.settings[paymentMethodName].support.includes("Refund");
-
     return isRefundable;
   }
 
