@@ -3,6 +3,7 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Sipariş Bulunamadı",
       "admin": {
         "shortcut": {
           "ordersLabel": "Emirler"
