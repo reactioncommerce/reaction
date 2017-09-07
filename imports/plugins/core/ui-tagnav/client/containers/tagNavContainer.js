@@ -95,6 +95,8 @@ const wrapComponent = (Comp) => (
     constructor(props) {
       super(props);
 
+      this._isMounted = false;
+
       this.state = {
         attachedBodyListener: false,
         editable: false,
@@ -114,6 +116,7 @@ const wrapComponent = (Comp) => (
     componentDidMount() {
       window.addEventListener("resize", this.onWindowResize);
       this.onWindowResize();
+      this._isMounted = true;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -137,6 +140,7 @@ const wrapComponent = (Comp) => (
 
     componentWillUnmount() {
       window.removeEventListener("resize", this.onWindowResize);
+      this._isMounted = false;
     }
 
     onWindowResize = () => {
@@ -263,7 +267,7 @@ const wrapComponent = (Comp) => (
       const closestNavItem = event.target.closest(".navbar-item");
 
       // on mouseover an element outside of tags, close dropdown
-      if (!closestNavItem) {
+      if (this._isMounted && !closestNavItem) {
         this.closeDropdownTimeout = setTimeout(() => {
           this.setState({ selectedTag: null });
           this.detachhBodyListener();
