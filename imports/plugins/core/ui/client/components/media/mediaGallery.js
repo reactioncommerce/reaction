@@ -74,10 +74,16 @@ class MediaGallery extends Component {
           return (
             <Measure
               key={index}
-              onMeasure={(dimensions) => {
-                this.setState({ dimensions });
+              bounds
+              onResize={(contentRect) => {
+                this.setState({ dimensions: contentRect.bounds })
               }}
             >
+
+              {({ measureRef }) =>
+                <div ref={measureRef}>
+
+
               <Components.MediaItem
                 editable={this.props.editable}
                 index={index}
@@ -93,6 +99,9 @@ class MediaGallery extends Component {
                 isFeatured={true}
                 {...this.props}
               />
+
+            </div>
+          }
             </Measure>
           );
         }
