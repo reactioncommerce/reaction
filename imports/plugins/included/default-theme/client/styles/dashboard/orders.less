@@ -64,21 +64,19 @@
   flex: 0 0 auto;
 }
 
-.order-item-details .order-detail-title {
-  flex: 1 1 auto;
-}
-
-.order-item-details .order-detail-quantity {
-  flex: 0 0 auto;
-}
-
-.order-item-details .order-detail-price {
-  flex: 1 1 auto;
-  margin-right: 20px;
+.order-item-details {
+  flex: 4;
+  margin-left: 20px;
+  align-items: center;
 }
 
 .order-detail-quantity {
-  margin-right: 50px;
+  flex: 1;
+}
+
+.order-detail-price {
+  flex: 1;
+  margin-left: 15px
 }
 
 
@@ -135,16 +133,15 @@
   list-style-type: none;
   margin-bottom: 0px;
   padding-top: 10px;
+  padding-bottom: 1px;
   cursor: pointer;
 
   &.invoice-item {
-    padding-top: 8px;
-    height: 56px;
     margin-bottom: 10px;
   }
 
   &.selected {
-    background-color: @rui-info;
+    background-color: @rui-info-bg;
   }
 }
 
@@ -152,7 +149,7 @@
   .display(flex);
 }
 
-.invoice .invoice:hover, .invoice:hover {
+.invoice-line-items:hover {
   background-color: @list-group-hover-bg;
   cursor: pointer;
 }
@@ -168,13 +165,6 @@
   background-color: @white;
   box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.16);
   border: solid 1px #7894a4;
-}
-
-.invoice-popover-checkbox {
-  padding-left: 10px;
-  -webkit-flex: 1;
-  flex: 0;
-  border: 1px
 }
 
 .invoice-popover-controls {
@@ -206,40 +196,50 @@
   }
 }
 
-.invoice-order-line-media {
-  flex: 0 0 auto;
-  width: 40px;
-
-  img {
-    width: 100%;
-  }
-}
-
-.invoive-order-items {
+.invoice-order-items {
   margin-bottom: 10px;
-  height: 84px;
   padding: 10px;
-  background-color: @black25;
+  background-color: #f7f7f7;
 
   .invoice-order-item-tax {
     display: flex;
     width: 100%;
-    div {
+
+    b {
+      flex: 4;
+    }
+
+    .tax-code {
+      flex: 1
+    }
+
+    .tax-cost {
+      text-align: right;
       flex: 1;
+    }
+  }
 
-      &.tax-code {
-        text-align: right;
-      }
+  .invoice-order-item-shipping {
+    display: flex;
 
-      &.tax-cost {
-        text-align: right;
-      }
+    b {
+      flex: 4
+    }
+  }
+
+  .invoice-order-item-subtotal {
+    display: flex;
+
+    b {
+      flex: 4
     }
   }
 }
 
 .invoice-actions {
   display: flex;
+  padding-top: 20px;
+
   div {
     &.invoice-action-cancel {
       flex: 2;
@@ -267,7 +267,7 @@
       flex: 1;
 
       &:first-child {
-        flex: 2;
+        flex: 4;
       }
 
       &:last-child {
@@ -293,7 +293,7 @@
         flex: 1;
 
         &:first-child {
-          flex: 2
+          flex: 5
         }
 
         &:last-child {
@@ -353,18 +353,16 @@
 
 .order-item-media {
   .flex(0 0 auto);
-  width: 50px;
+  width: 40px;
+  margin-left: 15px;
 
-    img {
-      width: 100%;
-    }
-}
+  &.popover-mode {
+    margin-left: 0;
+  }
 
-.order-item-details {
-  .display(flex);
-  .flex(1 1 auto);
-  .margin-left(20px);
-  align-items: center;
+  img {
+    width: 100%;
+  }
 }
 
 .order-shipments {
@@ -381,7 +379,6 @@
     .margin-right(20px);
     .text-align(right);
   }
-
 
   > .amount {
     .flex(0 0 auto);
@@ -416,15 +413,10 @@
     border-right: solid 1px @rui-default-disabled;
   }
 
-
-
-
   > .invoice-details {
     flex: 1;
     .text-align(right);
     padding-right: 15px;
-
-
 
     > .refundAmount {
       .text-align(left);
@@ -434,7 +426,6 @@
       flex: 1;
     }
   }
-
 
     .captured-total {
       background-color: @rui-success-bg;
@@ -520,6 +511,12 @@
       margin-bottom: 30px;
       height: 40px;
 
+      &.invoice-item {
+        padding-top: 8px;
+        height: 56px;
+        margin-bottom: 10px;
+      }
+
       .order-item {
         flex: 0 0 auto;
         position: relative;
@@ -540,6 +537,90 @@
   }
 }
 
+// Invoice Styling
+
+.invoice-popover {
+  width: 416px;
+  max-height: 600px;
+  overflow-y: scroll;
+  margin-left: -10px;
+  padding-top: 0px;
+  padding: 10px;
+  padding-bottom: 30px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.16);
+  border: solid 1px #7894a4;
+}
+
+.invoice-popover-checkbox {
+  padding-left: 10px;
+  -webkit-flex: 1;
+  flex: 0;
+  border: 1px
+}
+
+.invoice-popover-controls {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  width: 100%;
+  height: 30px;
+
+  .checkbox-large {
+    margin-left: 10px;
+  }
+
+  .invoice-popover-selected {
+    flex: 7;
+    padding-top: 2px;
+    padding-left: 10px;
+
+    i {
+      font-size: 18px;
+    }
+
+    span {
+      font-size: 16px;
+      left: 5px;
+      position: relative;
+      top: 0px;
+    }
+  }
+
+  .invoice-popover-close {
+    flex: 1;
+  }
+}
+
+.rollover-checkbox {
+    &.order-invoice-rollover {
+      .selected-checkbox {
+        padding-right: 6px;
+        padding-left: 17px;
+        padding-top: 5px;
+
+        .checkbox-avatar {
+          margin-left: -6px;
+          border-radius: 2px;
+          border: solid 2px #5e6264;
+          background: transparent;
+        }
+      }
+
+      .second-child {
+        padding-right: 6px;
+        padding-left: 17px;
+        padding-top: 5px;
+
+        .checkbox-avatar {
+          margin-left: -6px;
+          border-radius: 2px;
+          border: solid 2px #5e6264;
+        }
+      }
+    }
+  }
 // Order Table Styles
 .rui.order.table {
   border-top: none;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Badge, ClickToCopy } from "/imports/plugins/core/ui/client/components";
+import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
 
 class OrderSummary extends Component {
   static propTypes = {
