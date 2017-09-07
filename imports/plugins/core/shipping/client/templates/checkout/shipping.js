@@ -22,7 +22,9 @@ function cartShippingQuotes(currentCart) {
       for (const shipping of cart.shipping) {
         if (shipping.shipmentQuotes) {
           for (const quote of shipping.shipmentQuotes) {
-            shipmentQuotes.push(quote);
+            if (quote.carrier === "Flat Rate" || quote.requestStatus !== "error") {
+              shipmentQuotes.push(quote);
+            }
           }
         }
       }

@@ -6,16 +6,18 @@ import { Cart as CartSchema } from "/lib/collections/schemas";
 /**
  * getShippingRates - Returns a list of shipping rates based on the
  * items in a cart.
- * @param {Array} rates - an array of shipping rates. Might be non-empty
- * because some shipping rates have been fetched before.
+ * @param {Array} previousQueryResults - an array of shipping rates and
+ * info about failed calls to the APIs of some shipping methods providers
+ * e.g Shippo.
  * @param {Object} cart - details about the purchase a user wants to make.
  * @return {Array} - an array that contains two arrays: the first array will
  * be an updated list of shipping rates, and the second will contain info for
  * retrying this specific package if any errors occurred while retrieving the
  * shipping rates.
  */
-function getShippingRates(rates, cart) {
+function getShippingRates(previousQueryResults, cart) {
   check(cart, CartSchema);
+  const [rates] = previousQueryResults;
   const shops = [];
   const products = cart.items;
 
@@ -33,7 +35,7 @@ function getShippingRates(rates, cart) {
   });
 
   if (!pkgData || !cart.items || pkgData.settings.flatRates.enabled !== true) {
-    return rates;
+    return previousQueryResults;
   }
 
   // default selector is primary shop

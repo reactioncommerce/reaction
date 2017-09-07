@@ -15,7 +15,7 @@ function getShippingRates(previousQueryResults, cart) {
 
   // must have cart items and package enabled to calculate shipping
   if (!pkgData || !cart.items || pkgData.settings.shippo.enabled !== true) {
-    return rates;
+    return previousQueryResults;
   }
 
   // default selector is current shop
