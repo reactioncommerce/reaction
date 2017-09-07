@@ -68,12 +68,14 @@ export function createCart(productId, variantId) {
     shipping: [
       {
         _id: Random.id(),
+        shopId: getShop()._id,
         address: getAddress()
       }
     ],
     billing: [
       {
         _id: Random.id(),
+        shopId: getShop()._id,
         address: getAddress()
       }
     ],
