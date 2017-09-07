@@ -168,7 +168,7 @@ const wrapComponent = (Comp) => (
         <Measure
           bounds
           onResize={(contentRect) => {
-            this.setState({ dimensions: contentRect.bounds })
+            this.setState({ dimensions: contentRect.bounds });
           }}
         >
 
@@ -187,10 +187,9 @@ const wrapComponent = (Comp) => (
                 mediaGalleryHeight={height}
                 mediaGalleryWidth={width}
               />
-
-          </div>
-        }
-          </Measure>
+            </div>
+          }
+        </Measure>
       );
     }
   }

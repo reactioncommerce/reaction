@@ -76,32 +76,28 @@ class MediaGallery extends Component {
               key={index}
               bounds
               onResize={(contentRect) => {
-                this.setState({ dimensions: contentRect.bounds })
+                this.setState({ dimensions: contentRect.bounds });
               }}
             >
-
               {({ measureRef }) =>
                 <div ref={measureRef}>
-
-
-              <Components.MediaItem
-                editable={this.props.editable}
-                index={index}
-                key={index}
-                revision={this.featuredMedia.revision}
-                metadata={this.featuredMedia.metadata}
-                onMouseEnter={this.props.onMouseEnterMedia}
-                onMove={this.props.onMoveMedia}
-                onRemoveMedia={this.props.onRemoveMedia}
-                source={this.featuredMedia}
-                mediaHeight={height}
-                mediaWidth={width}
-                isFeatured={true}
-                {...this.props}
-              />
-
-            </div>
-          }
+                  <Components.MediaItem
+                    editable={this.props.editable}
+                    index={index}
+                    key={index}
+                    revision={this.featuredMedia.revision}
+                    metadata={this.featuredMedia.metadata}
+                    onMouseEnter={this.props.onMouseEnterMedia}
+                    onMove={this.props.onMoveMedia}
+                    onRemoveMedia={this.props.onRemoveMedia}
+                    source={this.featuredMedia}
+                    mediaHeight={height}
+                    mediaWidth={width}
+                    isFeatured={true}
+                    {...this.props}
+                  />
+                </div>
+              }
             </Measure>
           );
         }
