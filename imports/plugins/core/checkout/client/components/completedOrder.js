@@ -74,7 +74,6 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
               </div>
             </div>;
           }
-
         })}
 
         <div className="order-details-content-title">
