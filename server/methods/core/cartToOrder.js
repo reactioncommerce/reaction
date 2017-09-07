@@ -139,25 +139,26 @@ export function copyCartToOrder(cartId) {
     return item;
   });
 
-  // TODO: update this to assign each item to the correct shipment based on
-  // which fulfillment provider is serving that item.
+  // Assign items to each shipping record based on the shopId of the item
   _.each(order.items, (item) => {
-    // TODO: Loop through items based on fulfillment provider / payment / shopID
-    // TODO: Set each order item workflow to new
-    // TODO: Set each order item workflow workflow to "created"
-    // TODO: Assign correct shipment to order item
-    // TODO: Assign correct payment to order item (perhaps in a different part of code)
-
+    const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === item.shopId);
     // If the shipment exists
-    if (order.shipping[0].items) {
-      // Assign each item in the order to the correct shipment
-      // TODO: We should also be assigning the correct shipment to each order item here
-      order.shipping[0].items.push({
+    if (shippingRecord.items) {
+      shippingRecord.items.push({
         _id: item._id,
         productId: item.productId,
         shopId: item.shopId,
         variantId: item.variants._id
       });
+    } else {
+      shippingRecord.items = [
+        {
+          _id: item._id,
+          productId: item.productId,
+          shopId: item.shopId,
+          variantId: item.variants._id
+        }
+      ];
     }
   });
 
