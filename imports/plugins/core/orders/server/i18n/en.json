@@ -28,7 +28,11 @@
             "cardTitle": "Invoice",
             "adjustedTotal": "Adjusted Total",
             "capturedTotal": "Captured Total",
-            "refund": "Refund"
+            "refund": "Refund",
+            "refundLabel": "For Refund",
+            "refundItem": "Items",
+            "refundItemAmount": "Total",
+            "refundTotal": "Refund Total"
           },
           "fulfillment": "Fulfillment",
           "orderDetails": "Order Details",

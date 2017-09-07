@@ -1,13 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Checkbox from "./checkbox";
+import classnames from "classnames";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const RolloverCheckbox = ({ children, checked, checkboxClassName, onChange, name }) => {
+const RolloverCheckbox = ({ children, checked, checkboxClassName, onChange, name, className }) => {
+  const extendedClassName = classnames({
+    "rollover-checkbox": true
+  }, className);
+
   if (checked) {
     return (
-      <div className="rollover-checkbox">
+      <div className={extendedClassName}>
         <div className="selected-checkbox">
-          <Checkbox
+          <Components.Checkbox
             checked={checked}
             onChange={onChange}
             className={checkboxClassName}
@@ -18,12 +23,12 @@ const RolloverCheckbox = ({ children, checked, checkboxClassName, onChange, name
     );
   }
   return (
-    <div className="rollover-checkbox">
+    <div className={extendedClassName}>
       <div className="first-child">
         { children }
       </div>
       <div className="second-child">
-        <Checkbox
+        <Components.Checkbox
           checked={checked}
           onChange={onChange}
           className={checkboxClassName}
@@ -38,8 +43,11 @@ RolloverCheckbox.propTypes = {
   checkboxClassName: PropTypes.string,
   checked: PropTypes.bool,
   children: PropTypes.node,
+  className: PropTypes.string,
   name: PropTypes.string,
   onChange: PropTypes.func
 };
+
+registerComponent("RolloverCheckbox", RolloverCheckbox);
 
 export default RolloverCheckbox;

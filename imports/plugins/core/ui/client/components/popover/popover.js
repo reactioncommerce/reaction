@@ -89,11 +89,13 @@ class Popover extends Component {
           />
         </Components.ButtonGroup>
       );
+    } else if (this.props.buttonElement) {
+      return React.cloneElement(this.props.buttonElement, {
+        onClick: this.props.onClick
+      });
     }
 
-    return React.cloneElement(this.props.buttonElement, {
-      onClick: this.props.onClick
-    });
+    return <div />;
   }
 
   render() {
@@ -107,7 +109,7 @@ class Popover extends Component {
           "popover-open": true,
           "popover-theme-arrows": this.props.showArrow || false
         })}
-        constraints={[{
+        constraints={this.props.constraints || [{
           to: "scrollParent",
           attachment: "together"
         }]}
@@ -124,6 +126,7 @@ Popover.propTypes = {
   attachment: PropTypes.string,
   buttonElement: PropTypes.node,
   children: PropTypes.node,
+  constraints: PropTypes.array,
   isOpen: PropTypes.bool,
   onClick: PropTypes.func,
   onDisplayButtonClick: PropTypes.func,
