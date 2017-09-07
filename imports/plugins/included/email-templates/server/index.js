@@ -109,3 +109,16 @@ Reaction.registerTemplate({
   template: Reaction.Email.getTemplateFile(TemplatePaths.orderRefunded),
   subject: "{{shop.name}}: Confirmation of refund for {{order._id}}"
 });
+
+/*
+  * Orders - Order Refunded
+  * When: Admin completes the order flow and item is shipped
+  * When: Admin refunds line items
+  */
+Reaction.registerTemplate({
+  title: "Orders - Order Item Refunded",
+  name: TemplatePaths.orderItemRefund,
+  type: "email",
+  template: Reaction.Email.getTemplateFile(TemplatePaths.orderItemRefund),
+  subject: "{{shop.name}}: Refund confirmation - {{order._id}}"
+});
