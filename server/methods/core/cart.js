@@ -711,6 +711,7 @@ Meteor.methods({
 
     let selector;
     let update;
+    const primaryShopId = Reaction.getPrimaryShopId();
     // temp hack until we build out multiple shipment handlers
     // if we have an existing item update it, otherwise add to set.
     if (Array.isArray(cart.shipping) && cart.shipping.length > 0) {
@@ -720,7 +721,8 @@ Meteor.methods({
       };
       update = {
         $set: {
-          "shipping.$.address": address
+          "shipping.$.address": address,
+          "shopId": primaryShopId
         }
       };
     } else {
@@ -730,7 +732,8 @@ Meteor.methods({
       update = {
         $addToSet: {
           shipping: {
-            address: address
+            address: address,
+            shopId: primaryShopId
           }
         }
       };
