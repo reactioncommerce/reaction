@@ -72,10 +72,11 @@ const filters = new SimpleSchema({
  * @param {Array} shops - array of shopId to retrieve product from.
  * @return {Object} return product cursor
  */
-Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}) {
+Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, editMode = true) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, Object));
   check(sort, Match.OneOf(undefined, Object));
+  check(editMode, Match.Maybe(Boolean));
 
   // TODO: Consider publishing the non-admin publication if a user is not in "edit mode" to see what is published
 
@@ -234,11 +235,12 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     }
   } // end if productFilters
 
+
+  // We publish an admin version of this publication to admins of products who are in "Edit Mode"
   // Authorized content curators for shops get special publication of the product
   // with all relevant revisions all is one package
-  // userAdminShopIds is a list of shopIds that the user has createProduct or
-  // owner access for
-  if (userAdminShopIds && Array.isArray(userAdminShopIds) && userAdminShopIds.length > 0) {
+  // userAdminShopIds is a list of shopIds that the user has createProduct or owner access for
+  if (editMode && userAdminShopIds && Array.isArray(userAdminShopIds) && userAdminShopIds.length > 0) {
     selector.isVisible = {
       $in: [true, false, null, undefined]
     };
