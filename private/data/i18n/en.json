@@ -188,6 +188,7 @@
         "canceledLabel": "Canceled",
         "refundAmount": "Refund Amount",
         "applyRefund": "Apply Refund",
+        "refundItems": "Refund Items",
         "adjustedTotal": "Adjusted Total",
         "processor": "Processor",
         "filter": {
@@ -203,6 +204,12 @@
           "canceled": "Canceled",
           "refunded": "Refunded"
         },
+        "refundItemsTitle": "Refund selected items",
+        "refundItemsApproveAlert": "You are about to refund {{refundItemsQuantity}} items but have yet to approve or capture {{totalAmount}} payment on your order. Would you like to approve now?",
+        "refundItemsCaptureAlert": "Capture payment for total amount {{totalAmount}}?",
+        "refundItemsAlert": "Refund {{refundItemsQuantity}} item(s), total refund amount {{refundItemsTotal}}?",
+        "refundItemsSuccess": "Items have successfully been refunded",
+        "refundItemsWait": "Payment capture is taking longer than expected. Try again in a few minutes",
         "capture": "Capture",
         "capturing": "Capturing",
         "bulkActions": "Bulk Actions",
@@ -242,7 +249,13 @@
         "registerGuest": "Hello! Add an email and receive order updates.",
         "trackYourDelivery": "Order updates will be sent to",
         "noOrdersFound": "No orders found.",
-        "adminMessage": "You are viewing orders as an administrator"
+        "adminMessage": "You are viewing orders as an administrator",
+        "yourCart": "Your Cart",
+        "orderPlacedBy": "Order placed by",
+        "orderSubtotal": "Subtotal",
+        "orderShipping": "Shipping",
+        "orderTax": "Tax",
+        "quantityTotal": "Quantity Total"
       },
       "checkoutLogin": {
         "welcome": "Welcome, it's so good to see you.",

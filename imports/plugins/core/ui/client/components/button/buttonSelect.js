@@ -51,7 +51,7 @@ class ButtonSelect extends Component {
         bezelStyle="solid"
         label={defaultButton.name}
         i18nKeyLabel={defaultButton.i18nKeyLabel}
-        buttonType={defaultButton.buttonType}
+        type={defaultButton.buttonType}
       />
     );
 
@@ -101,7 +101,7 @@ class ButtonSelect extends Component {
         bezelStyle="solid"
         label={button.name}
         i18nKeyLabel={button.i18nKeyLabel}
-        buttonType={button.buttonType}
+        type={button.buttonType}
       />
     );
 

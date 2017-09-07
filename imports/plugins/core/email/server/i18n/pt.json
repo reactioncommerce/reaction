@@ -80,7 +80,8 @@
           "saveSuccess": "Definições de correio guardadas.",
           "saveFailed": "Falha ao guardar definições do correio. {{error}}",
           "cantSendEmail": "Erro de servidor: Não é possível enviar uma notificação de e-mail.",
-          "emailSent": "notificação de e-mail enviado."
+          "emailSent": "notificação de e-mail enviado.",
+          "addOrderEmailFailed": "Adicionando e-mail ao pedido falhou"
         }
       }
     }

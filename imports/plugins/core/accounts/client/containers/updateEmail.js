@@ -32,7 +32,7 @@ const handlers = {
 const composer = (props, onData) => {
   const user = Accounts.findOne(Meteor.userId());
   const email = user.emails[0].address;
-  onData(null, { email, ...props });
+  onData(null, { email });
 };
 
 registerComponent("UpdateEmail", UpdateEmail, [

@@ -3,6 +3,7 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "A rendelés nem található",
       "admin": {
         "shortcut": {
           "ordersLabel": "rendelés"
