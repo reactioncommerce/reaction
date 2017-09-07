@@ -263,8 +263,6 @@ const wrapComponent = (Comp) => (
       this.setState({ attachedBodyListener: false });
     }
 
-    // TODO: If this is a method of TagNavContainer, why is it, and many
-    // others, declared as an arrow function?
     closeDropdown = (event) => {
       const closestNavItem = event.target.closest(".navbar-item");
 
