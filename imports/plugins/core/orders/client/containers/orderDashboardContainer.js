@@ -273,6 +273,17 @@ class OrderDashboardContainer extends Component {
   }
 
   /**
+   * getShipppingObject
+   *
+   * @summary get proper shipping obect as per current active shop
+   * @param {Object} order - order object to check against
+   * @return {Object} shipping object to use
+   */
+  getShipppingObject = (order) => {
+    return order.shipping.find((shipping) => { return shipping.shopId === Reaction.getShopId(); });
+  }
+
+  /**
    * shippingStatusUpdateCall
    *
    * @summary set selected order(s) to the provided shipping state
@@ -304,7 +315,9 @@ class OrderDashboardContainer extends Component {
 
     // TODO: rethink this type of flow for updating shipping statuses
     selectedOrders.forEach((order) => {
-      Meteor.call(`orders/shipment${capitalizeStatus}`, order, order.shipping[0], (err) => {
+      const shippingRecord = this.getShipppingObject(order);
+
+      Meteor.call(`orders/shipment${capitalizeStatus}`, order, shippingRecord, (err) => {
         if (err) {
           Alerts.toast(`An error occured while setting the status: ${err}`, "error");
         } else {
@@ -445,11 +458,11 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
-      const orderWorkflow = order.shipping[0].workflow;
+      const orderWorkflow = this.getShipppingObject(order).workflow;
       // check if the order(s) are in this state already or in the previous state
 
-      // TODO: model this with the assumption that there may be different workflows depending on the type of shop or product that a shop is selling.
+      // TODO: model this with the assumption that there may be different workflows
+      // depending on the type of shop or product that a shop is selling.
       if (orderWorkflow.status === "new") {
         isNotPicked++;
       } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
@@ -496,11 +509,12 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
-      const orderWorkflow = order.shipping[0].workflow;
+      const orderWorkflow = this.getShipppingObject(order).workflow;
+
       // check if the order(s) are in this state already or in one of the previous states
 
-      // TODO: model this with the assumption that there may be different workflows depending on the type of shop or product that a shop is selling.
+      // TODO: model this with the assumption that there may be different workflows
+      // depending on the type of shop or product that a shop is selling.
       if (orderWorkflow.status === "new") {
         isNotPicked++;
       } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
@@ -555,11 +569,11 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
-      const orderWorkflow = order.shipping[0].workflow;
+      const orderWorkflow = this.getShipppingObject(order).workflow;
       // check if the order(s) are in this state already or in one of the previous states
 
-      // TODO: model this with the assumption that there may be different workflows depending on the type of shop or product that a shop is selling.
+      // TODO: model this with the assumption that there may be different workflows
+      // depending on the type of shop or product that a shop is selling.
       if (orderWorkflow.status === "new") {
         isNotPacked++;
         whichFalseState = shippingStates.picked;
@@ -615,11 +629,11 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
-      const orderWorkflow = order.shipping[0].workflow.status;
+      const orderWorkflow = this.getShipppingObject(order).workflow.status;
       // check if the order(s) are in this state already or in one of the previous states
 
-      // TODO: model this with the assumption that there may be different workflows depending on the type of shop or product that a shop is selling.
+      // TODO: model this with the assumption that there may be different workflows
+      // depending on the type of shop or product that a shop is selling.
       if (orderWorkflow === "new") {
         isNotLabeled++;
         whichFalseState = shippingStates.picked;
