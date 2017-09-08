@@ -13,14 +13,16 @@ import { Logger, Hooks, Reaction } from "/server/api";
 
 
 // helper to return the order credit object
-// the first credit paymentMethod on the order
+// credit paymentMethod on the order as per current active shop
 // returns entire payment method
 export function orderCreditMethod(order) {
-  return order.billing.filter(value => value.paymentMethod.method ===  "credit")[0];
+  const creditBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "credit");
+  return creditBillingRecords.billing.find((billing) => { return billing.shopId === Reaction.getShopId(); });
 }
 // helper to return the order debit object
 export function orderDebitMethod(order) {
-  return order.billing.filter(value => value.paymentMethod.method ===  "debit")[0];
+  const debitBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "debit");
+  return debitBillingRecords.billing.find((billing) => { return billing.shopId === Reaction.getShopId(); });
 }
 
 // REVIEW: This jsdoc doesn't seem to be accurate
@@ -215,6 +217,7 @@ export const methods = {
 
     return Orders.update({
       "_id": order._id,
+      "billing.shopId": Reaction.getShopId,
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
@@ -256,6 +259,7 @@ export const methods = {
 
     return Orders.update({
       "_id": order._id,
+      "billing.shopId": Reaction.getShopId,
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
@@ -290,10 +294,13 @@ export const methods = {
       ordersInventoryAdjust(order._id);
     }
 
+    const billingRecord = order.billing.find((billing) => { return billing.shopId === Reaction.getShopId(); });
+    const shippingRecord = order.shipping.find((shipping) => { return shipping.shopId === Reaction.getShopId(); });
+
     let paymentMethod = orderCreditMethod(order).paymentMethod;
     paymentMethod = Object.assign(paymentMethod, { amount: Number(paymentMethod.amount) });
-    const invoiceTotal = order.billing[0].invoice.total;
-    const shipment = order.shipping[0];
+    const invoiceTotal = billingRecord.invoice.total;
+    const shipment = shippingRecord;
     const itemIds = shipment.items.map((item) => {
       return item._id;
     });
@@ -314,6 +321,7 @@ export const methods = {
 
     return Orders.update({
       "_id": order._id,
+      "billing.shopId": Reaction.getShopId,
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
@@ -348,8 +356,9 @@ export const methods = {
       if (result) {
         Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", order._id);
 
+        const shippingRecord = order.shipping.find((shipping) => {return shipping.shopId === Reaction.getShopId();});
         // Set the status of the items as shipped
-        const itemIds = order.shipping[0].items.map((item) => {
+        const itemIds = shippingRecord.items.map((item) => {
           return item._id;
         });
 
@@ -524,6 +533,7 @@ export const methods = {
     }
 
     const billing = orderCreditMethod(order);
+    const shippingRecord = order.shipping.find((shipping) => { return shipping.shopId === Reaction.getShopId(); });
     // TODO: Update */refunds/list for marketplace
     const refundResult = Meteor.call("orders/refunds/list", order);
     const refundTotal = refundResult.reduce((acc, refund) => acc + refund.amount, 0);
@@ -651,13 +661,13 @@ export const methods = {
         orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
         orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
         shipping: {
-          tracking: order.shipping[0].tracking,
-          carrier: order.shipping[0].shipmentMethod.carrier,
+          tracking: shippingRecord.tracking,
+          carrier: shippingRecord.shipmentMethod.carrier,
           address: {
-            address: order.shipping[0].address.address1,
-            city: order.shipping[0].address.city,
-            region: order.shipping[0].address.region,
-            postal: order.shipping[0].address.postal
+            address: shippingRecord.address.address1,
+            city: shippingRecord.address.city,
+            region: shippingRecord.address.region,
+            postal: shippingRecord.address.postal
           }
         }
       };
@@ -990,6 +1000,7 @@ export const methods = {
 
     Orders.update({
       "_id": orderId,
+      "billing.shopId": Reaction.getShopId(),
       "billing.paymentMethod.transactionId": transactionId
     }, {
       $set: {
@@ -1050,6 +1061,7 @@ export const methods = {
 
         Orders.update({
           "_id": orderId,
+          "billing.shopId": Reaction.getShopId(),
           "billing.paymentMethod.transactionId": transactionId
         }, {
           $set: {
