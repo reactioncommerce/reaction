@@ -67,6 +67,19 @@ Reaction.registerTemplate({
   subject: "{{shopName}}: Please verify your email address"
 });
 
+/*
+ * Accounts - Verify Updated Email
+ * When: A user signs up through launchdock
+ * TODO: Used by launchdock, I haven't been able to test efficiently
+ */
+Reaction.registerTemplate({
+  title: "Accounts - Verify Updated Email Address",
+  name: TemplatePaths.verifyUpdatedEmailTemplate,
+  type: "email",
+  template: Reaction.Email.getTemplateFile(TemplatePaths.verifyUpdatedEmailTemplate),
+  subject: "Verify your new email address"
+});
+
 
 /*
  * Order (coreOrder) related email templates

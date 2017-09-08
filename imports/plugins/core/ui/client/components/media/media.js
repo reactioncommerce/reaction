@@ -93,6 +93,7 @@ class MediaItem extends Component {
         alt=""
         className="img-responsive"
         src={this.source}
+        height={this.props.mediaHeight}
       />
     );
 

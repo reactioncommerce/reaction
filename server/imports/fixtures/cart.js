@@ -68,12 +68,14 @@ export function createCart(productId, variantId) {
     shipping: [
       {
         _id: Random.id(),
+        shopId: getShop()._id,
         address: getAddress()
       }
     ],
     billing: [
       {
         _id: Random.id(),
+        shopId: getShop()._id,
         address: getAddress()
       }
     ],
@@ -155,12 +157,14 @@ export default function () {
     shipping: [
       {
         _id: Random.id(),
+        shopId: getShop()._id,
         address: addressForOrder
       }
     ],
     billing: [
       {
         _id: Random.id(),
+        shopId: getShop()._id,
         address: addressForOrder
       }
     ],
