@@ -116,6 +116,17 @@ Template.shopifySync.events({
 
     // If no options selected, warn user
     return Alerts.toast(`${i18next.t("admin.shopifyConnectSettings.noSyncIntegrationsSelected")}`, "warning");
+  },
+  "click [data-event-action=stopShopifySync]"() {
+    // setup sync with provided integrations
+    return Meteor.call("connectors/shopify/sync/teardown", (err) => {
+      if (!err) {
+        // If there is no error, notify of success
+        return Alerts.toast(i18next.t("admin.shopifyConnectSettings.syncStopSuccess"), "success");
+      }
+      // Notify setup sync error if an error is returned
+      return Alerts.toast(i18next.t("admin.shopifyConnectSettings.syncStopFailure"), "error");
+    });
   }
 });
 
