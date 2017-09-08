@@ -425,14 +425,16 @@ export const methods = {
     try {
       const refunds = StripeApi.methods.listRefunds.call({ transactionId: paymentMethod.transactionId });
       result = [];
-      for (const refund of refunds.data) {
-        result.push({
-          type: refund.object,
-          amount: refund.amount / 100,
-          created: refund.created * 1000,
-          currency: refund.currency,
-          raw: refund
-        });
+      if (refunds) {
+        for (const refund of refunds.data) {
+          result.push({
+            type: refund.object,
+            amount: refund.amount / 100,
+            created: refund.created * 1000,
+            currency: refund.currency,
+            raw: refund
+          });
+        }
       }
     } catch (error) {
       Logger.error(error);
