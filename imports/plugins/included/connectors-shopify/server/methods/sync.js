@@ -45,8 +45,7 @@ export const methods = {
       Logger.info(`Setting up shopify webhook ${topic} for ${integrationsByTopic[topic]}`);
       Meteor.call("connectors/shopify/createWebhook", {
         topic: topic,
-        integrations: integrationsByTopic[topic],
-        absoluteUrl: "http://f0aacb15.ngrok.io/"
+        integrations: integrationsByTopic[topic]
       });
     });
   },
