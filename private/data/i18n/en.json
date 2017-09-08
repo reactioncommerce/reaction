@@ -410,6 +410,8 @@
         "signupCode": "Registration Code",
         "signUpWithYourEmailAddress": "Register with your email address",
         "terms": "Terms of Use",
+        "updateEmailAddress": "Update Email Address",
+        "updatingEmailAddress": "Updating Email Address",
         "updateYourPassword": "Update your password",
         "updatePasswordAndContinue": "Update and continue",
         "username": "Username",
@@ -419,6 +421,7 @@
         "role": "Role",
         "info": {
           "emailSent": "Email Sent",
+          "emailUpdated": "Email Updated",
           "emailVerified": "Email verified",
           "passwordChanged": "Password changed",
           "passwordReset": "Password reset",

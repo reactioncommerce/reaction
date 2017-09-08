@@ -5,6 +5,8 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { Reaction } from "/client/api";
 import { i18next } from  "/client/api";
 import * as Collections from "/lib/collections";
+import { Components } from "@reactioncommerce/reaction-components";
+
 
 /**
  * onCreated: Account Profile View
@@ -25,6 +27,18 @@ Template.accountProfile.onCreated(() => {
  * Helpers: Account Profile View
  */
 Template.accountProfile.helpers({
+
+  UpdateEmail() {
+    return {
+      component: Components.UpdateEmail
+    };
+  },
+
+  ReactionAvatar() {
+    return {
+      component: Components.ReactionAvatar
+    };
+  },
 
   /**
    * User has password
