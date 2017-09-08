@@ -19,18 +19,15 @@ const Webhook = new SimpleSchema({
     type: String,
     label: "Format of webhook data"
   },
-
+  integrations: {
+    type: [String],
+    label: "Integrations currently using this webhook",
+    optional: true
+  },
   // Currently unused, might want it later
   description: {
     type: String,
     label: "Shopify Webhook Description",
-    optional: true
-  },
-
-  // Currently unused, might want it later
-  usedBy: {
-    type: [String],
-    label: "Integrations currently using this webhook",
     optional: true
   }
 });

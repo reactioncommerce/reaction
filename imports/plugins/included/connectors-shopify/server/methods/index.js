@@ -1,3 +1,4 @@
-import "./import-products.js";
-import "./sync.js";
-import "./sync-orders.js";
+import "./import-products";
+import "./sync";
+import "./sync-orders";
+import "./webhooks";

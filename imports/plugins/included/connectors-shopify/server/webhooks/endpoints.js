@@ -9,6 +9,7 @@ import { Reaction } from "/server/api";
  * We varify by hashing the body of the request with the shared secret
  * and comparing it with the sha256 hash that is sent as a header
  * @method verifyWebhook
+ * @private
  * @param  {Object} req request object that comes in with POST request
  * @return {boolean} true if webhook is verifiable, false otherwise
  */
