@@ -49,7 +49,7 @@ class OrderTableColumn extends Component {
   render() {
     const columnAccessor = this.props.row.column.id;
 
-    if (columnAccessor === "shipping[0].address.fullName") {
+    if (columnAccessor === "shippingfullName") {
       return (
         <div style={{ display: "inline-flex" }}>
           {this.renderCheckboxOnSelect(this.props.row)}
@@ -82,14 +82,14 @@ class OrderTableColumn extends Component {
         </div>
       );
     }
-    if (columnAccessor === "billing[0].invoice.total") {
+    if (columnAccessor === "billingTotal") {
       return (
         <div style={{ marginTop: 7 }}>
           <strong>{formatPriceString(this.props.row.original.billing[0].invoice.total)}</strong>
         </div>
       );
     }
-    if (columnAccessor === "shipping[0].workflow.status") {
+    if (columnAccessor === "shippingStatus") {
       return (
         <Badge
           className="orders-badge"

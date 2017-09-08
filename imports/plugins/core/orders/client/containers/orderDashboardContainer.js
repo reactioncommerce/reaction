@@ -78,7 +78,7 @@ const OrderHelper =  {
  * @return {Object} shipping object to use
  */
 function getShipppingObject(order) {
-  return order.shipping.find((shipping) => { return shipping.shopId === Reaction.getShopId(); });
+  return order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
 }
 
 class OrderDashboardContainer extends Component {

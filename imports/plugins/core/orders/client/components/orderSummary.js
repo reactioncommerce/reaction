@@ -122,7 +122,7 @@ class OrderSummary extends Component {
             <div className="order-summary-form-group">
               <strong data-i18n="orderShipping.carrier">Carrier</strong>
               <div className="invoice-details">
-                {this.getBillingInfo(order).shipmentMethod.carrier} - {this.getBillingInfo(order).shipmentMethod.label}
+                {this.getShippingInfo(order).shipmentMethod.carrier} - {this.getShippingInfo(order).shipmentMethod.label}
               </div>
             </div>
 

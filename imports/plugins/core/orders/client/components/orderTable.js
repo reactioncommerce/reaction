@@ -60,6 +60,13 @@ class OrderTable extends Component {
     ) || {};
   }
 
+  // helper function to get appropriate shipping info
+  getShippingInfo(order) {
+    return order.shipping.find(
+      shipping => shipping.shopId === Reaction.getShopId()
+    ) || {};
+  }
+
   /**
    * Fullfilment Badge
    * @param  {Object} order object containing info for order and coreOrderWorkflow
@@ -143,24 +150,26 @@ class OrderTable extends Component {
   }
 
   renderShipmentInfo(order) {
-    const emailAddress = order.email || <Translation defaultValue={"Email not availabe"} i18nKey={"admin.orderWorkflow.ordersList.emailNotFound"} />;
+    const emailAddress = order.email ||
+    <Translation defaultValue={"Email not availabe"} i18nKey={"admin.orderWorkflow.ordersList.emailNotFound"} />;
+
     return (
       <div className="shipment-info">
         <div className="customer-info">
           <Avatar
             email={order.email}
             round={true}
-            name={order.shipping[0].address.fullName}
+            name={this.getShippingInfo(order).address.fullName}
             size={30}
             className="rui-order-avatar"
           />
-          <strong>{order.shipping[0].address.fullName}</strong> | {emailAddress}
+          <strong>{this.getShippingInfo(order).address.fullName}</strong> | {emailAddress}
         </div>
         <div className="workflow-info">
           <Badge
             badgeSize="large"
-            i18nKeyLabel={`cartDrawer.${order.shipping[0].workflow.status}`}
-            label={order.shipping[0].workflow.status}
+            i18nKeyLabel={`cartDrawer.${this.getShippingInfo(order).workflow.status}`}
+            label={this.getShippingInfo(order).workflow.status}
             status="basic"
           />
           <Badge
@@ -205,14 +214,38 @@ class OrderTable extends Component {
     if (this.props.isOpen) {
       // Render order list column/row data
       const filteredFields = {
-        "Name": "shipping[0].address.fullName",
-        "Email": "email",
-        "Date": "createdAt",
-        "ID": "_id",
-        "Total": "billing[0].invoice.total",
-        "Shipping": "shipping[0].workflow.status",
-        "Status": "workflow.status",
-        "": ""
+        "Name": {
+          accessor: row => this.getShippingInfo(row).address.fullName,
+          id: "shippingfullName"
+        },
+        "Email": {
+          accessor: "email",
+          id: "email"
+        },
+        "Date": {
+          accessor: "createdAt",
+          id: "createdAt"
+        },
+        "ID": {
+          accessor: "_id",
+          id: "_id"
+        },
+        "Total": {
+          accessor: row => this.getBillingInfo(row).invoice.total,
+          id: "billingTotal"
+        },
+        "Shipping": {
+          accessor: row => this.getShippingInfo(row).workflow.status,
+          id: "shippingStatus"
+        },
+        "Status": {
+          accessor: "workflow.status",
+          id: "workflow.status"
+        },
+        "": {
+          accessor: "",
+          id: ""
+        }
       };
 
       const columnNames = Object.keys(filteredFields);
@@ -262,7 +295,8 @@ class OrderTable extends Component {
         }
 
         const columnMeta = {
-          accessor: filteredFields[columnName],
+          accessor: filteredFields[columnName].accessor,
+          id: filteredFields[columnName].id,
           Header: colHeader ? colHeader : columnName,
           headerClassName: classNames.headerClassNames[columnName],
           className: classNames.colClassNames[columnName],

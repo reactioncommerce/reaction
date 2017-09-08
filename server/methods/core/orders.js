@@ -17,12 +17,12 @@ import { Logger, Hooks, Reaction } from "/server/api";
 // returns entire payment method
 export function orderCreditMethod(order) {
   const creditBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "credit");
-  return creditBillingRecords.find((billing) => { return billing.shopId === Reaction.getShopId(); });
+  return creditBillingRecords.find(billing => billing.shopId === Reaction.getShopId());
 }
 // helper to return the order debit object
 export function orderDebitMethod(order) {
   const debitBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "debit");
-  return debitBillingRecords.find((billing) => { return billing.shopId === Reaction.getShopId(); });
+  return debitBillingRecords.find(billing => billing.shopId === Reaction.getShopId());
 }
 
 // REVIEW: This jsdoc doesn't seem to be accurate
