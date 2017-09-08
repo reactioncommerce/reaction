@@ -63,15 +63,17 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
           <Components.Translation defaultValue="Shipping Address" i18nKey={"cartCompleted.shippingAddress"} />
         </div>
         {orderSummary.shipping.map((shipment) => {
-          return <div className="order-details-info-box" key={shipment._id}>
-            <div className="order-details-info-box-content">
-              <p>
-                {shipment.address.fullName}<br/>
-                {shipment.address.address1}<br/>
-                {shipment.address.city}, {shipment.address.region} {shipment.address.postal} {shipment.address.country}
-              </p>
-            </div>
-          </div>;
+          if (shipment.address.fullName || shipment.address.address1) {
+            return <div className="order-details-info-box" key={shipment._id}>
+              <div className="order-details-info-box-content">
+                <p>
+                  {shipment.address.fullName}<br/>
+                  {shipment.address.address1}<br/>
+                  {shipment.address.city}, {shipment.address.region} {shipment.address.postal} {shipment.address.country}
+                </p>
+              </div>
+            </div>;
+          }
         })}
 
         <div className="order-details-content-title">
