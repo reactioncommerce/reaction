@@ -84,6 +84,8 @@ describe("Publication", function () {
         // setup
         sandbox.stub(Reaction, "getShopId", () => shop._id);
         sandbox.stub(Roles, "userIsInRole", () => true);
+        sandbox.stub(Reaction, "hasPermission", () => true);
+        sandbox.stub(Reaction, "getShopsWithRoles", () => [shop._id]);
 
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;
@@ -103,6 +105,8 @@ describe("Publication", function () {
         // setup
         sandbox.stub(Reaction, "getShopId", () => shop._id);
         sandbox.stub(Roles, "userIsInRole", () => true);
+        sandbox.stub(Reaction, "hasPermission", () => true);
+        sandbox.stub(Reaction, "getShopsWithRoles", () => [shop._id]);
 
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;
@@ -251,6 +255,8 @@ describe("Publication", function () {
         const productScrollLimit = 24;
         sandbox.stub(Reaction, "getCurrentShop", function () {return { _id: "123" };});
         sandbox.stub(Roles, "userIsInRole", () => true);
+        sandbox.stub(Reaction, "hasPermission", () => true);
+        sandbox.stub(Reaction, "getShopsWithRoles", () => [shop._id]);
 
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;
@@ -330,6 +336,7 @@ describe("Publication", function () {
       it("should return a product based on a regex to admin even if it isn't visible", function (done) {
         sandbox.stub(Reaction, "getShopId", () => shop._id);
         sandbox.stub(Roles, "userIsInRole", () => true);
+        sandbox.stub(Reaction, "hasPermission", () => true);
 
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;

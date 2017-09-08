@@ -1,7 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Roles } from "meteor/alanning:roles";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Products, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
@@ -69,33 +68,27 @@ const filters = new SimpleSchema({
 
 /**
  * products publication
- * @param {Number} productScrollLimit - optional, defaults to 24
+ * @param {Number} [productScrollLimit] - optional, defaults to 24
  * @param {Array} shops - array of shopId to retrieve product from.
  * @return {Object} return product cursor
  */
-Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, adminSubscription) {
+Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, editMode = true) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, Object));
   check(sort, Match.OneOf(undefined, Object));
-  check(adminSubscription, Match.Maybe(Boolean));
+  check(editMode, Match.Maybe(Boolean));
+
+  // TODO: Consider publishing the non-admin publication if a user is not in "edit mode" to see what is published
 
   // Active shop
   const shopId = Reaction.getShopId();
   const primaryShopId = Reaction.getPrimaryShopId();
 
-  let isAdmin = false;
-
-  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shopId)) {
-    isAdmin = true;
-  }
+  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
+  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId);
 
   // Don't publish if we're missing an active or primary shopId
   if (!shopId || !primaryShopId) {
-    return this.ready();
-  }
-
-  // Don't publish admin subscriptions to non-admins
-  if (adminSubscription && isAdmin) {
     return this.ready();
   }
 
@@ -108,22 +101,12 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     return this.ready();
   }
 
-  // Init empty selector
-  const selector = {};
-
-  // If this is an admin subscribing to admin products, publish deleted and child products
-  if (isAdmin && adminSubscription) {
-    _.extend(selector, {
-      isDeleted: { $in: [null, false] },
-      ancestors: { $exists: true },
-      shopId: shopId
-    });
-  } else { // Changing the selector for non admin users only. To get top-level products for all shops.
-    _.extend(selector, {
-      isDeleted: { $in: [null, false] },
-      ancestors: []
-    });
-  }
+  // Init default selector - Everyone can see products that fit this selector
+  const selector = {
+    ancestors: [], // Lookup top-level products
+    isDeleted: { $in: [null, false] }, // by default, we don't publish deleted products
+    isVisible: true // by default, only lookup visible products
+  };
 
   if (productFilters) {
     // handle multiple shops
@@ -252,14 +235,18 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     }
   } // end if productFilters
 
-  // Authorized content curators fo the shop get special publication of the product
-  // with all relevant revisions all is one package
 
-  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shopId)) {
+  // We publish an admin version of this publication to admins of products who are in "Edit Mode"
+  // Authorized content curators for shops get special publication of the product
+  // with all relevant revisions all is one package
+  // userAdminShopIds is a list of shopIds that the user has createProduct or owner access for
+  if (editMode && userAdminShopIds && Array.isArray(userAdminShopIds) && userAdminShopIds.length > 0) {
     selector.isVisible = {
-      $in: [true, false, undefined]
+      $in: [true, false, null, undefined]
     };
-    selector.ancestors = [];
+    selector.shopId = {
+      $in: userAdminShopIds
+    };
 
     // Get _ids of top-level products
     const productIds = Products.find(selector, {
@@ -422,23 +409,22 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     ];
   }
 
-  // Everyone else gets the standard, visible products
-  selector.isVisible = true;
-
+  // This is where the publication begins for non-admin users
   // Get _ids of top-level products
   const productIds = Products.find(selector, {
     sort: sort,
     limit: productScrollLimit
   }).map(product => product._id);
 
-  let newSelector = selector;
+  let newSelector = { ...selector };
 
   // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
-  if (productFilters) {
+  if (productFilters && Object.keys(productFilters).length === 0 && productFilters.constructor === Object) {
     newSelector = _.omit(selector, ["hashtags", "ancestors"]);
 
     if (productFilters.tags) {
-      // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
+      // Re-configure selector to pick either Variants of one of the top-level products,
+      // or the top-level products in the filter
       _.extend(newSelector, {
         $or: [{
           ancestors: {
@@ -499,8 +485,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   }
   // Returning Complete product tree for top level products to avoid sold out warning.
   const productCursor = Products.find(newSelector, {
-    sort: sort,
-    limit: productScrollLimit
+    sort: sort
+    // TODO: REVIEW Limiting final products publication for non-admins
+    // I think we shouldn't limit here, otherwise we are limited to 24 total products which
+    // could be far less than 24 top-level products
+    // limit: productScrollLimit
   });
 
   const mediaProductIds = productCursor.fetch().map((p) => p._id);
