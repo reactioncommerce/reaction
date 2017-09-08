@@ -624,21 +624,10 @@ export default {
 
   setActionViewDetail(viewData, options = {}) {
     const { open } = options;
-    const currentRouteName = this.Router.getRouteName();
 
     Session.set("admin/showActionView", true);
     Session.set("admin/showActionViewDetail", typeof open === "boolean" ? open : true);
-
-    /* TODO: Find out the purpose/aim of the if...else block below. Because
-    removing it and simply using:
-      Session.set("admin/detailView", [viewData]);
-    works perfectly well AFAIK.
-    */
-    if (currentRouteName !== "index") {
-      Session.set("admin/actionView", [viewData]);
-    } else if (viewData) {
-      Session.set("admin/detailView", [viewData]);
-    }
+    Session.set("admin/detailView", [viewData]);
   },
 
   pushActionViewDetail(viewData) {
