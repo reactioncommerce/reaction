@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import { Reaction } from "/client/api";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
 
 class OrderSummary extends Component {
@@ -39,6 +40,20 @@ class OrderSummary extends Component {
     const shortId = orderId.slice(-5);
 
     return shortId;
+  }
+
+  // helper function to get appropriate billing info
+  getBillingInfo(order) {
+    return order.billing.find(
+      billing => billing.shopId === Reaction.getShopId()
+    ) || {};
+  }
+
+  // helper function to get appropriate shipping info
+  getShippingInfo(order) {
+    return order.shipping.find(
+      shipping => shipping.shopId === Reaction.getShopId()
+    ) || {};
   }
 
   render() {
@@ -86,28 +101,28 @@ class OrderSummary extends Component {
             <div className="order-summary-form-group">
               <strong data-i18n="order.processor">Processor</strong>
               <div className="invoice-details">
-                {order.billing[0].paymentMethod.processor}
+                {this.getBillingInfo(order).paymentMethod.processor}
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="order.payment">Payment</strong>
               <div className="invoice-details">
-                {order.billing[0].paymentMethod.storedCard} ({order.billing[0].invoice.total})
+                {this.getBillingInfo(order).paymentMethod.storedCard} ({this.getBillingInfo(order).invoice.total})
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="order.transaction">Transaction</strong>
               <div className="invoice-details">
-                {order.billing[0].paymentMethod.transactionId}
+                {this.getBillingInfo(order).paymentMethod.transactionId}
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="orderShipping.carrier">Carrier</strong>
               <div className="invoice-details">
-                {order.shipping[0].shipmentMethod.carrier} - {order.shipping[0].shipmentMethod.label}
+                {this.getBillingInfo(order).shipmentMethod.carrier} - {this.getBillingInfo(order).shipmentMethod.label}
               </div>
             </div>
 
