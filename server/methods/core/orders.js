@@ -454,7 +454,7 @@ export const methods = {
 
     this.unblock();
 
-    const shipment = order.shipping[0];
+    const shipment = order.shipping.find((shipping) => { return shipping.shopId === Reaction.getShopId(); });
 
     if (order.email) {
       Meteor.call("orders/sendNotification", order, (err) => {
