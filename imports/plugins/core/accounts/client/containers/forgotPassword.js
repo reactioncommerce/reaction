@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
-import { ForgotPassword } from "../components";
+import ForgotPassword from "../components/forgotPassword";
 import { LoginFormValidation } from "/lib/api";
 
 
