@@ -70,6 +70,17 @@ const OrderHelper =  {
   }
 };
 
+/**
+ * getShipppingObject
+ *
+ * @summary get proper shipping obect as per current active shop
+ * @param {Object} order - order object to check against
+ * @return {Object} shipping object to use
+ */
+function getShipppingObject(order) {
+  return order.shipping.find((shipping) => { return shipping.shopId === Reaction.getShopId(); });
+}
+
 class OrderDashboardContainer extends Component {
   static propTypes = {
     handleMenuClick: PropTypes.func,
@@ -273,17 +284,6 @@ class OrderDashboardContainer extends Component {
   }
 
   /**
-   * getShipppingObject
-   *
-   * @summary get proper shipping obect as per current active shop
-   * @param {Object} order - order object to check against
-   * @return {Object} shipping object to use
-   */
-  getShipppingObject = (order) => {
-    return order.shipping.find((shipping) => { return shipping.shopId === Reaction.getShopId(); });
-  }
-
-  /**
    * shippingStatusUpdateCall
    *
    * @summary set selected order(s) to the provided shipping state
@@ -315,7 +315,7 @@ class OrderDashboardContainer extends Component {
 
     // TODO: rethink this type of flow for updating shipping statuses
     selectedOrders.forEach((order) => {
-      const shippingRecord = this.getShipppingObject(order);
+      const shippingRecord = getShipppingObject(order);
 
       Meteor.call(`orders/shipment${capitalizeStatus}`, order, shippingRecord, (err) => {
         if (err) {
@@ -458,7 +458,7 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      const orderWorkflow = this.getShipppingObject(order).workflow;
+      const orderWorkflow = getShipppingObject(order).workflow;
       // check if the order(s) are in this state already or in the previous state
 
       // TODO: model this with the assumption that there may be different workflows
@@ -509,7 +509,7 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      const orderWorkflow = this.getShipppingObject(order).workflow;
+      const orderWorkflow = getShipppingObject(order).workflow;
 
       // check if the order(s) are in this state already or in one of the previous states
 
@@ -569,7 +569,7 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      const orderWorkflow = this.getShipppingObject(order).workflow;
+      const orderWorkflow = getShipppingObject(order).workflow;
       // check if the order(s) are in this state already or in one of the previous states
 
       // TODO: model this with the assumption that there may be different workflows
@@ -629,7 +629,7 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      const orderWorkflow = this.getShipppingObject(order).workflow.status;
+      const orderWorkflow = getShipppingObject(order).workflow.status;
       // check if the order(s) are in this state already or in one of the previous states
 
       // TODO: model this with the assumption that there may be different workflows
