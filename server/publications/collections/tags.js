@@ -10,5 +10,7 @@ Meteor.publish("Tags", function () {
   if (!shopId) {
     return this.ready();
   }
+  // TODO: filter tag results based on permissions and isVisible or some other
+  // publication quality
   return Tags.find({});
 });
