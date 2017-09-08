@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import { LoginFormMessages } from "../components";
+import LoginFormMessages from "../components/loginFormMessages";
 
 const wrapComponent = (Comp) => (
   class LoginFormMessagesContainer extends Component {

@@ -51,7 +51,7 @@ export const ShopifyConnectPackageConfig = new SimpleSchema([
     },
     "settings.shopName": {
       type: String,
-      label: "Handelized Shop Name",
+      label: "Shop Slug",
       optional: true
     },
     "settings.webhooks": {

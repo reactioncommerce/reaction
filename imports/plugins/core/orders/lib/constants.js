@@ -32,10 +32,10 @@ export const orderFilters = [{
   label: "New"
 }, {
   name: "processing",
-  label: "Processing"
+  label: "This Week"
 }, {
   name: "completed",
-  label: "Completed"
+  label: "Shipping Status"
 }];
 
 /**

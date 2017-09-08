@@ -80,7 +80,8 @@
           "saveSuccess": "Mail-instellingen opgeslagen.",
           "saveFailed": "Kan mail instellingen op te slaan. {{error}}",
           "cantSendEmail": "Server Error: Kan geen email melding sturen.",
-          "emailSent": "E-mail melding verzonden."
+          "emailSent": "E-mail melding verzonden.",
+          "addOrderEmailFailed": "Het toevoegen van e-mail naar bestelling mislukt"
         }
       }
     }

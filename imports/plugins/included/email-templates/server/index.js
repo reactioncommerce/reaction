@@ -67,6 +67,19 @@ Reaction.registerTemplate({
   subject: "{{shopName}}: Please verify your email address"
 });
 
+/*
+ * Accounts - Verify Updated Email
+ * When: A user signs up through launchdock
+ * TODO: Used by launchdock, I haven't been able to test efficiently
+ */
+Reaction.registerTemplate({
+  title: "Accounts - Verify Updated Email Address",
+  name: TemplatePaths.verifyUpdatedEmailTemplate,
+  type: "email",
+  template: Reaction.Email.getTemplateFile(TemplatePaths.verifyUpdatedEmailTemplate),
+  subject: "Verify your new email address"
+});
+
 
 /*
  * Order (coreOrder) related email templates
@@ -108,4 +121,17 @@ Reaction.registerTemplate({
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.orderRefunded),
   subject: "{{shop.name}}: Confirmation of refund for {{order._id}}"
+});
+
+/*
+  * Orders - Order Refunded
+  * When: Admin completes the order flow and item is shipped
+  * When: Admin refunds line items
+  */
+Reaction.registerTemplate({
+  title: "Orders - Order Item Refunded",
+  name: TemplatePaths.orderItemRefund,
+  type: "email",
+  template: Reaction.Email.getTemplateFile(TemplatePaths.orderItemRefund),
+  subject: "{{shop.name}}: Refund confirmation - {{order._id}}"
 });

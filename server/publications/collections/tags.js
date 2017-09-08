@@ -7,13 +7,10 @@ import { Reaction } from "/server/api";
  */
 Meteor.publish("Tags", function () {
   const shopId = Reaction.getShopId();
-  const primaryShopId = Reaction.getPrimaryShopId();
   if (!shopId) {
     return this.ready();
   }
-  return Tags.find({
-    shopId: {
-      $in: [shopId, primaryShopId]
-    }
-  });
+  // TODO: filter tag results based on permissions and isVisible or some other
+  // publication quality
+  return Tags.find({});
 });
