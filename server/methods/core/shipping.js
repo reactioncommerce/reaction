@@ -163,8 +163,24 @@ export const methods = {
       }
     }
 
+    let newRates;
+    const didEveryShippingProviderFail = rates.every((shippingMethod) => {
+      return shippingMethod.requestStatus && shippingMethod.requestStatus === "error";
+    });
+    if (didEveryShippingProviderFail) {
+      newRates = [{
+        requestStatus: "error",
+        shippingProvider: "all",
+        message: "All requests for shipping methods failed."
+      }];
+    } else {
+      newRates = rates.filter((shippingMethod) => {
+        return !(shippingMethod.requestStatus) || shippingMethod.requestStatus !== "error";
+      });
+    }
+
     Logger.debug("getShippingRates returning rates", rates);
-    return rates;
+    return newRates;
   }
 };
 

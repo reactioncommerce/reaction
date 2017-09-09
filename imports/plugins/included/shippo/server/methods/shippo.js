@@ -363,15 +363,21 @@ export const methods = {
       packageName: "shippo",
       fileName: "shippo.js"
     };
+    const errorDetails = {
+      requestStatus: "error",
+      shippingProvider: "shippo"
+    };
+
     let isRetry;
     if (retrialTargets.length > 0) {
       const isNotAmongFailedRequests = retrialTargets.every((target) =>
         target.packageName !== currentMethodInfo.packageName &&
         target.fileName !== currentMethodInfo.fileName
       );
-
+      // In this case, and some below, there's no need for a retry.
       if (isNotAmongFailedRequests) {
-        return [[], []];
+        errorDetails.message = "Skipping Shippo API call as this method isn't one of those to retry.";
+        return [[errorDetails], []];
       }
 
       isRetry = true;
@@ -396,7 +402,8 @@ export const methods = {
       const apiKey = getApiKey(cart.shopId);
       // If for a weird reason Shop hasn't a Shippo Api key anymore return no-rates.
       if (!apiKey) {
-        return [[], []];
+        errorDetails.message = "No Shippo API key was found in this cart.";
+        return [[errorDetails], []];
       }
       // TODO create a shipping address book record for shop.
       const shippoAddressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
@@ -407,7 +414,8 @@ export const methods = {
         // so we put CM...
         shippoParcel = createShippoParcel(cart.items[0].parcel, unitOfMeasure, "CM");
       } else {
-        return [[], []];
+        errorDetails.message = "This cart has no items, or the first item has no 'parcel' property.";
+        return [[errorDetails], []];
       }
 
       const buyer = Accounts.findOne({
@@ -427,7 +435,8 @@ export const methods = {
         }
         shippoAddressTo = createShippoAddress(cart.shipping[0].address, email, purpose);
       } else {
-        return [[], []];
+        errorDetails.message = "The 'shipping' property of this cart is either missing or incomplete.";
+        return [[errorDetails], []];
       }
       const carrierAccounts = Object.keys(shippoDocs);
       let shippoShipment;
@@ -441,17 +450,18 @@ export const methods = {
           apiKey
         });
       } catch (error) {
-        const errorDetails = {
+        const errorData = {
           requestStatus: "error",
           shippingProvider: "shippo",
           message: error.message
         };
 
         if (isRetry) {
-          return [[], []];
+          errorDetails.message = "The Shippo API call has failed again.";
+          return [[errorDetails], []];
         }
 
-        return [[errorDetails], [currentMethodInfo]];
+        return [[errorData], [currentMethodInfo]];
       }
 
       if (!shippoShipment.rates_list || shippoShipment.rates_list.length === 0) {
@@ -462,7 +472,8 @@ export const methods = {
         };
 
         if (isRetry) {
-          return [[], []];
+          errorDetails.message = "Didn't get any shipping methods. The Shippo API call has failed again.";
+          return [[errorDetails], []];
         }
 
         return [[noShippingMethods], [currentMethodInfo]];
@@ -474,7 +485,8 @@ export const methods = {
       return [reactionRates, []];
     }
 
-    return [[], []];
+    errorDetails.message = "Error. Your cart is either undefined or has the wrong userId.";
+    return [[errorDetails], []];
   },
 
   /**

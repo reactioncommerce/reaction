@@ -17,7 +17,7 @@ import { Cart as CartSchema } from "/lib/collections/schemas";
  */
 function getShippingRates(previousQueryResults, cart) {
   check(cart, CartSchema);
-  const [rates] = previousQueryResults;
+  const [rates, retrialTargets] = previousQueryResults;
   const shops = [];
   const products = cart.items;
 
@@ -35,7 +35,14 @@ function getShippingRates(previousQueryResults, cart) {
   });
 
   if (!pkgData || !cart.items || pkgData.settings.flatRates.enabled !== true) {
-    return previousQueryResults;
+    const errorDetails = {
+      requestStatus: "error",
+      shippingProvider: "flat-rate-shipping",
+      message: "Error. Flat rate shipping might be uninstalled or disabled, or your cart is empty."
+    };
+    // There's no need for a retry in this case.
+    rates.push(errorDetails);
+    return [rates, retrialTargets];
   }
 
   // default selector is primary shop
@@ -96,7 +103,7 @@ function getShippingRates(previousQueryResults, cart) {
   });
 
   Logger.debug("Flat rate onGetShippingRates", rates);
-  return [rates, []];
+  return [rates, retrialTargets];
 }
 // run getShippingRates when the onGetShippingRates event runs
 Hooks.Events.add("onGetShippingRates", getShippingRates);
