@@ -8,11 +8,15 @@
         <div class="panel-heading  panel-title-center">
 
             <div class="profile-image">
-              {{!--> avatar user=currentUser class="circular-icon" size="large" shape="circle"--}}
-              <img class="circular-icon" src="{{getGravatar currentUser 80}}" style="width: 80px;border-radius: 50%;" />
+              <div>
+                {{> React ReactionAvatar }}
+              </div>
               <span class="profile-image-display-name">{{displayName}}</span>
             </div>
 
+        </div>
+        <div class="panel-content">
+          {{> React UpdateEmail }}
         </div>
         <div class="panel-content">
           {{#if userHasPassword}}

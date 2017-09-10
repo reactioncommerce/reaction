@@ -35,4 +35,5 @@ export { Overlay } from "./modal";
 export * from "./tabs";
 export { default as Select } from "./select/select.react";
 export { default as ClickToCopy } from "./clickToCopy/clickToCopy";
+export { ReactionAvatar } from "./avatar";
 export * from "./notFound";
