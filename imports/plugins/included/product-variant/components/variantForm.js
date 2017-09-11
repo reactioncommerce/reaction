@@ -154,7 +154,11 @@ class VariantForm extends Component {
 
   handleInventoryPolicyChange = (event, value, field) => {
     /*
-    Due to some confusing verbiage on how inventoryPolicy works / is displayed, we need to handle this field differently than we handle the other checkboxes in this component. Specifically, we display the opposite value of what the actual field value is. Because this is a checkbox, that means that the opposite value is actually the field value as well, not just a display value, so we need to reverse the boolean value when it gets passed into this function before we send it to the server to update the data.
+    Due to some confusing verbiage on how inventoryPolicy works / is displayed, we need to handle this field
+    differently than we handle the other checkboxes in this component. Specifically, we display the opposite value of
+    what the actual field value is. Because this is a checkbox, that means that the opposite value is actually the
+    field value as well, not just a display value, so we need to reverse the boolean value when it gets passed into
+    this function before we send it to the server to update the data.
     */
 
     const reverseValue = !value;
