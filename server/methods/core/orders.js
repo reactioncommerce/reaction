@@ -56,6 +56,43 @@ export function ordersInventoryAdjust(orderId) {
   });
 }
 
+// TODO: Marketplace: Is there a reason to do this any other way? Can admins reduce for more
+// than one shop
+/**
+ * ordersInventoryAdjustByShop
+ * adjust inventory for a particular shop when an order is approved
+ * @param {String} orderId - orderId
+ * @param {String} shopId - the id of the shop approving the order
+ * @return {null} no return value
+ */
+export function ordersInventoryAdjustByShop(orderId, shopId) {
+  check(orderId, String);
+  check(shopId, String);
+
+  if (!Reaction.hasPermission("orders")) {
+    throw new Meteor.Error("access-denied", "Access Denied");
+  }
+
+  const order = Orders.findOne(orderId);
+  order.items.forEach(item => {
+    if (item.shopId === shopId) {
+      Products.update({
+        _id: item.variants._id
+      }, {
+        $inc: {
+          inventoryQuantity: -item.quantity
+        }
+      }, {
+        publish: true,
+        selector: {
+          type: "variant"
+        }
+      });
+    }
+  });
+}
+
+
 export function orderQuantityAdjust(orderId, refundedItem) {
   check(orderId, String);
 
@@ -233,6 +270,7 @@ export const methods = {
   "orders/approvePayment": function (order) {
     check(order, Object);
     const invoice = orderCreditMethod(order).invoice;
+    const shopId = Reaction.getShopId();  // the shop of the user who is currently logged on
 
     // REVIEW: Who should have access to do this for a marketplace?
     // Do we have/need a shopId on each order?
@@ -252,11 +290,12 @@ export const methods = {
     const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
 
     // Updates flattened inventory count on variants in Products collection
-    ordersInventoryAdjust(order._id);
+    ordersInventoryAdjustByShop(order._id, shopId);
 
-    return Orders.update({
+    Orders.update({
       "_id": order._id,
-      "billing.paymentMethod.method": "credit"
+      "billing.paymentMethod.method": "credit",
+      "billing.shopId": shopId
     }, {
       $set: {
         "billing.$.paymentMethod.amount": total,
