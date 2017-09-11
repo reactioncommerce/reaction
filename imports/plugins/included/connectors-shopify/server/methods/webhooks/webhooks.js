@@ -11,7 +11,6 @@ import { Packages } from "/lib/collections";
  *       contains methods for creating and deleting webhooks providing
  *       synchronization between a Shopify store and a Reaction shop
  * @module connectors/shopify/webhooks
- * location: imports/plugins/included/connectors-shopify/server/methods/webhooks.js
  */
 
 export const methods = {

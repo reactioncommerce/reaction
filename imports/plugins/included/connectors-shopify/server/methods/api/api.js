@@ -4,7 +4,6 @@ import { Reaction } from "/server/api";
 /**
  * @file Shopify connector api methods and helpers
  * @module connectors/shopify/api
- * location: imports/plugins/included/connectors-shopify/server/methods/api/api.js
  */
 
 /**

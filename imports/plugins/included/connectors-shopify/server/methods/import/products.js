@@ -15,7 +15,6 @@ import { connectorsRoles } from "../../lib/roles";
  *       contains methods and helpers for setting up and removing synchronization between
  *       a Shopify store and a Reaction shop
  * @module connectors/shopify/import/products
- * location: imports/plugins/included/connectors-shopify/server/methods/import-products.js
  */
 
 /**

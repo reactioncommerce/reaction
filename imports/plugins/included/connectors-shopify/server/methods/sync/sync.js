@@ -5,7 +5,6 @@ import { Reaction, Logger } from "/server/api";
 /**
  * @file Methods for setting up and removing synchronization between a Shopify store and a Reaction shop
  * @module connectors/shopify/sync
- * location: imports/plugins/included/connectors-shopify/server/methods/sync/sync.js
  */
 
 export const methods = {
