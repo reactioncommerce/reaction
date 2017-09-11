@@ -271,7 +271,6 @@ export const methods = {
     check(order, Object);
     const invoice = orderCreditMethod(order).invoice;
     const shopId = Reaction.getShopId();  // the shop of the user who is currently logged on
-
     // REVIEW: Who should have access to do this for a marketplace?
     // Do we have/need a shopId on each order?
     if (!Reaction.hasPermission("orders")) {
@@ -292,17 +291,19 @@ export const methods = {
     // Updates flattened inventory count on variants in Products collection
     ordersInventoryAdjustByShop(order._id, shopId);
 
+    const billing = order.billing;
+    const billingRecord = billing.find((bRecord) => bRecord.shopId === shopId);
+    billingRecord.paymentMethod.amount = total;
+    billingRecord.paymentMethod.status = "approved";
+    billingRecord.paymentMethod.mode = "capture";
+    billingRecord.invoice.discounts = discount;
+    billingRecord.invoice.total = Number(total);
+
     Orders.update({
-      "_id": order._id,
-      "billing.paymentMethod.method": "credit",
-      "billing.shopId": shopId
+      _id: order._id
     }, {
       $set: {
-        "billing.$.paymentMethod.amount": total,
-        "billing.$.paymentMethod.status": "approved",
-        "billing.$.paymentMethod.mode": "capture",
-        "billing.$.invoice.discounts": discount,
-        "billing.$.invoice.total": Number(total)
+        billing: billing,
       }
     });
   },
