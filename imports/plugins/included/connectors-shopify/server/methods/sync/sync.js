@@ -3,14 +3,14 @@ import { check } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
 
 /**
- * @file Shopify connector sync methods
- *       contains methods for setting up and removing synchronization between a Shopify store and a Reaction shop
+ * @file Methods for setting up and removing synchronization between a Shopify store and a Reaction shop
  * @module connectors/shopify/sync
- * location: imports/plugins/included/connectors-shopify/server/methods/sync.js
+ * location: imports/plugins/included/connectors-shopify/server/methods/sync/sync.js
  */
 
 export const methods = {
   /**
+   * Given an array of integrations, creates and registers a webhook with the Shopify store for each integration
    * @method connectors/shopify/sync/setup
    * @param {[string]} integrations Array of integrations. Each integration should take the form
    *                                topic:method - e.g. orders/create:updateInventory
@@ -29,7 +29,6 @@ export const methods = {
     const integrationsByTopic = integrations.reduce((topics, integration) => {
       const splitIntegration = integration.split(":");
       const topic = splitIntegration[0];
-      // const method = splitIntegration[1];
 
       if (topics[topic]) {
         topics[topic].push(integration);
@@ -45,7 +44,8 @@ export const methods = {
       Logger.info(`Setting up shopify webhook ${topic} for ${integrationsByTopic[topic]}`);
       Meteor.call("connectors/shopify/createWebhook", {
         topic: topic,
-        integrations: integrationsByTopic[topic]
+        integrations: integrationsByTopic[topic],
+        absoluteUrl: "http://f0aacb15.ngrok.io"
       });
     });
   },

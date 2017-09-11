@@ -22,7 +22,7 @@ export const methods = {
    * @method connectors/shopify/createWebhook
    * @param {Object} options Options object
    * @param {string} options.topic - the shopify topic to subscribe to
-   * @param {string} [options.absoluteUrl] - Url to send webhook requests
+   * @param {string} [options.absoluteUrl] - Url to send webhook requests - should only be used in development mode
    * @return {void}
    */
   async "connectors/shopify/createWebhook"(options) {
@@ -33,6 +33,8 @@ export const methods = {
       throw new Meteor.error("access-denied", "Access denied");
     }
 
+    // This code is duplicated in `../api/api`
+    // But is left here intentionally as we are updating the specific shopifyPkg that this returns later in this method
     const shopifyPkg = Reaction.getPackageSettingsWithOptions({
       shopId: Reaction.getShopId(),
       name: "reaction-connectors-shopify"
@@ -80,13 +82,13 @@ export const methods = {
     }
   },
   /**
-   * Given a shopifyWebhookId, attempts to delete that webhook via the Shopify API
+   * Given a shopifyWebhookId, delete that webhook via the Shopify API
    * @async
-   * @method
+   * @method connectors/shopify/webhooks/delete
    * @param {number} shopifyWebhookId The shopifyId of the webhook to delete
    * @returns {number} the number of Packages updated (either 1 or 0)
    */
-  async "connectors/shopify/webhook/delete"(shopifyWebhookId) {
+  async "connectors/shopify/webhooks/delete"(shopifyWebhookId) {
     check(shopifyWebhookId, Number);
 
     // Check for permissions
@@ -94,6 +96,8 @@ export const methods = {
       throw new Meteor.error("access-denied", "Access denied");
     }
 
+    // This code is duplicated in `../api/api`
+    // But is left here intentionally as we are updating the specific shopifyPkg that this returns later in this method
     const shopifyPkg = Reaction.getPackageSettingsWithOptions({
       shopId: Reaction.getShopId(),
       name: "reaction-connectors-shopify"
@@ -136,6 +140,12 @@ export const methods = {
       throw new Meteor.Error("api-error", `Shopify API Error, error deleting webhook: ${error}`);
     }
   },
+  /**
+   * Delete all registered Shopify webhooks via the Shopify API
+   * @async
+   * @method connectors/shopify/webhooks/deleteAll
+   * @returns {number} the number of Packages updated (either 1 or 0)
+   */
   async "connectors/shopify/webhooks/deleteAll"() {
     // Check for permissions
     if (!Reaction.hasPermission(["owner", "settings/connectors", "settings/connectors/shopify"])) {

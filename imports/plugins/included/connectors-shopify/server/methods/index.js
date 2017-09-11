@@ -1,4 +1,4 @@
-import "./import-products";
+import "./api";
+import "./import";
 import "./sync";
-import "./sync-orders";
 import "./webhooks";

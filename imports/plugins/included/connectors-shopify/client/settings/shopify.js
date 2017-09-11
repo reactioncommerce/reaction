@@ -26,7 +26,7 @@ Template.shopifyImport.events({
     $(event.currentTarget).html(`<i class='fa fa-circle-o-notch fa-spin'></i> ${i18next.t("admin.shopifyConnectSettings.importing")}`);
     event.currentTarget.disabled = true;
 
-    Meteor.call("shopifyConnect/importProducts", (err) => {
+    Meteor.call("connectors/shopify/import/products", (err) => {
       $(event.currentTarget).html(`
           <i class='fa fa-cloud-download'></i> ${i18next.t("admin.shopifyConnectSettings.importProducts")}`);
       event.currentTarget.disabled = false;

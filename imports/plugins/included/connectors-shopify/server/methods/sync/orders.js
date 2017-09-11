@@ -2,8 +2,14 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Reaction } from "/server/api";
 import { Products } from "/lib/collections";
-import { connectorsRoles } from "../lib/roles";
+import { connectorsRoles } from "../../lib/roles";
 
+/**
+ * @file Methods for syncing Shopify orders
+ *       contains methods and helpers for synchronization of orders between a Shopify store and a Reaction shop
+ * @module connectors/shopify/sync/orders
+ * location: imports/plugins/included/connectors-shopify/server/methods/sync/orders.js
+ */
 
 /**
  * Given a list of variants in an ancestor chain, finds the bottommost variant
@@ -27,7 +33,14 @@ function findBottomVariant(variants) {
 }
 
 export const methods = {
-  "shopify/sync/orders/created": (lineItems) => {
+  /**
+   * Given an array of line items from a Shopify order, this method updates the inventory quantity for all variants
+   * in the Reaction store which have a matching shopifyId to the line items in the order
+   * @method connectors/shopify/sync/orders/created
+   * @param {[Object]} lineItems array of line items from a Shopify order
+   * @returns {void}
+   */
+  "connectors/shopify/sync/orders/created": (lineItems) => {
     check(lineItems, [Object]);
 
     if (!Reaction.hasPermission(connectorsRoles)) {

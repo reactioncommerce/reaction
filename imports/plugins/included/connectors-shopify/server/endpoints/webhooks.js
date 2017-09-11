@@ -50,6 +50,6 @@ Reaction.Endpoints.add("post", "/webhooks/shopify/orders-create", function (req,
 
   // If we can verify that this request is legitimate, call our shopify/sync/orders/created
   if (verifyWebhook(req)) {
-    Meteor.call("shopify/sync/orders/created", req.body.line_items);
+    Meteor.call("connectors/shopify/sync/orders/created", req.body.line_items);
   }
 });
