@@ -1,6 +1,7 @@
 import moment from "moment";
 import { Template } from "meteor/templating";
 import { Orders, Shops } from "/lib/collections";
+import { Reaction } from "/client/api";
 
 /**
  * dashboardOrdersList helpers
@@ -27,7 +28,7 @@ Template.dashboardOrdersList.helpers({
     return moment(this.createdAt).fromNow();
   },
   shipmentTracking() {
-    return this.shipping[0].shipmentMethod.tracking;
+    return this.shipping.find(shipping => shipping.shopId === Reaction.getShopId()).shipmentMethod.tracking;
   },
   shopName() {
     const shop = Shops.findOne(this.shopId);
