@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Components, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Media, Orders, OrderSearch as OrderSearchCollection } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrderDashboard from "../components/orderDashboard.js";
 import OrderSearch from "../components/orderSearch";
 import {
@@ -834,4 +833,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, Loading)(OrderDashboardContainer);
+export default composeWithTracker(composer, Components.Loading)(OrderDashboardContainer);
