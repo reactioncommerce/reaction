@@ -269,41 +269,24 @@ export const methods = {
    */
   "orders/approvePayment": function (order) {
     check(order, Object);
-    const invoice = orderCreditMethod(order).invoice;
     const shopId = Reaction.getShopId();  // the shop of the user who is currently logged on
-    // REVIEW: Who should have access to do this for a marketplace?
-    // Do we have/need a shopId on each order?
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
-
-    this.unblock(); // REVIEW: why unblock here?
-
-    // this is server side check to verify
-    // that the math all still adds up.
-    const subTotal = invoice.subtotal;
-    const shipping = invoice.shipping;
-    const taxes = invoice.taxes;
-    const discount = invoice.discounts;
-    const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
-    const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
 
     // Updates flattened inventory count on variants in Products collection
     ordersInventoryAdjustByShop(order._id, shopId);
 
     const billing = order.billing;
     const billingRecord = billing.find((bRecord) => bRecord.shopId === shopId);
-    billingRecord.paymentMethod.amount = total;
     billingRecord.paymentMethod.status = "approved";
     billingRecord.paymentMethod.mode = "capture";
-    billingRecord.invoice.discounts = discount;
-    billingRecord.invoice.total = Number(total);
 
     Orders.update({
       _id: order._id
     }, {
       $set: {
-        billing: billing,
+        billing: billing
       }
     });
   },
@@ -850,7 +833,6 @@ export const methods = {
    */
   "orders/capturePayments": (orderId) => {
     check(orderId, String);
-
     // REVIEW: For marketplace implmentations who should be able to capture payments?
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error("access-denied", "Access Denied");
