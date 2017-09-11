@@ -1,4 +1,6 @@
 import { Template } from "meteor/templating";
+import { Gravatar } from "meteor/jparker:gravatar";
+import * as Collections from "/lib/collections";
 
 export const LoginFormSharedHelpers = {
   messages: function () {
@@ -16,4 +18,22 @@ export const LoginFormSharedHelpers = {
     const finalString = str === null ? "" : String(str);
     return finalString.charAt(0).toUpperCase() + finalString.slice(1);
   }
+
 };
+
+export function getGravatar(user) {
+  const options = {
+    secure: true,
+    size: 30,
+    default: "identicon"
+  };
+  if (!user) { return false; }
+  const account = Collections.Accounts.findOne(user._id);
+  if (account && account.profile && account.profile.picture) {
+    return account.profile.picture;
+  }
+  if (user.emails && user.emails.length > 0) {
+    const email = user.emails[0].address;
+    return Gravatar.imageUrl(email, options);
+  }
+}

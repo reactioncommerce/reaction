@@ -31,7 +31,7 @@ const ThirdPartyAPI = {
   },
   refund: function (transactionId, amount) {
     return {
-      sucess: true,
+      success: true,
       transactionId: transactionId,
       amount: amount
     };

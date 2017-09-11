@@ -10,6 +10,14 @@ class Checkbox extends Component {
     }
   }
 
+  renderLabel() {
+    const { label, i18nKeyLabel } = this.props;
+    if (label || i18nKeyLabel) {
+      return (<Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />);
+    }
+    return null;
+  }
+
   render() {
     return (
       <label>

@@ -14,6 +14,7 @@ export const coreDefaultTemplate = "coreDefault";
 export const inviteShopMemberTemplate = "accounts/inviteShopMember";
 export const resetPaswordTemplate = "accounts/resetPassword";
 export const welcomeEmailTemplate = "accounts/sendWelcomeEmail";
+export const verifyUpdatedEmailTemplate = "accounts/verifyUpdatedEmail";
 // TODO: Used by launchdock, I haven't been able to test efficiently
 export const verifyEmailTemplate = "accounts/verifyEmail";
 
@@ -24,3 +25,4 @@ export const verifyEmailTemplate = "accounts/verifyEmail";
 export const coreOrderNewTemplate = "orders/new";
 export const orderShipped = "orders/shipped";
 export const orderRefunded = "orders/refunded";
+export const orderItemRefund = "orders/itemRefund";
