@@ -90,7 +90,7 @@ describe("stripe/payment/capture", function () {
       mode: "capture",
       createdAt: new Date()
     };
-    sandbox.stub(StripeApi.methods.captureCharge, "call", function () {
+    sandbox.stub(StripeApi.methods, "captureCharge", function () {
       return stripeCaptureResult;
     });
     // spyOn(StripeApi.methods.captureCharge, "call").and.returnValue(stripeCaptureResult);
@@ -103,7 +103,7 @@ describe("stripe/payment/capture", function () {
       expect(captureError).to.be.undefined;
       expect(captureResult).to.not.be.undefined;
       expect(captureResult.saved).to.be.true;
-      expect(StripeApi.methods.captureCharge.call).to.have.been.calledWith({
+      expect(StripeApi.methods.captureCharge).to.have.been.calledWith({
         transactionId: paymentMethod.transactionId,
         captureDetails: {
           amount: 1999
