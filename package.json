@@ -76,11 +76,20 @@
     "prerender-node": "^2.7.2",
     "prop-types": "^15.5.10",
     "query-parse": "^1.0.0",
+<<<<<<< HEAD
     "radium": "^0.19.4",
     "react": "15.6.1",
     "react-addons-create-fragment": "15.6.0",
     "react-addons-pure-render-mixin": "15.6.0",
     "react-autosuggest": "^9.3.1",
+=======
+    "radium": "^0.19.1",
+    "react": "15.4.2",
+    "react-addons-create-fragment": "15.4.2",
+    "react-addons-pure-render-mixin": "15.4.2",
+    "react-addons-shallow-compare": "^15.6.0",
+    "react-autosuggest": "^9.0.0",
+>>>>>>> 6c00b03fb... Adding react-addons-shallow-compare dependencie
     "react-avatar": "^2.3.0",
     "react-color": "^2.13.3",
     "react-copy-to-clipboard": "^5.0.0",
