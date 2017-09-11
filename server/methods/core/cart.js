@@ -546,7 +546,7 @@ Meteor.methods({
    */
   "cart/setShipmentMethod": function (cartId, method) {
     check(cartId, String);
-    check(method, ShippingMethod);
+    check(method, Object);
     // get current cart
     const cart = Collections.Cart.findOne({
       _id: cartId,
