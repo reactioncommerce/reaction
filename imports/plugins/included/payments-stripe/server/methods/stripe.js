@@ -34,10 +34,14 @@ function stripeCaptureCharge(paymentMethod) {
     amount: formatForStripe(paymentMethod.amount)
   };
 
+  const stripePackage = Packages.findOne(paymentMethod.paymentPackageId);
+  const stripeKey = stripePackage.settings.api_key || stripePackage.settings.connectAuth.access_token;
+
   try {
     const captureResult = StripeApi.methods.captureCharge({
       transactionId: paymentMethod.transactionId,
-      captureDetails: captureDetails
+      captureDetails: captureDetails,
+      apiKey: stripeKey
     });
     if (captureResult.status === "succeeded") {
       result = {
@@ -120,10 +124,7 @@ function buildPaymentMethods(options) {
 
   const shopIds = Object.keys(transactionsByShopId);
   const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + cardData.number.slice(-4);
-  const packageData = Packages.findOne({
-    name: "reaction-stripe",
-    shopId: Reaction.getPrimaryShopId()
-  });
+
 
   const paymentMethods = [];
 
@@ -138,6 +139,11 @@ function buildPaymentMethods(options) {
           shopId: shopId,
           quantity: item.quantity
         };
+      });
+
+      const packageData = Packages.findOne({
+        name: "reaction-stripe",
+        shopId: shopId
       });
 
       const paymentMethod = {

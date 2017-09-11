@@ -55,7 +55,7 @@ StripeApi.methods.getApiKey = function () {
 };
 
 
-StripeApi.methods.createCharge = function({ chargeObj, apiKey }) {
+StripeApi.methods.createCharge = function ({ chargeObj, apiKey }) {
   check(chargeObj, chargeObjectSchema);
 
   const stripeKey = apiKey || StripeApi.methods.getApiKey();
