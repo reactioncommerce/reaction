@@ -35,7 +35,7 @@ function stripeCaptureCharge(paymentMethod) {
   };
 
   try {
-    const captureResult = StripeApi.methods.captureCharge.call({
+    const captureResult = StripeApi.methods.captureCharge({
       transactionId: paymentMethod.transactionId,
       captureDetails: captureDetails
     });
@@ -388,7 +388,7 @@ export const methods = {
 
     let result;
     try {
-      const refundResult = StripeApi.methods.createRefund.call({ refundDetails });
+      const refundResult = StripeApi.methods.createRefund({ refundDetails });
       Logger.debug(refundResult);
       if (refundResult && refundResult.object === "refund") {
         result = {
@@ -423,7 +423,7 @@ export const methods = {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     let result;
     try {
-      const refunds = StripeApi.methods.listRefunds.call({ transactionId: paymentMethod.transactionId });
+      const refunds = StripeApi.methods.listRefunds({ transactionId: paymentMethod.transactionId });
       result = [];
       if (refunds) {
         for (const refund of refunds.data) {

@@ -1,6 +1,6 @@
 /* eslint camelcase: 0 */
 import _ from "lodash";
-import { ValidatedMethod } from "meteor/mdg:validated-method";
+import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction, Logger } from "/server/api";
@@ -43,122 +43,80 @@ const expectedErrors = [
   "incorrect_number"
 ];
 
-StripeApi.methods.getApiKey = new ValidatedMethod({
-  name: "StripeApi.methods.getApiKey",
-  validate: null,
-  run() {
-    const stripePkg = Reaction.getPackageSettingsWithOptions({
-      shopId: Reaction.getPrimaryShopId(),
-      name: "reaction-stripe"
-    });
-    if (stripePkg || stripePkg.settings && stripePkg.settings.api_key) {
-      return stripePkg.settings.api_key;
-    }
-    throw new Meteor.Error("access-denied", "Invalid Stripe Credentials");
+StripeApi.methods.getApiKey = function () {
+  const stripePkg = Reaction.getPackageSettingsWithOptions({
+    shopId: Reaction.getPrimaryShopId(),
+    name: "reaction-stripe"
+  });
+  if (stripePkg || stripePkg.settings && stripePkg.settings.api_key) {
+    return stripePkg.settings.api_key;
   }
-});
+  throw new Meteor.Error("invalid-credentials", "Invalid Stripe Credentials");
+};
 
 
-StripeApi.methods.createCharge = new ValidatedMethod({
-  name: "StripeApi.methods.createCharge",
-  validate: new SimpleSchema({
-    chargeObj: { type: chargeObjectSchema },
-    apiKey: { type: String, optional: true }
-  }).validator(),
-  run({ chargeObj, apiKey }) {
-    let stripe;
-    if (!apiKey) {
-      const dynamicApiKey = StripeApi.methods.getApiKey.call();
-      stripe = require("stripe")(dynamicApiKey);
-    } else {
-      stripe = require("stripe")(apiKey);
-    }
-    try {
-      const chargePromise = stripe.charges.create(chargeObj);
-      const promiseResult = Promise.await(chargePromise);
-      return promiseResult;
-    } catch (e) {
-      // Handle "expected" errors differently
-      if (e.rawType === "card_error" && _.includes(expectedErrors, e.code)) {
-        Logger.debug("Error from Stripe is expected, not throwing");
-        const normalizedError = {
-          details: e.message
-        };
-        return { error: normalizedError, result: null };
-      }
-      Logger.error("Received unexpected error type: " + e.rawType);
-      Logger.error(e);
+StripeApi.methods.createCharge = function(chargeObj, apiKey) {
+  check(chargeObj, chargeObjectSchema);
 
-      // send raw error to server log, but sanitized version to client
-      const sanitisedError = {
-        details: "An unexpected error has occurred"
+  const stripeKey = apiKey || StripeApi.methods.getApiKey();
+  const stripe = require("stripe")(stripeKey);
+  try {
+    const chargePromise = stripe.charges.create(chargeObj);
+    const promiseResult = Promise.await(chargePromise);
+    return promiseResult;
+  } catch (e) {
+    // Handle "expected" errors differently
+    if (e.rawType === "card_error" && _.includes(expectedErrors, e.code)) {
+      Logger.debug("Error from Stripe is expected, not throwing");
+      const normalizedError = {
+        details: e.message
       };
-      return { error: sanitisedError, result: null };
+      return { error: normalizedError, result: null };
     }
-  }
-});
+    Logger.error("Received unexpected error type: " + e.rawType);
+    Logger.error(e);
 
-StripeApi.methods.captureCharge = new ValidatedMethod({
-  name: "StripeApi.methods.captureCharge",
-  validate: new SimpleSchema({
-    transactionId: { type: String },
-    captureDetails: { type: captureDetailsSchema },
-    apiKey: { type: String, optional: true }
-  }).validator(),
-  run({ transactionId, captureDetails, apiKey })  {
-    let stripe;
-    if (!apiKey) {
-      const dynamicApiKey = StripeApi.methods.getApiKey.call();
-      stripe = require("stripe")(dynamicApiKey);
-    } else {
-      stripe = require("stripe")(apiKey);
-    }
-    const capturePromise = stripe.charges.capture(transactionId, captureDetails);
-    const captureResults = Promise.await(capturePromise);
-    return captureResults;
+    // send raw error to server log, but sanitized version to client
+    const sanitisedError = {
+      details: "An unexpected error has occurred"
+    };
+    return { error: sanitisedError, result: null };
   }
-});
+};
 
-StripeApi.methods.createRefund = new ValidatedMethod({
-  name: "StripeApi.methods.createRefund",
-  validate: new SimpleSchema({
-    refundDetails: { type: refundDetailsSchema },
-    apiKey: { type: String, optional: true }
-  }).validator(),
-  run({ refundDetails, apiKey }) {
-    let stripe;
-    if (!apiKey) {
-      const dynamicApiKey = StripeApi.methods.getApiKey.call();
-      stripe = require("stripe")(dynamicApiKey);
-    } else {
-      stripe = require("stripe")(apiKey);
-    }
-    const refundPromise = stripe.refunds.create({ charge: refundDetails.charge, amount: refundDetails.amount });
-    const refundResults = Promise.await(refundPromise);
-    return refundResults;
-  }
-});
 
-StripeApi.methods.listRefunds = new ValidatedMethod({
-  name: "StripeApi.methods.listRefunds",
-  validate: new SimpleSchema({
-    transactionId: { type: String },
-    apiKey: { type: String, optional: true }
-  }).validator(),
-  run({ transactionId, apiKey }) {
-    let stripe;
-    if (!apiKey) {
-      const dynamicApiKey = StripeApi.methods.getApiKey.call();
-      stripe = require("stripe")(dynamicApiKey);
-    } else {
-      stripe = require("stripe")(apiKey);
-    }
-    try {
-      const refundListPromise = stripe.refunds.list({ charge: transactionId });
-      const refundListResults = Promise.await(refundListPromise);
-      return refundListResults;
-    } catch (error) {
-      Logger.error("Encountered an error when trying to list refunds", error);
-    }
+StripeApi.methods.captureCharge = function ({ transactionId, captureDetails, apiKey }) {
+  check(transactionId, String);
+  check(captureDetails, captureDetailsSchema);
+
+  const stripeKey = apiKey || StripeApi.methods.getApiKey();
+  const stripe = require("stripe")(stripeKey);
+  const capturePromise = stripe.charges.capture(transactionId, captureDetails);
+  const captureResults = Promise.await(capturePromise);
+  return captureResults;
+};
+
+StripeApi.methods.createRefund = function ({ refundDetails, apiKey }) {
+  check(refundDetails, refundDetailsSchema);
+
+  const stripeKey = apiKey || StripeApi.methods.getApiKey();
+  const stripe = require("stripe")(stripeKey);
+  const refundPromise = stripe.refunds.create({ charge: refundDetails.charge, amount: refundDetails.amount });
+  const refundResults = Promise.await(refundPromise);
+  return refundResults;
+};
+
+StripeApi.methods.listRefunds = function ({ transactionId, apiKey }) {
+  check(transactionId, String);
+
+  const stripeKey = apiKey || StripeApi.methods.getApiKey();
+  const stripe = require("stripe")(stripeKey);
+  try {
+    const refundListPromise = stripe.refunds.list({ charge: transactionId });
+    const refundListResults = Promise.await(refundListPromise);
+    return refundListResults;
+  } catch (error) {
+    // Logger.error("Encountered an error when trying to list refunds", error);
+    Logger.error("Encountered an error when trying to list refunds");
   }
-});
+};
