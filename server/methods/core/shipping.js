@@ -4,6 +4,153 @@ import { Cart } from "/lib/collections";
 import { Logger, Hooks } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
+function createShipmentQuotes(cartId, shopId, rates, selector) {
+  let update = {
+    $push: {
+      shipping: {
+        shopId: shopId,
+        shipmentQuotes: rates,
+        shipmentQuotesQueryStatus: {
+          requestStatus: "pending"
+        }
+      }
+    }
+  };
+  Cart.update(selector, update, function (error) {
+    if (error) {
+      Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
+      return;
+    }
+    Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
+  });
+
+  if (rates.length === 1 && rates[0].requestStatus === "error") {
+    const errorDetails = rates[0];
+    update = {
+      $push: {
+        shipping: {
+          shopId: shopId,
+          shipmentQuotes: [],
+          shipmentQuotesQueryStatus: {
+            requestStatus: errorDetails.requestStatus,
+            shippingProvider: errorDetails.shippingProvider,
+            message: errorDetails.message
+          }
+        }
+      }
+    };
+  }
+
+  if (rates.length > 0 && rates[0].requestStatus === undefined) {
+    update = {
+      $push: {
+        shipping: {
+          shopId: shopId,
+          shipmentQuotes: rates,
+          shipmentQuotesQueryStatus: {
+            requestStatus: "success",
+            numOfShippingMethodsFound: rates.length
+          }
+        }
+      }
+    };
+  }
+
+  return update;
+}
+
+function createShippingRecordByShop(cart, rates) {
+  const cartId = cart._id;
+  const itemsByShop = cart.getItemsByShop();
+  const shops = Object.keys(itemsByShop);
+  const selector = { _id: cartId };
+  shops.map((shopId) => {
+    const update = createShipmentQuotes(cartId, shopId, rates, selector);
+    return Cart.update(selector, update, (error) => {
+      if (error) {
+        Logger.error(`Error adding rates to cart from createShippingRecordByShop ${cartId}`, error);
+        return;
+      }
+      Logger.debug(`Success adding rates to cart ${cartId}`, rates);
+    });
+  });
+}
+
+function updateShipmentQuotes(cartId, rates, selector) {
+  let update = {
+    $set: {
+      "shipping.0.shipmentQuotesQueryStatus": {
+        requestStatus: "pending"
+      }
+    }
+  };
+  Cart.update(selector, update, function (error) {
+    if (error) {
+      Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
+      return;
+    }
+    Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
+  });
+
+  if (rates.length === 1 && rates[0].requestStatus === "error") {
+    const errorDetails = rates[0];
+    update = {
+      $set: {
+        "shipping.0.shipmentQuotes": [],
+        "shipping.0.shipmentQuotesQueryStatus": {
+          requestStatus: errorDetails.requestStatus,
+          shippingProvider: errorDetails.shippingProvider,
+          message: errorDetails.message
+        }
+      }
+    };
+  }
+
+  if (rates.length > 0 && rates[0].requestStatus === undefined) {
+    update = {
+      $set: {
+        "shipping.$.shipmentQuotes": rates,
+        "shipping.$.shipmentQuotesQueryStatus": {
+          requestStatus: "success",
+          numOfShippingMethodsFound: rates.length
+        }
+      }
+    };
+  }
+
+  return update;
+}
+
+function updateShippingRecordByShop(cart, rates) {
+  const cartId = cart._id;
+  const itemsByShop = cart.getItemsByShop();
+  const shops = Object.keys(itemsByShop);
+  let update;
+  let selector;
+  shops.map((shopId) => {
+    selector = {
+      "_id": cartId,
+      "shipping.shopId": shopId
+    };
+    const shippingRecord = Cart.findOne(selector);
+    // we may have added a new shop since the last time we did this, if so we need to add a new record
+
+    if (shippingRecord) {
+      update = updateShipmentQuotes(cartId, rates, selector);
+    } else {
+      selector = { _id: cartId };
+      update = createShipmentQuotes(cartId, shopId, rates, selector);
+    }
+
+    Cart.update(selector, update, function (error) {
+      if (error) {
+        Logger.warn(`Error updating rates for cart ${cartId}`, error);
+        return;
+      }
+      Logger.debug(`Success updating rates for cart ${cartId}`, rates);
+    });
+  });
+}
 /*
  * Reaction Shipping Methods
  * methods typically used for checkout (shipping, taxes, etc)
@@ -25,115 +172,14 @@ export const methods = {
     const cart = Cart.findOne(cartId);
     check(cart, CartSchema);
 
-    const rates = Meteor.call("shipping/getShippingRates", cart);
-    let selector = { _id: cartId };
-    let update;
-
-    // Temp hack until we build out multiple shipment handlers.
-    // If we have an existing item update it, otherwise add to set.
-    if (cart && cart.shipping) {
-      update = {
-        $set: {
-          "shipping.0.shipmentQuotesQueryStatus": {
-            requestStatus: "pending"
-          }
-        }
-      };
-      Cart.update(selector, update, function (error) {
-        if (error) {
-          Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
-          return;
-        }
-        Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
-      });
-
-      if (rates.length === 1 && rates[0].requestStatus === "error") {
-        const errorDetails = rates[0];
-        update = {
-          $set: {
-            "shipping.0.shipmentQuotes": [],
-            "shipping.0.shipmentQuotesQueryStatus": {
-              requestStatus: errorDetails.requestStatus,
-              shippingProvider: errorDetails.shippingProvider,
-              message: errorDetails.message
-            }
-          }
-        };
-      }
-
-      if (rates.length > 0 && rates[0].requestStatus === undefined) {
-        selector = {
-          "_id": cartId,
-          "shipping._id": cart.shipping[0]._id
-        };
-        update = {
-          $set: {
-            "shipping.$.shipmentQuotes": rates,
-            "shipping.$.shipmentQuotesQueryStatus": {
-              requestStatus: "success",
-              numOfShippingMethodsFound: rates.length
-            }
-          }
-        };
-      }
-    } else {
-      update = {
-        $push: {
-          shipping: {
-            shipmentQuotes: rates,
-            shipmentQuotesQueryStatus: {
-              requestStatus: "pending"
-            }
-          }
-        }
-      };
-      Cart.update(selector, update, function (error) {
-        if (error) {
-          Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
-          return;
-        }
-        Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
-      });
-
-      if (rates.length === 1 && rates[0].requestStatus === "error") {
-        const errorDetails = rates[0];
-        update = {
-          $push: {
-            shipping: {
-              shipmentQuotes: [],
-              shipmentQuotesQueryStatus: {
-                requestStatus: errorDetails.requestStatus,
-                shippingProvider: errorDetails.shippingProvider,
-                message: errorDetails.message
-              }
-            }
-          }
-        };
-      }
-
-      if (rates.length > 0 && rates[0].requestStatus === undefined) {
-        update = {
-          $push: {
-            shipping: {
-              shipmentQuotes: rates,
-              shipmentQuotesQueryStatus: {
-                requestStatus: "success",
-                numOfShippingMethodsFound: rates.length
-              }
-            }
-          }
-        };
+    if (cart) {
+      const rates = Meteor.call("shipping/getShippingRates", cart);
+      if (cart.shipping) {
+        updateShippingRecordByShop(cart, rates);
+      } else {
+        createShippingRecordByShop(cart, rates);
       }
     }
-
-    // add quotes to the cart
-    Cart.update(selector, update, function (error) {
-      if (error) {
-        Logger.warn(`Error adding rates to cart ${cartId}`, error);
-        return;
-      }
-      Logger.debug(`Success adding rates to cart ${cartId}`, rates);
-    });
   },
 
   /**

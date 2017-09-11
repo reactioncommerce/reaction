@@ -5,7 +5,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 import { Accounts } from "meteor/accounts-base";
 import { Random } from "meteor/random";
 import { Reaction } from "/client/api";
-import { UpdatePasswordOverlay } from "/client/modules/accounts/components";
+import UpdatePasswordOverlay from "../components/updatePasswordOverlay";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { LoginFormValidation } from "/lib/api";
 

@@ -16,14 +16,16 @@ import { Cart } from "/lib/collections";
 function cartShippingQuotes(currentCart) {
   const cart = currentCart || Cart.findOne();
   const shipmentQuotes = [];
-
+  const primaryShopId = Reaction.getPrimaryShopId();
   if (cart) {
     if (cart.shipping) {
       for (const shipping of cart.shipping) {
         if (shipping.shipmentQuotes) {
           for (const quote of shipping.shipmentQuotes) {
-            if (quote.carrier === "Flat Rate" || quote.requestStatus !== "error") {
-              shipmentQuotes.push(quote);
+            if (shipping.shopId === primaryShopId) {
+              if (quote.carrier === "Flat Rate" || quote.requestStatus !== "error") {
+                shipmentQuotes.push(quote);
+              }
             }
           }
         }
@@ -59,11 +61,11 @@ function shippingMethodsQueryStatus(currentCart) {
 function cartShipmentMethods() {
   const cart = Cart.findOne();
   const shipmentMethods = [];
-
+  const primaryShopId = Reaction.getPrimaryShopId();
   if (cart) {
     if (cart.shipping) {
       for (const shipping of cart.shipping) {
-        if (shipping.shipmentMethod) {
+        if (shipping.shipmentMethod && shipping.shopId === primaryShopId) {
           shipmentMethods.push(shipping.shipmentMethod);
         }
       }
