@@ -74,6 +74,7 @@
     "react": "15.4.2",
     "react-addons-create-fragment": "15.4.2",
     "react-addons-pure-render-mixin": "15.4.2",
+    "react-addons-shallow-compare": "^15.6.0",
     "react-autosuggest": "^9.0.0",
     "react-avatar": "^2.3.0",
     "react-color": "^2.11.4",
