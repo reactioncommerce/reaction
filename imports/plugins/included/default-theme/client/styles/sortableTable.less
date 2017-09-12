@@ -13,6 +13,12 @@
     margin-bottom: 30px;
 }
 
+@media only screen and (max-width: 560px) {
+  .ReactTable {
+    margin-bottom: 0;
+  }
+}
+
 .ReactTable * {
     box-sizing: border-box;
 }
@@ -33,7 +39,6 @@
     align-items: stretch;
     width: 100%;
     border-collapse: collapse;
-    overflow: auto;
 }
 
 .ReactTable .rt-thead {
@@ -160,7 +165,6 @@
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
-    overflow: auto;
 }
 
 .ReactTable .rt-tbody .rt-tr-group {

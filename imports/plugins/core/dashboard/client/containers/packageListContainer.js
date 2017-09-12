@@ -21,6 +21,7 @@ function handleShowPackage(event, app) {
  * @return {undefined} No return value
  */
 function handleShowDashboard() {
+  Reaction.hideActionViewDetail();
   Reaction.showActionView({
     i18nKeyTitle: "dashboard.coreTitle",
     title: "Dashboard",
