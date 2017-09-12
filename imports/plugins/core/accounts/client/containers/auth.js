@@ -1,14 +1,11 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Router } from "/client/api";
-import { SignIn, SignUp, LoginButtons } from "../components";
-import MessagesContainer from "./messages";
-import { ServiceConfigHelper } from "../helpers";
-import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
+import { ServiceConfigHelper, LoginFormSharedHelpers } from "../helpers";
 import { LoginFormValidation } from "/lib/api";
 
 class AuthContainer extends Component {
@@ -113,7 +110,7 @@ class AuthContainer extends Component {
 
   formMessages = () => {
     return (
-      <MessagesContainer
+      <Components.LoginFormMessages
         messages={this.state.formMessages}
       />
     );
@@ -169,7 +166,7 @@ class AuthContainer extends Component {
   renderAuthView() {
     if (this.props.currentView === "loginFormSignInView") {
       return (
-        <SignIn
+        <Components.SignIn
           {...this.props}
           onFormSubmit={this.handleFormSubmit}
           messages={this.state.formMessages}
@@ -180,7 +177,7 @@ class AuthContainer extends Component {
       );
     } else if (this.props.currentView === "loginFormSignUpView") {
       return (
-        <SignUp
+        <Components.SignUp
           {...this.props}
           onFormSubmit={this.handleFormSubmit}
           messages={this.state.formMessages}
@@ -196,7 +193,7 @@ class AuthContainer extends Component {
   render() {
     return (
       <div>
-        <LoginButtons
+        <Components.LoginButtons
           loginServices={this.services}
           currentView={this.props.currentView}
           onSeparator={this.shouldShowSeperator}

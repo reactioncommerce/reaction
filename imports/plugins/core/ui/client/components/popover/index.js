@@ -1,2 +1,2 @@
-export { default as Propover } from "./popover";
-export { default as PropoverContent } from "./popoverContent";
+export { default as Popover } from "./popover";
+export { default as PopoverContent } from "./popoverContent";

@@ -188,6 +188,7 @@
         "canceledLabel": "Canceled",
         "refundAmount": "Refund Amount",
         "applyRefund": "Apply Refund",
+        "refundItems": "Refund Items",
         "adjustedTotal": "Adjusted Total",
         "processor": "Processor",
         "filter": {
@@ -203,6 +204,12 @@
           "canceled": "Canceled",
           "refunded": "Refunded"
         },
+        "refundItemsTitle": "Refund selected items",
+        "refundItemsApproveAlert": "You are about to refund {{refundItemsQuantity}} items but have yet to approve or capture {{totalAmount}} payment on your order. Would you like to approve now?",
+        "refundItemsCaptureAlert": "Capture payment for total amount {{totalAmount}}?",
+        "refundItemsAlert": "Refund {{refundItemsQuantity}} item(s), total refund amount {{refundItemsTotal}}?",
+        "refundItemsSuccess": "Items have successfully been refunded",
+        "refundItemsWait": "Payment capture is taking longer than expected. Try again in a few minutes",
         "capture": "Capture",
         "capturing": "Capturing",
         "bulkActions": "Bulk Actions",
@@ -403,6 +410,8 @@
         "signupCode": "Registration Code",
         "signUpWithYourEmailAddress": "Register with your email address",
         "terms": "Terms of Use",
+        "updateEmailAddress": "Update Email Address",
+        "updatingEmailAddress": "Updating Email Address",
         "updateYourPassword": "Update your password",
         "updatePasswordAndContinue": "Update and continue",
         "username": "Username",
@@ -412,6 +421,7 @@
         "role": "Role",
         "info": {
           "emailSent": "Email Sent",
+          "emailUpdated": "Email Updated",
           "emailVerified": "Email verified",
           "passwordChanged": "Password changed",
           "passwordReset": "Password reset",
