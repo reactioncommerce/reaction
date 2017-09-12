@@ -739,6 +739,7 @@ class OrderDashboardContainer extends Component {
       <OrderDashboard
         handleSelect={this.handleSelect}
         orders={this.state.orders}
+        orderCount={this.state.orderCount}
         query={this.state.query}
         filter={this.state.filter}
         className={this.state.className}
@@ -766,9 +767,10 @@ const composer = (props, onData) => {
 
   if (mediaSubscription.ready() && ordersSubscription.ready()) {
     const orders = Orders.find().fetch();
-
+    const orderCount = Orders.find().count();
     onData(null, {
-      orders
+      orders,
+      orderCount
     });
   }
 };

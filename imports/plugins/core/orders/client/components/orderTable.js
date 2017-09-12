@@ -43,6 +43,7 @@ class OrderTable extends Component {
     isLoading: PropTypes.object,
     isOpen: PropTypes.bool,
     multipleSelect: PropTypes.bool,
+    orderCount: PropTypes.number,
     orders: PropTypes.array,
     query: PropTypes.object,
     renderFlowList: PropTypes.bool,
@@ -337,7 +338,7 @@ class OrderTable extends Component {
           }
           publication="CustomPaginatedOrders"
           collection={Orders}
-          matchingResultsCount="order-count"
+          matchingResultsCount={this.props.orderCount}
           query={this.props.query}
           columnMetadata={customColumnMetadata}
           externalLoadingComponent={Loading}
