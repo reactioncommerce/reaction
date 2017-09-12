@@ -6,7 +6,6 @@ import { Components, composeWithTracker } from "@reactioncommerce/reaction-compo
 import { Media, Orders, OrderSearch as OrderSearchCollection } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import OrderDashboard from "../components/orderDashboard.js";
-import OrderSearch from "../components/orderSearch";
 import {
   PACKAGE_NAME,
   ORDER_LIST_FILTERS_PREFERENCE_NAME,
@@ -131,6 +130,7 @@ class OrderDashboardContainer extends Component {
    * @return {null} -
    */
   handleSearchChange = (value) => {
+    console.log("value", value);
     this.setState({ searchQuery: value }, () => {
       this.dep.changed();
     });
@@ -794,10 +794,11 @@ class OrderDashboardContainer extends Component {
   render() {
     return (
       <div className="order-dashboard-container">
-        <OrderSearch handleChange={this.handleSearchChange} />
         <OrderDashboard
           handleSelect={this.handleSelect}
+          handleChange={this.handleSearchChange}
           orders={this.state.orders}
+          searchQuery={this.state.searchQuery}
           query={this.state.query}
           filter={this.state.filter}
           className={this.state.className}

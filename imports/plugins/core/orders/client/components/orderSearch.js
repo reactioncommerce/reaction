@@ -13,37 +13,34 @@ class OrderSearch extends Component {
     handleChange: PropTypes.func
   };
 
-  constructor() {
-    super();
-
-    this.state = { query: "" };
+  state = {
+    value: ""
   }
 
   /**
-   * handleChange - handler to call onchange of search input
-   * @param {string} event - event object
-   * @param {string} value - current value of the search input
-   * @return {null} -
-   */
-  handleChange = (event, value) => {
-    this.setState({ query: value });
+    * handleChange - handler to call onchange of search input
+    * @param {string} event - event object
+    * @return {null} -
+    */
+  handleChange = (event) => {
+    const value = event.target.value;
 
-    if (this.props.handleChange) {
-      this.props.handleChange(value);
-    }
-  };
+    this.setState({
+      value
+    });
+    this.props.handleChange(value);
+  }
 
   /**
-   * handleClear - handler called onclick of search clear text
-   * @return {null} -
-   */
+    * handleClear - handler called onclick of search clear text
+    * @return {null} -
+    */
   handleClear = () => {
-    this.setState({ query: "" });
-
-    if (this.props.handleChange) {
-      this.props.handleChange("");
-    }
-  };
+    this.setState({
+      value: ""
+    });
+    this.props.handleChange("");
+  }
 
   render() {
     return (
@@ -51,7 +48,7 @@ class OrderSearch extends Component {
         <Components.TextField
           className="search-input"
           onChange={this.handleChange}
-          value={this.state.query}
+          value={this.state.value}
           i18nKeyPlaceholder="admin.dashboard.searchLabel"
         />
         <i className="fa fa-search fa-fw"/>
@@ -59,7 +56,6 @@ class OrderSearch extends Component {
           className="search-clear"
           i18nKeyLabel="admin.dashboard.clearSearch"
           label="Clear"
-          containerStyle={{ fontWeight: "normal" }}
           onClick={this.handleClear}
         />
       </div>

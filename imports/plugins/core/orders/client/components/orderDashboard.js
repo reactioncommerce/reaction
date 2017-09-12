@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Icon, Translation } from "@reactioncommerce/reaction-ui";
 import OrderTable from "./orderTable";
 import OrderActions from "./orderActions";
+import OrderSearch from "../components/orderSearch";
 
 class OrderDashboard extends Component {
   static propTypes = {
@@ -11,6 +12,7 @@ class OrderDashboard extends Component {
     displayMedia: PropTypes.func,
     filter: PropTypes.string,
     handleBulkPaymentCapture: PropTypes.func,
+    handleChange: PropTypes.func,
     handleClick: PropTypes.func,
     handleMenuClick: PropTypes.func,
     handleSelect: PropTypes.func,
@@ -19,6 +21,7 @@ class OrderDashboard extends Component {
     orders: PropTypes.array,
     query: PropTypes.object,
     renderFlowList: PropTypes.bool,
+    searchQuery: PropTypes.string,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,
@@ -60,6 +63,10 @@ class OrderDashboard extends Component {
   render() {
     return (
       <div>
+        <OrderSearch
+          handleChange={this.props.handleChange}
+          searchQuery={this.props.searchQuery}
+        />
         <OrderActions
           handleMenuClick={this.props.handleMenuClick}
           clearFilter={this.props.clearFilter}
