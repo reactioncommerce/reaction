@@ -93,25 +93,23 @@ class OrderDashboard extends Component {
               </div>
             </div>
 
-            <div>
-              <OrderTable
-                orders={this.props.orders}
-                query={this.state.query}
-                selectedItems={this.props.selectedItems}
-                handleSelect={this.props.handleSelect}
-                handleClick={this.props.handleClick}
-                multipleSelect={this.props.multipleSelect}
-                selectAllOrders={this.props.selectAllOrders}
-                displayMedia={this.props.displayMedia}
-                isOpen={this.state.openList}
-                shipping={this.props.shipping}
-                setShippingStatus={this.props.setShippingStatus}
-                isLoading={this.props.isLoading}
-                renderFlowList={this.props.renderFlowList}
-                toggleShippingFlowList={this.props.toggleShippingFlowList}
-                handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
-              />
-            </div>
+            <OrderTable
+              orders={this.props.orders}
+              query={this.state.query}
+              selectedItems={this.props.selectedItems}
+              handleSelect={this.props.handleSelect}
+              handleClick={this.props.handleClick}
+              multipleSelect={this.props.multipleSelect}
+              selectAllOrders={this.props.selectAllOrders}
+              displayMedia={this.props.displayMedia}
+              isOpen={this.state.openList}
+              shipping={this.props.shipping}
+              setShippingStatus={this.props.setShippingStatus}
+              isLoading={this.props.isLoading}
+              renderFlowList={this.props.renderFlowList}
+              toggleShippingFlowList={this.props.toggleShippingFlowList}
+              handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
+            />
           </div> :
           <div className="container-fluid-sm order-details-list-container">
             <div className="empty-view-message">
