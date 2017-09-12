@@ -2,8 +2,10 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { Counts } from "meteor/tmeasday:publish-counts";
+import { ReactiveAggregate } from "./reactiveAggregate";
 import { Orders } from "/lib/collections";
 import { Reaction } from "/server/api";
+
 
 /**
  * orders
@@ -68,11 +70,46 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
   const selector = {
     "items.shopId": shopId
   };
-
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
-    Counts.publish(this, "order-count", Orders.find(selector), { noReady: true });
-    return Orders.find(selector);
+    ReactiveAggregate(this, Orders, [
+      {
+        $project: {
+          items: {
+            $filter: {
+              input: "$items",
+              as: "item",
+              cond: { $eq: ["$$item.shopId", "J8Bhq3uTtdgwZx3rz"] }
+            }
+          },
+          billing: {
+            $filter: {
+              input: "$billing",
+              as: "billing",
+              cond: { $eq: ["$$billing.shopId", "J8Bhq3uTtdgwZx3rz"] }
+            }
+          },
+          shipping: {
+            $filter: {
+              input: "$shipping",
+              as: "shipping",
+              cond: { $eq: ["$$shipping.shopId", "J8Bhq3uTtdgwZx3rz"] }
+            }
+          },
+          cartId: 1,
+          sessionId: 1,
+          shopId: 1,
+          workflow: 1,
+          discount: 1,
+          tax: 1,
+          email: 1,
+          createdAt: 1
+        }
+      }
+    ], selector);
   }
+
+  // TODO How to we return this order-count
+  //   Counts.publish(this, "order-count", Orders.find(selector), { noReady: true });
   return Orders.find({
     shopId: shopId,
     userId: this.userId
