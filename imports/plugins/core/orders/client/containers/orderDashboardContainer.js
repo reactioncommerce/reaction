@@ -233,15 +233,14 @@ class OrderDashboardContainer extends Component {
       Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
     }
 
-    const id = Reaction.Router.getQueryParam("_id");
-
-    if (id === undefined) {
-      Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
-    } else {
-      Reaction.Router.go("dashboard/orders", {}, {
-        _id: order._id
-      });
-    }
+    /* TODO: 
+    a) What other routes have a query parameter of _id=XXXXXXX ?
+    b) What exactly are we using the order dashboard for? If it's search,
+     well, clicking a search result doesn't CURRENTLY do anything. What's
+     more, there's some debate as to whether that SHOULD link to anywhere.
+     And if it should, why not the existing, modal orders panel?
+    */
+    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
   }
 
   /**

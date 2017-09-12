@@ -89,8 +89,8 @@ const getStyles = (props) => {
     masterViewPanel: {
       display: "flex",
       flexDirection: "column",
-      flex: "1 1 auto"
-      // height: "100%"
+      flex: "1 1 auto",
+      width: "50%"
     },
     masterView: {
       flex: "1 1 auto",

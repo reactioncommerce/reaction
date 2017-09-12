@@ -14,20 +14,20 @@ import ProductImage from "./productImage";
 const classNames = {
   colClassNames: {
     "Name": "order-table-column-name",
-    "Email": "order-table-column-email hidden-xs hidden-sm",
+    "Email": "order-table-column-email",
     "Date": "order-table-column-date hidden-xs hidden-sm",
-    "ID": "order-table-column-id hidden-xs",
-    "Total": "order-table-column-total hidden-xs",
+    "ID": "order-table-column-id hidden-xs hidden-sm",
+    "Total": "order-table-column-total",
     "Shipping": "order-table-column-shipping hidden-xs hidden-sm",
     "Status": "order-table-column-status",
     "": "order-table-column-control"
   },
   headerClassNames: {
     "Name": "order-table-header-name",
-    "Email": "order-table-header-email hidden-xs hidden-sm",
+    "Email": "order-table-header-email",
     "Date": "order-table-header-date hidden-xs hidden-sm",
-    "ID": "order-table-header-id hidden-xs",
-    "Total": "order-table-header-total hidden-xs",
+    "ID": "order-table-header-id hidden-xs hidden-sm",
+    "Total": "order-table-header-total",
     "Shipping": "order-table-header-shipping hidden-xs hidden-sm",
     "Status": "order-table-header-status",
     "": "order-table-header-control"
@@ -316,7 +316,7 @@ class OrderTable extends Component {
     }
 
     return (
-      <div>
+      <div className="order-details-table">
         {this.props.isOpen &&
           <OrderBulkActionsBar
             shipping={this.props.shipping}
