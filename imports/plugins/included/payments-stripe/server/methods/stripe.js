@@ -356,7 +356,7 @@ export const methods = {
    */
   "stripe/payment/capture": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    // let result;
+
     const captureDetails = {
       amount: formatForStripe(paymentMethod.amount)
     };

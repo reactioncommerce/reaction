@@ -2,6 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
+import { Packages } from "/lib/collections";
 import { StripeApi } from "./stripeapi";
 
 const stripeCaptureResult = {
@@ -78,10 +79,12 @@ describe("stripe/payment/capture", function () {
   });
 
   it("should call StripeApi.methods.captureCharge with the proper parameters and return saved = true", function (done) {
+    const stripePackage = Packages.findOne({ name: "reaction-stripe" });
+    const apiKey = stripePackage.settings.api_key;
     const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
-      paymentPackageId: "vrXutd72c2m7Lenqw",
+      paymentPackageId: stripePackage._id,
       paymentSettingsKey: "reaction-stripe",
       method: "credit",
       transactionId: "ch_17hZ4wBXXkbZQs3xL5JhlSgS",
@@ -93,7 +96,6 @@ describe("stripe/payment/capture", function () {
     sandbox.stub(StripeApi.methods, "captureCharge", function () {
       return stripeCaptureResult;
     });
-    // spyOn(StripeApi.methods.captureCharge, "call").and.returnValue(stripeCaptureResult);
 
     let captureResult = null;
     let captureError = null;
@@ -107,7 +109,8 @@ describe("stripe/payment/capture", function () {
         transactionId: paymentMethod.transactionId,
         captureDetails: {
           amount: 1999
-        }
+        },
+        apiKey: apiKey
       });
       done();
     });
