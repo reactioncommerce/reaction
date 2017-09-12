@@ -78,21 +78,21 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
             $filter: {
               input: "$items",
               as: "item",
-              cond: { $eq: ["$$item.shopId", "J8Bhq3uTtdgwZx3rz"] }
+              cond: { $eq: ["$$item.shopId", shopId] }
             }
           },
           billing: {
             $filter: {
               input: "$billing",
               as: "billing",
-              cond: { $eq: ["$$billing.shopId", "J8Bhq3uTtdgwZx3rz"] }
+              cond: { $eq: ["$$billing.shopId", shopId] }
             }
           },
           shipping: {
             $filter: {
               input: "$shipping",
               as: "shipping",
-              cond: { $eq: ["$$shipping.shopId", "J8Bhq3uTtdgwZx3rz"] }
+              cond: { $eq: ["$$shipping.shopId", shopId] }
             }
           },
           cartId: 1,
