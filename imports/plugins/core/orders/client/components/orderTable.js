@@ -338,7 +338,7 @@ class OrderTable extends Component {
           }
           publication="CustomPaginatedOrders"
           collection={Orders}
-          matchingResultsCount={this.props.orderCount}
+          matchingResultsCount={this.props.orderCount.toString()}
           query={this.props.query}
           columnMetadata={customColumnMetadata}
           externalLoadingComponent={Loading}

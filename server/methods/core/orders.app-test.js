@@ -1,4 +1,3 @@
-import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
@@ -76,10 +75,6 @@ describe("orders test", function () {
       this.userId = id;
       return methods[method].apply(this, arguments);
     });
-  }
-
-  function orderCreditMethod(orderData) {
-    return orderData.billing.filter(value => value.paymentMethod.method ===  "credit")[0];
   }
 
   describe("orders/cancelOrder", function () {

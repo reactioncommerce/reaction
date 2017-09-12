@@ -73,6 +73,7 @@ const OrderHelper =  {
 class OrderDashboardContainer extends Component {
   static propTypes = {
     handleMenuClick: PropTypes.func,
+    orderCount: PropTypes.number,
     orders: PropTypes.array
   }
 
@@ -738,8 +739,8 @@ class OrderDashboardContainer extends Component {
     return (
       <OrderDashboard
         handleSelect={this.handleSelect}
+        orderCount={this.props.orderCount}
         orders={this.state.orders}
-        orderCount={this.state.orderCount}
         query={this.state.query}
         filter={this.state.filter}
         className={this.state.className}

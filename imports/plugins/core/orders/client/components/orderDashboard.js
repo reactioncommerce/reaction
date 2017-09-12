@@ -59,7 +59,6 @@ class OrderDashboard extends Component {
   }
 
   render() {
-    console.log("props", this.props);
     return (
       <div>
         <OrderActions
