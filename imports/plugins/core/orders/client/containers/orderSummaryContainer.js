@@ -9,7 +9,13 @@ import { Card, CardHeader, CardBody, CardGroup } from "/imports/plugins/core/ui/
 import { Reaction, i18next } from "/client/api";
 import OrderSummary from "../components/orderSummary";
 
-// helper function to get appropriate shipping info
+/**
+ * getShippingInfo
+ *
+ * @summary get proper shipping object as per current active shop
+ * @param {Object} order - order object to check against
+ * @return {Object} proper shipping object to use
+ */
 function getShippingInfo(order) {
   return order.shipping.find(
     shipping => shipping.shopId === Reaction.getShopId()

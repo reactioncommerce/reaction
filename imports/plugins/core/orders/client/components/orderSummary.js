@@ -4,6 +4,32 @@ import moment from "moment";
 import { Reaction } from "/client/api";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
 
+/**
+ * getBillingInfo
+ *
+ * @summary get proper billing object as per current active shop
+ * @param {Object} order - order object to check against
+ * @return {Object} proper billing object to use
+ */
+function getBillingInfo(order) {
+  return order.billing.find(
+    billing => billing.shopId === Reaction.getShopId()
+  ) || {};
+}
+
+/**
+ * getShippingInfo
+ *
+ * @summary get proper shipping object as per current active shop
+ * @param {Object} order - order object to check against
+ * @return {Object} proper shipping object to use
+ */
+function getShippingInfo(order) {
+  return order.shipping.find(
+    shipping => shipping.shopId === Reaction.getShopId()
+  ) || {};
+}
+
 class OrderSummary extends Component {
   static propTypes = {
     dateFormat: PropTypes.func,
@@ -40,20 +66,6 @@ class OrderSummary extends Component {
     const shortId = orderId.slice(-5);
 
     return shortId;
-  }
-
-  // helper function to get appropriate billing info
-  getBillingInfo(order) {
-    return order.billing.find(
-      billing => billing.shopId === Reaction.getShopId()
-    ) || {};
-  }
-
-  // helper function to get appropriate shipping info
-  getShippingInfo(order) {
-    return order.shipping.find(
-      shipping => shipping.shopId === Reaction.getShopId()
-    ) || {};
   }
 
   render() {
@@ -101,28 +113,28 @@ class OrderSummary extends Component {
             <div className="order-summary-form-group">
               <strong data-i18n="order.processor">Processor</strong>
               <div className="invoice-details">
-                {this.getBillingInfo(order).paymentMethod.processor}
+                {getBillingInfo(order).paymentMethod.processor}
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="order.payment">Payment</strong>
               <div className="invoice-details">
-                {this.getBillingInfo(order).paymentMethod.storedCard} ({this.getBillingInfo(order).invoice.total})
+                {getBillingInfo(order).paymentMethod.storedCard} ({getBillingInfo(order).invoice.total})
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="order.transaction">Transaction</strong>
               <div className="invoice-details">
-                {this.getBillingInfo(order).paymentMethod.transactionId}
+                {getBillingInfo(order).paymentMethod.transactionId}
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="orderShipping.carrier">Carrier</strong>
               <div className="invoice-details">
-                {this.getShippingInfo(order).shipmentMethod.carrier} - {this.getShippingInfo(order).shipmentMethod.label}
+                {getShippingInfo(order).shipmentMethod.carrier} - {getShippingInfo(order).shipmentMethod.label}
               </div>
             </div>
 

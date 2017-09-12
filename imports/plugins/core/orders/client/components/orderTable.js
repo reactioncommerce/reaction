@@ -34,6 +34,32 @@ const classNames = {
   }
 };
 
+/**
+ * getBillingInfo
+ *
+ * @summary get proper billing object as per current active shop
+ * @param {Object} order - order object to check against
+ * @return {Object} proper billing object to use
+ */
+function getBillingInfo(order) {
+  return order.billing.find(
+    billing => billing.shopId === Reaction.getShopId()
+  ) || {};
+}
+
+/**
+ * getShippingInfo
+ *
+ * @summary get proper shipping object as per current active shop
+ * @param {Object} order - order object to check against
+ * @return {Object} proper shipping object to use
+ */
+function getShippingInfo(order) {
+  return order.shipping.find(
+    shipping => shipping.shopId === Reaction.getShopId()
+  ) || {};
+}
+
 class OrderTable extends Component {
   static propTypes = {
     displayMedia: PropTypes.func,
@@ -51,20 +77,6 @@ class OrderTable extends Component {
     setShippingStatus: PropTypes.func,
     shipping: PropTypes.object,
     toggleShippingFlowList: PropTypes.func
-  }
-
-  // helper function to get appropriate billing info
-  getBillingInfo(order) {
-    return order.billing.find(
-      billing => billing.shopId === Reaction.getShopId()
-    ) || {};
-  }
-
-  // helper function to get appropriate shipping info
-  getShippingInfo(order) {
-    return order.shipping.find(
-      shipping => shipping.shopId === Reaction.getShopId()
-    ) || {};
   }
 
   /**
@@ -125,7 +137,7 @@ class OrderTable extends Component {
           </span>
 
           <span className="order-data order-data-total">
-            <strong>Total: {formatPriceString(this.getBillingInfo(order).invoice.total)}</strong>
+            <strong>Total: {formatPriceString(getBillingInfo(order).invoice.total)}</strong>
           </span>
         </div>
 
@@ -159,17 +171,17 @@ class OrderTable extends Component {
           <Avatar
             email={order.email}
             round={true}
-            name={this.getShippingInfo(order).address.fullName}
+            name={getShippingInfo(order).address.fullName}
             size={30}
             className="rui-order-avatar"
           />
-          <strong>{this.getShippingInfo(order).address.fullName}</strong> | {emailAddress}
+          <strong>{getShippingInfo(order).address.fullName}</strong> | {emailAddress}
         </div>
         <div className="workflow-info">
           <Badge
             badgeSize="large"
-            i18nKeyLabel={`cartDrawer.${this.getShippingInfo(order).workflow.status}`}
-            label={this.getShippingInfo(order).workflow.status}
+            i18nKeyLabel={`cartDrawer.${getShippingInfo(order).workflow.status}`}
+            label={getShippingInfo(order).workflow.status}
             status="basic"
           />
           <Badge
@@ -215,7 +227,7 @@ class OrderTable extends Component {
       // Render order list column/row data
       const filteredFields = {
         "Name": {
-          accessor: row => this.getShippingInfo(row).address.fullName,
+          accessor: row => getShippingInfo(row).address.fullName,
           id: "shippingfullName"
         },
         "Email": {
@@ -231,11 +243,11 @@ class OrderTable extends Component {
           id: "_id"
         },
         "Total": {
-          accessor: row => this.getBillingInfo(row).invoice.total,
+          accessor: row => getBillingInfo(row).invoice.total,
           id: "billingTotal"
         },
         "Shipping": {
-          accessor: row => this.getShippingInfo(row).workflow.status,
+          accessor: row => getShippingInfo(row).workflow.status,
           id: "shippingStatus"
         },
         "Status": {
