@@ -155,8 +155,12 @@ export function buildOrderSearchRecord(orderId) {
   const user = Meteor.users.findOne(order.userId);
   const userEmails = [];
   if (user) {
-    for (const email of user.emails) {
-      userEmails.push(email.address);
+    if (user.emails.length) {
+      for (const email of user.emails) {
+        userEmails.push(email.address);
+      }
+    } else if (order.email) {
+      userEmails.push(order.email);
     }
   }
   const orderSearch = {};
