@@ -62,7 +62,7 @@ class OrderDashboard extends Component {
 
   render() {
     return (
-      <div>
+      <div className="orders-table-container">
         <OrderSearch
           handleChange={this.props.handleChange}
           searchQuery={this.props.searchQuery}
@@ -74,21 +74,23 @@ class OrderDashboard extends Component {
           className={this.props.className}
         />
         {this.state.orders.length ?
-          <div className="container-fluid-sm">
-            <div className="order-toggle-buttons">
-              <button
-                className={`order-toggle-btn ${this.state.detailClassName}`}
-                onClick={this.handleDetailToggle}
-              >
-                <i className="fa fa-th-list" />
-              </button>
+          <div className="container-fluid-sm order-details-list-container">
+            <div className="order-toggle-buttons-container">
+              <div className="order-toggle-buttons">
+                <button
+                  className={`order-toggle-btn ${this.state.detailClassName}`}
+                  onClick={this.handleDetailToggle}
+                >
+                  <i className="fa fa-th-list" />
+                </button>
 
-              <button
-                className={`order-toggle-btn ${this.state.listClassName}`}
-                onClick={this.handleListToggle}
-              >
-                <i className="fa fa-list" />
-              </button>
+                <button
+                  className={`order-toggle-btn ${this.state.listClassName}`}
+                  onClick={this.handleListToggle}
+                >
+                  <i className="fa fa-list" />
+                </button>
+              </div>
             </div>
 
             <div>
@@ -111,7 +113,7 @@ class OrderDashboard extends Component {
               />
             </div>
           </div> :
-          <div className="container-fluid-sm">
+          <div className="container-fluid-sm order-details-list-container">
             <div className="empty-view-message">
               <Icon icon="fa fa-sun-o" />
               <Translation defaultValue={"No orders found"} i18nKey={"order.ordersNotFound"} />
