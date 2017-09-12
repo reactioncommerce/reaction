@@ -876,7 +876,10 @@ function getCurrentUserName(currentUser) {
 
 function getDataForEmail(options) {
   const { shop, currentUserName, token, emailLogo, name } = options;
+  const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
+
   return {
+    primaryShop: primaryShop, // Primary shop data - may or may not be the same as shop
     shop: shop, // Shop Data
     contactEmail: _.get(shop, "emails[0].address"),
     homepage: Meteor.absoluteUrl(),
