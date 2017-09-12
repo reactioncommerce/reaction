@@ -4,7 +4,6 @@ import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
-import { ShippingMethod } from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
 /**
