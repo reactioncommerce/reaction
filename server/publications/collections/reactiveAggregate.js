@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import { Mongo, MongoInternals } from "meteor/mongo";
 
 
@@ -28,8 +29,19 @@ function wrapWithDb(mongoConn) {
   }
 }
 
-
+/**
+ * Create a Reactive collection from a Mongo aggregate pipeline
+ * @param {Object} sub - The publication we are creating
+ * @param {Collection} collection - the collection we are operating on
+ * @param {Array} pipeline - The mongo aggregation pipeline to run
+ * @param {Object} options - an object of options
+ * @returns {Cursor} A mongo cursor for subscription
+ * @constructor
+ */
 export function ReactiveAggregate(sub, collection, pipeline, options) {
+  check(pipeline, Array);
+  check(options, Match.Optional(Object));
+
   const defaultOptions = {
     observeSelector: {},
     observeOptions: {},
