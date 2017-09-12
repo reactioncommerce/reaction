@@ -7,7 +7,7 @@ class GridItemControls extends Component {
     checked: PropTypes.func,
     hasChanges: PropTypes.func,
     hasCreateProductPermission: PropTypes.func,
-    inValidVariant: PropTypes.array,
+    invalidVariant: PropTypes.array,
     product: PropTypes.object
   }
 
@@ -22,7 +22,7 @@ class GridItemControls extends Component {
   }
 
   renderVisibilityButton() {
-    if (this.props.inValidVariant.length) {
+    if (this.props.invalidVariant.length) {
       return (
         <div>
           <Components.IconButton

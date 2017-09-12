@@ -24,7 +24,7 @@ const wrapComponent = (Comp) => (
       this.validation = new Validation(ProductVariant);
 
       this.state = {
-        inValidVariant: []
+        invalidVariant: []
       };
 
       this.hasCreateProductPermission = this.hasCreateProductPermission.bind(this);
@@ -33,7 +33,7 @@ const wrapComponent = (Comp) => (
     }
 
     componentWillMount() {
-      this.checkLabelValidation();
+      this.variantValidation();
     }
 
     hasCreateProductPermission = () => {
@@ -48,20 +48,20 @@ const wrapComponent = (Comp) => (
       return this.props.isSelected === true;
     }
 
-    // checks whether the product variant has a Label
-    checkLabelValidation = () => {
+    // checks whether the product variant id valid
+    variantValidation = () => {
       const variants = ReactionProduct.getVariants(this.props.product._id);
       let validationStatus;
-      let inValidVariant;
+      let invalidVariant;
       if (variants) {
         validationStatus = variants.map((variant) => {
           return this.validation.validate(variant);
         });
 
-        inValidVariant = validationStatus.filter(status => status.isValid === false);
+        invalidVariant = validationStatus.filter(status => status.isValid === false);
       }
       this.setState({
-        inValidVariant
+        invalidVariant
       });
     }
 
@@ -72,7 +72,7 @@ const wrapComponent = (Comp) => (
           hasCreateProductPermission={this.hasCreateProductPermission}
           hasChanges={this.hasChanges}
           checked={this.checked}
-          inValidVariant={this.state.inValidVariant}
+          invalidVariant={this.state.invalidVariant}
         />
       );
     }
