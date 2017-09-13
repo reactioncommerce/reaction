@@ -28,6 +28,11 @@ function createShippingRecordByShop(cart, rates) {
   });
 }
 
+/**
+ * @summary if we have items in the cart, ensure that we only have shipping records for shops currently represented in the cart
+ * @param {Object} cart - The cart to operate on
+ * @returns {null} null
+ */
 function pruneShippingRecordsByShop(cart) {
   if (cart.items) {
     const cartId = cart._id;

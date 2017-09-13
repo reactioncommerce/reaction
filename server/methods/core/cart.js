@@ -924,7 +924,6 @@ Meteor.methods({
         needToUpdate = true;
       }
       if (cart.shipping && typeof cart.shipping[0].address === "object" && cart.shipping[0].address._id === addressId) {
-        // update.$unset["shipping.$.address"] = "";
         removeShippingAddresses(cart);
         isShippingDeleting = true;
       }
