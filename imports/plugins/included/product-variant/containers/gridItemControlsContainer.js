@@ -48,7 +48,7 @@ const wrapComponent = (Comp) => (
       return this.props.isSelected === true;
     }
 
-    // checks whether the product variant id valid
+    // checks whether the product variant is valid
     variantValidation = () => {
       const variants = ReactionProduct.getVariants(this.props.product._id);
       let validationStatus;
