@@ -28,6 +28,29 @@ function createShippingRecordByShop(cart, rates) {
   });
 }
 
+function pruneShippingRecordsByShop(cart) {
+  const cartId = cart._id;
+  const itemsByShop = cart.getItemsByShop();
+  const shops = Object.keys(itemsByShop);
+  if (shops.length > 0 && cart.items.length > 0) {
+    Cart.update({ _id: cartId },
+      {
+        $pull: {
+          shipping: { shopId: { $nin: shops } }
+        }
+      }
+    );
+  } else {
+    Cart.update({ _id: cartId },
+      {
+        $set: {
+          shipping: []
+        }
+      }
+    );
+  }
+}
+
 function updateShippingRecordByShop(cart, rates) {
   const cartId = cart._id;
   const itemsByShop = cart.getItemsByShop();
@@ -67,6 +90,7 @@ function updateShippingRecordByShop(cart, rates) {
       Logger.debug(`Success updating rates for cart ${cartId}`, rates);
     });
   });
+  pruneShippingRecordsByShop(cart);
 }
 /*
  * Reaction Shipping Methods
