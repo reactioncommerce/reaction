@@ -51,6 +51,35 @@ function pruneShippingRecordsByShop(cart) {
   }
 }
 
+/**
+ * @method - When adding shipping records, ensure that each record has an address
+ * @param cart - The Cart object we need to operate on
+ */
+function normalizeAddresses(cart) {
+  const shipping = cart.shipping;
+  const cartId = cart._id;
+  let address; // we can only have one address so whatever was the last assigned
+  shipping.map((shippingRecord) => {
+    if (shippingRecord.address) {
+      address = shippingRecord.address;
+    }
+  });
+  const shopIds = Object.keys(cart.getItemsByShop());
+  shopIds.map((shopId) => {
+    const selector = {
+      "_id": cartId,
+      "shipping.shopId": shopId
+    };
+
+    const update = {
+      $set: {
+        "shipping.$.address": address
+      }
+    };
+    Cart.update(selector, update);
+  });
+}
+
 function updateShippingRecordByShop(cart, rates) {
   const cartId = cart._id;
   const itemsByShop = cart.getItemsByShop();
@@ -64,7 +93,6 @@ function updateShippingRecordByShop(cart, rates) {
     };
     const shippingRecord = Cart.findOne(selector);
     // we may have added a new shop since the last time we did this, if so we need to add a new record
-
     if (shippingRecord) {
       update = {
         $set: {
@@ -91,6 +119,7 @@ function updateShippingRecordByShop(cart, rates) {
     });
   });
   pruneShippingRecordsByShop(cart);
+  normalizeAddresses(cart)
 }
 /*
  * Reaction Shipping Methods

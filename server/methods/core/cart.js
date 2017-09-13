@@ -84,6 +84,18 @@ function getSessionCarts(userId, sessionId, shopId) {
   return allowedCarts;
 }
 
+function removeShippingAddresses(cart) {
+  const cartShipping = cart.shipping;
+  cartShipping.map((sRecord) => {
+    delete sRecord.address;
+  });
+  Collections.Cart.update({
+    _id: cart._id
+  }, {
+    $set: { shipping: cartShipping }
+  });
+}
+
 /**
  * Reaction Cart Methods
  */
@@ -718,44 +730,28 @@ Meteor.methods({
       throw new Meteor.Error(404, "Cart not found",
         "Cart not found for user with such id");
     }
-
-    let selector;
-    let update;
-    const primaryShopId = Reaction.getPrimaryShopId();
     // temp hack until we build out multiple shipment handlers
-    // if we have an existing item update it, otherwise add to set.
-    if (Array.isArray(cart.shipping) && cart.shipping.length > 0) {
-      selector = {
+    // set the same address for every shipping record
+    const shopIds = Object.keys(cart.getItemsByShop());
+    shopIds.map((shopId) => {
+      const selector = {
         "_id": cartId,
-        "shipping._id": cart.shipping[0]._id
+        "shipping.shopId": shopId
       };
-      update = {
-        $set: {
-          "shipping.$.address": address,
-          "shopId": primaryShopId
-        }
-      };
-    } else {
-      selector = {
-        _id: cartId
-      };
-      update = {
-        $addToSet: {
-          shipping: {
-            address: address,
-            shopId: primaryShopId
-          }
-        }
-      };
-    }
 
-    // add / or set the shipping address
-    try {
-      Collections.Cart.update(selector, update);
-    } catch (e) {
-      Logger.error(e);
-      throw new Meteor.Error("An error occurred adding the address");
-    }
+      const update = {
+        $set: {
+          "shipping.$.address": address
+        }
+      };
+      try {
+        Collections.Cart.update(selector, update);
+      } catch (e) {
+        Logger.error(e);
+        throw new Meteor.Error("An error occurred adding the address");
+      }
+    });
+
 
     // refresh shipping quotes
     Meteor.call("shipping/updateShipmentQuotes", cartId);
@@ -836,7 +832,6 @@ Meteor.methods({
 
     return Collections.Cart.update(selector, update);
   },
-
   /**
    * cart/unsetAddresses
    * @description removes address from cart.
@@ -850,6 +845,7 @@ Meteor.methods({
    * object or `false` if we don't need to update cart
    */
   "cart/unsetAddresses": function (addressId, userId, type) {
+    console.log("running unset Addresses");
     check(addressId, String);
     check(userId, String);
     check(type, Match.Optional(String));
@@ -877,15 +873,13 @@ Meteor.methods({
       }
     } else { // or if we remove address itself, when we run this part we assume
       // that the billing/shipping arrays can hold only one element [0]
-      if (cart.billing && typeof cart.billing[0].address === "object" &&
-        cart.billing[0].address._id === addressId) {
+      if (cart.billing && typeof cart.billing[0].address === "object" && cart.billing[0].address._id === addressId) {
         update.$unset["billing.0.address"] = "";
         needToUpdate = true;
       }
-      if (cart.shipping && typeof cart.shipping[0].address === "object" &&
-        cart.shipping[0].address._id === addressId) {
-        update.$unset["shipping.0.address"] = "";
-        needToUpdate = true;
+      if (cart.shipping && typeof cart.shipping[0].address === "object" && cart.shipping[0].address._id === addressId) {
+        // update.$unset["shipping.$.address"] = "";
+        removeShippingAddresses(cart);
         isShippingDeleting = true;
       }
     }
