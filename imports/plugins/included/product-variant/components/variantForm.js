@@ -162,17 +162,17 @@ class VariantForm extends Component {
     is the same as `handleCheckboxChange`.
     */
 
-    const reverseValue = !value;
+    const inverseValue = !value;
 
     this.setState(({ variant }) => ({
       variant: {
         ...variant,
-        [field]: reverseValue
+        [field]: inverseValue
       }
     }));
 
 
-    this.handleFieldBlur(event, reverseValue, field);
+    this.handleFieldBlur(event, inverseValue, field);
   }
 
   handleCardExpand = (event, card, cardName, isExpanded) => {
