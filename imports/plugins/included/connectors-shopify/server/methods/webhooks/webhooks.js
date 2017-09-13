@@ -18,13 +18,13 @@ export const methods = {
    * Meteor method for creating a shopify webhook for the active shop
    * See: https://help.shopify.com/api/reference/webhook for list of valid topics
    * @async
-   * @method connectors/shopify/createWebhook
+   * @method connectors/shopify/webhooks/create
    * @param {Object} options Options object
    * @param {string} options.topic - the shopify topic to subscribe to
    * @param {string} [options.absoluteUrl] - Url to send webhook requests - should only be used in development mode
    * @return {void}
    */
-  async "connectors/shopify/createWebhook"(options) {
+  async "connectors/shopify/webhooks/create"(options) {
     check(options, Object);
 
     // Check for permissions

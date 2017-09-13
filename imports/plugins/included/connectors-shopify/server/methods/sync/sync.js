@@ -41,7 +41,7 @@ export const methods = {
     const topics = Object.keys(integrationsByTopic);
     topics.forEach((topic) => {
       Logger.info(`Setting up shopify webhook ${topic} for ${integrationsByTopic[topic]}`);
-      Meteor.call("connectors/shopify/createWebhook", {
+      Meteor.call("connectors/shopify/webhooks/create", {
         topic: topic,
         integrations: integrationsByTopic[topic]
       });
