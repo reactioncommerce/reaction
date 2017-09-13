@@ -15,7 +15,7 @@ export const methods = {
    *                                topic:method - e.g. orders/create:updateInventory
    *                                The top will be used to subscribe to a webhook and each integration will be stored
    *                                in the integrations array within the shopify webhooks settings
-   *  @returns {void}
+   *  @returns {undefined}
    */
   "connectors/shopify/sync/setup"(integrations) {
     check(integrations, [String]);
@@ -52,7 +52,7 @@ export const methods = {
    * May be used in the future to do some checks before deleting
    * or to be a way to selectively delete webhooks.
    * @method connectors/shopify/sync/teardown
-   * @returns {void}
+   * @returns {undefined}
    */
   "connectors/shopify/sync/teardown"() {
     // Check for permissions

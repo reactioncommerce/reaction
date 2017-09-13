@@ -19,10 +19,10 @@ export const methods = {
    * See: https://help.shopify.com/api/reference/webhook for list of valid topics
    * @async
    * @method connectors/shopify/webhooks/create
-   * @param {Object} options Options object
+   * @param {object} options options object
    * @param {string} options.topic - the shopify topic to subscribe to
    * @param {string} [options.absoluteUrl] - Url to send webhook requests - should only be used in development mode
-   * @return {void}
+   * @return {undefined}
    */
   async "connectors/shopify/webhooks/create"(options) {
     check(options, Object);

@@ -8,9 +8,9 @@ import { Reaction } from "/server/api";
  * verifies that the request coming from a webhook is from the connected Shopify shop
  * We varify by hashing the body of the request with the shared secret
  * and comparing it with the sha256 hash that is sent as a header
- * @method verifyWebhook
  * @private
- * @param  {Object} req request object that comes in with POST request
+ * @method verifyWebhook
+ * @param  {object} req request object that comes in with POST request
  * @return {boolean} true if webhook is verifiable, false otherwise
  */
 function verifyWebhook(req) {

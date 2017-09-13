@@ -14,8 +14,8 @@ import { connectorsRoles } from "../../lib/roles";
  * Given a list of variants in an ancestor chain, finds the bottommost variant
  * @private
  * @method findBottomVariant
- * @param  {[Object]} variants Array of variant objects
- * @return {Object} Bottommost variant object
+ * @param  {[object]} variants Array of variant objects
+ * @return {object} Bottommost variant object
  */
 function findBottomVariant(variants) {
   return variants.reduce((bottomVariant, variant) => {
@@ -36,8 +36,8 @@ export const methods = {
    * Given an array of line items from a Shopify order, this method updates the inventory quantity for all variants
    * in the Reaction store which have a matching shopifyId to the line items in the order
    * @method connectors/shopify/sync/orders/created
-   * @param {[Object]} lineItems array of line items from a Shopify order
-   * @returns {void}
+   * @param {[object]} lineItems array of line items from a Shopify order
+   * @returns {undefined}
    */
   "connectors/shopify/sync/orders/created": (lineItems) => {
     check(lineItems, [Object]);

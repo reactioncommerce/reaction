@@ -21,8 +21,11 @@ import { connectorsRoles } from "../../lib/roles";
  * Transforms a Shopify product into a Reaction product.
  * @private
  * @method createReactionProductFromShopifyProduct
- * @param  {object} options { shopifyProduct, shopId, hashtags }
- * @return {[type]} An object that fits the `Product` schema
+ * @param  {object} options Options object
+ * @param  {object} options.shopifyProduct the Shopify product object
+ * @param  {string} options.shopId The shopId we're importing for
+ * @param  {[string]} options.hashtags An array of hashtags that should be attached to this product.
+ * @return {object} An object that fits the `Product` schema
  *
  * @todo consider abstracting private Shopify import helpers into a helpers file
  */
@@ -74,7 +77,7 @@ function createReactionProductFromShopifyProduct(options) {
  * @private
  * @method createReactionVariantFromShopifyVariant
  * @param  {object} options { shopifyVariant, variant, index, ancestors, shopId }
- * @return {[type]} An object that fits the `ProductVariant` schema
+ * @return {object} An object that fits the `ProductVariant` schema
  */
 function createReactionVariantFromShopifyVariant(options) {
   const { shopifyVariant, variant, index, ancestors, shopId } = options;
@@ -126,9 +129,9 @@ function createReactionVariantFromShopifyVariant(options) {
  * Finds the images associated with a particular shopify variant
  * @private
  * @method findVariantImages
- * @param  {Number} shopifyVariantId The variant `id` from shopify
- * @param  {Array} images An array of images from a Shopify product
- * @return {Array} Returns an array of images that match the passed shopifyVariantId
+ * @param  {number} shopifyVariantId The variant `id` from shopify
+ * @param  {[object]} images An array of image objects from a Shopify product
+ * @return {[object]} Returns an array of image objects that match the passed shopifyVariantId
  */
 function findVariantImages(shopifyVariantId, images) {
   return images.filter((imageObj) => {
@@ -140,9 +143,9 @@ function findVariantImages(shopifyVariantId, images) {
  * Finds the images associated with a particular shopify variant
  * @method findProductImages
  * @private
- * @param  {Number} shopifyProductId The product `id` from shopify
- * @param  {Array} images An array of images from a Shopify product
- * @return {Array} Returns an array of images that match the passed shopifyProductId
+ * @param  {number} shopifyProductId The product `id` from shopify
+ * @param  {[object]} images An array of image objects from a Shopify product
+ * @return {[object]} Returns an array of image objects that match the passed shopifyProductId
  */
 function findProductImages(shopifyProductId, images) {
   return images.filter((imageObj) => imageObj.product_id === shopifyProductId);
@@ -191,10 +194,9 @@ function getShopifyVariantsAndOptions(shopifyProduct) {
  * @method normalizeWeight
  * @param  {number} weight weight of the product in grams
  * @return {number} weight of the product in the shop's default unitsOfMeasure
+ * @todo get store unitsOfMeasure, convert to store unitsOfMeasure from grams, return converted weight
  */
 function normalizeWeight(weight) {
-  // TODO: get store unitsOfMeasure
-  // convert weight in grams to store unitsOfMeasure
   return weight;
 }
 
@@ -205,7 +207,7 @@ function normalizeWeight(weight) {
  * @method saveImage
  * @param  {string}  url url of the image to save
  * @param  {object}  metadata metadata to save with the image
- * @return {void}
+ * @return {undefined}
  */
 function saveImage(url, metadata) {
   const fileObj = new FS.File();
@@ -223,7 +225,7 @@ export const methods = {
    * @async
    * @method connectors/shopify/import/products
    * @param {object} options An object of options for the shopify API call. Available options here: https://help.shopify.com/api/reference/product#index
-   * @returns {array} An array of the Reaction product _ids (including variants and options) that were created.
+   * @returns {[string]} An array of the Reaction product _ids (including variants and options) that were created.
    */
   async "connectors/shopify/import/products"(options) {
     check(options, Match.Maybe(Object));
