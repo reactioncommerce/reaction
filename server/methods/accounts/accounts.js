@@ -580,7 +580,7 @@ export function inviteShopOwner(options) {
 
   Reaction.Email.send({
     to: email,
-    from: `${shop.name} <${_.get(shop, "emails[0].address")}>`,
+    from: `${_.get(dataForEmail, "primaryShop.name")} <${_.get(dataForEmail, "primaryShop.emails[0].address")}>`,
     subject: SSR.render(subject, dataForEmail),
     html: SSR.render(tpl, dataForEmail)
   });
