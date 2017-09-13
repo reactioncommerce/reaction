@@ -6,6 +6,7 @@ import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Roles } from "meteor/alanning:roles";
 import ManageGroups from "/imports/plugins/core/accounts/client/components/manageGroups";
+import { Components } from "@reactioncommerce/reaction-components";
 
 const getPermissionMap = (permissions) => {
   const permissionMap = {};
@@ -140,6 +141,12 @@ Template.memberSettings.helpers({
     return {
       component: ManageGroups,
       ...Template.currentData()
+    };
+  },
+
+  ReactionAvatar() {
+    return {
+      component: Components.ReactionAvatar
     };
   }
 });
