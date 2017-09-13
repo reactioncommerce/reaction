@@ -732,26 +732,73 @@ Meteor.methods({
     }
     // temp hack until we build out multiple shipment handlers
     // set the same address for every shipping record
-    const shopIds = Object.keys(cart.getItemsByShop());
-    shopIds.map((shopId) => {
-      const selector = {
-        "_id": cartId,
-        "shipping.shopId": shopId
-      };
+    let selector;
+    let update;
+    if (cart.shipping && cart.shipping.length > 0) {
+      const shopIds = Object.keys(cart.getItemsByShop());
+      shopIds.map((shopId) => {
+        selector = {
+          "_id": cartId,
+          "shipping.shopId": shopId
+        };
 
-      const update = {
-        $set: {
-          "shipping.$.address": address
-        }
-      };
+        update = {
+          $set: {
+            "shipping.$.address": address
+          }
+        };
+      });
       try {
         Collections.Cart.update(selector, update);
       } catch (e) {
         Logger.error(e);
         throw new Meteor.Error("An error occurred adding the address");
       }
-    });
+    } else {
+      // if no items in cart just add one record for the carts shop
+      if (!cart.items) {
+        selector = {
+          _id: cartId
+        };
+        update = {
+          $push: {
+            shipping: {
+              address: address,
+              shopId: cart.shopId
+            }
+          }
+        };
 
+        try {
+          Collections.Cart.update(selector, update);
+        } catch (e) {
+          Logger.error(e);
+          throw new Meteor.Error("An error occurred adding the address");
+        }
+      } else {
+        // if we have items in the cart, add a record for each shop that's represented in the items
+        const shopIds = Object.keys(cart.getItemsByShop());
+        shopIds.map((shopId) => {
+          selector = {
+            _id: cartId
+          };
+          update = {
+            $addToSet: {
+              shipping: {
+                address: address,
+                shopId: shopId
+              }
+            }
+          };
+          try {
+            Collections.Cart.update(selector, update);
+          } catch (e) {
+            Logger.error(e);
+            throw new Meteor.Error("An error occurred adding the address");
+          }
+        });
+      }
+    }
 
     // refresh shipping quotes
     Meteor.call("shipping/updateShipmentQuotes", cartId);
@@ -845,7 +892,6 @@ Meteor.methods({
    * object or `false` if we don't need to update cart
    */
   "cart/unsetAddresses": function (addressId, userId, type) {
-    console.log("running unset Addresses");
     check(addressId, String);
     check(userId, String);
     check(type, Match.Optional(String));

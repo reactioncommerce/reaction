@@ -29,31 +29,34 @@ function createShippingRecordByShop(cart, rates) {
 }
 
 function pruneShippingRecordsByShop(cart) {
-  const cartId = cart._id;
-  const itemsByShop = cart.getItemsByShop();
-  const shops = Object.keys(itemsByShop);
-  if (shops.length > 0 && cart.items.length > 0) {
-    Cart.update({ _id: cartId },
-      {
-        $pull: {
-          shipping: { shopId: { $nin: shops } }
+  if (cart.items) {
+    const cartId = cart._id;
+    const itemsByShop = cart.getItemsByShop();
+    const shops = Object.keys(itemsByShop);
+    if (shops.length > 0 && cart.items.length > 0) {
+      Cart.update({ _id: cartId },
+        {
+          $pull: {
+            shipping: { shopId: { $nin: shops } }
+          }
         }
-      }
-    );
-  } else {
-    Cart.update({ _id: cartId },
-      {
-        $set: {
-          shipping: []
+      );
+    } else {
+      Cart.update({ _id: cartId },
+        {
+          $set: {
+            shipping: []
+          }
         }
-      }
-    );
+      );
+    }
   }
 }
 
 /**
- * @method - When adding shipping records, ensure that each record has an address
- * @param cart - The Cart object we need to operate on
+ * @summary - When adding shipping records, ensure that each record has an address
+ * @param {Object} cart - The Cart object we need to operate on
+ * @returns {null} null
  */
 function normalizeAddresses(cart) {
   const shipping = cart.shipping;
@@ -119,7 +122,7 @@ function updateShippingRecordByShop(cart, rates) {
     });
   });
   pruneShippingRecordsByShop(cart);
-  normalizeAddresses(cart)
+  normalizeAddresses(cart);
 }
 /*
  * Reaction Shipping Methods
