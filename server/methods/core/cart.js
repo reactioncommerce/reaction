@@ -4,7 +4,6 @@ import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
-import { ShippingMethod } from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
 /**
@@ -568,7 +567,7 @@ Meteor.methods({
    */
   "cart/setShipmentMethod": function (cartId, method) {
     check(cartId, String);
-    check(method, ShippingMethod);
+    check(method, Object);
     // get current cart
     const cart = Collections.Cart.findOne({
       _id: cartId,
