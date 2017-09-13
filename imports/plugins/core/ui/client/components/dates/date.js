@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from "react-dates";
+import { DateRangePicker } from "react-dates";
 import moment from "moment";
 
 
@@ -12,7 +12,7 @@ class Dates extends Component {
       startDate: moment(),
       endDate: moment("2017-10-1"),
       focusedInput: null
-    }
+    };
   }
 
   render() {
@@ -23,23 +23,18 @@ class Dates extends Component {
         onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
         focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
         onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+        numberOfMonths={this.props.numberOfMonths}
       />
     );
   }
 }
 
 Dates.defaultProps = {
-  checked: false
+  numberOfMonths: 1
 };
 
 Dates.propTypes = {
-  checked: PropTypes.bool,
-  className: PropTypes.string,
-  i18nKeyLabel: PropTypes.string,
-  label: PropTypes.string,
-  name: PropTypes.string,
-  onChange: PropTypes.func,
-  onMouseOut: PropTypes.func
+  numberOfMonths: PropTypes.number
 };
 
 registerComponent("Dates", Dates);
