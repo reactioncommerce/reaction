@@ -153,8 +153,15 @@ StripeApi.methods.listRefunds = new ValidatedMethod({
     } else {
       stripe = require("stripe")(apiKey);
     }
-    const refundListPromise = stripe.refunds.list({ charge: transactionId });
-    const refundListResults = Promise.await(refundListPromise);
-    return refundListResults;
+
+    // this is just temporary workaround until we make refunds Stripe connect aware
+    try {
+      const refundListPromise = stripe.refunds.list({ charge: transactionId });
+      const refundListResults = Promise.await(refundListPromise);
+      return refundListResults;
+    } catch (error) {
+      Logger.error("Stripe refund error");
+      return [];
+    }
   }
 });
