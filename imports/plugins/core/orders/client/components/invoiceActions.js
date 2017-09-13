@@ -84,26 +84,23 @@ class InvoiceActions extends Component {
       <div>
         {this.props.hasRefundingEnabled &&
           <div className="flex refund-container">
-            <div className="form-group order-summary-form-group">
-              <div className="invoice-details">
-                <Components.NumericInput
-                  numericType="currency"
-                  value={this.state.value}
-                  maxValue={adjustedTotal}
-                  format={this.props.currency}
-                  classNames={{
-                    input: {
-                      amount: true
-                    }
-                  }}
-                  onChange={(event, data)=>{
-                    this.setState({
-                      value: data.numberValue
-                    });
-                  }}
-                />
-              </div>
-
+            <div className="refund-input">
+              <Components.NumericInput
+                numericType="currency"
+                value={this.state.value}
+                maxValue={adjustedTotal}
+                format={this.props.currency}
+                classNames={{
+                  input: {
+                    amount: true
+                  }
+                }}
+                onChange={(event, data)=>{
+                  this.setState({
+                    value: data.numberValue
+                  });
+                }}
+              />
             </div>
 
             <Components.Button
@@ -128,16 +125,18 @@ class InvoiceActions extends Component {
         }
 
         {this.props.showAfterPaymentCaptured &&
-          <Components.Button
-            className="btn btn-danger"
-            bezelStyle="solid"
-            type="button"
-            data-event-action="cancelOrder"
-            style={{ marginBottom: 10 }}
-            data-i18n="order.cancelOrderLabel"
-          >
-            Cancel Order
-          </Components.Button>
+          <div className="cancel-order-btn">
+            <Components.Button
+              className="btn btn-danger"
+              bezelStyle="solid"
+              type="button"
+              data-event-action="cancelOrder"
+              style={{ marginBottom: 10 }}
+              data-i18n="order.cancelOrderLabel"
+            >
+              Cancel Order
+            </Components.Button>
+          </div>
         }
 
         <a
