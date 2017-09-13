@@ -1,7 +1,6 @@
 /* eslint camelcase: 0 */
 import _ from "lodash";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
-import { Meteor } from "meteor/meteor";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Logger } from "/server/api";
 
