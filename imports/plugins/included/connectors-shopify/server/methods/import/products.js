@@ -137,6 +137,19 @@ function findVariantImages(shopifyVariantId, images) {
 }
 
 /**
+ * Finds the images associated with a particular shopify variant
+ * @method findProductImages
+ * @private
+ * @param  {Number} shopifyProductId The product `id` from shopify
+ * @param  {Array} images An array of images from a Shopify product
+ * @return {Array} Returns an array of images that match the passed shopifyProductId
+ */
+function findProductImages(shopifyProductId, images) {
+  return images.filter((imageObj) => imageObj.product_id === shopifyProductId);
+}
+
+
+/**
  * Finds and returns arrays of option values for each of Shopify's option layers
  * returns an object consisting of the following three values:
  * shopifyVariants representing the first option on the shopify product (`option1` in the variant)
@@ -291,6 +304,7 @@ export const methods = {
             const reactionProductId = Products.insert(reactionProduct, { selector: { type: "simple" }, publish: true });
             ids.push(reactionProductId);
 
+            // Save the primary image to the grid and as priority 0
             saveImage(shopifyProduct.image.src, {
               ownerId: Meteor.userId(),
               productId: reactionProductId,
@@ -299,6 +313,22 @@ export const methods = {
               priority: 0,
               toGrid: 1
             });
+
+            // Save all remaining product images to product
+            const productImages = findProductImages(shopifyProduct.id, shopifyProduct.images);
+            for (const productImage of productImages) {
+              if (shopifyProduct.image.id !== productImage.id) {
+                saveImage(productImage.src, {
+                  ownerId: Meteor.userId(),
+                  productId: reactionProductId,
+                  variantId: reactionProductId,
+                  shopId: shopId,
+                  priority: (shopifyProduct.position), // Shopify index positions starting at 1.
+                  toGrid: 0
+                });
+              }
+            }
+
 
             // If variantLabel exists, we have at least one variant
             if (shopifyVariants) {
