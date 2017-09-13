@@ -297,13 +297,13 @@ export const methods = {
           stripeCharge.source = token.id;
 
           // Get the set application fee from the dashboard
-          const appFee = stripePkg.settings.applicationFee || 0;
-          const percentAppFee = appFee / 100; // Convert whole number app fee to percentage
-
           // TODO: MethodHook for complex application fee here.
+          const dashboardAppFee = stripePkg.settings.applicationFee || 0;
+          const percentAppFee = dashboardAppFee / 100; // Convert whole number app fee to percentage
+          const applicationFee = formatForStripe(cartTotals[shopId] * percentAppFee);
 
           // eslint-disable-next-line camelcase
-          stripeCharge.application_fee = formatForStripe(cartTotals[shopId] * percentAppFee);
+          stripeCharge.application_fee = applicationFee;
         }
 
         // We should only do this once per shop per cart
