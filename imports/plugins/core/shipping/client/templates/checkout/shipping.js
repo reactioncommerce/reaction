@@ -1,8 +1,19 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { EJSON } from "meteor/ejson";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
+
+function uniqObjects(methods) {
+  const jsonBlobs = methods.map((method) => {
+    return JSON.stringify(method);
+  });
+  const uniqueBlobs = _.uniq(jsonBlobs);
+  return uniqueBlobs.map((blob) => {
+    return EJSON.parse(blob);
+  });
+}
 
 // cartShippingQuotes
 // returns multiple methods
@@ -20,7 +31,7 @@ function cartShippingQuotes(currentCart) {
       }
     }
   }
-  return shipmentQuotes;
+  return uniqObjects(shipmentQuotes);
 }
 // cartShipmentMethods to get current shipment method
 // this returns multiple methods, if more than one carrier
