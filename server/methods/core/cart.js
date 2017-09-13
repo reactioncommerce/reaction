@@ -487,15 +487,8 @@ Meteor.methods({
       throw new Meteor.Error("cart-item-not-found", "Unable to find an item with such id in cart.");
     }
 
-    // refresh shipping quotes
-    Meteor.call("shipping/updateShipmentQuotes", cart._id);
-    // revert workflow to checkout shipping step.
-    Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
-    // reset selected shipment method
-    Meteor.call("cart/resetShipmentMethod", cart._id);
-
     if (!quantity || quantity >= cartItem.quantity) {
-      return Collections.Cart.update({
+      const cartResult = Collections.Cart.update({
         _id: cart._id
       }, {
         $pull: {
@@ -508,18 +501,28 @@ Meteor.methods({
       }, (error, result) => {
         if (error) {
           Logger.error(error);
-          Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(),
-            "error removing from cart");
+          Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(), "error removing from cart");
           return error;
         }
         Logger.debug(`cart: deleted cart item variant id ${cartItem.variants._id}`);
         return result;
       });
+      // TODO: HACK: When calling update shipping the changes to the cart have not taken place yet
+      // But calling this findOne seems to force this record to update. Extra weird since we aren't
+      // passing the Cart but just the cartId and regrabbing it so you would think that would work but it does not
+      Collections.Cart.findOne(cart._id);
+      // refresh shipping quotes
+      Meteor.call("shipping/updateShipmentQuotes", cart._id);
+      // revert workflow
+      Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+      // reset selected shipment method
+      Meteor.call("cart/resetShipmentMethod", cart._id);
+      return cartResult;
     }
 
     // if quantity lets convert to negative and increment
     const removeQuantity = Math.abs(quantity) * -1;
-    return Collections.Cart.update({
+    const cartResult = Collections.Cart.update({
       "_id": cart._id,
       "items._id": cartItem._id
     }, {
@@ -536,6 +539,13 @@ Meteor.methods({
       Logger.debug(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);
       return result;
     });
+    // refresh shipping quotes
+    Meteor.call("shipping/updateShipmentQuotes", cart._id);
+    // revert workflow
+    Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+    // reset selected shipment method
+    Meteor.call("cart/resetShipmentMethod", cart._id);
+    return cartResult;
   },
   /**
    * cart/setShipmentMethod
