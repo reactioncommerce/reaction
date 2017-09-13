@@ -176,12 +176,17 @@ export function buildOrderSearchRecord(orderId) {
     billing => billing.shopId === Reaction.getShopId()
   ) || {};
 
+  // get the shipping object for the current shop on the order (and not hardcoded [0])
+  const shopShipping = order.shipping.find(
+    shipping => shipping.shopId === Reaction.getShopId()
+  ) || {};
+
   orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
   orderSearch.billingPhone = _.replace(shopBilling.address && shopBilling.address.phone, /\D/g, "");
-  // TODO: All the order.shipping[0] references below needs to be updated when we update shipping to contain
+  // TODO: All the shopShipping references below needs to be updated when we update shipping to contain
   // shopId proper multi-shop scenario..... similar to what we have for shopBilling
-  orderSearch.shippingName = order.shipping[0].address.fullName;
-  orderSearch.shippingPhone = _.replace(order.shipping[0].address.phone, /\D/g, "");
+  orderSearch.shippingName = shopShipping.address.fullName;
+  orderSearch.shippingPhone = _.replace(shopShipping.address.phone, /\D/g, "");
   orderSearch.billingAddress = {
     address: shopBilling.address && shopBilling.address.address1,
     postal: shopBilling.address && shopBilling.address.postal,
@@ -190,11 +195,11 @@ export function buildOrderSearchRecord(orderId) {
     country: shopBilling.address && shopBilling.address.country
   };
   orderSearch.shippingAddress = {
-    address: order.shipping[0].address.address1,
-    postal: order.shipping[0].address.postal,
-    city: order.shipping[0].address.city,
-    region: order.shipping[0].address.region,
-    country: order.shipping[0].address.country
+    address: shopShipping.address.address1,
+    postal: shopShipping.address.postal,
+    city: shopShipping.address.city,
+    region: shopShipping.address.region,
+    country: shopShipping.address.country
   };
   orderSearch.userEmails = userEmails;
   orderSearch.orderTotal = shopBilling.invoice && shopBilling.invoice.total;
@@ -202,9 +207,9 @@ export function buildOrderSearchRecord(orderId) {
   orderSearch.billingStatus = shopBilling.paymentMethod && shopBilling.paymentMethod.status;
   orderSearch.billingCard = shopBilling.paymentMethod && shopBilling.paymentMethod.storedCard;
   orderSearch.currentWorkflowStatus = order.workflow.status;
-  if (order.shipping[0].shipped) {
+  if (shopShipping.shipped) {
     orderSearch.shippingStatus = "Shipped";
-  } else if (order.shipping[0].packed) {
+  } else if (shopShipping.packed) {
     orderSearch.shippingStatus = "Packed";
   } else {
     orderSearch.shippingStatus = "New";
