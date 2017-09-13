@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
 import { Button, DropDownMenu, MenuItem } from "@reactioncommerce/reaction-ui";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class OrderActions extends Component {
   static propTypes = {
@@ -90,9 +91,7 @@ class OrderActions extends Component {
           <div className="order-filter-label">
             <span className="order-filter-name"> This Week </span>
             <div className="order-filter-icons">
-              <Button className="order-filter-button">
-                <i className="fa fa-filter" />
-              </Button>
+              <Components.Dates/>>
               {this.buttonElement()}
             </div>
           </div>
