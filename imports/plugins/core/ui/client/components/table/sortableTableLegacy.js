@@ -4,13 +4,14 @@ import { TacoTable } from "react-taco-table";
 
 class SortableTableLegacy extends Component {
   render() {
-    const { data, columns } = this.props;
+    const { data, columns, onRowClick } = this.props;
 
     return (
       <TacoTable
         className="table sortable-table"
         columns={columns}
         data={data}
+        onRowClick={onRowClick}
       />
     );
   }
@@ -18,7 +19,8 @@ class SortableTableLegacy extends Component {
 
 SortableTableLegacy.propTypes = {
   columns: PropTypes.array,
-  data: PropTypes.array
+  data: PropTypes.array,
+  onRowClick: PropTypes.func
 };
 
 export default SortableTableLegacy;
