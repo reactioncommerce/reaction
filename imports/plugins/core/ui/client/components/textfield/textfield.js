@@ -180,7 +180,7 @@ class TextField extends Component {
     if (helpText) {
       return (
         <span className="help-block">
-          <Components.Translation defaultValue={this.props.helpText} i18nKey={i18nKey} />
+          <Components.Translation defaultValue={helpText} i18nKey={i18nKey} />
         </span>
       );
     }
