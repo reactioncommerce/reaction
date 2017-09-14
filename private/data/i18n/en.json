@@ -92,8 +92,7 @@
         "addBarcode": "Add Barcode",
         "quantity": "Quantity",
         "quantityGreaterThanZero": "Error: Quantity must be greater than zero",
-        "dropFiles": "Drop files to upload",
-        "variantValidation": "Fill the Label option in order to publish product successfully"
+        "dropFiles": "Drop files to upload"
       },
       "productDetailEdit": {
         "title": "Title",

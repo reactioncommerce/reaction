@@ -12,8 +12,6 @@ import { Tags, Media, Cart } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
-import { ProductVariant } from "/lib/collections/schemas/products";
-import { Validation } from "@reactioncommerce/reaction-collections";
 
 const wrapComponent = (Comp) => (
   class ProductDetailContainer extends Component {
@@ -26,7 +24,6 @@ const wrapComponent = (Comp) => (
     constructor(props) {
       super(props);
 
-      this.validation = new Validation(ProductVariant);
 
       this.animationTimeOut = null;
       this.textTimeOut = null;
@@ -35,24 +32,6 @@ const wrapComponent = (Comp) => (
         cartQuantity: 1,
         click: 0
       };
-    }
-
-      componentDidMount = () => {
-        this.variantValidation();
-      }
-
-    // Alert when variant is not valid
-    variantValidation = () => {
-      const currentVariant = ReactionProduct.selectedVariant();
-      const validationStatus = this.validation.validate(currentVariant);
-      if (validationStatus.isValid === false) {
-        Alerts.inline("Fill the Label option in order to publish product successfully", "error", {
-          placement: "productDetail",
-          i18nKey: "productDetail.variantValidation",
-          autoHide: 10000
-        });
-      }
-      return [];
     }
 
     handleCartQuantityChange = (event, quantity) => {
