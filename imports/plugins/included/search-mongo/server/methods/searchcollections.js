@@ -153,14 +153,16 @@ export function ensureProductSearchIndex() {
 export function buildOrderSearchRecord(orderId) {
   const order = Orders.findOne(orderId);
   const user = Meteor.users.findOne(order.userId);
+  const anonymousUserEmail = order.email;
+
   const userEmails = [];
-  if (user) {
-    if (user.emails.length) {
-      for (const email of user.emails) {
-        userEmails.push(email.address);
-      }
-    } else if (order.email) {
-      userEmails.push(order.email);
+  if (user && user.emails.length) {
+    for (const email of user.emails) {
+      userEmails.push(email.address);
+    }
+  } else {
+    if (anonymousUserEmail) {
+      userEmails.push(anonymousUserEmail);
     }
   }
   const orderSearch = {};

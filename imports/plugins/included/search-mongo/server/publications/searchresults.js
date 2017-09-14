@@ -76,11 +76,11 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
           $options: "i"
         } },
         { billingPhone: {
-          $regex: searchPhone,
+          $regex: "^" + searchPhone + "$",
           $options: "i"
         } },
         { shippingPhone: {
-          $regex: searchPhone,
+          $regex: "^" + searchPhone + "$",
           $options: "i"
         } },
         { "product.title": {
