@@ -89,7 +89,7 @@ CalendarPicker.defaultProps = {
   onOutsideClick() {},
   keepOpenOnDateSelect: false,
   renderCalendarInfo: null,
-  isRTL: true,
+  isRTL: false,
 
   // navigation related props
   navPrev: null,
