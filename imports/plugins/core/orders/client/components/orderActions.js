@@ -89,7 +89,7 @@ class OrderActions extends Component {
         </div>
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span className="order-filter-name"> This Week </span>
+            <span className="order-filter-name"> Date range </span>
             <div className="order-filter-icons">
               <Button
                 className={filterClassName}
