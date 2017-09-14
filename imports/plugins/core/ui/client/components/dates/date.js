@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import { DateRangePicker } from "react-dates";
+import { DayPickerRangeController } from "react-dates";
 import moment from "moment";
 
 
@@ -17,7 +17,7 @@ class Dates extends Component {
 
   render() {
     return (
-      <DateRangePicker
+      <DayPickerRangeController
         startDate={this.state.startDate} // momentPropTypes.momentObj or null,
         endDate={this.state.endDate} // momentPropTypes.momentObj or null,
         onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,

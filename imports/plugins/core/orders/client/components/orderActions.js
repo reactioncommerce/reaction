@@ -91,8 +91,22 @@ class OrderActions extends Component {
           <div className="order-filter-label">
             <span className="order-filter-name"> This Week </span>
             <div className="order-filter-icons">
-              <Components.Dates/>>
-              {this.buttonElement()}
+              <Button
+                className={filterClassName}
+                onClick={this.props.clearFilter}
+              >
+                <i className="fa fa-filter" />
+              </Button>
+              <DropDownMenu
+                buttonElement={this.buttonElement()}
+                menuClassName="calender-dropdown"
+                className="order-menu-item-dropdown"
+                onChange={this.props.handleMenuClick}
+                attachment="bottom right"
+                targetAttachment="top right"
+              >
+                <Components.Dates/>
+              </DropDownMenu>
             </div>
           </div>
         </div>
