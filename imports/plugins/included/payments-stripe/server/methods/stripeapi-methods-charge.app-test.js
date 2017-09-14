@@ -55,7 +55,7 @@ describe("Stripe.authorize", function () {
     sandbox.restore();
   });
 
-  it("should call StripeApi.methods.createCharge with the proper parameters and return saved = true", function (done) {
+  it.skip("should call StripeApi.methods.createCharge with the proper parameters and return saved = true", function (done) {
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeChargeResult;
     });
