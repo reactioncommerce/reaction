@@ -3,7 +3,8 @@ import { Shipping, Packages } from "/lib/collections";
 import { Logger, Reaction, Hooks } from "/server/api";
 
 // callback ran on getShippingRates hook
-function getShippingRates(rates, cart) {
+function getShippingRates(previousQueryResults, cart) {
+  const [rates, retrialTargets] = previousQueryResults;
   const shops = [];
   const products = cart.items;
 
@@ -14,7 +15,14 @@ function getShippingRates(rates, cart) {
 
   // must have cart items and package enabled to calculate shipping
   if (!pkgData || !cart.items || pkgData.settings.shippo.enabled !== true) {
-    return rates;
+    const errorDetails = {
+      requestStatus: "error",
+      shippingProvider: "shippo",
+      message: "Error. The Shippo package may be uninstalled or disabled, or your cart is empty."
+    };
+    // There's no need for a retry in this case.
+    rates.push(errorDetails);
+    return [rates, retrialTargets];
   }
 
   // default selector is current shop
@@ -52,13 +60,17 @@ function getShippingRates(rates, cart) {
 
     //  Get shippingRates from Shippo
     if (Object.keys(shippoDocs).length > 0) {
-      const shippoRates = Meteor.call("shippo/getShippingRatesForCart", cart._id, shippoDocs);
+      const targets = retrialTargets.slice();
+      const shippingRatesInfo =
+        Meteor.call("shippo/getShippingRatesForCart", cart._id, shippoDocs, targets);
+      const [shippoRates, singleRetrialTarget] = shippingRatesInfo;
       rates.push(...shippoRates);
+      retrialTargets.push(...singleRetrialTarget);
     }
   }
 
-  Logger.debug("Shippo onGetShippingRates", rates);
-  return rates;
+  Logger.debug("Shippo onGetShippingRates", [rates, retrialTargets]);
+  return [rates, retrialTargets];
 }
 
 // run getShippingRates when the onGetShippingRates event runs
