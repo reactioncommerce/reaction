@@ -105,7 +105,7 @@ class OrderActions extends Component {
                 attachment="bottom right"
                 targetAttachment="top right"
               >
-                <Components.Dates/>
+                <Components.CalendarPicker/>
               </DropDownMenu>
             </div>
           </div>
