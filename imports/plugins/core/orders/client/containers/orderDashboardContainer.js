@@ -133,6 +133,7 @@ class OrderDashboardContainer extends Component {
 
   handleMenuClick = (event, value) => {
     const query = OrderHelper.makeQuery(value);
+    this.selectAllOrders(this.state.orders, this.state.multipleSelect);
 
     this.setState({
       query,
@@ -183,6 +184,7 @@ class OrderDashboardContainer extends Component {
   }
 
   selectAllOrders = (orders, areAllSelected) => {
+    // const query = OrderHelper.makeQuery("new");
     this.setState({
       renderFlowList: false
     });
@@ -199,6 +201,15 @@ class OrderDashboardContainer extends Component {
       this.setState({
         selectedItems: [],
         multipleSelect: false
+      });
+    } else if (this.state.query !== {}) {
+      let filleredOrders = Orders.find(this.state.query).fetch();
+      filleredOrders = filleredOrders.map((order) => {
+        return order._id;
+      });
+      this.setState({
+        selectedItems: filleredOrders,
+        multipleSelect: true
       });
     } else {
       // if there are no selected orders, or if there are some orders that have been
@@ -232,7 +243,7 @@ class OrderDashboardContainer extends Component {
       Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
     }
 
-    /* TODO: 
+    /* TODO:
     a) What other routes have a query parameter of _id=XXXXXXX ?
     b) What exactly are we using the order dashboard for? If it's search,
      well, clicking a search result doesn't CURRENTLY do anything. What's
