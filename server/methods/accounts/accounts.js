@@ -580,7 +580,7 @@ export function inviteShopOwner(options) {
 
   Reaction.Email.send({
     to: email,
-    from: `${shop.name} <${_.get(shop, "emails[0].address")}>`,
+    from: `${_.get(dataForEmail, "primaryShop.name")} <${_.get(dataForEmail, "primaryShop.emails[0].address")}>`,
     subject: SSR.render(subject, dataForEmail),
     html: SSR.render(tpl, dataForEmail)
   });
@@ -876,7 +876,10 @@ function getCurrentUserName(currentUser) {
 
 function getDataForEmail(options) {
   const { shop, currentUserName, token, emailLogo, name } = options;
+  const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
+
   return {
+    primaryShop: primaryShop, // Primary shop data - may or may not be the same as shop
     shop: shop, // Shop Data
     contactEmail: _.get(shop, "emails[0].address"),
     homepage: Meteor.absoluteUrl(),
