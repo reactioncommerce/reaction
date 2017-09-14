@@ -24,7 +24,6 @@ const wrapComponent = (Comp) => (
     constructor(props) {
       super(props);
 
-
       this.animationTimeOut = null;
       this.textTimeOut = null;
 
