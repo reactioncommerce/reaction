@@ -9,9 +9,9 @@ Reaction.registerPackage({
     express: {
       enabled: false,
       support: [
-        "authorize",
-        "capture",
-        "refund"
+        "Authorize",
+        "Capture",
+        "Refund"
       ]
     },
     payflow: {
