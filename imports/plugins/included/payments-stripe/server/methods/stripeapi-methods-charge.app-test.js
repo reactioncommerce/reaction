@@ -3,6 +3,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { StripeApi } from "./stripeapi";
 import { Stripe } from "../../lib/api";
+import { StripeLib } from "./stripe";
 
 const stripeChargeResult = {
   id: "ch_17hA8DBXXkbZQs3xENUmN9bZ",
@@ -59,6 +60,9 @@ describe("Stripe.authorize", function () {
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeChargeResult;
     });
+    sandbox.stub(StripeLib, "getApiKey", function () {
+      return "sk_not_actual_key";
+    });
     const cardData = {
       cvv2: "345",
       expire_month: "4",
@@ -90,7 +94,7 @@ describe("Stripe.authorize", function () {
     sandbox.restore();
   });
 
-  it("should properly charge a card when using a currency besides USD", function (done) {
+  it.only("should properly charge a card when using a currency besides USD", function (done) {
     const form = {
       cvv2: "345",
       expire_month: "4",
@@ -101,11 +105,12 @@ describe("Stripe.authorize", function () {
     };
     const total = "22.98";
     const currency = "EUR";
-
+    sandbox.stub(StripeLib, "getApiKey", function () {
+      return "sk_not_actual_key";
+    });
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeChargeResult;
     });
-    // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeChargeResult);
     let chargeResult = null;
     Stripe.authorize(form, { total: total, currency: currency }, function (error, result) {
       chargeResult = result;
@@ -177,7 +182,9 @@ describe("Stripe.authorize", function () {
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeDeclineResult;
     });
-    // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeDeclineResult);
+    sandbox.stub(StripeLib, "getApiKey", function () {
+      return "sk_not_actual_key";
+    });
 
     let chargeResult = null;
     Stripe.authorize(form, { total: total, currency: currency }, function (error, result) {
@@ -253,6 +260,9 @@ describe("Stripe.authorize", function () {
       };
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeExpiredCardResult;
+    });
+    sandbox.stub(StripeLib, "getApiKey", function () {
+      return "sk_not_actual_key";
     });
 
     let chargeResult = null;

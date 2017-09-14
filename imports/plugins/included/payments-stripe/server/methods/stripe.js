@@ -1,9 +1,7 @@
-import accounting from "accounting-js";
 /* eslint camelcase: 0 */
-// meteor modules
+import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-// reaction modules
 import { Packages } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { StripeApi } from "./stripeapi";
@@ -52,7 +50,9 @@ function unformatFromStripe(amount) {
   return (amount / 100);
 }
 
-export function getApiKey() {
+export const StripeLib = {};
+
+StripeLib.getApiKey = function() {
   const settings = Packages.findOne({
     name: "reaction-stripe",
     shopId: Reaction.getShopId()
@@ -70,7 +70,7 @@ function stripeCaptureCharge(paymentMethod) {
   };
 
   try {
-    const apiKey = getApiKey();
+    const apiKey = StripeLib.getApiKey();
     const captureResult = StripeApi.methods.captureCharge.call({
       transactionId: paymentMethod.transactionId,
       captureDetails,
@@ -132,7 +132,7 @@ Meteor.methods({
     let chargeResult;
 
     try {
-      const apiKey = getApiKey();
+      const apiKey = StripeLib.getApiKey();
       chargeResult = StripeApi.methods.createCharge.call({ chargeObj, apiKey });
       if (chargeResult && chargeResult.status && chargeResult.status === "succeeded") {
         result = {
@@ -198,7 +198,7 @@ Meteor.methods({
 
     let result;
     try {
-      const apiKey = getApiKey();
+      const apiKey = StripeLib.getApiKey();
       const refundResult = StripeApi.methods.createRefund.call({ refundDetails, apiKey });
       Logger.debug(refundResult);
       if (refundResult && refundResult.object === "refund") {
@@ -233,7 +233,7 @@ Meteor.methods({
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     let result;
     try {
-      const apiKey = getApiKey();
+      const apiKey = StripeLib.getApiKey();
       const refunds = StripeApi.methods.listRefunds.call({ transactionId: paymentMethod.transactionId, apiKey });
       result = [];
       for (const refund of refunds.data) {
