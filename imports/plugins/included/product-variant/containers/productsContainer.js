@@ -138,8 +138,22 @@ function composer(props, onData) {
     createdAt: 1
   };
 
+  // Get the current user and their preferences
+  const user = Meteor.user();
+  const prefs = user && user.profile && user.profile.preferences;
+
+  // Edit mode is true by default
+  let editMode = true;
+
+  // if we have a "viewAs" preference and the preference is not set to "administrator", then edit mode is false
+  if (prefs && prefs["reaction-dashboard"] && prefs["reaction-dashboard"].viewAs) {
+    if (prefs["reaction-dashboard"].viewAs !== "administrator") {
+      editMode = false;
+    }
+  }
+
   const queryParams = Object.assign({}, tags, Reaction.Router.current().queryParams);
-  const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort);
+  const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;

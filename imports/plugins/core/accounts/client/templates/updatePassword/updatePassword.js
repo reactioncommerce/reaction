@@ -6,8 +6,8 @@ import { Random } from "meteor/random";
 import { Blaze } from "meteor/blaze";
 import { ReactiveVar } from "meteor/reactive-var";
 import { i18next } from "/client/api";
-import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
-import { UpdatePasswordOverlay } from "/client/modules/accounts/containers";
+import { LoginFormSharedHelpers } from "../../helpers";
+import { getComponent } from "/imports/plugins/core/components/lib";
 import { LoginFormValidation } from "/lib/api";
 
 /**
@@ -50,7 +50,7 @@ Template.loginFormUpdatePasswordOverlay.helpers({
     const currentData = Template.currentData() || {};
     return {
       ...currentData,
-      component: UpdatePasswordOverlay
+      component: getComponent("UpdatePasswordOverlay")
     };
   }
 });
