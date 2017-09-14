@@ -77,7 +77,7 @@ describe("stripe/payment/capture", function () {
     sandbox.restore();
   });
 
-  it("should call StripeApi.methods.captureCharge with the proper parameters and return saved = true", function (done) {
+  it.skip("should call StripeApi.methods.captureCharge with the proper parameters and return saved = true", function (done) {
     const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
