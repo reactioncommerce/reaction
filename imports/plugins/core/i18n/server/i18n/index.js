@@ -2,6 +2,7 @@ import { loadTranslations } from "/server/startup/i18n";
 
 // import ar from "./ar.json";
 // import bg from "./bg.json";
+// import cs from "./cs.json";
 // import de from "./de.json";
 // import el from "./el.json";
 import en from "./en.json";
@@ -9,6 +10,7 @@ import en from "./en.json";
 // import fr from "./fr.json";
 // import he from "./he.json";
 // import hr from "./hr.json";
+// import hu from "./hu.json";
 // import it from "./it.json";
 // import my from "./my.json";
 // import nb from "./nb.json";
@@ -29,4 +31,4 @@ import en from "./en.json";
 // automated translation software
 //
 loadTranslations([en]);
-// loadTranslations([ar, bg, de, el, en, es, fr, he, hr, it, my, nb, nl, pl, pt, ro, ru, sl, sv, tr, vi, zh]);
+// loadTranslations([ar, bg, cs, de, el, en, es, fr, he, hr, hu, it, my, nb, nl, pl, pt, ro, ru, sl, sv, tr, vi, zh]);

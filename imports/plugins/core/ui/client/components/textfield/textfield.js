@@ -11,6 +11,7 @@ class TextField extends Component {
    * @return {String} value for text input
    */
   get value() {
+    // TODO intl
     return this.props.value || "";
   }
 
@@ -48,6 +49,7 @@ class TextField extends Component {
    */
   onChange = (event) => {
     if (this.props.onChange) {
+      // TODO intl
       this.props.onChange(event, event.target.value, this.props.name);
     }
   }
