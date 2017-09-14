@@ -49,7 +49,6 @@ getResults.products = function (searchTerm, facets, maxResults, userId) {
 
 getResults.orders = function (searchTerm, facets, maxResults, userId) {
   let orderResults;
-  const searchPhone = _.replace(searchTerm, /\D/g, "");
   const shopId = Reaction.getShopId();
   const findTerm = {
     $and: [
@@ -76,11 +75,11 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
           $options: "i"
         } },
         { billingPhone: {
-          $regex: "^" + searchPhone + "$",
+          $regex: searchTerm,
           $options: "i"
         } },
         { shippingPhone: {
-          $regex: "^" + searchPhone + "$",
+          $regex: searchTerm,
           $options: "i"
         } },
         { "product.title": {
