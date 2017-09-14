@@ -243,6 +243,7 @@ export const methods = {
 
       // Get cart totals for each Shop
       const cartTotals = cart.getTotalByShop();
+      const cartSubtotals = cart.getSubtotalByShop();
 
       // Loop through all shopIds represented in cart
       shopIds.forEach((shopId) => {
@@ -301,7 +302,7 @@ export const methods = {
           const percentAppFee = dashboardAppFee / 100; // Convert whole number app fee to percentage
 
           // Initialize applicationFee - this can be adjusted by the onCalculateStripeApplicationFee event hook
-          const coreApplicationFee = formatForStripe(cartTotals[shopId] * percentAppFee);
+          const coreApplicationFee = formatForStripe(cartSubtotals[shopId] * percentAppFee);
 
           /**
            * Hook for affecting the application fee charged. Any hooks that `add` "onCalculateStripeApplicationFee" will
@@ -319,6 +320,8 @@ export const methods = {
             cart, // The cart
             shopId // currentShopId
           });
+
+          // TODO: Consider discounts when determining application fee
 
           // Charge the application fee created by hooks. If it doesn't exist, that means that a hook has fouled up
           // the application fee. Review hooks and plugins.
