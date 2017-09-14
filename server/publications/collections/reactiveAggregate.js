@@ -2,13 +2,14 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Mongo, MongoInternals } from "meteor/mongo";
 
-
+// This code taken from https://github.com/meteorhacks/meteor-aggregate
 // Add the aggregate function available in tbe raw collection to normal collections
 Mongo.Collection.prototype.aggregate = function (pipelines, options) {
   const coll = this._getCollection();
   return Meteor.wrapAsync(coll.aggregate.bind(coll))(pipelines, options);
 };
 
+// this group of methods were taken from https://github.com/meteorhacks/meteor-collection-utils
 Mongo.Collection.prototype._getDb = function () {
   if (typeof this._collection._getDb === "function") {
     return this._collection._getDb();
@@ -28,7 +29,36 @@ function wrapWithDb(mongoConn) {
   }
 }
 
-
+// this code taken from https://github.com/JcBernack/meteor-reactive-aggregate
+// ## Usage
+// ReactiveAggregate(sub, collection, pipeline, options)
+//
+// - `sub` should always be `this` in a publication.
+// - `collection` is the Mongo.Collection instance to query.
+// - `pipeline` is the aggregation pipeline to execute.
+// - `options` provides further options:
+//   - `observeSelector` can be given to improve efficiency. This selector is used for observing the collection.
+// (e.g. `{ authorId: { $exists: 1 } }`)
+// - `observeOptions` can be given to limit fields, further improving efficiency. Ideally used to limit fields on your query.
+//   If none is given any change to the collection will cause the aggregation to be reevaluated.
+// (e.g. `{ limit: 10, sort: { createdAt: -1 } }`)
+// - `clientCollection` defaults to `collection._name` but can be overriden to sent the results
+// to a different client-side collection.
+//
+// ## Quick Example
+//
+// A publication for one of the
+//   [examples](https://docs.mongodb.org/v3.0/reference/operator/aggregation/group/#group-documents-by-author)
+// in the MongoDB docs would look like this:
+//
+// Meteor.publish("booksByAuthor", function () {
+//   ReactiveAggregate(this, Books, [{
+//     $group: {
+//       _id: "$author",
+//       books: { $push: "$$ROOT" }
+//     }
+//   }]);
+// });
 export function ReactiveAggregate(sub, collection, pipeline, options) {
   const defaultOptions = {
     observeSelector: {},
