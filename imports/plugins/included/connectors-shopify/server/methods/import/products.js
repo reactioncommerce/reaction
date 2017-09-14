@@ -325,7 +325,7 @@ export const methods = {
                   productId: reactionProductId,
                   variantId: reactionProductId,
                   shopId: shopId,
-                  priority: (shopifyProduct.position), // Shopify index positions starting at 1.
+                  priority: productImage.position, // Shopify index positions starting at 1.
                   toGrid: 0
                 });
               }
