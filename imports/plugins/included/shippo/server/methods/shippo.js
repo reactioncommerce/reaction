@@ -374,10 +374,8 @@ export const methods = {
         target.packageName !== currentMethodInfo.packageName &&
         target.fileName !== currentMethodInfo.fileName
       );
-      // In this case, and some below, there's no need for a retry.
       if (isNotAmongFailedRequests) {
-        errorDetails.message = "Skipping Shippo API call as this method isn't one of those to retry.";
-        return [[errorDetails], []];
+        return [[], retrialTargets];
       }
 
       isRetry = true;
@@ -402,6 +400,8 @@ export const methods = {
       const apiKey = getApiKey(cart.shopId);
       // If for a weird reason Shop hasn't a Shippo Api key anymore return no-rates.
       if (!apiKey) {
+        // In this case, and some similar ones below, there's no need
+        // for a retry.
         errorDetails.message = "No Shippo API key was found in this cart.";
         return [[errorDetails], []];
       }

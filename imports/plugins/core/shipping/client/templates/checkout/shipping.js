@@ -39,18 +39,23 @@ function cartShippingQuotes(currentCart) {
 function shippingMethodsQueryStatus(currentCart) {
   const cart = currentCart || Cart.findOne();
   let queryStatus;
+  let failingShippingProvider;
 
   if (cart) {
     if (cart.shipping) {
       for (const shipping of cart.shipping) {
-        if (shipping.shipmentQuotesQueryStatus) {
-          queryStatus = shipping.shipmentQuotesQueryStatus.requestStatus;
+        const quotesQueryStatus = shipping.shipmentQuotesQueryStatus;
+        if (quotesQueryStatus) {
+          queryStatus = quotesQueryStatus.requestStatus;
+        }
+        if (queryStatus === "error") {
+          failingShippingProvider = quotesQueryStatus.shippingProvider;
         }
       }
     }
   }
 
-  return queryStatus;
+  return [queryStatus, failingShippingProvider];
 }
 
 /**
@@ -121,7 +126,7 @@ Template.coreCheckoutShipping.helpers({
 
       // isLoadingShippingMethods is updated here because, when this template
       // reacts to a change in data, this method is called before hasShippingMethods().
-      const isLoadingShippingMethods = shippingMethodsQueryStatus() === "pending";
+      const isLoadingShippingMethods = shippingMethodsQueryStatus()[0] === "pending";
       instance.state.set("isLoadingShippingMethods", isLoadingShippingMethods);
 
       const shippingQuotes = cartShippingQuotes(cart);
@@ -130,15 +135,27 @@ Template.coreCheckoutShipping.helpers({
   },
 
   hasShippingMethods() {
-    const hasEnabledShippingProviders = enabledShipping().length > 0;
-    if (!hasEnabledShippingProviders) {
+    const instance = Template.instance();
+    const isLoadingShippingMethods = instance.state.get("isLoadingShippingMethods");
+    if (isLoadingShippingMethods) {
+      return true;
+    }
+
+    // Useful for when shipping methods are enabled, but querying them fails
+    // due to internet connection issues.
+    const quotesQueryStatus = shippingMethodsQueryStatus();
+    const didAllQueriesFail =
+      quotesQueryStatus[0] === "error" && quotesQueryStatus[1] === "all";
+    if (didAllQueriesFail) {
       return false;
     }
 
-    const instance = Template.instance();
-    const isLoadingShippingMethods = instance.state.get("isLoadingShippingMethods");
+    const hasEnabledShippingProviders = enabledShipping().length > 0;
+    if (hasEnabledShippingProviders) {
+      return true;
+    }
 
-    return isLoadingShippingMethods;
+    return false;
   },
 
   // helper to display currently selected shipmentMethod

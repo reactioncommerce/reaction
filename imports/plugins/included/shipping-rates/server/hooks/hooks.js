@@ -21,6 +21,20 @@ function getShippingRates(previousQueryResults, cart) {
   const shops = [];
   const products = cart.items;
 
+  const currentMethodInfo = {
+    packageName: "flat-rate-shipping",
+    fileName: "hooks.js"
+  };
+  if (retrialTargets.length > 0) {
+    const isNotAmongFailedRequests = retrialTargets.every((target) =>
+      target.packageName !== currentMethodInfo.packageName &&
+      target.fileName !== currentMethodInfo.fileName
+    );
+    if (isNotAmongFailedRequests) {
+      return previousQueryResults;
+    }
+  }
+
   let merchantShippingRates = false;
   const marketplaceSettings = Reaction.getMarketplaceSettings();
   if (marketplaceSettings && marketplaceSettings.enabled) {
@@ -72,6 +86,7 @@ function getShippingRates(previousQueryResults, cart) {
   }
 
   const shippingCollection = Shipping.find(selector);
+  const initialNumOfRates = rates.length;
   shippingCollection.forEach(function (doc) {
     const _results = [];
     for (const method of doc.methods) {
@@ -101,6 +116,17 @@ function getShippingRates(previousQueryResults, cart) {
     }
     return _results;
   });
+
+  if (rates.length === initialNumOfRates) {
+    const errorDetails = {
+      requestStatus: "error",
+      shippingProvider: "flat-rate-shipping",
+      message: "Flat rate shipping did not return any shipping methods."
+    };
+    rates.push(errorDetails);
+    retrialTargets.push(currentMethodInfo);
+    return [rates, retrialTargets];
+  }
 
   Logger.debug("Flat rate onGetShippingRates", rates);
   return [rates, retrialTargets];
