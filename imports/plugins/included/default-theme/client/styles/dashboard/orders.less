@@ -650,7 +650,7 @@
   // Table Headers
   .order-table-header-name {
     border-right: none;
-    text-align: left;
+    .text-align(left);
     padding-top: 8px;
 
     min-width: 20%;
@@ -780,14 +780,14 @@
   // Name cell display
   .order-table-name-cell {
     display: inline-flex;
-    padding-left: 5px
+    .padding-left(5px);
   }
 
   // Checkbox Styling
   .order-header-checkbox {
     margin-top: 10px;
     margin-bottom: 0px;
-    margin-right: 10px;
+    .margin-right(10px);
     border-radius: 2px;
     border: solid 2px @black65;
   }
@@ -888,10 +888,10 @@
   height: 68px;
   background-color: darken(#fff, 3%);
   padding-top: 20px;
-  margin-top: 92px;
+  margin-top: 67px;
 
   .orders-checkbox {
-    margin-left: 11px;
+    .margin-left(11px);
     vertical-align: -7px;
   }
 
@@ -899,20 +899,20 @@
     font-size: 15px;
     font-weight: bold;
     color: @rui-brand;
-    margin-left: 20px;
+    .margin-left(20px);
     vertical-align: middle;
   }
 
   .capture-orders-button, .bulk-actions-button {
     width: 176px;
     text-align: center;
-    margin-left: 30px;
+    .margin-left(30px);
     vertical-align: middle;
   }
 
   .bulk-actions-button {
     i {
-      margin-left: 25px;
+      .margin-left(25px);
     }
   }
 
@@ -920,7 +920,7 @@
     position: relative;
     z-index: 1;
     width: 286px;
-    margin-left: 254px;
+    .margin-left(256px);
     margin-top: 14px;
     border: solid 1px @rui-default;
     border-radius: 3px;
@@ -931,7 +931,7 @@
       position: absolute;
       display: block;
       border-style: solid;
-      left: 82.5%;
+      .left(82.5%);
       z-index: 100;
     }
 
