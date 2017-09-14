@@ -1,8 +1,9 @@
-/* eslint no-unused-vars: 1 */
-
 import React, { Component } from "react";
 import classnames from "classnames";
 import Button from "./button.jsx";
+
+/* eslint react/prop-types: 0 */
+// TODO validate prop-types in FlatButton
 
 class FlatButton extends Component {
   static defaultProps = {
