@@ -1,11 +1,18 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 
-// cartShippingQuotes
-// returns multiple methods
+/**
+ * cartShippingQuotes - returns a list of all the shipping costs/quotations
+ * of each available shipping carrier like UPS, Fedex etc.
+ * @param {Object} currentCart - The current cart that's about
+ * to be checked out.
+ * @returns {Array} - an array of the quotations of multiple shipping
+ * carriers.
+ */
 function cartShippingQuotes(currentCart) {
   const cart = currentCart || Cart.findOne();
   const shipmentQuotes = [];
@@ -16,20 +23,48 @@ function cartShippingQuotes(currentCart) {
         if (shipping.shipmentQuotes) {
           for (const quote of shipping.shipmentQuotes) {
             if (shipping.shopId === primaryShopId) {
-              shipmentQuotes.push(quote);
+              if (quote.carrier === "Flat Rate" || quote.requestStatus !== "error") {
+                shipmentQuotes.push(quote);
+              }
             }
           }
         }
       }
     }
   }
+
   return shipmentQuotes;
 }
-// cartShipmentMethods to get current shipment method
-// this returns multiple methods, if more than one carrier
-// has been chosen
-function cartShipmentMethods(currentCart) {
+
+function shippingMethodsQueryStatus(currentCart) {
   const cart = currentCart || Cart.findOne();
+  let queryStatus;
+  let failingShippingProvider;
+
+  if (cart) {
+    if (cart.shipping) {
+      for (const shipping of cart.shipping) {
+        const quotesQueryStatus = shipping.shipmentQuotesQueryStatus;
+        if (quotesQueryStatus) {
+          queryStatus = quotesQueryStatus.requestStatus;
+        }
+        if (queryStatus === "error") {
+          failingShippingProvider = quotesQueryStatus.shippingProvider;
+        }
+      }
+    }
+  }
+
+  return [queryStatus, failingShippingProvider];
+}
+
+/**
+ * cartShipmentMethods - gets current shipment methods.
+ * @return {Array} - Returns multiple methods if more than one
+ * carrier has been chosen.
+ */
+function cartShipmentMethods() {
+  const cart = Cart.findOne();
   const shipmentMethods = [];
   const primaryShopId = Reaction.getPrimaryShopId();
   if (cart) {
@@ -57,10 +92,14 @@ function enabledShipping() {
   return enabledShippingArr;
 }
 
-// ensure new quotes are
 Template.coreCheckoutShipping.onCreated(function () {
   this.autorun(() => {
     this.subscribe("Shipping");
+  });
+
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    isLoadingShippingMethods: true
   });
 
   const enabled = enabledShipping();
@@ -84,9 +123,41 @@ Template.coreCheckoutShipping.helpers({
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
       const cart = Cart.findOne();
-      return cartShippingQuotes(cart);
+
+      // isLoadingShippingMethods is updated here because, when this template
+      // reacts to a change in data, this method is called before hasShippingMethods().
+      const isLoadingShippingMethods = shippingMethodsQueryStatus()[0] === "pending";
+      instance.state.set("isLoadingShippingMethods", isLoadingShippingMethods);
+
+      const shippingQuotes = cartShippingQuotes(cart);
+      return shippingQuotes;
     }
   },
+
+  hasShippingMethods() {
+    const instance = Template.instance();
+    const isLoadingShippingMethods = instance.state.get("isLoadingShippingMethods");
+    if (isLoadingShippingMethods) {
+      return true;
+    }
+
+    // Useful for when shipping methods are enabled, but querying them fails
+    // due to internet connection issues.
+    const quotesQueryStatus = shippingMethodsQueryStatus();
+    const didAllQueriesFail =
+      quotesQueryStatus[0] === "error" && quotesQueryStatus[1] === "all";
+    if (didAllQueriesFail) {
+      return false;
+    }
+
+    const hasEnabledShippingProviders = enabledShipping().length > 0;
+    if (hasEnabledShippingProviders) {
+      return true;
+    }
+
+    return false;
+  },
+
   // helper to display currently selected shipmentMethod
   isSelected: function () {
     const self = this;
