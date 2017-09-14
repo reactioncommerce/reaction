@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { DayPickerRangeController } from "react-dates";
-import { forbidExtraProps } from "airbnb-prop-types";
-import momentPropTypes from "react-moment-proptypes";
-// import moment from "moment";
 import omit from "lodash/omit";
 
 class CalendarPicker extends Component {
@@ -18,8 +15,6 @@ class CalendarPicker extends Component {
   }
 
   onDatesChange = ({ startDate, endDate }) => {
-    console.log("on date change start date", startDate);
-    console.log("on date change start date", endDate);
     this.setState({
       startDate,
       endDate
@@ -106,11 +101,11 @@ CalendarPicker.defaultProps = {
   monthFormat: "MMMM YYYY"
 };
 
-CalendarPicker.propTypes = forbidExtraProps({
+CalendarPicker.propTypes = {
   // example props for the demo
   autoFocusEndDate: PropTypes.bool,
-  initialStartDate: momentPropTypes.momentObj,
-  initialEndDate: momentPropTypes.momentObj,
+  initialStartDate: PropTypes.object,
+  initialEndDate: PropTypes.object,
 
   keepOpenOnDateSelect: PropTypes.bool,
   minimumNights: PropTypes.number,
@@ -137,7 +132,7 @@ CalendarPicker.propTypes = forbidExtraProps({
   monthFormat: PropTypes.string,
 
   isRTL: PropTypes.bool
-});
+};
 
 registerComponent("CalendarPicker", CalendarPicker);
 
