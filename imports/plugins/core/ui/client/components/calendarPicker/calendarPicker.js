@@ -17,11 +17,17 @@ class CalendarPicker extends Component {
     };
   }
 
-  onDatesChange = (startDate, endDate) => {
+  onDatesChange = ({ startDate, endDate }) => {
+    console.log("on date change start date", startDate);
+    console.log("on date change start date", endDate);
     this.setState({
       startDate,
       endDate
     });
+
+    if (this.props.onDatesChange) {
+      this.props.onDatesChange({ startDate, endDate });
+    }
   }
 
 onFocusChange = (focusedInput) => {
@@ -34,7 +40,6 @@ onFocusChange = (focusedInput) => {
 render() {
   // can show start dates and end dates
   const { showInputs } = this.props;
-  console.log("startDate", this.state.startDate.startDate);
 
   const { focusedInput, startDate, endDate } = this.state;
 
@@ -46,17 +51,17 @@ render() {
   ]);
 
 
-  // const startDateString = this.staetstartDate && startDate.startDate.format("YYYY-MM-DD");
-  // const endDateString = endDate && endDate.endDate.format("YYYY-MM-DD");
+  const startDateString = startDate && startDate.format("YYYY-MM-DD");
+  const endDateString = endDate && endDate.format("YYYY-MM-DD");
 
   return (
     <div>
       {showInputs &&
         <div style={{ marginBottom: 16 }}>
-          Hey
+          <input type="text" name="start date" value={startDateString} readOnly />
+          <input type="text" name="end date" value={endDateString} readOnly />
         </div>
       }
-
       <DayPickerRangeController
         {...props}
         onDatesChange={this.onDatesChange}
@@ -66,14 +71,6 @@ render() {
         endDate={endDate}
       />
     </div>
-    // <DayPickerRangeController
-    //   startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-    //   endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-    //   onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
-    //   focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-    //   onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
-    //   numberOfMonths={this.props.numberOfMonths}
-    // />
   );
 }
 }
