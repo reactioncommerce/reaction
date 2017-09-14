@@ -118,7 +118,7 @@ DropDownMenu.propTypes = {
   closeOnClick: PropTypes.bool,
   isEnabled: PropTypes.bool,
   isOpen: PropTypes.bool,
-  menuClassName: PropTypes.string,
+  menuClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   menuStyle: PropTypes.object,
   onChange: PropTypes.func,
   onPublishClick: PropTypes.func,
