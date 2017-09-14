@@ -65,7 +65,11 @@
       "react-addons-test-utils",
       "react-dom",
       "react",
-      "transliteration"
+      "transliteration",
+      "react-measure",
+      "react-onclickoutside",
+      "react-textarea-autosize",
+      "fibers"
     ],
     "unused-ignores": [
       "jquery",

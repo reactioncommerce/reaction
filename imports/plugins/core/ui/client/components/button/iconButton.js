@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import classnames from "classnames";
 import Button from "./button.jsx";
 
+/* eslint react/prop-types: 0 */
+// TODO validate prop-types in IconButton
+
 class IconButton extends Component {
   static defaultProps = {
     bezelStyle: "solid"

@@ -1,10 +1,8 @@
 /* eslint camelcase: 0 */
 import _ from "lodash";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
-import { Meteor } from "meteor/meteor";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { Packages } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import { Logger } from "/server/api";
 
 export const StripeApi = {};
 StripeApi.methods = {};
@@ -44,36 +42,15 @@ const expectedErrors = [
   "incorrect_number"
 ];
 
-StripeApi.methods.getApiKey = new ValidatedMethod({
-  name: "StripeApi.methods.getApiKey",
-  validate: null,
-  run() {
-    const settings = Packages.findOne({
-      name: "reaction-stripe",
-      shopId: Reaction.getShopId()
-    }).settings;
-    if (!settings.api_key) {
-      throw new Meteor.Error("403", "Invalid Stripe Credentials");
-    }
-    return settings.api_key;
-  }
-});
-
 
 StripeApi.methods.createCharge = new ValidatedMethod({
   name: "StripeApi.methods.createCharge",
   validate: new SimpleSchema({
     chargeObj: { type: chargeObjectSchema },
-    apiKey: { type: String, optional: true }
+    apiKey: { type: String }
   }).validator(),
   run({ chargeObj, apiKey }) {
-    let stripe;
-    if (!apiKey) {
-      const dynamicApiKey = StripeApi.methods.getApiKey.call();
-      stripe = require("stripe")(dynamicApiKey);
-    } else {
-      stripe = require("stripe")(apiKey);
-    }
+    const stripe = require("stripe")(apiKey);
     try {
       const chargePromise = stripe.charges.create(chargeObj);
       const promiseResult = Promise.await(chargePromise);
@@ -104,16 +81,10 @@ StripeApi.methods.captureCharge = new ValidatedMethod({
   validate: new SimpleSchema({
     transactionId: { type: String },
     captureDetails: { type: captureDetailsSchema },
-    apiKey: { type: String, optional: true }
+    apiKey: { type: String }
   }).validator(),
   run({ transactionId, captureDetails, apiKey })  {
-    let stripe;
-    if (!apiKey) {
-      const dynamicApiKey = StripeApi.methods.getApiKey.call();
-      stripe = require("stripe")(dynamicApiKey);
-    } else {
-      stripe = require("stripe")(apiKey);
-    }
+    const stripe = require("stripe")(apiKey);
     const capturePromise = stripe.charges.capture(transactionId, captureDetails);
     const captureResults = Promise.await(capturePromise);
     return captureResults;
@@ -124,16 +95,10 @@ StripeApi.methods.createRefund = new ValidatedMethod({
   name: "StripeApi.methods.createRefund",
   validate: new SimpleSchema({
     refundDetails: { type: refundDetailsSchema },
-    apiKey: { type: String, optional: true }
+    apiKey: { type: String }
   }).validator(),
   run({ refundDetails, apiKey }) {
-    let stripe;
-    if (!apiKey) {
-      const dynamicApiKey = StripeApi.methods.getApiKey.call();
-      stripe = require("stripe")(dynamicApiKey);
-    } else {
-      stripe = require("stripe")(apiKey);
-    }
+    const stripe = require("stripe")(apiKey);
     const refundPromise = stripe.refunds.create({ charge: refundDetails.charge, amount: refundDetails.amount });
     const refundResults = Promise.await(refundPromise);
     return refundResults;
@@ -144,16 +109,10 @@ StripeApi.methods.listRefunds = new ValidatedMethod({
   name: "StripeApi.methods.listRefunds",
   validate: new SimpleSchema({
     transactionId: { type: String },
-    apiKey: { type: String, optional: true }
+    apiKey: { type: String }
   }).validator(),
   run({ transactionId, apiKey }) {
-    let stripe;
-    if (!apiKey) {
-      const dynamicApiKey = StripeApi.methods.getApiKey.call();
-      stripe = require("stripe")(dynamicApiKey);
-    } else {
-      stripe = require("stripe")(apiKey);
-    }
+    const stripe = require("stripe")(apiKey);
     const refundListPromise = stripe.refunds.list({ charge: transactionId });
     const refundListResults = Promise.await(refundListPromise);
     return refundListResults;

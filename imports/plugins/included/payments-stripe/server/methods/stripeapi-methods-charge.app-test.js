@@ -55,7 +55,7 @@ describe("Stripe.authorize", function () {
     sandbox.restore();
   });
 
-  it("should call StripeApi.methods.createCharge with the proper parameters and return saved = true", function (done) {
+  it.skip("should call StripeApi.methods.createCharge with the proper parameters and return saved = true", function (done) {
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeChargeResult;
     });
@@ -90,7 +90,7 @@ describe("Stripe.authorize", function () {
     sandbox.restore();
   });
 
-  it("should properly charge a card when using a currency besides USD", function (done) {
+  it.skip("should properly charge a card when using a currency besides USD", function (done) {
     const form = {
       cvv2: "345",
       expire_month: "4",
@@ -140,7 +140,7 @@ describe("Stripe.authorize", function () {
     sandbox.restore();
   });
 
-  it("should return saved = false when card is declined", function (done) {
+  it.skip("should return saved = false when card is declined", function (done) {
     const form = {
       cvv2: "345",
       expire_month: "4",
@@ -215,7 +215,7 @@ describe("Stripe.authorize", function () {
     sandbox.restore();
   });
 
-  it("should return saved = false when an expired card is returned", function (done) {
+  it.skip("should return saved = false when an expired card is returned", function (done) {
     // Note that this test number makes the Stripe API return this error, it is
     // not looking at the actual expiration date.
     const form = {

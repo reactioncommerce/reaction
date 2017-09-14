@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -62,7 +62,6 @@
     "node-loggly-bulk": "^2.0.0",
     "nodemailer-wellknown": "^0.2.1",
     "nouislider-algolia-fork": "^10.0.0",
-    "npm-shrinkwrap": "^6.0.2",
     "path-to-regexp": "^1.7.0",
     "paypal-rest-sdk": "^1.7.1",
     "postcss": "^6.0.2",
@@ -74,6 +73,7 @@
     "react": "15.4.2",
     "react-addons-create-fragment": "15.4.2",
     "react-addons-pure-render-mixin": "15.4.2",
+    "react-addons-shallow-compare": "^15.6.0",
     "react-autosuggest": "^9.0.0",
     "react-avatar": "^2.3.0",
     "react-color": "^2.11.4",
