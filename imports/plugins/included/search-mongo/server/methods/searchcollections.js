@@ -153,10 +153,16 @@ export function ensureProductSearchIndex() {
 export function buildOrderSearchRecord(orderId) {
   const order = Orders.findOne(orderId);
   const user = Meteor.users.findOne(order.userId);
+  const anonymousUserEmail = order.email;
+
   const userEmails = [];
-  if (user) {
+  if (user && user.emails.length) {
     for (const email of user.emails) {
       userEmails.push(email.address);
+    }
+  } else {
+    if (anonymousUserEmail) {
+      userEmails.push(anonymousUserEmail);
     }
   }
   const orderSearch = {};
@@ -167,36 +173,53 @@ export function buildOrderSearchRecord(orderId) {
       orderSearch[field] = order[field];
     }
   }
-  orderSearch.billingName = order.billing[0].address.fullName;
-  orderSearch.billingPhone = _.replace(order.billing[0].address.phone, /\D/g, "");
-  orderSearch.shippingName = order.shipping[0].address.fullName;
-  orderSearch.shippingPhone = _.replace(order.shipping[0].address.phone, /\D/g, "");
+  // get the billing object for the current shop on the order (and not hardcoded [0])
+  const shopBilling = order.billing.find(
+    billing => billing.shopId === Reaction.getShopId()
+  ) || {};
+
+  // get the shipping object for the current shop on the order (and not hardcoded [0])
+  const shopShipping = order.shipping.find(
+    shipping => shipping.shopId === Reaction.getShopId()
+  ) || {};
+
+  orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
+  orderSearch.billingPhone = _.replace(shopBilling.address && shopBilling.address.phone, /\D/g, "");
+  orderSearch.shippingName = shopShipping.address.fullName;
+  orderSearch.shippingPhone = _.replace(shopShipping.address.phone, /\D/g, "");
   orderSearch.billingAddress = {
-    address: order.billing[0].address.address1,
-    postal: order.billing[0].address.postal,
-    city: order.billing[0].address.city,
-    region: order.billing[0].address.region,
-    country: order.billing[0].address.country
+    address: shopBilling.address && shopBilling.address.address1,
+    postal: shopBilling.address && shopBilling.address.postal,
+    city: shopBilling.address && shopBilling.address.city,
+    region: shopBilling.address && shopBilling.address.region,
+    country: shopBilling.address && shopBilling.address.country
   };
   orderSearch.shippingAddress = {
-    address: order.shipping[0].address.address1,
-    postal: order.shipping[0].address.postal,
-    city: order.shipping[0].address.city,
-    region: order.shipping[0].address.region,
-    country: order.shipping[0].address.country
+    address: shopShipping.address.address1,
+    postal: shopShipping.address.postal,
+    city: shopShipping.address.city,
+    region: shopShipping.address.region,
+    country: shopShipping.address.country
   };
   orderSearch.userEmails = userEmails;
-  orderSearch.orderTotal = order.billing[0].invoice.total;
+  orderSearch.orderTotal = shopBilling.invoice && shopBilling.invoice.total;
   orderSearch.orderDate = moment(order.createdAt).format("YYYY/MM/DD");
-  orderSearch.billingStatus = order.billing[0].paymentMethod.status;
+  orderSearch.billingStatus = shopBilling.paymentMethod && shopBilling.paymentMethod.status;
+  orderSearch.billingCard = shopBilling.paymentMethod && shopBilling.paymentMethod.storedCard;
   orderSearch.currentWorkflowStatus = order.workflow.status;
-  if (order.shipping[0].shipped) {
+  if (shopShipping.shipped) {
     orderSearch.shippingStatus = "Shipped";
-  } else if (order.shipping[0].packed) {
+  } else if (shopShipping.packed) {
     orderSearch.shippingStatus = "Packed";
   } else {
     orderSearch.shippingStatus = "New";
   }
+  orderSearch.product = {};
+  orderSearch.variants = {};
+  orderSearch.product.title = order.items.map(item => item.product.title);
+  orderSearch.variants.title = order.items.map(item => item.variants.title);
+  orderSearch.variants.optionTitle = order.items.map(item => item.variants.optionTitle);
+
   OrderSearch.insert(orderSearch);
 }
 
