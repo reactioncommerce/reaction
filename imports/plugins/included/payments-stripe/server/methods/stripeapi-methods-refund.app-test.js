@@ -44,7 +44,7 @@ describe("stripe/refund/create", function () {
       receipt_number: null
     };
 
-    sandbox.stub(StripeApi.methods.createRefund, "call", function () {
+    sandbox.stub(StripeApi.methods, "createRefund", function () {
       return stripeRefundResult;
     });
     // spyOn(StripeApi.methods.createRefund, "call").and.returnValue(stripeRefundResult);
@@ -57,7 +57,7 @@ describe("stripe/refund/create", function () {
       expect(refundError).to.be.undefined;
       expect(refundResult).to.not.be.undefined;
       expect(refundResult.saved).to.be.true;
-      expect(StripeApi.methods.createRefund.call).to.have.been.calledWith({
+      expect(StripeApi.methods.createRefund).to.have.been.calledWith({
         refundDetails: {
           charge: paymentMethod.transactionId,
           amount: 1999,

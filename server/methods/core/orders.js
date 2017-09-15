@@ -56,6 +56,43 @@ export function ordersInventoryAdjust(orderId) {
   });
 }
 
+// TODO: Marketplace: Is there a reason to do this any other way? Can admins reduce for more
+// than one shop
+/**
+ * ordersInventoryAdjustByShop
+ * adjust inventory for a particular shop when an order is approved
+ * @param {String} orderId - orderId
+ * @param {String} shopId - the id of the shop approving the order
+ * @return {null} no return value
+ */
+export function ordersInventoryAdjustByShop(orderId, shopId) {
+  check(orderId, String);
+  check(shopId, String);
+
+  if (!Reaction.hasPermission("orders")) {
+    throw new Meteor.Error("access-denied", "Access Denied");
+  }
+
+  const order = Orders.findOne(orderId);
+  order.items.forEach(item => {
+    if (item.shopId === shopId) {
+      Products.update({
+        _id: item.variants._id
+      }, {
+        $inc: {
+          inventoryQuantity: -item.quantity
+        }
+      }, {
+        publish: true,
+        selector: {
+          type: "variant"
+        }
+      });
+    }
+  });
+}
+
+
 export function orderQuantityAdjust(orderId, refundedItem) {
   check(orderId, String);
 
@@ -232,38 +269,24 @@ export const methods = {
    */
   "orders/approvePayment": function (order) {
     check(order, Object);
-    const invoice = orderCreditMethod(order).invoice;
-
-    // REVIEW: Who should have access to do this for a marketplace?
-    // Do we have/need a shopId on each order?
+    const shopId = Reaction.getShopId();  // the shop of the user who is currently logged on
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    this.unblock(); // REVIEW: why unblock here?
-
-    // this is server side check to verify
-    // that the math all still adds up.
-    const subTotal = invoice.subtotal;
-    const shipping = invoice.shipping;
-    const taxes = invoice.taxes;
-    const discount = invoice.discounts;
-    const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
-    const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
-
     // Updates flattened inventory count on variants in Products collection
-    ordersInventoryAdjust(order._id);
+    ordersInventoryAdjustByShop(order._id, shopId);
 
-    return Orders.update({
-      "_id": order._id,
-      "billing.paymentMethod.method": "credit"
+    const billing = order.billing;
+    const billingRecord = billing.find((bRecord) => bRecord.shopId === shopId);
+    billingRecord.paymentMethod.status = "approved";
+    billingRecord.paymentMethod.mode = "capture";
+
+    Orders.update({
+      _id: order._id
     }, {
       $set: {
-        "billing.$.paymentMethod.amount": total,
-        "billing.$.paymentMethod.status": "approved",
-        "billing.$.paymentMethod.mode": "capture",
-        "billing.$.invoice.discounts": discount,
-        "billing.$.invoice.total": Number(total)
+        billing: billing
       }
     });
   },
@@ -805,22 +828,20 @@ export const methods = {
    * orders/capturePayments
    * @summary Finalize any payment where mode is "authorize"
    * and status is "approved", reprocess as "capture"
-   * @todo: add tests working with new payment methods
-   * @todo: refactor to use non Meteor.namespace
    * @param {String} orderId - add tracking to orderId
    * @return {null} no return value
    */
   "orders/capturePayments": (orderId) => {
     check(orderId, String);
-
     // REVIEW: For marketplace implmentations who should be able to capture payments?
-    // Probably just the marketplace and not shops/vendors?
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
-
+    const shopId = Reaction.getShopId(); // the shopId of the current user, e.g. merchant
     const order = Orders.findOne(orderId);
-    const itemIds = order.shipping[0].items.map((item) => {
+    // find the appropriate shipping record by shop
+    const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === shopId);
+    const itemIds = shippingRecord.items.map((item) => {
       return item._id;
     });
 
@@ -831,61 +852,62 @@ export const methods = {
     }
 
     // process order..payment.paymentMethod
-    _.each(order.billing, function (billing) {
-      const paymentMethod = billing.paymentMethod;
-      const transactionId = paymentMethod.transactionId;
+    // find the billing record based on shopId
+    const bilingRecord = order.billing.find((bRecord) => bRecord.shopId === shopId);
 
-      if (paymentMethod.mode === "capture" && paymentMethod.status === "approved" && paymentMethod.processor) {
-        // Grab the amount from the shipment, otherwise use the original amount
-        const processor = paymentMethod.processor.toLowerCase();
+    const paymentMethod = bilingRecord.paymentMethod;
+    const transactionId = paymentMethod.transactionId;
 
-        Meteor.call(`${processor}/payment/capture`, paymentMethod, (error, result) => {
-          if (result && result.saved === true) {
-            const metadata = Object.assign(billing.paymentMethod.metadata || {}, result.metadata || {});
+    if (paymentMethod.mode === "capture" && paymentMethod.status === "approved" && paymentMethod.processor) {
+      // Grab the amount from the shipment, otherwise use the original amount
+      const processor = paymentMethod.processor.toLowerCase();
 
-            Orders.update({
-              "_id": orderId,
-              "billing.paymentMethod.transactionId": transactionId
-            }, {
-              $set: {
-                "billing.$.paymentMethod.mode": "capture",
-                "billing.$.paymentMethod.status": "completed",
-                "billing.$.paymentMethod.metadata": metadata
-              },
-              $push: {
-                "billing.$.paymentMethod.transactions": result
-              }
-            });
+      Meteor.call(`${processor}/payment/capture`, paymentMethod, (error, result) => {
+        if (result && result.saved === true) {
+          const metadata = Object.assign(bilingRecord.paymentMethod.metadata || {}, result.metadata || {});
 
-            // event onOrderPaymentCaptured used for confirmation hooks
-            // ie: confirmShippingMethodForOrder is triggered here
-            Hooks.Events.run("onOrderPaymentCaptured", orderId);
-          } else {
-            if (result && result.error) {
-              Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
-            } else {
-              Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, error);
+          Orders.update({
+            "_id": orderId,
+            "billing.paymentMethod.transactionId": transactionId
+          }, {
+            $set: {
+              "billing.$.paymentMethod.mode": "capture",
+              "billing.$.paymentMethod.status": "completed",
+              "billing.$.paymentMethod.metadata": metadata
+            },
+            $push: {
+              "billing.$.paymentMethod.transactions": result
             }
+          });
 
-            Orders.update({
-              "_id": orderId,
-              "billing.paymentMethod.transactionId": transactionId
-            }, {
-              $set: {
-                "billing.$.paymentMethod.mode": "capture",
-                "billing.$.paymentMethod.status": "error"
-              },
-              $push: {
-                "billing.$.paymentMethod.transactions": result
-              }
-            });
-
-            return { error: "orders/capturePayments: Failed to capture transaction" };
+          // event onOrderPaymentCaptured used for confirmation hooks
+          // ie: confirmShippingMethodForOrder is triggered here
+          Hooks.Events.run("onOrderPaymentCaptured", orderId);
+        } else {
+          if (result && result.error) {
+            Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
+          } else {
+            Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, error);
           }
-          return { error, result };
-        });
-      }
-    });
+
+          Orders.update({
+            "_id": orderId,
+            "billing.paymentMethod.transactionId": transactionId
+          }, {
+            $set: {
+              "billing.$.paymentMethod.mode": "capture",
+              "billing.$.paymentMethod.status": "error"
+            },
+            $push: {
+              "billing.$.paymentMethod.transactions": result
+            }
+          });
+
+          return { error: "orders/capturePayments: Failed to capture transaction" };
+        }
+        return { error, result };
+      });
+    }
   },
 
   /**

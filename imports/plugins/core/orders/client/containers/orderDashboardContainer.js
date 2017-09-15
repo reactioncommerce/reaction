@@ -73,6 +73,7 @@ const OrderHelper =  {
 class OrderDashboardContainer extends Component {
   static propTypes = {
     handleMenuClick: PropTypes.func,
+    orderCount: PropTypes.number,
     orders: PropTypes.array
   }
 
@@ -737,6 +738,7 @@ class OrderDashboardContainer extends Component {
     return (
       <OrderDashboard
         handleSelect={this.handleSelect}
+        orderCount={this.props.orderCount}
         orders={this.state.orders}
         query={this.state.query}
         filter={this.state.filter}
@@ -765,9 +767,10 @@ const composer = (props, onData) => {
 
   if (mediaSubscription.ready() && ordersSubscription.ready()) {
     const orders = Orders.find().fetch();
-
+    const orderCount = Orders.find().count();
     onData(null, {
-      orders
+      orders,
+      orderCount
     });
   }
 };

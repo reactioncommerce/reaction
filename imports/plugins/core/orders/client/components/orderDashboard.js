@@ -16,6 +16,7 @@ class OrderDashboard extends Component {
     handleSelect: PropTypes.func,
     isLoading: PropTypes.object,
     multipleSelect: PropTypes.bool,
+    orderCount: PropTypes.number,
     orders: PropTypes.array,
     query: PropTypes.object,
     renderFlowList: PropTypes.bool,
@@ -89,6 +90,7 @@ class OrderDashboard extends Component {
             <div>
               <OrderTable
                 orders={this.props.orders}
+                orderCount={this.props.orderCount}
                 query={this.state.query}
                 selectedItems={this.props.selectedItems}
                 handleSelect={this.props.handleSelect}

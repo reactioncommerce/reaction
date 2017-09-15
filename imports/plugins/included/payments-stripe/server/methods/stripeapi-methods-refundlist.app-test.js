@@ -53,7 +53,7 @@ describe("stripe/refunds/list", function () {
       has_more: false,
       url: "/v1/refunds"
     };
-    sandbox.stub(StripeApi.methods.listRefunds, "call", function () {
+    sandbox.stub(StripeApi.methods, "listRefunds", function () {
       return stripeRefundListResult;
     });
 
@@ -69,7 +69,7 @@ describe("stripe/refunds/list", function () {
       expect(refundListResult[0].amount).to.equal(19.99);
       expect(refundListResult[0].currency).to.equal("usd");
 
-      expect(StripeApi.methods.listRefunds.call).to.have.been.calledWith({
+      expect(StripeApi.methods.listRefunds).to.have.been.calledWith({
         transactionId: paymentMethod.transactionId
       });
       done();

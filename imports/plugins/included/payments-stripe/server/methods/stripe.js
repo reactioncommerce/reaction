@@ -34,10 +34,14 @@ function stripeCaptureCharge(paymentMethod) {
     amount: formatForStripe(paymentMethod.amount)
   };
 
+  const stripePackage = Packages.findOne(paymentMethod.paymentPackageId);
+  const stripeKey = stripePackage.settings.api_key || stripePackage.settings.connectAuth.access_token;
+
   try {
-    const captureResult = StripeApi.methods.captureCharge.call({
+    const captureResult = StripeApi.methods.captureCharge({
       transactionId: paymentMethod.transactionId,
-      captureDetails: captureDetails
+      captureDetails: captureDetails,
+      apiKey: stripeKey
     });
     if (captureResult.status === "succeeded") {
       result = {
@@ -120,10 +124,7 @@ function buildPaymentMethods(options) {
 
   const shopIds = Object.keys(transactionsByShopId);
   const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + cardData.number.slice(-4);
-  const packageData = Packages.findOne({
-    name: "reaction-stripe",
-    shopId: Reaction.getPrimaryShopId()
-  });
+
 
   const paymentMethods = [];
 
@@ -138,6 +139,11 @@ function buildPaymentMethods(options) {
           shopId: shopId,
           quantity: item.quantity
         };
+      });
+
+      const packageData = Packages.findOne({
+        name: "reaction-stripe",
+        shopId: shopId
       });
 
       const paymentMethod = {
@@ -350,7 +356,7 @@ export const methods = {
    */
   "stripe/payment/capture": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    // let result;
+
     const captureDetails = {
       amount: formatForStripe(paymentMethod.amount)
     };
@@ -388,7 +394,7 @@ export const methods = {
 
     let result;
     try {
-      const refundResult = StripeApi.methods.createRefund.call({ refundDetails });
+      const refundResult = StripeApi.methods.createRefund({ refundDetails });
       Logger.debug(refundResult);
       if (refundResult && refundResult.object === "refund") {
         result = {
@@ -423,16 +429,18 @@ export const methods = {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     let result;
     try {
-      const refunds = StripeApi.methods.listRefunds.call({ transactionId: paymentMethod.transactionId });
+      const refunds = StripeApi.methods.listRefunds({ transactionId: paymentMethod.transactionId });
       result = [];
-      for (const refund of refunds.data) {
-        result.push({
-          type: refund.object,
-          amount: refund.amount / 100,
-          created: refund.created * 1000,
-          currency: refund.currency,
-          raw: refund
-        });
+      if (refunds) {
+        for (const refund of refunds.data) {
+          result.push({
+            type: refund.object,
+            amount: refund.amount / 100,
+            created: refund.created * 1000,
+            currency: refund.currency,
+            raw: refund
+          });
+        }
       }
     } catch (error) {
       Logger.error(error);
