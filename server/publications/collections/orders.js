@@ -1,51 +1,63 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
-import { Counts } from "meteor/tmeasday:publish-counts";
 import { ReactiveAggregate } from "./reactiveAggregate";
 import { Orders } from "/lib/collections";
 import { Reaction } from "/server/api";
 
 
-const filteredOrdersProjection = [
-  {
-    $project: {
-      items: {
-        $filter: {
-          input: "$items",
-          as: "item",
-          cond: { $eq: ["$$item.shopId", "J8Bhq3uTtdgwZx3rz"] }
-        }
-      },
-      billing: {
-        $filter: {
-          input: "$billing",
-          as: "billing",
-          cond: { $eq: ["$$billing.shopId", "J8Bhq3uTtdgwZx3rz"] }
-        }
-      },
-      shipping: {
-        $filter: {
-          input: "$shipping",
-          as: "shipping",
-          cond: { $eq: ["$$shipping.shopId", "J8Bhq3uTtdgwZx3rz"] }
-        }
-      },
-      cartId: 1,
-      sessionId: 1,
-      shopId: 1,
-      workflow: 1,
-      discount: 1,
-      tax: 1,
-      email: 1,
-      createdAt: 1
-    }
-  }
-];
-
 /**
- * orders
+ * A shared way of creating a projection
+ * @param {String} shopId - shopId to filter records by
+ * @param {Object} sort - An object containing a sort
+ * @param {Number} limit - An optional limit of how many records to return
+ * @returns {Array} An array of projection operators
  */
+export function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0) {
+  // NOTE: in Mongo 3.4 using the $in operator will be supported for projection filters
+  const aggregate = [
+    { $match: { "items.shopId": shopId } },
+    {
+      $project: {
+        items: {
+          $filter: {
+            input: "$items",
+            as: "item",
+            cond: { $eq: ["$$item.shopId", shopId] }
+          }
+        },
+        billing: {
+          $filter: {
+            input: "$billing",
+            as: "billing",
+            cond: { $eq: ["$$billing.shopId", shopId] }
+          }
+        },
+        shipping: {
+          $filter: {
+            input: "$shipping",
+            as: "shipping",
+            cond: { $eq: ["$$shipping.shopId", shopId] }
+          }
+        },
+        cartId: 1,
+        sessionId: 1,
+        shopId: 1, // workflow is still stored at the top level and used to showing status
+        workflow: 1,
+        discount: 1,
+        tax: 1,
+        email: 1,
+        createdAt: 1
+      },
+    },
+    { $sort: sort }
+  ];
+
+  if (limit > 0) {
+    aggregate.push({ $limit: limit });
+  }
+  return aggregate;
+}
 
 Meteor.publish("Orders", function () {
   if (this.userId === null) {
@@ -55,15 +67,23 @@ Meteor.publish("Orders", function () {
   if (!shopId) {
     return this.ready();
   }
+
+  // return any order for which the shopId is attached to an item
+  const aggregateOptions = {
+    observeSelector: {
+      "items.shopId": shopId
+    }
+  };
+  const aggregate = createAggregate(shopId);
+
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
+    ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
+  } else {
     return Orders.find({
-      shopId: shopId
+      shopId: shopId,
+      userId: this.userId
     });
   }
-  return Orders.find({
-    shopId: shopId,
-    userId: this.userId
-  });
 });
 
 /**
@@ -80,14 +100,22 @@ Meteor.publish("PaginatedOrders", function (limit) {
   if (!shopId) {
     return this.ready();
   }
+  // return any order for which the shopId is attached to an item
+  const aggregateOptions = {
+    observeSelector: {
+      "items.shopId": shopId
+    }
+  };
+  const aggregate = createAggregate(shopId, { createdAt: -1 }, limit);
+
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
-    Counts.publish(this, "order-count", Orders.find({ shopId: shopId }), { noReady: true });
-    return Orders.find({ shopId: shopId }, { limit: limit });
+    ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
+  } else {
+    return Orders.find({
+      shopId: shopId,
+      userId: this.userId
+    });
   }
-  return Orders.find({
-    shopId: shopId,
-    userId: this.userId
-  });
 });
 
 Meteor.publish("CustomPaginatedOrders", function (query, options) {
@@ -108,16 +136,15 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
       "items.shopId": shopId
     }
   };
+  const aggregate = createAggregate(shopId);
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
-    ReactiveAggregate(this, Orders, filteredOrdersProjection, aggregateOptions);
+    ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
+  } else {
+    return Orders.find({
+      shopId: shopId,
+      userId: this.userId
+    });
   }
-
-  // TODO How to we return this order-count
-  //   Counts.publish(this, "order-count", Orders.find(selector), { noReady: true });
-  return Orders.find({
-    shopId: shopId,
-    userId: this.userId
-  });
 });
 
 /**
