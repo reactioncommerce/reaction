@@ -7,6 +7,42 @@ import { Orders } from "/lib/collections";
 import { Reaction } from "/server/api";
 
 
+const filteredOrdersProjection = [
+  {
+    $project: {
+      items: {
+        $filter: {
+          input: "$items",
+          as: "item",
+          cond: { $eq: ["$$item.shopId", "J8Bhq3uTtdgwZx3rz"] }
+        }
+      },
+      billing: {
+        $filter: {
+          input: "$billing",
+          as: "billing",
+          cond: { $eq: ["$$billing.shopId", "J8Bhq3uTtdgwZx3rz"] }
+        }
+      },
+      shipping: {
+        $filter: {
+          input: "$shipping",
+          as: "shipping",
+          cond: { $eq: ["$$shipping.shopId", "J8Bhq3uTtdgwZx3rz"] }
+        }
+      },
+      cartId: 1,
+      sessionId: 1,
+      shopId: 1,
+      workflow: 1,
+      discount: 1,
+      tax: 1,
+      email: 1,
+      createdAt: 1
+    }
+  }
+];
+
 /**
  * orders
  */
@@ -67,45 +103,13 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
   }
 
   // return any order for which the shopId is attached to an item
-  const selector = {
-    "items.shopId": shopId
+  const aggregateOptions = {
+    observeSelector: {
+      "items.shopId": shopId
+    }
   };
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
-    ReactiveAggregate(this, Orders, [
-      {
-        $project: {
-          items: {
-            $filter: {
-              input: "$items",
-              as: "item",
-              cond: { $eq: ["$$item.shopId", "J8Bhq3uTtdgwZx3rz"] }
-            }
-          },
-          billing: {
-            $filter: {
-              input: "$billing",
-              as: "billing",
-              cond: { $eq: ["$$billing.shopId", "J8Bhq3uTtdgwZx3rz"] }
-            }
-          },
-          shipping: {
-            $filter: {
-              input: "$shipping",
-              as: "shipping",
-              cond: { $eq: ["$$shipping.shopId", "J8Bhq3uTtdgwZx3rz"] }
-            }
-          },
-          cartId: 1,
-          sessionId: 1,
-          shopId: 1,
-          workflow: 1,
-          discount: 1,
-          tax: 1,
-          email: 1,
-          createdAt: 1
-        }
-      }
-    ], selector);
+    ReactiveAggregate(this, Orders, filteredOrdersProjection, aggregateOptions);
   }
 
   // TODO How to we return this order-count
