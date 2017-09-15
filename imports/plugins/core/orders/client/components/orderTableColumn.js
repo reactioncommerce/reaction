@@ -53,7 +53,7 @@ class OrderTableColumn extends Component {
       return (
         <div style={{ display: "inline-flex" }}>
           {this.renderCheckboxOnSelect(this.props.row)}
-          <strong style={{ paddingLeft: 5, marginTop: 7 }}>{this.props.row.value}</strong>
+          <strong className="orders-full-name">{this.props.row.value}</strong>
         </div>
       );
     }
