@@ -453,6 +453,7 @@
   .controls {
     width: 10%;
     max-width: 66px;
+    border-left: 1px solid @black10;
   }
 
   .content {
@@ -542,6 +543,13 @@
         }
       }
     }
+  }
+}
+
+.rtl .rui.card.order {
+  .controls {
+    border-right: 1px solid @black10;
+    border-left: none;
   }
 }
 
@@ -842,6 +850,13 @@
   }
 }
 
+.rtl .rui.order.table {
+  .order-table-column-name {
+  border-left: 1px solid @black10;
+  border-right: none;
+  }
+}
+
 .rollover-checkbox {
 
   .second-child {
@@ -975,8 +990,8 @@
     }
 
     i.bulk-actions-icons-select {
-      margin-left: 10px;
-      margin-right: -8px;
+      .margin-left(10px);
+      .margin-right(-8px);
     }
 
     i.fa-check {
@@ -1059,7 +1074,7 @@
 
   .order-filter-item {
     display: flex;
-    flex: 1 1 auto;
+    .flex(1 1 auto);
     width: 33%;
     height: 100%;
     align-items: center;
@@ -1080,9 +1095,9 @@
 
   .order-filter-name {
     font-size: 16px;
-    flex: 0 1 auto;
+    .flex(0 1 auto);
     position: absolute;
-    left: 50%;
+    .left(50%);
     transform: translateX(-50%);
 
     &.active {
@@ -1091,8 +1106,8 @@
   }
 
   .order-filter-icons {
-    flex: 0 1 auto;
-    margin-left: auto;
+    .flex(0 1 auto);
+    .margin-left(auto);
   }
 
   .order-filter-button {
@@ -1104,7 +1119,7 @@
   }
 
   .order-filter-dropdown-button {
-    padding-left: 0
+    .padding-left(0);
   }
 
   .order-filter-dropdown-button:focus {
