@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Media, Orders } from "/lib/collections";
+import { Tracker } from "meteor/tracker";
+import { Components, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Media, Orders, OrderSearch as OrderSearchCollection } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrderDashboard from "../components/orderDashboard.js";
 import {
   PACKAGE_NAME,
@@ -113,13 +113,36 @@ class OrderDashboardContainer extends Component {
       ready: false,
       query: {},
       filter: i18next.t("order.filter.status"),
-      className: ""
+      className: "",
+      searchQuery: ""
     };
+
+    this.dep = new Tracker.Dependency;
+  }
+
+  componentDidMount() {
+    this.setupTracker();
   }
 
   componentWillReceiveProps = (nextProps) => {
+    this.setupTracker();
     this.setState({
       orders: nextProps.orders
+    });
+  }
+
+  componentWillUnmount() {
+    this.subscription.stop();
+  }
+
+  /**
+   * handleSearchChange - handler called on search query change
+   * @param  {String} value - search field current value
+   * @return {null} -
+   */
+  handleSearchChange = (value) => {
+    this.setState({ searchQuery: value }, () => {
+      this.dep.changed();
     });
   }
 
@@ -143,8 +166,9 @@ class OrderDashboardContainer extends Component {
   }
 
   handleMenuClick = (event, value) => {
-    const query = OrderHelper.makeQuery(value);
-
+    let query = OrderHelper.makeQuery(value);
+    // ensure other fields (e.g ids) on query are kept
+    query = Object.assign({}, this.state.query, query);
     this.setState({
       query,
       filter: i18next.t(`order.filter.${value}`),
@@ -152,8 +176,40 @@ class OrderDashboardContainer extends Component {
     });
   }
 
+  // Extracted Tracker logic for the search subscription, to allow calling in both
+  // componentDidMount and componentWillReceiveProps
+  // TODO: Find a way to move this to a wrapper container
+  setupTracker = () => {
+    Tracker.autorun(() => {
+      this.dep.depend();
+      this.subscription = Meteor.subscribe("SearchResults", "orders", this.state.searchQuery);
+      let orderSearchResultsIds;
+
+      if (this.subscription.ready()) {
+        const orderSearchResults = OrderSearchCollection.find().fetch();
+        const query = this.state.query;
+        orderSearchResultsIds = orderSearchResults.map(orderSearch => orderSearch._id);
+        // checking to ensure search was made and search results are returned
+        if (this.state.searchQuery && Array.isArray(orderSearchResultsIds)) {
+          // add matching results from search to query passed to Sortable
+          query._id = { $in: orderSearchResultsIds };
+          return this.setState({ query: query });
+        }
+        // being here means no search text is inputed or search was cleared, so reset any previous match
+        delete query._id;
+        this.setState({ query: query });
+      }
+    });
+  }
+
   clearFilter = () => {
+    const oldQuery = this.state.query;
     const query = OrderHelper.makeQuery("");
+    // id is set by the searchbar in setupTracker. Here we check if there's a current value in it before
+    // the filter was cleared. If there is, we attach it back to the queryObj
+    if (oldQuery._id) {
+      query._id = oldQuery._id;
+    }
 
     this.setState({
       query,
@@ -749,26 +805,30 @@ class OrderDashboardContainer extends Component {
 
   render() {
     return (
-      <OrderDashboard
-        handleSelect={this.handleSelect}
-        orders={this.state.orders}
-        query={this.state.query}
-        filter={this.state.filter}
-        className={this.state.className}
-        clearFilter={this.clearFilter}
-        handleClick={this.handleClick}
-        displayMedia={this.handleDisplayMedia}
-        selectedItems={this.state.selectedItems}
-        selectAllOrders={this.selectAllOrders}
-        multipleSelect={this.state.multipleSelect}
-        handleMenuClick={this.handleMenuClick}
-        setShippingStatus={this.setShippingStatus}
-        shipping={this.state.shipping}
-        isLoading={this.state.isLoading}
-        renderFlowList={this.state.renderFlowList}
-        toggleShippingFlowList={this.toggleShippingFlowList}
-        handleBulkPaymentCapture={this.handleBulkPaymentCapture}
-      />
+      <div className="order-dashboard-container">
+        <OrderDashboard
+          handleSelect={this.handleSelect}
+          handleChange={this.handleSearchChange}
+          orders={this.state.orders}
+          searchQuery={this.state.searchQuery}
+          query={this.state.query}
+          filter={this.state.filter}
+          className={this.state.className}
+          clearFilter={this.clearFilter}
+          handleClick={this.handleClick}
+          displayMedia={this.handleDisplayMedia}
+          selectedItems={this.state.selectedItems}
+          selectAllOrders={this.selectAllOrders}
+          multipleSelect={this.state.multipleSelect}
+          handleMenuClick={this.handleMenuClick}
+          setShippingStatus={this.setShippingStatus}
+          shipping={this.state.shipping}
+          isLoading={this.state.isLoading}
+          renderFlowList={this.state.renderFlowList}
+          toggleShippingFlowList={this.toggleShippingFlowList}
+          handleBulkPaymentCapture={this.handleBulkPaymentCapture}
+        />
+      </div>
     );
   }
 }
@@ -786,4 +846,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, Loading)(OrderDashboardContainer);
+export default composeWithTracker(composer, Components.Loading)(OrderDashboardContainer);
