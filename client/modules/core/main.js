@@ -559,6 +559,7 @@ export default {
   },
 
   setActionView(viewData) {
+    this.hideActionViewDetail();
     if (viewData) {
       let viewStack;
 
