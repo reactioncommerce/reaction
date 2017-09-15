@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
 import moment from "moment";
-import { formatPriceString } from "/client/api";
+import { formatPriceString, i18next } from "/client/api";
 import Avatar from "react-avatar";
 import { Badge, ClickToCopy, Icon, RolloverCheckbox, Checkbox } from "@reactioncommerce/reaction-ui";
 
@@ -117,10 +117,11 @@ class OrderTableColumn extends Component {
         "btn": true,
         "btn-success": startWorkflow
       });
+      const chevronDirection = i18next.dir() === "rtl" ? "left" : "right";
 
       return (
         <button className={classes} onClick={() => this.props.handleClick(this.props.row.original, startWorkflow)}>
-          <Icon icon="fa fa-chevron-right" />
+          <Icon icon={`fa fa-chevron-${chevronDirection}`} />
         </button>
       );
     }

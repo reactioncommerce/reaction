@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Avatar from "react-avatar";
 import moment from "moment";
 import classnames from "classnames/dedupe";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
 import OrderTableColumn from "./orderTableColumn";
@@ -88,10 +88,11 @@ class OrderTable extends Component {
       "btn": true,
       "btn-success": startWorkflow
     });
+    const chevronDirection = i18next.dir() === "rtl" ? "left" : "right";
 
     return (
       <button className={classes} onClick={() => this.props.handleClick(order, startWorkflow)}>
-        <Icon icon="fa fa-chevron-right" />
+        <Icon icon={`fa fa-chevron-${chevronDirection}`} />
       </button>
     );
   }
