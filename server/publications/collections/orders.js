@@ -48,7 +48,7 @@ export function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0) {
         tax: 1,
         email: 1,
         createdAt: 1
-      },
+      }
     },
     { $sort: sort }
   ];
