@@ -453,17 +453,17 @@ export const methods = {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     let result;
     try {
-      // const refunds = StripeApi.methods.listRefunds.call({ transactionId: paymentMethod.transactionId });
+      const refunds = StripeApi.methods.listRefunds.call({ transactionId: paymentMethod.transactionId });
       result = [];
-      // for (const refund of refunds.data) {
-      //   result.push({
-      //     type: refund.object,
-      //     amount: refund.amount / 100,
-      //     created: refund.created * 1000,
-      //     currency: refund.currency,
-      //     raw: refund
-      //   });
-      // }
+      for (const refund of refunds.data) {
+        result.push({
+          type: refund.object,
+          amount: refund.amount / 100,
+          created: refund.created * 1000,
+          currency: refund.currency,
+          raw: refund
+        });
+      }
     } catch (error) {
       Logger.error(error);
       result = { error };
