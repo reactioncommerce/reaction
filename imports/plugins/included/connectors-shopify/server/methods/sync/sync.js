@@ -22,7 +22,7 @@ export const methods = {
 
     // Check for permissions
     if (!Reaction.hasPermission(["owner", "settings/connectors", "settings/connectors/shopify"])) {
-      throw new Meteor.error("access-denied", "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
 
     const integrationsByTopic = integrations.reduce((topics, integration) => {
@@ -57,7 +57,7 @@ export const methods = {
   "connectors/shopify/sync/teardown"() {
     // Check for permissions
     if (!Reaction.hasPermission(["owner", "settings/connectors", "settings/connectors/shopify"])) {
-      throw new Meteor.error("access-denied", "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
 
     Meteor.call("connectors/shopify/webhooks/deleteAll");

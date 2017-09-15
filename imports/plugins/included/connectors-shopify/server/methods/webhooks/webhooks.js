@@ -27,7 +27,7 @@ export const methods = {
 
     // Check for permissions
     if (!Reaction.hasPermission(["owner", "settings/connectors", "settings/connectors/shopify"])) {
-      throw new Meteor.error("access-denied", "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
 
     // This code is duplicated in `../api/api`
@@ -90,7 +90,7 @@ export const methods = {
 
     // Check for permissions
     if (!Reaction.hasPermission(["owner", "settings/connectors", "settings/connectors/shopify"])) {
-      throw new Meteor.error("access-denied", "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
 
     // This code is duplicated in `../api/api`
@@ -146,7 +146,7 @@ export const methods = {
   async "connectors/shopify/webhooks/deleteAll"() {
     // Check for permissions
     if (!Reaction.hasPermission(["owner", "settings/connectors", "settings/connectors/shopify"])) {
-      throw new Meteor.error("access-denied", "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
 
     const shopifyPkg = Reaction.getPackageSettingsWithOptions({

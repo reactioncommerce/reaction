@@ -4,16 +4,16 @@ import { PackageConfig } from "/lib/collections/schemas/registry";
 const Webhook = new SimpleSchema({
   shopifyId: {
     type: Number,
-    label: "Shopify Webhook ID",
+    label: "Shopify webhook ID",
     decimal: false
   },
   topic: {
     type: String,
-    label: "Shopify Webhook Topic"
+    label: "Shopify webhook topic"
   },
   address: {
     type: String,
-    label: "url that this webhook will POST to"
+    label: "URL webhook will POST to"
   },
   format: {
     type: String,
@@ -27,7 +27,7 @@ const Webhook = new SimpleSchema({
   // Currently unused, might want it later
   description: {
     type: String,
-    label: "Shopify Webhook Description",
+    label: "Shopify webhook description",
     optional: true
   }
 });
@@ -36,27 +36,27 @@ export const ShopifyConnectPackageConfig = new SimpleSchema([
   PackageConfig, {
     "settings.apiKey": {
       type: String,
-      label: "API Key",
+      label: "API key",
       optional: true
     },
     "settings.password": {
       type: String,
-      label: "API Password",
+      label: "API password",
       optional: true
     },
     "settings.sharedSecret": {
       type: String,
-      label: "API Shared Secret",
+      label: "API shared secret",
       optional: true
     },
     "settings.shopName": {
       type: String,
-      label: "Shop Slug",
+      label: "Shop slug",
       optional: true
     },
     "settings.webhooks": {
       type: [Webhook],
-      label: "Registered Shopify Webhooks",
+      label: "Registered Shopify webhooks",
       optional: true
     }
   }

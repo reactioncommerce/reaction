@@ -5,7 +5,6 @@ import { $ } from "meteor/jquery";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { ShopifyConnectPackageConfig } from "../../lib/collections/schemas";
-
 import "./shopify.html";
 
 Template.shopifyConnectSettings.helpers({
@@ -53,14 +52,10 @@ Template.shopifySync.helpers({
   },
 
   integrationIsActive(integration) {
-    const pkg = Packages.findOne({
-      name: "reaction-connectors-shopify",
-      shopId: Reaction.getShopId()
-    });
-
+    const { settings } = Reaction.getPackageSettings("reaction-connectors-shopify");
     // If this package has webhooks, determine if there is a match for the `integration` passed in as an arg
-    if (pkg && pkg.settings && Array.isArray(pkg.settings.webhooks) && pkg.settings.webhooks.length > 0) {
-      const integrations = pkg.settings.webhooks.reduce((integrationsArray, webhook) => {
+    if (settings && Array.isArray(settings.webhooks) && settings.webhooks.length > 0) {
+      const integrations = settings.webhooks.reduce((integrationsArray, webhook) => {
         // if this webhook doesn't have any integrations, skip it.
         if (!Array.isArray(webhook.integrations)) {
           return integrationsArray;

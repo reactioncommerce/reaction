@@ -24,7 +24,7 @@ export const methods = {
     check(options, Match.Maybe(Object));
 
     if (!Reaction.hasPermission(connectorsRoles)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
 
     const apiCreds = getApiInfo();
@@ -35,7 +35,7 @@ export const methods = {
       const count = await shopify.product.count(opts);
       return count;
     } catch (err) {
-      Logger.error("something went wrong");
+      Logger.error("Something went wrong during Shopify products count");
     }
   }
 };
