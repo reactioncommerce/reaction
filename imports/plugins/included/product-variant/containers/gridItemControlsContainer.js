@@ -4,21 +4,36 @@ import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
+import { ReactionProduct } from "/lib/api";
 import GridItemControls from "../components/gridItemControls";
+import { ProductVariant } from "/lib/collections/schemas/products";
+import { Validation } from "@reactioncommerce/reaction-collections";
+
 
 const wrapComponent = (Comp) => (
   class GridItemControlsContainer extends Component {
     static propTypes = {
       isSelected: PropTypes.bool,
-      product: PropTypes.object
+      product: PropTypes.object,
+      variant: PropTypes.object
     }
 
     constructor() {
       super();
 
+      this.validation = new Validation(ProductVariant);
+
+      this.state = {
+        invalidVariant: []
+      };
+
       this.hasCreateProductPermission = this.hasCreateProductPermission.bind(this);
       this.hasChanges = this.hasChanges.bind(this);
       this.checked = this.checked.bind(this);
+    }
+
+    componentWillMount() {
+      this.variantValidation();
     }
 
     hasCreateProductPermission = () => {
@@ -33,6 +48,23 @@ const wrapComponent = (Comp) => (
       return this.props.isSelected === true;
     }
 
+    // checks whether the product variant is valid
+    variantValidation = () => {
+      const variants = ReactionProduct.getVariants(this.props.product._id);
+      let validationStatus;
+      let invalidVariant;
+      if (variants) {
+        validationStatus = variants.map((variant) => {
+          return this.validation.validate(variant);
+        });
+
+        invalidVariant = validationStatus.filter(status => status.isValid === false);
+      }
+      this.setState({
+        invalidVariant
+      });
+    }
+
     render() {
       return (
         <Comp
@@ -40,6 +72,7 @@ const wrapComponent = (Comp) => (
           hasCreateProductPermission={this.hasCreateProductPermission}
           hasChanges={this.hasChanges}
           checked={this.checked}
+          invalidVariant={this.state.invalidVariant}
         />
       );
     }
