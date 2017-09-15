@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
-import { Button, DropDownMenu, MenuItem } from "@reactioncommerce/reaction-ui";
+import { Button, DropDownMenu, MenuItem, Translation } from "@reactioncommerce/reaction-ui";
 
 class OrderActions extends Component {
   static propTypes = {
@@ -34,7 +34,12 @@ class OrderActions extends Component {
       <div className="order-filter-bar">
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span className={labelClassName}> {this.props.filter}</span>
+            <span className={labelClassName}>
+              <Translation
+                defaultValue={this.props.filter}
+                i18nKey={this.props.filter}
+              />
+            </span>
             <div className="order-filter-icons">
               <Button
                 className={filterClassName}
@@ -88,7 +93,12 @@ class OrderActions extends Component {
         </div>
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span className="order-filter-name"> This Week </span>
+            <span className="order-filter-name">
+              <Translation
+                defaultValue="This Week"
+                i18nKey="order.filter.thisWeek"
+              />
+            </span>
             <div className="order-filter-icons">
               <Button className="order-filter-button">
                 <i className="fa fa-filter" />
@@ -99,7 +109,12 @@ class OrderActions extends Component {
         </div>
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span className="order-filter-name">  Shipping Status </span>
+            <span className="order-filter-name">
+              <Translation
+                defaultValue="Shipping Status"
+                i18nKey="order.filter.shippingStatus"
+              />
+            </span>
             <div className="order-filter-icons">
               <Button className="order-filter-button">
                 <i className="fa fa-filter" />
