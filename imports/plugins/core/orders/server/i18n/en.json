@@ -11,7 +11,8 @@
         "dashboard": {
           "ordersLabel": "Orders",
           "ordersTitle": "Orders",
-          "ordersDescription": "Fulfill your orders"
+          "ordersDescription": "Fulfill your orders",
+          "clearSearch": "Clear"
         },
         "orderWorkflow": {
           "ordersList": {
