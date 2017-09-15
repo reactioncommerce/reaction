@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Mongo, MongoInternals } from "meteor/mongo";
 
@@ -86,12 +85,12 @@ export function ReactiveAggregate(sub, collection, pipeline, options) {
       sub._ids[doc._id] = sub._iteration;
     });
     // remove documents not in the result anymore
-    _.forEach(sub._ids, function (value, key) {
+    for (const [key, value] of Object.entries(sub._ids)) {
       if (value !== sub._iteration) {
         delete sub._ids[key];
         sub.removed(subOptions.clientCollection, key);
       }
-    });
+    }
     sub._iteration++;
   }
 
