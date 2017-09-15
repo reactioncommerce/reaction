@@ -124,6 +124,18 @@ function findVariantImages(shopifyVariantId, images) {
 }
 
 /**
+ * Finds the images associated with a particular shopify variant
+ * @method findProductImages
+ * @private
+ * @param  {Number} shopifyProductId The product `id` from shopify
+ * @param  {Array} images An array of images from a Shopify product
+ * @return {Array} Returns an array of images that match the passed shopifyProductId
+ */
+function findProductImages(shopifyProductId, images) {
+  return images.filter((imageObj) => imageObj.product_id === shopifyProductId);
+}
+
+/**
  * get Shopify Api Key, Password and Domain from the Shopify Connect package with the supplied shopId or alternatly the active shopId
  * @method getApiInfo
  * @param  {string} [shopId=Reaction.getShopId()] The shopId to get the API info for. Defaults to current shop.
@@ -321,6 +333,7 @@ export const methods = {
             const reactionProductId = Products.insert(reactionProduct, { selector: { type: "simple" }, publish: true });
             ids.push(reactionProductId);
 
+            // Save the primary image to the grid and as priority 0
             saveImage(shopifyProduct.image.src, {
               ownerId: Meteor.userId(),
               productId: reactionProductId,
@@ -329,6 +342,22 @@ export const methods = {
               priority: 0,
               toGrid: 1
             });
+
+            const productImages = findProductImages(shopifyProduct.id, shopifyProduct.images);
+
+            for (const productImage of productImages) {
+              // Save all remaining product images to product
+              if (shopifyProduct.image.id !== productImage.id) {
+                saveImage(productImage.src, {
+                  ownerId: Meteor.userId(),
+                  productId: reactionProductId,
+                  variantId: reactionProductId,
+                  shopId: shopId,
+                  priority: productImage.position, // Shopify index positions starting at 1.
+                  toGrid: 0
+                });
+              }
+            }
 
             // If variantLabel exists, we have at least one variant
             if (shopifyVariants) {
