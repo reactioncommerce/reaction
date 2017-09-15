@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
+import { i18next } from "/client/api";
 import { Button, DropDownMenu, MenuItem, Translation } from "@reactioncommerce/reaction-ui";
 
 class OrderActions extends Component {
@@ -30,6 +31,8 @@ class OrderActions extends Component {
       "order-filter-name": true
     }, this.props.className);
 
+    const attachmentDirection = i18next.dir() === "rtl" ? "left" : "right";
+
     return (
       <div className="order-filter-bar">
         <div className="order-filter-item">
@@ -52,8 +55,8 @@ class OrderActions extends Component {
                 menuClassName="tab-list-dropdown"
                 className="order-menu-item-dropdown"
                 onChange={this.props.handleMenuClick}
-                attachment="bottom right"
-                targetAttachment="top right"
+                attachment={`bottom ${attachmentDirection}`}
+                targetAttachment={`top ${attachmentDirection}`}
               >
                 <MenuItem
                   label="New"
