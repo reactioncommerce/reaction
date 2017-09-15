@@ -329,7 +329,6 @@ export const methods = {
               }
             }
 
-
             // If variantLabel exists, we have at least one variant
             if (shopifyVariants) {
               Logger.debug(`Importing ${shopifyProduct.title} variants`);
