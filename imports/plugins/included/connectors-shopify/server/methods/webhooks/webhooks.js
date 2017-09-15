@@ -1,8 +1,6 @@
 import Shopify from "shopify-api-node";
-
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-
 import { Reaction, Logger } from "/server/api";
 import { Packages } from "/lib/collections";
 

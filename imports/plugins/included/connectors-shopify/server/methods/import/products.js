@@ -1,10 +1,8 @@
 /* eslint camelcase: 0 */
 import Shopify from "shopify-api-node";
-
 import { Meteor } from "meteor/meteor";
 import { Logger } from "/server/api";
 import { check, Match } from "meteor/check";
-
 import { Reaction } from "/server/api";
 import { Products, Tags, Media } from "/lib/collections";
 import { getApiInfo } from "../api/api";

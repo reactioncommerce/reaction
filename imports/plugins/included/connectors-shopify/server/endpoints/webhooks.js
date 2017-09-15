@@ -1,7 +1,5 @@
 import crypto from "crypto";
-
 import { Meteor } from "meteor/meteor";
-
 import { Reaction } from "/server/api";
 
 /**
