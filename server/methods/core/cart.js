@@ -733,6 +733,7 @@ Meteor.methods({
     // set the same address for every shipping record
     let selector;
     let update;
+    let updated = false;
     if (cart.shipping && cart.shipping.length > 0 && cart.items) {
       const shopIds = Object.keys(cart.getItemsByShop());
       shopIds.map((shopId) => {
@@ -749,6 +750,7 @@ Meteor.methods({
       });
       try {
         Collections.Cart.update(selector, update);
+        updated = true;
       } catch (e) {
         Logger.error("An error occurred adding the address", e);
         throw new Meteor.Error("An error occurred adding the address", e);
@@ -772,6 +774,7 @@ Meteor.methods({
 
           try {
             Collections.Cart.update(selector, update);
+            updated = true;
           } catch (e) {
             Logger.error(e);
             throw new Meteor.Error("An error occurred adding the address");
@@ -808,13 +811,14 @@ Meteor.methods({
         });
       }
     }
-    try {
-      Collections.Cart.update(selector, update);
-    } catch (e) {
-      Logger.error(e);
-      throw new Meteor.Error("An error occurred adding the address");
+    if (!updated) {
+      try {
+        Collections.Cart.update(selector, update);
+      } catch (e) {
+        Logger.error(e);
+        throw new Meteor.Error("An error occurred adding the address");
+      }
     }
-
     // refresh shipping quotes
     Meteor.call("shipping/updateShipmentQuotes", cartId);
 

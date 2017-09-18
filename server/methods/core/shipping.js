@@ -79,7 +79,7 @@ function createShippingRecordByShop(cart, rates) {
 /**
  * @summary if we have items in the cart, ensure that we only have shipping records for shops currently represented in the cart
  * @param {Object} cart - The cart to operate on
- * @returns {null} null
+ * @returns {undefined} undefined
  */
 function pruneShippingRecordsByShop(cart) {
   if (cart.items) {
@@ -109,7 +109,7 @@ function pruneShippingRecordsByShop(cart) {
 /**
  * @summary - When adding shipping records, ensure that each record has an address
  * @param {Object} cart - The Cart object we need to operate on
- * @returns {null} null
+ * @returns {undefined} undefined
  */
 function normalizeAddresses(cart) {
   const shipping = cart.shipping;
