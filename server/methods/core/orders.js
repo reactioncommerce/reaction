@@ -56,6 +56,30 @@ export function ordersInventoryAdjust(orderId) {
   });
 }
 
+export function orderQuantityAdjust(orderId, refundedItem) {
+  check(orderId, String);
+
+  if (!Reaction.hasPermission("orders")) {
+    throw new Meteor.Error("access-denied", "Access Denied");
+  }
+
+  const order = Orders.findOne(orderId);
+  order.items.forEach((item) => {
+    if (item._id === refundedItem.id) {
+      const itemId = item._id;
+      const newQuantity = item.quantity - refundedItem.refundedQuantity;
+
+      Orders.update({
+        _id: orderId,
+        items: { $elemMatch: { _id: itemId } }
+      }, { $set:
+        { "items.$.quantity": newQuantity }
+      }
+      );
+    }
+  });
+}
+
 
 /**
  * Reaction Order Methods
@@ -501,13 +525,8 @@ export const methods = {
 
     const billing = orderCreditMethod(order);
     // TODO: Update */refunds/list for marketplace
-    // const refundResult = Meteor.call("orders/refunds/list", order);
-    const refundTotal = 0;
-
-    // TODO: We should use reduce here
-    // _.each(refundResult, function (item) {
-    //   refundTotal += parseFloat(item.amount);
-    // });
+    const refundResult = Meteor.call("orders/refunds/list", order);
+    const refundTotal = refundResult.reduce((acc, refund) => acc + refund.amount, 0);
 
     // Get user currency formatting from shops collection, remove saved rate
     const userCurrencyFormatting = _.omit(shop.currencies[billing.currency.userCurrency], ["enabled", "rate"]);
@@ -669,6 +688,9 @@ export const methods = {
       } else if (action === "refunded") {
         tpl = "orders/refunded";
         subject = "orders/refunded/subject";
+      } else if (action === "itemRefund") {
+        tpl = "orders/itemRefund";
+        subject = "orders/itemRefund/subject";
       } else {
         tpl = `orders/${order.workflow.status}`;
         subject = `orders/${order.workflow.status}/subject`;
@@ -905,12 +927,14 @@ export const methods = {
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object
    * @param {Number} amount - Amount of the refund, as a positive number
+   * @param {Bool} sendEmail - Send email confirmation
    * @return {null} no return value
    */
-  "orders/refunds/create": function (orderId, paymentMethod, amount) {
+  "orders/refunds/create": function (orderId, paymentMethod, amount, sendEmail = true) {
     check(orderId, String);
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
+    check(sendEmail, Match.Optional(Boolean));
 
     // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
     if (!Reaction.hasPermission("orders")) {
@@ -952,8 +976,12 @@ export const methods = {
           "billing.$.paymentMethod.transactions": result
         }
       };
+
       // Send email to notify cuustomer of a refund
-      Meteor.call("orders/sendNotification", order, "refunded");
+      if (sendEmail) {
+        Meteor.call("orders/sendNotification", order, "refunded");
+      }
+
       if (result.saved === false) {
         Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
         throw new Meteor.Error("Attempt to refund transaction failed", result.error);
@@ -971,6 +999,73 @@ export const methods = {
     });
 
     Hooks.Events.run("onOrderRefundCreated", orderId);
+  },
+
+  /**
+   * orders/refunds/refundItems
+   *
+   * @summary Apply a refund to line items
+   * @param {String} orderId - order object
+   * @param {Object} paymentMethod - paymentMethod object
+   * @param {Object} refundItemsInfo - info about refund items
+   * @return {Object} refund boolean and result/error value
+   */
+  "orders/refunds/refundItems": function (orderId, paymentMethod, refundItemsInfo) {
+    check(orderId, String);
+    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    check(refundItemsInfo, Object);
+
+    // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
+    if (!Reaction.hasPermission("orders")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    const fut = new Future();
+    const order = Orders.findOne(orderId);
+    const transactionId = paymentMethod.transactionId;
+    const amount = refundItemsInfo.total;
+    const quantity = refundItemsInfo.quantity;
+    const refundItems = refundItemsInfo.items;
+    const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
+
+    // refund payment to customer
+    Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(amount), false, (error, result) => {
+      if (error) {
+        Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, error);
+        fut.return({
+          refund: false,
+          error: error
+        });
+      }
+      if (result) {
+        refundItems.forEach(refundItem => {
+          orderQuantityAdjust(orderId, refundItem);
+        });
+
+        let refundedStatus = "refunded";
+
+        if (quantity < originalQuantity) {
+          refundedStatus = "partialRefund";
+        }
+
+        Orders.update({
+          "_id": orderId,
+          "billing.paymentMethod.transactionId": transactionId
+        }, {
+          $set: {
+            "billing.$.paymentMethod.status": refundedStatus
+          }
+        });
+
+        Meteor.call("orders/sendNotification", order, "itemRefund");
+
+        fut.return({
+          refund: true,
+          result: result
+        });
+      }
+    });
+    return fut.wait();
   }
 };
 

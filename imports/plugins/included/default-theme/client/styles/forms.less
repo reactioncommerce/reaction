@@ -65,7 +65,7 @@
 .rui.switch {
   display: flex;
   align-items: center;
-  cursor: hand;
+  cursor: pointer;
   padding: 10px 0;
   margin-bottom: 0;
 
@@ -150,7 +150,7 @@
 	height: 20px;
 	border-radius: 2px;
 	border: solid 2px #5e6264;
-  
+
   &:checked {
     font-size: 13px;
 
@@ -165,10 +165,10 @@
   }
 }
 
-.number-input {
+.rui.number-input {
   display: flex;
 
-  .number-field {
+  .number-input-field {
     width: 36px;
     height: 40px;
     margin-right: 5px;
@@ -179,13 +179,13 @@
   }
 
   .edited {
-    background-color: #edfdf8;
-    border: 1px solid #94e8d1
+    background-color: @rui-info-bg;
+    border: 1px solid @rui-info;
   }
-  .number-field:focus {
-    background-color: #edfdf8;
+  .number-input-field:focus {
+    background-color: @rui-info-bg;
   }
-  .number-field::-webkit-inner-spin-button {
+  .number-input-field::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
 
@@ -194,7 +194,7 @@
     flex: none;
 
     .button {
-      border: 1px solid #98afbc;
+      border: 1px solid @rui-default;
       border-radius: 2px;
       margin-bottom: -18px;
       width: 20px;
@@ -207,7 +207,6 @@
       i {
         font-size: 8px;
         color: #5e6264;
-        position: absolute;
       }
     }
   }

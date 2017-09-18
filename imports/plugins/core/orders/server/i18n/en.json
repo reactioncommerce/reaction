@@ -3,6 +3,7 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Order Not Found",
       "admin": {
         "shortcut": {
           "ordersLabel": "Orders"
@@ -10,7 +11,8 @@
         "dashboard": {
           "ordersLabel": "Orders",
           "ordersTitle": "Orders",
-          "ordersDescription": "Fulfill your orders"
+          "ordersDescription": "Fulfill your orders",
+          "clearSearch": "Clear"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -27,7 +29,11 @@
             "cardTitle": "Invoice",
             "adjustedTotal": "Adjusted Total",
             "capturedTotal": "Captured Total",
-            "refund": "Refund"
+            "refund": "Refund",
+            "refundLabel": "For Refund",
+            "refundItem": "Items",
+            "refundItemAmount": "Total",
+            "refundTotal": "Refund Total"
           },
           "fulfillment": "Fulfillment",
           "orderDetails": "Order Details",

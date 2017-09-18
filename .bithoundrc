@@ -64,6 +64,7 @@
       "react-addons-pure-render-mixin",
       "react-addons-test-utils",
       "react-dom",
+      "react-measure",
       "react",
       "transliteration"
     ],

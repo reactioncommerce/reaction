@@ -28,11 +28,11 @@ const handlers = {
 };
 
 registerComponent("Notification", Notification, [
-  composeWithTracker(composer),
+  composeWithTracker(composer, false),
   withProps(handlers)
 ]);
 
 export default compose(
-  composeWithTracker(composer),
+  composeWithTracker(composer, false),
   withProps(handlers)
 )(Notification);
