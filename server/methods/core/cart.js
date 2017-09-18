@@ -733,7 +733,7 @@ Meteor.methods({
     // set the same address for every shipping record
     let selector;
     let update;
-    if (cart.shipping && cart.shipping.length > 0) {
+    if (cart.shipping && cart.shipping.length > 0 && cart.items) {
       const shopIds = Object.keys(cart.getItemsByShop());
       shopIds.map((shopId) => {
         selector = {
@@ -750,8 +750,8 @@ Meteor.methods({
       try {
         Collections.Cart.update(selector, update);
       } catch (e) {
-        Logger.error(e);
-        throw new Meteor.Error("An error occurred adding the address");
+        Logger.error("An error occurred adding the address", e);
+        throw new Meteor.Error("An error occurred adding the address", e);
       }
     } else {
       // if no items in cart just add one record for the carts shop
