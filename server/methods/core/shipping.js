@@ -4,20 +4,68 @@ import { Cart } from "/lib/collections";
 import { Logger, Hooks } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
+function createShipmentQuotes(cartId, shopId, rates, selector) {
+  let update = {
+    $push: {
+      shipping: {
+        shopId: shopId,
+        shipmentQuotes: rates,
+        shipmentQuotesQueryStatus: {
+          requestStatus: "pending"
+        }
+      }
+    }
+  };
+  Cart.update(selector, update, function (error) {
+    if (error) {
+      Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
+      return;
+    }
+    Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
+  });
+
+  if (rates.length === 1 && rates[0].requestStatus === "error") {
+    const errorDetails = rates[0];
+    update = {
+      $push: {
+        shipping: {
+          shopId: shopId,
+          shipmentQuotes: [],
+          shipmentQuotesQueryStatus: {
+            requestStatus: errorDetails.requestStatus,
+            shippingProvider: errorDetails.shippingProvider,
+            message: errorDetails.message
+          }
+        }
+      }
+    };
+  }
+
+  if (rates.length > 0 && rates[0].requestStatus === undefined) {
+    update = {
+      $push: {
+        shipping: {
+          shopId: shopId,
+          shipmentQuotes: rates,
+          shipmentQuotesQueryStatus: {
+            requestStatus: "success",
+            numOfShippingMethodsFound: rates.length
+          }
+        }
+      }
+    };
+  }
+
+  return update;
+}
+
 function createShippingRecordByShop(cart, rates) {
   const cartId = cart._id;
   const itemsByShop = cart.getItemsByShop();
   const shops = Object.keys(itemsByShop);
   const selector = { _id: cartId };
   shops.map((shopId) => {
-    const update = {
-      $push: {
-        shipping: {
-          shipmentQuotes: rates,
-          shopId: shopId
-        }
-      }
-    };
+    const update = createShipmentQuotes(cartId, shopId, rates, selector);
     return Cart.update(selector, update, (error) => {
       if (error) {
         Logger.error(`Error adding rates to cart from createShippingRecordByShop ${cartId}`, error);
@@ -88,6 +136,51 @@ function normalizeAddresses(cart) {
   });
 }
 
+function updateShipmentQuotes(cartId, rates, selector) {
+  let update = {
+    $set: {
+      "shipping.0.shipmentQuotesQueryStatus": {
+        requestStatus: "pending"
+      }
+    }
+  };
+  Cart.update(selector, update, function (error) {
+    if (error) {
+      Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
+      return;
+    }
+    Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
+  });
+
+  if (rates.length === 1 && rates[0].requestStatus === "error") {
+    const errorDetails = rates[0];
+    update = {
+      $set: {
+        "shipping.0.shipmentQuotes": [],
+        "shipping.0.shipmentQuotesQueryStatus": {
+          requestStatus: errorDetails.requestStatus,
+          shippingProvider: errorDetails.shippingProvider,
+          message: errorDetails.message
+        }
+      }
+    };
+  }
+
+  if (rates.length > 0 && rates[0].requestStatus === undefined) {
+    update = {
+      $set: {
+        "shipping.$.shipmentQuotes": rates,
+        "shipping.$.shipmentQuotesQueryStatus": {
+          requestStatus: "success",
+          numOfShippingMethodsFound: rates.length
+        }
+      }
+    };
+  }
+
+  return update;
+}
+
 function updateShippingRecordByShop(cart, rates) {
   const cartId = cart._id;
   const itemsByShop = cart.getItemsByShop();
@@ -102,22 +195,12 @@ function updateShippingRecordByShop(cart, rates) {
     const shippingRecord = Cart.findOne(selector);
     // we may have added a new shop since the last time we did this, if so we need to add a new record
     if (shippingRecord) {
-      update = {
-        $set: {
-          "shipping.$.shipmentQuotes": rates
-        }
-      };
+      update = updateShipmentQuotes(cartId, rates, selector);
     } else {
       selector = { _id: cartId };
-      update = {
-        $push: {
-          shipping: {
-            shipmentQuotes: rates,
-            shopId: shopId
-          }
-        }
-      };
+      update = createShipmentQuotes(cartId, shopId, rates, selector);
     }
+
     Cart.update(selector, update, function (error) {
       if (error) {
         Logger.warn(`Error updating rates for cart ${cartId}`, error);
@@ -169,15 +252,42 @@ export const methods = {
   "shipping/getShippingRates": function (cart) {
     check(cart, CartSchema);
     const rates = [];
+    const retrialTargets = [];
     // must have items to calculate shipping
     if (!cart.items) {
       return rates;
     }
     // hooks for other shipping rate events
     // all callbacks should return rates
-    Hooks.Events.run("onGetShippingRates", rates, cart);
+    Hooks.Events.run("onGetShippingRates", [rates, retrialTargets], cart);
+
+    // Try once more.
+    if (retrialTargets.length > 0) {
+      Hooks.Events.run("onGetShippingRates", [rates, retrialTargets], cart);
+
+      if (retrialTargets.length > 0) {
+        Logger.warn("Failed to get shipping methods from these packages:", retrialTargets);
+      }
+    }
+
+    let newRates;
+    const didEveryShippingProviderFail = rates.every((shippingMethod) => {
+      return shippingMethod.requestStatus && shippingMethod.requestStatus === "error";
+    });
+    if (didEveryShippingProviderFail) {
+      newRates = [{
+        requestStatus: "error",
+        shippingProvider: "all",
+        message: "All requests for shipping methods failed."
+      }];
+    } else {
+      newRates = rates.filter((shippingMethod) => {
+        return !(shippingMethod.requestStatus) || shippingMethod.requestStatus !== "error";
+      });
+    }
+
     Logger.debug("getShippingRates returning rates", rates);
-    return rates;
+    return newRates;
   }
 };
 
