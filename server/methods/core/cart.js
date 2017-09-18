@@ -754,25 +754,40 @@ Meteor.methods({
         throw new Meteor.Error("An error occurred adding the address", e);
       }
     } else {
-      // if no items in cart just add one record for the carts shop
+      // if no items in cart just add or modify one record for the carts shop
       if (!cart.items) {
-        selector = {
-          _id: cartId
-        };
-        update = {
-          $push: {
-            shipping: {
-              address: address,
-              shopId: cart.shopId
+        // add a shipping record if it doesn't exist
+        if (!cart.shipping) {
+          selector = {
+            _id: cartId
+          };
+          update = {
+            $push: {
+              shipping: {
+                address: address,
+                shopId: cart.shopId
+              }
             }
-          }
-        };
+          };
 
-        try {
-          Collections.Cart.update(selector, update);
-        } catch (e) {
-          Logger.error(e);
-          throw new Meteor.Error("An error occurred adding the address");
+          try {
+            Collections.Cart.update(selector, update);
+          } catch (e) {
+            Logger.error(e);
+            throw new Meteor.Error("An error occurred adding the address");
+          }
+        } else {
+          // modify an existing record if we have one already
+          selector = {
+            "_id": cartId,
+            "shipping.shopId": cart.shopId
+          };
+
+          update = {
+            $set: {
+              "shipping.$.address": address
+            }
+          };
         }
       } else {
         // if we have items in the cart, add a record for each shop that's represented in the items
@@ -789,14 +804,15 @@ Meteor.methods({
               }
             }
           };
-          try {
-            Collections.Cart.update(selector, update);
-          } catch (e) {
-            Logger.error(e);
-            throw new Meteor.Error("An error occurred adding the address");
-          }
+
         });
       }
+    }
+    try {
+      Collections.Cart.update(selector, update);
+    } catch (e) {
+      Logger.error(e);
+      throw new Meteor.Error("An error occurred adding the address");
     }
 
     // refresh shipping quotes
