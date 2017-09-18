@@ -261,8 +261,7 @@ class OrderDashboardContainer extends Component {
         multipleSelect: false
       });
     } else if (orders === []) {
-      // if filter is selected it resets all orders that have been checked by
-      // by select all
+      // if filter is selected it resets all orders that have been checked when all are selected
       this.setState({
         renderFlowList: false,
         selectedItems: [],
