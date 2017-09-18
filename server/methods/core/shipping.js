@@ -9,7 +9,7 @@ function createShipmentQuotes(cartId, shopId, rates, selector) {
     $push: {
       shipping: {
         shopId: shopId,
-        shipmentQuotes: rates,
+        shipmentQuotes: [],
         shipmentQuotesQueryStatus: {
           requestStatus: "pending"
         }
@@ -27,15 +27,12 @@ function createShipmentQuotes(cartId, shopId, rates, selector) {
   if (rates.length === 1 && rates[0].requestStatus === "error") {
     const errorDetails = rates[0];
     update = {
-      $push: {
-        shipping: {
-          shopId: shopId,
-          shipmentQuotes: [],
-          shipmentQuotesQueryStatus: {
-            requestStatus: errorDetails.requestStatus,
-            shippingProvider: errorDetails.shippingProvider,
-            message: errorDetails.message
-          }
+      $set: {
+        "shipping.0.shipmentQuotes": [],
+        "shipping.0.shipmentQuotesQueryStatus": {
+          requestStatus: errorDetails.requestStatus,
+          shippingProvider: errorDetails.shippingProvider,
+          message: errorDetails.message
         }
       }
     };
@@ -43,14 +40,11 @@ function createShipmentQuotes(cartId, shopId, rates, selector) {
 
   if (rates.length > 0 && rates[0].requestStatus === undefined) {
     update = {
-      $push: {
-        shipping: {
-          shopId: shopId,
-          shipmentQuotes: rates,
-          shipmentQuotesQueryStatus: {
-            requestStatus: "success",
-            numOfShippingMethodsFound: rates.length
-          }
+      $set: {
+        "shipping.$.shipmentQuotes": rates,
+        "shipping.$.shipmentQuotesQueryStatus": {
+          requestStatus: "success",
+          numOfShippingMethodsFound: rates.length
         }
       }
     };
