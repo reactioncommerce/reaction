@@ -46,6 +46,7 @@ export function withCurrentAccount(component) {
       const isGuest = Roles.userIsInRole(user, "guest", shopId);
       // but if a user has never logged in then they are anonymous
       const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
+
       const account = Accounts.findOne(user._id);
 
       onData(null, { currentAccount: isGuest && !isAnonymous && account });
