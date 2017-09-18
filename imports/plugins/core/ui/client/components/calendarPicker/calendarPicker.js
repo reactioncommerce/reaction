@@ -21,7 +21,7 @@ class CalendarPicker extends Component {
     });
 
     if (this.props.onDatesChange) {
-      this.props.onDatesChange({ startDate, endDate });
+      this.props.onDatesChange(startDate, endDate);
     }
   }
 

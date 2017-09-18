@@ -12,6 +12,17 @@ class OrderActions extends Component {
     handleMenuClick: PropTypes.func
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    };
+  }
+
+  onDatesChange = (bla1, bla2) => {
+    console.log("--->", bla1, bla2);
+  }
+
   buttonElement() {
     return (
       <Button
@@ -101,11 +112,10 @@ class OrderActions extends Component {
                 buttonElement={this.buttonElement()}
                 menuClassName="calender-dropdown"
                 className="order-menu-item-dropdown"
-                onChange={this.props.handleMenuClick}
                 attachment="bottom right"
                 targetAttachment="top right"
               >
-                <Components.CalendarPicker/>
+                <Components.CalendarPicker onDatesChange={this.onDatesChange} />
               </DropDownMenu>
             </div>
           </div>

@@ -191,6 +191,10 @@ class OrderDashboardContainer extends Component {
     });
   }
 
+  // searchDate = (bla, bla2) => {
+  //   query.
+  // }
+
   clearFilter = () => {
     const oldQuery = this.state.query;
     const query = OrderHelper.makeQuery("");
