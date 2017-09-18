@@ -111,6 +111,7 @@ const composer = ({ currentAccount }, onData) => {
   const adminShortcuts = getAdminShortcutIcons();
 
   onData(null, {
+    currentAccount,
     adminShortcuts,
     userImage,
     userName
