@@ -34,6 +34,23 @@ function getShippingRates(previousQueryResults, cart) {
       return previousQueryResults;
     }
   }
+  if (!(cart.shipping && cart.shipping[0] && cart.shipping[0].address)) {
+    const errorDetails = {
+      requestStatus: "error",
+      shippingProvider: "shippo",
+      message: "The 'shipping' property of this cart is either missing or incomplete."
+    };
+    rates.push(errorDetails);
+    return [rates, retrialTargets];
+  }
+  if (!(cart.items && cart.items[0] && cart.items[0].parcel)) {
+    const errorDetails = {
+      requestStatus: "error",
+      shippingProvider: "shippo",
+      message: "This cart has no items, or the first item has no 'parcel' property."
+    };
+    return [[errorDetails], []];
+  }
 
   let merchantShippingRates = false;
   const marketplaceSettings = Reaction.getMarketplaceSettings();
