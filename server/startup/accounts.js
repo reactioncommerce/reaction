@@ -229,10 +229,10 @@ export default function () {
       // in current version currentSessionId will be available for anonymous
       // users only, because it is unknown for me how to pass sessionId when user
       // logged in
-
-      // currentSessionId should be a string but the former declaration assign currentSessionId a boolean value.
-      const currentSessionId = options.methodArguments[0];
-
+      let currentSessionId;
+      if (options.methodArguments && options.methodArguments.length === 1 && options.methodArguments[0].sessionId) {
+        currentSessionId = options.methodArguments[0].sessionId;
+      }
       // changing of workflow status from now happens within `cart/mergeCart`
       return Meteor.call("cart/mergeCart", cart._id, currentSessionId);
     }
