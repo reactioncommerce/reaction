@@ -155,7 +155,6 @@ class OrderDashboardContainer extends Component {
   }
 
   handleMenuClick = (event, value) => {
-  //  const query = OrderHelper.makeQuery(value);
     let query = OrderHelper.makeQuery(value);
     // ensure other fields (e.g ids) on query are kept
     query = Object.assign({}, this.state.query, query);
@@ -262,7 +261,7 @@ class OrderDashboardContainer extends Component {
         multipleSelect: false
       });
     } else if (orders === []) {
-      // if filter is selected it resets all orders that has been checked by
+      // if filter is selected it resets all orders that have been checked by
       // by select all
       this.setState({
         renderFlowList: false,
