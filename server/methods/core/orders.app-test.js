@@ -80,16 +80,25 @@ describe("orders test", function () {
   }
 
   function billingObjectMethod(orderObject) {
-    return orderObject.billing.find(billing => billing.shopId === shopId);
+    const billingObject = orderObject.billing.find((billing) => {
+      return billing.shopId === shopId;
+    });
+    return billingObject;
   }
 
   function shippingObjectMethod(orderObject) {
-    return orderObject.shipping.find(shipping => shipping.shopId === shopId);
+    const shippingObject = orderObject.shipping.find((shipping) => {
+      return shipping.shopId === shopId;
+    });
+    return shippingObject;
   }
 
   function orderCreditMethod(orderData) {
     const billingRecord = orderData.billing.filter(value => value.paymentMethod.method ===  "credit");
-    return billingRecord.find(billing => billing.shopId === shopId);
+    const billingObject =  billingRecord.find((billing) => {
+      return billing.shopId === shopId;
+    });
+    return billingObject;
   }
 
   describe("orders/cancelOrder", function () {

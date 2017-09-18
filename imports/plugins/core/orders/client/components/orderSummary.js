@@ -1,34 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Reaction } from "/client/api";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
-
-/**
- * getBillingInfo
- *
- * @summary get proper billing object as per current active shop
- * @param {Object} order - order object to check against
- * @return {Object} proper billing object to use
- */
-function getBillingInfo(order) {
-  return order.billing.find(
-    billing => billing.shopId === Reaction.getShopId()
-  ) || {};
-}
-
-/**
- * getShippingInfo
- *
- * @summary get proper shipping object as per current active shop
- * @param {Object} order - order object to check against
- * @return {Object} proper shipping object to use
- */
-function getShippingInfo(order) {
-  return order.shipping.find(
-    shipping => shipping.shopId === Reaction.getShopId()
-  ) || {};
-}
+import { getBillingInfo, getShippingInfo } from "../../lib/helpers/orderHelpers";
 
 class OrderSummary extends Component {
   static propTypes = {

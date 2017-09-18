@@ -3,6 +3,7 @@ import { Template } from "meteor/templating";
 import { Orders, Shops } from "/lib/collections";
 import { Reaction } from "/client/api";
 
+
 /**
  * dashboardOrdersList helpers
  *
@@ -28,7 +29,10 @@ Template.dashboardOrdersList.helpers({
     return moment(this.createdAt).fromNow();
   },
   shipmentTracking() {
-    return this.shipping.find(shipping => shipping.shopId === Reaction.getShopId()).shipmentMethod.tracking;
+    const shippingObject = this.shipping.find((shipping) => {
+      return shipping.shopId === Reaction.getShopId();
+    });
+    return shippingObject.shipmentMethod.tracking;
   },
   shopName() {
     const shop = Shops.findOne(this.shopId);

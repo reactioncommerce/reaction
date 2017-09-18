@@ -6,21 +6,9 @@ import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Orders } from "/lib/collections";
 import { Card, CardHeader, CardBody, CardGroup } from "/imports/plugins/core/ui/client/components";
-import { Reaction, i18next } from "/client/api";
+import { i18next } from "/client/api";
 import OrderSummary from "../components/orderSummary";
-
-/**
- * getShippingInfo
- *
- * @summary get proper shipping object as per current active shop
- * @param {Object} order - order object to check against
- * @return {Object} proper shipping object to use
- */
-function getShippingInfo(order) {
-  return order.shipping.find(
-    shipping => shipping.shopId === Reaction.getShopId()
-  ) || {};
-}
+import { getShippingInfo } from "../../lib/helpers/orderHelpers";
 
 class OrderSummaryContainer extends Component {
   static propTypes = {

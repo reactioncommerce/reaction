@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import Avatar from "react-avatar";
 import moment from "moment";
 import classnames from "classnames/dedupe";
-import { Reaction } from "/client/api";
 import { Orders } from "/lib/collections";
 import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
 import OrderTableColumn from "./orderTableColumn";
 import OrderBulkActionsBar from "./orderBulkActionsBar";
 import { formatPriceString } from "/client/api";
 import ProductImage from "./productImage";
+import { getBillingInfo, getShippingInfo } from "../../lib/helpers/orderHelpers";
 
 const classNames = {
   colClassNames: {
@@ -33,32 +33,6 @@ const classNames = {
     "": "order-table-header-control"
   }
 };
-
-/**
- * getBillingInfo
- *
- * @summary get proper billing object as per current active shop
- * @param {Object} order - order object to check against
- * @return {Object} proper billing object to use
- */
-function getBillingInfo(order) {
-  return order.billing.find(
-    billing => billing.shopId === Reaction.getShopId()
-  ) || {};
-}
-
-/**
- * getShippingInfo
- *
- * @summary get proper shipping object as per current active shop
- * @param {Object} order - order object to check against
- * @return {Object} proper shipping object to use
- */
-function getShippingInfo(order) {
-  return order.shipping.find(
-    shipping => shipping.shopId === Reaction.getShopId()
-  ) || {};
-}
 
 class OrderTable extends Component {
   static propTypes = {
