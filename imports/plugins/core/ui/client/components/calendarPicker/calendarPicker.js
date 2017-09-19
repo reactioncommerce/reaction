@@ -64,6 +64,9 @@ render() {
         focusedInput={focusedInput}
         startDate={startDate}
         endDate={endDate}
+        navPrev={<i className="fa fa-arrow-left"/>}
+        navNext={<i className="fa fa-arrow-right"/>}
+        hideKeyboardShortcutsPanel={true}
       />
     </div>
   );
