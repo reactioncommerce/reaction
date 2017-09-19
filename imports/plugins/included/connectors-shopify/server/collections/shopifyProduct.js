@@ -4,7 +4,8 @@ import { Products } from "/lib/collections";
 export const ShopifyProduct = new SimpleSchema({
   shopifyId: {
     type: Number,
-    optional: true
+    optional: true,
+    decimal: false
   }
 });
 
