@@ -35,6 +35,7 @@
         "shopSettings": "Postavke Shop",
         "dashboard": "kontrolna ploča",
         "print": "otisak",
+        "editMode": "način uređivanja",
         "auto": "Auto"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": " je sada dostupan.",
         "pkgDisabled": " je sada onemogućen."
+      },
+      "gridSettingsPanel": {
+        "title": "Postavke Grid",
+        "selected": "Odabran"
       },
       "cartDrawer": {
         "empty": "Nažalost, vaša košarica je prazna.",
