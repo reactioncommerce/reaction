@@ -1,3 +1,4 @@
+sudo: required
 language: node_js
 node_js:
   - "7"
@@ -7,3 +8,12 @@ services:
   - mongodb
 env:
   - LAIKA_OPTIONS="-t 5000
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: AKIAI37VRE3PGAJFME2A
+  secret_access_key:
+    secure: "Encypted vloOO/25Jht6Yok5WbiI1jGfQgL0Om8FK1ecsCEM="
+  region: "us-east-1"  
+  app: "Shop DEV"
+  env: "ShopDev-env"
+  bucket_name: "elasticbeanstalk-eu-central-1-262863902191"
