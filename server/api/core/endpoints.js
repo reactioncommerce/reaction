@@ -4,7 +4,6 @@ import _ from "lodash";
 import Fiber from "fibers";
 import connect from "connect";
 import bodyParser from "body-parser";
-import query from "connect-query";
 import connectRoute from "connect-route";
 
 import { Meteor } from "meteor/meteor";
@@ -16,9 +15,14 @@ import { WebApp } from "meteor/webapp";
 // Exported as default at the bottom of this file.
 const Endpoints = {};
 
-WebApp.connectHandlers.use(bodyParser.urlencoded({ limit: "50mb", extended: true })); // Override default request size
-WebApp.connectHandlers.use(bodyParser.json({ limit: "50mb", extended: true })); // Override default request size
-WebApp.connectHandlers.use(query());
+WebApp.connectHandlers.use(bodyParser.json({
+  limit: "200kb", // Override default request size
+  // Attach the raw body which is necessary for doing verifications for some webhooks
+  verify: function (req, res, buf) {
+    req.rawBody = buf;
+  },
+  extended: true
+}));
 
 // Handler for adding middleware before an endpoint (Endpoints.middleWare
 // is just for legacy reasons). Also serves as a namespace for middleware
