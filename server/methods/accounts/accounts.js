@@ -664,6 +664,8 @@ export function inviteShopMember(options) {
     dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
   }
 
+  dataForEmail.groupName = _.startCase(group.name);
+
   // Compile Email with SSR
   const tpl = "accounts/inviteShopMember";
   const subject = "accounts/inviteShopMember/subject";
