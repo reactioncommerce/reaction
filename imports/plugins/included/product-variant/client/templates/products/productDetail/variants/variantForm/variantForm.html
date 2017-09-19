@@ -1,6 +1,6 @@
 <template name="variantForm">
   <div>
-    {{> React component=variantFormComponent variant=variant}}
+    {{> React component=variantFormComponent variant=variant type="variant" }}
   </div>
 
   <div class="panel panel-default">
@@ -18,8 +18,10 @@
       </div>
     </div>
     <div class="panel-group panel-group-accordian" role="tablist" aria-multiselectable="true">
-      {{#each childVariants}}
-        {{>childVariantForm}}
+      {{#each childVariant in childVariants}}
+        <div>
+          {{> React component=variantFormComponent variant=childVariant type="option" }}
+        </div>
       {{/each}}
     </div>
   </div>
