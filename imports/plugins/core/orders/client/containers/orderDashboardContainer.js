@@ -829,7 +829,6 @@ class OrderDashboardContainer extends Component {
   }
 
   render() {
-    console.log("state--->", this.state.query);
     return (
       <div className="order-dashboard-container">
         <OrderDashboard

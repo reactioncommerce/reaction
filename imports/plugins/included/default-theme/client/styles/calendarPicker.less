@@ -159,10 +159,14 @@
 .CalendarMonth__caption {
   color: #3c3f40;
   margin-top: 7px;
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
   margin-bottom: 2px;
   caption-side: initial;
+
+  strong {
+    font-weight: normal;
+  }
 }
 
 .CalendarMonth--horizontal .CalendarMonth__caption,
@@ -347,9 +351,9 @@
 .DayPickerNavigation--horizontal .DayPickerNavigation__prev,
 .DayPickerNavigation--horizontal .DayPickerNavigation__next {
   border-radius: 50%;
-  border: 2px solid @rui-brand-dark;
+  border: 2px solid #3c3f40;
   padding: 1px 1px;
-  top: 26px;
+  top: 23px;
   background-color: #fff;
   z-index: 2;
   position: absolute;
@@ -583,7 +587,6 @@ outline: none;
 }
 
 .DayPickerKeyboardShortcuts__panel--block .KeyboardShortcutRow__key-container {
-  width: auto;
   text-align: left;
   display: inline;
 }

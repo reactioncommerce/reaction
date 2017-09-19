@@ -15,11 +15,16 @@ class OrderActions extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      startDate: null,
+      endDate: null
     };
   }
 
   onDatesChange = (startDate, endDate) => {
+    this.setState({
+      startDate,
+      endDate
+    });
     this.props.onDatesChange(startDate, endDate);
   }
 
@@ -30,6 +35,17 @@ class OrderActions extends Component {
       >
         <i className="fa fa-angle-down" />
       </Components.Button>
+    );
+  }
+
+  dateLabel() {
+    if (this.state.startDate && this.state.endDate) {
+      return (
+        <span>{this.state.startDate.format("MM/DD")} - {this.state.endDate.format("MM/DD")}</span>
+      );
+    }
+    return (
+      <Components.Translation defaultValue="Date Range" i18nKey="order.filter.dateRange" />
     );
   }
 
@@ -47,7 +63,7 @@ class OrderActions extends Component {
             </span>
             <div className="order-filter-icons">
               <Components.Button
-                className={ classnames({
+                className={classnames({
                   "order-filter-button": true
                 }, this.props.className.status)}
                 onClick={() => this.props.clearFilter("status")}
@@ -98,13 +114,26 @@ class OrderActions extends Component {
         </div>
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span className="order-filter-name"> Date range </span>
+            <span
+              className={classnames({
+                "order-filter-name": true
+              }, this.props.className.date)}
+            >
+              {this.dateLabel()}
+            </span>
             <div className="order-filter-icons">
               <Components.Button
                 className={classnames({
                   "order-filter-button": true
                 }, this.props.className.date)}
-                onClick={() => this.props.clearFilter("date")}
+                onClick={() => {
+                  this.setState({
+                    startDate: null,
+                    endDate: null
+                  });
+
+                  this.props.clearFilter("date");
+                }}
               >
                 <i className="fa fa-filter" />
               </Components.Button>
@@ -116,7 +145,11 @@ class OrderActions extends Component {
                 targetAttachment="top right"
                 isClickable={false}
               >
-                <Components.CalendarPicker onDatesChange={this.onDatesChange}/>
+                <Components.CalendarPicker
+                  initialStartDate={this.state.startDate}
+                  initialEndDate={this.state.endDate}
+                  onDatesChange={this.onDatesChange}
+                />
               </Components.DropDownMenu>
             </div>
           </div>
