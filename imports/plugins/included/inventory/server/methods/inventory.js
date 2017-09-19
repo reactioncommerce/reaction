@@ -86,7 +86,7 @@ export function registerInventory(product) {
   return totalNewInventory;
 }
 
-function adjustInventory(product, userId) {
+function adjustInventory(product, userId, context) {
   // TODO: This can fail even if updateVariant succeeds.
   // Should probably look at making these two more atomic
   const simpleProductSchema = Reaction.collectionSchema("Products", { type: "simple" });
@@ -104,9 +104,13 @@ function adjustInventory(product, userId) {
       type = "simple";
   }
 
+  // calledByServer is only true if this method was triggered by the server, such as from a webhook.
+  // there will be a null connection and no userId.
+  const calledByServer = (context && context.connection === null && !Meteor.userId());
+  // if this method is calledByServer, skip permission check.
   // user needs createProduct permission to adjust inventory
   // REVIEW: Should this be checking shop permission instead?
-  if (!Reaction.hasPermission("createProduct", userId, product.shopId)) {
+  if (!calledByServer && !Reaction.hasPermission("createProduct", userId, product.shopId)) {
     throw new Meteor.Error(403, "Access Denied");
   }
 
@@ -166,6 +170,6 @@ Meteor.methods({
     const simpleProductSchema = Reaction.collectionSchema("Products", { type: "simple" });
     const variantProductSchema = Reaction.collectionSchema("Products", { type: "variant" });
     check(product, Match.OneOf(simpleProductSchema, variantProductSchema));
-    adjustInventory(product, this.userId);
+    adjustInventory(product, this.userId, this);
   }
 });
