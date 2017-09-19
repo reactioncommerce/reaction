@@ -243,12 +243,12 @@ function composer(props, onData) {
   }
 
   const countries = Countries.find({}).fetch();
-  const variant = ReactionProduct.selectedTopVariant();
+  const variant = props.variant || ReactionProduct.selectedTopVariant();
 
   if (variant) {
     onData(null, {
       countries,
-      variant: ReactionProduct.selectedTopVariant(),
+      variant: variant,
       editFocus: Reaction.state.get("edit/focus")
     });
   } else {
