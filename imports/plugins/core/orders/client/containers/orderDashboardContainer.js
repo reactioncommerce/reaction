@@ -362,9 +362,9 @@ class OrderDashboardContainer extends Component {
     selectedOrders.forEach((order) => {
       const shippingRecord = getShippingInfo(order);
 
-      Meteor.call(`orders/shipment${capitalizeStatus}`, order, shippingRecord, (err) => {
-        if (err) {
-          Alerts.toast(`An error occured while setting the status: ${err}`, "error");
+      Meteor.call(`orders/shipment${capitalizeStatus}`, order, shippingRecord, (error) => {
+        if (error) {
+          Alerts.toast(`An error occured while setting the status: ${error}`, "error");
         } else {
           Meteor.call("orders/updateHistory", order._id, "Shipping state set by bulk operation", status);
         }
@@ -753,25 +753,25 @@ class OrderDashboardContainer extends Component {
     // TODO: send these orders in batch as an array. This would entail re-writing the
     // "orders/approvePayment" method to receive an array of orders as a param.
     selectedOrders.forEach((order) => {
-      Meteor.call("orders/approvePayment", order, (err) => {
-        if (err) {
+      Meteor.call("orders/approvePayment", order, (error) => {
+        if (error) {
           this.setState({
             isLoading: {
               capturePayment: false
             }
           });
-          Alerts.toast(`An error occured while approving the payment: ${err}`, "error");
+          Alerts.toast(`An error occured while approving the payment: ${error}`, "error");
         } else {
           // TODO: send these orders in batch as an array. This would entail re-writing the
           // "orders/capturePayments" method to receive an array of orders as a param.
-          Meteor.call("orders/capturePayments", order._id, (error) => {
-            if (error) {
+          Meteor.call("orders/capturePayments", order._id, (err) => {
+            if (err) {
               this.setState({
                 isLoading: {
                   capturePayment: false
                 }
               });
-              Alerts.toast(`An error occured while capturing the payment: ${error}`, "error");
+              Alerts.toast(`An error occured while capturing the payment: ${err}`, "error");
             }
 
             orderCount++;

@@ -137,7 +137,7 @@ class OrderTable extends Component {
 
   renderShipmentInfo(order) {
     const emailAddress = order.email ||
-    <Translation defaultValue={"Email not availabe"} i18nKey={"admin.orderWorkflow.ordersList.emailNotFound"} />;
+    <Translation defaultValue={"Email not available"} i18nKey={"admin.orderWorkflow.ordersList.emailNotFound"} />;
 
     return (
       <div className="shipment-info">

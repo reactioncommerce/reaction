@@ -39,15 +39,15 @@ Template.coreOrderShippingTracking.events({
     Meteor.call("shipping/status/refresh", orderId, (result) => {
       if (result && result.error) {
         instance.$("#btn-processing").addClass("hidden");
-        Alerts.toast(i18next.t("orderShipping.labelError", { err: result.error }), "error", { timeout: 7000 });
+        Alerts.toast(i18next.t("orderShipping.labelError", { error: result.error }), "error", { timeout: 7000 });
       }
     });
   },
   "click [data-event-action=shipmentShipped]": function () {
     const template = Template.instance();
     const shipment = getShippingInfo(template.order);
-    Meteor.call("orders/shipmentShipped", template.order, shipment, (err) => {
-      if (err) {
+    Meteor.call("orders/shipmentShipped", template.order, shipment, (error) => {
+      if (error) {
         Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
       } else {
         Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
@@ -67,8 +67,8 @@ Template.coreOrderShippingTracking.events({
 
   "click [data-event-action=resendNotification]": function () {
     const template = Template.instance();
-    Meteor.call("orders/sendNotification", template.order, "shipped", (err) => {
-      if (err) {
+    Meteor.call("orders/sendNotification", template.order, "shipped", (error) => {
+      if (error) {
         Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
       } else {
         Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
