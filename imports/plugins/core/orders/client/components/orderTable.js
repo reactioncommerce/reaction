@@ -13,24 +13,24 @@ import { getBillingInfo, getShippingInfo } from "../../lib/helpers/orderHelpers"
 
 const classNames = {
   colClassNames: {
-    "Name": "order-table-column-name",
-    "Email": "order-table-column-email",
-    "Date": "order-table-column-date hidden-xs hidden-sm",
-    "ID": "order-table-column-id hidden-xs hidden-sm",
-    "Total": "order-table-column-total",
-    "Shipping": "order-table-column-shipping hidden-xs hidden-sm",
-    "Status": "order-table-column-status",
-    "": "order-table-column-control"
+    Name: "order-table-column-name",
+    Email: "order-table-column-email",
+    Date: "order-table-column-date hidden-xs hidden-sm",
+    ID: "order-table-column-id hidden-xs hidden-sm",
+    Total: "order-table-column-total",
+    Shipping: "order-table-column-shipping hidden-xs hidden-sm",
+    Status: "order-table-column-status",
+    Control: "order-table-column-control"
   },
   headerClassNames: {
-    "Name": "order-table-header-name",
-    "Email": "order-table-header-email",
-    "Date": "order-table-header-date hidden-xs hidden-sm",
-    "ID": "order-table-header-id hidden-xs hidden-sm",
-    "Total": "order-table-header-total",
-    "Shipping": "order-table-header-shipping hidden-xs hidden-sm",
-    "Status": "order-table-header-status",
-    "": "order-table-header-control"
+    Name: "order-table-header-name",
+    Email: "order-table-header-email",
+    Date: "order-table-header-date hidden-xs hidden-sm",
+    ID: "order-table-header-id hidden-xs hidden-sm",
+    Total: "order-table-header-total",
+    Shipping: "order-table-header-shipping hidden-xs hidden-sm",
+    Status: "order-table-header-status",
+    Control: "order-table-header-control"
   }
 };
 
@@ -200,35 +200,35 @@ class OrderTable extends Component {
     if (this.props.isOpen) {
       // Render order list column/row data
       const filteredFields = {
-        "Name": {
+        Name: {
           accessor: row => getShippingInfo(row).address.fullName,
           id: "shippingfullName"
         },
-        "Email": {
+        Email: {
           accessor: "email",
           id: "email"
         },
-        "Date": {
+        Date: {
           accessor: "createdAt",
           id: "createdAt"
         },
-        "ID": {
+        ID: {
           accessor: "_id",
           id: "_id"
         },
-        "Total": {
+        Total: {
           accessor: row => getBillingInfo(row).invoice.total,
           id: "billingTotal"
         },
-        "Shipping": {
+        Shipping: {
           accessor: row => getShippingInfo(row).workflow.status,
           id: "shippingStatus"
         },
-        "Status": {
+        Status: {
           accessor: "workflow.status",
           id: "workflow.status"
         },
-        "": {
+        Control: {
           accessor: "",
           id: ""
         }
@@ -275,10 +275,12 @@ class OrderTable extends Component {
           );
         }
 
-        if (columnName === "") {
+        if (columnName === "Control") {
+          colHeader = " ";
           resizable = false;
           sortable = false;
         }
+
 
         const columnMeta = {
           accessor: filteredFields[columnName].accessor,
