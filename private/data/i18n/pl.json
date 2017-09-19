@@ -11,7 +11,7 @@
         "groups": {
           "email": "Ustawienia poczty e-mail",
           "description": "Opis",
-          "remove": "Usunąć"
+          "remove": "Usuń"
         },
         "settings": {
           "localizationAndI18NLabel": "Lokalizacja i i18n"
@@ -20,11 +20,11 @@
       "app": {
         "save": "Zapisz",
         "saveAndContinue": "Zapisz i kontynuuj",
-        "cancel": "Anulować",
-        "submit": "Przedkładać",
-        "delete": "Usunąć",
-        "create": "Tworzyć",
-        "close": "Blisko",
+        "cancel": "Anuluj",
+        "submit": "Wyślij",
+        "delete": "Usuń",
+        "create": "Stwórz",
+        "close": "Zamknij",
         "settings": "Ustawienia",
         "loading": "Ładowanie",
         "toggle": "Przełącznik",
@@ -32,56 +32,56 @@
         "unauthorizedMessage": "Nie masz uprawnień, aby zobaczyć tę zawartość.",
         "monthOptions": "Wybierz miesiąc",
         "yearOptions": "Wybierz rok",
-        "shopSettings": "Ustawienia Shop",
-        "dashboard": "Dashboard",
-        "print": "Wydrukować",
+        "shopSettings": "Ustawienia Sklepu",
+        "dashboard": "Panel Kontrolny",
+        "print": "Wydrukuj",
         "auto": "Auto"
       },
       "searchSettings": {
         "productSearchSettings": {
           "panelTitle": "Wyszukiwarka produktów",
-          "includeTitle": "Dołącz tytuł",
-          "includeDescription": "zawierać opis",
-          "includePageTitle": "Dołącz tytuł strony",
-          "includeDetails": "zawierać szczegóły",
-          "includeVendor": "Dołącz sprzedawcą"
+          "includeTitle": "Dodaj tytuł",
+          "includeDescription": "Dodaj opis",
+          "includePageTitle": "Dodaj tytuł strony",
+          "includeDetails": "Dodaj szczegóły",
+          "includeVendor": "Dodaj sprzedawcę"
         },
         "orderSearchSettings": {
-          "panelTitle": "Zamówienie Ustawienia wyszukiwania"
+          "panelTitle": "Ustawienia Wyszukiwania Zamówień"
         },
         "accountSearchSettings": {
-          "panelTitle": "Konto Ustawienia wyszukiwania"
+          "panelTitle": "Ustawienia Wyszukiwania Kont"
         },
-        "noSettings": "Brak ustawienia aktualnie dostępne",
-        "settingsSaved": "Ustawienia wyszukiwania zapamiętanych",
-        "settingsfailed": "Ustawienia wyszukiwania aktualizacja nie powiodła się"
+        "noSettings": "Brak aktualnie dostępnych ustawień",
+        "settingsSaved": "Zapis ustawień wyszukiwania nie udał się",
+        "settingsfailed": "Zapis ustawień wyszukiwania udany"
       },
       "header": {
-        "tagsAdd": "Dodaj etykietke",
+        "tagsAdd": "Dodaj etykietkę",
         "search": "Szukaj produktów ..."
       },
       "productDetail": {
         "productManagement": "Zarządzanie produktem",
         "whenYouAreDone": "po zakończeniu edycji.",
         "tags": "Tagi",
-        "tagsAdd": "Dodaj etykietke",
-        "addInventory": "Dodaj Inventory",
+        "tagsAdd": "Dodaj etykietkę",
+        "addInventory": "Dodaj Inwentarz",
         "barcode": "kod kreskowy",
         "confirmDeleteBarcode": "Czy na pewno chcesz usunąć kod kreskowy",
         "details": "Szczegóły",
-        "detailsName": "Nazwa Detail",
+        "detailsName": "Nazwa Szczegółu",
         "detailsInfo": "Szczegółowe informacje",
-        "generate": "Generować",
+        "generate": "Generuj",
         "generateBarcodes": "Generowanie kodów kreskowych",
         "hideBarcodes": "Ukryj Kody kreskowe",
         "options": "Opcje",
         "addToCart": "Dodaj do koszyka",
         "chooseOptions": "Proszę wybrać opcje przed dodaniem do koszyka",
-        "outOfStock": "Niestety, ten element jest niedostępny!",
+        "outOfStock": "Niestety, ten przedmiot jest niedostępny!",
         "publishFirst": "Publikowanie produktu przed dodaniem do koszyka.",
-        "quantityAbbreviation": "QTY",
+        "quantityAbbreviation": "ILOŚĆ",
         "selectOption": "Wybierz jedną z opcji przed dodaniem do koszyka",
-        "addedToCart": "w dodatku",
+        "addedToCart": "Dodano do koszyka",
         "showBarcodes": "Pokaż kody kreskowe",
         "soldOut": "Wyprzedane!",
         "backOrder": "Zaległe zamówienie",
@@ -103,27 +103,27 @@
         "twitterMsg": "Twitter Wiadomość",
         "pinterestMsg": "Wiadomość Pinterest",
         "googleplusMsg": "Wiadomość Google+",
-        "editVariant": "Edycja Variant",
-        "variantOptions": "Variant Opcje",
-        "variantDetails": "wariant Szczegóły",
-        "duplicateVariant": "Duplikować",
-        "addVariantOption": "Dodaj Option",
-        "removeVariant": "Usunąć",
-        "duplicateProduct": "duplikat wyrobów",
-        "pinProduct": "pin wyrobów",
-        "toggleSize": "Przegubowe Rozmiar",
-        "publish": "Publikować",
-        "moreOptions": "Więcej możliwości",
+        "editVariant": "Edycja Wariantu",
+        "variantOptions": "Opcje Wariantu",
+        "variantDetails": "Szczegóły Wariantu",
+        "duplicateVariant": "Duplikuj",
+        "addVariantOption": "Dodaj Opcję",
+        "removeVariant": "Usuń",
+        "duplicateProduct": "Duplikuj produkt",
+        "pinProduct": "Przypnij produkt",
+        "toggleSize": "Przełącz rozmiar",
+        "publish": "Publikuj",
+        "moreOptions": "Więcej opcji",
         "details": "Szczegóły"
       },
       "productVariant": {
         "addVariantOptions": "Dodaj opcje, aby umożliwić \"Dodaj do koszyka\" butto",
         "inventoryQuantity": "Ilość",
-        "title": "Etykieta",
+        "title": "Tytuł",
         "price": "Cena",
         "optionTitle": "Opcja",
         "barcode": "kod kreskowy",
-        "compareAtPrice": "Cena (MSRP)",
+        "compareAtPrice": "Cena (SCD)",
         "fulfillmentService": "Wykonanie usługi",
         "weight": "Waga",
         "length": "Długość",
@@ -131,19 +131,19 @@
         "height": "Wysokość",
         "taxable": "Podlegający opodatkowaniu",
         "taxCode": "Kody podatkowe",
-        "taxDescription": "Opis podatkowe",
-        "inventoryManagement": "Inwentaryzacja",
-        "inventoryManagementLabel": "Rejestracja produktu w systemie inwentaryzacji i śledzić jego status",
-        "inventoryPolicy": "Zaprzeczyć, gdy niedostępne",
-        "inventoryPolicyLabel": "Nie sprzedawać wariant produktu, gdy nie jest dostępny w magazynie",
+        "taxDescription": "Opis podatku",
+        "inventoryManagement": "Zarządzanie Inwentarzem",
+        "inventoryManagementLabel": "Rejestruj produkt w systemie inwentaryzacji i śledź jego status",
+        "inventoryPolicy": "Odmówić sprzedaży, gdy produkt jest niedostępny",
+        "inventoryPolicyLabel": "Nie sprzedawać wariantu produktu, gdy nie jest dostępny w magazynie",
         "lowInventoryWarningThreshold": "Informuj @",
-        "lowInventoryWarningThresholdLabel": "Ostrzegają klientów, że produkt będzie zbliżona do wyprzedane gdy ilość osiągnie kolejny próg",
+        "lowInventoryWarningThresholdLabel": "Ostrzegaj klientów, że produkt będzie bliski wyprzedania gdy ilość osiągnie kolejny próg",
         "originCountry": "Kraj pochodzenia",
-        "selectTaxCode": "Wybierz Ordynacja podatkowa"
+        "selectTaxCode": "Wybierz Ordynacje podatkową"
       },
       "variantList": {
         "moreOptions": "Istnieje więcej opcji dostępnych dla tego wyboru.",
-        "createVariant": "Tworzenie Variant"
+        "createVariant": "Tworzenie opcji"
       },
       "gridPackage": {
         "pkgEnabled": "{{app}} jest teraz włączona.",
@@ -151,12 +151,12 @@
       },
       "cartDrawer": {
         "empty": "Jesteśmy smutni. Twój koszyk jest pusty.",
-        "keepShopping": "Lek na zakupy",
-        "checkout": "Sprawdź teraz",
+        "keepShopping": "Kontynuuj zakupy",
+        "checkout": "Kup teraz",
         "new": "Nowy",
         "coreOrderWorkflow/created": "Utworzono",
-        "coreOrderWorkflow/completed": "Zakończony",
-        "coreOrderWorkflow/canceled": "Odwołany"
+        "coreOrderWorkflow/completed": "Zakończono",
+        "coreOrderWorkflow/canceled": "Odwołano"
       },
       "cartSubTotals": {
         "head": "Twój koszyk",
@@ -172,38 +172,38 @@
       "order": {
         "created": "Utworzono",
         "reference": "Odniesienie",
-        "cancelInvoice": "Anulować",
+        "cancelInvoice": "Anuluj",
         "invoice": "Faktura",
         "ordersNotFound": "Nie znaleziono zleceń",
-        "approveInvoice": "Zatwierdzać",
-        "makeAdjustments": "dokonanie zmian",
-        "capturePayment": "Przechwytywanie Płatność",
-        "paymentCaptured": "Płatność Schwytany",
-        "capturedTotal": "schwytany Razem",
-        "canceledLabel": "Odwołany",
-        "refundAmount": "Kwota Refundacji",
+        "approveInvoice": "Zatwierdź",
+        "makeAdjustments": "dokonaj zmiany",
+        "capturePayment": "Przechwyć Płatność",
+        "paymentCaptured": "Płatność Przechwycona",
+        "capturedTotal": "Suma Przechwyconych Płatności",
+        "canceledLabel": "Odwołano",
+        "refundAmount": "Kwota Zwrotu",
         "applyRefund": "Zastosuj zwrot",
-        "adjustedTotal": "Skorygowany Razem",
+        "adjustedTotal": "Suma po korekcie",
         "processor": "Edytor",
         "filter": {
           "new": "Nowy",
-          "captured": "Płatność Schwytany",
+          "captured": "Płatność Przechwycona",
           "shipped": "Wysłane",
-          "completed": "Zakończony",
-          "canceled": "Odwołany",
-          "refunded": "zwrotowi"
+          "completed": "Zakończone",
+          "canceled": "Odwołane",
+          "refunded": "Zwrócone"
         }
       },
       "orderShipping": {
         "shipTo": "Dostawa do",
-        "notShipped": "Jeszcze Wysyłający",
+        "notShipped": "Do wysłania",
         "noTracking": "Bez śledzenia",
         "tracking": "Śledzenie",
-        "shipmentEmpty": "Ta przesyłka ma żadnych produktów",
-        "shipmentPacked": "Wszystkie przedmioty pakiety",
-        "shipped": "Wysłane",
-        "shippingNotifyCustomer": "Poinformować klienta, że ​​ich elementy będą dostarczane szybko.",
-        "resendNotification": "Ponowna Powiadomienie przesyłki"
+        "shipmentEmpty": "Ta przesyłka nie ma żadnych produktów",
+        "shipmentPacked": "Przesyłka zapakowana",
+        "shipped": "Wysłano",
+        "shippingNotifyCustomer": "Poinformuj klienta o wysłaniu zamówienia.",
+        "resendNotification": "Ponowna powiadomienie o statusie przesyłki"
       },
       "cartCompleted": {
         "thankYou": "Dziękuję!",
@@ -211,63 +211,63 @@
         "yourOrderIsNow": "Twoje zamówienie jest obecnie",
         "summaryMessage": "Dziękuję za Twoje zamówienie.",
         "submitted": "składać",
-        "registerGuest": "Witaj! Dodaj e-mail i otrzymywać aktualizacje dotyczące zamówienia.",
-        "trackYourDelivery": "aktualizacje Zamówienie zostanie wysłany do",
-        "noOrdersFound": "Nie znaleziono zleceń.",
-        "adminMessage": "Oglądasz zleceń jako administrator"
+        "registerGuest": "Witaj! Dodaj e-mail aby otrzymywać aktualizacje dotyczące zamówienia.",
+        "trackYourDelivery": "aktualizacja Zamówienie zostanie wysłana do",
+        "noOrdersFound": "Nie znaleziono zamówień.",
+        "adminMessage": "Oglądasz zamówienie jako administrator"
       },
       "checkoutLogin": {
-        "welcome": "Witaj, to jest tak dobrze cię widzieć.",
-        "loginCompleted": "konto zakończone",
+        "welcome": "Witaj, dobrze cię widzieć.",
+        "loginCompleted": "zalogowano",
         "createOrLogin": "Załóż konto lub zaloguj się",
-        "guestOrLogin": "Zaloguj się lub kasy jako gość",
+        "guestOrLogin": "Zaloguj się lub przejdź do kasy jako gość",
         "continueAsGuest": "Kontynuuj jako gość",
-        "guestMessage": "Można kasy, bez zakładania konta. Będziesz miał szansę stworzyć konto później."
+        "guestMessage": "Można dokończyć zamówienie, bez zakładania konta. Będziesz miał szansę stworzyć konto później."
       },
       "addressBookGrid": {
         "addAddress": "Dodaj adres",
         "chooseAddress": "Wybierz adres wysyłki i płatności",
-        "createDefault": "Stwórz swój adres domyślnej",
+        "createDefault": "Stwórz swój domyślny adres",
         "selectShippingAddress": "Wybierz adres wysyłki",
         "selectBillingAddress": "Wybierz adres rozliczeniowy"
       },
       "addressBookAdd": {
-        "addAddress": "Dodaj nowy wpis adresu",
-        "createAddress": "Stwórz swój adres domyślnej"
+        "addAddress": "Dodaj nowy adres",
+        "createAddress": "Stwórz domyślny adres"
       },
       "addressBookEdit": {
-        "editAddress": "Montaż tego wpisu adresu"
+        "editAddress": "Edytuj adres"
       },
       "address": {
         "country": "Kraj",
         "fullName": "Pełne imię i nazwisko",
         "address1": "Adres",
         "address2": "Adres",
-        "postal": "Pocztowy",
+        "postal": "Kod Pocztowy",
         "city": "Miasto",
         "region": "Region",
-        "phone": "Telefon",
-        "isShippingDefault": "Ustaw jako domyślny adres wysyłki?",
-        "isBillingDefault": "Ustaw jako domyślny adres rozliczeniowy?",
-        "isCommercial": "Ten adres handlowych."
+        "phone": "Numer Telefonu",
+        "isShippingDefault": "Ustawić jako domyślny adres wysyłki?",
+        "isBillingDefault": "Ustawić jako domyślny adres rozliczeniowy?",
+        "isCommercial": "Adres firmowy."
       },
       "checkoutProgressBar": {
         "login": "Konto",
         "shippingBilling": "Dane adresowe",
         "shippingOptions": "Opcje wysyłki",
-        "reviewPayment": "Recenzja",
-        "complete": "Kompletny"
+        "reviewPayment": "Podsumowanie Płatności",
+        "complete": "Zakończony"
       },
       "checkoutReview": {
-        "review": "Recenzja"
+        "review": "Podsumowanie"
       },
       "consoleIcon": {
-        "iconTitle": "Zobacz Console",
+        "iconTitle": "Zobacz Konsolę",
         "text": "Konsola"
       },
       "createProductIcon": {
         "iconTitle": "Tworzenie produktu",
-        "text": "Tworzyć"
+        "text": "Stwórz"
       },
       "social": {
         "facebook": "Facebook",
@@ -280,12 +280,12 @@
       "corePackageConfig": {
         "settings": {
           "public": {
-            "allowGuestCheckout": "Pozwól gości Zamówienie"
+            "allowGuestCheckout": "Zezwalaj na zamówienia bez rejestracji"
           },
           "openexchangerates": {
             "appId": "Otwórz Exchange Rates App Id",
-            "refreshPeriod": "Otwarte ceny walut okres odświeżania",
-            "refreshPeriodPlaceholder": "czyli każdy 1 godzina"
+            "refreshPeriod": "Okres odświeżania kursów walut",
+            "refreshPeriodPlaceholder": "Co każdą godzinę"
           },
           "google": {
             "clientId": "Identyfikator klienta Google",
@@ -294,8 +294,8 @@
         }
       },
       "revisions": {
-        "isDisabled": "kontroli wersji jest wyłączona. Wszelkie zmiany będą publikowane natychmiast.",
-        "isEnabled": "kontroli wersji jest włączona dla Produktów. Wszelkie zmiany będą muszą być opublikowane, zanim będzie widoczna dla klientów."
+        "isDisabled": "kontrola wersji jest wyłączona. Wszelkie zmiany będą publikowane natychmiast.",
+        "isEnabled": "kontrola wersji jest włączona dla Produktów. Wszelkie zmiany muszą być opublikowane, zanim będą widoczne dla klientów."
       },
       "shop": {
         "defaultPaymentMethod": "Domyślna metoda płatności",
@@ -308,10 +308,10 @@
         "emailPlaceholder": "Główny kontakt email",
         "keywords": "Słowa kluczowe",
         "keywordsPlaceholder": "Meta słów kluczowych dla SEO",
-        "language": "Język bazowy",
+        "language": "Język główny",
         "addressBook": {
           "company": "Firma",
-          "companyPlaceholder": "Ta nazwa firmy",
+          "companyPlaceholder": "Nazwa firmy",
           "country": "Kraj",
           "fullName": "Pełne imię i nazwisko",
           "fullNamePlaceholder": "Twoja nazwa organizacji",
@@ -320,25 +320,25 @@
           "address1Tooltip": "Ten adres będzie widoczny dla użytkowników",
           "address2": "Adres",
           "address2Placeholder": "Dodatkowy adres",
-          "postal": "Pocztowy",
+          "postal": "Kod Pocztowy",
           "city": "Miasto",
           "region": "Region",
-          "phone": "Telefon",
+          "phone": "Numer Telefonu",
           "isShippingDefault": "Ustaw jako domyślny adres wysyłki?",
           "isBillingDefault": "Ustaw jako domyślny adres rozliczeniowy?",
-          "isCommercial": "Ten adres handlowych."
+          "isCommercial": "Adres firmowy."
         }
       },
       "accountsUI": {
         "members": "Użytkownicy",
         "guest": "Gość",
-        "addMember": "Dodawanie członka",
+        "addMember": "Dodaj użytkownika",
         "add": "dodaj",
         "and": "i",
         "back": "powrót",
         "changePassword": "Zmień hasło",
         "choosePassword": "Wybierz hasło",
-        "clickAgree": "Klikając na Zarejestruj się zgadzasz się z naszą",
+        "clickAgree": "Rejestrując się zgadzasz się z naszą",
         "configure": "Konfiguruj",
         "createAccount": "Utwórz konto",
         "currentPassword": "Aktualne hasło",

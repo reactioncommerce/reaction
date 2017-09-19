@@ -13,8 +13,8 @@ import { Template } from "meteor/templating";
  * cartCount, cartSubTotal, cartShipping, cartTaxes, cartTotal
  * are calculated by a transformation on the collection
  * and are available to use in template as cart.xxx
- * in template: {{cart.cartCount}}
- * in code: Cart.findOne().cartTotal()
+ * in template: {{cart.getCount}}
+ * in code: Cart.findOne().getTotal()
  * @return {Object} returns inventory helpers
  */
 Template.registerHelper("cart", function () {

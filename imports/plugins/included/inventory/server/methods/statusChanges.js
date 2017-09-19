@@ -303,7 +303,12 @@ Meteor.methods({
     check(inventoryItem, Schemas.Inventory);
     // user needs createProduct permission to adjust inventory
     // REVIEW: Should this be checking against shop permissions instead?
-    if (!Reaction.hasPermission("createProduct", this.userId, inventoryItem.shopId)) {
+
+    // calledByServer is only true if this method was triggered by the server, such as from a webhook.
+    // there will be a null connection and no userId.
+    const calledByServer = (this.connection === null && !Meteor.userId());
+
+    if (!calledByServer && !Reaction.hasPermission("createProduct", this.userId, inventoryItem.shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
     // this.unblock();
