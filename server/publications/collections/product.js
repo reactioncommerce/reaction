@@ -53,15 +53,16 @@ export function findProductMedia(publicationInstance, productIds) {
  * @param {String} productIdOrHandle - productId or handle
  * @return {Object} return product cursor
  */
-Meteor.publish("Product", function (productIdOrHandle) {
+Meteor.publish("Product", function (productIdOrHandle, shopId) {
   check(productIdOrHandle, Match.OptionalOrNull(String));
+  check(shopId, Match.Maybe(String));
+
   if (!productIdOrHandle) {
     Logger.debug("ignoring null request on Product subscription");
     return this.ready();
   }
 
-  // TODO review for REGEX / DOS vulnerabilities.
-  const product = Products.findOne({
+  const preSelector = {
     $or: [{
       _id: productIdOrHandle
     }, {
@@ -70,7 +71,14 @@ Meteor.publish("Product", function (productIdOrHandle) {
         $options: "i"
       }
     }]
-  });
+  };
+
+  if (shopId) {
+    preSelector.shopId = shopId;
+  }
+
+  // TODO review for REGEX / DOS vulnerabilities.
+  const product = Products.findOne(preSelector);
 
   if (!product) {
     // Product not found, return empty subscription.
@@ -87,6 +95,10 @@ Meteor.publish("Product", function (productIdOrHandle) {
       { ancestors: _id }
     ]
   };
+
+  if (shopId) {
+    selector.shopId = shopId;
+  }
 
   // Authorized content curators for the shop get special publication of the product
   // all all relevant revisions all is one package

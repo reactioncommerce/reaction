@@ -267,6 +267,7 @@ const wrapComponent = (Comp) => (
 
 function composer(props, onData) {
   const tagSub = Meteor.subscribe("Tags");
+  const shopId = Reaction.Router.getParam("shopId");
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
   const revisionType = Reaction.Router.getQueryParam("revision");
@@ -275,7 +276,7 @@ function composer(props, onData) {
   let productSub;
 
   if (productId) {
-    productSub = Meteor.subscribe("Product", productId);
+    productSub = Meteor.subscribe("Product", productId, shopId);
   }
 
   if (productSub && productSub.ready() && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {

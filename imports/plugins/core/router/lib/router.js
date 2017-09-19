@@ -607,6 +607,17 @@ Router.initPackageRoutes = (options) => {
         }
       });
 
+      routeDefinitions.push({
+        route: "/shop/:shopId",
+        name: "index",
+        options: {
+          name: "index",
+          ...options.indexRoute,
+          component: indexLayout.component,
+          structure: indexLayout.structure
+        }
+      });
+
       // Not-found route
       routeDefinitions.push({
         route: "/not-found",
@@ -634,7 +645,8 @@ Router.initPackageRoutes = (options) => {
                 permissions,
                 template,
                 layout,
-                workflow
+                workflow,
+                provides
               } = registryItem;
 
               // get registry route name
@@ -657,7 +669,13 @@ Router.initPackageRoutes = (options) => {
                   structure: reactionLayout.structure
                 }
               };
-
+              newRoutes.push({
+                ...newRouteConfig,
+                route: `/shop/:shopId${route}`,
+                options: {
+                  ...newRouteConfig.options
+                }
+              });
               // push new routes
               newRoutes.push(newRouteConfig);
             } // end registryItems
