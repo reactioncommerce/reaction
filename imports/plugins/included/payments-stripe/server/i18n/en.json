@@ -23,7 +23,10 @@
         "connect": {
           "stripeConnectNotEnabled": "Stripe Connect is not enabled for this application. Please contact the adminstrator.",
           "shopEmailNotConfigured": "Please configure your shop email first.",
-          "shopAddressNotConfigured": "Please configure your shop address first"
+          "shopAddressNotConfigured": "Please configure your shop address first",
+          "applicationFeeDescription": "This number represents a percentage fee that the marketplace (this shop) takes for any item which is sold by a merchant shop for this marketplace. This fee applies only if Stripe Connect is setup and enabled on both the marketplace and the merchant shops and if Stripe is the payment provider used to perform the checkout.",
+          "moreDetails": "For more details, see the",
+          "docsLink": "Stripe Connect Docs"
         },
         "redirect": {
           "stripeConnectWaitingNote": "Will auto redirect in a couple seconds or click here."
