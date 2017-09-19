@@ -35,6 +35,7 @@
         "shopSettings": "Настройки на магазина",
         "dashboard": "Табло",
         "print": "Принтирай",
+        "editMode": "режим на редактиране",
         "auto": "Автоматичен"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}}е включен.",
         "pkgDisabled": "{{app}}е изключен."
+      },
+      "gridSettingsPanel": {
+        "title": "Настройки грид",
+        "selected": "подбран"
       },
       "cartDrawer": {
         "empty": "За съжаление кошницата Ви е празна.",

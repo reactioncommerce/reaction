@@ -35,6 +35,7 @@
         "shopSettings": "Настройки магазина",
         "dashboard": "Панель управления",
         "print": "Распечатать",
+        "editMode": "Режим редактирования",
         "auto": "Автоматически"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": "Пакет \"{{app}}\" подключен",
         "pkgDisabled": "Пакет \"{{app}}\" отключен"
+      },
+      "gridSettingsPanel": {
+        "title": "Настройки сетки",
+        "selected": "выбранный"
       },
       "cartDrawer": {
         "empty": "Очень жаль, ваша корзина пуста",

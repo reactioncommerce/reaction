@@ -35,6 +35,7 @@
         "shopSettings": "Setări Magazin",
         "dashboard": "Bord",
         "print": "Imprimare",
+        "editMode": "Mod editare",
         "auto": "Auto"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} este acum activată.",
         "pkgDisabled": "{{app}} este acum dezactivată."
+      },
+      "gridSettingsPanel": {
+        "title": "Setări de rețea",
+        "selected": "Selectat"
       },
       "cartDrawer": {
         "empty": "Suntem triști. Coșul dumneavoastră este gol.",

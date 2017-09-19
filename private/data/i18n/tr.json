@@ -35,6 +35,7 @@
         "shopSettings": "Mağaza ayarları",
         "dashboard": "Yönetim",
         "print": "Baskı",
+        "editMode": "Düzenleme modu",
         "auto": "Oto"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": " şu anda etkin.",
         "pkgDisabled": " şu anda etkin değil."
+      },
+      "gridSettingsPanel": {
+        "title": "Izgara Ayarları",
+        "selected": "Seçilmiş"
       },
       "cartDrawer": {
         "empty": "Üzgünüz. Sepetiniz boş.",
