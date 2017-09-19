@@ -35,6 +35,7 @@
         "shopSettings": "butiks Inställningar",
         "dashboard": "Instrumentbräda",
         "print": "Skriv",
+        "editMode": "redigeringsläge",
         "auto": "Bil"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} har nu aktiverats.",
         "pkgDisabled": "{{app}} är nu inaktiverad."
+      },
+      "gridSettingsPanel": {
+        "title": "galler Inställningar",
+        "selected": "Vald"
       },
       "cartDrawer": {
         "empty": "Vi är ledsna. Din vagn är tom.",

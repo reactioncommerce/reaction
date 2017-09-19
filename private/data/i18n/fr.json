@@ -35,6 +35,7 @@
         "shopSettings": "Paramètres du magasin",
         "dashboard": "Tableau de bord",
         "print": "Imprimer",
+        "editMode": "Editer le mode",
         "auto": "Auto"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} est désormais activé",
         "pkgDisabled": "{{app}} est désormais désactivé"
+      },
+      "gridSettingsPanel": {
+        "title": "Paramètres de la grille",
+        "selected": "Choisi"
       },
       "cartDrawer": {
         "empty": "Nous sommes désolés. Votre panier est vide.",

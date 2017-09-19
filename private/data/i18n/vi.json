@@ -35,6 +35,7 @@
         "shopSettings": "cửa hàng Cài đặt",
         "dashboard": "bảng điều khiển",
         "print": "In",
+        "editMode": "Chế độ chỉnh sửa",
         "auto": "Tự động"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} được kích hoạt.",
         "pkgDisabled": "{{app}} hiện bị vô hiệu."
+      },
+      "gridSettingsPanel": {
+        "title": "Cài đặt lưới",
+        "selected": "Đã chọn"
       },
       "cartDrawer": {
         "empty": "Chúng tôi đang buồn. Giỏ của bạn trống trơn.",
