@@ -5,10 +5,11 @@ import ReactTable from "react-table";
 import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 // SortableTable is a wrapper around ReactTable.
 // Anything that works in ReactTable should work in SortableTable OOTB (although it may not be styled).
-// ReactTable docs are available here: https://react-table.js.org/#/story/readme
+// ReactTable docs are available at: https://react-table.js.org/#/story/readme
 
 class SortableTable extends Component {
   constructor(props) {
@@ -359,5 +360,7 @@ SortableTable.defaultProps = {
   // ofText: <Translation defaultValue="of" i18nKey={"reactionUI.components.sortableTable.tableText.ofText"} />,
   // rowsText: <Translation defaultValue="rows" i18nKey={"reactionUI.components.sortableTable.tableText.rowsText"} />
 };
+
+registerComponent("SortableTable", SortableTable);
 
 export default SortableTable;
