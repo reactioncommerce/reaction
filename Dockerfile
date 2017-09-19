@@ -1,5 +1,13 @@
-FROM reactioncommerce/base:v2.0.2
+FROM aeyde/reactioncommerce:0.0.1
 
-# Default environment variables
-ENV ROOT_URL "http://localhost"
-ENV MONGO_URL "mongodb://127.0.0.1:27017/reaction"
+ENV ROOT_URL "https://shop-dev.aeyde.org"
+
+ENV MAIL_URL="smtp://aeydestore@mg.aeyde.org:godsarmy@smtp.mailgun.org:465"
+
+ENV MONGO_URL="mongodb://reaction:reaction@35.156.178.202:27017/reactioncommerce"
+
+ENV REACTION_EMAIL "benno@aeyde.com"
+ENV REACTION_USER "benno"
+ENV REACTION_AUTH "godsarmy"
+
+EXPOSE 3000
