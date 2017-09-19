@@ -1,0 +1,19 @@
+sudo: required
+language: node_js
+node_js:
+  - "7"
+before_install:
+  - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-laika/master/configure.sh | /bin/sh"
+services:
+  - mongodb
+env:
+  - LAIKA_OPTIONS="-t 5000"
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: AKIAJASHLVDHTLQTKOIA
+  secret_access_key:
+    secure: "Encypted 2eWfUaVtkB7lSnM71vqA/tWWJ9eJ3dwBYpMOrhFY="
+  region: "eu-central-1"  
+  app: "Shop DEV"
+  env: "ShopDev-env"
+  bucket_name: "elasticbeanstalk-eu-central-1-262863902191"
