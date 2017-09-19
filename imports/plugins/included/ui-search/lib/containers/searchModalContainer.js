@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
-import { Roles } from "meteor/alanning:roles";
 import _ from "lodash";
 import { Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
@@ -120,15 +119,7 @@ class SearchModalContainer extends Component {
     });
   }
 
-  handleAccountClick = (event) => {
-    const userId = event._id;
-
-    Reaction.showActionView({
-      label: "Permissions",
-      i18nKeyLabel: "admin.settings.permissionsSettingsLabel",
-      data: userPermissions(userId),
-      template: "memberSettings"
-    });
+  handleAccountClick = () => {
     Reaction.Router.go("dashboard/accounts", {}, {});
     this.handleChildUnmount();
   }
@@ -238,40 +229,6 @@ function getProductHashtags(productResults) {
     }
   }
   return hashtags;
-}
-
-function userPermissions(userId) {
-  if (Reaction.hasPermission("reaction-accounts")) {
-    const shopId = Reaction.getShopId();
-    const user = Meteor.users.findOne(userId);
-    const member = {};
-    member.userId = user._id;
-
-    if (user.emails && user.emails.length) {
-      // this is some kind of denormalization. It is helpful to have both
-      // of this string and array. Array goes to avatar, string goes to
-      // template
-      member.emails = user.emails;
-      member.email = user.emails[0].address;
-    }
-    // member.user = user;
-    member.username = user.username;
-    member.isAdmin = Roles.userIsInRole(user._id, "admin", shopId);
-    member.roles = user.roles;
-    member.services = user.services;
-
-    if (Roles.userIsInRole(member.userId, "owner", shopId)) {
-      member.role = "owner";
-    } else if (Roles.userIsInRole(member.userId, "admin", shopId)) {
-      member.role = "admin";
-    } else if (Roles.userIsInRole(member.userId, "dashboard", shopId)) {
-      member.role = "dashboard";
-    } else if (Roles.userIsInRole(member.userId, "guest", shopId)) {
-      member.role = "guest";
-    }
-
-    return member;
-  }
 }
 
 function tagToggle(arr, val) {
