@@ -35,7 +35,27 @@
         "shopSettings": "Shop Settings",
         "dashboard": "Dashboard",
         "print": "Print",
-        "auto": "Auto"
+        "editMode": "Edit Mode",
+        "auto": "Auto",
+        "archive": "Archive",
+        "archived": "Archived",
+        "error": "Error",
+        "deleted": "Deleted",
+        "toggleEditMode": "Toggle Edit Mode",
+        "updateSettings": "Update Settings",
+        "notFound": "This page was not found.",
+        "pageNotFound": "This page was not found.",
+        "notFoundTitle": "Oops!",
+        "notFoundError": "Page not found.",
+        "productNotFound": "This product was not found.",
+        "loadMoreProducts": "Load more products",
+        "noProductsFound": "No products found.",
+        "private": "Private",
+        "public": "Public",
+        "shortcut": {
+          "addProductLabel": "Add Product",
+          "accountsLabel": "Accounts"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -92,6 +112,28 @@
         "addBarcode": "Add Barcode",
         "quantity": "Quantity",
         "quantityGreaterThanZero": "Error: Quantity must be greater than zero",
+        "tagsEdit": "Edit tags",
+        "tagExists": "Tag already exists, or is empty.",
+        "tagInUse": "Tag is in use and cannot be deleted.",
+        "productArchiveError": "There was an error while sending {{product}} to the archives.",
+        "archiveErrorTheProduct": "the product",
+        "clonedAlert": "Cloned {{product}}",
+        "clonedAlert_plural": "Cloned {{product}}",
+        "archivedAlert": "Archived {{product}}",
+        "archivedAlert_plural": "Archived {{product}}",
+        "theProduct": "the product",
+        "theSelectedProducts": "the selected products",
+        "notFoundTitle": "Oops!",
+        "notFoundError": "This is not the product you were looking for."
+      },
+      "tags": {
+        "tagName": "Tag Name",
+        "addTag": "Add Tag",
+        "updateTag": "Update Tag",
+        "addGroupTag": "Add Group Tag",
+        "addSubTag": "Add Sub Tag",
+        "removeTag": "Remove Tag",
+        "createTag": "Create Tag",
         "dropFiles": "Drop files to upload"
       },
       "productDetailEdit": {
@@ -114,7 +156,25 @@
         "toggleSize": "Toggle Size",
         "publish": "Publish",
         "moreOptions": "More Options",
-        "details": "Details"
+        "details": "Details",
+        "addVariantFail": "Unable to create variant for {{title}}.",
+        "cloneVariantFail": "Unable to clone variant for {{title}}.",
+        "removeVariantConfirm": "Are you sure you want to delete {{title}}",
+        "restoreVariantConfirm": "Are you sure you want to restore {{title}} from the archive?",
+        "restoreVariantFail": "Unable to restore {{title}}.",
+        "archiveVariantConfirm": "Are you sure you want to archive {{title}}",
+        "thisVariant": "this variant",
+        "thisOption": "this option",
+        "archiveProduct": "Archive Product",
+        "restoreProduct": "Restore Product from archive",
+        "archiveThisProduct": "Archive this product?",
+        "archiveSelectedProducts": "Archive selected products?",
+        "noSelectedProducts": "No selected products. Use the ",
+        "orShiftCtrlCmd": " or shift|ctrl|cmd + click on products to select multiple. With shift you can select a contiguous range of products.",
+        "makeVisible": "Make Visible",
+        "hideProduct": "Hide Product",
+        "productIsVisible": "Product is visible",
+        "productIsNotVisible": "Product is not visible"
       },
       "productVariant": {
         "addVariantOptions": "Add options to enable 'Add to Cart' button",
@@ -147,7 +207,12 @@
       },
       "gridPackage": {
         "pkgEnabled": "{{app}} is now enabled.",
-        "pkgDisabled": "{{app}} is now disabled."
+        "pkgDisabled": "{{app}} is now disabled.",
+        "disableConfirm": "Are you sure you want to disable {{app}}?"
+      },
+      "gridSettingsPanel": {
+        "title": "Grid Settings",
+        "selected": "Selected"
       },
       "cartDrawer": {
         "empty": "We're sad. Your cart is empty.",

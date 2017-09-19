@@ -35,6 +35,7 @@
         "shopSettings": "Shop Instellingen",
         "dashboard": "Dashboard",
         "print": "Afdruk",
+        "editMode": "Bewerkingsmodus",
         "auto": "Auto"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": " is nu ingeschakeld.",
         "pkgDisabled": " is nu uitgeschakeld."
+      },
+      "gridSettingsPanel": {
+        "title": "Grid-instellingen",
+        "selected": "Gekozen"
       },
       "cartDrawer": {
         "empty": "Uw winkelwagen is leeg.",
