@@ -7,7 +7,7 @@ import OrderSearch from "../components/orderSearch";
 
 class OrderDashboard extends Component {
   static propTypes = {
-    className: PropTypes.string,
+    className: PropTypes.object,
     clearFilter: PropTypes.func,
     displayMedia: PropTypes.func,
     filter: PropTypes.string,
