@@ -35,6 +35,7 @@
         "shopSettings": "trgovina Nastavitve",
         "dashboard": "Nadzorna plošča",
         "print": "Tiskanje",
+        "editMode": "način urejanja",
         "auto": "Auto"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} je sedaj omogočeno.",
         "pkgDisabled": "{{app}} je zdaj onemogočeno."
+      },
+      "gridSettingsPanel": {
+        "title": "Nastavitve Grid",
+        "selected": "Izbrano"
       },
       "cartDrawer": {
         "empty": "Mi smo žalostni. Košara je prazna.",
