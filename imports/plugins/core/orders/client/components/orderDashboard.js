@@ -18,6 +18,7 @@ class OrderDashboard extends Component {
     handleSelect: PropTypes.func,
     isLoading: PropTypes.object,
     multipleSelect: PropTypes.bool,
+    onDatesChange: PropTypes.func,
     orders: PropTypes.array,
     query: PropTypes.object,
     renderFlowList: PropTypes.bool,
@@ -72,6 +73,7 @@ class OrderDashboard extends Component {
           clearFilter={this.props.clearFilter}
           filter={this.props.filter}
           className={this.props.className}
+          onDatesChange={this.props.onDatesChange}
         />
         {this.state.orders.length ?
           <div className="container-fluid-sm order-details-list-container">

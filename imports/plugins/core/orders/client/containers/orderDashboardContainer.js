@@ -191,9 +191,16 @@ class OrderDashboardContainer extends Component {
     });
   }
 
-  // searchDate = (bla, bla2) => {
-  //   query.
-  // }
+  filterDates = (startDate, endDate) => {
+    const query = this.state.query;
+    if (startDate && endDate) {
+      query.createdAt = {
+        $gte: new Date(startDate.toISOString()),
+        $lt: new Date(endDate.toISOString())
+      };
+      this.setState({ query });
+    }
+  }
 
   clearFilter = () => {
     const oldQuery = this.state.query;
@@ -794,6 +801,7 @@ class OrderDashboardContainer extends Component {
   }
 
   render() {
+    console.log("state--->", this.state.query);
     return (
       <div className="order-dashboard-container">
         <OrderDashboard
@@ -805,6 +813,7 @@ class OrderDashboardContainer extends Component {
           filter={this.state.filter}
           className={this.state.className}
           clearFilter={this.clearFilter}
+          onDatesChange={this.filterDates}
           handleClick={this.handleClick}
           displayMedia={this.handleDisplayMedia}
           selectedItems={this.state.selectedItems}

@@ -9,7 +9,8 @@ class OrderActions extends Component {
     className: PropTypes.string,
     clearFilter: PropTypes.func,
     filter: PropTypes.string,
-    handleMenuClick: PropTypes.func
+    handleMenuClick: PropTypes.func,
+    onDatesChange: PropTypes.func
   }
 
   constructor(props) {
@@ -19,8 +20,8 @@ class OrderActions extends Component {
     };
   }
 
-  onDatesChange = (bla1, bla2) => {
-    console.log("--->", bla1, bla2);
+  onDatesChange = (startDate, endDate) => {
+    this.props.onDatesChange(startDate, endDate);
   }
 
   buttonElement() {
@@ -114,8 +115,9 @@ class OrderActions extends Component {
                 className="order-menu-item-dropdown"
                 attachment="bottom right"
                 targetAttachment="top right"
+                isClickable={false}
               >
-                <Components.CalendarPicker onDatesChange={this.onDatesChange} />
+                <Components.CalendarPicker onDatesChange={this.onDatesChange}/>
               </DropDownMenu>
             </div>
           </div>
