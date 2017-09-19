@@ -16,4 +16,4 @@ deploy:
   region: "eu-central-1"  
   app: "Shop DEV"
   env: "ShopDev-env"
-  bucket_name: "elasticbeanstalk-eu-central-1-262863902191"
+  bucket_name: "aeyde-shop-dev"
