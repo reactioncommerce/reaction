@@ -114,7 +114,8 @@
         "toggleSize": "تبديل الحجم",
         "publish": "نشر",
         "moreOptions": "خيارات إضافية",
-        "details": "تفاصيل"
+        "details": "تفاصيل",
+        "editMode": "إضافة نمط"
       },
       "productVariant": {
         "addVariantOptions": "إضافة خيارات لتمكين \"إضافة إلى العربة\" بطو",
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} مفعل الان.",
         "pkgDisabled": "{{app}} أصبح معطلا."
+      },
+      "gridSettingsPanel": {
+        "title": "إعدادات الشبكة",
+        "selected": "مختار"
       },
       "cartDrawer": {
         "empty": "نشعر بالحزن. .عربتك فارغة",
