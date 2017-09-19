@@ -555,20 +555,21 @@ export function inviteShopOwner(options) {
   }
 
   const { shopId } = Meteor.call("shop/createShop", userId) || {};
-  const shop = Shops.findOne(shopId);
+  const primaryShop = Reaction.getPrimaryShop();
 
   // Compile Email with SSR
-  const tpl = "accounts/inviteShopAdmin";
+  const tpl = "accounts/inviteShopOwner";
   const subject = "accounts/inviteShopOwner/subject";
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
-  const emailLogo = getEmailLogo(shop);
+  const emailLogo = getEmailLogo(primaryShop);
   const token = Random.id();
   const currentUser = Meteor.users.findOne(this.userId);
   const currentUserName = getCurrentUserName(currentUser);
-  const dataForEmail = getDataForEmail({ shop, currentUserName, name, token, emailLogo });
+  // uses primaryShop's data (name, address etc) in email copy sent to new merchant
+  const dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
 
   Meteor.users.update(userId, {
     $set: {
@@ -664,8 +665,8 @@ export function inviteShopMember(options) {
   }
 
   // Compile Email with SSR
-  const tpl = "accounts/inviteShopOwner";
-  const subject = "accounts/inviteShopOwner/subject";
+  const tpl = "accounts/inviteShopMember";
+  const subject = "accounts/inviteShopMember/subject";
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
