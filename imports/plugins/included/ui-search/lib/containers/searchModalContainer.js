@@ -15,7 +15,6 @@ class SearchModalContainer extends Component {
       value: localStorage.getItem("searchValue") || "",
       tagResults: [],
       productResults: [],
-      orderResults: [],
       renderChild: true,
       accountResults: [],
       facets: []
@@ -24,12 +23,10 @@ class SearchModalContainer extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
     this.handleAccountClick = this.handleAccountClick.bind(this);
-    this.handleOrderClick = this.handleOrderClick.bind(this);
     this.handleTagClick = this.handleTagClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.dep = new Tracker.Dependency;
-    this.getWorkflowStatus = this.getWorkflowStatus.bind(this);
   }
 
   componentDidMount() {
@@ -57,8 +54,7 @@ class SearchModalContainer extends Component {
 
           this.setState({
             tagResults: tagSearchResults,
-            accountResults: [],
-            orderResults: []
+            accountResults: []
           });
         }
 
@@ -70,20 +66,6 @@ class SearchModalContainer extends Component {
           this.setState({
             accountResults,
             tagResults: [],
-            orderResults: [],
-            productResults: []
-          });
-        }
-
-        /*
-          * Order Search
-          */
-        if (searchCollection === "orders") {
-          const orderResults = Collections.OrderSearch.find().fetch();
-          this.setState({
-            orderResults,
-            tagResults: [],
-            accountResults: [],
             productResults: []
           });
         }
@@ -124,30 +106,6 @@ class SearchModalContainer extends Component {
     this.handleChildUnmount();
   }
 
-  handleOrderClick = (event)  => {
-    const isActionViewOpen = Reaction.isActionViewOpen();
-    const orderId = event._id;
-
-    // toggle detail views
-    if (isActionViewOpen === false) {
-      Reaction.showActionView({
-        label: "Order Details",
-        i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: event,
-        props: {
-          size: "large"
-        },
-        template: "coreOrderWorkflow"
-      });
-    }
-
-    Reaction.Router.go("dashboard/orders", {}, {
-      _id: orderId,
-      status: this.getWorkflowStatus(event)
-    });
-    this.handleChildUnmount();
-  }
-
   handleTagClick = (tagId) => {
     const newFacet = tagId;
     const element = document.getElementById(tagId);
@@ -162,7 +120,6 @@ class SearchModalContainer extends Component {
     this.setState({
       tagResults: [],
       productResults: [],
-      orderResults: [],
       accountResults: [],
       collection
     }, () => {
@@ -172,17 +129,6 @@ class SearchModalContainer extends Component {
 
   handleChildUnmount = () =>  {
     this.setState({ renderChild: false });
-  }
-
-  getWorkflowStatus(order) {
-    let status = "new";
-    if (order.currentWorkflowStatus === "coreOrderWorkflow/processing") {
-      status = "processing";
-    }
-    if (order.currentWorkflowStatus === "coreOrderWorkflow/completed") {
-      status = "completed";
-    }
-    return status;
   }
 
   render() {
@@ -196,13 +142,11 @@ class SearchModalContainer extends Component {
               handleClick={this.handleClick}
               handleToggle={this.handleToggle}
               handleAccountClick={this.handleAccountClick}
-              handleOrderClick={this.handleOrderClick}
               handleTagClick={this.handleTagClick}
               products={this.state.productResults}
               tags={this.state.tagResults}
               value={this.state.value}
               accounts={this.state.accountResults}
-              orders={this.state.orderResults}
               unmountMe={this.handleChildUnmount}
             />
           </div> : null

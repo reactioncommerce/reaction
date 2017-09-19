@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Reaction } from "/client/api";
 import { TextField, Button, IconButton, SortableTableLegacy } from "@reactioncommerce/reaction-ui";
 import ProductGridContainer from "/imports/plugins/included/product-variant/containers/productGridContainer";
-import { accountsTable, ordersTable } from "../helpers";
+import { accountsTable } from "../helpers";
 
 class SearchModal extends Component {
   static propTypes = {
@@ -11,10 +11,8 @@ class SearchModal extends Component {
     handleAccountClick: PropTypes.func,
     handleChange: PropTypes.func,
     handleClick: PropTypes.func,
-    handleOrderClick: PropTypes.func,
     handleTagClick: PropTypes.func,
     handleToggle: PropTypes.func,
-    orders: PropTypes.array,
     products: PropTypes.array,
     siteName: PropTypes.string,
     tags: PropTypes.array,
@@ -68,17 +66,6 @@ class SearchModal extends Component {
               Accounts
             </div>
           }
-          {Reaction.hasPermission("orders") &&
-            <div
-              className="search-type-option"
-              data-i18n="search.searchTypeOrders"
-              data-event-action="searchCollection"
-              data-event-value="orders"
-              onClick={() => this.props.handleToggle("orders")}
-            >
-              Orders
-            </div>
-          }
         </div>
       );
     }
@@ -112,13 +99,6 @@ class SearchModal extends Component {
             <div className="data-table">
               <div className="table-responsive">
                 <SortableTableLegacy data={this.props.accounts} columns={accountsTable()} onRowClick={this.props.handleAccountClick} />
-              </div>
-            </div>
-          }
-          {this.props.orders.length > 0 &&
-            <div className="data-table">
-              <div className="table-responsive">
-                <SortableTableLegacy data={this.props.orders} columns={ordersTable()} onRowClick={this.props.handleOrderClick} />
               </div>
             </div>
           }
