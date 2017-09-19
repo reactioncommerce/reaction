@@ -31,6 +31,18 @@ Reaction.registerTemplate({
 });
 
 /*
+ * Accounts - Invite Shop Owner
+ * When: A new shop is created. This is sent to the new shop owner
+ */
+Reaction.registerTemplate({
+  title: "Accounts - Invite Shop Owner",
+  name: TemplatePaths.inviteShopOwnerTemplate,
+  type: "email",
+  template: Reaction.Email.getTemplateFile(TemplatePaths.inviteShopOwnerTemplate),
+  subject: "{{shop.name}} has invited you to manage a store"
+});
+
+/*
  * Accounts - Reset Password
  * When: User requests to reset their password
  */

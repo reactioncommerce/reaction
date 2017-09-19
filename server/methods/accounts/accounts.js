@@ -664,8 +664,8 @@ export function inviteShopMember(options) {
   }
 
   // Compile Email with SSR
-  const tpl = "accounts/inviteShopAdmin";
-  const subject = "accounts/inviteShopMember/subject";
+  const tpl = "accounts/inviteShopOwner";
+  const subject = "accounts/inviteShopOwner/subject";
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
