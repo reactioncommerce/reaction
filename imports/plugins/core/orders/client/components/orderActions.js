@@ -50,9 +50,10 @@ class OrderActions extends Component {
     );
   }
 
-    const attachmentDirection = i18next.dir() === "rtl" ? "left" : "right";
 
   render() {
+    const attachmentDirection = i18next.dir() === "rtl" ? "left" : "right";
+
     return (
       <div className="order-filter-bar">
         <div className="order-filter-item">
@@ -160,7 +161,7 @@ class OrderActions extends Component {
         <div className="order-filter-item">
           <div className="order-filter-label">
             <span className="order-filter-name">
-              <Translation
+              <Components.Translation
                 defaultValue="Shipping Status"
                 i18nKey="order.filter.shippingStatus"
               />
