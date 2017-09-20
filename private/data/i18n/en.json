@@ -227,18 +227,7 @@
         "orderSetToState": "{{orderNumber}} {{orderText}} set to {{status}}",
         "skippedBulkOrdersAlert": "You've requested that {{selectedOrders}} {{orderText}} be set to the '{{status}}' status, but {{numberOfSkippedOrders}} of these orders {{skippedOrdersText}} not in the '{{skippedState}}' state and would skip all steps leading up to the '{{status}}' state. Are you sure you want to do this?",
         "bulkOrdersRegressionAlert": "You're about to regress {{ordersToRegress}} {{orderText}} back to the '{{status}}' state. Are you sure you want to continue with this operation?",
-        "paymentCaptureSuccess": "Payments successfully captured",
-        "table": {
-          "headers" : {
-            "name": "Name",
-            "email": "Email",
-            "date": "Date",
-            "id": "ID",
-            "total": "Total",
-            "shipping": "Shipping",
-            "status": "Status"
-          }
-        }
+        "paymentCaptureSuccess": "Payments successfully captured"
       },
       "orderShipping": {
         "shipTo": "Ship To",

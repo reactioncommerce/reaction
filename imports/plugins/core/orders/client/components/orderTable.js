@@ -256,7 +256,7 @@ class OrderTable extends Component {
               <span style={{ marginTop: 10 }}>
                 <Translation
                   defaultValue="Name"
-                  i18nKey="order.table.headers.name"
+                  i18nKey="admin.table.headers.name"
                 />
               </span>
             </div>
@@ -266,7 +266,7 @@ class OrderTable extends Component {
           resizable = false;
           sortable = false;
         } else {
-          columnNameLabel = i18next.t(`order.table.headers.${columnName}`);
+          columnNameLabel = i18next.t(`admin.table.headers.${columnName}`);
         }
 
         const columnMeta = {

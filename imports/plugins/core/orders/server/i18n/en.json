@@ -38,6 +38,17 @@
           "fulfillment": "Fulfillment",
           "orderDetails": "Order Details",
           "shipmentTracking": "Shipment"
+        },
+        "table": {
+          "headers" : {
+            "name": "Name",
+            "email": "Email",
+            "date": "Date",
+            "id": "ID",
+            "total": "Total",
+            "shipping": "Shipping",
+            "status": "Status"
+          }
         }
       }
     }
