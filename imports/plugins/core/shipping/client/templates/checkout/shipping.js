@@ -1,23 +1,10 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { EJSON } from "meteor/ejson";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 
-function uniqObjects(methods) {
-  const jsonBlobs = methods.map((method) => {
-    return JSON.stringify(method);
-  });
-  const uniqueBlobs = _.uniq(jsonBlobs);
-  return uniqueBlobs.map((blob) => {
-    return EJSON.parse(blob);
-  });
-}
-
-// cartShippingQuotes
-// returns multiple methods
 /**
  * cartShippingQuotes - returns a list of all the shipping costs/quotations
  * of each available shipping carrier like UPS, Fedex etc.
@@ -35,15 +22,12 @@ function cartShippingQuotes(currentCart) {
         if (shipping.shipmentQuotes) {
           for (const quote of shipping.shipmentQuotes) {
             shipmentQuotes.push(quote);
-            if (quote.carrier === "Flat Rate" || quote.requestStatus !== "error") {
-              shipmentQuotes.push(quote);
-            }
           }
         }
       }
     }
   }
-  return uniqObjects(shipmentQuotes);
+  return shipmentQuotes;
 }
 
 function shippingMethodsQueryStatus(currentCart) {
