@@ -35,6 +35,7 @@
         "shopSettings": "Bolt beállítások",
         "dashboard": "Műszerfal",
         "print": "Nyomtatás",
+        "editMode": "Szerkesztés módban",
         "auto": "kocsi"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": " most engedélyezett.",
         "pkgDisabled": " most nem engedélyezett."
+      },
+      "gridSettingsPanel": {
+        "title": "rács beállításai",
+        "selected": "Kiválasztott"
       },
       "cartDrawer": {
         "empty": "Szomorúan vesszük tudomásul, hogy üres a kosarad.",

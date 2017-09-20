@@ -35,6 +35,7 @@
         "shopSettings": "Impostazioni negozio",
         "dashboard": "Cruscotto",
         "print": "Stampa",
+        "editMode": "Modalità Modifica",
         "auto": "Automobile"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": " è ora abilitato.",
         "pkgDisabled": " è ora disabilitato."
+      },
+      "gridSettingsPanel": {
+        "title": "Impostazioni griglia",
+        "selected": "Selezionata"
       },
       "cartDrawer": {
         "empty": "Il tuo carrello è vuoto :(",
