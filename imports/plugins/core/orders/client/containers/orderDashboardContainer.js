@@ -760,6 +760,7 @@ class OrderDashboardContainer extends Component {
         } else {
           // TODO: send these orders in batch as an array. This would entail re-writing the
           // "orders/capturePayments" method to receive an array of orders as a param.
+          console.log("capturePayments - OrderDashboardContainer");
           Meteor.call("orders/capturePayments", order._id, (error) => {
             if (error) {
               this.setState({

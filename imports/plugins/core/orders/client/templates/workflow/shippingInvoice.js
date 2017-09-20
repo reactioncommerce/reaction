@@ -1,6 +1,7 @@
 import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import Alert from "sweetalert2";
 import $ from "jquery";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
@@ -8,8 +9,6 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { i18next, Logger, Reaction } from "/client/api";
 import { Orders, Shops, Packages } from "/lib/collections";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
-import { getOrderRiskStatus, getOrderRiskBadge } from "../../helpers";
-import swal from "sweetalert2";
 
 // helper to return the order payment object
 // the first credit paymentMethod on the order
@@ -171,53 +170,6 @@ Template.coreOrderShippingInvoice.events({
   "click [data-event-action=makeAdjustments]": (event, instance) => {
     event.preventDefault();
     Meteor.call("orders/makeAdjustmentsToInvoice", instance.state.get("order"));
-  },
-
-  "click [data-event-action=capturePayment]": (event, instance) => {
-    event.preventDefault();
-    const order = instance.state.get("order");
-
-    // if there's a payment risk on order; alert admin before capture
-    if (getOrderRiskStatus(order)) {
-      alertConfirm()
-        .then(() => capturePay())
-        .catch(() => false);
-    } else {
-      capturePay();
-    }
-
-    function capturePay() {
-      instance.state.set("isCapturing", true);
-
-      Meteor.call("orders/capturePayments", order._id);
-
-      if (order.workflow.status === "new") {
-        Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
-
-        Reaction.Router.setQueryParams({
-          filter: "processing",
-          _id: order._id
-        });
-      }
-    }
-
-    function alertConfirm() {
-      let alertType = "warning";
-      const riskBadge = getOrderRiskBadge(getOrderRiskStatus(order));
-      // show different alert type depending on risk level
-      if (riskBadge === "danger") {
-        alertType = "error";
-      }
-
-      return swal({
-        title: i18next.t("admin.orderRisk.riskCapture"),
-        text: i18next.t("admin.settings.riskCaptureWarn"),
-        type: alertType,
-        showCancelButton: true,
-        cancelButtonText: i18next.t("admin.settings.cancel"),
-        confirmButtonText: i18next.t("admin.settings.continue")
-      });
-    }
   },
 
   "change input[name=refund_amount], keyup input[name=refund_amount]": (event, instance) => {
