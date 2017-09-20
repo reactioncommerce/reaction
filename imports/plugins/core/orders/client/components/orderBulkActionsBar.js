@@ -136,7 +136,6 @@ class OrderBulkActionsBar extends Component {
 
   render() {
     const { orders, multipleSelect, selectedItems, selectAllOrders } = this.props;
-
     if (selectedItems.length > 0) {
       return (
         <div className="bulk-order-actions-bar">

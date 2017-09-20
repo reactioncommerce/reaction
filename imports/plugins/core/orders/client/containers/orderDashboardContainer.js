@@ -160,7 +160,7 @@ class OrderDashboardContainer extends Component {
     query = Object.assign({}, this.state.query, query);
 
     // Uncheck Checkbox if checked
-    this.selectAllOrders([], true);
+    this.selectAllOrders(Orders.find(query).fetch, true);
 
     this.setState({
       query,
@@ -260,23 +260,16 @@ class OrderDashboardContainer extends Component {
         selectedItems: [],
         multipleSelect: false
       });
-    } else if (orders === []) {
-      // if filter is selected it resets all orders that have been checked when all are selected
-      this.setState({
-        renderFlowList: false,
-        selectedItems: [],
-        multipleSelect: false
-      });
     } else if (this.state.query !== {}) {
       // this condition was added to enable getting the total number of orders
       // based on the query set and also select all the ids of the orders fetched
       // from the query
-      let filleredOrders = Orders.find(this.state.query).fetch();
-      filleredOrders = filleredOrders.map((order) => {
+      let filteredOrders = Orders.find(this.state.query).fetch();
+      filteredOrders = filteredOrders.map((order) => {
         return order._id;
       });
       this.setState({
-        selectedItems: filleredOrders,
+        selectedItems: filteredOrders,
         multipleSelect: true
       });
     } else {
