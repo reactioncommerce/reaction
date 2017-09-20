@@ -261,15 +261,15 @@ export const methods = {
       return [];
     }
     this.unblock();
-    const cart = Cart.findOne(cartId);
+    let cart = Cart.findOne(cartId);
     check(cart, CartSchema);
 
     if (cart) {
       if (!cart.shipping || cart.shipping.length === 0) {
         addAddresses(cart);
+        cart = Cart.findOne(cartId);
       }
       const rates = Meteor.call("shipping/getShippingRates", cart);
-      console.log("got rates", rates);
       if (cart.shipping && cart.shipping.length !== 0) {
         updateShippingRecordByShop(cart, rates);
       } else {
