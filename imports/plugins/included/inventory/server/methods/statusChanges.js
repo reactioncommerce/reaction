@@ -235,9 +235,9 @@ Meteor.methods({
     check(backOrderQty, Number);
     this.unblock();
 
-    // this use case could happen then mergeCart is fires. We don't add anything
+    // this use case could happen when mergeCart is fired. We don't add anything
     // or remove, just item owner changed. We need to add this check here
-    // because of bulk operation. It thows exception if nothing to operate.
+    // because of bulk operation. It throws exception if nothing to operate.
     if (backOrderQty === 0) {
       return 0;
     }
