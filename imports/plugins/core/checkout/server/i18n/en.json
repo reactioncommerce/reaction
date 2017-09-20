@@ -8,6 +8,9 @@
         "dashboard": {},
         "settings": {}
       },
+      "cartDrawerItems": {
+        "limitedSupply": "Limited Supply"
+      },
       "cartCompleted": {
         "yourCart": "Your Cart",
         "discountTotal": "Discount Total",
