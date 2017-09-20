@@ -226,7 +226,6 @@ function getDefaultAddress(cart) {
 function addAddresses(cart) {
   console.log("calling addAddresses");
   const address = getDefaultAddress(cart);
-  console.log("adding address", address);
   if (address) {
     const shopIds = Object.keys(cart.getItemsByShop());
     shopIds.map((shopId) => {
@@ -266,13 +265,15 @@ export const methods = {
     check(cart, CartSchema);
 
     if (cart) {
+      if (!cart.shipping || cart.shipping.length === 0) {
+        addAddresses(cart);
+      }
       const rates = Meteor.call("shipping/getShippingRates", cart);
       console.log("got rates", rates);
       if (cart.shipping && cart.shipping.length !== 0) {
         updateShippingRecordByShop(cart, rates);
       } else {
         // if no shipping records, lets add them so we have address
-        addAddresses(cart);
         updateShippingRecordByShop(cart, rates);
       }
     }
