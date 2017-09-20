@@ -160,7 +160,7 @@ class OrderDashboardContainer extends Component {
     if (startDate && endDate) {
       query.createdAt = {
         $gte: new Date(startDate.toISOString()),
-        $lt: new Date(endDate.toISOString())
+        $lte: new Date(endDate.toISOString())
       };
       this.setState({
         className: Object.assign({}, this.state.className, {
