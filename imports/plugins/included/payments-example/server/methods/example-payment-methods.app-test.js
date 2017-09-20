@@ -49,7 +49,7 @@ describe("ExampleApi", function () {
     expect(transaction).to.not.be.undefined;
   });
 
-  it.only("should return risk status for flagged test card", function () {
+  it("should return risk status for flagged test card", function () {
     const cardData = {
       name: "Test User",
       number: RISKYCARD,
