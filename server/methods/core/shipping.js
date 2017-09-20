@@ -1,10 +1,11 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Cart } from "/lib/collections";
+import { Cart, Accounts } from "/lib/collections";
 import { Logger, Hooks } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
 function createShipmentQuotes(cartId, shopId, rates, selector) {
+  console.log("calling createShipmentQuotes", shopId, rates);
   let update = {
     $push: {
       shipping: {
@@ -54,12 +55,13 @@ function createShipmentQuotes(cartId, shopId, rates, selector) {
 }
 
 function createShippingRecordByShop(cart, rates) {
+  console.log("createShippingRecordByShop");
   const cartId = cart._id;
   const itemsByShop = cart.getItemsByShop();
   const shops = Object.keys(itemsByShop);
   const selector = { _id: cartId };
   shops.map((shopId) => {
-    const update = createShipmentQuotes(cartId, shopId, rates, selector);
+    const update = createShipmentQuotes(cartId, shopId, rates, selector, address);
     return Cart.update(selector, update, (error) => {
       if (error) {
         Logger.error(`Error adding rates to cart from createShippingRecordByShop ${cartId}`, error);
@@ -91,8 +93,8 @@ function pruneShippingRecordsByShop(cart) {
     } else {
       Cart.update({ _id: cartId },
         {
-          $set: {
-            shipping: []
+          $unset: {
+            shipping: ""
           }
         }
       );
@@ -106,29 +108,33 @@ function pruneShippingRecordsByShop(cart) {
  * @returns {undefined} undefined
  */
 function normalizeAddresses(cart) {
-  const shipping = cart.shipping;
-  const cartId = cart._id;
-  let address; // we can only have one address so whatever was the last assigned
-  shipping.map((shippingRecord) => {
-    if (shippingRecord.address) {
-      address = shippingRecord.address;
-    }
-  });
-  const shopIds = Object.keys(cart.getItemsByShop());
-  shopIds.map((shopId) => {
-    const selector = {
-      "_id": cartId,
-      "shipping.shopId": shopId
-    };
-
-    const update = {
-      $set: {
-        "shipping.$.address": address
+  console.log("calling normalizeAddresses");
+  if (cart.shipping && cart.shipping.length > 0) {
+    const shipping = cart.shipping;
+    const cartId = cart._id;
+    let address; // we can only have one address so whatever was the last assigned
+    shipping.map((shippingRecord) => {
+      if (shippingRecord.address) {
+        address = shippingRecord.address;
       }
-    };
-    Cart.update(selector, update);
-  });
+    });
+    const shopIds = Object.keys(cart.getItemsByShop());
+    shopIds.map((shopId) => {
+      const selector = {
+        "_id": cartId,
+        "shipping.shopId": shopId
+      };
+
+      const update = {
+        $set: {
+          "shipping.$.address": address
+        }
+      };
+      Cart.update(selector, update);
+    });
+  }
 }
+
 
 function updateShipmentQuotes(cartId, rates, selector) {
   let update = {
@@ -206,6 +212,38 @@ function updateShippingRecordByShop(cart, rates) {
   pruneShippingRecordsByShop(cart);
   normalizeAddresses(cart);
 }
+
+function getDefaultAddress(cart) {
+  const userId = cart.userId;
+  const account = Accounts.findOne(userId);
+  if (account && account.profile && account.profile.addressBook) {
+    const address = account.profile.addressBook.find((addressEntry) => addressEntry.isShippingDefault === true);
+    return address;
+  }
+}
+
+
+function addAddresses(cart) {
+  console.log("calling addAddresses");
+  const address = getDefaultAddress(cart);
+  console.log("adding address", address);
+  if (address) {
+    const shopIds = Object.keys(cart.getItemsByShop());
+    shopIds.map((shopId) => {
+      Cart.update({
+        _id: cart._id
+      }, {
+        $push: {
+          shipping: {
+            shopId: shopId,
+            address: address
+          }
+        }
+      });
+    });
+  }
+
+}
 /*
  * Reaction Shipping Methods
  * methods typically used for checkout (shipping, taxes, etc)
@@ -229,10 +267,13 @@ export const methods = {
 
     if (cart) {
       const rates = Meteor.call("shipping/getShippingRates", cart);
-      if (cart.shipping) {
+      console.log("got rates", rates);
+      if (cart.shipping && cart.shipping.length !== 0) {
         updateShippingRecordByShop(cart, rates);
       } else {
-        createShippingRecordByShop(cart, rates);
+        // if no shipping records, lets add them so we have address
+        addAddresses(cart);
+        updateShippingRecordByShop(cart, rates);
       }
     }
   },
