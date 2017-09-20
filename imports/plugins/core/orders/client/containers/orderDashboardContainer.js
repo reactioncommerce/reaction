@@ -158,11 +158,12 @@ class OrderDashboardContainer extends Component {
     const query = this.state.query;
 
     if (startDate && endDate) {
-      // add time to endDate so that ISOString doesn't generate random time
-      const formattedEndDate = endDate.set("hour", 23).set("minute", 59);
+      // generate time for start and end of day
+      const formattedEndDate = endDate.endOf("day");
+      const formattedStartDate = startDate.startOf("day");
 
       query.createdAt = {
-        $gte: new Date(startDate.toISOString()),
+        $gte: new Date(formattedStartDate.toISOString()),
         $lte: new Date(formattedEndDate.toISOString())
       };
       this.setState({
