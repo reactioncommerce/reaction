@@ -37,19 +37,11 @@ function getShippingRates(previousQueryResults, cart) {
   if (!(cart.shipping && cart.shipping[0] && cart.shipping[0].address)) {
     const errorDetails = {
       requestStatus: "error",
-      shippingProvider: "shippo",
+      shippingProvider: "flat-rate-shipping",
       message: "The 'shipping' property of this cart is either missing or incomplete."
     };
     rates.push(errorDetails);
     return [rates, retrialTargets];
-  }
-  if (!(cart.items && cart.items[0] && cart.items[0].parcel)) {
-    const errorDetails = {
-      requestStatus: "error",
-      shippingProvider: "shippo",
-      message: "This cart has no items, or the first item has no 'parcel' property."
-    };
-    return [[errorDetails], []];
   }
 
   let merchantShippingRates = false;
@@ -90,7 +82,6 @@ function getShippingRates(previousQueryResults, cart) {
         shops.push(product.shopId);
       }
     }
-
     // if we have multiple shops in cart
     if ((shops !== null ? shops.length : void 0) > 0) {
       selector = {
