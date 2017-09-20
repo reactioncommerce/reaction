@@ -34,14 +34,42 @@ function getShippingRates(previousQueryResults, cart) {
       return previousQueryResults;
     }
   }
-  if (!(cart.shipping && cart.shipping[0] && cart.shipping[0].address)) {
+
+  // Verify that we have shipping records
+  if (!cart.shipping || !cart.shipping.length) {
     const errorDetails = {
-      requestStatus: "error",
+      requestStats: "error",
       shippingProvider: "flat-rate-shipping",
-      message: "The 'shipping' property of this cart is either missing or incomplete."
+      message: "this cart is missing shipping records"
     };
-    rates.push(errorDetails);
-    return [rates, retrialTargets];
+    return [[errorDetails], []];
+  }
+
+  // Verify that we have a valid address to work with
+  let shippingErrorDetails;
+  cart.shipping.map((shippingRecord) => {
+    if (!shippingRecord.address) {
+      shippingErrorDetails = {
+        requestStatus: "error",
+        shippingProvider: "flat-rate-shipping",
+        message: "The address property on one or more shipping records are incomplete"
+      };
+    }
+  });
+
+  if (shippingErrorDetails) {
+    return [[shippingErrorDetails], []];
+  }
+
+
+  // Validate that we have valid items to work with
+  if (!cart.items || !cart.items.length) {
+    const errorDetails = {
+      requestStats: "error",
+      shippingProvider: "flat-rate-shipping",
+      message: "this cart has no items"
+    };
+    return [[errorDetails], []];
   }
 
   let merchantShippingRates = false;
