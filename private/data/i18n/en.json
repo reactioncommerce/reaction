@@ -119,9 +119,9 @@
       "productVariant": {
         "addVariantOptions": "Add options to enable 'Add to Cart' button",
         "inventoryQuantity": "Quantity",
-        "title": "Label",
+        "title": "Title",
         "price": "Price",
-        "optionTitle": "Short label",
+        "optionTitle": "Option title",
         "barcode": "Barcode",
         "compareAtPrice": "Compare at price",
         "fulfillmentService": "Fulfillment service",
