@@ -47,46 +47,42 @@ export default {
     Tracker.autorun(() => {
       let shop;
       if (this.Subscriptions.PrimaryShop.ready()) {
-        // if we've already set the primaryShopId, carry on.
-        // otherwise we need to define it.
-        if (!this.primaryShopId) {
-          // There should only ever be one "primary" shop
-          shop = Shops.findOne({
-            shopType: "primary"
-          });
+        // There should only ever be one "primary" shop
+        shop = Shops.findOne({
+          shopType: "primary"
+        });
 
-          if (shop) {
-            this.primaryShopId = shop._id;
-            this.primaryShopName = shop.name;
+        if (shop) {
+          this.primaryShopId = shop._id;
+          this.primaryShopName = shop.name;
 
-            // We'll initialize locale and currency for the primary shop unless
-            // marketplace settings exist and merchantLocale is set to true
-            if (this.marketplace.merchantLocale !== true) {
-              // initialize local client Countries collection
-              if (!Countries.findOne()) {
-                createCountryCollection(shop.locales.countries);
-              }
+          // We'll initialize locale and currency for the primary shop unless
+          // marketplace settings exist and merchantLocale is set to true
+          if (this.marketplace.merchantLocale !== true) {
+            // initialize local client Countries collection
+            if (!Countries.findOne()) {
+              createCountryCollection(shop.locales.countries);
+            }
 
-              const locale = this.Locale.get() || {};
+            const locale = this.Locale.get() || {};
 
-              // fix for https://github.com/reactioncommerce/reaction/issues/248
-              // we need to keep an eye for rates changes
-              if (typeof locale.locale === "object" &&
+            // fix for https://github.com/reactioncommerce/reaction/issues/248
+            // we need to keep an eye for rates changes
+            if (typeof locale.locale === "object" &&
                  typeof locale.currency === "object" &&
                  typeof locale.locale.currency === "string") {
-                const localeCurrency = locale.locale.currency.split(",")[0];
-                if (typeof shop.currencies[localeCurrency] === "object") {
-                  if (typeof shop.currencies[localeCurrency].rate === "number") {
-                    locale.currency.rate = shop.currencies[localeCurrency].rate;
-                    localeDep.changed();
-                  }
+              const localeCurrency = locale.locale.currency.split(",")[0];
+              if (typeof shop.currencies[localeCurrency] === "object") {
+                if (typeof shop.currencies[localeCurrency].rate === "number") {
+                  locale.currency.rate = shop.currencies[localeCurrency].rate;
+                  localeDep.changed();
                 }
               }
-              // we are looking for a shopCurrency changes here
-              if (typeof locale.shopCurrency === "object") {
-                locale.shopCurrency = shop.currencies[shop.currency];
-                localeDep.changed();
-              }
+            }
+            // we are looking for a shopCurrency changes here
+            if (typeof locale.shopCurrency === "object") {
+              locale.shopCurrency = shop.currencies[shop.currency];
+              localeDep.changed();
             }
           }
         }
@@ -559,6 +555,7 @@ export default {
   },
 
   setActionView(viewData) {
+    this.hideActionViewDetail();
     if (viewData) {
       let viewStack;
 
@@ -624,16 +621,10 @@ export default {
 
   setActionViewDetail(viewData, options = {}) {
     const { open } = options;
-    const currentRouteName = this.Router.getRouteName();
 
     Session.set("admin/showActionView", true);
     Session.set("admin/showActionViewDetail", typeof open === "boolean" ? open : true);
-
-    if (currentRouteName !== "index") {
-      Session.set("admin/actionView", [viewData]);
-    } else if (viewData) {
-      Session.set("admin/detailView", [viewData]);
-    }
+    Session.set("admin/detailView", [viewData]);
   },
 
   pushActionViewDetail(viewData) {

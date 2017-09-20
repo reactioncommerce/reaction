@@ -536,213 +536,6 @@ Meteor.methods({
       return result;
     });
   },
-
-  /**
-   * cart/copyCartToOrder
-   * @summary transform cart to order when a payment is processed we want to
-   * copy the cart over to an order object, and give the user a new empty
-   * cart. reusing the cart schema makes sense, but integrity of the order, we
-   * don't want to just make another cart item
-   * @todo:  Partial order processing, shopId processing
-   * @todo:  Review Security on this method
-   * @param {String} cartId - cartId to transform to order
-   * @return {String} returns orderId
-   */
-  "cart/copyCartToOrder": function (cartId) {
-    check(cartId, String);
-    const cart = Collections.Cart.findOne(cartId);
-
-    // security check - method can only be called on own cart
-    if (cart.userId !== Meteor.userId()) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    // Init new order object from existing cart
-    const order = Object.assign({}, cart);
-
-    // get sessionId from cart while cart is fresh
-    const sessionId = cart.sessionId;
-
-    // If there are no order items, throw an error. We won't create an empty order
-    if (!order.items || order.items.length === 0) {
-      const msg = "An error occurred saving the order. Missing cart items.";
-      Logger.error(msg);
-      throw new Meteor.Error("no-cart-items", msg);
-    }
-
-    // Debug only message to identify the current cartId
-    Logger.debug("cart/copyCartToOrder", cartId);
-
-    // Set our new order's cartId to existing cart._id
-    // We'll get a new _id for our order
-    order.cartId = cart._id;
-
-    // This block assigns an existing user's email associated with their account to this order
-    // We copied order from cart, so this userId and email are coming from the existing cart
-    if (order.userId && !order.email) {
-      // If we have a userId, but do _not_ have an email associated with this order
-      // we need to go find the account associated with this userId
-      const account = Collections.Accounts.findOne(order.userId);
-
-      // Check to make sure that the account exists and has an emails field
-      if (typeof account === "object" && account.emails) {
-        for (const email of account.emails) {
-          // If a user has specified an alternate "order" email address, use that
-          if (email.provides === "orders") {
-            order.email = email.address;
-          // Otherwise, check to see if the user has a "default" email address
-          } else if (email.provides === "default") {
-            order.email = email.address;
-          }
-          // If we can't find any relevant email addresses for the user, we'll
-          // let them assign an email address to this order after the checkout
-        }
-      }
-    }
-
-    // The schema will provide default values for these fields in our new order
-    // so we'll delete the values copied from the cart
-    delete order.createdAt; // autovalues from cart
-    delete order.updatedAt;
-    delete order.getCount;
-    delete order.getShippingTotal;
-    delete order.getSubTotal;
-    delete order.getTaxTotal;
-    delete order.getDiscounts;
-    delete order.getTotal;
-    delete order._id;
-
-    // TODO: update this to handle multiple shipments instead of hardcoding to
-    // first element in `order.shipping` array
-    if (Array.isArray(order.shipping)) {
-      if (order.shipping.length > 0) {
-        order.shipping[0].paymentId = order.billing[0]._id;
-
-        if (!Array.isArray(order.shipping[0].items)) {
-          order.shipping[0].items = [];
-        }
-      }
-    } else { // if not - create it
-      order.shipping = [];
-    }
-
-    // Add current exchange rate into order.billing.currency
-    // If user currency === shop currency, exchange rate = 1.0
-    const currentUser = Meteor.user();
-    let userCurrency = Reaction.getShopCurrency();
-    let exchangeRate = "1.00";
-
-    if (currentUser && currentUser.profile && currentUser.profile.currency) {
-      userCurrency = Meteor.user().profile.currency;
-    }
-
-    if (userCurrency !== Reaction.getShopCurrency()) {
-      const userExchangeRate = Meteor.call("shop/getCurrencyRates", userCurrency);
-
-      if (typeof userExchangeRate === "number") {
-        exchangeRate = userExchangeRate;
-      } else {
-        Logger.warn("Failed to get currency exchange rates. Setting exchange rate to null.");
-        exchangeRate = null;
-      }
-    }
-
-    if (!order.billing[0].currency) {
-      order.billing[0].currency = {
-        // userCurrency is shopCurrency unless user has selected a different currency than the shop
-        userCurrency: userCurrency
-      };
-    }
-
-    order.items = order.items.map(item => {
-      item.shippingMethod = order.shipping[order.shipping.length - 1];
-      item.workflow = {
-        status: "new",
-        workflow: ["coreOrderWorkflow/created"]
-      };
-
-      return item;
-    });
-
-    // TODO: update this to assign each item to the correct shipment based on
-    // which fulfillment provider is serving that item.
-    _.each(order.items, (item) => {
-      // TODO: Loop through items based on fulfillment provider / payment / shopID
-      // TODO: Set each order item workflow to new
-      // TODO: Set each order item workflow workflow to "created"
-      // TODO: Assign correct shipment to order item
-      // TODO: Assign correct payment to order item (perhaps in a different part of code)
-
-      // If the shipment exists
-      if (order.shipping[0].items) {
-        // Assign each item in the order to the correct shipment
-        // TODO: We should also be assigning the correct shipment to each order item here
-        order.shipping[0].items.push({
-          _id: item._id,
-          productId: item.productId,
-          shopId: item.shopId,
-          variantId: item.variants._id
-        });
-      }
-    });
-
-    // TODO: Set all shipping statuses to false. Consider eliminating in favor
-    // of order item workflow status.
-    // Set shipping statuses to false
-    order.shipping[0].items.packed = false;
-    order.shipping[0].items.shipped = false;
-    order.shipping[0].items.delivered = false;
-
-    // begin a new shipping workflow for the order
-    order.shipping[0].workflow = {
-      status: "new",
-      workflow: ["coreOrderWorkflow/notStarted"]
-    };
-    order.billing[0].currency.exchangeRate = exchangeRate;
-    order.workflow.status = "new";
-    order.workflow.workflow = ["coreOrderWorkflow/created"];
-
-    // insert new reaction order
-    const orderId = Collections.Orders.insert(order);
-
-    if (orderId) {
-      Collections.Cart.remove({
-        _id: order.cartId
-      });
-      // create a new cart for the user
-      // even though this should be caught by
-      // subscription handler, it's not always working
-      const newCartExists = Collections.Cart.find({ userId: order.userId });
-      if (newCartExists.count() === 0) {
-        Meteor.call("cart/createCart", this.userId, sessionId);
-        // after recreate new cart we need to make it looks like previous by
-        // updating `cart/workflow/status` to "coreCheckoutShipping"
-        // by calling `workflow/pushCartWorkflow` three times. This is the only
-        // way to do that without refactoring of `workflow/pushCartWorkflow`
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook");
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
-      }
-
-      Logger.info("Transitioned cart " + cartId + " to order " + orderId);
-      // catch send notification, we don't want
-      // to block because of notification errors
-
-      if (order.email) {
-        Meteor.call("orders/sendNotification", Collections.Orders.findOne(orderId), (err) => {
-          if (err) {
-            Logger.error(err, `Error in orders/sendNotification for order ${orderId}`);
-          }
-        });
-      }
-
-      // order success
-      return orderId;
-    }
-    // we should not have made it here, throw error
-    throw new Meteor.Error(400, "cart/copyCartToOrder: Invalid request");
-  },
-
   /**
    * cart/setShipmentMethod
    * @summary saves method as order default
@@ -764,19 +557,24 @@ Meteor.methods({
         "Cart not found for user with such id");
     }
 
-    // temp hack until we build out multiple shipping handlers
+    // Sets all shipping methods to the one selected
+    // TODO: Accept an object of shopId to method map to ship via different methods per shop
     let selector;
     let update;
-    // temp hack until we build out multiple shipment handlers
     // if we have an existing item update it, otherwise add to set.
     if (cart.shipping) {
+      const updatedShipping = [];
+      cart.shipping.map((shipRecord) => {
+        shipRecord.shipmentMethod = method;
+        updatedShipping.push(shipRecord);
+      });
+
       selector = {
-        "_id": cartId,
-        "shipping._id": cart.shipping[0]._id
+        _id: cartId
       };
       update = {
         $set: {
-          "shipping.$.shipmentMethod": method
+          shipping: updatedShipping
         }
       };
     } else {
@@ -786,7 +584,8 @@ Meteor.methods({
       update = {
         $addToSet: {
           shipping: {
-            shipmentMethod: method
+            shipmentMethod: method,
+            shopId: cart.shopId
           }
         }
       };
@@ -911,6 +710,7 @@ Meteor.methods({
 
     let selector;
     let update;
+    const primaryShopId = Reaction.getPrimaryShopId();
     // temp hack until we build out multiple shipment handlers
     // if we have an existing item update it, otherwise add to set.
     if (Array.isArray(cart.shipping) && cart.shipping.length > 0) {
@@ -920,7 +720,8 @@ Meteor.methods({
       };
       update = {
         $set: {
-          "shipping.$.address": address
+          "shipping.$.address": address,
+          "shopId": primaryShopId
         }
       };
     } else {
@@ -930,7 +731,8 @@ Meteor.methods({
       update = {
         $addToSet: {
           shipping: {
-            address: address
+            address: address,
+            shopId: primaryShopId
           }
         }
       };
@@ -1118,7 +920,7 @@ Meteor.methods({
 
     const cartShipping = cart.getShippingTotal();
     const cartSubTotal = cart.getSubTotal();
-    const cartSubTotalByShop = cart.getSubTotalByShop();
+    const cartSubtotalByShop = cart.getSubtotalByShop();
     const cartTaxes = cart.getTaxTotal();
     const cartTaxesByShop = cart.getTaxesByShop();
     const cartDiscounts = cart.getDiscounts();
@@ -1144,7 +946,7 @@ Meteor.methods({
         const shopId = paymentMethod.shopId;
         const invoice = {
           shipping: parseFloat(cartShipping),
-          subtotal: parseFloat(cartSubTotalByShop[shopId]),
+          subtotal: parseFloat(cartSubtotalByShop[shopId]),
           taxes: parseFloat(cartTaxesByShop[shopId]),
           discounts: parseFloat(cartDiscounts),
           total: parseFloat(cartTotalByShop[shopId])

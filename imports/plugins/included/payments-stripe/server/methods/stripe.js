@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Random } from "meteor/random";
 
-import { Reaction, Logger } from "/server/api";
+import { Reaction, Logger, Hooks } from "/server/api";
 import { StripeApi } from "./stripeapi";
 
 import { Cart, Shops, Accounts, Packages } from "/lib/collections";
@@ -269,6 +269,7 @@ export const methods = {
 
       // Get cart totals for each Shop
       const cartTotals = cart.getTotalByShop();
+      const cartSubtotals = cart.getSubtotalByShop();
 
       // Loop through all shopIds represented in cart
       shopIds.forEach((shopId) => {
@@ -322,8 +323,37 @@ export const methods = {
           // TODO: Add description to charge in Stripe
           stripeCharge.source = token.id;
 
-          // Demo 20% application fee
-          stripeCharge.application_fee = formatForStripe(cartTotals[shopId] * 0.2); // eslint-disable-line camelcase
+          // Get the set application fee from the dashboard
+          const dashboardAppFee = stripePkg.settings.applicationFee || 0;
+          const percentAppFee = dashboardAppFee / 100; // Convert whole number app fee to percentage
+
+          // Initialize applicationFee - this can be adjusted by the onCalculateStripeApplicationFee event hook
+          const coreApplicationFee = formatForStripe(cartSubtotals[shopId] * percentAppFee);
+
+          /**
+           * Hook for affecting the application fee charged. Any hooks that `add` "onCalculateStripeApplicationFee" will
+           * run here
+           * @module hooks/payments/stripe
+           * @method onCalculateStripeApplicationFee
+           * @param {number} applicationFee the exact application fee in cents (must be returned by every hook)
+           * @param {object} options object containing properties passed into the hook
+           * @param {object} options.cart the cart object
+           * @param {object} options.shopId the shopId
+           * @todo Consider abstracting the application fee out of the Stripe implementation, into core payments
+           * @returns {number} the application fee after having been through all hooks (must be returned by ever hook)
+           */
+          const applicationFee = Hooks.Events.run("onCalculateStripeApplicationFee", coreApplicationFee, {
+            cart, // The cart
+            shopId // currentShopId
+          });
+
+          // TODO: Consider discounts when determining application fee
+
+          // Charge the application fee created by hooks. If it doesn't exist, that means that a hook has fouled up
+          // the application fee. Review hooks and plugins.
+          // Fall back to the application fee that comes from the stripe dashboard when hook based app fee is undefined
+          // eslint-disable-next-line camelcase
+          stripeCharge.application_fee = applicationFee || coreApplicationFee;
         }
 
         // We should only do this once per shop per cart

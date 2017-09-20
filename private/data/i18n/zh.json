@@ -35,6 +35,7 @@
         "shopSettings": "商店设置",
         "dashboard": "控制台",
         "print": "打印",
+        "editMode": "编辑模式",
         "auto": "自动"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} 现在已启用。",
         "pkgDisabled": "{{app}} 现在处于禁用状态。"
+      },
+      "gridSettingsPanel": {
+        "title": "网格设置",
+        "selected": "选"
       },
       "cartDrawer": {
         "empty": "我们非常抱歉，您的购物车是空的。",
