@@ -103,7 +103,7 @@ class OrderDashboardContainer extends Component {
       ready: false,
       query: {},
       filter: i18next.t("order.filter.status"),
-      className: "",
+      classNamesContainer: {},
       searchQuery: ""
     };
 
@@ -155,6 +155,27 @@ class OrderDashboardContainer extends Component {
     }
   }
 
+  filterDates = (startDate, endDate) => {
+    const query = this.state.query;
+
+    if (startDate && endDate) {
+      // generate time for start and end of day
+      const formattedEndDate = endDate.endOf("day");
+      const formattedStartDate = startDate.startOf("day");
+
+      query.createdAt = {
+        $gte: new Date(formattedStartDate.toISOString()),
+        $lte: new Date(formattedEndDate.toISOString())
+      };
+      this.setState({
+        classNamesContainer: Object.assign({}, this.state.classNamesContainer, {
+          date: "active"
+        }),
+        query
+      });
+    }
+  }
+
   handleMenuClick = (event, value) => {
     let query = OrderHelper.makeQuery(value);
     // ensure other fields (e.g ids) on query are kept
@@ -162,7 +183,9 @@ class OrderDashboardContainer extends Component {
     this.setState({
       query,
       filter: i18next.t(`order.filter.${value}`),
-      className: "active"
+      classNamesContainer: Object.assign({}, this.state.classNamesContainer, {
+        status: "active"
+      })
     });
   }
 
@@ -192,19 +215,39 @@ class OrderDashboardContainer extends Component {
     });
   }
 
-  clearFilter = () => {
+  clearFilter = (filterString) => {
+    let query;
+    let filter = this.state.filter;
     const oldQuery = this.state.query;
-    const query = OrderHelper.makeQuery("");
+    const classNamesContainer = this.state.classNamesContainer;
+
+    if (filterString === "status") {
+      query = OrderHelper.makeQuery("");
+      filter = i18next.t("order.filter.status");
+
+      // if there was another filter active reattach it to the query object
+      if (oldQuery.createdAt) {
+        query.createdAt = oldQuery.createdAt;
+      }
+    } else if (filterString === "date") {
+      query = OrderHelper.makeQuery(filter.toLowerCase());
+    }
+
     // id is set by the searchbar in setupTracker. Here we check if there's a current value in it before
     // the filter was cleared. If there is, we attach it back to the queryObj
     if (oldQuery._id) {
       query._id = oldQuery._id;
     }
 
+    // clear filter for a particular search
+    const filterClassName = Object.assign({}, classNamesContainer, {
+      [filterString]: ""
+    });
+
     this.setState({
       query,
-      filter: i18next.t("order.filter.status"),
-      className: ""
+      filter,
+      classNamesContainer: filterClassName
     });
   }
 
@@ -803,8 +846,9 @@ class OrderDashboardContainer extends Component {
           searchQuery={this.state.searchQuery}
           query={this.state.query}
           filter={this.state.filter}
-          className={this.state.className}
+          classNamesContainer={this.state.classNamesContainer}
           clearFilter={this.clearFilter}
+          filterDates={this.filterDates}
           handleClick={this.handleClick}
           displayMedia={this.handleDisplayMedia}
           selectedItems={this.state.selectedItems}
