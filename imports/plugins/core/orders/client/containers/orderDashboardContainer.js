@@ -102,7 +102,7 @@ class OrderDashboardContainer extends Component {
       ready: false,
       query: {},
       filter: i18next.t("order.filter.status"),
-      className: {},
+      classNamesContainer: {},
       searchQuery: ""
     };
 
@@ -163,7 +163,7 @@ class OrderDashboardContainer extends Component {
         $lt: new Date(endDate.toISOString())
       };
       this.setState({
-        className: Object.assign({}, this.state.className, {
+        classNamesContainer: Object.assign({}, this.state.classNamesContainer, {
           date: "active"
         }),
         query
@@ -178,7 +178,7 @@ class OrderDashboardContainer extends Component {
     this.setState({
       query,
       filter: i18next.t(`order.filter.${value}`),
-      className: Object.assign({}, this.state.className, {
+      classNamesContainer: Object.assign({}, this.state.classNamesContainer, {
         status: "active"
       })
     });
@@ -214,7 +214,7 @@ class OrderDashboardContainer extends Component {
     let query;
     let filter = this.state.filter;
     const oldQuery = this.state.query;
-    const className = this.state.className;
+    const classNamesContainer = this.state.classNamesContainer;
 
     if (filterString === "status") {
       query = OrderHelper.makeQuery("");
@@ -235,14 +235,14 @@ class OrderDashboardContainer extends Component {
     }
 
     // clear filter for a particular search
-    const filterClassName = Object.assign({}, className, {
+    const filterClassName = Object.assign({}, classNamesContainer, {
       [filterString]: ""
     });
 
     this.setState({
       query,
       filter,
-      className: filterClassName
+      classNamesContainer: filterClassName
     });
   }
 
@@ -838,9 +838,9 @@ class OrderDashboardContainer extends Component {
           searchQuery={this.state.searchQuery}
           query={this.state.query}
           filter={this.state.filter}
-          className={this.state.className}
+          classNamesContainer={this.state.classNamesContainer}
           clearFilter={this.clearFilter}
-          onDatesChange={this.filterDates}
+          filterDates={this.filterDates}
           handleClick={this.handleClick}
           displayMedia={this.handleDisplayMedia}
           selectedItems={this.state.selectedItems}

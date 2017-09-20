@@ -5,11 +5,11 @@ import { Components } from "@reactioncommerce/reaction-components";
 
 class OrderActions extends Component {
   static propTypes = {
-    className: PropTypes.object,
+    classNamesContainer: PropTypes.object,
     clearFilter: PropTypes.func,
     filter: PropTypes.string,
-    handleMenuClick: PropTypes.func,
-    onDatesChange: PropTypes.func
+    filterDates: PropTypes.func,
+    handleMenuClick: PropTypes.func
   }
 
   constructor(props) {
@@ -20,12 +20,12 @@ class OrderActions extends Component {
     };
   }
 
-  onDatesChange = (startDate, endDate) => {
+  handleDatesChange = (startDate, endDate) => {
     this.setState({
       startDate,
       endDate
     });
-    this.props.onDatesChange(startDate, endDate);
+    this.props.filterDates(startDate, endDate);
   }
 
   buttonElement() {
@@ -57,7 +57,7 @@ class OrderActions extends Component {
             <span
               className={classnames({
                 "order-filter-name": true
-              }, this.props.className.status)}
+              }, this.props.classNamesContainer.status)}
             >
               {this.props.filter}
             </span>
@@ -65,7 +65,7 @@ class OrderActions extends Component {
               <Components.Button
                 className={classnames({
                   "order-filter-button": true
-                }, this.props.className.status)}
+                }, this.props.classNamesContainer.status)}
                 onClick={() => this.props.clearFilter("status")}
               >
                 <i className="fa fa-filter" />
@@ -117,7 +117,7 @@ class OrderActions extends Component {
             <span
               className={classnames({
                 "order-filter-name": true
-              }, this.props.className.date)}
+              }, this.props.classNamesContainer.date)}
             >
               {this.dateLabel()}
             </span>
@@ -125,7 +125,7 @@ class OrderActions extends Component {
               <Components.Button
                 className={classnames({
                   "order-filter-button": true
-                }, this.props.className.date)}
+                }, this.props.classNamesContainer.date)}
                 onClick={() => {
                   this.setState({
                     startDate: null,
@@ -148,7 +148,7 @@ class OrderActions extends Component {
                 <Components.CalendarPicker
                   initialStartDate={this.state.startDate}
                   initialEndDate={this.state.endDate}
-                  onDatesChange={this.onDatesChange}
+                  onDatesChange={this.handleDatesChange}
                 />
               </Components.DropDownMenu>
             </div>
