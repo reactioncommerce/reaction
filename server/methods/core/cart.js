@@ -21,7 +21,7 @@ function quantityProcessing(product, variant, itemQty = 1) {
   const MIN = variant.minOrderQuantity || 1;
   const MAX = variant.inventoryQuantity || Infinity;
 
-  if (MIN > MAX) {
+  if (variant.inventoryPolicy && MIN > MAX) {
     Logger.debug(`productId: ${product._id}, variantId ${variant._id
     }: inventoryQuantity lower then minimum order`);
     throw new Meteor.Error(`productId: ${product._id}, variantId ${variant._id
