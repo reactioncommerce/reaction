@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 
-import { ExampleApi, RISKYCARD } from "./exampleapi";
+import { ExampleApi, TESTRISKYCARD } from "./exampleapi";
 
 const paymentMethod = {
   processor: "Generic",
@@ -52,7 +52,7 @@ describe("ExampleApi", function () {
   it("should return risk status for flagged test card", function () {
     const cardData = {
       name: "Test User",
-      number: RISKYCARD,
+      number: TESTRISKYCARD,
       expireMonth: "2",
       expireYear: "2018",
       cvv2: "123",

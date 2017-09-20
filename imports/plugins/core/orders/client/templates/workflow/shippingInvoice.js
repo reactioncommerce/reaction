@@ -1,7 +1,6 @@
 import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import Alert from "sweetalert2";
 import $ from "jquery";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
@@ -9,6 +8,7 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { i18next, Logger, Reaction } from "/client/api";
 import { Orders, Shops, Packages } from "/lib/collections";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
+
 
 // helper to return the order payment object
 // the first credit paymentMethod on the order
