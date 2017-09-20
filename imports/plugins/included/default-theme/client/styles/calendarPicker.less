@@ -46,8 +46,9 @@
 }
 
 .CalendarDay--hovered {
-  background: #e4e7e7;
-  border: 1px double #d4d9d9;
+  background: @rui-info-hover;
+  border-radius: 50%;
+  border: 1px solid @rui-info-hover;
   color: inherit;
 }
 
@@ -64,13 +65,14 @@
 
 .CalendarDay--selected-span {
   background: @rui-info-bg;
-  border: 1px double @rui-info-bg;
+  border: 1px solid @rui-info-bg;
   color: @rui-default-text;
 }
 
 .CalendarDay--selected-span.CalendarDay--hovered, .CalendarDay--selected-span:active {
-  background: @rui-info-bg;
-  border: 1px double @rui-info-bg;
+  background: @rui-info-hover;
+  border-radius: 50%;
+  border: 1px solid @rui-info-hover;
 }
 
 .CalendarDay--selected-span.CalendarDay--last-in-range {
@@ -80,7 +82,7 @@
 .CalendarDay--hovered-span,
 .CalendarDay--after-hovered-start {
   background: @rui-info-bg;
-  border: 1px double @rui-info-bg;
+  border: 1px solid @rui-info-bg;
   color: @rui-default-text;
 }
 
@@ -92,9 +94,13 @@
 .CalendarDay--selected-start,
 .CalendarDay--selected-end,
 .CalendarDay--selected {
-  background: @rui-info;
-  border-radius: 50%;
   color: @rui-default-text;
+  background: #f7f7f7;
+
+  button {
+    background: @rui-info;
+    border-radius: 50%;
+  }
 }
 
 .CalendarDay--selected-start:active,
@@ -136,7 +142,7 @@
 
 .CalendarMonth table {
   border-collapse: separate;
-  border-spacing: 0 0.1em;
+  border-spacing: 0 0.225em;
 }
 
 .CalendarMonth--horizontal:first-of-type,
@@ -157,7 +163,7 @@
 }
 
 .CalendarMonth__caption {
-  color: #3c3f40;
+  color: @rui-default-text;
   margin-top: 7px;
   font-size: 16px;
   text-align: center;
@@ -351,7 +357,7 @@
 .DayPickerNavigation--horizontal .DayPickerNavigation__prev,
 .DayPickerNavigation--horizontal .DayPickerNavigation__next {
   border-radius: 50%;
-  border: 2px solid #3c3f40;
+  border: 2px solid @rui-default-text;
   padding: 1px 1px;
   top: 23px;
   background-color: #fff;
@@ -380,6 +386,7 @@
 .DayPickerNavigation--horizontal i {
   height: 16px;
   width: 14px;
+  color: @rui-default-text;
 }
 
 .DayPickerNavigation--horizontal .DayPickerNavigation__prev--default svg,
