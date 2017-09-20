@@ -112,10 +112,11 @@ function normalizeMode(transaction) {
 }
 
 /**
- * normalizes the mode of a transaction
- * @method normalizeMode
- * @param  {object} transaction The transaction that we need to normalize
- * @return {string} normalized status string - either failed, capture, or authorize
+ * @method normalizeRiskLevel
+ * @private
+ * @summary Normalizes the risk level response of a transaction to the values defined in paymentMethod schema
+ * @param  {object} transaction - The transaction that we need to normalize
+ * @return {string} normalized status string - either elevated, high, or normal
  */
 function normalizeRiskLevel(transaction) {
   if (!transaction) {

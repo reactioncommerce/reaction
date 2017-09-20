@@ -1,11 +1,11 @@
 import { Reaction } from "/client/api";
 
 /*
- * getOrderRiskBadge - helper - client
- * returns risk level value on the paymentMethod
- * highest = danger; elevated = warning; normal doesn't get a label
- * @param {String} riskLevel - risk level value on the paymentMethod
- * @return {String} label - style color class based on risk level
+ * @method getOrderRiskBadge
+ * @private
+ * @summary Selects appropriate color badge (e.g  danger, warning) value based on risklevel
+ * @param {string} riskLevel - risk level value on the paymentMethod
+ * @return {string} label - style color class based on risk level
  */
 export function getOrderRiskBadge(riskLevel) {
   let label;
@@ -23,17 +23,16 @@ export function getOrderRiskBadge(riskLevel) {
 }
 
 /*
- * getOrderRiskStatus - helper - client
- * gets the risk label on the paymentMethod object for a shop on an order
- * An empty string is returned if the value is "normal". We don't flag a normal charge
- * @param {Object} order - order object
- * @return {String} label - risklevel value (if risklevel is not normal)
+ * @method getOrderRiskStatus
+ * @private
+ * @summary Gets the risk label on the paymentMethod object for a shop on an order.
+ * An empty string is returned if the value is "normal" becuase we don't flag a normal charge
+ * @param {object} order - order object
+ * @return {string} label - risklevel value (if risklevel is not normal)
  */
 export function getOrderRiskStatus(order) {
   let riskLevel;
-  const billingForShop = order.billing.find(
-    billing => billing.shopId === Reaction.getShopId()
-  );
+  const billingForShop = order.billing.find((billing) => billing.shopId === Reaction.getShopId());
 
   if (billingForShop.paymentMethod && billingForShop.paymentMethod.riskLevel) {
     riskLevel = billingForShop.paymentMethod.riskLevel;

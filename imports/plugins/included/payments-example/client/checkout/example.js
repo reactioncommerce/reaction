@@ -80,6 +80,7 @@ AutoForm.addHooks("example-payment-form", {
             storedCard: storedCard,
             method: "credit",
             transactionId: transaction.transactionId,
+            riskLevel: transaction.riskLevel,
             currency: transaction.currency,
             amount: transaction.amount,
             status: transaction.status,
