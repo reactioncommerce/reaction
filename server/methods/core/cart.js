@@ -807,7 +807,6 @@ Meteor.methods({
               }
             }
           };
-
         });
       }
     }

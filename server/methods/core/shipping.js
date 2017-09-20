@@ -5,7 +5,6 @@ import { Logger, Hooks } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
 function createShipmentQuotes(cartId, shopId, rates, selector) {
-  console.log("calling createShipmentQuotes", shopId, rates);
   let update = {
     $push: {
       shipping: {
@@ -54,23 +53,6 @@ function createShipmentQuotes(cartId, shopId, rates, selector) {
   return update;
 }
 
-function createShippingRecordByShop(cart, rates) {
-  console.log("createShippingRecordByShop");
-  const cartId = cart._id;
-  const itemsByShop = cart.getItemsByShop();
-  const shops = Object.keys(itemsByShop);
-  const selector = { _id: cartId };
-  shops.map((shopId) => {
-    const update = createShipmentQuotes(cartId, shopId, rates, selector, address);
-    return Cart.update(selector, update, (error) => {
-      if (error) {
-        Logger.error(`Error adding rates to cart from createShippingRecordByShop ${cartId}`, error);
-        return;
-      }
-      Logger.debug(`Success adding rates to cart ${cartId}`, rates);
-    });
-  });
-}
 
 /**
  * @summary if we have items in the cart, ensure that we only have shipping records for shops currently represented in the cart
@@ -108,7 +90,6 @@ function pruneShippingRecordsByShop(cart) {
  * @returns {undefined} undefined
  */
 function normalizeAddresses(cart) {
-  console.log("calling normalizeAddresses");
   if (cart.shipping && cart.shipping.length > 0) {
     const shipping = cart.shipping;
     const cartId = cart._id;
@@ -224,7 +205,6 @@ function getDefaultAddress(cart) {
 
 
 function addAddresses(cart) {
-  console.log("calling addAddresses");
   const address = getDefaultAddress(cart);
   if (address) {
     const shopIds = Object.keys(cart.getItemsByShop());
@@ -241,7 +221,6 @@ function addAddresses(cart) {
       });
     });
   }
-
 }
 /*
  * Reaction Shipping Methods
