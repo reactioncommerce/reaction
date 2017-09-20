@@ -194,9 +194,17 @@ class Router {
  */
 Router.pathFor = (path, options = {}) => {
   const foundPath = Router.routes.find((pathObject) => {
-    if (pathObject.options.name === path) {
-      return true;
+    if (pathObject.route) {
+      if (options.hash && options.hash.shopSlug) {
+        if (pathObject.options.name === path && pathObject.route.includes("shopSlug")) {
+          return true;
+        }
+      } else if (pathObject.options.name === path && !pathObject.route.includes("shopSlug")) {
+        return true;
+      }
     }
+
+    // No path found
     return false;
   });
 
@@ -608,10 +616,11 @@ Router.initPackageRoutes = (options) => {
       });
 
       routeDefinitions.push({
-        route: "/shop/:shopId",
+        route: "/shop/:shopSlug",
         name: "index",
         options: {
           name: "index",
+          type: "shop-prefix",
           ...options.indexRoute,
           component: indexLayout.component,
           structure: indexLayout.structure
@@ -645,11 +654,10 @@ Router.initPackageRoutes = (options) => {
                 permissions,
                 template,
                 layout,
-                workflow,
-                provides
+                workflow
+                // provides
               } = registryItem;
 
-              // get registry route name
               const name = getRegistryRouteName(pkg.name, registryItem);
 
               // define new route
@@ -671,9 +679,10 @@ Router.initPackageRoutes = (options) => {
               };
               newRoutes.push({
                 ...newRouteConfig,
-                route: `/shop/:shopId${route}`,
+                route: `/shop/:shopSlug${route}`,
                 options: {
-                  ...newRouteConfig.options
+                  ...newRouteConfig.options,
+                  type: "shop-prefix"
                 }
               });
               // push new routes

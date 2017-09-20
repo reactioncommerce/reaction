@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Media, Products, Revisions } from "/lib/collections";
+import { Media, Products, Revisions, Shops } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
@@ -53,9 +53,9 @@ export function findProductMedia(publicationInstance, productIds) {
  * @param {String} productIdOrHandle - productId or handle
  * @return {Object} return product cursor
  */
-Meteor.publish("Product", function (productIdOrHandle, shopId) {
+Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
   check(productIdOrHandle, Match.OptionalOrNull(String));
-  check(shopId, Match.Maybe(String));
+  check(shopIdOrSlug, Match.Maybe(String));
 
   if (!productIdOrHandle) {
     Logger.debug("ignoring null request on Product subscription");
@@ -73,8 +73,20 @@ Meteor.publish("Product", function (productIdOrHandle, shopId) {
     }]
   };
 
-  if (shopId) {
-    preSelector.shopId = shopId;
+  if (shopIdOrSlug) {
+    const shop = Shops.findOne({
+      $or: [{
+        _id: shopIdOrSlug
+      }, {
+        slug: shopIdOrSlug
+      }]
+    });
+
+    if (shop) {
+      preSelector.shopId = shop._id;
+    } else {
+      return this.ready();
+    }
   }
 
   // TODO review for REGEX / DOS vulnerabilities.
@@ -95,10 +107,6 @@ Meteor.publish("Product", function (productIdOrHandle, shopId) {
       { ancestors: _id }
     ]
   };
-
-  if (shopId) {
-    selector.shopId = shopId;
-  }
 
   // Authorized content curators for the shop get special publication of the product
   // all all relevant revisions all is one package

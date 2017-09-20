@@ -113,7 +113,7 @@ function composer(props, onData) {
   let canLoadMoreProducts = false;
 
   const slug = Reaction.Router.getParam("slug");
-  const shopId = Reaction.Router.getParam("shopId");
+  const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
 
   const tag = Tags.findOne({ slug }) || Tags.findOne(slug);
   const scrollLimit = Session.get("productScrollLimit");
@@ -124,8 +124,8 @@ function composer(props, onData) {
     tags = { tags: [tag._id] };
   }
 
-  if (shopId) {
-    shopIds = { shops: [shopId] };
+  if (shopIdOrSlug) {
+    shopIds = { shops: [shopIdOrSlug] };
   }
 
   // if we get an invalid slug, don't return all products
