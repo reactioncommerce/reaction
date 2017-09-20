@@ -94,7 +94,9 @@ class Badge extends Component {
           onMouseOut={this.handleButtonMouseOut}
           onMouseOver={this.handleButtonMouseOver}
         >
-          <Components.Tooltip attachment={tooltipAttachment} tooltipContent={this.renderTooltipContent()}>
+          <Components.Tooltip
+            attachment={tooltipAttachment} tooltipContent={this.renderTooltipContent()}
+          >
             <span className={classes} style={{ display: "inline-flex" }}>
               {this.renderLabel()}
             </span>
