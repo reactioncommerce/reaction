@@ -3,7 +3,7 @@ import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Random } from "meteor/random";
 
 // Test card to use to add risk level flag for testing purposes only.
-const RISKYCARD = "4000000000009235";
+export const RISKYCARD = "4000000000009235";
 
 // You should not implement ThirdPartyAPI. It is supposed to represent your third party API
 // And is called so that it can be stubbed out for testing. This would be a library

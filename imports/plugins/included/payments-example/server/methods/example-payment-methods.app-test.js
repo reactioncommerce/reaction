@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 
-import { ExampleApi } from "./exampleapi";
+import { ExampleApi, RISKYCARD } from "./exampleapi";
 
 const paymentMethod = {
   processor: "Generic",
@@ -47,6 +47,30 @@ describe("ExampleApi", function () {
       paymentData: paymentData
     });
     expect(transaction).to.not.be.undefined;
+  });
+
+  it.only("should return risk status for flagged test card", function () {
+    const cardData = {
+      name: "Test User",
+      number: RISKYCARD,
+      expireMonth: "2",
+      expireYear: "2018",
+      cvv2: "123",
+      type: "visa"
+    };
+    const paymentData = {
+      currency: "USD",
+      total: "19.99"
+    };
+
+    const transactionType = "authorize";
+    const transaction = ExampleApi.methods.authorize.call({
+      transactionType: transactionType,
+      cardData: cardData,
+      paymentData: paymentData
+    });
+
+    expect(transaction.riskStatus).to.be.defined;
   });
 
   it("should return data from ThirdPartAPI capture", function (done) {
