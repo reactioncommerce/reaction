@@ -989,7 +989,7 @@ Meteor.methods({
 
     const cartShipping = cart.getShippingTotal();
     const cartSubTotal = cart.getSubTotal();
-    const cartSubTotalByShop = cart.getSubTotalByShop();
+    const cartSubtotalByShop = cart.getSubtotalByShop();
     const cartTaxes = cart.getTaxTotal();
     const cartTaxesByShop = cart.getTaxesByShop();
     const cartDiscounts = cart.getDiscounts();
@@ -1015,7 +1015,7 @@ Meteor.methods({
         const shopId = paymentMethod.shopId;
         const invoice = {
           shipping: parseFloat(cartShipping),
-          subtotal: parseFloat(cartSubTotalByShop[shopId]),
+          subtotal: parseFloat(cartSubtotalByShop[shopId]),
           taxes: parseFloat(cartTaxesByShop[shopId]),
           discounts: parseFloat(cartDiscounts),
           total: parseFloat(cartTotalByShop[shopId])
