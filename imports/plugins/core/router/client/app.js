@@ -36,6 +36,28 @@ const styles = {
   }
 };
 
+
+const handleViewContextChange = (event, value) => {
+  Reaction.setUserPreferences("reaction-dashboard", "viewAs", value);
+
+  if (Reaction.isPreview() === true) {
+    // Save last action view state
+    const saveActionViewState = Reaction.getActionView();
+    Reaction.setUserPreferences("reaction-dashboard", "savedActionViewState", saveActionViewState);
+
+    // hideActionView during isPreview === true
+    Reaction.hideActionView();
+  }
+};
+
+const handleKeyDown = (event) => {
+  if (event.altKey && event.keyCode === 69) { // Switch edit mode
+    const userWas = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "customer");
+    const userIs = userWas === "customer" ? "administrator" : "customer";
+    handleViewContextChange(event, userIs);
+  }
+};
+
 class App extends Component {
   static propTypes = {
     children: PropTypes.node,
@@ -62,10 +84,12 @@ class App extends Component {
     return (
       <div
         style={styles.adminApp}
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
       >
         <div className={pageClassName} id="reactionAppContainer" style={styles.adminContentContainer}>
           <div className="reaction-toolbar">
-            <ConnectedToolbarComponent data={routeData} />
+            <ConnectedToolbarComponent handleViewContextChange={handleViewContextChange} data={routeData} />
           </div>
           <div style={styles.scrollableContainer}>
             <Switch>
