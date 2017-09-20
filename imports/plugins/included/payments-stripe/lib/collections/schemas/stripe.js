@@ -41,6 +41,13 @@ export const StripePackageConfig = new SimpleSchema([
       type: String,
       label: "API Secret Key"
     },
+    // This field only applies to marketplace style orders where a payment is taken on behalf of another store
+    "settings.applicationFee": {
+      type: Number,
+      label: "Percentage Application Fee",
+      optional: true,
+      defaultValue: 5
+    },
     "settings.connectAuth": {
       type: StripeConnectAuthorizationCredentials,
       label: "Connect Authorization Credentials",
