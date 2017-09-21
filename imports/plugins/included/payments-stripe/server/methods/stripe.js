@@ -61,6 +61,136 @@ function stripeCaptureCharge(paymentMethod) {
   return result;
 }
 
+/**
+ * normalizes the status of a transaction
+ * @method normalizeStatus
+ * @param  {object} transaction - The transaction that we need to normalize
+ * @return {string} normalized status string - either failed, settled, or created
+ */
+function normalizeStatus(transaction) {
+  if (!transaction) {
+    throw new Meteor.Error("normalizeStatus requires a transaction");
+  }
+
+  // if this transaction failed, mode is "failed"
+  if (transaction.failure_code) {
+    return "failed";
+  }
+
+  // if this transaction was captured, status is "settled"
+  if (transaction.captured) { // Transaction was authorized but not captured
+    return "settled";
+  }
+
+  // Otherwise status is "created"
+  return "created";
+}
+
+/**
+ * normalizes the mode of a transaction
+ * @method normalizeMode
+ * @param  {object} transaction The transaction that we need to normalize
+ * @return {string} normalized status string - either failed, capture, or authorize
+ */
+function normalizeMode(transaction) {
+  if (!transaction) {
+    throw new Meteor.Error("normalizeMode requires a transaction");
+  }
+
+  // if this transaction failed, mode is "failed"
+  if (transaction.failure_code) {
+    return "failed";
+  }
+
+  // If this transaction was captured, mode is "capture"
+  if (transaction.captured) {
+    return "capture";
+  }
+
+  // Anything else, mode is "authorize"
+  return "authorize";
+}
+
+/**
+ * @method normalizeRiskLevel
+ * @private
+ * @summary Normalizes the risk level response of a transaction to the values defined in paymentMethod schema
+ * @param  {object} transaction - The transaction that we need to normalize
+ * @return {string} normalized status string - either elevated, high, or normal
+ */
+function normalizeRiskLevel(transaction) {
+  if (!transaction) {
+    throw new Meteor.Error("normalizeRiskLevel requires a transaction");
+  }
+
+  const outcome = transaction.outcome && transaction.outcome.risk_level;
+
+  if (outcome === "elevated") {
+    return "elevated";
+  }
+
+  if (outcome === "highest") {
+    return "high";
+  }
+
+  // default to normal if no other flagged
+  return "normal";
+}
+
+
+function buildPaymentMethods(options) {
+  const { cardData, cartItemsByShop, transactionsByShopId } = options;
+  if (!transactionsByShopId) {
+    throw new Meteor.Error("Creating a payment method log requries transaction data");
+  }
+
+  const shopIds = Object.keys(transactionsByShopId);
+  const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + cardData.number.slice(-4);
+  const packageData = Packages.findOne({
+    name: "reaction-stripe",
+    shopId: Reaction.getPrimaryShopId()
+  });
+
+  const paymentMethods = [];
+
+
+  shopIds.forEach((shopId) => {
+    if (transactionsByShopId[shopId]) {
+      const cartItems = cartItemsByShop[shopId].map((item) => {
+        return {
+          _id: item._id,
+          productId: item.productId,
+          variantId: item.variants._id,
+          shopId: shopId,
+          quantity: item.quantity
+        };
+      });
+
+      const paymentMethod = {
+        processor: "Stripe",
+        storedCard: storedCard,
+        method: "credit",
+        paymentPackageId: packageData._id,
+        // TODO: REVIEW WITH AARON - why is paymentSettings key important
+        // and why is it just defined on the client?
+        paymentSettingsKey: packageData.name.split("/").splice(-1)[0],
+        transactionId: transactionsByShopId[shopId].id,
+        amount: transactionsByShopId[shopId].amount * 0.01,
+        status: normalizeStatus(transactionsByShopId[shopId]),
+        mode: normalizeMode(transactionsByShopId[shopId]),
+        riskLevel: normalizeRiskLevel(transactionsByShopId[shopId]),
+        createdAt: new Date(transactionsByShopId[shopId].created),
+        transactions: [],
+        items: cartItems,
+        shopId: shopId
+      };
+      paymentMethod.transactions.push(transactionsByShopId[shopId]);
+      paymentMethods.push(paymentMethod);
+    }
+  });
+
+  return paymentMethods;
+}
 
 export const methods = {
   "stripe/payment/createCharges": async function (transactionType, cardData, cartId) {
