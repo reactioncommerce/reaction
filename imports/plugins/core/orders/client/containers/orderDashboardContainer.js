@@ -796,25 +796,25 @@ class OrderDashboardContainer extends Component {
     // TODO: send these orders in batch as an array. This would entail re-writing the
     // "orders/approvePayment" method to receive an array of orders as a param.
     selectedOrders.forEach((order) => {
-      Meteor.call("orders/approvePayment", order, (error) => {
-        if (error) {
+      Meteor.call("orders/approvePayment", order, (approvePaymentError) => {
+        if (approvePaymentError) {
           this.setState({
             isLoading: {
               capturePayment: false
             }
           });
-          Alerts.toast(`An error occured while approving the payment: ${error}`, "error");
+          Alerts.toast(`An error occured while approving the payment: ${approvePaymentError}`, "error");
         } else {
           // TODO: send these orders in batch as an array. This would entail re-writing the
           // "orders/capturePayments" method to receive an array of orders as a param.
-          Meteor.call("orders/capturePayments", order._id, (err) => {
-            if (err) {
+          Meteor.call("orders/capturePayments", order._id, (capturePaymentError) => {
+            if (capturePaymentError) {
               this.setState({
                 isLoading: {
                   capturePayment: false
                 }
               });
-              Alerts.toast(`An error occured while capturing the payment: ${err}`, "error");
+              Alerts.toast(`An error occured while capturing the payment: ${capturePaymentError}`, "error");
             }
 
             orderCount++;
