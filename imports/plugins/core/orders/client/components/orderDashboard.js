@@ -7,15 +7,14 @@ import OrderSearch from "../components/orderSearch";
 
 class OrderDashboard extends Component {
   static propTypes = {
-    classNamesContainer: PropTypes.object,
     clearFilter: PropTypes.func,
     displayMedia: PropTypes.func,
-    filter: PropTypes.string,
     filterDates: PropTypes.func,
+    filterShippingStatus: PropTypes.func,
+    filterWorkflowStatus: PropTypes.func,
     handleBulkPaymentCapture: PropTypes.func,
     handleChange: PropTypes.func,
     handleClick: PropTypes.func,
-    handleMenuClick: PropTypes.func,
     handleSelect: PropTypes.func,
     isLoading: PropTypes.object,
     multipleSelect: PropTypes.bool,
@@ -69,11 +68,10 @@ class OrderDashboard extends Component {
           searchQuery={this.props.searchQuery}
         />
         <OrderActions
-          handleMenuClick={this.props.handleMenuClick}
           clearFilter={this.props.clearFilter}
-          filter={this.props.filter}
-          classNamesContainer={this.props.classNamesContainer}
           filterDates={this.props.filterDates}
+          filterShippingStatus={this.props.filterShippingStatus}
+          filterWorkflowStatus={this.props.filterWorkflowStatus}
         />
         {this.state.orders.length ?
           <div className="container-fluid-sm order-details-list-container">

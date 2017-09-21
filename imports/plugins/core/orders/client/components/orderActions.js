@@ -5,27 +5,25 @@ import { Components } from "@reactioncommerce/reaction-components";
 
 class OrderActions extends Component {
   static propTypes = {
-    classNamesContainer: PropTypes.object,
     clearFilter: PropTypes.func,
-    filter: PropTypes.string,
     filterDates: PropTypes.func,
-    handleMenuClick: PropTypes.func
+    filterShippingStatus: PropTypes.func,
+    filterWorkflowStatus: PropTypes.func
   }
 
   constructor(props) {
     super(props);
     this.state = {
       startDate: null,
-      endDate: null
+      endDate: null,
+      workflowLabel: "status",
+      shippingLabel: "shippingStatus",
+      classNames: {
+        date: "",
+        shipping: "",
+        workflow: ""
+      }
     };
-  }
-
-  handleDatesChange = (startDate, endDate) => {
-    this.setState({
-      startDate,
-      endDate
-    });
-    this.props.filterDates(startDate, endDate);
   }
 
   buttonElement() {
@@ -49,6 +47,33 @@ class OrderActions extends Component {
     );
   }
 
+  handleDatesChange = (startDate, endDate) => {
+    this.setState({
+      startDate,
+      endDate,
+      classNames: { ...this.state.classNames, date: "active" }
+    });
+    this.props.filterDates(startDate, endDate);
+  }
+
+  handleWorkflowChange = (event, value) => {
+    this.setState({
+      workflowLabel: value,
+      classNames: { ...this.state.classNames, workflow: "active" }
+    });
+
+    this.props.filterWorkflowStatus(event, value);
+  }
+
+  handleShippingChange = (event, value) => {
+    this.setState({
+      shippingLabel: value,
+      classNames: { ...this.state.classNames, shipping: "active" }
+    });
+
+    this.props.filterShippingStatus(event, value);
+  }
+
   render() {
     return (
       <div className="order-filter-bar">
@@ -57,24 +82,34 @@ class OrderActions extends Component {
             <span
               className={classnames({
                 "order-filter-name": true
-              }, this.props.classNamesContainer.status)}
+              }, this.state.classNames.workflow)}
             >
-              {this.props.filter}
+              <Components.Translation
+                defaultValue={this.state.workflowLabel}
+                i18nKey={`order.filter.${this.state.workflowLabel}`}
+              />
             </span>
             <div className="order-filter-icons">
               <Components.Button
-                className={classnames({
-                  "order-filter-button": true
-                }, this.props.classNamesContainer.status)}
-                onClick={() => this.props.clearFilter("status")}
+                className={
+                  classnames({
+                    "order-filter-button": true
+                  }, this.state.classNames.workflow)}
+                onClick={() => {
+                  this.setState({
+                    workflowLabel: "status",
+                    classNames: { ...this.state.classNames, workflow: "" }
+                  });
+                  this.props.clearFilter("workflow");
+                }}
               >
                 <i className="fa fa-filter" />
               </Components.Button>
               <Components.DropDownMenu
                 buttonElement={this.buttonElement()}
-                menuClassName="tab-list-dropdown"
+                menuClassName="status-dropdown"
                 className="order-menu-item-dropdown"
-                onChange={this.props.handleMenuClick}
+                onChange={this.handleWorkflowChange}
                 attachment="bottom right"
                 targetAttachment="top right"
               >
@@ -117,21 +152,22 @@ class OrderActions extends Component {
             <span
               className={classnames({
                 "order-filter-name": true
-              }, this.props.classNamesContainer.date)}
+              }, this.state.classNames.date)}
             >
               {this.dateLabel()}
             </span>
             <div className="order-filter-icons">
               <Components.Button
-                className={classnames({
-                  "order-filter-button": true
-                }, this.props.classNamesContainer.date)}
+                className={
+                  classnames({
+                    "order-filter-button": true
+                  }, this.state.classNames.date)}
                 onClick={() => {
                   this.setState({
                     startDate: null,
-                    endDate: null
+                    endDate: null,
+                    classNames: { ...this.state.classNames, date: "" }
                   });
-
                   this.props.clearFilter("date");
                 }}
               >
@@ -156,12 +192,60 @@ class OrderActions extends Component {
         </div>
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span className="order-filter-name">  Shipping Status </span>
+            <span
+              className={classnames({
+                "order-filter-name": true
+              }, this.state.classNames.shipping)}
+            >
+              <Components.Translation
+                defaultValue={this.state.shippingLabel}
+                i18nKey={`order.${this.state.shippingLabel}`}
+              />
+            </span>
             <div className="order-filter-icons">
-              <Components.Button className="order-filter-button">
+              <Components.Button
+                className={
+                  classnames({
+                    "order-filter-button": true
+                  }, this.state.classNames.shipping)}
+                onClick={() => {
+                  this.setState({
+                    classNames: { ...this.state.classNames, shipping: "" }
+                  });
+                  this.props.clearFilter("shipping");
+                }}
+              >
                 <i className="fa fa-filter" />
               </Components.Button>
-              {this.buttonElement()}
+              <Components.DropDownMenu
+                buttonElement={this.buttonElement()}
+                menuClassName="status-dropdown"
+                className="order-menu-item-dropdown"
+                onChange={this.handleShippingChange}
+                attachment="bottom right"
+                targetAttachment="top right"
+              >
+                <Components.MenuItem
+                  label="Picked"
+                  i18nKeyLabel="order.picked"
+                  value="picked"
+                />
+                <Components.MenuItem
+                  label="Packed"
+                  i18nKeyLabel="order.packed"
+                  value="packed"
+                />
+                <Components.MenuItem
+                  label="Labeled"
+                  i18nKeyLabel="order.labeled"
+                  value="labeled"
+                />
+                <Components.MenuItem
+                  label="Shipped"
+                  i18nKeyLabel="order.shipped"
+                  value="shipped"
+                />
+              </Components.DropDownMenu>
             </div>
           </div>
         </div>
