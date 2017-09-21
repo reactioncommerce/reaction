@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class OrderActions extends Component {
+class OrderFilter extends Component {
   static propTypes = {
     clearFilter: PropTypes.func,
     filterDates: PropTypes.func,
@@ -97,9 +97,10 @@ class OrderActions extends Component {
         <div className="order-filter-item">
           <div className="order-filter-label">
             <span
-              className={classnames({
-                "order-filter-name": true
-              }, this.state.classNames.workflow)}
+              className={
+                classnames({
+                  "order-filter-name": true
+                }, this.state.classNames.workflow)}
             >
               <Components.Translation
                 defaultValue={this.state.workflowLabel}
@@ -269,4 +270,6 @@ class OrderActions extends Component {
   }
 }
 
-export default OrderActions;
+registerComponent("OrderFilter", OrderFilter);
+
+export default OrderFilter;

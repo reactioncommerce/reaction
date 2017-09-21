@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Icon, Translation } from "@reactioncommerce/reaction-ui";
+import { Components } from "@reactioncommerce/reaction-ui";
 import OrderTable from "./orderTable";
-import OrderActions from "./orderActions";
-import OrderSearch from "../components/orderSearch";
+import OrderFilter from "./orderFilter";
+import OrderSearch from "./orderSearch";
 
 class OrderDashboard extends Component {
   static propTypes = {
@@ -67,7 +67,7 @@ class OrderDashboard extends Component {
           handleChange={this.props.handleChange}
           searchQuery={this.props.searchQuery}
         />
-        <OrderActions
+        <OrderFilter
           clearFilter={this.props.clearFilter}
           filterDates={this.props.filterDates}
           filterShippingStatus={this.props.filterShippingStatus}
@@ -113,8 +113,8 @@ class OrderDashboard extends Component {
           </div> :
           <div className="container-fluid-sm order-details-list-container">
             <div className="empty-view-message">
-              <Icon icon="fa fa-sun-o" />
-              <Translation defaultValue={"No orders found"} i18nKey={"order.ordersNotFound"} />
+              <Components.Icon icon="fa fa-sun-o" />
+              <Components.Translation defaultValue={"No orders found"} i18nKey={"order.ordersNotFound"} />
             </div>
           </div>
         }

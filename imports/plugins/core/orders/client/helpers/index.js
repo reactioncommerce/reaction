@@ -49,3 +49,90 @@ export function getOrderRiskStatus(order) {
 
   return riskLevel;
 }
+
+export function filterWorkflowStatus(filter) {
+  let query = {};
+
+  switch (filter) {
+    // New orders
+    case "new":
+      query = {
+        "workflow.status": "new"
+      };
+      break;
+
+    // Orders that have been approved
+    case "approved":
+      query = {
+        "workflow.status": "coreOrderWorkflow/processing",
+        "billing.paymentMethod.status": "approved"
+      };
+      break;
+
+    // Orders that have been captured
+    case "captured":
+      query = {
+        "billing.paymentMethod.status": "completed",
+        "shipping.shipped": false
+      };
+      break;
+
+    // Orders that are being processed
+    case "processing":
+      query = {
+        "workflow.status": "coreOrderWorkflow/processing"
+      };
+      break;
+
+    // Orders that are complete, including all items with complete status
+    case "completed":
+      query = {
+        "workflow.status": "coreOrderWorkflow/completed"
+      };
+      break;
+
+    case "canceled":
+      query = {
+        "workflow.status": "coreOrderWorkflow/canceled"
+      };
+      break;
+
+    default:
+  }
+
+  return query;
+}
+
+export function filterShippingStatus(filter) {
+  let query = {};
+
+  switch (filter) {
+    case "picked":
+      query = {
+        "shipping.workflow.status": "coreOrderWorkflow/picked"
+      };
+      break;
+
+    case "packed":
+      query = {
+        "shipping.workflow.status": "coreOrderWorkflow/packed"
+      };
+      break;
+
+    case "labelled":
+      query = {
+        "shipping.workflow.status": "coreOrderWorkflow/labeled"
+      };
+      break;
+
+    case "shipped":
+      query = {
+        "shipping.workflow.status": "coreOrderWorkflow/shipped"
+      };
+      break;
+
+    default:
+  }
+
+  return query;
+}
