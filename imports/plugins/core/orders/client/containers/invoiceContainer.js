@@ -598,11 +598,10 @@ function capturePayments(order, onCancel) {
     capture();
   }
 
-
   function alertDialog() {
     let alertType = "warning";
     const riskBadge = getOrderRiskBadge(getOrderRiskStatus(order));
-    // use red alert color type for high risk level
+    // use red alert color for high risk level
     if (riskBadge === "danger") {
       alertType = "error";
     }

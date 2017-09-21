@@ -34,12 +34,16 @@ export function getOrderRiskStatus(order) {
   let riskLevel;
   const billingForShop = order.billing.find((billing) => billing.shopId === Reaction.getShopId());
 
-  if (billingForShop.paymentMethod && billingForShop.paymentMethod.riskLevel) {
+  if (billingForShop && billingForShop.paymentMethod && billingForShop.paymentMethod.riskLevel) {
     riskLevel = billingForShop.paymentMethod.riskLevel;
   }
 
   // normal transactions do not need to be flagged
   if (riskLevel === "normal") {
+    return "";
+  }
+
+  if (!riskLevel) {
     return "";
   }
 
