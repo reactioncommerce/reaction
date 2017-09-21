@@ -34,6 +34,7 @@ class EditContainer extends Component {
       }
     });
 
+    // TODO: EK-Marker - Choose between these two ways to write the state
     Reaction.state.set("edit/focus", props.field);
 
     return true;

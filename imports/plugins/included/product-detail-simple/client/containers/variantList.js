@@ -123,6 +123,11 @@ class VariantListContainer extends Component {
       editVariant = Products.findOne(variant.ancestors[ancestors]);
     }
 
+    const cardName = `variant-${variant._id}`;
+    // TODO: EK-Marker - Choose between these two ways to write the state
+    Reaction.state.set("variant/edit/id", cardName);
+    Reaction.state.set("edit/focus", cardName);
+
     ReactionProduct.setCurrentVariant(variant._id);
     Session.set("variant-form-" + editVariant._id, true);
     Reaction.Router.go("product", {

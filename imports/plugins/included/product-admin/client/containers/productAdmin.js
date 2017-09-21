@@ -29,6 +29,7 @@ const wrapComponent = (Comp) => (
     }
 
     handleCardExpand = (cardName) => {
+      // TODO: EK-Marker - Choose between these two ways to write the state
       Reaction.state.set("edit/focus", cardName);
     }
 
@@ -142,6 +143,7 @@ function composer(props, onData) {
 
     const countries = Countries.find({}).fetch();
 
+    // TODO: EK-Marker - Choose between these two ways to write the state
     onData(null, {
       editFocus: Reaction.state.get("edit/focus"),
       product: product,
