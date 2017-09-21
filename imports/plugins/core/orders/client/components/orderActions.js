@@ -47,6 +47,23 @@ class OrderActions extends Component {
     );
   }
 
+  shippingLabel() {
+    if (this.state.classNames.shipping === "active") {
+      return (
+        <Components.Translation
+          defaultValue={this.state.shippingLabel}
+          i18nKey={`order.${this.state.shippingLabel}`}
+        />
+      );
+    }
+    return (
+      <Components.Translation
+        defaultValue={this.state.shippingLabel}
+        i18nKey={`order.filter.${this.state.shippingLabel}`}
+      />
+    );
+  }
+
   handleDatesChange = (startDate, endDate) => {
     this.setState({
       startDate,
@@ -197,10 +214,7 @@ class OrderActions extends Component {
                 "order-filter-name": true
               }, this.state.classNames.shipping)}
             >
-              <Components.Translation
-                defaultValue={this.state.shippingLabel}
-                i18nKey={`order.${this.state.shippingLabel}`}
-              />
+              {this.shippingLabel()}
             </span>
             <div className="order-filter-icons">
               <Components.Button
@@ -210,6 +224,7 @@ class OrderActions extends Component {
                   }, this.state.classNames.shipping)}
                 onClick={() => {
                   this.setState({
+                    shippingLabel: "shippingStatus",
                     classNames: { ...this.state.classNames, shipping: "" }
                   });
                   this.props.clearFilter("shipping");
