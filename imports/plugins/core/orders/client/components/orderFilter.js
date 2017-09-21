@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classnames from "classnames/dedupe";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import * as Constants from "../../lib/constants";
 
@@ -97,12 +96,7 @@ class OrderFilter extends Component {
       <div className="order-filter-bar">
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span
-              className={
-                classnames({
-                  "order-filter-name": true
-                }, this.state.classNames.workflow)}
-            >
+            <span className={`order-filter-name ${this.state.classNames.workflow}`}>
               <Components.Translation
                 defaultValue={this.state.workflowLabel}
                 i18nKey={`order.filter.${this.state.workflowLabel}`}
@@ -110,10 +104,7 @@ class OrderFilter extends Component {
             </span>
             <div className="order-filter-icons">
               <Components.Button
-                className={
-                  classnames({
-                    "order-filter-button": true
-                  }, this.state.classNames.workflow)}
+                className={`order-filter-button ${this.state.classNames.workflow}`}
                 onClick={() => {
                   this.setState({
                     workflowLabel: "status",
@@ -147,18 +138,13 @@ class OrderFilter extends Component {
         <div className="order-filter-item">
           <div className="order-filter-label">
             <span
-              className={classnames({
-                "order-filter-name": true
-              }, this.state.classNames.date)}
+              className={`order-filter-name ${this.state.classNames.date}`}
             >
               {this.dateLabel()}
             </span>
             <div className="order-filter-icons">
               <Components.Button
-                className={
-                  classnames({
-                    "order-filter-button": true
-                  }, this.state.classNames.date)}
+                className={`order-filter-button ${this.state.classNames.date}`}
                 onClick={() => {
                   this.setState({
                     startDate: null,
@@ -190,18 +176,13 @@ class OrderFilter extends Component {
         <div className="order-filter-item">
           <div className="order-filter-label">
             <span
-              className={classnames({
-                "order-filter-name": true
-              }, this.state.classNames.shipping)}
+              className={`order-filter-name ${this.state.classNames.shipping}`}
             >
               {this.shippingLabel()}
             </span>
             <div className="order-filter-icons">
               <Components.Button
-                className={
-                  classnames({
-                    "order-filter-button": true
-                  }, this.state.classNames.shipping)}
+                className={`order-filter-button ${this.state.classNames.shipping}`}
                 onClick={() => {
                   this.setState({
                     shippingLabel: "shippingStatus",
