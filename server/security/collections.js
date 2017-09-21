@@ -46,7 +46,9 @@ export default function () {
     allow(type, arg, userId) {
       if (!arg) throw new Error("ifHasRole security rule method requires an argument");
       if (arg.role) {
-        return Roles.userIsInRole(userId, arg.role, Reaction.getShopId());
+        // userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
+        // if not passed, getShopId can default to primaryShop
+        return Roles.userIsInRole(userId, arg.role, Reaction.getShopId(userId));
       }
       return Roles.userIsInRole(userId, arg);
     }
@@ -72,7 +74,9 @@ export default function () {
   Security.defineMethod("ifFileBelongsToShop", {
     fetch: [],
     deny: function (type, arg, userId, doc) {
-      return doc.metadata.shopId !== Reaction.getShopId();
+      // userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
+      // if not passed, getShopId can default to primaryShop
+      return doc.metadata.shopId !== Reaction.getShopId(userId);
     }
   });
 
