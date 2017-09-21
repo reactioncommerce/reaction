@@ -27,7 +27,7 @@ Reaction.registerTemplate({
   name: TemplatePaths.inviteShopMemberTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.inviteShopMemberTemplate),
-  subject: "You have been invited to join {{groupName}} in {{shop.name}}"
+  subject: "You have been invited to join the group \"{{groupName}}\" in the store \"{{shop.name}}\""
 });
 
 /*
