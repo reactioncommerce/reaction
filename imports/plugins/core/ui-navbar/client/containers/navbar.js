@@ -7,8 +7,6 @@ import NavBar from "../components/navbar";
 function composer(props, onData) {
   const searchPackage = Reaction.Apps({ provides: "ui-search" });
 
-  const shop = Shops.findOne(Reaction.getShopId());
-
   let searchEnabled;
   let searchTemplate;
 
@@ -24,6 +22,7 @@ function composer(props, onData) {
   // ready before it proceeds to send the data as props to the components
   if (Reaction.Subscriptions.PrimaryShop.ready() &&
       Reaction.Subscriptions.MerchantShops.ready()) {
+    const shop = Shops.findOne(Reaction.getShopId());
     onData(null, {
       shop,
       searchEnabled,
