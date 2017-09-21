@@ -55,8 +55,7 @@ class OrderTableColumn extends Component {
       return (
         <div style={{ display: "inline-flex" }}>
           {this.renderCheckboxOnSelect(this.props.row)}
-          <strong className="orders-full-name">{this.props.row.value}</strong>
-          <strong style={{ paddingLeft: 5, marginTop: 7 }}>
+          <strong className="orders-full-name">
             {this.props.row.value}
             {orderRisk &&
               <Badge
