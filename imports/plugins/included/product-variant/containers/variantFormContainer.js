@@ -37,11 +37,13 @@ const wrapComponent = (Comp) => (
     }
 
     componentWillReceiveProps(nextProps) {
-      this.setState(() => ({
-        variant: nextProps.variant
-      }), () => {
-        this.runVariantValidation(this.state.variant);
-      });
+      if (_.isEqual(nextProps.variant, this.props.variant) === false){
+        this.setState(() => ({
+          variant: nextProps.variant
+        }), () => {
+          this.runVariantValidation(nextProps.variant);
+        });
+      }
     }
 
     runVariantValidation(variant) {
@@ -198,6 +200,7 @@ const wrapComponent = (Comp) => (
 
     handleCardExpand = (cardName) => {
       // TODO: EK-Marker - Choose between these two ways to write the state
+      console.log("!!!!!!!-------");
       Reaction.state.set("edit/focus", cardName);
       Reaction.state.set("variant/edit/id", cardName);
     }
