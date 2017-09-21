@@ -37,7 +37,7 @@ const wrapComponent = (Comp) => (
     }
 
     componentWillReceiveProps(nextProps) {
-      if (_.isEqual(nextProps.variant, this.props.variant) === false){
+      if (_.isEqual(nextProps.variant, this.props.variant) === false) {
         this.setState(() => ({
           variant: nextProps.variant
         }), () => {
