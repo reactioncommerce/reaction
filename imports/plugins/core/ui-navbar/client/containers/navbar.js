@@ -1,9 +1,14 @@
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
+import { Shops } from "/lib/collections";
 import NavBar from "../components/navbar";
+
 
 function composer(props, onData) {
   const searchPackage = Reaction.Apps({ provides: "ui-search" });
+
+  const shop = Shops.findOne(Reaction.getShopId());
+
   let searchEnabled;
   let searchTemplate;
 
@@ -15,12 +20,17 @@ function composer(props, onData) {
   }
 
   const hasProperPermission = Reaction.hasPermission("account/profile");
-
-  onData(null, {
-    searchEnabled,
-    searchTemplate,
-    hasProperPermission
-  });
+  // this condition checks whether The suscription to the shops collection is
+  // ready before it proceeds to send the data as props to the components
+  if (Reaction.Subscriptions.PrimaryShop.ready() &&
+      Reaction.Subscriptions.MerchantShops.ready()) {
+    onData(null, {
+      shop,
+      searchEnabled,
+      searchTemplate,
+      hasProperPermission
+    });
+  }
 }
 
 registerComponent("NavBar", NavBar, composeWithTracker(composer));

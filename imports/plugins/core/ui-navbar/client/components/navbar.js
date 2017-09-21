@@ -22,7 +22,8 @@ async function openSearchModalLegacy(props) {
 class NavBar extends Component {
   static propTypes = {
     hasProperPermission: PropTypes.bool,
-    searchEnabled: PropTypes.bool
+    searchEnabled: PropTypes.bool,
+    shop: PropTypes.object
   }
 
   state = {
@@ -60,7 +61,7 @@ class NavBar extends Component {
 
   renderBrand() {
     return (
-      <Components.Brand />
+      <Components.Brand shop={this.props.shop}/>
     );
   }
 
@@ -118,7 +119,7 @@ class NavBar extends Component {
           isVisible={this.state.navBarVisible}
           closeNavbar={this.handleCloseNavbar}
         >
-          <Components.Brand />
+          {this.renderBrand()}
         </Components.TagNav>
       </div>
     );
