@@ -124,8 +124,6 @@ class VariantListContainer extends Component {
     }
 
     const cardName = `variant-${variant._id}`;
-    // TODO: EK-Marker - Choose between these two ways to write the state
-    Reaction.state.set("variant/edit/id", cardName);
     Reaction.state.set("edit/focus", cardName);
 
     ReactionProduct.setCurrentVariant(variant._id);

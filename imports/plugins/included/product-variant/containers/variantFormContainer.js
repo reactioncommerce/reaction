@@ -199,10 +199,7 @@ const wrapComponent = (Comp) => (
     }
 
     handleCardExpand = (cardName) => {
-      // TODO: EK-Marker - Choose between these two ways to write the state
-      console.log("!!!!!!!-------");
       Reaction.state.set("edit/focus", cardName);
-      Reaction.state.set("variant/edit/id", cardName);
     }
 
     updateQuantityIfChildVariants =  (variant) => {
@@ -250,7 +247,6 @@ function composer(props, onData) {
   const countries = Countries.find({}).fetch();
   const variant = props.variant || ReactionProduct.selectedTopVariant();
 
-  // TODO: EK-Marker - Choose Reaction.state version for editFocus
   if (variant) {
     onData(null, {
       countries,
