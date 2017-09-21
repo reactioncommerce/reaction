@@ -135,11 +135,10 @@ class OrderFilter extends Component {
             </div>
           </div>
         </div>
+
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span
-              className={`order-filter-name ${this.state.classNames.date}`}
-            >
+            <span className={`order-filter-name ${this.state.classNames.date}`}>
               {this.dateLabel()}
             </span>
             <div className="order-filter-icons">
@@ -173,11 +172,10 @@ class OrderFilter extends Component {
             </div>
           </div>
         </div>
+
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span
-              className={`order-filter-name ${this.state.classNames.shipping}`}
-            >
+            <span className={`order-filter-name ${this.state.classNames.shipping}`}>
               {this.shippingLabel()}
             </span>
             <div className="order-filter-icons">
