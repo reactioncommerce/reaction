@@ -23,7 +23,7 @@ Template.coreOrderShippingTracking.onCreated(() => {
   }
 
   Tracker.autorun(() => {
-    template.order = getOrder(currentData.orderId, currentData.fulfillment._id);
+    template.order = getOrder(currentData.orderId, currentData.fulfillment && currentData.fulfillment._id);
   });
 });
 
@@ -109,9 +109,12 @@ Template.coreOrderShippingTracking.helpers({
   printableLabels() {
     const order = Template.instance().order;
     const shipment = getShippingInfo(order);
-    const { shippingLabelUrl, customsLabelUrl } = shipment;
-    if (shippingLabelUrl || customsLabelUrl) {
-      return { shippingLabelUrl, customsLabelUrl };
+
+    if (shipment) {
+      const { shippingLabelUrl, customsLabelUrl } = shipment;
+      if (shippingLabelUrl || customsLabelUrl) {
+        return { shippingLabelUrl, customsLabelUrl };
+      }
     }
 
     return false;
@@ -120,7 +123,7 @@ Template.coreOrderShippingTracking.helpers({
     const currentData = Template.currentData();
     const order = Template.instance().order;
 
-    const shippedItems = _.every(currentData.fulfillment.items, (shipmentItem) => {
+    const shippedItems = _.every(currentData.fulfillment && currentData.fulfillment.items, (shipmentItem) => {
       const fullItem = _.find(order.items, (orderItem) => {
         if (orderItem._id === shipmentItem._id) {
           return true;
@@ -137,7 +140,7 @@ Template.coreOrderShippingTracking.helpers({
     const currentData = Template.currentData();
     const order = Template.instance().order;
 
-    const canceledItems = _.every(currentData.fulfillment.items, (shipmentItem) => {
+    const canceledItems = _.every(currentData.fulfillment && currentData.fulfillment.items, (shipmentItem) => {
       const fullItem = _.find(order.items, (orderItem) => {
         if (orderItem._id === shipmentItem._id) {
           return true;
@@ -154,7 +157,7 @@ Template.coreOrderShippingTracking.helpers({
     const currentData = Template.currentData();
     const order = Template.instance().order;
 
-    const completedItems = _.every(currentData.fulfillment.items, (shipmentItem) => {
+    const completedItems = _.every(currentData.fulfillment && currentData.fulfillment.items, (shipmentItem) => {
       const fullItem = _.find(order.items, (orderItem) => {
         if (orderItem._id === shipmentItem._id) {
           return true;
@@ -199,8 +202,9 @@ Template.coreOrderShippingTracking.helpers({
   shipmentReady() {
     const order = Template.instance().order;
     const shipment = getShippingInfo(order);
+    const shipmentWorkflow = shipment.workflow;
 
-    return _.includes(shipment.workflow.workflow, "coreOrderWorkflow/packed") && shipment.tracking ||
-    _.includes(shipment.workflow.workflow, "coreOrderWorkflow/packed");
+    return _.includes(shipmentWorkflow && shipmentWorkflow.workflow, "coreOrderWorkflow/packed") && shipment.tracking
+    ||  _.includes(shipmentWorkflow && shipmentWorkflow.workflow, "coreOrderWorkflow/packed");
   }
 });

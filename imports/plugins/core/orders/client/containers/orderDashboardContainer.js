@@ -380,6 +380,9 @@ class OrderDashboardContainer extends Component {
    * @return {null} no return value
    */
   shippingStatusUpdateCall = (selectedOrders, status) => {
+    const filteredSelectedOrders = selectedOrders.filter((order) => {
+      return order.shipping && Object.keys(getShippingInfo(order)).length;
+    });
     this.setState({
       isLoading: {
         [status]: true
@@ -387,7 +390,7 @@ class OrderDashboardContainer extends Component {
     });
     let orderText = "order";
 
-    if (selectedOrders.length > 1) {
+    if (filteredSelectedOrders.length > 1) {
       orderText = "orders";
     }
 
@@ -402,7 +405,7 @@ class OrderDashboardContainer extends Component {
     // different shipping statuses to receive an array of objects(orders) as a param
 
     // TODO: rethink this type of flow for updating shipping statuses
-    selectedOrders.forEach((order) => {
+    filteredSelectedOrders.forEach((order) => {
       const shippingRecord = getShippingInfo(order);
 
       Meteor.call(`orders/shipment${capitalizeStatus}`, order, shippingRecord, (error) => {
@@ -412,7 +415,7 @@ class OrderDashboardContainer extends Component {
           Meteor.call("orders/updateHistory", order._id, "Shipping state set by bulk operation", status);
         }
         orderCount++;
-        if (orderCount === selectedOrders.length) {
+        if (orderCount === filteredSelectedOrders.length) {
           this.setState({
             shipping: {
               [status]: true
@@ -423,7 +426,7 @@ class OrderDashboardContainer extends Component {
           });
           Alerts.alert({
             text: i18next.t("order.orderSetToState", {
-              orderNumber: selectedOrders.length,
+              orderNumber: filteredSelectedOrders.length,
               orderText: orderText,
               status: status
             }),
@@ -551,19 +554,21 @@ class OrderDashboardContainer extends Component {
 
       // TODO: model this with the assumption that there may be different workflows
       // depending on the type of shop or product that a shop is selling.
-      if (orderWorkflow.status === "new") {
-        isNotPicked++;
-      } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
-        isPicked++;
-      } else {
-        // check if the selected order(s) are being regressed back to this state
-        if (orderWorkflow.workflow.includes("coreOrderWorkflow/picked")) {
-          ordersToRegress++;
-        } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/picked") &&
-        (orderWorkflow.status === "coreOrderWorkflow/packed" ||
-        orderWorkflow.status === "coreOrderWorkflow/labeled" ||
-        orderWorkflow.status === "coreOrderWorkflow/shipped")) {
-          ordersToRegress++;
+      if (orderWorkflow) {
+        if (orderWorkflow.status === "new") {
+          isNotPicked++;
+        } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
+          isPicked++;
+        } else {
+          // check if the selected order(s) are being regressed back to this state
+          if (orderWorkflow.workflow.includes("coreOrderWorkflow/picked")) {
+            ordersToRegress++;
+          } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/picked") &&
+          (orderWorkflow.status === "coreOrderWorkflow/packed" ||
+          orderWorkflow.status === "coreOrderWorkflow/labeled" ||
+          orderWorkflow.status === "coreOrderWorkflow/shipped")) {
+            ordersToRegress++;
+          }
         }
       }
     });
@@ -603,20 +608,22 @@ class OrderDashboardContainer extends Component {
 
       // TODO: model this with the assumption that there may be different workflows
       // depending on the type of shop or product that a shop is selling.
-      if (orderWorkflow.status === "new") {
-        isNotPicked++;
-      } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
-        isNotPacked++;
-      } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
-        isPacked++;
-      } else {
-        // check if the selected order(s) are being regressed back to this state
-        if (orderWorkflow.workflow.includes("coreOrderWorkflow/packed")) {
-          ordersToRegress++;
-        } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/packed") &&
+      if (orderWorkflow) {
+        if (orderWorkflow.status === "new") {
+          isNotPicked++;
+        } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
+          isNotPacked++;
+        } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
+          isPacked++;
+        } else {
+          // check if the selected order(s) are being regressed back to this state
+          if (orderWorkflow.workflow.includes("coreOrderWorkflow/packed")) {
+            ordersToRegress++;
+          } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/packed") &&
           (orderWorkflow.status === "coreOrderWorkflow/labeled" ||
           orderWorkflow.status === "coreOrderWorkflow/shipped")) {
-          ordersToRegress++;
+            ordersToRegress++;
+          }
         }
       }
     });
@@ -662,21 +669,23 @@ class OrderDashboardContainer extends Component {
 
       // TODO: model this with the assumption that there may be different workflows
       // depending on the type of shop or product that a shop is selling.
-      if (orderWorkflow.status === "new") {
-        isNotPacked++;
-        whichFalseState = shippingStates.picked;
-      } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
-        isNotPacked++;
-        whichFalseState = shippingStates.packed;
-      } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
-        isNotLabeled++;
-      } else if (orderWorkflow.status === "coreOrderWorkflow/labeled") {
-        isLabeled++;
-      } else {
-        // check if the selected order(s) are being regressed back to this state
-        if (orderWorkflow.workflow.includes("coreOrderWorkflow/labeled") ||
-        orderWorkflow.status === "coreOrderWorkflow/shipped") {
-          ordersToRegress++;
+      if (orderWorkflow) {
+        if (orderWorkflow.status === "new") {
+          isNotPacked++;
+          whichFalseState = shippingStates.picked;
+        } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
+          isNotPacked++;
+          whichFalseState = shippingStates.packed;
+        } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
+          isNotLabeled++;
+        } else if (orderWorkflow.status === "coreOrderWorkflow/labeled") {
+          isLabeled++;
+        } else {
+          // check if the selected order(s) are being regressed back to this state
+          if (orderWorkflow.workflow.includes("coreOrderWorkflow/labeled") ||
+          orderWorkflow.status === "coreOrderWorkflow/shipped") {
+            ordersToRegress++;
+          }
         }
       }
     });
@@ -717,24 +726,27 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      const orderWorkflow = getShippingInfo(order).workflow.status;
+      const orderWorkflow = getShippingInfo(order).workflow;
       // check if the order(s) are in this state already or in one of the previous states
 
       // TODO: model this with the assumption that there may be different workflows
       // depending on the type of shop or product that a shop is selling.
-      if (orderWorkflow === "new") {
-        isNotLabeled++;
-        whichFalseState = shippingStates.picked;
-      } else if (orderWorkflow === "coreOrderWorkflow/picked") {
-        isNotLabeled++;
-        whichFalseState = shippingStates.packed;
-      } else if (orderWorkflow === "coreOrderWorkflow/packed") {
-        isNotLabeled++;
-        whichFalseState = shippingStates.labeled;
-      } else if (orderWorkflow === "coreOrderWorkflow/labeled") {
-        isNotShipped++;
-      } else if (orderWorkflow === "coreOrderWorkflow/shipped") {
-        isShipped++;
+      if (orderWorkflow) {
+        const orderWorkflowStatus = orderWorkflow.status;
+        if (orderWorkflowStatus === "new") {
+          isNotLabeled++;
+          whichFalseState = shippingStates.picked;
+        } else if (orderWorkflowStatus === "coreOrderWorkflow/picked") {
+          isNotLabeled++;
+          whichFalseState = shippingStates.packed;
+        } else if (orderWorkflowStatus === "coreOrderWorkflow/packed") {
+          isNotLabeled++;
+          whichFalseState = shippingStates.labeled;
+        } else if (orderWorkflowStatus === "coreOrderWorkflow/labeled") {
+          isNotShipped++;
+        } else if (orderWorkflowStatus === "coreOrderWorkflow/shipped") {
+          isShipped++;
+        }
       }
     });
 

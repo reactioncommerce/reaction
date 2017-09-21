@@ -15,7 +15,8 @@ class OrderSummary extends Component {
   }
 
   badgeStatus() {
-    const orderStatus = this.props.order.workflow.status;
+    const order = this.props.order;
+    const orderStatus = order && order.workflow && order.workflow.status;
 
     if (orderStatus === "new") {
       return "info";
@@ -46,11 +47,15 @@ class OrderSummary extends Component {
     const { dateFormat, tracking, order, profileShippingAddress, printableLabels } = this.props;
     const paymentMethod = getBillingInfo(order).paymentMethod;
     const invoice = getBillingInfo(order).invoice;
+    const shipmentMethod = getShippingInfo(order).shipmentMethod;
 
     return (
       <div>
-        <div className="order-summary-form-group bg-info" style={{ lineHeight: 3, marginTop: -15, marginRight: -15, marginLeft: -15 }}>
-          <strong style={{ marginLeft: 15 }}>{profileShippingAddress.fullName}</strong>
+        <div
+          className="order-summary-form-group bg-info"
+          style={{ lineHeight: 3, marginTop: -15, marginRight: -15, marginLeft: -15 }}
+        >
+          <strong style={{ marginLeft: 15 }}>{profileShippingAddress && profileShippingAddress.fullName}</strong>
           <div className="invoice-details" style={{ marginRight: 15, position: "relative" }}>
             {order.email}
           </div>
@@ -61,8 +66,8 @@ class OrderSummary extends Component {
             <div style={{ marginBottom: 4 }}>
               <Badge
                 badgeSize="large"
-                i18nKeyLabel={`cartDrawer.${order.workflow.status}`}
-                label={order.workflow.status}
+                i18nKeyLabel={`cartDrawer.${order && order.workflow && order.workflow.status}`}
+                label={order && order.workflow && order.workflow.status}
                 status={this.badgeStatus()}
               />
             </div>
@@ -110,7 +115,7 @@ class OrderSummary extends Component {
             <div className="order-summary-form-group">
               <strong data-i18n="orderShipping.carrier">Carrier</strong>
               <div className="invoice-details">
-                {getShippingInfo(order).shipmentMethod.carrier} - {getShippingInfo(order).shipmentMethod.label}
+                { shipmentMethod && shipmentMethod.carrier} - {shipmentMethod && shipmentMethod.label}
               </div>
             </div>
 
@@ -141,15 +146,24 @@ class OrderSummary extends Component {
         <div className="order-summary-form-group">
           <strong data-i18n="orderShipping.shipTo">Ship to</strong>
           <div className="invoice-details">
-            <strong>Phone: </strong>{profileShippingAddress.phone}
+            <strong>Phone: </strong>{profileShippingAddress && profileShippingAddress.phone}
           </div>
         </div>
 
         <div style={{ marginTop: 4 }}>
-          <span>{profileShippingAddress.fullName}</span>
-          <br/><span>{profileShippingAddress.address1}</span>
-          {profileShippingAddress.address2 && <span><br/>{profileShippingAddress.address2}</span>}
-          <br/><span>{profileShippingAddress.city}, {profileShippingAddress.region}, {profileShippingAddress.country} {profileShippingAddress.postal}</span>
+          <span>{profileShippingAddress && profileShippingAddress.fullName}</span>
+          <br/>
+          <span>{profileShippingAddress && profileShippingAddress.address1}</span>
+          {profileShippingAddress && profileShippingAddress.address2 &&
+            <span><br/>{profileShippingAddress.address2}</span>
+          }
+          <br/>
+          <span>
+            {profileShippingAddress && profileShippingAddress.city},&nbsp;
+            {profileShippingAddress && profileShippingAddress.region},&nbsp;
+            {profileShippingAddress && profileShippingAddress.country}&nbsp;
+            {profileShippingAddress && profileShippingAddress.postal}
+          </span>
         </div>
       </div>
     );

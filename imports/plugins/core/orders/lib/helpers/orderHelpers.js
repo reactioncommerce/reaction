@@ -8,7 +8,7 @@ import { Reaction } from "/client/api";
  * @return {Object} proper billing object to use
  */
 export function getBillingInfo(order) {
-  const billingInfo = order.billing && order.billing.find((billing) => {
+  const billingInfo = order && order.billing && order.billing.find((billing) => {
     return billing && (billing.shopId === Reaction.getShopId());
   });
   return billingInfo || {};
@@ -22,8 +22,8 @@ export function getBillingInfo(order) {
  * @return {Object} proper shipping object to use
  */
 export function getShippingInfo(order) {
-  const shippingInfo = order.shipping.find((shipping) => {
-    return shipping.shopId === Reaction.getShopId();
+  const shippingInfo = order && order.shipping && order.shipping.find((shipping) => {
+    return shipping && shipping.shopId === Reaction.getShopId();
   });
   return shippingInfo || {};
 }

@@ -626,7 +626,7 @@ const composer = (props, onData) => {
 
   // returns order items with shipping detail
   const returnItems = order.items.map((item) => {
-    const shipping = shipment.shipmentMethod;
+    const shipping = shipment && shipment.shipmentMethod;
     item.shipping = shipping;
     return item;
   });
@@ -653,7 +653,7 @@ const composer = (props, onData) => {
   const printOrder = Reaction.Router.pathFor("dashboard/pdf/orders", {
     hash: {
       id: props.order._id,
-      shipment: props.currentData.fulfillment._id
+      shipment: props.currentData.fulfillment && props.currentData.fulfillment._id
     }
   });
 

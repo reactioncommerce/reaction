@@ -138,22 +138,29 @@ const composer = (props, onData) => {
     // Find current order
     const order = Orders.findOne({
       "_id": props.orderId,
-      "shipping._id": props.fulfillment._id
+      "shipping._id": props.fulfillment && props.fulfillment._id
     });
 
-    const profileShippingAddress = getShippingInfo(order).address;
+    if (order) {
+      const profileShippingAddress = getShippingInfo(order).address;
 
-    if (order.workflow) {
-      if (order.workflow.status === "coreOrderCreated") {
-        order.workflow.status = "coreOrderCreated";
-        Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order);
+      if (order.workflow) {
+        if (order.workflow.status === "coreOrderCreated") {
+          order.workflow.status = "coreOrderCreated";
+          Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order);
+        }
       }
-    }
 
-    onData(null, {
-      order: order,
-      profileShippingAddress: profileShippingAddress
-    });
+      onData(null, {
+        order: order,
+        profileShippingAddress: profileShippingAddress
+      });
+    } else {
+      onData(null, {
+        order: {},
+        profileShippingAddress: {}
+      });
+    }
   }
 };
 

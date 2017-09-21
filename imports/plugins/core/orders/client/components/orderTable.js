@@ -139,6 +139,7 @@ class OrderTable extends Component {
   renderShipmentInfo(order) {
     const emailAddress = order.email ||
     <Translation defaultValue={"Email not available"} i18nKey={"admin.orderWorkflow.ordersList.emailNotFound"} />;
+    const shipping = getShippingInfo(order);
 
     return (
       <div className="shipment-info">
@@ -146,17 +147,17 @@ class OrderTable extends Component {
           <Avatar
             email={order.email}
             round={true}
-            name={getShippingInfo(order).address.fullName}
+            name={shipping.address && shipping.address.fullName}
             size={30}
             className="rui-order-avatar"
           />
-          <strong>{getShippingInfo(order).address.fullName}</strong> | {emailAddress}
+          <strong>{shipping.address && shipping.address.fullName}</strong> | {emailAddress}
         </div>
         <div className="workflow-info">
           <Badge
             badgeSize="large"
-            i18nKeyLabel={`cartDrawer.${getShippingInfo(order).workflow.status}`}
-            label={getShippingInfo(order).workflow.status}
+            i18nKeyLabel={`cartDrawer.${shipping.workflow && shipping.workflow.status}`}
+            label={shipping.workflow && shipping.workflow.status}
             status="basic"
           />
           <Badge
@@ -202,7 +203,7 @@ class OrderTable extends Component {
       // Render order list column/row data
       const filteredFields = {
         Name: {
-          accessor: row => getShippingInfo(row).address.fullName,
+          accessor: row => getShippingInfo(row).address && getShippingInfo(row).address.fullName,
           id: "shippingfullName"
         },
         Email: {
@@ -222,7 +223,7 @@ class OrderTable extends Component {
           id: "billingTotal"
         },
         Shipping: {
-          accessor: row => getShippingInfo(row).workflow.status,
+          accessor: row => getShippingInfo(row).workflow && getShippingInfo(row).workflow.status,
           id: "shippingStatus"
         },
         Status: {
