@@ -5,7 +5,7 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { Template } from "meteor/templating";
 import { i18next, Reaction } from "/client/api";
 import { Orders } from "/lib/collections";
-import { getShippingInfo } from "../../../lib/helpers/orderHelpers";
+import { getShippingInfo } from "../../helpers";
 
 Template.coreOrderShippingTracking.onCreated(() => {
   const template = Template.instance();

@@ -8,7 +8,7 @@ import { Orders } from "/lib/collections";
 import { Card, CardHeader, CardBody, CardGroup } from "/imports/plugins/core/ui/client/components";
 import { i18next } from "/client/api";
 import OrderSummary from "../components/orderSummary";
-import { getShippingInfo } from "../../lib/helpers/orderHelpers";
+import { getShippingInfo } from "../helpers";
 
 class OrderSummaryContainer extends Component {
   static propTypes = {

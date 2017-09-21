@@ -12,7 +12,7 @@ import {
   ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME,
   shippingStates
 } from "../../lib/constants";
-import { getShippingInfo } from "../../lib/helpers/orderHelpers";
+import { getShippingInfo } from "../helpers";
 
 const shippingStrings = ["picked", "packed", "labeled", "shipped"];
 

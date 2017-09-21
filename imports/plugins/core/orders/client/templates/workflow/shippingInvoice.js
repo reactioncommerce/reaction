@@ -8,7 +8,7 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { i18next, Logger, Reaction } from "/client/api";
 import { Orders, Shops, Packages } from "/lib/collections";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
-import { getBillingInfo } from "../../../lib/helpers/orderHelpers";
+import { getBillingInfo } from "../../helpers";
 
 // helper to return the order payment object
 // the first credit paymentMethod on the order

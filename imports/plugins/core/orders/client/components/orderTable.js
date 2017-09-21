@@ -3,34 +3,35 @@ import PropTypes from "prop-types";
 import Avatar from "react-avatar";
 import moment from "moment";
 import classnames from "classnames/dedupe";
+import { i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
 import OrderTableColumn from "./orderTableColumn";
 import OrderBulkActionsBar from "./orderBulkActionsBar";
 import { formatPriceString } from "/client/api";
 import ProductImage from "./productImage";
-import { getBillingInfo, getShippingInfo } from "../../lib/helpers/orderHelpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo } from "../helpers";
 
 const classNames = {
   colClassNames: {
-    Name: "order-table-column-name",
-    Email: "order-table-column-email",
-    Date: "order-table-column-date hidden-xs hidden-sm",
-    ID: "order-table-column-id hidden-xs hidden-sm",
-    Total: "order-table-column-total",
-    Shipping: "order-table-column-shipping hidden-xs hidden-sm",
-    Status: "order-table-column-status",
-    Control: "order-table-column-control"
+    name: "order-table-column-name",
+    email: "order-table-column-email",
+    date: "order-table-column-date hidden-xs hidden-sm",
+    id: "order-table-column-id hidden-xs hidden-sm",
+    total: "order-table-column-total",
+    shipping: "order-table-column-shipping hidden-xs hidden-sm",
+    status: "order-table-column-status",
+    control: "order-table-column-control"
   },
   headerClassNames: {
-    Name: "order-table-header-name",
-    Email: "order-table-header-email",
-    Date: "order-table-header-date hidden-xs hidden-sm",
-    ID: "order-table-header-id hidden-xs hidden-sm",
-    Total: "order-table-header-total",
-    Shipping: "order-table-header-shipping hidden-xs hidden-sm",
-    Status: "order-table-header-status",
-    Control: "order-table-header-control"
+    name: "order-table-header-name",
+    email: "order-table-header-email",
+    date: "order-table-header-date hidden-xs hidden-sm",
+    id: "order-table-header-id hidden-xs hidden-sm",
+    total: "order-table-header-total",
+    shipping: "order-table-header-shipping hidden-xs hidden-sm",
+    status: "order-table-header-status",
+    control: "order-table-header-control"
   }
 };
 
@@ -81,10 +82,11 @@ class OrderTable extends Component {
       "btn": true,
       "btn-success": startWorkflow
     });
+    const chevronDirection = i18next.dir() === "rtl" ? "left" : "right";
 
     return (
       <button className={classes} onClick={() => this.props.handleClick(order, startWorkflow)}>
-        <Icon icon="fa fa-chevron-right" />
+        <Icon icon={`fa fa-chevron-${chevronDirection}`} />
       </button>
     );
   }
@@ -140,6 +142,7 @@ class OrderTable extends Component {
     const emailAddress = order.email ||
     <Translation defaultValue={"Email not available"} i18nKey={"admin.orderWorkflow.ordersList.emailNotFound"} />;
     const shipping = getShippingInfo(order);
+    const orderRisk = getOrderRiskStatus(order);
 
     return (
       <div className="shipment-info">
@@ -152,6 +155,13 @@ class OrderTable extends Component {
             className="rui-order-avatar"
           />
           <strong>{shipping.address && shipping.address.fullName}</strong> | {emailAddress}
+          {orderRisk &&
+            <Badge
+              className="risk-info"
+              i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
+              status={getOrderRiskBadge(orderRisk)}
+            />
+          }
         </div>
         <div className="workflow-info">
           <Badge
@@ -202,35 +212,35 @@ class OrderTable extends Component {
     if (this.props.isOpen) {
       // Render order list column/row data
       const filteredFields = {
-        Name: {
+        name: {
           accessor: row => getShippingInfo(row).address && getShippingInfo(row).address.fullName,
           id: "shippingfullName"
         },
-        Email: {
+        email: {
           accessor: "email",
           id: "email"
         },
-        Date: {
+        date: {
           accessor: "createdAt",
           id: "createdAt"
         },
-        ID: {
+        id: {
           accessor: "_id",
           id: "_id"
         },
-        Total: {
+        total: {
           accessor: row => getBillingInfo(row).invoice && getBillingInfo(row).invoice.total,
           id: "billingTotal"
         },
-        Shipping: {
+        shipping: {
           accessor: row => getShippingInfo(row).workflow && getShippingInfo(row).workflow.status,
           id: "shippingStatus"
         },
-        Status: {
+        status: {
           accessor: "workflow.status",
           id: "workflow.status"
         },
-        Control: {
+        control: {
           accessor: "",
           id: ""
         }
@@ -261,9 +271,10 @@ class OrderTable extends Component {
         let colHeader = undefined;
         let resizable = true;
         let sortable = true;
+        let columnNameLabel;
 
         // Add custom styles for the column name `name`
-        if (columnName === "Name") {
+        if (columnName === "name") {
           colHeader = () => (
             <div className="order-table-name-cell">
               <Checkbox
@@ -272,22 +283,27 @@ class OrderTable extends Component {
                 name="orders-checkbox"
                 onChange={() => this.props.selectAllOrders(this.props.orders, this.props.multipleSelect)}
               />
-              <span style={{ marginTop: 10 }}>{columnName}</span>
+              <span style={{ marginTop: 10 }}>
+                <Translation
+                  defaultValue="Name"
+                  i18nKey="admin.table.headers.name"
+                />
+              </span>
             </div>
           );
-        }
-
-        if (columnName === "Control") {
+        } else if (columnName === "control") {
           colHeader = " ";
           resizable = false;
           sortable = false;
+        } else {
+          columnNameLabel = i18next.t(`admin.table.headers.${columnName}`);
         }
 
 
         const columnMeta = {
           accessor: filteredFields[columnName].accessor,
           id: filteredFields[columnName].id,
-          Header: colHeader ? colHeader : columnName,
+          Header: colHeader ? colHeader : columnNameLabel,
           headerClassName: classNames.headerClassNames[columnName],
           className: classNames.colClassNames[columnName],
           resizable: resizable,
