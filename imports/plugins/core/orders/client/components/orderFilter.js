@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import * as Constants from "../../lib/constants";
 
 class OrderFilter extends Component {
   static propTypes = {
@@ -131,36 +132,14 @@ class OrderFilter extends Component {
                 attachment="bottom right"
                 targetAttachment="top right"
               >
-                <Components.MenuItem
-                  label="New"
-                  i18nKeyLabel="order.filter.new"
-                  value="new"
-                />
-                <Components.MenuItem
-                  label="Approved"
-                  i18nKeyLabel="order.filter.approved"
-                  value="approved"
-                />
-                <Components.MenuItem
-                  label="Captured"
-                  i18nKeyLabel="order.filter.captured"
-                  value="captured"
-                />
-                <Components.MenuItem
-                  label="Processing"
-                  i18nKeyLabel="order.filter.processing"
-                  value="processing"
-                />
-                <Components.MenuItem
-                  label="Completed"
-                  i18nKeyLabel="order.filter.completed"
-                  value="completed"
-                />
-                <Components.MenuItem
-                  label="Canceled"
-                  i18nKeyLabel="order.filter.canceled"
-                  value="canceled"
-                />
+                {Constants.workflowStatus.map((status, index) => (
+                  <Components.MenuItem
+                    key={index}
+                    label={status.label}
+                    i18nKeyLabel={`order.filter.${status.value}`}
+                    value={status.value}
+                  />
+                ))}
               </Components.DropDownMenu>
             </div>
           </div>
@@ -241,26 +220,14 @@ class OrderFilter extends Component {
                 attachment="bottom right"
                 targetAttachment="top right"
               >
-                <Components.MenuItem
-                  label="Picked"
-                  i18nKeyLabel="order.picked"
-                  value="picked"
-                />
-                <Components.MenuItem
-                  label="Packed"
-                  i18nKeyLabel="order.packed"
-                  value="packed"
-                />
-                <Components.MenuItem
-                  label="Labeled"
-                  i18nKeyLabel="order.labeled"
-                  value="labeled"
-                />
-                <Components.MenuItem
-                  label="Shipped"
-                  i18nKeyLabel="order.shipped"
-                  value="shipped"
-                />
+                {Constants.shippingStatus.map((status, index) => (
+                  <Components.MenuItem
+                    key={index}
+                    label={status.label}
+                    i18nKeyLabel={`order.${status.value}`}
+                    value={status.value}
+                  />
+                ))}
               </Components.DropDownMenu>
             </div>
           </div>
