@@ -1,6 +1,7 @@
 // export ButtonGroup from "./buttonGroup/buttonGroup";
 
 export { Alerts, Alert } from "./alerts";
+export { App } from "./app";
 export { default as Icon } from "./icon/icon";
 export { default as CircularProgress } from "./progress/circularProgress";
 export { default as Divider } from "./divider/divider";
