@@ -44,6 +44,8 @@ class OrderSummary extends Component {
 
   render() {
     const { dateFormat, tracking, order, profileShippingAddress, printableLabels } = this.props;
+    const paymentMethod = getBillingInfo(order).paymentMethod;
+    const invoice = getBillingInfo(order).invoice;
 
     return (
       <div>
@@ -87,21 +89,21 @@ class OrderSummary extends Component {
             <div className="order-summary-form-group">
               <strong data-i18n="order.processor">Processor</strong>
               <div className="invoice-details">
-                {getBillingInfo(order).paymentMethod.processor}
+                {paymentMethod && paymentMethod.processor}
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="order.payment">Payment</strong>
               <div className="invoice-details">
-                {getBillingInfo(order).paymentMethod.storedCard} ({getBillingInfo(order).invoice.total})
+                {paymentMethod && paymentMethod.storedCard} ({invoice && invoice.total})
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="order.transaction">Transaction</strong>
               <div className="invoice-details">
-                {getBillingInfo(order).paymentMethod.transactionId}
+                {paymentMethod && paymentMethod.transactionId}
               </div>
             </div>
 

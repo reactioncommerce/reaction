@@ -8,8 +8,8 @@ import { Reaction } from "/client/api";
  * @return {Object} proper billing object to use
  */
 export function getBillingInfo(order) {
-  const billingInfo = order.billing.find((billing) => {
-    return billing.shopId === Reaction.getShopId();
+  const billingInfo = order.billing && order.billing.find((billing) => {
+    return billing && (billing.shopId === Reaction.getShopId());
   });
   return billingInfo || {};
 }

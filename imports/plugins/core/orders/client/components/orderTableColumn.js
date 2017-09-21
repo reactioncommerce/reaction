@@ -5,6 +5,7 @@ import moment from "moment";
 import { formatPriceString } from "/client/api";
 import Avatar from "react-avatar";
 import { Badge, ClickToCopy, Icon, RolloverCheckbox, Checkbox } from "@reactioncommerce/reaction-ui";
+import { getBillingInfo } from "../../lib/helpers/orderHelpers";
 
 class OrderTableColumn extends Component {
   static propTypes = {
@@ -48,6 +49,7 @@ class OrderTableColumn extends Component {
 
   render() {
     const columnAccessor = this.props.row.column.id;
+    const invoice = getBillingInfo(this.props.row.original).invoice;
 
     if (columnAccessor === "shippingfullName") {
       return (
@@ -85,7 +87,7 @@ class OrderTableColumn extends Component {
     if (columnAccessor === "billingTotal") {
       return (
         <div style={{ marginTop: 7 }}>
-          <strong>{formatPriceString(this.props.row.original.billing[0].invoice.total)}</strong>
+          <strong>{formatPriceString(invoice && invoice.total)}</strong>
         </div>
       );
     }
