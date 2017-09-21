@@ -119,7 +119,7 @@ export function filterShippingStatus(filter) {
       };
       break;
 
-    case "labelled":
+    case "labeled":
       query = {
         "shipping.workflow.status": "coreOrderWorkflow/labeled"
       };
