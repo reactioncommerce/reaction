@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
 import { getBillingInfo, getShippingInfo } from "../../lib/helpers/orderHelpers";
+import { getOrderRiskBadge, getOrderRiskStatus } from "../helpers";
 
 class OrderSummary extends Component {
   static propTypes = {
@@ -44,6 +45,7 @@ class OrderSummary extends Component {
 
   render() {
     const { dateFormat, tracking, order, profileShippingAddress, printableLabels } = this.props;
+    const orderRisk = getOrderRiskStatus(order);
 
     return (
       <div>
@@ -63,6 +65,15 @@ class OrderSummary extends Component {
                 label={order.workflow.status}
                 status={this.badgeStatus()}
               />
+              {orderRisk &&
+                <Badge
+                  badgeSize="large"
+                  className={`risk-info risk-info-detail ${orderRisk}`}
+                  i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
+                  label={orderRisk}
+                  status={getOrderRiskBadge(orderRisk)}
+                />
+              }
             </div>
 
             <div className="order-summary-form-group">

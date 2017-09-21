@@ -10,6 +10,7 @@ import OrderBulkActionsBar from "./orderBulkActionsBar";
 import { formatPriceString } from "/client/api";
 import ProductImage from "./productImage";
 import { getBillingInfo, getShippingInfo } from "../../lib/helpers/orderHelpers";
+import { getOrderRiskBadge, getOrderRiskStatus } from "../helpers";
 
 const classNames = {
   colClassNames: {
@@ -138,6 +139,7 @@ class OrderTable extends Component {
   renderShipmentInfo(order) {
     const emailAddress = order.email ||
     <Translation defaultValue={"Email not available"} i18nKey={"admin.orderWorkflow.ordersList.emailNotFound"} />;
+    const orderRisk = getOrderRiskStatus(order);
 
     return (
       <div className="shipment-info">
@@ -150,6 +152,13 @@ class OrderTable extends Component {
             className="rui-order-avatar"
           />
           <strong>{getShippingInfo(order).address.fullName}</strong> | {emailAddress}
+          {orderRisk &&
+            <Badge
+              className="risk-info"
+              i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
+              status={getOrderRiskBadge(orderRisk)}
+            />
+          }
         </div>
         <div className="workflow-info">
           <Badge
