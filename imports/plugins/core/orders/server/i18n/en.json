@@ -8,6 +8,11 @@
         "shortcut": {
           "ordersLabel": "Orders"
         },
+        "orderRisk": {
+          "high": "High Risk",
+          "riskCapture": "Capture Order with Risk Charge?",
+          "riskCaptureWarn": "You are about to capture order with a charge risk. Confirm before proceeding."
+        },
         "dashboard": {
           "ordersLabel": "Orders",
           "ordersTitle": "Orders",
