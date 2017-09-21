@@ -35,6 +35,7 @@
         "shopSettings": "Definições da loja",
         "dashboard": "Painel de controlo",
         "print": "Imprimir",
+        "editMode": "Modo de edição",
         "auto": "Automático"
       },
       "searchSettings": {
@@ -148,6 +149,10 @@
       "gridPackage": {
         "pkgEnabled": "A aplicação {{app}} está agora ativada.",
         "pkgDisabled": "A aplicação {{app}} está agora desativada."
+      },
+      "gridSettingsPanel": {
+        "title": "Configurações de grade",
+        "selected": "Selecionado"
       },
       "cartDrawer": {
         "empty": "Lamentamos. O seu carrinho está vazio.",

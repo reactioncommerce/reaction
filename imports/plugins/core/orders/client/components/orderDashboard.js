@@ -3,14 +3,17 @@ import PropTypes from "prop-types";
 import { Icon, Translation } from "@reactioncommerce/reaction-ui";
 import OrderTable from "./orderTable";
 import OrderActions from "./orderActions";
+import OrderSearch from "../components/orderSearch";
 
 class OrderDashboard extends Component {
   static propTypes = {
-    className: PropTypes.string,
+    classNamesContainer: PropTypes.object,
     clearFilter: PropTypes.func,
     displayMedia: PropTypes.func,
     filter: PropTypes.string,
+    filterDates: PropTypes.func,
     handleBulkPaymentCapture: PropTypes.func,
+    handleChange: PropTypes.func,
     handleClick: PropTypes.func,
     handleMenuClick: PropTypes.func,
     handleSelect: PropTypes.func,
@@ -20,6 +23,7 @@ class OrderDashboard extends Component {
     orders: PropTypes.array,
     query: PropTypes.object,
     renderFlowList: PropTypes.bool,
+    searchQuery: PropTypes.string,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,
@@ -61,11 +65,16 @@ class OrderDashboard extends Component {
   render() {
     return (
       <div className="orders-table-container">
+        <OrderSearch
+          handleChange={this.props.handleChange}
+          searchQuery={this.props.searchQuery}
+        />
         <OrderActions
           handleMenuClick={this.props.handleMenuClick}
           clearFilter={this.props.clearFilter}
           filter={this.props.filter}
-          className={this.props.className}
+          classNamesContainer={this.props.classNamesContainer}
+          filterDates={this.props.filterDates}
         />
         {this.state.orders.length ?
           <div className="container-fluid-sm order-details-list-container">
@@ -87,26 +96,24 @@ class OrderDashboard extends Component {
               </div>
             </div>
 
-            <div>
-              <OrderTable
-                orders={this.props.orders}
-                orderCount={this.props.orderCount}
-                query={this.state.query}
-                selectedItems={this.props.selectedItems}
-                handleSelect={this.props.handleSelect}
-                handleClick={this.props.handleClick}
-                multipleSelect={this.props.multipleSelect}
-                selectAllOrders={this.props.selectAllOrders}
-                displayMedia={this.props.displayMedia}
-                isOpen={this.state.openList}
-                shipping={this.props.shipping}
-                setShippingStatus={this.props.setShippingStatus}
-                isLoading={this.props.isLoading}
-                renderFlowList={this.props.renderFlowList}
-                toggleShippingFlowList={this.props.toggleShippingFlowList}
-                handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
-              />
-            </div>
+            <OrderTable
+              orders={this.props.orders}
+              orderCount={this.props.orderCount}
+              query={this.state.query}
+              selectedItems={this.props.selectedItems}
+              handleSelect={this.props.handleSelect}
+              handleClick={this.props.handleClick}
+              multipleSelect={this.props.multipleSelect}
+              selectAllOrders={this.props.selectAllOrders}
+              displayMedia={this.props.displayMedia}
+              isOpen={this.state.openList}
+              shipping={this.props.shipping}
+              setShippingStatus={this.props.setShippingStatus}
+              isLoading={this.props.isLoading}
+              renderFlowList={this.props.renderFlowList}
+              toggleShippingFlowList={this.props.toggleShippingFlowList}
+              handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
+            />
           </div> :
           <div className="container-fluid-sm order-details-list-container">
             <div className="empty-view-message">

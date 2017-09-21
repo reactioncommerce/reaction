@@ -21,7 +21,7 @@ function quantityProcessing(product, variant, itemQty = 1) {
   const MIN = variant.minOrderQuantity || 1;
   const MAX = variant.inventoryQuantity || Infinity;
 
-  if (MIN > MAX) {
+  if (variant.inventoryPolicy && MIN > MAX) {
     Logger.debug(`productId: ${product._id}, variantId ${variant._id
     }: inventoryQuantity lower then minimum order`);
     throw new Meteor.Error(`productId: ${product._id}, variantId ${variant._id
@@ -920,7 +920,7 @@ Meteor.methods({
 
     const cartShipping = cart.getShippingTotal();
     const cartSubTotal = cart.getSubTotal();
-    const cartSubTotalByShop = cart.getSubTotalByShop();
+    const cartSubtotalByShop = cart.getSubtotalByShop();
     const cartTaxes = cart.getTaxTotal();
     const cartTaxesByShop = cart.getTaxesByShop();
     const cartDiscounts = cart.getDiscounts();
@@ -946,7 +946,7 @@ Meteor.methods({
         const shopId = paymentMethod.shopId;
         const invoice = {
           shipping: parseFloat(cartShipping),
-          subtotal: parseFloat(cartSubTotalByShop[shopId]),
+          subtotal: parseFloat(cartSubtotalByShop[shopId]),
           taxes: parseFloat(cartTaxesByShop[shopId]),
           discounts: parseFloat(cartDiscounts),
           total: parseFloat(cartTotalByShop[shopId])

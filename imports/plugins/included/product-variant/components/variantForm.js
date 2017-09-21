@@ -152,6 +152,29 @@ class VariantForm extends Component {
     this.handleFieldBlur(event, value, field);
   }
 
+  handleInventoryPolicyChange = (event, value, field) => {
+    /*
+    Due to some confusing verbiage on how inventoryPolicy works / is displayed, we need to handle this field
+    differently than we handle the other checkboxes in this component. Specifically, we display the opposite value of
+    what the actual field value is. Because this is a checkbox, that means that the opposite value is actually the
+    field value as well, not just a display value, so we need to reverse the boolean value when it gets passed into
+    this function before we send it to the server to update the data. Other than reversing the value, this function
+    is the same as `handleCheckboxChange`.
+    */
+
+    const inverseValue = !value;
+
+    this.setState(({ variant }) => ({
+      variant: {
+        ...variant,
+        [field]: inverseValue
+      }
+    }));
+
+
+    this.handleFieldBlur(event, inverseValue, field);
+  }
+
   handleCardExpand = (event, card, cardName, isExpanded) => {
     if (typeof this.props.onCardExpand === "function") {
       this.props.onCardExpand(isExpanded ? cardName : undefined);
@@ -481,8 +504,8 @@ class VariantForm extends Component {
                 name="inventoryPolicy"
                 label={"Allow Backorder"}
                 onLabel={"Allow Backorder"}
-                checked={this.state.inventoryPolicy}
-                onChange={this.handleCheckboxChange}
+                checked={!this.state.inventoryPolicy}
+                onChange={this.handleInventoryPolicyChange}
                 validation={this.props.validation}
               />
             </div>

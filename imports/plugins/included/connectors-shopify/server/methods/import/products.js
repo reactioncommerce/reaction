@@ -1,19 +1,31 @@
 /* eslint camelcase: 0 */
 import Shopify from "shopify-api-node";
-
 import { Meteor } from "meteor/meteor";
 import { Logger } from "/server/api";
 import { check, Match } from "meteor/check";
-
 import { Reaction } from "/server/api";
-import { Packages, Products, Tags, Media } from "/lib/collections";
-import { connectorsRoles } from "../lib/roles";
+import { Products, Tags, Media } from "/lib/collections";
+import { getApiInfo } from "../api/api";
+import { connectorsRoles } from "../../lib/roles";
+
+/**
+ * @file Shopify connector import product method
+ *       contains methods and helpers for setting up and removing synchronization between
+ *       a Shopify store and a Reaction shop
+ * @module connectors/shopify/import/products
+ */
 
 /**
  * Transforms a Shopify product into a Reaction product.
+ * @private
  * @method createReactionProductFromShopifyProduct
- * @param  {object} options { shopifyProduct, shopId, hashtags }
- * @return {[type]} An object that fits the `Product` schema
+ * @param  {object} options Options object
+ * @param  {object} options.shopifyProduct the Shopify product object
+ * @param  {string} options.shopId The shopId we're importing for
+ * @param  {[string]} options.hashtags An array of hashtags that should be attached to this product.
+ * @return {object} An object that fits the `Product` schema
+ *
+ * @todo consider abstracting private Shopify import helpers into a helpers file
  */
 function createReactionProductFromShopifyProduct(options) {
   const { shopifyProduct, shopId, hashtags } = options;
@@ -60,9 +72,10 @@ function createReactionProductFromShopifyProduct(options) {
 
 /**
  * Transforms a Shopify variant into a Reaction variant.
+ * @private
  * @method createReactionVariantFromShopifyVariant
  * @param  {object} options { shopifyVariant, variant, index, ancestors, shopId }
- * @return {[type]} An object that fits the `ProductVariant` schema
+ * @return {object} An object that fits the `ProductVariant` schema
  */
 function createReactionVariantFromShopifyVariant(options) {
   const { shopifyVariant, variant, index, ancestors, shopId } = options;
@@ -112,10 +125,11 @@ function createReactionVariantFromShopifyVariant(options) {
 
 /**
  * Finds the images associated with a particular shopify variant
+ * @private
  * @method findVariantImages
- * @param  {Number} shopifyVariantId The variant `id` from shopify
- * @param  {Array} images An array of images from a Shopify product
- * @return {Array} Returns an array of images that match the passed shopifyVariantId
+ * @param  {number} shopifyVariantId The variant `id` from shopify
+ * @param  {[object]} images An array of image objects from a Shopify product
+ * @return {[object]} Returns an array of image objects that match the passed shopifyVariantId
  */
 function findVariantImages(shopifyVariantId, images) {
   return images.filter((imageObj) => {
@@ -124,23 +138,17 @@ function findVariantImages(shopifyVariantId, images) {
 }
 
 /**
- * get Shopify Api Key, Password and Domain from the Shopify Connect package with the supplied shopId or alternatly the active shopId
- * @method getApiInfo
- * @param  {string} [shopId=Reaction.getShopId()] The shopId to get the API info for. Defaults to current shop.
- * @return {object} shopify API connection information
+ * Finds the images associated with a particular shopify variant
+ * @method findProductImages
+ * @private
+ * @param  {number} shopifyProductId The product `id` from shopify
+ * @param  {[object]} images An array of image objects from a Shopify product
+ * @return {[object]} Returns an array of image objects that match the passed shopifyProductId
  */
-function getApiInfo(shopId = Reaction.getShopId()) {
-  const { settings } = Packages.findOne({
-    name: "reaction-connectors-shopify",
-    shopId
-  });
-
-  return {
-    apiKey: settings.apiKey,
-    password: settings.password,
-    shopName: settings.shopName
-  };
+function findProductImages(shopifyProductId, images) {
+  return images.filter((imageObj) => imageObj.product_id === shopifyProductId);
 }
+
 
 /**
  * Finds and returns arrays of option values for each of Shopify's option layers
@@ -149,6 +157,7 @@ function getApiInfo(shopId = Reaction.getShopId()) {
  * shopifyOptions representing the second option on the shopify product (`option2` in the variant)
  * shopifyTernary representing the third option on the shopify product (`option3` in the variant)
  * any of these will return undefined if the product does not have an option at that layer.
+ * @private
  * @method getShopifyVariantsAndOptions
  * @param  {object} shopifyProduct The shopify product we are importing
  * @return {object} returns an object consisting of shopifyVariants, shopifyOptions, and shopifyTernaryOptions
@@ -179,23 +188,24 @@ function getShopifyVariantsAndOptions(shopifyProduct) {
 
 /**
  * Transforms a weight in grams to a weight in the shop's default unitsOfMeasure
+ * @private
  * @method normalizeWeight
  * @param  {number} weight weight of the product in grams
  * @return {number} weight of the product in the shop's default unitsOfMeasure
+ * @todo get store unitsOfMeasure, convert to store unitsOfMeasure from grams, return converted weight
  */
 function normalizeWeight(weight) {
-  // TODO: get store unitsOfMeasure
-  // convert weight in grams to store unitsOfMeasure
   return weight;
 }
 
 /**
  * Saves an image from a url to the Collection FS image storage location
  * (default: Mongo GridFS)
+ * @private
  * @method saveImage
  * @param  {string}  url url of the image to save
  * @param  {object}  metadata metadata to save with the image
- * @return {void}
+ * @return {undefined}
  */
 function saveImage(url, metadata) {
   const fileObj = new FS.File();
@@ -208,41 +218,14 @@ function saveImage(url, metadata) {
 
 export const methods = {
   /**
-   * Gets a count of the products from Shopify with the API credentials setup for your store.
-   *
-   * @async
-   * @method shopifyConnect/getProductsCount
-   * @param {object} options An object of options for the shopify API call. Available options here: https://help.shopify.com/api/reference/product#count
-   * @returns {number} Number of products
-   */
-  async "shopifyConnect/getProductsCount"(options) {
-    check(options, Match.Maybe(Object));
-
-    if (!Reaction.hasPermission(connectorsRoles)) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    const apiCreds = getApiInfo();
-    const shopify = new Shopify(apiCreds);
-    const opts = Object.assign({}, { published_status: "published" }, { ...options });
-
-    try {
-      const count = await shopify.product.count(opts);
-      return count;
-    } catch (err) {
-      Logger.error("something went wrong");
-    }
-  },
-
-  /**
    * Imports products for the active Reaction Shop from Shopify with the API credentials setup for that shop.
    *
    * @async
-   * @method shopifyConnect/getProductsCount
+   * @method connectors/shopify/import/products
    * @param {object} options An object of options for the shopify API call. Available options here: https://help.shopify.com/api/reference/product#index
-   * @returns {array} An array of the Reaction product _ids (including variants and options) that were created.
+   * @returns {[string]} An array of the Reaction product _ids (including variants and options) that were created.
    */
-  async "shopifyConnect/importProducts"(options) {
+  async "connectors/shopify/import/products"(options) {
     check(options, Match.Maybe(Object));
 
     if (!Reaction.hasPermission(connectorsRoles)) {
@@ -321,6 +304,7 @@ export const methods = {
             const reactionProductId = Products.insert(reactionProduct, { selector: { type: "simple" }, publish: true });
             ids.push(reactionProductId);
 
+            // Save the primary image to the grid and as priority 0
             saveImage(shopifyProduct.image.src, {
               ownerId: Meteor.userId(),
               productId: reactionProductId,
@@ -329,6 +313,21 @@ export const methods = {
               priority: 0,
               toGrid: 1
             });
+
+            // Save all remaining product images to product
+            const productImages = findProductImages(shopifyProduct.id, shopifyProduct.images);
+            for (const productImage of productImages) {
+              if (shopifyProduct.image.id !== productImage.id) {
+                saveImage(productImage.src, {
+                  ownerId: Meteor.userId(),
+                  productId: reactionProductId,
+                  variantId: reactionProductId,
+                  shopId: shopId,
+                  priority: productImage.position, // Shopify index positions starting at 1.
+                  toGrid: 0
+                });
+              }
+            }
 
             // If variantLabel exists, we have at least one variant
             if (shopifyVariants) {
@@ -485,8 +484,9 @@ export const methods = {
               price.range = `${price.max}`;
             }
             Products.update({ _id: reactionProductId }, { $set: { price: price } }, { selector: { type: "simple" }, publish: true });
+            Logger.debug(`Product ${shopifyProduct.title} added`);
           } else { // product already exists check
-            Logger.debug(`Product ${shopifyProduct.title} already exists`);
+            Logger.info(`Product ${shopifyProduct.title} already exists`);
           }
         } // End product loop
       } // End pages loop

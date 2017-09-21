@@ -1,6 +1,7 @@
 // export ButtonGroup from "./buttonGroup/buttonGroup";
 
 export { Alerts, Alert } from "./alerts";
+export { App } from "./app";
 export { default as Icon } from "./icon/icon";
 export { default as CircularProgress } from "./progress/circularProgress";
 export { default as Divider } from "./divider/divider";
@@ -37,3 +38,4 @@ export { default as Select } from "./select/select.react";
 export { default as ClickToCopy } from "./clickToCopy/clickToCopy";
 export { ReactionAvatar } from "./avatar";
 export * from "./notFound";
+export { CalendarPicker } from "./calendarPicker/calendarPicker";

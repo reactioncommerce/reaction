@@ -836,6 +836,10 @@
       background-color: #e8fcf6;
     }
   }
+
+  .rt-noData {
+      top: 75%
+  }
 }
 
 .rollover-checkbox {
@@ -888,7 +892,7 @@
   height: 68px;
   background-color: darken(#fff, 3%);
   padding-top: 20px;
-  margin-top: 92px;
+  margin-top: 67px;
 
   .orders-checkbox {
     margin-left: 11px;
@@ -1049,6 +1053,34 @@
   }
 }
 
+.calender-dropdown {
+  position: relative !important;
+  width: 321px;
+  border: solid 1px @rui-default;
+  border-radius: 3px;
+  background-color: @white;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.16);
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    display: block;
+    border-style: solid;
+    left: 91.5%;
+    z-index: 100;
+  }
+  &:before {
+    top: -21px;
+    border-color: transparent transparent @rui-default transparent;
+    border-width: 10px;
+  }
+  &:after {
+    top: -19px;
+    border-color: transparent transparent @white transparent;
+    border-width: 10px;
+  }
+}
+
 .order-filter-bar {
   display: flex;
   height: 51px;
@@ -1109,6 +1141,36 @@
 
   .order-filter-button:focus {
     outline: none;
+  }
+}
+
+.order-dashboard-container {
+  .order-search {
+    position: relative;
+    .form-group {
+      margin-bottom: 0;
+    }
+    .search-input {
+      font-size: @font-size-base;
+      .padding-left(100px);
+      border-width: 1px 0;
+    }
+    .btn {
+      text-decoration: underline;
+    }
+    .btn, .fa {
+      position: absolute;
+      top: 50%;
+      .right(50px);
+      margin-top: -14px;
+      padding: 0;
+      font-weight: normal
+    }
+    .fa {
+      .left(60px);
+      font-size: @font-size-large;
+      margin-top: -8px;
+    }
   }
 }
 
