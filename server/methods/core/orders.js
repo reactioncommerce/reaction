@@ -837,7 +837,7 @@ export const methods = {
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
-    const shopId = Reaction.getShopId(); // the shopId of the current user, e.g. merchant
+    const shopId = Reaction.getShopId(); // the shopId of the current user, i.e. merchant
     const order = Orders.findOne(orderId);
     // find the appropriate shipping record by shop
     const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === shopId);
