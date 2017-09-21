@@ -1053,6 +1053,34 @@
   }
 }
 
+.calender-dropdown {
+  position: relative !important;
+  width: 321px;
+  border: solid 1px @rui-default;
+  border-radius: 3px;
+  background-color: @white;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.16);
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    display: block;
+    border-style: solid;
+    left: 91.5%;
+    z-index: 100;
+  }
+  &:before {
+    top: -21px;
+    border-color: transparent transparent @rui-default transparent;
+    border-width: 10px;
+  }
+  &:after {
+    top: -19px;
+    border-color: transparent transparent @white transparent;
+    border-width: 10px;
+  }
+}
+
 .order-filter-bar {
   display: flex;
   height: 51px;
@@ -1181,4 +1209,27 @@
 .order-details-table {
   width: 100%;
   margin: 0 auto;
+}
+
+.risk-info {
+  text-transform: capitalize;
+  padding: @padding-small-vertical;
+  vertical-align: top;
+  &.risk-info-detail {
+    margin: 0 5px;
+    border-radius: @border-radius-large;
+    padding: @padding-small-vertical @padding-small-horizontal;
+    height: auto;
+    vertical-align: middle;
+  }
+  &.elevated {
+    background-color: fade(@rui-warning, 10%);
+    border: 1px solid @rui-warning;
+    color: darken(@rui-warning, 30%);
+  }
+  &.high {
+    background-color: fade(@rui-danger, 10%);
+    border: 1px solid @rui-danger;
+    color: darken(@rui-danger, 30%);
+  }
 }

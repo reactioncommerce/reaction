@@ -1,48 +1,76 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
-import { Button, DropDownMenu, MenuItem } from "@reactioncommerce/reaction-ui";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class OrderActions extends Component {
   static propTypes = {
-    className: PropTypes.string,
+    classNamesContainer: PropTypes.object,
     clearFilter: PropTypes.func,
     filter: PropTypes.string,
+    filterDates: PropTypes.func,
     handleMenuClick: PropTypes.func
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      startDate: null,
+      endDate: null
+    };
+  }
+
+  handleDatesChange = (startDate, endDate) => {
+    this.setState({
+      startDate,
+      endDate
+    });
+    this.props.filterDates(startDate, endDate);
   }
 
   buttonElement() {
     return (
-      <Button
+      <Components.Button
         className="order-filter-dropdown-button"
       >
         <i className="fa fa-angle-down" />
-      </Button>
+      </Components.Button>
+    );
+  }
+
+  dateLabel() {
+    if (this.state.startDate && this.state.endDate) {
+      return (
+        <span>{this.state.startDate.format("MM/DD")} - {this.state.endDate.format("MM/DD")}</span>
+      );
+    }
+    return (
+      <Components.Translation defaultValue="Date Range" i18nKey="order.filter.dateRange" />
     );
   }
 
   render() {
-    const filterClassName = classnames({
-      "order-filter-button": true
-    }, this.props.className);
-
-    const labelClassName = classnames({
-      "order-filter-name": true
-    }, this.props.className);
-
     return (
       <div className="order-filter-bar">
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span className={labelClassName}> {this.props.filter}</span>
+            <span
+              className={classnames({
+                "order-filter-name": true
+              }, this.props.classNamesContainer.status)}
+            >
+              {this.props.filter}
+            </span>
             <div className="order-filter-icons">
-              <Button
-                className={filterClassName}
-                onClick={this.props.clearFilter}
+              <Components.Button
+                className={classnames({
+                  "order-filter-button": true
+                }, this.props.classNamesContainer.status)}
+                onClick={() => this.props.clearFilter("status")}
               >
                 <i className="fa fa-filter" />
-              </Button>
-              <DropDownMenu
+              </Components.Button>
+              <Components.DropDownMenu
                 buttonElement={this.buttonElement()}
                 menuClassName="tab-list-dropdown"
                 className="order-menu-item-dropdown"
@@ -50,50 +78,79 @@ class OrderActions extends Component {
                 attachment="bottom right"
                 targetAttachment="top right"
               >
-                <MenuItem
+                <Components.MenuItem
                   label="New"
                   i18nKeyLabel="order.filter.new"
                   value="new"
                 />
-                <MenuItem
+                <Components.MenuItem
                   label="Approved"
                   i18nKeyLabel="order.filter.approved"
                   value="approved"
                 />
-                <MenuItem
+                <Components.MenuItem
                   label="Captured"
                   i18nKeyLabel="order.filter.captured"
                   value="captured"
                 />
-                <MenuItem
+                <Components.MenuItem
                   label="Processing"
                   i18nKeyLabel="order.filter.processing"
                   value="processing"
                 />
-                <MenuItem
+                <Components.MenuItem
                   label="Completed"
                   i18nKeyLabel="order.filter.completed"
                   value="completed"
                 />
-                <MenuItem
+                <Components.MenuItem
                   label="Canceled"
                   i18nKeyLabel="order.filter.canceled"
                   value="canceled"
                 />
-              </DropDownMenu>
+              </Components.DropDownMenu>
             </div>
-
-
           </div>
         </div>
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span className="order-filter-name"> This Week </span>
+            <span
+              className={classnames({
+                "order-filter-name": true
+              }, this.props.classNamesContainer.date)}
+            >
+              {this.dateLabel()}
+            </span>
             <div className="order-filter-icons">
-              <Button className="order-filter-button">
+              <Components.Button
+                className={classnames({
+                  "order-filter-button": true
+                }, this.props.classNamesContainer.date)}
+                onClick={() => {
+                  this.setState({
+                    startDate: null,
+                    endDate: null
+                  });
+
+                  this.props.clearFilter("date");
+                }}
+              >
                 <i className="fa fa-filter" />
-              </Button>
-              {this.buttonElement()}
+              </Components.Button>
+              <Components.DropDownMenu
+                buttonElement={this.buttonElement()}
+                menuClassName="calender-dropdown"
+                className="order-menu-item-dropdown"
+                attachment="bottom right"
+                targetAttachment="top right"
+                isClickable={false}
+              >
+                <Components.CalendarPicker
+                  initialStartDate={this.state.startDate}
+                  initialEndDate={this.state.endDate}
+                  onDatesChange={this.handleDatesChange}
+                />
+              </Components.DropDownMenu>
             </div>
           </div>
         </div>
@@ -101,12 +158,11 @@ class OrderActions extends Component {
           <div className="order-filter-label">
             <span className="order-filter-name">  Shipping Status </span>
             <div className="order-filter-icons">
-              <Button className="order-filter-button">
+              <Components.Button className="order-filter-button">
                 <i className="fa fa-filter" />
-              </Button>
+              </Components.Button>
               {this.buttonElement()}
             </div>
-
           </div>
         </div>
       </div>
