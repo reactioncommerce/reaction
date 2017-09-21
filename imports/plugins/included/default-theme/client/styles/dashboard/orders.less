@@ -453,6 +453,7 @@
   .controls {
     width: 10%;
     max-width: 66px;
+    border-left: 1px solid @black10;
   }
 
   .content {
@@ -542,6 +543,13 @@
         }
       }
     }
+  }
+}
+
+.rtl .rui.card.order {
+  .controls {
+    border-right: 1px solid @black10;
+    border-left: none;
   }
 }
 
@@ -650,7 +658,7 @@
   // Table Headers
   .order-table-header-name {
     border-right: none;
-    text-align: left;
+    .text-align(left);
     padding-top: 8px;
 
     min-width: 20%;
@@ -780,14 +788,14 @@
   // Name cell display
   .order-table-name-cell {
     display: inline-flex;
-    padding-left: 5px
+    .padding-left(5px);
   }
 
   // Checkbox Styling
   .order-header-checkbox {
     margin-top: 10px;
     margin-bottom: 0px;
-    margin-right: 10px;
+    .margin-right(10px);
     border-radius: 2px;
     border: solid 2px @black65;
   }
@@ -842,6 +850,13 @@
   }
 }
 
+.rtl .rui.order.table {
+  .order-table-column-name {
+  border-left: 1px solid @black10;
+  border-right: none;
+  }
+}
+
 .rollover-checkbox {
 
   .second-child {
@@ -864,6 +879,11 @@
     border: solid 2px @black65;
     background: transparent;
   }
+}
+
+strong.orders-full-name {
+  margin-top: 7px;
+  .padding-left(5px);
 }
 
 .rui.order.table.table-header-hidden {
@@ -895,7 +915,7 @@
   margin-top: 67px;
 
   .orders-checkbox {
-    margin-left: 11px;
+    .margin-left(11px);
     vertical-align: -7px;
   }
 
@@ -903,20 +923,20 @@
     font-size: 15px;
     font-weight: bold;
     color: @rui-brand;
-    margin-left: 20px;
+    .margin-left(20px);
     vertical-align: middle;
   }
 
   .capture-orders-button, .bulk-actions-button {
     width: 176px;
     text-align: center;
-    margin-left: 30px;
+    .margin-left(30px);
     vertical-align: middle;
   }
 
   .bulk-actions-button {
     i {
-      margin-left: 25px;
+      .margin-left(25px);
     }
   }
 
@@ -924,7 +944,7 @@
     position: relative;
     z-index: 1;
     width: 286px;
-    margin-left: 254px;
+    .margin-left(256px);
     margin-top: 14px;
     border: solid 1px @rui-default;
     border-radius: 3px;
@@ -935,7 +955,7 @@
       position: absolute;
       display: block;
       border-style: solid;
-      left: 82.5%;
+      .left(82.5%);
       z-index: 100;
     }
 
@@ -975,8 +995,8 @@
     }
 
     i.bulk-actions-icons-select {
-      margin-left: 10px;
-      margin-right: -8px;
+      .margin-left(10px);
+      .margin-right(-8px);
     }
 
     i.fa-check {
@@ -1020,7 +1040,7 @@
     position: absolute;
     display: block;
     border-style: solid;
-    left: 90%;
+    .left(90%);
     z-index: 100;
   }
   &:before {
@@ -1044,6 +1064,7 @@
       font-size: 16px;
       line-height: 1.9;
       color: @rui-default-text;
+      .text-align(left);
     }
 
     a:hover {
@@ -1053,13 +1074,41 @@
   }
 }
 
+.calender-dropdown {
+  position: relative !important;
+  width: 321px;
+  border: solid 1px @rui-default;
+  border-radius: 3px;
+  background-color: @white;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.16);
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    display: block;
+    border-style: solid;
+    .left(91.5%);
+    z-index: 100;
+  }
+  &:before {
+    top: -21px;
+    border-color: transparent transparent @rui-default transparent;
+    border-width: 10px;
+  }
+  &:after {
+    top: -19px;
+    border-color: transparent transparent @white transparent;
+    border-width: 10px;
+  }
+}
+
 .order-filter-bar {
   display: flex;
   height: 51px;
 
   .order-filter-item {
     display: flex;
-    flex: 1 1 auto;
+    .flex(1 1 auto);
     width: 33%;
     height: 100%;
     align-items: center;
@@ -1080,7 +1129,7 @@
 
   .order-filter-name {
     font-size: 16px;
-    flex: 0 1 auto;
+    .flex(0 1 auto);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -1091,8 +1140,8 @@
   }
 
   .order-filter-icons {
-    flex: 0 1 auto;
-    margin-left: auto;
+    .flex(0 1 auto);
+    .margin-left(auto);
   }
 
   .order-filter-button {
@@ -1104,7 +1153,7 @@
   }
 
   .order-filter-dropdown-button {
-    padding-left: 0
+    .padding-left(0);
   }
 
   .order-filter-dropdown-button:focus {
@@ -1181,4 +1230,27 @@
 .order-details-table {
   width: 100%;
   margin: 0 auto;
+}
+
+.risk-info {
+  text-transform: capitalize;
+  padding: @padding-small-vertical;
+  vertical-align: top;
+  &.risk-info-detail {
+    margin: 0 5px;
+    border-radius: @border-radius-large;
+    padding: @padding-small-vertical @padding-small-horizontal;
+    height: auto;
+    vertical-align: middle;
+  }
+  &.elevated {
+    background-color: fade(@rui-warning, 10%);
+    border: 1px solid @rui-warning;
+    color: darken(@rui-warning, 30%);
+  }
+  &.high {
+    background-color: fade(@rui-danger, 10%);
+    border: 1px solid @rui-danger;
+    color: darken(@rui-danger, 30%);
+  }
 }

@@ -20,7 +20,7 @@ class Menu extends Component {
           active: element.props.value === this.props.value
         }, this.props.className);
         return (
-          <li className={baseClassName}>{newChild}</li>
+          <li className={baseClassName}>{this.props.isClickable ? newChild : element}</li>
         );
       });
     }
@@ -45,6 +45,7 @@ Menu.propTypes = {
   attachment: PropTypes.string,
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  isClickable: PropTypes.bool,
   menuClassName: PropTypes.string,
   onChange: PropTypes.func,
   style: PropTypes.object,
@@ -52,7 +53,8 @@ Menu.propTypes = {
 };
 
 Menu.defaultProps = {
-  attachment: "top"
+  attachment: "top",
+  isClickable: true
 };
 
 registerComponent("Menu", Menu);
