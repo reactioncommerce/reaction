@@ -12,8 +12,9 @@ import { Reaction } from "/server/api";
  * @param {Object} sort - An object containing a sort
  * @param {Number} limit - An optional limit of how many records to return
  * @returns {Array} An array of projection operators
+ * @private
  */
-export function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0) {
+function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0) {
   // NOTE: in Mongo 3.4 using the $in operator will be supported for projection filters
   const aggregate = [
     { $match: { "items.shopId": shopId } },
