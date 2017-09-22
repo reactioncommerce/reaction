@@ -14,7 +14,7 @@ Reaction.registerPackage({
     refreshPeriod: "every 2 hours"
   },
   registry: [{
-    provides: "dashboard",
+    provides: ["dashboard"],
     label: "Shippo",
     description: "Shippo service",
     icon: "fa fa-plane",
@@ -28,7 +28,7 @@ Reaction.registerPackage({
     label: "Shippo",
     icon: "fa fa-plane",
     name: "shipping/settings/shippo",
-    provides: "shippingSettings",
+    provides: ["shippingSettings"],
     container: "connection",
     template: "shippoSettings"
   }
@@ -40,7 +40,7 @@ Reaction.registerPackage({
     // alter coreCheckoutShipping checkout.js and inherit from there (or write specific logic) for a shippo's
     // checkout template.
     //
-    // provides: "shippingMethod",
+    // provides: ["shippingMethod"],
     // name: "shipping/methods/shippo",
     // template: "shippoCheckoutShipping"
     // Not needed at the time cause the coreCheckoutShipping is enough(inherited from Flatrate)

@@ -17,7 +17,7 @@ Reaction.registerPackage({
     name: "settings/connectors/shopify",
     icon: "fa fa-exchange",
     route: "/dashboard/connectors/shopify",
-    provides: "connectorSettings",
+    provides: ["connectorSettings"],
     container: "dashboard",
     template: "shopifyConnectSettings"
   }]
