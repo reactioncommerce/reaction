@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
 import { isEqual } from "lodash";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
@@ -304,9 +305,15 @@ class VariantForm extends Component {
   renderVariantFields() {
     const cardName = `variant-${this.variant._id}`;
 
+    const classNames = classnames({
+      "variant-option-card": true,
+      "active": this.isExpanded(cardName)
+    });
+
     return (
       <Components.CardGroup>
         <Components.Card
+          className={classNames}
           expandable={true}
           expanded={this.isExpanded(cardName)}
           name={cardName}
@@ -539,9 +546,15 @@ class VariantForm extends Component {
   renderOptionFields() {
     const cardName = `variant-${this.variant._id}`;
 
+    const classNames = classnames({
+      "variant-option-card": true,
+      "active": this.isExpanded(cardName)
+    });
+
     return (
       <Components.CardGroup>
         <Components.Card
+          className={classNames}
           expandable={true}
           expanded={this.isExpanded(cardName)}
           name={cardName}

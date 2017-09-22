@@ -30,6 +30,9 @@ Template.variantForm.onCreated(function () {
  */
 
 Template.variantForm.helpers({
+  variantEditComponent() {
+    return Components.VariantEdit;
+  },
   variantFormComponent() {
     return Components.VariantForm;
   },
