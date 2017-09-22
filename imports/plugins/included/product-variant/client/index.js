@@ -1,7 +1,3 @@
-import "./templates/products/productDetail/variants/variantForm/childVariant.html";
-import "./templates/products/productDetail/variants/variantForm/childVariant.js";
-import "./templates/products/productDetail/variants/variantForm/variantForm.html";
-import "./templates/products/productDetail/variants/variantForm/variantForm.js";
 import "./templates/products/productDetail/variants/variantList/variantList.html";
 import "./templates/products/productDetail/variants/variantList/variantList.js";
 import "./templates/products/productDetail/variants/variant.html";
@@ -42,3 +38,4 @@ export { default as ProductGridContainer } from "../containers/productGridContai
 export { default as ProductGridItemsContainer } from "../containers/productGridItemsContainer";
 export { default as ProductsContainer } from "../containers/productsContainer";
 export { default as VariantFormContainer } from "../containers/variantFormContainer";
+export { default as VariantEditContainer } from "../containers/variantEditContainer";
