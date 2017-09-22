@@ -7,7 +7,7 @@ import { Media } from "/lib/collections";
 
 class Brand extends Component {
   static propTypes = {
-    shop: PropTypes.object
+    shop: PropTypes.object.isRequired
   }
   constructor(props) {
     super(props);

@@ -23,7 +23,7 @@ class NavBar extends Component {
   static propTypes = {
     hasProperPermission: PropTypes.bool,
     searchEnabled: PropTypes.bool,
-    shop: PropTypes.object
+    shop: PropTypes.object.isRequired
   }
 
   state = {
