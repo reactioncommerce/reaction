@@ -315,6 +315,9 @@ export function addressBookAdd(address, accountUserId) {
   this.unblock();
 
   const userId = accountUserId || Meteor.userId();
+  const account = Accounts.findOne({
+    userId: userId
+  });
   // required default id
   if (!address._id) {
     address._id = Random.id();
@@ -356,24 +359,30 @@ export function addressBookAdd(address, accountUserId) {
     }
   }
 
-  Meteor.users.update(Meteor.userId(), {
+  const userUpdateQuery = {
     $set: {
-      "name": address.fullName,
       "profile.addressBook": address
     }
-  });
-
-  return Accounts.upsert({
-    userId: userId
-  }, {
+  };
+  const accountsUpdateQuery = {
     $set: {
-      name: address.fullName,
       userId: userId
     },
     $addToSet: {
       "profile.addressBook": address
     }
-  });
+  };
+
+  if (!account.name || _.get(account, 'profile.addressBook.length', 0) === 0) {
+    userUpdateQuery.$set.name = address.fullName;
+    accountsUpdateQuery.$set.name = address.fullName;
+  }
+
+  Meteor.users.update(Meteor.userId(), userUpdateQuery);
+
+  return Accounts.upsert({
+    userId: userId
+  }, accountsUpdateQuery);
 }
 
 /**
@@ -469,22 +478,29 @@ export function addressBookUpdate(address, accountUserId, type) {
     }
   }
 
-  Meteor.users.update(Meteor.userId(), {
+  const userUpdateQuery = {
     $set: {
-      "name": address.fullName,
       "profile.addressBook": address
     }
-  });
+  };
+
+  const accountsUpdateQuery = {
+    $set: {
+      "profile.addressBook.$": address
+    }
+  };
+  // update the name when there is no name or the user updated his only shipping address
+  if (!account.name || _.get(account, 'profile.addressBook.length', 0) <= 1) {
+    userUpdateQuery.$set.name = address.fullName;
+    accountsUpdateQuery.$set.name = address.fullName;
+  }
+
+  Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
   return Accounts.update({
     "userId": userId,
     "profile.addressBook._id": address._id
-  }, {
-    $set: {
-      "name": address.fullName,
-      "profile.addressBook.$": address
-    }
-  });
+  }, accountsUpdateQuery);
 }
 
 /**
