@@ -107,23 +107,6 @@
             </div>
 
             <div class="rui item half">
-              <div class="rui textfield form-group {{hasErrorClassName 'inventoryQuantity'}}">
-                <label for="quantity-{{childVariantFormId}}" data-i18n="productVariant.inventoryQuantity">Quantity</label>
-                <input
-                  id="quantity-{{childVariantFormId}}"
-                  type="number"
-                  class="form-control input-sm child-variant-input"
-                  value="{{inventoryQuantity}}"
-                  name="inventoryQuantity"
-                  placeholder="QTY"
-                  />
-                {{#with hasValidationMessage 'inventoryQuantity'}}
-                  <span class="help-block">{{message}}</span>
-                {{/with}}
-              </div>
-            </div>
-
-            <div class="rui item half">
               <div class="rui textfield form-group {{hasErrorClassName 'price'}}">
                 <label for="price-{{childVariantFormId}}" data-i18n="productVariant.price" class="column-price">Price</label>
                 <input
@@ -140,6 +123,42 @@
                 {{/with}}
               </div>
             </div>
+
+            <div class="rui item half">
+              <div class="rui textfield form-group {{hasErrorClassName 'compareAtPrice'}}">
+                <label for="compareAtPrice-{{childVariantFormId}}" data-i18n="productVariant.compareAtPrice" class="column-compareAtPrice">Compare at Price</label>
+                <input
+                  id="compareAtPrice-{{childVariantFormId}}"
+                  type="number"
+                  class="form-control
+                  input-sm child-variant-input"
+                  value="{{compareAtPrice}}"
+                  name="compareAtPrice"
+                  placeholder="Add Compare At Price"
+                  />
+                {{#with hasValidationMessage 'compareAtPrice'}}
+                  <span class="help-block">{{message}}</span>
+                {{/with}}
+              </div>
+            </div>
+
+            <div class="rui item half">
+              <div class="rui textfield form-group {{hasErrorClassName 'inventoryQuantity'}}">
+                <label for="quantity-{{childVariantFormId}}" data-i18n="productVariant.inventoryQuantity">Quantity</label>
+                <input
+                  id="quantity-{{childVariantFormId}}"
+                  type="number"
+                  class="form-control input-sm child-variant-input"
+                  value="{{inventoryQuantity}}"
+                  name="inventoryQuantity"
+                  placeholder="QTY"
+                  />
+                {{#with hasValidationMessage 'inventoryQuantity'}}
+                  <span class="help-block">{{message}}</span>
+                {{/with}}
+              </div>
+            </div>
+
           </div>
         </div> {{!-- /.child-variant-form --}}
       </div> {{!-- /.panel-body --}}

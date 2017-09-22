@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { isEqual } from "lodash";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
+import { Meteor } from "meteor/meteor";
 import { Components } from "@reactioncommerce/reaction-components";
 import { formatPriceString } from "/client/api";
 
@@ -43,11 +44,12 @@ class VariantForm extends Component {
     super(props);
 
     this.state = {
-      expandedCard: "variantDetails",
+      expandedCard: props.editFocus,
       variant: props.variant,
       inventoryPolicy: props.variant.inventoryPolicy,
       taxable: props.variant.taxable,
-      inventoryManagement: props.variant.inventoryManagement
+      inventoryManagement: props.variant.inventoryManagement,
+      validation: props.validation
     };
   }
 
@@ -64,10 +66,12 @@ class VariantForm extends Component {
     }
 
     this.setState({
+      expandedCard: nextProps.editFocus,
       inventoryManagement: nextProps.variant.inventoryManagement,
       inventoryPolicy: nextProps.variant.inventoryPolicy,
       taxable: nextProps.variant.taxable,
-      variant: nextProps.variant
+      variant: nextProps.variant,
+      validation: nextProps.validation
     });
   }
 
@@ -99,7 +103,7 @@ class VariantForm extends Component {
 
     if (fieldRef) {
       const input = fieldRef.refs.input;
-      const isFieldValid = this.props.validation.isFieldValid(fieldName);
+      const isFieldValid = this.state.validation.isFieldValid(fieldName);
       const flashColor = isFieldValid ? "#f0fff4" : "#ffeeef";
 
       Velocity.RunSequence([
@@ -181,6 +185,10 @@ class VariantForm extends Component {
     }
   }
 
+  handleVariantVisibilityToggle = (variant) => {
+    return this.props.onVisibilityButtonClick(variant);
+  }
+
   isExpanded = (groupName) => {
     return this.state.expandedCard === groupName;
   }
@@ -213,7 +221,7 @@ class VariantForm extends Component {
         onBlur={this.handleFieldBlur}
         onChange={this.handleFieldChange}
         onReturnKeyDown={this.handleFieldBlur}
-        validation={this.props.validation}
+        validation={this.state.validation}
       />
     );
   }
@@ -265,6 +273,8 @@ class VariantForm extends Component {
             value={this.props.onUpdateQuantityField(this.variant)}
             style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
             disabled={true}
+            helpText={"Variant inventory is now controlled by options"}
+            i18nKeyHelpText={"admin.helpText.variantInventoryQuantity"}
           />
         </div>
       );
@@ -283,19 +293,23 @@ class VariantForm extends Component {
           onChange={this.handleFieldChange}
           onBlur={this.handleFieldBlur}
           onReturnKeyDown={this.handleFieldBlur}
-          validation={this.props.validation}
+          validation={this.state.validation}
+          helpText={"Option inventory"}
+          i18nKeyHelpText={"admin.helpText.optionInventoryQuantity"}
         />
       </div>
     );
   }
 
-  render() {
+  renderVariantFields() {
+    const cardName = `variant-${this.variant._id}`;
+
     return (
       <Components.CardGroup>
         <Components.Card
           expandable={true}
-          expanded={this.isExpanded("variantDetails")}
-          name="variantDetails"
+          expanded={this.isExpanded(cardName)}
+          name={cardName}
           onExpand={this.handleCardExpand}
         >
           <Components.CardHeader
@@ -309,6 +323,12 @@ class VariantForm extends Component {
               className="rui btn btn-default btn-clone-variant flat"
               tooltip="Duplicate"
               onClick={() => this.props.cloneVariant(this.variant)}
+            />
+            <Components.VisibilityButton
+              onClick={() => this.handleVariantVisibilityToggle(this.variant)}
+              bezelStyle="flat"
+              primary={false}
+              toggleOn={this.variant.isVisible}
             />
             {this.renderArchiveButton()}
           </Components.CardHeader>
@@ -324,7 +344,7 @@ class VariantForm extends Component {
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
               onReturnKeyDown={this.handleFieldBlur}
-              validation={this.props.validation}
+              validation={this.state.validation}
             />
             <Components.Select
               clearable={false}
@@ -343,14 +363,14 @@ class VariantForm extends Component {
                   i18nKeyLabel="productVariant.compareAtPrice"
                   i18nKeyPlaceholder={formatPriceString("0.00")}
                   placeholder={formatPriceString("0.00")}
-                  label="MSRP"
+                  label="Compare At Price"
                   name="compareAtPrice"
                   ref="compareAtPriceInput"
                   value={this.variant.compareAtPrice}
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validation}
+                  validation={this.state.validation}
                 />
               </div>
               <div className="col-sm-6">
@@ -367,7 +387,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validation}
+                  validation={this.state.validation}
                 />
               </div>
             </div>
@@ -385,7 +405,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validation}
+                  validation={this.state.validation}
                 />
               </div>
               <div className="col-sm-6">
@@ -400,7 +420,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validation}
+                  validation={this.state.validation}
                 />
               </div>
             </div>
@@ -418,7 +438,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validation}
+                  validation={this.state.validation}
                 />
               </div>
               <div className="col-sm-6">
@@ -433,7 +453,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validation}
+                  validation={this.state.validation}
                 />
               </div>
             </div>
@@ -463,7 +483,7 @@ class VariantForm extends Component {
             onBlur={this.handleFieldBlur}
             onChange={this.handleFieldChange}
             onReturnKeyDown={this.handleFieldBlur}
-            validation={this.props.validation}
+            validation={this.state.validation}
           />
         </Components.SettingsCard>
 
@@ -492,7 +512,7 @@ class VariantForm extends Component {
                 onBlur={this.handleFieldBlur}
                 onChange={this.handleFieldChange}
                 onReturnKeyDown={this.handleFieldBlur}
-                validation={this.props.validation}
+                validation={this.state.validation}
               />
             </div>
           </div>
@@ -506,12 +526,138 @@ class VariantForm extends Component {
                 onLabel={"Allow Backorder"}
                 checked={!this.state.inventoryPolicy}
                 onChange={this.handleInventoryPolicyChange}
-                validation={this.props.validation}
+                validation={this.state.validation}
               />
             </div>
           </div>
         </Components.SettingsCard>
       </Components.CardGroup>
+    );
+  }
+
+
+  renderOptionFields() {
+    const cardName = `variant-${this.variant._id}`;
+
+    return (
+      <Components.CardGroup>
+        <Components.Card
+          expandable={true}
+          expanded={this.isExpanded(cardName)}
+          name={cardName}
+          onExpand={this.handleCardExpand}
+        >
+          <Components.CardHeader
+            actAsExpander={true}
+            title={this.variant.optionTitle || "Label is required"}
+            isValid={this.state.validation.isValid}
+          >
+            {this.renderArchivedLabel()}
+            <Components.Button
+              icon="files-o"
+              className="rui btn btn-default btn-clone-variant flat"
+              tooltip="Duplicate"
+              onClick={() => this.props.cloneVariant(this.variant)}
+            />
+            <Components.VisibilityButton
+              onClick={() => this.handleVariantVisibilityToggle(this.variant)}
+              bezelStyle="flat"
+              primary={false}
+              toggleOn={this.variant.isVisible}
+            />
+            {this.renderArchiveButton()}
+          </Components.CardHeader>
+          <Components.CardBody expandable={true}>
+            <Components.TextField
+              i18nKeyLabel="productVariant.optionTitle"
+              i18nKeyPlaceholder="productVariant.optionTitle"
+              placeholder="optionTitle"
+              label="Short Label"
+              name="optionTitle"
+              ref="optionTitleInput"
+              value={this.variant.optionTitle}
+              onBlur={this.handleFieldBlur}
+              onChange={this.handleFieldChange}
+              onReturnKeyDown={this.handleFieldBlur}
+              validation={this.state.validation}
+              helpText={"Displayed on Product Detail Page"}
+              i18nKeyHelpText={"admin.helpText.optionTitle"}
+            />
+            <Components.TextField
+              i18nKeyLabel="productVariant.title"
+              i18nKeyPlaceholder="productVariant.title"
+              placeholder="Label"
+              label="Label"
+              name="title"
+              ref="titleInput"
+              value={this.variant.title}
+              onBlur={this.handleFieldBlur}
+              onChange={this.handleFieldChange}
+              onReturnKeyDown={this.handleFieldBlur}
+              validation={this.state.validation}
+              helpText={"Displayed in cart, checkout, and orders"}
+              i18nKeyHelpText={"admin.helpText.title"}
+            />
+            <div className="row">
+              <div className="col-sm-6">
+                <Components.TextField
+                  i18nKeyLabel="productVariant.price"
+                  i18nKeyPlaceholder={formatPriceString("0.00")}
+                  placeholder={formatPriceString("0.00")}
+                  label="Price"
+                  name="price"
+                  ref="priceInput"
+                  value={this.variant.price}
+                  style={this.props.greyDisabledFields(this.variant)}
+                  disabled={this.props.hasChildVariants(this.variant)}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.state.validation}
+                  helpText={"Purchase price"}
+                  i18nKeyHelpText={"admin.helpText.price"}
+                />
+              </div>
+              <div className="col-sm-6">
+                <Components.TextField
+                  i18nKeyLabel="productVariant.compareAtPrice"
+                  i18nKeyPlaceholder={formatPriceString("0.00")}
+                  placeholder={formatPriceString("0.00")}
+                  label="Compare At Price"
+                  name="compareAtPrice"
+                  ref="compareAtPriceInput"
+                  value={this.variant.compareAtPrice}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.state.validation}
+                  helpText={"Original price or MSRP"}
+                  i18nKeyHelpText={"admin.helpText.compareAtPrice"}
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              {this.renderQuantityField()}
+            </div>
+          </Components.CardBody>
+        </Components.Card>
+      </Components.CardGroup>
+    );
+  }
+
+  render() {
+    if (this.props.type === "option") {
+      return (
+        <div>
+          {this.renderOptionFields()}
+        </div>
+      );
+    }
+    return (
+      <div>
+        {this.renderVariantFields()}
+      </div>
     );
   }
 }
@@ -529,8 +675,10 @@ VariantForm.propTypes = {
   onFieldChange: PropTypes.func,
   onUpdateQuantityField: PropTypes.func,
   onVariantFieldSave: PropTypes.func,
+  onVisibilityButtonClick: PropTypes.func,
   removeVariant: PropTypes.func,
   restoreVariant: PropTypes.func,
+  type: PropTypes.string,
   validation: PropTypes.object,
   variant: PropTypes.object
 };

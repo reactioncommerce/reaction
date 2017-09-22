@@ -2,8 +2,26 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Validation } from "@reactioncommerce/reaction-collections";
+import { ProductVariant } from "/lib/collections/schemas/products";
+
 
 class ChildVariant extends Component {
+  constructor(props) {
+    super(props);
+
+    this.validation = new Validation(ProductVariant);
+
+    this.state = {
+      invalidVariant: false
+    };
+  }
+
+  componentWillMount() {
+    this.variantValidation();
+  }
+
+
   handleClick = (event) => {
     if (this.props.onClick) {
       this.props.onClick(event, this.props.variant);
@@ -72,13 +90,37 @@ class ChildVariant extends Component {
     return null;
   }
 
+  renderValidationButton = () => {
+    if (this.state.invalidVariant === true) {
+      return (
+        <Components.Badge
+          status="danger"
+          indicator={true}
+          tooltip={"Validation error"}
+          i18nKeyTooltip={"admin.tooltip.validationError"}
+        />
+      );
+    }
+  }
+
+  // checks whether the product variant is validated
+  variantValidation = () => {
+    const invalidVariant = this.validation.validate(this.props.variant);
+
+    this.setState({
+      invalidVariant: !invalidVariant.isValid
+    });
+  }
+
   render() {
     const variant = this.props.variant;
     const classes = classnames({
       "btn": true,
       "btn-default": true,
+      "variant-button": true,
       "variant-detail-selected": this.props.isSelected,
-      "variant-deleted": this.props.variant.isDeleted
+      "variant-deleted": this.props.variant.isDeleted,
+      "variant-notVisible": !this.props.variant.isVisible
     });
 
     return (
@@ -95,7 +137,7 @@ class ChildVariant extends Component {
         <div className="variant-controls">
           {this.renderDeletionStatus()}
           {this.renderInventoryStatus()}
-          {this.props.visibilityButton}
+          {this.renderValidationButton()}
           {this.props.editButton}
         </div>
       </div>
