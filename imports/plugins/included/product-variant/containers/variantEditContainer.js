@@ -25,6 +25,7 @@ const wrapComponent = (Comp) => (
             confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
           });
         } else if (result) {
+          console.log("what's going on?");
           const newVariantId = result;
           const selectedProduct = ReactionProduct.selectedProduct();
           const handle = selectedProduct.__published && selectedProduct.__published.handle || selectedProduct.handle;

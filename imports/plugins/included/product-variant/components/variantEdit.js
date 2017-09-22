@@ -10,30 +10,14 @@ class VariantEdit extends Component {
     variant: PropTypes.object
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      childVariants: props.childVariants,
-      variant: props.variant || ReactionProduct.selectedTopVariant()
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      childVariants: nextProps.childVariants,
-      variant: nextProps.variant
-    });
-  }
-
   handleCreateNewChildVariant = () => {
     if (this.props.handleCreateNewChildVariant) {
-      this.props.handleCreateNewChildVariant(this.state.variant);
+      this.props.handleCreateNewChildVariant(this.props.variant);
     }
   }
 
   renderVariant() {
-    const variant = this.state.variant;
+    const variant = this.props.variant;
 
     return (
       <Components.VariantForm
@@ -68,7 +52,7 @@ class VariantEdit extends Component {
   }
 
   renderChildVariants() {
-    const childVariants = this.state.childVariants;
+    const childVariants = this.props.childVariants;
 
     return childVariants.map((childVariant, index) => {
       return (
@@ -82,6 +66,7 @@ class VariantEdit extends Component {
   }
 
   render() {
+    console.log("hello");
     return (
       <div>
         {this.renderVariant()}
