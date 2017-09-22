@@ -7,6 +7,7 @@ import { i18next, Logger, Reaction, formatPriceString } from "/client/api";
 import { Media, Packages } from "/lib/collections";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import Invoice from "../components/invoice.js";
+import { getOrderRiskStatus, getOrderRiskBadge } from "../helpers";
 
 class InvoiceContainer extends Component {
   static propTypes = {
@@ -242,7 +243,11 @@ class InvoiceContainer extends Component {
     });
 
     const order = this.state.order;
-    capturePayments(order);
+    capturePayments(order, () => {
+      this.setState({
+        isCapturing: false
+      });
+    });
   }
 
   handleCancelPayment = (event) => {
@@ -567,17 +572,47 @@ function approvePayment(order) {
 /**
  * @method capturePayments
  * @summary helper method to capture payments
- * @param {Object} order - object representing an order
+ * @param {object} order - object representing an order
+ * @param {function} onCancel - called on clicking cancel in alert dialog
  * @return {null} null
  */
-function capturePayments(order) {
-  Meteor.call("orders/capturePayments", order._id);
-  if (order.workflow.status === "new") {
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+function capturePayments(order, onCancel) {
+  const capture = () => {
+    Meteor.call("orders/capturePayments", order._id);
+    if (order.workflow.status === "new") {
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
 
-    Reaction.Router.setQueryParams({
-      filter: "processing",
-      _id: order._id
+      Reaction.Router.setQueryParams({
+        filter: "processing",
+        _id: order._id
+      });
+    }
+  };
+
+  // before capturing, check if there's a payment risk on order; alert admin before capture
+  if (getOrderRiskStatus(order)) {
+    alertDialog()
+      .then(capture)
+      .catch(onCancel);
+  } else {
+    capture();
+  }
+
+  function alertDialog() {
+    let alertType = "warning";
+    const riskBadge = getOrderRiskBadge(getOrderRiskStatus(order));
+    // use red alert color for high risk level
+    if (riskBadge === "danger") {
+      alertType = "error";
+    }
+
+    return Alerts.alert({
+      title: i18next.t("admin.orderRisk.riskCapture"),
+      text: i18next.t("admin.orderRisk.riskCaptureWarn"),
+      type: alertType,
+      showCancelButton: true,
+      cancelButtonText: i18next.t("admin.settings.cancel"),
+      confirmButtonText: i18next.t("admin.settings.continue")
     });
   }
 }

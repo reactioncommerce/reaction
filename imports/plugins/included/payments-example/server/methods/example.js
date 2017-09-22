@@ -88,6 +88,7 @@ Meteor.methods({
         status: "created",
         currency: paymentData.currency,
         amount: total,
+        riskLevel: normalizeRiskLevel(transaction),
         transactionId: transaction.id,
         response: {
           amount: total,
@@ -175,3 +176,24 @@ Meteor.methods({
     return emptyResult;
   }
 });
+
+/**
+ * @method normalizeRiskLevel
+ * @private
+ * @summary Normalizes the risk level response of a transaction to the values defined in paymentMethod schema
+ * @param  {object} transaction - The transaction that we need to normalize
+ * @return {string} normalized status string - either elevated, high, or normal
+ */
+function normalizeRiskLevel(transaction) {
+  // the values to be checked against will depend on the return codes/values from the payment API
+  if (transaction.riskStatus === "low_risk_level") {
+    return "elevated";
+  }
+
+  if (transaction.riskStatus === "highest_risk_level") {
+    return "high";
+  }
+
+  // default to normal if no other flagged
+  return "normal";
+}
