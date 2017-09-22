@@ -29,6 +29,7 @@ class Card extends Component {
   }
 
   render() {
+    const className = this.props.className;
     const elements = Children.map(this.props.children, (child) => {
       const newProps = {};
 
@@ -49,7 +50,7 @@ class Card extends Component {
       "panel-default": true,
       "panel-active": this.state.expanded,
       "closed": this.state.expanded === false
-    });
+    }, className);
 
     return (
       <div className={baseClassName} style={this.props.style}>
@@ -66,6 +67,7 @@ Card.defaultProps = {
 
 Card.propTypes = {
   children: PropTypes.node,
+  className: PropTypes.string,
   expandable: PropTypes.bool,
   expanded: PropTypes.bool,
   name: PropTypes.string,
