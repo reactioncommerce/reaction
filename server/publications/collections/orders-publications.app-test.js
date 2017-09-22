@@ -1,10 +1,12 @@
 /* eslint dot-notation: 0 */
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
 import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
+import { PublicationCollector } from "meteor/johanbrook:publication-collector";
 
 import { getShop } from "/server/imports/fixtures/shops";
 import { Reaction } from "/server/api";
@@ -46,12 +48,7 @@ describe("Order Publication", function () {
   });
 
   describe("Orders", () => {
-    const thisContext = {
-      userId: "userId",
-      ready: function () { return "ready"; }
-    };
-
-    it("should return shop orders for an admin", function () {
+    it("should return shop orders for an admin", function (done) {
       sandbox.stub(Collections.Orders._hookAspects.insert.before[0], "aspect");
       sandbox.stub(Collections.Orders._hookAspects.update.before[0], "aspect");
       sandbox.stub(Reaction, "hasPermission", () => true);
@@ -64,13 +61,16 @@ describe("Order Publication", function () {
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Roles, "userIsInRole", () => true);
       const order = Factory.create("order", { status: "created" });
-      const publication = Meteor.server.publish_handlers["Orders"];
-      const cursor = publication.apply(thisContext);
-      const data = cursor.fetch()[0];
-      expect(data.shopId).to.equal(order.shopId);
+      const collector = new PublicationCollector({ userId: Random.id() });
+      collector.collect("Orders", (collections) => {
+        expect(collections.Orders.length).to.equal(1);
+        const shopOrder = collections.Orders[0];
+        expect(shopOrder.shopId).to.equal(order.shopId);
+        done();
+      });
     });
 
-    it("should not return shop orders for non admin", function () {
+    it("should not return shop orders for a non-admin", function (done) {
       sandbox.stub(Collections.Orders._hookAspects.insert.before[0], "aspect");
       sandbox.stub(Collections.Orders._hookAspects.update.before[0], "aspect");
       sandbox.stub(Reaction, "hasPermission", () => true);
@@ -83,11 +83,11 @@ describe("Order Publication", function () {
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Roles, "userIsInRole", () => false);
       Factory.create("order", { status: "created" });
-      const publication = Meteor.server.publish_handlers["Orders"];
-      const cursor = publication.apply(thisContext);
-      expect(cursor.fetch().length).to.equal(0);
+      const collector = new PublicationCollector({ userId: Random.id() });
+      collector.collect("Orders", (collections) => {
+        expect(collections.Orders.length).to.equal(0);
+        done();
+      });
     });
   });
 });
-
-

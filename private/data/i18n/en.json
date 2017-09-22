@@ -258,7 +258,7 @@
         "processor": "Processor",
         "filter": {
           "status": "Status",
-          "thisWeek": "This Week",
+          "dateRange": "Date Range",
           "shippingStatus": "Shipping Status",
           "new": "New",
           "approved": "Approved",

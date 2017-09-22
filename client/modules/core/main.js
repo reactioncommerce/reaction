@@ -195,7 +195,10 @@ export default {
       } else {
         permissions = checkPermissions;
       }
-      // if the user has admin, owner permissions we'll always check if those roles are enough
+      // if the user has owner permissions we'll always check if those roles are enough
+      // By adding the "owner" role to the permissions list, we are making hasPermission always return
+      // true for "owners". This gives owners global access.
+      // TODO: Review this way of granting global access for owners
       permissions.push("owner");
       permissions = _.uniq(permissions);
 
