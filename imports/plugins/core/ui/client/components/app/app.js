@@ -1,9 +1,7 @@
+import { Switch } from "react-router-dom";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Switch } from "react-router-dom";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Reaction, Router } from "/client/api";
 import ToolbarContainer from "/imports/plugins/core/dashboard/client/containers/toolbarContainer";
 import Toolbar from "/imports/plugins/core/dashboard/client/components/toolbar";
 import { ActionViewContainer, PackageListContainer } from "/imports/plugins/core/dashboard/client/containers";
@@ -105,12 +103,4 @@ class App extends Component {
   }
 }
 
-function composer(props, onData) {
-  onData(null, {
-    isActionViewOpen: Reaction.isActionViewOpen(),
-    hasDashboardAccess: Reaction.hasDashboardAccessForAnyShop(),
-    currentRoute: Router.current()
-  });
-}
-
-export default composeWithTracker(composer)(App);
+export default App;
