@@ -77,19 +77,19 @@ export function createShopFactory() {
         }
       }
     },
-    baseUOM: "OZ",
+    baseUOM: "oz",
     unitsOfMeasure: [{
-      uom: "OZ",
+      uom: "oz",
       label: "Ounces",
       default: true
     }, {
-      uom: "LB",
+      uom: "lb",
       label: "Pounds"
     }, {
-      uom: "GR",
+      uom: "g",
       label: "Grams"
     }, {
-      uom: "KG",
+      uom: "kg",
       label: "Kilograms"
     }],
     layout: [{
