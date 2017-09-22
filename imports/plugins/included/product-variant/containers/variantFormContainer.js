@@ -202,6 +202,10 @@ const wrapComponent = (Comp) => (
       Reaction.state.set("edit/focus", cardName);
     }
 
+    handleVariantVisibilityToggle = (variant) => {
+      Meteor.call("products/updateProductField", variant._id, "isVisible", !variant.isVisible);
+    }
+
     updateQuantityIfChildVariants =  (variant) => {
       if (this.hasChildVariants(variant)) {
         const variantQuantity = ReactionProduct.getVariantQuantity(variant);
@@ -221,6 +225,7 @@ const wrapComponent = (Comp) => (
             removeVariant={this.removeVariant}
             cloneVariant={this.cloneVariant}
             onVariantFieldSave={this.handleVariantFieldSave}
+            onVisibilityButtonClick={this.handleVariantVisibilityToggle}
             onCardExpand={this.handleCardExpand}
             onUpdateQuantityField={this.updateQuantityIfChildVariants}
             validation={this.state.validationStatus}
