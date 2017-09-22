@@ -27,7 +27,19 @@ Reaction.registerTemplate({
   name: TemplatePaths.inviteShopMemberTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.inviteShopMemberTemplate),
-  subject: "You have been invited to join {{shop.name}}"
+  subject: "You have been invited to join the group \"{{groupName}}\" in the store \"{{shop.name}}\""
+});
+
+/*
+ * Accounts - Invite Shop Owner
+ * When: A new shop is created. This is sent to the new shop owner
+ */
+Reaction.registerTemplate({
+  title: "Accounts - Invite Shop Owner",
+  name: TemplatePaths.inviteShopOwnerTemplate,
+  type: "email",
+  template: Reaction.Email.getTemplateFile(TemplatePaths.inviteShopOwnerTemplate),
+  subject: "{{shop.name}} has invited you to manage a store"
 });
 
 /*
