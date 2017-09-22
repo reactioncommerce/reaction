@@ -77,6 +77,18 @@ export function createShopFactory() {
         }
       }
     },
+    baseUOL: "in",
+    unitsOfLength: [{
+      uol: "in",
+      label: "Inches",
+      default: true
+    }, {
+      uol: "cm",
+      label: "Centimeters"
+    }, {
+      uol: "ft",
+      label: "Feet"
+    }],
     baseUOM: "oz",
     unitsOfMeasure: [{
       uom: "oz",
