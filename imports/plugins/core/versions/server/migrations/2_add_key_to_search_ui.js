@@ -10,7 +10,7 @@ Migrations.add({
         $set: {
           registry: [{
             name: "Search Modal",
-            provides: "ui-search",
+            provides: ["ui-search"],
             template: "searchModal"
           }]
         }

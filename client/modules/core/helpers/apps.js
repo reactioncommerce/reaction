@@ -161,7 +161,11 @@ export function Apps(optionHash) {
         // Check to see if the schema for this property is an array
         // if so, we want to make sure that this item is included in the array
         if (Array.isArray(Registry._schema[property].type())) {
-          return item[property].includes(itemFilter[property]);
+          // Check to see if the registry entry is an array.
+          // Legacy registry entries could exist that use a string even when the schema requires an array.
+          if (Array.isArray(item[property])) {
+            return item[property].includes(itemFilter[property]);
+          }
         }
 
         // If it's not an array, the filter should match exactly
