@@ -18,9 +18,6 @@ class ShortcutBar extends Component {
       <FlatButton onClick={this.props.handleShowDashboard}>
         <Icon
           icon="icon icon-reaction-logo"
-          style={{
-            fontSize: 24
-          }}
         />
       </FlatButton>
     );
