@@ -159,7 +159,7 @@ function getValidator() {
   // check if addressValidation is enabled but the package is disabled, don't do address validation
   let registryName;
   for (const registry of geoCoder.registry) {
-    if (registry.provides === "addressValidation") {
+    if (registry.provides && registry.provides.includes("addressValidation")) {
       registryName = registry.name;
     }
   }
