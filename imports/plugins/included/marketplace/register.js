@@ -69,12 +69,6 @@ Reaction.registerPackage({
     template: "marketplaceShopSettings",
     showForShopTypes: ["primary"]
   }, {
-    route: "shop/:shopId",
-    name: "shop",
-    template: "products",
-    workflow: "coreProductWorkflow",
-    priority: 1
-  }, {
     // does this work?
     // override default shop settings
     route: "shop/settings",
