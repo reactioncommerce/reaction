@@ -10,7 +10,7 @@ Reaction.registerPackage({
   },
   registry: [
     {
-      provides: "dashboard",
+      provides: ["dashboard"],
       label: "Catalog",
       description: "Product catalog",
       icon: "fa fa-book",
@@ -20,7 +20,7 @@ Reaction.registerPackage({
       label: "Catalog Settings",
       icon: "fa fa-book",
       name: "catalog/settings",
-      provides: "settings",
+      provides: ["settings"],
       template: "catalogSettings"
     }
   ]
