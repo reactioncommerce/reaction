@@ -16,7 +16,7 @@ Reaction.registerPackage({
     label: "Add Product",
     icon: "fa fa-plus",
     template: "productDetail",
-    provides: "shortcut",
+    provides: ["shortcut"],
     container: "addItem",
     priority: 1,
     permissions: [{
