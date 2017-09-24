@@ -5,12 +5,10 @@ import { Logger, Reaction, Hooks } from "/server/api";
 // callback ran on getShippingRates hook
 function getShippingRates(previousQueryResults, cart) {
   const [rates, retrialTargets] = previousQueryResults;
-  const shops = [];
-  const products = cart.items;
 
   const pkgData = Packages.findOne({
     name: "reaction-shippo",
-    shopId: Reaction.getShopId()
+    shopId: Reaction.getPrimaryShopId()
   });
 
   // must have cart items and package enabled to calculate shipping
@@ -25,28 +23,22 @@ function getShippingRates(previousQueryResults, cart) {
     return [rates, retrialTargets];
   }
 
-  // default selector is current shop
-  let selector = {
-    "shopId": Reaction.getShopId(),
-    "provider.enabled": true
-  };
-
-  // create an array of shops, allowing
-  // the cart to have products from multiple shops
+  // This cart possibly contains items from multiple shops, so get the
+  // IDs of those shops and use those in the DB query.
+  const products = cart.items;
+  const primaryShopId = Reaction.getPrimaryShopId();
+  const shopIds = [primaryShopId];
   for (const product of products) {
-    if (product.shopId) {
-      shops.push(product.shopId);
+    if (product.shopId && product.shopId !== primaryShopId) {
+      shopIds.push(product.shopId);
     }
   }
-  // if we have multiple shops in cart
-  if ((shops !== null ? shops.length : void 0) > 0) {
-    selector = {
-      "shopId": {
-        $in: shops
-      },
-      "provider.enabled": true
-    };
-  }
+  const selector = {
+    "shopId": {
+      $in: shopIds
+    },
+    "provider.enabled": true
+  };
 
   const shippingCollection = Shipping.find(selector);
   const shippoDocs = {};
