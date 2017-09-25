@@ -59,21 +59,21 @@ class VariantForm extends Component {
     const currentVariant = this.props.variant || {};
 
     if (!isEqual(nextVariant, currentVariant)) {
+      console.log("is this going?");
       for (const fieldName of fieldNames) {
         if (nextVariant[fieldName] !== currentVariant[fieldName]) {
           this.animateFieldFlash(fieldName);
         }
       }
+      this.setState({
+        expandedCard: nextProps.editFocus,
+        inventoryManagement: nextProps.variant.inventoryManagement,
+        inventoryPolicy: nextProps.variant.inventoryPolicy,
+        taxable: nextProps.variant.taxable,
+        variant: nextProps.variant,
+        validation: nextProps.validation
+      });
     }
-
-    this.setState({
-      expandedCard: nextProps.editFocus,
-      inventoryManagement: nextProps.variant.inventoryManagement,
-      inventoryPolicy: nextProps.variant.inventoryPolicy,
-      taxable: nextProps.variant.taxable,
-      variant: nextProps.variant,
-      validation: nextProps.validation
-    });
   }
 
   fieldGroupForFieldName(field) {
@@ -306,7 +306,7 @@ class VariantForm extends Component {
     const cardName = `variant-${this.variant._id}`;
 
     const classNames = classnames({
-      "variant-option-card": true,
+      "variant-card": true,
       "active": this.isExpanded(cardName)
     });
 
