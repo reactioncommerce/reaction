@@ -26,7 +26,7 @@ Reaction.registerPackage({
     // Settings panel
     {
       label: "Stripe",
-      provides: "paymentSettings",
+      provides: ["paymentSettings"],
       container: "dashboard",
       template: "stripeSettings",
       hideForShopTypes: ["merchant", "affiliate"]
@@ -35,7 +35,7 @@ Reaction.registerPackage({
     // Payment form for checkout
     {
       template: "stripePaymentForm",
-      provides: "paymentMethod",
+      provides: ["paymentMethod", "marketplacePaymentMethod"],
       icon: "fa fa-cc-stripe"
     },
 
@@ -50,7 +50,7 @@ Reaction.registerPackage({
       label: "Stripe Merchant Account",
       icon: "fa fa-cc-stripe",
       container: "dashboard",
-      provides: "marketplaceMerchantSettings",
+      provides: ["marketplaceMerchantSettings"],
       template: "stripeConnectMerchantSignup",
       hideForShopTypes: ["primary"]
     }

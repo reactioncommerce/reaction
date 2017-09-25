@@ -9,7 +9,7 @@ Reaction.registerPackage({
     name: "SMS"
   },
   registry: [{
-    provides: "dashboard",
+    provides: ["dashboard"],
     label: "SMS",
     description: "Notifications",
     icon: "fa fa-mobile fa-2x",
@@ -20,7 +20,7 @@ Reaction.registerPackage({
     label: "SMS Settings",
     icon: "fa fa-mobile",
     route: "/dashboard/sms",
-    provides: "settings",
+    provides: ["settings"],
     container: "dashboard",
     template: "smsSettings"
   }]

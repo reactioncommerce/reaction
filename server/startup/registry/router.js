@@ -10,7 +10,7 @@ export default function () {
       name: "Layout"
     },
     registry: [{
-      provides: "dashboard",
+      provides: ["dashboard"],
       label: "Routing",
       description: "Routing utilities",
       icon: "fa fa-share-square-o",

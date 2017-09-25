@@ -98,7 +98,7 @@ Template.coreAdminLayout.helpers({
         if (Reaction.hasPermission(item.route, Meteor.userId())) {
           let icon = item.icon;
 
-          if (!item.icon && item.provides === "settings") {
+          if (!item.icon && item.provides && item.provides.includes("settings")) {
             icon = "gear";
           }
 
@@ -147,7 +147,7 @@ Template.coreAdminLayout.helpers({
 
     if (reactionApp) {
       const settingsData = _.find(reactionApp.registry, function (item) {
-        return item.route === Reaction.Router.getRouteName() && item.provides === "settings";
+        return item.route === Reaction.Router.getRouteName() && item.provides && item.provides.includes("settings");
       });
 
       return settingsData;
