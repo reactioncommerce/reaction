@@ -13,7 +13,7 @@ Reaction.registerPackage({
   },
   registry: [
     {
-      provides: "dashboard",
+      provides: ["dashboard"],
       workflow: "coreDashboardWorkflow",
       name: "Templates",
       label: "Templates",
@@ -26,7 +26,7 @@ Reaction.registerPackage({
       label: "Template Settings",
       icon: "fa fa-columns",
       name: "templates/settings",
-      provides: "settings",
+      provides: ["settings"],
       template: "templateSettings",
       meta: {
         actionView: {
@@ -37,7 +37,7 @@ Reaction.registerPackage({
     {
       label: "Email Templates",
       name: "templates/settings/email",
-      provides: "templateSettings",
+      provides: ["templateSettings"],
       template: "emailTemplates"
     }
   ]
