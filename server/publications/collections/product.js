@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Media, Products, Revisions } from "/lib/collections";
+import { Media, Products, Revisions, Shops } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
@@ -53,15 +53,16 @@ export function findProductMedia(publicationInstance, productIds) {
  * @param {String} productIdOrHandle - productId or handle
  * @return {Object} return product cursor
  */
-Meteor.publish("Product", function (productIdOrHandle) {
+Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
   check(productIdOrHandle, Match.OptionalOrNull(String));
+  check(shopIdOrSlug, Match.Maybe(String));
+
   if (!productIdOrHandle) {
     Logger.debug("ignoring null request on Product subscription");
     return this.ready();
   }
 
-  // TODO review for REGEX / DOS vulnerabilities.
-  const product = Products.findOne({
+  const preSelector = {
     $or: [{
       _id: productIdOrHandle
     }, {
@@ -70,7 +71,26 @@ Meteor.publish("Product", function (productIdOrHandle) {
         $options: "i"
       }
     }]
-  });
+  };
+
+  if (shopIdOrSlug) {
+    const shop = Shops.findOne({
+      $or: [{
+        _id: shopIdOrSlug
+      }, {
+        slug: shopIdOrSlug
+      }]
+    });
+
+    if (shop) {
+      preSelector.shopId = shop._id;
+    } else {
+      return this.ready();
+    }
+  }
+
+  // TODO review for REGEX / DOS vulnerabilities.
+  const product = Products.findOne(preSelector);
 
   if (!product) {
     // Product not found, return empty subscription.

@@ -30,22 +30,22 @@ Reaction.registerPackage({
     {
       label: "Avalara",
       name: "taxes/settings/avalara",
-      provides: "taxSettings",
+      provides: ["taxSettings"],
       template: "avalaraSettings"
     },
     {
       label: "Avalara Address Validation",
       name: "taxes/addressValidation/avalara",
-      provides: "addressValidation"
+      provides: ["addressValidation"]
     },
     {
       label: "Avalara Tax Calculation",
-      provides: "taxMethod",
+      provides: ["taxMethod"],
       name: "taxes/calculation/avalara"
     },
     {
       label: "Avalara Tax Codes",
-      provides: "taxCodes",
+      provides: ["taxCodes"],
       name: "taxes/taxcodes/avalara"
     }
   ]
