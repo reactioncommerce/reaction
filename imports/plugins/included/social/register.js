@@ -33,7 +33,7 @@ Reaction.registerPackage({
     }
   },
   registry: [{
-    provides: "dashboard",
+    provides: ["dashboard"],
     label: "Social",
     description: "Social Channel configuration",
     icon: "fa fa-share-alt",
@@ -47,11 +47,11 @@ Reaction.registerPackage({
     label: "Social Settings",
     icon: "fa fa-share-alt",
     route: "/dashboard/social",
-    provides: "settings",
+    provides: ["settings"],
     container: "dashboard",
     template: "socialSettings"
   }, {
     template: "reactionSocial",
-    provides: "social"
+    provides: ["social"]
   }]
 });

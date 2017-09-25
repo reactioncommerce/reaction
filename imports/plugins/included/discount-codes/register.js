@@ -13,10 +13,10 @@ Reaction.registerPackage({
   registry: [
     {
       label: "Codes",
-      provides: "paymentSettings",
+      provides: ["paymentSettings"],
       template: "customDiscountCodes"
     }, {
-      provides: "paymentMethod",
+      provides: ["paymentMethod"],
       template: "discountCodesCheckout"
     }
   ]

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
+import { i18next } from "/client/api";
 import { Components } from "@reactioncommerce/reaction-components";
 
 class OrderActions extends Component {
@@ -49,7 +50,10 @@ class OrderActions extends Component {
     );
   }
 
+
   render() {
+    const attachmentDirection = i18next.dir() === "rtl" ? "left" : "right";
+
     return (
       <div className="order-filter-bar">
         <div className="order-filter-item">
@@ -75,8 +79,8 @@ class OrderActions extends Component {
                 menuClassName="tab-list-dropdown"
                 className="order-menu-item-dropdown"
                 onChange={this.props.handleMenuClick}
-                attachment="bottom right"
-                targetAttachment="top right"
+                attachment={`bottom ${attachmentDirection}`}
+                targetAttachment={`top ${attachmentDirection}`}
               >
                 <Components.MenuItem
                   label="New"
@@ -141,8 +145,8 @@ class OrderActions extends Component {
                 buttonElement={this.buttonElement()}
                 menuClassName="calender-dropdown"
                 className="order-menu-item-dropdown"
-                attachment="bottom right"
-                targetAttachment="top right"
+                attachment={`bottom ${attachmentDirection}`}
+                targetAttachment={`top ${attachmentDirection}`}
                 isClickable={false}
               >
                 <Components.CalendarPicker
@@ -156,7 +160,12 @@ class OrderActions extends Component {
         </div>
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span className="order-filter-name">  Shipping Status </span>
+            <span className="order-filter-name">
+              <Components.Translation
+                defaultValue="Shipping Status"
+                i18nKey="order.filter.shippingStatus"
+              />
+            </span>
             <div className="order-filter-icons">
               <Components.Button className="order-filter-button">
                 <i className="fa fa-filter" />

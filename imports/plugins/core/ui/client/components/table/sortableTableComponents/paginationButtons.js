@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "/imports/plugins/core/ui/client/components";
+import { i18next } from "/client/api";
 
 
 class PaginationButtons extends Component {
@@ -12,11 +13,13 @@ class PaginationButtons extends Component {
     const { children } = this.props;
 
     if (children === "Previous") {
-      return "fa fa-angle-left";
+      const angleDirection = i18next.dir() === "rtl" ? "right" : "left";
+      return `fa fa-angle-${angleDirection}`;
     }
 
     if (children === "Next") {
-      return "fa fa-angle-right";
+      const angleDirection = i18next.dir() === "rtl" ? "left" : "right";
+      return `fa fa-angle-${angleDirection}`;
     }
 
     return null;

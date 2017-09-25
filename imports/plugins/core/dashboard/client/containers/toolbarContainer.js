@@ -83,8 +83,7 @@ function composer(props, onData) {
     for (const item of registryItems) {
       if (Reaction.hasPermission(item.route, Meteor.userId())) {
         let icon = item.icon;
-
-        if (!item.icon && item.provides === "settings") {
+        if (!item.icon && item.provides && item.provides.includes("settings")) {
           icon = "gear";
         }
 
