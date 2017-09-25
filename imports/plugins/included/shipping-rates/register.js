@@ -13,7 +13,7 @@ Reaction.registerPackage({
   },
   registry: [
     {
-      provides: "dashboard",
+      provides: ["dashboard"],
       route: "/shipping/rates",
       name: "shipping",
       label: "Shipping",
@@ -24,7 +24,7 @@ Reaction.registerPackage({
       workflow: "coreDashboardWorkflow"
     },
     {
-      provides: "shippingSettings",
+      provides: ["shippingSettings"],
       name: "shipping/settings/flatRates",
       label: "Flat Rate",
       description: "Provide shipping rates",
@@ -34,7 +34,7 @@ Reaction.registerPackage({
     {
       template: "flatRateCheckoutShipping",
       name: "shipping/flatRates",
-      provides: "shippingMethod"
+      provides: ["shippingMethod"]
     }
   ]
 });

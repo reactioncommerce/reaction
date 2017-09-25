@@ -25,7 +25,7 @@ Reaction.registerPackage({
   registry: [
     // Settings panel
     {
-      provides: "paymentSettings",
+      provides: ["paymentSettings"],
       label: "Authorize.net",
       container: "dashboard",
       template: "authnetSettings"
@@ -34,7 +34,7 @@ Reaction.registerPackage({
     // Payment form for checkout
     {
       template: "authnetPaymentForm",
-      provides: "paymentMethod",
+      provides: ["paymentMethod"],
       icon: "fa fa-credit-card"
     }
   ]

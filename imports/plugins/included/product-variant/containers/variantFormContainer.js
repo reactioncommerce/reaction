@@ -81,7 +81,11 @@ const wrapComponent = (Comp) => (
         "shopId": shopId,
         "registry.provides": "taxCodes",
         "$where": function () {
-          const providerName = _.filter(this.registry, (o) => o.provides === "taxCodes")[0].name.split("/")[2];
+          const providers = this.registry.filter((o) => {
+            return o.provides && o.provides.includes("taxCodes");
+          });
+          const providerName = providers[0].name.split("/")[2];
+
           return this.settings[providerName].enabled;
         }
       });
