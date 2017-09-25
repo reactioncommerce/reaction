@@ -185,8 +185,8 @@ export function buildOrderSearchRecord(orderId) {
 
   orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
   orderSearch.billingPhone = _.replace(shopBilling.address && shopBilling.address.phone, /\D/g, "");
-  orderSearch.shippingName = shopShipping.address.fullName;
-  orderSearch.shippingPhone = _.replace(shopShipping.address.phone, /\D/g, "");
+  orderSearch.shippingName = shopShipping.address && shopShipping.address.fullName;
+  orderSearch.shippingPhone = _.replace(shopShipping.address && shopShipping.address.phone, /\D/g, "");
   orderSearch.billingAddress = {
     address: shopBilling.address && shopBilling.address.address1,
     postal: shopBilling.address && shopBilling.address.postal,
@@ -195,11 +195,11 @@ export function buildOrderSearchRecord(orderId) {
     country: shopBilling.address && shopBilling.address.country
   };
   orderSearch.shippingAddress = {
-    address: shopShipping.address.address1,
-    postal: shopShipping.address.postal,
-    city: shopShipping.address.city,
-    region: shopShipping.address.region,
-    country: shopShipping.address.country
+    address: shopShipping.address && shopShipping.address.address1,
+    postal: shopShipping.address && shopShipping.address.postal,
+    city: shopShipping.address && shopShipping.address.city,
+    region: shopShipping.address && shopShipping.address.region,
+    country: shopShipping.address && shopShipping.address.country
   };
   orderSearch.userEmails = userEmails;
   orderSearch.orderTotal = shopBilling.invoice && shopBilling.invoice.total;
