@@ -29,37 +29,37 @@ class CalendarPicker extends Component {
     }
   }
 
-onFocusChange = (focusedInput) => {
-  this.setState({
-    // Force the focusedInput to always be truthy so that dates are always selectable
-    focusedInput: !focusedInput ? "startDate" : focusedInput
-  });
-}
+  onFocusChange = (focusedInput) => {
+    this.setState({
+      // Force the focusedInput to always be truthy so that dates are always selectable
+      focusedInput: !focusedInput ? "startDate" : focusedInput
+    });
+  }
 
-render() {
-  const { focusedInput, startDate, endDate } = this.state;
+  render() {
+    const { focusedInput, startDate, endDate } = this.state;
 
-  const props = omit(this.props, [
-    "autoFocus",
-    "autoFocusEndDate",
-    "initialStartDate",
-    "initialEndDate"
-  ]);
+    const props = omit(this.props, [
+      "autoFocus",
+      "autoFocusEndDate",
+      "initialStartDate",
+      "initialEndDate"
+    ]);
 
-  return (
-    <DayPickerRangeController
-      {...props}
-      onDatesChange={this.onDatesChange}
-      onFocusChange={this.onFocusChange}
-      focusedInput={focusedInput}
-      startDate={startDate}
-      endDate={endDate}
-      navPrev={<i className="fa fa-arrow-left"/>}
-      navNext={<i className="fa fa-arrow-right"/>}
-      hideKeyboardShortcutsPanel={true}
-    />
-  );
-}
+    return (
+      <DayPickerRangeController
+        {...props}
+        onDatesChange={this.onDatesChange}
+        onFocusChange={this.onFocusChange}
+        focusedInput={focusedInput}
+        startDate={startDate}
+        endDate={endDate}
+        navPrev={<i className="fa fa-arrow-left"/>}
+        navNext={<i className="fa fa-arrow-right"/>}
+        hideKeyboardShortcutsPanel={true}
+      />
+    );
+  }
 }
 
 CalendarPicker.defaultProps = {
