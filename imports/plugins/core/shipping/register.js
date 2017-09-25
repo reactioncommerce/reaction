@@ -13,7 +13,7 @@ Reaction.registerPackage({
   },
   registry: [
     {
-      provides: "dashboard",
+      provides: ["dashboard"],
       route: "/dashboard/shipping",
       name: "shipping",
       label: "Shipping",
@@ -24,7 +24,7 @@ Reaction.registerPackage({
       workflow: "coreDashboardWorkflow"
     },
     {
-      provides: "settings",
+      provides: ["settings"],
       name: "settings/shipping",
       label: "Shipping",
       description: "Configure shipping",
