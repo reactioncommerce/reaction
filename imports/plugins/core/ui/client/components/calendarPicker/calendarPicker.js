@@ -37,29 +37,29 @@ onFocusChange = (focusedInput) => {
 }
 
 render() {
-    const { focusedInput, startDate, endDate } = this.state;
+  const { focusedInput, startDate, endDate } = this.state;
 
-    const props = omit(this.props, [
-      "autoFocus",
-      "autoFocusEndDate",
-      "initialStartDate",
-      "initialEndDate"
-    ]);
+  const props = omit(this.props, [
+    "autoFocus",
+    "autoFocusEndDate",
+    "initialStartDate",
+    "initialEndDate"
+  ]);
 
-    return (
-      <DayPickerRangeController
-        {...props}
-        onDatesChange={this.onDatesChange}
-        onFocusChange={this.onFocusChange}
-        focusedInput={focusedInput}
-        startDate={startDate}
-        endDate={endDate}
-        navPrev={<i className="fa fa-arrow-left"/>}
-        navNext={<i className="fa fa-arrow-right"/>}
-        hideKeyboardShortcutsPanel={true}
-      />
-    );
-  }
+  return (
+    <DayPickerRangeController
+      {...props}
+      onDatesChange={this.onDatesChange}
+      onFocusChange={this.onFocusChange}
+      focusedInput={focusedInput}
+      startDate={startDate}
+      endDate={endDate}
+      navPrev={<i className="fa fa-arrow-left"/>}
+      navNext={<i className="fa fa-arrow-right"/>}
+      hideKeyboardShortcutsPanel={true}
+    />
+  );
+}
 }
 
 CalendarPicker.defaultProps = {
