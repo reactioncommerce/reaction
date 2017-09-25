@@ -24,7 +24,7 @@ Reaction.registerPackage({
   registry: [
     {
       label: "Braintree",
-      provides: "paymentSettings",
+      provides: ["paymentSettings"],
       container: "dashboard",
       template: "braintreeSettings"
     },
@@ -32,7 +32,7 @@ Reaction.registerPackage({
     // paymentMethod dynamic template
     {
       template: "braintreePaymentForm",
-      provides: "paymentMethod",
+      provides: ["paymentMethod"],
       icon: "fa fa-credit-card"
     }
   ]

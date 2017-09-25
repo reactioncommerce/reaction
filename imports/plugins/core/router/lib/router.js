@@ -194,9 +194,17 @@ class Router {
  */
 Router.pathFor = (path, options = {}) => {
   const foundPath = Router.routes.find((pathObject) => {
-    if (pathObject.options.name === path) {
-      return true;
+    if (pathObject.route) {
+      if (options.hash && options.hash.shopSlug) {
+        if (pathObject.options.name === path && pathObject.route.includes("shopSlug")) {
+          return true;
+        }
+      } else if (pathObject.options.name === path && !pathObject.route.includes("shopSlug")) {
+        return true;
+      }
     }
+
+    // No path found
     return false;
   });
 
@@ -607,6 +615,18 @@ Router.initPackageRoutes = (options) => {
         }
       });
 
+      routeDefinitions.push({
+        route: "/shop/:shopSlug",
+        name: "index",
+        options: {
+          name: "index",
+          type: "shop-prefix",
+          ...options.indexRoute,
+          component: indexLayout.component,
+          structure: indexLayout.structure
+        }
+      });
+
       // Not-found route
       routeDefinitions.push({
         route: "/not-found",
@@ -635,9 +655,9 @@ Router.initPackageRoutes = (options) => {
                 template,
                 layout,
                 workflow
+                // provides
               } = registryItem;
 
-              // get registry route name
               const name = getRegistryRouteName(pkg.name, registryItem);
 
               // define new route
@@ -657,7 +677,14 @@ Router.initPackageRoutes = (options) => {
                   structure: reactionLayout.structure
                 }
               };
-
+              newRoutes.push({
+                ...newRouteConfig,
+                route: `/shop/:shopSlug${route}`,
+                options: {
+                  ...newRouteConfig.options,
+                  type: "shop-prefix"
+                }
+              });
               // push new routes
               newRoutes.push(newRouteConfig);
             } // end registryItems
