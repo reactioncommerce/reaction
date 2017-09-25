@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
+import { Registry } from "/lib/collections/schemas/registry";
 
 
 /**
@@ -152,7 +153,24 @@ export function Apps(optionHash) {
         return false;
       }
 
-      return _.isMatch(item, itemFilter);
+      const filterKeys = Object.keys(itemFilter);
+      // Loop through all keys in the itemFilter
+      // each filter item should match exactly with the property in the registry or
+      // should be included in the array if that property is an array
+      return filterKeys.every((property) => {
+        // Check to see if the schema for this property is an array
+        // if so, we want to make sure that this item is included in the array
+        if (Array.isArray(Registry._schema[property].type())) {
+          // Check to see if the registry entry is an array.
+          // Legacy registry entries could exist that use a string even when the schema requires an array.
+          if (Array.isArray(item[property])) {
+            return item[property].includes(itemFilter[property]);
+          }
+        }
+
+        // If it's not an array, the filter should match exactly
+        return item[property] === itemFilter[property];
+      });
     });
 
     for (const registry of matchingRegistry) {

@@ -791,6 +791,18 @@ export default {
 
         const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
 
+        if (combinedSettings.registry) {
+          combinedSettings.registry = combinedSettings.registry.map((entry) => {
+            if (entry.provides && !Array.isArray(entry.provides)) {
+              entry.provides = [entry.provides];
+              Logger.warn(`Plugin ${combinedSettings.name} is using a deprecated version of the provides property for` +
+                          ` the ${entry.name || entry.route} registry entry. Since v1.5.0 registry provides accepts` +
+                          " an array of strings.");
+            }
+            return entry;
+          });
+        }
+
         // populate array of layouts that don't already exist in Shops
         if (combinedSettings.layout) {
           // filter out layout Templates
