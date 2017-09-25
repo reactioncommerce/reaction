@@ -9,7 +9,7 @@ Reaction.registerPackage({
     name: "Connectors"
   },
   registry: [{
-    provides: "dashboard",
+    provides: ["dashboard"],
     route: "/dashboard/connectors",
     name: "connectors",
     label: "Connectors",
@@ -19,7 +19,7 @@ Reaction.registerPackage({
     container: "core",
     workflow: "coreDashboardWorkflow"
   }, {
-    provides: "settings",
+    provides: ["settings"],
     name: "settings/connectors",
     label: "Connectors",
     description: "Configure connectors",

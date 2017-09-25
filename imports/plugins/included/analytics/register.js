@@ -22,7 +22,7 @@ Reaction.registerPackage({
     }
   },
   registry: [{
-    provides: "dashboard",
+    provides: ["dashboard"],
     label: "Analytics",
     description: "Analytics and tracking integrations",
     template: "reactionAnalytics",
@@ -37,7 +37,7 @@ Reaction.registerPackage({
     label: "Analytics Settings",
     icon: "fa fa-bar-chart-o",
     route: "/dashboard/analytics/settings",
-    provides: "settings",
+    provides: ["settings"],
     container: "dashboard",
     template: "reactionAnalyticsSettings"
   }]
