@@ -126,6 +126,8 @@ class ProductDetailContainer extends Component {
             }
             // Reset cart quantity on success
             this.handleCartQuantityChange(null, 1);
+            /* eslint react/no-direct-mutation-state: 0 */
+            // TODO review and replace this.state with this.setState
             this.state.click++;
 
             return true;
