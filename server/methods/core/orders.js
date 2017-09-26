@@ -480,7 +480,7 @@ export const methods = {
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
 
     const isCompleted = order.items.every((item) => {
-      return item.workflow.workflow.includes("coreOrderItemWorkflow/completed");
+      return item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed");
     });
 
     Orders.update({
