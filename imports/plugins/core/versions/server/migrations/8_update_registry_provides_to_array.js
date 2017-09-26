@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { Migrations } from "meteor/percolate:migrations";
-=======
-import { Migrations } from "/imports/plugins/core/versions";
->>>>>>> marketplace
 import { Packages } from "/lib/collections";
 
 Migrations.add({
