@@ -5,3 +5,5 @@ import "./4_update_templates_priority";
 import "./5_update_defaultRoles_to_groups";
 import "./6_update_tags_is_visible";
 import "./7_add_shop_slugs_to_schema";
+import "./8_update_registry_provides_to_array";
+import "./9_set_primary_shop";
