@@ -51,7 +51,7 @@
           "shipmentTracking": "Shipment"
         },
         "table": {
-          "headers" : {
+          "headers": {
             "name": "Name",
             "email": "Email",
             "date": "Date",

@@ -1,0 +1,47 @@
+[{
+  "language": "Hungarian",
+  "i18n": "hu",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "PayPal fizetés"
+        },
+        "paymentMethod": {
+          "expressLabel": "Expressz",
+          "creditCardLabel": "Hitelkártya"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Nem rendelkezik PayPal jelszó és aláírási?",
+          "paypalExpressGetCredentialsHere": "Kap egy itt.",
+          "paypalPayflowCredentials": "Nem rendelkezik PayPal ügyfél-azonosító és titkos",
+          "paypalPayflowGetCredentialsHere": "Hozzák ide."
+        },
+        "settings": {
+          "saveSuccess": "A beállításokat mentettük",
+          "saveFailed": "Hiba történt a beállítások mentése közben"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Teljesíteni rendelését",
+        "paymentMethod": {
+          "expressButtonLabel": "Fizeshess",
+          "expressNotConfigured": "Paypal Express nincs beállítva.",
+          "expressNotAvailable": "Paypal Express nem elérhető",
+          "submitting": "beküldése",
+          "invalidCard": "Hoppá! Hitelkártya szám érvénytelen.",
+          "unknownError": "Hoppá! Ismeretlen hiba lépett fel",
+          "resubmit": "Resubmit fizetés"
+        }
+      }
+    }
+  }
+}]

@@ -10,14 +10,27 @@
           "shopifyConnectDescription": "Connettore dati per Shopify"
         },
         "shopifyConnectSettings": {
-          "importProducts": "Prodotti di importazione",
-          "importing": "Importazione ... Questo potrebbe richiedere un po 'di tempo.",
           "editApiKey": "Modifica API Key",
           "editPassword": "Modifica password API",
           "editSharedSecret": "Modifica API Segreto condiviso",
           "editShopifyDomain": "Modifica il dominio Shopify",
+          "headingSync": "Impostazioni di sincronizzazione",
+          "headingImport": "Importazione",
+          "importFailed": "Errore durante l'importazione di prodotti.",
+          "importing": "Importazione ... Questo potrebbe richiedere un po 'di tempo.",
+          "importProducts": "Prodotti di importazione",
           "importSuccess": "Prodotti importati con successo.",
-          "importFailed": "Errore durante l'importazione di prodotti."
+          "keepInventorySynced": "Conserva l'inventario sincronizzato",
+          "noSyncIntegrationsSelected": "Seleziona almeno un'opzione da sincronizzare",
+          "optionImportProducts": "Prodotti",
+          "optionOrdersCreateUpdateInventory": "Aggiorna Inventario quando viene inserito nuovo ordine Shopify",
+          "syncSetup": "Sincronizzazione di installazione",
+          "syncSetupSuccess": "Configurare con successo la sincronizzazione Shopify",
+          "syncSetupFailure": "Errore durante l'impostazione della sincronizzazione Shoify",
+          "syncStop": "Stop sincronizzazione",
+          "syncStopSuccess": "Si è arrestato con successo Shopify sync!",
+          "syncStopFailure": "Errore durante l'arresto di Shopify sync!",
+          "startImport": "Avvia importazione"
         }
       }
     }
