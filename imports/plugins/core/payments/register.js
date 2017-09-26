@@ -12,7 +12,7 @@ Reaction.registerPackage({
   },
   registry: [
     {
-      provides: "dashboard",
+      provides: ["dashboard"],
       name: "payments",
       label: "Payments",
       description: "Payment Methods",
@@ -25,7 +25,7 @@ Reaction.registerPackage({
       label: "Payment Settings",
       icon: "fa fa-credit-card",
       name: "payment/settings",
-      provides: "settings",
+      provides: ["settings"],
       template: "paymentSettings"
     }
   ]

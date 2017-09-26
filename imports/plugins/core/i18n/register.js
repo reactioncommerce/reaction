@@ -9,14 +9,14 @@ Reaction.registerPackage({
     name: "i18n"
   },
   registry: [{
-    provides: "dashboard",
+    provides: ["dashboard"],
     label: "i18n",
     description: "Internationalization utilities",
     icon: "fa fa-language",
     priority: 1,
     container: "utilities"
   }, {
-    provides: "settings",
+    provides: ["settings"],
     template: "i18nSettings",
     label: "Localization and i18n",
     icon: "fa fa-language",

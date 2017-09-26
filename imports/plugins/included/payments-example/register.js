@@ -25,7 +25,7 @@ Reaction.registerPackage({
     // Settings panel
     {
       label: "Example Payment", // this key (minus spaces) is used for translations
-      provides: "paymentSettings",
+      provides: ["paymentSettings"],
       container: "dashboard",
       template: "exampleSettings"
     },
@@ -33,7 +33,7 @@ Reaction.registerPackage({
     // Payment form for checkout
     {
       template: "examplePaymentForm",
-      provides: "paymentMethod",
+      provides: ["paymentMethod"],
       icon: "fa fa-credit-card-alt"
     }
   ]

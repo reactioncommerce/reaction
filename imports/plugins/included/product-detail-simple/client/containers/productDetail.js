@@ -133,6 +133,8 @@ const wrapComponent = (Comp) => (
               }
               // Reset cart quantity on success
               this.handleCartQuantityChange(null, 1);
+              /* eslint react/no-direct-mutation-state: 0 */
+              // TODO review and replace this.state with this.setState
               this.state.click++;
 
               return true;
@@ -267,6 +269,7 @@ const wrapComponent = (Comp) => (
 
 function composer(props, onData) {
   const tagSub = Meteor.subscribe("Tags");
+  const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
   const revisionType = Reaction.Router.getQueryParam("revision");
@@ -275,7 +278,7 @@ function composer(props, onData) {
   let productSub;
 
   if (productId) {
-    productSub = Meteor.subscribe("Product", productId);
+    productSub = Meteor.subscribe("Product", productId, shopIdOrSlug);
   }
 
   if (productSub && productSub.ready() && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {
