@@ -1,0 +1,27 @@
+[{
+  "i18n": "zh-hant",
+  "ns": "reaction-analytics",
+  "translation": {
+    "reaction-analytics": {
+      "admin": {
+        "dashboard": {
+          "analyticsLabel": "Analytics（分析）",
+          "analyticsTitle": "Analytics（分析）",
+          "analyticsDescription": "分析和跟蹤集成"
+        },
+        "settings": {
+          "analyticsSettingsLabel": "Analytics設置"
+        },
+        "googleAnalytics": {
+          "label": "谷歌分析"
+        },
+        "mixpanel": {
+          "label": "Mixpanel"
+        },
+        "segment": {
+          "label": "分割"
+        }
+      }
+    }
+  }
+}]

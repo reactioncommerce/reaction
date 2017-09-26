@@ -1,0 +1,32 @@
+[{
+  "language": "Traditional Chinese",
+  "i18n": "zh-hant",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "布倫特裡支付"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "添加憑據啟用"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "布倫特裡不允許退款，直到交易結算。這可能需要長達24小時。請稍后再試。"
+          }
+        }
+      }
+    }
+  }
+}]

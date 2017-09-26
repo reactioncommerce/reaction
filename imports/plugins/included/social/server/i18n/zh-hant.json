@@ -1,0 +1,42 @@
+[{
+  "i18n": "zh-hant",
+  "ns": "reaction-social",
+  "translation": {
+    "reaction-social": {
+      "admin": {
+        "dashboard": {
+          "socialLabel": "社會",
+          "socialTitle": "社會",
+          "socialDescription": "社會渠道的配置"
+        },
+        "settings": {
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "應用程式ID",
+                "appSecret": "應用秘密",
+                "profilePage": "個人主頁"
+              },
+              "googleplus": {
+                "title": "Google+的",
+                "profilePage": "個人主頁"
+              },
+              "pinterest": {
+                "title": "Pinterest的",
+                "profilePage": "個人主頁"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "用戶名",
+                "profilePage": "個人主頁"
+              }
+            }
+          },
+          "socialSettingsLabel": "社交設置",
+          "socialSettingsSaved": "社會環境保存"
+        }
+      }
+    }
+  }
+}]
