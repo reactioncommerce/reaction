@@ -4,6 +4,12 @@
   "translation": {
     "reaction-orders": {
       "notFound": "Order Not Found",
+      "order": {
+        "cancelOrder": "Do you want to cancel this order?",
+        "cancelOrderLabel": "Cancel Order",
+        "cancelOrderThenRestock": "Yes, and restock",
+        "cancelOrderNoRestock": "Yes, but no restocking"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "Orders"
