@@ -530,8 +530,8 @@ class VariantForm extends Component {
                 i18nKeyLabel="productVariant.inventoryPolicy"
                 i18nKeyOnLabel="productVariant.inventoryPolicy"
                 name="inventoryPolicy"
-                label={"Allow Backorder"}
-                onLabel={"Allow Backorder"}
+                label={"Allow backorder"}
+                onLabel={"Allow backorder"}
                 checked={!this.state.inventoryPolicy}
                 onChange={this.handleInventoryPolicyChange}
                 validation={this.props.validation}
