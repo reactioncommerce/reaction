@@ -52,7 +52,7 @@ class OrderTableColumn extends Component {
     const invoice = getBillingInfo(this.props.row.original).invoice || {};
     const orderRisk = getOrderRiskStatus(this.props.row.original);
 
-    if (columnAccessor === "shippingfullName") {
+    if (columnAccessor === "shippingFullName") {
       return (
         <div style={{ display: "inline-flex" }}>
           {this.renderCheckboxOnSelect(this.props.row)}

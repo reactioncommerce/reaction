@@ -214,7 +214,7 @@ class OrderTable extends Component {
       const filteredFields = {
         name: {
           accessor: row => getShippingInfo(row).address && getShippingInfo(row).address.fullName,
-          id: "shippingfullName"
+          id: "shippingFullName"
         },
         email: {
           accessor: "email",
