@@ -9,7 +9,7 @@ Reaction.registerPackage({
   registry: [{
     route: "/dashboard/ui",
     name: "reaction-ui/uiDashboard",
-    provides: "dashboard",
+    provides: ["dashboard"],
     workflow: "coreUIWorkflow",
     container: "appearance",
     label: "Themes",

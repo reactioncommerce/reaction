@@ -274,7 +274,7 @@ function isLowQuantity(variants) {
  * @description Is products variants is still available to be ordered after
  * summary variants quantity is zero
  * @param {Array} variants - array with variant objects
- * @return {boolean} is backorder allowed or now for a product
+ * @return {boolean} is backorder allowed or not for a product
  */
 function isBackorder(variants) {
   return variants.every(variant => {
