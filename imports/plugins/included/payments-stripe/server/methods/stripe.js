@@ -25,6 +25,11 @@ function unformatFromStripe(amount) {
   return (amount / 100);
 }
 
+/**
+ * @summary Capture the results of a previous charge
+ * @param {object} paymentMethod - Object containing info about the previous transaction
+ * @returns {object} Object indicating the result, saved = true means success
+ */
 function stripeCaptureCharge(paymentMethod) {
   let result;
   const captureDetails = {
