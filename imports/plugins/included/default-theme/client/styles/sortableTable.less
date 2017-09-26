@@ -517,14 +517,15 @@
 }
 
 .ReactTable .select-wrap select {
-    padding: 5px 15px 5px 7px;
-    // min-width: 100px;
+  padding: 5px;
+  .padding-right(15px);
+  .padding-left(7px);
 }
 
 .ReactTable .select-wrap:after {
     content: '';
     position: absolute;
-    right: 8px;
+    .right(8px);
     top: 50%;
     -webkit-transform: translate(0, -50%);
     transform: translate(0, -50%);

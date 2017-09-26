@@ -1,3 +1,5 @@
+import "./helpers";
+
 import "./templates/list/items.html";
 import "./templates/list/items.js";
 import "./templates/list/ordersList.html";

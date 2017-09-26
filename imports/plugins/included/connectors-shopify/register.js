@@ -9,14 +9,15 @@ Reaction.registerPackage({
     apiKey: "",
     password: "",
     sharedSecret: "",
-    shopName: ""
+    shopName: "",
+    webhooks: []
   },
   registry: [{
     label: "Shopify Connect Settings",
     name: "settings/connectors/shopify",
     icon: "fa fa-exchange",
     route: "/dashboard/connectors/shopify",
-    provides: "connectorSettings",
+    provides: ["connectorSettings"],
     container: "dashboard",
     template: "shopifyConnectSettings"
   }]
