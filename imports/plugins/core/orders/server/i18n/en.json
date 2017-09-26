@@ -5,6 +5,7 @@
     "reaction-orders": {
       "notFound": "Order Not Found",
       "order": {
+        "applyRefundToThisOrder": "Apply refund of {{currencySymbol}}{{refund}} to this order?",
         "applyRefundDuringCancelOrder": "This will refund the order total of {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Do you want to cancel this order?",
         "cancelOrderLabel": "Cancel Order",
