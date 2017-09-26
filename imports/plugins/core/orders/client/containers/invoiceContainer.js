@@ -274,6 +274,7 @@ class InvoiceContainer extends Component {
       alertText = i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal });
     }
 
+    // TODO: Redesign the cancel order workflow to be more intuitive
     Alerts.alert({
       title: i18next.t("order.cancelOrder"),
       text: alertText,
@@ -327,7 +328,7 @@ class InvoiceContainer extends Component {
       });
     } else {
       Alerts.alert({
-        title: i18next.t("order.applyRefundToThisOrder", { refund: refund, currencySymbol: currencySymbol }),
+        title: i18next.t("order.applyRefund", { refund: refund, currencySymbol: currencySymbol }),
         showCancelButton: true,
         confirmButtonText: i18next.t("order.applyRefund")
       }, (isConfirm) => {
