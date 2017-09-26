@@ -23,11 +23,12 @@ import sl from "./sl.json";
 import sv from "./sv.json";
 import tr from "./tr.json";
 import vi from "./vi.json";
-import zh from "./zh.json";
+import zhHans from "./zh-hans.json";
+import zhHant from "./zh-hant.json";
 
 //
 // we want all the files in individual
 // imports for easier handling by
 // automated translation software
 //
-loadTranslations([ar, bg, cs, de, el, en, es, fr, he, hr, hu, it, my, nb, nl, pl, pt, ro, ru, sl, sv, tr, vi, zh]);
+loadTranslations([ar, bg, cs, de, el, en, es, fr, he, hr, hu, it, my, nb, nl, pl, pt, ro, ru, sl, sv, tr, vi, zhHans, zhHant]);

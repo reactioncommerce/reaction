@@ -518,7 +518,11 @@
     "enabled": false
   }, {
     "label": "中文(简体)",
-    "i18n": "zh",
+    "i18n": "zh-hans",
+    "enabled": true
+  }, {
+    "label": "中文(繁體)",
+    "i18n": "zh-hant",
     "enabled": true
   }, {
     "label": "České",

@@ -1,0 +1,23 @@
+[{
+  "i18n": "zh-hant",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "扁平率",
+          "confirmRateDelete": "刪除率是多少？",
+          "rateSaved": "扁平率保存。",
+          "rateFailed": "統一費率更新失敗。",
+          "noRatesFound": "沒有發現率。"
+        },
+        "shippingGrid": {
+          "name": "名字",
+          "group": "組",
+          "rate": "率",
+          "label": "標簽"
+        }
+      }
+    }
+  }
+}]

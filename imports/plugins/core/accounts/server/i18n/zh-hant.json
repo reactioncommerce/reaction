@@ -1,0 +1,20 @@
+[{
+  "i18n": "zh-hant",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "帳戶",
+          "accountsTitle": "帳戶",
+          "accountsDescription": "帳號設定"
+        },
+        "settings": {
+          "accountsSettingsLabel": "帳戶",
+          "accountsSettingsTitle": "帳戶",
+          "accountsSettingsDescription": "帳號設定"
+        }
+      }
+    }
+  }
+}]

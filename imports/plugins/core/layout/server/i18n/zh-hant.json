@@ -1,0 +1,15 @@
+[{
+  "i18n": "zh-hant",
+  "ns": "reaction-layout",
+  "translation": {
+    "reaction-layout": {
+      "admin": {
+        "dashboard": {
+          "layoutLabel": "設計",
+          "layoutTitle": "設計",
+          "layoutDescription": "布局公用事業"
+        }
+      }
+    }
+  }
+}]

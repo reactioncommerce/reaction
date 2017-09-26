@@ -1,0 +1,22 @@
+[{
+  "i18n": "zh-hant",
+  "ns": "reaction-revisions",
+  "translation": {
+    "reaction-revisions": {
+      "admin": {
+        "dashboard": {
+          "preview": "預習",
+          "revisionsLabel": "修訂",
+          "revisionsTitle": "修訂",
+          "revisionsDescription": "版本控制"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "產品修訂"
+        },
+        "toolbar": {
+          "publishAll": "所有發布"
+        }
+      }
+    }
+  }
+}]
