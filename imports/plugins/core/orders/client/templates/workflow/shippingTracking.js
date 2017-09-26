@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { ReactiveVar } from "meteor/reactive-var";
@@ -123,14 +122,14 @@ Template.coreOrderShippingTracking.helpers({
     const currentData = Template.currentData();
     const order = Template.instance().order;
 
-    const shippedItems = _.every(currentData.fulfillment && currentData.fulfillment.items, (shipmentItem) => {
-      const fullItem = _.find(order.items, (orderItem) => {
+    const shippedItems = currentData.fulfillment && currentData.fulfillment.items.every((shipmentItem) => {
+      const fullItem = order.items.find((orderItem) => {
         if (orderItem._id === shipmentItem._id) {
           return true;
         }
       });
 
-      return !_.includes(fullItem.workflow.workflow, "coreOrderItemWorkflow/shipped");
+      return !fullItem.workflow.workflow.includes("coreOrderItemWorkflow/shipped");
     });
 
     return shippedItems;
@@ -140,8 +139,8 @@ Template.coreOrderShippingTracking.helpers({
     const currentData = Template.currentData();
     const order = Template.instance().order;
 
-    const canceledItems = _.every(currentData.fulfillment && currentData.fulfillment.items, (shipmentItem) => {
-      const fullItem = _.find(order.items, (orderItem) => {
+    const canceledItems = currentData.fulfillment && currentData.fulfillment.items.every((shipmentItem) => {
+      const fullItem = order.items.find((orderItem) => {
         if (orderItem._id === shipmentItem._id) {
           return true;
         }
@@ -157,14 +156,14 @@ Template.coreOrderShippingTracking.helpers({
     const currentData = Template.currentData();
     const order = Template.instance().order;
 
-    const completedItems = _.every(currentData.fulfillment && currentData.fulfillment.items, (shipmentItem) => {
-      const fullItem = _.find(order.items, (orderItem) => {
+    const completedItems = currentData.fulfillment && currentData.fulfillment.items.every((shipmentItem) => {
+      const fullItem = order.items.find((orderItem) => {
         if (orderItem._id === shipmentItem._id) {
           return true;
         }
       });
 
-      return _.includes(fullItem.workflow.workflow, "coreOrderItemWorkflow/completed");
+      return fullItem.workflow.workflow.includes("coreOrderItemWorkflow/completed");
     });
 
     return completedItems;
@@ -204,7 +203,7 @@ Template.coreOrderShippingTracking.helpers({
     const shipment = getShippingInfo(order);
     const shipmentWorkflow = shipment.workflow;
 
-    return _.includes(shipmentWorkflow && shipmentWorkflow.workflow, "coreOrderWorkflow/packed") && shipment.tracking
-    ||  _.includes(shipmentWorkflow && shipmentWorkflow.workflow, "coreOrderWorkflow/packed");
+    return shipmentWorkflow && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed") && shipment.tracking
+    || shipmentWorkflow && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed");
   }
 });
