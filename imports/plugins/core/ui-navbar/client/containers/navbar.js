@@ -23,6 +23,9 @@ function composer(props, onData) {
   if (Reaction.Subscriptions.PrimaryShop.ready() &&
       Reaction.Subscriptions.MerchantShops.ready()) {
     const shop = Shops.findOne(Reaction.getShopId());
+    if (!shop) {
+      return null;
+    }
     onData(null, {
       shop,
       searchEnabled,
