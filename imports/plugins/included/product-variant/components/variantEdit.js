@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { ReactionProduct } from "/lib/api";
 import { Components } from "@reactioncommerce/reaction-components";
 
 class VariantEdit extends Component {
   static propTypes = {
     childVariants: PropTypes.arrayOf(PropTypes.object),
+    countries: PropTypes.arrayOf(PropTypes.object),
+    editFocus: PropTypes.string,
     handleCreateNewChildVariant: PropTypes.func,
     variant: PropTypes.object
   };
@@ -21,6 +22,8 @@ class VariantEdit extends Component {
 
     return (
       <Components.VariantForm
+        editFocus={this.props.editFocus}
+        countries={this.props.countries}
         variant={variant}
         type={"variant"}
       />
@@ -54,15 +57,21 @@ class VariantEdit extends Component {
   renderChildVariants() {
     const childVariants = this.props.childVariants;
 
-    return childVariants.map((childVariant, index) => {
-      return (
-        <Components.VariantForm
-          key={index}
-          variant={childVariant}
-          type={"option"}
-        />
-      );
-    });
+    if (Array.isArray(childVariants)) {
+      return childVariants.map((childVariant, index) => {
+        return (
+          <Components.VariantForm
+            key={index}
+            editFocus={this.props.editFocus}
+            countries={this.props.countries}
+            variant={childVariant}
+            type={"option"}
+          />
+        );
+      });
+    }
+
+    return null;
   }
 
   render() {

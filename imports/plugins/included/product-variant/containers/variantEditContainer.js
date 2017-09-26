@@ -5,6 +5,7 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
+import { Countries } from "/client/collections";
 import { Reaction, i18next } from "/client/api";
 import { applyProductRevision } from "/lib/api/products";
 import VariantEdit from "../components/variantEdit";
@@ -14,6 +15,8 @@ const wrapComponent = (Comp) => (
   class VariantEditContainer extends Component {
     static propTypes = {
       childVariants: PropTypes.arrayOf(PropTypes.object),
+      countries: PropTypes.arrayOf(PropTypes.object),
+      editFocus: PropTypes.string,
       variant: PropTypes.object
     };
 
@@ -25,7 +28,6 @@ const wrapComponent = (Comp) => (
             confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
           });
         } else if (result) {
-          console.log("what's going on?");
           const newVariantId = result;
           const selectedProduct = ReactionProduct.selectedProduct();
           const handle = selectedProduct.__published && selectedProduct.__published.handle || selectedProduct.handle;
@@ -46,6 +48,8 @@ const wrapComponent = (Comp) => (
       return (
         <Comp
           childVariants={this.props.childVariants}
+          countries={this.props.countries}
+          editFocus={this.props.editFocus}
           handleCreateNewChildVariant={this.handleCreateNewChildVariant}
           variant={this.props.variant}
         />
@@ -55,6 +59,8 @@ const wrapComponent = (Comp) => (
 );
 
 function composer(props, onData) {
+  Meteor.subscribe("TaxCodes").ready();
+
   const productHandle = Reaction.Router.getParam("handle");
 
   if (!productHandle) {
@@ -70,8 +76,14 @@ function composer(props, onData) {
     const childVariants = ReactionProduct.getVariants(revisedVariant._id);
 
     onData(null, {
+      countries: Countries.find({}).fetch(),
+      editFocus: Reaction.state.get("edit/focus"),
       childVariants: childVariants,
       variant: revisedVariant
+    });
+  } else {
+    onData(null, {
+      countries: Countries.find({}).fetch()
     });
   }
 }

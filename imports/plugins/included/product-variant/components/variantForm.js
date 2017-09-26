@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { isEqual } from "lodash";
+import _ from "lodash";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
-import { Meteor } from "meteor/meteor";
 import { Components } from "@reactioncommerce/reaction-components";
 import { formatPriceString } from "/client/api";
 
@@ -49,31 +48,33 @@ class VariantForm extends Component {
       variant: props.variant,
       inventoryPolicy: props.variant.inventoryPolicy,
       taxable: props.variant.taxable,
-      inventoryManagement: props.variant.inventoryManagement,
-      validation: props.validation
+      inventoryManagement: props.variant.inventoryManagement
     };
   }
 
   componentWillReceiveProps(nextProps) {
     const nextVariant = nextProps.variant || {};
-    const currentVariant = this.props.variant || {};
+    const currentVariant = this.state.variant || {};
 
-    if (!isEqual(nextVariant, currentVariant)) {
-      console.log("is this going?");
+    if (_.isEqual(nextVariant, currentVariant) === false) {
       for (const fieldName of fieldNames) {
         if (nextVariant[fieldName] !== currentVariant[fieldName]) {
           this.animateFieldFlash(fieldName);
         }
       }
+
       this.setState({
         expandedCard: nextProps.editFocus,
         inventoryManagement: nextProps.variant.inventoryManagement,
         inventoryPolicy: nextProps.variant.inventoryPolicy,
         taxable: nextProps.variant.taxable,
-        variant: nextProps.variant,
-        validation: nextProps.validation
+        variant: nextProps.variant
       });
     }
+
+    this.setState({
+      expandedCard: nextProps.editFocus
+    });
   }
 
   fieldGroupForFieldName(field) {
@@ -104,7 +105,7 @@ class VariantForm extends Component {
 
     if (fieldRef) {
       const input = fieldRef.refs.input;
-      const isFieldValid = this.state.validation.isFieldValid(fieldName);
+      const isFieldValid = this.props.validation.isFieldValid(fieldName);
       const flashColor = isFieldValid ? "#f0fff4" : "#ffeeef";
 
       Velocity.RunSequence([
@@ -222,7 +223,7 @@ class VariantForm extends Component {
         onBlur={this.handleFieldBlur}
         onChange={this.handleFieldChange}
         onReturnKeyDown={this.handleFieldBlur}
-        validation={this.state.validation}
+        validation={this.props.validation}
       />
     );
   }
@@ -294,7 +295,7 @@ class VariantForm extends Component {
           onChange={this.handleFieldChange}
           onBlur={this.handleFieldBlur}
           onReturnKeyDown={this.handleFieldBlur}
-          validation={this.state.validation}
+          validation={this.props.validation}
           helpText={"Option inventory"}
           i18nKeyHelpText={"admin.helpText.optionInventoryQuantity"}
         />
@@ -351,7 +352,7 @@ class VariantForm extends Component {
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
               onReturnKeyDown={this.handleFieldBlur}
-              validation={this.state.validation}
+              validation={this.props.validation}
             />
             <Components.Select
               clearable={false}
@@ -377,7 +378,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.state.validation}
+                  validation={this.props.validation}
                 />
               </div>
               <div className="col-sm-6">
@@ -394,7 +395,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.state.validation}
+                  validation={this.props.validation}
                 />
               </div>
             </div>
@@ -412,7 +413,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.state.validation}
+                  validation={this.props.validation}
                 />
               </div>
               <div className="col-sm-6">
@@ -427,7 +428,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.state.validation}
+                  validation={this.props.validation}
                 />
               </div>
             </div>
@@ -445,7 +446,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.state.validation}
+                  validation={this.props.validation}
                 />
               </div>
               <div className="col-sm-6">
@@ -460,7 +461,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.state.validation}
+                  validation={this.props.validation}
                 />
               </div>
             </div>
@@ -490,7 +491,7 @@ class VariantForm extends Component {
             onBlur={this.handleFieldBlur}
             onChange={this.handleFieldChange}
             onReturnKeyDown={this.handleFieldBlur}
-            validation={this.state.validation}
+            validation={this.props.validation}
           />
         </Components.SettingsCard>
 
@@ -519,7 +520,7 @@ class VariantForm extends Component {
                 onBlur={this.handleFieldBlur}
                 onChange={this.handleFieldChange}
                 onReturnKeyDown={this.handleFieldBlur}
-                validation={this.state.validation}
+                validation={this.props.validation}
               />
             </div>
           </div>
@@ -533,7 +534,7 @@ class VariantForm extends Component {
                 onLabel={"Allow Backorder"}
                 checked={!this.state.inventoryPolicy}
                 onChange={this.handleInventoryPolicyChange}
-                validation={this.state.validation}
+                validation={this.props.validation}
               />
             </div>
           </div>
@@ -563,7 +564,7 @@ class VariantForm extends Component {
           <Components.CardHeader
             actAsExpander={true}
             title={this.variant.optionTitle || "Label is required"}
-            isValid={this.state.validation.isValid}
+            isValid={this.props.validation.isValid}
           >
             {this.renderArchivedLabel()}
             <Components.Button
@@ -592,7 +593,7 @@ class VariantForm extends Component {
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
               onReturnKeyDown={this.handleFieldBlur}
-              validation={this.state.validation}
+              validation={this.props.validation}
               helpText={"Displayed on Product Detail Page"}
               i18nKeyHelpText={"admin.helpText.optionTitle"}
             />
@@ -607,7 +608,7 @@ class VariantForm extends Component {
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
               onReturnKeyDown={this.handleFieldBlur}
-              validation={this.state.validation}
+              validation={this.props.validation}
               helpText={"Displayed in cart, checkout, and orders"}
               i18nKeyHelpText={"admin.helpText.title"}
             />
@@ -626,7 +627,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.state.validation}
+                  validation={this.props.validation}
                   helpText={"Purchase price"}
                   i18nKeyHelpText={"admin.helpText.price"}
                 />
@@ -643,7 +644,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.state.validation}
+                  validation={this.props.validation}
                   helpText={"Original price or MSRP"}
                   i18nKeyHelpText={"admin.helpText.compareAtPrice"}
                 />
