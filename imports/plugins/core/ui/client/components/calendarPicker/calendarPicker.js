@@ -29,14 +29,14 @@ class CalendarPicker extends Component {
     }
   }
 
-onFocusChange = (focusedInput) => {
-  this.setState({
-    // Force the focusedInput to always be truthy so that dates are always selectable
-    focusedInput: !focusedInput ? "startDate" : focusedInput
-  });
-}
+  onFocusChange = (focusedInput) => {
+    this.setState({
+      // Force the focusedInput to always be truthy so that dates are always selectable
+      focusedInput: !focusedInput ? "startDate" : focusedInput
+    });
+  }
 
-render() {
+  render() {
     const { focusedInput, startDate, endDate } = this.state;
 
     const props = omit(this.props, [
