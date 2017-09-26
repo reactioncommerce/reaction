@@ -1,0 +1,41 @@
+[{
+  "i18n": "zh-hant",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "命令"
+        },
+        "dashboard": {
+          "ordersLabel": "命令",
+          "ordersTitle": "命令",
+          "ordersDescription": "完成訂單"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "日期",
+            "orderId": "訂單ID",
+            "total": "合計",
+            "emailNotFound": "電子郵件不可用"
+          },
+          "summary": {
+            "cardTitle": "概要",
+            "copyOrderLink": "復制訂單鏈接"
+          },
+          "invoice": {
+            "cardTitle": "賬單",
+            "adjustedTotal": "調整后的總金額",
+            "capturedTotal": "已收款總額",
+            "refund": "退"
+          },
+          "fulfillment": "履行",
+          "orderDetails": "訂單詳細信息",
+          "shipmentTracking": "發貨"
+        }
+      }
+    }
+  }
+}]
+
+

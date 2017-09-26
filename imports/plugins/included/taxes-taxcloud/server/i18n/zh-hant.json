@@ -1,0 +1,26 @@
+[{
+  "language": "Traditional Chinese",
+  "i18n": "zh-hant",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "TaxCloud稅"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "添加憑據啟用",
+          "taxcloudGetCredentialsURL": "在這裡讓他們"
+        }
+      }
+    }
+  }
+}]

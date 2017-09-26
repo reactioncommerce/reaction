@@ -1,0 +1,18 @@
+[{
+  "i18n": "zh-hant",
+  "ns": "reaction-product-admin",
+  "translation": {
+    "reaction-product-admin": {
+      "admin": {
+        "settings": {
+          "productSettingsLabel": "產品設置",
+          "productDetailsLabel": "產品詳情"
+        }
+      },
+      "productDetailEdit": {
+        "template": "模板設置",
+        "templateSelectPlaceholder": "選擇模板"
+      }
+    }
+  }
+}]
