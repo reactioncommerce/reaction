@@ -65,15 +65,14 @@ Meteor.startup(() => {
         packageNamespaces.push(pkg.name);
       }
 
-
-      const shop = Shops.findOne({
+      let shop;
+      shop = Shops.findOne({
         _id: shopId
       });
-      let language;
-      if (shop) {
-        language = shop.language;
+      if (!shop) {
+        shop = null;
       }
-      // let language = shop.language;
+      let language = shop.language;
       if (Meteor.user() && Meteor.user().profile && Meteor.user().profile.lang) {
         language = Meteor.user().profile.lang;
       }
