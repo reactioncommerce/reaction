@@ -142,7 +142,7 @@ const composer = (props, onData) => {
     });
 
     if (order) {
-      const profileShippingAddress = getShippingInfo(order).address;
+      const profileShippingAddress = getShippingInfo(order).address || {};
 
       if (order.workflow) {
         if (order.workflow.status === "coreOrderCreated") {

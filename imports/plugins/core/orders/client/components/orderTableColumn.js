@@ -49,7 +49,7 @@ class OrderTableColumn extends Component {
 
   render() {
     const columnAccessor = this.props.row.column.id;
-    const invoice = getBillingInfo(this.props.row.original).invoice;
+    const invoice = getBillingInfo(this.props.row.original).invoice || {};
     const orderRisk = getOrderRiskStatus(this.props.row.original);
 
     if (columnAccessor === "shippingfullName") {
@@ -97,7 +97,7 @@ class OrderTableColumn extends Component {
     if (columnAccessor === "billingTotal") {
       return (
         <div style={{ marginTop: 7 }}>
-          <strong>{formatPriceString(invoice && invoice.total)}</strong>
+          <strong>{formatPriceString(invoice.total)}</strong>
         </div>
       );
     }

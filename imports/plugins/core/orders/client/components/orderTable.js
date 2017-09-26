@@ -93,7 +93,7 @@ class OrderTable extends Component {
 
   renderOrderInfo(order) {
     const { displayMedia } = this.props;
-    const invoice = getBillingInfo(order).invoice;
+    const invoice = getBillingInfo(order).invoice || {};
 
     return (
       <div className="order-info">
@@ -114,7 +114,7 @@ class OrderTable extends Component {
           </span>
 
           <span className="order-data order-data-total">
-            <strong>Total: {formatPriceString(invoice && invoice.total)}</strong>
+            <strong>Total: {formatPriceString(invoice.total)}</strong>
           </span>
         </div>
 

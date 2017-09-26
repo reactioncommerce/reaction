@@ -45,9 +45,9 @@ class OrderSummary extends Component {
 
   render() {
     const { dateFormat, tracking, order, profileShippingAddress, printableLabels } = this.props;
-    const paymentMethod = getBillingInfo(order).paymentMethod;
-    const invoice = getBillingInfo(order).invoice;
-    const shipmentMethod = getShippingInfo(order).shipmentMethod;
+    const paymentMethod = getBillingInfo(order).paymentMethod || {};
+    const invoice = getBillingInfo(order).invoice || {};
+    const shipmentMethod = getShippingInfo(order).shipmentMethod || {};
     const orderRisk = getOrderRiskStatus(order);
 
     return (
@@ -111,21 +111,21 @@ class OrderSummary extends Component {
             <div className="order-summary-form-group">
               <strong data-i18n="order.payment">Payment</strong>
               <div className="invoice-details">
-                {paymentMethod && paymentMethod.storedCard} ({invoice && invoice.total})
+                {paymentMethod.storedCard} ({invoice.total})
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="order.transaction">Transaction</strong>
               <div className="invoice-details">
-                {paymentMethod && paymentMethod.transactionId}
+                {paymentMethod.transactionId}
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="orderShipping.carrier">Carrier</strong>
               <div className="invoice-details">
-                { shipmentMethod && shipmentMethod.carrier} - {shipmentMethod && shipmentMethod.label}
+                {shipmentMethod.carrier} - {shipmentMethod.label}
               </div>
             </div>
 
@@ -156,23 +156,18 @@ class OrderSummary extends Component {
         <div className="order-summary-form-group">
           <strong data-i18n="orderShipping.shipTo">Ship to</strong>
           <div className="invoice-details">
-            <strong>Phone: </strong>{profileShippingAddress && profileShippingAddress.phone}
+            <strong>Phone: </strong>{profileShippingAddress.phone}
           </div>
         </div>
 
         <div style={{ marginTop: 4 }}>
-          <span>{profileShippingAddress && profileShippingAddress.fullName}</span>
+          <span>{profileShippingAddress.fullName}</span>
           <br/>
-          <span>{profileShippingAddress && profileShippingAddress.address1}</span>
-          {profileShippingAddress && profileShippingAddress.address2 &&
-            <span><br/>{profileShippingAddress.address2}</span>
-          }
+          <span>{profileShippingAddress.address1}</span>
+          {profileShippingAddress.address2 && <span><br/>{profileShippingAddress.address2}</span>}
           <br/>
           <span>
-            {profileShippingAddress && profileShippingAddress.city},&nbsp;
-            {profileShippingAddress && profileShippingAddress.region},&nbsp;
-            {profileShippingAddress && profileShippingAddress.country}&nbsp;
-            {profileShippingAddress && profileShippingAddress.postal}
+            {profileShippingAddress.city}, {profileShippingAddress.region}, {profileShippingAddress.country} {profileShippingAddress.postal}
           </span>
         </div>
       </div>
