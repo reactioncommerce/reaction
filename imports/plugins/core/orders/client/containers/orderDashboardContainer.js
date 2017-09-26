@@ -127,7 +127,7 @@ class OrderDashboardContainer extends Component {
     }
 
     this.setState({
-      query: { ...filterWorkflowStatus(shippingFilter.toLowerCase()), ...query },
+      query: { ...filterShippingStatus(shippingFilter.toLowerCase()), ...query },
       workflowFilter: value
     });
   }
@@ -152,11 +152,12 @@ class OrderDashboardContainer extends Component {
 
   clearFilter = (filterString) => {
     let query;
-    const shippingFilter = this.state.shippingFilter;
-    const workflowFilter = this.state.workflowFilter;
+    let shippingFilter = this.state.shippingFilter;
+    let workflowFilter = this.state.workflowFilter;
 
     if (filterString === "workflow") {
-      query = { ...filterWorkflowStatus(""), ...filterShippingStatus(shippingFilter.toLowerCase()) };
+      workflowFilter = "";
+      query = { ...filterWorkflowStatus(workflowFilter), ...filterShippingStatus(shippingFilter.toLowerCase()) };
 
       if (this.state.query.createdAt) {
         query.createdAt = this.state.query.createdAt;
@@ -167,7 +168,8 @@ class OrderDashboardContainer extends Component {
         ...filterShippingStatus(shippingFilter.toLowerCase())
       };
     } else if (filterString === "shipping") {
-      query = { ...filterWorkflowStatus(workflowFilter.toLowerCase()), ...filterShippingStatus("") };
+      shippingFilter = "";
+      query = { ...filterWorkflowStatus(workflowFilter.toLowerCase()), ...filterShippingStatus(shippingFilter) };
 
       if (this.state.query.createdAt) {
         query.createdAt = this.state.query.createdAt;
