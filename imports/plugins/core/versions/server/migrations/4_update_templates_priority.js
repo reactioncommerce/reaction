@@ -1,4 +1,4 @@
-import { Migrations } from "/imports/plugins/core/versions";
+import { Migrations } from "meteor/percolate:migrations";
 import { Packages } from "/lib/collections";
 
 const reactionPkgs = [ // reaction packages with layouts
