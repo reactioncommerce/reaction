@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "bson": {
-      "version": "0.5.4",
-      "resolved": "https://registry.npmjs.org/bson/-/bson-0.5.4.tgz",
+      "version": "0.5.7",
+      "resolved": "https://registry.npmjs.org/bson/-/bson-0.5.7.tgz",
       "from": "bson@>=0.5.4 <0.6.0"
     },
     "buffer-shims": {
@@ -31,8 +31,8 @@
       "from": "gridfs-stream@1.1.1"
     },
     "inherits": {
-      "version": "2.0.1",
-      "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz",
+      "version": "2.0.3",
+      "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.3.tgz",
       "from": "inherits@>=2.0.1 <2.1.0"
     },
     "isarray": {
@@ -61,8 +61,8 @@
       "from": "readable-stream@2.1.5"
     },
     "require_optional": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/require_optional/-/require_optional-1.0.0.tgz",
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/require_optional/-/require_optional-1.0.1.tgz",
       "from": "require_optional@>=1.0.0 <1.1.0"
     },
     "resolve-from": {
@@ -71,8 +71,8 @@
       "from": "resolve-from@>=2.0.0 <3.0.0"
     },
     "semver": {
-      "version": "5.3.0",
-      "resolved": "https://registry.npmjs.org/semver/-/semver-5.3.0.tgz",
+      "version": "5.4.1",
+      "resolved": "https://registry.npmjs.org/semver/-/semver-5.4.1.tgz",
       "from": "semver@>=5.1.0 <6.0.0"
     },
     "string_decoder": {
