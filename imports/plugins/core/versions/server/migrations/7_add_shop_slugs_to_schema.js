@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Migrations } from "meteor/percolate:migrations";
+=======
+import { Migrations } from "/imports/plugins/core/versions";
+>>>>>>> marketplace
 import { Shops } from "/lib/collections";
 import { getSlug } from "/lib/api";
 
