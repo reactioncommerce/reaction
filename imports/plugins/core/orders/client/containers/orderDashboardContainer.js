@@ -117,30 +117,46 @@ class OrderDashboardContainer extends Component {
 
   filterWorkflowStatus = (event, value) => {
     const query = filterWorkflowStatus(value);
+    const shippingFilter = this.state.shippingFilter;
+    if (this.state.query.createdAt) {
+      query.createdAt = this.state.query.createdAt;
+    }
+
+    if  (this.state.query._id) {
+      query._id = this.state.query._id;
+    }
 
     this.setState({
-      query: { ...this.state.query, ...query },
+      query: { ...filterWorkflowStatus(shippingFilter.toLowerCase()), ...query },
       workflowFilter: value
     });
   }
 
   filterShippingStatus = (event, value) => {
     const query = filterShippingStatus(value);
+    const workflowFilter = this.state.workflowFilter;
+
+    if (this.state.query.createdAt) {
+      query.createdAt = this.state.query.createdAt;
+    }
+
+    if  (this.state.query._id) {
+      query._id = this.state.query._id;
+    }
 
     this.setState({
-      query: { ...this.state.query, ...query },
+      query: { ...filterWorkflowStatus(workflowFilter.toLowerCase()), ...query },
       shippingFilter: value
     });
   }
 
   clearFilter = (filterString) => {
     let query;
-    let shippingFilter = this.state.shippingFilter;
-    let workflowFilter = this.state.workflowFilter;
+    const shippingFilter = this.state.shippingFilter;
+    const workflowFilter = this.state.workflowFilter;
 
     if (filterString === "workflow") {
-      workflowFilter = "";
-      query = { ...filterWorkflowStatus(workflowFilter), ...filterShippingStatus(shippingFilter.toLowerCase()) };
+      query = { ...filterWorkflowStatus(""), ...filterShippingStatus(shippingFilter.toLowerCase()) };
 
       if (this.state.query.createdAt) {
         query.createdAt = this.state.query.createdAt;
@@ -151,8 +167,7 @@ class OrderDashboardContainer extends Component {
         ...filterShippingStatus(shippingFilter.toLowerCase())
       };
     } else if (filterString === "shipping") {
-      shippingFilter = "";
-      query = { ...filterWorkflowStatus(workflowFilter.toLowerCase()), ...filterShippingStatus(shippingFilter) };
+      query = { ...filterWorkflowStatus(workflowFilter.toLowerCase()), ...filterShippingStatus("") };
 
       if (this.state.query.createdAt) {
         query.createdAt = this.state.query.createdAt;

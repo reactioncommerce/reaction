@@ -51,6 +51,8 @@ class SortableTable extends Component {
     // If no filter is set it will return the total number of items in the collection.
     const matchingResults = Counts.get(matchingResultsCount);
 
+    console.log("Matching results", matchingResults);
+
     const options = {};
 
     const pubHandle = Meteor.subscribe(publication, this.state.query, Object.assign({}, options));
@@ -190,6 +192,8 @@ class SortableTable extends Component {
     if (this.props.data) {
       return this.props.data.length;
     }
+
+    console.log("Matching results", this.getMeteorData().matchingResults);
 
     return this.getMeteorData().matchingResults;
   }
