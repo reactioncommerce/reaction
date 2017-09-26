@@ -1,0 +1,24 @@
+[{
+  "language": "Traditional Chinese",
+  "i18n": "zh-hant",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "條紋支付"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "不要有條紋API客戶端ID？",
+          "stripeSettingsGetItHere": "在這裡獲得"
+        }
+      }
+    }
+  }
+}]

@@ -63,7 +63,7 @@ Template.registerHelper("monthOptions", function (showDefaultOption = true) {
   // });
   let lang = i18next.language;
   if (lang === "zh") {
-    lang = "zh-cn";
+    lang = "zh-hans";
   }
 
   localLocale.locale(lang);

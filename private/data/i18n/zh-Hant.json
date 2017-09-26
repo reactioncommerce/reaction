@@ -1,6 +1,6 @@
 [{
-  "language": "Chinese",
-  "i18n": "zh-Hant",
+  "language": "Traditional Chinese",
+  "i18n": "zh-hant",
   "ns": "core",
   "translation": {
     "core": {
