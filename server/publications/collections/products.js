@@ -112,9 +112,15 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     // handle multiple shops
     if (productFilters.shops) {
       _.extend(selector, {
-        shopId: {
-          $in: productFilters.shops
-        }
+        $or: [{
+          shopId: {
+            $in: productFilters.shops
+          }
+        }, {
+          slug: {
+            $in: productFilters.shops
+          }
+        }]
       });
     }
 

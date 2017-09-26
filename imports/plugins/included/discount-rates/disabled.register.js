@@ -12,7 +12,7 @@ Reaction.registerPackage({
   registry: [
     {
       label: "Rates",
-      provides: "catalogSettings",
+      provides: ["catalogSettings"],
       template: "customDiscountRates"
     }
   ]
