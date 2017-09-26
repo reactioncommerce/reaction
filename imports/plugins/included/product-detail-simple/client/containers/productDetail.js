@@ -133,7 +133,11 @@ const wrapComponent = (Comp) => (
               }
               // Reset cart quantity on success
               this.handleCartQuantityChange(null, 1);
-              this.state.click++;
+
+              const click = this.state.click + 1;
+              this.setState({
+                click
+              });
 
               return true;
             });
