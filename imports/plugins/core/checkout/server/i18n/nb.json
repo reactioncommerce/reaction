@@ -1,0 +1,13 @@
+[{
+  "i18n": "nb",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartCompleted": {
+        "orderShipping": "Frakt",
+        "orderTax": "Moms",
+        "trackYourDelivery": "Ordre oppdateringer vil bli sendt til"
+      }
+    }
+  }
+}]

@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "Vul uw bestelling",
         "paymentMethod": {
+          "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "Betaal met PayPal",
           "expressNotConfigured": "Paypal Express niet geconfigureerd.",
           "expressNotAvailable": "Paypal Express niet beschikbaar",
