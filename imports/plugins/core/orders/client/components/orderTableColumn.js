@@ -5,7 +5,7 @@ import moment from "moment";
 import { formatPriceString, i18next } from "/client/api";
 import Avatar from "react-avatar";
 import { Badge, ClickToCopy, Icon, RolloverCheckbox, Checkbox } from "@reactioncommerce/reaction-ui";
-import { getOrderRiskBadge, getOrderRiskStatus } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo } from "../helpers";
 
 class OrderTableColumn extends Component {
   static propTypes = {
@@ -49,9 +49,10 @@ class OrderTableColumn extends Component {
 
   render() {
     const columnAccessor = this.props.row.column.id;
+    const invoice = getBillingInfo(this.props.row.original).invoice || {};
     const orderRisk = getOrderRiskStatus(this.props.row.original);
 
-    if (columnAccessor === "shipping[0].address.fullName") {
+    if (columnAccessor === "shippingFullName") {
       return (
         <div style={{ display: "inline-flex" }}>
           {this.renderCheckboxOnSelect(this.props.row)}
@@ -93,14 +94,14 @@ class OrderTableColumn extends Component {
         </div>
       );
     }
-    if (columnAccessor === "billing[0].invoice.total") {
+    if (columnAccessor === "billingTotal") {
       return (
         <div style={{ marginTop: 7 }}>
-          <strong>{formatPriceString(this.props.row.original.billing[0].invoice.total)}</strong>
+          <strong>{formatPriceString(invoice.total)}</strong>
         </div>
       );
     }
-    if (columnAccessor === "shipping[0].workflow.status") {
+    if (columnAccessor === "shippingStatus") {
       return (
         <Badge
           className="orders-badge"
