@@ -194,7 +194,7 @@
         "taxDescription": "Tax Description",
         "inventoryManagement": "Inventory Tracking",
         "inventoryManagementLabel": "Register product in inventory system and track its status",
-        "inventoryPolicy": "Allow Backorder",
+        "inventoryPolicy": "Allow backorder",
         "inventoryPolicyLabel": "Do not sell the product variant when it is not in stock",
         "lowInventoryWarningThreshold": "Warn At",
         "lowInventoryWarningThresholdLabel": "Warn customers that the product will be close to sold out when the quantity reaches the next threshold",
