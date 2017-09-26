@@ -111,6 +111,7 @@ export function groupPermissions(packages) {
             shopId: pkg.shopId,
             permission: registryItem.name || pkg.name + "/" + registryItem.template,
             icon: registryItem.icon,
+            // TODO: Rethink naming convention for permissions list
             label: registryItem.label || registryItem.provides || registryItem.route
           });
         }
