@@ -9,3 +9,4 @@ import "./8_update_registry_provides_to_array";
 import "./9_set_primary_shop";
 import "./10_add_shopId_on_billing";
 import "./11_add_shopId_on_shipping";
+import "./12_rebuild_order_search_collection";
