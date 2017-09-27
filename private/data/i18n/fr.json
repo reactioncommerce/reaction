@@ -12,9 +12,6 @@
           "email": "Paramètres de messagerie",
           "description": "Description",
           "remove": "Supprimer"
-        },
-        "settings": {
-          "localizationAndI18NLabel": "Localisation et i18n"
         }
       },
       "app": {
@@ -34,28 +31,7 @@
         "yearOptions": "Sélectionner une année",
         "shopSettings": "Paramètres du magasin",
         "dashboard": "Tableau de bord",
-        "print": "Imprimer",
-        "editMode": "Editer le mode",
-        "auto": "Auto"
-      },
-      "searchSettings": {
-        "productSearchSettings": {
-          "panelTitle": "Recherche de produit",
-          "includeTitle": "Inclure un titre",
-          "includeDescription": "Inclure la description",
-          "includePageTitle": "Inclure le titre de la page",
-          "includeDetails": "Inclure une description",
-          "includeVendor": "Inclure le vendeur"
-        },
-        "orderSearchSettings": {
-          "panelTitle": "Paramètres de recherche de la commande"
-        },
-        "accountSearchSettings": {
-          "panelTitle": "Paramètres de recherche du compte"
-        },
-        "noSettings": "Aucun paramètre de disponible actuellement",
-        "settingsSaved": "Paramètres de recherche enregistrés",
-        "settingsfailed": "Echec de la mise à jour des paramètres de recherche"
+        "print": "Imprimer"
       },
       "header": {
         "tagsAdd": "Ajouter une balise",
@@ -92,8 +68,7 @@
         "startTracking": "Lancer le suivi",
         "addBarcode": "AJouter un code-barres",
         "quantity": "Quantité",
-        "quantityGreaterThanZero": "Erreur : la quantité doit être supérieure à zéro",
-        "dropFiles": "Déposer des fichiers à télécharger."
+        "quantityGreaterThanZero": "Erreur : la quantité doit être supérieure à zéro"
       },
       "productDetailEdit": {
         "title": "Titre",
@@ -104,9 +79,6 @@
         "twitterMsg": "Message Twitter",
         "pinterestMsg": "Message Pinterest",
         "googleplusMsg": "Message Google+",
-        "editVariant": "Editer la variante",
-        "variantOptions": "Options de la variante",
-        "variantDetails": "Informations sur la variante",
         "duplicateVariant": "Doublon",
         "addVariantOption": "Ajouter des options",
         "removeVariant": "Supprimer",
@@ -114,33 +86,7 @@
         "pinProduct": "Epingler le produit",
         "toggleSize": "Modification de la taille",
         "publish": "Publier",
-        "moreOptions": "Options supplémentaires",
-        "details": "Coordonnées"
-      },
-      "productVariant": {
-        "addVariantOptions": "Ajout d'options pour permettre 'Ajouter au panier' butto",
-        "inventoryQuantity": "Quantité",
-        "title": "Balise",
-        "price": "Prix",
-        "optionTitle": "Option",
-        "barcode": "Code-barres",
-        "compareAtPrice": "Prix (PVC)",
-        "fulfillmentService": "Service d'exécution",
-        "weight": "Poids",
-        "length": "Longueur",
-        "width": "Largeur",
-        "height": "Hauteur",
-        "taxable": "Taxable",
-        "taxCode": "Codes de taxes",
-        "taxDescription": "description de l'impôt",
-        "inventoryManagement": "Suivi de l'inventaire",
-        "inventoryManagementLabel": "Enregistrer le produit dans le système d'inventaire et suivre son statut",
-        "inventoryPolicy": "Refuser lors d'une rupture de stock",
-        "inventoryPolicyLabel": "Ne pas vendre la variante du produit lorsqu'elle n'est pas en stock",
-        "lowInventoryWarningThreshold": "Avertir @",
-        "lowInventoryWarningThresholdLabel": "Avertir les clients que le produit est en quasi rupture de stock lorsque les quantités atteindront le seuil suivant",
-        "originCountry": "Pays d'origine",
-        "selectTaxCode": "Sélectionnez Code fiscal"
+        "moreOptions": "Options supplémentaires"
       },
       "variantList": {
         "moreOptions": "Aucune option de disponible pour cette sélection.",
@@ -149,10 +95,6 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} est désormais activé",
         "pkgDisabled": "{{app}} est désormais désactivé"
-      },
-      "gridSettingsPanel": {
-        "title": "Paramètres de la grille",
-        "selected": "Choisi"
       },
       "cartDrawer": {
         "empty": "Nous sommes désolés. Votre panier est vide.",
@@ -281,58 +223,6 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
-      },
-      "corePackageConfig": {
-        "settings": {
-          "public": {
-            "allowGuestCheckout": "Autoriser le règlement en tant qu'invité"
-          },
-          "openexchangerates": {
-            "appId": "Ouvrir l'app Id du taux de change",
-            "refreshPeriod": "Ouvrir la période d'actualisation du taux d'échange",
-            "refreshPeriodPlaceholder": "par exemple toutes les heures"
-          },
-          "google": {
-            "clientId": "ID client Google",
-            "apiKey": "Clé de l'API Google"
-          }
-        }
-      },
-      "revisions": {
-        "isDisabled": "La gestion de version est désactivée. Toute modification sera immédiatement publiée.",
-        "isEnabled": "le contrôle de révision est activée pour les produits. Toute modification sera doivent être publiés avant d'être visible pour les clients."
-      },
-      "shop": {
-        "defaultPaymentMethod": "Méthode de paiement par défaut",
-        "name": "Nom",
-        "namePlaceholder": "Nom du magasin",
-        "description": "Description",
-        "descriptionPlaceholder": "Décrivez votre magasin en tenant compte du SEO",
-        "descriptionTooltip": "Ce champ est utilisé par une métabalise de description. Les moteurs de recherche sont autorisés à décrire votre magasin",
-        "email": "E-mail",
-        "emailPlaceholder": "E-mail du contact principal",
-        "keywords": "Mots clés",
-        "keywordsPlaceholder": "Mots-clés méta",
-        "language": "Langue de référence",
-        "addressBook": {
-          "company": "Entreprise",
-          "companyPlaceholder": "Nom de l'entreprise",
-          "country": "Pays",
-          "fullName": "Nom complet",
-          "fullNamePlaceholder": "Le nom de votre entreprise",
-          "address1": "Adresse",
-          "address1Placeholder": "Adresse de votre entreprise",
-          "address1Tooltip": "Cette adresse sera visible par les visiteurs",
-          "address2": "Adresse",
-          "address2Placeholder": "Adresse supplémentaire",
-          "postal": "Postal",
-          "city": "Ville",
-          "region": "Région",
-          "phone": "Téléphone",
-          "isShippingDefault": "Utiliser cette adresse comme adresse de livraison par défaut ?",
-          "isBillingDefault": "Utiliser cette adresse comme adresse de facturation ?",
-          "isCommercial": "Il s'agit d'une adresse commerciale."
-        }
       },
       "accountsUI": {
         "members": "Membres",

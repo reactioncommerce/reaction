@@ -5,6 +5,9 @@
     "reaction-product-variant": {
       "productGrid": {
         "noProductsFound": "找不到产品"
+      },
+      "productDetailEdit": {
+        "variantDetails": "变异细节"
       }
     }
   }
