@@ -39,8 +39,7 @@ const OrderHelper =  {
       // Orders that have been captured
       case "captured":
         query = {
-          "billing.paymentMethod.status": "completed",
-          "shipping.shipped": false
+          "billing.paymentMethod.status": "completed"
         };
         break;
 
