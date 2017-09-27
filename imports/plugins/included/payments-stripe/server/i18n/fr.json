@@ -16,7 +16,20 @@
           "stripeLabel": "Stripe",
           "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Ne pas avoir un numéro de client API Stripe?",
-          "stripeSettingsGetItHere": "Obtenez-le ici"
+          "stripeSettingsGetItHere": "Obtenez-le ici",
+          "stripeClientIdWarning": "L'ID client est un champ PUBLIC. Assurez-vous d'utiliser le client_id trouvé sur la page de configuration Stripe Connect.",
+          "stripeClientIdLink": "Paramètres de connexion Stripe"
+        },
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect n'est pas activé pour cette application. Veuillez contacter l'administrateur.",
+          "shopEmailNotConfigured": "Configurez d'abord l'e-mail de votre boutique.",
+          "shopAddressNotConfigured": "Configurez l'adresse de votre boutique d'abord",
+          "applicationFeeDescription": "Ce nombre représente un pourcentage de frais que le marché (ce magasin) prend pour tout objet qui est vendu par un magasin marchand pour ce marché. Cette taxe s'applique uniquement si Stripe Connect est configuré et activé sur le marché et les magasins marchands et si Stripe est le fournisseur de paiement utilisé pour effectuer le paiement.",
+          "moreDetails": "Pour plus de détails, consultez le",
+          "docsLink": "Stripe Connect Docs"
+        },
+        "redirect": {
+          "stripeConnectWaitingNote": "Réoriente automatiquement en quelques secondes ou cliquez ici."
         }
       }
     }

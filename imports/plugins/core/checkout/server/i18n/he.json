@@ -1,0 +1,13 @@
+[{
+  "i18n": "he",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartCompleted": {
+        "orderShipping": "משלוח",
+        "orderTax": "הגדרות מס",
+        "trackYourDelivery": "עדכוני ההזמנה יישלחו אל"
+      }
+    }
+  }
+}]
