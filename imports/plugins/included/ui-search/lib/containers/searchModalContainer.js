@@ -101,8 +101,8 @@ class SearchModalContainer extends Component {
     });
   }
 
-  handleAccountClick = () => {
-    Reaction.Router.go("dashboard/accounts", {}, {});
+  handleAccountClick = (event) => {
+    Reaction.Router.go("account/profile", {}, { userId: event._id });
     this.handleChildUnmount();
   }
 
