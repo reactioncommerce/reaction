@@ -102,31 +102,20 @@ class VariantListContainer extends Component {
     });
   }
 
+  handleOpenActionViewForValidation = () => {
+    const cardName = `variant-${variant._id}`;
+    Reaction.state.set("edit/focus", cardName);
+
+    Reaction.showActionView({
+      label: "Edit Variant",
+      i18nKeyLabel: "productDetailEdit.editVariant",
+      template: "variantForm",
+      data: variant
+    });
+  }
+
   handleVariantClick = (event, variant, ancestors = -1) => {
-    if (Reaction.isActionViewOpen()) {
-      this.handleEditVariant(event, variant, ancestors);
-    } else {
-      ReactionProduct.setCurrentVariant(variant._id);
-      Session.set("variant-form-" + variant._id, true);
-      Reaction.Router.go("product", {
-        handle: this.productHandle,
-        variantId: variant._id
-      }, {
-        as: Reaction.Router.getQueryParam("as")
-      });
-
-      if (Reaction.hasPermission("createProduct")) {
-        const cardName = `variant-${variant._id}`;
-        Reaction.state.set("edit/focus", cardName);
-
-        Reaction.showActionView({
-          label: "Edit Variant",
-          i18nKeyLabel: "productDetailEdit.editVariant",
-          template: "variantForm",
-          data: variant
-        });
-      }
-    }
+    this.handleEditVariant(event, variant, ancestors);
   }
 
   handleEditVariant = (event, variant, ancestors = -1) => {
