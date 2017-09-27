@@ -1,9 +1,8 @@
-import _ from "lodash";
 import { Hooks, Logger } from "/server/api";
-import { Migrations } from "/imports/plugins/core/versions";
+import { Migrations } from "meteor/percolate:migrations";
 
 function reactionLogger(opts) {
-  if (_.includes(["warn", "info", "error"], opts.level)) {
+  if (["warn", "info", "error"].includes(opts.level)) {
     Logger[opts.level](opts.message);
   }
 }

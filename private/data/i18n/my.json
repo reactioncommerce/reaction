@@ -12,9 +12,6 @@
           "email": "အီးမေးလ်က",
           "description": "ဖေါ်ပြချက်",
           "remove": "Remove"
-        },
-        "settings": {
-          "localizationAndI18NLabel": "ပြည်တွင်းနှင့် i18n"
         }
       },
       "app": {
@@ -34,28 +31,7 @@
         "yearOptions": "တစ်နှစ် Choose",
         "shopSettings": "ဆိုင်က Settings",
         "dashboard": "dashboard ကို",
-        "print": "ပုံနှိပ်",
-        "editMode": "Edit ကို mode ကို",
-        "auto": "အော်တို"
-      },
-      "searchSettings": {
-        "productSearchSettings": {
-          "panelTitle": "ကုန်ပစ္စည်းရှာရန်",
-          "includeTitle": "ခေါင်းစဉ်တို့ပါဝင်သည်",
-          "includeDescription": "ဖော်ပြချက် Include",
-          "includePageTitle": "စာမျက်နှာခေါင်းစဉ်ကိုပါဝင်စေ",
-          "includeDetails": "အသေးစိတျမြားပါဝငျ",
-          "includeVendor": "ရောင်းချသူ Include"
-        },
-        "orderSearchSettings": {
-          "panelTitle": "အမိန့်ရှာရန်ချိန်ညှိ"
-        },
-        "accountSearchSettings": {
-          "panelTitle": "အကောင့်ရှာရန်ချိန်ညှိ"
-        },
-        "noSettings": "အဘယ်သူမျှမ settings ကိုလက်ရှိရရှိနိုင်",
-        "settingsSaved": "ရှာဖွေမှုဆက်တင်များသည်ကယ်တင်ခြင်းသို့ရောက်",
-        "settingsfailed": "ရှာဖွေမှုဆက်တင်များရှုံးနိမ့်ခဲ့ရကို update"
+        "print": "ပုံနှိပ်"
       },
       "header": {
         "tagsAdd": "tag ကို Add",
@@ -92,8 +68,7 @@
         "startTracking": "ခြေရာကောက် Start",
         "addBarcode": "ဘားကုဒ် Add",
         "quantity": "အရေအတွက်",
-        "quantityGreaterThanZero": "အမှား: ပမာဏသုညထက်ကြီးမြတ်သူဖြစ်ရမည်",
-        "dropFiles": "upload ဖိုင်များကို drop"
+        "quantityGreaterThanZero": "အမှား: ပမာဏသုညထက်ကြီးမြတ်သူဖြစ်ရမည်"
       },
       "productDetailEdit": {
         "title": "ခေါင်းစဥ်",
@@ -104,9 +79,6 @@
         "twitterMsg": "Twitter Message",
         "pinterestMsg": "Pinterest ကို Message",
         "googleplusMsg": "Google+ မှာကို Message",
-        "editVariant": "Edit ကိုမူကွဲ",
-        "variantOptions": "မူကွဲ Options ကို",
-        "variantDetails": "မူကွဲအသေးစိတ်",
         "duplicateVariant": "မူရငျးခှဲ",
         "addVariantOption": "Option ကို Add",
         "removeVariant": "Remove",
@@ -114,33 +86,7 @@
         "pinProduct": "pin ကုန်ပစ္စည်း",
         "toggleSize": "toggle Size ကို",
         "publish": "ပုံနှိပ်ထုတ်ဝေ",
-        "moreOptions": "ပိုများသော Options ကို",
-        "details": "အသေးစိတ်"
-      },
-      "productVariant": {
-        "addVariantOptions": "butto '' လှည်းထည့်ရန် 'ကို enable ရွေးချယ်စရာ Add",
-        "inventoryQuantity": "အရေအတွက်",
-        "title": "တံဆိပ်",
-        "price": "စျေးနှုန်း",
-        "optionTitle": "option ကို",
-        "barcode": "ဘားကုဒ်",
-        "compareAtPrice": "စျေးနှုန်း (MSRP)",
-        "fulfillmentService": "ပွညျ့စုံဝန်ဆောင်မှု",
-        "weight": "အလေးချိန်",
-        "length": "အရှည်",
-        "width": "width",
-        "height": "အမြင့်",
-        "taxable": "Taxable",
-        "taxCode": "အခွန်ကုဒ်များ",
-        "taxDescription": "အခွန်ဖျေါပွခကျြ",
-        "inventoryManagement": "inventory ခြေရာခံခြင်း",
-        "inventoryManagementLabel": "စာရင်းစနစ်ထဲမှာထုတ်ကုန် Register နှင့်၎င်း၏အဆင့်အတန်းကိုခြေရာခံ",
-        "inventoryPolicy": "အခါ, စတော့ရှယ်ယာထဲကငွငျးပယျ",
-        "inventoryPolicyLabel": "ဒါကြောင့်စတော့ရှယ်ယာထဲမှာမပါသောအခါကုန်ပစ္စည်းမူကွဲမရောင်းပါနဲ့",
-        "lowInventoryWarningThreshold": "သတိပေး @",
-        "lowInventoryWarningThresholdLabel": "အရေအတွက်နောက်လာမည့်တံခါးခုံကိုရောက်ရှိသည့်အခါကုန်ပစ္စည်းရောင်းထွက်နီးစပ်ဖြစ်လိမ့်မည်ဟုဖောက်သည်သတိပေး",
-        "originCountry": "မူလအစနိုင်ငံ",
-        "selectTaxCode": "အခွန် Code ကို Select လုပ်ပါ"
+        "moreOptions": "ပိုများသော Options ကို"
       },
       "variantList": {
         "moreOptions": "ဤအတွက်နောက်ထပ်ရွေးချယ်စရာများ ရှိပါသေးသည်",
@@ -149,10 +95,6 @@
       "gridPackage": {
         "pkgEnabled": " သည် အလုပ်လုပ်နေသည်။",
         "pkgDisabled": " သည် အလုပ်လုပ် မနေပါ။"
-      },
-      "gridSettingsPanel": {
-        "title": "grid က Settings",
-        "selected": "Selected"
       },
       "cartDrawer": {
         "empty": "စျေးခြင်းတောင်းတွင် ဘာမှ ရှိမနေပါ :(",
@@ -281,58 +223,6 @@
         "meetup": "Meetup",
         "twitter": "တွစ်တာ",
         "weibo": "Weibo"
-      },
-      "corePackageConfig": {
-        "settings": {
-          "public": {
-            "allowGuestCheckout": "ဧည့်သည် Checkout Allow"
-          },
-          "openexchangerates": {
-            "appId": "ပွင့်လင်းချိန်းနှုန်း App ကို Id",
-            "refreshPeriod": "ပွင့်လင်းချိန်းနှုန်းကာလ refresh",
-            "refreshPeriodPlaceholder": "တနည်း, တိုင်း 1 နာရီ"
-          },
-          "google": {
-            "clientId": "Google ကလိုင်းယင့် ID ကို",
-            "apiKey": "Google က API ကို Key ကို"
-          }
-        }
-      },
-      "revisions": {
-        "isDisabled": "တည်းဖြတ်မူထိန်းချုပ်မှုကိုပိတ်ထားသည်။ မဆိုအပြောင်းအလဲများချက်ချင်းပုံနှိပ်ထုတ်ဝေပါလိမ့်မည်။",
-        "isEnabled": "တည်းဖြတ်မူထိန်းချုပ်မှုထုတ်ကုန်များအတွက် enabled ဖြစ်ပါတယ်။ မဆိုစသောအပြောင်းအလဲဖောက်သည်မြင်နိုင်ဖြစ်ခြင်းမီကထုတ်ဝေသောခံရဖို့လိုအပ်ပါလိမ့်မည်။"
-      },
-      "shop": {
-        "defaultPaymentMethod": "default ငွေပေးချေမှုရမည့်နည်းလမ်း",
-        "name": "နာမကိုအမှီ",
-        "namePlaceholder": "ဆိုင်အမည်",
-        "description": "ဖေါ်ပြချက်",
-        "descriptionPlaceholder": "SEO ဆိုသည်မှာအဘို့သင့်ဆိုင်ကိုဖော်ပြရန်",
-        "descriptionTooltip": "SEO ဆိုသည်မှာအဘို့အ meta ဖျေါပွခကျြ",
-        "email": "အီးမေးလ်က",
-        "emailPlaceholder": "မူလတန်းဆက်သွယ်ရန်အီးမေးလ်",
-        "keywords": "keywords",
-        "keywordsPlaceholder": "SEO ဆိုသည်မှာအဘို့အ meta သော့ချက်စာလုံးများ",
-        "language": "base ဘာသာစကားများ",
-        "addressBook": {
-          "company": "ကုမ္ပဏီ",
-          "companyPlaceholder": "ဒီစီးပွားရေးဘွဲ့နာမ",
-          "country": "ပြည်",
-          "fullName": "နာမည်အပြည့်အစုံ",
-          "fullNamePlaceholder": "သင်၏အဖွဲ့အစည်း name ကို",
-          "address1": "လိပ်စာ",
-          "address1Placeholder": "သင်၏အဖွဲ့အစည်းလိပ်စာ",
-          "address1Tooltip": "ဒီလိပ်စာဧည့်သည်များမှမြင်နိုင်ဖြစ်ရလိမ့်မည်",
-          "address2": "လိပ်စာ",
-          "address2Placeholder": "အပိုဆောင်းလိပ်စာ",
-          "postal": "စာတိုက်",
-          "city": "မြို့",
-          "region": "ဒေသ",
-          "phone": "ဖုန်းနံပါတ်",
-          "isShippingDefault": "ဒီကသင့်ကို default ရေကြောင်းလိပ်စာလုပ်ရမလား?",
-          "isBillingDefault": "ဒီကသင့်ကို default ငွေတောင်းခံလိပ်စာလုပ်ရမလား?",
-          "isCommercial": "ဒါကစီးပွားဖြစ်လိပ်စာဖြစ်ပါတယ်။"
-        }
       },
       "accountsUI": {
         "members": "အဖွဲ့ဝင်များ",

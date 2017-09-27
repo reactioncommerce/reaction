@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "Completar su pedido",
         "paymentMethod": {
+          "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "Pagar con PayPal",
           "expressNotConfigured": "Paypal Express no está configurado.",
           "expressNotAvailable": "Paypal Express no disponible",
