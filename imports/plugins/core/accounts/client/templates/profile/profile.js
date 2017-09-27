@@ -110,6 +110,13 @@ Template.accountProfile.helpers({
     return "addressBookAdd";
   },
 
+  showSellerSignup: function () {
+    const marketplaceEnabled = Reaction.marketplace && Reaction.marketplace.enabled === true;
+    const allowMerchantSignup = Reaction.marketplace && Reaction.marketplace.allowMerchantSignup === true;
+    const isMarketplaceGuest = Reaction.hasMarketplaceAccess("guest") && !Reaction.hasAdminAccess();
+    return marketplaceEnabled && allowMerchantSignup && isMarketplaceGuest;
+  },
+
   isMarketplaceGuest: function () {
     return (Reaction.hasMarketplaceAccess("guest") && !Reaction.hasAdminAccess());
   },
