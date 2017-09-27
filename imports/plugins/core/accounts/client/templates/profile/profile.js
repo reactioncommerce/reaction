@@ -8,6 +8,22 @@ import * as Collections from "/lib/collections";
 import { Components } from "@reactioncommerce/reaction-components";
 
 
+function isOwnerOfProfile() {
+  const targetUserId = Reaction.Router.getQueryParam("userId");
+  const loggedInUserId = Meteor.userId();
+  return !targetUserId || targetUserId === loggedInUserId;
+}
+
+function hasPermissionsFor(permission) {
+  if (!permission) {
+    return false;
+  }
+
+  const loggedInUserId = Meteor.userId();
+  const shopId = Reaction.getShopId();
+  return Reaction.hasPermission(permission, loggedInUserId, shopId);
+}
+
 /**
  * onCreated: Account Profile View
  */
@@ -27,6 +43,21 @@ Template.accountProfile.onCreated(() => {
  * Helpers: Account Profile View
  */
 Template.accountProfile.helpers({
+  canEditAccount() {
+    if (isOwnerOfProfile()) {
+      return true;
+    }
+
+    return hasPermissionsFor("accounts");
+  },
+
+  canViewUserOrders() {
+    if (isOwnerOfProfile()) {
+      return true;
+    }
+
+    return hasPermissionsFor("orders");
+  },
 
   UpdateEmail() {
     return {
