@@ -5,25 +5,25 @@ Migrations.add({
   version: 9,
   up() {
     Shops.find().forEach(
-      function(shop) {
-        if(!shop.baseUOM) {
+      function (shop) {
+        if (!shop.baseUOM) {
           shop.baseUOM = "oz";
         } else {
           shop.baseUOM = shop.baseUOM.toLowerCase();
         }
         shop.unitsOfMeasure = [{
-          "uom": "oz",
-          "label": "Ounces",
-          "default": true
+          uom: "oz",
+          label: "Ounces",
+          default: true
         }, {
-          "uom": "lb",
-          "label": "Pounds"
+          uom: "lb",
+          label: "Pounds"
         }, {
-          "uom": "g",
-          "label": "Grams"
+          uom: "g",
+          label: "Grams"
         }, {
-          "uom": "kg",
-          "label": "Kilograms"
+          uom: "kg",
+          label: "Kilograms"
         }];
 
         if (shop.baseUOM === "gr") {

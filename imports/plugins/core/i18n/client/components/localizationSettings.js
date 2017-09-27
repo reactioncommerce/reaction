@@ -18,8 +18,8 @@ class LocalizationSettings extends Component {
     onUpdateLocalization: PropTypes.func,
     shop: PropTypes.object, // Shop data
     timezoneOptions: PropTypes.array,
-    uomOptions: PropTypes.array,
-    uolOptions: PropTypes.array
+    uolOptions: PropTypes.array,
+    uomOptions: PropTypes.array
   }
 
   renderCurrencies() {
