@@ -13,14 +13,23 @@ import { currencyDep } from "./main";
  */
 
 function findCurrency(defaultCurrency, useDefaultShopCurrency) {
-  const shop = Shops.findOne(Reaction.getPrimaryShopId(), {
-    fields: {
-      currencies: 1,
-      currency: 1
-    }
-  });
-
-  const shopCurrency = shop.currency;
+  let shop;
+  // this condition checks whether The suscription to the shops collection is
+  // ready before it proceeds to send the data as props to the components
+  if (Reaction.Subscriptions.PrimaryShop.ready()) {
+    shop = Shops.findOne(Reaction.getPrimaryShopId(), {
+      fields: {
+        currencies: 1,
+        currency: 1
+      }
+    });
+  }
+  let shopCurrency;
+  if (!shop) {
+    shopCurrency = null;
+  } else {
+    shopCurrency = shop.currency;
+  }
   const localStorageCurrencyName = localStorage.getItem("currency");
   if (typeof shop === "object" && shop.currencies && localStorageCurrencyName) {
     let localStorageCurrency = {};
