@@ -1,20 +1,26 @@
 import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import $ from "jquery";
+import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { i18next, Logger, Reaction } from "/client/api";
 import { Orders, Shops, Packages } from "/lib/collections";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
-
+import { getBillingInfo } from "../../helpers";
 
 // helper to return the order payment object
 // the first credit paymentMethod on the order
 // returns entire payment method
 function orderCreditMethod(order) {
-  return order.billing.filter(value => value.paymentMethod.method ===  "credit")[0];
+  const creditMethods = order.billing && order.billing.filter((value) => {
+    return value && value.paymentMethod && value.paymentMethod.method ===  "credit";
+  });
+  const creditMethod = creditMethods && creditMethods.find((billing) => {
+    billing && billing.shopId === Reaction.getShopId();
+  });
+  return creditMethod || {};
 }
 
 //
@@ -115,20 +121,21 @@ Template.coreOrderShippingInvoice.events({
   "click [data-event-action=cancelOrder]": (event, instance) => {
     event.preventDefault();
     const order = instance.state.get("order");
-    const invoiceTotal = order.billing[0].invoice.total;
+    const invoiceTotal = getBillingInfo(order).invoice && getBillingInfo(order).invoice.total;
     const currencySymbol = instance.state.get("currency").symbol;
+    const paymentMethod = getBillingInfo(order).paymentMethod;
 
     Meteor.subscribe("Packages", Reaction.getShopId());
-    const packageId = order.billing[0].paymentMethod.paymentPackageId;
-    const settingsKey = order.billing[0].paymentMethod.paymentSettingsKey;
+    const packageId = paymentMethod && paymentMethod.paymentPackageId;
+    const settingsKey = paymentMethod && paymentMethod.paymentSettingsKey;
     // check if payment provider supports de-authorize
     const checkSupportedMethods = Packages.findOne({
       _id: packageId,
       shopId: Reaction.getShopId()
     }).settings[settingsKey].support;
 
-    const orderStatus = order.billing[0].paymentMethod.status;
-    const orderMode = order.billing[0].paymentMethod.mode;
+    const orderStatus = paymentMethod && paymentMethod.status;
+    const orderMode = paymentMethod && paymentMethod.mode;
 
     let alertText;
     if (_.includes(checkSupportedMethods, "de-authorize") ||
@@ -189,7 +196,7 @@ Template.coreOrderShippingInvoice.helpers({
   disabled() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-    const status = orderCreditMethod(order).paymentMethod.status;
+    const status = orderCreditMethod(order).paymentMethod && orderCreditMethod(order).paymentMethod.status;
 
     if (status === "approved" || status === "completed") {
       return "disabled";

@@ -3,35 +3,35 @@ import PropTypes from "prop-types";
 import Avatar from "react-avatar";
 import moment from "moment";
 import classnames from "classnames/dedupe";
-import { Reaction, i18next } from "/client/api";
+import { i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
 import OrderTableColumn from "./orderTableColumn";
 import OrderBulkActionsBar from "./orderBulkActionsBar";
 import { formatPriceString } from "/client/api";
 import ProductImage from "./productImage";
-import { getOrderRiskBadge, getOrderRiskStatus } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo } from "../helpers";
 
 const classNames = {
   colClassNames: {
-    "name": "order-table-column-name",
-    "email": "order-table-column-email",
-    "date": "order-table-column-date hidden-xs hidden-sm",
-    "id": "order-table-column-id hidden-xs hidden-sm",
-    "total": "order-table-column-total",
-    "shipping": "order-table-column-shipping hidden-xs hidden-sm",
-    "status": "order-table-column-status",
-    "": "order-table-column-control"
+    name: "order-table-column-name",
+    email: "order-table-column-email",
+    date: "order-table-column-date hidden-xs hidden-sm",
+    id: "order-table-column-id hidden-xs hidden-sm",
+    total: "order-table-column-total",
+    shipping: "order-table-column-shipping hidden-xs hidden-sm",
+    status: "order-table-column-status",
+    control: "order-table-column-control"
   },
   headerClassNames: {
-    "name": "order-table-header-name",
-    "email": "order-table-header-email",
-    "date": "order-table-header-date hidden-xs hidden-sm",
-    "id": "order-table-header-id hidden-xs hidden-sm",
-    "total": "order-table-header-total",
-    "shipping": "order-table-header-shipping hidden-xs hidden-sm",
-    "status": "order-table-header-status",
-    "": "order-table-header-control"
+    name: "order-table-header-name",
+    email: "order-table-header-email",
+    date: "order-table-header-date hidden-xs hidden-sm",
+    id: "order-table-header-id hidden-xs hidden-sm",
+    total: "order-table-header-total",
+    shipping: "order-table-header-shipping hidden-xs hidden-sm",
+    status: "order-table-header-status",
+    control: "order-table-header-control"
   }
 };
 
@@ -53,13 +53,6 @@ class OrderTable extends Component {
     setShippingStatus: PropTypes.func,
     shipping: PropTypes.object,
     toggleShippingFlowList: PropTypes.func
-  }
-
-  // helper function to get appropriate billing info
-  getBillingInfo(order) {
-    return order.billing.find(
-      billing => billing.shopId === Reaction.getShopId()
-    ) || {};
   }
 
   /**
@@ -101,6 +94,7 @@ class OrderTable extends Component {
 
   renderOrderInfo(order) {
     const { displayMedia } = this.props;
+    const invoice = getBillingInfo(order).invoice || {};
 
     return (
       <div className="order-info">
@@ -121,7 +115,7 @@ class OrderTable extends Component {
           </span>
 
           <span className="order-data order-data-total">
-            <strong>Total: {formatPriceString(this.getBillingInfo(order).invoice.total)}</strong>
+            <strong>Total: {formatPriceString(invoice.total)}</strong>
           </span>
         </div>
 
@@ -146,7 +140,9 @@ class OrderTable extends Component {
   }
 
   renderShipmentInfo(order) {
-    const emailAddress = order.email || <Translation defaultValue={"Email not availabe"} i18nKey={"admin.orderWorkflow.ordersList.emailNotFound"} />;
+    const emailAddress = order.email ||
+    <Translation defaultValue={"Email not available"} i18nKey={"admin.orderWorkflow.ordersList.emailNotFound"} />;
+    const shipping = getShippingInfo(order);
     const orderRisk = getOrderRiskStatus(order);
 
     return (
@@ -155,11 +151,11 @@ class OrderTable extends Component {
           <Avatar
             email={order.email}
             round={true}
-            name={order.shipping[0].address.fullName}
+            name={shipping.address && shipping.address.fullName}
             size={30}
             className="rui-order-avatar"
           />
-          <strong>{order.shipping[0].address.fullName}</strong> | {emailAddress}
+          <strong>{shipping.address && shipping.address.fullName}</strong> | {emailAddress}
           {orderRisk &&
             <Badge
               className="risk-info"
@@ -171,8 +167,8 @@ class OrderTable extends Component {
         <div className="workflow-info">
           <Badge
             badgeSize="large"
-            i18nKeyLabel={`cartDrawer.${order.shipping[0].workflow.status}`}
-            label={order.shipping[0].workflow.status}
+            i18nKeyLabel={`cartDrawer.${shipping.workflow && shipping.workflow.status}`}
+            label={shipping.workflow && shipping.workflow.status}
             status="basic"
           />
           <Badge
@@ -217,14 +213,38 @@ class OrderTable extends Component {
     if (this.props.isOpen) {
       // Render order list column/row data
       const filteredFields = {
-        "name": "shipping[0].address.fullName",
-        "email": "email",
-        "date": "createdAt",
-        "id": "_id",
-        "total": "billing[0].invoice.total",
-        "shipping": "shipping[0].workflow.status",
-        "status": "workflow.status",
-        "": ""
+        name: {
+          accessor: row => getShippingInfo(row).address && getShippingInfo(row).address.fullName,
+          id: "shippingFullName"
+        },
+        email: {
+          accessor: "email",
+          id: "email"
+        },
+        date: {
+          accessor: "createdAt",
+          id: "createdAt"
+        },
+        id: {
+          accessor: "_id",
+          id: "_id"
+        },
+        total: {
+          accessor: row => getBillingInfo(row).invoice && getBillingInfo(row).invoice.total,
+          id: "billingTotal"
+        },
+        shipping: {
+          accessor: row => getShippingInfo(row).workflow && getShippingInfo(row).workflow.status,
+          id: "shippingStatus"
+        },
+        status: {
+          accessor: "workflow.status",
+          id: "workflow.status"
+        },
+        control: {
+          accessor: "",
+          id: ""
+        }
       };
 
       const columnNames = Object.keys(filteredFields);
@@ -272,16 +292,18 @@ class OrderTable extends Component {
               </span>
             </div>
           );
-        } else if (columnName === "") {
-          columnNameLabel = "";
+        } else if (columnName === "control") {
+          colHeader = " ";
           resizable = false;
           sortable = false;
         } else {
           columnNameLabel = i18next.t(`admin.table.headers.${columnName}`);
         }
 
+
         const columnMeta = {
-          accessor: filteredFields[columnName],
+          accessor: filteredFields[columnName].accessor,
+          id: filteredFields[columnName].id,
           Header: colHeader ? colHeader : columnNameLabel,
           headerClassName: classNames.headerClassNames[columnName],
           className: classNames.colClassNames[columnName],

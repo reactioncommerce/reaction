@@ -130,7 +130,6 @@ export default function () {
     requiresShipping: true,
     shipping: [{
       shopId: getShopId(),
-      _id: Random.id(),
       items: [
         {
           _id: itemIdOne,
@@ -183,6 +182,7 @@ export default function () {
     Factory.extend("order", {
       billing: [{
         _id: Random.id(),
+        shopId: getShopId(),
         address: getAddress({ isBillingDefault: true }),
         paymentMethod: paymentMethod({
           processor: "Paypal",

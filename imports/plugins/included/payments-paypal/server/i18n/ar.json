@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "استكمال طلبك",
         "paymentMethod": {
+          "PaypalExpress": "بايبال اكسبرس",
           "expressButtonLabel": "دفع مع PayPal",
           "expressNotConfigured": "باي بال عبر عن عدم تكوينها.",
           "expressNotAvailable": "باي بال السريعة غير متاح",

@@ -1,4 +1,4 @@
-import { Migrations } from "/imports/plugins/core/versions";
+import { Migrations } from "meteor/percolate:migrations";
 import { Shops } from "/lib/collections";
 import { getSlug } from "/lib/api";
 
