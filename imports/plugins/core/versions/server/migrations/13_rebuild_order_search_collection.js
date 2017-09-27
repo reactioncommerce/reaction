@@ -1,11 +1,11 @@
-import { Migrations } from "/imports/plugins/core/versions";
+import { Migrations } from "meteor/percolate:migrations";
 import { OrderSearch } from "/lib/collections";
 import { buildOrderSearch } from "/imports/plugins/included/search-mongo/server/methods/searchcollections";
 
 Migrations.add({
-  // Migrations 10 and 11 introduced changes on Orders, so we need to rebuild the search collections.
+  // Migrations 11 and 12 introduced changes on Orders, so we need to rebuild the search collections.
   // Building OrderSearch here then covers the rebuild in migration 1 (so it was moved from migration 1 to here)
-  version: 12,
+  version: 13,
   up: function () {
     OrderSearch.remove({});
     buildOrderSearch();

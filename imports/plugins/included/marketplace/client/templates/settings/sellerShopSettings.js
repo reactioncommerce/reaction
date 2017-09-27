@@ -111,6 +111,24 @@ Template.sellerShopSettings.helpers({
     return Countries.find().fetch();
   },
 
+  uolOptions() {
+    const sellerShop = Reaction.getSellerShop();
+
+    if (!sellerShop) {
+      return;
+    }
+
+    const unitsOfLength = sellerShop.unitsOfLength;
+    const uolOptions = [];
+    for (const length of unitsOfLength) {
+      uolOptions.push({
+        label: i18next.t(`uol.${length.uol}`, { defaultValue: length.uol }),
+        value: length.uol
+      });
+    }
+    return uolOptions;
+  },
+
   uomOptions() {
     const sellerShop = Reaction.getSellerShop();
 

@@ -13,7 +13,7 @@ Template.stripeConnectSignupButton.events({
       enabled: true
     });
 
-    //eslint-disable-next-line
+    // eslint-disable-next-line
     // debugger;
     let clientId;
 

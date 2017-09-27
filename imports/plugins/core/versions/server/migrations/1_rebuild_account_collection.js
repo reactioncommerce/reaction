@@ -1,4 +1,4 @@
-import { Migrations } from "/imports/plugins/core/versions";
+import { Migrations } from "meteor/percolate:migrations";
 import { AccountSearch } from "/lib/collections";
 import { buildAccountSearch } from "/imports/plugins/included/search-mongo/server/methods/searchcollections";
 
