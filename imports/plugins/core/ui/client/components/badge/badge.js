@@ -31,6 +31,25 @@ class Badge extends Component {
     });
   }
 
+  handleClick = (event) => {
+    if (this.props.tagName === "a") {
+      event.preventDefault();
+    }
+
+    // If this is a toogle button, and has a onToggle callback function
+    if (this.props.toggle && this.props.onToggle) {
+      if (this.props.toggleOn) {
+        // If toggleOn is true, return the toggleOn value, or true
+        this.props.onToggle(event, this.props.onValue || true);
+      } else {
+        // Otherwise return the value prop, or false
+        this.props.onToggle(event, this.props.value || false);
+      }
+    } else if (this.props.onClick) {
+      this.props.onClick(event, this.props.value);
+    }
+  }
+
   renderTooltipContent() {
     if (this.isTooltipOpen) {
       if (typeof this.props.tooltip === "string") {
@@ -93,6 +112,7 @@ class Badge extends Component {
         <span
           onMouseOut={this.handleButtonMouseOut}
           onMouseOver={this.handleButtonMouseOver}
+          onClick={this.handleClick}
         >
           <Components.Tooltip
             attachment={tooltipAttachment} tooltipContent={this.renderTooltipContent()}

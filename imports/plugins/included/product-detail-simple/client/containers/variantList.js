@@ -114,6 +114,18 @@ class VariantListContainer extends Component {
       }, {
         as: Reaction.Router.getQueryParam("as")
       });
+
+      if (Reaction.hasPermission("createProduct")) {
+        const cardName = `variant-${variant._id}`;
+        Reaction.state.set("edit/focus", cardName);
+
+        Reaction.showActionView({
+          label: "Edit Variant",
+          i18nKeyLabel: "productDetailEdit.editVariant",
+          template: "variantForm",
+          data: variant
+        });
+      }
     }
   }
 

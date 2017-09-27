@@ -98,6 +98,7 @@ class ChildVariant extends Component {
           indicator={true}
           tooltip={"Validation error"}
           i18nKeyTooltip={"admin.tooltip.validationError"}
+          onClick={this.handleClick}
         />
       );
     }
