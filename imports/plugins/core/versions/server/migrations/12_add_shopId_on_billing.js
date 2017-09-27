@@ -5,31 +5,31 @@ import { Reaction } from "/server/api/";
 Migrations.add({
   version: 12,
   up() {
-    // moving to multi-shop setup requires each shipping objects to be marked by shopId
-    // This adds shopId field to each shipping object in orders and carts.
+    // moving to multi-shop setup requires each billing objects to be marked by shopId
+    // This adds shopId field to each billing object in orders and carts.
     const shopId = Reaction.getShopId();
 
     Orders.update({}, {
-      $set: { "shipping.0.shopId": shopId }
+      $set: { "billing.0.shopId": shopId }
     }, {
       multi: true
     });
 
     Cart.update({}, {
-      $set: { "shipping.0.shopId": shopId }
+      $set: { "billing.0.shopId": shopId }
     }, {
       multi: true
     });
   },
   down() {
     Orders.update({}, {
-      $unset: { "shipping.0.shopId": "" }
+      $unset: { "billing.0.shopId": "" }
     }, {
       multi: true
     });
 
     Cart.update({}, {
-      $set: { "shipping.0.shopId": "" }
+      $set: { "billing.0.shopId": "" }
     }, {
       multi: true
     });
