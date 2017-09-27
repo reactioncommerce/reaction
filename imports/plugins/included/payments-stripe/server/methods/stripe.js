@@ -443,7 +443,7 @@ export const methods = {
     try {
       const stripePackage = Packages.findOne(paymentMethod.paymentPackageId);
       const stripeKey = stripePackage.settings.api_key || stripePackage.settings.connectAuth.access_token;
-      const stripe = require("stripe")(stripeKey);
+      const stripe = stripeNpm(stripeKey);
       const refundPromise = stripe.refunds.create({ charge: paymentMethod.transactionId, amount: formatForStripe(amount) });
       const refundResult = Promise.await(refundPromise);
       Logger.debug(refundResult);
@@ -479,7 +479,7 @@ export const methods = {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     const stripePackage = Packages.findOne(paymentMethod.paymentPackageId);
     const stripeKey = stripePackage.settings.api_key || stripePackage.settings.connectAuth.access_token;
-    const stripe = require("stripe")(stripeKey);
+    const stripe = stripeNpm(stripeKey);
     let refundListResults;
     try {
       const refundListPromise = stripe.refunds.list({ charge: paymentMethod.transactionId });
