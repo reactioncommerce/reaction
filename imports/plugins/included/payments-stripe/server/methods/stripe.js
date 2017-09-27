@@ -449,8 +449,7 @@ export const methods = {
 
     let result;
     try {
-      const stripePackage = Packages.findOne(paymentMethod.paymentPackageId);
-      const stripeKey = stripePackage.settings.api_key || stripePackage.settings.connectAuth.access_token;
+      const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
       const stripe = stripeNpm(stripeKey);
       const refundPromise = stripe.refunds.create({ charge: paymentMethod.transactionId, amount: formatForStripe(amount) });
       const refundResult = Promise.await(refundPromise);
@@ -485,8 +484,7 @@ export const methods = {
    */
   "stripe/refund/list": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    const stripePackage = Packages.findOne(paymentMethod.paymentPackageId);
-    const stripeKey = stripePackage.settings.api_key || stripePackage.settings.connectAuth.access_token;
+    const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
     const stripe = stripeNpm(stripeKey);
     let refundListResults;
     try {
@@ -497,7 +495,7 @@ export const methods = {
     }
 
     const result = [];
-    if (refundListResults) {
+    if (refundListResults && refundListResults.data) {
       for (const refund of refundListResults.data) {
         result.push({
           type: refund.object,
