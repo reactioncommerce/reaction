@@ -73,6 +73,8 @@ class AdminInviteForm extends Component {
           messageKey = "admin.groupsInvite.inviteOwnerError";
         } else if (error.reason === "cannot invite to group") {
           messageKey = "admin.groupsInvite.cannotInvite";
+        } else if (error.reason === "Need to set a username or email") {
+          messageKey = "admin.groupsInvite.NeedToSetUsernameOrEmail";
         } else {
           messageKey = "admin.groupsInvite.errorSendingInvite";
         }
