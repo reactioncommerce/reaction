@@ -30,13 +30,9 @@ class CalendarPicker extends Component {
   onFocusChange = (focusedInput) => {
     this.setState({
       // Force the focusedInput to always be truthy so that dates are always selectable
-<<<<<<< HEAD
-      focusedInput: !focusedInput ? "startDate" : focusedInput
-=======
       focusedInput: !focusedInput
         ? "startDate"
         : focusedInput
->>>>>>> marketplace
     });
   }
 
