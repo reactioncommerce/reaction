@@ -88,6 +88,15 @@
                 options=uomOptions}}
             </div>
 
+            <div class="form-group">
+              <label class="control-label" data-i18n="shop.baseUOL">Base Unit of Length</label>
+              {{>afFieldInput
+                type="select"
+                name="baseUOL"
+                class="form-control"
+                options=uolOptions}}
+            </div>
+
             {{> shopSettingsSubmitButton}}
           {{/autoForm}}
         </div>
