@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "Заполните ваш заказ",
         "paymentMethod": {
+          "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "Оплата с PayPal",
           "expressNotConfigured": "Paypal Экспресс не настроен.",
           "expressNotAvailable": "Paypal Экспресс не доступен",

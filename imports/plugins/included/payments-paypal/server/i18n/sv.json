@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "Slutföra din beställning",
         "paymentMethod": {
+          "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "Betala med PayPal",
           "expressNotConfigured": "Paypal Express inte konfigurerats.",
           "expressNotAvailable": "Paypal Express inte tillgänglig",

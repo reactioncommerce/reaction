@@ -12,9 +12,6 @@
           "email": "E-mailinstellingen",
           "description": "Voeg een productomschrijving toe",
           "remove": "Verwijderen"
-        },
-        "settings": {
-          "localizationAndI18NLabel": "Lokalisatie en i18n"
         }
       },
       "app": {
@@ -34,28 +31,7 @@
         "yearOptions": "Kies jaar",
         "shopSettings": "Shop Instellingen",
         "dashboard": "Dashboard",
-        "print": "Afdruk",
-        "editMode": "Bewerkingsmodus",
-        "auto": "Auto"
-      },
-      "searchSettings": {
-        "productSearchSettings": {
-          "panelTitle": "product zoeken",
-          "includeTitle": "Inclusief titel",
-          "includeDescription": "Inclusief beschrijving",
-          "includePageTitle": "Inclusief paginatitel",
-          "includeDetails": "bijzonderheden",
-          "includeVendor": "omvatten vendor"
-        },
-        "orderSearchSettings": {
-          "panelTitle": "Zoeken Instellingen"
-        },
-        "accountSearchSettings": {
-          "panelTitle": "Account zoekinstellingen"
-        },
-        "noSettings": "Geen instellingen die momenteel beschikbaar",
-        "settingsSaved": "Zoekinstellingen opgeslagen",
-        "settingsfailed": "updaten zoekinstellingen is mislukt"
+        "print": "Afdruk"
       },
       "header": {
         "tagsAdd": "Tag toevoegen",
@@ -92,8 +68,7 @@
         "startTracking": "Start Tracking",
         "addBarcode": "Streepjescode toevoegen",
         "quantity": "Aantal",
-        "quantityGreaterThanZero": "Fout: aantal moet hoger zijn dan nul",
-        "dropFiles": "Drop bestanden te uploaden"
+        "quantityGreaterThanZero": "Fout: aantal moet hoger zijn dan nul"
       },
       "productDetailEdit": {
         "title": "Producttitel",
@@ -104,9 +79,6 @@
         "twitterMsg": "Twitterbericht",
         "pinterestMsg": "Pinterest-bericht",
         "googleplusMsg": "Google+ bericht",
-        "editVariant": "bewerken Variant",
-        "variantOptions": "variant Opties",
-        "variantDetails": "variant Details",
         "duplicateVariant": "Dupliceren",
         "addVariantOption": "Optie toevoegen",
         "removeVariant": "Verwijderen",
@@ -114,33 +86,7 @@
         "pinProduct": "Product vastzetten",
         "toggleSize": "Grootte wisselen",
         "publish": "publiceren",
-        "moreOptions": "Meer opties",
-        "details": "Details"
-      },
-      "productVariant": {
-        "addVariantOptions": "opties Voeg inschakelen 'In Winkelwagen' butto",
-        "inventoryQuantity": "Hoeveelheid",
-        "title": "Etiket",
-        "price": "Prijs",
-        "optionTitle": "Keuze",
-        "barcode": "Barcode",
-        "compareAtPrice": "Price (MSRP)",
-        "fulfillmentService": "Fulfillment dienst",
-        "weight": "Gewicht",
-        "length": "Lengte",
-        "width": "Breedte",
-        "height": "Hoogte",
-        "taxable": "belastbaar",
-        "taxCode": "BTW-codes",
-        "taxDescription": "tax Beschrijving",
-        "inventoryManagement": "inventaris bijhouden",
-        "inventoryManagementLabel": "Registreer product in inventarissysteem en volgen de status",
-        "inventoryPolicy": "Deny toen niet op voorraad",
-        "inventoryPolicyLabel": "Niet verkopen het product variant wanneer het niet op voorraad",
-        "lowInventoryWarningThreshold": "waarschuw @",
-        "lowInventoryWarningThresholdLabel": "Waarschuw klanten die het product dicht bij uitverkocht zal zijn wanneer de hoeveelheid de volgende drempelwaarde bereikt,",
-        "originCountry": "herkomst Land",
-        "selectTaxCode": "Selecteer Tax Code"
+        "moreOptions": "Meer opties"
       },
       "variantList": {
         "moreOptions": "Er zijn meerdere opties beschikbaar voor deze selectie.",
@@ -149,10 +95,6 @@
       "gridPackage": {
         "pkgEnabled": " is nu ingeschakeld.",
         "pkgDisabled": " is nu uitgeschakeld."
-      },
-      "gridSettingsPanel": {
-        "title": "Grid-instellingen",
-        "selected": "Gekozen"
       },
       "cartDrawer": {
         "empty": "Uw winkelwagen is leeg.",
@@ -281,58 +223,6 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
-      },
-      "corePackageConfig": {
-        "settings": {
-          "public": {
-            "allowGuestCheckout": "Laat Gast Afrekenen"
-          },
-          "openexchangerates": {
-            "appId": "Open Wisselkoersen App Id",
-            "refreshPeriod": "Open Wisselkoersen vernieuwen periode",
-            "refreshPeriodPlaceholder": "d.w.z. elk 1 uur"
-          },
-          "google": {
-            "clientId": "Google Client ID",
-            "apiKey": "Google API Key"
-          }
-        }
-      },
-      "revisions": {
-        "isDisabled": "Revisie controle is uitgeschakeld. Eventuele wijzigingen zullen onmiddellijk worden gepubliceerd.",
-        "isEnabled": "Revisie controle is ingeschakeld voor producten. Eventuele wijzigingen zullen nodig hebben voordat ze zichtbaar zijn voor klanten om te worden gepubliceerd."
-      },
-      "shop": {
-        "defaultPaymentMethod": "Standaardbetaalmethode",
-        "name": "Naam",
-        "namePlaceholder": "Shop Naam",
-        "description": "Beschrijving",
-        "descriptionPlaceholder": "Beschrijf uw winkel voor SEO",
-        "descriptionTooltip": "Meta Beschrijving voor SEO",
-        "email": "Email",
-        "emailPlaceholder": "Primaire Contact E-mail",
-        "keywords": "trefwoorden",
-        "keywordsPlaceholder": "Meta keywords voor SEO",
-        "language": "Base Taal",
-        "addressBook": {
-          "company": "Bedrijf",
-          "companyPlaceholder": "Deze bedrijfsnaam",
-          "country": "Land",
-          "fullName": "Volledige naam",
-          "fullNamePlaceholder": "Naam van uw organisatie",
-          "address1": "Addresregel 1",
-          "address1Placeholder": "Uw organisatie adres",
-          "address1Tooltip": "Dit adres is zichtbaar voor bezoekers",
-          "address2": "Addresregel 2",
-          "address2Placeholder": "Extra Adres",
-          "postal": "Postcode",
-          "city": "Stad",
-          "region": "Province",
-          "phone": "Telefoon",
-          "isShippingDefault": "Wilt u hiervan uw standaardverzendadres maken?",
-          "isBillingDefault": "Wilt u hiervan uw standaardfactuuradres maken?",
-          "isCommercial": "Dit is een zakelijk adres."
-        }
       },
       "accountsUI": {
         "members": "Gebruikers",

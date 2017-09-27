@@ -5,6 +5,9 @@
     "reaction-product-variant": {
       "productGrid": {
         "noProductsFound": "Inga produkter hittades"
+      },
+      "productDetailEdit": {
+        "variantDetails": "variant Detaljer"
       }
     }
   }

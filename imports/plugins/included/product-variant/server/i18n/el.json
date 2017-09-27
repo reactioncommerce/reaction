@@ -5,6 +5,9 @@
     "reaction-product-variant": {
       "productGrid": {
         "noProductsFound": "Δεν βρέθηκαν προϊόντα"
+      },
+      "productDetailEdit": {
+        "variantDetails": "παραλλαγή Λεπτομέρειες"
       }
     }
   }

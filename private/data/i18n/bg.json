@@ -12,9 +12,6 @@
           "email": "Email настройки",
           "description": "Добавете описание на продукта",
           "remove": "Премахни"
-        },
-        "settings": {
-          "localizationAndI18NLabel": "Локализация и i18n"
         }
       },
       "app": {
@@ -34,28 +31,7 @@
         "yearOptions": "Изберете година",
         "shopSettings": "Настройки на магазина",
         "dashboard": "Табло",
-        "print": "Принтирай",
-        "editMode": "режим на редактиране",
-        "auto": "Автоматичен"
-      },
-      "searchSettings": {
-        "productSearchSettings": {
-          "panelTitle": "Търсене на продукт",
-          "includeTitle": "Включи заглавие",
-          "includeDescription": "Включи описание",
-          "includePageTitle": "Включване на заглавие на страница",
-          "includeDetails": "Включване на детайли",
-          "includeVendor": "Включи продавач"
-        },
-        "orderSearchSettings": {
-          "panelTitle": "Поръчка Настройки за търсенето"
-        },
-        "accountSearchSettings": {
-          "panelTitle": "Сметка Настройки за търсенето"
-        },
-        "noSettings": "Не настройки наличните в момента",
-        "settingsSaved": "Настройки за търсенето спасени",
-        "settingsfailed": "актуализация Настройки за търсенето провали"
+        "print": "Принтирай"
       },
       "header": {
         "tagsAdd": "Добави етикет",
@@ -92,8 +68,7 @@
         "startTracking": "Проследяване",
         "addBarcode": "Добави баркод",
         "quantity": "Количество",
-        "quantityGreaterThanZero": "Грешка: Количеството трябва да е повече от 0",
-        "dropFiles": "Капка файлове за качване"
+        "quantityGreaterThanZero": "Грешка: Количеството трябва да е повече от 0"
       },
       "productDetailEdit": {
         "title": "Заглавие на продукта",
@@ -104,9 +79,6 @@
         "twitterMsg": "Twitter съобщение ",
         "pinterestMsg": "Pinterest съобщение ",
         "googleplusMsg": "Google+ съобщение",
-        "editVariant": "Edit Variant",
-        "variantOptions": "Вариант Options",
-        "variantDetails": "Вариант Детайли",
         "duplicateVariant": "Дубликат",
         "addVariantOption": "Добавяне на опция",
         "removeVariant": "Премахни",
@@ -114,33 +86,7 @@
         "pinProduct": "Запомнете продукта",
         "toggleSize": "Изберете размер",
         "publish": "Публикуване",
-        "moreOptions": "Още настройки",
-        "details": "Детайли"
-      },
-      "productVariant": {
-        "addVariantOptions": "Добави опции, за да се даде възможност на \"Добави в количката\" butto",
-        "inventoryQuantity": "количество",
-        "title": "Етикет",
-        "price": "Цена",
-        "optionTitle": "опция",
-        "barcode": "Barcode",
-        "compareAtPrice": "Цена (MSRP)",
-        "fulfillmentService": "Извършване на услуги",
-        "weight": "Тегло",
-        "length": "дължина",
-        "width": "широчина",
-        "height": "височина",
-        "taxable": "облагаем",
-        "taxCode": "Данъчни кодове",
-        "taxDescription": "Данъчен Описание",
-        "inventoryManagement": "Опис проследяване",
-        "inventoryManagementLabel": "Регистрирайте продукт в система за инвентаризация и следите му статус",
-        "inventoryPolicy": "Deny, когато е на склад",
-        "inventoryPolicyLabel": "Да не се продава вариант на продукта, когато той не е в наличност",
-        "lowInventoryWarningThreshold": "Предупредете @",
-        "lowInventoryWarningThresholdLabel": "Предупредете клиенти, че продуктът ще бъде близо до разпродадени, когато количеството достигне следващия праг",
-        "originCountry": "произход Страна",
-        "selectTaxCode": "Изберете данъчен кодекс"
+        "moreOptions": "Още настройки"
       },
       "variantList": {
         "moreOptions": "Има още настройки в този раздел.",
@@ -149,10 +95,6 @@
       "gridPackage": {
         "pkgEnabled": "{{app}}е включен.",
         "pkgDisabled": "{{app}}е изключен."
-      },
-      "gridSettingsPanel": {
-        "title": "Настройки грид",
-        "selected": "подбран"
       },
       "cartDrawer": {
         "empty": "За съжаление кошницата Ви е празна.",
@@ -281,58 +223,6 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
-      },
-      "corePackageConfig": {
-        "settings": {
-          "public": {
-            "allowGuestCheckout": "Оставя гости Checkout"
-          },
-          "openexchangerates": {
-            "appId": "Id Open Валутни курсове на App",
-            "refreshPeriod": "Отворени валутни курсове освежават период",
-            "refreshPeriodPlaceholder": "т.е. всеки един часа"
-          },
-          "google": {
-            "clientId": "Google Client ID",
-            "apiKey": "Google API Key"
-          }
-        }
-      },
-      "revisions": {
-        "isDisabled": "контрол на контрол е забранено. Всички промени ще бъдат публикувани веднага.",
-        "isEnabled": "контрол на контрол е активиран за продукти. ще се нуждае от никакви промени, за да бъдат публикувани преди да бъдат видими за клиентите."
-      },
-      "shop": {
-        "defaultPaymentMethod": "Default Начин на плащане",
-        "name": "Име",
-        "namePlaceholder": "Магазин Наименование",
-        "description": "описание",
-        "descriptionPlaceholder": "Опишете вашия магазин за SEO",
-        "descriptionTooltip": "Мета Описание за SEO",
-        "email": "електронна поща",
-        "emailPlaceholder": "Основно място за контакт Email",
-        "keywords": "Ключови думи",
-        "keywordsPlaceholder": "Мета ключови думи за SEO",
-        "language": "Base Език",
-        "addressBook": {
-          "company": "Компания",
-          "companyPlaceholder": "Това име на фирма",
-          "country": "Държава",
-          "fullName": "Пълно име",
-          "fullNamePlaceholder": "Вашето име на организация",
-          "address1": "Адрес 1",
-          "address1Placeholder": "Вашата организация адрес",
-          "address1Tooltip": "Този адрес ще бъде видим за посетителите",
-          "address2": "Адрес 2",
-          "address2Placeholder": "Допълнителна адрес",
-          "postal": "Поща",
-          "city": "Град",
-          "region": "Регион",
-          "phone": "Телефон",
-          "isShippingDefault": "Сигурни ли сте, че искате да направите този адрес за доставка подразбиращ се?",
-          "isBillingDefault": "Сигурни ли сте, че искате да направите този адрес за плащане подразбиращ се?",
-          "isCommercial": "Това е търговски адрес."
-        }
       },
       "accountsUI": {
         "members": "Участници",

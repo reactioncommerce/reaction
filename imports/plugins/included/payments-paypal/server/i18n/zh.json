@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "完成订单",
         "paymentMethod": {
+          "PaypalExpress": "贝宝快递",
           "expressButtonLabel": "使用PayPal付款",
           "expressNotConfigured": "PayPal快速未配置。",
           "expressNotAvailable": "PayPal快速不可用",
