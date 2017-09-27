@@ -37,7 +37,8 @@ const wrapComponent = (Comp) => (
 
     componentWillReceiveProps(nextProps) {
       this.setState(() => ({
-        variant: nextProps.variant
+        variant: nextProps.variant,
+        isDeleted: nextProps.variant && nextProps.variant.isDeleted
       }), () => {
         this.runVariantValidation(this.state.variant);
       });
