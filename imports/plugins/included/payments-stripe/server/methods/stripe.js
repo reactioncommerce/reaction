@@ -25,6 +25,14 @@ function unformatFromStripe(amount) {
   return (amount / 100);
 }
 
+export const utils = {};
+
+utils.getStripeApi = function (paymentPackageId) {
+  const stripePackage = Packages.findOne(paymentPackageId);
+  const stripeKey = stripePackage.settings.api_key || stripePackage.settings.connectAuth.access_token;
+  return stripeKey;
+};
+
 /**
  * @summary Capture the results of a previous charge
  * @param {object} paymentMethod - Object containing info about the previous transaction
@@ -36,9 +44,9 @@ function stripeCaptureCharge(paymentMethod) {
     amount: formatForStripe(paymentMethod.amount)
   };
 
-  const stripePackage = Packages.findOne(paymentMethod.paymentPackageId);
-  const stripeKey = stripePackage.settings.api_key || stripePackage.settings.connectAuth.access_token;
-  const stripe = require("stripe")(stripeKey);
+
+  const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
+  const stripe = stripeNpm(stripeKey);
 
   try {
     const capturePromise = stripe.charges.capture(paymentMethod.transactionId, captureDetails);
