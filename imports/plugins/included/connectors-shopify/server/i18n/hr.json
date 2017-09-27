@@ -10,14 +10,27 @@
           "shopifyConnectDescription": "Priključak podataka za Shopify"
         },
         "shopifyConnectSettings": {
-          "importProducts": "Uvoz proizvoda",
-          "importing": "Uvoz ... Ovo bi moglo potrajati malo.",
           "editApiKey": "Uredi API ključ",
           "editPassword": "Uređivanje lozinke za API",
           "editSharedSecret": "Uređivanje zajedničke tajne API-ja",
           "editShopifyDomain": "Uređivanje trgovine domene",
+          "headingSync": "Postavke sinkronizacije",
+          "headingImport": "Uvoz",
+          "importFailed": "Pogreška pri uvozu proizvoda.",
+          "importing": "Uvoz ... Ovo bi moglo potrajati malo.",
+          "importProducts": "Uvoz proizvoda",
           "importSuccess": "Proizvodi uspješno uvezeni.",
-          "importFailed": "Pogreška pri uvozu proizvoda."
+          "keepInventorySynced": "Sinkronizirajte oglasni prostor",
+          "noSyncIntegrationsSelected": "Odaberite bar jednu opciju za sinkronizaciju",
+          "optionImportProducts": "Proizvodi",
+          "optionOrdersCreateUpdateInventory": "Ažuriraj oglasni prostor kada se stavlja nova narudžba Shopify",
+          "syncSetup": "Postavi sinkronizaciju",
+          "syncSetupSuccess": "Uspješno postavite sinkronizaciju Shopify",
+          "syncSetupFailure": "Pogreška pri postavljanju sinkronizacije Shoify",
+          "syncStop": "Zaustavi sinkronizaciju",
+          "syncStopSuccess": "Uspješno je zaustavljen Sync Shopify!",
+          "syncStopFailure": "Pogreška pri zaustavljanju sinkronizacije Shopify!",
+          "startImport": "Započni uvoz"
         }
       }
     }

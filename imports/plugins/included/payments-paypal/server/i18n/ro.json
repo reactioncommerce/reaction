@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "Finaliza comanda",
         "paymentMethod": {
+          "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "Plătiți cu PayPal",
           "expressNotConfigured": "Paypal Express nu este configurat.",
           "expressNotAvailable": "Paypal Express nu este disponibil",

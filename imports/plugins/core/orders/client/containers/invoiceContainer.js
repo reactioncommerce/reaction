@@ -274,6 +274,7 @@ class InvoiceContainer extends Component {
       alertText = i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal });
     }
 
+    // TODO: Redesign the cancel order workflow to be more intuitive
     Alerts.alert({
       title: i18next.t("order.cancelOrder"),
       text: alertText,
