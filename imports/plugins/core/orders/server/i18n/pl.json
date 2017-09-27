@@ -4,14 +4,26 @@
   "translation": {
     "reaction-orders": {
       "notFound": "Zamówienie nie zostało znalezione",
+      "order": {
+        "cancelOrder": "Czy chcesz anulować zamówienie?",
+        "cancelOrderLabel": "Anuluj zamówienie",
+        "cancelOrderThenRestock": "Tak, i uzupełnij",
+        "cancelOrderNoRestock": "Tak, ale nie restocking"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "Święcenia"
         },
+        "orderRisk": {
+          "high": "Wysokie ryzyko",
+          "riskCapture": "Złożyć zamówienie z opłatą za ryzyko?",
+          "riskCaptureWarn": "Zamierzasz uchwycić zlecenie z ładunkiem. Potwierdź przed kontynuowaniem."
+        },
         "dashboard": {
           "ordersLabel": "Święcenia",
           "ordersTitle": "Święcenia",
-          "ordersDescription": "Spełnij swoje zamówienia"
+          "ordersDescription": "Spełnij swoje zamówienia",
+          "clearSearch": "Wyczyść"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -28,11 +40,26 @@
             "cardTitle": "Faktura",
             "adjustedTotal": "Skorygowany Razem",
             "capturedTotal": "schwytany Razem",
-            "refund": "Zwrot"
+            "refund": "Zwrot",
+            "refundLabel": "Za zwrot",
+            "refundItem": "Przedmiotów",
+            "refundItemAmount": "Razem",
+            "refundTotal": "Zwrot kosztów"
           },
           "fulfillment": "Spełnienie",
           "orderDetails": "Szczegóły zamówienia",
           "shipmentTracking": "Wysyłka"
+        },
+        "table": {
+          "headers": {
+            "name": "Nazwa",
+            "email": "Ustawienia poczty e-mail",
+            "date": "Data",
+            "id": "ID",
+            "total": "Razem",
+            "shipping": "Wysyłka",
+            "status": "Status"
+          }
         }
       }
     }

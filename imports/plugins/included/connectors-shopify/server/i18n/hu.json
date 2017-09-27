@@ -10,14 +10,27 @@
           "shopifyConnectDescription": "Adatcsatlakozó Shopify számára"
         },
         "shopifyConnectSettings": {
-          "importProducts": "Termékek importálása",
-          "importing": "Importálás ... Ez eltarthat egy kicsit.",
           "editApiKey": "Szerkesztés API-kulcs",
           "editPassword": "API-jelszó szerkesztése",
           "editSharedSecret": "API megosztott titka szerkesztése",
           "editShopifyDomain": "Shopify Domain szerkesztése",
+          "headingSync": "Szinkronizálási beállítások",
+          "headingImport": "import",
+          "importFailed": "Hiba történt a termékek importálásakor.",
+          "importing": "Importálás ... Ez eltarthat egy kicsit.",
+          "importProducts": "Termékek importálása",
           "importSuccess": "A sikeresen importált termékek.",
-          "importFailed": "Hiba történt a termékek importálásakor."
+          "keepInventorySynced": "A készlet szinkronizálása",
+          "noSyncIntegrationsSelected": "Kérjük, válasszon legalább egy lehetőséget a szinkronizáláshoz",
+          "optionImportProducts": "Termékek",
+          "optionOrdersCreateUpdateInventory": "Frissítse a készletet, amikor új Shopify megrendelést helyeznek el",
+          "syncSetup": "Beállítás szinkronizálása",
+          "syncSetupSuccess": "A Shopify szinkronizálás sikeres beállítása",
+          "syncSetupFailure": "Hiba történt a Shoify szinkronizálás beállításakor",
+          "syncStop": "Stop szinkronizálás",
+          "syncStopSuccess": "Sikeresen leállt Shopify szinkron!",
+          "syncStopFailure": "Hiba történt a Shopify szinkronizálás megállításában!",
+          "startImport": "Indítsa el az importálást"
         }
       }
     }

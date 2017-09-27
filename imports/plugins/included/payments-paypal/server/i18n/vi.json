@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "Hoàn thành đặt hàng của bạn",
         "paymentMethod": {
+          "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "Thanh toán bằng PayPal",
           "expressNotConfigured": "Paypal Express không được cấu hình.",
           "expressNotAvailable": "Paypal Express không có sẵn",

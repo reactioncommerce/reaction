@@ -129,6 +129,7 @@ export default function () {
     },
     requiresShipping: true,
     shipping: [{
+      shopId: getShopId(),
       items: [
         {
           _id: itemIdOne,
@@ -148,6 +149,7 @@ export default function () {
     }], // Shipping Schema
     billing: [{
       _id: Random.id(),
+      shopId: getShopId(),
       address: getAddress({ isBillingDefault: true }),
       paymentMethod: paymentMethod({
         method: "credit",
@@ -180,6 +182,7 @@ export default function () {
     Factory.extend("order", {
       billing: [{
         _id: Random.id(),
+        shopId: getShopId(),
         address: getAddress({ isBillingDefault: true }),
         paymentMethod: paymentMethod({
           processor: "Paypal",

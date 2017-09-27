@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "Dovršite narudžbu",
         "paymentMethod": {
+          "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "Plaćanje PayPalom",
           "expressNotConfigured": "Paypal Express ne konfigurira.",
           "expressNotAvailable": "Paypal Express nije dostupan",
