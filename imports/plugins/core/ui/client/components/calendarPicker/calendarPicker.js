@@ -4,9 +4,8 @@ import { DayPickerRangeController } from "react-dates";
 import omit from "lodash/omit";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
-// CalendarPicker is a wrapper around react-dates DayPickerRangeController.
-// Anything that works in react-dates should work in CalendarPicker
-// react-dates docs are available at: https://github.com/airbnb/react-dates
+// CalendarPicker is a wrapper around react-dates DayPickerRangeController. Anything that works in react-dates should
+// work in CalendarPicker react-dates docs are available at: https://github.com/airbnb/react-dates
 
 class CalendarPicker extends Component {
   constructor(props) {
@@ -14,15 +13,14 @@ class CalendarPicker extends Component {
     this.state = {
       startDate: props.initialStartDate,
       endDate: props.initialEndDate,
-      focusedInput: props.autoFocusEndDate ? "endDate" : "startDate"
+      focusedInput: props.autoFocusEndDate
+        ? "endDate"
+        : "startDate"
     };
   }
 
   onDatesChange = ({ startDate, endDate }) => {
-    this.setState({
-      startDate,
-      endDate
-    });
+    this.setState({ startDate, endDate });
 
     if (this.props.onDatesChange) {
       this.props.onDatesChange(startDate, endDate);
@@ -32,19 +30,20 @@ class CalendarPicker extends Component {
   onFocusChange = (focusedInput) => {
     this.setState({
       // Force the focusedInput to always be truthy so that dates are always selectable
+<<<<<<< HEAD
       focusedInput: !focusedInput ? "startDate" : focusedInput
+=======
+      focusedInput: !focusedInput
+        ? "startDate"
+        : focusedInput
+>>>>>>> marketplace
     });
   }
 
   render() {
     const { focusedInput, startDate, endDate } = this.state;
 
-    const props = omit(this.props, [
-      "autoFocus",
-      "autoFocusEndDate",
-      "initialStartDate",
-      "initialEndDate"
-    ]);
+    const props = omit(this.props, ["autoFocus", "autoFocusEndDate", "initialStartDate", "initialEndDate"]);
 
     return (
       <DayPickerRangeController
@@ -54,8 +53,8 @@ class CalendarPicker extends Component {
         focusedInput={focusedInput}
         startDate={startDate}
         endDate={endDate}
-        navPrev={<i className="fa fa-arrow-left"/>}
-        navNext={<i className="fa fa-arrow-right"/>}
+        navPrev={< i className = "fa fa-arrow-left" />}
+        navNext={< i className = "fa fa-arrow-right" />}
         hideKeyboardShortcutsPanel={true}
       />
     );

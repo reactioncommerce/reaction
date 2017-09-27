@@ -5,6 +5,9 @@
     "reaction-product-variant": {
       "productGrid": {
         "noProductsFound": "Nem található termékek"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Variant Részletek"
       }
     }
   }
