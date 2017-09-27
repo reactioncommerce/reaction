@@ -33,7 +33,7 @@ Migrations.add({
         cart.items.forEach((item) => {
           delete item.product;
         });
-        Cart.update({ _id: cart._id }, {
+        Cart._collection.update({ _id: cart._id }, {
           $set: { items: cart.items }
         });
       }
@@ -43,7 +43,7 @@ Migrations.add({
       order.items.forEach((item) => {
         delete item.product;
       });
-      Orders.update({ _id: order._id }, {
+      Orders._collection.update({ _id: order._id }, {
         $set: { items: order.items }
       });
     });

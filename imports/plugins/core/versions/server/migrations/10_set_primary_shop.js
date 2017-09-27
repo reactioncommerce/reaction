@@ -16,7 +16,7 @@ Migrations.add({
     });
   },
   down() {
-    Shops.update({ shopType: "primary" }, {
+    Shops._collection.update({ shopType: "primary" }, {
       $unset: { shopType: "" }
     });
   }
