@@ -121,7 +121,7 @@
         "width": "Width",
         "height": "Height",
         "taxable": "Taxable",
-        "taxCode": "Tax Code",
+        "taxCode": "Tax code",
         "taxDescription": "Tax description",
         "inventoryManagement": "Inventory tracking",
         "inventoryManagementLabel": "Register product in inventory system and track its status",
