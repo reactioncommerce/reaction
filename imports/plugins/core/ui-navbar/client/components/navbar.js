@@ -21,8 +21,10 @@ async function openSearchModalLegacy(props) {
 
 class NavBar extends Component {
   static propTypes = {
+    brandMedia: PropTypes.object,
     hasProperPermission: PropTypes.bool,
-    searchEnabled: PropTypes.bool
+    searchEnabled: PropTypes.bool,
+    shop: PropTypes.object
   }
 
   state = {
@@ -59,8 +61,14 @@ class NavBar extends Component {
   }
 
   renderBrand() {
+    const shop = this.props.shop || { name: "" };
+    const logo = this.props.brandMedia && this.props.brandMedia.url();
+
     return (
-      <Components.Brand />
+      <Components.Brand
+        logo={logo}
+        title={shop.name}
+      />
     );
   }
 
