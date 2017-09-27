@@ -5,6 +5,9 @@
     "reaction-product-variant": {
       "productGrid": {
         "noProductsFound": "Nebyly nalezeny žádné produkty"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Variant Podrobnosti"
       }
     }
   }

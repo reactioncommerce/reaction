@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "Teljesíteni rendelését",
         "paymentMethod": {
+          "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "Fizeshess",
           "expressNotConfigured": "Paypal Express nincs beállítva.",
           "expressNotAvailable": "Paypal Express nem elérhető",

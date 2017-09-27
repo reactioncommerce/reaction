@@ -1,0 +1,18 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-connect",
+  "translation": {
+    "reaction-connect": {
+      "admin": {
+        "dashboard": {
+          "connectLabel": "Conectați",
+          "connectTitle": "Conectați",
+          "connectDescription": "Reacția a conecta ca un serviciu implementat"
+        },
+        "settings": {
+          "reactionConnectLabel": "reacție Connect"
+        }
+      }
+    }
+  }
+}]

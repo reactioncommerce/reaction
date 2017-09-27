@@ -38,8 +38,8 @@ function createShippoParcel(reactionParcel, reactionMassUnit, reactionDistanceUn
     length: reactionParcel.length || "",
     height: reactionParcel.height || "",
     weight: reactionParcel.weight || "",
-    distance_unit: reactionDistanceUnit.toLowerCase(), // Propably we need to have for each shop a uom/baseuom for distance
-    mass_unit: reactionMassUnit.toLowerCase()
+    distance_unit: reactionDistanceUnit,
+    mass_unit: reactionMassUnit
   };
 
   return shippoParcel;
@@ -409,10 +409,9 @@ export const methods = {
       const shippoAddressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
       // product in the cart has to have parcel property with the dimensions
       if (cart.items && cart.items[0] && cart.items[0].parcel) {
-        const unitOfMeasure = shop && shop.unitsOfMeasure && shop.unitsOfMeasure[0].uom || "KG";
-        // at the moment shops don't have a kind of unitOfMeasure for distance
-        // so we put CM...
-        shippoParcel = createShippoParcel(cart.items[0].parcel, unitOfMeasure, "CM");
+        const unitOfMeasure = shop && shop.baseUOM || "kg";
+        const unitOfLength = shop && shop.baseUOL || "cm";
+        shippoParcel = createShippoParcel(cart.items[0].parcel, unitOfMeasure, unitOfLength);
       } else {
         errorDetails.message = "This cart has no items, or the first item has no 'parcel' property.";
         return [[errorDetails], []];

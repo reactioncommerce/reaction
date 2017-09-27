@@ -13,14 +13,22 @@ import { Logger, Hooks, Reaction } from "/server/api";
 
 
 // helper to return the order credit object
-// the first credit paymentMethod on the order
+// credit paymentMethod on the order as per current active shop
 // returns entire payment method
 export function orderCreditMethod(order) {
-  return order.billing.filter(value => value.paymentMethod.method ===  "credit")[0];
+  const creditBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "credit");
+  const billingRecord = creditBillingRecords.find((billing) => {
+    return billing.shopId === Reaction.getShopId();
+  });
+  return billingRecord;
 }
 // helper to return the order debit object
 export function orderDebitMethod(order) {
-  return order.billing.filter(value => value.paymentMethod.method ===  "debit")[0];
+  const debitBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "debit");
+  const billingRecord = debitBillingRecords.find((billing) => {
+    return billing.shopId === Reaction.getShopId();
+  });
+  return billingRecord;
 }
 
 // REVIEW: This jsdoc doesn't seem to be accurate
@@ -215,6 +223,7 @@ export const methods = {
 
     return Orders.update({
       "_id": order._id,
+      "billing.shopId": Reaction.getShopId,
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
@@ -256,6 +265,7 @@ export const methods = {
 
     return Orders.update({
       "_id": order._id,
+      "billing.shopId": Reaction.getShopId,
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
@@ -290,10 +300,13 @@ export const methods = {
       ordersInventoryAdjust(order._id);
     }
 
+    const billingRecord = order.billing.find(billing => billing.shopId === Reaction.getShopId());
+    const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
+
     let paymentMethod = orderCreditMethod(order).paymentMethod;
     paymentMethod = Object.assign(paymentMethod, { amount: Number(paymentMethod.amount) });
-    const invoiceTotal = order.billing[0].invoice.total;
-    const shipment = order.shipping[0];
+    const invoiceTotal = billingRecord.invoice.total;
+    const shipment = shippingRecord;
     const itemIds = shipment.items.map((item) => {
       return item._id;
     });
@@ -314,6 +327,7 @@ export const methods = {
 
     return Orders.update({
       "_id": order._id,
+      "billing.shopId": Reaction.getShopId,
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
@@ -348,8 +362,9 @@ export const methods = {
       if (result) {
         Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", order._id);
 
+        const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
         // Set the status of the items as shipped
-        const itemIds = order.shipping[0].items.map((item) => {
+        const itemIds = shippingRecord.items.map((item) => {
           return item._id;
         });
 
@@ -445,7 +460,7 @@ export const methods = {
 
     this.unblock();
 
-    const shipment = order.shipping[0];
+    const shipment = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
 
     if (order.email) {
       Meteor.call("orders/sendNotification", order, (err) => {
@@ -464,8 +479,8 @@ export const methods = {
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order, itemIds);
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
 
-    const isCompleted = _.every(order.items, (item) => {
-      return _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed");
+    const isCompleted = order.items.every((item) => {
+      return item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed");
     });
 
     Orders.update({
@@ -516,7 +531,7 @@ export const methods = {
     // Get shop logo, if available
     let emailLogo;
     if (Array.isArray(shop.brandAssets)) {
-      const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
+      const brandAsset = shop.brandAssets.find((asset) => asset.type === "navbarBrandImage");
       const mediaId = Media.findOne(brandAsset.mediaId);
       emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
     } else {
@@ -524,6 +539,7 @@ export const methods = {
     }
 
     const billing = orderCreditMethod(order);
+    const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
     // TODO: Update */refunds/list for marketplace
     const refundResult = Meteor.call("orders/refunds/list", order);
     const refundTotal = refundResult.reduce((acc, refund) => acc + refund.amount, 0);
@@ -651,13 +667,13 @@ export const methods = {
         orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
         orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
         shipping: {
-          tracking: order.shipping[0].tracking,
-          carrier: order.shipping[0].shipmentMethod.carrier,
+          tracking: shippingRecord.tracking,
+          carrier: shippingRecord.shipmentMethod.carrier,
           address: {
-            address: order.shipping[0].address.address1,
-            city: order.shipping[0].address.city,
-            region: order.shipping[0].address.region,
-            postal: order.shipping[0].address.postal
+            address: shippingRecord.address.address1,
+            city: shippingRecord.address.city,
+            region: shippingRecord.address.region,
+            postal: shippingRecord.address.postal
           }
         }
       };
@@ -831,7 +847,7 @@ export const methods = {
     }
 
     // process order..payment.paymentMethod
-    _.each(order.billing, function (billing) {
+    order.billing.forEach((billing) => {
       const paymentMethod = billing.paymentMethod;
       const transactionId = paymentMethod.transactionId;
 
@@ -956,7 +972,7 @@ export const methods = {
 
     let result;
     let query = {};
-    if (_.includes(checkSupportedMethods, "De-authorize")) {
+    if (checkSupportedMethods.includes("De-authorize")) {
       result = Meteor.call(`${processor}/payment/deAuthorize`, paymentMethod, amount);
       query = {
         $push: {
@@ -990,6 +1006,7 @@ export const methods = {
 
     Orders.update({
       "_id": orderId,
+      "billing.shopId": Reaction.getShopId(),
       "billing.paymentMethod.transactionId": transactionId
     }, {
       $set: {
@@ -1050,6 +1067,7 @@ export const methods = {
 
         Orders.update({
           "_id": orderId,
+          "billing.shopId": Reaction.getShopId(),
           "billing.paymentMethod.transactionId": transactionId
         }, {
           $set: {
