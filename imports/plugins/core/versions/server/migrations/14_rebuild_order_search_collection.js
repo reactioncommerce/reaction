@@ -3,8 +3,7 @@ import { OrderSearch } from "/lib/collections";
 import { buildOrderSearch } from "/imports/plugins/included/search-mongo/server/methods/searchcollections";
 
 Migrations.add({
-  // Migrations 12 and 13 introduced changes on Orders, so we need to rebuild the search collections.
-  // Building OrderSearch here then covers the rebuild in migration 1 (so it was moved from migration 1 to here)
+  // Migrations 12 and 13 introduced changes on Orders, so we need to rebuild the search collection
   version: 14,
   up: function () {
     OrderSearch.remove({});
