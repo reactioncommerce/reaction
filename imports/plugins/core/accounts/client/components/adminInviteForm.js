@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { getDefaultUserInviteGroup } from "../helpers/accountsHelper";
 
 class AdminInviteForm extends Component {
@@ -81,11 +81,7 @@ class AdminInviteForm extends Component {
 
       if (result) {
         this.setState({ name: "", email: "" });
-        ReactionAlerts.add(
-          "Invite Successful",
-          "success",
-          Object.assign({}, alertOptions, { i18nKey: "accountsUI.info.invitationSent" })
-        );
+        Alerts.toast(i18next.t("accountsUI.info.invitationSent"), "success");
       }
     });
   }
