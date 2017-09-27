@@ -129,13 +129,13 @@ class InvoiceActions extends Component {
             <Components.Button
               className="btn btn-danger"
               bezelStyle="solid"
+              label="Cancel Order"
+              i18nKeyLabel="order.cancelOrderLabel"
               type="button"
               data-event-action="cancelOrder"
               style={{ marginBottom: 10 }}
               data-i18n="order.cancelOrderLabel"
-            >
-              Cancel Order
-            </Components.Button>
+            />
           </div>
         }
 
