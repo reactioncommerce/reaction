@@ -4,14 +4,26 @@
   "translation": {
     "reaction-orders": {
       "notFound": "Bestelling niet gevonden",
+      "order": {
+        "cancelOrder": "Wilt u deze bestelling annuleren?",
+        "cancelOrderLabel": "Annuleer bestelling",
+        "cancelOrderThenRestock": "Ja, en opnieuw",
+        "cancelOrderNoRestock": "Ja, maar geen restocking"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "orders"
         },
+        "orderRisk": {
+          "high": "Hoog risico",
+          "riskCapture": "Capture Order Met Risicostarief?",
+          "riskCaptureWarn": "Je staat op het punt om de bestelling vast te leggen met een ladingrisico. Bevestig voordat u verder gaat."
+        },
         "dashboard": {
           "ordersLabel": "orders",
           "ordersTitle": "orders",
-          "ordersDescription": "Vervul uw bestellingen"
+          "ordersDescription": "Vervul uw bestellingen",
+          "clearSearch": "Duidelijk"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -28,11 +40,26 @@
             "cardTitle": "Factuur",
             "adjustedTotal": "aangepaste Total",
             "capturedTotal": "gevangen Totaal",
-            "refund": "Terugbetaling"
+            "refund": "Terugbetaling",
+            "refundLabel": "Voor terugbetaling",
+            "refundItem": "Items",
+            "refundItemAmount": "Totaal",
+            "refundTotal": "Restitutie Totaal"
           },
           "fulfillment": "Vervulling",
           "orderDetails": "Bestel Details",
           "shipmentTracking": "Verzending"
+        },
+        "table": {
+          "headers": {
+            "name": "Naam",
+            "email": "E-mailinstellingen",
+            "date": "Datum",
+            "id": "ID",
+            "total": "Totaal",
+            "shipping": "Verzenden",
+            "status": "Toestand"
+          }
         }
       }
     }

@@ -10,14 +10,27 @@
           "shopifyConnectDescription": "Data Connector cho Shopify"
         },
         "shopifyConnectSettings": {
-          "importProducts": "Sản phẩm nhập khẩu",
-          "importing": "Đang nhập ... Có thể mất một chút thời gian.",
           "editApiKey": "Sửa API Key",
           "editPassword": "Chỉnh sửa Mật khẩu API",
           "editSharedSecret": "Chỉnh sửa bí mật được chia sẻ API",
           "editShopifyDomain": "Chỉnh sửa tên miền Shopify",
+          "headingSync": "Cài đặt Đồng bộ hóa",
+          "headingImport": "nhập",
+          "importFailed": "Lỗi khi nhập sản phẩm.",
+          "importing": "Đang nhập ... Có thể mất một chút thời gian.",
+          "importProducts": "Sản phẩm nhập khẩu",
           "importSuccess": "Sản phẩm nhập khẩu thành công.",
-          "importFailed": "Lỗi khi nhập sản phẩm."
+          "keepInventorySynced": "Giữ đồng bộ hóa kho",
+          "noSyncIntegrationsSelected": "Vui lòng chọn ít nhất một tùy chọn để đồng bộ hóa",
+          "optionImportProducts": "Các sản phẩm",
+          "optionOrdersCreateUpdateInventory": "Cập nhật Hàng tồn kho khi đặt hàng Shopify mới",
+          "syncSetup": "Đồng bộ hóa cài đặt",
+          "syncSetupSuccess": "Thiết lập Shopify sync thành công",
+          "syncSetupFailure": "Lỗi cài đặt đồng bộ hóa Shoify",
+          "syncStop": "Ngừng đồng bộ hóa",
+          "syncStopSuccess": "Đã dừng đồng bộ hóa Shopify thành công!",
+          "syncStopFailure": "Lỗi khi dừng Shopify sync!",
+          "startImport": "Bắt đầu Nhập"
         }
       }
     }
