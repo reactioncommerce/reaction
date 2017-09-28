@@ -1,8 +1,8 @@
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
-import { Meteor } from "meteor/meteor";
 import { TaxCloudPackageConfig } from "../../lib/collections/schemas";
 
 Template.taxCloudSettings.helpers({
@@ -23,7 +23,7 @@ AutoForm.hooks({
     onSuccess: function () {
       Meteor.call("taxcloud/getTaxCodes", (err, res) => {
         if (err) {
-          throw new Meteor.Error(Number, "description");
+          throw new Meteor.Error(500, "description");
         } else if (res && Array.isArray(res)) {
           Alerts.toast(i18next.t("admin.taxSettings.shopTaxMethodsSaved"),
             "success");
