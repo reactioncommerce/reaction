@@ -62,7 +62,7 @@ class OrderDashboard extends Component {
 
   render() {
     return (
-      <div className="orders-table-container">
+      <div className="order-dashboard-container">
         <OrderSearch
           handleChange={this.props.handleChange}
           searchQuery={this.props.searchQuery}
