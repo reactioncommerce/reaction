@@ -179,6 +179,10 @@ class OrderDashboardContainer extends Component {
     let query = OrderHelper.makeQuery(value);
     // ensure other fields (e.g ids) on query are kept
     query = Object.assign({}, this.state.query, query);
+
+    // Uncheck Checkbox if checked
+    this.selectAllOrders(Orders.find(query).fetch, true);
+
     this.setState({
       query,
       filter: i18next.t(`order.filter.${value}`),
@@ -298,6 +302,18 @@ class OrderDashboardContainer extends Component {
       this.setState({
         selectedItems: [],
         multipleSelect: false
+      });
+    } else if (this.state.query !== {}) {
+      // this condition was added to enable getting the total number of orders
+      // based on the query set and also select all the ids of the orders fetched
+      // from the query
+      let filteredOrders = Orders.find(this.state.query).fetch();
+      filteredOrders = filteredOrders.map((order) => {
+        return order._id;
+      });
+      this.setState({
+        selectedItems: filteredOrders,
+        multipleSelect: true
       });
     } else {
       // if there are no selected orders, or if there are some orders that have been
