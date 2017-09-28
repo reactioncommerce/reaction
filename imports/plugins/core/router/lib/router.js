@@ -466,6 +466,8 @@ export function ReactionLayout(options = {}) {
     adminControlsFooter: ""
   };
 
+  let layoutTheme = "default";
+
   // Find a registered layout using the layoutName and workflowName
   if (shop) {
     const sortedLayout = shop.layout.sort((prev, next) => prev.priority - next.priority);
@@ -511,6 +513,7 @@ export function ReactionLayout(options = {}) {
 
   // Render the layout
   return {
+    theme: foundLayout && foundLayout.theme || "default",
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
       const route = Router.current().route;
@@ -610,6 +613,7 @@ Router.initPackageRoutes = (options) => {
         options: {
           name: "index",
           ...options.indexRoute,
+          theme:
           component: indexLayout.component,
           structure: indexLayout.structure
         }
