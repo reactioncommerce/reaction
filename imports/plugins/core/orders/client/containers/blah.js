@@ -763,7 +763,7 @@ const wrapComponent = (Comp) => (
     }
 
     render() {
-      console.log("state", this.state);
+      console.log("this.selectedItems", this.state.selectedItems);
       return (
         <Comp
           searchQuery={this.state.searchQuery}
