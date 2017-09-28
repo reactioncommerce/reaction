@@ -89,6 +89,21 @@ const wrapComponent = (Comp) => (
         }
       });
       const taxCodesArray = [];
+      // if (provider.name === "taxes-taxcloud") {
+      //   Meteor.call("taxcloud/getTaxCodes", (err, res) => {
+      //     if (err) {
+      //       throw new Meteor.Error(Number, "description");
+      //     } else if (res && Array.isArray(res)) {
+      //       res.forEach((code) => {
+      //         Meteor.call("taxes/insertTaxCodes", shopId, code, "taxes-taxcloud", (error) => {
+      //           if (error) {
+      //             throw new Meteor.Error("Error populating TaxCodes collection", error);
+      //           }
+      //         });
+      //       });
+      //     }
+      //   });
+      // }
 
       const codes = TaxCodes.find({
         shopId: shopId,

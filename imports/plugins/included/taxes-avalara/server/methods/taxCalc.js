@@ -16,9 +16,9 @@ const taxCalc = {};
 
 taxCalc.getPackageData = function () {
   const pkgData = Packages.findOne({
-    name: "taxes-avalara",
-    shopId: Reaction.getShopId(),
-    enabled: true
+    "name": "taxes-avalara",
+    "shopId": Reaction.getShopId(),
+    "settings.avalara.enabled": true
   });
   return pkgData;
 };
