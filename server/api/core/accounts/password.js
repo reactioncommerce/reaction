@@ -34,7 +34,7 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
   }
 
   // make sure we have a valid email
-  if (!email || !Array.includes(_.map(user.emails || [], "address"), email)) {
+  if (!email || !((_.map(user.emails || [], "address")).includes(email))) {
     Logger.error("sendResetPasswordEmail - Email not found");
     throw new Meteor.Error("email-not-found", "Email not found");
   }
@@ -151,7 +151,7 @@ export function sendVerificationEmail(userId, email) {
   }
 
   // make sure we have a valid address
-  if (!address || !Array.includes(_.map(user.emails || [], "address"), address)) {
+  if (!address || !((_.map(user.emails || [], "address")).includes(address))) {
     const msg = "Email not found for user";
     Logger.error(msg);
     throw new Meteor.Error("email-not-found", msg);
@@ -266,7 +266,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
   }
 
   // make sure we have a valid address
-  if (!address || !Array.includes(_.map(user.emails || [], "address"), address)) {
+  if (!address || !((_.map(user.emails || [], "address")).includes(address))) {
     const msg = "Email not found for user";
     Logger.error(msg);
     throw new Meteor.Error("email-not-found", msg);
