@@ -735,7 +735,7 @@ export default {
     // valid application
     if (reactionApp) {
       const settingsData = _.find(reactionApp.registry, function (item) {
-        return item.provides === provides && item.template === template;
+        return item.provides && item.provides.includes(provides) && item.template === template;
       });
       return settingsData;
     }

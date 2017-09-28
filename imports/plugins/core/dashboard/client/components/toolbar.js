@@ -131,7 +131,7 @@ class PublishControls extends Component {
             });
           }}
         >
-          <Icon style={{ fontSize: 24 }} icon="icon icon-reaction-logo" />
+          <Icon icon="icon icon-reaction-logo" />
         </FlatButton>
       </ToolbarGroup>
     );

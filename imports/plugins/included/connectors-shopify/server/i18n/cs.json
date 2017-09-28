@@ -10,14 +10,27 @@
           "shopifyConnectDescription": "Datový konektor pro nakupování"
         },
         "shopifyConnectSettings": {
-          "importProducts": "Import produktů",
-          "importing": "Importovat ... To může chvíli trvat.",
           "editApiKey": "Editace API",
           "editPassword": "Upravit heslo API",
           "editSharedSecret": "Upravit sdílené tajné rozhraní API",
           "editShopifyDomain": "Upravit doménu",
+          "headingSync": "Nastavení synchronizace",
+          "headingImport": "Import",
+          "importFailed": "Při importu produktů došlo k chybě.",
+          "importing": "Importovat ... To může chvíli trvat.",
+          "importProducts": "Import produktů",
           "importSuccess": "Produkty byly úspěšně importovány.",
-          "importFailed": "Při importu produktů došlo k chybě."
+          "keepInventorySynced": "Keep Inventory Synced",
+          "noSyncIntegrationsSelected": "Zvolte alespoň jednu možnost synchronizace",
+          "optionImportProducts": "produkty",
+          "optionOrdersCreateUpdateInventory": "Aktualizovat inventář při nové objednávce Shopify",
+          "syncSetup": "Nastavení synchronizace",
+          "syncSetupSuccess": "Úspěšně nastavit Synchronizovat službu Shopify",
+          "syncSetupFailure": "Chyba při nastavení synchronizace synchronizace",
+          "syncStop": "Zastavit synchronizaci",
+          "syncStopSuccess": "Úspěšně se zastavil Synchronizace shopify!",
+          "syncStopFailure": "Chyba při zastavení synchronizace Shopify!",
+          "startImport": "Spusťte import"
         }
       }
     }

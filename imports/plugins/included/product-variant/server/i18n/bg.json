@@ -5,6 +5,9 @@
     "reaction-product-variant": {
       "productGrid": {
         "noProductsFound": "Няма намерени продукти"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Вариант Детайли"
       }
     }
   }

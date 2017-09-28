@@ -15,7 +15,7 @@ Reaction.registerPackage({
   },
   registry: [
     {
-      provides: "dashboard",
+      provides: ["dashboard"],
       name: "taxes",
       label: "Taxes",
       description: "Provide tax rates",
@@ -28,18 +28,18 @@ Reaction.registerPackage({
       label: "Tax Settings",
       icon: "fa fa-university",
       name: "taxes/settings",
-      provides: "settings",
+      provides: ["settings"],
       template: "taxSettings"
     },
     {
       label: "Custom Rates",
       name: "taxes/settings/rates",
-      provides: "taxSettings",
+      provides: ["taxSettings"],
       template: "customTaxRates"
     },
     {
       template: "flatRateCheckoutTaxes",
-      provides: "taxMethod"
+      provides: ["taxMethod"]
     }
   ]
 });

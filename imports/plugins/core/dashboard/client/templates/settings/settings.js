@@ -37,7 +37,7 @@ Template.settingsHeader.helpers({
 
     if (reactionApp) {
       const settingsData = _.find(reactionApp.registry, function (item) {
-        return item.route === Reaction.Router.getRouteName() && item.provides === "settings";
+        return item.route === Reaction.Router.getRouteName() && item.provides && item.provides.includes("settings");
       });
 
       return settingsData;

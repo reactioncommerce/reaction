@@ -12,9 +12,6 @@
           "email": "إعدادات البريد الإلكتروني",
           "description": "مواصفات",
           "remove": "إزالة"
-        },
-        "settings": {
-          "localizationAndI18NLabel": "التحويل و i18n"
         }
       },
       "app": {
@@ -34,27 +31,7 @@
         "yearOptions": "اختر السنة",
         "shopSettings": "إعدادات المتجر",
         "dashboard": "لوحة المعلومات",
-        "print": "طباعة",
-        "auto": "تلقائي"
-      },
-      "searchSettings": {
-        "productSearchSettings": {
-          "panelTitle": "بحث المنتج",
-          "includeTitle": "شمل العنوان",
-          "includeDescription": "شمل الوصف",
-          "includePageTitle": "شمل عنوان الصفحة",
-          "includeDetails": "شامل التفاصيل",
-          "includeVendor": "شمل البائعين"
-        },
-        "orderSearchSettings": {
-          "panelTitle": "إعدادات طلب البحث"
-        },
-        "accountSearchSettings": {
-          "panelTitle": "اعدادات بحث الحساب "
-        },
-        "noSettings": "لا يوجد إعدادات متاحة حالياً",
-        "settingsSaved": "البحث عن الإعدادات المحفوظة",
-        "settingsfailed": "فشل تحديث إعدادات البحث"
+        "print": "طباعة"
       },
       "header": {
         "tagsAdd": "إضافة علامة",
@@ -91,8 +68,7 @@
         "startTracking": "بدء التتبع",
         "addBarcode": "إضافة الباركود",
         "quantity": "كمية",
-        "quantityGreaterThanZero": "خطأ: الكمية يجب أن تكون أكثر من صفر",
-        "dropFiles": "وضع الملفات للتحميل"        
+        "quantityGreaterThanZero": "خطأ: الكمية يجب أن تكون أكثر من صفر"
       },
       "productDetailEdit": {
         "title": "عنوان",
@@ -103,9 +79,6 @@
         "twitterMsg": "رسالة تويتر",
         "pinterestMsg": "رسالة بيرسنت",
         "googleplusMsg": "جوجل+ رسالة",
-        "editVariant": "تعديل المتغير",
-        "variantOptions": "خيارات نموذجية",
-        "variantDetails": "تفاصيل المتغير",
         "duplicateVariant": "مكرر",
         "addVariantOption": "إضافة خيار",
         "removeVariant": "إزالة",
@@ -113,34 +86,7 @@
         "pinProduct": "رمز البن للمنتج",
         "toggleSize": "تبديل الحجم",
         "publish": "نشر",
-        "moreOptions": "خيارات إضافية",
-        "details": "تفاصيل",
-        "editMode": "إضافة نمط"
-      },
-      "productVariant": {
-        "addVariantOptions": "إضافة خيارات لتمكين \"إضافة إلى العربة\" بطو",
-        "inventoryQuantity": "كمية",
-        "title": "علامة",
-        "price": "ثمن",
-        "optionTitle": "خيار",
-        "barcode": "الباركود",
-        "compareAtPrice": " (MSRP) ثمن ",
-        "fulfillmentService": "خدمة تلبية الطلب",
-        "weight": "وزن",
-        "length": "طول",
-        "width": "عرض",
-        "height": "ارتفاع",
-        "taxable": "خاضع للضريبة",
-        "taxCode": "رموز الضريبة",
-        "taxDescription": "الضرائب الوصف",
-        "inventoryManagement": "تتبع الجرد",
-        "inventoryManagementLabel": "تسجيل المنتج في نظام الجرد وتتبع حالتها",
-        "inventoryPolicy": "الرفض عندما يكون غير متوفر",
-        "inventoryPolicyLabel": "لا تبع المنتج البديل وهو غير موجود في المخزن",
-        "lowInventoryWarningThreshold": "Warn @",
-        "lowInventoryWarningThresholdLabel": "تحذير العملاء من أن المنتج سوف ينفذ عندما تصل الكمية الى الحد المحدد التالي",
-        "originCountry": "بلد المنشأ",
-        "selectTaxCode": "حدد قانون الضرائب"
+        "moreOptions": "خيارات إضافية"
       },
       "variantList": {
         "moreOptions": ".هنالك خيارات إضافية متاحة لهذا الأختيار",
@@ -149,10 +95,6 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} مفعل الان.",
         "pkgDisabled": "{{app}} أصبح معطلا."
-      },
-      "gridSettingsPanel": {
-        "title": "إعدادات الشبكة",
-        "selected": "مختار"
       },
       "cartDrawer": {
         "empty": "نشعر بالحزن. .عربتك فارغة",
@@ -281,58 +223,6 @@
         "meetup": "ميتوب",
         "twitter": "تويتر",
         "weibo": "ويبو"
-      },
-      "corePackageConfig": {
-        "settings": {
-          "public": {
-            "allowGuestCheckout": "السماح للضيف بالخروج"
-          },
-          "openexchangerates": {
-            "appId": "فتح  تبادل معدلات رقم التطبيق",
-            "refreshPeriod": "فتح فترة تجديد معدلات التبادل ",
-            "refreshPeriodPlaceholder": "أي كل ساعة"
-          },
-          "google": {
-            "clientId": "هوية العميل على جوجل",
-            "apiKey": " لجوجل  API مفتاح "
-          }
-        }
-      },
-      "revisions": {
-        "isDisabled": ".مراجعة المراقبة  غير مفعل .أي تغيير سوف يتم نشره فوراً",
-        "isEnabled": "يتم تمكين مراجعة مراقبة للمنتجات. سوف يحتاج أي تغييرات على أن تنشر قبل أن يكون مرئيا للعملاء."
-      },
-       "shop": {
-        "defaultPaymentMethod": "طريقة الدفع الإفتراضية",
-        "name": "الأسم",
-        "namePlaceholder": "اسم المتجر",
-        "description": "مواصفات",
-        "descriptionPlaceholder": "قم بوصف  متجرك من أجل الظهور في محركات البحث",
-        "descriptionTooltip": ".هذا الحقل يستخدم في وصف العلامة الوصفية إنه يسمح لمحركات البحث  لوصف متجرك",
-        "email": "بريد إلكتروني",
-        "emailPlaceholder": "البريد الإلكتروني لجهة الاتصال الأساسية",
-        "keywords": "الكلمات الدالة",
-        "keywordsPlaceholder": "الكلمات المفتاحية للظهور في محركات البحث",
-        "language": "اللغة الأساسية",
-        "addressBook": {
-          "company": "شركة",
-          "companyPlaceholder": "اسم العمل",
-          "country": "البلد",
-          "fullName": "الأسم الكامل",
-          "fullNamePlaceholder": "اسم مؤسستك",
-          "address1": "عناويين",
-          "address1Placeholder": "عنوان مؤسستك",
-          "address1Tooltip": "هذا العنوان سيكون مرئي للزائرين",
-          "address2": "العناوين",
-          "address2Placeholder": "عنوان إضافي",
-          "postal": "بريدي",
-          "city": "مدينة",
-          "region": "منطقة",
-          "phone": "هاتف ",
-          "isShippingDefault": "جعل هذا عنوانك الإفتراضي للشحن؟",
-          "isBillingDefault": "أجعل هذا عنوانك للفواتير ؟",
-          "isCommercial": "هذه عناوين تجارية"
-        }
       },
       "accountsUI": {
         "members": "أعضاء",

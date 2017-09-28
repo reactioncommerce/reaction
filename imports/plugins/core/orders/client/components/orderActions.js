@@ -158,7 +158,7 @@ class OrderActions extends Component {
             </div>
           </div>
         </div>
-        <div className="order-filter-item">
+        <div className="order-filter-item hidden-xs">
           <div className="order-filter-label">
             <span className="order-filter-name">
               <Components.Translation
