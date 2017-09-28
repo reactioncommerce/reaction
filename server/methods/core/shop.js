@@ -41,6 +41,12 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
+    // Anonymous users should never be permitted to create a shop
+    if (!hasPrimaryShopOwnerPermission &&
+        Reaction.hasPermission("anonymous", Meteor.userId(), Reaction.getPrimaryShopId())) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
     const count = Collections.Shops.find().count() || "";
     const currentUser = Meteor.user();
     const currentAccount = Collections.Accounts.findOne({ _id: currentUser._id });
