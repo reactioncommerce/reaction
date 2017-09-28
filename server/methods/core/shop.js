@@ -81,9 +81,6 @@ Meteor.methods({
       seedShop.shopType = "merchant";
     }
 
-    // identify a shop owner
-    const userId = shopAdminUserId || currentUser._id;
-
     // ensure unique id and shop name
     seedShop._id = Random.id();
     seedShop.name = seedShop.name + count;
@@ -123,8 +120,8 @@ Meteor.methods({
     Reaction.insertPackagesForShop(shop._id);
     Reaction.createDefaultGroups({ shopId: shop._id });
     const ownerGroup = Collections.Groups.findOne({ slug: "owner", shopId: shop._id });
-    Roles.addUsersToRoles([currentUser, userId], ownerGroup.permissions, shop._id);
-    Collections.Accounts.update({ _id: userId }, {
+    Roles.addUsersToRoles([currentUser, shopUser._id], ownerGroup.permissions, shop._id);
+    Collections.Accounts.update({ _id: shopUser._id }, {
       $set: {
         shopId: shop._id
       },
