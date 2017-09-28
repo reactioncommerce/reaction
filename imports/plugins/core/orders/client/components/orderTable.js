@@ -202,7 +202,6 @@ class OrderTable extends Component {
   }
 
   render() {
-    console.log("table", this.props);
     let getTrProps = undefined;
     let getTheadProps = undefined;
     let getTrGroupProps = undefined;
