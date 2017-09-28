@@ -24,65 +24,75 @@ Meteor.methods({
     check(shopAdminUserId, Match.Optional(String));
     check(shopData, Match.Optional(Schemas.Shop));
 
-    // must have owner access to create new shops when marketplace is disabled
-    if (!Reaction.hasOwnerAccess() && !Reaction.hasMarketplaceAccess("guest")) {
-      throw new Meteor.Error(403, "Access Denied");
+    // Get the current marketplace settings
+    const marketplace = Reaction.getMarketplaceSettings();
+
+    // check to see if the current user has owner permissions for the current marketplace
+    const hasPrimaryShopOwnerPermission = Reaction.hasPermission("owner", Meteor.userId(), Reaction.getPrimaryShopId());
+
+    // only permit merchant signup if marketplace is enabled and allowMerchantSignup is enabled
+    let allowMerchantShopCreation = false;
+    if (marketplace && marketplace.enabled && marketplace.public && marketplace.public.allowMerchantSignup) {
+      allowMerchantShopCreation = true;
     }
 
-    // this.unblock();
+    // must have owner access to create new shops when marketplace is disabled
+    if (!hasPrimaryShopOwnerPermission && !allowMerchantShopCreation) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
     const count = Collections.Shops.find().count() || "";
     const currentUser = Meteor.user();
     const currentAccount = Collections.Accounts.findOne({ _id: currentUser._id });
-
     if (!currentUser) {
-      throw new Meteor.Error("Unable to create shop with specified user");
+      throw new Meteor.Error("Unable to create shop without a user");
     }
 
+    // TODO: Consider permitting users to create more than one shop
+    // see https://github.com/reactioncommerce/reaction/issues/2889#issuecomment-330385283
+    // Would require adding a new option to the dashboard and updating the UI to make it easy to switch between shops
+    if (!hasPrimaryShopOwnerPermission) {
+      if (currentAccount.shopId !== Reaction.getPrimaryShopId()) {
+        throw new Meteor.Error("access-denied", "Each user may only create one shop");
+      }
+    }
+
+    const shopUser = Meteor.users.findOne({ _id: shopAdminUserId }) || currentUser;
+    const shopAccount = Collections.Accounts.findOne({ _id: shopAdminUserId }) || currentAccount;
+
     // we'll accept a shop object, or clone the current shop
-    const shop = shopData || Collections.Shops.findOne(Reaction.getShopId());
-    // if we don't have any shop data, use fixture
+    const seedShop = shopData || Collections.Shops.findOne(Reaction.getShopId());
 
     // Never create a second primary shop
-    if (shop.shopType === "primary") {
-      shop.shopType = "merchant";
+    if (seedShop.shopType === "primary") {
+      seedShop.shopType = "merchant";
     }
 
     // identify a shop owner
     const userId = shopAdminUserId || currentUser._id;
 
     // ensure unique id and shop name
-    shop._id = Random.id();
-    shop.name = shop.name + count;
+    seedShop._id = Random.id();
+    seedShop.name = seedShop.name + count;
 
     // We trust the owner's shop clone, check only when shopData is passed as an argument
     if (shopData) {
-      check(shop, Schemas.Shop);
+      check(seedShop, Schemas.Shop);
     }
 
-    // admin or marketplace needs to be on and guests allowed to create shops
-    if (currentUser && Reaction.hasMarketplaceAccess("guest")) {
-      // add user info for new shop
-      shop.emails = currentUser.emails;
+    const shop = Object.assign({}, seedShop, {
+      emails: shopUser.emails,
+      addressBook: shopAccount.addressBook,
+      name: shopData ? shopData.name : `${shopAccount.name}'s Shop`
+    });
 
-
-      // Reaction currently stores addressBook in Accounts collection not users
-      if (currentAccount && currentAccount.addressBook && Array.isArray(currentAccount.addressBook)) {
-        shop.addressBook = currentAccount.addressBook;
-      }
-
-      // TODO: SEUN REVIEW. Changed to above from below
-      // if (currentUser.profile && currentUser.profile.addressBook) {
-      //   shop.addressBook = [currentUser.profile && currentUser.profile.addressBook];
-      // }
-
-
-      // clean up new shop
-      delete shop.createdAt;
-      delete shop.updatedAt;
-      // TODO audience permissions need to be consolidated into [object] and not [string]
-      // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
-      delete shop.layout;
-    }
+    // Clean up values that get automatically added
+    delete shop.createdAt;
+    delete shop.updatedAt;
+    delete shop.slug;
+    // TODO audience permissions need to be consolidated into [object] and not [string]
+    // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
+    delete shop.layout;
 
     try {
       Collections.Shops.insert(shop);
