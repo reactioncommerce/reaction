@@ -1,14 +1,11 @@
 import React, { Component } from "react";
-
-import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
-import { Media, Orders, OrderSearch as OrderSearchCollection } from "/lib/collections";
-import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import OrderDashboard from "../components/blah";
+import { Orders, OrderSearch } from "/lib/collections";
+import { Components, composeWithTracker } from "@reactioncommerce/reaction-components";
+import OrderDashboard from "../components/orderDashboard";
 
-class Subscription extends Component {
+class OrderSubscription extends Component {
   render() {
-    console.log("props in order", {...this.props});
     return (
       <OrderDashboard {...this.props}/>
     );
@@ -21,7 +18,7 @@ function composer(props, onData) {
   const query = props.query;
 
   if (subscription.ready()) {
-    const orderSearchResults = OrderSearchCollection.find().fetch();
+    const orderSearchResults = OrderSearch.find().fetch();
     orderSearchResultsIds = orderSearchResults.map(orderSearch => orderSearch._id);
     // checking to ensure search was made and search results are returned
     if (props.searchQuery && Array.isArray(orderSearchResultsIds)) {
@@ -43,4 +40,4 @@ function composer(props, onData) {
   }
 }
 
-export default composeWithTracker(composer, Components.Loading)(Subscription);
+export default composeWithTracker(composer, Components.Loading)(OrderSubscription);
