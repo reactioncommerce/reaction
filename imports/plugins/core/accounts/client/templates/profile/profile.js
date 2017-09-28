@@ -70,15 +70,16 @@ Template.accountProfile.helpers({
    * @return {String} display name
    */
   displayName() {
-    const account = Collections.Accounts.findOne(Meteor.userId());
-
-    if (account) {
-      if (account.name) {
-        return account.name;
-      } else if (account.username) {
-        return account.username;
-      } else if (account.profile && account.profile.name) {
-        return account.profile.name;
+    if (Reaction.Subscriptions && Reaction.Subscriptions.Account && Reaction.Subscriptions.Account.ready()) {
+      const account = Collections.Accounts.findOne(Meteor.userId());
+      if (account) {
+        if (account.name) {
+          return account.name;
+        } else if (account.username) {
+          return account.username;
+        } else if (account.profile && account.profile.name) {
+          return account.profile.name;
+        }
       }
     }
 
@@ -88,10 +89,14 @@ Template.accountProfile.helpers({
   },
 
   showMerchantSignup: function () {
-    const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
-    const marketplaceEnabled = Reaction.marketplace && Reaction.marketplace.enabled === true;
-    const allowMerchantSignup = Reaction.marketplace && Reaction.marketplace.allowMerchantSignup === true;
-    const userHasShop = account.shopId !== Reaction.getPrimaryShopId();
-    return marketplaceEnabled && allowMerchantSignup && !userHasShop;
+    if (Reaction.Subscriptions && Reaction.Subscriptions.Account && Reaction.Subscriptions.Account.ready()) {
+      const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
+      const marketplaceEnabled = Reaction.marketplace && Reaction.marketplace.enabled === true;
+      const allowMerchantSignup = Reaction.marketplace && Reaction.marketplace.allowMerchantSignup === true;
+      // A user has the primaryShopId until a shop is created for them.
+      const userHasShop = account.shopId !== Reaction.getPrimaryShopId();
+      return marketplaceEnabled && allowMerchantSignup && !userHasShop;
+    }
+    return false;
   }
 });
