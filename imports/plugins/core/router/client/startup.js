@@ -10,7 +10,7 @@ Meteor.startup(function () {
   loadRegisteredComponents();
 
   // Subscribe to router required publications
-  // Note: Although these are subscribed to by the subscription mamager in "/modules/client/core/subscriptions",
+  // Note: Although these are subscribed to by the subscription manager in "/modules/client/core/subscriptions",
   // using the subscriptions manager sometimes causes issues when signing in/out where you may seee a grey screen
   // or missing shop data throughout the app.
   // TODO: Revisit subscriptions manager usage and waiting for shops to exist client side before rendering.

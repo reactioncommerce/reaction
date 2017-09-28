@@ -9,7 +9,7 @@ function composer(props, onData) {
   const searchPackage = Reaction.Apps({ provides: "ui-search" });
   let searchEnabled;
   let searchTemplate;
-  let bandMedia;
+  let brandMedia;
 
   if (searchPackage.length) {
     searchEnabled = true;
@@ -20,14 +20,14 @@ function composer(props, onData) {
 
   if (shop && Array.isArray(shop.brandAssets)) {
     const brandAsset = _.find(this.getShop().brandAssets, (asset) => asset.type === "navbarBrandImage");
-    bandMedia = Media.findOne(brandAsset.mediaId);
+    brandMedia = Media.findOne(brandAsset.mediaId);
   }
 
   const hasProperPermission = Reaction.hasPermission("account/profile");
 
   onData(null, {
     shop,
-    bandMedia,
+    brandMedia,
     searchEnabled,
     searchTemplate,
     hasProperPermission
