@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-ui";
+import { Components } from "@reactioncommerce/reaction-components";
 import OrderTable from "./orderTable";
 import OrderFilter from "./orderFilter";
 import OrderSearch from "./orderSearch";
@@ -44,17 +44,6 @@ class OrderDashboard extends Component {
     });
   }
 
-  // componentDidUpdate() {
-  //   this.props.blah();
-  //   this.pooh();
-  // }
-
-  // pooh() {
-  //   this.setState({
-  //     orders: this.props.orders
-  //   });
-  // }
-
   handleListToggle = () => {
     this.setState({
       detailClassName: "",
@@ -76,7 +65,7 @@ class OrderDashboard extends Component {
       <div className="orders-table-container">
         <OrderSearch
           handleChange={this.props.handleChange}
-          // searchQuery={this.props.searchQuery}
+          searchQuery={this.props.searchQuery}
         />
         <OrderFilter
           clearFilter={this.props.clearFilter}
@@ -108,18 +97,18 @@ class OrderDashboard extends Component {
               orders={this.props.orders}
               query={this.state.query}
               isOpen={this.state.openList}
-              // selectedItems={this.props.selectedItems}
-              // handleSelect={this.props.handleSelect}
-              // handleClick={this.props.handleClick}
-              // multipleSelect={this.props.multipleSelect}
-              // selectAllOrders={this.props.selectAllOrders}
-              // displayMedia={this.props.displayMedia}
-              // shipping={this.props.shipping}
-              // setShippingStatus={this.props.setShippingStatus}
-              // isLoading={this.props.isLoading}
-              // renderFlowList={this.props.renderFlowList}
-              // toggleShippingFlowList={this.props.toggleShippingFlowList}
-              // handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
+              selectedItems={this.props.selectedItems}
+              handleSelect={this.props.handleSelect}
+              handleClick={this.props.handleClick}
+              multipleSelect={this.props.multipleSelect}
+              selectAllOrders={this.props.selectAllOrders}
+              displayMedia={this.props.displayMedia}
+              shipping={this.props.shipping}
+              setShippingStatus={this.props.setShippingStatus}
+              isLoading={this.props.isLoading}
+              renderFlowList={this.props.renderFlowList}
+              toggleShippingFlowList={this.props.toggleShippingFlowList}
+              handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
             />
           </div> :
           <div className="container-fluid-sm order-details-list-container">

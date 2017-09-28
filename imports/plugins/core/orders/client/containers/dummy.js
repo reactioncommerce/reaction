@@ -8,6 +8,7 @@ import OrderDashboard from "../components/blah";
 
 class Subscription extends Component {
   render() {
+    console.log("props in order", {...this.props});
     return (
       <OrderDashboard {...this.props}/>
     );
@@ -15,30 +16,30 @@ class Subscription extends Component {
 }
 
 function composer(props, onData) {
-  console.log("props", props);
   const subscription = Meteor.subscribe("SearchResults", "orders", props.searchQuery);
   let orderSearchResultsIds;
-  let searchQuery;
+  const query = props.query;
 
-  const ordersSubscription = Meteor.subscribe("CustomPaginatedOrders", props.query);
-
-
-  if (ordersSubscription.ready() && subscription.ready()) {
+  if (subscription.ready()) {
     const orderSearchResults = OrderSearchCollection.find().fetch();
     orderSearchResultsIds = orderSearchResults.map(orderSearch => orderSearch._id);
     // checking to ensure search was made and search results are returned
     if (props.searchQuery && Array.isArray(orderSearchResultsIds)) {
       // add matching results from search to query passed to Sortable
-      searchQuery._id = { $in: orderSearchResultsIds };
+      query._id = { $in: orderSearchResultsIds };
+    } else {
+      // being here means no search text is inputed or search was cleared, so reset any previous match
+      delete query._id;
     }
 
-    // optional transform of collection for grid results
-    const results = Orders.find(props.query).fetch();
-    console.log("results", results);
+    const ordersSubscription = Meteor.subscribe("CustomPaginatedOrders", query);
 
-    onData(null, {
-      orders: results
-    });
+    if (ordersSubscription.ready()) {
+      const results = Orders.find(query).fetch();
+      return onData(null, {
+        orders: results
+      });
+    }
   }
 }
 
