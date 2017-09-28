@@ -5,6 +5,7 @@ import { $ } from "meteor/jquery";
 import { Reaction, Router } from "/client/api";
 import { Shops } from "/lib/collections";
 
+
 /**
  * addBodyClasses
  * Adds body classes to help themes distinguish pages and components based on the current route name and layout theme
