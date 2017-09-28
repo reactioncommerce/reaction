@@ -20,7 +20,7 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
     }
   });
 
-  const shopCurrency = shop.currency;
+  const shopCurrency = shop && shop.currency || "USD";
   const localStorageCurrencyName = localStorage.getItem("currency");
   if (typeof shop === "object" && shop.currencies && localStorageCurrencyName) {
     let localStorageCurrency = {};
