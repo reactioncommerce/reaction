@@ -324,6 +324,7 @@ class VariantForm extends Component {
             actAsExpander={true}
             i18nKeyTitle="productDetailEdit.variantDetails"
             title="Variant Details"
+            isValid={this.props.validation.isValid}
           >
             {this.renderArchivedLabel()}
             <Components.Button
