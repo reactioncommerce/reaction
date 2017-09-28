@@ -82,8 +82,7 @@ Meteor.methods({
 
     const shop = Object.assign({}, seedShop, {
       emails: shopUser.emails,
-      addressBook: shopAccount.addressBook,
-      name: shopData ? shopData.name : `${shopAccount.name}'s Shop`
+      addressBook: shopAccount.addressBook
     });
 
     // Clean up values that get automatically added
@@ -94,11 +93,15 @@ Meteor.methods({
     // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
     delete shop.layout;
 
+    let newShopId;
+
     try {
-      Collections.Shops.insert(shop);
+      newShopId = Collections.Shops.insert(shop);
     } catch (error) {
       return Logger.error(error, "Failed to shop/createShop");
     }
+
+    const newShop = Collections.Shops.findOne({ _id: newShopId });
 
     // we should have created new shop, or errored
     Logger.info("Created shop: ", shop._id);
@@ -114,6 +117,17 @@ Meteor.methods({
       },
       $addToSet: {
         groups: ownerGroup._id
+      }
+    });
+
+    // Add this shop to the merchant
+    Collections.Shops.update({ _id: Reaction.getPrimaryShopId() }, {
+      $addToSet: {
+        merchantShops: {
+          _id: newShop._id,
+          slug: newShop.slug,
+          name: newShop.name
+        }
       }
     });
 
