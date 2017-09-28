@@ -1,8 +1,8 @@
-import { Migrations } from "/imports/plugins/core/versions";
+import { Migrations } from "meteor/percolate:migrations";
 import { Packages } from "/lib/collections";
 
 Migrations.add({
-  version: 6,
+  version: 8,
   up() {
     const packages = Packages.find();
 

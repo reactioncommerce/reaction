@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "Ολοκληρώστε την παραγγελία σας",
         "paymentMethod": {
+          "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "Πληρώστε με PayPal",
           "expressNotConfigured": "Paypal Express δεν έχει ρυθμιστεί.",
           "expressNotAvailable": "Paypal Express δεν είναι διαθέσιμη",

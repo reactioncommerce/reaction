@@ -12,9 +12,6 @@
           "email": "E-mail",
           "description": "Adj hozzá termékleírást",
           "remove": "Távolítsuk"
-        },
-        "settings": {
-          "localizationAndI18NLabel": "Lokalizáció és i18n"
         }
       },
       "app": {
@@ -34,28 +31,7 @@
         "yearOptions": "Válasszon évet",
         "shopSettings": "Bolt beállítások",
         "dashboard": "Műszerfal",
-        "print": "Nyomtatás",
-        "editMode": "Szerkesztés módban",
-        "auto": "kocsi"
-      },
-      "searchSettings": {
-        "productSearchSettings": {
-          "panelTitle": "termék keresés",
-          "includeTitle": "cím felvétele",
-          "includeDescription": "Tartalmazza leírás",
-          "includePageTitle": "Tartalmazza oldal címe",
-          "includeDetails": "részletként",
-          "includeVendor": "Tartalmazza az eladóval"
-        },
-        "orderSearchSettings": {
-          "panelTitle": "Rendelési Keresési beállítások"
-        },
-        "accountSearchSettings": {
-          "panelTitle": "Fiók Keresési beállítások"
-        },
-        "noSettings": "Nem beállításokat a jelenleg rendelkezésre álló",
-        "settingsSaved": "Keresési beállítások mentve",
-        "settingsfailed": "Keresési beállítások frissítése sikertelen"
+        "print": "Nyomtatás"
       },
       "header": {
         "tagsAdd": "Címke hozzáadása",
@@ -92,8 +68,7 @@
         "startTracking": "Indítás követés",
         "addBarcode": "Add Vonalkód",
         "quantity": "Mennyiség",
-        "quantityGreaterThanZero": "Hiba: Mennyiség nagyobb kell legyen, mint nulla",
-        "dropFiles": "Drop fájlokat feltölteni"
+        "quantityGreaterThanZero": "Hiba: Mennyiség nagyobb kell legyen, mint nulla"
       },
       "productDetailEdit": {
         "title": "Termék neve",
@@ -104,9 +79,6 @@
         "twitterMsg": "Twitter Üzenet",
         "pinterestMsg": "Pinterest Üzenet",
         "googleplusMsg": "Google+ Üzenet",
-        "editVariant": "szerkesztés Variant",
-        "variantOptions": "Variant opciók",
-        "variantDetails": "Variant Részletek",
         "duplicateVariant": "Másolat",
         "addVariantOption": "Opció hozzáadása",
         "removeVariant": "Távolítsuk",
@@ -114,33 +86,7 @@
         "pinProduct": "pin termék",
         "toggleSize": "Kapcsoló mérete",
         "publish": "közzétesz",
-        "moreOptions": "Több lehetőség",
-        "details": "Részletek"
-      },
-      "productVariant": {
-        "addVariantOptions": "Add lehetőség, hogy \"kosárban\" butto",
-        "inventoryQuantity": "Mennyiség",
-        "title": "Címke",
-        "price": "Ár",
-        "optionTitle": "választási lehetőség",
-        "barcode": "Vonalkód",
-        "compareAtPrice": "Ár (MSRP)",
-        "fulfillmentService": "teljesítő szolgáltató",
-        "weight": "Súly",
-        "length": "Hossz",
-        "width": "Szélesség",
-        "height": "Magasság",
-        "taxable": "Adóköteles",
-        "taxCode": "Adó kódok",
-        "taxDescription": "Adó Leírás",
-        "inventoryManagement": "leltár nyomon követéséhez",
-        "inventoryManagementLabel": "Regisztráció termék nyilvántartási rendszert és a pálya az állapota",
-        "inventoryPolicy": "Deny amikor elfogyott",
-        "inventoryPolicyLabel": "Ne adja el a terméket variáns, ha nincs raktáron",
-        "lowInventoryWarningThreshold": "Warn @",
-        "lowInventoryWarningThresholdLabel": "Figyelmeztet, az ügyfelek, hogy a termék közel lesz elfogyott, amikor a mennyiség eléri a következő küszöböt",
-        "originCountry": "Származási ország",
-        "selectTaxCode": "Válassza adótörvény"
+        "moreOptions": "Több lehetőség"
       },
       "variantList": {
         "moreOptions": "További lehetőségek a kiválasztott termékhez.",
@@ -149,10 +95,6 @@
       "gridPackage": {
         "pkgEnabled": " most engedélyezett.",
         "pkgDisabled": " most nem engedélyezett."
-      },
-      "gridSettingsPanel": {
-        "title": "rács beállításai",
-        "selected": "Kiválasztott"
       },
       "cartDrawer": {
         "empty": "Szomorúan vesszük tudomásul, hogy üres a kosarad.",
@@ -281,58 +223,6 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
-      },
-      "corePackageConfig": {
-        "settings": {
-          "public": {
-            "allowGuestCheckout": "Hagyjuk Guest Pénztár"
-          },
-          "openexchangerates": {
-            "appId": "Nyílt Árfolyamok alkalmazás azonosítója",
-            "refreshPeriod": "Nyílt Árfolyamok frissítési idő",
-            "refreshPeriodPlaceholder": "vagyis minden 1 óra"
-          },
-          "google": {
-            "clientId": "Google ügyfél-azonosító",
-            "apiKey": "Google API-kulcs"
-          }
-        }
-      },
-      "revisions": {
-        "isDisabled": "Revision szabályozás ki van kapcsolva. A módosításokat haladéktalanul közzé kell tenni.",
-        "isEnabled": "Revision szabályozás engedélyezve a termékek. A módosításokat közzé kell tenni, mielőtt láthatóvá az ügyfelek számára."
-      },
-      "shop": {
-        "defaultPaymentMethod": "Alapértelmezett fizetési mód",
-        "name": "Név",
-        "namePlaceholder": "Bolt neve",
-        "description": "Leírás",
-        "descriptionPlaceholder": "Írja le bolt SEO",
-        "descriptionTooltip": "Meta Leírás SEO",
-        "email": "E-mail",
-        "emailPlaceholder": "Elsődleges kapcsolattartó e-mail",
-        "keywords": "Kulcsszavak",
-        "keywordsPlaceholder": "Meta kulcsszavak SEO",
-        "language": "alapnyelv",
-        "addressBook": {
-          "company": "Vállalat",
-          "companyPlaceholder": "Ez az üzlet neve",
-          "country": "Ország",
-          "fullName": "Teljes név",
-          "fullNamePlaceholder": "A szervezet neve",
-          "address1": "Cím 1",
-          "address1Placeholder": "A szervezet címe",
-          "address1Tooltip": "Ez a cím lesz látható a látogatók",
-          "address2": "Cím 2",
-          "address2Placeholder": "további cím",
-          "postal": "Postai",
-          "city": "Város",
-          "region": "Megye",
-          "phone": "Telefon",
-          "isShippingDefault": "Ez legyen az elsődleges szállítási címed?",
-          "isBillingDefault": "Ez legyen az elsődleges számlázási címed?",
-          "isCommercial": "Céges cím."
-        }
       },
       "accountsUI": {
         "members": "Belépés",

@@ -48,7 +48,8 @@ function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0) {
         discount: 1,
         tax: 1,
         email: 1,
-        createdAt: 1
+        createdAt: 1,
+        userId: 1
       }
     },
     { $sort: sort }

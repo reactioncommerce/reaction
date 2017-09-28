@@ -116,6 +116,15 @@ function composer(props, onData) {
     });
   }
 
+  const unitsOfLength = Shops.findOne().unitsOfLength;
+  const uolOptions = [];
+  for (const length of unitsOfLength) {
+    uolOptions.push({
+      label: i18next.t(`uol.${length.uol}`, { defaultValue: length.uol }),
+      value: length.uol
+    });
+  }
+
   const label = i18next.t("app.timezoneOptions", "Choose timezone");
   const timezoneOptions = [{
     value: "",
@@ -138,6 +147,7 @@ function composer(props, onData) {
     countryOptions: countries,
     currencyOptions,
     uomOptions,
+    uolOptions,
     timezoneOptions
   });
 }

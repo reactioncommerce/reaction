@@ -4,14 +4,26 @@
   "translation": {
     "reaction-orders": {
       "notFound": "Red nije pronađen",
+      "order": {
+        "cancelOrder": "Želite li otkazati ovu narudžbu?",
+        "cancelOrderLabel": "Otkazati narudžbu",
+        "cancelOrderThenRestock": "Da, i popunite se",
+        "cancelOrderNoRestock": "Da, ali ne popunjavanje"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "Narudžbe"
         },
+        "orderRisk": {
+          "high": "Visokog rizika",
+          "riskCapture": "Snimanje reda s naplatom rizika?",
+          "riskCaptureWarn": "Uskoro ćete uhvatiti red s rizikom naplate. Potvrdite prije nastavka."
+        },
         "dashboard": {
           "ordersLabel": "Narudžbe",
           "ordersTitle": "Narudžbe",
-          "ordersDescription": "Ispuniti Vaše narudžbe"
+          "ordersDescription": "Ispuniti Vaše narudžbe",
+          "clearSearch": "Čisto"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -28,11 +40,26 @@
             "cardTitle": "Dostavnica",
             "adjustedTotal": "Prilagođen Ukupno",
             "capturedTotal": "Uhvaćena Ukupno",
-            "refund": "Povrat"
+            "refund": "Povrat",
+            "refundLabel": "Za povrat",
+            "refundItem": "stavke",
+            "refundItemAmount": "Ukupno",
+            "refundTotal": "Ukupni iznos povrata"
           },
           "fulfillment": "Ispunjenje",
           "orderDetails": "Detalji narudžbe",
           "shipmentTracking": "Pošiljka"
+        },
+        "table": {
+          "headers": {
+            "name": "Ime",
+            "email": "Postavke e-pošte",
+            "date": "Rok",
+            "id": "ID",
+            "total": "Ukupno",
+            "shipping": "dostava",
+            "status": "Položaj"
+          }
         }
       }
     }
