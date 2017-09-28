@@ -46,8 +46,8 @@ export default function () {
     allow(type, arg, userId) {
       if (!arg) throw new Error("ifHasRole security rule method requires an argument");
       if (arg.role) {
-        // userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
-        // if not passed, getShopId can default to primaryShop
+        // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
+        // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
         return Roles.userIsInRole(userId, arg.role, Reaction.getShopId(userId));
       }
       return Roles.userIsInRole(userId, arg);
@@ -59,7 +59,9 @@ export default function () {
   Security.defineMethod("ifShopIdMatches", {
     fetch: [],
     deny: function (type, arg, userId, doc) {
-      return doc.shopId !== Reaction.getShopId();
+      // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
+      // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
+      return doc.shopId !== Reaction.getShopId(userId);
     }
   });
   // this rule is for the Shops collection
@@ -67,15 +69,17 @@ export default function () {
   Security.defineMethod("ifShopIdMatchesThisId", {
     fetch: [],
     deny: function (type, arg, userId, doc) {
-      return doc._id !== Reaction.getShopId();
+      // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
+      // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
+      return doc._id !== Reaction.getShopId(userId);
     }
   });
 
   Security.defineMethod("ifFileBelongsToShop", {
     fetch: [],
     deny: function (type, arg, userId, doc) {
-      // userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
-      // if not passed, getShopId can default to primaryShop
+      // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
+      // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
       return doc.metadata.shopId !== Reaction.getShopId(userId);
     }
   });
