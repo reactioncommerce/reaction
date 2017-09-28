@@ -16,7 +16,8 @@ class Variant extends Component {
     this.validation = new Validation(ProductVariant);
 
     this.state = {
-      invalidVariant: []
+      invalidVariant: [],
+      selfValidation: []
     };
   }
 
@@ -90,13 +91,23 @@ class Variant extends Component {
   }
 
   renderValidationButton = () => {
-    if (this.state.invalidVariant.length) {
+    if (this.state.selfValidation.isValid === false) {
       return (
         <Components.Badge
           status="danger"
           indicator={true}
           tooltip={"Validation error"}
           i18nKeyTooltip={"admin.tooltip.validationError"}
+        />
+      );
+    }
+    if (this.state.invalidVariant.length) {
+      return (
+        <Components.Badge
+          status="danger"
+          indicator={true}
+          tooltip={"Validation error on variant option"}
+          i18nKeyTooltip={"admin.tooltip.optionValidationError"}
         />
       );
     }
@@ -114,8 +125,13 @@ class Variant extends Component {
 
       invalidVariant = validationStatus.filter(status => status.isValid === false);
     }
+
+    const selfValidation = this.validation.validate(this.props.variant);
+
+    console.log("selfValidation", selfValidation);
     this.setState({
-      invalidVariant
+      invalidVariant,
+      selfValidation
     });
   }
 
