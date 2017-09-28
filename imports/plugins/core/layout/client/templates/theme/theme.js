@@ -26,7 +26,7 @@ function getRouteLayout(context) {
       }
 
       const shop = Shops.findOne(Reaction.getShopId());
-      const currentLayout = shop.layout.find((x) => {
+      const currentLayout = shop && shop.layout.find((x) => {
         if (x.layout === registryRoute.layout && x.workflow === registryRoute.workflow && x.enabled === true) {
           return true;
         }
