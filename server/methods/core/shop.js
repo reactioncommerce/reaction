@@ -74,7 +74,7 @@ Meteor.methods({
     }
 
     // we'll accept a shop object, or clone the current shop
-    const seedShop = shopData || Collections.Shops.findOne(Reaction.getShopId());
+    const seedShop = shopData || Collections.Shops.findOne(Reaction.getPrimaryShopId());
 
     // Never create a second primary shop
     if (seedShop.shopType === "primary") {
