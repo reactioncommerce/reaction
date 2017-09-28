@@ -33,15 +33,7 @@ class OrderDashboard extends Component {
     detailClassName: "",
     listClassName: "order-icon-toggle",
     openList: true,
-    orders: this.props.orders,
-    query: this.props.query
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      orders: nextProps.orders,
-      query: nextProps.query
-    });
+    orders: this.props.orders
   }
 
   handleListToggle = () => {
@@ -65,7 +57,6 @@ class OrderDashboard extends Component {
       <div className="order-dashboard-container">
         <OrderSearch
           handleChange={this.props.handleChange}
-          searchQuery={this.props.searchQuery}
         />
         <OrderFilter
           clearFilter={this.props.clearFilter}
@@ -95,7 +86,6 @@ class OrderDashboard extends Component {
 
             <OrderTable
               orders={this.props.orders}
-              query={this.state.query}
               isOpen={this.state.openList}
               selectedItems={this.props.selectedItems}
               handleSelect={this.props.handleSelect}
