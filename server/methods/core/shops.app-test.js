@@ -69,8 +69,9 @@ describe("core shop methods", function () {
           }]
         };
       });
+      Factory.create("account", { _id: "12345678" });
 
-      sandbox.stub(Reaction, "hasOwnerAccess", () => true);
+      sandbox.stub(Reaction, "hasPermission", () => true);
       Meteor.call("shop/createShop", "12345678", shop);
       const newShopCount = Shops.find({ name: shop.name }).count();
       expect(newShopCount).to.equal(1);

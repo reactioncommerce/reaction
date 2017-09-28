@@ -27,7 +27,7 @@ Meteor.methods({
     // Get the current marketplace settings
     const marketplace = Reaction.getMarketplaceSettings();
 
-    // check to see if the current user has owner permissions for the current marketplace
+    // check to see if the current user has owner permissions for the primary shop
     const hasPrimaryShopOwnerPermission = Reaction.hasPermission("owner", Meteor.userId(), Reaction.getPrimaryShopId());
 
     // only permit merchant signup if marketplace is enabled and allowMerchantSignup is enabled
