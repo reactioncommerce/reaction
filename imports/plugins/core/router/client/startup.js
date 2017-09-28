@@ -25,7 +25,7 @@ Meteor.startup(function () {
       //  initBrowserRouter calls Router.initPackageRoutes which calls shopSub.ready which is reactive,
       //  So we have to call initBrowserRouter in a non reactive context.
       //  Otherwise initBrowserRouter is called twice each time a subscription becomes "ready"
-      Tracker.nonreactive(()=> {
+      Tracker.nonreactive(() => {
         // Make sure we have shops before we try to make routes for them
         if (Array.isArray(shops) && shops.length)  {
           initBrowserRouter();
