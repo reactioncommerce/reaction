@@ -25,6 +25,8 @@ AutoForm.hooks({
         if (err) {
           throw new Meteor.Error(Number, "description");
         } else if (res && Array.isArray(res)) {
+          Alerts.toast(i18next.t("admin.taxSettings.shopTaxMethodsSaved"),
+            "success");
           res.forEach((code) => {
             Meteor.call("taxes/insertTaxCodes", Reaction.getShopId(), code, "taxes-taxcloud", (error) => {
               if (error) {
