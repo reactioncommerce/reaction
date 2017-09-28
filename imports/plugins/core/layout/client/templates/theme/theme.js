@@ -24,6 +24,10 @@ function getRouteLayout(context) {
       if (!registryRoute.layout) {
         registryRoute.layout = Session.get("DEFAULT_LAYOUT") || "coreLayout";
       }
+      // set a default workflow if none is given
+      if (!registryRoute.workflow) {
+        registryRoute.workflow = Session.get("DEFAULT_WORKFLOW") || "coreWorkflow";
+      }
 
       const shop = Shops.findOne(Reaction.getShopId());
       const currentLayout = shop.layout.find((x) => {
