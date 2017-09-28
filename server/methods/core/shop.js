@@ -63,8 +63,15 @@ Meteor.methods({
       }
     }
 
-    const shopUser = Meteor.users.findOne({ _id: shopAdminUserId }) || currentUser;
-    const shopAccount = Collections.Accounts.findOne({ _id: shopAdminUserId }) || currentAccount;
+    let shopUser = currentUser;
+    let shopAccount = currentAccount;
+
+    // TODO: Create a grantable permission for creating shops so we can decouple ownership from shop creation
+    // Only marketplace owners can create shops for others
+    if (hasPrimaryShopOwnerPermission) {
+      shopUser = Meteor.users.findOne({ _id: shopAdminUserId }) || currentUser;
+      shopAccount = Collections.Accounts.findOne({ _id: shopAdminUserId }) || currentAccount;
+    }
 
     // we'll accept a shop object, or clone the current shop
     const seedShop = shopData || Collections.Shops.findOne(Reaction.getShopId());
