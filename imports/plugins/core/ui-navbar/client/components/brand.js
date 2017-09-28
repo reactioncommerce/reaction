@@ -1,10 +1,13 @@
 import React, { Component } from "react";
-import _ from "lodash";
+import PropTypes from "prop-types";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import { Media, Shops } from "/lib/collections";
 
 class Brand extends Component {
+  static propTypes = {
+    logo: PropTypes.string,
+    title: PropTypes.string
+  }
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
@@ -15,27 +18,15 @@ class Brand extends Component {
     Reaction.Router.go("/");
   }
 
-  getShop() {
-    return Shops.findOne(Reaction.getShopId());
-  }
-
-  getLogo() {
-    if (Array.isArray(this.getShop().brandAssets)) {
-      const brandAsset = _.find(this.getShop().brandAssets, (asset) => asset.type === "navbarBrandImage");
-      return Media.findOne(brandAsset.mediaId);
-    }
-    return false;
-  }
-
   render() {
     return (
       <a className="brand" onClick={this.handleClick}>
-        {this.getLogo() &&
+        {this.props.logo &&
           <div className="logo">
-            <img src={this.getLogo().url()} />
+            <img src={this.props.logo} />
           </div>
         }
-        <span className="title">{this.getShop().name}</span>
+        <span className="title">{this.props.title}</span>
       </a>
     );
   }
