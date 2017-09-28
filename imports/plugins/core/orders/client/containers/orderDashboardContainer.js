@@ -12,7 +12,7 @@ import {
   shippingStates
 } from "../../lib/constants";
 import { getShippingInfo } from "../helpers";
-import OrderSubscription from "./orderSubscription";
+import OrderSubscription from "./orderSubscriptionContainer";
 
 const shippingStrings = ["picked", "packed", "labeled", "shipped"];
 
