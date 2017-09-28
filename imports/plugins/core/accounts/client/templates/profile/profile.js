@@ -1,6 +1,5 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Roles } from "meteor/alanning:roles";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Reaction } from "/client/api";
 import { i18next } from  "/client/api";
@@ -67,61 +66,32 @@ Template.accountProfile.helpers({
   },
 
   /**
-   * User's account profile
-   * @return {Object} account profile
-   */
-  account() {
-    return Collections.Accounts.findOne();
-  },
-
-  /**
    * User's display name
    * @return {String} display name
    */
   displayName() {
-    const userId = Meteor.userId() || {};
-    const user = Collections.Accounts.findOne(userId);
+    const account = Collections.Accounts.findOne(Meteor.userId());
 
-    if (user) {
-      if (user.name) {
-        return user.name;
-      } else if (user.username) {
-        return user.username;
-      } else if (user.profile && user.profile.name) {
-        return user.profile.name;
+    if (account) {
+      if (account.name) {
+        return account.name;
+      } else if (account.username) {
+        return account.username;
+      } else if (account.profile && account.profile.name) {
+        return account.profile.name;
       }
     }
 
-    if (Roles.userIsInRole(user._id || user.userId, "account/profile",
-      Reaction.getShopId())) {
+    if (Reaction.hasPermission("account/profile")) {
       return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
     }
   },
 
-  /**
-   * Returns the address book default view
-   * @return {String} "addressBookGrid" || "addressBookAdd"
-   */
-  addressBookView: function () {
-    const account = Collections.Accounts.findOne();
-    if (account.profile) {
-      return "addressBookGrid";
-    }
-    return "addressBookAdd";
-  },
-
-  showSellerSignup: function () {
+  showMerchantSignup: function () {
+    const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
     const marketplaceEnabled = Reaction.marketplace && Reaction.marketplace.enabled === true;
     const allowMerchantSignup = Reaction.marketplace && Reaction.marketplace.allowMerchantSignup === true;
-    const isMarketplaceGuest = Reaction.hasMarketplaceAccess("guest") && !Reaction.hasAdminAccess();
-    return marketplaceEnabled && allowMerchantSignup && isMarketplaceGuest;
-  },
-
-  isMarketplaceGuest: function () {
-    return (Reaction.hasMarketplaceAccess("guest") && !Reaction.hasAdminAccess());
-  },
-
-  isMarketplaceSeller: function () {
-    return (Reaction.hasMarketplaceAccess() && !Reaction.hasOwnerAccess());
+    const userHasShop = account.shopId !== Reaction.getPrimaryShopId();
+    return marketplaceEnabled && allowMerchantSignup && !userHasShop;
   }
 });
