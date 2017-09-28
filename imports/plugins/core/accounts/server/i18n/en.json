@@ -32,7 +32,8 @@
           "groupRequired": "A group is required to invite an admin",
           "cannotInvite": "You cannot invite to group",
           "unableToSendInvitationEmail": "Unable to send invitation email",
-          "errorSendingInvite": "An error occured while sending invite"
+          "errorSendingInvite": "An error occured while sending invite",
+          "NeedToSetUsernameOrEmail": "Need to set a username or email"
         }
       }
     }
