@@ -19,7 +19,7 @@ Meteor.startup(function () {
       //  Otherwise initBrowserRouter is called twice each time a Reaction.Subscriptions.Packages.ready() and
       //  Reaction.Subscriptions.PrimaryShop.ready() are true
 
-      Tracker.nonreactive(()=> {
+      Tracker.nonreactive(() => {
         initBrowserRouter();
       });
     }

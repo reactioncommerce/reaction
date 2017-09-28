@@ -285,7 +285,7 @@ class InvoiceContainer extends Component {
       cancelButtonColor: "#98afbc",
       confirmButtonText: i18next.t("order.cancelOrderNoRestock"),
       cancelButtonText: i18next.t("order.cancelOrderThenRestock")
-    }, (isConfirm, cancel)=> {
+    }, (isConfirm, cancel) => {
       let returnToStock;
       if (isConfirm) {
         returnToStock = false;

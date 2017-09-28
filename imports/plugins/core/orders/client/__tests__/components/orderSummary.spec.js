@@ -27,8 +27,8 @@ test("OrderSummary snapshot test", () => {
   // Initializing all the props passed into order summary component
   const dateFormat = jest.fn();
   const tracking = jest.fn();
-  const shipmentStatus = jest.fn(()=>({}));
-  const printableLabels = jest.fn(()=>({}));
+  const shipmentStatus = jest.fn(() =>({}));
+  const printableLabels = jest.fn(() =>({}));
   const profileShippingAddress = {};
   const order = {
     shipping: [{ shipmentMethod: {} }],
