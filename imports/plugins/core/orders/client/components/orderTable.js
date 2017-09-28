@@ -356,33 +356,34 @@ class OrderTable extends Component {
 
     return (
       <div className="order-details-table">
-        {this.props.isOpen &&
-          <OrderBulkActionsBar
-            shipping={this.props.shipping}
-            multipleSelect={this.props.multipleSelect}
-            orders={this.props.orders}
-            selectAllOrders={this.props.selectAllOrders}
-            selectedItems={this.props.selectedItems}
-            setShippingStatus={this.props.setShippingStatus}
-            isLoading={this.props.isLoading}
-            renderFlowList={this.props.renderFlowList}
-            toggleShippingFlowList={this.props.toggleShippingFlowList}
-            handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
-          />
+        {this.props.isOpen && <div>Open</div>
+        //   <OrderBulkActionsBar
+        //     shipping={this.props.shipping}
+        //     multipleSelect={this.props.multipleSelect}
+        //     orders={this.props.orders}
+        //     selectAllOrders={this.props.selectAllOrders}
+        //     selectedItems={this.props.selectedItems}
+        //     setShippingStatus={this.props.setShippingStatus}
+        //     isLoading={this.props.isLoading}
+        //     renderFlowList={this.props.renderFlowList}
+        //     toggleShippingFlowList={this.props.toggleShippingFlowList}
+        //     handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
+        //   />
         }
         <SortableTable
-          tableClassName={`rui order table -highlight ${this.props.selectedItems.length > 0 ?
-            "table-header-hidden" :
-            "table-header-visible"}`
-          }
-          publication="CustomPaginatedOrders"
+          // tableClassName={`rui order table -highlight ${this.props.selectedItems.length > 0 ?
+          //   "table-header-hidden" :
+          //   "table-header-visible"}`
+          // }
+          // publication="CustomPaginatedOrders"
           collection={Orders}
-          matchingResultsCount="order-count"
+          // matchingResultsCount="order-count"
+          data={this.props.orders}
           query={this.props.query}
           columnMetadata={customColumnMetadata}
           externalLoadingComponent={Loading}
           filterType="none"
-          selectedRows={this.props.selectedItems}
+          // selectedRows={this.props.selectedItems}
           getTheadProps={getTheadProps}
           getTrProps={getTrProps}
           getTrGroupProps={getTrGroupProps}
@@ -392,7 +393,7 @@ class OrderTable extends Component {
             };
           }}
           getTableProps={getTableProps}
-          showPaginationTop={this.props.selectedItems.length ? false : true}
+          // showPaginationTop={this.props.selectedItems.length ? false : true}
         />
       </div>
     );

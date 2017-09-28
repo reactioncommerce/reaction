@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import OrderDashboardContainer from "../containers/orderDashboardContainer";
+import OrderDashboardContainer from "../containers/blah";
 
 Template.orders.helpers({
   ordersComponent() {

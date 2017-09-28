@@ -17,24 +17,25 @@ class OrderTableColumn extends Component {
   }
 
   renderCheckboxOnSelect(row) {
-    if (this.props.selectedItems.length) {
-      return (
-        <div className="all-checkboxes">
-          <Checkbox
-            className="checkbox-large checkbox-avatar"
-            name={row.original._id}
-            onChange={this.props.handleSelect}
-            checked={this.props.selectedItems.includes(row.original._id)}
-          />
-        </div>
-      );
-    }
+    // if (this.props.selectedItems.length) {
+    //   return (
+    //     <div className="all-checkboxes">
+    //       <Checkbox
+    //         className="checkbox-large checkbox-avatar"
+    //         name={row.original._id}
+    //         onChange={this.props.handleSelect}
+    //         checked={this.props.selectedItems.includes(row.original._id)}
+    //       />
+    //     </div>
+    //   );
+    // }
     return (
       <RolloverCheckbox
         checkboxClassName="checkbox-avatar checkbox-large"
         name={row.original._id}
         onChange={this.props.handleSelect}
-        checked={this.props.selectedItems.includes(row.original._id)}
+        checked={false}
+        // checked={this.props.selectedItems.includes(row.original._id)}
       >
         <Avatar
           email={row.original.email}
