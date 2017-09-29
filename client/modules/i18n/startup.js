@@ -69,7 +69,9 @@ Meteor.startup(() => {
       const shop = Shops.findOne({
         _id: shopId
       });
-      let language = shop.language;
+
+      let language = shop && shop.language || "en";
+
       if (Meteor.user() && Meteor.user().profile && Meteor.user().profile.lang) {
         language = Meteor.user().profile.lang;
       }
