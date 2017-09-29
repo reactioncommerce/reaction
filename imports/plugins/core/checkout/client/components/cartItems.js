@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { i18next } from "/client/api";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class CartItems extends Component {
   static propTypes = {
@@ -38,7 +37,7 @@ class CartItems extends Component {
       >
         {handleLowInventory(item) &&
           <div className="badge badge-top badge-low-inv-warning">
-            { i18next.t("cartDrawerItems.limitedSupply", { default: "Limited Supply" }) }
+            <Components.Translation i18nKey="cartDrawerItems.limitedSupply" defaultValue="Limited supply" />
           </div>
         }
         <i className="remove-cart-item fa fa-times fa-lg"
