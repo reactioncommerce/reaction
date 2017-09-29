@@ -128,7 +128,6 @@ class Variant extends Component {
 
     const selfValidation = this.validation.validate(this.props.variant);
 
-    console.log("selfValidation", selfValidation);
     this.setState({
       invalidVariant,
       selfValidation

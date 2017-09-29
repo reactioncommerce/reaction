@@ -102,18 +102,6 @@ class VariantListContainer extends Component {
     });
   }
 
-  handleOpenActionViewForValidation = () => {
-    const cardName = `variant-${variant._id}`;
-    Reaction.state.set("edit/focus", cardName);
-
-    Reaction.showActionView({
-      label: "Edit Variant",
-      i18nKeyLabel: "productDetailEdit.editVariant",
-      template: "variantForm",
-      data: variant
-    });
-  }
-
   handleVariantClick = (event, variant, ancestors = -1) => {
     this.handleEditVariant(event, variant, ancestors);
   }
