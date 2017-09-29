@@ -278,24 +278,40 @@ export const methods = {
    */
   "orders/approvePayment": function (order) {
     check(order, Object);
-    const shopId = Reaction.getShopId();  // the shop of the user who is currently logged on
+    const invoice = orderCreditMethod(order).invoice;
+
+    // REVIEW: Who should have access to do this for a marketplace?
+    // Do we have/need a shopId on each order?
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
+    this.unblock(); // REVIEW: why unblock here?
+
+    // this is server side check to verify
+    // that the math all still adds up.
+    const shopId = Reaction.getShopId();
+    const subTotal = invoice.subtotal;
+    const shipping = invoice.shipping;
+    const taxes = invoice.taxes;
+    const discount = invoice.discounts;
+    const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
+    const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
+
     // Updates flattened inventory count on variants in Products collection
-    ordersInventoryAdjustByShop(order._id, shopId);
+    ordersInventoryAdjustByShop(order._id, shopId);;
 
-    const billing = order.billing;
-    const billingRecord = billing.find((bRecord) => bRecord.shopId === shopId);
-    billingRecord.paymentMethod.status = "approved";
-    billingRecord.paymentMethod.mode = "capture";
-
-    Orders.update({
-      _id: order._id
+    return Orders.update({
+      "_id": order._id,
+      "billing.shopId": shopId,
+      "billing.paymentMethod.method": "credit"
     }, {
       $set: {
-        billing: billing
+        "billing.$.paymentMethod.amount": total,
+        "billing.$.paymentMethod.status": "approved",
+        "billing.$.paymentMethod.mode": "capture",
+        "billing.$.invoice.discounts": discount,
+        "billing.$.invoice.total": Number(total)
       }
     });
   },
