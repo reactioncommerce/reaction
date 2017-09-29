@@ -321,7 +321,7 @@ class OrderTable extends Component {
         customColumnMetadata.push(columnMeta);
       });
     } else {
-      // Render order detail column/row dat
+      // Render order detail column/row data
 
       const columnMeta = {
         Cell: row => (<div>{this.renderOrderCard(row.original)}</div>)
@@ -375,9 +375,8 @@ class OrderTable extends Component {
             "table-header-hidden" :
             "table-header-visible"}`
           }
-          publication="CustomPaginatedOrders"
           collection={Orders}
-          matchingResultsCount="order-count"
+          data={this.props.orders}
           query={this.props.query}
           columnMetadata={customColumnMetadata}
           externalLoadingComponent={Loading}

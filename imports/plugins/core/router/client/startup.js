@@ -4,6 +4,7 @@ import { Tracker } from "meteor/tracker";
 import { Accounts } from "meteor/accounts-base";
 import { Shops } from "/lib/collections";
 import { initBrowserRouter } from "./browserRouter";
+import { Reaction } from "/client/api";
 import { Router } from "../lib";
 
 Meteor.startup(function () {
@@ -20,12 +21,21 @@ Meteor.startup(function () {
 
   Tracker.autorun(function () {
     // initialize client routing
-    if (primaryShopSub.ready() && merchantShopSub.ready() && packageSub.ready()) {
+    if (
+      primaryShopSub.ready() &&
+      merchantShopSub.ready() &&
+      packageSub.ready() &&
+      // In addition to the subscriptions, shopId must be defined before we proceed
+      // to avoid conditions where the subscriptions may be ready, but the cached
+      // shopId has yet been set.
+      // Reaction.primaryShopId is a reactive data source
+      Reaction.primaryShopId !== null
+    ) {
       const shops = Shops.find({}).fetch();
       //  initBrowserRouter calls Router.initPackageRoutes which calls shopSub.ready which is reactive,
       //  So we have to call initBrowserRouter in a non reactive context.
       //  Otherwise initBrowserRouter is called twice each time a subscription becomes "ready"
-      Tracker.nonreactive(()=> {
+      Tracker.nonreactive(() => {
         // Make sure we have shops before we try to make routes for them
         if (Array.isArray(shops) && shops.length)  {
           initBrowserRouter();
