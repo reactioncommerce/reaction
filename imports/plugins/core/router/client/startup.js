@@ -10,12 +10,21 @@ import { Router } from "../lib";
 Meteor.startup(function () {
   loadRegisteredComponents();
 
+  // Subscribe to router required publications
+  // Note: Although these are subscribed to by the subscription manager in "/modules/client/core/subscriptions",
+  // using the subscriptions manager sometimes causes issues when signing in/out where you may seee a grey screen
+  // or missing shop data throughout the app.
+  // TODO: Revisit subscriptions manager usage and waiting for shops to exist client side before rendering.
+  const primaryShopSub = Meteor.subscribe("PrimaryShop");
+  const merchantShopSub = Meteor.subscribe("MerchantShops");
+  const packageSub = Meteor.subscribe("Packages");
+
   Tracker.autorun(function () {
     // initialize client routing
     if (
-      Reaction.Subscriptions.Packages.ready() &&
-      Reaction.Subscriptions.PrimaryShop.ready() &&
-      Reaction.Subscriptions.MerchantShops.ready() &&
+      primaryShopSub.ready() &&
+      merchantShopSub.ready() &&
+      packageSub.ready() &&
       // In addition to the subscriptions, shopId must be defined before we proceed
       // to avoid conditions where the subscriptions may be ready, but the cached
       // shopId has yet been set.
