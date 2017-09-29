@@ -321,7 +321,7 @@ class OrderTable extends Component {
         customColumnMetadata.push(columnMeta);
       });
     } else {
-      // Render order detail column/row dat
+      // Render order detail column/row data
 
       const columnMeta = {
         Cell: row => (<div>{this.renderOrderCard(row.original)}</div>)

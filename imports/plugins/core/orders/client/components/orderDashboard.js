@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import OrderTable from "./orderTable";
+import OrderTable from "../containers/orderTableContainer";
 import OrderFilter from "./orderFilter";
 import OrderSearch from "./orderSearch";
 
@@ -87,18 +87,6 @@ class OrderDashboard extends Component {
             <OrderTable
               orders={this.props.orders}
               isOpen={this.state.openList}
-              selectedItems={this.props.selectedItems}
-              handleSelect={this.props.handleSelect}
-              handleClick={this.props.handleClick}
-              multipleSelect={this.props.multipleSelect}
-              selectAllOrders={this.props.selectAllOrders}
-              displayMedia={this.props.displayMedia}
-              shipping={this.props.shipping}
-              setShippingStatus={this.props.setShippingStatus}
-              isLoading={this.props.isLoading}
-              renderFlowList={this.props.renderFlowList}
-              toggleShippingFlowList={this.props.toggleShippingFlowList}
-              handleBulkPaymentCapture={this.props.handleBulkPaymentCapture}
             />
           </div> :
           <div className="container-fluid-sm order-details-list-container">
