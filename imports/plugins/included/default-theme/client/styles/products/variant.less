@@ -43,13 +43,6 @@
   box-shadow: 0 0 0 1px @brand-accent-color;
 }
 
-.variant-detail .alerts {
-  display: flex;
-  position: absolute;
-  .right(-10px);
-  top: -10px;
-}
-
 .variant-detail .badge {
   display: flex;
   align-items: center;
@@ -71,5 +64,13 @@
 }
 
 .variant-deleted {
-  opacity: 0.8;
+  opacity: 0.2;
+}
+
+.variant-button {
+  transition: opacity 200ms linear;
+}
+
+.variant-notVisible {
+  opacity: 0.5;
 }

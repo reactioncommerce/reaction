@@ -2,9 +2,29 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Validation } from "@reactioncommerce/reaction-collections";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 
+import { ReactionProduct } from "/lib/api";
+
+import { ProductVariant } from "/lib/collections/schemas";
+
 class Variant extends Component {
+  constructor(props) {
+    super(props);
+
+    this.validation = new Validation(ProductVariant);
+
+    this.state = {
+      invalidVariant: [],
+      selfValidation: []
+    };
+  }
+
+  componentWillMount() {
+    this.variantValidation();
+  }
+
   handleClick = (event) => {
     if (this.props.onClick) {
       this.props.onClick(event, this.props.variant);
@@ -70,12 +90,58 @@ class Variant extends Component {
     return null;
   }
 
+  renderValidationButton = () => {
+    if (this.state.selfValidation.isValid === false) {
+      return (
+        <Components.Badge
+          status="danger"
+          indicator={true}
+          tooltip={"Validation error"}
+          i18nKeyTooltip={"admin.tooltip.validationError"}
+        />
+      );
+    }
+    if (this.state.invalidVariant.length) {
+      return (
+        <Components.Badge
+          status="danger"
+          indicator={true}
+          tooltip={"Validation error on variant option"}
+          i18nKeyTooltip={"admin.tooltip.optionValidationError"}
+        />
+      );
+    }
+  }
+
+  variantValidation = () => {
+    const variants = ReactionProduct.getVariants(this.props.variant._id);
+    let validationStatus;
+    let invalidVariant;
+
+    if (variants) {
+      validationStatus = variants.map((variant) => {
+        return this.validation.validate(variant);
+      });
+
+      invalidVariant = validationStatus.filter(status => status.isValid === false);
+    }
+
+    const selfValidation = this.validation.validate(this.props.variant);
+
+    this.setState({
+      invalidVariant,
+      selfValidation
+    });
+  }
+
   render() {
     const variant = this.props.variant;
     const classes = classnames({
       "variant-detail": true,
+      "variant-button": true,
       "variant-detail-selected": this.props.isSelected,
-      "variant-deleted": this.props.variant.isDeleted
+      "variant-deleted": this.props.variant.isDeleted,
+      "variant-notVisible": !this.props.variant.isVisible
     });
 
     let variantTitleElement;
@@ -107,13 +173,13 @@ class Variant extends Component {
               <Components.Currency amount={this.price} editable={this.props.editable}/>
             </span>
           </div>
+        </div>
 
-          <div className="alerts">
-            {this.renderDeletionStatus()}
-            {this.renderInventoryStatus()}
-            {this.props.visibilityButton}
-            {this.props.editButton}
-          </div>
+        <div className="alerts">
+          {this.renderDeletionStatus()}
+          {this.renderInventoryStatus()}
+          {this.renderValidationButton()}
+          {this.props.editButton}
         </div>
       </li>
     );
