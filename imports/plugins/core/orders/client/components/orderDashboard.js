@@ -1,21 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Icon, Translation } from "@reactioncommerce/reaction-ui";
+import { Components } from "@reactioncommerce/reaction-components";
 import OrderTable from "./orderTable";
-import OrderActions from "./orderActions";
-import OrderSearch from "../components/orderSearch";
+import OrderFilter from "./orderFilter";
+import OrderSearch from "./orderSearch";
 
 class OrderDashboard extends Component {
   static propTypes = {
-    classNamesContainer: PropTypes.object,
     clearFilter: PropTypes.func,
     displayMedia: PropTypes.func,
-    filter: PropTypes.string,
     filterDates: PropTypes.func,
+    filterShippingStatus: PropTypes.func,
+    filterWorkflowStatus: PropTypes.func,
     handleBulkPaymentCapture: PropTypes.func,
     handleChange: PropTypes.func,
     handleClick: PropTypes.func,
-    handleMenuClick: PropTypes.func,
     handleSelect: PropTypes.func,
     isLoading: PropTypes.object,
     multipleSelect: PropTypes.bool,
@@ -68,12 +67,11 @@ class OrderDashboard extends Component {
           handleChange={this.props.handleChange}
           searchQuery={this.props.searchQuery}
         />
-        <OrderActions
-          handleMenuClick={this.props.handleMenuClick}
+        <OrderFilter
           clearFilter={this.props.clearFilter}
-          filter={this.props.filter}
-          classNamesContainer={this.props.classNamesContainer}
           filterDates={this.props.filterDates}
+          filterShippingStatus={this.props.filterShippingStatus}
+          filterWorkflowStatus={this.props.filterWorkflowStatus}
         />
         {this.state.orders.length ?
           <div className="container-fluid-sm order-details-list-container">
@@ -115,8 +113,8 @@ class OrderDashboard extends Component {
           </div> :
           <div className="container-fluid-sm order-details-list-container">
             <div className="empty-view-message">
-              <Icon icon="fa fa-sun-o" />
-              <Translation defaultValue={"No orders found"} i18nKey={"order.ordersNotFound"} />
+              <Components.Icon icon="fa fa-sun-o" />
+              <Components.Translation defaultValue={"No orders found"} i18nKey={"order.ordersNotFound"} />
             </div>
           </div>
         }
