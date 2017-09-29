@@ -29,8 +29,8 @@ Let us know how we can make the contribution process easier. We want to find the
 
 [Create a pull request](https://help.github.com/articles/creating-a-pull-request/) to propose and collaborate on changes to Reaction. These changes are proposed in a PR branch, and are reviewed before merge acceptance into `development` for release.
 
-- Should reference an issue if one exists, or provide detailed information on the goal of the PR.
-- Pass both [acceptance tests and unit testing](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction). New functionality should include new tests.
-- Lint and adhere to the [Reaction style guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide).
-- Contributors should review the CLA.
-- Code reviewed before merge acceptance.
+-   Should reference an issue if one exists, or provide detailed information on the goal of the PR.
+-   Pass both [acceptance tests and unit testing](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction). New functionality should include new tests.
+-   Lint and adhere to the [Reaction style guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide).
+-   Contributors should review the CLA.
+-   Code reviewed before merge acceptance.

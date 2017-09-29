@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "သင့်ရဲ့အမိန့်တွေကိုဖြည့်",
         "paymentMethod": {
+          "PaypalExpress": "paypal Express ကို",
           "expressButtonLabel": "PayPal နဲ့ပေးဆောင်",
           "expressNotConfigured": "paypal Express ကို configured မဟုတ်။",
           "expressNotAvailable": "paypal Express ကိုမရရှိနိုင်ပါ",

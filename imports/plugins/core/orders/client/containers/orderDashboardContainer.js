@@ -5,6 +5,7 @@ import { Tracker } from "meteor/tracker";
 import { Components, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Media, Orders, OrderSearch as OrderSearchCollection } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
+import { filterShippingStatus, filterWorkflowStatus } from "../helpers";
 import OrderDashboard from "../components/orderDashboard.js";
 import {
   PACKAGE_NAME,
@@ -12,67 +13,12 @@ import {
   ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME,
   shippingStates
 } from "../../lib/constants";
+import { getShippingInfo } from "../helpers";
 
 const shippingStrings = ["picked", "packed", "labeled", "shipped"];
 
-const OrderHelper =  {
-  makeQuery(filter) {
-    let query = {};
-
-    switch (filter) {
-      // New orders
-      case "new":
-        query = {
-          "workflow.status": "new"
-        };
-        break;
-
-      // Orders that have been approved
-      case "approved":
-        query = {
-          "workflow.status": "coreOrderWorkflow/processing",
-          "billing.paymentMethod.status": "approved"
-        };
-        break;
-
-      // Orders that have been captured
-      case "captured":
-        query = {
-          "billing.paymentMethod.status": "completed",
-          "shipping.shipped": false
-        };
-        break;
-
-      // Orders that are being processed
-      case "processing":
-        query = {
-          "workflow.status": "coreOrderWorkflow/processing"
-        };
-        break;
-
-      // Orders that are complete, including all items with complete status
-      case "completed":
-        query = {
-          "workflow.status": "coreOrderWorkflow/completed"
-        };
-        break;
-
-      case "canceled":
-        query = {
-          "workflow.status": "coreOrderWorkflow/canceled"
-        };
-        break;
-
-      default:
-    }
-
-    return query;
-  }
-};
-
 class OrderDashboardContainer extends Component {
   static propTypes = {
-    handleMenuClick: PropTypes.func,
     orders: PropTypes.array
   }
 
@@ -101,9 +47,9 @@ class OrderDashboardContainer extends Component {
       },
       ready: false,
       query: {},
-      filter: i18next.t("order.filter.status"),
-      classNamesContainer: {},
-      searchQuery: ""
+      searchQuery: "",
+      shippingFilter: "",
+      workflowFilter: ""
     };
 
     this.dep = new Tracker.Dependency;
@@ -166,25 +112,80 @@ class OrderDashboardContainer extends Component {
         $gte: new Date(formattedStartDate.toISOString()),
         $lte: new Date(formattedEndDate.toISOString())
       };
-      this.setState({
-        classNamesContainer: Object.assign({}, this.state.classNamesContainer, {
-          date: "active"
-        }),
-        query
-      });
+      this.setState({ query });
     }
   }
 
-  handleMenuClick = (event, value) => {
-    let query = OrderHelper.makeQuery(value);
-    // ensure other fields (e.g ids) on query are kept
-    query = Object.assign({}, this.state.query, query);
+  filterWorkflowStatus = (event, value) => {
+    const query = filterWorkflowStatus(value);
+    const shippingFilter = this.state.shippingFilter;
+    if (this.state.query.createdAt) {
+      query.createdAt = this.state.query.createdAt;
+    }
+
+    if  (this.state.query._id) {
+      query._id = this.state.query._id;
+    }
+
+    this.setState({
+      query: { ...filterShippingStatus(shippingFilter.toLowerCase()), ...query },
+      workflowFilter: value
+    });
+  }
+
+  filterShippingStatus = (event, value) => {
+    const query = filterShippingStatus(value);
+    const workflowFilter = this.state.workflowFilter;
+
+    if (this.state.query.createdAt) {
+      query.createdAt = this.state.query.createdAt;
+    }
+
+    if  (this.state.query._id) {
+      query._id = this.state.query._id;
+    }
+
+    this.setState({
+      query: { ...filterWorkflowStatus(workflowFilter.toLowerCase()), ...query },
+      shippingFilter: value
+    });
+  }
+
+  clearFilter = (filterString) => {
+    let query;
+    let shippingFilter = this.state.shippingFilter;
+    let workflowFilter = this.state.workflowFilter;
+
+    if (filterString === "workflow") {
+      workflowFilter = "";
+      query = { ...filterWorkflowStatus(workflowFilter), ...filterShippingStatus(shippingFilter.toLowerCase()) };
+
+      if (this.state.query.createdAt) {
+        query.createdAt = this.state.query.createdAt;
+      }
+    } else if (filterString === "date") {
+      query = {
+        ...filterWorkflowStatus(workflowFilter.toLowerCase()),
+        ...filterShippingStatus(shippingFilter.toLowerCase())
+      };
+    } else if (filterString === "shipping") {
+      shippingFilter = "";
+      query = { ...filterWorkflowStatus(workflowFilter.toLowerCase()), ...filterShippingStatus(shippingFilter) };
+
+      if (this.state.query.createdAt) {
+        query.createdAt = this.state.query.createdAt;
+      }
+    }
+
+    // If there is an id on the current search append it to query
+    if (this.state.query._id) {
+      query._id = this.state.query._id;
+    }
+
     this.setState({
       query,
-      filter: i18next.t(`order.filter.${value}`),
-      classNamesContainer: Object.assign({}, this.state.classNamesContainer, {
-        status: "active"
-      })
+      shippingFilter,
+      workflowFilter
     });
   }
 
@@ -211,42 +212,6 @@ class OrderDashboardContainer extends Component {
         delete query._id;
         this.setState({ query: query });
       }
-    });
-  }
-
-  clearFilter = (filterString) => {
-    let query;
-    let filter = this.state.filter;
-    const oldQuery = this.state.query;
-    const classNamesContainer = this.state.classNamesContainer;
-
-    if (filterString === "status") {
-      query = OrderHelper.makeQuery("");
-      filter = i18next.t("order.filter.status");
-
-      // if there was another filter active reattach it to the query object
-      if (oldQuery.createdAt) {
-        query.createdAt = oldQuery.createdAt;
-      }
-    } else if (filterString === "date") {
-      query = OrderHelper.makeQuery(filter.toLowerCase());
-    }
-
-    // id is set by the searchbar in setupTracker. Here we check if there's a current value in it before
-    // the filter was cleared. If there is, we attach it back to the queryObj
-    if (oldQuery._id) {
-      query._id = oldQuery._id;
-    }
-
-    // clear filter for a particular search
-    const filterClassName = Object.assign({}, classNamesContainer, {
-      [filterString]: ""
-    });
-
-    this.setState({
-      query,
-      filter,
-      classNamesContainer: filterClassName
     });
   }
 
@@ -379,6 +344,9 @@ class OrderDashboardContainer extends Component {
    * @return {null} no return value
    */
   shippingStatusUpdateCall = (selectedOrders, status) => {
+    const filteredSelectedOrders = selectedOrders.filter((order) => {
+      return order.shipping && Object.keys(getShippingInfo(order)).length;
+    });
     this.setState({
       isLoading: {
         [status]: true
@@ -386,7 +354,7 @@ class OrderDashboardContainer extends Component {
     });
     let orderText = "order";
 
-    if (selectedOrders.length > 1) {
+    if (filteredSelectedOrders.length > 1) {
       orderText = "orders";
     }
 
@@ -401,15 +369,17 @@ class OrderDashboardContainer extends Component {
     // different shipping statuses to receive an array of objects(orders) as a param
 
     // TODO: rethink this type of flow for updating shipping statuses
-    selectedOrders.forEach((order) => {
-      Meteor.call(`orders/shipment${capitalizeStatus}`, order, order.shipping[0], (err) => {
-        if (err) {
-          Alerts.toast(`An error occured while setting the status: ${err}`, "error");
+    filteredSelectedOrders.forEach((order) => {
+      const shippingRecord = getShippingInfo(order);
+
+      Meteor.call(`orders/shipment${capitalizeStatus}`, order, shippingRecord, (error) => {
+        if (error) {
+          Alerts.toast(`An error occured while setting the status: ${error}`, "error");
         } else {
           Meteor.call("orders/updateHistory", order._id, "Shipping state set by bulk operation", status);
         }
         orderCount++;
-        if (orderCount === selectedOrders.length) {
+        if (orderCount === filteredSelectedOrders.length) {
           this.setState({
             shipping: {
               [status]: true
@@ -420,7 +390,7 @@ class OrderDashboardContainer extends Component {
           });
           Alerts.alert({
             text: i18next.t("order.orderSetToState", {
-              orderNumber: selectedOrders.length,
+              orderNumber: filteredSelectedOrders.length,
               orderText: orderText,
               status: status
             }),
@@ -543,24 +513,26 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
-      const orderWorkflow = order.shipping[0].workflow;
+      const orderWorkflow = getShippingInfo(order).workflow;
       // check if the order(s) are in this state already or in the previous state
 
-      // TODO: model this with the assumption that there may be different workflows depending on the type of shop or product that a shop is selling.
-      if (orderWorkflow.status === "new") {
-        isNotPicked++;
-      } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
-        isPicked++;
-      } else {
-        // check if the selected order(s) are being regressed back to this state
-        if (orderWorkflow.workflow.includes("coreOrderWorkflow/picked")) {
-          ordersToRegress++;
-        } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/picked") &&
-        (orderWorkflow.status === "coreOrderWorkflow/packed" ||
-        orderWorkflow.status === "coreOrderWorkflow/labeled" ||
-        orderWorkflow.status === "coreOrderWorkflow/shipped")) {
-          ordersToRegress++;
+      // TODO: model this with the assumption that there may be different workflows
+      // depending on the type of shop or product that a shop is selling.
+      if (orderWorkflow) {
+        if (orderWorkflow.status === "new") {
+          isNotPicked++;
+        } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
+          isPicked++;
+        } else {
+          // check if the selected order(s) are being regressed back to this state
+          if (orderWorkflow.workflow.includes("coreOrderWorkflow/picked")) {
+            ordersToRegress++;
+          } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/picked") &&
+          (orderWorkflow.status === "coreOrderWorkflow/packed" ||
+          orderWorkflow.status === "coreOrderWorkflow/labeled" ||
+          orderWorkflow.status === "coreOrderWorkflow/shipped")) {
+            ordersToRegress++;
+          }
         }
       }
     });
@@ -594,25 +566,28 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
-      const orderWorkflow = order.shipping[0].workflow;
+      const orderWorkflow = getShippingInfo(order).workflow;
+
       // check if the order(s) are in this state already or in one of the previous states
 
-      // TODO: model this with the assumption that there may be different workflows depending on the type of shop or product that a shop is selling.
-      if (orderWorkflow.status === "new") {
-        isNotPicked++;
-      } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
-        isNotPacked++;
-      } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
-        isPacked++;
-      } else {
-        // check if the selected order(s) are being regressed back to this state
-        if (orderWorkflow.workflow.includes("coreOrderWorkflow/packed")) {
-          ordersToRegress++;
-        } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/packed") &&
+      // TODO: model this with the assumption that there may be different workflows
+      // depending on the type of shop or product that a shop is selling.
+      if (orderWorkflow) {
+        if (orderWorkflow.status === "new") {
+          isNotPicked++;
+        } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
+          isNotPacked++;
+        } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
+          isPacked++;
+        } else {
+          // check if the selected order(s) are being regressed back to this state
+          if (orderWorkflow.workflow.includes("coreOrderWorkflow/packed")) {
+            ordersToRegress++;
+          } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/packed") &&
           (orderWorkflow.status === "coreOrderWorkflow/labeled" ||
           orderWorkflow.status === "coreOrderWorkflow/shipped")) {
-          ordersToRegress++;
+            ordersToRegress++;
+          }
         }
       }
     });
@@ -653,26 +628,28 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
-      const orderWorkflow = order.shipping[0].workflow;
+      const orderWorkflow = getShippingInfo(order).workflow;
       // check if the order(s) are in this state already or in one of the previous states
 
-      // TODO: model this with the assumption that there may be different workflows depending on the type of shop or product that a shop is selling.
-      if (orderWorkflow.status === "new") {
-        isNotPacked++;
-        whichFalseState = shippingStates.picked;
-      } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
-        isNotPacked++;
-        whichFalseState = shippingStates.packed;
-      } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
-        isNotLabeled++;
-      } else if (orderWorkflow.status === "coreOrderWorkflow/labeled") {
-        isLabeled++;
-      } else {
-        // check if the selected order(s) are being regressed back to this state
-        if (orderWorkflow.workflow.includes("coreOrderWorkflow/labeled") ||
-        orderWorkflow.status === "coreOrderWorkflow/shipped") {
-          ordersToRegress++;
+      // TODO: model this with the assumption that there may be different workflows
+      // depending on the type of shop or product that a shop is selling.
+      if (orderWorkflow) {
+        if (orderWorkflow.status === "new") {
+          isNotPacked++;
+          whichFalseState = shippingStates.picked;
+        } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
+          isNotPacked++;
+          whichFalseState = shippingStates.packed;
+        } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
+          isNotLabeled++;
+        } else if (orderWorkflow.status === "coreOrderWorkflow/labeled") {
+          isLabeled++;
+        } else {
+          // check if the selected order(s) are being regressed back to this state
+          if (orderWorkflow.workflow.includes("coreOrderWorkflow/labeled") ||
+          orderWorkflow.status === "coreOrderWorkflow/shipped") {
+            ordersToRegress++;
+          }
         }
       }
     });
@@ -713,24 +690,27 @@ class OrderDashboardContainer extends Component {
     // status of each order in regard to the other statuses
     // TODO: optimise this process to avoid having this similar repetitive block of code across 4 methods
     selectedOrders.forEach((order) => {
-      // TODO: remove these hard-coded zero indexes to enable multiple shipments in marketplace
-      const orderWorkflow = order.shipping[0].workflow.status;
+      const orderWorkflow = getShippingInfo(order).workflow;
       // check if the order(s) are in this state already or in one of the previous states
 
-      // TODO: model this with the assumption that there may be different workflows depending on the type of shop or product that a shop is selling.
-      if (orderWorkflow === "new") {
-        isNotLabeled++;
-        whichFalseState = shippingStates.picked;
-      } else if (orderWorkflow === "coreOrderWorkflow/picked") {
-        isNotLabeled++;
-        whichFalseState = shippingStates.packed;
-      } else if (orderWorkflow === "coreOrderWorkflow/packed") {
-        isNotLabeled++;
-        whichFalseState = shippingStates.labeled;
-      } else if (orderWorkflow === "coreOrderWorkflow/labeled") {
-        isNotShipped++;
-      } else if (orderWorkflow === "coreOrderWorkflow/shipped") {
-        isShipped++;
+      // TODO: model this with the assumption that there may be different workflows
+      // depending on the type of shop or product that a shop is selling.
+      if (orderWorkflow) {
+        const orderWorkflowStatus = orderWorkflow.status;
+        if (orderWorkflowStatus === "new") {
+          isNotLabeled++;
+          whichFalseState = shippingStates.picked;
+        } else if (orderWorkflowStatus === "coreOrderWorkflow/picked") {
+          isNotLabeled++;
+          whichFalseState = shippingStates.packed;
+        } else if (orderWorkflowStatus === "coreOrderWorkflow/packed") {
+          isNotLabeled++;
+          whichFalseState = shippingStates.labeled;
+        } else if (orderWorkflowStatus === "coreOrderWorkflow/labeled") {
+          isNotShipped++;
+        } else if (orderWorkflowStatus === "coreOrderWorkflow/shipped") {
+          isShipped++;
+        }
       }
     });
 
@@ -792,25 +772,25 @@ class OrderDashboardContainer extends Component {
     // TODO: send these orders in batch as an array. This would entail re-writing the
     // "orders/approvePayment" method to receive an array of orders as a param.
     selectedOrders.forEach((order) => {
-      Meteor.call("orders/approvePayment", order, (err) => {
-        if (err) {
+      Meteor.call("orders/approvePayment", order, (approvePaymentError) => {
+        if (approvePaymentError) {
           this.setState({
             isLoading: {
               capturePayment: false
             }
           });
-          Alerts.toast(`An error occured while approving the payment: ${err}`, "error");
+          Alerts.toast(`An error occured while approving the payment: ${approvePaymentError}`, "error");
         } else {
           // TODO: send these orders in batch as an array. This would entail re-writing the
           // "orders/capturePayments" method to receive an array of orders as a param.
-          Meteor.call("orders/capturePayments", order._id, (error) => {
-            if (error) {
+          Meteor.call("orders/capturePayments", order._id, (capturePaymentError) => {
+            if (capturePaymentError) {
               this.setState({
                 isLoading: {
                   capturePayment: false
                 }
               });
-              Alerts.toast(`An error occured while capturing the payment: ${error}`, "error");
+              Alerts.toast(`An error occured while capturing the payment: ${capturePaymentError}`, "error");
             }
 
             orderCount++;
@@ -841,16 +821,15 @@ class OrderDashboardContainer extends Component {
           orders={this.state.orders}
           searchQuery={this.state.searchQuery}
           query={this.state.query}
-          filter={this.state.filter}
-          classNamesContainer={this.state.classNamesContainer}
           clearFilter={this.clearFilter}
           filterDates={this.filterDates}
+          filterShippingStatus={this.filterShippingStatus}
           handleClick={this.handleClick}
           displayMedia={this.handleDisplayMedia}
           selectedItems={this.state.selectedItems}
           selectAllOrders={this.selectAllOrders}
           multipleSelect={this.state.multipleSelect}
-          handleMenuClick={this.handleMenuClick}
+          filterWorkflowStatus={this.filterWorkflowStatus}
           setShippingStatus={this.setShippingStatus}
           shipping={this.state.shipping}
           isLoading={this.state.isLoading}
