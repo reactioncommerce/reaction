@@ -669,7 +669,6 @@ const wrapComponent = (Comp) => (
           selectAllOrders={this.selectAllOrders}
           multipleSelect={this.state.multipleSelect}
           setShippingStatus={this.setShippingStatus}
-
           shipping={this.state.shipping}
           isLoading={this.state.isLoading}
           renderFlowList={this.state.renderFlowList}
