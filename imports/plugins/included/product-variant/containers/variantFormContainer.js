@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { ReactionProduct } from "/lib/api";
 import { Packages } from "/lib/collections";
-import { Countries } from "/client/collections";
 import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import VariantForm from "../components/variantForm";
@@ -25,22 +24,13 @@ const wrapComponent = (Comp) => (
       this.validation = new Validation(ProductVariant);
 
       this.state = {
-        variant: props.variant,
         validationStatus: this.validation.validationStatus,
         isDeleted: props.variant && props.variant.isDeleted
       };
     }
 
     componentDidMount() {
-      this.runVariantValidation(this.state.variant);
-    }
-
-    componentWillReceiveProps(nextProps) {
-      this.setState(() => ({
-        variant: nextProps.variant
-      }), () => {
-        this.runVariantValidation(this.state.variant);
-      });
+      this.runVariantValidation(this.props.variant);
     }
 
     runVariantValidation(variant) {
@@ -48,8 +38,7 @@ const wrapComponent = (Comp) => (
         const validationStatus = this.validation.validate(variant);
 
         this.setState(() => ({
-          validationStatus,
-          variant
+          validationStatus
         }));
 
         return validationStatus;
@@ -193,7 +182,6 @@ const wrapComponent = (Comp) => (
         Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
           if (error) {
             Alerts.toast(error.message, "error");
-            this.forceUpdate();
           }
         });
       }
@@ -201,6 +189,10 @@ const wrapComponent = (Comp) => (
 
     handleCardExpand = (cardName) => {
       Reaction.state.set("edit/focus", cardName);
+    }
+
+    handleVariantVisibilityToggle = (variant) => {
+      Meteor.call("products/updateProductField", variant._id, "isVisible", !variant.isVisible);
     }
 
     updateQuantityIfChildVariants =  (variant) => {
@@ -211,7 +203,7 @@ const wrapComponent = (Comp) => (
     }
 
     render() {
-      if (this.state.variant) {
+      if (this.props.variant) {
         return (
           <Comp
             isProviderEnabled={this.isProviderEnabled}
@@ -222,12 +214,13 @@ const wrapComponent = (Comp) => (
             removeVariant={this.removeVariant}
             cloneVariant={this.cloneVariant}
             onVariantFieldSave={this.handleVariantFieldSave}
+            onVisibilityButtonClick={this.handleVariantVisibilityToggle}
             onCardExpand={this.handleCardExpand}
             onUpdateQuantityField={this.updateQuantityIfChildVariants}
             validation={this.state.validationStatus}
             isDeleted={this.state.isDeleted}
             {...this.props}
-            variant={this.state.variant}
+            variant={this.props.variant}
           />
         );
       }
@@ -237,34 +230,8 @@ const wrapComponent = (Comp) => (
   }
 );
 
-function composer(props, onData) {
-  Meteor.subscribe("TaxCodes").ready();
-
-  const productHandle = Reaction.Router.getParam("handle");
-  if (!productHandle) {
-    Reaction.clearActionView();
-  }
-
-  const countries = Countries.find({}).fetch();
-  const variant = ReactionProduct.selectedTopVariant();
-
-  if (variant) {
-    onData(null, {
-      countries,
-      variant: ReactionProduct.selectedTopVariant(),
-      editFocus: Reaction.state.get("edit/focus")
-    });
-  } else {
-    onData(null, { countries });
-  }
-}
-
-registerComponent("VariantForm", VariantForm, [
-  composeWithTracker(composer),
-  wrapComponent
-]);
+registerComponent("VariantForm", VariantForm, wrapComponent);
 
 export default compose(
-  composeWithTracker(composer),
   wrapComponent
 )(VariantForm);

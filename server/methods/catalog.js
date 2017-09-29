@@ -455,7 +455,7 @@ Meteor.methods({
 
     if (!newVariant) {
       Object.assign(assembledVariant, {
-        title: "",
+        title: product.title + " - Untitled Option",
         price: 0.00
       });
     }
