@@ -1,3 +1,4 @@
+import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
@@ -92,6 +93,13 @@ describe("orders test", function () {
     return shippingObject;
   }
 
+  function orderCreditMethod(orderData) {
+    const billingRecord = orderData.billing.filter(value => value.paymentMethod.method ===  "credit");
+    const billingObject =  billingRecord.find((billing) => {
+      return billing.shopId === shopId;
+    });
+    return billingObject;
+  }
 
   describe("orders/cancelOrder", function () {
     beforeEach(function () {
@@ -286,13 +294,21 @@ describe("orders test", function () {
     it("should approve payment", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("approvePayment", order.userId);
+      const invoice = orderCreditMethod(order).invoice;
+      const subTotal = invoice.subtotal;
+      const shipping = invoice.shipping;
+      const taxes = invoice.taxes;
+      const discount = invoice.discounts;
+      const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
+      const total = accounting.toFixed(discountTotal + shipping + taxes, 2);
       Meteor.call("orders/approvePayment", order);
       const orderBilling = billingObjectMethod(Orders.findOne({ _id: order._id }));
       expect(orderBilling.paymentMethod.status).to.equal("approved");
       expect(orderBilling.paymentMethod.mode).to.equal("capture");
+      expect(orderBilling.invoice.discounts).to.equal(discount);
+      expect(orderBilling.invoice.total).to.equal(Number(total));
     });
   });
-
 
   describe("orders/shipmentShipped", function () {
     it("should throw an error if user does not have permission", function () {
