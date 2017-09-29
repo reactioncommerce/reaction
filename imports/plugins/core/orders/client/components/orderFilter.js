@@ -99,7 +99,7 @@ class OrderFilter extends Component {
       <div className="order-filter-bar">
         <div className="order-filter-item">
           <div className="order-filter-label">
-            <span className={`order-filter-name ${this.state.classNames.workflow}`}>
+            <span className={`order-filter-name capitalize ${this.state.classNames.workflow}`}>
               <Components.Translation
                 defaultValue={this.state.workflowLabel}
                 i18nKey={`order.filter.${this.state.workflowLabel}`}
@@ -178,7 +178,7 @@ class OrderFilter extends Component {
 
         <div className="order-filter-item hidden-xs">
           <div className="order-filter-label">
-            <span className={`order-filter-name ${this.state.classNames.shipping}`}>
+            <span className={`order-filter-name capitalize ${this.state.classNames.shipping}`}>
               {this.shippingLabel()}
             </span>
             <div className="order-filter-icons">

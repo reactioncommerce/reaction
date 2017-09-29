@@ -4,14 +4,13 @@ import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { Media } from "/lib/collections";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import { filterShippingStatus, filterWorkflowStatus } from "../helpers";
+import { filterShippingStatus, filterWorkflowStatus, getShippingInfo } from "../helpers";
 import {
   PACKAGE_NAME,
   ORDER_LIST_FILTERS_PREFERENCE_NAME,
   ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME,
   shippingStates
 } from "../../lib/constants";
-import { getShippingInfo } from "../helpers";
 import OrderSubscription from "./orderSubscriptionContainer";
 
 const shippingStrings = ["picked", "packed", "labeled", "shipped"];
