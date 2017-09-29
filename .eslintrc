@@ -239,6 +239,7 @@
     }], // http://eslint.org/docs/rules/space-before-function-paren
     "space-infix-ops": 2, // http://eslint.org/docs/rules/space-infix-ops
     "space-in-parens": [2, "never"], // http://eslint.org/docs/rules/space-in-parens
-    "spaced-comment": [2, "always"] // http://eslint.org/docs/rules/spaced-comment
+    "spaced-comment": [2, "always"], // http://eslint.org/docs/rules/spaced-comment
+    "arrow-spacing": [2, { "before": true, "after": true }] // https://eslint.org/docs/rules/arrow-spacing
   }
 }
