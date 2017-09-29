@@ -92,13 +92,6 @@ describe("orders test", function () {
     return shippingObject;
   }
 
-  function orderCreditMethod(orderData) {
-    const billingRecord = orderData.billing.filter(value => value.paymentMethod.method ===  "credit");
-    const billingObject =  billingRecord.find((billing) => {
-      return billing.shopId === shopId;
-    });
-    return billingObject;
-  }
 
   describe("orders/cancelOrder", function () {
     beforeEach(function () {
