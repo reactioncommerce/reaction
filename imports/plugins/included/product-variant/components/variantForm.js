@@ -58,7 +58,9 @@ class VariantForm extends Component {
     if (!isEqual(nextVariant, currentVariant)) {
       for (const fieldName of fieldNames) {
         if (nextVariant[fieldName] !== currentVariant[fieldName]) {
-          this.animateFieldFlash(fieldName);
+          if (fieldName !== "taxCode") {
+            this.animateFieldFlash(fieldName);
+          }
         }
       }
     }
