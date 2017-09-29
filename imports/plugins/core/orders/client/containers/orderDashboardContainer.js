@@ -5,6 +5,7 @@ import { Tracker } from "meteor/tracker";
 import { Components, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Media, Orders, OrderSearch as OrderSearchCollection } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
+import { filterShippingStatus, filterWorkflowStatus } from "../helpers";
 import OrderDashboard from "../components/orderDashboard.js";
 import {
   PACKAGE_NAME,
@@ -16,65 +17,10 @@ import { getShippingInfo } from "../helpers";
 
 const shippingStrings = ["picked", "packed", "labeled", "shipped"];
 
-const OrderHelper =  {
-  makeQuery(filter) {
-    let query = {};
-
-    switch (filter) {
-      // New orders
-      case "new":
-        query = {
-          "workflow.status": "new"
-        };
-        break;
-
-      // Orders that have been approved
-      case "approved":
-        query = {
-          "workflow.status": "coreOrderWorkflow/processing",
-          "billing.paymentMethod.status": "approved"
-        };
-        break;
-
-      // Orders that have been captured
-      case "captured":
-        query = {
-          "billing.paymentMethod.status": "completed"
-        };
-        break;
-
-      // Orders that are being processed
-      case "processing":
-        query = {
-          "workflow.status": "coreOrderWorkflow/processing"
-        };
-        break;
-
-      // Orders that are complete, including all items with complete status
-      case "completed":
-        query = {
-          "workflow.status": "coreOrderWorkflow/completed"
-        };
-        break;
-
-      case "canceled":
-        query = {
-          "workflow.status": "coreOrderWorkflow/canceled"
-        };
-        break;
-
-      default:
-    }
-
-    return query;
-  }
-};
-
 class OrderDashboardContainer extends Component {
   static propTypes = {
-    handleMenuClick: PropTypes.func,
     orderCount: PropTypes.number,
-    orders: PropTypes.array
+    orders: PropTypes.array,
   }
 
   constructor(props) {
@@ -102,9 +48,9 @@ class OrderDashboardContainer extends Component {
       },
       ready: false,
       query: {},
-      filter: i18next.t("order.filter.status"),
-      classNamesContainer: {},
-      searchQuery: ""
+      searchQuery: "",
+      shippingFilter: "",
+      workflowFilter: ""
     };
 
     this.dep = new Tracker.Dependency;
@@ -167,25 +113,80 @@ class OrderDashboardContainer extends Component {
         $gte: new Date(formattedStartDate.toISOString()),
         $lte: new Date(formattedEndDate.toISOString())
       };
-      this.setState({
-        classNamesContainer: Object.assign({}, this.state.classNamesContainer, {
-          date: "active"
-        }),
-        query
-      });
+      this.setState({ query });
     }
   }
 
-  handleMenuClick = (event, value) => {
-    let query = OrderHelper.makeQuery(value);
-    // ensure other fields (e.g ids) on query are kept
-    query = Object.assign({}, this.state.query, query);
+  filterWorkflowStatus = (event, value) => {
+    const query = filterWorkflowStatus(value);
+    const shippingFilter = this.state.shippingFilter;
+    if (this.state.query.createdAt) {
+      query.createdAt = this.state.query.createdAt;
+    }
+
+    if  (this.state.query._id) {
+      query._id = this.state.query._id;
+    }
+
+    this.setState({
+      query: { ...filterShippingStatus(shippingFilter.toLowerCase()), ...query },
+      workflowFilter: value
+    });
+  }
+
+  filterShippingStatus = (event, value) => {
+    const query = filterShippingStatus(value);
+    const workflowFilter = this.state.workflowFilter;
+
+    if (this.state.query.createdAt) {
+      query.createdAt = this.state.query.createdAt;
+    }
+
+    if  (this.state.query._id) {
+      query._id = this.state.query._id;
+    }
+
+    this.setState({
+      query: { ...filterWorkflowStatus(workflowFilter.toLowerCase()), ...query },
+      shippingFilter: value
+    });
+  }
+
+  clearFilter = (filterString) => {
+    let query;
+    let shippingFilter = this.state.shippingFilter;
+    let workflowFilter = this.state.workflowFilter;
+
+    if (filterString === "workflow") {
+      workflowFilter = "";
+      query = { ...filterWorkflowStatus(workflowFilter), ...filterShippingStatus(shippingFilter.toLowerCase()) };
+
+      if (this.state.query.createdAt) {
+        query.createdAt = this.state.query.createdAt;
+      }
+    } else if (filterString === "date") {
+      query = {
+        ...filterWorkflowStatus(workflowFilter.toLowerCase()),
+        ...filterShippingStatus(shippingFilter.toLowerCase())
+      };
+    } else if (filterString === "shipping") {
+      shippingFilter = "";
+      query = { ...filterWorkflowStatus(workflowFilter.toLowerCase()), ...filterShippingStatus(shippingFilter) };
+
+      if (this.state.query.createdAt) {
+        query.createdAt = this.state.query.createdAt;
+      }
+    }
+
+    // If there is an id on the current search append it to query
+    if (this.state.query._id) {
+      query._id = this.state.query._id;
+    }
+
     this.setState({
       query,
-      filter: i18next.t(`order.filter.${value}`),
-      classNamesContainer: Object.assign({}, this.state.classNamesContainer, {
-        status: "active"
-      })
+      shippingFilter,
+      workflowFilter
     });
   }
 
@@ -212,42 +213,6 @@ class OrderDashboardContainer extends Component {
         delete query._id;
         this.setState({ query: query });
       }
-    });
-  }
-
-  clearFilter = (filterString) => {
-    let query;
-    let filter = this.state.filter;
-    const oldQuery = this.state.query;
-    const classNamesContainer = this.state.classNamesContainer;
-
-    if (filterString === "status") {
-      query = OrderHelper.makeQuery("");
-      filter = i18next.t("order.filter.status");
-
-      // if there was another filter active reattach it to the query object
-      if (oldQuery.createdAt) {
-        query.createdAt = oldQuery.createdAt;
-      }
-    } else if (filterString === "date") {
-      query = OrderHelper.makeQuery(filter.toLowerCase());
-    }
-
-    // id is set by the searchbar in setupTracker. Here we check if there's a current value in it before
-    // the filter was cleared. If there is, we attach it back to the queryObj
-    if (oldQuery._id) {
-      query._id = oldQuery._id;
-    }
-
-    // clear filter for a particular search
-    const filterClassName = Object.assign({}, classNamesContainer, {
-      [filterString]: ""
-    });
-
-    this.setState({
-      query,
-      filter,
-      classNamesContainer: filterClassName
     });
   }
 
@@ -858,16 +823,15 @@ class OrderDashboardContainer extends Component {
           orders={this.state.orders}
           searchQuery={this.state.searchQuery}
           query={this.state.query}
-          filter={this.state.filter}
-          classNamesContainer={this.state.classNamesContainer}
           clearFilter={this.clearFilter}
           filterDates={this.filterDates}
+          filterShippingStatus={this.filterShippingStatus}
           handleClick={this.handleClick}
           displayMedia={this.handleDisplayMedia}
           selectedItems={this.state.selectedItems}
           selectAllOrders={this.selectAllOrders}
           multipleSelect={this.state.multipleSelect}
-          handleMenuClick={this.handleMenuClick}
+          filterWorkflowStatus={this.filterWorkflowStatus}
           setShippingStatus={this.setShippingStatus}
           shipping={this.state.shipping}
           isLoading={this.state.isLoading}

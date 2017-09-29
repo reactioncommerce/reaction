@@ -24,18 +24,45 @@ export const DEFAULT_FILTER_NAME = "new";
 
 
 /**
- * Order filters
+ * Order workflow states
  * @type {String}
  */
-export const orderFilters = [{
-  name: "new",
-  label: "New"
+export const workflowStatus = [{
+  label: "New",
+  value: "new"
 }, {
-  name: "processing",
-  label: "This Week"
+  label: "Approved",
+  value: "approved"
 }, {
-  name: "completed",
-  label: "Shipping Status"
+  label: "Captured",
+  value: "captured"
+}, {
+  label: "Processing",
+  value: "processing"
+}, {
+  label: "Completed",
+  value: "completed"
+}, {
+  label: "Canceled",
+  value: "canceled"
+}];
+
+/**
+ * Order workflow states
+ * @type {String}
+ */
+export const shippingStatus = [{
+  label: "Picked",
+  value: "picked"
+}, {
+  label: "Packed",
+  value: "packed"
+}, {
+  label: "Labeled",
+  value: "labeled"
+}, {
+  label: "Shipped",
+  value: "shipped"
 }];
 
 /**
