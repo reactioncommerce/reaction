@@ -62,7 +62,7 @@ export default function () {
         // As this is run by the Server and we don't have userId()/this.userId
         // which "shippo/fetchTrackingStatusForOrders" need, we use dispatch:run-as-user
         // An alternative way is https://forums.meteor.com/t/cant-set-logged-in-user-for-rest-calls/18656/3
-        Meteor.runAsUser(ownerId, ()=> {
+        Meteor.runAsUser(ownerId, () => {
           Meteor.call("shippo/fetchTrackingStatusForOrders", error => {
             if (error) {
               job.done(error.toString(), { repeatId: true });
