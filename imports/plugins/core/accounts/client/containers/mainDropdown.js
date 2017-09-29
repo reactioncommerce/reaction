@@ -128,11 +128,11 @@ const handlers = {
 registerComponent("MainDropdown", MainDropdown, [
   withCurrentAccount,
   withProps(handlers),
-  composeWithTracker(composer)
+  composeWithTracker(composer, false)
 ]);
 
 export default compose(
   withCurrentAccount,
   withProps(handlers),
-  composeWithTracker(composer)
+  composeWithTracker(composer, false)
 )(MainDropdown);
