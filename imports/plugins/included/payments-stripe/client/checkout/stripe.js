@@ -5,7 +5,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { $ } from "meteor/jquery";
 import { getCardType } from "/client/modules/core/helpers/globals";
 import { Router } from "/client/api";
-import { Cart } from "/lib/collections";
+import { Cart, Orders } from "/lib/collections";
 import { StripePayment } from "../../lib/collections/schemas";
 
 let submitting = false;
@@ -73,6 +73,24 @@ Template.stripePaymentForm.helpers({
   StripePayment() {
     return StripePayment;
   }
+});
+
+// This creates an autorun block that monitors the CompletedCartOrder subscription
+// and once an order for the cart we're checking out with is available,
+// We trigger a Router.go to the cart/completed page.
+Template.stripePaymentForm.onCreated(function () {
+  // we need to cache the current "checkoutCart" because a new cart is created during copyCartToOrder
+  const checkoutCart = Cart.findOne({ userId: Meteor.userId() });
+  const orderSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), checkoutCart._id);
+  // Watch the orders subscription, once the order is created redirect to cart/completed
+  this.autorun(() => {
+    if (orderSub.ready()) {
+      const order = Orders.findOne({ cartId: checkoutCart._id });
+      if (order) {
+        Router.go("cart/completed", {}, { _id: checkoutCart._id });
+      }
+    }
+  });
 });
 
 //
