@@ -678,13 +678,14 @@ const wrapComponent = (Comp) => (
      * @summary call the relevant method based on the provided shipping status
      * @param {String} status - the selected shipping status to be set
      * @param {Array} selectedOrdersIds - array of ids of the selected orders
+     * @param {Array} orders - array of orders
      * @return {null} no return value
      */
-    setShippingStatus = (status, selectedOrdersIds) => {
+    setShippingStatus = (status, selectedOrdersIds, orders) => {
       this.setState({
         renderFlowList: true
       });
-      const selectedOrders = this.state.orders.filter((order) => {
+      const selectedOrders = orders.filter((order) => {
         return selectedOrdersIds.includes(order._id);
       });
 
@@ -705,13 +706,13 @@ const wrapComponent = (Comp) => (
       }
     }
 
-    handleBulkPaymentCapture = (selectedOrdersIds) => {
+    handleBulkPaymentCapture = (selectedOrdersIds, orders) => {
       this.setState({
         isLoading: {
           capturePayment: true
         }
       });
-      const selectedOrders = this.state.orders.filter((order) => {
+      const selectedOrders = orders.filter((order) => {
         return selectedOrdersIds.includes(order._id);
       });
 
@@ -772,7 +773,6 @@ const wrapComponent = (Comp) => (
           handleChange={this.handleSearchChange}
 
           handleSelect={this.handleSelect}
-          orders={this.state.orders}
           handleClick={this.handleClick}
           displayMedia={this.handleDisplayMedia}
           selectedItems={this.state.selectedItems}
