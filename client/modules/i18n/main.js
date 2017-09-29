@@ -125,11 +125,13 @@ Meteor.startup(() => {
             localStorage.setItem("currency", user.profile.currency);
           } else {
             const localStorageCurrency = localStorage.getItem("currency");
+            let profileCurrency = localStorageCurrency;
             if (!localStorageCurrency) {
               if (locale.currencyEnabled) {
                 // in case of multiple locale currencies
                 const primaryCurrency = locale.locale.currency.split(",")[0];
                 localStorage.setItem("currency", primaryCurrency);
+                profileCurrency = primaryCurrency;
               } else {
                 const shop = Shops.findOne({
                   _id: localeShopId
@@ -140,9 +142,11 @@ Meteor.startup(() => {
                 });
                 if (shop) {
                   localStorage.setItem("currency", shop.currency);
+                  profileCurrency = shop.currency;
                 }
               }
             }
+            Meteor.users.update(user._id, { $set: { "profile.currency": profileCurrency } });
           }
 
           Reaction.Locale.set(locale);
