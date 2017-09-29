@@ -62,7 +62,7 @@
         "showBarcodes": "Show Barcodes",
         "soldOut": "Sold Out!",
         "backOrder": "Backorder",
-        "limitedSupply": "Limited Supply",
+        "limitedSupply": "Limited supply",
         "publishProductVisible": "{{product}} is now visible",
         "publishProductHidden": "{{product}} is now hidden",
         "startTracking": "Start Tracking",
