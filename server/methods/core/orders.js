@@ -299,7 +299,7 @@ export const methods = {
     const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
 
     // Updates flattened inventory count on variants in Products collection
-    ordersInventoryAdjustByShop(order._id, shopId);;
+    ordersInventoryAdjustByShop(order._id, shopId);
 
     return Orders.update({
       "_id": order._id,

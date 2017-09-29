@@ -20,7 +20,7 @@ const shippingStrings = ["picked", "packed", "labeled", "shipped"];
 class OrderDashboardContainer extends Component {
   static propTypes = {
     orderCount: PropTypes.number,
-    orders: PropTypes.array,
+    orders: PropTypes.array
   }
 
   constructor(props) {
