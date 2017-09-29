@@ -54,15 +54,6 @@ Meteor.methods({
       throw new Meteor.Error("Unable to create shop without a user");
     }
 
-    // TODO: Consider permitting users to create more than one shop
-    // see https://github.com/reactioncommerce/reaction/issues/2889#issuecomment-330385283
-    // Would require adding a new option to the dashboard and updating the UI to make it easy to switch between shops
-    if (!hasPrimaryShopOwnerPermission) {
-      if (currentAccount.shopId !== Reaction.getPrimaryShopId()) {
-        throw new Meteor.Error("access-denied", "Each user may only create one shop");
-      }
-    }
-
     let shopUser = currentUser;
     let shopAccount = currentAccount;
 
@@ -71,6 +62,12 @@ Meteor.methods({
     if (hasPrimaryShopOwnerPermission) {
       shopUser = Meteor.users.findOne({ _id: shopAdminUserId }) || currentUser;
       shopAccount = Collections.Accounts.findOne({ _id: shopAdminUserId }) || currentAccount;
+    }
+
+    // Disallow creation of multiple shops, even for marketplace owners
+    if (shopAccount.shopId !== Reaction.getPrimaryShopId()) {
+      throw new Meteor.Error("operation-not-permitted",
+        "This user already has a shop. Each user may only have one shop.");
     }
 
     // we'll accept a shop object, or clone the current shop
