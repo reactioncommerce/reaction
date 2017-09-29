@@ -124,13 +124,13 @@ class OrderBulkActionsBar extends Component {
 
   handleListItemClick = (event, value) => {
     if (this.props.setShippingStatus) {
-      this.props.setShippingStatus(value, this.props.selectedItems);
+      this.props.setShippingStatus(value, this.props.selectedItems, this.props.orders);
     }
   }
 
   handlePaymentClick = () => {
     if (this.props.handleBulkPaymentCapture) {
-      this.props.handleBulkPaymentCapture(this.props.selectedItems);
+      this.props.handleBulkPaymentCapture(this.props.selectedItems, this.props.orders);
     }
   }
 
