@@ -8,6 +8,7 @@ import { Orders } from "/lib/collections";
 import { Card, CardHeader, CardBody, CardGroup } from "/imports/plugins/core/ui/client/components";
 import { i18next } from "/client/api";
 import OrderSummary from "../components/orderSummary";
+import { getShippingInfo } from "../helpers";
 
 class OrderSummaryContainer extends Component {
   static propTypes = {
@@ -27,15 +28,16 @@ class OrderSummaryContainer extends Component {
   }
 
   tracking = () => {
-    if (this.props.order.shipping[0].tracking) {
-      return this.props.order.shipping[0].tracking;
+    const shipping = getShippingInfo(this.props.order);
+    if (shipping.tracking) {
+      return shipping.tracking;
     }
     return i18next.t("orderShipping.noTracking");
   }
 
   shipmentStatus = () => {
     const order = this.props.order;
-    const shipment = order.shipping[0];
+    const shipment = getShippingInfo(this.props.order);
 
     if (shipment.delivered) {
       return {
@@ -95,7 +97,7 @@ class OrderSummaryContainer extends Component {
   }
 
   printableLabels = () => {
-    const { shippingLabelUrl, customsLabelUrl } = this.props.order.shipping[0];
+    const { shippingLabelUrl, customsLabelUrl } = getShippingInfo(this.props.order);
     if (shippingLabelUrl || customsLabelUrl) {
       return { shippingLabelUrl, customsLabelUrl };
     }
@@ -136,22 +138,29 @@ const composer = (props, onData) => {
     // Find current order
     const order = Orders.findOne({
       "_id": props.orderId,
-      "shipping._id": props.fulfillment._id
+      "shipping._id": props.fulfillment && props.fulfillment._id
     });
 
-    const profileShippingAddress = order.shipping[0].address;
+    if (order) {
+      const profileShippingAddress = getShippingInfo(order).address || {};
 
-    if (order.workflow) {
-      if (order.workflow.status === "coreOrderCreated") {
-        order.workflow.status = "coreOrderCreated";
-        Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order);
+      if (order.workflow) {
+        if (order.workflow.status === "coreOrderCreated") {
+          order.workflow.status = "coreOrderCreated";
+          Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order);
+        }
       }
-    }
 
-    onData(null, {
-      order: order,
-      profileShippingAddress: profileShippingAddress
-    });
+      onData(null, {
+        order: order,
+        profileShippingAddress: profileShippingAddress
+      });
+    } else {
+      onData(null, {
+        order: {},
+        profileShippingAddress: {}
+      });
+    }
   }
 };
 

@@ -19,7 +19,11 @@ import { getComponent } from "@reactioncommerce/reaction-components";
 const getStyles = (props) => {
   let viewSize = 400;
   const actionView = props.actionView || {};
-  const isBigView = actionView.provides === "dashboard" || (actionView.provides === "shortcut" && actionView.container === "dashboard");
+  const provides = actionView.provides || [];
+  // legacy provides could be a string, is an array since 1.5.0, check for either.
+  // prototype.includes has the fortunate side affect of checking string equality as well as array inclusion.
+  const isBigView = provides.includes("dashboard") ||
+                    (provides.includes("shortcut") && actionView.container === "dashboard");
 
   if (isBigView) {
     viewSize = "90vw";
@@ -277,8 +281,9 @@ class ActionView extends Component {
   get actionViewIsLargeSize() {
     const { meta } = this.props.actionView;
     const dashboardSize = meta && meta.actionView && meta.actionView.dashboardSize || "sm";
+    const includesDashboard = this.props.actionView.provides && this.props.actionView.provides.includes("dashboard");
 
-    return this.props.actionView.provides === "dashboard" || dashboardSize !== "sm";
+    return includesDashboard || dashboardSize !== "sm";
   }
 
   get showOverlay() {

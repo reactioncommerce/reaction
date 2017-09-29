@@ -1,0 +1,20 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartCompleted": {
+        "yourCart": "Вашата кошница",
+        "discountTotal": "Отстъпка Общо",
+        "orderTotal": "Обща стойност на поръчката",
+        "fulfilledBy": "Изпълнено от",
+        "quantityTotal": "Общо количество",
+        "orderSubtotal": "Междинна сума",
+        "orderShipping": "Доставка",
+        "orderTax": "Данъчни Settings",
+        "trackYourDelivery": "Информация за пратката",
+        "registerGuest": "Здравейте! Добавете имейл и получавайте актуализации на поръчките"
+      }
+    }
+  }
+}]

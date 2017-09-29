@@ -194,9 +194,17 @@ class Router {
  */
 Router.pathFor = (path, options = {}) => {
   const foundPath = Router.routes.find((pathObject) => {
-    if (pathObject.options.name === path) {
-      return true;
+    if (pathObject.route) {
+      if (options.hash && options.hash.shopSlug) {
+        if (pathObject.options.name === path && pathObject.route.includes("shopSlug")) {
+          return true;
+        }
+      } else if (pathObject.options.name === path && !pathObject.route.includes("shopSlug")) {
+        return true;
+      }
     }
+
+    // No path found
     return false;
   });
 
@@ -458,15 +466,22 @@ export function ReactionLayout(options = {}) {
     adminControlsFooter: ""
   };
 
+  let layoutTheme = "default";
+
   // Find a registered layout using the layoutName and workflowName
   if (shop) {
     const sortedLayout = shop.layout.sort((prev, next) => prev.priority - next.priority);
     const foundLayout = sortedLayout.find((x) => selectLayout(x, layoutName, workflowName));
 
-    if (foundLayout && foundLayout.structure) {
-      layoutStructure = {
-        ...foundLayout.structure
-      };
+    if (foundLayout) {
+      if (foundLayout.structure) {
+        layoutStructure = {
+          ...foundLayout.structure
+        };
+      }
+      if (foundLayout.theme) {
+        layoutTheme = foundLayout.theme;
+      }
     }
   }
 
@@ -503,6 +518,7 @@ export function ReactionLayout(options = {}) {
 
   // Render the layout
   return {
+    theme: layoutTheme,
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
       const route = Router.current().route;
@@ -602,6 +618,20 @@ Router.initPackageRoutes = (options) => {
         options: {
           name: "index",
           ...options.indexRoute,
+          theme: indexLayout.theme,
+          component: indexLayout.component,
+          structure: indexLayout.structure
+        }
+      });
+
+      routeDefinitions.push({
+        route: "/shop/:shopSlug",
+        name: "index",
+        options: {
+          name: "index",
+          type: "shop-prefix",
+          ...options.indexRoute,
+          theme: indexLayout.theme,
           component: indexLayout.component,
           structure: indexLayout.structure
         }
@@ -614,6 +644,7 @@ Router.initPackageRoutes = (options) => {
         options: {
           name: "not-found",
           ...notFoundLayout.indexRoute,
+          theme: notFoundLayout.theme,
           component: notFoundLayout.component,
           structure: notFoundLayout.structure
         }
@@ -635,9 +666,9 @@ Router.initPackageRoutes = (options) => {
                 template,
                 layout,
                 workflow
+                // provides
               } = registryItem;
 
-              // get registry route name
               const name = getRegistryRouteName(pkg.name, registryItem);
 
               // define new route
@@ -654,10 +685,18 @@ Router.initPackageRoutes = (options) => {
                   triggersEnter: Router.Hooks.get("onEnter", name),
                   triggersExit: Router.Hooks.get("onExit", name),
                   component: reactionLayout.component,
+                  theme: reactionLayout.theme,
                   structure: reactionLayout.structure
                 }
               };
-
+              newRoutes.push({
+                ...newRouteConfig,
+                route: `/shop/:shopSlug${route}`,
+                options: {
+                  ...newRouteConfig.options,
+                  type: "shop-prefix"
+                }
+              });
               // push new routes
               newRoutes.push(newRouteConfig);
             } // end registryItems

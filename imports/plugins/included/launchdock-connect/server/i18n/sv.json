@@ -1,0 +1,18 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-connect",
+  "translation": {
+    "reaction-connect": {
+      "admin": {
+        "dashboard": {
+          "connectLabel": "Ansluta",
+          "connectTitle": "Ansluta",
+          "connectDescription": "Anslut reaktion som en utvecklad tjänst"
+        },
+        "settings": {
+          "reactionConnectLabel": "reaktions~~POS=TRUNC Connect"
+        }
+      }
+    }
+  }
+}]
