@@ -133,6 +133,14 @@ class OrderDashboardContainer extends Component {
     });
   }
 
+  handleMenuClick = (event, value) => {
+    const query = OrderHelper.makeQuery(value);
+    // ensure other fields (e.g ids) on query are kept
+    if (this.state.query._id) {
+      query._id = this.state.query._id;
+    }
+  }
+
   filterShippingStatus = (event, value) => {
     const query = filterShippingStatus(value);
     const workflowFilter = this.state.workflowFilter;
