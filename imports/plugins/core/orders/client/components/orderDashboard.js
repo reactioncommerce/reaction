@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-ui";
+import { Components } from "@reactioncommerce/reaction-components";
 import OrderTable from "./orderTable";
 import OrderFilter from "./orderFilter";
 import OrderSearch from "./orderSearch";
