@@ -12,3 +12,4 @@ import "./11_add_product_to_cart_items";
 import "./12_add_shopId_on_billing";
 import "./13_add_shopId_on_shipping";
 import "./14_rebuild_order_search_collection";
+import "./15_update_shipping_status_to_workflow";
