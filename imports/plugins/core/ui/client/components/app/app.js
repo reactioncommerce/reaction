@@ -6,6 +6,7 @@ import ToolbarContainer from "/imports/plugins/core/dashboard/client/containers/
 import Toolbar from "/imports/plugins/core/dashboard/client/components/toolbar";
 import { ActionViewContainer, PackageListContainer } from "/imports/plugins/core/dashboard/client/containers";
 import { ActionView, ShortcutBar } from "/imports/plugins/core/dashboard/client/components";
+import { Reaction } from "/client/api";
 
 const ConnectedToolbarComponent = ToolbarContainer(Toolbar);
 const ConnectedAdminViewComponent = ActionViewContainer(ActionView);
@@ -34,28 +35,6 @@ const styles = {
   }
 };
 
-
-const handleViewContextChange = (event, value) => {
-  Reaction.setUserPreferences("reaction-dashboard", "viewAs", value);
-
-  if (Reaction.isPreview() === true) {
-    // Save last action view state
-    const saveActionViewState = Reaction.getActionView();
-    Reaction.setUserPreferences("reaction-dashboard", "savedActionViewState", saveActionViewState);
-
-    // hideActionView during isPreview === true
-    Reaction.hideActionView();
-  }
-};
-
-const handleKeyDown = (event) => {
-  if (event.altKey && event.keyCode === 69) { // Switch edit mode
-    const userWas = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "customer");
-    const userIs = userWas === "customer" ? "administrator" : "customer";
-    handleViewContextChange(event, userIs);
-  }
-};
-
 class App extends Component {
   static propTypes = {
     children: PropTypes.node,
@@ -66,6 +45,27 @@ class App extends Component {
 
   get isAdminApp() {
     return this.props.hasDashboardAccess;
+  }
+
+  handleViewContextChange = (event, value) => {
+    Reaction.setUserPreferences("reaction-dashboard", "viewAs", value);
+
+    if (Reaction.isPreview() === true) {
+      // Save last action view state
+      const saveActionViewState = Reaction.getActionView();
+      Reaction.setUserPreferences("reaction-dashboard", "savedActionViewState", saveActionViewState);
+
+      // hideActionView during isPreview === true
+      Reaction.hideActionView();
+    }
+  }
+
+  handleKeyDown = (event) => {
+    if (event.altKey && event.keyCode === 69) { // Switch edit mode
+      const userWas = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "customer");
+      const userIs = userWas === "customer" ? "administrator" : "customer";
+      this.handleViewContextChange(event, userIs);
+    }
   }
 
   renderAdminApp() {
@@ -83,11 +83,11 @@ class App extends Component {
       <div
         style={styles.adminApp}
         tabIndex={0}
-        onKeyDown={handleKeyDown}
+        onKeyDown={this.handleKeyDown}
       >
         <div className={pageClassName} id="reactionAppContainer" style={styles.adminContentContainer}>
           <div className="reaction-toolbar">
-            <ConnectedToolbarComponent handleViewContextChange={handleViewContextChange} data={routeData} />
+            <ConnectedToolbarComponent handleViewContextChange={this.handleViewContextChange} data={routeData} />
           </div>
           <div style={styles.scrollableContainer}>
             <Switch>
