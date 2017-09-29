@@ -159,11 +159,6 @@ function buildPaymentMethods(options) {
 
   const shopIds = Object.keys(transactionsByShopId);
   const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + cardData.number.slice(-4);
-  const packageData = Packages.findOne({
-    name: "reaction-stripe",
-    shopId: Reaction.getPrimaryShopId()
-  });
-
   const paymentMethods = [];
 
 
@@ -177,6 +172,12 @@ function buildPaymentMethods(options) {
           shopId: shopId,
           quantity: item.quantity
         };
+      });
+
+      // we need to grab this per shop to get the API key
+      const packageData = Packages.findOne({
+        name: "reaction-stripe",
+        shopId: shopId
       });
 
       const paymentMethod = {
@@ -472,7 +473,7 @@ export const methods = {
         saved: false,
         error: `Cannot issue refund: ${error.message}`
       };
-      Logger.fatal("Stripe call failed, refund was not issued");
+      Logger.fatal("Stripe call failed, refund was not issued", error.message);
     }
     return result;
   },
@@ -491,7 +492,7 @@ export const methods = {
       const refundListPromise = stripe.refunds.list({ charge: paymentMethod.transactionId });
       refundListResults = Promise.await(refundListPromise);
     } catch (error) {
-      Logger.error("Encountered an error when trying to list refunds", error);
+      Logger.error("Encountered an error when trying to list refunds", error.message);
     }
 
     const result = [];
