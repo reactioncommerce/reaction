@@ -6,6 +6,10 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 
+
+// Because we are duplicating shipment quotes across shipping records
+// we will get duplicate shipping quotes but we only want to diplay one
+// So this function eliminates duplicates
 function uniqObjects(methods) {
   const jsonBlobs = methods.map((method) => {
     return JSON.stringify(method);
@@ -35,9 +39,6 @@ function cartShippingQuotes(currentCart) {
         if (shipping.shipmentQuotes) {
           for (const quote of shipping.shipmentQuotes) {
             shipmentQuotes.push(quote);
-            if (quote.carrier === "Flat Rate" || quote.requestStatus !== "error") {
-              shipmentQuotes.push(quote);
-            }
           }
         }
       }
