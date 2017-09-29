@@ -1027,7 +1027,7 @@ strong.orders-full-name {
   float: right;
 }
 
-.tab-list-dropdown {
+.status-dropdown {
   position: relative !important;
   width: 274px;
   border: solid 1px @rui-default;
@@ -1236,7 +1236,7 @@ strong.orders-full-name {
 }
 
 @media only screen and (max-width: 560px) {
-  .tab-list-dropdown {
+  .status-dropdown {
     left: 130px;
 
     &:before, &:after {
@@ -1259,6 +1259,10 @@ strong.orders-full-name {
   .rui.admin.action-view-pane.action-view > div[data-radium] {
     width: 50%;
   }
+}
+
+.capitalize {
+  text-transform: capitalize;
 }
 
 .orders-table-container {
