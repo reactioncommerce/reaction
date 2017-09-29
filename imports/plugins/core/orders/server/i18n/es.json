@@ -4,14 +4,26 @@
   "translation": {
     "reaction-orders": {
       "notFound": "Pedido no encontrado",
+      "order": {
+        "cancelOrder": "¿Desea cancelar este pedido?",
+        "cancelOrderLabel": "Cancelar orden",
+        "cancelOrderThenRestock": "Sí, y reabastecer",
+        "cancelOrderNoRestock": "Sí, pero no hay reabastecimiento"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "Pedidos"
         },
+        "orderRisk": {
+          "high": "Alto riesgo",
+          "riskCapture": "¿Captura la orden con cargo al riesgo?",
+          "riskCaptureWarn": "Usted está a punto de capturar la orden con un riesgo de carga. Confirme antes de continuar."
+        },
         "dashboard": {
           "ordersLabel": "Pedidos",
           "ordersTitle": "Pedidos",
-          "ordersDescription": "Cumplir con sus pedidos"
+          "ordersDescription": "Cumplir con sus pedidos",
+          "clearSearch": "Claro"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -28,11 +40,26 @@
             "cardTitle": "Factura",
             "adjustedTotal": "Total ajustado",
             "capturedTotal": "Total registrado",
-            "refund": "Reembolso"
+            "refund": "Reembolso",
+            "refundLabel": "Para reembolso",
+            "refundItem": "Artículos",
+            "refundItemAmount": "Total",
+            "refundTotal": "Total reembolso"
           },
           "fulfillment": "Satisfacción",
           "orderDetails": "Información de envío",
           "shipmentTracking": "Envío"
+        },
+        "table": {
+          "headers": {
+            "name": "Nombre",
+            "email": "Ajustes del correo electrónico",
+            "date": "Fecha",
+            "id": "Identificación",
+            "total": "Total",
+            "shipping": "Envío",
+            "status": "Estado"
+          }
         }
       }
     }

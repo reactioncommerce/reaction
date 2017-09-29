@@ -14,7 +14,7 @@ Reaction.registerPackage({
     {
       label: "Product Revisions",
       name: "catalog/settings/revisions/general",
-      provides: "catalogSettings",
+      provides: ["catalogSettings"],
       template: "revisionControlSettings"
     }
   ]

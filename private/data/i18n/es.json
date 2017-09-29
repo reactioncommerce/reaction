@@ -12,9 +12,6 @@
           "email": "Ajustes del correo electrónico",
           "description": "Descripción",
           "remove": "Eliminar"
-        },
-        "settings": {
-          "localizationAndI18NLabel": "Localización y L10n"
         }
       },
       "app": {
@@ -34,28 +31,7 @@
         "yearOptions": "Elegir año",
         "shopSettings": "Opciones de la tienda",
         "dashboard": "Panel principal",
-        "print": "Imprimir",
-        "editMode": "Modo edición",
-        "auto": "Auto"
-      },
-      "searchSettings": {
-        "productSearchSettings": {
-          "panelTitle": "Búsqueda de producto",
-          "includeTitle": "Incluir título",
-          "includeDescription": "Incluir descripción",
-          "includePageTitle": "Incluir título de la página",
-          "includeDetails": "Incluir información",
-          "includeVendor": "Incluir proveedor"
-        },
-        "orderSearchSettings": {
-          "panelTitle": "Opciones de búsqueda de pédido"
-        },
-        "accountSearchSettings": {
-          "panelTitle": "Opciones de búsqueda de la cuenta"
-        },
-        "noSettings": "Ninguna configuración disponible",
-        "settingsSaved": "Parámetros de búsqueda guardados",
-        "settingsfailed": "Actualización de opciones de búsqueda fallida"
+        "print": "Imprimir"
       },
       "header": {
         "tagsAdd": "Añadir etiqueta",
@@ -92,8 +68,7 @@
         "startTracking": "Empezar seguimiento",
         "addBarcode": "Añadir código de barras",
         "quantity": "Cantidad",
-        "quantityGreaterThanZero": "Error: la cantidad debe ser superior a 0",
-        "dropFiles": "Arrastrar archivos para subirlos"
+        "quantityGreaterThanZero": "Error: la cantidad debe ser superior a 0"
       },
       "productDetailEdit": {
         "title": "Título",
@@ -104,9 +79,6 @@
         "twitterMsg": "TwitterMensaje",
         "pinterestMsg": "Mensaje en Pinterest",
         "googleplusMsg": "Mensaje Google+",
-        "editVariant": "Editar variante",
-        "variantOptions": "Opciones de variante",
-        "variantDetails": "Información de variantes",
         "duplicateVariant": "Duplicado",
         "addVariantOption": "Añadir opción",
         "removeVariant": "Eliminar",
@@ -114,33 +86,7 @@
         "pinProduct": "Fijar producto",
         "toggleSize": "Tamaño de la palanca",
         "publish": "Publicar",
-        "moreOptions": "Más opciones",
-        "details": "Información"
-      },
-      "productVariant": {
-        "addVariantOptions": "Añadir opciones para activar 'Agregar al carrito' butto",
-        "inventoryQuantity": "Cantidad",
-        "title": "Etiqueta",
-        "price": "Precio",
-        "optionTitle": "Opción",
-        "barcode": "Código de barras",
-        "compareAtPrice": "Precio (sugerido por el fabricante)",
-        "fulfillmentService": "Cumplimiento del servicio",
-        "weight": "Peso",
-        "length": "Longitud",
-        "width": "Anchura",
-        "height": "Altura",
-        "taxable": "Sujeto a impuestos",
-        "taxCode": "Códigos Tributarios",
-        "taxDescription": "Descripción de Impuestos",
-        "inventoryManagement": "Seguimiento de existencias",
-        "inventoryManagementLabel": "Registrar producto en el sistema del inventario y realizar un seguimiento de su estado",
-        "inventoryPolicy": "Negar cuando no haya existencias",
-        "inventoryPolicyLabel": "No vender la variante del producto cuando no está en stock",
-        "lowInventoryWarningThreshold": "Advertir @",
-        "lowInventoryWarningThresholdLabel": "Advertir a los clientes que el producto está a punto de agotarse cuando la cantidad alcanza el siguiente umbral",
-        "originCountry": "País de origen",
-        "selectTaxCode": "Seleccione Código Tributario"
+        "moreOptions": "Más opciones"
       },
       "variantList": {
         "moreOptions": "Hay más opciones disponibles para esta selección.",
@@ -149,10 +95,6 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} está ahora permitida.",
         "pkgDisabled": "{{app}} está deshabilitada."
-      },
-      "gridSettingsPanel": {
-        "title": "Configuración de cuadrícula",
-        "selected": "Seleccionado"
       },
       "cartDrawer": {
         "empty": "Estamos tristes. Tu carrito está vacío.",
@@ -281,58 +223,6 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
-      },
-      "corePackageConfig": {
-        "settings": {
-          "public": {
-            "allowGuestCheckout": "Permitir proceso de compra como invitado"
-          },
-          "openexchangerates": {
-            "appId": "ID de la app de tipo de cambio abierto",
-            "refreshPeriod": "Período de actualización del tipo de cambio abierto",
-            "refreshPeriodPlaceholder": "p. ej. cada hora"
-          },
-          "google": {
-            "clientId": "ID de cliente de Google",
-            "apiKey": "Clave de API de Google"
-          }
-        }
-      },
-      "revisions": {
-        "isDisabled": "El control de revisión está deshabilitado Todos los cambios se publicarán de imediato.",
-        "isEnabled": "Revisión de control está habilitada para los productos. Se necesitan cualquier cambio que se publicará antes de ser visibles para los clientes."
-      },
-      "shop": {
-        "defaultPaymentMethod": "Método de pago predeterminado",
-        "name": "Nombre",
-        "namePlaceholder": "Nombre de la tienda",
-        "description": "Descripción",
-        "descriptionPlaceholder": "Describe tu tienda para optimizar el posicionamiento en buscadores",
-        "descriptionTooltip": "Este campo utilizado por etiquetas meta de descripción. Permite que los motores de búsqueda describan tu tienda",
-        "email": "Correo electrónico",
-        "emailPlaceholder": "Dirección principal de correo electrónico",
-        "keywords": "Palabras clave",
-        "keywordsPlaceholder": "Etiquetas meta para posicionamiento SEO",
-        "language": "Idioma base",
-        "addressBook": {
-          "company": "Empresa",
-          "companyPlaceholder": "Nombre de este negocio",
-          "country": "País",
-          "fullName": "Nombre completo",
-          "fullNamePlaceholder": "Nombre de tu empresa",
-          "address1": "Dirección",
-          "address1Placeholder": "La dirección de tu empresa",
-          "address1Tooltip": "Esta dirección será visible para los visitantes",
-          "address2": "Dirección",
-          "address2Placeholder": "Dirección adicional",
-          "postal": "Postal",
-          "city": "Ciudad",
-          "region": "Región",
-          "phone": "Teléfono",
-          "isShippingDefault": "¿Quieres que esta sea tu dirección de envío predeterminada?",
-          "isBillingDefault": "¿Quieres que esta sea tu dirección de facturación?",
-          "isCommercial": "Esta es una dirección comercial"
-        }
       },
       "accountsUI": {
         "members": "Miembros",

@@ -11,7 +11,15 @@
           "invoice": {
             "cardTitle": "Faktura",
             "adjustedTotal": "Endret Total",
-            "capturedTotal": "Totalt innbetalt"
+            "capturedTotal": "Totalt innbetalt",
+            "refundItemAmount": "Totalt"
+          }
+        },
+        "table": {
+          "headers": {
+            "email": "Epost",
+            "total": "Totalt",
+            "shipping": "Frakt"
           }
         }
       }
