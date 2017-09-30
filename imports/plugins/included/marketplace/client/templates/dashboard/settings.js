@@ -6,10 +6,10 @@ import { MarketplacePackageConfig } from "../../../lib/collections/schemas";
 import { Components } from "@reactioncommerce/reaction-components";
 
 /**
- * marketplaceSettings helpers
+ * marketplaceShopSettings helpers
  *
  */
-Template.marketplaceSettings.helpers({
+Template.marketplaceShopSettings.helpers({
   MarketplacePackageConfig() {
     return MarketplacePackageConfig;
   },
@@ -24,11 +24,6 @@ Template.marketplaceSettings.helpers({
     return Components.InviteOwner;
   }
 });
-
-/**
- * marketplace Catalog settings
- */
-Template.marketplaceShopSettings.inheritsHelpersFrom("marketplaceSettings");
 
 /**
  * marketplaceSettings autoform alerts

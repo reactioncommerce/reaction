@@ -24,71 +24,96 @@ Meteor.methods({
     check(shopAdminUserId, Match.Optional(String));
     check(shopData, Match.Optional(Schemas.Shop));
 
-    // must have owner access to create new shops when marketplace is disabled
-    if (!Reaction.hasOwnerAccess() && !Reaction.hasMarketplaceAccess("guest")) {
-      throw new Meteor.Error(403, "Access Denied");
+    // Get the current marketplace settings
+    const marketplace = Reaction.getMarketplaceSettings();
+
+    // check to see if the current user has owner permissions for the primary shop
+    const hasPrimaryShopOwnerPermission = Reaction.hasPermission("owner", Meteor.userId(), Reaction.getPrimaryShopId());
+
+    // only permit merchant signup if marketplace is enabled and allowMerchantSignup is enabled
+    let allowMerchantShopCreation = false;
+    if (marketplace && marketplace.enabled && marketplace.public && marketplace.public.allowMerchantSignup) {
+      allowMerchantShopCreation = true;
     }
 
-    // this.unblock();
+    // must have owner access to create new shops when marketplace is disabled
+    if (!hasPrimaryShopOwnerPermission && !allowMerchantShopCreation) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    // Users may only create shops for themselves
+    if (!hasPrimaryShopOwnerPermission && shopAdminUserId !== Meteor.userId()) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    // Anonymous users should never be permitted to create a shop
+    if (!hasPrimaryShopOwnerPermission &&
+        Reaction.hasPermission("anonymous", Meteor.userId(), Reaction.getPrimaryShopId())) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
     const count = Collections.Shops.find().count() || "";
     const currentUser = Meteor.user();
     const currentAccount = Collections.Accounts.findOne({ _id: currentUser._id });
-
     if (!currentUser) {
-      throw new Meteor.Error("Unable to create shop with specified user");
+      throw new Meteor.Error("Unable to create shop without a user");
+    }
+
+    let shopUser = currentUser;
+    let shopAccount = currentAccount;
+
+    // TODO: Create a grantable permission for creating shops so we can decouple ownership from shop creation
+    // Only marketplace owners can create shops for others
+    if (hasPrimaryShopOwnerPermission) {
+      shopUser = Meteor.users.findOne({ _id: shopAdminUserId }) || currentUser;
+      shopAccount = Collections.Accounts.findOne({ _id: shopAdminUserId }) || currentAccount;
+    }
+
+    // Disallow creation of multiple shops, even for marketplace owners
+    if (shopAccount.shopId !== Reaction.getPrimaryShopId()) {
+      throw new Meteor.Error("operation-not-permitted",
+        "This user already has a shop. Each user may only have one shop.");
     }
 
     // we'll accept a shop object, or clone the current shop
-    const shop = shopData || Collections.Shops.findOne(Reaction.getShopId());
-    // if we don't have any shop data, use fixture
+    const seedShop = shopData || Collections.Shops.findOne(Reaction.getPrimaryShopId());
 
     // Never create a second primary shop
-    if (shop.shopType === "primary") {
-      shop.shopType = "merchant";
+    if (seedShop.shopType === "primary") {
+      seedShop.shopType = "merchant";
     }
 
-    // identify a shop owner
-    const userId = shopAdminUserId || currentUser._id;
-
     // ensure unique id and shop name
-    shop._id = Random.id();
-    shop.name = shop.name + count;
+    seedShop._id = Random.id();
+    seedShop.name = seedShop.name + count;
 
     // We trust the owner's shop clone, check only when shopData is passed as an argument
     if (shopData) {
-      check(shop, Schemas.Shop);
+      check(seedShop, Schemas.Shop);
     }
 
-    // admin or marketplace needs to be on and guests allowed to create shops
-    if (currentUser && Reaction.hasMarketplaceAccess("guest")) {
-      // add user info for new shop
-      shop.emails = currentUser.emails;
+    const shop = Object.assign({}, seedShop, {
+      emails: shopUser.emails,
+      addressBook: shopAccount.addressBook
+    });
 
+    // Clean up values that get automatically added
+    delete shop.createdAt;
+    delete shop.updatedAt;
+    delete shop.slug;
+    // TODO audience permissions need to be consolidated into [object] and not [string]
+    // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
+    delete shop.layout;
 
-      // Reaction currently stores addressBook in Accounts collection not users
-      if (currentAccount && currentAccount.addressBook && Array.isArray(currentAccount.addressBook)) {
-        shop.addressBook = currentAccount.addressBook;
-      }
-
-      // TODO: SEUN REVIEW. Changed to above from below
-      // if (currentUser.profile && currentUser.profile.addressBook) {
-      //   shop.addressBook = [currentUser.profile && currentUser.profile.addressBook];
-      // }
-
-
-      // clean up new shop
-      delete shop.createdAt;
-      delete shop.updatedAt;
-      // TODO audience permissions need to be consolidated into [object] and not [string]
-      // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
-      delete shop.layout;
-    }
+    let newShopId;
 
     try {
-      Collections.Shops.insert(shop);
+      newShopId = Collections.Shops.insert(shop);
     } catch (error) {
       return Logger.error(error, "Failed to shop/createShop");
     }
+
+    const newShop = Collections.Shops.findOne({ _id: newShopId });
 
     // we should have created new shop, or errored
     Logger.info("Created shop: ", shop._id);
@@ -97,13 +122,24 @@ Meteor.methods({
     Reaction.insertPackagesForShop(shop._id);
     Reaction.createDefaultGroups({ shopId: shop._id });
     const ownerGroup = Collections.Groups.findOne({ slug: "owner", shopId: shop._id });
-    Roles.addUsersToRoles([currentUser, userId], ownerGroup.permissions, shop._id);
-    Collections.Accounts.update({ _id: userId }, {
+    Roles.addUsersToRoles([currentUser, shopUser._id], ownerGroup.permissions, shop._id);
+    Collections.Accounts.update({ _id: shopUser._id }, {
       $set: {
         shopId: shop._id
       },
       $addToSet: {
         groups: ownerGroup._id
+      }
+    });
+
+    // Add this shop to the merchant
+    Collections.Shops.update({ _id: Reaction.getPrimaryShopId() }, {
+      $addToSet: {
+        merchantShops: {
+          _id: newShop._id,
+          slug: newShop.slug,
+          name: newShop.name
+        }
       }
     });
 
