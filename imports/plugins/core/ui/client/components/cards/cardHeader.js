@@ -17,6 +17,7 @@ class CardHeader extends Component {
     i18nKeyTitle: PropTypes.string,
     icon: PropTypes.string,
     imageView: PropTypes.node,
+    isValid: PropTypes.bool,
     onClick: PropTypes.func,
     onSwitchChange: PropTypes.func,
     showSwitch: PropTypes.bool,
@@ -109,11 +110,18 @@ class CardHeader extends Component {
   }
 
   render() {
+    let validation = false;
+
+    if (this.props.isValid === false) {
+      validation = true;
+    }
+
     const baseClassName = classnames({
       "rui": true,
       "panel-heading": true,
       "card-header": true,
-      "expandable": this.props.actAsExpander
+      "expandable": this.props.actAsExpander,
+      "validation": validation
     });
 
     if (this.props.actAsExpander) {

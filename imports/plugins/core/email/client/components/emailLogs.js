@@ -64,9 +64,7 @@ class EmailLogs extends Component {
   render() {
     return (
       <Components.CardGroup>
-        <Components.Card
-          expanded={true}
-        >
+        <Components.Card>
           <Components.CardHeader
             actAsExpander={true}
             i18nKeyTitle="admin.logs.headers.emailLogs"
