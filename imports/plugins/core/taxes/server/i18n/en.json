@@ -31,7 +31,7 @@
           "shopTaxMethodsFailed": "Failed saving tax method.",
           "customRatesLabel": "Custom Rates",
           "customRatesDescription": "Custom Rates",
-          "taxCode": "Tax Code",
+          "taxCode": "Tax code",
           "taxShipping": "Include Shipping",
           "taxRate": "Rate",
           "discountsIncluded": "Include Discounts",

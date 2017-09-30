@@ -308,7 +308,7 @@ class InvoiceContainer extends Component {
     const discounts = paymentMethod && paymentMethod.discounts;
     const refund = value;
     const refunds = this.state.refunds;
-    const refundTotal = refunds && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
+    const refundTotal = refunds && Array.isArray(refunds) && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
 
     let adjustedTotal;
 
@@ -626,7 +626,7 @@ const composer = (props, onData) => {
 
   // get adjusted Total
   let adjustedTotal;
-  const refundTotal = refunds && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
+  const refundTotal = refunds && Array.isArray(refunds) && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
 
   if (paymentMethod && paymentMethod.processor === "Stripe") {
     adjustedTotal = Math.abs(paymentMethod.amount + orderDiscounts - refundTotal);

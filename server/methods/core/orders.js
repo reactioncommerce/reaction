@@ -542,7 +542,7 @@ export const methods = {
     const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
     // TODO: Update */refunds/list for marketplace
     const refundResult = Meteor.call("orders/refunds/list", order);
-    const refundTotal = refundResult.reduce((acc, refund) => acc + refund.amount, 0);
+    const refundTotal = Array.isArray(refundResult) && refundResult.reduce((acc, refund) => acc + refund.amount, 0);
 
     // Get user currency formatting from shops collection, remove saved rate
     const userCurrencyFormatting = _.omit(shop.currencies[billing.currency.userCurrency], ["enabled", "rate"]);
