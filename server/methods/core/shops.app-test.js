@@ -1,5 +1,6 @@
 /* eslint dot-notation: 0 */
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { Factory } from "meteor/dburles:factory";
 import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
@@ -69,9 +70,11 @@ describe("core shop methods", function () {
           }]
         };
       });
-      Factory.create("account", { _id: "12345678" });
+      const shopId = Random.id();
+      Factory.create("account", { _id: "12345678", shopId: shopId });
 
       sandbox.stub(Reaction, "hasPermission", () => true);
+      sandbox.stub(Reaction, "getPrimaryShopId", () => shopId);
       Meteor.call("shop/createShop", "12345678", shop);
       const newShopCount = Shops.find({ name: shop.name }).count();
       expect(newShopCount).to.equal(1);
