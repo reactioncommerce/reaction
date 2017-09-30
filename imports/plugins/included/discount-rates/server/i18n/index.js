@@ -22,6 +22,7 @@ import ru from "./ru.json";
 import sl from "./sl.json";
 import sv from "./sv.json";
 import tr from "./tr.json";
+import vi from "./vi.json";
 import zhHans from "./zh-hans.json";
 import zhHant from "./zh-hant.json";
 
