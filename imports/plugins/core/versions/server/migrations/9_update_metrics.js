@@ -1,4 +1,4 @@
-import { Migrations } from "/imports/plugins/core/versions";
+import { Migrations } from "meteor/percolate:migrations";
 import { Shops } from "/lib/collections";
 
 Migrations.add({
@@ -38,5 +38,15 @@ Migrations.add({
         });
       }
     );
+  },
+  down() {
+    Shops.find().forEach((shop) => {
+      shop.baseUOM = shop.baseUOM && shop.baseUOM.toUpperCase();
+      Shops.update({ _id: shop._id }, {
+        $set: {
+          baseUOM: shop.baseUOM
+        }
+      });
+    });
   }
 });
