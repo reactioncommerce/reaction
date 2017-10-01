@@ -203,9 +203,7 @@ class Invoice extends Component {
   render() {
     return (
       <Components.CardGroup>
-        <Components.Card
-          expanded={true}
-        >
+        <Components.Card>
           <Components.CardHeader
             actAsExpander={false}
             i18nKeyTitle="admin.orderWorkflow.invoice.cardTitle"

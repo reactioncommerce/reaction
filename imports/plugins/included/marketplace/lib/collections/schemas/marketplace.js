@@ -58,6 +58,9 @@ export const MarketplacePackageConfig = new SimpleSchema([
       type: Boolean,
       defaultValue: false
     },
+    // Deprecated - no longer used in any marketplace considerations
+    // marketplace is enabled and disabled via the package
+    // seller signup is controlled by the allowMerchantSignup setting
     "settings.public.allowGuestSellers": {
       type: Boolean,
       defaultValue: false

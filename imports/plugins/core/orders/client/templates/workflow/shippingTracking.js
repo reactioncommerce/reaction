@@ -163,7 +163,9 @@ Template.coreOrderShippingTracking.helpers({
         }
       });
 
-      return fullItem.workflow.workflow.includes("coreOrderItemWorkflow/completed");
+      if (Array.isArray(fullItem.workflow.workflow)) {
+        return fullItem.workflow.workflow.includes("coreOrderItemWorkflow/completed");
+      }
     });
 
     return completedItems;
@@ -203,7 +205,7 @@ Template.coreOrderShippingTracking.helpers({
     const shipment = getShippingInfo(order);
     const shipmentWorkflow = shipment.workflow;
 
-    return shipmentWorkflow && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed") && shipment.tracking
-    || shipmentWorkflow && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed");
+    return shipmentWorkflow && Array.isArray(shipmentWorkflow.workflow) && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed") && shipment.tracking
+    || shipmentWorkflow && Array.isArray(shipmentWorkflow.workflow) && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed");
   }
 });

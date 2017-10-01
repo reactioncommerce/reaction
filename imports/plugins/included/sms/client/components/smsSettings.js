@@ -59,9 +59,7 @@ class SmsSettings extends Component {
 
     return (
       <Components.CardGroup>
-        <Components.Card
-          expanded={true}
-        >
+        <Components.Card>
           <Components.CardHeader
             actAsExpander={true}
             i18nKeyTitle="admin.settings.smsProvider"

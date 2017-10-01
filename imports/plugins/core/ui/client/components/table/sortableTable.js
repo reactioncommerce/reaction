@@ -226,7 +226,7 @@ class SortableTable extends Component {
     let className = "";
 
     if (selectedRows && selectedRows.length) {
-      if (selectedRows.includes(rowInfo.row._id)) {
+      if (rowInfo !== undefined && selectedRows.includes(rowInfo.row._id)) {
         className = "selected-row";
       }
     }

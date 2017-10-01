@@ -108,9 +108,7 @@ class OrderSummaryContainer extends Component {
   render() {
     return (
       <CardGroup>
-        <Card
-          expanded={true}
-        >
+        <Card>
           <CardHeader
             actAsExpander={false}
             i18nKeyTitle="admin.orderWorkflow.summary.cardTitle"
