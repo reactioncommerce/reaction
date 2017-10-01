@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "Dokončit svou objednávku",
         "paymentMethod": {
+          "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "Platit přes PayPal",
           "expressNotConfigured": "Paypal Express není nakonfigurován.",
           "expressNotAvailable": "Paypal Express není k dispozici",

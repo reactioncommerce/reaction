@@ -12,9 +12,6 @@
           "email": "E-posta",
           "description": "Ürün açıklması ekle",
           "remove": "Sil"
-        },
-        "settings": {
-          "localizationAndI18NLabel": "Yerelleştirme ve i18n"
         }
       },
       "app": {
@@ -34,28 +31,7 @@
         "yearOptions": "Yıl seçin",
         "shopSettings": "Mağaza ayarları",
         "dashboard": "Yönetim",
-        "print": "Baskı",
-        "editMode": "Düzenleme modu",
-        "auto": "Oto"
-      },
-      "searchSettings": {
-        "productSearchSettings": {
-          "panelTitle": "Ürün Arama",
-          "includeTitle": "başlığı",
-          "includeDescription": "açıklama ekleyin",
-          "includePageTitle": "Sayfa başlığı",
-          "includeDetails": "ayrıntıları içerir",
-          "includeVendor": "satıcı ekleyin"
-        },
-        "orderSearchSettings": {
-          "panelTitle": "Sipariş Arama Ayarları"
-        },
-        "accountSearchSettings": {
-          "panelTitle": "Hesap Arama Ayarları"
-        },
-        "noSettings": "mevcut ayar yok",
-        "settingsSaved": "Arama ayarları kaydedildi",
-        "settingsfailed": "Arama ayarları güncellemesi başarısız"
+        "print": "Baskı"
       },
       "header": {
         "tagsAdd": "Etiket ekle",
@@ -92,8 +68,7 @@
         "startTracking": "Takip Et",
         "addBarcode": "Barkod Ekle",
         "quantity": "Miktar",
-        "quantityGreaterThanZero": "Hata: Miktar sıfırdan büyük olmalıdır",
-        "dropFiles": "yüklemek için açılan dosyaları"
+        "quantityGreaterThanZero": "Hata: Miktar sıfırdan büyük olmalıdır"
       },
       "productDetailEdit": {
         "title": "Ürün ismi",
@@ -104,9 +79,6 @@
         "twitterMsg": "Twitter Mesaj",
         "pinterestMsg": "Pinterest Mesaj",
         "googleplusMsg": "Google+ Mesaj",
-        "editVariant": "Düzenleme Varyant",
-        "variantOptions": "varyant Seçenekler",
-        "variantDetails": "varyant Detayları",
         "duplicateVariant": "Kopyala",
         "addVariantOption": "Seçenek ekle",
         "removeVariant": "Sil",
@@ -114,33 +86,7 @@
         "pinProduct": "Ürünü Sabitle",
         "toggleSize": "Boyut Değiştir",
         "publish": "Görünür Yap",
-        "moreOptions": "Daha çok seçenek",
-        "details": "Ayrıntılar"
-      },
-      "productVariant": {
-        "addVariantOptions": "'Sepete ekle' sağlamak için seçenekleri eklemek butto",
-        "inventoryQuantity": "miktar",
-        "title": "Etiket",
-        "price": "Fiyat",
-        "optionTitle": "seçenek",
-        "barcode": "Barkod",
-        "compareAtPrice": "Fiyat (MSRP)",
-        "fulfillmentService": "Yerine Getirme hizmet",
-        "weight": "Ağırlık",
-        "length": "uzunluk",
-        "width": "genişlik",
-        "height": "Yükseklik",
-        "taxable": "vergiye tabi",
-        "taxCode": "vergi Kodları",
-        "taxDescription": "vergi Açıklama",
-        "inventoryManagement": "stok takibi",
-        "inventoryManagementLabel": "envanter sisteminde ürününüzü kaydedin ve durumunu izlemek",
-        "inventoryPolicy": "zaman stokta inkar",
-        "inventoryPolicyLabel": "o stokta değil, ürün varyantı satmıyoruz",
-        "lowInventoryWarningThreshold": "uyar @",
-        "lowInventoryWarningThresholdLabel": "miktarı bir sonraki düzeye ulaştığında ürünün tükendi yakın olacağı müşterileri uyarmak",
-        "originCountry": "Anavatan",
-        "selectTaxCode": "Vergi Kanunu seçin"
+        "moreOptions": "Daha çok seçenek"
       },
       "variantList": {
         "moreOptions": "Bu seçim için daha çok seçenek mevcut.",
@@ -149,10 +95,6 @@
       "gridPackage": {
         "pkgEnabled": " şu anda etkin.",
         "pkgDisabled": " şu anda etkin değil."
-      },
-      "gridSettingsPanel": {
-        "title": "Izgara Ayarları",
-        "selected": "Seçilmiş"
       },
       "cartDrawer": {
         "empty": "Üzgünüz. Sepetiniz boş.",
@@ -281,58 +223,6 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
-      },
-      "corePackageConfig": {
-        "settings": {
-          "public": {
-            "allowGuestCheckout": "İzin Misafir Ödeme"
-          },
-          "openexchangerates": {
-            "appId": "Açık Kurlar App Kimliği",
-            "refreshPeriod": "Açık Döviz Kurları dönemi yenileme",
-            "refreshPeriodPlaceholder": "yani her 1 saat"
-          },
-          "google": {
-            "clientId": "Google Müşteri Kimliği",
-            "apiKey": "Google API Anahtarı"
-          }
-        }
-      },
-      "revisions": {
-        "isDisabled": "Revizyon kontrolü devre dışı bırakılır. Herhangi bir değişiklik derhal yayınlanacaktır.",
-        "isEnabled": "Revizyon kontrol Ürünleri etkindir. Herhangi bir değişiklik müşterilere görünür olmak önce yayınlanmış gerekir edilecektir."
-      },
-      "shop": {
-        "defaultPaymentMethod": "Standart Ödeme Yöntemi",
-        "name": "Isim",
-        "namePlaceholder": "Mağaza Adı",
-        "description": "Tanım",
-        "descriptionPlaceholder": "SEO için alışveriş açıklayın",
-        "descriptionTooltip": "SEO için Meta Açıklaması",
-        "email": "E-posta",
-        "emailPlaceholder": "Birincil İletişim E-posta",
-        "keywords": "Anahtar Kelimeler",
-        "keywordsPlaceholder": "SEO için Meta anahtar kelimeler",
-        "language": "baz Dili",
-        "addressBook": {
-          "company": "Şirket",
-          "companyPlaceholder": "Bu işletme adı",
-          "country": "Ülke",
-          "fullName": "Ad Soyad",
-          "fullNamePlaceholder": "Sizin organizasyon adı",
-          "address1": "Adres",
-          "address1Placeholder": "Kuruluşunuz adresi",
-          "address1Tooltip": "Bu adres ziyaretçiler için görünür olacak",
-          "address2": "Adres 2",
-          "address2Placeholder": "Ek adres",
-          "postal": "Posta Kodu",
-          "city": "Şehir",
-          "region": "Bölge",
-          "phone": "Telefon",
-          "isShippingDefault": "Bu varsayılan teslimat adresiniz mi?",
-          "isBillingDefault": "Bu varsayılan fatura adresiniz mi?",
-          "isCommercial": "Bu ticari bir adres."
-        }
       },
       "accountsUI": {
         "members": "ÜyelerMembers",
