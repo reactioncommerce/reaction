@@ -59,7 +59,7 @@ class OrderFilter extends Component {
     }
     return (
       <Components.Translation
-        defaultValue={this.state.shippingLabel}
+        defaultValue="Shipping Status"
         i18nKey={`order.filter.${this.state.shippingLabel}`}
       />
     );
