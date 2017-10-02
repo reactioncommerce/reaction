@@ -15,13 +15,6 @@ function getShippingRates(previousQueryResults, cart) {
 
   // must have cart items and package enabled to calculate shipping
   if (!pkgData || !cart.items || pkgData.settings.shippo.enabled !== true) {
-    const errorDetails = {
-      requestStatus: "error",
-      shippingProvider: "shippo",
-      message: "Error. The Shippo package may be uninstalled or disabled, or your cart is empty."
-    };
-    // There's no need for a retry in this case.
-    rates.push(errorDetails);
     return [rates, retrialTargets];
   }
 
