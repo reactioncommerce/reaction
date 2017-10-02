@@ -415,6 +415,10 @@ Meteor.methods({
       });
     }
 
+    let parcel = null;
+    if (variant.weight || variant.height || variant.width || variant.length) {
+      parcel = { weight: variant.weight, height: variant.height, width: variant.width, length: variant.length };
+    }
     // cart variant doesn't exist
     return Collections.Cart.update({
       _id: cart._id
@@ -430,7 +434,7 @@ Meteor.methods({
           metafields: options.metafields,
           title: product.title,
           type: product.type,
-          parcel: product.parcel || null
+          parcel
         }
       }
     }, function (error, result) {
