@@ -183,9 +183,9 @@ export function buildOrderSearchRecord(orderId) {
   ) || {};
 
   orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
-  orderSearch.billingPhone = shopBilling.address && shopBilling.address.phone.replace(/\D/g, "");
+  orderSearch.billingPhone = shopBilling.address && shopBilling.address.phone;
   orderSearch.shippingName = shopShipping.address && shopShipping.address.fullName;
-  orderSearch.shippingPhone = shopShipping.address && shopShipping.address.phone.replace(/\D/g, "");
+  orderSearch.shippingPhone = shopShipping.address && shopShipping.address.phone;
   orderSearch.billingAddress = {
     address: shopBilling.address && shopBilling.address.address1,
     postal: shopBilling.address && shopBilling.address.postal,
