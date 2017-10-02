@@ -415,6 +415,7 @@ Meteor.methods({
       });
     }
 
+    // TODO: Handle more than 2 levels of variant hierarchy for determining parcel dimensions
     // we need to get the parent of the option to check if parcel info is stored there
     const immediateAncestors = variant.ancestors.filter((ancestor) => ancestor !== product._id);
     const immediateAncestor = Collections.Products.findOne({ _id: immediateAncestors[0] });
