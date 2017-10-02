@@ -207,36 +207,33 @@ const wrapComponent = (Comp) => (
      */
     updateInventoryPolicyIfChildVariants = (variant) => {
       // Get all siblings, including current variant
-      // Check to see if their inventory policy is true / false
       const options = ReactionProduct.getSiblings(variant);
+      // Get parent
+      const parent = ReactionProduct.getParent(variant);
 
-      console.log("getParent", ReactionProduct.getParent(variant));
+      // If this is not a top-level variant, update top-level inventory policy as well
+      if (parent) {
+        if (options && options.length) {
+          // Check to see if every variant option inventory policy is true
+          const inventoryPolicy = options.every((option) => {
+            return option.inventoryPolicy === true;
+          });
 
-      console.log("variant", variant);
-      console.log("options", options);
-
-      console.log("getSiblings", ReactionProduct.getSiblings(variant));
-      if (options && options.length) {
-        const inventoryPolicy = options.filter((option) => {
-          return option.inventoryPolicy === false;
-        });
-
-        console.log("getParent", ReactionProduct.getParent(variant));
-
-        // // If all inventory policies on children are true, update parent to be true
-        // if (inventoryPolicy.length === 0) {
-        //   return Meteor.call("products/updateProductField", parentId, "inventoryPolicy", true, (error) => {
-        //     if (error) {
-        //       Alerts.toast(error.message, "error");
-        //     }
-        //   });
-        // }
-        // // If any child has a false inventoryPolicy, update parent to be false
-        // return Meteor.call("products/updateProductField", parentId, "inventoryPolicy", false, (error) => {
-        //   if (error) {
-        //     Alerts.toast(error.message, "error");
-        //   }
-        // });
+          // If all inventory policies on children are true, update parent to be true
+          if (inventoryPolicy === true) {
+            return Meteor.call("products/updateProductField", parent._id, "inventoryPolicy", true, (error) => {
+              if (error) {
+                Alerts.toast(error.message, "error");
+              }
+            });
+          }
+          // If any child has a false inventoryPolicy, update parent to be false
+          return Meteor.call("products/updateProductField", parent._id, "inventoryPolicy", false, (error) => {
+            if (error) {
+              Alerts.toast(error.message, "error");
+            }
+          });
+        }
       }
     }
 
