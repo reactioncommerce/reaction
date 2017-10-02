@@ -50,7 +50,7 @@ const composer = (props, onData) => {
       const localStorageCurrency = localStorage.getItem("currency");
       const locale = Reaction.Locale.get();
 
-      if (localStorageCurrency) {
+      if (localStorageCurrency && shop.currencies[localStorageCurrency] && shop.currencies[localStorageCurrency].symbol) {
         currentCurrency = localStorageCurrency + " " + shop.currencies[localStorageCurrency].symbol;
       } else if (locale && locale.currency && locale.currency.enabled) {
         currentCurrency = locale.locale.currency + " " + locale.currency.symbol;

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { i18next } from "/client/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import * as Constants from "../../lib/constants";
 
@@ -58,7 +59,7 @@ class OrderFilter extends Component {
     }
     return (
       <Components.Translation
-        defaultValue="Shipping Status"
+        defaultValue={this.state.shippingLabel}
         i18nKey={`order.filter.${this.state.shippingLabel}`}
       />
     );
@@ -92,6 +93,8 @@ class OrderFilter extends Component {
   }
 
   render() {
+    const attachmentDirection = i18next.dir() === "rtl" ? "left" : "right";
+
     return (
       <div className="order-filter-bar">
         <div className="order-filter-item">
@@ -120,8 +123,8 @@ class OrderFilter extends Component {
                 menuClassName="status-dropdown"
                 className="order-menu-item-dropdown"
                 onChange={this.handleWorkflowChange}
-                attachment="bottom right"
-                targetAttachment="top right"
+                attachment={`bottom ${attachmentDirection}`}
+                targetAttachment={`top ${attachmentDirection}`}
               >
                 {Constants.workflowStatus.map((status, index) => (
                   <Components.MenuItem
@@ -159,8 +162,8 @@ class OrderFilter extends Component {
                 buttonElement={this.buttonElement()}
                 menuClassName="calender-dropdown"
                 className="order-menu-item-dropdown"
-                attachment="bottom right"
-                targetAttachment="top right"
+                attachment={`bottom ${attachmentDirection}`}
+                targetAttachment={`top ${attachmentDirection}`}
                 isClickable={false}
               >
                 <Components.CalendarPicker
@@ -196,8 +199,8 @@ class OrderFilter extends Component {
                 menuClassName="status-dropdown"
                 className="order-menu-item-dropdown"
                 onChange={this.handleShippingChange}
-                attachment="bottom right"
-                targetAttachment="top right"
+                attachment={`bottom ${attachmentDirection}`}
+                targetAttachment={`top ${attachmentDirection}`}
               >
                 {Constants.shippingStatus.map((status, index) => (
                   <Components.MenuItem
