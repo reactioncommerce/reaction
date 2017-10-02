@@ -105,7 +105,8 @@
         "makeVisible": "Make visible",
         "hideProduct": "Hide product",
         "productIsVisible": "Product is visible",
-        "productIsNotVisible": "Product is not visible"
+        "productIsNotVisible": "Product is not visible",
+        "variantOptions": "Variant options"
       },
       "productVariant": {
         "addVariantOptions": "Add options to enable 'Add to Cart' button",
