@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Save and continue",
         "cancel": "Cancel",
