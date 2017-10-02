@@ -28,8 +28,8 @@ function createShipmentQuotes(cartId, shopId, rates, selector) {
     const errorDetails = rates[0];
     update = {
       $set: {
-        "shipping.0.shipmentQuotes": [],
-        "shipping.0.shipmentQuotesQueryStatus": {
+        "shipping.$.shipmentQuotes": [],
+        "shipping.$.shipmentQuotesQueryStatus": {
           requestStatus: errorDetails.requestStatus,
           shippingProvider: errorDetails.shippingProvider,
           message: errorDetails.message
@@ -120,7 +120,7 @@ function normalizeAddresses(cart) {
 function updateShipmentQuotes(cartId, rates, selector) {
   let update = {
     $set: {
-      "shipping.0.shipmentQuotesQueryStatus": {
+      "shipping.$.shipmentQuotesQueryStatus": {
         requestStatus: "pending"
       }
     }
@@ -137,8 +137,8 @@ function updateShipmentQuotes(cartId, rates, selector) {
     const errorDetails = rates[0];
     update = {
       $set: {
-        "shipping.0.shipmentQuotes": [],
-        "shipping.0.shipmentQuotesQueryStatus": {
+        "shipping.$.shipmentQuotes": [],
+        "shipping.$.shipmentQuotesQueryStatus": {
           requestStatus: errorDetails.requestStatus,
           shippingProvider: errorDetails.shippingProvider,
           message: errorDetails.message
@@ -269,7 +269,7 @@ export const methods = {
     const rates = [];
     const retrialTargets = [];
     // must have items to calculate shipping
-    if (!cart.items) {
+    if (!cart.items || !cart.items.length) {
       return rates;
     }
     // hooks for other shipping rate events
