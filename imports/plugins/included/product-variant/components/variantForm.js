@@ -130,7 +130,6 @@ class VariantForm extends Component {
   }
 
   handleFieldBlur = (event, value, field) => {
-    console.log("field", field);
     if (this.props.onVariantFieldSave) {
       this.props.onVariantFieldSave(this.variant._id, field, value, this.state.variant);
     }

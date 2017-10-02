@@ -178,9 +178,6 @@ const wrapComponent = (Comp) => (
     handleVariantFieldSave = (variantId, fieldName, value, variant) => {
       const validationStatus = this.runVariantValidation(variant);
 
-      console.log("fieldName", fieldName);
-
-
       if (validationStatus.isFieldValid(fieldName)) {
         Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
           if (error) {
