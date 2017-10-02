@@ -178,7 +178,6 @@ function updateShippingRecordByShop(cart, rates) {
     if (shippingRecord) {
       update = updateShipmentQuotes(cartId, rates, selector);
     } else {
-      selector = { _id: cartId };
       update = createShipmentQuotes(cartId, shopId, rates, selector);
     }
 
