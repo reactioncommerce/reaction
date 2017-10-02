@@ -209,7 +209,7 @@ const wrapComponent = (Comp) => (
       // Get all siblings, including current variant
       const options = ReactionProduct.getSiblings(variant);
       // Get parent
-      const parent = ReactionProduct.getParent(variant);
+      const parent = ReactionProduct.getVariantParent(variant);
 
       // If this is not a top-level variant, update top-level inventory policy as well
       if (parent) {
