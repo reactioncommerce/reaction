@@ -30,6 +30,16 @@ class TextField extends Component {
     return undefined;
   }
 
+  get isHelpMode() {
+    // TODO: add functionality to toggle helpMode on / off.
+    // When on, helpText will always show.
+    // When off, only validation messages will show.
+    // For now, all helpText will show, meaning this doesn't affect how the app currently works.
+    // This is here just to lay the foundation for when we add the toggle.
+
+    return true;
+  }
+
   get validationMessage() {
     const { name, validation } = this.props;
 
@@ -168,6 +178,7 @@ class TextField extends Component {
    * @return {ReactNode|null} react node or null
    */
   renderHelpText() {
+    const helpMode = this.isHelpMode;
     const message = this.validationMessage;
     let helpText = this.props.helpText;
     let i18nKey = this.props.i18nKeyHelpText;
@@ -177,7 +188,17 @@ class TextField extends Component {
       i18nKey = message.i18nKeyMessage;
     }
 
-    if (helpText) {
+    // If this is a validation message, show even if helpMode is false
+    if (this.isValid === false && message) {
+      return (
+        <span className="help-block">
+          <Components.Translation defaultValue={helpText} i18nKey={i18nKey} />
+        </span>
+      );
+    }
+
+    // If this is a non-validation message, only show if helpMode is true
+    if (helpText && helpMode) {
       return (
         <span className="help-block">
           <Components.Translation defaultValue={helpText} i18nKey={i18nKey} />

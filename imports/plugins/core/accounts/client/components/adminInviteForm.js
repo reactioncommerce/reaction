@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { getDefaultUserInviteGroup } from "../helpers/accountsHelper";
 
 class AdminInviteForm extends Component {
@@ -73,6 +73,8 @@ class AdminInviteForm extends Component {
           messageKey = "admin.groupsInvite.inviteOwnerError";
         } else if (error.reason === "cannot invite to group") {
           messageKey = "admin.groupsInvite.cannotInvite";
+        } else if (error.reason === "Need to set a username or email") {
+          messageKey = "admin.groupsInvite.NeedToSetUsernameOrEmail";
         } else {
           messageKey = "admin.groupsInvite.errorSendingInvite";
         }
@@ -81,11 +83,7 @@ class AdminInviteForm extends Component {
 
       if (result) {
         this.setState({ name: "", email: "" });
-        ReactionAlerts.add(
-          "Invite Successful",
-          "success",
-          Object.assign({}, alertOptions, { i18nKey: "accountsUI.info.invitationSent" })
-        );
+        Alerts.toast(i18next.t("accountsUI.info.invitationSent"), "success");
       }
     });
   }
@@ -180,7 +178,7 @@ class AdminInviteForm extends Component {
 
   render() {
     return (
-      <Components.Card expanded={true}>
+      <Components.Card>
         <Components.CardHeader
           actAsExpander={true}
           data-i18n="accountsUI.info.addAdminUser"

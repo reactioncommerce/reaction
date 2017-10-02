@@ -1,0 +1,20 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartCompleted": {
+        "yourCart": "Din varukorg",
+        "discountTotal": "Rabatt Totalt",
+        "orderTotal": "ordersumma",
+        "fulfilledBy": "Uppfylls av",
+        "quantityTotal": "Mängd Totalt",
+        "orderSubtotal": "Delsumma",
+        "orderShipping": "Frakt",
+        "orderTax": "skatte~~POS=TRUNC",
+        "trackYourDelivery": "Order uppdateringar kommer att skickas till",
+        "registerGuest": "Hallå! Lägg till ett mail och få orderuppdateringar"
+      }
+    }
+  }
+}]

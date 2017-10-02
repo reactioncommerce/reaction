@@ -18,6 +18,7 @@ class LocalizationSettings extends Component {
     onUpdateLocalization: PropTypes.func,
     shop: PropTypes.object, // Shop data
     timezoneOptions: PropTypes.array,
+    uolOptions: PropTypes.array,
     uomOptions: PropTypes.array
   }
 
@@ -128,6 +129,10 @@ class LocalizationSettings extends Component {
               baseUOM: {
                 type: "select",
                 options: this.props.uomOptions
+              },
+              baseUOL: {
+                type: "select",
+                options: this.props.uolOptions
               },
               language: {
                 type: "select",

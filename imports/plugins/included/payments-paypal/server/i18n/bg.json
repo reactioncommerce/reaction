@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "Завършете поръчката",
         "paymentMethod": {
+          "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "Плащане с PayPal",
           "expressNotConfigured": "Paypal Express не е конфигурирано.",
           "expressNotAvailable": "Paypal Express не е наличен",

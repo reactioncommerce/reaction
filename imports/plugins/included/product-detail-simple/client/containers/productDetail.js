@@ -29,7 +29,7 @@ const wrapComponent = (Comp) => (
 
       this.state = {
         cartQuantity: 1,
-        click: 0
+        productClick: 0
       };
     }
 
@@ -133,7 +133,10 @@ const wrapComponent = (Comp) => (
               }
               // Reset cart quantity on success
               this.handleCartQuantityChange(null, 1);
-              this.state.click++;
+
+              this.setState(({ productClick }) => ({
+                productClick: productClick + 1
+              }));
 
               return true;
             });
@@ -169,9 +172,9 @@ const wrapComponent = (Comp) => (
 
             this.textTimeOut = setTimeout(() => {
               $("#spin").addClass("hidden");
-              $(".cart-alert-text").text(`${this.state.click * quantity} ${addToCartTitle} ${addToCartText}`);
+              $(".cart-alert-text").text(`${this.state.productClick * quantity} ${addToCartTitle} ${addToCartText}`);
               $(".cart-alert-text").fadeIn("slow");
-              this.setState({ click: 0 });
+              this.setState({ productClick: 0 });
             }, 2000);
 
             clearTimeout(this.animationTimeOut);

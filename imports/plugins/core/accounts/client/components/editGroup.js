@@ -174,7 +174,7 @@ class EditGroup extends Component {
     const alertId = this.state.alertOptions.id;
     return (
       <div className="edit-group-container">
-        <Components.Card expanded={true}>
+        <Components.Card>
           <Components.CardHeader actAsExpander={true} i18nKeyTitle="admin.groups.editGroups" title="Edit Groups" />
           <Components.CardBody expandable={true}>
             <div className="settings">

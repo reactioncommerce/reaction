@@ -12,9 +12,6 @@
           "email": "E-naslov",
           "description": "Opis",
           "remove": "Odstraniti"
-        },
-        "settings": {
-          "localizationAndI18NLabel": "Lokalizacija in i18n"
         }
       },
       "app": {
@@ -34,28 +31,7 @@
         "yearOptions": "Izberite leto",
         "shopSettings": "trgovina Nastavitve",
         "dashboard": "Nadzorna plošča",
-        "print": "Tiskanje",
-        "editMode": "način urejanja",
-        "auto": "Auto"
-      },
-      "searchSettings": {
-        "productSearchSettings": {
-          "panelTitle": "Iskanje",
-          "includeTitle": "vključi naslov",
-          "includeDescription": "Vključite opis",
-          "includePageTitle": "Vključi naslov strani",
-          "includeDetails": "vključuje podrobnosti",
-          "includeVendor": "vključi prodajalca"
-        },
-        "orderSearchSettings": {
-          "panelTitle": "Nastavitve naročilo Iskanje"
-        },
-        "accountSearchSettings": {
-          "panelTitle": "Nastavitve računa iskanja"
-        },
-        "noSettings": "Ni nastavitve trenutno na voljo",
-        "settingsSaved": "Nastavitve iskanja shranjene",
-        "settingsfailed": "Nastavitve iskanja posodobitev ni uspela"
+        "print": "Tiskanje"
       },
       "header": {
         "tagsAdd": "Dodaj oznako",
@@ -92,8 +68,7 @@
         "startTracking": "Začni sledenje",
         "addBarcode": "Dodajte črtne kode",
         "quantity": "količina",
-        "quantityGreaterThanZero": "Napaka: Količina mora biti večji od nič",
-        "dropFiles": "Spusti datoteke za nalaganje"
+        "quantityGreaterThanZero": "Napaka: Količina mora biti večji od nič"
       },
       "productDetailEdit": {
         "title": "Naslov",
@@ -104,9 +79,6 @@
         "twitterMsg": "Twitter sporočilo",
         "pinterestMsg": "Pinterest sporočilo",
         "googleplusMsg": "Google+ sporočilo",
-        "editVariant": "Uredi Variant",
-        "variantOptions": "Variant Možnosti",
-        "variantDetails": "Variant Podrobnosti",
         "duplicateVariant": "podvajati",
         "addVariantOption": "Dodaj možnost",
         "removeVariant": "Odstraniti",
@@ -114,33 +86,7 @@
         "pinProduct": "pin izdelka",
         "toggleSize": "Preklop Velikost",
         "publish": "objavi",
-        "moreOptions": "več možnosti",
-        "details": "podrobnosti"
-      },
-      "productVariant": {
-        "addVariantOptions": "Dodaj možnosti, da bi \"Dodaj v košarico\" butto",
-        "inventoryQuantity": "količina",
-        "title": "Label",
-        "price": "Cena",
-        "optionTitle": "možnost",
-        "barcode": "Barcode",
-        "compareAtPrice": "Cena (MSRP)",
-        "fulfillmentService": "izpolnitev storitev",
-        "weight": "Teža",
-        "length": "dolžina",
-        "width": "Širina",
-        "height": "Višina",
-        "taxable": "Davčni",
-        "taxCode": "davčni Oznake",
-        "taxDescription": "davčna Opis",
-        "inventoryManagement": "sledenje popis",
-        "inventoryManagementLabel": "Vnos izdelek inventarja sistema in sledenje svoj status",
-        "inventoryPolicy": "Zanika, ko ni na zalogi",
-        "inventoryPolicyLabel": "Ne prodati varianto izdelka, če je ni na zalogi",
-        "lowInventoryWarningThreshold": "Opozori @",
-        "lowInventoryWarningThresholdLabel": "Opozarjajo stranke, da bo izdelek skoraj razprodan, ko doseže naslednji količinski prag",
-        "originCountry": "izvor Država",
-        "selectTaxCode": "Izberite davčnega zakonika"
+        "moreOptions": "več možnosti"
       },
       "variantList": {
         "moreOptions": "Obstaja več možnosti, ki so na voljo za ta izbor.",
@@ -149,10 +95,6 @@
       "gridPackage": {
         "pkgEnabled": "{{app}} je sedaj omogočeno.",
         "pkgDisabled": "{{app}} je zdaj onemogočeno."
-      },
-      "gridSettingsPanel": {
-        "title": "Nastavitve Grid",
-        "selected": "Izbrano"
       },
       "cartDrawer": {
         "empty": "Mi smo žalostni. Košara je prazna.",
@@ -281,58 +223,6 @@
         "meetup": "Meetup",
         "twitter": "Twitter",
         "weibo": "Weibo"
-      },
-      "corePackageConfig": {
-        "settings": {
-          "public": {
-            "allowGuestCheckout": "Dovoli Guest blagajno"
-          },
-          "openexchangerates": {
-            "appId": "Id App Cene odprta izmenjava",
-            "refreshPeriod": "Odprto Menjalni tečaji osvežitev rok",
-            "refreshPeriodPlaceholder": "t.j. vsak 1 uro"
-          },
-          "google": {
-            "clientId": "Google Client ID",
-            "apiKey": "Google ključ API"
-          }
-        }
-      },
-      "revisions": {
-        "isDisabled": "Nadzor Revizija je onemogočeno. Vse spremembe bodo objavljene takoj.",
-        "isEnabled": "Nadzor Revizija je omogočen za izdelke. Vse spremembe bo treba objaviti, preden se vidno strankam."
-      },
-      "shop": {
-        "defaultPaymentMethod": "Privzeti način plačila",
-        "name": "Name",
-        "namePlaceholder": "trgovina Ime",
-        "description": "Opis",
-        "descriptionPlaceholder": "Opišite svojo trgovino za SEO",
-        "descriptionTooltip": "Meta opis za SEO",
-        "email": "E-naslov",
-        "emailPlaceholder": "Primarni Kontaktni e-naslov",
-        "keywords": "ključne besede",
-        "keywordsPlaceholder": "Meta ključne besede za SEO",
-        "language": "Osnovna jezik",
-        "addressBook": {
-          "company": "Podjetje",
-          "companyPlaceholder": "Ta firma",
-          "country": "Država",
-          "fullName": "Polno ime",
-          "fullNamePlaceholder": "Vaše ime organizacije",
-          "address1": "naslov",
-          "address1Placeholder": "Vaša organizacija naslov",
-          "address1Tooltip": "Ta naslov bo vidna obiskovalcem",
-          "address2": "naslov",
-          "address2Placeholder": "Dodatni naslov",
-          "postal": "Postal",
-          "city": "Kraj",
-          "region": "regija",
-          "phone": "Telefon",
-          "isShippingDefault": "Naj bo to vaš privzeti naslov za dostavo?",
-          "isBillingDefault": "Naj bo to vaš privzeti naslov za izstavitev računa?",
-          "isCommercial": "To je komercialna naslov."
-        }
       },
       "accountsUI": {
         "members": "člani",
