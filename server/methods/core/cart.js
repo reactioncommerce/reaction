@@ -419,8 +419,10 @@ Meteor.methods({
     const immediateAncestors = variant.ancestors.filter((ancestor) => ancestor !== product._id);
     const immediateAncestor = Collections.Products.findOne({ _id: immediateAncestors[0] });
     let parcel = null;
-    if (immediateAncestor.weight || immediateAncestor.height || immediateAncestor.width || immediateAncestor.length) {
-      parcel = { weight: immediateAncestor.weight, height: immediateAncestor.height, width: immediateAncestor.width, length: immediateAncestor.length };
+    if (immediateAncestor) {
+      if (immediateAncestor.weight || immediateAncestor.height || immediateAncestor.width || immediateAncestor.length) {
+        parcel = { weight: immediateAncestor.weight, height: immediateAncestor.height, width: immediateAncestor.width, length: immediateAncestor.length };
+      }
     }
     // if it's set at the option level then that overrides
     if (variant.weight || variant.height || variant.width || variant.length) {
