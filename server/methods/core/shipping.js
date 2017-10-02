@@ -248,12 +248,7 @@ export const methods = {
         cart = Cart.findOne(cartId);
       }
       const rates = Meteor.call("shipping/getShippingRates", cart);
-      if (cart.shipping && cart.shipping.length !== 0) {
-        updateShippingRecordByShop(cart, rates);
-      } else {
-        // if no shipping records, lets add them so we have address
-        updateShippingRecordByShop(cart, rates);
-      }
+      updateShippingRecordByShop(cart, rates);
     }
   },
 
