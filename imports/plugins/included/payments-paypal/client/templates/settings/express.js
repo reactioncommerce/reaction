@@ -1,6 +1,7 @@
 /* eslint camelcase: 0 */
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
+import { i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { PaypalPackageConfig } from "../../../lib/collections/schemas";
 import "./express.html";
@@ -17,16 +18,12 @@ Template.paypalExpressSettings.helpers({
 });
 
 AutoForm.hooks({
-  "paypal-update-form": {
+  "paypal-update-form-express": {
     onSuccess: function () {
-      Alerts.removeSeen();
-      return Alerts.add("Paypal settings saved.", "success", {
-        autoHide: true
-      });
+      return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
     onError: function (operation, error) {
-      Alerts.removeSeen();
-      return Alerts.add("Paypal settings update failed. " + error, "danger");
+      return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
     }
   }
 });
