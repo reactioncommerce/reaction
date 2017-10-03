@@ -6,7 +6,7 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { Media } from "/lib/collections";
+import { Products, Media } from "/lib/collections";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import ProductGridItems from "../components/productGridItems";
 import { ProductVariant } from "/lib/collections/schemas/products";
@@ -181,6 +181,39 @@ const wrapComponent = (Comp) => (
       }
     }
 
+    handleEditVariant = (event, ancestors = -1) => {
+      const product = this.props.product;
+      const handle = product.__published && product.__published.handle || product.handle;
+
+      const variants = ReactionProduct.getVariants(this.props.product._id);
+      const variant = variants[0];
+      let editVariant = variant;
+      if (ancestors >= 0) {
+        editVariant = Products.findOne(variant.ancestors[ancestors]);
+      }
+
+      ReactionProduct.setCurrentVariant(variant._id);
+      Session.set("variant-form-" + editVariant._id, true);
+      Reaction.Router.go("product", {
+        handle: handle,
+        variantId: variant._id
+      }, {
+        as: Reaction.Router.getQueryParam("as")
+      });
+
+      if (Reaction.hasPermission("createProduct")) {
+        Reaction.showActionView({
+          label: "Edit Variant",
+          i18nKeyLabel: "productDetailEdit.editVariant",
+          template: "variantForm",
+          data: editVariant
+        });
+      }
+
+      // Prevent the default edit button `onEditButtonClick` function from running
+      return false;
+    }
+
     onDoubleClick = () => {
       const product = this.props.product;
       const handle = product.__published && product.__published.handle || product.handle;
@@ -194,18 +227,14 @@ const wrapComponent = (Comp) => (
         });
       }
       const invalidVariant = validationStatus.filter(status => status.isValid === false);
-
-      Reaction.Router.go("product", {
-        handle: handle
-      });
       // open edit variant card if variant is not valid
       if (invalidVariant.length) {
-        Reaction.setActionView({
-          label: "Edit Variant",
-          i18nKeyLabel: "productDetailEdit.editVariant",
-          template: "variantForm"
-        });
+        this.handleEditVariant();
       } else {
+        Reaction.Router.go("product", {
+          handle: handle
+        });
+
         Reaction.setActionView({
           i18nKeyLabel: "productDetailEdit.productSettings",
           label: "Product Settings",

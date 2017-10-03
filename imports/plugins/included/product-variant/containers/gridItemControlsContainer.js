@@ -33,7 +33,9 @@ const wrapComponent = (Comp) => (
     }
 
     componentWillMount() {
-      this.variantValidation();
+      if (!Reaction.isPreview()) {
+        this.variantValidation();
+      }
     }
 
     hasCreateProductPermission = () => {
@@ -71,8 +73,8 @@ const wrapComponent = (Comp) => (
           product={this.props.product}
           hasCreateProductPermission={this.hasCreateProductPermission}
           hasChanges={this.hasChanges}
-          checked={this.checked}
           invalidVariant={this.state.invalidVariant}
+          checked={this.checked}
         />
       );
     }
