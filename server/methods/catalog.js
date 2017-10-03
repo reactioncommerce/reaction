@@ -876,9 +876,22 @@ Meteor.methods({
       const booleanValue = (value === "true" || value === true);
       update = EJSON.parse("{\"" + field + "\":" + booleanValue + "}");
     } else {
-      const stringValue = EJSON.stringify(value);
-      update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
+      if (field === "handle") {
+        update = {
+          [field]: createHandle(value, _id) // handle should be unique
+        };
+      } else if (field === "title" && doc.handle === doc._id) { // update handle once title is set
+        const handle = createHandle(Reaction.getSlug(value), _id);
+        update = {
+          [field]: value,
+          handle
+        };
+      } else {
+        const stringValue = EJSON.stringify(value);
+        update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
+      }
     }
+
 
     // we need to use sync mode here, to return correct error and result to UI
     let result;
