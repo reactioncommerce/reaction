@@ -373,7 +373,7 @@ export function addressBookAdd(address, accountUserId) {
     }
   };
 
-  if (!account.name || _.get(account, 'profile.addressBook.length', 0) === 0) {
+  if (!account.name || _.get(account, "profile.addressBook.length", 0) === 0) {
     userUpdateQuery.$set.name = address.fullName;
     accountsUpdateQuery.$set.name = address.fullName;
   }
@@ -490,7 +490,7 @@ export function addressBookUpdate(address, accountUserId, type) {
     }
   };
   // update the name when there is no name or the user updated his only shipping address
-  if (!account.name || _.get(account, 'profile.addressBook.length', 0) <= 1) {
+  if (!account.name || _.get(account, "profile.addressBook.length", 0) <= 1) {
     userUpdateQuery.$set.name = address.fullName;
     accountsUpdateQuery.$set.name = address.fullName;
   }
