@@ -369,21 +369,6 @@ class VariantForm extends Component {
             <div className="row">
               <div className="col-sm-6">
                 <Components.TextField
-                  i18nKeyLabel="productVariant.compareAtPrice"
-                  i18nKeyPlaceholder={formatPriceString("0.00")}
-                  placeholder={formatPriceString("0.00")}
-                  label="Compare At Price"
-                  name="compareAtPrice"
-                  ref="compareAtPriceInput"
-                  value={this.variant.compareAtPrice}
-                  onBlur={this.handleFieldBlur}
-                  onChange={this.handleFieldChange}
-                  onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validation}
-                />
-              </div>
-              <div className="col-sm-6">
-                <Components.TextField
                   i18nKeyLabel="productVariant.price"
                   i18nKeyPlaceholder={formatPriceString("0.00")}
                   placeholder={formatPriceString("0.00")}
@@ -393,6 +378,21 @@ class VariantForm extends Component {
                   value={this.variant.price}
                   style={this.props.greyDisabledFields(this.variant)}
                   disabled={this.props.hasChildVariants(this.variant)}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.props.validation}
+                />
+              </div>
+              <div className="col-sm-6">
+                <Components.TextField
+                  i18nKeyLabel="productVariant.compareAtPrice"
+                  i18nKeyPlaceholder={formatPriceString("0.00")}
+                  placeholder={formatPriceString("0.00")}
+                  label="Compare At Price"
+                  name="compareAtPrice"
+                  ref="compareAtPriceInput"
+                  value={this.variant.compareAtPrice}
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
