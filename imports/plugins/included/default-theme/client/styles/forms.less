@@ -72,6 +72,12 @@
   input, label {
     display: none;
   }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }
 
 .rui.switch .switch-control {
@@ -135,6 +141,11 @@
 
 .rui.list-item-action .rui.switch {
   padding: 0;
+}
+
+// Original style is inherited from Bootstrap
+.rui.switch .help-block {
+  color: @black30;
 }
 
 .checkbox-large {
