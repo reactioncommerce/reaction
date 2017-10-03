@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": "Custom tax rate saved.",
           "shopCustomTaxRatesFailed": "Error saving tax rate.",
           "shopTaxMethodsSaved": "Saved tax method.",
+          "shopTaxMethodsAlreadySaved": "Taxcodes already loaded",
           "shopTaxMethodsFailed": "Failed saving tax method.",
           "customRatesLabel": "Custom Rates",
           "customRatesDescription": "Custom Rates",

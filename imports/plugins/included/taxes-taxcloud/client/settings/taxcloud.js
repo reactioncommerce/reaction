@@ -28,18 +28,20 @@ AutoForm.hooks({
             Alerts.toast(i18next.t("admin.taxSettings.shopTaxMethodsSaved"),
               "success");
             res.forEach((code) => {
-              Meteor.call("taxes/insertTaxCodes", Reaction.getShopId(), code, "taxes-taxcloud");
+              Meteor.call("taxes/insertTaxCodes", Reaction.getShopId(), code,
+                "taxes-taxcloud");
             });
           }
         });
       } else {
-        Alerts.toast("Taxcodes from Tax Cloud already loaded");
+        Alerts.toast(i18next.t("admin.taxSettings.shopTaxMethodsAlreadySaved"),
+          "success");
       }
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("admin.taxSettings.shopTaxMethodsFailed")} ${error}`, "error"
-      );
+        `${i18next.t("admin.taxSettings.shopTaxMethodsFailed")} ${error}`,
+        "error");
     }
   }
 });
