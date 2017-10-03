@@ -24,24 +24,16 @@ AutoForm.hooks({
     onSuccess: function () {
       if (!TaxCodes.findOne({ taxCodeProvider: "taxes-taxcloud" })) {
         Meteor.call("taxcloud/getTaxCodes", (err, res) => {
-          if (err) {
-            Alerts.toast(
-              `${i18next.t("admin.taxSettings.shopTaxMethodsFailed")} ${err}`, "error"
-            );
-          } else if (res && Array.isArray(res)) {
+          if (res && Array.isArray(res)) {
             Alerts.toast(i18next.t("admin.taxSettings.shopTaxMethodsSaved"),
               "success");
             res.forEach((code) => {
-              Meteor.call("taxes/insertTaxCodes", Reaction.getShopId(), code, "taxes-taxcloud", (error) => {
-                if (error) {
-                  Alerts.toast(
-                    `${i18next.t("admin.taxSettings.shopTaxMethodsFailed")} ${error}`, "error"
-                  );
-                }
-              });
+              Meteor.call("taxes/insertTaxCodes", Reaction.getShopId(), code, "taxes-taxcloud");
             });
           }
         });
+      } else {
+        Alerts.toast("Taxcodes from Tax Cloud already loaded");
       }
     },
     onError: function (operation, error) {
