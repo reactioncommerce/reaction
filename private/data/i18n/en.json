@@ -184,6 +184,9 @@
         "adjustedTotal": "Adjusted total",
         "processor": "Processor",
         "filter": {
+          "status": "Status",
+          "dateRange": "Date range",
+          "shippingStatus": "Shipping status",
           "new": "New",
           "captured": "Captured",
           "shipped": "Shipped",
