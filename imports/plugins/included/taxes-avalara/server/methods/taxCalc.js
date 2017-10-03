@@ -16,7 +16,7 @@ const taxCalc = {};
 
 taxCalc.getPackageData = function () {
   const pkgData = Reaction.getPackageSettings("taxes-avalara");
-  // TODO this could be done in more proper way
+  // TODO need to remove having to hardcode a settings value
   pkgData.settings.avalara = true;
   return pkgData;
 };
