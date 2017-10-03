@@ -6,7 +6,6 @@ import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
 import { Components } from "@reactioncommerce/reaction-components";
 import { formatPriceString } from "/client/api";
-import { Reaction } from "/lib/api";
 
 const fieldNames = [
   "title",
