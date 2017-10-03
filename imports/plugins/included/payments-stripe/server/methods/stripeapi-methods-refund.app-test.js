@@ -1,8 +1,9 @@
 /* eslint camelcase: 0 */
+import nock from "nock";
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { StripeApi } from "./stripeapi";
+import { utils } from "./stripe";
 
 describe("stripe/refund/create", function () {
   let sandbox;
@@ -44,10 +45,14 @@ describe("stripe/refund/create", function () {
       receipt_number: null
     };
 
-    sandbox.stub(StripeApi.methods.createRefund, "call", function () {
-      return stripeRefundResult;
+    // Stripe Charge Nock
+    nock("https://api.stripe.com:443")
+      .post("/v1/refunds")
+      .reply(200, stripeRefundResult); // .log(console.log);
+
+    sandbox.stub(utils, "getStripeApi", function () {
+      return "sk_fake_fake";
     });
-    // spyOn(StripeApi.methods.createRefund, "call").and.returnValue(stripeRefundResult);
 
     let refundResult = null;
     let refundError = null;
@@ -57,13 +62,6 @@ describe("stripe/refund/create", function () {
       expect(refundError).to.be.undefined;
       expect(refundResult).to.not.be.undefined;
       expect(refundResult.saved).to.be.true;
-      expect(StripeApi.methods.createRefund.call).to.have.been.calledWith({
-        refundDetails: {
-          charge: paymentMethod.transactionId,
-          amount: 1999,
-          reason: "requested_by_customer"
-        }
-      });
       done();
     });
   });
