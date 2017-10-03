@@ -466,15 +466,22 @@ export function ReactionLayout(options = {}) {
     adminControlsFooter: ""
   };
 
+  let layoutTheme = "default";
+
   // Find a registered layout using the layoutName and workflowName
   if (shop) {
     const sortedLayout = shop.layout.sort((prev, next) => prev.priority - next.priority);
     const foundLayout = sortedLayout.find((x) => selectLayout(x, layoutName, workflowName));
 
-    if (foundLayout && foundLayout.structure) {
-      layoutStructure = {
-        ...foundLayout.structure
-      };
+    if (foundLayout) {
+      if (foundLayout.structure) {
+        layoutStructure = {
+          ...foundLayout.structure
+        };
+      }
+      if (foundLayout.theme) {
+        layoutTheme = foundLayout.theme;
+      }
     }
   }
 
@@ -511,6 +518,7 @@ export function ReactionLayout(options = {}) {
 
   // Render the layout
   return {
+    theme: layoutTheme,
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
       const route = Router.current().route;
@@ -610,6 +618,7 @@ Router.initPackageRoutes = (options) => {
         options: {
           name: "index",
           ...options.indexRoute,
+          theme: indexLayout.theme,
           component: indexLayout.component,
           structure: indexLayout.structure
         }
@@ -622,6 +631,7 @@ Router.initPackageRoutes = (options) => {
           name: "index",
           type: "shop-prefix",
           ...options.indexRoute,
+          theme: indexLayout.theme,
           component: indexLayout.component,
           structure: indexLayout.structure
         }
@@ -634,6 +644,7 @@ Router.initPackageRoutes = (options) => {
         options: {
           name: "not-found",
           ...notFoundLayout.indexRoute,
+          theme: notFoundLayout.theme,
           component: notFoundLayout.component,
           structure: notFoundLayout.structure
         }
@@ -674,6 +685,7 @@ Router.initPackageRoutes = (options) => {
                   triggersEnter: Router.Hooks.get("onEnter", name),
                   triggersExit: Router.Hooks.get("onExit", name),
                   component: reactionLayout.component,
+                  theme: reactionLayout.theme,
                   structure: reactionLayout.structure
                 }
               };

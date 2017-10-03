@@ -1,13 +1,9 @@
 import accounting from "accounting-js";
 import stripeNpm from "stripe";
-
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Random } from "meteor/random";
-
 import { Reaction, Logger, Hooks } from "/server/api";
-import { StripeApi } from "./stripeapi";
-
 import { Cart, Shops, Accounts, Packages } from "/lib/collections";
 
 function parseCardData(data) {
@@ -20,6 +16,7 @@ function parseCardData(data) {
   };
 }
 
+
 // Stripe uses a "Decimal-less" format so 10.00 becomes 1000
 function formatForStripe(amount) {
   return Math.round(amount * 100);
@@ -28,17 +25,33 @@ function unformatFromStripe(amount) {
   return (amount / 100);
 }
 
+export const utils = {};
+
+utils.getStripeApi = function (paymentPackageId) {
+  const stripePackage = Packages.findOne(paymentPackageId);
+  const stripeKey = stripePackage.settings.api_key || stripePackage.settings.connectAuth.access_token;
+  return stripeKey;
+};
+
+/**
+ * @summary Capture the results of a previous charge
+ * @param {object} paymentMethod - Object containing info about the previous transaction
+ * @returns {object} Object indicating the result, saved = true means success
+ */
 function stripeCaptureCharge(paymentMethod) {
   let result;
   const captureDetails = {
     amount: formatForStripe(paymentMethod.amount)
   };
 
+
+  const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
+  const stripe = stripeNpm(stripeKey);
+
   try {
-    const captureResult = StripeApi.methods.captureCharge.call({
-      transactionId: paymentMethod.transactionId,
-      captureDetails: captureDetails
-    });
+    const capturePromise = stripe.charges.capture(paymentMethod.transactionId, captureDetails);
+    const captureResult = Promise.await(capturePromise);
+
     if (captureResult.status === "succeeded") {
       result = {
         saved: true,
@@ -146,11 +159,6 @@ function buildPaymentMethods(options) {
 
   const shopIds = Object.keys(transactionsByShopId);
   const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + cardData.number.slice(-4);
-  const packageData = Packages.findOne({
-    name: "reaction-stripe",
-    shopId: Reaction.getPrimaryShopId()
-  });
-
   const paymentMethods = [];
 
 
@@ -164,6 +172,12 @@ function buildPaymentMethods(options) {
           shopId: shopId,
           quantity: item.quantity
         };
+      });
+
+      // we need to grab this per shop to get the API key
+      const packageData = Packages.findOne({
+        name: "reaction-stripe",
+        shopId: shopId
       });
 
       const paymentMethod = {
@@ -397,8 +411,6 @@ export const methods = {
       throw new Meteor.Error("Error creating multiple stripe charges", "An unexpected error occurred");
     }
   },
-
-  // TODO: Update this method to support connect captures
   /**
    * Capture a Stripe charge
    * @see https://stripe.com/docs/api#capture_charge
@@ -407,7 +419,7 @@ export const methods = {
    */
   "stripe/payment/capture": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    // let result;
+
     const captureDetails = {
       amount: formatForStripe(paymentMethod.amount)
     };
@@ -423,7 +435,6 @@ export const methods = {
     return stripeCaptureCharge(paymentMethod);
   },
 
-  // TODO: Update this method to support connect
   /**
    * Issue a refund against a previously captured transaction
    * @see https://stripe.com/docs/api#refunds
@@ -437,15 +448,12 @@ export const methods = {
     check(amount, Number);
     check(reason, String);
 
-    const refundDetails = {
-      charge: paymentMethod.transactionId,
-      amount: formatForStripe(amount),
-      reason
-    };
-
     let result;
     try {
-      const refundResult = StripeApi.methods.createRefund.call({ refundDetails });
+      const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
+      const stripe = stripeNpm(stripeKey);
+      const refundPromise = stripe.refunds.create({ charge: paymentMethod.transactionId, amount: formatForStripe(amount) });
+      const refundResult = Promise.await(refundPromise);
       Logger.debug(refundResult);
       if (refundResult && refundResult.object === "refund") {
         result = {
@@ -465,12 +473,11 @@ export const methods = {
         saved: false,
         error: `Cannot issue refund: ${error.message}`
       };
-      Logger.fatal("Stripe call failed, refund was not issued");
+      Logger.fatal("Stripe call failed, refund was not issued", error.message);
     }
     return result;
   },
 
-  // Update this method to support connect
   /**
    * List refunds
    * @param  {Object} paymentMethod object
@@ -478,11 +485,19 @@ export const methods = {
    */
   "stripe/refund/list": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    let result;
+    const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
+    const stripe = stripeNpm(stripeKey);
+    let refundListResults;
     try {
-      const refunds = StripeApi.methods.listRefunds.call({ transactionId: paymentMethod.transactionId });
-      result = [];
-      for (const refund of refunds.data) {
+      const refundListPromise = stripe.refunds.list({ charge: paymentMethod.transactionId });
+      refundListResults = Promise.await(refundListPromise);
+    } catch (error) {
+      Logger.error("Encountered an error when trying to list refunds", error.message);
+    }
+
+    const result = [];
+    if (refundListResults && refundListResults.data) {
+      for (const refund of refundListResults.data) {
         result.push({
           type: refund.object,
           amount: refund.amount / 100,
@@ -491,9 +506,6 @@ export const methods = {
           raw: refund
         });
       }
-    } catch (error) {
-      Logger.error(error);
-      result = { error };
     }
     return result;
   }
