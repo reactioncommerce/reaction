@@ -15,11 +15,8 @@ const requiredFields = ["username", "password", "apiLoginId", "companyCode", "sh
 const taxCalc = {};
 
 taxCalc.getPackageData = function () {
-  const pkgData = Packages.findOne({
-    "name": "taxes-avalara",
-    "shopId": Reaction.getShopId(),
-    "settings.avalara.enabled": true
-  });
+  const pkgData = Reaction.getPackageSettings("taxes-avalara");
+  pkgData.settings.avalara = true;
   return pkgData;
 };
 
