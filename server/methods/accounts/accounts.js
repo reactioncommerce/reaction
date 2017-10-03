@@ -159,7 +159,7 @@ function getValidator() {
   // check if addressValidation is enabled but the package is disabled, don't do address validation
   let registryName;
   for (const registry of geoCoder.registry) {
-    if (registry.provides === "addressValidation") {
+    if (registry.provides && registry.provides.includes("addressValidation")) {
       registryName = registry.name;
     }
   }
@@ -315,6 +315,9 @@ export function addressBookAdd(address, accountUserId) {
   this.unblock();
 
   const userId = accountUserId || Meteor.userId();
+  const account = Accounts.findOne({
+    userId: userId
+  });
   // required default id
   if (!address._id) {
     address._id = Random.id();
@@ -356,24 +359,30 @@ export function addressBookAdd(address, accountUserId) {
     }
   }
 
-  Meteor.users.update(Meteor.userId(), {
+  const userUpdateQuery = {
     $set: {
-      "name": address.fullName,
       "profile.addressBook": address
     }
-  });
-
-  return Accounts.upsert({
-    userId: userId
-  }, {
+  };
+  const accountsUpdateQuery = {
     $set: {
-      name: address.fullName,
       userId: userId
     },
     $addToSet: {
       "profile.addressBook": address
     }
-  });
+  };
+
+  if (!account.name || _.get(account, "profile.addressBook.length", 0) === 0) {
+    userUpdateQuery.$set.name = address.fullName;
+    accountsUpdateQuery.$set.name = address.fullName;
+  }
+
+  Meteor.users.update(Meteor.userId(), userUpdateQuery);
+
+  return Accounts.upsert({
+    userId: userId
+  }, accountsUpdateQuery);
 }
 
 /**
@@ -469,22 +478,29 @@ export function addressBookUpdate(address, accountUserId, type) {
     }
   }
 
-  Meteor.users.update(Meteor.userId(), {
+  const userUpdateQuery = {
     $set: {
-      "name": address.fullName,
       "profile.addressBook": address
     }
-  });
+  };
+
+  const accountsUpdateQuery = {
+    $set: {
+      "profile.addressBook.$": address
+    }
+  };
+  // update the name when there is no name or the user updated his only shipping address
+  if (!account.name || _.get(account, "profile.addressBook.length", 0) <= 1) {
+    userUpdateQuery.$set.name = address.fullName;
+    accountsUpdateQuery.$set.name = address.fullName;
+  }
+
+  Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
   return Accounts.update({
     "userId": userId,
     "profile.addressBook._id": address._id
-  }, {
-    $set: {
-      "name": address.fullName,
-      "profile.addressBook.$": address
-    }
-  });
+  }, accountsUpdateQuery);
 }
 
 /**
@@ -555,20 +571,21 @@ export function inviteShopOwner(options) {
   }
 
   const { shopId } = Meteor.call("shop/createShop", userId) || {};
-  const shop = Shops.findOne(shopId);
+  const primaryShop = Reaction.getPrimaryShop();
 
   // Compile Email with SSR
-  const tpl = "accounts/inviteShopAdmin";
+  const tpl = "accounts/inviteShopOwner";
   const subject = "accounts/inviteShopOwner/subject";
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
-  const emailLogo = getEmailLogo(shop);
+  const emailLogo = getEmailLogo(primaryShop);
   const token = Random.id();
   const currentUser = Meteor.users.findOne(this.userId);
   const currentUserName = getCurrentUserName(currentUser);
-  const dataForEmail = getDataForEmail({ shop, currentUserName, name, token, emailLogo });
+  // uses primaryShop's data (name, address etc) in email copy sent to new merchant
+  const dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
 
   Meteor.users.update(userId, {
     $set: {
@@ -663,8 +680,10 @@ export function inviteShopMember(options) {
     dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
   }
 
+  dataForEmail.groupName = _.startCase(group.name);
+
   // Compile Email with SSR
-  const tpl = "accounts/inviteShopAdmin";
+  const tpl = "accounts/inviteShopMember";
   const subject = "accounts/inviteShopMember/subject";
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));

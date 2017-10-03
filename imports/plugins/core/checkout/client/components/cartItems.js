@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class CartItems extends Component {
   static propTypes = {
@@ -30,7 +30,16 @@ class CartItems extends Component {
     } = this.props;
 
     return (
-      <div className="cart-items" key={item._id} style={{ display: "inline-block" }}>
+      <div
+        className="cart-items"
+        key={item._id}
+        style={{ display: "inline-block" }}
+      >
+        {handleLowInventory(item) &&
+          <div className="badge badge-top badge-low-inv-warning">
+            <Components.Translation i18nKey="cartDrawerItems.limitedSupply" defaultValue="Limited supply" />
+          </div>
+        }
         <i className="remove-cart-item fa fa-times fa-lg"
           id={item._id}
           onClick={handleRemoveItem}
@@ -50,20 +59,14 @@ class CartItems extends Component {
           }
         </a>
         <div className="cart-labels">
-          {handleLowInventory(item) ?
-            <div className="badge badge-low-inv-warning"
-              title={item.variants.inventoryQuantity}
-              data-i18n="cartDrawerItems.left"
-            >!</div> :
-            <div>
-              <span className="badge" style={{ marginRight: "3px" }}>{item.quantity}</span>
-              <span className="cart-item-title">
-                {item.title}
-                <br />
-                <small>{item.variants.title}</small>
-              </span>
-            </div>
-          }
+          <div>
+            <span className="badge" style={{ marginRight: "3px" }}>{item.quantity}</span>
+            <span className="cart-item-title">
+              {item.title}
+              <br />
+              <small>{item.variants.title}</small>
+            </span>
+          </div>
         </div>
       </div>
     );

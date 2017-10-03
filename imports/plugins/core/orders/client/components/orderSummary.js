@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
-import { getOrderRiskBadge, getOrderRiskStatus } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo } from "../helpers";
 
 class OrderSummary extends Component {
   static propTypes = {
@@ -15,7 +15,8 @@ class OrderSummary extends Component {
   }
 
   badgeStatus() {
-    const orderStatus = this.props.order.workflow.status;
+    const order = this.props.order;
+    const orderStatus = order && order.workflow && order.workflow.status;
 
     if (orderStatus === "new") {
       return "info";
@@ -44,12 +45,18 @@ class OrderSummary extends Component {
 
   render() {
     const { dateFormat, tracking, order, profileShippingAddress, printableLabels } = this.props;
+    const paymentMethod = getBillingInfo(order).paymentMethod || {};
+    const invoice = getBillingInfo(order).invoice || {};
+    const shipmentMethod = getShippingInfo(order).shipmentMethod || {};
     const orderRisk = getOrderRiskStatus(order);
 
     return (
       <div>
-        <div className="order-summary-form-group bg-info" style={{ lineHeight: 3, marginTop: -15, marginRight: -15, marginLeft: -15 }}>
-          <strong style={{ marginLeft: 15 }}>{profileShippingAddress.fullName}</strong>
+        <div
+          className="order-summary-form-group bg-info"
+          style={{ lineHeight: 3, marginTop: -15, marginRight: -15, marginLeft: -15 }}
+        >
+          <strong style={{ marginLeft: 15 }}>{profileShippingAddress && profileShippingAddress.fullName}</strong>
           <div className="invoice-details" style={{ marginRight: 15, position: "relative" }}>
             {order.email}
           </div>
@@ -60,8 +67,8 @@ class OrderSummary extends Component {
             <div style={{ marginBottom: 4 }}>
               <Badge
                 badgeSize="large"
-                i18nKeyLabel={`cartDrawer.${order.workflow.status}`}
-                label={order.workflow.status}
+                i18nKeyLabel={`cartDrawer.${order && order.workflow && order.workflow.status}`}
+                label={order && order.workflow && order.workflow.status}
                 status={this.badgeStatus()}
               />
               {orderRisk &&
@@ -97,28 +104,28 @@ class OrderSummary extends Component {
             <div className="order-summary-form-group">
               <strong data-i18n="order.processor">Processor</strong>
               <div className="invoice-details">
-                {order.billing[0].paymentMethod.processor}
+                {paymentMethod && paymentMethod.processor}
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="order.payment">Payment</strong>
               <div className="invoice-details">
-                {order.billing[0].paymentMethod.storedCard} ({order.billing[0].invoice.total})
+                {paymentMethod.storedCard} ({invoice.total})
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="order.transaction">Transaction</strong>
               <div className="invoice-details">
-                {order.billing[0].paymentMethod.transactionId}
+                {paymentMethod.transactionId}
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="orderShipping.carrier">Carrier</strong>
               <div className="invoice-details">
-                {order.shipping[0].shipmentMethod.carrier} - {order.shipping[0].shipmentMethod.label}
+                {shipmentMethod.carrier} - {shipmentMethod.label}
               </div>
             </div>
 
@@ -155,9 +162,13 @@ class OrderSummary extends Component {
 
         <div style={{ marginTop: 4 }}>
           <span>{profileShippingAddress.fullName}</span>
-          <br/><span>{profileShippingAddress.address1}</span>
+          <br/>
+          <span>{profileShippingAddress.address1}</span>
           {profileShippingAddress.address2 && <span><br/>{profileShippingAddress.address2}</span>}
-          <br/><span>{profileShippingAddress.city}, {profileShippingAddress.region}, {profileShippingAddress.country} {profileShippingAddress.postal}</span>
+          <br/>
+          <span>
+            {profileShippingAddress.city}, {profileShippingAddress.region}, {profileShippingAddress.country} {profileShippingAddress.postal}
+          </span>
         </div>
       </div>
     );

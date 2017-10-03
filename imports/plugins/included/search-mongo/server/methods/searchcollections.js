@@ -1,6 +1,5 @@
 /* eslint camelcase: 0 */
 import moment from "moment";
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
@@ -26,7 +25,7 @@ const supportedLanguages = ["da", "nl", "en", "fi", "fr", "de", "hu", "it", "nb"
 
 function filterFields(customFields) {
   const fieldNames = [];
-  const fieldKeys = _.keys(customFields);
+  const fieldKeys = Object.keys(customFields);
   for (const fieldKey of fieldKeys) {
     if (customFields[fieldKey]) {
       fieldNames.push(fieldKey);
@@ -38,8 +37,8 @@ function filterFields(customFields) {
 // get the weights for all enabled fields
 function getScores(customFields, settings, collection = "products") {
   const weightObject = {};
-  for (const weight of _.keys(settings[collection].weights)) {
-    if (_.includes(customFields, weight)) {
+  for (const weight of Object.keys(settings[collection].weights)) {
+    if (customFields.includes(weight)) {
       weightObject[weight] = settings[collection].weights[weight];
     }
   }
@@ -49,7 +48,7 @@ function getScores(customFields, settings, collection = "products") {
 function getSearchLanguage() {
   const shopId = Reaction.getShopId();
   const shopLanguage = Shops.findOne(shopId).language;
-  if (_.includes(supportedLanguages, shopLanguage)) {
+  if (supportedLanguages.includes(shopLanguage)) {
     return { default_language: shopLanguage };
   }
   return { default_language: "en" };
@@ -174,8 +173,8 @@ export function buildOrderSearchRecord(orderId) {
     }
   }
   // get the billing object for the current shop on the order (and not hardcoded [0])
-  const shopBilling = order.billing.find(
-    billing => billing.shopId === Reaction.getShopId()
+  const shopBilling = order.billing && order.billing.find(
+    billing => billing && billing.shopId === Reaction.getShopId()
   ) || {};
 
   // get the shipping object for the current shop on the order (and not hardcoded [0])
@@ -184,9 +183,9 @@ export function buildOrderSearchRecord(orderId) {
   ) || {};
 
   orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
-  orderSearch.billingPhone = _.replace(shopBilling.address && shopBilling.address.phone, /\D/g, "");
-  orderSearch.shippingName = shopShipping.address.fullName;
-  orderSearch.shippingPhone = _.replace(shopShipping.address.phone, /\D/g, "");
+  orderSearch.billingPhone = shopBilling.address && shopBilling.address.phone.replace(/\D/g, "");
+  orderSearch.shippingName = shopShipping.address && shopShipping.address.fullName;
+  orderSearch.shippingPhone = shopShipping.address && shopShipping.address.phone.replace(/\D/g, "");
   orderSearch.billingAddress = {
     address: shopBilling.address && shopBilling.address.address1,
     postal: shopBilling.address && shopBilling.address.postal,
@@ -195,11 +194,11 @@ export function buildOrderSearchRecord(orderId) {
     country: shopBilling.address && shopBilling.address.country
   };
   orderSearch.shippingAddress = {
-    address: shopShipping.address.address1,
-    postal: shopShipping.address.postal,
-    city: shopShipping.address.city,
-    region: shopShipping.address.region,
-    country: shopShipping.address.country
+    address: shopShipping.address && shopShipping.address.address1,
+    postal: shopShipping.address && shopShipping.address.postal,
+    city: shopShipping.address && shopShipping.address.city,
+    region: shopShipping.address && shopShipping.address.region,
+    country: shopShipping.address && shopShipping.address.country
   };
   orderSearch.userEmails = userEmails;
   orderSearch.orderTotal = shopBilling.invoice && shopBilling.invoice.total;
@@ -216,9 +215,9 @@ export function buildOrderSearchRecord(orderId) {
   }
   orderSearch.product = {};
   orderSearch.variants = {};
-  orderSearch.product.title = order.items.map(item => item.product.title);
-  orderSearch.variants.title = order.items.map(item => item.variants.title);
-  orderSearch.variants.optionTitle = order.items.map(item => item.variants.optionTitle);
+  orderSearch.product.title = order.items.map(item => item.product && item.product.title);
+  orderSearch.variants.title = order.items.map(item => item.variants && item.variants.title);
+  orderSearch.variants.optionTitle = order.items.map(item => item.variants && item.variants.optionTitle);
 
   OrderSearch.insert(orderSearch);
 }

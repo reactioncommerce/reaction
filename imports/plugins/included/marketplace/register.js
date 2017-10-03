@@ -49,7 +49,6 @@ Reaction.registerPackage({
       }]
     },
     public: {
-      allowGuestSellers: true, // TODO: Eliminate in favor of marketplace.enabled and allowMerchantSignup
       allowMerchantSignup: false, // Merchants can sign up without an invite
       marketplaceNakedRoutes: true, // Routes to the primary marketplace shop should not use shop prefix
       merchantCart: false, // Unique cart for each merchant
@@ -64,16 +63,10 @@ Reaction.registerPackage({
   registry: [{
     label: "Marketplace",
     icon: "fa fa-globe",
-    provides: "shopSettings",
+    provides: ["shopSettings"],
     container: "dashboard",
     template: "marketplaceShopSettings",
     showForShopTypes: ["primary"]
-  }, {
-    route: "shop/:shopId",
-    name: "shop",
-    template: "products",
-    workflow: "coreProductWorkflow",
-    priority: 1
   }, {
     // does this work?
     // override default shop settings
@@ -82,7 +75,7 @@ Reaction.registerPackage({
     name: "sellerShopSettings",
     label: "Shop Settings",
     icon: "fa fa-th",
-    provides: "shortcut",
+    provides: ["shortcut"],
     container: "dashboard",
     audience: ["seller"],
     priority: 1
@@ -90,7 +83,7 @@ Reaction.registerPackage({
     // This provides the settings container for marketplaceMerchantSettings
     label: "My Shop Settings",
     icon: "fa fa-briefcase",
-    provides: "shopSettings",
+    provides: ["shopSettings"],
     container: "dashboard",
     template: "marketplaceMerchantSettings",
     hideForShopTypes: ["primary"]
