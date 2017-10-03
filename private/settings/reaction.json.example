@@ -19,7 +19,7 @@
                 "password": "",
                 "host": "",
                 "port": "",
-                "service": ""
+                "service": "custom"
             },
             "cart": {
                 "cleanupDurationDays": "older than 3 days"
