@@ -189,8 +189,7 @@ class Invoice extends Component {
             <div className="order-summary-form-group">
               <strong><Components.Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
               <div className="invoice-details">
-                <i className="fa fa-tag fa-lg" style={{ marginRight: 2 }}/>
-                <a className="btn-link" onClick={this.handleClick}>Add Discount</a>
+                {formatPriceString(invoice.discounts)}
               </div>
             </div>
             {this.renderDiscountForm()}
@@ -204,9 +203,7 @@ class Invoice extends Component {
   render() {
     return (
       <Components.CardGroup>
-        <Components.Card
-          expanded={true}
-        >
+        <Components.Card>
           <Components.CardHeader
             actAsExpander={false}
             i18nKeyTitle="admin.orderWorkflow.invoice.cardTitle"

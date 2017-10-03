@@ -8,27 +8,40 @@ class Card extends Component {
     super(props);
 
     this.state = {
-      expanded: props.expanded
+      expanded: true
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      expanded: nextProps.expanded
-    });
+  get isControlled() {
+    return typeof this.props.expanded === "boolean";
+  }
+
+  get isExpanded() {
+    if (this.isControlled) {
+      return this.props.expanded;
+    }
+
+    return this.state.expanded;
   }
 
   handleExpanderClick = (event) => {
-    this.setState({
-      expanded: !this.state.expanded
-    }, () => {
+    if (this.isControlled) {
       if (typeof this.props.onExpand === "function") {
-        this.props.onExpand(event, this, this.props.name, this.state.expanded);
+        this.props.onExpand(event, this, this.props.name, !this.isExpanded);
       }
-    });
+    } else {
+      this.setState({
+        expanded: !this.state.expanded
+      }, () => {
+        if (typeof this.props.onExpand === "function") {
+          this.props.onExpand(event, this, this.props.name, this.isExpanded);
+        }
+      });
+    }
   }
 
   render() {
+    const className = this.props.className;
     const elements = Children.map(this.props.children, (child) => {
       const newProps = {};
 
@@ -38,7 +51,7 @@ class Card extends Component {
       }
 
       if (child.props.expandable || child.props.actAsExpander) {
-        newProps.expanded = this.state.expanded;
+        newProps.expanded = this.isExpanded;
       }
 
       return React.cloneElement(child, newProps);
@@ -47,9 +60,9 @@ class Card extends Component {
     const baseClassName = classnames({
       "panel": true,
       "panel-default": true,
-      "panel-active": this.state.expanded,
-      "closed": this.state.expanded === false
-    });
+      "panel-active": this.isExpanded,
+      "closed": this.isExpanded === false
+    }, className);
 
     return (
       <div className={baseClassName} style={this.props.style}>
@@ -60,12 +73,12 @@ class Card extends Component {
 }
 
 Card.defaultProps = {
-  expandable: false,
-  expanded: true
+  expandable: false
 };
 
 Card.propTypes = {
   children: PropTypes.node,
+  className: PropTypes.string,
   expandable: PropTypes.bool,
   expanded: PropTypes.bool,
   name: PropTypes.string,

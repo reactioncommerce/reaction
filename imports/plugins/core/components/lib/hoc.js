@@ -53,7 +53,7 @@ export function withCurrentAccount(component) {
 
       onData(null, { currentAccount: isGuest && !isAnonymous && account });
     }
-  })(component);
+  }, false)(component);
 }
 
 

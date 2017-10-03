@@ -185,7 +185,10 @@ export function buildOrderSearchRecord(orderId) {
   orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
   orderSearch.billingPhone = shopBilling.address && shopBilling.address.phone.replace(/\D/g, "");
   orderSearch.shippingName = shopShipping.address && shopShipping.address.fullName;
-  orderSearch.shippingPhone = shopShipping.address && shopShipping.address.phone.replace(/\D/g, "");
+  if (shopShipping.address && shopShipping.address.phone) {
+    orderSearch.shippingPhone = shopShipping.address && shopShipping.address.phone.replace(/\D/g, "");
+  }
+
   orderSearch.billingAddress = {
     address: shopBilling.address && shopBilling.address.address1,
     postal: shopBilling.address && shopBilling.address.postal,
@@ -215,9 +218,9 @@ export function buildOrderSearchRecord(orderId) {
   }
   orderSearch.product = {};
   orderSearch.variants = {};
-  orderSearch.product.title = order.items.map(item => item.product.title);
-  orderSearch.variants.title = order.items.map(item => item.variants.title);
-  orderSearch.variants.optionTitle = order.items.map(item => item.variants.optionTitle);
+  orderSearch.product.title = order.items.map(item => item.product && item.product.title);
+  orderSearch.variants.title = order.items.map(item => item.variants && item.variants.title);
+  orderSearch.variants.optionTitle = order.items.map(item => item.variants && item.variants.optionTitle);
 
   OrderSearch.insert(orderSearch);
 }
