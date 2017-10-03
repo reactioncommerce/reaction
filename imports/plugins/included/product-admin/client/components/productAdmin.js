@@ -233,6 +233,7 @@ class ProductAdmin extends Component {
             i18nKeyTitle="productDetailEdit.productSettings"
             title="Product Settings"
             onChange={this.handleFieldChange}
+            name={"productDetails"}
           />
           <Components.CardBody expandable={true}>
             <Components.Select
