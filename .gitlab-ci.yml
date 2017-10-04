@@ -1,0 +1,25 @@
+image: node:7
+
+stages:
+  - build
+  - install
+  - test
+  - deploy
+
+install:
+  script:
+    - .circleci/install.sh
+    - meteor npm install
+
+build:
+  script:
+    - .circleci/build.sh
+
+test:
+  script:
+    - npm test
+    - reaction test
+
+deploy:
+  script:
+    - .circleci/deploy.sh
