@@ -16,7 +16,7 @@ describe("stripe/refunds/list", function () {
     sandbox.restore();
   });
 
-  it.skip("should call StripeApi.methods.listRefunds with the proper parameters and return a properly" +
+  it("should call StripeApi.methods.listRefunds with the proper parameters and return a properly" +
     "formatted list of refunds", function (done) {
     const paymentMethod = {
       processor: "Stripe",
