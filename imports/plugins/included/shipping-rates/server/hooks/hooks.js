@@ -38,7 +38,7 @@ function getShippingRates(previousQueryResults, cart) {
   // Verify that we have shipping records
   if (!cart.shipping || !cart.shipping.length) {
     const errorDetails = {
-      requestStats: "error",
+      requestStatus: "error",
       shippingProvider: "flat-rate-shipping",
       message: "this cart is missing shipping records"
     };
