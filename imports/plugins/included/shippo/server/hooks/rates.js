@@ -5,7 +5,7 @@ import { Logger, Reaction, Hooks } from "/server/api";
 // callback ran on getShippingRates hook
 function getShippingRates(previousQueryResults, cart) {
   const marketplaceSettings = Reaction.getMarketplaceSettings();
-  const { merchantShippingRates } = marketplaceSettings.public;
+  const { public: merchantShippingRates } = marketplaceSettings;
   const [rates, retrialTargets] = previousQueryResults;
   const shops = [];
   const products = cart.items;
