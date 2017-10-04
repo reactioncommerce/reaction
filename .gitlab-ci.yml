@@ -9,8 +9,8 @@ variables:
 stages:
   - build
   - install
-  - test
-  - deploy
+  #- test
+  #- deploy
 
 install:
   script:
