@@ -14,24 +14,10 @@ function isOwnerOfProfile() {
 }
 
 function getTargetAccount() {
-  let targetUserId = Reaction.Router.getQueryParam("userId");
-  let account = Collections.Accounts.findOne(targetUserId);
+  const targetUserId = Reaction.Router.getQueryParam("userId") || Meteor.userId();
+  const account = Collections.Accounts.findOne(targetUserId);
 
-  if (!account) {
-    targetUserId = Meteor.userId();
-    account = Collections.Accounts.findOne(targetUserId);
-  }
   return account;
-}
-
-function hasPermissionsFor(permission) {
-  if (!permission) {
-    return false;
-  }
-
-  const loggedInUserId = Meteor.userId();
-  const shopId = Reaction.getShopId();
-  return Reaction.hasPermission(permission, loggedInUserId, shopId);
 }
 
 /**
@@ -53,22 +39,6 @@ Template.accountProfile.onCreated(() => {
  * Helpers: Account Profile View
  */
 Template.accountProfile.helpers({
-  canEditAccount() {
-    if (isOwnerOfProfile()) {
-      return true;
-    }
-
-    return hasPermissionsFor("accounts");
-  },
-
-  canViewUserOrders() {
-    if (isOwnerOfProfile()) {
-      return true;
-    }
-
-    return hasPermissionsFor("orders");
-  },
-
   doesUserExist() {
     const targetUserId = Reaction.Router.getQueryParam("userId");
     if (!targetUserId) {
