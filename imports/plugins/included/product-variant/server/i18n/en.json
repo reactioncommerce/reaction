@@ -10,6 +10,7 @@
           "optionTitle": "Displayed on Product Detail Page",
           "price": "Purchase price",
           "title": "Displayed in cart, checkout, and orders",
+          "variantBackorderToggle": "Backorder allowance is now controlled by options",
           "variantInventoryQuantity": "Variant inventory is now controlled by options"
         },
         "tooltip": {

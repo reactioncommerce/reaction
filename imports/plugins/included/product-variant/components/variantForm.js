@@ -261,6 +261,44 @@ class VariantForm extends Component {
     }
   }
 
+  renderInventoryPolicyField() {
+    if (this.props.hasChildVariants(this.variant)) {
+      return (
+        <div className="col-sm-12">
+          <Components.Switch
+            i18nKeyLabel="productVariant.inventoryPolicy"
+            i18nKeyOnLabel="productVariant.inventoryPolicy"
+            name="inventoryPolicy"
+            label={"Allow backorder"}
+            onLabel={"Allow backorder"}
+            checked={!this.state.inventoryPolicy}
+            onChange={this.handleInventoryPolicyChange}
+            validation={this.props.validation}
+            disabled={true}
+            helpText={"Backorder allowance is now controlled by options"}
+            i18nKeyHelpText={"admin.helpText.variantBackorderToggle"}
+            style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div className="col-sm-12">
+        <Components.Switch
+          i18nKeyLabel="productVariant.inventoryPolicy"
+          i18nKeyOnLabel="productVariant.inventoryPolicy"
+          name="inventoryPolicy"
+          label={"Allow backorder"}
+          onLabel={"Allow backorder"}
+          checked={!this.state.inventoryPolicy}
+          onChange={this.handleInventoryPolicyChange}
+          validation={this.props.validation}
+        />
+      </div>
+    );
+  }
+
   renderQuantityField() {
     if (this.props.hasChildVariants(this.variant)) {
       return (
@@ -526,18 +564,7 @@ class VariantForm extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-sm-6">
-              <Components.Switch
-                i18nKeyLabel="productVariant.inventoryPolicy"
-                i18nKeyOnLabel="productVariant.inventoryPolicy"
-                name="inventoryPolicy"
-                label={"Allow backorder"}
-                onLabel={"Allow backorder"}
-                checked={!this.state.inventoryPolicy}
-                onChange={this.handleInventoryPolicyChange}
-                validation={this.props.validation}
-              />
-            </div>
+            {this.renderInventoryPolicyField()}
           </div>
         </Components.SettingsCard>
       </Components.CardGroup>
@@ -654,6 +681,72 @@ class VariantForm extends Component {
 
             <div className="row">
               {this.renderQuantityField()}
+              {this.renderInventoryPolicyField()}
+            </div>
+            <div className="row">
+              <div className="col-sm-6">
+                <Components.TextField
+                  i18nKeyLabel="productVariant.width"
+                  i18nKeyPlaceholder="0"
+                  placeholder="0"
+                  label="Width"
+                  name="width"
+                  ref="widthInput"
+                  value={this.variant.width}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.props.validation}
+                />
+              </div>
+              <div className="col-sm-6">
+                <Components.TextField
+                  i18nKeyLabel="productVariant.length"
+                  i18nKeyPlaceholder="0"
+                  placeholder="0"
+                  label="Length"
+                  name="length"
+                  ref="lengthInput"
+                  value={this.variant.length}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.props.validation}
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-sm-6">
+                <Components.TextField
+                  i18nKeyLabel="productVariant.height"
+                  i18nKeyPlaceholder="0"
+                  placeholder="0"
+                  label="Height"
+                  name="height"
+                  ref="heightInput"
+                  value={this.variant.height}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.props.validation}
+                />
+              </div>
+              <div className="col-sm-6">
+                <Components.TextField
+                  i18nKeyLabel="productVariant.weight"
+                  i18nKeyPlaceholder="0"
+                  placeholder="0"
+                  label="Weight"
+                  name="weight"
+                  ref="weightInput"
+                  value={this.variant.weight}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
+                  validation={this.props.validation}
+                />
+              </div>
             </div>
           </Components.CardBody>
         </Components.Card>
