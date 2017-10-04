@@ -1,8 +1,10 @@
 /* eslint camelcase: 0 */
+import nock from "nock";
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { StripeApi } from "./stripeapi";
+import { utils } from "./stripe";
 
 const stripeCaptureResult = {
   id: "ch_17hZ4wBXXkbZQs3xL5JhlSgS",
@@ -78,10 +80,11 @@ describe("stripe/payment/capture", function () {
   });
 
   it("should call StripeApi.methods.captureCharge with the proper parameters and return saved = true", function (done) {
+    const paymentPackageId = Random.id();
     const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
-      paymentPackageId: "vrXutd72c2m7Lenqw",
+      paymentPackageId: paymentPackageId,
       paymentSettingsKey: "reaction-stripe",
       method: "credit",
       transactionId: "ch_17hZ4wBXXkbZQs3xL5JhlSgS",
@@ -90,10 +93,15 @@ describe("stripe/payment/capture", function () {
       mode: "capture",
       createdAt: new Date()
     };
-    sandbox.stub(StripeApi.methods.captureCharge, "call", function () {
-      return stripeCaptureResult;
+
+    // Stripe Charge Nock
+    nock("https://api.stripe.com:443")
+      .post(`/v1/charges/${paymentMethod.transactionId}/capture`)
+      .reply(200, stripeCaptureResult); // .log(console.log);
+
+    sandbox.stub(utils, "getStripeApi", function () {
+      return "sk_fake_fake";
     });
-    // spyOn(StripeApi.methods.captureCharge, "call").and.returnValue(stripeCaptureResult);
 
     let captureResult = null;
     let captureError = null;
@@ -103,12 +111,6 @@ describe("stripe/payment/capture", function () {
       expect(captureError).to.be.undefined;
       expect(captureResult).to.not.be.undefined;
       expect(captureResult.saved).to.be.true;
-      expect(StripeApi.methods.captureCharge.call).to.have.been.calledWith({
-        transactionId: paymentMethod.transactionId,
-        captureDetails: {
-          amount: 1999
-        }
-      });
       done();
     });
   });
@@ -137,10 +139,15 @@ describe("stripe/payment/capture", function () {
       mode: "capture",
       createdAt: new Date()
     };
-    sandbox.stub(StripeApi.methods.captureCharge, "call", function () {
-      return stripeCaptureResult;
+
+    // Stripe Charge Nock
+    nock("https://api.stripe.com:443")
+      .post(`/v1/charges/${paymentMethod.transactionId}/capture`)
+      .reply(200, stripeCaptureResult); // .log(console.log);
+
+    sandbox.stub(utils, "getStripeApi", function () {
+      return "sk_fake_fake";
     });
-    // spyOn(StripeApi.methods.captureCharge, "call").and.returnValue(stripeCaptureResult);
 
     let captureResult = null;
     let captureError = null;

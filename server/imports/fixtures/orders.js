@@ -134,14 +134,14 @@ export default function () {
         {
           _id: itemIdOne,
           productId: Random.id(),
-          shopId: Random.id(),
+          shopId: getShopId(),
           variantId: Random.id(),
           packed: false
         },
         {
           _id: itemIdTwo,
           productId: Random.id(),
-          shopId: Random.id(),
+          shopId: getShopId(),
           variantId: Random.id(),
           packed: false
         }
