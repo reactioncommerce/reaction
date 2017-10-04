@@ -206,6 +206,7 @@ const wrapComponent = (Comp) => (
           template: "variantForm"
         });
       } else {
+        Reaction.state.set("edit/focus", "productDetails");
         Reaction.setActionView({
           i18nKeyLabel: "productDetailEdit.productSettings",
           label: "Product Settings",

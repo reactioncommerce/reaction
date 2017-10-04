@@ -465,6 +465,7 @@ class ActionView extends Component {
   }
 
   render() {
+    console.log("actionView", this.props);
     return (
       <div>
         <VelocityTransitionGroup
