@@ -63,21 +63,16 @@ export function verifyAccount(email, token) {
 
 /**
  * updateEmailAddress
- * @summary update a user's email address
- * @param {Object} updateInfo - info about the email update.
- * @param {Object} updateInfo.newEmail - new email.
- * @param {Object} updateInfo.targetUserId - id of the whose email
- * is to be updated.
- * @returns {Boolean} - returns boolean
+ * @summary update a user's email address.
+ * @param {String} email - user email.
+ * @returns {Boolean} - returns boolean.
  */
-export function updateEmailAddress(updateInfo) {
-  const { newEmail, targetUserId } = updateInfo;
-  check(updateInfo, Object);
-  check(newEmail, String);
-  check(targetUserId, String);
+export function updateEmailAddress(email) {
+  check(email, String);
+  const user = Meteor.user();
 
   // Add email to user account
-  MeteorAccounts.addEmail(targetUserId, newEmail);
+  MeteorAccounts.addEmail(user._id, email);
 
   return true;
 }
@@ -85,27 +80,23 @@ export function updateEmailAddress(updateInfo) {
 
 /**
  * removeEmailAddress
- * @summary remove a user's email address
- * @param {Object} oldInfo - info about a user's old email.
- * @param {Object} oldInfo.oldEmail - old email address.
- * @param {Object} oldInfo.targetUserId - id of the whose email
- * is to be updated.
- * @returns {Boolean} - returns boolean
+ * @summary remove a user's email address.
+ * @param {String} email - user email.
+ * @returns {Boolean} - returns boolean.
  */
-export function removeEmailAddress(oldInfo) {
-  check(oldInfo, Object);
-  const { oldEmail, targetUserId } = oldInfo;
-  check(oldEmail, String);
-  check(targetUserId, String);
+export function removeEmailAddress(email) {
+  check(email, String);
+
+  const user = Meteor.user();
 
   // Remove email address from user
-  MeteorAccounts.removeEmail(targetUserId, oldEmail);
+  MeteorAccounts.removeEmail(user._id, email);
 
   // Verify new address
-  sendUpdatedVerificationEmail(targetUserId);
+  sendUpdatedVerificationEmail(user._id);
 
   // Sync users and accounts collections
-  syncUsersAndAccounts(targetUserId);
+  syncUsersAndAccounts();
 
   return true;
 }
@@ -113,18 +104,15 @@ export function removeEmailAddress(oldInfo) {
 
 /**
  * syncUsersAndAccounts
- * @summary syncs emails associated with profile between Users and Accounts collections
- * @param {String} targetUserId - id of the user whose account is to be synced.
- * @returns {Boolean} - returns boolean
+ * @summary syncs emails associated with a user profile between the Users and
+ * Accounts collections.
+ * @returns {Boolean} - returns boolean.
  */
-export function syncUsersAndAccounts(targetUserId) {
-  check(targetUserId, String);
-
-  // Get user
-  const user = Meteor.users.findOne({ _id: targetUserId });
+export function syncUsersAndAccounts() {
+  const user = Meteor.user();
 
   Accounts.update({
-    _id: targetUserId
+    _id: user._id
   }, {
     $set: {
       emails: [

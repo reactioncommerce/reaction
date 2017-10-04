@@ -6,7 +6,6 @@ class UpdateEmail extends Component {
   static propTypes = {
     email: PropTypes.string,
     handleUpdateEmail: PropTypes.func.isRequired,
-    targetUserId: PropTypes.string.isRequired,
     uniqueId: PropTypes.string
   }
 
@@ -30,8 +29,7 @@ class UpdateEmail extends Component {
     this.setState({ showSpinner: true });
     const options = {
       newEmail: this.state.email,
-      oldEmail: this.props.email,
-      targetUserId: this.props.targetUserId
+      oldEmail: this.props.email
     };
     this.props.handleUpdateEmail(options, () => this.setState({ showSpinner: false }));
   }
