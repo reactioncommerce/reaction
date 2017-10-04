@@ -1011,7 +1011,7 @@ Meteor.methods({
     check(userId, String);
     check(email, String);
 
-    const currentUser = Collections.Accounts.findOne(userId);
+    const currentUser = Collections.Accounts.findOne({ _id: userId });
     let newEmail = {};
 
     if (!currentUser.emails.length) {

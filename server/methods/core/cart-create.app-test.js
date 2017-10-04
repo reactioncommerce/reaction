@@ -29,7 +29,8 @@ describe("Add/Create cart methods", function () {
       copyCartToOrder: Meteor.server.method_handlers["cart/copyCartToOrder"],
       addToCart: Meteor.server.method_handlers["cart/addToCart"],
       setShipmentAddress: Meteor.server.method_handlers["cart/setShipmentAddress"],
-      setPaymentAddress: Meteor.server.method_handlers["cart/setPaymentAddress"]
+      setPaymentAddress: Meteor.server.method_handlers["cart/setPaymentAddress"],
+      setAnonymousUserEmail: Meteor.server.method_handlers["cart/setAnonymousUserEmail"]
     };
   });
 
@@ -149,6 +150,25 @@ describe("Add/Create cart methods", function () {
       }
       expect(addToCartFunc).to.throw(Meteor.Error, "Product not found [404]");
       return done();
+    });
+  });
+
+  describe("cart/setAnonymousUserEmail", function () {
+    it("should add an email to an anonymous user", function () {
+      const cart = Factory.create("cart");
+      const currentAnonymousUser = Factory.create("account", {
+        _id: cart.userId,
+        emails: []
+      });
+
+      spyOnMethod("setAnonymousUserEmail", cart.userId);
+
+      const email = "anon@email.com";
+      Meteor.call("cart/setAnonymousUserEmail", currentAnonymousUser._id, email);
+
+      const currentUser = Accounts.findOne({ _id: currentAnonymousUser._id });
+      expect(currentUser.emails.length).to.not.equal(0);
+      expect(currentUser.emails[0].address).to.equal(email);
     });
   });
 
