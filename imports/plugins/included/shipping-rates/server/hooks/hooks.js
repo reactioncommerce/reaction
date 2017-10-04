@@ -65,7 +65,7 @@ function getShippingRates(previousQueryResults, cart) {
   // Validate that we have valid items to work with
   if (!cart.items || !cart.items.length) {
     const errorDetails = {
-      requestStats: "error",
+      requestStatus: "error",
       shippingProvider: "flat-rate-shipping",
       message: "this cart has no items"
     };
