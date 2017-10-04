@@ -261,7 +261,7 @@ describe("Publication", function () {
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;
 
-        collector.collect("Products", productScrollLimit, filters, {}, (collections) => {
+        collector.collect("Products", productScrollLimit, filters, {}, true, (collections) => {
           const products = collections.Products;
           expect(products.length).to.equal(3);
 
