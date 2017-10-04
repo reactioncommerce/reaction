@@ -38,7 +38,7 @@ describe("Publication", function () {
       max: 19.99
     };
 
-    before(function () {
+    beforeEach(function () {
       Collections.Products.direct.remove({});
 
       // a product with price range A, and not visible
@@ -261,7 +261,7 @@ describe("Publication", function () {
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;
 
-        collector.collect("Products", productScrollLimit, filters, {}, true, (collections) => {
+        collector.collect("Products", productScrollLimit, filters, {}, (collections) => {
           const products = collections.Products;
           expect(products.length).to.equal(3);
 
