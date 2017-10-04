@@ -153,12 +153,10 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
  * account orders
  */
 Meteor.publish("AccountOrders", function (userId, currentShopId) {
-  check(userId, Match.OptionalOrNull(String));
+  check(userId, String);
   check(currentShopId, Match.OptionalOrNull(String));
-  if (this.userId === null) {
-    return this.ready();
-  }
-  if (typeof userId === "string" && this.userId !== userId) {
+
+  if (this.userId === "") {
     return this.ready();
   }
   const shopId = currentShopId || Reaction.getShopId();
@@ -166,8 +164,8 @@ Meteor.publish("AccountOrders", function (userId, currentShopId) {
     return this.ready();
   }
   return Orders.find({
-    shopId: shopId,
-    userId: this.userId
+    userId,
+    shopId: shopId
   });
 });
 

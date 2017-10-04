@@ -79,9 +79,9 @@ Template.accountProfile.helpers({
    * @return {Array|null} an array of available orders for the user
    */
   userOrders() {
-    const orderSub = Meteor.subscribe("AccountOrders", Meteor.userId());
+    const targetUserId = Reaction.Router.getQueryParam("userId") || Meteor.userId();
+    const orderSub = Meteor.subscribe("AccountOrders", targetUserId);
     if (orderSub.ready()) {
-      const targetUserId = Reaction.Router.getQueryParam("userId") || Meteor.userId();
       return Collections.Orders.find({
         userId: targetUserId
       }, {
