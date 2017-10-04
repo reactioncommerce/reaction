@@ -86,13 +86,6 @@ function getShippingRates(previousQueryResults, cart) {
   });
 
   if (!pkgData || !cart.items || pkgData.settings.flatRates.enabled !== true) {
-    const errorDetails = {
-      requestStatus: "error",
-      shippingProvider: "flat-rate-shipping",
-      message: "Error. Flat rate shipping might be uninstalled or disabled, or your cart is empty."
-    };
-    // There's no need for a retry in this case.
-    rates.push(errorDetails);
     return [rates, retrialTargets];
   }
 
