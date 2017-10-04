@@ -765,9 +765,9 @@ Meteor.methods({
       try {
         Collections.Cart.update(selector, update);
         updated = true;
-      } catch (e) {
-        Logger.error("An error occurred adding the address", e);
-        throw new Meteor.Error("An error occurred adding the address", e);
+      } catch (error) {
+        Logger.error("An error occurred adding the address", error);
+        throw new Meteor.Error("An error occurred adding the address", error);
       }
     } else {
       // if no items in cart just add or modify one record for the carts shop
