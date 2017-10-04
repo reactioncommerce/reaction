@@ -81,7 +81,8 @@
           "saveFailed": "Failed to save mail settings. {{error}}",
           "cantSendEmail": "Server Error: Can't send email notification.",
           "emailSent": "Email notification sent.",
-          "addOrderEmailFailed": "Adding email to order failed"
+          "addOrderEmailFailed": "Adding email to order failed",
+          "addCartEmailFailed": "Adding email to cart failed"
         }
       }
     }

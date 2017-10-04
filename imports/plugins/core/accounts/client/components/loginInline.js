@@ -6,6 +6,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 class LoginInline extends Component {
   static propTypes = {
     continueAsGuest: PropTypes.func,
+    handleEmailSubmit: PropTypes.func.isRequired,
     renderEmailForm: PropTypes.bool
   };
 
@@ -30,14 +31,8 @@ class LoginInline extends Component {
     });
   };
 
-  /**
-   * @summary Handle submitting the email form
-   * @param {Event} event - the event that fired
-   * @returns {null} null
-   */
   handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("HERE", this.state);
+    this.props.handleEmailSubmit(event, this.state.email);
   }
 
   render() {

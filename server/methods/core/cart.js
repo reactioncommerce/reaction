@@ -997,5 +997,31 @@ Meteor.methods({
     }
 
     return Collections.Cart.findOne(selector);
+  },
+
+  /**
+   * cart/setAnonymousUserEmail
+   * @summary sets email for anonymous users as the first checkout step
+   * if Stripe is the enabled payment method
+   * @param {Object} userId - current user's Id
+   * @param {String} email - email to set for anonymous user
+   * @return {String} returns update result
+   */
+  "cart/setAnonymousUserEmail": function (userId, email) {
+    check(userId, String);
+    check(email, String);
+
+    const currentUser = Collections.Accounts.findOne(userId);
+    let newEmail = {};
+
+    if (!currentUser.emails.length) {
+      newEmail = {
+        address: email,
+        provides: "default",
+        verified: false
+      };
+    }
+
+    return Collections.Accounts.update(userId, { $push: { emails: newEmail } });
   }
 });

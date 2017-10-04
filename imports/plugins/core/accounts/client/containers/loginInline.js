@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import LoginInline from "../components/loginInline";
 
@@ -36,11 +36,30 @@ class LoginInlineContainer extends Component {
     }
   }
 
+  /**
+   * @summary Handle submitting the email form
+   * @param {Event} event - the event that fired
+   * @param {String} email - anonymous user's email
+   * @returns {null} null
+   */
+  handleEmailSubmit = (event, email) => {
+    event.preventDefault();
+    const userId = Meteor.userId();
+    Meteor.call("cart/setAnonymousUserEmail", userId, email, (error) => {
+      if (error) {
+        Alerts.toast(i18next.t("mail.alerts.addCartEmailFailed"), "error");
+      } else {
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
+      }
+    });
+  }
+
   render() {
     return (
       <LoginInline
         continueAsGuest={this.continueAsGuest}
         renderEmailForm={this.state.renderEmailForm}
+        handleEmailSubmit={this.handleEmailSubmit}
       />
     );
   }
