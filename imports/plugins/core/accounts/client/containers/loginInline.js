@@ -37,10 +37,11 @@ class LoginInlineContainer extends Component {
   }
 
   /**
+   * @method handleEmailSubmit
    * @summary Handle submitting the email form
    * @param {Event} event - the event that fired
    * @param {String} email - anonymous user's email
-   * @returns {null} null
+   * @return {undefined} undefined
    */
   handleEmailSubmit = (event, email) => {
     event.preventDefault();

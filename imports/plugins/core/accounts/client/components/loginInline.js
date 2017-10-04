@@ -19,11 +19,12 @@ class LoginInline extends Component {
   }
 
   /**
+   * @method handleFieldChange
    * @summary handle setting state whenever the field on the form change
    * @param {Event} event - the event that fired
    * @param {String} value - the new value for the field
    * @param {String} field - which field to modify it's value
-   * @return {null} null
+   * @return {undefined} undefined
    */
   handleFieldChange = (event, value, field) => {
     this.setState({
@@ -54,7 +55,8 @@ class LoginInline extends Component {
               />
               <Components.Button
                 type="submit"
-                label="Add Email"
+                label="Add email"
+                i18nKeyLabel="checkoutLogin.addEmail"
                 bezelStyle={"solid"}
               />
             </div>
@@ -79,7 +81,7 @@ class LoginInline extends Component {
                 bezelStyle="solid"
                 className="btn-block login-button single-login-button continue-guest"
                 i18nKeyLabel="checkoutLogin.continueAsGuest"
-                label="Continue as Guest"
+                label="Continue as guest"
                 onClick={this.props.continueAsGuest}
               />
             </div>

@@ -1014,12 +1014,12 @@ Meteor.methods({
   },
 
   /**
-   * cart/setAnonymousUserEmail
+   * @method cart/setAnonymousUserEmail
    * @summary sets email for anonymous users as the first checkout step
    * if Stripe is the enabled payment method
    * @param {Object} userId - current user's Id
    * @param {String} email - email to set for anonymous user
-   * @return {String} returns update result
+   * @return {Number} returns update result
    */
   "cart/setAnonymousUserEmail": function (userId, email) {
     check(userId, String);
