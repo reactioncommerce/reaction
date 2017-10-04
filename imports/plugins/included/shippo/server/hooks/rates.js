@@ -4,14 +4,24 @@ import { Logger, Reaction, Hooks } from "/server/api";
 
 // callback ran on getShippingRates hook
 function getShippingRates(previousQueryResults, cart) {
+  const { merchantShippingRates } = Reaction.getMarketplaceSettings();
   const [rates, retrialTargets] = previousQueryResults;
   const shops = [];
   const products = cart.items;
 
-  const pkgData = Packages.findOne({
-    name: "reaction-shippo",
-    shopId: Reaction.getShopId()
-  });
+  let pkgData;
+  if (merchantShippingRates) {
+    pkgData = Packages.findOne({
+      name: "reaction-shippo",
+      shopId: Reaction.getShopId()
+    });
+  } else {
+    pkgData = Packages.findOne({
+      name: "reaction-shippo",
+      shopId: Reaction.getPrimaryShopId()
+    });
+  }
+
 
   // must have cart items and package enabled to calculate shipping
   if (!pkgData || !cart.items || pkgData.settings.shippo.enabled !== true) {
