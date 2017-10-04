@@ -4,7 +4,8 @@ import { Logger, Reaction, Hooks } from "/server/api";
 
 // callback ran on getShippingRates hook
 function getShippingRates(previousQueryResults, cart) {
-  const { merchantShippingRates } = Reaction.getMarketplaceSettings();
+  const marketplaceSettings = Reaction.getMarketplaceSettings();
+  const { merchantShippingRates } = marketplaceSettings.public;
   const [rates, retrialTargets] = previousQueryResults;
   const shops = [];
   const products = cart.items;
@@ -34,22 +35,24 @@ function getShippingRates(previousQueryResults, cart) {
     "provider.enabled": true
   };
 
-  // create an array of shops, allowing
-  // the cart to have products from multiple shops
-  for (const product of products) {
-    if (product.shopId) {
-      shops.push(product.shopId);
+  // if we don't have merchant shipping rates enabled, only grab rates from primary shop
+  if (!merchantShippingRates) {
+    shops.push(Reaction.getPrimaryShopId());
+  } else {
+    // create an array of shops, allowing
+    // the cart to have products from multiple shops
+    for (const product of products) {
+      if (product.shopId) {
+        shops.push(product.shopId);
+      }
     }
   }
-  // if we have multiple shops in cart
-  if ((shops !== null ? shops.length : void 0) > 0) {
-    selector = {
-      "shopId": {
-        $in: shops
-      },
-      "provider.enabled": true
-    };
-  }
+  selector = {
+    "shopId": {
+      $in: shops
+    },
+    "provider.enabled": true
+  };
 
   const shippingCollection = Shipping.find(selector);
   const shippoDocs = {};
