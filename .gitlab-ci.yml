@@ -1,0 +1,31 @@
+image: node:7
+
+
+variables:
+  DOCKER_VERSION: '17.03.1-ce'
+  DOCKER_COMPOSE_VERSION: '1.13.0'
+  METEOR_ALLOW_SUPERUSER: 'true'
+
+stages:
+  - build
+  - install
+  - test
+  - deploy
+
+install:
+  script:
+    - .circleci/install.sh
+    - meteor npm install
+
+build:
+  script:
+    - .circleci/build.sh
+
+test:
+  script:
+    - npm test
+    - reaction test
+
+deploy:
+  script:
+    - .circleci/deploy.sh
