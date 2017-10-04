@@ -297,6 +297,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Your Orders",
+        "usersOrders": "User's Orders",
+        "oops": "Oops!",
+        "nonExistentAccount": "The user you're looking for does not exist.",
         "members": "Members",
         "guest": "Guest",
         "addMember": "Add a member",

@@ -10,7 +10,18 @@ import { Components } from "@reactioncommerce/reaction-components";
 function isOwnerOfProfile() {
   const targetUserId = Reaction.Router.getQueryParam("userId");
   const loggedInUserId = Meteor.userId();
-  return !targetUserId || targetUserId === loggedInUserId;
+  return targetUserId === undefined || targetUserId === loggedInUserId;
+}
+
+function getTargetAccount() {
+  let targetUserId = Reaction.Router.getQueryParam("userId");
+  let account = Collections.Accounts.findOne(targetUserId);
+
+  if (!account) {
+    targetUserId = Meteor.userId();
+    account = Collections.Accounts.findOne(targetUserId);
+  }
+  return account;
 }
 
 function hasPermissionsFor(permission) {
@@ -58,6 +69,21 @@ Template.accountProfile.helpers({
     return hasPermissionsFor("orders");
   },
 
+  doesUserExist() {
+    const targetUserId = Reaction.Router.getQueryParam("userId");
+    if (!targetUserId) {
+      // If userId isn't in this route's query parameters, then a user 
+      // is viewing his/her own profile.
+      return true;
+    }
+    const targetUser = Collections.Accounts.findOne(targetUserId);
+    return targetUser !== undefined;
+  },
+
+  isOwnerOfProfile() {
+    return isOwnerOfProfile();
+  },
+
   UpdateEmail() {
     return {
       component: Components.UpdateEmail
@@ -85,8 +111,9 @@ Template.accountProfile.helpers({
   userOrders() {
     const orderSub = Meteor.subscribe("AccountOrders", Meteor.userId());
     if (orderSub.ready()) {
+      const targetUserId = Reaction.Router.getQueryParam("userId") || Meteor.userId();
       return Collections.Orders.find({
-        userId: Meteor.userId()
+        userId: targetUserId
       }, {
         sort: {
           createdAt: -1
@@ -102,7 +129,8 @@ Template.accountProfile.helpers({
    */
   displayName() {
     if (Reaction.Subscriptions && Reaction.Subscriptions.Account && Reaction.Subscriptions.Account.ready()) {
-      const account = Collections.Accounts.findOne(Meteor.userId());
+      const account = getTargetAccount();
+
       if (account) {
         if (account.name) {
           return account.name;
@@ -116,6 +144,20 @@ Template.accountProfile.helpers({
 
     if (Reaction.hasPermission("account/profile")) {
       return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
+    }
+  },
+
+  /**
+   * Display user's email
+   * @return {String} - email of target user
+   */
+  displayEmail() {
+    if (Reaction.Subscriptions && Reaction.Subscriptions.Account && Reaction.Subscriptions.Account.ready()) {
+      const account = getTargetAccount();
+
+      if (account && account.emails && account.emails[0]) {
+        return account.emails[0].address;
+      }
     }
   },
 
