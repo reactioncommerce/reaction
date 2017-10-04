@@ -4,7 +4,7 @@ import { Cart, Accounts } from "/lib/collections";
 import { Logger, Hooks } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
-function createShipmentQuotes(cartId, shopId, rates, selector) {
+function createShipmentQuotes(cartId, shopId, rates) {
   let update = {
     $push: {
       shipping: {
@@ -16,7 +16,8 @@ function createShipmentQuotes(cartId, shopId, rates, selector) {
       }
     }
   };
-  Cart.update(selector, update, function (error) {
+
+  Cart.update({ _id: cartId }, update, function (error) {
     if (error) {
       Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
       return;
@@ -173,12 +174,12 @@ function updateShippingRecordByShop(cart, rates) {
       "_id": cartId,
       "shipping.shopId": shopId
     };
-    const shippingRecord = Cart.findOne(selector);
+    const cartForShipping = Cart.findOne(selector);
     // we may have added a new shop since the last time we did this, if so we need to add a new record
-    if (shippingRecord) {
+    if (cartForShipping) {
       update = updateShipmentQuotes(cartId, rates, selector);
     } else {
-      update = createShipmentQuotes(cartId, shopId, rates, selector);
+      update = createShipmentQuotes(cartId, shopId, rates);
     }
 
     Cart.update(selector, update, function (error) {
