@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Save and continue",
         "cancel": "Cancel",
@@ -105,7 +106,8 @@
         "makeVisible": "Make visible",
         "hideProduct": "Hide product",
         "productIsVisible": "Product is visible",
-        "productIsNotVisible": "Product is not visible"
+        "productIsNotVisible": "Product is not visible",
+        "variantOptions": "Variant options"
       },
       "productVariant": {
         "addVariantOptions": "Add options to enable 'Add to Cart' button",
@@ -182,6 +184,9 @@
         "adjustedTotal": "Adjusted total",
         "processor": "Processor",
         "filter": {
+          "status": "Status",
+          "dateRange": "Date range",
+          "shippingStatus": "Shipping status",
           "new": "New",
           "captured": "Captured",
           "shipped": "Shipped",

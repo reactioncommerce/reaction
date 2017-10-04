@@ -1,8 +1,9 @@
 /* eslint camelcase: 0 */
+import nock from "nock";
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { StripeApi } from "./stripeapi";
+import { utils } from "./stripe";
 
 describe("stripe/refunds/list", function () {
   let sandbox;
@@ -53,8 +54,14 @@ describe("stripe/refunds/list", function () {
       has_more: false,
       url: "/v1/refunds"
     };
-    sandbox.stub(StripeApi.methods.listRefunds, "call", function () {
-      return stripeRefundListResult;
+
+    // Stripe Charge Nock
+    nock("https://api.stripe.com:443")
+      .get("/v1/refunds")
+      .reply(200, stripeRefundListResult); // .log(console.log);
+
+    sandbox.stub(utils, "getStripeApi", function () {
+      return "sk_fake_fake";
     });
 
     let refundListResult = null;
@@ -68,10 +75,6 @@ describe("stripe/refunds/list", function () {
       expect(refundListResult[0].type).to.equal("refund");
       expect(refundListResult[0].amount).to.equal(19.99);
       expect(refundListResult[0].currency).to.equal("usd");
-
-      expect(StripeApi.methods.listRefunds.call).to.have.been.calledWith({
-        transactionId: paymentMethod.transactionId
-      });
       done();
     });
   });

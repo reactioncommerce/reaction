@@ -38,7 +38,7 @@ class VariantEdit extends Component {
           name={"variantOptions"}
         >
           <Components.CardHeader
-            i18nKeyTitle="productDetailEdit.variantsDetails"
+            i18nKeyTitle="productDetailEdit.variantsOptions"
             title="Variant Options"
           >
             <Components.Button

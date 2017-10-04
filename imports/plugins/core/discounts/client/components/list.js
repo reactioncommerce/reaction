@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Translation, IconButton } from "/imports/plugins/core/ui/client/components";
 import DiscountForm from "./form";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
@@ -100,5 +101,8 @@ const options = {
 
 let discountListComponent = DiscountList;
 discountListComponent = composeWithTracker(composer, options)(discountListComponent);
+
+registerComponent("DiscountList", discountListComponent);
+
 
 export default discountListComponent;

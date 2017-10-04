@@ -183,6 +183,10 @@ const wrapComponent = (Comp) => (
           if (error) {
             Alerts.toast(error.message, "error");
           }
+
+          if (fieldName === "inventoryPolicy") {
+            this.updateInventoryPolicyIfChildVariants(variant);
+          }
         });
       }
     }
@@ -193,6 +197,42 @@ const wrapComponent = (Comp) => (
 
     handleVariantVisibilityToggle = (variant) => {
       Meteor.call("products/updateProductField", variant._id, "isVisible", !variant.isVisible);
+    }
+
+    /**
+     * @method updateInventoryPolicyIfChildVariants
+     * @description update parent inventory policy if variant has children
+     * @param {Object} variant product or variant document
+     * @return {undefined} return nothing
+     */
+    updateInventoryPolicyIfChildVariants = (variant) => {
+      // Get all siblings, including current variant
+      const options = ReactionProduct.getSiblings(variant);
+      // Get parent
+      const parent = ReactionProduct.getVariantParent(variant);
+
+      // If this is not a top-level variant, update top-level inventory policy as well
+      if (parent && options && options.length) {
+        // Check to see if every variant option inventory policy is true
+        const inventoryPolicy = options.every((option) => {
+          return option.inventoryPolicy === true;
+        });
+
+        // If all inventory policies on children are true, update parent to be true
+        if (inventoryPolicy === true) {
+          return Meteor.call("products/updateProductField", parent._id, "inventoryPolicy", true, (error) => {
+            if (error) {
+              Alerts.toast(error.message, "error");
+            }
+          });
+        }
+        // If any child has a false inventoryPolicy, update parent to be false
+        return Meteor.call("products/updateProductField", parent._id, "inventoryPolicy", false, (error) => {
+          if (error) {
+            Alerts.toast(error.message, "error");
+          }
+        });
+      }
     }
 
     updateQuantityIfChildVariants =  (variant) => {
