@@ -31,13 +31,7 @@
   "updatedAt": {
     "$date": "2014-06-01T12:17:13.949-0700"
   },
-  "vendor": "Example Manufacturer",
-  "parcel": {
-    "length": 10,
-    "width": 5,
-    "height": 3,
-    "weight": 20
-  }
+  "vendor": "Example Manufacturer"
 }, {
   "_id": "6qiqPwBkeJdtdQc4G",
   "ancestors": [
@@ -82,7 +76,10 @@
   "createdAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
   },
-  "weight": 35,
+  "weight": 25,
+  "length": 10,
+  "height": 3,
+  "width": 10,
   "metafields": [{
     "key": null,
     "value": null
@@ -109,7 +106,10 @@
   "createdAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
   },
-  "weight": 35,
+  "weight": 25,
+  "length": 10,
+  "height": 3,
+  "width": 10,
   "metafields": [{
     "key": null,
     "value": null
