@@ -6,7 +6,7 @@ import { Components } from "@reactioncommerce/reaction-components";
  */
 
 Template.loginInline.helpers({
-  component() {
+  loginInlineComponent() {
     return {
       component: Components.LoginInline
     };
