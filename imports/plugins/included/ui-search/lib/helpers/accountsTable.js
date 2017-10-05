@@ -28,7 +28,7 @@ export default function accountsTable() {
         if (rowData.profile) {
           return rowData.profile.firstName;
         }
-        return "(unvailable)";
+        return i18next.t("search.accountSearchResults.notAvailable", "Not available");
       }
     },
     {
@@ -39,7 +39,7 @@ export default function accountsTable() {
         if (rowData.profile) {
           return rowData.profile.lastName;
         }
-        return "(unvailable)";
+        return i18next.t("search.accountSearchResults.notAvailable", "Not available");
       }
     },
     {
@@ -50,7 +50,7 @@ export default function accountsTable() {
         if (rowData.profile) {
           return rowData.profile.phone;
         }
-        return "(unvailable)";
+        return i18next.t("search.accountSearchResults.notAvailable", "Not available");
       }
     },
     {
