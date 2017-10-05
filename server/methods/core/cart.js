@@ -750,7 +750,10 @@ Meteor.methods({
     let selector;
     let update;
     let updated = false; // if we update inline set to true, otherwise fault to update at the end
+    // We have two behaviors depending on if we have existing shipping records and if we
+    // have items in the cart.
     if (cart.shipping && cart.shipping.length > 0 && cart.items) {
+      // if we have shipping records and cart.items, update each one by shop
       const shopIds = Object.keys(cart.getItemsByShop());
       shopIds.forEach((shopId) => {
         selector = {
@@ -763,14 +766,14 @@ Meteor.methods({
             "shipping.$.address": address
           }
         };
+        try {
+          Collections.Cart.update(selector, update);
+          updated = true;
+        } catch (error) {
+          Logger.error("An error occurred adding the address", error);
+          throw new Meteor.Error("An error occurred adding the address", error);
+        }
       });
-      try {
-        Collections.Cart.update(selector, update);
-        updated = true;
-      } catch (error) {
-        Logger.error("An error occurred adding the address", error);
-        throw new Meteor.Error("An error occurred adding the address", error);
-      }
     } else {
       // if no items in cart just add or modify one record for the carts shop
       if (!cart.items) {
@@ -791,8 +794,8 @@ Meteor.methods({
           try {
             Collections.Cart.update(selector, update);
             updated = true;
-          } catch (e) {
-            Logger.error(e);
+          } catch (error) {
+            Logger.error(error);
             throw new Meteor.Error("An error occurred adding the address");
           }
         } else {
@@ -809,7 +812,8 @@ Meteor.methods({
           };
         }
       } else {
-        // if we have items in the cart, add a record for each shop that's represented in the items
+        // if we have items in the cart but we didn't have existing shipping records
+        // add a record for each shop that's represented in the items
         const shopIds = Object.keys(cart.getItemsByShop());
         shopIds.map((shopId) => {
           selector = {
@@ -827,10 +831,11 @@ Meteor.methods({
       }
     }
     if (!updated) {
+      // if we didn't do one of the inline updates, then run the update here
       try {
         Collections.Cart.update(selector, update);
-      } catch (e) {
-        Logger.error(e);
+      } catch (error) {
+        Logger.error(error);
         throw new Meteor.Error("An error occurred adding the address");
       }
     }
