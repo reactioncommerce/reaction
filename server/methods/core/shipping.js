@@ -214,7 +214,7 @@ function addAddresses(cart) {
   const address = getDefaultAddress(cart);
   if (address) {
     const shopIds = Object.keys(cart.getItemsByShop());
-    shopIds.map((shopId) => {
+    shopIds.forEach((shopId) => {
       Cart.update({
         _id: cart._id
       }, {
