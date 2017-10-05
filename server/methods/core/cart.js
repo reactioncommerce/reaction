@@ -1015,27 +1015,23 @@ Meteor.methods({
 
   /**
    * @method cart/setAnonymousUserEmail
-   * @summary sets email for anonymous users as the first checkout step
-   * if Stripe is the enabled payment method
+   * @summary assigns email to anonymous user's cart instance
    * @param {Object} userId - current user's Id
-   * @param {String} email - email to set for anonymous user
+   * @param {String} email - email to set for anonymous user's cart instance
    * @return {Number} returns update result
    */
   "cart/setAnonymousUserEmail": function (userId, email) {
     check(userId, String);
     check(email, String);
 
-    const currentUser = Collections.Accounts.findOne({ _id: userId });
-    let newEmail = {};
+    const currentUserCart = Collections.Cart.findOne({ userId: userId });
+    const cartId = currentUserCart._id;
+    let newEmail = "";
 
-    if (!currentUser.emails.length) {
-      newEmail = {
-        address: email,
-        provides: "default",
-        verified: false
-      };
+    if (!currentUserCart.email) {
+      newEmail = email;
     }
 
-    return Collections.Accounts.update(userId, { $push: { emails: newEmail } });
+    return Collections.Cart.update({ _id: cartId }, { $set: { email: newEmail } });
   }
 });
