@@ -386,6 +386,7 @@ Meteor.methods({
         Object.assign(clone, variant, {
           _id: Random.id(),
           ancestors: ancestorsClone,
+          title: `${sortedVariant.title} - copy`,
           optionTitle: `${sortedVariant.optionTitle} - copy`
         });
       }
