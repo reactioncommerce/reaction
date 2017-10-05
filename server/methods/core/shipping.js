@@ -103,7 +103,7 @@ function normalizeAddresses(cart) {
     });
     const updatedShipping = [];
     cart.shipping.forEach((shippingRecord) => {
-      shippingRecord.shipping.address = address;
+      shippingRecord.address = address;
       updatedShipping.push(shippingRecord);
     });
 
