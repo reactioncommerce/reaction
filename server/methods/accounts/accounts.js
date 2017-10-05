@@ -767,8 +767,7 @@ export function sendWelcomeEmail(shopId, userId) {
   }
 
   // assign verification url
-  const prefix = Reaction.getShopPrefix().replace(/\//, "");
-  dataForEmail.verificationUrl = `${Meteor.absoluteUrl()}${prefix}/account/profile/verify?email=${user.emails[0].address}`;
+  dataForEmail.verificationUrl = `${Meteor.absoluteUrl()}account/profile/verify?email=${user.emails[0].address}`;
   const userEmail = user.emails[0].address;
 
   let shopEmail;
