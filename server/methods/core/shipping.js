@@ -101,20 +101,22 @@ function normalizeAddresses(cart) {
         address = shippingRecord.address;
       }
     });
-    const shopIds = Object.keys(cart.getItemsByShop());
-    shopIds.forEach((shopId) => {
-      const selector = {
-        "_id": cartId,
-        "shipping.shopId": shopId
-      };
-
-      const update = {
-        $set: {
-          "shipping.$.address": address
-        }
-      };
-      Cart.update(selector, update);
+    const updatedShipping = [];
+    cart.shipping.forEach((shippingRecord) => {
+      shippingRecord.shipping.address = address;
+      updatedShipping.push(shippingRecord);
     });
+
+    const selector = {
+      _id: cartId
+    };
+
+    const update = {
+      $set: {
+        shipping: updatedShipping
+      }
+    };
+    Cart.update(selector, update);
   }
 }
 
