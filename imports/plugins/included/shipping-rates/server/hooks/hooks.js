@@ -1,4 +1,5 @@
 import { check } from "meteor/check";
+import { Meteor } from "meteor/meteor";
 import { Shipping, Packages } from "/lib/collections";
 import { Logger, Reaction, Hooks } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
@@ -76,10 +77,8 @@ function getShippingRates(previousQueryResults, cart) {
   let pkgData;
   if (merchantShippingRates) {
     // TODO this needs to be rewritten to handle getting rates from each shops that's represented on the order
-    pkgData = Packages.findOne({
-      name: "reaction-shipping-rates",
-      shopId: Reaction.getShopId()
-    });
+    Logger.fatal("Multiple shipping providers is currently not supported");
+    throw new Meteor.Error("not-implemented", "Multiple shipping providers is currently not supported");
   } else {
     pkgData = Packages.findOne({
       name: "reaction-shipping-rates",
