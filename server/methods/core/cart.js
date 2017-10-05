@@ -749,10 +749,10 @@ Meteor.methods({
     // TODO: for every shipping record
     let selector;
     let update;
-    let updated = false;
+    let updated = false; // if we update inline set to true, otherwise fault to update at the end
     if (cart.shipping && cart.shipping.length > 0 && cart.items) {
       const shopIds = Object.keys(cart.getItemsByShop());
-      shopIds.map((shopId) => {
+      shopIds.forEach((shopId) => {
         selector = {
           "_id": cartId,
           "shipping.shopId": shopId
