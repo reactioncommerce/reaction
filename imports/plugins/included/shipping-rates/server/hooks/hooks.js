@@ -97,6 +97,8 @@ function getShippingRates(previousQueryResults, cart) {
     "provider.enabled": true
   };
 
+  // Get rates from shops if merchantShippingRates is enabled
+  // Otherwise just get them from the primaryShop
   if (merchantShippingRates) {
     // create an array of shops, allowing
     // the cart to have products from multiple shops
