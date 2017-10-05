@@ -47,22 +47,17 @@ function getShippingRates(previousQueryResults, cart) {
 
   // Verify that we have a valid address to work with
   let shippingErrorDetails;
-  cart.shipping.map((shippingRecord) => {
-    if (!shippingRecord.address) {
-      shippingErrorDetails = {
-        requestStatus: "error",
-        shippingProvider: "flat-rate-shipping",
-        message: "The address property on one or more shipping records are incomplete"
-      };
-    }
-  });
-
-  if (shippingErrorDetails) {
+  if (cart.shipping.find((shippingRecord) => !shippingRecord.address)) {
+    shippingErrorDetails = {
+      requestStatus: "error",
+      shippingProvider: "flat-rate-shipping",
+      message: "The address property on one or more shipping records are incomplete"
+    };
     return [[shippingErrorDetails], []];
   }
 
-
-  // Validate that we have valid items to work with
+  // Validate that we have valid items to work with. We should never get here since we filter for this
+  // at the cart level
   if (!cart.items || !cart.items.length) {
     const errorDetails = {
       requestStatus: "error",
@@ -80,6 +75,7 @@ function getShippingRates(previousQueryResults, cart) {
 
   let pkgData;
   if (merchantShippingRates) {
+    // TODO this needs to be rewritten to handle getting rates from each shops that's represented on the order
     pkgData = Packages.findOne({
       name: "reaction-shipping-rates",
       shopId: Reaction.getShopId()
