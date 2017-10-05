@@ -533,8 +533,8 @@ Meteor.methods({
         return result;
       });
       // TODO: HACK: When calling update shipping the changes to the cart have not taken place yet
-      // But calling this findOne seems to force this record to update. Extra weird since we aren't
-      // passing the Cart but just the cartId and regrabbing it so you would think that would work but it does not
+      // TODO: But calling this findOne seems to force this record to update. Extra weird since we aren't
+      // TODO: passing the Cart but just the cartId and regrabbing it so you would think that would work but it does not
       Collections.Cart.findOne(cart._id);
       // refresh shipping quotes
       Meteor.call("shipping/updateShipmentQuotes", cart._id);
@@ -743,8 +743,10 @@ Meteor.methods({
       throw new Meteor.Error(404, "Cart not found",
         "Cart not found for user with such id");
     }
-    // temp hack until we build out multiple shipment handlers
-    // set the same address for every shipping record
+    // TODO: When we have a front end for doing more than one address
+    // TODO: we need to not use the same address for every record
+    // TODO: this is a temporary workaround so that we have a valid address
+    // TODO: for every shipping record
     let selector;
     let update;
     let updated = false;
