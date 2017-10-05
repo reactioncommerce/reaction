@@ -10,9 +10,15 @@ import { Cart } from "/lib/collections";
 // Because we are duplicating shipment quotes across shipping records
 // we will get duplicate shipping quotes but we only want to diplay one
 // So this function eliminates duplicates
-function uniqObjects(methods) {
-  const jsonBlobs = methods.map((method) => {
-    return JSON.stringify(method);
+/**
+ * Return a unique list of objects
+ * @param {Array} objs - An array of objects
+ * @returns {Array} An array of object only containing unique members
+ * @private
+ */
+function uniqObjects(objs) {
+  const jsonBlobs = objs.map((obj) => {
+    return JSON.stringify(obj);
   });
   const uniqueBlobs = _.uniq(jsonBlobs);
   return uniqueBlobs.map((blob) => {
