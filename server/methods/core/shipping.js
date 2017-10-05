@@ -96,13 +96,13 @@ function normalizeAddresses(cart) {
     const shipping = cart.shipping;
     const cartId = cart._id;
     let address; // we can only have one address so whatever was the last assigned
-    shipping.map((shippingRecord) => {
+    shipping.forEach((shippingRecord) => {
       if (shippingRecord.address) {
         address = shippingRecord.address;
       }
     });
     const shopIds = Object.keys(cart.getItemsByShop());
-    shopIds.map((shopId) => {
+    shopIds.forEach((shopId) => {
       const selector = {
         "_id": cartId,
         "shipping.shopId": shopId
@@ -170,7 +170,7 @@ function updateShippingRecordByShop(cart, rates) {
   const shops = Object.keys(itemsByShop);
   let update;
   let selector;
-  shops.map((shopId) => {
+  shops.forEach((shopId) => {
     selector = {
       "_id": cartId,
       "shipping.shopId": shopId
@@ -204,7 +204,12 @@ function getDefaultAddress(cart) {
   }
 }
 
-
+/**
+ * Add the default address to the cart
+ * @param {Object} cart - the cart to modify
+ * @returns {undefined}
+ * @private
+ */
 function addAddresses(cart) {
   const address = getDefaultAddress(cart);
   if (address) {
