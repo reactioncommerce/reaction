@@ -958,7 +958,8 @@ Meteor.methods({
       }
     } else { // or if we remove address itself, when we run this part we assume
       // that the billing/shipping arrays can hold only one element [0]
-      if (cart.billing && typeof cart.billing[0].address === "object" && cart.billing[0].address._id === addressId) {
+      if (cart.billing && typeof cart.billing[0].address === "object" &&
+        cart.billing[0].address._id === addressId) {
         update.$unset["billing.0.address"] = "";
         needToUpdate = true;
       }
