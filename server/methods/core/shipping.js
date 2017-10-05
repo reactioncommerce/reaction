@@ -59,6 +59,7 @@ function createShipmentQuotes(cartId, shopId, rates) {
  * @summary if we have items in the cart, ensure that we only have shipping records for shops currently represented in the cart
  * @param {Object} cart - The cart to operate on
  * @returns {undefined} undefined
+ * @private
  */
 function pruneShippingRecordsByShop(cart) {
   if (cart.items) {
