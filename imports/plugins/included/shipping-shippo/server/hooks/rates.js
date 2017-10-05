@@ -5,17 +5,19 @@ import { Logger, Reaction, Hooks } from "/server/api";
 // callback ran on getShippingRates hook
 function getShippingRates(previousQueryResults, cart) {
   const marketplaceSettings = Reaction.getMarketplaceSettings();
-  const { public: merchantShippingRates } = marketplaceSettings;
+  let merchantShippingRates = false;
+  if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantShippingRates) {
+    merchantShippingRates = marketplaceSettings.public.merchantShippingRates;
+  }
+
   const [rates, retrialTargets] = previousQueryResults;
   const shops = [];
   const products = cart.items;
 
   let pkgData;
   if (merchantShippingRates) {
-    pkgData = Packages.findOne({
-      name: "reaction-shippo",
-      shopId: Reaction.getShopId()
-    });
+    Logger.fatal("Multiple shipping providers is currently not implemented");
+    throw new Meteor.Error("not-implemented", "Multiple shipping providers is currently not implemented");
   } else {
     pkgData = Packages.findOne({
       name: "reaction-shippo",
