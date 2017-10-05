@@ -124,7 +124,7 @@ class VariantListContainer extends Component {
       as: Reaction.Router.getQueryParam("as")
     });
 
-    if (Reaction.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct") && !Reaction.isPreview()) {
       Reaction.showActionView({
         label: "Edit Variant",
         i18nKeyLabel: "productDetailEdit.editVariant",
