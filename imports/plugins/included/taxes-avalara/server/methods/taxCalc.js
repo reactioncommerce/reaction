@@ -5,7 +5,7 @@ import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
-import { Packages, Shops, Accounts } from "/lib/collections";
+import { Shops, Accounts } from "/lib/collections";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import Avalogger from "./avalogger";
@@ -15,11 +15,7 @@ const requiredFields = ["username", "password", "apiLoginId", "companyCode", "sh
 const taxCalc = {};
 
 taxCalc.getPackageData = function () {
-  const pkgData = Packages.findOne({
-    name: "taxes-avalara",
-    shopId: Reaction.getShopId(),
-    enabled: true
-  });
+  const pkgData = Reaction.getPackageSettings("taxes-avalara");
   return pkgData;
 };
 
