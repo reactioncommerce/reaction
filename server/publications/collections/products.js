@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { Products, Revisions } from "/lib/collections";
+import { Products, Shops, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { findProductMedia } from "./product";
@@ -99,6 +99,30 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   } catch (e) {
     Logger.debug(e, "Invalid Product Filters");
     return this.ready();
+  }
+
+  const shopIdsOrSlugs = productFilters && productFilters.shops;
+
+  if (shopIdsOrSlugs) {
+    // Get all shopIds associated with the slug or Id
+    const shopIds = Shops.find({
+      $or: [{
+        _id: {
+          $in: shopIdsOrSlugs
+        }
+      }, {
+        slug: {
+          $in: shopIdsOrSlugs
+        }
+      }]
+    }).map((shop) => shop._id);
+
+    // If we found shops, update the productFilters
+    if (shopIds) {
+      productFilters.shops = shopIds;
+    } else {
+      return this.ready();
+    }
   }
 
   // Init default selector - Everyone can see products that fit this selector
