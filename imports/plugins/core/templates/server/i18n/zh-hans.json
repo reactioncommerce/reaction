@@ -12,7 +12,7 @@
       "templateGrid": {
         "noTemplatesFound": "没有找到模板",
         "columns": {
-          "title": "称号",
+          "title": "模板名称",
           "type": "类型",
           "language": "语言"
         }
