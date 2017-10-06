@@ -274,7 +274,7 @@ function isLowQuantity(variants) {
  * @description Is products variants is still available to be ordered after
  * summary variants quantity is zero
  * @param {Array} variants - array with variant objects
- * @return {boolean} is backorder allowed or now for a product
+ * @return {boolean} is backorder allowed or not for a product
  */
 function isBackorder(variants) {
   return variants.every(variant => {
@@ -328,18 +328,20 @@ Meteor.methods({
   "products/cloneVariant": function (productId, variantId) {
     check(productId, String);
     check(variantId, String);
-    // user needs createProduct permission to clone
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
 
+    // Check first if Variant exists and then if user has the right to clone it
     const variant = Products.findOne(variantId);
+    if (!variant) {
+      throw new Meteor.Error("Variant not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, variant.shopId)) {
+      throw new Meteor.Error("Access Denied");
+    }
 
     // Verify that this variant and any ancestors are not deleted.
     // Child variants cannot be added if a parent product or product revision
     // is marked as `{ isDeleted: true }`
     if (ReactionProduct.isAncestorDeleted(variant, true)) {
-      throw new Meteor.Error(403, "Unable to create product variant");
+      throw new Meteor.Error("Unable to create product variant");
     }
 
     const variants = Products.find({
@@ -424,21 +426,24 @@ Meteor.methods({
   "products/createVariant": function (parentId, newVariant) {
     check(parentId, String);
     check(newVariant, Match.Optional(Object));
-    // must have createProduct permissions
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+
+    // Check first if Product exists and then if user has the rights
+    const product = Products.findOne(parentId);
+    if (!product) {
+      throw new Meteor.Error("Product not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
 
     const newVariantId = Random.id();
     // get parent ancestors to build new ancestors array
-    const product = Products.findOne(parentId);
     const { ancestors } = product;
 
     // Verify that the parent variant and any ancestors are not deleted.
     // Child variants cannot be added if a parent product or product revision
     // is marked as `{ isDeleted: true }`
     if (ReactionProduct.isAncestorDeleted(product, true)) {
-      throw new Meteor.Error(403, "Unable to create product variant");
+      throw new Meteor.Error("Unable to create product variant");
     }
 
     Array.isArray(ancestors) && ancestors.push(parentId);
@@ -450,7 +455,7 @@ Meteor.methods({
 
     if (!newVariant) {
       Object.assign(assembledVariant, {
-        title: "",
+        title: product.title + " - Untitled option",
         price: 0.00
       });
     }
@@ -488,12 +493,15 @@ Meteor.methods({
    */
   "products/updateVariant": function (variant) {
     check(variant, Object);
-    // must have createProduct permissions
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+
+    // Check first if Variant exists and then if user has the right to clone it
+    const currentVariant = Products.findOne(variant._id);
+    if (!currentVariant) {
+      throw new Meteor.Error("Variant not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, currentVariant.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
 
-    const currentVariant = Products.findOne(variant._id);
     // update variants
     if (typeof currentVariant === "object") {
       const newVariant = Object.assign({}, currentVariant, variant);
@@ -531,9 +539,13 @@ Meteor.methods({
    */
   "products/deleteVariant": function (variantId) {
     check(variantId, String);
-    // must have createProduct permissions
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+
+    // Check first if Variant exists and then if user has the right to delete it
+    const variant = Products.findOne(variantId);
+    if (!variant) {
+      throw new Meteor.Error("Variant not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, variant.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
 
     const selector = {
@@ -573,11 +585,32 @@ Meteor.methods({
    */
   "products/cloneProduct": function (productOrArray) {
     check(productOrArray, Match.OneOf(Array, Object));
-    // must have createProduct permissions
+
+    // REVIEW: This check may be unnecessary now - checks that user has permission to clone
+    // for active shop
     if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("Access Denied");
     }
-    // this.unblock();
+
+    if (Array.isArray(productOrArray)) {
+      // Reduce to unique shops found among producs in this array
+      const shopIds = productOrArray.map(prod => prod.shopId);
+      const uniqueShopIds = [...new Set(shopIds)];
+
+      // For each unique shopId check to make sure that user has permission to clone
+      uniqueShopIds.forEach((shopId) => {
+        if (!Reaction.hasPermission("createProduct", this.userId, shopId)) {
+          throw new Meteor.Error(403,
+            "Access Denied");
+        }
+      });
+    } else {
+      // Single product was passed in - ensure that user has permission to clone
+      if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) {
+        throw new Meteor.Error(403,
+          "Access Denied");
+      }
+    }
 
     let result;
     let products;
@@ -688,13 +721,17 @@ Meteor.methods({
    */
   "products/createProduct": function (product) {
     check(product, Match.Optional(Object));
-    // must have createProduct permission
+
+    // Ensure user has createProduct permission for active shop
     if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("Access Denied");
     }
 
-    // if a product object was provided
+    // also if a product is provided, check first that the user doesn't mock a shop with no permissions to it
     if (product) {
+      if (!product.shopId || !Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+        throw new Meteor.Error("Product should have a valid shopId");
+      }
       return Products.insert(product);
     }
 
@@ -723,9 +760,18 @@ Meteor.methods({
    */
   "products/archiveProduct": function (productId) {
     check(productId, Match.OneOf(Array, String));
-    // must have admin permission to delete
-    if (!Reaction.hasPermission("createProduct") && !Reaction.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access Denied");
+
+    let extractedProductId;
+    if (Array.isArray(productId)) {
+      extractedProductId = productId[0];
+    }
+
+    // Check first if Product exists and then if user has the right to delete it
+    const product = Products.findOne(extractedProductId || productId);
+    if (!product) {
+      throw new Meteor.Error("Product not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
 
     let productIds;
@@ -789,7 +835,7 @@ Meteor.methods({
       });
       return numRemoved;
     }
-    throw new Meteor.Error(304, "Something went wrong, nothing was deleted");
+    throw new Meteor.Error("Something went wrong, nothing was deleted");
   },
 
   /**
@@ -809,21 +855,43 @@ Meteor.methods({
     check(_id, String);
     check(field, String);
     check(value, Match.OneOf(String, Object, Array, Boolean, Number));
-    // must have createProduct permission
+
+    // Must have createProduct permission for active shop
     if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
+    // Check first if Product exists and then if user has the right to alter it
     const doc = Products.findOne(_id);
+    if (!doc) {
+      throw new Meteor.Error("Product not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, doc.shopId)) {
+      throw new Meteor.Error("Access Denied");
+    }
+
     const type = doc.type;
     let update;
     // handle booleans with correct typing
     if (value === "false" || value === "true") {
-      update = EJSON.parse(`{${field}:${value}}`);
+      const booleanValue = (value === "true" || value === true);
+      update = EJSON.parse("{\"" + field + "\":" + booleanValue + "}");
     } else {
-      const stringValue = EJSON.stringify(value);
-      update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
+      if (field === "handle") {
+        update = {
+          [field]: createHandle(value, _id) // handle should be unique
+        };
+      } else if (field === "title" && doc.handle === doc._id) { // update handle once title is set
+        const handle = createHandle(Reaction.getSlug(value), _id);
+        update = {
+          [field]: value,
+          handle
+        };
+      } else {
+        const stringValue = EJSON.stringify(value);
+        update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
+      }
     }
+
 
     // we need to use sync mode here, to return correct error and result to UI
     let result;
@@ -863,10 +931,15 @@ Meteor.methods({
     check(productId, String);
     check(tagName, String);
     check(tagId, Match.OneOf(String, null));
-    // must have createProduct permission
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+
+    // Check first if Product exists and then if user has the right to alter it
+    const product = Products.findOne(productId);
+    if (!product) {
+      throw new Meteor.Error("Product not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
+
     this.unblock();
 
     const newTag = {
@@ -886,7 +959,7 @@ Meteor.methods({
         }
       }).count();
       if (productCount > 0) {
-        throw new Meteor.Error(403, "Existing Tag, Update Denied");
+        throw new Meteor.Error("Existing Tag, Update Denied");
       }
       return Products.update(productId, {
         $push: {
@@ -931,8 +1004,13 @@ Meteor.methods({
   "products/removeProductTag": function (productId, tagId) {
     check(productId, String);
     check(tagId, String);
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+
+    // Check first if Product exists and then if user has the right to alter it
+    const product = Products.findOne(productId);
+    if (!product) {
+      throw new Meteor.Error("Product not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
 
     Products.update(productId, {
@@ -954,12 +1032,15 @@ Meteor.methods({
    */
   "products/setHandle": function (productId) {
     check(productId, String);
-    // must have createProduct permission
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+
+    // Check first if Product exists and then if user has the right to alter it
+    const product = Products.findOne(productId);
+    if (!product) {
+      throw new Meteor.Error("Product not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
 
-    const product = Products.findOne(productId);
     let handle = Reaction.getSlug(product.title);
     handle = createHandle(handle, product._id);
     Products.update(product._id, {
@@ -982,9 +1063,12 @@ Meteor.methods({
   "products/setHandleTag": function (productId, tagId) {
     check(productId, String);
     check(tagId, String);
-    // must have createProduct permission
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+    // Check first if Product exists and then if user has the right to alter it
+    const product = Products.findOne(productId);
+    if (!product) {
+      throw new Meteor.Error("Product not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
 
     function getSet(handle) {
@@ -996,7 +1080,6 @@ Meteor.methods({
       };
     }
 
-    const product = Products.findOne(productId);
     const tag = Tags.findOne(tagId);
     // set handle
     if (product.handle === tag.slug) {
@@ -1037,9 +1120,15 @@ Meteor.methods({
     check(productId, String);
     check(positionData, Object);
     check(tag, String);
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+
+    // Check first if Product exists and then if user has the proper rights
+    const product = Products.findOne(productId);
+    if (!product) {
+      throw new Meteor.Error("Product not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
+
     this.unblock();
 
     const position = `positions.${tag}.position`;
@@ -1069,13 +1158,12 @@ Meteor.methods({
    */
   "products/updateVariantsPosition": function (sortedVariantIds) {
     check(sortedVariantIds, [String]);
-    // TODO: to make this work we need to remove auditArgumentsCheck I suppose
-    // new SimpleSchema({
-    //   sortedVariantIds: { type: [String] }
-    // }).validate({ sortedVariantIds });
 
+    // This checks to make sure the user has createProduct permissions for the active shop.
+    // TODO: We should determine if that is the correct role that a user should have
+    // to be permitted to re-arrange products on the grid
     if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("Access Denied");
     }
 
     sortedVariantIds.forEach((id, index) => {
@@ -1110,9 +1198,13 @@ Meteor.methods({
     check(productId, String);
     check(updatedMeta, Object);
     check(meta, Match.OneOf(Object, Number, undefined, null));
-    // must have createProduct permission
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+
+    // Check first if Product exists and then if user has the proper rights
+    const product = Products.findOne(productId);
+    if (!product) {
+      throw new Meteor.Error("Product not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
 
     // update existing metadata
@@ -1170,9 +1262,12 @@ Meteor.methods({
     check(metafields, Object);
     check(type, String);
 
-    // must have createProduct permission
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+    // Check first if Product exists and then if user has the proper rights
+    const product = Products.findOne(productId);
+    if (!product) {
+      throw new Meteor.Error("Product not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
 
     return Products.update({
@@ -1194,11 +1289,15 @@ Meteor.methods({
    */
   "products/publishProduct": function (productId) {
     check(productId, String);
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+
+    // Check first if Product exists and then if user has the proper rights
+    const product = Products.findOne(productId);
+    if (!product) {
+      throw new Meteor.Error("Product not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
 
-    const product = Products.findOne(productId);
     const variants = Products.find({
       ancestors: {
         $in: [productId]
@@ -1228,12 +1327,12 @@ Meteor.methods({
         });
       } else {
         Logger.debug("invalid product visibility ", productId);
-        throw new Meteor.Error(403, "Forbidden", "Variant is required");
+        throw new Meteor.Error("Forbidden", "Variant is required");
       }
 
       if (!variantValidator) {
         Logger.debug("invalid product visibility ", productId);
-        throw new Meteor.Error(403, "Forbidden",
+        throw new Meteor.Error("Forbidden",
           "Some properties are missing.");
       }
 
@@ -1255,7 +1354,7 @@ Meteor.methods({
       return res === 1 && !product.isVisible;
     }
     Logger.debug("invalid product visibility ", productId);
-    throw new Meteor.Error(400, "Bad Request");
+    throw new Meteor.Error("Bad Request");
   },
   /**
    * products/publishProduct
@@ -1266,11 +1365,15 @@ Meteor.methods({
    */
   "products/toggleVisibility": function (productId) {
     check(productId, String);
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+
+    // Check first if Product exists and then if user has the proper rights
+    const product = Products.findOne(productId);
+    if (!product) {
+      throw new Meteor.Error("Product not found");
+    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+      throw new Meteor.Error("Access Denied");
     }
 
-    const product = Products.findOne(productId);
     const res = Products.update(productId, {
       $set: {
         isVisible: !product.isVisible

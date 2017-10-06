@@ -8,9 +8,9 @@ import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
-import { Shops, Translations } from "/lib/collections";
+import { Shops, Translations, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import i18next, { packageNamespaces, getLabelsFor, getMessagesFor, i18nextDep, currencyDep } from "./main";
+import i18next, { getLabelsFor, getMessagesFor, i18nextDep, currencyDep } from "./main";
 import { mergeDeep } from "/lib/api";
 
 //
@@ -40,9 +40,38 @@ Meteor.startup(() => {
   // this only runs on initial page loaded
   // and when user.profile.lang updates
   Tracker.autorun(function () {
-    if (Reaction.Subscriptions.Shops.ready() && Meteor.user()) {
-      const shop = Shops.findOne(Reaction.getShopId());
-      let language = shop.language;
+    if (Reaction.Subscriptions.PrimaryShop.ready() &&
+        Reaction.Subscriptions.MerchantShops.ready() &&
+        Meteor.user()) {
+      let shopId;
+
+      // Choose shop to get language from
+      if (Reaction.marketplaceEnabled && Reaction.merchantLanguage) {
+        shopId = Reaction.getShopId();
+      } else {
+        shopId = Reaction.getPrimaryShopId();
+      }
+
+      const packageNamespaces = [];
+
+      const packages = Packages.find({
+        shopId: shopId
+      }, {
+        fields: {
+          name: 1
+        }
+      }).fetch();
+      for (const pkg of packages) {
+        packageNamespaces.push(pkg.name);
+      }
+
+
+      const shop = Shops.findOne({
+        _id: shopId
+      });
+
+      let language = shop && shop.language || "en";
+
       if (Meteor.user() && Meteor.user().profile && Meteor.user().profile.lang) {
         language = Meteor.user().profile.lang;
       }
@@ -113,7 +142,9 @@ Meteor.startup(() => {
   // althought it is also triggered when profile updates ( meaning .lang )
   Tracker.autorun(function () {
     const user = Meteor.user();
-    if (Reaction.Subscriptions.Shops.ready() && user) {
+
+    if (Reaction.Subscriptions.PrimaryShop.ready() &&
+        Reaction.Subscriptions.MerchantShops.ready() && user) {
       if (user.profile && user.profile.currency) {
         const localStorageCurrency = localStorage.getItem("currency");
         if (localStorageCurrency !== user.profile.currency) {

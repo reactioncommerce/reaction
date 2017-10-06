@@ -3,14 +3,27 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Objednávka nebyla nalezena",
+      "order": {
+        "cancelOrder": "Chcete tuto objednávku zrušit?",
+        "cancelOrderLabel": "Zrušit objednávku",
+        "cancelOrderThenRestock": "Ano, a znovu",
+        "cancelOrderNoRestock": "Ano, ale žádné doplňování"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "objednávky"
         },
+        "orderRisk": {
+          "high": "Vysoké riziko",
+          "riskCapture": "Zachyťte příkaz s rizikovým poplatkem?",
+          "riskCaptureWarn": "Chystáte se zachytit objednávku s rizikem poplatku. Potvrdit před pokračováním."
+        },
         "dashboard": {
           "ordersLabel": "objednávky",
           "ordersTitle": "objednávky",
-          "ordersDescription": "Splnit Vaše objednávky"
+          "ordersDescription": "Splnit Vaše objednávky",
+          "clearSearch": "Jasný"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -27,11 +40,26 @@
             "cardTitle": "Faktura",
             "adjustedTotal": "Upravený Total",
             "capturedTotal": "zajatý Total",
-            "refund": "Vrácení platby"
+            "refund": "Vrácení platby",
+            "refundLabel": "Pro vrácení peněz",
+            "refundItem": "předměty",
+            "refundItemAmount": "Celkem",
+            "refundTotal": "Celkové vrácení peněz"
           },
           "fulfillment": "Splnění",
           "orderDetails": "Podrobnosti o objednávce",
           "shipmentTracking": "Zásilka"
+        },
+        "table": {
+          "headers": {
+            "name": "Název",
+            "email": "Email",
+            "date": "Datum",
+            "id": "ID",
+            "total": "Celkem",
+            "shipping": "lodní",
+            "status": "Postavení"
+          }
         }
       }
     }

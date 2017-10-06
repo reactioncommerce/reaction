@@ -3,14 +3,27 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Sipariş Bulunamadı",
+      "order": {
+        "cancelOrder": "Bu emri iptal etmek istiyor musunuz?",
+        "cancelOrderLabel": "Siparişi iptal et",
+        "cancelOrderThenRestock": "Evet ve yeniden yerleştirme",
+        "cancelOrderNoRestock": "Evet, ama restocking yok"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "Emirler"
         },
+        "orderRisk": {
+          "high": "Yüksek risk",
+          "riskCapture": "Risk Yüklemeli Sipariş Alınır mı?",
+          "riskCaptureWarn": "Yükleme riski taşıyan bir emir yakalamak üzeresin. Devam etmeden önce onaylayın."
+        },
         "dashboard": {
           "ordersLabel": "Emirler",
           "ordersTitle": "Emirler",
-          "ordersDescription": "siparişlerinizi yerine getirmek"
+          "ordersDescription": "siparişlerinizi yerine getirmek",
+          "clearSearch": "Açık"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -27,11 +40,26 @@
             "cardTitle": "Fatura",
             "adjustedTotal": "Düzeltilmiş Toplam",
             "capturedTotal": "yakalanan Toplam",
-            "refund": "Geri ödeme"
+            "refund": "Geri ödeme",
+            "refundLabel": "Geri Ödeme İçin",
+            "refundItem": "Öğeler",
+            "refundItemAmount": "Toplam",
+            "refundTotal": "Geri Ödeme Toplamı"
           },
           "fulfillment": "yerine getirme",
           "orderDetails": "sipariş detayları",
           "shipmentTracking": "yükleme"
+        },
+        "table": {
+          "headers": {
+            "name": "Isim",
+            "email": "E-posta",
+            "date": "Tarih",
+            "id": "Kimlik",
+            "total": "Toplam",
+            "shipping": "Nakliye",
+            "status": "Durum"
+          }
         }
       }
     }

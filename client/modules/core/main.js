@@ -22,49 +22,130 @@ const reactionState = new ReactiveDict();
  * Global reaction shop permissions methods and shop initialization
  */
 export default {
-  shopId: null,
+  _shopId: new ReactiveVar(null), // The active shop
+  _primaryShopId: new ReactiveVar(null), // The first shop created
+  marketplace: { _ready: false }, // Marketplace Settings
 
   Locale: new ReactiveVar({}),
 
   init() {
-    // keep an eye out for shop change
-    return Tracker.autorun(() => {
-      let domain;
-      let shop;
+    Tracker.autorun(() => {
+      // marketplaceSettings come over on the PrimaryShopPackages subscription
+      if (this.Subscriptions.PrimaryShopPackages.ready()) {
+        if (!this.marketplace._ready) {
+          const marketplacePkgSettings = this.getMarketplaceSettings();
+          if (marketplacePkgSettings && marketplacePkgSettings.public) {
+            this.marketplace._ready = true;
+            this.marketplace = marketplacePkgSettings.public;
+            this.marketplace.enabled = true;
+          }
+        }
+      }
+    });
 
-      if (this.Subscriptions.Shops.ready()) {
-        domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
+    // Listen for the primary shop subscription and set accordingly
+    Tracker.autorun(() => {
+      let shop;
+      if (this.Subscriptions.PrimaryShop.ready()) {
+        // There should only ever be one "primary" shop
         shop = Shops.findOne({
-          domains: domain
+          shopType: "primary"
         });
 
         if (shop) {
-          this.shopId = shop._id;
-          this.shopName = shop.name;
-          // initialize local client Countries collection
-          if (!Countries.findOne()) {
-            createCountryCollection(shop.locales.countries);
-          }
+          this.primaryShopId = shop._id;
+          this.primaryShopName = shop.name;
 
-          const locale = this.Locale.get() || {};
+          // We'll initialize locale and currency for the primary shop unless
+          // marketplace settings exist and merchantLocale is set to true
+          if (this.marketplace.merchantLocale !== true) {
+            // initialize local client Countries collection
+            if (!Countries.findOne()) {
+              createCountryCollection(shop.locales.countries);
+            }
 
-          // fix for https://github.com/reactioncommerce/reaction/issues/248
-          // we need to keep an eye for rates changes
-          if (typeof locale.locale === "object" &&
-            typeof locale.currency === "object" &&
-            typeof locale.locale.currency === "string") {
-            const localeCurrency = locale.locale.currency.split(",")[0];
-            if (typeof shop.currencies[localeCurrency] === "object") {
-              if (typeof shop.currencies[localeCurrency].rate === "number") {
-                locale.currency.rate = shop.currencies[localeCurrency].rate;
-                localeDep.changed();
+            const locale = this.Locale.get() || {};
+
+            // fix for https://github.com/reactioncommerce/reaction/issues/248
+            // we need to keep an eye for rates changes
+            if (typeof locale.locale === "object" &&
+                 typeof locale.currency === "object" &&
+                 typeof locale.locale.currency === "string") {
+              const localeCurrency = locale.locale.currency.split(",")[0];
+              if (typeof shop.currencies[localeCurrency] === "object") {
+                if (typeof shop.currencies[localeCurrency].rate === "number") {
+                  locale.currency.rate = shop.currencies[localeCurrency].rate;
+                  localeDep.changed();
+                }
               }
             }
+            // we are looking for a shopCurrency changes here
+            if (typeof locale.shopCurrency === "object") {
+              locale.shopCurrency = shop.currencies[shop.currency];
+              localeDep.changed();
+            }
           }
-          // we are looking for a shopCurrency changes here
-          if (typeof locale.shopCurrency === "object") {
-            locale.shopCurrency = shop.currencies[shop.currency];
-            localeDep.changed();
+        }
+      }
+    });
+
+    // Listen for active shop change
+    return Tracker.autorun(() => {
+      let domain;
+      let shop;
+      if (this.Subscriptions.MerchantShops.ready()) {
+        domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
+
+        // if we don't have an active shopId, try to retreive it from the userPreferences object
+        // and set the shop from the storedShopId
+        if (!this.shopId) {
+          const storedShopId = this.getUserPreferences("reaction", "activeShopId");
+          if (storedShopId) {
+            shop = Shops.findOne({
+              _id: storedShopId
+            });
+          } else {
+            shop = Shops.findOne({
+              domains: domain
+            });
+          }
+        }
+
+        if (shop) {
+          // Only set shopId if it hasn't been set yet
+          if (!this.shopId) {
+            this.shopId = shop._id;
+            this.shopName = shop.name;
+          }
+
+          // We only use the active shop to setup locale if marketplace settings
+          // are enabled and merchantLocale is set to true
+          if (this.marketplace.merchantLocale === true) {
+          // initialize local client Countries collection
+            if (!Countries.findOne()) {
+              createCountryCollection(shop.locales.countries);
+            }
+
+            const locale = this.Locale.get() || {};
+
+            // fix for https://github.com/reactioncommerce/reaction/issues/248
+            // we need to keep an eye for rates changes
+            if (typeof locale.locale === "object" &&
+            typeof locale.currency === "object" &&
+            typeof locale.locale.currency === "string") {
+              const localeCurrency = locale.locale.currency.split(",")[0];
+              if (typeof shop.currencies[localeCurrency] === "object") {
+                if (typeof shop.currencies[localeCurrency].rate === "number") {
+                  locale.currency.rate = shop.currencies[localeCurrency].rate;
+                  localeDep.changed();
+                }
+              }
+            }
+            // we are looking for a shopCurrency changes here
+            if (typeof locale.shopCurrency === "object") {
+              locale.shopCurrency = shop.currencies[shop.currency];
+              localeDep.changed();
+            }
           }
           return this;
         }
@@ -88,10 +169,17 @@ export default {
    * @return {Boolean} Boolean - true if has permission
    */
   hasPermission(checkPermissions, checkUserId, checkGroup) {
-    let group = this.getShopId();
+    let group;
+    // default group to the shop or global if shop isn't defined for some reason.
+    if (checkGroup !== undefined && typeof checkGroup === "string") {
+      group = checkGroup;
+    } else {
+      group = this.getShopId() || Roles.GLOBAL_GROUP;
+    }
+
     let permissions = ["owner"];
     let id = "";
-    const userId = checkUserId || this.userId || Meteor.userId();
+    const userId = checkUserId || Meteor.userId();
     //
     // local roleCheck function
     // is the bulk of the logic
@@ -107,7 +195,10 @@ export default {
       } else {
         permissions = checkPermissions;
       }
-      // if the user has admin, owner permissions we'll always check if those roles are enough
+      // if the user has owner permissions we'll always check if those roles are enough
+      // By adding the "owner" role to the permissions list, we are making hasPermission always return
+      // true for "owners". This gives owners global access.
+      // TODO: Review this way of granting global access for owners
       permissions.push("owner");
       permissions = _.uniq(permissions);
 
@@ -117,7 +208,11 @@ export default {
       if (Roles.userIsInRole(userId, permissions, group)) {
         return true;
       }
+
       // global roles check
+      // TODO: Review this commented out code
+      /*
+
       const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
       // we're looking for seller permissions.
       if (sellerShopPermissions) {
@@ -130,7 +225,7 @@ export default {
             }
           }
         }
-      }
+      }*/
       // no specific permissions found returning false
       return false;
     }
@@ -168,18 +263,39 @@ export default {
       } else {
         return roleCheck();
       }
-
-      // default group to the shop or global if shop
-      // isn't defined for some reason.
-      if (checkGroup !== undefined && typeof checkGroup === "string") {
-        group = checkGroup;
-      }
-      if (!group) {
-        group = Roles.GLOBAL_GROUP;
-      }
     }
     // return false to be safe
     return false;
+  },
+
+
+  /**
+   * hasDashboardAccessForAnyShop - client
+   * client permission check for any "owner", "admin", or "dashboard" permissions for any shop.
+   *
+   * @todo This could be faster with a dedicated hasAdminDashboard boolean on the user object
+   * @param { Object } options - options object that can be passed a user and/or a set of permissions
+   * @return {Boolean} Boolean - true if has dashboard access for any shop
+   */
+  hasDashboardAccessForAnyShop(options = { user: Meteor.user(), permissions: ["owner", "admin", "dashboard"] }) {
+    const user = options.user;
+    const permissions = options.permissions;
+
+    if (!user || !user.roles) {
+      return false;
+    }
+
+    // Nested find that determines if a user has any of the permissions
+    // specified in the `permissions` array for any shop
+    const hasPermissions = Object.keys(user.roles).find((shopId) => {
+      return user.roles[shopId].find((role) => {
+        return permissions.find(permission => permission === role);
+      });
+    });
+
+    // Find returns undefined if nothing is found.
+    // This will return true if permissions are found, false otherwise
+    return typeof hasPermissions !== "undefined";
   },
 
   hasOwnerAccess() {
@@ -187,14 +303,44 @@ export default {
     return this.hasPermission(ownerPermissions);
   },
 
-  hasAdminAccess() {
+  /**
+   * Checks to see if the user has admin permissions. If a shopId is optionally
+   * passed in, we check for that shopId, otherwise we check against the default
+   * @method hasAdminAccess
+   * @param  {string} [shopId] Optional shopId to check access against
+   * @return {Boolean} true if the user has admin or owner permission,
+   *                   otherwise false
+   */
+  hasAdminAccess(shopId) {
     const adminPermissions = ["owner", "admin"];
+    if (shopId) {
+      return this.hasPermission(adminPermissions, Meteor.userId(), shopId);
+    }
     return this.hasPermission(adminPermissions);
   },
 
   hasDashboardAccess() {
     const dashboardPermissions = ["owner", "admin", "dashboard"];
     return this.hasPermission(dashboardPermissions);
+  },
+
+  hasShopSwitcherAccess() {
+    return this.hasDashboardAccessForAnyShop();
+  },
+
+  getSellerShopId: function (userId = Meteor.userId(), noFallback = false) {
+    if (userId) {
+      const group = Roles.getGroupsForUser(userId, "admin")[0];
+      if (group) {
+        return group;
+      }
+    }
+
+    if (noFallback) {
+      return false;
+    }
+
+    return this.getShopId();
   },
 
   getUserPreferences(packageName, preference, defaultValue) {
@@ -229,16 +375,90 @@ export default {
     });
   },
 
+  // primaryShopId is the first created shop. In a marketplace setting it's
+  // the shop that controls the marketplace and can see all other shops.
+  get primaryShopId() {
+    return this._primaryShopId.get();
+  },
+
+  set primaryShopId(shopId) {
+    this._primaryShopId.set(shopId);
+  },
+
+  getPrimaryShopId() {
+    return this.primaryShopId;
+  },
+
+  getPrimaryShopName() {
+    const shopId = this.getPrimaryShopId();
+    const shop = Shops.findOne({
+      _id: shopId
+    });
+
+    if (shop && shop.name) {
+      return shop.name;
+    }
+
+    // If we can't find the primaryShop return an empty string
+    return "";
+  },
+
+  // Primary Shop should probably not have a prefix (or should it be /shop?)
+  getPrimaryShopPrefix() {
+    return "/" + this.getSlug(this.getPrimaryShopName().toLowerCase());
+  },
+
+  getPrimaryShopSettings() {
+    const settings = Packages.findOne({
+      name: "core",
+      shopId: this.getPrimaryShopId()
+    }) || {};
+    return settings.settings || {};
+  },
+
+  getPrimaryShopCurrency() {
+    const shop = Shops.findOne({
+      _id: this.getPrimaryShopId()
+    });
+
+    return shop && shop.currency || "USD";
+  },
+
+  // shopId refers to the active shop. For most shoppers this will be the same
+  // as the primary shop, but for administrators this will usually be the shop
+  // they administer.
+  get shopId() {
+    return this._shopId.get();
+  },
+
   getShopId() {
-    return this.shopId;
+    return this.shopId || this.getUserPreferences("reaction", "activeShopId");
+  },
+
+  set shopId(id) {
+    this._shopId.set(id);
+  },
+
+  setShopId(id) {
+    if (id) {
+      this.shopId = id;
+      this.setUserPreferences("reaction", "activeShopId", id);
+    }
   },
 
   getShopName() {
-    return this.shopName;
+    const shopId = this.getShopId();
+    const shop = Shops.findOne({
+      _id: shopId
+    });
+    return shop && shop.name;
   },
 
   getShopPrefix() {
-    return "/" + this.getSlug(this.getShopName().toLowerCase());
+    const shopName = this.getShopName();
+    if (shopName) {
+      return "/" + this.getSlug(shopName.toLowerCase());
+    }
   },
 
   getShopSettings() {
@@ -268,7 +488,19 @@ export default {
   },
 
   getPackageSettings(name) {
-    return Packages.findOne({ name, shopId: this.getShopId() });
+    const shopId = this.getShopId();
+    const query = { name };
+
+    if (shopId) {
+      query.shopId = shopId;
+    }
+
+    return Packages.findOne(query);
+  },
+
+  getPackageSettingsWithOptions(options) {
+    const query = options;
+    return Packages.findOne(query);
   },
 
   allowGuestCheckout() {
@@ -280,11 +512,32 @@ export default {
     }
     return allowGuest;
   },
+  /**
+   * canInviteToGroup - client (similar to server/api canInviteToGroup)
+   * @summary checks if the user making the request is allowed to make invitation to that group
+   * @param {Object} options -
+   * @param {Object} options.group - group to invite to
+   * @param {Object} options.user - user object  making the invite (Meteor.user())
+   * @return {Boolean} -
+   */
+  canInviteToGroup(options) {
+    const { group } = options;
+    let { user } = options;
+    if (!user) {
+      user = Meteor.user();
+    }
+    const userPermissions = user.roles[group.shopId];
+    const groupPermissions = group.permissions;
 
-  getSellerShopId() {
-    return Roles.getGroupsForUser(this.userId, "admin");
+    // granting invitation right for user with `owner` role in a shop
+    if (this.hasPermission(["owner"], Meteor.userId(), group.shopId)) {
+      return true;
+    }
+
+    // checks that userPermissions includes all elements from groupPermissions
+    // we are not using Reaction.hasPermission here because it returns true if the user has at least one
+    return _.difference(groupPermissions, userPermissions).length === 0;
   },
-
   /**
    * @description showActionView
    *
@@ -304,8 +557,8 @@ export default {
     return Session.equals("admin/showActionViewDetail", true);
   },
 
-
   setActionView(viewData) {
+    this.hideActionViewDetail();
     if (viewData) {
       let viewStack;
 
@@ -374,10 +627,7 @@ export default {
 
     Session.set("admin/showActionView", true);
     Session.set("admin/showActionViewDetail", typeof open === "boolean" ? open : true);
-
-    if (viewData) {
-      Session.set("admin/detailView", [viewData]);
-    }
+    Session.set("admin/detailView", [viewData]);
   },
 
   pushActionViewDetail(viewData) {
@@ -485,12 +735,28 @@ export default {
     // valid application
     if (reactionApp) {
       const settingsData = _.find(reactionApp.registry, function (item) {
-        return item.provides === provides && item.template === template;
+        return item.provides && item.provides.includes(provides) && item.template === template;
       });
       return settingsData;
     }
     Logger.debug("getRegistryForCurrentRoute not found", template, provides);
     return {};
+  },
+
+  /**
+   * getMarketplaceSettingsFromPackages finds the enabled `reaction-marketplace` package for
+   * the primary shop and returns the settings
+   * @method getMarketplaceSettingsFromPackages
+   * @return {Object} The marketplace settings from the primary shop or undefined
+   */
+  getMarketplaceSettings() {
+    const marketplaceSettings = Packages.findOne({
+      name: "reaction-marketplace",
+      shopId: this.getPrimaryShopId(), // the primary shop always owns the marketplace settings
+      enabled: true // only use the marketplace settings if marketplace is enabled
+    });
+
+    return marketplaceSettings && marketplaceSettings.settings;
   }
 
 };

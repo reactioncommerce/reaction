@@ -7,9 +7,10 @@ import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
+import { Accounts, Cart, Groups, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
+import { sendUpdatedVerificationEmail } from "/server/api/core/accounts";
 
 
 /**
@@ -59,6 +60,74 @@ export function verifyAccount(email, token) {
   return false;
 }
 
+
+/**
+ * updateEmailAddress
+ * @summary update a users email address
+ * @param {String} email - user email
+ * @returns {Boolean} - returns boolean
+ */
+export function updateEmailAddress(email) {
+  check(email, String);
+
+  // Get users current Email address
+  const user = Meteor.user();
+
+  // Add email to user account
+  MeteorAccounts.addEmail(user._id, email);
+
+  return true;
+}
+
+
+/**
+ * removeEmailAddress
+ * @summary revmoe a users email address
+ * @param {String} email - user email
+ * @returns {Boolean} - returns boolean
+ */
+export function removeEmailAddress(email) {
+  check(email, String);
+
+  // Get user
+  const user = Meteor.user();
+
+  // Remove email address from user
+  MeteorAccounts.removeEmail(user._id, email);
+
+  // Verify new address
+  sendUpdatedVerificationEmail(user._id);
+
+  // Sync users and accounts collections
+  syncUsersAndAccounts();
+
+  return true;
+}
+
+
+/**
+ * syncUsersAndAccounts
+ * @summary syncs emails associated with profile between Users and Accounts collections
+ * @returns {Boolean} - returns boolean
+ */
+export function syncUsersAndAccounts() {
+  // Get user
+  const user = Meteor.user();
+
+  Accounts.update({
+    _id: user._id
+  }, {
+    $set: {
+      emails: [
+        user.emails[0]
+      ]
+    }
+  });
+
+  return true;
+}
+
+
 /**
  * @summary Returns the name of the geocoder method to use
  * @returns {string} Name of the Geocoder method to use
@@ -90,7 +159,7 @@ function getValidator() {
   // check if addressValidation is enabled but the package is disabled, don't do address validation
   let registryName;
   for (const registry of geoCoder.registry) {
-    if (registry.provides === "addressValidation") {
+    if (registry.provides && registry.provides.includes("addressValidation")) {
       registryName = registry.name;
     }
   }
@@ -246,6 +315,9 @@ export function addressBookAdd(address, accountUserId) {
   this.unblock();
 
   const userId = accountUserId || Meteor.userId();
+  const account = Accounts.findOne({
+    userId: userId
+  });
   // required default id
   if (!address._id) {
     address._id = Random.id();
@@ -287,24 +359,30 @@ export function addressBookAdd(address, accountUserId) {
     }
   }
 
-  Meteor.users.update(Meteor.userId(), {
+  const userUpdateQuery = {
     $set: {
-      "name": address.fullName,
       "profile.addressBook": address
     }
-  });
-
-  return Accounts.upsert({
-    userId: userId
-  }, {
+  };
+  const accountsUpdateQuery = {
     $set: {
-      name: address.fullName,
       userId: userId
     },
     $addToSet: {
       "profile.addressBook": address
     }
-  });
+  };
+
+  if (!account.name || _.get(account, "profile.addressBook.length", 0) === 0) {
+    userUpdateQuery.$set.name = address.fullName;
+    accountsUpdateQuery.$set.name = address.fullName;
+  }
+
+  Meteor.users.update(Meteor.userId(), userUpdateQuery);
+
+  return Accounts.upsert({
+    userId: userId
+  }, accountsUpdateQuery);
 }
 
 /**
@@ -400,22 +478,29 @@ export function addressBookUpdate(address, accountUserId, type) {
     }
   }
 
-  Meteor.users.update(Meteor.userId(), {
+  const userUpdateQuery = {
     $set: {
-      "name": address.fullName,
       "profile.addressBook": address
     }
-  });
+  };
+
+  const accountsUpdateQuery = {
+    $set: {
+      "profile.addressBook.$": address
+    }
+  };
+  // update the name when there is no name or the user updated his only shipping address
+  if (!account.name || _.get(account, "profile.addressBook.length", 0) <= 1) {
+    userUpdateQuery.$set.name = address.fullName;
+    accountsUpdateQuery.$set.name = address.fullName;
+  }
+
+  Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
   return Accounts.update({
     "userId": userId,
     "profile.addressBook._id": address._id
-  }, {
-    $set: {
-      "name": address.fullName,
-      "profile.addressBook.$": address
-    }
-  });
+  }, accountsUpdateQuery);
 }
 
 /**
@@ -456,19 +541,89 @@ export function addressBookRemove(addressId, accountUserId) {
 }
 
 /**
+ * inviteShopOwner
+ * invite a new user as owner of a new shop
+ * @param {Object} options -
+ * @param {String} options.email - email of invitee
+ * @param {String} options.name - name of invitee
+ * @returns {Boolean} returns true
+ */
+export function inviteShopOwner(options) {
+  check(options, Object);
+  check(options.email, String);
+  check(options.name, String);
+  const { name, email } = options;
+
+  if (!Reaction.hasPermission("admin", this.userId, Reaction.getPrimaryShopId())) {
+    throw new Meteor.Error("access-denied", "Access denied");
+  }
+  const user = Meteor.users.findOne({ "emails.address": email });
+  let userId;
+  if (user) {
+    // TODO: Verify email address
+    userId = user._id;
+  } else {
+    userId = MeteorAccounts.createUser({
+      email: email,
+      name: name,
+      profile: { invited: true }
+    });
+  }
+
+  const { shopId } = Meteor.call("shop/createShop", userId) || {};
+  const primaryShop = Reaction.getPrimaryShop();
+
+  // Compile Email with SSR
+  const tpl = "accounts/inviteShopOwner";
+  const subject = "accounts/inviteShopOwner/subject";
+
+  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+
+  const emailLogo = getEmailLogo(primaryShop);
+  const token = Random.id();
+  const currentUser = Meteor.users.findOne(this.userId);
+  const currentUserName = getCurrentUserName(currentUser);
+  // uses primaryShop's data (name, address etc) in email copy sent to new merchant
+  const dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
+
+  Meteor.users.update(userId, {
+    $set: {
+      "services.password.reset": { token, email, when: new Date() },
+      "name": name,
+      "profile.preferences.reaction.activeShopId": shopId
+    }
+  });
+
+  Reaction.Email.send({
+    to: email,
+    from: `${_.get(dataForEmail, "primaryShop.name")} <${_.get(dataForEmail, "primaryShop.emails[0].address")}>`,
+    subject: SSR.render(subject, dataForEmail),
+    html: SSR.render(tpl, dataForEmail)
+  });
+
+  return true;
+}
+
+/**
    * inviteShopMember
    * invite new admin users
    * (not consumers) to secure access in the dashboard
    * to permissions as specified in packages/roles
-   * @param {String} shopId - shop to invite user
-   * @param {String} email - email of invitee
-   * @param {String} name - name to address email
+   * @param {Object} options -
+   * @param {String} options.shopId - shop to invite user
+   * @param {String} options.groupId - groupId to invite user
+   * @param {String} options.email - email of invitee
+   * @param {String} options.name - name of invitee
    * @returns {Boolean} returns true
    */
-export function inviteShopMember(shopId, email, name) {
+export function inviteShopMember(options) {
+  const { shopId, email, name, groupId } = options;
+  check(options, Object);
   check(shopId, String);
   check(email, String);
   check(name, String);
+  check(groupId, String);
 
   this.unblock();
 
@@ -485,19 +640,47 @@ export function inviteShopMember(shopId, email, name) {
     throw new Meteor.Error("access-denied", "Access denied");
   }
 
-  const currentUser = Meteor.users.findOne(this.userId);
+  const group = Groups.findOne({ _id: groupId }) || {};
 
-  let currentUserName;
-
-  if (currentUser) {
-    if (currentUser.profile) {
-      currentUserName = currentUser.profile.name || currentUser.username;
-    } else {
-      currentUserName = currentUser.username;
-    }
-  } else {
-    currentUserName = "Admin";
+  // check to ensure that invitee has roles required to perform the invitation
+  if (!Reaction.canInviteToGroup({ group, user: Meteor.user() })) {
+    throw new Meteor.Error(403, "cannot invite to group");
   }
+
+  if (group.slug === "owner") {
+    throw new Meteor.Error(400, "cannot directly invite owner");
+  }
+
+  const currentUser = Meteor.users.findOne(this.userId);
+  const currentUserName = getCurrentUserName(currentUser);
+  const emailLogo = getEmailLogo(shop);
+  const token = Random.id();
+  const user = Meteor.users.findOne({ "emails.address": email });
+  let dataForEmail;
+  let userId;
+
+  if (user) {
+    userId = user._id; // since user exists, we promote the account
+    Meteor.call("group/addUser", userId, groupId);
+    dataForEmail = getDataForEmail({ shop, name, currentUserName, emailLogo });
+  } else {
+    userId = MeteorAccounts.createUser({
+      profile: { invited: true },
+      email,
+      name,
+      groupId
+    });
+    // set token to be used for first login for the new account
+    const tokenUpdate = {
+      "services.password.reset": { token, email, when: new Date() },
+      name
+    };
+    Meteor.users.update(userId, { $set: tokenUpdate });
+    // adds token to url in email sent
+    dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
+  }
+
+  dataForEmail.groupName = _.startCase(group.name);
 
   // Compile Email with SSR
   const tpl = "accounts/inviteShopMember";
@@ -505,93 +688,13 @@ export function inviteShopMember(shopId, email, name) {
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
-  // Get shop logo, if available. If not, use default logo from file-system
-  let emailLogo;
-  if (Array.isArray(shop.brandAssets)) {
-    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-    const mediaId = Media.findOne(brandAsset.mediaId);
-    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
-  } else {
-    emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
-  }
-
-  const token = Random.id();
-
-  const dataForEmail = {
-    // Shop Data
-    shop: shop,
-    contactEmail: shop.emails[0].address,
-    homepage: Meteor.absoluteUrl(),
-    emailLogo: emailLogo,
-    copyrightDate: moment().format("YYYY"),
-    legalName: shop.addressBook[0].company,
-    physicalAddress: {
-      address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
-      city: shop.addressBook[0].city,
-      region: shop.addressBook[0].region,
-      postal: shop.addressBook[0].postal
-    },
-    shopName: shop.name,
-    socialLinks: {
-      display: true,
-      facebook: {
-        display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
-        link: "https://www.facebook.com"
-      },
-      googlePlus: {
-        display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
-        link: "https://plus.google.com"
-      },
-      twitter: {
-        display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
-        link: "https://www.twitter.com"
-      }
-    },
-    // Account Data
-    user: Meteor.user(),
-    currentUserName,
-    invitedUserName: name,
-    url: MeteorAccounts.urls.enrollAccount(token)
-  };
-
-  const user = Meteor.users.findOne({
-    "emails.address": email
+  Reaction.Email.send({
+    to: email,
+    from: `${shop.name} <${shop.emails[0].address}>`,
+    subject: SSR.render(subject, dataForEmail),
+    html: SSR.render(tpl, dataForEmail)
   });
 
-  if (!user) {
-    const userId = MeteorAccounts.createUser({
-      email: email,
-      name: name,
-      profile: {
-        invited: true
-      }
-    });
-
-    const newUser = Meteor.users.findOne(userId);
-
-    if (!newUser) {
-      throw new Error("Can't find user");
-    }
-
-    Meteor.users.update(userId, {
-      $set: {
-        "services.password.reset": { token, email, when: new Date() },
-        "name": name
-      }
-    });
-
-    Reaction.Email.send({
-      to: email,
-      from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: SSR.render(subject, dataForEmail),
-      html: SSR.render(tpl, dataForEmail)
-    });
-  } else {
-    throw new Meteor.Error("409", "A user with this email address already exists");
-  }
   return true;
 }
 
@@ -663,9 +766,11 @@ export function sendWelcomeEmail(shopId, userId) {
     return true;
   }
 
+  const defaultEmail = user.emails.find((email => email.provides === "default"));
+  // Encode email address for URI
+  const encodedEmailAddress = encodeURIComponent(defaultEmail.address);
   // assign verification url
-  const prefix = Reaction.getShopPrefix().replace(/\//, "");
-  dataForEmail.verificationUrl = `${Meteor.absoluteUrl()}${prefix}/account/profile/verify?email=${user.emails[0].address}`;
+  dataForEmail.verificationUrl = `${Meteor.absoluteUrl()}account/profile/verify?email=${encodedEmailAddress}`;
   const userEmail = user.emails[0].address;
 
   let shopEmail;
@@ -761,6 +866,86 @@ export function setUserPermissions(userId, permissions, group) {
   }
 }
 
+// Get shop logo, if available. If not, use default logo from file-system
+function getEmailLogo(shop) {
+  let emailLogo;
+  if (Array.isArray(shop.brandAssets)) {
+    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
+    const mediaId = Media.findOne(brandAsset.mediaId);
+    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
+  } else {
+    emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+  }
+  return emailLogo;
+}
+
+function getCurrentUserName(currentUser) {
+  if (currentUser && currentUser.profile && currentUser.profile.name) {
+    return currentUser.profile.name;
+  }
+
+  if (currentUser.name) {
+    return currentUser.name;
+  }
+
+  if (currentUser.username) {
+    return currentUser.username;
+  }
+
+  return "Admin";
+}
+
+function getDataForEmail(options) {
+  const { shop, currentUserName, token, emailLogo, name } = options;
+  const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
+
+  return {
+    primaryShop: primaryShop, // Primary shop data - may or may not be the same as shop
+    shop: shop, // Shop Data
+    contactEmail: _.get(shop, "emails[0].address"),
+    homepage: Meteor.absoluteUrl(),
+    emailLogo: emailLogo,
+    copyrightDate: moment().format("YYYY"),
+    legalName: _.get(shop, "addressBook[0].company"),
+    physicalAddress: {
+      address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
+      city: _.get(shop, "addressBook[0].city"),
+      region: _.get(shop, "addressBook[0].region"),
+      postal: _.get(shop, "addressBook[0].postal")
+    },
+    shopName: shop.name,
+    socialLinks: {
+      display: true,
+      facebook: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+        link: "https://www.facebook.com"
+      },
+      googlePlus: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+        link: "https://plus.google.com"
+      },
+      twitter: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+        link: "https://www.twitter.com"
+      }
+    },
+    user: Meteor.user(), // Account Data
+    currentUserName,
+    invitedUserName: name,
+    url: getEmailUrl(token)
+  };
+
+  function getEmailUrl(userToken) {
+    if (userToken) {
+      return MeteorAccounts.urls.enrollAccount(userToken);
+    }
+    return Meteor.absoluteUrl();
+  }
+}
+
 /**
  * accounts/createFallbackLoginToken
  * @returns {String} returns a new loginToken for current user,
@@ -788,9 +973,12 @@ Meteor.methods({
   "accounts/addressBookUpdate": addressBookUpdate,
   "accounts/addressBookRemove": addressBookRemove,
   "accounts/inviteShopMember": inviteShopMember,
+  "accounts/inviteShopOwner": inviteShopOwner,
   "accounts/sendWelcomeEmail": sendWelcomeEmail,
   "accounts/addUserPermissions": addUserPermissions,
   "accounts/removeUserPermissions": removeUserPermissions,
   "accounts/setUserPermissions": setUserPermissions,
-  "accounts/createFallbackLoginToken": createFallbackLoginToken
+  "accounts/createFallbackLoginToken": createFallbackLoginToken,
+  "accounts/updateEmailAddress": updateEmailAddress,
+  "accounts/removeEmailAddress": removeEmailAddress
 });

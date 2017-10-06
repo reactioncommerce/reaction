@@ -1,22 +1,45 @@
+import { loadRegisteredComponents } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Accounts } from "meteor/accounts-base";
-import { Reaction } from "/client/api";
+import { Shops } from "/lib/collections";
 import { initBrowserRouter } from "./browserRouter";
+import { Reaction } from "/client/api";
 import { Router } from "../lib";
 
 Meteor.startup(function () {
+  loadRegisteredComponents();
+
+  // Subscribe to router required publications
+  // Note: Although these are subscribed to by the subscription manager in "/modules/client/core/subscriptions",
+  // using the subscriptions manager sometimes causes issues when signing in/out where you may seee a grey screen
+  // or missing shop data throughout the app.
+  // TODO: Revisit subscriptions manager usage and waiting for shops to exist client side before rendering.
+  const primaryShopSub = Meteor.subscribe("PrimaryShop");
+  const merchantShopSub = Meteor.subscribe("MerchantShops");
+  const packageSub = Meteor.subscribe("Packages");
+
   Tracker.autorun(function () {
     // initialize client routing
-
-    if (Reaction.Subscriptions.Packages.ready() && Reaction.Subscriptions.Shops.ready()) {
+    if (
+      primaryShopSub.ready() &&
+      merchantShopSub.ready() &&
+      packageSub.ready() &&
+      // In addition to the subscriptions, shopId must be defined before we proceed
+      // to avoid conditions where the subscriptions may be ready, but the cached
+      // shopId has yet been set.
+      // Reaction.primaryShopId is a reactive data source
+      Reaction.primaryShopId !== null
+    ) {
+      const shops = Shops.find({}).fetch();
       //  initBrowserRouter calls Router.initPackageRoutes which calls shopSub.ready which is reactive,
       //  So we have to call initBrowserRouter in a non reactive context.
-      //  Otherwise initBrowserRouter is called twice each time a Reaction.Subscriptions.Packages.ready() and
-      //  Reaction.Subscriptions.Shops.ready() are true
-
-      Tracker.nonreactive(()=> {
-        initBrowserRouter();
+      //  Otherwise initBrowserRouter is called twice each time a subscription becomes "ready"
+      Tracker.nonreactive(() => {
+        // Make sure we have shops before we try to make routes for them
+        if (Array.isArray(shops) && shops.length)  {
+          initBrowserRouter();
+        }
       });
     }
   });
@@ -29,8 +52,12 @@ Meteor.startup(function () {
   // has already been generated (existing user)
   //
   Accounts.onLogin(() => {
+    const shops = Shops.find({}).fetch();
+
     if (Meteor.loggingIn() === false && Router._routes.length > 0) {
-      initBrowserRouter();
+      if (Array.isArray(shops) && shops.length)  {
+        initBrowserRouter();
+      }
     }
   });
 });

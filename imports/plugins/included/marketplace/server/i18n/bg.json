@@ -1,0 +1,23 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Станете продавач",
+        "errorCannotCreateShop": "Не можа да се създаде магазин за текущия потребител {{user}}",
+        "yourShopIsReady": "Магазинът ви вече е готов!"
+      },
+      "app": {
+        "shops": "Магазини",
+        "myShop": "Магазинът ми"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Пазарните настройки бяха запазени успешно!",
+          "dashboardMarketplaceSettingsFailed": "Запазването на настройките за Marketplace не бе успешно"
+        }
+      }
+    }
+  }
+}]

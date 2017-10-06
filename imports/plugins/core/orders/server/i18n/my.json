@@ -3,14 +3,27 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "အမိန့်တွေ့မ",
+      "order": {
+        "cancelOrder": "သင်သည်ဤအမိန့်ကိုပယ်ဖျက်ချင်ပါသလား?",
+        "cancelOrderLabel": "အော်ဒါဖျက်သိမ်းသည်",
+        "cancelOrderThenRestock": "ဟုတ်ကဲ့, restock",
+        "cancelOrderNoRestock": "ဟုတ်ကဲ့, ဒါပေမယ့်ဘယ်သူမျှမ restocking"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "အမိန့်"
         },
+        "orderRisk": {
+          "high": "မြင့်မားသောအန္တရာယ်",
+          "riskCapture": "အန္တရာယ်တာဝန်ခံနှင့်အတူအမိန့် Capture?",
+          "riskCaptureWarn": "သင်တစ်ဦးတာဝန်ခံအန္တရာယ်နှင့်အတူအမိန့်ကိုဖမ်းယူဖို့အကြောင်းရှိပါသည်။ ဆက်လက်မလုပ်ဆောင်မီအတည်ပြုပါ။"
+        },
         "dashboard": {
           "ordersLabel": "အမိန့်",
           "ordersTitle": "အမိန့်",
-          "ordersDescription": "သင့်ရဲ့အမိန့်ဖြည့်ဆည်း"
+          "ordersDescription": "သင့်ရဲ့အမိန့်ဖြည့်ဆည်း",
+          "clearSearch": "ရှင်းလင်းသော"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -27,11 +40,26 @@
             "cardTitle": "ဝယ်ကုန်စာရင်း",
             "adjustedTotal": "Adjustments စုစုပေါင်း",
             "capturedTotal": "ဖမ်းမိစုစုပေါင်း",
-            "refund": "ပြန်ပေးခြင်း"
+            "refund": "ပြန်ပေးခြင်း",
+            "refundLabel": "ပြန်အမ်းငွေအဘို့",
+            "refundItem": "items",
+            "refundItemAmount": "စုစုပေါင်း ကျသင့်ငွေ",
+            "refundTotal": "ပြန်အမ်းငွေစုစုပေါင်း"
           },
           "fulfillment": "ပွညျ့စုံ",
           "orderDetails": "အမိန့်အသေးစိတ်",
           "shipmentTracking": "တင်ပို့"
+        },
+        "table": {
+          "headers": {
+            "name": "နာမကိုအမှီ",
+            "email": "အီးမေးလ်က",
+            "date": "နေ့စှဲ",
+            "id": "ID ကို",
+            "total": "စုစုပေါင်း ကျသင့်ငွေ",
+            "shipping": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း",
+            "status": "status"
+          }
         }
       }
     }

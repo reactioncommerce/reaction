@@ -13,7 +13,7 @@ Reaction.registerPackage({
     description: "Email settings",
     icon: "fa fa-envelope-o",
     name: "email/settings",
-    provides: "settings",
+    provides: ["settings"],
     workflow: "coreEmailWorkflow",
     template: "emailSettings",
     meta: {

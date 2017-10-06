@@ -1,0 +1,13 @@
+<template name="marketplaceShopSettings">
+  {{#autoForm collection=Collections.Packages schema=MarketplacePackageConfig
+              doc=packageData id="marketplaceOptionsForm" type="update" autosave=true}}
+    {{> afFieldInput name="settings.public.allowMerchantSignup"}}
+    <!-- TODO: As we add optional functionality to marketplace, add options here -->
+  {{/autoForm}}
+
+  {{schema}}
+
+  <div class="settings-invite-owner">
+    {{> React component=inviteOwner }}
+  </div>
+</template>

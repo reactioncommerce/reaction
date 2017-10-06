@@ -3,14 +3,27 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Comanda nu a fost găsită",
+      "order": {
+        "cancelOrder": "Doriți să anulați această comandă?",
+        "cancelOrderLabel": "Anulați comanda",
+        "cancelOrderThenRestock": "Da, și restock",
+        "cancelOrderNoRestock": "Da, dar fără repopulare"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "Istoric comenzi"
         },
+        "orderRisk": {
+          "high": "Risc ridicat",
+          "riskCapture": "Capturați comanda cu taxă de risc?",
+          "riskCaptureWarn": "Sunteți pe punctul de a capta comanda cu un risc de taxă. Confirmați înainte de a continua."
+        },
         "dashboard": {
           "ordersLabel": "Istoric comenzi",
           "ordersTitle": "Istoric comenzi",
-          "ordersDescription": "Onora comenzile"
+          "ordersDescription": "Onora comenzile",
+          "clearSearch": "clar"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -27,11 +40,26 @@
             "cardTitle": "Factură",
             "adjustedTotal": "Totalul ajustat",
             "capturedTotal": "Totalul capturat",
-            "refund": "Restituire"
+            "refund": "Restituire",
+            "refundLabel": "Pentru rambursare",
+            "refundItem": "articole",
+            "refundItemAmount": "Total",
+            "refundTotal": "Suma totală de rambursare"
           },
           "fulfillment": "Onorarea comenzilor",
           "orderDetails": "Detalii Comandă",
           "shipmentTracking": "Expediere"
+        },
+        "table": {
+          "headers": {
+            "name": "Nume",
+            "email": "Email",
+            "date": "Data",
+            "id": "ID",
+            "total": "Total",
+            "shipping": "livrare",
+            "status": "Stare"
+          }
         }
       }
     }

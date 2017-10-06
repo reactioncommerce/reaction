@@ -1,4 +1,5 @@
 import React from "react";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import IconButton from "./iconButton";
 
 /**
@@ -25,5 +26,7 @@ const EditButton = (props) => {
     />
   );
 };
+
+registerComponent("EditButton", EditButton);
 
 export default EditButton;

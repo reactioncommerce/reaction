@@ -1,4 +1,5 @@
 import Sortable from "sortablejs";
+import { Components } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
 import { Meteor } from "meteor/meteor";
@@ -7,7 +8,6 @@ import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Products, Media } from "/lib/collections";
-import { EditButton, VisibilityButton } from "/imports/plugins/core/ui/client/components";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
@@ -164,7 +164,7 @@ Template.variantList.helpers({
     const parentVariant = Products.findOne(variant.ancestors[1]);
 
     return {
-      component: EditButton,
+      component: Components.EditButton,
       toggleOn: variantIsInActionView(variant._id),
       onClick() {
         ReactionProduct.setCurrentVariant(variant._id);
@@ -186,7 +186,7 @@ Template.variantList.helpers({
     // const parentVariant = Products.findOne(variant.ancestors[1]);
 
     return {
-      component: VisibilityButton,
+      component: Components.VisibilityButton,
       toggleOn: variant.isVisible,
       onClick() {
         ReactionProduct.toggleVisibility(variant);

@@ -3,14 +3,27 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "لم يتم العثور على الطلب",
+      "order": {
+        "cancelOrder": "هل تريد إلغاء هذا الطلب؟",
+        "cancelOrderLabel": "الغاء الطلب",
+        "cancelOrderThenRestock": "نعم، وإعادة تخزين",
+        "cancelOrderNoRestock": "نعم، ولكن لا إعادة تخزين"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "أوامر"
         },
+        "orderRisk": {
+          "high": "مخاطرة عالية",
+          "riskCapture": "أمر القبض مع تهمة المخاطر؟",
+          "riskCaptureWarn": "كنت على وشك التقاط النظام مع خطر تهمة. تأكيد قبل المتابعة."
+        },
         "dashboard": {
           "ordersLabel": "أوامر",
           "ordersTitle": "أوامر",
-          "ordersDescription": "تلبية طلباتكم"
+          "ordersDescription": "تلبية طلباتكم",
+          "clearSearch": "صافي"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -27,11 +40,26 @@
             "cardTitle": "فاتورة",
             "adjustedTotal": "إجمالي المعدل",
             "capturedTotal": "الإجمالي المقبوض",
-            "refund": "إعادة مال"
+            "refund": "إعادة مال",
+            "refundLabel": "لاسترداد الأموال",
+            "refundItem": "العناصر",
+            "refundItemAmount": "جميع",
+            "refundTotal": "رد المبلغ الإجمالي"
           },
           "fulfillment": "تلبية الطلب",
           "orderDetails": "تفاصيل الطلب",
           "shipmentTracking": "شحنة"
+        },
+        "table": {
+          "headers": {
+            "name": "اسم",
+            "email": "إعدادات البريد الإلكتروني",
+            "date": "التاريخ",
+            "id": "هوية شخصية",
+            "total": "جميع",
+            "shipping": "الشحن",
+            "status": "حالة"
+          }
         }
       }
     }

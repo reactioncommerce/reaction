@@ -1,0 +1,14 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "productGrid": {
+        "noProductsFound": "Ürün Bulunamadı"
+      },
+      "productDetailEdit": {
+        "variantDetails": "varyant Detayları"
+      }
+    }
+  }
+}]

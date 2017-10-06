@@ -3,14 +3,27 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Auftrag nicht gefunden",
+      "order": {
+        "cancelOrder": "Möchten Sie diese Bestellung stornieren?",
+        "cancelOrderLabel": "Bestellung stornieren",
+        "cancelOrderThenRestock": "Ja, und wieder aufzutragen",
+        "cancelOrderNoRestock": "Ja, aber keine Aufstockung"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "Bestellungen"
         },
+        "orderRisk": {
+          "high": "Hohes Risiko",
+          "riskCapture": "Capture Order mit Risikogebühr?",
+          "riskCaptureWarn": "Sie sind dabei, die Bestellung mit einem Gebührenrisiko zu erfassen. Vorher bestätigen."
+        },
         "dashboard": {
           "ordersLabel": "Bestellungen",
           "ordersTitle": "Bestellungen",
-          "ordersDescription": "Erfüllen Sie sich Ihre Aufträge"
+          "ordersDescription": "Erfüllen Sie sich Ihre Aufträge",
+          "clearSearch": "Klar"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -27,11 +40,26 @@
             "cardTitle": "Rechnung",
             "adjustedTotal": "Angepasste Summe",
             "capturedTotal": "Erfasst gesamt",
-            "refund": "Rückerstattung"
+            "refund": "Rückerstattung",
+            "refundLabel": "Für Rückerstattung",
+            "refundItem": "Artikel",
+            "refundItemAmount": "Summe",
+            "refundTotal": "Rückerstattung Gesamt"
           },
           "fulfillment": "Abwicklung",
           "orderDetails": "Bestellungs-Details",
           "shipmentTracking": "Versand"
+        },
+        "table": {
+          "headers": {
+            "name": "Name",
+            "email": "E-Mail-Einstellungen",
+            "date": "Datum",
+            "id": "Identifikation",
+            "total": "Summe",
+            "shipping": "Versand",
+            "status": "Status"
+          }
         }
       }
     }

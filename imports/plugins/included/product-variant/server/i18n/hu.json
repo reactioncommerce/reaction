@@ -1,0 +1,14 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "productGrid": {
+        "noProductsFound": "Nem található termékek"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Variant Részletek"
+      }
+    }
+  }
+}]

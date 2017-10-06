@@ -1,18 +1,18 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
-class CardToobar extends Component {
-  static propTypes = {
-    children: PropTypes.node
-  }
+const CardToolbar = ({ children }) => (
+  <div className="rui card-toolbar">
+    {children}
+  </div>
+);
 
-  render() {
-    return (
-      <div className="rui card-toolbar">
-        {this.props.children}
-      </div>
-    );
-  }
-}
 
-export default CardToobar;
+CardToolbar.propTypes = {
+  children: PropTypes.node
+};
+
+registerComponent("CardToolbar", CardToolbar);
+
+export default CardToolbar;

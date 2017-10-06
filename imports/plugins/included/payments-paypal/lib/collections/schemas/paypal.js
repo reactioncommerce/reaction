@@ -3,7 +3,7 @@ import { PackageConfig } from "/lib/collections/schemas/registry";
 
 export const PaypalPackageConfig = new SimpleSchema([
   PackageConfig, {
-    "settings.express_auth_and_capture": {
+    "settings.expressAuthAndCapture": {
       type: Boolean,
       label: "Capture at time of Auth",
       defaultValue: false
@@ -14,7 +14,7 @@ export const PaypalPackageConfig = new SimpleSchema([
     },
     "settings.express.support.$": {
       type: String,
-      allowedValues: ["authorize", "de-authorize", "capture", "refund"]
+      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
     },
     "settings.payflow.support": {
       type: Array,
@@ -98,4 +98,3 @@ export const PaypalPayment = new SimpleSchema({
     label: "CVV"
   }
 });
-

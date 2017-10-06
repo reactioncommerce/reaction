@@ -1,2 +1,2 @@
-export { default as NotificationContainer } from "./notificationContainer";
-export { default as NotificationRouteContainer } from "./notificationRouteContainer";
+export { default as NotificationContainer } from "./notification";
+export { default as NotificationRouteContainer } from "./notificationRoute";

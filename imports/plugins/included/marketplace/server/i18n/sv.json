@@ -1,0 +1,23 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Bli en säljare",
+        "errorCannotCreateShop": "Kunde inte skapa butik för nuvarande användare {{user}}",
+        "yourShopIsReady": "Din butik är nu klar!"
+      },
+      "app": {
+        "shops": "butiker",
+        "myShop": "Min butik"
+      },
+      "admin": {
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Marknadsföringsinställningar har sparats!",
+          "dashboardMarketplaceSettingsFailed": "Misslyckades med att spara Marketplace-inställningar"
+        }
+      }
+    }
+  }
+}]

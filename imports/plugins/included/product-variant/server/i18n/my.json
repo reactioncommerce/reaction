@@ -1,0 +1,14 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "productGrid": {
+        "noProductsFound": "ထုတ်ကုန်များတွေ့သည်အဘယ်သူမျှမ"
+      },
+      "productDetailEdit": {
+        "variantDetails": "မူကွဲအသေးစိတ်"
+      }
+    }
+  }
+}]

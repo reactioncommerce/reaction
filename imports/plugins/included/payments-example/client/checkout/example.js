@@ -56,13 +56,13 @@ AutoForm.addHooks("example-payment-form", {
       type: Reaction.getCardType(doc.cardNumber)
     };
     const storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
-    Meteor.subscribe("Packages");
+    Meteor.subscribe("Packages", Reaction.getShopId());
     const packageData = Packages.findOne({
       name: "example-paymentmethod",
       shopId: Reaction.getShopId()
     });
     Example.authorize(form, {
-      total: Cart.findOne().cartTotal(),
+      total: Cart.findOne().getTotal(),
       currency: Shops.findOne().currency
     }, function (error, transaction) {
       submitting = false;
@@ -80,6 +80,7 @@ AutoForm.addHooks("example-payment-form", {
             storedCard: storedCard,
             method: "credit",
             transactionId: transaction.transactionId,
+            riskLevel: transaction.riskLevel,
             currency: transaction.currency,
             amount: transaction.amount,
             status: transaction.status,

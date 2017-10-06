@@ -1,7 +1,3 @@
-import LocalizationSettingsContainer from "./containers/localizationSettingsContainer";
-import { registerComponent } from "/imports/plugins/core/layout/lib/components";
-
-registerComponent({
-  name: "i18nSettings",
-  component: LocalizationSettingsContainer
-});
+export { default as CurrencyDropdown } from "./containers/currencyDropdown";
+export { default as LanguageDropdown } from "./containers/languageDropdown";
+export { default as LocalizationSettings } from "./containers/localizationSettings";

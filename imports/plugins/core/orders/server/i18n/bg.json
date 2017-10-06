@@ -3,14 +3,27 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Поръчката не е намерена",
+      "order": {
+        "cancelOrder": "Искате ли да анулирате тази поръчка?",
+        "cancelOrderLabel": "Отмяна на поръчката",
+        "cancelOrderThenRestock": "Да, и отново",
+        "cancelOrderNoRestock": "Да, но без зареждане"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "Поръчки"
         },
+        "orderRisk": {
+          "high": "Висок риск",
+          "riskCapture": "Поръчка за улавяне с риск?",
+          "riskCaptureWarn": "На път сте да запишете поръчката с риск от зареждане. Потвърдете, преди да продължите."
+        },
         "dashboard": {
           "ordersLabel": "Поръчки",
           "ordersTitle": "Поръчки",
-          "ordersDescription": "Изпълним вашите поръчки"
+          "ordersDescription": "Изпълним вашите поръчки",
+          "clearSearch": "ясно"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -27,11 +40,26 @@
             "cardTitle": "фактура",
             "adjustedTotal": "Корегирана сума",
             "capturedTotal": "Одобрена сума",
-            "refund": "Възстановяване"
+            "refund": "Възстановяване",
+            "refundLabel": "За възстановяване на средства",
+            "refundItem": "Предмети",
+            "refundItemAmount": "Обща сума",
+            "refundTotal": "Общо възнаграждение"
           },
           "fulfillment": "изпълняване",
           "orderDetails": "подробности за поръчката",
           "shipmentTracking": "пратка"
+        },
+        "table": {
+          "headers": {
+            "name": "Име",
+            "email": "Email настройки",
+            "date": "Дата",
+            "id": "документ за самоличност",
+            "total": "Обща сума",
+            "shipping": "Доставка",
+            "status": "Статус"
+          }
         }
       }
     }

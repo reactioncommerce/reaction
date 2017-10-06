@@ -29,6 +29,7 @@
       "checkout": {
         "completeYourOrder": "Siparişinizi tamamlamak",
         "paymentMethod": {
+          "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "PayPal ile öde",
           "expressNotConfigured": "Paypal Express yapılandırılmamış.",
           "expressNotAvailable": "Paypal Express mevcut değil",

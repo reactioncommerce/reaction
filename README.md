@@ -52,6 +52,17 @@ Release documentation across multiple branches can be found at <https://docs.rea
 
 The Reaction documentation source is located in the [reaction-docs](https://github.com/reactioncommerce/reaction-docs) repository, while the documentation site is in the [reactioncommerce/redoc](https://github.com/reactioncommerce/redoc) application.
 
+### Community
+
+There are many ways to get connected with the Reaction core team and community:
+
+-   [Reaction Commerce Gitter chat](https://gitter.im/reactioncommerce/reaction)
+-   [Reaction Commerce forum](https://forums.reactioncommerce.com/)
+-   [Reaction Community calls](http://getrxn.io/2rcCal): Join our biweekly community calls every other Wednesday at 7AM PST/10AM EST. Subscribe to our [Reaction Community Google Calendar](http://getrxn.io/2rcCal) to RSVP to the next call and check out the [agenda](https://docs.google.com/document/d/1PwenrammgQJpQfFoUUJZ96i_JJYCM_4glAjB1_ZzgwA/edit?usp=sharing).
+-   [Reaction Action](http://getrxn.io/2rcCal): RSVP for the monthly Reaction Action livestreams.
+
+Our [community guidelines](https://docs.reactioncommerce.com/reaction-docs/master/guidelines) can be found in our [documentation](https://docs.reactioncommerce.com/).
+
 ### Contributing
 
 Star us on GitHub—it helps!
@@ -61,6 +72,7 @@ Interested in participating in the development of Reaction? That's really great!
 The [Reaction Gitter room](https://gitter.im/reactioncommerce/reaction) and [forum](https://forums.reactioncommerce.com/) are good places to engage with core contributors, the community, and to get familiar with Reaction.  
 
 Check out the [Issues](https://github.com/reactioncommerce/reaction/issues) page, and if you find something you want to work on, let us know in the comments. If you're interested in a particular [project](https://github.com/reactioncommerce/reaction/projects) and you aren’t sure where to begin, feel free to ask. Start small!
+
 
 If your contribution doesn't fit with an existing issue, go ahead and [create an Issue](https://github.com/reactioncommerce/reaction/issues/new) before submitting a [Pull Request](https://help.github.com/articles/about-pull-requests/). This will allow the Reaction team to give feedback if necessary.
 

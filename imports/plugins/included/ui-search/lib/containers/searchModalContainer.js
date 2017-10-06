@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Roles } from "meteor/alanning:roles";
 import _ from "lodash";
 import { Reaction } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
 import * as Collections from "/lib/collections";
 import SearchModal from "../components/searchModal";
 
@@ -30,6 +30,7 @@ class SearchModalContainer extends Component {
     this.handleToggle = this.handleToggle.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.dep = new Tracker.Dependency;
+    this.getWorkflowStatus = this.getWorkflowStatus.bind(this);
   }
 
   componentDidMount() {
@@ -150,7 +151,8 @@ class SearchModalContainer extends Component {
     }
 
     Reaction.Router.go("dashboard/orders", {}, {
-      _id: orderId
+      _id: orderId,
+      status: this.getWorkflowStatus(event)
     });
     this.handleChildUnmount();
   }
@@ -179,6 +181,17 @@ class SearchModalContainer extends Component {
 
   handleChildUnmount = () =>  {
     this.setState({ renderChild: false });
+  }
+
+  getWorkflowStatus(order) {
+    let status = "new";
+    if (order.currentWorkflowStatus === "coreOrderWorkflow/processing") {
+      status = "processing";
+    }
+    if (order.currentWorkflowStatus === "coreOrderWorkflow/completed") {
+      status = "completed";
+    }
+    return status;
   }
 
   render() {

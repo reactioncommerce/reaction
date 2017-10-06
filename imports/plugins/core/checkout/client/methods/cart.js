@@ -7,6 +7,9 @@ import { Cart } from "/lib/collections";
 // Client Cart Methods
 // Stubs with matching server methods.
 Meteor.methods({
+  // Not used for stripe connect integration
+  // Under consideration for deprecation and migrating other payment Packages
+  // to payments-stripe style methods
   "cart/submitPayment": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     const checkoutCart = Cart.findOne({
@@ -16,11 +19,11 @@ Meteor.methods({
     const cart = _.clone(checkoutCart);
     const cartId = cart._id;
     const invoice = {
-      shipping: cart.cartShipping(),
-      subtotal: cart.cartSubTotal(),
-      taxes: cart.cartTaxes(),
-      discounts: cart.cartDiscounts(),
-      total: cart.cartTotal()
+      shipping: cart.getShippingTotal(),
+      subtotal: cart.getSubTotal(),
+      taxes: cart.getTaxTotal(),
+      discounts: cart.getDiscounts(),
+      total: cart.getTotal()
     };
     // we won't actually close the order at this stage.
     // we'll just update the workflow and billing data where

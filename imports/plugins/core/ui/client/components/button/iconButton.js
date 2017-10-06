@@ -1,71 +1,63 @@
-import React, { Component } from "react";
+import React from "react";
 import classnames from "classnames";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import Button from "./button.jsx";
 
-/* eslint react/prop-types: 0 */
-// TODO validate prop-types in IconButton
+const IconButton = ({ icon, onIcon, ...otherProps }) => {
+  // otherProps.buttonKind === 'flat'
+  // default should be default, flat is new css that makes the background transparent.
+  let buttonClassName;
 
-class IconButton extends Component {
-  static defaultProps = {
-    bezelStyle: "solid"
-  }
-
-  render() {
-    const {
-      icon,
-      onIcon,
-      ...otherProps
-    } = this.props;
-
-
-    // this.props.buttonKind === 'flat'
-    // default should be default, flat is new css that makes the bakcground tarnsparent
-    let buttonClassName;
-
-    if (this.props.kind === "flat") {
-      buttonClassName = classnames({
-        "icon": true,
-        "icon-only": true
-      });
-    } else if (this.props.kind === "mediaGalleryStatus") {
-      buttonClassName = classnames({
-        "icon": true,
-        "icon-only": true,
-        "status-badge": true
-      });
-    } else {
-      buttonClassName = classnames({
-        "icon-only": true,
-        "variant-edit": true
-      });
-    }
-
-    const iconClassName = classnames({
-      "fa-lg": true,
-      [icon]: true
+  if (otherProps.kind === "flat") {
+    buttonClassName = classnames({
+      "icon": true,
+      "icon-only": true
     });
-
-    let onIconClassName;
-
-    if (onIcon) {
-      onIconClassName = classnames({
-        "fa-lg": true,
-        [onIcon]: true
-      });
-    }
-
-    return (
-      <Button
-        className={buttonClassName}
-        icon={iconClassName}
-        onIcon={onIconClassName}
-        containerStyle={{ display: "flex", width: "100%", justifyContent: "center" }}
-        {...otherProps}
-      />
-    );
+  } else if (otherProps.kind === "mediaGalleryStatus") {
+    buttonClassName = classnames({
+      "icon": true,
+      "icon-only": true,
+      "status-badge": true
+    });
+  } else {
+    buttonClassName = classnames({
+      "icon-only": true,
+      "variant-edit": true
+    });
   }
-}
 
-IconButton.propTypes = Object.assign({}, Button.propTypes);
+  const iconClassName = classnames({
+    "fa-lg": true,
+    [icon]: true
+  });
+
+  let onIconClassName;
+
+  if (onIcon) {
+    onIconClassName = classnames({
+      "fa-lg": true,
+      [onIcon]: true
+    });
+  }
+
+  return (
+    <Button
+      className={buttonClassName}
+      icon={iconClassName}
+      onIcon={onIconClassName}
+      containerStyle={{ display: "flex", width: "100%", justifyContent: "center" }}
+      kind
+      {...otherProps}
+    />
+  );
+};
+
+IconButton.propTypes = { ...Button.propTypes };
+
+IconButton.defaultProps = {
+  bezelStyle: "solid"
+};
+
+registerComponent("IconButton", IconButton);
 
 export default IconButton;

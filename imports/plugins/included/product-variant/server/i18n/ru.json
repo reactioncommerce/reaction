@@ -1,0 +1,14 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "productGrid": {
+        "noProductsFound": "Нет продуктов"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Варианты деталей"
+      }
+    }
+  }
+}]

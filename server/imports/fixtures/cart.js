@@ -29,8 +29,9 @@ export function getCartItem(options = {}) {
   const defaults = {
     _id: Random.id(),
     productId: product._id,
-    shopId: getShop()._id,
+    shopId: options.shopId || getShop()._id,
     quantity: _.random(1, selectedOption.inventoryQuantity),
+    product: product,
     variants: selectedOption,
     title: product.title
   };
@@ -53,6 +54,7 @@ export function createCart(productId, variantId) {
     productId: product._id,
     shopId: getShop()._id,
     quantity: 1,
+    product: product,
     variants: variant,
     title: product.title
   };
@@ -66,12 +68,14 @@ export function createCart(productId, variantId) {
     shipping: [
       {
         _id: Random.id(),
+        shopId: getShop()._id,
         address: getAddress()
       }
     ],
     billing: [
       {
         _id: Random.id(),
+        shopId: getShop()._id,
         address: getAddress()
       }
     ],
@@ -147,18 +151,28 @@ export default function () {
     ]
   };
 
+  const cartMultiItems = {
+    items: [getSingleCartItem(), getSingleCartItem()]
+  };
+
+  const cartMultiShopItems = {
+    items: [getSingleCartItem(), getSingleCartItem({ shopId: Random.id() })]
+  };
+
   const addressForOrder = getAddress();
   const cartToOrder = {
     shopId: getShop()._id,
     shipping: [
       {
         _id: Random.id(),
+        shopId: getShop()._id,
         address: addressForOrder
       }
     ],
     billing: [
       {
         _id: Random.id(),
+        shopId: getShop()._id,
         address: addressForOrder
       }
     ],
@@ -183,5 +197,7 @@ export default function () {
   Factory.define("anonymousCart", Cart, Object.assign({}, cart, anonymousCart));
   Factory.define("cartOne", Cart, Object.assign({}, cart, cartToOrder, cartOne));
   Factory.define("cartTwo", Cart, Object.assign({}, cart, cartToOrder, cartTwo));
+  Factory.define("cartMultiItems", Cart, Object.assign({}, cart, cartToOrder, cartMultiItems));
+  Factory.define("cartMultiShop", Cart, Object.assign({}, cart, cartToOrder, cartMultiShopItems));
   Factory.define("cartNoItems", Cart, Object.assign({}, cart, cartToOrder, cartNoItems));
 }

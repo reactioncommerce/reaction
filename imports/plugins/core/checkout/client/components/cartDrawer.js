@@ -1,43 +1,40 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CartSubTotals from "../container/cartSubTotalContainer";
-import CartItems from "./cartItems";
+import { Components } from "@reactioncommerce/reaction-components";
 
-const cartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, handleImage, handleLowInventory, handleShowProduct }) => {
-  return (
-    <div>
-      <div className="cart-drawer-swiper-container">
-        <div className="cart-drawer-swiper-wrapper">
-          <div className="cart-drawer-swiper-slide">
-            <CartSubTotals />
-          </div>
-          {productItems.map(item => {
-            return (
-              <div className="cart-drawer-swiper-slide" key={item._id}>
-                <CartItems
-                  item={item}
-                  pdpPath={pdpPath}
-                  handleLowInventory={handleLowInventory}
-                  handleImage={handleImage}
-                  handleRemoveItem={handleRemoveItem}
-                  handleShowProduct={handleShowProduct}
-                />
-              </div>
-            );
-          })}
+const CartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, handleImage, handleLowInventory, handleShowProduct }) => (
+  <div>
+    <div className="cart-drawer-swiper-container">
+      <div className="cart-drawer-swiper-wrapper">
+        <div className="cart-drawer-swiper-slide">
+          <Components.CartSubTotal />
         </div>
-      </div>
-      <div className="cart-drawer-pagination" />
-      <div className="row">
-        <span className="rui btn btn-cta btn-lg btn-block" id="btn-checkout" data-i18n="cartDrawer.checkout" onClick={handleCheckout}>
-          Checkout now
-        </span>
+        {productItems.map(item => {
+          return (
+            <div className="cart-drawer-swiper-slide" key={item._id}>
+              <Components.CartItems
+                item={item}
+                pdpPath={pdpPath}
+                handleLowInventory={handleLowInventory}
+                handleImage={handleImage}
+                handleRemoveItem={handleRemoveItem}
+                handleShowProduct={handleShowProduct}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
-  );
-};
+    <div className="cart-drawer-pagination" />
+    <div className="row">
+      <span className="rui btn btn-cta btn-lg btn-block" id="btn-checkout" data-i18n="cartDrawer.checkout" onClick={handleCheckout}>
+        Checkout now
+      </span>
+    </div>
+  </div>
+);
 
-cartDrawer.propTypes = {
+CartDrawer.propTypes = {
   handleCheckout: PropTypes.func,
   handleImage: PropTypes.func,
   handleLowInventory: PropTypes.func,
@@ -47,4 +44,4 @@ cartDrawer.propTypes = {
   productItems: PropTypes.array
 };
 
-export default cartDrawer;
+export default CartDrawer;

@@ -1,0 +1,14 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "productGrid": {
+        "noProductsFound": "Nisu pronađeni proizvodi"
+      },
+      "productDetailEdit": {
+        "variantDetails": "varijanta Detalji"
+      }
+    }
+  }
+}]

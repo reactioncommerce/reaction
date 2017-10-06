@@ -1,0 +1,14 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "productGrid": {
+        "noProductsFound": "Nessun prodotto trovato"
+      },
+      "productDetailEdit": {
+        "variantDetails": "variante Dettagli"
+      }
+    }
+  }
+}]

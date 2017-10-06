@@ -56,29 +56,11 @@
     "lint": {"engine": "eslint"}
   },
   "dependencies": {
-    "mute": [
-      "wdio-mocha-framework",
-      "griddle-react",
-      "twilio",
-      "react-addons-create-fragment",
-      "react-addons-pure-render-mixin",
-      "react-addons-test-utils",
-      "react-dom",
-      "react",
-      "transliteration",
-      "react-measure",
-      "react-onclickoutside",
-      "react-textarea-autosize",
-      "fibers"
-    ],
     "unused-ignores": [
-      "jquery",
       "sweetalert2",
       "font-awesome",
-      "bcrypt",
       "react-addons-pure-render-mixin",
       "url",
-      "griddle-react",
       "tether-tooltip",
       "react-textarea-autosize",
       "react-color",

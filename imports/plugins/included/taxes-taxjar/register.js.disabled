@@ -15,7 +15,7 @@ Reaction.registerPackage({
     {
       label: "TaxJar",
       name: "taxes/settings/taxjar",
-      provides: "taxSettings",
+      provides: ["taxSettings"],
       template: "taxJarSettings"
     }
   ]

@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
-import { Shops, Packages } from "/lib/collections";
+import { Shops } from "/lib/collections";
 
 //
 // Reaction i18n Translations, RTL and Currency Exchange Support
@@ -84,21 +84,32 @@ export function getMessagesFor() {
 export const i18nextDep = new Tracker.Dependency();
 export const localeDep = new Tracker.Dependency();
 export const currencyDep = new Tracker.Dependency();
-export const packageNamespaces = [];
 
 Meteor.startup(() => {
   Tracker.autorun(function (c) {
+    let merchantShopsReadyOrSkipped = false;
+
+    // Choose shopSubscription based on marketplace settings
+    if (Reaction.marketplaceEnabled && Reaction.merchantLanguage) {
+      merchantShopsReadyOrSkipped = Reaction.Subscriptions.MerchantShops.ready();
+    } else {
+      merchantShopsReadyOrSkipped = true;
+    }
+
     // setting local and active packageNamespaces
     // packageNamespaces are used to determine i18n namespace
-    if (Reaction.Subscriptions.Shops.ready()) {
+    if (Reaction.Subscriptions.PrimaryShop.ready() && merchantShopsReadyOrSkipped) {
+      const primaryShopId = Reaction.getPrimaryShopId();
       // every package gets a namespace, fetch them and export
-      const packages = Packages.find({}, {
-        fields: {
-          name: 1
-        }
-      }).fetch();
-      for (const pkg of packages) {
-        packageNamespaces.push(pkg.name);
+      // get packages from primaryShopId as merchant shops
+      // may not have all packages
+
+      // By default, use the primaryShopId to get locale
+      // If markteplace is enabled and set to use merchant currencies,
+      // get the active shopId
+      let localeShopId = primaryShopId;
+      if (Reaction.marketplaceEnabled && Reaction.merchantCurrency) {
+        localeShopId = Reaction.getShopId();
       }
 
       // use i18n detected language to getLocale info
@@ -120,15 +131,20 @@ Meteor.startup(() => {
                 const primaryCurrency = locale.locale.currency.split(",")[0];
                 localStorage.setItem("currency", primaryCurrency);
               } else {
-                const shop = Shops.findOne(Reaction.getShopId(), {
+                const shop = Shops.findOne({
+                  _id: localeShopId
+                }, {
                   fields: {
                     currency: 1
                   }
                 });
-                localStorage.setItem("currency", shop.currency);
+                if (shop) {
+                  localStorage.setItem("currency", shop.currency);
+                }
               }
             }
           }
+
           Reaction.Locale.set(locale);
           localeDep.changed();
 

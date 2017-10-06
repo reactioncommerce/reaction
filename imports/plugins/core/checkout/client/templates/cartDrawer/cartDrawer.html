@@ -1,7 +1,7 @@
 <template name="cartDrawer">
-<div id="cart-drawer-container">
-{{> displayCartDrawer}}
-</div>
+  <div id="cart-drawer-container">
+    {{> displayCartDrawer}}
+  </div>
 </template>
 
 
@@ -9,12 +9,11 @@
   <div>
     {{> React component=EmptyCartDrawer}}
   </div>
-
 </template>
 
 
 <template name="openCartDrawer">
-<div class="cart-drawer" id="cart-drawer">
-  {{> React component=CartDrawerContainer}}
-</div>
+  <div class="cart-drawer" id="cart-drawer">
+    {{> React component=CartDrawerContainer}}
+  </div>
 </template>

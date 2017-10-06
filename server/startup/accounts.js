@@ -80,10 +80,8 @@ export default function () {
    * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
    */
   Accounts.onCreateUser((options, user) => {
-    const shop = Reaction.getCurrentShop();
-    const shopId = shop._id;
-    const defaultVisitorRole =  ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
-    const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
+    const shopId = Reaction.getShopId(); // current shop; not primary shop
+    const groupToAddUser = options.groupId;
     const roles = {};
     const additionals = {
       name: options && options.name,
@@ -92,7 +90,7 @@ export default function () {
     if (!user.emails) user.emails = [];
     // init default user roles
     // we won't create users unless we have a shop.
-    if (shop) {
+    if (shopId) {
       // retain language when user has defined a language
       // perhaps should be treated as additionals
       // or in onLogin below, or in the anonymous method options
@@ -108,12 +106,23 @@ export default function () {
           }
         }
       }
-
       // if we don't have user.services we're an anonymous user
       if (!user.services) {
-        roles[shopId] = shop.defaultVisitorRole || defaultVisitorRole;
+        const group = Collections.Groups.findOne({ slug: "guest", shopId });
+        const defaultGuestRoles = group.permissions;
+        // if no defaultGuestRoles retrieved from DB, use the default Reaction set
+        roles[shopId] = defaultGuestRoles || Reaction.defaultVisitorRoles;
+        additionals.groups = [group._id];
       } else {
-        roles[shopId] = shop.defaultRoles || defaultRoles;
+        let group;
+        if (groupToAddUser) {
+          group = Collections.Groups.findOne({ _id: groupToAddUser, shopId });
+        } else {
+          group = Collections.Groups.findOne({ slug: "customer", shopId });
+        }
+        // if no group or customer permissions retrieved from DB, use the default Reaction customer set
+        roles[shopId] = group.permissions || Reaction.defaultCustomerRoles;
+        additionals.groups = [group._id];
         // also add services with email defined to user.emails[]
         for (const service in user.services) {
           if (user.services[service].email) {
@@ -137,6 +146,16 @@ export default function () {
               dprofile_image_url_https;
           } else if (user.services[service].profile_picture) {
             additionals.profile.picture = user.services[service].profile_picture;
+          }
+          // Correctly map Instagram profile data to Meteor user / Accounts
+          if (user.services.instagram) {
+            user.username = user.services[service].username;
+            user.name = user.services[service].full_name;
+            additionals.name = user.services[service].full_name;
+            additionals.profile.picture = user.services[service].profile_picture;
+            additionals.profile.bio = user.services[service].bio;
+            additionals.profile.name = user.services[service].full_name;
+            additionals.profile.username = user.services[service].username;
           }
         }
       }
@@ -210,10 +229,10 @@ export default function () {
       // in current version currentSessionId will be available for anonymous
       // users only, because it is unknown for me how to pass sessionId when user
       // logged in
-      const currentSessionId = options.methodArguments &&
-        options.methodArguments.length === 1 &&
-        options.methodArguments[0].sessionId;
-
+      let currentSessionId;
+      if (options.methodArguments && options.methodArguments.length === 1 && options.methodArguments[0].sessionId) {
+        currentSessionId = options.methodArguments[0].sessionId;
+      }
       // changing of workflow status from now happens within `cart/mergeCart`
       return Meteor.call("cart/mergeCart", cart._id, currentSessionId);
     }

@@ -235,9 +235,9 @@ Meteor.methods({
     check(backOrderQty, Number);
     this.unblock();
 
-    // this use case could happen then mergeCart is fires. We don't add anything
+    // this use case could happen when mergeCart is fired. We don't add anything
     // or remove, just item owner changed. We need to add this check here
-    // because of bulk operation. It thows exception if nothing to operate.
+    // because of bulk operation. It throws exception if nothing to operate.
     if (backOrderQty === 0) {
       return 0;
     }
@@ -288,7 +288,7 @@ Meteor.methods({
   "inventory/lowStock": function (product) {
     check(product, Schemas.Product);
     //
-    // TODO implement inventory/lowstock calculations
+    // TODO: implement inventory/lowstock calculations
     // placeholder is here to give plugins a place to hook into
     //
     Logger.debug("inventory/lowStock");
@@ -302,11 +302,17 @@ Meteor.methods({
   "inventory/remove": function (inventoryItem) {
     check(inventoryItem, Schemas.Inventory);
     // user needs createProduct permission to adjust inventory
-    if (!Reaction.hasPermission("createProduct")) {
+    // REVIEW: Should this be checking against shop permissions instead?
+
+    // calledByServer is only true if this method was triggered by the server, such as from a webhook.
+    // there will be a null connection and no userId.
+    const calledByServer = (this.connection === null && !Meteor.userId());
+
+    if (!calledByServer && !Reaction.hasPermission("createProduct", this.userId, inventoryItem.shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
     // this.unblock();
-    // todo add bulkOp here
+    // TODO: add bulkOp here
 
     Logger.debug("inventory/remove", inventoryItem);
     return Inventory.remove(inventoryItem);

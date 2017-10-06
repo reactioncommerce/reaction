@@ -22,7 +22,7 @@ function showError(error) {
 }
 
 function buildPaymentMethod(result, status, mode) {
-  Meteor.subscribe("Packages");
+  Meteor.subscribe("Packages", Reaction.getShopId());
   const packageData = Packages.findOne({
     name: "reaction-paypal",
     shopId: Reaction.getShopId()

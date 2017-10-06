@@ -13,10 +13,9 @@ import { Session } from "meteor/session";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Tracker } from "meteor/tracker";
 import { Packages, Shops } from "/lib/collections";
-import { getComponent } from "/imports/plugins/core/layout/lib/components";
+import { getComponent } from "@reactioncommerce/reaction-components/components";
 import BlazeLayout from "/imports/plugins/core/layout/lib/blazeLayout";
 import Hooks from "./hooks";
-
 
 export let history;
 
@@ -33,14 +32,43 @@ if (Meteor.isClient) {
   history = createMemoryHistory();
 }
 
-// Base router class (static)
+/** Class representing a static base router */
 class Router {
+  /**
+   * history
+   * @type {history}
+   */
   static history = history
+
+  /**
+   * Hooks
+   * @type {Hooks}
+   */
   static Hooks = Hooks
+
+  /**
+   * Registered route definitions
+   * @type {Array}
+   */
   static routes = []
+
+  /**
+   * Router initialization state
+   * @type {Boolean}
+   */
   static _initialized = false;
+
+  /**
+   * Active classname for active routes
+   * @type {String}
+   */
   static activeClassName = "active";
 
+  /**
+   * Routes array
+   * @type {Array}
+   * @param {Array} value An array of objects
+   */
   static set _routes(value) {
     Router.routes = value;
   }
@@ -49,34 +77,64 @@ class Router {
     return Router.routes;
   }
 
+  /**
+   * Triggers reactively on router ready state changed
+   * @return {Boolean} Router initalization state
+   */
   static ready() {
     routerReadyDependency.depend();
     return Router._initialized;
   }
 
+  /**
+   * Re-triggers router ready dependency
+   * @return {undefined}
+   */
   static triggerRouterReady() {
     routerReadyDependency.changed();
   }
 
+  /**
+   * Hooks
+   * @type {Hooks}
+   */
   static get triggers() {
     return Hooks;
   }
 
+  /**
+   * Get the current route date. Not reactive.
+   * @return {Object} Object containing route data
+   */
   static current() {
     return currentRoute.toJS();
   }
 
+  /**
+   * Set current route data. Is reactive.
+   * @param {Object} routeData Object containing route data
+   * @return {undefined}
+   */
   static setCurrentRoute(routeData) {
     currentRoute = Immutable.Map(routeData);
     routerChangeDependency.changed();
   }
 
+  /**
+   * Get the name of the current route. Is reactive.
+   * @return {String} Name of current route
+   */
   static getRouteName() {
     const current = Router.current();
 
     return current.route && current.route.name || "";
   }
 
+  /**
+   * Get param by name. Is reactive.
+   * @param  {String} name Param name
+   * @return {String|undefined} String value or undefined
+   */
   static getParam(name) {
     routerChangeDependency.depend();
     const current = Router.current();
@@ -84,6 +142,11 @@ class Router {
     return current.params && current.params[name] || undefined;
   }
 
+  /**
+   * Get query param by name
+   * @param  {String} name Query param name. Is reactive.
+   * @return {String|undefined} String value or undefined
+   */
   static getQueryParam(name) {
     routerChangeDependency.depend();
     const current = Router.current();
@@ -91,19 +154,32 @@ class Router {
     return current.query && current.query[name] || undefined;
   }
 
+  /**
+   * Merge new query params with current params
+   * @param {Object} newParams Object containing params
+   * @return {undefined}
+   */
   static setQueryParams(newParams) {
     const current = Router.current();
+
+    // Merge current and new params
     const queryParams = Object.assign({}, current.query, newParams);
 
+    // Any param marked as null or undefined will be removed
     for (const key in queryParams) {
       if (queryParams[key] === null || queryParams[key] === undefined) {
         delete queryParams[key];
       }
     }
 
+    // Update route
     Router.go(current.route.name, current.params, queryParams);
   }
 
+  /**
+   * Watch path change. Is Reactive.
+   * @return {undefined}
+   */
   static watchPathChange() {
     routerChangeDependency.depend();
   }
@@ -117,20 +193,18 @@ class Router {
  * @return {String} returns current router path
  */
 Router.pathFor = (path, options = {}) => {
-  // const params = options.hash || {};
-  // const query = params.query ? Router._qs.parse(params.query) : {};
-  // // prevent undefined param error
-  // for (const i in params) {
-  //   if (params[i] === null || params[i] === undefined) {
-  //     params[i] = "/";
-  //   }
-  // }
-  // return Router.path(path, params, query);
-
   const foundPath = Router.routes.find((pathObject) => {
-    if (pathObject.options.name === path) {
-      return true;
+    if (pathObject.route) {
+      if (options.hash && options.hash.shopSlug) {
+        if (pathObject.options.name === path && pathObject.route.includes("shopSlug")) {
+          return true;
+        }
+      } else if (pathObject.options.name === path && !pathObject.route.includes("shopSlug")) {
+        return true;
+      }
     }
+
+    // No path found
     return false;
   });
 
@@ -164,7 +238,13 @@ Router.pathFor = (path, options = {}) => {
   return "/";
 };
 
-
+/**
+ * Navigate to path with params and query
+ * @param  {String} path Path string
+ * @param  {Object} params Route params object
+ * @param  {Object} query Query params object
+ * @return {undefined} undefined
+ */
 Router.go = (path, params, query) => {
   let actualPath;
 
@@ -185,7 +265,7 @@ Router.go = (path, params, query) => {
     }
   };
 
-  // if Router is in a non ready/initialized state yet ,wait until it is
+  // if Router is in a non ready/initialized state yet, wait until it is
   if (!Router.ready()) {
     Tracker.autorun(routerReadyWaitFor => {
       if (Router.ready()) {
@@ -200,6 +280,13 @@ Router.go = (path, params, query) => {
   routerGo();
 };
 
+/**
+ * Replace location
+ * @param  {String} path Path string
+ * @param  {Object} params Route params object
+ * @param  {Object} query Query params object
+ * @return {undefined} undefined
+ */
 Router.replace = (path, params, query) => {
   const actualPath = Router.pathFor(path, {
     hash: {
@@ -213,6 +300,10 @@ Router.replace = (path, params, query) => {
   }
 };
 
+/**
+ * Reload router
+ * @return {undefined} undefined
+ */
 Router.reload = () => {
   const current = Router.current();
 
@@ -259,6 +350,7 @@ Router.isActiveClassName = (routeName) => {
 /**
  * hasRoutePermission
  * check if user has route permissions
+ * @access private
  * @param  {Object} route - route context
  * @return {Boolean} returns `true` if route is autoriized, `false` otherwise
  */
@@ -302,6 +394,7 @@ function getRegistryRouteName(packageName, registryItem) {
 
 /**
  * selectLayout
+ * @access private
  * @param {Object} layout - element of shops.layout array
  * @param {Object} setLayout - layout
  * @param {Object} setWorkflow - workflow
@@ -319,6 +412,7 @@ function selectLayout(layout, setLayout, setWorkflow) {
 /**
  * ReactionLayout
  * sets and returns reaction layout structure
+ * @access public
  * @param {Object} options - this router context
  * @param {String} options.layout - string of shop.layout.layout (defaults to coreLayout)
  * @param {String} options.workflow - string of shop.layout.workflow (defaults to coreLayout)
@@ -326,8 +420,32 @@ function selectLayout(layout, setLayout, setWorkflow) {
  */
 export function ReactionLayout(options = {}) {
   // Find a workflow layout to render
-  // Get the current shop data
-  const shop = Shops.findOne(Router.Reaction.getShopId());
+
+  // By default we'll use the primary shop for layouts
+  let shopId = Router.Reaction.getPrimaryShopId();
+
+  // We'll check the marketplace settings too so that we can use the active shopId
+  // if merchantTemplates is enabled
+  // XXX: using merchantTemplates is not ready for production and has not been tested! Use at your own risk.
+  let marketplaceSettings;
+
+  if (Meteor.isClient) { // If we're on the client, use the cached marketplace settings
+    marketplaceSettings = Router.Reaction.marketplace;
+  } else { // if we're on the server, go get the settings from the db with this method
+    marketplaceSettings = Router.Reaction.getMarketplaceSettings();
+    if (marketplaceSettings && marketplaceSettings.public) {
+      // We're only interested in the public settings here
+      marketplaceSettings = marketplaceSettings.public;
+    }
+  }
+
+  // If merchantTemplates is enabled, use the active shopId
+  if (marketplaceSettings && marketplaceSettings.merchantTemplates === true) {
+    shopId = Router.Reaction.getShopId();
+  }
+
+  // Get the shop data
+  const shop = Shops.findOne(shopId);
 
   // get the layout & workflow from options if they exist
   // Otherwise get them from the Session. this is set in `/client/config/defaults`
@@ -348,15 +466,22 @@ export function ReactionLayout(options = {}) {
     adminControlsFooter: ""
   };
 
+  let layoutTheme = "default";
+
   // Find a registered layout using the layoutName and workflowName
   if (shop) {
     const sortedLayout = shop.layout.sort((prev, next) => prev.priority - next.priority);
     const foundLayout = sortedLayout.find((x) => selectLayout(x, layoutName, workflowName));
 
-    if (foundLayout && foundLayout.structure) {
-      layoutStructure = {
-        ...foundLayout.structure
-      };
+    if (foundLayout) {
+      if (foundLayout.structure) {
+        layoutStructure = {
+          ...foundLayout.structure
+        };
+      }
+      if (foundLayout.theme) {
+        layoutTheme = foundLayout.theme;
+      }
     }
   }
 
@@ -377,7 +502,15 @@ export function ReactionLayout(options = {}) {
 
   // If there is no Blaze Template (Template[]) or React Component (getComponent)
   // Then use the notFound template instead
-  if (!Template[layoutStructure.template] && !getComponent(layoutStructure.template)) {
+  let hasReactComponent = true;
+
+  try {
+    getComponent(layoutStructure.template);
+  } catch (e) {
+    hasReactComponent = false;
+  }
+
+  if (!Template[layoutStructure.template] && !hasReactComponent) {
     return (
       <Blaze template={layoutStructure.notFound} />
     );
@@ -385,6 +518,7 @@ export function ReactionLayout(options = {}) {
 
   // Render the layout
   return {
+    theme: layoutTheme,
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
       const route = Router.current().route;
@@ -399,20 +533,25 @@ export function ReactionLayout(options = {}) {
         structure.template = "unauthorized";
       }
 
-      if (getComponent(layoutName)) {
+      try {
+        // Try to create a React component if defined
         return React.createElement(getComponent(layoutName), {
           ...props,
           structure: structure
         });
-      } else if (Template[layoutName]) {
-        return (
-          <BlazeLayout
-            {...structure}
-            blazeTemplate={layoutName}
-          />
-        );
+      } catch (e) {
+        // Otherwise fallback to a blaze template
+        if (Template[layoutName]) {
+          return (
+            <BlazeLayout
+              {...structure}
+              blazeTemplate={layoutName}
+            />
+          );
+        }
       }
 
+      // If all else fails, render a not found page
       return <Blaze template={structure.notFound} />;
     }
   };
@@ -434,7 +573,27 @@ Router.initPackageRoutes = (options) => {
   Router.routes = [];
 
   const pkgs = Packages.find().fetch();
-  const prefix = Router.Reaction.getShopPrefix();
+  const shops = Shops.find({}, { fields: { _id: 1, name: 1, shopType: 1 } }).fetch();
+
+  const shopPrefixes = shops.reduce((prefixesByShopId, shop) => {
+    const shopName = shop.name;
+    const shopSlug = Router.Reaction.getSlug(shopName.toLowerCase());
+
+    // If this is the primary shop
+    if (shop.shopType === "primary") {
+      // If naked routes is turned off, use the shop slug for our primary shop routes
+      if (Router.Reaction.marketplace && Router.Reaction.marketplace.marketplaceNakedRoutes === false) {
+        prefixesByShopId[shop._id] = `/${shopSlug}`;
+      } else {
+        prefixesByShopId[shop._id] = "";
+      }
+    } else {
+      // If this is not the primary shop, use the shop slug in routes for this shop
+      prefixesByShopId[shop._id] = `/${shopSlug}`;
+    }
+    return prefixesByShopId;
+  }, {});
+
   const routeDefinitions = [];
 
   // prefixing isnt necessary if we only have one shop
@@ -459,18 +618,33 @@ Router.initPackageRoutes = (options) => {
         options: {
           name: "index",
           ...options.indexRoute,
+          theme: indexLayout.theme,
           component: indexLayout.component,
           structure: indexLayout.structure
         }
       });
 
-      // Not found route
+      routeDefinitions.push({
+        route: "/shop/:shopSlug",
+        name: "index",
+        options: {
+          name: "index",
+          type: "shop-prefix",
+          ...options.indexRoute,
+          theme: indexLayout.theme,
+          component: indexLayout.component,
+          structure: indexLayout.structure
+        }
+      });
+
+      // Not-found route
       routeDefinitions.push({
         route: "/not-found",
         name: "not-found",
         options: {
           name: "not-found",
           ...notFoundLayout.indexRoute,
+          theme: notFoundLayout.theme,
           component: notFoundLayout.component,
           structure: notFoundLayout.structure
         }
@@ -492,9 +666,9 @@ Router.initPackageRoutes = (options) => {
                 template,
                 layout,
                 workflow
+                // provides
               } = registryItem;
 
-              // get registry route name
               const name = getRegistryRouteName(pkg.name, registryItem);
 
               // define new route
@@ -511,10 +685,18 @@ Router.initPackageRoutes = (options) => {
                   triggersEnter: Router.Hooks.get("onEnter", name),
                   triggersExit: Router.Hooks.get("onExit", name),
                   component: reactionLayout.component,
+                  theme: reactionLayout.theme,
                   structure: reactionLayout.structure
                 }
               };
-
+              newRoutes.push({
+                ...newRouteConfig,
+                route: `/shop/:shopSlug${route}`,
+                options: {
+                  ...newRouteConfig.options,
+                  type: "shop-prefix"
+                }
+              });
               // push new routes
               newRoutes.push(newRouteConfig);
             } // end registryItems
@@ -534,6 +716,7 @@ Router.initPackageRoutes = (options) => {
             } else if (shopCount <= 1) {
               route.group.prefix = "";
             } else {
+              const prefix = shopPrefixes[pkg.shopId];
               route.group.prefix = prefix;
               route.route = `${prefix}${route.route}`;
             }
@@ -562,10 +745,22 @@ Router.initPackageRoutes = (options) => {
         );
       });
 
+      // Last route, if no other route is matched, this one will be the not-found view
+      // Note: This is last becuase all other routes must at-least attempt a match
+      // before falling back to this not-found route.
+      reactRouterRoutes.push(
+        <Route
+          key="not-found"
+          render={notFoundLayout.component}
+        />
+      );
+
+      // Finish initialization
       Router._initialized = true;
       Router.reactComponents = reactRouterRoutes;
       Router._routes = uniqRoutes;
 
+      // Trigger a reactive refresh to re-render routes
       routerReadyDependency.changed();
     }
   });

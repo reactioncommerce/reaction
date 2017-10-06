@@ -3,14 +3,29 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Order Not Found",
+      "order": {
+        "applyRefundToThisOrder": "Apply refund of {{currencySymbol}}{{refund}} to this order?",
+        "applyRefundDuringCancelOrder": "This will refund the order total of {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrder": "Do you want to cancel this order?",
+        "cancelOrderLabel": "Cancel Order",
+        "cancelOrderThenRestock": "Yes, and restock",
+        "cancelOrderNoRestock": "Yes, but no restocking"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "Orders"
         },
+        "orderRisk": {
+          "high": "High Risk",
+          "riskCapture": "Capture Order with Risk Charge?",
+          "riskCaptureWarn": "You are about to capture order with a charge risk. Confirm before proceeding."
+        },
         "dashboard": {
           "ordersLabel": "Orders",
           "ordersTitle": "Orders",
-          "ordersDescription": "Fulfill your orders"
+          "ordersDescription": "Fulfill your orders",
+          "clearSearch": "Clear"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -27,11 +42,26 @@
             "cardTitle": "Invoice",
             "adjustedTotal": "Adjusted Total",
             "capturedTotal": "Captured Total",
-            "refund": "Refund"
+            "refund": "Refund",
+            "refundLabel": "For Refund",
+            "refundItem": "Items",
+            "refundItemAmount": "Total",
+            "refundTotal": "Refund Total"
           },
           "fulfillment": "Fulfillment",
           "orderDetails": "Order Details",
           "shipmentTracking": "Shipment"
+        },
+        "table": {
+          "headers": {
+            "name": "Name",
+            "email": "Email",
+            "date": "Date",
+            "id": "ID",
+            "total": "Total",
+            "shipping": "Shipping",
+            "status": "Status"
+          }
         }
       }
     }

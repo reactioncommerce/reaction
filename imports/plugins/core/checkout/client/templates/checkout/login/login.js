@@ -1,6 +1,5 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 
@@ -18,9 +17,12 @@ Template.checkoutLogin.helpers({
     if (cart && cart.workflow) {
       const currentStatus = cart.workflow.status;
       const guestUser = Reaction.hasPermission("guest", Meteor.user());
-      const anonUser = Roles.userIsInRole("anonymous", Meteor.user(), Reaction.getShopId());
 
-      if (currentStatus !== self.template && guestUser === true && anonUser === false) {
+      // when you click as "continue as guest" you ARE still anonymous.
+      // you are only NOT anonymous if you sign up or have supply an email. Hence
+      // we check only that the user is at least guest before moving to next step.
+      // since sign up users can still have guest permission.
+      if (currentStatus !== self.template && guestUser === true) {
         return true;
       }
     }

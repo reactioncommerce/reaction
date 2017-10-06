@@ -5,7 +5,7 @@ import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
-import { Packages, Shops, Accounts } from "/lib/collections";
+import { Shops, Accounts } from "/lib/collections";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import Avalogger from "./avalogger";
@@ -15,11 +15,7 @@ const requiredFields = ["username", "password", "apiLoginId", "companyCode", "sh
 const taxCalc = {};
 
 taxCalc.getPackageData = function () {
-  const pkgData = Packages.findOne({
-    name: "taxes-avalara",
-    shopId: Reaction.getShopId(),
-    enabled: true
-  });
+  const pkgData = Reaction.getPackageSettings("taxes-avalara");
   return pkgData;
 };
 
@@ -385,7 +381,7 @@ function cartToSalesOrder(cart) {
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
-  const cartShipping = cart.cartShipping();
+  const cartShipping = cart.getShippingTotal();
   const cartDate = moment(cart.createdAt).format();
   let lineItems = [];
   if (cart.items) {
@@ -491,7 +487,7 @@ function orderToSalesInvoice(order) {
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
-  const orderShipping = order.orderShipping();
+  const orderShipping = order.getShippingTotal();
   const orderDate = moment(order.createdAt).format();
   const lineItems = order.items.map((item) => {
     if (item.variants.taxable) {
