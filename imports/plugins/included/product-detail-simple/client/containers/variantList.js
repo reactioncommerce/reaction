@@ -117,14 +117,8 @@ class VariantListContainer extends Component {
 
     ReactionProduct.setCurrentVariant(variant._id);
     Session.set("variant-form-" + editVariant._id, true);
-    Reaction.Router.go("product", {
-      handle: this.productHandle,
-      variantId: variant._id
-    }, {
-      as: Reaction.Router.getQueryParam("as")
-    });
 
-    if (Reaction.hasPermission("createProduct")) {
+    if (Reaction.hasPermission("createProduct") && !Reaction.isPreview()) {
       Reaction.showActionView({
         label: "Edit Variant",
         i18nKeyLabel: "productDetailEdit.editVariant",
