@@ -5,38 +5,38 @@
     "reaction-shipping": {
       "admin": {
         "dashboard": {
-          "shippingLabel": "运输",
-          "shippingTitle": "运输",
+          "shippingLabel": "配送",
+          "shippingTitle": "配送",
           "shippingDescription": "提供运费"
         },
         "settings": {
-          "shippingLabel": "运输"
+          "shippingLabel": "配送"
         }
       },
       "checkoutShipping": {
-        "selectShippingOption": "选择送货方式",
-        "noShippingMethods": "没有送货方式配置。",
+        "selectShippingOption": "选择配送方式",
+        "noShippingMethods": "没有配送方式配置。",
         "contactAdmin": "请联系店主管理员。",
         "configureNow": "现在配置。",
-        "shipping": "运输"
+        "shipping": "配送"
       },
       "shipping": {
         "addShippingProvider": "添加航运商",
         "editShippingProvider": "编辑航运商",
-        "addShippingMethod": "添加送货方式",
-        "editShippingMethod": "编辑送货方式",
-        "deleteShippingMethod": "删除运输方式",
+        "addShippingMethod": "添加配送方式",
+        "editShippingMethod": "编辑配送方式",
+        "deleteShippingMethod": "删除配送方式",
         "noSettingsForThisView": "对于这种观点没有设置",
-        "noShippingMethods": "没有送货方式配置。",
+        "noShippingMethods": "没有配送方式配置。",
         "removeShippingMethodConfirm": "你确定要删除{{method}}？",
-        "removeShippingMethodTitle": "除去运输方式",
-        "shippingMethodDeleted": "这种运输方式已被删除。",
-        "removeShippingProvider": "除去运输提供商",
+        "removeShippingMethodTitle": "除去配送方式",
+        "shippingMethodDeleted": "这种配送方式已被删除。",
+        "removeShippingProvider": "除去配送提供商",
         "removeShippingProviderConfirm": "你确定要删除{{provider}}？",
-        "shippingProviderSaved": "航运提供商保存。",
-        "shippingProviderUpdated": "航运商的数据更新。",
-        "shippingMethodRateAdded": "送货方式加入速度。",
-        "shippingMethodRateUpdated": "更新送货方法率。",
+        "shippingProviderSaved": "物流供应商保存。",
+        "shippingProviderUpdated": "物流供应商的数据更新。",
+        "shippingMethodRateAdded": "配送方式收费已加入。",
+        "shippingMethodRateUpdated": "配送方式收费已更新。",
         "name": "名字",
         "label": "标签",
         "group": "组",

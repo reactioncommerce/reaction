@@ -1,6 +1,6 @@
 [{
   "language": "Simplified Chinese",
-  "i18n": "zh-hans",
+  "i18n": "zh-Hans",
   "ns": "core",
   "translation": {
     "core": {
@@ -370,7 +370,7 @@
         "noTracking": "不追踪",
         "tracking": "追踪",
         "printLabels": "打印标签",
-        "printShippingLabel": "运输",
+        "printShippingLabel": "送货",
         "printCustomsLabel": "海关",
         "generateTracking": "生成标签和跟踪",
         "labelError": "错误创建货运标签{{err}}",
@@ -520,7 +520,7 @@
       "checkoutProgressBar": {
         "login": "登录",
         "shippingBilling": "输入收货和账单地址",
-        "shippingOptions": "选择运输方式",
+        "shippingOptions": "选择送货方式",
         "reviewPayment": "核对订单",
         "complete": "完成订单"
       },

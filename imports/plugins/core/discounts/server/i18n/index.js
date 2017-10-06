@@ -22,7 +22,7 @@ import sv from "./sv.json";
 import tr from "./tr.json";
 import vi from "./vi.json";
 import zhHans from "./zh-hans.json";
-import zhHant from "./zh-hant.json";
+import zhHant from "./zh-Hant.json";
 //
 // we want all the files in individual
 // imports for easier handling by

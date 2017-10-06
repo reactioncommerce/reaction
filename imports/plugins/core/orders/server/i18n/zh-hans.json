@@ -5,11 +5,11 @@
     "reaction-orders": {
       "admin": {
         "shortcut": {
-          "ordersLabel": "命令"
+          "ordersLabel": "订单"
         },
         "dashboard": {
-          "ordersLabel": "命令",
-          "ordersTitle": "命令",
+          "ordersLabel": "订单",
+          "ordersTitle": "订单",
           "ordersDescription": "完成订单"
         },
         "orderWorkflow": {
