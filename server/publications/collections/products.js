@@ -6,6 +6,7 @@ import { Products, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { findProductMedia } from "./product";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 //
 // define search filters as a schema so we can validate
@@ -65,6 +66,8 @@ const filters = new SimpleSchema({
     optional: true
   }
 });
+
+registerSchema("filters", filters);
 
 /**
  * products publication
