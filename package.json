@@ -41,6 +41,7 @@
     "css-annotation": "^0.6.2",
     "deep-diff": "^0.3.8",
     "dnd-core": "^2.4.0",
+    "escape-string-regexp": "^1.0.5",
     "faker": "^4.1.0",
     "fibers": "^2.0.0",
     "flatten-obj": "^3.1.0",
@@ -117,7 +118,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.0.0",
-    "babel-jest": "^20.0.3",
+    "babel-jest": "^21.2.0",
     "babel-plugin-lodash": "^3.2.11",
     "babel-plugin-module-resolver": "^2.7.1",
     "babel-preset-env": "^1.6.0",
@@ -128,7 +129,7 @@
     "enzyme-to-json": "^1.5.1",
     "eslint": "^4.7.2",
     "eslint-plugin-react": "^7.1.0",
-    "jest": "^20.0.4",
+    "jest": "^21.2.1",
     "js-yaml": "^3.9.0",
     "react-addons-test-utils": "15.6.0"
   },

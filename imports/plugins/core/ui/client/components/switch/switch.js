@@ -10,6 +10,9 @@ class Switch extends Component {
 
   static propTypes = {
     checked: PropTypes.bool,
+    disabled: PropTypes.bool,
+    helpText: PropTypes.string,
+    i18nKeyHelpText: PropTypes.string,
     i18nKeyLabel: PropTypes.string,
     i18nKeyOnLabel: PropTypes.string,
     label: PropTypes.string,
@@ -24,6 +27,16 @@ class Switch extends Component {
     this.state = {
       checked: false
     };
+  }
+
+  get isHelpMode() {
+    // TODO: add functionality to toggle helpMode on / off.
+    // When on, helpText will always show.
+    // When off, only validation messages will show.
+    // For now, all helpText will show, meaning this doesn't affect how the app currently works.
+    // This is here just to lay the foundation for when we add the toggle.
+
+    return true;
   }
 
   handleChange = (event) => {
@@ -61,6 +74,27 @@ class Switch extends Component {
     return null;
   }
 
+  /**
+   * Render help text or validation message
+   * @return {ReactNode|null} react node or null
+   */
+  renderHelpText() {
+    const helpMode = this.isHelpMode;
+    const helpText = this.props.helpText;
+    const i18nKey = this.props.i18nKeyHelpText;
+
+    // Show if helpMode is true
+    if (helpText && helpMode) {
+      return (
+        <span className="help-block">
+          <Components.Translation defaultValue={helpText} i18nKey={i18nKey} />
+        </span>
+      );
+    }
+
+    return null;
+  }
+
   checkboxRef = (ref) => {
     this._checkbox = ref;
   }
@@ -68,7 +102,8 @@ class Switch extends Component {
   render() {
     const baseClassName = classnames({
       rui: true,
-      switch: true
+      switch: true,
+      disabled: this.props.disabled
     });
 
     const switchControlClassName = classnames({
@@ -77,16 +112,19 @@ class Switch extends Component {
     });
 
     return (
-      <label className={baseClassName}>
-        <input
-          checked={this.props.checked}
-          onChange={this.handleChange}
-          ref={this.checkboxRef}
-          type="checkbox"
-        />
-        <div className={switchControlClassName} />
-        {this.renderLabel()}
-      </label>
+      <span>
+        <label className={baseClassName}>
+          <input
+            checked={this.props.checked}
+            onChange={this.handleChange}
+            ref={this.checkboxRef}
+            type="checkbox"
+          />
+          <div className={switchControlClassName} />
+          {this.renderLabel()}
+        </label>
+        {this.renderHelpText()}
+      </span>
     );
   }
 }

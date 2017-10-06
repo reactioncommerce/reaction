@@ -50,7 +50,7 @@ class UpdateEmail extends Component {
         />
         <Components.Button
           bezelStyle={"solid"}
-          icon={showSpinner && "fa fa-spin fa-circle-o-notch"}
+          icon={showSpinner ? "fa fa-spin fa-circle-o-notch" : ""}
           i18nKeyLabel={showSpinner ? "accountsUI.updatingEmailAddress" : "accountsUI.updateEmailAddress"}
           label={showSpinner ? "Updating Email Address" : "Update Email Address"}
           status={"primary"}
