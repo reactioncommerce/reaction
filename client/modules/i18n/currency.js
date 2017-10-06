@@ -1,7 +1,7 @@
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Reaction, Logger } from "/client/api";
-import { Shops } from "/lib/collections";
+import { Shops, Accounts } from "/lib/collections";
 import { currencyDep } from "./main";
 
 /**
@@ -21,7 +21,9 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   });
 
   const shopCurrency = shop && shop.currency || "USD";
-  const user = Meteor.user();
+  const user = Accounts.findOne({
+    _id: Meteor.userId()
+  });
   const profileCurrency = user.profile && user.profile.currency;
   if (typeof shop === "object" && shop.currencies && profileCurrency) {
     let userCurrency = {};

@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Match } from "meteor/check";
 import { Reaction } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Cart, Shops } from "/lib/collections";
+import { Cart, Shops, Accounts } from "/lib/collections";
 import CurrencyDropdown from "../components/currencyDropdown";
 
 const handlers = {
@@ -15,7 +15,7 @@ const handlers = {
     // and only possible because we allow it in the
     // UserProfile and ShopMembers publications.
     //
-    Meteor.users.update(Meteor.userId(), { $set: { "profile.currency": currencyName } });
+    Accounts.update(Meteor.userId(), { $set: { "profile.currency": currencyName } });
 
     const cart = Cart.findOne({ userId: Meteor.userId() });
 
@@ -45,7 +45,9 @@ const composer = (props, onData) => {
       }
     });
 
-    const user = Meteor.user();
+    const user = Accounts.findOne({
+      _id: Meteor.userId()
+    });
     const profileCurrency = user.profile && user.profile.currency;
 
     if (Match.test(shop, Object) && shop.currency) {
