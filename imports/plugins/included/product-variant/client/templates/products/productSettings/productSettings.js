@@ -80,6 +80,15 @@ Template.productSettingsListItem.events({
     Reaction.Router.go("product", {
       handle: this.handle
     });
+
+    // Set actionView to product admin
+    Reaction.setActionView({
+      i18nKeyLabel: "productDetailEdit.productSettings",
+      label: "Product Settings",
+      template: "ProductAdmin"
+    });
+
+    Reaction.state.set("edit/focus", "productDetails");
   }
 });
 
