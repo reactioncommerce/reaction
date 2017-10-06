@@ -14,7 +14,7 @@
           "enabled": "启用"
         },
         "shippingSettings": {
-          "noCarriersFound": "没有配置运输载体。",
+          "noCarriersFound": "没有配置送货载体。",
           "editApiKey": "编辑API密钥",
           "carrierSaved": "运营商成功保存。",
           "carrierFailed": "更新时出错载体。",

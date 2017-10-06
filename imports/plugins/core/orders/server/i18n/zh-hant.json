@@ -1,15 +1,15 @@
 [{
-  "i18n": "zh-hant",
+  "i18n": "zh-Hant",
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
       "admin": {
         "shortcut": {
-          "ordersLabel": "命令"
+          "ordersLabel": "訂單"
         },
         "dashboard": {
-          "ordersLabel": "命令",
-          "ordersTitle": "命令",
+          "ordersLabel": "訂單",
+          "ordersTitle": "訂單",
           "ordersDescription": "完成訂單"
         },
         "orderWorkflow": {

@@ -1,5 +1,5 @@
 [{
-  "i18n": "zh-hant",
+  "i18n": "zh-Hant",
   "ns": "reaction-dashboard",
   "translation": {
     "reaction-dashboard": {
@@ -12,7 +12,7 @@
           "packageGroupSettingsLabel": "設置"
         },
         "settings": {
-          "shopSettingsLabel": "店",
+          "shopSettingsLabel": "商店",
           "import": "導入",
           "general": {
             "label": "通用"

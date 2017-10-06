@@ -1,6 +1,6 @@
 [{
   "language": "Traditional Chinese",
-  "i18n": "zh-hant",
+  "i18n": "zh-Hant",
   "ns": "core",
   "translation": {
     "core": {
@@ -370,7 +370,7 @@
         "noTracking": "不追蹤",
         "tracking": "追蹤",
         "printLabels": "打印標簽",
-        "printShippingLabel": "運輸",
+        "printShippingLabel": "送貨",
         "printCustomsLabel": "海關",
         "generateTracking": "生成標簽和跟蹤",
         "labelError": "錯誤創建貨運標簽{{err}}",

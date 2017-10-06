@@ -62,8 +62,9 @@ Template.registerHelper("monthOptions", function (showDefaultOption = true) {
   //   parentLocale: "zh-cn"
   // });
   let lang = i18next.language;
+  console.log(lang)
   if (lang === "zh") {
-    lang = "zh-hans";
+    lang = "zh-Hans";
   }
 
   localLocale.locale(lang);
