@@ -41,6 +41,7 @@ export function getLabelsFor(schema, name) {
     const i18nKey = name.charAt(0).toLowerCase() + name.slice(1) + "." +
       fieldName
         .split(".$").join("");
+        console.log("i18nKey", i18nKey);
     // translate autoform label
     const t = i18next.t(i18nKey);
     if (new RegExp("string").test(t) !== true && t !== i18nKey) {
