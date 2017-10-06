@@ -155,20 +155,19 @@ describe("Add/Create cart methods", function () {
 
   describe("cart/setAnonymousUserEmail", function () {
     it("should add an email to an anonymous user", function () {
-      const cart = Factory.create("cart");
-      const currentAnonymousUser = Factory.create("account", {
-        _id: cart.userId,
-        emails: []
+      const cart = Factory.create("cart", {
+        userId: userId,
+        email: undefined
       });
 
       spyOnMethod("setAnonymousUserEmail", cart.userId);
 
       const email = "anon@email.com";
-      Meteor.call("cart/setAnonymousUserEmail", currentAnonymousUser._id, email);
+      Meteor.call("cart/setAnonymousUserEmail", cart.userId, email);
+      const currentUserCart = Cart.findOne({ _id: cart._id });
 
-      const currentUser = Accounts.findOne({ _id: currentAnonymousUser._id });
-      expect(currentUser.emails.length).to.not.equal(0);
-      expect(currentUser.emails[0].address).to.equal(email);
+      expect(currentUserCart.email).to.not.be.undefined;
+      expect(currentUserCart.email).to.equal(email);
     });
   });
 
