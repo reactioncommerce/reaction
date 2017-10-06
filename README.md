@@ -56,7 +56,7 @@ The Reaction documentation source is located in the [reaction-docs](https://gith
 
 There are many ways to get connected with the Reaction core team and community:
 
--   [Reaction Commece Gitter chat](https://gitter.im/reactioncommerce/reaction)
+-   [Reaction Commerce Gitter chat](https://gitter.im/reactioncommerce/reaction)
 -   [Reaction Commerce forum](https://forums.reactioncommerce.com/)
 -   [Reaction Community calls](http://getrxn.io/2rcCal): Join our biweekly community calls every other Wednesday at 7AM PST/10AM EST. Subscribe to our [Reaction Community Google Calendar](http://getrxn.io/2rcCal) to RSVP to the next call and check out the [agenda](https://docs.google.com/document/d/1PwenrammgQJpQfFoUUJZ96i_JJYCM_4glAjB1_ZzgwA/edit?usp=sharing).
 -   [Reaction Action](http://getrxn.io/2rcCal): RSVP for the monthly Reaction Action livestreams.

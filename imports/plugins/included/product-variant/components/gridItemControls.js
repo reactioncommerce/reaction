@@ -7,7 +7,6 @@ class GridItemControls extends Component {
     checked: PropTypes.func,
     hasChanges: PropTypes.func,
     hasCreateProductPermission: PropTypes.func,
-    invalidVariant: PropTypes.array,
     product: PropTypes.object
   }
 
@@ -22,17 +21,7 @@ class GridItemControls extends Component {
   }
 
   renderVisibilityButton() {
-    if (this.props.invalidVariant.length) {
-      return (
-        <div>
-          <Components.IconButton
-            icon=""
-            onIcon=""
-            status="danger"
-          />
-        </div>
-      );
-    } else if (this.props.hasChanges()) {
+    if (this.props.hasChanges()) {
       return (
         <div>
           <Components.IconButton

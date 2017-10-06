@@ -83,6 +83,18 @@ function getSessionCarts(userId, sessionId, shopId) {
   return allowedCarts;
 }
 
+function removeShippingAddresses(cart) {
+  const cartShipping = cart.shipping;
+  cartShipping.map((sRecord) => {
+    delete sRecord.address;
+  });
+  Collections.Cart.update({
+    _id: cart._id
+  }, {
+    $set: { shipping: cartShipping }
+  });
+}
+
 /**
  * Reaction Cart Methods
  */
@@ -415,6 +427,20 @@ Meteor.methods({
       });
     }
 
+    // TODO: Handle more than 2 levels of variant hierarchy for determining parcel dimensions
+    // we need to get the parent of the option to check if parcel info is stored there
+    const immediateAncestors = variant.ancestors.filter((ancestor) => ancestor !== product._id);
+    const immediateAncestor = Collections.Products.findOne({ _id: immediateAncestors[0] });
+    let parcel = null;
+    if (immediateAncestor) {
+      if (immediateAncestor.weight || immediateAncestor.height || immediateAncestor.width || immediateAncestor.length) {
+        parcel = { weight: immediateAncestor.weight, height: immediateAncestor.height, width: immediateAncestor.width, length: immediateAncestor.length };
+      }
+    }
+    // if it's set at the option level then that overrides
+    if (variant.weight || variant.height || variant.width || variant.length) {
+      parcel = { weight: variant.weight, height: variant.height, width: variant.width, length: variant.length };
+    }
     // cart variant doesn't exist
     return Collections.Cart.update({
       _id: cart._id
@@ -430,7 +456,7 @@ Meteor.methods({
           metafields: options.metafields,
           title: product.title,
           type: product.type,
-          parcel: product.parcel || null
+          parcel
         }
       }
     }, function (error, result) {
@@ -486,15 +512,8 @@ Meteor.methods({
       throw new Meteor.Error("cart-item-not-found", "Unable to find an item with such id in cart.");
     }
 
-    // refresh shipping quotes
-    Meteor.call("shipping/updateShipmentQuotes", cart._id);
-    // revert workflow to checkout shipping step.
-    Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
-    // reset selected shipment method
-    Meteor.call("cart/resetShipmentMethod", cart._id);
-
     if (!quantity || quantity >= cartItem.quantity) {
-      return Collections.Cart.update({
+      const cartResult = Collections.Cart.update({
         _id: cart._id
       }, {
         $pull: {
@@ -507,18 +526,28 @@ Meteor.methods({
       }, (error, result) => {
         if (error) {
           Logger.error(error);
-          Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(),
-            "error removing from cart");
+          Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(), "error removing from cart");
           return error;
         }
         Logger.debug(`cart: deleted cart item variant id ${cartItem.variants._id}`);
         return result;
       });
+      // TODO: HACK: When calling update shipping the changes to the cart have not taken place yet
+      // TODO: But calling this findOne seems to force this record to update. Extra weird since we aren't
+      // TODO: passing the Cart but just the cartId and regrabbing it so you would think that would work but it does not
+      Collections.Cart.findOne(cart._id);
+      // refresh shipping quotes
+      Meteor.call("shipping/updateShipmentQuotes", cart._id);
+      // revert workflow
+      Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+      // reset selected shipment method
+      Meteor.call("cart/resetShipmentMethod", cart._id);
+      return cartResult;
     }
 
     // if quantity lets convert to negative and increment
     const removeQuantity = Math.abs(quantity) * -1;
-    return Collections.Cart.update({
+    const cartResult = Collections.Cart.update({
       "_id": cart._id,
       "items._id": cartItem._id
     }, {
@@ -535,6 +564,13 @@ Meteor.methods({
       Logger.debug(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);
       return result;
     });
+    // refresh shipping quotes
+    Meteor.call("shipping/updateShipmentQuotes", cart._id);
+    // revert workflow
+    Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+    // reset selected shipment method
+    Meteor.call("cart/resetShipmentMethod", cart._id);
+    return cartResult;
   },
   /**
    * cart/setShipmentMethod
@@ -707,45 +743,102 @@ Meteor.methods({
       throw new Meteor.Error(404, "Cart not found",
         "Cart not found for user with such id");
     }
-
+    // TODO: When we have a front end for doing more than one address
+    // TODO: we need to not use the same address for every record
+    // TODO: this is a temporary workaround so that we have a valid address
+    // TODO: for every shipping record
     let selector;
     let update;
-    const primaryShopId = Reaction.getPrimaryShopId();
-    // temp hack until we build out multiple shipment handlers
-    // if we have an existing item update it, otherwise add to set.
-    if (Array.isArray(cart.shipping) && cart.shipping.length > 0) {
-      selector = {
-        "_id": cartId,
-        "shipping._id": cart.shipping[0]._id
-      };
-      update = {
-        $set: {
-          "shipping.$.address": address,
-          "shopId": primaryShopId
-        }
-      };
-    } else {
-      selector = {
-        _id: cartId
-      };
-      update = {
-        $addToSet: {
-          shipping: {
-            address: address,
-            shopId: primaryShopId
+    let updated = false; // if we update inline set to true, otherwise fault to update at the end
+    // We have two behaviors depending on if we have existing shipping records and if we
+    // have items in the cart.
+    if (cart.shipping && cart.shipping.length > 0 && cart.items) {
+      // if we have shipping records and cart.items, update each one by shop
+      const shopIds = Object.keys(cart.getItemsByShop());
+      shopIds.forEach((shopId) => {
+        selector = {
+          "_id": cartId,
+          "shipping.shopId": shopId
+        };
+
+        update = {
+          $set: {
+            "shipping.$.address": address
           }
+        };
+        try {
+          Collections.Cart.update(selector, update);
+          updated = true;
+        } catch (error) {
+          Logger.error("An error occurred adding the address", error);
+          throw new Meteor.Error("An error occurred adding the address", error);
         }
-      };
-    }
+      });
+    } else {
+      // if no items in cart just add or modify one record for the carts shop
+      if (!cart.items) {
+        // add a shipping record if it doesn't exist
+        if (!cart.shipping) {
+          selector = {
+            _id: cartId
+          };
+          update = {
+            $push: {
+              shipping: {
+                address: address,
+                shopId: cart.shopId
+              }
+            }
+          };
 
-    // add / or set the shipping address
-    try {
-      Collections.Cart.update(selector, update);
-    } catch (e) {
-      Logger.error(e);
-      throw new Meteor.Error("An error occurred adding the address");
-    }
+          try {
+            Collections.Cart.update(selector, update);
+            updated = true;
+          } catch (error) {
+            Logger.error(error);
+            throw new Meteor.Error("An error occurred adding the address");
+          }
+        } else {
+          // modify an existing record if we have one already
+          selector = {
+            "_id": cartId,
+            "shipping.shopId": cart.shopId
+          };
 
+          update = {
+            $set: {
+              "shipping.$.address": address
+            }
+          };
+        }
+      } else {
+        // if we have items in the cart but we didn't have existing shipping records
+        // add a record for each shop that's represented in the items
+        const shopIds = Object.keys(cart.getItemsByShop());
+        shopIds.map((shopId) => {
+          selector = {
+            _id: cartId
+          };
+          update = {
+            $addToSet: {
+              shipping: {
+                address: address,
+                shopId: shopId
+              }
+            }
+          };
+        });
+      }
+    }
+    if (!updated) {
+      // if we didn't do one of the inline updates, then run the update here
+      try {
+        Collections.Cart.update(selector, update);
+      } catch (error) {
+        Logger.error(error);
+        throw new Meteor.Error("An error occurred adding the address");
+      }
+    }
     // refresh shipping quotes
     Meteor.call("shipping/updateShipmentQuotes", cartId);
 
@@ -825,7 +918,6 @@ Meteor.methods({
 
     return Collections.Cart.update(selector, update);
   },
-
   /**
    * cart/unsetAddresses
    * @description removes address from cart.
@@ -871,10 +963,8 @@ Meteor.methods({
         update.$unset["billing.0.address"] = "";
         needToUpdate = true;
       }
-      if (cart.shipping && typeof cart.shipping[0].address === "object" &&
-        cart.shipping[0].address._id === addressId) {
-        update.$unset["shipping.0.address"] = "";
-        needToUpdate = true;
+      if (cart.shipping && typeof cart.shipping[0].address === "object" && cart.shipping[0].address._id === addressId) {
+        removeShippingAddresses(cart);
         isShippingDeleting = true;
       }
     }
@@ -997,5 +1087,27 @@ Meteor.methods({
     }
 
     return Collections.Cart.findOne(selector);
+  },
+
+  /**
+   * @method cart/setAnonymousUserEmail
+   * @summary assigns email to anonymous user's cart instance
+   * @param {Object} userId - current user's Id
+   * @param {String} email - email to set for anonymous user's cart instance
+   * @return {Number} returns update result
+   */
+  "cart/setAnonymousUserEmail": function (userId, email) {
+    check(userId, String);
+    check(email, String);
+
+    const currentUserCart = Collections.Cart.findOne({ userId: userId });
+    const cartId = currentUserCart._id;
+    let newEmail = "";
+
+    if (!currentUserCart.email) {
+      newEmail = email;
+    }
+
+    return Collections.Cart.update({ _id: cartId }, { $set: { email: newEmail } });
   }
 });

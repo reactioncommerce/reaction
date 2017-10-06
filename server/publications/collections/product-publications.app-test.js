@@ -38,7 +38,7 @@ describe("Publication", function () {
       max: 19.99
     };
 
-    before(function () {
+    beforeEach(function () {
       Collections.Products.direct.remove({});
 
       // a product with price range A, and not visible
