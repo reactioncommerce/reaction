@@ -14,11 +14,11 @@ export function marketplaceUpdateShopWorkflow(shopId, workflowStatus) {
   check(workflowStatus, String);
 
   if (shopId === Reaction.getPrimaryShopId()) {
-    throw new Meteor.Error(403, "Cannot change shop status");
+    throw new Meteor.Error("access-denied", "Cannot change shop status");
   }
 
   if (!Reaction.hasPermission("admin", this.userId, Reaction.getPrimaryShopId())) {
-    throw new Meteor.Error(403, "Cannot change shop status");
+    throw new Meteor.Error("access-denied", "Cannot change shop status");
   }
 
   if (status.includes(workflowStatus)) {
@@ -30,12 +30,12 @@ export function marketplaceUpdateShopWorkflow(shopId, workflowStatus) {
       }
     }, function (error) {
       if (error) {
-        throw new Meteor.Error(500, error.message);
+        throw new Meteor.Error("server-error", error.message);
       }
     });
   }
 
-  throw new Meteor.Error(500, "Workflow status could not be updated should be one if active or disabled");
+  throw new Meteor.Error("server-error", "Workflow status could not be updated, should be 'active' or 'disabled'");
 }
 
 Meteor.methods({
