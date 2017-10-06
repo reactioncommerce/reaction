@@ -139,17 +139,13 @@ Meteor.startup(() => {
   // use tracker autorun to detect currency changes
   // this only runs on initial page loaded
   // and when user.profile.currency updates
-  // althought it is also triggered when profile updates ( meaning .lang )
+  // although it is also triggered when profile updates ( meaning .lang )
   Tracker.autorun(function () {
     const user = Meteor.user();
 
     if (Reaction.Subscriptions.PrimaryShop.ready() &&
         Reaction.Subscriptions.MerchantShops.ready() && user) {
       if (user.profile && user.profile.currency) {
-        const localStorageCurrency = localStorage.getItem("currency");
-        if (localStorageCurrency !== user.profile.currency) {
-          localStorage.setItem("currency", user.profile.currency);
-        }
         currencyDep.changed();
       }
     }

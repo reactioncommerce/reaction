@@ -21,19 +21,20 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   });
 
   const shopCurrency = shop && shop.currency || "USD";
-  const localStorageCurrencyName = localStorage.getItem("currency");
-  if (typeof shop === "object" && shop.currencies && localStorageCurrencyName) {
-    let localStorageCurrency = {};
-    if (shop.currencies[localStorageCurrencyName]) {
+  const user = Meteor.user();
+  const profileCurrency = user.profile && user.profile.currency;
+  if (typeof shop === "object" && shop.currencies && profileCurrency) {
+    let userCurrency = {};
+    if (shop.currencies[profileCurrency]) {
       if (useDefaultShopCurrency) {
-        localStorageCurrency = shop.currencies[shop.currency];
-        localStorageCurrency.exchangeRate = 1;
+        userCurrency = shop.currencies[shop.currency];
+        userCurrency.exchangeRate = 1;
       } else {
-        localStorageCurrency = shop.currencies[localStorageCurrencyName];
-        localStorageCurrency.exchangeRate = shop.currencies[localStorageCurrencyName].rate;
+        userCurrency = shop.currencies[profileCurrency];
+        userCurrency.exchangeRate = shop.currencies[profileCurrency].rate;
       }
     }
-    return localStorageCurrency;
+    return userCurrency;
   }
   return shopCurrency;
 }

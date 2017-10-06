@@ -16,7 +16,6 @@ const handlers = {
     // UserProfile and ShopMembers publications.
     //
     Meteor.users.update(Meteor.userId(), { $set: { "profile.currency": currencyName } });
-    localStorage.setItem("currency", currencyName);
 
     const cart = Cart.findOne({ userId: Meteor.userId() });
 
@@ -46,12 +45,14 @@ const composer = (props, onData) => {
       }
     });
 
+    const user = Meteor.user();
+    const profileCurrency = user.profile && user.profile.currency;
+
     if (Match.test(shop, Object) && shop.currency) {
-      const localStorageCurrency = localStorage.getItem("currency");
       const locale = Reaction.Locale.get();
 
-      if (localStorageCurrency && shop.currencies[localStorageCurrency] && shop.currencies[localStorageCurrency].symbol) {
-        currentCurrency = localStorageCurrency + " " + shop.currencies[localStorageCurrency].symbol;
+      if (profileCurrency && shop.currencies[profileCurrency] && shop.currencies[profileCurrency].symbol) {
+        currentCurrency = profileCurrency + " " + shop.currencies[profileCurrency].symbol;
       } else if (locale && locale.currency && locale.currency.enabled) {
         currentCurrency = locale.locale.currency + " " + locale.currency.symbol;
       } else {
@@ -63,12 +64,11 @@ const composer = (props, onData) => {
       for (const currencyName in shop.currencies) {
         if (shop.currencies[currencyName].enabled === true) {
           const currency = { currency: currencyName };
-          const localStorageCurrency = localStorage.getItem("currency");
           // only one currency will be "active". Either the one
-          // matching the localStorageCurrency if exists or else
+          // matching the profileCurrency if it exists or else
           //  the one matching shop currency
-          if (localStorageCurrency) {
-            if (localStorageCurrency === currency.currency) {
+          if (profileCurrency) {
+            if (profileCurrency === currency.currency) {
               currency.class = "active";
             }
           } else if (shop.currency === currency.currency) {

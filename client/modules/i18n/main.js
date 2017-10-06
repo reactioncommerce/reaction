@@ -121,31 +121,25 @@ Meteor.startup(() => {
           // flag in case the locale currency isn't enabled
           locale.currencyEnabled = locale.currency.enabled;
           const user = Meteor.user();
-          if (user && user.profile && user.profile.currency) {
-            localStorage.setItem("currency", user.profile.currency);
-          } else {
-            const localStorageCurrency = localStorage.getItem("currency");
-            let profileCurrency = localStorageCurrency;
-            if (!localStorageCurrency) {
-              if (locale.currencyEnabled) {
-                // in case of multiple locale currencies
-                const primaryCurrency = locale.locale.currency.split(",")[0];
-                localStorage.setItem("currency", primaryCurrency);
-                profileCurrency = primaryCurrency;
-              } else {
-                const shop = Shops.findOne({
-                  _id: localeShopId
-                }, {
-                  fields: {
-                    currency: 1
-                  }
-                });
-                if (shop) {
-                  localStorage.setItem("currency", shop.currency);
-                  profileCurrency = shop.currency;
+
+          let profileCurrency = user.profile && user.profile.currency;
+          if (!profileCurrency) {
+            if (locale.currencyEnabled) {
+              // in case of multiple locale currencies
+              profileCurrency = locale.locale.currency.split(",")[0];
+            } else {
+              const shop = Shops.findOne({
+                _id: localeShopId
+              }, {
+                fields: {
+                  currency: 1
                 }
+              });
+              if (shop) {
+                profileCurrency = shop.currency;
               }
             }
+
             Meteor.users.update(user._id, { $set: { "profile.currency": profileCurrency } });
           }
 
