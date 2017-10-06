@@ -77,7 +77,13 @@ class SearchModal extends Component {
         <p className="rui suggested-tags" data-i18n="search.suggestedTags">Suggested tags</p>
         <div className="rui search-tags">
           {this.props.tags.map((tag) => (
-            <span className="rui search-tag" id={tag._id} key={tag._id} onClick={() => this.props.handleTagClick(tag._id)}>{tag.name}</span>
+            <span
+              className="rui search-tag"
+              id={tag._id} key={tag._id}
+              onClick={() => this.props.handleTagClick(tag._id)}
+            >
+              {tag.name}
+            </span>
           ))}
         </div>
       </div>
@@ -94,11 +100,21 @@ class SearchModal extends Component {
           {this.props.tags.length > 0 && this.renderProductSearchTags()}
         </div>
         <div className="rui search-modal-results-container">
-          {this.props.products.length > 0 && <ProductGridContainer products={this.props.products} unmountMe={this.props.unmountMe} isSearch={true} />}
+          {this.props.products.length > 0 &&
+            <ProductGridContainer
+              products={this.props.products}
+              unmountMe={this.props.unmountMe}
+              isSearch={true}
+            />
+          }
           {this.props.accounts.length > 0 &&
             <div className="data-table">
               <div className="table-responsive">
-                <SortableTableLegacy data={this.props.accounts} columns={accountsTable()} onRowClick={this.props.handleAccountClick} />
+                <SortableTableLegacy
+                  data={this.props.accounts}
+                  columns={accountsTable()}
+                  onRowClick={this.props.handleAccountClick}
+                />
               </div>
             </div>
           }
