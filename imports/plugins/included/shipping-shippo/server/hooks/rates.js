@@ -4,24 +4,30 @@ import { Logger, Reaction, Hooks } from "/server/api";
 
 // callback ran on getShippingRates hook
 function getShippingRates(previousQueryResults, cart) {
+  const marketplaceSettings = Reaction.getMarketplaceSettings();
+  let merchantShippingRates = false;
+  if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantShippingRates) {
+    merchantShippingRates = marketplaceSettings.public.merchantShippingRates;
+  }
+
   const [rates, retrialTargets] = previousQueryResults;
   const shops = [];
   const products = cart.items;
 
-  const pkgData = Packages.findOne({
-    name: "reaction-shippo",
-    shopId: Reaction.getShopId()
-  });
+  let pkgData;
+  if (merchantShippingRates) {
+    Logger.fatal("Multiple shipping providers is currently not implemented");
+    throw new Meteor.Error("not-implemented", "Multiple shipping providers is currently not implemented");
+  } else {
+    pkgData = Packages.findOne({
+      name: "reaction-shippo",
+      shopId: Reaction.getPrimaryShopId()
+    });
+  }
+
 
   // must have cart items and package enabled to calculate shipping
   if (!pkgData || !cart.items || pkgData.settings.shippo.enabled !== true) {
-    const errorDetails = {
-      requestStatus: "error",
-      shippingProvider: "shippo",
-      message: "Error. The Shippo package may be uninstalled or disabled, or your cart is empty."
-    };
-    // There's no need for a retry in this case.
-    rates.push(errorDetails);
     return [rates, retrialTargets];
   }
 
@@ -31,22 +37,24 @@ function getShippingRates(previousQueryResults, cart) {
     "provider.enabled": true
   };
 
-  // create an array of shops, allowing
-  // the cart to have products from multiple shops
-  for (const product of products) {
-    if (product.shopId) {
-      shops.push(product.shopId);
+  // if we don't have merchant shipping rates enabled, only grab rates from primary shop
+  if (!merchantShippingRates) {
+    shops.push(Reaction.getPrimaryShopId());
+  } else {
+    // create an array of shops, allowing
+    // the cart to have products from multiple shops
+    for (const product of products) {
+      if (product.shopId) {
+        shops.push(product.shopId);
+      }
     }
   }
-  // if we have multiple shops in cart
-  if ((shops !== null ? shops.length : void 0) > 0) {
-    selector = {
-      "shopId": {
-        $in: shops
-      },
-      "provider.enabled": true
-    };
-  }
+  selector = {
+    "shopId": {
+      $in: shops
+    },
+    "provider.enabled": true
+  };
 
   const shippingCollection = Shipping.find(selector);
   const shippoDocs = {};
