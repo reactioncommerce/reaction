@@ -1,7 +1,5 @@
-import { Meteor } from "meteor/meteor";
 import _ from "lodash";
 import React, { Component } from "react";
-import classnames from "classnames";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { SHOP_WORKFLOW_STATUS_ACTIVE, SHOP_WORKFLOW_STATUS_DISABLED } from "../../lib/constants";
@@ -39,8 +37,8 @@ class MarketplaceShopTableCell extends Component {
 
     if (field === "emails" && Array.isArray(data.value) && data.value.length) {
       return (
-        <div>
-          {data.value[0].address}
+        <div className="table-cell body">
+          <span>{data.value[0].address}</span>
         </div>
       );
     }
@@ -48,8 +46,16 @@ class MarketplaceShopTableCell extends Component {
     if (field === "workflow") {
       return (
         <Components.DropDownMenu
-          value={this.status}
+          buttonElement={
+            <div className="col-dropdown">
+              <Components.Button bezelStyle="solid" label={_.startCase(this.status)}>
+                &nbsp;
+                <i className="fa fa-chevron-down" />
+              </Components.Button>
+            </div>
+          }
           onChange={this.handleWorkflowChange}
+          value={this.status}
         >
           <Components.MenuItem
             label="Active"
@@ -65,8 +71,8 @@ class MarketplaceShopTableCell extends Component {
 
 
     return (
-      <div>
-        {data.value}
+      <div className="table-cell body">
+        <span>{data.value}</span>
       </div>
     );
   }

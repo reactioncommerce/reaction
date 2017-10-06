@@ -13,7 +13,7 @@ class MarketplaceShops extends Component {
 
     const columnMetadata = fields.map((field) => {
       return {
-        Header: <Components.Translation i18nKey={`admin.logs.headers.${field}`} defaultValue={field} />,
+        Header: <Components.Translation i18nKey={`marketplaceShops.headers.${field}`} defaultValue={field} />,
         accessor: field,
         Cell: (data) => ( // eslint-disable-line
           <Components.MarketplaceShopTableCell
@@ -39,9 +39,8 @@ class MarketplaceShops extends Component {
 
   render() {
     return (
-      <div className="group-container">
-        <div className="settings">
-          {/* <Components.Alerts placement={alertId} id={alertId} onAlertRemove={this.removeAlert} /> */}
+      <div className="rui sortable-table-container">
+        <div className="rui sortable-table">
           {this.renderShopsTable()}
         </div>
       </div>
