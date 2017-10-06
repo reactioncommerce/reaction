@@ -42,14 +42,20 @@ Meteor.publish("MerchantShops", function () {
     delete fields.locales;
   }
 
-  // Return all non-primary shops for this domain that are active
-  return Shops.find({
+  let selector = {
     domains: domain,
     shopType: {
       $ne: "primary"
-    },
-    active: true
-  }, {
-    fields
-  });
+    }
+  };
+
+  if (!Reaction.hasPermission("admin", this.userId, Reaction.getPrimaryShopId())) {
+    selector = {
+      ...selector,
+      "workflow.status": "active"
+    };
+  }
+
+  // Return all non-primary shops for this domain that are active
+  return Shops.find(selector, { fields });
 });
