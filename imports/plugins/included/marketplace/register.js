@@ -68,6 +68,23 @@ Reaction.registerPackage({
     template: "marketplaceShopSettings",
     showForShopTypes: ["primary"]
   }, {
+    route: "shop/settings/shops",
+    template: "MarketplaceShops",
+    name: "marketplaceShops",
+    label: "Marketplace Shops",
+    icon: "fa fa-globe",
+    provides: ["settings"],
+    container: "dashboard",
+    meta: {
+      actionView: {
+        dashboardSize: "lg"
+      }
+    },
+    permissions: [{
+      label: "Marketplace Shops",
+      permission: "marketplaceShops"
+    }]
+  }, {
     // does this work?
     // override default shop settings
     route: "shop/settings",
