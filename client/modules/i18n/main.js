@@ -35,11 +35,9 @@ export function getBrowserLanguage() {
  * @return {Object} return schema label object
  */
 export function getLabelsFor(schema, name) {
-  console.log("translation schema", schema, name);
   const labels = {};
   // loop through all the rendered form fields and generate i18n keys
   for (const fieldName of schema._schemaKeys) {
-    console.log("fieldName", fieldName);
     const i18nKey = name.charAt(0).toLowerCase() + name.slice(1) + "." +
       fieldName
         .split(".$").join("");
