@@ -65,14 +65,13 @@ Our [community guidelines](https://docs.reactioncommerce.com/reaction-docs/maste
 
 ### Contributing
 
-Star us on GitHub—it helps!
+Star us on GitHub — it helps!
 
 Interested in participating in the development of Reaction? That's really great! Before you get started, please review our [Community Guidelines](https://docs.reactioncommerce.com/reaction-docs/master/guidelines).
 
 The [Reaction Gitter room](https://gitter.im/reactioncommerce/reaction) and [forum](https://forums.reactioncommerce.com/) are good places to engage with core contributors, the community, and to get familiar with Reaction.  
 
 Check out the [Issues](https://github.com/reactioncommerce/reaction/issues) page, and if you find something you want to work on, let us know in the comments. If you're interested in a particular [project](https://github.com/reactioncommerce/reaction/projects) and you aren’t sure where to begin, feel free to ask. Start small!
-
 
 If your contribution doesn't fit with an existing issue, go ahead and [create an Issue](https://github.com/reactioncommerce/reaction/issues/new) before submitting a [Pull Request](https://help.github.com/articles/about-pull-requests/). This will allow the Reaction team to give feedback if necessary.
 
@@ -82,8 +81,6 @@ Pull Requests should:
 -   Note any existing associated issues.
 -   Lint and adhere to the [Reaction style guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide).
 -   Pass both [acceptance tests and unit testing](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction).
-
-We're giving away t-shirts, tote bags, and $500 gift cards to anyone who contributes a feature or fixes a bug. Learn more about the [Reaction Hack-a-bug-a-thon](https://blog.reactioncommerce.com/introducing-the-reaction-hack-a-bug-a-thon/).  
 
 ### Testing
 
