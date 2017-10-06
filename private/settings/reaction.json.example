@@ -18,7 +18,8 @@
                 "user": "",
                 "password": "",
                 "host": "",
-                "port": ""
+                "port": "",
+                "service": "custom"
             },
             "cart": {
                 "cleanupDurationDays": "older than 3 days"
