@@ -208,7 +208,7 @@ export const methods = {
     const participatingShops = Object.keys(uniqueShopObj);
 
     if (participatingShops.length > 1) {
-      throw new Meteor.Error(400, "discounts.multiShopError", "Discounts cannot be applied to a multi-shop cart or order");
+      throw new Meteor.Error("not-implemented", "discounts.multiShopError", "Discounts cannot be applied to a multi-shop cart or order");
     }
 
     // TODO: add  conditions: conditions
