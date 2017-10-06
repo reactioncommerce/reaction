@@ -153,8 +153,8 @@ class ActionView extends Component {
     this.state = {
       isMobile: this.isMobile,
       enterAnimation: {
-        animation: { translateX: 0 },
-        duration: 200,
+        animation: { translateX: ["0%", "-100%"] },
+        duration: 1000,
         easing: "easeInOutQuad"
       },
       leaveAnimation: {
@@ -173,7 +173,23 @@ class ActionView extends Component {
         easing: "easeInOutQuad"
       }
     };
-
+    // 
+    // this.handleRightToLeftAnimation = () => {
+    //   if (window) {
+    //     this.setState({
+    //       enterAnimation: {
+    //         animation: { translateX: ["0%", "-100%"] },
+    //         duration: 1000,
+    //         easing: "easeInOutQuad"
+    //       },
+    //       leaveAnimation: {
+    //         animation: { translateX: -400 },
+    //         duration: 200,
+    //         easing: "easeInOutQuad"
+    //       }
+    //     });
+    //   }
+    // };
     this.handleResize = debounce(() => {
       if (window) {
         this.setState({
