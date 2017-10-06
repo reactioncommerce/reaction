@@ -187,7 +187,7 @@ Template.coreOrderShippingTracking.helpers({
         view = true;
       }
       // TODO modularize tracking more, editable to settings
-      if (view && shipment.shipmentMethod.carrier === "Flat Rate") {
+      if (view && (shipment.shipmentMethod && shipment.shipmentMethod.carrier) === "Flat Rate") {
         return true;
       }
     }
