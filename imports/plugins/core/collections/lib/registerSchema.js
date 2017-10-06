@@ -1,22 +1,11 @@
 export const Schemas = {}; // populated with all Schemas
 
 /**
- * Register a component and container(s) with a name.
- * The raw component can then be extended or replaced.
+ * Register a schema
+ * @param {String} name The name of the schema to register.
+ * @param {Array} schema Schema data.
  *
- * Structure of a component in the list:
- *
- * ComponentsTable.MyComponent = {
- *    name: 'MyComponent',
- *    hocs: [fn1, fn2],
- *    rawComponent: React.Component
- * }
- *
- * @param {String} name The name of the component to register.
- * @param {React.Component} rawComponent Interchangeable/extendable component.
- * @param {Function|[Function]} hocs The HOCs to wrap around the raw component.
- *
- * @returns {React.Component} returns the final wrapped component
+ * @returns {Empty} no return. Adds schema to Schemas object
  */
 export function registerSchema(name, schema) {
   if (!name || !schema) {
@@ -27,15 +16,9 @@ export function registerSchema(name, schema) {
   Schemas[name] = schema;
 }
 
-
-
-
-
-
 /**
- * Get a component registered with registerComponent(name, component, ...hocs).
- * @param {String} name The name of the component to get.
- * @return {Function|React.Component} A (wrapped) React component
+ * Get all schemas registered with registerSchema().
+ * @return {Object} An object that contains all registered schemas
  */
 export function getSchemas() {
   return Schemas;
