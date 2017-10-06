@@ -47,8 +47,6 @@ class ProductField extends Component {
 
   handleFocus = (event) => {
     // Open actionView, if it's not open already
-console.log("this input", this._input);
-console.log("this.props", this.props);
     // Set actionView to the productDetails pane
     Reaction.state.set("edit/focus", "productDetails");
   }
