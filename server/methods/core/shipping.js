@@ -1,22 +1,23 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Cart } from "/lib/collections";
+import { Cart, Accounts } from "/lib/collections";
 import { Logger, Hooks } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
-function createShipmentQuotes(cartId, shopId, rates, selector) {
+function createShipmentQuotes(cartId, shopId, rates) {
   let update = {
     $push: {
       shipping: {
         shopId: shopId,
-        shipmentQuotes: rates,
+        shipmentQuotes: [],
         shipmentQuotesQueryStatus: {
           requestStatus: "pending"
         }
       }
     }
   };
-  Cart.update(selector, update, function (error) {
+
+  Cart.update({ _id: cartId }, update, function (error) {
     if (error) {
       Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
       return;
@@ -27,15 +28,12 @@ function createShipmentQuotes(cartId, shopId, rates, selector) {
   if (rates.length === 1 && rates[0].requestStatus === "error") {
     const errorDetails = rates[0];
     update = {
-      $push: {
-        shipping: {
-          shopId: shopId,
-          shipmentQuotes: [],
-          shipmentQuotesQueryStatus: {
-            requestStatus: errorDetails.requestStatus,
-            shippingProvider: errorDetails.shippingProvider,
-            message: errorDetails.message
-          }
+      $set: {
+        "shipping.$.shipmentQuotes": [],
+        "shipping.$.shipmentQuotesQueryStatus": {
+          requestStatus: errorDetails.requestStatus,
+          shippingProvider: errorDetails.shippingProvider,
+          message: errorDetails.message
         }
       }
     };
@@ -43,14 +41,11 @@ function createShipmentQuotes(cartId, shopId, rates, selector) {
 
   if (rates.length > 0 && rates[0].requestStatus === undefined) {
     update = {
-      $push: {
-        shipping: {
-          shopId: shopId,
-          shipmentQuotes: rates,
-          shipmentQuotesQueryStatus: {
-            requestStatus: "success",
-            numOfShippingMethodsFound: rates.length
-          }
+      $set: {
+        "shipping.$.shipmentQuotes": rates,
+        "shipping.$.shipmentQuotesQueryStatus": {
+          requestStatus: "success",
+          numOfShippingMethodsFound: rates.length
         }
       }
     };
@@ -59,27 +54,74 @@ function createShipmentQuotes(cartId, shopId, rates, selector) {
   return update;
 }
 
-function createShippingRecordByShop(cart, rates) {
-  const cartId = cart._id;
-  const itemsByShop = cart.getItemsByShop();
-  const shops = Object.keys(itemsByShop);
-  const selector = { _id: cartId };
-  shops.map((shopId) => {
-    const update = createShipmentQuotes(cartId, shopId, rates, selector);
-    return Cart.update(selector, update, (error) => {
-      if (error) {
-        Logger.error(`Error adding rates to cart from createShippingRecordByShop ${cartId}`, error);
-        return;
+
+/**
+ * @summary if we have items in the cart, ensure that we only have shipping records for shops currently represented in the cart
+ * @param {Object} cart - The cart to operate on
+ * @returns {undefined} undefined
+ * @private
+ */
+function pruneShippingRecordsByShop(cart) {
+  if (cart.items) {
+    const cartId = cart._id;
+    const itemsByShop = cart.getItemsByShop();
+    const shops = Object.keys(itemsByShop);
+    if (shops.length > 0 && cart.items.length > 0) {
+      Cart.update({ _id: cartId },
+        {
+          $pull: {
+            shipping: { shopId: { $nin: shops } }
+          }
+        }
+      );
+    } else {
+      Cart.update({ _id: cartId },
+        {
+          $unset: {
+            shipping: ""
+          }
+        }
+      );
+    }
+  }
+}
+
+/**
+ * @summary - When adding shipping records, ensure that each record has an address
+ * @param {Object} cart - The Cart object we need to operate on
+ * @returns {undefined} undefined
+ */
+function normalizeAddresses(cart) {
+  if (cart.shipping && cart.shipping.length > 0) {
+    const shipping = cart.shipping;
+    const cartId = cart._id;
+    let address; // we can only have one address so whatever was the last assigned
+    shipping.forEach((shippingRecord) => {
+      if (shippingRecord.address) {
+        address = shippingRecord.address;
       }
-      Logger.debug(`Success adding rates to cart ${cartId}`, rates);
     });
-  });
+    const shopIds = Object.keys(cart.getItemsByShop());
+    shopIds.forEach((shopId) => {
+      const selector = {
+        "_id": cartId,
+        "shipping.shopId": shopId
+      };
+
+      const update = {
+        $set: {
+          "shipping.$.address": address
+        }
+      };
+      Cart.update(selector, update);
+    });
+  }
 }
 
 function updateShipmentQuotes(cartId, rates, selector) {
   let update = {
     $set: {
-      "shipping.0.shipmentQuotesQueryStatus": {
+      "shipping.$.shipmentQuotesQueryStatus": {
         requestStatus: "pending"
       }
     }
@@ -96,8 +138,8 @@ function updateShipmentQuotes(cartId, rates, selector) {
     const errorDetails = rates[0];
     update = {
       $set: {
-        "shipping.0.shipmentQuotes": [],
-        "shipping.0.shipmentQuotesQueryStatus": {
+        "shipping.$.shipmentQuotes": [],
+        "shipping.$.shipmentQuotesQueryStatus": {
           requestStatus: errorDetails.requestStatus,
           shippingProvider: errorDetails.shippingProvider,
           message: errorDetails.message
@@ -127,19 +169,17 @@ function updateShippingRecordByShop(cart, rates) {
   const shops = Object.keys(itemsByShop);
   let update;
   let selector;
-  shops.map((shopId) => {
+  shops.forEach((shopId) => {
     selector = {
       "_id": cartId,
       "shipping.shopId": shopId
     };
-    const shippingRecord = Cart.findOne(selector);
+    const cartForShipping = Cart.findOne(selector);
     // we may have added a new shop since the last time we did this, if so we need to add a new record
-
-    if (shippingRecord) {
+    if (cartForShipping) {
       update = updateShipmentQuotes(cartId, rates, selector);
     } else {
-      selector = { _id: cartId };
-      update = createShipmentQuotes(cartId, shopId, rates, selector);
+      update = createShipmentQuotes(cartId, shopId, rates);
     }
 
     Cart.update(selector, update, function (error) {
@@ -150,6 +190,42 @@ function updateShippingRecordByShop(cart, rates) {
       Logger.debug(`Success updating rates for cart ${cartId}`, rates);
     });
   });
+  pruneShippingRecordsByShop(cart);
+  normalizeAddresses(cart);
+}
+
+function getDefaultAddress(cart) {
+  const userId = cart.userId;
+  const account = Accounts.findOne(userId);
+  if (account && account.profile && account.profile.addressBook) {
+    const address = account.profile.addressBook.find((addressEntry) => addressEntry.isShippingDefault === true);
+    return address;
+  }
+}
+
+/**
+ * Add the default address to the cart
+ * @param {Object} cart - the cart to modify
+ * @returns {undefined}
+ * @private
+ */
+function addAddresses(cart) {
+  const address = getDefaultAddress(cart);
+  if (address) {
+    const shopIds = Object.keys(cart.getItemsByShop());
+    shopIds.forEach((shopId) => {
+      Cart.update({
+        _id: cart._id
+      }, {
+        $push: {
+          shipping: {
+            shopId: shopId,
+            address: address
+          }
+        }
+      });
+    });
+  }
 }
 /*
  * Reaction Shipping Methods
@@ -169,16 +245,16 @@ export const methods = {
       return [];
     }
     this.unblock();
-    const cart = Cart.findOne(cartId);
+    let cart = Cart.findOne(cartId);
     check(cart, CartSchema);
 
     if (cart) {
-      const rates = Meteor.call("shipping/getShippingRates", cart);
-      if (cart.shipping) {
-        updateShippingRecordByShop(cart, rates);
-      } else {
-        createShippingRecordByShop(cart, rates);
+      if (!cart.shipping || cart.shipping.length === 0) {
+        addAddresses(cart);
+        cart = Cart.findOne(cartId);
       }
+      const rates = Meteor.call("shipping/getShippingRates", cart);
+      updateShippingRecordByShop(cart, rates);
     }
   },
 
@@ -193,7 +269,7 @@ export const methods = {
     const rates = [];
     const retrialTargets = [];
     // must have items to calculate shipping
-    if (!cart.items) {
+    if (!cart.items || !cart.items.length) {
       return rates;
     }
     // hooks for other shipping rate events

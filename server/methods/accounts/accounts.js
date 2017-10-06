@@ -766,9 +766,11 @@ export function sendWelcomeEmail(shopId, userId) {
     return true;
   }
 
+  const defaultEmail = user.emails.find((email => email.provides === "default"));
+  // Encode email address for URI
+  const encodedEmailAddress = encodeURIComponent(defaultEmail.address);
   // assign verification url
-  const prefix = Reaction.getShopPrefix().replace(/\//, "");
-  dataForEmail.verificationUrl = `${Meteor.absoluteUrl()}${prefix}/account/profile/verify?email=${user.emails[0].address}`;
+  dataForEmail.verificationUrl = `${Meteor.absoluteUrl()}account/profile/verify?email=${encodedEmailAddress}`;
   const userEmail = user.emails[0].address;
 
   let shopEmail;
