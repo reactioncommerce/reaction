@@ -1,0 +1,28 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_HOST: tcp://localhost:2375
+
+before_script:
+  - docker info
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
+
+testing:
+  stage: deploy
+  script:
+    - docker build --build-arg TOOL_NODE_FLAGS="--max-old-space-size=2048" -t "$CI_REGISTRY_IMAGE:${CI_COMMIT_REF_SLUG}" .
+  only:
+    - branches
+  except:
+    - master
+
+master:
+  stage: deploy
+  script:
+    - docker build --build-arg TOOL_NODE_FLAGS="--max-old-space-size=2048" -t "$CI_REGISTRY_IMAGE:latest" .
+    - docker push "$CI_REGISTRY_IMAGE:latest"
+  only:
+    - master
