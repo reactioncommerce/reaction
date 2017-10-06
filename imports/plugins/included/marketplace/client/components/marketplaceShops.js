@@ -15,7 +15,7 @@ class MarketplaceShops extends Component {
       return {
         Header: <Components.Translation i18nKey={`marketplaceShops.headers.${field}`} defaultValue={field} />,
         accessor: field,
-        Cell: (data) => ( // eslint-disable-line
+        Cell: (data) => (
           <Components.MarketplaceShopTableCell
             data={data}
             field={field}
