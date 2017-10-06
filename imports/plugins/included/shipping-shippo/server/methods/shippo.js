@@ -32,17 +32,25 @@ function createShippoAddress(reactionAddress, email, purpose) {
 
 // Creates a parcel object suitable for Shippo Api Calls given
 // a reaction product's parcel and units of measure for mass and distance
-function createShippoParcel(reactionParcel, reactionMassUnit, reactionDistanceUnit) {
+function createShippoParcel(reactionParcel, cartWeight, reactionMassUnit, reactionDistanceUnit) {
   const shippoParcel = {
     width: reactionParcel.width || "",
     length: reactionParcel.length || "",
     height: reactionParcel.height || "",
-    weight: reactionParcel.weight || "",
+    weight: cartWeight,
     distance_unit: reactionDistanceUnit,
     mass_unit: reactionMassUnit
   };
 
   return shippoParcel;
+}
+
+function getTotalCartweight(cart) {
+  const totalWeight = cart.items.reduce((sum, cartItem) => {
+    const itemWeight = cartItem.quantity * cartItem.parcel.weight;
+    return sum + itemWeight;
+  }, 0);
+  return totalWeight;
 }
 
 // converts the Rates List fetched from the Shippo Api to Reaction Shipping Rates form
@@ -411,7 +419,8 @@ export const methods = {
       if (cart.items && cart.items[0] && cart.items[0].parcel) {
         const unitOfMeasure = shop && shop.baseUOM || "kg";
         const unitOfLength = shop && shop.baseUOL || "cm";
-        shippoParcel = createShippoParcel(cart.items[0].parcel, unitOfMeasure, unitOfLength);
+        const cartWeight = getTotalCartweight(cart);
+        shippoParcel = createShippoParcel(cart.items[0].parcel, cartWeight, unitOfMeasure, unitOfLength);
       } else {
         errorDetails.message = "This cart has no items, or the first item has no 'parcel' property.";
         return [[errorDetails], []];

@@ -1,10 +1,33 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { EJSON } from "meteor/ejson";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 
+
+// Because we are duplicating shipment quotes across shipping records
+// we will get duplicate shipping quotes but we only want to diplay one
+// So this function eliminates duplicates
+/**
+ * Return a unique list of objects
+ * @param {Array} objs - An array of objects
+ * @returns {Array} An array of object only containing unique members
+ * @private
+ */
+function uniqObjects(objs) {
+  const jsonBlobs = objs.map((obj) => {
+    return JSON.stringify(obj);
+  });
+  const uniqueBlobs = _.uniq(jsonBlobs);
+  return uniqueBlobs.map((blob) => {
+    return EJSON.parse(blob);
+  });
+}
+
+// cartShippingQuotes
+// returns multiple methods
 /**
  * cartShippingQuotes - returns a list of all the shipping costs/quotations
  * of each available shipping carrier like UPS, Fedex etc.
@@ -16,24 +39,18 @@ import { Cart } from "/lib/collections";
 function cartShippingQuotes(currentCart) {
   const cart = currentCart || Cart.findOne();
   const shipmentQuotes = [];
-  const primaryShopId = Reaction.getPrimaryShopId();
   if (cart) {
     if (cart.shipping) {
       for (const shipping of cart.shipping) {
         if (shipping.shipmentQuotes) {
           for (const quote of shipping.shipmentQuotes) {
-            if (shipping.shopId === primaryShopId) {
-              if (quote.carrier === "Flat Rate" || quote.requestStatus !== "error") {
-                shipmentQuotes.push(quote);
-              }
-            }
+            shipmentQuotes.push(quote);
           }
         }
       }
     }
   }
-
-  return shipmentQuotes;
+  return uniqObjects(shipmentQuotes);
 }
 
 function shippingMethodsQueryStatus(currentCart) {
@@ -66,13 +83,10 @@ function shippingMethodsQueryStatus(currentCart) {
 function cartShipmentMethods() {
   const cart = Cart.findOne();
   const shipmentMethods = [];
-  const primaryShopId = Reaction.getPrimaryShopId();
   if (cart) {
     if (cart.shipping) {
       for (const shipping of cart.shipping) {
-        if (shipping.shipmentMethod && shipping.shopId === primaryShopId) {
-          shipmentMethods.push(shipping.shipmentMethod);
-        }
+        shipmentMethods.push(shipping.shipmentMethod);
       }
     }
   }
