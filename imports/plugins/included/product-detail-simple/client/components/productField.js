@@ -46,14 +46,19 @@ class ProductField extends Component {
   }
 
   handleFocus = () => {
-    // Set actionView state the productDetails section
+    // Open actionView, if not already open
+    if (!Reaction.isActionViewOpen()) {
+      Reaction.showActionView();
+    }
+
+    // Open actionView to productDetails panel
+    Reaction.state.set("edit/focus", "productDetails");
+
     Reaction.setActionView({
       i18nKeyLabel: "productDetailEdit.productSettings",
       label: "Product Settings",
       template: "ProductAdmin"
     });
-
-    Reaction.state.set("edit/focus", "productDetails");
   }
 
   get fieldName() {
