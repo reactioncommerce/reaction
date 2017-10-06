@@ -249,6 +249,8 @@ export const methods = {
     const defaultEmail = customerAccount.emails.find((email) => email.provides === "default");
     if (defaultEmail) {
       customerEmail = defaultEmail.address;
+    } else if (!defaultEmail) {
+      customerEmail = cart.email;
     } else {
       throw new Meteor.Error("Customer does not have default email");
     }

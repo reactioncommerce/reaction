@@ -88,7 +88,7 @@ export const methods = {
     const shop = Shops.findOne(cart.shopId);
     const currency = shop.currency;
     const options = PayPal.expressCheckoutAccountOptions();
-    const captureAtAuth = getSetting(cart.shopId, "express_auth_and_capture");
+    const captureAtAuth = getSetting(cart.shopId, "expressAuthAndCapture");
     let paymentAction;
     if (captureAtAuth) {
       paymentAction = "Sale";

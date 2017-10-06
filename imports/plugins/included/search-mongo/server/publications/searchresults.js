@@ -1,4 +1,5 @@
 import _ from "lodash";
+import escapeStringRegex from "escape-string-regexp";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
@@ -49,56 +50,57 @@ getResults.products = function (searchTerm, facets, maxResults, userId) {
 
 getResults.orders = function (searchTerm, facets, maxResults, userId) {
   let orderResults;
+  const regexSafeSearchTerm = escapeStringRegex(searchTerm);
   const shopId = Reaction.getShopId();
   const findTerm = {
     $and: [
       { shopId: shopId },
       { $or: [
         { _id: {
-          $regex: `^${searchTerm}`,
+          $regex: `^${regexSafeSearchTerm}`,
           $options: "i"
         } },
         { userEmails: {
-          $regex: searchTerm,
+          $regex: regexSafeSearchTerm,
           $options: "i"
         } },
         { shippingName: {
-          $regex: searchTerm,
+          $regex: regexSafeSearchTerm,
           $options: "i"
         } },
         { billingName: {
-          $regex: searchTerm,
+          $regex: regexSafeSearchTerm,
           $options: "i"
         } },
         { billingCard: {
-          $regex: searchTerm,
+          $regex: regexSafeSearchTerm,
           $options: "i"
         } },
         { billingPhone: {
-          $regex: searchTerm,
+          $regex: regexSafeSearchTerm,
           $options: "i"
         } },
         { shippingPhone: {
-          $regex: searchTerm,
+          $regex: regexSafeSearchTerm,
           $options: "i"
         } },
         { "product.title": {
-          $regex: searchTerm,
+          $regex: regexSafeSearchTerm,
           $options: "i"
         } },
         { "variants.title": {
-          $regex: searchTerm,
+          $regex: regexSafeSearchTerm,
           $options: "i"
         } },
         { "variants.optionTitle": {
-          $regex: searchTerm,
+          $regex: regexSafeSearchTerm,
           $options: "i"
         } }
       ] }
     ] };
   if (Reaction.hasPermission("orders", userId)) {
     orderResults = OrderSearch.find(findTerm, { limit: maxResults });
-    Logger.debug(`Found ${orderResults.count()} orders searching for ${searchTerm}`);
+    Logger.debug(`Found ${orderResults.count()} orders searching for ${regexSafeSearchTerm}`);
   }
   return orderResults;
 };

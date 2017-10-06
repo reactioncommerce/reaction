@@ -1,4 +1,5 @@
 import { check } from "meteor/check";
+import { Meteor } from "meteor/meteor";
 import { Shipping, Packages } from "/lib/collections";
 import { Logger, Reaction, Hooks } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
@@ -34,20 +35,35 @@ function getShippingRates(previousQueryResults, cart) {
       return previousQueryResults;
     }
   }
-  if (!(cart.shipping && cart.shipping[0] && cart.shipping[0].address)) {
+
+  // Verify that we have shipping records
+  if (!cart.shipping || !cart.shipping.length) {
     const errorDetails = {
       requestStatus: "error",
-      shippingProvider: "shippo",
-      message: "The 'shipping' property of this cart is either missing or incomplete."
+      shippingProvider: "flat-rate-shipping",
+      message: "this cart is missing shipping records"
     };
-    rates.push(errorDetails);
-    return [rates, retrialTargets];
+    return [[errorDetails], []];
   }
-  if (!(cart.items && cart.items[0] && cart.items[0].parcel)) {
+
+  // Verify that we have a valid address to work with
+  let shippingErrorDetails;
+  if (cart.shipping.find((shippingRecord) => !shippingRecord.address)) {
+    shippingErrorDetails = {
+      requestStatus: "error",
+      shippingProvider: "flat-rate-shipping",
+      message: "The address property on one or more shipping records are incomplete"
+    };
+    return [[shippingErrorDetails], []];
+  }
+
+  // Validate that we have valid items to work with. We should never get here since we filter for this
+  // at the cart level
+  if (!cart.items || !cart.items.length) {
     const errorDetails = {
       requestStatus: "error",
-      shippingProvider: "shippo",
-      message: "This cart has no items, or the first item has no 'parcel' property."
+      shippingProvider: "flat-rate-shipping",
+      message: "this cart has no items"
     };
     return [[errorDetails], []];
   }
@@ -58,21 +74,20 @@ function getShippingRates(previousQueryResults, cart) {
     merchantShippingRates = marketplaceSettings.public.merchantShippingRates;
   }
 
-  // TODO: Check to see if the merchantShippingRates flag is set in
-  // marketplace and get rates from the correct shop.
-  const pkgData = Packages.findOne({
-    name: "reaction-shipping-rates",
-    shopId: Reaction.getPrimaryShopId()
-  });
+  let pkgData;
+  if (merchantShippingRates) {
+    // TODO this needs to be rewritten to handle getting rates from each shops that's represented on the order
+    Logger.fatal("Multiple shipping providers is currently not supported");
+    throw new Meteor.Error("not-implemented", "Multiple shipping providers is currently not supported");
+  } else {
+    pkgData = Packages.findOne({
+      name: "reaction-shipping-rates",
+      shopId: Reaction.getPrimaryShopId()
+    });
+  }
+
 
   if (!pkgData || !cart.items || pkgData.settings.flatRates.enabled !== true) {
-    const errorDetails = {
-      requestStatus: "error",
-      shippingProvider: "flat-rate-shipping",
-      message: "Error. Flat rate shipping might be uninstalled or disabled, or your cart is empty."
-    };
-    // There's no need for a retry in this case.
-    rates.push(errorDetails);
     return [rates, retrialTargets];
   }
 
@@ -82,6 +97,8 @@ function getShippingRates(previousQueryResults, cart) {
     "provider.enabled": true
   };
 
+  // Get rates from shops if merchantShippingRates is enabled
+  // Otherwise just get them from the primaryShop
   if (merchantShippingRates) {
     // create an array of shops, allowing
     // the cart to have products from multiple shops
@@ -90,7 +107,6 @@ function getShippingRates(previousQueryResults, cart) {
         shops.push(product.shopId);
       }
     }
-
     // if we have multiple shops in cart
     if ((shops !== null ? shops.length : void 0) > 0) {
       selector = {
