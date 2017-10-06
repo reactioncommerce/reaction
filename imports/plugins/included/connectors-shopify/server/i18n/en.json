@@ -35,10 +35,10 @@
       },
       "shopifyConnectPackageConfig": {
         "settings" : {
-          "apiKey": "Api keyzzz",
-          "password": "API passwordzzz",
-          "sharedSecret": "API shared secretzzz",
-          "shopName": "Shop slugzzz"
+          "apiKey": "API key",
+          "password": "API password",
+          "sharedSecret": "API shared secret",
+          "shopName": "Shop slug"
         }
       }
     }
