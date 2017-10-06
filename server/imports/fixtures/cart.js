@@ -29,7 +29,7 @@ export function getCartItem(options = {}) {
   const defaults = {
     _id: Random.id(),
     productId: product._id,
-    shopId: getShop()._id,
+    shopId: options.shopId || getShop()._id,
     quantity: _.random(1, selectedOption.inventoryQuantity),
     product: product,
     variants: selectedOption,
@@ -151,6 +151,14 @@ export default function () {
     ]
   };
 
+  const cartMultiItems = {
+    items: [getSingleCartItem(), getSingleCartItem()]
+  };
+
+  const cartMultiShopItems = {
+    items: [getSingleCartItem(), getSingleCartItem({ shopId: Random.id() })]
+  };
+
   const addressForOrder = getAddress();
   const cartToOrder = {
     shopId: getShop()._id,
@@ -189,5 +197,7 @@ export default function () {
   Factory.define("anonymousCart", Cart, Object.assign({}, cart, anonymousCart));
   Factory.define("cartOne", Cart, Object.assign({}, cart, cartToOrder, cartOne));
   Factory.define("cartTwo", Cart, Object.assign({}, cart, cartToOrder, cartTwo));
+  Factory.define("cartMultiItems", Cart, Object.assign({}, cart, cartToOrder, cartMultiItems));
+  Factory.define("cartMultiShop", Cart, Object.assign({}, cart, cartToOrder, cartMultiShopItems));
   Factory.define("cartNoItems", Cart, Object.assign({}, cart, cartToOrder, cartNoItems));
 }
