@@ -376,7 +376,8 @@ Meteor.methods({
         Object.assign(clone, sortedVariant, {
           _id: variantNewId,
           title: `${sortedVariant.title} - copy`,
-          optionTitle: `${sortedVariant.optionTitle} - copy`
+          optionTitle: `${sortedVariant.optionTitle} - copy`,
+          price: variant.price
         });
       } else {
         const parentIndex = sortedVariant.ancestors.indexOf(variantId);
@@ -387,7 +388,7 @@ Meteor.methods({
           _id: Random.id(),
           ancestors: ancestorsClone,
           title: `${sortedVariant.title} - copy`,
-          optionTitle: `${sortedVariant.optionTitle} - copy`
+          optionTitle: `${sortedVariant.optionTitle}`
         });
       }
       delete clone.updatedAt;
