@@ -42,7 +42,7 @@ class LoginInline extends Component {
         <div className="accounts-dialog accounts-inline">
           <form onSubmit={this.handleSubmit} className="add-email-input">
             <Components.Translation
-              defaultValue="Hello! Add an email and receive order updates"
+              defaultValue="Add your email address to receive order updates"
               i18nKey="{cartCompleted.registerGuest}"
             />
             <div>
