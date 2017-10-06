@@ -5,7 +5,7 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
-          "preview": "預習",
+          "preview": "預覽",
           "revisionsLabel": "修訂",
           "revisionsTitle": "修訂",
           "revisionsDescription": "版本控制"

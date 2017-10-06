@@ -1,5 +1,5 @@
 [{
-  "i18n": "zh-hans",
+  "i18n": "zh-Hans",
   "ns": "reaction-taxes",
   "translation": {
     "reaction-taxes": {
@@ -24,13 +24,13 @@
           "taxSettingsLabel": "税款设置"
         },
         "taxSettings": {
-          "noCustomTaxRatesFound": "未找到自定义税率。",
-          "shopCustomTaxRatesSaved": "自定义税率已保存。",
+          "noCustomTaxRatesFound": "未找到自定税率。",
+          "shopCustomTaxRatesSaved": "自定税率已保存。",
           "shopCustomTaxRatesFailed": "保存税率时出错。",
           "shopTaxMethodsSaved": "已保存的纳税方式。",
           "shopTaxMethodsFailed": "保存纳税方式失败。",
-          "customRatesLabel": "自定义费用",
-          "customRatesDescription": "自定义费用",
+          "customRatesLabel": "自定费用",
+          "customRatesDescription": "自定费用",
           "taxCode": "税码",
           "taxShipping": "包括发货",
           "taxRate": "费用",
