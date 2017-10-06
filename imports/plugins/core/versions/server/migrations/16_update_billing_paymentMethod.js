@@ -43,7 +43,16 @@ Migrations.add({
     });
   },
   down() {
-    //
-    //
+    Orders.find().forEach((order) => {
+      order.billing.forEach((billing) => {
+        delete billing.paymentMethod.paymentPackageId;
+        delete billing.paymentMethod.paymentSettingsKey;
+        delete billing.paymentMethod.shopId;
+        delete billing.paymentMethod.items;
+      });
+      Orders._collection.update({ _id: order._id }, {
+        $set: { items: order.billing }
+      });
+    });
   }
 });
