@@ -49,7 +49,6 @@ class OrderFilter extends Component {
   }
 
   shippingLabel() {
-    console.log("this.state.shippingLabel", this.state.shippingLabel);
     if (this.state.classNames.shipping === "active") {
       return (
         <Components.Translation
