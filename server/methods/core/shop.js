@@ -234,7 +234,7 @@ Meteor.methods({
     });
     let profileCurrency = user.profile && user.profile.currency;
     if (!profileCurrency) {
-      if (shop.currencies[localeCurrency].enabled) {
+      if (shop.currencies[localeCurrency] && shop.currencies[localeCurrency].enabled) {
         profileCurrency = localeCurrency.currency;
       } else {
         profileCurrency = shop.currency;
