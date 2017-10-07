@@ -76,6 +76,19 @@
           "search": {
             "clearSearch": "Clear",
             "placeholder": "Search orders"
+          },
+          "data": {
+            "status": {
+              "new": "New ",
+              "coreOrderWorkflow/created": "Created ",
+              "coreOrderWorkflow/processing": "Processing ",
+              "coreOrderWorkflow/completed": "Completed ",
+              "coreOrderWorkflow/canceled": "Canceled ",
+              "coreOrderWorkflow/picked": "Picked ",
+              "coreOrderWorkflow/packed": "Packed ",
+              "coreOrderWorkflow/labeled": "Labeled ",
+              "coreOrderWorkflow/shipped": "Shipped "
+            }
           }
         }
       }

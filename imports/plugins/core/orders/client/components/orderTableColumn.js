@@ -106,7 +106,7 @@ class OrderTableColumn extends Component {
         <Badge
           className="orders-badge"
           badgeSize="large"
-          i18nKeyLabel={`cartDrawer.${this.props.row.value}`}
+          i18nKeyLabel={`admin.table.data.status.${this.props.row.value}`}
           label={this.props.row.value}
           status="basic"
         />
@@ -117,7 +117,7 @@ class OrderTableColumn extends Component {
         <div className="status-info">
           <Badge
             badgeSize="large"
-            i18nKeyLabel={`cartDrawer.${this.props.row.value}`}
+            i18nKeyLabel={`admin.table.data.status.${this.props.row.value}`}
             label={this.props.row.value}
             status={this.props.fulfillmentBadgeStatus(this.props.row.original)}
           />
