@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
-import { Shops, Accounts } from "/lib/collections";
+import { Shops } from "/lib/collections";
 
 //
 // Reaction i18n Translations, RTL and Currency Exchange Support
@@ -120,9 +120,7 @@ Meteor.startup(() => {
           moment.locale(locale.language);
           // flag in case the locale currency isn't enabled
           locale.currencyEnabled = locale.currency.enabled;
-          const user = Accounts.findOne({
-            _id: Meteor.userId()
-          });
+          const user = Meteor.user();
 
           let profileCurrency = user.profile && user.profile.currency;
           if (!profileCurrency) {
@@ -142,7 +140,7 @@ Meteor.startup(() => {
               }
             }
 
-            Accounts.update(user._id, { $set: { "profile.currency": profileCurrency } });
+            Meteor.users.update(user._id, { $set: { "profile.currency": profileCurrency } });
           }
 
           Reaction.Locale.set(locale);
