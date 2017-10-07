@@ -1,5 +1,6 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { TaxPackageConfig } from "/imports/plugins/core/taxes/lib/collections/schemas";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 /**
 * TaxPackageConfig Schema
@@ -38,3 +39,5 @@ export const TaxCloudPackageConfig = new SimpleSchema([
     }
   }
 ]);
+
+registerSchema("TaxCloudPackageConfig", TaxCloudPackageConfig);

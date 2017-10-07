@@ -15,7 +15,8 @@
         "applied": "applied",
         "code": "code",
         "codeIsExpired": "Code is expired",
-        "codeIsInvalid": "Code is invalid"
+        "codeIsInvalid": "Code is invalid",
+        "multiShopError": "Discounts cannot be applied to a multi-shop cart or order"
       },
       "admin": {
         "paymentSettings": {

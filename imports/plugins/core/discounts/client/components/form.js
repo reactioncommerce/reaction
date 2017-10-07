@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import debounce from "lodash/debounce";
 import { Meteor } from "meteor/meteor";
+import { i18next } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
 export default class DiscountForm extends Component {
@@ -20,6 +21,10 @@ export default class DiscountForm extends Component {
       const { discount } = this.state;
       // handle discount code validation messages after attempt to apply
       Meteor.call("discounts/codes/apply", this.props.id, discount, this.props.collection, (error, result) => {
+        if (error) {
+          Alerts.toast(i18next.t(error.reason), "error");
+        }
+
         if (typeof result === "object") {
           this.setState({ validationMessage: result });
         } else if (result !== 1) {

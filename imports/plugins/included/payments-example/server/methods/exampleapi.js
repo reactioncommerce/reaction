@@ -1,6 +1,7 @@
 import { ValidatedMethod } from "meteor/mdg:validated-method";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Random } from "meteor/random";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 // Test card to use to add risk level flag for testing purposes only.
 export const RISKY_TEST_CARD = "4000000000009235";
@@ -75,10 +76,14 @@ export const cardSchema = new SimpleSchema({
   type: { type: String }
 });
 
+registerSchema("cardSchema", cardSchema);
+
 export const paymentDataSchema = new SimpleSchema({
   total: { type: String },
   currency: { type: String }
 });
+
+registerSchema("paymentDataSchema", paymentDataSchema);
 
 
 ExampleApi.methods.authorize = new ValidatedMethod({

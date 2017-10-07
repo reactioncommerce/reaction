@@ -63,14 +63,12 @@ export function verifyAccount(email, token) {
 
 /**
  * updateEmailAddress
- * @summary update a users email address
- * @param {String} email - user email
- * @returns {Boolean} - returns boolean
+ * @summary update a user's email address.
+ * @param {String} email - user email.
+ * @returns {Boolean} - returns boolean.
  */
 export function updateEmailAddress(email) {
   check(email, String);
-
-  // Get users current Email address
   const user = Meteor.user();
 
   // Add email to user account
@@ -82,14 +80,13 @@ export function updateEmailAddress(email) {
 
 /**
  * removeEmailAddress
- * @summary revmoe a users email address
- * @param {String} email - user email
- * @returns {Boolean} - returns boolean
+ * @summary remove a user's email address.
+ * @param {String} email - user email.
+ * @returns {Boolean} - returns boolean.
  */
 export function removeEmailAddress(email) {
   check(email, String);
 
-  // Get user
   const user = Meteor.user();
 
   // Remove email address from user
@@ -107,11 +104,11 @@ export function removeEmailAddress(email) {
 
 /**
  * syncUsersAndAccounts
- * @summary syncs emails associated with profile between Users and Accounts collections
- * @returns {Boolean} - returns boolean
+ * @summary syncs emails associated with a user profile between the Users and
+ * Accounts collections.
+ * @returns {Boolean} - returns boolean.
  */
 export function syncUsersAndAccounts() {
-  // Get user
   const user = Meteor.user();
 
   Accounts.update({
@@ -766,7 +763,7 @@ export function sendWelcomeEmail(shopId, userId) {
     return true;
   }
 
-  const defaultEmail = user.emails.find((email => email.provides === "default"));
+  const defaultEmail = user.emails.find(email => email.provides === "default");
   // Encode email address for URI
   const encodedEmailAddress = encodeURIComponent(defaultEmail.address);
   // assign verification url

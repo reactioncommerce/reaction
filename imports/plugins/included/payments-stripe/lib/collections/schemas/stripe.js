@@ -1,5 +1,6 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { PackageConfig } from "/lib/collections/schemas/registry";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 /*
  *  Meteor.settings.stripe =
  *    mode: false  #sandbox
@@ -30,6 +31,8 @@ const StripeConnectAuthorizationCredentials = new SimpleSchema({
     type: String
   }
 });
+
+registerSchema("StripeConnectAuthorizationCredentials", StripeConnectAuthorizationCredentials);
 
 export const StripePackageConfig = new SimpleSchema([
   PackageConfig, {
@@ -71,6 +74,8 @@ export const StripePackageConfig = new SimpleSchema([
   }
 ]);
 
+registerSchema("StripePackageConfig", StripePackageConfig);
+
 export const StripePayment = new SimpleSchema({
   payerName: {
     type: String,
@@ -98,3 +103,5 @@ export const StripePayment = new SimpleSchema({
     label: "CVV"
   }
 });
+
+registerSchema("StripePayment", StripePayment);

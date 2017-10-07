@@ -1,4 +1,5 @@
 import moment from "moment";
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Orders, Shops } from "/lib/collections";
 import { Reaction } from "/client/api";
@@ -18,7 +19,8 @@ Template.dashboardOrdersList.helpers({
     if (data.hash.data) {
       return data.hash.data;
     }
-    return Orders.find({}, {
+    const targetUserId = Reaction.Router.getQueryParam("userId") || Meteor.userId();
+    return Orders.find({ userId: targetUserId }, {
       sort: {
         createdAt: -1
       },
