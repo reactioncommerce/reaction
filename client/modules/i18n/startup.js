@@ -1,4 +1,3 @@
-import _ from "lodash";
 import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import i18nextLocalStorageCache from "i18next-localstorage-cache";
 import i18nextSprintfPostProcessor from "i18next-sprintf-postprocessor";
