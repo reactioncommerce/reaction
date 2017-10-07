@@ -44,11 +44,12 @@ class OrderFilter extends Component {
       );
     }
     return (
-      <Components.Translation defaultValue="Date Range" i18nKey="order.filter.dateRange" />
+      <Components.Translation defaultValue="Date Range" i18nKey="admin.table.filter.dateRange" />
     );
   }
 
   shippingLabel() {
+    console.log("this.state.shippingLabel", this.state.shippingLabel);
     if (this.state.classNames.shipping === "active") {
       return (
         <Components.Translation
@@ -60,7 +61,7 @@ class OrderFilter extends Component {
     return (
       <Components.Translation
         defaultValue="Shipping Status"
-        i18nKey={`order.filter.${this.state.shippingLabel}`}
+        i18nKey={`admin.table.filter.${this.state.shippingLabel}`}
       />
     );
   }
@@ -102,7 +103,7 @@ class OrderFilter extends Component {
             <span className={`order-filter-name capitalize ${this.state.classNames.workflow}`}>
               <Components.Translation
                 defaultValue={this.state.workflowLabel}
-                i18nKey={`order.filter.${this.state.workflowLabel}`}
+                i18nKey={`admin.table.filter.${this.state.workflowLabel}`}
               />
             </span>
             <div className="order-filter-icons">
@@ -130,7 +131,7 @@ class OrderFilter extends Component {
                   <Components.MenuItem
                     key={index}
                     label={status.label}
-                    i18nKeyLabel={`order.filter.${status.value}`}
+                    i18nKeyLabel={`admin.table.filter.${status.value}`}
                     value={status.value}
                   />
                 ))}
