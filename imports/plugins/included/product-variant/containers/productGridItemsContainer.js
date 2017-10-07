@@ -187,6 +187,9 @@ const wrapComponent = (Comp) => (
         handle: handle
       });
 
+      // Open actionView to productDetails panel
+      Reaction.state.set("edit/focus", "productDetails");
+
       Reaction.setActionView({
         i18nKeyLabel: "productDetailEdit.productSettings",
         label: "Product Settings",

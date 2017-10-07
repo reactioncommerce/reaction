@@ -75,6 +75,18 @@ class TextField extends Component {
   }
 
   /**
+   * onFocus
+   * @summary set the state when the input is focused
+   * @param  {Event} event Event object
+   * @return {void}
+   */
+  onFocus = (event) => {
+    if (this.props.onFocus) {
+      this.props.onFocus(event, event.target.value, this.props.name);
+    }
+  }
+
+  /**
    * onKeyDown
    * @summary set the state when the value of the input is changed
    * @param  {Event} event Event object
@@ -104,6 +116,7 @@ class TextField extends Component {
         className={`${this.props.name}-edit-input`}
         onBlur={this.onBlur}
         onChange={this.onChange}
+        onFocus={this.onFocus}
         placeholder={placeholder}
         ref="input"
         value={this.value}
@@ -133,6 +146,7 @@ class TextField extends Component {
         name={this.props.name}
         onBlur={this.onBlur}
         onChange={this.onChange}
+        onFocus={this.onFocus}
         onKeyDown={this.onKeyDown}
         placeholder={placeholder}
         ref="input"
@@ -254,6 +268,7 @@ TextField.propTypes = {
   name: PropTypes.string,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
+  onFocus: PropTypes.func,
   onKeyDown: PropTypes.func,
   onReturnKeyDown: PropTypes.func,
   placeholder: PropTypes.string,
