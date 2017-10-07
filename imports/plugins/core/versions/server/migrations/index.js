@@ -14,3 +14,4 @@ import "./13_add_shopId_on_shipping";
 import "./14_rebuild_order_search_collection";
 import "./15_update_shipping_status_to_workflow";
 import "./16_update_billing_paymentMethod";
+import "./17_set_shop_uols";
