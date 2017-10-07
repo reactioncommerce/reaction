@@ -173,8 +173,9 @@ Template.accountProfile.helpers({
     if (Reaction.Subscriptions && Reaction.Subscriptions.Account && Reaction.Subscriptions.Account.ready()) {
       const account = getTargetAccount();
 
-      if (account && account.emails && account.emails[0]) {
-        return account.emails[0].address;
+      if (account && Array.isArray(account.emails)) {
+        const defaultEmail = account.emails.find((email) => email.provides === "default");
+        return defaultEmail.address;
       }
     }
   },

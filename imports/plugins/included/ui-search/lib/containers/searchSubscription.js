@@ -19,17 +19,19 @@ function getSiteName() {
 }
 
 function getProductHashtags(productResults) {
-  const hashtags = [];
-  for (const product of productResults) {
-    if (product.hashtags) {
-      for (const hashtag of product.hashtags) {
-        if (!_.includes(hashtags, hashtag)) {
-          hashtags.push(hashtag);
+  const foundHashtags = {}; // Object to keep track of results for O(1) lookup
+  return productResults.reduce((hashtags, product) => {
+    if (Array.isArray(product.hashtags)) {
+      product.hashtags.forEach((tag) => {
+        // If we haven't added this tag yet, push it and add it to the foundHashtags dict
+        if (!foundHashtags[tag]) {
+          hashtags.push(tag);
+          foundHashtags[tag] = true;
         }
-      }
+      });
     }
-  }
-  return hashtags;
+    return hashtags;
+  }, []);
 }
 
 function composer(props, onData) {
