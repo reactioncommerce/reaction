@@ -17,6 +17,7 @@ export { default as SignIn } from "./components/signIn";
 export { default as SignUp } from "./components/signUp";
 export { default as UpdateEmail } from "./containers/updateEmail";
 export { default as UpdatePasswordOverlay } from "./components/updatePasswordOverlay";
+export { default as LoginInline } from "./components/loginInline";
 
 export { default as AccountsDashboardContainer } from "./containers/accountsDashboardContainer";
 export { default as AuthContainer } from "./containers/auth";
@@ -25,6 +26,7 @@ export { default as ForgotPasswordContainer } from "./containers/forgotPassword"
 export { default as MainDropdownContainer } from "./containers/mainDropdown";
 export { default as MessagesContainer } from "./containers/messages";
 export { default as UpdatePasswordOverlayContainer } from "./containers/passwordOverlay";
+export { default as LoginInlineContainer } from "./containers/loginInline";
 
 import "./templates/accounts.html";
 
