@@ -20,7 +20,7 @@ export function orderCreditMethod(order) {
   const billingRecord = creditBillingRecords.find((billing) => {
     return billing.shopId === Reaction.getShopId();
   });
-  return billingRecord;
+  return billingRecord || {};
 }
 // helper to return the order debit object
 export function orderDebitMethod(order) {
@@ -28,7 +28,7 @@ export function orderDebitMethod(order) {
   const billingRecord = debitBillingRecords.find((billing) => {
     return billing.shopId === Reaction.getShopId();
   });
-  return billingRecord;
+  return billingRecord || {};
 }
 
 // REVIEW: This jsdoc doesn't seem to be accurate
@@ -577,16 +577,17 @@ export const methods = {
     }
 
     const billing = orderCreditMethod(order);
-    const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
+    const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId()) || {};
     // TODO: Update */refunds/list for marketplace
     const refundResult = Meteor.call("orders/refunds/list", order);
     const refundTotal = Array.isArray(refundResult) && refundResult.reduce((acc, refund) => acc + refund.amount, 0);
+    const userCurrency = billing.currency && billing.currency.userCurrency;
 
     // Get user currency formatting from shops collection, remove saved rate
-    const userCurrencyFormatting = _.omit(shop.currencies[billing.currency.userCurrency], ["enabled", "rate"]);
+    const userCurrencyFormatting = _.omit(shop.currencies[userCurrency], ["enabled", "rate"]);
 
     // Get user currency exchange rate at time of transaction
-    const userCurrencyExchangeRate = billing.currency.exchangeRate;
+    const userCurrencyExchangeRate = billing.currency && billing.currency.exchangeRate;
 
     // Combine same products into single "product" for display purposes
     const combinedItems = [];
@@ -635,6 +636,11 @@ export const methods = {
         }
       }
 
+      const billingAddress = billing.address || {};
+      const billingInvoice = billing.invoice || {};
+      const billingPaymentMethod = billing.paymentMethod || {};
+      const shippingAddress = shippingRecord.address || {};
+
       // Merge data into single object to pass to email template
       const dataForEmail = {
         // Shop Data
@@ -673,32 +679,32 @@ export const methods = {
         order: order,
         billing: {
           address: {
-            address: billing.address.address1,
-            city: billing.address.city,
-            region: billing.address.region,
-            postal: billing.address.postal
+            address: billingAddress.address1,
+            city: billingAddress.city,
+            region: billingAddress.region,
+            postal: billingAddress.postal
           },
-          paymentMethod: billing.paymentMethod.storedCard || billing.paymentMethod.processor,
+          paymentMethod: billingPaymentMethod.storedCard || billingPaymentMethod.processor,
           subtotal: accounting.formatMoney(
-            billing.invoice.subtotal * userCurrencyExchangeRate, userCurrencyFormatting
+            billingInvoice.subtotal * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           shipping: accounting.formatMoney(
-            billing.invoice.shipping * userCurrencyExchangeRate, userCurrencyFormatting
+            billingInvoice.shipping * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           taxes: accounting.formatMoney(
-            billing.invoice.taxes * userCurrencyExchangeRate, userCurrencyFormatting
+            billingInvoice.taxes * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           discounts: accounting.formatMoney(
-            billing.invoice.discounts * userCurrencyExchangeRate, userCurrencyFormatting
+            billingInvoice.discounts * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           refunds: accounting.formatMoney(
             refundTotal * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           total: accounting.formatMoney(
-            billing.invoice.total * userCurrencyExchangeRate, userCurrencyFormatting
+            billingInvoice.total * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           adjustedTotal: accounting.formatMoney(
-            (billing.paymentMethod.amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting
+            (billingPaymentMethod.amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting
           )
         },
         combinedItems: combinedItems,
@@ -706,12 +712,12 @@ export const methods = {
         orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
         shipping: {
           tracking: shippingRecord.tracking,
-          carrier: shippingRecord.shipmentMethod.carrier,
+          carrier: shippingRecord.shipmentMethod && shippingRecord.shipmentMethod.carrier,
           address: {
-            address: shippingRecord.address.address1,
-            city: shippingRecord.address.city,
-            region: shippingRecord.address.region,
-            postal: shippingRecord.address.postal
+            address: shippingAddress.address1,
+            city: shippingAddress.city,
+            region: shippingAddress.region,
+            postal: shippingAddress.postal
           }
         }
       };
@@ -950,7 +956,7 @@ export const methods = {
    */
   "orders/refunds/list": function (order) {
     check(order, Object);
-    const paymentMethod = orderCreditMethod(order).paymentMethod;
+    const paymentMethod = orderCreditMethod(order).paymentMethod || {};
 
     if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
       throw new Meteor.Error("access-denied", "Access Denied");
@@ -959,7 +965,7 @@ export const methods = {
     this.unblock();
 
     const future = new Future();
-    const processor = paymentMethod.processor.toLowerCase();
+    const processor = paymentMethod.processor && paymentMethod.processor.toLowerCase();
 
     Meteor.call(`${processor}/refund/list`, paymentMethod, (error, result) => {
       if (error) {
