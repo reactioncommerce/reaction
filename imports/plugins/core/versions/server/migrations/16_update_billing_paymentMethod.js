@@ -1,5 +1,5 @@
 import { Migrations } from "meteor/percolate:migrations";
-import { Cart, Orders, Packages } from "/lib/collections";
+import { Orders, Packages } from "/lib/collections";
 
 const paymentNameDict = {
   Example: "example-paymentmethod",
@@ -14,7 +14,7 @@ Migrations.add({
   version: 16,
   up() {
     Orders.find().forEach((order) => {
-      order.billing.forEach((billing) => {
+      const newBilling = order.billing.map((billing) => {
         const packageData = Packages.findOne({
           name: paymentNameDict[billing.paymentMethod.processor],
           shopId: billing.shopId
@@ -35,10 +35,11 @@ Migrations.add({
         billing.paymentMethod.paymentSettingsKey = settingsKey;
         billing.paymentMethod.shopId = billing.shopId;
         billing.paymentMethod.items = cartItems;
+        return billing;
       });
 
       Orders.update({ _id: order._id }, {
-        $set: { billing: order.billing }
+        $set: { billing: newBilling }
       });
     });
   },
