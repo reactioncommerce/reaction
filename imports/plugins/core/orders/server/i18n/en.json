@@ -54,24 +54,28 @@
         },
         "table": {
           "headers": {
-            "name": "Name - 12345",
-            "email": "Email - 12345",
-            "date": "Date - 12345",
-            "id": "ID - 12345",
-            "total": "Total - 12345",
-            "shipping": "Shipping - 12345",
-            "status": "Status - 12345"
+            "name": "Name",
+            "email": "Email",
+            "date": "Date",
+            "id": "ID",
+            "total": "Total",
+            "shipping": "Shipping",
+            "status": "Status"
           },
           "filter": {
-            "status": "Status - 12345",
-            "dateRange": "Date range - 12345",
-            "shippingStatus": "Shipping status - 12345",
-            "new": "New - 12345",
-            "captured": "Captured - 12345",
-            "shipped": "Shipped - 12345",
-            "completed": "Completed - 12345",
-            "canceled": "Canceled - 12345",
-            "refunded": "Refunded - 12345"
+            "status": "Status",
+            "dateRange": "Date range",
+            "shippingStatus": "Shipping status",
+            "new": "New",
+            "captured": "Captured",
+            "shipped": "Shipped",
+            "completed": "Completed",
+            "canceled": "Canceled",
+            "refunded": "Refunded"
+          },
+          "search": {
+            "clearSearch": "Clear",
+            "placeholder": "Search orders"
           }
         }
       }
