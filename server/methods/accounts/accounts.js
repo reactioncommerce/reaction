@@ -763,7 +763,7 @@ export function sendWelcomeEmail(shopId, userId) {
     return true;
   }
 
-  const defaultEmail = user.emails.find((email => email.provides === "default"));
+  const defaultEmail = user.emails.find(email => email.provides === "default");
   // Encode email address for URI
   const encodedEmailAddress = encodeURIComponent(defaultEmail.address);
   // assign verification url

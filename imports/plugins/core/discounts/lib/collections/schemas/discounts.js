@@ -1,5 +1,6 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 // The Discounts Schema validates using multiple schemas
 // be sure to use `{ selector: { discountMethod: "code" } }`
@@ -22,6 +23,8 @@ export const Transactions = new SimpleSchema({
     optional: true
   }
 });
+
+registerSchema("Transactions", Transactions);
 
 /*
 * Discounts Schema
@@ -126,3 +129,5 @@ export const Discounts = new SimpleSchema({
     label: "Tags"
   }
 });
+
+registerSchema("Discounts", Discounts);
