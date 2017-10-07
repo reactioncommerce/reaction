@@ -6,10 +6,10 @@ import { currencyDep } from "./main";
 
 /**
  * findCurrency
- * private function for returning localStorage currency
+ * private function for returning user currency
  * @param   {Object}  defaultCurrency    The default currency
  * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
- * @return  {Object}  localStorageCurrency The localStorage currency
+ * @return  {Object}  user currency or shop currency if none is found
  */
 
 function findCurrency(defaultCurrency, useDefaultShopCurrency) {
