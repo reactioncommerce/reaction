@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
-import { Shops } from "/lib/collections";
+import { Shops, Accounts } from "/lib/collections";
 
 //
 // Reaction i18n Translations, RTL and Currency Exchange Support
@@ -120,29 +120,29 @@ Meteor.startup(() => {
           moment.locale(locale.language);
           // flag in case the locale currency isn't enabled
           locale.currencyEnabled = locale.currency.enabled;
-          const user = Meteor.user();
-          if (user && user.profile && user.profile.currency) {
-            localStorage.setItem("currency", user.profile.currency);
-          } else {
-            const localStorageCurrency = localStorage.getItem("currency");
-            if (!localStorageCurrency) {
-              if (locale.currencyEnabled) {
-                // in case of multiple locale currencies
-                const primaryCurrency = locale.locale.currency.split(",")[0];
-                localStorage.setItem("currency", primaryCurrency);
-              } else {
-                const shop = Shops.findOne({
-                  _id: localeShopId
-                }, {
-                  fields: {
-                    currency: 1
-                  }
-                });
-                if (shop) {
-                  localStorage.setItem("currency", shop.currency);
+          const user = Accounts.findOne({
+            _id: Meteor.userId()
+          });
+
+          let profileCurrency = user.profile && user.profile.currency;
+          if (!profileCurrency) {
+            if (locale.currencyEnabled) {
+              // in case of multiple locale currencies
+              profileCurrency = locale.locale.currency.split(",")[0];
+            } else {
+              const shop = Shops.findOne({
+                _id: localeShopId
+              }, {
+                fields: {
+                  currency: 1
                 }
+              });
+              if (shop) {
+                profileCurrency = shop.currency;
               }
             }
+
+            Accounts.update(user._id, { $set: { "profile.currency": profileCurrency } });
           }
 
           Reaction.Locale.set(locale);
