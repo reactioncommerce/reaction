@@ -81,11 +81,11 @@ Meteor.publish("CartImages", function (cartItems) {
     [{
       "metadata.productId": { $in: productIds }
     },
-      {
-        "metadata.productId": { $in: variantIds }
-      }
+    {
+      "metadata.productId": { $in: variantIds }
+    }
     ],
-      "metadata.workflow": { $nin: ["archived", "unpublished"] }
+    "metadata.workflow": { $nin: ["archived", "unpublished"] }
     }
   );
 
