@@ -1,4 +1,3 @@
-import _ from "lodash";
 import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import i18nextLocalStorageCache from "i18next-localstorage-cache";
 import i18nextSprintfPostProcessor from "i18next-sprintf-postprocessor";
@@ -9,7 +8,7 @@ import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
 import { Shops, Translations, Packages } from "/lib/collections";
-import * as Schemas from "/lib/collections/schemas";
+import { getSchemas } from "@reactioncommerce/reaction-collections";
 import i18next, { getLabelsFor, getMessagesFor, i18nextDep, currencyDep } from "./main";
 import { mergeDeep } from "/lib/api";
 
@@ -112,7 +111,10 @@ Meteor.startup(() => {
           }, () => {
             // someday this should work
             // see: https://github.com/aldeed/meteor-simple-schema/issues/494
-            for (const schema in _.omit(Schemas, "__esModule")) {
+
+            // Loop through registered Schemas
+            const Schemas = getSchemas();
+            for (const schema in Schemas) {
               if ({}.hasOwnProperty.call(Schemas, schema)) {
                 const ss = Schemas[schema];
                 ss.labels(getLabelsFor(ss, schema));
