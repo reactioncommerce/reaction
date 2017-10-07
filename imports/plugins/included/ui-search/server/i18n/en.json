@@ -7,6 +7,11 @@
         "shortcut": {},
         "dashboard": {},
         "settings": {}
+      },
+      "search": {
+        "accountSearchResults": {
+          "notAvailable": "Not available"
+        }
       }
     }
   }
