@@ -1,5 +1,6 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { PackageConfig } from "/lib/collections/schemas/registry";
+import { registerSchema } from "/imports/plugins/core/collections";
 
 const Webhook = new SimpleSchema({
   shopifyId: {
@@ -32,6 +33,8 @@ const Webhook = new SimpleSchema({
   }
 });
 
+registerSchema("Webhook", Webhook);
+
 export const ShopifyConnectPackageConfig = new SimpleSchema([
   PackageConfig, {
     "settings.apiKey": {
@@ -61,3 +64,5 @@ export const ShopifyConnectPackageConfig = new SimpleSchema([
     }
   }
 ]);
+
+registerSchema("ShopifyConnectPackageConfig", ShopifyConnectPackageConfig);

@@ -6,6 +6,7 @@ import { Products, Shops, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { findProductMedia } from "./product";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 //
 // define search filters as a schema so we can validate
@@ -65,6 +66,8 @@ const filters = new SimpleSchema({
     optional: true
   }
 });
+
+registerSchema("filters", filters);
 
 /**
  * products publication
@@ -513,6 +516,24 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       }]
     });
   }
+
+  // Get disabled shop id's to use for filtering
+  const disabledShopIds = Shops.find({
+    "workflow.status": {
+      $in: ["disabled", "archived"]
+    }
+  }, {
+    fields: { _id: 1 }
+  }).map((shop) => shop._id);
+
+  // Adjust the selector to exclude all disabled shops
+  newSelector = {
+    ...newSelector,
+    shopId: {
+      $nin: disabledShopIds
+    }
+  };
+
   // Returning Complete product tree for top level products to avoid sold out warning.
   const productCursor = Products.find(newSelector, {
     sort: sort

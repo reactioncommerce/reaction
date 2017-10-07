@@ -1,5 +1,6 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Products } from "/lib/collections";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 export const ShopifyProduct = new SimpleSchema({
   shopifyId: {
@@ -8,6 +9,8 @@ export const ShopifyProduct = new SimpleSchema({
     decimal: false
   }
 });
+
+registerSchema("ShopifyProduct", ShopifyProduct);
 
 Products.attachSchema(ShopifyProduct, { selector: { type: "simple" } });
 Products.attachSchema(ShopifyProduct, { selector: { type: "variant" } });

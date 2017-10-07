@@ -5,12 +5,8 @@ set -e
 DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
 
 # if we're not on a deployment branch or a Docker related PR branch, skip the Docker build/test
-if [[ "$CIRCLE_BRANCH" != "master" && \
-      "$CIRCLE_BRANCH" != "development" && \
-      "$CIRCLE_BRANCH" != *"docker"* && \
-      "$CIRCLE_BRANCH" != "marketplace" ]]; # TODO: remove this once marketplace is merged
-then
-  echo "Not running a deployment branch. Skipping the Docker build test."
+if [[ "$CIRCLE_BRANCH" != "master" && "$CIRCLE_BRANCH" != *"docker"* ]]; then
+  echo "Not running a build branch. Skipping the Docker build test."
   exit 0
 fi
 

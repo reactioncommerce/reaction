@@ -272,7 +272,7 @@ function composer(props, onData) {
   const tagSub = Meteor.subscribe("Tags");
   const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
   const productId = Reaction.Router.getParam("handle");
-  const variantId = Reaction.Router.getParam("variantId");
+  const variantId = ReactionProduct.selectedVariantId();
   const revisionType = Reaction.Router.getQueryParam("revision");
   const viewProductAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 

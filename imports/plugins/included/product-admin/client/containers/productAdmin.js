@@ -143,7 +143,7 @@ function composer(props, onData) {
     const countries = Countries.find({}).fetch();
 
     onData(null, {
-      editFocus: Reaction.state.get("edit/focus"),
+      editFocus: Reaction.state.get("edit/focus") || "productDetails",
       product: product,
       media,
       tags,
@@ -152,7 +152,9 @@ function composer(props, onData) {
       countries
     });
   } else {
-    onData(null, {});
+    onData(null, {
+      editFocus: Reaction.state.get("edit/focus") || "productDetails"
+    });
   }
 }
 
