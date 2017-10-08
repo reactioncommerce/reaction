@@ -64,6 +64,7 @@ const getStyles = (props) => {
       "flex": "0 0 auto",
       "backgroundColor": "white",
       "borderLeft": "1px solid @black10",
+      "borderRight": "1px solid @black10",
       "overflow": "hidden",
       "transition": "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
       "zIndex": 1050
@@ -144,7 +145,8 @@ class ActionView extends Component {
     handleActionViewDetailBack: PropTypes.func,
     handleActionViewDetailClose: PropTypes.func,
     isActionViewAtRootView: PropTypes.bool,
-    isDetailViewAtRootView: PropTypes.bool
+    isDetailViewAtRootView: PropTypes.bool,
+    language: PropTypes.string
   }
 
   constructor(props) {
@@ -153,8 +155,8 @@ class ActionView extends Component {
     this.state = {
       isMobile: this.isMobile,
       enterAnimation: {
-        animation: { translateX: ["0%", "-100%"] },
-        duration: 1000,
+        animation: { translateX: 0 },
+        duration: 200,
         easing: "easeInOutQuad"
       },
       leaveAnimation: {
@@ -173,23 +175,23 @@ class ActionView extends Component {
         easing: "easeInOutQuad"
       }
     };
-    // 
-    // this.handleRightToLeftAnimation = () => {
-    //   if (window) {
-    //     this.setState({
-    //       enterAnimation: {
-    //         animation: { translateX: ["0%", "-100%"] },
-    //         duration: 1000,
-    //         easing: "easeInOutQuad"
-    //       },
-    //       leaveAnimation: {
-    //         animation: { translateX: -400 },
-    //         duration: 200,
-    //         easing: "easeInOutQuad"
-    //       }
-    //     });
-    //   }
-    // };
+
+    // this function sets the animation transition to move from left to right
+    // when the language is switched to a right-to-left language , eg. Arabic, Hebrew
+    this.handleRightToLeftAnimation = () => {
+      this.setState({
+        enterAnimation: {
+          animation: { translateX: ["0%", "-100%"] },
+          duration: 200,
+          easing: "easeInOutQuad"
+        },
+        leaveAnimation: {
+          animation: { translateX: "-100%" },
+          duration: 200,
+          easing: "easeInOutQuad"
+        }
+      });
+    };
     this.handleResize = debounce(() => {
       if (window) {
         this.setState({
@@ -202,6 +204,27 @@ class ActionView extends Component {
   componentDidMount() {
     if (window) {
       window.addEventListener("resize", this.handleResize, false);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // Array containing abbreviations of right-to-left languages
+    const rightToLeftLanguages = ["ar", "he"];
+    if (rightToLeftLanguages.indexOf(nextProps.language) > -1) {
+      this.handleRightToLeftAnimation();
+    } else {
+      this.setState({
+        enterAnimation: {
+          animation: { translateX: 0 },
+          duration: 200,
+          easing: "easeInOutQuad"
+        },
+        leaveAnimation: {
+          animation: { translateX: 400 },
+          duration: 200,
+          easing: "easeInOutQuad"
+        }
+      });
     }
   }
 

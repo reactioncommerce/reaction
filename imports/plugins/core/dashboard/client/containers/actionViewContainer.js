@@ -1,4 +1,5 @@
 import React from "react";
+import { Meteor } from "meteor/meteor";
 import { StyleRoot } from "radium";
 import _ from "lodash";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
@@ -25,6 +26,7 @@ function handleActionViewDetailClose() {
 function composer(props, onData) {
   const shortcuts = Reaction.Apps({ provides: "shortcut", enabled: true });
   const items = [];
+  const language = Meteor.user().profile.lang;
 
   if (_.isArray(shortcuts)) {
     for (const shortcut of shortcuts) {
@@ -63,6 +65,7 @@ function composer(props, onData) {
 
     actionViewIsOpen: Reaction.isActionViewOpen(),
     detailViewIsOpen: Reaction.isActionViewDetailOpen(),
+    language,
 
     // Callbacks
     handleActionViewBack,
