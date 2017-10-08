@@ -64,7 +64,6 @@ const getStyles = (props) => {
       "flex": "0 0 auto",
       "backgroundColor": "white",
       "borderLeft": "1px solid @black10",
-      "borderRight": "1px solid @black10",
       "overflow": "hidden",
       "transition": "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
       "zIndex": 1050
