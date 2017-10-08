@@ -1,5 +1,6 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { PackageConfig } from "/lib/collections/schemas/registry";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 export const SearchPackageConfig = new SimpleSchema([
   PackageConfig, {
@@ -65,3 +66,5 @@ export const SearchPackageConfig = new SimpleSchema([
     }
   }
 ]);
+
+registerSchema("SearchPackageConfig", SearchPackageConfig);

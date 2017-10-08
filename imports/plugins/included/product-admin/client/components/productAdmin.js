@@ -105,9 +105,10 @@ class ProductAdmin extends Component {
     }
   }
 
-  handleCardExpand(cardName) {
+
+  handleCardExpand = (event, card, cardName, isExpanded) => {
     if (this.props.onCardExpand) {
-      this.props.onCardExpand(cardName);
+      this.props.onCardExpand(isExpanded ? cardName : undefined);
     }
   }
 
@@ -213,12 +214,8 @@ class ProductAdmin extends Component {
     );
   }
 
-  isExpanded(groupName) {
-    if (this.state.expandedCard && this.state.expandedCard === groupName) {
-      return true;
-    }
-
-    return false;
+  isExpanded = (groupName) => {
+    return this.state.expandedCard === groupName;
   }
 
   render() {
@@ -226,7 +223,8 @@ class ProductAdmin extends Component {
       <Components.CardGroup>
         <Components.Card
           expanded={this.isExpanded("productDetails")}
-          onExpand={this.handleCardExpand.bind(this, "productDetails")}
+          name={"productDetails"}
+          onExpand={this.handleCardExpand}
         >
           <Components.CardHeader
             actAsExpander={true}
@@ -323,7 +321,8 @@ class ProductAdmin extends Component {
         </Components.Card>
         <Components.Card
           expanded={this.isExpanded("social")}
-          onExpand={this.handleCardExpand.bind(this, "social")}
+          name={"social"}
+          onExpand={this.handleCardExpand}
         >
           <Components.CardHeader
             actAsExpander={true}
@@ -376,7 +375,8 @@ class ProductAdmin extends Component {
 
         <Components.Card
           expanded={this.isExpanded("hashtags")}
-          onExpand={this.handleCardExpand.bind(this, "hashtags")}
+          name={"hashtags"}
+          onExpand={this.handleCardExpand}
         >
           <Components.CardHeader
             actAsExpander={true}
@@ -396,7 +396,8 @@ class ProductAdmin extends Component {
 
         <Components.Card
           expanded={this.isExpanded("metafields")}
-          onExpand={this.handleCardExpand.bind(this, "metafields")}
+          name={"metafields"}
+          onExpand={this.handleCardExpand}
         >
           <Components.CardHeader
             actAsExpander={true}
