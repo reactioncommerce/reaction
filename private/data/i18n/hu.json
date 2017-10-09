@@ -93,8 +93,8 @@
         "createVariant": "Variáció létrehozás"
       },
       "gridPackage": {
-        "pkgEnabled": " most engedélyezett.",
-        "pkgDisabled": " most nem engedélyezett."
+        "pkgEnabled": "{{app}} most engedélyezett.",
+        "pkgDisabled": "{{app}} most nem engedélyezett."
       },
       "cartDrawer": {
         "empty": "Szomorúan vesszük tudomásul, hogy üres a kosarad.",

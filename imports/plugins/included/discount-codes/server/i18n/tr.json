@@ -15,7 +15,8 @@
         "applied": "uygulamalı",
         "code": "kod",
         "codeIsExpired": "Kod süresi dolmuş",
-        "codeIsInvalid": "Kod geçersiz"
+        "codeIsInvalid": "Kod geçersiz",
+        "multiShopError": "İndirimler, çok mağazalı bir arabaya veya siparişe uygulanamaz"
       },
       "admin": {
         "paymentSettings": {

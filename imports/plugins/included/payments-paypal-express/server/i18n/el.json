@@ -1,0 +1,47 @@
+[{
+  "language": "Greek",
+  "i18n": "el",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "πληρωμών PayPal"
+        },
+        "paymentMethod": {
+          "expressLabel": "Εξπρές",
+          "creditCardLabel": "Πιστωτική κάρτα"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Δεν έχετε PayPal όνομα, κωδικό και υπογραφή;",
+          "paypalExpressGetCredentialsHere": "Πάρτε ένα εδώ.",
+          "paypalPayflowCredentials": "Δεν έχετε PayPal αναγνωριστικό πελάτη και το μυστικό",
+          "paypalPayflowGetCredentialsHere": "Πάρτε τους εδώ."
+        },
+        "settings": {
+          "saveSuccess": "Οι ρυθμίσεις σας έχουν αποθηκευτεί",
+          "saveFailed": "Παρουσιάστηκε πρόβλημα κατά την αποθήκευση των ρυθμίσεών σας"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Ολοκληρώστε την παραγγελία σας",
+        "paymentMethod": {
+          "expressButtonLabel": "Πληρώστε με PayPal",
+          "expressNotConfigured": "Paypal Express δεν έχει ρυθμιστεί.",
+          "expressNotAvailable": "Paypal Express δεν είναι διαθέσιμη",
+          "submitting": "υποβάλλοντας",
+          "invalidCard": "Ωχ! ο αριθμός της πιστωτικής κάρτας δεν είναι έγκυρος.",
+          "unknownError": "Ωχ! Προέκυψε ένα άγνωστο σφάλμα",
+          "resubmit": "Εκ νέου υποβολή πληρωμής"
+        }
+      }
+    }
+  }
+}]

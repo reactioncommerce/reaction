@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Δεν ήταν δυνατή η δημιουργία καταστήματος για τον τρέχοντα χρήστη {{user}}",
         "yourShopIsReady": "Το κατάστημα σας είναι έτοιμο!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Όνομα καταστήματος",
+          "emails": "Email επικοινωνίας",
+          "workflow": "Κατάσταση"
+        }
+      },
       "app": {
         "shops": "Καταστήματα",
         "myShop": "Το κατάστημά μου"

@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": "Пользовательская налоговая ставка сохранена.",
           "shopCustomTaxRatesFailed": "Ошибка при сохранении налоговой ставки.",
           "shopTaxMethodsSaved": "Метод снижения налоговых выплат.",
+          "shopTaxMethodsAlreadySaved": "Уже загруженные налоговые коды",
           "shopTaxMethodsFailed": "Это метод снижения налогов не работает.",
           "customRatesLabel": "Пользовательские ставки",
           "customRatesDescription": "Пользовательские ставки",

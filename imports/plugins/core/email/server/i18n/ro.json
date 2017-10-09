@@ -81,7 +81,8 @@
           "saveFailed": "pentru a salva setările de mail a eșuat. {{error}}",
           "cantSendEmail": "Eroare de server: Nu se poate trimite o notificare de e-mail.",
           "emailSent": "Notificare e-mail trimis.",
-          "addOrderEmailFailed": "Adăugarea e-mailului la comandă a eșuat"
+          "addOrderEmailFailed": "Adăugarea e-mailului la comandă a eșuat",
+          "addCartEmailFailed": "Adăugarea e-mailului în căruciar a eșuat"
         }
       }
     }

@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "ကန့်သတ်ထောက်ပံ့ရေး"
+      },
       "cartCompleted": {
         "yourCart": "သင့်ရဲ့လှည်း",
         "discountTotal": "လျှော့စျေးစုစုပေါင်း",

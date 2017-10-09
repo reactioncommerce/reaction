@@ -20,6 +20,14 @@
             "email": "Epost",
             "total": "Totalt",
             "shipping": "Frakt"
+          },
+          "filter": {
+            "new": "Ny",
+            "captured": "Betalt",
+            "shipped": "Sendt",
+            "completed": "Fullført",
+            "canceled": "Avbrutt",
+            "refunded": "Refundert"
           }
         }
       }

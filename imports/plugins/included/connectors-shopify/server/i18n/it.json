@@ -32,6 +32,14 @@
           "syncStopFailure": "Errore durante l'arresto di Shopify sync!",
           "startImport": "Avvia importazione"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API chiave",
+          "password": "Password API",
+          "sharedSecret": "API segreto condiviso",
+          "shopName": "Shop slug"
+        }
       }
     }
   }

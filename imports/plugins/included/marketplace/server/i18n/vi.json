@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Không thể tạo cửa hàng cho người dùng hiện tại {{user}}",
         "yourShopIsReady": "Cửa hàng của bạn đã sẵn sàng!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Tên cửa hàng",
+          "emails": "Địa chỉ email liên lạc",
+          "workflow": "Trạng thái"
+        }
+      },
       "app": {
         "shops": "Cửa hàng",
         "myShop": "Cửa hàng của tôi"

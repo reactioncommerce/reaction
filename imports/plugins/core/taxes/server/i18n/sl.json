@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": "Stopnja davka meri rešen.",
           "shopCustomTaxRatesFailed": "Napaka pri shranjevanju davčno stopnjo.",
           "shopTaxMethodsSaved": "Shranjen metoda davek.",
+          "shopTaxMethodsAlreadySaved": "Tovorni kodi, ki so že naloženi",
           "shopTaxMethodsFailed": "Ni varčevanje davčni postopek.",
           "customRatesLabel": "Cene po meri",
           "customRatesDescription": "Cene po meri",
