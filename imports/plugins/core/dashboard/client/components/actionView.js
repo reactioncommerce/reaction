@@ -177,7 +177,7 @@ class ActionView extends Component {
 
     // this function sets the animation transition to move from left to right
     // when the language is switched to a right-to-left language , eg. Arabic, Hebrew
-    this.handleRightToLeftAnimation = () => {
+    this.handleLeftToRightAnimation = () => {
       this.setState({
         enterAnimation: {
           animation: { translateX: ["0%", "-100%"] },
@@ -210,7 +210,7 @@ class ActionView extends Component {
     // Array containing abbreviations of right-to-left languages
     const rightToLeftLanguages = ["ar", "he"];
     if (rightToLeftLanguages.indexOf(nextProps.language) > -1) {
-      this.handleRightToLeftAnimation();
+      this.handleLeftToRightAnimation();
     } else {
       this.setState({
         enterAnimation: {
