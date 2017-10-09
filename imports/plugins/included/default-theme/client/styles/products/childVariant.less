@@ -26,9 +26,34 @@
   width: 25%;
   padding: 10px;
 
-  @media only screen and (max-width: @screen-xs-max) {
-    max-width: 33%;
-    width: 33%;
+  .deleted-variant-icon {
+    display: none;
+  }
+
+  @media only screen and (max-width: @screen-xs) {
+    max-width: 50%;
+    width: 50%;
+
+    .deleted-variant-icon {
+      display: inline-block;
+    }
+
+    .xs-deleted-icon {
+      border: none;
+      font-size: 10px;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      width: 24px;
+      height: 24px;
+      box-shadow: none;
+    }
+
+    .deleted-variant-text {
+      display: none;
+    }
   }
 }
 
