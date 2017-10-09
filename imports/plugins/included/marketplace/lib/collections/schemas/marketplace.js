@@ -1,6 +1,7 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { Shop } from "/lib/collections/schemas/shops.js";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 export const ShopTypes = new SimpleSchema({
   shopType: {
@@ -13,6 +14,8 @@ export const ShopTypes = new SimpleSchema({
   }
 });
 
+registerSchema("ShopTypes", ShopTypes);
+
 export const EnabledPackagesByShopType = new SimpleSchema({
   shopType: {
     type: String
@@ -21,6 +24,8 @@ export const EnabledPackagesByShopType = new SimpleSchema({
     type: [String]
   }
 });
+
+registerSchema("EnabledPackagesByShopType", EnabledPackagesByShopType);
 
 export const MarketplacePackageConfig = new SimpleSchema([
   PackageConfig, {
@@ -114,6 +119,8 @@ export const MarketplacePackageConfig = new SimpleSchema([
   }
 ]);
 
+registerSchema("MarketplacePackageConfig", MarketplacePackageConfig);
+
 /**
  * Seller Shop Schema
  */
@@ -125,3 +132,5 @@ export const SellerShop = new SimpleSchema([
     }
   }
 ]);
+
+registerSchema("SellerShop", SellerShop);

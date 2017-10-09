@@ -5,6 +5,8 @@ import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
+import { Reaction } from "client/api";
+
 class ProductField extends Component {
   state = {
     value: this.value
@@ -41,6 +43,22 @@ class ProductField extends Component {
     if (this.props.onProductFieldChange) {
       this.props.onProductFieldChange(this.props.product._id, this.fieldName, value);
     }
+  }
+
+  handleFocus = () => {
+    // Open actionView, if not already open
+    if (!Reaction.isActionViewOpen()) {
+      Reaction.showActionView();
+    }
+
+    // Open actionView to productDetails panel
+    Reaction.state.set("edit/focus", "productDetails");
+
+    Reaction.setActionView({
+      i18nKeyLabel: "productDetailEdit.productSettings",
+      label: "Product Settings",
+      template: "ProductAdmin"
+    });
   }
 
   get fieldName() {
@@ -97,6 +115,7 @@ class ProductField extends Component {
           multiline={this.props.multiline}
           onBlur={this.handleBlur}
           onChange={this.handleChange}
+          onFocus={this.handleFocus}
           onReturnKeyDown={this.handleBlur}
           value={this.state.value}
           {...this.props.textFieldProps}

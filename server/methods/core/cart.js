@@ -1087,5 +1087,27 @@ Meteor.methods({
     }
 
     return Collections.Cart.findOne(selector);
+  },
+
+  /**
+   * @method cart/setAnonymousUserEmail
+   * @summary assigns email to anonymous user's cart instance
+   * @param {Object} userId - current user's Id
+   * @param {String} email - email to set for anonymous user's cart instance
+   * @return {Number} returns update result
+   */
+  "cart/setAnonymousUserEmail": function (userId, email) {
+    check(userId, String);
+    check(email, String);
+
+    const currentUserCart = Collections.Cart.findOne({ userId: userId });
+    const cartId = currentUserCart._id;
+    let newEmail = "";
+
+    if (!currentUserCart.email) {
+      newEmail = email;
+    }
+
+    return Collections.Cart.update({ _id: cartId }, { $set: { email: newEmail } });
   }
 });
