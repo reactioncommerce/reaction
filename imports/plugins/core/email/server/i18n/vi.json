@@ -81,7 +81,8 @@
           "saveFailed": "Không lưu cài đặt mail. {{error}}",
           "cantSendEmail": "Server Error: Không thể gửi email thông báo.",
           "emailSent": "Thông báo email gửi đi.",
-          "addOrderEmailFailed": "Thêm email theo đơn đặt hàng không thành công"
+          "addOrderEmailFailed": "Thêm email theo đơn đặt hàng không thành công",
+          "addCartEmailFailed": "Thêm email vào giỏ hàng không thành công"
         }
       }
     }

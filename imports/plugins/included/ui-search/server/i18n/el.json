@@ -1,0 +1,13 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-ui-search",
+  "translation": {
+    "reaction-ui-search": {
+      "search": {
+        "accountSearchResults": {
+          "notAvailable": "Μη διαθέσιμος"
+        }
+      }
+    }
+  }
+}]

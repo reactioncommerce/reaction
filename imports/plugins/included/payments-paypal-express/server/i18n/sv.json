@@ -1,0 +1,47 @@
+[{
+  "language": "Swedish",
+  "i18n": "sv",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "PayPal betalningar"
+        },
+        "paymentMethod": {
+          "expressLabel": "uttrycka",
+          "creditCardLabel": "Kreditkort"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Inte har ett PayPal användarnamn, lösenord och signatur?",
+          "paypalExpressGetCredentialsHere": "Få en här.",
+          "paypalPayflowCredentials": "Inte har ett PayPal-klient-ID och hemlig",
+          "paypalPayflowGetCredentialsHere": "Få dem här."
+        },
+        "settings": {
+          "saveSuccess": "Dina inställningar har sparats",
+          "saveFailed": "Det gick inte att spara dina inställningar"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Slutföra din beställning",
+        "paymentMethod": {
+          "expressButtonLabel": "Betala med PayPal",
+          "expressNotConfigured": "Paypal Express inte konfigurerats.",
+          "expressNotAvailable": "Paypal Express inte tillgänglig",
+          "submitting": "att skicka in",
+          "invalidCard": "Oj då! Kreditkortsnummer är ogiltigt.",
+          "unknownError": "Oj då! Ett okänt fel har uppstått",
+          "resubmit": "skicka om betalning"
+        }
+      }
+    }
+  }
+}]

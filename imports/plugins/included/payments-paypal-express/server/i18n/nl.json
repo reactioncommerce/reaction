@@ -1,0 +1,47 @@
+[{
+  "language": "Dutch",
+  "i18n": "nl",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "PayPal-betalingen"
+        },
+        "paymentMethod": {
+          "expressLabel": "uitdrukken",
+          "creditCardLabel": "Credit card"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Heeft een PayPal-gebruikersnaam, wachtwoord en handtekening niet?",
+          "paypalExpressGetCredentialsHere": "Krijg hier.",
+          "paypalPayflowCredentials": "Heb je geen PayPal-client-ID en geheime",
+          "paypalPayflowGetCredentialsHere": "Haal ze hier."
+        },
+        "settings": {
+          "saveSuccess": "je instellingen zijn opgeslagen",
+          "saveFailed": "Er was een probleem bij het opslaan van uw instellingen"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Vul uw bestelling",
+        "paymentMethod": {
+          "expressButtonLabel": "Betaal met PayPal",
+          "expressNotConfigured": "Paypal Express niet geconfigureerd.",
+          "expressNotAvailable": "Paypal Express niet beschikbaar",
+          "submitting": "Indienen",
+          "invalidCard": "Oeps! Credit Card nummer is ongeldig.",
+          "unknownError": "Oeps! Er is een onbekende fout opgetreden",
+          "resubmit": "opnieuw betaling"
+        }
+      }
+    }
+  }
+}]

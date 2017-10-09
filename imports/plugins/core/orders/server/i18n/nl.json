@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "Bestelling niet gevonden",
       "order": {
+        "applyRefundToThisOrder": "Solliciteer terugbetaling van {{currencySymbol}}{{refund}} deze bestelling?",
+        "applyRefundDuringCancelOrder": "Dit zal het bestelbedrag van {{currencySymbol}}{{invoiceTotal}} terugbetalen",
         "cancelOrder": "Wilt u deze bestelling annuleren?",
         "cancelOrderLabel": "Annuleer bestelling",
         "cancelOrderThenRestock": "Ja, en opnieuw",
@@ -59,6 +61,34 @@
             "total": "Totaal",
             "shipping": "Verzenden",
             "status": "Toestand"
+          },
+          "filter": {
+            "status": "Toestand",
+            "dateRange": "Datumbereik",
+            "shippingStatus": "Verzendstatus",
+            "new": "Nieuw",
+            "captured": "betaling Gevangen",
+            "shipped": "verzonden",
+            "completed": "Voltooid",
+            "canceled": "Geannuleerd",
+            "refunded": "terugbetaald"
+          },
+          "search": {
+            "clearSearch": "Duidelijk",
+            "placeholder": "Zoekopdrachten"
+          },
+          "data": {
+            "status": {
+              "new": "nieuwe",
+              "coreOrderWorkflow/created": "gemaakt",
+              "coreOrderWorkflow/processing": "Verwerken",
+              "coreOrderWorkflow/completed": "Voltooid",
+              "coreOrderWorkflow/canceled": "Geannuleerd",
+              "coreOrderWorkflow/picked": "uitgezocht",
+              "coreOrderWorkflow/packed": "overvol",
+              "coreOrderWorkflow/labeled": "geëtiketteerd",
+              "coreOrderWorkflow/shipped": "verzonden"
+            }
           }
         }
       }

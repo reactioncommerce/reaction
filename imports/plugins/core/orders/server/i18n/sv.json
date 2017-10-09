@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "Beställningen hittades inte",
       "order": {
+        "applyRefundToThisOrder": "Applicera återbetalning av {{currencySymbol}}{{refund}} till denna order?",
+        "applyRefundDuringCancelOrder": "Detta kommer att återbetala orderingången för {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Vill du avbryta denna order?",
         "cancelOrderLabel": "Avbryt beställning",
         "cancelOrderThenRestock": "Ja, och återuppta",
@@ -59,6 +61,34 @@
             "total": "Totalt",
             "shipping": "Frakt",
             "status": "Status"
+          },
+          "filter": {
+            "status": "Status",
+            "dateRange": "Datumintervall",
+            "shippingStatus": "Fraktstatus",
+            "new": "Ny",
+            "captured": "betalning Tagna",
+            "shipped": "skeppas",
+            "completed": "Avslutad",
+            "canceled": "Avbrutet",
+            "refunded": "återbetalas"
+          },
+          "search": {
+            "clearSearch": "Klar",
+            "placeholder": "Sökord"
+          },
+          "data": {
+            "status": {
+              "new": "Ny",
+              "coreOrderWorkflow/created": "Skapad",
+              "coreOrderWorkflow/processing": "bearbetning",
+              "coreOrderWorkflow/completed": "Avslutad",
+              "coreOrderWorkflow/canceled": "Avbryts",
+              "coreOrderWorkflow/picked": "plockade",
+              "coreOrderWorkflow/packed": "Packade",
+              "coreOrderWorkflow/labeled": "märkt",
+              "coreOrderWorkflow/shipped": "levereras"
+            }
           }
         }
       }

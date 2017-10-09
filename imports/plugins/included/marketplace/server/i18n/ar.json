@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "تعذر إنشاء متجر للمستخدم الحالي {{user}}",
         "yourShopIsReady": "متجرك الآن جاهز!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "اسم المحل",
+          "emails": "تواصل بالبريد الاكتروني",
+          "workflow": "حالة"
+        }
+      },
       "app": {
         "shops": "محلات",
         "myShop": "متجري"

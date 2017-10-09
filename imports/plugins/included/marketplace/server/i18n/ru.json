@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Не удалось создать магазин для текущего пользователя {{user}}",
         "yourShopIsReady": "Теперь ваш магазин готов!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Имя магазина",
+          "emails": "Почта для связи",
+          "workflow": "Статус"
+        }
+      },
       "app": {
         "shops": "Магазины",
         "myShop": "Мой магазин"

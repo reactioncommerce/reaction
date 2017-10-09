@@ -32,7 +32,8 @@
           "groupRequired": "Un groupe doit inviter un administrateur",
           "cannotInvite": "Vous ne pouvez pas inviter au groupe",
           "unableToSendInvitationEmail": "Impossible d'envoyer un courrier électronique d'invitation",
-          "errorSendingInvite": "Une erreur s'est produite lors de l'envoi d'une invitation"
+          "errorSendingInvite": "Une erreur s'est produite lors de l'envoi d'une invitation",
+          "NeedToSetUsernameOrEmail": "Il est nécessaire de définir un nom d'utilisateur ou e-mail"
         }
       }
     }

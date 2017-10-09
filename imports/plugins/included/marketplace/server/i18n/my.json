@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "လက်ရှိအသုံးပြုသူများအတွက်ဆိုင်ကိုမဖန်တီးနိုင်ခဲ့ {{user}}",
         "yourShopIsReady": "သင့်ရဲ့ဆိုင်ယခုအဆင်သင့်ပါ!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "ဆိုင် name ကို",
+          "emails": "ဆက်သွယ်ရန်အီးမေးလ်",
+          "workflow": "status"
+        }
+      },
       "app": {
         "shops": "စျေးဆိုင်",
         "myShop": "အကြှနျုပျ၏ဆိုင်"

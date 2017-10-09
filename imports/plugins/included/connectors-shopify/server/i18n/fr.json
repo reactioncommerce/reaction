@@ -32,6 +32,14 @@
           "syncStopFailure": "Erreur d'arrêt Shopify sync!",
           "startImport": "Commencer l'importation"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "clé API",
+          "password": "Mot de passe API",
+          "sharedSecret": "Secret partagé API",
+          "shopName": "Limace de magasin"
+        }
       }
     }
   }

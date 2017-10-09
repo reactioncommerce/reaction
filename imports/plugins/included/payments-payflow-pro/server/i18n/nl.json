@@ -1,0 +1,13 @@
+[{
+  "language": "Dutch",
+  "i18n": "nl",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "je instellingen zijn opgeslagen",
+        "saveFailed": "Er was een probleem bij het opslaan van uw instellingen"
+      }
+    }
+  }
+}]

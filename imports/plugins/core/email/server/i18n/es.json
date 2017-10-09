@@ -81,7 +81,8 @@
           "saveFailed": "Error al guardar las opciones de correo. {{error}}",
           "cantSendEmail": "Error de servidor: No se puede enviar una notificación por correo electrónico.",
           "emailSent": "notificación por correo electrónico enviado.",
-          "addOrderEmailFailed": "No se pudo agregar el correo electrónico al pedido."
+          "addOrderEmailFailed": "No se pudo agregar el correo electrónico al pedido.",
+          "addCartEmailFailed": "Error al agregar el correo electrónico al carro"
         }
       }
     }

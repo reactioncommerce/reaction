@@ -32,7 +32,8 @@
           "groupRequired": "Skupina musí pozvat administrátora",
           "cannotInvite": "Nemůžete pozvat ke skupině",
           "unableToSendInvitationEmail": "Nelze odeslat e-mail s pozvánkou",
-          "errorSendingInvite": "Při odesílání pozvánky došlo k chybě"
+          "errorSendingInvite": "Při odesílání pozvánky došlo k chybě",
+          "NeedToSetUsernameOrEmail": "Je třeba zadat uživatelské jméno nebo email"
         }
       }
     }

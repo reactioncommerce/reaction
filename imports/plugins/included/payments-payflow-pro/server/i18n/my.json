@@ -1,0 +1,13 @@
+[{
+  "language": "Burmese",
+  "i18n": "my",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "သင့်ရဲ့ settings ကိုကယ်တင်ခြင်းသို့ရောက်ကြပြီ",
+        "saveFailed": "သင့်ရဲ့ settings ကိုချွေတာပြဿနာတစ်ခုရှိခဲ့သည်"
+      }
+    }
+  }
+}]

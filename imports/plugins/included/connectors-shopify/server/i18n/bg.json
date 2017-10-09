@@ -32,6 +32,14 @@
           "syncStopFailure": "Грешка при спирането на синхронизирането с Shopify",
           "startImport": "Стартирайте импортирането"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API ключ",
+          "password": "Парола за API",
+          "sharedSecret": "API споделена тайна",
+          "shopName": "Магазин за сладолед"
+        }
       }
     }
   }

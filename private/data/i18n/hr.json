@@ -93,8 +93,8 @@
         "createVariant": "Kreiraj Varijantu"
       },
       "gridPackage": {
-        "pkgEnabled": " je sada dostupan.",
-        "pkgDisabled": " je sada onemogućen."
+        "pkgEnabled": "{{app}} je sada dostupan.",
+        "pkgDisabled": "{{app}} je sada onemogućen."
       },
       "cartDrawer": {
         "empty": "Nažalost, vaša košarica je prazna.",

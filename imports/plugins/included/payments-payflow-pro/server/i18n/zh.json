@@ -1,0 +1,13 @@
+[{
+  "language": "Chinese",
+  "i18n": "zh",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "您的设置已经保存",
+        "saveFailed": "保存设置时出现问题"
+      }
+    }
+  }
+}]

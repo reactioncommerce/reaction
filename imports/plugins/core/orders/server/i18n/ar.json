@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "لم يتم العثور على الطلب",
       "order": {
+        "applyRefundToThisOrder": "هل تريد استرداد مبلغ {{currencySymbol}}{{refund}} لهذا الطلب؟",
+        "applyRefundDuringCancelOrder": "سيؤدي هذا إلى رد المبلغ الإجمالي للطلب البالغ {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "هل تريد إلغاء هذا الطلب؟",
         "cancelOrderLabel": "الغاء الطلب",
         "cancelOrderThenRestock": "نعم، وإعادة تخزين",
@@ -59,6 +61,34 @@
             "total": "جميع",
             "shipping": "الشحن",
             "status": "حالة"
+          },
+          "filter": {
+            "status": "حالة",
+            "dateRange": "نطاق الموعد",
+            "shippingStatus": "حالة الشحن",
+            "new": "جديد",
+            "captured": "تم تحصيل الدفعة",
+            "shipped": "تم الشحن",
+            "completed": "مكتمل",
+            "canceled": "تم الإلغاء",
+            "refunded": "المستردة"
+          },
+          "search": {
+            "clearSearch": "صافي",
+            "placeholder": "تقسيمات البحث"
+          },
+          "data": {
+            "status": {
+              "new": "الجديد",
+              "coreOrderWorkflow/created": "خلقت",
+              "coreOrderWorkflow/processing": "معالجة",
+              "coreOrderWorkflow/completed": "منجز",
+              "coreOrderWorkflow/canceled": "ألغيت",
+              "coreOrderWorkflow/picked": "اختار",
+              "coreOrderWorkflow/packed": "معباه",
+              "coreOrderWorkflow/labeled": "المسمى",
+              "coreOrderWorkflow/shipped": "شحنها"
+            }
           }
         }
       }
