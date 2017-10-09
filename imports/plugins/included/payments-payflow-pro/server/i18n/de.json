@@ -1,0 +1,13 @@
+[{
+  "language": "German",
+  "i18n": "de",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "Deine Einstellungen wurden gespeichert",
+        "saveFailed": "Es gab ein Problem beim Speichern Ihrer Einstellungen"
+      }
+    }
+  }
+}]

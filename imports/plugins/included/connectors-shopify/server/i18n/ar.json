@@ -32,6 +32,14 @@
           "syncStopFailure": "حدث خطأ أثناء إيقاف مزامنة شوبيفي!",
           "startImport": "بدء الاستيراد"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "مفتاح API",
+          "password": "كلمة مرور واجهة برمجة التطبيقات",
+          "sharedSecret": "شارك أبي السر",
+          "shopName": "متجر سبيكة"
+        }
       }
     }
   }

@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "Поръчката не е намерена",
       "order": {
+        "applyRefundToThisOrder": "Нанесете възстановяване на {{currencySymbol}}{{refund}} до тази цел?",
+        "applyRefundDuringCancelOrder": "Това ще възстанови общата сума на поръчката на {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Искате ли да анулирате тази поръчка?",
         "cancelOrderLabel": "Отмяна на поръчката",
         "cancelOrderThenRestock": "Да, и отново",
@@ -59,6 +61,34 @@
             "total": "Обща сума",
             "shipping": "Доставка",
             "status": "Статус"
+          },
+          "filter": {
+            "status": "Статус",
+            "dateRange": "Период от време",
+            "shippingStatus": "Статус на доставка",
+            "new": "Нов",
+            "captured": "Плащането Заснето",
+            "shipped": "Изпратено",
+            "completed": "завършен",
+            "canceled": "отменен",
+            "refunded": "Възстановява"
+          },
+          "search": {
+            "clearSearch": "ясно",
+            "placeholder": "Поръчки за търсене"
+          },
+          "data": {
+            "status": {
+              "new": "нов",
+              "coreOrderWorkflow/created": "Създаден",
+              "coreOrderWorkflow/processing": "обработване",
+              "coreOrderWorkflow/completed": "завършен",
+              "coreOrderWorkflow/canceled": "отменен",
+              "coreOrderWorkflow/picked": "избран",
+              "coreOrderWorkflow/packed": "натъпкан",
+              "coreOrderWorkflow/labeled": "Етикетирани",
+              "coreOrderWorkflow/shipped": "Доставят"
+            }
           }
         }
       }

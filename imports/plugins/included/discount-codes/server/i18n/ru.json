@@ -15,7 +15,8 @@
         "applied": "прикладная",
         "code": "код",
         "codeIsExpired": "Код истек",
-        "codeIsInvalid": "Код недействителен"
+        "codeIsInvalid": "Код недействителен",
+        "multiShopError": "Скидки не могут быть применены к корзине или заказу с несколькими магазинами"
       },
       "admin": {
         "paymentSettings": {

@@ -32,6 +32,14 @@
           "syncStopFailure": "Ошибка остановки. Синхронизация.",
           "startImport": "Start Import"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "Ключ API",
+          "password": "Пароль API",
+          "sharedSecret": "Общий доступ к API",
+          "shopName": "Магазин пули"
+        }
       }
     }
   }

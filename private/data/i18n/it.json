@@ -63,8 +63,8 @@
         "soldOut": "Esaurito!",
         "backOrder": "backorder",
         "limitedSupply": "limitata Fornitura",
-        "publishProductVisible": "è ora visibile",
-        "publishProductHidden": "è ora nascosto",
+        "publishProductVisible": "{{product}} è ora visibile",
+        "publishProductHidden": "{{product}} è ora nascosto",
         "startTracking": "Inizio di monitoraggio",
         "addBarcode": "Aggiungi codice a barre",
         "quantity": "Quantità",
@@ -93,8 +93,8 @@
         "createVariant": "creare Variante"
       },
       "gridPackage": {
-        "pkgEnabled": " è ora abilitato.",
-        "pkgDisabled": " è ora disabilitato."
+        "pkgEnabled": "{{app}} è ora abilitato.",
+        "pkgDisabled": "{{app}} è ora disabilitato."
       },
       "cartDrawer": {
         "empty": "Il tuo carrello è vuoto :(",

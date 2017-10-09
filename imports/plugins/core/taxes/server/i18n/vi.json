@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": "thuế suất tùy chỉnh lưu.",
           "shopCustomTaxRatesFailed": "tiết kiệm thuế suất lỗi.",
           "shopTaxMethodsSaved": "Phương pháp thuế lưu.",
+          "shopTaxMethodsAlreadySaved": "Mã số thuế đã được tải",
           "shopTaxMethodsFailed": "Không tiết kiệm phương pháp thuế.",
           "customRatesLabel": "Giá tùy chỉnh",
           "customRatesDescription": "Giá tùy chỉnh",

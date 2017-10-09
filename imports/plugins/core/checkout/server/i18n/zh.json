@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "供应有限"
+      },
       "cartCompleted": {
         "yourCart": "你的购物车",
         "discountTotal": "折扣总计",

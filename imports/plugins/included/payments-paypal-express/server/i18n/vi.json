@@ -1,0 +1,47 @@
+[{
+  "language": "Vietnamese",
+  "i18n": "vi",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "thanh toán PayPal"
+        },
+        "paymentMethod": {
+          "expressLabel": "bày tỏ",
+          "creditCardLabel": "Thẻ tín dụng"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Không có một tên người dùng PayPal, mật khẩu, chữ ký?",
+          "paypalExpressGetCredentialsHere": "Nhận một ở đây.",
+          "paypalPayflowCredentials": "Không có một ID khách hàng PayPal và bí mật",
+          "paypalPayflowGetCredentialsHere": "Nhận được chúng ở đây."
+        },
+        "settings": {
+          "saveSuccess": "Cài đặt của bạn đã được lưu",
+          "saveFailed": "Đã xảy ra sự cố khi lưu cài đặt của bạn"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Hoàn thành đặt hàng của bạn",
+        "paymentMethod": {
+          "expressButtonLabel": "Thanh toán bằng PayPal",
+          "expressNotConfigured": "Paypal Express không được cấu hình.",
+          "expressNotAvailable": "Paypal Express không có sẵn",
+          "submitting": "trình",
+          "invalidCard": "Rất tiếc! Số thẻ tín dụng là không hợp lệ.",
+          "unknownError": "Rất tiếc! Một lỗi không rõ đã xảy ra",
+          "resubmit": "gửi lại thanh toán"
+        }
+      }
+    }
+  }
+}]

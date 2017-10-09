@@ -32,6 +32,14 @@
           "syncStopFailure": "Error al detener Shopify sync!",
           "startImport": "Iniciar Importación"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "Clave de la API",
+          "password": "Contraseña del API",
+          "sharedSecret": "API compartido secreto",
+          "shopName": "Tienda de babosa"
+        }
       }
     }
   }

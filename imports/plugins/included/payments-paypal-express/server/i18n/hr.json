@@ -1,0 +1,47 @@
+[{
+  "language": "Croatian",
+  "i18n": "hr",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "PayPal plaćanja"
+        },
+        "paymentMethod": {
+          "expressLabel": "Izraziti",
+          "creditCardLabel": "Kreditna kartica"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Nemate PayPal korisničko ime, lozinku i potpis?",
+          "paypalExpressGetCredentialsHere": "Nabavite ga ovdje.",
+          "paypalPayflowCredentials": "Nemate PayPal klijent ime i tajna",
+          "paypalPayflowGetCredentialsHere": "Nabavite ih ovdje."
+        },
+        "settings": {
+          "saveSuccess": "Vaše su postavke spremljene",
+          "saveFailed": "Došlo je do problema prilikom spremanja vaših postavki"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Dovršite narudžbu",
+        "paymentMethod": {
+          "expressButtonLabel": "Plaćanje PayPalom",
+          "expressNotConfigured": "Paypal Express ne konfigurira.",
+          "expressNotAvailable": "Paypal Express nije dostupan",
+          "submitting": "Slanje",
+          "invalidCard": "Uh! broj kreditne kartice nije valjan.",
+          "unknownError": "Uh! Došlo je do nepoznate pogreške",
+          "resubmit": "Ponovno slanje plaćanje"
+        }
+      }
+    }
+  }
+}]

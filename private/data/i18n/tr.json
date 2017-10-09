@@ -63,8 +63,8 @@
         "soldOut": "Tükendi!",
         "backOrder": "Geçici olarak stok dışı",
         "limitedSupply": "Sınırlı stok",
-        "publishProductVisible": " artık görünür",
-        "publishProductHidden": " artık gizli",
+        "publishProductVisible": "{{product}} artık görünür",
+        "publishProductHidden": "{{product}} artık gizli",
         "startTracking": "Takip Et",
         "addBarcode": "Barkod Ekle",
         "quantity": "Miktar",
@@ -93,8 +93,8 @@
         "createVariant": "Benzerini Oluştur"
       },
       "gridPackage": {
-        "pkgEnabled": " şu anda etkin.",
-        "pkgDisabled": " şu anda etkin değil."
+        "pkgEnabled": "{{app}} şu anda etkin.",
+        "pkgDisabled": "{{app}} şu anda etkin değil."
       },
       "cartDrawer": {
         "empty": "Üzgünüz. Sepetiniz boş.",

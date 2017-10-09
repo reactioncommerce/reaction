@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Approvisionnement limité"
+      },
       "cartCompleted": {
         "yourCart": "Votre panier",
         "discountTotal": "Remise totale",
