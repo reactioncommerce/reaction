@@ -946,31 +946,23 @@ export const methods = {
    * loop through order's payments and find existing refunds.
    * @summary Get a list of refunds for a particular payment method.
    * @param {Object} order - order object
-   * @return {null} no return value
+   * @return {Array} Array contains refund records
    */
   "orders/refunds/list": function (order) {
     check(order, Object);
-    const paymentMethod = orderCreditMethod(order).paymentMethod;
 
     if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    this.unblock();
-
-    const future = new Future();
-    const processor = paymentMethod.processor.toLowerCase();
-
-    Meteor.call(`${processor}/refund/list`, paymentMethod, (error, result) => {
-      if (error) {
-        future.return(error);
-      } else {
-        check(result, [Schemas.Refund]);
-        future.return(result);
-      }
-    });
-
-    return future.wait();
+    const refunds = [];
+    for (const billingRecord of order.billing) {
+      const paymentMethod = billingRecord.paymentMethod;
+      const processor = paymentMethod.processor.toLowerCase();
+      const shopRefunds = Meteor.call(`${processor}/refund/list`, paymentMethod);
+      refunds.push(...shopRefunds);
+    }
+    return refunds;
   },
 
   /**
