@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": "Custom belastingtarief opgeslagen.",
           "shopCustomTaxRatesFailed": "Fout bij het opslaan belastingtarief.",
           "shopTaxMethodsSaved": "Opgeslagen belasting methode.",
+          "shopTaxMethodsAlreadySaved": "Belastingcodes al geladen",
           "shopTaxMethodsFailed": "Mislukt het opslaan van fiscale methode.",
           "customRatesLabel": "Aangepaste tarieven",
           "customRatesDescription": "Aangepaste tarieven",

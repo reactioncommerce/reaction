@@ -32,6 +32,14 @@
           "syncStopFailure": "Napaka pri prekinitvi sinhronizacije Shopify!",
           "startImport": "Začnite uvoz"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "Ključ API",
+          "password": "Geslo API",
+          "sharedSecret": "API v skupni rabi",
+          "shopName": "Nakup"
+        }
       }
     }
   }

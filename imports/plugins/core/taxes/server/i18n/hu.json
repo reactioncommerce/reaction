@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": "Egyedi adókulcs mentve.",
           "shopCustomTaxRatesFailed": "Hiba történt a adókulcs.",
           "shopTaxMethodsSaved": "Mentett adó módszer.",
+          "shopTaxMethodsAlreadySaved": "Már betöltött adókódok",
           "shopTaxMethodsFailed": "Sikertelen mentés adó módszer.",
           "customRatesLabel": "egyéni árak",
           "customRatesDescription": "egyéni árak",

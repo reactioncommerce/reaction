@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "自动",
         "save": "保存",
         "saveAndContinue": "保存并继续",
         "cancel": "取消",
@@ -86,7 +87,52 @@
         "pinProduct": "固定产品",
         "toggleSize": "切换大小",
         "publish": "发布",
-        "moreOptions": "更多选项"
+        "moreOptions": "更多选项",
+        "details": "详细信息",
+        "addVariantFail": "无法为{{title}}创建变体。",
+        "cloneVariantFail": "无法克隆变种{{title}}。",
+        "removeVariantConfirm": "您确定要删除{{title}}吗？",
+        "restoreVariantConfirm": "您确定要从垃圾箱恢复{{title}}吗？",
+        "restoreVariantFail": "无法恢复{{title}}。",
+        "archiveVariantConfirm": "确定要把{{title}}存档吗",
+        "thisVariant": "此款式",
+        "thisOption": "此选项",
+        "archiveProduct": "归档产品",
+        "restoreProduct": "从垃圾箱恢复产品",
+        "archiveThisProduct": "要把本产品存档吗？",
+        "archiveSelectedProducts": "要把选中的产品存档吗？",
+        "noSelectedProducts": "未选择产品。使用 ",
+        "orShiftCtrlCmd": " 或按 Shift|Ctrl|Cmd + 点击产品来选择多款产品。用 Shift 可以选择连续的产品。",
+        "makeVisible": "显示",
+        "hideProduct": "隐藏产品",
+        "productIsVisible": "产品已显示",
+        "productIsNotVisible": "产品未显示",
+        "variantOptions": "款式选项"
+      },
+      "productVariant": {
+        "addVariantOptions": "添加选项来启用“添加到购物车”按钮操",
+        "inventoryQuantity": "数量",
+        "title": "标签",
+        "price": "价格",
+        "optionTitle": "选项",
+        "barcode": "条形码",
+        "compareAtPrice": "价格 (MSRP)",
+        "fulfillmentService": "履行服务",
+        "weight": "重量",
+        "length": "长度",
+        "width": "宽度",
+        "height": "高低",
+        "taxable": "应税",
+        "taxCode": "税码",
+        "taxDescription": "税务说明",
+        "inventoryManagement": "库存跟踪",
+        "inventoryManagementLabel": "在库存系统中注册产品并跟踪其状态",
+        "inventoryPolicy": "缺货时拒绝",
+        "inventoryPolicyLabel": "产品款式缺货时不进行销售",
+        "lowInventoryWarningThreshold": "警告 @",
+        "lowInventoryWarningThresholdLabel": "当数量达到下一个阈值时，提醒顾客产品即将售罄",
+        "originCountry": "原产地",
+        "selectTaxCode": "选择税码"
       },
       "variantList": {
         "moreOptions": "还有更多选项",
@@ -102,8 +148,13 @@
         "checkout": "立刻结算",
         "new": "新订单",
         "coreOrderWorkflow/created": "已生成",
+        "coreOrderWorkflow/processing": "正在处理",
         "coreOrderWorkflow/completed": "已完成",
-        "coreOrderWorkflow/canceled": "已取消"
+        "coreOrderWorkflow/canceled": "已取消",
+        "coreOrderWorkflow/picked": "采摘的",
+        "coreOrderWorkflow/packed": "袋装",
+        "coreOrderWorkflow/labeled": "标记",
+        "coreOrderWorkflow/shipped": "已出货"
       },
       "cartSubTotals": {
         "head": "您的购物车",
@@ -133,13 +184,34 @@
         "adjustedTotal": "调整后的总金额",
         "processor": "经手人",
         "filter": {
+          "status": "状态",
+          "dateRange": "日期范围",
+          "shippingStatus": "运送状态",
           "new": "新订单",
           "captured": "已收款",
           "shipped": "已出货",
           "completed": "已完成",
           "canceled": "已取消",
           "refunded": "已退款"
-        }
+        },
+        "capture": "捕获",
+        "capturing": "捕获",
+        "bulkActions": "批量操作",
+        "selected": "选",
+        "picked": "采摘的",
+        "packed": "袋装",
+        "labeled": "标记",
+        "shipped": "已出货",
+        "printInvoiceAndPickSheet": "打印发票和拣单",
+        "generateLabel": "生成标签",
+        "approveBulkOrderAction": "是，全部选择所有订单",
+        "approveBulkOrderActionRegression": "是的，回归所有选定的订单",
+        "cancelBulkOrderAction": "不，取消",
+        "orderAlreadyInState": "{{orderText}}已经{{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}}设为{{status}}",
+        "skippedBulkOrdersAlert": "您已要求{{selectedOrders}} {{orderText}}设置为“{{status}}”状态，但这些订单{{skippedOrdersText}}中的{{numberOfSkippedOrders}}未处于“{{skippedState}}”状态，并且将跳过导致“{{status}}”状态的所有步骤。你确定要这样做吗？",
+        "bulkOrdersRegressionAlert": "您即将将{{ordersToRegress}} {{orderText}}退回“{{status}}”状态。您确定要继续执行此操作吗？",
+        "paymentCaptureSuccess": "付款已成功捕获"
       },
       "orderShipping": {
         "shipTo": "发到",
@@ -169,7 +241,8 @@
         "createOrLogin": "登录或注册",
         "guestOrLogin": "登录或随便逛逛",
         "continueAsGuest": "继续逛逛",
-        "guestMessage": "您现在可以直接结账，您稍后可以注册账号。"
+        "guestMessage": "您现在可以直接结账，您稍后可以注册账号。",
+        "addEmail": "添加电子邮件"
       },
       "addressBookGrid": {
         "addAddress": "添加地址",
@@ -225,6 +298,10 @@
         "weibo": "微博"
       },
       "accountsUI": {
+        "yourOrders": "您的订单",
+        "usersOrders": "用户订单",
+        "oops": "糟糕!",
+        "nonExistentAccount": "您要查找的用户不存在。",
         "members": "会员",
         "guest": "访客",
         "addMember": "添加会员",

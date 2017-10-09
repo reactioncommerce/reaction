@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Automobile",
         "save": "Salva",
         "saveAndContinue": "Salva e continua",
         "cancel": "Annulla",
@@ -63,8 +64,8 @@
         "soldOut": "Esaurito!",
         "backOrder": "backorder",
         "limitedSupply": "limitata Fornitura",
-        "publishProductVisible": "è ora visibile",
-        "publishProductHidden": "è ora nascosto",
+        "publishProductVisible": "{{product}} è ora visibile",
+        "publishProductHidden": "{{product}} è ora nascosto",
         "startTracking": "Inizio di monitoraggio",
         "addBarcode": "Aggiungi codice a barre",
         "quantity": "Quantità",
@@ -86,15 +87,60 @@
         "pinProduct": "Pin del prodotto",
         "toggleSize": "Toggle Dimensioni",
         "publish": "Pubblica",
-        "moreOptions": "Più opzioni"
+        "moreOptions": "Più opzioni",
+        "details": "Dettagli",
+        "addVariantFail": "Impossibile creare variante per {{title}}.",
+        "cloneVariantFail": "Impossibile clonare variante per {{title}}.",
+        "removeVariantConfirm": "Sei sicuro di voler eliminare {{title}}",
+        "restoreVariantConfirm": "Sei sicuro di voler ripristinare {{title}} dal cestino?",
+        "restoreVariantFail": "Impossibile ripristinare {{title}}.",
+        "archiveVariantConfirm": "Sei sicuro che si desidera archiviare {{title}}",
+        "thisVariant": "questa variante",
+        "thisOption": "questa opzione",
+        "archiveProduct": "Archivio prodotti",
+        "restoreProduct": "Ripristino del prodotto dal Cestino",
+        "archiveThisProduct": "Archivia questo prodotto?",
+        "archiveSelectedProducts": "Archivio selezionato prodotti?",
+        "noSelectedProducts": "Nessun prodotto selezionato. Usa il",
+        "orShiftCtrlCmd": " o spostamento | ctrl | cmd + click sui prodotti per selezionare più. Con spostamento è possibile selezionare un intervallo contiguo di prodotti.",
+        "makeVisible": "rendere visibile",
+        "hideProduct": "Nascondi prodotto",
+        "productIsVisible": "Il prodotto è visibile",
+        "productIsNotVisible": "Il prodotto non è visibile",
+        "variantOptions": "Opzioni Variant"
+      },
+      "productVariant": {
+        "addVariantOptions": "Aggiungere opzioni per attivare 'Aggiungi al carrello' butto",
+        "inventoryQuantity": "Quantità",
+        "title": "Etichetta",
+        "price": "Prezzo",
+        "optionTitle": "Opzione",
+        "barcode": "Barcode",
+        "compareAtPrice": "Prezzo (MSRP)",
+        "fulfillmentService": "servizio di Fulfillment",
+        "weight": "Peso",
+        "length": "Lunghezza",
+        "width": "Larghezza",
+        "height": "Altezza",
+        "taxable": "Imponibile",
+        "taxCode": "Codici fiscali",
+        "taxDescription": "Descrizione fiscale",
+        "inventoryManagement": "il monitoraggio delle scorte",
+        "inventoryManagementLabel": "Registrare il prodotto nel sistema di inventario e monitorare il suo stato",
+        "inventoryPolicy": "Nega quando esaurito",
+        "inventoryPolicyLabel": "Non vendere la variante di prodotto quando non è in magazzino",
+        "lowInventoryWarningThreshold": "Avvertire @",
+        "lowInventoryWarningThresholdLabel": "Avvertire la clientela che il prodotto sarà vicino a esaurito quando la quantità raggiunge la soglia successiva",
+        "originCountry": "Paese di origine",
+        "selectTaxCode": "Seleziona Codice Fiscale"
       },
       "variantList": {
         "moreOptions": "Ci sono altre opzioni disponibili per questa selezione.",
         "createVariant": "creare Variante"
       },
       "gridPackage": {
-        "pkgEnabled": " è ora abilitato.",
-        "pkgDisabled": " è ora disabilitato."
+        "pkgEnabled": "{{app}} è ora abilitato.",
+        "pkgDisabled": "{{app}} è ora disabilitato."
       },
       "cartDrawer": {
         "empty": "Il tuo carrello è vuoto :(",
@@ -102,8 +148,13 @@
         "checkout": "Vai al checkout",
         "new": "Nuovo",
         "coreOrderWorkflow/created": "Creato",
+        "coreOrderWorkflow/processing": "lavorazione",
         "coreOrderWorkflow/completed": "Completato",
-        "coreOrderWorkflow/canceled": "Annullato"
+        "coreOrderWorkflow/canceled": "Annullato",
+        "coreOrderWorkflow/picked": "raccolto",
+        "coreOrderWorkflow/packed": "Confezionato",
+        "coreOrderWorkflow/labeled": "Labeled",
+        "coreOrderWorkflow/shipped": "Spedito"
       },
       "cartSubTotals": {
         "head": "Il tuo carrello",
@@ -133,13 +184,34 @@
         "adjustedTotal": "totale rettificato",
         "processor": "Processore",
         "filter": {
+          "status": "Stato",
+          "dateRange": "Intervallo di date",
+          "shippingStatus": "Stato della spedizione",
           "new": "Nuovo",
           "captured": "pagamento Captured",
           "shipped": "Spedito",
           "completed": "Completato",
           "canceled": "Annullato",
           "refunded": "rimborsato"
-        }
+        },
+        "capture": "Catturare",
+        "capturing": "Catturare",
+        "bulkActions": "Azioni in blocco",
+        "selected": "Selezionata",
+        "picked": "raccolto",
+        "packed": "Confezionato",
+        "labeled": "Labeled",
+        "shipped": "Spedito",
+        "printInvoiceAndPickSheet": "Stampa fattura e foglio pick",
+        "generateLabel": "Genera etichetta",
+        "approveBulkOrderAction": "Sì, Imposta tutti Seleziona tutti gli ordini",
+        "approveBulkOrderActionRegression": "Sì, regressa tutti gli ordini selezionati",
+        "cancelBulkOrderAction": "No, Annulla",
+        "orderAlreadyInState": "{{orderText}} è già stato {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} impostato su {{status}}",
+        "skippedBulkOrdersAlert": "Hai richiesto che {{selectedOrders}} {{orderText}} sia impostato sullo stato \"{{status}}\", ma {{numberOfSkippedOrders}} di questi ordini {{skippedOrdersText}} non nello stato '{{skippedState}}' e ignorerà tutti i passaggi che portano allo stato '{{status}}'. Sei sicuro di volerlo fare?",
+        "bulkOrdersRegressionAlert": "Stai per regredire {{ordersToRegress}} {{orderText}} torna allo stato '{{status}}'. Sei sicuro di voler continuare con questa operazione?",
+        "paymentCaptureSuccess": "I pagamenti sono stati catturati con successo"
       },
       "orderShipping": {
         "shipTo": "Spedire a",
@@ -169,7 +241,8 @@
         "createOrLogin": "Crea un account o accedi",
         "guestOrLogin": "Entra o checkout come ospite",
         "continueAsGuest": "Continua come ospite",
-        "guestMessage": "È possibile checkout senza creare un account. Avrete la possibilità di creare un account in seguito."
+        "guestMessage": "È possibile checkout senza creare un account. Avrete la possibilità di creare un account in seguito.",
+        "addEmail": "Aggiungi e-mail"
       },
       "addressBookGrid": {
         "addAddress": "Aggiungere Indirizzo",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "I tuoi ordini",
+        "usersOrders": "Ordini dell'utente",
+        "oops": "Oops!",
+        "nonExistentAccount": "L'utente che stai cercando non esiste.",
         "members": "Membri",
         "guest": "ospite",
         "addMember": "Aggiungere un membro",

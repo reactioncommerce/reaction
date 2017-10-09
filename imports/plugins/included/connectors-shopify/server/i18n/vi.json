@@ -32,6 +32,14 @@
           "syncStopFailure": "Lỗi khi dừng Shopify sync!",
           "startImport": "Bắt đầu Nhập"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "Mã API",
+          "password": "Mật khẩu API",
+          "sharedSecret": "API chia sẻ bí mật",
+          "shopName": "Mua sắm sên"
+        }
       }
     }
   }

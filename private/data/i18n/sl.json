@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Auto",
         "save": "Shrani",
         "saveAndContinue": "Shrani in nadaljuj",
         "cancel": "Prekliči",
@@ -86,7 +87,52 @@
         "pinProduct": "pin izdelka",
         "toggleSize": "Preklop Velikost",
         "publish": "objavi",
-        "moreOptions": "več možnosti"
+        "moreOptions": "več možnosti",
+        "details": "podrobnosti",
+        "addVariantFail": "Ni mogoče ustvariti varianto za {{title}}.",
+        "cloneVariantFail": "Ni mogoče klonirati varianto za {{title}}.",
+        "removeVariantConfirm": "Ali ste prepričani, da želite izbrisati {{title}}",
+        "restoreVariantConfirm": "Ali ste prepričani, da želite obnoviti {{title}} iz smeti?",
+        "restoreVariantFail": "Ni mogoče obnoviti {{title}}.",
+        "archiveVariantConfirm": "Ali ste prepričani, da želite arhivirati {{title}}",
+        "thisVariant": "ta varianta",
+        "thisOption": "ta možnost",
+        "archiveProduct": "Arhiv izdelkov",
+        "restoreProduct": "Obnovitev izdelka iz smetnjaka",
+        "archiveThisProduct": "Arhivirati ta izdelek?",
+        "archiveSelectedProducts": "Arhiv izbrane izdelke?",
+        "noSelectedProducts": "Ni izbrane izdelke. Uporabi",
+        "orShiftCtrlCmd": " ali premik | ctrl | cmd + kliknite na izdelke izbrati večkratnik. S premikom lahko izberete sosednji paleto izdelkov.",
+        "makeVisible": "Naj Visible",
+        "hideProduct": "Skrij izdelka",
+        "productIsVisible": "Izdelek je viden",
+        "productIsNotVisible": "Izdelek ni vidna",
+        "variantOptions": "Variant Možnosti"
+      },
+      "productVariant": {
+        "addVariantOptions": "Dodaj možnosti, da bi \"Dodaj v košarico\" butto",
+        "inventoryQuantity": "količina",
+        "title": "Label",
+        "price": "Cena",
+        "optionTitle": "možnost",
+        "barcode": "Barcode",
+        "compareAtPrice": "Cena (MSRP)",
+        "fulfillmentService": "izpolnitev storitev",
+        "weight": "Teža",
+        "length": "dolžina",
+        "width": "Širina",
+        "height": "Višina",
+        "taxable": "Davčni",
+        "taxCode": "davčni Oznake",
+        "taxDescription": "davčna Opis",
+        "inventoryManagement": "sledenje popis",
+        "inventoryManagementLabel": "Vnos izdelek inventarja sistema in sledenje svoj status",
+        "inventoryPolicy": "Zanika, ko ni na zalogi",
+        "inventoryPolicyLabel": "Ne prodati varianto izdelka, če je ni na zalogi",
+        "lowInventoryWarningThreshold": "Opozori @",
+        "lowInventoryWarningThresholdLabel": "Opozarjajo stranke, da bo izdelek skoraj razprodan, ko doseže naslednji količinski prag",
+        "originCountry": "izvor Država",
+        "selectTaxCode": "Izberite davčnega zakonika"
       },
       "variantList": {
         "moreOptions": "Obstaja več možnosti, ki so na voljo za ta izbor.",
@@ -102,8 +148,13 @@
         "checkout": "Naročilo zdaj",
         "new": "New",
         "coreOrderWorkflow/created": "Ustvarjeno",
+        "coreOrderWorkflow/processing": "Obravnavati",
         "coreOrderWorkflow/completed": "končan",
-        "coreOrderWorkflow/canceled": "preklicana"
+        "coreOrderWorkflow/canceled": "preklicana",
+        "coreOrderWorkflow/picked": "Izbrano",
+        "coreOrderWorkflow/packed": "Pakirano",
+        "coreOrderWorkflow/labeled": "Označeno",
+        "coreOrderWorkflow/shipped": "pošiljajo"
       },
       "cartSubTotals": {
         "head": "Vaš voziček",
@@ -133,13 +184,34 @@
         "adjustedTotal": "prilagojena Skupaj",
         "processor": "procesor",
         "filter": {
+          "status": "Status",
+          "dateRange": "Časovno obdobje",
+          "shippingStatus": "Status pošiljanja",
           "new": "New",
           "captured": "plačilo Zajeto",
           "shipped": "pošiljajo",
           "completed": "končan",
           "canceled": "preklicana",
           "refunded": "Vrnjeno"
-        }
+        },
+        "capture": "Ujemi",
+        "capturing": "Zajemanje",
+        "bulkActions": "Množične akcije",
+        "selected": "Izbrano",
+        "picked": "Izbrano",
+        "packed": "Pakirano",
+        "labeled": "Označeno",
+        "shipped": "pošiljajo",
+        "printInvoiceAndPickSheet": "Tiskanje računa in izbirni list",
+        "generateLabel": "Ustvari nalepko",
+        "approveBulkOrderAction": "Da, nastavi vse Izberite vse naloge",
+        "approveBulkOrderActionRegression": "Da, Regresiraj vse izbrane naloge",
+        "cancelBulkOrderAction": "Ne, prekliči",
+        "orderAlreadyInState": "{{orderText}} je že bil {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} je nastavljen na {{status}}",
+        "skippedBulkOrdersAlert": "Zahtevali ste, da se {{selectedOrders}} {{orderText}} nastavi na status »{{status}}«, vendar pa {{numberOfSkippedOrders}} teh naročil {{skippedOrdersText}} ni v stanju »{{skippedState}}« in preskočite vse korake, ki vodijo do stanja »{{status}}«. Ste prepričani, da želite to storiti?",
+        "bulkOrdersRegressionAlert": "Približali boste {{ordersToRegress}} {{orderText}} nazaj v stanje »{{status}}«. Ali ste prepričani, da želite nadaljevati s to operacijo?",
+        "paymentCaptureSuccess": "Plačila uspešno ujeta"
       },
       "orderShipping": {
         "shipTo": "Poslati v",
@@ -169,7 +241,8 @@
         "createOrLogin": "Ustvarite račun ali pa se vpiši",
         "guestOrLogin": "Prijavite se, ali prevzeti kot gost",
         "continueAsGuest": "Nadaljuj kot gost",
-        "guestMessage": "Lahko checkout brez ustvarjanja računa. Imeli boste priložnost, da ustvarite račun pozneje."
+        "guestMessage": "Lahko checkout brez ustvarjanja računa. Imeli boste priložnost, da ustvarite račun pozneje.",
+        "addEmail": "Dodajanje e-pošte"
       },
       "addressBookGrid": {
         "addAddress": "Dodaj naslov",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Vaša naročila",
+        "usersOrders": "Uporabnikova naročila",
+        "oops": "Ups!",
+        "nonExistentAccount": "Uporabnik, ki ga iščete, ne obstaja.",
         "members": "člani",
         "guest": "Gost",
         "addMember": "Dodajanje člana",

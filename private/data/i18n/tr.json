@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Oto",
         "save": "Kaydet",
         "saveAndContinue": "Kaydet ve devam et",
         "cancel": "Vazgeç",
@@ -63,8 +64,8 @@
         "soldOut": "Tükendi!",
         "backOrder": "Geçici olarak stok dışı",
         "limitedSupply": "Sınırlı stok",
-        "publishProductVisible": " artık görünür",
-        "publishProductHidden": " artık gizli",
+        "publishProductVisible": "{{product}} artık görünür",
+        "publishProductHidden": "{{product}} artık gizli",
         "startTracking": "Takip Et",
         "addBarcode": "Barkod Ekle",
         "quantity": "Miktar",
@@ -86,15 +87,60 @@
         "pinProduct": "Ürünü Sabitle",
         "toggleSize": "Boyut Değiştir",
         "publish": "Görünür Yap",
-        "moreOptions": "Daha çok seçenek"
+        "moreOptions": "Daha çok seçenek",
+        "details": "Ayrıntılar",
+        "addVariantFail": "{{title}} için varyantı oluşturulamıyor.",
+        "cloneVariantFail": "{{title}} için varyantı klonlamak için açılamıyor.",
+        "removeVariantConfirm": "Eğer {{title}} silmek istediğinizden emin misiniz",
+        "restoreVariantConfirm": "Eğer çöp kutusundan {{title}} geri yüklemek istediğiniz emin misiniz?",
+        "restoreVariantFail": "{{title}} geri yüklenemedi.",
+        "archiveVariantConfirm": "Eğer {{title}} arşivlemek istediğiniz emin misiniz",
+        "thisVariant": "bu varyant",
+        "thisOption": "Bu seçenek,",
+        "archiveProduct": "Arşiv Ürün",
+        "restoreProduct": "Çöp Kutusundan Ürünü Restore",
+        "archiveThisProduct": "Bu ürünü arşivle?",
+        "archiveSelectedProducts": "Arşiv Seçili ürünleri?",
+        "noSelectedProducts": "Hiçbir ürün seçilmedi. Kullan",
+        "orShiftCtrlCmd": " veya vardiya | ctrl | cmd + birden seçmek için ürünler tıklayın. vardiya ile ürün bitişik aralığı seçebilirsiniz.",
+        "makeVisible": "Görünür olun",
+        "hideProduct": "gizle Ürün",
+        "productIsVisible": "Ürün görünür",
+        "productIsNotVisible": "Ürün görünmüyorsa",
+        "variantOptions": "varyant Seçenekler"
+      },
+      "productVariant": {
+        "addVariantOptions": "'Sepete ekle' sağlamak için seçenekleri eklemek butto",
+        "inventoryQuantity": "miktar",
+        "title": "Etiket",
+        "price": "Fiyat",
+        "optionTitle": "seçenek",
+        "barcode": "Barkod",
+        "compareAtPrice": "Fiyat (MSRP)",
+        "fulfillmentService": "Yerine Getirme hizmet",
+        "weight": "Ağırlık",
+        "length": "uzunluk",
+        "width": "genişlik",
+        "height": "Yükseklik",
+        "taxable": "vergiye tabi",
+        "taxCode": "vergi Kodları",
+        "taxDescription": "vergi Açıklama",
+        "inventoryManagement": "stok takibi",
+        "inventoryManagementLabel": "envanter sisteminde ürününüzü kaydedin ve durumunu izlemek",
+        "inventoryPolicy": "zaman stokta inkar",
+        "inventoryPolicyLabel": "o stokta değil, ürün varyantı satmıyoruz",
+        "lowInventoryWarningThreshold": "uyar @",
+        "lowInventoryWarningThresholdLabel": "miktarı bir sonraki düzeye ulaştığında ürünün tükendi yakın olacağı müşterileri uyarmak",
+        "originCountry": "Anavatan",
+        "selectTaxCode": "Vergi Kanunu seçin"
       },
       "variantList": {
         "moreOptions": "Bu seçim için daha çok seçenek mevcut.",
         "createVariant": "Benzerini Oluştur"
       },
       "gridPackage": {
-        "pkgEnabled": " şu anda etkin.",
-        "pkgDisabled": " şu anda etkin değil."
+        "pkgEnabled": "{{app}} şu anda etkin.",
+        "pkgDisabled": "{{app}} şu anda etkin değil."
       },
       "cartDrawer": {
         "empty": "Üzgünüz. Sepetiniz boş.",
@@ -102,8 +148,13 @@
         "checkout": "Ödemeye geç",
         "new": "Yeni",
         "coreOrderWorkflow/created": "oluşturuldu",
+        "coreOrderWorkflow/processing": "Işleme",
         "coreOrderWorkflow/completed": "Tamamlanan",
-        "coreOrderWorkflow/canceled": "Iptal edildi"
+        "coreOrderWorkflow/canceled": "Iptal edildi",
+        "coreOrderWorkflow/picked": "Seçilmiş",
+        "coreOrderWorkflow/packed": "paketlenmiş",
+        "coreOrderWorkflow/labeled": "Etiketli",
+        "coreOrderWorkflow/shipped": "gönderilen"
       },
       "cartSubTotals": {
         "head": "Sepetiniz",
@@ -133,13 +184,34 @@
         "adjustedTotal": "Düzeltilmiş Toplam",
         "processor": "İşlemci",
         "filter": {
+          "status": "Durum",
+          "dateRange": "Tarih aralığı",
+          "shippingStatus": "Nakliye durumu",
           "new": "Yeni",
           "captured": "Ödeme Yakalanan",
           "shipped": "gönderilen",
           "completed": "Tamamlanan",
           "canceled": "Iptal edildi",
           "refunded": "iade"
-        }
+        },
+        "capture": "Ele geçirmek",
+        "capturing": "yakalama",
+        "bulkActions": "Toplu eylemler",
+        "selected": "Seçilmiş",
+        "picked": "Seçilmiş",
+        "packed": "paketlenmiş",
+        "labeled": "Etiketli",
+        "shipped": "gönderilen",
+        "printInvoiceAndPickSheet": "Fatura ve Levha Yazdır",
+        "generateLabel": "Etiket Yarat",
+        "approveBulkOrderAction": "Evet, Hepsini Ayarla Tüm Siparişleri Seç",
+        "approveBulkOrderActionRegression": "Evet, Seçilen Tüm Siparişleri Geciktir",
+        "cancelBulkOrderAction": "Hayır, İptal et",
+        "orderAlreadyInState": "{{orderText}} zaten {{status}} oldu",
+        "orderSetToState": "{{orderNumber}} {{orderText}}, {{status}} olarak ayarlandı",
+        "skippedBulkOrdersAlert": "{{selectedOrders}} {{orderText}} öğesinin '{{status}}' konumuna ayarlanmasını ancak bu siparişlerin {{numberOfSkippedOrders}}'ünün {{skippedOrdersText}} konumunun '{{skippedState}}' durumunda olmadığını ve '{{status}}' durumuna giden tüm adımları atlamasını istediniz. Bunu yapmak istediğinden emin misin?",
+        "bulkOrdersRegressionAlert": "{{ordersToRegress}} {{orderText}} sayfasını '{{status}}' durumuna gerilemek üzeresiniz. Bu işleme devam etmek istediğinizden emin misiniz?",
+        "paymentCaptureSuccess": "Ödemeler başarıyla alındı"
       },
       "orderShipping": {
         "shipTo": "Alıcı",
@@ -169,7 +241,8 @@
         "createOrLogin": "Hesap oluştur ya da giriş yap",
         "guestOrLogin": "Giriş yap ya da misafir olarak öde",
         "continueAsGuest": "Misafir olarak devam et",
-        "guestMessage": "Bir hesap oluşturmadan ödeme yapabilirsiniz. Daha sonra hesap oluşturabilirsiniz."
+        "guestMessage": "Bir hesap oluşturmadan ödeme yapabilirsiniz. Daha sonra hesap oluşturabilirsiniz.",
+        "addEmail": "E-posta ekleyin"
       },
       "addressBookGrid": {
         "addAddress": "Adres Ekle",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Senin emirlerin",
+        "usersOrders": "Kullanıcı emirleri",
+        "oops": "Hata!",
+        "nonExistentAccount": "Aradığınız kullanıcı yok.",
         "members": "ÜyelerMembers",
         "guest": "Misafir",
         "addMember": "Üye ekle",

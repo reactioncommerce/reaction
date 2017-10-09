@@ -15,7 +15,8 @@
         "applied": "تطبيقي",
         "code": "رمز",
         "codeIsExpired": "انتهت صلاحية الرمز",
-        "codeIsInvalid": "كود غير صالح"
+        "codeIsInvalid": "كود غير صالح",
+        "multiShopError": "لا يمكن تطبيق تخفيضات على سلة تسوق متعددة أو أمر"
       },
       "admin": {
         "paymentSettings": {

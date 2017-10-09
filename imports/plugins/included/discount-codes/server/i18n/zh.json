@@ -15,7 +15,8 @@
         "applied": "应用的",
         "code": "码",
         "codeIsExpired": "代码已过期",
-        "codeIsInvalid": "代码无效"
+        "codeIsInvalid": "代码无效",
+        "multiShopError": "折扣不能应用于多店铺购物车或订单"
       },
       "admin": {
         "paymentSettings": {

@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Автоматически",
         "save": "Сохранить",
         "saveAndContinue": "Сохранить и продолжить",
         "cancel": "Отмена",
@@ -86,7 +87,52 @@
         "pinProduct": "Закрепить товар",
         "toggleSize": "Поменять размер",
         "publish": "Опубликовать",
-        "moreOptions": "Больше опций"
+        "moreOptions": "Больше опций",
+        "details": "Подробное описание",
+        "addVariantFail": "Невозможно создать вариант для {{title}}.",
+        "cloneVariantFail": "Невозможно клонировать вариант для {{title}}.",
+        "removeVariantConfirm": "Вы уверены, что хотите удалить {{title}}?",
+        "restoreVariantConfirm": "Вы уверены, что хотите восстановить {{title}} из корзины?",
+        "restoreVariantFail": "Невозможно восстановить {{title}}.",
+        "archiveVariantConfirm": "Вы уверены, что хотите заархивировать {{title}}",
+        "thisVariant": "этот вариант",
+        "thisOption": "эту опцию",
+        "archiveProduct": "Архив продуктов",
+        "restoreProduct": "Восстановить товар из корзины",
+        "archiveThisProduct": "Архивировать этот продукт?",
+        "archiveSelectedProducts": "Архивировать выбранные продукты?",
+        "noSelectedProducts": "Нет выбранных продуктов. Нажмите на ",
+        "orShiftCtrlCmd": " либо используйте shift|ctrl|cmd + клик мыши на продуктах, чтобы выбрать несколько. Shift позволяет выбрать несколько продуктов подряд.",
+        "makeVisible": "Сделать видимыми",
+        "hideProduct": "Скрыть товар",
+        "productIsVisible": "Товар отображается",
+        "productIsNotVisible": "Товар не виден",
+        "variantOptions": "Опции варианта"
+      },
+      "productVariant": {
+        "addVariantOptions": "Добавить параметры для включения 'Добавить в корзину' переключате",
+        "inventoryQuantity": "Количество",
+        "title": "Название",
+        "price": "Цена",
+        "optionTitle": "Опция",
+        "barcode": "Штрих-код",
+        "compareAtPrice": "Цена (MSRP)",
+        "fulfillmentService": "Обслуживание услуги",
+        "weight": "Вес",
+        "length": "длина",
+        "width": "Ширина",
+        "height": "Высота",
+        "taxable": "Налогооблагаемый",
+        "taxCode": "Налоговые коды",
+        "taxDescription": "Налог Описание",
+        "inventoryManagement": "Следить за кол-вом",
+        "inventoryManagementLabel": "Сделать товар складским и отслеживать его состояние",
+        "inventoryPolicy": "Откл. при нуле",
+        "inventoryPolicyLabel": "Не продавать вариант товара, когда его нет в наличие",
+        "lowInventoryWarningThreshold": "Предупреждать при",
+        "lowInventoryWarningThresholdLabel": "Предупреждать покупателей о том, что продукт заканчивается, когда количество достигло следующего порога",
+        "originCountry": "Страна происхождения",
+        "selectTaxCode": "Выберите Налоговый кодекс"
       },
       "variantList": {
         "moreOptions": "Для этого варианта доступны следующие опции:",
@@ -102,8 +148,13 @@
         "checkout": "Оформить заказ",
         "new": "Новых",
         "coreOrderWorkflow/created": "Создан",
+        "coreOrderWorkflow/processing": "В работе",
         "coreOrderWorkflow/completed": "Завершенных",
-        "coreOrderWorkflow/canceled": "Отмененных"
+        "coreOrderWorkflow/canceled": "Отмененных",
+        "coreOrderWorkflow/picked": "поднято",
+        "coreOrderWorkflow/packed": "уплотненный",
+        "coreOrderWorkflow/labeled": "маркированный",
+        "coreOrderWorkflow/shipped": "Доставлено"
       },
       "cartSubTotals": {
         "head": "Ваша корзина",
@@ -133,13 +184,34 @@
         "adjustedTotal": "Итого после возврата",
         "processor": "Платёжная система",
         "filter": {
+          "status": "Статус",
+          "dateRange": "Диапазон дат",
+          "shippingStatus": "Статус отправки",
           "new": "Новых",
           "captured": "Оплаченных",
           "shipped": "Доставленых",
           "completed": "Завершенных",
           "canceled": "Отмененных",
           "refunded": "Возвращенных"
-        }
+        },
+        "capture": "Захватить",
+        "capturing": "Захватив",
+        "bulkActions": "Массовые действия",
+        "selected": "выбранный",
+        "picked": "поднято",
+        "packed": "уплотненный",
+        "labeled": "маркированный",
+        "shipped": "Доставлено",
+        "printInvoiceAndPickSheet": "Печать счета-фактуры и листка",
+        "generateLabel": "Создать метку",
+        "approveBulkOrderAction": "Да, Установить все Выбрать все заказы",
+        "approveBulkOrderActionRegression": "Да, Регресс Все выбранные заказы",
+        "cancelBulkOrderAction": "Нет, Отменить",
+        "orderAlreadyInState": "{{orderText}} уже был {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} установлен в {{status}}",
+        "skippedBulkOrdersAlert": "Вы запросили, чтобы {{selectedOrders}} {{orderText}} был установлен в статус «{{status}}», но {{numberOfSkippedOrders}} этих заказов {{skippedOrdersText}} не был в состоянии «{{skippedState}}» и пропустил все шаги, ведущие к состоянию «{{status}}». Вы уверены, что хотите это сделать?",
+        "bulkOrdersRegressionAlert": "Вы собираетесь вернуть {{ordersToRegress}} {{orderText}} обратно в состояние «{{status}}». Вы действительно хотите продолжить эту операцию?",
+        "paymentCaptureSuccess": "Успешные платежи"
       },
       "orderShipping": {
         "shipTo": "Доставить до",
@@ -169,7 +241,8 @@
         "createOrLogin": "Создайте учётную запись или зайдите чтобы продолжить",
         "guestOrLogin": "Войти или оформить заказ без регистрации",
         "continueAsGuest": "Продолжить без регистрации",
-        "guestMessage": "Вы можете оформить заказ без создания учётной записи. У вас будет возможность создать её позже."
+        "guestMessage": "Вы можете оформить заказ без создания учётной записи. У вас будет возможность создать её позже.",
+        "addEmail": "Добавить электронную почту"
       },
       "addressBookGrid": {
         "addAddress": "Добавить адрес",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Ваши заказы",
+        "usersOrders": "Заказы пользователя",
+        "oops": "Ой!",
+        "nonExistentAccount": "Пользователь, которого вы ищете, не существует.",
         "members": "Сотрудники",
         "guest": "Гость",
         "addMember": "Добавить сотрудника",

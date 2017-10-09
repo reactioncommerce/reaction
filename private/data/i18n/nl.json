@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Opslaan en doorgaan",
         "cancel": "Annuleren",
@@ -63,8 +64,8 @@
         "soldOut": "Uitverkocht!",
         "backOrder": "Backorder",
         "limitedSupply": "Beperkte voorraad",
-        "publishProductVisible": "is nu zichtbaar",
-        "publishProductHidden": "is nu verborgen",
+        "publishProductVisible": "{{product}} is nu zichtbaar",
+        "publishProductHidden": "{{product}} is nu verborgen",
         "startTracking": "Start Tracking",
         "addBarcode": "Streepjescode toevoegen",
         "quantity": "Aantal",
@@ -86,15 +87,60 @@
         "pinProduct": "Product vastzetten",
         "toggleSize": "Grootte wisselen",
         "publish": "publiceren",
-        "moreOptions": "Meer opties"
+        "moreOptions": "Meer opties",
+        "details": "Details",
+        "addVariantFail": "Kan geen variant te creëren voor {{title}}.",
+        "cloneVariantFail": "Kan geen variant klonen voor {{title}}.",
+        "removeVariantConfirm": "Bent u zeker dat u wilt verwijderen {{title}}",
+        "restoreVariantConfirm": "Bent u zeker dat u wilt {{title}} herstellen uit de prullenbak?",
+        "restoreVariantFail": "Kan geen {{title}} herstellen.",
+        "archiveVariantConfirm": "Bent u zeker dat u wilt archiveren {{title}}",
+        "thisVariant": "deze variant",
+        "thisOption": "deze optie",
+        "archiveProduct": "archief Product",
+        "restoreProduct": "Product te herstellen uit de prullenbak",
+        "archiveThisProduct": "Archiveer dit product?",
+        "archiveSelectedProducts": "Archief geselecteerde producten?",
+        "noSelectedProducts": "Geen geselecteerde producten. Gebruik de",
+        "orShiftCtrlCmd": " of shift | ctrl | cmd + klik op producten meerdere te selecteren. Met shift kunt u een aaneengesloten reeks van producten te selecteren.",
+        "makeVisible": "Make Visible",
+        "hideProduct": "Hide Product",
+        "productIsVisible": "Product is zichtbaar",
+        "productIsNotVisible": "Het product is niet zichtbaar",
+        "variantOptions": "variant Opties"
+      },
+      "productVariant": {
+        "addVariantOptions": "opties Voeg inschakelen 'In Winkelwagen' butto",
+        "inventoryQuantity": "Hoeveelheid",
+        "title": "Etiket",
+        "price": "Prijs",
+        "optionTitle": "Keuze",
+        "barcode": "Barcode",
+        "compareAtPrice": "Price (MSRP)",
+        "fulfillmentService": "Fulfillment dienst",
+        "weight": "Gewicht",
+        "length": "Lengte",
+        "width": "Breedte",
+        "height": "Hoogte",
+        "taxable": "belastbaar",
+        "taxCode": "BTW-codes",
+        "taxDescription": "tax Beschrijving",
+        "inventoryManagement": "inventaris bijhouden",
+        "inventoryManagementLabel": "Registreer product in inventarissysteem en volgen de status",
+        "inventoryPolicy": "Deny toen niet op voorraad",
+        "inventoryPolicyLabel": "Niet verkopen het product variant wanneer het niet op voorraad",
+        "lowInventoryWarningThreshold": "waarschuw @",
+        "lowInventoryWarningThresholdLabel": "Waarschuw klanten die het product dicht bij uitverkocht zal zijn wanneer de hoeveelheid de volgende drempelwaarde bereikt,",
+        "originCountry": "herkomst Land",
+        "selectTaxCode": "Selecteer Tax Code"
       },
       "variantList": {
         "moreOptions": "Er zijn meerdere opties beschikbaar voor deze selectie.",
         "createVariant": "Variant aanmaken"
       },
       "gridPackage": {
-        "pkgEnabled": " is nu ingeschakeld.",
-        "pkgDisabled": " is nu uitgeschakeld."
+        "pkgEnabled": " {{app}} is nu ingeschakeld.",
+        "pkgDisabled": "{{app}} is nu uitgeschakeld."
       },
       "cartDrawer": {
         "empty": "Uw winkelwagen is leeg.",
@@ -102,8 +148,13 @@
         "checkout": "Nu betalen",
         "new": "Nieuw",
         "coreOrderWorkflow/created": "Gemaakt",
+        "coreOrderWorkflow/processing": "verwerking",
         "coreOrderWorkflow/completed": "Voltooid",
-        "coreOrderWorkflow/canceled": "Geannuleerd"
+        "coreOrderWorkflow/canceled": "Geannuleerd",
+        "coreOrderWorkflow/picked": "uitgezocht",
+        "coreOrderWorkflow/packed": "overvol",
+        "coreOrderWorkflow/labeled": "geëtiketteerd",
+        "coreOrderWorkflow/shipped": "verzonden"
       },
       "cartSubTotals": {
         "head": "Uw winkelwagen",
@@ -133,13 +184,34 @@
         "adjustedTotal": "aangepaste Total",
         "processor": "bewerker",
         "filter": {
+          "status": "Toestand",
+          "dateRange": "Datumbereik",
+          "shippingStatus": "Verzendstatus",
           "new": "Nieuw",
           "captured": "betaling Gevangen",
           "shipped": "verzonden",
           "completed": "Voltooid",
           "canceled": "Geannuleerd",
           "refunded": "terugbetaald"
-        }
+        },
+        "capture": "Vangst",
+        "capturing": "Het vastleggen",
+        "bulkActions": "Bulk Actions",
+        "selected": "Gekozen",
+        "picked": "uitgezocht",
+        "packed": "overvol",
+        "labeled": "geëtiketteerd",
+        "shipped": "verzonden",
+        "printInvoiceAndPickSheet": "Afdrukken Factuur en Afrekenen Blad",
+        "generateLabel": "Label genereren",
+        "approveBulkOrderAction": "Ja, Alles instellen Selecteer alle bestellingen",
+        "approveBulkOrderActionRegression": "Ja, Herstel alle geselecteerde bestellingen",
+        "cancelBulkOrderAction": "Nee, Annuleren",
+        "orderAlreadyInState": "{{orderText}} is al {{status}} geweest",
+        "orderSetToState": "{{orderNumber}} {{orderText}} ingesteld op {{status}}",
+        "skippedBulkOrdersAlert": "U heeft gevraagd dat {{selectedOrders}} {{orderText}} ingesteld worden op de '{{status}}'-status, maar {{numberOfSkippedOrders}} van deze bestellingen {{skippedOrdersText}} niet in de' {{skippedState}}'-staat en slaat alle stappen op die naar de '{{status}}'-toestand gaan. Weet u zeker dat u dit wilt doen?",
+        "bulkOrdersRegressionAlert": "Je staat op het punt om {{ordersToRegress}} {{orderText}} terug te keren naar de '{{status}}' -status. Weet u zeker dat u met deze operatie wilt doorgaan?",
+        "paymentCaptureSuccess": "Betalingen zijn succesvol vastgelegd"
       },
       "orderShipping": {
         "shipTo": "Verzend naar",
@@ -169,7 +241,8 @@
         "createOrLogin": "Maak een account aan of log in om verder te gaan",
         "guestOrLogin": "Login of reken af als gast",
         "continueAsGuest": "Verder als gast",
-        "guestMessage": "U kunt afrekenen zonder een account aan te maken. U krijgt later de kans om nieuw account te maken."
+        "guestMessage": "U kunt afrekenen zonder een account aan te maken. U krijgt later de kans om nieuw account te maken.",
+        "addEmail": "Voeg e-mail toe"
       },
       "addressBookGrid": {
         "addAddress": "Adres toevoegen",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Jouw bestellingen",
+        "usersOrders": "Bestellingen van de gebruiker",
+        "oops": "Oeps!",
+        "nonExistentAccount": "De gebruiker die u zoekt bestaat niet.",
         "members": "Gebruikers",
         "guest": "Gast",
         "addMember": "Gebruiker toevoegen",

@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": "Der benutzerdefinierte Steuersatz wurde gespeichert.",
           "shopCustomTaxRatesFailed": "Fehler beim Speichern des Steuersatzes.",
           "shopTaxMethodsSaved": "Besteuerungsart speichern.",
+          "shopTaxMethodsAlreadySaved": "Bereits gespeicherte Steuerkennzeichen",
           "shopTaxMethodsFailed": "Die Besteuerungsart konnte nicht gespeichert werden. ",
           "customRatesLabel": "Benutzerdefinierte Preise",
           "customRatesDescription": "Benutzerdefinierte Preise",

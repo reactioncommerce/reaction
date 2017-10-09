@@ -6,6 +6,9 @@
       "admin": {
         "settings": {
           "cancel": "Avbryt"
+        },
+        "groupsInvite": {
+          "NeedToSetUsernameOrEmail": "Du må angi et brukernavn eller en epost adresse"
         }
       }
     }

@@ -1,0 +1,47 @@
+[{
+  "language": "Portuguese",
+  "i18n": "pt",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "pagamentos PayPal"
+        },
+        "paymentMethod": {
+          "expressLabel": "Expressar",
+          "creditCardLabel": "Cartão de crédito"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Não tem um nome de usuário PayPal, senha e assinatura?",
+          "paypalExpressGetCredentialsHere": "Obter um aqui.",
+          "paypalPayflowCredentials": "Não tem uma ID do cliente PayPal e secreto",
+          "paypalPayflowGetCredentialsHere": "Obtê-los aqui."
+        },
+        "settings": {
+          "saveSuccess": "suas configurações foram salvas",
+          "saveFailed": "Ocorreu um problema ao salvar suas configurações"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Concluir a sua encomenda",
+        "paymentMethod": {
+          "expressButtonLabel": "Pagar com PayPal",
+          "expressNotConfigured": "Paypal Express não configurado.",
+          "expressNotAvailable": "Paypal Express não disponível",
+          "submitting": "Submeter",
+          "invalidCard": "Ops! Número do cartão de crédito é inválido.",
+          "unknownError": "Ops! Um erro desconhecido ocorreu",
+          "resubmit": "reenviar o pagamento"
+        }
+      }
+    }
+  }
+}]

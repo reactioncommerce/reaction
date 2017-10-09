@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "Naročilo ni bilo mogoče najti",
       "order": {
+        "applyRefundToThisOrder": "Uporabi vračilo {{currencySymbol}}{{refund}} k temu, da bi?",
+        "applyRefundDuringCancelOrder": "To bo povrnil red skupaj {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Ali želite preklicati naročilo?",
         "cancelOrderLabel": "Preklic naročila",
         "cancelOrderThenRestock": "Ja, in obnovo",
@@ -59,6 +61,34 @@
             "total": "Skupaj",
             "shipping": "Dostava",
             "status": "Status"
+          },
+          "filter": {
+            "status": "Status",
+            "dateRange": "Časovno obdobje",
+            "shippingStatus": "Status pošiljanja",
+            "new": "New",
+            "captured": "plačilo Zajeto",
+            "shipped": "pošiljajo",
+            "completed": "končan",
+            "canceled": "preklicana",
+            "refunded": "Vrnjeno"
+          },
+          "search": {
+            "clearSearch": "Počisti",
+            "placeholder": "Iskalna naročila"
+          },
+          "data": {
+            "status": {
+              "new": "Novo",
+              "coreOrderWorkflow/created": "Ustvarjeno",
+              "coreOrderWorkflow/processing": "Obravnavati",
+              "coreOrderWorkflow/completed": "Dokončano",
+              "coreOrderWorkflow/canceled": "Preklicano",
+              "coreOrderWorkflow/picked": "Izbrano",
+              "coreOrderWorkflow/packed": "Pakirano",
+              "coreOrderWorkflow/labeled": "Označeno",
+              "coreOrderWorkflow/shipped": "Shipped"
+            }
           }
         }
       }

@@ -81,7 +81,8 @@
           "saveFailed": "Impossibile salvare le impostazioni di posta elettronica. {{error}}",
           "cantSendEmail": "Errore del server: Non è possibile inviare e-mail di notifica.",
           "emailSent": "Email di notifica inviato.",
-          "addOrderEmailFailed": "L'aggiunta dell'email all'ordine non è riuscita"
+          "addOrderEmailFailed": "L'aggiunta dell'email all'ordine non è riuscita",
+          "addCartEmailFailed": "L'aggiunta di email al carrello non è riuscita"
         }
       }
     }

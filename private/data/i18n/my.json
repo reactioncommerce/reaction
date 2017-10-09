@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "အော်တို",
         "save": "ကြော်ငြာကို Save လုပ်ရန်",
         "saveAndContinue": "Save နှင့်ဆက်လက်",
         "cancel": "ပယ်ဖျက်ပါ",
@@ -86,15 +87,60 @@
         "pinProduct": "pin ကုန်ပစ္စည်း",
         "toggleSize": "toggle Size ကို",
         "publish": "ပုံနှိပ်ထုတ်ဝေ",
-        "moreOptions": "ပိုများသော Options ကို"
+        "moreOptions": "ပိုများသော Options ကို",
+        "details": "အသေးစိတ်",
+        "addVariantFail": "{{title}} ဘို့မူကွဲကိုဖန်တီးရန်မဖြစ်နိုင်ပါ။",
+        "cloneVariantFail": "{{title}} ဘို့မူကွဲ clone လို့မရနိုင်ပါ။",
+        "removeVariantConfirm": "သငျသညျ {{title}} သင်ဖျက်လိုတာသေချာ",
+        "restoreVariantConfirm": "သင်အမှိုက်မှ {{title}} restore ချင်သေချာလား?",
+        "restoreVariantFail": "{{title}} restore လုပ်လို့မရနိုင်ပါ။",
+        "archiveVariantConfirm": "သငျသညျ {{title}} archive လုပ်ချင်တဲ့သင်သေချာလား",
+        "thisVariant": "ဒီမူကွဲ",
+        "thisOption": "ဒီ option",
+        "archiveProduct": "မော်ကွန်းတိုက်ကုန်ပစ္စည်း",
+        "restoreProduct": "အမှိုက်ပုံးထဲကနေကုန်ပစ္စည်း Restore",
+        "archiveThisProduct": "ဒီထုတ်ကုန်မော်ကွန်းတင်မလား?",
+        "archiveSelectedProducts": "မော်ကွန်းတိုက်ထုတ်ကုန်ကိုရှေးခယျြ?",
+        "noSelectedProducts": "အဘယ်သူမျှမရွေးချယ်ထားသည့်ထုတ်ကုန်များ။ ထိုသုံးပါ",
+        "orShiftCtrlCmd": " ctrl + | | cmd + မျိုးစုံရွေးဖို့ကုန်ပစ္စည်းများအပေါ်ကိုကလစ်နှိပ်ပါသို့မဟုတ်ပြောင်းလဲရန်။ ပြောင်းကုန်ပြီနှင့်တကွသင်ထုတ်ကုန်တစ်ခုထိစပ်အကွာအဝေးရွေးနိုင်သည်။",
+        "makeVisible": "မြင်နိုင်ပါစေ",
+        "hideProduct": "ဖျောက်ကုန်ပစ္စည်း",
+        "productIsVisible": "ကုန်ပစ္စည်းမြင်နိုင်သည်",
+        "productIsNotVisible": "ကုန်ပစ္စည်းမြင်နိုင်သည်မဟုတ်",
+        "variantOptions": "မူကွဲ Options ကို"
+      },
+      "productVariant": {
+        "addVariantOptions": "butto '' လှည်းထည့်ရန် 'ကို enable ရွေးချယ်စရာ Add",
+        "inventoryQuantity": "အရေအတွက်",
+        "title": "တံဆိပ်",
+        "price": "စျေးနှုန်း",
+        "optionTitle": "option ကို",
+        "barcode": "ဘားကုဒ်",
+        "compareAtPrice": "စျေးနှုန်း (MSRP)",
+        "fulfillmentService": "ပွညျ့စုံဝန်ဆောင်မှု",
+        "weight": "အလေးချိန်",
+        "length": "အရှည်",
+        "width": "width",
+        "height": "အမြင့်",
+        "taxable": "Taxable",
+        "taxCode": "အခွန်ကုဒ်များ",
+        "taxDescription": "အခွန်ဖျေါပွခကျြ",
+        "inventoryManagement": "inventory ခြေရာခံခြင်း",
+        "inventoryManagementLabel": "စာရင်းစနစ်ထဲမှာထုတ်ကုန် Register နှင့်၎င်း၏အဆင့်အတန်းကိုခြေရာခံ",
+        "inventoryPolicy": "အခါ, စတော့ရှယ်ယာထဲကငွငျးပယျ",
+        "inventoryPolicyLabel": "ဒါကြောင့်စတော့ရှယ်ယာထဲမှာမပါသောအခါကုန်ပစ္စည်းမူကွဲမရောင်းပါနဲ့",
+        "lowInventoryWarningThreshold": "သတိပေး @",
+        "lowInventoryWarningThresholdLabel": "အရေအတွက်နောက်လာမည့်တံခါးခုံကိုရောက်ရှိသည့်အခါကုန်ပစ္စည်းရောင်းထွက်နီးစပ်ဖြစ်လိမ့်မည်ဟုဖောက်သည်သတိပေး",
+        "originCountry": "မူလအစနိုင်ငံ",
+        "selectTaxCode": "အခွန် Code ကို Select လုပ်ပါ"
       },
       "variantList": {
         "moreOptions": "ဤအတွက်နောက်ထပ်ရွေးချယ်စရာများ ရှိပါသေးသည်",
         "createVariant": "အမျိုးအစားတူ ပစ္စည်းတစ်ခု ထပ်လုပ်ရန်"
       },
       "gridPackage": {
-        "pkgEnabled": " သည် အလုပ်လုပ်နေသည်။",
-        "pkgDisabled": " သည် အလုပ်လုပ် မနေပါ။"
+        "pkgEnabled": "{{app}} သည် အလုပ်လုပ်နေသည်။",
+        "pkgDisabled": "{{app}} သည် အလုပ်လုပ် မနေပါ။"
       },
       "cartDrawer": {
         "empty": "စျေးခြင်းတောင်းတွင် ဘာမှ ရှိမနေပါ :(",
@@ -102,8 +148,13 @@
         "checkout": "ငွေပေးချေမည်",
         "new": "နယူး",
         "coreOrderWorkflow/created": "Created",
+        "coreOrderWorkflow/processing": "လုပ်ဆောင်နေသည်",
         "coreOrderWorkflow/completed": "completed",
-        "coreOrderWorkflow/canceled": "ဖျက်သိမ်း"
+        "coreOrderWorkflow/canceled": "ဖျက်သိမ်း",
+        "coreOrderWorkflow/picked": "ကောက်ယူ",
+        "coreOrderWorkflow/packed": "Pack",
+        "coreOrderWorkflow/labeled": "တံဆိပ်ကပ်",
+        "coreOrderWorkflow/shipped": "တင်ပို့"
       },
       "cartSubTotals": {
         "head": "သင်၏ စျေးခြင်းတောင်း",
@@ -133,13 +184,34 @@
         "adjustedTotal": "Adjustments စုစုပေါင်း",
         "processor": "processor ကို",
         "filter": {
+          "status": "status",
+          "dateRange": "နေ့စွဲအကွာအဝေး",
+          "shippingStatus": "shipping status ကို",
           "new": "နယူး",
           "captured": "ငွေပေးချေမှုရမည့်ဖမ်းဆီးခံရသော",
           "shipped": "တင်ပို့",
           "completed": "completed",
           "canceled": "ဖျက်သိမ်း",
           "refunded": "ပြန်အမ်း"
-        }
+        },
+        "capture": "ဖမ်းဆီး",
+        "capturing": "ရိုက်ကူးခြင်း",
+        "bulkActions": "bulk လုပ်ဆောင်ချက်များ",
+        "selected": "Selected",
+        "picked": "ကောက်ယူ",
+        "packed": "Pack",
+        "labeled": "တံဆိပ်ကပ်",
+        "shipped": "တင်ပို့",
+        "printInvoiceAndPickSheet": "ငွေတောင်းခံလွှာ Print နှင့်စာရွက် Pick",
+        "generateLabel": "တံဆိပ်တပ်ရန် Generate",
+        "approveBulkOrderAction": "ဟုတ်ပါတယ်, သတ်မှတ်ရန်အားလုံးအားလုံးအမိန့်ကို Select လုပ်ပါ",
+        "approveBulkOrderActionRegression": "ဟုတ်ပါတယ်, အားလုံးရွေးချယ်ထားသောအမိန့် Regression",
+        "cancelBulkOrderAction": "အဘယ်သူမျှမ, Cancel",
+        "orderAlreadyInState": "{{orderText}} ပြီးသား {{status}} ခဲ့",
+        "orderSetToState": "{{orderNumber}} {{orderText}} {{status}} ဟုသတ်မှတ်",
+        "skippedBulkOrdersAlert": "သငျသညျ {{selectedOrders}} {{orderText}} ကို '{{status}}' 'အဆင့်အတန်းဟုသတ်မှတ်ခံရသည်ဟုတောင်းဆိုခဲ့ပေမယ့်ဒီအမိန့်များ {{numberOfSkippedOrders}} ကို' {{skippedState}} '' ပြည်နယ်ထဲမှာမ {{skippedOrdersText}} နှင့် '' {{status}} '' ပြည်နယ်အထိဦးဆောင်အားလုံးခြေလှမ်းများကိုကျော်သွားလိမ့်မယ်။ သင်ဤလုပ်ချင်သေချာလား?",
+        "bulkOrdersRegressionAlert": "သငျသညျကျောကို '{{status}}' 'ပြည်နယ်မှ {{ordersToRegress}} {{orderText}} Regression ပါတော့မည်။ သင်ဤစစ်ဆင်ရေးနှင့်အတူဆက်လက်ချင်သင်သေချာပါသလား?",
+        "paymentCaptureSuccess": "ငွေပေးချေမှုကိုအောင်မြင်စွာသိမ်းပိုက်"
       },
       "orderShipping": {
         "shipTo": "သို့တင်ပို့သည်",
@@ -169,7 +241,8 @@
         "createOrLogin": "အကောင့်တစ်ခု Create, ဒါမှမဟုတ်အတွက်လက်မှတ်ရေးထိုး",
         "guestOrLogin": "သို့ဝင်ရန်, ဒါမှမဟုတ်တစ်ဦးဧည့်သည်အဖြစ် Checkout",
         "continueAsGuest": "ဧည့်သည်အဖြစ် Continue",
-        "guestMessage": "သငျသညျ account တစ်ခုဖန်တီးခြင်းမပါဘဲ Checkout နိုင်ပါတယ်။ သငျသညျအကြာတွင် account တစ်ခုဖန်တီးရန်အခွင့်အလမ်းရှိပါလိမ့်မယ်။"
+        "guestMessage": "သငျသညျ account တစ်ခုဖန်တီးခြင်းမပါဘဲ Checkout နိုင်ပါတယ်။ သငျသညျအကြာတွင် account တစ်ခုဖန်တီးရန်အခွင့်အလမ်းရှိပါလိမ့်မယ်။",
+        "addEmail": "အီးမေးလ်က Add"
       },
       "addressBookGrid": {
         "addAddress": "လိပ်စာ Add",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "သင့်ရဲ့အမိန့်",
+        "usersOrders": "အသုံးပြုသူရဲ့အမိန့်",
+        "oops": "သည်းခံပါ!",
+        "nonExistentAccount": "သင်တို့အဘို့အရှာနေအသုံးပြုသူမတည်ရှိပါဘူး။",
         "members": "အဖွဲ့ဝင်များ",
         "guest": "ဧည့်သည်",
         "addMember": "အဖွဲ့ဝင်တစ်ဦး Add",

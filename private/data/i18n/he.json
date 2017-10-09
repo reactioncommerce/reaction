@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "אוטומטי",
         "save": "שמור",
         "saveAndContinue": "שמור והמשך",
         "cancel": "בטל",
@@ -86,7 +87,42 @@
         "pinProduct": "סמן מוצר",
         "toggleSize": "החלף מידה/גודל",
         "publish": "פרסום",
-        "moreOptions": "עוד אפשרויות"
+        "moreOptions": "עוד אפשרויות",
+        "details": "פרטים",
+        "removeVariantConfirm": "האם אתה בטוח שברצונך למחוק את {{title}}",
+        "restoreVariantConfirm": "האם אתה בטוח שברצונך לשחזר את {{title}} מפח האשפה?",
+        "archiveVariantConfirm": "האם אתה בטוח שברצונך להעביר לארכיון את {{title}}",
+        "thisVariant": "גרסת מוצר זו",
+        "thisOption": "אפשרות זו",
+        "restoreProduct": "שחזר מוצר מפח האשפה",
+        "archiveThisProduct": "להעביר לארכיון מוצר זה?",
+        "archiveSelectedProducts": "להעביר לארכיון מוצרים שנבחרו?",
+        "noSelectedProducts": "לא נבחרו מוצרים. השתמש ב- ",
+        "orShiftCtrlCmd": " או shift|ctrl|cmd + לחץ על המוצרים כדי לבחור בכמה.  עם shift תוכל לבחור בטווח מוצרים רציף.",
+        "makeVisible": "הפוך לגלוי",
+        "hideProduct": "הסתר מוצר",
+        "productIsVisible": "המוצר גלוי",
+        "productIsNotVisible": "המוצר אינו גלוי",
+        "variantOptions": "אפשרויות גרסת מוצר"
+      },
+      "productVariant": {
+        "addVariantOptions": "הוסף אפשרויות כדי להפעיל  את הלחצן \"הוסף לעגלה\"",
+        "inventoryQuantity": "כמות",
+        "title": "תווית",
+        "price": "מחיר",
+        "optionTitle": "אפשרות",
+        "barcode": "ברקוד",
+        "compareAtPrice": "מחיר (MSRP)",
+        "fulfillmentService": "שירות ביצוע",
+        "weight": "משקל",
+        "taxable": "חייב במס",
+        "taxCode": "קוד מס",
+        "inventoryManagement": "מעקב אחר מלאי",
+        "inventoryManagementLabel": "רשום מוצר במערכת המלאי ועקוב אחרי הסטטוס שלו",
+        "inventoryPolicy": "מנע כאשר אזל מהמלאי",
+        "inventoryPolicyLabel": "אל תמכור גרסה אחרת של המוצר כאשר הוא אינו במלאי",
+        "lowInventoryWarningThreshold": "הזהר @",
+        "lowInventoryWarningThresholdLabel": "שלח התראה ללקוחות שהמוצר עומד לאזול כאשר הכמות תגיע לסף הבא"
       },
       "variantList": {
         "moreOptions": "יש עוד אפשרויות זמינות עבור בחירה זו.",
@@ -102,8 +138,10 @@
         "checkout": "לך לקופה עכשיו",
         "new": "חדש",
         "coreOrderWorkflow/created": "נוצר",
+        "coreOrderWorkflow/processing": "מעבד",
         "coreOrderWorkflow/completed": "הושלם",
-        "coreOrderWorkflow/canceled": "בוטל"
+        "coreOrderWorkflow/canceled": "בוטל",
+        "coreOrderWorkflow/shipped": "נשלח"
       },
       "cartSubTotals": {
         "head": "הסך שלך",
@@ -133,13 +171,15 @@
         "adjustedTotal": "סך מתוקן",
         "processor": "מעבד",
         "filter": {
+          "status": "סטטוס",
           "new": "חדש",
           "captured": "התשלום עובד",
           "shipped": "נשלח",
           "completed": "הושלם",
           "canceled": "בוטל",
           "refunded": "החזר ניתן"
-        }
+        },
+        "shipped": "נשלח"
       },
       "orderShipping": {
         "shipTo": "שלח אל",
@@ -225,6 +265,8 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "ההזמנות שלך",
+        "oops": "אופס!",
         "members": "חברים",
         "guest": "אורח",
         "addMember": "הוסף חבר",

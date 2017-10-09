@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "Η παραγγελία δεν βρέθηκε",
       "order": {
+        "applyRefundToThisOrder": "Εφαρμόστε επιστροφή του {{currencySymbol}}{{refund}} σε αυτή τη σειρά;",
+        "applyRefundDuringCancelOrder": "Αυτό θα επιστρέψει το σύνολο παραγγελίας του {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Θέλετε να ακυρώσετε αυτήν την παραγγελία;",
         "cancelOrderLabel": "Ακύρωση παραγγελίας",
         "cancelOrderThenRestock": "Ναι, και επαναλάβετε",
@@ -59,6 +61,34 @@
             "total": "Σύνολο",
             "shipping": "Αποστολή",
             "status": "Κατάσταση"
+          },
+          "filter": {
+            "status": "Κατάσταση",
+            "dateRange": "Εύρος ημερομηνιών",
+            "shippingStatus": "Κατάσταση αποστολής",
+            "new": "Νέος",
+            "captured": "πληρωμή Συλλαμβάνονται",
+            "shipped": "αποστέλλονται",
+            "completed": "Ολοκληρώθηκε το",
+            "canceled": "Ακυρώθηκε",
+            "refunded": "επιστρέφεται"
+          },
+          "search": {
+            "clearSearch": "Σαφής",
+            "placeholder": "Εντολές αναζήτησης"
+          },
+          "data": {
+            "status": {
+              "new": "Νέος",
+              "coreOrderWorkflow/created": "Δημιουργήθηκε",
+              "coreOrderWorkflow/processing": "Επεξεργασία",
+              "coreOrderWorkflow/completed": "Ολοκληρώθηκε το",
+              "coreOrderWorkflow/canceled": "Ακυρώθηκε",
+              "coreOrderWorkflow/picked": "Εκλεκτός",
+              "coreOrderWorkflow/packed": "Συσκευασμένα",
+              "coreOrderWorkflow/labeled": "Με την ένδειξη",
+              "coreOrderWorkflow/shipped": "Αποστέλλονται"
+            }
           }
         }
       }

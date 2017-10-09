@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Автоматичен",
         "save": "Запиши",
         "saveAndContinue": "Запиши и продължи",
         "cancel": "Отмени",
@@ -86,7 +87,52 @@
         "pinProduct": "Запомнете продукта",
         "toggleSize": "Изберете размер",
         "publish": "Публикуване",
-        "moreOptions": "Още настройки"
+        "moreOptions": "Още настройки",
+        "details": "Детайли",
+        "addVariantFail": "Не може да се създаде вариант за {{title}}.",
+        "cloneVariantFail": "Не може да се клонира вариант за {{title}}.",
+        "removeVariantConfirm": "Сигурни ли сте, че искате да изтриете {{title}}",
+        "restoreVariantConfirm": "Сигурни ли сте че искате да възстановите {{title}} от боклука?",
+        "restoreVariantFail": "Не може да се възстанови {{title}}.",
+        "archiveVariantConfirm": "Сигурни ли сте че искате да архивирате {{title}}",
+        "thisVariant": "този вариант",
+        "thisOption": "тази опция",
+        "archiveProduct": "Архив на продукта",
+        "restoreProduct": "Възстановяване на продукция от кошчето",
+        "archiveThisProduct": "Архивиране този продукт?",
+        "archiveSelectedProducts": "Архив избрани продукти?",
+        "noSelectedProducts": "Няма избран продукти. Използвай",
+        "orShiftCtrlCmd": " или смяна | Ctrl | Cmd + щракнете върху продукти, за да изберете многократно. С промяна можете да изберете съседни гама от продукти.",
+        "makeVisible": "Направи Видим",
+        "hideProduct": "Hide Каталог",
+        "productIsVisible": "Продуктът е видима",
+        "productIsNotVisible": "Продуктът не се вижда",
+        "variantOptions": "Вариант Options"
+      },
+      "productVariant": {
+        "addVariantOptions": "Добави опции, за да се даде възможност на \"Добави в количката\" butto",
+        "inventoryQuantity": "количество",
+        "title": "Етикет",
+        "price": "Цена",
+        "optionTitle": "опция",
+        "barcode": "Barcode",
+        "compareAtPrice": "Цена (MSRP)",
+        "fulfillmentService": "Извършване на услуги",
+        "weight": "Тегло",
+        "length": "дължина",
+        "width": "широчина",
+        "height": "височина",
+        "taxable": "облагаем",
+        "taxCode": "Данъчни кодове",
+        "taxDescription": "Данъчен Описание",
+        "inventoryManagement": "Опис проследяване",
+        "inventoryManagementLabel": "Регистрирайте продукт в система за инвентаризация и следите му статус",
+        "inventoryPolicy": "Deny, когато е на склад",
+        "inventoryPolicyLabel": "Да не се продава вариант на продукта, когато той не е в наличност",
+        "lowInventoryWarningThreshold": "Предупредете @",
+        "lowInventoryWarningThresholdLabel": "Предупредете клиенти, че продуктът ще бъде близо до разпродадени, когато количеството достигне следващия праг",
+        "originCountry": "произход Страна",
+        "selectTaxCode": "Изберете данъчен кодекс"
       },
       "variantList": {
         "moreOptions": "Има още настройки в този раздел.",
@@ -102,8 +148,13 @@
         "checkout": "Към кошницата",
         "new": "Нов",
         "coreOrderWorkflow/created": "Създадено",
+        "coreOrderWorkflow/processing": "обработване",
         "coreOrderWorkflow/completed": "завършен",
-        "coreOrderWorkflow/canceled": "отменен"
+        "coreOrderWorkflow/canceled": "отменен",
+        "coreOrderWorkflow/picked": "избран",
+        "coreOrderWorkflow/packed": "натъпкан",
+        "coreOrderWorkflow/labeled": "Етикетирани",
+        "coreOrderWorkflow/shipped": "Изпратено"
       },
       "cartSubTotals": {
         "head": "Вашата кошница",
@@ -133,13 +184,34 @@
         "adjustedTotal": "Корегирана сума",
         "processor": "Начин за плащане",
         "filter": {
+          "status": "Статус",
+          "dateRange": "Период от време",
+          "shippingStatus": "Статус на доставка",
           "new": "Нов",
           "captured": "Плащането Заснето",
           "shipped": "Доставят",
           "completed": "завършен",
           "canceled": "отменен",
           "refunded": "Възстановява"
-        }
+        },
+        "capture": "Улавяне",
+        "capturing": "Прихващане",
+        "bulkActions": "Групови действия",
+        "selected": "подбран",
+        "picked": "избран",
+        "packed": "натъпкан",
+        "labeled": "Етикетирани",
+        "shipped": "Изпратено",
+        "printInvoiceAndPickSheet": "Печатане на фактура и избор на лист",
+        "generateLabel": "Генериране на етикет",
+        "approveBulkOrderAction": "Да, Задаване на всички Избери всички поръчки",
+        "approveBulkOrderActionRegression": "Да, възстановете всички избрани поръчки",
+        "cancelBulkOrderAction": "Не, отменете",
+        "orderAlreadyInState": "{{orderText}} вече е {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} зададено на {{status}}",
+        "skippedBulkOrdersAlert": "Поискахте {{selectedOrders}} {{orderText}} да бъде зададен в състояние \"{{status}}\", но {{numberOfSkippedOrders}} от тези поръчки {{skippedOrdersText}} не е в състояние \"{{skippedState}}\" и би пропуснал всички стъпки, водещи до състоянието \"{{status}}\". Наистина ли искате да направите това?",
+        "bulkOrdersRegressionAlert": "На път сте да възстановите {{ordersToRegress}} {{orderText}} обратно до състоянието \"{{status}}\". Наистина ли искате да продължите с тази операция?",
+        "paymentCaptureSuccess": "Плащанията успешно са заснети"
       },
       "orderShipping": {
         "shipTo": "Изпрати до",
@@ -169,7 +241,8 @@
         "createOrLogin": "Направете акаунт или се впишете",
         "guestOrLogin": "Впишете се като гост",
         "continueAsGuest": "Продължете като гост",
-        "guestMessage": "Можете да завършите поръчката без акаунт."
+        "guestMessage": "Можете да завършите поръчката без акаунт.",
+        "addEmail": "Добавете имейл"
       },
       "addressBookGrid": {
         "addAddress": "Добавете адрес",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Вашите поръчки",
+        "usersOrders": "Поръчки на потребителя",
+        "oops": "Опа..!",
+        "nonExistentAccount": "Потребителят, който търсите, не съществува.",
         "members": "Участници",
         "guest": "Гост",
         "addMember": "Добави участник",

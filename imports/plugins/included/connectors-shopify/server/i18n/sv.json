@@ -32,6 +32,14 @@
           "syncStopFailure": "Ett fel på att stoppa Shopify-synkronisering!",
           "startImport": "Starta importen"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API-nyckel",
+          "password": "API-lösenord",
+          "sharedSecret": "API-delad hemlighet",
+          "shopName": "Shop slug"
+        }
       }
     }
   }

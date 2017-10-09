@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Tự động",
         "save": "Lưu",
         "saveAndContinue": "Lưu lại và tiếp tục",
         "cancel": "Hủy bỏ",
@@ -86,7 +87,52 @@
         "pinProduct": "pin sản phẩm",
         "toggleSize": "Kích toggle",
         "publish": "Công bố",
-        "moreOptions": "Lựa chọn khác"
+        "moreOptions": "Lựa chọn khác",
+        "details": "Chi tiết",
+        "addVariantFail": "Không thể tạo ra biến thể cho {{title}}.",
+        "cloneVariantFail": "Không thể để nhân bản biến thể cho {{title}}.",
+        "removeVariantConfirm": "Bạn có chắc chắn muốn xóa {{title}}",
+        "restoreVariantConfirm": "Bạn có chắc chắn muốn khôi phục {{title}} từ thùng rác?",
+        "restoreVariantFail": "Không thể phục hồi {{title}}.",
+        "archiveVariantConfirm": "Bạn có chắc chắn muốn lưu trữ {{title}}",
+        "thisVariant": "phiên bản này",
+        "thisOption": "tùy chọn này",
+        "archiveProduct": "lưu trữ sản phẩm",
+        "restoreProduct": "Khôi phục sản phẩm từ rác",
+        "archiveThisProduct": "Lưu trữ sản phẩm này?",
+        "archiveSelectedProducts": "Lưu trữ các sản phẩm được lựa chọn?",
+        "noSelectedProducts": "Không có lựa chọn sản phẩm. Sử dụng",
+        "orShiftCtrlCmd": " hoặc chuyển đổi | ctrl | cmd + click vào sản phẩm để chọn nhiều. Với sự chuyển đổi, bạn có thể chọn một phạm vi tiếp giáp của sản phẩm.",
+        "makeVisible": "Hãy Visible",
+        "hideProduct": "Ẩn sản phẩm",
+        "productIsVisible": "Sản phẩm có thể nhìn thấy",
+        "productIsNotVisible": "Sản phẩm không nhìn thấy được",
+        "variantOptions": "Tùy chọn Variant"
+      },
+      "productVariant": {
+        "addVariantOptions": "Thêm tùy chọn để cho phép \"Thêm vào giỏ\" butto",
+        "inventoryQuantity": "Số lượng, lượng",
+        "title": "Nhãn",
+        "price": "Giá bán",
+        "optionTitle": "Tùy chọn",
+        "barcode": "Mã vạch",
+        "compareAtPrice": "Giá (MSRP)",
+        "fulfillmentService": "dịch vụ hoàn thành",
+        "weight": "Cân nặng",
+        "length": "Chiều dài",
+        "width": "Chiều rộng",
+        "height": "Chiều cao",
+        "taxable": "Thu nhập chịu thuế",
+        "taxCode": "Mã số thuế",
+        "taxDescription": "Mô tả thuế",
+        "inventoryManagement": "theo dõi hàng tồn kho",
+        "inventoryManagementLabel": "Đăng ký sản phẩm trong hệ thống kiểm kê và theo dõi tình trạng của nó",
+        "inventoryPolicy": "Từ chối khi hết hàng",
+        "inventoryPolicyLabel": "Không bán các phiên bản sản phẩm khi nó không có trong kho",
+        "lowInventoryWarningThreshold": "Cảnh báo @",
+        "lowInventoryWarningThresholdLabel": "Cảnh báo khách hàng rằng sản phẩm sẽ được đóng cửa để bán ra khi số lượng đạt đến ngưỡng tiếp theo",
+        "originCountry": "nước xuất xứ",
+        "selectTaxCode": "Chọn Mã số thuế"
       },
       "variantList": {
         "moreOptions": "Có rất nhiều tùy chọn có sẵn cho lựa chọn này.",
@@ -102,8 +148,13 @@
         "checkout": "Thanh toán tại",
         "new": "Mới",
         "coreOrderWorkflow/created": "Tạo",
+        "coreOrderWorkflow/processing": "Chế biến",
         "coreOrderWorkflow/completed": "Đã hoàn thành",
-        "coreOrderWorkflow/canceled": "bị hủy bỏ"
+        "coreOrderWorkflow/canceled": "bị hủy bỏ",
+        "coreOrderWorkflow/picked": "Chọn",
+        "coreOrderWorkflow/packed": "Đóng gói",
+        "coreOrderWorkflow/labeled": "Được gắn nhãn",
+        "coreOrderWorkflow/shipped": "vận chuyển"
       },
       "cartSubTotals": {
         "head": "giỏ hàng của bạn",
@@ -133,13 +184,34 @@
         "adjustedTotal": "Tổng số điều chỉnh",
         "processor": "Bộ vi xử lý",
         "filter": {
+          "status": "Trạng thái",
+          "dateRange": "Phạm vi ngày",
+          "shippingStatus": "Tình trạng giao hàng",
           "new": "Mới",
           "captured": "Thanh toán bắt",
           "shipped": "vận chuyển",
           "completed": "Đã hoàn thành",
           "canceled": "bị hủy bỏ",
           "refunded": "Hoàn"
-        }
+        },
+        "capture": "Bắt giữ",
+        "capturing": "Chụp",
+        "bulkActions": "Hành động số lượng lớn",
+        "selected": "Đã chọn",
+        "picked": "Chọn",
+        "packed": "Đóng gói",
+        "labeled": "Được gắn nhãn",
+        "shipped": "vận chuyển",
+        "printInvoiceAndPickSheet": "In Hoá đơn và Chọn tờ",
+        "generateLabel": "Tạo nhãn",
+        "approveBulkOrderAction": "Có, Đặt Tất cả Chọn Tất cả Đơn đặt hàng",
+        "approveBulkOrderActionRegression": "Vâng, Trả lại Tất cả các Đơn đặt hàng đã Chọn",
+        "cancelBulkOrderAction": "Không, Hủy",
+        "orderAlreadyInState": "{{orderText}} đã được {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} đặt thành {{status}}",
+        "skippedBulkOrdersAlert": "Bạn đã yêu cầu {{selectedOrders}} {{orderText}} được đặt thành trạng thái '{{status}}', nhưng {{numberOfSkippedOrders}} trong số các đơn đặt hàng này {{skippedOrdersText}} không ở trong trạng thái '{{skippedState}}' và sẽ bỏ qua tất cả các bước dẫn đến trạng thái '{{status}}'. Bạn có chắc chắn muốn làm điều này?",
+        "bulkOrdersRegressionAlert": "Bạn sắp trở lại {{ordersToRegress}} {{orderText}} trở lại trạng thái '{{status}}'. Bạn có chắc chắn muốn tiếp tục với hoạt động này?",
+        "paymentCaptureSuccess": "Thanh toán đã thành công"
       },
       "orderShipping": {
         "shipTo": "Tàu",
@@ -169,7 +241,8 @@
         "createOrLogin": "Tạo một tài khoản hoặc đăng nhập",
         "guestOrLogin": "Đăng nhập hoặc kiểm như là một khách",
         "continueAsGuest": "Tiếp tục như Khách",
-        "guestMessage": "Bạn có thể kiểm tra mà không cần tạo một tài khoản. Bạn sẽ có cơ hội để tạo ra một tài khoản sau đó."
+        "guestMessage": "Bạn có thể kiểm tra mà không cần tạo một tài khoản. Bạn sẽ có cơ hội để tạo ra một tài khoản sau đó.",
+        "addEmail": "Thêm email"
       },
       "addressBookGrid": {
         "addAddress": "Thêm Địa chỉ",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Đơn đặt hàng của bạn",
+        "usersOrders": "Đơn đặt hàng của người dùng",
+        "oops": "Rất tiếc!",
+        "nonExistentAccount": "Người dùng bạn đang tìm kiếm không tồn tại.",
         "members": "Thành viên",
         "guest": "Khách",
         "addMember": "Thêm một thành viên",

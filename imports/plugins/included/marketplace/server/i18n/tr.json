@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Geçerli kullanıcı için mağaza oluşturulamadı {{user}}",
         "yourShopIsReady": "Dükkanınız hazır!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Mağaza adı",
+          "emails": "İletişim E-posta",
+          "workflow": "Durum"
+        }
+      },
       "app": {
         "shops": "Mağazalar",
         "myShop": "Benim dükkanım"

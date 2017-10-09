@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Αυτο",
         "save": "Αποθηκεύσετε",
         "saveAndContinue": "Αποθήκευση και συνέχεια",
         "cancel": "Ακύρωση",
@@ -86,15 +87,60 @@
         "pinProduct": "pin Προϊόν",
         "toggleSize": "Εναλλαγή Μέγεθος",
         "publish": "Δημοσιεύω",
-        "moreOptions": "Περισσότερες επιλογές"
+        "moreOptions": "Περισσότερες επιλογές",
+        "details": "Καθέκαστα",
+        "addVariantFail": "Αδύνατη η δημιουργία παραλλαγή για {{title}}.",
+        "cloneVariantFail": "Δεν είναι δυνατή η κλωνοποίηση παραλλαγή για {{title}}.",
+        "removeVariantConfirm": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{title}}",
+        "restoreVariantConfirm": "Είστε σίγουροι ότι θέλετε να επαναφέρετε {{title}} από τα σκουπίδια;",
+        "restoreVariantFail": "Δεν είναι δυνατή η αποκατάσταση της {{title}}.",
+        "archiveVariantConfirm": "Είστε βέβαιοι ότι θέλετε να αρχειοθετήσετε {{title}}",
+        "thisVariant": "Αυτή η παραλλαγή",
+        "thisOption": "Αυτή η επιλογή",
+        "archiveProduct": "Αρχείο προϊόντων",
+        "restoreProduct": "Επαναφορά του προϊόντος από τον Κάδο απορριμμάτων",
+        "archiveThisProduct": "Αρχειοθετήσετε αυτό το προϊόν;",
+        "archiveSelectedProducts": "Αρχείο επιλεγμένα προϊόντα;",
+        "noSelectedProducts": "Δεν υπάρχουν επιλεγμένα προϊόντα. Χρησιμοποιήστε το",
+        "orShiftCtrlCmd": " ή μετατόπιση | ctrl | cmd + κλικ στα προϊόντα για να επιλέξετε πολλαπλά. Με μετατόπιση μπορείτε να επιλέξετε μια συνεχόμενη σειρά των προϊόντων.",
+        "makeVisible": "Κάντε Ορατό",
+        "hideProduct": "Απόκρυψη προϊόντων",
+        "productIsVisible": "Το προϊόν είναι ορατό",
+        "productIsNotVisible": "Το προϊόν δεν είναι ορατό",
+        "variantOptions": "παραλλαγή Επιλογές"
+      },
+      "productVariant": {
+        "addVariantOptions": "Προσθέστε τις επιλογές για να επιτρέψει «Προσθήκη στο Καλάθι» butto",
+        "inventoryQuantity": "Ποσότητα",
+        "title": "Επιγραφή",
+        "price": "Τίμημα",
+        "optionTitle": "Επιλογή",
+        "barcode": "barcode",
+        "compareAtPrice": "Τιμή (MSRP)",
+        "fulfillmentService": "εκπλήρωση υπηρεσίας",
+        "weight": "Βάρος",
+        "length": "Μήκος",
+        "width": "Πλάτος",
+        "height": "Υψος",
+        "taxable": "Φορολογήσιμος",
+        "taxCode": "Φόρος Κωδικοί",
+        "taxDescription": "Φόρος Περιγραφή",
+        "inventoryManagement": "παρακολούθηση και την απογραφή",
+        "inventoryManagementLabel": "Καταχωρήστε το προϊόν στο σύστημα απογραφής και να παρακολουθείτε την κατάσταση της",
+        "inventoryPolicy": "Deny όταν εξαντληθεί",
+        "inventoryPolicyLabel": "Μην πουλήσει την παραλλαγή του προϊόντος όταν δεν είναι σε απόθεμα",
+        "lowInventoryWarningThreshold": "προειδοποιούν @",
+        "lowInventoryWarningThresholdLabel": "Προειδοποιούν τους πελάτες ότι το προϊόν θα είναι κοντά στο sold out, όταν η ποσότητα που φθάνει το επόμενο όριο",
+        "originCountry": "Χώρα προέλευσης",
+        "selectTaxCode": "Επιλέξτε Κώδικα Φορολογίας"
       },
       "variantList": {
         "moreOptions": "Υπάρχουν πολλαπλές επιλογές για αυτήν την παραλλαγή.",
         "createVariant": "Δημιουργία παραλλαγής"
       },
       "gridPackage": {
-        "pkgEnabled": " τώρα ενεργοποιήθηκε.",
-        "pkgDisabled": " τώρα απενεργοποιήθηκε."
+        "pkgEnabled": "{{app}} τώρα ενεργοποιήθηκε.",
+        "pkgDisabled": "{{app}} τώρα απενεργοποιήθηκε."
       },
       "cartDrawer": {
         "empty": "Λυπούμαστε. Το καλάθι σου είναι άδειο.",
@@ -102,8 +148,13 @@
         "checkout": "Πήγαινε στο ταμείο",
         "new": "Νέος",
         "coreOrderWorkflow/created": "δημιουργήθηκε",
+        "coreOrderWorkflow/processing": "Επεξεργασία",
         "coreOrderWorkflow/completed": "Ολοκληρώθηκε το",
-        "coreOrderWorkflow/canceled": "Ακυρώθηκε"
+        "coreOrderWorkflow/canceled": "Ακυρώθηκε",
+        "coreOrderWorkflow/picked": "Εκλεκτός",
+        "coreOrderWorkflow/packed": "Συσκευασμένα",
+        "coreOrderWorkflow/labeled": "Με την ένδειξη",
+        "coreOrderWorkflow/shipped": "αποστέλλονται"
       },
       "cartSubTotals": {
         "head": "Το καλάθι σου",
@@ -133,13 +184,34 @@
         "adjustedTotal": "Προσαρμοσμένο Σύνολο",
         "processor": "επεξεργαστής",
         "filter": {
+          "status": "Κατάσταση",
+          "dateRange": "Εύρος ημερομηνιών",
+          "shippingStatus": "Κατάσταση αποστολής",
           "new": "Νέος",
           "captured": "πληρωμή Συλλαμβάνονται",
           "shipped": "αποστέλλονται",
           "completed": "Ολοκληρώθηκε το",
           "canceled": "Ακυρώθηκε",
           "refunded": "επιστρέφεται"
-        }
+        },
+        "capture": "Πιάνω",
+        "capturing": "Καταγραφή",
+        "bulkActions": "Μαζικές ενέργειες",
+        "selected": "επιλεγμένα",
+        "picked": "Εκλεκτός",
+        "packed": "Συσκευασμένα",
+        "labeled": "Με την ένδειξη",
+        "shipped": "αποστέλλονται",
+        "printInvoiceAndPickSheet": "Εκτύπωση τιμολογίου και φύλλου επιλογής",
+        "generateLabel": "Δημιουργία ετικέτας",
+        "approveBulkOrderAction": "Ναι, Ορισμός όλων Επιλέξτε όλες τις παραγγελίες",
+        "approveBulkOrderActionRegression": "Ναι, καταργήστε όλες τις επιλεγμένες παραγγελίες",
+        "cancelBulkOrderAction": "Όχι, ακυρώστε",
+        "orderAlreadyInState": "Το {{orderText}} ήταν ήδη {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} σε {{status}}",
+        "skippedBulkOrdersAlert": "Ζήσατε να ορίσετε {{orderText}} {{orderText}} στην κατάσταση '{{status}}', αλλά η {{numberOfSkippedOrders}} αυτών των παραγγελιών {{skippedOrdersText}} δεν βρίσκεται στην κατάσταση '{{skippedState}}' και θα παραλείψει όλα τα βήματα που οδηγούν στην κατάσταση '{{status}}'. Είστε βέβαιοι ότι θέλετε να το κάνετε αυτό;",
+        "bulkOrdersRegressionAlert": "Πρόκειται να επαναφέρετε το {{ordersToRegress}} {{orderText}} στην κατάσταση '{{status}}'. Είστε βέβαιοι ότι θέλετε να συνεχίσετε με αυτή τη λειτουργία;",
+        "paymentCaptureSuccess": "Οι πληρωμές ολοκληρώθηκαν με επιτυχία"
       },
       "orderShipping": {
         "shipTo": "Αποστολή προς",
@@ -169,7 +241,8 @@
         "createOrLogin": "Δημιούργησε λογαριασμό ή συνδέσου",
         "guestOrLogin": "Κάνε σύνδεση ή συνέχισε ώς επισκέπτης",
         "continueAsGuest": "Συνέχισε ώς επισκέπτης",
-        "guestMessage": "Μπορείς να πληρώσεις χωρίς να έχεις λογαριασμό. Θα έχεις την δυνατότητα να δημιουργήσεις λογαριασμό μετά."
+        "guestMessage": "Μπορείς να πληρώσεις χωρίς να έχεις λογαριασμό. Θα έχεις την δυνατότητα να δημιουργήσεις λογαριασμό μετά.",
+        "addEmail": "Προσθήκη ηλεκτρονικού ταχυδρομείου"
       },
       "addressBookGrid": {
         "addAddress": "Προσθήκη διεύθυνσης",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Οι παραγγελίες σας",
+        "usersOrders": "Παραγγελίες του χρήστη",
+        "oops": "Ουπς!",
+        "nonExistentAccount": "Ο χρήστης που αναζητάτε δεν υπάρχει.",
         "members": "μέλη",
         "guest": "Επισκέπτης",
         "addMember": "Προσθέστε ένα μέλος",

@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "Ordre non trouvé",
       "order": {
+        "applyRefundToThisOrder": "Appliquer le remboursement de {{currencySymbol}}{{refund}} à cette commande?",
+        "applyRefundDuringCancelOrder": "Cela remboursera le total de la commande de {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Voulez-vous annuler cette commande?",
         "cancelOrderLabel": "annuler la commande",
         "cancelOrderThenRestock": "Oui, et réapprovisionnez",
@@ -59,6 +61,34 @@
             "total": "Total",
             "shipping": "livraison",
             "status": "Statut"
+          },
+          "filter": {
+            "status": "Statut",
+            "dateRange": "Période",
+            "shippingStatus": "Statut d'envoi",
+            "new": "Nouveau",
+            "captured": "Paiement saisi",
+            "shipped": "Expédié",
+            "completed": "Complété",
+            "canceled": "Annulé",
+            "refunded": "Remboursé"
+          },
+          "search": {
+            "clearSearch": "Clair",
+            "placeholder": "Ordres de recherche"
+          },
+          "data": {
+            "status": {
+              "new": "Nouveau",
+              "coreOrderWorkflow/created": "Créé",
+              "coreOrderWorkflow/processing": "En traitement",
+              "coreOrderWorkflow/completed": "Terminé",
+              "coreOrderWorkflow/canceled": "Annulé",
+              "coreOrderWorkflow/picked": "Choisi",
+              "coreOrderWorkflow/packed": "Emballé",
+              "coreOrderWorkflow/labeled": "Étiqueté",
+              "coreOrderWorkflow/shipped": "Expédié"
+            }
           }
         }
       }

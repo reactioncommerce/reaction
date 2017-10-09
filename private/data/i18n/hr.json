@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Auto",
         "save": "Spremi",
         "saveAndContinue": "Spremi i nastavi",
         "cancel": "Prekini",
@@ -86,15 +87,60 @@
         "pinProduct": "Pin proizvoda",
         "toggleSize": "Prebaci Veličina",
         "publish": "Objaviti",
-        "moreOptions": "Više mogućnosti"
+        "moreOptions": "Više mogućnosti",
+        "details": "Detalji",
+        "addVariantFail": "Nije moguće stvoriti varijantu za {{title}}.",
+        "cloneVariantFail": "Nije moguće klonirati varijantu za {{title}}.",
+        "removeVariantConfirm": "Jeste li sigurni da želite obrisati {{title}}",
+        "restoreVariantConfirm": "Jeste li sigurni da želite vratiti {{title}} iz kante za smeće?",
+        "restoreVariantFail": "Nije moguće vratiti {{title}}.",
+        "archiveVariantConfirm": "Jeste li sigurni da želite arhivirati {{title}}",
+        "thisVariant": "ova varijanta",
+        "thisOption": "ova opcija",
+        "archiveProduct": "Arhiva proizvoda",
+        "restoreProduct": "Vraćanje proizvoda iz otpada",
+        "archiveThisProduct": "Arhivirati ovaj proizvod?",
+        "archiveSelectedProducts": "Arhiva odabrane proizvode?",
+        "noSelectedProducts": "Nije odabrana proizvoda. Koristiti",
+        "orShiftCtrlCmd": " ili pomak | ctrl | Ctrl + klik na proizvode za odabir višestruki. Uz smjene možete odabrati granični raspon proizvoda.",
+        "makeVisible": "Provjerite Vidljiv",
+        "hideProduct": "Sakrij proizvoda",
+        "productIsVisible": "Proizvod je vidljiv",
+        "productIsNotVisible": "Proizvod nije vidljiv",
+        "variantOptions": "Varijante Mogućnosti"
+      },
+      "productVariant": {
+        "addVariantOptions": "Dodaj mogućnosti kako bi se omogućilo \"Dodaj u košaricu\" butto",
+        "inventoryQuantity": "Količina",
+        "title": "Označiti",
+        "price": "Cijena",
+        "optionTitle": "Opcija",
+        "barcode": "Barkod",
+        "compareAtPrice": "Cijena (MSRP)",
+        "fulfillmentService": "ispunjenje usluge",
+        "weight": "Težina",
+        "length": "dužina",
+        "width": "Širina",
+        "height": "Visina",
+        "taxable": "Oporeziva",
+        "taxCode": "Porezni Codes",
+        "taxDescription": "Porezna Opis",
+        "inventoryManagement": "praćenje inventara",
+        "inventoryManagementLabel": "Registrirajte proizvod na zalihama sustava i pratiti svoj status",
+        "inventoryPolicy": "Deny kad nema na skladištu",
+        "inventoryPolicyLabel": "Ne prodavati varijantu proizvoda kada to nije na lageru",
+        "lowInventoryWarningThreshold": "upozori @",
+        "lowInventoryWarningThresholdLabel": "Upozoravaju korisnike da će proizvod biti blizu rasprodan kada je količina dosegne sljedeći prag",
+        "originCountry": "Porijeklo Zemlja",
+        "selectTaxCode": "Odaberite porezni broj"
       },
       "variantList": {
         "moreOptions": "Postoji još opcija za ovaj odabir.",
         "createVariant": "Kreiraj Varijantu"
       },
       "gridPackage": {
-        "pkgEnabled": " je sada dostupan.",
-        "pkgDisabled": " je sada onemogućen."
+        "pkgEnabled": "{{app}} je sada dostupan.",
+        "pkgDisabled": "{{app}} je sada onemogućen."
       },
       "cartDrawer": {
         "empty": "Nažalost, vaša košarica je prazna.",
@@ -102,8 +148,13 @@
         "checkout": "Završi",
         "new": "Novi",
         "coreOrderWorkflow/created": "Stvoren",
+        "coreOrderWorkflow/processing": "Obrada",
         "coreOrderWorkflow/completed": "dovršen",
-        "coreOrderWorkflow/canceled": "otkazan"
+        "coreOrderWorkflow/canceled": "otkazan",
+        "coreOrderWorkflow/picked": "izabran",
+        "coreOrderWorkflow/packed": "upakiran",
+        "coreOrderWorkflow/labeled": "Označen",
+        "coreOrderWorkflow/shipped": "isporučen"
       },
       "cartSubTotals": {
         "head": "Vaša košarica",
@@ -133,13 +184,34 @@
         "adjustedTotal": "Prilagođen Ukupno",
         "processor": "Procesor",
         "filter": {
+          "status": "Položaj",
+          "dateRange": "Raspon datuma",
+          "shippingStatus": "Status isporuke",
           "new": "Novi",
           "captured": "Uhvaćena plaćanja",
           "shipped": "isporučen",
           "completed": "dovršen",
           "canceled": "otkazan",
           "refunded": "Povrat za"
-        }
+        },
+        "capture": "Uhvatiti",
+        "capturing": "snimanje",
+        "bulkActions": "Bulk Actions",
+        "selected": "Odabran",
+        "picked": "izabran",
+        "packed": "upakiran",
+        "labeled": "Označen",
+        "shipped": "isporučen",
+        "printInvoiceAndPickSheet": "Ispiši dostavnicu i odaberite list",
+        "generateLabel": "Generiranje oznake",
+        "approveBulkOrderAction": "Da, postavite sve odabir svih narudžbi",
+        "approveBulkOrderActionRegression": "Da, regresirajte sve odabrane narudžbe",
+        "cancelBulkOrderAction": "Ne, odustani",
+        "orderAlreadyInState": "{{orderText}} već je {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} postavljen na {{status}}",
+        "skippedBulkOrdersAlert": "Zatražili ste da je {{selectedOrders}} {{orderText}} postavljen na status \"{{status}}\", ali {{numberOfSkippedOrders}} od tih narudžbi {{skippedOrdersText}} ne nalazi se u državi \"{{skippedState}}\" i preskočit će sve korake koji vode do države \"{{status}}\". Jeste li sigurni da želite to učiniti?",
+        "bulkOrdersRegressionAlert": "Spremate regrutirati {{ordersToRegress}} {{orderText}} natrag u stanje \"{{status}}\". Jeste li sigurni da želite nastaviti s ovom radnjom?",
+        "paymentCaptureSuccess": "Plaćanja su uspješno zarobljena"
       },
       "orderShipping": {
         "shipTo": "Poslati nekome",
@@ -169,7 +241,8 @@
         "createOrLogin": "Kreiraj račun ili se prijavi za nastavak",
         "guestOrLogin": "Prijavite se ili naplata kao gost",
         "continueAsGuest": "Nastavi kao gost",
-        "guestMessage": "Možete plaćanje bez stvaranja računa. Vi ćete imati priliku stvoriti račun kasnije."
+        "guestMessage": "Možete plaćanje bez stvaranja računa. Vi ćete imati priliku stvoriti račun kasnije.",
+        "addEmail": "Dodajte e-poštu"
       },
       "addressBookGrid": {
         "addAddress": "Dodaj adresa",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Vaše narudžbe",
+        "usersOrders": "Narudžbe korisnika",
+        "oops": "Uh!",
+        "nonExistentAccount": "Korisnik koji tražite ne postoji.",
         "members": "članovi",
         "guest": "Gost",
         "addMember": "Dodaj člana",

@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Auto",
         "save": "Zapisz",
         "saveAndContinue": "Zapisz i kontynuuj",
         "cancel": "Anuluj",
@@ -86,7 +87,52 @@
         "pinProduct": "Przypnij produkt",
         "toggleSize": "Przełącz rozmiar",
         "publish": "Publikuj",
-        "moreOptions": "Więcej opcji"
+        "moreOptions": "Więcej opcji",
+        "details": "Szczegóły",
+        "addVariantFail": "Nie można utworzyć wariant dla {{title}}.",
+        "cloneVariantFail": "Nie można sklonować wariant dla {{title}}.",
+        "removeVariantConfirm": "Czy na pewno chcesz usunąć {{title}}",
+        "restoreVariantConfirm": "Czy na pewno chcesz przywrócić {{title}} z kosza?",
+        "restoreVariantFail": "Nie można przywrócić {{title}}.",
+        "archiveVariantConfirm": "Czy na pewno chcesz zarchiwizować {{title}}",
+        "thisVariant": "ten wariant",
+        "thisOption": "ta opcja",
+        "archiveProduct": "Archiwum produktów",
+        "restoreProduct": "Przywracanie wyroby od kosza",
+        "archiveThisProduct": "Zarchiwizować ten produkt?",
+        "archiveSelectedProducts": "Archiwum wybrane produkty?",
+        "noSelectedProducts": "Nie wybrano produktów. Użyj",
+        "orShiftCtrlCmd": " lub przesunięcia | ctrl | cmd + kliknij, aby zaznaczyć wiele produktów. Z przesunięciem można wybrać ciągłą gamę produktów.",
+        "makeVisible": "Bądź widoczny",
+        "hideProduct": "Karta produktu",
+        "productIsVisible": "Produkt jest widoczny",
+        "productIsNotVisible": "Produkt nie jest widoczny",
+        "variantOptions": "Opcje Wariantu"
+      },
+      "productVariant": {
+        "addVariantOptions": "Dodaj opcje, aby umożliwić \"Dodaj do koszyka\" butto",
+        "inventoryQuantity": "Ilość",
+        "title": "Tytuł",
+        "price": "Cena",
+        "optionTitle": "Opcja",
+        "barcode": "kod kreskowy",
+        "compareAtPrice": "Cena (SCD)",
+        "fulfillmentService": "Wykonanie usługi",
+        "weight": "Waga",
+        "length": "Długość",
+        "width": "Szerokość",
+        "height": "Wysokość",
+        "taxable": "Podlegający opodatkowaniu",
+        "taxCode": "Kody podatkowe",
+        "taxDescription": "Opis podatku",
+        "inventoryManagement": "Zarządzanie Inwentarzem",
+        "inventoryManagementLabel": "Rejestruj produkt w systemie inwentaryzacji i śledź jego status",
+        "inventoryPolicy": "Odmówić sprzedaży, gdy produkt jest niedostępny",
+        "inventoryPolicyLabel": "Nie sprzedawać wariantu produktu, gdy nie jest dostępny w magazynie",
+        "lowInventoryWarningThreshold": "Informuj @",
+        "lowInventoryWarningThresholdLabel": "Ostrzegaj klientów, że produkt będzie bliski wyprzedania gdy ilość osiągnie kolejny próg",
+        "originCountry": "Kraj pochodzenia",
+        "selectTaxCode": "Wybierz Ordynacje podatkową"
       },
       "variantList": {
         "moreOptions": "Istnieje więcej opcji dostępnych dla tego wyboru.",
@@ -102,8 +148,13 @@
         "checkout": "Kup teraz",
         "new": "Nowy",
         "coreOrderWorkflow/created": "Utworzono",
+        "coreOrderWorkflow/processing": "Przetwarzanie",
         "coreOrderWorkflow/completed": "Zakończono",
-        "coreOrderWorkflow/canceled": "Odwołano"
+        "coreOrderWorkflow/canceled": "Odwołano",
+        "coreOrderWorkflow/picked": "Doborowy",
+        "coreOrderWorkflow/packed": "Zatłoczony",
+        "coreOrderWorkflow/labeled": "Oznaczone",
+        "coreOrderWorkflow/shipped": "Wysłane"
       },
       "cartSubTotals": {
         "head": "Twój koszyk",
@@ -133,13 +184,34 @@
         "adjustedTotal": "Suma po korekcie",
         "processor": "Edytor",
         "filter": {
+          "status": "Status",
+          "dateRange": "Zakres dat",
+          "shippingStatus": "Stan wysyłki",
           "new": "Nowy",
           "captured": "Płatność Przechwycona",
           "shipped": "Wysłane",
           "completed": "Zakończone",
           "canceled": "Odwołane",
           "refunded": "Zwrócone"
-        }
+        },
+        "capture": "Zdobyć",
+        "capturing": "Przechwytywanie",
+        "bulkActions": "Działania masowe",
+        "selected": "Wybrany",
+        "picked": "Doborowy",
+        "packed": "Zatłoczony",
+        "labeled": "Oznaczone",
+        "shipped": "Wysłane",
+        "printInvoiceAndPickSheet": "Wydrukuj fakturę i wybierz arkusz",
+        "generateLabel": "Wygeneruj etykietę",
+        "approveBulkOrderAction": "Tak, ustaw wszystkie zaznacz wszystkie zlecenia",
+        "approveBulkOrderActionRegression": "Tak, Odwołaj wszystkie wybrane zamówienia",
+        "cancelBulkOrderAction": "Nie, Anuluj",
+        "orderAlreadyInState": "{{orderText}} był już {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} ustaw na {{status}}",
+        "skippedBulkOrdersAlert": "Zażądałeś, aby {{selectedOrders}} {{orderText}} była ustawiona na status \"{{status}}\", ale {{numberOfSkippedOrders}} z tych zamówień {{skippedOrdersText}} nie w stanie \"{{skippedState}}\" i pominięto wszystkie kroki prowadzące do stanu \"{{status}}\". Czy na pewno chcesz to zrobić?",
+        "bulkOrdersRegressionAlert": "Już chcesz cofnąć {{ordersToRegress}} {{orderText}} z powrotem do stanu \"{{status}}\". Czy na pewno chcesz kontynuować tę operację?",
+        "paymentCaptureSuccess": "Dokonano płatności"
       },
       "orderShipping": {
         "shipTo": "Dostawa do",
@@ -169,7 +241,8 @@
         "createOrLogin": "Załóż konto lub zaloguj się",
         "guestOrLogin": "Zaloguj się lub przejdź do kasy jako gość",
         "continueAsGuest": "Kontynuuj jako gość",
-        "guestMessage": "Można dokończyć zamówienie, bez zakładania konta. Będziesz miał szansę stworzyć konto później."
+        "guestMessage": "Można dokończyć zamówienie, bez zakładania konta. Będziesz miał szansę stworzyć konto później.",
+        "addEmail": "Dodaj e-mail"
       },
       "addressBookGrid": {
         "addAddress": "Dodaj adres",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Twoje rozkazy",
+        "usersOrders": "Zlecenia użytkownika",
+        "oops": "Ups!",
+        "nonExistentAccount": "Użytkownik, którego szukasz, nie istnieje.",
         "members": "Użytkownicy",
         "guest": "Gość",
         "addMember": "Dodaj użytkownika",

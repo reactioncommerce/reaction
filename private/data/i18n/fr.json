@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Auto",
         "save": "Enregistrer",
         "saveAndContinue": "Sauvegarder et continuer",
         "cancel": "Annuler",
@@ -86,7 +87,52 @@
         "pinProduct": "Epingler le produit",
         "toggleSize": "Modification de la taille",
         "publish": "Publier",
-        "moreOptions": "Options supplémentaires"
+        "moreOptions": "Options supplémentaires",
+        "details": "Coordonnées",
+        "addVariantFail": "Impossible de créer variante pour {{title}}.",
+        "cloneVariantFail": "Impossible de cloner variante pour {{title}}.",
+        "removeVariantConfirm": "Êtes-vous certain de vouloir supprimer {{title}}",
+        "restoreVariantConfirm": "Etes-vous certain de vouloir restaurer {{title}} depuis la corbeille ?",
+        "restoreVariantFail": "Impossible de restaurer {{title}}.",
+        "archiveVariantConfirm": "Êtes-vous sûr de vouloir archiver {{title}}",
+        "thisVariant": "cette variante",
+        "thisOption": "cette option",
+        "archiveProduct": "produit Archive",
+        "restoreProduct": "Restaurer les produits de la corbeille",
+        "archiveThisProduct": "Archiver ce produit ?",
+        "archiveSelectedProducts": "Archiver les produits sélectionnés ?",
+        "noSelectedProducts": "Aucun produit sélectionné Utiliser le ",
+        "orShiftCtrlCmd": " ou maj|ctrl|cmd + clic sur les produits pour faire une sélection multiple. Avec la touche majuscule, vous pouvez sélectionner un ensemble de produits.",
+        "makeVisible": "Rendre visible",
+        "hideProduct": "Masquer le produit",
+        "productIsVisible": "Le produit est visible",
+        "productIsNotVisible": "Le produit n'est pas visible",
+        "variantOptions": "Options de la variante"
+      },
+      "productVariant": {
+        "addVariantOptions": "Ajout d'options pour permettre 'Ajouter au panier' butto",
+        "inventoryQuantity": "Quantité",
+        "title": "Balise",
+        "price": "Prix",
+        "optionTitle": "Option",
+        "barcode": "Code-barres",
+        "compareAtPrice": "Prix (PVC)",
+        "fulfillmentService": "Service d'exécution",
+        "weight": "Poids",
+        "length": "Longueur",
+        "width": "Largeur",
+        "height": "Hauteur",
+        "taxable": "Taxable",
+        "taxCode": "Codes de taxes",
+        "taxDescription": "description de l'impôt",
+        "inventoryManagement": "Suivi de l'inventaire",
+        "inventoryManagementLabel": "Enregistrer le produit dans le système d'inventaire et suivre son statut",
+        "inventoryPolicy": "Refuser lors d'une rupture de stock",
+        "inventoryPolicyLabel": "Ne pas vendre la variante du produit lorsqu'elle n'est pas en stock",
+        "lowInventoryWarningThreshold": "Avertir @",
+        "lowInventoryWarningThresholdLabel": "Avertir les clients que le produit est en quasi rupture de stock lorsque les quantités atteindront le seuil suivant",
+        "originCountry": "Pays d'origine",
+        "selectTaxCode": "Sélectionnez Code fiscal"
       },
       "variantList": {
         "moreOptions": "Aucune option de disponible pour cette sélection.",
@@ -102,8 +148,13 @@
         "checkout": "Payer maintenant",
         "new": "Nouveau",
         "coreOrderWorkflow/created": "Créé",
+        "coreOrderWorkflow/processing": "Traitement",
         "coreOrderWorkflow/completed": "Complété",
-        "coreOrderWorkflow/canceled": "Annulé"
+        "coreOrderWorkflow/canceled": "Annulé",
+        "coreOrderWorkflow/picked": "Choisi",
+        "coreOrderWorkflow/packed": "Emballé",
+        "coreOrderWorkflow/labeled": "Étiqueté",
+        "coreOrderWorkflow/shipped": "Expédié"
       },
       "cartSubTotals": {
         "head": "Votre panier",
@@ -133,13 +184,34 @@
         "adjustedTotal": "Total ajusté",
         "processor": "Processeur",
         "filter": {
+          "status": "Statut",
+          "dateRange": "Période",
+          "shippingStatus": "Statut d'envoi",
           "new": "Nouveau",
           "captured": "Paiement saisi",
           "shipped": "Expédié",
           "completed": "Complété",
           "canceled": "Annulé",
           "refunded": "Remboursé"
-        }
+        },
+        "capture": "Capture",
+        "capturing": "Capturer",
+        "bulkActions": "Actions en vrac",
+        "selected": "Choisi",
+        "picked": "Choisi",
+        "packed": "Emballé",
+        "labeled": "Étiqueté",
+        "shipped": "Expédié",
+        "printInvoiceAndPickSheet": "Imprimer la facture et la feuille de sélection",
+        "generateLabel": "Générer l'étiquette",
+        "approveBulkOrderAction": "Oui, définissez tous Sélectionnez toutes les commandes",
+        "approveBulkOrderActionRegression": "Oui, réglez tous les bons sélectionnés",
+        "cancelBulkOrderAction": "Non, Annuler",
+        "orderAlreadyInState": "{{orderText}} a déjà été {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} réglé sur {{status}}",
+        "skippedBulkOrdersAlert": "Vous avez demandé que {{selectedOrders}} {{orderText}} soit réglé sur le statut '{{status}}', mais {{numberOfSkippedOrders}} de ces ordres {{skippedOrdersText}} pas dans l'état '{{skippedState}}' et saute toutes les étapes menant à l'état '{{status}}'. Es-tu sûr de vouloir faire ça?",
+        "bulkOrdersRegressionAlert": "Vous êtes sur le point de régresser {{ordersToRegress}} {{orderText}} à l'état '{{status}}'. Êtes-vous sûr de vouloir poursuivre cette opération?",
+        "paymentCaptureSuccess": "Paiements capturés avec succès"
       },
       "orderShipping": {
         "shipTo": "Envoyer à",
@@ -169,7 +241,8 @@
         "createOrLogin": "Créer un compte ou s'identifier",
         "guestOrLogin": "Identifiez-vous ou réglez en tant qu'invité",
         "continueAsGuest": "Poursuivre en tant qu'invité",
-        "guestMessage": "Vous pouvez régler sans créer de compte. Vous aurez l'opportunité de créer un compte ultérieurement."
+        "guestMessage": "Vous pouvez régler sans créer de compte. Vous aurez l'opportunité de créer un compte ultérieurement.",
+        "addEmail": "Ajouter un courrier électronique"
       },
       "addressBookGrid": {
         "addAddress": "Ajouter une adresse",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Vos commandes",
+        "usersOrders": "Commandes de l'utilisateur",
+        "oops": "Oups !",
+        "nonExistentAccount": "L'utilisateur que vous recherchez n'existe pas.",
         "members": "Membres",
         "guest": "Invité",
         "addMember": "Ajouter un membre",

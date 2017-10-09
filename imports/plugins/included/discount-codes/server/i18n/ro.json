@@ -15,7 +15,8 @@
         "applied": "aplicat",
         "code": "cod",
         "codeIsExpired": "Codul este expirat",
-        "codeIsInvalid": "Cod este nevalid"
+        "codeIsInvalid": "Cod este nevalid",
+        "multiShopError": "Reducerile nu pot fi aplicate unui coș de cumpărături sau unei comenzi multi-shop"
       },
       "admin": {
         "paymentSettings": {

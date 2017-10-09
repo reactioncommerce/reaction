@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Auto",
         "save": "Salvați",
         "saveAndContinue": "Salvează si continuă",
         "cancel": "Anulează",
@@ -86,7 +87,52 @@
         "pinProduct": "Fixează produsului",
         "toggleSize": "Dimensiune comutare",
         "publish": "Publică",
-        "moreOptions": "Mai multe opțiuni"
+        "moreOptions": "Mai multe opțiuni",
+        "details": "Detalii",
+        "addVariantFail": "Nu se poate crea varianta pentru {{title}}.",
+        "cloneVariantFail": "Nu se poate clona varianta pentru {{title}}.",
+        "removeVariantConfirm": "Sunteți sigur că doriți să ștergeți {{title}}",
+        "restoreVariantConfirm": "Sunteți sigur(ă) că doriți să recuperați {{title}} din coșul de gunoi?",
+        "restoreVariantFail": "Nu se poate restabili {{title}}.",
+        "archiveVariantConfirm": "Sigur doriți să arhivați {{title}}",
+        "thisVariant": "această variantă",
+        "thisOption": "această opțiune",
+        "archiveProduct": "Arhiva produse",
+        "restoreProduct": "Recuperare produs din coșul de gunoi",
+        "archiveThisProduct": "Arhivați acest produs?",
+        "archiveSelectedProducts": "Arhivați produsele selectate?",
+        "noSelectedProducts": "Nici un produs selectat. Folosește",
+        "orShiftCtrlCmd": "sau apăsați shift|ctrl|cmd + clic pe produse pentru a selecta mai multe. Cu shift puteți selecta o gamă de produse învecinate.",
+        "makeVisible": "Expunere",
+        "hideProduct": "Ascundere produs",
+        "productIsVisible": "Produsul este vizibil",
+        "productIsNotVisible": "Produsul nu este vizibil",
+        "variantOptions": "Opțiuni variantă"
+      },
+      "productVariant": {
+        "addVariantOptions": "Adăugați opțiuni pentru a permite 'Adauga in cos' butto",
+        "inventoryQuantity": "Cantitate",
+        "title": "Etichetă",
+        "price": "Preț",
+        "optionTitle": "Opțiune",
+        "barcode": "Cod de bare",
+        "compareAtPrice": "Preț recomandat (MSRP)",
+        "fulfillmentService": "Serviciul de onorare a comenzilor",
+        "weight": "Greutate",
+        "length": "Lungime",
+        "width": "Lăţime",
+        "height": "Înălţime",
+        "taxable": "Impozabil",
+        "taxCode": "Codurile fiscale",
+        "taxDescription": "Descriere Brut",
+        "inventoryManagement": "Urmărirea inventarului",
+        "inventoryManagementLabel": "Înregistrați-vă produsul în sistemul de inventariere și urmărirea stării acestuia",
+        "inventoryPolicy": "Refuzați atunci când nu este din stoc",
+        "inventoryPolicyLabel": "Nu vinde varianta de produs atunci când nu este în stoc",
+        "lowInventoryWarningThreshold": "Avertizează la",
+        "lowInventoryWarningThresholdLabel": "Avertizează clienții că produsul va fi aproape vândut atunci când cantitatea atinge pragul",
+        "originCountry": "Țară de origine",
+        "selectTaxCode": "Selectați Codul Fiscal"
       },
       "variantList": {
         "moreOptions": "Există mai multe opțiuni disponibile pentru această selecție.",
@@ -102,8 +148,13 @@
         "checkout": "Finalizează comanda",
         "new": "Nou",
         "coreOrderWorkflow/created": "Creată",
+        "coreOrderWorkflow/processing": "Prelucrare",
         "coreOrderWorkflow/completed": "Completă",
-        "coreOrderWorkflow/canceled": "Anulată"
+        "coreOrderWorkflow/canceled": "Anulată",
+        "coreOrderWorkflow/picked": "ales",
+        "coreOrderWorkflow/packed": "bătătorit",
+        "coreOrderWorkflow/labeled": "marcat",
+        "coreOrderWorkflow/shipped": "Transportat"
       },
       "cartSubTotals": {
         "head": "Coșul dumneavoastră",
@@ -133,13 +184,34 @@
         "adjustedTotal": "Totalul ajustat",
         "processor": "Procesator",
         "filter": {
+          "status": "Stare",
+          "dateRange": "Interval de date",
+          "shippingStatus": "Starea de expediere",
           "new": "Nou",
           "captured": "Plată Capturată",
           "shipped": "Trimis",
           "completed": "Completă",
           "canceled": "Anulată",
           "refunded": "Rambursată"
-        }
+        },
+        "capture": "Captură",
+        "capturing": "capturarea",
+        "bulkActions": "Acțiuni grupate",
+        "selected": "Selectat",
+        "picked": "ales",
+        "packed": "bătătorit",
+        "labeled": "marcat",
+        "shipped": "Transportat",
+        "printInvoiceAndPickSheet": "Imprimați factura și alegeți foaia",
+        "generateLabel": "Generați etichetă",
+        "approveBulkOrderAction": "Da, setați toate selectați toate comenzile",
+        "approveBulkOrderActionRegression": "Da, Regresați toate comenzile selectate",
+        "cancelBulkOrderAction": "Nu, Anulați",
+        "orderAlreadyInState": "{{orderText}} a fost deja {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} setat la {{status}}",
+        "skippedBulkOrdersAlert": "Ați cerut ca {{selectedOrders}} {{orderText}} să fie setat la starea \"{{status}}\", dar {{numberOfSkippedOrders}} din aceste comenzi {{skippedOrdersText}} nu este în starea \"{{skippedState}}\" și ar ignora toți pașii care au dus la starea \"{{status}}\". Sigur vrei să faci asta?",
+        "bulkOrdersRegressionAlert": "Sunteți pe cale să regresați {{ordersToRegress}} {{orderText}} înapoi în starea \"{{status}}\". Sigur doriți să continuați cu această operațiune?",
+        "paymentCaptureSuccess": "Plățile au fost capturate cu succes"
       },
       "orderShipping": {
         "shipTo": "Trimite spre",
@@ -169,7 +241,8 @@
         "createOrLogin": "Creați un cont sau conectați-vă",
         "guestOrLogin": "Conectați-vă sau finalizați comanda fără autentificare",
         "continueAsGuest": "Continuați fără autentificare",
-        "guestMessage": "Puteți să finalizați comanda fără a crea un cont. Veți avea posibilitatea să creați un cont mai târziu."
+        "guestMessage": "Puteți să finalizați comanda fără a crea un cont. Veți avea posibilitatea să creați un cont mai târziu.",
+        "addEmail": "Adăugați e-mail"
       },
       "addressBookGrid": {
         "addAddress": "Adăugaţi o adresă",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Comenzile dvs.",
+        "usersOrders": "Comenzile utilizatorului",
+        "oops": "Văleu!",
+        "nonExistentAccount": "Utilizatorul pe care îl căutați nu există.",
         "members": "Membrii",
         "guest": "Fără autentificare",
         "addMember": "Adăuga un membru",

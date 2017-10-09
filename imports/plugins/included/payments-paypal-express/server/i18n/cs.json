@@ -1,0 +1,47 @@
+[{
+  "language": "Czech",
+  "i18n": "cs",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "PayPal platby"
+        },
+        "paymentMethod": {
+          "expressLabel": "Vyjádřit",
+          "creditCardLabel": "Kreditní karta"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Nemají PayPal uživatelské jméno, heslo a podpis?",
+          "paypalExpressGetCredentialsHere": "Získat jej zde.",
+          "paypalPayflowCredentials": "Nemáte PayPal ID klienta a tajemství",
+          "paypalPayflowGetCredentialsHere": "Získejte je zde."
+        },
+        "settings": {
+          "saveSuccess": "Vaše nastavení bylo uloženo",
+          "saveFailed": "Při ukládání nastavení došlo k potížím"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Dokončit svou objednávku",
+        "paymentMethod": {
+          "expressButtonLabel": "Platit přes PayPal",
+          "expressNotConfigured": "Paypal Express není nakonfigurován.",
+          "expressNotAvailable": "Paypal Express není k dispozici",
+          "submitting": "odesláním",
+          "invalidCard": "Jejda! číslo kreditní karty je neplatné.",
+          "unknownError": "Jejda! nastala neznámá chyba",
+          "resubmit": "Znovu odeslat platbu"
+        }
+      }
+    }
+  }
+}]

@@ -32,6 +32,14 @@
           "syncStopFailure": "Wystąpił błąd podczas synchronizacji Shopify!",
           "startImport": "Zacznij importować"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "Klucz API",
+          "password": "Hasło API",
+          "sharedSecret": "API współdzielone",
+          "shopName": "Kupuj ślimak"
+        }
       }
     }
   }

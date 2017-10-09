@@ -86,7 +86,13 @@
         "pinProduct": "Fest Produkt",
         "toggleSize": "Bytt størrelse",
         "publish": "Publiser",
-        "moreOptions": "Flere varianter"
+        "moreOptions": "Flere varianter",
+        "details": "Detaljer"
+      },
+      "productVariant": {
+        "inventoryQuantity": "Antall",
+        "title": "Produkt tittel",
+        "barcode": "Strekkode"
       },
       "variantList": {
         "moreOptions": "Det er flere alternativ for den valgte varianten.",
@@ -103,7 +109,8 @@
         "new": "Ny",
         "coreOrderWorkflow/created": "Opprettet",
         "coreOrderWorkflow/completed": "Fullført",
-        "coreOrderWorkflow/canceled": "Avbrutt"
+        "coreOrderWorkflow/canceled": "Avbrutt",
+        "coreOrderWorkflow/shipped": "Sendt"
       },
       "cartSubTotals": {
         "head": "Din handlekurv",
@@ -139,7 +146,8 @@
           "completed": "Fullført",
           "canceled": "Avbrutt",
           "refunded": "Refundert"
-        }
+        },
+        "shipped": "Sendt"
       },
       "orderShipping": {
         "shipTo": "Send til",
@@ -225,6 +233,7 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "oops": "Oops!",
         "members": "Bruker",
         "guest": "Gjest",
         "addMember": "Legg til en bruker",

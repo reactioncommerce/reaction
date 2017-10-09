@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Uložit a pokračovat",
         "cancel": "Zrušit",
@@ -86,7 +87,52 @@
         "pinProduct": "pin zboží",
         "toggleSize": "toggle Velikost",
         "publish": "Publikovat",
-        "moreOptions": "Více možností"
+        "moreOptions": "Více možností",
+        "details": "Podrobnosti",
+        "addVariantFail": "Nelze vytvořit variantu pro {{title}}.",
+        "cloneVariantFail": "Nelze klonovat variantu pro {{title}}.",
+        "removeVariantConfirm": "Jste si jisti, že chcete smazat {{title}}",
+        "restoreVariantConfirm": "Jste si jisti, že chcete obnovit {{title}} z koše?",
+        "restoreVariantFail": "Nepodařilo se obnovit {{title}}.",
+        "archiveVariantConfirm": "Jste si jisti, že chcete archivovat {{title}}",
+        "thisVariant": "tato varianta",
+        "thisOption": "tato možnost",
+        "archiveProduct": "Archiv produktů",
+        "restoreProduct": "Obnovit produkt z koše",
+        "archiveThisProduct": "Archivovat tento produkt?",
+        "archiveSelectedProducts": "Archiv vybrané produkty?",
+        "noSelectedProducts": "Žádné vybrané produkty. Použití",
+        "orShiftCtrlCmd": " nebo shift | ctrl | cmd + klik na výrobky pro volbu násobek. S posunem můžete vybrat souvislou řadu výrobků.",
+        "makeVisible": "zviditelnit",
+        "hideProduct": "Skrýt Product",
+        "productIsVisible": "je vidět produkt",
+        "productIsNotVisible": "Výrobek není viditelná",
+        "variantOptions": "Variant Možnosti"
+      },
+      "productVariant": {
+        "addVariantOptions": "Přidat možností k tomu, aby \"Přidat do košíku\" Butto",
+        "inventoryQuantity": "Množství",
+        "title": "Označení",
+        "price": "Cena",
+        "optionTitle": "Volba",
+        "barcode": "čárový kód",
+        "compareAtPrice": "Cena (MSRP)",
+        "fulfillmentService": "prováděcí služby",
+        "weight": "Hmotnost",
+        "length": "Délka",
+        "width": "Šířka",
+        "height": "Výška",
+        "taxable": "Zdanitelný",
+        "taxCode": "daňové kódy",
+        "taxDescription": "Tax Popis",
+        "inventoryManagement": "sledování inventáře",
+        "inventoryManagementLabel": "Zaregistrovat produkt v inventárního systému a sledovat její stav",
+        "inventoryPolicy": "Popírají, kdy není skladem",
+        "inventoryPolicyLabel": "Neprodáváme si variantu produktu, pokud to není na skladě",
+        "lowInventoryWarningThreshold": "varovat @",
+        "lowInventoryWarningThresholdLabel": "Varovat zákazníky, že výrobek bude mít blízko k vyprodáno, když množství dosáhne dalšího limitního",
+        "originCountry": "původ Země",
+        "selectTaxCode": "Vyberte daňového řádu"
       },
       "variantList": {
         "moreOptions": "Tam jsou k dispozici pro tento výběr více možností.",
@@ -102,8 +148,13 @@
         "checkout": "Zkontrolovat teď",
         "new": "Nový",
         "coreOrderWorkflow/created": "Vytvořeno",
+        "coreOrderWorkflow/processing": "zpracování",
         "coreOrderWorkflow/completed": "Dokončeno",
-        "coreOrderWorkflow/canceled": "Zrušeno"
+        "coreOrderWorkflow/canceled": "Zrušeno",
+        "coreOrderWorkflow/picked": "Sklizené",
+        "coreOrderWorkflow/packed": "Balené",
+        "coreOrderWorkflow/labeled": "Označeno",
+        "coreOrderWorkflow/shipped": "Posíláme"
       },
       "cartSubTotals": {
         "head": "Váš nákupní košík",
@@ -133,13 +184,34 @@
         "adjustedTotal": "Upravený Total",
         "processor": "Procesor",
         "filter": {
+          "status": "Postavení",
+          "dateRange": "Časové období",
+          "shippingStatus": "Stav odeslání",
           "new": "Nový",
           "captured": "platba Zachycená",
           "shipped": "Posíláme",
           "completed": "Dokončeno",
           "canceled": "Zrušeno",
           "refunded": "vrácena"
-        }
+        },
+        "capture": "Zachyťte",
+        "capturing": "Zachycení",
+        "bulkActions": "Hromadné akce",
+        "selected": "Vybraný",
+        "picked": "Sklizené",
+        "packed": "Balené",
+        "labeled": "Označeno",
+        "shipped": "Posíláme",
+        "printInvoiceAndPickSheet": "Tisk faktury a výběr listu",
+        "generateLabel": "Generovat štítek",
+        "approveBulkOrderAction": "Ano, Nastavit vše Vybrat všechny objednávky",
+        "approveBulkOrderActionRegression": "Ano, regresujte všechny vybrané objednávky",
+        "cancelBulkOrderAction": "Ne, zrušte",
+        "orderAlreadyInState": "{{orderText}} již byl {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} nastaveno na {{status}}",
+        "skippedBulkOrdersAlert": "Požadovali jste, aby byl {{orderText}} nastaven na status '{{status}}', ale {{numberOfSkippedOrders}} těchto příkazů {{skippedOrdersText}} není ve stavu '{{skippedState}}' a přeskočil všechny kroky vedoucí ke stavu '{{status}}'. Opravdu chcete to udělat?",
+        "bulkOrdersRegressionAlert": "Chystáte se regresovat {{ordersToRegress}} {{orderText}} zpět do stavu \"{{status}}\". Opravdu chcete pokračovat v této operaci?",
+        "paymentCaptureSuccess": "Platby byly úspěšně zachyceny"
       },
       "orderShipping": {
         "shipTo": "Dopravit do",
@@ -169,7 +241,8 @@
         "createOrLogin": "Vytvořte si účet nebo se přihlaste",
         "guestOrLogin": "Přihlaste se nebo pokladní jako host",
         "continueAsGuest": "Pokračovat jako host",
-        "guestMessage": "Můžete pokladny bez vytvoření účtu. Budete mít možnost vytvořit si účet později."
+        "guestMessage": "Můžete pokladny bez vytvoření účtu. Budete mít možnost vytvořit si účet později.",
+        "addEmail": "Přidat e-mail"
       },
       "addressBookGrid": {
         "addAddress": "Přidat adresu",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Vaše objednávky",
+        "usersOrders": "Uživatelské příkazy",
+        "oops": "Jejda!",
+        "nonExistentAccount": "Uživatel, který hledáte, neexistuje.",
         "members": "Členové",
         "guest": "Host",
         "addMember": "Přidat člena",

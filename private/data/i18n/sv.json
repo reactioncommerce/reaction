@@ -15,6 +15,7 @@
         }
       },
       "app": {
+        "auto": "Bil",
         "save": "Spara",
         "saveAndContinue": "Spara och fortsätt",
         "cancel": "Avboka",
@@ -86,7 +87,52 @@
         "pinProduct": "pin Produkt",
         "toggleSize": "toggle Storlek",
         "publish": "Publicera",
-        "moreOptions": "Fler alternativ"
+        "moreOptions": "Fler alternativ",
+        "details": "Detaljer",
+        "addVariantFail": "Det går inte att skapa variant för {{title}}.",
+        "cloneVariantFail": "Det går inte att klona variant för {{title}}.",
+        "removeVariantConfirm": "Är du säker på att du vill radera {{title}}",
+        "restoreVariantConfirm": "Är du säker på att du vill återställa {{title}} från papperskorgen?",
+        "restoreVariantFail": "Det går inte att återställa {{title}}.",
+        "archiveVariantConfirm": "Är du säker på att du vill arkivera {{title}}",
+        "thisVariant": "denna variant",
+        "thisOption": "detta alternativ",
+        "archiveProduct": "arkiv Produkt",
+        "restoreProduct": "Återställ produkten från papperskorgen",
+        "archiveThisProduct": "Arkivera den här produkten?",
+        "archiveSelectedProducts": "Arkiv valda produkter?",
+        "noSelectedProducts": "Ingen valda produkter. Använd",
+        "orShiftCtrlCmd": " eller skift | ctrl | cmd + klicka på produkter att välja flera. Med skift kan du välja ett sammanhängande utbud av produkter.",
+        "makeVisible": "synliggöra",
+        "hideProduct": "hide Produkt",
+        "productIsVisible": "Produkten är synlig",
+        "productIsNotVisible": "Produkten är inte synlig",
+        "variantOptions": "variant Val"
+      },
+      "productVariant": {
+        "addVariantOptions": "Lägg alternativ för att göra det möjligt för \"Lägg i varukorgen\" butto",
+        "inventoryQuantity": "Kvantitet",
+        "title": "Etikett",
+        "price": "Pris",
+        "optionTitle": "Alternativ",
+        "barcode": "Streckkod",
+        "compareAtPrice": "Pris (MSRP)",
+        "fulfillmentService": "uppfyllandet tjänsten",
+        "weight": "Vikt",
+        "length": "Längd",
+        "width": "Bredd",
+        "height": "Höjd",
+        "taxable": "Beskattningsbar",
+        "taxCode": "skatte~~POS=TRUNC",
+        "taxDescription": "skatt Beskrivning",
+        "inventoryManagement": "inventering spårning",
+        "inventoryManagementLabel": "Registrera produkt i inventeringssystem och spåra dess status",
+        "inventoryPolicy": "Neka när slutsåld",
+        "inventoryPolicyLabel": "Inte sälja produkten varianten när det inte är i lager",
+        "lowInventoryWarningThreshold": "Varna @",
+        "lowInventoryWarningThresholdLabel": "Varna kunder att produkten kommer att vara nära slutsålda när mängden når nästa tröskel",
+        "originCountry": "Ursprungsland",
+        "selectTaxCode": "Välj skattelagen"
       },
       "variantList": {
         "moreOptions": "Det finns fler alternativ för detta val.",
@@ -102,8 +148,13 @@
         "checkout": "kassan nu",
         "new": "Ny",
         "coreOrderWorkflow/created": "Skapad",
+        "coreOrderWorkflow/processing": "bearbetning",
         "coreOrderWorkflow/completed": "Avslutad",
-        "coreOrderWorkflow/canceled": "Avbrutet"
+        "coreOrderWorkflow/canceled": "Avbrutet",
+        "coreOrderWorkflow/picked": "plockade",
+        "coreOrderWorkflow/packed": "Packade",
+        "coreOrderWorkflow/labeled": "märkt",
+        "coreOrderWorkflow/shipped": "skeppas"
       },
       "cartSubTotals": {
         "head": "din kundvagn",
@@ -133,13 +184,34 @@
         "adjustedTotal": "justerat Total",
         "processor": "processor",
         "filter": {
+          "status": "Status",
+          "dateRange": "Datumintervall",
+          "shippingStatus": "Fraktstatus",
           "new": "Ny",
           "captured": "betalning Tagna",
           "shipped": "skeppas",
           "completed": "Avslutad",
           "canceled": "Avbrutet",
           "refunded": "återbetalas"
-        }
+        },
+        "capture": "Fånga",
+        "capturing": "Fångande",
+        "bulkActions": "Massåtgärder",
+        "selected": "Vald",
+        "picked": "plockade",
+        "packed": "Packade",
+        "labeled": "märkt",
+        "shipped": "skeppas",
+        "printInvoiceAndPickSheet": "Skriv ut faktura och plockningsblad",
+        "generateLabel": "Generera etikett",
+        "approveBulkOrderAction": "Ja, Ange alla Välj alla beställningar",
+        "approveBulkOrderActionRegression": "Ja, bekräfta alla utvalda beställningar",
+        "cancelBulkOrderAction": "Nej, Avbryt",
+        "orderAlreadyInState": "{{orderText}} har redan varit {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} satt till {{status}}",
+        "skippedBulkOrdersAlert": "Du har begärt att {{selectedOrders}} {{orderText}} ställs in på statusen \"{{status}}\", men {{numberOfSkippedOrders}} av dessa beställningar {{skippedOrdersText}} inte i \"{{skippedState}}\" -statusen och skulle hoppa över alla steg som leder upp till \"{{status}}\" -statusen. Är du säker på att du vill göra det här?",
+        "bulkOrdersRegressionAlert": "Du håller på att regressera {{ordersToRegress}} {{orderText}} tillbaka till \"{{status}}\" -staten. Är du säker på att du vill fortsätta med denna operation?",
+        "paymentCaptureSuccess": "Betalningar har tagits med framgång"
       },
       "orderShipping": {
         "shipTo": "Frakta till",
@@ -169,7 +241,8 @@
         "createOrLogin": "Skapa ett konto eller logga in",
         "guestOrLogin": "Logga in eller kassan som gäst",
         "continueAsGuest": "Fortsätt som gäst",
-        "guestMessage": "Du kan kassan utan att skapa ett konto. Du har en chans att skapa ett konto senare."
+        "guestMessage": "Du kan kassan utan att skapa ett konto. Du har en chans att skapa ett konto senare.",
+        "addEmail": "Lägg till e-post"
       },
       "addressBookGrid": {
         "addAddress": "Lägg till adress",
@@ -225,6 +298,10 @@
         "weibo": "Weibo"
       },
       "accountsUI": {
+        "yourOrders": "Dina beställningar",
+        "usersOrders": "Användarens order",
+        "oops": "hoppsan!",
+        "nonExistentAccount": "Användaren du letar efter existerar inte.",
         "members": "Medlemmar",
         "guest": "Gäst",
         "addMember": "Lägg till en medlem",
