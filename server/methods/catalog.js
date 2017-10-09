@@ -389,7 +389,11 @@ Meteor.methods({
           ancestors: ancestorsClone,
           title: `${sortedVariant.title}`,
           optionTitle: `${sortedVariant.optionTitle}`,
-          price: `${sortedVariant.price}` ? `${sortedVariant.price}` : `${variant.price}`
+          price: `${sortedVariant.price}` ? `${sortedVariant.price}` : `${variant.price}`,
+          height: `${sortedVariant.height}`,
+          width: `${sortedVariant.width}`,
+          weight: `${sortedVariant.weight}`,
+          length: `${sortedVariant.length}`
         });
       }
       delete clone.updatedAt;
