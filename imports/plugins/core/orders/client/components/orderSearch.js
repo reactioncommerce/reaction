@@ -49,12 +49,12 @@ class OrderSearch extends Component {
           className="search-input"
           onChange={this.handleChange}
           value={this.state.value}
-          i18nKeyPlaceholder="admin.dashboard.searchLabel"
+          i18nKeyPlaceholder="admin.table.search.placeholder"
         />
         <i className="fa fa-search fa-fw"/>
         <Components.Button
           className="search-clear"
-          i18nKeyLabel="admin.dashboard.clearSearch"
+          i18nKeyLabel="admin.table.search.clearSearch"
           label="Clear"
           onClick={this.handleClear}
         />

@@ -1,5 +1,6 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 /**
 * Taxes Schema
@@ -95,3 +96,5 @@ export const Taxes = new SimpleSchema({
     optional: true
   }
 });
+
+registerSchema("Taxes", Taxes);

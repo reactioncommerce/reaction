@@ -1,5 +1,7 @@
 /* eslint camelcase: 0 */
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
+
 
 export const addressSchema = new SimpleSchema({
   object_purpose: { type: String, allowedValues: ["QUOTE", "PURCHASE"] },
@@ -19,6 +21,8 @@ export const addressSchema = new SimpleSchema({
   metadata: { type: String, optional: true }
 });
 
+registerSchema("addressSchema", addressSchema);
+
 // Overrides the properties required for purchasing labels/shipping.
 // we don't override the purpose because for some cases like getRatesForCart we don't want to
 // purchase Labels(purpose="QUOTE" but we want all the fields required for purchasing to be present.
@@ -32,6 +36,8 @@ export const purchaseAddressSchema = new SimpleSchema([addressSchema, {
   email: { type: String, regEx: SimpleSchema.RegEx.Email, optional: true }
 }]);
 
+registerSchema("purchaseAddressSchema", purchaseAddressSchema);
+
 export const parcelSchema = new SimpleSchema({
   length: { type: Number, decimal: true, min: 0.0001 },
   width: { type: Number, decimal: true, min: 0.0001 },
@@ -43,3 +49,5 @@ export const parcelSchema = new SimpleSchema({
   extra: { type: Object, optional: true },
   metadata: { type: String, optional: true }
 });
+
+registerSchema("parcelSchema", parcelSchema);

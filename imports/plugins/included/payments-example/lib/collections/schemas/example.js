@@ -1,5 +1,6 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { PackageConfig } from "/lib/collections/schemas/registry";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 export const ExamplePackageConfig = new SimpleSchema([
   PackageConfig, {
@@ -14,6 +15,8 @@ export const ExamplePackageConfig = new SimpleSchema([
     }
   }
 ]);
+
+registerSchema("ExamplePackageConfig", ExamplePackageConfig);
 
 export const ExamplePayment = new SimpleSchema({
   payerName: {
@@ -42,3 +45,5 @@ export const ExamplePayment = new SimpleSchema({
     label: "CVV"
   }
 });
+
+registerSchema("ExamplePayment", ExamplePayment);
