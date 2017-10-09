@@ -240,8 +240,9 @@
         "loginCompleted": "Account completed",
         "createOrLogin": "Create an account, or sign in",
         "guestOrLogin": "Sign in, or checkout as a guest",
-        "continueAsGuest": "Continue as Guest",
-        "guestMessage": "You can checkout without creating an account. You'll have a chance to create an account later."
+        "continueAsGuest": "Continue as guest",
+        "guestMessage": "You can checkout without creating an account. You'll have a chance to create an account later.",
+        "addEmail": "Add email"
       },
       "addressBookGrid": {
         "addAddress": "Add address",

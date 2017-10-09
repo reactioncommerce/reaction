@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Could not create shop for current user {{user}}",
         "yourShopIsReady": "Your shop is now ready!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Shop name",
+          "emails": "Contact email",
+          "workflow": "Status"
+        }
+      },
       "app": {
         "shops": "Shops",
         "myShop": "My Shop"
