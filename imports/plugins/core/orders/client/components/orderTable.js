@@ -308,7 +308,6 @@ class OrderTable extends Component {
           className: classNames.colClassNames[columnName],
           resizable: resizable,
           sortable: sortable,
-          maxWidth: 200,
           Cell: row => (
             <OrderTableColumn
               row={row}
@@ -372,7 +371,7 @@ class OrderTable extends Component {
           />
         }
         <SortableTable
-          tableClassName={`rui order table -striped -highlight ${this.props.selectedItems.length > 0 ?
+          tableClassName={`rui order table -highlight ${this.props.selectedItems.length > 0 ?
             "table-header-hidden" :
             "table-header-visible"}`
           }
