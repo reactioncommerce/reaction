@@ -61,6 +61,34 @@
             "total": "Total",
             "shipping": "Shipping",
             "status": "Status"
+          },
+          "filter": {
+            "status": "Status",
+            "dateRange": "Date range",
+            "shippingStatus": "Shipping status",
+            "new": "New",
+            "captured": "Captured",
+            "shipped": "Shipped",
+            "completed": "Completed",
+            "canceled": "Canceled",
+            "refunded": "Refunded"
+          },
+          "search": {
+            "clearSearch": "Clear",
+            "placeholder": "Search orders"
+          },
+          "data": {
+            "status": {
+              "new": "New ",
+              "coreOrderWorkflow/created": "Created ",
+              "coreOrderWorkflow/processing": "Processing ",
+              "coreOrderWorkflow/completed": "Completed ",
+              "coreOrderWorkflow/canceled": "Canceled ",
+              "coreOrderWorkflow/picked": "Picked ",
+              "coreOrderWorkflow/packed": "Packed ",
+              "coreOrderWorkflow/labeled": "Labeled ",
+              "coreOrderWorkflow/shipped": "Shipped "
+            }
           }
         }
       }
