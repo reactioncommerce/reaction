@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Ograničena ponuda"
+      },
       "cartCompleted": {
         "yourCart": "Vaša košarica",
         "discountTotal": "Popust Ukupno",

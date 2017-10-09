@@ -1,0 +1,13 @@
+[{
+  "language": "Croatian",
+  "i18n": "hr",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "Vaše su postavke spremljene",
+        "saveFailed": "Došlo je do problema prilikom spremanja vaših postavki"
+      }
+    }
+  }
+}]

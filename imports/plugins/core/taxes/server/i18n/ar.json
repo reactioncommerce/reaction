@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": ". معدل ضرائب مخصصة محفوظة",
           "shopCustomTaxRatesFailed": ".خطأ في حفظ معدل الضريبة",
           "shopTaxMethodsSaved": ".حفظ طريقة الضريبة",
+          "shopTaxMethodsAlreadySaved": "تم تحميل تاكسكوديس بالفعل",
           "shopTaxMethodsFailed": "فشل حفظ طريقة الضرائب",
           "customRatesLabel": "المعدلات المخصصة",
           "customRatesDescription": "المعدلات المخصصة",

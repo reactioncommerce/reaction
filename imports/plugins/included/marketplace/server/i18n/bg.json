@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Не можа да се създаде магазин за текущия потребител {{user}}",
         "yourShopIsReady": "Магазинът ви вече е готов!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Име на магазина",
+          "emails": "Имейл за връзка",
+          "workflow": "Статус"
+        }
+      },
       "app": {
         "shops": "Магазини",
         "myShop": "Магазинът ми"

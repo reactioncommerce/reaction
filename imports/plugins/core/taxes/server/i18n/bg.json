@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": "данъчна ставка по поръчка спасен.",
           "shopCustomTaxRatesFailed": "спестяване на данъчната ставка за грешка.",
           "shopTaxMethodsSaved": "Спасен метод данък.",
+          "shopTaxMethodsAlreadySaved": "Вече са заредени данъчни кодове",
           "shopTaxMethodsFailed": "Неуспешно спестяване данъчен метод.",
           "customRatesLabel": "Персонализирани цени",
           "customRatesDescription": "Персонализирани цени",

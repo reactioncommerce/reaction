@@ -1,0 +1,13 @@
+[{
+  "language": "Turkish",
+  "i18n": "tr",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "Ayarlarınız kaydedildi",
+        "saveFailed": "Ayarlarınız kaydedilirken bir sorun oluştu."
+      }
+    }
+  }
+}]

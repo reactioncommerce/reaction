@@ -1,0 +1,13 @@
+[{
+  "language": "Hungarian",
+  "i18n": "hu",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "A beállításokat mentettük",
+        "saveFailed": "Hiba történt a beállítások mentése közben"
+      }
+    }
+  }
+}]

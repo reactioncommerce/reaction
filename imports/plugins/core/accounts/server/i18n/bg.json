@@ -32,7 +32,8 @@
           "groupRequired": "Групата трябва да покани администратор",
           "cannotInvite": "Не можете да каните група",
           "unableToSendInvitationEmail": "Не може да се изпрати имейл с покана",
-          "errorSendingInvite": "Възникна грешка при изпращане на покана"
+          "errorSendingInvite": "Възникна грешка при изпращане на покана",
+          "NeedToSetUsernameOrEmail": "Трябва да зададете потребителско име и електронна поща."
         }
       }
     }

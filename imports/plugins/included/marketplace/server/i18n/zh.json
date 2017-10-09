@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "无法为当前用户{{user}}创建商店",
         "yourShopIsReady": "你的商店现在准备好了！"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "店名",
+          "emails": "联系电子邮件",
+          "workflow": "状态"
+        }
+      },
       "app": {
         "shops": "商店",
         "myShop": "我的店铺"

@@ -15,7 +15,8 @@
         "applied": "aplicado",
         "code": "código",
         "codeIsExpired": "Código ha caducado",
-        "codeIsInvalid": "Código no es válido"
+        "codeIsInvalid": "Código no es válido",
+        "multiShopError": "No se pueden aplicar descuentos a un carrito o pedido de varias tiendas"
       },
       "admin": {
         "paymentSettings": {

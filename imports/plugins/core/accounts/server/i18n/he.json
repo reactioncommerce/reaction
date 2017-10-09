@@ -6,6 +6,9 @@
       "admin": {
         "settings": {
           "cancel": "בטל"
+        },
+        "groupsInvite": {
+          "NeedToSetUsernameOrEmail": "חובה להגדיר שם משתמש או דוא\"ל"
         }
       }
     }

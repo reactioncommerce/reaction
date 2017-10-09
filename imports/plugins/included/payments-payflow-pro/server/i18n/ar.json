@@ -1,0 +1,13 @@
+[{
+  "language": "Arabic",
+  "i18n": "ar",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "تم حفظ إعداداتك",
+        "saveFailed": "حدثت مشكلة أثناء حفظ الإعدادات"
+      }
+    }
+  }
+}]

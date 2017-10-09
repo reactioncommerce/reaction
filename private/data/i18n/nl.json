@@ -63,8 +63,8 @@
         "soldOut": "Uitverkocht!",
         "backOrder": "Backorder",
         "limitedSupply": "Beperkte voorraad",
-        "publishProductVisible": "is nu zichtbaar",
-        "publishProductHidden": "is nu verborgen",
+        "publishProductVisible": "{{product}} is nu zichtbaar",
+        "publishProductHidden": "{{product}} is nu verborgen",
         "startTracking": "Start Tracking",
         "addBarcode": "Streepjescode toevoegen",
         "quantity": "Aantal",
@@ -93,8 +93,8 @@
         "createVariant": "Variant aanmaken"
       },
       "gridPackage": {
-        "pkgEnabled": " is nu ingeschakeld.",
-        "pkgDisabled": " is nu uitgeschakeld."
+        "pkgEnabled": " {{app}} is nu ingeschakeld.",
+        "pkgDisabled": "{{app}} is nu uitgeschakeld."
       },
       "cartDrawer": {
         "empty": "Uw winkelwagen is leeg.",

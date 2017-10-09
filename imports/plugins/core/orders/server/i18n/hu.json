@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "A rendelés nem található",
       "order": {
+        "applyRefundToThisOrder": "Alkalmazza visszatérítés {{currencySymbol}}{{refund}} hogy ebben a sorrendben?",
+        "applyRefundDuringCancelOrder": "Ez visszatéríti a rendelés teljes {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Szeretné, hogy megszünteti ezt a rendelést?",
         "cancelOrderLabel": "Rendelés lemondása",
         "cancelOrderThenRestock": "Igen, és újratelepítésére",
@@ -59,6 +61,34 @@
             "total": "Összesen",
             "shipping": "Szállítás",
             "status": "Állapot"
+          },
+          "filter": {
+            "status": "Állapot",
+            "dateRange": "Időintervallum",
+            "shippingStatus": "Szállítási állapot",
+            "new": "Új",
+            "captured": "fizetési rögzített",
+            "shipped": "Kiszállított",
+            "completed": "befejezték",
+            "canceled": "Törölve",
+            "refunded": "Visszautalva"
+          },
+          "search": {
+            "clearSearch": "Egyértelmű",
+            "placeholder": "Keresési megbízások"
+          },
+          "data": {
+            "status": {
+              "new": "Új",
+              "coreOrderWorkflow/created": "Alkotó",
+              "coreOrderWorkflow/processing": "Feldolgozás",
+              "coreOrderWorkflow/completed": "befejezték",
+              "coreOrderWorkflow/canceled": "Törölve",
+              "coreOrderWorkflow/picked": "Válogatott",
+              "coreOrderWorkflow/packed": "Csomagolt",
+              "coreOrderWorkflow/labeled": "Jelzett",
+              "coreOrderWorkflow/shipped": "Kiszállított"
+            }
           }
         }
       }

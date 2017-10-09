@@ -1,0 +1,13 @@
+[{
+  "language": "Slovenian",
+  "i18n": "sl",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "Vaše nastavitve so shranjene",
+        "saveFailed": "Pri shranjevanju nastavitev je prišlo do težave"
+      }
+    }
+  }
+}]

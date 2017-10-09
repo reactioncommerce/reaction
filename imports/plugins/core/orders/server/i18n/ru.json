@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "Заказ не найден",
       "order": {
+        "applyRefundToThisOrder": "Применить возврат {{currencySymbol}}{{refund}} в этот заказ?",
+        "applyRefundDuringCancelOrder": "Это вернет сумму заказа {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Вы хотите отменить этот заказ?",
         "cancelOrderLabel": "Отменить заказ",
         "cancelOrderThenRestock": "Да, и пополнение запасов",
@@ -59,6 +61,34 @@
             "total": "Итого",
             "shipping": "Перевозка",
             "status": "Статус"
+          },
+          "filter": {
+            "status": "Статус",
+            "dateRange": "Диапазон дат",
+            "shippingStatus": "Статус отправки",
+            "new": "Новых",
+            "captured": "Оплаченных",
+            "shipped": "Доставлено",
+            "completed": "Завершенных",
+            "canceled": "Отмененных",
+            "refunded": "Возвращенных"
+          },
+          "search": {
+            "clearSearch": "Очистить",
+            "placeholder": "Поиск заказов"
+          },
+          "data": {
+            "status": {
+              "new": "новый",
+              "coreOrderWorkflow/created": "созданный",
+              "coreOrderWorkflow/processing": "обработка",
+              "coreOrderWorkflow/completed": "Завершенный",
+              "coreOrderWorkflow/canceled": "отменен",
+              "coreOrderWorkflow/picked": "поднято",
+              "coreOrderWorkflow/packed": "уплотненный",
+              "coreOrderWorkflow/labeled": "маркированный",
+              "coreOrderWorkflow/shipped": "Высылаем"
+            }
           }
         }
       }
