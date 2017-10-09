@@ -234,10 +234,11 @@ Meteor.methods({
     });
     let profileCurrency = user.profile && user.profile.currency;
     if (!profileCurrency) {
+      localeCurrency = localeCurrency[0];
       if (shop.currencies[localeCurrency] && shop.currencies[localeCurrency].enabled) {
-        profileCurrency = localeCurrency.currency;
+        profileCurrency = localeCurrency;
       } else {
-        profileCurrency = shop.currency;
+        profileCurrency = shop.currency.split(",")[0];
       }
 
       Collections.Accounts.update(user._id, { $set: { "profile.currency": profileCurrency } });

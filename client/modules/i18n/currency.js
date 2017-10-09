@@ -69,7 +69,7 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
     return false;
   }
 
-  // uses the localStorage currency instead of locale
+  // get user currency instead of locale currency
   const userCurrency = findCurrency(locale.currency, defaultShopCurrency);
 
   // for the cases then we have only one price. It is a number.
