@@ -8,7 +8,6 @@ import { check, Match } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { getSlug } from "/lib/api";
 import { Media, Orders, Products, Shops, Packages } from "/lib/collections";
-import * as Schemas from "/lib/collections/schemas";
 import { Logger, Hooks, Reaction } from "/server/api";
 
 
@@ -576,17 +575,48 @@ export const methods = {
       emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
     }
 
-    const billing = orderCreditMethod(order);
-    const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
+    let subtotal = 0;
+    let shippingCost = 0;
+    let taxes = 0;
+    let discounts = 0;
+    let total = 0;
+    let amount = 0;
+    let address = {};
+    let paymentMethod = {};
+    let shippingAddress = {};
+    let tracking;
+    let carrier = "";
+    for (const billingRecord of order.billing) {
+      subtotal += billingRecord.invoice.subtotal;
+      shippingCost += billingRecord.invoice.shipping;
+      taxes += billingRecord.invoice.taxes;
+      discounts += billingRecord.invoice.discounts;
+      total += billingRecord.invoice.total;
+      amount += billingRecord.paymentMethod.amount;
+      address = billingRecord.address;
+      paymentMethod = billingRecord.paymentMethod;
+    }
+
+    for (const shippingRecord of order.shipping) {
+      shippingAddress = shippingRecord.address;
+      carrier = shippingRecord.shipmentMethod.carrier;
+      tracking = shippingRecord.tracking;
+    }
+
     // TODO: Update */refunds/list for marketplace
     const refundResult = Meteor.call("orders/refunds/list", order);
     const refundTotal = Array.isArray(refundResult) && refundResult.reduce((acc, refund) => acc + refund.amount, 0);
 
     // Get user currency formatting from shops collection, remove saved rate
-    const userCurrencyFormatting = _.omit(shop.currencies[billing.currency.userCurrency], ["enabled", "rate"]);
+    // using billing[0] here to get the currency and exchange rate used because
+    // in multishop mode, the currency object is different across shops
+    // and it's inconsistent, i.e. sometimes there's no exchangeRate field in the secondary
+    // shop's currency array.
+    // TODO: Remove billing[0] and properly aquire userCurrency and exchange rate
+    const userCurrencyFormatting = _.omit(shop.currencies[order.billing[0].currency.userCurrency], ["enabled", "rate"]);
 
     // Get user currency exchange rate at time of transaction
-    const userCurrencyExchangeRate = billing.currency.exchangeRate;
+    const userCurrencyExchangeRate = order.billing[0].currency.exchangeRate;
 
     // Combine same products into single "product" for display purposes
     const combinedItems = [];
@@ -673,45 +703,45 @@ export const methods = {
         order: order,
         billing: {
           address: {
-            address: billing.address.address1,
-            city: billing.address.city,
-            region: billing.address.region,
-            postal: billing.address.postal
+            address: address.address1,
+            city: address.city,
+            region: address.region,
+            postal: address.postal
           },
-          paymentMethod: billing.paymentMethod.storedCard || billing.paymentMethod.processor,
+          paymentMethod: paymentMethod.storedCard || paymentMethod.processor,
           subtotal: accounting.formatMoney(
-            billing.invoice.subtotal * userCurrencyExchangeRate, userCurrencyFormatting
+            subtotal * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           shipping: accounting.formatMoney(
-            billing.invoice.shipping * userCurrencyExchangeRate, userCurrencyFormatting
+            shippingCost * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           taxes: accounting.formatMoney(
-            billing.invoice.taxes * userCurrencyExchangeRate, userCurrencyFormatting
+            taxes * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           discounts: accounting.formatMoney(
-            billing.invoice.discounts * userCurrencyExchangeRate, userCurrencyFormatting
+            discounts * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           refunds: accounting.formatMoney(
             refundTotal * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           total: accounting.formatMoney(
-            billing.invoice.total * userCurrencyExchangeRate, userCurrencyFormatting
+            total * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           adjustedTotal: accounting.formatMoney(
-            (billing.paymentMethod.amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting
+            (amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting
           )
         },
         combinedItems: combinedItems,
         orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
         orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
         shipping: {
-          tracking: shippingRecord.tracking,
-          carrier: shippingRecord.shipmentMethod.carrier,
+          tracking: tracking,
+          carrier: carrier,
           address: {
-            address: shippingRecord.address.address1,
-            city: shippingRecord.address.city,
-            region: shippingRecord.address.region,
-            postal: shippingRecord.address.postal
+            address: shippingAddress.address1,
+            city: shippingAddress.city,
+            region: shippingAddress.region,
+            postal: shippingAddress.postal
           }
         }
       };
