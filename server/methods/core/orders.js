@@ -731,7 +731,7 @@ export const methods = {
         },
         combinedItems: combinedItems,
         orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
-        orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
+        orderUrl: `/cart/completed?_id=${order.cartId}`,
         shipping: {
           tracking: tracking,
           carrier: carrier,
