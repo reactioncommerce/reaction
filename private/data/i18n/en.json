@@ -252,11 +252,11 @@
       "productVariant": {
         "addVariantOptions": "Add options to enable 'Add to Cart' button",
         "inventoryQuantity": "Quantity",
-        "title": "Label",
+        "title": "Title",
         "price": "Price",
         "optionTitle": "Option",
         "barcode": "Barcode",
-        "compareAtPrice": "MSRP",
+        "compareAtPrice": "Compare at price",
         "fulfillmentService": "Fulfillment service",
         "weight": "Weight",
         "length": "Length",
