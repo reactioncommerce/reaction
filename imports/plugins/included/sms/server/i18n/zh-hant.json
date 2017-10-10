@@ -1,0 +1,31 @@
+[{
+  "i18n": "zh-Hant",
+  "ns": "reaction-sms",
+  "translation": {
+    "reaction-sms": {
+      "admin": {
+        "dashboard": {
+          "smsLabel": "短信",
+          "smsTitle": "短信",
+          "smsDescription": "通知"
+        },
+        "settings": {
+          "smsSettingsLabel": "短信設置",
+          "smsProvider": "短信提供商",
+          "providerName": "提供程序名稱",
+          "selectProvider": "選擇短信供應商",
+          "phoneNumber": "Sms電話號碼",
+          "apiKey": "API密鑰",
+          "apiToken": "API令牌/秘密"
+        },
+        "alerts": {
+          "noApiKey": "請添加API密鑰",
+          "noApiToken": "請添加API TOKEN / Secret",
+          "noSmsProvider": "請選擇短信提供商",
+          "noSmsPhone": "請添加您的短信提供商為您提供的電話號碼",
+          "saveSuccess": "短信設置已保存"
+        }
+      }
+    }
+  }
+}]

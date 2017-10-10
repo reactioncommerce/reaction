@@ -1,0 +1,29 @@
+[{
+  "i18n": "zh-Hant",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "貨運標簽和包裹跟蹤"
+        },
+        "shippingGrid": {
+          "carrier": "運營商",
+          "enabled": "啟用"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "沒有配置運輸載體。",
+          "editApiKey": "編輯API密鑰",
+          "carrierSaved": "運營商成功保存。",
+          "carrierFailed": "更新時出錯載體。",
+          "refresh": "刷新方法"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "設置保存！七寶API現在已啟用。"
+      }
+    }
+  }
+}]

@@ -1,0 +1,18 @@
+[{
+  "i18n": "zh-Hant",
+  "ns": "reaction-inventory",
+  "translation": {
+    "reaction-inventory": {
+      "admin": {
+        "dashboard": {
+          "inventoryLabel": "庫存",
+          "inventoryTitle": "庫存",
+          "inventoryDescription": "庫存公用事業"
+        },
+        "settings": {
+          "inventorySettingsLabel": "清單設置"
+        }
+      }
+    }
+  }
+}]

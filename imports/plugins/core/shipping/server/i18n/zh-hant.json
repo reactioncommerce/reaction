@@ -1,0 +1,81 @@
+[{
+  "i18n": "zh-Hant",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "配送",
+          "shippingTitle": "配送",
+          "shippingDescription": "提供運費"
+        },
+        "settings": {
+          "shippingLabel": "配送"
+        }
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "選擇配送方式",
+        "noShippingMethods": "沒有配送方式配置。",
+        "contactAdmin": "請聯系店主管理員。",
+        "configureNow": "現在配置。",
+        "shipping": "配送"
+      },
+      "shipping": {
+        "addShippingProvider": "添加物流供應商",
+        "editShippingProvider": "編輯物流供應商",
+        "addShippingMethod": "添加配送方式",
+        "editShippingMethod": "編輯配送方式",
+        "deleteShippingMethod": "刪除配送方式",
+        "noSettingsForThisView": "對於這種觀點沒有設置",
+        "noShippingMethods": "沒有配送方式配置。",
+        "removeShippingMethodConfirm": "你確定要刪除{{method}}？",
+        "removeShippingMethodTitle": "除去配送方式",
+        "shippingMethodDeleted": "這種配送方式已被刪除。",
+        "removeShippingProvider": "除去物流供應商",
+        "removeShippingProviderConfirm": "你確定要刪除{{provider}}？",
+        "shippingProviderSaved": "物流供應商保存。",
+        "shippingProviderUpdated": "物流供應商的數據更新。",
+        "shippingMethodRateAdded": "配送方式收費已加入。",
+        "shippingMethodRateUpdated": "配送方式收費已更新。",
+        "name": "名字",
+        "label": "標簽",
+        "group": "組",
+        "cost": "費用",
+        "handling": "處理",
+        "rate": "率",
+        "enabled": "啟用",
+        "disabled": "殘疾人",
+        "addRate": "添加率",
+        "updateRate": "更新{{name}}率",
+        "addNewCondition": "新增條件",
+        "deleteCondition": "刪除條件",
+        "provider": {
+          "name": "服務代碼",
+          "label": "公共標簽",
+          "enabled": "啟用"
+        }
+      },
+      "shippingMethod": {
+        "name": "方法名稱",
+        "label": "公共標簽",
+        "group": "組",
+        "cost": "費用",
+        "handling": "處理",
+        "rate": "率",
+        "enabled": "啟用",
+        "matchingCartRanges": "匹配車范圍",
+        "validRanges": {
+          "begin": "開始",
+          "end": "結束"
+        },
+        "matchingLocales": "匹配的語言環境",
+        "validLocales": {
+          "origination": "從",
+          "destination": "至",
+          "deliveryBegin": "運送時間預估。",
+          "deliveryEnd": "交貨時間預估。"
+        }
+      }
+    }
+  }
+}]

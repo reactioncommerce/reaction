@@ -1,0 +1,40 @@
+[{
+  "language": "Traditional Chinese",
+  "i18n": "zh-Hant",
+  "ns": "discount-codes",
+  "translation": {
+    "reaction-discounts": {
+      "checkoutPayment": {
+        "applyDiscount": "申請",
+        "discountError": "抱歉，申請折扣的錯誤。"
+      },
+      "discounts": {
+        "enterItHere": "有代碼？在此輸入。",
+        "discountLabel": "優惠碼",
+        "submitted": "折扣保存並應用",
+        "applied": "應用的",
+        "code": "碼",
+        "codeIsExpired": "代碼已過期",
+        "codeIsInvalid": "代碼無效"
+      },
+      "admin": {
+        "paymentSettings": {
+          "codesLabel": "代碼"
+        },
+        "settings": {
+          "codesLabel": "代碼",
+          "noCustomDiscountCodesFound": "沒有折扣代碼中。"
+        },
+        "discountGrid": {
+          "code": "代碼",
+          "calculation": {
+            "method": "計算"
+          },
+          "conditions": {
+            "redemptionLimit": "限制"
+          }
+        }
+      }
+    }
+  }
+}]

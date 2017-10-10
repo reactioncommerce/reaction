@@ -1,0 +1,88 @@
+[{
+  "i18n": "zh-Hant",
+  "ns": "reaction-email",
+  "translation": {
+    "reaction-email": {
+      "admin": {
+        "dashboard": {
+          "emailLabel": "電子郵件",
+          "emailTitle": "電子郵件",
+          "emailDescription": "電子郵件設置"
+        },
+        "logs": {
+          "headers": {
+            "emailLogs": "電子郵件日志",
+            "email": "電子郵件設置",
+            "data": {
+              "subject": "主題",
+              "to": "至"
+            },
+            "sent": "已發送",
+            "status": "狀態",
+            "updated": "已發送"
+          },
+          "noEmails": "尚未發送任何電子郵件",
+          "limit": "數量",
+          "retry": "重試",
+          "noneAvailble": "無"
+        },
+        "settings": {
+          "mailProvider": "郵件提供商",
+          "editSettings": "編輯設置",
+          "emailSettingsLabel": "電子郵件設置",
+          "emailSettingsTitle": "電子郵件設置",
+          "emailSettingsDescription": "電子郵件設置",
+          "fieldNotSet": "沒有設置",
+          "status": "狀態",
+          "service": "服務",
+          "user": "用戶",
+          "password": "密碼",
+          "host": "主機",
+          "port": "端口",
+          "passwordShow": "顯示",
+          "passwordHide": "隱藏"
+        }
+      },
+      "mail": {
+        "headers": {
+          "email": "電子郵件設置",
+          "emailSettings": "電子郵件設置",
+          "config": "配置",
+          "settings": "郵件提供商",
+          "actions": "行動"
+        },
+        "settings": {
+          "selectService": "選擇一項服務...",
+          "custom": "自定義"
+        },
+        "logs": {
+          "headers": {
+            "emailLogs": "電子郵件日志",
+            "email": "電子郵件設置",
+            "subject": "主題",
+            "sent": "已發送",
+            "status": "狀態"
+          },
+          "noEmails": "尚未發送任何電子郵件",
+          "limit": "數量",
+          "retry": "重試",
+          "noneAvailble": "無"
+        },
+        "alerts": {
+          "error": "錯誤：{{error}}",
+          "resendSuccess": "嘗試重新發送電子郵件到 {{email}}",
+          "missingService": "請選擇郵件提供商服務",
+          "userPassRequired": "{{service}}需要 SMTP 用戶和密碼",
+          "allFieldsRequired": "自定義服務的所有字段都必須填寫！",
+          "portNaN": "端口必須為數字！",
+          "connectionFailed": "連接失敗！",
+          "saveAnyway": "您依然想保存設置嗎？",
+          "saveSuccess": "郵件設置已保存。",
+          "saveFailed": "保存郵件設置失敗。{{error}}",
+          "cantSendEmail": "服務器錯誤：無法發送電子郵件通知。",
+          "emailSent": "電子郵件通知發送。"
+        }
+      }
+    }
+  }
+}]

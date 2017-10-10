@@ -1,0 +1,24 @@
+[{
+  "i18n": "zh-Hant",
+  "ns": "reaction-catalog",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "shortcut": {
+          "catalogLabel": "目錄",
+          "catalogTitle": "目錄"
+        },
+        "dashboard": {
+          "catalogLabel": "目錄",
+          "catalogTitle": "目錄",
+          "catalogDescription": "市場目錄"
+        },
+        "settings": {
+          "catalogSettingsLabel": "目錄設置",
+          "catalogSettingsTitle": "目錄設置",
+          "catalogSettingsDescription": "市場目錄"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,23 @@
+[{
+  "language": "Traditional Chinese",
+  "i18n": "zh-Hant",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "價格",
+          "noCustomDiscountRatesFound": "沒有貼現率找到。",
+          "settingsSaveSuccess": "設置保存成功。",
+          "settingsSaveFailure": "無法保存設置。",
+          "confirmRateDelete": "確認貼現率刪除。"
+        },
+        "discountGrid": {
+          "label": "標簽",
+          "discountMethod": "方法",
+          "discount": "折扣"
+        }
+      }
+    }
+  }
+}]

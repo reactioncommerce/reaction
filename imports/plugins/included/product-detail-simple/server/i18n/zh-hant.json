@@ -1,0 +1,22 @@
+[{
+  "i18n": "zh-Hant",
+  "ns": "product-detail-simple",
+  "translation": {
+    "product-detail-simple": {
+      "admin": {
+        "settings": {
+          "productDetailsLabel": "產品詳情"
+        },
+        "inventoryAlerts": {
+          "adjustedQuantity": "您的產品數量進行了調整，在股票的最大數量"
+        },
+        "mediaGallery": {
+          "deleteImage": "點擊刪除圖片",
+          "addedImage": "這是一個新的形象。發布以保存更改。",
+          "removedImage": "圖片已被刪除。發布以保存更改。"
+        }
+      },
+      "availableOptions": "可用選項"
+    }
+  }
+}]

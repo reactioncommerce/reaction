@@ -1,0 +1,43 @@
+[{
+  "language": "Traditional Chinese",
+  "i18n": "zh-Hant",
+  "ns": "reaction-paypal",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "Paypal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "PayPal付款"
+        },
+        "paymentMethod": {
+          "expressLabel": "表現",
+          "creditCardLabel": "信用卡"
+        },
+        "paymentSettings": {
+          "paypalLabel": "Paypal",
+          "paypalSettingsLabel": "Paypal",
+          "paypalExpressCredentials": "沒有一個PayPal的用戶名，密碼和簽名？",
+          "paypalExpressGetCredentialsHere": "這裡獲取一個。",
+          "paypalPayflowCredentials": "沒有一個PayPal客戶端ID和秘密",
+          "paypalPayflowGetCredentialsHere": "在這裡得到他們。"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "完成訂單",
+        "paymentMethod": {
+          "expressButtonLabel": "使用PayPal付款",
+          "expressNotConfigured": "PayPal快速未配置。",
+          "expressNotAvailable": "PayPal快速不可用",
+          "submitting": "提交",
+          "invalidCard": "哎呀！信用卡號碼無效。",
+          "unknownError": "哎呀！出現未知錯誤",
+          "resubmit": "重新提交支付"
+        }
+      }
+    }
+  }
+}]

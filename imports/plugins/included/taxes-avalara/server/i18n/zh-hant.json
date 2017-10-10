@@ -1,0 +1,61 @@
+[{
+  "language": "Traditional Chinese",
+  "i18n": "zh-Hant",
+  "ns": "taxes-avalara",
+  "translation": {
+    "reaction-taxes": {
+      "settings": {
+        "apiLoginId": "Avalara API登錄ID",
+        "username": "用戶名",
+        "password": "密碼",
+        "companyCode": "公司代碼",
+        "shippingTaxCode": "航運稅法",
+        "mode": "生產模式",
+        "performTaxCalculation": "執行計稅",
+        "addressValidation": "地址驗証",
+        "enableAddressValidationByCountry": "啟用按國家地址驗証",
+        "enableLogging": "啟用日志記錄",
+        "logRetentionDuration": "日志保留時間",
+        "requestTimeout": "請求超時",
+        "commitDocuments": "提交文件",
+        "administratorsPanel": "管理員面板",
+        "testCredentialsSuccess": "連接測試成功",
+        "testCredentialsFailed": "連接測試失敗，請檢查憑據",
+        "apiError": "Avalara配置不正確"
+      },
+      "logGrid": {
+        "noLogsFound": "沒有找到記錄",
+        "columns": {
+          "data": {
+            "request": {
+              "data": {
+                "date": "日期",
+                "type": "文件類型"
+              }
+            }
+          },
+          "date": "日期",
+          "docType": "文件類型"
+        }
+      },
+      "admin": {
+        "shortcut": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara"
+        },
+        "dashboard": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara",
+          "avalaraDescription": "Avalara稅率",
+          "testCredentials": "測試憑據"
+        },
+        "taxSettings": {
+          "avalaraLabel": "Avalara",
+          "avalaraSettingsLabel": "Avalara",
+          "formTitle": "稅收設置",
+          "entityCodeCustomLabel": "設置自定義值"
+        }
+      }
+    }
+  }
+}]

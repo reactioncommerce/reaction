@@ -1,0 +1,38 @@
+[{
+  "i18n": "zh-Hant",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "主題",
+          "themesTitle": "主題",
+          "themesDescription": "主題和UI組件"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "編輯主題",
+        "duplicateTheme": "重復的主題",
+        "duplicateThemeError": "無法復制主題",
+        "publishThemeError": "`無法發布主題{{themeName}}",
+        "components": {
+          "navbar": "導航欄",
+          "button": "按鍵",
+          "sortableTable": {
+            "filterPlaceholder": "過濾數據",
+            "tableText": {
+              "noDataMessage": "未找到結果",
+              "previousText": "上一頁",
+              "nextText": "下一個",
+              "loadingText": "加載中...",
+              "noDataText": "未找到結果",
+              "pageText": "頁",
+              "ofText": "的",
+              "rowsText": "行"
+            }
+          }
+        }
+      }
+    }
+  }
+}]

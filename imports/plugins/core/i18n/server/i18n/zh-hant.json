@@ -1,0 +1,24 @@
+[{
+  "i18n": "zh-Hant",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "shopLocalization": "商店本地化",
+          "enabledCurrencies": "貨幣",
+          "enabledLanguages": "語言",
+          "allOn": "全部打開",
+          "allOff": "全部關閉"
+        },
+        "baseUOM": "基本度量單位",
+        "currency": "基本幣種",
+        "currencyTooltip": "商店默認幣種",
+        "language": "基本語言",
+        "languageTooltip": "如果設備語言檢測失敗，將使用此種語言",
+        "timezone": "時區",
+        "timezoneOptions": "選擇時區"
+      }
+    }
+  }
+}]

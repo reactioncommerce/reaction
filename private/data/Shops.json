@@ -518,7 +518,11 @@
     "enabled": false
   }, {
     "label": "中文(简体)",
-    "i18n": "zh",
+    "i18n": "zh-Hans",
+    "enabled": true
+  }, {
+    "label": "中文(繁體)",
+    "i18n": "zh-Hant",
     "enabled": true
   }, {
     "label": "České",
@@ -1109,7 +1113,7 @@
         "continent": "AS",
         "capital": "Beijing",
         "currency": "CNY",
-        "languages": "zh"
+        "languages": "zh-Hans,en"
       },
       "CO": {
         "name": "Colombia",
@@ -1582,7 +1586,7 @@
         "continent": "AS",
         "capital": "City of Victoria",
         "currency": "HKD",
-        "languages": "zh,en"
+        "languages": "zh-Hant,zh-Hans,en"
       },
       "HM": {
         "name": "Heard Island and McDonald Islands",
@@ -2059,7 +2063,7 @@
         "continent": "AS",
         "capital": "",
         "currency": "MOP",
-        "languages": "zh,pt"
+        "languages": "zh-Hant,zh-Hans,pt,en"
       },
       "MP": {
         "name": "Northern Mariana Islands",
@@ -2509,7 +2513,7 @@
         "continent": "AS",
         "capital": "Singapore",
         "currency": "SGD",
-        "languages": "en,ms,ta,zh"
+        "languages": "en,ms,ta,zh-Hans,zh-Hant"
       },
       "SH": {
         "name": "Saint Helena",
@@ -2779,7 +2783,7 @@
         "continent": "AS",
         "capital": "Taipei",
         "currency": "TWD",
-        "languages": "zh"
+        "languages": "zh-Hant,en"
       },
       "TZ": {
         "name": "Tanzania",
@@ -4321,7 +4325,7 @@
         "continent": "AS",
         "capital": "Beijing",
         "currency": "CNY",
-        "languages": "zh"
+        "languages": "zh-Hans,en"
       },
       "CO": {
         "name": "Colombia",
@@ -4794,7 +4798,7 @@
         "continent": "AS",
         "capital": "City of Victoria",
         "currency": "HKD",
-        "languages": "zh,en"
+        "languages": "zh-Hant,zh-Hans,en"
       },
       "HM": {
         "name": "Heard Island and McDonald Islands",
@@ -5271,7 +5275,7 @@
         "continent": "AS",
         "capital": "",
         "currency": "MOP",
-        "languages": "zh,pt"
+        "languages": "zh-Hant,zh-Hans,pt"
       },
       "MP": {
         "name": "Northern Mariana Islands",
@@ -5721,7 +5725,7 @@
         "continent": "AS",
         "capital": "Singapore",
         "currency": "SGD",
-        "languages": "en,ms,ta,zh"
+        "languages": "en,ms,ta,zh-Hans,zh-Hant"
       },
       "SH": {
         "name": "Saint Helena",
@@ -5991,7 +5995,7 @@
         "continent": "AS",
         "capital": "Taipei",
         "currency": "TWD",
-        "languages": "zh"
+        "languages": "zh-Hant,en"
       },
       "TZ": {
         "name": "Tanzania",
