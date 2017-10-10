@@ -6,9 +6,7 @@ import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { getSlug } from "/lib/api";
 import { Media, Orders, Products, Shops, Packages } from "/lib/collections";
-import * as Schemas from "/lib/collections/schemas";
 import { Logger, Hooks, Reaction } from "/server/api";
 
 
@@ -565,7 +563,7 @@ export const methods = {
 
     // Get Shop information
     const shop = Shops.findOne(order.shopId);
-
+    // TODO need to make this fully support multi-shop. Now it's just collapsing into one
     // Get shop logo, if available
     let emailLogo;
     if (Array.isArray(shop.brandAssets)) {
@@ -576,17 +574,45 @@ export const methods = {
       emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
     }
 
-    const billing = orderCreditMethod(order);
-    const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
-    // TODO: Update */refunds/list for marketplace
+    let subtotal = 0;
+    let shippingCost = 0;
+    let taxes = 0;
+    let discounts = 0;
+    let amount = 0;
+    let address = {};
+    let paymentMethod = {};
+    let shippingAddress = {};
+    let tracking;
+    let carrier = "";
+    for (const billingRecord of order.billing) {
+      subtotal += billingRecord.invoice.subtotal;
+      taxes += billingRecord.invoice.taxes;
+      discounts += billingRecord.invoice.discounts;
+      amount += billingRecord.paymentMethod.amount;
+      address = billingRecord.address;
+      paymentMethod = billingRecord.paymentMethod;
+    }
+
+    for (const shippingRecord of order.shipping) {
+      shippingAddress = shippingRecord.address;
+      carrier = shippingRecord.shipmentMethod.carrier;
+      tracking = shippingRecord.tracking;
+      shippingCost += shippingRecord.shipmentMethod.rate;
+    }
+
     const refundResult = Meteor.call("orders/refunds/list", order);
     const refundTotal = Array.isArray(refundResult) && refundResult.reduce((acc, refund) => acc + refund.amount, 0);
 
     // Get user currency formatting from shops collection, remove saved rate
-    const userCurrencyFormatting = _.omit(shop.currencies[billing.currency.userCurrency], ["enabled", "rate"]);
+    // using billing[0] here to get the currency and exchange rate used because
+    // in multishop mode, the currency object is different across shops
+    // and it's inconsistent, i.e. sometimes there's no exchangeRate field in the secondary
+    // shop's currency array.
+    // TODO: Remove billing[0] and properly aquire userCurrency and exchange rate
+    const userCurrencyFormatting = _.omit(shop.currencies[order.billing[0].currency.userCurrency], ["enabled", "rate"]);
 
     // Get user currency exchange rate at time of transaction
-    const userCurrencyExchangeRate = billing.currency.exchangeRate;
+    const userCurrencyExchangeRate = order.billing[0].currency.exchangeRate;
 
     // Combine same products into single "product" for display purposes
     const combinedItems = [];
@@ -673,45 +699,45 @@ export const methods = {
         order: order,
         billing: {
           address: {
-            address: billing.address.address1,
-            city: billing.address.city,
-            region: billing.address.region,
-            postal: billing.address.postal
+            address: address.address1,
+            city: address.city,
+            region: address.region,
+            postal: address.postal
           },
-          paymentMethod: billing.paymentMethod.storedCard || billing.paymentMethod.processor,
+          paymentMethod: paymentMethod.storedCard || paymentMethod.processor,
           subtotal: accounting.formatMoney(
-            billing.invoice.subtotal * userCurrencyExchangeRate, userCurrencyFormatting
+            subtotal * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           shipping: accounting.formatMoney(
-            billing.invoice.shipping * userCurrencyExchangeRate, userCurrencyFormatting
+            shippingCost * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           taxes: accounting.formatMoney(
-            billing.invoice.taxes * userCurrencyExchangeRate, userCurrencyFormatting
+            taxes * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           discounts: accounting.formatMoney(
-            billing.invoice.discounts * userCurrencyExchangeRate, userCurrencyFormatting
+            discounts * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           refunds: accounting.formatMoney(
             refundTotal * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           total: accounting.formatMoney(
-            billing.invoice.total * userCurrencyExchangeRate, userCurrencyFormatting
+            (subtotal + shippingCost) * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           adjustedTotal: accounting.formatMoney(
-            (billing.paymentMethod.amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting
+            (amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting
           )
         },
         combinedItems: combinedItems,
         orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
-        orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
+        orderUrl: `cart/completed?_id=${order.cartId}`,
         shipping: {
-          tracking: shippingRecord.tracking,
-          carrier: shippingRecord.shipmentMethod.carrier,
+          tracking: tracking,
+          carrier: carrier,
           address: {
-            address: shippingRecord.address.address1,
-            city: shippingRecord.address.city,
-            region: shippingRecord.address.region,
-            postal: shippingRecord.address.postal
+            address: shippingAddress.address1,
+            city: shippingAddress.city,
+            region: shippingAddress.region,
+            postal: shippingAddress.postal
           }
         }
       };
@@ -946,31 +972,23 @@ export const methods = {
    * loop through order's payments and find existing refunds.
    * @summary Get a list of refunds for a particular payment method.
    * @param {Object} order - order object
-   * @return {null} no return value
+   * @return {Array} Array contains refund records
    */
   "orders/refunds/list": function (order) {
     check(order, Object);
-    const paymentMethod = orderCreditMethod(order).paymentMethod;
 
     if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    this.unblock();
-
-    const future = new Future();
-    const processor = paymentMethod.processor.toLowerCase();
-
-    Meteor.call(`${processor}/refund/list`, paymentMethod, (error, result) => {
-      if (error) {
-        future.return(error);
-      } else {
-        check(result, [Schemas.Refund]);
-        future.return(result);
-      }
-    });
-
-    return future.wait();
+    const refunds = [];
+    for (const billingRecord of order.billing) {
+      const paymentMethod = billingRecord.paymentMethod;
+      const processor = paymentMethod.processor.toLowerCase();
+      const shopRefunds = Meteor.call(`${processor}/refund/list`, paymentMethod);
+      refunds.push(...shopRefunds);
+    }
+    return refunds;
   },
 
   /**
