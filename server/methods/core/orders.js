@@ -563,7 +563,7 @@ export const methods = {
 
     // Get Shop information
     const shop = Shops.findOne(order.shopId);
-
+    // TODO need to make this fully support multi-shop. Now it's just collapsing into one
     // Get shop logo, if available
     let emailLogo;
     if (Array.isArray(shop.brandAssets)) {
@@ -600,7 +600,6 @@ export const methods = {
       shippingCost += shippingRecord.shipmentMethod.rate;
     }
 
-    // TODO: Update */refunds/list for marketplace
     const refundResult = Meteor.call("orders/refunds/list", order);
     const refundTotal = Array.isArray(refundResult) && refundResult.reduce((acc, refund) => acc + refund.amount, 0);
 
@@ -730,7 +729,7 @@ export const methods = {
         },
         combinedItems: combinedItems,
         orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
-        orderUrl: `/cart/completed?_id=${order.cartId}`,
+        orderUrl: `cart/completed?_id=${order.cartId}`,
         shipping: {
           tracking: tracking,
           carrier: carrier,
