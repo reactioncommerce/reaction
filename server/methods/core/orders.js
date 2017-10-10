@@ -579,7 +579,6 @@ export const methods = {
     let shippingCost = 0;
     let taxes = 0;
     let discounts = 0;
-    let total = 0;
     let amount = 0;
     let address = {};
     let paymentMethod = {};
@@ -588,10 +587,8 @@ export const methods = {
     let carrier = "";
     for (const billingRecord of order.billing) {
       subtotal += billingRecord.invoice.subtotal;
-      shippingCost += billingRecord.invoice.shipping;
       taxes += billingRecord.invoice.taxes;
       discounts += billingRecord.invoice.discounts;
-      total += billingRecord.invoice.total;
       amount += billingRecord.paymentMethod.amount;
       address = billingRecord.address;
       paymentMethod = billingRecord.paymentMethod;
@@ -601,6 +598,7 @@ export const methods = {
       shippingAddress = shippingRecord.address;
       carrier = shippingRecord.shipmentMethod.carrier;
       tracking = shippingRecord.tracking;
+      shippingCost += shippingRecord.shipmentMethod.rate;
     }
 
     // TODO: Update */refunds/list for marketplace
@@ -725,7 +723,7 @@ export const methods = {
             refundTotal * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           total: accounting.formatMoney(
-            total * userCurrencyExchangeRate, userCurrencyFormatting
+            (subtotal + shippingCost) * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           adjustedTotal: accounting.formatMoney(
             (amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting
