@@ -61,7 +61,7 @@ Template.accountProfile.helpers({
   doesUserExist() {
     const targetUserId = Reaction.Router.getQueryParam("userId");
     if (!targetUserId) {
-      // If userId isn't in this route's query parameters, then a user 
+      // If userId isn't in this route's query parameters, then a user
       // is viewing his/her own profile.
       return true;
     }

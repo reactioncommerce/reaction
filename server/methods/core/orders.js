@@ -6,7 +6,6 @@ import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { getSlug } from "/lib/api";
 import { Media, Orders, Products, Shops, Packages } from "/lib/collections";
 import { Logger, Hooks, Reaction } from "/server/api";
 
