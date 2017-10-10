@@ -20,6 +20,12 @@
         "myShop": "Moj dućan"
       },
       "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect nije omogućen za ovu aplikaciju. Obratite se administratoru.",
+          "shopEmailNotConfigured": "Prvo konfigurirajte svoju trgovinu e-poštom.",
+          "shopAddressNotConfigured": "Prvo konfigurirajte svoju trgovinu",
+          "shopNotActive": "Trgovina nije aktivna. Kontaktirajte vlasnika tržišta."
+        },
         "settings": {
           "dashboardMarketplaceSettingsSaved": "Postavke tržišta uspješno su spremljene!",
           "dashboardMarketplaceSettingsFailed": "Spremanje postavki tržišta nije uspjelo"

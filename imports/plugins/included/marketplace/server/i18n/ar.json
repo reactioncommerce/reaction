@@ -20,6 +20,12 @@
         "myShop": "متجري"
       },
       "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "لم يتم تمكين الشريط اتصال لهذا التطبيق. يرجى الاتصال المشرف.",
+          "shopEmailNotConfigured": "يرجى تهيئة البريد الإلكتروني للمتجر أولا.",
+          "shopAddressNotConfigured": "يرجى تكوين عنوان المحل أولا",
+          "shopNotActive": "متجرك غير نشط. يرجى الاتصال بمالك السوق."
+        },
         "settings": {
           "dashboardMarketplaceSettingsSaved": "تم حفظ إعدادات ماركتبليس بنجاح!",
           "dashboardMarketplaceSettingsFailed": "أخفق حفظ إعدادات ماركتبليس"
