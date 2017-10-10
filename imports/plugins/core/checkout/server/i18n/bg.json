@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Ограничена доставка"
+      },
       "cartCompleted": {
         "yourCart": "Вашата кошница",
         "discountTotal": "Отстъпка Общо",

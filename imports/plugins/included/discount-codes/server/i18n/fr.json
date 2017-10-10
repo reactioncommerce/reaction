@@ -15,7 +15,8 @@
         "applied": "appliqué",
         "code": "code",
         "codeIsExpired": "Code est expiré",
-        "codeIsInvalid": "Le code est invalide"
+        "codeIsInvalid": "Le code est invalide",
+        "multiShopError": "Les rabais ne peuvent pas être appliqués à un panier ou une commande multi-boutique"
       },
       "admin": {
         "paymentSettings": {

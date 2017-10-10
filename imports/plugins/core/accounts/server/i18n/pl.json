@@ -32,7 +32,8 @@
           "groupRequired": "Grupa musi zaprosić administratora",
           "cannotInvite": "Nie można zaprosić do grupy",
           "unableToSendInvitationEmail": "Nie można wysłać e-maila z zaproszeniem",
-          "errorSendingInvite": "Podczas wysyłania zaproszenia wystąpił błąd"
+          "errorSendingInvite": "Podczas wysyłania zaproszenia wystąpił błąd",
+          "NeedToSetUsernameOrEmail": "Wymagane ustawienie nazwy użytkownika lub adresu email"
         }
       }
     }

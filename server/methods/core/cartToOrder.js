@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import { Roles } from "meteor/alanning:roles";
 import * as Collections from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
@@ -179,13 +180,21 @@ export function copyCartToOrder(cartId) {
     const newCartExists = Collections.Cart.find({ userId: order.userId });
     if (newCartExists.count() === 0) {
       Meteor.call("cart/createCart", this.userId, sessionId);
-      // after recreate new cart we need to make it looks like previous by
-      // updating `cart/workflow/status` to "coreCheckoutShipping"
-      // by calling `workflow/pushCartWorkflow` three times. This is the only
-      // way to do that without refactoring of `workflow/pushCartWorkflow`
-      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
-      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook");
-      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
+
+      // reset the checkout workflow to the beginning for an anonymous user.
+      // Using `Roles.userIsInRole` here because currently `Reaction.hasPermission("anonymous")`
+      // will not return the correct result for actual anonymous users
+      if (Roles.userIsInRole(currentUser, "anonymous", Reaction.getShopId())) {
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
+      } else {
+        // after recreate new cart we need to make it looks like previous by
+        // updating `cart/workflow/status` to "coreCheckoutShipping"
+        // by calling `workflow/pushCartWorkflow` three times. This is the only
+        // way to do that without refactoring of `workflow/pushCartWorkflow`
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook");
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
+      }
     }
 
     Logger.info("Transitioned cart " + cartId + " to order " + orderId);

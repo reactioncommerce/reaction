@@ -1,0 +1,13 @@
+[{
+  "language": "Greek",
+  "i18n": "el",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "Οι ρυθμίσεις σας έχουν αποθηκευτεί",
+        "saveFailed": "Παρουσιάστηκε πρόβλημα κατά την αποθήκευση των ρυθμίσεών σας"
+      }
+    }
+  }
+}]

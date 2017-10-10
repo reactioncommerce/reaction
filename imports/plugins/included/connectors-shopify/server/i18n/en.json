@@ -32,6 +32,14 @@
           "syncStopFailure": "Error stopping Shopify sync!",
           "startImport": "Start Import"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API key",
+          "password": "API password",
+          "sharedSecret": "API shared secret",
+          "shopName": "Shop slug"
+        }
       }
     }
   }

@@ -1,0 +1,13 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-ui-search",
+  "translation": {
+    "reaction-ui-search": {
+      "search": {
+        "accountSearchResults": {
+          "notAvailable": "Nu e disponibil"
+        }
+      }
+    }
+  }
+}]

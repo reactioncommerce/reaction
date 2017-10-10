@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Kunde inte skapa butik för nuvarande användare {{user}}",
         "yourShopIsReady": "Din butik är nu klar!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Butiknamn",
+          "emails": "Kontakta email",
+          "workflow": "Status"
+        }
+      },
       "app": {
         "shops": "butiker",
         "myShop": "Min butik"

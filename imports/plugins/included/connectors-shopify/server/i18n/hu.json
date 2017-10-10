@@ -32,6 +32,14 @@
           "syncStopFailure": "Hiba történt a Shopify szinkronizálás megállításában!",
           "startImport": "Indítsa el az importálást"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API kulcsot",
+          "password": "API jelszó",
+          "sharedSecret": "API megosztott titok",
+          "shopName": "Shop lövedék"
+        }
       }
     }
   }

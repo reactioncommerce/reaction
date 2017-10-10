@@ -1,0 +1,13 @@
+[{
+  "language": "French",
+  "i18n": "fr",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "Vos réglages ont été sauvegardés",
+        "saveFailed": "Il y a eu un problème lors de l'enregistrement de vos paramètres"
+      }
+    }
+  }
+}]

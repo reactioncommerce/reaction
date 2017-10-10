@@ -15,7 +15,8 @@
         "applied": "приложен",
         "code": "код",
         "codeIsExpired": "Code е изтекла",
-        "codeIsInvalid": "Code е невалиден"
+        "codeIsInvalid": "Code е невалиден",
+        "multiShopError": "Отстъпките не могат да се приложат към количка или поръчка с няколко магазина"
       },
       "admin": {
         "paymentSettings": {

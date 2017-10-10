@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
-import { Shops } from "/lib/collections";
+import { Shops, Accounts } from "/lib/collections";
 
 //
 // Reaction i18n Translations, RTL and Currency Exchange Support
@@ -99,51 +99,13 @@ Meteor.startup(() => {
     // setting local and active packageNamespaces
     // packageNamespaces are used to determine i18n namespace
     if (Reaction.Subscriptions.PrimaryShop.ready() && merchantShopsReadyOrSkipped) {
-      const primaryShopId = Reaction.getPrimaryShopId();
-      // every package gets a namespace, fetch them and export
-      // get packages from primaryShopId as merchant shops
-      // may not have all packages
 
-      // By default, use the primaryShopId to get locale
-      // If markteplace is enabled and set to use merchant currencies,
-      // get the active shopId
-      let localeShopId = primaryShopId;
-      if (Reaction.marketplaceEnabled && Reaction.merchantCurrency) {
-        localeShopId = Reaction.getShopId();
-      }
-
-      // use i18n detected language to getLocale info
+      // use i18n detected language to getLocale info and set it clie nt side
       Meteor.call("shop/getLocale", (error, result) => {
         if (result) {
           const locale = result;
           locale.language = getBrowserLanguage();
           moment.locale(locale.language);
-          // flag in case the locale currency isn't enabled
-          locale.currencyEnabled = locale.currency.enabled;
-          const user = Meteor.user();
-          if (user && user.profile && user.profile.currency) {
-            localStorage.setItem("currency", user.profile.currency);
-          } else {
-            const localStorageCurrency = localStorage.getItem("currency");
-            if (!localStorageCurrency) {
-              if (locale.currencyEnabled) {
-                // in case of multiple locale currencies
-                const primaryCurrency = locale.locale.currency.split(",")[0];
-                localStorage.setItem("currency", primaryCurrency);
-              } else {
-                const shop = Shops.findOne({
-                  _id: localeShopId
-                }, {
-                  fields: {
-                    currency: 1
-                  }
-                });
-                if (shop) {
-                  localStorage.setItem("currency", shop.currency);
-                }
-              }
-            }
-          }
 
           Reaction.Locale.set(locale);
           localeDep.changed();

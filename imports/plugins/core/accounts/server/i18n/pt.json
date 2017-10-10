@@ -32,7 +32,8 @@
           "groupRequired": "É necessário um grupo para convidar um administrador",
           "cannotInvite": "Você não pode convidar para agrupar",
           "unableToSendInvitationEmail": "Não é possível enviar o e-mail do convite",
-          "errorSendingInvite": "Ocorreu um erro ao enviar o convite"
+          "errorSendingInvite": "Ocorreu um erro ao enviar o convite",
+          "NeedToSetUsernameOrEmail": "É necessário definir um nome de utilizador ou email"
         }
       }
     }

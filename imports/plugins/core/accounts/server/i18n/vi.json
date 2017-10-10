@@ -32,7 +32,8 @@
           "groupRequired": "Một nhóm được yêu cầu mời một quản trị viên",
           "cannotInvite": "Bạn không thể mời nhóm",
           "unableToSendInvitationEmail": "Không thể gửi email lời mời",
-          "errorSendingInvite": "Đã xảy ra lỗi khi gửi lời mời"
+          "errorSendingInvite": "Đã xảy ra lỗi khi gửi lời mời",
+          "NeedToSetUsernameOrEmail": "Phải điền tên đăng nhập hoặc email"
         }
       }
     }

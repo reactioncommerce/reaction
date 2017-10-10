@@ -32,6 +32,14 @@
           "syncStopFailure": "停止Shopify同步错误！",
           "startImport": "开始导入"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API密钥",
+          "password": "API密码",
+          "sharedSecret": "API共享秘密",
+          "shopName": "商店s"
+        }
       }
     }
   }

@@ -1,0 +1,13 @@
+[{
+  "language": "Swedish",
+  "i18n": "sv",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "Dina inställningar har sparats",
+        "saveFailed": "Det gick inte att spara dina inställningar"
+      }
+    }
+  }
+}]

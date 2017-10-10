@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Nelze vytvořit obchod pro aktuálního uživatele {{user}}",
         "yourShopIsReady": "Váš obchod je nyní připraven!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Název obchodu",
+          "emails": "Kontaktní e-mail",
+          "workflow": "Postavení"
+        }
+      },
       "app": {
         "shops": "Obchody",
         "myShop": "Můj obchod"

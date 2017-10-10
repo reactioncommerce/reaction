@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Περιορισμένη προσφορά"
+      },
       "cartCompleted": {
         "yourCart": "Το καλάθι σας",
         "discountTotal": "Σύνολο έκπτωσης",

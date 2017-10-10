@@ -81,7 +81,8 @@
           "saveFailed": "保存邮件设置失败。{{error}}",
           "cantSendEmail": "服务器错误：无法发送电子邮件通知。",
           "emailSent": "电子邮件通知发送。",
-          "addOrderEmailFailed": "添加电子邮件订单失败"
+          "addOrderEmailFailed": "添加电子邮件订单失败",
+          "addCartEmailFailed": "添加电子邮件到购物车失败"
         }
       }
     }

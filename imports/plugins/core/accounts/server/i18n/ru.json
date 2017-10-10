@@ -32,7 +32,8 @@
           "groupRequired": "Группа должна пригласить администратора",
           "cannotInvite": "Вы не можете приглашать в группу",
           "unableToSendInvitationEmail": "Не удалось отправить приглашение по электронной почте",
-          "errorSendingInvite": "Произошла ошибка при отправке приглашения"
+          "errorSendingInvite": "Произошла ошибка при отправке приглашения",
+          "NeedToSetUsernameOrEmail": "Необходимо имя пользователя или email"
         }
       }
     }

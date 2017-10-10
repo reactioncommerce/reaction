@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Sınırlı tedarik"
+      },
       "cartCompleted": {
         "yourCart": "Sepetiniz",
         "discountTotal": "İndirim Toplamı",

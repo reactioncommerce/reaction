@@ -32,6 +32,14 @@
           "syncStopFailure": "Σφάλμα κατά τη διακοπή του συγχρονισμού Shopify!",
           "startImport": "Έναρξη εισαγωγής"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API κλειδί",
+          "password": "Κωδικός API",
+          "sharedSecret": "Κοινό μυστικό API",
+          "shopName": "Αγορά γυμνοσάλιαγκας"
+        }
       }
     }
   }

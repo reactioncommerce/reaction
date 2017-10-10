@@ -1,0 +1,43 @@
+[{
+  "language": "Hebrew",
+  "i18n": "he",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "תשלומי PayPal"
+        },
+        "paymentMethod": {
+          "expressLabel": "אקספרס",
+          "creditCardLabel": "כרטיס אשראי"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "אין לך שם משתמש, ססמה וחתימה של PayPal?",
+          "paypalExpressGetCredentialsHere": "קבל כאן.",
+          "paypalPayflowCredentials": "אין לך client ID ו- secret של PayPal ",
+          "paypalPayflowGetCredentialsHere": "קבל אותם/ן כאן."
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "השלם את ההזמנה שלך",
+        "paymentMethod": {
+          "expressButtonLabel": "שלם עם PayPal ",
+          "expressNotConfigured": "Paypal Express אינו מוגדר.",
+          "expressNotAvailable": "Paypal Express אינו זמין",
+          "submitting": "שולח",
+          "invalidCard": "אופס! מספר כרטיס האשראי אינו תקף.",
+          "unknownError": "אופס! שגיאה לא ידועה התרחשה",
+          "resubmit": "שלח שנית תשלום"
+        }
+      }
+    }
+  }
+}]

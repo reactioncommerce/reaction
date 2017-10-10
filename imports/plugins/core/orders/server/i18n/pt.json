@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "Ordem não encontrada",
       "order": {
+        "applyRefundToThisOrder": "Aplicar reembolso de {{currencySymbol}}{{refund}} para este pedido?",
+        "applyRefundDuringCancelOrder": "Isto irá reembolsar o total da encomenda de {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Deseja cancelar esta encomenda?",
         "cancelOrderLabel": "Cancelar pedido",
         "cancelOrderThenRestock": "Sim, e reabastecer",
@@ -59,6 +61,34 @@
             "total": "Total",
             "shipping": "Remessa",
             "status": "Estado"
+          },
+          "filter": {
+            "status": "Estado",
+            "dateRange": "intervalo de datas",
+            "shippingStatus": "Status de envio",
+            "new": "Novo",
+            "captured": "Pagamento capturado",
+            "shipped": "Enviado",
+            "completed": "Concluído",
+            "canceled": "Cancelado",
+            "refunded": "Reembolsado"
+          },
+          "search": {
+            "clearSearch": "Claro",
+            "placeholder": "Pedidos de pesquisa"
+          },
+          "data": {
+            "status": {
+              "new": "Novo",
+              "coreOrderWorkflow/created": "Criada",
+              "coreOrderWorkflow/processing": "Em processamento",
+              "coreOrderWorkflow/completed": "Concluído",
+              "coreOrderWorkflow/canceled": "Cancelado",
+              "coreOrderWorkflow/picked": "Escolhido",
+              "coreOrderWorkflow/packed": "Embalado",
+              "coreOrderWorkflow/labeled": "Rotulado",
+              "coreOrderWorkflow/shipped": "Enviado"
+            }
           }
         }
       }

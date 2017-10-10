@@ -1,0 +1,47 @@
+[{
+  "language": "German",
+  "i18n": "de",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "PayPal-Zahlungen"
+        },
+        "paymentMethod": {
+          "expressLabel": "ausdrücken",
+          "creditCardLabel": "Kreditkarte"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Sie haben kein PayPal Benutzername, Passwort und Unterschrift haben?",
+          "paypalExpressGetCredentialsHere": "Holen Sie sich ein hier.",
+          "paypalPayflowCredentials": "Sie haben kein PayPal-Client-ID und Geheimnis",
+          "paypalPayflowGetCredentialsHere": "Holen Sie sich hier."
+        },
+        "settings": {
+          "saveSuccess": "Deine Einstellungen wurden gespeichert",
+          "saveFailed": "Es gab ein Problem beim Speichern Ihrer Einstellungen"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Ergänzen Sie Ihre Bestellung",
+        "paymentMethod": {
+          "expressButtonLabel": "Mit PayPal bezahlen",
+          "expressNotConfigured": "Paypal Express nicht konfiguriert.",
+          "expressNotAvailable": "Paypal Express nicht verfügbar",
+          "submitting": "Einreichen",
+          "invalidCard": "Hoppla! Kreditkartennummer ist ungültig.",
+          "unknownError": "Hoppla! Ein unbekannter Fehler ist aufgetreten",
+          "resubmit": "Resubmit Zahlung"
+        }
+      }
+    }
+  }
+}]

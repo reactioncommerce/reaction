@@ -81,7 +81,8 @@
           "saveFailed": "Ni bilo mogoče shraniti nastavitve pošte. {{error}}",
           "cantSendEmail": "Napaka strežnika: Ne morem poslati e-poštno obvestilo.",
           "emailSent": "e-poštno obvestilo poslano.",
-          "addOrderEmailFailed": "Dodajanje e-pošte po naročilu ni uspelo"
+          "addOrderEmailFailed": "Dodajanje e-pošte po naročilu ni uspelo",
+          "addCartEmailFailed": "Dodajanje e-pošte v košarico ni uspelo"
         }
       }
     }

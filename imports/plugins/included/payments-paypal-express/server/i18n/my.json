@@ -1,0 +1,47 @@
+[{
+  "language": "Burmese",
+  "i18n": "my",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal က"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal က",
+          "paypalTitle": "PayPal က",
+          "paypalDescription": "PayPal ကငွေပေးချေမှု"
+        },
+        "paymentMethod": {
+          "expressLabel": "ထုတ်ဖော်ပြောဆို",
+          "creditCardLabel": "အကြွေးဝယ်ကဒ်"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal က",
+          "paypalSettingsLabel": "PayPal က",
+          "paypalExpressCredentials": "တစ်ဦးကို PayPal အသုံးပြုသူအမည်, password နဲ့လက်မှတ်ရှိသည်မဟုတ်သလား?",
+          "paypalExpressGetCredentialsHere": "ဒီနေရာမှာတစ်ရယူပါ။",
+          "paypalPayflowCredentials": "တစ်ဦးကို PayPal ကို client ID နှင့်လျှို့ဝှက်မရှိဘူးလား",
+          "paypalPayflowGetCredentialsHere": "ဒီနေရာမှာသူတို့ကိုရယူပါ။"
+        },
+        "settings": {
+          "saveSuccess": "သင့်ရဲ့ settings ကိုကယ်တင်ခြင်းသို့ရောက်ကြပြီ",
+          "saveFailed": "သင့်ရဲ့ settings ကိုချွေတာပြဿနာတစ်ခုရှိခဲ့သည်"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "သင့်ရဲ့အမိန့်တွေကိုဖြည့်",
+        "paymentMethod": {
+          "expressButtonLabel": "PayPal နဲ့ပေးဆောင်",
+          "expressNotConfigured": "paypal Express ကို configured မဟုတ်။",
+          "expressNotAvailable": "paypal Express ကိုမရရှိနိုင်ပါ",
+          "submitting": "တင်ပို့",
+          "invalidCard": "သည်းခံပါ! ခရက်ဒစ်ကတ်နံပါတ်မမှန်ကန်ဘူး။",
+          "unknownError": "သည်းခံပါ! အမည်မသိအမှားဖြစ်ပွားခဲ့သည်",
+          "resubmit": "ငွေပေးချေမှုပြန်လည်တင်သွင်းရန်"
+        }
+      }
+    }
+  }
+}]
