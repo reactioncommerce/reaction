@@ -690,7 +690,7 @@ describe("core product methods", function () {
       expect(Tags.find().count()).to.equal(1);
     });
 
-    it.skip("should publish remove product tag by admin", function () {
+    it("should publish remove product tag by admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
 
@@ -710,7 +710,8 @@ describe("core product methods", function () {
       const tags = Tags.find();
       expect(product.hashtags).to.not.contain(tag._id);
       expect(tags.count()).to.equal(1);
-      expect(tags.fetch()[0].isDeleted).to.equal(true);
+      // Tag should not be deleted, it should just be removed from the product
+      expect(tags.fetch()[0].isDeleted).to.equal(false);
     });
   });
 
@@ -1073,7 +1074,7 @@ describe("core product methods", function () {
       expect(product.isVisible).to.equal(isVisible);
     });
 
-    it.skip("should let admin toggle product revision visibility", function () {
+    it("should let admin toggle product revision visibility", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       let productRevision = Revisions.findOne({ documentId: product._id });
@@ -1083,7 +1084,7 @@ describe("core product methods", function () {
       expect(productRevision.documentData.isVisible).to.equal(!isVisible);
       expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Bad Request/);
       productRevision = Revisions.findOne({ documentId: product._id });
-      expect(productRevision.documentData.isVisible).to.equal(isVisible);
+      expect(productRevision.documentData.isVisible).to.equal(!isVisible);
     });
 
     it("should publish admin toggle product visibility", function () {
