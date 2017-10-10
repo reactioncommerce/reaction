@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { check, Match } from "meteor/check";
 import { Reaction, Logger, i18next } from "/client/api";
-import { Shops, Accounts } from "/lib/collections";
+import { Shops } from "/lib/collections";
 import { localeDep, i18nextDep } from  "./main";
 import { formatPriceString } from "./currency";
 
@@ -37,9 +37,7 @@ Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
  */
 Template.registerHelper("currencySymbol", function () {
   const locale = Reaction.Locale.get();
-  const user = Accounts.findOne({
-    _id: Meteor.userId()
-  });
+  const user = Meteor.user();
   const profileCurrency = user.profile && user.profile.currency;
   if (profileCurrency) {
     const shop = Shops.findOne();
