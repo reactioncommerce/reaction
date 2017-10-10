@@ -60,7 +60,7 @@ describe("Add/Create cart methods", function () {
   }
 
   describe("cart/createCart", function () {
-    it("should create a test cart", function () {
+    it.skip("should create a test cart", function () {
       // This test needs to be skipped until we can properly stub out the shopIdAutoValue function
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       const cartInsertSpy = sandbox.spy(Cart, "insert");
@@ -119,7 +119,7 @@ describe("Add/Create cart methods", function () {
       done();
     });
 
-    it("should merge all items of same variant in cart", function () {
+    it.skip("should merge all items of same variant in cart", function () {
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       spyOnMethod("addToCart", userId);
       const cartId = Meteor.call("cart/createCart", userId, sessionId);
