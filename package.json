@@ -123,6 +123,7 @@
     "eslint-plugin-react": "^7.1.0",
     "jest": "^21.2.1",
     "js-yaml": "^3.8.2",
+    "prop-types": "^15.6.0",
     "react-addons-test-utils": "15.4.2"
   },
   "postcss": {
@@ -149,7 +150,8 @@
   },
   "babel": {
     "plugins": [
-      "lodash", [
+      "lodash",
+      [
         "module-resolver",
         {
           "root": [

@@ -69,7 +69,6 @@ export function loadCoreTranslations() {
   const meteorPath = fs.realpathSync(process.cwd() + "/../");
   const i18nFolder = `${meteorPath}/server/assets/app/data/i18n/`;
 
-  console.log("i18n exists", directoryExists(i18nFolder));
   if (directoryExists(i18nFolder)) {
     fs.readdir(i18nFolder, Meteor.bindEnvironment(function (err, files) {
       if (err) throw new Meteor.Error("No translations found for import.", err);
