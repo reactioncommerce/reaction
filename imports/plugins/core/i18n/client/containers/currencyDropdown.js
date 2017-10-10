@@ -56,9 +56,9 @@ const composer = (props, onData) => {
       if (profileCurrency && shop.currencies[profileCurrency] && shop.currencies[profileCurrency].symbol) {
         currentCurrency = profileCurrency + " " + shop.currencies[profileCurrency].symbol;
       } else if (locale && locale.currency && locale.currency.enabled) {
-        currentCurrency = locale.locale.currency + " " + locale.currency.symbol;
+        currentCurrency = locale.locale.currency.split(",")[0] + " " + locale.currency.symbol;
       } else {
-        currentCurrency = shop.currency + " " + shop.currencies[shop.currency].symbol;
+        currentCurrency = shop.currency.split(",")[0] + " " + shop.currencies[shop.currency].symbol;
       }
     }
 
