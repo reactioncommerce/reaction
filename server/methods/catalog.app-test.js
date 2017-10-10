@@ -9,7 +9,7 @@ import { Products, Revisions, Tags } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
-import { addProduct } from "/server/imports/fixtures/products";
+import { addProduct, addProductSingleVariant } from "/server/imports/fixtures/products";
 import Fixtures from "/server/imports/fixtures";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
@@ -921,71 +921,71 @@ describe("core product methods", function () {
 
     it("should not update variants' position", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      const product1 = addProduct();
-      const product2 = addProduct();
-      const product3 = addProduct();
+      const { variant: variant1 } = addProductSingleVariant();
+      const { variant: variant2 } = addProductSingleVariant();
+      const { variant: variant3 } = addProductSingleVariant();
 
-      expect(product1.index).to.be.undefined;
-      expect(product2.index).to.be.undefined;
-      expect(product3.index).to.be.undefined;
+      expect(variant1.index).to.be.undefined;
+      expect(variant2.index).to.be.undefined;
+      expect(variant3.index).to.be.undefined;
 
       Meteor.call("products/updateVariantsPosition", [
-        product2._id, product3._id, product1._id
+        variant2._id, variant3._id, variant1._id
       ]);
       Meteor._sleepForMs(500);
-      const modifiedProduct1 = Products.findOne(product1._id);
-      const modifiedProduct2 = Products.findOne(product2._id);
-      const modifiedProduct3 = Products.findOne(product3._id);
-      expect(modifiedProduct1.index).to.be.undefined;
-      expect(modifiedProduct2.index).to.be.undefined;
-      expect(modifiedProduct3.index).to.be.undefined;
+      const modifiedVariant1 = Products.findOne(variant1._id);
+      const modifiedVariant2 = Products.findOne(variant2._id);
+      const modifiedVariant3 = Products.findOne(variant3._id);
+      expect(modifiedVariant1.index).to.be.undefined;
+      expect(modifiedVariant2.index).to.be.undefined;
+      expect(modifiedVariant3.index).to.be.undefined;
     });
 
     it("should update variants' revision position", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      const product1 = addProduct();
-      const product2 = addProduct();
-      const product3 = addProduct();
+      const { variant: variant1 } = addProductSingleVariant();
+      const { variant: variant2 } = addProductSingleVariant();
+      const { variant: variant3 } = addProductSingleVariant();
 
-      expect(product1.index).to.be.undefined;
-      expect(product2.index).to.be.undefined;
-      expect(product3.index).to.be.undefined;
+      expect(variant1.index).to.be.undefined;
+      expect(variant2.index).to.be.undefined;
+      expect(variant3.index).to.be.undefined;
 
       Meteor.call("products/updateVariantsPosition", [
-        product2._id, product3._id, product1._id
+        variant2._id, variant3._id, variant1._id
       ]);
       Meteor._sleepForMs(500);
-      const modifiedProductRevision1 = Revisions.findOne({ documentId: product1._id });
-      const modifiedProductRevision2 = Revisions.findOne({ documentId: product2._id });
-      const modifiedProductRevision3 = Revisions.findOne({ documentId: product3._id });
-      expect(modifiedProductRevision1.documentData.index).to.equal(2);
-      expect(modifiedProductRevision2.documentData.index).to.equal(0);
-      expect(modifiedProductRevision3.documentData.index).to.equal(1);
+      const modifiedVariantRevision1 = Revisions.findOne({ documentId: variant1._id });
+      const modifiedVariantRevision2 = Revisions.findOne({ documentId: variant2._id });
+      const modifiedVariantRevision3 = Revisions.findOne({ documentId: variant3._id });
+      expect(modifiedVariantRevision1.documentData.index).to.equal(2);
+      expect(modifiedVariantRevision2.documentData.index).to.equal(0);
+      expect(modifiedVariantRevision3.documentData.index).to.equal(1);
     });
 
-    it.skip("should publish variants' revision position", function () {
+    it("should publish variants' revision position", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      const product1 = addProduct();
-      const product2 = addProduct();
-      const product3 = addProduct();
+      const { variant: variant1 } = addProductSingleVariant();
+      const { variant: variant2 } = addProductSingleVariant();
+      const { variant: variant3 } = addProductSingleVariant();
 
-      expect(product1.index).to.be.undefined;
-      expect(product2.index).to.be.undefined;
-      expect(product3.index).to.be.undefined;
+      expect(variant1.index).to.be.undefined;
+      expect(variant2.index).to.be.undefined;
+      expect(variant3.index).to.be.undefined;
 
       Meteor.call("products/updateVariantsPosition", [
-        product2._id, product3._id, product1._id
+        variant2._id, variant3._id, variant1._id
       ]);
       Meteor._sleepForMs(500);
-      Meteor.publish("revisions/publish", [
-        product1._id, product2._id, product3._id
+      Meteor.call("revisions/publish", [
+        variant1._id, variant2._id, variant3._id
       ]);
-      const modifiedProduct1 = Products.findOne(product1._id);
-      const modifiedProduct2 = Products.findOne(product2._id);
-      const modifiedProduct3 = Products.findOne(product3._id);
-      expect(modifiedProduct1.index).to.equal(2);
-      expect(modifiedProduct2.index).to.equal(0);
-      expect(modifiedProduct3.index).to.equal(1);
+      const modifiedVariant1 = Products.findOne(variant1._id);
+      const modifiedVariant2 = Products.findOne(variant2._id);
+      const modifiedVariant3 = Products.findOne(variant3._id);
+      expect(modifiedVariant1.index).to.equal(2);
+      expect(modifiedVariant2.index).to.equal(0);
+      expect(modifiedVariant3.index).to.equal(1);
     });
   });
 
