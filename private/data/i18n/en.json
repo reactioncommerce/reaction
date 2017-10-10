@@ -207,7 +207,7 @@
         "productSettings": "Product settings",
         "product": "Product",
         "size": "Size",
-        "title": "Title",
+        "title": "Label",
         "untitledProduct": "Untitled product",
         "parmalink": "Permalink",
         "pageTitle": "Subtitle",
@@ -300,7 +300,11 @@
         "coreOrderWorkflow/created": "Created",
         "coreOrderWorkflow/processing": "Processing",
         "coreOrderWorkflow/completed": "Completed",
-        "coreOrderWorkflow/canceled": "Canceled"
+        "coreOrderWorkflow/canceled": "Canceled",
+        "coreOrderWorkflow/picked": "Picked",
+        "coreOrderWorkflow/packed": "Packed",
+        "coreOrderWorkflow/labeled": "Labeled",
+        "coreOrderWorkflow/shipped": "Shipped"
       },
       "cartSubTotals": {
         "discount": "Discount",
@@ -351,14 +355,35 @@
         "payment": "Payment",
         "itemsFrom": "item(s) from",
         "filter": {
-          "new": "New",
-          "captured": "Payment captured",
           "processing": "Processing",
+          "status": "Status",
+          "dateRange": "Date range",
+          "shippingStatus": "Shipping status",
+          "new": "New",
+          "captured": "Captured",
           "shipped": "Shipped",
           "completed": "Completed",
           "canceled": "Canceled",
           "refunded": "Refunded"
         },
+        "capture": "Capture",
+        "capturing": "Capturing",
+        "bulkActions": "Bulk Actions",
+        "selected": "Selected",
+        "picked": "Picked",
+        "packed": "Packed",
+        "labeled": "Labeled",
+        "shipped": "Shipped",
+        "printInvoiceAndPickSheet": "Print Invoice and Pick Sheet",
+        "generateLabel": "Generate Label",
+        "approveBulkOrderAction": "Yes, Set All Select All Orders",
+        "approveBulkOrderActionRegression": "Yes, Regress All Selected Orders",
+        "cancelBulkOrderAction": "No, Cancel",
+        "orderAlreadyInState": "{{orderText}} already been {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} set to {{status}}",
+        "skippedBulkOrdersAlert": "You've requested that {{selectedOrders}} {{orderText}} be set to the '{{status}}' status, but {{numberOfSkippedOrders}} of these orders {{skippedOrdersText}} not in the '{{skippedState}}' state and would skip all steps leading up to the '{{status}}' state. Are you sure you want to do this?",
+        "bulkOrdersRegressionAlert": "You're about to regress {{ordersToRegress}} {{orderText}} back to the '{{status}}' state. Are you sure you want to continue with this operation?",
+        "paymentCaptureSuccess": "Payments successfully captured",
         "showMore": "Show more"
       },
       "orderShipping": {
@@ -410,7 +435,8 @@
         "createOrLogin": "Create an account, or sign in",
         "guestOrLogin": "Sign in, or checkout as a guest",
         "continueAsGuest": "Continue as guest",
-        "guestMessage": "You can checkout without creating an account. You'll have a chance to create an account later."
+        "guestMessage": "You can checkout without creating an account. You'll have a chance to create an account later.",
+        "addEmail": "Add email"
       },
       "addressBookGrid": {
         "addAddress": "Add address",
@@ -552,9 +578,6 @@
       },
       "search": {
         "clearSearch": "Clear",
-        "noProductsFound": "No products found.",
-        "noOrdersFound": "No orders found.",
-        "noAccountsFound": "No accounts found.",
         "searchInputLabel": "Search",
         "suggestedTags": "Suggested tags",
         "searchTypeProducts": "Products",
@@ -567,29 +590,12 @@
           "lastName": "Last name",
           "phone": "Phone",
           "emails": "Email"
-        },
-        "orderSearchResults": {
-          "orderId": "Order ID",
-          "shopId": "Shop ID",
-          "shippingAddress": "Address",
-          "shippingCity": "City",
-          "shippingRegion": "Region",
-          "shippingCountry": "Country",
-          "shippingPhone": "Phone",
-          "shippingName": "Name",
-          "shippingStatus": "Status",
-          "billingAddress": "Address",
-          "billingCity": "City",
-          "billingRegion": "Region",
-          "billingCountry": "Country",
-          "billingPhone": "Phone",
-          "billingStatus": "Status",
-          "userEmails": "Email",
-          "orderDate": "Date",
-          "orderTotal": "Total"
         }
       },
       "accountsUI": {
+        "usersOrders": "User's orders",
+        "oops": "Oops!",
+        "nonExistentAccount": "The user you're looking for does not exist.",
         "members": "Members",
         "manage": "Manage",
         "guest": "Guest",
