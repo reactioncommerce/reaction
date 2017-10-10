@@ -119,7 +119,7 @@ describe("Add/Create cart methods", function () {
       done();
     });
 
-    it.skip("should merge all items of same variant in cart", function () {
+    it("should merge all items of same variant in cart", function () {
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       spyOnMethod("addToCart", userId);
       const cartId = Meteor.call("cart/createCart", userId, sessionId);
