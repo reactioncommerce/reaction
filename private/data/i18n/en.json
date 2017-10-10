@@ -7,32 +7,141 @@
       "languages": {
         "select": "Select language"
       },
+      "currencies": {
+        "select": "Select currency"
+      },
       "admin": {
+        "shortcut": {
+          "addProductLabel": "Add product",
+          "accountsLabel": "Accounts"
+        },
+        "dashboard": {
+          "i18NLabel": "i18n",
+          "i18NTitle": "i18n",
+          "i18NDescription": "Internationalization utilities",
+          "routingLabel": "Routing",
+          "routingTitle": "Routing",
+          "routingDescription": "Routing utilities",
+          "filtrationLabel": "Filtration",
+          "filtrationDescription": "Products filtration"
+        },
         "groups": {
-          "email": "Email",
-          "description": "Description",
-          "remove": "Remove"
+          "appearance": "Appearance",
+          "connect": "Connect",
+          "core": "Core",
+          "dashboard": "Dashboard",
+          "misc": "Misc",
+          "paymentMethod": "Payment Providers",
+          "utilities": "Utilities"
+        },
+        "settings": {
+          "accountSettingsLabel": "Login services",
+          "accountSettingsTitle": "Login services",
+          "accountSettingsDescription": "Authentication through social providers",
+          "saveSuccess": "Settings updated.",
+          "saveFailed": "Failed to update settings.",
+          "addShopMemberLabel": "Add shop member",
+          "permissionsSettingsLabel": "Permissions",
+          "localizationAndI18NLabel": "Localization and i18n"
+        },
+        "userAccountDropdown": {
+          "profileLabel": "Profile"
         }
       },
+      "accounts": {
+        "addMember": "Add member",
+        "shopMembers": "Shop members",
+        "guests": "Guests"
+      },
       "app": {
+        "add": "Add",
+        "editMode": "Edit mode",
+        "createContent": "Create content",
         "auto": "Auto",
         "save": "Save",
         "saveAndContinue": "Save and continue",
+        "saveChanges": "Save changes",
+        "selectOne": "(Select One)",
         "cancel": "Cancel",
+        "success": "Success",
+        "error": "Error",
         "submit": "Submit",
         "delete": "Delete",
+        "deleted": "Deleted",
+        "archive": "Archive",
+        "archived": "Archived",
         "create": "Create",
         "close": "Close",
         "settings": "Settings",
         "loading": "Loading",
         "toggle": "Toggle",
+        "toggleEditMode": "Toggle edit mode",
         "warning": "Oops!",
         "unauthorizedMessage": "You don't have permission to view this content.",
+        "updateSettings": "Update settings",
         "monthOptions": "Choose month",
         "yearOptions": "Choose year",
         "shopSettings": "Shop settings",
         "dashboard": "Dashboard",
-        "print": "Print"
+        "print": "Print",
+        "notFound": "This page was not found.",
+        "pageNotFound": "This page was not found.",
+        "notFoundTitle": "Oops!",
+        "notFoundError": "Page not found.",
+        "productNotFound": "This product was not found.",
+        "loadMoreProducts": "Load more products",
+        "noProductsFound": "No products found.",
+        "private": "Private",
+        "public": "Public",
+        "shortcut": {
+          "addProductLabel": "Add product",
+          "accountsLabel": "Accounts"
+        }
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Product search",
+          "includeTitle": "Include title",
+          "includeDescription": "Include description",
+          "includePageTitle": "Include page title",
+          "includeDetails": "Include details",
+          "includeVendor": "Include vendor"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Order search settings"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Account search settings"
+        },
+        "noSettings": "No settings currently available",
+        "settingsSaved": "Search settings saved",
+        "settingsfailed": "Search settings update failed"
+      },
+      "shopSettings": {
+        "localization": "Localization",
+        "options": "Options",
+        "paymentMethods": "Payment methods",
+        "externalServices": "External services",
+        "shopLocalizationSettingsSaved": "Shop localization settings saved.",
+        "shopLocalizationSettingsFailed": "Shop localization settings update failed.",
+        "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
+        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed."
+      },
+      "notifications": {
+        "body": {
+          "noNotifications": "No notifications yet",
+          "markAllAsRead": "Mark all as read",
+          "recent": "Recent",
+          "viewAll": "View all"
+        },
+        "messages": {
+          "orderCanceled": "Your order was canceled.",
+          "newOrder": "Your order was accepted.",
+          "forAdmin": "You have a new order.",
+          "orderDelivered": "Your order has been delivered.",
+          "orderProcessing": "Your order is being processed.",
+          "orderShipped": "Your order has been shipped."
+        }
       },
       "header": {
         "tagsAdd": "Add tag",
@@ -43,6 +152,9 @@
         "whenYouAreDone": "when you're done editing.",
         "tags": "Tags",
         "tagsAdd": "Add tag",
+        "tagExists": "Tag already exists, or is empty.",
+        "tagInUse": "Tag is in use and cannot be deleted.",
+        "dropFiles": "Drop files to upload",
         "addInventory": "Add inventory",
         "barcode": "Barcode",
         "confirmDeleteBarcode": "Are you sure you want to delete barcode",
@@ -56,6 +168,8 @@
         "addToCart": "Add to cart",
         "chooseOptions": "Please choose options before adding to cart",
         "outOfStock": "Sorry, this item is out of stock!",
+        "productArchiveError": "There was an error while sending {{product}} to the archives.",
+        "archiveErrorTheProduct": "the product",
         "publishFirst": "Publish product before adding to cart.",
         "quantityAbbreviation": "QTY",
         "selectOption": "Select an option before adding to cart",
@@ -66,48 +180,74 @@
         "limitedSupply": "Limited supply",
         "publishProductVisible": "{{product}} is now visible",
         "publishProductHidden": "{{product}} is now hidden",
+        "clonedAlert": "Cloned {{product}}",
+        "clonedAlert_plural": "Cloned {{product}}",
+        "archivedAlert": "Archived {{product}}",
+        "archivedAlert_plural": "Archived {{product}}",
+        "theProduct": "the product",
+        "theSelectedProducts": "the selected products",
         "startTracking": "Start tracking",
         "addBarcode": "Add barcode",
         "quantity": "Quantity",
-        "quantityGreaterThanZero": "Error: Quantity must be greater than zero"
+        "quantityGreaterThanZero": "Error: Quantity must be greater than zero",
+        "notFoundTitle": "Oops!",
+        "notFoundError": "This is not the product you were looking for."
+      },
+      "tags": {
+        "tagName": "Tag name",
+        "addTag": "Add tag",
+        "updateTag": "Update tag",
+        "addGroupTag": "Add group tag",
+        "addSubTag": "Add sub tag",
+        "removeTag": "Remove tag",
+        "createTag": "Create tag"
       },
       "productDetailEdit": {
+        "editOption": "Edit option",
+        "productSettings": "Product settings",
+        "product": "Product",
+        "size": "Size",
         "title": "Title",
+        "untitledProduct": "Untitled product",
+        "parmalink": "Permalink",
         "pageTitle": "Subtitle",
         "vendor": "Vendor",
         "description": "Description",
+        "originCountry": "Origin country",
         "facebookMsg": "Facebook message",
         "twitterMsg": "Twitter message",
         "pinterestMsg": "Pinterest message",
         "googleplusMsg": "Google+ message",
+        "editVariant": "Edit variant",
+        "variantOptions": "Variant options",
+        "variantDetails": "Variant details",
         "duplicateVariant": "Duplicate",
         "addVariantOption": "Add option",
-        "removeVariant": "Remove",
-        "duplicateProduct": "Duplicate product",
-        "pinProduct": "Pin product",
-        "toggleSize": "Toggle size",
-        "publish": "Publish",
-        "moreOptions": "More options",
-        "details": "Details",
         "addVariantFail": "Unable to create variant for {{title}}.",
         "cloneVariantFail": "Unable to clone variant for {{title}}.",
+        "removeVariant": "Remove",
         "removeVariantConfirm": "Are you sure you want to delete {{title}}",
-        "restoreVariantConfirm": "Are you sure you want to restore {{title}} from the vieve?",
+        "restoreVariantConfirm": "Are you sure you want to restore {{title}} from the archive?",
         "restoreVariantFail": "Unable to restore {{title}}.",
         "archiveVariantConfirm": "Are you sure you want to archive {{title}}",
         "thisVariant": "this variant",
         "thisOption": "this option",
+        "duplicateProduct": "Duplicate product",
+        "pinProduct": "Pin product",
+        "toggleSize": "Toggle Size",
         "archiveProduct": "Archive product",
         "restoreProduct": "Restore product from archive",
         "archiveThisProduct": "Archive this product?",
         "archiveSelectedProducts": "Archive selected products?",
+        "publish": "Publish",
+        "moreOptions": "More Options",
+        "details": "Details",
         "noSelectedProducts": "No selected products. Use the ",
         "orShiftCtrlCmd": " or shift|ctrl|cmd + click on products to select multiple. With shift you can select a contiguous range of products.",
         "makeVisible": "Make visible",
         "hideProduct": "Hide product",
         "productIsVisible": "Product is visible",
-        "productIsNotVisible": "Product is not visible",
-        "variantOptions": "Variant options"
+        "productIsNotVisible": "Product is not visible"
       },
       "productVariant": {
         "addVariantOptions": "Add options to enable 'Add to Cart' button",
@@ -129,7 +269,7 @@
         "inventoryManagementLabel": "Register product in inventory system and track its status",
         "inventoryPolicy": "Allow backorder",
         "inventoryPolicyLabel": "Do not sell the product variant when it is not in stock",
-        "lowInventoryWarningThreshold": "Warn At",
+        "lowInventoryWarningThreshold": "Warn at",
         "lowInventoryWarningThresholdLabel": "Warn customers that the product will be close to sold out when the quantity reaches the next threshold",
         "originCountry": "Origin country",
         "selectTaxCode": "Select tax code"
@@ -139,8 +279,18 @@
         "createVariant": "Create variant"
       },
       "gridPackage": {
+        "enable": "Enable",
+        "errorDisabling": "Error disabling package: ",
+        "errorEnabling": "Error enabling package: ",
+        "details": "Details",
+        "disable": "Disable",
+        "disableConfirm": "Are you sure you want to disable {{app}}?",
         "pkgEnabled": "{{app}} is now enabled.",
         "pkgDisabled": "{{app}} is now disabled."
+      },
+      "gridSettingsPanel": {
+        "title": "Grid settings",
+        "selected": "Selected"
       },
       "cartDrawer": {
         "empty": "We're sad. Your cart is empty.",
@@ -157,6 +307,7 @@
         "coreOrderWorkflow/shipped": "Shipped"
       },
       "cartSubTotals": {
+        "discount": "Discount",
         "head": "Your cart",
         "items": "Items in cart",
         "subtotal": "Sub total",
@@ -174,16 +325,37 @@
         "invoice": "Invoice",
         "ordersNotFound": "No orders found",
         "approveInvoice": "Approve",
+        "cancelOrderLabel": "Cancel order",
         "makeAdjustments": "Make adjustments",
         "capturePayment": "Capture payment",
         "paymentCaptured": "Payment captured",
         "capturedTotal": "Captured total",
         "canceledLabel": "Canceled",
         "refundAmount": "Refund amount",
+        "cancelOrder": "Do you want to cancel this order?",
+        "applyRefundToThisOrder": "Apply refund of {{currencySymbol}}{{refund}} to this order?",
+        "applyRefundDuringCancelOrder": "This will refund the order total of {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Yes, and restock",
+        "cancelOrderNoRestock": "Yes, but no restocking",
         "applyRefund": "Apply refund",
+        "refunding": "Refunding",
+        "applyDiscount": "Apply discount",
         "adjustedTotal": "Adjusted total",
+        "invalidDiscount": "Discount cannot be greater than original total price",
+        "fullDiscountWarning": "Applying a 100% discount will void / cancel this order with your payment provider",
+        "invalidRefund": "Refund(s) total cannot be greater than adjusted total",
         "processor": "Processor",
+        "placed": "Placed",
+        "on": "on",
+        "status": "Status",
+        "completed": "Completed",
+        "processing": "Processing",
+        "destination": "Destination",
+        "shipment": "Shipment",
+        "payment": "Payment",
+        "itemsFrom": "item(s) from",
         "filter": {
+          "processing": "Processing",
           "status": "Status",
           "dateRange": "Date range",
           "shippingStatus": "Shipping status",
@@ -211,18 +383,38 @@
         "orderSetToState": "{{orderNumber}} {{orderText}} set to {{status}}",
         "skippedBulkOrdersAlert": "You've requested that {{selectedOrders}} {{orderText}} be set to the '{{status}}' status, but {{numberOfSkippedOrders}} of these orders {{skippedOrdersText}} not in the '{{skippedState}}' state and would skip all steps leading up to the '{{status}}' state. Are you sure you want to do this?",
         "bulkOrdersRegressionAlert": "You're about to regress {{ordersToRegress}} {{orderText}} back to the '{{status}}' state. Are you sure you want to continue with this operation?",
-        "paymentCaptureSuccess": "Payments successfully captured"
+        "paymentCaptureSuccess": "Payments successfully captured",
+        "showMore": "Show more"
       },
       "orderShipping": {
-        "shipTo": "Ship To",
+        "shipTo": "Ship to",
         "notShipped": "Not yet shipped",
         "noTracking": "No tracking",
         "tracking": "Tracking",
+        "printLabels": "Labels",
+        "printShippingLabel": "Print shipping",
+        "printCustomsLabel": "Print customs",
+        "generateTracking": "Generate label and tracking",
+        "labelError": "Error creating shipping label {{err}}",
+        "carrier": "Carrier",
+        "addTracking": "Add tracking",
+        "itemsHaveBeenShipped": "All items have been shipped",
         "shipmentEmpty": "This shipment has no items",
         "shipmentPacked": "All items packed",
         "shipped": "Shipped",
+        "delivered": "Delivered",
         "shippingNotifyCustomer": "Notify the customer that their items will be shipping soon.",
         "resendNotification": "Resend shipment notification"
+      },
+      "orderWorkflow": {
+        "orderDetails": "Order details",
+        "invoice": "Invoice",
+        "lineItems": "Line items",
+        "shipmentTracking": "Shipment"
+      },
+      "cartCheckout": {
+        "surprise": "Woah!",
+        "emptyCheckoutCart": "looks like your cart is empty!"
       },
       "cartCompleted": {
         "thankYou": "Thank you!",
@@ -230,6 +422,8 @@
         "yourOrderIsNow": "Your order is now",
         "summaryMessage": "Thank you for your order.",
         "submitted": "submitted",
+        "processing": "processing",
+        "completed": "completed",
         "registerGuest": "Hello! Add an email and receive order updates.",
         "trackYourDelivery": "Order updates will be sent to",
         "noOrdersFound": "No orders found.",
@@ -248,15 +442,87 @@
         "addAddress": "Add address",
         "chooseAddress": "Choose shipping & billing address",
         "createDefault": "Create your default address",
+        "edit": "Edit",
+        "removeAddress": "Remove address",
         "selectShippingAddress": "Select a shipping address",
-        "selectBillingAddress": "Select a billing address"
+        "selectBillingAddress": "Select a billing address",
+        "cantRemoveThisAddress": "Can't remove this address: {{err}}"
       },
       "addressBookAdd": {
         "addAddress": "Add a new address entry",
-        "createAddress": "Create your default address"
+        "createAddress": "Create your default address",
+        "failedToAddAddress": "Failed to add address: {{err}}",
+        "validatedAddress": "Made changes to your address based upon validation. Please ensure this is correct"
       },
       "addressBookEdit": {
-        "editAddress": "Editing this address entry"
+        "editAddress": "Editing this address entry",
+        "addressValidation": "Address validation",
+        "reviewAddress": "For best compliance, please validate your address",
+        "somethingWentWrong": "Something went wrong: {{err}}",
+        "enteredAddress": "Entered address",
+        "validatedAddress": "Validate address"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Allow guest checkout"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates App Id",
+            "refreshPeriod": "Open Exchange Rates refresh period",
+            "refreshPeriodPlaceholder": "i.e. every 1 hour"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Google API Key"
+          }
+        }
+      },
+      "shop": {
+        "defaultPaymentMethod": "Default payment method",
+        "name": "Name",
+        "namePlaceholder": "Shop name",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe your shop for SEO",
+        "descriptionTooltip": "Meta description for SEO",
+        "email": "Email",
+        "emailPlaceholder": "Primary contact email",
+        "keywords": "Keywords",
+        "keywordsPlaceholder": "Meta keywords for SEO",
+        "language": "Base language",
+        "addressBook": {
+          "company": "Company",
+          "companyPlaceholder": "This business name",
+          "country": "Country",
+          "fullName": "Full name",
+          "fullNamePlaceholder": "Your organization name",
+          "address1": "Address",
+          "address1Placeholder": "Your organization address",
+          "address1Tooltip": "This address will be visible to visitors",
+          "address2": "Address",
+          "address2Placeholder": "Additional address",
+          "postal": "Postal",
+          "city": "City",
+          "region": "Region",
+          "phone": "Phone",
+          "isShippingDefault": "Make this your default shipping address?",
+          "isBillingDefault": "Make this your default billing address?",
+          "isCommercial": "This is a commercial address."
+        }
+      },
+      "revisions": {
+        "isDisabled": "Revision control is disabled. Any changes will be published immediately.",
+        "isEnabled": "Revision control is enabled for products. Any changes will be need to be published before being visible to customers.",
+        "unpublishedChanges": "Unpublished changes",
+        "publishChanges": "Publish changes",
+        "showChanges": "Show changes",
+        "hideChanges": "Hide changes",
+        "discardChanges": "Discard changes",
+        "changedPublished": "Changes published successfully",
+        "changesDiscarded": "Changes discarded successfully",
+        "noChanges": "No changes",
+        "noChangesPublished": "There are no changes to publish",
+        "noChangesDiscarded": "There are no changes to discard"
       },
       "address": {
         "country": "Country",
@@ -271,6 +537,9 @@
         "isBillingDefault": "Make this your default billing address?",
         "isCommercial": "This is a commercial address."
       },
+      "i18nSettings": {
+        "enabledLanguages": "Languages"
+      },
       "checkoutProgressBar": {
         "login": "Account",
         "shippingBilling": "Address details",
@@ -281,6 +550,12 @@
       "checkoutReview": {
         "review": "Review"
       },
+      "uom": {
+        "OZ": "Ounces",
+        "LB": "Pounds",
+        "GR": "Grams",
+        "KG": "Kilograms"
+      },
       "consoleIcon": {
         "iconTitle": "View console",
         "text": "Console"
@@ -290,19 +565,39 @@
         "text": "Create"
       },
       "social": {
+        "socialTitle": "Social",
         "facebook": "Facebook",
         "google": "Google",
         "github": "GitHub",
+        "instagram": "Instagram",
         "meetup": "Meetup",
+        "ok": "Ok",
         "twitter": "Twitter",
+        "vk": "VK",
         "weibo": "Weibo"
       },
+      "search": {
+        "clearSearch": "Clear",
+        "searchInputLabel": "Search",
+        "suggestedTags": "Suggested tags",
+        "searchTypeProducts": "Products",
+        "searchTypeAccounts": "Accounts",
+        "searchTypeOrders": "Orders",
+        "accountSearchResults": {
+          "accountId": "Account ID",
+          "shopId": "Shop ID",
+          "firstName": "First name",
+          "lastName": "Last name",
+          "phone": "Phone",
+          "emails": "Email"
+        }
+      },
       "accountsUI": {
-        "yourOrders": "Your orders",
         "usersOrders": "User's orders",
         "oops": "Oops!",
         "nonExistentAccount": "The user you're looking for does not exist.",
         "members": "Members",
+        "manage": "Manage",
         "guest": "Guest",
         "addMember": "Add a member",
         "add": "add",
@@ -320,6 +615,7 @@
         "emailResetLink": "Email reset link",
         "forgotPassword": "Reset password",
         "ifYouAlreadyHaveAnAccount": "If you already have an account",
+        "name": "Name",
         "newPassword": "New password",
         "newPasswordAgain": "New password (again)",
         "optional": "Optional",
@@ -332,22 +628,27 @@
         "setPassword": "Set password",
         "sign": "Sign",
         "signIn": "Sign in",
+        "signInService": "{{service}} sign in",
         "signin": "sign in",
         "signInWith": "Sign in with",
         "signUpWith": "Sign up with",
         "signedIn": "You are signed in.",
         "signOut": "Sign out",
         "signUp": "Register",
+        "signUpButton": "Register",
         "signupCode": "Registration code",
         "signUpWithYourEmailAddress": "Register with your email address",
         "terms": "Terms of use",
         "updateYourPassword": "Update your password",
         "updatePasswordAndContinue": "Update and continue",
+        "updatedServiceConfiguration": "Updated service configuration for {{service}}",
         "username": "Username",
         "usernameOrEmail": "Username or email",
         "with": "with",
         "checkoutAsGuest": "Checkout without user account",
         "role": "Role",
+        "yourOrders": "Your orders",
+        "addressBook": "Address book",
         "info": {
           "emailSent": "Email sent",
           "emailVerified": "Email verified",
@@ -362,6 +663,7 @@
           "passwordRequired": "Password is required.",
           "passwordMustBeAtLeast6CharactersLong": "Password must be at least 6 characters long.",
           "passwordMustContainRequirements": "Password must contain at least one number or symbol.",
+          "usernameMinLength": "Username must be at least 3 characters long",
           "minChar": "6 character minimum password.",
           "pwdsDontMatch": "Passwords don't match",
           "pwOneDigit": "Password must have at least one digit.",
@@ -373,6 +675,10 @@
           "usernameRequired": "Username is required.",
           "emailAlreadyExists": "Email already exists.",
           "emailDoesntMatchTheCriteria": "Email doesn't match the criteria.",
+          "errorSendingEmail": "Error sending email, possible configuration issue.",
+          "unableToSendInvitationEmail": "Unable to send invitation email.",
+          "userWithEmailAlreadyExists": "A user with this email address already exists",
+          "failedToLogout": "Failed to logout.",
           "invalidLoginToken": "Invalid login token",
           "loginForbidden": "Login forbidden",
           "serviceUnknown": "Service unknown",
@@ -401,6 +707,18 @@
           "matchFailed": "Match failed",
           "unknownError": "Unknown error"
         }
+      },
+      "loginServices": {
+        "appId": "App ID",
+        "secret": "Secret",
+        "clientId": "Client ID",
+        "consumerKey": "API key"
+      },
+      "error": {
+        "nameRequired": "Name is required.",
+        "isRequired": "{{field}} is required.",
+        "mustBeNumber": "{{field}} must be a number.",
+        "variantFieldIsRequired": "Variant {{number}} {{field}} is required."
       }
     }
   }
