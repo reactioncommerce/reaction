@@ -710,7 +710,8 @@ describe("core product methods", function () {
       const tags = Tags.find();
       expect(product.hashtags).to.not.contain(tag._id);
       expect(tags.count()).to.equal(1);
-      expect(tags.fetch()[0].isDeleted).to.equal(true);
+      // Tag should not be deleted, it should just be removed from the product
+      expect(tags.fetch()[0].isDeleted).to.equal(false);
     });
   });
 
