@@ -60,7 +60,7 @@ describe("Add/Create cart methods", function () {
   }
 
   describe("cart/createCart", function () {
-    it.skip("should create a test cart", function () {
+    it("should create a test cart", function () {
       // This test needs to be skipped until we can properly stub out the shopIdAutoValue function
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       const cartInsertSpy = sandbox.spy(Cart, "insert");
