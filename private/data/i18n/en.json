@@ -32,6 +32,7 @@
           "description": "Description",
           "core": "Core",
           "remove": "Remove",
+          "connect": "Connect",
           "dashboard": "Dashboard",
           "misc": "Misc",
           "paymentMethod": "Payment Providers",

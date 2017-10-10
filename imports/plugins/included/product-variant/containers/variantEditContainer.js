@@ -89,7 +89,7 @@ function composer(props, onData) {
 }
 
 
-registerComponent("variantForm", VariantEdit, [
+registerComponent("VariantEditForm", VariantEdit, [
   composeWithTracker(composer),
   wrapComponent
 ]);
