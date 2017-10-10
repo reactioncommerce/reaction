@@ -1144,7 +1144,8 @@ describe("core product methods", function () {
       expect(product.isVisible).to.equal(isVisible);
     });
 
-    it.skip("should not publish product when top variant has no children and no price", function (done) {
+    // Future test placeholder. Was previously skipped.
+    it("should not publish product when top variant has no children and no price", function (done) {
       return done();
     });
 
