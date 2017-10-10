@@ -23,6 +23,9 @@ import "./templates/products/productSettings/productSettings.js";
 import "./templates/products/products.html";
 import "./templates/products/products.js";
 
+import "./templates/products/variantForm.html";
+import "./templates/products/variantForm.js";
+
 export { default as GridItemControls } from "../components/gridItemControls";
 export { default as GridItemNotice } from "../components/gridItemNotice";
 export { default as ProductGrid } from "../components/productGrid";

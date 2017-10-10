@@ -15,7 +15,8 @@
         "applied": "aplikovaný",
         "code": "kód",
         "codeIsExpired": "Kodex vypršela",
-        "codeIsInvalid": "Kód je neplatný"
+        "codeIsInvalid": "Kód je neplatný",
+        "multiShopError": "Slevy nelze uplatnit na víceúčelový vozík nebo objednávku"
       },
       "admin": {
         "paymentSettings": {

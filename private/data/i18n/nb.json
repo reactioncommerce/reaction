@@ -11,7 +11,8 @@
         "groups": {
           "email": "Epost",
           "description": "Legg til en produkt beskrivelse",
-          "remove": "Fjern"
+          "remove": "Fjern",
+          "dashboard": "Dashboard"
         }
       },
       "app": {
@@ -31,7 +32,11 @@
         "yearOptions": "Velg år",
         "shopSettings": "Butikk Innstillinger",
         "dashboard": "Dashboard",
-        "print": "Skriv ut"
+        "print": "Skriv ut",
+        "notFoundTitle": "Oops!"
+      },
+      "shopSettings": {
+        "options": "Innstillinger"
       },
       "header": {
         "tagsAdd": "Legg til tag",
@@ -68,7 +73,11 @@
         "startTracking": "Start sporing",
         "addBarcode": "Legg til Strekkode",
         "quantity": "Antall",
-        "quantityGreaterThanZero": "Feil: Antall må være større enn null"
+        "quantityGreaterThanZero": "Feil: Antall må være større enn null",
+        "notFoundTitle": "Oops!"
+      },
+      "tags": {
+        "addTag": "Legg til tag"
       },
       "productDetailEdit": {
         "title": "Produkt tittel",
@@ -86,13 +95,20 @@
         "pinProduct": "Fest Produkt",
         "toggleSize": "Bytt størrelse",
         "publish": "Publiser",
-        "moreOptions": "Flere varianter"
+        "moreOptions": "Flere varianter",
+        "details": "Detaljer"
+      },
+      "productVariant": {
+        "inventoryQuantity": "Antall",
+        "title": "Produkt tittel",
+        "barcode": "Strekkode"
       },
       "variantList": {
         "moreOptions": "Det er flere alternativ for den valgte varianten.",
         "createVariant": "Opprett variant"
       },
       "gridPackage": {
+        "details": "Detaljer",
         "pkgEnabled": "{{app}} er aktivert.",
         "pkgDisabled": " {{app}}er deaktivert."
       },
@@ -103,7 +119,8 @@
         "new": "Ny",
         "coreOrderWorkflow/created": "Opprettet",
         "coreOrderWorkflow/completed": "Fullført",
-        "coreOrderWorkflow/canceled": "Avbrutt"
+        "coreOrderWorkflow/canceled": "Avbrutt",
+        "coreOrderWorkflow/shipped": "Sendt"
       },
       "cartSubTotals": {
         "head": "Din handlekurv",
@@ -132,6 +149,8 @@
         "applyRefund": "Refunder",
         "adjustedTotal": "Endret Total",
         "processor": "Betalingstilbyder",
+        "completed": "Fullført",
+        "itemsFrom": "vare(r) fra",
         "filter": {
           "new": "Ny",
           "captured": "Betalt",
@@ -139,7 +158,8 @@
           "completed": "Fullført",
           "canceled": "Avbrutt",
           "refunded": "Refundert"
-        }
+        },
+        "shipped": "Sendt"
       },
       "orderShipping": {
         "shipTo": "Send til",
@@ -151,6 +171,9 @@
         "shipped": "Sendt",
         "shippingNotifyCustomer": "Varsle kunden om at varene er klare til å sendes.",
         "resendNotification": "Send varsel om sending på nytt."
+      },
+      "orderWorkflow": {
+        "invoice": "Faktura"
       },
       "cartCompleted": {
         "thankYou": "Takk for handelen, og velkommen tilbake!",
@@ -184,6 +207,23 @@
       },
       "addressBookEdit": {
         "editAddress": "Rediger denne addressen"
+      },
+      "shop": {
+        "description": "Legg til en produkt beskrivelse",
+        "email": "Epost",
+        "addressBook": {
+          "country": "Land",
+          "fullName": "Fullt navn",
+          "address1": "Adresselinje2",
+          "address2": "Adresselinje2",
+          "postal": "Postnummer",
+          "city": "By",
+          "region": "Fylke",
+          "phone": "Telefon",
+          "isShippingDefault": "Gjør dette til din standard frakt adresse?",
+          "isBillingDefault": "Gjør dette til din standard faktura adresse?",
+          "isCommercial": "Dette er en bedriftsadresse."
+        }
       },
       "address": {
         "country": "Land",
@@ -224,7 +264,14 @@
         "twitter": "Twitter",
         "weibo": "Weibo"
       },
+      "search": {
+        "accountSearchResults": {
+          "phone": "Telefon",
+          "emails": "Epost"
+        }
+      },
       "accountsUI": {
+        "oops": "Oops!",
         "members": "Bruker",
         "guest": "Gjest",
         "addMember": "Legg til en bruker",
@@ -261,6 +308,7 @@
         "signedIn": "Du er logget inn.",
         "signOut": "Logg ut",
         "signUp": "Registrer",
+        "signUpButton": "Registrer",
         "signupCode": "Registrerings Kode",
         "signUpWithYourEmailAddress": "Registrer med din epost addresse",
         "terms": "Vilkår",

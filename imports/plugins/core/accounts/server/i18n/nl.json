@@ -32,7 +32,8 @@
           "groupRequired": "Een groep is verplicht een admin uit te nodigen",
           "cannotInvite": "U kunt geen groep uitnodigen",
           "unableToSendInvitationEmail": "Kan uitnodigings-e-mail niet verzenden",
-          "errorSendingInvite": "Er is een fout opgetreden tijdens het verzenden van uitnodiging"
+          "errorSendingInvite": "Er is een fout opgetreden tijdens het verzenden van uitnodiging",
+          "NeedToSetUsernameOrEmail": "Gebruikersnaam of e-mail is vereist"
         }
       }
     }

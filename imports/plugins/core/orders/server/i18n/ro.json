@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "Comanda nu a fost găsită",
       "order": {
+        "applyRefundToThisOrder": "Aplicați rambursarea {{currencySymbol}}{{refund}} la această comandă?",
+        "applyRefundDuringCancelOrder": "Aceasta va restitui suma totală a comenzii {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Doriți să anulați această comandă?",
         "cancelOrderLabel": "Anulați comanda",
         "cancelOrderThenRestock": "Da, și restock",
@@ -59,6 +61,34 @@
             "total": "Total",
             "shipping": "livrare",
             "status": "Stare"
+          },
+          "filter": {
+            "status": "Stare",
+            "dateRange": "Interval de date",
+            "shippingStatus": "Starea de expediere",
+            "new": "Nou",
+            "captured": "Plată Capturată",
+            "shipped": "Expediat",
+            "completed": "Completă",
+            "canceled": "Anulată",
+            "refunded": "Rambursată"
+          },
+          "search": {
+            "clearSearch": "clar",
+            "placeholder": "Comenzi de căutare"
+          },
+          "data": {
+            "status": {
+              "new": "Nou",
+              "coreOrderWorkflow/created": "Creată",
+              "coreOrderWorkflow/processing": "Prelucrare",
+              "coreOrderWorkflow/completed": "terminat",
+              "coreOrderWorkflow/canceled": "Anulat",
+              "coreOrderWorkflow/picked": "ales",
+              "coreOrderWorkflow/packed": "bătătorit",
+              "coreOrderWorkflow/labeled": "marcat",
+              "coreOrderWorkflow/shipped": "Transportat"
+            }
           }
         }
       }

@@ -97,7 +97,7 @@ class Invoice extends Component {
           </div>
         }
 
-        {refunds && refunds.map((refund) => (
+        {Array.isArray(refunds) && refunds.map((refund) => (
           <div className="order-summary-form-group text-danger" key={refund.created} style={{ marginBottom: 15 }}>
             <strong>Refunded on: {this.formatDate(refund.created, "MM/D/YYYY")}</strong>
             <div className="invoice-details"><strong>{formatPriceString(refund.amount)}</strong></div>

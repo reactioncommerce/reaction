@@ -1,0 +1,47 @@
+[{
+  "language": "Romanian",
+  "i18n": "ro",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "plăţile PayPal"
+        },
+        "paymentMethod": {
+          "expressLabel": "Expres",
+          "creditCardLabel": "Card de credit"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Nu au un nume de utilizator PayPal, parola și semnătura?",
+          "paypalExpressGetCredentialsHere": "A lua unul aici.",
+          "paypalPayflowCredentials": "Nu aveți un ID de client PayPal și secret",
+          "paypalPayflowGetCredentialsHere": "Ia-le aici."
+        },
+        "settings": {
+          "saveSuccess": "setarile tale au fost salvate",
+          "saveFailed": "A apărut o problemă la salvarea setărilor"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Finaliza comanda",
+        "paymentMethod": {
+          "expressButtonLabel": "Plătiți cu PayPal",
+          "expressNotConfigured": "Paypal Express nu este configurat.",
+          "expressNotAvailable": "Paypal Express nu este disponibil",
+          "submitting": "Inscrierea",
+          "invalidCard": "Oops! Numărul cardului de credit este nevalid.",
+          "unknownError": "Oops! A apărut o eroare necunoscută",
+          "resubmit": "retrimiteți de plată"
+        }
+      }
+    }
+  }
+}]

@@ -15,7 +15,8 @@
         "applied": "applicerad",
         "code": "koda",
         "codeIsExpired": "Rabatt väntar",
-        "codeIsInvalid": "Koden är ogiltig"
+        "codeIsInvalid": "Koden är ogiltig",
+        "multiShopError": "Rabatter kan inte tillämpas på en kundvagn eller order i flera butiker"
       },
       "admin": {
         "paymentSettings": {

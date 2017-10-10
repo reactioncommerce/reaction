@@ -1,0 +1,24 @@
+[{
+  "language": "Spanish",
+  "i18n": "es",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectLabel": "Conectarse a la banda"
+        },
+        "dashboard": {
+          "stripeConnectLabel": "Conectarse a la banda",
+          "stripeConnectDescription": "Pagos de Stripe Connect"
+        },
+        "paymentSettings": {
+          "stripeConnectLabel": "Conectarse a la banda",
+          "stripeConnectSettingsLabel": "Conectarse a la banda",
+          "stripeConnectSettingsDescription": "¿No tiene un ID de cliente de API de Stripe Connect?",
+          "stripeConnectSettingsGetItHere": "Consiguelo aqui"
+        }
+      }
+    }
+  }
+}]

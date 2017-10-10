@@ -1,0 +1,47 @@
+[{
+  "language": "Arabic",
+  "i18n": "ar",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "Paypal"
+        },
+        "dashboard": {
+          "paypalLabel": "Paypal",
+          "paypalTitle": "Paypal",
+          "paypalDescription": "المدفوعات باي بال"
+        },
+        "paymentMethod": {
+          "expressLabel": "التعبير",
+          "creditCardLabel": "بطاقة ائتمان"
+        },
+        "paymentSettings": {
+          "paypalLabel": "Paypal",
+          "paypalSettingsLabel": "Paypal",
+          "paypalExpressCredentials": "لم يكن لديك باي بال المستخدم، كلمة المرور و التوقيع؟",
+          "paypalExpressGetCredentialsHere": "الحصول على واحد هنا.",
+          "paypalPayflowCredentials": "لم يكن لديك معرف العميل باي بال وسر",
+          "paypalPayflowGetCredentialsHere": "الحصول عليها هنا."
+        },
+        "settings": {
+          "saveSuccess": "تم حفظ إعداداتك",
+          "saveFailed": "حدثت مشكلة أثناء حفظ الإعدادات"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "استكمال طلبك",
+        "paymentMethod": {
+          "expressButtonLabel": "دفع مع PayPal",
+          "expressNotConfigured": "باي بال عبر عن عدم تكوينها.",
+          "expressNotAvailable": "باي بال السريعة غير متاح",
+          "submitting": "تقديم",
+          "invalidCard": "عفوا! رقم البطاقة الائتمانية غير صالح.",
+          "unknownError": "عفوا! حدث خطأ غير معروف",
+          "resubmit": "إعادة دفع"
+        }
+      }
+    }
+  }
+}]

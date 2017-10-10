@@ -12,13 +12,21 @@ Migrations.add({
 
       if (currentShipping.packed) {
         currentShipping.workflow.status = "coreOrderWorkflow/packed";
-        currentShipping.workflow.workflow = ["coreOrderWorkflow/notStarted", "coreOrderWorkflow/packed"];
+        currentShipping.workflow.workflow = [
+          "coreOrderWorkflow/notStarted",
+          "coreOrderWorkflow/picked",
+          "coreOrderWorkflow/packed"
+        ];
       }
 
       if (currentShipping.shipped) {
         currentShipping.workflow.status = "coreOrderWorkflow/shipped";
         currentShipping.workflow.workflow = [
-          "coreOrderWorkflow/notStarted", "coreOrderWorkflow/packed", "coreOrderWorkflow/shipped"
+          "coreOrderWorkflow/notStarted",
+          "coreOrderWorkflow/picked",
+          "coreOrderWorkflow/packed",
+          "coreOrderWorkflow/labeled",
+          "coreOrderWorkflow/shipped"
         ];
       }
 
@@ -26,7 +34,9 @@ Migrations.add({
         currentShipping.workflow.status = "coreOrderWorkflow/delivered";
         currentShipping.workflow.workflow = [
           "coreOrderWorkflow/notStarted",
+          "coreOrderWorkflow/picked",
           "coreOrderWorkflow/packed",
+          "coreOrderWorkflow/labeled",
           "coreOrderWorkflow/shipped",
           "coreOrderWorkflow/delivered"
         ];

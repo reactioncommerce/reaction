@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": "aliquota fiscale personalizzato salvato.",
           "shopCustomTaxRatesFailed": "Errore durante il salvataggio aliquota fiscale.",
           "shopTaxMethodsSaved": "Metodo fiscale salvata.",
+          "shopTaxMethodsAlreadySaved": "I codici fiscali già caricati",
           "shopTaxMethodsFailed": "Impossibile salvare il metodo fiscale.",
           "customRatesLabel": "tariffe personalizzate",
           "customRatesDescription": "tariffe personalizzate",

@@ -32,6 +32,14 @@
           "syncStopFailure": "Eroare la oprirea sincronizării Shopify!",
           "startImport": "Porniți importul"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "Cheia API",
+          "password": "Parola API",
+          "sharedSecret": "Partajat secretul API",
+          "shopName": "Magazinulete"
+        }
       }
     }
   }

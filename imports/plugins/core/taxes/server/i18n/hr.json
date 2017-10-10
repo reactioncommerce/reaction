@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": "Stopa poreza Custom spasio.",
           "shopCustomTaxRatesFailed": "Ušteda porezne stope pogrešaka.",
           "shopTaxMethodsSaved": "Spremljeno porez metoda.",
+          "shopTaxMethodsAlreadySaved": "Taxcodes već učitani",
           "shopTaxMethodsFailed": "Neuspješno uštedu poreza metodu.",
           "customRatesLabel": "Prilagođena lista",
           "customRatesDescription": "Prilagođena lista",

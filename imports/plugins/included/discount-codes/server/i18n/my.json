@@ -15,7 +15,8 @@
         "applied": "အသုံးချ",
         "code": "ကုဒ်",
         "codeIsExpired": "Code ကိုသက်တမ်းကုန်သည်",
-        "codeIsInvalid": "Code ကိုမမှန်ကန်"
+        "codeIsInvalid": "Code ကိုမမှန်ကန်",
+        "multiShopError": "လျှော့စျေး multi-ဆိုင်လှည်းသို့မဟုတ်အမိန့်လျှောက်ထားရနိုင်မှာမဟုတ်ဘူး"
       },
       "admin": {
         "paymentSettings": {
