@@ -377,7 +377,12 @@ Meteor.methods({
           _id: variantNewId,
           title: `${sortedVariant.title} - copy`,
           optionTitle: `${sortedVariant.optionTitle} - copy`,
-          price: `${sortedVariant.price}` ? `${sortedVariant.price}` : `${variant.price}`
+          price: `${sortedVariant.price}` ?
+            `${sortedVariant.price}` :
+            `${variant.price}`,
+          compareAtPrice: `${sortedVariant.compareAtPrice}` ?
+            `${sortedVariant.compareAtPrice}` :
+            `${variant.compareAtPrice}`
         });
       } else {
         const parentIndex = sortedVariant.ancestors.indexOf(variantId);
@@ -389,7 +394,12 @@ Meteor.methods({
           ancestors: ancestorsClone,
           title: `${sortedVariant.title}`,
           optionTitle: `${sortedVariant.optionTitle}`,
-          price: `${sortedVariant.price}` ? `${sortedVariant.price}` : `${variant.price}`,
+          price: `${sortedVariant.price}` ?
+            `${sortedVariant.price}` :
+            `${variant.price}`,
+          compareAtPrice: `${sortedVariant.compareAtPrice}` ?
+            `${sortedVariant.compareAtPrice}` :
+            `${variant.compareAtPrice}`,
           height: `${sortedVariant.height}`,
           width: `${sortedVariant.width}`,
           weight: `${sortedVariant.weight}`,
@@ -399,6 +409,8 @@ Meteor.methods({
       delete clone.updatedAt;
       delete clone.createdAt;
       delete clone.inventoryQuantity;
+      delete clone.lowInventoryWarningThreshold;
+
       copyMedia(productId, oldId, clone._id);
       return Products.insert(clone, {
         validate: false
