@@ -1053,11 +1053,12 @@ describe("core product methods", function () {
       expect(updateProductSpy).to.not.have.been.called;
     });
 
-    it.skip("should let admin publish product chnages", function () {
+    it("should let admin publish product changes", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
       expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);
       Meteor.call("revisions/publish", product._id);
+      Meteor._sleepForMs(500);
       product = Products.findOne(product._id);
       expect(product.isVisible).to.equal(true);
     });
