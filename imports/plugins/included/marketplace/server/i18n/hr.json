@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Ne mogu stvoriti trgovinu za trenutni korisnik {{user}}",
         "yourShopIsReady": "Vaša trgovina je sada spremna!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Naziv trgovine",
+          "emails": "Email za kontakt",
+          "workflow": "Položaj"
+        }
+      },
       "app": {
         "shops": "trgovine",
         "myShop": "Moj dućan"

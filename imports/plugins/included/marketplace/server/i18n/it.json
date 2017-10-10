@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Impossibile creare negozio per l'utente corrente {{user}}",
         "yourShopIsReady": "Il tuo negozio è pronto!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Nome del negozio",
+          "emails": "Contatto email",
+          "workflow": "Stato"
+        }
+      },
       "app": {
         "shops": "negozi",
         "myShop": "Il mio negozio"

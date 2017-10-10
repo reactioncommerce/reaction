@@ -1,0 +1,13 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-ui-search",
+  "translation": {
+    "reaction-ui-search": {
+      "search": {
+        "accountSearchResults": {
+          "notAvailable": "Не е наличен"
+        }
+      }
+    }
+  }
+}]

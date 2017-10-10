@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Não foi possível criar uma loja para o usuário atual {{user}}",
         "yourShopIsReady": "Sua loja já está pronta!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Nome da loja",
+          "emails": "Email de contato",
+          "workflow": "Estado"
+        }
+      },
       "app": {
         "shops": "Lojas",
         "myShop": "Minha loja"

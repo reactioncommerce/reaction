@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Omezená nabídka"
+      },
       "cartCompleted": {
         "yourCart": "Váš košík",
         "discountTotal": "Sleva celkem",

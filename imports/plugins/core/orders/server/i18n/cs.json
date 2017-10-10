@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "Objednávka nebyla nalezena",
       "order": {
+        "applyRefundToThisOrder": "Uplatňovat vrácení {{currencySymbol}}{{refund}} na tomto pořadí?",
+        "applyRefundDuringCancelOrder": "Tím bude vrácena celková objednávka {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Chcete tuto objednávku zrušit?",
         "cancelOrderLabel": "Zrušit objednávku",
         "cancelOrderThenRestock": "Ano, a znovu",
@@ -59,6 +61,34 @@
             "total": "Celkem",
             "shipping": "lodní",
             "status": "Postavení"
+          },
+          "filter": {
+            "status": "Postavení",
+            "dateRange": "Časové období",
+            "shippingStatus": "Stav odeslání",
+            "new": "Nový",
+            "captured": "platba Zachycená",
+            "shipped": "Posíláme",
+            "completed": "Dokončeno",
+            "canceled": "Zrušeno",
+            "refunded": "vrácena"
+          },
+          "search": {
+            "clearSearch": "Jasný",
+            "placeholder": "Vyhledávací příkazy"
+          },
+          "data": {
+            "status": {
+              "new": "Nový",
+              "coreOrderWorkflow/created": "Vytvořeno",
+              "coreOrderWorkflow/processing": "zpracovává se",
+              "coreOrderWorkflow/completed": "Dokončeno",
+              "coreOrderWorkflow/canceled": "Zrušeno",
+              "coreOrderWorkflow/picked": "Vybrali jste",
+              "coreOrderWorkflow/packed": "Balené",
+              "coreOrderWorkflow/labeled": "Označeno",
+              "coreOrderWorkflow/shipped": "Odesláno"
+            }
           }
         }
       }

@@ -15,7 +15,8 @@
         "applied": "stosowany",
         "code": "kod",
         "codeIsExpired": "Kod jest wygasł",
-        "codeIsInvalid": "Kod jest nieprawidłowy"
+        "codeIsInvalid": "Kod jest nieprawidłowy",
+        "multiShopError": "Rabaty nie mogą być stosowane do koszyka lub zamówienia wielu sklepów"
       },
       "admin": {
         "paymentSettings": {

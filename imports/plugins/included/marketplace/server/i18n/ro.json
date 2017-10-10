@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Nu s-a putut crea magazin pentru utilizatorul curent {{user}}",
         "yourShopIsReady": "Magazinul dvs. este acum gata!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Numele magazinului",
+          "emails": "Emailul de contact",
+          "workflow": "Stare"
+        }
+      },
       "app": {
         "shops": "Magazine",
         "myShop": "Magazinul meu"

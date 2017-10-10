@@ -1,0 +1,13 @@
+[{
+  "language": "Russian",
+  "i18n": "ru",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "Ваши настройки были сохранены",
+        "saveFailed": "Не удалось сохранить настройки"
+      }
+    }
+  }
+}]

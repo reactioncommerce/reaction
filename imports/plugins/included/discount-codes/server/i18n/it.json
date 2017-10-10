@@ -15,7 +15,8 @@
         "applied": "applicato",
         "code": "codice",
         "codeIsExpired": "Codice è scaduto",
-        "codeIsInvalid": "Codice non è valido"
+        "codeIsInvalid": "Codice non è valido",
+        "multiShopError": "Gli sconti non possono essere applicati a un carrello multi-shop o ad un ordine"
       },
       "admin": {
         "paymentSettings": {

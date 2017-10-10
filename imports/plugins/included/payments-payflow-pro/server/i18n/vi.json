@@ -1,0 +1,13 @@
+[{
+  "language": "Vietnamese",
+  "i18n": "vi",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "Cài đặt của bạn đã được lưu",
+        "saveFailed": "Đã xảy ra sự cố khi lưu cài đặt của bạn"
+      }
+    }
+  }
+}]

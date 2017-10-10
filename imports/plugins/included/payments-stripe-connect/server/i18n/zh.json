@@ -1,0 +1,24 @@
+[{
+  "language": "Chinese",
+  "i18n": "zh",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectLabel": "条纹连接"
+        },
+        "dashboard": {
+          "stripeConnectLabel": "条纹连接",
+          "stripeConnectDescription": "条纹连接付款"
+        },
+        "paymentSettings": {
+          "stripeConnectLabel": "条纹连接",
+          "stripeConnectSettingsLabel": "条纹连接",
+          "stripeConnectSettingsDescription": "没有Stripe Connect API客户端ID？",
+          "stripeConnectSettingsGetItHere": "在这里获得"
+        }
+      }
+    }
+  }
+}]

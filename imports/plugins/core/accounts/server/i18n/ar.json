@@ -32,7 +32,8 @@
           "groupRequired": "مطلوب من المجموعة دعوة مشرف",
           "cannotInvite": "لا يمكنك الدعوة إلى المجموعة",
           "unableToSendInvitationEmail": "تعذر إرسال رسالة إلكترونية للدعوة",
-          "errorSendingInvite": "حدث خطأ أثناء إرسال دعوة"
+          "errorSendingInvite": "حدث خطأ أثناء إرسال دعوة",
+          "NeedToSetUsernameOrEmail": "يجب تعيين اسم مستخدم او بريد الكترونى"
         }
       }
     }

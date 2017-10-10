@@ -8,6 +8,13 @@
         "errorCannotCreateShop": "Nem sikerült létrehozni az aktuális felhasználó {{user}} boltját",
         "yourShopIsReady": "Boltja készen áll!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Shop név",
+          "emails": "Kapcsolattartó e-mail",
+          "workflow": "Állapot"
+        }
+      },
       "app": {
         "shops": "Üzletek",
         "myShop": "A boltom"

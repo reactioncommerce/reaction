@@ -81,7 +81,8 @@
           "saveFailed": "Die E-Mail-Einstellungen konnten nicht gespeichert werden.  {{error}}",
           "cantSendEmail": "Server-Fehler: Kann keine E-Mail-Benachrichtigung senden.",
           "emailSent": "E-Mail-Benachrichtigung gesendet.",
-          "addOrderEmailFailed": "Hinzufügen von E-Mails zur Bestellung fehlgeschlagen"
+          "addOrderEmailFailed": "Hinzufügen von E-Mails zur Bestellung fehlgeschlagen",
+          "addCartEmailFailed": "Hinzufügen von E-Mails zum Warenkorb fehlgeschlagen"
         }
       }
     }
