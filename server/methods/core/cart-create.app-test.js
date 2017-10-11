@@ -60,9 +60,8 @@ describe("Add/Create cart methods", function () {
   }
 
   describe("cart/createCart", function () {
-    it.skip("should create a test cart", function () {
-      // This test needs to be skipped until we can properly stub out the shopIdAutoValue function
-      sandbox.stub(Reaction, "getShopId", () => shop._id);
+    it("should create a test cart", function () {
+      sandbox.stub(Reaction, "getPrimaryShopId", () => shop._id);
       const cartInsertSpy = sandbox.spy(Cart, "insert");
       const cartId = Meteor.call("cart/createCart", userId, sessionId);
       const cart = Cart.findOne({ userId: userId });
@@ -107,6 +106,10 @@ describe("Add/Create cart methods", function () {
       updateShipmentQuoteStub.restore();
     });
 
+    beforeEach(function () {
+      Cart.remove({});
+    });
+
     it("should add item to cart", function (done) {
       let cart = Factory.create("cart");
       const items = cart.items.length;
@@ -119,7 +122,7 @@ describe("Add/Create cart methods", function () {
       done();
     });
 
-    it.skip("should merge all items of same variant in cart", function () {
+    it("should merge all items of same variant in cart", function () {
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       spyOnMethod("addToCart", userId);
       const cartId = Meteor.call("cart/createCart", userId, sessionId);
@@ -154,6 +157,10 @@ describe("Add/Create cart methods", function () {
   });
 
   describe("cart/setAnonymousUserEmail", function () {
+    beforeEach(function () {
+      Cart.remove({});
+    });
+
     it("should add an email to an anonymous user", function () {
       const cart = Factory.create("cart", {
         userId: userId,
