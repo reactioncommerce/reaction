@@ -3,18 +3,13 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
-import { TextField } from "/imports/plugins/core/ui/client/components/";
-import { EditContainer } from "/imports/plugins/core/ui/client/containers";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+import { Reaction } from "client/api";
 
 class ProductField extends Component {
-  static state = {}
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      value: this.value
-    };
+  state = {
+    value: this.value
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,6 +45,22 @@ class ProductField extends Component {
     }
   }
 
+  handleFocus = () => {
+    // Open actionView, if not already open
+    if (!Reaction.isActionViewOpen()) {
+      Reaction.showActionView();
+    }
+
+    // Open actionView to productDetails panel
+    Reaction.state.set("edit/focus", "productDetails");
+
+    Reaction.setActionView({
+      i18nKeyLabel: "productDetailEdit.productSettings",
+      label: "Product Settings",
+      template: "ProductAdmin"
+    });
+  }
+
   get fieldName() {
     return this.props.fieldName;
   }
@@ -66,7 +77,7 @@ class ProductField extends Component {
     if (this.showEditControls) {
       return (
         <span className="edit-controls">
-          <EditContainer
+          <Components.EditContainer
             autoHideEditButton={true}
             data={this.props.product}
             editView="ProductAdmin"
@@ -98,12 +109,13 @@ class ProductField extends Component {
 
     return (
       <div className={baseClassName}>
-        <TextField
+        <Components.TextField
           ref={(ref) => { this._input = ref;}}
           className={textFieldClassName}
           multiline={this.props.multiline}
           onBlur={this.handleBlur}
           onChange={this.handleChange}
+          onFocus={this.handleFocus}
           onReturnKeyDown={this.handleBlur}
           value={this.state.value}
           {...this.props.textFieldProps}
@@ -146,5 +158,7 @@ ProductField.propTypes = {
   product: PropTypes.object,
   textFieldProps: PropTypes.object
 };
+
+registerComponent("ProductField", ProductField);
 
 export default ProductField;

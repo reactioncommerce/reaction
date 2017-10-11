@@ -1,0 +1,23 @@
+[{
+  "i18n": "es",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Recursos limitados"
+      },
+      "cartCompleted": {
+        "yourCart": "Su Carrito",
+        "discountTotal": "Descuento Total",
+        "orderTotal": "Total del pedido",
+        "fulfilledBy": "Cumplido por",
+        "quantityTotal": "Cantidad Total",
+        "orderSubtotal": "Total parcial",
+        "orderShipping": "Envío",
+        "orderTax": "Opciones de impuestos",
+        "trackYourDelivery": "Las actualizaciones sobre pedidos se enviarán a",
+        "registerGuest": "¡Hola! Añadir un correo electrónico y recibir actualizaciones de pedidos"
+      }
+    }
+  }
+}]

@@ -1,0 +1,23 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Offerta limitata"
+      },
+      "cartCompleted": {
+        "yourCart": "Il tuo carrello",
+        "discountTotal": "Sconto Totale",
+        "orderTotal": "Ordine totale",
+        "fulfilledBy": "Completato da",
+        "quantityTotal": "Quantità Totale",
+        "orderSubtotal": "Totale parziale",
+        "orderShipping": "spedizione",
+        "orderTax": "Impostazioni fiscali",
+        "trackYourDelivery": "aggiornamenti ordine verrà inviato a",
+        "registerGuest": "Ciao! Aggiungi un'email e ricevere gli aggiornamenti degli ordini"
+      }
+    }
+  }
+}]

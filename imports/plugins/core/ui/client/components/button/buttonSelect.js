@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import Button from "./button.jsx";
-import { Translation } from "/imports/plugins/core/ui/client/components";
 
 class ButtonSelect extends Component {
   static PropTypes = {
@@ -51,7 +51,7 @@ class ButtonSelect extends Component {
         bezelStyle="solid"
         label={defaultButton.name}
         i18nKeyLabel={defaultButton.i18nKeyLabel}
-        buttonType={defaultButton.buttonType}
+        type={defaultButton.buttonType}
       />
     );
 
@@ -101,7 +101,7 @@ class ButtonSelect extends Component {
         bezelStyle="solid"
         label={button.name}
         i18nKeyLabel={button.i18nKeyLabel}
-        buttonType={button.buttonType}
+        type={button.buttonType}
       />
     );
 
@@ -134,7 +134,7 @@ class ButtonSelect extends Component {
                 type="button"
                 onClick={() => this.handleButtonChange(button)}
               >
-                <Translation defaultValue={button.name} i18nKey={button.i18nKeyLabel} />
+                <Components.Translation defaultValue={button.name} i18nKey={button.i18nKeyLabel} />
               </button>);
           })}
         </div>
@@ -142,5 +142,7 @@ class ButtonSelect extends Component {
     );
   }
 }
+
+registerComponent("ButtonSelect", ButtonSelect);
 
 export default ButtonSelect;

@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "Внешний вид",
+          "email": "Настройки электронной почты",
           "connect": "Connect",
+          "description": "Добавьте описание товара",
           "core": "Ядро",
+          "remove": "Удалить",
           "dashboard": "Панель управления",
           "misc": "Разное",
           "paymentMethod": "Платёжные системы",
@@ -56,8 +59,6 @@
       "app": {
         "add": "Создать",
         "editMode": "Режим редактирования",
-        "administratorView": "Администратор Просмотреть",
-        "customerView": "Клиент Просмотреть",
         "createContent": "Создать содержимое",
         "auto": "Автоматически",
         "save": "Сохранить",
@@ -137,7 +138,7 @@
           "viewAll": "Просмотреть все"
         },
         "messages": {
-          "orderCancelled": "Ваш заказ был отменен.",
+          "orderCanceled": "Ваш заказ был отменен.",
           "newOrder": "Ваш заказ обрабатывается.",
           "forAdmin": "У вас новый заказ.",
           "orderDelivered": "Ваш заказ был доставлен.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "когда закончите редактирование.",
         "tags": "Метки",
         "tagsAdd": "Новая метка",
-        "tagsEdit": "Редактировать метку",
         "tagExists": "Метка пуста, либо такая уже существует.",
         "tagInUse": "Этот тег используется, его нельзя удалять.",
         "dropFiles": "Бросьте сюда файлы для их загрузки",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "Создан",
         "coreOrderWorkflow/processing": "В работе",
         "coreOrderWorkflow/completed": "Завершенных",
-        "coreOrderWorkflow/canceled": "Отмененных"
+        "coreOrderWorkflow/canceled": "Отмененных",
+        "coreOrderWorkflow/picked": "поднято",
+        "coreOrderWorkflow/packed": "уплотненный",
+        "coreOrderWorkflow/labeled": "маркированный",
+        "coreOrderWorkflow/shipped": "Доставлено"
       },
       "cartSubTotals": {
         "discount": "Скидка",
@@ -354,14 +358,35 @@
         "payment": "Платёж",
         "itemsFrom": "ед. товара от",
         "filter": {
+          "processing": "В работе",
+          "status": "Статус",
+          "dateRange": "Диапазон дат",
+          "shippingStatus": "Статус отправки",
           "new": "Новых",
           "captured": "Оплаченных",
-          "processing": "В работе",
           "shipped": "Доставленых",
           "completed": "Завершенных",
           "canceled": "Отмененных",
           "refunded": "Возвращенных"
         },
+        "capture": "Захватить",
+        "capturing": "Захватив",
+        "bulkActions": "Массовые действия",
+        "selected": "выбранный",
+        "picked": "поднято",
+        "packed": "уплотненный",
+        "labeled": "маркированный",
+        "shipped": "Доставлено",
+        "printInvoiceAndPickSheet": "Печать счета-фактуры и листка",
+        "generateLabel": "Создать метку",
+        "approveBulkOrderAction": "Да, Установить все Выбрать все заказы",
+        "approveBulkOrderActionRegression": "Да, Регресс Все выбранные заказы",
+        "cancelBulkOrderAction": "Нет, Отменить",
+        "orderAlreadyInState": "{{orderText}} уже был {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} установлен в {{status}}",
+        "skippedBulkOrdersAlert": "Вы запросили, чтобы {{selectedOrders}} {{orderText}} был установлен в статус «{{status}}», но {{numberOfSkippedOrders}} этих заказов {{skippedOrdersText}} не был в состоянии «{{skippedState}}» и пропустил все шаги, ведущие к состоянию «{{status}}». Вы уверены, что хотите это сделать?",
+        "bulkOrdersRegressionAlert": "Вы собираетесь вернуть {{ordersToRegress}} {{orderText}} обратно в состояние «{{status}}». Вы действительно хотите продолжить эту операцию?",
+        "paymentCaptureSuccess": "Успешные платежи",
         "showMore": "Показать больше"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "Создайте учётную запись или зайдите чтобы продолжить",
         "guestOrLogin": "Войти или оформить заказ без регистрации",
         "continueAsGuest": "Продолжить без регистрации",
-        "guestMessage": "Вы можете оформить заказ без создания учётной записи. У вас будет возможность создать её позже."
+        "guestMessage": "Вы можете оформить заказ без создания учётной записи. У вас будет возможность создать её позже.",
+        "addEmail": "Добавить электронную почту"
       },
       "addressBookGrid": {
         "addAddress": "Добавить адрес",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "Очистить",
-        "noProductsFound": "Товар не найден",
-        "noOrdersFound": "Заказы не найдены.",
-        "noAccountsFound": "Аккаунт не найден.",
         "searchInputLabel": "Поиск реакции ",
         "suggestedTags": "Предлагаемые теги",
         "searchTypeProducts": "Товары",
@@ -570,29 +593,12 @@
           "lastName": "Фамилия",
           "phone": "Телефон",
           "emails": "Электронный адрес"
-        },
-        "orderSearchResults": {
-          "orderId": "Идентификационный номер заказа",
-          "shopId": "Идентификационный номер магазина",
-          "shippingAddress": "Адрес",
-          "shippingCity": "Страна",
-          "shippingRegion": "Область",
-          "shippingCountry": "Страна",
-          "shippingPhone": "Телефон",
-          "shippingName": "Имя",
-          "shippingStatus": "Статус",
-          "billingAddress": "Адрес",
-          "billingCity": "Город",
-          "billingRegion": "Область",
-          "billingCountry": "Страна",
-          "billingPhone": "Телефон",
-          "billingStatus": "Статус",
-          "userEmails": "Электронный адрес",
-          "orderDate": "Дата",
-          "orderTotal": "Всего"
         }
       },
       "accountsUI": {
+        "usersOrders": "Заказы пользователя",
+        "oops": "Ой!",
+        "nonExistentAccount": "Пользователь, которого вы ищете, не существует.",
         "members": "Сотрудники",
         "manage": "Настроить",
         "guest": "Гость",

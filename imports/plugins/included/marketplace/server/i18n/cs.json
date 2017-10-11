@@ -1,0 +1,36 @@
+[{
+  "i18n": "cs",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Staňte se prodejcem",
+        "errorCannotCreateShop": "Nelze vytvořit obchod pro aktuálního uživatele {{user}}",
+        "yourShopIsReady": "Váš obchod je nyní připraven!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Název obchodu",
+          "emails": "Kontaktní e-mail",
+          "workflow": "Postavení"
+        }
+      },
+      "app": {
+        "shops": "Obchody",
+        "myShop": "Můj obchod"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect není pro tuto aplikaci povoleno. Kontaktujte prosím administrátora.",
+          "shopEmailNotConfigured": "Nejprve nakonfigurujte e-mailovou adresu obchodu.",
+          "shopAddressNotConfigured": "Nejdříve prosím nakonfigurujte svou adresu obchodu",
+          "shopNotActive": "Váš obchod není aktivní. Obraťte se na vlastníka tržiště."
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Nastavení tržiště bylo úspěšně uloženo!",
+          "dashboardMarketplaceSettingsFailed": "Nepodařilo se uložit nastavení Marketplace"
+        }
+      }
+    }
+  }
+}]

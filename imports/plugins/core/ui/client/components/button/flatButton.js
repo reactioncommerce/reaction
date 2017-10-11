@@ -1,52 +1,27 @@
-import React, { Component } from "react";
+import React from "react";
 import classnames from "classnames";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import Button from "./button.jsx";
 
-/* eslint react/prop-types: 0 */
-// TODO validate prop-types in FlatButton
+const FlatButton = (props) => {
+  const buttonClassName = classnames({
+    rui: true,
+    button: true
+  });
 
-class FlatButton extends Component {
-  static defaultProps = {
-    bezelStyle: "flat"
-  }
-  render() {
-    const {
-      icon,
-      onIcon,
-      ...otherProps
-    } = this.props;
+  return (
+    <Button
+      className={buttonClassName}
+      {...props}
+    />
+  );
+};
 
-    const buttonClassName = classnames({
-      rui: true,
-      button: true
-    });
+FlatButton.propTypes = { ...Button.propTypes };
+FlatButton.defaultProps = {
+  bezelStyle: "flat"
+};
 
-    let iconClassName;
-    let onIconClassName;
-
-    if (icon) {
-      iconClassName = classnames({
-        [icon]: true
-      });
-    }
-
-    if (onIcon) {
-      onIconClassName = classnames({
-        [onIcon]: true
-      });
-    }
-
-    return (
-      <Button
-        className={buttonClassName}
-        icon={iconClassName}
-        onIcon={onIconClassName}
-        {...otherProps}
-      />
-    );
-  }
-}
-
-FlatButton.propTypes = Object.assign({}, Button.propTypes);
+registerComponent("FlatButton", FlatButton);
 
 export default FlatButton;

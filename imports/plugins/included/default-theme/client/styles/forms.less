@@ -40,7 +40,7 @@
         .lh-transition(all 200ms);
     }
 
-    &:avtive:after {
+    &:active:after {
         background-color: darken(#fff, 10%);
     }
 
@@ -65,12 +65,18 @@
 .rui.switch {
   display: flex;
   align-items: center;
-  cursor: hand;
+  cursor: pointer;
   padding: 10px 0;
   margin-bottom: 0;
 
   input, label {
     display: none;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 }
 
@@ -135,4 +141,110 @@
 
 .rui.list-item-action .rui.switch {
   padding: 0;
+}
+
+// Original style is inherited from Bootstrap
+.rui.switch .help-block {
+  color: @black30;
+}
+
+.checkbox-large {
+  -webkit-appearance: none;
+  // background-color: #fafafa;
+  // border: 1px solid #cacece;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+  padding: 9px;
+  // border-radius: 3px;
+  display: inline-block;
+  position: relative;
+  width: 20px;
+	height: 20px;
+	border-radius: 2px;
+	border: solid 2px #5e6264;
+
+  &:checked {
+    font-size: 13px;
+
+    &:after {
+      font-family: FontAwesome;
+      content: "\f00c";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      color: #5e6264;
+    }
+  }
+}
+
+.rui.number-input {
+  display: flex;
+
+  .number-input-field {
+    width: 36px;
+    height: 40px;
+    margin-right: 5px;
+    text-align: center;
+    background-color: #f7f7f7;
+    border: solid 1px #cccccc;
+    flex: 1;
+  }
+
+  .edited {
+    background-color: @rui-info-bg;
+    border: 1px solid @rui-info;
+  }
+  .number-input-field:focus {
+    background-color: @rui-info-bg;
+  }
+  .number-input-field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  .stacked-buttons {
+    width: 25px;
+    flex: none;
+
+    .button {
+      border: 1px solid @rui-default;
+      border-radius: 2px;
+      margin-bottom: -18px;
+      width: 20px;
+      align-items: center;
+      height: 19px;
+      display: flex;
+      justify-content: center;
+      padding: 0px;
+
+      i {
+        font-size: 8px;
+        color: #5e6264;
+      }
+    }
+  }
+}
+
+.rollover-checkbox {
+
+  .selected-checkbox {
+    padding-left: 10px;
+    -webkit-flex: 1;
+    flex: 0;
+    border: 1px
+  }
+
+  .second-child {
+    display: none;
+    padding-left: 10px;
+    -webkit-flex: 1;
+    flex: 1;
+    border: 1px
+  }
+
+  &:hover .first-child {
+    display: none;
+  }
+
+  &:hover .second-child {
+    display: inline-block;
+  }
 }

@@ -1,0 +1,46 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Υποδοχή δεδομένων για Shopify"
+        },
+        "shopifyConnectSettings": {
+          "editApiKey": "Επεξεργασία API Key",
+          "editPassword": "Επεξεργασία κωδικού πρόσβασης API",
+          "editSharedSecret": "Επεξεργασία μυστικού κοινόχρηστου API",
+          "editShopifyDomain": "Επεξεργασία τομέα εξαγοράς",
+          "headingSync": "Ρυθμίσεις συγχρονισμού",
+          "headingImport": "Εισαγωγή",
+          "importFailed": "Σφάλμα κατά την εισαγωγή προϊόντων.",
+          "importing": "Εισαγωγή ... Αυτό μπορεί να διαρκέσει λίγο.",
+          "importProducts": "Εισαγωγή προϊόντων",
+          "importSuccess": "Προϊόντα που έχουν εισαχθεί με επιτυχία.",
+          "keepInventorySynced": "Διατηρήστε το απόθεμα συγχρονισμένο",
+          "noSyncIntegrationsSelected": "Επιλέξτε τουλάχιστον μία επιλογή για συγχρονισμό",
+          "optionImportProducts": "προϊόντα",
+          "optionOrdersCreateUpdateInventory": "Ενημέρωση αποθέματος όταν τοποθετηθεί νέα παραγγελία Shopify",
+          "syncSetup": "Ρύθμιση συγχρονισμού",
+          "syncSetupSuccess": "Επιτυχής ρύθμιση του συγχρονισμού Shopify",
+          "syncSetupFailure": "Παρουσιάστηκε σφάλμα κατά τη ρύθμιση του συγχρονισμού με το Shoidy",
+          "syncStop": "Διακοπή συγχρονισμού",
+          "syncStopSuccess": "Σταματήσατε με επιτυχία το συγχρονισμό Shopify!",
+          "syncStopFailure": "Σφάλμα κατά τη διακοπή του συγχρονισμού Shopify!",
+          "startImport": "Έναρξη εισαγωγής"
+        }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API κλειδί",
+          "password": "Κωδικός API",
+          "sharedSecret": "Κοινό μυστικό API",
+          "shopName": "Αγορά γυμνοσάλιαγκας"
+        }
+      }
+    }
+  }
+}]

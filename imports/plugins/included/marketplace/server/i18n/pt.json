@@ -1,0 +1,36 @@
+[{
+  "i18n": "pt",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Torne-se um vendedor",
+        "errorCannotCreateShop": "Não foi possível criar uma loja para o usuário atual {{user}}",
+        "yourShopIsReady": "Sua loja já está pronta!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Nome da loja",
+          "emails": "Email de contato",
+          "workflow": "Estado"
+        }
+      },
+      "app": {
+        "shops": "Lojas",
+        "myShop": "Minha loja"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect não está habilitado para esta aplicação. Entre em contato com o adminstrator.",
+          "shopEmailNotConfigured": "Por favor configure primeiro o e-mail da sua loja.",
+          "shopAddressNotConfigured": "Configure o endereço da sua loja primeiro",
+          "shopNotActive": "Sua loja não está ativa. Entre em contato com o proprietário do mercado."
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "As configurações do Marketplace foram salvas com sucesso!",
+          "dashboardMarketplaceSettingsFailed": "Falha ao salvar as configurações do Marketplace"
+        }
+      }
+    }
+  }
+}]

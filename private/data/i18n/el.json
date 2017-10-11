@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "Εμφάνιση",
+          "email": "Ρυθμίσεις email",
           "connect": "Συνδέω",
+          "description": "Πρόσθεσε περιγραφή προϊόντος",
           "core": "Πυρήνας",
+          "remove": "Αφαιρώ",
           "dashboard": "Ταμπλό",
           "misc": "Διάφορα",
           "paymentMethod": "οι πάροχοι υπηρεσιών πληρωμών",
@@ -56,8 +59,6 @@
       "app": {
         "add": "Προσθέτω",
         "editMode": "κατάσταση επεξεργασίας",
-        "administratorView": "διαχειριστή View",
-        "customerView": "Προβολή των πελατών",
         "createContent": "Δημιουργία περιεχομένου",
         "auto": "Αυτο",
         "save": "Αποθηκεύσετε",
@@ -137,7 +138,7 @@
           "viewAll": "Δείτε όλα τα"
         },
         "messages": {
-          "orderCancelled": "Η παραγγελία σας ακυρώθηκε.",
+          "orderCanceled": "Η παραγγελία σας ακυρώθηκε.",
           "newOrder": "Η παραγγελία σας βρίσκεται υπό επεξεργασία.",
           "forAdmin": "Έχετε μια νέα τάξη πραγμάτων.",
           "orderDelivered": "Η παραγγελία σας έχει παραδοθεί.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "όταν τελειώσεις την επεξεργασία.",
         "tags": "Ετικέτες",
         "tagsAdd": "Προσθήκη ετικέτας",
-        "tagsEdit": "Επεξεργασία ετικετών",
         "tagExists": "Ετικέτα υπάρχει ήδη, ή είναι άδειο.",
         "tagInUse": "Tag είναι σε χρήση και δεν μπορεί να διαγραφεί.",
         "dropFiles": "Drop τα αρχεία να ανεβάσετε",
@@ -288,8 +288,8 @@
         "details": "Καθέκαστα",
         "disable": "Καθιστώ ανίκανο",
         "disableConfirm": "Είστε βέβαιοι ότι θέλετε να απενεργοποιήσετε {{app}};",
-        "pkgEnabled": " τώρα ενεργοποιήθηκε.",
-        "pkgDisabled": " τώρα απενεργοποιήθηκε."
+        "pkgEnabled": "{{app}} τώρα ενεργοποιήθηκε.",
+        "pkgDisabled": "{{app}} τώρα απενεργοποιήθηκε."
       },
       "gridSettingsPanel": {
         "title": "Ρυθμίσεις πλέγματος",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "δημιουργήθηκε",
         "coreOrderWorkflow/processing": "Επεξεργασία",
         "coreOrderWorkflow/completed": "Ολοκληρώθηκε το",
-        "coreOrderWorkflow/canceled": "Ακυρώθηκε"
+        "coreOrderWorkflow/canceled": "Ακυρώθηκε",
+        "coreOrderWorkflow/picked": "Εκλεκτός",
+        "coreOrderWorkflow/packed": "Συσκευασμένα",
+        "coreOrderWorkflow/labeled": "Με την ένδειξη",
+        "coreOrderWorkflow/shipped": "αποστέλλονται"
       },
       "cartSubTotals": {
         "discount": "Εκπτωση",
@@ -354,14 +358,35 @@
         "payment": "Πληρωμή",
         "itemsFrom": "αντικείμενο (α) από",
         "filter": {
+          "processing": "Επεξεργασία",
+          "status": "Κατάσταση",
+          "dateRange": "Εύρος ημερομηνιών",
+          "shippingStatus": "Κατάσταση αποστολής",
           "new": "Νέος",
           "captured": "πληρωμή Συλλαμβάνονται",
-          "processing": "Επεξεργασία",
           "shipped": "αποστέλλονται",
           "completed": "Ολοκληρώθηκε το",
           "canceled": "Ακυρώθηκε",
           "refunded": "επιστρέφεται"
         },
+        "capture": "Πιάνω",
+        "capturing": "Καταγραφή",
+        "bulkActions": "Μαζικές ενέργειες",
+        "selected": "επιλεγμένα",
+        "picked": "Εκλεκτός",
+        "packed": "Συσκευασμένα",
+        "labeled": "Με την ένδειξη",
+        "shipped": "αποστέλλονται",
+        "printInvoiceAndPickSheet": "Εκτύπωση τιμολογίου και φύλλου επιλογής",
+        "generateLabel": "Δημιουργία ετικέτας",
+        "approveBulkOrderAction": "Ναι, Ορισμός όλων Επιλέξτε όλες τις παραγγελίες",
+        "approveBulkOrderActionRegression": "Ναι, καταργήστε όλες τις επιλεγμένες παραγγελίες",
+        "cancelBulkOrderAction": "Όχι, ακυρώστε",
+        "orderAlreadyInState": "Το {{orderText}} ήταν ήδη {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} σε {{status}}",
+        "skippedBulkOrdersAlert": "Ζήσατε να ορίσετε {{orderText}} {{orderText}} στην κατάσταση '{{status}}', αλλά η {{numberOfSkippedOrders}} αυτών των παραγγελιών {{skippedOrdersText}} δεν βρίσκεται στην κατάσταση '{{skippedState}}' και θα παραλείψει όλα τα βήματα που οδηγούν στην κατάσταση '{{status}}'. Είστε βέβαιοι ότι θέλετε να το κάνετε αυτό;",
+        "bulkOrdersRegressionAlert": "Πρόκειται να επαναφέρετε το {{ordersToRegress}} {{orderText}} στην κατάσταση '{{status}}'. Είστε βέβαιοι ότι θέλετε να συνεχίσετε με αυτή τη λειτουργία;",
+        "paymentCaptureSuccess": "Οι πληρωμές ολοκληρώθηκαν με επιτυχία",
         "showMore": "Δείτε Περισσότερα"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "Δημιούργησε λογαριασμό ή συνδέσου",
         "guestOrLogin": "Κάνε σύνδεση ή συνέχισε ώς επισκέπτης",
         "continueAsGuest": "Συνέχισε ώς επισκέπτης",
-        "guestMessage": "Μπορείς να πληρώσεις χωρίς να έχεις λογαριασμό. Θα έχεις την δυνατότητα να δημιουργήσεις λογαριασμό μετά."
+        "guestMessage": "Μπορείς να πληρώσεις χωρίς να έχεις λογαριασμό. Θα έχεις την δυνατότητα να δημιουργήσεις λογαριασμό μετά.",
+        "addEmail": "Προσθήκη ηλεκτρονικού ταχυδρομείου"
       },
       "addressBookGrid": {
         "addAddress": "Προσθήκη διεύθυνσης",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "Σαφής",
-        "noProductsFound": "Δεν βρέθηκαν προϊόντα.",
-        "noOrdersFound": "Δεν βρέθηκαν παραγγελίες.",
-        "noAccountsFound": "Δεν βρέθηκαν λογαριασμοί.",
         "searchInputLabel": "Αναζήτηση Αντίδραση",
         "suggestedTags": "προτεινόμενες ετικέτες",
         "searchTypeProducts": "προϊόντα",
@@ -570,29 +593,12 @@
           "lastName": "Επίθετο",
           "phone": "Τηλέφωνο",
           "emails": "E-mail"
-        },
-        "orderSearchResults": {
-          "orderId": "Αριθμός Παραγγελίας",
-          "shopId": "κατάστημα ID",
-          "shippingAddress": "Διεύθυνση",
-          "shippingCity": "Πόλη",
-          "shippingRegion": "Περιοχή",
-          "shippingCountry": "Χώρα",
-          "shippingPhone": "Τηλέφωνο",
-          "shippingName": "Όνομα",
-          "shippingStatus": "Κατάσταση",
-          "billingAddress": "Διεύθυνση",
-          "billingCity": "Πόλη",
-          "billingRegion": "Περιοχή",
-          "billingCountry": "Χώρα",
-          "billingPhone": "Τηλέφωνο",
-          "billingStatus": "Κατάσταση",
-          "userEmails": "E-mail",
-          "orderDate": "Ημερομηνία",
-          "orderTotal": "Σύνολο"
         }
       },
       "accountsUI": {
+        "usersOrders": "Παραγγελίες του χρήστη",
+        "oops": "Ουπς!",
+        "nonExistentAccount": "Ο χρήστης που αναζητάτε δεν υπάρχει.",
         "members": "μέλη",
         "manage": "Διαχειρίζομαι",
         "guest": "Επισκέπτης",

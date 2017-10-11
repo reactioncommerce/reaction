@@ -1,0 +1,28 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "Orijinal fiyat veya MSRP",
+          "optionInventoryQuantity": "Envanter",
+          "optionTitle": "Ürün Ayrıntı Sayfasında Görüntüleniyor",
+          "price": "Alış fiyatı",
+          "title": "Sepette, kasada ve siparişlerde gösteriliyor",
+          "variantBackorderToggle": "Arka ödenek parası artık seçeneklerle kontrol edilir",
+          "variantInventoryQuantity": "Varyant envanteri artık seçeneklerle kontrol edilir"
+        },
+        "tooltip": {
+          "validationError": "Doğrulama Hatası"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "Ürün Bulunamadı"
+      },
+      "productDetailEdit": {
+        "variantDetails": "varyant Detayları"
+      }
+    }
+  }
+}]

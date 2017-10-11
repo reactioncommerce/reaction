@@ -1,0 +1,36 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Bli en säljare",
+        "errorCannotCreateShop": "Kunde inte skapa butik för nuvarande användare {{user}}",
+        "yourShopIsReady": "Din butik är nu klar!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Butiknamn",
+          "emails": "Kontakta email",
+          "workflow": "Status"
+        }
+      },
+      "app": {
+        "shops": "butiker",
+        "myShop": "Min butik"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect är inte aktiverat för den här applikationen. Vänligen kontakta administratören.",
+          "shopEmailNotConfigured": "Konfigurera din butiks e-post först.",
+          "shopAddressNotConfigured": "Vänligen konfigurera din butiksadress först",
+          "shopNotActive": "Din butik är inte aktiv. Vänligen kontakta marknadsplatsägaren."
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Marknadsföringsinställningar har sparats!",
+          "dashboardMarketplaceSettingsFailed": "Misslyckades med att spara Marketplace-inställningar"
+        }
+      }
+    }
+  }
+}]

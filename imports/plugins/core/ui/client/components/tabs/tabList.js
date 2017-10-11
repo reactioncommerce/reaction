@@ -1,6 +1,7 @@
 import React, { Children, Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 class TabList extends Component {
   static propTypes = {
@@ -39,5 +40,7 @@ class TabList extends Component {
     );
   }
 }
+
+registerComponent("TabList", TabList);
 
 export default TabList;

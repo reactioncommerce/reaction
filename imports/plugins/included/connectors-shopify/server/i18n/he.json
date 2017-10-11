@@ -1,0 +1,13 @@
+[{
+  "i18n": "he",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "shopifyConnectSettings": {
+          "headingImport": "ייבוא"
+        }
+      }
+    }
+  }
+}]

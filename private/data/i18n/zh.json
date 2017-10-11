@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "外观",
+          "email": "电子邮件设置",
           "connect": "连接",
+          "description": "产品描述",
           "core": "核心",
+          "remove": "删除款式",
           "dashboard": "仪表板",
           "misc": "杂项",
           "paymentMethod": "支付服务提供商",
@@ -56,8 +59,6 @@
       "app": {
         "add": "添加",
         "editMode": "编辑模式",
-        "administratorView": "管理员查看",
-        "customerView": "客户视图",
         "createContent": "创建内容",
         "auto": "自动",
         "save": "保存",
@@ -137,7 +138,7 @@
           "viewAll": "查看所有"
         },
         "messages": {
-          "orderCancelled": "您的订单被取消。",
+          "orderCanceled": "您的订单已被取消。",
           "newOrder": "正在处理您的订单。",
           "forAdmin": "你有一个新的秩序。",
           "orderDelivered": "您的订单已交付。",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "（完成编辑时点击）",
         "tags": "标签",
         "tagsAdd": "添加标签",
-        "tagsEdit": "编辑标记",
         "tagExists": "标记已存在或者为空。",
         "tagInUse": "标签正在被使用，不能删除。",
         "dropFiles": "拖放文件以上传",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "已生成",
         "coreOrderWorkflow/processing": "正在处理",
         "coreOrderWorkflow/completed": "已完成",
-        "coreOrderWorkflow/canceled": "已取消"
+        "coreOrderWorkflow/canceled": "已取消",
+        "coreOrderWorkflow/picked": "采摘的",
+        "coreOrderWorkflow/packed": "袋装",
+        "coreOrderWorkflow/labeled": "标记",
+        "coreOrderWorkflow/shipped": "已出货"
       },
       "cartSubTotals": {
         "discount": "折扣",
@@ -354,14 +358,35 @@
         "payment": "付款",
         "itemsFrom": "商品来自",
         "filter": {
+          "processing": "正在处理",
+          "status": "状态",
+          "dateRange": "日期范围",
+          "shippingStatus": "运送状态",
           "new": "新订单",
           "captured": "已收款",
-          "processing": "正在处理",
           "shipped": "已出货",
           "completed": "已完成",
           "canceled": "已取消",
           "refunded": "已退款"
         },
+        "capture": "捕获",
+        "capturing": "捕获",
+        "bulkActions": "批量操作",
+        "selected": "选",
+        "picked": "采摘的",
+        "packed": "袋装",
+        "labeled": "标记",
+        "shipped": "已出货",
+        "printInvoiceAndPickSheet": "打印发票和拣单",
+        "generateLabel": "生成标签",
+        "approveBulkOrderAction": "是，全部选择所有订单",
+        "approveBulkOrderActionRegression": "是的，回归所有选定的订单",
+        "cancelBulkOrderAction": "不，取消",
+        "orderAlreadyInState": "{{orderText}}已经{{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}}设为{{status}}",
+        "skippedBulkOrdersAlert": "您已要求{{selectedOrders}} {{orderText}}设置为“{{status}}”状态，但这些订单{{skippedOrdersText}}中的{{numberOfSkippedOrders}}未处于“{{skippedState}}”状态，并且将跳过导致“{{status}}”状态的所有步骤。你确定要这样做吗？",
+        "bulkOrdersRegressionAlert": "您即将将{{ordersToRegress}} {{orderText}}退回“{{status}}”状态。您确定要继续执行此操作吗？",
+        "paymentCaptureSuccess": "付款已成功捕获",
         "showMore": "展示更多"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "登录或注册",
         "guestOrLogin": "登录或随便逛逛",
         "continueAsGuest": "继续逛逛",
-        "guestMessage": "您现在可以直接结账，您稍后可以注册账号。"
+        "guestMessage": "您现在可以直接结账，您稍后可以注册账号。",
+        "addEmail": "添加电子邮件"
       },
       "addressBookGrid": {
         "addAddress": "添加地址",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "清除",
-        "noProductsFound": "未找到任何产品",
-        "noOrdersFound": "找不到订单。",
-        "noAccountsFound": "找不到账户。",
         "searchInputLabel": "搜索 Reaction ",
         "suggestedTags": "建议的标记",
         "searchTypeProducts": "产品",
@@ -570,29 +593,12 @@
           "lastName": "姓",
           "phone": "电话",
           "emails": "电子邮件"
-        },
-        "orderSearchResults": {
-          "orderId": "订单ID",
-          "shopId": "商店ID",
-          "shippingAddress": "地址",
-          "shippingCity": "城市",
-          "shippingRegion": "地区",
-          "shippingCountry": "国家",
-          "shippingPhone": "电话",
-          "shippingName": "名称",
-          "shippingStatus": "状态",
-          "billingAddress": "地址",
-          "billingCity": "城市",
-          "billingRegion": "地区",
-          "billingCountry": "国家",
-          "billingPhone": "电话",
-          "billingStatus": "状态",
-          "userEmails": "电子邮件",
-          "orderDate": "日期",
-          "orderTotal": "总计"
         }
       },
       "accountsUI": {
+        "usersOrders": "用户订单",
+        "oops": "糟糕!",
+        "nonExistentAccount": "您要查找的用户不存在。",
         "members": "会员",
         "manage": "管理",
         "guest": "访客",

@@ -1,0 +1,36 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "ရောင်းသူတစ်ဦးဖြစ်လာ",
+        "errorCannotCreateShop": "လက်ရှိအသုံးပြုသူများအတွက်ဆိုင်ကိုမဖန်တီးနိုင်ခဲ့ {{user}}",
+        "yourShopIsReady": "သင့်ရဲ့ဆိုင်ယခုအဆင်သင့်ပါ!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "ဆိုင် name ကို",
+          "emails": "ဆက်သွယ်ရန်အီးမေးလ်",
+          "workflow": "status"
+        }
+      },
+      "app": {
+        "shops": "စျေးဆိုင်",
+        "myShop": "အကြှနျုပျ၏ဆိုင်"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "အစင်း Connect ကိုဤလျှောက်လွှာအဘို့အဖွင့်မသည်။ အဆိုပါ adminstrator ကိုဆက်သွယ်ပါ။",
+          "shopEmailNotConfigured": "သင့်ရဲ့ဆိုင်ကိုအီးမေးလ်ပထမဦးဆုံး configure ပေးပါ။",
+          "shopAddressNotConfigured": "သင့်ရဲ့ဆိုင်လိပ်စာပထမဦးဆုံးပြင်ဆင်ထားပါ",
+          "shopNotActive": "သင့်ရဲ့ဆိုင်တက်ကြွမဟုတ်ပါဘူး။ ဈေးပိုင်ရှင်ကိုဆက်သွယ်ပါ။"
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Marketplace setting များကိုအောင်မြင်စွာကယ်တင်ခြင်းသို့ရောက်ရ၏,",
+          "dashboardMarketplaceSettingsFailed": "Marketplace setting များကိုကယ်တင်ရန်မအောင်မြင်ခဲ့ပါ"
+        }
+      }
+    }
+  }
+}]

@@ -28,7 +28,7 @@ export const methods = {
     if (!shop) {
       throw new Meteor.Error("Bad shop ID");
     }
-    const amount = Number(cart.cartTotal());
+    const amount = Number(cart.getTotal());
     const description = shop.name + " Ref: " + cartId;
     const currency = shop.currency;
     const options = PayPal.expressCheckoutAccountOptions();
@@ -84,11 +84,11 @@ export const methods = {
     if (!cart) {
       throw new Meteor.Error("Bad cart ID");
     }
-    const amount = Number(cart.cartTotal());
+    const amount = Number(cart.getTotal());
     const shop = Shops.findOne(cart.shopId);
     const currency = shop.currency;
     const options = PayPal.expressCheckoutAccountOptions();
-    const captureAtAuth = getSetting(cart.shopId, "express_auth_and_capture");
+    const captureAtAuth = getSetting(cart.shopId, "expressAuthAndCapture");
     let paymentAction;
     if (captureAtAuth) {
       paymentAction = "Sale";

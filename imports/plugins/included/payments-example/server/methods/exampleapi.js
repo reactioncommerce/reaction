@@ -1,6 +1,10 @@
 import { ValidatedMethod } from "meteor/mdg:validated-method";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Random } from "meteor/random";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
+
+// Test card to use to add risk level flag for testing purposes only.
+export const RISKY_TEST_CARD = "4000000000009235";
 
 // You should not implement ThirdPartyAPI. It is supposed to represent your third party API
 // And is called so that it can be stubbed out for testing. This would be a library
@@ -16,6 +20,11 @@ const ThirdPartyAPI = {
         amount: paymentData.total,
         currency: "USD"
       };
+      // This is for testing risk evaluation. Proper payment methods have dectection mechanisms for this.
+      // This is just a sample
+      if (cardData.number === RISKY_TEST_CARD) {
+        results.riskStatus = "highest_risk_level";
+      }
       return results;
     }
     return {
@@ -31,7 +40,7 @@ const ThirdPartyAPI = {
   },
   refund: function (transactionId, amount) {
     return {
-      sucess: true,
+      success: true,
       transactionId: transactionId,
       amount: amount
     };
@@ -67,10 +76,14 @@ export const cardSchema = new SimpleSchema({
   type: { type: String }
 });
 
+registerSchema("cardSchema", cardSchema);
+
 export const paymentDataSchema = new SimpleSchema({
   total: { type: String },
   currency: { type: String }
 });
+
+registerSchema("paymentDataSchema", paymentDataSchema);
 
 
 ExampleApi.methods.authorize = new ValidatedMethod({

@@ -1,0 +1,28 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "Αρχική τιμή ή MSRP",
+          "optionInventoryQuantity": "Καταγραφή εμπορευμάτων",
+          "optionTitle": "Εμφανίζεται στη σελίδα λεπτομερειών προϊόντος",
+          "price": "Τιμή αγοράς",
+          "title": "Εμφανίζονται στο καλάθι, στο ταμείο και στις παραγγελίες",
+          "variantBackorderToggle": "Το επίδομα backorder ελέγχεται τώρα από τις επιλογές",
+          "variantInventoryQuantity": "Το απόθεμα παραλλαγών ελέγχεται τώρα από επιλογές"
+        },
+        "tooltip": {
+          "validationError": "Σφάλμα επικύρωσης"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "Δεν βρέθηκαν προϊόντα"
+      },
+      "productDetailEdit": {
+        "variantDetails": "παραλλαγή Λεπτομέρειες"
+      }
+    }
+  }
+}]

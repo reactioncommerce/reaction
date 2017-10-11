@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
@@ -16,31 +15,33 @@ Meteor.publish("Accounts", function (userId) {
   if (this.userId === null) {
     return this.ready();
   }
+
   const shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }
 
-  const nonAnonUsers = _.map(Meteor.users.find({
-    [`roles.${shopId}`]: {
-      $nin: [ "anonymous" ]
-    }
+  const nonAdminGroups = Collections.Groups.find({
+    name: { $in: ["guest"] },
+    shopId
   }, {
     fields: { _id: 1 }
-  }).fetch(), "_id");
+  }).fetch().map((group) => group._id);
 
   // global admin can get all accounts
   if (Roles.userIsInRole(this.userId, ["owner"], Roles.GLOBAL_GROUP)) {
     return Collections.Accounts.find({
-      _id: { $in: nonAnonUsers }
+      groups: { $nin: nonAdminGroups }
     });
+
   // shop admin gets accounts for just this shop
-  } else if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+  } else if (Roles.userIsInRole(this.userId, ["admin", "owner", "reaction-accounts"], shopId)) {
     return Collections.Accounts.find({
-      _id: { $in: nonAnonUsers },
+      groups: { $nin: nonAdminGroups },
       shopId: shopId
     });
   }
+
   // regular users should get just their account
   return Collections.Accounts.find({
     userId: this.userId

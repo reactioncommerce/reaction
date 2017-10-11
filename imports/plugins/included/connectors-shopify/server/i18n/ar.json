@@ -1,0 +1,46 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "شوبيفي الاتصال",
+          "shopifyConnectTitle": "شوبيفي الاتصال",
+          "shopifyConnectDescription": "بيانات موصل ل شوبيفي"
+        },
+        "shopifyConnectSettings": {
+          "editApiKey": "تحرير مفتاح API",
+          "editPassword": "تحرير كلمة مرور واجهة برمجة التطبيقات",
+          "editSharedSecret": "تحرير سر مشترك لواجهة برمجة التطبيقات",
+          "editShopifyDomain": "تحرير شوبيفي النطاق",
+          "headingSync": "إعدادات المزامنة",
+          "headingImport": "إستيراد",
+          "importFailed": "حدث خطأ أثناء استيراد المنتجات.",
+          "importing": "استيراد ... قد يستغرق هذا بعض الوقت.",
+          "importProducts": "استيراد المنتجات",
+          "importSuccess": "تم استيراد المنتجات بنجاح.",
+          "keepInventorySynced": "إبقاء المخزون متزامنة",
+          "noSyncIntegrationsSelected": "يرجى تحديد خيار واحد على الأقل للمزامنة",
+          "optionImportProducts": "المنتجات",
+          "optionOrdersCreateUpdateInventory": "تحديث المخزون عند وضع النظام الجديد شوبيفي",
+          "syncSetup": "إعداد المزامنة",
+          "syncSetupSuccess": "تم بنجاح إعداد شوبيفي المزامنة",
+          "syncSetupFailure": "حدث خطأ أثناء إعداد مزامنة شويفي",
+          "syncStop": "إيقاف المزامنة",
+          "syncStopSuccess": "توقف بنجاح شوبيفي المزامنة!",
+          "syncStopFailure": "حدث خطأ أثناء إيقاف مزامنة شوبيفي!",
+          "startImport": "بدء الاستيراد"
+        }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "مفتاح API",
+          "password": "كلمة مرور واجهة برمجة التطبيقات",
+          "sharedSecret": "شارك أبي السر",
+          "shopName": "متجر سبيكة"
+        }
+      }
+    }
+  }
+}]

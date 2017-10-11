@@ -1,0 +1,57 @@
+<template name="accountsDashboard">
+  {{#if hasPermission 'accounts'}}
+    <div>
+      {{> React component=accountsDashboard }}
+    </div>
+  {{/if}}
+</template>
+
+<template name="accountsSettings">
+  {{#each service in services}}
+    <div class="panel panel-default">
+      <div class="panel-heading panel-heading-flex">
+        <div class="panel-title">
+          <i class="fa fa-{{service.name}}"></i>
+          {{service.label}}
+          <span data-i18n="accountsUI.signIn">Sign In</span>
+        </div>
+        <div class="panel-controls">
+          <input class="checkbox-switch" type="checkbox" name="enabled" value="{{service.name}}" {{checked service.enabled}}>
+        </div>
+      </div>
+      <div class="panel-body {{shown service.enabled}}">
+        <form name="{{service.name}}Settings">
+          <input type="hidden" value="{{service.name}}" name="service">
+          {{#each field in service.fields}}
+            <div class="form-group ">
+              <label for="{{name}}SettingsClientId"><span data-i18n="loginServices.{{field.property}}">{{field.label}}</span></label>
+
+              <div class="{{#if condition field.property "eq" "secret"}}form-inline{{/if}}">
+                <input
+                  class="form-control"
+                  id="{{service.name}}SettingsClientId"
+                  type="{{field.type}}"
+                  name="{{field.property}}"
+                  value="{{valueForField field.property service}}">
+
+                {{#if condition field.property "eq" "secret"}}
+                  <button class="btn btn-default" type="button" data-event-action="showSecret">Show</button>
+                {{/if}}
+              </div>
+
+            </div>
+          {{/each}}
+          <div class="form-group">
+            <button class="btn btn-primary" type="submit" data-i18n="app.updateSettings">Update Settings</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    {{else}}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title" data-i18n="accountsDashboardControls.noAdditionalServices">No Additional login services available</div>
+      </div>
+    </div>
+  {{/each}}
+</template>

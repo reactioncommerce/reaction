@@ -1,0 +1,23 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Ограниченная поставка"
+      },
+      "cartCompleted": {
+        "yourCart": "Ваша корзина",
+        "discountTotal": "Скидка Итого",
+        "orderTotal": "Весь заказ",
+        "fulfilledBy": "Выполнено",
+        "quantityTotal": "Количество Всего",
+        "orderSubtotal": "Промежуточный итог",
+        "orderShipping": "Перевозка",
+        "orderTax": "Настройки налогов",
+        "trackYourDelivery": "Обновления заказа будут высланы на",
+        "registerGuest": "Здравствуйте! Добавьте электронное письмо и получите обновления заказа"
+      }
+    }
+  }
+}]

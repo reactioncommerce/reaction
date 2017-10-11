@@ -1,0 +1,13 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-ui-search",
+  "translation": {
+    "reaction-ui-search": {
+      "search": {
+        "accountSearchResults": {
+          "notAvailable": "Nem elérhető"
+        }
+      }
+    }
+  }
+}]

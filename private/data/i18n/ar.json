@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "مظهر",
+          "email": "إعدادات البريد الإلكتروني",
           "connect": "توصيل",
+          "description": "مواصفات",
           "core": "جوهر",
+          "remove": "إزالة",
           "dashboard": "لوحة المعلومات",
           "misc": "متنوع",
           "paymentMethod": "مزود الدفعة",
@@ -56,8 +59,6 @@
       "app": {
         "add": "إضافة",
         "editMode": "إضافة نمط",
-        "administratorView": "مدير مشاهدة",
-        "customerView": "عرض العملاء",
         "createContent": "إنشاء محتوى",
         "auto": "تلقائي",
         "save": "حفظ",
@@ -137,7 +138,7 @@
           "viewAll": "عرض الكل"
         },
         "messages": {
-          "orderCancelled": "تم إلغاء طلبك.",
+          "orderCanceled": "تم إلغاء طلبك.",
           "newOrder": "طلبك قيد التنفيذ.",
           "forAdmin": "لديك النظام الجديد.",
           "orderDelivered": "وقد تم تسليم طلبك.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": ".عندما تنتهي من التحرير",
         "tags": "علامات",
         "tagsAdd": "إضافة علامة",
-        "tagsEdit": "إضافة علامة",
         "tagExists": ".العلامة موجودة بالفعل ,أو أنها فارغ",
         "tagInUse": "العلامة قيد الاستخدام ولايمكن حذفها",
         "dropFiles": "وضع الملفات للتحميل",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "تم الانشاء",
         "coreOrderWorkflow/processing": "جاري المعالجة",
         "coreOrderWorkflow/completed": "مكتمل",
-        "coreOrderWorkflow/canceled": "تم الإلغاء"
+        "coreOrderWorkflow/canceled": "تم الإلغاء",
+        "coreOrderWorkflow/picked": "اختار",
+        "coreOrderWorkflow/packed": "معباه",
+        "coreOrderWorkflow/labeled": "المسمى",
+        "coreOrderWorkflow/shipped": "تم الشحن"
       },
       "cartSubTotals": {
         "discount": "خصم",
@@ -354,14 +358,35 @@
         "payment": "دفعة",
         "itemsFrom": "عنصر من",
         "filter": {
+          "processing": "جاري المعالجة",
+          "status": "حالة",
+          "dateRange": "نطاق الموعد",
+          "shippingStatus": "حالة الشحن",
           "new": "جديد",
           "captured": "تم تحصيل الدفعة",
-          "processing": "جاري المعالجة",
           "shipped": "تم الشحن",
           "completed": "مكتمل",
           "canceled": "تم الإلغاء",
           "refunded": "المستردة"
         },
+        "capture": "أسر",
+        "capturing": "اسر",
+        "bulkActions": "إجراءات جملة",
+        "selected": "مختار",
+        "picked": "اختار",
+        "packed": "معباه",
+        "labeled": "المسمى",
+        "shipped": "تم الشحن",
+        "printInvoiceAndPickSheet": "طباعة الفاتورة واختيار ورقة",
+        "generateLabel": "إنشاء تسمية",
+        "approveBulkOrderAction": "نعم، تعيين الكل حدد جميع الطلبات",
+        "approveBulkOrderActionRegression": "نعم، ريجرس جميع الطلبات المختارة",
+        "cancelBulkOrderAction": "لا، إلغاء",
+        "orderAlreadyInState": "كان {{orderText}} بالفعل {{status}}",
+        "orderSetToState": "تم تعيين {{orderNumber}} {{orderText}} على {{status}}",
+        "skippedBulkOrdersAlert": "لقد طلبت تعيين {{selectedOrders}} {{orderText}} إلى الحالة \"{{status}}\"، ولكن {{numberOfSkippedOrders}} من هذه الطلبات {{skippedOrdersText}} ليس في حالة \"{{skippedState}}\"، وأنه سيتم تخطي جميع الخطوات المؤدية إلى حالة \"{{status}}\". هل انت متأكد من أنك تريد أن تفعل هذا؟",
+        "bulkOrdersRegressionAlert": "أنت على وشك التراجع عن {{ordersToRegress}} {{orderText}} مرة أخرى إلى الحالة \"{{status}}\". هل تريد بالتأكيد متابعة هذه العملية؟",
+        "paymentCaptureSuccess": "تم التقاط الدفعات بنجاح",
         "showMore": "أظهر المزيد"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "إنشاء حساب أو تسجيل الدخول ",
         "guestOrLogin": "تسجيل الدخول أوالخروج كضيف",
         "continueAsGuest": "الأستمرار كضيف",
-        "guestMessage": ".يمكنك التأكد دون إنشاء حساب ستحظى بفرصة لإنشاء حساب لاحقاً"
+        "guestMessage": ".يمكنك التأكد دون إنشاء حساب ستحظى بفرصة لإنشاء حساب لاحقاً",
+        "addEmail": "إضافة بريد إلكتروني"
       },
       "addressBookGrid": {
         "addAddress": "إضافة عناوين",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "مسح",
-        "noProductsFound": "لا يوجد منتج موجود",
-        "noOrdersFound": "لم يتم اعثور على طلبات ",
-        "noAccountsFound": "لم يتم العثور على حسابات",
         "searchInputLabel": "بحث عن ردةالفعل ",
         "suggestedTags": "العلامات المقترحة",
         "searchTypeProducts": "المنتجات",
@@ -570,29 +593,12 @@
           "lastName": "الاسم الاخير ",
           "phone": "الهاتف",
           "emails": "البريد الالكتروني "
-        },
-        "orderSearchResults": {
-          "orderId": "بطاقة تعريف الطلب ",
-          "shopId": "بطاقة تعريف المتجر",
-          "shippingAddress": "العنوان",
-          "shippingCity": "المدينة ",
-          "shippingRegion": "المنطقة ",
-          "shippingCountry": "البلد",
-          "shippingPhone": "الهاتف ",
-          "shippingName": "الاسم",
-          "shippingStatus": "الحالة ",
-          "billingAddress": "العنوان",
-          "billingCity": "المدينة ",
-          "billingRegion": "المنطقة ",
-          "billingCountry": "البلد ",
-          "billingPhone": "الهاتف",
-          "billingStatus": "الحالة ",
-          "userEmails": "البريد الالكتروني",
-          "orderDate": "التاريخ",
-          "orderTotal": "المجموع"
         }
       },
       "accountsUI": {
+        "usersOrders": "أوامر المستخدم",
+        "oops": "!أووبس ",
+        "nonExistentAccount": "المستخدم الذي تبحث عنه غير موجود.",
         "members": "أعضاء",
         "manage": "إدارة",
         "guest": "ضيف",

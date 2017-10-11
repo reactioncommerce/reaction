@@ -15,7 +15,8 @@
         "applied": "angewandt",
         "code": "Code",
         "codeIsExpired": "-Code ist abgelaufen",
-        "codeIsInvalid": "-Code ist ungültig"
+        "codeIsInvalid": "-Code ist ungültig",
+        "multiShopError": "Rabatte können nicht auf einen Einkaufswagen oder eine Bestellung angewendet werden."
       },
       "admin": {
         "paymentSettings": {

@@ -1,9 +1,10 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { PackageConfig } from "/lib/collections/schemas/registry";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 export const PaypalPackageConfig = new SimpleSchema([
   PackageConfig, {
-    "settings.express_auth_and_capture": {
+    "settings.expressAuthAndCapture": {
       type: Boolean,
       label: "Capture at time of Auth",
       defaultValue: false
@@ -14,7 +15,7 @@ export const PaypalPackageConfig = new SimpleSchema([
     },
     "settings.express.support.$": {
       type: String,
-      allowedValues: ["authorize", "de-authorize", "capture", "refund"]
+      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
     },
     "settings.payflow.support": {
       type: Array,
@@ -71,6 +72,8 @@ export const PaypalPackageConfig = new SimpleSchema([
   }
 ]);
 
+registerSchema("PaypalPackageConfig", PaypalPackageConfig);
+
 export const PaypalPayment = new SimpleSchema({
   payerName: {
     type: String,
@@ -99,3 +102,4 @@ export const PaypalPayment = new SimpleSchema({
   }
 });
 
+registerSchema("PaypalPayment", PaypalPayment);

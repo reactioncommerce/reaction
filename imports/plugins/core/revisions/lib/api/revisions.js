@@ -1,8 +1,12 @@
 import { Packages } from "/lib/collections";
+import { Reaction } from "/lib/api";
 
 export function getPackageSettings() {
+  const shopId = Reaction.getPrimaryShopId();
+
   const packageInfo = Packages.findOne({
-    name: "reaction-revisions"
+    name: "reaction-revisions",
+    shopId: shopId
   });
 
   if (packageInfo && packageInfo.enabled && packageInfo.settings) {

@@ -8,6 +8,7 @@
           "dashboardLabel": "لوحة أجهزة القياس"
         },
         "dashboard": {
+          "coreTitle": "لوحة أجهزة القياس",
           "packageGroupActionsLabel": "الإجراءات",
           "packageGroupSettingsLabel": "إعدادات"
         },

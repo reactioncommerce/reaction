@@ -13,13 +13,17 @@ import {
   Translation,
   Overlay
 } from "/imports/plugins/core/ui/client/components";
-import { getComponent } from "/imports/plugins/core/layout/lib/components";
+import { getComponent } from "@reactioncommerce/reaction-components";
 
 
 const getStyles = (props) => {
   let viewSize = 400;
   const actionView = props.actionView || {};
-  const isBigView = actionView.provides === "dashboard" || (actionView.provides === "shortcut" && actionView.container === "dashboard");
+  const provides = actionView.provides || [];
+  // legacy provides could be a string, is an array since 1.5.0, check for either.
+  // prototype.includes has the fortunate side affect of checking string equality as well as array inclusion.
+  const isBigView = provides.includes("dashboard") ||
+                    (provides.includes("shortcut") && actionView.container === "dashboard");
 
   if (isBigView) {
     viewSize = "90vw";
@@ -89,8 +93,8 @@ const getStyles = (props) => {
     masterViewPanel: {
       display: "flex",
       flexDirection: "column",
-      flex: "1 1 auto"
-      // height: "100%"
+      flex: "1 1 auto",
+      width: "50%"
     },
     masterView: {
       flex: "1 1 auto",
@@ -194,24 +198,24 @@ class ActionView extends Component {
   renderControlComponent() {
     if (this.props.actionView && typeof this.props.actionView.template === "string") {
       // Render a react component if one has been registered by name
-      const component = getComponent(this.props.actionView.template);
+      try {
+        const component = getComponent(this.props.actionView.template);
 
-      if (component) {
         return (
           <div style={this.styles.masterView} className="master">
             {React.createElement(component, this.props.actionView.data)}
           </div>
         );
+      } catch (e) {
+        return (
+          <div style={this.styles.masterView} className="master">
+            <Blaze
+              {...this.props.actionView.data}
+              template={this.props.actionView.template}
+            />
+          </div>
+        );
       }
-
-      return (
-        <div style={this.styles.masterView} className="master">
-          <Blaze
-            {...this.props.actionView.data}
-            template={this.props.actionView.template}
-          />
-        </div>
-      );
     }
 
     return null;
@@ -277,8 +281,9 @@ class ActionView extends Component {
   get actionViewIsLargeSize() {
     const { meta } = this.props.actionView;
     const dashboardSize = meta && meta.actionView && meta.actionView.dashboardSize || "sm";
+    const includesDashboard = this.props.actionView.provides && this.props.actionView.provides.includes("dashboard");
 
-    return this.props.actionView.provides === "dashboard" || dashboardSize !== "sm";
+    return includesDashboard || dashboardSize !== "sm";
   }
 
   get showOverlay() {
@@ -357,7 +362,7 @@ class ActionView extends Component {
             <h3 className="title" style={this.styles.title}>
               <Translation
                 defaultValue={actionView.label || "Dashboard"}
-                i18nKey={actionView.i18nKeyLabel || "dashboard.coreTitle"}
+                i18nKey={actionView.i18nKeyLabel || "admin.dashboard.coreTitle"}
               />
             </h3>
           </div>

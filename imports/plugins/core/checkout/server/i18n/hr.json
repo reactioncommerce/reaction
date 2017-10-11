@@ -1,0 +1,23 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Ograničena ponuda"
+      },
+      "cartCompleted": {
+        "yourCart": "Vaša košarica",
+        "discountTotal": "Popust Ukupno",
+        "orderTotal": "Redoslijed ukupno",
+        "fulfilledBy": "Ispunjava",
+        "quantityTotal": "Količina ukupno",
+        "orderSubtotal": "suma stavke",
+        "orderShipping": "dostava",
+        "orderTax": "Porezni Postavke",
+        "trackYourDelivery": "ažuriranja narudžba će biti poslana",
+        "registerGuest": "Zdravo! Dodajte e-poštu i primajte ažuriranja narudžbi"
+      }
+    }
+  }
+}]

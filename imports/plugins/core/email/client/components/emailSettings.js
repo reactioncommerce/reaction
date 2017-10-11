@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Select, TextField } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class EmailSettings extends Component {
   constructor(props) {
@@ -8,6 +8,7 @@ class EmailSettings extends Component {
 
     this.state = {
       settings: props.settings,
+      hasAuth: !(props.settings.service === "Maildev"),
       isSaving: false
     };
 
@@ -24,23 +25,27 @@ class EmailSettings extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { saveSettings } = this.props;
+    const { saveSettings, providers } = this.props;
     const { settings } = this.state;
+    let newSettings = settings;
+    if (settings.service !== "custom") {
+      newSettings = Object.assign({}, settings, providers[settings.service]);
+    }
     this.setState({ isSaving: true });
-    saveSettings(settings, () => this.setState({ isSaving: false }));
+    saveSettings(newSettings, () => this.setState({ isSaving: false }));
   }
 
-  handleSelect(e) {
-    const { settings } = this.state;
-    settings.service = e;
-    this.setState({ settings });
+  handleSelect(service) {
+    this.setState({ settings: { service }, hasAuth: !(service === "Maildev") });
   }
 
   render() {
     const { providers } = this.props;
-    const { settings, isSaving } = this.state;
+    const { settings, hasAuth, isSaving } = this.state;
 
-    const emailProviders = providers.map((name) => (
+    const providerNames = Object.keys(providers);
+
+    const emailProviders = providerNames.map((name) => (
       { label: name, value: name }
     ));
 
@@ -48,7 +53,7 @@ class EmailSettings extends Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <Select
+        <Components.Select
           clearable={false}
           label="Service"
           i18nKeyLabel="admin.settings.providerName"
@@ -61,7 +66,7 @@ class EmailSettings extends Component {
         />
         {settings.service === "custom" &&
           <div>
-            <TextField
+            <Components.TextField
               label="Host"
               i18nKeyLabel="admin.settings.host"
               type="text"
@@ -69,7 +74,7 @@ class EmailSettings extends Component {
               value={settings.host}
               onChange={this.handleStateChange}
             />
-            <TextField
+            <Components.TextField
               label="Port"
               i18nKeyLabel="admin.settings.port"
               type="text"
@@ -79,23 +84,27 @@ class EmailSettings extends Component {
             />
           </div>
         }
-        <TextField
-          label="User"
-          i18nKeyLabel="admin.settings.user"
-          type="text"
-          name="user"
-          value={settings.user}
-          onChange={this.handleStateChange}
-        />
-        <TextField
-          label="Password"
-          i18nKeyLabel="admin.settings.password"
-          type="password"
-          name="password"
-          value={settings.password}
-          onChange={this.handleStateChange}
-        />
-        <Button
+        {hasAuth &&
+          <div>
+            <Components.TextField
+              label="User"
+              i18nKeyLabel="admin.settings.user"
+              type="text"
+              name="user"
+              value={settings.user}
+              onChange={this.handleStateChange}
+            />
+            <Components.TextField
+              label="Password"
+              i18nKeyLabel="admin.settings.password"
+              type="password"
+              name="password"
+              value={settings.password}
+              onChange={this.handleStateChange}
+            />
+          </div>
+        }
+        <Components.Button
           primary={true}
           bezelStyle="solid"
           className="pull-right"
@@ -105,14 +114,14 @@ class EmailSettings extends Component {
           {isSaving ?
             <i className="fa fa-refresh fa-spin"/>
             : <span data-i18n="app.save">Save</span>}
-        </Button>
+        </Components.Button>
       </form>
     );
   }
 }
 
 EmailSettings.propTypes = {
-  providers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  providers: PropTypes.object.isRequired,
   saveSettings: PropTypes.func.isRequired,
   settings: PropTypes.shape({
     service: PropTypes.string,

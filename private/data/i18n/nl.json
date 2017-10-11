@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "Uiterlijk",
+          "email": "E-mailinstellingen",
           "connect": "Aansluiten",
+          "description": "Voeg een productomschrijving toe",
           "core": "Kern",
+          "remove": "Verwijderen",
           "dashboard": "Dashboard",
           "misc": "Misc",
           "paymentMethod": "betaling Providers",
@@ -56,8 +59,6 @@
       "app": {
         "add": "Toevoegen",
         "editMode": "Bewerkingsmodus",
-        "administratorView": "Administrator View",
-        "customerView": "Customer View",
         "createContent": "Inhoud aanmaken",
         "auto": "Auto",
         "save": "Save",
@@ -137,7 +138,7 @@
           "viewAll": "Bekijk alles"
         },
         "messages": {
-          "orderCancelled": "Uw bestelling is geannuleerd.",
+          "orderCanceled": "Uw bestelling is geannuleerd.",
           "newOrder": "Je bestelling wordt verwerkt.",
           "forAdmin": "U heeft een nieuwe bestelling.",
           "orderDelivered": "Uw bestelling is afgeleverd.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "zodra u klaar bent met bewerken.",
         "tags": "Tags",
         "tagsAdd": "Tag toevoegen",
-        "tagsEdit": "Tags bewerken",
         "tagExists": "Tag bestaat al of is leeg.",
         "tagInUse": "Tag is in gebruik en kan niet worden verwijderd.",
         "dropFiles": "Drop bestanden te uploaden",
@@ -181,8 +181,8 @@
         "soldOut": "Uitverkocht!",
         "backOrder": "Backorder",
         "limitedSupply": "Beperkte voorraad",
-        "publishProductVisible": "is nu zichtbaar",
-        "publishProductHidden": "is nu verborgen",
+        "publishProductVisible": "{{product}} is nu zichtbaar",
+        "publishProductHidden": "{{product}} is nu verborgen",
         "clonedAlert": "gekloonde {{product}}",
         "clonedAlert_plural": "gekloonde {{product}}",
         "archivedAlert": "gearchiveerd {{product}}",
@@ -288,8 +288,8 @@
         "details": "Details",
         "disable": "onbruikbaar maken",
         "disableConfirm": "Bent u zeker dat u wilt {{app}} uitschakelen?",
-        "pkgEnabled": " is nu ingeschakeld.",
-        "pkgDisabled": " is nu uitgeschakeld."
+        "pkgEnabled": " {{app}} is nu ingeschakeld.",
+        "pkgDisabled": "{{app}} is nu uitgeschakeld."
       },
       "gridSettingsPanel": {
         "title": "Grid-instellingen",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "Gemaakt",
         "coreOrderWorkflow/processing": "verwerking",
         "coreOrderWorkflow/completed": "Voltooid",
-        "coreOrderWorkflow/canceled": "Geannuleerd"
+        "coreOrderWorkflow/canceled": "Geannuleerd",
+        "coreOrderWorkflow/picked": "uitgezocht",
+        "coreOrderWorkflow/packed": "overvol",
+        "coreOrderWorkflow/labeled": "geëtiketteerd",
+        "coreOrderWorkflow/shipped": "verzonden"
       },
       "cartSubTotals": {
         "discount": "Korting",
@@ -354,14 +358,35 @@
         "payment": "Betaling",
         "itemsFrom": "artikel (en) van",
         "filter": {
+          "processing": "verwerking",
+          "status": "Toestand",
+          "dateRange": "Datumbereik",
+          "shippingStatus": "Verzendstatus",
           "new": "Nieuw",
           "captured": "betaling Gevangen",
-          "processing": "verwerking",
           "shipped": "verzonden",
           "completed": "Voltooid",
           "canceled": "Geannuleerd",
           "refunded": "terugbetaald"
         },
+        "capture": "Vangst",
+        "capturing": "Het vastleggen",
+        "bulkActions": "Bulk Actions",
+        "selected": "Gekozen",
+        "picked": "uitgezocht",
+        "packed": "overvol",
+        "labeled": "geëtiketteerd",
+        "shipped": "verzonden",
+        "printInvoiceAndPickSheet": "Afdrukken Factuur en Afrekenen Blad",
+        "generateLabel": "Label genereren",
+        "approveBulkOrderAction": "Ja, Alles instellen Selecteer alle bestellingen",
+        "approveBulkOrderActionRegression": "Ja, Herstel alle geselecteerde bestellingen",
+        "cancelBulkOrderAction": "Nee, Annuleren",
+        "orderAlreadyInState": "{{orderText}} is al {{status}} geweest",
+        "orderSetToState": "{{orderNumber}} {{orderText}} ingesteld op {{status}}",
+        "skippedBulkOrdersAlert": "U heeft gevraagd dat {{selectedOrders}} {{orderText}} ingesteld worden op de '{{status}}'-status, maar {{numberOfSkippedOrders}} van deze bestellingen {{skippedOrdersText}} niet in de' {{skippedState}}'-staat en slaat alle stappen op die naar de '{{status}}'-toestand gaan. Weet u zeker dat u dit wilt doen?",
+        "bulkOrdersRegressionAlert": "Je staat op het punt om {{ordersToRegress}} {{orderText}} terug te keren naar de '{{status}}' -status. Weet u zeker dat u met deze operatie wilt doorgaan?",
+        "paymentCaptureSuccess": "Betalingen zijn succesvol vastgelegd",
         "showMore": "Laat meer zien"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "Maak een account aan of log in om verder te gaan",
         "guestOrLogin": "Login of reken af als gast",
         "continueAsGuest": "Verder als gast",
-        "guestMessage": "U kunt afrekenen zonder een account aan te maken. U krijgt later de kans om nieuw account te maken."
+        "guestMessage": "U kunt afrekenen zonder een account aan te maken. U krijgt later de kans om nieuw account te maken.",
+        "addEmail": "Voeg e-mail toe"
       },
       "addressBookGrid": {
         "addAddress": "Adres toevoegen",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "Duidelijk",
-        "noProductsFound": "Geen producten gevonden.",
-        "noOrdersFound": "Geen bestellingen gevonden.",
-        "noAccountsFound": "Geen accounts gevonden.",
         "searchInputLabel": "zoeken Reaction",
         "suggestedTags": "voorgestelde tags",
         "searchTypeProducts": "producten",
@@ -570,29 +593,12 @@
           "lastName": "Achternaam",
           "phone": "Telefoon",
           "emails": "Email"
-        },
-        "orderSearchResults": {
-          "orderId": "Order ID",
-          "shopId": "Shop ID",
-          "shippingAddress": "Adres",
-          "shippingCity": "Stad",
-          "shippingRegion": "Regio",
-          "shippingCountry": "Land",
-          "shippingPhone": "Telefoon",
-          "shippingName": "Naam",
-          "shippingStatus": "Toestand",
-          "billingAddress": "Adres",
-          "billingCity": "Stad",
-          "billingRegion": "Regio",
-          "billingCountry": "Land",
-          "billingPhone": "Telefoon",
-          "billingStatus": "Toestand",
-          "userEmails": "Email",
-          "orderDate": "Datum",
-          "orderTotal": "Totaal"
         }
       },
       "accountsUI": {
+        "usersOrders": "Bestellingen van de gebruiker",
+        "oops": "Oeps!",
+        "nonExistentAccount": "De gebruiker die u zoekt bestaat niet.",
         "members": "Gebruikers",
         "manage": "beheren",
         "guest": "Gast",

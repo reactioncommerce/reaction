@@ -1,0 +1,46 @@
+[{
+  "i18n": "de",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Verbinden",
+          "shopifyConnectTitle": "Shopify Verbinden",
+          "shopifyConnectDescription": "Datenstecker für Shopify"
+        },
+        "shopifyConnectSettings": {
+          "editApiKey": "Bearbeiten API Key",
+          "editPassword": "API-Passwort bearbeiten",
+          "editSharedSecret": "Bearbeiten Sie API Shared Secret",
+          "editShopifyDomain": "Bearbeiten Shopify Domain",
+          "headingSync": "Synchronisierungseinstellungen",
+          "headingImport": "Importieren",
+          "importFailed": "Fehler beim Importieren von Produkten.",
+          "importing": "Importieren ... Das könnte eine Weile dauern.",
+          "importProducts": "Produkte importieren",
+          "importSuccess": "Produkte erfolgreich importiert",
+          "keepInventorySynced": "Inventory synchronisiert halten",
+          "noSyncIntegrationsSelected": "Bitte wählen Sie mindestens eine Synchronisationsoption aus",
+          "optionImportProducts": "Produkte",
+          "optionOrdersCreateUpdateInventory": "Inventar aktualisieren, wenn neue Bestellung aufgeben ist",
+          "syncSetup": "Synchronisation einstellen",
+          "syncSetupSuccess": "Erfolgreiche Einrichtung von Shopify synchronisieren",
+          "syncSetupFailure": "Fehler beim Einrichten der Synchronisierung",
+          "syncStop": "Stopp Sync",
+          "syncStopSuccess": "Erfolgreich gestoppt Shopify sync!",
+          "syncStopFailure": "Fehler beim Stoppen Shopify Sync!",
+          "startImport": "Start importieren"
+        }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API-Schlüssel",
+          "password": "API-Passwort",
+          "sharedSecret": "Gemeinsames API-Geheimnis",
+          "shopName": "Shop Schnecke"
+        }
+      }
+    }
+  }
+}]

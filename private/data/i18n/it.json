@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "Aspetto",
+          "email": "Impostazioni e-mail",
           "connect": "Collegare",
+          "description": "Aggiungi una descrizione del prodotto",
           "core": "Nucleo",
+          "remove": "Rimuovi",
           "dashboard": "Cruscotto",
           "misc": "Varie",
           "paymentMethod": "Provider di pagamento",
@@ -56,8 +59,6 @@
       "app": {
         "add": "Aggiungere",
         "editMode": "Modalità Modifica",
-        "administratorView": "Administrator View",
-        "customerView": "clienti Visualizza",
         "createContent": "creazione di contenuti",
         "auto": "Automobile",
         "save": "Salva",
@@ -137,7 +138,7 @@
           "viewAll": "Guarda tutto"
         },
         "messages": {
-          "orderCancelled": "Il tuo ordine è stato annullato.",
+          "orderCanceled": "Il tuo ordine è stato annullato.",
           "newOrder": "Il vostro ordine è in fase di elaborazione.",
           "forAdmin": "Hai un nuovo ordine.",
           "orderDelivered": "L'ordine è stato consegnato.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "quando hai completato le modifiche.",
         "tags": "Tags",
         "tagsAdd": "Aggiungi tag",
-        "tagsEdit": "Modificare i tag",
         "tagExists": "Variabile esiste già, o è vuoto.",
         "tagInUse": "Tag è in uso e non può essere eliminato.",
         "dropFiles": "Drop dei file da caricare",
@@ -181,8 +181,8 @@
         "soldOut": "Esaurito!",
         "backOrder": "backorder",
         "limitedSupply": "limitata Fornitura",
-        "publishProductVisible": "è ora visibile",
-        "publishProductHidden": "è ora nascosto",
+        "publishProductVisible": "{{product}} è ora visibile",
+        "publishProductHidden": "{{product}} è ora nascosto",
         "clonedAlert": "Cloned {{product}}",
         "clonedAlert_plural": "Cloned {{product}}",
         "archivedAlert": "Archiviato {{product}}",
@@ -288,8 +288,8 @@
         "details": "Dettagli",
         "disable": "Disattivare",
         "disableConfirm": "Sei sicuro che si desidera disattivare {{app}}?",
-        "pkgEnabled": " è ora abilitato.",
-        "pkgDisabled": " è ora disabilitato."
+        "pkgEnabled": "{{app}} è ora abilitato.",
+        "pkgDisabled": "{{app}} è ora disabilitato."
       },
       "gridSettingsPanel": {
         "title": "Impostazioni griglia",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "Creato",
         "coreOrderWorkflow/processing": "lavorazione",
         "coreOrderWorkflow/completed": "Completato",
-        "coreOrderWorkflow/canceled": "Annullato"
+        "coreOrderWorkflow/canceled": "Annullato",
+        "coreOrderWorkflow/picked": "raccolto",
+        "coreOrderWorkflow/packed": "Confezionato",
+        "coreOrderWorkflow/labeled": "Labeled",
+        "coreOrderWorkflow/shipped": "Spedito"
       },
       "cartSubTotals": {
         "discount": "Sconto",
@@ -354,14 +358,35 @@
         "payment": "Versamento",
         "itemsFrom": "item (s) da",
         "filter": {
+          "processing": "lavorazione",
+          "status": "Stato",
+          "dateRange": "Intervallo di date",
+          "shippingStatus": "Stato della spedizione",
           "new": "Nuovo",
           "captured": "pagamento Captured",
-          "processing": "lavorazione",
           "shipped": "Spedito",
           "completed": "Completato",
           "canceled": "Annullato",
           "refunded": "rimborsato"
         },
+        "capture": "Catturare",
+        "capturing": "Catturare",
+        "bulkActions": "Azioni in blocco",
+        "selected": "Selezionata",
+        "picked": "raccolto",
+        "packed": "Confezionato",
+        "labeled": "Labeled",
+        "shipped": "Spedito",
+        "printInvoiceAndPickSheet": "Stampa fattura e foglio pick",
+        "generateLabel": "Genera etichetta",
+        "approveBulkOrderAction": "Sì, Imposta tutti Seleziona tutti gli ordini",
+        "approveBulkOrderActionRegression": "Sì, regressa tutti gli ordini selezionati",
+        "cancelBulkOrderAction": "No, Annulla",
+        "orderAlreadyInState": "{{orderText}} è già stato {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} impostato su {{status}}",
+        "skippedBulkOrdersAlert": "Hai richiesto che {{selectedOrders}} {{orderText}} sia impostato sullo stato \"{{status}}\", ma {{numberOfSkippedOrders}} di questi ordini {{skippedOrdersText}} non nello stato '{{skippedState}}' e ignorerà tutti i passaggi che portano allo stato '{{status}}'. Sei sicuro di volerlo fare?",
+        "bulkOrdersRegressionAlert": "Stai per regredire {{ordersToRegress}} {{orderText}} torna allo stato '{{status}}'. Sei sicuro di voler continuare con questa operazione?",
+        "paymentCaptureSuccess": "I pagamenti sono stati catturati con successo",
         "showMore": "Mostra di più"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "Crea un account o accedi",
         "guestOrLogin": "Entra o checkout come ospite",
         "continueAsGuest": "Continua come ospite",
-        "guestMessage": "È possibile checkout senza creare un account. Avrete la possibilità di creare un account in seguito."
+        "guestMessage": "È possibile checkout senza creare un account. Avrete la possibilità di creare un account in seguito.",
+        "addEmail": "Aggiungi e-mail"
       },
       "addressBookGrid": {
         "addAddress": "Aggiungere Indirizzo",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "Chiaro",
-        "noProductsFound": "Nessun prodotto trovato.",
-        "noOrdersFound": "Nessun ordine trovato.",
-        "noAccountsFound": "Nessun account trovato.",
         "searchInputLabel": "Ricerca di reazione",
         "suggestedTags": "tag suggeriti",
         "searchTypeProducts": "Prodotti",
@@ -570,29 +593,12 @@
           "lastName": "Cognome",
           "phone": "Telefono",
           "emails": "Email"
-        },
-        "orderSearchResults": {
-          "orderId": "ID ordine",
-          "shopId": "negozio ID",
-          "shippingAddress": "Indirizzo",
-          "shippingCity": "Città",
-          "shippingRegion": "Regione",
-          "shippingCountry": "Nazione",
-          "shippingPhone": "Telefono",
-          "shippingName": "Nome",
-          "shippingStatus": "Stato",
-          "billingAddress": "Indirizzo",
-          "billingCity": "Città",
-          "billingRegion": "Regione",
-          "billingCountry": "Nazione",
-          "billingPhone": "Telefono",
-          "billingStatus": "Stato",
-          "userEmails": "Email",
-          "orderDate": "Data",
-          "orderTotal": "Totale"
         }
       },
       "accountsUI": {
+        "usersOrders": "Ordini dell'utente",
+        "oops": "Oops!",
+        "nonExistentAccount": "L'utente che stai cercando non esiste.",
         "members": "Membri",
         "manage": "Gestire",
         "guest": "ospite",

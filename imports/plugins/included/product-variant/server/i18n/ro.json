@@ -1,0 +1,28 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "Prețul inițial sau MSRP",
+          "optionInventoryQuantity": "Inventar",
+          "optionTitle": "Afișate pe pagina cu detalii a produsului",
+          "price": "Pretul de cumparare",
+          "title": "Afișate în coș, la checkout și comenzi",
+          "variantBackorderToggle": "Avantajul pentru redundanță este acum controlat prin opțiuni",
+          "variantInventoryQuantity": "Varianta inventarului este acum controlată de opțiuni"
+        },
+        "tooltip": {
+          "validationError": "Eroare de validare"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "Nu găsiți produse"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Detalii variante"
+      }
+    }
+  }
+}]

@@ -4,6 +4,7 @@ import { Random } from "meteor/random";
 import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
 import { SubsManager } from "meteor/meteorhacks:subs-manager";
+import Reaction from "./main";
 
 export const Subscriptions = {};
 
@@ -29,11 +30,26 @@ Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts", Meteor.userI
 /**
  * General Subscriptions
  */
-Subscriptions.Shops = Subscriptions.Manager.subscribe("Shops");
 
+// Primary shop subscription
+Subscriptions.PrimaryShop = Subscriptions.Manager.subscribe("PrimaryShop");
+
+// Additional shop subscriptions
+Subscriptions.MerchantShops = Subscriptions.Manager.subscribe("MerchantShops");
+
+// This Packages subscription is used for the Active shop's packages
+// // Init sub here so we have a "ready" state
 Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages");
 
+// This packages subscription is used for the Primary Shop's packages
+// The Packages publication defaults to returning the primaryShopId's packages,
+// so this subscription shouldn't ever need to be changed
+// TODO: Consider how to handle routes for several shops which are all active at once
+Subscriptions.PrimaryShopPackages = Subscriptions.Manager.subscribe("Packages");
+
 Subscriptions.Tags = Subscriptions.Manager.subscribe("Tags");
+
+Subscriptions.Groups = Subscriptions.Manager.subscribe("Groups");
 
 Subscriptions.Media = Subscriptions.Manager.subscribe("Media");
 
@@ -66,6 +82,15 @@ Tracker.autorun(() => {
   Tracker.nonreactive(() => {
     sessionId = Session.get("sessionId");
   });
-  Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, Meteor.userId());
+  Subscriptions.Cart = Subscriptions.Manager.subscribe("Cart", sessionId, Meteor.userId());
   Subscriptions.UserProfile = Meteor.subscribe("UserProfile", Meteor.userId());
+});
+
+Tracker.autorun(() => {
+  // Reload Packages sub if shopId changes
+  // We have a persistent subscription to the primary shop's packages,
+  // so don't refresh sub if we're updating to primaryShopId sub
+  if (Reaction.getShopId() && Reaction.getShopId() !== Reaction.getPrimaryShopId()) {
+    Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages", Reaction.getShopId());
+  }
 });

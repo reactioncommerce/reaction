@@ -1,0 +1,36 @@
+[{
+  "i18n": "sl",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Postanite prodajalec",
+        "errorCannotCreateShop": "Trgovca ni bilo mogoče ustvariti za trenutnega uporabnika {{user}}",
+        "yourShopIsReady": "Vaša trgovina je zdaj pripravljena!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Ime trgovine",
+          "emails": "E-poštni naslov za stik",
+          "workflow": "Status"
+        }
+      },
+      "app": {
+        "shops": "Trgovine",
+        "myShop": "Moja trgovina"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect za to aplikacijo ni omogočen. Obrnite se na skrbnika.",
+          "shopEmailNotConfigured": "Najprej nastavite e-poštno sporočilo o trgovini.",
+          "shopAddressNotConfigured": "Najprej konfigurirajte naslov vaše trgovine",
+          "shopNotActive": "Vaša trgovina ni aktivna. Obrnite se na lastnika tržnice."
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Nastavitve tržnice so uspešno shranjene!",
+          "dashboardMarketplaceSettingsFailed": "Nastavitev Marketplace ni bilo mogoče shraniti"
+        }
+      }
+    }
+  }
+}]

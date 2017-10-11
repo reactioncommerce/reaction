@@ -1,0 +1,36 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Légy eladó",
+        "errorCannotCreateShop": "Nem sikerült létrehozni az aktuális felhasználó {{user}} boltját",
+        "yourShopIsReady": "Boltja készen áll!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Shop név",
+          "emails": "Kapcsolattartó e-mail",
+          "workflow": "Állapot"
+        }
+      },
+      "app": {
+        "shops": "Üzletek",
+        "myShop": "A boltom"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "A Stripe Connect nincs engedélyezve ehhez az alkalmazáshoz. Kérjük, lépjen kapcsolatba az adminisztrátorral.",
+          "shopEmailNotConfigured": "Kérjük, először állítsa be a bolt e-mailjét.",
+          "shopAddressNotConfigured": "Kérjük, először állítsa be üzletét",
+          "shopNotActive": "Az üzlet nem aktív. Kérjük, lépjen kapcsolatba a piactér tulajdonosával."
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Piaci beállítások sikeresen mentve!",
+          "dashboardMarketplaceSettingsFailed": "A Marketplace beállításainak mentése sikertelen"
+        }
+      }
+    }
+  }
+}]

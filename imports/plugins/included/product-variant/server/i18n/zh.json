@@ -1,0 +1,28 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "原价或MSRP",
+          "optionInventoryQuantity": "库存",
+          "optionTitle": "显示在产品详细页面上",
+          "price": "购买价格",
+          "title": "显示在购物车，结帐和订单",
+          "variantBackorderToggle": "现在由备选方式控制退货津贴",
+          "variantInventoryQuantity": "备选库存现在由选项控制"
+        },
+        "tooltip": {
+          "validationError": "验证错误"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "找不到产品"
+      },
+      "productDetailEdit": {
+        "variantDetails": "变异细节"
+      }
+    }
+  }
+}]

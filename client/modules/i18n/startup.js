@@ -1,4 +1,3 @@
-import _ from "lodash";
 import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import i18nextLocalStorageCache from "i18next-localstorage-cache";
 import i18nextSprintfPostProcessor from "i18next-sprintf-postprocessor";
@@ -8,9 +7,9 @@ import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
-import { Shops, Translations } from "/lib/collections";
-import * as Schemas from "/lib/collections/schemas";
-import i18next, { packageNamespaces, getLabelsFor, getMessagesFor, i18nextDep, currencyDep } from "./main";
+import { Shops, Translations, Packages } from "/lib/collections";
+import { getSchemas } from "@reactioncommerce/reaction-collections";
+import i18next, { getLabelsFor, getMessagesFor, i18nextDep, currencyDep } from "./main";
 import { mergeDeep } from "/lib/api";
 
 //
@@ -40,9 +39,38 @@ Meteor.startup(() => {
   // this only runs on initial page loaded
   // and when user.profile.lang updates
   Tracker.autorun(function () {
-    if (Reaction.Subscriptions.Shops.ready() && Meteor.user()) {
-      const shop = Shops.findOne(Reaction.getShopId());
-      let language = shop.language;
+    if (Reaction.Subscriptions.PrimaryShop.ready() &&
+        Reaction.Subscriptions.MerchantShops.ready() &&
+        Meteor.user()) {
+      let shopId;
+
+      // Choose shop to get language from
+      if (Reaction.marketplaceEnabled && Reaction.merchantLanguage) {
+        shopId = Reaction.getShopId();
+      } else {
+        shopId = Reaction.getPrimaryShopId();
+      }
+
+      const packageNamespaces = [];
+
+      const packages = Packages.find({
+        shopId: shopId
+      }, {
+        fields: {
+          name: 1
+        }
+      }).fetch();
+      for (const pkg of packages) {
+        packageNamespaces.push(pkg.name);
+      }
+
+
+      const shop = Shops.findOne({
+        _id: shopId
+      });
+
+      let language = shop && shop.language || "en";
+
       if (Meteor.user() && Meteor.user().profile && Meteor.user().profile.lang) {
         language = Meteor.user().profile.lang;
       }
@@ -83,7 +111,10 @@ Meteor.startup(() => {
           }, () => {
             // someday this should work
             // see: https://github.com/aldeed/meteor-simple-schema/issues/494
-            for (const schema in _.omit(Schemas, "__esModule")) {
+
+            // Loop through registered Schemas
+            const Schemas = getSchemas();
+            for (const schema in Schemas) {
               if ({}.hasOwnProperty.call(Schemas, schema)) {
                 const ss = Schemas[schema];
                 ss.labels(getLabelsFor(ss, schema));
@@ -110,15 +141,13 @@ Meteor.startup(() => {
   // use tracker autorun to detect currency changes
   // this only runs on initial page loaded
   // and when user.profile.currency updates
-  // althought it is also triggered when profile updates ( meaning .lang )
+  // although it is also triggered when profile updates ( meaning .lang )
   Tracker.autorun(function () {
     const user = Meteor.user();
-    if (Reaction.Subscriptions.Shops.ready() && user) {
+
+    if (Reaction.Subscriptions.PrimaryShop.ready() &&
+        Reaction.Subscriptions.MerchantShops.ready() && user) {
       if (user.profile && user.profile.currency) {
-        const localStorageCurrency = localStorage.getItem("currency");
-        if (localStorageCurrency !== user.profile.currency) {
-          localStorage.setItem("currency", user.profile.currency);
-        }
         currencyDep.changed();
       }
     }

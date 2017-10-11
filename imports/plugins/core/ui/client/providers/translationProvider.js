@@ -1,6 +1,6 @@
 import { Session } from "meteor/session";
 import React, { Component, PropTypes, Children } from "react"; // eslint-disable-line
-import { composeWithTracker } from "/lib/api/compose";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { i18nextDep } from "/client/api";
 
 class TranslationProvider extends Component {

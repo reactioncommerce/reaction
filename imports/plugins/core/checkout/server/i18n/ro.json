@@ -1,0 +1,23 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Oferta limitată"
+      },
+      "cartCompleted": {
+        "yourCart": "Cosul tău",
+        "discountTotal": "Reducere totală",
+        "orderTotal": "Ordine totală",
+        "fulfilledBy": "Îndepărtat de",
+        "quantityTotal": "Cantitate totală",
+        "orderSubtotal": "Subtotal",
+        "orderShipping": "livrare",
+        "orderTax": "Setări impozite",
+        "trackYourDelivery": "Actualizările comenzii vor fi trimise la",
+        "registerGuest": "Buna! Adăugați un e-mail și primiți actualizări pentru comenzi"
+      }
+    }
+  }
+}]

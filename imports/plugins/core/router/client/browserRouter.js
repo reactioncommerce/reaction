@@ -3,16 +3,16 @@ import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import { matchPath } from "react-router";
 import { Router as ReactRouter } from "react-router-dom";
+import equal from "deep-equal";
 import { Reaction } from "/client/api";
 import pathToRegexp from "path-to-regexp";
-import { isEqual } from "lodash";
 import queryParse from "query-parse";
 import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
-import App from "/imports/plugins/core/router/client/app";
 import { Router } from "../lib";
 import { MetaData } from "/lib/api/router/metadata";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { Components } from "@reactioncommerce/reaction-components";
 
 const history = Router.history;
 
@@ -38,17 +38,21 @@ class BrowserRouter extends Component {
 
   handleLocationChange = location => {
     // Find all matching paths
-    const foundPaths = Router.routes.filter((pathObject) => {
+    let foundPaths = Router.routes.filter((pathObject) => {
       return matchPath(location.pathname, {
         path: pathObject.route,
         exact: true
       });
     });
 
-    // If no matching pathis, redirect to the not found page
+    // If no matching path is found, fetch the not-found route definition
     if (foundPaths.length === 0 && location.pathname !== "not-found") {
-      Router.replace("not-found");
-      return undefined;
+      foundPaths = Router.routes.filter((pathObject) => {
+        return matchPath("/not-found", {
+          path: pathObject.route,
+          exact: true
+        });
+      });
     }
 
     // If we have a found path, take the first match
@@ -75,7 +79,7 @@ class BrowserRouter extends Component {
       search = search.substr(1);
     }
 
-    // Create objext of all necessary data for the current route
+    // Create object of all necessary data for the current route
     const routeData = {
       route: {
         ...foundPath,
@@ -88,28 +92,35 @@ class BrowserRouter extends Component {
       payload: location
     };
 
-    // Get the previousroute, which is the currentRoute just before it changes
-    const previousRoute = Router.current();
+    // The currentRoute is equal to the routeData.route that we just setup
+    const currentRoute = routeData.route || {};
 
-    // If it seems like we've moved to a differen route, then run the onExit
-    // hooks for the previousRoute
-    const routesAreSame = isEqual(previousRoute.route, routeData.route);
-    const paramsAreSame = isEqual(previousRoute.params, routeData.params);
-    const queryParamsAreSame = isEqual(previousRoute.query, routeData.query);
+    // Get the previousRouteData, which is the Router.current() just before it changes.
+    // Default to empty objects to guard against error
+    const previousRouteData = Router.current() || {};
+    const previousRoute = previousRouteData.route;
 
-    const routesDiffer = routesAreSame && paramsAreSame && queryParamsAreSame;
-
-    if (routesDiffer === false) {
-      // Run on enter hooks
-      Router.Hooks.run("onExit", "GLOBAL", routeData);
-      Router.Hooks.run("onExit", previousRoute.name, previousRoute);
+    // If routes are not identical, run onExit and onEnter
+    if (!equal({
+      params: previousRouteData.params,
+      query: previousRouteData.query,
+      route: previousRouteData.route
+    }, {
+      params: routeData.params,
+      query: routeData.query,
+      route: routeData.route
+    })) {
+      // Run onExit hooks if the previousRoute exists
+      if (previousRoute) {
+        Router.Hooks.run("onExit", "GLOBAL", previousRouteData);
+        Router.Hooks.run("onExit", previousRoute.name, previousRouteData);
+      }
 
       // Set current route reactive-var
       Router.setCurrentRoute(routeData);
-
       // Run on enter hooks for the new route
       Router.Hooks.run("onEnter", "GLOBAL", routeData);
-      Router.Hooks.run("onEnter", routeData.name, routeData);
+      Router.Hooks.run("onEnter", currentRoute.name, routeData);
     }
   }
 
@@ -148,7 +159,7 @@ export function initBrowserRouter() {
       ReactDOM.render((
         <BrowserRouter history={history}>
           <TranslationProvider>
-            <App children={Router.reactComponents} />
+            <Components.App children={Router.reactComponents} />
           </TranslationProvider>
         </BrowserRouter>
       ), getRootNode());

@@ -15,7 +15,8 @@
         "applied": "ứng dụng",
         "code": "mã",
         "codeIsExpired": "Mã là hết hạn",
-        "codeIsInvalid": "Mã không hợp lệ"
+        "codeIsInvalid": "Mã không hợp lệ",
+        "multiShopError": "Không thể áp dụng mức chiết khấu đối với giỏ hàng hoặc đơn đặt hàng nhiều cửa hàng"
       },
       "admin": {
         "paymentSettings": {

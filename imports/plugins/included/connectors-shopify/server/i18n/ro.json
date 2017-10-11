@@ -1,0 +1,46 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Conector de date pentru magazin"
+        },
+        "shopifyConnectSettings": {
+          "editApiKey": "Edita Cheie API",
+          "editPassword": "Editați parola API",
+          "editSharedSecret": "Editați secretul partajat API",
+          "editShopifyDomain": "Editați Domeniul de cumpărături",
+          "headingSync": "Sincronizarea setărilor",
+          "headingImport": "Import",
+          "importFailed": "Eroare la importul produselor.",
+          "importing": "Importarea ... Ar putea dura ceva timp.",
+          "importProducts": "Produse de import",
+          "importSuccess": "Produsele importate cu succes.",
+          "keepInventorySynced": "Păstrați sincronizarea inventarului",
+          "noSyncIntegrationsSelected": "Selectați cel puțin o opțiune de sincronizare",
+          "optionImportProducts": "Produse",
+          "optionOrdersCreateUpdateInventory": "Actualizați inventarul când este plasată o comandă pentru Shopify",
+          "syncSetup": "Sincronizare instalare",
+          "syncSetupSuccess": "Setați cu succes setarea Sync Shopify",
+          "syncSetupFailure": "Eroare la instalarea sincronizării Shoield",
+          "syncStop": "Opriți sincronizarea",
+          "syncStopSuccess": "S-a oprit cu succes sincronizarea Shopify!",
+          "syncStopFailure": "Eroare la oprirea sincronizării Shopify!",
+          "startImport": "Porniți importul"
+        }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "Cheia API",
+          "password": "Parola API",
+          "sharedSecret": "Partajat secretul API",
+          "shopName": "Magazinulete"
+        }
+      }
+    }
+  }
+}]

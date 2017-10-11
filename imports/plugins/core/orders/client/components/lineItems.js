@@ -1,39 +1,77 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { isEmpty } from "lodash";
+import classnames from "classnames";
+import { Meteor } from "meteor/meteor";
+import { Roles } from "meteor/alanning:roles";
+import { Reaction } from "/client/api";
 import { formatPriceString } from "/client/api";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
+/**
+  * @summary React component for displaying the actionable data on the invoice section on the orders sideview
+  * @param {Object} props - React PropTypes
+  * @property {Object} order - An object represnting an order
+  * @property {Object} uniqueItems - An object representing a line item
+  * @property {Array} editedItems - An array/list of line items that have been edited/modified
+  * @property {Array} selectedItems - An array of all the line items  that have been selected
+  * @property {Function} displayMedia - A function to display line items images
+  * @property {Function} clearRefunds - A function to clear edited/selected items
+  * @property {Function} getRefundedItemsInfo - A function that returns an object containing refunded items info
+  * @property {Function} getSelectedItemsInfo - A function that returns an object containing selected items info
+  * @property {Function} handleInputChange - A function to handle numeric input change
+  * @property {Function} handleItemSelect - A function to handle selecting an item via chekbox
+  * @property {Function} handlePopOverOpen - A function to handle the popover open and close
+  * @property {Function} handleRefundItems - A function to handle items return
+  * @property {Function} handleSelectAllItems - A function to handle selecting of all items
+  * @property {Bool} selectAllItems - A boolean indicating whether all items have been selected
+  * @property {Bool} isRefunding - A boolean indicating whether payment is being refunded
+  * @property {Bool} popOverIsOpen - A boolean indicating whether popover is open
+  * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
+  */
 class LineItems extends Component {
   static propTypes = {
+    clearRefunds: PropTypes.func,
     displayMedia: PropTypes.func,
-    handleClick: PropTypes.func,
-    isExpanded: PropTypes.func,
-    onClose: PropTypes.func,
+    editedItems: PropTypes.array,
+    getRefundedItemsInfo: PropTypes.func,
+    getSelectedItemsInfo: PropTypes.func,
+    handleInputChange: PropTypes.func,
+    handleItemSelect: PropTypes.func,
+    handlePopOverOpen: PropTypes.func,
+    handleRefundItems: PropTypes.func,
+    handleSelectAllItems: PropTypes.func,
+    isRefunding: PropTypes.bool,
+    order: PropTypes.object,
+    popOverIsOpen: PropTypes.bool,
+    selectAllItems: PropTypes.bool,
+    selectedItems: PropTypes.array,
     uniqueItems: PropTypes.array
   }
 
-  calculateTotal(price, shipping, taxes) {
-    return formatPriceString(price + shipping + taxes);
+  displayMedia(uniqueItem) {
+    const { displayMedia } = this.props;
+
+    if (displayMedia(uniqueItem)) {
+      return (
+        <img src={displayMedia(uniqueItem).url()}/>
+      );
+    }
+    return (
+      <img src= "/resources/placeholder.gif" />
+    );
   }
 
-  renderLineItem(uniqueItem, quantity) {
-    const { handleClick, displayMedia } = this.props;
-
+  renderLineItem(uniqueItem) {
     return (
-      <div className="order-items">
+      <div className="order-items invoice-item">
         <div
-          className="invoice order-item form-group order-summary-form-group"
-          onClick={() => handleClick(uniqueItem._id)}
-          style={{ height: 70 }}
+          className="order-item form-group order-summary-form-group"
         >
-
-          <div className="order-item-media" style={{ marginLeft: 15 }}>
-            { !displayMedia(uniqueItem) ?
-              <img src= "/resources/placeholder.gif" /> :
-              <img
-                src={displayMedia(uniqueItem).url()}
-              />
-            }
+          <div className="order-item-media">
+            <div>
+              {this.displayMedia(uniqueItem)}
+            </div>
           </div>
 
           <div className="order-item-details">
@@ -43,7 +81,59 @@ class LineItems extends Component {
           </div>
 
           <div className="order-detail-quantity">
-            {quantity || uniqueItem.quantity}
+            <div>{uniqueItem.quantity}</div>
+          </div>
+
+          <div className="order-detail-price">
+            <div className="invoice-details" style={{ marginRight: 15 }}>
+              <strong>{formatPriceString(uniqueItem.variants.price)}</strong>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  renderPopOverLineItem(uniqueItem) {
+    const className = classnames({
+      "order-items": true,
+      "invoice-item": true,
+      "selected": this.props.selectedItems.includes(uniqueItem._id)
+    });
+
+    return (
+      <div className={className}>
+        <div
+          className="order-item form-group order-summary-form-group"
+        >
+          <div className="order-item-media popover-mode">
+            <Components.RolloverCheckbox
+              className="order-invoice-rollover"
+              checkboxClassName="checkbox-avatar checkbox-large"
+              onChange={() => this.props.handleItemSelect(uniqueItem)}
+              checked={this.props.selectedItems.includes(uniqueItem._id)}
+            >
+              {this.displayMedia(uniqueItem)}
+            </Components.RolloverCheckbox>
+          </div>
+
+          <div className="order-item-details">
+            <div className="order-detail-title">
+              {uniqueItem.title} <br/><small>{uniqueItem.variants.title}</small>
+            </div>
+          </div>
+
+          <div className="order-detail-quantity">
+            {!this.props.selectedItems.includes(uniqueItem._id) && uniqueItem.quantity > 0 ?
+              <Components.NumberTypeInput
+                minValue={0}
+                defaultValue={uniqueItem.quantity}
+                onChange={(event, value) => this.props.handleInputChange(event, value, uniqueItem)}
+                maxValue={uniqueItem.quantity}
+              /> :
+              <div>0</div>
+            }
           </div>
 
           <div className="order-detail-price">
@@ -59,92 +149,194 @@ class LineItems extends Component {
 
   renderLineItemInvoice(uniqueItem) {
     return (
+      <div className="invoice-order-items">
+        {this.props.order.taxes &&
+          <div className="invoice-order-item-tax">
+            <b>
+              <Components.Translation
+                defaultValue="Tax"
+                i18nKey="cartSubTotals.tax"
+              />
+            </b>
+            <div className="tax-code">
+              <span>
+                {uniqueItem.taxDetail ? uniqueItem.taxDetail.taxCode : uniqueItem.variants.taxCode}
+              </span>
+            </div>
+            <div className="tax-cost">
+              <span>
+                {uniqueItem.taxDetail ?
+                  formatPriceString(uniqueItem.taxDetail.tax) :
+                  formatPriceString(uniqueItem.tax)
+                }
+              </span>
+            </div>
+          </div>
+        }
+        <div className="invoice-order-item-subtotal">
+          <b>
+            <Components.Translation
+              defaultValue="Subtotal"
+              i18nKey="cartSubTotals.subtotal"
+            />
+          </b>
+          <span><b>{formatPriceString(uniqueItem.variants.price * uniqueItem.quantity)}</b></span>
+        </div>
+      </div>
+    );
+  }
+
+  renderLineItemRefund() {
+    const { editedItems } = this.props;
+    return (
       <div>
-        <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></strong>
-          <div className="invoice-details">
-            {formatPriceString(uniqueItem.variants.price)}
+        <div className="invoice-refund-edited">
+          <div className="refund-header">
+            <div>
+              <Components.Translation defaultValue="For Refund" i18nKey="admin.invoice.refundLabel"/>
+            </div>
+            <div>
+              <Components.Translation defaultValue="Items" i18nKey="admin.invoice.refundItems"/>
+            </div>
+            <div>
+              <Components.Translation defaultValue="Total" i18nKey="admin.invoice.refundItemAmount"/>
+            </div>
+          </div>
+          <div className="refund-body">
+            {editedItems.map((item, index) => (
+              <div className="refund-item" key={index}>
+                <div>
+                  <span>{item.title}</span>
+                </div>
+                <div>
+                  <span>{item.refundedQuantity}</span>
+                </div>
+                <div>
+                  <span>{formatPriceString(item.refundedTotal)}</span>
+                </div>
+              </div>
+            )
+            )}
+            <div className="refund-item return">
+              <div>
+                <b><Components.Translation defaultValue="RETURN TOTAL" i18nKey="admin.invoice.refundTotal"/></b>
+              </div>
+              <div>
+                <span>
+                  {this.props.getRefundedItemsInfo().quantity}
+                </span>
+              </div>
+              <div>
+                <span>
+                  {formatPriceString(this.props.getRefundedItemsInfo().total)}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    );
+  }
 
-        <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
-          <div className="invoice-details">
-            {formatPriceString(uniqueItem.shipping.rate)}
-          </div>
-        </div>
+  renderPopOver() {
+    return (
+      <Components.Popover
+        isOpen={this.props.popOverIsOpen}
+        attachment="middle center"
+        targetAttachment="middle center"
+        constraints={[
+          {
+            to: "scrollParent",
+            pin: true
+          },
+          {
+            to: "window",
+            attachment: "together"
+          }
+        ]}
+        showDropdownButton={false}
+      >
+        {this.popOverContent()}
+      </Components.Popover>
+    );
+  }
 
-        <div className="order-summary-form-group">
-          <strong>Item tax</strong>
-          <div className="invoice-details">
-            {uniqueItem.taxDetail ? formatPriceString(uniqueItem.taxDetail.tax / uniqueItem.quantity) : formatPriceString(0)}
+  popOverContent() {
+    return (
+      <div className="invoice-popover">
+        <div className="invoice-popover-controls">
+          <Components.Checkbox
+            className="checkbox-large"
+            checked={this.props.selectAllItems || this.props.selectedItems.length === this.props.uniqueItems.length}
+            onChange={() => this.props.handleSelectAllItems(this.props.uniqueItems)}
+          />
+          <div className="invoice-popover-close">
+            <Components.Button
+              className="rui btn btn-default flat icon-only pull-right"
+              icon="fa-2x fa fa-times"
+              bezelStyle="flat"
+              onClick={this.props.clearRefunds}
+            />
           </div>
         </div>
-
-        <div className="order-summary-form-group">
-          <strong>Tax code</strong>
-          <div className="invoice-details">
-            {uniqueItem.taxDetail ? uniqueItem.taxDetail.taxCode : uniqueItem.variants.taxCode}
+        <div>
+          {this.props.uniqueItems.map((uniqueItem, index) => (
+            <div key={index}>
+              {this.renderPopOverLineItem(uniqueItem)}
+              {this.renderLineItemInvoice(uniqueItem)}
+            </div>
+          ))}
+        </div>
+        <div>
+          {!isEmpty(this.props.editedItems) && this.renderLineItemRefund()}
+        </div>
+        <div className="invoice-actions">
+          <div className="invoice-action-cancel">
+            <Components.Button
+              className="pull-right"
+              bezelStyle="solid"
+              status="default"
+              label="Cancel"
+              onClick={this.props.clearRefunds}
+            />
+          </div>
+          <div className="invoice-action-refund">
+            <Components.Button
+              className="pull-right"
+              bezelStyle="solid"
+              status="primary"
+              disabled={this.props.isRefunding || this.props.editedItems.length === 0}
+              onClick={this.props.handleRefundItems}
+            >
+              {this.props.isRefunding ? <span>Refunding <i className="fa fa-spinner fa-spin" /></span> :
+                <span>Refund Items</span>
+              }
+            </Components.Button>
           </div>
         </div>
-
-        <div className="order-summary-form-group">
-          <strong>TOTAL</strong>
-          <div className="invoice-details">
-            {uniqueItem.taxDetail ?
-              <strong>
-                {this.calculateTotal(uniqueItem.variants.price, uniqueItem.shipping.rate, uniqueItem.taxDetail.tax)}
-              </strong> :
-              <strong>
-                {this.calculateTotal(uniqueItem.variants.price, uniqueItem.shipping.rate, 0)}
-              </strong>
-            }
-          </div>
-        </div>
-        <br/>
       </div>
     );
   }
 
   render() {
-    const { uniqueItems, isExpanded, onClose } = this.props;
+    const { uniqueItems } = this.props;
     return (
-      <div>
+      <div className="invoice invoice-line-items" onClick={this.props.handlePopOverOpen}>
         {uniqueItems.map((uniqueItem) => {
-          if (!isExpanded(uniqueItem._id)) {
-            return (
-              <div key={uniqueItem._id}> { this.renderLineItem(uniqueItem) } </div>
-            );
-          }
-
           return (
-            <div className="roll-up-invoice-list" key={uniqueItem._id}>
-              <div className="roll-up-content">
-
-                <div style={{ float: "right" }}>
-                  <button className="rui btn btn-default flat icon-only" onClick={() => onClose(uniqueItem._id)}>
-                    <i
-                      className="rui font-icon fa-lg fa fa-times"
-                    />
-                  </button>
-                </div>
-
-                <br/><br/>
-
-                {[...Array(uniqueItem.quantity)].map((v, i) =>
-                  <div key={i}>
-                    { this.renderLineItem(uniqueItem, 1) }
-                    { this.renderLineItemInvoice(uniqueItem) }
-                  </div>
-                )}
-
-              </div>
-            </div>
+            <div key={uniqueItem._id}> {this.renderLineItem(uniqueItem)} </div>
           );
         })}
+
+        {
+          Roles.userIsInRole(Meteor.userId(), ["orders", "dashboard/orders"], Reaction.getShopId()) &&
+          this.renderPopOver()
+        }
       </div>
     );
   }
 }
+
+registerComponent("LineItems", LineItems);
 
 export default LineItems;

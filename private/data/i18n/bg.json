@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "Външен вид",
+          "email": "Email настройки",
           "connect": "Свържете",
+          "description": "Добавете описание на продукта",
           "core": "сърцевина",
+          "remove": "Премахни",
           "dashboard": "Табло",
           "misc": "Разни",
           "paymentMethod": "доставчици на платежни",
@@ -56,8 +59,6 @@
       "app": {
         "add": "Добави",
         "editMode": "режим на редактиране",
-        "administratorView": "Administrator View",
-        "customerView": "Преглед на клиенти",
         "createContent": "Създаване на съдържание",
         "auto": "Автоматичен",
         "save": "Запиши",
@@ -137,7 +138,7 @@
           "viewAll": "Виж всички"
         },
         "messages": {
-          "orderCancelled": "Вашата цел е отменен.",
+          "orderCanceled": "Вашата цел е отменен.",
           "newOrder": "Вашата поръчка се обработва.",
           "forAdmin": "Имате нов ред.",
           "orderDelivered": "Вашата цел е бил доставен.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "Когато редакцията свърши.",
         "tags": "Ключови думи",
         "tagsAdd": "Добави ключова дума",
-        "tagsEdit": "Редактиране на тагове",
         "tagExists": "Tag вече съществува, или е празен.",
         "tagInUse": "Tag е в употреба и не може да бъде изтрита.",
         "dropFiles": "Капка файлове за качване",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "Създадено",
         "coreOrderWorkflow/processing": "обработване",
         "coreOrderWorkflow/completed": "завършен",
-        "coreOrderWorkflow/canceled": "отменен"
+        "coreOrderWorkflow/canceled": "отменен",
+        "coreOrderWorkflow/picked": "избран",
+        "coreOrderWorkflow/packed": "натъпкан",
+        "coreOrderWorkflow/labeled": "Етикетирани",
+        "coreOrderWorkflow/shipped": "Изпратено"
       },
       "cartSubTotals": {
         "discount": "отстъпка",
@@ -354,14 +358,35 @@
         "payment": "плащане",
         "itemsFrom": "продукт (а) от",
         "filter": {
+          "processing": "обработване",
+          "status": "Статус",
+          "dateRange": "Период от време",
+          "shippingStatus": "Статус на доставка",
           "new": "Нов",
           "captured": "Плащането Заснето",
-          "processing": "обработване",
           "shipped": "Доставят",
           "completed": "завършен",
           "canceled": "отменен",
           "refunded": "Възстановява"
         },
+        "capture": "Улавяне",
+        "capturing": "Прихващане",
+        "bulkActions": "Групови действия",
+        "selected": "подбран",
+        "picked": "избран",
+        "packed": "натъпкан",
+        "labeled": "Етикетирани",
+        "shipped": "Изпратено",
+        "printInvoiceAndPickSheet": "Печатане на фактура и избор на лист",
+        "generateLabel": "Генериране на етикет",
+        "approveBulkOrderAction": "Да, Задаване на всички Избери всички поръчки",
+        "approveBulkOrderActionRegression": "Да, възстановете всички избрани поръчки",
+        "cancelBulkOrderAction": "Не, отменете",
+        "orderAlreadyInState": "{{orderText}} вече е {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} зададено на {{status}}",
+        "skippedBulkOrdersAlert": "Поискахте {{selectedOrders}} {{orderText}} да бъде зададен в състояние \"{{status}}\", но {{numberOfSkippedOrders}} от тези поръчки {{skippedOrdersText}} не е в състояние \"{{skippedState}}\" и би пропуснал всички стъпки, водещи до състоянието \"{{status}}\". Наистина ли искате да направите това?",
+        "bulkOrdersRegressionAlert": "На път сте да възстановите {{ordersToRegress}} {{orderText}} обратно до състоянието \"{{status}}\". Наистина ли искате да продължите с тази операция?",
+        "paymentCaptureSuccess": "Плащанията успешно са заснети",
         "showMore": "Показване на още"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "Направете акаунт или се впишете",
         "guestOrLogin": "Впишете се като гост",
         "continueAsGuest": "Продължете като гост",
-        "guestMessage": "Можете да завършите поръчката без акаунт."
+        "guestMessage": "Можете да завършите поръчката без акаунт.",
+        "addEmail": "Добавете имейл"
       },
       "addressBookGrid": {
         "addAddress": "Добавете адрес",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "ясно",
-        "noProductsFound": "Няма намерени продукти.",
-        "noOrdersFound": "Няма намерени поръчки.",
-        "noAccountsFound": "Няма намерени профили.",
         "searchInputLabel": "Търсене реакция",
         "suggestedTags": "Предложени тагове",
         "searchTypeProducts": "Продукти",
@@ -570,29 +593,12 @@
           "lastName": "Фамилия",
           "phone": "Телефон",
           "emails": "електронна поща"
-        },
-        "orderSearchResults": {
-          "orderId": "Поръчка ID",
-          "shopId": "Магазин ID",
-          "shippingAddress": "адрес",
-          "shippingCity": "град",
-          "shippingRegion": "област",
-          "shippingCountry": "Държава",
-          "shippingPhone": "Телефон",
-          "shippingName": "Име",
-          "shippingStatus": "Статус",
-          "billingAddress": "адрес",
-          "billingCity": "град",
-          "billingRegion": "област",
-          "billingCountry": "Държава",
-          "billingPhone": "Телефон",
-          "billingStatus": "Статус",
-          "userEmails": "електронна поща",
-          "orderDate": "Дата",
-          "orderTotal": "Общо"
         }
       },
       "accountsUI": {
+        "usersOrders": "Поръчки на потребителя",
+        "oops": "Опа..!",
+        "nonExistentAccount": "Потребителят, който търсите, не съществува.",
         "members": "Участници",
         "manage": "Управлявам",
         "guest": "Гост",

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import Measure from "react-measure";
-import MediaItem from "./media";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class MediaGallery extends Component {
   constructor() {
@@ -74,25 +74,30 @@ class MediaGallery extends Component {
           return (
             <Measure
               key={index}
-              onMeasure={(dimensions) => {
-                this.setState({ dimensions });
+              bounds
+              onResize={(contentRect) => {
+                this.setState({ dimensions: contentRect.bounds });
               }}
             >
-              <MediaItem
-                editable={this.props.editable}
-                index={index}
-                key={index}
-                revision={this.featuredMedia.revision}
-                metadata={this.featuredMedia.metadata}
-                onMouseEnter={this.props.onMouseEnterMedia}
-                onMove={this.props.onMoveMedia}
-                onRemoveMedia={this.props.onRemoveMedia}
-                source={this.featuredMedia}
-                mediaHeight={height}
-                mediaWidth={width}
-                isFeatured={true}
-                {...this.props}
-              />
+              {({ measureRef }) =>
+                <div ref={measureRef}>
+                  <Components.MediaItem
+                    editable={this.props.editable}
+                    index={index}
+                    key={index}
+                    revision={this.featuredMedia.revision}
+                    metadata={this.featuredMedia.metadata}
+                    onMouseEnter={this.props.onMouseEnterMedia}
+                    onMove={this.props.onMoveMedia}
+                    onRemoveMedia={this.props.onRemoveMedia}
+                    source={this.featuredMedia}
+                    mediaHeight={height}
+                    mediaWidth={width}
+                    isFeatured={true}
+                    {...this.props}
+                  />
+                </div>
+              }
             </Measure>
           );
         }
@@ -100,7 +105,7 @@ class MediaGallery extends Component {
     }
 
     return (
-      <MediaItem />
+      <Components.MediaItem />
     );
   }
 
@@ -108,7 +113,7 @@ class MediaGallery extends Component {
     if (this.hasMedia) {
       return this.props.media.map((media, index) => {
         return (
-          <MediaItem
+          <Components.MediaItem
             editable={this.props.editable}
             index={index}
             key={index}

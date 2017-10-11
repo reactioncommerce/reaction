@@ -19,6 +19,13 @@ Template.registerHelper("reactionTemplate", function (options) {
   const shopId = options.hash.shopId || Reaction.getShopId();
   // get shop info, defaults to current
   const Shop = Collections.Shops.findOne(shopId);
+  const groupSub = Meteor.subscribe("Groups", { shopId });
+  let defaultRoles;
+  if (groupSub.ready()) {
+    const groups = Collections.Groups.findOne({ slug: "customer", shopId });
+    defaultRoles = groups.permissions;
+  }
+
   const reactionTemplates = [];
   // fetch collection from shop.layout configuration
   let layout = _.find(Shop.layout, {
@@ -72,7 +79,7 @@ Template.registerHelper("reactionTemplate", function (options) {
     for (layout of layoutWorkflows) {
       // audience is layout permissions
       if (layout.audience === undefined) {
-        layout.audience = Shop.defaultRoles || "owner";
+        layout.audience = defaultRoles || "owner";
       }
 
       // check permissions so you don't have to on template.

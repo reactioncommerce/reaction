@@ -17,6 +17,9 @@
           "catalogSettingsLabel": "Catalog",
           "catalogSettingsTitle": "Catalog",
           "catalogSettingsDescription": "Marketplace Catalog"
+        },
+        "catalogSettings": {
+          "productRevisionsLabel": "Product Revisions"
         }
       }
     }

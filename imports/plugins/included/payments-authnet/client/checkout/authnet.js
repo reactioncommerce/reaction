@@ -69,7 +69,7 @@ AutoForm.addHooks("authnet-payment-form", {
       cvv2: doc.cvv
     };
     const paymentInfo = {
-      total: Cart.findOne().cartTotal(),
+      total: Cart.findOne().getTotal(),
       currency: Shops.findOne().currency
     };
 
@@ -83,7 +83,7 @@ AutoForm.addHooks("authnet-payment-form", {
         let normalizedStatus = "failed";
 
         const transId = transaction.transactionId[0].toString();
-        Meteor.subscribe("Packages");
+        Meteor.subscribe("Packages", Reaction.getShopId());
         const packageData = Packages.findOne({
           name: "reaction-auth-net",
           shopId: Reaction.getShopId()

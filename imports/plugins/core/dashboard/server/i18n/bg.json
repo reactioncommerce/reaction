@@ -8,6 +8,7 @@
           "dashboardLabel": "Табло"
         },
         "dashboard": {
+          "coreTitle": "Табло",
           "packageGroupActionsLabel": "Мерки",
           "packageGroupSettingsLabel": "Настройки"
         },

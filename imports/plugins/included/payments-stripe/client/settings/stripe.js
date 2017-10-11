@@ -4,8 +4,6 @@ import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { StripePackageConfig } from "../../lib/collections/schemas";
 
-import "./stripe.html";
-
 Template.stripeSettings.helpers({
   StripePackageConfig() {
     return StripePackageConfig;
@@ -15,6 +13,10 @@ Template.stripeSettings.helpers({
       name: "reaction-stripe",
       shopId: Reaction.getShopId()
     });
+  },
+  marketplaceEnabled() {
+    const marketplace = Reaction.getMarketplaceSettings();
+    return marketplace && marketplace.enabled;
   }
 });
 

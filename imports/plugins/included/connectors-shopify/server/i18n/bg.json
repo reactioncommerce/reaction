@@ -1,0 +1,46 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Купи Свързване",
+          "shopifyConnectTitle": "Купи Свързване",
+          "shopifyConnectDescription": "Съединител за данни за магазин"
+        },
+        "shopifyConnectSettings": {
+          "editApiKey": "Edit API Key",
+          "editPassword": "Редактиране на API парола",
+          "editSharedSecret": "Редактиране на споделена тайна на API",
+          "editShopifyDomain": "Редактиране на домейна",
+          "headingSync": "Настройки за синхронизиране",
+          "headingImport": "внос",
+          "importFailed": "Грешка при импортирането на продукти.",
+          "importing": "Импортиране ... Това може да отнеме известно време.",
+          "importProducts": "Импортиране на продукти",
+          "importSuccess": "Продуктите са внесени успешно.",
+          "keepInventorySynced": "Съхраняване на инвентара синхронизирано",
+          "noSyncIntegrationsSelected": "Моля, изберете поне една опция за синхронизиране",
+          "optionImportProducts": "Продукти",
+          "optionOrdersCreateUpdateInventory": "Актуализирайте инвентаризацията, когато се появи нова поръчка за пазаруване",
+          "syncSetup": "Синхронизиране на настройките",
+          "syncSetupSuccess": "Настройте синхронизирането на Shopify успешно",
+          "syncSetupFailure": "Грешка при настройването на синхронизирането на Shoidy",
+          "syncStop": "Спрете синхронизирането",
+          "syncStopSuccess": "Успешно спряхте синхронизирането на Shopify!",
+          "syncStopFailure": "Грешка при спирането на синхронизирането с Shopify",
+          "startImport": "Стартирайте импортирането"
+        }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API ключ",
+          "password": "Парола за API",
+          "sharedSecret": "API споделена тайна",
+          "shopName": "Магазин за сладолед"
+        }
+      }
+    }
+  }
+}]

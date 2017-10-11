@@ -5,12 +5,13 @@ jobs:
     working_directory: /home/reaction
 
     docker:
-      - image: node:7
+      - image: node:8
 
     environment:
-      - DOCKER_VERSION: 17.03.1-ce
-      - DOCKER_COMPOSE_VERSION: 1.13.0
+      - DOCKER_VERSION: 17.05.0-ce
+      - DOCKER_COMPOSE_VERSION: 1.15.0
       - METEOR_ALLOW_SUPERUSER: true
+      - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
 
     steps:
       - setup_remote_docker
@@ -38,7 +39,7 @@ jobs:
           name: Restoring Meteor dev_bundle cache
           key: dev_bundle
 
-      - run: npm test
+      # - run: npm test
       - run: reaction test
 
       - save_cache:

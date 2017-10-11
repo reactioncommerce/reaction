@@ -9,7 +9,7 @@ Reaction.registerPackage({
     name: "Dashboard"
   },
   registry: [{
-    provides: "dashboard",
+    provides: ["dashboard"],
     workflow: "coreDashboardWorkflow",
     name: "dashboardPackages",
     label: "Core",
@@ -25,18 +25,22 @@ Reaction.registerPackage({
     route: "/dashboard",
     name: "dashboard",
     workflow: "coreDashboardWorkflow",
-    provides: "shortcut",
+    provides: ["shortcut"],
     label: "Dashboard",
     template: "dashboardPackages",
     icon: "icon-reaction-logo",
-    priority: 0
+    priority: 0,
+    permissions: [{
+      label: "Dashboard",
+      permission: "dashboard"
+    }]
   }, {
     route: "/dashboard/shop/settings",
     template: "shopSettings",
     name: "shopSettings",
     label: "Shop Settings",
     icon: "fa fa-th",
-    provides: "settings",
+    provides: ["settings"],
     container: "dashboard"
   }],
   layout: [{

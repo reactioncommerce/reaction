@@ -1,0 +1,36 @@
+[{
+  "i18n": "nl",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Word een verkoper",
+        "errorCannotCreateShop": "Kon geen winkel voor huidige gebruiker {{user}} maken",
+        "yourShopIsReady": "Uw winkel is nu klaar!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Winkelnaam",
+          "emails": "Contact email",
+          "workflow": "Toestand"
+        }
+      },
+      "app": {
+        "shops": "winkels",
+        "myShop": "Mijn winkel"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect is niet ingeschakeld voor deze toepassing. Neem contact op met de beheerder.",
+          "shopEmailNotConfigured": "Configureer eerst uw winkel e-mail.",
+          "shopAddressNotConfigured": "Configureer eerst uw winkeladres",
+          "shopNotActive": "Uw winkel is niet actief. Neem contact op met de eigenaar van de markt."
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Marktplaatsinstellingen zijn succesvol opgeslagen!",
+          "dashboardMarketplaceSettingsFailed": "Marktinstellingen zijn niet opgeslagen"
+        }
+      }
+    }
+  }
+}]

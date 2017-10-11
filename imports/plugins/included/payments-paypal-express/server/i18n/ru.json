@@ -1,0 +1,47 @@
+[{
+  "language": "Russian",
+  "i18n": "ru",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "платежей PayPal"
+        },
+        "paymentMethod": {
+          "expressLabel": "экспресс",
+          "creditCardLabel": "Кредитная карта"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Не иметь PayPal имя пользователя, пароль и подпись?",
+          "paypalExpressGetCredentialsHere": "Получить один здесь.",
+          "paypalPayflowCredentials": "Не иметь идентификатор клиента PayPal и секрет",
+          "paypalPayflowGetCredentialsHere": "Получить их здесь."
+        },
+        "settings": {
+          "saveSuccess": "Ваши настройки были сохранены",
+          "saveFailed": "Не удалось сохранить настройки"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Заполните ваш заказ",
+        "paymentMethod": {
+          "expressButtonLabel": "Оплата с PayPal",
+          "expressNotConfigured": "Paypal Экспресс не настроен.",
+          "expressNotAvailable": "Paypal Экспресс не доступен",
+          "submitting": "предоставление",
+          "invalidCard": "К сожалению! Номер кредитной карты является недействительным.",
+          "unknownError": "К сожалению! Произошла неизвестная ошибка",
+          "resubmit": "Resubmit платеж"
+        }
+      }
+    }
+  }
+}]

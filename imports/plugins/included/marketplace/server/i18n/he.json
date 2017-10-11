@@ -1,0 +1,13 @@
+[{
+  "i18n": "he",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplaceShops": {
+        "headers": {
+          "workflow": "סטטוס"
+        }
+      }
+    }
+  }
+}]

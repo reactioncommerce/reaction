@@ -1,0 +1,28 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "Исходная цена или MSRP",
+          "optionInventoryQuantity": "Инвентаризация",
+          "optionTitle": "Отображается на странице сведений о продукте",
+          "price": "Цена",
+          "title": "Отображается в корзине, оформлении заказа и заказах.",
+          "variantBackorderToggle": "Резервный резерв теперь контролируется опционами",
+          "variantInventoryQuantity": "Вариант инвентаризации теперь контролируется опциями"
+        },
+        "tooltip": {
+          "validationError": "Ошибка проверки"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "Нет продуктов"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Варианты деталей"
+      }
+    }
+  }
+}]

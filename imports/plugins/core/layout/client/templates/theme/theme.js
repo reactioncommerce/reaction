@@ -3,41 +3,8 @@ import { Tracker } from "meteor/tracker";
 import { Session } from "meteor/session";
 import { $ } from "meteor/jquery";
 import { Reaction, Router } from "/client/api";
-import { Packages, Shops } from "/lib/collections";
+import { Shops } from "/lib/collections";
 
-/**
- * getRouteLayout
- * Gets layout combo based on current route context
- * @param  {Object} context - route context
- * @returns {Object|null} The layout hash
- */
-function getRouteLayout(context) {
-  const pkg = Packages.findOne({ "registry.name": context.route.name, "enabled": true });
-
-  if (pkg) {
-    const registryRoute = pkg.registry.find((x) => {
-      return x.name === context.route.name;
-    });
-
-    if (registryRoute) {
-      // set a default layout if none is given
-      if (!registryRoute.layout) {
-        registryRoute.layout = Session.get("DEFAULT_LAYOUT") || "coreLayout";
-      }
-
-      const shop = Shops.findOne(Reaction.getShopId());
-      const currentLayout = shop.layout.find((x) => {
-        if (x.layout === registryRoute.layout && x.workflow === registryRoute.workflow && x.enabled === true) {
-          return true;
-        }
-      });
-
-      return currentLayout;
-    }
-  }
-
-  return null;
-}
 
 /**
  * addBodyClasses
@@ -59,14 +26,10 @@ function addBodyClasses(context) {
     ];
   }
 
-  // find the layout combo for this route
-  const currentLayout = getRouteLayout(context);
 
-  // add theme class for route layout or default
-  if (currentLayout && currentLayout.theme) {
-    classes.push(currentLayout.theme);
-  } else {
-    classes.push("default");
+  // add theme class for route layout
+  if (context && context.route && context.route.options && context.route.options.theme) {
+    classes.push(context.route.options.theme);
   }
 
   classes = classes.join(" ");
@@ -81,9 +44,19 @@ Router.Hooks.onEnter(addBodyClasses);
 
 Meteor.startup(() => {
   Tracker.autorun(() => {
-    const subscription = Reaction.Subscriptions.Shops;
-    if (subscription.ready()) {
-      const shop = Shops.findOne({});
+    if (Reaction.Subscriptions.PrimaryShop.ready() && Reaction.Subscriptions.MerchantShops.ready()) {
+      let shopId;
+
+      // Choose shop to get theme from
+      if (Reaction.marketplaceEnabled && Reaction.merchantTheme) {
+        shopId = Reaction.getShopId();
+      } else {
+        shopId = Reaction.getPrimaryShopId();
+      }
+
+      const shop = Shops.findOne({
+        _id: shopId
+      });
 
       if (shop) {
         if (shop.theme) {

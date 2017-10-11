@@ -77,19 +77,31 @@ export function createShopFactory() {
         }
       }
     },
-    baseUOM: "OZ",
+    baseUOL: "in",
+    unitsOfLength: [{
+      uol: "in",
+      label: "Inches",
+      default: true
+    }, {
+      uol: "cm",
+      label: "Centimeters"
+    }, {
+      uol: "ft",
+      label: "Feet"
+    }],
+    baseUOM: "oz",
     unitsOfMeasure: [{
-      uom: "OZ",
+      uom: "oz",
       label: "Ounces",
       default: true
     }, {
-      uom: "LB",
+      uom: "lb",
       label: "Pounds"
     }, {
-      uom: "GR",
+      uom: "g",
       label: "Grams"
     }, {
-      uom: "KG",
+      uom: "kg",
       label: "Kilograms"
     }],
     layout: [{
@@ -125,7 +137,9 @@ export function createShopFactory() {
     ],
     timezone: "US/Pacific",
     metafields: [],
-    defaultRoles: ["guest", "account/profile"],
+    // one shop in the marketplace is required as default shop. This is used to control marketplace settings.
+    // Not having a primary shop will cause test failures
+    shopType: "primary",
     createdAt: new Date,
     updatedAt: new Date()
   });

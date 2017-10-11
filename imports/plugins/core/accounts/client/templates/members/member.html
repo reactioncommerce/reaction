@@ -1,0 +1,27 @@
+<template name="member">
+  {{!-- TODO: make this a Reactive Table --}}
+      <div class="member-list-item-image">
+        <!-- <img class="circular-icon" src="{{getGravatar this 40}}" style="width: 40px;border-radius: 50%;"/> -->
+        <div>
+          {{> React ReactionAvatar }}
+        </div>
+      </div>
+      <div class="member-list-item-profile">
+        {{displayName this}}
+        <span>&nbsp;({{this.email}})</span>
+      </div>
+      <div class="member-list-item-profile">
+        <span>Customer Id: {{userId}}</span>
+      </div>
+
+      <div class="member-list-item-controls">
+        <button class="btn btn-default" data-event-action="showMemberSettings" data-i18n="accountsUI.manage">Manage</button>
+      </div>
+
+</template>
+
+<template name="memberSettings">
+  <div>
+    {{> React accountsDetail }}
+  </div>
+</template>

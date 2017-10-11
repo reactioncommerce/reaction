@@ -1,0 +1,47 @@
+[{
+  "language": "Italian",
+  "i18n": "it",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "pagamenti PayPal"
+        },
+        "paymentMethod": {
+          "expressLabel": "Esprimere",
+          "creditCardLabel": "Carta di credito"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Non hai ancora un nome utente PayPal, la password e la firma?",
+          "paypalExpressGetCredentialsHere": "Ottenere uno qui.",
+          "paypalPayflowCredentials": "Non hai ancora un ID cliente PayPal e segreto",
+          "paypalPayflowGetCredentialsHere": "Ottenere qui."
+        },
+        "settings": {
+          "saveSuccess": "Le tue impostazioni sono state salvate",
+          "saveFailed": "Si è verificato un problema durante la modifica delle impostazioni"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Completa l'ordine",
+        "paymentMethod": {
+          "expressButtonLabel": "paga con PayPal",
+          "expressNotConfigured": "Paypal Express non configurato.",
+          "expressNotAvailable": "Paypal Express non disponibile",
+          "submitting": "Invio",
+          "invalidCard": "Oops! il numero di carta di credito non è valido.",
+          "unknownError": "Oops! Si è verificato un errore sconosciuto",
+          "resubmit": "Invia nuovamente il pagamento"
+        }
+      }
+    }
+  }
+}]

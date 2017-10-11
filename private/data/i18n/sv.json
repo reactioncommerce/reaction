@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "Utseende",
+          "email": "e-postinställningar",
           "connect": "Ansluta",
+          "description": "Beskrivning",
           "core": "Kärna",
+          "remove": "Avlägsna",
           "dashboard": "Instrumentbräda",
           "misc": "misc",
           "paymentMethod": "betalnings~~POS=TRUNC",
@@ -56,8 +59,6 @@
       "app": {
         "add": "Lägga till",
         "editMode": "redigeringsläge",
-        "administratorView": "administratör View",
-        "customerView": "kund~~POS=TRUNC View",
         "createContent": "Skapa innehåll",
         "auto": "Bil",
         "save": "Spara",
@@ -137,7 +138,7 @@
           "viewAll": "Se alla"
         },
         "messages": {
-          "orderCancelled": "Din beställning har annullerats.",
+          "orderCanceled": "Din beställning har annullerats.",
           "newOrder": "Din beställning behandlas.",
           "forAdmin": "Du har en ny beställning.",
           "orderDelivered": "Din beställning har levererats.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "när du är klar med redigeringen.",
         "tags": "Taggar",
         "tagsAdd": "Lägg till tagg",
-        "tagsEdit": "redigera taggar",
         "tagExists": "Tag redan existerar, eller är tom.",
         "tagInUse": "Tag används och kan inte tas bort.",
         "dropFiles": "Släpp filer att ladda upp",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "Skapad",
         "coreOrderWorkflow/processing": "bearbetning",
         "coreOrderWorkflow/completed": "Avslutad",
-        "coreOrderWorkflow/canceled": "Avbrutet"
+        "coreOrderWorkflow/canceled": "Avbrutet",
+        "coreOrderWorkflow/picked": "plockade",
+        "coreOrderWorkflow/packed": "Packade",
+        "coreOrderWorkflow/labeled": "märkt",
+        "coreOrderWorkflow/shipped": "skeppas"
       },
       "cartSubTotals": {
         "discount": "Rabatt",
@@ -354,14 +358,35 @@
         "payment": "Betalning",
         "itemsFrom": "produkt (er) från",
         "filter": {
+          "processing": "bearbetning",
+          "status": "Status",
+          "dateRange": "Datumintervall",
+          "shippingStatus": "Fraktstatus",
           "new": "Ny",
           "captured": "betalning Tagna",
-          "processing": "bearbetning",
           "shipped": "skeppas",
           "completed": "Avslutad",
           "canceled": "Avbrutet",
           "refunded": "återbetalas"
         },
+        "capture": "Fånga",
+        "capturing": "Fångande",
+        "bulkActions": "Massåtgärder",
+        "selected": "Vald",
+        "picked": "plockade",
+        "packed": "Packade",
+        "labeled": "märkt",
+        "shipped": "skeppas",
+        "printInvoiceAndPickSheet": "Skriv ut faktura och plockningsblad",
+        "generateLabel": "Generera etikett",
+        "approveBulkOrderAction": "Ja, Ange alla Välj alla beställningar",
+        "approveBulkOrderActionRegression": "Ja, bekräfta alla utvalda beställningar",
+        "cancelBulkOrderAction": "Nej, Avbryt",
+        "orderAlreadyInState": "{{orderText}} har redan varit {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} satt till {{status}}",
+        "skippedBulkOrdersAlert": "Du har begärt att {{selectedOrders}} {{orderText}} ställs in på statusen \"{{status}}\", men {{numberOfSkippedOrders}} av dessa beställningar {{skippedOrdersText}} inte i \"{{skippedState}}\" -statusen och skulle hoppa över alla steg som leder upp till \"{{status}}\" -statusen. Är du säker på att du vill göra det här?",
+        "bulkOrdersRegressionAlert": "Du håller på att regressera {{ordersToRegress}} {{orderText}} tillbaka till \"{{status}}\" -staten. Är du säker på att du vill fortsätta med denna operation?",
+        "paymentCaptureSuccess": "Betalningar har tagits med framgång",
         "showMore": "Visa mer"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "Skapa ett konto eller logga in",
         "guestOrLogin": "Logga in eller kassan som gäst",
         "continueAsGuest": "Fortsätt som gäst",
-        "guestMessage": "Du kan kassan utan att skapa ett konto. Du har en chans att skapa ett konto senare."
+        "guestMessage": "Du kan kassan utan att skapa ett konto. Du har en chans att skapa ett konto senare.",
+        "addEmail": "Lägg till e-post"
       },
       "addressBookGrid": {
         "addAddress": "Lägg till adress",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "Klar",
-        "noProductsFound": "Inga produkter hittades.",
-        "noOrdersFound": "Inga order hittades.",
-        "noAccountsFound": "Inga konton hittades.",
         "searchInputLabel": "sökning Reaktion",
         "suggestedTags": "föreslagna taggar",
         "searchTypeProducts": "Produkter",
@@ -570,29 +593,12 @@
           "lastName": "Efternamn",
           "phone": "Telefon",
           "emails": "E-post"
-        },
-        "orderSearchResults": {
-          "orderId": "För ID",
-          "shopId": "Shop ID",
-          "shippingAddress": "Adress",
-          "shippingCity": "Stad",
-          "shippingRegion": "Område",
-          "shippingCountry": "Land",
-          "shippingPhone": "Telefon",
-          "shippingName": "Namn",
-          "shippingStatus": "Status",
-          "billingAddress": "Adress",
-          "billingCity": "Stad",
-          "billingRegion": "Område",
-          "billingCountry": "Land",
-          "billingPhone": "Telefon",
-          "billingStatus": "Status",
-          "userEmails": "E-post",
-          "orderDate": "Datum",
-          "orderTotal": "Totalt"
         }
       },
       "accountsUI": {
+        "usersOrders": "Användarens order",
+        "oops": "hoppsan!",
+        "nonExistentAccount": "Användaren du letar efter existerar inte.",
         "members": "Medlemmar",
         "manage": "Hantera",
         "guest": "Gäst",

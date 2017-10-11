@@ -1,0 +1,28 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "Izvorna cijena ili MSRP",
+          "optionInventoryQuantity": "Inventar",
+          "optionTitle": "Prikazano na stranici s pojedinostima o proizvodu",
+          "price": "Nabavna cijena",
+          "title": "Prikazano u košarici, naplata i narudžbi",
+          "variantBackorderToggle": "Naknadu za povrat sredstava sada kontrolira opcije",
+          "variantInventoryQuantity": "Inventar inventara sada kontrolira opcije"
+        },
+        "tooltip": {
+          "validationError": "Pogreška provjere valjanosti"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "Nisu pronađeni proizvodi"
+      },
+      "productDetailEdit": {
+        "variantDetails": "varijanta Detalji"
+      }
+    }
+  }
+}]

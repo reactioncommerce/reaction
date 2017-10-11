@@ -1,0 +1,36 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Trở thành một người bán",
+        "errorCannotCreateShop": "Không thể tạo cửa hàng cho người dùng hiện tại {{user}}",
+        "yourShopIsReady": "Cửa hàng của bạn đã sẵn sàng!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Tên cửa hàng",
+          "emails": "Địa chỉ email liên lạc",
+          "workflow": "Trạng thái"
+        }
+      },
+      "app": {
+        "shops": "Cửa hàng",
+        "myShop": "Cửa hàng của tôi"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Kết nối Sọc không được bật cho ứng dụng này. Vui lòng liên hệ với quản trị viên.",
+          "shopEmailNotConfigured": "Vui lòng định cấu hình email cửa hàng của bạn trước.",
+          "shopAddressNotConfigured": "Vui lòng định cấu hình địa chỉ mua hàng của bạn trước tiên",
+          "shopNotActive": "Cửa hàng của bạn không hoạt động. Vui lòng liên hệ với chủ sở hữu của thị trường."
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Cài đặt Marketplace đã được lưu thành công!",
+          "dashboardMarketplaceSettingsFailed": "Không thể lưu cài đặt Marketplace"
+        }
+      }
+    }
+  }
+}]

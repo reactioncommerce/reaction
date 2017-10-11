@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import { registerComponent } from "@reactioncommerce/reaction-components";
+import { Link } from "@reactioncommerce/reaction-router";
 import { Reaction } from "/client/api";
 
 class NotificationDropdown extends Component {
   constructor(props) {
     super(props);
     this.prefix = Reaction.getShopPrefix();
-    this.handleNoNotifications = this.handleNoNotifications.bind(this);
+    this.renderNoNotifications = this.renderNoNotifications.bind(this);
     this.renderDropdownHead = this.renderDropdownHead.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.handleClickViewAll = this.handleClickViewAll.bind(this);
   }
 
-  handleNoNotifications(notifyArr) {
+  renderNoNotifications(notifyArr) {
     if (notifyArr.length <= 0) {
       return (
         <li className="notification">
@@ -43,11 +44,6 @@ class NotificationDropdown extends Component {
     return markOneAsRead(notify._id);
   }
 
-  handleClickViewAll() {
-    const url = this.prefix + "/notifications";
-    Reaction.Router.go(url);
-  }
-
   renderDropdownHead() {
     const { notificationList, unread, markAllAsRead } = this.props;
     return (
@@ -66,7 +62,7 @@ class NotificationDropdown extends Component {
       <div className="notify-bar">
         { this.renderDropdownHead() }
         <ul className="dropdown-notify notifications">
-          { this.handleNoNotifications(notificationList) }
+          { this.renderNoNotifications(notificationList) }
           { notificationList.map((notify, key) => {
             const timeNow = moment(notify.timeSent).fromNow();
             const read = `notification ${notify.status}`;
@@ -91,7 +87,7 @@ class NotificationDropdown extends Component {
           })}
         </ul>
         <div className="dropdown-footer text-center">
-          <a onClick={this.handleClickViewAll} data-i18n="notifications.body.viewAll">View All</a>
+          <Link to="/notifications" data-i18n="notifications.body.viewAll">View All</Link>
         </div>
       </div>
     );
@@ -104,5 +100,7 @@ NotificationDropdown.propTypes = {
   notificationList: PropTypes.array.isRequired,
   unread: PropTypes.number.isRequired
 };
+
+registerComponent("NotificationDropdown", NotificationDropdown);
 
 export default NotificationDropdown;

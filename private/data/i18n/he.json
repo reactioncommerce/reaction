@@ -24,8 +24,11 @@
         },
         "groups": {
           "appearance": "מראה",
+          "email": "דוא\"ל",
           "connect": "התחבר לרשתות",
+          "description": "הוספת תיאור מוצר",
           "core": "ליבה",
+          "remove": "הסר",
           "dashboard": "לוח המחוונים",
           "misc": "שונות",
           "paymentMethod": "ספקי תשלום",
@@ -33,6 +36,7 @@
         },
         "settings": {
           "accountSettingsLabel": "הגדרות חשבון",
+          "accountSettingsTitle": "הגדרות חשבון",
           "saveSuccess": "ההגדרות עודכנו.",
           "saveFailed": "עדכון ההגדרות נכשל.",
           "addShopMemberLabel": "הוסף חבר חנות",
@@ -85,7 +89,11 @@
         "notFoundError": "העמוד לא נמצא.",
         "productNotFound": "מוצר זה לא נמצא.",
         "loadMoreProducts": "טען מוצרים נוספים",
-        "noProductsFound": "לא נמצאו מוצרים"
+        "noProductsFound": "לא נמצאו מוצרים",
+        "shortcut": {
+          "addProductLabel": "הוסף מוצר",
+          "accountsLabel": "חשבונות"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -124,7 +132,6 @@
           "viewAll": "להציג את כל"
         },
         "messages": {
-          "orderCancelled": "ההזמנה שלך בוטלה.",
           "newOrder": "שההזמנה מעובדת.",
           "forAdmin": "יש לך הזמנה חדשה.",
           "orderDelivered": "ההזמנה נשלחה.",
@@ -140,7 +147,6 @@
         "whenYouAreDone": "כאשר תסיים/י לערוך אותו.",
         "tags": "תגיות",
         "tagsAdd": "הוספת תגית",
-        "tagsEdit": "ערוך תגיות",
         "tagExists": "התגית כבר קיימת או שהיא ריקה.",
         "tagInUse": "לא ניתן למחוק תגים הנמצאים בשימוש.",
         "dropFiles": "שחרר קבצים כדי להעלות",
@@ -273,7 +279,8 @@
         "coreOrderWorkflow/created": "נוצר",
         "coreOrderWorkflow/processing": "מעבד",
         "coreOrderWorkflow/completed": "הושלם",
-        "coreOrderWorkflow/canceled": "בוטל"
+        "coreOrderWorkflow/canceled": "בוטל",
+        "coreOrderWorkflow/shipped": "נשלח"
       },
       "cartSubTotals": {
         "discount": "הנחה",
@@ -318,14 +325,16 @@
         "payment": "תשלום",
         "itemsFrom": "פריט(ים) מ-",
         "filter": {
+          "processing": "מעבד",
+          "status": "סטטוס",
           "new": "חדש",
           "captured": "התשלום עובד",
-          "processing": "מעבד",
           "shipped": "נשלח",
           "completed": "הושלם",
           "canceled": "בוטל",
           "refunded": "החזר ניתן"
-        }
+        },
+        "shipped": "נשלח"
       },
       "orderShipping": {
         "shipTo": "שלח אל",
@@ -502,9 +511,6 @@
       },
       "search": {
         "clearSearch": "מחק",
-        "noProductsFound": "לא נמצאו מוצרים",
-        "noOrdersFound": "לא נמצאו הזמנות.",
-        "noAccountsFound": "לא נמצאו חשבונות.",
         "searchInputLabel": "חפש Reaction ",
         "suggestedTags": "תגיות מוצעות",
         "searchTypeProducts": "מוצרים",
@@ -517,29 +523,10 @@
           "lastName": "שם משפחה",
           "phone": "טלפון",
           "emails": "דוא\"ל"
-        },
-        "orderSearchResults": {
-          "orderId": "מזהה הזמנה",
-          "shopId": "מזהה חנות",
-          "shippingAddress": "כתובת",
-          "shippingCity": "עיר",
-          "shippingRegion": "אזור",
-          "shippingCountry": "מדינה",
-          "shippingPhone": "טלפון",
-          "shippingName": "שם",
-          "shippingStatus": "סטטוס",
-          "billingAddress": "כתובת",
-          "billingCity": "עיר",
-          "billingRegion": "אזור",
-          "billingCountry": "מדינה",
-          "billingPhone": "טלפון",
-          "billingStatus": "סטטוס",
-          "userEmails": "דוא\"ל",
-          "orderDate": "תאריך",
-          "orderTotal": "סה\"כ"
         }
       },
       "accountsUI": {
+        "oops": "אופס!",
         "members": "חברים",
         "manage": "נהל",
         "guest": "אורח",

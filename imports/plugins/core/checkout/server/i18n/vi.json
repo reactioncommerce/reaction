@@ -1,0 +1,23 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Hàng hiếm"
+      },
+      "cartCompleted": {
+        "yourCart": "Giỏ hàng",
+        "discountTotal": "Tổng số chiết khấu",
+        "orderTotal": "Tổng đặt hàng",
+        "fulfilledBy": "Thực hiện bởi",
+        "quantityTotal": "Tổng số lượng",
+        "orderSubtotal": "Tổng cộng",
+        "orderShipping": "Đang chuyển hàng",
+        "orderTax": "Cài đặt thuế",
+        "trackYourDelivery": "cập nhật theo thứ tự sẽ được gửi đến",
+        "registerGuest": "Xin chào! Thêm email và nhận thông tin cập nhật đơn đặt hàng"
+      }
+    }
+  }
+}]

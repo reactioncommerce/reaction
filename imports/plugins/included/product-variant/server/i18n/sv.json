@@ -1,0 +1,28 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "Ursprungligt pris eller MSRP",
+          "optionInventoryQuantity": "Lager",
+          "optionTitle": "Visas på produktdetaljsida",
+          "price": "Köppris",
+          "title": "Visas i kundvagn, kassa och order",
+          "variantBackorderToggle": "Reservorderbidrag styrs nu av alternativ",
+          "variantInventoryQuantity": "Variantinventarier styrs nu av alternativ"
+        },
+        "tooltip": {
+          "validationError": "Valideringsfel"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "Inga produkter hittades"
+      },
+      "productDetailEdit": {
+        "variantDetails": "variant Detaljer"
+      }
+    }
+  }
+}]

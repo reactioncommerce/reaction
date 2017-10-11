@@ -1,0 +1,28 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "Giá gốc hoặc MSRP",
+          "optionInventoryQuantity": "Hàng tồn kho",
+          "optionTitle": "Hiển thị trên trang chi tiết sản phẩm",
+          "price": "Giá mua",
+          "title": "Được hiển thị trong giỏ hàng, thanh toán và đơn đặt hàng",
+          "variantBackorderToggle": "Trợ cấp ngược lại bây giờ được kiểm soát bởi các lựa chọn",
+          "variantInventoryQuantity": "Khoảng không quảng cáo biến thể hiện được kiểm soát bởi các tùy chọn"
+        },
+        "tooltip": {
+          "validationError": "Lỗi xác nhận"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "Không tìm thấy sản phẩm"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Chi tiết Variant"
+      }
+    }
+  }
+}]

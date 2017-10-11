@@ -1,0 +1,23 @@
+[{
+  "i18n": "nl",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Beperkte voorraad"
+      },
+      "cartCompleted": {
+        "yourCart": "Jouw winkelwagen",
+        "discountTotal": "Korting Totaal",
+        "orderTotal": "totale bestelling",
+        "fulfilledBy": "Vervuld door",
+        "quantityTotal": "Aantal Totaal",
+        "orderSubtotal": "Subtotaal",
+        "orderShipping": "Verzenden",
+        "orderTax": "tax-instellingen",
+        "trackYourDelivery": "De updates worden verzonden naar",
+        "registerGuest": "Hallo! Voeg een email toe en ontvang bestelupdates"
+      }
+    }
+  }
+}]

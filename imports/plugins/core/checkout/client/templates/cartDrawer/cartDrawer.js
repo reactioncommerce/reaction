@@ -1,10 +1,10 @@
+import Swiper from "swiper";
+import { Components } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Cart } from "/lib/collections";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
-import Swiper from "swiper";
-import CartDrawerContainer from "../../container/cartDrawerContainer";
-import EmptyCartDrawer from "../../container/emptyCartContainer";
+
 /**
  * cartDrawer helpers
  *
@@ -66,7 +66,7 @@ Template.openCartDrawer.onRendered(function () {
 
 Template.openCartDrawer.helpers({
   CartDrawerContainer() {
-    return CartDrawerContainer;
+    return Components.CartDrawer;
   }
 });
 
@@ -76,6 +76,6 @@ Template.emptyCartDrawer.onRendered(function () {
 
 Template.emptyCartDrawer.helpers({
   EmptyCartDrawer() {
-    return EmptyCartDrawer;
+    return Components.EmptyCartDrawer;
   }
 });

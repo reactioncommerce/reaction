@@ -1,0 +1,23 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "محدود العرض"
+      },
+      "cartCompleted": {
+        "yourCart": "عربتك",
+        "discountTotal": "مجموع الخصم",
+        "orderTotal": "الطلب الكلي",
+        "fulfilledBy": "مستوفاة",
+        "quantityTotal": "الكمية المجموع",
+        "orderSubtotal": "حاصل الجمع",
+        "orderShipping": "الشحن",
+        "orderTax": "إعدادات ضرائب",
+        "trackYourDelivery": "سيتم إرسال تحديث الطبات",
+        "registerGuest": "مرحبا! إضافة بريد إلكتروني وتلقي تحديثات الطلب"
+      }
+    }
+  }
+}]

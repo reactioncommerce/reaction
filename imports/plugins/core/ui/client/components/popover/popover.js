@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Tooltip } from "/imports/plugins/core/ui/client/components";
 import classnames from "classnames";
 import TetherComponent from "react-tether";
-import PopoverContent from "./popoverContent";
-import { Button, ButtonGroup } from "/imports/plugins/core/ui/client/components/";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class Popover extends Component {
   state = {
@@ -33,7 +31,7 @@ class Popover extends Component {
    * @return {String} attachment
    */
   get attachment() {
-    return this.props.attachment || Tooltip.defaultProps.attachment;
+    return this.props.attachment || Components.Tooltip.defaultProps.attachment;
   }
 
   handleDisplayButtonClick = (event, value) => {
@@ -69,7 +67,7 @@ class Popover extends Component {
   renderPopoverChildren() {
     if (this.isOpen) {
       return  (
-        <PopoverContent
+        <Components.PopoverContent
           children={this.props.children}
           onClickOutside={this.props.onClick}
         />
@@ -81,21 +79,23 @@ class Popover extends Component {
   renderButtons() {
     if (this.props.showDropdownButton) {
       return (
-        <ButtonGroup>
+        <Components.ButtonGroup>
           {this.props.buttonElement}
-          <Button
+          <Components.Button
             key="dropdown-button"
             icon="fa fa-chevron-down"
             onClick={this.props.onClick}
             status={this.props.buttonElement.props.status}
           />
-        </ButtonGroup>
+        </Components.ButtonGroup>
       );
+    } else if (this.props.buttonElement) {
+      return React.cloneElement(this.props.buttonElement, {
+        onClick: this.props.onClick
+      });
     }
 
-    return React.cloneElement(this.props.buttonElement, {
-      onClick: this.props.onClick
-    });
+    return <div />;
   }
 
   render() {
@@ -109,7 +109,7 @@ class Popover extends Component {
           "popover-open": true,
           "popover-theme-arrows": this.props.showArrow || false
         })}
-        constraints={[{
+        constraints={this.props.constraints || [{
           to: "scrollParent",
           attachment: "together"
         }]}
@@ -126,6 +126,7 @@ Popover.propTypes = {
   attachment: PropTypes.string,
   buttonElement: PropTypes.node,
   children: PropTypes.node,
+  constraints: PropTypes.array,
   isOpen: PropTypes.bool,
   onClick: PropTypes.func,
   onDisplayButtonClick: PropTypes.func,
@@ -142,5 +143,6 @@ Popover.defaultProps = {
   targetAttachment: "top left"
 };
 
+registerComponent("Popover", Popover);
 
 export default Popover;

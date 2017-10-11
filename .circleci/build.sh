@@ -5,13 +5,16 @@ set -e
 DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
 
 # if we're not on a deployment branch or a Docker related PR branch, skip the Docker build/test
-if [[ "$CIRCLE_BRANCH" != "master" && "$CIRCLE_BRANCH" != "development" && "$CIRCLE_BRANCH" != *"docker"* ]]; then
-  echo "Not running a deployment branch. Skipping the Docker build test."
+if [[ "$CIRCLE_BRANCH" != "master" && "$CIRCLE_BRANCH" != *"docker"* ]]; then
+  echo "Not running a build branch. Skipping the Docker build test."
   exit 0
 fi
 
 # build new image
-docker build --build-arg TOOL_NODE_FLAGS="--max-old-space-size=4096" -t reactioncommerce/reaction:latest .
+docker build \
+  --build-arg TOOL_NODE_FLAGS="--max-old-space-size=4096" \
+  --build-arg INSTALL_MONGO=true \
+  -t reactioncommerce/reaction:latest .
 
 # run the container and wait for it to boot
 docker-compose -f .circleci/docker-compose.yml up -d

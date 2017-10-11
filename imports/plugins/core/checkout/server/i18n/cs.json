@@ -1,0 +1,23 @@
+[{
+  "i18n": "cs",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Omezená nabídka"
+      },
+      "cartCompleted": {
+        "yourCart": "Váš košík",
+        "discountTotal": "Sleva celkem",
+        "orderTotal": "Objednávka celkem",
+        "fulfilledBy": "Splněno",
+        "quantityTotal": "Množství celkem",
+        "orderSubtotal": "Mezisoučet",
+        "orderShipping": "lodní",
+        "orderTax": "daňové Nastavení",
+        "trackYourDelivery": "Aktualizace objednávka bude zaslána",
+        "registerGuest": "Ahoj! Přidejte e-mail a získejte aktualizace objednávek"
+      }
+    }
+  }
+}]

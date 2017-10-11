@@ -1,0 +1,28 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "Оригинална цена или MSRP",
+          "optionInventoryQuantity": "Складова наличност",
+          "optionTitle": "Показва се на страницата с подробности за продукта",
+          "price": "Покупна цена",
+          "title": "Показва се в кошницата, касата и поръчките",
+          "variantBackorderToggle": "Обезщетението за резервно копие сега се контролира от опциите",
+          "variantInventoryQuantity": "Инвентарът на варианти сега се контролира от опциите"
+        },
+        "tooltip": {
+          "validationError": "Грешка при валидацията"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "Няма намерени продукти"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Вариант Детайли"
+      }
+    }
+  }
+}]

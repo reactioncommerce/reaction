@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Icon, Switch, Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class ListItem extends Component {
   static propTypes = {
@@ -11,6 +11,7 @@ class ListItem extends Component {
     icon: PropTypes.string,
     isAdmin: PropTypes.bool,
     label: PropTypes.string,
+    listItemClassName: PropTypes.string,
     onClick: PropTypes.func,
     onSwitchChange: PropTypes.func,
     switchName: PropTypes.string,
@@ -50,7 +51,7 @@ class ListItem extends Component {
     if (this.props.icon) {
       return (
         <div className={iconClassName}>
-          <Icon icon={this.data.icon} />
+          <Components.Icon icon={this.props.icon} />
         </div>
       );
     }
@@ -68,7 +69,7 @@ class ListItem extends Component {
     if (this.props.actionType === "switch") {
       return (
         <div className={actionClassName}>
-          <Switch
+          <Components.Switch
             checked={this.props.switchOn}
             name={this.props.switchName}
             onChange={this.handleSwitchChange}
@@ -80,7 +81,7 @@ class ListItem extends Component {
     if (this.props.actionType) {
       return (
         <div className={actionClassName}>
-          <Icon icon="fa fa-angle-right" />
+          <Components.Icon icon="fa fa-angle-right" />
         </div>
       );
     }
@@ -98,11 +99,14 @@ class ListItem extends Component {
 
     if (this.props.label) {
       content = (
-        <Translation
+        <Components.Translation
           defaultValue={this.props.label}
           i18nKey={this.props.i18nKeyLabel}
         />
       );
+      if (!this.props.i18nKeyLabel) {
+        content = (<span>{this.props.label}</span>);
+      }
     } else {
       content = this.props.children;
     }
@@ -137,7 +141,7 @@ class ListItem extends Component {
       "rui": true,
       "admin": this.props.isAdmin,
       "list-group-item": true
-    });
+    }, this.props.listItemClassName);
 
     return (
       <div className={listItemClassName} onClick={this.handleClick}>
@@ -149,5 +153,7 @@ class ListItem extends Component {
     );
   }
 }
+
+registerComponent("ListItem", ListItem);
 
 export default ListItem;

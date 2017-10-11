@@ -1,0 +1,28 @@
+[{
+  "i18n": "sl",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "Originalna cena ali MSRP",
+          "optionInventoryQuantity": "popis",
+          "optionTitle": "Prikazano na strani s podrobnostmi o izdelku",
+          "price": "Nakupna cena",
+          "title": "Prikazano v vozičku, blagajno in naročila",
+          "variantBackorderToggle": "Nadomestilo za backorder zdaj nadzira možnosti",
+          "variantInventoryQuantity": "Popis variant zdaj nadzira možnosti"
+        },
+        "tooltip": {
+          "validationError": "Napaka validacije"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "Najdeni izdelki"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Variant Podrobnosti"
+      }
+    }
+  }
+}]

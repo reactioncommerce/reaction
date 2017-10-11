@@ -1,0 +1,36 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Стать продавцом",
+        "errorCannotCreateShop": "Не удалось создать магазин для текущего пользователя {{user}}",
+        "yourShopIsReady": "Теперь ваш магазин готов!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Имя магазина",
+          "emails": "Почта для связи",
+          "workflow": "Статус"
+        }
+      },
+      "app": {
+        "shops": "Магазины",
+        "myShop": "Мой магазин"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect для этого приложения не включен. Обратитесь к администратору.",
+          "shopEmailNotConfigured": "Сначала настройте адрес электронной почты своего магазина.",
+          "shopAddressNotConfigured": "Сначала настройте адрес магазина",
+          "shopNotActive": "Ваш магазин неактивен. Обратитесь к владельцу на рынке."
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Настройки магазина сохранены успешно!",
+          "dashboardMarketplaceSettingsFailed": "Не удалось сохранить настройки Marketplace"
+        }
+      }
+    }
+  }
+}]

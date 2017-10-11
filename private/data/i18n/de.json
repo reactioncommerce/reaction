@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "Erscheinungsbild",
+          "email": "E-Mail-Einstellungen",
           "connect": "Verbinden",
+          "description": "Produktbeschreibung hinzufügen",
           "core": "Kern",
+          "remove": "Entfernen",
           "dashboard": "Dashboard",
           "misc": "Verschiedenes",
           "paymentMethod": "Zahlungs-Anbieter",
@@ -56,8 +59,6 @@
       "app": {
         "add": "Hinzufügen",
         "editMode": "Bearbeitungs-Modus",
-        "administratorView": "Administrator anzeigen",
-        "customerView": "Kundensicht",
         "createContent": "Inhalt erstellen",
         "auto": "Automatisch",
         "save": "Speichern",
@@ -137,7 +138,7 @@
           "viewAll": "Alle anzeigen"
         },
         "messages": {
-          "orderCancelled": "Ihre Bestellung wurde storniert.",
+          "orderCanceled": "Ihre Bestellung wurde storniert.",
           "newOrder": "Ihre Bestellung wird verarbeitet.",
           "forAdmin": "Sie haben einen neuen Auftrag.",
           "orderDelivered": "Ihre Bestellung wurde geliefert.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "wenn Sie mit editieren fertig sind.",
         "tags": "Tags",
         "tagsAdd": "Tag hinzufügen",
-        "tagsEdit": "Tags bearbeiten",
         "tagExists": "Der Tag existiert bereits oder ist leer. ",
         "tagInUse": "Tag wird benutzt und kann nicht gelöscht werden.",
         "dropFiles": "Dateien zum Hochladen hierherziehen",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "Erstellt",
         "coreOrderWorkflow/processing": "Bearbeiten",
         "coreOrderWorkflow/completed": "Beendet",
-        "coreOrderWorkflow/canceled": "Abgebrochen"
+        "coreOrderWorkflow/canceled": "Abgebrochen",
+        "coreOrderWorkflow/picked": "Picked",
+        "coreOrderWorkflow/packed": "Packed",
+        "coreOrderWorkflow/labeled": "Beschriftet",
+        "coreOrderWorkflow/shipped": "Versendet"
       },
       "cartSubTotals": {
         "discount": "Rabatt",
@@ -354,14 +358,35 @@
         "payment": "Zahlung",
         "itemsFrom": "Artikel von",
         "filter": {
+          "processing": "Bearbeiten",
+          "status": "Status",
+          "dateRange": "Datumsbereich",
+          "shippingStatus": "Versandstatus",
           "new": "Neu",
           "captured": "Zahlung erfasst",
-          "processing": "Bearbeiten",
           "shipped": "Gesendet",
           "completed": "Beendet",
           "canceled": "Abgebrochen",
           "refunded": "Erstattet"
         },
+        "capture": "Erfassung",
+        "capturing": "Erfassen",
+        "bulkActions": "Bulk-Aktionen",
+        "selected": "Ausgewählt",
+        "picked": "Picked",
+        "packed": "Packed",
+        "labeled": "Beschriftet",
+        "shipped": "Versendet",
+        "printInvoiceAndPickSheet": "Drucken Sie Rechnung und Auswahlblatt",
+        "generateLabel": "Label generieren",
+        "approveBulkOrderAction": "Ja, Alle auswählen Alle Aufträge auswählen",
+        "approveBulkOrderActionRegression": "Ja, Regress Alle Ausgewählten Aufträge",
+        "cancelBulkOrderAction": "Nein, Abbrechen",
+        "orderAlreadyInState": "{{orderText}} war bereits {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} auf {{status}} eingestellt",
+        "skippedBulkOrdersAlert": "Sie haben angefordert, dass {{selectedOrders}} {{orderText}} auf den Status '{{status}}' gesetzt ist, aber {{numberOfSkippedOrders}} dieser Aufträge {{skippedOrdersText}} nicht im Zustand '{{skippedState}}' und würde alle Schritte überspringen, die zum '{{status}}' Zustand führen. Bist du sicher, dass du das machen willst?",
+        "bulkOrdersRegressionAlert": "Du bist dabei, {{ordersToRegress}} {{orderText}} wieder in den Zustand '{{status}}' zurückzukehren. Bist du sicher, dass du diesen Vorgang fortsetzen möchtest?",
+        "paymentCaptureSuccess": "Zahlungen erfolgreich erfasst",
         "showMore": "Zeig mehr"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "Benutzerkonto anlegen oder anmelden",
         "guestOrLogin": "Anmelden oder als Gast fortfahren",
         "continueAsGuest": "Als Gast fortfahren",
-        "guestMessage": "Sie können ohne Benutzerkonto fortfahren. Auch später haben Sie noch die Möglichkeit, ein Benutzerkonto anzulegen."
+        "guestMessage": "Sie können ohne Benutzerkonto fortfahren. Auch später haben Sie noch die Möglichkeit, ein Benutzerkonto anzulegen.",
+        "addEmail": "E-Mail hinzufügen"
       },
       "addressBookGrid": {
         "addAddress": "Adresse hinzufügen",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "Löschen",
-        "noProductsFound": "Es wurden keine Produkte gefunden. ",
-        "noOrdersFound": "Keine Bestellungen gefunden.",
-        "noAccountsFound": "Keine Konten gefunden.",
         "searchInputLabel": "Suchergebnis ",
         "suggestedTags": "Vorgeschlagene Tags",
         "searchTypeProducts": "Produkte",
@@ -570,29 +593,12 @@
           "lastName": "Nachname",
           "phone": "Telefon",
           "emails": "E-Mail"
-        },
-        "orderSearchResults": {
-          "orderId": "Bestellnummer",
-          "shopId": "Shop-ID",
-          "shippingAddress": "Adresse",
-          "shippingCity": "Stadt",
-          "shippingRegion": "Region",
-          "shippingCountry": "Land",
-          "shippingPhone": "Telefon",
-          "shippingName": "Name",
-          "shippingStatus": "Status",
-          "billingAddress": "Adresse",
-          "billingCity": "Stadt",
-          "billingRegion": "Region",
-          "billingCountry": "Land",
-          "billingPhone": "Telefon",
-          "billingStatus": "Status",
-          "userEmails": "E-Mail",
-          "orderDate": "Datum",
-          "orderTotal": "Gesamt"
         }
       },
       "accountsUI": {
+        "usersOrders": "Bestellungen des Benutzers",
+        "oops": "Ups!",
+        "nonExistentAccount": "Der Benutzer, den Sie suchen, existiert nicht.",
         "members": "Mitglieder",
         "manage": "Verwalten",
         "guest": "Gast",

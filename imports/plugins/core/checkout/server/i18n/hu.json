@@ -1,0 +1,23 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Korlátozott ellátás"
+      },
+      "cartCompleted": {
+        "yourCart": "Az Ön kosara",
+        "discountTotal": "Kedvezmény összesen",
+        "orderTotal": "Rendelés Összesen",
+        "fulfilledBy": "Teljesítve:",
+        "quantityTotal": "Mennyiség összesen",
+        "orderSubtotal": "Részösszeg",
+        "orderShipping": "Szállítás",
+        "orderTax": "Adó beállítások",
+        "trackYourDelivery": "Megrendelésedről az értesítéseket ide küldjük",
+        "registerGuest": "Helló! Adjon hozzá egy e-mailt és fogadja a rendelés frissítéseit"
+      }
+    }
+  }
+}]

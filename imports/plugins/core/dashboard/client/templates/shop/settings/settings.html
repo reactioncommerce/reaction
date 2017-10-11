@@ -39,6 +39,7 @@
         <div class="panel-body">
           {{#autoForm collection=Collections.Shops doc=shop id="shopEditForm" type="update"}}
             {{> afQuickField name='name' placeholder="Shop Name"}}
+            {{> afQuickField name='slug' placeholder="Shop Slug"}}
             {{> afQuickField name='emails.0.address' label="Email" placeholder="Primary Contact Email"}}
             {{> afQuickField name='description' placeholder="Description"}}
             {{> afQuickField name='keywords' placeholder="Keywords"}}
@@ -109,6 +110,33 @@
       </div>
     </div>
 
+    {{#each reactionApps provides='shopSettings'}}
+      <div class="panel panel-default">
+        <div class="panel-heading panel-heading-flex">
+          <div class="panel-title">
+            <a
+              href="#collapsable-{{template}}"
+              aria-controls="collapsable-{{template}}"
+              role="button"
+              data-toggle="collapse"
+              data-parent="#shopSettingsAccordian">
+              <i class="{{icon}}"></i>
+              <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
+            </a>
+          </div>
+          {{#if showAppSwitch}}
+          <div class="panel-controls">
+            <input class="checkbox-switch" type="checkbox" name="enabled" data-id={{packageId}} data-key="{{settingsKey}}" {{checked enabled}}>
+          </div>
+          {{/if}}
+        </div>
+        <div id="collapsable-{{template}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapsable-{{template}}">
+          <div class="panel-body {{shown enabled}}">
+            {{> Template.dynamic template=template data=.}}
+          </div>
+        </div>
+      </div>
+    {{/each}}
   </div>
 </template>
 

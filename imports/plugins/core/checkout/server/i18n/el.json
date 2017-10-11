@@ -1,0 +1,23 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Περιορισμένη προσφορά"
+      },
+      "cartCompleted": {
+        "yourCart": "Το καλάθι σας",
+        "discountTotal": "Σύνολο έκπτωσης",
+        "orderTotal": "Παραγγελία Σύνολο",
+        "fulfilledBy": "Πραγματοποιούνται από",
+        "quantityTotal": "Συνολική ποσότητα",
+        "orderSubtotal": "ΜΕΡΙΚΟ ΣΥΝΟΛΟ",
+        "orderShipping": "Αποστολή",
+        "orderTax": "φορολογικές Ρυθμίσεις",
+        "trackYourDelivery": "Ενημερώσεις για την παραγγελία θα στέλνονται στο ",
+        "registerGuest": "Γειά σου! Προσθέστε ένα email και λάβετε ενημερώσεις παραγγελιών"
+      }
+    }
+  }
+}]

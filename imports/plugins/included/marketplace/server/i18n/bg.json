@@ -1,0 +1,36 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Станете продавач",
+        "errorCannotCreateShop": "Не можа да се създаде магазин за текущия потребител {{user}}",
+        "yourShopIsReady": "Магазинът ви вече е готов!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Име на магазина",
+          "emails": "Имейл за връзка",
+          "workflow": "Статус"
+        }
+      },
+      "app": {
+        "shops": "Магазини",
+        "myShop": "Магазинът ми"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect не е разрешено за това приложение. Моля, свържете се с администратора.",
+          "shopEmailNotConfigured": "Моля, първо конфигурирайте имейла си за магазина.",
+          "shopAddressNotConfigured": "Моля, първо конфигурирайте вашия адрес на магазина",
+          "shopNotActive": "Вашият магазин не е активен. Моля, свържете се със собственика на пазара."
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Пазарните настройки бяха запазени успешно!",
+          "dashboardMarketplaceSettingsFailed": "Запазването на настройките за Marketplace не бе успешно"
+        }
+      }
+    }
+  }
+}]

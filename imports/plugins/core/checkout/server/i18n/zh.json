@@ -1,0 +1,23 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "供应有限"
+      },
+      "cartCompleted": {
+        "yourCart": "你的购物车",
+        "discountTotal": "折扣总计",
+        "orderTotal": "订单总额",
+        "fulfilledBy": "履行",
+        "quantityTotal": "数量合计",
+        "orderSubtotal": "小计",
+        "orderShipping": "运输",
+        "orderTax": "税款设置",
+        "trackYourDelivery": "您的订单信息将会发到",
+        "registerGuest": "你好！添加电子邮件并接收订单更新"
+      }
+    }
+  }
+}]

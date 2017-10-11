@@ -1,0 +1,28 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "မူရင်းစျေးနှုန်းသို့မဟုတ် MSRP",
+          "optionInventoryQuantity": "စာရင်း",
+          "optionTitle": "ကုန်ပစ္စည်းအသေးစိတ်စာမျက်နှာပေါ်တွင်ပြသ",
+          "price": "ဝယ်ယူစျေးနှုန်း",
+          "title": "လှည်း, ကုန်ပစ္စည်းနှင့်အမိန့်ထဲမှာဖော်ပြပါတယ်",
+          "variantBackorderToggle": "Backorder စရိတ်ယခုရွေးချယ်စရာများကထိန်းချုပ်ထားတာဖြစ်ပါတယ်",
+          "variantInventoryQuantity": "မူကွဲစာရင်းယခုရွေးချယ်စရာများကထိန်းချုပ်ထားတာဖြစ်ပါတယ်"
+        },
+        "tooltip": {
+          "validationError": "အတည်ပြုခြင်းမှားယွင်းမှု"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "ထုတ်ကုန်များတွေ့သည်အဘယ်သူမျှမ"
+      },
+      "productDetailEdit": {
+        "variantDetails": "မူကွဲအသေးစိတ်"
+      }
+    }
+  }
+}]

@@ -1,0 +1,23 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "ကန့်သတ်ထောက်ပံ့ရေး"
+      },
+      "cartCompleted": {
+        "yourCart": "သင့်ရဲ့လှည်း",
+        "discountTotal": "လျှော့စျေးစုစုပေါင်း",
+        "orderTotal": "အမိန့်စုစုပေါင်း",
+        "fulfilledBy": "ဖွငျ့ပွညျ့စုံစ",
+        "quantityTotal": "အရေအတွက်စုစုပေါင်း",
+        "orderSubtotal": "စုစုပေါင်း",
+        "orderShipping": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း",
+        "orderTax": "အခွန်ကိုဆက်တင်",
+        "trackYourDelivery": "အမိန့် updates တွေကိုအပို့ခံရလိမျ့မညျ",
+        "registerGuest": "ဟလို! အီးမေးလ်တစ်ခု Add နှင့်အမိန့် updates များကိုလက်ခံရရှိ"
+      }
+    }
+  }
+}]

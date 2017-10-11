@@ -1,0 +1,46 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Bağlantıyı izle",
+          "shopifyConnectTitle": "Bağlantıyı izle",
+          "shopifyConnectDescription": "Shopify için Veri Bağlayıcı"
+        },
+        "shopifyConnectSettings": {
+          "editApiKey": "Düzenleme API Anahtarı",
+          "editPassword": "API Şifresini Düzenle",
+          "editSharedSecret": "API Paylaşılan Gizliliğini Düzenle",
+          "editShopifyDomain": "Shopify Etki Alanını Düzenle",
+          "headingSync": "Senkronizasyon Ayarları",
+          "headingImport": "Ithalat",
+          "importFailed": "Ürünler içe aktarılırken hata oluştu.",
+          "importing": "İthalat ... Bu biraz zaman alabilir.",
+          "importProducts": "İthalat Ürünleri",
+          "importSuccess": "Ürünler başarıyla ithal edildi.",
+          "keepInventorySynced": "Envanter Senkronize Edildi",
+          "noSyncIntegrationsSelected": "Senkronize etmek için lütfen en az bir seçenek seçin",
+          "optionImportProducts": "Ürünler",
+          "optionOrdersCreateUpdateInventory": "Yeni Shopify sipariş edildiğinde Envanteri güncelleyin",
+          "syncSetup": "Senkronizasyonu Kur",
+          "syncSetupSuccess": "Başarıyla kurulum Shopify senkronizasyonu",
+          "syncSetupFailure": "Senkronizasyonu düzeltme kurulurken hata oluştu",
+          "syncStop": "Senkronizasyonu Durdur",
+          "syncStopSuccess": "Mağazayı senkronize etmeyi başarıyla durdurdu!",
+          "syncStopFailure": "Shopify senkronizasyonunu durdurma hatası!",
+          "startImport": "İçe Aktarmayı Başlat"
+        }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API anahtarı",
+          "password": "API şifresi",
+          "sharedSecret": "API paylaşılan gizli",
+          "shopName": "Alışveriş slug"
+        }
+      }
+    }
+  }
+}]

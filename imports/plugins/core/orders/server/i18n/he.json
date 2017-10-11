@@ -16,11 +16,30 @@
           "invoice": {
             "cardTitle": "חשבונית",
             "adjustedTotal": "סך מתוקן",
-            "capturedTotal": "סך התשלום שעובד"
+            "capturedTotal": "סך התשלום שעובד",
+            "refundItemAmount": "סך הכל"
           },
           "fulfillment": "ביצוע",
           "orderDetails": "פרטי הזמנה",
           "shipmentTracking": "משלוח"
+        },
+        "table": {
+          "headers": {
+            "email": "דוא\"ל",
+            "date": "תאריך",
+            "total": "סך הכל",
+            "shipping": "משלוח",
+            "status": "סטטוס"
+          },
+          "filter": {
+            "status": "סטטוס",
+            "new": "חדש",
+            "captured": "התשלום עובד",
+            "shipped": "נשלח",
+            "completed": "הושלם",
+            "canceled": "בוטל",
+            "refunded": "החזר ניתן"
+          }
         }
       }
     }

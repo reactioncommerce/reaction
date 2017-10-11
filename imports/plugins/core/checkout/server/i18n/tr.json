@@ -1,0 +1,23 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Sınırlı tedarik"
+      },
+      "cartCompleted": {
+        "yourCart": "Sepetiniz",
+        "discountTotal": "İndirim Toplamı",
+        "orderTotal": "sipariş toplamı",
+        "fulfilledBy": "Yerine getiren",
+        "quantityTotal": "Miktar Toplam",
+        "orderSubtotal": "ara toplam",
+        "orderShipping": "Nakliye",
+        "orderTax": "vergi Ayarları",
+        "trackYourDelivery": "Sipariş güncellemeleri şu adrese gönderilecek",
+        "registerGuest": "Merhaba! E-posta ekleyin ve sipariş güncellemeleri alın"
+      }
+    }
+  }
+}]

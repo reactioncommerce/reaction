@@ -1,0 +1,28 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "Eredeti ár vagy MSRP",
+          "optionInventoryQuantity": "Leltár",
+          "optionTitle": "Megjelenik a termék részletes oldalán",
+          "price": "Vételár",
+          "title": "Kosárba, pénztárba és megrendelésekbe",
+          "variantBackorderToggle": "A hátrányos juttatásokat az opciók vezérlik",
+          "variantInventoryQuantity": "A változatleltárt jelenleg a lehetőségek választják"
+        },
+        "tooltip": {
+          "validationError": "Érvényesítési hiba"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "Nem található termékek"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Variant Részletek"
+      }
+    }
+  }
+}]

@@ -1,0 +1,36 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Γίνετε πωλητής",
+        "errorCannotCreateShop": "Δεν ήταν δυνατή η δημιουργία καταστήματος για τον τρέχοντα χρήστη {{user}}",
+        "yourShopIsReady": "Το κατάστημα σας είναι έτοιμο!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Όνομα καταστήματος",
+          "emails": "Email επικοινωνίας",
+          "workflow": "Κατάσταση"
+        }
+      },
+      "app": {
+        "shops": "Καταστήματα",
+        "myShop": "Το κατάστημά μου"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Το Stripe Connect δεν είναι ενεργοποιημένο για αυτήν την εφαρμογή. Επικοινωνήστε με το διαχειριστή.",
+          "shopEmailNotConfigured": "Ρυθμίστε πρώτα το ηλεκτρονικό ταχυδρομείο του καταστήματος.",
+          "shopAddressNotConfigured": "Ρυθμίστε πρώτα τη διεύθυνση του καταστήματός σας",
+          "shopNotActive": "Το κατάστημα δεν είναι ενεργό. Επικοινωνήστε με τον ιδιοκτήτη της αγοράς."
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Οι ρυθμίσεις του Marketplace αποθηκεύτηκαν με επιτυχία!",
+          "dashboardMarketplaceSettingsFailed": "Αποτυχία αποθήκευσης των ρυθμίσεων του Marketplace"
+        }
+      }
+    }
+  }
+}]

@@ -1,35 +1,76 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import { formatPriceString } from "/client/api";
-import { Translation } from "/imports/plugins/core/ui/client/components";
-import DiscountList from "/imports/plugins/core/discounts/client/components/list";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import LineItems from "./lineItems";
+import InvoiceActions from "./invoiceActions";
 
+/**
+  * @summary React component for displaying the `invoice` section on the orders sideview
+  * @param {Object} props - React PropTypes
+  * @property {Object} invoice - An object representing an invoice
+  * @property {Object} order - An object representing an order
+  * @property {Bool} discounts - A boolean indicating whether discounts are enabled
+  * @property {Array} refunds - An array/list of refunds
+  * @property {Bool} paymentCaptured - A boolean indicating whether payment has been captured
+  * @property {Bool} canMakeAdjustments - A boolean indicating whether adjustments could be made on total payment
+  * @property {Bool} hasRefundingEnabled - A boolean indicating whether payment supports refunds
+  * @property {Bool} isFetching - A boolean indicating whether refund list is being loaded
+  * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
+  */
 class Invoice extends Component {
   static propTypes = {
     canMakeAdjustments: PropTypes.bool,
-    collection: PropTypes.string,
-    dateFormat: PropTypes.func,
     discounts: PropTypes.bool,
-    handleClick: PropTypes.func,
+    hasRefundingEnabled: PropTypes.bool,
     invoice: PropTypes.object,
     isFetching: PropTypes.bool,
-    isOpen: PropTypes.bool,
-    orderId: PropTypes.string,
+    order: PropTypes.object,
     paymentCaptured: PropTypes.bool,
     refunds: PropTypes.array
   }
 
-  renderDiscountForm() {
-    const { isOpen, orderId, collection } = this.props;
+  state = {
+    isOpen: false
+  }
 
+  /**
+    * @summary Formats dates
+    * @param {Number} context - the date to be formatted
+    * @param {String} block - the preferred format
+    * @returns {String} formatted date
+    */
+  formatDate(context, block) {
+    const dateFormat = block || "MMM DD, YYYY hh:mm:ss A";
+    return moment(context).format(dateFormat);
+  }
+
+  /**
+    * @summary Handle clicking the add discount link
+    * @param {Event} event - the event that fired
+    * @returns {null} null
+    */
+  handleClick = (event) => {
+    event.preventDefault();
+    this.setState({
+      isOpen: true
+    });
+  }
+
+  /**
+    * @summary Displays the discount form
+    * @returns {null} null
+    */
+  renderDiscountForm() {
     return (
       <div>
-        {isOpen &&
+        {this.state.isOpen &&
           <div>
             <hr/>
-            <DiscountList
-              id={orderId}
-              collection={collection}
+            <Components.DiscountList
+              id={this.props.order._id}
+              collection="Orders"
               validatedInput={true}
             />
             <hr/>
@@ -39,12 +80,15 @@ class Invoice extends Component {
     );
   }
 
+  /**
+    * @summary Displays the refund information after the order payment breakdown on the invoice
+    * @returns {null} null
+    */
   renderRefundsInfo() {
-    const { isFetching, refunds, dateFormat } = this.props;
-
+    const { hasRefundingEnabled, isFetching, refunds } = this.props;
     return (
       <div>
-        {isFetching &&
+        {(hasRefundingEnabled && isFetching) &&
           <div className="form-group order-summary-form-group">
             <strong>Loading Refunds</strong>
             <div className="invoice-details">
@@ -53,9 +97,9 @@ class Invoice extends Component {
           </div>
         }
 
-        {refunds && refunds.map((refund) => (
+        {Array.isArray(refunds) && refunds.map((refund) => (
           <div className="order-summary-form-group text-danger" key={refund.created} style={{ marginBottom: 15 }}>
-            <strong>Refunded on: {dateFormat(refund.created, "MM/D/YYYY")}</strong>
+            <strong>Refunded on: {this.formatDate(refund.created, "MM/D/YYYY")}</strong>
             <div className="invoice-details"><strong>{formatPriceString(refund.amount)}</strong></div>
           </div>
         ))}
@@ -63,23 +107,28 @@ class Invoice extends Component {
     );
   }
 
+  /**
+    * @summary Displays the total payment form
+    * @returns {null} null
+    */
   renderTotal() {
-    const { invoice } = this.props;
-
     return (
       <div className="order-summary-form-group">
         <hr/>
         <strong>TOTAL</strong>
         <div className="invoice-details">
-          <strong>{formatPriceString(invoice.total)}</strong>
+          <strong>{formatPriceString(this.props.invoice.total)}</strong>
         </div>
       </div>
     );
   }
 
+  /**
+    * @summary Displays either refunds info or the total payment form
+    * @returns {null} null
+    */
   renderConditionalDisplay() {
     const { canMakeAdjustments, paymentCaptured } = this.props;
-
     return (
       <div>
         {canMakeAdjustments ?
@@ -98,8 +147,12 @@ class Invoice extends Component {
     );
   }
 
-  render() {
-    const { invoice, discounts, handleClick } = this.props;
+  /**
+    * @summary Displays the invoice form with broken down payment info
+    * @returns {null} null
+    */
+  renderInvoice() {
+    const { invoice, discounts } = this.props;
 
     return (
       <div>
@@ -111,21 +164,21 @@ class Invoice extends Component {
         </div>
 
         <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></strong>
+          <strong><Components.Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></strong>
           <div className="invoice-details">
             {formatPriceString(invoice.subtotal)}
           </div>
         </div>
 
         <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
+          <strong><Components.Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
           <div className="invoice-details">
             {formatPriceString(invoice.shipping)}
           </div>
         </div>
 
         <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Tax" i18nKey="cartSubTotals.tax"/></strong>
+          <strong><Components.Translation defaultValue="Tax" i18nKey="cartSubTotals.tax"/></strong>
           <div className="invoice-details">
             {formatPriceString(invoice.taxes)}
           </div>
@@ -134,10 +187,9 @@ class Invoice extends Component {
         {discounts &&
           <div>
             <div className="order-summary-form-group">
-              <strong><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
+              <strong><Components.Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
               <div className="invoice-details">
-                <i className="fa fa-tag fa-lg" style={{ marginRight: 2 }}/>
-                <a className="btn-link" onClick={handleClick}>Add Discount</a>
+                {formatPriceString(invoice.discounts)}
               </div>
             </div>
             {this.renderDiscountForm()}
@@ -147,6 +199,31 @@ class Invoice extends Component {
       </div>
     );
   }
+
+  render() {
+    return (
+      <Components.CardGroup>
+        <Components.Card>
+          <Components.CardHeader
+            actAsExpander={false}
+            i18nKeyTitle="admin.orderWorkflow.invoice.cardTitle"
+            title="Invoice"
+          />
+          <Components.CardBody expandable={false}>
+            <LineItems {...this.props} />
+
+            <div className="invoice-container">
+              {this.renderInvoice()}
+            </div>
+
+            <InvoiceActions {...this.props}/>
+          </Components.CardBody>
+        </Components.Card>
+      </Components.CardGroup>
+    );
+  }
 }
+
+registerComponent("Invoice", Invoice);
 
 export default Invoice;

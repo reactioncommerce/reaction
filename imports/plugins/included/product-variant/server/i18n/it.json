@@ -1,0 +1,28 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "Prezzo originale o MSRP",
+          "optionInventoryQuantity": "Inventario",
+          "optionTitle": "Visualizzati nella pagina di dettaglio del prodotto",
+          "price": "Prezzo d'acquisto",
+          "title": "Visualizzati nel carrello, nella consegna e negli ordini",
+          "variantBackorderToggle": "L'indennità Backorder è ora controllata da opzioni",
+          "variantInventoryQuantity": "L'inventario delle varianti è ora controllato da opzioni"
+        },
+        "tooltip": {
+          "validationError": "Errore di convalida"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "Nessun prodotto trovato"
+      },
+      "productDetailEdit": {
+        "variantDetails": "variante Dettagli"
+      }
+    }
+  }
+}]

@@ -3,14 +3,29 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Zamówienie nie zostało znalezione",
+      "order": {
+        "applyRefundToThisOrder": "Zastosuj zwrot {{currencySymbol}}{{refund}} do tego celu?",
+        "applyRefundDuringCancelOrder": "Spowoduje to zwrot całkowitej kwoty zamówienia {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrder": "Czy chcesz anulować zamówienie?",
+        "cancelOrderLabel": "Anuluj zamówienie",
+        "cancelOrderThenRestock": "Tak, i uzupełnij",
+        "cancelOrderNoRestock": "Tak, ale nie restocking"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "Święcenia"
         },
+        "orderRisk": {
+          "high": "Wysokie ryzyko",
+          "riskCapture": "Złożyć zamówienie z opłatą za ryzyko?",
+          "riskCaptureWarn": "Zamierzasz uchwycić zlecenie z ładunkiem. Potwierdź przed kontynuowaniem."
+        },
         "dashboard": {
           "ordersLabel": "Święcenia",
           "ordersTitle": "Święcenia",
-          "ordersDescription": "Spełnij swoje zamówienia"
+          "ordersDescription": "Spełnij swoje zamówienia",
+          "clearSearch": "Wyczyść"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -27,11 +42,54 @@
             "cardTitle": "Faktura",
             "adjustedTotal": "Skorygowany Razem",
             "capturedTotal": "schwytany Razem",
-            "refund": "Zwrot"
+            "refund": "Zwrot",
+            "refundLabel": "Za zwrot",
+            "refundItem": "Przedmiotów",
+            "refundItemAmount": "Razem",
+            "refundTotal": "Zwrot kosztów"
           },
           "fulfillment": "Spełnienie",
           "orderDetails": "Szczegóły zamówienia",
           "shipmentTracking": "Wysyłka"
+        },
+        "table": {
+          "headers": {
+            "name": "Nazwa",
+            "email": "Ustawienia poczty e-mail",
+            "date": "Data",
+            "id": "ID",
+            "total": "Razem",
+            "shipping": "Wysyłka",
+            "status": "Status"
+          },
+          "filter": {
+            "status": "Status",
+            "dateRange": "Zakres dat",
+            "shippingStatus": "Stan wysyłki",
+            "new": "Nowy",
+            "captured": "Płatność Przechwycona",
+            "shipped": "Wysłano",
+            "completed": "Zakończono",
+            "canceled": "Odwołano",
+            "refunded": "Zwrócone"
+          },
+          "search": {
+            "clearSearch": "Wyczyść",
+            "placeholder": "Szukaj zamówień"
+          },
+          "data": {
+            "status": {
+              "new": "Nowy",
+              "coreOrderWorkflow/created": "Stworzony",
+              "coreOrderWorkflow/processing": "Przetwarzanie",
+              "coreOrderWorkflow/completed": "Zakończony",
+              "coreOrderWorkflow/canceled": "Odwołany",
+              "coreOrderWorkflow/picked": "Doborowy",
+              "coreOrderWorkflow/packed": "Zatłoczony",
+              "coreOrderWorkflow/labeled": "Oznaczone",
+              "coreOrderWorkflow/shipped": "Wysłane"
+            }
+          }
         }
       }
     }

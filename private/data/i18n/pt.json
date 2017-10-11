@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "Aspeto",
+          "email": "Configurações de e-mail",
           "connect": "Conectar",
+          "description": "Descrição",
           "core": "Núcleo",
+          "remove": "Remover",
           "dashboard": "Painel de controlo",
           "misc": "Vários",
           "paymentMethod": "Fornecedores de pagamento",
@@ -56,8 +59,6 @@
       "app": {
         "add": "Adicionar",
         "editMode": "Modo de edição",
-        "administratorView": "administrador Ver",
-        "customerView": "cliente Ver",
         "createContent": "Criar conteúdo",
         "auto": "Automático",
         "save": "Guardar",
@@ -137,7 +138,7 @@
           "viewAll": "Ver todos os"
         },
         "messages": {
-          "orderCancelled": "Seu pedido foi cancelado.",
+          "orderCanceled": "Seu pedido foi cancelado.",
           "newOrder": "Seu pedido está sendo processado.",
           "forAdmin": "Você tem uma nova ordem.",
           "orderDelivered": "Seu pedido foi entregue.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "quando terminar a edição.",
         "tags": "Etiquetas",
         "tagsAdd": "Adicionar etiqueta",
-        "tagsEdit": "Editar etiquetas",
         "tagExists": "A etiqueta já existe ou está vazia.",
         "tagInUse": "A etiqueta está a ser utilizada e não pode ser eliminada.",
         "dropFiles": "Largar ficheiros para carregar",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "Criado",
         "coreOrderWorkflow/processing": "A processar",
         "coreOrderWorkflow/completed": "Concluído",
-        "coreOrderWorkflow/canceled": "Cancelado"
+        "coreOrderWorkflow/canceled": "Cancelado",
+        "coreOrderWorkflow/picked": "Escolhido",
+        "coreOrderWorkflow/packed": "embalado",
+        "coreOrderWorkflow/labeled": "Rotulado",
+        "coreOrderWorkflow/shipped": "Enviado"
       },
       "cartSubTotals": {
         "discount": "Desconto",
@@ -354,14 +358,35 @@
         "payment": "Pagamento",
         "itemsFrom": "item(ns) de",
         "filter": {
+          "processing": "A processar",
+          "status": "Estado",
+          "dateRange": "intervalo de datas",
+          "shippingStatus": "Status de envio",
           "new": "Novo",
           "captured": "Pagamento capturado",
-          "processing": "A processar",
           "shipped": "Enviado",
           "completed": "Concluído",
           "canceled": "Cancelado",
           "refunded": "Reembolsado"
         },
+        "capture": "Capturar",
+        "capturing": "Capturando",
+        "bulkActions": "Ações em massa",
+        "selected": "Selecionado",
+        "picked": "Escolhido",
+        "packed": "embalado",
+        "labeled": "Rotulado",
+        "shipped": "Enviado",
+        "printInvoiceAndPickSheet": "Imprimir fatura e folha de seleção",
+        "generateLabel": "Gerar etiqueta",
+        "approveBulkOrderAction": "Sim, Definir Tudo Selecionar Todas as Ordens",
+        "approveBulkOrderActionRegression": "Sim, regressa todas as ordens selecionadas",
+        "cancelBulkOrderAction": "Não, Cancelar",
+        "orderAlreadyInState": "{{orderText}} já foi {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} definido como {{status}}",
+        "skippedBulkOrdersAlert": "Você solicitou que {{selectedOrders}} {{orderText}} seja configurado para o status '{{status}}', mas {{numberOfSkippedOrders}} dessas ordens {{skippedOrdersText}} não no estado '{{skippedState}}' e ignorar todas as etapas que levem ao estado '{{status}}'. Você tem certeza de que quer fazer isso?",
+        "bulkOrdersRegressionAlert": "Você está prestes a regredir {{ordersToRegress}} {{orderText}} de volta ao estado '{{status}}'. Tem certeza de que deseja continuar com esta operação?",
+        "paymentCaptureSuccess": "Pagamentos capturados com sucesso",
         "showMore": "Mostre mais"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "Criar uma conta ou iniciar sessão",
         "guestOrLogin": "Iniciar sessão ou finalizar a compra como um convidado",
         "continueAsGuest": "Continuar como cliente",
-        "guestMessage": "Pode finalizar a compra sem criar uma conta. Terá a oportunidade de criar uma conta mais tarde."
+        "guestMessage": "Pode finalizar a compra sem criar uma conta. Terá a oportunidade de criar uma conta mais tarde.",
+        "addEmail": "Adicionar e-mail"
       },
       "addressBookGrid": {
         "addAddress": "Adicionar endereço",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "Limpar",
-        "noProductsFound": "Nenhum produto encontrado",
-        "noOrdersFound": "Nenhuma encomenda encontrada.",
-        "noAccountsFound": "Nenhuma conta encontrada.",
         "searchInputLabel": "Procurar na plataforma Reaction ",
         "suggestedTags": "Etiquetas sugeridas",
         "searchTypeProducts": "Produtos",
@@ -570,29 +593,12 @@
           "lastName": "Apelido",
           "phone": "Telefone",
           "emails": "Email"
-        },
-        "orderSearchResults": {
-          "orderId": "ID da encomenda",
-          "shopId": "ID da loja",
-          "shippingAddress": "Endereço",
-          "shippingCity": "Cidade",
-          "shippingRegion": "Região",
-          "shippingCountry": "País",
-          "shippingPhone": "Telefone",
-          "shippingName": "Nome",
-          "shippingStatus": "Estado",
-          "billingAddress": "Endereço",
-          "billingCity": "Cidade",
-          "billingRegion": "Região",
-          "billingCountry": "País",
-          "billingPhone": "Telefone",
-          "billingStatus": "Estado",
-          "userEmails": "Email",
-          "orderDate": "Data",
-          "orderTotal": "Total"
         }
       },
       "accountsUI": {
+        "usersOrders": "Ordens do usuário",
+        "oops": "Ups!",
+        "nonExistentAccount": "O usuário que você procura não existe.",
         "members": "Membros",
         "manage": "Gerir",
         "guest": "Convidado",

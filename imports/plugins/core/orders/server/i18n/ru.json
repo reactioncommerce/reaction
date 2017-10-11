@@ -3,14 +3,29 @@
   "ns": "reaction-orders",
   "translation": {
     "reaction-orders": {
+      "notFound": "Заказ не найден",
+      "order": {
+        "applyRefundToThisOrder": "Применить возврат {{currencySymbol}}{{refund}} в этот заказ?",
+        "applyRefundDuringCancelOrder": "Это вернет сумму заказа {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrder": "Вы хотите отменить этот заказ?",
+        "cancelOrderLabel": "Отменить заказ",
+        "cancelOrderThenRestock": "Да, и пополнение запасов",
+        "cancelOrderNoRestock": "Да, но без пополнения запасов"
+      },
       "admin": {
         "shortcut": {
           "ordersLabel": "заказы"
         },
+        "orderRisk": {
+          "high": "Высокий риск",
+          "riskCapture": "Захват заказа с риском?",
+          "riskCaptureWarn": "Вы собираетесь захватить заказ с риском для оплаты. Подтвердите, прежде чем продолжить."
+        },
         "dashboard": {
           "ordersLabel": "заказы",
           "ordersTitle": "заказы",
-          "ordersDescription": "Исполни ваши заказы"
+          "ordersDescription": "Исполни ваши заказы",
+          "clearSearch": "Очистить"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -27,11 +42,54 @@
             "cardTitle": "Счёт",
             "adjustedTotal": "Итого после возврата",
             "capturedTotal": "Получено всего",
-            "refund": "Возврат"
+            "refund": "Возврат",
+            "refundLabel": "Для возврата",
+            "refundItem": "Предметы",
+            "refundItemAmount": "Итого",
+            "refundTotal": "Сумма возврата"
           },
           "fulfillment": "Движение заказа",
           "orderDetails": "Детали заказа",
           "shipmentTracking": "Перевозка"
+        },
+        "table": {
+          "headers": {
+            "name": "Имя",
+            "email": "Настройки электронной почты",
+            "date": "Дата",
+            "id": "ID",
+            "total": "Итого",
+            "shipping": "Перевозка",
+            "status": "Статус"
+          },
+          "filter": {
+            "status": "Статус",
+            "dateRange": "Диапазон дат",
+            "shippingStatus": "Статус отправки",
+            "new": "Новых",
+            "captured": "Оплаченных",
+            "shipped": "Доставлено",
+            "completed": "Завершенных",
+            "canceled": "Отмененных",
+            "refunded": "Возвращенных"
+          },
+          "search": {
+            "clearSearch": "Очистить",
+            "placeholder": "Поиск заказов"
+          },
+          "data": {
+            "status": {
+              "new": "новый",
+              "coreOrderWorkflow/created": "созданный",
+              "coreOrderWorkflow/processing": "обработка",
+              "coreOrderWorkflow/completed": "Завершенный",
+              "coreOrderWorkflow/canceled": "отменен",
+              "coreOrderWorkflow/picked": "поднято",
+              "coreOrderWorkflow/packed": "уплотненный",
+              "coreOrderWorkflow/labeled": "маркированный",
+              "coreOrderWorkflow/shipped": "Высылаем"
+            }
+          }
         }
       }
     }

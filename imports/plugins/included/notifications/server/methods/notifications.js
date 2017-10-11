@@ -26,7 +26,7 @@ Meteor.methods({
 
     const values = {};
     const types = {
-      orderCancelled: "Your order was canceled.",
+      orderCanceled: "Your order was canceled.",
       newOrder: "Your order was accepted",
       forAdmin: "You have a new order.",
       orderDelivered: "Your order has been delivered.",

@@ -1,0 +1,36 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "Deveniți un vânzător",
+        "errorCannotCreateShop": "Nu s-a putut crea magazin pentru utilizatorul curent {{user}}",
+        "yourShopIsReady": "Magazinul dvs. este acum gata!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Numele magazinului",
+          "emails": "Emailul de contact",
+          "workflow": "Stare"
+        }
+      },
+      "app": {
+        "shops": "Magazine",
+        "myShop": "Magazinul meu"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect nu este activată pentru această aplicație. Contactați administratorul.",
+          "shopEmailNotConfigured": "Vă rugăm să configurați mai întâi e-mailul magazinului.",
+          "shopAddressNotConfigured": "Vă rugăm să configurați mai întâi adresa dvs. de magazin",
+          "shopNotActive": "Magazinul dvs. nu este activ. Contactați proprietarul site-ului."
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "Setările pentru Marketplace au fost salvate cu succes!",
+          "dashboardMarketplaceSettingsFailed": "Setările Marketplace nu au putut fi salvate"
+        }
+      }
+    }
+  }
+}]

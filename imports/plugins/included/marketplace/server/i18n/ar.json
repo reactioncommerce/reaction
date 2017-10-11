@@ -1,0 +1,36 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "تصبح البائع",
+        "errorCannotCreateShop": "تعذر إنشاء متجر للمستخدم الحالي {{user}}",
+        "yourShopIsReady": "متجرك الآن جاهز!"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "اسم المحل",
+          "emails": "تواصل بالبريد الاكتروني",
+          "workflow": "حالة"
+        }
+      },
+      "app": {
+        "shops": "محلات",
+        "myShop": "متجري"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "لم يتم تمكين الشريط اتصال لهذا التطبيق. يرجى الاتصال المشرف.",
+          "shopEmailNotConfigured": "يرجى تهيئة البريد الإلكتروني للمتجر أولا.",
+          "shopAddressNotConfigured": "يرجى تكوين عنوان المحل أولا",
+          "shopNotActive": "متجرك غير نشط. يرجى الاتصال بمالك السوق."
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "تم حفظ إعدادات ماركتبليس بنجاح!",
+          "dashboardMarketplaceSettingsFailed": "أخفق حفظ إعدادات ماركتبليس"
+        }
+      }
+    }
+  }
+}]

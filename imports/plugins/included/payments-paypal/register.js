@@ -6,12 +6,13 @@ Reaction.registerPackage({
   icon: "fa fa-paypal",
   autoEnable: true,
   settings: {
+    expressAuthAndCapture: false,
     express: {
       enabled: false,
       support: [
-        "authorize",
-        "capture",
-        "refund"
+        "Authorize",
+        "Capture",
+        "Refund"
       ]
     },
     payflow: {
@@ -26,13 +27,13 @@ Reaction.registerPackage({
   registry: [
     {
       label: "PayPal Express",
-      provides: "paymentSettings",
+      provides: ["paymentSettings"],
       name: "paypal/settings/express",
       icon: "fa fa-paypal",
       template: "paypalExpressSettings"
     }, {
       label: "PayPal PayFlow",
-      provides: "paymentSettings",
+      provides: ["paymentSettings"],
       name: "paypal/settings/payflow",
       icon: "fa fa-cc-paypal",
       template: "paypalPayFlowSettings"
@@ -48,14 +49,14 @@ Reaction.registerPackage({
       template: "paypalCheckoutButton",
       label: "Express",
       name: "payment/method/express",
-      provides: "paymentMethod",
+      provides: ["paymentMethod"],
       icon: "fa fa-paypal",
       priority: 1
     }, {
       template: "paypalPayflowForm",
       label: "Credit Card",
       name: "payment/method/payflow",
-      provides: "paymentMethod",
+      provides: ["paymentMethod"],
       icon: "fa fa-cc-paypal"
     }
   ]

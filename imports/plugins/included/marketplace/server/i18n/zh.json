@@ -1,0 +1,36 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-marketplace",
+  "translation": {
+    "reaction-marketplace": {
+      "marketplace": {
+        "becomeSeller": "成为卖家",
+        "errorCannotCreateShop": "无法为当前用户{{user}}创建商店",
+        "yourShopIsReady": "你的商店现在准备好了！"
+      },
+      "marketplaceShops": {
+        "headers": {
+          "name": "店名",
+          "emails": "联系电子邮件",
+          "workflow": "状态"
+        }
+      },
+      "app": {
+        "shops": "商店",
+        "myShop": "我的店铺"
+      },
+      "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "该应用程序未启用Stripe Connect。请联系管理员。",
+          "shopEmailNotConfigured": "请先配置您的商店电子邮件。",
+          "shopAddressNotConfigured": "请先配置您的店铺地址",
+          "shopNotActive": "您的商店没有活动。请联系市场主人。"
+        },
+        "settings": {
+          "dashboardMarketplaceSettingsSaved": "市场设置已成功保存！",
+          "dashboardMarketplaceSettingsFailed": "无法保存市场设置"
+        }
+      }
+    }
+  }
+}]

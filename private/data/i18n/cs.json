@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "Vzhled",
+          "email": "Email",
           "connect": "Připojit",
+          "description": "Popis",
           "core": "Jádro",
+          "remove": "Odstranit",
           "dashboard": "přístrojová deska",
           "misc": "Různé",
           "paymentMethod": "Platební Poskytovatelé",
@@ -56,8 +59,6 @@
       "app": {
         "add": "Přidat",
         "editMode": "režim úprav",
-        "administratorView": "Zobrazit správce",
-        "customerView": "Customer View",
         "createContent": "Vytvořit obsah",
         "auto": "Auto",
         "save": "Save",
@@ -137,7 +138,7 @@
           "viewAll": "Zobrazit vše"
         },
         "messages": {
-          "orderCancelled": "Vaše objednávka byla zrušena.",
+          "orderCanceled": "Vaše objednávka byla zrušena.",
           "newOrder": "Vaše objednávka se zpracovává.",
           "forAdmin": "Máte novou objednávku.",
           "orderDelivered": "Vaše objednávka byla doručena.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "Při dokončení úprav.",
         "tags": "Štítky",
         "tagsAdd": "Přidat značku",
-        "tagsEdit": "Edit tags",
         "tagExists": "Tag již existuje, nebo je prázdný.",
         "tagInUse": "Tag je používán a nemůže být odstraněn.",
         "dropFiles": "Drop soubory nahrát",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "Vytvořeno",
         "coreOrderWorkflow/processing": "zpracování",
         "coreOrderWorkflow/completed": "Dokončeno",
-        "coreOrderWorkflow/canceled": "Zrušeno"
+        "coreOrderWorkflow/canceled": "Zrušeno",
+        "coreOrderWorkflow/picked": "Sklizené",
+        "coreOrderWorkflow/packed": "Balené",
+        "coreOrderWorkflow/labeled": "Označeno",
+        "coreOrderWorkflow/shipped": "Posíláme"
       },
       "cartSubTotals": {
         "discount": "Sleva",
@@ -354,14 +358,35 @@
         "payment": "Platba",
         "itemsFrom": "položka (y) z",
         "filter": {
+          "processing": "zpracování",
+          "status": "Postavení",
+          "dateRange": "Časové období",
+          "shippingStatus": "Stav odeslání",
           "new": "Nový",
           "captured": "platba Zachycená",
-          "processing": "zpracování",
           "shipped": "Posíláme",
           "completed": "Dokončeno",
           "canceled": "Zrušeno",
           "refunded": "vrácena"
         },
+        "capture": "Zachyťte",
+        "capturing": "Zachycení",
+        "bulkActions": "Hromadné akce",
+        "selected": "Vybraný",
+        "picked": "Sklizené",
+        "packed": "Balené",
+        "labeled": "Označeno",
+        "shipped": "Posíláme",
+        "printInvoiceAndPickSheet": "Tisk faktury a výběr listu",
+        "generateLabel": "Generovat štítek",
+        "approveBulkOrderAction": "Ano, Nastavit vše Vybrat všechny objednávky",
+        "approveBulkOrderActionRegression": "Ano, regresujte všechny vybrané objednávky",
+        "cancelBulkOrderAction": "Ne, zrušte",
+        "orderAlreadyInState": "{{orderText}} již byl {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} nastaveno na {{status}}",
+        "skippedBulkOrdersAlert": "Požadovali jste, aby byl {{orderText}} nastaven na status '{{status}}', ale {{numberOfSkippedOrders}} těchto příkazů {{skippedOrdersText}} není ve stavu '{{skippedState}}' a přeskočil všechny kroky vedoucí ke stavu '{{status}}'. Opravdu chcete to udělat?",
+        "bulkOrdersRegressionAlert": "Chystáte se regresovat {{ordersToRegress}} {{orderText}} zpět do stavu \"{{status}}\". Opravdu chcete pokračovat v této operaci?",
+        "paymentCaptureSuccess": "Platby byly úspěšně zachyceny",
         "showMore": "Zobrazit více"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "Vytvořte si účet nebo se přihlaste",
         "guestOrLogin": "Přihlaste se nebo pokladní jako host",
         "continueAsGuest": "Pokračovat jako host",
-        "guestMessage": "Můžete pokladny bez vytvoření účtu. Budete mít možnost vytvořit si účet později."
+        "guestMessage": "Můžete pokladny bez vytvoření účtu. Budete mít možnost vytvořit si účet později.",
+        "addEmail": "Přidat e-mail"
       },
       "addressBookGrid": {
         "addAddress": "Přidat adresu",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "Jasný",
-        "noProductsFound": "Nebyly nalezeny žádné produkty.",
-        "noOrdersFound": "Nebyly nalezeny žádné objednávky.",
-        "noAccountsFound": "Nebyly nalezeny žádné účty.",
         "searchInputLabel": "Vyhledávání Reaction",
         "suggestedTags": "Navrhované tagy",
         "searchTypeProducts": "produkty",
@@ -570,29 +593,12 @@
           "lastName": "Příjmení",
           "phone": "Telefon",
           "emails": "Email"
-        },
-        "orderSearchResults": {
-          "orderId": "Číslo objednávky",
-          "shopId": "Shop ID",
-          "shippingAddress": "Adresa",
-          "shippingCity": "Město",
-          "shippingRegion": "Kraj",
-          "shippingCountry": "Země",
-          "shippingPhone": "Telefon",
-          "shippingName": "Název",
-          "shippingStatus": "Postavení",
-          "billingAddress": "Adresa",
-          "billingCity": "Město",
-          "billingRegion": "Kraj",
-          "billingCountry": "Země",
-          "billingPhone": "Telefon",
-          "billingStatus": "Postavení",
-          "userEmails": "Email",
-          "orderDate": "Datum",
-          "orderTotal": "Celkem"
         }
       },
       "accountsUI": {
+        "usersOrders": "Uživatelské příkazy",
+        "oops": "Jejda!",
+        "nonExistentAccount": "Uživatel, který hledáte, neexistuje.",
         "members": "Členové",
         "manage": "Spravovat",
         "guest": "Host",

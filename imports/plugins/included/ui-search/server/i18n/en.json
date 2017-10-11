@@ -3,10 +3,10 @@
   "ns": "reaction-ui-search",
   "translation": {
     "reaction-ui-search": {
-      "admin": {
-        "shortcut": {},
-        "dashboard": {},
-        "settings": {}
+      "search": {
+        "accountSearchResults": {
+          "notAvailable": "Not available"
+        }
       }
     }
   }

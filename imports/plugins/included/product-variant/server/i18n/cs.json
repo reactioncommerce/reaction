@@ -1,0 +1,28 @@
+[{
+  "i18n": "cs",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "Původní cena nebo MSRP",
+          "optionInventoryQuantity": "Inventář",
+          "optionTitle": "Zobrazeno na stránce s podrobnostmi o produktu",
+          "price": "Kupní cena",
+          "title": "Zobrazeno v košíku, pokladně a objednávkách",
+          "variantBackorderToggle": "Příspěvek pro backorder je nyní řízen možností",
+          "variantInventoryQuantity": "Varianta inventáře je nyní ovládána možnostmi"
+        },
+        "tooltip": {
+          "validationError": "Chyba ověření"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "Nebyly nalezeny žádné produkty"
+      },
+      "productDetailEdit": {
+        "variantDetails": "Variant Podrobnosti"
+      }
+    }
+  }
+}]

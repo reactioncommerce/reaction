@@ -1,0 +1,28 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-product-variant",
+  "translation": {
+    "reaction-product-variant": {
+      "admin": {
+        "helpText": {
+          "compareAtPrice": "السعر الأصلي أو مسرب",
+          "optionInventoryQuantity": "المخزون",
+          "optionTitle": "عرض في صفحة تفاصيل المنتج",
+          "price": "سعر الشراء",
+          "title": "عرض في سلة المشتريات، والخروج، وأوامر",
+          "variantBackorderToggle": "يتم التحكم بدل بدل النسخ الاحتياطي الآن عن طريق الخيارات",
+          "variantInventoryQuantity": "يتم التحكم في المخزون المتغير الآن عن طريق الخيارات"
+        },
+        "tooltip": {
+          "validationError": "خطئ في التحقق"
+        }
+      },
+      "productGrid": {
+        "noProductsFound": "لم يتم العثور على منتجات"
+      },
+      "productDetailEdit": {
+        "variantDetails": "تفاصيل المتغير"
+      }
+    }
+  }
+}]

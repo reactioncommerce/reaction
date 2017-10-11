@@ -3,10 +3,20 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
-      "admin": {
-        "shortcut": {},
-        "dashboard": {},
-        "settings": {}
+      "cartDrawerItems": {
+        "limitedSupply": "Limited supply"
+      },
+      "cartCompleted": {
+        "yourCart": "Your Cart",
+        "discountTotal": "Discount Total",
+        "orderTotal": "Order Total",
+        "fulfilledBy": "Fulfilled by",
+        "quantityTotal": "Quantity Total",
+        "orderSubtotal": "Subtotal",
+        "orderShipping": "Shipping",
+        "orderTax": "Tax",
+        "trackYourDelivery": "Order updates will be sent to",
+        "registerGuest": "Hello! Add an email and receive order updates"
       }
     }
   }

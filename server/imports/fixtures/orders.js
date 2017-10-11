@@ -109,6 +109,7 @@ export default function () {
         shopId: product.shopId,
         productId: product._id,
         quantity: 1,
+        product: product,
         variants: selectedOption,
         workflow: {
           status: "new"
@@ -119,6 +120,7 @@ export default function () {
         shopId: product2.shopId,
         productId: product2._id,
         quantity: 1,
+        product: product2,
         variants: selectedOption2,
         workflow: {
           status: "new"
@@ -127,18 +129,19 @@ export default function () {
     },
     requiresShipping: true,
     shipping: [{
+      shopId: getShopId(),
       items: [
         {
           _id: itemIdOne,
           productId: Random.id(),
-          shopId: Random.id(),
+          shopId: getShopId(),
           variantId: Random.id(),
           packed: false
         },
         {
           _id: itemIdTwo,
           productId: Random.id(),
-          shopId: Random.id(),
+          shopId: getShopId(),
           variantId: Random.id(),
           packed: false
         }
@@ -146,6 +149,7 @@ export default function () {
     }], // Shipping Schema
     billing: [{
       _id: Random.id(),
+      shopId: getShopId(),
       address: getAddress({ isBillingDefault: true }),
       paymentMethod: paymentMethod({
         method: "credit",
@@ -178,6 +182,7 @@ export default function () {
     Factory.extend("order", {
       billing: [{
         _id: Random.id(),
+        shopId: getShopId(),
         address: getAddress({ isBillingDefault: true }),
         paymentMethod: paymentMethod({
           processor: "Paypal",

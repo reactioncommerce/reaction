@@ -1,10 +1,10 @@
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Template } from "meteor/templating";
 import { i18next, Reaction } from "/client/api";
 import { Orders } from "/lib/collections";
+import { getShippingInfo } from "../../helpers";
 
 Template.coreOrderShippingTracking.onCreated(() => {
   const template = Template.instance();
@@ -22,7 +22,7 @@ Template.coreOrderShippingTracking.onCreated(() => {
   }
 
   Tracker.autorun(() => {
-    template.order = getOrder(currentData.orderId, currentData.fulfillment._id);
+    template.order = getOrder(currentData.orderId, currentData.fulfillment && currentData.fulfillment._id);
   });
 });
 
@@ -38,14 +38,15 @@ Template.coreOrderShippingTracking.events({
     Meteor.call("shipping/status/refresh", orderId, (result) => {
       if (result && result.error) {
         instance.$("#btn-processing").addClass("hidden");
-        Alerts.toast(i18next.t("orderShipping.labelError", { err: result.error }), "error", { timeout: 7000 });
+        Alerts.toast(i18next.t("orderShipping.labelError", { error: result.error }), "error", { timeout: 7000 });
       }
     });
   },
   "click [data-event-action=shipmentShipped]": function () {
     const template = Template.instance();
-    Meteor.call("orders/shipmentShipped", template.order, template.order.shipping[0], (err) => {
-      if (err) {
+    const shipment = getShippingInfo(template.order);
+    Meteor.call("orders/shipmentShipped", template.order, shipment, (error) => {
+      if (error) {
         Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
       } else {
         Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
@@ -65,8 +66,8 @@ Template.coreOrderShippingTracking.events({
 
   "click [data-event-action=resendNotification]": function () {
     const template = Template.instance();
-    Meteor.call("orders/sendNotification", template.order, "shipped", (err) => {
-      if (err) {
+    Meteor.call("orders/sendNotification", template.order, "shipped", (error) => {
+      if (error) {
         Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
       } else {
         Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
@@ -76,8 +77,9 @@ Template.coreOrderShippingTracking.events({
 
   "click [data-event-action=shipmentPacked]": () => {
     const template = Template.instance();
+    const shipment = getShippingInfo(template.order);
 
-    Meteor.call("orders/shipmentPacked", template.order, template.order.shipping[0], true);
+    Meteor.call("orders/shipmentPacked", template.order, shipment);
   },
 
   "submit form[name=addTrackingForm]": (event, template) => {
@@ -104,9 +106,14 @@ Template.coreOrderShippingTracking.events({
 
 Template.coreOrderShippingTracking.helpers({
   printableLabels() {
-    const { shippingLabelUrl, customsLabelUrl } = Template.instance().order.shipping[0];
-    if (shippingLabelUrl || customsLabelUrl) {
-      return { shippingLabelUrl, customsLabelUrl };
+    const order = Template.instance().order;
+    const shipment = getShippingInfo(order);
+
+    if (shipment) {
+      const { shippingLabelUrl, customsLabelUrl } = shipment;
+      if (shippingLabelUrl || customsLabelUrl) {
+        return { shippingLabelUrl, customsLabelUrl };
+      }
     }
 
     return false;
@@ -115,14 +122,14 @@ Template.coreOrderShippingTracking.helpers({
     const currentData = Template.currentData();
     const order = Template.instance().order;
 
-    const shippedItems = _.every(currentData.fulfillment.items, (shipmentItem) => {
-      const fullItem = _.find(order.items, (orderItem) => {
+    const shippedItems = currentData.fulfillment && currentData.fulfillment.items.every((shipmentItem) => {
+      const fullItem = order.items.find((orderItem) => {
         if (orderItem._id === shipmentItem._id) {
           return true;
         }
       });
 
-      return !_.includes(fullItem.workflow.workflow, "coreOrderItemWorkflow/shipped");
+      return !fullItem.workflow.workflow.includes("coreOrderItemWorkflow/shipped");
     });
 
     return shippedItems;
@@ -132,8 +139,8 @@ Template.coreOrderShippingTracking.helpers({
     const currentData = Template.currentData();
     const order = Template.instance().order;
 
-    const canceledItems = _.every(currentData.fulfillment.items, (shipmentItem) => {
-      const fullItem = _.find(order.items, (orderItem) => {
+    const canceledItems = currentData.fulfillment && currentData.fulfillment.items.every((shipmentItem) => {
+      const fullItem = order.items.find((orderItem) => {
         if (orderItem._id === shipmentItem._id) {
           return true;
         }
@@ -149,14 +156,16 @@ Template.coreOrderShippingTracking.helpers({
     const currentData = Template.currentData();
     const order = Template.instance().order;
 
-    const completedItems = _.every(currentData.fulfillment.items, (shipmentItem) => {
-      const fullItem = _.find(order.items, (orderItem) => {
+    const completedItems = currentData.fulfillment && currentData.fulfillment.items.every((shipmentItem) => {
+      const fullItem = order.items.find((orderItem) => {
         if (orderItem._id === shipmentItem._id) {
           return true;
         }
       });
 
-      return _.includes(fullItem.workflow.workflow, "coreOrderItemWorkflow/completed");
+      if (Array.isArray(fullItem.workflow.workflow)) {
+        return fullItem.workflow.workflow.includes("coreOrderItemWorkflow/completed");
+      }
     });
 
     return completedItems;
@@ -170,7 +179,8 @@ Template.coreOrderShippingTracking.helpers({
     // TODO: future proof by not using flatRates, but rather look for editable:true
     if (settings && settings.flatRates.enabled === true) {
       const template = Template.instance();
-      const shipment = template.order.shipping[0];
+      const order = template.order;
+      const shipment = getShippingInfo(order);
       const editing = template.showTrackingEditForm.get();
       let view = false;
       if (editing === true || !shipment.tracking && editing === false) {
@@ -187,12 +197,15 @@ Template.coreOrderShippingTracking.helpers({
     return Template.instance().order;
   },
   shipment() {
-    return Template.instance().order.shipping[0];
+    const order = Template.instance().order;
+    return getShippingInfo(order);
   },
   shipmentReady() {
     const order = Template.instance().order;
-    const shipment = order.shipping[0];
+    const shipment = getShippingInfo(order);
+    const shipmentWorkflow = shipment.workflow;
 
-    return shipment.packed && shipment.tracking;
+    return shipmentWorkflow && Array.isArray(shipmentWorkflow.workflow) && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed") && shipment.tracking
+    || shipmentWorkflow && Array.isArray(shipmentWorkflow.workflow) && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed");
   }
 });

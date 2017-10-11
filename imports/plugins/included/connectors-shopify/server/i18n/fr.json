@@ -1,0 +1,46 @@
+[{
+  "i18n": "fr",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Connecteur de données pour Shopify"
+        },
+        "shopifyConnectSettings": {
+          "editApiKey": "Modifier API Key",
+          "editPassword": "Modifier le mot de passe de l'API",
+          "editSharedSecret": "Modifier le secret partagé de l'API",
+          "editShopifyDomain": "Modifier Shopify Domain",
+          "headingSync": "Paramètres de synchronisation",
+          "headingImport": "Importer",
+          "importFailed": "Erreur lors de l'importation de produits.",
+          "importing": "Importation ... Cela pourrait prendre un peu de temps.",
+          "importProducts": "Produits d'importation",
+          "importSuccess": "Produits importés avec succès.",
+          "keepInventorySynced": "Conserver l'inventaire synchronisé",
+          "noSyncIntegrationsSelected": "Veuillez sélectionner au moins une option pour synchroniser",
+          "optionImportProducts": "Des produits",
+          "optionOrdersCreateUpdateInventory": "Mettre à jour l'inventaire lorsque le nouvel ordre Shopify est placé",
+          "syncSetup": "Configurer la synchronisation",
+          "syncSetupSuccess": "Installation réussie de Shopify sync",
+          "syncSetupFailure": "Erreur lors de la configuration de Shoify sync",
+          "syncStop": "Arrêter la synchronisation",
+          "syncStopSuccess": "Une solution de synchronisation réussie!",
+          "syncStopFailure": "Erreur d'arrêt Shopify sync!",
+          "startImport": "Commencer l'importation"
+        }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "clé API",
+          "password": "Mot de passe API",
+          "sharedSecret": "Secret partagé API",
+          "shopName": "Limace de magasin"
+        }
+      }
+    }
+  }
+}]

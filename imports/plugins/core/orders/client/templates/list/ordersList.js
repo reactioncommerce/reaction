@@ -1,6 +1,9 @@
 import moment from "moment";
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Orders, Shops } from "/lib/collections";
+import { Reaction } from "/client/api";
+
 
 /**
  * dashboardOrdersList helpers
@@ -16,7 +19,8 @@ Template.dashboardOrdersList.helpers({
     if (data.hash.data) {
       return data.hash.data;
     }
-    return Orders.find({}, {
+    const targetUserId = Reaction.Router.getQueryParam("userId") || Meteor.userId();
+    return Orders.find({ userId: targetUserId }, {
       sort: {
         createdAt: -1
       },
@@ -27,7 +31,10 @@ Template.dashboardOrdersList.helpers({
     return moment(this.createdAt).fromNow();
   },
   shipmentTracking() {
-    return this.shipping[0].shipmentMethod.tracking;
+    const shippingObject = this.shipping.find((shipping) => {
+      return shipping.shopId === Reaction.getShopId();
+    });
+    return shippingObject.shipmentMethod.tracking;
   },
   shopName() {
     const shop = Shops.findOne(this.shopId);

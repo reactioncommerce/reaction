@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "Xuất hiện",
+          "email": "Cài đặt email",
           "connect": "Kết nối",
+          "description": "Sự miêu tả",
           "core": "Cốt lõi",
+          "remove": "Tẩy",
           "dashboard": "bảng điều khiển",
           "misc": "misc",
           "paymentMethod": "Nhà cung cấp thanh toán",
@@ -56,8 +59,6 @@
       "app": {
         "add": "Thêm vào",
         "editMode": "Chế độ chỉnh sửa",
-        "administratorView": "administrator Xem",
-        "customerView": "khách hàng Xem",
         "createContent": "tạo nội dung",
         "auto": "Tự động",
         "save": "Lưu",
@@ -137,7 +138,7 @@
           "viewAll": "Xem tất cả"
         },
         "messages": {
-          "orderCancelled": "đặt hàng của bạn đã bị hủy bỏ.",
+          "orderCanceled": "đặt hàng của bạn đã bị hủy bỏ.",
           "newOrder": "Đơn hàng của bạn đang được xử lý.",
           "forAdmin": "Bạn có một trật tự mới.",
           "orderDelivered": "Chỗ đặt của bạn đã được gửi.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "khi bạn chỉnh sửa xong.",
         "tags": "thẻ",
         "tagsAdd": "Thêm thẻ",
-        "tagsEdit": "chỉnh sửa thẻ",
         "tagExists": "Tag đã tồn tại, hoặc rỗng.",
         "tagInUse": "Tag được sử dụng và không thể bị xóa.",
         "dropFiles": "Thả file để tải lên",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "Tạo",
         "coreOrderWorkflow/processing": "Chế biến",
         "coreOrderWorkflow/completed": "Đã hoàn thành",
-        "coreOrderWorkflow/canceled": "bị hủy bỏ"
+        "coreOrderWorkflow/canceled": "bị hủy bỏ",
+        "coreOrderWorkflow/picked": "Chọn",
+        "coreOrderWorkflow/packed": "Đóng gói",
+        "coreOrderWorkflow/labeled": "Được gắn nhãn",
+        "coreOrderWorkflow/shipped": "vận chuyển"
       },
       "cartSubTotals": {
         "discount": "Giảm giá",
@@ -354,14 +358,35 @@
         "payment": "Thanh toán",
         "itemsFrom": "item (s) từ",
         "filter": {
+          "processing": "Chế biến",
+          "status": "Trạng thái",
+          "dateRange": "Phạm vi ngày",
+          "shippingStatus": "Tình trạng giao hàng",
           "new": "Mới",
           "captured": "Thanh toán bắt",
-          "processing": "Chế biến",
           "shipped": "vận chuyển",
           "completed": "Đã hoàn thành",
           "canceled": "bị hủy bỏ",
           "refunded": "Hoàn"
         },
+        "capture": "Bắt giữ",
+        "capturing": "Chụp",
+        "bulkActions": "Hành động số lượng lớn",
+        "selected": "Đã chọn",
+        "picked": "Chọn",
+        "packed": "Đóng gói",
+        "labeled": "Được gắn nhãn",
+        "shipped": "vận chuyển",
+        "printInvoiceAndPickSheet": "In Hoá đơn và Chọn tờ",
+        "generateLabel": "Tạo nhãn",
+        "approveBulkOrderAction": "Có, Đặt Tất cả Chọn Tất cả Đơn đặt hàng",
+        "approveBulkOrderActionRegression": "Vâng, Trả lại Tất cả các Đơn đặt hàng đã Chọn",
+        "cancelBulkOrderAction": "Không, Hủy",
+        "orderAlreadyInState": "{{orderText}} đã được {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} đặt thành {{status}}",
+        "skippedBulkOrdersAlert": "Bạn đã yêu cầu {{selectedOrders}} {{orderText}} được đặt thành trạng thái '{{status}}', nhưng {{numberOfSkippedOrders}} trong số các đơn đặt hàng này {{skippedOrdersText}} không ở trong trạng thái '{{skippedState}}' và sẽ bỏ qua tất cả các bước dẫn đến trạng thái '{{status}}'. Bạn có chắc chắn muốn làm điều này?",
+        "bulkOrdersRegressionAlert": "Bạn sắp trở lại {{ordersToRegress}} {{orderText}} trở lại trạng thái '{{status}}'. Bạn có chắc chắn muốn tiếp tục với hoạt động này?",
+        "paymentCaptureSuccess": "Thanh toán đã thành công",
         "showMore": "Cho xem nhiều hơn"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "Tạo một tài khoản hoặc đăng nhập",
         "guestOrLogin": "Đăng nhập hoặc kiểm như là một khách",
         "continueAsGuest": "Tiếp tục như Khách",
-        "guestMessage": "Bạn có thể kiểm tra mà không cần tạo một tài khoản. Bạn sẽ có cơ hội để tạo ra một tài khoản sau đó."
+        "guestMessage": "Bạn có thể kiểm tra mà không cần tạo một tài khoản. Bạn sẽ có cơ hội để tạo ra một tài khoản sau đó.",
+        "addEmail": "Thêm email"
       },
       "addressBookGrid": {
         "addAddress": "Thêm Địa chỉ",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "Trong sáng",
-        "noProductsFound": "Không tìm thấy sản phẩm.",
-        "noOrdersFound": "Không tìm thấy đơn đặt hàng.",
-        "noAccountsFound": "Không tìm thấy tài khoản.",
         "searchInputLabel": "Tìm kiếm Reaction",
         "suggestedTags": "thẻ được đề xuất",
         "searchTypeProducts": "Các sản phẩm",
@@ -570,29 +593,12 @@
           "lastName": "tên họ",
           "phone": "Điện thoại",
           "emails": "E-mail"
-        },
-        "orderSearchResults": {
-          "orderId": "Order ID",
-          "shopId": "cửa hàng ID",
-          "shippingAddress": "Địa chỉ nhà",
-          "shippingCity": "Thành thị",
-          "shippingRegion": "Khu vực",
-          "shippingCountry": "Quốc gia",
-          "shippingPhone": "Điện thoại",
-          "shippingName": "Tên",
-          "shippingStatus": "Trạng thái",
-          "billingAddress": "Địa chỉ nhà",
-          "billingCity": "Thành thị",
-          "billingRegion": "Khu vực",
-          "billingCountry": "Quốc gia",
-          "billingPhone": "Điện thoại",
-          "billingStatus": "Trạng thái",
-          "userEmails": "E-mail",
-          "orderDate": "Ngày",
-          "orderTotal": "Tổng số"
         }
       },
       "accountsUI": {
+        "usersOrders": "Đơn đặt hàng của người dùng",
+        "oops": "Rất tiếc!",
+        "nonExistentAccount": "Người dùng bạn đang tìm kiếm không tồn tại.",
         "members": "Thành viên",
         "manage": "quản lý",
         "guest": "Khách",

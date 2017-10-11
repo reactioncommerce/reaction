@@ -1,0 +1,25 @@
+<template name="shopSelect">
+  {{#if shops}}
+    <div class="shops">
+      <div class="dropdown" role="shops">
+        <div class="dropdown-toggle"
+           data-toggle="dropdown"
+           data-delay="600"
+           aria-haspopup="true"
+           aria-expanded="false">
+
+          <span>{{currentShopName}}</span>
+
+          <span class="caret"></span>
+        </div>
+        <ul class="dropdown-menu" role="menu">
+          {{#each shops}}
+            <li class="{{isActiveShop _id}}">
+              <a class="shop" role="menuitem">{{name}}</a>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  {{/if}}
+</template>

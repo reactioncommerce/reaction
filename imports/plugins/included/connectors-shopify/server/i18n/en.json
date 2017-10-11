@@ -1,0 +1,46 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-connectors-shopify",
+  "translation": {
+    "reaction-connectors-shopify": {
+      "admin": {
+        "dashboard": {
+          "shopifyConnectLabel": "Shopify Connect",
+          "shopifyConnectTitle": "Shopify Connect",
+          "shopifyConnectDescription": "Data Connector for Shopify"
+        },
+        "shopifyConnectSettings": {
+          "editApiKey": "Edit API Key",
+          "editPassword": "Edit API Password",
+          "editSharedSecret": "Edit API Shared Secret",
+          "editShopifyDomain": "Edit Shopify Domain",
+          "headingSync": "Sync Settings",
+          "headingImport": "Import",
+          "importFailed": "Error importing products.",
+          "importing": "Importing ... This could take a little while.",
+          "importProducts": "Import Products",
+          "importSuccess": "Products imported successfully.",
+          "keepInventorySynced": "Keep Inventory Synced",
+          "noSyncIntegrationsSelected": "Please select at least one option to sync",
+          "optionImportProducts": "Products",
+          "optionOrdersCreateUpdateInventory": "Update Inventory when new Shopify order is placed",
+          "syncSetup": "Setup Sync",
+          "syncSetupSuccess": "Successfully setup Shopify sync",
+          "syncSetupFailure": "Error setting up Shoify sync",
+          "syncStop": "Stop Sync",
+          "syncStopSuccess": "Successfully Stopped Shopify sync!",
+          "syncStopFailure": "Error stopping Shopify sync!",
+          "startImport": "Start Import"
+        }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API key",
+          "password": "API password",
+          "sharedSecret": "API shared secret",
+          "shopName": "Shop slug"
+        }
+      }
+    }
+  }
+}]

@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "Aspect",
+          "email": "Email",
           "connect": "Conectați",
+          "description": "Adăugați o descriere produs",
           "core": "Miez",
+          "remove": "Elimină",
           "dashboard": "Bord",
           "misc": "Diverse",
           "paymentMethod": "Furnizorii plăți",
@@ -56,8 +59,6 @@
       "app": {
         "add": "Adăuga",
         "editMode": "Mod editare",
-        "administratorView": "administrator View",
-        "customerView": "Vezi de client",
         "createContent": "Creați conținut",
         "auto": "Auto",
         "save": "Salvați",
@@ -137,7 +138,7 @@
           "viewAll": "Vezi toate"
         },
         "messages": {
-          "orderCancelled": "Comanda dvs a fost anulat.",
+          "orderCanceled": "Comanda dvs. a fost anulată.",
           "newOrder": "Comanda dumneavoastră este în curs de procesare.",
           "forAdmin": "Ai o noua ordine.",
           "orderDelivered": "Comanda dumneavoastra a fost emis.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "când ați terminat editarea.",
         "tags": "Etichete",
         "tagsAdd": "Adăugaţi o etichetă",
-        "tagsEdit": "Editați etichete",
         "tagExists": "Eticheta există deja, sau este goală.",
         "tagInUse": "Tag-ul este în curs de utilizare și nu poate fi șters.",
         "dropFiles": "Dați drumul la fișiere pentru a le încărca",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "Creată",
         "coreOrderWorkflow/processing": "Prelucrare",
         "coreOrderWorkflow/completed": "Completă",
-        "coreOrderWorkflow/canceled": "Anulată"
+        "coreOrderWorkflow/canceled": "Anulată",
+        "coreOrderWorkflow/picked": "ales",
+        "coreOrderWorkflow/packed": "bătătorit",
+        "coreOrderWorkflow/labeled": "marcat",
+        "coreOrderWorkflow/shipped": "Transportat"
       },
       "cartSubTotals": {
         "discount": "Reducere",
@@ -354,14 +358,35 @@
         "payment": "Plată",
         "itemsFrom": "produs(e) din",
         "filter": {
+          "processing": "Prelucrare",
+          "status": "Stare",
+          "dateRange": "Interval de date",
+          "shippingStatus": "Starea de expediere",
           "new": "Nou",
           "captured": "Plată Capturată",
-          "processing": "Prelucrare",
           "shipped": "Trimis",
           "completed": "Completă",
           "canceled": "Anulată",
           "refunded": "Rambursată"
         },
+        "capture": "Captură",
+        "capturing": "capturarea",
+        "bulkActions": "Acțiuni grupate",
+        "selected": "Selectat",
+        "picked": "ales",
+        "packed": "bătătorit",
+        "labeled": "marcat",
+        "shipped": "Transportat",
+        "printInvoiceAndPickSheet": "Imprimați factura și alegeți foaia",
+        "generateLabel": "Generați etichetă",
+        "approveBulkOrderAction": "Da, setați toate selectați toate comenzile",
+        "approveBulkOrderActionRegression": "Da, Regresați toate comenzile selectate",
+        "cancelBulkOrderAction": "Nu, Anulați",
+        "orderAlreadyInState": "{{orderText}} a fost deja {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} setat la {{status}}",
+        "skippedBulkOrdersAlert": "Ați cerut ca {{selectedOrders}} {{orderText}} să fie setat la starea \"{{status}}\", dar {{numberOfSkippedOrders}} din aceste comenzi {{skippedOrdersText}} nu este în starea \"{{skippedState}}\" și ar ignora toți pașii care au dus la starea \"{{status}}\". Sigur vrei să faci asta?",
+        "bulkOrdersRegressionAlert": "Sunteți pe cale să regresați {{ordersToRegress}} {{orderText}} înapoi în starea \"{{status}}\". Sigur doriți să continuați cu această operațiune?",
+        "paymentCaptureSuccess": "Plățile au fost capturate cu succes",
         "showMore": "Arată mai multe"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "Creați un cont sau conectați-vă",
         "guestOrLogin": "Conectați-vă sau finalizați comanda fără autentificare",
         "continueAsGuest": "Continuați fără autentificare",
-        "guestMessage": "Puteți să finalizați comanda fără a crea un cont. Veți avea posibilitatea să creați un cont mai târziu."
+        "guestMessage": "Puteți să finalizați comanda fără a crea un cont. Veți avea posibilitatea să creați un cont mai târziu.",
+        "addEmail": "Adăugați e-mail"
       },
       "addressBookGrid": {
         "addAddress": "Adăugaţi o adresă",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "Ștergeți",
-        "noProductsFound": "Nu s-au găsit produse",
-        "noOrdersFound": "Nu s-a găsit nicio comandă.",
-        "noAccountsFound": "Nu s-a găsit niciun cont.",
         "searchInputLabel": "Căutare Reaction ",
         "suggestedTags": "Etichete sugerate",
         "searchTypeProducts": "Produse",
@@ -570,29 +593,12 @@
           "lastName": "Nume",
           "phone": "Telefon",
           "emails": "E-mail"
-        },
-        "orderSearchResults": {
-          "orderId": "ID comandă",
-          "shopId": "ID magazin",
-          "shippingAddress": "Adresă",
-          "shippingCity": "Oraș",
-          "shippingRegion": "Regiune",
-          "shippingCountry": "Țară",
-          "shippingPhone": "Telefon",
-          "shippingName": "Nume",
-          "shippingStatus": "Stare",
-          "billingAddress": "Adresă",
-          "billingCity": "Oraș",
-          "billingRegion": "Regiune",
-          "billingCountry": "Țară",
-          "billingPhone": "Telefon",
-          "billingStatus": "Stare",
-          "userEmails": "E-mail",
-          "orderDate": "Dată",
-          "orderTotal": "Total"
         }
       },
       "accountsUI": {
+        "usersOrders": "Comenzile utilizatorului",
+        "oops": "Văleu!",
+        "nonExistentAccount": "Utilizatorul pe care îl căutați nu există.",
         "members": "Membrii",
         "manage": "Administrează",
         "guest": "Fără autentificare",

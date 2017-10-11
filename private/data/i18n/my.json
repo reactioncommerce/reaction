@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "ပုံပန်းသဏ္ဍာန်",
+          "email": "အီးမေးလ်က",
           "connect": "ဆက်",
+          "description": "ဖေါ်ပြချက်",
           "core": "core",
+          "remove": "Remove",
           "dashboard": "dashboard ကို",
           "misc": "Misc",
           "paymentMethod": "ငွေပေးချေမှုရမည့် Providers",
@@ -56,8 +59,6 @@
       "app": {
         "add": "ပေါင်း",
         "editMode": "Edit ကို mode ကို",
-        "administratorView": "အုပ်ချုပ်ရေးမှူးကြည့်ရန်",
-        "customerView": "ဖောက်သည်ကြည့်ရန်",
         "createContent": "အကြောင်းအရာ Create",
         "auto": "အော်တို",
         "save": "ကြော်ငြာကို Save လုပ်ရန်",
@@ -137,7 +138,7 @@
           "viewAll": "အားလုံးကြည့်မည်"
         },
         "messages": {
-          "orderCancelled": "သင့်ရဲ့အမိန့်ကိုဖျက်သိမ်းခဲ့သည်။",
+          "orderCanceled": "သင့်ရဲ့အမိန့်ကိုဖျက်သိမ်းခဲ့သည်။",
           "newOrder": "သင့်ရဲ့အမိန့်လုပ်ငန်းများ၌လျက်ရှိသည်။",
           "forAdmin": "သငျသညျသစ်တစ်ခုအလို့ငှာရှိသည်။",
           "orderDelivered": "သင့်ရဲ့အမိန့်ကိုအပ်ခဲ့တာဖြစ်ပါတယ်။",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "ပြင်ဆင်ပြီးပါက",
         "tags": "အမျိုးအစား",
         "tagsAdd": "tag ကို Add",
-        "tagsEdit": "Edit ကို tags များ",
         "tagExists": "Tag ကိုပြီးသားတည်ရှိ, ဒါမှမဟုတ်အချည်းနှီးဖြစ်၏။",
         "tagInUse": "Tag ကိုအသုံးပြုသည်နှင့်မဖျက်နိုင်ပါ။",
         "dropFiles": "upload ဖိုင်များကို drop",
@@ -288,8 +288,8 @@
         "details": "အသေးစိတ်",
         "disable": "disable",
         "disableConfirm": "သငျသညျ {{app}} disable ချင်သေချာလား?",
-        "pkgEnabled": " သည် အလုပ်လုပ်နေသည်။",
-        "pkgDisabled": " သည် အလုပ်လုပ် မနေပါ။"
+        "pkgEnabled": "{{app}} သည် အလုပ်လုပ်နေသည်။",
+        "pkgDisabled": "{{app}} သည် အလုပ်လုပ် မနေပါ။"
       },
       "gridSettingsPanel": {
         "title": "grid က Settings",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "Created",
         "coreOrderWorkflow/processing": "လုပ်ဆောင်နေသည်",
         "coreOrderWorkflow/completed": "completed",
-        "coreOrderWorkflow/canceled": "ဖျက်သိမ်း"
+        "coreOrderWorkflow/canceled": "ဖျက်သိမ်း",
+        "coreOrderWorkflow/picked": "ကောက်ယူ",
+        "coreOrderWorkflow/packed": "Pack",
+        "coreOrderWorkflow/labeled": "တံဆိပ်ကပ်",
+        "coreOrderWorkflow/shipped": "တင်ပို့"
       },
       "cartSubTotals": {
         "discount": "လျှော့စျေး",
@@ -354,14 +358,35 @@
         "payment": "ငွေပေးချေမှုရမည့်",
         "itemsFrom": "ကို item (s) မှ",
         "filter": {
+          "processing": "လုပ်ဆောင်နေသည်",
+          "status": "status",
+          "dateRange": "နေ့စွဲအကွာအဝေး",
+          "shippingStatus": "shipping status ကို",
           "new": "နယူး",
           "captured": "ငွေပေးချေမှုရမည့်ဖမ်းဆီးခံရသော",
-          "processing": "လုပ်ဆောင်နေသည်",
           "shipped": "တင်ပို့",
           "completed": "completed",
           "canceled": "ဖျက်သိမ်း",
           "refunded": "ပြန်အမ်း"
         },
+        "capture": "ဖမ်းဆီး",
+        "capturing": "ရိုက်ကူးခြင်း",
+        "bulkActions": "bulk လုပ်ဆောင်ချက်များ",
+        "selected": "Selected",
+        "picked": "ကောက်ယူ",
+        "packed": "Pack",
+        "labeled": "တံဆိပ်ကပ်",
+        "shipped": "တင်ပို့",
+        "printInvoiceAndPickSheet": "ငွေတောင်းခံလွှာ Print နှင့်စာရွက် Pick",
+        "generateLabel": "တံဆိပ်တပ်ရန် Generate",
+        "approveBulkOrderAction": "ဟုတ်ပါတယ်, သတ်မှတ်ရန်အားလုံးအားလုံးအမိန့်ကို Select လုပ်ပါ",
+        "approveBulkOrderActionRegression": "ဟုတ်ပါတယ်, အားလုံးရွေးချယ်ထားသောအမိန့် Regression",
+        "cancelBulkOrderAction": "အဘယ်သူမျှမ, Cancel",
+        "orderAlreadyInState": "{{orderText}} ပြီးသား {{status}} ခဲ့",
+        "orderSetToState": "{{orderNumber}} {{orderText}} {{status}} ဟုသတ်မှတ်",
+        "skippedBulkOrdersAlert": "သငျသညျ {{selectedOrders}} {{orderText}} ကို '{{status}}' 'အဆင့်အတန်းဟုသတ်မှတ်ခံရသည်ဟုတောင်းဆိုခဲ့ပေမယ့်ဒီအမိန့်များ {{numberOfSkippedOrders}} ကို' {{skippedState}} '' ပြည်နယ်ထဲမှာမ {{skippedOrdersText}} နှင့် '' {{status}} '' ပြည်နယ်အထိဦးဆောင်အားလုံးခြေလှမ်းများကိုကျော်သွားလိမ့်မယ်။ သင်ဤလုပ်ချင်သေချာလား?",
+        "bulkOrdersRegressionAlert": "သငျသညျကျောကို '{{status}}' 'ပြည်နယ်မှ {{ordersToRegress}} {{orderText}} Regression ပါတော့မည်။ သင်ဤစစ်ဆင်ရေးနှင့်အတူဆက်လက်ချင်သင်သေချာပါသလား?",
+        "paymentCaptureSuccess": "ငွေပေးချေမှုကိုအောင်မြင်စွာသိမ်းပိုက်",
         "showMore": "နောက်ထပ်ပြရန်"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "အကောင့်တစ်ခု Create, ဒါမှမဟုတ်အတွက်လက်မှတ်ရေးထိုး",
         "guestOrLogin": "သို့ဝင်ရန်, ဒါမှမဟုတ်တစ်ဦးဧည့်သည်အဖြစ် Checkout",
         "continueAsGuest": "ဧည့်သည်အဖြစ် Continue",
-        "guestMessage": "သငျသညျ account တစ်ခုဖန်တီးခြင်းမပါဘဲ Checkout နိုင်ပါတယ်။ သငျသညျအကြာတွင် account တစ်ခုဖန်တီးရန်အခွင့်အလမ်းရှိပါလိမ့်မယ်။"
+        "guestMessage": "သငျသညျ account တစ်ခုဖန်တီးခြင်းမပါဘဲ Checkout နိုင်ပါတယ်။ သငျသညျအကြာတွင် account တစ်ခုဖန်တီးရန်အခွင့်အလမ်းရှိပါလိမ့်မယ်။",
+        "addEmail": "အီးမေးလ်က Add"
       },
       "addressBookGrid": {
         "addAddress": "လိပ်စာ Add",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "ရှင်းလင်းသော",
-        "noProductsFound": "အဘယ်သူမျှမကုန်ပစ္စည်းများတွေ့ရှိခဲ့ပါတယ်။",
-        "noOrdersFound": "အဘယ်သူမျှမမိန့်တွေ့ရှိခဲ့ပါတယ်။",
-        "noAccountsFound": "အကောင့်မျှမတွေ့။",
         "searchInputLabel": "ရှာရန်တုံ့ပြန်မှု",
         "suggestedTags": "အကြံပြု tags များ",
         "searchTypeProducts": "ထုတ်ကုန်များ",
@@ -570,29 +593,12 @@
           "lastName": "မျိုးနွယ်အမည်",
           "phone": "ဖုန်းနံပါတ်",
           "emails": "အီးမေးလ်က"
-        },
-        "orderSearchResults": {
-          "orderId": "အမိန့် ID ကို",
-          "shopId": "ဆိုင် ID ကို",
-          "shippingAddress": "လိပ်စာ",
-          "shippingCity": "မြို့",
-          "shippingRegion": "ဒေသ",
-          "shippingCountry": "ပြည်",
-          "shippingPhone": "ဖုန်းနံပါတ်",
-          "shippingName": "နာမကိုအမှီ",
-          "shippingStatus": "status",
-          "billingAddress": "လိပ်စာ",
-          "billingCity": "မြို့",
-          "billingRegion": "ဒေသ",
-          "billingCountry": "ပြည်",
-          "billingPhone": "ဖုန်းနံပါတ်",
-          "billingStatus": "status",
-          "userEmails": "အီးမေးလ်က",
-          "orderDate": "နေ့စှဲ",
-          "orderTotal": "စုစုပေါငျး"
         }
       },
       "accountsUI": {
+        "usersOrders": "အသုံးပြုသူရဲ့အမိန့်",
+        "oops": "သည်းခံပါ!",
+        "nonExistentAccount": "သင်တို့အဘို့အရှာနေအသုံးပြုသူမတည်ရှိပါဘူး။",
         "members": "အဖွဲ့ဝင်များ",
         "manage": "စီမံခန့်ခွဲရန်",
         "guest": "ဧည့်သည်",

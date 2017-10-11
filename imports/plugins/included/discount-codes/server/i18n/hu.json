@@ -15,7 +15,8 @@
         "applied": "alkalmazott",
         "code": "kód",
         "codeIsExpired": "Kód lejárt",
-        "codeIsInvalid": "Kód érvénytelen"
+        "codeIsInvalid": "Kód érvénytelen",
+        "multiShopError": "Kedvezmények nem alkalmazhatók egy multi-shop kosárra vagy megrendelésre"
       },
       "admin": {
         "paymentSettings": {

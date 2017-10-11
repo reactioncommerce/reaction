@@ -27,8 +27,11 @@
         },
         "groups": {
           "appearance": "Izgled",
+          "email": "Postavke e-pošte",
           "connect": "Spojiti",
+          "description": "Dodaj opis proizvoda",
           "core": "srž",
+          "remove": "Ukloniti",
           "dashboard": "kontrolna ploča",
           "misc": "Razno",
           "paymentMethod": "Pružatelji usluga plaćanja",
@@ -56,8 +59,6 @@
       "app": {
         "add": "Dodati",
         "editMode": "način uređivanja",
-        "administratorView": "Administrator Pogledaj",
-        "customerView": "Kupac Pogledaj",
         "createContent": "Stvaranje sadržaja",
         "auto": "Auto",
         "save": "Spremi",
@@ -137,7 +138,7 @@
           "viewAll": "Pogledaj sve"
         },
         "messages": {
-          "orderCancelled": "Vaša je narudžba otkazana.",
+          "orderCanceled": "Vaša je narudžba otkazana.",
           "newOrder": "Vaša narudžba obrađuje.",
           "forAdmin": "Imate novi poredak.",
           "orderDelivered": "Vaša narudžba dostavljena.",
@@ -154,7 +155,6 @@
         "whenYouAreDone": "kad je uređivanje gotovo",
         "tags": "Oznake",
         "tagsAdd": "Dodaj oznaku",
-        "tagsEdit": "Uredi oznake",
         "tagExists": "Tag već postoji, ili je prazna.",
         "tagInUse": "Tag je u uporabi i ne mogu se izbrisati.",
         "dropFiles": "Ispustiti datoteke za upload",
@@ -288,8 +288,8 @@
         "details": "Detalji",
         "disable": "onesposobiti",
         "disableConfirm": "Jeste li sigurni da želite onemogućiti {{app}}?",
-        "pkgEnabled": " je sada dostupan.",
-        "pkgDisabled": " je sada onemogućen."
+        "pkgEnabled": "{{app}} je sada dostupan.",
+        "pkgDisabled": "{{app}} je sada onemogućen."
       },
       "gridSettingsPanel": {
         "title": "Postavke Grid",
@@ -303,7 +303,11 @@
         "coreOrderWorkflow/created": "Stvoren",
         "coreOrderWorkflow/processing": "Obrada",
         "coreOrderWorkflow/completed": "dovršen",
-        "coreOrderWorkflow/canceled": "otkazan"
+        "coreOrderWorkflow/canceled": "otkazan",
+        "coreOrderWorkflow/picked": "izabran",
+        "coreOrderWorkflow/packed": "upakiran",
+        "coreOrderWorkflow/labeled": "Označen",
+        "coreOrderWorkflow/shipped": "isporučen"
       },
       "cartSubTotals": {
         "discount": "Popust",
@@ -354,14 +358,35 @@
         "payment": "Plaćanje",
         "itemsFrom": "točke (a) do",
         "filter": {
+          "processing": "Obrada",
+          "status": "Položaj",
+          "dateRange": "Raspon datuma",
+          "shippingStatus": "Status isporuke",
           "new": "Novi",
           "captured": "Uhvaćena plaćanja",
-          "processing": "Obrada",
           "shipped": "isporučen",
           "completed": "dovršen",
           "canceled": "otkazan",
           "refunded": "Povrat za"
         },
+        "capture": "Uhvatiti",
+        "capturing": "snimanje",
+        "bulkActions": "Bulk Actions",
+        "selected": "Odabran",
+        "picked": "izabran",
+        "packed": "upakiran",
+        "labeled": "Označen",
+        "shipped": "isporučen",
+        "printInvoiceAndPickSheet": "Ispiši dostavnicu i odaberite list",
+        "generateLabel": "Generiranje oznake",
+        "approveBulkOrderAction": "Da, postavite sve odabir svih narudžbi",
+        "approveBulkOrderActionRegression": "Da, regresirajte sve odabrane narudžbe",
+        "cancelBulkOrderAction": "Ne, odustani",
+        "orderAlreadyInState": "{{orderText}} već je {{status}}",
+        "orderSetToState": "{{orderNumber}} {{orderText}} postavljen na {{status}}",
+        "skippedBulkOrdersAlert": "Zatražili ste da je {{selectedOrders}} {{orderText}} postavljen na status \"{{status}}\", ali {{numberOfSkippedOrders}} od tih narudžbi {{skippedOrdersText}} ne nalazi se u državi \"{{skippedState}}\" i preskočit će sve korake koji vode do države \"{{status}}\". Jeste li sigurni da želite to učiniti?",
+        "bulkOrdersRegressionAlert": "Spremate regrutirati {{ordersToRegress}} {{orderText}} natrag u stanje \"{{status}}\". Jeste li sigurni da želite nastaviti s ovom radnjom?",
+        "paymentCaptureSuccess": "Plaćanja su uspješno zarobljena",
         "showMore": "Prikaži više"
       },
       "orderShipping": {
@@ -413,7 +438,8 @@
         "createOrLogin": "Kreiraj račun ili se prijavi za nastavak",
         "guestOrLogin": "Prijavite se ili naplata kao gost",
         "continueAsGuest": "Nastavi kao gost",
-        "guestMessage": "Možete plaćanje bez stvaranja računa. Vi ćete imati priliku stvoriti račun kasnije."
+        "guestMessage": "Možete plaćanje bez stvaranja računa. Vi ćete imati priliku stvoriti račun kasnije.",
+        "addEmail": "Dodajte e-poštu"
       },
       "addressBookGrid": {
         "addAddress": "Dodaj adresa",
@@ -555,9 +581,6 @@
       },
       "search": {
         "clearSearch": "Čisto",
-        "noProductsFound": "Nema pronađenih proizvoda.",
-        "noOrdersFound": "Nisu pronađene narudžbe.",
-        "noAccountsFound": "Nema pronađenih računa.",
         "searchInputLabel": "Traži Reakcija",
         "suggestedTags": "Predložene oznake",
         "searchTypeProducts": "Proizvodi",
@@ -570,29 +593,12 @@
           "lastName": "Prezime",
           "phone": "Telefon",
           "emails": "E-mail"
-        },
-        "orderSearchResults": {
-          "orderId": "ID narudžbe",
-          "shopId": "Trgovina ID",
-          "shippingAddress": "Adresa",
-          "shippingCity": "Grad",
-          "shippingRegion": "Regija",
-          "shippingCountry": "Zemlja",
-          "shippingPhone": "Telefon",
-          "shippingName": "Ime",
-          "shippingStatus": "Položaj",
-          "billingAddress": "Adresa",
-          "billingCity": "Grad",
-          "billingRegion": "Regija",
-          "billingCountry": "Zemlja",
-          "billingPhone": "Telefon",
-          "billingStatus": "Položaj",
-          "userEmails": "E-mail",
-          "orderDate": "Rok",
-          "orderTotal": "Ukupno"
         }
       },
       "accountsUI": {
+        "usersOrders": "Narudžbe korisnika",
+        "oops": "Uh!",
+        "nonExistentAccount": "Korisnik koji tražite ne postoji.",
         "members": "članovi",
         "manage": "Upravljati",
         "guest": "Gost",

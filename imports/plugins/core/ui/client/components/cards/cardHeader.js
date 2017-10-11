@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import CardTitle from "./cardTitle";
-import IconButton from "../button/iconButton";
-import Icon from "../icon/icon";
-import Switch from "../switch/switch";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class CardHeader extends Component {
   static defaultProps = {
@@ -20,6 +17,7 @@ class CardHeader extends Component {
     i18nKeyTitle: PropTypes.string,
     icon: PropTypes.string,
     imageView: PropTypes.node,
+    isValid: PropTypes.bool,
     onClick: PropTypes.func,
     onSwitchChange: PropTypes.func,
     showSwitch: PropTypes.bool,
@@ -49,7 +47,7 @@ class CardHeader extends Component {
   renderTitle() {
     if (this.props.title) {
       return (
-        <CardTitle
+        <Components.CardTitle
           i18nKeyTitle={this.props.i18nKeyTitle}
           title={this.props.title}
         />
@@ -62,7 +60,7 @@ class CardHeader extends Component {
     if (this.props.icon) {
       return (
         <div className="image">
-          <Icon icon={this.props.icon} />
+          <Components.Icon icon={this.props.icon} />
         </div>
       );
     }
@@ -87,7 +85,7 @@ class CardHeader extends Component {
 
     return (
       <div className={expanderClassName}>
-        <IconButton
+        <Components.IconButton
           icon="fa fa-angle-down"
           bezelStyle="outline"
           style={{ borderColor: "#dddddd" }}
@@ -100,7 +98,7 @@ class CardHeader extends Component {
   renderChildren() {
     if (this.props.showSwitch) {
       return (
-        <Switch
+        <Components.Switch
           checked={this.props.switchOn}
           name={this.props.switchName}
           onChange={this.handleSwitchChange}
@@ -112,11 +110,18 @@ class CardHeader extends Component {
   }
 
   render() {
+    let validation = false;
+
+    if (this.props.isValid === false) {
+      validation = true;
+    }
+
     const baseClassName = classnames({
       "rui": true,
       "panel-heading": true,
       "card-header": true,
-      "expandable": this.props.actAsExpander
+      "expandable": this.props.actAsExpander,
+      "validation": validation
     });
 
     if (this.props.actAsExpander) {
@@ -146,5 +151,7 @@ class CardHeader extends Component {
     );
   }
 }
+
+registerComponent("CardHeader", CardHeader);
 
 export default CardHeader;
