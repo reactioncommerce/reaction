@@ -4,7 +4,7 @@ Reaction.registerPackage({
   label: "Marketplace",
   name: "reaction-marketplace",
   icon: "fa fa-globe",
-  autoEnable: true,
+  autoEnable: false,
   settings: {
     name: "Marketplace",
     enabled: true,
