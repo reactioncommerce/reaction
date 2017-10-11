@@ -48,7 +48,7 @@ const composer = (props, onData) => {
     const user = Accounts.findOne({
       _id: Meteor.userId()
     });
-    const profileCurrency = user.profile && user.profile.currency;
+    const profileCurrency = user && user.profile && user.profile.currency;
 
     if (Match.test(shop, Object) && shop.currency) {
       const locale = Reaction.Locale.get();
