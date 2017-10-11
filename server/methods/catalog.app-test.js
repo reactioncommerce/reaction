@@ -1056,11 +1056,13 @@ describe("core product methods", function () {
     it("should let admin publish product changes", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
+      const isVisible = product.isVisible;
       expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);
       Meteor.call("revisions/publish", product._id);
       Meteor._sleepForMs(500);
       product = Products.findOne(product._id);
-      expect(product.isVisible).to.equal(true);
+      // We switch the visible state in `products/publishProdct` for revisions
+      expect(product.isVisible).to.equal(!isVisible);
     });
 
     it("should not let admin toggle product visibility", function () {
