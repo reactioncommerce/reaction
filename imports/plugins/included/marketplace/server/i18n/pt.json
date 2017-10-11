@@ -20,6 +20,12 @@
         "myShop": "Minha loja"
       },
       "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect não está habilitado para esta aplicação. Entre em contato com o adminstrator.",
+          "shopEmailNotConfigured": "Por favor configure primeiro o e-mail da sua loja.",
+          "shopAddressNotConfigured": "Configure o endereço da sua loja primeiro",
+          "shopNotActive": "Sua loja não está ativa. Entre em contato com o proprietário do mercado."
+        },
         "settings": {
           "dashboardMarketplaceSettingsSaved": "As configurações do Marketplace foram salvas com sucesso!",
           "dashboardMarketplaceSettingsFailed": "Falha ao salvar as configurações do Marketplace"

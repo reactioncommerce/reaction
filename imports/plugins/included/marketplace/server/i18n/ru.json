@@ -20,6 +20,12 @@
         "myShop": "Мой магазин"
       },
       "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect для этого приложения не включен. Обратитесь к администратору.",
+          "shopEmailNotConfigured": "Сначала настройте адрес электронной почты своего магазина.",
+          "shopAddressNotConfigured": "Сначала настройте адрес магазина",
+          "shopNotActive": "Ваш магазин неактивен. Обратитесь к владельцу на рынке."
+        },
         "settings": {
           "dashboardMarketplaceSettingsSaved": "Настройки магазина сохранены успешно!",
           "dashboardMarketplaceSettingsFailed": "Не удалось сохранить настройки Marketplace"

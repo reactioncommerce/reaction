@@ -28,7 +28,9 @@ function addBodyClasses(context) {
 
 
   // add theme class for route layout
-  classes.push(context.route.options.theme);
+  if (context && context.route && context.route.options && context.route.options.theme) {
+    classes.push(context.route.options.theme);
+  }
 
   classes = classes.join(" ");
 

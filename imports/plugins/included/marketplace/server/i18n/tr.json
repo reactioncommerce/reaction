@@ -20,6 +20,12 @@
         "myShop": "Benim dükkanım"
       },
       "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Bu uygulama için Şerit Bağlantı etkinleştirilmemiştir. Lütfen yönetici ile iletişime geçin.",
+          "shopEmailNotConfigured": "Lütfen dükkanınızın e-postasını önce yapılandırın.",
+          "shopAddressNotConfigured": "Lütfen önce alışveriş adresinizi yapılandırın",
+          "shopNotActive": "Dükkânınız aktif değil. Lütfen pazarın sahibi ile iletişime geçin."
+        },
         "settings": {
           "dashboardMarketplaceSettingsSaved": "Pazar yeri ayarları başarıyla kaydedildi!",
           "dashboardMarketplaceSettingsFailed": "Marketplace ayarlarını kaydetmek başarısız oldu"
