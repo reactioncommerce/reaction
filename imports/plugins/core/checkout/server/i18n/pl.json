@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Ograniczona dostawa"
+      },
       "cartCompleted": {
         "yourCart": "Twój wózek",
         "discountTotal": "Łączna suma rabatu",

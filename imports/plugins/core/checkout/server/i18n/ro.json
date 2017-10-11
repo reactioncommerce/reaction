@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Oferta limitată"
+      },
       "cartCompleted": {
         "yourCart": "Cosul tău",
         "discountTotal": "Reducere totală",

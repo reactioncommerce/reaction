@@ -32,7 +32,8 @@
           "groupRequired": "A csoportnak egy adminisztrátor meghívására van szüksége",
           "cannotInvite": "Nem lehet meghívni a csoportba",
           "unableToSendInvitationEmail": "Nem sikerült meghívó e-mailt küldeni",
-          "errorSendingInvite": "Hiba történt meghívás küldésekor"
+          "errorSendingInvite": "Hiba történt meghívás küldésekor",
+          "NeedToSetUsernameOrEmail": "Felhasználó vagy email szükséges"
         }
       }
     }

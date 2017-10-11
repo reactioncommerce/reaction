@@ -13,6 +13,10 @@ Template.stripeSettings.helpers({
       name: "reaction-stripe",
       shopId: Reaction.getShopId()
     });
+  },
+  marketplaceEnabled() {
+    const marketplace = Reaction.getMarketplaceSettings();
+    return marketplace && marketplace.enabled;
   }
 });
 

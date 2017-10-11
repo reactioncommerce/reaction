@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "Không tìm thấy đơn đặt hàng",
       "order": {
+        "applyRefundToThisOrder": "Áp dụng hoàn {{currencySymbol}}{{refund}} để đặt hàng này?",
+        "applyRefundDuringCancelOrder": "Điều này sẽ hoàn lại tổng số đơn đặt hàng của {{currencySymbol}}{{invoiceTotal}}",
         "cancelOrder": "Bạn có muốn hủy đơn đặt hàng này không?",
         "cancelOrderLabel": "Hủy đơn hàng",
         "cancelOrderThenRestock": "Vâng, và nạp lại",
@@ -59,6 +61,34 @@
             "total": "Tổng số",
             "shipping": "Đang chuyển hàng",
             "status": "Trạng thái"
+          },
+          "filter": {
+            "status": "Trạng thái",
+            "dateRange": "Phạm vi ngày",
+            "shippingStatus": "Tình trạng giao hàng",
+            "new": "Mới",
+            "captured": "Thanh toán bắt",
+            "shipped": "vận chuyển",
+            "completed": "Đã hoàn thành",
+            "canceled": "bị hủy bỏ",
+            "refunded": "Hoàn"
+          },
+          "search": {
+            "clearSearch": "Trong sáng",
+            "placeholder": "Tìm kiếm đơn đặt hàng"
+          },
+          "data": {
+            "status": {
+              "new": "Mới",
+              "coreOrderWorkflow/created": "Tạo",
+              "coreOrderWorkflow/processing": "Chế biến",
+              "coreOrderWorkflow/completed": "Đã hoàn thành",
+              "coreOrderWorkflow/canceled": "Đã hủy",
+              "coreOrderWorkflow/picked": "Chọn",
+              "coreOrderWorkflow/packed": "Đóng gói",
+              "coreOrderWorkflow/labeled": "Được gắn nhãn",
+              "coreOrderWorkflow/shipped": "Đã được giao"
+            }
           }
         }
       }

@@ -32,6 +32,14 @@
           "syncStopFailure": "မှားယွင်းနေသည် Shopify ထပ်တူပြုခြင်းရပ်တန့်!",
           "startImport": "သွင်းကုန် Start"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API သော့",
+          "password": "API ကိုစကားဝှက်ကို",
+          "sharedSecret": "API ကို shared လျှို့ဝှက်ချက်",
+          "shopName": "ဆိုင်ပက်ကျိ"
+        }
       }
     }
   }

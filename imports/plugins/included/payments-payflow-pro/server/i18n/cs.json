@@ -1,0 +1,13 @@
+[{
+  "language": "Czech",
+  "i18n": "cs",
+  "ns": "reaction-payflow-pro",
+  "translation": {
+    "admin": {
+      "settings": {
+        "saveSuccess": "Vaše nastavení bylo uloženo",
+        "saveFailed": "Při ukládání nastavení došlo k potížím"
+      }
+    }
+  }
+}]

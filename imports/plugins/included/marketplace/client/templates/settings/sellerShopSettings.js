@@ -120,11 +120,13 @@ Template.sellerShopSettings.helpers({
 
     const unitsOfLength = sellerShop.unitsOfLength;
     const uolOptions = [];
-    for (const length of unitsOfLength) {
-      uolOptions.push({
-        label: i18next.t(`uol.${length.uol}`, { defaultValue: length.uol }),
-        value: length.uol
-      });
+    if (Array.isArray(unitsOfLength)) {
+      for (const length of unitsOfLength) {
+        uolOptions.push({
+          label: i18next.t(`uol.${length.uol}`, { defaultValue: length.uol }),
+          value: length.uol
+        });
+      }
     }
     return uolOptions;
   },
@@ -138,11 +140,13 @@ Template.sellerShopSettings.helpers({
 
     const unitsOfMeasure = sellerShop.unitsOfMeasure;
     const uomOptions = [];
-    for (const measure of unitsOfMeasure) {
-      uomOptions.push({
-        label: i18next.t(`uom.${measure.uom}`, { defaultValue: measure.uom }),
-        value: measure.uom
-      });
+    if (Array.isArray(unitsOfMeasure)) {
+      for (const measure of unitsOfMeasure) {
+        uomOptions.push({
+          label: i18next.t(`uom.${measure.uom}`, { defaultValue: measure.uom }),
+          value: measure.uom
+        });
+      }
     }
     return uomOptions;
   },

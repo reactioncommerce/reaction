@@ -135,7 +135,7 @@ describe("orders test", function () {
       const returnToStock = true;
       spyOnMethod("cancelOrder", order.userId);
       Meteor.call("orders/cancelOrder", order, returnToStock);
-      const notify = Notifications.findOne({ to: order.userId, type: "orderCancelled" });
+      const notify = Notifications.findOne({ to: order.userId, type: "orderCanceled" });
       expect(notify.message).to.equal("Your order was canceled.");
     });
 

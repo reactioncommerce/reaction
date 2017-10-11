@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "未找到订单",
       "order": {
+        "applyRefundToThisOrder": "申请退还{{currencySymbol}}{{refund}}到这个订单？",
+        "applyRefundDuringCancelOrder": "这将退还{{currencySymbol}}{{invoiceTotal}}的订单总额",
         "cancelOrder": "你想取消这个订单吗？",
         "cancelOrderLabel": "取消订单",
         "cancelOrderThenRestock": "是的，补货",
@@ -59,6 +61,34 @@
             "total": "合计",
             "shipping": "运输",
             "status": "状态"
+          },
+          "filter": {
+            "status": "状态",
+            "dateRange": "日期范围",
+            "shippingStatus": "运送状态",
+            "new": "新订单",
+            "captured": "已收款",
+            "shipped": "已出货",
+            "completed": "已完成",
+            "canceled": "已取消",
+            "refunded": "已退款"
+          },
+          "search": {
+            "clearSearch": "明确",
+            "placeholder": "搜索订单"
+          },
+          "data": {
+            "status": {
+              "new": "新",
+              "coreOrderWorkflow/created": "创建",
+              "coreOrderWorkflow/processing": "处理",
+              "coreOrderWorkflow/completed": "已完成",
+              "coreOrderWorkflow/canceled": "取消",
+              "coreOrderWorkflow/picked": "采摘的",
+              "coreOrderWorkflow/packed": "袋装",
+              "coreOrderWorkflow/labeled": "标记",
+              "coreOrderWorkflow/shipped": "运"
+            }
           }
         }
       }

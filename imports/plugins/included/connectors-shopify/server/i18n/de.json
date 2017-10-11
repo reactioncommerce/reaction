@@ -32,6 +32,14 @@
           "syncStopFailure": "Fehler beim Stoppen Shopify Sync!",
           "startImport": "Start importieren"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API-Schlüssel",
+          "password": "API-Passwort",
+          "sharedSecret": "Gemeinsames API-Geheimnis",
+          "shopName": "Shop Schnecke"
+        }
       }
     }
   }

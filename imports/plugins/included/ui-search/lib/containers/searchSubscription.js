@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import * as Collections from "/lib/collections";
 import { Components, composeWithTracker } from "@reactioncommerce/reaction-components";

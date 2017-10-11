@@ -34,7 +34,7 @@
         }
       },
       "shopifyConnectPackageConfig": {
-        "settings" : {
+        "settings": {
           "apiKey": "API key",
           "password": "API password",
           "sharedSecret": "API shared secret",

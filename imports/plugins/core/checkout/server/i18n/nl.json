@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Beperkte voorraad"
+      },
       "cartCompleted": {
         "yourCart": "Jouw winkelwagen",
         "discountTotal": "Korting Totaal",

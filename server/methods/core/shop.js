@@ -215,7 +215,7 @@ Meteor.methods({
       if (shop.currencies[currency]) {
         result.currency = shop.currencies[currency];
         // only fetch rates if locale and shop currency are not equal
-        // if shop.curency = locale currency the rate is 1
+        // if shop.currency = locale currency the rate is 1
         if (shop.currency !== currency) {
           exchangeRate = Meteor.call("shop/getCurrencyRates", currency);
 
@@ -227,6 +227,22 @@ Meteor.methods({
         }
       }
     });
+
+    // adjust user currency
+    const user = Collections.Accounts.findOne({
+      _id: Meteor.userId()
+    });
+    let profileCurrency = user.profile && user.profile.currency;
+    if (!profileCurrency) {
+      localeCurrency = localeCurrency[0];
+      if (shop.currencies[localeCurrency] && shop.currencies[localeCurrency].enabled) {
+        profileCurrency = localeCurrency;
+      } else {
+        profileCurrency = shop.currency.split(",")[0];
+      }
+
+      Collections.Accounts.update(user._id, { $set: { "profile.currency": profileCurrency } });
+    }
 
     // set server side locale
     Reaction.Locale = result;

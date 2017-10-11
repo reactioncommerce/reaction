@@ -32,7 +32,8 @@
           "groupRequired": "Bir grup davet etmek için bir grup gerekiyor",
           "cannotInvite": "Gruba davet edemezsin",
           "unableToSendInvitationEmail": "Davetiye e-postası gönderilemiyor",
-          "errorSendingInvite": "Davet gönderilirken bir hata oluştu"
+          "errorSendingInvite": "Davet gönderilirken bir hata oluştu",
+          "NeedToSetUsernameOrEmail": "Kullanıcı Adı veya E-posta adresi girmelisiniz"
         }
       }
     }
