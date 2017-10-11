@@ -1148,10 +1148,6 @@ describe("core product methods", function () {
       expect(product.isVisible).to.equal(isVisible);
     });
 
-    // TODO: Future test placeholder. Was previously skipped.
-    // it("should not publish product when top variant has no children and no price", function (done) {
-    //   return done();
-    // });
 
     it("should not publish product when missing variant", function () {
       let product = addProduct();
