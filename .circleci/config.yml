@@ -52,6 +52,10 @@ jobs:
           command: .circleci/build.sh
           no_output_timeout: 30m
 
+      - run:
+          command: .reaction/jsdoc/build.sh
+          no_output_timeout: 2m
+
       # deploy the build (if on a deployment branch)
       - deploy:
           name: Docker Image Deploment
