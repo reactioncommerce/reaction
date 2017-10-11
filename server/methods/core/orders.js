@@ -1066,7 +1066,7 @@ export const methods = {
 
     Hooks.Events.run("onOrderRefundCreated", orderId);
 
-    // Send email to notify cuustomer of a refund
+    // Send email to notify customer of a refund
     if (checkSupportedMethods.includes("De-authorize")) {
       Meteor.call("orders/sendNotification", order);
     } else if (orderMode === "capture" && sendEmail) {
