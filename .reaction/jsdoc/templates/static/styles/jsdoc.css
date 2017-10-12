@@ -1,31 +1,27 @@
-@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700);
 
 * {
   box-sizing: border-box
 }
 
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
 }
 
 body {
-  color: #4d4e53;
   background-color: white;
-  margin: 0 auto;
-  padding: 0 20px;
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  color: #4d4e53;
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
   font-size: 16px;
   line-height: 160%;
-}
-
-img {
-  max-width: 100%;
+  margin: 0 auto;
 }
 
 a,
 a:active {
-  color: #606;
+  color: #000;
   text-decoration: none;
 }
 
@@ -45,25 +41,27 @@ p, ul, ol, blockquote {
   margin-bottom: 1em;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Montserrat', sans-serif;
-}
-
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: #000;
   font-weight: 400;
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
   margin: 0;
 }
 
 h1 {
-  font-weight: 300;
   font-size: 48px;
+  font-weight: 300;
   margin: 1em 0 .5em;
 }
 
 h1.page-title {
-  font-size: 48px;
-  margin: 1em 30px;
+  font-size: 40px;
+  margin: 1em 40px;
 }
 
 h2 {
@@ -84,12 +82,10 @@ h4 {
 
 h4.name {
   color: #fff;
-  background: #6d426d;
-  box-shadow: 0 .25em .5em #d3d3d3;
-  border-top: 1px solid #d3d3d3;
-  border-bottom: 1px solid #d3d3d3;
-  margin: 1.5em 0 0.5em;
+  background: #052a4e;
+  margin: 2.5em 0 0.5em;
   padding: .75em 0 .75em 10px;
+  font-size: 22px;
 }
 
 h4.name a {
@@ -100,7 +96,8 @@ h4.name a:hover {
   border-bottom-color: #fc83ff;
 }
 
-h5, .container-overview .subsection-title {
+h5,
+.container-overview .subsection-title {
   font-size: 120%;
   letter-spacing: -0.01em;
   margin: 8px 0 3px 0;
@@ -113,8 +110,11 @@ h6 {
   font-style: italic;
 }
 
-tt, code, kbd, samp {
-  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+tt,
+code,
+kbd,
+samp {
+  font-family: "Menlo", "Lucida Console", "Lucida Sans Typewriter", Monaco, monospace;
   background: #f4f4f4;
   padding: 1px 5px;
 }
@@ -133,7 +133,7 @@ tt, code, kbd, samp {
 #main {
   float: right;
   min-width: 360px;
-  width: calc(100% - 240px);
+  width: calc(100% - 300px);
 }
 
 header {
@@ -143,7 +143,8 @@ header {
 section {
   display: block;
   background-color: #fff;
-  padding: 0 0 0 30px;
+  max-width: 900px;
+  padding: 0 0 0 40px;
 }
 
 .variation {
@@ -152,7 +153,7 @@ section {
 
 .signature-attributes {
   font-size: 60%;
-  color: #eee;
+  color: #a7edff;
   font-style: italic;
   font-weight: lighter;
 }
@@ -160,19 +161,21 @@ section {
 nav {
   float: left;
   display: block;
-  width: 250px;
+  width: 300px;
   background: #fff;
-  overflow: auto;
+  overflow-y: scroll;
   position: fixed;
   height: 100%;
+  border-right: 1px solid #e6e6e5;
+  padding: 20px 20px 80px;
 }
 
 nav h3 {
   margin-top: 12px;
-  font-size: 13px;
+  font-size: 16px;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 700;
+  letter-spacing: normal;
+  font-weight: 600;
   line-height: 24px;
   margin: 15px 0 10px;
   padding: 0;
@@ -180,7 +183,7 @@ nav h3 {
 }
 
 nav ul {
-  font-family: 'Lucida Grande', 'Lucida Sans Unicode', arial, sans-serif;
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
   font-size: 100%;
   line-height: 17px;
   padding: 0;
@@ -190,16 +193,21 @@ nav ul {
 
 nav ul a,
 nav ul a:active {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
   line-height: 18px;
   padding: 0;
   display: block;
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+nav > ul > li > a {
+  font-weight: 600;
 }
 
 nav a:hover,
 nav a:active {
-  color: #606;
+  color: #000;
 }
 
 nav > ul {
@@ -207,7 +215,7 @@ nav > ul {
 }
 
 nav > ul > li > a {
-  color: #606;
+  color: #000;
 }
 
 nav ul ul {
@@ -229,20 +237,20 @@ nav ul ul a:active {
 }
 
 nav h2 {
-   font-size: 12px;
-   margin: 0;
-   padding: 0;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
 }
 
 nav > h2 > a {
-   display: block;
-   margin: 10px 0 -10px;
-   color: #606 !important;
+  display: block;
+  margin: 10px 0 -10px;
+  color: #000 !important;
 }
 
 footer {
   color: hsl(0, 0%, 28%);
-  margin-left: 250px;
+  margin-left: 325px;
   display: block;
   padding: 15px;
   font-style: italic;
@@ -254,7 +262,7 @@ footer {
 }
 
 .ancestors a {
-   color: #999 !important;
+  color: #999 !important;
 }
 
 .clear {
@@ -271,19 +279,20 @@ footer {
 }
 
 .type-signature {
-  color: #CA79CA
+  color: #a7edff
 }
 
 .type-signature:last-child {
   color: #eee;
 }
 
-.name, .signature {
-  font-family: Consolas, Monaco, 'Andale Mono', monospace
+.name,
+.signature {
+  font-family: "Menlo", "Lucida Console", "Lucida Sans Typewriter", Monaco, monospace
 }
 
 .signature {
-    color: #fc83ff;
+  color: #a7edff;
 }
 
 .details {
@@ -294,15 +303,15 @@ footer {
 }
 
 .details dt {
-   width: 120px;
-   float: left;
-   padding-left: 10px;
+  width: 120px;
+  float: left;
+  padding-left: 10px;
 }
 
 .details dd {
-   margin-left: 70px;
-   margin-top: 6px;
-   margin-bottom: 6px;
+  margin-left: 70px;
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 
 .details ul {
@@ -310,15 +319,15 @@ footer {
 }
 
 .details ul {
-   list-style-type: none
+  list-style-type: none
 }
 
 .details pre.prettyprint {
-   margin: 0
+  margin: 0
 }
 
 .details .object-value {
-   padding-top: 0
+  padding-top: 0
 }
 
 .description {
@@ -377,30 +386,31 @@ footer {
 }
 
 .prettyprint.linenums ol {
-   padding-left: 0
+  padding-left: 0
 }
 
 .prettyprint.linenums li {
-   border-left: 3px #34446B solid;
+  border-left: 3px #34446B solid;
 }
 
-.prettyprint.linenums li.selected, .prettyprint.linenums li.selected * {
-   background-color: #34446B;
+.prettyprint.linenums li.selected,
+.prettyprint.linenums li.selected * {
+  background-color: #34446B;
 }
 
 .prettyprint.linenums li * {
-   -webkit-user-select: text;
-   -moz-user-select: text;
-   -ms-user-select: text;
-   user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 
-.params, .props {
+.params,
+.props {
   border-spacing: 0;
   border: 1px solid #ddd;
   border-collapse: collapse;
   border-radius: 3px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   width: 100%;
   font-size: 14px;
   margin: 1em 0;
@@ -414,50 +424,63 @@ footer {
   white-space: pre;
 }
 
-.params td, .params .name, .props .name, .name code {
-   color: #4D4E53;
-   font-family: Consolas, Monaco, 'Andale Mono', monospace;
-   font-size: 100%;
+.params td,
+.params .name,
+.props .name,
+.name code {
+  color: #4D4E53;
+  font-family: "Menlo", "Lucida Console", "Lucida Sans Typewriter", Monaco, monospace;
+  font-size: 100%;
 }
 
-.params td, .params th, .props td, .props th {
-   margin: 0px;
-   text-align: left;
-   vertical-align: top;
-   padding: 10px;
-   display: table-cell;
+.params td,
+.params th,
+.props td,
+.props th {
+  margin: 0px;
+  text-align: left;
+  vertical-align: top;
+  padding: 10px;
+  display: table-cell;
 }
 
 .params td {
-   border-top: 1px solid #eee
+  border-top: 1px solid #eee
 }
 
-.params thead tr, .props thead tr {
-   background-color: #fff;
-   font-weight: bold;
+.params thead tr,
+.props thead tr {
+  background-color: #fff;
+  font-weight: bold;
 }
 
-.params .params thead tr, .props .props thead tr {
-   background-color: #fff;
-   font-weight: bold;
+.params .params thead tr,
+.props .props thead tr {
+  background-color: #fff;
+  font-weight: bold;
 }
 
-.params td.description > p:first-child, .props td.description > p:first-child {
-   margin-top: 0;
-   padding-top: 0;
+.params td.description > p:first-child,
+.props td.description > p:first-child {
+  margin-top: 0;
+  padding-top: 0;
 }
 
-.params td.description > p:last-child, .props td.description > p:last-child {
-   margin-bottom: 0;
-   padding-bottom: 0;
+.params td.description > p:last-child,
+.props td.description > p:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
-span.param-type, .params td .param-type, .param-type dd {
-   color: #606;
-  font-family: Consolas, Monaco, 'Andale Mono', monospace
+span.param-type,
+.params td .param-type,
+.param-type dd {
+  color: #000;
+  font-family: "Menlo", "Lucida Console", "Lucida Sans Typewriter", Monaco, monospace
 }
 
-.param-type dt, .param-type dd {
+.param-type dt,
+.param-type dd {
   display: inline-block
 }
 
@@ -477,19 +500,21 @@ span.param-type, .params td .param-type, .param-type dd {
   transition: 0.25s;
   cursor: pointer;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   opacity: .8;
 }
-.navicon-button .navicon:before, .navicon-button .navicon:after {
+.navicon-button .navicon:before,
+.navicon-button .navicon:after {
   transition: 0.25s;
 }
 .navicon-button:hover {
   transition: 0.5s;
   opacity: 1;
 }
-.navicon-button:hover .navicon:before, .navicon-button:hover .navicon:after {
+.navicon-button:hover .navicon:before,
+.navicon-button:hover .navicon:after {
   transition: 0.25s;
 }
 .navicon-button:hover .navicon:before {
@@ -508,7 +533,8 @@ span.param-type, .params td .param-type, .param-type dd {
   transition: 0.3s;
   border-radius: 2.5rem;
 }
-.navicon:before, .navicon:after {
+.navicon:before,
+.navicon:after {
   display: block;
   content: "";
   height: .3125rem;
@@ -540,7 +566,7 @@ span.param-type, .params td .param-type, .param-type dd {
 /* Minus */
 .nav-trigger:checked + label {
   -webkit-transform: scale(0.75);
-          transform: scale(0.75);
+    transform: scale(0.75);
 }
 
 /* × and + */
@@ -552,20 +578,20 @@ span.param-type, .params td .param-type, .param-type dd {
 .nav-trigger:checked + label.plus .navicon:before,
 .nav-trigger:checked + label.x .navicon:before {
   -webkit-transform: rotate(-45deg);
-          transform: rotate(-45deg);
+    transform: rotate(-45deg);
   background: #FFF;
 }
 
 .nav-trigger:checked + label.plus .navicon:after,
 .nav-trigger:checked + label.x .navicon:after {
   -webkit-transform: rotate(45deg);
-          transform: rotate(45deg);
+    transform: rotate(45deg);
   background: #FFF;
 }
 
 .nav-trigger:checked + label.plus {
   -webkit-transform: scale(0.75) rotate(45deg);
-          transform: scale(0.75) rotate(45deg);
+    transform: scale(0.75) rotate(45deg);
 }
 
 .nav-trigger:checked ~ nav {
@@ -637,6 +663,7 @@ span.param-type, .params td .param-type, .param-type dd {
 
   footer {
     margin-left: 0;
+    display: none;
   }
 }
 
