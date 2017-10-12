@@ -7,7 +7,9 @@ import { Jobs } from "/lib/collections";
 
 /**
  * Email Job Logs
- * @type {Object} options - standard publication options object
+ * @type {Object}
+ * @param query
+ * @param options - standard publication options object
  */
 Meteor.publish("Emails", function (query, options) {
   check(query, Match.Optional(Object));

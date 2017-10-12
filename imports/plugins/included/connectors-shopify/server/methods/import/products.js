@@ -22,7 +22,7 @@ import { connectorsRoles } from "../../lib/roles";
  * @param  {object} options Options object
  * @param  {object} options.shopifyProduct the Shopify product object
  * @param  {string} options.shopId The shopId we're importing for
- * @param  {[string]} options.hashtags An array of hashtags that should be attached to this product.
+ * @param  {array} options.hashtags An array of hashtag strings that should be attached to this product.
  * @return {object} An object that fits the `Product` schema
  *
  * @todo consider abstracting private Shopify import helpers into a helpers file
@@ -128,8 +128,8 @@ function createReactionVariantFromShopifyVariant(options) {
  * @private
  * @method findVariantImages
  * @param  {number} shopifyVariantId The variant `id` from shopify
- * @param  {[object]} images An array of image objects from a Shopify product
- * @return {[object]} Returns an array of image objects that match the passed shopifyVariantId
+ * @param  {array} images An array of image objects from a Shopify product
+ * @return {array} Returns an array of image objects that match the passed shopifyVariantId
  */
 function findVariantImages(shopifyVariantId, images) {
   return images.filter((imageObj) => {
@@ -142,8 +142,8 @@ function findVariantImages(shopifyVariantId, images) {
  * @method findProductImages
  * @private
  * @param  {number} shopifyProductId The product `id` from shopify
- * @param  {[object]} images An array of image objects from a Shopify product
- * @return {[object]} Returns an array of image objects that match the passed shopifyProductId
+ * @param  {array} images An array of image objects from a Shopify product
+ * @return {array} Returns an array of image objects that match the passed shopifyProductId
  */
 function findProductImages(shopifyProductId, images) {
   return images.filter((imageObj) => imageObj.product_id === shopifyProductId);
@@ -223,7 +223,7 @@ export const methods = {
    * @async
    * @method connectors/shopify/import/products
    * @param {object} options An object of options for the shopify API call. Available options here: https://help.shopify.com/api/reference/product#index
-   * @returns {[string]} An array of the Reaction product _ids (including variants and options) that were created.
+   * @returns {array} An array of the Reaction product _ids (including variants and options) that were created.
    */
   async "connectors/shopify/import/products"(options) {
     check(options, Match.Maybe(Object));
