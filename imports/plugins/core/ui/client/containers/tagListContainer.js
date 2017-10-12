@@ -251,9 +251,11 @@ function composer(props, onData) {
   }
 
   let isEditable = props.editable;
+
   if (typeof isEditable !== "boolean") {
-    isEditable = Reaction.hasPermission(["owner", "createProduct"]);
+    isEditable = Reaction.hasPermission(props.permissions);
   }
+
   const tagsByKey = {};
 
   if (Array.isArray(tags)) {

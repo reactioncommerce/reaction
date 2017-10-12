@@ -103,6 +103,7 @@ const wrapComponent = (Comp) => (
 
 function composer(props, onData) {
   const product = ReactionProduct.selectedProduct();
+  const editable = Reaction.hasAdminAccess();
   let tags;
   let media;
   let revisonDocumentIds;
@@ -149,7 +150,8 @@ function composer(props, onData) {
       tags,
       revisonDocumentIds,
       templates,
-      countries
+      countries,
+      editable
     });
   } else {
     onData(null, {
