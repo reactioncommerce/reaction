@@ -8,7 +8,7 @@ import { connectorsRoles } from "../../lib/roles";
 /**
  * @file Shopify connector wrapper for api calls for products
  *       wraps shopify product api calls in reaction methods
- * @module connectors/shopify/api/products
+ * @module connectors-shopify
  */
 
 export const methods = {
