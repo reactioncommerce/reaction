@@ -181,7 +181,7 @@
       "ignoreComments": true,
       "ignoreUrls": true
     }], // http://eslint.org/docs/rules/max-len
-    "require-jsdoc": [2, {
+    "require-jsdoc": [1, {
       "require": {
         "FunctionDeclaration": true,
         "MethodDefinition": false,
@@ -192,15 +192,7 @@
     "valid-jsdoc": [2, {
       "prefer": {
         "arg": "param",
-        "argument": "param",
-        "return": "returns"
-        },
-      "preferType": {
-        "Object": "object",
-        "Boolean": "boolean",
-        "Number": "number",
-        "String": "string",
-        "Array": "array"
+        "argument": "param"
         }
     }], // http://eslint.org/docs/rules/valid-jsdoc
     "quote-props": [2, "consistent-as-needed"], // http://eslint.org/docs/rules/quote-props
