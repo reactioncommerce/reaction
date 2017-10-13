@@ -7,6 +7,13 @@ import { Reaction, i18next } from "/client/api";
 import { TaxCloudPackageConfig } from "../../lib/collections/schemas";
 import { TaxCloudSettingsForm } from "../components";
 
+/**
+ * @method getPackageData
+ * @summary returns the data for the Package with the name in pkgName.
+ * @param {String} pkgName - the name of the Package required.
+ * @since 1.5.1
+ * @return {Object} - returns the data found for the said Package.
+ */
 function getPackageData(pkgName) {
   return Packages.findOne({
     name: pkgName,
@@ -15,9 +22,23 @@ function getPackageData(pkgName) {
 }
 
 Template.taxCloudSettings.helpers({
+  /**
+   * @method taxCloudPackageData
+   * @summary returns the data for the taxes-taxcloud Package.
+   * @since 1.5.1
+   * @return {Object} - returns data for the said Package.
+   */
   taxCloudPackageData() {
     return getPackageData("taxes-taxcloud");
   },
+  /**
+   * @method taxCloudCard
+   * @summary returns a component for updating the TaxCloud settings for
+   * this app.
+   * @since 1.5.1
+   * @return {Object} - returns an object that contains the component
+   * to render and some data to use as props for it.
+   */
   taxCloudCard() {
     const providerName = "taxcloud";
     const packageName = "taxes-taxcloud";

@@ -2,6 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Form } from "/imports/plugins/core/ui/client/components";
 
+/**
+ * @method TaxCloudSettingsForm
+ * @summary renders a form for updating TaxCloud settings.
+ * @param {Object} props - some data for use by this component.
+ * @since 1.5.1
+ * @return {Object} - returns a JSX element for rendering.
+ */
 const TaxCloudSettingsForm = (props) => {
   return (
     <Form
