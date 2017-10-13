@@ -15,7 +15,7 @@ function getPackageData(pkgName) {
 }
 
 Template.taxCloudSettings.helpers({
-  packageData() {
+  taxCloudPackageData() {
     return getPackageData("taxes-taxcloud");
   },
   taxCloudCard() {

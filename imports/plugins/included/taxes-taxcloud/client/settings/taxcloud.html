@@ -1,6 +1,6 @@
 <template name="taxCloudSettings">
 
-  {{#unless packageData.settings.taxcloud.apiLoginId}}
+  {{#unless taxCloudPackageData.settings.taxcloud.apiLoginId}}
   <div class="alert alert-info">
     <span data-i18n="admin.taxSettings.taxcloudCredentials">Add API Login ID to enable</span>
     <a href="https://www.taxcloud.com/" target="_blank">TaxCloud</a>
