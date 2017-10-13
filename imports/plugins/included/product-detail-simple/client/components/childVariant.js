@@ -69,7 +69,7 @@ class ChildVariant extends Component {
   renderDeletionStatus() {
     if (this.props.variant.isDeleted) {
       return (
-        <span className="badge badge-black">
+        <span className="badge badge-danger">
           <Components.Translation className="deleted-variant-text" defaultValue="Archived" i18nKey="app.archived" />
         </span>
       );
