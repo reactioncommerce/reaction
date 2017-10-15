@@ -53,6 +53,8 @@ import "./templates/members/member.html";
 import "./templates/members/member.js";
 import "./templates/profile/profile.html";
 import "./templates/profile/profile.js";
+import "./templates/profile/userOrdersList.html";
+import "./templates/profile/userOrdersList.js";
 import "./templates/updatePassword/updatePassword.html";
 import "./templates/updatePassword/updatePassword.js";
 import "./templates/verify/verifyAccount.html";
