@@ -32,7 +32,8 @@
           "groupRequired": "Eine Gruppe muss einen Administrator einladen",
           "cannotInvite": "Sie können nicht zur Gruppe einladen",
           "unableToSendInvitationEmail": "Kann keine Einladungsnachricht senden",
-          "errorSendingInvite": "Beim Senden der Einladung ist ein Fehler aufgetreten"
+          "errorSendingInvite": "Beim Senden der Einladung ist ein Fehler aufgetreten",
+          "NeedToSetUsernameOrEmail": "Bitte Benutzernamen oder E-Mail-Adresse angeben"
         }
       }
     }

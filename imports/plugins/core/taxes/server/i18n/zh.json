@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": "自定义税率已保存。",
           "shopCustomTaxRatesFailed": "保存税率时出错。",
           "shopTaxMethodsSaved": "已保存的纳税方式。",
+          "shopTaxMethodsAlreadySaved": "税号已经加载",
           "shopTaxMethodsFailed": "保存纳税方式失败。",
           "customRatesLabel": "自定义费用",
           "customRatesDescription": "自定义费用",

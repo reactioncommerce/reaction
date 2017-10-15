@@ -81,7 +81,8 @@
           "saveFailed": "posta ayarlarını kaydedilemedi. {{error}}",
           "cantSendEmail": "Sunucu Hatası: E-posta bildirimi göndermek olamaz.",
           "emailSent": "E-posta bildirimi gönderilir.",
-          "addOrderEmailFailed": "Siparişe e-posta eklenemedi"
+          "addOrderEmailFailed": "Siparişe e-posta eklenemedi",
+          "addCartEmailFailed": "E-postaya alışveriş sepetine eklenemedi."
         }
       }
     }

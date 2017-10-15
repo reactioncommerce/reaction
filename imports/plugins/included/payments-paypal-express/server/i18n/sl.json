@@ -1,0 +1,47 @@
+[{
+  "language": "Slovenian",
+  "i18n": "sl",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "plačila PayPal"
+        },
+        "paymentMethod": {
+          "expressLabel": "Izrazite",
+          "creditCardLabel": "Credit Card"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Še nimate PayPal uporabniško ime, geslo in podpis?",
+          "paypalExpressGetCredentialsHere": "Dobili tukaj.",
+          "paypalPayflowCredentials": "Še nimate PayPal ID odjemalca in skrivnost",
+          "paypalPayflowGetCredentialsHere": "Spravi jih tukaj."
+        },
+        "settings": {
+          "saveSuccess": "Vaše nastavitve so shranjene",
+          "saveFailed": "Pri shranjevanju nastavitev je prišlo do težave"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Izpolnite naročilo",
+        "paymentMethod": {
+          "expressButtonLabel": "Plačilo z PayPal",
+          "expressNotConfigured": "Paypal Express ni nastavljen.",
+          "expressNotAvailable": "Paypal Express ni na voljo",
+          "submitting": "Pošiljanje",
+          "invalidCard": "Ups! Številka kreditne kartice je neveljavna.",
+          "unknownError": "Ups! Prišlo je do neznane napake",
+          "resubmit": "ponovno pošljete plačilo"
+        }
+      }
+    }
+  }
+}]

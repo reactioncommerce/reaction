@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Ограниченная поставка"
+      },
       "cartCompleted": {
         "yourCart": "Ваша корзина",
         "discountTotal": "Скидка Итого",

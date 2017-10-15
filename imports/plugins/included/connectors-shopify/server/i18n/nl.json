@@ -32,6 +32,14 @@
           "syncStopFailure": "Fout bij het stoppen van Shopify-synchronisatie!",
           "startImport": "Start importeren"
         }
+      },
+      "shopifyConnectPackageConfig": {
+        "settings": {
+          "apiKey": "API sleutel",
+          "password": "API wachtwoord",
+          "sharedSecret": "API gedeeld geheim",
+          "shopName": "Winkel slak"
+        }
       }
     }
   }

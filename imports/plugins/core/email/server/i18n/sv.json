@@ -81,7 +81,8 @@
           "saveFailed": "Det gick inte att spara postinställningar. {{error}}",
           "cantSendEmail": "Server Error: Kan inte skicka e-postmeddelande.",
           "emailSent": "E-postmeddelande skickas.",
-          "addOrderEmailFailed": "Lägga till e-post i order misslyckades"
+          "addOrderEmailFailed": "Lägga till e-post i order misslyckades",
+          "addCartEmailFailed": "Lägga till e-post i kundvagn misslyckades"
         }
       }
     }

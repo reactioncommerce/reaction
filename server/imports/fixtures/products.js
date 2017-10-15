@@ -153,7 +153,7 @@ export default function () {
     requiresShipping: true,
     // parcel: ?,
     hashtags: [],
-    isVisible: faker.random.boolean(),
+    isVisible: true,
     publishedAt: new Date(),
     createdAt: new Date(),
     updatedAt: new Date()

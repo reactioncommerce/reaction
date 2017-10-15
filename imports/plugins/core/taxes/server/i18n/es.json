@@ -28,6 +28,7 @@
           "shopCustomTaxRatesSaved": "Tasas de impuestos personalizadas guardadas.",
           "shopCustomTaxRatesFailed": "Error al guardar la tasa impositiva.",
           "shopTaxMethodsSaved": "Método de impuesto guardado.",
+          "shopTaxMethodsAlreadySaved": "Taxcodes ya cargados",
           "shopTaxMethodsFailed": "Error al guardar método de impuesto",
           "customRatesLabel": "Tasas personalizadas",
           "customRatesDescription": "Tasas personalizadas",

@@ -1,0 +1,47 @@
+[{
+  "language": "Polish",
+  "i18n": "pl",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "płatności PayPal"
+        },
+        "paymentMethod": {
+          "expressLabel": "Wyrazić",
+          "creditCardLabel": "Karta kredytowa"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Nie masz PayPal nazwę użytkownika, hasło i podpis?",
+          "paypalExpressGetCredentialsHere": "Pobierz je tutaj.",
+          "paypalPayflowCredentials": "Nie masz identyfikator klienta PayPal i tajemnicą",
+          "paypalPayflowGetCredentialsHere": "Pobierz je tutaj."
+        },
+        "settings": {
+          "saveSuccess": "Twoje ustawienia zostały zapisane",
+          "saveFailed": "Podczas zapisywania ustawień wystąpił problem"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Zrealizuj zamówienie",
+        "paymentMethod": {
+          "expressButtonLabel": "Płać z PayPal",
+          "expressNotConfigured": "Paypal Express nie skonfigurowany.",
+          "expressNotAvailable": "Paypal Express nie dostępne",
+          "submitting": "Przedkładający",
+          "invalidCard": "Ups! Numer karty kredytowej jest nieprawidłowy.",
+          "unknownError": "Ups! Wystąpił nieznany błąd",
+          "resubmit": "Resubmit płatności"
+        }
+      }
+    }
+  }
+}]

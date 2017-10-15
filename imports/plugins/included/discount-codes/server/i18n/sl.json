@@ -15,7 +15,8 @@
         "applied": "uporabna",
         "code": "Koda",
         "codeIsExpired": "Kodeks je potekla",
-        "codeIsInvalid": "Koda je neveljavna"
+        "codeIsInvalid": "Koda je neveljavna",
+        "multiShopError": "Popusti se ne morejo uporabiti v nakupovalnem vozičku ali naročilu"
       },
       "admin": {
         "paymentSettings": {

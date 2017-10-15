@@ -1,0 +1,47 @@
+[{
+  "language": "Bulgarian",
+  "i18n": "bg",
+  "ns": "reaction-paypal-express",
+  "translation": {
+    "reaction-paypal-express": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "плащания PayPal"
+        },
+        "paymentMethod": {
+          "expressLabel": "изразявам",
+          "creditCardLabel": "Кредитна карта"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "Не са един PayPal потребителско име, парола и подпис?",
+          "paypalExpressGetCredentialsHere": "Вземете един тук.",
+          "paypalPayflowCredentials": "Не трябва клиентски идентификационен номер на PayPal и тайна",
+          "paypalPayflowGetCredentialsHere": "Сложете ги тук."
+        },
+        "settings": {
+          "saveSuccess": "Настройките ви са запазени",
+          "saveFailed": "Възникна проблем при запазването на настройките ви"
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Завършете поръчката",
+        "paymentMethod": {
+          "expressButtonLabel": "Плащане с PayPal",
+          "expressNotConfigured": "Paypal Express не е конфигурирано.",
+          "expressNotAvailable": "Paypal Express не е наличен",
+          "submitting": "Подаване",
+          "invalidCard": "Ами сега! номер на кредитна карта е невалидна.",
+          "unknownError": "Ами сега! Възникна неизвестна грешка",
+          "resubmit": "Повторно изпращане на плащане"
+        }
+      }
+    }
+  }
+}]

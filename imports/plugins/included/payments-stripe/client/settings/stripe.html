@@ -10,24 +10,26 @@
     <div>
       {{#autoForm collection=Collections.Packages schema=StripePackageConfig doc=packageData type="update" id="stripe-update-form"}}
         {{>afQuickField name='settings.api_key'}}
-        <br>
-        <span data-i18n="admin.paymentSettings.stripeClientIdWarning">The Client ID is a <strong>PUBLIC</strong> field. Please ensure you're using the `client_id` found on the </span>
-        <a target="_blank" href="https://dashboard.stripe.com/account/applications/settings">
-          <span data-i18n="admin.paymentSettings.stripeClientIDLink">Stripe Connect Settings</span>
-        </a>
-        {{>afQuickField name='settings.public.client_id'}}
-        <br>
-        <span data-i18n="admin.connect.applicationFeeDescription">
-          This number represents a percentage fee that the marketplace (this shop) takes for any item which is sold
-          by a merchant shop for this marketplace. This fee applies only if Stripe Connect is setup and enabled on both
-          the marketplace and the merchant shops and if Stripe is the payment provider used to perform the checkout.
-        </span>
-        <br>
-        <span data-i18n="admin.connect.moreDetails">For more details, see the</span>
-        <a target="_blank" href="https://stripe.com/docs/connect/direct-charges#flow-of-funds-with-fees">
-          <span data-i18n="admin.connect.docsLink">Stripe Connect Docs</span>
-        </a>
-        {{>afQuickField name="settings.applicationFee"}}
+        {{#if marketplaceEnabled}}
+          <br>
+          <span data-i18n="admin.paymentSettings.stripeClientIdWarning">The Client ID is a <strong>PUBLIC</strong> field. Please ensure you're using the `client_id` found on the </span>
+          <a target="_blank" href="https://dashboard.stripe.com/account/applications/settings">
+            <span data-i18n="admin.paymentSettings.stripeClientIDLink">Stripe Connect Settings</span>
+          </a>
+          {{>afQuickField name='settings.public.client_id'}}
+          <br>
+          <span data-i18n="admin.connect.applicationFeeDescription">
+            This number represents a percentage fee that the marketplace (this shop) takes for any item which is sold
+            by a merchant shop for this marketplace. This fee applies only if Stripe Connect is setup and enabled on both
+            the marketplace and the merchant shops and if Stripe is the payment provider used to perform the checkout.
+          </span>
+          <br>
+          <span data-i18n="admin.connect.moreDetails">For more details, see the</span>
+          <a target="_blank" href="https://stripe.com/docs/connect/direct-charges#flow-of-funds-with-fees">
+            <span data-i18n="admin.connect.docsLink">Stripe Connect Docs</span>
+          </a>
+          {{>afQuickField name="settings.applicationFee"}}
+        {{/if}}
         {{>afQuickField name="settings.reaction-stripe.support" options="allowed" noselect=true}}
         <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
       {{/autoForm}}

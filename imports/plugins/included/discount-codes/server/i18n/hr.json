@@ -15,7 +15,8 @@
         "applied": "primijenjen",
         "code": "kodirati",
         "codeIsExpired": "Kodeks je istekao",
-        "codeIsInvalid": "Kodeks je nevažeća"
+        "codeIsInvalid": "Kodeks je nevažeća",
+        "multiShopError": "Popusti se ne mogu primijeniti na multi-shop košaricu ili narudžbu"
       },
       "admin": {
         "paymentSettings": {

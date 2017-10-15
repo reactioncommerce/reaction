@@ -81,7 +81,8 @@
           "saveFailed": "Nie udało się zapisać ustawienia poczty. {{error}}",
           "cantSendEmail": "Błąd serwera: nie można wysłać powiadomienie e-mail.",
           "emailSent": "Powiadomienie e-mail wysłana.",
-          "addOrderEmailFailed": "Dodanie poczty e-mail do zamówienia nie powiodło się"
+          "addOrderEmailFailed": "Dodanie poczty e-mail do zamówienia nie powiodło się",
+          "addCartEmailFailed": "Dodanie poczty e-mail do koszyka nie powiodło się"
         }
       }
     }

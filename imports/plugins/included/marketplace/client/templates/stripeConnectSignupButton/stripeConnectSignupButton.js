@@ -29,6 +29,10 @@ Template.stripeConnectSignupButton.events({
 
     const shop = Shops.findOne({ _id: shopId });
 
+    if (!shop || !shop.workflow || shop.workflow.status !== "active") {
+      return Alerts.toast(`${i18next.t("admin.connect.shopNotActive")}`, "error");
+    }
+
     if (!shop.emails || !Array.isArray(shop.emails) || shop.emails.length === 0) {
       return Alerts.toast(`${i18next.t("admin.connect.shopEmailNotConfigured")}`, "error");
     }
