@@ -63,7 +63,6 @@ const getStyles = (props) => {
       "boxShadow": isBigView ? "0 0 40px rgba(0,0,0,.1)" : "",
       "flex": "0 0 auto",
       "backgroundColor": "white",
-      "borderLeft": "1px solid @black10",
       "overflow": "hidden",
       "transition": "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
       "zIndex": 1050
