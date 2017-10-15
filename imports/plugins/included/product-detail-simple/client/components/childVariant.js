@@ -135,7 +135,7 @@ class ChildVariant extends Component {
           <span className="title">{variant.optionTitle}</span>
         </button>
 
-        <div className="variant-controls">
+        <div className="variant-controls custom-variant-control">
           {this.renderDeletionStatus()}
           {this.renderInventoryStatus()}
           {this.renderValidationButton()}
