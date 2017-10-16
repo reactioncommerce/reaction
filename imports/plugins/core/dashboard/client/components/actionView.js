@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
+import { Reaction } from "/client/api";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
 import "velocity-animate";
@@ -206,9 +207,7 @@ class ActionView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // Array containing abbreviations of right-to-left languages
-    const rightToLeftLanguages = ["ar", "he"];
-    if (rightToLeftLanguages.indexOf(nextProps.language) > -1) {
+    if (Reaction.getRightToLeftLanguagesList().indexOf(nextProps.language) > -1) {
       this.handleLeftToRightAnimation();
     } else {
       this.setState({

@@ -1,5 +1,5 @@
-import React from "react";
 import { Meteor } from "meteor/meteor";
+import React from "react";
 import { StyleRoot } from "radium";
 import _ from "lodash";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";

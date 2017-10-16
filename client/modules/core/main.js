@@ -757,6 +757,13 @@ export default {
     });
 
     return marketplaceSettings && marketplaceSettings.settings;
+  },
+  /**
+   * getRightToLeftLanguagesList returns an array of right to left languages eg. Arabic, Hebrew
+   * @return {Array} Array of right to left languages
+   */
+  getRightToLeftLanguagesList() {
+    return ["ar", "he"];
   }
 
 };
