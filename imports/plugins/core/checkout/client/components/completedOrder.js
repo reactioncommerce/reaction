@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import { Router } from "/client/modules/router/";
 import CompletedShopOrders from "./completedShopOrders";
 import CompletedOrderPaymentMethod from "./completedOrderPaymentMethods";
 import CompletedOrderSummary from "./completedOrderSummary";
@@ -27,15 +28,26 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
       />
     );
   }
+
+  const headerText = Router.getRouteName() === "account/profile" ? (
+    <h3>
+      <strong>Order ID </strong>{orderId}
+    </h3>
+  ) : (
+    <div>
+      {/* This is the left side / main content */}
+      <h3><Components.Translation defaultValue="Thank You" i18nKey={"cartCompleted.thankYou"} /></h3>
+      <p><strong>Order ID </strong>{orderId}</p>
+      {/* show a different message depending on whether we have an email or not */}
+      <AddEmail order={order} orderEmail={order.email} />
+      {/* This is the left side / main content*/}
+    </div>
+  );
+
   return (
     <div className="container order-completed">
       <div className="order-details-header">
-        {/* This is the left side / main content */}
-        <h3><Components.Translation defaultValue="Thank You" i18nKey={"cartCompleted.thankYou"} /></h3>
-        <p><strong>Order ID </strong>{orderId}</p>
-        {/* show a different message depending on whether we have an email or not */}
-        <AddEmail order={order} orderEmail={order.email} />
-        {/* This is the left side / main content*/}
+        { headerText }
       </div>
 
       <div className="order-details-main">
