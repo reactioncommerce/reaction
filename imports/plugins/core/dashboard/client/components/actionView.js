@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
-import { Reaction } from "/client/api";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
 import "velocity-animate";
@@ -163,6 +162,16 @@ class ActionView extends Component {
         duration: 200,
         easing: "easeInOutQuad"
       },
+      rtlEnterAnimation: {
+        animation: { translateX: ["0%", "-100%"] },
+        duration: 200,
+        easing: "easeInOutQuad"
+      },
+      rtlLeaveAnimation: {
+        animation: { translateX: "-100%" },
+        duration: 200,
+        easing: "easeInOutQuad"
+      },
       enterAnimationForDetailView: {
         animation: { width: 400 },
         duration: 200,
@@ -175,22 +184,6 @@ class ActionView extends Component {
       }
     };
 
-    // this function sets the animation transition to move from left to right
-    // when the language is switched to a right-to-left language , eg. Arabic, Hebrew
-    this.handleLeftToRightAnimation = () => {
-      this.setState({
-        enterAnimation: {
-          animation: { translateX: ["0%", "-100%"] },
-          duration: 200,
-          easing: "easeInOutQuad"
-        },
-        leaveAnimation: {
-          animation: { translateX: "-100%" },
-          duration: 200,
-          easing: "easeInOutQuad"
-        }
-      });
-    };
     this.handleResize = debounce(() => {
       if (window) {
         this.setState({
@@ -203,25 +196,6 @@ class ActionView extends Component {
   componentDidMount() {
     if (window) {
       window.addEventListener("resize", this.handleResize, false);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (Reaction.getRightToLeftLanguagesList().indexOf(nextProps.language) > -1) {
-      this.handleLeftToRightAnimation();
-    } else {
-      this.setState({
-        enterAnimation: {
-          animation: { translateX: 0 },
-          duration: 200,
-          easing: "easeInOutQuad"
-        },
-        leaveAnimation: {
-          animation: { translateX: 400 },
-          duration: 200,
-          easing: "easeInOutQuad"
-        }
-      });
     }
   }
 
@@ -501,11 +475,12 @@ class ActionView extends Component {
   }
 
   render() {
+    const isRtl = document.querySelector("html").className === "rtl";
     return (
       <div>
         <VelocityTransitionGroup
-          enter={this.state.enterAnimation}
-          leave={this.state.leaveAnimation}
+          enter={isRtl ? this.state.rtlEnterAnimation : this.state.enterAnimation}
+          leave={isRtl ? this.state.rtlLeaveAnimation : this.state.leaveAnimation}
         >
           {this.renderActionView()}
         </VelocityTransitionGroup>
