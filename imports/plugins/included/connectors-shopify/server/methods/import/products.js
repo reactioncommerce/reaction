@@ -12,7 +12,7 @@ import { connectorsRoles } from "../../lib/roles";
  * @file Shopify connector import product method
  *       contains methods and helpers for setting up and removing synchronization between
  *       a Shopify store and a Reaction shop
- * @module connectors/shopify/import/products
+ * @module connectors-shopify
  */
 
 /**
