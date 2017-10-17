@@ -4,6 +4,12 @@ import hoistStatics from "hoist-non-react-statics";
 import _ from "lodash";
 import { getDisplayName } from "recompose";
 
+/**
+ * @file Reaction Components API
+ *
+ * @module components
+ */
+
 export default function compose(dataLoader, options = {}) {
   return function (Child) {
     const {
