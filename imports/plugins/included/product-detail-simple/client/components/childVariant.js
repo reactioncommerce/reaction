@@ -50,14 +50,14 @@ class ChildVariant extends Component {
     if (inventoryManagement && this.props.variant.inventoryQuantity <= 0) {
       if (inventoryPolicy) {
         return (
-          <span className="variant-qty-sold-out badge badge-danger custom-badge-child-variant">
+          <span className="variant-qty-sold-out badge badge-danger child-variant-badge-label">
             <Components.Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
           </span>
         );
       }
 
       return (
-        <span className="variant-qty-sold-out badge badge-info custom-badge-child-variant">
+        <span className="variant-qty-sold-out badge badge-info child-variant-badge-label">
           <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
         </span>
       );

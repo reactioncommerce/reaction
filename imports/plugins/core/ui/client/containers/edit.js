@@ -50,7 +50,7 @@ class EditContainer extends Component {
   renderVisibilityButton() {
     if (this.props.showsVisibilityButton) {
       return (
-        <span className="edit-container-item custom-edit-container-item">
+        <span className="edit-container-item edit-container-item">
           <Components.VisibilityButton
             onClick={this.handleVisibilityButtonClick}
             toggleOn={this.props.data.isVisible}
@@ -110,7 +110,7 @@ class EditContainer extends Component {
     }
 
     return (
-      <span className="edit-container-item custom-edit-container-item">
+      <span className="edit-container-item edit-container-item">
         <Components.EditButton
           onClick={this.handleEditButtonClick}
           status={status}
