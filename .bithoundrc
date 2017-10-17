@@ -56,6 +56,9 @@
     "lint": {"engine": "eslint"}
   },
   "dependencies": {
+    "mute": [
+      "enzyme"
+    ],
     "unused-ignores": [
       "sweetalert2",
       "font-awesome",

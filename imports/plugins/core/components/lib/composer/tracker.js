@@ -3,6 +3,10 @@ import { Tracker } from "meteor/tracker";
 import { Components } from "../components";
 import compose from "./compose";
 
+/**
+ * @file **Reaction Components API** - Most of the React components in the Reaction UI can be replaced or extended with the API outlined here. This allows anyone to create a custom plugin that can easily change the look of the UI and/or extend its functionality without having to edit core Reaction code. See {@link https://docs.reactioncommerce.com/reaction-docs/master/components-api full tutorial and documentation}.
+ * @module components
+ */
 
 /**
  * getTrackerLoader creates a Meteor Tracker to watch dep updates from
