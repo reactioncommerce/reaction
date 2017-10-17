@@ -59,7 +59,23 @@ Template.taxCloudSettings.helpers({
         `settings.${providerName}.taxCodeUrl`
 
       ],
-      handleSubmit: () => { console.log("Tried to change tax cloud settings."); }
+      handleSubmit: (event, changedInfo, targetField) => {
+        if (!changedInfo.isValid) {
+          return;
+        }
+        Meteor.call("package/update", packageName, targetField, changedInfo.doc.settings.taxcloud, (error) => {
+          if (error) {
+            Alerts.toast(
+              i18next.t("admin.update.updateFailed", { defaultValue: "Failed to update TaxCloud settings." }),
+              "error"
+            );
+          }
+          Alerts.toast(
+            i18next.t("admin.update.updateSucceeded", { defaultValue: "TaxCloud settings updated." }),
+            "success"
+          );
+        });
+      }
     };
   }
 });
