@@ -74,4 +74,22 @@
       font-weight: normal;
     }
   }
+  .order-details-side {
+    .flex(0 0 100%);
+    min-width: none;
+    max-width: none;
+  }
+  .order-details-main {
+    .flex(0 0 100%);
+  }
+  .shipping-payment-details {
+    display: flex;
+    .shipping-info, .payment-info{
+      flex: 1 1 8%;
+      width: 50%;
+    }
+    .shipping-info{
+      margin: 0 1.2rem 0 0;
+    }
+  }
 }

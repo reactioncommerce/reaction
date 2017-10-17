@@ -71,29 +71,35 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
       <div className="order-details-side">
 
         {/* This is the right side / side content */}
-        <div className="order-details-content-title">
-          <Components.Translation defaultValue="Shipping Address" i18nKey={"cartCompleted.shippingAddress"} />
-        </div>
-        {orderSummary.shipping.map((shipment) => {
-          if (shipment.address.fullName || shipment.address.address1) {
-            return <div className="order-details-info-box" key={shipment._id}>
-              <div className="order-details-info-box-content">
-                <p>
-                  {shipment.address.fullName}<br/>
-                  {shipment.address.address1}<br/>
-                  {shipment.address.city}, {shipment.address.region} {shipment.address.postal} {shipment.address.country}
-                </p>
-              </div>
-            </div>;
-          }
-        })}
+        <div className="shipping-payment-details">
+          <div className="shipping-info">
+            <div className="order-details-content-title">
+              <Components.Translation defaultValue="Shipping Address" i18nKey={"cartCompleted.shippingAddress"} />
+            </div>
+            {orderSummary.shipping.map((shipment) => {
+              if (shipment.address.fullName || shipment.address.address1) {
+                return <div className="order-details-info-box" key={shipment._id}>
+                  <div className="order-details-info-box-content">
+                    <p>
+                      {shipment.address.fullName}<br/>
+                      {shipment.address.address1}<br/>
+                      {shipment.address.city}, {shipment.address.region} {shipment.address.postal} {shipment.address.country}
+                    </p>
+                  </div>
+                </div>;
+              }
+            })}
+          </div>
 
-        <div className="order-details-content-title">
-          <Components.Translation defaultValue="Payment Method" i18nKey={"cartCompleted.paymentMethod"} />
+          <div className="payment-info">
+            <div className="order-details-content-title">
+              <Components.Translation defaultValue="Payment Method" i18nKey={"cartCompleted.paymentMethod"} />
+            </div>
+            {paymentMethods.map(function (paymentMethod) {
+              return <CompletedOrderPaymentMethod key={paymentMethod.key} paymentMethod={paymentMethod} />;
+            })}
+          </div>
         </div>
-        {paymentMethods.map(function (paymentMethod) {
-          return <CompletedOrderPaymentMethod key={paymentMethod.key} paymentMethod={paymentMethod} />;
-        })}
         <CompletedOrderSummary shops={shops} orderSummary={orderSummary} />
         {/* This is the right side / side content */}
       </div>
