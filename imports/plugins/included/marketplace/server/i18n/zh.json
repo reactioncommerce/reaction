@@ -20,6 +20,12 @@
         "myShop": "我的店铺"
       },
       "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "该应用程序未启用Stripe Connect。请联系管理员。",
+          "shopEmailNotConfigured": "请先配置您的商店电子邮件。",
+          "shopAddressNotConfigured": "请先配置您的店铺地址",
+          "shopNotActive": "您的商店没有活动。请联系市场主人。"
+        },
         "settings": {
           "dashboardMarketplaceSettingsSaved": "市场设置已成功保存！",
           "dashboardMarketplaceSettingsFailed": "无法保存市场设置"

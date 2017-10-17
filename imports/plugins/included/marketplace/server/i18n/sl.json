@@ -20,6 +20,12 @@
         "myShop": "Moja trgovina"
       },
       "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect za to aplikacijo ni omogočen. Obrnite se na skrbnika.",
+          "shopEmailNotConfigured": "Najprej nastavite e-poštno sporočilo o trgovini.",
+          "shopAddressNotConfigured": "Najprej konfigurirajte naslov vaše trgovine",
+          "shopNotActive": "Vaša trgovina ni aktivna. Obrnite se na lastnika tržnice."
+        },
         "settings": {
           "dashboardMarketplaceSettingsSaved": "Nastavitve tržnice so uspešno shranjene!",
           "dashboardMarketplaceSettingsFailed": "Nastavitev Marketplace ni bilo mogoče shraniti"

@@ -7,7 +7,7 @@ import { connectorsRoles } from "../../lib/roles";
 /**
  * @file Methods for syncing Shopify orders
  *       contains methods and helpers for synchronization of orders between a Shopify store and a Reaction shop
- * @module connectors/shopify/sync/orders
+ * @module connectors-shopify
  */
 
 /**

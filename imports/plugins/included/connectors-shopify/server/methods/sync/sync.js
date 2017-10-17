@@ -3,8 +3,8 @@ import { check } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
 
 /**
- * @file Methods for setting up and removing synchronization between a Shopify store and a Reaction shop
- * @module connectors/shopify/sync
+ * @file **Shopify Connector** - Methods for setting up and removing synchronization between a Shopify store and a Reaction shop
+ * @module connectors-shopify
  */
 
 export const methods = {

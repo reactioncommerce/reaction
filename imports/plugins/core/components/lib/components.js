@@ -1,5 +1,10 @@
 import { compose, setDisplayName } from "recompose";
 
+/**
+ * @file Reaction Components API
+ *
+ * @module components
+ */
 
 export const Components = {}; // populated with final wrapped components
 export const ComponentsTable = {}; // storage for separate elements of each component

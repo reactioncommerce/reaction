@@ -3,7 +3,7 @@ import { Reaction } from "/server/api";
 
 /**
  * @file Shopify connector api methods and helpers
- * @module connectors/shopify/api
+ * @module connectors-shopify
  */
 
 /**

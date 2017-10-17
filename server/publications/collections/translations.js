@@ -35,7 +35,7 @@ Meteor.publish("Translations", function (languages) {
   for (const sessionLanguage of sessionLanguages) {
     langTranQuery.push({
       i18n: sessionLanguage,
-      shopId: shopId
+      shopId: Reaction.getPrimaryShopId()
     });
   }
 
