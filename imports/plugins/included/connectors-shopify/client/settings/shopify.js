@@ -27,16 +27,17 @@ Template.shopifyImport.events({
 
     // If this is the primary shop, redirect to index
     if (Reaction.getShopId() === Reaction.getPrimaryShopId()) {
-      console.log("redirecting to index");
       Router.go("index");
     } else {
-      const shop = Shops.findOne({ _id: Reaction.getShopId() });
+      const shopId = Reaction.getShopId();
+      const shop = Shops.findOne({ _id: shopId });
+
+      // Check to see if this shop has a slug, otherwise direct to shopId route
       if (shop && shop.slug) {
         Router.go(`/shop/${shop.slug}`);
       } else {
-        Router.go(`/shop/${Reaction.getShopId()}`);
+        Router.go(`/shop/${shopId}`);
       }
-      // Check to see if this shop has a slug, otherwise direct to shopId route
     }
 
     Meteor.call("connectors/shopify/import/products", (err) => {
