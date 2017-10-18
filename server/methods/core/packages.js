@@ -19,21 +19,24 @@ export function updatePackage(packageName, field, value) {
   check(field, String);
   check(value, Object);
 
-  if (!Reaction.hasPermission([packageName])) {
-    throw new Meteor.Error(403, `Access Denied. You don't have permissions for the ${packageName} package.`);
+  const userId = Meteor.userId();
+  const shopId = Reaction.getShopId();
+  if (!Reaction.hasPermission([packageName], userId, shopId)) {
+    throw new Meteor.Error("access-denied", `Access Denied. You don't have permissions for the ${packageName} package.`);
   }
 
-  // TODO: What if the said Package doesn't exist? Should we create it? Or
-  // throw an error?
-
-  return Packages.update({
+  const updateResult = Packages.update({
     name: packageName,
-    shopId: Reaction.getShopId()
+    shopId: shopId
   }, {
     $set: {
       [field]: value
     }
   });
+  if (updateResult !== 1) {
+    throw new Meteor.Error("not-found", `An error occurred while updating the package ${packageName}.`);
+  }
+  return updateResult;
 }
 
 Meteor.methods({
