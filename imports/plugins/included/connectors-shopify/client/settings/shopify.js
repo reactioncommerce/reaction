@@ -2,8 +2,8 @@ import { Meteor } from "meteor/meteor";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
-import { Reaction, i18next } from "/client/api";
-import { Packages } from "/lib/collections";
+import { Reaction, Router, i18next } from "/client/api";
+import { Packages, Shops } from "/lib/collections";
 import { ShopifyConnectPackageConfig } from "../../lib/collections/schemas";
 import "./shopify.html";
 
@@ -24,6 +24,20 @@ Template.shopifyImport.events({
     event.preventDefault();
     $(event.currentTarget).html(`<i class='fa fa-circle-o-notch fa-spin'></i> ${i18next.t("admin.shopifyConnectSettings.importing")}`);
     event.currentTarget.disabled = true;
+
+    // If this is the primary shop, redirect to index
+    if (Reaction.getShopId() === Reaction.getPrimaryShopId()) {
+      console.log("redirecting to index");
+      Router.go("index");
+    } else {
+      const shop = Shops.findOne({ _id: Reaction.getShopId() });
+      if (shop && shop.slug) {
+        Router.go(`/shop/${shop.slug}`);
+      } else {
+        Router.go(`/shop/${Reaction.getShopId()}`);
+      }
+      // Check to see if this shop has a slug, otherwise direct to shopId route
+    }
 
     Meteor.call("connectors/shopify/import/products", (err) => {
       $(event.currentTarget).html(`
