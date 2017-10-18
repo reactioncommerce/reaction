@@ -29,27 +29,28 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
     );
   }
 
-  const headerText = Router.getRouteName() === "account/profile" ? (
-    <h3>
-      <strong>Order ID </strong>{orderId}
-    </h3>
-  ) : (
-    <div>
-      {/* This is the left side / main content */}
-      <h3><Components.Translation defaultValue="Thank You" i18nKey={"cartCompleted.thankYou"} /></h3>
-      <p><strong>Order ID </strong>{orderId}</p>
-      {/* show a different message depending on whether we have an email or not */}
-      <AddEmail order={order} orderEmail={order.email} />
-      {/* This is the left side / main content*/}
-    </div>
-  );
+  let headerText;
+  let isProfilePage = false;
+
+  if (Router.getRouteName() === "account/profile") {
+    headerText = null;
+    isProfilePage = true;
+  } else {
+    headerText = (
+      <div className="order-details-header">
+        {/* This is the left side / main content */}
+        <h3><Components.Translation defaultValue="Thank You" i18nKey={"cartCompleted.thankYou"} /></h3>
+        <p><strong>Order ID </strong>{orderId}</p>
+        {/* show a different message depending on whether we have an email or not */}
+        <AddEmail order={order} orderEmail={order.email} />
+        {/* This is the left side / main content*/}
+      </div>
+    );
+  }
 
   return (
     <div className="container order-completed">
-      <div className="order-details-header">
-        { headerText }
-      </div>
-
+      { headerText }
       <div className="order-details-main">
         <div className="order-details-content-title">
           <Components.Translation defaultValue="Your Items" i18nKey={"cartCompleted.yourItems"} />
@@ -63,6 +64,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
               key={shopKey}
               shippingMethod={shop[shopKey].shippingMethod}
               handleDisplayMedia={handleDisplayMedia}
+              isProfilePage={isProfilePage}
             />
           );
         })}
@@ -100,7 +102,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
             })}
           </div>
         </div>
-        <CompletedOrderSummary shops={shops} orderSummary={orderSummary} />
+        <CompletedOrderSummary shops={shops} orderSummary={orderSummary} isProfilePage={isProfilePage} />
         {/* This is the right side / side content */}
       </div>
 
