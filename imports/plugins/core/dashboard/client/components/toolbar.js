@@ -52,11 +52,6 @@ class PublishControls extends Component {
     }
   }
 
-  // Get shops that are not disabled(archived)
-  getActiveShops(shops) {
-    return shops.filter((shop) => shop.workflow.status !== "disabled");
-  }
-
   renderViewControls() {
     if (this.props.showViewAsControls) {
       return (
@@ -81,9 +76,8 @@ class PublishControls extends Component {
 
   renderShopSelect() {
     let menuItems;
-    const shops = this.getActiveShops(this.props.shops);
-    if (Array.isArray(shops)) {
-      menuItems = shops.map((shop, index) => {
+    if (Array.isArray(this.props.shops)) {
+      menuItems = this.props.shops.map((shop, index) => {
         return (
           <MenuItem
             label={shop.name}

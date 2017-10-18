@@ -51,7 +51,10 @@ function composer(props, onData) {
 
   if (user && user.roles) {
     // Get all shops for which user has roles
-    shops = Shops.find({ _id: { $in: Object.keys(user.roles) } }).fetch();
+    shops = Shops.find({
+      "_id": { $in: Object.keys(user.roles) },
+      "workflow.status": { $in: ["active", "new"] }
+    }).fetch();
   }
 
   // Standard variables
