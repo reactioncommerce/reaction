@@ -5,12 +5,12 @@ import { Shops, Accounts } from "/lib/collections";
 import { currencyDep } from "./main";
 
 /**
- * findCurrency
+ * @name findCurrency
  * @summary Private function for returning user currency
  * @private
- * @param   {Object}  defaultCurrency    The default currency
+ * @param {Object}  defaultCurrency    The default currency
  * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
- * @return  {Object}  user currency or shop currency if none is found
+ * @return {Object}  user currency or shop currency if none is found
  */
 function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   const shop = Shops.findOne(Reaction.getPrimaryShopId(), {
@@ -42,8 +42,10 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
 }
 
 /**
- * formatPriceString
+ * @name formatPriceString
  * @summary Return shop/locale specific formatted price. Also accepts a range formatted with " - ".
+ * @memberof i18n
+ * @method
  * @param {String} formatPrice - currentPrice or "xx.xx - xx.xx" formatted String
  * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
  * @return {String} returns locale formatted and exchange rate converted values
@@ -101,8 +103,10 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
 }
 
 /**
- * formatNumber
- * @param  {String} currentPrice - current Price
+ * @name formatNumber
+ * @memberof i18n
+ * @method
+ * @param {String} currentPrice - current Price
  * @return {String} return formatted number
  */
 export function formatNumber(currentPrice) {
