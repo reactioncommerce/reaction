@@ -131,6 +131,7 @@
     "eslint-plugin-react": "^7.1.0",
     "jest": "^21.2.1",
     "js-yaml": "^3.9.0",
+    "jsdoc": "^3.5.5",
     "react-addons-test-utils": "15.6.0"
   },
   "postcss": {
@@ -143,7 +144,8 @@
     }
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json"
   },
   "babel": {
     "plugins": [

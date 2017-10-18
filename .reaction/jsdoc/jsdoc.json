@@ -22,7 +22,7 @@
   "opts": {
     "template": ".reaction/jsdoc/templates",
     "encoding": "utf8",
-    "destination": "/tmp/reaction-jsdoc/",
+    "destination": "/tmp/reaction-docs/",
     "recurse": true
   },
   "sourceType": "module",
