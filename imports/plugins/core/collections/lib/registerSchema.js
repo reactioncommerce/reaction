@@ -1,11 +1,18 @@
 export const Schemas = {}; // populated with all Schemas
 
 /**
- * Register a schema
+ * @file **Reaction Schemas** - Use these methods to register and fetch Reaction Core schemas. See {@link https://docs.reactioncommerce.com/reaction-docs/master/simple-schema full documentation}.
+ *
+ * @module collections
+ */
+
+/**
+ * @name registerSchema
+ * @method
+ * @summary Register a schema. Adds schema to Schemas object.
  * @param {String} name The name of the schema to register.
  * @param {Array} schema Schema data.
- *
- * @returns {Empty} no return. Adds schema to Schemas object
+ * @returns {void}
  */
 export function registerSchema(name, schema) {
   if (!name || !schema) {
@@ -17,7 +24,9 @@ export function registerSchema(name, schema) {
 }
 
 /**
- * Get all schemas registered with registerSchema().
+ * @name getSchemas
+ * @method
+ * @summary Get all schemas registered with `registerSchema()`.
  * @return {Object} An object that contains all registered schemas
  */
 export function getSchemas() {
