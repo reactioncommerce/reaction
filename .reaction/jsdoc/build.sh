@@ -1,11 +1,12 @@
 #!/bin/bash
-
+## runs jsdoc
+## master branch docs will be published via aws s3 sync when all test pass
 set -e
 
-# build new jsdocs
+## install awscli
+apt-get -y -qq install awscli
+## install jsdoc
 npm install -g jsdoc
+# build new jsdocs
 echo "Running jsdocs on the reaction codebase"
 jsdoc . --verbose --configure .reaction/jsdoc/jsdoc.json
-
-# publish the jsdocs somewhere, or make an image or something cool.
-# do that here!
