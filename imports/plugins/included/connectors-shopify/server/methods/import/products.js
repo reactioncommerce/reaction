@@ -171,7 +171,6 @@ function createTagCache() {
 }
 
 
-
 /**
  * Finds and returns arrays of option values for each of Shopify's option layers
  * returns an object consisting of the following three values:
