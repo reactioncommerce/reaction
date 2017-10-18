@@ -167,9 +167,10 @@ function composer(props, onData) {
   }
 
   const activeShops = Shops.find({
-    "workflow.status": {
-      $in: ["active", "new"]
-    }
+    $or: [
+      { "workflow.status": "active" },
+      { _id: Reaction.getPrimaryShopId() }
+    ]
   }).fetch();
 
   const productCursor = Products.find({
