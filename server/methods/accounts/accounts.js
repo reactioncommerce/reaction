@@ -406,7 +406,7 @@ export function addressBookAdd(address, accountUserId) {
  * @name addressBookUpdate
  * @memberof Meteor/Accounts
  * @method
- * @description update existing address in user's profile
+ * @summary Update existing address in user's profile
  * @param {Object} address - address
  * @param {String|null} [accountUserId] - `account.userId` used by admin to edit users
  * @param {shipping|billing} [type] - name of selected address type
