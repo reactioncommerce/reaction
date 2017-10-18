@@ -1,12 +1,11 @@
 <template name="taxCloudSettings">
 
   {{#unless taxCloudPackageData.settings.taxcloud.apiLoginId}}
-  <div class="alert alert-info">
-    <span data-i18n="admin.taxSettings.taxcloudCredentials">Add API Login ID to enable</span>
-    <a href="https://www.taxcloud.com/" target="_blank">TaxCloud</a>
-  </div>
+    <div class="alert alert-info">
+      <span data-i18n="admin.taxSettings.taxcloudCredentials">Add API Login ID to enable</span>
+      <a href="https://www.taxcloud.com/" target="_blank">TaxCloud</a>
+    </div>
   {{/unless}}
-
 
   <div>
     {{> React taxCloudCard}}
