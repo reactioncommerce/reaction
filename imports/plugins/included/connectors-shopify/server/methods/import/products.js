@@ -258,7 +258,7 @@ export const methods = {
     const apiCreds = getApiInfo();
     const shopify = new Shopify(apiCreds);
     const shopId = Reaction.getShopId();
-    const limit = 20; // Shopify returns a maximum of 250 results per request
+    const limit = 50; // Shopify returns a maximum of 250 results per request
     const tagCache = createTagCache();
     const ids = [];
     const opts = Object.assign({}, {
@@ -268,7 +268,7 @@ export const methods = {
 
     try {
       const productCount = await shopify.product.count();
-      const numPages = 5; // Math.ceil(productCount / limit);
+      const numPages = Math.ceil(productCount / limit);
       const pages = [...Array(numPages).keys()];
       Logger.info(`Shopify Connector is preparing to import ${productCount} products`);
 
