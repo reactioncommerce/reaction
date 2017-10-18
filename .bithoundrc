@@ -58,7 +58,8 @@
   },
   "dependencies": {
     "mute": [
-      "enzyme"
+      "enzyme",
+      "jsdoc"
     ],
     "unused-ignores": [
       "sweetalert2",
