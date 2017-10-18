@@ -277,7 +277,7 @@ export const methods = {
         const shopifyProducts = await shopify.product.list({ ...opts, page: page });
         for (const shopifyProduct of shopifyProducts) {
           if (!Products.findOne({ shopifyId: shopifyProduct.id }, { fields: { _id: 1 } })) {
-            Logger.info(`Importing ${shopifyProduct.title}`);
+            Logger.debug(`Importing ${shopifyProduct.title}`);
             const price = { min: null, max: null, range: "0.00" };
 
             // Get tags from shopify and register them if they don't exist.
@@ -431,7 +431,7 @@ export const methods = {
 
                               const reactionTernaryOptionId = Products.insert(reactionTernaryOption, { type: "variant" });
                               ids.push(reactionTernaryOptionId);
-                              Logger.info(`Imported ${shopifyProduct.title} ${variant}/${option}/${ternaryOption}`);
+                              Logger.debug(`Imported ${shopifyProduct.title} ${variant}/${option}/${ternaryOption}`);
 
                               // Update Max Price
                               if (price.max === null || price.max < reactionTernaryOption.price) {
@@ -499,7 +499,7 @@ export const methods = {
             Products.update({ _id: reactionProductId }, { $set: { price: price } }, { selector: { type: "simple" }, publish: true });
             Logger.debug(`Product ${shopifyProduct.title} added`);
           } else { // product already exists check
-            Logger.info(`Product ${shopifyProduct.title} already exists`);
+            Logger.debug(`Product ${shopifyProduct.title} already exists`);
           }
         } // End product loop
       } // End pages loop
