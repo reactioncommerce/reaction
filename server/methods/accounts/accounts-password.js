@@ -4,8 +4,17 @@ import { check } from "meteor/check";
 import { Accounts } from "meteor/accounts-base";
 import { Reaction, Logger } from "/server/api";
 
+/**
+ * @name sendResetPasswordEmail
+ * @memberof Meteor/Accounts
+ * @method
+ * @example Meteor.call("accounts/sendResetPasswordEmail", options)
+ * @summary Send reset password email
+ * @param {Object} options
+ * @param {String} options.email - email of user
+ * @returns {false}
+ */
 Meteor.methods({
-
   "accounts/sendResetPasswordEmail"(options) {
     check(options, {
       email: String
