@@ -1,6 +1,6 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Products } from "/lib/collections";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "/imports/plugins/core/collections";
 
 export const ShopifyProduct = new SimpleSchema({
   shopifyId: {
