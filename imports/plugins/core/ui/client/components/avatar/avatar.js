@@ -21,6 +21,7 @@ const ReactionAvatar = (props) => {
       style={style}
       // Below props usually aren't passed, and will use defaults
       color={props.color}
+      currentUser={props.currentUser}
       facebookId={props.facebookId}
       fgColor={props.fgColor}
       googleId={props.googleId}
@@ -39,6 +40,7 @@ ReactionAvatar.propTypes = {
   className: PropTypes.string,
   color: PropTypes.string,
   colors: PropTypes.array,
+  currentUser: PropTypes.bool,
   email: PropTypes.string,
   facebookId: PropTypes.string,
   fgColor: PropTypes.string,
@@ -59,6 +61,7 @@ ReactionAvatar.propTypes = {
 ReactionAvatar.defaultProps = {
   className: null,
   color: null,
+  currentUser: true,
   email: null,
   facebookId: null,
   fgColor: "#FFFFFF",
