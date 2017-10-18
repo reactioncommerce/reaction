@@ -181,7 +181,7 @@
       "ignoreComments": true,
       "ignoreUrls": true
     }], // http://eslint.org/docs/rules/max-len
-    "require-jsdoc": [1, {
+    "require-jsdoc": [0, {
       "require": {
         "FunctionDeclaration": true,
         "MethodDefinition": false,
@@ -189,7 +189,7 @@
         "ArrowFunctionExpression": false
         }
     }], // https://eslint.org/docs/rules/require-jsdoc
-    "valid-jsdoc": [2, {
+    "valid-jsdoc": [0, {
       "prefer": {
         "arg": "param",
         "argument": "param"
