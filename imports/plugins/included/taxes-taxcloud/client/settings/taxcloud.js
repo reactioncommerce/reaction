@@ -67,6 +67,7 @@ Template.taxCloudSettings.helpers({
               i18next.t("admin.update.updateFailed", { defaultValue: "Failed to update TaxCloud settings." }),
               "error"
             );
+            return;
           }
           Alerts.toast(
             i18next.t("admin.update.updateSucceeded", { defaultValue: "TaxCloud settings updated." }),
