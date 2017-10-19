@@ -166,17 +166,17 @@ function composer(props, onData) {
     window.prerenderReady = true;
   }
 
-  const activeShops = Shops.find({
+  const activeShopsIds = Shops.find({
     $or: [
       { "workflow.status": "active" },
       { _id: Reaction.getPrimaryShopId() }
     ]
-  }).fetch();
+  }).fetch().map(activeShop => activeShop._id);
 
   const productCursor = Products.find({
     ancestors: [],
     type: { $in: ["simple"] },
-    shopId: { $in: activeShops.map(activeShop => (activeShop._id)) }
+    shopId: { $in: activeShopsIds }
   });
 
   const products = productCursor.map((product) => {
