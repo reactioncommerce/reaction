@@ -4,9 +4,18 @@ import { check, Match } from "meteor/check";
 import { Jobs, Packages } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
+/**
+ * @file Meteor methods for Email
+ *
+ *
+ * @namespace Meteor/Email
+*/
 Meteor.methods({
   /**
-   * Verify the current email configuration
+   * @name verifySettings
+   * @method
+   * @summary Verify the current email configuration
+   * @memberof Meteor/Email
    * @param {Object} settings - optional settings object (otherwise uses settings in database)
    * @return {Boolean} - returns true if SMTP connection succeeds
    */
@@ -57,9 +66,11 @@ Meteor.methods({
     }
   },
 
-
   /**
-   * Save new email configuration
+   * @name saveSettings
+   * @method
+   * @summary Save new email configuration
+   * @memberof Meteor/Email
    * @param {Object} settings - mail provider settings
    * @return {Boolean} - returns true if update succeeds
    */
@@ -90,9 +101,11 @@ Meteor.methods({
     return true;
   },
 
-
   /**
-   * Retry a failed or cancelled email job
+   * @name retryFailed
+   * @method
+   * @summary Retry a failed or cancelled email job
+   * @memberof Meteor/Email
    * @param {String} jobId - a sendEmail job ID
    * @return {Boolean} - returns true if job is successfully restarted
    */
