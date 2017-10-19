@@ -23,7 +23,7 @@ var CombinedStream = Npm.require('combined-stream');
  * @property FS.TempStore
  * @type {object}
  * @public
- * *it's an event emitter*
+ * @summary An event emitter
  */
 FS.TempStore = new EventEmitter();
 
@@ -35,7 +35,7 @@ var tracker = FS.TempStore.Tracker = new Mongo.Collection('cfs._tempstore.chunks
  * @type {StorageAdapter}
  * @namespace FS.TempStore
  * @private
- * This property is set to either `FS.Store.FileSystem` or `FS.Store.GridFS`
+ * @summary This property is set to either `FS.Store.FileSystem` or `FS.Store.GridFS`
  *
  * __When and why:__
  * We normally default to `cfs-filesystem` unless its not installed. *(we default to gridfs if installed)*
@@ -203,7 +203,7 @@ FS.TempStore.removeFile = function fsTempStoreRemoveFile(fileObj) {
 /**
  * @method FS.TempStore.removeAll
  * @public
- * This function removes all files from tempstorage - it cares not if file is
+ * @summary This function removes all files from tempstorage - it cares not if file is
  * already removed or not found, goal is reached anyway.
  */
 FS.TempStore.removeAll = function fsTempStoreRemoveAll() {

@@ -10,7 +10,7 @@ import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
  * products to a publication
  * @method findProductMedia
  * @param {Object} publicationInstance instance of the publication that invokes this method
- * @param {[String]} productIds array of productIds
+ * @param {array} productIds array of productIds
  * @return {Object} Media Cursor containing the product media that matches the selector
  */
 export function findProductMedia(publicationInstance, productIds) {
