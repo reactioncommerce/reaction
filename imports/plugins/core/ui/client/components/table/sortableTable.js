@@ -7,9 +7,12 @@ import { Counts } from "meteor/tmeasday:publish-counts";
 import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
-// SortableTable is a wrapper around ReactTable.
-// Anything that works in ReactTable should work in SortableTable OOTB (although it may not be styled).
-// ReactTable docs are available at: https://react-table.js.org/#/story/readme
+/**
+ * @file SortableTable is a wrapper around ReactTable.
+ *       Anything that works in ReactTable should work in SortableTable out of th ebox. Note: it may not be styled
+ *       ReactTable docs are available at: https://react-table.js.org/#/story/readme
+ * @module SortableTable
+ */
 
 class SortableTable extends Component {
   constructor(props) {
@@ -35,7 +38,8 @@ class SortableTable extends Component {
 
 
   /**
-   * getMeteorData() - Absorb publication / collection information from props, output data from subscription
+   * getMeteorData()
+   * @summary Absorb publication / collection information from props, output data from subscription
    * @prop {String} matchingResultsCount - Send to Counts collection to get results count of sub
    * @prop {String} publication - publication to subscribe to
    * @prop {Object} collection - collection to get data from
@@ -70,9 +74,8 @@ class SortableTable extends Component {
 
 
   /**
-   * customFilter() - Replace default filter with customized filter
-   * custom filter is case insensitive
-   * custom filter searches entire string, not just from string start
+   * customFilter()
+   * @summary Replace default filter with customized filter, custom filter is case insensitive, custom filter searches entire string, not just from string start
    * @param {Object} filter user-typed data
    * @param {Object} row row info for associated filter
    * @returns {String|Boolean} replacement filter
@@ -88,7 +91,8 @@ class SortableTable extends Component {
 
 
   /**
-   * handleFilterInput() - Update state when filter is changed
+   * handleFilterInput()
+   * @summary Update state when filter is changed
    * @param {script} event onChange event when typing in filter field
    * @param {string} value text field input
    * @param {string} field input field name to watch
@@ -102,7 +106,8 @@ class SortableTable extends Component {
 
 
   /**
-   * handleClick() - Handle click on table row
+   * handleClick()
+   * @summary Handle click on table row
    * @param {object} rowInfo row data passed in from ReactTable
    * @return {function} return onRowClick function prop, or undefined if not supplied
    */
@@ -126,7 +131,8 @@ class SortableTable extends Component {
 
 
   /**
-   * renderColumns() - Absorb columnMetadata information from props, output columns to display
+   * renderColumns()
+   * @summary Absorb columnMetadata information from props, output columns to display
    * @prop {String} columnMetadata - Object of data field, column header
    * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
    */
@@ -145,7 +151,8 @@ class SortableTable extends Component {
 
 
   /**
-   * renderData() - Take data from getMeteorData() and filter if needed, or spit out raw if no filter
+   * renderData()
+   * @summary Take data from getMeteorData() and filter if needed, or spit out raw if no filter
    * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
    */
   renderData() {
@@ -168,7 +175,8 @@ class SortableTable extends Component {
 
 
   /**
-   * renderColumnFilter() - Uses props to determine if Column Filters should be shown
+   * renderColumnFilter()
+   * @summary Uses props to determine if Column Filters should be shown
    * @returns {Bool} returns true or false for column filters
    */
   renderColumnFilter() {
@@ -183,7 +191,8 @@ class SortableTable extends Component {
 
 
   /**
-   * getTableData() - Checks if JSON data is passed vs publication data
+   * getTableData()
+   * @summary Checks if JSON data is passed vs publication data
    * @returns {Number} returns number of available data
    */
   getTableData() {
@@ -195,7 +204,8 @@ class SortableTable extends Component {
   }
 
   /**
-   * renderTableFilter() - Uses props to determine if a Table Filter should be shown
+   * renderTableFilter()
+   * @summary Uses props to determine if a Table Filter should be shown
    * @returns {node} returns JSX node or null
    */
   renderTableFilter() {
@@ -217,7 +227,8 @@ class SortableTable extends Component {
   }
 
   /**
-   * selectedRowsClassName() - if any rows are selected, give them a className of "selected-row"
+   * selectedRowsClassName()
+   * @summary If any rows are selected, give them a className of "selected-row"
    * @param {object} rowInfo row data passed in from ReactTable
    * @returns {String} className to apply to row that is selected, or empty string if no row is selected
    */
@@ -299,40 +310,46 @@ class SortableTable extends Component {
   }
 }
 
+/**
+  * @summary SortableTable propTypes
+  * @param {Object} props - React PropTypes
+  * @property {object} collection collection to get data from
+  * @property {array} columnMetadata provides filtered columns with i18n headers
+  * @property {array} data provides array of objects to be used in place of publication data
+  * @property {number} defaultPageSize how many results per page
+  * @property {bool} filterType filter by table, column, or both
+  * @property {array} filteredFields provides filtered columns, use columnMetadata instead
+  * @property {bool} isFilterable show / hide column filter
+  * @property {bool} isResizeable allow resizing of table columns
+  * @property {bool} isSortable allow column sorting
+  * @property {string} matchingResultsCount provides Count publication to get count from
+  * @property {number} minRows minimum amount of rows to display in table
+  * @property {string} noDataMessage text to display when no data is available
+  * @property {function} onRowClick provides function / action when clicking on row
+  * @property {string} publication provides publication to get Meteor data from
+  * @property {object} query provides query for publication filtering
+  * @property {array} selectedRows provides selected rows in the table
+  * @property {function} transform transform of collection for grid results
+  * @return {array} React propTypes
+  */
+
 SortableTable.propTypes = {
-  /** @type {object} collection collection to get data from */
   collection: PropTypes.object,
-  /** @type {array} columnMetadata provides filtered columns with i18n headers */
   columnMetadata: PropTypes.array,
-  /** @type {array} data provides array of objects to be used in place of publication data */
   data: PropTypes.array,
-  /** @type {number} defaultPageSize how many results per page */
   defaultPageSize: PropTypes.number,
-  /** @type {bool} filterType filter by table, column, or both */
   filterType: PropTypes.string,
-  /** @type {array} filteredFields provides filtered columns, use columnMetadata instead */
   filteredFields: PropTypes.array,
-  /** @type {bool} isFilterable show / hide column filter */
   isFilterable: PropTypes.bool,
-  /** @type {bool} isResizeable allow resizing of table columns */
   isResizeable: PropTypes.bool,
-  /** @type {bool} isSortable allow column sorting */
   isSortable: PropTypes.bool,
-  /** @type {string} matchingResultsCount provides Count publication to get count from */
   matchingResultsCount: PropTypes.string,
-  /** @type {number} minRows minimum amount of rows to display in table */
   minRows: PropTypes.number,
-  /** @type {string} noDataMessage text to display when no data is available */
   noDataMessage: PropTypes.string,
-  /** @type {function} onRowClick provides function / action when clicking on row */
   onRowClick: PropTypes.func,
-  /** @type {string} publication provides publication to get Meteor data from */
   publication: PropTypes.string,
-  /** @type {object} query provides query for publication filtering */
   query: PropTypes.object,
-  /** @type {array} selectedRows provides selected rows in the table */
   selectedRows: PropTypes.array,
-  /** @type {function} transform transform of collection for grid results */
   transform: PropTypes.func
 };
 
