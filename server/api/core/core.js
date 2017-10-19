@@ -205,10 +205,10 @@ export default {
   /**
    * Finds all shops that a user has a given set of roles for
    * @method getShopsWithRoles
-   * @param  {[string]} roles an array of roles to check. Will return a shopId if the user has _any_ of the roles
+   * @param  {array} roles an array of roles to check. Will return a shopId if the user has _any_ of the roles
    * @param  {string} [userId=Meteor.userId()] Optional userId, defaults to Meteor.userId()
    *                                           Must pass this.userId from publications to avoid error!
-   * @return {[string]} Array of shopIds that the user has at least one of the given set of roles for
+   * @return {array} Array of shopIds that the user has at least one of the given set of roles for
    */
   getShopsWithRoles(roles, userId = Meteor.userId()) {
     // Owner permission for a shop superceeds grantable permissions, so we always check for owner permissions as well
