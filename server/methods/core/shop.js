@@ -691,7 +691,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/getWorkflow
+   * @name getWorkflow
+   * @method
+   * @memberof Meteor/Shop
    * @summary gets the current shop workflows
    * @param {String} name - workflow name
    * @return {Array} returns workflow array
@@ -712,8 +714,11 @@ Meteor.methods({
     });
     return shopWorkflows;
   },
+
   /**
-   * shop/updateLanguageConfiguration
+   * @name updateLanguageConfiguration
+   * @method
+   * @memberof Meteor/Shop
    * @summary enable / disable a language
    * @param {String} language - language name | "all" to bulk enable / disable
    * @param {Boolean} enabled - true / false
@@ -774,7 +779,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/updateCurrencyConfiguration
+   * @name updateCurrencyConfiguration
+   * @method
+   * @memberof Meteor/Shop
    * @summary enable / disable a currency
    * @param {String} currency - currency name | "all" to bulk enable / disable
    * @param {Boolean} enabled - true / false
@@ -832,7 +839,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/updateBrandAsset
+   * @name updateBrandAsset
+   * @method
+   * @memberof Meteor/Shop
    * @param {Object} asset - brand asset {mediaId: "", type, ""}
    * @return {Int} returns update result
    */
@@ -882,7 +891,9 @@ Meteor.methods({
   },
 
   /*
-   * shop/togglePackage
+   * @name togglePackage
+   * @method
+   * @memberof Meteor/Shop
    * @summary enable/disable Reaction package
    * @param {String} packageId - package _id
    * @param {Boolean} enabled - current package `enabled` state
@@ -901,8 +912,11 @@ Meteor.methods({
       }
     });
   },
+
   /*
-  * shop/changeLayout
+  * @name changeLayout
+  * @method
+  * @memberof Meteor/Shop
   * @summary Change the layout for all workflows so you can use a custom one
   * @param {String} shopId - the shop's ID
   * @param {String} layout - new layout to use
