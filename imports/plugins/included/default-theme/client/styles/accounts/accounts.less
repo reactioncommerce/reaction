@@ -63,6 +63,11 @@
 
 .user-orders-list{
   width: inherit;
+  .panel-content{
+    @media screen and (max-width: @screen-xs-max) {
+      padding: 5px 10px;
+    }
+  }
   .order-completed{
     width: inherit;
   }
@@ -76,13 +81,15 @@
     max-width: none;
   }
   .shipping-payment-details {
-    display: flex;
-    .shipping-info, .payment-info{
-      flex: 1 1 8%;
-      width: 50%;
-    }
-    .shipping-info{
-      margin: 0 1.2rem 0 0;
+    @media screen and (min-width: @screen-xs-max) {
+      display: flex;
+      .shipping-info, .payment-info{
+        flex: 1 1 8%;
+        width: 50%;
+      }
+      .shipping-info{
+        margin: 0 1.2rem 0 0;
+      }
     }
   }
 }

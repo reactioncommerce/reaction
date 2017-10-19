@@ -53,7 +53,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
       { headerText }
       <div className="order-details-main">
         <div className="order-details-content-title">
-          <Components.Translation defaultValue="Your Items" i18nKey={"cartCompleted.yourItems"} />
+          <Components.Translation defaultValue="Your items" i18nKey={"cartCompleted.yourItems"} />
         </div>
         {shops.map(function (shop) {
           const shopKey = Object.keys(shop);
@@ -76,7 +76,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
         <div className="shipping-payment-details">
           <div className="shipping-info">
             <div className="order-details-content-title">
-              <Components.Translation defaultValue="Shipping Address" i18nKey={"cartCompleted.shippingAddress"} />
+              <Components.Translation defaultValue="Shipping address" i18nKey={"cartCompleted.shippingAddress"} />
             </div>
             {orderSummary.shipping.map((shipment) => {
               if (shipment.address.fullName || shipment.address.address1) {
@@ -95,7 +95,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
 
           <div className="payment-info">
             <div className="order-details-content-title">
-              <Components.Translation defaultValue="Payment Method" i18nKey={"cartCompleted.paymentMethod"} />
+              <Components.Translation defaultValue="Payment method" i18nKey={"cartCompleted.paymentMethod"} />
             </div>
             {paymentMethods.map(function (paymentMethod) {
               return <CompletedOrderPaymentMethod key={paymentMethod.key} paymentMethod={paymentMethod} />;
