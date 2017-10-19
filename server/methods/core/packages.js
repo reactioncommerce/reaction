@@ -34,7 +34,7 @@ export function updatePackage(packageName, field, value) {
     }
   });
   if (updateResult !== 1) {
-    throw new Meteor.Error("not-found", `An error occurred while updating the package ${packageName}.`);
+    throw new Meteor.Error("server-error", `An error occurred while updating the package ${packageName}.`);
   }
   return updateResult;
 }
