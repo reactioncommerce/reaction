@@ -7,7 +7,8 @@ import * as Collections from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
 /**
- * quantityProcessing
+ * @method quantityProcessing
+ * @private
  * @summary perform calculations admissibility of adding product to cart
  * @param {Object} product - product to add to Cart
  * @param {Object} variant - product variant
@@ -44,7 +45,8 @@ function quantityProcessing(product, variant, itemQty = 1) {
 }
 
 /**
- * getSessionCarts
+ * @method getSessionCarts
+ * @private
  * @summary get Cart cursor with all session carts
  * @param {String} userId - current user _id
  * @param {String} sessionId - current user session id
@@ -96,28 +98,23 @@ function removeShippingAddresses(cart) {
 }
 
 /**
- * Reaction Cart Methods
- */
-
+ * @file Meteor for Cart
+ *
+ * @namespace Meteor/Cart
+*/
 
 Meteor.methods({
   /**
-   * cart/mergeCart
-   * @summary merge matching sessionId cart into specified userId cart
-   *
-   * There should be one cart for each independent, non logged in user session
-   * When a user logs in that cart now belongs to that user and we use the a
-   * single user cart.
-   * If they are logged in on more than one devices, regardless of session,the
-   * user cart will be used
-   * If they had more than one cart, on more than one device,logged in at
-   * separate times then merge the carts
-   *
-   * @param {String} cartId - cartId of the cart to merge matching session
-   * carts into.
+   * @method cart/mergeCart
+   * @summary Merge matching sessionId cart into specified userId cart
+   * @description There should be one cart for each independent, non-logged-in user session.
+   * When a user logs in that cart now belongs to that user and we use the a single user cart.
+   * If they are logged in on more than one devices, regardless of session,the user cart will be used
+   * If they had more than one cart, on more than one device,logged in at separate times then merge the carts
+   * @memberof Meteor/Cart
+   * @param {String} cartId - cartId of the cart to merge matching session carts into.
    * @param {String} [currentSessionId] - current client session id
-   * @todo I think this method should be moved out from methods to a Function
-   * Declaration to keep it more secure
+   * @todo I think this method should be moved out from methods to a Function Declaration to keep it more secure
    * @return {Object|Boolean} cartId - cartId on success or false
    */
   "cart/mergeCart": function (cartId, currentSessionId) {
@@ -240,14 +237,13 @@ Meteor.methods({
   },
 
   /**
-   * cart/createCart
-   * @description create new cart for user, but all checks for current cart's
-   * existence should go before this method will be called, to keep it clean
+   * @method cart/createCart
+   * @description create new cart for user, but all checks for current cart's existence should go before this method will be called, to keep it clean
    * @summary create and return new cart for user
+   * @memberof Meteor/Cart
    * @param {String} userId - userId to create cart for
    * @param {String} sessionId - current client session id
-   * @todo I think this method should be moved out from methods to a Function
-   * Declaration to keep it more secure
+   * @todo I think this method should be moved out from methods to a Function Declaration to keep it more secure
    * @returns {String} cartId - users cartId
    */
   "cart/createCart": function (userId, sessionId) {
@@ -317,12 +313,12 @@ Meteor.methods({
   },
 
   /**
-   *  cart/addToCart
+   *  @method cart/addToCart
    *  @summary add items to a user cart
-   *  when we add an item to the cart, we want to break all relationships
-   *  with the existing item. We want to fix price, qty, etc into history
-   *  however, we could check reactively for price /qty etc, adjustments on
-   *  the original and notify them
+   *  @description when we add an item to the cart, we want to break all relationships with the existing item.
+   *  We want to fix price, qty, etc into history
+   *  however, we could check reactively for price /qty etc, adjustments on the original and notify them
+   *  @memberof Meteor/Cart
    *  @param {String} productId - productId to add to Cart
    *  @param {String} variantId - product variant _id
    *  @param {Number} [itemQty] - qty to add to cart
@@ -481,7 +477,8 @@ Meteor.methods({
   },
 
   /**
-   * cart/removeFromCart
+   * @method cart/removeFromCart
+   * @memberof Meteor/Cart
    * @summary removes or adjust quantity of a variant from the cart
    * @param {String} itemId - cart item _id
    * @param {Number} [quantity] - if provided will adjust increment by quantity
@@ -572,8 +569,10 @@ Meteor.methods({
     Meteor.call("cart/resetShipmentMethod", cart._id);
     return cartResult;
   },
+
   /**
-   * cart/setShipmentMethod
+   * @method cart/setShipmentMethod
+   * @memberof Meteor/Cart
    * @summary saves method as order default
    * @param {String} cartId - cartId to apply shipmentMethod
    * @param {Object} method - shipmentMethod object
@@ -641,7 +640,8 @@ Meteor.methods({
   },
 
   /**
-   * cart/setUserCurrency
+   * @method cart/setUserCurrency
+   * @memberof Meteor/Cart
    * @summary saves user currency in cart, to be paired with order/setCurrencyExhange
    * @param {String} cartId - cartId to apply setUserCurrency
    * @param {String} userCurrency - userCurrency to set to cart
@@ -700,7 +700,8 @@ Meteor.methods({
   },
 
   /**
-   * cart/resetShipmentMethod
+   * @method cart/resetShipmentMethod
+   * @memberof Meteor/Cart
    * @summary removes `shipmentMethod` object from cart
    * @param {String} cartId - cart _id
    * @return {Number} update result
@@ -724,7 +725,8 @@ Meteor.methods({
   },
 
   /**
-   * cart/setShipmentAddress
+   * @method cart/setShipmentAddress
+   * @memberof Meteor/Cart
    * @summary adds address book to cart shipping
    * @param {String} cartId - cartId to apply shipmentMethod
    * @param {Object} address - addressBook object
@@ -867,7 +869,8 @@ Meteor.methods({
   },
 
   /**
-   * cart/setPaymentAddress
+   * @method cart/setPaymentAddress
+   * @memberof Meteor/Cart
    * @summary adds addressbook to cart payments
    * @param {String} cartId - cartId to apply payment address
    * @param {Object} address - addressBook object
@@ -918,17 +921,17 @@ Meteor.methods({
 
     return Collections.Cart.update(selector, update);
   },
+
   /**
-   * cart/unsetAddresses
-   * @description removes address from cart.
+   * @method cart/unsetAddresses
+   * @summary removes address from cart.
+   * @memberof Meteor/Cart
    * @param {String} addressId - address._id
    * @param {String} userId - cart owner _id
    * @param {String} [type] - billing default or shipping default
    * @since 0.10.1
-   * @todo check if no more address in cart as shipping, we should reset
-   * `cartWorkflow` to second step
-   * @return {Number|Object|Boolean} The number of removed documents or error
-   * object or `false` if we don't need to update cart
+   * @todo check if no more address in cart as shipping, we should reset `cartWorkflow` to second step
+   * @return {Number|Object|Boolean} The number of removed documents or errorobject or `false` if we don't need to update cart
    */
   "cart/unsetAddresses": function (addressId, userId, type) {
     check(addressId, String);
@@ -987,10 +990,10 @@ Meteor.methods({
   },
 
   /**
-   * cart/submitPayment
-   * @summary saves a submitted payment to cart, triggers workflow
-   * and adds "paymentSubmitted" to cart workflow
-   * Note: this method also has a client stub, that forwards to cartCompleted
+   * @method cart/submitPayment
+   * @memberof Meteor/Cart
+   * @summary saves a submitted payment to cart, triggers workflow and adds "paymentSubmitted" to cart workflow
+   * @description Note: this method also has a client stub, that forwards to cartCompleted
    * @param {Object|Array} paymentMethods - an array of paymentMethods or (deprecated) a single paymentMethod object
    * @return {String} returns update result
    */
@@ -1091,6 +1094,7 @@ Meteor.methods({
 
   /**
    * @method cart/setAnonymousUserEmail
+   * @memberof Meteor/Cart
    * @summary assigns email to anonymous user's cart instance
    * @param {Object} userId - current user's Id
    * @param {String} email - email to set for anonymous user's cart instance
