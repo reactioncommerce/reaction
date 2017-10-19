@@ -1425,7 +1425,7 @@ Meteor.methods({
   },
 
   /**
-   * @name publishProduct
+   * @name toggleVisibility
    * @memberof Meteor/Product
    * @method
    * @summary publish (visibility) of product
