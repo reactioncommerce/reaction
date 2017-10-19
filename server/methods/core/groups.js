@@ -199,7 +199,8 @@ Meteor.methods({
    * @method
    * @memberof Meteor/Group
    * @summary removes a user from a group for a shop, and adds them to the default customer group.
-   * @description It updates the user's permission list to reflect. (NB: At this time, a user only belongs to only one group per shop)
+   * @description It updates the user's permission list to reflect.
+   * (NB: At this time, a user only belongs to only one group per shop)
    * @param {String} userId - current data of the group to be updated
    * @param {String} groupId - name of the group
    * @return {Object} - object.status of 200 on success or Error object on failure

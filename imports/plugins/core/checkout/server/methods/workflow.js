@@ -215,7 +215,8 @@ Meteor.methods({
    * @name revertCartWorkflow
    * @memberof Meteor/Workflow
    * @method
-   * @summary if something was changed on the previous `cartWorkflow` steps, we need to revert to this step to renew the order
+   * @summary if something was changed on the previous `cartWorkflow` steps,
+   * we need to revert to this step to renew the order
    * @param {String} newWorkflowStatus - name of `cartWorkflow` step, which we need to revert
    * @todo need tests
    * @return {Number|Boolean} cart update results
@@ -249,12 +250,12 @@ Meteor.methods({
 
   /**
    * @name pushOrderWorkflow
-   * @summary Update the order workflow: Push the status as the current workflow step, move the current status to completed worflow steps
+   * @summary Update the order workflow: Push the status as the current workflow step,
+   * move the current status to completed worflow steps
    *
    * @description Step 1 meteor call to push a new workflow
    * Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", this);
    * NOTE: "coreOrderWorkflow", "processing" will be combined into "coreOrderWorkflow/processing" and set as the status
-   *
    * Step 2 (this method) of the "workflow/pushOrderWorkflow" flow; Try to update the current status
    *
    * @method

@@ -890,7 +890,7 @@ Meteor.methods({
     });
   },
 
-  /*
+  /**
    * @name togglePackage
    * @method
    * @memberof Meteor/Shop
@@ -913,14 +913,14 @@ Meteor.methods({
     });
   },
 
-  /*
-  * @name changeLayout
-  * @method
-  * @memberof Meteor/Shop
-  * @summary Change the layout for all workflows so you can use a custom one
-  * @param {String} shopId - the shop's ID
-  * @param {String} layout - new layout to use
-  * @return {Number} mongo update result
+  /**
+   * @name changeLayout
+   * @method
+   * @memberof Meteor/Shop
+   * @summary Change the layout for all workflows so you can use a custom one
+   * @param {String} shopId - the shop's ID
+   * @param {String} newLayout - new layout to use
+   * @return {Number} mongo update result
    */
   "shop/changeLayouts": function (shopId, newLayout) {
     check(shopId, String);

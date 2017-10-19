@@ -14,7 +14,8 @@ import { sendUpdatedVerificationEmail } from "/server/api/core/accounts";
 
 /**
  * @file Meteor methods for Accounts
- * Reaction extends {@link https://github.com/meteor/meteor/tree/master/packages/accounts-base MeteorAccounts} with Reaction-specific behavior and user interaction.
+ * Reaction extends {@link https://github.com/meteor/meteor/tree/master/packages/accounts-base MeteorAccounts}
+ * with Reaction-specific behavior and user interaction.
  * @namespace Meteor/Accounts
  */
 
@@ -628,7 +629,8 @@ export function inviteShopOwner(options) {
 
 /**
  * @name inviteShopMember
- * @summary Invite new admin users (not consumers) to secure access in the dashboard to permissions as specified in packages/roles
+ * @summary Invite new admin users (not consumers) to secure access in the dashboard to permissions
+ * as specified in packages/roles
  * @memberof Meteor/Accounts
  * @method
  * @param {Object} options -
@@ -824,7 +826,8 @@ export function sendWelcomeEmail(shopId, userId) {
  * @memberof Meteor/Accounts
  * @method
  * @param {String} userId - userId
- * @param {Array|String} permissions - Name of role/permission. If array, users returned will have at least one of the roles specified but need not have _all_ roles.
+ * @param {Array|String} permissions - Name of role/permission.
+ * If array, users returned will have at least one of the roles specified but need not have _all_ roles.
  * @param {String} [group] Optional name of group to restrict roles to. User's Roles.GLOBAL_GROUP will also be checked.
  * @returns {Boolean} success/failure
  */
@@ -848,7 +851,8 @@ export function addUserPermissions(userId, permissions, group) {
  * @memberof Meteor/Accounts
  * @method
  * @param {String} userId - userId
- * @param {Array|String} permissions - Name of role/permission. If array, users returned will have at least one of the roles specified but need not have _all_ roles.
+ * @param {Array|String} permissions - Name of role/permission.
+ * If array, users returned will have at least one of the roles specified but need not have _all_ roles.
  * @param {String} [group] Optional name of group to restrict roles to.
  * @returns {Boolean} success/failure
  */
@@ -1001,7 +1005,8 @@ function getDataForEmail(options) {
  * @name createFallbackLoginToken
  * @memberof Meteor/Accounts
  * @method
- * @summary Returns a new loginToken for current user, that can be used for special login scenarios - e.g. store the newly created token as cookie on the browser, if the client does not offer local storage.
+ * @summary Returns a new loginToken for current user, that can be used for special login scenarios
+ * e.g. store the newly created token as cookie on the browser, if the client does not offer local storage.
  * @returns {String} loginToken for current user
  */
 export function createFallbackLoginToken() {

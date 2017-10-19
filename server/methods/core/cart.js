@@ -238,7 +238,8 @@ Meteor.methods({
 
   /**
    * @method cart/createCart
-   * @description create new cart for user, but all checks for current cart's existence should go before this method will be called, to keep it clean
+   * @description create new cart for user,
+   * but all checks for current cart's existence should go before this method will be called, to keep it clean
    * @summary create and return new cart for user
    * @memberof Meteor/Cart
    * @param {String} userId - userId to create cart for
@@ -315,7 +316,8 @@ Meteor.methods({
   /**
    *  @method cart/addToCart
    *  @summary add items to a user cart
-   *  @description when we add an item to the cart, we want to break all relationships with the existing item.
+   *  @description when we add an item to the cart,
+   *  we want to break all relationships with the existing item.
    *  We want to fix price, qty, etc into history
    *  however, we could check reactively for price /qty etc, adjustments on the original and notify them
    *  @memberof Meteor/Cart
@@ -931,7 +933,8 @@ Meteor.methods({
    * @param {String} [type] - billing default or shipping default
    * @since 0.10.1
    * @todo check if no more address in cart as shipping, we should reset `cartWorkflow` to second step
-   * @return {Number|Object|Boolean} The number of removed documents or errorobject or `false` if we don't need to update cart
+   * @return {Number|Object|Boolean} The number of removed documents or
+   * errorobject or `false` if we don't need to update cart
    */
   "cart/unsetAddresses": function (addressId, userId, type) {
     check(addressId, String);
