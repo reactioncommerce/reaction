@@ -4,8 +4,15 @@ import { Shops, Translations } from "/lib/collections";
 import { Reaction } from "/server/api";
 
 /**
+* @file Translations publication
+*
+*
+* @module Translations
+*/
+
+/**
  * Translations publication
- * @param {String, Array} sessionLanguages - current sessionLanguage default to 'en'
+ * @param {String|Array} sessionLanguages - String or array of langauges. current sessionLanguage, default to 'en'
  * @returns { Object } returns Translations
  * @todo like to see the langages validated more with a schema
  */
