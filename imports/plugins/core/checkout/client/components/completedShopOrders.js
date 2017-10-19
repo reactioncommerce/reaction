@@ -17,7 +17,7 @@ const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMeth
     <span>
       <strong>
         {shippingMethod.label}
-      </strong> - estimated delivery 17/10/2017
+      </strong>{shippingMethod.deliveryDate && <span> - estimated delivery {shippingMethod.deliveryDate}</span>}
     </span>
   ) : `${shippingMethod.carrier} - ${shippingMethod.label}`;
   return (
