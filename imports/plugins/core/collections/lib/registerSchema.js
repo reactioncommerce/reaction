@@ -1,7 +1,8 @@
 export const Schemas = {}; // populated with all Schemas
 
 /**
- * @file **Reaction Schemas** - Use these methods to register and fetch Reaction Core schemas. See {@link https://docs.reactioncommerce.com/reaction-docs/master/simple-schema full documentation}.
+ * @file **Reaction Schemas** - Use these methods to register and fetch Reaction Core schemas.
+ * See {@link https://docs.reactioncommerce.com/reaction-docs/master/simple-schema full documentation}.
  *
  * @module collections
  */
