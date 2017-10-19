@@ -181,7 +181,20 @@
       "ignoreComments": true,
       "ignoreUrls": true
     }], // http://eslint.org/docs/rules/max-len
-    "valid-jsdoc": 1, // http://eslint.org/docs/rules/valid-jsdoc
+    "require-jsdoc": [0, {
+      "require": {
+        "FunctionDeclaration": true,
+        "MethodDefinition": false,
+        "ClassDeclaration": false,
+        "ArrowFunctionExpression": false
+        }
+    }], // https://eslint.org/docs/rules/require-jsdoc
+    "valid-jsdoc": [0, {
+      "prefer": {
+        "arg": "param",
+        "argument": "param"
+        }
+    }], // http://eslint.org/docs/rules/valid-jsdoc
     "quote-props": [2, "consistent-as-needed"], // http://eslint.org/docs/rules/quote-props
     /**
      * Style
