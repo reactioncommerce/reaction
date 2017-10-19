@@ -4,11 +4,16 @@ import { Reaction, Logger } from "/server/api";
 import { Notifications, Packages } from "/lib/collections";
 
 /**
- * Reaction Notification methods
- */
+ * @file Meteor methods for Notifications
+ *
+ *
+ * @namespace Meteor/Notification
+*/
 Meteor.methods({
   /**
-  * notification/send
+  * @name send
+  * @memberof Meteor/Notification
+  * @method
   * @summary This send a notification to a user
   * @param {String} userId - The user
   * @param {String} type - The type of Notification
@@ -63,7 +68,9 @@ Meteor.methods({
   },
 
   /**
-   * notification/markOneAsRead
+   * @name markOneAsRead
+   * @memberof Meteor/Notification
+   * @method
    * @summary This marks all user's notification as ready
    * @param {String} id - The notification id
    * @return {Object} returns cursor
@@ -79,7 +86,9 @@ Meteor.methods({
   },
 
   /**
-   * notification/delete
+   * @name delete
+   * @memberof Meteor/Notification
+   * @method
    * @summary This deletes a notification
    * @param {String} id - The notification id
    * @return {Object} return cursor
