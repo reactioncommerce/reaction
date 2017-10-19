@@ -28,13 +28,17 @@ import { Logger, Reaction } from "/server/api";
 // DDPRateLimiter.addRule(addReserveRule, 5, 1000);
 // DDPRateLimiter.addRule(addBackorderRule, 5, 1000);
 
-//
-// Inventory methods
-//
-
+/**
+ * @file Meteor methods for Inventory
+ *
+ *
+ * @namespace Meteor/Inventory
+*/
 Meteor.methods({
   /**
-   * inventory/setStatus
+   * @name setStatus
+   * @method
+   * @memberof Meteor/Inventory
    * @summary sets status from one status to a new status. Defaults to "new" to "reserved"
    * @param  {Array} cartItems array of objects of type Schemas.CartItems
    * @param  {String} status optional - sets the inventory workflow status, defaults to "reserved"
@@ -144,8 +148,11 @@ Meteor.methods({
       `finished creating ${reservationCount} new ${reservationStatus} reservations`);
     return reservationCount;
   },
+
   /**
-   * inventory/clearStatus
+   * @name clearStatus
+   * @method
+   * @memberof Meteor/Inventory
    * @summary used to reset status on inventory item (defaults to "new")
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @param  {[type]} status optional reset workflow.status, defaults to "new"
@@ -197,8 +204,11 @@ Meteor.methods({
     }
     Logger.debug("inventory/clearReserve", newStatus);
   },
+
   /**
-   * inventory/clearReserve
+   * @name clearReserve
+   * @method
+   * @memberof Meteor/Inventory
    * @summary resets "reserved" items to "new"
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
@@ -207,9 +217,12 @@ Meteor.methods({
     check(cartItems, [Schemas.CartItem]);
     return Meteor.call("inventory/clearStatus", cartItems);
   },
+
   /**
-   * inventory/clearReserve
-   * converts new items to reserved, or backorders
+   * @name clearReserve
+   * @summary converts new items to reserved, or backorders
+   * @method
+   * @memberof Meteor/Inventory
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
@@ -217,15 +230,14 @@ Meteor.methods({
     check(cartItems, [Schemas.CartItem]);
     return Meteor.call("inventory/setStatus", cartItems);
   },
+
   /**
-   * inventory/backorder
-   * @summary is used by the cart process to create a new Inventory
-   * backorder item, but this could be used for inserting any
-   * custom inventory.
-   *
-   * A note on DDP Limits.
-   * As these are wide open we defined some ddp limiting rules http://docs.meteor.com/#/full/ddpratelimiter
-   *
+   * @name backorder
+   * @summary is used by the cart process to create a new Inventory backorder item,
+   * but this could be used for inserting any custom inventory.
+   * @method
+   * @description A note on DDP Limits: As these are wide open we defined some {@link http://docs.meteor.com/#/full/ddpratelimiter ddp limiting rules}
+   * @memberof Meteor/Inventory
    * @param {Object} reservation Schemas.Inventory
    * @param {Number} backOrderQty number of backorder items to create
    * @returns {Number} number of inserted backorder documents
@@ -282,20 +294,27 @@ Meteor.methods({
     Logger.error("skipped bulk operations backorder updates.");
     return null;
   },
-  //
-  // send low stock warnings
-  //
+
+  /**
+   * @name lowStock
+   * @summary send low stock warnings
+   * @method
+   * @memberof Meteor/Inventory
+   * @param  {Object} product object type Product
+   * @return {undefined}
+   * @todo implement inventory/lowstock calculations
+   */
   "inventory/lowStock": function (product) {
     check(product, Schemas.Product);
-    //
-    // TODO: implement inventory/lowstock calculations
     // placeholder is here to give plugins a place to hook into
-    //
     Logger.debug("inventory/lowStock");
   },
+
   /**
-   * inventory/remove
-   * delete an inventory item permanently
+   * @name remove
+   * @summary delete an inventory item permanently
+   * @method
+   * @memberof Meteor/Inventory
    * @param  {Object} inventoryItem object type Schemas.Inventory
    * @return {String} return remove result
    */
@@ -317,9 +336,12 @@ Meteor.methods({
     Logger.debug("inventory/remove", inventoryItem);
     return Inventory.remove(inventoryItem);
   },
+
   /**
-   * inventory/shipped
-   * mark inventory as shipped
+   * @name shipped
+   * @method
+   * @memberof Meteor/Inventory
+   * @summary mark inventory as shipped
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
@@ -327,9 +349,12 @@ Meteor.methods({
     check(cartItems, [Schemas.CartItem]);
     return Meteor.call("inventory/setStatus", cartItems, "shipped", "sold");
   },
+
   /**
-   * inventory/sold
-   * mark inventory as sold
+   * @name sold
+   * @method
+   * @memberof Meteor/Inventory
+   * @summary mark inventory as sold
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
@@ -337,9 +362,12 @@ Meteor.methods({
     check(cartItems, [Schemas.CartItem]);
     return Meteor.call("inventory/setStatus", cartItems, "sold", "reserved");
   },
+
   /**
-   * inventory/return
-   * mark inventory as returned
+   * @name return
+   * @method
+   * @memberof Meteor/Inventory
+   * @summary mark inventory as returned
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
@@ -347,9 +375,12 @@ Meteor.methods({
     check(cartItems, [Schemas.CartItem]);
     return Meteor.call("inventory/setStatus", cartItems, "return");
   },
+
   /**
-   * inventory/returnToStock
-   * mark inventory as return and available for sale
+   * @name returnToStock
+   * @method
+   * @memberof Meteor/Inventory
+   * @summary mark inventory as return and available for sale
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
