@@ -11,11 +11,16 @@ import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 
 /**
- * Reaction Shop Methods
- */
+ * @file Meteor methods for Shop
+ *
+ *
+ * @namespace Meteor/Shop
+*/
 Meteor.methods({
   /**
-   * shop/createShop
+   * @name createShop
+   * @method
+   * @memberof Meteor/Shop
    * @param {String} shopAdminUserId - optionally create shop for provided userId
    * @param {Object} shopData - optionally provide shop object to customize
    * @return {String} return shopId
@@ -148,7 +153,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/getLocale
+   * @name getLocale
+   * @method
+   * @memberof Meteor/Shop
    * @summary determine user's countryCode and return locale object
    * determine local currency and conversion rate from shop currency
    * @return {Object} returns user location and locale
@@ -252,7 +259,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/getCurrencyRates
+   * @name getCurrencyRates
+   * @method
+   * @memberof Meteor/Shop
    * @summary It returns the current exchange rate against the shop currency
    * usage: Meteor.call("shop/getCurrencyRates","USD")
    * @param {String} currency code
@@ -274,7 +283,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/fetchCurrencyRate
+   * @name fetchCurrencyRate
+   * @method
+   * @memberof Meteor/Shop
    * @summary fetch the latest currency rates from
    * https://openexchangerates.org
    * usage: Meteor.call("shop/fetchCurrencyRate")
@@ -361,7 +372,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/flushCurrencyRate
+   * @name flushCurrencyRate
+   * @method
+   * @memberof Meteor/Shop
    * @description Method calls by cron job
    * @summary It removes exchange rates that are too old
    * usage: Meteor.call("shop/flushCurrencyRate")
@@ -412,7 +425,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/updateShopExternalServices
+   * @name updateShopExternalServices
+   * @method
+   * @memberof Meteor/Shop
    * @description On submit OpenExchangeRatesForm handler
    * @summary we need to rerun fetch exchange rates job on every form submit,
    * that's why we update autoform type to "method-update"
@@ -458,7 +473,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/locateAddress
+   * @name locateAddress
+   * @method
+   * @memberof Meteor/Shop
    * @summary determine user's full location for autopopulating addresses
    * @param {Number} latitude - latitude
    * @param {Number} longitude - longitude
@@ -488,7 +505,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/createTag
+   * @name createTag
+   * @method
+   * @memberof Meteor/Shop
    * @summary creates new tag
    * @param {String} tagName - new tag name
    * @param {Boolean} isTopLevel - if true -- new tag will be created on top of
@@ -518,7 +537,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/updateHeaderTags
+   * @name updateHeaderTags
+   * @method
+   * @memberof Meteor/Shop
    * @summary method to insert or update tag with hierarchy
    * @param {String} tagName will insert, tagName + tagId will update existing
    * @param {String} tagId - tagId to update
@@ -604,7 +625,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/removeHeaderTag
+   * @name removeHeaderTag
+   * @method
+   * @memberof Meteor/Shop
    * @param {String} tagId - method to remove tag navigation tags
    * @param {String} currentTagId - currentTagId
    * @return {String} returns remove result
@@ -644,7 +667,9 @@ Meteor.methods({
   },
 
   /**
-   * shop/hideHeaderTag
+   * @name hideHeaderTag
+   * @method
+   * @memberof Meteor/Shop
    * @param {String} tagId - method to remove tag navigation tags
    * @return {String} returns remove result
    */
