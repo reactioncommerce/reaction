@@ -8,15 +8,20 @@ import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/serv
 import { Media, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
-/**
- * Reaction Product Methods
- */
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
 /* eslint quotes: 0 */
 
 /**
+ * @file Meteor methods for Product
+ *
+ *
+ * @namespace Meteor/Product
+*/
+
+/**
  * updateVariantProductField
+ * @private
  * @summary updates the variant
  * @param {Array} variants - the array of variants
  * @param {String} field - the field to update
@@ -31,6 +36,7 @@ function updateVariantProductField(variants, field, value) {
 
 /**
  * @array toDenormalize
+ * @private
  * @summary contains a list of fields, which should be denormalized
  * @type {string[]}
  */
@@ -44,6 +50,7 @@ const toDenormalize = [
 
 /**
  * @function createTitle
+ * @private
  * @description Recursive method which trying to find a new `title`, given the
  * existing copies
  * @param {String} newTitle - product `title`
@@ -99,6 +106,7 @@ function createTitle(newTitle, productId) {
 
 /**
  * @function createHandle
+ * @private
  * @description Recursive method which trying to find a new `handle`, given the
  * existing copies
  * @param {String} productHandle - product `handle`
@@ -157,6 +165,7 @@ function createHandle(productHandle, productId) {
 
 /**
  * @function copyMedia
+ * @private
  * @description copy images links to cloned variant from original
  * @param {String} newId - [cloned|original] product _id
  * @param {String} variantOldId - old variant _id
@@ -177,6 +186,7 @@ function copyMedia(newId, variantOldId, variantNewId) {
 
 /**
  * @function denormalize
+ * @private
  * @description With flattened model we do not want to get variant docs in
  * `products` publication, but we need some data from variants to display price,
  * quantity, etc. That's why we are denormalizing these properties into product
@@ -236,8 +246,8 @@ function denormalize(id, field) {
 
 /**
  * isSoldOut
- * @description We are stop accepting new orders if product marked as
- * `isSoldOut`.
+ * @private
+ * @summary We are stop accepting new orders if product marked as `isSoldOut`.
  * @param {Array} variants - Array with top-level variants
  * @return {Boolean} true if summary product quantity is zero.
  */
@@ -252,8 +262,8 @@ function isSoldOut(variants) {
 
 /**
  * isLowQuantity
- * @description If at least one of the variants is less than the threshold,
- * then function returns `true`
+ * @private
+ * @summary If at least one of the variants is less than the threshold, then function returns `true`
  * @param {Array} variants - array of child variants
  * @return {boolean} low quantity or not
  */
@@ -271,8 +281,8 @@ function isLowQuantity(variants) {
 
 /**
  * isBackorder
- * @description Is products variants is still available to be ordered after
- * summary variants quantity is zero
+ * @private
+ * @description Is products variants is still available to be ordered after summary variants quantity is zero
  * @param {Array} variants - array with variant objects
  * @return {boolean} is backorder allowed or not for a product
  */
@@ -285,7 +295,8 @@ function isBackorder(variants) {
 
 /**
  * flushQuantity
- * @description if variant `inventoryQuantity` not zero, function update it to
+ * @private
+ * @summary if variant `inventoryQuantity` not zero, function update it to
  * zero. This needed in case then option with it's own `inventoryQuantity`
  * creates to top-level variant. In that case top-level variant should display
  * sum of his options `inventoryQuantity` fields.
@@ -315,7 +326,9 @@ function flushQuantity(id) {
 
 Meteor.methods({
   /**
-   * products/cloneVariant
+   * @name cloneVariant
+   * @memberof Meteor/Product
+   * @method
    * @summary clones a product variant into a new variant
    * @description the method copies variants, but will also create and clone
    * child variants (options)
@@ -438,7 +451,9 @@ Meteor.methods({
   },
 
   /**
-   * products/createVariant
+   * @name createVariant
+   * @memberof Meteor/Product
+   * @method
    * @summary initializes empty variant template
    * @param {String} parentId - the product _id or top level variant _id where
    * we create variant
@@ -504,7 +519,9 @@ Meteor.methods({
   },
 
   /**
-   * products/updateVariant
+   * @name updateVariant
+   * @memberof Meteor/Product
+   * @method
    * @summary update individual variant with new values, merges into original
    * only need to supply updated information. Currently used for a one use case
    * - to manage top-level variant autoform.
@@ -553,7 +570,9 @@ Meteor.methods({
   },
 
   /**
-   * products/deleteVariant
+   * @name deleteVariant
+   * @memberof Meteor/Product
+   * @method
    * @summary delete variant, which should also delete child variants
    * @param {String} variantId - variantId to delete
    * @returns {Boolean} returns update results: `true` - if at least one variant
@@ -598,7 +617,9 @@ Meteor.methods({
   },
 
   /**
-   * products/cloneProduct
+   * @name cloneProduct
+   * @memberof Meteor/Product
+   * @method
    * @summary clone a whole product, defaulting visibility, etc
    * in the future we are going to do an inheritance product
    * that maintains relationships with the cloned product tree
@@ -735,7 +756,9 @@ Meteor.methods({
   },
 
   /**
-   * products/createProduct
+   * @name createProduct
+   * @memberof Meteor/Product
+   * @method
    * @summary when we create a new product, we create it with an empty variant.
    * all products have a variant with pricing and details
    * @param {Object} [product] - optional product object
@@ -775,7 +798,9 @@ Meteor.methods({
   },
 
   /**
-   * products/archiveProduct
+   * @name archiveProduct
+   * @memberof Meteor/Product
+   * @method
    * @summary archive a product and unlink it from all media
    * @param {String} productId - productId to delete
    * @returns {Number} returns number of removed products
@@ -861,7 +886,9 @@ Meteor.methods({
   },
 
   /**
-   * products/updateProductField
+   * @name updateProductField
+   * @memberof Meteor/Product
+   * @method
    * @summary update single product or variant field
    * @param {String} _id - product._id or variant._id to update
    * @param {String} field - key to update
@@ -942,7 +969,9 @@ Meteor.methods({
   },
 
   /**
-   * products/updateProductTags
+   * @name updateProductTags
+   * @memberof Meteor/Product
+   * @method
    * @summary method to insert or update tag with hierarchy
    * @param {String} productId - productId
    * @param {String} tagName - tagName
@@ -1017,7 +1046,9 @@ Meteor.methods({
   },
 
   /**
-   * products/removeProductTag
+   * @name removeProductTag
+   * @memberof Meteor/Product
+   * @method
    * @summary method to remove tag from product
    * @param {String} productId - productId
    * @param {String} tagId - tagId
@@ -1047,7 +1078,9 @@ Meteor.methods({
   },
 
   /**
-   * products/setHandle
+   * @name setHandle
+   * @memberof Meteor/Product
+   * @method
    * @summary copy of "products/setHandleTag", but without tag
    * @param {String} productId - productId
    * @returns {String} handle - product handle
@@ -1076,7 +1109,9 @@ Meteor.methods({
   },
 
   /**
-   * products/setHandleTag
+   * @name setHandleTag
+   * @memberof Meteor/Product
+   * @method
    * @summary set or toggle product handle
    * @param {String} productId - productId
    * @param {String} tagId - tagId
@@ -1130,7 +1165,9 @@ Meteor.methods({
   },
 
   /**
-   * products/updateProductPosition
+   * @name updateProductPosition
+   * @memberof Meteor/Product
+   * @method
    * @summary update product grid positions
    * @param {String} productId - productId
    * @param {Object} positionData -  an object with position,dimensions
@@ -1172,7 +1209,9 @@ Meteor.methods({
   },
 
   /**
-   * products/updateVariantsPosition
+   * @name updateVariantsPosition
+   * @memberof Meteor/Product
+   * @method
    * @description updates top level variant position index
    * @param {Array} sortedVariantIds - array of top level variant `_id`s
    * @since 0.11.0
@@ -1208,7 +1247,9 @@ Meteor.methods({
   },
 
   /**
-   * products/updateMetaFields
+   * @name updateMetaFields
+   * @memberof Meteor/Product
+   * @method
    * @summary update product metafield
    * @param {String} productId - productId
    * @param {Object} updatedMeta - update object with metadata
@@ -1272,7 +1313,9 @@ Meteor.methods({
   },
 
   /**
-   * products/removeMetaFields
+   * @name removeMetaFields
+   * @memberof Meteor/Product
+   * @method
    * @summary update product metafield
    * @param {String} productId - productId
    * @param {Object} metafields - metadata object to remove
@@ -1303,7 +1346,9 @@ Meteor.methods({
   },
 
   /**
-   * products/publishProduct
+   * @name publishProduct
+   * @memberof Meteor/Product
+   * @method
    * @summary publish (visibility) of product
    * @todo hook into publishing flow
    * @param {String} productId - productId
@@ -1378,8 +1423,11 @@ Meteor.methods({
     Logger.debug("invalid product visibility ", productId);
     throw new Meteor.Error("Bad Request");
   },
+
   /**
-   * products/publishProduct
+   * @name publishProduct
+   * @memberof Meteor/Product
+   * @method
    * @summary publish (visibility) of product
    * @todo hook into publishing flow
    * @param {String} productId - productId
