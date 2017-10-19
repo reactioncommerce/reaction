@@ -8,7 +8,9 @@ import { SortableTableFilter, SortableTablePagination } from "./sortableTableCom
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
 /**
- * @file SortableTable is a React Component wrapper around {@link https://react-table.js.org} ReactTable. Anything functionality from ReactTable should be available in SortableTable out of the box, but may require styling. For more, see {@link https://react-table.js.org/#/story/readme ReactTable docs}
+ * @file SortableTable is a React Component wrapper around {@link https://react-table.js.org} ReactTable.
+ * Any functionality from ReactTable should be available in SortableTable out of the box, but may require styling.
+ * For more, see {@link https://react-table.js.org/#/story/readme ReactTable docs}
  *
  * @module SortableTable
  * @extends Component
@@ -40,7 +42,8 @@ class SortableTable extends Component {
   /**
    * getMeteorData()
    * @method
-   * @summary Absorb publication / collection information from props, output data from subscription. Use props to get collection, use that information to call Meteor to get subscription and output data for table.
+   * @summary Absorb publication / collection information from props, output data from subscription.
+   * Use props to get collection, use that information to call Meteor to get subscription and output data for table.
    * @prop {String} matchingResultsCount - Send to Counts collection to get results count of sub
    * @prop {String} publication - publication to subscribe to
    * @prop {Object} collection - collection to get data from
@@ -74,7 +77,8 @@ class SortableTable extends Component {
   /**
    * customFilter()
    * @method
-   * @summary Replace default filter with customized filter, custom filter is case insensitive, custom filter searches entire string, not just from string start
+   * @summary Replace default filter with customized filter, custom filter is case insensitive
+   * custom filter searches entire string, not just from string start
    * @param {Object} filter user-typed data
    * @param {Object} row row info for associated filter
    * @returns {String|Boolean} replacement filter
