@@ -58,10 +58,10 @@ Object.assign(Alerts, {
    * }, callbackFunction);
    *
    * @param  {String|Object} titleOrOptions Pass a string or an object containing options
-   * @param  {[type]}   messageOrCallback [description]
-   * @param  {[type]}   options           [description]
+   * @param  {String}   messageOrCallback [description]
+   * @param  {Object}   options           [description]
    * @param  {Function} callback          [description]
-   * @return {[type]}                     [description]
+   * @return {undefined}                     [description]
    */
   alert(titleOrOptions, messageOrCallback, options, callback) {
     if (_.isObject(titleOrOptions)) {

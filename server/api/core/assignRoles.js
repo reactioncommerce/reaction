@@ -9,8 +9,8 @@ import { Logger } from "/server/api";
  * however this is to avoid a dependency in core
  * on the router
  * prefix/package name + registry name or route
- * @param  {[type]} packageName  [package name]
- * @param  {[type]} registryItem [registry object]
+ * @param  {String} packageName  [package name]
+ * @param  {Object} registryItem [registry object]
  * @return {String}              [route name]
  */
 function getRouteName(packageName, registryItem) {
