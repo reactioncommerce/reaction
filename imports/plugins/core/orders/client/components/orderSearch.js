@@ -4,11 +4,19 @@ import PropTypes from "prop-types";
 import { Components, registerComponent, withPermissions } from "@reactioncommerce/reaction-components";
 
 /**
- * React class for Search bar on Order Dashboard
- * @summary horizontal search bar on the order dashboard. can be replaced with registerComponent as "OrderSearch"
- * @property {Function} handleChange - function called to update state field on parent after search input text changes
+ * @file React class for Search bar on Order Dashboard
+ *
+ * @module OrderSearch
+ * @extends Component
  */
+
 class OrderSearch extends Component {
+  /**
+   * @name OrderSearch propTypes
+   * @type {propTypes}
+   * @summary horizontal search bar on the order dashboard. can be replaced with registerComponent as "OrderSearch"
+   * @property {Function} handleChange - function called to update state field on parent after search input text changes
+   */
   static propTypes = {
     handleChange: PropTypes.func
   };
@@ -18,10 +26,12 @@ class OrderSearch extends Component {
   }
 
   /**
-    * handleChange - handler to call onchange of search input
-    * @param {string} event - event object
-    * @return {null} -
-    */
+   * @name handleChange()
+   * @method
+   * @summary handleChange - handler to call onchange of search input
+   * @param {string} event - event object
+   * @return {null} -
+   */
   handleChange = (event) => {
     const value = event.target.value;
 
@@ -32,9 +42,11 @@ class OrderSearch extends Component {
   }
 
   /**
-    * handleClear - handler called onclick of search clear text
-    * @return {null} -
-    */
+   * @name handleClear()
+   * @method
+   * @summary handleClear - handler called onclick of search clear text
+   * @return {null} -
+   */
   handleClear = () => {
     this.setState({
       value: ""
