@@ -4,33 +4,11 @@ import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { Session } from "meteor/session";
-import { Gravatar } from "meteor/jparker:gravatar";
 import { Reaction, Logger } from "/client/api";
 import { i18nextDep, i18next } from  "/client/api";
-import * as Collections from "/lib/collections";
 import { Tags } from "/lib/collections";
 import MainDropdown from "../components/mainDropdown";
-
-function getUserGravatar(currentUser, size) {
-  const options = {
-    secure: true,
-    size: size,
-    default: "identicon"
-  };
-  const user = currentUser || Accounts.user();
-  if (!user) {
-    return false;
-  }
-  const account = Collections.Accounts.findOne(user._id);
-  // first we check picture exists. Picture has higher priority to display
-  if (account && account.profile && account.profile.picture) {
-    return account.profile.picture;
-  }
-  if (user.emails && user.emails.length === 1) {
-    const email = user.emails[0].address;
-    return Gravatar.imageUrl(email, options);
-  }
-}
+import { getUserAvatar } from "/imports/plugins/core/accounts/client/helpers/helpers";
 
 function displayName(displayUser) {
   i18nextDep.depend();
@@ -106,7 +84,7 @@ function handleChange(event, value) {
 }
 
 const composer = ({ currentAccount }, onData) => {
-  const userImage = getUserGravatar(currentAccount, 40);
+  const userImage = getUserAvatar(currentAccount);
   const userName = displayName(currentAccount);
   const adminShortcuts = getAdminShortcutIcons();
 

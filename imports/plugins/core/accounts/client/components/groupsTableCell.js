@@ -5,17 +5,18 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import { getGravatar } from "../helpers/accountsHelper";
+import { getUserAvatar } from "/imports/plugins/core/accounts/client/helpers/helpers";
 
 const GroupsTableCell = ({ account, columnName, group, adminGroups, handleRemoveUserFromGroup, handleUserGroupChange, ...props }) => {
   const email = _.get(account, "emails[0].address");
   const groups = adminGroups;
+  const userAvatar = getUserAvatar(account);
   if (columnName === "name") {
     // use first part of email, if account has no name
     const name = account.name || email.split("@")[0];
     return (
       <div className="table-cell body-first">
-        <img className="accounts-img-tag" src={getGravatar(account)} />
+        {userAvatar}
         <span><b>{name}</b></span>
       </div>
     );
