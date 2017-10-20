@@ -3,7 +3,6 @@ import { Template } from "meteor/templating";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction, i18next, i18nextDep } from "/client/api";
-import * as Collections from "/lib/collections";
 
 /**
  * registerHelper displayName

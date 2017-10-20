@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Template } from "meteor/templating";
 import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
