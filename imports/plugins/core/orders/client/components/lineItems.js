@@ -9,27 +9,35 @@ import { formatPriceString } from "/client/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 /**
-  * @summary React component for displaying the actionable data on the invoice section on the orders sideview
-  * @param {Object} props - React PropTypes
-  * @property {Object} order - An object represnting an order
-  * @property {Object} uniqueItems - An object representing a line item
-  * @property {Array} editedItems - An array/list of line items that have been edited/modified
-  * @property {Array} selectedItems - An array of all the line items  that have been selected
-  * @property {Function} displayMedia - A function to display line items images
-  * @property {Function} clearRefunds - A function to clear edited/selected items
-  * @property {Function} getRefundedItemsInfo - A function that returns an object containing refunded items info
-  * @property {Function} getSelectedItemsInfo - A function that returns an object containing selected items info
-  * @property {Function} handleInputChange - A function to handle numeric input change
-  * @property {Function} handleItemSelect - A function to handle selecting an item via chekbox
-  * @property {Function} handlePopOverOpen - A function to handle the popover open and close
-  * @property {Function} handleRefundItems - A function to handle items return
-  * @property {Function} handleSelectAllItems - A function to handle selecting of all items
-  * @property {Bool} selectAllItems - A boolean indicating whether all items have been selected
-  * @property {Bool} isRefunding - A boolean indicating whether payment is being refunded
-  * @property {Bool} popOverIsOpen - A boolean indicating whether popover is open
-  * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
-  */
+ * @file LineItems React Component for displaying the actionable data on the invoice section on the orders sideview
+ *
+ * @module LineItems
+ * @extends Component
+ */
+
 class LineItems extends Component {
+  /**
+   * @name LineItems propTypes
+   * @summary React component for displaying the actionable data on the invoice section on the orders sideview
+   * @param {Object} props - React PropTypes
+   * @property {Object} order - An object represnting an order
+   * @property {Object} uniqueItems - An object representing a line item
+   * @property {Array} editedItems - An array/list of line items that have been edited/modified
+   * @property {Array} selectedItems - An array of all the line items  that have been selected
+   * @property {Function} displayMedia - A function to display line items images
+   * @property {Function} clearRefunds - A function to clear edited/selected items
+   * @property {Function} getRefundedItemsInfo - A function that returns an object containing refunded items info
+   * @property {Function} getSelectedItemsInfo - A function that returns an object containing selected items info
+   * @property {Function} handleInputChange - A function to handle numeric input change
+   * @property {Function} handleItemSelect - A function to handle selecting an item via chekbox
+   * @property {Function} handlePopOverOpen - A function to handle the popover open and close
+   * @property {Function} handleRefundItems - A function to handle items return
+   * @property {Function} handleSelectAllItems - A function to handle selecting of all items
+   * @property {Bool} selectAllItems - A boolean indicating whether all items have been selected
+   * @property {Bool} isRefunding - A boolean indicating whether payment is being refunded
+   * @property {Bool} popOverIsOpen - A boolean indicating whether popover is open
+   * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
+   */
   static propTypes = {
     clearRefunds: PropTypes.func,
     displayMedia: PropTypes.func,

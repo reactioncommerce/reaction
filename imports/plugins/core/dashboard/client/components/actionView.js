@@ -63,7 +63,6 @@ const getStyles = (props) => {
       "boxShadow": isBigView ? "0 0 40px rgba(0,0,0,.1)" : "",
       "flex": "0 0 auto",
       "backgroundColor": "white",
-      "borderLeft": "1px solid @black10",
       "overflow": "hidden",
       "transition": "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
       "zIndex": 1050
@@ -144,7 +143,8 @@ class ActionView extends Component {
     handleActionViewDetailBack: PropTypes.func,
     handleActionViewDetailClose: PropTypes.func,
     isActionViewAtRootView: PropTypes.bool,
-    isDetailViewAtRootView: PropTypes.bool
+    isDetailViewAtRootView: PropTypes.bool,
+    language: PropTypes.string
   }
 
   constructor(props) {
@@ -159,6 +159,16 @@ class ActionView extends Component {
       },
       leaveAnimation: {
         animation: { translateX: 400 },
+        duration: 200,
+        easing: "easeInOutQuad"
+      },
+      rtlEnterAnimation: {
+        animation: { translateX: ["0%", "-100%"] },
+        duration: 200,
+        easing: "easeInOutQuad"
+      },
+      rtlLeaveAnimation: {
+        animation: { translateX: "-100%" },
         duration: 200,
         easing: "easeInOutQuad"
       },
@@ -465,11 +475,12 @@ class ActionView extends Component {
   }
 
   render() {
+    const isRtl = document.querySelector("html").className === "rtl";
     return (
       <div>
         <VelocityTransitionGroup
-          enter={this.state.enterAnimation}
-          leave={this.state.leaveAnimation}
+          enter={isRtl ? this.state.rtlEnterAnimation : this.state.enterAnimation}
+          leave={isRtl ? this.state.rtlLeaveAnimation : this.state.leaveAnimation}
         >
           {this.renderActionView()}
         </VelocityTransitionGroup>

@@ -99,7 +99,7 @@ ShippoApi.methods.getCarrierAccountsList = new ValidatedMethod({
  * @param {Object} parameter.shippoAddressFrom - The address of the sender
  * @param {Object} parameter.shippoAddressTo - The address of the receiver
  * @param {Object} parameter.shippoParcel - The parcel dimensions's/weight
- * @param {String("QUOTE"|"PURCHASE")} parameter.purpose  - The reason of the shipment(check prices/ purchase labels)
+ * @param {String} parameter.purpose  - "QUOTE" or "PURCHASE" - The reason of the shipment(check prices/ purchase labels)
  * @param {String} parameter.apiKey - The Test or Live Token required
  * for authentication by Shippo's api
  * @return {Object} shipment - The compound shipment object returned by Shippo
