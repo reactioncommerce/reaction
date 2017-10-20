@@ -389,6 +389,7 @@ class ProductAdmin extends Component {
           />
           <Components.CardBody expandable={true}>
             <Components.TagList
+              editable={this.props.editable}
               enableNewTagForm={true}
               product={this.product}
               tagProps={{
@@ -426,6 +427,7 @@ class ProductAdmin extends Component {
 ProductAdmin.propTypes = {
   countries: PropTypes.arrayOf(PropTypes.object),
   editFocus: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+  editable: PropTypes.bool,
   handleFieldBlur: PropTypes.func,
   handleFieldChange: PropTypes.func,
   handleProductFieldChange: PropTypes.func,
