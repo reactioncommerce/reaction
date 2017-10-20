@@ -1,12 +1,14 @@
 /* eslint camelcase: 0 */
 import Shopify from "shopify-api-node";
+import { Job } from "meteor/vsivsi:job-collection";
 import { Meteor } from "meteor/meteor";
 import { Logger } from "/server/api";
 import { check, Match } from "meteor/check";
 import { Reaction } from "/server/api";
-import { Products, Tags, Media } from "/lib/collections";
+import { Products, Jobs, Tags } from "/lib/collections";
 import { getApiInfo } from "../api/api";
 import { connectorsRoles } from "../../lib/roles";
+import { importImages } from "../../jobs/image-import";
 
 /**
  * @file Shopify connector import product method
@@ -151,6 +153,25 @@ function findProductImages(shopifyProductId, images) {
 
 
 /**
+ * cache all existing tags to memory {slug => id} so that when we're importing products we can
+ * lookup tags without a database call.
+ * @method createTagCache
+ * @private
+ * @return {object} Dictionary of tag slugs mapping to the associated _id
+ * @todo: For apps with large collections of tags (5k+), this may be less desirable than checking each tag against mongo
+ *        That would cause each product tag we find to hit the database at least once. We could make this optional
+ */
+function createTagCache() {
+  return Tags.find({}).fetch().reduce((cache, tag) => {
+    if (!cache[tag.slug]) {
+      cache[tag.slug] = tag._id;
+    }
+    return cache;
+  }, {});
+}
+
+
+/**
  * Finds and returns arrays of option values for each of Shopify's option layers
  * returns an object consisting of the following three values:
  * shopifyVariants representing the first option on the shopify product (`option1` in the variant)
@@ -199,6 +220,7 @@ function normalizeWeight(weight) {
 }
 
 /**
+ * Creates a new job to save an image from a given url
  * Saves an image from a url to the Collection FS image storage location
  * (default: Mongo GridFS)
  * @private
@@ -208,12 +230,13 @@ function normalizeWeight(weight) {
  * @return {undefined}
  */
 function saveImage(url, metadata) {
-  const fileObj = new FS.File();
-  fileObj.attachData(url);
-
-  // Set workflow to "published" to bypass revision control on insert for this image.
-  fileObj.metadata = { ...metadata, workflow: "published" };
-  Media.insert(fileObj);
+  new Job(Jobs, "connectors/shopify/import/image", { url: url, metadata: metadata })
+    .priority("normal")
+    .retry({
+      retries: 5,
+      wait: 5000,
+      backoff: "exponential" // delay by twice as long for each subsequent retry
+    }).save();
 }
 
 export const methods = {
@@ -227,7 +250,6 @@ export const methods = {
    */
   async "connectors/shopify/import/products"(options) {
     check(options, Match.Maybe(Object));
-
     if (!Reaction.hasPermission(connectorsRoles)) {
       throw new Meteor.Error(403, "Access Denied");
     }
@@ -235,22 +257,13 @@ export const methods = {
     const apiCreds = getApiInfo();
     const shopify = new Shopify(apiCreds);
     const shopId = Reaction.getShopId();
-    const limit = 250; // Shopify returns a maximum of 250 results per request
+    const limit = 50; // Shopify returns a maximum of 250 results per request
+    const tagCache = createTagCache();
+    const ids = [];
     const opts = Object.assign({}, {
       published_status: "published",
       limit: limit
     }, { ... options });
-
-    // Cache all tags as we discover or create them so we only ever have to look tags up once
-    // Start by caching all existing tags to memory {slug => id}
-    const tagCache = Tags.find({}).fetch().reduce((cache, tag) => {
-      if (!cache[tag.slug]) {
-        cache[tag.slug] = tag._id;
-      }
-      return cache;
-    }, {});
-
-    const ids = [];
 
     try {
       const productCount = await shopify.product.count();
@@ -261,7 +274,6 @@ export const methods = {
       for (const page of pages) {
         Logger.debug(`Importing page ${page + 1} of ${numPages} - each page has ${limit} products`);
         const shopifyProducts = await shopify.product.list({ ...opts, page: page });
-
         for (const shopifyProduct of shopifyProducts) {
           if (!Products.findOne({ shopifyId: shopifyProduct.id }, { fields: { _id: 1 } })) {
             Logger.debug(`Importing ${shopifyProduct.title}`);
@@ -418,7 +430,7 @@ export const methods = {
 
                               const reactionTernaryOptionId = Products.insert(reactionTernaryOption, { type: "variant" });
                               ids.push(reactionTernaryOptionId);
-                              Logger.info(`Imported ${shopifyProduct.title} ${variant}/${option}/${ternaryOption}`);
+                              Logger.debug(`Imported ${shopifyProduct.title} ${variant}/${option}/${ternaryOption}`);
 
                               // Update Max Price
                               if (price.max === null || price.max < reactionTernaryOption.price) {
@@ -486,11 +498,14 @@ export const methods = {
             Products.update({ _id: reactionProductId }, { $set: { price: price } }, { selector: { type: "simple" }, publish: true });
             Logger.debug(`Product ${shopifyProduct.title} added`);
           } else { // product already exists check
-            Logger.info(`Product ${shopifyProduct.title} already exists`);
+            Logger.debug(`Product ${shopifyProduct.title} already exists`);
           }
         } // End product loop
       } // End pages loop
       Logger.info(`Reaction Shopify Connector has finished importing ${ids.length} products`);
+
+      // Run jobs to import all queued images;
+      importImages();
       return ids;
     } catch (error) {
       Logger.error("There was a problem importing your products from Shopify", error);
