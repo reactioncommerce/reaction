@@ -42,9 +42,6 @@ jobs:
       # run reaction tests
       - run: .circleci/tests.sh
 
-      # if we had a failure, run tests again
-      - run: .circleci/backup-tests.sh
-
       - save_cache:
           name: Saving Meteor dev_bundle to cache
           key: dev_bundle
