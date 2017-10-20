@@ -95,14 +95,13 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     return this.ready();
   }
 
-  // Get disabled shop id's to use for filtering
-  const disabledShopIds = Shops.find({
-    "workflow.status": {
-      $in: ["disabled", "archived"]
-    }
-  }, {
-    fields: { _id: 1 }
-  }).map((shop) => shop._id);
+  // Get active shop id's to use for filtering
+  const activeShopsIds = Shops.find({
+    $or: [
+      { "workflow.status": "active" },
+      { _id: Reaction.getPrimaryShopId() }
+    ]
+  }).fetch().map(activeShop => activeShop._id);
 
   // if there are filter/params that don't match the schema
   // validate, catch except but return no results
@@ -287,8 +286,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       $in: [true, false, null, undefined]
     };
     selector.shopId = {
-      $in: userAdminShopIds,
-      $nin: disabledShopIds
+      $in: activeShopsIds
     };
 
     // Get _ids of top-level products
@@ -527,11 +525,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     });
   }
 
-  // Adjust the selector to exclude all disabled shops
+  // Adjust the selector to include only active shops
   newSelector = {
     ...newSelector,
     shopId: {
-      $nin: disabledShopIds
+      $in: activeShopsIds
     }
   };
 
