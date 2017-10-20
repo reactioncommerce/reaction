@@ -5,6 +5,9 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import GridItemControls from "../components/gridItemControls";
+import { ReactionProduct } from "/lib/api";
+import { ProductVariant } from "/lib/collections/schemas/products";
+import { Validation } from "@reactioncommerce/reaction-collections";
 
 const wrapComponent = (Comp) => (
   class GridItemControlsContainer extends Component {
@@ -16,9 +19,17 @@ const wrapComponent = (Comp) => (
     constructor() {
       super();
 
+      this.validation = new Validation(ProductVariant);
+      this.isValid = true;
+
       this.hasCreateProductPermission = this.hasCreateProductPermission.bind(this);
       this.hasChanges = this.hasChanges.bind(this);
       this.checked = this.checked.bind(this);
+      this.checkValidation = this.checkValidation.bind(this);
+    }
+
+    componentWillMount() {
+      this.checkValidation();
     }
 
     hasCreateProductPermission = () => {
@@ -27,6 +38,16 @@ const wrapComponent = (Comp) => (
 
     hasChanges = () => {
       return this.props.product.__draft ? true : false;
+    }
+
+    // This method checks validation of the variants of the all the products on the Products grid to
+    // check whether all required fields have been submitted before publishing
+    checkValidation = () => {
+      // this returns an array with a single object 
+      const variants = ReactionProduct.getVariants(this.props.product._id).map((variant) => this.validation.validate(variant));
+      this.setState({
+        isValid: variants[0].isValid
+      });
     }
 
     checked = () => {
@@ -40,6 +61,7 @@ const wrapComponent = (Comp) => (
           hasCreateProductPermission={this.hasCreateProductPermission}
           hasChanges={this.hasChanges}
           checked={this.checked}
+          isValid={this.state.isValid}
         />
       );
     }
