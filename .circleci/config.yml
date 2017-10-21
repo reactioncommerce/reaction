@@ -62,7 +62,7 @@ jobs:
           name: Deploy to S3 if tests pass and branch is Master
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region us-west-2
+              aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
             else
               echo "Not master branch so not deploying"
             fi
