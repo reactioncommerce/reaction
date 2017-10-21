@@ -2,7 +2,8 @@ import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Media } from "/lib/collections";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import CompletedOrder from "../../../checkout/client/components/completedOrder";
+import OrdersList from "../components/ordersList";
+
 
 const handlers = {};
 
@@ -32,42 +33,47 @@ handlers.handleDisplayMedia = (item) => {
 
 function composer(props, onData) {
   // Get user order from props
-  const order = props.order;
+  const orders = props.orders;
+  const allOrdersInfo = [];
 
-  if (order) {
-    const imageSub = Meteor.subscribe("CartImages", order.items);
-
-    const orderSummary = {
-      quantityTotal: order.getCount(),
-      subtotal: order.getSubTotal(),
-      shippingTotal: order.getShippingTotal(),
-      tax: order.getTaxTotal(),
-      discounts: order.getDiscounts(),
-      total: order.getTotal(),
-      shipping: order.shipping
-    };
-
-    if (imageSub.ready()) {
-      const productImages = Media.find().fetch();
-      const orderId = order._id;
-      onData(null, {
-        shops: order.getShopSummary(),
-        order,
-        orderId,
-        orderSummary,
-        paymentMethods: order.getUniquePaymentMethods(),
-        productImages
-      });
-    }
+  if (orders) {
+    orders.map((order) => {
+      const imageSub = Meteor.subscribe("CartImages", order.items);
+      const orderSummary = {
+        quantityTotal: order.getCount(),
+        subtotal: order.getSubTotal(),
+        shippingTotal: order.getShippingTotal(),
+        tax: order.getTaxTotal(),
+        discounts: order.getDiscounts(),
+        total: order.getTotal(),
+        shipping: order.shipping
+      };
+      if (imageSub.ready()) {
+        const productImages = Media.find().fetch();
+        const orderId = order._id;
+        const orderInfo = {
+          shops: order.getShopSummary(),
+          order,
+          orderId,
+          orderSummary,
+          paymentMethods: order.getUniquePaymentMethods(),
+          productImages
+        };
+        allOrdersInfo.push(orderInfo);
+      }
+    });
+    onData(null, {
+      allOrdersInfo
+    });
   } else {
     onData(null, {
-      order
+      orders
     });
   }
 }
 
 
-registerComponent("CompletedOrder", CompletedOrder, [
+registerComponent("OrdersList", OrdersList, [
   withProps(handlers),
   composeWithTracker(composer)
 ]);
@@ -75,4 +81,4 @@ registerComponent("CompletedOrder", CompletedOrder, [
 export default compose(
   withProps(handlers),
   composeWithTracker(composer)
-)(CompletedOrder);
+)(OrdersList);

@@ -27,7 +27,6 @@ const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMeth
         <div className="store-detail-box">
           <span className="order-details-store-title">{shopName}</span>
           <span className="order-details-shipping-name">{shippingName}</span>
-          {/* <span className="order-details-shipping-name">{shippingMethod.carrier} - {shippingMethod.label}</span> */}
         </div>
       </div>
       <div className="order-details-info-box-topless">

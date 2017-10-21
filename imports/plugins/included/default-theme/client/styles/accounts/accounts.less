@@ -64,16 +64,26 @@
 .user-orders-list{
   width: inherit;
   .panel-content{
+    padding-top: 0px;
     @media screen and (max-width: @screen-xs-max) {
       padding: 5px 10px;
     }
   }
+  .container {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
   .order-completed{
     width: inherit;
+    margin: 0px 0px 20px 0px;
   }
   .order-details-main {
     .flex(0 0 100%);
     max-width: none;
+    margin-right: 0px;
+    .order-details-shop-breakdown{
+      margin-bottom: 0px;
+    }
   }
   .order-details-side {
     .flex(0 0 100%);
@@ -83,9 +93,14 @@
   .shipping-payment-details {
     @media screen and (min-width: @screen-xs-max) {
       display: flex;
+      flex-wrap: nowrap;
       .shipping-info, .payment-info{
-        flex: 1 1 8%;
+        display: flex;
+        flex-direction: column;
         width: 50%;
+        .order-details-info-box {
+          flex: 1 0 auto;
+        }
       }
       .shipping-info{
         margin: 0 1.2rem 0 0;

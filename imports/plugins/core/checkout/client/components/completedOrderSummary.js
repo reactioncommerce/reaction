@@ -13,11 +13,11 @@ import ShopOrderSummary from "./shopOrderSummary";
  * @return {Node} React node containing the order summary broken down by shop
  */
 const CompletedOrderSummary = ({ shops, orderSummary, isProfilePage }) => {
-  const title = isProfilePage ? "Order summary" : "Your Cart";
+  const title = isProfilePage ? "Order Summary" : "Your Cart";
   return (
     <div>
       <div className="order-details-content-title">
-        <Components.Translation defaultValue={title} i18nKey={title || "cartCompleted.yourCart"} />
+        <p><Components.Translation defaultValue={title} i18nKey={title || "cartCompleted.yourCart"} /></p>
       </div>
       <div className="order-details-info-box">
         {shops.map((shop) => {

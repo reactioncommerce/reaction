@@ -1,31 +1,43 @@
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Orders } from "/lib/collections";
+import { Reaction } from "/client/api";
 import CompletedOrder from "/imports/plugins/core/accounts/client/containers/userOrdersListContainer";
 
+/**
+ * @method getOrders
+ * @summary returns user's orders
+ * @since 1.5.1
+ * @return {Array} - an array of orders
+ */
+function getOrders() {
+  const targetUserId = Reaction.Router.getQueryParam("userId") ||
+  Meteor.userId();
+  return Orders.find({ userId: targetUserId }, {
+    sort: {
+      createdAt: -1
+    },
+    limit: 25
+  });
+}
 
 /**
  * userOrdersList helpers
  *
  */
 Template.userOrdersList.helpers({
-  orders(data) {
+  hasData(data) {
     if (data.hash.data) {
       return data.hash.data;
     }
-    const orders = Orders.find({}, {
-      sort: {
-        createdAt: -1
-      },
-      limit: 25
-    });
-    return orders;
+    return true;
   },
 
   // Returns React Component
-  completedOrder() {
-    const order = this;
+  completedOrders() {
+    const orders = getOrders();
     return { component: CompletedOrder,
-      order
+      orders
     };
   }
 });

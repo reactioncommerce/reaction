@@ -154,9 +154,6 @@
   line-height: 1.5;
   min-width: 300px;
   max-width: 30%;
-  .order-details-info-box {
-    min-height: 110px;
-  }
   @media screen and (max-width: @screen-xs-max) {
     min-width: 100%;
     max-width: 100%;
@@ -211,6 +208,12 @@
   line-height: 1.75;
   margin-bottom: 15px;
   margin-top: 25px;
+  span {
+    text-transform: lowercase;
+  }
+  p::first-letter {
+    text-transform: capitalize;
+  }
 }
 
 .order-details-info-box-content {
