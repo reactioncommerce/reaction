@@ -4,6 +4,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 import OrderTable from "../containers/orderTableContainer";
 import OrderFilter from "./orderFilter";
 import OrderSearch from "./orderSearch";
+import { exportOrdersToCSV } from "../helpers";
 
 class OrderDashboard extends Component {
   static propTypes = {
@@ -52,6 +53,10 @@ class OrderDashboard extends Component {
     });
   }
 
+  handleExportClick = () => {
+    exportOrdersToCSV();
+  }
+
   render() {
     return (
       <div className="order-dashboard-container">
@@ -83,7 +88,10 @@ class OrderDashboard extends Component {
                 </button>
               </div>
             </div>
-
+            <button
+              className="btn btn-default"
+              onClick={this.handleExportClick}
+            >EXPORT TO CSV</button>
             <OrderTable
               orders={this.props.orders}
               isOpen={this.state.openList}

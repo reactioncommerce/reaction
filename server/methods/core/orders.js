@@ -1140,6 +1140,44 @@ export const methods = {
       }
     });
     return fut.wait();
+  },
+  "orders/ExportAllOrdersToCSV": () => {
+    const fields = [
+      "_id",
+      "sessionId",
+      "userId",
+      "shopId",
+      "workflow",
+      "billing",
+      "discount",
+      "tax",
+      "shipping",
+      "items",
+      "cartId",
+      "email",
+      "createdAt"
+    ];
+    const data = [];
+
+    const orders = Orders.find().fetch();
+    _.each(orders, (rows) => {
+      data.push([
+        rows._id,
+        rows.sessionId,
+        rows.userId,
+        rows.shopId,
+        JSON.stringify(rows.workflow),
+        JSON.stringify(rows.billing),
+        rows.discount,
+        rows.tax,
+        JSON.stringify(rows.shipping),
+        JSON.stringify(rows.items),
+        rows.cartId,
+        rows.email,
+        rows.createdAt
+      ]);
+    });
+    return { fields: fields, data: data };
   }
 };
 
