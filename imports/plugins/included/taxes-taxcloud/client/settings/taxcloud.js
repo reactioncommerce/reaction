@@ -1,23 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { TaxCloudPackageConfig } from "../../lib/collections/schemas";
 import { TaxCloudSettingsForm } from "../components";
-
-/**
- * @method getPackageData
- * @summary returns the data for the Package with the name in pkgName.
- * @param {String} pkgName - the name of the Package required.
- * @since 1.5.1
- * @return {Object} - returns the data found for the said Package.
- */
-function getPackageData(pkgName) {
-  return Packages.findOne({
-    name: pkgName,
-    shopId: Reaction.getShopId()
-  });
-}
 
 Template.taxCloudSettings.helpers({
   /**
@@ -27,7 +12,7 @@ Template.taxCloudSettings.helpers({
    * @return {Object} - returns data for the said Package.
    */
   taxCloudPackageData() {
-    return getPackageData("taxes-taxcloud");
+    return Reaction.getPackageSettings("taxes-taxcloud");
   },
   /**
    * @method taxCloudCard
@@ -40,7 +25,7 @@ Template.taxCloudSettings.helpers({
   taxCloudCard() {
     const providerName = "taxcloud";
     const packageName = "taxes-taxcloud";
-    const packageData = getPackageData(packageName);
+    const packageData = Reaction.getPackageSettings(packageName);
     return {
       component: TaxCloudSettingsForm,
       schema: TaxCloudPackageConfig,
