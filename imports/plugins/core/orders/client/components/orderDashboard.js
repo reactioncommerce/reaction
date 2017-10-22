@@ -91,6 +91,7 @@ class OrderDashboard extends Component {
             <button
               className="btn btn-default"
               onClick={this.handleExportClick}
+              style={{ width: "150px" }}
             >EXPORT TO CSV</button>
             <OrderTable
               orders={this.props.orders}

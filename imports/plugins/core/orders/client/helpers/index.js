@@ -183,9 +183,9 @@ export function getShippingInfo(order) {
 }
 
 export function exportOrdersToCSV() {
-  Meteor.call("orders/ExportAllOrdersToCSV", (error, data) => {
+  Meteor.call("orders/ExportAllOrdersToCSV", "all", (error, data) => {
     if (error) {
-      console.log("Error don happen");
+      console.log("Error happened");
     }
     const csv = Papa.unparse(data);
     downloadCSV(csv);
