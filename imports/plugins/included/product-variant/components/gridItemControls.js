@@ -7,7 +7,7 @@ class GridItemControls extends Component {
     checked: PropTypes.func,
     hasChanges: PropTypes.func,
     hasCreateProductPermission: PropTypes.func,
-    isValid: PropTypes.func,
+    isValid: PropTypes.bool,
     product: PropTypes.object
   }
 
