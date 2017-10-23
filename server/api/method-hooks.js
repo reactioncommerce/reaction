@@ -26,14 +26,16 @@ export const MethodHooks = {};
 
 /**
  * A collection of after hooks
- * @type {Object.<String, [Hook]>} A mapping from method names to arrays of hooks
+ * @type {Object}
+ * @summary <String, [Hook]> A mapping from method names to arrays of hooks
  * @private
  */
 MethodHooks._afterHooks = {};
 
 /**
  * A collection of before hooks
- * @type {Object.<String, [Hook]>} A mapping from method names to arrays of hooks
+ * @type {Object}
+ * @summary <String, [Hook]> A mapping from method names to arrays of hooks
  * @private
  */
 MethodHooks._beforeHooks = {};
@@ -47,20 +49,22 @@ MethodHooks._handlers = Meteor.isClient ? Meteor.connection._methodHandlers :
 
 /**
  * The original method handlers
- * @type {Object.<String, Function>} Method handler mapping
+ * @type {Object}
+ * @summary <String, Function> Method handler mapping
  * @private
  */
 MethodHooks._originalMethodHandlers = {};
 
 /**
  * Wrappers
- * @type {Object.<String, Function>} A mapping from method names to method functions
+ * @type {Object}
+ * @summary <String, Function> A mapping from method names to method functions
  * @private
  */
 MethodHooks._wrappers = {};
 
 /**
- *  initializeHook
+ * initializeHook
  * @summary Initializes a new hook
  * @param {String} mapping - map hook: a is  place to store the mapping
  * @param {String} methodName - The name of the method
@@ -174,7 +178,7 @@ MethodHooks.after = function (methodName, afterFunction) {
 /**
  * MethodHooks.beforeMethods
  * Call the provided hook in values for the key'd method names
- * @param {Object.<string, Hook>} dict - dict
+ * @param {Object} dict - <string, Hook> dict
  * @return {String} - returns transformed data
  */
 MethodHooks.beforeMethods = function (dict) {
@@ -185,7 +189,7 @@ MethodHooks.beforeMethods = function (dict) {
 
 /**
  * Call the provided hook in values for the key'd method names
- * @param {Object.<string, Hook>} dict - dict
+ * @param {Object} dict - <string, Hook> dict
  * @return {String} - returns transformed data
  */
 MethodHooks.afterMethods = function (dict) {

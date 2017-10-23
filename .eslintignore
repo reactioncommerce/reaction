@@ -4,3 +4,4 @@
 server/plugins.js
 client/plugins.js
 packages/*
+.reaction/jsdoc/templates/*
