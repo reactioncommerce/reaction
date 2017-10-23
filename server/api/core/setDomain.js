@@ -15,9 +15,10 @@ export function getRegistryDomain(requestUrl) {
 
 
 /**
- *  @private setDomain
- *  @summary update the default shop url if ROOT_URL supplied is different from current
- *  @return {String} returns insert result
+ * setDomain
+ * @private
+ * @summary update the default shop url if ROOT_URL supplied is different from current
+ * @return {String} returns insert result
  */
 export function setDomain() {
   let currentDomain;
