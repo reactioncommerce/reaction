@@ -21,6 +21,10 @@ const { Jobs, Packages, Shops, Groups } = Collections;
 export default {
 
   init() {
+
+    // run beforeCoreInit hooks
+    Hooks.Events.run("beforeCoreInit");
+
     // make sure the default shop has been created before going further
     while (!this.getShopId()) {
       Logger.warn("No shopId, waiting one second...");
