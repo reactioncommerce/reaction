@@ -28,7 +28,8 @@ class TaxCloudSettingsFormContainer extends Component {
     * @param {Object} event - event info.
     * @param {Object} changedInfo - info about the new TaxCloud settings.
     * @param {String} targetField - the field to update in the TaxCloud Package.
-    * @property {String} packageName - String className or `classnames` compatible object for the base wrapper
+    * @property {String} packageName - the name of this tax provider in lowercase.
+    * @since 1.5.2
     * @return {null} - returns nothing
     */
   handleSubmit(event, changedInfo, targetField) {
@@ -90,7 +91,7 @@ class TaxCloudSettingsFormContainer extends Component {
   * @type {propTypes}
   * @param {Object} props - React PropTypes
   * @property {String} packageName - the value of the "name" field in the TaxCloud Package.
-  * @property {String} providerName - the name of this provider in small caps i.e "taxcloud".
+  * @property {String} providerName - the name of this provider in lowercase i.e "taxcloud".
   * @property {Object} settings - the value of the "settings" field in the TaxCloud Package.
   * @return {Array} React propTypes
   */

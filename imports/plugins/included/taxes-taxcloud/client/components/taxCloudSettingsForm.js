@@ -6,16 +6,20 @@ import { Form } from "/imports/plugins/core/ui/client/components";
  * @file TaxCloudSettingsForm is a React Component for changing TaxCloud
  * settings.
  * @module TaxCloudSettingsForm
- * @extends Component
  */
 
-// TODO: Do I need to add @property docs to this even though it's a pure
-// component?
 /**
  * @method TaxCloudSettingsForm
  * @summary renders a form for updating TaxCloud settings.
  * @param {Object} props - some data for use by this component.
- * @since 1.5.1
+ * @property {Object} doc - current TaxCloud settings.
+ * @property {String} docPath - the field in the TaxCloud Package where settings are stored.
+ * @property {Object} fields - info about the fields the form is to show.
+ * @property {Function} handleSubmit - a function for saving new TaxCloud settings.
+ * @property {Array} hideFields - the fields (from the TaxCloud Package) to hide from the form.
+ * @property {String} name - the name of this provider in lowercase (i.e taxcloud).
+ * @property {Object} schema - info about the DB structure of the TaxCloud Package.
+ * @since 1.5.2
  * @return {Node} - a React node containing the TaxCloud settings form.
  */
 const TaxCloudSettingsForm = (props) => {
@@ -37,17 +41,14 @@ const TaxCloudSettingsForm = (props) => {
   * @type {propTypes}
   * @param {Object} props - React PropTypes
   * @property {Object} doc - data about the current TaxCloud settings.
-  * @property {String} docPath - the "path" (or field) in the TaxCloud Package
-  * where new settings are to be saved.
+  * @property {String} docPath - the field in the TaxCloud Package where settings are saved.
   * @property {Object} fields - info about the fields of the TaxCloud Package
   * that the settings form will allow users to change.
   * @property {Function} handleSubmit - a function that saves new TaxCloud settings.
   * @property {Array} hideFields - an array of the TaxCloud Package's fields
   * to hide from the settings form.
-  * @property {String} name - the field in the TaxCloud Package where new
-  * settings are to be saved.
-  * @property {Object} schema - info about the DB schema used by the
-  * TaxCloud Package.
+  * @property {String} name - the name of this provider in lowercase.
+  * @property {Object} schema - info about the schema used by the TaxCloud Package.
   * @return {Array} React propTypes
   */
 TaxCloudSettingsForm.propTypes = {
