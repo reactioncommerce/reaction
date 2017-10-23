@@ -585,10 +585,10 @@ export const methods = {
     let tracking;
     let carrier = "";
     for (const billingRecord of order.billing) {
-      subtotal += billingRecord.invoice.subtotal;
-      taxes += billingRecord.invoice.taxes;
-      discounts += billingRecord.invoice.discounts;
-      amount += billingRecord.paymentMethod.amount;
+      subtotal += parseFloat(billingRecord.invoice.subtotal);
+      taxes += parseFloat(billingRecord.invoice.taxes);
+      discounts += parseFloat(billingRecord.invoice.discounts);
+      amount += parseFloat(billingRecord.paymentMethod.amount);
       address = billingRecord.address;
       paymentMethod = billingRecord.paymentMethod;
     }
