@@ -128,6 +128,9 @@ export function createShopFactory() {
       theme: "default",
       enabled: true
     }],
+    workflow: {
+      status: "active"
+    },
     public: true,
     brandAssets: [
       {
