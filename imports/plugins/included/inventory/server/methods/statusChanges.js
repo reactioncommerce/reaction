@@ -148,8 +148,8 @@ Meteor.methods({
    * inventory/clearStatus
    * @summary used to reset status on inventory item (defaults to "new")
    * @param  {Array} cartItems array of objects Schemas.CartItem
-   * @param  {[type]} status optional reset workflow.status, defaults to "new"
-   * @param  {[type]} currentStatus optional matching workflow.status, defaults to "reserved"
+   * @param  {Array} status optional reset workflow.status, defaults to "new"
+   * @param  {Array} currentStatus optional matching workflow.status, defaults to "reserved"
    * @return {undefined} undefined
    */
   "inventory/clearStatus": function (cartItems, status, currentStatus) {

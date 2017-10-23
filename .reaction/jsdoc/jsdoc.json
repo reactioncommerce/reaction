@@ -1,0 +1,44 @@
+{
+  "plugins": ["plugins/markdown", "plugins/summarize"],
+  "markdown": {
+    "parser": "gfm"
+  },
+  "source": {
+    "exclude": [
+      ".git",
+      ".meteor",
+      "node_modules",
+      "private",
+      "client/plugins.js",
+      "server/plugins.js",
+      "custom/client",
+      "custom/server",
+      "public/custom",
+      "private/custom",
+      "imports/plugins/custom"
+    ],
+    "includePattern": ".+\\.js(x|doc)?$"
+  },
+  "opts": {
+    "template": ".reaction/jsdoc/templates",
+    "encoding": "utf8",
+    "destination": "/tmp/reaction-docs/",
+    "recurse": true
+  },
+  "sourceType": "module",
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "default": {
+      "includeDate": false
+    }
+  },
+  "docdash": {
+    "static": [true],
+    "sort": [false]
+  },
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc"]
+  }
+}
