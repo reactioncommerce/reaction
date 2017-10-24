@@ -21,8 +21,8 @@
           "taxcloudGetCredentialsURL": "Get them here"
         },
         "update": {
-          "updateSucceeded": "Failed to update TaxCloud settings.",
-          "updateFailed": "TaxCloud settings updated."
+          "updateSucceeded": "TaxCloud settings updated.",
+          "updateFailed": "Failed to update TaxCloud settings."
         }
       }
     }
