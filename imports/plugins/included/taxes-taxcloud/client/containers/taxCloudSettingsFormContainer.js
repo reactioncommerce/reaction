@@ -27,7 +27,7 @@ class TaxCloudSettingsFormContainer extends Component {
     * @summary event handler for when new TaxCloud settings are submitted.
     * @param {Object} event - event info.
     * @param {Object} changedInfo - info about the new TaxCloud settings.
-    * @param {String} targetField - the field to update in the TaxCloud Package.
+    * @param {String} targetField - where to save the new settings in the TaxCloud Package.
     * @property {String} packageName - the name of this tax provider in lowercase.
     * @since 1.5.2
     * @return {null} - returns nothing
