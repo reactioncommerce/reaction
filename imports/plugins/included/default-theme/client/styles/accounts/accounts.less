@@ -64,7 +64,6 @@
 .user-orders-list{
   width: inherit;
   .panel-content{
-    padding-top: 0px;
     @media screen and (max-width: @screen-xs-max) {
       padding: 5px 10px;
     }
@@ -75,7 +74,7 @@
   }
   .order-completed{
     width: inherit;
-    margin: 0px 0px 20px 0px;
+    margin: 20px 0px 20px 0px;
   }
   .order-details-main {
     .flex(0 0 100%);
@@ -94,6 +93,7 @@
     @media screen and (min-width: @screen-xs-max) {
       display: flex;
       flex-wrap: nowrap;
+      flex-direction: row-reverse;
       .shipping-info, .payment-info{
         display: flex;
         flex-direction: column;
@@ -102,7 +102,7 @@
           flex: 1 0 auto;
         }
       }
-      .shipping-info{
+      .payment-info{
         margin: 0 1.2rem 0 0;
       }
     }

@@ -13,7 +13,7 @@ import ShopOrderSummary from "./shopOrderSummary";
  * @return {Node} React node containing the order summary broken down by shop
  */
 const CompletedOrderSummary = ({ shops, orderSummary, isProfilePage }) => {
-  const title = isProfilePage ? "Order Summary" : "Your Cart";
+  const title = isProfilePage ? "Order Summary" : "Your Items";
   return (
     <div>
       <div className="order-details-content-title">

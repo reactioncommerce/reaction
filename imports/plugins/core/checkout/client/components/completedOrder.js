@@ -33,7 +33,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
   let isProfilePage = false;
 
   if (Router.getRouteName() === "account/profile") {
-    headerText = null;
+    headerText = (<p><strong>Order ID </strong>{orderId}</p>);
     isProfilePage = true;
   } else {
     headerText = (
