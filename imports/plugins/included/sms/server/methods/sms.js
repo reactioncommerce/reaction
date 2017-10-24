@@ -5,13 +5,17 @@ import { check } from "meteor/check";
 import { Sms, Accounts } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
-
 /**
- * Sms Methods
- */
+ * @file Meteor methods for SMS. Run these methods using `Meteor.call()`.
+ *
+ *
+ * @namespace Methods/SMS
+*/
 Meteor.methods({
   /**
-   * sms/saveSettings
+   * @name sms/saveSettings
+   * @method
+   * @memberof Methods/SMS
    * @summary This save the sms provider settings
    * @param {Object} settings - settings
    * @return {object} returns result
@@ -30,7 +34,9 @@ Meteor.methods({
   },
 
   /**
-   * sms/send
+   * @name sms/send
+   * @method
+   * @memberof Methods/SMS
    * @summary This send the sms to the user
    * @param {String} message - The message to send
    * @param {String} userId - The user to receive the message
