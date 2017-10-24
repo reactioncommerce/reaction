@@ -6,16 +6,16 @@ import { Sms, Accounts } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
 /**
- * @file Meteor methods for SMS
+ * @file Meteor methods for SMS. Run these methods using `Meteor.call()`.
  *
  *
- * @namespace Meteor/SMS
+ * @namespace Methods/SMS
 */
 Meteor.methods({
   /**
-   * @name saveSettings
+   * @name sms/saveSettings
    * @method
-   * @memberof Meteor/SMS
+   * @memberof Methods/SMS
    * @summary This save the sms provider settings
    * @param {Object} settings - settings
    * @return {object} returns result
@@ -34,9 +34,9 @@ Meteor.methods({
   },
 
   /**
-   * @name send
+   * @name sms/send
    * @method
-   * @memberof Meteor/SMS
+   * @memberof Methods/SMS
    * @summary This send the sms to the user
    * @param {String} message - The message to send
    * @param {String} userId - The user to receive the message

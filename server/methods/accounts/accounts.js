@@ -13,15 +13,15 @@ import { Logger, Reaction } from "/server/api";
 import { sendUpdatedVerificationEmail } from "/server/api/core/accounts";
 
 /**
- * @file Meteor methods for Accounts
- * Reaction extends {@link https://github.com/meteor/meteor/tree/master/packages/accounts-base MeteorAccounts}
- * with Reaction-specific behavior and user interaction.
- * @namespace Meteor/Accounts
+ * @file Extends Meteor's {@link https://github.com/meteor/meteor/tree/master/packages/accounts-base Accounts-Base}
+ * with methods for Reaction-specific behavior and user interaction. Run these methods using: `Meteor.call()`
+ * @example Meteor.call("accounts/verifyAccount", email, token)
+ * @namespace Methods/Accounts
  */
 
 /**
- * @name verifyAccount
- * @memberof Meteor/Accounts
+ * @name accounts/verifyAccount
+ * @memberof Methods/Accounts
  * @method
  * @summary Verify registered user account
  * @example Meteor.call("accounts/verifyAccount", email, token)
@@ -70,8 +70,8 @@ export function verifyAccount(email, token) {
 }
 
 /**
- * @name updateEmailAddress
- * @memberof Meteor/Accounts
+ * @name accounts/updateEmailAddress
+ * @memberof Methods/Accounts
  * @method
  * @summary Update a user's email address
  * @param {String} email - user email
@@ -88,8 +88,8 @@ export function updateEmailAddress(email) {
 }
 
 /**
- * @name removeEmailAddress
- * @memberof Meteor/Accounts
+ * @name accounts/removeEmailAddress
+ * @memberof Methods/Accounts
  * @method
  * @summary Remove a user's email address.
  * @param {String} email - user email.
@@ -113,8 +113,8 @@ export function removeEmailAddress(email) {
 }
 
 /**
- * @name syncUsersAndAccounts
- * @memberof Meteor/Accounts
+ * @name accounts/syncUsersAndAccounts
+ * @memberof Methods/Accounts
  * @method
  * @summary Syncs emails associated with a user profile between the Users and Accounts collections.
  * @returns {Boolean} - returns boolean.
@@ -182,7 +182,7 @@ function getValidator() {
 }
 
 /**
- * @name compareAddress
+ * @name acompareAddress
  * @summary Compare individual fields of address and accumulate errors
  * @param {Object} address - the address provided by the customer
  * @param {Object} validationAddress - address provided by validator
@@ -263,8 +263,8 @@ function compareAddress(address, validationAddress) {
 }
 
 /**
- * @name validateAddress
- * @memberof Meteor/Accounts
+ * @name accounts/validateAddress
+ * @memberof Methods/Accounts
  * @method
  * @summary Validates an address, and if fails returns details of issues
  * @param {Object} address - The address object to validate
@@ -310,8 +310,8 @@ function currentUserHasPassword() {
 }
 
 /**
- * @name addressBookAdd
- * @memberof Meteor/Accounts
+ * @name accounts/addressBookAdd
+ * @memberof Methods/Accounts
  * @method
  * @summary Add new addresses to an account
  * @example Meteor.call("accounts/addressBookAdd", address, callBackFunction(error, result))
@@ -404,8 +404,8 @@ export function addressBookAdd(address, accountUserId) {
 }
 
 /**
- * @name addressBookUpdate
- * @memberof Meteor/Accounts
+ * @name accounts/addressBookUpdate
+ * @memberof Methods/Accounts
  * @method
  * @summary Update existing address in user's profile
  * @param {Object} address - address
@@ -523,8 +523,8 @@ export function addressBookUpdate(address, accountUserId, type) {
 }
 
 /**
- * @name addressBookRemove
- * @memberof Meteor/Accounts
+ * @name accounts/addressBookRemove
+ * @memberof Methods/Accounts
  * @method
  * @summary Remove existing address in user's profile
  * @param {String} addressId - address `_id`
@@ -561,9 +561,9 @@ export function addressBookRemove(addressId, accountUserId) {
 }
 
 /**
- * @name inviteShopOwner
+ * @name accounts/inviteShopOwner
  * @summary Invite a new user as owner of a new shop
- * @memberof Meteor/Accounts
+ * @memberof Methods/Accounts
  * @method
  * @param {Object} options -
  * @param {String} options.email - email of invitee
@@ -628,10 +628,10 @@ export function inviteShopOwner(options) {
 }
 
 /**
- * @name inviteShopMember
+ * @name accounts/inviteShopMember
  * @summary Invite new admin users (not consumers) to secure access in the dashboard to permissions
  * as specified in packages/roles
- * @memberof Meteor/Accounts
+ * @memberof Methods/Accounts
  * @method
  * @param {Object} options -
  * @param {String} options.shopId - shop to invite user
@@ -722,9 +722,9 @@ export function inviteShopMember(options) {
 }
 
 /**
- * @name sendWelcomeEmail
+ * @name accounts/sendWelcomeEmail
  * @summary Send an email to consumers on sign up
- * @memberof Meteor/Accounts
+ * @memberof Methods/Accounts
  * @method
  * @param {String} shopId - shopId of new User
  * @param {String} userId - new userId to welcome
@@ -822,8 +822,8 @@ export function sendWelcomeEmail(shopId, userId) {
 }
 
 /**
- * @name addUserPermissions
- * @memberof Meteor/Accounts
+ * @name accounts/addUserPermissions
+ * @memberof Methods/Accounts
  * @method
  * @param {String} userId - userId
  * @param {Array|String} permissions - Name of role/permission.
@@ -847,8 +847,8 @@ export function addUserPermissions(userId, permissions, group) {
 }
 
 /**
- * @name removeUserPermissions
- * @memberof Meteor/Accounts
+ * @name accounts/removeUserPermissions
+ * @memberof Methods/Accounts
  * @method
  * @param {String} userId - userId
  * @param {Array|String} permissions - Name of role/permission.
@@ -873,8 +873,8 @@ export function removeUserPermissions(userId, permissions, group) {
 }
 
 /**
- * @name setUserPermissions
- * @memberof Meteor/Accounts
+ * @name accounts/setUserPermissions
+ * @memberof Methods/Accounts
  * @method
  * @param {String} userId - userId
  * @param {String|Array} permissions - string/array of permissions
@@ -899,7 +899,7 @@ export function setUserPermissions(userId, permissions, group) {
 
 /**
  * @name getEmailLogo
- * @memberof Meteor/Accounts
+ * @memberof Methods/Accounts
  * @summary Get shop logo, if available. If not, use default logo from file-system
  * @method
  * @private
@@ -920,7 +920,7 @@ function getEmailLogo(shop) {
 
 /**
  * @name getCurrentUserName
- * @memberof Meteor/Accounts
+ * @memberof Methods/Accounts
  * @method
  * @private
  * @param  {Object} currentUser - User
@@ -944,11 +944,12 @@ function getCurrentUserName(currentUser) {
 
 /**
  * @name getDataForEmail
- * @memberof Meteor/Accounts
+ * @memberof Methods/Accounts
  * @method
  * @private
  * @param  {Object} options - shop, currentUserName, token, emailLogo, name
- * @return {Object} data - primaryShop, shop, contactEmail, homepage, emailLogo, legalName, physicalAddress, shopName, socialLinks, user, invitedUserName, url
+ * @return {Object} data - primaryShop, shop, contactEmail, homepage,
+ * emailLogo, legalName, physicalAddress, shopName, socialLinks, user, invitedUserName, url
  */
 function getDataForEmail(options) {
   const { shop, currentUserName, token, emailLogo, name } = options;
@@ -1002,8 +1003,8 @@ function getDataForEmail(options) {
 }
 
 /**
- * @name createFallbackLoginToken
- * @memberof Meteor/Accounts
+ * @name accounts/createFallbackLoginToken
+ * @memberof Methods/Accounts
  * @method
  * @summary Returns a new loginToken for current user, that can be used for special login scenarios
  * e.g. store the newly created token as cookie on the browser, if the client does not offer local storage.

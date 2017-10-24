@@ -5,8 +5,8 @@ import { ServiceConfiguration } from "meteor/service-configuration";
 import { Reaction } from "/server/api";
 
 /**
- * @name updateServiceConfiguration
- * @memberof Meteor/Accounts
+ * @name accounts/updateServiceConfiguration
+ * @memberof Methods/Accounts
  * @method
  * @example Meteor.call("accounts/updateServiceConfiguration", service, fields, (callBackFunction))
  * @summary Update service configuration

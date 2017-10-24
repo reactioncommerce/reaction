@@ -14,13 +14,13 @@ import * as Schemas from "/lib/collections/schemas";
  * @file Meteor methods for Shop
  *
  *
- * @namespace Meteor/Shop
+ * @namespace Methods/Shop
 */
 Meteor.methods({
   /**
-   * @name createShop
+   * @name shop/createShop
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @param {String} shopAdminUserId - optionally create shop for provided userId
    * @param {Object} shopData - optionally provide shop object to customize
    * @return {String} return shopId
@@ -153,9 +153,9 @@ Meteor.methods({
   },
 
   /**
-   * @name getLocale
+   * @name shop/getLocale
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @summary determine user's countryCode and return locale object
    * determine local currency and conversion rate from shop currency
    * @return {Object} returns user location and locale
@@ -259,9 +259,9 @@ Meteor.methods({
   },
 
   /**
-   * @name getCurrencyRates
+   * @name shop/getCurrencyRates
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @summary It returns the current exchange rate against the shop currency
    * usage: Meteor.call("shop/getCurrencyRates","USD")
    * @param {String} currency code
@@ -283,9 +283,9 @@ Meteor.methods({
   },
 
   /**
-   * @name fetchCurrencyRate
+   * @name shop/fetchCurrencyRate
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @summary fetch the latest currency rates from
    * https://openexchangerates.org
    * usage: Meteor.call("shop/fetchCurrencyRate")
@@ -372,9 +372,9 @@ Meteor.methods({
   },
 
   /**
-   * @name flushCurrencyRate
+   * @name shop/flushCurrencyRate
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @description Method calls by cron job
    * @summary It removes exchange rates that are too old
    * usage: Meteor.call("shop/flushCurrencyRate")
@@ -425,9 +425,9 @@ Meteor.methods({
   },
 
   /**
-   * @name updateShopExternalServices
+   * @name shop/updateShopExternalServices
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @description On submit OpenExchangeRatesForm handler
    * @summary we need to rerun fetch exchange rates job on every form submit,
    * that's why we update autoform type to "method-update"
@@ -473,9 +473,9 @@ Meteor.methods({
   },
 
   /**
-   * @name locateAddress
+   * @name shop/locateAddress
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @summary determine user's full location for autopopulating addresses
    * @param {Number} latitude - latitude
    * @param {Number} longitude - longitude
@@ -505,9 +505,9 @@ Meteor.methods({
   },
 
   /**
-   * @name createTag
+   * @name shop/createTag
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @summary creates new tag
    * @param {String} tagName - new tag name
    * @param {Boolean} isTopLevel - if true -- new tag will be created on top of
@@ -537,9 +537,9 @@ Meteor.methods({
   },
 
   /**
-   * @name updateHeaderTags
+   * @name shop/updateHeaderTags
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @summary method to insert or update tag with hierarchy
    * @param {String} tagName will insert, tagName + tagId will update existing
    * @param {String} tagId - tagId to update
@@ -625,9 +625,9 @@ Meteor.methods({
   },
 
   /**
-   * @name removeHeaderTag
+   * @name shop/removeHeaderTag
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @param {String} tagId - method to remove tag navigation tags
    * @param {String} currentTagId - currentTagId
    * @return {String} returns remove result
@@ -667,9 +667,9 @@ Meteor.methods({
   },
 
   /**
-   * @name hideHeaderTag
+   * @name shop/hideHeaderTag
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @param {String} tagId - method to remove tag navigation tags
    * @return {String} returns remove result
    */
@@ -691,9 +691,9 @@ Meteor.methods({
   },
 
   /**
-   * @name getWorkflow
+   * @name shop/getWorkflow
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @summary gets the current shop workflows
    * @param {String} name - workflow name
    * @return {Array} returns workflow array
@@ -716,9 +716,9 @@ Meteor.methods({
   },
 
   /**
-   * @name updateLanguageConfiguration
+   * @name shop/updateLanguageConfiguration
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @summary enable / disable a language
    * @param {String} language - language name | "all" to bulk enable / disable
    * @param {Boolean} enabled - true / false
@@ -779,9 +779,9 @@ Meteor.methods({
   },
 
   /**
-   * @name updateCurrencyConfiguration
+   * @name shop/updateCurrencyConfiguration
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @summary enable / disable a currency
    * @param {String} currency - currency name | "all" to bulk enable / disable
    * @param {Boolean} enabled - true / false
@@ -839,9 +839,9 @@ Meteor.methods({
   },
 
   /**
-   * @name updateBrandAsset
+   * @name shop/updateBrandAsset
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @param {Object} asset - brand asset {mediaId: "", type, ""}
    * @return {Int} returns update result
    */
@@ -891,9 +891,9 @@ Meteor.methods({
   },
 
   /**
-   * @name togglePackage
+   * @name shop/togglePackage
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @summary enable/disable Reaction package
    * @param {String} packageId - package _id
    * @param {Boolean} enabled - current package `enabled` state
@@ -914,9 +914,9 @@ Meteor.methods({
   },
 
   /**
-   * @name changeLayout
+   * @name shop/changeLayout
    * @method
-   * @memberof Meteor/Shop
+   * @memberof Methods/Shop
    * @summary Change the layout for all workflows so you can use a custom one
    * @param {String} shopId - the shop's ID
    * @param {String} newLayout - new layout to use

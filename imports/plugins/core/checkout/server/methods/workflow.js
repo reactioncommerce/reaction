@@ -8,16 +8,17 @@ import { Logger, Reaction } from "/server/api";
 /* eslint no-shadow: 0 */
 
 /**
- * @file Meteor methods for SMS
+ * @file Methods for Workflow. Run these methods using `Meteor.call()`.
+ * @example Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
  *
- *
- * @namespace Meteor/Workflow
+ * @namespace Methods/Workflow
 */
 Meteor.methods({
   /**
-   * @name pushCartWorkflow
-   * @memberof Meteor/Workflow
+   * @name workflow/pushCartWorkflow
+   * @memberof Methods/Workflow
    * @method
+   * @example Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
    * @summary updates cart workflow status
    * @description status in the workflow is stored as the current active workflow step.
    * first sets, second call moves status to next workflow
@@ -212,8 +213,8 @@ Meteor.methods({
   },
 
   /**
-   * @name revertCartWorkflow
-   * @memberof Meteor/Workflow
+   * @name workflow/revertCartWorkflow
+   * @memberof Methods/Workflow
    * @method
    * @summary if something was changed on the previous `cartWorkflow` steps,
    * we need to revert to this step to renew the order
@@ -249,7 +250,7 @@ Meteor.methods({
   },
 
   /**
-   * @name pushOrderWorkflow
+   * @name workflow/pushOrderWorkflow
    * @summary Update the order workflow: Push the status as the current workflow step,
    * move the current status to completed worflow steps
    *
@@ -259,7 +260,7 @@ Meteor.methods({
    * Step 2 (this method) of the "workflow/pushOrderWorkflow" flow; Try to update the current status
    *
    * @method
-   * @memberof Meteor/Workflow
+   * @memberof Methods/Workflow
    * @param  {String} workflow workflow to push to
    * @param  {String} status - Workflow status
    * @param  {Order} order - Schemas.Order, an order object
@@ -290,11 +291,11 @@ Meteor.methods({
   },
 
   /**
-   * @name pullOrderWorkflow
+   * @name workflow/pullOrderWorkflow
    * @description Push the status as the current workflow step, move the current status to completed worflow steps
    * @summary Pull a previous order status
    * @method
-   * @memberof Meteor/Workflow
+   * @memberof Methods/Workflow
    * @param  {String} workflow workflow to push to
    * @param  {String} status - Workflow status
    * @param  {Order} order - Schemas.Order, an order object
@@ -321,9 +322,9 @@ Meteor.methods({
   },
 
   /**
-   * @name pushItemWorkflow
+   * @name workflow/pushItemWorkflow
    * @method
-   * @memberof Meteor/Workflow
+   * @memberof Methods/Workflow
    * @param  {String} status  Workflow status
    * @param  {Object} order   Schemas.Order, an order object
    * @param  {String[]} itemIds Array of item IDs

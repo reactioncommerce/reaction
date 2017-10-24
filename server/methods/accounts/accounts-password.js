@@ -5,8 +5,8 @@ import { Accounts } from "meteor/accounts-base";
 import { Reaction, Logger } from "/server/api";
 
 /**
- * @name sendResetPasswordEmail
- * @memberof Meteor/Accounts
+ * @name accounts/sendResetPasswordEmail
+ * @memberof Methods/Accounts
  * @method
  * @example Meteor.call("accounts/sendResetPasswordEmail", options)
  * @summary Send reset password email

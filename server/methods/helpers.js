@@ -4,13 +4,13 @@ import { Meteor } from "meteor/meteor";
  * @file Meteor methods for Reaction
  *
  *
- * @namespace Meteor/Reaction
+ * @namespace Methods/Reaction
 */
 Meteor.methods({
   /**
-   * @name getUserId
+   * @name reaction/getUserId
    * @method
-   * @memberof Meteor/Reaction
+   * @memberof Methods/Reaction
    * @summary return server side userId if available
    * @return {String} userId - if available
    */
