@@ -3,6 +3,16 @@ import { Roles } from "meteor/alanning:roles";
 import { Logger, Reaction } from "/server/api";
 import { Shops, Groups } from "/lib/collections";
 
+/**
+ * @method createGroups
+ * @summary creates groups for shops
+ * @param {object} options -
+ * @param {string} options.shopId - the id of shop to create the group for. Not passing a shopId creates
+ * the group(s) for all available shops
+ * @param {object} options.roles - key-value pair representing the group slug (key) and
+ * array of roles for the group (value)
+ * @return {null}
+ */
 export function createGroups(options = {}) {
   const { shopId } = options;
   let { roles } = options;
@@ -40,6 +50,12 @@ export function createGroups(options = {}) {
   }
 }
 
+/**
+ * @method getDefaultGroupRoles
+ * @private
+ * @summary Generates default groups
+ * @return {object} roles - object key-value pair containing the default groups and roles for the groups
+ */
 function getDefaultGroupRoles() {
   /* Get all defined roles from the DB except "anonymous" because that gets removed from a user on register
    * if it's not removed, it causes mismatch between roles in user (i.e Meteor.user().roles[shopId]) vs that in
