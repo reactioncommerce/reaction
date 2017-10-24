@@ -441,6 +441,14 @@ Meteor.methods({
     if (variant.weight || variant.height || variant.width || variant.length) {
       parcel = { weight: variant.weight, height: variant.height, width: variant.width, length: variant.length };
     }
+    // Use default settings for parcel weight, length, height, and width
+    parcel = {
+      weight: 10,
+      height: 10,
+      width: 10,
+      length: 10
+    };
+
     // cart variant doesn't exist
     return Collections.Cart.update({
       _id: cart._id

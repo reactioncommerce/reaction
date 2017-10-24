@@ -1,0 +1,24 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-shipping-parcel-size",
+  "translation": {
+    "reaction-shipping-parcel-size": {
+      "admin": {
+        "parcelDimensionSettings": {
+          "label": "Parcel",
+          "weight": "Parcel Weight",
+          "height": "Parcel Height",
+          "length": "Parcel Length",
+          "width": "Parcel Width"
+        },
+        "alerts": {
+          "noWeight": "Please add parcel weight",
+          "noHeight": "Please add parcel height",
+          "noLength": "Please add parcel length",
+          "noWidth": "Please add parcel width",
+          "saveSuccess": "Parcel Settings saved"
+        }
+      }
+    }
+  }
+}]
