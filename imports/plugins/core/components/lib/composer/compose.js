@@ -5,9 +5,7 @@ import _ from "lodash";
 import { getDisplayName } from "recompose";
 
 /**
- * @file Reaction Components API
- *
- * @module components
+ * @namespace components
  */
 
 export default function compose(dataLoader, options = {}) {
