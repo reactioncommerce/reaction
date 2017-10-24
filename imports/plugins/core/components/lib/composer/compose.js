@@ -4,10 +4,6 @@ import hoistStatics from "hoist-non-react-statics";
 import _ from "lodash";
 import { getDisplayName } from "recompose";
 
-/**
- * @namespace components
- */
-
 export default function compose(dataLoader, options = {}) {
   return function (Child) {
     const {

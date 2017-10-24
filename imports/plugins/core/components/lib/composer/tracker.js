@@ -6,8 +6,17 @@ import compose from "./compose";
 /**
  * @file **Reaction Components API** - Most of the React components in the Reaction UI can be replaced or extended with the API outlined here. This allows anyone to create a custom plugin that can easily change the look of the UI and/or extend its functionality without having to edit core Reaction code. See {@link https://docs.reactioncommerce.com/reaction-docs/master/components-api full tutorial and documentation}.
  *
+ * @example // Register a component and container(s) with a name.
+ * // The raw component can then be extended or replaced.
  *
- * @namespace components
+ * // Structure of a component in the list:
+ *
+ * ComponentsTable.MyComponent = {
+ *    name: 'MyComponent',
+ *    hocs: [fn1, fn2],
+ *    rawComponent: React.Component
+ * }
+ * @namespace Components
  */
 
 /**
@@ -16,7 +25,7 @@ import compose from "./compose";
  * the passed in reactiveMapper function
  * @param  {Function} reactiveMapper data fetching function to bind to a tracker
  * @return {Function} composed function
- * @memberof components
+ * @memberof Components
  * @private
  */
 function getTrackerLoader(reactiveMapper) {
@@ -44,7 +53,7 @@ function getTrackerLoader(reactiveMapper) {
  * @param {Function} reactiveMapper data fetching function to bind to a tracker
  * @param {React.Component|Boolean|Object} options can be a custom loader, false (to disable), or a full options object
  * @return {Function} composed function
- * @memberof components
+ * @memberof Components
  */
 export function composeWithTracker(reactiveMapper, options) {
   let composeOptions = {};
