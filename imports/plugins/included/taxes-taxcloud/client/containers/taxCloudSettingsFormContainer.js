@@ -106,8 +106,9 @@ const composer = (props, onData) => {
   const packageSub = Meteor.subscribe("Packages", shopId);
   if (packageSub.ready()) {
     const providerName = "taxcloud";
-    const packageData = Packages.findOne({ name: "taxes-taxcloud", shopId });
-    onData(null, { ...packageData, providerName });
+    const packageName = "taxes-taxcloud";
+    const packageData = Packages.findOne({ name: packageName, shopId });
+    onData(null, { ...packageData, packageName, providerName });
   }
 };
 
