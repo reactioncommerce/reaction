@@ -4,6 +4,12 @@ import { Roles } from "meteor/alanning:roles";
 import { Accounts, Groups } from "/lib/collections";
 import { composeWithTracker } from "./composer";
 
+/**
+ * @file Reaction Components API
+ *
+ * @module components
+ */
+
 let Reaction;
 
 if (Meteor.isClient) {

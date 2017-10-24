@@ -101,7 +101,8 @@ Template.accountProfile.helpers({
    */
   ReactionAvatar() {
     return {
-      component: Components.ReactionAvatar
+      component: Components.ReactionAvatar,
+      currentUser: true
     };
   },
 

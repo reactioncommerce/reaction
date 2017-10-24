@@ -25,7 +25,7 @@ Template.registerHelper("Schemas", function () {
 /**
  * currentUser
  * @summary overrides Meteor Package.blaze currentUser method
- * @return {[Boolean]} returns true/null if user has registered
+ * @return {Boolean} returns true/null if user has registered
  */
 
 Template.registerHelper("currentUser", function () {

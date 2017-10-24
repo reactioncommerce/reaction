@@ -6,12 +6,12 @@ import { Reaction, i18next } from "/client/api";
 import { Components } from "@reactioncommerce/reaction-components";
 
 /**
- * @summary Allows user to add an email after completing an order
- * @param {Object} props - React PropTypes
- * @property {Object} order - An object representing the order
- * @property {String} orderEmail - a string containing the email attached to the order if it exists
- * @return {Node} React node containing input box when no email has been attached to the order
+ * @file AddEmail React Component allows user to add an email after completing an order
+ *
+ * @module AddEmail
+ * @extends Component
  */
+
 class AddEmail extends Component {
   constructor(props) {
     super(props);
@@ -25,6 +25,8 @@ class AddEmail extends Component {
   }
 
   /**
+   * @name handleFieldChange()
+   * @method
    * @summary handle setting state whenever the field on the form change
    * @param {Event} event - the event that fired
    * @param {String} value - the new value for the field
@@ -38,6 +40,8 @@ class AddEmail extends Component {
   };
 
   /**
+   * @name handleSubmit()
+   * @method
    * @summary Handle submitting the email form
    * @param {Event} event - the event that fired
    * @returns {null} null
@@ -107,6 +111,14 @@ class AddEmail extends Component {
   }
 }
 
+/**
+ * @name AddEmail propTypes
+ * @type {propTypes}
+ * @param {Object} props - React PropTypes
+ * @property {Object} order - An object representing the order
+ * @property {String} orderEmail - a string containing the email attached to the order if it exists
+ * @return {Node} React node containing input box when no email has been attached to the order
+ */
 AddEmail.propTypes = {
   order: PropTypes.object,
   orderEmail: PropTypes.string

@@ -7,14 +7,14 @@ import { connectorsRoles } from "../../lib/roles";
 /**
  * @file Methods for syncing Shopify orders
  *       contains methods and helpers for synchronization of orders between a Shopify store and a Reaction shop
- * @module connectors/shopify/sync/orders
+ * @module connectors-shopify
  */
 
 /**
  * Given a list of variants in an ancestor chain, finds the bottommost variant
  * @private
  * @method findBottomVariant
- * @param  {[object]} variants Array of variant objects
+ * @param  {array} variants Array of variant objects
  * @return {object} Bottommost variant object
  */
 function findBottomVariant(variants) {
@@ -36,7 +36,7 @@ export const methods = {
    * Given an array of line items from a Shopify order, this method updates the inventory quantity for all variants
    * in the Reaction store which have a matching shopifyId to the line items in the order
    * @method connectors/shopify/sync/orders/created
-   * @param {[object]} lineItems array of line items from a Shopify order
+   * @param {object} lineItems array of line items from a Shopify order
    * @returns {undefined}
    */
   "connectors/shopify/sync/orders/created": (lineItems) => {

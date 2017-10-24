@@ -1,5 +1,10 @@
 import { compose, setDisplayName } from "recompose";
 
+/**
+ * @file Reaction Components API
+ *
+ * @module components
+ */
 
 export const Components = {}; // populated with final wrapped components
 export const ComponentsTable = {}; // storage for separate elements of each component
@@ -19,7 +24,7 @@ export const ComponentsTable = {}; // storage for separate elements of each comp
  *
  * @param {String} name The name of the component to register.
  * @param {React.Component} rawComponent Interchangeable/extendable component.
- * @param {Function|[Function]} hocs The HOCs to wrap around the raw component.
+ * @param {Function|Array} hocs The HOCs to wrap around the raw component.
  *
  * @returns {React.Component} returns the final wrapped component
  */
@@ -41,7 +46,7 @@ export function registerComponent(name, rawComponent, hocs = []) {
  * Register containers (HOC) with a name.
  * If some containers already exist for the component, they will be extended.
  * @param {String} name The name of the component to register.
- * @param {Function|[Function]} hocs The HOCs to wrap around the raw component.
+ * @param {Function|Array} hocs The HOCs to wrap around the raw component.
  *
  * @returns {undefined}
  */
@@ -98,7 +103,7 @@ export function getComponent(name) {
  * This function keeps track of the previous HOCs and wraps the new HOCs around previous ones
  * @param {String} name The name of the component to register.
  * @param {React.Component} newComponent Interchangeable/extendable component.
- * @param {Function|[Function]} hocs The HOCs to compose with the raw component.
+ * @param {Function|Array} hocs The HOCs to compose with the raw component.
  * @returns {Function|React.Component} A component callable with Components[name]
  */
 export function replaceComponent(name, newComponent, hocs = []) {
