@@ -107,7 +107,7 @@ const composer = (props, onData) => {
   if (packageSub.ready()) {
     const providerName = "taxcloud";
     const packageName = "taxes-taxcloud";
-    const packageData = Packages.findOne({ name: packageName, shopId });
+    const packageData = Reaction.getPackageSettings(packageName);
     onData(null, { ...packageData, packageName, providerName });
   }
 };
