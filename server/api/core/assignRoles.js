@@ -4,13 +4,13 @@ import { Logger } from "/server/api";
 
 /**
  * getRouteName
- * assemble route name to be standard
+ * @summary assemble route name to be standard
  * this is duplicate that exists in Reaction.Router
  * however this is to avoid a dependency in core
  * on the router
  * prefix/package name + registry name or route
- * @param  {[type]} packageName  [package name]
- * @param  {[type]} registryItem [registry object]
+ * @param  {string} packageName  [package name]
+ * @param  {object} registryItem [registry object]
  * @return {String}              [route name]
  */
 function getRouteName(packageName, registryItem) {
@@ -33,7 +33,7 @@ function getRouteName(packageName, registryItem) {
 
 /**
  * assignOwnerRoles
- * populate roles with all the packages and their permissions
+ * @summary populate roles with all the packages and their permissions
  * this is the main way that roles are inserted and created for
  * admin user.
  * we assign all package roles to each owner account for each shopId

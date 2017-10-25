@@ -5,7 +5,13 @@ import { Meteor } from "meteor/meteor";
 import "sweetalert2/dist/sweetalert2.css";
 import Alerts from "./inlineAlerts";
 
-// Extends Bootstaps alerts and add more alert types
+/**
+ * @file ReactionAlerts - Shows a popup alert, extends Bootstrap Alerts and adds more alert types. See Bootstrap Alert documentation: https://getbootstrap.com/docs/3.3/components/#alerts
+ *
+ *
+ * @module ReactionAlerts
+ */
+
 Meteor.startup(function () {
   sAlert.config({
     effect: "stackslide",
@@ -57,11 +63,11 @@ Object.assign(Alerts, {
    * 	type: "success|info|warning|error|"
    * }, callbackFunction);
    *
-   * @param  {String|Object} titleOrOptions Pass a string or an object containing options
-   * @param  {[type]}   messageOrCallback [description]
-   * @param  {[type]}   options           [description]
-   * @param  {Function} callback          [description]
-   * @return {[type]}                     [description]
+   * @param  {string|object} titleOrOptions Pass a string or an object containing options
+   * @param  {string}   messageOrCallback [description]
+   * @param  {string}   options           [description]
+   * @param  {function} callback          [description]
+   * @return {string}                     [description]
    */
   alert(titleOrOptions, messageOrCallback, options, callback) {
     if (_.isObject(titleOrOptions)) {

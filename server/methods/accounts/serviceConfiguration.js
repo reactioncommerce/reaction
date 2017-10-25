@@ -4,7 +4,16 @@ import { check } from "meteor/check";
 import { ServiceConfiguration } from "meteor/service-configuration";
 import { Reaction } from "/server/api";
 
-
+/**
+ * @name accounts/updateServiceConfiguration
+ * @memberof Methods/Accounts
+ * @method
+ * @example Meteor.call("accounts/updateServiceConfiguration", service, fields, (callBackFunction))
+ * @summary Update service configuration
+ * @param {String} service
+ * @param {Array} fields
+ * @returns {false}
+ */
 Meteor.methods({
   "accounts/updateServiceConfiguration": function (service, fields) {
     check(service, String);
