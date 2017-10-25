@@ -24,9 +24,7 @@ class MainDropdown extends Component {
       [PropTypes.bool, PropTypes.object]
     ),
     handleChange: PropTypes.func,
-    userImage: PropTypes.oneOfType(
-      [PropTypes.bool, PropTypes.string]
-    ),
+    userImage: PropTypes.object,
     userName: PropTypes.string,
     userShortcuts: PropTypes.object
   }
