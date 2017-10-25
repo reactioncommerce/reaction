@@ -28,9 +28,12 @@ function getOrders() {
 Template.userOrdersList.helpers({
   hasData(data) {
     if (data.hash.data) {
-      return data.hash.data;
+      if (data.hash.data.count() > 0) {
+        return true;
+      }
+      return false;
     }
-    return true;
+    return false;
   },
 
   // Returns React Component
