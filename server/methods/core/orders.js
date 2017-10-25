@@ -9,10 +9,20 @@ import { SSR } from "meteor/meteorhacks:ssr";
 import { Media, Orders, Products, Shops, Packages } from "/lib/collections";
 import { Logger, Hooks, Reaction } from "/server/api";
 
+/**
+ * @file Methods for Orders.
+ *
+ *
+ * @namespace Methods/Orders
+*/
 
-// helper to return the order credit object
-// credit paymentMethod on the order as per current active shop
-// returns entire payment method
+/**
+ * @name orderCreditMethod
+ * @summary Helper to return the order credit object.
+ * Credit paymentMethod on the order as per current active shop
+ * @param  {Object} order order object
+ * @return {Object} returns entire payment method
+ */
 export function orderCreditMethod(order) {
   const creditBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "credit");
   const billingRecord = creditBillingRecords.find((billing) => {
@@ -20,7 +30,15 @@ export function orderCreditMethod(order) {
   });
   return billingRecord;
 }
-// helper to return the order debit object
+
+/**
+ * @name orderDebitMethod
+ * @method
+ * @memberof Methods/Orders
+ * @summary Helper to return the order debit object
+ * @param  {Object} order order object
+ * @return {Pbject} returns entire payment method
+ */
 export function orderDebitMethod(order) {
   const debitBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "debit");
   const billingRecord = debitBillingRecords.find((billing) => {
@@ -29,11 +47,12 @@ export function orderDebitMethod(order) {
   return billingRecord;
 }
 
-// REVIEW: This jsdoc doesn't seem to be accurate
 /**
- * ordersInventoryAdjust
- * adjust inventory when an order is placed
- * @param {String} orderId - add tracking to orderId
+ * @name ordersInventoryAdjust
+ * @method
+ * @memberof Methods/Orders
+ * @summary Adjust inventory when an order is placed
+ * @param {String} orderId - Add tracking to orderId
  * @return {null} no return value
  */
 export function ordersInventoryAdjust(orderId) {
@@ -62,11 +81,12 @@ export function ordersInventoryAdjust(orderId) {
   });
 }
 
-// TODO: Marketplace: Is there a reason to do this any other way? Can admins reduce for more
-// than one shop
 /**
- * ordersInventoryAdjustByShop
- * adjust inventory for a particular shop when an order is approved
+ * @name ordersInventoryAdjustByShop
+ * @method
+ * @memberof Methods/Orders
+ * @summary Adjust inventory for a particular shop when an order is approved
+ * @todo Marketplace: Is there a reason to do this any other way? Can admins reduce for more than one shop?
  * @param {String} orderId - orderId
  * @param {String} shopId - the id of the shop approving the order
  * @return {null} no return value
@@ -98,7 +118,14 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
   });
 }
 
-
+/**
+ * @name orderQuantityAdjust
+ * @method
+ * @memberof Methods/Orders
+ * @param  {String} orderId      orderId
+ * @param  {Object} refundedItem refunded item
+ * @return {null} no return value
+ */
 export function orderQuantityAdjust(orderId, refundedItem) {
   check(orderId, String);
 
@@ -123,14 +150,11 @@ export function orderQuantityAdjust(orderId, refundedItem) {
   });
 }
 
-
-/**
- * Reaction Order Methods
- */
 export const methods = {
   /**
-   * orders/shipmentPicked
-   *
+   * @name orders/shipmentPicked
+   * @method
+   * @memberof Methods/Orders
    * @summary update picking status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
@@ -164,9 +188,11 @@ export const methods = {
     }
     return result;
   },
+
   /**
-   * orders/shipmentPacked
-   *
+   * @name orders/shipmentPacked
+   * @method
+   * @memberof Methods/Orders
    * @summary update packing status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
@@ -204,8 +230,9 @@ export const methods = {
   },
 
   /**
-   * orders/shipmentLabeled
-   *
+   * @name orders/shipmentLabeled
+   * @method
+   * @memberof Methods/Orders
    * @summary update labeling status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
@@ -241,8 +268,9 @@ export const methods = {
   },
 
   /**
-   * orders/makeAdjustmentsToInvoice
-   *
+   * @name orders/makeAdjustmentsToInvoice
+   * @method
+   * @memberof Methods/Orders
    * @summary Update the status of an invoice to allow adjustments to be made
    * @param {Object} order - order object
    * @return {Object} Mongo update
@@ -268,8 +296,9 @@ export const methods = {
   },
 
   /**
-   * orders/approvePayment
-   *
+   * @name orders/approvePayment
+   * @method
+   * @memberof Methods/Orders
    * @summary Approve payment and apply any adjustments
    * @param {Object} order - order object
    * @return {Object} return this.processPayment result
@@ -315,8 +344,9 @@ export const methods = {
   },
 
   /**
-   * orders/cancelOrder
-   *
+   * @name orders/cancelOrder
+   * @method
+   * @memberof Methods/Orders
    * @summary Start the cancel order process
    * @param {Object} order - order object
    * @param {Boolean} returnToStock - condition to return product to stock
@@ -377,8 +407,9 @@ export const methods = {
   },
 
   /**
-   * orders/processPayment
-   *
+   * @name orders/processPayment
+   * @method
+   * @memberof Methods/Orders
    * @summary trigger processPayment and workflow update
    * @param {Object} order - order object
    * @return {Object} return this.processPayment result
@@ -411,9 +442,11 @@ export const methods = {
       return false;
     });
   },
+
   /**
-   * orders/shipmentShipped
-   *
+   * @name orders/shipmentShipped
+   * @method
+   * @memberof Methods/Orders
    * @summary trigger shipmentShipped status and workflow update
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
@@ -480,8 +513,9 @@ export const methods = {
   },
 
   /**
-   * orders/shipmentDelivered
-   *
+   * @name orders/shipmentDelivered
+   * @method
+   * @memberof Methods/Orders
    * @summary trigger shipmentShipped status and workflow update
    * @param {Object} order - order object
    * @return {Object} return workflow result
@@ -542,8 +576,9 @@ export const methods = {
   },
 
   /**
-   * orders/sendNotification
-   *
+   * @name orders/sendNotification
+   * @method
+   * @memberof Methods/Orders
    * @summary send order notification email
    * @param {Object} order - order object
    * @param {Object} action - send notification action
@@ -792,9 +827,11 @@ export const methods = {
   },
 
   /**
-   * orders/updateShipmentTracking
+   * @name orders/updateShipmentTracking
    * @summary Adds tracking information to order without workflow update.
    * Call after any tracking code is generated
+   * @method
+   * @memberof Methods/Orders
    * @param {Object} order - An Order object
    * @param {Object} shipment - A Shipment object
    * @param {String} tracking - tracking id
@@ -821,7 +858,9 @@ export const methods = {
   },
 
   /**
-   * orders/addOrderEmail
+   * @name orders/addOrderEmail
+   * @method
+   * @memberof Methods/Orders
    * @summary Adds email to order, used for guest users
    * @param {String} cartId - add tracking to orderId
    * @param {String} email - valid email address
@@ -850,7 +889,9 @@ export const methods = {
   },
 
   /**
-   * orders/updateHistory
+   * @name orders/updateHistory
+   * @method
+   * @memberof Methods/Orders
    * @summary adds order history item for tracking and logging order updates
    * @param {String} orderId - add tracking to orderId
    * @param {String} event - workflow event
@@ -880,11 +921,12 @@ export const methods = {
     });
   },
 
-
   /**
-   * orders/capturePayments
+   * @name orders/capturePayments
    * @summary Finalize any payment where mode is "authorize"
    * and status is "approved", reprocess as "capture"
+   * @method
+   * @memberof Methods/Orders
    * @param {String} orderId - add tracking to orderId
    * @return {null} no return value
    */
@@ -968,9 +1010,11 @@ export const methods = {
   },
 
   /**
-   * orders/refund/list
-   * loop through order's payments and find existing refunds.
-   * @summary Get a list of refunds for a particular payment method.
+   * @name orders/refund/list
+   * @summary loop through order's payments and find existing refunds.
+   * Get a list of refunds for a particular payment method.
+   * @method
+   * @memberof Methods/Orders
    * @param {Object} order - order object
    * @return {Array} Array contains refund records
    */
@@ -992,8 +1036,9 @@ export const methods = {
   },
 
   /**
-   * orders/refund/create
-   *
+   * @name orders/refund/create
+   * @method
+   * @memberof Methods/Orders
    * @summary Apply a refund to an already captured order
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object
@@ -1075,8 +1120,9 @@ export const methods = {
   },
 
   /**
-   * orders/refunds/refundItems
-   *
+   * @name orders/refunds/refundItems
+   * @method
+   * @memberof Methods/Orders
    * @summary Apply a refund to line items
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object
