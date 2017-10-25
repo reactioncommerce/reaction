@@ -153,7 +153,7 @@ const activeShop = {
   _id: Random.id()
 };
 
-export function getActiveShop(options = {}) {
+export function createActiveShop(options = {}) {
   const existingActiveShop = Shops.findOne({ "workflow.status": "active", ...options });
 
   // If we found an existingActiveShop, return it

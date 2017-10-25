@@ -3,7 +3,7 @@ import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
-import { getActiveShop } from "/server/imports/fixtures/shops";
+import { createActiveShop } from "/server/imports/fixtures/shops";
 import { Reaction } from "/server/api";
 import * as Collections from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
@@ -18,7 +18,7 @@ describe("Publication", function () {
 
   beforeEach(function () {
     Collections.Shops.remove({});
-    getActiveShop({ _id: shopId });
+    createActiveShop({ _id: shopId });
     sandbox = sinon.sandbox.create();
     sandbox.stub(RevisionApi, "isRevisionControlEnabled", () => true);
   });
