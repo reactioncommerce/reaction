@@ -19,7 +19,7 @@ const ShopOrderSummary = ({ shopSummary }) => {
       </div>
       <div className="order-summary-line">
         <div className="order-summary-title">
-          <Components.Translation defaultValue="Quantity Total" i18nKey={"cartCompleted.quantityTotal"}/>
+          <Components.Translation defaultValue="Items in order" i18nKey={"cartCompleted.orderItems"}/>
         </div>
         <div className="order-summary-value">{shopSummary.quantityTotal}</div>
       </div>
