@@ -23,7 +23,7 @@ import { TaxCloudPackageConfig } from "../../lib/collections/schemas";
 const TaxCloudSettingsForm = (props) => {
   const { handleSubmit, hiddenFields, settings, shownFields } = props;
   return (
-    <div>
+    <div className="rui taxcloud-settings-form">
       {!settings.taxcloud.apiLoginId &&
         <div className="alert alert-info">
           <span data-i18n="admin.taxSettings.taxcloudCredentials">Add API Login ID to enable</span>
