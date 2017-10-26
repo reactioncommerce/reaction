@@ -42,15 +42,14 @@ const handlers = {
 };
 
 const composer = (props, onData) => {
-  const providerName = "taxcloud";
   const shownFields = {
-    [`settings.${providerName}.apiKey`]: TaxCloudPackageConfig._schema[`settings.${providerName}.apiKey`],
-    [`settings.${providerName}.apiLoginId`]: TaxCloudPackageConfig._schema[`settings.${providerName}.apiLoginId`]
+    ["settings.taxcloud.apiKey"]: TaxCloudPackageConfig._schema["settings.taxcloud.apiKey"],
+    ["settings.taxcloud.apiLoginId"]: TaxCloudPackageConfig._schema["settings.taxcloud.apiLoginId"]
   };
   const hiddenFields = [
-    `settings.${providerName}.enabled`,
-    `settings.${providerName}.refreshPeriod`,
-    `settings.${providerName}.taxCodeUrl`
+    "settings.taxcloud.enabled",
+    "settings.taxcloud.refreshPeriod",
+    "settings.taxcloud.taxCodeUrl"
   ];
 
   const shopId = Reaction.getShopId();
