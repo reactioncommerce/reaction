@@ -3,13 +3,13 @@ import { TaxCloudSettingsFormContainer } from "../containers";
 
 Template.taxCloudSettings.helpers({
   /**
-   * @method taxCloudCard
+   * @method taxCloudForm
    * @summary returns a component for updating the TaxCloud settings for
    * this app.
    * @since 1.5.2
    * @return {Object} - an object containing the component to render.
    */
-  taxCloudCard() {
+  taxCloudForm() {
     return { component: TaxCloudSettingsFormContainer };
   }
 });
