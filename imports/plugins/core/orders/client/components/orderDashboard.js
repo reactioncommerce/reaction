@@ -4,7 +4,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 import OrderTable from "../containers/orderTableContainer";
 import OrderFilter from "./orderFilter";
 import OrderSearch from "./orderSearch";
-import { exportOrdersToCSV } from "../helpers";
+import { exportOrdersToCSV, exportOrdersToCSVByDate } from "../helpers";
 
 class OrderDashboard extends Component {
   static propTypes = {
@@ -34,7 +34,31 @@ class OrderDashboard extends Component {
     detailClassName: "",
     listClassName: "order-icon-toggle",
     openList: true,
-    orders: this.props.orders
+    orders: this.props.orders,
+    startDate: null,
+    endDate: null,
+    exportOption: "all",
+    showCalendarPicker: false,
+    disableExport: false
+  }
+
+  handleSelectChange = (event) => {
+    this.setState({
+      value: event.target.value
+    });
+    if (this.state.value === "date") {
+      this.setState({
+        disableExport: false,
+        showCalendarPicker: !this.state.showCalendarPicker
+      });
+    } else {
+      this.setState({
+        startDate: null,
+        endDate: null,
+        disableExport: true,
+        showCalendarPicker: !this.state.showCalendarPicker
+      });
+    }
   }
 
   handleListToggle = () => {
@@ -53,11 +77,38 @@ class OrderDashboard extends Component {
     });
   }
 
+  handleDatesChange = (startDate, endDate) => {
+    this.setState({
+      startDate,
+      endDate,
+      disableExport: false
+    });
+  }
+
   handleExportClick = () => {
-    exportOrdersToCSV();
+    switch (this.state.value) {
+      case "all":
+        exportOrdersToCSV();
+        break;
+      case "date":
+        exportOrdersToCSVByDate(this.state.startDate, this.state.endDate);
+        break;
+      default:
+    }
   }
 
   render() {
+    const renderCalendar = () => {
+      if (this.state.showCalendarPicker) {
+        return (
+          <Components.CalendarPicker
+            initialStartDate={this.state.startDate}
+            initialEndDate={this.state.endDate}
+            onDatesChange={this.handleDatesChange}
+          />
+        );
+      }
+    };
     return (
       <div className="order-dashboard-container">
         <OrderSearch
@@ -88,10 +139,18 @@ class OrderDashboard extends Component {
                 </button>
               </div>
             </div>
+            <span className="select-wrap">
+              <select onChange={this.handleSelectChange} value={this.state.value}>
+                <option value="all">All orders</option>
+                <option value="date">By Date</option>
+              </select>
+            </span>
+            {renderCalendar()}
             <button
               className="btn btn-default"
               onClick={this.handleExportClick}
               style={{ width: "150px" }}
+              disabled={this.state.disableExport}
             >EXPORT TO CSV</button>
             <OrderTable
               orders={this.props.orders}

@@ -1146,50 +1146,83 @@ export const methods = {
    * into a CSV formatted file
    * @return {Array} an array with columns and rows
    */
-  "orders/ExportAllOrdersToCSV": function (option) {
-    check(option, String);
+  "orders/ExportAllOrdersToCSV": () => {
+    const fields = [
+      "_id",
+      "sessionId",
+      "userId",
+      "shopId",
+      "workflow",
+      "billing",
+      "discount",
+      "tax",
+      "shipping",
+      "items",
+      "cartId",
+      "email",
+      "createdAt"
+    ];
+    const data = [];
 
-    switch (option) {
-      case "all":
-        const fields = [
-          "_id",
-          "sessionId",
-          "userId",
-          "shopId",
-          "workflow",
-          "billing",
-          "discount",
-          "tax",
-          "shipping",
-          "items",
-          "cartId",
-          "email",
-          "createdAt"
-        ];
-        const data = [];
+    const orders = Orders.find().fetch();
+    _.each(orders, (rows) => {
+      data.push([
+        rows._id,
+        rows.sessionId,
+        rows.userId,
+        rows.shopId,
+        JSON.stringify(rows.workflow),
+        JSON.stringify(rows.billing),
+        rows.discount,
+        rows.tax,
+        JSON.stringify(rows.shipping),
+        JSON.stringify(rows.items),
+        rows.cartId,
+        rows.email,
+        rows.createdAt
+      ]);
+    });
+    return { fields: fields, data: data };
+  },
+  "orders/ExportAllOrdersToCSVByDate": (startDate, endDate) => {
+    check(startDate, Object);
+    check(endDate, Object);
 
-        const orders = Orders.find().fetch();
-        _.each(orders, (rows) => {
-          data.push([
-            rows._id,
-            rows.sessionId,
-            rows.userId,
-            rows.shopId,
-            JSON.stringify(rows.workflow),
-            JSON.stringify(rows.billing),
-            rows.discount,
-            rows.tax,
-            JSON.stringify(rows.shipping),
-            JSON.stringify(rows.items),
-            rows.cartId,
-            rows.email,
-            rows.createdAt
-          ]);
-        });
-        return { fields: fields, data: data };
-      default:
-        break;
-    }
+    // generate time for start and end of day
+    const formattedEndDate = endDate.endOf("day");
+    const formattedStartDate = startDate.startOf("day");
+
+    const fields = [
+      "_id",
+      "sessionId",
+      "userId",
+      "shopId",
+      "discount",
+      "tax",
+      "cartId",
+      "email",
+      "createdAt"
+    ];
+    const data = [];
+
+    const orders = Orders.find({
+      $gte: new Date(formattedStartDate.toISOString()),
+      $lte: new Date(formattedEndDate.toISOString())
+    }).fetch();
+    _.each(orders, (rows) => {
+      data.push([
+        rows._id,
+        rows.sessionId,
+        rows.userId,
+        rows.shopId,
+        rows.discount,
+        rows.tax,
+        rows.cartId,
+        rows.email,
+        rows.createdAt
+      ]);
+    });
+    return { fields: fields, data: data };
   }
 };
 

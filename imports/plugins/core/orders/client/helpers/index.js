@@ -183,7 +183,17 @@ export function getShippingInfo(order) {
 }
 
 export function exportOrdersToCSV() {
-  Meteor.call("orders/ExportAllOrdersToCSV", "all", (error, data) => {
+  Meteor.call("orders/ExportAllOrdersToCSV", (error, data) => {
+    if (error) {
+      console.log("Error happened");
+    }
+    const csv = Papa.unparse(data);
+    downloadCSV(csv);
+  });
+}
+
+export function exportOrdersToCSVByDate(startDate, endDate) {
+  Meteor.call("orders/ExportAllOrdersToCSVByDate", startDate, endDate, (error, data) => {
     if (error) {
       console.log("Error happened");
     }
