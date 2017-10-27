@@ -46,11 +46,12 @@ Learn more on how to [configure your project](https://docs.reactioncommerce.com/
 
 # Get involved
 
-## Documentation
+## Documentation and tools
 - [Developer documentation](https://docs.reactioncommerce.com)
 - [API documentation](http://api.docs.reactioncommerce.com) 
 - [Reaction component style guide](https://styleguide.reactioncommerce.com/)
-- [Store operator guide](https://docs.reactioncommerce.com/reaction-docs/master/dashboard)
+- [Reaction GraphQL API server base](https://github.com/reactioncommerce/reaction-api-base)
+- [Reaction sample data](https://github.com/reactioncommerce/reaction-sample-data)
 
 ## Get help
 - [Reaction Commerce Gitter chat](https://gitter.im/reactioncommerce/reaction)
