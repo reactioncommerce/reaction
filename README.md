@@ -58,6 +58,7 @@ Learn more on how to [configure your project](https://docs.reactioncommerce.com/
 - [Reaction Commerce forum](https://forums.reactioncommerce.com/)
 
 ## Learn
+- [Reaction Commerce engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
 - [Customization themes & plugins tutorial](https://docs.reactioncommerce.com/reaction-docs/master/tutorial)
 - [Reaction Commerce YouTube videos](https://www.youtube.com/user/reactioncommerce/videos)
 
