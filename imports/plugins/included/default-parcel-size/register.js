@@ -8,7 +8,10 @@ Reaction.registerPackage({
   settings: {
     name: "Parcel Size",
     size: {
-      enabled: false
+      weight: 10,
+      height: 10,
+      length: 10,
+      width: 10
     }
   },
   registry: [

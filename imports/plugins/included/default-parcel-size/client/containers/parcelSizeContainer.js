@@ -13,14 +13,10 @@ const saveDefaultSize = (size, callback) => {
   return callback();
 };
 
-const composer = ({}, onData) => {
+const composer = (props, onData) => {
+  const size = props.settings.size;
   onData(null, {
-    size: {
-      weight: 10,
-      height: 10,
-      length: 10,
-      width: 10
-    },
+    size,
     saveDefaultSize
   });
 };
