@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { Components } from "@reactioncommerce/reaction-components";
 
 class ParcelDimensionSettings extends Component {
-  constructor() {
-    super();
+  static propTypes = {
+    saveDefaultSize: PropTypes.func,
+    size: PropTypes.object
+  }
+
+  constructor(props) {
+    super(props);
     this.state = {
-      dimension: {},
+      size: this.props.size,
       isSaving: false
     };
     this.handleStateChange = this.handleStateChange.bind(this);
@@ -16,23 +20,24 @@ class ParcelDimensionSettings extends Component {
   }
 
   handleStateChange(event) {
-    const { dimension } = this.state;
+    const { size } = this.state;
     const value = event.target.value;
-    dimension[event.target.name] = parseInt(value, 10);
-    this.setState({ dimension });
+    size[event.target.name] = parseInt(value, 10);
+    this.setState({ size });
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    const { dimension } = this.state;
-    dimension._id = Reaction.getShopId();
-    Meteor.call("shipping/dimension/add", dimension);
+    const { size } = this.state;
+    size._id = Reaction.getShopId();
     this.setState({ isSaving: true });
+    this.props.saveDefaultSize(size, () => {
+      this.setState({ isSaving: false });
+    });
   }
 
   render() {
-    const { isSaving, dimension } = this.state;
-
+    const { isSaving, size } = this.state;
     return (
       <Components.CardGroup>
         <Components.Card>
@@ -43,7 +48,7 @@ class ParcelDimensionSettings extends Component {
                 type={"number"}
                 i18nKeyLabel="admin.parcelDimensionSettings.weight"
                 name="weight"
-                value={dimension.weight || 0}
+                value={size.weight}
                 onChange={this.handleStateChange}
               />
               <Components.TextField
@@ -51,7 +56,7 @@ class ParcelDimensionSettings extends Component {
                 type="number"
                 i18nKeyLabel="admin.parcelDimensionSettings.height"
                 name="height"
-                value={dimension.height || 0}
+                value={size.height}
                 onChange={this.handleStateChange}
               />
               <Components.TextField
@@ -59,7 +64,7 @@ class ParcelDimensionSettings extends Component {
                 type="number"
                 i18nKeyLabel="admin.parcelDimensionSettings.width"
                 name="width"
-                value={dimension.width || 0}
+                value={size.width}
                 onChange={this.handleStateChange}
               />
               <Components.TextField
@@ -67,7 +72,7 @@ class ParcelDimensionSettings extends Component {
                 type="number"
                 i18nKeyLabel="admin.parcelDimensionSettings.length"
                 name="length"
-                value={dimension.length || 0}
+                value={size.length}
                 onChange={this.handleStateChange}
               />
               <Components.Button

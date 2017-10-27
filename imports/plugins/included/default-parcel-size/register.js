@@ -1,23 +1,23 @@
 import { Reaction } from "/server/api";
 
 Reaction.registerPackage({
-  label: "Parcel Dimensions",
+  label: "Default Parcel Size",
   name: "reaction-shipping-parcel-size",
   icon: "fa fa-truck-o",
   autoEnable: true,
   settings: {
     name: "Parcel Size",
-    dimension: {
+    size: {
       enabled: false
     }
   },
   registry: [
     {
       provides: ["dashboard"],
-      route: "/shipping/dimension",
+      route: "/shipping/size",
       name: "shipping",
       label: "Shipping",
-      description: "Provide parcel dimension details",
+      description: "Provide parcel size details",
       icon: "fa fa-truck",
       priority: 1,
       container: "core",
@@ -25,11 +25,11 @@ Reaction.registerPackage({
     },
     {
       provides: ["shippingSettings"],
-      name: "shipping/settings/parcelDimension",
+      name: "shipping/settings/parcelSize",
       label: "Parcel Dimensions",
-      description: "Provide parcel dimension details",
+      description: "Provide parcel size details",
       icon: "fa fa-truck",
-      template: "parcelDimensionSettings"
+      template: "parcelSizeSettings"
     }
   ]
 });

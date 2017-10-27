@@ -2,10 +2,11 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Components } from "@reactioncommerce/reaction-components";
 
-Template.parcelDimensionSettings.helpers({
-  dimensionSettings() {
+
+Template.parcelSizeSettings.helpers({
+  sizeSettings() {
     return {
-      component: Components.ParcelDimensionSettings
+      component: Components.ParcelSizeSettings
     };
   }
 });

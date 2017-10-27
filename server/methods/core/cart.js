@@ -441,13 +441,19 @@ Meteor.methods({
     if (variant.weight || variant.height || variant.width || variant.length) {
       parcel = { weight: variant.weight, height: variant.height, width: variant.width, length: variant.length };
     }
+
+    // Get default parcel size
+    const defaultParcelSize = Reaction.getPackageSettings("reaction-shipping-parcel-size").settings.dimension;
+
     // Use default settings for parcel weight, length, height, and width
-    parcel = {
-      weight: 10,
-      height: 10,
-      width: 10,
-      length: 10
-    };
+    if (defaultParcelSize) {
+      parcel = {
+        weight: defaultParcelSize.weight,
+        height: defaultParcelSize.height,
+        width: defaultParcelSize.width,
+        length: defaultParcelSize.length
+      };
+    }
 
     // cart variant doesn't exist
     return Collections.Cart.update({
