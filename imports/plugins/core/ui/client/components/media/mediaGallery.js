@@ -80,7 +80,7 @@ class MediaGallery extends Component {
               }}
             >
               {({ measureRef }) =>
-                <div ref={measureRef}>
+                <div ref={measureRef} style={{ width: 100 + "%", height: 100 + "%" }}>
                   <Components.MediaItem
                     editable={this.props.editable}
                     index={index}
