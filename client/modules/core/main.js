@@ -186,6 +186,8 @@ export default {
     // called out a userId is validated.
     //
     function roleCheck() {
+      // TODO: There're some outdated comments in this function. Clean them out.
+
       // permissions can be either a string or an array
       // we'll force it into an array and use that
       if (checkPermissions === undefined) {
@@ -193,14 +195,26 @@ export default {
       } else if (typeof checkPermissions === "string") {
         permissions = [checkPermissions];
       } else {
+        /* TODO: Consult and add the code below if it is thought
+        of as useful.
+        if (!Array.isArray(checkPermissions)) {
+          return false;
+        }
+        if (checkPermissions.length === 0) {
+          return false;
+        }
+        */
         permissions = checkPermissions;
       }
       // if the user has owner permissions we'll always check if those roles are enough
       // By adding the "owner" role to the permissions list, we are making hasPermission always return
       // true for "owners". This gives owners global access.
       // TODO: Review this way of granting global access for owners
-      permissions.push("owner");
-      permissions = _.uniq(permissions);
+
+      // TODO: Find out why were we ever joining "owner" to the permissions
+      // array in the first place.
+      // permissions.push("owner");
+      // permissions = _.uniq(permissions);
 
       //
       // return if user has permissions in the group
