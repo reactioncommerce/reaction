@@ -213,8 +213,6 @@ export default {
 
       // TODO: Find out why were we ever joining "owner" to the permissions
       // array in the first place.
-      // permissions.push("owner");
-      // permissions = _.uniq(permissions);
 
       //
       // return if user has permissions in the group
