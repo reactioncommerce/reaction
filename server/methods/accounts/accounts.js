@@ -327,7 +327,7 @@ export function addressBookAdd(address, accountUserId) {
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
     if (!Reaction.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
   }
   this.unblock();
@@ -422,7 +422,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
     if (!Reaction.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
   }
   this.unblock();
@@ -539,7 +539,7 @@ export function addressBookRemove(addressId, accountUserId) {
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
     if (!Reaction.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
   }
   this.unblock();
@@ -667,11 +667,11 @@ export function inviteShopMember(options) {
 
   // check to ensure that invitee has roles required to perform the invitation
   if (!Reaction.canInviteToGroup({ group, user: Meteor.user() })) {
-    throw new Meteor.Error(403, "cannot invite to group");
+    throw new Meteor.Error("access-denied", "cannot invite to group");
   }
 
   if (group.slug === "owner") {
-    throw new Meteor.Error(400, "cannot directly invite owner");
+    throw new Meteor.Error("bad-request", "cannot directly invite owner");
   }
 
   const currentUser = Meteor.users.findOne(this.userId);
@@ -833,7 +833,7 @@ export function sendWelcomeEmail(shopId, userId) {
  */
 export function addUserPermissions(userId, permissions, group) {
   if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
-    throw new Meteor.Error(403, "Access denied");
+    throw new Meteor.Error("access-denied", "Access denied");
   }
   check(userId, Match.OneOf(String, Array));
   check(permissions, Match.OneOf(String, Array));
@@ -858,7 +858,7 @@ export function addUserPermissions(userId, permissions, group) {
  */
 export function removeUserPermissions(userId, permissions, group) {
   if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
-    throw new Meteor.Error(403, "Access denied");
+    throw new Meteor.Error("access-denied", "Access denied");
   }
   check(userId, String);
   check(permissions, Match.OneOf(String, Array));
@@ -868,7 +868,7 @@ export function removeUserPermissions(userId, permissions, group) {
     return Roles.removeUsersFromRoles(userId, permissions, group);
   } catch (error) {
     Logger.error(error);
-    throw new Meteor.Error(403, "Access Denied");
+    throw new Meteor.Error("access-denied", "Access Denied");
   }
 }
 
@@ -883,7 +883,7 @@ export function removeUserPermissions(userId, permissions, group) {
  */
 export function setUserPermissions(userId, permissions, group) {
   if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
-    throw new Meteor.Error(403, "Access denied");
+    throw new Meteor.Error("access-denied", "Access denied");
   }
   check(userId, String);
   check(permissions, Match.OneOf(String, Array));

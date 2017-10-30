@@ -25,7 +25,7 @@ export function copyCartToOrder(cartId) {
 
   // security check - method can only be called on own cart
   if (cart.userId !== Meteor.userId()) {
-    throw new Meteor.Error(403, "Access Denied");
+    throw new Meteor.Error("access-denied", "Access Denied");
   }
 
   // Init new order object from existing cart
@@ -215,7 +215,7 @@ export function copyCartToOrder(cartId) {
     return orderId;
   }
   // we should not have made it here, throw error
-  throw new Meteor.Error(400, "cart/copyCartToOrder: Invalid request");
+  throw new Meteor.Error("bad-request", "cart/copyCartToOrder: Invalid request");
 }
 
 Meteor.methods({

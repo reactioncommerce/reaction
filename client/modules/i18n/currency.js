@@ -87,7 +87,7 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
       // we know the locale, but we don"t know exchange rate. In that case we
       // should return to default shop currency
       if (typeof userCurrency.rate !== "number") {
-        throw new Meteor.Error("exchangeRateUndefined");
+        throw new Meteor.Error("invalid-exchange-rate", "Exchange rate is invalid");
       }
       prices[i] *= userCurrency.rate;
 

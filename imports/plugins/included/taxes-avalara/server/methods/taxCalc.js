@@ -54,7 +54,7 @@ function checkConfiguration(packageData = taxCalc.getPackageData()) {
     }
   }
   if (!isValid) {
-    throw new Meteor.Error("The Avalara package is not configured correctly. Cannot continue");
+    throw new Meteor.Error("bad-configuration", "The Avalara package is not configured correctly. Cannot continue");
   }
   return isValid;
 }
@@ -225,7 +225,7 @@ taxCalc.getEntityCodes = function () {
     const result = avaGet(requestUrl);
 
     if (result && result.code === "ETIMEDOUT") {
-      throw new Meteor.Error("Request timed out while populating entity codes.");
+      throw new Meteor.Error("request-timeout", "Request timed out while populating entity codes.");
     }
 
     return _.get(result, "data.value", []);
@@ -328,7 +328,7 @@ taxCalc.testCredentials = function (credentials, testCredentials = false) {
   const result = avaGet(requestUrl, { auth, timeout: credentials.requestTimeout }, testCredentials);
 
   if (result && result.code === "ETIMEDOUT") {
-    throw new Meteor.Error("Request Timed out. Increase your timeout settings");
+    throw new Meteor.Error("request-timeout", "Request Timed out. Increase your timeout settings");
   }
 
   if (result.statusCode === 200) {
@@ -344,7 +344,7 @@ taxCalc.testCredentials = function (credentials, testCredentials = false) {
           res.forEach(function (code) {
             Meteor.call("taxes/insertTaxCodes", Reaction.getShopId(), code, "taxes-avalara", (err) => {
               if (err) {
-                throw new Meteor.Error("Error populating TaxCodes collection", err);
+                throw new Meteor.Error("error-occurred", "Error populating TaxCodes collection", err);
               }
             });
           });
