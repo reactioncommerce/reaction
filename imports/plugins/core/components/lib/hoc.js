@@ -14,9 +14,12 @@ if (Meteor.isClient) {
 
 
 /**
- * A wrapper to reactively inject the current user into a component
+ * @name withCurrentUser
+ * @method
+ * @summary A wrapper to reactively inject the current user into a component
  * @param {Function|React.Component} component - the component to wrap
  * @return {Function} the new wrapped component with a "currentUser" prop
+ * @memberof Components
  */
 export function withCurrentUser(component) {
   return composeWithTracker((props, onData) => {
@@ -26,10 +29,13 @@ export function withCurrentUser(component) {
 
 
 /**
- * A wrapper to reactively inject the current account into a component.
+ * @name withCurrentAccount
+ * @method
+ * @summary A wrapper to reactively inject the current account into a component.
  * This assumes you have signed up and are not an anonymous user.
  * @param {Function|React.Component} component - the component to wrap
  * @return {Function} the new wrapped component with a "currentAccount" prop
+ * @memberof Components
  */
 export function withCurrentAccount(component) {
   return composeWithTracker((props, onData) => {
@@ -58,10 +64,13 @@ export function withCurrentAccount(component) {
 
 
 /**
- * A wrapper to reactively inject the current user's admin status.
+ * @name withIsAdmin
+ * @method
+ * @summary A wrapper to reactively inject the current user's admin status.
  * Sets a boolean 'isAdmin' prop on the wrapped component.
  * @param {Function|React.Component} component - the component to wrap
  * @return {Function} the new wrapped component with an "isAdmin" prop
+ * @memberof Components
  */
 export function withIsAdmin(component) {
   return composeWithTracker((props, onData) => {
@@ -70,11 +79,14 @@ export function withIsAdmin(component) {
 }
 
 /**
- * A wrapper to reactively inject a user's permission based on group or roles
+ * @name withPermissions
+ * @method
+ * @summary A wrapper to reactively inject a user's permission based on group or roles
  * Group access is given to users at that group level and above
  * @param  {Array|String} roles String or array of strings of permissions to check. default: roles=["guest", "anonymous"]
  * @param  {String} group Slug title of a group to check against. Group option supercedes roles option. default: group="customer".
  * @return {Function} the new wrapped component with a "hasPermissions" prop
+ * @memberof Components
  */
 export function withPermissions({ roles = ["guest", "anonymous"], group }) {
   return composeWithTracker((props, onData) => {
@@ -104,10 +116,13 @@ export function withPermissions({ roles = ["guest", "anonymous"], group }) {
 
 
 /**
- * A wrapper to reactively inject the current user's owner status.
+ * @name withIsOwner
+ * @method
+ * @summary A wrapper to reactively inject the current user's owner status.
  * Sets a boolean 'isOwner' prop on the wrapped component.
  * @param {Function|React.Component} component - the component to wrap
  * @return {Function} the new wrapped component with an "isOwner" prop
+ * @memberof Components
  */
 export function withIsOwner(component) {
   return composeWithTracker((props, onData) => {

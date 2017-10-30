@@ -3,15 +3,15 @@ import { check } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
 
 /**
- * @file Methods for setting up and removing synchronization between a Shopify store and a Reaction shop
- * @module connectors/shopify/sync
+ * @file **Shopify Connector** - Methods for setting up and removing synchronization between a Shopify store and a Reaction shop
+ * @module connectors-shopify
  */
 
 export const methods = {
   /**
    * Given an array of integrations, creates and registers a webhook with the Shopify store for each integration
    * @method connectors/shopify/sync/setup
-   * @param {[string]} integrations Array of integrations. Each integration should take the form
+   * @param {array} integrations Array of integrations. Each integration should take the form
    *                                topic:method - e.g. orders/create:updateInventory
    *                                The top will be used to subscribe to a webhook and each integration will be stored
    *                                in the integrations array within the shopify webhooks settings
