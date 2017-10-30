@@ -431,6 +431,8 @@ Meteor.methods({
     // we need to get the parent of the option to check if parcel info is stored there
     const immediateAncestors = variant.ancestors.filter((ancestor) => ancestor !== product._id);
     const immediateAncestor = Collections.Products.findOne({ _id: immediateAncestors[0] });
+    // Get default parcel size
+    const defaultParcelSize = Reaction.getPackageSettings("reaction-shipping-parcel-size").settings.dimension;
     let parcel = null;
     if (immediateAncestor) {
       if (immediateAncestor.weight || immediateAncestor.height || immediateAncestor.width || immediateAncestor.length) {
@@ -441,9 +443,6 @@ Meteor.methods({
     if (variant.weight || variant.height || variant.width || variant.length) {
       parcel = { weight: variant.weight, height: variant.height, width: variant.width, length: variant.length };
     }
-
-    // Get default parcel size
-    const defaultParcelSize = Reaction.getPackageSettings("reaction-shipping-parcel-size").settings.dimension;
 
     // Use default settings for parcel weight, length, height, and width
     if (defaultParcelSize) {

@@ -6,10 +6,10 @@
       "admin": {
         "parcelDimensionSettings": {
           "label": "Parcel",
-          "weight": "Parcel Weight",
-          "height": "Parcel Height",
-          "length": "Parcel Length",
-          "width": "Parcel Width"
+          "weight": "Weight (in)",
+          "length": "Length (in)",
+          "width": "Width (lbs)",
+          "height": "Height (in)"
         },
         "alerts": {
           "noWeight": "Please add parcel weight",

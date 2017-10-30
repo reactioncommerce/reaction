@@ -8,10 +8,10 @@ Reaction.registerPackage({
   settings: {
     name: "Parcel Size",
     size: {
-      weight: 10,
-      height: 10,
-      length: 10,
-      width: 10
+      weight: 70,
+      length: 11.25,
+      width: 8.75,
+      height: 6
     }
   },
   registry: [
@@ -29,7 +29,7 @@ Reaction.registerPackage({
     {
       provides: ["shippingSettings"],
       name: "shipping/settings/parcelSize",
-      label: "Parcel Dimensions",
+      label: "Parcel Size",
       description: "Provide parcel size details",
       icon: "fa fa-truck",
       template: "parcelSizeSettings"
