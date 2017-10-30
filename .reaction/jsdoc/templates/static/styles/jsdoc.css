@@ -61,7 +61,9 @@ h1 {
 
 h1.page-title {
   font-size: 40px;
-  margin: 1em 40px;
+  margin: 0;
+  margin-bottom: 50px;
+  color: #052a4e;
 }
 
 h2 {
@@ -144,7 +146,6 @@ section {
   display: block;
   background-color: #fff;
   max-width: 900px;
-  padding: 0 0 0 40px;
 }
 
 .variation {

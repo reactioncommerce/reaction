@@ -61,6 +61,7 @@
   -moz-flex: 1 1 auto;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
+  padding: 70px 40px 60px;
 }
 
 .reaction-nav {
