@@ -7,19 +7,26 @@ import LineItems from "./lineItems";
 import InvoiceActions from "./invoiceActions";
 
 /**
-  * @summary React component for displaying the `invoice` section on the orders sideview
-  * @param {Object} props - React PropTypes
-  * @property {Object} invoice - An object representing an invoice
-  * @property {Object} order - An object representing an order
-  * @property {Bool} discounts - A boolean indicating whether discounts are enabled
-  * @property {Array} refunds - An array/list of refunds
-  * @property {Bool} paymentCaptured - A boolean indicating whether payment has been captured
-  * @property {Bool} canMakeAdjustments - A boolean indicating whether adjustments could be made on total payment
-  * @property {Bool} hasRefundingEnabled - A boolean indicating whether payment supports refunds
-  * @property {Bool} isFetching - A boolean indicating whether refund list is being loaded
-  * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
-  */
+ * @file Invoice is a React Component for displaying the `invoice` section on the orders sideview
+ * @module Invoice
+ * @extends Components
+ */
+
 class Invoice extends Component {
+  /**
+    * @name Invoice propTypes
+    * @type {propTypes}
+    * @param {Object} props - React PropTypes
+    * @property {Object} invoice - An object representing an invoice
+    * @property {Object} order - An object representing an order
+    * @property {Bool} discounts - A boolean indicating whether discounts are enabled
+    * @property {Array} refunds - An array/list of refunds
+    * @property {Bool} paymentCaptured - A boolean indicating whether payment has been captured
+    * @property {Bool} canMakeAdjustments - A boolean indicating whether adjustments could be made on total payment
+    * @property {Bool} hasRefundingEnabled - A boolean indicating whether payment supports refunds
+    * @property {Bool} isFetching - A boolean indicating whether refund list is being loaded
+    * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
+    */
   static propTypes = {
     canMakeAdjustments: PropTypes.bool,
     discounts: PropTypes.bool,
@@ -36,6 +43,8 @@ class Invoice extends Component {
   }
 
   /**
+    * @name formatDate()
+    * @method
     * @summary Formats dates
     * @param {Number} context - the date to be formatted
     * @param {String} block - the preferred format
@@ -47,6 +56,8 @@ class Invoice extends Component {
   }
 
   /**
+    * @name handleClick()
+    * @method
     * @summary Handle clicking the add discount link
     * @param {Event} event - the event that fired
     * @returns {null} null
@@ -59,6 +70,8 @@ class Invoice extends Component {
   }
 
   /**
+    * @name renderDiscountForm()
+    * @method
     * @summary Displays the discount form
     * @returns {null} null
     */
@@ -81,6 +94,8 @@ class Invoice extends Component {
   }
 
   /**
+    * @name renderRefundsInfo()
+    * @method
     * @summary Displays the refund information after the order payment breakdown on the invoice
     * @returns {null} null
     */
@@ -108,6 +123,8 @@ class Invoice extends Component {
   }
 
   /**
+    * @name renderTotal()
+    * @method
     * @summary Displays the total payment form
     * @returns {null} null
     */
@@ -124,6 +141,8 @@ class Invoice extends Component {
   }
 
   /**
+    * @name renderConditionalDisplay()
+    * @method
     * @summary Displays either refunds info or the total payment form
     * @returns {null} null
     */
@@ -148,6 +167,8 @@ class Invoice extends Component {
   }
 
   /**
+    * @name renderInvoice()
+    * @method
     * @summary Displays the invoice form with broken down payment info
     * @returns {null} null
     */

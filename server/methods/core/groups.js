@@ -7,19 +7,24 @@ import { Accounts, Groups } from "/lib/collections";
 import { getSlug } from "/lib/api";
 
 /**
- * Reaction Permission Group Methods
- */
+ * @file Methods for creating and managing admin user permission groups.
+ * Run these methods using `Meteor.call()`.
+ * @example Meteor.call("group/createGroup", sampleCustomerGroup, shop._id)
+ * @namespace Methods/Group
+*/
 Meteor.methods({
   /**
-   * group/createGroup
-   * @summary creates a new permission group for a shop
+   * @name group/createGroup
+   * @method
+   * @memberof Methods/Group
+   * @summary Creates a new permission group for a shop
    * It creates permission group for a given shop with passed in roles
    * @param {Object} groupData - info about group to create
    * @param {String} groupData.name - name of the group to be created
    * @param {String} groupData.description - Optional description of the group to be created
    * @param {Array} groupData.permissions - permissions to assign to the group being created
    * @param {String} shopId - id of the shop the group belongs to
-   * @return {Object} - object.status of 200 on success or Error object on failure
+   * @return {Object} - `object.status` of 200 on success or Error object on failure
    */
   "group/createGroup": function (groupData, shopId) {
     check(groupData, Object);
@@ -63,16 +68,18 @@ Meteor.methods({
   },
 
   /**
-   * group/updateGroup
-   * @summary updates a permission group for a shop
-   * changes the details of a group (name, desc, permissions etc) to the values passed in.
+   * @name group/updateGroup
+   * @method
+   * @memberof Methods/Group
+   * @summary Updates a permission group for a shop.
+   * Change the details of a group (name, desc, permissions etc) to the values passed in.
    * It also goes into affected user data to modify both the groupName (using Accounts schema)
    * and group permissions (using "accounts/removeUserPermissions")
    * @param {Object} groupId - group to be updated
    * @param {Object} newGroupData - updated group info (similar to current group data)
    * slug remains untouched; used as key in querying
    * @param {String} shopId - id of the shop the group belongs to
-   * @return {Object} - object.status of 200 on success or Error object on failure
+   * @return {Object} - `object.status` of 200 on success or Error object on failure
    */
   "group/updateGroup": function (groupId, newGroupData, shopId) {
     check(groupId, String);
@@ -113,14 +120,17 @@ Meteor.methods({
     Logger.error(error);
     throw new Meteor.Error(500, "Update not successful");
   },
+
   /**
-   * group/addUser
-   * @summary adds a user to a permission group
-   * It updates the user's list of permissions/roles with the defined the list defined for the group
+   * @name group/addUser
+   * @method
+   * @memberof Methods/Group
+   * @summary Adds a user to a permission group
+   * Updates the user's list of permissions/roles with the defined the list defined for the group
    * (NB: At this time, a user only belongs to only one group per shop)
    * @param {String} userId - current data of the group to be updated
    * @param {String} groupId - id of the group
-   * @return {Object} - object.status of 200 on success or Error object on failure
+   * @return {Object} - `object.status` of 200 on success or Error object on failure
    */
   "group/addUser": function (userId, groupId) {
     check(userId, String);
@@ -185,12 +195,15 @@ Meteor.methods({
   },
 
   /**
-   * group/removeUser
-   * @summary removes a user from a group for a shop, and adds them to the default customer group.
-   * It updates the user's permission list to reflect. (NB: At this time, a user only belongs to only one group per shop)
+   * @name group/removeUser
+   * @method
+   * @memberof Methods/Group
+   * @summary Removes a user from a group for a shop, and adds them to the default customer group.
+   * Updates the user's permission list to reflect.
+   * (NB: At this time, a user only belongs to only one group per shop)
    * @param {String} userId - current data of the group to be updated
    * @param {String} groupId - name of the group
-   * @return {Object} - object.status of 200 on success or Error object on failure
+   * @return {Object} - `object.status` of 200 on success or Error object on failure
    */
   "group/removeUser": function (userId, groupId) {
     check(userId, String);
@@ -223,7 +236,8 @@ Meteor.methods({
 
 /**
  * changeMarketplaceOwner
- * @summary checks if the user making the request is allowed to make invitation to that group
+ * @private
+ * @summary Checks if the user making the request is allowed to make invitation to that group
  * @param {Object} options -
  * @param {String} options.userId - userID
  * @param {String} options.permissions - permissions
@@ -236,6 +250,15 @@ function changeMarketplaceOwner({ userId, permissions }) {
   Meteor.users.update({ _id: Meteor.userId() }, { $unset: { [`roles.${Roles.GLOBAL_GROUP}`]: "" } });
 }
 
+/**
+ * setUserPermissions
+ * @private
+ * @summary Set user permissions
+ * @param {Object} users -
+ * @param {String} permissions -
+ * @param {String} shopId -
+ * @return {null} -
+ */
 function setUserPermissions(users, permissions, shopId) {
   let affectedUsers = users;
   if (!Array.isArray(users)) {
