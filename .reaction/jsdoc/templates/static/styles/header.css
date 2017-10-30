@@ -1,0 +1,122 @@
+.page {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  z-index: 1;
+}
+
+.main-header {
+  display: -ms-flexbox;
+    display: flex;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    background-color: #f9f8f2;
+}
+
+.container {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  height: 400px;
+}
+
+
+.sidebar {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 300px;
+  max-width: 300px;
+  border-right: 1px solid #e6e6e6;
+  background-color: #fafafa;
+  background-color: #ffffff;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.docs {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+#content {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: white;
+  -moz-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+.reaction-nav {
+  min-height: 70px;
+  background-color: #ffffff;
+  padding: 0 40px;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  z-index: 1000;
+  position: relative;
+}
+
+.reaction-nav-group {
+  min-height: 70px;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.reaction-nav-header {
+  flex: 0 1 auto;
+}
+
+.reaction-nav-links {
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -moz-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  height: 100%;
+  margin-left: 4rem;
+}
+
+.main-header {
+  height: 60px;
+  width: 100%;
+  background-color: #f9f8f2;
+}
+
+h2:first-child {
+  display: none;
+}
+
+nav h3 {
+  margin-top: 0;
+}
