@@ -25,7 +25,15 @@
       </div>
     </div>
   {{else}}
-    {{> emptyCheckoutCart}}
+    {{#if currentUser}}
+      <div>
+        <div class="spinner-container">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    {{else}}
+      {{> emptyCheckoutCart}}
+    {{/if}}
   {{/if}}
 </template>
 
