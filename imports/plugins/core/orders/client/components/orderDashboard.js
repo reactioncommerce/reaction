@@ -37,7 +37,7 @@ class OrderDashboard extends Component {
     orders: this.props.orders,
     startDate: null,
     endDate: null,
-    exportOption: "all",
+    value: "all",
     showCalendarPicker: false,
     disableExport: false
   }
@@ -91,7 +91,7 @@ class OrderDashboard extends Component {
         exportOrdersToCSV();
         break;
       case "date":
-        exportOrdersToCSVByDate(this.state.startDate, this.state.endDate);
+        exportOrdersToCSVByDate(this.state.startDate.startOf("day"), this.state.endDate.endOf("day"));
         break;
       default:
     }
@@ -140,6 +140,7 @@ class OrderDashboard extends Component {
               </div>
             </div>
             <span className="select-wrap">
+              Filter :
               <select onChange={this.handleSelectChange} value={this.state.value}>
                 <option value="all">All orders</option>
                 <option value="date">By Date</option>
@@ -149,7 +150,7 @@ class OrderDashboard extends Component {
             <button
               className="btn btn-default"
               onClick={this.handleExportClick}
-              style={{ width: "150px" }}
+              style={{ width: "150px", marginTop: "10px" }}
               disabled={this.state.disableExport}
             >EXPORT TO CSV</button>
             <OrderTable

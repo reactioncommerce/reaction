@@ -6,6 +6,7 @@ import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
+import { Flat } from "meteor/thepumpinglemma:flat";
 import { Media, Orders, Products, Shops, Packages } from "/lib/collections";
 import { Logger, Hooks, Reaction } from "/server/api";
 
@@ -1182,15 +1183,11 @@ export const methods = {
         rows.createdAt
       ]);
     });
-    return { fields: fields, data: data };
+    return { fields: fields, data: Flat.flatten(data) };
   },
   "orders/ExportAllOrdersToCSVByDate": (startDate, endDate) => {
-    check(startDate, Object);
-    check(endDate, Object);
-
-    // generate time for start and end of day
-    const formattedEndDate = endDate.endOf("day");
-    const formattedStartDate = startDate.startOf("day");
+    check(startDate, String);
+    check(endDate, String);
 
     const fields = [
       "_id",
@@ -1206,8 +1203,8 @@ export const methods = {
     const data = [];
 
     const orders = Orders.find({
-      $gte: new Date(formattedStartDate.toISOString()),
-      $lte: new Date(formattedEndDate.toISOString())
+      $gte: new Date(startDate.toISOString()),
+      $lte: new Date(endDate.toISOString())
     }).fetch();
     _.each(orders, (rows) => {
       data.push([

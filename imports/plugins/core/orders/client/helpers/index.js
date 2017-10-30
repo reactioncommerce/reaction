@@ -187,12 +187,15 @@ export function exportOrdersToCSV() {
     if (error) {
       console.log("Error happened");
     }
+    // const flattenedData = Flat.flatten(data);
+    // console.log(flattenedData, "Im a banana");
     const csv = Papa.unparse(data);
     downloadCSV(csv);
   });
 }
 
 export function exportOrdersToCSVByDate(startDate, endDate) {
+  console.log("I get here in helpers");
   Meteor.call("orders/ExportAllOrdersToCSVByDate", startDate, endDate, (error, data) => {
     if (error) {
       console.log("Error happened");
