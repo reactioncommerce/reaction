@@ -4,7 +4,9 @@ import { Logger, Reaction } from "/server/api";
 import { Shops, Groups } from "/lib/collections";
 
 /**
- * @method createGroups
+ * @name createGroups
+ * @method
+ * @memberof Core
  * @summary creates groups for shops
  * @param {object} options -
  * @param {string} options.shopId - the id of shop to create the group for. Not passing a shopId creates
@@ -53,6 +55,8 @@ export function createGroups(options = {}) {
 /**
  * @method getDefaultGroupRoles
  * @private
+ * @method
+ * @memberof Core
  * @summary Generates default groups
  * @return {object} roles - object key-value pair containing the default groups and roles for the groups
  */
