@@ -12,6 +12,7 @@ class UpdatePasswordOverlay extends Component {
     onCancel: PropTypes.func,
     onError: PropTypes.func,
     onFormSubmit: PropTypes.func,
+    type: PropTypes.string,
     uniqueId: PropTypes.string
   }
 
@@ -77,6 +78,7 @@ class UpdatePasswordOverlay extends Component {
   }
 
   renderSpinnerOnWait() {
+    const { type } = this.props;
     if (this.props.isDisabled === true) {
       return (
         <div className="col-sm-6" style={{ textAlign: "center" }}>
@@ -84,6 +86,22 @@ class UpdatePasswordOverlay extends Component {
         </div>
       );
     }
+
+    if (type === "setPassword") {
+      return (
+        <div className="col-sm-6">
+          <Components.Button
+            className="btn-block"
+            primary={true}
+            bezelStyle="solid"
+            i18nKeyLabel="accountsUI.setPassword"
+            label="Set your password"
+            type="submit"
+          />
+        </div>
+      );
+    }
+
     return (
       <div className="col-sm-6">
         <Components.Button
@@ -106,6 +124,20 @@ class UpdatePasswordOverlay extends Component {
     );
   }
 
+  renderPasswordResetText() {
+    const { type } = this.props;
+
+    if (type === "setPassword") {
+      return (
+        <Components.Translation defaultValue="Set Your Password" i18nKey="accountsUI.setPassword"/>
+      );
+    }
+
+    return (
+      <Components.Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword"/>
+    );
+  }
+
   render() {
     const passwordClasses = classnames({
       "form-group": true,
@@ -124,7 +156,7 @@ class UpdatePasswordOverlay extends Component {
                 <form className="modal-content" onSubmit={this.handleSubmit}>
                   <div className="modal-header">
                     <h4 className="modal-title">
-                      <Components.Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword"/>
+                      {this.renderPasswordResetText()}
                     </h4>
                   </div>
 
