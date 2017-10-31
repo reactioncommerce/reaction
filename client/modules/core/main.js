@@ -195,15 +195,6 @@ export default {
       } else if (typeof checkPermissions === "string") {
         permissions = [checkPermissions];
       } else {
-        /* TODO: Consult and add the code below if it is thought
-        of as useful.
-        if (!Array.isArray(checkPermissions)) {
-          return false;
-        }
-        if (checkPermissions.length === 0) {
-          return false;
-        }
-        */
         permissions = checkPermissions;
       }
       // if the user has owner permissions we'll always check if those roles are enough
