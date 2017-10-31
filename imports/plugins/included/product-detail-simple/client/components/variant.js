@@ -45,14 +45,14 @@ class Variant extends Component {
     if (inventoryManagement && this.props.soldOut) {
       if (inventoryPolicy) {
         return (
-          <span className="variant-qty-sold-out badge badge-danger">
+          <span className="variant-qty-sold-out badge badge-danger variant-badge-label">
             <Components.Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
           </span>
         );
       }
 
       return (
-        <span className="variant-qty-sold-out badge badge-info">
+        <span className="variant-qty-sold-out badge badge-info variant-badge-label">
           <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
         </span>
       );
@@ -62,14 +62,14 @@ class Variant extends Component {
     if (inventoryManagement && this.props.variant.lowInventoryWarningThreshold >= this.props.variant.inventoryTotal) {
       if (inventoryPolicy) {
         return (
-          <span className="variant-qty-sold-out badge badge-warning">
+          <span className="variant-qty-sold-out badge badge-warning variant-badge-label">
             <Components.Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
           </span>
         );
       }
 
       return (
-        <span className="variant-qty-sold-out badge badge-info">
+        <span className="variant-qty-sold-out badge badge-info variant-badge-label">
           <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
         </span>
       );
@@ -81,7 +81,7 @@ class Variant extends Component {
   renderDeletionStatus() {
     if (this.props.variant.isDeleted) {
       return (
-        <span className="badge badge-danger">
+        <span className="badge badge-danger variant-badge-label">
           <Components.Translation defaultValue="Archived" i18nKey="app.archived" />
         </span>
       );
