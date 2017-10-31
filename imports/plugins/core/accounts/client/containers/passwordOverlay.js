@@ -16,6 +16,7 @@ const wrapComponent = (Comp) => (
       formMessages: PropTypes.object,
       isOpen: PropTypes.bool,
       token: PropTypes.string,
+      type: PropTypes.string,
       uniqueId: PropTypes.string
     }
 
@@ -120,6 +121,7 @@ const wrapComponent = (Comp) => (
             onCancel={this.handleFormCancel}
             isOpen={this.state.isOpen}
             isDisabled={this.state.isDisabled}
+            type={this.props.type}
           />
         </TranslationProvider>
       );
