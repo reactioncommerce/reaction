@@ -18,6 +18,8 @@ import { Logger, Hooks, Reaction } from "/server/api";
 
 /**
  * @name orderCreditMethod
+ * @method
+ * @memberof Methods/Orders
  * @summary Helper to return the order credit object.
  * Credit paymentMethod on the order as per current active shop
  * @param  {Object} order order object
@@ -53,6 +55,8 @@ export function orderDebitMethod(order) {
  * @memberof Methods/Orders
  * @summary Adjust inventory when an order is placed
  * @param {String} orderId - Add tracking to orderId
+ * @todo Why are we waiting until someone with orders permissions does something to reduce quantity of
+ * ordered items seems like this could cause over ordered items and messed up order quantities pretty easily.
  * @return {null} no return value
  */
 export function ordersInventoryAdjust(orderId) {
@@ -62,8 +66,6 @@ export function ordersInventoryAdjust(orderId) {
     throw new Meteor.Error("access-denied", "Access Denied");
   }
 
-  // REVIEW: Why are we waiting until someone with orders permissions does something to reduce quantity of ordered items
-  // seems like this could cause over ordered items and messed up order quantities pretty easily.
   const order = Orders.findOne(orderId);
   order.items.forEach(item => {
     Products.update({

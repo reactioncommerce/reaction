@@ -15,6 +15,7 @@ import { Cart as CartSchema } from "/lib/collections/schemas";
 /**
  * @name createShipmentQuotes
  * @private
+ * @summary Returns object with shipping object with `requestStatus` as `pending`
  * @param  {String} cartId ID
  * @param  {String} shopId ID
  * @param  {Object} rates  Shipping rates
