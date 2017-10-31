@@ -6,13 +6,7 @@ Reaction.registerPackage({
   icon: "fa fa-truck-o",
   autoEnable: true,
   settings: {
-    name: "Parcel Size",
-    size: {
-      weight: 70,
-      length: 11.25,
-      width: 8.75,
-      height: 6
-    }
+    name: "Parcel Size"
   },
   registry: [
     {

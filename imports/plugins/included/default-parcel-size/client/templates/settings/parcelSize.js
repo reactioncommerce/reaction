@@ -1,15 +1,18 @@
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api/";
+import { Shops } from "/lib/collections";
 import { Components } from "@reactioncommerce/reaction-components";
 
 
 Template.parcelSizeSettings.helpers({
   sizeSettings() {
-    const { settings } = Reaction.getPackageSettings("reaction-shipping-parcel-size");
+    const shop = Shops.findOne({
+      _id: Reaction.getShopId()
+    });
+    const defaultParcelSize = shop.defaultParcelSize;
     return {
       component: Components.ParcelSizeSettings,
-      settings
+      defaultParcelSize
     };
   }
 });

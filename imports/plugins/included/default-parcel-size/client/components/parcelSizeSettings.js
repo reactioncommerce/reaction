@@ -45,7 +45,7 @@ class ParcelDimensionSettings extends Component {
             <form onSubmit={this.handleSubmit}>
               <Components.TextField
                 label="Weight"
-                type={"number"}
+                type="number"
                 i18nKeyLabel="admin.parcelDimensionSettings.weight"
                 name="weight"
                 value={size.weight}

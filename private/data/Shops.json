@@ -3211,5 +3211,11 @@
     "isCommercial": true,
     "isShippingDefault": true,
     "isBillingDefault": true
-  }]
+  }],
+  "defaultParcelSize": {
+    "weight": 70,
+    "length": 11.25,
+    "width": 8.75,
+    "height": 6
+  }
 }]

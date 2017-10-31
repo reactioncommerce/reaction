@@ -24,7 +24,7 @@ export const methods = {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    const pkg =  Reaction.getPackageSettings("reaction-shipping-parcel-size");
+    const pkg =  Reaction.getShopId();
 
     if (pkg) {
       return Packages.update(
