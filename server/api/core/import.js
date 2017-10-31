@@ -11,6 +11,7 @@ import doRightJoinNoIntersection from "./rightJoin";
 /**
  * @file Exposes the Import object implementing methods for bulk imports.
  * @author Tom De Caluwé
+ * @namespace Import
  */
 
 export const Import = {};
@@ -52,6 +53,9 @@ Import.indication = function (field, collection, probability) {
 
 /**
  * Import.identify
+ * @name identify
+ * @method
+ * @memberof Import
  * @summary Tries to identify the schema associated with a document.
  * @param {Object} document - A document with unknown schema
  * @returns {Mongo.Collection} Returns a MongoDB collection in which the
@@ -103,6 +107,9 @@ Import.identify = function (document) {
 };
 
 /**
+ * @name commit
+ * @method
+ * @memberof Import
  * @summary Commit the buffer for a given collection to the database.
  * @param {Mongo.Collection} collection The target collection to be flushed to disk
  * @returns {undefined}
@@ -149,6 +156,9 @@ Import.commit = function (collection) {
 };
 
 /**
+ * @name flush
+ * @method
+ * @memberof Import
  * @summary Process the buffer for a given collection and commit the database.
  * @param {Mongo.Collection} collection optional - supply a Mongo collection, or leave empty to commit all buffer entries
  * @returns {undefined}
@@ -164,6 +174,9 @@ Import.flush = function (collection) {
 };
 
 /**
+ * @name context
+ * @method
+ * @memberof Import
  * @summary Get a validation context for a given collection.
  * @param {Mongo.Collection} collection The target collection
  * @param {Object} [selector] A selector object to retrieve the correct schema.
@@ -190,6 +203,9 @@ Import.context = function (collection, selector) {
 };
 
 /**
+ * @name buffer
+ * @method
+ * @memberof Import
  * @summary Get an import buffer for a given collection.
  * @param {Object} collection The target collection
  * @returns {Object} return buffer
@@ -215,6 +231,9 @@ Import.buffer = function (collection) {
 };
 
 /**
+ * @name product
+ * @method
+ * @memberof Import
  * @summary Store a product in the import buffer.
  * @param {Object} key A key to look up the product
  * @param {Object} product The product data to be updated
@@ -236,6 +255,9 @@ Import.product = function (key, product) {
 };
 
 /**
+ * @name package
+ * @method
+ * @memberof Import
  * @summary Store a package in the import buffer.
  * @param {Object} pkg The package data to be updated
  * @param {String} shopId The package data to be updated
@@ -257,6 +279,9 @@ Import.package = function (pkg, shopId) {
 //
 
 /**
+ * @name template
+ * @method
+ * @memberof Import
  * @summary Store a template in the import buffer.
  * @param {Object} templateInfo The template data to be updated
  * @returns {undefined}
@@ -273,6 +298,9 @@ Import.template = function (templateInfo) {
 };
 
 /**
+ * @name translation
+ * @method
+ * @memberof Import
  * @summary Store a translation in the import buffer.
  * @param {Object} key A key to look up the translation
  * @param {Object} translation The translation data to be updated
@@ -284,6 +312,9 @@ Import.translation = function (key, translation) {
 };
 
 /**
+ * @name shop
+ * @method
+ * @memberof Import
  * @summary Store a shop in the import buffer.
  * @param {Object} key A key to look up the shop
  * @param {Object} shop The shop data to be updated
@@ -294,6 +325,9 @@ Import.shop = function (key, shop) {
 };
 
 /**
+ * @name layout
+ * @method
+ * @memberof Import
  * @summary store a shop layout in the import buffer
  * @param {Array} layout - an array of layouts to be added to shop
  * @param {String} shopId shopId
@@ -310,6 +344,9 @@ Import.layout = function (layout, shopId) {
 };
 
 /**
+ * @name shipping
+ * @method
+ * @memberof Import
  * @summary Store shipping in the import buffer.
  * @param {Object} key A shipping service key used in combination with provider
  * @param {Object} shipping The shipping data to be updated
@@ -337,6 +374,9 @@ Import.shipping = function (key, shipping) {
 };
 
 /**
+ * @name tag
+ * @method
+ * @memberof Import
  * @summary Store a tag in the import buffer.
  * @param {Object} key A key to look up the tag
  * @param {Object} tag The tag data to be updated
@@ -347,6 +387,9 @@ Import.tag = function (key, tag) {
 };
 
 /**
+ * @name object
+ * @method
+ * @memberof Import
  * @summary Push a new upsert document to the import buffer.
  * @param {Mongo.Collection} collection The target collection
  * @param {Object} key A key to look up the object
@@ -402,6 +445,9 @@ Import.object = function (collection, key, object) {
 };
 
 /**
+ * @name process
+ * @method
+ * @memberof Import
  * @summary Process a json array of import documents using a callback.
  * @param {Object[]} json An array containing the import documents
  * @param {string[]} keys Fields that should be used as the import key.
