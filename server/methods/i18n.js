@@ -10,7 +10,7 @@ Meteor.methods({
    * @method
    * @memberof i18n
    * @example Meteor.call("i18n/flushTranslations"))
-   * @summary Meteor method to remove all translations, and reload from jsonFiles
+   * @summary Method to remove all translations, and reload from jsonFiles
    * @return {undefined}
    */
   "i18n/flushTranslations": function () {
