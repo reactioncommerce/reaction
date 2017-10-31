@@ -8,7 +8,7 @@ import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
-import { Products, Tags } from "/lib/collections";
+import { Products, Tags, Shops } from "/lib/collections";
 import ProductsComponent from "../components/products";
 
 /**
@@ -166,9 +166,17 @@ function composer(props, onData) {
     window.prerenderReady = true;
   }
 
+  const activeShopsIds = Shops.find({
+    $or: [
+      { "workflow.status": "active" },
+      { _id: Reaction.getPrimaryShopId() }
+    ]
+  }).fetch().map(activeShop => activeShop._id);
+
   const productCursor = Products.find({
     ancestors: [],
-    type: { $in: ["simple"] }
+    type: { $in: ["simple"] },
+    shopId: { $in: activeShopsIds }
   });
 
   const products = productCursor.map((product) => {
