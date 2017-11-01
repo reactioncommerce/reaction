@@ -3,12 +3,6 @@ import PropTypes from "prop-types";
 import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 
-const styles = {
-  editContainerItem: {
-    display: "flex",
-    marginLeft: 5
-  }
-};
 
 class EditContainer extends Component {
   handleEditButtonClick = (event) => {
@@ -56,7 +50,7 @@ class EditContainer extends Component {
   renderVisibilityButton() {
     if (this.props.showsVisibilityButton) {
       return (
-        <span className="edit-container-item" style={styles.editContainerItem}>
+        <span className="edit-container-item edit-container-item">
           <Components.VisibilityButton
             onClick={this.handleVisibilityButtonClick}
             toggleOn={this.props.data.isVisible}
@@ -116,7 +110,7 @@ class EditContainer extends Component {
     }
 
     return (
-      <span className="edit-container-item" style={styles.editContainerItem}>
+      <span className="edit-container-item edit-container-item">
         <Components.EditButton
           onClick={this.handleEditButtonClick}
           status={status}
