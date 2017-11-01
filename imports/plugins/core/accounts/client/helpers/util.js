@@ -102,4 +102,12 @@ export class ServiceConfigHelper {
       return service;
     });
   }
+
+  static addProvider(provider, fields) {
+    providers[provider] = {
+      fields: () => {
+        return fields;
+      }
+    };
+  }
 }
