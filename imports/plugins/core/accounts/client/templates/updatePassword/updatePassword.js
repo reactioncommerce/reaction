@@ -17,7 +17,8 @@ Accounts.onResetPasswordLink((token, done) => {
   Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
     token: token,
     callback: done,
-    isOpen: true
+    isOpen: true,
+    type: "updatePassword"
   }, $("body").get(0));
 });
 
@@ -29,7 +30,8 @@ Accounts.onEnrollmentLink((token, done) => {
   Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
     token: token,
     callback: done,
-    isOpen: true
+    isOpen: true,
+    type: "setPassword"
   }, $("body").get(0));
 });
 
