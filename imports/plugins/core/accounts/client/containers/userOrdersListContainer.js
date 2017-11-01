@@ -1,5 +1,6 @@
 import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
+import { Router } from "/client/modules/router/";
 import { Media } from "/lib/collections";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import OrdersList from "../components/ordersList";
@@ -35,8 +36,13 @@ function composer(props, onData) {
   // Get user order from props
   const orders = props.orders;
   const allOrdersInfo = [];
+  let isProfilePage = false;
 
-  if (orders) {
+  if (Router.getRouteName() === "account/profile") {
+    isProfilePage = true;
+  }
+
+  if (orders.length > 0) {
     orders.map((order) => {
       const imageSub = Meteor.subscribe("CartImages", order.items);
       const orderSummary = {
@@ -63,11 +69,13 @@ function composer(props, onData) {
       }
     });
     onData(null, {
-      allOrdersInfo
+      allOrdersInfo,
+      isProfilePage
     });
   } else {
     onData(null, {
-      orders
+      orders,
+      isProfilePage
     });
   }
 }

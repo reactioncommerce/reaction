@@ -1,11 +1,6 @@
 <template name="userOrdersList">
-  {{#if hasData data=data}}
-    <div>
-      {{> React completedOrders }}
-    </div> 
-  {{else}}
-    <div class="alert alert-info">
-      <span data-i18n="cartCompleted.noOrdersFound">No orders found.</span>
-    </div>
-  {{/if}}
+  <div>
+    {{> React completedOrders }}
+  </div> 
+
 </template>

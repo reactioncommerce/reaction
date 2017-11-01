@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { Router } from "/client/modules/router/";
 import CompletedShopOrders from "./completedShopOrders";
 import CompletedOrderPaymentMethod from "./completedOrderPaymentMethods";
 import CompletedOrderSummary from "./completedOrderSummary";
@@ -16,9 +15,10 @@ import AddEmail from "./addEmail";
  * @property {Object} orderSummary - An object containing the items making up the order summary
  * @property {Array} paymentMethod - An array of paymentMethod objects
  * @property {Function} handleDisplayMedia - A function for displaying the product image
+ * @property {Booleam} isProfilePage - A boolean value that checks if current page is user profile page
  * @return {Node} React node containing the top-level component for displaying the completed order/receipt page
  */
-const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, handleDisplayMedia }) => {
+const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, handleDisplayMedia, isProfilePage }) => {
   if (!order) {
     return (
       <Components.NotFound
@@ -30,11 +30,9 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
   }
 
   let headerText;
-  let isProfilePage = false;
 
-  if (Router.getRouteName() === "account/profile") {
-    headerText = (<p><strong>Order ID </strong>{orderId}</p>);
-    isProfilePage = true;
+  if (isProfilePage) {
+    headerText = (<p className="order-id"><strong>Order ID </strong>{orderId}</p>);
   } else {
     headerText = (
       <div className="order-details-header">
@@ -112,6 +110,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
 
 CompletedOrder.propTypes = {
   handleDisplayMedia: PropTypes.func,
+  isProfilePage: PropTypes.bool,
   order: PropTypes.object,
   orderId: PropTypes.string,
   orderSummary: PropTypes.object,

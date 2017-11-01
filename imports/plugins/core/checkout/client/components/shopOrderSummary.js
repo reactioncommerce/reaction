@@ -6,7 +6,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
  * @summary Displays the order summary for each shop
  * @param {Object} props - React PropTypes
  * @property {Object} shopSummary - An object representing the summary information for this Shop
- * @property {boolean} isProfilePage - Checks if current page is Profile Page
+ * @property {boolean} isProfilePage - Checks if current page is profile page
  * @return {Node} React node containing the summary information for each shop
  */
 const ShopOrderSummary = ({ shopSummary, isProfilePage }) => {
