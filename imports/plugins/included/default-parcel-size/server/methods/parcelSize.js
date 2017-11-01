@@ -13,7 +13,6 @@ export const methods = {
    */
   "shipping/size/save": function (size) {
     check(size, {
-      _id: String,
       weight: Number,
       height: Number,
       length: Number,

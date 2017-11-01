@@ -1,6 +1,7 @@
 import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
+import { Reaction } from "/client/api/";
 import { isEmpty } from "lodash";
 import ParcelSizeSettings from "../components/parcelSizeSettings";
 
@@ -35,8 +36,9 @@ const saveDefaultSize = (size, callback) => {
   return callback();
 };
 
+
 const composer = (props, onData) => {
-  const size = props.defaultParcelSize;
+  const { size } = Reaction.getPackageSettings("reaction-shipping-parcel-size").settings;
   onData(null, {
     size,
     saveDefaultSize
