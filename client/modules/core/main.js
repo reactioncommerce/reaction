@@ -186,11 +186,20 @@ export default {
     function roleCheck() {
       // permissions can be either a string or an array
       // we'll force it into an array and use that
+      // TODO: Should we also cater for checkPermissions === "" and checkPermissions === []?
       if (checkPermissions === undefined) {
         permissions = ["owner"];
       } else if (typeof checkPermissions === "string") {
+        if (checkPermissions === "owner") {
+          return Roles.userIsInRole(userId, "owner", group);
+        }
+
         permissions = [checkPermissions];
       } else {
+        if (checkPermissions.length === 1 && checkPermissions[0] === "owner") {
+          return Roles.userIsInRole(userId, checkPermissions, group);
+        }
+
         permissions = checkPermissions;
       }
 
