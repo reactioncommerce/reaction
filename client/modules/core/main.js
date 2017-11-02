@@ -180,14 +180,10 @@ export default {
     let permissions = ["owner"];
     let id = "";
     const userId = checkUserId || Meteor.userId();
-    //
-    // local roleCheck function
-    // is the bulk of the logic
-    // called out a userId is validated.
-    //
-    function roleCheck() {
-      // TODO: There're some outdated comments in this function. Clean them out.
 
+    // This is declared as a function for the sake of reuse. Note that it is
+    // only called after userId is validated.
+    function roleCheck() {
       // permissions can be either a string or an array
       // we'll force it into an array and use that
       if (checkPermissions === undefined) {
@@ -197,46 +193,16 @@ export default {
       } else {
         permissions = checkPermissions;
       }
-      // if the user has owner permissions we'll always check if those roles are enough
-      // By adding the "owner" role to the permissions list, we are making hasPermission always return
-      // true for "owners". This gives owners global access.
-      // TODO: Review this way of granting global access for owners
 
-      // TODO: Find out why were we ever joining "owner" to the permissions
-      // array in the first place.
-
-      //
-      // return if user has permissions in the group
-      //
       if (Roles.userIsInRole(userId, permissions, group)) {
         return true;
       }
 
-      // global roles check
-      // TODO: Review this commented out code
-      /*
-
-      const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
-      // we're looking for seller permissions.
-      if (sellerShopPermissions) {
-        // loop through shops roles and check permissions
-        for (const key in sellerShopPermissions) {
-          if (key) {
-            const shop = sellerShopPermissions[key];
-            if (Roles.userIsInRole(userId, permissions, shop)) {
-              return true;
-            }
-          }
-        }
-      }*/
-      // no specific permissions found returning false
       return false;
     }
 
-    //
-    // check if a user id has been found
-    // in line 156 setTimeout
-    //
+    // If userId has been found, this calls roleCheck and then returns the
+    // result of that call. Returns false otherwise.
     function validateUserId() {
       if (Meteor.userId()) {
         Meteor.clearTimeout(id);
@@ -246,21 +212,17 @@ export default {
       return false;
     }
 
-    //
-    // actual logic block to check permissions
-    // we'll bypass unecessary checks during
-    // a user logging, as we'll check again
-    // when everything is ready
-    //
+    /*
+      Checks for permissions. We'll skip performing some checks if the user is
+      currently logging in, as those will be done when log in is complete.
+    */
     if (Meteor.loggingIn() === false) {
-      //
       // this userId check happens because when logout
-      // occurs it takes a few cycles for a new anonymous user
+      // occurs. It takes a few cycles for a new anonymous user
       // to get created and during this time the user has no
       // permission, not even guest permissions so we
       // need to wait and reload the routes. This
-      // mainly affects the logout from dashboard pages
-      //
+      // mainly affects the logout from dashboard pages.
       if (!userId) {
         id = Meteor.setTimeout(validateUserId, 5000);
       } else {
