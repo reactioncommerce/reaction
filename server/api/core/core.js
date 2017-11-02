@@ -22,7 +22,6 @@ const { Jobs, Packages, Shops } = Collections;
 export default {
 
   init() {
-
     // run beforeCoreInit hooks
     Hooks.Events.run("beforeCoreInit");
 
