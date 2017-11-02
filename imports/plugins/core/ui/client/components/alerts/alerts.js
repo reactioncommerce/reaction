@@ -9,7 +9,7 @@ const Alerts = ({ alerts, handleAlertRemove, handleAlertSeen }) => (
       return (
         <Components.Alert
           alert={alert}
-          key={index}
+          key={alert._id}
           onAlertRemove={handleAlertRemove}
           onAlertSeen={handleAlertSeen}
         />
