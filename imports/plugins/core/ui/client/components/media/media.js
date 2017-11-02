@@ -103,7 +103,7 @@ class MediaItem extends Component {
   }
 
   render() {
-    const classes = { "gallery-image": true, "img-cursor": Reaction.hasAdminAccess() };
+    const classes = { "gallery-image": true, "admin-gallery-image": Reaction.hasAdminAccess() };
     const mediaElement = (
       <div
         className={classnames(classes)}
