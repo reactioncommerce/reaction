@@ -435,7 +435,9 @@ Meteor.methods({
     const immediateAncestors = variant.ancestors.filter((ancestor) => ancestor !== product._id);
     const immediateAncestor = Collections.Products.findOne({ _id: immediateAncestors[0] });
     // Get default parcel size
-    const defaultParcelSize = Reaction.getPackageSettings("reaction-shipping-parcel-size").settings.dimension;
+    const shop = Collections.Shops.findOne({
+      _id: Reaction.getShopId
+    });
     let parcel = null;
     if (immediateAncestor) {
       if (immediateAncestor.weight || immediateAncestor.height || immediateAncestor.width || immediateAncestor.length) {
@@ -448,7 +450,8 @@ Meteor.methods({
     }
 
     // Use default settings for parcel weight, length, height, and width
-    if (defaultParcelSize) {
+    if (shop && shop.defaultParcelSize) {
+      const defaultParcelSize = shop.defaultParcelSize;
       parcel = {
         weight: defaultParcelSize.weight,
         height: defaultParcelSize.height,

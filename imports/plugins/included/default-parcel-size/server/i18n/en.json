@@ -4,8 +4,8 @@
   "translation": {
     "reaction-shipping-parcel-size": {
       "admin": {
-        "parcelDimensionSettings": {
-          "label": "Parcel",
+        "settings": {
+          "label": "Parcel Size",
           "weight": "Weight (in)",
           "length": "Length (in)",
           "width": "Width (lbs)",

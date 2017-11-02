@@ -1,17 +1,19 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Reaction } from "/server/api";
-import { Packages } from "/lib/collections";
+import { Shops } from "/lib/collections";
 import { shippingRoles } from "../../lib/roles";
 
 export const methods = {
   /**
-   * shipping/dimension/add
-   * add new parcel dimension method
-   * @summary insert parcel dimension: weight, height, length, and width
-   * @param { Object } dimension a valid dimension object
-   */
-  "shipping/size/save": function (size) {
+   * @method shipping/size/save
+   * @summary update defaultParcelSize
+   * @param {String} shopId - current shopId
+   * @param {Object} size - size to be updated
+   * @since 1.5.5
+ */
+  "shipping/size/save": function (shopId, size) {
+    check(shopId, String);
     check(size, {
       weight: Number,
       height: Number,
@@ -23,27 +25,22 @@ export const methods = {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    const pkg =  Reaction.getShopId();
-
-    if (pkg) {
-      return Packages.update(
-        {
-          name: "reaction-shipping-parcel-size",
-          shopId: Reaction.getShopId()
-        },
-        {
-          $set: {
-            settings: {
-              size: {
-                weight: size.weight,
-                height: size.height,
-                length: size.length,
-                width: size.width
-              }
-            }
-          }
+    // check if shopId is equal to current shopId
+    if (shopId === Reaction.getShopId()) {
+      return Shops.update({
+        _id: shopId
+      }, {
+        $set: {
+          "defaultParcelSize.weight": size.weight,
+          "defaultParcelSize.length": size.length,
+          "defaultParcelSize.width": size.width,
+          "defaultParcelSize.height": size.height
         }
-      );
+      }, function (error) {
+        if (error) {
+          throw new Meteor.Error("server-error", error.message);
+        }
+      });
     }
     throw new Meteor.Error("does-not-exist", "Package does not exist");
   }

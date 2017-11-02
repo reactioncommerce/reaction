@@ -1,5 +1,6 @@
 import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
+import { Reaction } from "/client/api";
 /*
  * Template shippinges Helpers
  */
@@ -21,6 +22,19 @@ Template.shippingSettings.helpers({
       return "hidden";
     }
     return "";
+  },
+
+  /**
+   * showWithoutToggle
+   * @param {String} name
+   * @returns {Boolean} - returns true if package is eaction-shipping-parcel-size
+   */
+  showWithoutToggle(name) {
+    const registry = Reaction.getPackageSettings("reaction-shipping-parcel-size").registry;
+    if (name === registry[1].name) {
+      return true;
+    }
+    return false;
   }
 });
 
