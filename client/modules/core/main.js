@@ -192,9 +192,6 @@ export default {
       if (!checkPermissions) {
         return false;
       }
-      if (typeof checkPermissions !== "string" && !Array.isArray(checkPermissions)) {
-        return false;
-      }
 
       if (Roles.userIsInRole(userId, checkPermissions, group)) {
         return true;
