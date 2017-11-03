@@ -1,8 +1,12 @@
 import { slugify } from "transliteration";
 
 /**
- * getSlug - return a slugified string using "slugify" from transliteration
- * https://www.npmjs.com/package/transliteration
+ * @name getSlug
+ * @summary Return a slugified string using "slugify" from transliteration
+ * @see https://www.npmjs.com/package/transliteration
+ * @method
+ * @memberof Helpers
+ * @locus Server
  * @param  {String} slugString - string to slugify
  * @return {String} slugified string
  */

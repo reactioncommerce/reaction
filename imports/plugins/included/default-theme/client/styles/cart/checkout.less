@@ -208,6 +208,12 @@
   line-height: 1.75;
   margin-bottom: 15px;
   margin-top: 25px;
+  span {
+    text-transform: lowercase;
+  }
+  p::first-letter {
+    text-transform: capitalize;
+  }
 }
 
 .order-details-info-box-content {
@@ -252,15 +258,21 @@
 
 .order-details-quantity {
   flex: 1 1 auto;
-  margin-top: 5px;
+  span {
+    position: relative;
+    top: 35%;
+  }
 }
 
 .order-details-price {
   flex: 1 1 auto;
   text-align: right;
   font-weight: bold;
-  margin-top: 5px;
   color: #343434;
+  span {
+    position: relative;
+    top: 35%;
+  }
 }
 
 
