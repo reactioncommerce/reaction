@@ -221,13 +221,14 @@ export default {
       return false;
     }
 
-    /*
-      Checks for permissions. We'll skip performing some checks if the user is
-      currently logging in, as those will be done when log in is complete.
-    */
+    // Actual logic block to check permissions.
+    // We'll bypass unnecessary checks during
+    // a user's log in, as we'll check again
+    // when everything is ready.
+    //
     if (Meteor.loggingIn() === false) {
       // this userId check happens because when logout
-      // occurs. It takes a few cycles for a new anonymous user
+      // occurs, it takes a few cycles for a new anonymous user
       // to get created and during this time the user has no
       // permission, not even guest permissions so we
       // need to wait and reload the routes. This
