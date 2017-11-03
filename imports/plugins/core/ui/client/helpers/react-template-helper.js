@@ -1,4 +1,4 @@
-// http://react-in-meteor.readthedocs.org/en/latest/react-template-helper/
+// https://guide.meteor.com/react.html#using-with-blaze
 import React from "react";
 import ReactDOM from "react-dom";
 import _ from "lodash";
