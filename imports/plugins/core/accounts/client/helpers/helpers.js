@@ -1,6 +1,8 @@
+import React from "react";
 import { Template } from "meteor/templating";
-import { Gravatar } from "meteor/jparker:gravatar";
+import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
+import { Components } from "@reactioncommerce/reaction-components";
 
 export const LoginFormSharedHelpers = {
   messages: function () {
@@ -21,19 +23,38 @@ export const LoginFormSharedHelpers = {
 
 };
 
-export function getGravatar(user) {
-  const options = {
-    secure: true,
-    size: 30,
-    default: "identicon"
-  };
-  if (!user) { return false; }
+export function getUserAvatar(currentUser) {
+  const user = currentUser || Accounts.user();
+
   const account = Collections.Accounts.findOne(user._id);
+  // first we check picture exists. Picture has higher priority to display
   if (account && account.profile && account.profile.picture) {
-    return account.profile.picture;
+    const picture = account.profile.picture;
+
+    return (
+      <Components.ReactionAvatar
+        className={"accounts-avatar"}
+        size={30}
+        src={picture}
+      />
+    );
   }
-  if (user.emails && user.emails.length > 0) {
+  if (user.emails && user.emails.length === 1) {
     const email = user.emails[0].address;
-    return Gravatar.imageUrl(email, options);
+
+    return (
+      <Components.ReactionAvatar
+        className={"accounts-avatar"}
+        email={email}
+        size={30}
+      />
+    );
   }
+
+  return (
+    <Components.ReactionAvatar
+      className={"accounts-avatar"}
+      size={30}
+    />
+  );
 }

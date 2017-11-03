@@ -20,6 +20,7 @@ export { default as UpdatePasswordOverlay } from "./components/updatePasswordOve
 export { default as LoginInline } from "./components/loginInline";
 
 export { default as AccountsDashboardContainer } from "./containers/accountsDashboardContainer";
+export { default as UserOrdersListContainer } from "./containers/userOrdersListContainer";
 export { default as AuthContainer } from "./containers/auth";
 export { default as EditGroupContainer } from "./containers/editGroupContainer";
 export { default as ForgotPasswordContainer } from "./containers/forgotPassword";
@@ -53,6 +54,8 @@ import "./templates/members/member.html";
 import "./templates/members/member.js";
 import "./templates/profile/profile.html";
 import "./templates/profile/profile.js";
+import "./templates/profile/userOrdersList.html";
+import "./templates/profile/userOrdersList.js";
 import "./templates/updatePassword/updatePassword.html";
 import "./templates/updatePassword/updatePassword.js";
 import "./templates/verify/verifyAccount.html";
