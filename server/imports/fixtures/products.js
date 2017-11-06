@@ -2,7 +2,7 @@ import faker from "faker";
 import _ from "lodash";
 import { Factory } from "meteor/dburles:factory";
 import { Products, Tags } from "/lib/collections";
-import { getShop } from "./shops";
+import { getShop, getDefaultParcelSize } from "./shops";
 
 
 /**
@@ -48,7 +48,10 @@ export function productVariant(options = {}) {
   const defaults = {
     ancestors: [],
     compareAtPrice: _.random(0, 1000),
-    weight: _.random(0, 10),
+    weight: getDefaultParcelSize().weight,
+    length: getDefaultParcelSize().length,
+    width: getDefaultParcelSize().width,
+    height: getDefaultParcelSize().height,
     inventoryManagement: faker.random.boolean(),
     inventoryPolicy: faker.random.boolean(),
     lowInventoryWarningThreshold: _.random(1, 5),
@@ -74,6 +77,7 @@ export function productVariant(options = {}) {
   };
   return _.defaults(options, defaults);
 }
+
 
 export function addProduct() {
   const product = Factory.create("product");

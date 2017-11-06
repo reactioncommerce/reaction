@@ -34,6 +34,11 @@ export function getAddress(options = {}) {
   return _.defaults(options, defaults);
 }
 
+export function getDefaultParcelSize() {
+  const shop = getShop();
+  return shop.defaultParcelSize;
+}
+
 const shop = {
   name: faker.internet.domainName(),
   description: faker.company.catchPhrase(),
