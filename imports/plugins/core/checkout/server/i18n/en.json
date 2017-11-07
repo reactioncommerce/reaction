@@ -7,7 +7,7 @@
         "limitedSupply": "Limited supply"
       },
       "cartCompleted": {
-        "yourCart": "Your Cart",
+        "orderSummary": "Order Summary",
         "discountTotal": "Discount Total",
         "orderTotal": "Order Total",
         "fulfilledBy": "Fulfilled by",

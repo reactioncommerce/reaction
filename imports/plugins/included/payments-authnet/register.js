@@ -17,8 +17,7 @@ Reaction.registerPackage({
       enabled: false,
       support: [
         "Authorize",
-        "Capture",
-        "Refund"
+        "Capture"
       ]
     }
   },

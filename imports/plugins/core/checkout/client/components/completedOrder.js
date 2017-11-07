@@ -15,9 +15,10 @@ import AddEmail from "./addEmail";
  * @property {Object} orderSummary - An object containing the items making up the order summary
  * @property {Array} paymentMethod - An array of paymentMethod objects
  * @property {Function} handleDisplayMedia - A function for displaying the product image
+ * @property {Booleam} isProfilePage - A boolean value that checks if current page is user profile page
  * @return {Node} React node containing the top-level component for displaying the completed order/receipt page
  */
-const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, handleDisplayMedia }) => {
+const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, handleDisplayMedia, isProfilePage }) => {
   if (!order) {
     return (
       <Components.NotFound
@@ -27,8 +28,13 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
       />
     );
   }
-  return (
-    <div className="container order-completed">
+
+  let headerText;
+
+  if (isProfilePage) {
+    headerText = (<p className="order-id"><strong>Order ID </strong>{orderId}</p>);
+  } else {
+    headerText = (
       <div className="order-details-header">
         {/* This is the left side / main content */}
         <h3><Components.Translation defaultValue="Thank You" i18nKey={"cartCompleted.thankYou"} /></h3>
@@ -37,10 +43,15 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
         <AddEmail order={order} orderEmail={order.email} />
         {/* This is the left side / main content*/}
       </div>
+    );
+  }
 
+  return (
+    <div className="container order-completed">
+      { headerText }
       <div className="order-details-main">
         <div className="order-details-content-title">
-          <Components.Translation defaultValue="Your Items" i18nKey={"cartCompleted.yourItems"} />
+          <p><Components.Translation defaultValue="Your Items" i18nKey={"cartCompleted.yourItems"} /></p>
         </div>
         {shops.map(function (shop) {
           const shopKey = Object.keys(shop);
@@ -51,6 +62,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
               key={shopKey}
               shippingMethod={shop[shopKey].shippingMethod}
               handleDisplayMedia={handleDisplayMedia}
+              isProfilePage={isProfilePage}
             />
           );
         })}
@@ -59,30 +71,36 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
       <div className="order-details-side">
 
         {/* This is the right side / side content */}
-        <div className="order-details-content-title">
-          <Components.Translation defaultValue="Shipping Address" i18nKey={"cartCompleted.shippingAddress"} />
-        </div>
-        {orderSummary.shipping.map((shipment) => {
-          if (shipment.address.fullName || shipment.address.address1) {
-            return <div className="order-details-info-box" key={shipment._id}>
-              <div className="order-details-info-box-content">
-                <p>
-                  {shipment.address.fullName}<br/>
-                  {shipment.address.address1}<br/>
-                  {shipment.address.city}, {shipment.address.region} {shipment.address.postal} {shipment.address.country}
-                </p>
-              </div>
-            </div>;
-          }
-        })}
+        <div className="shipping-payment-details">
+          <div className="shipping-info">
+            <div className="order-details-content-title">
+              <p> <Components.Translation defaultValue="Shipping Address" i18nKey={"cartCompleted.shippingAddress"} /></p>
+            </div>
+            {orderSummary.shipping.map((shipment) => {
+              if (shipment.address.fullName || shipment.address.address1) {
+                return <div className="order-details-info-box" key={shipment._id}>
+                  <div className="order-details-info-box-content">
+                    <p>
+                      {shipment.address.fullName}<br/>
+                      {shipment.address.address1}<br/>
+                      {shipment.address.city}, {shipment.address.region} {shipment.address.postal} {shipment.address.country}
+                    </p>
+                  </div>
+                </div>;
+              }
+            })}
+          </div>
 
-        <div className="order-details-content-title">
-          <Components.Translation defaultValue="Payment Method" i18nKey={"cartCompleted.paymentMethod"} />
+          <div className="payment-info">
+            <div className="order-details-content-title">
+              <p><Components.Translation defaultValue="Payment Method" i18nKey={"cartCompleted.paymentMethod"} /></p>
+            </div>
+            {paymentMethods.map(function (paymentMethod) {
+              return <CompletedOrderPaymentMethod key={paymentMethod.key} paymentMethod={paymentMethod} />;
+            })}
+          </div>
         </div>
-        {paymentMethods.map(function (paymentMethod) {
-          return <CompletedOrderPaymentMethod key={paymentMethod.key} paymentMethod={paymentMethod} />;
-        })}
-        <CompletedOrderSummary shops={shops} orderSummary={orderSummary} />
+        <CompletedOrderSummary shops={shops} orderSummary={orderSummary} isProfilePage={isProfilePage} />
         {/* This is the right side / side content */}
       </div>
 
@@ -92,6 +110,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
 
 CompletedOrder.propTypes = {
   handleDisplayMedia: PropTypes.func,
+  isProfilePage: PropTypes.bool,
   order: PropTypes.object,
   orderId: PropTypes.string,
   orderSummary: PropTypes.object,

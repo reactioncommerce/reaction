@@ -2,28 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
-import { Gravatar } from "meteor/jparker:gravatar";
 import { Reaction, i18next, i18nextDep } from "/client/api";
-import * as Collections from "/lib/collections";
-
-Template.registerHelper("getGravatar", function (currentUser, size) {
-  const options = {
-    secure: true,
-    size: size,
-    default: "identicon"
-  };
-  const user = currentUser || Accounts.user();
-  if (!user) return false;
-  const account = Collections.Accounts.findOne(user._id);
-  // first we check picture exists. Picture has higher priority to display
-  if (account && account.profile && account.profile.picture) {
-    return account.profile.picture;
-  }
-  if (user.emails && user.emails.length === 1) {
-    const email = user.emails[0].address;
-    return Gravatar.imageUrl(email, options);
-  }
-});
 
 /**
  * registerHelper displayName
