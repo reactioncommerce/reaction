@@ -245,3 +245,12 @@ Template.shopSettings.events({
     Meteor.call("shop/togglePackage", packageId, !event.target.checked);
   }
 });
+
+Template.optionsShopSettings.helpers({
+  packageData: function () {
+    return Packages.findOne({
+      name: "core",
+      shopId: Reaction.getShopId()
+    });
+  }
+});
