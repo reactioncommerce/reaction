@@ -1,6 +1,7 @@
 import { Mongo } from "meteor/mongo";
-import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 
+const DiscountSchema = Schemas.DiscountCodes;
 
 /**
  * Client side collections

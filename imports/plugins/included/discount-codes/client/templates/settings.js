@@ -5,9 +5,11 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { DiscountCodes } from "../collections/codes";
 import { i18next } from "/client/api";
-import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { IconButton, Loading, SortableTable }  from "/imports/plugins/core/ui/client/components";
 import "./settings.html";
+
+const DiscountSchema = Schemas.DiscountCodes;
 
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
 /* eslint no-unused-vars: ["error", { "argsIgnorePattern": "[oO]ptions" }] */

@@ -1,7 +1,9 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { PackageConfig } from "/lib/collections/schemas/registry";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { Taxes } from "./taxes";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
+
+const PackageConfig = Schemas.PackageConfig;
 
 /**
 * TaxPackageConfig Schema

@@ -6,8 +6,9 @@ import { Validation } from "@reactioncommerce/reaction-collections";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 
 import { ReactionProduct } from "/lib/api";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 
-import { ProductVariant } from "/lib/collections/schemas";
+const ProductVariant = Schemas.ProductVariant;
 
 class Variant extends Component {
   constructor(props) {

@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Validation } from "@reactioncommerce/reaction-collections";
-import { ProductVariant } from "/lib/collections/schemas/products";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 
+const ProductVariant = Schemas.ProductVariant;
 
 class ChildVariant extends Component {
   constructor(props) {

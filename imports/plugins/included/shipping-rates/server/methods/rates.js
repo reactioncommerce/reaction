@@ -2,9 +2,11 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import { Shipping } from "/lib/collections";
-import { ShippingMethod } from "/lib/collections/schemas";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { Reaction } from "/server/api";
 import { shippingRoles } from "../lib/roles";
+
+const ShippingMethod = Schemas.ShippingMethod;
 
 export const methods = {
   /**

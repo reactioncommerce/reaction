@@ -5,10 +5,11 @@ import { Blaze } from "meteor/blaze";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Template } from "meteor/templating";
 import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
-import { EmailTemplates } from "../../lib/collections/schemas";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { i18next } from "/client/api";
 import { Templates } from "/lib/collections";
 
+const EmailTemplates = Schemas.EmailTemplates;
 
 /*
  * template templateSettings onCreated

@@ -1,7 +1,9 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { PackageConfig } from "/lib/collections/schemas/registry";
-import { Shop } from "/lib/collections/schemas/shops.js";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
+
+const PackageConfig = Schemas.PackageConfig;
+const Shop = Schemas.Shop;
 
 export const ShopTypes = new SimpleSchema({
   shopType: {

@@ -9,8 +9,10 @@ import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import VariantForm from "../components/variantForm";
-import { ProductVariant } from "/lib/collections/schemas/products";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { Validation } from "@reactioncommerce/reaction-collections";
+
+const ProductVariant = Schemas.ProductVariant;
 
 const wrapComponent = (Comp) => (
   class VariantFormContainer extends Component {
