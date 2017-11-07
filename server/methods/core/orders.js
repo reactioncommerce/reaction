@@ -621,10 +621,11 @@ export const methods = {
     let shippingAddress = {};
     let tracking;
     let carrier = "";
+
     for (const billingRecord of order.billing) {
-      subtotal += billingRecord.invoice.subtotal;
-      taxes += billingRecord.invoice.taxes;
-      discounts += billingRecord.invoice.discounts;
+      subtotal += Number.parseFloat(billingRecord.invoice.subtotal);
+      taxes += Number.parseFloat(billingRecord.invoice.taxes);
+      discounts += Number.parseFloat(billingRecord.invoice.discounts);
       amount += billingRecord.paymentMethod.amount;
       address = billingRecord.address;
       paymentMethod = billingRecord.paymentMethod;
@@ -636,6 +637,7 @@ export const methods = {
       tracking = shippingRecord.tracking;
       shippingCost += shippingRecord.shipmentMethod.rate;
     }
+
 
     const refundResult = Meteor.call("orders/refunds/list", order);
     const refundTotal = Array.isArray(refundResult) && refundResult.reduce((acc, refund) => acc + refund.amount, 0);
