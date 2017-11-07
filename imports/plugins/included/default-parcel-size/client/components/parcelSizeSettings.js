@@ -17,12 +17,22 @@ class ParcelDimensionSettings extends Component {
     super(props);
     this.state = {
       size: this.props.size,
+      isEditing: false,
       isSaving: false
     };
+    this.handleFieldFocus = this.handleFieldFocus.bind(this);
     this.handleStateChange = this.handleStateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  /**
+   * @memberof ParcelDimensionSettings
+   */
+  handleFieldFocus() {
+    this.setState({
+      isEditing: true
+    });
+  }
   /**
    * @param {Object} event
    * @memberof ParcelDimensionSettings
@@ -49,7 +59,7 @@ class ParcelDimensionSettings extends Component {
   }
 
   render() {
-    const { isSaving, size } = this.state;
+    const { isEditing, isSaving, size } = this.state;
     return (
       <Components.CardGroup>
         <Components.Card>
@@ -67,6 +77,7 @@ class ParcelDimensionSettings extends Component {
                 name="weight"
                 value={size.weight}
                 onChange={this.handleStateChange}
+                onFocus={this.handleFieldFocus}
               />
               <Components.TextField
                 label="Height"
@@ -75,6 +86,7 @@ class ParcelDimensionSettings extends Component {
                 name="height"
                 value={size.height}
                 onChange={this.handleStateChange}
+                onFocus={this.handleFieldFocus}
               />
               <Components.TextField
                 label="Width"
@@ -83,6 +95,7 @@ class ParcelDimensionSettings extends Component {
                 name="width"
                 value={size.width}
                 onChange={this.handleStateChange}
+                onFocus={this.handleFieldFocus}
               />
               <Components.TextField
                 label="Length"
@@ -91,17 +104,20 @@ class ParcelDimensionSettings extends Component {
                 name="length"
                 value={size.length}
                 onChange={this.handleStateChange}
+                onFocus={this.handleFieldFocus}
               />
-              <Components.Button
-                bezelStyle="solid"
-                status="primary"
-                className="pull-right"
-                type="submit" disabled={isSaving}
-              >
-                {isSaving ?
-                  <i className="fa fa-refresh fa-spin"/>
-                  : <span data-i18n="app.save">Save</span>}
-              </Components.Button>
+              {isEditing &&
+                <Components.Button
+                  bezelStyle="solid"
+                  status="primary"
+                  className="pull-right"
+                  type="submit" disabled={isSaving}
+                >
+                  {isSaving ?
+                    <i className="fa fa-refresh fa-spin" />
+                    : <span data-i18n="app.save">Save</span>}
+                </Components.Button>
+              }
             </form>
           </Components.CardBody>
         </Components.Card>

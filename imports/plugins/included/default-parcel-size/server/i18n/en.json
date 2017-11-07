@@ -5,11 +5,11 @@
     "reaction-shipping-parcel-size": {
       "admin": {
         "settings": {
-          "label": "Parcel size",
-          "weight": "Weight (lbs)",
-          "length": "Length (in)",
-          "width": "Width (in)",
-          "height": "Height (in)"
+          "label": "Default parcel size",
+          "weight": "Weight",
+          "length": "Length",
+          "width": "Width",
+          "height": "Height"
         },
         "alerts": {
           "noWeight": "Please add parcel weight",
