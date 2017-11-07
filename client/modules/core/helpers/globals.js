@@ -3,16 +3,15 @@ import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 
-// Reaction Globals
-//
-// These should all be removed. PR's happily accepted.
-//
 /* eslint "no-extend-native": [2, {"exceptions": ["String"]}] */
 /* eslint "no-alert": 0 */
 
 /**
- * toggleSession
- * quick and easy snippet for toggling sessions
+ * @name toggleSession
+ * @method
+ * @memberof Helpers
+ * @todo These should all be removed. PR's happily accepted.
+ * @summary Quick and easy snippet for toggling sessions
  * @param {String} sessionVariable - string name, see http://docs.meteor.com/#/basic/session
  * @param {String} positiveState - optional, if is is positiveState, set opposite
  * @return {Object} return session value
@@ -28,10 +27,12 @@ export function toggleSession(sessionVariable, positiveState) {
   return Session.get(sessionVariable);
 }
 
-
 /**
- * getCardTypes
- * @summary determine the card type and return label
+ * @name getCardTypes
+ * @method
+ * @memberof Helpers
+ * @todo These should all be removed. PR's happily accepted.
+ * @summary Determine the card type and return label
  * @todo needs i18n conversion?
  * @param {String} cardNumber - a credit card number
  * @return {String} card label, ie: visa
@@ -57,8 +58,11 @@ export function getCardType(cardNumber) {
 }
 
 /**
- * getGuestLoginState
- * @summary determines if a guest checkout is enabled and the login state for users
+ * @name getGuestLoginState
+ * @method
+ * @memberof Helpers
+ * @todo These should all be removed. PR's happily accepted.
+ * @summary Determines if a guest checkout is enabled and the login state for users
  * @return {Boolean} true if authenticated user
  */
 export function getGuestLoginState() {
