@@ -42,6 +42,12 @@ Reaction.registerPackage({
     icon: "fa fa-th",
     provides: ["settings"],
     container: "dashboard"
+  }, {
+    label: "Options",
+    provides: ["shopSettings"],
+    container: "dashboard",
+    template: "optionsShopSettings",
+    hideForShopTypes: ["merchant"]
   }],
   layout: [{
     layout: "coreLayout",

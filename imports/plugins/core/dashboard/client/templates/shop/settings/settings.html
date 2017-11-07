@@ -83,7 +83,7 @@
       </div>
     </div>
 
-    <div class="panel panel-default">
+    <!-- <div class="panel panel-default">
       <div class="panel-heading">
         <div class="panel-title">
           <a
@@ -108,7 +108,7 @@
           {{/autoForm}}
         </div>
       </div>
-    </div>
+    </div> -->
 
     {{#each reactionApps provides='shopSettings'}}
       <div class="panel panel-default">
@@ -137,6 +137,22 @@
         </div>
       </div>
     {{/each}}
+  </div>
+</template>
+
+<template name="optionsShopSettings">
+  <div id="options" class="panel-collapse collapse" role="tabpanel" aria-labelledby="options">
+    <div class="panel-body">
+      {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
+      doc=packageData id="shopEditExternalServicesForm" type="method-update" meteormethod="shop/updateShopExternalServices"}}
+        {{> afQuickField name='settings.openexchangerates.appId'}}
+        {{> afQuickField name='settings.openexchangerates.refreshPeriod' placeholder="every 1 hour"}}
+        {{> afQuickField name='settings.google.clientId'}}
+        {{> afQuickField name='settings.google.apiKey'}}
+        {{> afQuickField name='settings.cart.cleanupDurationDays' placeholder="older than 3 days"}}
+        {{> shopSettingsSubmitButton}}
+        {{/autoForm}}
+    </div>
   </div>
 </template>
 
