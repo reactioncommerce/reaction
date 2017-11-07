@@ -47,7 +47,7 @@ Reaction.registerPackage({
     provides: ["shopSettings"],
     container: "dashboard",
     template: "optionsShopSettings",
-    hideForShopTypes: ["merchant"]
+    showForShopTypes: ["primary"]
   }],
   layout: [{
     layout: "coreLayout",
