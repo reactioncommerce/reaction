@@ -1,8 +1,9 @@
 import { Meteor } from "meteor/meteor";
+import { Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
-import { Packages } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
+import { Packages } from "/lib/collections";
 import { Reaction } from "/server/api";
 
 describe.only("Update Package", function () {
@@ -25,6 +26,22 @@ describe.only("Update Package", function () {
         return Meteor.call("package/update", examplePackage.name, "settings", {});
       }
       expect(updatePackage).to.throw(Meteor.Error, /Access Denied/);
+      expect(pkgUpdateSpy).to.not.have.been.called;
+
+      return done();
+    });
+
+    it.only("should throw an error when supplied with an argument of the wrong type", function (done) {
+      const pkgUpdateSpy = sandbox.spy(Packages, "update");
+      sandbox.stub(Reaction, "getShopId", () => "randomId");
+      sandbox.stub(Reaction, "hasPermission", () => true);
+
+      function updatePackage(packageName, field, value) {
+        return Meteor.call("package/update", packageName, field, value);
+      }
+      expect(() => updatePackage([], "someField", { foo: "bar" })).to.throw(Match.Error, /Match error: Expected string, got object/);
+      expect(() => updatePackage("somePackage", [], { foo: "bar" })).to.throw(Match.Error, /Match error: Expected string, got object/);
+      expect(() => updatePackage("somePackage", "someField", "")).to.throw(Match.Error, /Match error: Expected object, got string/);
       expect(pkgUpdateSpy).to.not.have.been.called;
 
       return done();
