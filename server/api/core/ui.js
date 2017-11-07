@@ -33,7 +33,7 @@ function objectToCSS(styles) {
 }
 
 /**
- * @name processAnnotations
+ * @name ui/processAnnotations
  * @method
  * @memberof Methods/ui
  * @summary Uses `parse` method from {@link https://github.com/morishitter/css-annotation|CSS Annotation}
@@ -46,7 +46,7 @@ function annotateCSS(stylesheet) {
 }
 
 /**
- * @name cssToObject
+ * @name ui/cssToObject
  * @method
  * @memberof Methods/ui
  * @param  {String|null|undefied|void} styles CSS as a string
@@ -62,7 +62,7 @@ function cssToObject(styles) {
 }
 
 /**
- * @name themeToCSS
+ * @name ui/themeToCSS
  * @method
  * @memberof Methods/ui
  * @param  {Object} theme Theme
@@ -80,7 +80,7 @@ function themeToCSS(theme) {
 }
 
 /**
- * @name updateStyles
+ * @name ui/updateStyles
  * @method
  * @memberof Methods/ui
  * @param  {Object} data Object with `styles`
@@ -105,7 +105,7 @@ function updateStyles(data) {
 }
 
 /**
- * @name publishTheme
+ * @name ui/publishTheme
  * @method
  * @memberof Methods/ui
  * @example Meteor.call("ui/publishTheme", theme, (error))
@@ -130,7 +130,7 @@ function publishTheme(theme) {
 }
 
 /**
- * @name registerTheme
+ * @name ui/registerTheme
  * @method
  * @memberof Methods/ui
  * @example Reaction.registerTheme(Assets.getText("themes/button.css"));
@@ -186,7 +186,7 @@ export function registerTheme(styles) {
 }
 
 /**
- * @name duplicateTheme
+ * @name ui/duplicateTheme
  * @method
  * @memberof Methods/ui
  * @example Meteor.call("ui/duplicateTheme", theme)
