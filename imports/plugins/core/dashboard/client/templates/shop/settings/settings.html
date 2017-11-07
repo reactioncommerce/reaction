@@ -97,7 +97,7 @@
               <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
             </a>
           </div>
-          {{#if showAppSwitch}}
+          {{#if showAppSwitch template}}
           <div class="panel-controls">
             <input class="checkbox-switch" type="checkbox" name="enabled" data-id={{packageId}} data-key="{{settingsKey}}" {{checked enabled}}>
           </div>
@@ -114,7 +114,7 @@
 </template>
 
 <template name="optionsShopSettings">
-  <div class="panel-body">
+  <div class="optionsShopSettings">
     {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
     doc=packageData id="shopEditExternalServicesForm" type="method-update" meteormethod="shop/updateShopExternalServices"}}
       {{> afQuickField name='settings.openexchangerates.appId'}}

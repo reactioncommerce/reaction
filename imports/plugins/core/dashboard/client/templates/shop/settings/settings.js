@@ -154,7 +154,12 @@ Template.shopSettings.helpers({
     }).addressBook;
     return address[0];
   },
-  showAppSwitch() {
+  showAppSwitch(template) {
+    if (template === "optionsShopSettings") {
+      // do not have switch for options card/panel
+      return false;
+    }
+
     if (Reaction.getMarketplaceSettings()) {
       // if marketplace is enabled, only the primary shop can switch apps on and off.
       return Reaction.getShopId() === Reaction.getPrimaryShopId();
