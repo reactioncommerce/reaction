@@ -6,8 +6,6 @@ import { Schemas } from "@reactioncommerce/reaction-collections";
 import { Reaction } from "/server/api";
 import { shippingRoles } from "../lib/roles";
 
-const ShippingMethod = Schemas.ShippingMethod;
-
 export const methods = {
   /**
    * shipping/rates/add
@@ -69,7 +67,7 @@ export const methods = {
    * @return { Number } update result
    */
   "shipping/rates/update": function (method) {
-    check(method, ShippingMethod);
+    check(method, Schemas.ShippingMethod);
     if (!Reaction.hasPermission(shippingRoles)) {
       throw new Meteor.Error(403, "Access Denied");
     }

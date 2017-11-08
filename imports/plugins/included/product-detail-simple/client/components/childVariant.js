@@ -5,13 +5,11 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 import { Validation } from "@reactioncommerce/reaction-collections";
 import { Schemas } from "@reactioncommerce/reaction-collections";
 
-const ProductVariant = Schemas.ProductVariant;
-
 class ChildVariant extends Component {
   constructor(props) {
     super(props);
 
-    this.validation = new Validation(ProductVariant);
+    this.validation = new Validation(Schemas.ProductVariant);
 
     this.state = {
       invalidVariant: false

@@ -9,8 +9,6 @@ import { Schemas } from "@reactioncommerce/reaction-collections";
 import { i18next } from "/client/api";
 import { Templates } from "/lib/collections";
 
-const EmailTemplates = Schemas.EmailTemplates;
-
 /*
  * template templateSettings onCreated
  */
@@ -112,7 +110,7 @@ Template.templateSettings.helpers({
   },
 
   emailTemplateSchema() {
-    return EmailTemplates;
+    return Schemas.EmailTemplates;
   }
 });
 

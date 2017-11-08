@@ -9,8 +9,6 @@ import { Schemas } from "@reactioncommerce/reaction-collections";
 import { IconButton, Loading, SortableTable }  from "/imports/plugins/core/ui/client/components";
 import "./settings.html";
 
-const DiscountSchema = Schemas.DiscountCodes;
-
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
 /* eslint no-unused-vars: ["error", { "argsIgnorePattern": "[oO]ptions" }] */
 
@@ -121,7 +119,7 @@ Template.customDiscountCodes.helpers({
   },
   // schema for forms
   discountSchema() {
-    return DiscountSchema;
+    return Schemas.DiscountCodes;
   },
 
   discountCode() {

@@ -12,8 +12,6 @@ import VariantForm from "../components/variantForm";
 import { Schemas } from "@reactioncommerce/reaction-collections";
 import { Validation } from "@reactioncommerce/reaction-collections";
 
-const ProductVariant = Schemas.ProductVariant;
-
 const wrapComponent = (Comp) => (
   class VariantFormContainer extends Component {
     static propTypes = {
@@ -23,7 +21,7 @@ const wrapComponent = (Comp) => (
     constructor(props) {
       super(props);
 
-      this.validation = new Validation(ProductVariant);
+      this.validation = new Validation(Schemas.ProductVariant);
 
       this.state = {
         validationStatus: this.validation.validationStatus,

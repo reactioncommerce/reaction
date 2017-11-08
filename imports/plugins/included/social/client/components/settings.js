@@ -7,8 +7,6 @@ import {
 } from "/imports/plugins/core/ui/client/components";
 import { Schemas } from "@reactioncommerce/reaction-collections";
 
-const SocialPackageConfig = Schemas.SocialPackageConfig;
-
 const socialProviders = [
   {
     name: "facebook",
@@ -45,7 +43,7 @@ class SocialSettings extends Component {
   }
 
   getSchemaForField(provider, field) {
-    return SocialPackageConfig._schema[`settings.public.apps.${provider}.${field}`];
+    return Schemas.SocialPackageConfig._schema[`settings.public.apps.${provider}.${field}`];
   }
 
   handleSettingChange = (event, value, name) => {
@@ -84,7 +82,7 @@ class SocialSettings extends Component {
             onSwitchChange={this.props.onSettingEnableChange}
           >
             <Form
-              schema={SocialPackageConfig}
+              schema={Schemas.SocialPackageConfig}
               doc={doc}
               docPath={`settings.public.apps.${provider.name}`}
               hideFields={[

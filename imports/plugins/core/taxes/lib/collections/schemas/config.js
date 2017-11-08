@@ -3,14 +3,12 @@ import { Schemas } from "@reactioncommerce/reaction-collections";
 import { Taxes } from "./taxes";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
-const PackageConfig = Schemas.PackageConfig;
-
 /**
 * TaxPackageConfig Schema
 */
 
 export const TaxPackageConfig = new SimpleSchema([
-  PackageConfig, {
+  Schemas.PackageConfig, {
     "settings.defaultTaxCode": {
       type: String,
       optional: true

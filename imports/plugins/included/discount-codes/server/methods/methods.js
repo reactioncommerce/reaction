@@ -6,10 +6,8 @@ import { Cart } from "/lib/collections";
 import { Discounts } from  "/imports/plugins/core/discounts/lib/collections";
 import { Schemas } from "@reactioncommerce/reaction-collections";
 
-const DiscountSchema = Schemas.DiscountCodes;
-
 // attach discount code specific schema
-Discounts.attachSchema(DiscountSchema, { selector: { discountMethod: "code" } });
+Discounts.attachSchema(Schemas.DiscountCodes, { selector: { discountMethod: "code" } });
 
 //
 // make all discount methods available

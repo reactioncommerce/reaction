@@ -3,14 +3,12 @@ import { Schemas } from "@reactioncommerce/reaction-collections";
 import { Discounts } from "./discounts";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
-const PackageConfig = Schemas.PackageConfig;
-
 /**
 * DiscountsPackageConfig Schema
 */
 
 export const DiscountsPackageConfig = new SimpleSchema([
-  PackageConfig, {
+  Schemas.PackageConfig, {
     "settings.rates": {
       type: Object,
       optional: true

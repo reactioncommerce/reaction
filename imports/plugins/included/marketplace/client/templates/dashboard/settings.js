@@ -5,15 +5,13 @@ import { Packages } from "/lib/collections";
 import { Schemas } from "@reactioncommerce/reaction-collections";
 import { Components } from "@reactioncommerce/reaction-components";
 
-const MarketplacePackageConfig = Schemas.MarketplacePackageConfig;
-
 /**
  * marketplaceShopSettings helpers
  *
  */
 Template.marketplaceShopSettings.helpers({
   MarketplacePackageConfig() {
-    return MarketplacePackageConfig;
+    return Schemas.MarketplacePackageConfig;
   },
 
   packageData() {
