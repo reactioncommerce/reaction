@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -145,7 +145,7 @@
   },
   "scripts": {
     "test": "jest",
-    "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json"
+    "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md"
   },
   "babel": {
     "plugins": [

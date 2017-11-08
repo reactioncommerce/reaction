@@ -23,7 +23,7 @@ export const AuthNetPackageConfig = new SimpleSchema([
     },
     "settings.reaction-auth-net.support.$": {
       type: String,
-      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+      allowedValues: ["Authorize", "De-authorize", "Capture"]
     },
     "settings.api_id": {
       type: String,

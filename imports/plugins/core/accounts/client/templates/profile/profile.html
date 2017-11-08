@@ -26,7 +26,7 @@
       </div>
 
       <div class="flex-item">
-        <div class="panel panel-default">
+        <div class="panel panel-default user-orders-list">
           <div class="panel-heading">
             {{#if isOwnerOfProfile}}
               <h3 class="panel-title" data-i18n="accountsUI.yourOrders">Your orders</h3>
@@ -35,7 +35,7 @@
             {{/if}}
           </div>
           <div class="panel-content">
-            {{> dashboardOrdersList data=userOrders}}
+            {{> userOrdersList data=userOrders}}
           </div>
         </div>
       </div>
