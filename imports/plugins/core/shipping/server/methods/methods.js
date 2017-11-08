@@ -4,6 +4,12 @@ import { Shipping, Packages } from "/lib/collections";
 import { Reaction } from "/server/api";
 import { shippingRoles } from "../lib/roles";
 
+/**
+ *
+ * @namespace Methods/Shipping
+ */
+
+
 export const methods = {
   "shipping/status/refresh": function (orderId) {
     check(orderId, String);
@@ -13,8 +19,11 @@ export const methods = {
     return orderId;
   },
   /**
-   * shipping/provider/toggle
-   * @summary toggle enabled provider
+   * @name shipping/provider/toggle
+   * @method
+   * @memberof Methods/Shipping
+   * @example Meteor.call("shipping/provider/toggle", packageId, settingsKey)
+   * @summary Toggle enabled provider
    * @param { String } packageId - packageId
    * @param { String } provider - provider name
    * @return { Number } update - result
