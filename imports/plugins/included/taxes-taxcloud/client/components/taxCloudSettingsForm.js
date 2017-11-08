@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 import { TaxCloudPackageConfig } from "../../lib/collections/schemas";
 
 /**
@@ -26,7 +27,7 @@ const TaxCloudSettingsForm = (props) => {
     <div className="rui taxcloud-settings-form">
       {!settings.taxcloud.apiLoginId &&
         <div className="alert alert-info">
-          <span data-i18n="admin.taxSettings.taxcloudCredentials">Add API Login ID to enable</span>
+          <Components.Translation defaultValue="Add API Login ID to enable" i18nkey="admin.taxSettings.taxcloudCredentials" />
           <a href="https://www.taxcloud.com/" target="_blank">TaxCloud</a>
         </div>
       }
