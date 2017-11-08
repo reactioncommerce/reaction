@@ -21,18 +21,6 @@
 
 
 // Gallery all images
-.rui.media-gallery .gallery-image:hover {
-  background-color: @list-group-hover-bg;
-}
-
-.admin-gallery-image {
-  cursor: pointer;
-}
-
-.admin-gallery-image:hover {
-  opacity: 0.7;
-}
-
 .rui.media-gallery .gallery-image .img-responsive {
   width: 100%;
 }
@@ -150,4 +138,18 @@
 
 .rui.media-gallery .gallery-image:hover .gallery-tools a {
   color: @gray-dark;
+}
+
+.admin-gallery-image {
+  cursor: pointer;
+
+  &:hover {
+    background-color: @list-group-hover-bg;
+    opacity: 0.7;
+  }
+}
+
+.admin-featuredImage:hover {
+  background-color: @list-group-hover-bg;
+  opacity: 0.8;
 }
