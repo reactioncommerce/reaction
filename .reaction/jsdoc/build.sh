@@ -9,4 +9,4 @@ apt-get -y -qq install awscli
 npm install -g jsdoc
 # build new jsdocs
 echo "Running jsdocs on the reaction codebase"
-jsdoc . --verbose --configure .reaction/jsdoc/jsdoc.json
+jsdoc . --verbose --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md
