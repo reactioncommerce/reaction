@@ -22,6 +22,7 @@
           "importSuccess": "Products imported successfully.",
           "keepInventorySynced": "Keep Inventory Synced",
           "noSyncIntegrationsSelected": "Please select at least one option to sync",
+          "optionImportCustomers": "Customers",
           "optionImportProducts": "Products",
           "optionOrdersCreateUpdateInventory": "Update Inventory when new Shopify order is placed",
           "syncSetup": "Setup Sync",

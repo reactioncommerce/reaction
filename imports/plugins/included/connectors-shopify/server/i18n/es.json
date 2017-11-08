@@ -22,6 +22,7 @@
           "importSuccess": "Productos importados correctamente.",
           "keepInventorySynced": "Mantenga el inventario sincronizado",
           "noSyncIntegrationsSelected": "Selecciona al menos una opción para sincronizar",
+          "optionImportCustomers": "Usuarios",
           "optionImportProducts": "productos",
           "optionOrdersCreateUpdateInventory": "Actualizar el inventario cuando se coloca el nuevo pedido de Shopify",
           "syncSetup": "Configurar la sincronización",
