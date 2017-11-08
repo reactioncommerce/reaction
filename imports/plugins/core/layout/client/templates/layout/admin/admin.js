@@ -10,6 +10,7 @@ import ToolbarContainer from "/imports/plugins/core/dashboard/client/containers/
 import Toolbar from "/imports/plugins/core/dashboard/client/components/toolbar";
 import { ActionViewContainer } from "/imports/plugins/core/dashboard/client/containers";
 import { ActionView } from "/imports/plugins/core/dashboard/client/components";
+import { getComponent } from "/imports/plugins/core/components/lib";
 
 Template.coreAdminLayout.onRendered(function () {
   $("body").addClass("admin");
@@ -29,6 +30,14 @@ Template.coreAdminLayout.helpers({
   ActionViewComponent() {
     return {
       component: ActionViewContainer(ActionView),
+      data: Template.currentData()
+    };
+  },
+  getFooterComponent() {
+    // I think this template is not used anymore, but not
+    // 100% sure. Therefore I've put this code in here..
+    return {
+      component: getComponent("Footer"),
       data: Template.currentData()
     };
   },

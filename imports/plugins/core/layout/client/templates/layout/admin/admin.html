@@ -21,11 +21,11 @@
       {{> Template.dynamic template=template}}
       <!-- end template region -->
 
-      <footer class="reaction-navigation-footer footer-default">
-        <!-- begin layoutFooter -->
-        {{> Template.dynamic template=layoutFooter}}
-        <!-- end layoutFooter -->
-      </footer>
+      <!-- Wrapping: Must be the only child of its parent container. -->
+      <div>
+        {{> React getFooterComponent}}
+      </div>
+
     </main>
   </div>
 

@@ -32,7 +32,7 @@ Reaction.registerPackage({
     enabled: true,
     structure: {
       template: "productDetail",
-      layoutHeader: "layoutHeader",
+      layoutHeader: "NavBar",
       layoutFooter: "",
       notFound: "productNotFound",
       dashboardHeader: "productDetailSimpleToolbar",
@@ -48,8 +48,9 @@ Reaction.registerPackage({
     enabled: true,
     structure: {
       template: "products",
-      layoutHeader: "layoutHeader",
+      layoutHeader: "NavBar",
       layoutFooter: "",
+      // layoutFooter: "Footer", // TODO: decide if it's desirable to display standard footer in product grid for a stock installation
       notFound: "productNotFound",
       dashboardHeader: "gridPublishControls",
       dashboardControls: "productDetailDashboardControls",

@@ -57,7 +57,7 @@ Reaction.registerPackage({
     enabled: true,
     structure: {
       template: "accountsDashboard",
-      layoutHeader: "layoutHeader",
+      layoutHeader: "NavBar",
       layoutFooter: "",
       notFound: "notFound",
       dashboardHeader: "dashboardHeader",

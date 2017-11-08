@@ -50,7 +50,7 @@ Reaction.registerPackage({
     enabled: true,
     structure: {
       template: "dashboardPackages",
-      layoutHeader: "layoutHeader",
+      layoutHeader: "NavBar",
       layoutFooter: "",
       notFound: "notFound",
       dashboardHeader: "dashboardHeader",
