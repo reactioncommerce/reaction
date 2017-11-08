@@ -20,7 +20,7 @@ Template.shopifyConnectSettings.helpers({
 });
 
 Template.shopifyImport.events({
-  "click [data-event-action=importCustomersFromShopify]"(event) {
+  "click [data-event-action=importDataFromShopify]"(event) {
     event.preventDefault();
     $(event.currentTarget).html(`<i class='fa fa-circle-o-notch fa-spin'></i> ${i18next.t("admin.shopifyConnectSettings.importing")}`);
     event.currentTarget.disabled = true;
@@ -40,47 +40,34 @@ Template.shopifyImport.events({
       }
     }
 
-    Meteor.call("connectors/shopify/import/customers", (err) => {
-      $(event.currentTarget).html(`
-          <i class='fa fa-cloud-download'></i> ${i18next.t("admin.shopifyConnectSettings.importCustomers")}`);
-      event.currentTarget.disabled = false;
-
-      if (!err) {
-        return Alerts.toast(i18next.t("admin.shopifyConnectSettings.importSuccess"), "success");
-      }
-      return Alerts.toast(`${i18next.t("admin.shopifyConnectSettings.importFailed")}: ${err}`, "error");
-    });
-  },
-  "click [data-event-action=importProductsFromShopify]"(event) {
-    event.preventDefault();
-    $(event.currentTarget).html(`<i class='fa fa-circle-o-notch fa-spin'></i> ${i18next.t("admin.shopifyConnectSettings.importing")}`);
-    event.currentTarget.disabled = true;
-
-    // If this is the primary shop, redirect to index
-    if (Reaction.getShopId() === Reaction.getPrimaryShopId()) {
-      Router.go("index");
-    } else {
-      const shopId = Reaction.getShopId();
-      const shop = Shops.findOne({ _id: shopId });
-
-      // Check to see if this shop has a slug, otherwise direct to shopId route
-      if (shop && shop.slug) {
-        Router.go(`/shop/${shop.slug}`);
-      } else {
-        Router.go(`/shop/${shopId}`);
-      }
+    // TODO transform these Meteor calls to jobs like we do for the products images
+    // we got customers checkbox checked ? if yes then download customers
+    if ($("#shopifyCheckboxCustomers").is(":checked")) {
+      Meteor.call("connectors/shopify/import/customers", (err) => {
+        $(event.currentTarget).html(`
+            <i class='fa fa-cloud-download'></i> ${i18next.t("admin.shopifyConnectSettings.importCustomers")}`);
+        event.currentTarget.disabled = false;
+  
+        if (!err) {
+          return Alerts.toast(i18next.t("admin.shopifyConnectSettings.importSuccess"), "success");
+        }
+        return Alerts.toast(`${i18next.t("admin.shopifyConnectSettings.importFailed")}: ${err}`, "error");
+      });
     }
-
-    Meteor.call("connectors/shopify/import/products", (err) => {
-      $(event.currentTarget).html(`
-          <i class='fa fa-cloud-download'></i> ${i18next.t("admin.shopifyConnectSettings.importProducts")}`);
-      event.currentTarget.disabled = false;
-
-      if (!err) {
-        return Alerts.toast(i18next.t("admin.shopifyConnectSettings.importSuccess"), "success");
-      }
-      return Alerts.toast(`${i18next.t("admin.shopifyConnectSettings.importFailed")}: ${err}`, "error");
-    });
+    // we got products checkbox checked ? if yes then download products
+    if ($("#shopifyCheckboxProducts").is(":checked")) {
+      Meteor.call("connectors/shopify/import/products", (err) => {
+        $(event.currentTarget).html(`
+            <i class='fa fa-cloud-download'></i> ${i18next.t("admin.shopifyConnectSettings.importCustomers")}`);
+        event.currentTarget.disabled = false;
+  
+        if (!err) {
+          return Alerts.toast(i18next.t("admin.shopifyConnectSettings.importSuccess"), "success");
+        }
+        return Alerts.toast(`${i18next.t("admin.shopifyConnectSettings.importFailed")}: ${err}`, "error");
+      });
+    }
+    
   }
 });
 
