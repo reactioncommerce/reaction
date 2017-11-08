@@ -6,7 +6,7 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { Packages } from "/lib/collections";
 import { Reaction } from "/server/api";
 
-describe.only("Update Package", function () {
+describe("Update Package", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -17,8 +17,8 @@ describe.only("Update Package", function () {
     sandbox.restore();
   });
 
-  describe.only("package/update", function () {
-    it.only("should throw an 'Access Denied' error for non-admins", function (done) {
+  describe("package/update", function () {
+    it("should throw an 'Access Denied' error for non-admins", function (done) {
       const pkgUpdateSpy = sandbox.spy(Packages, "update");
       const examplePackage = Factory.create("examplePackage");
 
@@ -31,7 +31,7 @@ describe.only("Update Package", function () {
       return done();
     });
 
-    it.only("should throw an error when supplied with an argument of the wrong type", function (done) {
+    it("should throw an error when supplied with an argument of the wrong type", function (done) {
       const pkgUpdateSpy = sandbox.spy(Packages, "update");
       sandbox.stub(Reaction, "getShopId", () => "randomId");
       sandbox.stub(Reaction, "hasPermission", () => true);
@@ -47,7 +47,7 @@ describe.only("Update Package", function () {
       return done();
     });
 
-    it.only("should be able to update any Package", function (done) {
+    it("should be able to update any Package", function (done) {
       const packageUpdateSpy = sandbox.spy(Packages, "update");
       const oldPackage = Factory.create("examplePackage");
 
