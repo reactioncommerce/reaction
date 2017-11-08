@@ -24,19 +24,20 @@ class MainDropdown extends Component {
       [PropTypes.bool, PropTypes.object]
     ),
     handleChange: PropTypes.func,
-    userImage: PropTypes.oneOfType(
-      [PropTypes.bool, PropTypes.string]
-    ),
+    userImage: PropTypes.object,
     userName: PropTypes.string,
     userShortcuts: PropTypes.object
   }
 
   buttonElement() {
+    const { userImage, userName } = this.props;
     return (
       <Components.Button containerStyle={{ color: "#000", fontWeight: "normal", letterSpacing: 0.8 }}>
-        <img className="accounts-img-tag" src={this.props.userImage} />&nbsp;
-        <span>{this.props.userName}</span>&nbsp;
-        <i className="fa fa-caret-down" />
+        <span>{userImage}</span>
+        <span>{userName}</span>&nbsp;
+        <Components.Icon
+          icon={"fa fa-caret-down"}
+        />
       </Components.Button>
     );
   }
