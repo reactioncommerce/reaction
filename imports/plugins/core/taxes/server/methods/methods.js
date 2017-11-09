@@ -5,12 +5,18 @@ import { Taxes } from "../../lib/collections";
 import Reaction from "../api";
 import { Logger } from "/server/api";
 
-//
-// make all tax methods available
-//
+/**
+ * @file Methods for Taxes. Run these methods using `Meteor.call()`.
+ *
+ *
+ * @namespace Methods/Taxes
+*/
+
 export const methods = {
   /**
-   * taxes/deleteRate
+   * @name taxes/deleteRate
+   * @method
+   * @memberof Methods/Taxes
    * @param  {String} taxId tax taxId to delete
    * @return {String} returns update/insert result
    */
@@ -26,7 +32,9 @@ export const methods = {
   },
 
   /**
-   * taxes/addRate
+   * @name taxes/addRate
+   * @method
+   * @memberof Methods/Taxes
    * @param  {String} modifier update statement
    * @param  {String} docId    tax docId
    * @return {String} returns update/insert result
@@ -48,8 +56,10 @@ export const methods = {
   },
 
   /**
-   * taxes/setRate
-   * update the cart without hooks
+   * @name taxes/setRate
+   * @summary Update the cart without hooks
+   * @method
+   * @memberof Methods/Taxes
    * @param  {String} cartId cartId
    * @param  {Number} taxRate taxRate
    * @param  {Object} taxes taxes
@@ -69,15 +79,16 @@ export const methods = {
   },
 
   /**
-   * taxes/setRateByShopAndItem
-   * update the cart without hooks
-   * Options:
-   *   taxRatesByShop - Object shopIds: taxRates
-   *   itemsWithTax - items array with computed tax details
-   *   cartTaxRate - tax rate for shop associated with cart.shopId
-   *   cartTaxData - tax data for shop associated with cart.shopId
+   * @name taxes/setRateByShopAndItem
+   * @method
+   * @memberof Methods/Taxes
+   * @summary Update the cart without hooks
    * @param  {String} cartId cartId
    * @param  {Object} options - Options object
+   * @param  {Object} options.taxRatesByShop - Object shopIds: taxRates
+   * @param  {Array}  options.itemsWithTax - Items array with computed tax details
+   * @param  {Object} options.cartTaxRate - Tax rate for shop associated with cart.shopId
+   * @param  {Object} options.cartTaxData - Tax data for shop associated with cart.shopId
    * @return {Number} returns update result
    */
   "taxes/setRateByShopAndItem": function (cartId, options) {
@@ -102,7 +113,9 @@ export const methods = {
   },
 
   /**
-   * taxes/calculate
+   * @name taxes/calculate
+   * @method
+   * @memberof Methods/Taxes
    * @param  {String} cartId cartId
    * @return {Object}  returns tax object
    */
@@ -222,5 +235,4 @@ export const methods = {
   } // end taxes/calculate
 };
 
-// export tax methods to Meteor
 Meteor.methods(methods);

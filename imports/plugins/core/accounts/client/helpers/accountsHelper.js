@@ -1,4 +1,3 @@
-/* global Gravatar */
 import { Meteor } from "meteor/meteor";
 import _ from "lodash";
 import { Reaction } from "/client/api";
@@ -65,23 +64,6 @@ export function getDefaultUserInviteGroup(groups) {
   }
 
   return result;
-}
-
-export function getGravatar(user) {
-  const options = {
-    secure: true,
-    size: 30,
-    default: "identicon"
-  };
-  if (!user) { return false; }
-  const account = Collections.Accounts.findOne(user._id);
-  if (account && account.profile && account.profile.picture) {
-    return account.profile.picture;
-  }
-  if (user.emails && user.emails.length > 0) {
-    const email = user.emails[0].address;
-    return Gravatar.imageUrl(email, options);
-  }
 }
 
 export function groupPermissions(packages) {
