@@ -182,7 +182,7 @@ function getValidator() {
 }
 
 /**
- * @name acompareAddress
+ * @name compareAddress
  * @summary Compare individual fields of address and accumulate errors
  * @param {Object} address - the address provided by the customer
  * @param {Object} validationAddress - address provided by validator
@@ -651,6 +651,7 @@ export function inviteShopMember(options) {
   this.unblock();
 
   const shop = Shops.findOne(shopId);
+  const primaryShop = Reaction.getPrimaryShop();
 
   if (!shop) {
     const msg = `accounts/inviteShopMember - Shop ${shopId} not found`;
@@ -676,7 +677,7 @@ export function inviteShopMember(options) {
 
   const currentUser = Meteor.users.findOne(this.userId);
   const currentUserName = getCurrentUserName(currentUser);
-  const emailLogo = getEmailLogo(shop);
+  const emailLogo = getEmailLogo(primaryShop);
   const token = Random.id();
   const user = Meteor.users.findOne({ "emails.address": email });
   let dataForEmail;
@@ -685,7 +686,8 @@ export function inviteShopMember(options) {
   if (user) {
     userId = user._id; // since user exists, we promote the account
     Meteor.call("group/addUser", userId, groupId);
-    dataForEmail = getDataForEmail({ shop, name, currentUserName, emailLogo });
+    // use primaryShop's data (name, address etc) in email copy sent to new shop manager
+    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
   } else {
     userId = MeteorAccounts.createUser({
       profile: { invited: true },
@@ -699,8 +701,8 @@ export function inviteShopMember(options) {
       name
     };
     Meteor.users.update(userId, { $set: tokenUpdate });
-    // adds token to url in email sent
-    dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
+    // use primaryShop's data (name, address etc) in email copy sent to new shop manager
+    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
   }
 
   dataForEmail.groupName = _.startCase(group.name);
@@ -711,9 +713,10 @@ export function inviteShopMember(options) {
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
+  // send invitation email from primary shop email
   Reaction.Email.send({
     to: email,
-    from: `${shop.name} <${shop.emails[0].address}>`,
+    from: `${dataForEmail.primaryShop.name} <${dataForEmail.primaryShop.emails[0].address}>`,
     subject: SSR.render(subject, dataForEmail),
     html: SSR.render(tpl, dataForEmail)
   });
