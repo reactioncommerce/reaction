@@ -7,6 +7,13 @@ import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/t
 import { Reaction, i18next } from "/client/api";
 import { getDefaultUserInviteGroup } from "../helpers/accountsHelper";
 
+/**
+ * @summary React component to display admin invite form
+ * @memberof Accounts
+ * @extends {Component}
+ * @property {Function} canInviteToGroup
+ * @property {Array} groups
+ */
 class AdminInviteForm extends Component {
   static propTypes = {
     canInviteToGroup: PropTypes.func,
