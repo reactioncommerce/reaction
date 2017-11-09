@@ -1,5 +1,3 @@
-import "./templates/layout/admin/admin.html";
-import "./templates/layout/admin/admin.js";
 import "./templates/layout/alerts/alerts.html";
 import "./templates/layout/alerts/alerts.js";
 import "./templates/layout/alerts/inlineAlerts.js";

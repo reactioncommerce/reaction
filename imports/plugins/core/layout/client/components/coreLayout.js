@@ -19,17 +19,16 @@ const CoreLayout = ({ actionViewIsOpen, structure }) => {
   return (
     <div className={pageClassName} id="reactionAppContainer">
 
-      { headerComponent && React.createElement(headerComponent, {}) }
+      {headerComponent && React.createElement(headerComponent, {})}
 
       <Blaze template="cartDrawer" className="reaction-cart-drawer" />
 
-      { Template[template] &&
+      {Template[template] &&
         <main>
           <Blaze template={template} />
-        </main>
-      }
+        </main>}
 
-      { footerComponent && React.createElement(footerComponent, {}) }
+      {footerComponent && React.createElement(footerComponent, {})}
     </div>
   );
 };
