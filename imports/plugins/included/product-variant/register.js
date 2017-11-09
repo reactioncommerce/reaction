@@ -50,7 +50,6 @@ Reaction.registerPackage({
       template: "products",
       layoutHeader: "NavBar",
       layoutFooter: "",
-      // layoutFooter: "Footer", // TODO: decide if it's desirable to display standard footer in product grid for a stock installation
       notFound: "productNotFound",
       dashboardHeader: "gridPublishControls",
       dashboardControls: "productDetailDashboardControls",
