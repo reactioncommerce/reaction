@@ -61,7 +61,6 @@ const wrapComponent = (Comp) => (
           hasCreateProductPermission={this.hasCreateProductPermission}
           hasChanges={this.hasChanges}
           checked={this.checked}
-          isValid={this.state.isValid}
         />
       );
     }
