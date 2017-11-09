@@ -20,7 +20,6 @@ const wrapComponent = (Comp) => (
       super(props);
 
       this.validation = new Validation(ProductVariant);
-      this.isValid = true;
       this.validProduct = props.product;
 
       this.hasCreateProductPermission = this.hasCreateProductPermission.bind(this);
@@ -47,7 +46,6 @@ const wrapComponent = (Comp) => (
       // this returns an array with a single object
       const variants = ReactionProduct.getVariants(this.props.product._id).map((variant) => this.validation.validate(variant));
       this.setState({
-        isValid: variants[0].isValid,
         validProduct: Object.assign({}, this.props.product, { __isValid: variants[0].isValid })
       });
     }
