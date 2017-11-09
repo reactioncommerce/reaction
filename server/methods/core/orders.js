@@ -355,7 +355,6 @@ export const methods = {
       && paymentMethods.settings[paymentMethodName].support.includes("Refund");
 
     if (isRefundable) {
-      console.log(isRefundable);
       Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal));
     }
 
