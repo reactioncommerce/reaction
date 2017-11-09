@@ -75,6 +75,7 @@ Reaction.registerPackage({
     icon: "fa fa-globe",
     provides: ["settings"],
     container: "dashboard",
+    showForShopTypes: ["primary"],
     meta: {
       actionView: {
         dashboardSize: "lg"
