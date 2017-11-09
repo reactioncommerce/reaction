@@ -313,6 +313,7 @@
         "discount": "Discount",
         "head": "Your cart",
         "items": "Items in cart",
+        "orderItems": "Items in order",
         "subtotal": "Sub total",
         "shipping": "Shipping",
         "tax": "Tax",
