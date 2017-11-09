@@ -16,11 +16,12 @@ const wrapComponent = (Comp) => (
       product: PropTypes.object
     }
 
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
 
       this.validation = new Validation(ProductVariant);
       this.isValid = true;
+      this.validProduct = props.product;
 
       this.hasCreateProductPermission = this.hasCreateProductPermission.bind(this);
       this.hasChanges = this.hasChanges.bind(this);
@@ -43,10 +44,11 @@ const wrapComponent = (Comp) => (
     // This method checks validation of the variants of the all the products on the Products grid to
     // check whether all required fields have been submitted before publishing
     checkValidation = () => {
-      // this returns an array with a single object 
+      // this returns an array with a single object
       const variants = ReactionProduct.getVariants(this.props.product._id).map((variant) => this.validation.validate(variant));
       this.setState({
-        isValid: variants[0].isValid
+        isValid: variants[0].isValid,
+        validProduct: Object.assign({}, this.props.product, { __isValid: variants[0].isValid })
       });
     }
 
@@ -57,7 +59,7 @@ const wrapComponent = (Comp) => (
     render() {
       return (
         <Comp
-          product={this.props.product}
+          product={this.state.validProduct}
           hasCreateProductPermission={this.hasCreateProductPermission}
           hasChanges={this.hasChanges}
           checked={this.checked}

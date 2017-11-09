@@ -22,7 +22,7 @@ class GridItemControls extends Component {
   }
 
   renderVisibilityButton() {
-    if (!this.props.isValid) {
+    if (!this.props.product.__isValid && this.props.hasChanges()) {
       return (
         <div>
           <Components.IconButton
