@@ -53,7 +53,7 @@
       },
       "accounts": {
         "addMember": "Lägg till medlem",
-        "shopMembers": "Shopmedlemmar",
+        "shopMembers": "Butiksmedlemmar",
         "guests": "Gäster"
       },
       "app": {
@@ -77,7 +77,7 @@
         "close": "Stäng",
         "settings": "Inställningar",
         "loading": "Laddar",
-        "toggle": "toggle",
+        "toggle": "växla",
         "toggleEditMode": "Växla redigeringsläge",
         "warning": "Hoppsan!",
         "unauthorizedMessage": "Du har inte behörighet att se detta innehåll.",
@@ -116,7 +116,7 @@
         "accountSearchSettings": {
           "panelTitle": "Sökinställningar för konto"
         },
-        "noSettings": "Inga inställningar för närvarande tillgängliga",
+        "noSettings": "Inga inställningar är för närvarande tillgängliga",
         "settingsSaved": "Sökinställningar sparades",
         "settingsfailed": "Sökinställningar gick inte att uppdatera"
       },
@@ -125,8 +125,8 @@
         "options": "Val",
         "paymentMethods": "Betalningsmetoder",
         "externalServices": "Externa tjänster",
-        "shopLocalizationSettingsSaved": "Lokaliseringsinställningar sparades.",
-        "shopLocalizationSettingsFailed": "Shop lokaliseringsinställningar uppdatering misslyckades.",
+        "shopLocalizationSettingsSaved": "Inställningar sparades.",
+        "shopLocalizationSettingsFailed": "Uppdatering misslyckades.",
         "shopPaymentMethodsSaved": "Betalningsinställningar sparades.",
         "shopPaymentMethodsFailed": "Uppdatering misslyckades."
       },
@@ -179,7 +179,7 @@
         "addedToCart": "Tillagd i kundkorg",
         "showBarcodes": "Visa streckkoder",
         "soldOut": "Utsåld!",
-        "backOrder": "rest",
+        "backOrder": "Backorder",
         "limitedSupply": "Begränsat antal",
         "publishProductVisible": "{{product}} är nu synlig",
         "publishProductHidden": "{{product}} är nu gömd",
@@ -201,7 +201,7 @@
         "addTag": "Lägg till tagg",
         "updateTag": "Uppdatera tagg",
         "addGroupTag": "Lägg till grupptagg",
-        "addSubTag": "Lägga subtagg",
+        "addSubTag": "Lägg till subtagg",
         "removeTag": "Ta bort tagg",
         "createTag": "Skapa tagg"
       },
@@ -217,10 +217,10 @@
         "vendor": "Försäljare",
         "description": "Beskrivning",
         "originCountry": "Ursprungsland",
-        "facebookMsg": "Facebook meddelande",
-        "twitterMsg": "Twitter meddelande",
-        "pinterestMsg": "Pinterest meddelande",
-        "googleplusMsg": "Google+ meddelande",
+        "facebookMsg": "Facebook-meddelanden",
+        "twitterMsg": "Twitter-meddelanden",
+        "pinterestMsg": "Pinterest-meddelanden",
+        "googleplusMsg": "Google+-meddelanden",
         "editVariant": "Redigera Variant",
         "variantOptions": "Variant",
         "variantDetails": "Beskrivning",
@@ -412,7 +412,7 @@
       "orderWorkflow": {
         "orderDetails": "Orderdetaljer",
         "invoice": "Faktura",
-        "lineItems": "Linjeposter",
+        "lineItems": "Rader",
         "shipmentTracking": "Leveransspårning"
       },
       "cartCheckout": {
@@ -468,11 +468,11 @@
       "corePackageConfig": {
         "settings": {
           "public": {
-            "allowGuestCheckout": "Tillåt gästcheckout"
+            "allowGuestCheckout": "Tillåt gästutcheckning"
           },
           "openexchangerates": {
-            "appId": "Öppna Valutakurser App Id",
-            "refreshPeriod": "Öppna valutakursernas uppdateringsperiod",
+            "appId": "App-ID",
+            "refreshPeriod": "Uppdateringsperiod för valutakurser",
             "refreshPeriodPlaceholder": "dvs varje timme"
           },
           "google": {
@@ -712,8 +712,8 @@
         }
       },
       "loginServices": {
-        "appId": "App ID",
-        "secret": "Hemligt",
+        "appId": "App-ID",
+        "secret": "Hemlig nyckel",
         "clientId": "Klientid",
         "consumerKey": "API-nyckel"
       },
