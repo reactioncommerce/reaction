@@ -775,7 +775,7 @@ Meteor.methods({
     // also if a product is provided, check first that the user doesn't mock a shop with no permissions to it
     if (product) {
       if (!product.shopId || !Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
-        throw new Meteor.Error("invalid-shopid", "Product should have a valid shopId");
+        throw new Meteor.Error("invalid-parameter", "Product should have a valid shopId");
       }
       return Products.insert(product);
     }
@@ -1394,12 +1394,12 @@ Meteor.methods({
         });
       } else {
         Logger.debug("invalid product visibility ", productId);
-        throw new Meteor.Error("forbidden", "Variant is required");
+        throw new Meteor.Error("invalid-parameter", "Variant is required");
       }
 
       if (!variantValidator) {
         Logger.debug("invalid product visibility ", productId);
-        throw new Meteor.Error("forbidden",
+        throw new Meteor.Error("invalid-parameter",
           "Some properties are missing.");
       }
 
@@ -1421,7 +1421,7 @@ Meteor.methods({
       return res === 1 && !product.isVisible;
     }
     Logger.debug("invalid product visibility ", productId);
-    throw new Meteor.Error("bad-request", "Bad Request");
+    throw new Meteor.Error("invalid-parameter", "Bad Request");
   },
 
   /**

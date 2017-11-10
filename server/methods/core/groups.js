@@ -61,7 +61,7 @@ Meteor.methods({
       _id = Groups.insert(newGroupData);
     } catch (error) {
       Logger.error(error);
-      throw new Meteor.Error("bad-request", "Bad request");
+      throw new Meteor.Error("invalid-parameter", "Bad request");
     }
 
     return { status: 200, group: Groups.findOne({ _id }) };
@@ -100,7 +100,7 @@ Meteor.methods({
 
     // prevent edits on owner. Owner groups is the default containing all roles, and as such should be untouched
     if (group.slug === "owner") {
-      throw new Meteor.Error("bad-request", "Invalid request");
+      throw new Meteor.Error("invalid-parameter", "Bad request");
     }
 
     Groups.update({ _id: groupId, shopId }, { $set: update });
@@ -220,7 +220,7 @@ Meteor.methods({
     }
 
     if (!user) {
-      throw new Meteor.Error("not-found", "Could not find user");
+      throw new Meteor.Error("invalid-parameter", "Could not find user");
     }
 
     try {

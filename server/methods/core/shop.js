@@ -402,7 +402,7 @@ Meteor.methods({
 
     // if updatedAt is not a Date(), then there is no rates yet
     if (typeof updatedAt !== "object") {
-      throw new Meteor.Error("not-exists",
+      throw new Meteor.Error("error-occurred",
         "[flushCurrencyRates worker]: There is nothing to flush.");
     }
 

@@ -82,7 +82,7 @@ function stripeCaptureCharge(paymentMethod) {
  */
 function normalizeStatus(transaction) {
   if (!transaction) {
-    throw new Meteor.Error("transaction-required", "normalizeStatus requires a transaction");
+    throw new Meteor.Error("invalid-parameter", "normalizeStatus requires a transaction");
   }
 
   // if this transaction failed, mode is "failed"
@@ -107,7 +107,7 @@ function normalizeStatus(transaction) {
  */
 function normalizeMode(transaction) {
   if (!transaction) {
-    throw new Meteor.Error("transaction-required", "normalizeMode requires a transaction");
+    throw new Meteor.Error("invalid-parameter", "normalizeMode requires a transaction");
   }
 
   // if this transaction failed, mode is "failed"
@@ -133,7 +133,7 @@ function normalizeMode(transaction) {
  */
 function normalizeRiskLevel(transaction) {
   if (!transaction) {
-    throw new Meteor.Error("transaction-required", "normalizeRiskLevel requires a transaction");
+    throw new Meteor.Error("invalid-parameter", "normalizeRiskLevel requires a transaction");
   }
 
   const outcome = transaction.outcome && transaction.outcome.risk_level;
@@ -154,7 +154,7 @@ function normalizeRiskLevel(transaction) {
 function buildPaymentMethods(options) {
   const { cardData, cartItemsByShop, transactionsByShopId } = options;
   if (!transactionsByShopId) {
-    throw new Meteor.Error("transaction-data-required", "Creating a payment method log requries transaction data");
+    throw new Meteor.Error("invalid-parameter", "Creating a payment method log requries transaction data");
   }
 
   const shopIds = Object.keys(transactionsByShopId);
@@ -230,7 +230,7 @@ export const methods = {
 
     if (!stripePkg || !stripePkg.settings || !stripePkg.settings.api_key) {
       // Fail if we can't find a Stripe API key
-      throw new Meteor.Error("stripe-not-configured-properly", "Attempted to create multiple stripe charges, but stripe was not configured properly.");
+      throw new Meteor.Error("not-configured", "Attempted to create multiple stripe charges, but stripe was not configured properly.");
     }
 
     const capture = transactionType === "capture";
@@ -243,7 +243,7 @@ export const methods = {
     if (!customerAccount || !Array.isArray(customerAccount.emails)) {
       // TODO: Is it okay to create random email here if anonymous?
       Logger.Error("cart email missing!");
-      throw new Meteor.Error("email-is-required", "Email is required for marketplace checkouts.");
+      throw new Meteor.Error("invalid-parameter", "Email is required for marketplace checkouts.");
     }
 
     const defaultEmail = customerAccount.emails.find((email) => email.provides === "default");
@@ -252,7 +252,7 @@ export const methods = {
     } else if (!defaultEmail) {
       customerEmail = cart.email;
     } else {
-      throw new Meteor.Error("no-default-email", "Customer does not have default email");
+      throw new Meteor.Error("invalid-parameter", "Customer does not have default email");
     }
 
     // Initialize stripe api lib

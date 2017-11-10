@@ -22,11 +22,11 @@ export const methods = {
     this.unblock();
     const cart = Cart.findOne(cartId);
     if (!cart) {
-      throw new Meteor.Error("bad-cart-id", "Bad cart ID");
+      throw new Meteor.Error("invalid-parameter", "Bad cart ID");
     }
     const shop = Shops.findOne(cart.shopId);
     if (!shop) {
-      throw new Meteor.Error("bad-shop-id", "Bad shop ID");
+      throw new Meteor.Error("invalid-parameter", "Bad shop ID");
     }
     const amount = Number(cart.getTotal());
     const description = shop.name + " Ref: " + cartId;
@@ -59,7 +59,7 @@ export const methods = {
       throw new Meteor.Error("checkout-failed", error.message);
     }
     if (!response || response.statusCode !== 200) {
-      throw new Meteor.Error("bad-paypal-response", "Bad response from PayPal");
+      throw new Meteor.Error("bad-response", "Bad response from PayPal");
     }
     const parsedResponse = parseResponse(response);
     if (parsedResponse.ACK !== "Success") {
@@ -82,7 +82,7 @@ export const methods = {
     this.unblock();
     const cart = Cart.findOne(cartId);
     if (!cart) {
-      throw new Meteor.Error("bad-cart-id", "Bad cart ID");
+      throw new Meteor.Error("invalid-parameter", "Bad cart ID");
     }
     const amount = Number(cart.getTotal());
     const shop = Shops.findOne(cart.shopId);
@@ -115,7 +115,7 @@ export const methods = {
       throw new Meteor.Error("confirmation-failed", error.message);
     }
     if (!response || response.statusCode !== 200) {
-      throw new Meteor.Error("bad-paypal-response", "Bad response from PayPal");
+      throw new Meteor.Error("bad-response", "Bad response from PayPal");
     }
     const parsedResponse = parseResponse(response);
 
@@ -196,7 +196,7 @@ export const methods = {
     }
 
     if (!response || response.statusCode !== 200) {
-      throw new Meteor.Error("bad-paypal-response", "Bad Response from PayPal during Capture");
+      throw new Meteor.Error("bad-response", "Bad Response from PayPal during Capture");
     }
 
     const parsedResponse = parseResponse(response);
@@ -256,7 +256,7 @@ export const methods = {
 
     if (!response || response.statusCode !== 200) {
       Logger.debug("Bad Response from PayPal during Refund Creation");
-      throw new Meteor.Error("bad-paypal-response", "Bad Response from PayPal during Refund Creation");
+      throw new Meteor.Error("bad-response", "Bad Response from PayPal during Refund Creation");
     }
 
     const parsedResponse = parseResponse(response);
@@ -317,7 +317,7 @@ export const methods = {
     }
 
     if (!response || response.statusCode !== 200) {
-      throw new Meteor.Error("bad-paypal-response", "Bad Response from PayPal during refund list");
+      throw new Meteor.Error("bad-response", "Bad Response from PayPal during refund list");
     }
 
     const parsedResponse = parseResponse(response);

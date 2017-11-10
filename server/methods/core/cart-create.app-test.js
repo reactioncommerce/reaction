@@ -151,7 +151,7 @@ describe("Add/Create cart methods", function () {
       function addToCartFunc() {
         return Meteor.call("cart/addToCart", "fakeProductId", variantId, quantity);
       }
-      expect(addToCartFunc).to.throw(Meteor.Error, "Product with such id was not found! [product-not-found]");
+      expect(addToCartFunc).to.throw(Meteor.Error, "Product with such id was not found [not-found]");
       return done();
     });
   });

@@ -655,7 +655,7 @@ export function inviteShopMember(options) {
   if (!shop) {
     const msg = `accounts/inviteShopMember - Shop ${shopId} not found`;
     Logger.error(msg);
-    throw new Meteor.Error("shop-not-found", msg);
+    throw new Meteor.Error("not-found", msg);
   }
 
   if (!Reaction.hasPermission("reaction-accounts", this.userId, shopId)) {
@@ -667,11 +667,11 @@ export function inviteShopMember(options) {
 
   // check to ensure that invitee has roles required to perform the invitation
   if (!Reaction.canInviteToGroup({ group, user: Meteor.user() })) {
-    throw new Meteor.Error("access-denied", "cannot invite to group");
+    throw new Meteor.Error("access-denied", "Cannot invite to group");
   }
 
   if (group.slug === "owner") {
-    throw new Meteor.Error("bad-request", "cannot directly invite owner");
+    throw new Meteor.Error("bad-request", "Cannot directly invite owner");
   }
 
   const currentUser = Meteor.users.findOne(this.userId);

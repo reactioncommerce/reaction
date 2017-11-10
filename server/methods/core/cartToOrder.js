@@ -38,7 +38,7 @@ export function copyCartToOrder(cartId) {
   if (!order.items || order.items.length === 0) {
     const msg = "An error occurred saving the order. Missing cart items.";
     Logger.error(msg);
-    throw new Meteor.Error("no-cart-items", msg);
+    throw new Meteor.Error("error-occurred", msg);
   }
 
   // Debug only message to identify the current cartId
