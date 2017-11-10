@@ -1,8 +1,8 @@
 <template name="shippingSettings">
+    <div>
+       {{> React displayParcelSizeForm}}
+    </div>
     {{#each reactionApps provides='shippingSettings'}}
-      {{#if showWithoutToggle name }}
-        {{> parcelSizeSettings}}
-      {{else}}
         <div class="panel panel-default">
           <div class="panel-heading panel-heading-flex">
             <div class="panel-title">
@@ -19,7 +19,5 @@
             {{> Template.dynamic template=template data=.}}
           </div>
         </div>
-      {{/if}}
     {{/each}}
-
 </template>

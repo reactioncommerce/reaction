@@ -58,7 +58,7 @@ const saveDefaultSize = (shopId, size, callback) => {
   const { isValid, sizeInt } = validateInput(size);
 
   if (isValid === true) {
-    Meteor.call("shipping/size/save", shopId, sizeInt, (error) => {
+    Meteor.call("shipping/updateParcelSize", shopId, sizeInt, (error) => {
       if (error) {
         Alerts.toast("An error occured", "error");
       } else {

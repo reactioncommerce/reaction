@@ -1,6 +1,6 @@
 import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/client/api";
+import { Components } from "@reactioncommerce/reaction-components";
 /*
  * Template shippinges Helpers
  */
@@ -25,16 +25,15 @@ Template.shippingSettings.helpers({
   },
 
   /**
-   * showWithoutToggle
-   * @param {String} name
-   * @returns {Boolean} - returns true if package is eaction-shipping-parcel-size
+   * @method displayParcelSizeForm
+   * @summary renders ParcelSizeSettings component in template
+   * @since 1.5.5
+   * @return {Object} component - ParcelSizeSettings
    */
-  showWithoutToggle(name) {
-    const registry = Reaction.getPackageSettings("reaction-shipping-parcel-size").registry;
-    if (name === registry[1].name) {
-      return true;
-    }
-    return false;
+  displayParcelSizeForm() {
+    return {
+      component: Components.ParcelSizeSettings
+    };
   }
 });
 

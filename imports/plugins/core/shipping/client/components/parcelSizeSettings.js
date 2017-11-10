@@ -4,10 +4,10 @@ import { Reaction } from "/client/api";
 import { Components } from "@reactioncommerce/reaction-components";
 
 /**
- * @class ParcelDimensionSettings
+ * @class ParcelSizeSettings
  * @extends {Component}
  */
-class ParcelDimensionSettings extends Component {
+class ParcelSizeSettings extends Component {
   static propTypes = {
     saveDefaultSize: PropTypes.func,
     size: PropTypes.object
@@ -65,7 +65,7 @@ class ParcelDimensionSettings extends Component {
         <Components.Card>
           <Components.CardHeader
             actAsExpander={true}
-            i18nKeyTitle="admin.settings.label"
+            i18nKeyTitle="defaultParcelSize.label"
             title="Parcel Size"
           />
           <Components.CardBody expandable={true}>
@@ -73,7 +73,7 @@ class ParcelDimensionSettings extends Component {
               <Components.TextField
                 label="Weight"
                 type="text"
-                i18nKeyLabel="admin.settings.weight"
+                i18nKeyLabel="defaultParcelSize.weight"
                 name="weight"
                 value={size.weight}
                 onChange={this.handleStateChange}
@@ -82,7 +82,7 @@ class ParcelDimensionSettings extends Component {
               <Components.TextField
                 label="Height"
                 type="text"
-                i18nKeyLabel="admin.settings.height"
+                i18nKeyLabel="defaultParcelSize.height"
                 name="height"
                 value={size.height}
                 onChange={this.handleStateChange}
@@ -91,7 +91,7 @@ class ParcelDimensionSettings extends Component {
               <Components.TextField
                 label="Width"
                 type="text"
-                i18nKeyLabel="admin.settings.width"
+                i18nKeyLabel="defaultParcelSize.width"
                 name="width"
                 value={size.width}
                 onChange={this.handleStateChange}
@@ -100,7 +100,7 @@ class ParcelDimensionSettings extends Component {
               <Components.TextField
                 label="Length"
                 type="text"
-                i18nKeyLabel="admin.settings.length"
+                i18nKeyLabel="defaultParcelSize.length"
                 name="length"
                 value={size.length}
                 onChange={this.handleStateChange}
@@ -126,4 +126,4 @@ class ParcelDimensionSettings extends Component {
   }
 }
 
-export default ParcelDimensionSettings;
+export default ParcelSizeSettings;
