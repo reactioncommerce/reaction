@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import Measure from "react-measure";
+import classnames from "classnames";
 import { Components } from "@reactioncommerce/reaction-components";
+import { Reaction } from "/client/api";
 
 class MediaGallery extends Component {
   constructor() {
@@ -132,6 +134,7 @@ class MediaGallery extends Component {
 
   renderMediaGalleryUploader() {
     const containerWidth = this.props.mediaGalleryWidth;
+    const classes = { "admin-featuredImage": Reaction.hasAdminAccess() };
     let featured = this.renderAddItem();
     let gallery;
 
@@ -153,7 +156,7 @@ class MediaGallery extends Component {
           accept="image/jpg, image/png, image/jpeg"
         >
           <div className="rui gallery">
-            <div className="featuredImage" style={{ height: containerWidth + "px" }}>
+            <div className={classnames(classes)} style={{ height: containerWidth + "px" }}>
               {featured}
             </div>
             <div className="rui gallery-thumbnails">
@@ -168,11 +171,12 @@ class MediaGallery extends Component {
 
   renderMediaGallery() {
     const containerWidth = this.props.mediaGalleryWidth;
+    const classes = { "admin-featuredImage": Reaction.hasAdminAccess() };
 
     return (
       <div className="rui media-gallery">
         <div className="rui gallery">
-          <div className="featuredImage" style={{ height: containerWidth + "px" }}>
+          <div className={classnames(classes)} style={{ height: containerWidth + "px" }}>
             {this.renderFeaturedMedia()}
           </div>
           <div className="rui gallery-thumbnails">
