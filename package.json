@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.5.7",
+  "version": "1.6.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -122,7 +122,7 @@
     "babel-eslint": "^8.0.1",
     "babel-jest": "^21.2.0",
     "babel-plugin-lodash": "^3.2.11",
-    "babel-plugin-module-resolver": "^2.7.1",
+    "babel-plugin-module-resolver": "^3.0.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
