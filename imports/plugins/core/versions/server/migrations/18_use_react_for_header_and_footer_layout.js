@@ -1,7 +1,6 @@
 import { Migrations } from "meteor/percolate:migrations";
 import { Shops, Packages } from "/lib/collections";
 
-
 const pkgs = [
   "reaction-accounts",
   "reaction-checkout",
