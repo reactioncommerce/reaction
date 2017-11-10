@@ -63,7 +63,7 @@ function getSearchLanguage() {
  * @return {undefined}   doesn't return anything
  */
 function handleRawCollectionFailures(error) {
-  // If we get an error from the Mongo driver because something tried to drop al
+  // If we get an error from the Mongo driver because something tried to drop a
   // collection before it existed, log it out as debug info.
   // Otherwise, log whatever happened as an error.
   if (error.name === "MongoError" && error.message === "ns not found") {
