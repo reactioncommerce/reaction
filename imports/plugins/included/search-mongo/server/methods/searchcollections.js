@@ -55,14 +55,14 @@ function getSearchLanguage() {
 }
 
 /**
- * handleRawCollectionFailures
+ * handleIndexUpdateFailures
  * When using Collection.rawCollection() methods that return a Promise,
  * handle the errors in a catch. However, ignore errors with altering indexes
  * before a collection exists.
  * @param  {Error} error an error object returned from a Promise rejection
  * @return {undefined}   doesn't return anything
  */
-function handleRawCollectionFailures(error) {
+function handleIndexUpdateFailures(error) {
   // If we get an error from the Mongo driver because something tried to drop a
   // collection before it existed, log it out as debug info.
   // Otherwise, log whatever happened as an error.
@@ -123,8 +123,8 @@ export function buildProductSearch(cb) {
   }
 
   const rawProductSearchCollection = ProductSearch.rawCollection();
-  rawProductSearchCollection.dropIndexes().catch(handleRawCollectionFailures);
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleRawCollectionFailures);
+  rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
+  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -138,8 +138,8 @@ export function buildEmptyProductSearch() {
     indexObject[field] = "text";
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
-  rawProductSearchCollection.dropIndexes().catch(handleRawCollectionFailures);
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleRawCollectionFailures);
+  rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
+  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
 }
 
 export function rebuildProductSearchIndex(cb) {
@@ -150,8 +150,8 @@ export function rebuildProductSearchIndex(cb) {
     indexObject[field] = "text";
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
-  rawProductSearchCollection.dropIndexes().catch(handleRawCollectionFailures);
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleRawCollectionFailures);
+  rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
+  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -165,7 +165,7 @@ export function ensureProductSearchIndex() {
     indexObject[field] = "text";
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleRawCollectionFailures);
+  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
 }
 
 export function buildOrderSearchRecord(orderId) {
@@ -251,8 +251,8 @@ export function buildOrderSearch(cb) {
     buildOrderSearchRecord(order._id);
   }
   const rawOrderSearchCollection = OrderSearch.rawCollection();
-  rawOrderSearchCollection.dropIndexes().catch(handleRawCollectionFailures);
-  rawOrderSearchCollection.createIndex({ shopId: 1, shippingName: 1, billingName: 1, userEmails: 1 }).catch(handleRawCollectionFailures);
+  rawOrderSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
+  rawOrderSearchCollection.createIndex({ shopId: 1, shippingName: 1, billingName: 1, userEmails: 1 }).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -267,8 +267,8 @@ export function buildAccountSearch(cb) {
     buildAccountSearchRecord(account._id);
   }
   const rawAccountSearchCollection = AccountSearch.rawCollection();
-  rawAccountSearchCollection.dropIndexes().catch(handleRawCollectionFailures);
-  rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleRawCollectionFailures);
+  rawAccountSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
+  rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -290,6 +290,6 @@ export function buildAccountSearchRecord(accountId) {
     }
     AccountSearch.insert(accountSearch);
     const rawAccountSearchCollection = AccountSearch.rawCollection();
-    rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleRawCollectionFailures);
+    rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleIndexUpdateFailures);
   }
 }
