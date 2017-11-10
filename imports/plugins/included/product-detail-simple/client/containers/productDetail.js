@@ -322,7 +322,10 @@ function composer(props, onData) {
           // Loop through ancestors in reverse to find a variant that has media to use
           for (const ancestor of selectedVariant.ancestors.reverse()) {
             const media = Media.find({
-              "metadata.variantId": ancestor
+              $or: [
+                { "metadata.variantId": ancestor },
+                { "metadata.productId": ancestor }
+              ]
             }, {
               sort: {
                 "metadata.priority": 1
