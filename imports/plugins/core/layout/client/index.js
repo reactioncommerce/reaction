@@ -9,8 +9,6 @@ import "./templates/layout/createContentMenu/createContentMenu.js";
 import "./templates/layout/footer/footer.html";
 import "./templates/layout/header/brand.html";
 import "./templates/layout/header/button.html";
-import "./templates/layout/header/header.html";
-import "./templates/layout/header/header.js";
 import "./templates/layout/header/tags.html";
 import "./templates/layout/notFound/notFound.html";
 import "./templates/layout/notFound/notFound.js";

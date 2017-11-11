@@ -28,7 +28,7 @@ Reaction.registerPackage({
     enabled: true,
     structure: {
       template: "cartCheckout",
-      layoutHeader: "checkoutHeader",
+      layoutHeader: "",
       layoutFooter: "",
       notFound: "notFound",
       dashboardHeader: "",
