@@ -61,67 +61,69 @@ class ParcelSizeSettings extends Component {
   render() {
     const { isEditing, isSaving, size } = this.state;
     return (
-      <Components.CardGroup>
-        <Components.Card>
-          <Components.CardHeader
-            actAsExpander={true}
-            i18nKeyTitle="defaultParcelSize.label"
-            title="Parcel Size"
-          />
-          <Components.CardBody expandable={true}>
-            <form onSubmit={this.handleSubmit}>
-              <Components.TextField
-                label="Weight"
-                type="text"
-                i18nKeyLabel="defaultParcelSize.weight"
-                name="weight"
-                value={size.weight}
-                onChange={this.handleStateChange}
-                onFocus={this.handleFieldFocus}
-              />
-              <Components.TextField
-                label="Height"
-                type="text"
-                i18nKeyLabel="defaultParcelSize.height"
-                name="height"
-                value={size.height}
-                onChange={this.handleStateChange}
-                onFocus={this.handleFieldFocus}
-              />
-              <Components.TextField
-                label="Width"
-                type="text"
-                i18nKeyLabel="defaultParcelSize.width"
-                name="width"
-                value={size.width}
-                onChange={this.handleStateChange}
-                onFocus={this.handleFieldFocus}
-              />
-              <Components.TextField
-                label="Length"
-                type="text"
-                i18nKeyLabel="defaultParcelSize.length"
-                name="length"
-                value={size.length}
-                onChange={this.handleStateChange}
-                onFocus={this.handleFieldFocus}
-              />
-              {isEditing &&
-                <Components.Button
-                  bezelStyle="solid"
-                  status="primary"
-                  className="pull-right"
-                  type="submit" disabled={isSaving}
-                >
-                  {isSaving ?
-                    <i className="fa fa-refresh fa-spin" />
-                    : <span data-i18n="app.save">Save</span>}
-                </Components.Button>
-              }
-            </form>
-          </Components.CardBody>
-        </Components.Card>
-      </Components.CardGroup>
+      <div className="parcel-setting">
+        <Components.CardGroup>
+          <Components.Card>
+            <Components.CardHeader
+              actAsExpander={true}
+              i18nKeyTitle="defaultParcelSize.label"
+              title="Parcel Size"
+            />
+            <Components.CardBody expandable={true}>
+              <form onSubmit={this.handleSubmit}>
+                <Components.TextField
+                  label="Weight"
+                  type="text"
+                  i18nKeyLabel="defaultParcelSize.weight"
+                  name="weight"
+                  value={size.weight}
+                  onChange={this.handleStateChange}
+                  onFocus={this.handleFieldFocus}
+                />
+                <Components.TextField
+                  label="Height"
+                  type="text"
+                  i18nKeyLabel="defaultParcelSize.height"
+                  name="height"
+                  value={size.height}
+                  onChange={this.handleStateChange}
+                  onFocus={this.handleFieldFocus}
+                />
+                <Components.TextField
+                  label="Width"
+                  type="text"
+                  i18nKeyLabel="defaultParcelSize.width"
+                  name="width"
+                  value={size.width}
+                  onChange={this.handleStateChange}
+                  onFocus={this.handleFieldFocus}
+                />
+                <Components.TextField
+                  label="Length"
+                  type="text"
+                  i18nKeyLabel="defaultParcelSize.length"
+                  name="length"
+                  value={size.length}
+                  onChange={this.handleStateChange}
+                  onFocus={this.handleFieldFocus}
+                />
+                {isEditing &&
+                  <Components.Button
+                    bezelStyle="solid"
+                    status="primary"
+                    className="pull-right"
+                    type="submit" disabled={isSaving}
+                  >
+                    {isSaving ?
+                      <i className="fa fa-refresh fa-spin" />
+                      : <span data-i18n="app.save">Save</span>}
+                  </Components.Button>
+                }
+              </form>
+            </Components.CardBody>
+          </Components.Card>
+        </Components.CardGroup>
+      </div>
     );
   }
 }
