@@ -4,6 +4,23 @@ import { Cart, Accounts } from "/lib/collections";
 import { Logger, Hooks } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
+/**
+ * @file Methods for Shipping - methods typically used for checkout (shipping, taxes, etc).
+ * Run these methods using `Meteor.call()`.
+ *
+ *
+ * @namespace Methods/Shipping
+*/
+
+/**
+ * @name createShipmentQuotes
+ * @private
+ * @summary Returns object with shipping object with `requestStatus` as `pending`
+ * @param  {String} cartId ID
+ * @param  {String} shopId ID
+ * @param  {Object} rates  Shipping rates
+ * @return {Object}        Update object with `shipping` object.
+ */
 function createShipmentQuotes(cartId, shopId, rates) {
   let update = {
     $push: {
@@ -54,9 +71,11 @@ function createShipmentQuotes(cartId, shopId, rates) {
   return update;
 }
 
-
 /**
- * @summary if we have items in the cart, ensure that we only have shipping records for shops currently represented in the cart
+ * @name pruneShippingRecordsByShop
+ * @private
+ * @summary if we have items in the cart, ensure that we only have shipping records
+ * for shops currently represented in the cart
  * @param {Object} cart - The cart to operate on
  * @returns {undefined} undefined
  * @private
@@ -87,9 +106,11 @@ function pruneShippingRecordsByShop(cart) {
 }
 
 /**
+ * @name normalizeAddresses
  * @summary - When adding shipping records, ensure that each record has an address
  * @param {Object} cart - The Cart object we need to operate on
  * @returns {undefined} undefined
+ * @private
  */
 function normalizeAddresses(cart) {
   if (cart.shipping && cart.shipping.length > 0) {
@@ -118,6 +139,14 @@ function normalizeAddresses(cart) {
   }
 }
 
+/**
+ * @name updateShipmentQuotes
+ * @param  {String} cartId   Cart ID
+ * @param  {Object} rates    Rate object
+ * @param  {Object} selector Selector
+ * @return {Object}          Update
+ * @private
+ */
 function updateShipmentQuotes(cartId, rates, selector) {
   let update = {
     $set: {
@@ -163,6 +192,13 @@ function updateShipmentQuotes(cartId, rates, selector) {
   return update;
 }
 
+/**
+ * @name updateShippingRecordByShop
+ * @param  {Object} cart  Cart object
+ * @param  {Object} rates Rate object
+ * @return {null}
+ * @private
+ */
 function updateShippingRecordByShop(cart, rates) {
   const cartId = cart._id;
   const itemsByShop = cart.getItemsByShop();
@@ -194,6 +230,12 @@ function updateShippingRecordByShop(cart, rates) {
   normalizeAddresses(cart);
 }
 
+/**
+ * @name getDefaultAddress
+ * @param  {Object} cart [description]
+ * @return {Object} address
+ * @private
+ */
 function getDefaultAddress(cart) {
   const userId = cart.userId;
   const account = Accounts.findOne(userId);
@@ -204,7 +246,8 @@ function getDefaultAddress(cart) {
 }
 
 /**
- * Add the default address to the cart
+ * @name addAddresses
+ * @summary Add the default address to the cart
  * @param {Object} cart - the cart to modify
  * @returns {undefined}
  * @private
@@ -227,15 +270,14 @@ function addAddresses(cart) {
     });
   }
 }
-/*
- * Reaction Shipping Methods
- * methods typically used for checkout (shipping, taxes, etc)
- */
+
 export const methods = {
   /**
-   * shipping/updateShipmentQuotes
-   * @summary gets shipping rates and updates the users cart methods
-   * @todo add orderId argument/fallback
+   * @name shipping/updateShipmentQuotes
+   * @method
+   * @memberof Methods/Shipping
+   * @summary Gets shipping rates and updates the users cart methods
+   * @todo Add orderId argument/fallback
    * @param {String} cartId - cartId
    * @return {undefined}
    */
@@ -259,8 +301,10 @@ export const methods = {
   },
 
   /**
-   * shipping/getShippingRates
-   * @summary just gets rates, without updating anything
+   * @name shipping/getShippingRates
+   * @method
+   * @memberof Methods/Shipping
+   * @summary Just gets rates, without updating anything
    * @param {Object} cart - cart object
    * @return {Array} return updated rates in cart
    */
