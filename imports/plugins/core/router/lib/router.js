@@ -531,28 +531,26 @@ export function ReactionLayout(options = {}) {
       // then override the template to use the default unauthroized template
       if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found") {
         structure.template = "unauthorized";
-      } else {
-        try {
-          // Try to create a React component if defined
-          return React.createElement(getComponent(layoutName), {
-            ...props,
-            structure: structure
-          });
-        } catch (e) {
-          // Otherwise fallback to a blaze template
-          if (Template[layoutName]) {
-            return (
-              <BlazeLayout
-                {...structure}
-                blazeTemplate={layoutName}
-              />
-            );
-          }
-        }
-
-        // If all else fails, render a not found page
-        return <Blaze template={structure.notFound} />;
       }
+      try {
+      // Try to create a React component if defined
+        return React.createElement(getComponent(layoutName), {
+          ...props,
+          structure: structure
+        });
+      } catch (e) {
+        // Otherwise fallback to a blaze template
+        if (Template[layoutName]) {
+          return (
+            <BlazeLayout
+              {...structure}
+              blazeTemplate={layoutName}
+            />
+          );
+        }
+      }
+      // If all else fails, render a not found page
+      return <Blaze template={structure.notFound} />;
     }
   };
 }

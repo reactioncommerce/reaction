@@ -1,5 +1,6 @@
 import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker, withCurrentAccount } from "@reactioncommerce/reaction-components";
+import { Router } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
@@ -70,9 +71,16 @@ function handleChange(event, value) {
   event.preventDefault();
 
   if (value === "logout") {
+    const current = Router.current();
+
     return Meteor.logout((error) => {
       if (error) {
         Logger.error(error, "Failed to logout.");
+      }
+      if (current.route.fullPath === `/cart/completed?_id=${current.query._id}`) {
+        Reaction.Router.go("/");
+      } else {
+        Reaction.Router.go(`${current.route.fullPath}`);
       }
     });
   }
