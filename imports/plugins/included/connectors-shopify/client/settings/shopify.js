@@ -91,6 +91,21 @@ Template.shopifySync.helpers({
 
     // If no webhooks are found, this integration is inactive
     return "";
+  },
+
+  hookIsActive(hook) {
+    const { settings } = Reaction.getPackageSettings("reaction-connectors-shopify");
+    const { synchooks } = settings;
+    const [ topic, event, syncType ]  = hook.split(":");
+    const matchingHooks = synchooks.map((syncHook) => {
+      if (syncHook.topic === topic && syncHook.event === event && syncHook.syncType === syncType) {
+        return syncHook;
+      }
+    });
+    if (matchingHooks.length > 0) {
+      return "checked";
+    }
+    return "";
   }
 });
 
@@ -110,7 +125,6 @@ Template.shopifySync.events({
     // - options should be in the form topic:integration
     // - e.g. orders/create:updateInventory
     const integrations = Array.from(selectedOptionsNodeList).map((integration) => integration.name);
-
     // If there's at least one option
     if (integrations && Array.isArray(integrations) && integrations.length > 0) {
       // setup sync with provided integrations
@@ -136,6 +150,34 @@ Template.shopifySync.events({
       }
       // Notify setup sync error if an error is returned
       return Alerts.toast(i18next.t("admin.shopifyConnectSettings.syncStopFailure"), "error");
+    });
+  },
+
+  "submit [data-event-action=setupShopifyHooks]"(formEvent) {
+    event.preventDefault();
+    const form = formEvent.target;
+    const optionsNodeList = form.querySelectorAll('input[type="checkbox"]');
+    const optionsList = Array.from(optionsNodeList).map((hook) => {
+      return { name: hook.name, checked: hook.checked };
+    });
+    optionsList.forEach((node) => {
+      if (node.checked) {
+        Meteor.call("synchooks/shopify/addHook", node, (error) => {
+          if (!error) {
+            Alerts.toast(i18next.t("admin.shopifyConnectSettings.hookSetupSuccess"), "success");
+          } else {
+            Alerts.toast(i18next.t("admin.shopifyConnectSettings.hookSetupFailure"), "error");
+          }
+        });
+      } else {
+        Meteor.call("synchooks/shopify/removeHook", node, (error) => {
+          if (!error) {
+            Alerts.toast(i18next.t("admin.shopifyConnectSettings.hookSetupSuccess"), "success");
+          } else {
+            Alerts.toast(i18next.t("admin.shopifyConnectSettings.hookSetupFailure"), "error");
+          }
+        });
+      }
     });
   }
 });

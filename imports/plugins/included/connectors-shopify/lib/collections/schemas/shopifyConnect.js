@@ -49,6 +49,22 @@ const Webhook = new SimpleSchema({
   }
 });
 
+export const Pushhooks = new SimpleSchema({
+  topic: {
+    type: String,
+    label: "Outbound Sync Topic",
+    allowedValues: ["orders"] // expand as necessary
+  },
+  event: {
+    type: String,
+    label: "Event to act upon"
+  },
+  syncType: {
+    type: String,
+    label: "Exactly what to sync in this topic"
+  }
+});
+
 registerSchema("Webhook", Webhook);
 
 /**
@@ -85,6 +101,11 @@ export const ShopifyConnectPackageConfig = new SimpleSchema([
     "settings.webhooks": {
       type: [Webhook],
       label: "Registered Shopify webhooks",
+      optional: true
+    },
+    "settings.synchooks": {
+      type: [Pushhooks],
+      label: "Hooks being used to sync outbound with Shopify",
       optional: true
     }
   }
