@@ -105,4 +105,13 @@ describe("Fixtures:", function () {
     const productCount = Collections.Products.find().count();
     expect(productCount).to.be.above(0);
   });
+
+  it("Product fixture should create a product with shop default parcel size values", function () {
+    const { defaultParcelSize } = Factory.create("shop");
+    const { variant } = addProductSingleVariant();
+    expect(variant.weight).to.equal(defaultParcelSize.weight);
+    expect(variant.length).to.equal(defaultParcelSize.length);
+    expect(variant.width).to.equal(defaultParcelSize.width);
+    expect(variant.height).to.equal(defaultParcelSize.height);
+  });
 });

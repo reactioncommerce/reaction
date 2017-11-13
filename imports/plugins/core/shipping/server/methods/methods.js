@@ -100,7 +100,7 @@ export const methods = {
         }
       });
     }
-    throw new Meteor.Error("does-not-exist", "Package does not exist");
+    throw new Meteor.Error("does-not-exist", "Shop does not exist");
   }
 };
 
