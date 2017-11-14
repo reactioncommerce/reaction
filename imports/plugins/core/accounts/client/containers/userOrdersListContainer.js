@@ -1,10 +1,9 @@
 import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
-import { Orders, Media } from "/lib/collections";
-import { Reaction } from "/client/api";
+import { Router } from "/client/modules/router/";
+import { Media } from "/lib/collections";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import CompletedOrder from "../components/completedOrder";
+import OrdersList from "../components/ordersList";
 
 
 const handlers = {};
@@ -34,24 +33,18 @@ handlers.handleDisplayMedia = (item) => {
 };
 
 function composer(props, onData) {
-  // The Cart subscription does not update when you delete the original record
-  // but don't change parameters so we need to re-init that subscription here.
-  // (possibly because the oplog is tied to the original id?)
-  // I think this is a bug in SubscriptionManager but that should be revisited later
-  const sessionId = Session.get("sessionId");
-  Reaction.Subscriptions.Cart = Reaction.Subscriptions.Manager.subscribe("Cart", sessionId, Meteor.userId());
-  const orderId = Reaction.Router.getQueryParam("_id");
-  const orderSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), orderId);
+  // Get user order from props
+  const orders = props.orders;
+  const allOrdersInfo = [];
+  let isProfilePage = false;
 
-  if (orderSub.ready()) {
-    const order = Orders.findOne({
-      userId: Meteor.userId(),
-      cartId: orderId
-    });
+  if (Router.getRouteName() === "account/profile") {
+    isProfilePage = true;
+  }
 
-    if (order) {
+  if (orders.length > 0) {
+    orders.map((order) => {
       const imageSub = Meteor.subscribe("CartImages", order.items);
-
       const orderSummary = {
         quantityTotal: order.getCount(),
         subtotal: order.getSubTotal(),
@@ -61,30 +54,34 @@ function composer(props, onData) {
         total: order.getTotal(),
         shipping: order.shipping
       };
-
       if (imageSub.ready()) {
         const productImages = Media.find().fetch();
-
-        onData(null, {
-          isProfilePage: false,
+        const orderId = order._id;
+        const orderInfo = {
           shops: order.getShopSummary(),
           order,
           orderId,
           orderSummary,
           paymentMethods: order.getUniquePaymentMethods(),
           productImages
-        });
+        };
+        allOrdersInfo.push(orderInfo);
       }
-    } else {
-      onData(null, {
-        order
-      });
-    }
+    });
+    onData(null, {
+      allOrdersInfo,
+      isProfilePage
+    });
+  } else {
+    onData(null, {
+      orders,
+      isProfilePage
+    });
   }
 }
 
 
-registerComponent("CompletedOrder", CompletedOrder, [
+registerComponent("OrdersList", OrdersList, [
   withProps(handlers),
   composeWithTracker(composer)
 ]);
@@ -92,4 +89,4 @@ registerComponent("CompletedOrder", CompletedOrder, [
 export default compose(
   withProps(handlers),
   composeWithTracker(composer)
-)(CompletedOrder);
+)(OrdersList);

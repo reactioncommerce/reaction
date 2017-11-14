@@ -9,18 +9,19 @@ import ShopOrderSummary from "./shopOrderSummary";
  * @param {Object} props - React PropTypes
  * @property {Array} shops - An array of summary information broken down by shop
  * @property {Object} orderSummary - An object representing the "bottom line" summary for the order
+ * @property {boolean} isProfilePage - Checks if current page is Profile Page
  * @return {Node} React node containing the order summary broken down by shop
  */
-const CompletedOrderSummary = ({ shops, orderSummary }) => {
+const CompletedOrderSummary = ({ shops, orderSummary, isProfilePage }) => {
   return (
     <div>
       <div className="order-details-content-title">
-        <Components.Translation defaultValue="Your Cart" i18nKey={"cartCompleted.yourCart"} />
+        <p><Components.Translation defaultValue="Order Summary" i18nKey={"cartCompleted.orderSummary"} /></p>
       </div>
       <div className="order-details-info-box">
         {shops.map((shop) => {
           const shopKey = Object.keys(shop);
-          return <ShopOrderSummary shopSummary={shop[shopKey]} key={shopKey} />;
+          return <ShopOrderSummary shopSummary={shop[shopKey]} key={shopKey} isProfilePage={isProfilePage} />;
         })}
         <hr />
         {orderSummary.discounts > 0 &&
@@ -47,6 +48,7 @@ const CompletedOrderSummary = ({ shops, orderSummary }) => {
 };
 
 CompletedOrderSummary.propTypes = {
+  isProfilePage: PropTypes.bool,
   orderSummary: PropTypes.object,
   shops: PropTypes.array
 };

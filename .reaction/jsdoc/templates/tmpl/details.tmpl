@@ -12,15 +12,28 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     data.defaultvalue = "<pre class=\"prettyprint\"><code>" + data.defaultvalue + "</code></pre>";
     defaultObjectClass = ' class="object-value"';
 }
+
+function getGitHubLink(meta) {
+  return "https://github.com/reactioncommerce/reaction/blob/master/" + meta.shortpath
+}
+
+function getGitHubLinkWithLine(meta) {
+  return "https://github.com/reactioncommerce/reaction/blame/master/" + meta.shortpath + "#L" + meta.lineno
+}
 ?>
 
 <dl class="details">
 
     <?js if (data.meta && self.outputSourceFiles) {?>
     <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <?js= self.linkto(meta.shortpath) ?>, <?js= self.linkto(meta.shortpath, 'line ' + meta.lineno, null, 'line' + meta.lineno) ?>
-    </li></ul></dd>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <?js= self.linkto(getGitHubLink(meta), meta.shortpath) ?>,
+          <?js= self.linkto(getGitHubLinkWithLine(meta), "line " + meta.lineno) ?>
+        </li>
+        </ul>
+      </dd>
     <?js } ?>
 
     <?js if (data.version) {?>

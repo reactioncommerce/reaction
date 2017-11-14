@@ -59,9 +59,11 @@ h1 {
   margin: 1em 0 .5em;
 }
 
-h1.page-title {
+.page-title {
   font-size: 40px;
-  margin: 1em 40px;
+  margin: 0;
+  margin-bottom: 50px;
+  color: #052a4e;
 }
 
 h2 {
@@ -130,12 +132,6 @@ samp {
   margin: 0
 }
 
-#main {
-  float: right;
-  min-width: 360px;
-  width: calc(100% - 300px);
-}
-
 header {
   display: block
 }
@@ -144,7 +140,6 @@ section {
   display: block;
   background-color: #fff;
   max-width: 900px;
-  padding: 0 0 0 40px;
 }
 
 .variation {
@@ -158,26 +153,12 @@ section {
   font-weight: lighter;
 }
 
-nav {
-  float: left;
-  display: block;
-  width: 300px;
-  background: #fff;
-  overflow-y: scroll;
-  position: fixed;
-  height: 100%;
-  border-right: 1px solid #e6e6e5;
-  padding: 20px 20px 80px;
-}
-
 nav h3 {
-  margin-top: 12px;
   font-size: 16px;
   text-transform: uppercase;
   letter-spacing: normal;
   font-weight: 600;
   line-height: 24px;
-  margin: 15px 0 10px;
   padding: 0;
   color: #000;
 }
@@ -195,31 +176,38 @@ nav ul a,
 nav ul a:active {
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
   line-height: 18px;
-  padding: 0;
+  padding: 0.2rem 0.4rem;
   display: block;
-  font-size: 14px;
+  font-size: 14.4px;
   font-weight: 400;
 }
 
 nav > ul > li > a {
-  font-weight: 600;
+  font-size: 14.4px;
+  font-weight: 400;
+  padding: 0.2rem 0.4rem;
 }
 
-nav a:hover,
-nav a:active {
+nav a:hover {
+  background: #e4faff;
+  text-decoration: none;
+}
+
+nav a:hover {
   color: #000;
+}
+
+nav a:active {
+  color: #fd8283;
 }
 
 nav > ul {
   padding: 0 10px;
 }
 
-nav > ul > li > a {
-  color: #000;
-}
-
 nav ul ul {
-  margin-bottom: 10px
+  margin-bottom: 10px;
+  margin-left: 20px;
 }
 
 nav ul ul + ul {
@@ -244,8 +232,13 @@ nav h2 {
 
 nav > h2 > a {
   display: block;
-  margin: 10px 0 -10px;
-  color: #000 !important;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+nav h3 {
+  margin-top: 48px;
 }
 
 footer {
