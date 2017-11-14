@@ -62,7 +62,7 @@
       <div>
         <form data-event-action="setupShopifyHooks">
           <div>
-            <input type="checkbox" name="orders:orders/create:exportOrders" {{hookIsActive "orders:order/create:exportOrders"}}/>
+            <input type="checkbox" name="orders:orders/create:exportOrders" {{hookIsActive "orders:order/create:exportToShopify"}}/>
             <label for="optionsPushOrdersOnCreate">
         <span data-i18n="admin.shopifyConnectSettings.optionsPushOrdersOnCreate">
           Push orders to Shopify on create
