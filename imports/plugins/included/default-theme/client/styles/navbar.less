@@ -261,6 +261,9 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
   margin-top: 0;
   .right(0);
   .left(auto);
+  @media screen and (max-width: @screen-xs-max) {
+    .right(-35px);
+  }
 }
 
 .rui.navbar .search {
@@ -270,6 +273,9 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
   height: @navbar-height;
   padding: 0px @navbar-padding-vertical;
   cursor: pointer;
+  @media screen and (max-width: @screen-xs-max) {
+    padding: 0px 12.8px;
+  }
 }
 
 .rui.navbar .search:hover {
