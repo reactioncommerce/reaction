@@ -31,6 +31,14 @@ if (Meteor.isClient) {
   history = createMemoryHistory();
 }
 
+let Logger;
+
+if (Meteor.isClient) {
+  Logger = require("/client/api").Logger;
+} else {
+  Logger = require("/server/api").Logger;
+}
+
 /** Class representing a static base router */
 class Router {
   /**
@@ -538,7 +546,9 @@ export function ReactionLayout(options = {}) {
           ...props,
           structure: structure
         });
-      } catch (e) {}
+      } catch (e) {
+        Logger.error(e, "Failed to create a React layout element");
+      }
 
       // If all else fails, render a not found page
       return <Blaze template={structure.notFound} />;
