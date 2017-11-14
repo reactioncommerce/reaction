@@ -31,14 +31,6 @@ if (Meteor.isClient) {
   history = createMemoryHistory();
 }
 
-let Logger;
-
-if (Meteor.isClient) {
-  Logger = require("/client/api").Logger;
-} else {
-  Logger = require("/server/api").Logger;
-}
-
 /** Class representing a static base router */
 class Router {
   /**
@@ -547,7 +539,8 @@ export function ReactionLayout(options = {}) {
           structure: structure
         });
       } catch (e) {
-        Logger.error(e, "Failed to create a React layout element");
+        // eslint-disable-next-line
+        console.warn(e, "Failed to create a React layout element");
       }
 
       // If all else fails, render a not found page
