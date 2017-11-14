@@ -55,7 +55,8 @@ cfs:ui@0.1.3
 cfs:upload-http@0.0.20
 cfs:worker@0.1.4
 check@1.2.5
-coffeescript@1.12.6_1
+coffeescript@1.12.7_3
+coffeescript-compiler@1.12.7_3
 dburles:factory@1.1.0
 ddp@1.4.0
 ddp-client@2.2.0
@@ -112,7 +113,7 @@ mobile-experience@1.0.5
 mobile-status-bar@1.0.14
 modules@0.11.0
 modules-runtime@0.9.0
-momentjs:moment@2.19.1
+momentjs:moment@2.19.2
 mongo@1.3.0
 mongo-dev-server@1.1.0
 mongo-id@1.0.6
