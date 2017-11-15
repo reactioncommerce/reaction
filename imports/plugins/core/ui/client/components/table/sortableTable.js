@@ -38,13 +38,6 @@ class SortableTable extends Component {
     }
   }
 
-  // displayNoresultsFound() {
-  //   if (this.getTableData() === 0) {
-  //     return (
-  //       <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>
-  //     );
-  //   }
-  // }
   /**
    * @name getMeteorData()
    * @method
