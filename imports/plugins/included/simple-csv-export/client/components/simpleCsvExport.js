@@ -10,8 +10,7 @@ class SimpleCSVExport extends Component {
         <Components.Card>
           <Components.CardHeader
             actAsExpander={true}
-            i18nKeyTitle="admin.settings.smsProvider"
-            title="SMS Provider"
+            title="Export-CSV"
           />
           <Components.CardBody expandable={true}>
             <button>
