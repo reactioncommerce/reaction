@@ -1,2 +1,2 @@
 import "./products";
-import "./api";
+export * from "./api";

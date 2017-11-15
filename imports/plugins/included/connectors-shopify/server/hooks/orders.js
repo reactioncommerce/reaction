@@ -2,7 +2,7 @@
 import Shopify from "shopify-api-node";
 import { Reaction, Logger } from "/server/api";
 import { Orders } from "/lib/collections";
-import { getApiInfo } from "../methods/api/api";
+import { getApiInfo } from "../methods/api";
 
 export function exportToShopify(doc) {
   Logger.info("exporting to Shopify");
