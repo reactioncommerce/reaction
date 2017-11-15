@@ -48,9 +48,10 @@ function updateHandler(collection) {
   return function (doc) {
     let changed = false;
     for (const layout of doc.layout) {
-      if (layout.structure && (
-        layout.structure.layoutHeader === "layoutHeader" ||
-          layout.structure.layoutHeader === "checkoutHeader")) {
+      if (layout.structure && layout.structure.template === "cartCheckout") {
+        layout.structure.layoutHeader = "NavBarCheckout";
+        changed = true;
+      } else if (layout.structure && layout.structure.layoutHeader === "layoutHeader") {
         layout.structure.layoutHeader = "NavBar";
         changed = true;
       }
