@@ -189,7 +189,7 @@ export default {
      * @method roleCheck
      * @summary check whether or not a user is in a list of roles.
      * @private
-     * @since 1.5.5
+     * @since 0.15.0
      * @return {Boolean} - returns true if a user is in one or more of the roles
      * listed and false if not.
      */
@@ -210,7 +210,7 @@ export default {
      * @summary verifies that Meteor.userId() returns a value, after which
      * it calls some functions, especially roleCheck.
      * @private
-     * @since 1.5.5
+     * @since 0.15.0
      * @return {Boolean} - if userId has been found, this calls roleCheck and
      * then returns the result of that call. Returns false otherwise.
      */
