@@ -224,12 +224,17 @@ Meteor.methods({
         // only fetch rates if locale and shop currency are not equal
         // if shop.currency = locale currency the rate is 1
         if (shop.currency !== currency) {
-          exchangeRate = Meteor.call("shop/getCurrencyRates", currency);
+          const settings = Reaction.getShopSettings();
+          const exchangeConfig = settings.openexchangerates || {};
 
-          if (typeof exchangeRate === "number") {
-            result.currency.exchangeRate = exchangeRate;
-          } else {
-            Logger.warn("Failed to get currency exchange rates.");
+          if (exchangeConfig.appId) {
+            exchangeRate = Meteor.call("shop/getCurrencyRates", currency);
+
+            if (typeof exchangeRate === "number") {
+              result.currency.exchangeRate = exchangeRate;
+            } else {
+              Logger.warn("Failed to get currency exchange rates.");
+            }
           }
         }
       }
