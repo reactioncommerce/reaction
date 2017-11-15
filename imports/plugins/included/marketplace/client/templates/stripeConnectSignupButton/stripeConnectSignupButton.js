@@ -47,7 +47,7 @@ Template.stripeConnectSignupButton.events({
     const businessName = shop.addressBook[0].company;
     const streetAddress = shop.addressBook[0].address1;
     const city = shop.addressBook[0].city;
-    const state = shop.addressBook[0].state;
+    const state = shop.addressBook[0].region;
     const zip = shop.addressBook[0].postal;
 
     const stripeConnectAuthorizeUrl = `https://connect.stripe.com/oauth/authorize?response_type=code&state=${shopId}&client_id=${clientId}&scope=read_write`;
