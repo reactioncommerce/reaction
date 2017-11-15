@@ -1,19 +1,40 @@
-import { compose } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-// import { Meteor } from "meteor/meteor";
-// import actions from "../actions";
+import React, { Component } from "react";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
+import { Packages } from "/lib/collections";
+import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { Reaction } from "/client/api";
 import ExportSettings from "../components/exportSettings";
 
+class ExportSettingsContainer extends Component {
+  render() {
+    const settingsKey = this.props.packageData.registry[0].settingsKey;
+    return (
+      <TranslationProvider>
+        <ExportSettings
+          settings={this.props.packageData.settings[settingsKey]}
+        />
+      </TranslationProvider>
+    );
+  }
+}
+
+ExportSettingsContainer.propTypes = {
+  packageData: PropTypes.object
+};
 
 const composer = ({}, onData) => {
-  onData(null);
+  const primaryShopSub = Meteor.subscribe("PrimaryShop");
+  const merchantShopSub = Meteor.subscribe("MerchantShops");
+  const exportSettings = Reaction.Apps({ provides: "exportMethod" });
+  if (primaryShopSub.ready() && merchantShopSub.ready()) {
+    const packageData = Packages.findOne({
+      exportSettings,
+      shopId: Reaction.getShopId()
+    });
+    onData(null, { packageData });
+  }
 };
-//
-// const handlers = {
-//   saveSettings: actions.settings.saveSettings
-// };
 
-registerComponent("ExportCSV", ExportSettings, [
-  composeWithTracker(composer)]);
-
-export default compose(composeWithTracker(composer))(ExportSettings);
+export default composeWithTracker(composer)(ExportSettingsContainer);
