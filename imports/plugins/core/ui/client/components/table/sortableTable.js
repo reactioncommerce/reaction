@@ -38,7 +38,13 @@ class SortableTable extends Component {
     }
   }
 
-
+  // displayNoresultsFound() {
+  //   if (this.getTableData() === 0) {
+  //     return (
+  //       <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>
+  //     );
+  //   }
+  // }
   /**
    * @name getMeteorData()
    * @method
@@ -272,6 +278,13 @@ class SortableTable extends Component {
   render() {
     const { ...otherProps } = this.props;
     const defaultClassName = "-striped -highlight";
+    const displayNoResultsFound = () => {
+      if (this.getTableData() === 0) {
+        let displayText = "";
+        displayText = <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>;
+        return displayText;
+      }
+    };
 
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (
@@ -288,7 +301,7 @@ class SortableTable extends Component {
           previousText={otherProps.previousText}
           nextText={otherProps.nextText}
           loadingText={otherProps.loadingText}
-          noDataText={() => <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>}
+          noDataText={displayNoResultsFound()}
           pageText={otherProps.pageText}
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
