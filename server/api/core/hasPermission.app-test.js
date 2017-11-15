@@ -33,16 +33,9 @@ describe.only("hasPermission", function () {
     expect(hasPermissions).to.be.false;
   });
 
-  it.only("should return false for anonymous users when `permissions === [owner]`", function () {
-    const anonymousUser = Factory.create("anonymous");
-    sandbox.stub(Meteor, "userId", () => anonymousUser._id);
-    const hasPermissions = Core.hasPermission(["owner"]);
-    expect(hasPermissions).to.be.false;
-  });
-
-  it.only("should return false for registered users when `permissions === [owner]`", function () {
-    const user = Factory.create("registeredUser");
-    sandbox.stub(Meteor, "userId", () => user._id);
+  it.only("should return false for users that don't have the `owner` permission", function () {
+    const registeredUser = Factory.create("registeredUser");
+    sandbox.stub(Meteor, "userId", () => registeredUser._id);
     const hasPermissions = Core.hasPermission(["owner"]);
     expect(hasPermissions).to.be.false;
   });
