@@ -279,8 +279,8 @@ class SortableTable extends Component {
     const { ...otherProps } = this.props;
     const defaultClassName = "-striped -highlight";
     const displayNoResultsFound = () => {
+      let displayText = "";
       if (this.getTableData() === 0) {
-        let displayText = "";
         displayText = <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>;
         return displayText;
       }
