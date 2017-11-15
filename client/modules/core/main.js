@@ -159,14 +159,19 @@ export default {
   },
 
   /**
-   * hasPermission - client
-   * client permissions checks
-   * hasPermission exists on both the server and the client.
-   *
-   * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
-   * @param {String} checkUserId - userId, defaults to Meteor.userId()
-   * @param {String} checkGroup group - default to shopId
-   * @return {Boolean} Boolean - true if has permission
+   * hasPermission - Performs client-side permission checks. Note that
+   * hasPermission exists on both the server and the client. So this is
+   * the client-side version.
+   * @param {String | Array} checkPermissions - permissions to check for. If
+   * empty/undefined, this function returns false.
+   * @param {String} checkUserId - user ID. If empty/undefined, this function uses
+   * the value returned by Meteor.userId().
+   * @param {String} checkGroup - the group that the user being checked
+   * belongs to. If empty/undefined, this function uses the ID of the
+   * current shop or Roles.GLOBAL_GROUP.
+   * @since 0.14
+   * @return {Boolean} - returns true if the said user has any of the permissions
+   * in checkPermissions, and false if s/he has none of them.
    */
   hasPermission(checkPermissions, checkUserId, checkGroup) {
     let group;

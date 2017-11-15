@@ -101,13 +101,17 @@ export default {
   registerTemplate: registerTemplate,
 
   /**
-   * hasPermission - server
-   * server permissions checks
-   * hasPermission exists on both the server and the client.
-   * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
-   * @param {String} userId - userId, defaults to Meteor.userId()
-   * @param {String} checkGroup group - default to shopId
-   * @return {Boolean} Boolean - true if has permission
+   * hasPermission - Performs server-side permission checks. Note that
+   * hasPermission exists on both the server and the client. This is
+   * the server-side version.
+   * @param {String | Array} checkPermissions - permissions to check for. If
+   * empty/undefined, this function returns false.
+   * @param {String} userId - user ID. Defaults to Meteor.userId().
+   * @param {String} checkGroup - the group that the user being checked belongs
+   * to. Defaults to the ID of the current shop or Roles.GLOBAL_GROUP.
+   * @since 0.14
+   * @return {Boolean} - returns true if the said user has any of the permissions
+   * in checkPermissions, and false if s/he has none of them.
    */
   hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getShopId()) {
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
