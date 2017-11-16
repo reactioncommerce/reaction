@@ -5,7 +5,7 @@ import { Reaction } from "/client/api";
 import NavBar from "../components/navbar";
 import { Media, Shops } from "/lib/collections";
 
-function composer(props, onData) {
+export function composer(props, onData) {
   const shop = Shops.findOne(Reaction.getShopId());
   const searchPackage = Reaction.Apps({ provides: "ui-search" });
   let searchEnabled;
@@ -36,24 +36,5 @@ function composer(props, onData) {
 }
 
 registerComponent("NavBar", NavBar, composeWithTracker(composer));
-
-registerComponent("NavBarCheckout", (props, context) => {
-  const visibility = {
-    hamburger: false,
-    brand: true,
-    tags: false,
-    search: false,
-    notifications: false,
-    languages: false,
-    currency: false,
-    mainDropdown: false,
-    cartContainer: false
-  };
-  const newProps = {
-    ...props,
-    visibility
-  }
-  return React.createElement(NavBar, newProps, context);
-}, composeWithTracker(composer));
 
 export default composeWithTracker(composer)(NavBar);
