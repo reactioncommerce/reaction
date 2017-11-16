@@ -14,7 +14,7 @@ Fixtures();
 const shippoDocs = {};
 const retrialTargets = [];
 
-describe.only("Shippo methods", function () {
+describe("Shippo methods", function () {
   let sandbox;
   let originals;
 

@@ -118,6 +118,7 @@ describe("Add/Create cart methods", function () {
       Meteor._sleepForMs(500);
       cart = Cart.findOne(cart._id);
       expect(cart.items.length).to.equal(items + 1);
+      console.log("cart: ", cart.items[2]);
       expect(cart.items[cart.items.length - 1].productId).to.equal(productId);
       done();
     });
