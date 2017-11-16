@@ -1,15 +1,17 @@
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { check, Match } from "meteor/check";
 import { Reaction, Logger, i18next } from "/client/api";
-import { Shops } from "/lib/collections";
+import { Shops, Accounts } from "/lib/collections";
 import { localeDep, i18nextDep } from  "./main";
 import { formatPriceString } from "./currency";
 
 /**
- * i18n
- * see: http://i18next.com/
- * pass the translation key as the first argument
- * and the default message as the second argument
+ * @name i18n
+ * @see http://i18next.com/
+ * @summary Pass the translation key as the first argument and the default message as the second argument
+ * @memberof i18n
+ * @method
  * @param {String} i18nKey - i18nKey
  * @param {String} i18nMessage - message text
  * @example {{i18n "accountsTemplate.error" "Invalid Email"}}
@@ -30,26 +32,33 @@ Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
 });
 
 /**
- * currencySymbol
- * @summary return shop /locale specific currency format (ie: $)
+ * @name currencySymbol
+ * @memberof i18n
+ * @method
+ * @summary Eeturn shop /locale specific currency format (ie: $)
  * @returns {String} return current locale currency symbol
  */
 Template.registerHelper("currencySymbol", function () {
   const locale = Reaction.Locale.get();
-  const localStorageCurrency = localStorage.getItem("currency");
-  if (localStorageCurrency) {
+  const user = Accounts.findOne({
+    _id: Meteor.userId()
+  });
+  const profileCurrency = user.profile && user.profile.currency;
+  if (profileCurrency) {
     const shop = Shops.findOne();
     if (Match.test(shop, Object) && shop.currencies) {
-      return shop.currencies[localStorageCurrency].symbol;
+      return shop.currencies[profileCurrency].symbol;
     }
   }
   return locale.currency.symbol;
 });
 
 /**
- * formatPrice
- * @summary return shop /locale specific formatted price
- * also accepts a range formatted with " - "
+ * @name formatPrice
+ * @memberof i18n
+ * @method
+ * @summary Return shop /locale specific formatted price. Also accepts a range formatted with " - "
+ * @example {{formatPrice displayPrice}}
  * @param {String} currentPrice - currentPrice or "xx.xx - xx.xx" formatted String
  * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
  * @return {String} returns locale formatted and exchange rate converted values

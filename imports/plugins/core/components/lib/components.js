@@ -1,25 +1,25 @@
 import { compose, setDisplayName } from "recompose";
 
-
 export const Components = {}; // populated with final wrapped components
 export const ComponentsTable = {}; // storage for separate elements of each component
 
-
 /**
- * Register a component and container(s) with a name.
- * The raw component can then be extended or replaced.
+ * @example // Register a component and container(s) with a name.
+ * // The raw component can then be extended or replaced.
  *
- * Structure of a component in the list:
+ * // Structure of a component in the list:
  *
  * ComponentsTable.MyComponent = {
  *    name: 'MyComponent',
  *    hocs: [fn1, fn2],
  *    rawComponent: React.Component
  * }
- *
+ * @name registerComponent
+ * @method
+ * @memberof Components
  * @param {String} name The name of the component to register.
  * @param {React.Component} rawComponent Interchangeable/extendable component.
- * @param {Function|[Function]} hocs The HOCs to wrap around the raw component.
+ * @param {Function|Array} hocs The HOCs to wrap around the raw component.
  *
  * @returns {React.Component} returns the final wrapped component
  */
@@ -38,11 +38,13 @@ export function registerComponent(name, rawComponent, hocs = []) {
 
 
 /**
- * Register containers (HOC) with a name.
+ * @name registerHOC
+ * @method
+ * @summary Register containers (HOC) with a name.
  * If some containers already exist for the component, they will be extended.
  * @param {String} name The name of the component to register.
- * @param {Function|[Function]} hocs The HOCs to wrap around the raw component.
- *
+ * @param {Function|Array} hocs The HOCs to wrap around the raw component.
+ * @memberof Components
  * @returns {undefined}
  */
 export function registerHOC(name, hocs = []) {
@@ -76,9 +78,12 @@ export function registerHOC(name, hocs = []) {
 
 
 /**
- * Get a component registered with registerComponent(name, component, ...hocs).
+ * @name getComponent
+ * @method
+ * @summary Get a component registered with registerComponent(name, component, ...hocs).
  * @param {String} name The name of the component to get.
  * @return {Function|React.Component} A (wrapped) React component
+ * @memberof Components
  */
 export function getComponent(name) {
   const component = ComponentsTable[name];
@@ -94,12 +99,15 @@ export function getComponent(name) {
 
 
 /**
- * Replace a Reaction component with a new component and optionally add one or more higher order components.
+ * @name replaceComponent
+ * @method
+ * @summary Replace a Reaction component with a new component and optionally add one or more higher order components.
  * This function keeps track of the previous HOCs and wraps the new HOCs around previous ones
  * @param {String} name The name of the component to register.
  * @param {React.Component} newComponent Interchangeable/extendable component.
- * @param {Function|[Function]} hocs The HOCs to compose with the raw component.
+ * @param {Function|Array} hocs The HOCs to compose with the raw component.
  * @returns {Function|React.Component} A component callable with Components[name]
+ * @memberof Components
  */
 export function replaceComponent(name, newComponent, hocs = []) {
   const previousComponent = ComponentsTable[name];
@@ -115,26 +123,35 @@ export function replaceComponent(name, newComponent, hocs = []) {
 
 
 /**
- * Get the raw UI component without any possible HOCs wrapping it.
+ * @name getRawComponent
+ * @method
+ * @summary Get the raw UI component without any possible HOCs wrapping it.
  * @param {String} name The name of the component to get.
  * @returns {Function|React.Component} A React component
+ * @memberof Components
  */
 export const getRawComponent = (name) => ComponentsTable[name].rawComponent;
 
 
 /**
- * Get the raw UI component without any possible HOCs wrapping it.
+ * @name getHOCs
+ * @method
+ * @summary Get the raw UI component without any possible HOCs wrapping it.
  * @param {String} name The name of the component to get.
  * @returns {Function|React.Component} Array of HOCs
+ * @memberof Components
  */
 export const getHOCs = (name) => ComponentsTable[name].hocs;
 
 
 /**
- * Wrap a new component with the HOCs from a different component
+ * @name copyHOCs
+ * @method
+ * @summary Wrap a new component with the HOCs from a different component
  * @param {String} sourceComponentName The name of the component to get the HOCs from
  * @param {Function|React.Component} targetComponent Component to wrap
  * @returns {Function|React.Component} A new component wrapped with the HOCs of the source component
+ * @memberof Components
  */
 export function copyHOCs(sourceComponentName, targetComponent) {
   const sourceComponent = ComponentsTable[sourceComponentName];
@@ -143,9 +160,12 @@ export function copyHOCs(sourceComponentName, targetComponent) {
 
 
 /**
- * Populate the final Components object with the contents of the lookup table.
+ * @name loadRegisteredComponents
+ * @method
+ * @summary Populate the final Components object with the contents of the lookup table.
  * This should only be called once on app startup.
  * @returns {Object} An object containing all of the registered components
+ * @memberof Components
  **/
 export function loadRegisteredComponents() {
   Object.keys(ComponentsTable).map((name) => {

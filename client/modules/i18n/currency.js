@@ -1,17 +1,17 @@
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Reaction, Logger } from "/client/api";
-import { Shops } from "/lib/collections";
+import { Shops, Accounts } from "/lib/collections";
 import { currencyDep } from "./main";
 
 /**
- * findCurrency
- * private function for returning localStorage currency
- * @param   {Object}  defaultCurrency    The default currency
+ * @name findCurrency
+ * @summary Private function for returning user currency
+ * @private
+ * @param {Object}  defaultCurrency    The default currency
  * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
- * @return  {Object}  localStorageCurrency The localStorage currency
+ * @return {Object}  user currency or shop currency if none is found
  */
-
 function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   const shop = Shops.findOne(Reaction.getPrimaryShopId(), {
     fields: {
@@ -21,27 +21,31 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   });
 
   const shopCurrency = shop && shop.currency || "USD";
-  const localStorageCurrencyName = localStorage.getItem("currency");
-  if (typeof shop === "object" && shop.currencies && localStorageCurrencyName) {
-    let localStorageCurrency = {};
-    if (shop.currencies[localStorageCurrencyName]) {
+  const user = Accounts.findOne({
+    _id: Meteor.userId()
+  });
+  const profileCurrency = user.profile && user.profile.currency;
+  if (typeof shop === "object" && shop.currencies && profileCurrency) {
+    let userCurrency = {};
+    if (shop.currencies[profileCurrency]) {
       if (useDefaultShopCurrency) {
-        localStorageCurrency = shop.currencies[shop.currency];
-        localStorageCurrency.exchangeRate = 1;
+        userCurrency = shop.currencies[shop.currency];
+        userCurrency.exchangeRate = 1;
       } else {
-        localStorageCurrency = shop.currencies[localStorageCurrencyName];
-        localStorageCurrency.exchangeRate = shop.currencies[localStorageCurrencyName].rate;
+        userCurrency = shop.currencies[profileCurrency];
+        userCurrency.exchangeRate = shop.currencies[profileCurrency].rate;
       }
     }
-    return localStorageCurrency;
+    return userCurrency;
   }
   return shopCurrency;
 }
 
 /**
- * formatPriceString
- * @summary return shop /locale specific formatted price
- * also accepts a range formatted with " - "
+ * @name formatPriceString
+ * @summary Return shop/locale specific formatted price. Also accepts a range formatted with " - ".
+ * @memberof i18n
+ * @method
  * @param {String} formatPrice - currentPrice or "xx.xx - xx.xx" formatted String
  * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
  * @return {String} returns locale formatted and exchange rate converted values
@@ -66,7 +70,7 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
     return false;
   }
 
-  // uses the localStorage currency instead of locale
+  // get user currency instead of locale currency
   const userCurrency = findCurrency(locale.currency, defaultShopCurrency);
 
   // for the cases then we have only one price. It is a number.
@@ -98,6 +102,13 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
   return price;
 }
 
+/**
+ * @name formatNumber
+ * @memberof i18n
+ * @method
+ * @param {String} currentPrice - current Price
+ * @return {String} return formatted number
+ */
 export function formatNumber(currentPrice) {
   const locale = Reaction.Locale.get();
   let price = currentPrice;

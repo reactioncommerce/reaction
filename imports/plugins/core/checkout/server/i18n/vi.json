@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Hàng hiếm"
+      },
       "cartCompleted": {
         "yourCart": "Giỏ hàng",
         "discountTotal": "Tổng số chiết khấu",

@@ -42,6 +42,7 @@
     "**/extjs/resources/**",
     "**/extjs/src/**",
     "**/extjs/welcome/**",
+    "**/jsdoc/templates/**",
     "bower_components/**"
   ],
   "test": [
@@ -56,6 +57,10 @@
     "lint": {"engine": "eslint"}
   },
   "dependencies": {
+    "mute": [
+      "enzyme",
+      "jsdoc"
+    ],
     "unused-ignores": [
       "sweetalert2",
       "font-awesome",

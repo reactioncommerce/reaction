@@ -32,7 +32,8 @@
           "groupRequired": "Skupina mora povabiti skrbnika",
           "cannotInvite": "Skupine ne morete povabiti",
           "unableToSendInvitationEmail": "Pošiljanje vabila ni bilo mogoče poslati",
-          "errorSendingInvite": "Pri pošiljanju povabila je prišlo do napake"
+          "errorSendingInvite": "Pri pošiljanju povabila je prišlo do napake",
+          "NeedToSetUsernameOrEmail": "Prijava ali email sta obvezna"
         }
       }
     }

@@ -8,11 +8,24 @@
         "errorCannotCreateShop": "Impossible de créer un magasin pour l'utilisateur actuel {{user}}",
         "yourShopIsReady": "Votre boutique est maintenant prête!"
       },
+      "marketplaceShops": {
+        "headers": {
+          "name": "Nom de la boutique",
+          "emails": "Email du contact",
+          "workflow": "Statut"
+        }
+      },
       "app": {
         "shops": "Magasins",
         "myShop": "Mon magasin"
       },
       "admin": {
+        "connect": {
+          "stripeConnectNotEnabled": "Stripe Connect n'est pas activé pour cette application. Veuillez contacter l'administrateur.",
+          "shopEmailNotConfigured": "Configurez d'abord l'e-mail de votre boutique.",
+          "shopAddressNotConfigured": "Configurez l'adresse de votre boutique d'abord",
+          "shopNotActive": "Votre boutique n'est pas active. Veuillez contacter le propriétaire du marché."
+        },
         "settings": {
           "dashboardMarketplaceSettingsSaved": "Les paramètres du marché sont enregistrés avec succès!",
           "dashboardMarketplaceSettingsFailed": "Impossible d'enregistrer les paramètres du marché"

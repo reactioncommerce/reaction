@@ -54,8 +54,67 @@
   text-align: center;
 }
 
-.profile-image-display-name {
+.profile-image-display-name,
+.profile-image-email {
   display: block;
+  font-size: 1.8rem;  
   margin-top: 10px;
-  font-size: 1.8rem;
+}
+
+.user-orders-list{
+  width: inherit;
+  .panel-content{
+    @media screen and (max-width: @screen-xs-max) {
+      padding: 5px 10px;
+    }
+  }
+  .container {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .order-completed{
+    width: inherit;
+    margin: 20px 0px 30px 0px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid @border-color;
+    p.order-id{
+      font-size: 16px;
+    }
+  }
+  .order-completed:last-child {
+    margin-bottom: 20px;
+    padding-bottom: 0px;
+    border-bottom: none;
+  }
+  .order-details-main {
+    .flex(0 0 100%);
+    max-width: none;
+    margin-right: 0px;
+    .order-details-shop-breakdown{
+      margin-bottom: 0px;
+    }
+  }
+  .order-details-side {
+    .flex(0 0 100%);
+    min-width: none;
+    max-width: none;
+  }
+  .shipping-payment-details {
+    @media screen and (min-width: @screen-xs-max) {
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: row-reverse;
+      .shipping-info, .payment-info{
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        .order-details-info-box {
+          flex: 1 0 auto;
+        }
+      }
+      .payment-info{
+        margin: 0 1.2rem 0 0;
+      }
+    }
+  }
 }

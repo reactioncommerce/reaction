@@ -6,6 +6,7 @@ import { Products, Shops, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { findProductMedia } from "./product";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 //
 // define search filters as a schema so we can validate
@@ -66,6 +67,8 @@ const filters = new SimpleSchema({
   }
 });
 
+registerSchema("filters", filters);
+
 /**
  * products publication
  * @param {Number} [productScrollLimit] - optional, defaults to 24
@@ -91,6 +94,14 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   if (!shopId || !primaryShopId) {
     return this.ready();
   }
+
+  // Get active shop id's to use for filtering
+  const activeShopsIds = Shops.find({
+    $or: [
+      { "workflow.status": "active" },
+      { _id: Reaction.getPrimaryShopId() }
+    ]
+  }).fetch().map(activeShop => activeShop._id);
 
   // if there are filter/params that don't match the schema
   // validate, catch except but return no results
@@ -275,7 +286,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       $in: [true, false, null, undefined]
     };
     selector.shopId = {
-      $in: userAdminShopIds
+      $in: activeShopsIds
     };
 
     // Get _ids of top-level products
@@ -514,20 +525,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     });
   }
 
-  // Get disabled shop id's to use for filtering
-  const disabledShopIds = Shops.find({
-    "workflow.status": {
-      $in: ["disabled", "archived"]
-    }
-  }, {
-    fields: { _id: 1 }
-  }).map((shop) => shop._id);
-
-  // Adjust the selector to exclude all disabled shops
+  // Adjust the selector to include only active shops
   newSelector = {
     ...newSelector,
     shopId: {
-      $nin: disabledShopIds
+      $in: activeShopsIds
     }
   };
 

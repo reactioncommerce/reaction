@@ -28,7 +28,7 @@ export default function accountsTable() {
         if (rowData.profile) {
           return rowData.profile.firstName;
         }
-        return undefined;
+        return i18next.t("search.accountSearchResults.notAvailable", "Not available");
       }
     },
     {
@@ -39,7 +39,7 @@ export default function accountsTable() {
         if (rowData.profile) {
           return rowData.profile.lastName;
         }
-        return undefined;
+        return i18next.t("search.accountSearchResults.notAvailable", "Not available");
       }
     },
     {
@@ -50,7 +50,7 @@ export default function accountsTable() {
         if (rowData.profile) {
           return rowData.profile.phone;
         }
-        return undefined;
+        return i18next.t("search.accountSearchResults.notAvailable", "Not available");
       }
     },
     {
@@ -64,13 +64,13 @@ export default function accountsTable() {
     {
       id: "manageAccount",
       type: DataType.String,
-      header: i18next.t("search.orderSearchResults.shippingStatus", { defaultValue: "Shipping Status" }),
+      header: "",
       value: rowData => {
         return rowData.emails[0];
       },
       tdClassName: "account-manage",
       renderer(cellData, { rowData }) {
-        return <span data-event-action="manageAccount" data-event-data={rowData._id}>Manage</span>;
+        return <span data-event-action="manageAccount" data-event-data={rowData._id}>View</span>;
       }
     }
   ];

@@ -5,6 +5,8 @@
     "reaction-orders": {
       "notFound": "အမိန့်တွေ့မ",
       "order": {
+        "applyRefundToThisOrder": "ဒီအမိန့်မှ {{currencySymbol}}{{refund}} ၏ပြန်အမ်းငွေ Apply?",
+        "applyRefundDuringCancelOrder": "ဤသည် {{currencySymbol}}{{invoiceTotal}} ၏အမိန့်စုစုပေါင်းပြန်အမ်းလိမ့်မယ်",
         "cancelOrder": "သင်သည်ဤအမိန့်ကိုပယ်ဖျက်ချင်ပါသလား?",
         "cancelOrderLabel": "အော်ဒါဖျက်သိမ်းသည်",
         "cancelOrderThenRestock": "ဟုတ်ကဲ့, restock",
@@ -59,6 +61,34 @@
             "total": "စုစုပေါင်း ကျသင့်ငွေ",
             "shipping": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း",
             "status": "status"
+          },
+          "filter": {
+            "status": "status",
+            "dateRange": "နေ့စွဲအကွာအဝေး",
+            "shippingStatus": "shipping status ကို",
+            "new": "နယူး",
+            "captured": "ငွေပေးချေမှုရမည့်ဖမ်းဆီးခံရသော",
+            "shipped": "တင်ပို့",
+            "completed": "completed",
+            "canceled": "ဖျက်သိမ်း",
+            "refunded": "ပြန်အမ်း"
+          },
+          "search": {
+            "clearSearch": "ရှင်းလင်းသော",
+            "placeholder": "ရှာရန်အမိန့်"
+          },
+          "data": {
+            "status": {
+              "new": "နယူး",
+              "coreOrderWorkflow/created": "Created",
+              "coreOrderWorkflow/processing": "ထုတ်ယူခြင်း",
+              "coreOrderWorkflow/completed": "ပြီးစီး",
+              "coreOrderWorkflow/canceled": "ဖျက်သိမ်း",
+              "coreOrderWorkflow/picked": "ကောက်ယူ",
+              "coreOrderWorkflow/packed": "Pack",
+              "coreOrderWorkflow/labeled": "တံဆိပ်ကပ်",
+              "coreOrderWorkflow/shipped": "တင်ပို့"
+            }
           }
         }
       }

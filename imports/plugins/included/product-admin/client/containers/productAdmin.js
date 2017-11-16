@@ -103,6 +103,7 @@ const wrapComponent = (Comp) => (
 
 function composer(props, onData) {
   const product = ReactionProduct.selectedProduct();
+  const editable = Reaction.hasAdminAccess();
   let tags;
   let media;
   let revisonDocumentIds;
@@ -143,16 +144,19 @@ function composer(props, onData) {
     const countries = Countries.find({}).fetch();
 
     onData(null, {
-      editFocus: Reaction.state.get("edit/focus"),
+      editFocus: Reaction.state.get("edit/focus") || "productDetails",
       product: product,
       media,
       tags,
       revisonDocumentIds,
       templates,
-      countries
+      countries,
+      editable
     });
   } else {
-    onData(null, {});
+    onData(null, {
+      editFocus: Reaction.state.get("edit/focus") || "productDetails"
+    });
   }
 }
 

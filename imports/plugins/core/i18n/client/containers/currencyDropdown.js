@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Match } from "meteor/check";
 import { Reaction } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Cart, Shops } from "/lib/collections";
+import { Cart, Shops, Accounts } from "/lib/collections";
 import CurrencyDropdown from "../components/currencyDropdown";
 
 const handlers = {
@@ -15,8 +15,7 @@ const handlers = {
     // and only possible because we allow it in the
     // UserProfile and ShopMembers publications.
     //
-    Meteor.users.update(Meteor.userId(), { $set: { "profile.currency": currencyName } });
-    localStorage.setItem("currency", currencyName);
+    Accounts.update(Meteor.userId(), { $set: { "profile.currency": currencyName } });
 
     const cart = Cart.findOne({ userId: Meteor.userId() });
 
@@ -46,16 +45,20 @@ const composer = (props, onData) => {
       }
     });
 
+    const user = Accounts.findOne({
+      _id: Meteor.userId()
+    });
+    const profileCurrency = user && user.profile && user.profile.currency;
+
     if (Match.test(shop, Object) && shop.currency) {
-      const localStorageCurrency = localStorage.getItem("currency");
       const locale = Reaction.Locale.get();
 
-      if (localStorageCurrency && shop.currencies[localStorageCurrency] && shop.currencies[localStorageCurrency].symbol) {
-        currentCurrency = localStorageCurrency + " " + shop.currencies[localStorageCurrency].symbol;
+      if (profileCurrency && shop.currencies[profileCurrency] && shop.currencies[profileCurrency].symbol) {
+        currentCurrency = profileCurrency + " " + shop.currencies[profileCurrency].symbol;
       } else if (locale && locale.currency && locale.currency.enabled) {
-        currentCurrency = locale.locale.currency + " " + locale.currency.symbol;
+        currentCurrency = locale.locale.currency.split(",")[0] + " " + locale.currency.symbol;
       } else {
-        currentCurrency = shop.currency + " " + shop.currencies[shop.currency].symbol;
+        currentCurrency = shop.currency.split(",")[0] + " " + shop.currencies[shop.currency].symbol;
       }
     }
 
@@ -63,12 +66,11 @@ const composer = (props, onData) => {
       for (const currencyName in shop.currencies) {
         if (shop.currencies[currencyName].enabled === true) {
           const currency = { currency: currencyName };
-          const localStorageCurrency = localStorage.getItem("currency");
           // only one currency will be "active". Either the one
-          // matching the localStorageCurrency if exists or else
+          // matching the profileCurrency if it exists or else
           //  the one matching shop currency
-          if (localStorageCurrency) {
-            if (localStorageCurrency === currency.currency) {
+          if (profileCurrency) {
+            if (profileCurrency === currency.currency) {
               currency.class = "active";
             }
           } else if (shop.currency === currency.currency) {

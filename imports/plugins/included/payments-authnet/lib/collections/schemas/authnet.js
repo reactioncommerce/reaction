@@ -1,5 +1,7 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { PackageConfig } from "/lib/collections/schemas/registry";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
+
 /**
  * Meteor.settings.authnet =
  *   mode: false (sandbox)
@@ -21,7 +23,7 @@ export const AuthNetPackageConfig = new SimpleSchema([
     },
     "settings.reaction-auth-net.support.$": {
       type: String,
-      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+      allowedValues: ["Authorize", "De-authorize", "Capture"]
     },
     "settings.api_id": {
       type: String,
@@ -35,6 +37,8 @@ export const AuthNetPackageConfig = new SimpleSchema([
     }
   }
 ]);
+
+registerSchema("AuthNetPackageConfig", AuthNetPackageConfig);
 
 export const AuthNetPayment = new SimpleSchema({
   payerName: {
@@ -63,3 +67,5 @@ export const AuthNetPayment = new SimpleSchema({
     max: 4
   }
 });
+
+registerSchema("AuthNetPayment", AuthNetPayment);

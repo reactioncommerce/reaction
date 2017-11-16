@@ -60,6 +60,7 @@ describe("core shop methods", function () {
     });
 
     it("should create new shop for admin for userId and shopObject", function () {
+      this.timeout(5000);
       sandbox.stub(Meteor, "user", () => {
         return {
           userId: "12345678",

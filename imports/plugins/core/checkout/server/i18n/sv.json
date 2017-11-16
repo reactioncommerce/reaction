@@ -3,6 +3,9 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
+      "cartDrawerItems": {
+        "limitedSupply": "Begränsad tillgång"
+      },
       "cartCompleted": {
         "yourCart": "Din varukorg",
         "discountTotal": "Rabatt Totalt",

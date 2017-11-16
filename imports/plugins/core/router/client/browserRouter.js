@@ -101,14 +101,15 @@ class BrowserRouter extends Component {
     const previousRoute = previousRouteData.route;
 
     // If routes are not identical, run onExit and onEnter
-    if (!equal({ params: previousRouteData.params,
-                  query: previousRouteData.query,
-                  route: previousRouteData.route
-                }, {
-                  params: routeData.params,
-                  query: routeData.query,
-                  route: routeData.route
-                })) {
+    if (!equal({
+      params: previousRouteData.params,
+      query: previousRouteData.query,
+      route: previousRouteData.route
+    }, {
+      params: routeData.params,
+      query: routeData.query,
+      route: routeData.route
+    })) {
       // Run onExit hooks if the previousRoute exists
       if (previousRoute) {
         Router.Hooks.run("onExit", "GLOBAL", previousRouteData);

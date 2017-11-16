@@ -3,20 +3,15 @@
   "ns": "reaction-checkout",
   "translation": {
     "reaction-checkout": {
-      "admin": {
-        "shortcut": {},
-        "dashboard": {},
-        "settings": {}
-      },
       "cartDrawerItems": {
         "limitedSupply": "Limited supply"
       },
       "cartCompleted": {
-        "yourCart": "Your Cart",
+        "orderSummary": "Order Summary",
         "discountTotal": "Discount Total",
         "orderTotal": "Order Total",
         "fulfilledBy": "Fulfilled by",
-        "quantityTotal": "Quantity Total",
+        "orderItems": "Items in order",
         "orderSubtotal": "Subtotal",
         "orderShipping": "Shipping",
         "orderTax": "Tax",

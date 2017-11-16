@@ -66,6 +66,7 @@ function composer(props, onData) {
         const productImages = Media.find().fetch();
 
         onData(null, {
+          isProfilePage: false,
           shops: order.getShopSummary(),
           order,
           orderId,

@@ -14,13 +14,17 @@ import ProcessJobs from "/server/jobs";
 import { registerTemplate } from "./templates";
 import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
+import { createGroups } from "./groups";
 
 // Unpack the named Collections we use.
-const { Jobs, Packages, Shops, Groups } = Collections;
+const { Jobs, Packages, Shops } = Collections;
 
 export default {
 
   init() {
+    // run beforeCoreInit hooks
+    Hooks.Events.run("beforeCoreInit");
+
     // make sure the default shop has been created before going further
     while (!this.getShopId()) {
       Logger.warn("No shopId, waiting one second...");
@@ -43,7 +47,7 @@ export default {
     this.loadPackages();
     // process imports from packages and any hooked imports
     this.Import.flush();
-    this.createDefaultGroups();
+    this.createGroups();
     // timing is important, packages are rqd for initial permissions configuration.
     if (!Meteor.isAppTest) {
       this.createDefaultAdminUser();
@@ -65,60 +69,7 @@ export default {
   },
   defaultCustomerRoles: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
   defaultVisitorRoles: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
-  createDefaultGroups(options = {}) {
-    const self = this;
-    const { shopId } = options;
-    const allGroups = Groups.find({}).fetch();
-    const query = {};
-
-    if (shopId) {
-      query._id = shopId;
-    }
-
-    const shops = Shops.find(query).fetch();
-
-    /* Get all defined roles from the DB minus "anonymous" because that gets removed from a user on register
-     * if it's not removed, it causes mismatch between roles in user (i.e Meteor.user().roles[shopId]) vs that in
-     * the user's group (Group.find(usergroup).permissions) */
-    let ownerRoles = Roles
-      .getAllRoles().fetch()
-      .map(role => role.name)
-      .filter(role => role !== "anonymous"); // see comment above
-
-    // Join all other roles with package roles for owner. Owner should have all roles
-    // this is needed because of default roles defined in the app that are not in Roles.getAllRoles
-    ownerRoles = ownerRoles.concat(this.defaultCustomerRoles);
-    ownerRoles = _.uniq(ownerRoles);
-
-    // we're making a Shop Manager default group that have all roles minue the owner role
-    const shopManagerRoles = ownerRoles.filter(role => role !== "owner");
-    const roles = {
-      "shop manager": shopManagerRoles,
-      "customer": this.defaultCustomerRoles,
-      "guest": this.defaultVisitorRoles,
-      "owner": ownerRoles
-    };
-
-    if (shops && shops.length) {
-      shops.forEach(shop => createGroupsForShop(shop));
-    }
-    function createGroupsForShop(shop) {
-      Object.keys(roles).forEach(groupKeys => {
-        const groupExists = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === shop._id);
-        if (!groupExists) { // create group only if it doesn't exist before
-          // get roles from the default groups of the primary shop; we try to use this first before using default roles
-          const primaryShopGroup = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === self.getPrimaryShopId());
-          Logger.debug(`creating group ${groupKeys} for shop ${shop.name}`);
-          Groups.insert({
-            name: groupKeys,
-            slug: groupKeys,
-            permissions: primaryShopGroup && primaryShopGroup.permissions || roles[groupKeys],
-            shopId: shop._id
-          });
-        }
-      });
-    }
-  },
+  createGroups,
   /**
    * canInviteToGroup
    * @summary checks if the user making the request is allowed to make invitation to that group
@@ -205,10 +156,10 @@ export default {
   /**
    * Finds all shops that a user has a given set of roles for
    * @method getShopsWithRoles
-   * @param  {[string]} roles an array of roles to check. Will return a shopId if the user has _any_ of the roles
+   * @param  {array} roles an array of roles to check. Will return a shopId if the user has _any_ of the roles
    * @param  {string} [userId=Meteor.userId()] Optional userId, defaults to Meteor.userId()
    *                                           Must pass this.userId from publications to avoid error!
-   * @return {[string]} Array of shopIds that the user has at least one of the given set of roles for
+   * @return {array} Array of shopIds that the user has at least one of the given set of roles for
    */
   getShopsWithRoles(roles, userId = Meteor.userId()) {
     // Owner permission for a shop superceeds grantable permissions, so we always check for owner permissions as well

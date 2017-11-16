@@ -1,63 +1,69 @@
 <template name="accountProfile">
-
-  <div class="flex flex-column flex-align-center flex-2x container-lg">
-
-    <div class="flex-item">
-      <div class="panel panel-lg">
-
-        <div class="panel-heading  panel-title-center">
-
+  {{#if doesUserExist}}
+    <div class="flex flex-column flex-align-center flex-2x container-lg">
+      <div class="flex-item">
+        <div class="panel panel-lg">
+          <div class="panel-heading panel-title-center">
             <div class="profile-image">
               <div>
                 {{> React ReactionAvatar }}
               </div>
               <span class="profile-image-display-name">{{displayName}}</span>
+              <span class="profile-image-email">{{displayEmail}}</span>
             </div>
-
-        </div>
-        <div class="panel-content">
-          {{> React UpdateEmail }}
-        </div>
-        <div class="panel-content">
-          {{#if userHasPassword}}
-            {{> loginFormChangePassword}}
+          </div>
+          {{#if isOwnerOfProfile}}
+            <div class="panel-content">
+              {{> React UpdateEmail }}
+            </div>
+            {{#if userHasPassword}}
+              <div class="panel-content">
+                {{> loginFormChangePassword}}
+              </div>
+            {{/if}}
           {{/if}}
         </div>
-
       </div>
-    </div>
 
-
-    <div class="flex-item">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title" data-i18n="accountsUI.yourOrders">Your Orders</h3>
-        </div>
-
-        <div class="panel-content">
-          {{> dashboardOrdersList data=userOrders}}
-        </div>
-      </div>
-    </div>
-
-
-    <div class="flex-item">
-      {{> addressBookPanel}}
-    </div>
-
-    {{#if showMerchantSignup }}
       <div class="flex-item">
-        <div class="panel panel-default">
+        <div class="panel panel-default user-orders-list">
           <div class="panel-heading">
-            <h3 class="panel-title" data-i18n="marketplace.becomeSeller">Become a Seller</h3>
+            {{#if isOwnerOfProfile}}
+              <h3 class="panel-title" data-i18n="accountsUI.yourOrders">Your orders</h3>
+            {{else}}
+              <h3 class="panel-title" data-i18n="accountsUI.usersOrders">User's orders</h3>
+            {{/if}}
           </div>
-
           <div class="panel-content">
-            {{> becomeSellerButton}}
+            {{> userOrdersList data=userOrders}}
           </div>
         </div>
       </div>
-    {{/if}}
-  </div>
 
+      {{#if isOwnerOfProfile}}
+        <div class="flex-item">
+          {{> addressBookPanel}}
+        </div>
+
+        {{#if showMerchantSignup}}
+          <div class="flex-item">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title" data-i18n="marketplace.becomeSeller">Become a Seller</h3>
+              </div>
+              <div class="panel-content">
+                {{> becomeSellerButton}}
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      {{/if}}
+    </div>
+  {{else}}
+    <div class="empty-view-message">
+      <i class="fa fa-user-times"></i>
+      <p data-i18n="accountsUI.oops">Oops!</p>
+      <p data-i18n="accountsUI.nonExistentAccount">The user you're looking for does not exist.</p>
+    </div>
+  {{/if}}
 </template>

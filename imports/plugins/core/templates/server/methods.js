@@ -2,10 +2,20 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Templates } from "/lib/collections";
 
+/**
+ * @file Methods for Templates. Run these methods using `Meteor.call()`.
+ *
+ *
+ * @namespace Methods/Templates
+*/
+
 export const methods = {
   /**
-   * templates/email/update
-   * @summary updates email template in Templates collection
+   * @name templates/email/update
+   * @method
+   * @memberof Methods/Templates
+   * @todo Add permissions
+   * @summary Updates email template in Templates collection
    * @param {String} templateId - id of template to remove
    * @param {Object} doc - data to update
    * @return {Number} remove template
