@@ -78,6 +78,8 @@ describe("Add/Create cart methods", function () {
     let permissionStub;
     let resetShipmentStub;
     let updateShipmentQuoteStub;
+    let parcelDetails;
+    let defaultParcelSize;
 
     before(function () {
       permissionStub = sinon.stub(Reaction, "hasPermission", function () {
@@ -98,6 +100,8 @@ describe("Add/Create cart methods", function () {
       variantId = Products.findOne({
         ancestors: [productId]
       })._id;
+
+      defaultParcelSize = shop.defaultParcelSize;
     });
 
     after(function () {
@@ -117,10 +121,14 @@ describe("Add/Create cart methods", function () {
       Meteor.call("cart/addToCart", productId, variantId, quantity);
       Meteor._sleepForMs(500);
       cart = Cart.findOne(cart._id);
+      parcelDetails = cart.items[2].parcel;
       expect(cart.items.length).to.equal(items + 1);
-      console.log("cart: ", cart.items[2]);
       expect(cart.items[cart.items.length - 1].productId).to.equal(productId);
       done();
+    });
+
+    it("should set shop default parcel size as parcel details in cart", function () {
+      expect(defaultParcelSize).to.deep.equal(parcelDetails);
     });
 
     it("should merge all items of same variant in cart", function () {
