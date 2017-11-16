@@ -1,5 +1,4 @@
 import _ from "lodash";
-import React from "react";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import NavBar from "../components/navbar";
