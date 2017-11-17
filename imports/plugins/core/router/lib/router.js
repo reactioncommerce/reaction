@@ -530,13 +530,10 @@ export function ReactionLayout(options = {}) {
       // If the current route is unauthorized, and is not the "not-found" route,
       // then override the template to use the default unauthroized template
       if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found") {
-        if (!Meteor.user()) {
-          structure.template = "unauthorized";
-        }
-        return false;
+        structure.template = "unauthorized";
       }
       try {
-      // Try to create a React component if defined
+        // Try to create a React component if defined
         return React.createElement(getComponent(layoutName), {
           ...props,
           structure: structure
