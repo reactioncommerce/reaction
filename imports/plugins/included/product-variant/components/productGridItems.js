@@ -57,7 +57,7 @@ class ProductGridItems extends Component {
       );
     }
     return (
-      <span className="product-image" style={{ backgroundImage: `url(${this.props.media().url({ store: "large" })})` }}/>
+      <span className="product-image" style={{ backgroundImage: `url('${this.props.media().url({ store: "large" })}')` }}/>
     );
   }
 
@@ -67,7 +67,7 @@ class ProductGridItems extends Component {
         return (
           <div className={`product-additional-images ${this.renderVisible()}`}>
             {this.props.additionalMedia().map((media) => {
-              return <span key={media._id} className="product-image" style={{ backgroundImage: `url(${media.url({ store: "medium" })})` }} />;
+              return <span key={media._id} className="product-image" style={{ backgroundImage: `url('${media.url({ store: "medium" })}')` }} />;
             })}
             {this.renderOverlay()}
           </div>
