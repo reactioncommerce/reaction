@@ -9,17 +9,22 @@ const onWorkflowChange = (shopId, value) => {
 };
 
 const composer = (props, onData) => {
-  // Get all shops, excluding the primary shop
-  const shops = Shops.find({
-    _id: {
-      $nin: [Reaction.getPrimaryShopId()]
-    }
-  }).fetch();
+  // Subscribe to MerchantShops
+  const merchantShopSub = Meteor.subscribe("MerchantShops");
 
-  onData(null, {
-    shops,
-    onWorkflowChange
-  });
+  // Get all shops (excluding the primary shop) if subscription is ready
+  if (merchantShopSub.ready()) {
+    const shops = Shops.find({
+      _id: {
+        $nin: [Reaction.getPrimaryShopId()]
+      }
+    }).fetch();
+
+    onData(null, {
+      shops,
+      onWorkflowChange
+    });
+  }
 };
 
 registerComponent("MarketplaceShops", MarketplaceShops, composeWithTracker(composer));
