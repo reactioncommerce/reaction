@@ -20,7 +20,7 @@ const Translation = ({ i18nKey, defaultValue, ...rest }) => {
   // This checks to see if translation is undefined and returns the default value instead
   if (typeof translation === "undefined") {
     return (
-      <span {... rest}>{defaultValue}</span>
+      <span {...rest}>{defaultValue}</span>
     );
   }
 
