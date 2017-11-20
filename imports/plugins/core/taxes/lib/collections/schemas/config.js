@@ -1,4 +1,6 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { Taxes } from "./taxes";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
@@ -7,8 +9,9 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 * TaxPackageConfig Schema
 */
 
-export const TaxPackageConfig = new SimpleSchema([
-  PackageConfig, {
+export const TaxPackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
+  .extend(PackageConfig)
+  .extend({
     "settings.defaultTaxCode": {
       type: String,
       optional: true
@@ -23,7 +26,8 @@ export const TaxPackageConfig = new SimpleSchema([
     },
     "settings.rates": {
       type: Object,
-      optional: true
+      optional: true,
+      defaultValue: {}
     },
     "settings.rates.enabled": {
       type: Boolean,
@@ -31,10 +35,12 @@ export const TaxPackageConfig = new SimpleSchema([
       defaultValue: false
     },
     "settings.rates.taxes": {
-      type: [Taxes],
+      type: Array,
       optional: true
+    },
+    "settings.rates.taxes.$": {
+      type: Taxes
     }
-  }
-]);
+  });
 
 registerSchema("TaxPackageConfig", TaxPackageConfig);

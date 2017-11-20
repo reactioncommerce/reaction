@@ -1,4 +1,6 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "/imports/plugins/core/collections";
 
@@ -19,35 +21,37 @@ import { registerSchema } from "/imports/plugins/core/collections";
  * @property {String} description Shopify webhook description, currently unused
  */
 const Webhook = new SimpleSchema({
-  shopifyId: {
-    type: Number,
-    label: "Shopify webhook ID",
-    decimal: false
+  "shopifyId": {
+    type: SimpleSchema.Integer,
+    label: "Shopify webhook ID"
   },
-  topic: {
+  "topic": {
     type: String,
     label: "Shopify webhook topic"
   },
-  address: {
+  "address": {
     type: String,
     label: "URL webhook will POST to"
   },
-  format: {
+  "format": {
     type: String,
     label: "Format of webhook data"
   },
-  integrations: {
-    type: [String],
+  "integrations": {
+    type: Array,
     label: "Integrations currently using this webhook",
     optional: true
   },
+  "integrations.$": {
+    type: String
+  },
   // Currently unused, might want it later
-  description: {
+  "description": {
     type: String,
     label: "Shopify webhook description",
     optional: true
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("Webhook", Webhook);
 
@@ -60,8 +64,9 @@ registerSchema("Webhook", Webhook);
  * @property {String} settings.shopName Shop slug
  * @property {Array} settings.webhooks Array of registered Shopify webhooks
  */
-export const ShopifyConnectPackageConfig = new SimpleSchema([
-  PackageConfig, {
+export const ShopifyConnectPackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
+  .extend(PackageConfig)
+  .extend({
     "settings.apiKey": {
       type: String,
       label: "API key",
@@ -83,11 +88,13 @@ export const ShopifyConnectPackageConfig = new SimpleSchema([
       optional: true
     },
     "settings.webhooks": {
-      type: [Webhook],
+      type: Array,
       label: "Registered Shopify webhooks",
       optional: true
+    },
+    "settings.webhooks.$": {
+      type: Webhook
     }
-  }
-]);
+  });
 
 registerSchema("ShopifyConnectPackageConfig", ShopifyConnectPackageConfig);

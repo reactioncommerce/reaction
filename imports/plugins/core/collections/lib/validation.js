@@ -46,9 +46,9 @@ class Validation {
     const isValid = this.validationContext.validate(cleanedObject);
 
     // Avoiding the reactive-stuff built into simple-schema, grab invalid
-    // keys from the private var _invalidKeys, and create a new object with
+    // keys from the private var _validationErrors, and create a new object with
     // the validation error and message.
-    this.validationContext._invalidKeys
+    this.validationContext._validationErrors
       .forEach((validationError) => {
         messages[validationError.name] = {
           ...validationError,

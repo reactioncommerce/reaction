@@ -1,4 +1,6 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { Shop } from "/lib/collections/schemas/shops.js";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
@@ -12,30 +14,27 @@ export const ShopTypes = new SimpleSchema({
     type: Boolean,
     defaultValue: false
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("ShopTypes", ShopTypes);
 
 export const EnabledPackagesByShopType = new SimpleSchema({
-  shopType: {
-    type: String
-  },
-  enabledPackages: {
-    type: [String]
-  }
-});
+  shopType: String,
+  enabledPackages: [String]
+}, { check, tracker: Tracker });
 
 registerSchema("EnabledPackagesByShopType", EnabledPackagesByShopType);
 
-export const MarketplacePackageConfig = new SimpleSchema([
-  PackageConfig, {
+export const MarketplacePackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
+  .extend(PackageConfig)
+  .extend({
     "settings.thirdPartyLogistics": {
       type: Object,
       blackbox: true,
       optional: true
     },
     "settings.shops.enabledShopTypes": {
-      type: [ShopTypes],
+      type: Array,
       defaultValue: [{
         shopType: "merchant",
         active: true
@@ -44,9 +43,15 @@ export const MarketplacePackageConfig = new SimpleSchema([
         active: false
       }]
     },
+    "settings.shops.enabledShopTypes.$": {
+      type: ShopTypes
+    },
     "settings.shops.enabledPackagesByShopTypes": {
-      type: [EnabledPackagesByShopType],
+      type: Array,
       optional: true
+    },
+    "settings.shops.enabledPackagesByShopTypes.$": {
+      type: EnabledPackagesByShopType
     },
     "settings.payoutMethod": {
       type: Object,
@@ -55,7 +60,8 @@ export const MarketplacePackageConfig = new SimpleSchema([
     },
     "settings.public": {
       type: Object,
-      optional: true
+      optional: true,
+      defaultValue: {}
     },
     // if true, any user can create a shop
     // if false, shop owners must be invited via Accounts panel
@@ -116,21 +122,20 @@ export const MarketplacePackageConfig = new SimpleSchema([
       type: Boolean,
       defaultValue: false
     }
-  }
-]);
+  });
 
 registerSchema("MarketplacePackageConfig", MarketplacePackageConfig);
 
 /**
  * Seller Shop Schema
  */
-export const SellerShop = new SimpleSchema([
-  Shop, {
+export const SellerShop = new SimpleSchema({}, { check, tracker: Tracker })
+  .extend(Shop)
+  .extend({
     stripeConnectSettings: {
       type: Object,
       optional: true
     }
-  }
-]);
+  });
 
 registerSchema("SellerShop", SellerShop);

@@ -104,7 +104,7 @@ Meteor.methods({
   },
 
   "authnet/payment/capture": function (paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    PaymentMethod.validate(paymentMethod);
     const {
       transactionId,
       amount
@@ -166,7 +166,7 @@ Meteor.methods({
   },
 
   "authnet/refund/create": function (paymentMethod, amount) {
-    check(paymentMethod, PaymentMethod);
+    PaymentMethod.validate(paymentMethod);
     check(amount, Number);
     const result = {
       saved: false,

@@ -11,27 +11,19 @@ Migrations.add({
 
     Orders.update({}, {
       $set: { "billing.0.shopId": shopId }
-    }, {
-      multi: true
-    });
+    }, { bypassCollection2: true, multi: true });
 
     Cart.update({}, {
       $set: { "billing.0.shopId": shopId }
-    }, {
-      multi: true
-    });
+    }, { bypassCollection2: true, multi: true });
   },
   down() {
     Orders.update({}, {
       $unset: { "billing.0.shopId": "" }
-    }, {
-      multi: true
-    });
+    }, { bypassCollection2: true, multi: true });
 
     Cart.update({}, {
       $set: { "billing.0.shopId": "" }
-    }, {
-      multi: true
-    });
+    }, { bypassCollection2: true, multi: true });
   }
 });

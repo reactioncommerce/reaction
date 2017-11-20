@@ -8,13 +8,13 @@ Migrations.add({
       $set: {
         isVisible: true
       }
-    }, { multi: true });
+    }, { bypassCollection2: true, multi: true });
   },
   down() {
     Tags.update({}, {
       $unset: {
         isVisible: null
       }
-    }, { multi: true });
+    }, { bypassCollection2: true, multi: true });
   }
 });

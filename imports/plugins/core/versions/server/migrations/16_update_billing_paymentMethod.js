@@ -40,7 +40,7 @@ Migrations.add({
 
       Orders.update({ _id: order._id }, {
         $set: { billing: newBilling }
-      });
+      }, { bypassCollection2: true });
     });
   },
   down() {
@@ -51,9 +51,9 @@ Migrations.add({
         delete billing.paymentMethod.shopId;
         delete billing.paymentMethod.items;
       });
-      Orders._collection.update({ _id: order._id }, {
+      Orders.update({ _id: order._id }, {
         $set: { items: order.billing }
-      });
+      }, { bypassCollection2: true });
     });
   }
 });

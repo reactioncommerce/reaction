@@ -41,7 +41,7 @@ function updateHandler(oldValue, newValue) {
     if (changed) {
       Packages.update(pkg._id, {
         $set: { layout: pkg.layout }
-      });
+      }, { bypassCollection2: true });
     }
   };
 }

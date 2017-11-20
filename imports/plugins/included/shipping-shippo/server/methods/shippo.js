@@ -203,7 +203,7 @@ export const methods = {
    */
   "shippo/updateApiKey"(modifier, _id) {
     // Important server-side check for security and data integrity
-    check(modifier, ShippoPackageConfig);
+    ShippoPackageConfig.validate(modifier);
     check(_id, String);
 
     // Make sure user has proper rights to this package

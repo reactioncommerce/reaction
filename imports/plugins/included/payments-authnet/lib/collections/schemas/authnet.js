@@ -1,4 +1,6 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
@@ -11,8 +13,9 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
  *   see: https://github.com/authnet/rest-api-sdk-nodejs
  */
 
-export const AuthNetPackageConfig = new SimpleSchema([
-  PackageConfig, {
+export const AuthNetPackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
+  .extend(PackageConfig)
+  .extend({
     "settings.mode": {
       type: Boolean,
       defaultValue: false
@@ -35,8 +38,7 @@ export const AuthNetPackageConfig = new SimpleSchema([
       label: "Transaction Key",
       min: 60
     }
-  }
-]);
+  });
 
 registerSchema("AuthNetPackageConfig", AuthNetPackageConfig);
 
@@ -66,6 +68,6 @@ export const AuthNetPayment = new SimpleSchema({
     label: "CVV",
     max: 4
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("AuthNetPayment", AuthNetPayment);

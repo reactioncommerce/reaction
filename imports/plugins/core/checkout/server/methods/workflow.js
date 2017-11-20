@@ -269,7 +269,7 @@ Meteor.methods({
   "workflow/pushOrderWorkflow": function (workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    check(order, Object); // TODO: Validatate as Schemas.Order
+    Reaction.Schemas.Order.validate(order);
     this.unblock();
 
     const workflowStatus = `${workflow}/${status}`;
@@ -304,7 +304,7 @@ Meteor.methods({
   "workflow/pullOrderWorkflow": function (workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    check(order, Object);
+    Reaction.Schemas.Order.validate(order);
     this.unblock();
 
     const result = Orders.update({
@@ -332,7 +332,7 @@ Meteor.methods({
    */
   "workflow/pushItemWorkflow": function (status, order, itemIds) {
     check(status, String);
-    check(order, Object);
+    Reaction.Schemas.Order.validate(order);
     check(itemIds, Array);
 
     const items = order.items.map((item) => {

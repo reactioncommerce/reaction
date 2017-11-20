@@ -4,7 +4,7 @@ import { Tracker } from "meteor/tracker";
 import { Accounts } from "meteor/accounts-base";
 
 import { Reaction, Logger } from "/client/api";
-
+import { userPrefs } from "./main";
 
 const cookieName = "_RcFallbackLoginToken";
 
@@ -15,8 +15,9 @@ const cookieName = "_RcFallbackLoginToken";
 Meteor.startup(function () {
   // init the core
   Reaction.init();
+
   // initialize anonymous guest users
-  return Tracker.autorun(function () {
+  Tracker.autorun(function () {
     const userId = Meteor.userId();
 
     if (userId && !isLocalStorageAvailable() && !readCookie(cookieName)) {
@@ -52,6 +53,15 @@ Meteor.startup(function () {
         }
       }
     }
+  });
+
+  // Set up an autorun to get fine-grained reactivity on only the
+  // user preferences
+  Tracker.autorun(function () {
+    const userId = Meteor.userId();
+    if (!userId) return;
+    const user = Meteor.users.findOne(userId, { fields: { profile: 1 } });
+    userPrefs.set(user && user.profile && user.profile.preferences || undefined);
   });
 });
 

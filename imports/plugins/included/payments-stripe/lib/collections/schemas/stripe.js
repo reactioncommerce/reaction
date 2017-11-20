@@ -1,4 +1,6 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 /*
@@ -30,12 +32,13 @@ const StripeConnectAuthorizationCredentials = new SimpleSchema({
   access_token: { // eslint-disable-line camelcase
     type: String
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("StripeConnectAuthorizationCredentials", StripeConnectAuthorizationCredentials);
 
-export const StripePackageConfig = new SimpleSchema([
-  PackageConfig, {
+export const StripePackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
+  .extend(PackageConfig)
+  .extend({
     "settings.mode": {
       type: Boolean,
       defaultValue: false
@@ -71,8 +74,7 @@ export const StripePackageConfig = new SimpleSchema([
       label: "Public Client ID",
       optional: true
     }
-  }
-]);
+  });
 
 registerSchema("StripePackageConfig", StripePackageConfig);
 
@@ -102,6 +104,6 @@ export const StripePayment = new SimpleSchema({
     max: 4,
     label: "CVV"
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("StripePayment", StripePayment);

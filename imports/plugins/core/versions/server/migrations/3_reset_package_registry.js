@@ -11,7 +11,7 @@ Migrations.add({
           registry: []
         }
       },
-      { multi: true }
+      { bypassCollection2: true, multi: true }
     );
     Reaction.loadPackages();
     Reaction.Import.flush();

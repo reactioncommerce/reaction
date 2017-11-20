@@ -112,7 +112,7 @@ Meteor.methods({
    * @return {Object} results normalized
    */
   "example/payment/capture": function (paymentData) {
-    check(paymentData, Reaction.Schemas.PaymentMethod);
+    Reaction.Schemas.PaymentMethod.validate(paymentData);
     const authorizationId = paymentData.transactionId;
     const amount = paymentData.amount;
     const response = ExampleApi.methods.capture.call({
@@ -133,7 +133,7 @@ Meteor.methods({
    * @return {Object} result
    */
   "example/refund/create": function (paymentMethod, amount) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
     check(amount, Number);
     const { transactionId } = paymentMethod;
     const response = ExampleApi.methods.refund.call({
@@ -153,7 +153,7 @@ Meteor.methods({
    * @return {Object} result
    */
   "example/refund/list": function (paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
     const { transactionId } = paymentMethod;
     const response = ExampleApi.methods.refunds.call({
       transactionId: transactionId

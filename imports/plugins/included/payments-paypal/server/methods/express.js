@@ -149,7 +149,7 @@ export const methods = {
    * @return {Object} results from PayPal normalized
    */
   "paypalexpress/payment/capture": function (paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
     this.unblock();
     const options = PayPal.expressCheckoutAccountOptions();
     const amount = accounting.toFixed(paymentMethod.amount, 2);
@@ -225,7 +225,7 @@ export const methods = {
    * @return {Object} Transaction results from PayPal normalized
    */
   "paypalexpress/refund/create": function (paymentMethod, amount) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
     check(amount, Number);
     this.unblock();
 
@@ -292,7 +292,7 @@ export const methods = {
    * @return {array}  Refunds from PayPal query, normalized
    */
   "paypalexpress/refund/list": function (paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
     this.unblock();
 
     const options = PayPal.expressCheckoutAccountOptions();

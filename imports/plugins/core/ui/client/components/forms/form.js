@@ -64,7 +64,7 @@ class Form extends Component {
   }
 
   get schema() {
-    return this.props.schema._schema;
+    return this.props.schema.mergedSchema();
   }
 
   valueForField(fieldName) {
@@ -184,7 +184,7 @@ class Form extends Component {
     let fieldHasError = false;
 
     if (this.state.isValid === false) {
-      this.state.schema._invalidKeys
+      this.state.schema.validationErrors()
         .filter((v) => v.name === field.name)
         .map((validationError) => {
           const message = this.state.schema.keyErrorMessage(validationError.name);

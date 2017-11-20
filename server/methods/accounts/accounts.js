@@ -320,7 +320,7 @@ function currentUserHasPassword() {
  * @return {Object} with keys `numberAffected` and `insertedId` if doc was inserted
  */
 export function addressBookAdd(address, accountUserId) {
-  check(address, Schemas.Address);
+  Schemas.Address.validate(address);
   check(accountUserId, Match.Optional(String));
   // security, check for admin access. We don't need to check every user call
   // here because we are calling `Meteor.userId` from within this Method.
@@ -414,7 +414,7 @@ export function addressBookAdd(address, accountUserId) {
  * @return {Number} The number of affected documents
  */
 export function addressBookUpdate(address, accountUserId, type) {
-  check(address, Schemas.Address);
+  Schemas.Address.validate(address);
   check(accountUserId, Match.OneOf(String, null, undefined));
   check(type, Match.Optional(String));
   // security, check for admin access. We don't need to check every user call

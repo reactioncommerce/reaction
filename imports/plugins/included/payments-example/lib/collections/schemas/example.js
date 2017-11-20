@@ -1,9 +1,12 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
-export const ExamplePackageConfig = new SimpleSchema([
-  PackageConfig, {
+export const ExamplePackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
+  .extend(PackageConfig)
+  .extend({
     "settings.mode": {
       type: Boolean,
       defaultValue: true
@@ -13,8 +16,7 @@ export const ExamplePackageConfig = new SimpleSchema([
       label: "API Key",
       optional: true
     }
-  }
-]);
+  });
 
 registerSchema("ExamplePackageConfig", ExamplePackageConfig);
 
@@ -44,6 +46,6 @@ export const ExamplePayment = new SimpleSchema({
     max: 4,
     label: "CVV"
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("ExamplePayment", ExamplePayment);

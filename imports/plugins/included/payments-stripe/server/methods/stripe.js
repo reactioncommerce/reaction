@@ -420,7 +420,7 @@ export const methods = {
    * @return {Object} results from Stripe normalized
    */
   "stripe/payment/capture": function (paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
 
     const captureDetails = {
       amount: formatForStripe(paymentMethod.amount)
@@ -446,7 +446,7 @@ export const methods = {
    * @return {Object} result
    */
   "stripe/refund/create": function (paymentMethod, amount, reason = "requested_by_customer") {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
     check(amount, Number);
     check(reason, String);
 
@@ -486,7 +486,7 @@ export const methods = {
    * @return {Object} result
    */
   "stripe/refund/list": function (paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
     const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
     const stripe = stripeNpm(stripeKey);
     let refundListResults;

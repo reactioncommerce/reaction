@@ -50,7 +50,7 @@ export function paymentSubmit(transactionType, cardData, paymentData) {
  * @return {Object} results from PayPal normalized
  */
 export function paymentCapture(paymentMethod) {
-  check(paymentMethod, PaymentMethod);
+  PaymentMethod.validate(paymentMethod);
 
   const paymentCaptureDetails = {
     authorizationId: paymentMethod.metadata.authorizationId,
@@ -84,7 +84,7 @@ export function paymentCapture(paymentMethod) {
  * @return {Object} results - Object containing the results of the transaction
  */
 export function createRefund(paymentMethod, amount) {
-  check(paymentMethod, PaymentMethod);
+  PaymentMethod.validate(paymentMethod);
   check(amount, Number);
 
   const refundDetails = {
@@ -119,7 +119,7 @@ export function createRefund(paymentMethod, amount) {
  * @return {Array} results - An array of refund objects for display in admin
  */
 export function listRefunds(paymentMethod) {
-  check(paymentMethod, PaymentMethod);
+  PaymentMethod.validate(paymentMethod);
 
   const refundListDetails = {
     transactionId: paymentMethod.metadata.transactionId

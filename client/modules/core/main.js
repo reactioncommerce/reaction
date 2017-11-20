@@ -17,6 +17,8 @@ import { Router } from "/client/modules/router";
 // access using `Reaction.state`
 const reactionState = new ReactiveDict();
 
+export const userPrefs = new ReactiveVar(undefined, (val, newVal) => JSON.stringify(val) === JSON.stringify(newVal));
+
 /**
  * Reaction namespace
  * Global reaction shop permissions methods and shop initialization
@@ -387,27 +389,18 @@ export default {
   },
 
   getUserPreferences(packageName, preference, defaultValue) {
-    const user = Meteor.user();
-
-    if (user) {
-      const profile = Meteor.user().profile;
-      if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
-        return profile.preferences[packageName][preference];
-      }
-    }
-
-    return defaultValue || undefined;
+    const prefs = userPrefs.get();
+    return prefs && prefs[packageName] && prefs[packageName][preference] || defaultValue || undefined;
   },
 
   setUserPreferences(packageName, preference, value) {
-    if (Meteor.user()) {
-      return Meteor.users.update(Meteor.userId(), {
-        $set: {
-          [`profile.preferences.${packageName}.${preference}`]: value
-        }
-      });
-    }
-    return false;
+    const userId = Meteor.userId();
+    if (!userId) return false;
+    return Meteor.users.update(userId, {
+      $set: {
+        [`profile.preferences.${packageName}.${preference}`]: value
+      }
+    });
   },
 
   updateUserPreferences(packageName, preference, values) {

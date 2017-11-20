@@ -1,9 +1,12 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
-export const PaypalPackageConfig = new SimpleSchema([
-  PackageConfig, {
+export const PaypalPackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
+  .extend(PackageConfig)
+  .extend({
     "settings.expressAuthAndCapture": {
       type: Boolean,
       label: "Capture at time of Auth",
@@ -69,8 +72,7 @@ export const PaypalPackageConfig = new SimpleSchema([
       type: Boolean,
       defaultValue: false
     }
-  }
-]);
+  });
 
 registerSchema("PaypalPackageConfig", PaypalPackageConfig);
 
@@ -100,6 +102,6 @@ export const PaypalPayment = new SimpleSchema({
     max: 4,
     label: "CVV"
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("PaypalPayment", PaypalPayment);

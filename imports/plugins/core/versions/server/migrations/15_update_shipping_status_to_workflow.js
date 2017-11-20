@@ -53,7 +53,7 @@ Migrations.add({
 
       Orders.update({ _id: order._id }, {
         $set: { "shipping.0": currentShipping }
-      });
+      }, { bypassCollection2: true });
     });
   },
   down: function () {
@@ -81,7 +81,7 @@ Migrations.add({
 
       Orders.update({ _id: order._id }, {
         $set: { "shipping.0": currentShipping }
-      });
+      }, { bypassCollection2: true });
     });
   }
 });

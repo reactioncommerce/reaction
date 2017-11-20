@@ -2,7 +2,6 @@ import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Reaction, Logger } from "/client/api";
 import { Shops, Accounts } from "/lib/collections";
-import { currencyDep } from "./main";
 
 /**
  * @name findCurrency
@@ -12,33 +11,23 @@ import { currencyDep } from "./main";
  * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
  * @return {Object}  user currency or shop currency if none is found
  */
-function findCurrency(defaultCurrency, useDefaultShopCurrency) {
-  const shop = Shops.findOne(Reaction.getPrimaryShopId(), {
-    fields: {
-      currencies: 1,
-      currency: 1
-    }
-  });
+function findCurrency(user, shop, defaultCurrency, useDefaultShopCurrency) {
+  if (!shop) return "USD";
 
-  const shopCurrency = shop && shop.currency || "USD";
-  const user = Accounts.findOne({
-    _id: Meteor.userId()
-  });
+  const shopCurrency = shop.currency || "USD";
   const profileCurrency = user && user.profile && user.profile.currency;
-  if (typeof shop === "object" && shop.currencies && profileCurrency) {
-    let userCurrency = {};
-    if (shop.currencies[profileCurrency]) {
-      if (useDefaultShopCurrency) {
-        userCurrency = shop.currencies[shop.currency];
-        userCurrency.exchangeRate = 1;
-      } else {
-        userCurrency = shop.currencies[profileCurrency];
-        userCurrency.exchangeRate = shop.currencies[profileCurrency].rate;
-      }
-    }
-    return userCurrency;
+
+  if (!profileCurrency || !shop.currencies) return shopCurrency;
+
+  let userCurrency = {};
+  if (useDefaultShopCurrency || !shop.currencies[profileCurrency]) {
+    userCurrency = shop.currencies[shop.currency];
+    userCurrency.exchangeRate = 1;
+  } else {
+    userCurrency = shop.currencies[profileCurrency];
+    userCurrency.exchangeRate = shop.currencies[profileCurrency].rate;
   }
-  return shopCurrency;
+  return userCurrency;
 }
 
 /**
@@ -51,6 +40,24 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
  * @return {String} returns locale formatted and exchange rate converted values
  */
 export function formatPriceString(formatPrice, useDefaultShopCurrency) {
+  if (typeof formatPrice !== "string" && typeof formatPrice !== "number") {
+    return false;
+  }
+
+  // Call all reactive dependencies right away to be sure they are registered in case we return early
+  const userId = Meteor.userId();
+  // Rerun on changes to the "profile" object only
+  const user = userId && Accounts.findOne(userId, { fields: { profile: 1 } });
+  const shopId = Reaction.getPrimaryShopId();
+  // Rerun on changes to the "currencies" and "currency" fields only
+  const shop = shopId && Shops.findOne(shopId, {
+    fields: {
+      currencies: 1,
+      currency: 1
+    }
+  });
+  const locale = Reaction.Locale.get();
+
   let defaultShopCurrency = useDefaultShopCurrency;
 
   // in case useDefaultShopCurrency is a Spacebars.kw we have this check
@@ -58,20 +65,13 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
     defaultShopCurrency = false;
   }
 
-  currencyDep.depend();
-  const locale = Reaction.Locale.get();
-
   if (typeof locale !== "object" || typeof locale.currency !== "object") {
     // locale not yet loaded, so we don"t need to return anything.
     return false;
   }
 
-  if (typeof formatPrice !== "string" && typeof formatPrice !== "number") {
-    return false;
-  }
-
   // get user currency instead of locale currency
-  const userCurrency = findCurrency(locale.currency, defaultShopCurrency);
+  const userCurrency = findCurrency(user, shop, locale.currency, defaultShopCurrency);
 
   // for the cases then we have only one price. It is a number.
   const currentPrice = formatPrice.toString();

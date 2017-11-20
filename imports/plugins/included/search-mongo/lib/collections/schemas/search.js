@@ -1,16 +1,19 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
-export const SearchPackageConfig = new SimpleSchema([
-  PackageConfig, {
+export const SearchPackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
+  .extend(PackageConfig)
+  .extend({
     "settings.products.includes.title": {
       type: Boolean,
       defaultValue: true,
       label: "Include title"
     },
     "settings.products.weights.title": {
-      type: Number,
+      type: SimpleSchema.Integer,
       label: "Title weight",
       defaultValue: 10,
       max: 10,
@@ -22,7 +25,7 @@ export const SearchPackageConfig = new SimpleSchema([
       defaultValue: true
     },
     "settings.products.weights.description": {
-      type: Number,
+      type: SimpleSchema.Integer,
       label: "Desc. weight",
       defaultValue: 5,
       max: 10,
@@ -34,7 +37,7 @@ export const SearchPackageConfig = new SimpleSchema([
       defaultValue: false
     },
     "settings.products.weights.pageTitle": {
-      type: Number,
+      type: SimpleSchema.Integer,
       label: "Page title weight",
       defaultValue: 2,
       max: 10,
@@ -46,7 +49,7 @@ export const SearchPackageConfig = new SimpleSchema([
       defaultValue: true
     },
     "settings.products.weights.metafields": {
-      type: Number,
+      type: SimpleSchema.Integer,
       label: "Details weight",
       defaultValue: 6,
       max: 10,
@@ -58,13 +61,12 @@ export const SearchPackageConfig = new SimpleSchema([
       defaultValue: true
     },
     "settings.products.weights.vendor": {
-      type: Number,
+      type: SimpleSchema.Integer,
       label: "Vendor weight",
       defaultValue: 6,
       max: 10,
       min: 1
     }
-  }
-]);
+  });
 
 registerSchema("SearchPackageConfig", SearchPackageConfig);

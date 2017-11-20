@@ -5,13 +5,10 @@ accounts-oauth@1.1.15
 accounts-password@1.5.0
 accounts-twitter@1.4.0
 alanning:roles@1.2.16
-aldeed:autoform@5.8.1
+aldeed:autoform@6.2.0
 aldeed:browser-tests@0.1.1
-aldeed:collection2@2.10.0
-aldeed:collection2-core@1.2.0
-aldeed:schema-deny@1.1.0
-aldeed:schema-index@1.1.1
-aldeed:simple-schema@1.5.3
+aldeed:collection2-core@2.0.4
+aldeed:schema-index@2.0.0
 aldeed:template-extension@4.1.0
 allow-deny@1.1.0
 audit-argument-checks@1.0.7

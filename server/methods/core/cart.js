@@ -227,7 +227,7 @@ Meteor.methods({
 
     // `checkoutLogin` should be used for anonymous only. Registered users
     // no need see this.
-    if (currentCart.workflow.status === "new") {
+    if (currentCart.workflow && currentCart.workflow.status === "new") {
       // to call `workflow/pushCartWorkflow` two times is the only way to move
       // from status "new" to "checkoutAddressBook" which I found without
       // refactoring of `workflow/pushCartWorkflow`
@@ -412,7 +412,7 @@ Meteor.methods({
       }, function (error, result) {
         if (error) {
           Logger.warn("error adding to cart",
-            Collections.Cart.simpleSchema().namedContext().invalidKeys());
+            Collections.Cart.simpleSchema().namedContext().validationErrors());
           return error;
         }
 
@@ -465,7 +465,7 @@ Meteor.methods({
     }, function (error, result) {
       if (error) {
         Logger.error(error);
-        Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(),
+        Logger.error(Collections.Cart.simpleSchema().namedContext().validationErrors(),
           "Invalid keys. Error adding to cart.");
         return error;
       }
@@ -530,7 +530,7 @@ Meteor.methods({
       }, (error, result) => {
         if (error) {
           Logger.error(error);
-          Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(), "error removing from cart");
+          Logger.error(Collections.Cart.simpleSchema().namedContext().validationErrors(), "error removing from cart");
           return error;
         }
         Logger.debug(`cart: deleted cart item variant id ${cartItem.variants._id}`);
@@ -561,7 +561,7 @@ Meteor.methods({
     }, (error, result) => {
       if (error) {
         Logger.error(error);
-        Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(),
+        Logger.error(Collections.Cart.simpleSchema().namedContext().validationErrors(),
           "error removing from cart");
         return error;
       }
@@ -741,7 +741,7 @@ Meteor.methods({
    */
   "cart/setShipmentAddress": function (cartId, address) {
     check(cartId, String);
-    check(address, Reaction.Schemas.Address);
+    Reaction.Schemas.Address.validate(address);
 
     const cart = Collections.Cart.findOne({
       _id: cartId,
@@ -886,7 +886,7 @@ Meteor.methods({
    */
   "cart/setPaymentAddress": function (cartId, address) {
     check(cartId, String);
-    check(address, Reaction.Schemas.Address);
+    Reaction.Schemas.Address.validate(address);
 
     const cart = Collections.Cart.findOne({
       _id: cartId,
@@ -1006,12 +1006,7 @@ Meteor.methods({
    * @return {String} returns update result
    */
   "cart/submitPayment": function (paymentMethods) {
-    if (Array.isArray((paymentMethods))) {
-      check(paymentMethods, [Reaction.Schemas.PaymentMethod]);
-    } else {
-      check(paymentMethods, Reaction.Schemas.PaymentMethod);
-    }
-
+    Reaction.Schemas.PaymentMethod.validate(paymentMethods);
 
     const cart = Collections.Cart.findOne({
       userId: Meteor.userId()

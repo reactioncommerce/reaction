@@ -12,7 +12,7 @@ Migrations.add({
         });
         Cart.update({ _id: cart._id }, {
           $set: { items: cart.items }
-        });
+        }, { bypassCollection2: true });
       }
     });
 
@@ -23,7 +23,7 @@ Migrations.add({
       });
       Orders.update({ _id: order._id }, {
         $set: { items: order.items }
-      });
+      }, { bypassCollection2: true });
     });
   },
   // Going down, we remove the product object on each item in cart and order
@@ -33,9 +33,9 @@ Migrations.add({
         cart.items.forEach((item) => {
           delete item.product;
         });
-        Cart._collection.update({ _id: cart._id }, {
+        Cart.update({ _id: cart._id }, {
           $set: { items: cart.items }
-        });
+        }, { bypassCollection2: true });
       }
     });
 
@@ -43,9 +43,9 @@ Migrations.add({
       order.items.forEach((item) => {
         delete item.product;
       });
-      Orders._collection.update({ _id: order._id }, {
+      Orders.update({ _id: order._id }, {
         $set: { items: order.items }
-      });
+      }, { bypassCollection2: true });
     });
   }
 });

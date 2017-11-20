@@ -17,12 +17,15 @@ class ProductPublishContainer extends Component {
   }
 
   handleVisibilityChange = (event, isProductVisible) => {
+    const { product } = this.props;
+    if (!product) return;
+
     // Update main product
-    Meteor.call("products/updateProductField", this.props.product._id, "isVisible", isProductVisible);
+    Meteor.call("products/updateProductField", product._id, "isVisible", isProductVisible);
 
     const variants = Products.find({
       ancestors: {
-        $in: [this.props.product._id]
+        $in: [product._id]
       }
     }).fetch();
 
@@ -39,13 +42,16 @@ class ProductPublishContainer extends Component {
   }
 
   handlePublishSuccess = (result) => {
-    if (result && result.status === "success" && this.props.product) {
-      const productDocument = result.previousDocuments.find((product) => this.props.product._id === product._id);
+    const { product } = this.props;
+    if (!product) return;
 
-      if (productDocument && this.props.product.handle !== productDocument.handle) {
+    if (result && result.status === "success") {
+      const productDocument = result.previousDocuments.find((p) => product._id === p._id);
+
+      if (productDocument && product.handle !== productDocument.handle) {
         const newProductPath = Router.pathFor("product", {
           hash: {
-            handle: this.props.product.handle
+            handle: product.handle
           }
         });
 

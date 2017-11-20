@@ -288,7 +288,7 @@ export const methods = {
     }
     this.unblock();
     let cart = Cart.findOne(cartId);
-    check(cart, CartSchema);
+    CartSchema.validate(cart);
 
     if (cart) {
       if (!cart.shipping || cart.shipping.length === 0) {
@@ -309,7 +309,7 @@ export const methods = {
    * @return {Array} return updated rates in cart
    */
   "shipping/getShippingRates": function (cart) {
-    check(cart, CartSchema);
+    CartSchema.validate(cart);
     const rates = [];
     const retrialTargets = [];
     // must have items to calculate shipping

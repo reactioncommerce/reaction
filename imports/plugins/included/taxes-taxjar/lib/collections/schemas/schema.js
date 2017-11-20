@@ -1,4 +1,6 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { TaxPackageConfig } from "/imports/plugins/core/taxes/lib/collections/schemas";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
@@ -6,11 +8,13 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 * TaxPackageConfig Schema
 */
 
-export const TaxJarPackageConfig = new SimpleSchema([
-  TaxPackageConfig, {
+export const TaxJarPackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
+  .extend(TaxPackageConfig)
+  .extend({
     "settings.taxjar": {
       type: Object,
-      optional: true
+      optional: true,
+      defaultValue: {}
     },
     "settings.taxjar.enabled": {
       type: Boolean,
@@ -22,7 +26,6 @@ export const TaxJarPackageConfig = new SimpleSchema([
       label: "TaxJar API Login ID",
       optional: true
     }
-  }
-]);
+  });
 
 registerSchema("TaxJarPackageConfig", TaxJarPackageConfig);

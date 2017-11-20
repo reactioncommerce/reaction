@@ -6,7 +6,6 @@ import { MongoInternals } from "meteor/mongo";
 import * as Collections from "/lib/collections";
 import Hooks from "../hooks";
 import { Logger } from "../logger";
-import doRightJoinNoIntersection from "./rightJoin";
 
 /**
  * @file Exposes the Import object implementing methods for bulk imports.
@@ -17,7 +16,6 @@ import doRightJoinNoIntersection from "./rightJoin";
 export const Import = {};
 
 Import._buffers = {};
-Import._contexts = {};
 Import._count = {};
 Import._indications = {};
 Import._limit = 1000;
@@ -180,7 +178,7 @@ Import.flush = function (collection) {
  * @summary Get a validation context for a given collection.
  * @param {Mongo.Collection} collection The target collection
  * @param {Object} [selector] A selector object to retrieve the correct schema.
- * @returns {SimpleSchemaValidationContext} A validation context.
+ * @returns {SimpleSchema.ValidationContext} A validation context.
  *
  * The validation context is requested from the schema associated with the
  * collection.
@@ -194,12 +192,7 @@ Import.context = function (collection, selector) {
   if (selector && selector.type) {
     name = `${name}_${selector.type}`;
   }
-  // Construct a new validation context if necessary.
-  if (this._contexts[name]) {
-    return this._contexts[name];
-  }
-  this._contexts[name] = collection.simpleSchema(selector).newContext();
-  return this._contexts[name];
+  return collection.simpleSchema(selector).namedContext(name);
 };
 
 /**
@@ -400,7 +393,6 @@ Import.object = function (collection, key, object) {
   check(collection, Mongo.Collection);
   check(key, Object);
   check(object, Object);
-  const updateObject = object;
 
   // enforce strings instead of Mongo.ObjectId
   if (!collection.findOne(key) && !object._id) {
@@ -410,35 +402,26 @@ Import.object = function (collection, key, object) {
   // hooks for additional import manipulation.
   const importObject = Hooks.Events.run(`onImport${this._name(collection)}`, object);
 
-  // Clone object for cleaning
-  const cleanedObject = Object.assign({}, importObject);
-
   // Cleaning the object adds default values from schema, if value doesn't exist
-  collection.simpleSchema(importObject).clean(cleanedObject);
+  const cleanedModifier = collection.simpleSchema(importObject).clean({
+    $set: importObject
+  }, {
+    isModifier: true,
+    extendAutoValueContext: { isUpsert: true }
+  });
 
   // And validate the object against the schema
-  this.context(collection, updateObject).validate(cleanedObject, {});
-
-  // Disjoint importObject and cleanedObject again
-  // to prevent `Cannot update '<field>' and '<field>' at the same time` errors
-  const defaultValuesObject = doRightJoinNoIntersection(importObject, cleanedObject);
+  this.context(collection, importObject).validate(cleanedModifier, {
+    modifier: true,
+    upsert: true
+  });
 
   // Upsert the object.
-  const find = this.buffer(collection).find(key);
-
   // With the upsert option set to true, if no matching documents exist for the Bulk.find() condition,
   // then the update or the replacement operation performs an insert.
   // https://docs.mongodb.com/manual/reference/method/Bulk.find.upsert/
-  if (Object.keys(defaultValuesObject).length === 0) {
-    find.upsert().update({
-      $set: importObject
-    });
-  } else {
-    find.upsert().update({
-      $set: importObject,
-      $setOnInsert: defaultValuesObject
-    });
-  }
+  this.buffer(collection).find(key).upsert().update(cleanedModifier);
+
   if (this._count[this._name(collection)]++ >= this._limit) {
     this.flush(collection);
   }

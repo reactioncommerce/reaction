@@ -1,4 +1,6 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { TaxPackageConfig } from "/imports/plugins/core/taxes/lib/collections/schemas";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
@@ -6,11 +8,13 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 * TaxPackageConfig Schema
 */
 
-export const AvalaraPackageConfig = new SimpleSchema([
-  TaxPackageConfig, {
+export const AvalaraPackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
+  .extend(TaxPackageConfig)
+  .extend({
     "settings.avalara": {
       type: Object,
-      optional: true
+      optional: true,
+      defaultValue: {}
     },
     "settings.avalara.enabled": {
       type: Boolean,
@@ -64,20 +68,22 @@ export const AvalaraPackageConfig = new SimpleSchema([
     },
     "settings.avalara.logRetentionDuration": {
       label: "Retain Logs Duration (Days)",
-      type: Number,
+      type: SimpleSchema.Integer,
       defaultValue: 30
     },
     "settings.avalara.requestTimeout": {
       label: "Request Timeout",
-      type: Number,
+      type: SimpleSchema.Integer,
       defaultValue: 1500
     },
     "settings.addressValidation.countryList": {
       label: "Enable Address Validation by Country",
-      type: [String],
+      type: Array,
       optional: true
+    },
+    "settings.addressValidation.countryList.$": {
+      type: String
     }
-  }
-]);
+  });
 
 registerSchema("AvalaraPackageConfig", AvalaraPackageConfig);
