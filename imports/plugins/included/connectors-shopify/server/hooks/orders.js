@@ -35,7 +35,22 @@ function convertRcOrderToShopifyOrder(order, index, shopId) {
   shopifyOrder.id = order._id;
   const itemsForShop = order.getItemsByShop()[shopId];
   shopifyOrder.line_items = convertLineItems(itemsForShop, order);
-  shopifyOrder.transactions = convertTransactions(order.billing[index].paymentMethod);
+  // Not sure if we can/should do transactions
+  // shopifyOrder.transactions = convertTransactions(order.billing[index].paymentMethod);
+  shopifyOrder.phone = order.billing[index].address.phone;
+  shopifyOrder.source_name = "reaction_export";
+  shopifyOrder.subtotal_price = order.getSubtotalByShop()[shopId];
+  shopifyOrder.token = order._id;
+  shopifyOrder.total_discounts = accounting.toFixed(order.getDiscountsByShop()[shopId], 2);
+  shopifyOrder.total_line_item_price = order.getItemsByShop()[shopId].reduce((total, item) => {
+    total + item.variants.price;
+  }, 0);
+  shopifyOrder.total_price = accounting.toFixed(order.getTotalByShop()[shopId]);
+  shopifyOrder.total_tax = order.getTaxesByShop()[shopId];
+  shopifyOrder.total_weight = shopifyOrder.line_items.reduce((sum, item) => {
+    sum + item.grams;
+  }, 0);
+  Logger.info("sending shopify order", shopifyOrder);
   return shopifyOrder;
 }
 
@@ -108,9 +123,9 @@ function convertLineItems(items, order) {
   return lineItems;
 }
 
-function convertTransactions(paymentMethod) {
-  return paymentMethod;
-}
+// function convertTransactions(paymentMethod) {
+//   return paymentMethod;
+// }
 
 function convertAddress(address) {
   const convertedAddress = {};
