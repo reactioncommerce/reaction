@@ -24,7 +24,6 @@ const Translation = ({ i18nKey, defaultValue, ...rest }) => {
     );
   }
 
-
   return (
     <span {...rest}>{translation}</span>
   );
