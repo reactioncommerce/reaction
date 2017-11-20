@@ -288,7 +288,7 @@ export const methods = {
 
     return Orders.update({
       "_id": order._id,
-      "billing.shopId": Reaction.getShopId,
+      "billing.shopId": Reaction.getShopId(),
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
@@ -395,7 +395,7 @@ export const methods = {
 
     return Orders.update({
       "_id": order._id,
-      "billing.shopId": Reaction.getShopId,
+      "billing.shopId": Reaction.getShopId(),
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
@@ -606,9 +606,9 @@ export const methods = {
     if (Array.isArray(shop.brandAssets)) {
       const brandAsset = shop.brandAssets.find((asset) => asset.type === "navbarBrandImage");
       const mediaId = Media.findOne(brandAsset.mediaId);
-      emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
+      emailLogo = path.join(Reaction.absoluteUrl(), mediaId.url());
     } else {
-      emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+      emailLogo = Reaction.absoluteUrl() + "resources/email-templates/shop-logo.png";
     }
 
     let subtotal = 0;
@@ -682,7 +682,7 @@ export const methods = {
           combinedItems.push(orderItem);
 
           // Placeholder image if there is no product image
-          orderItem.placeholderImage = Meteor.absoluteUrl() + "resources/placeholder.gif";
+          orderItem.placeholderImage = Reaction.absoluteUrl() + "resources/placeholder.gif";
 
           const variantImage = Media.findOne({
             "metadata.productId": orderItem.productId,
@@ -690,12 +690,12 @@ export const methods = {
           });
           // variant image
           if (variantImage) {
-            orderItem.variantImage = path.join(Meteor.absoluteUrl(), variantImage.url());
+            orderItem.variantImage = path.join(Reaction.absoluteUrl(), variantImage.url());
           }
           // find a default image
           const productImage = Media.findOne({ "metadata.productId": orderItem.productId });
           if (productImage) {
-            orderItem.productImage = path.join(Meteor.absoluteUrl(), productImage.url());
+            orderItem.productImage = path.join(Reaction.absoluteUrl(), productImage.url());
           }
         }
       }
@@ -705,7 +705,7 @@ export const methods = {
         // Shop Data
         shop: shop,
         contactEmail: shop.emails[0].address,
-        homepage: Meteor.absoluteUrl(),
+        homepage: Reaction.absoluteUrl(),
         emailLogo: emailLogo,
         copyrightDate: moment().format("YYYY"),
         legalName: shop.addressBook[0].company,
@@ -720,17 +720,17 @@ export const methods = {
           display: true,
           facebook: {
             display: true,
-            icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+            icon: Reaction.absoluteUrl() + "resources/email-templates/facebook-icon.png",
             link: "https://www.facebook.com"
           },
           googlePlus: {
             display: true,
-            icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+            icon: Reaction.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
             link: "https://plus.google.com"
           },
           twitter: {
             display: true,
-            icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+            icon: Reaction.absoluteUrl() + "resources/email-templates/twitter-icon.png",
             link: "https://www.twitter.com"
           }
         },

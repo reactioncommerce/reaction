@@ -378,7 +378,7 @@ taxCalc.getTaxCodes = function () {
 function cartToSalesOrder(cart) {
   const pkgData = taxCalc.getPackageData();
   const { companyCode, shippingTaxCode } = pkgData.settings.avalara;
-  const company = Shops.findOne(Reaction.getShopId());
+  const company = Reaction.getShop();
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const cartShipping = cart.getShippingTotal();
@@ -484,7 +484,7 @@ function orderToSalesInvoice(order) {
   } else {
     documentType = "SalesOrder";
   }
-  const company = Shops.findOne(Reaction.getShopId());
+  const company = Reaction.getShop();
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const orderShipping = order.getShippingTotal();
@@ -586,7 +586,7 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
   check(callback, Function);
   const pkgData = taxCalc.getPackageData();
   const { companyCode } = pkgData.settings.avalara;
-  const company = Shops.findOne(Reaction.getShopId());
+  const company = Reaction.getShop();
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const baseUrl = getUrl();

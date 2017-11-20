@@ -23,6 +23,7 @@ const reactionState = new ReactiveDict();
  */
 export default {
   _shopId: new ReactiveVar(null), // The active shop
+  _shopDomain: new ReactiveVar(null), // The active shop's domain (a shop may have multiple domains)
   _primaryShopId: new ReactiveVar(null), // The first shop created
   marketplace: { _ready: false }, // Marketplace Settings
 
@@ -48,9 +49,7 @@ export default {
       let shop;
       if (this.Subscriptions.PrimaryShop.ready()) {
         // There should only ever be one "primary" shop
-        shop = Shops.findOne({
-          shopType: "primary"
-        });
+        shop = this.getPrimaryShop();
 
         if (shop) {
           this.primaryShopId = shop._id;
@@ -91,32 +90,20 @@ export default {
 
     // Listen for active shop change
     return Tracker.autorun(() => {
-      let domain;
-      let shop;
       if (this.Subscriptions.MerchantShops.ready()) {
-        domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
+        this._shopDomain.set(document.location.hostname); // client side code... is this ok??
 
         // if we don't have an active shopId, try to retreive it from the userPreferences object
         // and set the shop from the storedShopId
         if (!this.shopId) {
-          const storedShopId = this.getUserPreferences("reaction", "activeShopId");
-          if (storedShopId) {
-            shop = Shops.findOne({
-              _id: storedShopId
-            });
-          } else {
-            shop = Shops.findOne({
-              domains: domain
-            });
-          }
+          this.shopId = this._determineShopId();
         }
 
+        const shop = this.getShop();
+
         if (shop) {
-          // Only set shopId if it hasn't been set yet
-          if (!this.shopId) {
-            this.shopId = shop._id;
-            this.shopName = shop.name;
-          }
+          this.shopId = shop._id;
+          this.shopName = shop.name;
 
           // We only use the active shop to setup locale if marketplace settings
           // are enabled and merchantLocale is set to true
@@ -156,6 +143,40 @@ export default {
   // Return global "reactionState" Reactive Dict
   get state() {
     return reactionState;
+  },
+
+  /**
+   * absoluteUrl
+   * @summary a wrapper method for Meteor.absoluteUrl which sets the rootUrl to
+   * the current URL (instead of defaulting to ROOT_URL)
+   * @param {String} [path] A path to append to the root URL. Do not include a leading "`/`".
+   * @param {Object} [options]
+   * @param {Boolean} options.secure Create an HTTPS URL.
+   * @param {Boolean} options.replaceLocalhost Replace localhost with 127.0.0.1. Useful for services that don't recognize localhost as a domain name.
+   * @param {String} options.rootUrl Override the default ROOT_URL from the server environment. For example: "`http://foo.example.com`"
+   * @return {String} URL for the given path and options
+   */
+  absoluteUrl(path, options) {
+    const o = _.extend({}, options);
+
+    if (!("rootUrl" in o) && this._shopDomain.get()) {
+      o.rootUrl = this._shopDomain.get();
+    }
+
+    return Meteor.absoluteUrl(path, o);
+  },
+
+  /**
+   * getDomain
+   * @summary extracts the domain name from the absoluteUrl.
+   * @param {Object} [options] inheritied from absoluteUrl
+   * @param {Boolean} options.secure Create an HTTPS URL.
+   * @param {Boolean} options.replaceLocalhost Replace localhost with 127.0.0.1. Useful for services that don't recognize localhost as a domain name.
+   * @param {String} options.rootUrl Override the default ROOT_URL from the server environment. For example: "`http://foo.example.com`"
+   * @return {String} Domain/hostname for the given options
+   */
+  getDomain(options) {
+    return this.absoluteUrl("", options).split("/")[2].split(":")[0];
   },
 
   /**
@@ -375,39 +396,69 @@ export default {
     });
   },
 
-  // primaryShopId is the first created shop. In a marketplace setting it's
-  // the shop that controls the marketplace and can see all other shops.
+  /**
+   * primaryShopId
+   * @summary getter method for the first created shop. In a marketplace setting
+   * it's the shop that controls the marketplace and can see all other shops.
+   * @param {Number} the document id for the Primary Shop
+   */
   get primaryShopId() {
     return this._primaryShopId.get();
   },
 
+  /**
+   * primaryShopId
+   * @summary setter method for the primary shop.
+   * (should probably only be used at startup)
+   */
   set primaryShopId(shopId) {
     this._primaryShopId.set(shopId);
   },
 
-  getPrimaryShopId() {
-    return this.primaryShopId;
+  /**
+   * getPrimaryShop
+   * @summary get's the shop corresponding to this.primaryShopId
+   * @return {Object} an instance of Shop
+   */
+  getPrimaryShop() {
+    // TODO: cache this?
+    return Shops.findOne({
+      shopType: "primary"
+    });
   },
 
-  getPrimaryShopName() {
-    const shopId = this.getPrimaryShopId();
-    const shop = Shops.findOne({
-      _id: shopId
-    });
+  /**
+   * getPrimaryShopId
+   * @summary gets the primary Shop's id
+   */
+  getPrimaryShopId() {
+    const shop = this.getPrimaryShop();
 
-    if (shop && shop.name) {
-      return shop.name;
+    if (shop) {
+      return shop._id;
     }
+  },
 
-    // If we can't find the primaryShop return an empty string
-    return "";
+  /**
+   * getPrimaryShopName
+   * @summary gets the primary Shop's name with error checking
+   */
+  getPrimaryShopName() {
+    const shop = this.getPrimaryShop();
+
+    return shop ? shop.name : "";
   },
 
   // Primary Shop should probably not have a prefix (or should it be /shop?)
+  // Shop's have a prefix attribute... use that?
   getPrimaryShopPrefix() {
     return "/" + this.getSlug(this.getPrimaryShopName().toLowerCase());
   },
 
+  /**
+   * getPrimaryShopSettings
+   * @summary gets the primary Shop's settings
+   */
   getPrimaryShopSettings() {
     const settings = Packages.findOne({
       name: "core",
@@ -416,10 +467,12 @@ export default {
     return settings.settings || {};
   },
 
+  /**
+   * getPrimaryShopName
+   * @summary gets the primary Shop's currency (default: USD)
+   */
   getPrimaryShopCurrency() {
-    const shop = Shops.findOne({
-      _id: this.getPrimaryShopId()
-    });
+    const shop = this.getPrimaryShop();
 
     return shop && shop.currency || "USD";
   },
@@ -431,14 +484,14 @@ export default {
     return this._shopId.get();
   },
 
-  getShopId() {
-    return this.shopId || this.getUserPreferences("reaction", "activeShopId");
-  },
-
   set shopId(id) {
     this._shopId.set(id);
   },
 
+  /**
+   * setShopId
+   * @summary sets the "active" Shop's id
+   */
   setShopId(id) {
     if (id) {
       this.shopId = id;
@@ -446,14 +499,65 @@ export default {
     }
   },
 
-  getShopName() {
-    const shopId = this.getShopId();
-    const shop = Shops.findOne({
-      _id: shopId
+  /**
+   * getShopId
+   * @summary gets the "active" Shop's id
+   * @return {String} name for the primary shop
+   */
+  getShopId() {
+    return this._shopId.get();
+  },
+
+  /**
+   * _determineShopId
+   * @summary does the work to determine the "active" shop, taking into account
+   * a user's choice of shops as well as the current domain/hostname. Should
+   * be used at initialization, use Reaction.getShopId() in code
+   */
+  _determineShopId() {
+    let shopId = this.getShopId();
+
+    if (shopId) { return shopId; }
+
+    // not sure this is necessary with the domain check
+    shopId = this.getUserPreferences("reaction", "activeShopId");
+
+    if (shopId) { return shopId; }
+
+    const shop = Shops.find({
+      domains: this.getDomain()
+    }, {
+      limit: 1,
+      fields: {
+        _id: 1
+      }
+    }).fetch()[0];
+
+    return shop && shop._id;
+  },
+
+  /**
+   * getShop
+   * @summary gets the "active" shop
+   * @return {Object} instance of Shop (or null)
+   */
+  getShop() {
+    // TODO: cache this?
+    return Shops.findOne({
+      _id: this.shopId
     });
+  },
+
+  /**
+   * getShopName
+   * @summary gets the active Shop's name with error checking
+   * @return {String} name for the active shop
+   */
+  getShopName() {
     return shop && shop.name;
   },
 
+  // Shop's have a prefix attribute... use that?
   getShopPrefix() {
     const shopName = this.getShopName();
     if (shopName) {
@@ -461,6 +565,10 @@ export default {
     }
   },
 
+  /**
+   * getShopSettings
+   * @summary gets the active Shop's settings
+   */
   getShopSettings() {
     const settings = Packages.findOne({
       name: "core",
@@ -469,10 +577,12 @@ export default {
     return settings.settings || {};
   },
 
+  /**
+   * getShopName
+   * @summary gets the active Shop's currency (default: USD)
+   */
   getShopCurrency() {
-    const shop = Shops.findOne({
-      _id: this.shopId
-    });
+    const shop = this.getShop();
 
     return shop && shop.currency || "USD";
   },

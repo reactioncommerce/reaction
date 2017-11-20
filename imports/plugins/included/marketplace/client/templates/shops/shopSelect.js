@@ -15,16 +15,25 @@ Template.shopSelect.helpers({
   },
 
   currentShopName() {
-    const _id = Router.getParam("shopId") || Reaction.getShopId(); // or prime shop
+    const _id = Router.getParam("shopId");
     let shop;
 
     if (_id) {
       shop = Shops.findOne({
         _id
       });
-      if (shop) {
-        return shop.name;
-      }
+    }
+
+    if (!shop) {
+      shop = Reaction.getShop();
+    }
+
+    if (!shop) {
+      shop = Reaction.getPrimaryShop();
+    }
+
+    if (shop) {
+      return shop.name;
     }
 
     return "Shop Name";

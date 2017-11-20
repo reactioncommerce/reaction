@@ -5,7 +5,7 @@ import NavBar from "../components/navbar";
 import { Media, Shops } from "/lib/collections";
 
 function composer(props, onData) {
-  const shop = Shops.findOne(Reaction.getShopId());
+  const shop = Reaction.getShop();
   const searchPackage = Reaction.Apps({ provides: "ui-search" });
   let searchEnabled;
   let searchTemplate;

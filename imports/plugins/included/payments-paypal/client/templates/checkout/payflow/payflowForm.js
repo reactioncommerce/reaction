@@ -86,7 +86,7 @@ AutoForm.addHooks("paypal-payment-form", {
     const storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
     PayPal.authorize(form, {
       total: Cart.findOne().getTotal(),
-      currency: Shops.findOne().currency
+      currency: Reaction.getPrimaryShop().currency // TODO: Reaction.getShop()?
     }, function (error, transaction) {
       submitting = false; // todo: check scope
       if (error) {

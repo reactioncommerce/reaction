@@ -421,8 +421,7 @@ function selectLayout(layout, setLayout, setWorkflow) {
 export function ReactionLayout(options = {}) {
   // Find a workflow layout to render
 
-  // By default we'll use the primary shop for layouts
-  let shopId = Router.Reaction.getPrimaryShopId();
+  let shop;
 
   // We'll check the marketplace settings too so that we can use the active shopId
   // if merchantTemplates is enabled
@@ -441,11 +440,10 @@ export function ReactionLayout(options = {}) {
 
   // If merchantTemplates is enabled, use the active shopId
   if (marketplaceSettings && marketplaceSettings.merchantTemplates === true) {
-    shopId = Router.Reaction.getShopId();
+    shop = Router.Reaction.getShop();
+  } else {
+    shop = Router.Reaction.getPrimaryShop();
   }
-
-  // Get the shop data
-  const shop = Shops.findOne(shopId);
 
   // get the layout & workflow from options if they exist
   // Otherwise get them from the Session. this is set in `/client/config/defaults`

@@ -41,7 +41,7 @@ Template.addressBookAdd.helpers({
       }
     }
 
-    const shop = Collections.Shops.findOne(Reaction.getShopId());
+    const shop = Reaction.getShop();
 
     // Set default country code based on shop's shipping address
     if (shop && Array.isArray(shop.addressBook) && shop.addressBook.length > 0) {

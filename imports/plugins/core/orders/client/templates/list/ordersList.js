@@ -37,7 +37,7 @@ Template.dashboardOrdersList.helpers({
     return shippingObject.shipmentMethod.tracking;
   },
   shopName() {
-    const shop = Shops.findOne(this.shopId);
+    const shop = Reaction.getShop();
     return shop !== null ? shop.name : void 0;
   }
 });

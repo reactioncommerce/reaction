@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
+import { Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 import { Components, composeWithTracker } from "@reactioncommerce/reaction-components";
 import SearchModal from "../components/searchModal";
@@ -13,7 +14,7 @@ class SearchSubscription extends Component {
 }
 
 function getSiteName() {
-  const shop = Collections.Shops.findOne();
+  const shop = Reaction.getShop();
   return typeof shop === "object" && shop.name ? shop.name : "";
 }
 
