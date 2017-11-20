@@ -15,21 +15,21 @@ Meteor.startup(function () {
   // using the subscriptions manager sometimes causes issues when signing in/out where you may seee a grey screen
   // or missing shop data throughout the app.
   // TODO: Revisit subscriptions manager usage and waiting for shops to exist client side before rendering.
-  const primaryShopSub = Meteor.subscribe("PrimaryShop");
+  const shopSub = Meteor.subscribe("Shop");
   const merchantShopSub = Meteor.subscribe("MerchantShops");
   const packageSub = Meteor.subscribe("Packages");
 
   Tracker.autorun(function () {
     // initialize client routing
     if (
-      primaryShopSub.ready() &&
+      shopSub.ready() &&
       merchantShopSub.ready() &&
       packageSub.ready() &&
       // In addition to the subscriptions, shopId must be defined before we proceed
       // to avoid conditions where the subscriptions may be ready, but the cached
       // shopId has yet been set.
-      // Reaction.primaryShopId is a reactive data source
-      Reaction.primaryShopId !== null
+      // Reaction.getShopId() is a reactive data source
+      Reaction.getShopId() !== null
     ) {
       const shops = Shops.find({}).fetch();
       //  initBrowserRouter calls Router.initPackageRoutes which calls shopSub.ready which is reactive,

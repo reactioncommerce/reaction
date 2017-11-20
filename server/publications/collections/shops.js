@@ -5,7 +5,16 @@ import { Shops } from "/lib/collections";
 // We should be able to publish just the enabled languages/currencies/
 Meteor.publish("PrimaryShop", function () {
   return Shops.find({
-    shopType: "primary"
+    _id: Reaction.getPrimaryShopId()
+  }, {
+    fields: {},
+    limit: 1
+  });
+});
+
+Meteor.publish("Shop", function () {
+  return Shops.find({
+    _id: Reaction.getShopId()
   }, {
     fields: {},
     limit: 1

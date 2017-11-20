@@ -70,7 +70,7 @@ AutoForm.addHooks("authnet-payment-form", {
     };
     const paymentInfo = {
       total: Cart.findOne().getTotal(),
-      currency: Shops.findOne().currency
+      currency: Reaction.getPrimaryShop().currency // TODO: Reaction.getShop()?
     };
 
     // Submit for processing

@@ -6,7 +6,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { Shops } from "/lib/collections";
 import { Countries } from "/client/collections";
 import { Taxes, TaxCodes } from "../../lib/collections";
-import { i18next } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Taxes as TaxSchema } from "../../lib/collections/schemas";
 import { IconButton, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 
@@ -127,7 +127,7 @@ Template.customTaxRates.helpers({
     return Countries.find().fetch();
   },
   statesForCountry: function () {
-    const shop = Shops.findOne();
+    const shop = Reaction.getShop();
     const selectedCountry = AutoForm.getFieldValue("country");
     if (!selectedCountry) {
       return false;
@@ -150,7 +150,7 @@ Template.customTaxRates.helpers({
     return options;
   },
   taxRate() {
-    const shop = Shops.findOne();
+    const shop = Reaction.getShop();
     const instance = Template.instance();
     const id = instance.state.get("editingId");
     const tax = Taxes.findOne(id) || {};

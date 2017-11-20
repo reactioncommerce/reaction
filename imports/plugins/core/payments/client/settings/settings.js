@@ -38,7 +38,7 @@ Template.paymentSettings.helpers({
     return options;
   },
   shop() {
-    return Shops.findOne(Reaction.getShopId());
+    return Reaction.getShop();
   }
 });
 

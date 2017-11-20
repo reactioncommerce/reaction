@@ -2,6 +2,7 @@ import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
+import { Reaction } from "/client/api";
 import { Countries } from "/client/collections";
 import * as Collections from "/lib/collections";
 
@@ -15,7 +16,7 @@ Template.addressBookForm.helpers({
   },
   statesForCountry: function () {
     let locale;
-    const shop = Collections.Shops.findOne();
+    const shop = Reaction.getShop();
     const selectedCountry = Session.get("addressBookCountry") || AutoForm.getFieldValue("country");
     if (!selectedCountry) {
       return false;

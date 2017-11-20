@@ -62,7 +62,7 @@ const wrapComponent = (Comp) => (
 
 function composer(props, onData) {
   const languages = [];
-  const shop = Shops.findOne();
+  const shop = Reaction.getPrimaryShop(); // TODO?: Reaction.getShop()?
   const countries = Countries.find().fetch();
   const preferences = Reaction.getUserPreferences("reaction-i18n", "settingsCards", {});
 
@@ -107,7 +107,7 @@ function composer(props, onData) {
   }
 
 
-  const unitsOfMeasure = Shops.findOne().unitsOfMeasure;
+  const unitsOfMeasure = Reaction.getPrimaryShop().unitsOfMeasure; // TODO: Reaction.getShop()?
   const uomOptions = [];
   if (Array.isArray(unitsOfMeasure)) {
     for (const measure of unitsOfMeasure) {

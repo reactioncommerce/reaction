@@ -46,8 +46,7 @@ function getScores(customFields, settings, collection = "products") {
 }
 
 function getSearchLanguage() {
-  const shopId = Reaction.getShopId();
-  const shopLanguage = Shops.findOne(shopId).language;
+  const shopLanguage = Reaction.getPrimaryShop().language // TODO: Reaction.getShop()?;
   if (supportedLanguages.includes(shopLanguage)) {
     return { default_language: shopLanguage };
   }

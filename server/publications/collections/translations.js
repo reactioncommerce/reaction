@@ -18,8 +18,7 @@ import { Reaction } from "/server/api";
  */
 Meteor.publish("Translations", function (languages) {
   check(languages, Match.OneOf(String, Array));
-  const shopId = Reaction.getShopId();
-  const shopLanguage = Shops.findOne(shopId).language;
+  const shopLanguage = Reaction.getPrimaryShop().language // TODO: Reaction.getShop()?;
   const sessionLanguages = [];
   const langTranQuery = [];
 

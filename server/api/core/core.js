@@ -3,6 +3,7 @@ import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { ReactiveVar } from "meteor/reactive-var";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import { Accounts } from "meteor/accounts-base";
@@ -20,6 +21,9 @@ import { createGroups } from "./groups";
 const { Jobs, Packages, Shops } = Collections;
 
 export default {
+  _shopId: new ReactiveVar(null),
+  _primaryShopId: new ReactiveVar(null),
+  _shopDomain: new ReactiveVar(null),
 
   init() {
     // run beforeCoreInit hooks
@@ -53,6 +57,13 @@ export default {
       this.createDefaultAdminUser();
     }
     this.setAppVersion();
+
+    Meteor.onConnection((connection) => {
+      this._shopDomain.set(connection.httpHeaders.host);
+      this._shopId.set(this.getShopId());
+      this._primaryShopId.set(this.getPrimaryShopId());
+    });
+
     // hook after init finished
     Hooks.Events.run("afterCoreInit");
 
@@ -67,6 +78,27 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name] = packageInfo;
     return registeredPackage;
   },
+
+  /**
+   * absoluteUrl
+   * @summary a wrapper method for Meteor.absoluteUrl which sets the rootUrl to
+   * the current URL (instead of defaulting to ROOT_URL)
+   * @param {String} [path] A path to append to the root URL. Do not include a leading "`/`".
+   * @param {Object} [options]
+   * @param {Boolean} options.secure Create an HTTPS URL.
+   * @param {Boolean} options.replaceLocalhost Replace localhost with 127.0.0.1. Useful for services that don't recognize localhost as a domain name.
+   * @param {String} options.rootUrl Override the default ROOT_URL from the server environment. For example: "`http://foo.example.com`"
+   */
+  absoluteUrl(path, options) {
+    const o = _.extend({}, options);
+
+    if (!("rootUrl" in o) && this._shopDomain.get()) {
+      o.rootUrl = this._shopDomain.get();
+    }
+
+    return Meteor.absoluteUrl(path, o);
+  },
+
   defaultCustomerRoles: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
   defaultVisitorRoles: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
   createGroups,
@@ -191,6 +223,11 @@ export default {
     return getMailUrl();
   },
 
+  /**
+   * getPrimaryShop
+   * @summary get's the shop corresponding to this.getPrimaryShopId()
+   * @return {Object} an instance of Shop
+   */
   getPrimaryShop() {
     const primaryShop = Shops.findOne({
       shopType: "primary"
@@ -199,8 +236,10 @@ export default {
     return primaryShop;
   },
 
-  // primaryShopId is the first created shop. In a marketplace setting it's
-  // the shop that controls the marketplace and can see all other shops.
+  /**
+   * getPrimaryShopId
+   * @summary gets the primary Shop's id
+   */
   getPrimaryShopId() {
     const primaryShop = this.getPrimaryShop();
     if (primaryShop) {
@@ -208,6 +247,10 @@ export default {
     }
   },
 
+  /**
+   * getPrimaryShopName
+   * @summary gets the primary Shop's name with error checking
+   */
   getPrimaryShopName() {
     const primaryShop = this.getPrimaryShop();
     if (primaryShop) {
@@ -218,10 +261,15 @@ export default {
   },
 
   // Primary Shop should probably not have a prefix (or should it be /shop?)
+  // Shop's have a prefix attribute... use that?
   getPrimaryShopPrefix() {
     return "/" + this.getSlug(this.getPrimaryShopName().toLowerCase());
   },
 
+  /**
+   * getPrimaryShopSettings
+   * @summary gets the primary Shop's settings
+   */
   getPrimaryShopSettings() {
     const settings = Packages.findOne({
       name: "core",
@@ -230,14 +278,14 @@ export default {
     return settings.settings || {};
   },
 
+  /**
+   * getPrimaryShopName
+   * @summary gets the primary Shop's currency (default: USD)
+   */
   getPrimaryShopCurrency() {
     const primaryShop = this.getPrimaryShop();
 
-    if (primaryShop && primaryShop.currency) {
-      return primaryShop.currency;
-    }
-
-    return "USD";
+    return shop && shop.currency || "USD";
   },
 
   /**
@@ -274,12 +322,27 @@ export default {
     return null;
   },
 
+  getDomain() {
+    // you may be tempted to simply return `this._storeDomain.get()`,
+    // but absoluteUrl does some work when that should be accounted for
+    // for example, when value is null
+    return url.parse(this.absoluteUrl()).hostname;
+  },
+
+  /**
+   * getShopId
+   * @summary gets the "active" Shop's id
+   * @param  {String} [userId] Optional userId to get the shop id from that
+   *                  user's preferences. defaults to "shop for this domain"
+   *                  when unset
+   * @return {String} name for the primary shop
+   */
   getShopId(userId) {
     check(userId, Match.Maybe(String));
     const activeUserId = Meteor.call("reaction/getUserId");
     if (activeUserId || userId) {
       const activeShopId = this.getUserPreferences({
-        userId: activeUserId || userId,
+        userId: activeUserId || userId, // should this be reversed? if we are trying to get the shop for a given order, this would return "my" shop, not the user's shop
         packageName: "reaction",
         preference: "activeShopId"
       });
@@ -288,8 +351,8 @@ export default {
       }
     }
 
-    // TODO: This should intelligently find the correct default shop
-    // Probably whatever the main shop is or the marketplace
+    // Get the Shop which corresponds to the domain from quich the request
+    // originated
     const domain = this.getDomain();
     const shop = Shops.find({
       domains: domain
@@ -302,39 +365,29 @@ export default {
     return shop && shop._id;
   },
 
-  getDomain() {
-    return url.parse(Meteor.absoluteUrl()).hostname;
+  /**
+   * getShop
+   * @summary gets the "active" shop
+   * @return {Object} instance of Shop (or null)
+   */
+  getShop() {
+    Shops.find({
+      _id: this.getShopId()
+    });
   },
 
+  /**
+   * getShopName
+   * @summary gets the active Shop's name with error checking
+   * @return {String} name for the active shop
+   */
   getShopName() {
-    const shopId = this.getShopId();
-    let shop;
-    if (shopId) {
-      shop = Shops.findOne({
-        _id: shopId
-      }, {
-        fields: {
-          name: 1
-        }
-      });
-    } else {
-      const domain = this.getDomain();
-      shop = Shops.findOne({
-        domains: domain
-      }, {
-        fields: {
-          name: 1
-        }
-      });
-    }
-    if (shop && shop.name) {
-      return shop.name;
-    }
-    // If we can't find the shop or shop name return an empty string
-    // so that string methods that rely on getShopName don't error
-    return "";
+    const shop = this.getShop();
+
+    return shop ? shop.name : "";
   },
 
+  // Shop's have a prefix attribute... use that?
   getShopPrefix() {
     const shopName = this.getShopName();
     const lowerCaseShopName = shopName.toLowerCase();
@@ -343,14 +396,8 @@ export default {
   },
 
   getShopEmail() {
-    const shop = Shops.find({
-      _id: this.getShopId()
-    }, {
-      limit: 1,
-      fields: {
-        emails: 1
-      }
-    }).fetch()[0];
+    const shop = this.getShop();
+
     return shop && shop.emails && shop.emails[0].address;
   },
 
@@ -360,9 +407,7 @@ export default {
   },
 
   getShopCurrency() {
-    const shop = Shops.findOne({
-      _id: this.getShopId()
-    });
+    const shop = this.getShop();
 
     return shop && shop.currency || "USD";
   },
@@ -370,14 +415,9 @@ export default {
   // TODO: Marketplace - should each shop set their own default language or
   // should the Marketplace set a language that's picked up by all shops?
   getShopLanguage() {
-    const { language } = Shops.findOne({
-      _id: this.getShopId()
-    }, {
-      fields: {
-        language: 1
-      } }
-    );
-    return language;
+    const shop = this.getShop();
+
+    return shop && shop.language;
   },
 
   getPackageSettings(name) {
@@ -509,7 +549,7 @@ export default {
   },
 
   getAppVersion() {
-    return Shops.findOne().appVersion;
+    return this.getPrimaryShop().appVersion;
   },
 
   /**

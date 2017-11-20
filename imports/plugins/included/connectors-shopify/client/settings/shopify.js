@@ -29,8 +29,8 @@ Template.shopifyImport.events({
     if (Reaction.getShopId() === Reaction.getPrimaryShopId()) {
       Router.go("index");
     } else {
+      const shop = Reaction.getShop();
       const shopId = Reaction.getShopId();
-      const shop = Shops.findOne({ _id: shopId });
 
       // Check to see if this shop has a slug, otherwise direct to shopId route
       if (shop && shop.slug) {

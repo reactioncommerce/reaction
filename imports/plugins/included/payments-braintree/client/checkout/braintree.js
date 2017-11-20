@@ -55,7 +55,7 @@ function submitToBrainTree(doc, template) {
     type: getCardType(doc.cardNumber)
   };
   const cartTotal = Cart.findOne().getTotal();
-  const currencyCode = Shops.findOne().currency;
+  const currencyCode = Reaction.getPrimaryShop().currency // TODO: Reaction.getShop()?;
 
   Braintree.authorize(cardData, {
     total: cartTotal,

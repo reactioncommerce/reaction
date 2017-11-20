@@ -45,18 +45,14 @@ Router.Hooks.onEnter(addBodyClasses);
 Meteor.startup(() => {
   Tracker.autorun(() => {
     if (Reaction.Subscriptions.PrimaryShop.ready() && Reaction.Subscriptions.MerchantShops.ready()) {
-      let shopId;
+      let shop;
 
       // Choose shop to get theme from
       if (Reaction.marketplaceEnabled && Reaction.merchantTheme) {
-        shopId = Reaction.getShopId();
+        shop = Reaction.getShop();
       } else {
-        shopId = Reaction.getPrimaryShopId();
+        shop = Reaction.getPrimaryShop();
       }
-
-      const shop = Shops.findOne({
-        _id: shopId
-      });
 
       if (shop) {
         if (shop.theme) {

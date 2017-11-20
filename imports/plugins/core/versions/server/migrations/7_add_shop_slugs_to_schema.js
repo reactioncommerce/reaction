@@ -1,5 +1,6 @@
 import { Migrations } from "meteor/percolate:migrations";
 import { Shops } from "/lib/collections";
+import { Reaction } from "/server/api";
 import { getSlug } from "/lib/api";
 
 Migrations.add({
@@ -8,7 +9,7 @@ Migrations.add({
     // Get all shops
     const shops = Shops.find();
     // Get primary shop
-    const primaryShop = Shops.findOne({ shopType: "primary" });
+    const primaryShop = Reaction.getPrimaryShop();
     // Init list of merchant shops
     const merchantShops = [];
 

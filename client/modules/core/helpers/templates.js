@@ -199,7 +199,7 @@ Template.registerHelper("toCamelCase", function (str) {
  * @return {String} returns site name
  */
 Template.registerHelper("siteName", function () {
-  const shop = Collections.Shops.findOne();
+  const shop = Reaction.getShop();
   return typeof shop === "object" && shop.name ? shop.name : "";
 });
 

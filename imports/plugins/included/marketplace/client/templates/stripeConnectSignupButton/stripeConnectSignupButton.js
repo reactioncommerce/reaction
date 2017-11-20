@@ -27,7 +27,7 @@ Template.stripeConnectSignupButton.events({
       return Alerts.toast(`${i18next.t("admin.connect.stripeConnectNotEnabled")}`, "error");
     }
 
-    const shop = Shops.findOne({ _id: shopId });
+    const shop = Reaction.getShop();
 
     if (!shop || !shop.workflow || shop.workflow.status !== "active") {
       return Alerts.toast(`${i18next.t("admin.connect.shopNotActive")}`, "error");

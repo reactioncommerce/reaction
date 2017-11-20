@@ -1,5 +1,5 @@
 import { Shops } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 
 /**
  * getDomain
@@ -8,7 +8,7 @@ import { Logger } from "/server/api";
  * @return {String} domain name stripped from requestUrl
  */
 export function getRegistryDomain(requestUrl) {
-  const url = requestUrl || process.env.ROOT_URL;
+  const url = Reaction.absoluteUrl();
   const domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
   return domain;
 }
@@ -24,7 +24,7 @@ export function setDomain() {
   let currentDomain;
   // we automatically update the shop domain when ROOT_URL changes
   try {
-    currentDomain = Shops.findOne().domains[0];
+    currentDomain = Shops.findOne().domains[0]; // TODO?: Reaction.getDomain()
   } catch (_error) {
     Logger.error(_error, "Failed to determine default shop.");
   }

@@ -138,9 +138,7 @@ Template.shopSettings.helpers({
   },
 
   shop: function () {
-    return Shops.findOne({
-      _id: Reaction.getShopId()
-    });
+    return Reaction.getShop();
   },
   packageData: function () {
     return Packages.findOne({
@@ -149,9 +147,7 @@ Template.shopSettings.helpers({
     });
   },
   addressBook: function () {
-    const address = Shops.findOne({
-      _id: Reaction.getShopId()
-    }).addressBook;
+    const address = this.shop().addressBook;
     return address[0];
   },
   showAppSwitch(template) {

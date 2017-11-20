@@ -41,7 +41,7 @@ PayflowproApi.apiCall.captureCharge = function (paymentCaptureDetails) {
 
   let result;
   // TODO: This should be changed to some ReactionCore method
-  const shop = Shops.findOne(Reaction.getShopId());
+  const shop = Reaction.getShop();
   const wrappedFunc = Meteor.wrapAsync(PayFlow.authorization.capture, PayFlow.authorization);
   const wrappedFuncVoid = Meteor.wrapAsync(PayFlow.authorization.void, PayFlow.authorization);
   const captureTotal = Math.round(parseFloat(paymentCaptureDetails.amount) * 100) / 100;

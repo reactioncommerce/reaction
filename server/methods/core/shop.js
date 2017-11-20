@@ -81,7 +81,7 @@ Meteor.methods({
     }
 
     // we'll accept a shop object, or clone the current shop
-    const seedShop = shopData || Collections.Shops.findOne(Reaction.getPrimaryShopId());
+    const seedShop = shopData || Reaction.getPrimaryShop();
 
     // Never create a second primary shop
     if (seedShop.shopType === "primary") {
@@ -175,6 +175,7 @@ Meteor.methods({
     }
 
     // get shop locale/currency related data
+    // TODO: use Reaction.getShop() instead of querying
     const shop = Collections.Shops.findOne(Reaction.getShopId(), {
       fields: {
         addressBook: 1,
@@ -277,6 +278,7 @@ Meteor.methods({
     this.unblock();
 
     const field = `currencies.${currency}.rate`;
+    // TODO: use Reaction.getShop() instead of querying
     const shop = Collections.Shops.findOne(Reaction.getShopId(), {
       fields: {
         [field]: 1
@@ -301,6 +303,7 @@ Meteor.methods({
     this.unblock();
 
     const shopId = Reaction.getShopId();
+    // TODO: use Reaction.getShop() instead of querying
     const shop = Collections.Shops.findOne(shopId, {
       fields: {
         addressBook: 1,
@@ -398,6 +401,7 @@ Meteor.methods({
       shopId = Reaction.getPrimaryShopId();
     }
 
+    // TODO: use Reaction.getShop()/getPrimaryShop() instead of querying
     const shop = Collections.Shops.findOne(shopId, {
       fields: {
         currencies: 1
@@ -739,9 +743,7 @@ Meteor.methods({
     }
     this.unblock();
 
-    const shop = Collections.Shops.findOne({
-      _id: Reaction.getShopId()
-    });
+    const shop = Reaction.getShop();
 
     const defaultLanguage = shop.language;
 
@@ -801,9 +803,7 @@ Meteor.methods({
     }
     this.unblock();
 
-    const shop = Collections.Shops.findOne({
-      _id: Reaction.getShopId()
-    });
+    const shop = Reaction.getShopId();
 
     const defaultCurrency = shop.currency;
 
@@ -862,6 +862,7 @@ Meteor.methods({
     this.unblock();
 
     // Does our shop contain the brandasset we're tring to add
+    // TODO: use Reaction.getShop() instead of querying
     const shopWithBrandAsset = Collections.Shops.findOne({
       "_id": Reaction.getShopId(),
       "brandAssets.type": asset.type

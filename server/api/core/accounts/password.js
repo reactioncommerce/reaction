@@ -53,23 +53,23 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
   Meteor._ensure(user, "services", "password").reset = tokenObj;
 
   // Get shop data for email display
-  const shop = Shops.findOne(Reaction.getShopId());
+  const shop = Reaction.getShop();
 
   // Get shop logo, if available. If not, use default logo from file-system
   let emailLogo;
   if (Array.isArray(shop.brandAssets)) {
     const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
     const mediaId = Media.findOne(brandAsset.mediaId);
-    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
+    emailLogo = path.join(Reaction.absoluteUrl(), mediaId.url());
   } else {
-    emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+    emailLogo = Reaction.absoluteUrl() + "resources/email-templates/shop-logo.png";
   }
 
   const dataForEmail = {
     // Shop Data
     shop: shop,
     contactEmail: shop.emails[0].address,
-    homepage: Meteor.absoluteUrl(),
+    homepage: Reaction.absoluteUrl(),
     emailLogo: emailLogo,
     copyrightDate: moment().format("YYYY"),
     legalName: shop.addressBook[0].company,
@@ -84,17 +84,17 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
       display: true,
       facebook: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+        icon: Reaction.absoluteUrl() + "resources/email-templates/facebook-icon.png",
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+        icon: Reaction.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+        icon: Reaction.absoluteUrl() + "resources/email-templates/twitter-icon.png",
         link: "https://www.twitter.com"
       }
     },
@@ -173,8 +173,8 @@ export function sendVerificationEmail(userId, email) {
   const dataForEmail = {
     // Reaction Information
     contactEmail: "hello@reactioncommerce.com",
-    homepage: Meteor.absoluteUrl(),
-    emailLogo: Meteor.absoluteUrl() + "resources/placeholder.gif",
+    homepage: Reaction.absoluteUrl(),
+    emailLogo: Reaction.absoluteUrl() + "resources/placeholder.gif",
     copyrightDate: moment().format("YYYY"),
     legalName: "Reaction Commerce",
     physicalAddress: {
@@ -288,8 +288,8 @@ export function sendUpdatedVerificationEmail(userId, email) {
   const dataForEmail = {
     // Reaction Information
     contactEmail: "hello@reactioncommerce.com",
-    homepage: Meteor.absoluteUrl(),
-    emailLogo: Meteor.absoluteUrl() + "resources/placeholder.gif",
+    homepage: Reaction.absoluteUrl(),
+    emailLogo: Reaction.absoluteUrl() + "resources/placeholder.gif",
     copyrightDate: moment().format("YYYY"),
     legalName: "Reaction Commerce",
     physicalAddress: {

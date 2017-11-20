@@ -45,7 +45,7 @@ Template.registerHelper("currencySymbol", function () {
   });
   const profileCurrency = user.profile && user.profile.currency;
   if (profileCurrency) {
-    const shop = Shops.findOne();
+    const shop = Reaction.getPrimaryShop();
     if (Match.test(shop, Object) && shop.currencies) {
       return shop.currencies[profileCurrency].symbol;
     }
