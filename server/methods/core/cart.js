@@ -108,7 +108,7 @@ function removeShippingAddresses(cart) {
  * @file Methods for Cart - Use these methods by running `Meteor.call()`
  * @example Meteor.call("cart/createCart", this.userId, sessionId)
  * @namespace Methods/Cart
-*/
+ */
 
 Meteor.methods({
   /**
@@ -1020,6 +1020,7 @@ Meteor.methods({
     const cartId = cart._id;
 
     const cartShipping = cart.getShippingTotal();
+    const cartShippingByShop = cart.getShippingTotalByShop();
     const cartSubTotal = cart.getSubTotal();
     const cartSubtotalByShop = cart.getSubtotalByShop();
     const cartTaxes = cart.getTaxTotal();
@@ -1046,7 +1047,7 @@ Meteor.methods({
       paymentMethods.forEach((paymentMethod) => {
         const shopId = paymentMethod.shopId;
         const invoice = {
-          shipping: parseFloat(cartShipping),
+          shipping: parseFloat(cartShippingByShop[shopId]),
           subtotal: parseFloat(cartSubtotalByShop[shopId]),
           taxes: parseFloat(cartTaxesByShop[shopId]),
           discounts: parseFloat(cartDiscounts),
