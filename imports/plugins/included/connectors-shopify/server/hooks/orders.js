@@ -157,12 +157,14 @@ function convertCustomer(address, order) {
 
 Orders.after.insert((userId, doc) => {
   const { settings } = Reaction.getPackageSettings("reaction-connectors-shopify");
-  const { syncHooks } = settings;
-  syncHooks.forEach((hook) => {
-    if (hook.topic === "orders" && hook.event === "order/create") {
-      if (hook.syncType === "exportToShopify") { // should this just be dynamic?
-        exportToShopify(doc);
+  const { synchooks } = settings;
+  if (synchooks) {
+    synchooks.forEach((hook) => {
+      if (hook.topic === "orders" && hook.event === "orders/create") {
+        if (hook.syncType === "exportToShopify") { // should this just be dynamic?
+          exportToShopify(doc);
+        }
       }
-    }
-  });
+    });
+  }
 });
