@@ -30,7 +30,8 @@ Reaction.registerPackage({
     route: "/dashboard/account/settings",
     container: "accounts",
     workflow: "coreAccountsWorkflow",
-    template: "accountsSettings"
+    template: "accountsSettings",
+    showForShopTypes: ["primary"]
   }, {
     route: "/dashboard/accounts",
     name: "dashboard/accounts",
