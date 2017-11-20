@@ -96,14 +96,16 @@ Template.shopifySync.helpers({
   hookIsActive(hook) {
     const { settings } = Reaction.getPackageSettings("reaction-connectors-shopify");
     const { synchooks } = settings;
-    const [ topic, event, syncType ]  = hook.split(":");
-    const matchingHooks = synchooks.map((syncHook) => {
-      if (syncHook.topic === topic && syncHook.event === event && syncHook.syncType === syncType) {
-        return syncHook;
+    if (synchooks) {
+      const [ topic, event, syncType ]  = hook.split(":");
+      const matchingHooks = synchooks.map((syncHook) => {
+        if (syncHook.topic === topic && syncHook.event === event && syncHook.syncType === syncType) {
+          return syncHook;
+        }
+      });
+      if (matchingHooks.length > 0) {
+        return "checked";
       }
-    });
-    if (matchingHooks.length > 0) {
-      return "checked";
     }
     return "";
   }
