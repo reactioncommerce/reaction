@@ -23,7 +23,7 @@ import { Media } from "/imports/plugins/core/files/server";
     from: 'me@example.com',
     to: 'you@example.com',
     subject: 'RE: new email API',
-    html: SSR.render('some-name', { shopUrl: Meteor.absoluteUrl() })
+    html: SSR.render('some-name', { shopUrl: Reaction.absoluteUrl() })
   });
  * @param  {Object} options - object containing to/from/subject/html String keys
  * @return {Boolean} returns job object
@@ -137,5 +137,5 @@ export function getShopLogo(shop) {
     const fileRecord = brandAsset && Promise.await(Media.findOne(brandAsset.mediaId));
     emailLogo = fileRecord && fileRecord.url({ absolute: true, store: "medium" });
   }
-  return emailLogo || `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
+  return emailLogo || `${Reaction.absoluteUrl()}resources/email-templates/shop-logo.png`;
 }

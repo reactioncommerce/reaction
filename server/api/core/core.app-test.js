@@ -129,7 +129,74 @@ describe("Server/API/Core", () => {
     });
   });
 
+  describe("#absoluteUrl", () => {
+    let path;
+    let connectionHost;
+    let rootUrl;
+    let meteorRoolUrl;
+
+    beforeEach(() => {
+      sandbox = sinon.sandbox.create();
+
+      // commonly used test vars
+      path = randomString();
+      connectionHost = `${randomString()}.reactioncommerce.com`;
+      rootUrl = `https://${randomString()}.reactioncommerce.com`;
+
+      // mocking Meteor
+      meteorRoolUrl = Meteor.absoluteUrl.defaultOptions.rootUrl;
+      // this is a round-about way of mocking $ROOT_URL
+      Meteor.absoluteUrl.defaultOptions.rootUrl = rootUrl;
+    });
+
+    afterEach(() => {
+      sandbox.restore();
+
+      // restore Meteor
+      Meteor.absoluteUrl.defaultOptions.rootUrl = meteorRoolUrl;
+    });
+
+    it("wraps Meteor.absoluteUrl", () => {
+      const options = { rootUrl }; // passing rootUrl will skip some internal logic
+
+      const fnMeteorAbsoluteUrl =
+        sandbox.spy(Meteor, "absoluteUrl").withArgs(path, options);
+
+      core.absoluteUrl(path, options);
+
+      expect(fnMeteorAbsoluteUrl.called).to.be.true;
+    });
+
+    describe("outside of a connection", () => {
+      it("defaults to $ROOT_URL", () => {
+        expect(core.absoluteUrl()).to.include(rootUrl);
+      });
+    });
+
+    describe("within a connection", () => {
+      beforeEach(() => {
+        // for reference: https://github.com/meteor/meteor/blob/ed98a07125cd072552482ca2244239f034857814/packages/ddp-server/livedata_server.js#L279-L295
+        sinon.stub(DDP._CurrentMethodInvocation, "get").returns({
+          connection: { httpHeaders: { host: connectionHost } }
+        });
+      });
+
+      afterEach(() => {
+        DDP._CurrentMethodInvocation.get.restore();
+      });
+
+      it("uses the current connection's host", () => {
+        expect(core.absoluteUrl()).to.include(connectionHost);
+      });
+
+      it("uses $ROOT_URL's protocol/scheme", () => {
+        // this would he http:// if $ROOT_URL had not used https://
+        expect(core.absoluteUrl()).to.startsWith("https://");
+      });
+    });
+  });
+
   function randomString() {
-    return new Date().getTime().toString();
+    return Math.random.toString(36);
   }
 });

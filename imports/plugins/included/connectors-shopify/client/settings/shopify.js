@@ -120,7 +120,7 @@ Template.shopifySync.helpers({
 
   currentDomain() {
     const { settings } = Reaction.getPackageSettings("reaction-connectors-shopify");
-    return settings.webhooksDomain || Meteor.absoluteUrl();
+    return settings.webhooksDomain || Reaction.absoluteUrl();
   },
 
   hookIsActive(hook) {

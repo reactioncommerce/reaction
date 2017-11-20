@@ -60,7 +60,7 @@ export async function sendResetPasswordEmail(userId, optionalEmail) {
     // Shop Data
     shop,
     contactEmail: shop.emails[0].address,
-    homepage: Meteor.absoluteUrl(),
+    homepage: Reaction.absoluteUrl(),
     emailLogo,
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
@@ -75,17 +75,17 @@ export async function sendResetPasswordEmail(userId, optionalEmail) {
       display: true,
       facebook: {
         display: true,
-        icon: `${Meteor.absoluteUrl()}resources/email-templates/facebook-icon.png`,
+        icon: `${Reaction.absoluteUrl()}resources/email-templates/facebook-icon.png`,
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: `${Meteor.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
+        icon: `${Reaction.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: `${Meteor.absoluteUrl()}resources/email-templates/twitter-icon.png`,
+        icon: `${Reaction.absoluteUrl()}resources/email-templates/twitter-icon.png`,
         link: "https://www.twitter.com"
       }
     },
@@ -167,8 +167,8 @@ export async function sendVerificationEmail(userId, email) {
   const dataForEmail = {
     // Reaction Information
     contactEmail: "hello@reactioncommerce.com",
-    homepage: Meteor.absoluteUrl(),
-    emailLogo: `${Meteor.absoluteUrl()}resources/placeholder.gif`,
+    homepage: Reaction.absoluteUrl(),
+    emailLogo: `${Reaction.absoluteUrl()}resources/placeholder.gif`,
     copyrightDate,
     legalName: "Reaction Commerce",
     physicalAddress: {
@@ -285,8 +285,8 @@ export async function sendUpdatedVerificationEmail(userId, email) {
   const dataForEmail = {
     // Reaction Information
     contactEmail: "hello@reactioncommerce.com",
-    homepage: Meteor.absoluteUrl(),
-    emailLogo: `${Meteor.absoluteUrl()}resources/placeholder.gif`,
+    homepage: Reaction.absoluteUrl(),
+    emailLogo: `${Reaction.absoluteUrl()}resources/placeholder.gif`,
     copyrightDate,
     legalName: "Reaction Commerce",
     physicalAddress: {

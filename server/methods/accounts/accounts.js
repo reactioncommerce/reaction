@@ -712,7 +712,7 @@ export function inviteShopMember(options) {
     Meteor.call("group/addUser", userId, groupId);
 
     // do not send token, as no password reset is needed
-    const url = Meteor.absoluteUrl();
+    const url = Reaction.absoluteUrl();
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
     dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, emailLogo, url });
@@ -807,17 +807,17 @@ export function sendWelcomeEmail(shopId, userId, token) {
       display: true,
       facebook: {
         display: true,
-        icon: `${Meteor.absoluteUrl()}resources/email-templates/facebook-icon.png`,
+        icon: `${Reaction.absoluteUrl()}resources/email-templates/facebook-icon.png`,
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: `${Meteor.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
+        icon: `${Reaction.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: `${Meteor.absoluteUrl()}resources/email-templates/twitter-icon.png`,
+        icon: `${Reaction.absoluteUrl()}resources/email-templates/twitter-icon.png`,
         link: "https://www.twitter.com"
       }
     },
@@ -969,7 +969,7 @@ function getDataForEmail(options) {
     primaryShop, // Primary shop data - may or may not be the same as shop
     shop, // Shop Data
     contactEmail: _.get(shop, "emails[0].address"),
-    homepage: Meteor.absoluteUrl(),
+    homepage: Reaction.absoluteUrl(),
     emailLogo,
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
@@ -984,17 +984,17 @@ function getDataForEmail(options) {
       display: true,
       facebook: {
         display: true,
-        icon: `${Meteor.absoluteUrl()}resources/email-templates/facebook-icon.png`,
+        icon: `${Reaction.absoluteUrl()}resources/email-templates/facebook-icon.png`,
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: `${Meteor.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
+        icon: `${Reaction.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: `${Meteor.absoluteUrl()}resources/email-templates/twitter-icon.png`,
+        icon: `${Reaction.absoluteUrl()}resources/email-templates/twitter-icon.png`,
         link: "https://www.twitter.com"
       }
     },
@@ -1008,7 +1008,7 @@ function getDataForEmail(options) {
     if (userToken) {
       return MeteorAccounts.urls.enrollAccount(userToken);
     }
-    return Meteor.absoluteUrl();
+    return Reaction.absoluteUrl();
   }
 }
 

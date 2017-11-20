@@ -2,7 +2,8 @@ import url from "url";
 import packageJson from "/package.json";
 import _, { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { DDP } from "meteor/ddp-client";
+import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
@@ -73,6 +74,57 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name];
     return registeredPackage;
   },
+
+  /**
+   * absoluteUrl
+   * @summary a wrapper method for Meteor.absoluteUrl which sets the rootUrl to
+   * the current URL (instead of defaulting to ROOT_URL)
+   * @param {String} [path] A path to append to the root URL. Do not include a leading "`/`".
+   * @param {Object} [options]
+   * @param {Boolean} options.secure Create an HTTPS URL.
+   * @param {Boolean} options.replaceLocalhost Replace localhost with 127.0.0.1. Useful for services that don't recognize localhost as a domain name.
+   * @param {String} options.rootUrl Override the default ROOT_URL from the server environment. For example: "`http://foo.example.com`"
+   */
+  absoluteUrl(path, options) {
+    const opts = Object.assign({}, options);
+    const hasRootUrl = "rootUrl" in opts;
+
+    if (!hasRootUrl) {
+      const domain = this.connectionDomain();
+
+      if (domain) {
+        // Meteor.absoluteUrl will default to http unless the scheme is set on
+        // rootUrl. the "connection domain" does not inform us of ssl, so we
+        // use Meteor.rootUrl to inform us (i.e., if this is returning "http://"
+        // update your $ROOT_URL)
+        const rootUrl = url.parse(Meteor.absoluteUrl.defaultOptions.rootUrl);
+        rootUrl.host = domain;
+        opts.rootUrl = rootUrl.format();
+      }
+    }
+
+    return Meteor.absoluteUrl(path, opts);
+  },
+
+  /**
+   * connectionDomain
+   * @summary inspects the current connection to the client to get the host
+   * @return {String} - the current host (domain sans protocol) or undefined
+   */
+  connectionDomain() {
+    const invocation =
+      DDP._CurrentMethodInvocation.get() ||
+      DDP._CurrentPublicationInvocation.get();
+
+    if (!invocation) { return; }
+
+    const { connection } = invocation;
+
+    if (!connection) { return; }
+
+    return connection.httpHeaders.host;
+  },
+
   defaultCustomerRoles: ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
   defaultVisitorRoles: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
   createGroups,
@@ -458,7 +510,7 @@ export default {
    * @return {String} Shop domain
    */
   getDomain() {
-    return url.parse(Meteor.absoluteUrl()).hostname;
+    return url.parse(this.absoluteUrl()).hostname;
   },
 
   /**
