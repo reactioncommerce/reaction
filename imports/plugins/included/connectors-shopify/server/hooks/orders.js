@@ -10,6 +10,7 @@ export function exportToShopify(doc) {
   const apiCreds = getApiInfo();
   const shopify = new Shopify(apiCreds);
   const numShopOrders = doc.billing.length; // if we have multiple billing, we have multiple shops
+  Logger.info(`Exporting ${numShopOrders} order(s) to Shopify`);
   for (let i = 0; i < numShopOrders; i++) {
     // send a shopify order once for each merchant order
     const shopId = doc.billing[i].shopId;
@@ -18,12 +19,13 @@ export function exportToShopify(doc) {
   }
 }
 
-function convertRcOrderToShopifyOrder(order, index, shopId) {
+function convertRcOrderToShopifyOrder(doc, index, shopId) {
+  const order = Orders.findOne(doc._id); // only this object has the original transforms defined
   const shopifyOrder = {};
-  const billingAddress = convertAddress(order.billing[index]);
+  const billingAddress = convertAddress(order.billing[index].address);
   shopifyOrder.billing_address = billingAddress;
-  const shippingAddress = convertAddress(order.shipping[index]);
-  shopifyOrder.shipping_address = convertAddress(shippingAddress);
+  const shippingAddress = convertAddress(order.shipping[index].address);
+  shopifyOrder.shipping_address = shippingAddress;
   shopifyOrder.customer = convertCustomer(billingAddress, order);
   shopifyOrder.email = order.email;
   const paymentType = order.billing[index].method;
@@ -128,29 +130,34 @@ function convertLineItems(items, order) {
 // }
 
 function convertAddress(address) {
+  Logger.info("Converting address", address);
   const convertedAddress = {};
   convertedAddress.address1 = address.address1;
   convertedAddress.address2 = address.address2 || "";
   convertedAddress.city = address.city;
   convertedAddress.country = address.country;
   convertedAddress.country_code = address.country;
-  convertedAddress.name = address.name;
-  [ convertedAddress.first_name, convertedAddress.last_name ] = address.fullName.split(" ", 1);
+  convertedAddress.name = address.fullName;
+  const [ firstName, ...lastName ] = address.fullName.split(" ");
+  convertedAddress.first_name = firstName;
+  convertedAddress.last_name = lastName.join(" ");
   convertedAddress.phone = address.phone;
   convertedAddress.zip = address.postal;
   convertedAddress.province_code = address.region;
+  Logger.info("final converted address", convertedAddress);
   return convertedAddress;
 }
 
 function convertCustomer(address, order) {
-  const [ first_name, last_name ] = address.fullName.split(" ", 1);
+  Logger.info("creating customer with address,order", address, order);
   const customer = {
     accepts_marketing: false,
     email: order.email,
     phone: address.phone,
-    first_name,
-    last_name
+    first_name: address.first_name,
+    last_name: address.last_name
   };
+  Logger.info("create customer", customer);
   return customer;
 }
 
@@ -162,7 +169,13 @@ Orders.after.insert((userId, doc) => {
     synchooks.forEach((hook) => {
       if (hook.topic === "orders" && hook.event === "orders/create") {
         if (hook.syncType === "exportToShopify") { // should this just be dynamic?
-          exportToShopify(doc);
+          try {
+            exportToShopify(doc);
+          } catch (error) {
+            Logger.error("Error.keys", Object.keys(error));
+            Logger.error("Error exporting to Shopify", error);
+            return true;
+          }
         }
       }
     });
