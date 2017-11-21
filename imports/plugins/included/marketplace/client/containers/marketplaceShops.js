@@ -9,11 +9,8 @@ const onWorkflowChange = (shopId, value) => {
 };
 
 const composer = (props, onData) => {
-  // Subscribe to MerchantShops
-  const merchantShopSub = Meteor.subscribe("MerchantShops");
-
-  // Get all shops (excluding the primary shop) if subscription is ready
-  if (merchantShopSub.ready()) {
+  // Subscribe to merchant shops and get all shops (excluding the primary shop) if subscription is ready
+  if (Reaction.Subscriptions.MerchantShops.ready()) {
     const shops = Shops.find({
       _id: {
         $nin: [Reaction.getPrimaryShopId()]
