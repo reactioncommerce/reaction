@@ -13,6 +13,7 @@ class ParcelSizeSettings extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      expanded: this.props.getEditFocus() ? true : false,
       size: this.props.size,
       isEditing: false,
       isSaving: false,
@@ -21,6 +22,7 @@ class ParcelSizeSettings extends Component {
     this.handleFieldFocus = this.handleFieldFocus.bind(this);
     this.handleStateChange = this.handleStateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCardExpand = this.handleCardExpand.bind(this);
   }
 
   /**
@@ -75,6 +77,24 @@ class ParcelSizeSettings extends Component {
   }
 
   /**
+  * @name handleCardExpand()
+  * @summary Handle card expansion
+  * @param {script} event - onChange event when expander is clicked
+  * @param {Object} card - card component
+  * @param {String} cardName - card name
+  * @param {Boolean} isExpanded - boolean value from card component
+  * @return {Function} state for field value
+  */
+  handleCardExpand = (event, card, cardName, isExpanded) => {
+    if (this.props.onCardExpand) {
+      this.props.onCardExpand(isExpanded ? cardName : undefined);
+      this.setState({
+        expanded: this.props.getEditFocus() === cardName
+      });
+    }
+  }
+
+  /**
   * renderComponent
   * @method render()
   * @summary React component for displaying default parcel size form
@@ -89,7 +109,11 @@ class ParcelSizeSettings extends Component {
     return (
       <div className="parcel-setting">
         <Components.CardGroup>
-          <Components.Card>
+          <Components.Card
+            expanded={this.state.expanded}
+            name={"parcelSize"}
+            onExpand={this.handleCardExpand}
+          >
             <Components.CardHeader
               actAsExpander={true}
               i18nKeyTitle="defaultParcelSize.label"
@@ -162,6 +186,8 @@ class ParcelSizeSettings extends Component {
   * @name ParcelSizeSettings propTypes
   * @type {propTypes}
   * @param {Object} props - React PropTypes
+  * @property {Function} getEditFocus provides function that gets edit/focus value in Reaction state
+  * @property {Function} onCardExpand provides function that controls card expansion
   * @property {Function} saveDefaultSize provides function / action when form is submitted
   * @property {Object} size provides parcel weight, lenght, width, and height
   * @property {Function} validation provides function that validates form inputs
@@ -169,6 +195,8 @@ class ParcelSizeSettings extends Component {
 */
 
 ParcelSizeSettings.propTypes = {
+  getEditFocus: PropTypes.func,
+  onCardExpand: PropTypes.func,
   saveDefaultSize: PropTypes.func,
   size: PropTypes.object,
   validation: PropTypes.func

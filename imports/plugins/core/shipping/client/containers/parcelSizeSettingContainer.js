@@ -39,6 +39,27 @@ const saveDefaultSize = (shopId, size, callback) => {
 };
 
 /**
+ * @method onCardExpand
+ * @summary set "edit/focus" in current Reaction state
+ * @param {String} cardName - card name to be set
+ * @since 1.5.5
+ * @return {Function} callback
+*/
+const onCardExpand = (cardName) => {
+  Reaction.state.set("edit/focus", cardName);
+};
+
+/**
+ * @method getEditFocus
+ * @summary get "edit/focus" value from current Reaction state
+ * @since 1.5.5
+ * @return {String} - value in current Reaction state
+*/
+const getEditFocus = () => {
+  return Reaction.state.get("edit/focus");
+};
+
+/**
  * @method composer
  * @summary composer
  * @param {Object} props
@@ -50,6 +71,8 @@ const composer = (props, onData) => {
     _id: Reaction.getShopId()
   }).defaultParcelSize;
   onData(null, {
+    getEditFocus,
+    onCardExpand,
     size,
     saveDefaultSize,
     validation
