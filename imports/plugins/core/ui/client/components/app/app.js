@@ -2,13 +2,11 @@ import { Switch } from "react-router-dom";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import ToolbarContainer from "/imports/plugins/core/dashboard/client/containers/toolbarContainer";
-import Toolbar from "/imports/plugins/core/dashboard/client/components/toolbar";
+import { Components } from "@reactioncommerce/reaction-components";
 import { ActionViewContainer, PackageListContainer } from "/imports/plugins/core/dashboard/client/containers";
 import { ActionView, ShortcutBar } from "/imports/plugins/core/dashboard/client/components";
 import { Reaction } from "/client/api";
 
-const ConnectedToolbarComponent = ToolbarContainer(Toolbar);
 const ConnectedAdminViewComponent = ActionViewContainer(ActionView);
 const ConnectedShortcutBarContainer = PackageListContainer(ShortcutBar);
 
@@ -87,7 +85,7 @@ class App extends Component {
       >
         <div className={pageClassName} id="reactionAppContainer" style={styles.adminContentContainer}>
           <div className="reaction-toolbar">
-            <ConnectedToolbarComponent handleViewContextChange={this.handleViewContextChange} data={routeData} />
+            <Components.PublishControls handleViewContextChange={this.handleViewContextChange} data={routeData} />
           </div>
           <div style={styles.scrollableContainer}>
             <Switch>
