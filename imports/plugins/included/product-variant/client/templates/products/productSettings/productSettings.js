@@ -103,7 +103,7 @@ Template.productSettingsListItem.helpers({
   media() {
     const media = Media.findOne({
       "metadata.productId": this._id,
-      "metadata.priority": 0,
+      "metadata.workflow": { $nin: ["archived"] },
       "metadata.toGrid": 1
     }, { sort: { uploadedAt: 1 } });
 
