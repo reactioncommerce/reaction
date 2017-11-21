@@ -68,6 +68,7 @@
     "node-loggly-bulk": "^2.0.0",
     "nodemailer-wellknown": "^0.2.3",
     "nouislider-algolia-fork": "^10.0.0",
+    "papaparse": "^4.3.6",
     "path-to-regexp": "^1.7.0",
     "paypal-rest-sdk": "^1.7.1",
     "postcss": "^6.0.8",
