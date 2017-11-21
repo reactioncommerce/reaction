@@ -62,7 +62,8 @@ class ParcelSizeSettings extends Component {
     if (validationStatus.isValid) {
       this.props.saveDefaultSize(shopId, size, () => {
         this.setState({
-          isSaving: false
+          isSaving: false,
+          validationStatus: {}
         });
       });
     } else {
