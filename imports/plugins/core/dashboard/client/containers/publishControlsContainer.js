@@ -1,11 +1,13 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { compose } from "recompose";
+import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
 import { Tags, Shops } from "/lib/collections";
 import { TranslationProvider, AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
+import PublishControls from "../components/publishControls";
 
 const handleAddProduct = () => {
   Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
@@ -103,8 +105,8 @@ function composer(props, onData) {
   });
 }
 
-export default function ToolbarContainer(Comp) {
-  function CompositeComponent(props) {
+function PublishControlsContextWrapper(Comp) {
+  return function CompositeComponent(props) {
     return (
       <TranslationProvider>
         <AdminContextProvider>
@@ -112,7 +114,15 @@ export default function ToolbarContainer(Comp) {
         </AdminContextProvider>
       </TranslationProvider>
     );
-  }
-
-  return composeWithTracker(composer)(CompositeComponent);
+  };
 }
+
+registerComponent("PublishControls", PublishControls, [
+  composeWithTracker(composer),
+  PublishControlsContextWrapper
+]);
+
+export default compose(
+  composeWithTracker(composer),
+  PublishControlsContextWrapper
+)(PublishControls);
