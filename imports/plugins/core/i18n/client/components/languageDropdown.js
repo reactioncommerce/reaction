@@ -41,7 +41,7 @@ class LanguageDropDown extends Component {
               menuStyle={{ maxHeight: 500, overflow: "auto" }}
             >
               <Components.MenuItem
-                label="Select Currency"
+                label="Select language"
                 i18nKeyLabel="languages.select"
                 disabled={true}
               />
