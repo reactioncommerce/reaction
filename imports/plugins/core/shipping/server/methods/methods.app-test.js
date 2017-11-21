@@ -24,7 +24,7 @@ after(function () {
   Shops.direct.remove();
 });
 
-describe.only("shipping methods", function () {
+describe("shipping methods", function () {
   let sandbox;
 
   beforeEach(function () {
