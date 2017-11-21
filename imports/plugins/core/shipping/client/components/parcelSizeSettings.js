@@ -1,24 +1,22 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Reaction } from "/client/api";
 import { Components } from "@reactioncommerce/reaction-components";
+import { Reaction } from "/client/api";
+
 
 /**
- * @class ParcelSizeSettings
- * @extends {Component}
- */
+ * @file ParcelSizeSettings - React Component wrapper for shop default parcel size form displayed in shipping settings
+ * @module ParcelSizeSettings
+ * @extends Component
+*/
 class ParcelSizeSettings extends Component {
-  static propTypes = {
-    saveDefaultSize: PropTypes.func,
-    size: PropTypes.object
-  }
-
   constructor(props) {
     super(props);
     this.state = {
       size: this.props.size,
       isEditing: false,
-      isSaving: false
+      isSaving: false,
+      validationStatus: {}
     };
     this.handleFieldFocus = this.handleFieldFocus.bind(this);
     this.handleStateChange = this.handleStateChange.bind(this);
@@ -26,38 +24,65 @@ class ParcelSizeSettings extends Component {
   }
 
   /**
-   * @memberof ParcelDimensionSettings
-   */
+   * @name handleFieldFocus()
+   * @summary Handle input field focus in form
+   * @return {function} state for field value
+  */
   handleFieldFocus() {
     this.setState({
       isEditing: true
     });
   }
+
   /**
-   * @param {Object} event
-   * @memberof ParcelDimensionSettings
-   */
+    * @name handleStateChange()
+    * @summary Handle input field change
+    * @param {script} event - onChange event when typing in input field
+    * @return {function} state for field value
+  */
   handleStateChange(event) {
     const { size } = this.state;
-    const value = event.target.value;
-    size[event.target.name] = value;
+    // get target value and remove any space character
+    size[event.target.name] = event.target.value.trim();
     this.setState({ size });
   }
 
   /**
-   * @param {Object} event
-   * @memberof ParcelDimensionSettings
-   */
+  * @name handleSubmit()
+  * @summary Handle form submission
+  * @param {script} event - onChange event when typing in input field
+  * @return {function} state for field value
+  */
   handleSubmit(event) {
     event.preventDefault();
     const { size } = this.state;
     const shopId = Reaction.getShopId();
     this.setState({ isSaving: true });
-    this.props.saveDefaultSize(shopId, size, () => {
-      this.setState({ isSaving: false });
-    });
+    const validationStatus = this.props.validation().validate(size);
+    if (validationStatus.isValid) {
+      this.props.saveDefaultSize(shopId, size, () => {
+        this.setState({
+          isSaving: false
+        });
+      });
+    } else {
+      this.setState({
+        isSaving: false,
+        validationStatus
+      });
+    }
   }
 
+  /**
+  * renderComponent
+  * @method render()
+  * @summary React component for displaying default parcel size form
+  * @param {Object} props - React PropTypes
+  * @property {Boolean} isEditing - show/hide save button
+  * @property {Boolean} isSaving - show/hide loading icon on button
+  * @property {Object} size - provides parcel weight, lenght, width, and height
+  * @return {Node} React node containing form view
+  */
   render() {
     const { isEditing, isSaving, size } = this.state;
     return (
@@ -79,6 +104,7 @@ class ParcelSizeSettings extends Component {
                   value={size.weight}
                   onChange={this.handleStateChange}
                   onFocus={this.handleFieldFocus}
+                  validation={this.state.validationStatus}
                 />
                 <Components.TextField
                   label="Height"
@@ -88,6 +114,7 @@ class ParcelSizeSettings extends Component {
                   value={size.height}
                   onChange={this.handleStateChange}
                   onFocus={this.handleFieldFocus}
+                  validation={this.state.validationStatus}
                 />
                 <Components.TextField
                   label="Width"
@@ -97,6 +124,7 @@ class ParcelSizeSettings extends Component {
                   value={size.width}
                   onChange={this.handleStateChange}
                   onFocus={this.handleFieldFocus}
+                  validation={this.state.validationStatus}
                 />
                 <Components.TextField
                   label="Length"
@@ -106,6 +134,7 @@ class ParcelSizeSettings extends Component {
                   value={size.length}
                   onChange={this.handleStateChange}
                   onFocus={this.handleFieldFocus}
+                  validation={this.state.validationStatus}
                 />
                 {isEditing &&
                   <Components.Button
@@ -127,5 +156,21 @@ class ParcelSizeSettings extends Component {
     );
   }
 }
+
+/**
+  * @name ParcelSizeSettings propTypes
+  * @type {propTypes}
+  * @param {Object} props - React PropTypes
+  * @property {Function} saveDefaultSize provides function / action when form is submitted
+  * @property {Object} size provides parcel weight, lenght, width, and height
+  * @property {Function} validation provides function that validates form inputs
+  * @return {Array} React propTypes
+*/
+
+ParcelSizeSettings.propTypes = {
+  saveDefaultSize: PropTypes.func,
+  size: PropTypes.object,
+  validation: PropTypes.func
+};
 
 export default ParcelSizeSettings;

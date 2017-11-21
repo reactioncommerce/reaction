@@ -1,73 +1,40 @@
+import { Meteor } from "meteor/meteor";
 import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Meteor } from "meteor/meteor";
-import { Reaction } from "/client/api/";
-import { isEmpty } from "lodash";
+import { Validation } from "@reactioncommerce/reaction-collections";
+import { Reaction, i18next } from "/client/api/";
 import { Shops } from "/lib/collections";
+import { ParcelSize } from "../../lib/collections/schema";
 import ParcelSizeSettings from "../components/parcelSizeSettings";
 
 /**
- * @method isNumber
- * @summary checks if an input is an integer or a decimal
- * @param {String} input - input string
+ * @method validation
+ * @summary create a validation context for size object
  * @since 1.5.5
- * @return {Boolean} - returns a boolean result
- */
-const isNumber = (input) => {
-  return /^\d+(\.\d{1,2})?$/.test(input);
-};
-
-/**
- * @method validateInput
- * @summary checks if each key in size object is a number
- * @param {object} size - an object with weight, length, width, and height keys
- * @since 1.5.5
- * @return {Object} - returns an object with isValid, erros, sizeInt keys
- */
-const validateInput = (size) => {
-  const errors = {};
-
-  // variable to store valid key value
-  const sizeInt = {};
-  for (const key in size) {
-    if (key !== "_id" && size.hasOwnProperty(key)) {
-      if (isNumber(size[key]) === true) {
-        // convert to floating point number
-        sizeInt[key] = parseFloat(size[key]);
-      } else {
-        errors[key] = "Invalid input";
-      }
-    }
-  }
-  return {
-    isValid: isEmpty(errors),
-    errors,
-    sizeInt
-  };
+ * @return {Function} - return a new instance of Validation using ParcelSize schema
+*/
+const validation = () => {
+  return new Validation(ParcelSize);
 };
 
 /**
  * @method saveDefaultSize
- * @summary calls "shipping/size/save" method if size is a valid object
+ * @summary call "shipping/updateParcelSize" method
  * @param {String} shopId - current shopId
- * @param {Object} size - size to be saved
+ * @param {Object} size - size object to be saved
+ * @param {Function} callback - callback
  * @since 1.5.5
  * @return {Function} callback
- */
+*/
 const saveDefaultSize = (shopId, size, callback) => {
-  const { isValid, sizeInt } = validateInput(size);
-
-  if (isValid === true) {
-    Meteor.call("shipping/updateParcelSize", shopId, sizeInt, (error) => {
-      if (error) {
-        Alerts.toast("An error occured", "error");
-      } else {
-        Alerts.toast("Settings saved");
-      }
-    });
-  } else {
-    Alerts.toast("Invalid inputs", "error");
-  }
+  Meteor.call("shipping/updateParcelSize", shopId, size, (error) => {
+    if (error) {
+      Alerts.toast(i18next.t("shippingSettings.parcelSize.saveFailed"),
+        "error");
+    } else {
+      Alerts.toast(i18next.t("shippingSettings.parcelSize.saveSuccess"), "success");
+    }
+  });
   return callback();
 };
 
@@ -77,14 +44,15 @@ const saveDefaultSize = (shopId, size, callback) => {
  * @param {Object} props
  * @param {Function} onData
  * @since 1.5.5
- */
+*/
 const composer = (props, onData) => {
   const size = Shops.findOne({
     _id: Reaction.getShopId()
   }).defaultParcelSize;
   onData(null, {
     size,
-    saveDefaultSize
+    saveDefaultSize,
+    validation
   });
 };
 

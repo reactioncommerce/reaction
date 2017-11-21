@@ -16,8 +16,6 @@ const parcelSize = {
 let shop;
 let initialDefaultParcelSize;
 before(function () {
-  this.timeout(10000);
-  Meteor._sleepForMs(7000);
   shop = Factory.create("shop");
   initialDefaultParcelSize = shop.defaultParcelSize;
 });
@@ -26,7 +24,7 @@ after(function () {
   Shops.direct.remove();
 });
 
-describe("shipping methods", function () {
+describe.only("shipping methods", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -37,13 +35,10 @@ describe("shipping methods", function () {
     sandbox.restore();
   });
 
-
   describe("shipping/updateParcelSize", function () {
-    it("should throw 403 error with shipping permission", function (done) {
+    it("should throw 403 error with shipping permission", function () {
       sandbox.stub(Roles, "userIsInRole", () => false);
-      // this should actually trigger a whole lot of things
       expect(() => Meteor.call("shipping/updateParcelSize", "dummyShopId", parcelSize)).to.throw(Meteor.Error, /Access Denied/);
-      return done();
     });
     it("should update default parcel size when user has permission", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);

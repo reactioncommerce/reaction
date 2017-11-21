@@ -436,7 +436,7 @@ Meteor.methods({
     const immediateAncestor = Collections.Products.findOne({ _id: immediateAncestors[0] });
     // Get default parcel size
     const shop = Collections.Shops.findOne({
-      _id: Reaction.getShopId
+      _id: Reaction.getShopId()
     });
     let parcel = null;
     if (immediateAncestor) {
