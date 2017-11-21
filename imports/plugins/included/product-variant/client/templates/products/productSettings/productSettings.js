@@ -176,7 +176,7 @@ Template.productSettings.events({
         (error) => { // eslint-disable-line no-loop-func
           if (error) {
             Logger.warn(error);
-            throw new Meteor.Error(403, error);
+            throw new Meteor.Error("access-denied", error);
           }
         }
       );

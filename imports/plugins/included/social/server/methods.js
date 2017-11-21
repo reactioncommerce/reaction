@@ -9,7 +9,7 @@ export function updateSocialSetting(provider, field, value) {
   check(value, Match.OneOf(String, Boolean));
 
   if (!Reaction.hasPermission(["reaction-social"])) {
-    throw new Meteor.Error(403, "Access Denied");
+    throw new Meteor.Error("access-denied", "Access Denied");
   }
 
   return Packages.update({
@@ -26,7 +26,7 @@ export function updateSocialSettings(values) {
   check(values, Match.OneOf(Object, String, Boolean, Number, null, undefined));
 
   if (!Reaction.hasPermission(["reaction-social"])) {
-    throw new Meteor.Error(403, "Access Denied");
+    throw new Meteor.Error("access-denied", "Access Denied");
   }
 
   return Packages.update({

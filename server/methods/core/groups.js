@@ -37,7 +37,7 @@ Meteor.methods({
     // we are limiting group method actions to only users with admin roles
     // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP
     if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     const defaultCustomerGroupForShop = Groups.findOne({ slug: "customer", shopId }) || {};
@@ -55,13 +55,13 @@ Meteor.methods({
     // ensure one group type per shop
     const groupExists = Groups.findOne({ slug: newGroupData.slug, shopId });
     if (groupExists) {
-      throw new Meteor.Error(409, "Group already exist for this shop");
+      throw new Meteor.Error("conflict", "Group already exist for this shop");
     }
     try {
       _id = Groups.insert(newGroupData);
     } catch (error) {
       Logger.error(error);
-      throw new Meteor.Error(400, "Bad request");
+      throw new Meteor.Error("invalid-parameter", "Bad request");
     }
 
     return { status: 200, group: Groups.findOne({ _id }) };
@@ -89,7 +89,7 @@ Meteor.methods({
     // we are limiting group method actions to only users with admin roles
     // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP
     if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     // 1. Update the group data
@@ -100,7 +100,7 @@ Meteor.methods({
 
     // prevent edits on owner. Owner groups is the default containing all roles, and as such should be untouched
     if (group.slug === "owner") {
-      throw new Meteor.Error(400, "Invalid request");
+      throw new Meteor.Error("invalid-parameter", "Bad request");
     }
 
     Groups.update({ _id: groupId, shopId }, { $set: update });
@@ -118,7 +118,7 @@ Meteor.methods({
       return { status: 200, group: Groups.findOne({ _id: groupId }) };
     }
     Logger.error(error);
-    throw new Meteor.Error(500, "Update not successful");
+    throw new Meteor.Error("server-error", "Update not successful");
   },
 
   /**
@@ -143,20 +143,20 @@ Meteor.methods({
     // we are limiting group method actions to only users with admin roles
     // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP
     if (!Reaction.hasPermission("admin", loggedInUserId, shopId)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     // Users with `owner` and/or `admin` roles can invite to any group
     // Also a user with `admin` can invite to only groups they have permissions that are a superset of
     // See details of canInvite method in core (i.e Reaction.canInviteToGroup)
     if (!canInvite) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     if (slug === "owner") {
       // if adding a user to the owner group, check that the request is done by current owner
       if (!Reaction.hasPermission("owner", Meteor.userId(), shopId)) {
-        throw new Meteor.Error(403, "Access Denied");
+        throw new Meteor.Error("access-denied", "Access Denied");
       }
     }
 
@@ -190,7 +190,7 @@ Meteor.methods({
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
-      throw new Meteor.Error(500, "Could not add user");
+      throw new Meteor.Error("server-error", "Could not add user");
     }
   },
 
@@ -216,11 +216,11 @@ Meteor.methods({
     // we are limiting group method actions to only users with admin roles
     // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP
     if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     if (!user) {
-      throw new Meteor.Error(404, "Could not find user");
+      throw new Meteor.Error("invalid-parameter", "Could not find user");
     }
 
     try {
@@ -229,7 +229,7 @@ Meteor.methods({
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
-      throw new Meteor.Error(500, "Could not add user");
+      throw new Meteor.Error("server-error", "Could not add user");
     }
   }
 });

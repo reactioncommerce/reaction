@@ -515,7 +515,7 @@ export const methods = {
         // If for a weird reason Shop hasn't a Shippo Api key anymore you have to throw an error
         // cause the Shippo label purchasing is not gonna happen.
         if (!apiKey) {
-          throw new Meteor.Error("403", "Invalid Shippo Credentials");
+          throw new Meteor.Error("access-denied", "Invalid Shippo Credentials");
         }
         const rateId = orderShipment.shipmentMethod.settings.rateId;
         // make the actual purchase
