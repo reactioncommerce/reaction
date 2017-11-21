@@ -3,11 +3,11 @@
 }
 
 html.rtl .rui.admin.action-view {
-  border-right: 1px solid @black10;
+  border-right: 1px solid @black20;
 }
 
 html:not(.rtl) .rui.admin.action-view {
-  border-left: 1px solid @black10;
+  border-left: 1px solid @black20;
 }
 
 .rui.admin.action-view {
@@ -155,7 +155,7 @@ html:not(.rtl) .rui.admin.action-view {
 }
 
 .admin-controls-content .panel-default > .panel-heading {
-  background-color: darken(@white, 2%);
+  background-color: lighten(@black05, 2%);
 
   &.validation {
     background-color: @rui-danger-bg;
@@ -201,6 +201,8 @@ body.admin-vertical .admin-controls {
 // not getting the form-control class
 .admin-controls-content label {
   font-weight: lighter;
+  color: @rui-default-text;
+  letter-spacing: .02rem;
 }
 
 
@@ -236,6 +238,8 @@ body.admin-vertical .admin-controls {
 
 .rui.admin.action-view-pane .header .title {
   margin: 0;
+  letter-spacing: 0.03rem;
+  color: @rui-default-text;
 }
 
 .rui.admin.action-view-detail {
