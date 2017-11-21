@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Components } from "@reactioncommerce/reaction-components";
+import { FetchExportDataSet } from "../../server/jobs";
 
 
 class SimpleCSVExport extends Component {
@@ -16,6 +17,10 @@ class SimpleCSVExport extends Component {
       startDate,
       endDate
     });
+  }
+
+  handleOnclick() {
+    FetchExportDataSet();
   }
 
   dateLabel() {
@@ -40,7 +45,7 @@ class SimpleCSVExport extends Component {
         <br />
         {this.dateLabel()}
         <br />
-        <button>
+        <button onClick={this.handleOnclick}>
         Export
         </button>
       </div>

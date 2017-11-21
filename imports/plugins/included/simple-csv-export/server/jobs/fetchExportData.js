@@ -1,20 +1,18 @@
 import { Meteor } from "meteor/meteor";
 import { Jobs, Orders } from "/lib/collections";
+import Papa from "papaparse";
 
-export function exportOrdersToCSV() {
+function exportOrdersToCSV() {
   Meteor.call("orders/FetchExportDataSet", (error, data) => {
     if (error) {
       console.log("Error happened");
     }
-    // const flattenedData = Flat.flatten(data);
-    // console.log(flattenedData, "Im a banana");
     const csv = Papa.unparse(data);
     downloadCSV(csv);
   });
 }
 
-export function exportOrdersToCSVByDate(startDate, endDate) {
-  console.log("I get here in helpers");
+function exportOrdersToCSVByDate(startDate, endDate) {
   Meteor.call("orders/ExportAllOrdersToCSVByDate", startDate, endDate, (error, data) => {
     if (error) {
       console.log("Error happened");
@@ -34,7 +32,7 @@ function downloadCSV(csv) {
 	    document.body.removeChild(a);
 }
 
-export function FetchExportDataSet() {
+export default function () {
   Jobs.processJobs("orders/FetchExportDataSet", {
     pollInterval: 60 * 60 * 1000,
     workTimeout: 5 * 1000
@@ -44,8 +42,6 @@ export function FetchExportDataSet() {
         console.log("Error happened");
         job.fail("I failed this city");
       }
-      // const flattenedData = Flat.flatten(data);
-      // console.log(flattenedData, "Im a banana");
       const csv = Papa.unparse(data);
       downloadCSV(csv);
       job.done("Yaaay!!");
