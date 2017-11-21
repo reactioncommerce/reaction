@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { Reaction } from "/client/api";
-import ExportSettings from "../components/exportSettings";
+import { ExportSettings } from "../components";
 
 class ExportSettingsContainer extends Component {
   render() {
@@ -14,6 +14,7 @@ class ExportSettingsContainer extends Component {
       <TranslationProvider>
         <ExportSettings
           settings={this.props.packageData.settings[settingsKey]}
+          exportSettings={this.props.exportSettings}
         />
       </TranslationProvider>
     );
@@ -21,19 +22,20 @@ class ExportSettingsContainer extends Component {
 }
 
 ExportSettingsContainer.propTypes = {
+  exportSettings: PropTypes.array,
   packageData: PropTypes.object
 };
 
 const composer = ({}, onData) => {
   const primaryShopSub = Meteor.subscribe("PrimaryShop");
   const merchantShopSub = Meteor.subscribe("MerchantShops");
-  const exportSettings = Reaction.Apps({ provides: "exportMethod" });
+  const exportSettings = Reaction.Apps({ provides: "exportSettings" });
   if (primaryShopSub.ready() && merchantShopSub.ready()) {
     const packageData = Packages.findOne({
-      exportSettings,
+      name: "reaction-simple-export-csv",
       shopId: Reaction.getShopId()
     });
-    onData(null, { packageData });
+    onData(null, { packageData, exportSettings });
   }
 };
 

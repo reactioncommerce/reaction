@@ -1,27 +1,19 @@
-// import { Reaction } from "/server/api";
-//
-// Reaction.registerPackage({
-//   label: "Export-CSV",
-//   name: "reaction-simple-export-csv",
-//   icon: "fa fa-download",
-//   autoEnable: true,
-//   settings: {
-//     name: "Export to CSV"
-//   },
-//   registry: [{
-//     provides: ["dashboard"],
-//     label: "Export-CSV",
-//     description: "Export Orders to CSV",
-//     icon: "fa fa-download",
-//     priority: 3,
-//     container: "core",
-//     workflow: "coreDashboardWorkflow"
-//   },
-//   {
-//     label: "Export-CSV",
-//     icon: "fa fa-download",
-//     provides: ["settings"],
-//     container: "dashboard",
-//     template: "exportCSV"
-//   }]
-// });
+import { Reaction } from "/server/api";
+
+Reaction.registerPackage({
+  label: "Export-CSV",
+  name: "reaction-simple-export-csv",
+  icon: "fa fa-file-excel-o",
+  autoEnable: true,
+  settings: {
+    enabled: true
+  },
+  registry: [
+    // Settings panel
+    {
+      label: "Simple CSV Export", // this key (minus spaces) is used for translations
+      provides: ["exportSettings"],
+      container: "dashboard",
+      template: "simpleCsvExport"
+    }]
+});

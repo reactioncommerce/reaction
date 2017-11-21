@@ -1,10 +1,11 @@
 import { Template } from "meteor/templating";
-import { Components } from "@reactioncommerce/reaction-components";
+import { SimpleCsvExport } from "../components";
+import "./simpleCsvExport.html";
 
 Template.simpleCsvExport.helpers({
   exportCSV() {
     return {
-      component: Components.ExportCSV
+      component: SimpleCsvExport
     };
   }
 });

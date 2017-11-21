@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import ExportSettingsContainer from "../components/exportSettings";
+import { ExportSettingsContainer } from "../containers";
 import "./exportSettings.html";
 
 Template.exportSettings.helpers({
