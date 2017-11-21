@@ -176,6 +176,12 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
   .padding-left(@navbar-padding-vertical);
 }
 
+@media only screen and (min-width: 300px) and (max-width: 400px) {
+  .rui.navbar .accounts .accounts.dropdown .dropdown-toggle {
+    padding: 0px 10px;
+  }
+}
+
 .rui.navbar .accounts .dropdown {
   height: 100%;
 }
@@ -270,6 +276,12 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
   height: @navbar-height;
   padding: 0px @navbar-padding-vertical;
   cursor: pointer;
+}
+
+@media only screen and (min-width: 300px) and (max-width: 400px) {
+  .rui.navbar .search {
+    padding: 0px;
+  }
 }
 
 .rui.navbar .search:hover {
