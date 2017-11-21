@@ -15,3 +15,4 @@ import "./14_rebuild_order_search_collection";
 import "./15_update_shipping_status_to_workflow";
 import "./16_update_billing_paymentMethod";
 import "./17_set_shop_uols";
+import "./18_use_react_for_header_and_footer_layout";
