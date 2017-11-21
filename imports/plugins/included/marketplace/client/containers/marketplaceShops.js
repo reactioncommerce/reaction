@@ -10,7 +10,7 @@ const onWorkflowChange = (shopId, value) => {
 
 const composer = (props, onData) => {
   // Subscribe to merchant shops and get all shops (excluding the primary shop) if subscription is ready
-  if (Reaction.Subscriptions.MerchantShops.ready()) {
+  if (Meteor.subscribe("MerchantShops").ready()) {
     const shops = Shops.find({
       _id: {
         $nin: [Reaction.getPrimaryShopId()]
