@@ -679,6 +679,7 @@ const composer = (props, onData) => {
           return tax.lineNumber === item._id;
         });
         item.taxDetail = taxDetail;
+        return item;
       }
     });
   } else {

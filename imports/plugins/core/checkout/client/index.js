@@ -10,7 +10,6 @@ import "./templates/cartIcon/cartIcon.js";
 import "./templates/checkout/addressBook/addressBook.html";
 import "./templates/checkout/completed/completed.html";
 import "./templates/checkout/completed/completed.js";
-import "./templates/checkout/header/header.html";
 import "./templates/checkout/login/login.html";
 import "./templates/checkout/login/login.js";
 import "./templates/checkout/progressBar/progressBar.html";
