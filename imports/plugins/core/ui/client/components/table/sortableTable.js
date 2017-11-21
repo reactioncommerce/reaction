@@ -262,7 +262,6 @@ class SortableTable extends Component {
     let displayText = "";
     if (this.getTableData() === 0) {
       displayText = <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>;
-      return displayText;
     }
     return displayText;
   }
