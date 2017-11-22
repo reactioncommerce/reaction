@@ -24,7 +24,7 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   const user = Accounts.findOne({
     _id: Meteor.userId()
   });
-  const profileCurrency = user.profile && user.profile.currency;
+  const profileCurrency = user && user.profile && user.profile.currency;
   if (typeof shop === "object" && shop.currencies && profileCurrency) {
     let userCurrency = {};
     if (shop.currencies[profileCurrency]) {
