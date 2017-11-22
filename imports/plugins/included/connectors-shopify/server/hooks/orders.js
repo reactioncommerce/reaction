@@ -15,6 +15,7 @@ export function exportToShopify(doc) {
     // send a shopify order once for each merchant order
     const shopId = doc.billing[i].shopId;
     const shopifyOrder = convertRcOrderToShopifyOrder(doc, i, shopId);
+    Logger.info("sending shopify order", shopifyOrder);
     shopify.order.create(shopifyOrder);
   }
 }
@@ -45,14 +46,13 @@ function convertRcOrderToShopifyOrder(doc, index, shopId) {
   shopifyOrder.token = order._id;
   shopifyOrder.total_discounts = accounting.toFixed(order.getDiscountsByShop()[shopId], 2);
   shopifyOrder.total_line_item_price = order.getItemsByShop()[shopId].reduce((total, item) => {
-    total + item.variants.price;
+    return total + item.variants.price;
   }, 0);
   shopifyOrder.total_price = accounting.toFixed(order.getTotalByShop()[shopId]);
   shopifyOrder.total_tax = order.getTaxesByShop()[shopId];
   shopifyOrder.total_weight = shopifyOrder.line_items.reduce((sum, item) => {
-    sum + item.grams;
+    return sum + (item.grams * item.quantity);
   }, 0);
-  Logger.info("sending shopify order", shopifyOrder);
   return shopifyOrder;
 }
 
@@ -61,6 +61,7 @@ function normalizeWeight(weight, shopId) {
   const shop = Shops.findOne(shopId);
   const { baseUOM } = shop;
   // Could've used switch, this was easier to read
+  // should these be a utilities module somewhere?
   if (baseUOM === "g") {
     return weight;
   }
@@ -95,7 +96,7 @@ function convertLineItems(items, order) {
     lineItem.title = item.product.title;
     lineItem.variant_id = item.variants._id;
     lineItem.variant_title = item.variants.title;
-    lineItem.vendor = item.vendor;
+    lineItem.vendor = item.product.vendor;
     lineItem.taxable = item.variants.taxable;
     if (order.taxes) {
       lineItem.tax_lines = [];
@@ -130,7 +131,6 @@ function convertLineItems(items, order) {
 // }
 
 function convertAddress(address) {
-  Logger.info("Converting address", address);
   const convertedAddress = {};
   convertedAddress.address1 = address.address1;
   convertedAddress.address2 = address.address2 || "";
@@ -144,12 +144,10 @@ function convertAddress(address) {
   convertedAddress.phone = address.phone;
   convertedAddress.zip = address.postal;
   convertedAddress.province_code = address.region;
-  Logger.info("final converted address", convertedAddress);
   return convertedAddress;
 }
 
 function convertCustomer(address, order) {
-  Logger.info("creating customer with address,order", address, order);
   const customer = {
     accepts_marketing: false,
     email: order.email,
@@ -157,7 +155,6 @@ function convertCustomer(address, order) {
     first_name: address.first_name,
     last_name: address.last_name
   };
-  Logger.info("create customer", customer);
   return customer;
 }
 
@@ -172,7 +169,6 @@ Orders.after.insert((userId, doc) => {
           try {
             exportToShopify(doc);
           } catch (error) {
-            Logger.error("Error.keys", Object.keys(error));
             Logger.error("Error exporting to Shopify", error);
             return true;
           }
