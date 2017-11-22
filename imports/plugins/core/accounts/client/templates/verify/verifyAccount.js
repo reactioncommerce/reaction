@@ -9,7 +9,7 @@ Template.verifyAccount.onCreated(() => {
   const email = Reaction.Router.getQueryParam("email");
   Meteor.call("accounts/verifyAccount", email, (error, result) => {
     if (error) {
-      throw new Meteor.Error("Account Verification error", error);
+      throw new Meteor.Error("account-verification-error", error);
     }
     return template.verified.set(result);
   });
