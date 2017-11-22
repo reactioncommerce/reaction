@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
+import ReactImageMagnify from 'react-image-magnify';
 import { SortableItem } from "../../containers";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
@@ -90,7 +91,25 @@ class MediaItem extends Component {
   }
 
   renderImage() {
-    const image = (
+    if (this.props.zoomable && !this.props.editable) {
+      return <ReactImageMagnify {...{
+        smallImage: {
+            isFluidWidth: true,
+            src: this.source,
+        },
+        imageClassName: "img-responsive",
+        fadeDurationInMs: 150,
+        hoverDelayInMs: 200,
+        pressDuration: 300,
+        largeImage: {
+            src: this.source,
+            width: 1200,
+            height: this.props.mediaHeight * 2
+        },
+        enlargedImagePosition: "over",
+      }} />
+    }
+    return (
       <img
         alt=""
         className="img-responsive"
@@ -98,8 +117,6 @@ class MediaItem extends Component {
         height={this.props.mediaHeight}
       />
     );
-
-    return image;
   }
 
   render() {
