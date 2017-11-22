@@ -3,6 +3,7 @@ import { Packages } from "/lib/collections";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { AuthNetPackageConfig } from "../../lib/collections/schemas";
+import { AuthnetFormContainer } from "../containers";
 
 import "./authnet.html";
 
@@ -12,6 +13,18 @@ Template.authnetSettings.helpers({
   },
   packageData() {
     return Packages.findOne({ name: "reaction-auth-net", shopId: Reaction.getShopId() });
+  },
+
+  /**
+   * @method authnetForm
+   * @summary returns a form component for updating the Authnet settings
+   * @since 1.5.2
+   * @return {Object} - an object containing the component to render.
+   */
+  authnetForm() {
+    return {
+      component: AuthnetFormContainer
+    };
   }
 });
 

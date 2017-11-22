@@ -1,5 +1,7 @@
 <template name="authnetSettings">
-
+  <div>
+    {{> React authnetForm}}
+  </div>
     {{#unless packageData.settings.api_id}}
     <div class="alert alert-info">
       <span data-i18n="admin.paymentSettings.authorizenetCredentials">Don't have a Authorize.net API Login ID and Transaction Key?</span>
@@ -9,7 +11,7 @@
     </div>
     {{/unless}}
 
-    <div>
+    <!-- <div>
       {{#autoForm collection=Collections.Packages
         schema=AuthNetPackageConfig
         doc=packageData
@@ -23,6 +25,6 @@
 
       <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
       {{/autoForm}}
-    </div>
+    </div> -->
 
 </template>
