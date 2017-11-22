@@ -22,7 +22,7 @@ export const methods = {
 
     // check permissions to delete
     if (!Reaction.hasPermission("discounts")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     return Discounts.direct.remove({ _id: discountId });

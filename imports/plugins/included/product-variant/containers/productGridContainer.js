@@ -128,7 +128,7 @@ const wrapComponent = (Comp) => (
         Meteor.call("products/updateProductPosition", productId, position, tag, error => {
           if (error) {
             Logger.error(error);
-            throw new Meteor.Error(error);
+            throw new Meteor.Error("error-occurred", error);
           }
         });
       });

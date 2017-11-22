@@ -75,7 +75,7 @@ export const methods = {
         }
       });
     } catch (error) {
-      throw new Meteor.Error("unknown-error", `Shopify API Error creating new webhook: ${error.message}`);
+      throw new Meteor.Error("server-error", `Shopify API Error creating new webhook: ${error.message}`);
     }
   },
   /**
@@ -134,7 +134,7 @@ export const methods = {
         });
       }
       // If there is another error, throw it.
-      throw new Meteor.Error("api-error", `Shopify API Error, error deleting webhook: ${error}`);
+      throw new Meteor.Error("server-error", `Shopify API Error, error deleting webhook: ${error}`);
     }
   },
   /**
