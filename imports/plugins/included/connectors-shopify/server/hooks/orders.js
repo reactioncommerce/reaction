@@ -5,19 +5,21 @@ import { Reaction, Logger } from "/server/api";
 import { Orders, Shops } from "/lib/collections";
 import { getApiInfo } from "../methods/api";
 
-export function exportToShopify(doc) {
-  Logger.info("exporting to Shopify");
+export async function exportToShopify(doc) {
   const apiCreds = getApiInfo();
   const shopify = new Shopify(apiCreds);
   const numShopOrders = doc.billing.length; // if we have multiple billing, we have multiple shops
-  Logger.info(`Exporting ${numShopOrders} order(s) to Shopify`);
+  Logger.debug(`Exporting ${numShopOrders} order(s) to Shopify`);
+  const shopifyOrders = [];
   for (let i = 0; i < numShopOrders; i++) {
     // send a shopify order once for each merchant order
     const shopId = doc.billing[i].shopId;
     const shopifyOrder = convertRcOrderToShopifyOrder(doc, i, shopId);
     Logger.info("sending shopify order", shopifyOrder);
-    shopify.order.create(shopifyOrder);
+    const newShopifyOrder = await shopify.order.create(shopifyOrder);
+    shopifyOrders.push(newShopifyOrder);
   }
+  return shopifyOrders;
 }
 
 function convertRcOrderToShopifyOrder(doc, index, shopId) {
@@ -167,7 +169,13 @@ Orders.after.insert((userId, doc) => {
       if (hook.topic === "orders" && hook.event === "orders/create") {
         if (hook.syncType === "exportToShopify") { // should this just be dynamic?
           try {
-            exportToShopify(doc);
+            exportToShopify(doc)
+              .then(exportedOrder => {
+                console.log("exported order", exportedOrder);
+              })
+              .catch(error => {
+                console.log("got error", error);
+              });
           } catch (error) {
             Logger.error("Error exporting to Shopify", error);
             return true;
