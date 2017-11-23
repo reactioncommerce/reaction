@@ -124,6 +124,10 @@ class Form extends Component {
     this.handleChange(new Event("onSelect"), value, name);
   }
 
+  handleMultiSelectChange = (value, name) => {
+    this.handleChange(new Event("onMultiSelect"), value, name);
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
 
@@ -177,6 +181,27 @@ class Form extends Component {
           />
         );
         break;
+      case "multiselect":
+        fieldElement = (
+          <Components.MultiSelect
+            {...sharedProps}
+            multi={true}
+            onChange={this.handleMultiSelectChange}
+            options={field.options}
+            value={this.valueForField(field.name)}
+          />
+        );
+        break;
+      case "number":
+        fieldElement = (
+          <Components.TextField
+            {...sharedProps}
+            value={3000}
+            onChange={this.handleChange}
+            value={this.valueForField(field.name)}
+          />
+        );
+        break;
       default:
         return null;
     }
@@ -220,7 +245,7 @@ class Form extends Component {
       const fieldProps = {
         ...fieldSchema,
         name: fieldName,
-        type: typeof fieldSchema.type(),
+        type: (typeof fieldSchema.type === "function") ? typeof fieldSchema.type(): fieldSchema.type,
         ...additionalFieldProps
       };
 
@@ -258,7 +283,11 @@ class Form extends Component {
         return map(this.props.fields, (fieldData, key) => { // eslint-disable-line consistent-return
           const fieldSchema = this.schema[key];
           if (fieldSchema) {
-            return this.renderField({ fieldName: key }, fieldData);
+            var tempObj = Object.assign({}, fieldData);
+            if (typeof tempObj.type === "function") {
+              delete tempObj.type;
+            }
+            return this.renderField({ fieldName: key }, tempObj);
           }
         });
       }

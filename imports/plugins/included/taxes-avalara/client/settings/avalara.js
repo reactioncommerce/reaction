@@ -10,6 +10,7 @@ import { Packages, Logs } from "/lib/collections";
 import { Logs as LogSchema } from "/lib/collections/schemas/logs";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
 import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
+import { AvalaraSettingsFormContainer } from "../containers";
 
 
 function getPackageData() {
@@ -38,11 +39,16 @@ Template.avalaraSettings.onCreated(function () {
 const countryDefaults = ["US", "CA"];
 
 Template.avalaraSettings.helpers({
-  packageConfigSchema() {
-    return AvalaraPackageConfig;
-  },
-  packageData() {
-    return getPackageData();
+
+  /**
+  * @method avalaraForm
+  * @summary returns a component for updating the TaxCloud settings for
+  * this app.
+  * @since 1.5.2
+  * @return {Object} - an object containing the component to render.
+  */
+  avalaraForm() {
+    return { component: AvalaraSettingsFormContainer };
   },
   logSchema() {
     return LogSchema;
@@ -137,40 +143,4 @@ Template.avalaraSettings.events({
     $(".template-grid-row").removeClass("active");
     Template.instance().$(event.currentTarget).addClass("active");
   },
-  "click [data-event-action=testCredentials]": function (event) {
-    const formId = "avalara-update-form";
-    if (!AutoForm.validateForm(formId)) {
-      return null;
-    }
-    event.preventDefault();
-    event.stopPropagation();
-    const formData = AutoForm.getFormValues(formId);
-    const settings = _.get(formData, "insertDoc.settings.avalara");
-
-    Meteor.call("avalara/testCredentials", settings, function (error, result) {
-      if (error && error.message) {
-        return Alerts.toast(`${i18next.t("settings.testCredentialsFailed")} ${error.message}`, "error");
-      }
-      const statusCode = _.get(result, "statusCode");
-      const connectionValid = _.inRange(statusCode, 400);
-      if (connectionValid) {
-        return Alerts.toast(i18next.t("settings.testCredentialsSuccess"), "success");
-      }
-      return Alerts.toast(i18next.t("settings.testCredentialsFailed"), "error");
-    });
-  }
-});
-
-AutoForm.hooks({
-  "avalara-update-form": {
-    onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.taxSettings.shopTaxMethodsSaved"),
-        "success");
-    },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.taxSettings.shopTaxMethodsFailed")} ${error}`, "error"
-      );
-    }
-  }
 });
