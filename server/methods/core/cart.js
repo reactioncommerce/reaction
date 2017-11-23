@@ -434,30 +434,52 @@ Meteor.methods({
     // we need to get the parent of the option to check if parcel info is stored there
     const immediateAncestors = variant.ancestors.filter((ancestor) => ancestor !== product._id);
     const immediateAncestor = Collections.Products.findOne({ _id: immediateAncestors[0] });
-    // Get default parcel size
-    const shop = Collections.Shops.findOne({
-      _id: Reaction.getShopId()
-    });
-    let parcel = null;
-    if (immediateAncestor) {
-      if (immediateAncestor.weight || immediateAncestor.height || immediateAncestor.width || immediateAncestor.length) {
-        parcel = { weight: immediateAncestor.weight, height: immediateAncestor.height, width: immediateAncestor.width, length: immediateAncestor.length };
-      }
-    }
-    // if it's set at the option level then that overrides
-    if (variant.weight || variant.height || variant.width || variant.length) {
-      parcel = { weight: variant.weight, height: variant.height, width: variant.width, length: variant.length };
-    }
 
-    // Use default settings for parcel weight, length, height, and width
-    if (shop && shop.defaultParcelSize) {
-      const defaultParcelSize = shop.defaultParcelSize;
-      parcel = {
-        weight: defaultParcelSize.weight,
-        height: defaultParcelSize.height,
-        width: defaultParcelSize.width,
-        length: defaultParcelSize.length
-      };
+    // Get default parcel size from primary shop
+    const { defaultParcelSize }  = Collections.Shops.findOne({
+      _id: Reaction.getPrimaryShopId()
+    });
+
+    // Fallback flat rate box (to be used if defaultParcelSize is not set on shop)
+    const flatRateBox = {
+      weight: 10,
+      length: 1,
+      width: 8,
+      height: 6
+    };
+
+    // Set parcel
+    let parcel = {
+      weight: immediateAncestor ? immediateAncestor.weight : variant.weight,
+      height: immediateAncestor ? immediateAncestor.height : variant.height,
+      width: immediateAncestor ? immediateAncestor.width : variant.width,
+      length: immediateAncestor ? immediateAncestor.length : variant.length
+    };
+
+    // Set default parcel size as parcel if parcel is not defined
+    if (!parcel) {
+      if (defaultParcelSize) {
+        parcel = Object.assign({}, defaultParcelSize);
+      } else {
+        parcel = Object.assign({}, flatRateBox);
+      }
+    } else {
+      // Check if any parcel property is set to zero and set to corresponding value on default parcel size (or flatRateBox)
+      Object.keys(parcel).forEach(function (key) {
+        if (parcel[key] === 0) {
+          if (defaultParcelSize) {
+            parcel = Object.assign({},
+              parcel,
+              { [key]: defaultParcelSize[key] }
+            );
+          } else {
+            parcel = Object.assign({},
+              parcel,
+              { [key]: flatRateBox[key] }
+            );
+          }
+        }
+      });
     }
 
     // cart variant doesn't exist
