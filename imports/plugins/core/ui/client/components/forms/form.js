@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { map, update, set, at, isEqual } from "lodash";
+import { at, get, isEqual, map, set, update, extend } from "lodash";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class Form extends Component {
   static defaultProps = {
-    autoSave: false
+    autoSave: false,
+    renderFromFields: false
   }
 
   static propTypes = {
@@ -14,9 +15,13 @@ class Form extends Component {
     doc: PropTypes.object,
     docPath: PropTypes.string,
     fields: PropTypes.object,
+    // Object containing the properties specific to each field.
+    fieldsProp: PropTypes.object,
     hideFields: PropTypes.arrayOf(PropTypes.string),
     name: PropTypes.string,
     onSubmit: PropTypes.func,
+    // Should the form be rendered from props.fields or not
+    renderFromFields: PropTypes.bool,
     schema: PropTypes.object
   }
 
@@ -91,7 +96,7 @@ class Form extends Component {
     const cleanedObject = this.state.schema._simpleSchema.clean(docToValidate);
 
     // Finally validate the document
-    this.setState({
+    return this.setState({
       isValid: this.state.schema.validate(cleanedObject)
     });
   }
@@ -128,10 +133,10 @@ class Form extends Component {
     this.handleChange(new Event("onMultiSelect"), value, name);
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
 
-    this.validate();
+    await this.validate();
 
     if (this.props.onSubmit) {
       this.props.onSubmit(event, {
@@ -152,7 +157,7 @@ class Form extends Component {
     let fieldElement;
     let helpText;
 
-    switch (field.type) {
+    switch (field.renderComponent || field.type) {
       case "boolean":
         fieldElement = (
           <Components.Switch
@@ -196,8 +201,8 @@ class Form extends Component {
         fieldElement = (
           <Components.TextField
             {...sharedProps}
-            value={3000}
             onChange={this.handleChange}
+            type={field.type}
             value={this.valueForField(field.name)}
           />
         );
@@ -245,7 +250,7 @@ class Form extends Component {
       const fieldProps = {
         ...fieldSchema,
         name: fieldName,
-        type: (typeof fieldSchema.type === "function") ? typeof fieldSchema.type(): fieldSchema.type,
+        type: typeof fieldSchema.type(),
         ...additionalFieldProps
       };
 
@@ -256,11 +261,11 @@ class Form extends Component {
   }
 
   renderWithSchema() {
-    const { docPath } = this.props;
+    const { docPath, fieldsProp, renderFromFields } = this.props;
 
     if (this.props.schema) {
       // Render form with a specific docPath
-      if (docPath) {
+      if (!renderFromFields && docPath) {
         return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
           if (key.endsWith(docPath)) {
             const objectKeys = this.objectKeys[docPath + "."];
@@ -282,12 +287,13 @@ class Form extends Component {
       if (this.props.fields) {
         return map(this.props.fields, (fieldData, key) => { // eslint-disable-line consistent-return
           const fieldSchema = this.schema[key];
+          const tempObj = Object.assign({}, fieldData);
           if (fieldSchema) {
-            var tempObj = Object.assign({}, fieldData);
             if (typeof tempObj.type === "function") {
               delete tempObj.type;
             }
-            return this.renderField({ fieldName: key }, tempObj);
+            const fieldProp = get(fieldsProp, key, undefined);
+            return this.renderField({ fieldName: key }, extend(tempObj, fieldProp));
           }
         });
       }

@@ -1,14 +1,9 @@
-import _ from "lodash";
 import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
-import { Meteor } from "meteor/meteor";
-import { AutoForm } from "meteor/aldeed:autoform";
-import { Countries } from "/client/collections";
 import { Reaction, i18next } from "/client/api";
 import { Packages, Logs } from "/lib/collections";
 import { Logs as LogSchema } from "/lib/collections/schemas/logs";
-import { AvalaraPackageConfig } from "../../lib/collections/schemas";
 import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 import { AvalaraSettingsFormContainer } from "../containers";
 
@@ -35,8 +30,6 @@ Template.avalaraSettings.onCreated(function () {
   });
 });
 
-// Avalara supports only Canada and US for address validation
-const countryDefaults = ["US", "CA"];
 
 Template.avalaraSettings.helpers({
 
@@ -47,7 +40,7 @@ Template.avalaraSettings.helpers({
   * @since 1.5.2
   * @return {Object} - an object containing the component to render.
   */
-  avalaraForm() {
+  avalaraSettings() {
     return { component: AvalaraSettingsFormContainer };
   },
   logSchema() {
@@ -55,15 +48,6 @@ Template.avalaraSettings.helpers({
   },
   logCollection() {
     return Logs;
-  },
-  countryOptions() {
-    return Countries.find({ value: { $in: countryDefaults } }).fetch();
-  },
-  countryDefaults() {
-    return countryDefaults;
-  },
-  currentCountryList() {
-    return AutoForm.getFieldValue("settings.addressValidation.countryList");
   },
   loggingEnabled() {
     const pkgData = getPackageData();
@@ -133,8 +117,6 @@ Template.avalaraSettings.helpers({
     log.data = JSON.stringify(log.data, null, 4);
     return log;
   }
-
-
 });
 
 Template.avalaraSettings.events({
@@ -142,5 +124,5 @@ Template.avalaraSettings.events({
     // toggle all rows off, then add our active row
     $(".template-grid-row").removeClass("active");
     Template.instance().$(event.currentTarget).addClass("active");
-  },
+  }
 });

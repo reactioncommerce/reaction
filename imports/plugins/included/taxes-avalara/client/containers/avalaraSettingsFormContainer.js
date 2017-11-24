@@ -1,10 +1,11 @@
-import _ from 'lodash';
+import _ from "lodash";
 import { compose, withProps } from "recompose";
 import { composeWithTracker, registerComponent } from  "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
 import { AvalaraSettingsForm } from "../components";
+import { Countries } from "/client/collections";
 
 /**
  * @file This is a container for AvalaraSettingsForm.
@@ -42,7 +43,7 @@ const handlers = {
   },
 
   handleTestCredentials(event, settings) {
-    Meteor.call("avalara/testCredentials", settings, function (error, result) {
+    Meteor.call("avalara/testCredentials", settings.avalara, function (error, result) {
       if (error && error.message) {
         return Alerts.toast(`${i18next.t("settings.testCredentialsFailed")} ${error.message}`, "error");
       }
@@ -51,10 +52,9 @@ const handlers = {
         const connectionValid = _.inRange(statusCode, 400);
         if (connectionValid) {
           return Alerts.toast(i18next.t("settings.testCredentialsSuccess"), "success");
-        } else {
-          return Alerts.toast(i18next.t("settings.testCredentialsFailed"), "error");  
         }
-      } catch(e) {
+        return Alerts.toast(i18next.t("settings.testCredentialsFailed"), "error");
+      } catch (e) {
         return Alerts.toast(i18next.t("settings.testCredentialsFailed"), "error");
       }
     });
@@ -69,25 +69,13 @@ const composer = (props, onData) => {
     ["settings.avalara.companyCode"]: AvalaraPackageConfig._schema["settings.avalara.companyCode"],
     ["settings.avalara.shippingTaxCode"]: AvalaraPackageConfig._schema["settings.avalara.shippingTaxCode"],
     ["settings.addressValidation.enabled"]: AvalaraPackageConfig._schema["settings.addressValidation.enabled"],
-    ["settings.addressValidation.countryList"]: _.assign(AvalaraPackageConfig._schema["settings.addressValidation.countryList"], {
-      type: "multiselect",
-      options: [
-            { value: "Canada", label: "Canada" },
-            { value: "United States", label: "United States" }
-          ],
-    }),
+    ["settings.addressValidation.countryList"]: AvalaraPackageConfig._schema["settings.addressValidation.countryList"],
     ["settings.avalara.requestTimeout"]: AvalaraPackageConfig._schema["settings.avalara.requestTimeout"],
-    ["settings.avalara.mode"]: _.assign(AvalaraPackageConfig._schema["settings.avalara.mode"], {
-      type: "select",
-      options: [
-          { value: false, label: "Production Mode" },
-          { value: true, label: "Testing-Sandbox Mode" }],
-      label: undefined,
-    }),
+    ["settings.avalara.mode"]: AvalaraPackageConfig._schema["settings.avalara.mode"],
     ["settings.avalara.performTaxCalculation"]: AvalaraPackageConfig._schema["settings.avalara.performTaxCalculation"],
     ["settings.avalara.enableLogging"]: AvalaraPackageConfig._schema["settings.avalara.enableLogging"],
     ["settings.avalara.logRetentionDuration"]: AvalaraPackageConfig._schema["settings.avalara.logRetentionDuration"],
-    ["settings.avalara.commitDocuments"]: AvalaraPackageConfig._schema["settings.avalara.commitDocuments"],
+    ["settings.avalara.commitDocuments"]: AvalaraPackageConfig._schema["settings.avalara.commitDocuments"]
   };
   const hiddenFields = [
     "settings.avalara.enabled",
@@ -95,19 +83,36 @@ const composer = (props, onData) => {
     "settings.avalara.commitDocuments"
   ];
 
+  // Avalara supports only Canada and US for address validation
+  const countryDefaults = ["US", "CA"];
+  const validCountries =  Countries.find({ value: { $in: countryDefaults } }).fetch();
+
+  const fieldsProp = {
+    "settings.addressValidation.countryList": {
+      renderComponent: "multiselect",
+      options: validCountries,
+      defaultValue: _.map(validCountries, "value")
+    },
+    "settings.avalara.mode": {
+      renderComponent: "select",
+      options: [
+        { value: false, label: "Production Mode" },
+        { value: true, label: "Testing-Sandbox Mode" }],
+      label: undefined
+    }
+  };
+
   const shopId = Reaction.getShopId();
-  const packageSub = Meteor.subscribe("Packages", shopId, {
-    onReady: function () { console.log("onReady And the Items actually Arrive", arguments); },
-    onError: function () { console.log("onError", arguments); }
-  });
+  const packageSub = Meteor.subscribe("Packages", shopId);
   if (packageSub.ready()) {
     const packageData = Reaction.getPackageSettings("taxes-avalara");
     onData(null,
-        {
-            settings: packageData.settings,
-            shownFields,
-            hiddenFields
-        });
+      {
+        settings: packageData.settings,
+        shownFields,
+        hiddenFields,
+        fieldsProp
+      });
   }
 };
 

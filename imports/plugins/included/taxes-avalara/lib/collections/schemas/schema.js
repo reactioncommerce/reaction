@@ -19,19 +19,19 @@ export const AvalaraPackageConfig = new SimpleSchema([
     },
     "settings.avalara.apiLoginId": {
       label: "Avalara API Login ID",
-      type: String,
+      type: String
     },
     "settings.avalara.username": {
       label: "Username",
-      type: String,
+      type: String
     },
     "settings.avalara.password": {
       label: "Password",
-      type: String,
+      type: String
     },
     "settings.avalara.companyCode": {
       label: "Company code",
-      type: String,
+      type: String
     },
     "settings.avalara.shippingTaxCode": {
       label: "Shipping Tax Code",
@@ -45,7 +45,8 @@ export const AvalaraPackageConfig = new SimpleSchema([
     "settings.addressValidation.countryList": {
       label: "Enable Address Validation by Country",
       type: [String],
-      optional: true
+      optional: true,
+      defaultValue: ["US", "CA"]
     },
     "settings.avalara.requestTimeout": {
       label: "Request Timeout",
@@ -68,7 +69,8 @@ export const AvalaraPackageConfig = new SimpleSchema([
       defaultValue: false
     },
     "settings.avalara.companyId": {
-      type: String
+      type: String,
+      optional: true
     },
     "settings.avalara.commitDocuments": {
       label: "Commit Documents",
@@ -79,7 +81,7 @@ export const AvalaraPackageConfig = new SimpleSchema([
       label: "Retain Logs Duration (Days)",
       type: Number,
       defaultValue: 30
-    },
+    }
   }
 ]);
 

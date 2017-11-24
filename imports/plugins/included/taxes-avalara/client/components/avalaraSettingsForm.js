@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Form } from "/imports/plugins/core/ui/client/components";
 import { Components } from "@reactioncommerce/reaction-components";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
+import "../styles/settings.less";
 
 /**
  * @file AvalaraSettingsForm is a React Component used to change Avalara
@@ -23,12 +24,12 @@ import { AvalaraPackageConfig } from "../../lib/collections/schemas";
  * @return {Node} - a React node containing the Avalara settings form.
  */
 const AvalaraSettingsForm = (props) => {
+  const { handleSubmit, hiddenFields, settings, shownFields, fieldsProp } = props;
 
   function handleTestCredentials(event) {
     props.handleTestCredentials(event, settings);
   }
 
-  const { handleSubmit, hiddenFields, settings, shownFields } = props;
   return (
     <div className="rui avalara-update-form">
       {!settings.avalara.apiLoginId &&
@@ -40,12 +41,18 @@ const AvalaraSettingsForm = (props) => {
       <Form
         schema={AvalaraPackageConfig}
         doc={{ settings }}
+        renderFromFields={true}
+        fieldsProp={fieldsProp}
+        docPath={"settings.avalara"}
         name={"settings.avalara"}
         fields={shownFields}
         hideFields={hiddenFields}
         onSubmit={handleSubmit}
       />
-      <Components.Button id="testAvalaraCredentials" label="Test Credentials" buttonType="button" className="btn btn-default pull-right" data-event-action="testCredentials" i18nKeyLabel="admin.dashboard.avalaraTestCredentials" bezelStyle="outline" onClick={handleTestCredentials}/>
+      <Components.Button id="testAvalaraCredentials" label="Test Credentials" buttonType="button"
+        className="btn btn-default pull-right" i18nKeyLabel="admin.dashboard.avalaraTestCredentials"
+        bezelStyle="outline" onClick={handleTestCredentials}
+      />
     </div>
   );
 };
@@ -63,7 +70,9 @@ const AvalaraSettingsForm = (props) => {
   * @return {Array} React propTypes
   */
 AvalaraSettingsForm.propTypes = {
+  fieldsProp: PropTypes.object,
   handleSubmit: PropTypes.func,
+  handleTestCredentials: PropTypes.func,
   hiddenFields: PropTypes.arrayOf(PropTypes.string),
   settings: PropTypes.object,
   shownFields: PropTypes.object

@@ -20,6 +20,7 @@ Reaction.registerPackage({
     },
     addressValidation: {
       enabled: true,
+      countryList: ["US", "CA"],
       addressValidationMethod: "avalara/addressValidation"
     },
     taxCodes: {
