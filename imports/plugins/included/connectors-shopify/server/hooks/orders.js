@@ -56,8 +56,6 @@ function convertRcOrderToShopifyOrder(doc, index, shopId) {
   shopifyOrder.id = order._id;
   const itemsForShop = order.getItemsByShop()[shopId];
   shopifyOrder.line_items = convertLineItems(itemsForShop, order);
-  // Not sure if we can/should do transactions
-  // shopifyOrder.transactions = convertTransactions(order.billing[index].paymentMethod);
   shopifyOrder.phone = order.billing[index].address.phone;
   shopifyOrder.source_name = "reaction_export";
   shopifyOrder.subtotal_price = order.getSubtotalByShop()[shopId];
