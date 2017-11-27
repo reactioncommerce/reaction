@@ -435,9 +435,19 @@ Meteor.methods({
     const immediateAncestors = variant.ancestors.filter((ancestor) => ancestor !== product._id);
     const immediateAncestor = Collections.Products.findOne({ _id: immediateAncestors[0] });
 
+    // Get maketplace settings
+    const marketplaceSettings = Reaction.getMarketplaceSettings();
+
+    let shopId;
+    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantCart) {
+      shopId = Reaction.getShopId();
+    } else {
+      shopId = Reaction.getPrimaryShopId();
+    }
+
     // Get default parcel size from primary shop
     const { defaultParcelSize }  = Collections.Shops.findOne({
-      _id: Reaction.getPrimaryShopId()
+      _id: shopId
     });
 
     // Fallback flat rate box (to be used if defaultParcelSize is not set on shop)
