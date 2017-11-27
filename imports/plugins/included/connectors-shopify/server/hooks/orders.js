@@ -6,15 +6,22 @@ import { Orders, Shops } from "/lib/collections";
 import { getApiInfo } from "../methods/api";
 
 
-function markExported(exportedOrders) {
-  // currently doesn't mark orders exported
-  return exportedOrders;
+function markExported(exportedOrder, shopId, order) {
+  Orders.update({ _id: order._id }, {
+    $push: {
+      exportHistory: {
+        status: "success",
+        dateAttempted: new Date(),
+        exportMethod: "reaction-connectors-shopify",
+        destinationIdentifier: exportedOrder.id,
+        shopId: shopId
+      }
+    }
+  });
 }
 
 
 export async function exportToShopify(doc) {
-  const apiCreds = getApiInfo();
-  const shopify = new Shopify(apiCreds);
   const numShopOrders = doc.billing.length; // if we have multiple billing, we have multiple shops
   Logger.debug(`Exporting ${numShopOrders} order(s) to Shopify`);
   const shopifyOrders = [];
@@ -22,8 +29,11 @@ export async function exportToShopify(doc) {
     // send a shopify order once for each merchant order
     const shopId = doc.billing[index].shopId;
     const shopifyOrder = convertRcOrderToShopifyOrder(doc, index, shopId);
-    Logger.info("sending shopify order", shopifyOrder);
+    Logger.debug("sending shopify order", shopifyOrder, doc._id);
+    const apiCreds = getApiInfo(shopId);
+    const shopify = new Shopify(apiCreds);
     const newShopifyOrder = await shopify.order.create(shopifyOrder);
+    markExported(newShopifyOrder, shopId, doc);
     shopifyOrders.push(newShopifyOrder);
   }
   return shopifyOrders;
@@ -186,7 +196,6 @@ Orders.after.insert((userId, doc) => {
             exportToShopify(doc)
               .then(exportedOrders => {
                 Logger.debug("exported order(s)", exportedOrders);
-                markExported(exportedOrders);
               })
               .catch(error => {
                 Logger.error("Encountered error when exporting to shopify", error);
