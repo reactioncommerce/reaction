@@ -123,7 +123,7 @@ function convertLineItems(items, order) {
       lineItem.tax_lines = [];
       // when using Avalara we get tax detail
       // get the tax iten for this particular line
-      const taxItem = order.taxes.filter((tax) => tax.lineNumber === item._id);
+      const taxItem = order.taxes.find((tax) => tax.lineNumber === item._id);
       taxItem.details.forEach((detail) => {
         const taxLine = {
           title: detail.taxName,
@@ -146,10 +146,6 @@ function convertLineItems(items, order) {
   });
   return lineItems;
 }
-
-// function convertTransactions(paymentMethod) {
-//   return paymentMethod;
-// }
 
 function convertAddress(address) {
   const convertedAddress = {};
