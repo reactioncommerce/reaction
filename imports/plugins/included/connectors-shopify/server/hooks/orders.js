@@ -20,24 +20,23 @@ function markExported(exportedOrder, shopId, order) {
   });
 }
 
-
-export async function exportToShopify(doc) {
-  const numShopOrders = doc.billing.length; // if we have multiple billing, we have multiple shops
-  Logger.debug(`Exporting ${numShopOrders} order(s) to Shopify`);
-  const shopifyOrders = [];
-  for (let index = 0; index < numShopOrders; index++) {
-    // send a shopify order once for each merchant order
-    const shopId = doc.billing[index].shopId;
-    const shopifyOrder = convertRcOrderToShopifyOrder(doc, index, shopId);
-    Logger.debug("sending shopify order", shopifyOrder, doc._id);
-    const apiCreds = getApiInfo(shopId);
-    const shopify = new Shopify(apiCreds);
-    const newShopifyOrder = await shopify.order.create(shopifyOrder);
-    markExported(newShopifyOrder, shopId, doc);
-    shopifyOrders.push(newShopifyOrder);
-  }
-  return shopifyOrders;
+function markExportFailed(doc) {
+  const order = Orders.findOne(doc._id); // only this object has the original transforms defined
+  const shops = Object.keys(order.getItemsByShop());
+  shops.forEach((shopId) => {
+    Orders.update({ _id: order._id }, {
+      $push: {
+        exportHistory: {
+          status: "failed",
+          dateAttempted: new Date(),
+          exportMethod: "reaction-connectors-shopify",
+          shopId: shopId
+        }
+      }
+    });
+  });
 }
+
 
 function convertRcOrderToShopifyOrder(doc, index, shopId) {
   const order = Orders.findOne(doc._id); // only this object has the original transforms defined
@@ -106,7 +105,9 @@ function convertLineItems(items, order) {
     lineItem.fulfillable_quantity = item.quantity;
     lineItem.fulfillment_service = "manual";
     lineItem.fullfillment_status = null;
-    lineItem.grams = normalizeWeight(item.parcel.weight, item.shopId);
+    if (item.parcel && item.parcel.weight) {
+      lineItem.grams = normalizeWeight(item.parcel.weight, item.shopId);
+    }
     lineItem.id = item._id;
     lineItem.product_id = item.productId;
     lineItem.quantity = item.quantity;
@@ -184,6 +185,24 @@ function convertCustomer(address, order) {
   return customer;
 }
 
+export async function exportToShopify(doc) {
+  const numShopOrders = doc.billing.length; // if we have multiple billing, we have multiple shops
+  Logger.debug(`Exporting ${numShopOrders} order(s) to Shopify`);
+  const shopifyOrders = [];
+  for (let index = 0; index < numShopOrders; index++) {
+    // send a shopify order once for each merchant order
+    const shopId = doc.billing[index].shopId;
+    const shopifyOrder = convertRcOrderToShopifyOrder(doc, index, shopId);
+    Logger.debug("sending shopify order", shopifyOrder, doc._id);
+    const apiCreds = getApiInfo(shopId);
+    const shopify = new Shopify(apiCreds);
+    const newShopifyOrder = await shopify.order.create(shopifyOrder);
+    markExported(newShopifyOrder, shopId, doc);
+    shopifyOrders.push(newShopifyOrder);
+  }
+  return shopifyOrders;
+}
+
 
 Orders.after.insert((userId, doc) => {
   const pkgData = Reaction.getPackageSettings("reaction-connectors-shopify");
@@ -202,6 +221,7 @@ Orders.after.insert((userId, doc) => {
                 .catch(error => {
                   Logger.error("Encountered error when exporting to shopify", error);
                   Logger.error(error.response.body);
+                  markExportFailed(doc);
                 });
             } catch (error) {
               Logger.error("Error exporting to Shopify", error);
