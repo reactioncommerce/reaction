@@ -5,16 +5,23 @@ import { Reaction, Logger } from "/server/api";
 import { Orders, Shops } from "/lib/collections";
 import { getApiInfo } from "../methods/api";
 
+
+function markExported(exportedOrders) {
+  // currently doesn't mark orders exported
+  return exportedOrders;
+}
+
+
 export async function exportToShopify(doc) {
   const apiCreds = getApiInfo();
   const shopify = new Shopify(apiCreds);
   const numShopOrders = doc.billing.length; // if we have multiple billing, we have multiple shops
   Logger.debug(`Exporting ${numShopOrders} order(s) to Shopify`);
   const shopifyOrders = [];
-  for (let i = 0; i < numShopOrders; i++) {
+  for (let index = 0; index < numShopOrders; index++) {
     // send a shopify order once for each merchant order
-    const shopId = doc.billing[i].shopId;
-    const shopifyOrder = convertRcOrderToShopifyOrder(doc, i, shopId);
+    const shopId = doc.billing[index].shopId;
+    const shopifyOrder = convertRcOrderToShopifyOrder(doc, index, shopId);
     Logger.info("sending shopify order", shopifyOrder);
     const newShopifyOrder = await shopify.order.create(shopifyOrder);
     shopifyOrders.push(newShopifyOrder);
@@ -100,6 +107,7 @@ function convertLineItems(items, order) {
     lineItem.variant_title = item.variants.title;
     lineItem.vendor = item.product.vendor;
     lineItem.taxable = item.variants.taxable;
+    lineItem.price = item.variants.price;
     if (order.taxes) {
       lineItem.tax_lines = [];
       // when using Avalara we get tax detail
@@ -150,10 +158,16 @@ function convertAddress(address) {
 }
 
 function convertCustomer(address, order) {
+  let phone;
+  if (address.country_code === "US") {
+    phone = `+1${address.phone}`; // shopify wants this corny +1 in front of the phone
+  } else {
+    phone = address.phone;
+  }
   const customer = {
     accepts_marketing: false,
     email: order.email,
-    phone: address.phone,
+    phone,
     first_name: address.first_name,
     last_name: address.last_name
   };
@@ -170,11 +184,13 @@ Orders.after.insert((userId, doc) => {
         if (hook.syncType === "exportToShopify") { // should this just be dynamic?
           try {
             exportToShopify(doc)
-              .then(exportedOrder => {
-                console.log("exported order", exportedOrder);
+              .then(exportedOrders => {
+                Logger.debug("exported order(s)", exportedOrders);
+                markExported(exportedOrders);
               })
               .catch(error => {
-                console.log("got error", error);
+                Logger.error("Encountered error when exporting to shopify", error);
+                Logger.error(error.response.body);
               });
           } catch (error) {
             Logger.error("Error exporting to Shopify", error);
