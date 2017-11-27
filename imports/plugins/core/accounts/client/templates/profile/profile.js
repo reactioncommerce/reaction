@@ -100,6 +100,15 @@ Template.accountProfile.helpers({
    * @return {Object} - contains the component that displays a user's avatar.
    */
   ReactionAvatar() {
+    const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
+    if (account && account.profile && account.profile.picture) {
+      const picture = account.profile.picture;
+      return {
+        component: Components.ReactionAvatar,
+        currentUser: true,
+        src: picture
+      };
+    }
     return {
       component: Components.ReactionAvatar,
       currentUser: true
@@ -176,6 +185,9 @@ Template.accountProfile.helpers({
 
       if (account && Array.isArray(account.emails)) {
         const defaultEmail = account.emails.find((email) => email.provides === "default");
+        if (defaultEmail === undefined) {
+          return "";
+        }
         return defaultEmail.address;
       }
     }

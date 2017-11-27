@@ -5,6 +5,9 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import GridItemControls from "../components/gridItemControls";
+import { ReactionProduct } from "/lib/api";
+import { ProductVariant } from "/lib/collections/schemas/products";
+import { Validation } from "@reactioncommerce/reaction-collections";
 
 const wrapComponent = (Comp) => (
   class GridItemControlsContainer extends Component {
@@ -13,12 +16,20 @@ const wrapComponent = (Comp) => (
       product: PropTypes.object
     }
 
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
+
+      this.validation = new Validation(ProductVariant);
+      this.validProduct = props.product;
 
       this.hasCreateProductPermission = this.hasCreateProductPermission.bind(this);
       this.hasChanges = this.hasChanges.bind(this);
       this.checked = this.checked.bind(this);
+      this.checkValidation = this.checkValidation.bind(this);
+    }
+
+    componentWillMount() {
+      this.checkValidation();
     }
 
     hasCreateProductPermission = () => {
@@ -29,6 +40,16 @@ const wrapComponent = (Comp) => (
       return this.props.product.__draft ? true : false;
     }
 
+    // This method checks validation of the variants of the all the products on the Products grid to
+    // check whether all required fields have been submitted before publishing
+    checkValidation = () => {
+      // this returns an array with a single object
+      const variants = ReactionProduct.getVariants(this.props.product._id).map((variant) => this.validation.validate(variant));
+      this.setState({
+        validProduct: Object.assign({}, this.props.product, { __isValid: variants[0].isValid })
+      });
+    }
+
     checked = () => {
       return this.props.isSelected === true;
     }
@@ -36,7 +57,7 @@ const wrapComponent = (Comp) => (
     render() {
       return (
         <Comp
-          product={this.props.product}
+          product={this.state.validProduct}
           hasCreateProductPermission={this.hasCreateProductPermission}
           hasChanges={this.hasChanges}
           checked={this.checked}
