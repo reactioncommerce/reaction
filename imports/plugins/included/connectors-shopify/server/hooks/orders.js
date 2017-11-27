@@ -62,11 +62,11 @@ function convertRcOrderToShopifyOrder(doc, index, shopId) {
   shopifyOrder.source_name = "reaction_export";
   shopifyOrder.subtotal_price = order.getSubtotalByShop()[shopId];
   shopifyOrder.token = order._id;
-  shopifyOrder.total_discounts = accounting.toFixed(order.getDiscountsByShop()[shopId], 2);
+  shopifyOrder.total_discounts = order.getDiscountsByShop()[shopId];
   shopifyOrder.total_line_item_price = order.getItemsByShop()[shopId].reduce((total, item) => {
-    return total + item.variants.price;
+    return total + (item.variants.price * item.quantity);
   }, 0);
-  shopifyOrder.total_price = accounting.toFixed(order.getTotalByShop()[shopId]);
+  shopifyOrder.total_price = order.getTotalByShop()[shopId];
   shopifyOrder.total_tax = order.getTaxesByShop()[shopId];
   shopifyOrder.total_weight = shopifyOrder.line_items.reduce((sum, item) => {
     return sum + (item.grams * item.quantity);
