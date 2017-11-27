@@ -186,27 +186,30 @@ function convertCustomer(address, order) {
 
 
 Orders.after.insert((userId, doc) => {
-  const { settings } = Reaction.getPackageSettings("reaction-connectors-shopify");
-  const { synchooks } = settings;
-  if (synchooks) {
-    synchooks.forEach((hook) => {
-      if (hook.topic === "orders" && hook.event === "orders/create") {
-        if (hook.syncType === "exportToShopify") { // should this just be dynamic?
-          try {
-            exportToShopify(doc)
-              .then(exportedOrders => {
-                Logger.debug("exported order(s)", exportedOrders);
-              })
-              .catch(error => {
-                Logger.error("Encountered error when exporting to shopify", error);
-                Logger.error(error.response.body);
-              });
-          } catch (error) {
-            Logger.error("Error exporting to Shopify", error);
-            return true;
+  const pkgData = Reaction.getPackageSettings("reaction-connectors-shopify");
+  if (pkgData) {
+    const { settings } = pkgData;
+    const { synchooks } = settings;
+    if (synchooks) {
+      synchooks.forEach((hook) => {
+        if (hook.topic === "orders" && hook.event === "orders/create") {
+          if (hook.syncType === "exportToShopify") { // should this just be dynamic?
+            try {
+              exportToShopify(doc)
+                .then(exportedOrders => {
+                  Logger.debug("exported order(s)", exportedOrders);
+                })
+                .catch(error => {
+                  Logger.error("Encountered error when exporting to shopify", error);
+                  Logger.error(error.response.body);
+                });
+            } catch (error) {
+              Logger.error("Error exporting to Shopify", error);
+              return true;
+            }
           }
         }
-      }
-    });
+      });
+    }
   }
 });
