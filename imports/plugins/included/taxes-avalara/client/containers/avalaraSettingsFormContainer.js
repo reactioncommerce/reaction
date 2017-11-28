@@ -21,7 +21,6 @@ const handlers = {
     * @param {Object} event - event info.
     * @param {Object} changedInfo - info about the new Avalara settings.
     * @param {String} targetField - where to save the new settings in the Avalara Package.
-    * @since 1.5.2
     * @return {null} - returns nothing
     */
   handleSubmit(event, changedInfo, targetField) { // eslint-disable-line no-unused-vars
@@ -83,8 +82,7 @@ const composer = (props, onData) => {
   };
   const hiddenFields = [
     "settings.avalara.enabled",
-    "settings.avalara.companyId",
-    "settings.avalara.commitDocuments"
+    "settings.avalara.companyId"
   ];
 
   validCountries = validCountries || Countries.find({ value: { $in: countryDefaults } }).fetch();
@@ -98,12 +96,31 @@ const composer = (props, onData) => {
     "settings.avalara.mode": {
       renderComponent: "select",
       options: [
-        { value: false, label: "Production Mode" },
-        { value: true, label: "Testing-Sandbox Mode" }],
+        { value: true, label: "Production Mode" },
+        { value: false, label: "Testing-Sandbox Mode" }],
       label: undefined
+    },
+    "settings.avalara.logRetentionDuration": {
+      renderComponent: "string",
+      inputType: "number"
+    },
+    "settings.avalara.requestTimeout": {
+      renderComponent: "string",
+      inputType: "number"
     },
     "settings.avalara.password": {
       inputType: "password"
+    }
+  };
+
+  const logFieldsProp = {
+    data: {
+      renderComponent: "string",
+      multiline: true,
+      maxRows: 15
+    },
+    date: {
+      disabled: true
     }
   };
 
@@ -123,7 +140,8 @@ const composer = (props, onData) => {
         shownFields,
         hiddenFields,
         fieldsProp,
-        shownLogFields
+        shownLogFields,
+        logFieldsProp
       });
   }
 };

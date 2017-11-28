@@ -10,17 +10,31 @@ class Form extends Component {
     renderFromFields: false
   }
 
+  /**
+  * @name Form propTypes
+  * @type {propTypes}
+  * @param {Object} props - React PropTypes
+  * @property {Boolean} autoSave - controls autoSave and rendering of Submit button.
+  * @property {Object} doc - the object that will have the form state.
+  * @property {String} docPath - the path in the schema which will be used for validation or to render fields.
+  * @property {Array} fields - fields to render.
+  * @property {Object} fieldsProps - map of field specific properties passed to underlying components.
+  * @property {Array} hideFields - fields to hide.
+  * @property {String} name
+  * @property {Func} onSubmit
+  * @property {Boolean} renderFromFields - this controls whether form is rendered from schema or from fields.
+  * @property {Object} schema - the schema used for validation and rendering.
+  * @return {Array} React propTypes
+  */
   static propTypes = {
     autoSave: PropTypes.bool,
     doc: PropTypes.object,
     docPath: PropTypes.string,
     fields: PropTypes.object,
-    // Object containing the properties specific to each field.
     fieldsProp: PropTypes.object,
     hideFields: PropTypes.arrayOf(PropTypes.string),
     name: PropTypes.string,
     onSubmit: PropTypes.func,
-    // Should the form be rendered from props.fields or not
     renderFromFields: PropTypes.bool,
     schema: PropTypes.object
   }
@@ -119,7 +133,7 @@ class Form extends Component {
     }, () => {
       this.validate();
     });
-
+    // Calling user defined field specific handleChange function
     if (this.props.fieldsProp[name] && typeof this.props.fieldsProp[name].handleChange === "function") {
       this.props.fieldsProp[name].handleChange(event, value, name);
     }
@@ -140,6 +154,8 @@ class Form extends Component {
   handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Need to wait for this before using this.state.isValid
+    // as validate() changes state.
     await this.validate();
 
     if (this.props.onSubmit) {
@@ -160,7 +176,7 @@ class Form extends Component {
 
     let fieldElement;
     let helpText;
-
+    // Checking for user defined render style else using what is best according to the type.
     switch (field.renderComponent || field.type) {
       case "boolean":
         fieldElement = (
@@ -203,16 +219,6 @@ class Form extends Component {
             options={field.options}
             value={this.valueForField(field.name)}
             simpleValue={false}
-          />
-        );
-        break;
-      case "number":
-        fieldElement = (
-          <Components.TextField
-            {...sharedProps}
-            onChange={this.handleChange}
-            type={field.type}
-            value={this.valueForField(field.name)}
           />
         );
         break;
@@ -298,6 +304,7 @@ class Form extends Component {
           const fieldSchema = this.schema[key];
           const tempObj = Object.assign({}, fieldData);
           if (fieldSchema) {
+            // Remove inherited type() as type is supposed to be string.
             if (typeof tempObj.type === "function") {
               delete tempObj.type;
             }
