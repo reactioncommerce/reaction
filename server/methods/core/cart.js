@@ -450,14 +450,6 @@ Meteor.methods({
       _id: shopId
     });
 
-    // Fallback flat rate box (to be used if defaultParcelSize is not set on shop)
-    const flatRateBox = {
-      weight: 10,
-      length: 1,
-      width: 8,
-      height: 6
-    };
-
     // Set parcel
     let parcel = {
       weight: immediateAncestor ? immediateAncestor.weight : variant.weight,
@@ -468,26 +460,15 @@ Meteor.methods({
 
     // Set default parcel size as parcel if parcel is not defined
     if (!parcel) {
-      if (defaultParcelSize) {
-        parcel = Object.assign({}, defaultParcelSize);
-      } else {
-        parcel = Object.assign({}, flatRateBox);
-      }
+      parcel = Object.assign({}, defaultParcelSize);
     } else {
-      // Check if any parcel property is set to zero and set to corresponding value on default parcel size (or flatRateBox)
+      // Check if any parcel property is set to zero and set to corresponding value on default parcel size
       Object.keys(parcel).forEach(function (key) {
         if (parcel[key] === 0) {
-          if (defaultParcelSize) {
-            parcel = Object.assign({},
-              parcel,
-              { [key]: defaultParcelSize[key] }
-            );
-          } else {
-            parcel = Object.assign({},
-              parcel,
-              { [key]: flatRateBox[key] }
-            );
-          }
+          parcel = Object.assign({},
+            parcel,
+            { [key]: defaultParcelSize[key] }
+          );
         }
       });
     }

@@ -13,17 +13,17 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 export const ParcelSize = new SimpleSchema({
   length: {
     type: Number,
-    min: 0,
+    min: 1,
     decimal: true
   },
   width: {
     type: Number,
-    min: 0,
+    min: 1,
     decimal: true
   },
   height: {
     type: Number,
-    min: 0,
+    min: 1,
     decimal: true
   },
   weight: {
