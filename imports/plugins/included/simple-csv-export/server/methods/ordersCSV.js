@@ -98,7 +98,7 @@ export const methods = {
       .save({
         cancelRepeats: true
       });
-      console.log("I dey here");
+      console.log("I entered methods");
   }
 };
 

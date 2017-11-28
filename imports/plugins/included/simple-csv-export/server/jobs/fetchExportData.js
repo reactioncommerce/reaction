@@ -19,65 +19,61 @@ import { Hooks, Logger } from "/server/api";
 //     });
 // });
 
-function exportOrdersToCSV() {
-  Meteor.call("orders/FetchExportDataSet", (error, data) => {
-    if (error) {
-      console.log("Error happened");
-    }
-    const csv = Papa.unparse(data);
-    downloadCSV(csv);
-  });
-}
-
-function exportOrdersToCSVByDate(startDate, endDate) {
-  Meteor.call("orders/ExportAllOrdersToCSVByDate", startDate, endDate, (error, data) => {
-    if (error) {
-      console.log("Error happened");
-    }
-    const csv = Papa.unparse(data);
-    downloadCSV(csv);
-  });
-}
-
-function downloadCSV(csv) {
-  const blob = new Blob([csv]);
-  const a = window.document.createElement("a");
-	    a.href = window.URL.createObjectURL(blob, { type: "text/plain" });
-	    a.download = "orders.csv";
-	    document.body.appendChild(a);
-	    a.click();
-	    document.body.removeChild(a);
-}
+// function exportOrdersToCSV() {
+//   Meteor.call("orders/FetchExportDataSet", (error, data) => {
+//     if (error) {
+//       console.log("Error happened");
+//     }
+//     const csv = Papa.unparse(data);
+//     downloadCSV(csv);
+//   });
+// }
+//
+// function exportOrdersToCSVByDate(startDate, endDate) {
+//   Meteor.call("orders/ExportAllOrdersToCSVByDate", startDate, endDate, (error, data) => {
+//     if (error) {
+//       console.log("Error happened");
+//     }
+//     const csv = Papa.unparse(data);
+//     downloadCSV(csv);
+//   });
+// }
+//
+// function downloadCSV(csv) {
+//   const blob = new Blob([csv]);
+//   const a = window.document.createElement("a");
+// 	    a.href = window.URL.createObjectURL(blob, { type: "text/plain" });
+// 	    a.download = "orders.csv";
+// 	    document.body.appendChild(a);
+// 	    a.click();
+// 	    document.body.removeChild(a);
+// }
 
 
 export default function () {
-  console.log("I entered JOBS");
-  // const fetchExportDataJob =
-  Jobs.processJobs("fetchExportDataJob", {
-    pollInterval: 30 * 1000,
-    workTimeout: 180 * 1000
+  const fetchExportDataJob = Jobs.processJobs("fetchExportDataJob", {
+    pollInterval: 60 * 60 * 1000,
+    workTimeout: 7 * 10000
   }, (job, callback) => {
+      console.log("I entered JOBS");
     Meteor.call("orders/orders/FetchExportData", (error, data) => {
+      console.log(job.log(error), "job logged");
       if (error) {
-        job.done("I failed this city");
-        callback();
+        job.fail(error, "Job failed");
       } else {
-        const csv = Papa.unparse(data);
-        downloadCSV(csv);
-        job.done("Yaaay!!");
-        callback();
+        job.done("Success!!");
       }
     });
 
     callback();
   });
 
-  // Jobs.find({
-  //   type: "fetchExportDataJob",
-  //   status: "ready"
-  // }).observe({
-  //   added() {
-  //     return fetchExportDataJob.trigger();
-  //   }
-  // });
+  Jobs.find({
+    type: "fetchExportDataJob",
+    status: "ready"
+  }).observe({
+    added() {
+      return fetchExportDataJob.trigger();
+    }
+  });
 }
