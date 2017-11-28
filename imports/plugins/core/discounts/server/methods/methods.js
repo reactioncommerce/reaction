@@ -4,12 +4,16 @@ import { Cart } from "/lib/collections";
 import { Discounts } from "../../lib/collections";
 import Reaction from "../api";
 
-//
-// make all discount methods available
-//
+/**
+ *
+ * @namespace Methods/Discounts
+ */
+
 export const methods = {
   /**
-   * discounts/deleteRate
+   * @name discounts/deleteRate
+   * @method
+   * @memberof Methods/Discounts
    * @param  {String} discountId discount id to delete
    * @return {String} returns update/insert result
    */
@@ -18,15 +22,17 @@ export const methods = {
 
     // check permissions to delete
     if (!Reaction.hasPermission("discounts")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     return Discounts.direct.remove({ _id: discountId });
   },
 
   /**
-   * discounts/setRate
-   * update the cart discounts without hooks
+   * @name discounts/setRate
+   * @method
+   * @memberof Methods/Discounts
+   * @summary Update the cart discounts without hooks
    * @param  {String} cartId cartId
    * @param  {Number} discountRate discountRate
    * @param  {Object} discounts discounts
@@ -44,9 +50,12 @@ export const methods = {
       }
     });
   },
+
   /**
-   * discounts/transaction
-   * applies a transaction to discounts for history
+   * @name discounts/transaction
+   * @method
+   * @memberof Methods/Discounts
+   * @summary Applies a transaction to discounts for history
    * @param  {String} cartId cartId
    * @param  {String} discountId discountId
    * @return {String} returns update result
@@ -68,8 +77,11 @@ export const methods = {
       { selector: { discountMethod: discount.discountMethod } }
     );
   },
+
   /**
-   * discounts/calculate
+   * @name discounts/calculate
+   * @method
+   * @memberof Methods/Discounts
    * @param  {String} cart cartId
    * @return {Object}  returns discount object
    */
@@ -105,5 +117,4 @@ export const methods = {
   }
 };
 
-// export methods to Meteor
 Meteor.methods(methods);
