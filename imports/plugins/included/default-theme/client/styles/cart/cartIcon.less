@@ -6,7 +6,17 @@
   position: relative;
   background-color: @cart-icon-bg;
   height: @navbar-height;
-
+  @media screen and (max-width: @screen-xs-max) {
+    width:  @navbar-height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  i {
+    @media screen and (max-width: @screen-xs-max) {
+      font-size: 22px;
+    }
+  }
   a i {
     color: @cart-icon-color;
     background-color: transparent;
@@ -21,6 +31,11 @@
     bottom: 4px;
     .right(1px);
     background-color: @cart-icon-badge;
+    @media screen and (max-width: @screen-xs-max) {
+      bottom: 8px;
+      .right(7px);
+      padding: 2px 5px;
+    }
   }
 
   .badge-warning {

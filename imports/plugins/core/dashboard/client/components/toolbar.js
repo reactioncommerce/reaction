@@ -90,13 +90,15 @@ class PublishControls extends Component {
     }
 
     return (
-      <DropDownMenu
-        onChange={this.onShopSelectChange}
-        value={this.props.shopId}
-        closeOnClick={true}
-      >
-        {menuItems}
-      </DropDownMenu>
+      <div className="hidden-xs">
+        <DropDownMenu
+          onChange={this.onShopSelectChange}
+          value={this.props.shopId}
+          closeOnClick={true}
+        >
+          {menuItems}
+        </DropDownMenu>
+      </div>
     );
   }
 
@@ -119,21 +121,23 @@ class PublishControls extends Component {
 
   renderAdminButton() {
     return (
-      <ToolbarGroup visibleOnMobile={true}>
-        <VerticalDivider key={"divder-2"} />
-        <FlatButton
-          key="dashboard-button"
-          onClick={() => {
-            Reaction.showActionView({
-              i18nKeyTitle: "dashboard.coreTitle",
-              title: "Dashboard",
-              template: "dashboardPackages"
-            });
-          }}
-        >
-          <Icon icon="icon icon-reaction-logo" />
-        </FlatButton>
-      </ToolbarGroup>
+      <div className="hidden-xs">
+        <ToolbarGroup visibleOnMobile={true}>
+          <VerticalDivider key={"divder-2"} />
+          <FlatButton
+            key="dashboard-button"
+            onClick={() => {
+              Reaction.showActionView({
+                i18nKeyTitle: "dashboard.coreTitle",
+                title: "Dashboard",
+                template: "dashboardPackages"
+              });
+            }}
+          >
+            <Icon icon="icon icon-reaction-logo" />
+          </FlatButton>
+        </ToolbarGroup>
+      </div>
     );
   }
 
@@ -168,7 +172,7 @@ class PublishControls extends Component {
     if (this.props.dashboardHeaderTemplate && this.props.hasCreateProductAccess) {
       if (this.props.isEnabled) {
         return [
-          <VerticalDivider key="customControlsVerticaldivider" />,
+          <div className="hidden-xs" key="customControlsVerticaldivider"><VerticalDivider/></div>,
           <Blaze key="customControls" template={this.props.dashboardHeaderTemplate} />
         ];
       }

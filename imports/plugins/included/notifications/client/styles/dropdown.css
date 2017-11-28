@@ -63,6 +63,9 @@ html:not(.rtl) .dropdown .notify-drop.dropdown-menu {
         padding:0px;
         left: -20px !important;
     }
+    html:not(.rtl) .dropdown .notify-drop.dropdown-menu {
+      left: 0px !important;
+    }
 }
 .notify-drop {
     min-width:290px !important;

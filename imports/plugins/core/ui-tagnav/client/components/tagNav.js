@@ -18,6 +18,21 @@ class TagNav extends Component {
     this.setState({ selectedTag: nextProps.selectedTag });
   }
 
+  /**
+   * onShopSelectChange
+   * @method
+   * @summary Handle change in selected shop
+   * @param {script} event
+   * @param {String} shopId - selected shopId
+   * @since 1.5.8
+   * @return {void}
+  */
+  onShopSelectChange = (event, shopId) => {
+    if (typeof this.props.handleShopSelectChange === "function") {
+      this.props.handleShopSelectChange(event, shopId);
+    }
+  }
+
   renderEditButton() {
     const { editContainerItem } = this.props.navButtonStyles;
     return (
@@ -53,6 +68,48 @@ class TagNav extends Component {
     };
   }
 
+  /**
+  * renderShopSelect
+  * @method
+  * @summary Handles shop options display on mobile view
+  * @return {JSX} component containing dropdown
+  */
+  renderShopSelect() {
+    let menuItems;
+    if (Array.isArray(this.props.shops)) {
+      menuItems = this.props.shops.map((shop, index) => {
+        return (
+          <Components.MenuItem
+            label={shop.name}
+            selectLabel={shop.name}
+            value={shop._id}
+            key={index}
+          />
+        );
+      });
+    }
+    if (menuItems) {
+      return (
+        <div className="shop-select">
+          <Components.DropDownMenu
+            onChange={this.onShopSelectChange}
+            value={this.props.shop._id}
+            closeOnClick={true}
+            buttonElement={
+              <Components.Button
+                icon="fa fa-caret-down"
+                iconAfter={true}
+                label={this.props.shop.name}
+              />
+            }
+          >
+            {menuItems}
+          </Components.DropDownMenu>
+        </div>
+      );
+    }
+  }
+
   render() {
     const { navbarOrientation, navbarPosition, navbarAnchor, navbarVisibility } = this.props;
     return (
@@ -67,6 +124,7 @@ class TagNav extends Component {
           />
           {this.props.children}
         </div>
+        {this.renderShopSelect()}
         <div className="navbar-items">
           <DragDropProvider>
             <Components.TagList
@@ -101,6 +159,7 @@ TagNav.propTypes = {
   children: PropTypes.node,
   closeNavbar: PropTypes.func,
   editable: PropTypes.bool,
+  handleShopSelectChange: PropTypes.func,
   navButtonStyles: PropTypes.object,
   navbarAnchor: PropTypes.string,
   navbarOrientation: PropTypes.string,
@@ -108,7 +167,9 @@ TagNav.propTypes = {
   navbarVisibility: PropTypes.string,
   onEditButtonClick: PropTypes.func,
   onMoveTag: PropTypes.func,
-  selectedTag: PropTypes.object
+  selectedTag: PropTypes.object,
+  shop: PropTypes.object,
+  shops: PropTypes.array
 };
 
 export default TagNav;

@@ -1,3 +1,10 @@
+@import "../../../default-theme/client/styles/variables.less";
+.rui.navbar > .navbar-notification {
+  position: relative;
+  @media screen and (max-width: @screen-xs-max) {
+    display: none;
+  }
+}
 .rui.navbar .notification-icon {
     display: -webkit-flex;
     display: -moz-flex;
@@ -15,6 +22,9 @@
     height: 55px;
     padding: 0px 14px;
     cursor: pointer;
+    @media screen and (max-width: @screen-xs-max) {
+      padding: 0px;
+    }
 }
 
 .rui.navbar .notification-icon:after {

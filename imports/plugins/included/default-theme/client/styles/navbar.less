@@ -37,9 +37,34 @@
   color: @text-color;
 }
 
+.rui.navbar .shop-select{
+  display: none;
+  position: relative;
+  width: 100%;
+  margin-bottom: -20px;
+  .padding-left(5px);
+  .btn span {
+    color: @link-color;
+    margin-right: 0.5em;
+    font-weight: normal;
+  }
+  &:hover {
+    background-color: @black10;
+  }
+  @media screen and (max-width: @screen-xs-max) {
+    display: block;
+  }
+}
 .rui.navbar .menu {
   .flex(1 1 auto);
   margin: 0 10px;
+}
+// Styles for mobile
+.rui.navbar .menu .languages .dropdown-toggle,
+.rui.navbar .menu .currencies .btn{
+  @media screen and (max-width: @screen-xs-max) {
+    padding: 0px;
+  }
 }
 
 .rui.navbar .rui.tagnav {
@@ -103,6 +128,12 @@
   .align-items(center);
   .flex(0 0 auto);
   height: @navbar-height;
+}
+.rui.navbar > .languages,
+.rui.navbar > .currencies {
+  @media screen and (max-width: @screen-xs-max) {
+    display: none;
+  }
 }
 
 .rui.navbar .languages .dropdown-menu {
@@ -218,6 +249,10 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
     padding: 0;
 }
 
+.rui.navbar .accounts .dropdown i {
+    font-size: 1.3em;
+}
+
 .rui.navbar .accounts .dropdown .user-accounts-dropdown-apps {
   margin: 0;
 }
@@ -274,7 +309,7 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
   padding: 0px @navbar-padding-vertical;
   cursor: pointer;
   @media screen and (max-width: @screen-xs-max) {
-    padding: 0px 12.8px;
+    padding: 0px;
   }
 }
 

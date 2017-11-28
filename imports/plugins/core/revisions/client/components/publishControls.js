@@ -219,16 +219,18 @@ class PublishControls extends Component {
     }
 
     return (
-      <Button
-        bezelStyle="outline"
-        disabled={this.hasChanges === false}
-        label="Publish"
-        onClick={this.handlePublishClick}
-        status="success"
-        tooltip={"This product has changes that need to be published before they are visible to your customers."}
-        i18nKeyLabel="productDetailEdit.publish"
-        {...buttonProps}
-      />
+      <div className="hidden-xs">
+        <Button
+          bezelStyle="outline"
+          disabled={this.hasChanges === false}
+          label="Publish"
+          onClick={this.handlePublishClick}
+          status="success"
+          tooltip={"This product has changes that need to be published before they are visible to your customers."}
+          i18nKeyLabel="productDetailEdit.publish"
+          {...buttonProps}
+        />
+      </div>
     );
   }
 
@@ -285,17 +287,19 @@ class PublishControls extends Component {
       }
 
       return (
-        <FlatButton
-          i18nKeyTooltip={i18nKeyTooltip}
-          icon="fa fa-eye-slash"
-          onIcon="fa fa-eye"
-          toggle={true}
-          tooltip={tooltip}
-          value="public"
-          onValue="private"
-          toggleOn={this.isVisible === "public"}
-          onToggle={this.handleVisibilityChange}
-        />
+        <div className="hidden-xs">
+          <FlatButton
+            i18nKeyTooltip={i18nKeyTooltip}
+            icon="fa fa-eye-slash"
+            onIcon="fa fa-eye"
+            toggle={true}
+            tooltip={tooltip}
+            value="public"
+            onValue="private"
+            toggleOn={this.isVisible === "public"}
+            onToggle={this.handleVisibilityChange}
+          />
+        </div>
       );
     }
 
