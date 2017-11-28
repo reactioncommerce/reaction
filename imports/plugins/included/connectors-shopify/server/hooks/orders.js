@@ -5,7 +5,13 @@ import { Reaction, Logger } from "/server/api";
 import { Orders, Shops } from "/lib/collections";
 import { getApiInfo } from "../methods/api";
 
-
+/**
+ * @private
+ * @summary Mark orders as exported after export
+ * @param {Object} exportedOrder the converted order
+ * @param {String} shopId - the shopId to attach
+ * @param {Object} order - the order to be marked
+ */
 function markExported(exportedOrder, shopId, order) {
   Orders.update({ _id: order._id }, {
     $push: {
@@ -20,6 +26,11 @@ function markExported(exportedOrder, shopId, order) {
   });
 }
 
+/**
+ * @private
+ * @summary Mark orders as exported after export
+ * @param {Object} doc - the order to mark as failed
+ */
 function markExportFailed(doc) {
   const order = Orders.findOne(doc._id); // only this object has the original transforms defined
   const shops = Object.keys(order.getItemsByShop());
@@ -37,7 +48,14 @@ function markExportFailed(doc) {
   });
 }
 
-
+/**
+ * @private
+ * @summary build a new object for export to Shopify
+ * @param {Object} doc - the order to convert
+ * @param {Number} index - the sequence number of billing/shipping records we are processing
+ * @param {String} shopId - the Id of the shop we are processing for
+ * @returns {Object} shopifyOrder - the converted order
+ */
 function convertRcOrderToShopifyOrder(doc, index, shopId) {
   const order = Orders.findOne(doc._id); // only this object has the original transforms defined
   const shopifyOrder = {};
@@ -72,6 +90,13 @@ function convertRcOrderToShopifyOrder(doc, index, shopId) {
   return shopifyOrder;
 }
 
+/**
+ * @private
+ * @summary Normalize all weights to grams
+ * @param {Number} weight - the original weight value
+ * @param {String} shopId - the shop we are converting for
+ * @returns {Number} the normalized value
+ */
 function normalizeWeight(weight, shopId) {
   // if weight is not grams, convert to grams if is grams just return
   const shop = Shops.findOne(shopId);
@@ -97,6 +122,13 @@ function normalizeWeight(weight, shopId) {
   }
 }
 
+/**
+ * @private
+ * @summary Convert individual line items of an order
+ * @param {Array} items - The items on the order object
+ * @param {Object} order - The order we are converting for
+ * @returns {Array} An array of converted line items
+ */
 function convertLineItems(items, order) {
   const lineItems = items.map((item) => {
     const lineItem = {};
@@ -139,12 +171,17 @@ function convertLineItems(items, order) {
         rate: item.taxData.rate / 100
       }];
     }
-    // lineItem.total_discount = ????;
     return lineItem;
   });
   return lineItems;
 }
 
+/**
+ * @private
+ * @summary Convert address object into Shopify-compatible format
+ * @param {Object} address - the address to convert
+ * @returns {Object} converted address
+ */
 function convertAddress(address) {
   const convertedAddress = {};
   convertedAddress.address1 = address.address1;
@@ -162,6 +199,13 @@ function convertAddress(address) {
   return convertedAddress;
 }
 
+/**
+ * @private
+ * @summary Create a customer object in Shopify-compatible format
+ * @param {Object} address - Converted address object
+ * @param {Object} order - Original order we are converting
+ * @returns {Object} Shopify-compatible customer object
+ */
 function convertCustomer(address, order) {
   let phone;
   if (address.country_code === "US") {
@@ -179,6 +223,11 @@ function convertCustomer(address, order) {
   return customer;
 }
 
+/**
+ * @summary Export an order to Shopify
+ * @param {Object} doc - The order to convert
+ * @returns {Promise.<Array>} - An array of exported orders
+ */
 export async function exportToShopify(doc) {
   const numShopOrders = doc.billing.length; // if we have multiple billing, we have multiple shops
   Logger.debug(`Exporting ${numShopOrders} order(s) to Shopify`);
