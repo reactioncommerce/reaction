@@ -711,6 +711,7 @@
 
     min-width: 15%;
     max-width: 100%;
+
   }
 
   .order-table-header-control {
@@ -811,7 +812,7 @@
   }
 
   .order-table-thead {
-    border-top: 1px solid @black10;
+    // border-top: 1px solid @black10;
     border-right: 1px solid @black10;
     border-left: 1px solid @black10;
   }
@@ -833,6 +834,15 @@
 
   .order-table-list {
     border-bottom: 1px solid @black10;
+    border-top: 1px solid @black10;
+    border-left: 1px solid @black10;
+    border-right: 1px solid @black10;
+    .rt-thead{
+      border-bottom: none;
+      .rt-th{
+        border-bottom: 1px solid #e6e6e6;        
+      }
+    }
   }
 
   .order-table-detail {

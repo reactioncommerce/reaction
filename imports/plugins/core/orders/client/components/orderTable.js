@@ -291,6 +291,7 @@ class OrderTable extends Component {
               </span>
             </div>
           );
+          resizable = false;
         } else if (columnName === "control") {
           colHeader = " ";
           resizable = false;
