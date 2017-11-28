@@ -1,8 +1,10 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-// import { Flat } from "meteor/thepumpinglemma:flat";
 import { check } from "meteor/check";
-import { Orders } from "/lib/collections";
+import { Job } from "meteor/vsivsi:job-collection";
+import { Jobs, Orders } from "/lib/collections";
+import fetchExportDataJobs from "../jobs/fetchExportData";
+
 
 export const methods = {
   /**
@@ -46,6 +48,7 @@ export const methods = {
         rows.createdAt
       ]);
     });
+    console.log("I entered fetching orders");
     return { fields: fields, data: data };
   },
   "orders/ExportAllOrdersToCSVByDate": (startDate, endDate) => {
@@ -83,6 +86,19 @@ export const methods = {
       ]);
     });
     return { fields: fields, data: data };
+  },
+  "orders/beginExportToCsvJob": () => {
+    new Job(Jobs, "fetchExportDataJob", {})
+      .priority("normal")
+      .retry({
+        retries: 5,
+        wait: 60000,
+        backoff: "exponential" // delay by twice as long for each subsequent retry
+      })
+      .save({
+        cancelRepeats: true
+      });
+      console.log("I dey here");
   }
 };
 

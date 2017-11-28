@@ -1,1 +1,2 @@
-import "./jobs/fetchExportData";
+import "./jobs";
+import "./methods";

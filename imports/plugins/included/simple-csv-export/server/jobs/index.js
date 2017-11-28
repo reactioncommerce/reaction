@@ -1,1 +1,4 @@
-export { default as FetchExportDataSet } from "./fetchExportData";
+import "./fetchExportData";
+import fetchExportDataJobs from "./fetchExportData";
+
+fetchExportDataJobs();

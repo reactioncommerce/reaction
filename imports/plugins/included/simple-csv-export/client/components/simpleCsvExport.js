@@ -1,6 +1,6 @@
 import React, { Component } from "react";
+import { Meteor } from "meteor/meteor";
 import { Components } from "@reactioncommerce/reaction-components";
-import { FetchExportDataSet } from "../../server/jobs";
 
 
 class SimpleCSVExport extends Component {
@@ -20,7 +20,13 @@ class SimpleCSVExport extends Component {
   }
 
   handleOnclick() {
-    FetchExportDataSet();
+    Meteor.call("orders/beginExportToCsvJob", (error) => {
+      if (error) {
+        console.log(error, "I didnt work");
+      } else {
+        console.log("I worked");
+      }
+    });
   }
 
   dateLabel() {
