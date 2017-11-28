@@ -38,7 +38,7 @@ ShippoApi.methods.getAddressList = new ValidatedMethod({
       return addressList;
     } catch (error) {
       Logger.error(error.message);
-      throw new Meteor.Error(error.message);
+      throw new Meteor.Error("server-error", error.message);
     }
   }
 });
@@ -84,7 +84,7 @@ ShippoApi.methods.getCarrierAccountsList = new ValidatedMethod({
         return fetchCarriers();
       } catch (error) {
         Logger.error(error.message);
-        throw new Meteor.Error(error.message);
+        throw new Meteor.Error("server-error", error.message);
       }
     }
 
@@ -133,7 +133,7 @@ ShippoApi.methods.createShipment = new ValidatedMethod({
       return shipment;
     } catch (error) {
       Logger.error(error.message);
-      throw new Meteor.Error(error.message);
+      throw new Meteor.Error("server-error", error.message);
     }
   }
 });
@@ -169,13 +169,13 @@ ShippoApi.methods.createTransaction = new ValidatedMethod({
       if (transaction.object_status !== "SUCCESS") {
         const error = transaction.messages[0].text;
         Logger.error(error);
-        throw new Meteor.Error(error);
+        throw new Meteor.Error("server-error", error);
       }
 
       return transaction;
     } catch (error) {
       Logger.debug(error.message);
-      throw new Meteor.Error(error.message);
+      throw new Meteor.Error("server-error", error.message);
     }
   }
 });
@@ -205,7 +205,7 @@ ShippoApi.methods.getTransaction = new ValidatedMethod({
       return transaction;
     } catch (error) {
       Logger.error(error.message);
-      throw new Meteor.Error(error.message);
+      throw new Meteor.Error("server-error", error.message);
     }
   }
 });
