@@ -120,6 +120,10 @@ class Form extends Component {
       this.validate();
     });
 
+    if (this.props.fieldsProp[name] && typeof this.props.fieldsProp[name].handleChange === "function") {
+      this.props.fieldsProp[name].handleChange(event, value, name);
+    }
+
     if (this.props.autoSave === true) {
       this.handleSubmit(event);
     }
@@ -130,7 +134,7 @@ class Form extends Component {
   }
 
   handleMultiSelectChange = (value, name) => {
-    this.handleChange(new Event("onMultiSelect"), value, name);
+    this.handleChange(new Event("onMultiSelect"), map(value, "value"), name);
   }
 
   handleSubmit = async (event) => {
@@ -173,6 +177,10 @@ class Form extends Component {
             {...sharedProps}
             onChange={this.handleChange}
             value={this.valueForField(field.name)}
+            multiline={field.multiline}
+            maxRows={field.maxRows}
+            disabled={field.disabled}
+            type={field.inputType}
           />
         );
         break;
@@ -194,6 +202,7 @@ class Form extends Component {
             onChange={this.handleMultiSelectChange}
             options={field.options}
             value={this.valueForField(field.name)}
+            simpleValue={false}
           />
         );
         break;

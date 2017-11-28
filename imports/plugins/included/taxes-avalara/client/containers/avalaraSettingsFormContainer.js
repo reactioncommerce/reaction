@@ -1,10 +1,11 @@
 import _ from "lodash";
 import { compose, withProps } from "recompose";
-import { composeWithTracker, registerComponent } from  "@reactioncommerce/reaction-components";
+import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
 import { AvalaraSettingsForm } from "../components";
+import { Logs as LogSchema } from "/lib/collections/schemas/logs";
 import { Countries } from "/client/collections";
 
 /**
@@ -23,11 +24,11 @@ const handlers = {
     * @since 1.5.2
     * @return {null} - returns nothing
     */
-  handleSubmit(event, changedInfo, targetField) {
+  handleSubmit(event, changedInfo, targetField) { // eslint-disable-line no-unused-vars
     if (!changedInfo.isValid) {
       return;
     }
-    Meteor.call("package/update", "taxes-avalara", targetField, changedInfo.doc.settings.avalara, (error) => {
+    Meteor.call("package/update", "taxes-avalara", "settings", changedInfo.doc.settings, (error) => {
       if (error) {
         Alerts.toast(
           i18next.t("admin.update.updateFailed", { defaultValue: "Failed to update Avalara settings." }),
@@ -61,6 +62,9 @@ const handlers = {
   }
 };
 
+const countryDefaults = ["US", "CA"];
+let validCountries = null;
+
 const composer = (props, onData) => {
   const shownFields = {
     ["settings.avalara.apiLoginId"]: AvalaraPackageConfig._schema["settings.avalara.apiLoginId"],
@@ -83,9 +87,7 @@ const composer = (props, onData) => {
     "settings.avalara.commitDocuments"
   ];
 
-  // Avalara supports only Canada and US for address validation
-  const countryDefaults = ["US", "CA"];
-  const validCountries =  Countries.find({ value: { $in: countryDefaults } }).fetch();
+  validCountries = validCountries || Countries.find({ value: { $in: countryDefaults } }).fetch();
 
   const fieldsProp = {
     "settings.addressValidation.countryList": {
@@ -99,8 +101,17 @@ const composer = (props, onData) => {
         { value: false, label: "Production Mode" },
         { value: true, label: "Testing-Sandbox Mode" }],
       label: undefined
+    },
+    "settings.avalara.password": {
+      inputType: "password"
     }
   };
+
+  const shownLogFields = {
+    date: LogSchema._schema.date,
+    data: LogSchema._schema.data
+  };
+
 
   const shopId = Reaction.getShopId();
   const packageSub = Meteor.subscribe("Packages", shopId);
@@ -111,7 +122,8 @@ const composer = (props, onData) => {
         settings: packageData.settings,
         shownFields,
         hiddenFields,
-        fieldsProp
+        fieldsProp,
+        shownLogFields
       });
   }
 };
