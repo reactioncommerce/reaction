@@ -529,10 +529,12 @@ export function ReactionLayout(options = {}) {
 
       // If the current route is unauthorized, and is not the "not-found" route,
       // then override the template to use the default unauthroized template
-      if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found") {
-        structure.template = "unauthorized";
+      if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found" && !Meteor.user()) {
+        if (!Router.Reaction.hasPermission(route.permissions, Meteor.userId())) {
+          structure.template = "unauthorized";
+        }
+        return false;
       }
-
       try {
         // Try to create a React component if defined
         return React.createElement(getComponent(layoutName), {
@@ -550,7 +552,6 @@ export function ReactionLayout(options = {}) {
           );
         }
       }
-
       // If all else fails, render a not found page
       return <Blaze template={structure.notFound} />;
     }

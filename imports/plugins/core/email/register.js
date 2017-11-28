@@ -29,7 +29,7 @@ Reaction.registerPackage({
     enabled: true,
     structure: {
       template: "email",
-      layoutHeader: "layoutHeader",
+      layoutHeader: "NavBar",
       layoutFooter: "",
       notFound: "notFound",
       dashboardHeader: "dashboardHeader",
