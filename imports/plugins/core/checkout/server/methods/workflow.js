@@ -335,6 +335,39 @@ Meteor.methods({
     check(order, Object);
     check(itemIds, Array);
 
+    if (status === "coreOrderItemWorkflow/packed") {
+      const shopId = Reaction.getShopId();
+
+      const existingOrder = Orders.find({ _id: order._id }).fetch();
+      const existingItems = existingOrder[0].items.filter(item => item.shopId !== shopId);
+
+      const newItems = order.items.map((item) => {
+        // Add the current status to completed workflows
+        if (item.workflow.status !== "new") {
+          const workflows = item.workflow.workflow || [];
+
+          workflows.push(status);
+          item.workflow.workflow = _.uniq(workflows);
+        }
+
+        // Set the new item status
+        item.workflow.status = status;
+        return item;
+      });
+
+      const items = existingItems.concat(newItems);
+
+      const result = Orders.update({
+        _id: order._id
+      }, {
+        $set: {
+          items: items
+        }
+      });
+
+      return result;
+    }
+
     const items = order.items.map((item) => {
       // Add the current status to completed workflows
       if (item.workflow.status !== "new") {
