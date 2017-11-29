@@ -27,14 +27,27 @@
   }
 
   .badge {
+    @size: 20px;
     position: absolute;
     bottom: 4px;
-    .right(1px);
+    .right(4px);
     background-color: @cart-icon-badge;
+    // padding: 4px 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto;
+    width: @size;
+    height: @size;
+    max-width: @size;
+    max-height: @size;
+    min-width: @size;
+    min-height: @size;
+    border-radius: @size / 2;
+    font-weight: 300;
     @media screen and (max-width: @screen-xs-max) {
       bottom: 8px;
       .right(7px);
-      padding: 2px 5px;
     }
   }
 
