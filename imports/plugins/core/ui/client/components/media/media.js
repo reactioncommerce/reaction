@@ -103,7 +103,7 @@ class MediaItem extends Component {
         pressDuration: 300,
         largeImage: {
             src: this.source,
-            width: 1200,
+            width: this.props.mediaWidth * 2,
             height: this.props.mediaHeight * 2
         },
         enlargedImagePosition: "beside",
