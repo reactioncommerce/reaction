@@ -94,17 +94,18 @@ class MediaItem extends Component {
     if (this.props.zoomable && !this.props.editable) {
       return <ReactImageMagnify {...{
         smallImage: {
-            isFluidWidth: true,
-            src: this.source,
+          width: this.props.mediaWidth,
+          height: this.props.mediaHeight,
+          src: this.source,
         },
         imageClassName: "img-responsive",
         fadeDurationInMs: 150,
         hoverDelayInMs: 200,
         pressDuration: 300,
         largeImage: {
-            src: this.source,
-            width: this.props.mediaWidth * 2,
-            height: this.props.mediaHeight * 2
+          src: this.source,
+          width: this.props.mediaWidth * 2,
+          height: this.props.mediaHeight * 2
         },
         enlargedImagePosition: "beside",
         enlargedImageContainerClassName: "zoomed-image-container"
@@ -115,7 +116,6 @@ class MediaItem extends Component {
         alt=""
         className="img-responsive"
         src={this.source}
-        height={this.props.mediaHeight}
       />
     );
   }
