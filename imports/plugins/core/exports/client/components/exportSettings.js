@@ -26,9 +26,6 @@ class ExportSettings extends Component {
           <div className="panel panel-default">
             <div className="panel-heading panel-heading-flex">
               <div className="panel-title content-view">
-                <div className="image">
-                  <i className="fa fa-file-excel-o" />
-                </div>
                 <span data-i18n={exportSetting.i18nKeyLabel}>{exportSetting.label}</span>
               </div>
               <div className="panel-controls">

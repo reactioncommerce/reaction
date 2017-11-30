@@ -20,7 +20,7 @@ class SimpleCSVExport extends Component {
   }
 
   handleOnclick() {
-    Meteor.call("orders/beginExportToCsvJob", (error) => {
+    Meteor.call("orders/orders/FetchExportData", (error) => {
       if (error) {
         console.log(error, "I didnt work");
       } else {
@@ -48,8 +48,9 @@ class SimpleCSVExport extends Component {
           initialEndDate={this.state.endDate}
           onDatesChange={this.handleDatesChange}
         />
-        <br />
         {this.dateLabel()}
+        <br />
+        <br />
         <br />
         <button onClick={this.handleOnclick}>
         Export

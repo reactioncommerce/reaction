@@ -1,4 +1,3 @@
-import "./fetchExportData";
-import fetchExportDataJobs from "./fetchExportData";
+import fetchOrdersJob from "./fetchOrdersJob";
 
-fetchExportDataJobs();
+fetchOrdersJob();
