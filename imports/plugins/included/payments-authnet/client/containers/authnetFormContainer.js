@@ -29,10 +29,10 @@ const handlers = {
 
 const composer = (props, onData) => {
   const shownFields = {
+    ["settings.mode"]: AuthNetPackageConfig._schema["settings.mode"],
     ["settings.api_id"]: AuthNetPackageConfig._schema["settings.api_id"],
     ["settings.transaction_key"]: AuthNetPackageConfig._schema["settings.transaction_key"]
   };
-  const hiddenFields = ["settings.mode"];
   const packageSub = Meteor.subscribe("Packages", Reaction.getShopId());
 
   if (packageSub.ready()) {
@@ -40,8 +40,7 @@ const composer = (props, onData) => {
     onData(null, {
       schema: AuthNetPackageConfig,
       settings: packageData.settings,
-      shownFields,
-      hiddenFields
+      shownFields
     });
   }
 };

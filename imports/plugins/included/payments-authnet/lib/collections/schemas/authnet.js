@@ -15,7 +15,8 @@ export const AuthNetPackageConfig = new SimpleSchema([
   PackageConfig, {
     "settings.mode": {
       type: Boolean,
-      defaultValue: false
+      defaultValue: false,
+      label: "Mode"
     },
     "settings.reaction-auth-net.support": {
       type: Array,

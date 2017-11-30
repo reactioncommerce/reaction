@@ -144,18 +144,15 @@ class AuthnetSettingsForm extends Component {
   */
   render() {
     const { configSchema, settings } = this.state;
-    const { shownFields, hiddenFields, handleSubmit } = this.props;
+    const { shownFields, handleSubmit } = this.props;
     return (
       <div>
-        {this.renderSupportedMethods()}
-        {this.renderModeOptions()}
         <Form
           schema={configSchema}
-          doc={settings}
+          doc={{ settings }}
           docPath={"settings"}
           name={"settings"}
           fields={shownFields}
-          hideFields={hiddenFields}
           onSubmit={handleSubmit}
         />
       </div>
