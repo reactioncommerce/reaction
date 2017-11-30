@@ -15,6 +15,13 @@ Template.cartCheckout.helpers({
       return Cart.findOne();
     }
     return {};
+  },
+  cartCount() {
+    const cart = Cart.findOne();
+    if (cart.items && cart.items.length > 0) {
+      return true;
+    }
+    return false;
   }
 });
 
