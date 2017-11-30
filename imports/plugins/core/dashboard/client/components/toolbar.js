@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Blaze from "meteor/gadicc:blaze-react-component";
+import { Components } from "@reactioncommerce/reaction-components";
 import {
   DropDownMenu,
   MenuItem,
   FlatButton,
-  Toolbar,
-  ToolbarGroup,
   Switch,
   Icon,
   VerticalDivider
@@ -119,7 +118,7 @@ class PublishControls extends Component {
 
   renderAdminButton() {
     return (
-      <ToolbarGroup visibleOnMobile={true}>
+      <Components.ToolbarGroup visibleOnMobile={true}>
         <VerticalDivider key={"divder-2"} />
         <FlatButton
           key="dashboard-button"
@@ -133,7 +132,7 @@ class PublishControls extends Component {
         >
           <Icon icon="icon icon-reaction-logo" />
         </FlatButton>
-      </ToolbarGroup>
+      </Components.ToolbarGroup>
     );
   }
 
@@ -182,18 +181,18 @@ class PublishControls extends Component {
 
   render() {
     return (
-      <Toolbar>
-        <ToolbarGroup firstChild={true}>
+      <Components.Toolbar>
+        <Components.ToolbarGroup firstChild={true}>
           {this.renderVisibilitySwitch()}
           {this.renderShopSelect()}
-        </ToolbarGroup>
-        <ToolbarGroup lastChild={true}>
+        </Components.ToolbarGroup>
+        <Components.ToolbarGroup lastChild={true}>
           {this.renderAddButton()}
           {this.renderPackageButons()}
           {this.renderCustomControls()}
-        </ToolbarGroup>
+        </Components.ToolbarGroup>
         {this.renderAdminButton()}
-      </Toolbar>
+      </Components.Toolbar>
     );
   }
 }

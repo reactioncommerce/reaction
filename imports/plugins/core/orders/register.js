@@ -45,8 +45,8 @@ Reaction.registerPackage({
     enabled: true,
     structure: {
       template: "orders",
-      layoutHeader: "layoutHeader",
-      layoutFooter: "layoutFooter",
+      layoutHeader: "NavBar",
+      layoutFooter: "Footer",
       notFound: "notFound",
       dashboardHeader: "dashboardHeader",
       dashboardHeaderControls: "orderListFilters",
@@ -60,8 +60,8 @@ Reaction.registerPackage({
     enabled: true,
     structure: {
       template: "completedPDFLayout",
-      layoutHeader: "layoutHeader",
-      layoutFooter: "layoutFooter"
+      layoutHeader: "NavBar",
+      layoutFooter: "Footer"
     }
   }, {
     layout: "coreLayout",
