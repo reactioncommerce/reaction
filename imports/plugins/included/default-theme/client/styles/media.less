@@ -149,7 +149,12 @@
   }
 }
 
-.admin-featuredImage:hover {
-  background-color: @list-group-hover-bg;
-  opacity: 0.8;
+.admin-gallery-image.no-fade-on-hover {
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.zoomed-image-container {
+  z-index: 1;
 }

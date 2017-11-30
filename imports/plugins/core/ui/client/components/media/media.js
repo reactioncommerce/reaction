@@ -106,7 +106,8 @@ class MediaItem extends Component {
             width: 1200,
             height: this.props.mediaHeight * 2
         },
-        enlargedImagePosition: "over",
+        enlargedImagePosition: "beside",
+        enlargedImageContainerClassName: "zoomed-image-container"
       }} />
     }
     return (
@@ -120,7 +121,7 @@ class MediaItem extends Component {
   }
 
   render() {
-    const classes = { "gallery-image": true, "admin-gallery-image": Reaction.hasAdminAccess() };
+    const classes = { "gallery-image": true, "no-fade-on-hover": this.props.zoomable && !this.props.editable, "admin-gallery-image": Reaction.hasAdminAccess() };
     const mediaElement = (
       <div
         className={classnames(classes)}
