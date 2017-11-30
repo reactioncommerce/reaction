@@ -49,7 +49,7 @@ const wrapComponent = (Comp) => (
       // Do nothing if we are in preview mode
       if (Reaction.isPreview() === false) {
         /* firefox event fix */
-        event = event || window.event;
+        //event = event || window.event;
         // Don't trigger the clear selection if we're clicking on a grid item.
         if (event.target.closest(".product-grid-item") === null) {
           const selectedProducts = Session.get("productGrid/selectedProducts");
