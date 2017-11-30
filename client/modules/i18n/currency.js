@@ -24,7 +24,7 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   const user = Accounts.findOne({
     _id: Meteor.userId()
   });
-  const profileCurrency = user.profile && user.profile.currency;
+  const profileCurrency = user && user.profile && user.profile.currency;
   if (typeof shop === "object" && shop.currencies && profileCurrency) {
     let userCurrency = {};
     if (shop.currencies[profileCurrency]) {
@@ -87,7 +87,7 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
       // we know the locale, but we don"t know exchange rate. In that case we
       // should return to default shop currency
       if (typeof userCurrency.rate !== "number") {
-        throw new Meteor.Error("exchangeRateUndefined");
+        throw new Meteor.Error("invalid-exchange-rate", "Exchange rate is invalid");
       }
       prices[i] *= userCurrency.rate;
 
