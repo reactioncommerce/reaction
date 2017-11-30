@@ -54,6 +54,7 @@
     "i18next-localstorage-cache": "^1.1.1",
     "i18next-sprintf-postprocessor": "^0.2.2",
     "immutable": "^3.8.1",
+    "javascript-state-machine": "3.0.1",
     "jquery-i18next": "^1.2.0",
     "later": "^1.2.0",
     "lodash": "^4.17.4",
