@@ -326,21 +326,15 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       $in: [true, false, null, undefined]
     };
 
-    // Get _ids of top-level products
-    const productIds = Products.find(selector, {
+    const adminProductCursor = Products.find(selector, {
       sort: sort,
       limit: productScrollLimit
-    }).map(product => product._id);
+    });
 
-    let newSelector = selector;
-
+    const adminProductIds = adminProductCursor.map((p) => p._id);
 
     if (RevisionApi.isRevisionControlEnabled()) {
-      const productCursor = Products.find(newSelector, {
-        limit: productScrollLimit,
-        sort: sort
-      });
-      const handle = productCursor.observeChanges({
+      const handle = adminProductCursor.observeChanges({
         added: (id, fields) => {
           const revisions = Revisions.find({
             "$or": [
@@ -434,25 +428,20 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         handle2.stop();
       });
 
-      const mediaProductIds = productCursor.fetch().map((p) => p._id);
+      const mediaProductIds = adminProductCursor.fetch().map((p) => p._id);
       const mediaCursor = findProductsMedia(this, mediaProductIds);
 
       return [
-        productCursor,
+        // adminProductCursor,
         mediaCursor
       ];
     }
 
-    // Else revision control is disabled, but user is an admin
-    const productCursor = Products.find(newSelector, {
-      sort: sort,
-      limit: productScrollLimit
-    });
-    const mediaProductIds = productCursor.fetch().map((p) => p._id);
+    const mediaProductIds = adminProductCursor.fetch().map((p) => p._id);
     const mediaCursor = findProductsMedia(this, mediaProductIds);
 
     return [
-      productCursor,
+      adminProductCursor,
       mediaCursor
     ];
   }
