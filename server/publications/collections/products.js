@@ -374,6 +374,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       });
 
       const handle2 = Revisions.find({
+        "revision.documentId": adminProductIds,
         "workflow.status": {
           $nin: [
             "revision/published"
