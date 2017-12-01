@@ -334,29 +334,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
     let newSelector = selector;
 
-    // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
-    if (productFilters && productFilters.tags) {
-      newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-
-      // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
-      _.extend(newSelector, {
-        $or: [{
-          ancestors: {
-            $in: productIds
-          }
-        }, {
-          $and: [{
-            hashtags: {
-              $in: productFilters.tags
-            }
-          }, {
-            _id: {
-              $in: productIds
-            }
-          }]
-        }]
-      });
-    }
 
     if (RevisionApi.isRevisionControlEnabled()) {
       const productCursor = Products.find(newSelector, {
