@@ -14,7 +14,6 @@ import { Counts } from "meteor/tmeasday:publish-counts";
 import { Tracker } from "meteor/tracker";
 import { Packages, Shops } from "/lib/collections";
 import { getComponent } from "@reactioncommerce/reaction-components/components";
-import BlazeLayout from "/imports/plugins/core/layout/lib/blazeLayout";
 import Hooks from "./hooks";
 
 export let history;
@@ -542,15 +541,8 @@ export function ReactionLayout(options = {}) {
           structure: structure
         });
       } catch (e) {
-        // Otherwise fallback to a blaze template
-        if (Template[layoutName]) {
-          return (
-            <BlazeLayout
-              {...structure}
-              blazeTemplate={layoutName}
-            />
-          );
-        }
+        // eslint-disable-next-line
+        console.warn(e, "Failed to create a React layout element");
       }
       // If all else fails, render a not found page
       return <Blaze template={structure.notFound} />;
