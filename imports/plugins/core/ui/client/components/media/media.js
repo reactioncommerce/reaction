@@ -107,7 +107,7 @@ class MediaItem extends Component {
           width: this.props.mediaWidth * 2,
           height: this.props.mediaHeight * 2
         },
-        enlargedImagePosition: "beside",
+        isHintEnabled: true,
         enlargedImageContainerClassName: "zoomed-image-container"
       }} />
     }

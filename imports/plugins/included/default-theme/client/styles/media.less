@@ -157,8 +157,11 @@
   & > div {
     height: auto !important;
 
-    img {
+    & > img {
       height: auto !important;
+      & ~ div {
+        margin-bottom: 20%;
+      }
     }
   }
 
@@ -172,4 +175,5 @@
 .rtl .zoomed-image-container {
   left: 0% !important;
   right: 100% !important;
+  margin-right: 10px;
 }
