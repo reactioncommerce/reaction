@@ -59,7 +59,9 @@
   "dependencies": {
     "mute": [
       "enzyme",
-      "jsdoc"
+      "jsdoc",
+      "react",
+      "react-dom"
     ],
     "unused-ignores": [
       "sweetalert2",

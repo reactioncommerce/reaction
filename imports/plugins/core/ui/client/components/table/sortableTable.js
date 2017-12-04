@@ -38,7 +38,6 @@ class SortableTable extends Component {
     }
   }
 
-
   /**
    * @name getMeteorData()
    * @method
@@ -253,6 +252,20 @@ class SortableTable extends Component {
     return className;
   }
 
+  /**
+   * @name displayNoResultsFound()
+   * @method
+   * @summary This function displays a 'No Results Found' when there is no data to populate the table
+   * @return {node} returns a JSX node or empty string
+   */
+  displayNoResultsFound() {
+    let displayText = "";
+    if (this.getTableData() === 0) {
+      displayText = <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>;
+    }
+    return displayText;
+  }
+
   renderPaginationBottom = () => {
     if (this.getTableData() === 0) {
       return false;
@@ -288,7 +301,7 @@ class SortableTable extends Component {
           previousText={otherProps.previousText}
           nextText={otherProps.nextText}
           loadingText={otherProps.loadingText}
-          noDataText={() => <span className="sortableTable-noDataText">{this.props.noDataMessage}</span>}
+          noDataText={this.displayNoResultsFound()}
           pageText={otherProps.pageText}
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
