@@ -678,10 +678,7 @@ export default {
    *  @return {String} returns insert result
    */
   loadPackages() {
-    const packages = Packages.find().fetch();
-
     let registryFixtureData;
-
     if (process.env.REACTION_REGISTRY) {
       // check the environment for the registry fixture data first
       registryFixtureData = process.env.REACTION_REGISTRY;
@@ -707,74 +704,10 @@ export default {
       }
     }
 
-    const layouts = [];
     // for each shop, we're loading packages in a unique registry
-    _.each(this.Packages, (config, pkgName) => {
-      return Shops.find().forEach((shop) => {
-        const shopId = shop._id;
-        if (!shopId) return [];
-
-        // existing registry will be upserted with changes, perhaps we should add:
-        this.assignOwnerRoles(shopId, pkgName, config.registry);
-
-        // Settings from the package registry.js
-        const settingsFromPackage = {
-          name: pkgName,
-          icon: config.icon,
-          enabled: !!config.autoEnable,
-          settings: config.settings,
-          registry: config.registry,
-          layout: config.layout
-        };
-
-        // Setting from a fixture file, most likely reaction.json
-        let settingsFromFixture;
-        if (registryFixtureData) {
-          settingsFromFixture = _.find(registryFixtureData[0], (packageSetting) => {
-            return config.name === packageSetting.name;
-          });
-        }
-
-        // Setting already imported into the packages collection
-        const settingsFromDB = _.find(packages, (ps) => {
-          return (config.name === ps.name && shopId === ps.shopId);
-        });
-
-        const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
-
-        if (combinedSettings.registry) {
-          combinedSettings.registry = combinedSettings.registry.map((entry) => {
-            if (entry.provides && !Array.isArray(entry.provides)) {
-              entry.provides = [entry.provides];
-              Logger.warn(`Plugin ${combinedSettings.name} is using a deprecated version of the provides property for` +
-                          ` the ${entry.name || entry.route} registry entry. Since v1.5.0 registry provides accepts` +
-                          " an array of strings.");
-            }
-            return entry;
-          });
-        }
-
-        // populate array of layouts that don't already exist in Shops
-        if (combinedSettings.layout) {
-          // filter out layout Templates
-          for (const pkg of combinedSettings.layout) {
-            if (pkg.layout) {
-              layouts.push(pkg);
-            }
-          }
-        }
-        // Import package data
-        this.Import.package(combinedSettings, shopId);
-        return Logger.debug(`Initializing ${shop.name} ${pkgName}`);
-      }); // end shops
-    });
-
-    // helper for removing layout duplicates
-    const uniqLayouts = uniqWith(layouts, _.isEqual);
-    // import layouts into Shops
-    Shops.find().forEach((shop) => {
-      this.Import.layout(uniqLayouts, shop._id);
-    });
+    importPackagesForEachShop.call(this, registryFixtureData);
+    clonePackageLayoutForEachShop.call(this);
+    importStateflowsForEachShop.call(this);
 
     //
     // package cleanup
@@ -844,3 +777,96 @@ export default {
     return c2._simpleSchema;
   }
 };
+
+function importPackagesForEachShop(registryFixtureData) {
+  _.each(this.Packages, (config, pkgName) => {
+    Shops.find().forEach((shop) => {
+      const shopId = shop._id;
+      if (!shopId) return [];
+
+      // existing registry will be upserted with changes, perhaps we should add:
+      this.assignOwnerRoles(shopId, pkgName, config.registry);
+
+      // Settings from the package registry.js
+      const settingsFromPackage = {
+        name: pkgName,
+        icon: config.icon,
+        enabled: !!config.autoEnable,
+        settings: config.settings,
+        registry: config.registry,
+        layout: config.layout,
+        stateflows: config.stateflows
+      };
+
+      // Setting from a fixture file, most likely reaction.json
+      let settingsFromFixture;
+      if (registryFixtureData) {
+        settingsFromFixture = _.find(registryFixtureData[0], (packageSetting) => {
+          return config.name === packageSetting.name;
+        });
+      }
+
+      const packages = Packages.find().fetch();
+      // Setting already imported into the packages collection
+      const settingsFromDB = _.find(packages, (ps) => {
+        return (config.name === ps.name && shopId === ps.shopId);
+      });
+
+      const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
+
+      if (combinedSettings.registry) {
+        combinedSettings.registry = combinedSettings.registry.map((entry) => {
+          if (entry.provides && !Array.isArray(entry.provides)) {
+            entry.provides = [entry.provides];
+            Logger.warn(`Plugin ${combinedSettings.name} is using a deprecated version of the provides property for` +
+              ` the ${entry.name || entry.route} registry entry. Since v1.5.0 registry provides accepts` +
+              " an array of strings.");
+          }
+          return entry;
+        });
+      }
+
+      // Import package data
+      this.Import.package(combinedSettings, shopId);
+      Logger.debug(`Initializing ${shop.name} ${pkgName}`);
+    });
+  });
+}
+
+function clonePackageLayoutForEachShop() {
+  const layouts = [];
+  _.each(this.Packages, (pkg) => {
+    // populate array of layouts that don't already exist in Shops
+    if (pkg.layout) {
+      // filter out layout Templates
+      for (const layout of pkg.layout) {
+        if (layout.layout) {
+          layouts.push(layout);
+        }
+      }
+    }
+  });
+
+  // helper for removing layout duplicates
+  const uniqLayouts = uniqWith(layouts, _.isEqual);
+  if (uniqLayouts.length !== layouts.length) {
+    Logger.error("That should not happen. Investigate.");
+  }
+  // clone layouts into Shops
+  Shops.find().forEach((shop) => {
+    Logger.debug(`Cloning layouts to shop ${shop.name}`);
+    this.Import.layout(uniqLayouts, shop._id);
+  });
+}
+
+function importStateflowsForEachShop() {
+  Shops.find().forEach((shop) => {
+    _.each(this.Packages, (pkg) => {
+      if (pkg.stateflows) {
+        pkg.stateflows.forEach((stateflow) => {
+          this.Import.stateflow(stateflow, shop._id);
+        });
+      }
+    });
+  });
+}

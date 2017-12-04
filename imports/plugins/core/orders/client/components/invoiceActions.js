@@ -45,6 +45,7 @@ class InvoiceActions extends Component {
     paymentApproved: PropTypes.bool,
     paymentCaptured: PropTypes.bool,
     paymentPendingApproval: PropTypes.bool,
+    paymentMethodWorkflow: PropTypes.object,
     printOrder: PropTypes.string,
     showAfterPaymentCaptured: PropTypes.bool
   }
@@ -191,34 +192,16 @@ class InvoiceActions extends Component {
     }
 
     if (this.props.paymentApproved) {
-      return (
-        <div className="flex">
-          <a
-            className="btn btn-link"
-            href={this.props.printOrder}
-            target="_blank"
-            data-i18n="app.print"
-          >
-            Print
-          </a>
-
-          <button
-            className="btn btn-success flex-item-fill"
-            type="button"
-            data-event-action="capturePayment"
-            disabled={this.props.isCapturing}
-            onClick = {this.props.handleCapturePayment}
-          >
-
-            {this.props.isCapturing ?
-              <span id="btn-capture-payment">
-                Capturing <i className="fa fa-spinner fa-spin" id="btn-processing" />
-              </span> :
-              <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
-            }
-          </button>
-        </div>
-      );
+      const component = this.props.paymentMethodWorkflow.component;
+      // null is a valid return value ..
+      if (component === null) {
+        return null;
+      }
+      if (component) {
+        return React.createElement(component, this.props);
+      }
+      // TODO MJ: This should not be necessary if all payment provider plugins are configured correctly.
+      return <Components.InvoiceActionsApproved/>;
     }
   }
 

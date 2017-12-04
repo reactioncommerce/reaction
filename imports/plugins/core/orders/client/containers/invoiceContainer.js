@@ -4,10 +4,11 @@ import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { i18next, Logger, Reaction, formatPriceString } from "/client/api";
-import { Media, Packages } from "/lib/collections";
+import { Media, Packages, Stateflows } from "/lib/collections";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import Invoice from "../components/invoice.js";
 import { getOrderRiskStatus, getOrderRiskBadge, getBillingInfo } from "../helpers";
+import { StateflowStrategyRegistry } from "/lib/api/stateflow-strategies";
 
 class InvoiceContainer extends Component {
   static propTypes = {
@@ -233,7 +234,7 @@ class InvoiceContainer extends Component {
     event.preventDefault();
 
     const order = this.state.order;
-    approvePayment(order);
+    approvePayment.call(this, order);
   }
 
   handleCapturePayment = (event) => {
@@ -244,7 +245,7 @@ class InvoiceContainer extends Component {
     });
 
     const order = this.state.order;
-    capturePayments(order, () => {
+    capturePayments.call(this, order, () => {
       this.setState({
         isCapturing: false
       });
@@ -392,7 +393,7 @@ class InvoiceContainer extends Component {
       confirmButtonText: i18next.t("order.capturePayment")
     }, (isConfirm) => {
       if (isConfirm) {
-        capturePayments(order);
+        capturePayments.call(this, order);
         this.alertToRefund(order);
       }
     });
@@ -539,6 +540,8 @@ function approvePayment(order) {
           if (error) {
             Logger.warn(error);
           }
+          // TODO MJ: The above call to "orders/approvePayment" should be implemented in pushNextState's strategy object.
+          this.props.paymentMethodWorkflow.pushNextState("approvePayment");
         });
       }
     });
@@ -554,6 +557,8 @@ function approvePayment(order) {
           });
         }
       }
+      // TODO MJ: The above call to "orders/approvePayment" should be implemented in pushNextState's strategy object.
+      this.props.paymentMethodWorkflow.pushNextState("approvePayment");
     });
   }
 }
@@ -567,7 +572,10 @@ function approvePayment(order) {
  */
 function capturePayments(order, onCancel) {
   const capture = () => {
-    Meteor.call("orders/capturePayments", order._id);
+    Meteor.call("orders/capturePayments", order._id, () => {
+      // TODO MJ: The above call to "orders/capturePayments" should be implemented in pushNextState's strategy object.
+      this.props.paymentMethodWorkflow.pushNextState("capturePayment");
+    });
     if (order.workflow.status === "new") {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
 
@@ -581,10 +589,10 @@ function capturePayments(order, onCancel) {
   // before capturing, check if there's a payment risk on order; alert admin before capture
   if (getOrderRiskStatus(order)) {
     alertDialog()
-      .then(capture)
+      .then(capture.bind(this))
       .catch(onCancel);
   } else {
-    capture();
+    capture.call(this);
   }
 
   function alertDialog() {
@@ -694,6 +702,24 @@ const composer = (props, onData) => {
     }
   });
 
+  let paymentMethodWorkflow;
+  const stateflow = Stateflows.findOne({ name: shopBilling.paymentMethod.paymentSettingsKey });
+  if (stateflow) {
+    paymentMethodWorkflow = stateflow.create({
+      stateflowStrategy: StateflowStrategyRegistry[stateflow.strategy],
+      doc: props.order
+    });
+
+    paymentMethodWorkflow.depend(); // make reactive (also triggers internal `save` behaviour)
+  }
+
+  if (paymentMethodWorkflow) {
+    console.log("status " + paymentMethodWorkflow.state);
+  } else {
+    console.log("not defined yet");
+  }
+
+
   onData(null, {
     uniqueItems,
     invoice,
@@ -702,6 +728,7 @@ const composer = (props, onData) => {
     paymentCaptured,
     paymentPendingApproval,
     paymentApproved,
+    paymentMethodWorkflow,
     canMakeAdjustments,
     showAfterPaymentCaptured,
     printOrder,

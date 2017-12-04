@@ -35,7 +35,8 @@ class Invoice extends Component {
     isFetching: PropTypes.bool,
     order: PropTypes.object,
     paymentCaptured: PropTypes.bool,
-    refunds: PropTypes.array
+    refunds: PropTypes.array,
+    paymentMethodWorkflow: PropTypes.object
   }
 
   state = {

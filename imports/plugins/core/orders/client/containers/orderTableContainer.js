@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
-import { Media } from "/lib/collections";
+import { Media, Stateflows } from "/lib/collections";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import { getShippingInfo } from "../helpers";
+import { getShippingInfo, getBillingInfo } from "../helpers";
 import {
   PACKAGE_NAME,
   ORDER_LIST_FILTERS_PREFERENCE_NAME,
@@ -12,6 +12,7 @@ import {
   shippingStates
 } from "../../lib/constants";
 import OrderTable from "../components/orderTable";
+import { StateflowStrategyRegistry } from "/lib/api/stateflow-strategies";
 
 const shippingStrings = ["picked", "packed", "labeled", "shipped"];
 
@@ -627,6 +628,20 @@ const wrapComponent = (Comp) => (
             });
             Alerts.toast(`An error occured while approving the payment: ${approvePaymentError}`, "error");
           } else {
+            // TODO MJ: The above call to "orders/approvePayment" should be implemented in pushNextState's strategy object.
+            let stateflow;
+            const billing = getBillingInfo(order);
+            if (billing) {
+              stateflow = Stateflows.findOne({ name: billing.paymentMethod.paymentSettingsKey });
+              if (stateflow) {
+                const paymentMethodWorkflow = stateflow.create({
+                  stateflowStrategy: StateflowStrategyRegistry[stateflow.strategy],
+                  doc: order
+                });
+                paymentMethodWorkflow.pushNextState("approvePayment");
+              }
+            }
+
             // TODO: send these orders in batch as an array. This would entail re-writing the
             // "orders/capturePayments" method to receive an array of orders as a param.
             Meteor.call("orders/capturePayments", order._id, (capturePaymentError) => {
@@ -637,6 +652,16 @@ const wrapComponent = (Comp) => (
                   }
                 });
                 Alerts.toast(`An error occured while capturing the payment: ${capturePaymentError}`, "error");
+              }
+
+              // TODO MJ: The above call to "orders/capturePayments" should be implemented in pushNextState's strategy object.
+              if (billing && stateflow) {
+                // Because we didn't make the above workflow instance reactive via .depend(), we need to instantiate it anew.
+                const paymentMethodWorkflow = stateflow.create({
+                  stateflowStrategy: StateflowStrategyRegistry[stateflow.strategy],
+                  doc: order
+                });
+                paymentMethodWorkflow.pushNextState("capturePayment");
               }
 
               orderCount++;
