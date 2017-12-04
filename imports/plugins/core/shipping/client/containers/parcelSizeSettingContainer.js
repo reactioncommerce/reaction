@@ -1,5 +1,5 @@
+import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
-import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Validation } from "@reactioncommerce/reaction-collections";
 import { Reaction, i18next } from "/client/api/";
@@ -53,7 +53,6 @@ const onCardExpand = (cardName) => {
  * @method getEditFocus
  * @summary get "edit/focus" value from current Reaction state
  * @since 1.5.5
- * @return {String} - value in current Reaction state
 */
 const getEditFocus = () => {
   return Reaction.state.get("edit/focus");
@@ -61,7 +60,7 @@ const getEditFocus = () => {
 
 /**
  * @method composer
- * @summary composer
+ * @summary composer - reactive Tracker wrapped function
  * @param {Object} props
  * @param {Function} onData
  * @since 1.5.5
@@ -80,11 +79,9 @@ const composer = (props, onData) => {
 };
 
 registerComponent("ParcelSizeSettings", ParcelSizeSettings, [
-  composeWithTracker(composer),
-  withProps({})
+  composeWithTracker(composer)
 ]);
 
 export default compose(
-  composeWithTracker(composer),
-  withProps({})
+  composeWithTracker(composer)
 )(ParcelSizeSettings);

@@ -106,6 +106,10 @@ class ParcelSizeSettings extends Component {
   */
   render() {
     const { isEditing, isSaving, size } = this.state;
+    // return null if size is undefined
+    if (!size) {
+      return null;
+    }
     return (
       <div className="parcel-setting">
         <Components.CardGroup>
@@ -168,9 +172,10 @@ class ParcelSizeSettings extends Component {
                     className="pull-right"
                     type="submit" disabled={isSaving}
                   >
-                    {isSaving ?
+                    { isSaving ?
                       <i className="fa fa-refresh fa-spin" />
-                      : <span data-i18n="app.save">Save</span>}
+                      : <Components.Translation defaultValue="Save" i18nKey="app.save" />
+                    }
                   </Components.Button>
                 }
               </form>

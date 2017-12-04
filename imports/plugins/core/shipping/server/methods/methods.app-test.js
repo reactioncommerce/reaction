@@ -36,11 +36,11 @@ describe("shipping methods", function () {
   });
 
   describe("shipping/updateParcelSize", function () {
-    it("should throw 403 error with shipping permission", function () {
+    it("should throw 403 error if user does not have permission", function () {
       sandbox.stub(Roles, "userIsInRole", () => false);
       expect(() => Meteor.call("shipping/updateParcelSize", "dummyShopId", parcelSize)).to.throw(Meteor.Error, /Access Denied/);
     });
-    it("should update default parcel size when user has permission", function (done) {
+    it("should update default parcel size when user has permission", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Reaction, "getShopId", () => {
         return shop._id;
@@ -51,7 +51,6 @@ describe("shipping methods", function () {
       Meteor.call("shipping/updateParcelSize", shop._id, parcelSize);
       const updateParcelSize = shop.defaultParcelSize;
       expect(initialDefaultParcelSize).to.not.equal(updateParcelSize);
-      return done();
     });
   });
 });
