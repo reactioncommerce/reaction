@@ -98,9 +98,9 @@ Template.shopifySync.helpers({
     const { synchooks } = settings;
     if (synchooks) {
       const [ topic, event, syncType ]  = hook.split(":");
-      const matchingHooks = synchooks.map((syncHook) => {
-        if (syncHook.topic === topic && syncHook.event === event && syncHook.syncType === syncType) {
-          return syncHook;
+      const matchingHooks = synchooks.map((synchook) => {
+        if (synchook.topic === topic && synchook.event === event && synchook.syncType === syncType) {
+          return synchook;
         }
       });
       if (matchingHooks.length > 0) {

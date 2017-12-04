@@ -49,7 +49,9 @@ const Webhook = new SimpleSchema({
   }
 });
 
-export const Pushhooks = new SimpleSchema({
+registerSchema("Webhook", Webhook);
+
+export const Synchook = new SimpleSchema({
   topic: {
     type: String,
     label: "Outbound Sync Topic",
@@ -65,7 +67,7 @@ export const Pushhooks = new SimpleSchema({
   }
 });
 
-registerSchema("Webhook", Webhook);
+registerSchema("Synchook", Synchook);
 
 /**
  * @name ShopifyConnectPackageConfig
@@ -104,7 +106,7 @@ export const ShopifyConnectPackageConfig = new SimpleSchema([
       optional: true
     },
     "settings.synchooks": {
-      type: [Pushhooks],
+      type: [Synchook],
       label: "Hooks being used to sync outbound with Shopify",
       optional: true
     }

@@ -2,6 +2,7 @@
 import accounting from "accounting-js";
 import Shopify from "shopify-api-node";
 import { Reaction, Logger } from "/server/api";
+import { convertWeight } from "/lib/api";
 import { Orders, Shops } from "/lib/collections";
 import { getApiInfo } from "../methods/api";
 
@@ -56,23 +57,21 @@ function markExportFailed(doc) {
  * @param {String} shopId - the Id of the shop we are processing for
  * @returns {Object} shopifyOrder - the converted order
  */
-function convertRcOrderToShopifyOrder(doc, index, shopId) {
+function convertOrderToShopifyOrder(doc, index, shopId) {
   const order = Orders.findOne(doc._id); // only this object has the original transforms defined
-  const shopifyOrder = {};
-  const billingAddress = convertAddress(order.billing[index].address);
-  shopifyOrder.billing_address = billingAddress;
-  const shippingAddress = convertAddress(order.shipping[index].address);
-  shopifyOrder.shipping_address = shippingAddress;
-  shopifyOrder.customer = convertCustomer(billingAddress, order);
-  shopifyOrder.email = order.email;
   const paymentType = order.billing[index].method;
+  const itemsForShop = order.getItemsByShop()[shopId];
+  const shopifyOrder = {};
+  shopifyOrder.billing_address = convertAddress(order.billing[index].address);
+  shopifyOrder.shipping_address = convertAddress(order.shipping[index].address);
+  shopifyOrder.customer = convertCustomer(shopifyOrder.billing_address, order);
+  shopifyOrder.email = order.email;
   if (paymentType === "credit" && order.billing[index].mode === "authorize") {
     shopifyOrder.financial_status = "authorized";
   } else {
     shopifyOrder.financial_status = "paid";
   }
   shopifyOrder.id = order._id;
-  const itemsForShop = order.getItemsByShop()[shopId];
   shopifyOrder.line_items = convertLineItems(itemsForShop, order);
   shopifyOrder.phone = order.billing[index].address.phone;
   shopifyOrder.source_name = "reaction_export";
@@ -101,24 +100,19 @@ function normalizeWeight(weight, shopId) {
   // if weight is not grams, convert to grams if is grams just return
   const shop = Shops.findOne(shopId);
   const { baseUOM } = shop;
-  // Could've used switch, this was easier to read
-  // should these be a utilities module somewhere?
   if (baseUOM === "g") {
     return weight;
   }
   if (baseUOM === "lb") {
-    const grams = weight * 453.592;
-    return grams;
+    return convertWeight("lb", "g", weight);
   }
 
   if (baseUOM === "oz") {
-    const grams = weight * 28.35;
-    return grams;
+    return convertWeight("oz", "g", weight);
   }
 
   if (baseUOM === "kg") {
-    const grams = weight / 1000;
-    return grams;
+    return convertWeight("kg", "g", weight);
   }
 }
 
@@ -142,7 +136,9 @@ function convertLineItems(items, order) {
     lineItem.product_id = item.productId;
     lineItem.quantity = item.quantity;
     lineItem.requires_shipping = item.product.requiresShipping;
-    // lineItem.sku = ??? Not sure what should be the SKU here
+    if (item.variants.sku) { // this doesn't appear to be written anywhere but it's in the schema
+      lineItem.sku = item.variants.sku;
+    }
     lineItem.title = item.product.title;
     lineItem.variant_id = item.variants._id;
     lineItem.variant_title = item.variants.title;
@@ -235,7 +231,7 @@ export async function exportToShopify(doc) {
   for (let index = 0; index < numShopOrders; index++) {
     // send a shopify order once for each merchant order
     const shopId = doc.billing[index].shopId;
-    const shopifyOrder = convertRcOrderToShopifyOrder(doc, index, shopId);
+    const shopifyOrder = convertOrderToShopifyOrder(doc, index, shopId);
     Logger.debug("sending shopify order", shopifyOrder, doc._id);
     const apiCreds = getApiInfo(shopId);
     const shopify = new Shopify(apiCreds);
@@ -254,22 +250,20 @@ Orders.after.insert((userId, doc) => {
     const { synchooks } = settings;
     if (synchooks) {
       synchooks.forEach((hook) => {
-        if (hook.topic === "orders" && hook.event === "orders/create") {
-          if (hook.syncType === "exportToShopify") { // should this just be dynamic?
-            try {
-              exportToShopify(doc)
-                .then(exportedOrders => {
-                  Logger.debug("exported order(s)", exportedOrders);
-                })
-                .catch(error => {
-                  Logger.error("Encountered error when exporting to shopify", error);
-                  Logger.error(error.response.body);
-                  markExportFailed(doc);
-                });
-            } catch (error) {
-              Logger.error("Error exporting to Shopify", error);
-              return true;
-            }
+        if (hook.topic === "orders" && hook.event === "orders/create" && hook.syncType === "exportToShopify") {
+          try {
+            exportToShopify(doc)
+              .then(exportedOrders => {
+                Logger.debug("exported order(s)", exportedOrders);
+              })
+              .catch(error => {
+                Logger.error("Encountered error when exporting to shopify", error);
+                Logger.error(error.response.body);
+                markExportFailed(doc);
+              });
+          } catch (error) {
+            Logger.error("Error exporting to Shopify", error);
+            return true;
           }
         }
       });
