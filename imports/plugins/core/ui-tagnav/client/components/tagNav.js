@@ -28,7 +28,7 @@ class TagNav extends Component {
    * @return {void}
   */
   onShopSelectChange = (event, shopId) => {
-    if (typeof this.props.handleShopSelectChange === "function") {
+    if (this.props.handleShopSelectChange) {
       this.props.handleShopSelectChange(event, shopId);
     }
   }

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import { Icon } from "/imports/plugins/core/ui/client/components";
 import Login from "./login";
 
 const iconStyle = {
@@ -90,8 +89,9 @@ class MainDropdown extends Component {
       <div className="accounts-dropdown">
         <div className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
           <span>
-            <Icon icon="fa fa-user" />
-          </span><b className="caret" />
+            <Components.Icon icon="fa fa-user" />
+          </span>
+          <b className="caret" />
         </div>
         <div
           className="accounts-dialog accounts-layout dropdown-menu pull-right"
