@@ -39,7 +39,7 @@
 }
 
 html:not(.rtl) .dropdown .notify-drop.dropdown-menu {
-  left: auto !important;
+  left: auto;
   right: 0px;
 }
 
@@ -64,7 +64,7 @@ html:not(.rtl) .dropdown .notify-drop.dropdown-menu {
         left: -20px !important;
     }
     html:not(.rtl) .dropdown .notify-drop.dropdown-menu {
-      left: 0px !important;
+      left: 0px;
     }
 }
 .notify-drop {
