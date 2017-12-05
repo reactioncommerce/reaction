@@ -1,6 +1,11 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
+SimpleSchema.messages({
+  greaterThanZero: "Value must be greater than zero"
+});
+
+
 /**
  * @name ParcelSize
  * @memberof schemas
@@ -13,23 +18,39 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 export const ParcelSize = new SimpleSchema({
   length: {
     type: Number,
-    min: 1,
-    decimal: true
+    decimal: true,
+    custom: function () {
+      if (this.value <= 0) {
+        return "greaterThanZero";
+      }
+    }
   },
   width: {
     type: Number,
-    min: 1,
-    decimal: true
+    decimal: true,
+    custom: function () {
+      if (this.value <= 0) {
+        return "greaterThanZero";
+      }
+    }
   },
   height: {
     type: Number,
-    min: 1,
-    decimal: true
+    decimal: true,
+    custom: function () {
+      if (this.value <= 0) {
+        return "greaterThanZero";
+      }
+    }
   },
   weight: {
     type: Number,
-    min: 1,
-    decimal: true
+    decimal: true,
+    custom: function () {
+      if (this.value <= 0) {
+        return "greaterThanZero";
+      }
+    }
   }
 });
 
