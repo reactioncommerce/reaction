@@ -46,6 +46,8 @@ class PublishControls extends Component {
 
   // Passthrough to shopSelectChange handler in container above
   onShopSelectChange = (event, shopId) => {
+
+    console.log("onShopSelectChange", shopId);
     if (typeof this.props.onShopSelectChange === "function") {
       this.props.onShopSelectChange(event, shopId);
     }
@@ -74,29 +76,40 @@ class PublishControls extends Component {
   }
 
   renderShopSelect() {
+    // TODO: If we can change hasShopSwitcherAccess to only be for marketplace owner, use it here instead of new hasMarketplacePermission const
+    const hasMarketplacePermission = Reaction.hasAdminAccess(Reaction.getPrimaryShopId());
+
     let menuItems;
-    if (Array.isArray(this.props.shops)) {
-      menuItems = this.props.shops.map((shop, index) => {
-        return (
-          <MenuItem
-            label={shop.name}
-            selectLabel={shop.name}
-            value={shop._id}
-            key={index}
-          />
-        );
-      });
+
+    // If user account has Marketplace permissions, show shop switcher
+    if (hasMarketplacePermission === true) { // TODO: see not on line 79 above
+      if (Array.isArray(this.props.shops)) {
+        menuItems = this.props.shops.map((shop, index) => {
+          return (
+            <MenuItem
+              label={shop.name}
+              selectLabel={shop.name}
+              value={shop._id}
+              key={index}
+            />
+          );
+        });
+      }
+
+      return (
+        <DropDownMenu
+          onChange={this.onShopSelectChange}
+          value={this.props.shopId}
+          closeOnClick={true}
+        >
+          {menuItems}
+        </DropDownMenu>
+      );
     }
 
-    return (
-      <DropDownMenu
-        onChange={this.onShopSelectChange}
-        value={this.props.shopId}
-        closeOnClick={true}
-      >
-        {menuItems}
-      </DropDownMenu>
-    );
+    // If the user is just a shop owner, not a marketplace owner,
+    // then make sure the shop is set to their shop and show them nothing
+    return this.onShopSelectChange(null, Reaction.getSellerShopId());
   }
 
   renderVisibilitySwitch() {
