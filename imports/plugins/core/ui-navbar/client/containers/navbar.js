@@ -35,10 +35,8 @@ export function composer(props, onData) {
    * @return {void}
   */
   const handleShopSelectChange = (event, shopId) => {
-    // Test that shopId is a valid ID
-    if (/^[A-Za-z0-9]{17}$/.test(shopId)) {
-      Reaction.setShopId(shopId);
-    }
+    // set shopId
+    Reaction.setShopId(shopId);
   };
   if (searchPackage.length) {
     searchEnabled = true;
