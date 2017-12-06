@@ -50,7 +50,7 @@ class CartItems extends Component {
           onClick={this.handleClick}
         >
           {handleImage(item) ?
-            <div className="center-cropped" style={{ backgroundImage: `url(${handleImage(item).url({ store: "small" })})` }}>
+            <div className="center-cropped" style={{ backgroundImage: `url('${handleImage(item).url({ store: "small" })}')` }}>
               <img src={handleImage(item).url({ store: "small" })} className="product-grid-item-images img-responsive" />
             </div> :
             <div className="center-cropped" style={{ backgroundImage: "url('/resources/placeholder.gif')" }}>
