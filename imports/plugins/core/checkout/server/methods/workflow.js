@@ -328,6 +328,7 @@ Meteor.methods({
    * @param  {String} status  Workflow status
    * @param  {Object} order   Schemas.Order, an order object
    * @param  {String[]} itemIds Array of item IDs
+   * @param  {Boolean} isPack  packed workflow
    * @return {Boolean}         true if update was successful
    */
   "workflow/pushItemWorkflow": function (status, order, itemIds, isPack = false) {
