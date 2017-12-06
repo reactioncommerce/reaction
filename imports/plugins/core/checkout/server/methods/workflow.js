@@ -330,45 +330,21 @@ Meteor.methods({
    * @param  {String[]} itemIds Array of item IDs
    * @return {Boolean}         true if update was successful
    */
-  "workflow/pushItemWorkflow": function (status, order, itemIds) {
+  "workflow/pushItemWorkflow": function (status, order, itemIds, isPack = false) {
     check(status, String);
     check(order, Object);
     check(itemIds, Array);
+    check(isPack, Boolean);
 
-    if (status === "coreOrderItemWorkflow/packed") {
+    let existingItems;
+
+    if (isPack) {
       const shopId = Reaction.getShopId();
 
-      const existingOrder = Orders.find({ _id: order._id }).fetch();
-      const existingItems = existingOrder[0].items.filter(item => item.shopId !== shopId);
-
-      const newItems = order.items.map((item) => {
-        // Add the current status to completed workflows
-        if (item.workflow.status !== "new") {
-          const workflows = item.workflow.workflow || [];
-
-          workflows.push(status);
-          item.workflow.workflow = _.uniq(workflows);
-        }
-
-        // Set the new item status
-        item.workflow.status = status;
-        return item;
-      });
-
-      const items = existingItems.concat(newItems);
-
-      const result = Orders.update({
-        _id: order._id
-      }, {
-        $set: {
-          items: items
-        }
-      });
-
-      return result;
+      existingItems = Orders.findOne({ _id: order._id }).items.filter(item => item.shopId !== shopId);
     }
 
-    const items = order.items.map((item) => {
+    const currentItems = order.items.map((item) => {
       // Add the current status to completed workflows
       if (item.workflow.status !== "new") {
         const workflows = item.workflow.workflow || [];
@@ -382,11 +358,13 @@ Meteor.methods({
       return item;
     });
 
+    const items = existingItems ? existingItems.concat(currentItems) : currentItems;
+
     const result = Orders.update({
       _id: order._id
     }, {
       $set: {
-        items: items
+        items
       }
     });
 
