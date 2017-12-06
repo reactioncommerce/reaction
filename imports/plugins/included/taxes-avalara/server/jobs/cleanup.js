@@ -30,8 +30,6 @@ function cleanupAvalaraJobs(callback) {
 Hooks.Events.add("afterCoreInit", () => {
   if (!Meteor.isAppTest) {
     Logger.debug("Adding Avalara log cleanup job and removing existing");
-    // Renove all previous jobs
-    Jobs.remove({ type: "logs/removeOldAvalaraLogs" });
     new Job(Jobs, "logs/removeOldAvalaraLogs", {})
       .priority("normal")
       .retry({
