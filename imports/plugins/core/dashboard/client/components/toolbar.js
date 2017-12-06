@@ -46,8 +46,6 @@ class PublishControls extends Component {
 
   // Passthrough to shopSelectChange handler in container above
   onShopSelectChange = (event, shopId) => {
-
-    console.log("onShopSelectChange", shopId);
     if (typeof this.props.onShopSelectChange === "function") {
       this.props.onShopSelectChange(event, shopId);
     }
