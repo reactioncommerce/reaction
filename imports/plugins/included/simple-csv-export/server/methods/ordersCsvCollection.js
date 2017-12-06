@@ -1,7 +1,8 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Orders } from "/lib/collections";
+import { Job } from "meteor/vsivsi:job-collection";
+import { Jobs, Orders } from "/lib/collections";
 
 
 export const methods = {
@@ -83,6 +84,20 @@ export const methods = {
       ]);
     });
     return { fields: fields, data: data };
+  },
+  "orders/executeJobs": () => {
+    new Job(Jobs, "fetchOrdersJob", {})
+      .priority("normal")
+      .retry({
+        retries: 5,
+        wait: 60000,
+        backoff: "exponential" // delay by twice as long for each subsequent retry
+      })
+      .save({
+        // Cancel any jobs of the same type,
+        // but only if this job repeats forever.
+        cancelRepeats: true
+      });
   }
 };
 

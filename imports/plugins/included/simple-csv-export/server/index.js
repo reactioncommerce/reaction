@@ -1,2 +1,2 @@
-// import "./jobs";
+import "./jobs";
 import "./methods";

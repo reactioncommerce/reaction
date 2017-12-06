@@ -20,13 +20,7 @@ class SimpleCSVExport extends Component {
   }
 
   handleOnclick() {
-    Meteor.call("orders/orders/FetchExportData", (error) => {
-      if (error) {
-        console.log(error, "I didnt work");
-      } else {
-        console.log("I worked");
-      }
-    });
+    Meteor.call("orders/executeJobs");
   }
 
   dateLabel() {
