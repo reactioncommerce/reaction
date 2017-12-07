@@ -1,4 +1,7 @@
+import { Meteor } from "meteor/meteor";
+// import { Papa } from "meteor/harrison:papa-parse";
 import { Reaction } from "/client/api";
+
 
 /*
  * @method getOrderRiskBadge
@@ -177,4 +180,37 @@ export function getShippingInfo(order) {
     return shipping && shipping.shopId === Reaction.getShopId();
   });
   return shippingInfo || {};
+}
+
+export function exportOrdersToCSV() {
+  Meteor.call("orders/ExportAllOrdersToCSV", (error, data) => {
+    if (error) {
+      console.log("Error happened");
+    }
+    // const flattenedData = Flat.flatten(data);
+    // console.log(flattenedData, "Im a banana");
+    const csv = Papa.unparse(data);
+    downloadCSV(csv);
+  });
+}
+
+export function exportOrdersToCSVByDate(startDate, endDate) {
+  console.log("I get here in helpers");
+  Meteor.call("orders/ExportAllOrdersToCSVByDate", startDate, endDate, (error, data) => {
+    if (error) {
+      console.log("Error happened");
+    }
+    const csv = Papa.unparse(data);
+    downloadCSV(csv);
+  });
+}
+
+function downloadCSV(csv) {
+  const blob = new Blob([csv]);
+  const a = window.document.createElement("a");
+	    a.href = window.URL.createObjectURL(blob, { type: "text/plain" });
+	    a.download = "orders.csv";
+	    document.body.appendChild(a);
+	    a.click();
+	    document.body.removeChild(a);
 }
