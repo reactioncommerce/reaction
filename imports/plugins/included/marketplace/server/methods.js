@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
 import { Reaction } from "/lib/api";
 import { Shops, Packages } from "/lib/collections";
 import { SHOP_WORKFLOW_STATUS_ACTIVE, SHOP_WORKFLOW_STATUS_DISABLED } from "../lib/constants";
@@ -47,7 +47,7 @@ export function marketplaceUpdateShopWorkflow(shopId, workflowStatus) {
  * @return {boolean} -
  */
 function updateShopPackageStatus(packageName, pkgStatus, shopId) {
-  check(packageName, String);
+  check(packageName, Match.OneOf(String, Array));
   check(pkgStatus, Boolean);
   check(shopId, String);
 
@@ -57,6 +57,17 @@ function updateShopPackageStatus(packageName, pkgStatus, shopId) {
 
   if (!Reaction.hasPermission("admin", this.userId, Reaction.getPrimaryShopId())) {
     throw new Meteor.Error("access-denied", "Cannot change shop status");
+  }
+
+  if (Array.isArray(packageName)) {
+    return Packages.update({
+      shopId,
+      name: { $in: packageName }
+    }, {
+      $set: { enabled: pkgStatus }
+    }, {
+      multi: true
+    });
   }
 
   return Packages.update({

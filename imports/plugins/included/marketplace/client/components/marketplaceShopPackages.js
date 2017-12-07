@@ -13,6 +13,18 @@ class MarketplaceShopPackages extends Component {
     this.props.handleToggle(status, pkgName, this.props.shopId);
   }
 
+  get allPackages() {
+    return this.props.packages.map((pkg) => pkg.name);
+  }
+
+  handleAllOn = (event, status) => {
+    this.props.handleToggle(status, this.allPackages, this.props.shopId);
+  }
+
+  handleAllOff = (event, status) => {
+    this.props.handleToggle(status, this.allPackages, this.props.shopId);
+  }
+
   renderPackageList() {
     if (this.props.packages.length) {
       return this.props.packages.map((pkg) => {
@@ -60,14 +72,14 @@ class MarketplaceShopPackages extends Component {
               <Components.FlatButton
                 i18nKeyLabel={"admin.i18nSettings.allOn"}
                 label="All On"
-                value={name}
+                value={true}
                 onClick={this.handleAllOn}
               />
               { "|" }
               <Components.FlatButton
                 i18nKeyLabel={"admin.i18nSettings.allOff"}
                 label="All Off"
-                value={name}
+                value={false}
                 onClick={this.handleAllOff}
               />
             </Components.CardToolbar>
