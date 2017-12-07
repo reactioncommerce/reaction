@@ -52,6 +52,7 @@ function handleChange(event, value) {
       if (error) {
         Logger.error(error, "Failed to logout.");
       }
+      Reaction.setShopId(Reaction.getPrimaryShopId());
     });
   }
 
