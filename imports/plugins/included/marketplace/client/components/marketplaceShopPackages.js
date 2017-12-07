@@ -5,19 +5,33 @@ import { Components } from "@reactioncommerce/reaction-components";
 class MarketplaceShopPackages extends Component {
   static propTypes = {
     handleToggle: PropTypes.func,
-    packages: PropTypes.array
+    packages: PropTypes.array,
+    shopId: PropTypes.string
   }
 
   handleToggle = (event, status, pkgName) => {
-    this.props.handleToggle(status, pkgName);
+    this.props.handleToggle(status, pkgName, this.props.shopId);
   }
 
   renderPackageList() {
     if (this.props.packages.length) {
       return this.props.packages.map((pkg) => {
+        const pkgLabel = pkg.registry.find((reg) => {
+          if (reg.provides && reg.provides.indexOf("dashboard") > -1) {
+            return true;
+          }
+          if (reg.provides && reg.provides.indexOf("actions") > -1) {
+            return true;
+          }
+          if (reg.provides && reg.provides.indexOf("settings") > -1) {
+            return true;
+          }
+          return false;
+        });
+
         return (
           <Components.ListItem
-            label={pkg.name}
+            label={pkgLabel.label}
             key={pkg._id}
             actionType="switch"
             switchOn={pkg.enabled}
@@ -33,19 +47,34 @@ class MarketplaceShopPackages extends Component {
 
   render() {
     return (
-      <Components.Card>
-        <Components.CardHeader
-          actAsExpander={true}
-          data-i18n=""
-          title="Manage Shop Packages"
-          id="accounts"
-        />
-        <Components.CardBody expandable={true}>
-          <div className="rui panel-body">
+      <div className="shop-package-setting">
+        <Components.Card>
+          <Components.CardHeader
+            actAsExpander={true}
+            data-i18n=""
+            title="Manage Shop Packages"
+            id="accounts"
+          />
+          <Components.CardBody expandable={true}>
+            <Components.CardToolbar>
+              <Components.FlatButton
+                i18nKeyLabel={"admin.i18nSettings.allOn"}
+                label="All On"
+                value={name}
+                onClick={this.handleAllOn}
+              />
+              { "|" }
+              <Components.FlatButton
+                i18nKeyLabel={"admin.i18nSettings.allOff"}
+                label="All Off"
+                value={name}
+                onClick={this.handleAllOff}
+              />
+            </Components.CardToolbar>
             {this.renderPackageList()}
-          </div>
-        </Components.CardBody>
-      </Components.Card>
+          </Components.CardBody>
+        </Components.Card>
+      </div>
     );
   }
 }
