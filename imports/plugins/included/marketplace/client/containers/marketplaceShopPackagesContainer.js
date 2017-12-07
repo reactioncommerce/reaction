@@ -9,14 +9,13 @@ function composer(props, onData) {
 
   if (pkgSub.ready()) {
     const packages = Packages.find({ shopId: props.shopId }).fetch();
-    console.log({ packages });
+
     onData(null, { ...props, packages, handleToggle });
   }
 }
 
 function handleToggle(status, pkgName, shopId) {
-  Meteor.call("marketplace/updatePackageStatus", pkgName, status, shopId, (error, response) => {
-    console.log({ error, response });
+  Meteor.call("marketplace/updatePackageStatus", pkgName, status, shopId, (error) => {
     if (error) {
       return Alerts.toast(i18next.t("marketplaceShops.errors.packageUpdate"), "error");
     }
