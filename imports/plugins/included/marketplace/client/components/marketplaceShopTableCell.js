@@ -2,7 +2,6 @@ import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { Reaction } from "/client/api";
 import { SHOP_WORKFLOW_STATUS_ACTIVE, SHOP_WORKFLOW_STATUS_DISABLED } from "../../lib/constants";
 
 class MarketplaceShopTableCell extends Component {
@@ -31,14 +30,6 @@ class MarketplaceShopTableCell extends Component {
 
       this.props.onWorkflowChange(_id, value);
     }
-  }
-
-  handleShopSelect = () => {
-    Reaction.setActionViewDetail({
-      data: { shopId: this.shop._id },
-      props: { size: "large" },
-      template: "MarketplaceShopPackages"
-    });
   }
 
   render() {
@@ -80,7 +71,7 @@ class MarketplaceShopTableCell extends Component {
 
     return (
       <div className="table-cell body">
-        <span><a onClick={this.handleShopSelect}>{data.value}</a></span>
+        <span>{data.value}</span>
       </div>
     );
   }

@@ -1,11 +1,25 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import { Reaction } from "/client/api";
 
 class MarketplaceShops extends Component {
   static propTypes = {
     onWorkflowChange: PropTypes.func,
     shops: PropTypes.arrayOf(PropTypes.object)
+  }
+
+  getTrGroupProps(state, rowInfo) {
+    return {
+      onClick: () => {
+        const shopId = rowInfo.original._id;
+        Reaction.setActionViewDetail({
+          data: { shopId },
+          props: { size: "large" },
+          template: "MarketplaceShopPackages"
+        });
+      }
+    };
   }
 
   renderShopsTable() {
@@ -31,6 +45,7 @@ class MarketplaceShops extends Component {
         columnMetadata={columnMetadata}
         filteredFields={fields}
         filterType="none"
+        getTrGroupProps={this.getTrGroupProps}
         showFilter={true}
         isSortable={false}
       />
