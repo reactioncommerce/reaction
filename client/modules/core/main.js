@@ -298,6 +298,24 @@ export default {
     return typeof hasPermissions !== "undefined";
   },
 
+  getShopsForUser(roles, userId = Meteor.userId()) {
+    const shops = [];
+    const user = Meteor.user(userId);
+
+    Object.keys(user.roles).find((shopId) => {
+      if (this.hasPermission(roles, userId, shopId)) {
+        shops.push(shopId);
+      }
+    });
+
+    return shops;
+  },
+
+  hasDashboardAccessForMultipleShops() {
+    const adminShopIds = this.getShopsForUser(["owner", "admin", "dashboard"]);
+    return Array.isArray(adminShopIds) && adminShopIds.length > 1;
+  },
+
   hasOwnerAccess() {
     const ownerPermissions = ["owner"];
     return this.hasPermission(ownerPermissions);
@@ -325,7 +343,7 @@ export default {
   },
 
   hasShopSwitcherAccess() {
-    return this.hasDashboardAccessForAnyShop();
+    return this.hasDashboardAccessForMultipleShops();
   },
 
   getSellerShopId: function (userId = Meteor.userId(), noFallback = false) {
