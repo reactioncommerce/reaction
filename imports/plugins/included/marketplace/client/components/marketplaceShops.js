@@ -40,7 +40,7 @@ class MarketplaceShops extends Component {
   render() {
     return (
       <div className="rui sortable-table-container">
-        <div className="rui sortable-table">
+        <div className="rui sortable-table marketplace-shops">
           {this.renderShopsTable()}
         </div>
       </div>

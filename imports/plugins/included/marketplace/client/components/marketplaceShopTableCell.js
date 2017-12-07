@@ -35,8 +35,6 @@ class MarketplaceShopTableCell extends Component {
 
   handleShopSelect = () => {
     Reaction.setActionViewDetail({
-      label: "Order Details",
-      i18nKeyLabel: "orderWorkflow.orderDetails",
       data: { shopId: this.shop._id },
       props: { size: "large" },
       template: "MarketplaceShopPackages"
@@ -82,7 +80,7 @@ class MarketplaceShopTableCell extends Component {
 
     return (
       <div className="table-cell body">
-        <a onClick={this.handleShopSelect}>{data.value}</a>
+        <span><a onClick={this.handleShopSelect}>{data.value}</a></span>
       </div>
     );
   }
