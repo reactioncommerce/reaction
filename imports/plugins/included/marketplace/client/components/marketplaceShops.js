@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { Reaction } from "/client/api";
 
 class MarketplaceShops extends Component {
   static propTypes = {
+    handleSelectRow: PropTypes.func,
     onWorkflowChange: PropTypes.func,
     shops: PropTypes.arrayOf(PropTypes.object)
   }
@@ -19,7 +19,6 @@ class MarketplaceShops extends Component {
 
   getTrGroupProps = (state, rowInfo) => {
     let className = "";
-    console.log(rowInfo.original._id, this.state.selected);
     if (rowInfo.original._id === this.state.selected) {
       className = "selected";
     }
@@ -27,11 +26,9 @@ class MarketplaceShops extends Component {
     return {
       className,
       onClick: () => {
-        console.log("clicked");
         const shopId = rowInfo.original._id;
-        this.setState({ selected: shopId }, () => {
-          this.props.handleSelectRow(shopId);
-        });
+        this.setState({ selected: shopId });
+        this.props.handleSelectRow(shopId);
       }
     };
   }
