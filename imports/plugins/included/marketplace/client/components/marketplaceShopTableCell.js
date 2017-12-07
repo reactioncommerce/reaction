@@ -8,6 +8,7 @@ class MarketplaceShopTableCell extends Component {
   static propTypes = {
     data: PropTypes.object,
     field: PropTypes.string,
+    handleSelectRow: PropTypes.func,
     onWorkflowChange: PropTypes.func
   }
 

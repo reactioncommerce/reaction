@@ -19,10 +19,19 @@ const composer = (props, onData) => {
 
     onData(null, {
       shops,
-      onWorkflowChange
+      onWorkflowChange,
+      handleSelectRow
     });
   }
 };
+
+function handleSelectRow(shopId) {
+  Reaction.setActionViewDetail({
+    data: { shopId },
+    props: { size: "large" },
+    template: "MarketplaceShopPackages"
+  });
+}
 
 registerComponent("MarketplaceShops", MarketplaceShops, composeWithTracker(composer));
 

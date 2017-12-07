@@ -9,14 +9,28 @@ class MarketplaceShops extends Component {
     shops: PropTypes.arrayOf(PropTypes.object)
   }
 
-  getTrGroupProps(state, rowInfo) {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selected: null
+    };
+  }
+
+  getTrGroupProps = (state, rowInfo) => {
+    let className = "";
+    console.log(rowInfo.original._id, this.state.selected);
+    if (rowInfo.original._id === this.state.selected) {
+      className = "selected";
+    }
+
     return {
+      className,
       onClick: () => {
+        console.log("clicked");
         const shopId = rowInfo.original._id;
-        Reaction.setActionViewDetail({
-          data: { shopId },
-          props: { size: "large" },
-          template: "MarketplaceShopPackages"
+        this.setState({ selected: shopId }, () => {
+          this.props.handleSelectRow(shopId);
         });
       }
     };
