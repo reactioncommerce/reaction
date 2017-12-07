@@ -74,13 +74,10 @@ class PublishControls extends Component {
   }
 
   renderShopSelect() {
-    // TODO: If we can change hasShopSwitcherAccess to only be for marketplace owner, use it here instead of new hasMarketplacePermission const
-    const hasMarketplacePermission = Reaction.hasAdminAccess(Reaction.getPrimaryShopId());
-
     let menuItems;
 
     // If user account has Marketplace permissions, show shop switcher
-    if (hasMarketplacePermission === true) { // TODO: see not on line 79 above
+    if (Reaction.hasShopSwitcherAccess()) {
       if (Array.isArray(this.props.shops)) {
         menuItems = this.props.shops.map((shop, index) => {
           return (
