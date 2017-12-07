@@ -104,18 +104,21 @@ export default {
   registerTemplate: registerTemplate,
 
   /**
-   * hasPermission - server
-   * server permissions checks
-   * hasPermission exists on both the server and the client.
-   * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
-   * @param {String} userId - userId, defaults to Meteor.userId()
-   * @param {String} checkGroup group - default to shopId
-   * @return {Boolean} Boolean - true if has permission
+   * hasPermission - Performs server-side permission checks. Note that
+   * hasPermission exists on both the server and the client. This is
+   * the server-side version.
+   * @param {String | Array} checkPermissions - permissions to check for. If
+   * empty/undefined, this function returns false.
+   * @param {String} userId - user ID. Defaults to Meteor.userId().
+   * @param {String} checkGroup - the group that the user being checked belongs
+   * to. Defaults to the ID of the current shop or Roles.GLOBAL_GROUP.
+   * @since 0.14
+   * @return {Boolean} - returns true if the said user has any of the permissions
+   * in checkPermissions, and false if s/he has none of them.
    */
   hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getShopId()) {
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
     // Match.Optional(String));
-    let permissions;
     // default group to the shop or global if shop isn't defined for some reason.
     let group;
     if (checkGroup !== undefined && typeof checkGroup === "string") {
@@ -124,21 +127,12 @@ export default {
       group = this.getShopId() || Roles.GLOBAL_GROUP;
     }
 
-    // permissions can be either a string or an array we'll force it into an array and use that
-    if (checkPermissions === undefined) {
-      permissions = ["owner"];
-    } else if (typeof checkPermissions === "string") {
-      permissions = [checkPermissions];
-    } else {
-      permissions = checkPermissions;
+    if (!checkPermissions) {
+      return false;
     }
 
-    // if the user has admin, owner permissions we'll always check if those roles are enough
-    permissions.push("owner");
-    permissions = _.uniq(permissions);
-
     // return if user has permissions in the group
-    return Roles.userIsInRole(userId, permissions, group);
+    return Roles.userIsInRole(userId, checkPermissions, group);
   },
 
   hasOwnerAccess() {
