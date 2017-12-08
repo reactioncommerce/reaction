@@ -35,13 +35,33 @@ export const BraintreePackageConfig = new SimpleSchema([
       optional: false
     },
     "settings.reaction-braintree.support": {
-      type: Array,
+      type: Object,
       label: "Payment provider supported methods"
     },
-    "settings.reaction-braintree.support.$": {
-      type: String,
-      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+    "settings.reaction-braintree.support.authorize": {
+      type: Boolean,
+      label: "Authorize",
+      defaultValue: true
+    },
+    "settings.reaction-braintree.support.de_authorize": {
+      type: Boolean,
+      label: "De-Authorize",
+      defaultValue: false
+    },
+    "settings.reaction-braintree.support.capture": {
+      type: Boolean,
+      label: "Capture",
+      defaultValue: true
+    },
+    "settings.reaction-braintree.support.refund": {
+      type: Boolean,
+      label: "Refund",
+      defaultValue: true
     }
+    // "settings.reaction-braintree.support.$": {
+    //   type: String,
+    //   allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+    // }
   }
 ]);
 
