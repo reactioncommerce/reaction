@@ -319,6 +319,8 @@ export default {
       const hasRole = rolesUserHas.find((roleUserHas) => roles.includes(roleUserHas));
 
       // if we found the role, then the user has permission for this shop. Add shopId to shopsWithPermission array
+      // Remove "__global_roles__" from this check, as this function will always return true for marketplace admins
+      // otherwise, since it's always attached to marketplace admin roles
       if (hasRole && shopId !== "__global_roles__") {
         shopsWithPermission.push(shopId);
       }
