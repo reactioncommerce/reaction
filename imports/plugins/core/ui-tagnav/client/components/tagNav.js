@@ -5,6 +5,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { getTagIds } from "/lib/selectors/tags";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
+import ShopSelect from "/imports/plugins/core/dashboard/client/components/shopSelect";
 
 class TagNav extends Component {
   constructor(props) {
@@ -50,6 +51,28 @@ class TagNav extends Component {
     );
   }
 
+  /**
+  * renderShopSelect
+  * @method
+  * @summary Handles shop options display on mobile view
+  * @return {JSX} React node containing dropdown menu
+  */
+  renderShopSelect() {
+    if (this.props.handleShopSelectChange) {
+      return (
+        <ShopSelect
+          className={"shop-select"}
+          isTagNav={true}
+          onShopSelectChange={this.onShopSelectChange}
+          shopName={this.props.shop.name}
+          shops={this.props.shops}
+          shopId={this.props.shop._id}
+        />
+      );
+    }
+    return null;
+  }
+
   tagGroupProps = (tag) => {
     const subTagGroups = _.compact(TagHelpers.subTags(tag));
     const tagsByKey = {};
@@ -66,48 +89,6 @@ class TagNav extends Component {
       tagIds: getTagIds({ tags: subTagGroups }) || [],
       subTagGroups
     };
-  }
-
-  /**
-  * renderShopSelect
-  * @method
-  * @summary Handles shop options display on mobile view
-  * @return {JSX} component containing dropdown
-  */
-  renderShopSelect() {
-    let menuItems;
-    if (Array.isArray(this.props.shops)) {
-      menuItems = this.props.shops.map((shop, index) => {
-        return (
-          <Components.MenuItem
-            label={shop.name}
-            selectLabel={shop.name}
-            value={shop._id}
-            key={index}
-          />
-        );
-      });
-    }
-    if (menuItems) {
-      return (
-        <div className="shop-select">
-          <Components.DropDownMenu
-            onChange={this.onShopSelectChange}
-            value={this.props.shop._id}
-            closeOnClick={true}
-            buttonElement={
-              <Components.Button
-                icon="fa fa-caret-down"
-                iconAfter={true}
-                label={this.props.shop.name}
-              />
-            }
-          >
-            {menuItems}
-          </Components.DropDownMenu>
-        </div>
-      );
-    }
   }
 
   render() {

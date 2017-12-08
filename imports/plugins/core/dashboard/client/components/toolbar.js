@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Components } from "@reactioncommerce/reaction-components";
 import {
-  DropDownMenu,
-  MenuItem,
   FlatButton,
   Switch,
   Icon,
@@ -12,6 +10,7 @@ import {
 } from "/imports/plugins/core/ui/client/components";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 import { Reaction } from "/client/api";
+import ShopSelect from "../components/shopSelect";
 
 class PublishControls extends Component {
   static propTypes = {
@@ -71,34 +70,6 @@ class PublishControls extends Component {
     }
 
     return null;
-  }
-
-  renderShopSelect() {
-    let menuItems;
-    if (Array.isArray(this.props.shops)) {
-      menuItems = this.props.shops.map((shop, index) => {
-        return (
-          <MenuItem
-            label={shop.name}
-            selectLabel={shop.name}
-            value={shop._id}
-            key={index}
-          />
-        );
-      });
-    }
-
-    return (
-      <div className="hidden-xs">
-        <DropDownMenu
-          onChange={this.onShopSelectChange}
-          value={this.props.shopId}
-          closeOnClick={true}
-        >
-          {menuItems}
-        </DropDownMenu>
-      </div>
-    );
   }
 
   renderVisibilitySwitch() {
@@ -188,7 +159,11 @@ class PublishControls extends Component {
       <Components.Toolbar>
         <Components.ToolbarGroup firstChild={true}>
           {this.renderVisibilitySwitch()}
-          {this.renderShopSelect()}
+          <ShopSelect
+            onShopSelectChange={this.onShopSelectChange}
+            shopId={this.props.shopId}
+            shops={this.props.shops}
+          />
         </Components.ToolbarGroup>
         <Components.ToolbarGroup lastChild={true}>
           {this.renderAddButton()}
