@@ -541,4 +541,7 @@ export const methods = {
 
 Meteor.methods(methods);
 
-Hooks.Events.add("onOrderPaymentCaptured", methods["shippo/confirmShippingMethodForOrder"]);
+Hooks.Events.add("onOrderPaymentCaptured", (orderId) => {
+  Meteor.call("shippo/confirmShippingMethodForOrder", orderId);
+  return orderId;
+});
