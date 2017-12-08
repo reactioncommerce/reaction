@@ -337,7 +337,6 @@ export default {
    */
   hasDashboardAccessForMultipleShops() {
     const adminShopIds = this.getShopsForUser(["owner", "admin", "dashboard"]);
-    console.log("adminShopIds", adminShopIds);
     return Array.isArray(adminShopIds) && adminShopIds.length > 1;
   },
 
