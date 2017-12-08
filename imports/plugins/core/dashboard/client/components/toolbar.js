@@ -76,7 +76,8 @@ class PublishControls extends Component {
   renderShopSelect() {
     let menuItems;
 
-    // If user account has Marketplace permissions, show shop switcher
+    // If a user has owner, admin, or marketplace permissions for more than one (1) shops
+    // show the shop switcher to allow for easy switching between the shops
     if (Reaction.hasShopSwitcherAccess()) {
       if (Array.isArray(this.props.shops)) {
         menuItems = this.props.shops.map((shop, index) => {
@@ -103,7 +104,7 @@ class PublishControls extends Component {
     }
 
     // If the user is just a shop owner, not a marketplace owner,
-    // then make sure the shop is set to their shop and show them nothing
+    // make sure the shop is set to their shop and do not show the shop switcher
     return this.onShopSelectChange(null, Reaction.getSellerShopId());
   }
 

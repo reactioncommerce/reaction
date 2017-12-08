@@ -299,16 +299,26 @@ export default {
   },
 
   getShopsForUser(roles, userId = Meteor.userId()) {
-    const shops = [];
+    // Get full user object, and get shopIds of all shops they are attached to
     const user = Meteor.user(userId);
+    const shopIds = Object.keys(user.roles);
 
-    Object.keys(user.roles).find((shopId) => {
-      if (this.hasPermission(roles, userId, shopId)) {
-        shops.push(shopId);
+    // Reduce shopIds to shopsWithPermission, using the roles passed in to this function
+    const shopIdsWithRoles = shopIds.reduce((shopsWithPermission, shopId) => {
+      // Get list of roles user has for this shop
+      const rolesUserHas = user.roles[shopId];
+
+      // Find first role that is included in the passed in roles array, otherwise hasRole is undefined
+      const hasRole = rolesUserHas.find((roleUserHas) => roles.includes(roleUserHas));
+
+      // if we found the role, then the user has permission for this shop. Add shopId to shopsWithPermission array
+      if (hasRole) {
+        shopsWithPermission.push(shopId);
       }
-    });
+      return shopsWithPermission;
+    }, []);
 
-    return shops;
+    return shopIdsWithRoles;
   },
 
   hasDashboardAccessForMultipleShops() {
