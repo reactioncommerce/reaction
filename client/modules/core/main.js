@@ -309,9 +309,12 @@ export default {
     // Get full user object, and get shopIds of all shops they are attached to
     const user = Meteor.user(userId);
     const shopIds = Object.keys(user.roles);
+    // Remove "__global_roles__" from the list of shopIds, as this function will always return true for
+    // marketplace admins if that "id" is left in the check
+    const filteredShopIds = shopIds.filter(shopId => shopId !== "__global_roles__");
 
     // Reduce shopIds to shopsWithPermission, using the roles passed in to this function
-    const shopIdsWithRoles = shopIds.reduce((shopsWithPermission, shopId) => {
+    const shopIdsWithRoles = filteredShopIds.reduce((shopsWithPermission, shopId) => {
       // Get list of roles user has for this shop
       const rolesUserHas = user.roles[shopId];
 
@@ -319,9 +322,7 @@ export default {
       const hasRole = rolesUserHas.find((roleUserHas) => roles.includes(roleUserHas));
 
       // if we found the role, then the user has permission for this shop. Add shopId to shopsWithPermission array
-      // Remove "__global_roles__" from this check, as this function will always return true for marketplace admins
-      // otherwise, since it's always attached to marketplace admin roles
-      if (hasRole && shopId !== "__global_roles__") {
+      if (hasRole) {
         shopsWithPermission.push(shopId);
       }
       return shopsWithPermission;
@@ -337,7 +338,6 @@ export default {
    */
   hasDashboardAccessForMultipleShops() {
     const adminShopIds = this.getShopsForUser(["owner", "admin", "dashboard"]);
-    console.log("adminShopIds", adminShopIds);
     return Array.isArray(adminShopIds) && adminShopIds.length > 1;
   },
 
