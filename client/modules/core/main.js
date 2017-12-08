@@ -298,6 +298,13 @@ export default {
     return typeof hasPermissions !== "undefined";
   },
 
+  /**
+   * getShopsForUser -
+   * @summary gets shopIds of shops where user has provided permissions
+   * @param {Array} roles - roles to check if user has
+   * @param {Object} userId - userId to check permissions for (defaults to current user)
+   * @return {Array} - shopIds user has provided permissions for
+   */
   getShopsForUser(roles, userId = Meteor.userId()) {
     // Get full user object, and get shopIds of all shops they are attached to
     const user = Meteor.user(userId);
@@ -321,8 +328,14 @@ export default {
     return shopIdsWithRoles;
   },
 
+  /**
+   * hasDashboardAccessForAnyShop - client
+   * @summary - client permission check for any "owner", "admin", or "dashboard" permissions for more than one shop.
+   * @return {Boolean} Boolean - true if has dashboard access for more than one shop
+   */
   hasDashboardAccessForMultipleShops() {
     const adminShopIds = this.getShopsForUser(["owner", "admin", "dashboard"]);
+    console.log("adminShopIds", adminShopIds);
     return Array.isArray(adminShopIds) && adminShopIds.length > 1;
   },
 
