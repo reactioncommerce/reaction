@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import update from "react/lib/update";
 import _ from "lodash";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
@@ -10,7 +10,6 @@ import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import ProductGrid from "../components/productGrid";
 import { getTagIds as getIds } from "/lib/selectors/tags";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
 
 const wrapComponent = (Comp) => (
   class ProductGridContainer extends Component {
@@ -173,7 +172,7 @@ function composer(props, onData) {
     productIds: props.productIds || getIds({ tags: products }),
     productsByKey
   });
-};
+}
 
 
 registerComponent("ProductGrid", ProductGrid, [composeWithTracker(composer), wrapComponent]);
