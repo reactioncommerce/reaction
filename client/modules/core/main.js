@@ -319,7 +319,7 @@ export default {
       const hasRole = rolesUserHas.find((roleUserHas) => roles.includes(roleUserHas));
 
       // if we found the role, then the user has permission for this shop. Add shopId to shopsWithPermission array
-      if (hasRole) {
+      if (hasRole && shopId !== "__global_roles__") {
         shopsWithPermission.push(shopId);
       }
       return shopsWithPermission;
