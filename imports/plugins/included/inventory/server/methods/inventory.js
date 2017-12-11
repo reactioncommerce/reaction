@@ -143,6 +143,7 @@ Meteor.methods({
     registerInventory(product);
   },
   "inventory/adjust": function (product) { // TODO: this should be variant
+    Products.simpleSchema(product).validate(product);
     adjustInventory(product, this.userId, this);
   }
 });

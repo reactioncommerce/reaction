@@ -180,6 +180,7 @@ export function Apps(optionHash) {
 
   // Sort apps by priority (registry.priority)
   const sortedApps = reactionApps.sort((a, b) => a.priority - b.priority).slice();
+  console.log("sortedApps", JSON.stringify(sortedApps, null, " "));
 
   return sortedApps;
 }

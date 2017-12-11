@@ -154,9 +154,15 @@ function createHandle(productHandle, productId) {
   }
 
   // we should check again if there are any new matches with DB
-  if (Products.find({
-    handle: handle
-  }).count() !== 0) {
+  // exception product._id needed for cases then double triggering happens
+  const newHandleCount = Products.find({
+    handle,
+    _id: {
+      $nin: [productId]
+    }
+  }).count();
+
+  if (newHandleCount !== 0) {
     handle = createHandle(handle, productId);
   }
 

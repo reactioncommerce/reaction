@@ -465,8 +465,7 @@ Meteor.methods({
     }, function (error, result) {
       if (error) {
         Logger.error(error);
-        Logger.error(Collections.Cart.simpleSchema().namedContext().validationErrors(),
-          "Invalid keys. Error adding to cart.");
+        Logger.error("Error adding to cart. Validation errors:", error.invalidKeys);
         return error;
       }
 
