@@ -5,6 +5,7 @@ import ReactImageMagnify from 'react-image-magnify';
 import { SortableItem } from "../../containers";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
+import Hint from "./hint";
 
 class MediaItem extends Component {
   handleMouseEnter = (event) => {
@@ -108,7 +109,10 @@ class MediaItem extends Component {
           height: this.props.mediaHeight * 2
         },
         isHintEnabled: true,
-        enlargedImageContainerClassName: "zoomed-image-container"
+        enlargedImageContainerClassName: "zoomed-image-container",
+        hintTextMouse: "Hover to zoom",
+        hintTextTouch: "Long-touch to zoom",
+        hintComponent: Hint,
       }} />
     }
     return (
