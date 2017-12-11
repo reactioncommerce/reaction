@@ -213,14 +213,16 @@ class Form extends Component {
   }
 
   renderField(field, additionalFieldProps) {
+    const { schema } = this.props;
     const { fieldName } = field;
 
     if (this.isFieldHidden(fieldName) === false) {
-      const fieldSchema = this.schema[fieldName];
+      const fieldSchema = schema.getDefinition(fieldName);
       const fieldProps = {
         ...fieldSchema,
         name: fieldName,
-        type: typeof fieldSchema.type(),
+        // This assumes that oneOf is not used for any schema types
+        type: typeof fieldSchema.type[0].type(),
         ...additionalFieldProps
       };
 
