@@ -33,6 +33,7 @@ service-configuration@1.0.11
 mdg:validated-method
 shell-server@0.3.0
 dynamic-import@0.2.0
+standard-minifier-js@2.2.3
 
 # Meteor Auth Packages
 accounts-base@1.4.0
@@ -47,7 +48,6 @@ twitter-config-ui@1.0.0
 
 
 # Community Packages
-abernix:standard-minifier-js
 alanning:roles
 aldeed:autoform
 aldeed:collection2
