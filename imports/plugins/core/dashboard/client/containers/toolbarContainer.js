@@ -46,19 +46,10 @@ const handleShopSelectChange = (event, shopId) => {
 function composer(props, onData) {
   // Reactive data sources
   const routeName = Reaction.Router.getRouteName();
-  const user = Meteor.user();
-  let shops;
-
-  if (user && user.roles) {
-    // Get all shops for which user has roles
-    shops = Shops.find({
-      $and: [
-        { _id: { $in: Object.keys(user.roles) } },
-        { $or: [{ "workflow.status": "active" }, { _id: Reaction.getPrimaryShopId() }] }
-      ]
-    }).fetch();
-  }
-
+  const shopIds = Reaction.getShopsForUser(["owner", "admin", "dashboard"]);
+  const shops = Shops.find({
+    _id: { $in: shopIds }
+  }).fetch();
   // Standard variables
   const packageButtons = [];
 
