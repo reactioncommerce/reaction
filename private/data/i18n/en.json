@@ -656,6 +656,7 @@
         "addressBook": "Address book",
         "info": {
           "emailSent": "Email sent",
+          "emailUpdated": "Email updated",
           "emailVerified": "Email verified",
           "passwordChanged": "Password changed",
           "passwordReset": "Password reset",
