@@ -412,14 +412,14 @@ export const methods = {
 
                         // Save all relevant variant images to our option
                         const optionImages = findVariantImages(shopifyOption.id, shopifyProduct.images);
-                        for (const optionImage of optionImages) {
+                        for (const [index, optionImage] of optionImages.entries()) {
                           saveImage(optionImage.src, {
                             ownerId: Meteor.userId(),
                             productId: reactionProductId,
                             variantId: reactionOptionId,
                             shopId: shopId,
                             priority: 1,
-                            toGrid: 0
+                            toGrid: index === 0 ? 1 : 0 // We save the first of each variant image to the grid
                           });
                         }
 
@@ -471,14 +471,14 @@ export const methods = {
 
                               // Save all relevant variant images to our option
                               const ternaryOptionImages = findVariantImages(shopifyTernaryOption.id, shopifyProduct.images);
-                              for (const ternaryOptionImage of ternaryOptionImages) {
+                              for (const [index, ternaryOptionImage] of ternaryOptionImages.entries()) {
                                 saveImage(ternaryOptionImage.src, {
                                   ownerId: Meteor.userId(),
                                   productId: reactionProductId,
                                   variantId: reactionOptionId,
                                   shopId: shopId,
                                   priority: 1,
-                                  toGrid: 0
+                                  toGrid: index === 0 ? 1 : 0 // We save the first of each variant image to the grid
                                 });
                               } // So many close parens and brackets. Don't get lost.
                             }
@@ -511,14 +511,14 @@ export const methods = {
 
                     // Save all relevant variant images to our variant.
                     const variantImages = findVariantImages(shopifyVariant.id, shopifyProduct.images);
-                    for (const variantImage of variantImages) {
+                    for (const [index, variantImage] of variantImages.entries()) {
                       saveImage(variantImage.src, {
                         ownerId: Meteor.userId(),
                         productId: reactionProductId,
                         variantId: reactionVariantId,
                         shopId: shopId,
                         priority: 1,
-                        toGrid: 0
+                        toGrid: index === 0 ? 1 : 0 // We save the first of each variant image to the grid
                       });
                     }
                     Logger.debug(`Imported ${shopifyProduct.title} ${variant}`);
