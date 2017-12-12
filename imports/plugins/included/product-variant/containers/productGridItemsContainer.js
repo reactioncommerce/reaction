@@ -126,15 +126,13 @@ const wrapComponent = (Comp) => (
     }
 
     additionalProductMedia = () => {
-      const variants = ReactionProduct.getVariants(this.props.product._id);
-      const variantIds = variants.map(variant => variant._id);
       const mediaArray = Media.find({
-        "metadata.productId": this.props.product._id,
-        "metadata.variantId": {
-          $in: variantIds
-        },
-        "metadata.workflow": { $nin: ["archived", "unpublished"] }
-      }, { limit: 3 });
+        "metadata.productId": this.props.product._id
+      }, {
+        sort: { "metadata.priority": 1, "uploadedAt": 1 },
+        skip: 1, // Skip the primary product media
+        limit: 3
+      });
 
       return mediaArray.count() > 1 ? mediaArray : false;
     }
