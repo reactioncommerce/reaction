@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
-import ReactImageMagnify from 'react-image-magnify';
+import ReactImageMagnify from "react-image-magnify";
 import { SortableItem } from "../../containers";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
@@ -93,27 +93,30 @@ class MediaItem extends Component {
 
   renderImage() {
     if (this.props.zoomable && !this.props.editable) {
-      return <ReactImageMagnify {...{
-        smallImage: {
-          width: this.props.mediaWidth,
-          height: this.props.mediaHeight,
-          src: this.source,
-        },
-        imageClassName: "img-responsive",
-        fadeDurationInMs: 150,
-        hoverDelayInMs: 200,
-        pressDuration: 300,
-        largeImage: {
-          src: this.source,
-          width: this.props.mediaWidth * 2,
-          height: this.props.mediaHeight * 2
-        },
-        isHintEnabled: true,
-        enlargedImageContainerClassName: "zoomed-image-container",
-        hintTextMouse: "Hover to zoom",
-        hintTextTouch: "Long-touch to zoom",
-        hintComponent: Hint,
-      }} />
+      return (
+        <ReactImageMagnify {...{
+          smallImage: {
+            width: this.props.mediaWidth,
+            height: this.props.mediaHeight,
+            src: this.source
+          },
+          imageClassName: "img-responsive",
+          fadeDurationInMs: 150,
+          hoverDelayInMs: 200,
+          pressDuration: 300,
+          largeImage: {
+            src: this.source,
+            width: this.props.mediaWidth * 2,
+            height: this.props.mediaHeight * 2
+          },
+          isHintEnabled: true,
+          enlargedImageContainerClassName: "zoomed-image-container",
+          hintTextMouse: "Hover to zoom",
+          hintTextTouch: "Long-touch to zoom",
+          hintComponent: Hint
+        }}
+        />
+      );
     }
     return (
       <img
@@ -125,7 +128,8 @@ class MediaItem extends Component {
   }
 
   render() {
-    const classes = { "gallery-image": true, "no-fade-on-hover": this.props.zoomable && !this.props.editable, "admin-gallery-image": Reaction.hasAdminAccess() };
+    const classes = { "gallery-image": true, "no-fade-on-hover": this.props.zoomable && !this.props.editable,
+      "admin-gallery-image": Reaction.hasAdminAccess() };
     const mediaElement = (
       <div
         className={classnames(classes)}
@@ -162,7 +166,8 @@ MediaItem.propTypes = {
   onMouseLeave: PropTypes.func,
   onRemoveMedia: PropTypes.func,
   revision: PropTypes.object,
-  source: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  source: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  zoomable: PropTypes.bool
 };
 
 registerComponent("MediaItem", MediaItem, SortableItem("media"));
