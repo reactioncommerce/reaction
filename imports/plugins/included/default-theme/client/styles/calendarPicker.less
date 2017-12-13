@@ -5,7 +5,7 @@
   color: #565a5c;
   cursor: pointer; }
 
-.CalendarDay__button {
+.CalendarDay_button {
   position: relative;
   height: 100%;
   width: 100%;
@@ -22,7 +22,7 @@
   border: 0;
 }
 
-.CalendarDay__button:active {
+.CalendarDay_button:active {
   outline: 0;
 }
 
@@ -161,7 +161,7 @@
   display: block;
 }
 
-.CalendarMonth__caption {
+.CalendarMonth_caption {
   color: @rui-default-text;
   margin-top: 7px;
   font-size: 16px;
@@ -174,12 +174,12 @@
   }
 }
 
-.CalendarMonth--horizontal .CalendarMonth__caption,
-.CalendarMonth--vertical .CalendarMonth__caption {
+.CalendarMonth--horizontal .CalendarMonth_caption,
+.CalendarMonth--vertical .CalendarMonth_caption {
   padding: 15px 0 35px;
 }
 
-.CalendarMonth--vertical-scrollable .CalendarMonth__caption {
+.CalendarMonth--vertical-scrollable .CalendarMonth_caption {
   padding: 5px 0;
 }
 
@@ -238,19 +238,19 @@
   position: initial;
 }
 
-.DayPicker__focus-region {
+.DayPicker_focus-region {
   outline: none;
 }
 
-.DayPicker__week-headers {
+.DayPicker_week-headers {
   position: relative;
 }
 
-.DayPicker--horizontal .DayPicker__week-headers {
+.DayPicker--horizontal .DayPicker_week-headers {
   margin-left: 9px;
 }
 
-.DayPicker__week-header {
+.DayPicker_week-header {
   color: #757575;
   position: absolute;
   top: 62px;
@@ -259,19 +259,19 @@
   text-align: left;
 }
 
-.DayPicker__week-header ul {
+.DayPicker_week-header ul {
   list-style: none;
   margin: 1px 0;
   padding-left: 0;
   padding-right: 0;
 }
 
-.DayPicker__week-header li {
+.DayPicker_week-header li {
   display: inline-block;
   text-align: center;
 }
 
-.DayPicker--vertical .DayPicker__week-header {
+.DayPicker--vertical .DayPicker_week-header {
   left: 50%;
 }
 
@@ -279,7 +279,7 @@
   height: 100%;
 }
 
-.DayPicker--vertical-scrollable .DayPicker__week-header {
+.DayPicker--vertical-scrollable .DayPicker_week-header {
   top: 0;
   display: table-row;
   border-bottom: 1px solid #dbdbdb;
@@ -297,7 +297,7 @@
   overflow-y: scroll;
 }
 
-.DayPicker--vertical-scrollable .DayPicker__week-header {
+.DayPicker--vertical-scrollable .DayPicker_week-header {
   margin-left: 0;
   left: 0;
   width: 100%;
@@ -318,8 +318,8 @@
   width: 100%;
 }
 
-.DayPickerNavigation__prev,
-.DayPickerNavigation__next {
+.DayPickerNavigation_prev,
+.DayPickerNavigation_next {
   cursor: pointer;
   line-height: 0.78;
   -webkit-user-select: none;
@@ -331,21 +331,21 @@
   user-select: none;
 }
 
-.DayPickerNavigation__prev--default,
-.DayPickerNavigation__next--default {
+.DayPickerNavigation_prev--default,
+.DayPickerNavigation_next--default {
   border: 1px solid #dce0e0;
   background-color: #fff;
   color: #757575;
 }
 
-.DayPickerNavigation__prev--default:focus, .DayPickerNavigation__prev--default:hover,
-.DayPickerNavigation__next--default:focus,
-.DayPickerNavigation__next--default:hover {
+.DayPickerNavigation_prev--default:focus, .DayPickerNavigation_prev--default:hover,
+.DayPickerNavigation_next--default:focus,
+.DayPickerNavigation_next--default:hover {
   border: 1px solid #c4c4c4;
 }
 
-.DayPickerNavigation__prev--default:active,
-.DayPickerNavigation__next--default:active {
+.DayPickerNavigation_prev--default:active,
+.DayPickerNavigation_next--default:active {
   background: #f2f2f2;
 }
 
@@ -353,8 +353,8 @@
   position: relative;
 }
 
-.DayPickerNavigation--horizontal .DayPickerNavigation__prev,
-.DayPickerNavigation--horizontal .DayPickerNavigation__next {
+.DayPickerNavigation--horizontal .DayPickerNavigation_prev,
+.DayPickerNavigation--horizontal .DayPickerNavigation_next {
   border-radius: 50%;
   border: 2px solid @rui-default-text;
   padding: 1px 1px;
@@ -364,20 +364,20 @@
   position: absolute;
 }
 
-.DayPickerNavigation--horizontal .DayPickerNavigation__prev {
+.DayPickerNavigation--horizontal .DayPickerNavigation_prev {
   left: 22px;
 }
 
-.DayPickerNavigation--horizontal .DayPickerNavigation__prev--rtl {
+.DayPickerNavigation--horizontal .DayPickerNavigation_prev--rtl {
   left: auto;
   right: 22px;
 }
 
-.DayPickerNavigation--horizontal .DayPickerNavigation__next {
+.DayPickerNavigation--horizontal .DayPickerNavigation_next {
   right: 22px;
 }
 
-.DayPickerNavigation--horizontal .DayPickerNavigation__next--rtl {
+.DayPickerNavigation--horizontal .DayPickerNavigation_next--rtl {
   right: auto;
   left: 22px;
 }
@@ -388,8 +388,8 @@
   color: @rui-default-text;
 }
 
-.DayPickerNavigation--horizontal .DayPickerNavigation__prev--default svg,
-.DayPickerNavigation--horizontal .DayPickerNavigation__next--default svg {
+.DayPickerNavigation--horizontal .DayPickerNavigation_prev--default svg,
+.DayPickerNavigation--horizontal .DayPickerNavigation_next--default svg {
   height: 19px;
   width: 19px;
   fill: #82888a;
@@ -406,27 +406,27 @@
   z-index: 2;
 }
 
-.DayPickerNavigation--vertical .DayPickerNavigation__prev,
-.DayPickerNavigation--vertical .DayPickerNavigation__next {
+.DayPickerNavigation--vertical .DayPickerNavigation_prev,
+.DayPickerNavigation--vertical .DayPickerNavigation_next {
   display: inline-block;
   position: relative;
   height: 100%;
   width: 50%;
 }
 
-.DayPickerNavigation--vertical .DayPickerNavigation__next--default {
+.DayPickerNavigation--vertical .DayPickerNavigation_next--default {
   border-left: 0;
 }
 
-.DayPickerNavigation--vertical .DayPickerNavigation__prev--default,
-.DayPickerNavigation--vertical .DayPickerNavigation__next--default {
+.DayPickerNavigation--vertical .DayPickerNavigation_prev--default,
+.DayPickerNavigation--vertical .DayPickerNavigation_next--default {
   text-align: center;
   font-size: 2.5em;
   padding: 5px;
 }
 
-.DayPickerNavigation--vertical .DayPickerNavigation__prev--default svg,
-.DayPickerNavigation--vertical .DayPickerNavigation__next--default svg {
+.DayPickerNavigation--vertical .DayPickerNavigation_prev--default svg,
+.DayPickerNavigation--vertical .DayPickerNavigation_next--default svg {
   height: 42px;
   width: 42px;
   fill: #484848;
@@ -436,12 +436,12 @@
   position: relative;
 }
 
-.DayPickerNavigation--vertical-scrollable .DayPickerNavigation__next {
+.DayPickerNavigation--vertical-scrollable .DayPickerNavigation_next {
   width: 100%;
 }
 
-.DayPickerKeyboardShortcuts__show,
-.DayPickerKeyboardShortcuts__close {
+.DayPickerKeyboardShortcuts_show,
+.DayPickerKeyboardShortcuts_close {
   background: none;
   border: 0;
   color: inherit;
@@ -452,71 +452,71 @@
   cursor: pointer;
 }
 
-.DayPickerKeyboardShortcuts__show:active,
-.DayPickerKeyboardShortcuts__close:active {
+.DayPickerKeyboardShortcuts_show:active,
+.DayPickerKeyboardShortcuts_close:active {
   outline: none;
 }
 
-.DayPickerKeyboardShortcuts__show {
+.DayPickerKeyboardShortcuts_show {
   width: 22px;
   position: absolute;
   z-index: 2;
 }
 
-.DayPickerKeyboardShortcuts__show--bottom-right {
+.DayPickerKeyboardShortcuts_show--bottom-right {
   border-top: 26px solid transparent;
   border-right: 33px solid #00a699;
   bottom: 0;
   right: 0;
 }
 
-.DayPickerKeyboardShortcuts__show--bottom-right:hover {
+.DayPickerKeyboardShortcuts_show--bottom-right:hover {
   border-right: 33px solid #008489;
 }
 
-.DayPickerKeyboardShortcuts__show--bottom-right .DayPickerKeyboardShortcuts__show_span {
+.DayPickerKeyboardShortcuts_show--bottom-right .DayPickerKeyboardShortcuts_show_span {
   bottom: 0;
   right: -28px;
 }
 
-.DayPickerKeyboardShortcuts__show--top-right {
+.DayPickerKeyboardShortcuts_show--top-right {
   border-bottom: 26px solid transparent;
   border-right: 33px solid #00a699;
   top: 0;
   right: 0;
 }
 
-.DayPickerKeyboardShortcuts__show--top-right:hover {
+.DayPickerKeyboardShortcuts_show--top-right:hover {
   border-right: 33px solid #008489;
 }
 
-.DayPickerKeyboardShortcuts__show--top-right .DayPickerKeyboardShortcuts__show_span {
+.DayPickerKeyboardShortcuts_show--top-right .DayPickerKeyboardShortcuts_show_span {
   top: 1px;
   right: -28px;
 }
 
-.DayPickerKeyboardShortcuts__show--top-left {
+.DayPickerKeyboardShortcuts_show--top-left {
   border-bottom: 26px solid transparent;
   border-left: 33px solid #00a699;
   top: 0;
   left: 0;
 }
 
-.DayPickerKeyboardShortcuts__show--top-left:hover {
+.DayPickerKeyboardShortcuts_show--top-left:hover {
   border-left: 33px solid #008489;
 }
 
-.DayPickerKeyboardShortcuts__show--top-left .DayPickerKeyboardShortcuts__show_span {
+.DayPickerKeyboardShortcuts_show--top-left .DayPickerKeyboardShortcuts_show_span {
   top: 1px;
   left: -28px;
 }
 
-.DayPickerKeyboardShortcuts__show_span {
+.DayPickerKeyboardShortcuts_show_span {
   color: #fff;
   position: absolute;
 }
 
-.DayPickerKeyboardShortcuts__panel {
+.DayPickerKeyboardShortcuts_panel {
   overflow: auto;
   background: #fff;
   border: 1px solid #dbdbdb;
@@ -531,35 +531,35 @@
   margin: 33px;
 }
 
-.DayPickerKeyboardShortcuts__title {
+.DayPickerKeyboardShortcuts_title {
   font-size: 16px;
   font-weight: bold;
   margin: 0;
 }
 
-.DayPickerKeyboardShortcuts__list {
+.DayPickerKeyboardShortcuts_list {
   list-style: none;
   padding: 0;
 }
 
-.DayPickerKeyboardShortcuts__close {
+.DayPickerKeyboardShortcuts_close {
   position: absolute;
   right: 22px;
   top: 22px;
   z-index: 2;
 }
 
-.DayPickerKeyboardShortcuts__close svg {
+.DayPickerKeyboardShortcuts_close svg {
   height: 15px;
   width: 15px;
   fill: #cacccd;
 }
 
-.DayPickerKeyboardShortcuts__close svg:hover, .DayPickerKeyboardShortcuts__close svg:focus {
+.DayPickerKeyboardShortcuts_close svg:hover, .DayPickerKeyboardShortcuts_close svg:focus {
   fill: #82888a;
 }
 
-.DayPickerKeyboardShortcuts__close:active {
+.DayPickerKeyboardShortcuts_close:active {
 outline: none;
 }
 
@@ -567,14 +567,14 @@ outline: none;
   margin: 6px 0;
 }
 
-.KeyboardShortcutRow__key-container {
+.KeyboardShortcutRow_key-container {
   display: inline-block;
   white-space: nowrap;
   text-align: right;
   margin-right: 6px;
 }
 
-.KeyboardShortcutRow__key {
+.KeyboardShortcutRow_key {
   font-family: monospace;
   font-size: 12px;
   text-transform: uppercase;
@@ -582,22 +582,22 @@ outline: none;
   padding: 2px 6px;
 }
 
-.KeyboardShortcutRow__action {
+.KeyboardShortcutRow_action {
   display: inline;
   word-break: break-word;
   margin-left: 8px;
 }
 
-.DayPickerKeyboardShortcuts__panel--block .KeyboardShortcutRow {
+.DayPickerKeyboardShortcuts_panel--block .KeyboardShortcutRow {
   margin-bottom: 16px;
 }
 
-.DayPickerKeyboardShortcuts__panel--block .KeyboardShortcutRow__key-container {
+.DayPickerKeyboardShortcuts_panel--block .KeyboardShortcutRow_key-container {
   text-align: left;
   display: inline;
 }
 
-.DayPickerKeyboardShortcuts__panel--block .KeyboardShortcutRow__action {
+.DayPickerKeyboardShortcuts_panel--block .KeyboardShortcutRow_action {
   display: inline;
 }
 
@@ -660,7 +660,7 @@ outline: none;
   background: #cacccd;
 }
 
-.DateInput__input {
+.DateInput_input {
   opacity: 0;
   position: absolute;
   top: 0;
@@ -670,31 +670,31 @@ outline: none;
   width: 100%;
 }
 
-.DateInput__input[readonly] {
+.DateInput_input[readonly] {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
 }
 
-.DateInput__display-text {
+.DateInput_display-text {
   padding: 4px 8px;
   white-space: nowrap;
   overflow: hidden;
 }
 
-.DateInput__display-text--has-input {
+.DateInput_display-text--has-input {
   color: #484848;
 }
 
-.DateInput__display-text--focused {
+.DateInput_display-text--focused {
   background: #99ede6;
   border-color: #99ede6;
   border-radius: 3px;
   color: #007a87;
 }
 
-.DateInput__display-text--disabled {
+.DateInput_display-text--disabled {
   font-style: italic;
 }
 
@@ -714,33 +714,33 @@ outline: none;
   display: inline-block;
 }
 
-.DateRangePicker__picker {
+.DateRangePicker_picker {
   z-index: 1;
   background-color: #fff;
   position: absolute;
 }
 
-.DateRangePicker__picker--rtl {
+.DateRangePicker_picker--rtl {
   direction: rtl;
 }
 
-.DateRangePicker__picker--direction-left {
+.DateRangePicker_picker--direction-left {
   left: 0;
 }
 
-.DateRangePicker__picker--direction-right {
+.DateRangePicker_picker--direction-right {
   right: 0;
 }
 
-.DateRangePicker__picker--open-down {
+.DateRangePicker_picker--open-down {
   top: 72px;
 }
 
-.DateRangePicker__picker--open-up {
+.DateRangePicker_picker--open-up {
   bottom: 72px;
 }
 
-.DateRangePicker__picker--portal {
+.DateRangePicker_picker--portal {
   background-color: rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
@@ -749,11 +749,11 @@ outline: none;
   width: 100%;
 }
 
-.DateRangePicker__picker--full-screen-portal {
+.DateRangePicker_picker--full-screen-portal {
   background-color: #fff;
 }
 
-.DateRangePicker__close {
+.DateRangePicker_close {
   background: none;
   border: 0;
   color: inherit;
@@ -769,13 +769,13 @@ outline: none;
   z-index: 2;
 }
 
-.DateRangePicker__close svg {
+.DateRangePicker_close svg {
   height: 15px;
   width: 15px;
   fill: #cacccd;
 }
 
-.DateRangePicker__close:hover, .DateRangePicker__close:focus {
+.DateRangePicker_close:hover, .DateRangePicker_close:focus {
   color: #b0b3b4;
   text-decoration: none;
 }
@@ -794,19 +794,19 @@ outline: none;
   direction: rtl;
 }
 
-.DateRangePickerInput__arrow {
+.DateRangePickerInput_arrow {
   display: inline-block;
   vertical-align: middle;
 }
 
-.DateRangePickerInput__arrow svg {
+.DateRangePickerInput_arrow svg {
   vertical-align: middle;
   fill: #484848;
   height: 24px;
   width: 24px;
 }
 
-.DateRangePickerInput__clear-dates {
+.DateRangePickerInput_clear-dates {
   background: none;
   border: 0;
   color: inherit;
@@ -820,24 +820,24 @@ outline: none;
   margin: 0 10px 0 5px;
 }
 
-.DateRangePickerInput__clear-dates svg {
+.DateRangePickerInput_clear-dates svg {
   fill: #82888a;
   height: 12px;
   width: 15px;
   vertical-align: middle;
 }
 
-.DateRangePickerInput__clear-dates--hide {
+.DateRangePickerInput_clear-dates--hide {
   visibility: hidden;
 }
 
-.DateRangePickerInput__clear-dates:focus,
-.DateRangePickerInput__clear-dates--hover {
+.DateRangePickerInput_clear-dates:focus,
+.DateRangePickerInput_clear-dates--hover {
   background: #dbdbdb;
   border-radius: 50%;
 }
 
-.DateRangePickerInput__calendar-icon {
+.DateRangePickerInput_calendar-icon {
   background: none;
   border: 0;
   color: inherit;
@@ -851,7 +851,7 @@ outline: none;
   margin: 0 5px 0 10px;
 }
 
-.DateRangePickerInput__calendar-icon svg {
+.DateRangePickerInput_calendar-icon svg {
   fill: #82888a;
   height: 15px;
   width: 14px;
@@ -863,33 +863,33 @@ outline: none;
   display: inline-block;
 }
 
-.SingleDatePicker__picker {
+.SingleDatePicker_picker {
   z-index: 1;
   background-color: #fff;
   position: absolute;
 }
 
-.SingleDatePicker__picker--rtl {
+.SingleDatePicker_picker--rtl {
   direction: rtl;
 }
 
-.SingleDatePicker__picker--direction-left {
+.SingleDatePicker_picker--direction-left {
   left: 0;
 }
 
-.SingleDatePicker__picker--direction-right {
+.SingleDatePicker_picker--direction-right {
   right: 0;
 }
 
-.SingleDatePicker__picker--open-down {
+.SingleDatePicker_picker--open-down {
   top: 72px;
 }
 
-.SingleDatePicker__picker--open-up {
+.SingleDatePicker_picker--open-up {
   bottom: 72px;
 }
 
-.SingleDatePicker__picker--portal {
+.SingleDatePicker_picker--portal {
   background-color: rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
@@ -898,11 +898,11 @@ outline: none;
   width: 100%;
 }
 
-.SingleDatePicker__picker--full-screen-portal {
+.SingleDatePicker_picker--full-screen-portal {
   background-color: #fff;
 }
 
-.SingleDatePicker__close {
+.SingleDatePicker_close {
   background: none;
   border: 0;
   color: inherit;
@@ -918,13 +918,13 @@ outline: none;
   z-index: 2;
 }
 
-.SingleDatePicker__close svg {
+.SingleDatePicker_close svg {
   height: 15px;
   width: 15px;
   fill: #cacccd;
 }
 
-.SingleDatePicker__close:hover, .SingleDatePicker__close:focus {
+.SingleDatePicker_close:hover, .SingleDatePicker_close:focus {
   color: #b0b3b4;
   text-decoration: none;
 }
@@ -938,7 +938,7 @@ outline: none;
   direction: rtl;
 }
 
-.SingleDatePickerInput__clear-date {
+.SingleDatePickerInput_clear-date {
   background: none;
   border: 0;
   color: inherit;
@@ -952,24 +952,24 @@ outline: none;
   margin: 0 10px 0 5px;
 }
 
-.SingleDatePickerInput__clear-date svg {
+.SingleDatePickerInput_clear-date svg {
   fill: #82888a;
   height: 12px;
   width: 15px;
   vertical-align: middle;
 }
 
-.SingleDatePickerInput__clear-date--hide {
+.SingleDatePickerInput_clear-date--hide {
   visibility: hidden;
 }
 
-.SingleDatePickerInput__clear-date:focus,
-.SingleDatePickerInput__clear-date--hover {
+.SingleDatePickerInput_clear-date:focus,
+.SingleDatePickerInput_clear-date--hover {
   background: #dbdbdb;
   border-radius: 50%;
 }
 
-.SingleDatePickerInput__calendar-icon {
+.SingleDatePickerInput_calendar-icon {
   background: none;
   border: 0;
   color: inherit;
@@ -983,7 +983,7 @@ outline: none;
   margin: 0 5px 0 10px;
 }
 
-.SingleDatePickerInput__calendar-icon svg {
+.SingleDatePickerInput_calendar-icon svg {
   fill: #82888a;
   height: 15px;
   width: 14px;
