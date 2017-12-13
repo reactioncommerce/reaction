@@ -35,7 +35,6 @@ export { default as VariantForm } from "../components/variantForm";
 export { default as VariantEdit } from "../components/variantEdit";
 
 export { default as GridItemControlsContainer } from "../containers/gridItemControlsContainer";
-export { default as GridItemNoticeContainer } from "../containers/gridItemNoticeContainer";
 export { default as GridPublishContainer } from "../containers/gridPublishContainer";
 export { default as ProductGridContainer } from "../containers/productGridContainer";
 export { default as ProductGridItemsContainer } from "../containers/productGridItemsContainer";

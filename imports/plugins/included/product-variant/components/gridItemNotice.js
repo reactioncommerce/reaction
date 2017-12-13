@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
+import { registerComponent, Components } from "@reactioncommerce/reaction-components";
 
 class GridItemNotice extends Component {
   static propTypes = {
-    isBackorder: PropTypes.func,
-    isLowQuantity: PropTypes.func,
-    isSoldOut: PropTypes.func
+    isBackorder: PropTypes.bool,
+    isLowQuantity: PropTypes.bool,
+    isSoldOut: PropTypes.bool
   }
 
   renderNotice() {
-    if (this.props.isSoldOut()) {
-      if (this.props.isBackorder()) {
+    if (this.props.isSoldOut) {
+      if (this.props.isBackorder) {
         return (
           <span className="variant-qty-sold-out badge">
             <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
@@ -23,7 +23,7 @@ class GridItemNotice extends Component {
           <Components.Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
         </span>
       );
-    } else if (this.props.isLowQuantity()) {
+    } else if (this.props.isLowQuantity) {
       return (
         <div className="badge badge-low-inv-warning" title="">
           <Components.Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
@@ -40,4 +40,5 @@ class GridItemNotice extends Component {
   }
 }
 
+registerComponent("GridItemNotice", GridItemNotice);
 export default GridItemNotice;
