@@ -318,8 +318,7 @@
   width: 100%;
 }
 
-.DayPickerNavigation_prev,
-.DayPickerNavigation_next {
+.DayPickerNavigation_button {
   cursor: pointer;
   line-height: 0.78;
   -webkit-user-select: none;
@@ -329,23 +328,17 @@
   -ms-user-select: none;
   /* IE10+ */
   user-select: none;
-}
-
-.DayPickerNavigation_prev--default,
-.DayPickerNavigation_next--default {
   border: 1px solid #dce0e0;
   background-color: #fff;
   color: #757575;
 }
 
-.DayPickerNavigation_prev--default:focus, .DayPickerNavigation_prev--default:hover,
-.DayPickerNavigation_next--default:focus,
-.DayPickerNavigation_next--default:hover {
+.DayPickerNavigation_button:focus,
+.DayPickerNavigation_button:hover {
   border: 1px solid #c4c4c4;
 }
 
-.DayPickerNavigation_prev--default:active,
-.DayPickerNavigation_next--default:active {
+.DayPickerNavigation_button:active {
   background: #f2f2f2;
 }
 
@@ -353,49 +346,45 @@
   position: relative;
 }
 
-.DayPickerNavigation--horizontal .DayPickerNavigation_prev,
-.DayPickerNavigation--horizontal .DayPickerNavigation_next {
-  border-radius: 50%;
+.DayPickerNavigation_container__horizontal .DayPickerNavigation_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
   border: 2px solid @rui-default-text;
-  padding: 1px 1px;
+  width: 24px;
+  height: 24px;
   top: 23px;
   background-color: #fff;
   z-index: 2;
   position: absolute;
 }
 
-.DayPickerNavigation--horizontal .DayPickerNavigation_prev {
+.DayPickerNavigation_container__horizontal .DayPickerNavigation_leftButton__horizontal {
   left: 22px;
 }
 
-.DayPickerNavigation--horizontal .DayPickerNavigation_prev--rtl {
+.rtl .DayPickerNavigation_container__horizontal .DayPickerNavigation_leftButton__horizontal {
   left: auto;
   right: 22px;
 }
 
-.DayPickerNavigation--horizontal .DayPickerNavigation_next {
+.DayPickerNavigation_container__horizontal .DayPickerNavigation_rightButton__horizontal {
   right: 22px;
 }
 
-.DayPickerNavigation--horizontal .DayPickerNavigation_next--rtl {
+.rtl .DayPickerNavigation_container__horizontal .DayPickerNavigation_rightButton__horizontal {
   right: auto;
   left: 22px;
 }
 
-.DayPickerNavigation--horizontal i {
+.DayPickerNavigation_container__horizontal i {
   height: 16px;
   width: 14px;
   color: @rui-default-text;
 }
 
-.DayPickerNavigation--horizontal .DayPickerNavigation_prev--default svg,
-.DayPickerNavigation--horizontal .DayPickerNavigation_next--default svg {
-  height: 19px;
-  width: 19px;
-  fill: #82888a;
-}
-
-.DayPickerNavigation--vertical {
+.DayPickerNavigation_container__vertical {
   background: #fff;
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
   position: absolute;
@@ -406,37 +395,28 @@
   z-index: 2;
 }
 
-.DayPickerNavigation--vertical .DayPickerNavigation_prev,
-.DayPickerNavigation--vertical .DayPickerNavigation_next {
+.DayPickerNavigation_container__vertical .DayPickerNavigation_button {
   display: inline-block;
   position: relative;
   height: 100%;
   width: 50%;
 }
 
-.DayPickerNavigation--vertical .DayPickerNavigation_next--default {
+.DayPickerNavigation_container__vertical .DayPickerNavigation_rightButton__vertical {
   border-left: 0;
 }
 
-.DayPickerNavigation--vertical .DayPickerNavigation_prev--default,
-.DayPickerNavigation--vertical .DayPickerNavigation_next--default {
+.DayPickerNavigation_container__vertical .DayPickerNavigation_button {
   text-align: center;
   font-size: 2.5em;
   padding: 5px;
 }
 
-.DayPickerNavigation--vertical .DayPickerNavigation_prev--default svg,
-.DayPickerNavigation--vertical .DayPickerNavigation_next--default svg {
-  height: 42px;
-  width: 42px;
-  fill: #484848;
-}
-
-.DayPickerNavigation--vertical-scrollable {
+.DayPickerNavigation_container__vertical-scrollable {
   position: relative;
 }
 
-.DayPickerNavigation--vertical-scrollable .DayPickerNavigation_next {
+.DayPickerNavigation_container__vertical-scrollable .DayPickerNavigation_rightButton__vertical {
   width: 100%;
 }
 
