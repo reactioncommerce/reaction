@@ -72,6 +72,24 @@ class PublishControls extends Component {
     return null;
   }
 
+  renderShopSelect() {
+    // If a user has owner, admin, or marketplace permissions for more than one (1) shops
+    // show the shop switcher to allow for easy switching between the shops
+    if (Reaction.hasShopSwitcherAccess()) {
+      return (
+        <ShopSelect
+          onShopSelectChange={this.onShopSelectChange}
+          shopId={this.props.shopId}
+          shops={this.props.shops}
+        />
+      );
+    }
+
+    // If the user is just a shop owner, not a marketplace owner,
+    // make sure the shop is set to their shop and do not show the shop switcher
+    return this.onShopSelectChange(null, Reaction.getSellerShopId());
+  }
+
   renderVisibilitySwitch() {
     if (this.props.hasCreateProductAccess) {
       return (
@@ -159,11 +177,7 @@ class PublishControls extends Component {
       <Components.Toolbar>
         <Components.ToolbarGroup firstChild={true}>
           {this.renderVisibilitySwitch()}
-          <ShopSelect
-            onShopSelectChange={this.onShopSelectChange}
-            shopId={this.props.shopId}
-            shops={this.props.shops}
-          />
+          {this.renderShopSelect()}
         </Components.ToolbarGroup>
         <Components.ToolbarGroup lastChild={true}>
           {this.renderAddButton()}
