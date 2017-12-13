@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import "react-dates/initialize";
 import { DayPickerRangeController } from "react-dates";
 import omit from "lodash/omit";
 import { registerComponent } from "@reactioncommerce/reaction-components";
