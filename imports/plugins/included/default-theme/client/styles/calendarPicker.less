@@ -186,6 +186,7 @@
 .CalendarMonthGrid {
   z-index: 0;
   text-align: left;
+  display: flex;
 
   tr {
     background: #f7f7f7;
@@ -194,23 +195,23 @@
   }
 }
 
-.CalendarMonthGrid--animating {
+.CalendarMonthGrid__animating {
   -webkit-transition: -webkit-transform 0.2s ease-in-out;
   -moz-transition: -moz-transform 0.2s ease-in-out;
   transition: transform 0.2s ease-in-out;
   z-index: 1;
 }
 
-.CalendarMonthGrid--horizontal {
+.CalendarMonthGrid__horizontal {
   position: absolute;
   left: 9px;
 }
 
-.CalendarMonthGrid--vertical {
+.CalendarMonthGrid__vertical {
   margin: 0 auto;
 }
 
-.CalendarMonthGrid--vertical-scrollable {
+.CalendarMonthGrid__vertical-scrollable {
   margin: 0 auto;
   overflow-y: scroll;
 }
