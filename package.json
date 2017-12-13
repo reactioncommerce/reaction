@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -62,7 +62,7 @@
     "lodash.pick": "^4.4.0",
     "match-sorter": "^2.2.0",
     "meteor-node-stubs": "^0.3.2",
-    "moment": "^2.19.2",
+    "moment": "^2.19.3",
     "moment-timezone": "^0.5.14",
     "nexmo": "^2.0.2",
     "nock": "^9.1.3",
