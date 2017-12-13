@@ -328,24 +328,14 @@ Meteor.methods({
    * @param  {String} status  Workflow status
    * @param  {Object} order   Schemas.Order, an order object
    * @param  {String[]} itemIds Array of item IDs
-   * @param  {Boolean} isPack  packed workflow
    * @return {Boolean}         true if update was successful
    */
-  "workflow/pushItemWorkflow": function (status, order, itemIds, isPack = false) {
+  "workflow/pushItemWorkflow": function (status, order, itemIds) {
     check(status, String);
     check(order, Object);
     check(itemIds, Array);
-    check(isPack, Boolean);
 
-    let existingItems;
-
-    if (isPack) {
-      const shopId = Reaction.getShopId();
-
-      existingItems = Orders.findOne({ _id: order._id }).items.filter(item => item.shopId !== shopId);
-    }
-
-    const currentItems = order.items.map((item) => {
+    const items = order.items.map((item) => {
       // Add the current status to completed workflows
       if (item.workflow.status !== "new") {
         const workflows = item.workflow.workflow || [];
@@ -359,15 +349,21 @@ Meteor.methods({
       return item;
     });
 
-    const items = existingItems ? existingItems.concat(currentItems) : currentItems;
+    let result;
 
-    const result = Orders.update({
-      _id: order._id
-    }, {
-      $set: {
-        items
-      }
-    });
+    for (const id of itemIds) {
+      const modifiedItem = items.find(item => item._id === id);
+      const { status, workflow } = modifiedItem.workflow;
+
+      result = Orders.update(
+        { "_id": order._id, "items._id": id },
+        {
+          $set: {
+            "items.$.workflow.status": status,
+            "items.$.workflow.workflow": workflow
+          }
+        });
+    }
 
     return result;
   }

@@ -215,7 +215,7 @@ export const methods = {
       return item._id;
     });
 
-    const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds, true);
+    const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
     if (result === 1) {
       return Orders.update({
         "_id": order._id,
