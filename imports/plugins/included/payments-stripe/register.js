@@ -11,11 +11,11 @@ Reaction.registerPackage({
     "api_key": "",
     "reaction-stripe": {
       enabled: false,
-      support: [
-        "Authorize",
-        "Capture",
-        "Refund"
-      ]
+      support: {
+        authorize: true,
+        capture: true,
+        refund: true
+      }
     },
     "public": {
       client_id: ""
