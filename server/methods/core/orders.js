@@ -380,7 +380,16 @@ export const methods = {
     });
 
     // refund payment to customer
-    Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal));
+    const paymentMethodId = paymentMethod && paymentMethod.paymentPackageId;
+    const paymentMethodName = paymentMethod && paymentMethod.paymentSettingsKey;
+    const getPaymentMethod = Packages.findOne({ _id: paymentMethodId });
+    const isRefundable = getPaymentMethod && getPaymentMethod.settings && getPaymentMethod.settings[paymentMethodName]
+      && getPaymentMethod.settings[paymentMethodName].support.includes("Refund");
+
+    if (isRefundable) {
+      Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal));
+    }
+
 
     // send notification to user
     const prefix = Reaction.getShopPrefix();
@@ -1068,8 +1077,7 @@ export const methods = {
     const settingsKey = paymentMethod.paymentSettingsKey;
     // check if payment provider supports de-authorize
     const checkSupportedMethods = Packages.findOne({
-      _id: packageId,
-      shopId: Reaction.getShopId()
+      _id: packageId
     }).settings[settingsKey].support;
 
     const orderMode = paymentMethod.mode;

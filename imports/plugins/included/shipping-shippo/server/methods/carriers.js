@@ -14,7 +14,7 @@ export const methods = {
   "shippo/carrier/update": function (provider) {
     check(provider, Object); // ShippingProvider
     if (!Reaction.hasPermission(shippingRoles)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     const method = {};
     method.provider = provider;

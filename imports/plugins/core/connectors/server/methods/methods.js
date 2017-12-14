@@ -24,7 +24,7 @@ export const methods = {
     check(packageId, String);
     check(connection, String);
     if (!Reaction.hasPermission(connectorsRoles)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     const pkg = Packages.findOne(packageId);
     if (pkg && pkg.settings[connection]) {

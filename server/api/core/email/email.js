@@ -48,7 +48,7 @@ export function getSubject(template) {
   if (typeof template !== "string") {
     const msg = "Reaction.Email.getSubject() requires a template name";
     Logger.error(msg);
-    throw new Meteor.Error("no-template-name", msg);
+    throw new Meteor.Error("invalid-parameter", msg);
   }
 
   // set default
@@ -79,7 +79,7 @@ export function getTemplate(template) {
   if (typeof template !== "string") {
     const msg = "Reaction.Email.getTemplate() requires a template name";
     Logger.error(msg);
-    throw new Meteor.Error("no-template-name", msg);
+    throw new Meteor.Error("invalid-parameter", msg);
   }
 
   // set default
@@ -110,7 +110,7 @@ export function getTemplateFile(file) {
   if (typeof file !== "string") {
     const msg = "Reaction.Email.getTemplateFile() requires a template name";
     Logger.error(msg);
-    throw new Meteor.Error("no-template-name", msg);
+    throw new Meteor.Error("invalid-parameter", msg);
   }
 
   try {
