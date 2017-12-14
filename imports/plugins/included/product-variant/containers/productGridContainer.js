@@ -168,9 +168,9 @@ function composer(props, onData) {
       productsByKey[product._id] = product;
     }
   }
-
+  const productIds = getTagIds({ tags: products }) || [];
   onData(null, {
-    productIds: getTagIds({ tags: products }),
+    productIds,
     productsByKey
   });
 }
