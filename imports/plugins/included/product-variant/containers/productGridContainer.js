@@ -2,14 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import update from "react/lib/update";
 import _ from "lodash";
-import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { compose } from "/imports/plugins/core/components/lib/composer";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import ProductGrid from "../components/productGrid";
-import { getTagIds as getIds } from "/lib/selectors/tags";
+import { getTagIds } from "/lib/selectors/tags";
 
 const wrapComponent = (Comp) => (
   class ProductGridContainer extends Component {
@@ -169,12 +170,12 @@ function composer(props, onData) {
   }
 
   onData(null, {
-    productIds: props.productIds || getIds({ tags: products }),
+    productIds: getTagIds({ tags: products }),
     productsByKey
   });
 }
 
 
-registerComponent("ProductGrid", ProductGrid, [composeWithTracker(composer), wrapComponent]);
+registerComponent("ProductGrid", ProductGrid, [compose(composer), wrapComponent]);
 
 export default wrapComponent(ProductGrid);

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import { getTagIds as getIds } from "/lib/selectors/tags";
 
 /** Class representing the Products React component
  * @summary PropTypes for Product React component
@@ -50,22 +49,10 @@ class Products extends Component {
    * @return {Node} React node containing the `ProductGrid` component.
    */
   renderProductGrid() {
-    const products = this.props.products;
-
-    const productsByKey = {};
-
-    if (Array.isArray(products)) {
-      for (const product of products) {
-        productsByKey[product._id] = product;
-      }
-    }
-
     return (
       <Components.ProductGrid
-        productsByKey={productsByKey || {}}
-        productIds={getIds({ tags: products })}
         canEdit={Reaction.hasPermission("createProduct")}
-        products={products}
+        products={this.props.products}
       />
     );
   }
