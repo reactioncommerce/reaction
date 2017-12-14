@@ -16,22 +16,22 @@ export const PaypalPackageConfig = new SimpleSchema([
     "settings.express.support.authorize": {
       type: Boolean,
       defaultValue: true,
-      label: Authorize
+      label: "Authorize"
     },
     "settings.express.support.de_authorize": {
       type: Boolean,
       defaultValue: true,
-      label: De-Authorize
+      label: "De-Authorize"
     },
     "settings.express.support.capture": {
       type: Boolean,
       defaultValue: true,
-      label: Capture
+      label: "Capture"
     },
     "settings.express.support.refund": {
       type: Boolean,
       defaultValue: true,
-      label: Refund,
+      label: "Refund",
     },
     "settings.payflow.support": {
       type: Object,
@@ -40,22 +40,22 @@ export const PaypalPackageConfig = new SimpleSchema([
     "settings.payflow.support.authorize": {
       type: Boolean,
       defaultValue: true,
-      label: Authorize
+      label: "Authorize"
     },
     "settings.payflow.support.de_authorize": {
       type: Boolean,
       defaultValue: true,
-      label: De-Authorize
+      label: "De-Authorize"
     },
     "settings.payflow.support.capture": {
       type: Boolean,
       defaultValue: true,
-      label: Capture
+      label: "Capture"
     },
     "settings.payflow.support.refund": {
       type: Boolean,
       defaultValue: true,
-      label: Refund,
+      label: "Refund",
     },
     "settings.merchantId": {
       type: String,

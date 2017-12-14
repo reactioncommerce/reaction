@@ -58,10 +58,6 @@ export const BraintreePackageConfig = new SimpleSchema([
       label: "Refund",
       defaultValue: true
     }
-    // "settings.reaction-braintree.support.$": {
-    //   type: String,
-    //   allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
-    // }
   }
 ]);
 

@@ -63,22 +63,22 @@ export const StripePackageConfig = new SimpleSchema([
     "settings.reaction-stripe.support.authorize": {
       type: Boolean,
       defaultValue: true,
-      label: Authorize
+      label: "Authorize"
     },
     "settings.reaction-stripe.support.de_authorize": {
       type: Boolean,
       defaultValue: false,
-      label: De-Authorize
+      label: "De-Authorize"
     },
     "settings.reaction-stripe.support.capture": {
       type: Boolean,
       defaultValue: true,
-      label: Capture
+      label: "Capture"
     },
     "settings.reaction-stripe.support.refund": {
       type: Boolean,
       defaultValue: true,
-      label: Refund
+      label: "Refund"
     },
 
     // Public Settings
