@@ -6,11 +6,10 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
  * @summary Displays the order summary for each shop
  * @param {Object} props - React PropTypes
  * @property {Object} shopSummary - An object representing the summary information for this Shop
- * @property {boolean} isProfilePage - Checks if current page is profile page
+ * @property {boolean} isProfilePage - Checks if current page is profile page (unused)
  * @return {Node} React node containing the summary information for each shop
  */
-const ShopOrderSummary = ({ shopSummary, isProfilePage }) => {
-  const shopSummaryName = isProfilePage ? "Items in order" : "Quantity Total";
+const ShopOrderSummary = ({ shopSummary }) => {
   return (
     <div className="order-details-info-box-content">
       <div className="order-summary-line">
@@ -21,7 +20,7 @@ const ShopOrderSummary = ({ shopSummary, isProfilePage }) => {
       </div>
       <div className="order-summary-line">
         <div className="order-summary-title">
-          <Components.Translation defaultValue={shopSummaryName} i18nKey={shopSummaryName || "cartCompleted.quantityTotal"}/>
+          <Components.Translation defaultValue="Items in order" i18nKey={"cartCompleted.orderItems"}/>
         </div>
         <div className="order-summary-value">{shopSummary.quantityTotal}</div>
       </div>

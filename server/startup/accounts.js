@@ -37,7 +37,7 @@ export default function () {
 
       // check if the email is verified
       if (!userEmail.length || !userEmail[0].verified) {
-        throw new Meteor.Error("403", "Oops! Please validate your email first.");
+        throw new Meteor.Error("access-denied", "Oops! Please validate your email first.");
       }
     }
 

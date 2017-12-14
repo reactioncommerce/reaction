@@ -182,7 +182,7 @@ function getValidator() {
 }
 
 /**
- * @name acompareAddress
+ * @name compareAddress
  * @summary Compare individual fields of address and accumulate errors
  * @param {Object} address - the address provided by the customer
  * @param {Object} validationAddress - address provided by validator
@@ -327,7 +327,7 @@ export function addressBookAdd(address, accountUserId) {
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
     if (!Reaction.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
   }
   this.unblock();
@@ -422,7 +422,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
     if (!Reaction.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
   }
   this.unblock();
@@ -539,7 +539,7 @@ export function addressBookRemove(addressId, accountUserId) {
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
     if (!Reaction.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
   }
   this.unblock();
@@ -651,11 +651,12 @@ export function inviteShopMember(options) {
   this.unblock();
 
   const shop = Shops.findOne(shopId);
+  const primaryShop = Reaction.getPrimaryShop();
 
   if (!shop) {
     const msg = `accounts/inviteShopMember - Shop ${shopId} not found`;
     Logger.error(msg);
-    throw new Meteor.Error("shop-not-found", msg);
+    throw new Meteor.Error("not-found", msg);
   }
 
   if (!Reaction.hasPermission("reaction-accounts", this.userId, shopId)) {
@@ -667,16 +668,16 @@ export function inviteShopMember(options) {
 
   // check to ensure that invitee has roles required to perform the invitation
   if (!Reaction.canInviteToGroup({ group, user: Meteor.user() })) {
-    throw new Meteor.Error(403, "cannot invite to group");
+    throw new Meteor.Error("access-denied", "Cannot invite to group");
   }
 
   if (group.slug === "owner") {
-    throw new Meteor.Error(400, "cannot directly invite owner");
+    throw new Meteor.Error("bad-request", "Cannot directly invite owner");
   }
 
   const currentUser = Meteor.users.findOne(this.userId);
   const currentUserName = getCurrentUserName(currentUser);
-  const emailLogo = getEmailLogo(shop);
+  const emailLogo = getEmailLogo(primaryShop);
   const token = Random.id();
   const user = Meteor.users.findOne({ "emails.address": email });
   let dataForEmail;
@@ -685,7 +686,8 @@ export function inviteShopMember(options) {
   if (user) {
     userId = user._id; // since user exists, we promote the account
     Meteor.call("group/addUser", userId, groupId);
-    dataForEmail = getDataForEmail({ shop, name, currentUserName, emailLogo });
+    // use primaryShop's data (name, address etc) in email copy sent to new shop manager
+    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
   } else {
     userId = MeteorAccounts.createUser({
       profile: { invited: true },
@@ -699,8 +701,8 @@ export function inviteShopMember(options) {
       name
     };
     Meteor.users.update(userId, { $set: tokenUpdate });
-    // adds token to url in email sent
-    dataForEmail = getDataForEmail({ shop, name, currentUserName, token, emailLogo });
+    // use primaryShop's data (name, address etc) in email copy sent to new shop manager
+    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
   }
 
   dataForEmail.groupName = _.startCase(group.name);
@@ -711,9 +713,10 @@ export function inviteShopMember(options) {
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
+  // send invitation email from primary shop email
   Reaction.Email.send({
     to: email,
-    from: `${shop.name} <${shop.emails[0].address}>`,
+    from: `${dataForEmail.primaryShop.name} <${dataForEmail.primaryShop.emails[0].address}>`,
     subject: SSR.render(subject, dataForEmail),
     html: SSR.render(tpl, dataForEmail)
   });
@@ -833,7 +836,7 @@ export function sendWelcomeEmail(shopId, userId) {
  */
 export function addUserPermissions(userId, permissions, group) {
   if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
-    throw new Meteor.Error(403, "Access denied");
+    throw new Meteor.Error("access-denied", "Access denied");
   }
   check(userId, Match.OneOf(String, Array));
   check(permissions, Match.OneOf(String, Array));
@@ -858,7 +861,7 @@ export function addUserPermissions(userId, permissions, group) {
  */
 export function removeUserPermissions(userId, permissions, group) {
   if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
-    throw new Meteor.Error(403, "Access denied");
+    throw new Meteor.Error("access-denied", "Access denied");
   }
   check(userId, String);
   check(permissions, Match.OneOf(String, Array));
@@ -868,7 +871,7 @@ export function removeUserPermissions(userId, permissions, group) {
     return Roles.removeUsersFromRoles(userId, permissions, group);
   } catch (error) {
     Logger.error(error);
-    throw new Meteor.Error(403, "Access Denied");
+    throw new Meteor.Error("access-denied", "Access Denied");
   }
 }
 
@@ -883,7 +886,7 @@ export function removeUserPermissions(userId, permissions, group) {
  */
 export function setUserPermissions(userId, permissions, group) {
   if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
-    throw new Meteor.Error(403, "Access denied");
+    throw new Meteor.Error("access-denied", "Access denied");
   }
   check(userId, String);
   check(permissions, Match.OneOf(String, Array));
