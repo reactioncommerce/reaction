@@ -30,7 +30,7 @@ Reaction.registerPackage({
     enabled: true,
     structure: {
       template: "uiDashboard",
-      layoutHeader: "layoutHeader",
+      layoutHeader: "NavBar",
       layoutFooter: "",
       notFound: "notFound",
       dashboardHeader: "dashboardHeader",

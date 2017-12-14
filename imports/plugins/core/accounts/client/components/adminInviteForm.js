@@ -118,8 +118,8 @@ class AdminInviteForm extends Component {
       <Components.DropDownMenu
         buttonElement={buttonElement(dropOptions)}
         onChange={this.handleGroupSelect}
-        attachment="bottom right"
-        targetAttachment="top right"
+        attachment="top right"
+        targetAttachment="bottom right"
       >
         {dropOptions
           .map((grp, index) => (

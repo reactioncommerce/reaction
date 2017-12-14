@@ -33,7 +33,7 @@ MethodHooks.after("cart/submitPayment", function (options) {
         // This is done by extending the existing result.
         result.orderId = orderId;
       } else {
-        throw new Meteor.Error(
+        throw new Meteor.Error("server-error",
           "An error occurred verifing payment method. Failed to save order."
         );
       }

@@ -251,7 +251,7 @@ export const methods = {
   async "connectors/shopify/import/products"(options) {
     check(options, Match.Maybe(Object));
     if (!Reaction.hasPermission(connectorsRoles)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     const apiCreds = getApiInfo();

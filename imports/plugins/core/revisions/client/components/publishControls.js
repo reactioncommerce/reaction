@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Components } from "@reactioncommerce/reaction-components";
 import {
   Button,
   FlatButton,
@@ -7,7 +8,6 @@ import {
   Divider,
   DropDownMenu,
   MenuItem,
-  ToolbarGroup,
   Switch,
   Icon
 } from "/imports/plugins/core/ui/client/components";
@@ -378,14 +378,14 @@ class PublishControls extends Component {
   render() {
     if (this.props.isEnabled) {
       return (
-        <ToolbarGroup lastChild={true}>
+        <Components.ToolbarGroup lastChild={true}>
           {this.renderDeletionStatus()}
           {this.renderUndoButton()}
           {this.renderArchiveButton()}
           {this.renderViewControls()}
           {this.renderPublishButton()}
           {/* this.renderMoreOptionsButton() */}
-        </ToolbarGroup>
+        </Components.ToolbarGroup>
       );
     }
 
