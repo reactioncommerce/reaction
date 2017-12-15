@@ -55,7 +55,7 @@ export const PaypalPackageConfig = new SimpleSchema([
     "settings.payflow.support.refund": {
       type: Boolean,
       defaultValue: true,
-      label: "Refund",
+      label: "Refund"
     },
     "settings.merchantId": {
       type: String,
