@@ -31,7 +31,7 @@ export const PaypalPackageConfig = new SimpleSchema([
     "settings.express.support.refund": {
       type: Boolean,
       defaultValue: true,
-      label: "Refund",
+      label: "Refund"
     },
     "settings.payflow.support": {
       type: Object,
