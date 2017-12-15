@@ -25,7 +25,7 @@ export const methods = {
     });
 
     if (!stripePkg || !stripePkg.settings || !stripePkg.settings.api_key) {
-      throw new Meteor.Error("cannot-authorize", "Cannot authorize stripe connect merchant. Primary shop stripe must be configured.");
+      throw new Meteor.Error("invalid-parameters", "Cannot authorize stripe connect merchant. Primary shop stripe must be configured.");
     }
 
     const merchantStripePkg = Reaction.getPackageSettingsWithOptions({
