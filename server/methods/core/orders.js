@@ -380,18 +380,15 @@ export const methods = {
     });
 
     // refund payment to customer
-    //const paymentMethodId = paymentMethod && paymentMethod.paymentPackageId;
-    //const paymentMethodName = paymentMethod && paymentMethod.paymentSettingsKey;
-    //const getPaymentMethod = Packages.findOne({ _id: paymentMethodId });
-    //const isRefundable = getPaymentMethod && getPaymentMethod.settings && getPaymentMethod.settings[paymentMethodName]
-    //  && getPaymentMethod.settings[paymentMethodName].support.includes("Refund");
-    //  
-    //console.log(getPaymentMethod.settings[paymentMethodName].support.includes("Refund"));
+    const paymentMethodId = paymentMethod && paymentMethod.paymentPackageId;
+    const paymentMethodName = paymentMethod && paymentMethod.paymentSettingsKey;
+    const getPaymentMethod = Packages.findOne({ _id: paymentMethodId });
+    const isRefundable = getPaymentMethod && getPaymentMethod.settings && getPaymentMethod.settings[paymentMethodName]
+     && getPaymentMethod.settings[paymentMethodName].support.includes("Refund");
 
-    
-    Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal));
-  
-
+    if (isRefundable) {
+      Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal));
+    }
 
     // send notification to user
     const prefix = Reaction.getShopPrefix();
