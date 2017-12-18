@@ -16,9 +16,8 @@ import * as Utils from "./utils";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 
-/**
- * Reaction methods (server)
- */
+// Reaction methods (server)
+
 const Reaction = Object.assign({},
   Core,
   { Accounts },
