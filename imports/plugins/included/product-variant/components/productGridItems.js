@@ -79,11 +79,7 @@ class ProductGridItems extends Component {
   renderNotices() {
     return (
       <div className="grid-alerts">
-        <Components.GridItemNotice
-          isBackorder={this.props.product.isBackorder}
-          isLowQuantity={this.props.product.isLowQuantity}
-          isSoldOut={this.props.product.isSoldOut}
-        />
+        <Components.GridItemNotice product={this.props.product} />
         <Components.GridItemControls product={this.props.product} />
       </div>
 
