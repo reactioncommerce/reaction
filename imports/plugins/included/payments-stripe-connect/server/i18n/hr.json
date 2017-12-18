@@ -1,0 +1,24 @@
+[{
+  "language": "Croatian",
+  "i18n": "hr",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectLabel": "Stripe Connect"
+        },
+        "dashboard": {
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectDescription": "Plaćanja za Stripe Connect"
+        },
+        "paymentSettings": {
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectSettingsLabel": "Stripe Connect",
+          "stripeConnectSettingsDescription": "Nemate klijentski ID API-ja za Stripe Connect?",
+          "stripeConnectSettingsGetItHere": "Nabavite ga ovdje"
+        }
+      }
+    }
+  }
+}]

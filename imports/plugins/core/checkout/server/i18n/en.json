@@ -7,11 +7,11 @@
         "limitedSupply": "Limited supply"
       },
       "cartCompleted": {
-        "orderSummary": "Order Summary",
+        "yourCart": "Your Cart",
         "discountTotal": "Discount Total",
         "orderTotal": "Order Total",
         "fulfilledBy": "Fulfilled by",
-        "orderItems": "Items in order",
+        "quantityTotal": "Quantity Total",
         "orderSubtotal": "Subtotal",
         "orderShipping": "Shipping",
         "orderTax": "Tax",
