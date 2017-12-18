@@ -19,10 +19,6 @@
           "taxcloudSettingsLabel": "TaxCloud",
           "taxcloudCredentials": "Add credentials to enable",
           "taxcloudGetCredentialsURL": "Get them here"
-        },
-        "update": {
-          "updateSucceeded": "TaxCloud settings updated.",
-          "updateFailed": "Failed to update TaxCloud settings."
         }
       }
     }
