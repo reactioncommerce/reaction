@@ -1,14 +1,15 @@
 {
+  "lockfileVersion": 1,
   "dependencies": {
     "combined-stream": {
       "version": "0.0.4",
       "resolved": "https://registry.npmjs.org/combined-stream/-/combined-stream-0.0.4.tgz",
-      "from": "combined-stream@0.0.4"
+      "integrity": "sha1-LRpDNH2+lRWkonlnMuW4hHOECyI="
     },
     "delayed-stream": {
       "version": "0.0.5",
       "resolved": "https://registry.npmjs.org/delayed-stream/-/delayed-stream-0.0.5.tgz",
-      "from": "delayed-stream@0.0.5"
+      "integrity": "sha1-1LH0OpPoKW3+AmlPRoC8N6MTxz8="
     }
   }
 }
