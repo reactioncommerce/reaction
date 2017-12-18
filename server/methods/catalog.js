@@ -253,8 +253,7 @@ function denormalize(id, field) {
  */
 function isSoldOut(variants) {
   return variants.every(variant => {
-    // TODO: decide where control of inventoryManagement and inventoryPolicy is controlled for products and variants
-    if (variant.inventoryManagement) {
+    if (variant.inventoryManagement && variant.inventoryPolicy) {
       return Catalog.getVariantQuantity(variant) <= 0;
     }
     return false;
@@ -270,7 +269,6 @@ function isSoldOut(variants) {
  */
 function isLowQuantity(variants) {
   return variants.some(variant => {
-    // TODO: performance: optimize isSoldOut and isLowQuantity to share variant traversal
     const quantity = Catalog.getVariantQuantity(variant);
     // we need to keep an eye on `inventoryPolicy` too and qty > 0
     if (variant.inventoryManagement && variant.inventoryPolicy && quantity) {
