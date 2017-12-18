@@ -1,4 +1,5 @@
-import React, { Component, PropTypes, Children } from "react"; // eslint-disable-line
+import { Component, Children } from "react";
+import PropTypes from "prop-types";
 import { DragDropManager } from "dnd-core";
 import HTML5Backend from "react-dnd-html5-backend";
 import { registerComponent } from "@reactioncommerce/reaction-components";
