@@ -15,8 +15,8 @@ import { Cart } from "/lib/collections";
 */
 Cart.after.update((userId, cart, fieldNames) => {
   const trigger = ["discount", "billing", "shipping"];
-  let discount = 0;
   if (cart) {
+    let discount = cart.discount;
     for (const field of fieldNames) {
       if (indexOf(trigger, field) !== -1) {
         discount = Meteor.call("discounts/calculate", cart);
