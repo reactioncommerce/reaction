@@ -566,7 +566,6 @@ Router.initPackageRoutes = (options) => {
   Router.routes = [];
 
   const pkgs = Packages.find().fetch();
-  const shops = Shops.find({}, { fields: { _id: 1, name: 1, shopType: 1 } }).fetch();
 
   const routeDefinitions = [];
 
@@ -579,7 +578,6 @@ Router.initPackageRoutes = (options) => {
     if (shopSub.ready()) {
       shopSubWaitFor.stop();
       // using tmeasday:publish-counts
-      const shopCount = Counts.get("shops-count");
 
       // Default layouts
       const indexLayout = ReactionLayout(options.indexRoute);
