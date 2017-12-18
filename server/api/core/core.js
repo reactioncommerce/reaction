@@ -676,7 +676,7 @@ export default {
    * @name getAppVersion
    * @method
    * @memberof Core
-   * @return {Number} App version
+   * @return {String} App version
    */
   getAppVersion() {
     return Shops.findOne().appVersion;
@@ -969,7 +969,7 @@ export default {
    * @name setAppVersion
    * @method
    * @memberof Core
-   * @return {Number} App version
+   * @return {undefined} no return value
    */
   setAppVersion() {
     const version = packageJson.version;
