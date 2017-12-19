@@ -489,8 +489,14 @@ export default {
     }
   },
 
-  getShopName() {
-    const shopId = this.getShopId();
+  /**
+   * getShopName
+   * @summary gets name of shop by provided shopId, or current active shop if shopId is not provided
+   * @param {String} providedShopID - shopId of shop to return name of
+   * @return {String} - shop name
+   */
+  getShopName(providedShopId) {
+    const shopId = providedShopId || this.getShopId();
     const shop = Shops.findOne({
       _id: shopId
     });
