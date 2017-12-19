@@ -185,10 +185,7 @@ Template.accountProfile.helpers({
 
       if (account && Array.isArray(account.emails)) {
         const defaultEmail = account.emails.find((email) => email.provides === "default");
-        if (defaultEmail === undefined) {
-          return "";
-        }
-        return defaultEmail.address;
+        return defaultEmail && defaultEmail.address || account.emails[0].address;
       }
     }
   },
