@@ -5,17 +5,17 @@ import { buildOrderSearch,
 
 Migrations.add({
   version: 1,
-  up: function () {
+  up() {
     OrderSearch.remove({});
-    AccountSearch.remove();
+    AccountSearch.remove({});
     buildOrderSearch();
     buildAccountSearch();
   },
-  down: function () {
+  down() {
     // whether we are going up or down we just want to update the search collections
     // to match whatever the current code in the build methods are.
     OrderSearch.remove({});
-    AccountSearch.remove();
+    AccountSearch.remove({});
     buildOrderSearch();
     buildAccountSearch();
   }

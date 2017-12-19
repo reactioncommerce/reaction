@@ -4,7 +4,7 @@
 
 [Reaction](http://reactioncommerce.com) is an event-driven, real-time reactive commerce platform built with JavaScript (ES6). It plays nicely with npm, Docker, and React.
 
-![Reaction v.1.0.0](https://raw.githubusercontent.com/reactioncommerce/reaction-docs/master/assets/rc-desktop.png)
+![Reaction v.1.x](https://raw.githubusercontent.com/reactioncommerce/reaction-docs/master/assets/Reaction-Commerce-Illustration-BG-800px.png)
 
 ## Features
 
@@ -63,7 +63,7 @@ Learn more on how to [configure your project](https://docs.reactioncommerce.com/
 - [Reaction Commerce YouTube videos](https://www.youtube.com/user/reactioncommerce/videos)
 
 ## Join the community calls
-- [Reaction Community calls](http://getrxn.io/2rcCal): Join our biweekly community calls every other Wednesday at 7AM PST/10AM EST. 
+- [Reaction community calls](http://getrxn.io/2rcCal): Join our biweekly community calls every other Wednesday at 7AM PST/10AM EST. 
 - Subscribe to our [Reaction Community Google Calendar](http://getrxn.io/2rcCal) to RSVP to the next call and check out the [agenda](https://docs.google.com/document/d/1PwenrammgQJpQfFoUUJZ96i_JJYCM_4glAjB1_ZzgwA/edit?usp=sharing).
 - [Reaction Action](http://getrxn.io/2rcCal): RSVP for the monthly Reaction Action livestreams.
 
