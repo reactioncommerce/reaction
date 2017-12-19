@@ -164,6 +164,21 @@
 
 }
 
+.gallery-image.no-fade-on-hover {
+  &:hover {
+    opacity: 1;
+  }
+
+  & > div {
+    height: auto !important;
+
+    & > img {
+      height: auto !important;
+    }
+  }
+
+}
+
 .zoomed-image-container {
   z-index: 1;
   direction: ltr;
