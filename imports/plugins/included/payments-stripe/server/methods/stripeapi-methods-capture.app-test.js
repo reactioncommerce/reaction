@@ -154,7 +154,7 @@ describe("stripe/payment/capture", function () {
     Meteor.call("stripe/payment/capture", paymentMethod, function (error, result) {
       captureResult = result;
       captureError = error;
-      expect(captureError.message).to.equal("Match error: Match error: Transaction id is required");
+      expect(captureError.message).to.equal("Transaction ID is required");
       expect(captureResult).to.be.undefined;
       done();
     });
