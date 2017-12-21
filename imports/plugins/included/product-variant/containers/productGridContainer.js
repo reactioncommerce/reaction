@@ -9,8 +9,6 @@ import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import ProductGrid from "../components/productGrid";
-import { getTagIds as getIds } from "/lib/selectors/tags";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
 
 const wrapComponent = (Comp) => (
   class ProductGridContainer extends Component {
@@ -160,22 +158,6 @@ const wrapComponent = (Comp) => (
   }
 );
 
-function composer(props, onData) {
-  const products = props.products;
-  const productsByKey = {};
-  if (Array.isArray(products)) {
-    for (const product of products) {
-      productsByKey[product._id] = product;
-    }
-  }
-
-  onData(null, {
-    productIds: props.productIds || getIds({ tags: products }),
-    productsByKey
-  });
-};
-
-
-registerComponent("ProductGrid", ProductGrid, [composeWithTracker(composer), wrapComponent]);
+registerComponent("ProductGrid", ProductGrid, wrapComponent);
 
 export default wrapComponent(ProductGrid);
