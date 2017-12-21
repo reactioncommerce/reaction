@@ -145,7 +145,9 @@ const wrapComponent = (Comp) => (
       return (
         <Components.DragDropProvider>
           <Comp
+            productIds={this.props.productIds}
             products={this.products}
+            productsByKey={this.props.productsByKey}
             onMove={this.handleProductDrag}
             itemSelectHandler={this.handleSelectProductItem}
             canEdit={this.props.canEdit}
