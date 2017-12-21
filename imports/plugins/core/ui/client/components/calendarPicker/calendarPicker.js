@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import "react-dates/initialize";
 import { DayPickerRangeController } from "react-dates";
 import omit from "lodash/omit";
 import { registerComponent } from "@reactioncommerce/reaction-components";
@@ -17,6 +18,23 @@ class CalendarPicker extends Component {
         ? "endDate"
         : "startDate"
     };
+  }
+
+  /**
+   * Getter returning a value of `true` if the current drection is set to RTL
+   * @return {Boolean} true if RTL false if LTR
+   */
+  get isRTL() {
+    if (typeof this.props.isRTL === "boolean") {
+      // If isRTL is set from props, then use
+      return this.props.isRTL;
+    } else if (document) {
+      // Otherwise try to determine RTL status from the html class name "rtl"
+      return document.getElementsByTagName("html")[0].className.includes("rtl");
+    }
+
+    // Return false if above matches fail
+    return false;
   }
 
   onDatesChange = ({ startDate, endDate }) => {
@@ -47,6 +65,7 @@ class CalendarPicker extends Component {
         onDatesChange={this.onDatesChange}
         onFocusChange={this.onFocusChange}
         focusedInput={focusedInput}
+        isRTL={this.isRTL}
         startDate={startDate}
         endDate={endDate}
         navPrev={< i className = "fa fa-arrow-left" />}
@@ -76,7 +95,7 @@ CalendarPicker.defaultProps = {
   onOutsideClick() {},
   keepOpenOnDateSelect: false,
   renderCalendarInfo: null,
-  isRTL: false,
+  isRTL: undefined,
 
   // navigation related props
   navPrev: null,

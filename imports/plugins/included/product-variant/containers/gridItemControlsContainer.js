@@ -44,10 +44,20 @@ const wrapComponent = (Comp) => (
     // check whether all required fields have been submitted before publishing
     checkValidation = () => {
       // this returns an array with a single object
-      const variants = ReactionProduct.getVariants(this.props.product._id).map((variant) => this.validation.validate(variant));
-      this.setState({
-        validProduct: Object.assign({}, this.props.product, { __isValid: variants[0].isValid })
-      });
+      const variants = ReactionProduct.getVariants(this.props.product._id);
+
+      // should validate variants if they exist to determine if product is Valid
+      if (variants.length !== 0) {
+        const validatedVariants = variants.map((variant) => this.validation.validate(variant));
+        this.setState({
+          validProduct: Object.assign({}, this.props.product, { __isValid: validatedVariants[0].isValid })
+        });
+      } else {
+        // if variants do not exist then validation should pass
+        this.setState({
+          validProduct: Object.assign({}, this.props.product, { __isValid: true })
+        });
+      }
     }
 
     checked = () => {

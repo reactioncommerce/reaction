@@ -96,6 +96,7 @@ class MediaGallery extends Component {
                     mediaHeight={height}
                     mediaWidth={width}
                     isFeatured={true}
+                    zoomable={true}
                     {...this.props}
                   />
                 </div>
