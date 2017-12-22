@@ -3,6 +3,19 @@ import PropTypes from "prop-types";
 import { Reaction } from "/client/api";
 import { Components } from "@reactioncommerce/reaction-components";
 
+/**
+ * @summary React component to log in form in line
+ * @memberof Accounts
+ * @extends {Component}
+ * @example <LoginInline
+         continueAsGuest={this.continueAsGuest}
+         renderEmailForm={this.state.renderEmailForm}
+         handleEmailSubmit={this.handleEmailSubmit}
+       />
+ * @property {Function} continueAsGuest - On-click handler function
+ * @property {Function} handleEmailSubmit - Required: E-mail submit function
+ * @property {Boolean} renderEmailForm - Render e-mail form or not
+ */
 class LoginInline extends Component {
   static propTypes = {
     continueAsGuest: PropTypes.func,
@@ -20,7 +33,7 @@ class LoginInline extends Component {
 
   /**
    * @method handleFieldChange
-   * @summary handle setting state whenever the field on the form change
+   * @summary Handle setting state whenever the field on the form change
    * @param {Event} event - the event that fired
    * @param {String} value - the new value for the field
    * @param {String} field - which field to modify it's value
