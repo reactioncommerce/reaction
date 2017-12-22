@@ -137,10 +137,12 @@ class AvalaraSettingsForm extends Component {
           hideFields={hiddenFields}
           onSubmit={handleSubmit}
         />
-        <Components.Button id="testAvalaraCredentials" label="Test Credentials" buttonType="button"
-          className="btn btn-default pull-right" i18nKeyLabel="admin.dashboard.avalaraTestCredentials"
-          bezelStyle="outline" onClick={this.handleTestCredentials}
-        />
+        <div id="testAvalaraCredentialsContainer">
+          <Components.Button id="testAvalaraCredentials" label="Test Credentials" buttonType="button"
+            className="btn btn-default" i18nKeyLabel="admin.dashboard.avalaraTestCredentials"
+            bezelStyle="outline" onClick={this.handleTestCredentials}
+          />
+        </div>
         {this.state.showLogs &&
         (
           <Components.SortableTable
