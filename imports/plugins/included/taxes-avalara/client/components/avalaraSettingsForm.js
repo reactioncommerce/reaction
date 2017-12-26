@@ -143,6 +143,9 @@ class AvalaraSettingsForm extends Component {
             bezelStyle="outline" onClick={this.handleTestCredentials}
           />
         </div>
+        <div className="panel-body text-center avalara-login-box">
+          <a href="https://admin-development.avalara.net" target="_blank">Avalara Admin Console Login</a>
+        </div>
         {this.state.showLogs &&
         (
           <Components.SortableTable
