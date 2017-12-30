@@ -17,7 +17,6 @@ const code = {
 
 before(function () {
   this.timeout(10000);
-  Meteor._sleepForMs(7000);
 });
 
 describe("discount code methods", function () {
@@ -45,7 +44,6 @@ describe("discount code methods", function () {
       const discountId = Meteor.call("discounts/addCode", code);
       expect(discountInsertSpy).to.have.been.called;
 
-      Meteor._sleepForMs(500);
       const discountCount = Discounts.find(discountId).count();
       expect(discountCount).to.equal(1);
       return done();

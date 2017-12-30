@@ -64,37 +64,35 @@ registerSchema("Webhook", Webhook);
  * @property {String} settings.shopName Shop slug
  * @property {Array} settings.webhooks Array of registered Shopify webhooks
  */
-export const ShopifyConnectPackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
-  .extend(PackageConfig)
-  .extend({
-    "settings.apiKey": {
-      type: String,
-      label: "API key",
-      optional: true
-    },
-    "settings.password": {
-      type: String,
-      label: "API password",
-      optional: true
-    },
-    "settings.sharedSecret": {
-      type: String,
-      label: "API shared secret",
-      optional: true
-    },
-    "settings.shopName": {
-      type: String,
-      label: "Shop slug",
-      optional: true
-    },
-    "settings.webhooks": {
-      type: Array,
-      label: "Registered Shopify webhooks",
-      optional: true
-    },
-    "settings.webhooks.$": {
-      type: Webhook
-    }
-  });
+export const ShopifyConnectPackageConfig = PackageConfig.clone().extend({
+  "settings.apiKey": {
+    type: String,
+    label: "API key",
+    optional: true
+  },
+  "settings.password": {
+    type: String,
+    label: "API password",
+    optional: true
+  },
+  "settings.sharedSecret": {
+    type: String,
+    label: "API shared secret",
+    optional: true
+  },
+  "settings.shopName": {
+    type: String,
+    label: "Shop slug",
+    optional: true
+  },
+  "settings.webhooks": {
+    type: Array,
+    label: "Registered Shopify webhooks",
+    optional: true
+  },
+  "settings.webhooks.$": {
+    type: Webhook
+  }
+});
 
 registerSchema("ShopifyConnectPackageConfig", ShopifyConnectPackageConfig);

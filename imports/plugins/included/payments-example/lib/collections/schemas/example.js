@@ -4,19 +4,17 @@ import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
-export const ExamplePackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
-  .extend(PackageConfig)
-  .extend({
-    "settings.mode": {
-      type: Boolean,
-      defaultValue: true
-    },
-    "settings.apiKey": {
-      type: String,
-      label: "API Key",
-      optional: true
-    }
-  });
+export const ExamplePackageConfig = PackageConfig.clone().extend({
+  "settings.mode": {
+    type: Boolean,
+    defaultValue: true
+  },
+  "settings.apiKey": {
+    type: String,
+    label: "API Key",
+    optional: true
+  }
+});
 
 registerSchema("ExamplePackageConfig", ExamplePackageConfig);
 

@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import { Logger, Reaction, i18next } from "/client/api";
 import { Cart } from "/lib/collections";
 
@@ -10,7 +11,7 @@ Meteor.methods({
   // Under consideration for deprecation and migrating other payment Packages
   // to payments-stripe style methods
   "cart/submitPayment": function (paymentMethod) {
-    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
+    check(paymentMethod, Object);
     const checkoutCart = Cart.findOne({
       userId: Meteor.userId()
     });

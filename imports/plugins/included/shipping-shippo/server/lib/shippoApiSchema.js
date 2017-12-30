@@ -27,21 +27,19 @@ registerSchema("addressSchema", addressSchema);
 // Overrides the properties required for purchasing labels/shipping.
 // we don't override the purpose because for some cases like getRatesForCart we don't want to
 // purchase Labels(purpose="QUOTE" but we want all the fields required for purchasing to be present.
-export const purchaseAddressSchema = new SimpleSchema({}, { check, tracker: Tracker })
-  .extend(addressSchema)
-  .extend({
-    name: String,
-    street1: String,
-    city: String,
-    state: String,
-    zip: String,
-    phone: String,
-    email: {
-      type: String,
-      regEx: SimpleSchema.RegEx.Email,
-      optional: true
-    }
-  });
+export const purchaseAddressSchema = addressSchema.clone().extend({
+  name: String,
+  street1: String,
+  city: String,
+  state: String,
+  zip: String,
+  phone: String,
+  email: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+    optional: true
+  }
+});
 
 registerSchema("purchaseAddressSchema", purchaseAddressSchema);
 

@@ -557,7 +557,7 @@ export function addressBookRemove(addressId, accountUserId) {
         _id: addressId
       }
     }
-  });
+  }, { bypassCollection2: true });
 }
 
 /**

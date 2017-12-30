@@ -1,9 +1,8 @@
 import { PayflowproApi } from "./payflowproApi";
 import { Logger } from "/server/api";
-import { PaymentMethod } from "/lib/collections/schemas";
+import { PaymentMethodArgument } from "/lib/collections/schemas";
 import { check } from "meteor/check";
 import { PayPal } from "../../lib/api"; // PayPal is the reaction api
-
 
 /**
  * payflowpro/payment/submit
@@ -50,7 +49,10 @@ export function paymentSubmit(transactionType, cardData, paymentData) {
  * @return {Object} results from PayPal normalized
  */
 export function paymentCapture(paymentMethod) {
-  PaymentMethod.validate(paymentMethod);
+  // Call both check and validate because by calling `clean`, the audit pkg
+  // thinks that we haven't checked paymentMethod arg
+  check(paymentMethod, Object);
+  PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
   const paymentCaptureDetails = {
     authorizationId: paymentMethod.metadata.authorizationId,
@@ -84,8 +86,12 @@ export function paymentCapture(paymentMethod) {
  * @return {Object} results - Object containing the results of the transaction
  */
 export function createRefund(paymentMethod, amount) {
-  PaymentMethod.validate(paymentMethod);
   check(amount, Number);
+
+  // Call both check and validate because by calling `clean`, the audit pkg
+  // thinks that we haven't checked paymentMethod arg
+  check(paymentMethod, Object);
+  PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
   const refundDetails = {
     captureId: paymentMethod.metadata.captureId,
@@ -119,7 +125,10 @@ export function createRefund(paymentMethod, amount) {
  * @return {Array} results - An array of refund objects for display in admin
  */
 export function listRefunds(paymentMethod) {
-  PaymentMethod.validate(paymentMethod);
+  // Call both check and validate because by calling `clean`, the audit pkg
+  // thinks that we haven't checked paymentMethod arg
+  check(paymentMethod, Object);
+  PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
   const refundListDetails = {
     transactionId: paymentMethod.metadata.transactionId

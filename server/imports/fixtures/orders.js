@@ -130,10 +130,12 @@ export default function () {
     requiresShipping: true,
     shipping: [{
       shopId: getShopId(),
+      address: getAddress({ isShippingDefault: true }),
       items: [
         {
           _id: itemIdOne,
           productId: Random.id(),
+          quantity: 1,
           shopId: getShopId(),
           variantId: Random.id(),
           packed: false
@@ -141,6 +143,7 @@ export default function () {
         {
           _id: itemIdTwo,
           productId: Random.id(),
+          quantity: 1,
           shopId: getShopId(),
           variantId: Random.id(),
           packed: false

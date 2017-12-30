@@ -5,6 +5,7 @@ import { Roles } from "meteor/alanning:roles";
 import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
+import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 /**
  * @method quantityProcessing
@@ -1005,7 +1006,7 @@ Meteor.methods({
    * @return {String} returns update result
    */
   "cart/submitPayment": function (paymentMethods) {
-    Reaction.Schemas.PaymentMethod.validate(paymentMethods);
+    PaymentMethodArgument.validate(paymentMethods);
 
     const cart = Collections.Cart.findOne({
       userId: Meteor.userId()

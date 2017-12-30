@@ -5,6 +5,7 @@ import { check } from "meteor/check";
 import { Random } from "meteor/random";
 import { Reaction, Logger, Hooks } from "/server/api";
 import { Cart, Shops, Accounts, Packages } from "/lib/collections";
+import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 function parseCardData(data) {
   return {
@@ -420,7 +421,10 @@ export const methods = {
    * @return {Object} results from Stripe normalized
    */
   "stripe/payment/capture": function (paymentMethod) {
-    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     const captureDetails = {
       amount: formatForStripe(paymentMethod.amount)
@@ -446,9 +450,13 @@ export const methods = {
    * @return {Object} result
    */
   "stripe/refund/create": function (paymentMethod, amount, reason = "requested_by_customer") {
-    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
     check(amount, Number);
     check(reason, String);
+
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     let result;
     try {
@@ -486,7 +494,11 @@ export const methods = {
    * @return {Object} result
    */
   "stripe/refund/list": function (paymentMethod) {
-    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
+
     const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
     const stripe = stripeNpm(stripeKey);
     let refundListResults;

@@ -49,6 +49,7 @@ Meteor.methods({
     check(shopId, String);
 
     const user = Accounts.findOne({ _id: userId });
+    if (!user) return;
     const addressBook = user.profile.addressBook;
     let phone = false;
     // check for addressBook phone

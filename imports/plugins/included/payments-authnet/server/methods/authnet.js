@@ -9,7 +9,7 @@ import { Promise } from "meteor/promise";
 import AuthNetAPI from "@reactioncommerce/authorize-net";
 import { Reaction, Logger } from "/server/api";
 import { Packages } from "/lib/collections";
-import { PaymentMethod } from "/lib/collections/schemas";
+import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 function getAccountOptions(isPayment) {
   const queryConditions = {
@@ -104,7 +104,11 @@ Meteor.methods({
   },
 
   "authnet/payment/capture": function (paymentMethod) {
-    PaymentMethod.validate(paymentMethod);
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(paymentMethod);
+
     const {
       transactionId,
       amount
@@ -166,8 +170,13 @@ Meteor.methods({
   },
 
   "authnet/refund/create": function (paymentMethod, amount) {
-    PaymentMethod.validate(paymentMethod);
     check(amount, Number);
+
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(paymentMethod);
+
     const result = {
       saved: false,
       error: "Reaction does not yet support direct refund processing from Authorize.net. " +

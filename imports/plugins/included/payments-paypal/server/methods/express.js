@@ -6,7 +6,8 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { PayPal } from "../../lib/api";
 import { Shops, Cart, Packages } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import { Logger } from "/server/api";
+import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 const nvpVersion = "52.0";
 
@@ -149,7 +150,10 @@ export const methods = {
    * @return {Object} results from PayPal normalized
    */
   "paypalexpress/payment/capture": function (paymentMethod) {
-    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
     this.unblock();
     const options = PayPal.expressCheckoutAccountOptions();
     const amount = accounting.toFixed(paymentMethod.amount, 2);
@@ -225,8 +229,12 @@ export const methods = {
    * @return {Object} Transaction results from PayPal normalized
    */
   "paypalexpress/refund/create": function (paymentMethod, amount) {
-    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
     check(amount, Number);
+
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
     this.unblock();
 
     const options = PayPal.expressCheckoutAccountOptions();
@@ -292,7 +300,10 @@ export const methods = {
    * @return {array}  Refunds from PayPal query, normalized
    */
   "paypalexpress/refund/list": function (paymentMethod) {
-    Reaction.Schemas.PaymentMethod.validate(paymentMethod);
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
     this.unblock();
 
     const options = PayPal.expressCheckoutAccountOptions();

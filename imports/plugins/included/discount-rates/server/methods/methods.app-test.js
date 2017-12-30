@@ -6,7 +6,6 @@ import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 
 before(function () {
   this.timeout(10000);
-  Meteor._sleepForMs(7000);
 });
 
 describe("discount rate methods", function () {
@@ -42,7 +41,6 @@ describe("discount rate methods", function () {
       expect(discountInsertSpy).to.have.been.called;
 
       const discountCount = Discounts.find(discountId).count();
-      Meteor._sleepForMs(500);
       expect(discountCount).to.equal(1);
       return done();
     });

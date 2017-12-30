@@ -13,32 +13,30 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
  *   see: https://github.com/authnet/rest-api-sdk-nodejs
  */
 
-export const AuthNetPackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
-  .extend(PackageConfig)
-  .extend({
-    "settings.mode": {
-      type: Boolean,
-      defaultValue: false
-    },
-    "settings.reaction-auth-net.support": {
-      type: Array,
-      label: "Payment provider supported methods"
-    },
-    "settings.reaction-auth-net.support.$": {
-      type: String,
-      allowedValues: ["Authorize", "De-authorize", "Capture"]
-    },
-    "settings.api_id": {
-      type: String,
-      label: "API Login ID",
-      min: 60
-    },
-    "settings.transaction_key": {
-      type: String,
-      label: "Transaction Key",
-      min: 60
-    }
-  });
+export const AuthNetPackageConfig = PackageConfig.clone().extend({
+  "settings.mode": {
+    type: Boolean,
+    defaultValue: false
+  },
+  "settings.reaction-auth-net.support": {
+    type: Array,
+    label: "Payment provider supported methods"
+  },
+  "settings.reaction-auth-net.support.$": {
+    type: String,
+    allowedValues: ["Authorize", "De-authorize", "Capture"]
+  },
+  "settings.api_id": {
+    type: String,
+    label: "API Login ID",
+    min: 60
+  },
+  "settings.transaction_key": {
+    type: String,
+    label: "Transaction Key",
+    min: 60
+  }
+});
 
 registerSchema("AuthNetPackageConfig", AuthNetPackageConfig);
 

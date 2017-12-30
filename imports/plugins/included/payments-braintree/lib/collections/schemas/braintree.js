@@ -13,37 +13,35 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
  *  see: https://developers.braintreepayments.com/javascript+node/reference
  */
 
-export const BraintreePackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
-  .extend(PackageConfig)
-  .extend({
-    "settings.mode": {
-      type: Boolean,
-      defaultValue: false
-    },
-    "settings.merchant_id": {
-      type: String,
-      label: "Merchant ID",
-      optional: false
-    },
-    "settings.public_key": {
-      type: String,
-      label: "Public Key",
-      optional: false
-    },
-    "settings.private_key": {
-      type: String,
-      label: "Private Key",
-      optional: false
-    },
-    "settings.reaction-braintree.support": {
-      type: Array,
-      label: "Payment provider supported methods"
-    },
-    "settings.reaction-braintree.support.$": {
-      type: String,
-      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
-    }
-  });
+export const BraintreePackageConfig = PackageConfig.clone().extend({
+  "settings.mode": {
+    type: Boolean,
+    defaultValue: false
+  },
+  "settings.merchant_id": {
+    type: String,
+    label: "Merchant ID",
+    optional: false
+  },
+  "settings.public_key": {
+    type: String,
+    label: "Public Key",
+    optional: false
+  },
+  "settings.private_key": {
+    type: String,
+    label: "Private Key",
+    optional: false
+  },
+  "settings.reaction-braintree.support": {
+    type: Array,
+    label: "Payment provider supported methods"
+  },
+  "settings.reaction-braintree.support.$": {
+    type: String,
+    allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+  }
+});
 
 registerSchema("BraintreePackageConfig", BraintreePackageConfig);
 

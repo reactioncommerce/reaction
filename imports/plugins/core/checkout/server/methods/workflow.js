@@ -269,7 +269,9 @@ Meteor.methods({
   "workflow/pushOrderWorkflow": function (workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    Reaction.Schemas.Order.validate(order);
+    check(order, Match.ObjectIncluding({
+      _id: String
+    }));
     this.unblock();
 
     const workflowStatus = `${workflow}/${status}`;
@@ -304,7 +306,12 @@ Meteor.methods({
   "workflow/pullOrderWorkflow": function (workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    Reaction.Schemas.Order.validate(order);
+    check(order, Match.ObjectIncluding({
+      _id: String,
+      workflow: Match.ObjectIncluding({
+        status: String
+      })
+    }));
     this.unblock();
 
     const result = Orders.update({
@@ -332,7 +339,10 @@ Meteor.methods({
    */
   "workflow/pushItemWorkflow": function (status, order, itemIds) {
     check(status, String);
-    Reaction.Schemas.Order.validate(order);
+    check(order, Match.ObjectIncluding({
+      _id: String,
+      items: [Object]
+    }));
     check(itemIds, Array);
 
     const items = order.items.map((item) => {

@@ -36,45 +36,43 @@ const StripeConnectAuthorizationCredentials = new SimpleSchema({
 
 registerSchema("StripeConnectAuthorizationCredentials", StripeConnectAuthorizationCredentials);
 
-export const StripePackageConfig = new SimpleSchema({}, { check, tracker: Tracker })
-  .extend(PackageConfig)
-  .extend({
-    "settings.mode": {
-      type: Boolean,
-      defaultValue: false
-    },
-    "settings.api_key": {
-      type: String,
-      label: "API Secret Key"
-    },
-    // This field only applies to marketplace style orders where a payment is taken on behalf of another store
-    "settings.applicationFee": {
-      type: Number,
-      label: "Percentage Application Fee",
-      optional: true,
-      defaultValue: 5
-    },
-    "settings.connectAuth": {
-      type: StripeConnectAuthorizationCredentials,
-      label: "Connect Authorization Credentials",
-      optional: true
-    },
-    "settings.reaction-stripe.support": {
-      type: Array,
-      label: "Payment provider supported methods"
-    },
-    "settings.reaction-stripe.support.$": {
-      type: String,
-      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
-    },
+export const StripePackageConfig = PackageConfig.clone().extend({
+  "settings.mode": {
+    type: Boolean,
+    defaultValue: false
+  },
+  "settings.api_key": {
+    type: String,
+    label: "API Secret Key"
+  },
+  // This field only applies to marketplace style orders where a payment is taken on behalf of another store
+  "settings.applicationFee": {
+    type: Number,
+    label: "Percentage Application Fee",
+    optional: true,
+    defaultValue: 5
+  },
+  "settings.connectAuth": {
+    type: StripeConnectAuthorizationCredentials,
+    label: "Connect Authorization Credentials",
+    optional: true
+  },
+  "settings.reaction-stripe.support": {
+    type: Array,
+    label: "Payment provider supported methods"
+  },
+  "settings.reaction-stripe.support.$": {
+    type: String,
+    allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+  },
 
-    // Public Settings
-    "settings.public.client_id": {
-      type: String,
-      label: "Public Client ID",
-      optional: true
-    }
-  });
+  // Public Settings
+  "settings.public.client_id": {
+    type: String,
+    label: "Public Client ID",
+    optional: true
+  }
+});
 
 registerSchema("StripePackageConfig", StripePackageConfig);
 
