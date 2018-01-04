@@ -383,7 +383,7 @@ export const methods = {
     const paymentMethodId = paymentMethod && paymentMethod.paymentPackageId;
     const paymentMethodName = paymentMethod && paymentMethod.paymentSettingsKey;
     const getPaymentMethod = Packages.findOne({ _id: paymentMethodId });
-    const refund = _.get(paymentMethod.settings[paymentMethodName].support, "refund");
+    const refund = _.get(getPaymentMethod.settings[paymentMethodName].support, "refund");
     const isRefundable = getPaymentMethod && getPaymentMethod.settings && getPaymentMethod.settings[paymentMethodName]
      && refund;
 
