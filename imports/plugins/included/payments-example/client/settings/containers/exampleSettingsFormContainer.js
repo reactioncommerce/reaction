@@ -38,7 +38,6 @@ class ExampleSettingsFormContainer extends Component {
       property: "support",
       value: settings.support
     }];
-
     this.saveUpdate(fields, packageId, settingsKey);
   }
 

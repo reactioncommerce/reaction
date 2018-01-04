@@ -12,6 +12,30 @@ export const ExamplePackageConfig = new SimpleSchema([
       type: String,
       label: "API Key",
       optional: true
+    },
+    "settings.example-paymentmethod.support": {
+      type: Object,
+      label: "Payment provider supported methods"
+    },
+    "settings.example-paymentmethod.authorize": {
+      type: Boolean,
+      label: "Authorize",
+      defaultValue: true
+    },
+    "settings.example-paymentmethod.support.de_authorize": {
+      type: Boolean,
+      label: "De-Authorize",
+      defaultValue: false
+    },
+    "settings.example-paymentmethod.support.capture": {
+      type: Boolean,
+      label: "Capture",
+      defaultValue: true
+    },
+    "settings.example-paymentmethod.support.refund": {
+      type: Boolean,
+      label: "Refund",
+      defaultValue: true
     }
   }
 ]);

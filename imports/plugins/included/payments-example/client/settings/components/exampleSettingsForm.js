@@ -12,10 +12,10 @@ class ExampleSettingsForm extends Component {
         support: props.settings.support
       },
       checkbox: {
-        "Authorize": _.includes(props.settings.support, "Authorize"),
-        "De-authorize": _.includes(props.settings.support, "De-authorize"),
-        "Capture": _.includes(props.settings.support, "Capture"),
-        "Refund": _.includes(props.settings.support, "Refund")
+        "Authorize": _.get(props.settings.support, "authorize"),
+        "De-authorize": _.get(props.settings.support, "de_authorize"),
+        "Capture": _.get(props.settings.support, "capture"),
+        "Refund": _.get(props.settings.support, "refund")
       }
     };
   }
@@ -29,14 +29,16 @@ class ExampleSettingsForm extends Component {
   handleCheckBox = (event, isInputChecked, name) => {
     const { checkbox, settings } = this.state;
     checkbox[name] = isInputChecked;
+    console.log({ [name]: checkbox[name] });
     this.setState({ checkbox });
-    if (!_.includes(settings.support, name) && isInputChecked) {
-      settings.support.push(name);
+    if (!_.get(settings.support, name) && isInputChecked) {
+      settings.support[name] = checkbox[name];
       return this.setState({ settings });
     }
-    const index = settings.support.indexOf(name);
-    settings.support.splice(index, 1);
-    return this.setState({ settings });
+
+    // const index = settings.support.indexOf(name);
+    // settings.support.splice(index, 1);
+    // return this.setState({ settings });
   }
 
   handleSubmit = (e) => {
