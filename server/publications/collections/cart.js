@@ -77,16 +77,24 @@ Meteor.publish("CartImages", function (cartItems) {
 
   // return image for each the top level product or the variant and let the client code decide which to display
   const productImages = Media.find(
-    { "$or":
-    [{
-      "metadata.productId": { $in: productIds }
-    },
     {
-      "metadata.productId": { $in: variantIds }
+      "$or": [
+        {
+          "metadata.productId": {
+            $in: productIds
+          }
+        },
+        {
+          "metadata.productId": {
+            $in: variantIds
+          }
+        }
+      ],
+      "metadata.workflow": {
+        $nin: ["archived", "unpublished"]
+      }
     }
-    ],
-    "metadata.workflow": { $nin: ["archived", "unpublished"] }
-    }
+
   );
 
   return productImages;
