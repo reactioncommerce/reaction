@@ -132,7 +132,7 @@ class AvalaraSettingsForm extends Component {
       <div className="rui avalara-update-form">
         {!settings.avalara.apiLoginId &&
           <div className="alert alert-info">
-            <Components.Translation defaultValue="Add API Login ID to enable" i18nKey="admin.taxSettings.taxcloudCredentials" />
+            <Components.Translation defaultValue="Add API Login ID to enable" i18nKey="admin.taxSettings.credentials" />
             <a href="https://admin-development.avalara.net" target="_blank"> Avalara</a>
           </div>
         }
