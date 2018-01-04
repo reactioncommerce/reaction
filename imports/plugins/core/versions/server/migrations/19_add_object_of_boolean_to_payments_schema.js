@@ -25,7 +25,7 @@ Migrations.add({
           support = packages.settings[PaypalSupport[paypal]].support;
           Packages.update({ name: paymentMethodName[key] }, {
             $set: {
-              [`settings.${paymentMethodName[key]}.${PaypalSupport[paypal]}.support`]: support
+              [`settings.${PaypalSupport[paypal]}.support`]: support
             }
           });
           // console.log(PaypalSupport[paypal], packages.settings[PaypalSupport[paypal]].support);
