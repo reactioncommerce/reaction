@@ -285,7 +285,7 @@ Meteor.methods({
     });
     Logger.debug("create cart: into new user cart. created: " +  currentCartId +
     " for user " + userId);
-    Hooks.Events.run("onCartCreate", Collections.Cart.findOne(currentCartId));
+    Hooks.Events.run("onCartCreate", currentCartId);
 
     // merge session carts into the current cart
     if (sessionCartCount > 0 && !anonymousUser) {
@@ -645,7 +645,7 @@ Meteor.methods({
     // update or insert method
     try {
       Collections.Cart.update(selector, update);
-      Hooks.Events.run("onShipmentMethodSet", cart);
+      Hooks.Events.run("onCartShipmentMethodSet", cart);
     } catch (e) {
       Logger.error(e, `Error adding rates to cart ${cartId}`);
       throw new Meteor.Error("server-error", "An error occurred saving the order", e);
@@ -708,7 +708,7 @@ Meteor.methods({
     // add / or set the shipping address
     try {
       Collections.Cart.update(selector, update);
-      Hooks.Events.run("onUserCurrencySet", cart);
+      Hooks.Events.run("onCartUserCurrencySet", cart);
     } catch (e) {
       Logger.error(e);
       throw new Meteor.Error("server-error", "An error occurred adding the currency");
@@ -883,7 +883,7 @@ Meteor.methods({
       Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
     }
 
-    Hooks.Events.run("onShipmentAddressSet", cart);
+    Hooks.Events.run("onCartShipmentAddressSet", cart);
     return true;
   },
 
@@ -995,7 +995,7 @@ Meteor.methods({
     if (needToUpdate) {
       try {
         Collections.Cart.update(selector, update);
-        Hooks.Events.run("onAddressesSet", cart);
+        Hooks.Events.run("onCartAddressesSet", cart);
       } catch (e) {
         Logger.error(e);
         throw new Meteor.Error("server-error", "Error updating cart");
@@ -1106,7 +1106,7 @@ Meteor.methods({
 
     try {
       Collections.Cart.update(selector, update);
-      Hooks.Events.run("onPaymentSubmit", cart);
+      Hooks.Events.run("onCartPaymentSubmit", cart);
     } catch (e) {
       Logger.error(e);
       throw new Meteor.Error("server-error", "An error occurred saving the order");
