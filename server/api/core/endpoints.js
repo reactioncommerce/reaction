@@ -1,5 +1,3 @@
-// Adapted from https://github.com/stubailo/meteor-rest/tree/master/packages/json-routes
-
 import _ from "lodash";
 import Fiber from "fibers";
 import connect from "connect";
@@ -9,10 +7,14 @@ import connectRoute from "connect-route";
 import { Meteor } from "meteor/meteor";
 import { WebApp } from "meteor/webapp";
 
-// TODO: Add a rate limiter to our HTTP endpoint module
+/**
+ * @file Reaction Endpoints - This becomes Reaction.Endpoints and can be used in any server side code that
+ * `imports { Reaction } from "/server/api"`
+ * Adapted from https://github.com/stubailo/meteor-rest/tree/master/packages/json-routes
+ * @todo Add a rate limiter to our HTTP endpoint module
+ * @namespace Endpoints
+ */
 
-// This becomes Reaction.Endpoints and can be used in any server side code that imports { Reaction } from "/server/api"
-// Exported as default at the bottom of this file.
 const Endpoints = {};
 
 WebApp.connectHandlers.use(bodyParser.json({
@@ -42,8 +44,9 @@ WebApp.connectHandlers.use(Meteor.bindEnvironment(connectRoute(function (router)
 })));
 
 /**
- * Stringifies and writes JSON to body of response
  * @method writeJsonToBody
+ * @summary Stringifies and writes JSON to body of response
+ * @private
  * @param  {Object} res response object
  * @param  {Object} json JSON
  * @return {void}
@@ -89,6 +92,15 @@ let responseHeaders = {
   "Pragma": "no-cache"
 };
 
+/**
+ * @method add
+ * @memberof Endpoints
+ * @param  {String} method  HTTP method
+ * @param  {String} path    HTTP path - Make sure path starts with a slash
+ * @param  {Function} handler Callback handler
+ * @example Reaction.Endpoints.add("post", "/webhooks/shopify/orders-create", function (req, res){})
+ * @return {undefined}
+ */
 Endpoints.add = function (method, path, handler) {
   // Make sure path starts with a slash
   let slashedPath = path;
@@ -119,14 +131,22 @@ Endpoints.add = function (method, path, handler) {
   });
 };
 
+/**
+ * @method setResponseHeaders
+ * @memberof Endpoints
+ * @param  {Object} headers HTTP headers
+ * @return {undefined}
+ */
 Endpoints.setResponseHeaders = function (headers) {
   responseHeaders = headers;
 };
 
 /**
- * Sets the response headers, status code, and body, and ends it.
+ * @method sendResponse
+ * @summary Sets the response headers, status code, and body, and ends it.
  * The JSON response will be pretty printed if NODE_ENV is `development`.
- *
+ * @memberof Endpoints
+ * @example Reaction.Endpoints.sendResponse(res)
  * @param {Object} res Response object
  * @param {Object} [options] Options object
  * @param {Number} [options.code] HTTP status code. Default is 200.

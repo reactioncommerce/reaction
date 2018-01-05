@@ -52,13 +52,13 @@
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
-          "credentials": "Add API Login ID to enable",
+          "avalaraCredentials": "Add API Login ID to enable",
           "formTitle": "Tax Settings",
           "entityCodeCustomLabel": "SET CUSTOM VALUE"
         },
         "update": {
-          "updateSucceeded": "Avalara settings updated.",
-          "updateFailed": "Failed to update Avalara settings."
+          "avalaraUpdateSucceeded": "Avalara settings updated.",
+          "avalaraUpdateFailed": "Failed to update Avalara settings."
         }
       }
     }

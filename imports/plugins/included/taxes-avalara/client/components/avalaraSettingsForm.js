@@ -24,7 +24,6 @@ import { Loading } from "/imports/plugins/core/ui/client/components";
  * @property {Array} hiddenFields - the fields (of the Avalara Package) to hide from the form.
  * @property {Object} settings - the value of the "settings" field in the Avalara Package.
  * @property {Object} shownFields - info about the fields the form is to show.
- * @since 1.5.2
  * @return {Node} - a React node containing the Avalara settings form.
  */
 class AvalaraSettingsForm extends Component {
@@ -32,12 +31,15 @@ class AvalaraSettingsForm extends Component {
   * @name AvalaraSettingsForm propTypes
   * @type {propTypes}
   * @param {Object} props - React PropTypes
+  * @property {Object} fieldsProps - map of field specific properties for avalara settings.
   * @property {Function} handleSubmit - a function that saves new Avalara settings.
   * @property {Array} hiddenFields - an array of the Avalara Package's fields
   * to hide from the settings form.
+  * @property {Object} logFieldsProps - map of field specific properties for logs.
   * @property {Object} settings - the value of the "settings" field in the Avalara Package.
   * @property {Object} shownFields - info about the fields of the Avalara Package
   * that the settings form will allow users to change.
+  * @property {Object} shownLogFields - fields to show from Log schema
   * @return {Array} React propTypes
   */
   static propTypes = {
@@ -45,9 +47,19 @@ class AvalaraSettingsForm extends Component {
     handleSubmit: PropTypes.func,
     handleTestCredentials: PropTypes.func,
     hiddenFields: PropTypes.arrayOf(PropTypes.string),
+    logFieldsProp: PropTypes.object,
     settings: PropTypes.object,
     shownFields: PropTypes.object,
     shownLogFields: PropTypes.object
+  };
+  static filteredFields = [ "data.request.data.date", "data.request.data.type" ];
+  static noDataMessage = i18next.t("logGrid.noLogsFound");
+
+  // helper adds a class to every grid row
+  static customRowMetaData = {
+    bodyCssClassName: () =>  {
+      return "log-grid-row";
+    }
   };
 
   constructor(props) {
@@ -96,43 +108,21 @@ class AvalaraSettingsForm extends Component {
   render() {
     const { handleSubmit, hiddenFields, settings, shownFields, shownLogFields } = this.props;
 
-    const filteredFields = [ "data.request.data.type", "data.request.data.date"];
-    const noDataMessage = i18next.t("logGrid.noLogsFound");
-
-    // helper adds a class to every grid row
-    const customRowMetaData = {
-      bodyCssClassName: () =>  {
-        return "log-grid-row";
-      }
-    };
-
     // add i18n handling to headers
-    const customColumnMetadata = [];
-    filteredFields.forEach(function (field) {
-      const columnMeta = {
+    const customColumnMetadata = AvalaraSettingsForm.filteredFields.reduce((arr, field) => {
+      arr.push({
         accessor: field,
         Header: i18next.t(`logGrid.columns.${field}`)
-      };
-      customColumnMetadata.push(columnMeta);
-    });
+      });
+      return arr;
+    }, []);
 
-    const logFieldsProp = {
-      data: {
-        renderComponent: "string",
-        multiline: true,
-        maxRows: 15,
-        disabled: true
-      },
-      date: {
-        disabled: true
-      }
-    };
 
     return (
       <div className="rui avalara-update-form">
         {!settings.avalara.apiLoginId &&
           <div className="alert alert-info">
-            <Components.Translation defaultValue="Add API Login ID to enable" i18nKey="admin.taxSettings.credentials" />
+            <Components.Translation defaultValue="Add API Login ID to enable" i18nKey="admin.taxSettings.avalaraCredentials" />
             <a href="https://admin-development.avalara.net" target="_blank"> Avalara</a>
           </div>
         }
@@ -147,10 +137,15 @@ class AvalaraSettingsForm extends Component {
           hideFields={hiddenFields}
           onSubmit={handleSubmit}
         />
-        <Components.Button id="testAvalaraCredentials" label="Test Credentials" buttonType="button"
-          className="btn btn-default pull-right" i18nKeyLabel="admin.dashboard.avalaraTestCredentials"
-          bezelStyle="outline" onClick={this.handleTestCredentials}
-        />
+        <div id="testAvalaraCredentialsContainer">
+          <Components.Button id="testAvalaraCredentials" label="Test Credentials" buttonType="button"
+            className="btn btn-default" i18nKeyLabel="admin.dashboard.avalaraTestCredentials"
+            bezelStyle="outline" onClick={this.handleTestCredentials}
+          />
+        </div>
+        <div className="panel-body text-center avalara-login-box">
+          <a href="https://admin-development.avalara.net" target="_blank">Avalara Admin Console Login</a>
+        </div>
         {this.state.showLogs &&
         (
           <Components.SortableTable
@@ -159,10 +154,10 @@ class AvalaraSettingsForm extends Component {
             query= {{ logType: "avalara" }}
             matchingResultsCount= {"logs-count"}
             showFilter= {true}
-            rowMetadata= {customRowMetaData}
-            filteredFields= {filteredFields}
-            columns= {filteredFields}
-            noDataMessage= {noDataMessage}
+            rowMetadata= {AvalaraSettingsForm.customRowMetaData}
+            filteredFields= {AvalaraSettingsForm.filteredFields}
+            columns= {AvalaraSettingsForm.filteredFields}
+            noDataMessage= {AvalaraSettingsForm.noDataMessage}
             onRowClick= {this.editRow}
             columnMetadata= {customColumnMetadata}
             externalLoadingComponent= {Loading}
@@ -175,7 +170,7 @@ class AvalaraSettingsForm extends Component {
               schema={LogSchema}
               doc={this.state.log}
               fields={shownLogFields}
-              fieldsProp={logFieldsProp}
+              fieldsProp={this.props.logFieldsProp}
               autoSave={true}
             />
           )}
