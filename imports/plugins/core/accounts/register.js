@@ -1,5 +1,11 @@
 import { Reaction } from "/server/api";
 
+/**
+ * @file Accounts core plugin: Manage how members sign into your shop
+ *
+ * @namespace Accounts
+ */
+
 Reaction.registerPackage({
   label: "Accounts",
   name: "reaction-accounts",
