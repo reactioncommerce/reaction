@@ -20,25 +20,27 @@ Migrations.add({
       let packages;
       let support;
       if (paymentMethodName[key] === "reaction-paypal") {
-        packages = Packages.findOne({ name: paymentMethodName[key] });
-        Object.keys(PaypalSupport).forEach((paypal) => {
-          support = packages.settings[PaypalSupport[paypal]].support;
-          Packages.update({ name: paymentMethodName[key] }, {
-            $set: {
-              [`settings.${PaypalSupport[paypal]}.support`]: support
-            }
+        packages = Packages.find({ name: paymentMethodName[key] });
+        packages.forEach((pkg) => {
+          Object.keys(PaypalSupport).forEach((paypal) => {
+            support = pkg.settings[PaypalSupport[paypal]].support;
+            Packages.update({ _id: pkg._id }, {
+              $set: {
+                [`settings.${PaypalSupport[paypal]}.support`]: support
+              }
+            });
           });
-          // console.log(PaypalSupport[paypal], packages.settings[PaypalSupport[paypal]].support);
         });
       } else {
-        packages = Packages.findOne({ name: paymentMethodName[key] });
-        support = packages.settings[paymentMethodName[key]].support;
-        Packages.update({ name: paymentMethodName[key] }, {
-          $set: {
-            [`settings.${paymentMethodName[key]}.support`]: support
-          }
+        packages = Packages.find({ name: paymentMethodName[key] });
+        packages.forEach((pkg) => {
+          support = pkg.settings[paymentMethodName[key]].support;
+          Packages.update({ _id: pkg._id }, {
+            $set: {
+              [`settings.${paymentMethodName[key]}.support`]: support
+            }
+          });
         });
-        // console.log(paymentMethodName[key], support);
       }
     });
   },
