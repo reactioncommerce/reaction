@@ -1077,8 +1077,7 @@ export const methods = {
     const settingsKey = paymentMethod.paymentSettingsKey;
     // check if payment provider supports de-authorize
     const checkSupportedMethods = Packages.findOne({
-      _id: packageId,
-      shopId: Reaction.getShopId()
+      _id: packageId
     }).settings[settingsKey].support;
 
     const orderMode = paymentMethod.mode;
