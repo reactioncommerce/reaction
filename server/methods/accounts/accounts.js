@@ -693,9 +693,10 @@ export function inviteShopMember(options) {
 
     // do not send token, as no password reset is needed
     token = null;
+    const url = Meteor.absoluteUrl();
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
+    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo, url });
 
     // Get email template and subject
     tpl = "accounts/inviteShopMember";
@@ -971,7 +972,7 @@ function getCurrentUserName(currentUser) {
  * emailLogo, legalName, physicalAddress, shopName, socialLinks, user, invitedUserName, url
  */
 function getDataForEmail(options) {
-  const { shop, currentUserName, token, emailLogo, name } = options;
+  const { shop, currentUserName, token, emailLogo, name, url } = options;
   const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
 
   return {
@@ -1010,7 +1011,7 @@ function getDataForEmail(options) {
     user: Meteor.user(), // Account Data
     currentUserName,
     invitedUserName: name,
-    url: getEmailUrl(token)
+    url: url || getEmailUrl(token)
   };
 
   function getEmailUrl(userToken) {
