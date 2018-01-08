@@ -1,5 +1,5 @@
-import { ValidatedMethod } from "meteor/mdg:validated-method";
 import SimpleSchema from "simpl-schema";
+import { ValidatedMethod } from "meteor/mdg:validated-method";
 import { Random } from "meteor/random";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 

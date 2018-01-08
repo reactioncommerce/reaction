@@ -978,5 +978,40 @@ export default {
     const version = packageJson.version;
     Logger.info(`Reaction Version: ${version}`);
     Shops.update({}, { $set: { appVersion: version } }, { multi: true });
+  },
+
+  /**
+   * @summary Method for getting all schemas attached to a given collection
+   * @deprecated by simpl-schema
+   * @private
+   * @name collectionSchema
+   * @param  {string} collection The mongo collection to get schemas for
+   * @param  {Object} [selector] Optional selector for multi schema collections
+   * @return {Object} Returns a simpleSchema that is a combination of all schemas
+   *                  that have been attached to the collection or false if
+   *                  the collection or schema could not be found
+   */
+  collectionSchema(collection, selector) {
+    Logger.warn("Reaction.collectionSchema is deprecated and will be removed" +
+      " in a future release. Use collection.simpleSchema(selector).");
+
+    const selectorErrMsg = selector ? `and selector ${selector}` : "";
+    const errMsg = `Reaction.collectionSchema could not find schemas for ${collection} collection ${selectorErrMsg}`;
+
+    const col = Collections[collection];
+    if (!col) {
+      Logger.warn(errMsg);
+      // Return false so we don't pass a check that uses a non-existant schema
+      return false;
+    }
+
+    const schema = col.simpleSchema(selector);
+    if (!schema) {
+      Logger.warn(errMsg);
+      // Return false so we don't pass a check that uses a non-existant schema
+      return false;
+    }
+
+    return schema;
   }
 };

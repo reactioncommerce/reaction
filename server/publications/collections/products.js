@@ -1,8 +1,8 @@
 import _ from "lodash";
+import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { check, Match } from "meteor/check";
-import SimpleSchema from "simpl-schema";
 import { Products, Shops, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
