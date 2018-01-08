@@ -10,7 +10,9 @@ import { Reaction, Logger } from "/server/api";
 
 
 /**
- * Send an email with a link that the user can use to reset their password.
+ * @method sendResetPasswordEmail
+ * @memberof Core
+ * @summary Send an email with a link that the user can use to reset their password.
  * @param {String} userId - The id of the user to send email to.
  * @param {String} [optionalEmail] Address to send the email to.
  *                 This address must be in the user's `emails` list.
@@ -119,7 +121,9 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
 
 
 /**
- * Send an email with a link the user can use verify their email address.
+ * @method sendVerificationEmail
+ * @memberof Core
+ * @summary Send an email with a link the user can use verify their email address.
  * @param {String} userId - The id of the user to send email to.
  * @param {String} [email] Optional. Address to send the email to.
  *                 This address must be in the user's emails list.
@@ -234,7 +238,9 @@ export function sendVerificationEmail(userId, email) {
 
 
 /**
- * Send an email with a link the user can use to verify their updated email address.
+ * @method sendUpdatedVerificationEmail
+ * @memberof Core
+ * @summary Send an email with a link the user can use to verify their updated email address.
  * @param {String} userId - The id of the user to send email to.
  * @param {String} [email] Optional. Address to send the email to.
  *                 This address must be in the user's emails list.

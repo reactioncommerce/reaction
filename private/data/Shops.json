@@ -427,7 +427,7 @@
     },
     "PLN": {
       "enabled": false,
-      "format": "%s%v",
+      "format": "%v %s",
       "symbol": "zł",
       "decimal": ","
     },
