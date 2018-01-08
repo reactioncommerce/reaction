@@ -699,12 +699,12 @@ export const methods = {
           });
           // variant image
           if (variantImage) {
-            orderItem.variantImage = path.join(Meteor.absoluteUrl(), variantImage.url());
+            orderItem.variantImage = Meteor.absoluteUrl(variantImage.url());
           }
           // find a default image
           const productImage = Media.findOne({ "metadata.productId": orderItem.productId });
           if (productImage) {
-            orderItem.productImage = path.join(Meteor.absoluteUrl(), productImage.url());
+            orderItem.productImage = Meteor.absoluteUrl(productImage.url());
           }
         }
       }
