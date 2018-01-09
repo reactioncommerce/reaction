@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { at, get, isEqual, map, set, update, extend } from "lodash";
+import { at, get, isEqual, set, update } from "lodash";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
@@ -148,7 +148,7 @@ class Form extends Component {
   }
 
   handleMultiSelectChange = (value, name) => {
-    this.handleChange(new Event("onMultiSelect"), map(value, "value"), name);
+    this.handleChange(new Event("onMultiSelect"), value.map(v => v.value), name);
   }
 
   handleSubmit = async (event) => {
@@ -281,7 +281,7 @@ class Form extends Component {
     if (this.props.schema) {
       // Render form with a specific docPath
       if (!renderFromFields && docPath) {
-        return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
+        return Object.keys(this.schema).map((key) => { // eslint-disable-line consistent-return
           if (key.endsWith(docPath)) {
             const objectKeys = this.objectKeys[docPath + "."];
             if (Array.isArray(objectKeys)) {
@@ -300,7 +300,8 @@ class Form extends Component {
 
       // Render form by only using desired fields from schema
       if (this.props.fields) {
-        return map(this.props.fields, (fieldData, key) => { // eslint-disable-line consistent-return
+        return Object.keys(this.props.fields).map((key) => { // eslint-disable-line consistent-return
+          const fieldData = this.props.fields[key];
           const fieldSchema = this.schema[key];
           const tempObj = Object.assign({}, fieldData);
           if (fieldSchema) {
@@ -309,13 +310,13 @@ class Form extends Component {
               delete tempObj.type;
             }
             const fieldProp = get(fieldsProp, key, undefined);
-            return this.renderField({ fieldName: key }, extend(tempObj, fieldProp));
+            return this.renderField({ fieldName: key }, Object.assign(tempObj, fieldProp));
           }
         });
       }
 
       // Render all fields if none of the options are set above
-      return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
+      return Object.keys(this.schema).map((key) => {// eslint-disable-line consistent-return
         return this.renderField({ fieldName: key });
       });
     }
