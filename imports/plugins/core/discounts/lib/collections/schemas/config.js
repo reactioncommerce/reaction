@@ -7,6 +7,13 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 */
 
 export const DiscountsPackageConfig = PackageConfig.clone().extend({
+  // Remove blackbox: true from settings obj
+  "settings": {
+    type: Object,
+    optional: true,
+    blackbox: false,
+    defaultValue: {}
+  },
   "settings.rates": {
     type: Object,
     optional: true,

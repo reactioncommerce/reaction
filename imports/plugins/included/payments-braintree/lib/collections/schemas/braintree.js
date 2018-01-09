@@ -14,6 +14,13 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
  */
 
 export const BraintreePackageConfig = PackageConfig.clone().extend({
+  // Remove blackbox: true from settings obj
+  "settings": {
+    type: Object,
+    optional: true,
+    blackbox: false,
+    defaultValue: {}
+  },
   "settings.mode": {
     type: Boolean,
     defaultValue: false

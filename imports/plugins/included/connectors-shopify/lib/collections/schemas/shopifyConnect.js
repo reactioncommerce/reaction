@@ -65,6 +65,13 @@ registerSchema("Webhook", Webhook);
  * @property {Array} settings.webhooks Array of registered Shopify webhooks
  */
 export const ShopifyConnectPackageConfig = PackageConfig.clone().extend({
+  // Remove blackbox: true from settings obj
+  "settings": {
+    type: Object,
+    optional: true,
+    blackbox: false,
+    defaultValue: {}
+  },
   "settings.apiKey": {
     type: String,
     label: "API key",

@@ -37,6 +37,13 @@ const StripeConnectAuthorizationCredentials = new SimpleSchema({
 registerSchema("StripeConnectAuthorizationCredentials", StripeConnectAuthorizationCredentials);
 
 export const StripePackageConfig = PackageConfig.clone().extend({
+  // Remove blackbox: true from settings obj
+  "settings": {
+    type: Object,
+    optional: true,
+    blackbox: false,
+    defaultValue: {}
+  },
   "settings.mode": {
     type: Boolean,
     defaultValue: false

@@ -5,6 +5,13 @@ import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 export const ExamplePackageConfig = PackageConfig.clone().extend({
+  // Remove blackbox: true from settings obj
+  "settings": {
+    type: Object,
+    optional: true,
+    blackbox: false,
+    defaultValue: {}
+  },
   "settings.mode": {
     type: Boolean,
     defaultValue: true

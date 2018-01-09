@@ -26,6 +26,13 @@ export const EnabledPackagesByShopType = new SimpleSchema({
 registerSchema("EnabledPackagesByShopType", EnabledPackagesByShopType);
 
 export const MarketplacePackageConfig = PackageConfig.clone().extend({
+  // Remove blackbox: true from settings obj
+  "settings": {
+    type: Object,
+    optional: true,
+    blackbox: false,
+    defaultValue: {}
+  },
   "settings.thirdPartyLogistics": {
     type: Object,
     blackbox: true,

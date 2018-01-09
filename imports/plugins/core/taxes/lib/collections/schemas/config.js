@@ -7,6 +7,13 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 */
 
 export const TaxPackageConfig = PackageConfig.clone().extend({
+  // Remove blackbox: true from settings obj
+  "settings": {
+    type: Object,
+    optional: true,
+    blackbox: false,
+    defaultValue: {}
+  },
   "settings.defaultTaxCode": {
     type: String,
     optional: true
