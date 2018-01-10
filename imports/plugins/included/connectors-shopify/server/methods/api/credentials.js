@@ -12,7 +12,7 @@ import { connectorsRoles } from "../../lib/roles";
 
 export const methods = {
   /**
-   * Gets a count of the products from Shopify with the API credentials setup for your store.
+   * Check if Shopify API's credentials are valid or not.
    *
    * @async
    * @method connectors/shopify/api/credentials/test
