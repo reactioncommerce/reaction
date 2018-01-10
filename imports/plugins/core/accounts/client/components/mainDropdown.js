@@ -112,6 +112,10 @@ class MainDropdown extends Component {
               menuStyle={menuStyle}
               className="accounts-li-tag"
               onChange={this.props.handleChange}
+              constraints={[{
+                to: "window",
+                attachment: "together"
+              }]}
             >
               {this.renderUserIcons()}
               {this.renderAdminIcons()}
