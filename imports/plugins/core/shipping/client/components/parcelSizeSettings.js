@@ -17,7 +17,7 @@ class ParcelSizeSettings extends Component {
       size: this.props.size,
       isEditing: false,
       isSaving: false,
-      validationStatus: {}
+      validationStatus: this.props.validation().validate(this.props.size)
     };
     this.handleFieldFocus = this.handleFieldFocus.bind(this);
     this.handleStateChange = this.handleStateChange.bind(this);

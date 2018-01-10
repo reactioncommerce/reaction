@@ -68,7 +68,7 @@ export const methods = {
    * @summary update defaultParcelSize
    * @param {String} shopId - current shopId
    * @param {Object} size - size to be updated
-   * @since 1.5.5
+   * @since 1.6.3
   */
   "shipping/updateParcelSize": function (shopId, size) {
     check(shopId, String);

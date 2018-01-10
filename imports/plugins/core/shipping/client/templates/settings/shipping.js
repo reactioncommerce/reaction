@@ -27,7 +27,7 @@ Template.shippingSettings.helpers({
   /**
    * @method displayParcelSizeForm
    * @summary renders ParcelSizeSettings component in template
-   * @since 1.5.5
+   * @since 1.6.3
    * @return {Object} component - ParcelSizeSettings
    */
   displayParcelSizeForm() {

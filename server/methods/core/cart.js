@@ -446,31 +446,36 @@ Meteor.methods({
     }
 
     // Get default parcel size from primary shop
-    const { defaultParcelSize }  = Collections.Shops.findOne({
+    const { defaultParcelSize } = Collections.Shops.findOne({
       _id: shopId
     });
 
     // Set parcel
-    let parcel = {
-      weight: immediateAncestor ? immediateAncestor.weight : variant.weight,
-      height: immediateAncestor ? immediateAncestor.height : variant.height,
-      width: immediateAncestor ? immediateAncestor.width : variant.width,
-      length: immediateAncestor ? immediateAncestor.length : variant.length
-    };
+    let parcel = null;
+    if (immediateAncestor) {
+      if (immediateAncestor.weight || immediateAncestor.height || immediateAncestor.width || immediateAncestor.length) {
+        parcel = {
+          weight: immediateAncestor.weight,
+          height: immediateAncestor.height,
+          width: immediateAncestor.width,
+          length: immediateAncestor.length
+        };
+      }
+    }
+    // if it's set at the option level then that overrides
+    if (variant.weight || variant.height || variant.width || variant.length) {
+      parcel = {
+        weight: variant.weight,
+        height: variant.height,
+        width: variant.width,
+        length: variant.length
+      };
+    }
 
-    // Set default parcel size as parcel if parcel is not defined
+    // Check if parcel is undefined (occurs if product/variant dimension values are zero)
     if (!parcel) {
-      parcel = Object.assign({}, defaultParcelSize);
-    } else {
-      // Check if any parcel property is set to zero and set to corresponding value on default parcel size
-      Object.keys(parcel).forEach(function (key) {
-        if (parcel[key] === 0) {
-          parcel = Object.assign({},
-            parcel,
-            { [key]: defaultParcelSize[key] }
-          );
-        }
-      });
+      // Set parcel to defaulParcelSize
+      parcel = defaultParcelSize;
     }
 
     // cart variant doesn't exist

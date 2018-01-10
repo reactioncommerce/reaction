@@ -2,7 +2,10 @@ import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 SimpleSchema.messages({
-  greaterThanZero: "Value must be greater than zero"
+  "greaterThanZero length": "Length must be greater than 0",
+  "greaterThanZero width": "Width must be greater than 0",
+  "greaterThanZero height": "Height must be greater than 0",
+  "greaterThanZero weight": "Weight must be greater than 0"
 });
 
 
@@ -21,7 +24,7 @@ export const ParcelSize = new SimpleSchema({
     decimal: true,
     custom: function () {
       if (this.value <= 0) {
-        return "greaterThanZero";
+        return "greaterThanZero length";
       }
     }
   },
@@ -30,7 +33,7 @@ export const ParcelSize = new SimpleSchema({
     decimal: true,
     custom: function () {
       if (this.value <= 0) {
-        return "greaterThanZero";
+        return "greaterThanZero width";
       }
     }
   },
@@ -39,7 +42,7 @@ export const ParcelSize = new SimpleSchema({
     decimal: true,
     custom: function () {
       if (this.value <= 0) {
-        return "greaterThanZero";
+        return "greaterThanZero height";
       }
     }
   },
@@ -48,7 +51,7 @@ export const ParcelSize = new SimpleSchema({
     decimal: true,
     custom: function () {
       if (this.value <= 0) {
-        return "greaterThanZero";
+        return "greaterThanZero weight";
       }
     }
   }
