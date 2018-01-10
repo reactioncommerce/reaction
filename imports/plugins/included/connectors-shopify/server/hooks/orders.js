@@ -73,6 +73,7 @@ function convertOrderToShopifyOrder(doc, index, shopId) {
   }
   shopifyOrder.id = order._id;
   shopifyOrder.line_items = convertLineItems(itemsForShop, order);
+  shopifyOrder.shipping_lines = convertShipping(order, index);
   shopifyOrder.phone = order.billing[index].address.phone;
   shopifyOrder.source_name = "reaction_export";
   shopifyOrder.subtotal_price = order.getSubtotalByShop()[shopId];
@@ -217,6 +218,30 @@ function convertCustomer(address, order) {
     last_name: address.last_name
   };
   return customer;
+}
+
+/**
+ * @private
+ * @summary Create a shippingMethod object to record shipping on a Shopify order
+ * @param {Object} order - The order with shipping data
+ * @param {Number} index - The shop index to convert
+ * @returns {Array} An array of shipping lines
+ */
+function convertShipping(order, index) {
+  const shippingLines = [];
+  // I don't think we need to check this because we should **always** have a shipping record per shop
+  // so worst case shipmentMethod is undefined and we will skip
+  const method = order.shipping[index].shipmentMethod;
+  if (method) {
+    const shippingMethod = {
+      code: method.name,
+      price: method.rate,
+      title: method.name,
+      source: method.carrier
+    };
+    shippingLines.push(shippingMethod);
+  }
+  return shippingLines;
 }
 
 /**
