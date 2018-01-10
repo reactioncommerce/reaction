@@ -79,7 +79,6 @@ Template.shopSettings.helpers({
     const shopId = Reaction.getShopId();
 
     const media = Media.find({
-      "metadata.ownerId": Meteor.userId(),
       "metadata.shopId": shopId,
       "metadata.type": "brandAsset"
     });
