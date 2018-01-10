@@ -20,6 +20,11 @@ function getProductFindTerm(searchTerm, searchTags, userId) {
   if (!Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
     findTerm.isVisible = true;
   }
+  // Deletes the shopId field from "findTerm" for primary shop
+  // thereby allowing users on primary shop to search all products
+  if (shopId === Reaction.getPrimaryShopId()) {
+    delete findTerm.shopId;
+  }
   return findTerm;
 }
 
@@ -97,7 +102,13 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
           $options: "i"
         } }
       ] }
-    ] };
+    ]
+  };
+  // Deletes the shopId field from "findTerm" for primary shop
+  // thereby allowing users on primary shop to search all products
+  if (shopId === Reaction.getPrimaryShopId()) {
+    delete findTerm.$and[0].shopId;
+  }
   if (Reaction.hasPermission("orders", userId)) {
     orderResults = OrderSearch.find(findTerm, { limit: maxResults });
     Logger.debug(`Found ${orderResults.count()} orders searching for ${regexSafeSearchTerm}`);
@@ -131,7 +142,13 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
             $options: "i"
           } }
         ] }
-      ] };
+      ]
+    };
+    // Deletes the shopId field from "findTerm" for primary shop
+    // thereby allowing users on primary shop to search all products
+    if (shopId === Reaction.getPrimaryShopId()) {
+      delete findTerm.$and[0].shopId;
+    }
     accountResults = AccountSearch.find(findTerm, {
       limit: maxResults
     });

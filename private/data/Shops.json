@@ -429,7 +429,8 @@
       "enabled": false,
       "format": "%v %s",
       "symbol": "zł",
-      "decimal": ","
+      "decimal": ",",
+      "thousand": " "
     },
     "QAR": {
       "enabled": false,
