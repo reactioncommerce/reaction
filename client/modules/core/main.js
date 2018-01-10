@@ -399,6 +399,8 @@ export default {
   },
 
   setUserPreferences(packageName, preference, value) {
+    // User preferences are not stored in Meteor.user().profile
+    // to prevent all autorun() with dependency on Meteor.user() to run again.
     if (Meteor.user()) {
       return Accounts.update(Meteor.userId(), {
         $set: {
