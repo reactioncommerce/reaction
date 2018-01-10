@@ -481,7 +481,7 @@ export default {
   },
 
   setShopId(id) {
-    if (id) {
+    if (id && this.shopId !== id) {
       this.shopId = id;
       this.setUserPreferences("reaction", "activeShopId", id);
     }
