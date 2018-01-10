@@ -1,6 +1,7 @@
 /* eslint camelcase: 0 */
 import accounting from "accounting-js";
 import Shopify from "shopify-api-node";
+import { parse, format } from "libphonenumber-js";
 import { Reaction, Logger } from "/server/api";
 import { convertWeight } from "/lib/api";
 import { Orders, Shops } from "/lib/collections";
@@ -204,16 +205,12 @@ function convertAddress(address) {
  * @returns {Object} Shopify-compatible customer object
  */
 function convertCustomer(address, order) {
-  let phone;
-  if (address.country_code === "US") {
-    phone = `+1${address.phone}`; // shopify wants this corny +1 in front of the phone
-  } else {
-    phone = address.phone;
-  }
+  const { phone } = parse(address.phone, address.country_code);
+  const formattedPhone = format(phone, address.country_code, "International").replace(/\s/g, "");
   const customer = {
     accepts_marketing: false,
     email: order.email,
-    phone,
+    phone: formattedPhone,
     first_name: address.first_name,
     last_name: address.last_name
   };
