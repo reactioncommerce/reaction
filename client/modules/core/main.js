@@ -391,7 +391,7 @@ export default {
     if (user) {
       const profile = user.profile;
       if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
-        return user.profile.preferences[packageName][preference];
+        return profile.preferences[packageName][preference];
       }
     }
 
