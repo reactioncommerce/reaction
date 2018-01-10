@@ -23,7 +23,7 @@ import { createGroups } from "./groups";
  */
 
 // Unpack the named Collections we use.
-const { Jobs, Packages, Shops } = Collections;
+const { Jobs, Packages, Shops, Accounts: AccountsCollection } = Collections;
 
 export default {
 
@@ -584,7 +584,7 @@ export default {
       return undefined;
     }
 
-    const user = Meteor.users.findOne({ _id: userId });
+    const user = AccountsCollection.findOne({ _id: userId });
 
     if (user) {
       const profile = user.profile;
