@@ -27,7 +27,7 @@ Meteor.methods({
    */
   "shop/createShop": function (shopAdminUserId, shopData) {
     check(shopAdminUserId, Match.Optional(String));
-    check(shopData, Match.Optional(Schemas.Shop));
+    check(shopData, Match.Optional(Collections.Shops.simpleSchema()));
 
     // Get the current marketplace settings
     const marketplace = Reaction.getMarketplaceSettings();
@@ -91,11 +91,6 @@ Meteor.methods({
     // ensure unique id and shop name
     seedShop._id = Random.id();
     seedShop.name = seedShop.name + count;
-
-    // We trust the owner's shop clone, check only when shopData is passed as an argument
-    if (shopData) {
-      check(seedShop, Schemas.Shop);
-    }
 
     const shop = Object.assign({}, seedShop, {
       emails: shopUser.emails,
