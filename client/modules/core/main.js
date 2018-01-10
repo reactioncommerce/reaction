@@ -387,10 +387,11 @@ export default {
   },
 
   getUserPreferences(packageName, preference, defaultValue) {
-    if (Meteor.user() && this.Subscriptions && this.Subscriptions.Account.ready()) {
-      const profile = Accounts.findOne(Meteor.userId()).profile;
+    const user = Accounts.findOne(Meteor.userId());
+    if (user) {
+      const profile = user.profile;
       if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
-        return profile.preferences[packageName][preference];
+        return user.profile.preferences[packageName][preference];
       }
     }
 
@@ -398,7 +399,7 @@ export default {
   },
 
   setUserPreferences(packageName, preference, value) {
-    if (Meteor.user() && this.Subscriptions && this.Subscriptions.Account.ready()) {
+    if (Meteor.user()) {
       return Accounts.update(Meteor.userId(), {
         $set: {
           [`profile.preferences.${packageName}.${preference}`]: value
