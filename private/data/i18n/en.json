@@ -725,6 +725,12 @@
         "isRequired": "{{field}} is required.",
         "mustBeNumber": "{{field}} must be a number.",
         "variantFieldIsRequired": "Variant {{number}} {{field}} is required."
+      },
+      "shippingSettings": {
+        "parcelSize": {
+          "saveSuccess": "Parcel size saved.",
+          "saveFailed": "Parcel size update failed."
+        }
       }
     }
   }

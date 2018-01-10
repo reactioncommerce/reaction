@@ -34,6 +34,11 @@ export function getAddress(options = {}) {
   return _.defaults(options, defaults);
 }
 
+export function getDefaultParcelSize() {
+  const shop = getShop();
+  return shop.defaultParcelSize;
+}
+
 const shop = {
   name: faker.internet.domainName(),
   description: faker.company.catchPhrase(),
@@ -142,6 +147,12 @@ const shop = {
   // one shop in the marketplace is required as default shop. This is used to control marketplace settings.
   // Not having a primary shop will cause test failures
   shopType: "primary",
+  defaultParcelSize: {
+    weight: faker.random.number(),
+    length: faker.random.number(),
+    width: faker.random.number(),
+    height: faker.random.number()
+  },
   createdAt: new Date,
   updatedAt: new Date()
 };

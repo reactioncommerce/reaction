@@ -434,16 +434,50 @@ Meteor.methods({
     // we need to get the parent of the option to check if parcel info is stored there
     const immediateAncestors = variant.ancestors.filter((ancestor) => ancestor !== product._id);
     const immediateAncestor = Collections.Products.findOne({ _id: immediateAncestors[0] });
+
+    // Get maketplace settings
+    const marketplaceSettings = Reaction.getMarketplaceSettings();
+
+    let shopId;
+    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantCart) {
+      shopId = Reaction.getShopId();
+    } else {
+      shopId = Reaction.getPrimaryShopId();
+    }
+
+    // Get default parcel size from primary shop
+    const { defaultParcelSize } = Collections.Shops.findOne({
+      _id: shopId
+    });
+
+    // Set parcel
     let parcel = null;
     if (immediateAncestor) {
       if (immediateAncestor.weight || immediateAncestor.height || immediateAncestor.width || immediateAncestor.length) {
-        parcel = { weight: immediateAncestor.weight, height: immediateAncestor.height, width: immediateAncestor.width, length: immediateAncestor.length };
+        parcel = {
+          weight: immediateAncestor.weight,
+          height: immediateAncestor.height,
+          width: immediateAncestor.width,
+          length: immediateAncestor.length
+        };
       }
     }
     // if it's set at the option level then that overrides
     if (variant.weight || variant.height || variant.width || variant.length) {
-      parcel = { weight: variant.weight, height: variant.height, width: variant.width, length: variant.length };
+      parcel = {
+        weight: variant.weight,
+        height: variant.height,
+        width: variant.width,
+        length: variant.length
+      };
     }
+
+    // Check if parcel is undefined (occurs if product/variant dimension values are zero)
+    if (!parcel) {
+      // Set parcel to defaulParcelSize
+      parcel = defaultParcelSize;
+    }
+
     // cart variant doesn't exist
     return Collections.Cart.update({
       _id: cart._id

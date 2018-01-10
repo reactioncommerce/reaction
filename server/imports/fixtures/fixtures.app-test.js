@@ -18,11 +18,13 @@ describe("Fixtures:", function () {
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
     Collections.Orders.direct.remove();
+    Collections.Shops.direct.remove();
   });
 
   afterEach(function () {
     sandbox.restore();
     Collections.Orders.direct.remove();
+    Collections.Shops.direct.remove();
   });
 
   it("Account fixture should create an account", function () {
@@ -90,10 +92,26 @@ describe("Fixtures:", function () {
     expect(shopCount).to.be.above(1);
   });
 
+  it("Shop fixture should create a Shop with default parcel size value", function () {
+    const shop = Factory.create("shop");
+    expect(shop.defaultParcelSize).to.not.be.undefined;
+    expect(shop.defaultParcelSize).to.be.an("object");
+    expect(shop.defaultParcelSize).to.include.all.keys("weight", "length", "width", "height");
+  });
+
   it("Product fixture should create a product", function () {
     const product = Factory.create("product");
     expect(product).to.not.be.undefined;
     const productCount = Collections.Products.find().count();
     expect(productCount).to.be.above(0);
+  });
+
+  it("Product fixture should create a product with shop default parcel size values", function () {
+    const { defaultParcelSize } = Factory.create("shop");
+    const { variant } = addProductSingleVariant();
+    expect(variant.weight).to.equal(defaultParcelSize.weight);
+    expect(variant.length).to.equal(defaultParcelSize.length);
+    expect(variant.width).to.equal(defaultParcelSize.width);
+    expect(variant.height).to.equal(defaultParcelSize.height);
   });
 });

@@ -75,6 +75,20 @@
           "deliveryBegin": "Shipping Est.",
           "deliveryEnd": "Delivery Est."
         }
+      },
+      "defaultParcelSize": {
+        "label": "Default parcel size",
+        "weight": "Weight",
+        "length": "Length",
+        "width": "Width",
+        "height": "Height",
+        "alerts": {
+          "noWeight": "Please add parcel weight",
+          "noHeight": "Please add parcel height",
+          "noLength": "Please add parcel length",
+          "noWidth": "Please add parcel width",
+          "saveSuccess": "Parcel settings saved"
+        }
       }
     }
   }
