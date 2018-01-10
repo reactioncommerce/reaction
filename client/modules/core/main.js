@@ -9,7 +9,7 @@ import { Roles } from "meteor/alanning:roles";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
 import { localeDep } from  "/client/modules/i18n";
-import { Packages, Shops } from "/lib/collections";
+import { Packages, Shops, Accounts } from "/lib/collections";
 import { Router } from "/client/modules/router";
 
 // Global, private state object for client side
@@ -387,10 +387,8 @@ export default {
   },
 
   getUserPreferences(packageName, preference, defaultValue) {
-    const user = Meteor.user();
-
-    if (user) {
-      const profile = Meteor.user().profile;
+    if (Meteor.user() && this.Subscriptions && this.Subscriptions.Account.ready()) {
+      const profile = Accounts.findOne(Meteor.userId()).profile;
       if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
         return profile.preferences[packageName][preference];
       }
@@ -400,8 +398,8 @@ export default {
   },
 
   setUserPreferences(packageName, preference, value) {
-    if (Meteor.user()) {
-      return Meteor.users.update(Meteor.userId(), {
+    if (Meteor.user() && this.Subscriptions && this.Subscriptions.Account.ready()) {
+      return Accounts.update(Meteor.userId(), {
         $set: {
           [`profile.preferences.${packageName}.${preference}`]: value
         }
