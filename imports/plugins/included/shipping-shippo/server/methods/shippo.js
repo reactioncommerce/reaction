@@ -401,7 +401,7 @@ export const methods = {
         field: {
           addressBook: 1,
           emails: 1,
-          unitsOfMeasure: { $elemMatch: { default: true } }
+          unitsOfWeight: { $elemMatch: { default: true } }
         }
       });
 
@@ -417,10 +417,10 @@ export const methods = {
       const shippoAddressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
       // product in the cart has to have parcel property with the dimensions
       if (cart.items && cart.items[0] && cart.items[0].parcel) {
-        const unitOfMeasure = shop && shop.baseUOM || "kg";
+        const unitOfWeight = shop && shop.baseUOW || "kg";
         const unitOfLength = shop && shop.baseUOL || "cm";
         const cartWeight = getTotalCartweight(cart);
-        shippoParcel = createShippoParcel(cart.items[0].parcel, cartWeight, unitOfMeasure, unitOfLength);
+        shippoParcel = createShippoParcel(cart.items[0].parcel, cartWeight, unitOfWeight, unitOfLength);
       } else {
         errorDetails.message = "This cart has no items, or the first item has no 'parcel' property.";
         return [[errorDetails], []];
