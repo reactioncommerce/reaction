@@ -131,24 +131,24 @@ Template.sellerShopSettings.helpers({
     return uolOptions;
   },
 
-  uomOptions() {
+  uowOptions() {
     const sellerShop = Reaction.getSellerShop();
 
     if (!sellerShop) {
       return;
     }
 
-    const unitsOfMeasure = sellerShop.unitsOfMeasure;
-    const uomOptions = [];
-    if (Array.isArray(unitsOfMeasure)) {
-      for (const measure of unitsOfMeasure) {
-        uomOptions.push({
-          label: i18next.t(`uom.${measure.uom}`, { defaultValue: measure.uom }),
-          value: measure.uom
+    const unitsOfWeight = sellerShop.unitsOfWeight;
+    const uowOptions = [];
+    if (Array.isArray(unitsOfWeight)) {
+      for (const weight of unitsOfWeight) {
+        uowOptions.push({
+          label: i18next.t(`uow.${weight.uow}`, { defaultValue: weight.uow }),
+          value: weight.uow
         });
       }
     }
-    return uomOptions;
+    return uowOptions;
   },
 
   selectedCurrency() {

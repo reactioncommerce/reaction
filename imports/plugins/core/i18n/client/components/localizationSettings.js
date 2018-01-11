@@ -19,7 +19,7 @@ class LocalizationSettings extends Component {
     shop: PropTypes.object, // Shop data
     timezoneOptions: PropTypes.array,
     uolOptions: PropTypes.array,
-    uomOptions: PropTypes.array
+    uowOptions: PropTypes.array
   }
 
   renderCurrencies() {
@@ -126,9 +126,9 @@ class LocalizationSettings extends Component {
                 type: "select",
                 options: this.props.currencyOptions
               },
-              baseUOM: {
+              baseUOW: {
                 type: "select",
-                options: this.props.uomOptions
+                options: this.props.uowOptions
               },
               baseUOL: {
                 type: "select",

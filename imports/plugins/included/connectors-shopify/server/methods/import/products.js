@@ -211,12 +211,12 @@ function getShopifyVariantsAndOptions(shopifyProduct) {
 
 
 /**
- * Transforms a weight in grams to a weight in the shop's default unitsOfMeasure
+ * Transforms a weight in grams to a weight in the shop's default unitsOfWeight
  * @private
  * @method normalizeWeight
  * @param  {number} weight weight of the product in grams
- * @return {number} weight of the product in the shop's default unitsOfMeasure
- * @todo get store unitsOfMeasure, convert to store unitsOfMeasure from grams, return converted weight
+ * @return {number} weight of the product in the shop's default unitsOfWeight
+ * @todo get store unitsOfWeight, convert to store unitsOfWeight from grams, return converted weight
  */
 function normalizeWeight(weight) {
   return weight;

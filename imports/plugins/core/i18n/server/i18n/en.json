@@ -11,7 +11,7 @@
           "allOn": "All On",
           "allOff": "All Off"
         },
-        "baseUOM": "Base Unit of Measure",
+        "baseUOW": "Base Unit of Weight",
         "currency": "Base Currency",
         "currencyTooltip": "Shop default currency",
         "language": "Base Language",

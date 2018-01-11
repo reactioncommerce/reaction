@@ -88,19 +88,19 @@ const shop = {
     uol: "ft",
     label: "Feet"
   }],
-  baseUOM: "oz",
-  unitsOfMeasure: [{
-    uom: "oz",
+  baseUOW: "oz",
+  unitsOfWeight: [{
+    uow: "oz",
     label: "Ounces",
     default: true
   }, {
-    uom: "lb",
+    uow: "lb",
     label: "Pounds"
   }, {
-    uom: "g",
+    uow: "g",
     label: "Grams"
   }, {
-    uom: "kg",
+    uow: "kg",
     label: "Kilograms"
   }],
   layout: [{
