@@ -8,7 +8,7 @@ import { CSVLink } from "react-csv";
  * @summary React component for downloading CSV file of provided data, a wrapper around `react-csv`
  * @module CSVDownload
  * @extends Component
- * @file CSVDownalod React Component for downloading data in CSV Format
+ * @file CSVDownload React Component for downloading data in CSV Format
  * @param {object} props - React PropTypes
  * @property {object} data - An array containing data to download in CSV format
  * @property {string} filename - Name of the file that is downloaded
