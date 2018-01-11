@@ -56,16 +56,21 @@ function markExportFailed(doc) {
  * @param {Object} doc - the order to convert
  * @param {Number} index - the sequence number of billing/shipping records we are processing
  * @param {String} shopId - the Id of the shop we are processing for
+ * @param {Object} existingCustomer - the existing customer Id if it exists
  * @returns {Object} shopifyOrder - the converted order
  */
-function convertOrderToShopifyOrder(doc, index, shopId) {
+function convertOrderToShopifyOrder(doc, index, shopId, existingCustomer = undefined) {
   const order = Orders.findOne(doc._id); // only this object has the original transforms defined
   const paymentType = order.billing[index].method;
   const itemsForShop = order.getItemsByShop()[shopId];
   const shopifyOrder = {};
   shopifyOrder.billing_address = convertAddress(order.billing[index].address);
   shopifyOrder.shipping_address = convertAddress(order.shipping[index].address);
-  shopifyOrder.customer = convertCustomer(shopifyOrder.billing_address, order);
+  if (!existingCustomer || !existingCustomer.length) {
+    shopifyOrder.customer = convertCustomer(shopifyOrder.billing_address, order);
+  } else {
+    shopifyOrder.customer = existingCustomer;
+  }
   shopifyOrder.email = order.email;
   if (paymentType === "credit" && order.billing[index].mode === "authorize") {
     shopifyOrder.financial_status = "authorized";
@@ -197,6 +202,18 @@ function convertAddress(address) {
   return convertedAddress;
 }
 
+async function isExistingCustomer(address, email, shopify) {
+  const query = `email:${email}`;
+  const customerByEmailPromise = shopify.customer.search({ query });
+  return customerByEmailPromise;
+}
+
+function normalizePhone(phoneToNormalize, countryCode) {
+  const { phone } = parse(phoneToNormalize, countryCode);
+  const formattedPhone = format(phone, countryCode, "International").replace(/\s/g, "");
+  return formattedPhone;
+}
+
 /**
  * @private
  * @summary Create a customer object in Shopify-compatible format
@@ -205,8 +222,7 @@ function convertAddress(address) {
  * @returns {Object} Shopify-compatible customer object
  */
 function convertCustomer(address, order) {
-  const { phone } = parse(address.phone, address.country_code);
-  const formattedPhone = format(phone, address.country_code, "International").replace(/\s/g, "");
+  const formattedPhone = normalizePhone(address.phone, address.country_code);
   const customer = {
     accepts_marketing: false,
     email: order.email,
@@ -253,10 +269,12 @@ export async function exportToShopify(doc) {
   for (let index = 0; index < numShopOrders; index++) {
     // send a shopify order once for each merchant order
     const shopId = doc.billing[index].shopId;
-    const shopifyOrder = convertOrderToShopifyOrder(doc, index, shopId);
-    Logger.debug("sending shopify order", shopifyOrder, doc._id);
     const apiCreds = getApiInfo(shopId);
     const shopify = new Shopify(apiCreds);
+    const existingCustomerQuery = await isExistingCustomer(doc.billing[index].address, doc.email, shopify);
+    const existingCustomer = existingCustomerQuery[0];
+    const shopifyOrder = convertOrderToShopifyOrder(doc, index, shopId, existingCustomer);
+    Logger.debug("sending shopify order", shopifyOrder, doc._id);
     const newShopifyOrder = await shopify.order.create(shopifyOrder);
     markExported(newShopifyOrder, shopId, doc);
     shopifyOrders.push(newShopifyOrder);
@@ -280,7 +298,9 @@ Orders.after.insert((userId, doc) => {
               })
               .catch(error => {
                 Logger.error("Encountered error when exporting to shopify", error);
-                Logger.error(error.response.body);
+                if (error.response && error.response.body) {
+                  Logger.error(error.response.body);
+                }
                 markExportFailed(doc);
               });
           } catch (error) {
