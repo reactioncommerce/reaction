@@ -13,7 +13,7 @@ class ExampleSettingsForm extends Component {
       },
       checkbox: {
         authorize: _.get(props.settings.support, "authorize"),
-        de_authorize: _.get(props.settings.support, "de_authorize"),
+        ["de_authorize"]: _.get(props.settings.support, "de_authorize"),
         capture: _.get(props.settings.support, "capture"),
         refund: _.get(props.settings.support, "refund")
       }
