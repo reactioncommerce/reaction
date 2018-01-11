@@ -692,11 +692,10 @@ export function inviteShopMember(options) {
     Meteor.call("group/addUser", userId, groupId);
 
     // do not send token, as no password reset is needed
-    token = null;
     const url = Meteor.absoluteUrl();
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo, url });
+    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, emailLogo, url });
 
     // Get email template and subject
     tpl = "accounts/inviteShopMember";
