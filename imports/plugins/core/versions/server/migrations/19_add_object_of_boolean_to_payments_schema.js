@@ -5,7 +5,8 @@ const paymentMethodName = {
   Braintree: "reaction-braintree",
   AuthNet: "reaction-auth-net",
   Paypal: "reaction-paypal",
-  Stripe: "reaction-stripe"
+  Stripe: "reaction-stripe",
+  Example: "example-paymentmethod"
 };
 
 const PaypalSupport = {
@@ -31,7 +32,7 @@ Migrations.add({
             if (Array.isArray(support)) {
               const supportObject = {};
               support.forEach((method) => {
-                supportObject[method.toLowerCase()] = true;
+                supportObject[method.toLowerCase().replace(/-/g, "_")] = true;
               });
               // Update the package  settings support document with the new support
               Packages.update({ _id: pkg._id }, {
@@ -52,7 +53,7 @@ Migrations.add({
             const supportObject = {};
             // loop through support array
             support.forEach((method) => {
-              supportObject[method.toLowerCase()] = true;
+              supportObject[method.toLowerCase().replace(/-/g, "_")] = true;
             });
             // Update the package  settings support document with the new support
             Packages.update({ _id: pkg._id }, {
