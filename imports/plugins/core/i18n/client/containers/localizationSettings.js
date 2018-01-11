@@ -31,7 +31,7 @@ const wrapComponent = (Comp) => (
         $set: {
           timezone: doc.timezone,
           currency: doc.currency,
-          baseUOM: doc.baseUOM,
+          baseUOW: doc.baseUOW,
           language: doc.language
         }
       });
@@ -107,13 +107,13 @@ function composer(props, onData) {
   }
 
 
-  const unitsOfMeasure = Shops.findOne().unitsOfMeasure;
-  const uomOptions = [];
-  if (Array.isArray(unitsOfMeasure)) {
-    for (const measure of unitsOfMeasure) {
-      uomOptions.push({
-        label: i18next.t(`uom.${measure.uom}`, { defaultValue: measure.uom }),
-        value: measure.uom
+  const unitsOfWeight = Shops.findOne().unitsOfWeight;
+  const uowOptions = [];
+  if (Array.isArray(unitsOfWeight)) {
+    for (const weight of unitsOfWeight) {
+      uowOptions.push({
+        label: i18next.t(`uow.${weight.uow}`, { defaultValue: weight.uow }),
+        value: weight.uow
       });
     }
   }
@@ -150,7 +150,7 @@ function composer(props, onData) {
     enabledLanguages: languages.filter(language => (language.enabled || language.value === shop.language)),
     countryOptions: countries,
     currencyOptions,
-    uomOptions,
+    uowOptions,
     uolOptions,
     timezoneOptions
   });
