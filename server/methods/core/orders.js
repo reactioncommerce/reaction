@@ -699,12 +699,12 @@ export const methods = {
           });
           // variant image
           if (variantImage) {
-            orderItem.variantImage = path.join(Meteor.absoluteUrl(), variantImage.url());
+            orderItem.variantImage = Meteor.absoluteUrl(variantImage.url());
           }
           // find a default image
           const productImage = Media.findOne({ "metadata.productId": orderItem.productId });
           if (productImage) {
-            orderItem.productImage = path.join(Meteor.absoluteUrl(), productImage.url());
+            orderItem.productImage = Meteor.absoluteUrl(productImage.url());
           }
         }
       }
@@ -717,12 +717,12 @@ export const methods = {
         homepage: Meteor.absoluteUrl(),
         emailLogo: emailLogo,
         copyrightDate: moment().format("YYYY"),
-        legalName: shop.addressBook[0].company,
+        legalName: _.get(shop, "addressBook[0].company"),
         physicalAddress: {
-          address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
-          city: shop.addressBook[0].city,
-          region: shop.addressBook[0].region,
-          postal: shop.addressBook[0].postal
+          address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
+          city: _.get(shop, "addressBook[0].city"),
+          region: _.get(shop, "addressBook[0].region"),
+          postal: _.get(shop, "addressBook[0].postal")
         },
         shopName: shop.name,
         socialLinks: {
