@@ -30,7 +30,8 @@
           "syncStop": "Stop Sync",
           "syncStopSuccess": "Successfully Stopped Shopify sync!",
           "syncStopFailure": "Error stopping Shopify sync!",
-          "startImport": "Start Import"
+          "startImport": "Start Import",
+          "invalidCredentials": "Invalid credentials"
         }
       },
       "shopifyConnectPackageConfig": {

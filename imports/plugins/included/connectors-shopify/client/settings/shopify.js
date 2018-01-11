@@ -147,7 +147,7 @@ AutoForm.hooks({
         if (isValid) {
           return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
         }
-        return Alerts.toast(i18next.t("admin.settings.saveFailed"), "error");
+        return Alerts.toast(i18next.t("admin.shopifyConnectSettings.invalidCredentials", "Invalid credentials"), "error");
       });
     },
     onError(error) {
