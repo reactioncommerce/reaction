@@ -4,20 +4,18 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 import { CSVLink } from "react-csv";
 
 /**
- * @file CSVDownalod React Component for downloading data in CSV Format
- *
+ * @name CSVDownload propTypes
+ * @summary React component for downloading CSV file of provided data, a wrapper around `react-csv`
  * @module CSVDownload
  * @extends Component
+ * @file CSVDownalod React Component for downloading data in CSV Format
+ * @param {object} props - React PropTypes
+ * @property {object} data - An array containing data to download in CSV format
+ * @property {string} filename - Name of the file that is downloaded
+ * @return {node} React node containing component for downloading CSV file of provided data
  */
+
 class CSVDownload extends Component {
-  /**
-   * @name CSVDownload propTypes
-   * @summary React component for downloading CSV file of provided data, a wrapper around `react-csv`
-   * @param {object} props - React PropTypes
-   * @property {object} data - Ann array containing data to download in CSV format
-   * @property {string} filename - Name of the file that is downloaded
-   * @return {node} React node containing component for downloading CSV file of provided data
-   */
   static propTypes = {
     className: PropTypes.string,
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
