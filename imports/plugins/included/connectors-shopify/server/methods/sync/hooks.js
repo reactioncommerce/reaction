@@ -5,6 +5,11 @@ import { Packages } from "/lib/collections";
 import { connectorsRoles } from "../../lib/roles";
 
 export const methods = {
+  /**
+   * @summary define hooks handlers for adding event hooks
+   * @param {String} hook - The name of the hook to add a handler for
+   * @returns {Number} Results of Packages update
+   */
   "synchooks/shopify/addHook": (hook) => {
     check(hook, { name: String, checked: Boolean });
     if (!Reaction.hasPermission(connectorsRoles)) {
@@ -12,10 +17,15 @@ export const methods = {
     }
     const [ topic, event, syncType ] = hook.name.split(":");
     const hookSetting = { topic, event, syncType };
-    Packages.update({ name: "reaction-connectors-shopify", shopId: Reaction.getShopId() },
+    return Packages.update({ name: "reaction-connectors-shopify", shopId: Reaction.getShopId() },
       { $push: { "settings.synchooks": hookSetting }
       });
   },
+  /**
+   * @summary define hooks handlers for removing event hooks
+   * @param {String} hook - The name of the hook to remove a handler for
+   * @returns {Number} Results of Packages update
+   */
   "synchooks/shopify/removeHook": (hook) => {
     if (!Reaction.hasPermission(connectorsRoles)) {
       throw new Meteor.Error("access-denied", "Access Denied");
@@ -23,7 +33,7 @@ export const methods = {
     check(hook, { name: String, checked: Boolean });
     const [ topic, event, syncType ] = hook.name.split(":");
     const hookSetting = { topic, event, syncType };
-    Packages.update({ name: "reaction-connectors-shopify", shopId: Reaction.getShopId() },
+    return Packages.update({ name: "reaction-connectors-shopify", shopId: Reaction.getShopId() },
       { $pull: { "settings.synchooks": hookSetting }
       });
   }

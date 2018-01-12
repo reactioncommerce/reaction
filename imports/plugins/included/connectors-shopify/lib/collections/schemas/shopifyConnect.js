@@ -51,6 +51,13 @@ const Webhook = new SimpleSchema({
 
 registerSchema("Webhook", Webhook);
 
+/**
+ * @name Synchook
+ * @type {SimpleSchema}
+ * @property {String} topic - General topic this event is under
+ * @property {String} event - The type of event that we are capturing
+ * @property {String} syncType - The handler to run for this event
+ */
 export const Synchook = new SimpleSchema({
   topic: {
     type: String,
