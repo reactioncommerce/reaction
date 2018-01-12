@@ -2,6 +2,8 @@
 import accounting from "accounting-js";
 import Shopify from "shopify-api-node";
 import { parse, format } from "libphonenumber-js";
+import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
 import { convertWeight } from "/lib/api";
 import { Orders, Shops } from "/lib/collections";
@@ -60,13 +62,14 @@ function markExportFailed(doc) {
  * @returns {Object} shopifyOrder - the converted order
  */
 function convertOrderToShopifyOrder(doc, index, shopId, existingCustomer = undefined) {
+  check(existingCustomer, Match.OneOf(Object, undefined));
   const order = Orders.findOne(doc._id); // only this object has the original transforms defined
   const paymentType = order.billing[index].method;
   const itemsForShop = order.getItemsByShop()[shopId];
   const shopifyOrder = {};
   shopifyOrder.billing_address = convertAddress(order.billing[index].address);
   shopifyOrder.shipping_address = convertAddress(order.shipping[index].address);
-  if (!existingCustomer || !existingCustomer.length) {
+  if (!existingCustomer) {
     shopifyOrder.customer = convertCustomer(shopifyOrder.billing_address, order);
   } else {
     shopifyOrder.customer = existingCustomer;
@@ -272,6 +275,10 @@ export async function exportToShopify(doc) {
     const apiCreds = getApiInfo(shopId);
     const shopify = new Shopify(apiCreds);
     const existingCustomerQuery = await isExistingCustomer(doc.billing[index].address, doc.email, shopify);
+    // this should never happen but I want a meaningful error here in case it does
+    if (existingCustomerQuery.length > 1) {
+      throw new Meteor.Error("duplicate-customer", "Discovered more than one customer in Shopify. Cannot continue");
+    }
     const existingCustomer = existingCustomerQuery[0];
     const shopifyOrder = convertOrderToShopifyOrder(doc, index, shopId, existingCustomer);
     Logger.debug("sending shopify order", shopifyOrder, doc._id);
