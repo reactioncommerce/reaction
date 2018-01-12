@@ -94,3 +94,4 @@ johanbrook:publication-collector
 # meteorhacks:sikka                         # additional ddp, login security
 
 # Custom Packages
+simply:reactive-local-storage
