@@ -1,6 +1,7 @@
 import store from "amplify-store";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
+import { Accounts as AccountsCollection } from "/lib/collections";
 import { Accounts } from "meteor/accounts-base";
 
 import { Reaction, Logger } from "/client/api";
@@ -18,6 +19,19 @@ Meteor.startup(function () {
   // initialize anonymous guest users
   return Tracker.autorun(function () {
     const userId = Meteor.userId();
+
+    // Load data from Accounts collection into the localStorage
+    Tracker.nonreactive(() => {
+      const user = AccountsCollection.findOne(userId)
+      if (user && user.profile && user.profile.preferences) {
+        Object.keys(user.profile.preferences).forEach((packageName) => {
+          const packageSettings = user.profile.preferences[packageName];
+          Object.keys(packageSettings).forEach((preference) => {
+            Reaction.setUserPreferences(packageName, preference, packageSettings[preference]);
+          });
+        });
+      }
+    });
 
     if (userId && !isLocalStorageAvailable() && !readCookie(cookieName)) {
       Logger.debug("No local storage available. About to set up fallback login " +
