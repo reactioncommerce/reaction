@@ -14,18 +14,12 @@
       {{#autoForm
         schema=taxSchema
         type="method-update"
-        meteormethod="taxes/addRate"
+        meteormethod="taxes/editRate"
         doc=taxRate
         id="customTaxRates-update-form"
         resetOnSuccess=true
       }}
         <div>
-          <!-- {{> afQuickField name='taxCode' options=taxCodes class='form-control'}}
-          {{> afQuickField name='cartMethod' options="allowed" class='form-control'}}
-          {{> afQuickField name='taxLocale' options="allowed" class='form-control'}}
-          {{> afQuickField name='taxShipping'}}
-          {{> afQuickField name='taxIncluded'}}
-          {{> afQuickField name='discountsIncluded'}} -->
           {{> afQuickField name='country' options=countryOptions class='form-control'}}
 
           <label class="control-label">{{afFieldLabelText name='region'}}</label>
@@ -55,12 +49,6 @@
         resetOnSuccess=true
       }}
         <div>
-          <!-- {{> afQuickField name='taxCode' options=taxCodes class='form-control'}}
-          {{> afQuickField name='cartMethod' options="allowed" class='form-control'}}
-          {{> afQuickField name='taxLocale' options="allowed" class='form-control'}}
-          {{> afQuickField name='taxShipping'}}
-          {{> afQuickField name='taxIncluded'}}
-          {{> afQuickField name='discountsIncluded'}} -->
           {{> afQuickField name='country' options=countryOptions class='form-control'}}
 
           <label class="control-label">{{afFieldLabelText name='region'}}</label>

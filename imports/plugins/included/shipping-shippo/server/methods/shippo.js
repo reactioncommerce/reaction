@@ -196,24 +196,30 @@ export const methods = {
    * Also inserts(and deletes if already exist) docs in the Shipping collection each of the
    * activated Carriers of the Shippo account.
    * This method is intended to be used mainly by Autoform.
-   * @param {Object} modifier - The Autoform's modifier string
-   * @param {String} _id - The id of the Shippo package that gets updated
-   * @return {Object} result - The object returned.
+   * @param  {Object} details An object with _id and modifier props
+   * @param  {String} [docId] DEPRECATED. The _id, if details is the modifier.
+   * @return {Object|Boolean} result - The object returned.
    * @return {String} {string("update"|"delete")} result.type - The type of updating happened.
    */
-  "shippo/updateApiKey"(modifier, _id) {
-    // Important server-side check for security and data integrity
-    ShippoPackageConfig.validate(modifier);
-    check(_id, String);
+  "shippo/updateApiKey"(details, docId) {
+    check(details, Object);
+
+    // Backward compatibility
+    check(docId, Match.Optional(String));
+    const id = docId || details._id;
+    const modifier = docId ? details : details.modifier;
+
+    // Important server-side checks for security and data integrity
+    check(id, String);
+    ShippoPackageConfig.validate(modifier, { modifier: true });
 
     // Make sure user has proper rights to this package
-    const { shopId } = Packages.findOne({ _id },
-      { field: { shopId: 1 } });
+    const { shopId } = Packages.findOne(id, { field: { shopId: 1 } });
     if (shopId && Roles.userIsInRole(this.userId, shippingRoles, shopId)) {
       // If user wants to delete existing key
       if (modifier.hasOwnProperty("$unset")) {
         const customModifier = { $set: { "settings.apiKey": null } };
-        Packages.update(_id, customModifier);
+        Packages.update(id, customModifier);
         // remove shop's existing Shippo Providers from Shipping Collection
         removeShippoProviders(false, shopId);
 
@@ -226,7 +232,7 @@ export const methods = {
       // if not possible throws a relative Meteor Error (eg invalid_credentials)
       ShippoApi.methods.getAddressList.call({ apiKey });
       // if everything is ok proceed with the api key update
-      Packages.update(_id, modifier);
+      Packages.update(id, modifier);
       // remove shop's existing Shippo Providers from Shipping Collection
       removeShippoProviders(false, shopId);
 

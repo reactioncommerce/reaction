@@ -434,16 +434,19 @@ Meteor.methods({
    * @description On submit OpenExchangeRatesForm handler
    * @summary we need to rerun fetch exchange rates job on every form submit,
    * that's why we update autoform type to "method-update"
-   * @param {Object} modifier - the modifier object generated from the form values
-   * @param {String} _id - the _id of the document being updated
+   * @param {Object} details An object with _id and modifier props
    * @fires Collections.Packages#update
-   * @todo This method fires Packages collection, so maybe someday it could be
+   * @todo This method fires Packages collection, so maybe someday it could be moved to another file
    * @returns {undefined}
-   * moved to another file
    */
-  "shop/updateShopExternalServices": function (modifier, _id) {
-    if (modifier) Schemas.CorePackageConfig.validate(modifier);
-    check(_id, String);
+  "shop/updateShopExternalServices": function (details) {
+    check(details, {
+      _id: String,
+      modifier: Object // actual schema validation happens below
+    });
+
+    const { _id, modifier } = details;
+    Schemas.CorePackageConfig.validate(modifier, { modifier: true });
 
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
