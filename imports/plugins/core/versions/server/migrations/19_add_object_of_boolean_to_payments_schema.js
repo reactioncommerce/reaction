@@ -25,7 +25,7 @@ Migrations.add({
         packages = Packages.find({ name: paymentMethodName[key] });
         // Loop through all packages and update support to be an object
         packages.forEach((pkg) => {
-          // Lopp through all paypalsupport of payment to get each paymentmethod
+          // Loop through all paypalsupport of payment to get each paymentmethod
           Object.keys(PaypalSupport).forEach((paypal) => {
             support = pkg.settings[PaypalSupport[paypal]].support;
             // Checking to make sure support is an array

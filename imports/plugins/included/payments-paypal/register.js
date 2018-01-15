@@ -10,17 +10,19 @@ Reaction.registerPackage({
     express: {
       enabled: false,
       support: {
-        authorize: true,
-        capture: true,
-        refund: true
+        "authorize": true,
+        "[de_authorize]": false,
+        "capture": true,
+        "refund": true
       }
     },
     payflow: {
       enabled: false,
       support: {
-        authorize: true,
-        capture: true,
-        refund: true
+        "authorize": true,
+        "[de_authorize]": false,
+        "capture": true,
+        "refund": true
       }
     }
   },

@@ -383,9 +383,9 @@ export const methods = {
     const paymentMethodId = paymentMethod && paymentMethod.paymentPackageId;
     const paymentMethodName = paymentMethod && paymentMethod.paymentSettingsKey;
     const getPaymentMethod = Packages.findOne({ _id: paymentMethodId });
-    const refund = _.get(getPaymentMethod.settings[paymentMethodName].support, "refund");
+    const isRefundEnabled = _.get(getPaymentMethod.settings[paymentMethodName].support, "refund");
     const isRefundable = getPaymentMethod && getPaymentMethod.settings && getPaymentMethod.settings[paymentMethodName]
-     && refund;
+     && isRefundEnabled;
 
     if (isRefundable) {
       Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal));
