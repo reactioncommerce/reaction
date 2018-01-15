@@ -204,7 +204,7 @@ Meteor.methods({
           }
         });
 
-        Hooks.Events.run("onCartMerge", sessionCart, [cartId]);
+        Hooks.Events.run("onCartMerge", sessionCart);
       }
 
       // cleanup session Carts after merge.
@@ -429,7 +429,7 @@ Meteor.methods({
         Logger.debug(`cart: increment variant ${variantId} quantity by ${
           quantity}`);
 
-        Hooks.Events.run("onCartAdd", cart);
+        Hooks.Events.run("onCartAdd", { productId, cart });
 
         return result;
       });
@@ -484,7 +484,7 @@ Meteor.methods({
 
       Logger.debug(`cart: add variant ${variantId} to cartId ${cart._id}`);
 
-      Hooks.Events.run("onCartAdd", cart);
+      Hooks.Events.run("onCartAdd", { productId, cart });
 
       return result;
     });
@@ -553,7 +553,7 @@ Meteor.methods({
       Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
       // reset selected shipment method
       Meteor.call("cart/resetShipmentMethod", cart._id);
-      Hooks.Events.run("onCartRemove", cart);
+      Hooks.Events.run("onCartRemove", { itemId, cart });
       return cartResult;
     }
 
@@ -582,7 +582,7 @@ Meteor.methods({
     Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
     // reset selected shipment method
     Meteor.call("cart/resetShipmentMethod", cart._id);
-    Hooks.Events.run("onCartRemove", cart);
+    Hooks.Events.run("onCartRemove", { itemId, cart });
     return cartResult;
   },
 
@@ -645,7 +645,7 @@ Meteor.methods({
     // update or insert method
     try {
       Collections.Cart.update(selector, update);
-      Hooks.Events.run("onCartShipmentMethodSet", cart);
+      Hooks.Events.run("onCartShipmentMethodSet", method);
     } catch (e) {
       Logger.error(e, `Error adding rates to cart ${cartId}`);
       throw new Meteor.Error("server-error", "An error occurred saving the order", e);
@@ -708,7 +708,7 @@ Meteor.methods({
     // add / or set the shipping address
     try {
       Collections.Cart.update(selector, update);
-      Hooks.Events.run("onCartUserCurrencySet", cart);
+      Hooks.Events.run("onCartUserCurrencySet", userCurrency);
     } catch (e) {
       Logger.error(e);
       throw new Meteor.Error("server-error", "An error occurred adding the currency");
@@ -737,6 +737,7 @@ Meteor.methods({
         `Cart: ${cartId} not found for user: ${this.userId}`);
     }
 
+    Hooks.Events.run("onCartShipmentMethodReset", cartId);
     return Collections.Cart.update({ _id: cartId }, {
       $unset: { "shipping.0.shipmentMethod": "" }
     });
@@ -883,7 +884,7 @@ Meteor.methods({
       Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
     }
 
-    Hooks.Events.run("onCartShipmentAddressSet", cart);
+    Hooks.Events.run("onCartShipmentAddressSet", address);
     return true;
   },
 
@@ -938,6 +939,7 @@ Meteor.methods({
       };
     }
 
+    Hooks.Events.run("onCartPaymentAddressSet", address);
     return Collections.Cart.update(selector, update);
   },
 

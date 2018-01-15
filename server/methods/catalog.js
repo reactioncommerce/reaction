@@ -616,7 +616,7 @@ Meteor.methods({
     const productId = toDelete[0].ancestors[0];
     toDenormalize.forEach(field => denormalize(productId, field));
 
-    Hooks.Events.run("onProductVariantDelete", deleted);
+    Hooks.Events.run("onProductVariantDelete", toDelete);
     return typeof deleted === "number" && deleted > 0;
   },
 
@@ -757,7 +757,7 @@ Meteor.methods({
       }
     }
 
-    Hooks.Events.run("onProductClone", products);
+    Hooks.Events.run("onProductClone", { ...products, source: productOrArray });
     return results;
   },
 
@@ -800,7 +800,6 @@ Meteor.methods({
           title: "",
           type: "variant" // needed for multi-schema
         });
-        Hooks.Events.run("onProductCreate", result);
       }
     });
   },

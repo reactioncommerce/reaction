@@ -173,7 +173,7 @@ export function copyCartToOrder(cartId) {
   const orderId = Collections.Orders.insert(order);
 
   if (orderId) {
-    Hooks.Events.run("onOrderCreate", order, [orderId]);
+    Hooks.Events.run("onOrderCreate", order);
 
     Collections.Cart.remove({
       _id: order.cartId
