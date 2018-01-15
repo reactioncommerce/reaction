@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Template } from "meteor/templating";
 import { Reaction } from "/lib/api";
-import { SellerShops, Media } from "/lib/collections";
+import { SellerShops, Media, Shops } from "/lib/collections";
 import { i18next } from "/client/api";
 import { Countries } from "/client/collections";
 
@@ -83,16 +83,18 @@ Template.sellerShopSettings.helpers({
   },
 
   currencyOptions() {
-    const sellerShop = Reaction.getSellerShop();
+    // Merchant shops don't have currencies
+    const primaryShopId = Reaction.getPrimaryShopId();
+    const primaryShop = Shops.findOne(primaryShopId);
 
-    if (!sellerShop) {
+    if (!primaryShop) {
       return;
     }
 
     const currencies = [];
-    for (const currency in sellerShop.currencies) {
-      if ({}.hasOwnProperty.call(sellerShop.currencies, currency)) {
-        const structure = sellerShop.currencies[currency];
+    for (const currency in primaryShop.currencies) {
+      if ({}.hasOwnProperty.call(primaryShop.currencies, currency)) {
+        const structure = primaryShop.currencies[currency];
         const option = {
           // TODO global helper needed from i18nSettings.currencyOptions
           label: currency + "  |  " + structure.symbol,
@@ -152,15 +154,16 @@ Template.sellerShopSettings.helpers({
   },
 
   selectedCurrency() {
-    const sellerShop = Reaction.getSellerShop();
+    const primaryShopId = Reaction.getPrimaryShopId();
+    const primaryShop = Shops.findOne(primaryShopId);
 
-    if (!sellerShop) {
+    if (!primaryShop) {
       return;
     }
 
-    for (const currency in sellerShop.currencies) {
-      if (currency === sellerShop.currency) {
-        return sellerShop.currencies[currency];
+    for (const currency in primaryShop.currencies) {
+      if (currency === primaryShop.currency) {
+        return primaryShop.currencies[currency];
       }
     }
   },
