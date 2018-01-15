@@ -31,7 +31,8 @@
           "syncStopSuccess": "Successfully Stopped Shopify sync!",
           "syncStopFailure": "Error stopping Shopify sync!",
           "startImport": "Start Import",
-          "invalidCredentials": "Invalid credentials"
+          "invalidCredentials": "Invalid API key/password",
+          "validCredentials": "Valid API key and password"
         }
       },
       "shopifyConnectPackageConfig": {

@@ -145,7 +145,7 @@ AutoForm.hooks({
     onSuccess: function () {
       Meteor.call("connectors/shopify/api/credentials/test", (err, isValid) => {
         if (isValid) {
-          return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
+          return Alerts.toast(i18next.t("admin.shopifyConnectSettings.validCredentials"), "success");
         }
         return Alerts.toast(i18next.t("admin.shopifyConnectSettings.invalidCredentials", "Invalid credentials"), "error");
       });
