@@ -11,13 +11,13 @@ import { Countries } from "/client/collections";
 import { localeDep } from  "/client/modules/i18n";
 import { Packages, Shops, Accounts } from "/lib/collections";
 import { Router } from "/client/modules/router";
-import * as RLocalStorage from "meteor/simply:reactive-local-storage";
+import store from "store";
 
 // Global, private state object for client side
 // This is placed outside the main object to make it a private variable.
 // access using `Reaction.state`
 const reactionState = new ReactiveDict();
-
+const deps = new Map();
 /**
  * Reaction namespace
  * Global reaction shop permissions methods and shop initialization
@@ -388,8 +388,10 @@ export default {
   },
 
   getUserPreferences(packageName, preference, defaultValue) {
+    getDep(`${packageName}.${preference}`).depend();
     if (Meteor.user()) {
-      const packageSettings = RLocalStorage.getItem(packageName);
+      const packageSettings = store.get(packageName);
+      // packageSettings[preference] should not be undefined or null.
       if (packageSettings && packageSettings[preference] != undefined) { // eslint-disable-line eqeqeq
         return packageSettings[preference];
       }
@@ -399,9 +401,12 @@ export default {
   },
 
   setUserPreferences(packageName, preference, value) {
+    getDep(`${packageName}.${preference}`).changed();
     // User preferences are not stored in Meteor.user().profile
     // to prevent all autorun() with dependency on Meteor.user() to run again.
     if (Meteor.user()) {
+      // "reaction" package settings should be synced to
+      // the Accounts collection.
       if (packageName in ["reaction"]) {
         Accounts.update(Meteor.userId(), {
           $set: {
@@ -409,9 +414,9 @@ export default {
           }
         });
       }
-      const packageSettings = RLocalStorage.getItem(packageName) || {};
+      const packageSettings = store.get(packageName) || {};
       packageSettings[preference] = value;
-      return RLocalStorage.setItem(packageName, packageSettings);
+      return store.set(packageName, packageSettings);
     }
     return false;
   },
@@ -849,4 +854,11 @@ function createCountryCollection(countries) {
     Countries.insert(country);
   }
   return countryOptions;
+}
+
+function getDep(key) {
+  if (!deps.has(key)) {
+    deps.set(key, new Tracker.Dependency());
+  }
+  return deps.get(key);
 }

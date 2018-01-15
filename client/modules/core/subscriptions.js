@@ -1,4 +1,4 @@
-import store from "amplify-store";
+import store from "store";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { Session } from "meteor/session";
@@ -60,17 +60,17 @@ Tracker.autorun(function () {
   // we are trying to track both amplify and Session.get here, but the problem
   // is - we can't track amplify. It just not tracked. So, to track amplify we
   // are using dirty hack inside Accounts.loginWithAnonymous method.
-  const sessionId = store("Reaction.session");
+  const sessionId = store.get("Reaction.session");
   let newSession;
   Tracker.nonreactive(() => {
     newSession = Random.id();
   });
   if (typeof sessionId !== "string") {
-    store("Reaction.session", newSession);
+    store.set("Reaction.session", newSession);
     Session.set("sessionId", newSession);
   }
   if (typeof Session.get("sessionId") !== "string") {
-    Session.set("sessionId", store("Reaction.session"));
+    Session.set("sessionId", store.get("Reaction.session"));
   }
   Subscriptions.Sessions = Meteor.subscribe("Sessions", Session.get("sessionId"));
 });

@@ -1,4 +1,4 @@
-import store from "amplify-store";
+import store from "store";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Accounts as AccountsCollection } from "/lib/collections";
@@ -22,14 +22,19 @@ Meteor.startup(function () {
 
     // Load data from Accounts collection into the localStorage
     Tracker.nonreactive(() => {
-      const user = AccountsCollection.findOne(userId)
-      if (user && user.profile && user.profile.preferences) {
-        Object.keys(user.profile.preferences).forEach((packageName) => {
-          const packageSettings = user.profile.preferences[packageName];
-          Object.keys(packageSettings).forEach((preference) => {
-            Reaction.setUserPreferences(packageName, preference, packageSettings[preference]);
+      try {
+        const user = AccountsCollection.findOne(userId);
+        if (user && user.profile && user.profile.preferences) {
+          Object.keys(user.profile.preferences).forEach((packageName) => {
+            const packageSettings = user.profile.preferences[packageName];
+            Object.keys(packageSettings).forEach((preference) => {
+              Reaction.setUserPreferences(packageName, preference, packageSettings[preference]);
+            });
           });
-        });
+        }
+      } catch (err) {
+        Logger.error("Problem in loading user preferences from Accounts collection");
+        Logger.error(err);
       }
     });
 
@@ -51,7 +56,7 @@ Meteor.startup(function () {
     let sessionId;
     Tracker.nonreactive(function () {
       loggingIn = Accounts.loggingIn();
-      sessionId = store("Reaction.session");
+      sessionId = store.get("Reaction.session");
     });
 
     if (!userId) {
