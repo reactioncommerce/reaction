@@ -281,7 +281,7 @@ taxCalc.validateAddress = function (address) {
     // if this is a country with regions, pass in region
     addressToValidate.region = address.region;
   }
-  if (address.line2) {
+  if (address.address2) {
     addressToValidate.line2 = address.address2;
   }
   const baseUrl = getUrl();
@@ -307,7 +307,7 @@ taxCalc.validateAddress = function (address) {
       country: resultAddress.country
     };
     if (resultAddress.line2) {
-      validatedAddress.addresss2 = resultAddress.line2;
+      validatedAddress.address2 = resultAddress.line2;
     }
   }
   return { validatedAddress, errors };
