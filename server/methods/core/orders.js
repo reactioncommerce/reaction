@@ -769,7 +769,7 @@ export const methods = {
             refundTotal * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           total: accounting.formatMoney(
-            (subtotal + shippingCost) * userCurrencyExchangeRate, userCurrencyFormatting
+            (subtotal + shippingCost + taxes - discounts) * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           adjustedTotal: accounting.formatMoney(
             (amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting
