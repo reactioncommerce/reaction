@@ -137,7 +137,7 @@ Template.coreOrderShippingInvoice.events({
     const orderMode = paymentMethod && paymentMethod.mode;
 
     let alertText;
-    if (_.includes(checkSupportedMethods, "de-authorize") ||
+    if (_.get(checkSupportedMethods, "de_authorize") ||
       (orderStatus === "completed" && orderMode === "capture")) {
       alertText = i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal });
     }

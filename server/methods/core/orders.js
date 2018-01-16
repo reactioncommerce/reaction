@@ -1084,7 +1084,7 @@ export const methods = {
 
     let result;
     let query = {};
-    if (checkSupportedMethods.includes("De-authorize")) {
+    if (_.get(checkSupportedMethods, "de_authorize")) {
       result = Meteor.call(`${processor}/payment/deAuthorize`, paymentMethod, amount);
       query = {
         $push: {
@@ -1124,7 +1124,7 @@ export const methods = {
     Hooks.Events.run("onOrderRefundCreated", orderId);
 
     // Send email to notify customer of a refund
-    if (checkSupportedMethods.includes("De-authorize")) {
+    if (_.get(checkSupportedMethods, "de_authorize")) {
       Meteor.call("orders/sendNotification", order);
     } else if (orderMode === "capture" && sendEmail) {
       Meteor.call("orders/sendNotification", order, "refunded");
