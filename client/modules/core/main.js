@@ -392,7 +392,7 @@ export default {
     if (Meteor.user()) {
       const packageSettings = store.get(packageName);
       // packageSettings[preference] should not be undefined or null.
-      if (packageSettings && typeof packageSettings[preference] !== undefined && packageSettings[preference] !== null) {
+      if (packageSettings && typeof packageSettings[preference] !== "undefined" && packageSettings[preference] !== null) {
         return packageSettings[preference];
       }
     }
