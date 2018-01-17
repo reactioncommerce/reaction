@@ -10,7 +10,9 @@ import { Reaction, Logger } from "/server/api";
 
 
 /**
- * Send an email with a link that the user can use to reset their password.
+ * @method sendResetPasswordEmail
+ * @memberof Core
+ * @summary Send an email with a link that the user can use to reset their password.
  * @param {String} userId - The id of the user to send email to.
  * @param {String} [optionalEmail] Address to send the email to.
  *                 This address must be in the user's `emails` list.
@@ -72,12 +74,12 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
     homepage: Meteor.absoluteUrl(),
     emailLogo: emailLogo,
     copyrightDate: moment().format("YYYY"),
-    legalName: shop.addressBook[0].company,
+    legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
-      address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
-      city: shop.addressBook[0].city,
-      region: shop.addressBook[0].region,
-      postal: shop.addressBook[0].postal
+      address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
+      city: _.get(shop, "addressBook[0].city"),
+      region: _.get(shop, "addressBook[0].region"),
+      postal: _.get(shop, "addressBook[0].postal")
     },
     shopName: shop.name,
     socialLinks: {
@@ -119,7 +121,9 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
 
 
 /**
- * Send an email with a link the user can use verify their email address.
+ * @method sendVerificationEmail
+ * @memberof Core
+ * @summary Send an email with a link the user can use verify their email address.
  * @param {String} userId - The id of the user to send email to.
  * @param {String} [email] Optional. Address to send the email to.
  *                 This address must be in the user's emails list.
@@ -234,7 +238,9 @@ export function sendVerificationEmail(userId, email) {
 
 
 /**
- * Send an email with a link the user can use to verify their updated email address.
+ * @method sendUpdatedVerificationEmail
+ * @memberof Core
+ * @summary Send an email with a link the user can use to verify their updated email address.
  * @param {String} userId - The id of the user to send email to.
  * @param {String} [email] Optional. Address to send the email to.
  *                 This address must be in the user's emails list.

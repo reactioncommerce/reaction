@@ -84,8 +84,8 @@
 
   .rui.status-badge {
     position: absolute;
-    top: -17px;
-    right: -17px;
+    top: -23px;
+    right: -23px;
     width: 16px;
     height: 16px;
 
@@ -149,7 +149,45 @@
   }
 }
 
-.admin-featuredImage:hover {
-  background-color: @list-group-hover-bg;
-  opacity: 0.8;
+.admin-gallery-image.no-fade-on-hover {
+  &:hover {
+    opacity: 1;
+  }
+
+  & > div {
+    height: auto !important;
+
+    & > img {
+      height: auto !important;
+    }
+  }
+
+}
+
+.gallery-image.no-fade-on-hover {
+  &:hover {
+    opacity: 1;
+  }
+
+  & > div {
+    height: auto !important;
+
+    & > img {
+      height: auto !important;
+    }
+  }
+
+}
+
+.zoomed-image-container {
+  z-index: 1;
+  direction: ltr;
+}
+
+@media(min-width: 480px) {
+  .rtl .zoomed-image-container {
+    left: 0% !important;
+    right: 100% !important;
+    margin-right: 10px;
+  }
 }
