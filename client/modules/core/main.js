@@ -1,4 +1,5 @@
 import _ from "lodash";
+import store from "store";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { check } from "meteor/check";
@@ -11,7 +12,6 @@ import { Countries } from "/client/collections";
 import { localeDep } from  "/client/modules/i18n";
 import { Packages, Shops, Accounts } from "/lib/collections";
 import { Router } from "/client/modules/router";
-import store from "store";
 
 // Global, private state object for client side
 // This is placed outside the main object to make it a private variable.
@@ -392,7 +392,7 @@ export default {
     if (Meteor.user()) {
       const packageSettings = store.get(packageName);
       // packageSettings[preference] should not be undefined or null.
-      if (packageSettings && packageSettings[preference] != undefined) { // eslint-disable-line eqeqeq
+      if (packageSettings && typeof packageSettings[preference] !== undefined && packageSettings[preference] !== null) {
         return packageSettings[preference];
       }
     }
