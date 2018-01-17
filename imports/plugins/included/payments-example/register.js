@@ -18,7 +18,7 @@ Reaction.registerPackage({
         authorize: true,
         de_authorize: false,
         capture: true,
-        refund: true
+        refund: false
       }
     }
   },
