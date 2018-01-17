@@ -1,7 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
-import { Random } from "meteor/random";
 import { check, Match } from "meteor/check";
 import { HTTP } from "meteor/http";
 import { Job } from "meteor/vsivsi:job-collection";
@@ -9,6 +8,32 @@ import { GeoCoder, Logger } from "/server/api";
 import { Reaction } from "/lib/api";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
+
+/**
+ * Returns an existing shop object, with some values removed or changed such
+ * that it is suitable for inserting as a new shop.
+ */
+function cloneShop(shopId) {
+  const shop = Collections.Shops.findOne(shopId);
+  if (!shop) return null;
+
+  // Never create a second primary shop
+  if (shop.shopType === "primary") shop.shopType = "merchant";
+
+  // Ensure unique id and shop name
+  const count = Collections.Shops.find().count() || "";
+  shop.name = shop.name + count;
+
+  // Clean up values that get automatically added
+  delete shop._id;
+  delete shop.createdAt;
+  delete shop.updatedAt;
+  delete shop.slug;
+  // TODO audience permissions need to be consolidated into [object] and not [string]
+  // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
+  delete shop.layout;
+  return shop;
+}
 
 /**
  * @file Meteor methods for Shop
@@ -27,7 +52,11 @@ Meteor.methods({
    */
   "shop/createShop": function (shopAdminUserId, shopData) {
     check(shopAdminUserId, Match.Optional(String));
-    if (shopData) Schemas.Shop.validate(shopData);
+    if (shopData) {
+      Collections.Shops.simpleSchema(shopData).validate(shopData);
+      // Never create a second primary shop
+      if (shopData.shopType === "primary") shopData.shopType = "merchant";
+    }
 
     // Get the current marketplace settings
     const marketplace = Reaction.getMarketplaceSettings();
@@ -57,7 +86,6 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    const count = Collections.Shops.find().count() || "";
     const currentUser = Meteor.user();
     const currentAccount = Collections.Accounts.findOne({ _id: currentUser._id });
     if (!currentUser) {
@@ -74,39 +102,18 @@ Meteor.methods({
       shopAccount = Collections.Accounts.findOne({ _id: shopAdminUserId }) || currentAccount;
     }
 
+    const primaryShopId = Reaction.getPrimaryShopId();
+
     // Disallow creation of multiple shops, even for marketplace owners
-    if (shopAccount.shopId !== Reaction.getPrimaryShopId()) {
+    if (shopAccount.shopId !== primaryShopId) {
       throw new Meteor.Error("operation-not-permitted",
         "This user already has a shop. Each user may only have one shop.");
     }
 
     // we'll accept a shop object, or clone the current shop
-    const seedShop = shopData || Collections.Shops.findOne(Reaction.getPrimaryShopId());
-
-    // Never create a second primary shop
-    if (seedShop.shopType === "primary") {
-      seedShop.shopType = "merchant";
-    }
-
-    // ensure unique id and shop name
-    seedShop._id = Random.id();
-    seedShop.name = seedShop.name + count;
-
-    // We trust the owner's shop clone, check only when shopData is passed as an argument
-    if (shopData) Schemas.Shop.validate(seedShop);
-
-    const shop = Object.assign({}, seedShop, {
-      emails: shopUser.emails,
-      addressBook: shopAccount.addressBook
-    });
-
-    // Clean up values that get automatically added
-    delete shop.createdAt;
-    delete shop.updatedAt;
-    delete shop.slug;
-    // TODO audience permissions need to be consolidated into [object] and not [string]
-    // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
-    delete shop.layout;
+    const shop = shopData || cloneShop(primaryShopId);
+    shop.emails = shopUser.emails;
+    shop.addressBook = shopAccount.addressBook;
 
     let newShopId;
 
@@ -119,16 +126,16 @@ Meteor.methods({
     const newShop = Collections.Shops.findOne({ _id: newShopId });
 
     // we should have created new shop, or errored
-    Logger.info("Created shop: ", shop._id);
+    Logger.info("Created shop: ", newShopId);
 
     // update user
-    Reaction.insertPackagesForShop(shop._id);
-    Reaction.createGroups({ shopId: shop._id });
-    const ownerGroup = Collections.Groups.findOne({ slug: "owner", shopId: shop._id });
-    Roles.addUsersToRoles([currentUser, shopUser._id], ownerGroup.permissions, shop._id);
+    Reaction.insertPackagesForShop(newShopId);
+    Reaction.createGroups({ shopId: newShopId });
+    const ownerGroup = Collections.Groups.findOne({ slug: "owner", shopId: newShopId });
+    Roles.addUsersToRoles([currentUser, shopUser._id], ownerGroup.permissions, newShopId);
     Collections.Accounts.update({ _id: shopUser._id }, {
       $set: {
-        shopId: shop._id
+        shopId: newShopId
       },
       $addToSet: {
         groups: ownerGroup._id
@@ -136,7 +143,7 @@ Meteor.methods({
     });
 
     // Add this shop to the merchant
-    Collections.Shops.update({ _id: Reaction.getPrimaryShopId() }, {
+    Collections.Shops.update({ _id: primaryShopId }, {
       $addToSet: {
         merchantShops: {
           _id: newShop._id,
@@ -147,7 +154,7 @@ Meteor.methods({
     });
 
     // Set active shop to new shop.
-    return { shopId: shop._id };
+    return { shopId: newShopId };
   },
 
   /**
