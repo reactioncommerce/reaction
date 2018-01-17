@@ -271,12 +271,13 @@ function compareAddress(address, validationAddress) {
  * @returns {{validated: boolean, address: *}} - The results of the validation
  */
 export function validateAddress(address) {
-  check(address, Object);
+  Schemas.Address.clean(address, { mutate: true });
+  Schemas.Address.validate(address);
+
   let validated = true;
   let validationErrors;
   let validatedAddress = address;
   let formErrors;
-  Schemas.Address.clean(address);
   const validator = getValidator();
   if (validator) {
     const validationResult = Meteor.call(validator, address);
@@ -291,7 +292,6 @@ export function validateAddress(address) {
     } else {
       // No address, fail validation
       validated = false;
-      validatedAddress.failedValidation = false;
     }
   }
   const validationResults = { validated, fieldErrors: validationErrors, formErrors, validatedAddress };
@@ -430,12 +430,10 @@ export function addressBookUpdate(address, accountUserId, type) {
   const userId = accountUserId || Meteor.userId();
   // we need to compare old state of isShippingDefault, isBillingDefault with
   // new state and if it was enabled/disabled reflect this changes in cart
-  const account = Accounts.findOne({
-    userId: userId
-  });
-  const oldAddress = account.profile.addressBook.find(function (addr) {
-    return addr._id === address._id;
-  });
+  const account = Accounts.findOne({ userId });
+  const oldAddress = (account.profile.addressBook || []).find(addr => addr._id === address._id);
+
+  if (!oldAddress) throw new Meteor.Error("not-found", `No existing address found with ID ${address._id}`);
 
   // happens when the user clicked the address in grid. We need to set type
   // to `true`
@@ -448,7 +446,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   // when the current default address(ship or bill) gets edited(so Current and Previous default are the same).
   // This check can be simplified to :
   if (address.isShippingDefault || address.isBillingDefault ||
-    oldAddress.isShippingDefault || address.isBillingDefault) {
+    oldAddress.isShippingDefault || oldAddress.isBillingDefault) {
     const cart = Cart.findOne({ userId: userId });
     // Cart should exist to this moment, so we doesn't need to to verify its
     // existence.

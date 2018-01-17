@@ -4,8 +4,15 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 
+const rate = {
+  discount: 12,
+  label: "Discount 5",
+  description: "Discount by 5%",
+  discountMethod: "rate"
+};
+
 before(function () {
-  this.timeout(10000);
+  this.timeout(15000);
 });
 
 describe("discount rate methods", function () {
@@ -19,22 +26,15 @@ describe("discount rate methods", function () {
     sandbox.restore();
   });
 
-  const rate = {
-    discount: 12,
-    label: "Discount 5",
-    description: "Discount by 5%",
-    discountMethod: "rate"
-  };
-
   describe("discounts/addRate", function () {
-    it("should throw 403 error with discounts permission", function (done) {
+    it("should throw 403 error with discounts permission", function () {
       sandbox.stub(Roles, "userIsInRole", () => false);
       // this should actually trigger a whole lot of things
       expect(() => Meteor.call("discounts/addRate", rate)).to.throw(Meteor.Error, /Access Denied/);
-      return done();
     });
+
     // admin user
-    it("should add rate when user has role", function (done) {
+    it("should add rate when user has role", function () {
       sandbox.stub(Roles, "userIsInRole", () => true);
       const discountInsertSpy = sandbox.spy(Discounts, "insert");
       const discountId = Meteor.call("discounts/addRate", rate);
@@ -42,7 +42,6 @@ describe("discount rate methods", function () {
 
       const discountCount = Discounts.find(discountId).count();
       expect(discountCount).to.equal(1);
-      return done();
     });
   });
 });
