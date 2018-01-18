@@ -365,7 +365,22 @@ export const methods = {
     }
 
     if (!returnToStock) {
-      ordersInventoryAdjust(order._id);
+      // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
+      // in some instances which causes the order not to cancel
+      order.items.forEach(item => {
+        Products.update({
+          _id: item.variants._id
+        }, {
+          $inc: {
+            inventoryQuantity: -item.quantity
+          }
+        }, {
+          publish: true,
+          selector: {
+            type: "variant"
+          }
+        });
+      });
     }
 
     const billingRecord = order.billing.find(billing => billing.shopId === Reaction.getShopId());
