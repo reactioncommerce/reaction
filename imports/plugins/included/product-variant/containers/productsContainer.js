@@ -93,9 +93,7 @@ const wrapComponent = (Comp) => (
 
     render() {
       const ownProps = Object.keys(ProductsContainer.propTypes);
-      const passedProps = Object.keys(this.props).reduce((obj, key) => (
-        ownProps.includes(key) ?  { ...obj } : { ...obj, [key]: this.props[key] }
-      ), {});
+      const passedProps = Object.keys(this.props).reduce((obj, key) => (ownProps.includes(key) ?  { ...obj } : { ...obj, [key]: this.props[key] }), {});
 
       return (
         <Comp
