@@ -98,7 +98,7 @@ Meteor.publish("PaginatedOrders", function (limit) {
   if (this.userId === null) {
     return this.ready();
   }
-  const shopId = Reaction.getShopId(this.userId);
+  const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }
@@ -127,7 +127,7 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
   if (this.userId === null) {
     return this.ready();
   }
-  const shopId = Reaction.getShopId(this.userId);
+  const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }
