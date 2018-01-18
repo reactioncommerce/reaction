@@ -291,7 +291,9 @@ export function validateAddress(address) {
     } else {
       // No address, fail validation
       validated = false;
-      validatedAddress.failedValidation = false;
+      validatedAddress = {
+        failedValidation: false
+      };
     }
   }
   const validationResults = { validated, fieldErrors: validationErrors, formErrors, validatedAddress };
