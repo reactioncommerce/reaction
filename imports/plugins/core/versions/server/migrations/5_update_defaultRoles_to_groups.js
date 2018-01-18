@@ -57,7 +57,7 @@ Migrations.add({
       ownerRoles = ownerRoles.concat(Reaction.defaultCustomerRoles);
       ownerRoles = _.uniq(ownerRoles);
 
-      const shopManagerRoles = ownerRoles.filter(role => role !== "owner");
+      const shopManagerRoles = ownerRoles.filter(role => role !== "owner" && role !== "admin");
       const roles = {
         "shop manager": shopManagerRoles,
         "customer": defaultRoles || Reaction.defaultCustomerRoles,
