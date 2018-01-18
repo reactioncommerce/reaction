@@ -368,18 +368,21 @@ export const methods = {
       // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
       // in some instances which causes the order not to cancel
       order.items.forEach(item => {
-        Products.update({
-          _id: item.variants._id
-        }, {
-          $inc: {
-            inventoryQuantity: -item.quantity
-          }
-        }, {
-          publish: true,
-          selector: {
-            type: "variant"
-          }
-        });
+        if (Reaction.hasPermission("orders", Meteor.userId(), item.shopId)) {
+          Products.update({
+            _id: item.variants._id,
+            shopId: item.shopId
+          }, {
+            $inc: {
+              inventoryQuantity: -item.quantity
+            }
+          }, {
+            publish: true,
+            selector: {
+              type: "variant"
+            }
+          });
+        }
       });
     }
 
