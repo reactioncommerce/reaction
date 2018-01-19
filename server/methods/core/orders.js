@@ -377,10 +377,8 @@ export const methods = {
               inventoryQuantity: -item.quantity
             }
           }, {
-            publish: true,
-            selector: {
-              type: "variant"
-            }
+            bypassCollection2: true,
+            publish: true
           });
         }
       });
