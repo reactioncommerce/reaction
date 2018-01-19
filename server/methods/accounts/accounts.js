@@ -286,13 +286,13 @@ export function validateAddress(address) {
       validationErrors = compareAddress(address, validatedAddress);
       if (validationErrors.totalErrors || formErrors.length) {
         validated = false;
-        validatedAddress.failedValidation = false;
+        validatedAddress.failedValidation = true;
       }
     } else {
       // No address, fail validation
       validated = false;
       validatedAddress = {
-        failedValidation: false
+        failedValidation: true
       };
     }
   }
