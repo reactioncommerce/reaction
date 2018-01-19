@@ -17,9 +17,23 @@ export const methods = {
     }
     const [ topic, event, syncType ] = hook.name.split(":");
     const hookSetting = { topic, event, syncType };
-    return Packages.update({ name: "reaction-connectors-shopify", shopId: Reaction.getShopId() },
-      { $push: { "settings.synchooks": hookSetting }
-      });
+    return Packages.update({
+      "name": "reaction-connectors-shopify",
+      "shopId": Reaction.getShopId(),
+      // This $not $elemMatch block prevents us from creating duplicate synchooks as we won't find a package to update that
+      // matches this shopId and existing synchook
+      "settings.synchooks": {
+        $not: {
+          $elemMatch: {
+            topic: "orders",
+            event: "orders/create",
+            syncType: "exportToShopify"
+          }
+        }
+      }
+    }, {
+      $push: { "settings.synchooks": hookSetting }
+    });
   },
   /**
    * @summary define hooks handlers for removing event hooks
