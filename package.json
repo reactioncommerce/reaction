@@ -19,10 +19,10 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
-    "@reactioncommerce/authorize-net": "^1.0.8",
     "@reactioncommerce/nodemailer": "^5.0.5",
     "accounting-js": "^1.1.1",
     "amplify-store": "^0.1.0",
+    "authorize-net": "^1.0.10",
     "autoprefixer": "^7.1.6",
     "autosize": "^4.0.0",
     "babel-runtime": "^6.26.0",
