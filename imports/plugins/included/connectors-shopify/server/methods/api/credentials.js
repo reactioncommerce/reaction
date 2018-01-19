@@ -25,9 +25,8 @@ export const methods = {
     }
 
     const apiCreds = getApiInfo();
-    const shopify = new Shopify(apiCreds);
-
     try {
+      const shopify = new Shopify(apiCreds);
       await shopify.product.count();
     } catch (err) {
       return false;
