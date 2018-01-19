@@ -546,13 +546,9 @@ export default {
   },
 
   allowGuestCheckout() {
-    let allowGuest = false;
     const settings = this.getShopSettings();
     // we can disable in admin, let's check.
-    if (settings.public && settings.public.allowGuestCheckout) {
-      allowGuest = settings.public.allowGuestCheckout;
-    }
-    return allowGuest;
+    return settings.public && settings.public.allowGuestCheckout ? true : false;
   },
   /**
    * canInviteToGroup - client (similar to server/api canInviteToGroup)
