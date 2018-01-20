@@ -52,6 +52,31 @@ const Webhook = new SimpleSchema({
 registerSchema("Webhook", Webhook);
 
 /**
+ * @name Synchook
+ * @type {SimpleSchema}
+ * @property {String} topic - General topic this event is under
+ * @property {String} event - The type of event that we are capturing
+ * @property {String} syncType - The handler to run for this event
+ */
+export const Synchook = new SimpleSchema({
+  topic: {
+    type: String,
+    label: "Outbound Sync Topic",
+    allowedValues: ["orders"] // expand as necessary
+  },
+  event: {
+    type: String,
+    label: "Event to act upon"
+  },
+  syncType: {
+    type: String,
+    label: "Exactly what to sync in this topic"
+  }
+});
+
+registerSchema("Synchook", Synchook);
+
+/**
  * @name ShopifyConnectPackageConfig
  * @type {SimpleSchema}
  * @property {String} settings.apiKey Shopify API key
@@ -85,6 +110,11 @@ export const ShopifyConnectPackageConfig = new SimpleSchema([
     "settings.webhooks": {
       type: [Webhook],
       label: "Registered Shopify webhooks",
+      optional: true
+    },
+    "settings.synchooks": {
+      type: [Synchook],
+      label: "Hooks being used to sync outbound with Shopify",
       optional: true
     }
   }
