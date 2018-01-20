@@ -57,15 +57,14 @@ function getTotalCartweight(cart) {
 function ratesParser(shippoRates, shippoDocs) {
   return shippoRates.map(rate => {
     const rateAmount = parseFloat(rate.amount);
-    // const methodLabel = `${rate.provider} - ${rate.servicelevel_name}`;
     const reactionRate = {
       carrier: rate.provider,
       method: {
+        carrier: rate.provider,
         enabled: true,
+        handling: 0,
         label: rate.servicelevel_name,
         rate: rateAmount,
-        handling: 0,
-        carrier: rate.provider,
         settings: {
           // carrierAccount: rate.carrier_account,
           rateId: rate.object_id,
@@ -452,6 +451,7 @@ export const methods = {
         errorDetails.message = "The 'shipping' property of this cart is either missing or incomplete.";
         return [[errorDetails], []];
       }
+
       const carrierAccounts = Object.keys(shippoDocs);
       let shippoShipment;
       try {
@@ -478,7 +478,8 @@ export const methods = {
         return [[errorData], [currentMethodInfo]];
       }
 
-      if (!shippoShipment.rates_list || shippoShipment.rates_list.length === 0) {
+      const shippoRates = shippoShipment.rates_list;
+      if (!shippoRates || shippoRates.length === 0) {
         const noShippingMethods = {
           requestStatus: "error",
           shippingProvider: "shippo",
@@ -493,9 +494,7 @@ export const methods = {
         return [[noShippingMethods], [currentMethodInfo]];
       }
 
-      const shippoRates = shippoShipment.rates_list;
       const reactionRates = ratesParser(shippoRates, shippoDocs);
-
       return [reactionRates, []];
     }
 
