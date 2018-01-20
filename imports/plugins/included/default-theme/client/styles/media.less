@@ -84,8 +84,8 @@
 
   .rui.status-badge {
     position: absolute;
-    top: -17px;
-    right: -17px;
+    top: -23px;
+    right: -23px;
     width: 16px;
     height: 16px;
 
@@ -150,6 +150,21 @@
 }
 
 .admin-gallery-image.no-fade-on-hover {
+  &:hover {
+    opacity: 1;
+  }
+
+  & > div {
+    height: auto !important;
+
+    & > img {
+      height: auto !important;
+    }
+  }
+
+}
+
+.gallery-image.no-fade-on-hover {
   &:hover {
     opacity: 1;
   }
