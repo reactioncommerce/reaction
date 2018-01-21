@@ -17,6 +17,10 @@
         {{>afQuickField name='settings.public_key'}}
         {{>afQuickField name='settings.private_key'}}
         {{>afQuickField name="settings.reaction-braintree.support" options="allowed" noselect=true}}
+        {{>afQuickField name="settings.reaction-braintree.support.authorize" type="boolean-checkbox" options="allowed" noselect=true}}
+        {{>afQuickField name="settings.reaction-braintree.support.de_authorize" type="boolean-checkbox" options="allowed" noselect=true}}
+        {{>afQuickField name="settings.reaction-braintree.support.capture" type="boolean-checkbox" options="allowed" noselect=true}}
+        {{>afQuickField name="settings.reaction-braintree.support.refund" type="boolean-checkbox" options="allowed" noselect=true}}
         {{>afQuickField name='settings.mode' type="boolean-select" trueLabel="Live - Production Mode" falseLabel="Testing - Sandbox Mode"}}
         <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
       {{/autoForm}}

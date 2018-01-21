@@ -14,11 +14,12 @@ Reaction.registerPackage({
     "private_key": "",
     "reaction-braintree": {
       enabled: false,
-      support: [
-        "Authorize",
-        "Capture",
-        "Refund"
-      ]
+      support: {
+        authorize: true,
+        de_authorize: false,
+        capture: true,
+        refund: true
+      }
     }
   },
   registry: [

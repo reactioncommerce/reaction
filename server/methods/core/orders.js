@@ -399,13 +399,13 @@ export const methods = {
     const paymentMethodId = paymentMethod && paymentMethod.paymentPackageId;
     const paymentMethodName = paymentMethod && paymentMethod.paymentSettingsKey;
     const getPaymentMethod = Packages.findOne({ _id: paymentMethodId });
+    const isRefundEnabled = _.get(getPaymentMethod.settings[paymentMethodName].support, "refund");
     const isRefundable = getPaymentMethod && getPaymentMethod.settings && getPaymentMethod.settings[paymentMethodName]
-      && getPaymentMethod.settings[paymentMethodName].support.includes("Refund");
+     && isRefundEnabled;
 
     if (isRefundable) {
       Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal));
     }
-
 
     // send notification to user
     const prefix = Reaction.getShopPrefix();
@@ -1100,7 +1100,7 @@ export const methods = {
 
     let result;
     let query = {};
-    if (checkSupportedMethods.includes("De-authorize")) {
+    if (_.get(checkSupportedMethods, "de_authorize")) {
       result = Meteor.call(`${processor}/payment/deAuthorize`, paymentMethod, amount);
       query = {
         $push: {
@@ -1140,7 +1140,7 @@ export const methods = {
     Hooks.Events.run("onOrderRefundCreated", orderId);
 
     // Send email to notify customer of a refund
-    if (checkSupportedMethods.includes("De-authorize")) {
+    if (_.get(checkSupportedMethods, "de_authorize")) {
       Meteor.call("orders/sendNotification", order);
     } else if (orderMode === "capture" && sendEmail) {
       Meteor.call("orders/sendNotification", order, "refunded");

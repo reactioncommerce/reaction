@@ -12,10 +12,10 @@ class ExampleSettingsForm extends Component {
         support: props.settings.support
       },
       checkbox: {
-        "Authorize": _.includes(props.settings.support, "Authorize"),
-        "De-authorize": _.includes(props.settings.support, "De-authorize"),
-        "Capture": _.includes(props.settings.support, "Capture"),
-        "Refund": _.includes(props.settings.support, "Refund")
+        authorize: _.get(props.settings.support, "authorize"),
+        ["de_authorize"]: _.get(props.settings.support, "de_authorize"),
+        capture: _.get(props.settings.support, "capture"),
+        refund: _.get(props.settings.support, "refund")
       }
     };
   }
@@ -30,12 +30,11 @@ class ExampleSettingsForm extends Component {
     const { checkbox, settings } = this.state;
     checkbox[name] = isInputChecked;
     this.setState({ checkbox });
-    if (!_.includes(settings.support, name) && isInputChecked) {
-      settings.support.push(name);
+    if (!_.get(settings.support, name) && isInputChecked) {
+      settings.support[name] = true;
       return this.setState({ settings });
     }
-    const index = settings.support.indexOf(name);
-    settings.support.splice(index, 1);
+    settings.support[name] = false;
     return this.setState({ settings });
   }
 
@@ -75,8 +74,8 @@ class ExampleSettingsForm extends Component {
             <Checkbox
               label="Authorize"
               onChange={this.handleCheckBox}
-              name="Authorize"
-              checked={this.state.checkbox.Authorize}
+              name="authorize"
+              checked={this.state.checkbox.authorize}
             />
           </div>
 
@@ -84,8 +83,8 @@ class ExampleSettingsForm extends Component {
             <Checkbox
               label="De-authorize"
               onChange={this.handleCheckBox}
-              name="De-authorize"
-              checked={this.state.checkbox["De-authorize"]}
+              name="de_authorize"
+              checked={this.state.checkbox.de_authorize}
             />
           </div>
 
@@ -93,8 +92,8 @@ class ExampleSettingsForm extends Component {
             <Checkbox
               label="Capture"
               onChange={this.handleCheckBox}
-              name="Capture"
-              checked={this.state.checkbox.Capture}
+              name="capture"
+              checked={this.state.checkbox.capture}
             />
           </div>
 
@@ -102,8 +101,8 @@ class ExampleSettingsForm extends Component {
             <Checkbox
               label="Refund"
               onChange={this.handleCheckBox}
-              name="Refund"
-              checked={this.state.checkbox.Refund}
+              name="refund"
+              checked={this.state.checkbox.refund}
             />
           </div>
 

@@ -10,20 +10,52 @@ export const PaypalPackageConfig = new SimpleSchema([
       defaultValue: false
     },
     "settings.express.support": {
-      type: Array,
+      type: Object,
       label: "Payment provider supported methods"
     },
-    "settings.express.support.$": {
-      type: String,
-      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+    "settings.express.support.authorize": {
+      type: Boolean,
+      defaultValue: true,
+      label: "Authorize"
+    },
+    "settings.express.support.de_authorize": {
+      type: Boolean,
+      defaultValue: true,
+      label: "De-Authorize"
+    },
+    "settings.express.support.capture": {
+      type: Boolean,
+      defaultValue: true,
+      label: "Capture"
+    },
+    "settings.express.support.refund": {
+      type: Boolean,
+      defaultValue: true,
+      label: "Refund"
     },
     "settings.payflow.support": {
-      type: Array,
+      type: Object,
       label: "Payment provider supported methods"
     },
-    "settings.payflow.support.$": {
-      type: String,
-      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+    "settings.payflow.support.authorize": {
+      type: Boolean,
+      defaultValue: true,
+      label: "Authorize"
+    },
+    "settings.payflow.support.de_authorize": {
+      type: Boolean,
+      defaultValue: true,
+      label: "De-Authorize"
+    },
+    "settings.payflow.support.capture": {
+      type: Boolean,
+      defaultValue: true,
+      label: "Capture"
+    },
+    "settings.payflow.support.refund": {
+      type: Boolean,
+      defaultValue: true,
+      label: "Refund"
     },
     "settings.merchantId": {
       type: String,

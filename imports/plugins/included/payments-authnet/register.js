@@ -15,10 +15,10 @@ Reaction.registerPackage({
     },
     "reaction-auth-net": {
       enabled: false,
-      support: [
-        "Authorize",
-        "Capture"
-      ]
+      support: {
+        authorize: true,
+        capture: true
+      }
     }
   },
   registry: [

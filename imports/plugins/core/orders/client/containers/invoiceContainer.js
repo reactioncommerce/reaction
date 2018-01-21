@@ -223,9 +223,9 @@ class InvoiceContainer extends Component {
     const paymentMethodId = orderBillingInfo.paymentMethod && orderBillingInfo.paymentMethod.paymentPackageId;
     const paymentMethodName = orderBillingInfo.paymentMethod && orderBillingInfo.paymentMethod.paymentSettingsKey;
     const paymentMethod = Packages.findOne({ _id: paymentMethodId });
+    const isRefundEnabled = _.get(paymentMethod.settings[paymentMethodName].support, "refund");
     const isRefundable = paymentMethod && paymentMethod.settings && paymentMethod.settings[paymentMethodName]
-      && paymentMethod.settings[paymentMethodName].support.includes("Refund");
-
+      && isRefundEnabled;
     return isRefundable;
   }
 
@@ -270,7 +270,7 @@ class InvoiceContainer extends Component {
     const orderMode = getBillingInfo(order).paymentMethod && getBillingInfo(order).paymentMethod.mode;
 
     let alertText;
-    if (_.includes(checkSupportedMethods, "de-authorize") ||
+    if (_.get(checkSupportedMethods, "de_authorize") ||
       (orderStatus === "completed" && orderMode === "capture")) {
       alertText = i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal });
     }

@@ -31,6 +31,10 @@
           {{>afQuickField name="settings.applicationFee"}}
         {{/if}}
         {{>afQuickField name="settings.reaction-stripe.support" options="allowed" noselect=true}}
+        {{>afQuickField name="settings.reaction-stripe.support.authorize" type="boolean-checkbox" options="allowed" noselect=true}}
+        {{>afQuickField name="settings.reaction-stripe.support.de_authorize" type="boolean-checkbox" options="allowed" noselect=true}}
+        {{>afQuickField name="settings.reaction-stripe.support.capture" type="boolean-checkbox" options="allowed" noselect=true}}
+        {{>afQuickField name="settings.reaction-stripe.support.refund" type="boolean-checkbox" options="allowed" noselect=true}}
         <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
       {{/autoForm}}
     </div>
