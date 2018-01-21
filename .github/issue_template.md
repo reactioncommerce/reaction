@@ -13,6 +13,4 @@ to our [Gitter room](https://gitter.im/reactioncommerce/reaction) instead.
 (run `reaction -v` from your reaction directory)
 
 For enhancements or other issues, please describe, in as much detail as
-possible, how the app should be changed, and how this would benefit other users and developers. 
-
-We're giving away t-shirts, tote bags, and $500 gift cards to anyone who contributes a feature or fixes a bug. Learn more about the [Reaction Hack-a-bug-a-thon](https://blog.reactioncommerce.com/introducing-the-reaction-hack-a-bug-a-thon/). 
+possible, how the app should be changed, and how this would benefit other users and developers.
