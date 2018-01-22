@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import * as Collections from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 
 /**
@@ -173,6 +173,8 @@ export function copyCartToOrder(cartId) {
   const orderId = Collections.Orders.insert(order);
 
   if (orderId) {
+    Hooks.Events.run("onOrderCreate", order);
+
     Collections.Cart.remove({
       _id: order.cartId
     });

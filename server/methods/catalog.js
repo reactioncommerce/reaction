@@ -6,7 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { copyFile, ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
 import { Media, Products, Revisions, Tags } from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
@@ -440,6 +440,7 @@ Meteor.methods({
                 clone._id} from ${variantId}`
             );
           }
+          Hooks.Events.run("onProductVariantClone", variant);
         }
         if (error) {
           Logger.error(
@@ -511,6 +512,7 @@ Meteor.methods({
             `products/createVariant: created variant: ${
               newVariantId} for ${parentId}`
           );
+          Hooks.Events.run("onProductVariantCreate", product);
         }
       }
     );
@@ -564,6 +566,7 @@ Meteor.methods({
               denormalize(productId, field);
             }
           });
+          Hooks.Events.run("onProductVariantUpdate", newVariant);
         }
       });
     }
@@ -613,6 +616,7 @@ Meteor.methods({
     const productId = toDelete[0].ancestors[0];
     toDenormalize.forEach(field => denormalize(productId, field));
 
+    Hooks.Events.run("onProductVariantDelete", toDelete);
     return typeof deleted === "number" && deleted > 0;
   },
 
@@ -752,6 +756,8 @@ Meteor.methods({
         results.push(result);
       }
     }
+
+    Hooks.Events.run("onProductClone", { ...products, source: productOrArray });
     return results;
   },
 
@@ -777,6 +783,7 @@ Meteor.methods({
       if (!product.shopId || !Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
         throw new Meteor.Error("invalid-parameter", "Product should have a valid shopId");
       }
+      Hooks.Events.run("onProductCreate", product);
       return Products.insert(product);
     }
 
@@ -880,6 +887,7 @@ Meteor.methods({
           "metadata.isDeleted": true
         }
       });
+      Hooks.Events.run("onProductArchive", product);
       return numRemoved;
     }
     throw new Meteor.Error("server-error", "Something went wrong, nothing was deleted");
@@ -953,6 +961,7 @@ Meteor.methods({
           type: type
         }
       });
+      Hooks.Events.run("onProductFieldUpdate", doc);
     } catch (e) {
       throw new Meteor.Error("server-error", e.message);
     }
@@ -1075,6 +1084,7 @@ Meteor.methods({
         type: "simple"
       }
     });
+    Hooks.Events.run("onProductTagRemove", product);
   },
 
   /**
@@ -1105,6 +1115,7 @@ Meteor.methods({
       }
     });
 
+    Hooks.Events.run("onProductHandleSet", product);
     return handle;
   },
 
@@ -1143,6 +1154,7 @@ Meteor.methods({
       let handle = Reaction.getSlug(product.title);
       handle = createHandle(handle, product._id);
       Products.update(product._id, getSet(handle));
+      Hooks.Events.run("onProductHandleTagSet", tag);
 
       return handle;
     }
@@ -1160,6 +1172,7 @@ Meteor.methods({
         getSet(currentProductHandle));
     }
     Products.update(product._id, getSet(tag.slug));
+    Hooks.Events.run("onProductHandleTagSet", tag);
 
     return tag.slug;
   },
@@ -1417,6 +1430,7 @@ Meteor.methods({
       });
       // update product variants visibility
       updateVariantProductField(variants, "isVisible", !product.isVisible);
+      Hooks.Events.run("onProductPublish", product);
       // if collection updated we return new `isVisible` state
       return res === 1 && !product.isVisible;
     }
@@ -1460,6 +1474,7 @@ Meteor.methods({
 
       Meteor.call("products/updateProductField", updateId, "price", updatedPriceRange);
     }
+    Hooks.Events.run("onProductVisibilityToggle", product);
 
     // if collection updated we return new `isVisible` state
     return res === 1 && !product.isVisible;
