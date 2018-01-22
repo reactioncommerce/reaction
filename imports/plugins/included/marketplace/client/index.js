@@ -16,6 +16,11 @@ import "./templates/shops/shopSelect.js";
 import "./templates/stripeConnectSignupButton/stripeConnectSignupButton.html";
 import "./templates/stripeConnectSignupButton/stripeConnectSignupButton.js";
 
+import "./templates/marketplaceShopPackages.html";
+import "./templates/marketplaceShopPackages.js";
+
+import "./styles/settings.less";
+
 export { default as InviteOwner } from "./components/inviteOwner";
 
 export * from "./components";

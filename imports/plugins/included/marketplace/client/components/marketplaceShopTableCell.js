@@ -8,6 +8,7 @@ class MarketplaceShopTableCell extends Component {
   static propTypes = {
     data: PropTypes.object,
     field: PropTypes.string,
+    handleSelectRow: PropTypes.func,
     onWorkflowChange: PropTypes.func
   }
 
@@ -68,7 +69,6 @@ class MarketplaceShopTableCell extends Component {
         </Components.DropDownMenu>
       );
     }
-
 
     return (
       <div className="table-cell body">

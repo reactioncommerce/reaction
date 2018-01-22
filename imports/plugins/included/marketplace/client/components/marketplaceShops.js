@@ -4,8 +4,33 @@ import { Components } from "@reactioncommerce/reaction-components";
 
 class MarketplaceShops extends Component {
   static propTypes = {
+    handleSelectRow: PropTypes.func,
     onWorkflowChange: PropTypes.func,
     shops: PropTypes.arrayOf(PropTypes.object)
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selected: null
+    };
+  }
+
+  getTrGroupProps = (state, rowInfo) => {
+    let className = "";
+    if (rowInfo.original._id === this.state.selected) {
+      className = "selected";
+    }
+
+    return {
+      className,
+      onClick: () => {
+        const shopId = rowInfo.original._id;
+        this.setState({ selected: shopId });
+        this.props.handleSelectRow(shopId);
+      }
+    };
   }
 
   renderShopsTable() {
@@ -31,6 +56,7 @@ class MarketplaceShops extends Component {
         columnMetadata={columnMetadata}
         filteredFields={fields}
         filterType="none"
+        getTrGroupProps={this.getTrGroupProps}
         showFilter={true}
         isSortable={false}
       />
@@ -40,7 +66,7 @@ class MarketplaceShops extends Component {
   render() {
     return (
       <div className="rui sortable-table-container">
-        <div className="rui sortable-table">
+        <div className="rui sortable-table marketplace-shops">
           {this.renderShopsTable()}
         </div>
       </div>

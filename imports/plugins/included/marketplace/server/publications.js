@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Reaction } from "/lib/api";
-import { Shops } from "/lib/collections";
+import { Shops, Packages } from "/lib/collections";
 
 
 Meteor.publish("SellerShops", function (shopIds) {
@@ -72,4 +72,47 @@ Meteor.publish("SellerShops", function (shopIds) {
   }
 
   this.ready();
+});
+
+/**
+ * MarketplaceShopPackages
+ * @summary function to publish packages available for a marketplace shop
+ * @param {string} shopID
+ * @return {object | boolean }
+ */
+Meteor.publish("MarketplaceShopPackages", function (shopId) {
+  check(shopId, String);
+
+  if (!Reaction.hasPermission("admin", this.userId, Reaction.getPrimaryShopId())) {
+    return this.ready();
+  }
+
+  const shop = Shops.findOne({ _id: shopId });
+  const marketplaceSettings = Reaction.getMarketplaceSettings();
+  const packagesConfig =
+    marketplaceSettings &&
+    marketplaceSettings.shops &&
+    marketplaceSettings.shops.enabledPackagesByShopTypes;
+
+  if (shop && Array.isArray(packagesConfig)) {
+    const shopTypeConfig = packagesConfig.find((config) => config.shopType === shop.shopType);
+
+    const dashboardOptions = ["settings", "actions"];
+
+    // TODO: Comment
+    return Packages.find({
+      "registry.provides": { $in: dashboardOptions },
+      "name": { $in: shopTypeConfig.enabledPackages },
+      shopId
+    }, {
+      fields: {
+        shopId: 1,
+        name: 1,
+        registry: 1,
+        enabled: 1
+      }
+    });
+  }
+
+  return this.ready();
 });

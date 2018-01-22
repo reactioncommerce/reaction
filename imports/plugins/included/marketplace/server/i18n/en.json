@@ -11,8 +11,14 @@
       "marketplaceShops": {
         "headers": {
           "name": "Shop name",
-          "emails": "Contact email",
+          "emails": "Owner",
           "workflow": "Status"
+        },
+        "errors": {
+          "packageUpdate": "Package status update failed!"
+        },
+        "success": {
+          "packageUpdate": "Package status updated successfully!"
         }
       },
       "app": {
