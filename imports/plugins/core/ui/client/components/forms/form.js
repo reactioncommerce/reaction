@@ -108,11 +108,11 @@ class Form extends Component {
 
     // Clean any fields not in schame to avoid needless validation errors
     const cleanedObject = this.state.schema._simpleSchema.clean(docToValidate);
-
+    const isValid = this.state.schema.validate(cleanedObject);
     // Finally validate the document
-    return this.setState({
-      isValid: this.state.schema.validate(cleanedObject)
-    });
+    this.setState({ isValid });
+
+    return { isValid };
   }
 
   isFieldHidden(fieldName) {
@@ -127,20 +127,20 @@ class Form extends Component {
     const newdoc = update(this.state.doc, name, () => {
       return value;
     });
-
-    this.setState({
-      doc: newdoc
-    }, () => {
-      this.validate();
-    });
     // Calling user defined field specific handleChange function
     if (this.props.fieldsProp[name] && typeof this.props.fieldsProp[name].handleChange === "function") {
       this.props.fieldsProp[name].handleChange(event, value, name);
     }
 
-    if (this.props.autoSave === true) {
-      this.handleSubmit(event);
-    }
+    this.setState({
+      doc: newdoc
+    }, () => {
+      if (this.props.autoSave === true) {
+        this.handleSubmit(event);
+      } else {
+        this.validate();
+      }
+    });
   }
 
   handleSelectChange = (value, name) => {
@@ -156,12 +156,12 @@ class Form extends Component {
 
     // Need to wait for this before using this.state.isValid
     // as validate() changes state.
-    await this.validate();
+    const isValid = this.validate();
 
     if (this.props.onSubmit) {
       this.props.onSubmit(event, {
         doc: this.state.doc,
-        isValid: this.state.isValid
+        isValid
       }, this.props.name);
     }
   }

@@ -1,8 +1,7 @@
-import _ from "lodash";
-import { compose, withProps } from "recompose";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { Reaction, i18next } from "/client/api";
+import { Reaction } from "/client/api";
+import { compose, withProps } from "recompose";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
 import { AvalaraSettingsForm } from "../components";
 import { Logs as LogSchema } from "/lib/collections/schemas/logs";
@@ -12,60 +11,10 @@ import { Countries } from "/client/collections";
  * @file This is a container for AvalaraSettingsForm.
  * @module avalaraSettingsFormContainer
  */
-
-const handlers = {
-  /**
-    * handleSubmit
-    * @method
-    * @summary event handler for when new Avalara settings are submitted.
-    * @param {Object} event - event info.
-    * @param {Object} changedInfo - info about the new Avalara settings.
-    * @param {String} targetField - where to save the new settings in the Avalara Package.
-    * @return {null} - returns nothing
-    */
-  handleSubmit(event, changedInfo, targetField) { // eslint-disable-line no-unused-vars
-    if (!changedInfo.isValid) {
-      return;
-    }
-    Meteor.call("package/update", "taxes-avalara", "settings", changedInfo.doc.settings, (error) => {
-      if (error) {
-        Alerts.toast(
-          i18next.t("admin.update.avalaraUpdateFailed", { defaultValue: "Failed to update Avalara settings." }),
-          "error"
-        );
-        return;
-      }
-      Alerts.toast(
-        i18next.t("admin.update.avalaraUpdateSucceeded", { defaultValue: "Avalara settings updated." }),
-        "success"
-      );
-    });
-  },
-
-  handleTestCredentials(event, settings) {
-    Meteor.call("avalara/testCredentials", settings.avalara, function (error, result) {
-      if (error && error.message) {
-        return Alerts.toast(`${i18next.t("settings.testCredentialsFailed")} ${error.message}`, "error");
-      }
-      try {
-        const statusCode = _.get(result, "statusCode");
-        const connectionValid = _.inRange(statusCode, 400);
-        if (connectionValid) {
-          return Alerts.toast(i18next.t("settings.testCredentialsSuccess"), "success");
-        }
-        return Alerts.toast(i18next.t("settings.testCredentialsFailed"), "error");
-      } catch (e) {
-        return Alerts.toast(i18next.t("settings.testCredentialsFailed"), "error");
-      }
-    });
-  }
-};
-
 const countryDefaults = ["US", "CA"];
-let validCountries = null;
 
-const composer = (props, onData) => {
-  const shownFields = {
+const formSettings = {
+  shownFields: {
     ["settings.avalara.apiLoginId"]: AvalaraPackageConfig._schema["settings.avalara.apiLoginId"],
     ["settings.avalara.username"]: AvalaraPackageConfig._schema["settings.avalara.username"],
     ["settings.avalara.password"]: AvalaraPackageConfig._schema["settings.avalara.password"],
@@ -79,20 +28,12 @@ const composer = (props, onData) => {
     ["settings.avalara.enableLogging"]: AvalaraPackageConfig._schema["settings.avalara.enableLogging"],
     ["settings.avalara.logRetentionDuration"]: AvalaraPackageConfig._schema["settings.avalara.logRetentionDuration"],
     ["settings.avalara.commitDocuments"]: AvalaraPackageConfig._schema["settings.avalara.commitDocuments"]
-  };
-  const hiddenFields = [
+  },
+  hiddenFields: [
     "settings.avalara.enabled",
     "settings.avalara.companyId"
-  ];
-
-  validCountries = validCountries || Countries.find({ value: { $in: countryDefaults } }).fetch();
-
-  const fieldsProp = {
-    "settings.addressValidation.countryList": {
-      renderComponent: "multiselect",
-      options: validCountries,
-      defaultValue: _.map(validCountries, "value")
-    },
+  ],
+  fieldsProp: {
     "settings.avalara.mode": {
       renderComponent: "select",
       options: [
@@ -111,9 +52,8 @@ const composer = (props, onData) => {
     "settings.avalara.password": {
       inputType: "password"
     }
-  };
-
-  const logFieldsProp = {
+  },
+  logFieldsProp: {
     data: {
       renderComponent: "string",
       multiline: true,
@@ -122,32 +62,35 @@ const composer = (props, onData) => {
     date: {
       disabled: true
     }
-  };
-
-  const shownLogFields = {
+  },
+  shownLogFields: {
     date: LogSchema._schema.date,
     data: LogSchema._schema.data
-  };
+  }
+}
 
-
+const composer = (props, onData) => {
   const shopId = Reaction.getShopId();
   const packageSub = Meteor.subscribe("Packages", shopId);
+
+  const validCountries = Countries.find({ value: { $in: countryDefaults } }).fetch();
+  formSettings.fieldsProp["settings.addressValidation.countryList"] = {
+    renderComponent: "multiselect",
+    options: validCountries,
+    defaultValue: validCountries.map(country => country.value)
+  };
+
   if (packageSub.ready()) {
     const packageData = Reaction.getPackageSettings("taxes-avalara");
     onData(null,
       {
-        settings: packageData.settings,
-        shownFields,
-        hiddenFields,
-        fieldsProp,
-        shownLogFields,
-        logFieldsProp
+        settings: packageData.settings
       });
   }
 };
 
 registerComponent("AvalaraSettingsForm", AvalaraSettingsForm, [
-  withProps(handlers), composeWithTracker(composer)
+  withProps(formSettings), composeWithTracker(composer)
 ]);
 
-export default compose(withProps(handlers), composeWithTracker(composer))(AvalaraSettingsForm);
+export default compose(withProps(formSettings), composeWithTracker(composer))(AvalaraSettingsForm);

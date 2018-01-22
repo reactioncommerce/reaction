@@ -27,9 +27,9 @@ taxCalc.getPackageData = function () {
  */
 function getUrl() {
   const packageData = taxCalc.getPackageData();
-  const { productionMode } = packageData.settings.avalara;
+  const { mode } = packageData.settings.avalara;
   let baseUrl;
-  if (!productionMode) {
+  if (!mode) {
     baseUrl = "https://sandbox-rest.avatax.com/api/v2/";
   } else {
     baseUrl = "https://rest.avatax.com";

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { assign, clone } from "lodash";
 import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
 import { Form } from "/imports/plugins/core/ui/client/components";
 import { Components } from "@reactioncommerce/reaction-components";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
@@ -44,8 +45,6 @@ class AvalaraSettingsForm extends Component {
   */
   static propTypes = {
     fieldsProp: PropTypes.object,
-    handleSubmit: PropTypes.func,
-    handleTestCredentials: PropTypes.func,
     hiddenFields: PropTypes.arrayOf(PropTypes.string),
     logFieldsProp: PropTypes.object,
     settings: PropTypes.object,
@@ -65,36 +64,98 @@ class AvalaraSettingsForm extends Component {
   constructor(props) {
     super(props);
 
+    this.handleTestCredentials = this.handleTestCredentials.bind(this);
+    // attach the handleChange to all properties.
+    props.fieldsProp.forEach((field) => {
+      field.handleChange = this.handleChange.bind(this);
+    });
+
     this.state = {
-      editingId: undefined,
-      showLogs: this.props.settings.avalara.enableLogging,
-      log: undefined,
-      fieldsProp: assign(clone(props.fieldsProp), {
+      showLogs: props.settings.avalara.enableLogging,
+      fieldsProp: {
+        ...props.fieldsProp,
         "settings.avalara.enableLogging": {
           handleChange: this.handleLogToggle
         }
-      })
+      },
+      settings: props.settings
     };
   }
 
+  /**
+    * handleSubmit
+    * @method
+    * @summary event handler for when new Avalara settings are submitted.
+    * @param {Object} event - event info.
+    * @param {Object} changedInfo - info about the new Avalara settings.
+    * @param {String} targetField - where to save the new settings in the Avalara Package.
+    * @return {null} - returns nothing
+    */
+  handleSubmit(event, changedInfo, targetField) { // eslint-disable-line no-unused-vars
+    if (!changedInfo.isValid) {
+      return;
+    }
+    Meteor.call("package/update", "taxes-avalara", "settings", changedInfo.doc.settings, (error) => {
+      if (error) {
+        Alerts.toast(
+          i18next.t("admin.update.avalaraUpdateFailed", { defaultValue: "Failed to update Avalara settings." }),
+          "error"
+        );
+        return;
+      }
+      Alerts.toast(
+        i18next.t("admin.update.avalaraUpdateSucceeded", { defaultValue: "Avalara settings updated." }),
+        "success"
+      );
+    });
+  }
+
+  handleChange(event, value, name) {
+    this.setState((prevState) => {
+      return {
+        settings: {
+          ...prevState.settings,
+          [name]: value
+        }
+      };
+    });
+  }
+
+  handleTestCredentials() {
+    Meteor.call("avalara/testCredentials", this.state.settings.avalara, function (error, result) {
+      if (error && error.message) {
+        return Alerts.toast(`${i18next.t("settings.testCredentialsFailed")} ${error.message}`, "error");
+      }
+      try {
+        const statusCode = _.get(result, "statusCode");
+        const connectionValid = _.inRange(statusCode, 400);
+        if (connectionValid) {
+          return Alerts.toast(i18next.t("settings.testCredentialsSuccess"), "success");
+        }
+        return Alerts.toast(i18next.t("settings.testCredentialsFailed"), "error");
+      } catch (err) {
+        return Alerts.toast(i18next.t("settings.testCredentialsFailed"), "error");
+      }
+    });
+  }
+
   handleLogToggle = () => {
-    this.setState(() => ({ showLogs: !this.state.showLogs }));
+    this.setState((prevState) => ({ showLogs: !prevState.showLogs }));
   }
 
-  handleTestCredentials = (event) => {
-    this.props.handleTestCredentials(event, this.props.settings);
-  }
-
+  /**
+  * Shows the selected log in detail.
+  * @param  {Object} options
+  * @memberof AvalaraSettingsForm
+  */
   editRow = (options) => {
     const currentId = this.state.editingId;
-    this.setState(() => {
-      const id = options.props.data._id;
-      const log = Logs.findOne(id) || {};
-      log.data = JSON.stringify(log.data, null, 4);
-      return {
-        editingId: id,
-        log
-      };
+    const id = options.props.data._id;
+    const log = Logs.findOne(id) || {};
+    log.data = JSON.stringify(log.data, null, 4);
+    this.setState({
+      editingId: id,
+      log
     });
     // toggle edit mode clicking on same row
     if (currentId === options.props.data._id) {
@@ -106,7 +167,7 @@ class AvalaraSettingsForm extends Component {
   }
 
   render() {
-    const { handleSubmit, hiddenFields, settings, shownFields, shownLogFields } = this.props;
+    const { hiddenFields, settings, shownFields, shownLogFields } = this.props;
 
     // add i18n handling to headers
     const customColumnMetadata = AvalaraSettingsForm.filteredFields.reduce((arr, field) => {
@@ -120,22 +181,22 @@ class AvalaraSettingsForm extends Component {
 
     return (
       <div className="rui avalara-update-form">
-        {!settings.avalara.apiLoginId &&
+        {!(!!settings.avalara.apiLoginId) &&
           <div className="alert alert-info">
             <Components.Translation defaultValue="Add API Login ID to enable" i18nKey="admin.taxSettings.avalaraCredentials" />
-            <a href="https://admin-development.avalara.net" target="_blank"> Avalara</a>
+            <a href="https://admin-development.avalara.net" target="_blank">Avalara</a>
           </div>
         }
         <Form
           schema={AvalaraPackageConfig}
           doc={{ settings }}
-          renderFromFields={true}
+          renderFromFields
           fieldsProp={this.state.fieldsProp}
-          docPath={"settings.avalara"}
-          name={"settings.avalara"}
+          docPath="settings.avalara"
+          name="settings.avalara"
           fields={shownFields}
           hideFields={hiddenFields}
-          onSubmit={handleSubmit}
+          onSubmit={this.handleSubmit}
         />
         <div id="testAvalaraCredentialsContainer">
           <Components.Button id="testAvalaraCredentials" label="Test Credentials" buttonType="button"
@@ -146,14 +207,14 @@ class AvalaraSettingsForm extends Component {
         <div className="panel-body text-center avalara-login-box">
           <a href="https://admin-development.avalara.net" target="_blank">Avalara Admin Console Login</a>
         </div>
-        {this.state.showLogs &&
+        {!!this.state.showLogs &&
         (
           <Components.SortableTable
-            publication={"Logs"}
+            publication="Logs"
             collection= {Logs}
             query= {{ logType: "avalara" }}
-            matchingResultsCount= {"logs-count"}
-            showFilter= {true}
+            matchingResultsCount="logs-count"
+            showFilter
             rowMetadata= {AvalaraSettingsForm.customRowMetaData}
             filteredFields= {AvalaraSettingsForm.filteredFields}
             columns= {AvalaraSettingsForm.filteredFields}
@@ -164,14 +225,14 @@ class AvalaraSettingsForm extends Component {
           />
         )}
         <div>
-          {this.state.log &&
+          {!!this.state.log &&
           (
             <Form
               schema={LogSchema}
               doc={this.state.log}
               fields={shownLogFields}
               fieldsProp={this.props.logFieldsProp}
-              autoSave={true}
+              autoSave
             />
           )}
         </div>
