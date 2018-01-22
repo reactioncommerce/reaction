@@ -102,7 +102,7 @@ Meteor.startup(() => {
     // setting local and active packageNamespaces
     // packageNamespaces are used to determine i18n namespace
     if (Reaction.Subscriptions.PrimaryShop.ready() && merchantShopsReadyOrSkipped) {
-      // use i18n detected language to getLocale info and set it clie nt side
+      // use i18n detected language to getLocale info and set it client side
       Meteor.call("shop/getLocale", (error, result) => {
         if (result) {
           const locale = result;
