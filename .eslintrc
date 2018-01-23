@@ -264,7 +264,7 @@
     // "array-bracket-spacing": ["error", "never"],
     // "array-callback-return": ["error", { "allowImplicit": true }],
     // "arrow-body-style": ["error", "as-needed", { "requireReturnForObjectLiteral": false }],
-    // "arrow-parens": [ "error", "as-needed", { "requireForBlockBody": true }],
+    // "arrow-parens": [ "error", "always", { "requireForBlockBody": true }],
     // "block-spacing": ["error", "always"],
     // "computed-property-spacing": ["error", "never"],
     // "dot-location": ["error", "property"],
@@ -317,7 +317,7 @@
     // "no-void": "error",
     // "object-curly-newline": ["error", { "ObjectExpression": { "multiline": true, "consistent": true }, "ObjectPattern": { "multiline": true, "consistent": true } }],
     // "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": true }],
-    // "object-shorthand": ["error", "always", { "ignoreConstructors": false, "avoidQuotes": true }],
+    // "object-shorthand": ["error", "always"],
     // "operator-assignment": ["error", "always"],
     // "prefer-arrow-callback": ["error", { "allowNamedFunctions": false, "allowUnboundThis": true }],
     // "prefer-destructuring": ["error", {
