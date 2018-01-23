@@ -678,17 +678,30 @@ export function inviteShopMember(options) {
   const currentUser = Meteor.users.findOne(this.userId);
   const currentUserName = getCurrentUserName(currentUser);
   const emailLogo = getEmailLogo(primaryShop);
-  const token = Random.id();
   const user = Meteor.users.findOne({ "emails.address": email });
+  const token = Random.id();
   let dataForEmail;
   let userId;
+  let tpl;
+  let subject;
 
+  // If the user already has an account, send informative email, not "invite" email
   if (user) {
-    userId = user._id; // since user exists, we promote the account
+    // The user already exists, we promote the account, rather than creating a new one
+    userId = user._id;
     Meteor.call("group/addUser", userId, groupId);
+
+    // do not send token, as no password reset is needed
+    const url = Meteor.absoluteUrl();
+
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
+    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, emailLogo, url });
+
+    // Get email template and subject
+    tpl = "accounts/inviteShopMember";
+    subject = "accounts/inviteShopMember/subject";
   } else {
+    // The user does not already exist, we need to create a new account
     userId = MeteorAccounts.createUser({
       profile: { invited: true },
       email,
@@ -701,15 +714,18 @@ export function inviteShopMember(options) {
       name
     };
     Meteor.users.update(userId, { $set: tokenUpdate });
+
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
     dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
+
+    // Get email template and subject
+    tpl = "accounts/inviteNewShopMember";
+    subject = "accounts/inviteNewShopMember/subject";
   }
 
   dataForEmail.groupName = _.startCase(group.name);
 
   // Compile Email with SSR
-  const tpl = "accounts/inviteShopMember";
-  const subject = "accounts/inviteShopMember/subject";
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
@@ -955,7 +971,7 @@ function getCurrentUserName(currentUser) {
  * emailLogo, legalName, physicalAddress, shopName, socialLinks, user, invitedUserName, url
  */
 function getDataForEmail(options) {
-  const { shop, currentUserName, token, emailLogo, name } = options;
+  const { shop, currentUserName, token, emailLogo, name, url } = options;
   const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
 
   return {
@@ -994,7 +1010,7 @@ function getDataForEmail(options) {
     user: Meteor.user(), // Account Data
     currentUserName,
     invitedUserName: name,
-    url: getEmailUrl(token)
+    url: url || getEmailUrl(token)
   };
 
   function getEmailUrl(userToken) {
