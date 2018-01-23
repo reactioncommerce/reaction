@@ -365,7 +365,23 @@ export const methods = {
     }
 
     if (!returnToStock) {
-      ordersInventoryAdjust(order._id);
+      // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
+      // in some instances which causes the order not to cancel
+      order.items.forEach(item => {
+        if (Reaction.hasPermission("orders", Meteor.userId(), item.shopId)) {
+          Products.update({
+            _id: item.variants._id,
+            shopId: item.shopId
+          }, {
+            $inc: {
+              inventoryQuantity: -item.quantity
+            }
+          }, {
+            bypassCollection2: true,
+            publish: true
+          });
+        }
+      });
     }
 
     const billingRecord = order.billing.find(billing => billing.shopId === Reaction.getShopId());
@@ -699,12 +715,12 @@ export const methods = {
           });
           // variant image
           if (variantImage) {
-            orderItem.variantImage = path.join(Meteor.absoluteUrl(), variantImage.url());
+            orderItem.variantImage = Meteor.absoluteUrl(variantImage.url());
           }
           // find a default image
           const productImage = Media.findOne({ "metadata.productId": orderItem.productId });
           if (productImage) {
-            orderItem.productImage = path.join(Meteor.absoluteUrl(), productImage.url());
+            orderItem.productImage = Meteor.absoluteUrl(productImage.url());
           }
         }
       }
@@ -717,12 +733,12 @@ export const methods = {
         homepage: Meteor.absoluteUrl(),
         emailLogo: emailLogo,
         copyrightDate: moment().format("YYYY"),
-        legalName: shop.addressBook[0].company,
+        legalName: _.get(shop, "addressBook[0].company"),
         physicalAddress: {
-          address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
-          city: shop.addressBook[0].city,
-          region: shop.addressBook[0].region,
-          postal: shop.addressBook[0].postal
+          address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
+          city: _.get(shop, "addressBook[0].city"),
+          region: _.get(shop, "addressBook[0].region"),
+          postal: _.get(shop, "addressBook[0].postal")
         },
         shopName: shop.name,
         socialLinks: {
@@ -769,7 +785,7 @@ export const methods = {
             refundTotal * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           total: accounting.formatMoney(
-            (subtotal + shippingCost) * userCurrencyExchangeRate, userCurrencyFormatting
+            (subtotal + shippingCost + taxes - discounts) * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           adjustedTotal: accounting.formatMoney(
             (amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting

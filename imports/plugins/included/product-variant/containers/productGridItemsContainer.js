@@ -45,7 +45,7 @@ const wrapComponent = (Comp) => (
       document.querySelector(".page > main").removeEventListener("click", this.onPageClick);
     }
 
-    onPageClick = () => {
+    onPageClick = (event) => {
       // Do nothing if we are in preview mode
       if (Reaction.isPreview() === false) {
         // Don't trigger the clear selection if we're clicking on a grid item.
