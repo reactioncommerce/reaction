@@ -43,7 +43,7 @@ MethodHooks.after("taxes/calculate", (options) => {
       }
     });
   }
-  return options.result;
+  return options;
 });
 
 MethodHooks.after("cart/copyCartToOrder", (options) => {
@@ -72,5 +72,5 @@ MethodHooks.after("orders/refunds/create", (options) => {
       }
     });
   }
-  return options.result;
+  return options;
 });
