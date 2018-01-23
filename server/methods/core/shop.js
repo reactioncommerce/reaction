@@ -32,6 +32,9 @@ function cloneShop(shopId) {
   // TODO audience permissions need to be consolidated into [object] and not [string]
   // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
   delete shop.layout;
+  // delete brandAssets object from shop to prevent new shops from carrying over existing shop's
+  // brand image
+  delete shop.brandAssets;
   return shop;
 }
 

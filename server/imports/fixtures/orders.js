@@ -68,6 +68,7 @@ export function getShopId() {
  */
 
 export default function () {
+  const shopId = getShopId();
   Factory.define("order", Orders, {
     // Schemas.OrderItems
     additionalField: faker.lorem.sentence(),
@@ -80,7 +81,7 @@ export default function () {
     notes: [],
 
     // Schemas.Cart
-    shopId: getShopId(),
+    shopId: shopId,
     userId: getUserId(),
     sessionId: "Session",
     email: faker.internet.email(),
@@ -91,13 +92,13 @@ export default function () {
       ]
     },
     items: function () {
-      const product = addProduct();
+      const product = addProduct({ shopId });
       const variant = Products.findOne({ ancestors: [product._id] });
       const childVariants = Products.find({ ancestors: [
         product._id, variant._id
       ] }).fetch();
       const selectedOption = Random.choice(childVariants);
-      const product2 = addProduct();
+      const product2 = addProduct({ shopId });
       const variant2 = Products.findOne({ ancestors: [product2._id] });
       const childVariants2 = Products.find({ ancestors: [
         product2._id, variant2._id
@@ -129,14 +130,14 @@ export default function () {
     },
     requiresShipping: true,
     shipping: [{
-      shopId: getShopId(),
+      shopId,
       address: getAddress({ isShippingDefault: true }),
       items: [
         {
           _id: itemIdOne,
           productId: Random.id(),
           quantity: 1,
-          shopId: getShopId(),
+          shopId,
           variantId: Random.id(),
           packed: false
         },
@@ -144,7 +145,7 @@ export default function () {
           _id: itemIdTwo,
           productId: Random.id(),
           quantity: 1,
-          shopId: getShopId(),
+          shopId,
           variantId: Random.id(),
           packed: false
         }
@@ -152,7 +153,7 @@ export default function () {
     }], // Shipping Schema
     billing: [{
       _id: Random.id(),
-      shopId: getShopId(),
+      shopId,
       address: getAddress({ isBillingDefault: true }),
       paymentMethod: paymentMethod({
         method: "credit",

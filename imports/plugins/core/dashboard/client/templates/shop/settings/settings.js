@@ -76,12 +76,15 @@ Template.shopSettings.helpers({
     return "";
   },
   brandImageSelectProps() {
+    const shopId = Reaction.getShopId();
+
     const media = Media.find({
+      "metadata.shopId": shopId,
       "metadata.type": "brandAsset"
     });
 
     const shop = Shops.findOne({
-      "_id": Reaction.getShopId(),
+      "_id": shopId,
       "brandAssets.type": "navbarBrandImage"
     });
 

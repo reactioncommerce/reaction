@@ -33,6 +33,12 @@ const wrapComponent = (Comp) => (
       this.runVariantValidation(this.props.variant);
     }
 
+    componentWillReceiveProps(nextProps) {
+      this.setState({
+        isDeleted: nextProps.variant && nextProps.variant.isDeleted
+      });
+    }
+
     runVariantValidation(variant) {
       if (variant) {
         const validationStatus = this.validation.validate(variant);
