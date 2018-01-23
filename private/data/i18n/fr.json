@@ -147,15 +147,15 @@
         }
       },
       "header": {
-        "tagsAdd": "Ajouter une balise",
+        "tagsAdd": "Ajouter un tag",
         "search": "Recherche de produits..."
       },
       "productDetail": {
         "productManagement": "Gestion des produits",
         "whenYouAreDone": "lorsque vous aurez fini l'édition.",
-        "tags": "Balises",
-        "tagsAdd": "Ajouter une balise",
-        "tagExists": "La balise est vide ou existe déjà.",
+        "tags": "Tags",
+        "tagsAdd": "Ajouter un tag",
+        "tagExists": "Le tag est vide ou existe déjà.",
         "tagInUse": "Le tag est utilisé et ne peut pas être supprimé.",
         "dropFiles": "Déposer des fichiers à télécharger.",
         "addInventory": "Ajouter l'inventaire",
@@ -197,13 +197,13 @@
         "notFoundError": "Il ne s'agit pas du produit que vous recherchez."
       },
       "tags": {
-        "tagName": "Nom de la balise",
-        "addTag": "AJouter une balise",
-        "updateTag": "Mettre à jour la balise",
-        "addGroupTag": "Ajouter au groupe de balise",
-        "addSubTag": "Ajouter une sous-balise",
-        "removeTag": "Supprimer la balise",
-        "createTag": "Créer une balise"
+        "tagName": "Nom du tag",
+        "addTag": "Ajouter un tag",
+        "updateTag": "Mettre à jour le tag",
+        "addGroupTag": "Ajouter un groupe de tags",
+        "addSubTag": "Ajouter un sous-tag",
+        "removeTag": "Supprimer le tag",
+        "createTag": "Créer un tag"
       },
       "productDetailEdit": {
         "editOption": "Editer les options",
@@ -582,7 +582,7 @@
       "search": {
         "clearSearch": "Effacer",
         "searchInputLabel": "Rechercher une réaction ",
-        "suggestedTags": "Balises suggérées",
+        "suggestedTags": "Tags suggérés",
         "searchTypeProducts": "Produits",
         "searchTypeAccounts": "Comptes",
         "searchTypeOrders": "Commandes",

@@ -75,12 +75,12 @@ export function productVariant(options = {}) {
   return _.defaults(options, defaults);
 }
 
-export function addProduct() {
-  const product = Factory.create("product");
+export function addProduct(options = {}) {
+  const product = Factory.create("product", options);
   // top level variant
-  const variant = Factory.create("variant", Object.assign({}, productVariant(), { ancestors: [product._id] }));
-  Factory.create("variant", Object.assign({}, productVariant(), { ancestors: [product._id, variant._id] }));
-  Factory.create("variant", Object.assign({}, productVariant(), { ancestors: [product._id, variant._id] }));
+  const variant = Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id] }));
+  Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
+  Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
   return product;
 }
 

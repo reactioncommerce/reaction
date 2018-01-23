@@ -11,6 +11,7 @@ export const coreDefaultTemplate = "coreDefault";
 /*
  * Account related email templates
  */
+export const inviteNewShopMemberTemplate = "accounts/inviteNewShopMember";
 export const inviteShopMemberTemplate = "accounts/inviteShopMember";
 export const inviteShopOwnerTemplate = "accounts/inviteShopOwner";
 export const resetPaswordTemplate = "accounts/resetPassword";
