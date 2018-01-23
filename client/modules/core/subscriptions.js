@@ -53,6 +53,8 @@ Subscriptions.Groups = Subscriptions.Manager.subscribe("Groups");
 
 Subscriptions.Media = Subscriptions.Manager.subscribe("Media");
 
+Subscriptions.Stateflows = Subscriptions.Manager.subscribe("Stateflows");
+
 /**
  * Subscriptions that need to reload on new sessions
  */

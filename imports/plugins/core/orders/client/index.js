@@ -26,3 +26,5 @@ import "./templates/workflow/workflow.js";
 
 import "./templates/orders.html";
 import "./templates/orders.js";
+
+import "./components";

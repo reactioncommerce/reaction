@@ -297,6 +297,18 @@ Import.template = function (templateInfo) {
   return this.object(Collections.Templates, key, templateInfo);
 };
 
+Import.stateflow = function (stateflow, shopId) {
+  console.log("shopId " + shopId);
+  check(stateflow, Object);
+  check(shopId, String);
+  const key = {
+    name: stateflow.name,
+    shopId: shopId
+  };
+
+  return this.object(Collections.Stateflows, key, stateflow);
+};
+
 /**
  * @name translation
  * @method
