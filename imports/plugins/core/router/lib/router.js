@@ -125,7 +125,7 @@ class Router {
   static getRouteName() {
     const current = Router.current();
 
-    return current.route && current.route.name || "";
+    return (current.route && current.route.name) || "";
   }
 
   /**
@@ -137,7 +137,7 @@ class Router {
     routerChangeDependency.depend();
     const current = Router.current();
 
-    return current.params && current.params[name] || undefined;
+    return (current.params && current.params[name]) || undefined;
   }
 
   /**
@@ -149,7 +149,7 @@ class Router {
     routerChangeDependency.depend();
     const current = Router.current();
 
-    return current.query && current.query[name] || undefined;
+    return (current.query && current.query[name]) || undefined;
   }
 
   /**
@@ -212,7 +212,7 @@ Router.pathFor = (path, options = {}) => {
     // This is becuase of Spacebars that we have hash.
     // Spacebars takes all params passed into a template tag and places
     // them into the options.hash object. This will also include any `query` params
-    const hash = options && options.hash || {};
+    const hash = (options && options.hash) || {};
 
     // Create an executable function based on the route regex
     const toPath = pathToRegexp.compile(foundPath.route);
