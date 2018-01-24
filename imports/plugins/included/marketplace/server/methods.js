@@ -22,17 +22,17 @@ export function marketplaceUpdateShopWorkflow(shopId, workflowStatus) {
   }
 
   if (status.includes(workflowStatus)) {
-    return Shops.update({
-      _id: shopId
-    }, {
-      $set: {
-        "workflow.status": workflowStatus
-      }
-    }, function (error) {
-      if (error) {
-        throw new Meteor.Error("server-error", error.message);
-      }
-    });
+    try {
+      return Shops.update({
+        _id: shopId
+      }, {
+        $set: {
+          "workflow.status": workflowStatus
+        }
+      });
+    } catch (error) {
+      throw new Meteor.Error("server-error", error.message);
+    }
   }
 
   throw new Meteor.Error("server-error", "Workflow status could not be updated, should be 'active' or 'disabled'");
