@@ -76,8 +76,8 @@ class App extends Component {
     });
 
     const currentRoute = this.props.currentRoute;
-    const routeOptions = currentRoute.route && currentRoute.route.options || {};
-    const routeData = routeOptions && routeOptions.structure || {};
+    const routeOptions = (currentRoute.route && currentRoute.route.options) || {};
+    const routeData = (routeOptions && routeOptions.structure) || {};
 
     return (
       <div
