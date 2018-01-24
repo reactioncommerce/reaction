@@ -153,7 +153,7 @@ function convertAddress(address) {
   convertedAddress.country = address.country;
   convertedAddress.country_code = address.country;
   convertedAddress.name = address.fullName;
-  const [ firstName, ...lastName ] = address.fullName.split(" ");
+  const [firstName, ...lastName] = address.fullName.split(" ");
   convertedAddress.first_name = firstName;
   convertedAddress.last_name = lastName.join(" ");
   convertedAddress.phone = address.phone;

@@ -680,6 +680,6 @@ const wrapComponent = (Comp) => (
   }
 );
 
-registerComponent("OrderTable", OrderTable, [ wrapComponent ]);
+registerComponent("OrderTable", OrderTable, [wrapComponent]);
 
 export default compose(wrapComponent)(OrderTable);

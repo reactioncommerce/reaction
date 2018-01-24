@@ -684,7 +684,7 @@ describe("core product methods", function () {
       Meteor.call("products/removeProductTag", product._id, tag._id);
       const productRevision = Revisions.findOne({
         "documentId": product._id,
-        "workflow.status": { $nin: [ "revision/published" ] }
+        "workflow.status": { $nin: ["revision/published"] }
       });
       expect(productRevision.documentData.hashtags).to.not.contain(tag._id);
       expect(Tags.find().count()).to.equal(1);

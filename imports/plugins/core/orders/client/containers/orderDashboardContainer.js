@@ -130,6 +130,6 @@ const wrapComponent = (Comp) => (
   }
 );
 
-registerComponent("OrderSubscription", OrderSubscription, [ wrapComponent ]);
+registerComponent("OrderSubscription", OrderSubscription, [wrapComponent]);
 
 export default compose(wrapComponent)(OrderSubscription);

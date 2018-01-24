@@ -65,7 +65,7 @@ Template.avalaraSettings.helpers({
   },
 
   logGrid() {
-    const filteredFields = [ "data.request.data.date", "data.request.data.type"];
+    const filteredFields = ["data.request.data.date", "data.request.data.type"];
     const noDataMessage = i18next.t("logGrid.noLogsFound");
     const instance = Template.instance();
 
