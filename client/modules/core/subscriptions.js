@@ -51,6 +51,8 @@ Subscriptions.Tags = Subscriptions.Manager.subscribe("Tags");
 
 Subscriptions.Groups = Subscriptions.Manager.subscribe("Groups");
 
+Subscriptions.Media = Subscriptions.Manager.subscribe("Media");
+
 /**
  * Subscriptions that need to reload on new sessions
  */
