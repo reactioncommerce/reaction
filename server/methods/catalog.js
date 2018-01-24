@@ -1,4 +1,4 @@
-import _ from  "lodash";
+import _ from "lodash";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import { EJSON } from "meteor/ejson";
@@ -902,21 +902,19 @@ Meteor.methods({
     if (value === "false" || value === "true") {
       const booleanValue = (value === "true" || value === true);
       update = EJSON.parse("{\"" + field + "\":" + booleanValue + "}");
+    } else if (field === "handle") {
+      update = {
+        [field]: createHandle(value, _id) // handle should be unique
+      };
+    } else if (field === "title" && doc.handle === doc._id) { // update handle once title is set
+      const handle = createHandle(Reaction.getSlug(value), _id);
+      update = {
+        [field]: value,
+        handle
+      };
     } else {
-      if (field === "handle") {
-        update = {
-          [field]: createHandle(value, _id) // handle should be unique
-        };
-      } else if (field === "title" && doc.handle === doc._id) { // update handle once title is set
-        const handle = createHandle(Reaction.getSlug(value), _id);
-        update = {
-          [field]: value,
-          handle
-        };
-      } else {
-        const stringValue = EJSON.stringify(value);
-        update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
-      }
+      const stringValue = EJSON.stringify(value);
+      update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
     }
 
 

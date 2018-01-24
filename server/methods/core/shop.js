@@ -331,51 +331,49 @@ Meteor.methods({
     if (!shopSettings.settings.openexchangerates) {
       throw new Meteor.Error("not-configured",
         "Open Exchange Rates not configured. Configure for current rates.");
+    } else if (!shopSettings.settings.openexchangerates.appId) {
+      throw new Meteor.Error("not-configured",
+        "Open Exchange Rates AppId not configured. Configure for current rates.");
     } else {
-      if (!shopSettings.settings.openexchangerates.appId) {
-        throw new Meteor.Error("not-configured",
-          "Open Exchange Rates AppId not configured. Configure for current rates.");
-      } else {
-        // shop open exchange rates appId
-        const openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
+      // shop open exchange rates appId
+      const openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
 
-        // we'll update all the available rates in Shops.currencies whenever we
-        // get a rate request, using base currency
-        const rateUrl =
+      // we'll update all the available rates in Shops.currencies whenever we
+      // get a rate request, using base currency
+      const rateUrl =
           `https://openexchangerates.org/api/latest.json?base=${
             baseCurrency}&app_id=${openexchangeratesAppId}`;
-        let rateResults;
+      let rateResults;
 
-        // We can get an error if we try to change the base currency with a simple
-        // account
-        try {
-          rateResults = HTTP.get(rateUrl);
-        } catch (error) {
-          if (error.error) {
-            Logger.error(error.message);
-            throw new Meteor.Error("server-error", error.message);
-          } else {
-            // https://openexchangerates.org/documentation#errors
-            throw new Meteor.Error("server-error", error.response.data.description);
-          }
+      // We can get an error if we try to change the base currency with a simple
+      // account
+      try {
+        rateResults = HTTP.get(rateUrl);
+      } catch (error) {
+        if (error.error) {
+          Logger.error(error.message);
+          throw new Meteor.Error("server-error", error.message);
+        } else {
+          // https://openexchangerates.org/documentation#errors
+          throw new Meteor.Error("server-error", error.response.data.description);
         }
-
-        const exchangeRates = rateResults.data.rates;
-
-        _.each(shopCurrencies, function (currencyConfig, currencyKey) {
-          if (exchangeRates[currencyKey] !== undefined) {
-            const rateUpdate = {
-              // this needed for shop/flushCurrencyRates Method
-              "currencies.updatedAt": new Date(rateResults.data.timestamp * 1000)
-            };
-            const collectionKey = `currencies.${currencyKey}.rate`;
-            rateUpdate[collectionKey] = exchangeRates[currencyKey];
-            Collections.Shops.update(shopId, {
-              $set: rateUpdate
-            });
-          }
-        });
       }
+
+      const exchangeRates = rateResults.data.rates;
+
+      _.each(shopCurrencies, function (currencyConfig, currencyKey) {
+        if (exchangeRates[currencyKey] !== undefined) {
+          const rateUpdate = {
+            // this needed for shop/flushCurrencyRates Method
+            "currencies.updatedAt": new Date(rateResults.data.timestamp * 1000)
+          };
+          const collectionKey = `currencies.${currencyKey}.rate`;
+          rateUpdate[collectionKey] = exchangeRates[currencyKey];
+          Collections.Shops.update(shopId, {
+            $set: rateUpdate
+          });
+        }
+      });
     }
   },
 

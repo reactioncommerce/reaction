@@ -281,7 +281,7 @@ Meteor.methods({
       sessionId: sessionId,
       userId: userId
     });
-    Logger.debug("create cart: into new user cart. created: " +  currentCartId +
+    Logger.debug("create cart: into new user cart. created: " + currentCartId +
       " for user " + userId);
 
     // merge session carts into the current cart

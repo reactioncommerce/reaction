@@ -249,7 +249,7 @@ export const methods = {
           CURRENCYCODE: currencycode
         }
       });
-    }  catch (error) {
+    } catch (error) {
       Logger.debug(error, "Failed paypalexpress/refund/create");
       throw new Meteor.Error("refund-create-failed", error.message);
     }
@@ -312,7 +312,7 @@ export const methods = {
           TRANSACTIONCLASS: "Refund"
         }
       });
-    }  catch (error) {
+    } catch (error) {
       throw new Meteor.Error("refund-list-failed", error.message);
     }
 

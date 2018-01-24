@@ -178,10 +178,8 @@ export function buildOrderSearchRecord(orderId) {
     for (const email of user.emails) {
       userEmails.push(email.address);
     }
-  } else {
-    if (anonymousUserEmail) {
-      userEmails.push(anonymousUserEmail);
-    }
+  } else if (anonymousUserEmail) {
+    userEmails.push(anonymousUserEmail);
   }
   const orderSearch = {};
   for (const field of requiredFields.orders) {

@@ -13,7 +13,7 @@ class EmailLogs extends Component {
 
     // helper adds a class to every grid row
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
+      bodyCssClassName: () => {
         return "email-grid-row";
       }
     };

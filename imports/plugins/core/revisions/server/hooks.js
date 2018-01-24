@@ -629,7 +629,7 @@ Products.before.remove(function (userId, product) {
       documentId: product._id,
       documentData: product
     });
-    productRevision =  Revisions.findOne({
+    productRevision = Revisions.findOne({
       documentId: product._id
     });
   }

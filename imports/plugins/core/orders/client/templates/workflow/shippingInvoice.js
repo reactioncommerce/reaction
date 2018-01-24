@@ -15,7 +15,7 @@ import { getBillingInfo } from "../../helpers";
 // returns entire payment method
 function orderCreditMethod(order) {
   const creditMethods = order.billing && order.billing.filter((value) => {
-    return value && value.paymentMethod && value.paymentMethod.method ===  "credit";
+    return value && value.paymentMethod && value.paymentMethod.method === "credit";
   });
   const creditMethod = creditMethods && creditMethods.find((billing) => {
     billing && billing.shopId === Reaction.getShopId();

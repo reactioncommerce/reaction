@@ -272,10 +272,8 @@ const wrapComponent = (Comp) => (
           this.setState({ selectedTag: null });
           this.detachhBodyListener();
         }, 500);
-      } else {
-        if (this.closeDropdownTimeout) {
-          clearTimeout(this.closeDropdownTimeout);
-        }
+      } else if (this.closeDropdownTimeout) {
+        clearTimeout(this.closeDropdownTimeout);
       }
     }
 

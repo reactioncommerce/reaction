@@ -5,7 +5,7 @@ import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { Session } from "meteor/session";
 import { Reaction, Logger } from "/client/api";
-import { i18nextDep, i18next } from  "/client/api";
+import { i18nextDep, i18next } from "/client/api";
 import { Tags } from "/lib/collections";
 import MainDropdown from "../components/mainDropdown";
 import { getUserAvatar } from "/imports/plugins/core/accounts/client/helpers/helpers";

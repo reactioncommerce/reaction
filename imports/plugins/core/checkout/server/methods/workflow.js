@@ -88,7 +88,7 @@ Meteor.methods({
             hasPermission = Roles.userIsInRole(Meteor.userId(), layout.audience, Reaction.getShopId());
           }
 
-          if (hasPermission  && !layout.layout) {
+          if (hasPermission && !layout.layout) {
             defaultPackageWorkflows.push(layout);
           }
         });

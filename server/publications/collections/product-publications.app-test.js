@@ -87,7 +87,7 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getShopId", () => shopId);
         sandbox.stub(Roles, "userIsInRole", () => true);
         sandbox.stub(Reaction, "hasPermission", () => true);
-        sandbox.stub(Reaction, "getShopsWithRoles", () =>  [shopId]);
+        sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId]);
 
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;
@@ -108,7 +108,7 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getShopId", () => shopId);
         sandbox.stub(Roles, "userIsInRole", () => true);
         sandbox.stub(Reaction, "hasPermission", () => true);
-        sandbox.stub(Reaction, "getShopsWithRoles", () =>  [shopId]);
+        sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId]);
 
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;
@@ -258,7 +258,7 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getCurrentShop", function () {return { _id: "123" };});
         sandbox.stub(Roles, "userIsInRole", () => true);
         sandbox.stub(Reaction, "hasPermission", () => true);
-        sandbox.stub(Reaction, "getShopsWithRoles", () =>  [shopId]);
+        sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId]);
 
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;

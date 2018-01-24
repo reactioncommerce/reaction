@@ -171,11 +171,9 @@ const wrapComponent = (Comp) => (
             this.props.itemSelectHandler(checkbox.checked, product._id);
           }
         }
-      } else {
-        if (checkbox) {
-          checkbox.checked = !checkbox.checked;
-          this.props.itemSelectHandler(checkbox.checked, product._id);
-        }
+      } else if (checkbox) {
+        checkbox.checked = !checkbox.checked;
+        this.props.itemSelectHandler(checkbox.checked, product._id);
       }
     }
 
@@ -229,16 +227,14 @@ const wrapComponent = (Comp) => (
           if (event.metaKey || event.ctrlKey || event.shiftKey) {
             this.handleCheckboxSelect(list, product);
           }
+        } else if (event.metaKey || event.ctrlKey || event.shiftKey) {
+          this.handleCheckboxSelect(list, product);
         } else {
-          if (event.metaKey || event.ctrlKey || event.shiftKey) {
-            this.handleCheckboxSelect(list, product);
-          } else {
-            const checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
-            Session.set("productGrid/selectedProducts", []);
-            if (checkbox) {
-              checkbox.checked = true;
-              this.props.itemSelectHandler(checkbox.checked, product._id);
-            }
+          const checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
+          Session.set("productGrid/selectedProducts", []);
+          if (checkbox) {
+            checkbox.checked = true;
+            this.props.itemSelectHandler(checkbox.checked, product._id);
           }
         }
       } else {

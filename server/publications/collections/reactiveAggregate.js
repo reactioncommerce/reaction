@@ -18,7 +18,7 @@ Mongo.Collection.prototype._getDb = function () {
   if (typeof this._collection._getDb === "function") {
     return this._collection._getDb();
   }
-  const  mongoConn = MongoInternals.defaultRemoteCollectionDriver().mongo;
+  const mongoConn = MongoInternals.defaultRemoteCollectionDriver().mongo;
   return wrapWithDb(mongoConn);
 };
 

@@ -1,7 +1,7 @@
 /* eslint dot-notation: 0 */
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
-import { Products, Inventory }  from "/lib/collections";
+import { Products, Inventory } from "/lib/collections";
 import { Reaction } from "/server/api";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";

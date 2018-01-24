@@ -35,7 +35,7 @@ MethodHooks.after("taxes/calculate", function (options) {
       // for multi-vendor/shop orders
       if (shop.addressBook) {
         const shopAddress = shop.addressBook[0];
-        origin =  {
+        origin = {
           Address1: shopAddress.address1,
           City: shopAddress.city,
           State: shopAddress.region,

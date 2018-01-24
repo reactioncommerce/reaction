@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { Roles } from "meteor/alanning:roles";
-import { Translations }  from "/lib/collections";
+import { Translations } from "/lib/collections";
 import { Reaction } from "/server/api";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";

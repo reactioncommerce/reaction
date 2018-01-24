@@ -108,7 +108,7 @@ class App extends Component {
     });
 
     const currentRoute = this.props.currentRoute;
-    const layout = currentRoute && currentRoute.route && currentRoute.route.options &&  currentRoute.route.options.layout;
+    const layout = currentRoute && currentRoute.route && currentRoute.route.options && currentRoute.route.options.layout;
 
     if (this.isAdminApp && layout !== "printLayout") {
       return this.renderAdminApp();

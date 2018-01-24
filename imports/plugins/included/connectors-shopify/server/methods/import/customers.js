@@ -35,7 +35,7 @@ function createReactionCustomerFromShopifyCustomer(options) {
   // shopify is very forgiving so expect plenty of nulls !!
   const fakePhone = "33888888888";
   const fakeZip = "00000";
-  const first_name = shopifyCustomer.first_name  || "no_first_name";
+  const first_name = shopifyCustomer.first_name || "no_first_name";
   const last_name = shopifyCustomer.last_name || "no_last_name";
   const name = `${first_name} ${last_name}`;
 

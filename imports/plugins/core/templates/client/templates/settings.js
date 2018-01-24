@@ -56,7 +56,7 @@ Template.templateSettings.helpers({
 
     // helper adds a class to every grid row
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
+      bodyCssClassName: () => {
         return "template-grid-row";
       }
     };

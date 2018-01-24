@@ -215,7 +215,7 @@ describe("Refund", function () {
       throw new Meteor.Error("not-found", "Not Found");
     });
     const transactionId = "abc1234";
-    paymentMethod.transactionId =  transactionId;
+    paymentMethod.transactionId = transactionId;
     expect(function () {
       Meteor.call("example/refund/create", paymentMethod, 19.99);
     }).to.throw(Meteor.Error, /Not Found/);

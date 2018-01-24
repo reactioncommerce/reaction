@@ -25,7 +25,7 @@ class TotalActionsContaner extends Component {
   }
 
   render() {
-    const  { paymentCaptured, adjustedTotal, invoice } =  this.props;
+    const { paymentCaptured, adjustedTotal, invoice } = this.props;
     return (
       <div>
         <TotalActions

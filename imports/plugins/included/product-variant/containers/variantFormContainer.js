@@ -241,7 +241,7 @@ const wrapComponent = (Comp) => (
       }
     }
 
-    updateQuantityIfChildVariants =  (variant) => {
+    updateQuantityIfChildVariants = (variant) => {
       if (this.hasChildVariants(variant)) {
         const variantQuantity = ReactionProduct.getVariantQuantity(variant);
         return variantQuantity;

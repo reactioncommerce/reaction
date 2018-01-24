@@ -172,7 +172,7 @@ function getValidator() {
       registryName = registry.name;
     }
   }
-  const packageKey = registryName.split("/")[2];  // "taxes/addressValidation/{packageKey}"
+  const packageKey = registryName.split("/")[2]; // "taxes/addressValidation/{packageKey}"
   if (!_.get(geoCoder.settings[packageKey], "enabled")) {
     return "";
   }

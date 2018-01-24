@@ -70,30 +70,28 @@ AutoForm.addHooks("example-payment-form", {
       if (error) {
         handleExampleSubmitError(error);
         uiEnd(template, "Resubmit payment");
+      } else if (transaction.saved === true) {
+        submitting = false;
+        paymentMethod = {
+          processor: "Example",
+          paymentPackageId: packageData._id,
+          paymentSettingsKey: packageData.registry[0].settingsKey,
+          storedCard: storedCard,
+          method: "credit",
+          transactionId: transaction.transactionId,
+          riskLevel: transaction.riskLevel,
+          currency: transaction.currency,
+          amount: transaction.amount,
+          status: transaction.status,
+          mode: "authorize",
+          createdAt: new Date(),
+          transactions: []
+        };
+        paymentMethod.transactions.push(transaction.response);
+        Meteor.call("cart/submitPayment", paymentMethod);
       } else {
-        if (transaction.saved === true) {
-          submitting = false;
-          paymentMethod = {
-            processor: "Example",
-            paymentPackageId: packageData._id,
-            paymentSettingsKey: packageData.registry[0].settingsKey,
-            storedCard: storedCard,
-            method: "credit",
-            transactionId: transaction.transactionId,
-            riskLevel: transaction.riskLevel,
-            currency: transaction.currency,
-            amount: transaction.amount,
-            status: transaction.status,
-            mode: "authorize",
-            createdAt: new Date(),
-            transactions: []
-          };
-          paymentMethod.transactions.push(transaction.response);
-          Meteor.call("cart/submitPayment", paymentMethod);
-        } else {
-          handleExampleSubmitError(transaction.error);
-          uiEnd(template, "Resubmit payment");
-        }
+        handleExampleSubmitError(transaction.error);
+        uiEnd(template, "Resubmit payment");
       }
     });
     return false;

@@ -90,7 +90,7 @@ class VariantListContainer extends Component {
   }
 
   handleCreateVariant = () => {
-    const selectedProduct =  ReactionProduct.selectedProduct();
+    const selectedProduct = ReactionProduct.selectedProduct();
 
     Meteor.call("products/createVariant", selectedProduct._id, (error) => {
       if (error) {

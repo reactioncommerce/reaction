@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import { Reaction } from "/server/api";
-import { Discounts } from  "/imports/plugins/core/discounts/lib/collections";
+import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { DiscountRates as DiscountSchema } from "../../lib/collections/schemas";
 
 // attach discount code specific schema
