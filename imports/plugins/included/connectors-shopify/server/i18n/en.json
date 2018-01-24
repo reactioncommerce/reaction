@@ -16,6 +16,7 @@
           "editShopifyDomain": "Edit Shopify Domain",
           "headingSync": "Sync Settings",
           "headingImport": "Import",
+          "importCustomers": "Customers",
           "importFailed": "Error importing products.",
           "importing": "Importing ... This could take a little while.",
           "importProducts": "Import Products",
