@@ -464,7 +464,7 @@ export default {
       _id: this.getPrimaryShopId()
     });
 
-    return shop && shop.currency || "USD";
+    return (shop && shop.currency) || "USD";
   },
 
   // shopId refers to the active shop. For most shoppers this will be the same
@@ -523,7 +523,7 @@ export default {
       _id: this.shopId
     });
 
-    return shop && shop.currency || "USD";
+    return (shop && shop.currency) || "USD";
   },
 
   isPreview() {
