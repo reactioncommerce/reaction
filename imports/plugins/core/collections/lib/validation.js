@@ -26,7 +26,7 @@ class Validation {
   }
 
   get cleanOptions() {
-    return this.options && this.options.cleanOptions || { getAutoValues: false };
+    return (this.options && this.options.cleanOptions) || { getAutoValues: false };
   }
 
   /**
