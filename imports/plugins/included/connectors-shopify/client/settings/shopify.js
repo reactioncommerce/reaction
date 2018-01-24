@@ -22,8 +22,11 @@ Template.shopifyConnectSettings.helpers({
 Template.shopifyImport.events({
   "click [data-event-action=importDataFromShopify]"(event) {
     event.preventDefault();
-    $(event.currentTarget).html(`<i class='fa fa-circle-o-notch fa-spin'></i> ${i18next.t("admin.shopifyConnectSettings.importing")}`);
-    event.currentTarget.disabled = true;
+
+    if ($("#shopifyCheckboxCustomers").is(":checked") || $("#shopifyCheckboxProducts").is(":checked")) {
+      $(event.currentTarget).html(`<i class='fa fa-circle-o-notch fa-spin'></i> ${i18next.t("admin.shopifyConnectSettings.importing")}`);
+      event.currentTarget.disabled = true;
+    }
 
     // If this is the primary shop, redirect to index
     if (Reaction.getShopId() === Reaction.getPrimaryShopId()) {
@@ -40,6 +43,10 @@ Template.shopifyImport.events({
       }
     }
 
+    // If no option is selected, return error asking user to select type of import
+    if (!$("#shopifyCheckboxCustomers").is(":checked") && !$("#shopifyCheckboxProducts").is(":checked")) {
+      return Alerts.toast(i18next.t("admin.shopifyConnectSettings.chooseImportType"), "error");
+    }
     // TODO transform these Meteor calls to jobs like we do for the products images
     // we got customers checkbox checked ? if yes then download customers
     if ($("#shopifyCheckboxCustomers").is(":checked")) {

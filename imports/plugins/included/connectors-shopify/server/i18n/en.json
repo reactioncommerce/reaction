@@ -10,6 +10,7 @@
           "shopifyConnectDescription": "Data Connector for Shopify"
         },
         "shopifyConnectSettings": {
+          "chooseImportType": "Please select type of data to import",
           "editApiKey": "Edit API Key",
           "editPassword": "Edit API Password",
           "editSharedSecret": "Edit API Shared Secret",
@@ -20,7 +21,7 @@
           "importFailed": "Error importing products.",
           "importing": "Importing ... This could take a little while.",
           "importProducts": "Import Products",
-          "importSuccess": "Products imported successfully.",
+          "importSuccess": "Data imported successfully.",
           "keepInventorySynced": "Keep Inventory Synced",
           "noSyncIntegrationsSelected": "Please select at least one option to sync",
           "optionImportCustomers": "Customers",
