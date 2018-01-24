@@ -100,6 +100,7 @@ class InvoiceContainer extends Component {
         if (id !== lineItem._id) {
           return id;
         }
+        return;
       });
       // remove item from edited quantities
       editedItems = editedItems.filter((item) => item.id !== lineItem._id);
@@ -675,6 +676,7 @@ const composer = (props, onData) => {
         item.taxDetail = taxDetail;
         return item;
       }
+      return;
     });
   } else {
     uniqueItems = returnItems;

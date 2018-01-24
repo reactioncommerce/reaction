@@ -16,8 +16,9 @@ export function getChildVariants() {
           variant.ancestors[1] === current._id &&
           variant.optionTitle &&
           variant.type !== "inventory") {
-          childVariants.push(variant);
+          return childVariants.push(variant);
         }
+        return;
       });
     } else {
       // TODO not sure we need this part...
@@ -27,8 +28,9 @@ export function getChildVariants() {
           variant.ancestors[1] === current.ancestors[1] &&
           variant.optionTitle
         ) {
-          childVariants.push(variant);
+          return childVariants.push(variant);
         }
+        return;
       });
     }
 

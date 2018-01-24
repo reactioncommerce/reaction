@@ -84,6 +84,7 @@ const wrapComponent = (Comp) => (
           if (id !== name) {
             return id;
           }
+          return;
         });
         this.setState({
           selectedItems: updatedSelectedArray

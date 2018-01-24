@@ -19,7 +19,7 @@ function composer(props, onData) {
 const handlers = {
   markAllAsRead(notificationList) {
     notificationList.map((notify) => {
-      Meteor.call("notification/markOneAsRead", notify._id);
+      return Meteor.call("notification/markOneAsRead", notify._id);
     });
   },
   markOneAsRead(id) {

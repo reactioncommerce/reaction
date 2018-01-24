@@ -17,6 +17,7 @@ export default function sortUsersIntoGroups({ accounts, groups }) {
       if (acc.groups && acc.groups.indexOf(group._id) > -1) {
         return acc;
       }
+      return;
     });
     group.users = _.compact(matchingAccounts);
     return group;
@@ -131,6 +132,7 @@ export function groupPermissions(packages) {
         permissions: _.uniq(permissions)
       };
     }
+    return;
   });
 }
 

@@ -186,7 +186,7 @@ class Form extends Component {
           const message = this.state.schema.keyErrorMessage(validationError.name);
           fieldHasError = true;
 
-          helpText = (
+          return helpText = (
             <div className="help-block">
               {message}
             </div>

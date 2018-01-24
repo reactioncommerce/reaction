@@ -126,6 +126,7 @@ Template.shopifySync.helpers({
         if (synchook.topic === topic && synchook.event === event && synchook.syncType === syncType) {
           return synchook;
         }
+        return;
       });
       if (matchingHooks.length > 0) {
         return "checked";

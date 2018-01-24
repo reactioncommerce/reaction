@@ -30,7 +30,7 @@ import { Logger, Reaction } from "/server/api";
  */
 function updateVariantProductField(variants, field, value) {
   return variants.map((variant) => {
-    Meteor.call("products/updateProductField", variant._id, field, value);
+    return Meteor.call("products/updateProductField", variant._id, field, value);
   });
 }
 
@@ -660,7 +660,7 @@ Meteor.methods({
       ancestors.map((oldId) => {
         const pair = getIds(oldId);
         // TODO do we always have newId on this step?
-        newAncestors.push(pair[0].newId);
+        return newAncestors.push(pair[0].newId);
       });
       return newAncestors;
     }
@@ -826,7 +826,7 @@ Meteor.methods({
 
     const ids = [];
     productsWithVariants.map((doc) => {
-      ids.push(doc._id);
+      return ids.push(doc._id);
     });
 
     Products.remove({

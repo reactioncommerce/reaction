@@ -34,6 +34,7 @@ class ButtonSelect extends Component {
       if (button.active === true) {
         return button;
       }
+      return;
     });
     defaultButton = defaultButton[0];
 
@@ -43,6 +44,7 @@ class ButtonSelect extends Component {
       if (button.active === false || button.active === undefined) {
         return button;
       }
+      return;
     });
     const currentButton = (
       <Button
@@ -70,6 +72,7 @@ class ButtonSelect extends Component {
       if (button.name !== activeButton) {
         return button;
       }
+      return;
     });
     return this.setState({ nonActiveButtons });
   }

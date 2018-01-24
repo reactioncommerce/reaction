@@ -396,6 +396,7 @@ function cartToSalesOrder(cart) {
           taxCode: item.variants.taxCode
         };
       }
+      return;
     });
     if (cartShipping) {
       lineItems.push({
