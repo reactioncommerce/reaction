@@ -119,7 +119,7 @@ const wrapComponent = (Comp) => (
       this.state.productIds.map((productId, index) => {
         const position = { position: index, updatedAt: new Date() };
 
-        Meteor.call("products/updateProductPosition", productId, position, tag, (error) => {
+        return Meteor.call("products/updateProductPosition", productId, position, tag, (error) => {
           if (error) {
             Logger.error(error);
             throw new Meteor.Error("error-occurred", error);

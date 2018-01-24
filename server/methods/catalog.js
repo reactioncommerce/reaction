@@ -30,7 +30,7 @@ import { Logger, Reaction } from "/server/api";
  */
 function updateVariantProductField(variants, field, value) {
   return variants.map((variant) => {
-    Meteor.call("products/updateProductField", variant._id, field, value);
+    return Meteor.call("products/updateProductField", variant._id, field, value);
   });
 }
 

@@ -88,6 +88,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
                   </div>
                 </div>;
               }
+              return null;
             })}
           </div>
 

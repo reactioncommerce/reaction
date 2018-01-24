@@ -104,6 +104,7 @@ class MediaGallery extends Component {
             </Measure>
           );
         }
+        return null;
       });
     }
 

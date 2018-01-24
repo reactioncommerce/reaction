@@ -95,7 +95,7 @@ function getSessionCarts(userId, sessionId, shopId) {
 function removeShippingAddresses(cart) {
   const cartShipping = cart.shipping;
   cartShipping.map((sRecord) => {
-    delete sRecord.address;
+    return delete sRecord.address;
   });
   Collections.Cart.update({
     _id: cart._id
