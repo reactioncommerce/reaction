@@ -160,7 +160,7 @@ Template.memberSettings.events({
     const permissions = [];
     const member = template.data;
     if (!this.shopId) {
-      throw new Meteor.Error("Shop is required");
+      throw new Meteor.Error("invalid-parameter", "Shop is required");
     }
     if (self.name) {
       permissions.push(self.name);

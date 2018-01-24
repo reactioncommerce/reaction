@@ -10,7 +10,7 @@ export const getPkgData = (pkgName) => {
 };
 
 
-export default function () {
+export function examplePaymentMethod() {
   const examplePaymentMethodPackage = {
     name: "example-paymentmethod",
     icon: "fa fa-credit-card-alt",
@@ -34,3 +34,21 @@ export default function () {
   Factory.define("examplePaymentPackage", Packages, Object.assign({}, examplePaymentMethodPackage));
 }
 
+/**
+ * @method examplePackage
+ * @summary creates a new fixture based off of the Packages collection.
+ * @since 1.5.5
+ * @return {undefined} - returns nothing.
+ */
+export function examplePackage() {
+  const examplePkg = {
+    name: "example-package",
+    settings: {
+      enabled: false,
+      apiUrl: "http://example.com/api"
+    },
+    shopId: "random-shop-101"
+  };
+
+  Factory.define("examplePackage", Packages, examplePkg);
+}

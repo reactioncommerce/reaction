@@ -75,7 +75,7 @@ function disableReactionPackage(reactionPackage) {
               "success"
             );
           } else if (error) {
-            throw new Meteor.Error("error disabling package", error);
+            throw new Meteor.Error("error-disabling-package", error);
           }
         }
       );

@@ -26,6 +26,6 @@ Meteor.methods({
       });
       return taxCodeArray;
     }
-    throw new Meteor.Error("Error getting tax codes");
+    throw new Meteor.Error("retrieval-failed", "Error getting tax codes");
   }
 });

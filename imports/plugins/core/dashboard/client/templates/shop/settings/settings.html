@@ -83,33 +83,6 @@
       </div>
     </div>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <div class="panel-title">
-          <a
-            href="#options"
-            aria-controls="options"
-            role="button"
-            data-toggle="collapse"
-            data-parent="#shopSettingsAccordian"
-            data-i18n="admin.settings.options.label">Options</a>
-        </div>
-      </div>
-      <div id="options" class="panel-collapse collapse" role="tabpanel" aria-labelledby="options">
-        <div class="panel-body">
-          {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
-          doc=packageData id="shopEditExternalServicesForm" type="method-update" meteormethod="shop/updateShopExternalServices"}}
-            {{> afQuickField name='settings.openexchangerates.appId'}}
-            {{> afQuickField name='settings.openexchangerates.refreshPeriod' placeholder="every 1 hour"}}
-            {{> afQuickField name='settings.google.clientId'}}
-            {{> afQuickField name='settings.google.apiKey'}}
-            {{> afQuickField name='settings.cart.cleanupDurationDays' placeholder="older than 3 days"}}
-            {{> shopSettingsSubmitButton}}
-          {{/autoForm}}
-        </div>
-      </div>
-    </div>
-
     {{#each reactionApps provides='shopSettings'}}
       <div class="panel panel-default">
         <div class="panel-heading panel-heading-flex">
@@ -124,7 +97,7 @@
               <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
             </a>
           </div>
-          {{#if showAppSwitch}}
+          {{#if showAppSwitch template}}
           <div class="panel-controls">
             <input class="checkbox-switch" type="checkbox" name="enabled" data-id={{packageId}} data-key="{{settingsKey}}" {{checked enabled}}>
           </div>
@@ -137,6 +110,20 @@
         </div>
       </div>
     {{/each}}
+  </div>
+</template>
+
+<template name="optionsShopSettings">
+  <div class="optionsShopSettings">
+    {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
+    doc=packageData id="shopEditExternalServicesForm" type="method-update" meteormethod="shop/updateShopExternalServices"}}
+      {{> afQuickField name='settings.openexchangerates.appId'}}
+      {{> afQuickField name='settings.openexchangerates.refreshPeriod' placeholder="every 1 hour"}}
+      {{> afQuickField name='settings.google.clientId'}}
+      {{> afQuickField name='settings.google.apiKey'}}
+      {{> afQuickField name='settings.cart.cleanupDurationDays' placeholder="older than 3 days"}}
+      {{> shopSettingsSubmitButton}}
+      {{/autoForm}}
   </div>
 </template>
 

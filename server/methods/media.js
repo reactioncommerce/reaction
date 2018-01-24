@@ -18,7 +18,7 @@ export const removeMedia = new ValidatedMethod({
   }).validator(),
   run({ mediaId }) {
     if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     return Media.remove({ _id: mediaId });
   }
@@ -38,7 +38,7 @@ export const updateMediaPriorities = new ValidatedMethod({
   }).validator(),
   run({ sortedMedias }) {
     if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     const results = [];
     sortedMedias.forEach((image, index) => {

@@ -103,7 +103,7 @@ Template.productSettingsListItem.helpers({
   media() {
     const media = Media.findOne({
       "metadata.productId": this._id,
-      "metadata.priority": 0,
+      "metadata.workflow": { $nin: ["archived"] },
       "metadata.toGrid": 1
     }, { sort: { uploadedAt: 1 } });
 
@@ -176,7 +176,7 @@ Template.productSettings.events({
         (error) => { // eslint-disable-line no-loop-func
           if (error) {
             Logger.warn(error);
-            throw new Meteor.Error(403, error);
+            throw new Meteor.Error("access-denied", error);
           }
         }
       );

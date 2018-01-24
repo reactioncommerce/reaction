@@ -8,6 +8,16 @@ import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/t
 import { Reaction } from "/client/api";
 import { groupPermissions } from "../helpers/accountsHelper";
 
+/**
+ * @summary React component to display edit group panel
+ * @memberof Accounts
+ * @extends {Component}
+ * @property {Array} accounts
+ * @property {Array} groups
+ * @property {Function} onChangeGroup
+ * @property {Array} packages
+ * @property {Object} selectedGroup
+ */
 class EditGroup extends Component {
   static propTypes = {
     accounts: PropTypes.array,

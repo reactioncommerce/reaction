@@ -22,11 +22,11 @@ export const methods = {
     this.unblock();
     const cart = Cart.findOne(cartId);
     if (!cart) {
-      throw new Meteor.Error("Bad cart ID");
+      throw new Meteor.Error("invalid-parameter", "Bad cart ID");
     }
     const shop = Shops.findOne(cart.shopId);
     if (!shop) {
-      throw new Meteor.Error("Bad shop ID");
+      throw new Meteor.Error("invalid-parameter", "Bad shop ID");
     }
     const amount = Number(cart.getTotal());
     const description = shop.name + " Ref: " + cartId;
@@ -56,10 +56,10 @@ export const methods = {
         }
       });
     } catch (error) {
-      throw new Meteor.Error(error.message);
+      throw new Meteor.Error("checkout-failed", error.message);
     }
     if (!response || response.statusCode !== 200) {
-      throw new Meteor.Error("Bad response from PayPal");
+      throw new Meteor.Error("bad-response", "Bad response from PayPal");
     }
     const parsedResponse = parseResponse(response);
     if (parsedResponse.ACK !== "Success") {
@@ -82,7 +82,7 @@ export const methods = {
     this.unblock();
     const cart = Cart.findOne(cartId);
     if (!cart) {
-      throw new Meteor.Error("Bad cart ID");
+      throw new Meteor.Error("invalid-parameter", "Bad cart ID");
     }
     const amount = Number(cart.getTotal());
     const shop = Shops.findOne(cart.shopId);
@@ -112,10 +112,10 @@ export const methods = {
         }
       });
     } catch (error) {
-      throw new Meteor.Error(error.message);
+      throw new Meteor.Error("confirmation-failed", error.message);
     }
     if (!response || response.statusCode !== 200) {
-      throw new Meteor.Error("Bad response from PayPal");
+      throw new Meteor.Error("bad-response", "Bad response from PayPal");
     }
     const parsedResponse = parseResponse(response);
 
@@ -173,7 +173,7 @@ export const methods = {
           }
         });
       } catch (error) {
-        throw new Meteor.Error(error.message);
+        throw new Meteor.Error("capture-failed", error.message);
       }
     } else {
       try {
@@ -191,12 +191,12 @@ export const methods = {
           }
         });
       } catch (error) {
-        throw new Meteor.Error(error.message);
+        throw new Meteor.Error("capture-failed", error.message);
       }
     }
 
     if (!response || response.statusCode !== 200) {
-      throw new Meteor.Error("Bad Response from PayPal during Capture");
+      throw new Meteor.Error("bad-response", "Bad Response from PayPal during Capture");
     }
 
     const parsedResponse = parseResponse(response);
@@ -251,12 +251,12 @@ export const methods = {
       });
     }  catch (error) {
       Logger.debug(error, "Failed paypalexpress/refund/create");
-      throw new Meteor.Error(error.message);
+      throw new Meteor.Error("refund-create-failed", error.message);
     }
 
     if (!response || response.statusCode !== 200) {
       Logger.debug("Bad Response from PayPal during Refund Creation");
-      throw new Meteor.Error("Bad Response from PayPal during Refund Creation");
+      throw new Meteor.Error("bad-response", "Bad Response from PayPal during Refund Creation");
     }
 
     const parsedResponse = parseResponse(response);
@@ -313,11 +313,11 @@ export const methods = {
         }
       });
     }  catch (error) {
-      throw new Meteor.Error(error.message);
+      throw new Meteor.Error("refund-list-failed", error.message);
     }
 
     if (!response || response.statusCode !== 200) {
-      throw new Meteor.Error("Bad Response from PayPal during refund list");
+      throw new Meteor.Error("bad-response", "Bad Response from PayPal during refund list");
     }
 
     const parsedResponse = parseResponse(response);

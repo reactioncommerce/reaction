@@ -61,7 +61,7 @@ Meteor.methods({
     const currentUser = Meteor.user();
     const currentAccount = Collections.Accounts.findOne({ _id: currentUser._id });
     if (!currentUser) {
-      throw new Meteor.Error("Unable to create shop without a user");
+      throw new Meteor.Error("server-error", "Unable to create shop without a user");
     }
 
     let shopUser = currentUser;
@@ -109,6 +109,9 @@ Meteor.methods({
     // TODO audience permissions need to be consolidated into [object] and not [string]
     // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
     delete shop.layout;
+    // delete brandAssets object from shop to prevent new shops from carrying over existing shop's
+    // brand image
+    delete shop.brandAssets;
 
     let newShopId;
 
@@ -185,7 +188,7 @@ Meteor.methods({
     });
 
     if (!shop) {
-      throw new Meteor.Error("Failed to find shop data. Unable to determine locale.");
+      throw new Meteor.Error("not-found", "Failed to find shop data. Unable to determine locale.");
     }
     // configure default defaultCountryCode
     // fallback to shop settings
@@ -224,12 +227,17 @@ Meteor.methods({
         // only fetch rates if locale and shop currency are not equal
         // if shop.currency = locale currency the rate is 1
         if (shop.currency !== currency) {
-          exchangeRate = Meteor.call("shop/getCurrencyRates", currency);
+          const settings = Reaction.getShopSettings();
+          const exchangeConfig = settings.openexchangerates || {};
 
-          if (typeof exchangeRate === "number") {
-            result.currency.exchangeRate = exchangeRate;
-          } else {
-            Logger.warn("Failed to get currency exchange rates.");
+          if (exchangeConfig.appId) {
+            exchangeRate = Meteor.call("shop/getCurrencyRates", currency);
+
+            if (typeof exchangeRate === "number") {
+              result.currency.exchangeRate = exchangeRate;
+            } else {
+              Logger.warn("Failed to get currency exchange rates.");
+            }
           }
         }
       }
@@ -321,11 +329,11 @@ Meteor.methods({
     // with current rates from Open Exchange Rates
     // warn if we don't have app_id
     if (!shopSettings.settings.openexchangerates) {
-      throw new Meteor.Error("notConfigured",
+      throw new Meteor.Error("not-configured",
         "Open Exchange Rates not configured. Configure for current rates.");
     } else {
       if (!shopSettings.settings.openexchangerates.appId) {
-        throw new Meteor.Error("notConfigured",
+        throw new Meteor.Error("not-configured",
           "Open Exchange Rates AppId not configured. Configure for current rates.");
       } else {
         // shop open exchange rates appId
@@ -345,10 +353,10 @@ Meteor.methods({
         } catch (error) {
           if (error.error) {
             Logger.error(error.message);
-            throw new Meteor.Error(error.message);
+            throw new Meteor.Error("server-error", error.message);
           } else {
             // https://openexchangerates.org/documentation#errors
-            throw new Meteor.Error(error.response.data.description);
+            throw new Meteor.Error("server-error", error.response.data.description);
           }
         }
 
@@ -402,7 +410,7 @@ Meteor.methods({
 
     // if updatedAt is not a Date(), then there is no rates yet
     if (typeof updatedAt !== "object") {
-      throw new Meteor.Error("notExists",
+      throw new Meteor.Error("error-occurred",
         "[flushCurrencyRates worker]: There is nothing to flush.");
     }
 
@@ -444,7 +452,7 @@ Meteor.methods({
 
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     this.unblock();
 
@@ -522,7 +530,7 @@ Meteor.methods({
 
     // must have 'core' permissions
     if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     const tag = {
@@ -554,7 +562,7 @@ Meteor.methods({
     let newTagId = {};
     // must have 'core' permissions
     if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     this.unblock();
 
@@ -621,7 +629,7 @@ Meteor.methods({
     } else if (typeof newTagId === "string" && !currentTagId) {
       return true;
     }
-    throw new Meteor.Error(403, "Failed to update header tags.");
+    throw new Meteor.Error("access-denied", "Failed to update header tags.");
   },
 
   /**
@@ -637,7 +645,7 @@ Meteor.methods({
     check(currentTagId, String);
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     this.unblock();
     // remove from related tag use
@@ -663,7 +671,7 @@ Meteor.methods({
       return Collections.Tags.remove(tagId);
     }
     // unable to delete anything
-    throw new Meteor.Error(403, "Unable to delete tags that are in use.");
+    throw new Meteor.Error("access-denied", "Unable to delete tags that are in use.");
   },
 
   /**
@@ -677,7 +685,7 @@ Meteor.methods({
     check(tagId, String);
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     this.unblock();
     // hide it
@@ -730,7 +738,7 @@ Meteor.methods({
 
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     this.unblock();
 
@@ -792,7 +800,7 @@ Meteor.methods({
     check(enabled, Boolean);
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     this.unblock();
 
@@ -852,7 +860,7 @@ Meteor.methods({
     });
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     this.unblock();
 
@@ -903,7 +911,7 @@ Meteor.methods({
     check(packageId, String);
     check(enabled, Boolean);
     if (!Reaction.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     return Collections.Packages.update(packageId, {

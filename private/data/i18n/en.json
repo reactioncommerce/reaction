@@ -313,6 +313,7 @@
         "discount": "Discount",
         "head": "Your cart",
         "items": "Items in cart",
+        "orderItems": "Items in order",
         "subtotal": "Sub total",
         "shipping": "Shipping",
         "tax": "Tax",
@@ -407,7 +408,8 @@
         "shipped": "Shipped",
         "delivered": "Delivered",
         "shippingNotifyCustomer": "Notify the customer that their items will be shipping soon.",
-        "resendNotification": "Resend shipment notification"
+        "resendNotification": "Resend shipment notification",
+        "noShippingInfo": "No shipping information available"
       },
       "orderWorkflow": {
         "orderDetails": "Order details",
@@ -654,6 +656,7 @@
         "addressBook": "Address book",
         "info": {
           "emailSent": "Email sent",
+          "emailUpdated": "Email updated",
           "emailVerified": "Email verified",
           "passwordChanged": "Password changed",
           "passwordReset": "Password reset",

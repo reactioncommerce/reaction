@@ -178,7 +178,7 @@ class Invoice extends Component {
     return (
       <div>
         <div className="order-summary-form-group">
-          <strong>Quantity Total</strong>
+          <strong><Components.Translation defaultValue="Items in order" i18nKey="cartSubTotals.orderItems" /></strong>
           <div className="invoice-details">
             {invoice.totalItems}
           </div>

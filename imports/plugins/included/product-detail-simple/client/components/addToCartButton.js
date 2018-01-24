@@ -40,7 +40,7 @@ class AddToCartButton extends Component {
     if (this.props.editable && this.hasVariants === false) {
       return (
         <Components.Alert>
-          <Components.Translation defaultValue="Add options to enable 'Add to Cart' button" i18nkey="productVariant.addVariantOptions" />
+          <Components.Translation defaultValue="Add options to enable 'Add to Cart' button" i18nKey="productVariant.addVariantOptions" />
         </Components.Alert>
       );
     }

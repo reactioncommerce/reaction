@@ -111,7 +111,7 @@ function adjustInventory(product, userId, context) {
   // user needs createProduct permission to adjust inventory
   // REVIEW: Should this be checking shop permission instead?
   if (!calledByServer && !Reaction.hasPermission("createProduct", userId, product.shopId)) {
-    throw new Meteor.Error(403, "Access Denied");
+    throw new Meteor.Error("access-denied", "Access Denied");
   }
 
   // Quantity and variants of this product's variant inventory
@@ -162,7 +162,7 @@ function adjustInventory(product, userId, context) {
 Meteor.methods({
   "inventory/register": function (product) {
     if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     registerInventory(product);
   },

@@ -28,7 +28,7 @@ export const PayFlow = {
       client_secret: getSettings(settings, ref, "client_secret")
     };
     if (!options.client_id) {
-      throw new Meteor.Error(403, "Invalid PayPal Credentials");
+      throw new Meteor.Error("invalid-credentials", "Invalid PayPal Credentials");
     }
     return options;
   },

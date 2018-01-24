@@ -25,7 +25,7 @@ export const methods = {
 
     // check permissions to delete
     if (!Reaction.hasPermission("taxes")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     return Taxes.remove(taxId);
@@ -45,7 +45,7 @@ export const methods = {
 
     // check permissions to add
     if (!Reaction.hasPermission("taxes")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     // if no doc, insert
     if (!docId) {

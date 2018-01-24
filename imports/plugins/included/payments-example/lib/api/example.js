@@ -7,7 +7,7 @@ export const Example = {
       name: "reaction-paymentmethod"
     }).settings;
     if (!settings.apiKey) {
-      throw new Meteor.Error("403", "Invalid Credentials");
+      throw new Meteor.Error("invalid-credentials", "Invalid Credentials");
     }
     return settings.apiKey;
   },

@@ -22,6 +22,7 @@ Reaction.registerPackage({
     route: "/dashboard/sms",
     provides: ["settings"],
     container: "dashboard",
-    template: "smsSettings"
+    template: "smsSettings",
+    showForShopTypes: ["primary"]
   }]
 });

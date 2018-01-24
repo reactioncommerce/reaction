@@ -178,7 +178,7 @@ describe("Capture payment", function () {
 
   it("should throw an error if transaction ID is not found", function () {
     sandbox.stub(ExampleApi.methods, "capture", function () {
-      throw new Meteor.Error("Not Found");
+      throw new Meteor.Error("not-found", "Not Found");
     });
     expect(function () {
       Meteor.call("example/payment/capture", "abc123");
@@ -212,7 +212,7 @@ describe("Refund", function () {
 
   it("should throw an error if transaction ID is not found", function () {
     sandbox.stub(ExampleApi.methods.refund, "call", function () {
-      throw new Meteor.Error("404", "Not Found");
+      throw new Meteor.Error("not-found", "Not Found");
     });
     const transactionId = "abc1234";
     paymentMethod.transactionId =  transactionId;
@@ -245,7 +245,7 @@ describe("List Refunds", function () {
 
   it("should throw an error if transaction ID is not found", function () {
     sandbox.stub(ExampleApi.methods, "refunds", function () {
-      throw new Meteor.Error("404", "Not Found");
+      throw new Meteor.Error("not-found", "Not Found");
     });
     expect(() => Meteor.call("example/refund/list", paymentMethod)).to.throw(Meteor.Error, /Not Found/);
   });

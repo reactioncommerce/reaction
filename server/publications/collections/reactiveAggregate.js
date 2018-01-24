@@ -113,7 +113,7 @@ export function ReactiveAggregate(pub, collection, pipeline, options) {
     changed: update,
     removed: update,
     error: function (error) {
-      throw new Meteor.Error(`Encountered an error while observing ${collection._name}`, error);
+      throw new Meteor.Error("server-error", `Encountered an error while observing ${collection._name}`, error);
     }
   });
   // observeChanges() will immediately fire an "added" event for each document in the query

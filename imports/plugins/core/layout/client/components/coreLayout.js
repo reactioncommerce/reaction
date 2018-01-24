@@ -1,33 +1,34 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { getComponent, registerComponent } from "@reactioncommerce/reaction-components";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Template } from "meteor/templating";
 
 const CoreLayout = ({ actionViewIsOpen, structure }) => {
-  const { layoutFooter, template } = structure || {};
+  const { layoutHeader, layoutFooter, template } = structure || {};
 
   const pageClassName = classnames({
     "page": true,
     "show-settings": actionViewIsOpen
   });
 
+  const headerComponent = layoutHeader && getComponent(layoutHeader);
+  const footerComponent = layoutFooter && getComponent(layoutFooter);
+
   return (
     <div className={pageClassName} id="reactionAppContainer">
-      <Components.NavBar />
+
+      {headerComponent && React.createElement(headerComponent, {})}
 
       <Blaze template="cartDrawer" className="reaction-cart-drawer" />
 
-      { Template[template] &&
+      {Template[template] &&
         <main>
           <Blaze template={template} />
-        </main>
-      }
+        </main>}
 
-      { Template[layoutFooter] &&
-        <Blaze template={layoutFooter} className="reaction-navigation-footer footer-default" />
-      }
+      {footerComponent && React.createElement(footerComponent, {})}
     </div>
   );
 };

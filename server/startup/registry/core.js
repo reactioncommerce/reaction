@@ -34,8 +34,8 @@ export default function () {
       enabled: true,
       structure: {
         template: "products",
-        layoutHeader: "layoutHeader",
-        layoutFooter: "layoutFooter",
+        layoutHeader: "NavBar",
+        layoutFooter: "Footer",
         notFound: "productNotFound",
         dashboardControls: "dashboardControls",
         adminControlsFooter: "adminControlsFooter"
@@ -47,8 +47,8 @@ export default function () {
       enabled: true,
       structure: {
         template: "unauthorized",
-        layoutHeader: "layoutHeader",
-        layoutFooter: "layoutFooter"
+        layoutHeader: "NavBar",
+        layoutFooter: "Footer"
       }
     }]
   });

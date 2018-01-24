@@ -114,7 +114,7 @@ export const methods = {
 
     // check permissions to add
     if (!Reaction.hasPermission("discount-codes")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     // if no doc, insert
     if (!docId) {

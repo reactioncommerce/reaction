@@ -4,7 +4,7 @@ import { Reaction } from "/client/api";
 import NavBar from "../components/navbar";
 import { Media, Shops } from "/lib/collections";
 
-function composer(props, onData) {
+export function composer(props, onData) {
   const shop = Shops.findOne(Reaction.getShopId());
   const searchPackage = Reaction.Apps({ provides: "ui-search" });
   let searchEnabled;

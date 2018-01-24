@@ -42,6 +42,7 @@ providers.Instagram.fields = function () {
   ];
 };
 
+
 export class ServiceConfigHelper {
   availableServices() {
     const services = Package["accounts-oauth"] ? Accounts.oauth.serviceNames() : [];
@@ -101,5 +102,26 @@ export class ServiceConfigHelper {
 
       return service;
     });
+  }
+
+  /**
+   * @method addProvider
+   * @memberof Accounts
+   * @summary Add an OAuth provider, with field definitions required to render the form
+   * which collects and stores configuation settings for the provider.
+   * @example ServiceConfigHelper.addProvider("Untappd", [{ property: "clientId", label: "Client ID" }]), { property:
+   *  "secret", label: "Client Secret" }]);
+   * @see https://github.com/reactioncommerce/reaction/pull/3231
+   * @param {string} provider Display Name of the provider
+   * @param {object[]} fields Array of plain old JavaScript objects with the keys `property`
+   * ("apiKey", for example. `apiKey` should correspond to your OAuth provider's
+   * implementation) and `label` ("API Key", for example)
+   */
+  static addProvider(provider, fields) {
+    providers[provider] = {
+      fields: () => {
+        return fields;
+      }
+    };
   }
 }

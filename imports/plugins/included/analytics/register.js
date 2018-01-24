@@ -39,6 +39,7 @@ Reaction.registerPackage({
     route: "/dashboard/analytics/settings",
     provides: ["settings"],
     container: "dashboard",
-    template: "reactionAnalyticsSettings"
+    template: "reactionAnalyticsSettings",
+    showForShopTypes: ["primary"]
   }]
 });

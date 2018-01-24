@@ -1,5 +1,11 @@
 import { Reaction } from "/server/api";
 
+/**
+ * @file Accounts core plugin: Manage how members sign into your shop
+ *
+ * @namespace Accounts
+ */
+
 Reaction.registerPackage({
   label: "Accounts",
   name: "reaction-accounts",
@@ -30,7 +36,8 @@ Reaction.registerPackage({
     route: "/dashboard/account/settings",
     container: "accounts",
     workflow: "coreAccountsWorkflow",
-    template: "accountsSettings"
+    template: "accountsSettings",
+    showForShopTypes: ["primary"]
   }, {
     route: "/dashboard/accounts",
     name: "dashboard/accounts",
@@ -57,7 +64,7 @@ Reaction.registerPackage({
     enabled: true,
     structure: {
       template: "accountsDashboard",
-      layoutHeader: "layoutHeader",
+      layoutHeader: "NavBar",
       layoutFooter: "",
       notFound: "notFound",
       dashboardHeader: "dashboardHeader",

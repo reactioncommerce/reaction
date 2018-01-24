@@ -33,8 +33,8 @@ class MainDropdown extends Component {
     const { userImage, userName } = this.props;
     return (
       <Components.Button containerStyle={{ color: "#000", fontWeight: "normal", letterSpacing: 0.8 }}>
-        <span>{userImage}</span>
-        <span>{userName}</span>&nbsp;
+        <span className="main-dropdown-userImage">{userImage}</span>
+        <span className="main-dropdown-userName">{userName}</span>&nbsp;
         <Components.Icon
           icon={"fa fa-caret-down"}
         />
@@ -112,6 +112,10 @@ class MainDropdown extends Component {
               menuStyle={menuStyle}
               className="accounts-li-tag"
               onChange={this.props.handleChange}
+              constraints={[{
+                to: "window",
+                attachment: "together"
+              }]}
             >
               {this.renderUserIcons()}
               {this.renderAdminIcons()}

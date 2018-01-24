@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Blaze from "meteor/gadicc:blaze-react-component";
+import { Components } from "@reactioncommerce/reaction-components";
 import {
   DropDownMenu,
   MenuItem,
   FlatButton,
-  Toolbar,
-  ToolbarGroup,
   Switch,
   Icon,
   VerticalDivider
@@ -76,28 +75,37 @@ class PublishControls extends Component {
 
   renderShopSelect() {
     let menuItems;
-    if (Array.isArray(this.props.shops)) {
-      menuItems = this.props.shops.map((shop, index) => {
-        return (
-          <MenuItem
-            label={shop.name}
-            selectLabel={shop.name}
-            value={shop._id}
-            key={index}
-          />
-        );
-      });
+
+    // If a user has owner, admin, or marketplace permissions for more than one (1) shops
+    // show the shop switcher to allow for easy switching between the shops
+    if (Reaction.hasShopSwitcherAccess()) {
+      if (Array.isArray(this.props.shops)) {
+        menuItems = this.props.shops.map((shop, index) => {
+          return (
+            <MenuItem
+              label={shop.name}
+              selectLabel={shop.name}
+              value={shop._id}
+              key={index}
+            />
+          );
+        });
+      }
+
+      return (
+        <DropDownMenu
+          onChange={this.onShopSelectChange}
+          value={this.props.shopId}
+          closeOnClick={true}
+        >
+          {menuItems}
+        </DropDownMenu>
+      );
     }
 
-    return (
-      <DropDownMenu
-        onChange={this.onShopSelectChange}
-        value={this.props.shopId}
-        closeOnClick={true}
-      >
-        {menuItems}
-      </DropDownMenu>
-    );
+    // If the user is just a shop owner, not a marketplace owner,
+    // make sure the shop is set to their shop and do not show the shop switcher
+    return this.onShopSelectChange(null, Reaction.getSellerShopId());
   }
 
   renderVisibilitySwitch() {
@@ -119,7 +127,7 @@ class PublishControls extends Component {
 
   renderAdminButton() {
     return (
-      <ToolbarGroup visibleOnMobile={true}>
+      <Components.ToolbarGroup visibleOnMobile={true}>
         <VerticalDivider key={"divder-2"} />
         <FlatButton
           key="dashboard-button"
@@ -133,7 +141,7 @@ class PublishControls extends Component {
         >
           <Icon icon="icon icon-reaction-logo" />
         </FlatButton>
-      </ToolbarGroup>
+      </Components.ToolbarGroup>
     );
   }
 
@@ -182,18 +190,18 @@ class PublishControls extends Component {
 
   render() {
     return (
-      <Toolbar>
-        <ToolbarGroup firstChild={true}>
+      <Components.Toolbar>
+        <Components.ToolbarGroup firstChild={true}>
           {this.renderVisibilitySwitch()}
           {this.renderShopSelect()}
-        </ToolbarGroup>
-        <ToolbarGroup lastChild={true}>
+        </Components.ToolbarGroup>
+        <Components.ToolbarGroup lastChild={true}>
           {this.renderAddButton()}
           {this.renderPackageButons()}
           {this.renderCustomControls()}
-        </ToolbarGroup>
+        </Components.ToolbarGroup>
         {this.renderAdminButton()}
-      </Toolbar>
+      </Components.Toolbar>
     );
   }
 }

@@ -316,7 +316,7 @@ Products.before.insert((userId, product) => {
 
     if (archivedCount > 0) {
       Logger.debug(`Cannot create product ${product._id} as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
-      throw new Meteor.Error("Unable to create product variant");
+      throw new Meteor.Error("unable-to-create-variant", "Unable to create product variant");
     }
   }
 
@@ -370,7 +370,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
     if (archivedCount > 0) {
       Logger.debug(`Cannot restore product ${product._id} as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
-      throw new Meteor.Error("Unable to delete product variant");
+      throw new Meteor.Error("unable-to-delete-variant", "Unable to delete product variant");
     }
   }
 

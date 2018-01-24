@@ -14,4 +14,4 @@ reaction:
 
 mongo:
   image: mongo:latest
-  command: mongod --storageEngine=wiredTiger
+  command: mongod --storageEngine=wiredTiger --bind_ip_all

@@ -19,7 +19,7 @@ Template.createContentMenu.helpers({
               let currentTagId;
 
               if (error) {
-                throw new Meteor.Error("createProduct error", error);
+                throw new Meteor.Error("create-product-error", error);
               } else if (productId) {
                 currentTagId = Session.get("currentTag");
                 currentTag = Tags.findOne(currentTagId);

@@ -4,7 +4,22 @@ import { Shipping, Packages } from "/lib/collections";
 import { Reaction } from "/server/api";
 import { shippingRoles } from "../lib/roles";
 
+/**
+ *
+ * @namespace Methods/Shipping
+ */
+
 export const methods = {
+  /**
+   * @name shipping/status/refresh
+   * @method
+   * @memberof Methods/Shipping
+   * @todo This is a stub for future core processing
+   * @summary Blank method. Serves as a place for Method Hooks,
+   * in other shipping packages, like Shippo
+   * @param  {String} orderId order ID
+   * @return {String}         order ID
+   */
   "shipping/status/refresh": function (orderId) {
     check(orderId, String);
     // this is a stub for future core processing
@@ -12,18 +27,22 @@ export const methods = {
     // in other shipping packages, like Shippo
     return orderId;
   },
+
   /**
-   * shipping/provider/toggle
-   * @summary toggle enabled provider
-   * @param { String } packageId - packageId
-   * @param { String } provider - provider name
-   * @return { Number } update - result
+   * @name shipping/provider/toggle
+   * @method
+   * @memberof Methods/Shipping
+   * @example Meteor.call("shipping/provider/toggle", packageId, settingsKey)
+   * @summary Toggle enabled provider
+   * @param { String } packageId packageId
+   * @param { String } provider provider name
+   * @return { Number } update result
    */
   "shipping/provider/toggle": function (packageId, provider) {
     check(packageId, String);
     check(provider, String);
     if (!Reaction.hasPermission(shippingRoles)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     const pkg = Packages.findOne(packageId);
     if (pkg && pkg.settings[provider]) {

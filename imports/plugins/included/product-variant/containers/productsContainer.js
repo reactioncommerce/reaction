@@ -185,7 +185,6 @@ function composer(props, onData) {
 
   const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
 
-
   canLoadMoreProducts = productCursor.count() >= Session.get("productScrollLimit");
   const stateProducts = sortedProducts;
 

@@ -43,7 +43,7 @@ export const methods = {
     check(lineItems, [Object]);
 
     if (!Reaction.hasPermission(connectorsRoles)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     lineItems.forEach((lineItem) => {

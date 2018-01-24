@@ -26,7 +26,7 @@ export const methods = {
       enabled: Boolean
     });
     if (!Reaction.hasPermission(shippingRoles)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     // a little trickery
     // we passed in the providerId
@@ -69,7 +69,7 @@ export const methods = {
   "shipping/rates/update": function (method) {
     check(method, ShippingMethod);
     if (!Reaction.hasPermission(shippingRoles)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     const methodId = method._id;
 
@@ -92,7 +92,7 @@ export const methods = {
     check(rateId, String);
 
     if (!Reaction.hasPermission(shippingRoles)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     return Shipping.update({

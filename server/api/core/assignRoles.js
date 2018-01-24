@@ -3,7 +3,10 @@ import { Roles } from "meteor/alanning:roles";
 import { Logger } from "/server/api";
 
 /**
- * getRouteName
+ * @name getRouteName
+ * @method
+ * @memberof Core
+ * @private
  * @summary assemble route name to be standard
  * this is duplicate that exists in Reaction.Router
  * however this is to avoid a dependency in core
@@ -32,7 +35,9 @@ function getRouteName(packageName, registryItem) {
 
 
 /**
- * assignOwnerRoles
+ * @name assignOwnerRoles
+ * @method
+ * @memberof Core
  * @summary populate roles with all the packages and their permissions
  * this is the main way that roles are inserted and created for
  * admin user.
@@ -44,7 +49,6 @@ function getRouteName(packageName, registryItem) {
  * @param  {String} registry - registry object
  * @return {undefined}
  */
-
 export function assignOwnerRoles(shopId, pkgName, registry) {
   const defaultRoles = ["owner", "admin", "createProduct", "guest", pkgName];
   const globalRoles = defaultRoles;

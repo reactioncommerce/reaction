@@ -42,6 +42,12 @@ Reaction.registerPackage({
     icon: "fa fa-th",
     provides: ["settings"],
     container: "dashboard"
+  }, {
+    label: "Options",
+    provides: ["shopSettings"],
+    container: "dashboard",
+    template: "optionsShopSettings",
+    showForShopTypes: ["primary"]
   }],
   layout: [{
     layout: "coreLayout",
@@ -50,7 +56,7 @@ Reaction.registerPackage({
     enabled: true,
     structure: {
       template: "dashboardPackages",
-      layoutHeader: "layoutHeader",
+      layoutHeader: "NavBar",
       layoutFooter: "",
       notFound: "notFound",
       dashboardHeader: "dashboardHeader",

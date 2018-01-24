@@ -76,12 +76,15 @@ Template.shopSettings.helpers({
     return "";
   },
   brandImageSelectProps() {
+    const shopId = Reaction.getShopId();
+
     const media = Media.find({
+      "metadata.shopId": shopId,
       "metadata.type": "brandAsset"
     });
 
     const shop = Shops.findOne({
-      "_id": Reaction.getShopId(),
+      "_id": shopId,
       "brandAssets.type": "navbarBrandImage"
     });
 
@@ -154,7 +157,12 @@ Template.shopSettings.helpers({
     }).addressBook;
     return address[0];
   },
-  showAppSwitch() {
+  showAppSwitch(template) {
+    if (template === "optionsShopSettings") {
+      // do not have switch for options card/panel
+      return false;
+    }
+
     if (Reaction.getMarketplaceSettings()) {
       // if marketplace is enabled, only the primary shop can switch apps on and off.
       return Reaction.getShopId() === Reaction.getPrimaryShopId();
@@ -243,5 +251,14 @@ Template.shopSettings.events({
 
     Meteor.call("registry/update", packageId, settingsKey, fields);
     Meteor.call("shop/togglePackage", packageId, !event.target.checked);
+  }
+});
+
+Template.optionsShopSettings.helpers({
+  packageData: function () {
+    return Packages.findOne({
+      name: "core",
+      shopId: Reaction.getShopId()
+    });
   }
 });

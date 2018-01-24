@@ -4,7 +4,9 @@ import { Logger, Reaction } from "/server/api";
 import { Shops, Groups } from "/lib/collections";
 
 /**
- * @method createGroups
+ * @name createGroups
+ * @method
+ * @memberof Core
  * @summary creates groups for shops
  * @param {object} options -
  * @param {string} options.shopId - the id of shop to create the group for. Not passing a shopId creates
@@ -53,13 +55,15 @@ export function createGroups(options = {}) {
 /**
  * @method getDefaultGroupRoles
  * @private
- * @summary Generates default groups
+ * @method
+ * @memberof Core
+ * @summary Generates default groups: Get all defined roles from the DB except "anonymous"
+ * because that gets removed from a user on register if it's not removed,
+ * it causes mismatch between roles in user (i.e Meteor.user().roles[shopId]) vs that in
+ * the user's group (Group.find(usergroup).permissions)
  * @return {object} roles - object key-value pair containing the default groups and roles for the groups
  */
 function getDefaultGroupRoles() {
-  /* Get all defined roles from the DB except "anonymous" because that gets removed from a user on register
-   * if it's not removed, it causes mismatch between roles in user (i.e Meteor.user().roles[shopId]) vs that in
-   * the user's group (Group.find(usergroup).permissions) */
   let ownerRoles = Roles
     .getAllRoles().fetch()
     .map(role => role.name)

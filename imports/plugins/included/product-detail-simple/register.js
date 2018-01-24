@@ -19,7 +19,7 @@ Reaction.registerPackage({
     enabled: true,
     structure: {
       template: "productDetailSimple",
-      layoutHeader: "layoutHeader",
+      layoutHeader: "NavBar",
       layoutFooter: "",
       notFound: "productNotFound",
       dashboardHeader: "productDetailSimpleToolbar",

@@ -3,6 +3,20 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
+/**
+ * @summary React component to display sign in form
+ * @memberof Accounts
+ * @extends {Component}
+ * @property {Object} credentials
+ * @property {Boolean} isLoading
+ * @property {Function} loginFormMessages
+ * @property {Object} messages
+ * @property {Function} onError
+ * @property {Function} onForgotPasswordClick
+ * @property {Function} onFormSubmit
+ * @property {Function} onSignUpClick
+ * @property {String} uniqueId
+ */
 class SignIn extends Component {
   static propTypes = {
     credentials: PropTypes.object,

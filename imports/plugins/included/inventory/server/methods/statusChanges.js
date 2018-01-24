@@ -57,7 +57,7 @@ Meteor.methods({
 
     // check basic user permissions
     // if (!Reaction.hasPermission(["guest", "anonymous"])) {
-    //   throw new Meteor.Error(403, "Access Denied");
+    //   throw new Meteor.Error("access-denied", "Access Denied");
     // }
 
     // set defaults
@@ -168,7 +168,7 @@ Meteor.methods({
 
     // // check basic user permissions
     // if (!Reaction.hasPermission(["guest", "anonymous"])) {
-    //   throw new Meteor.Error(403, "Access Denied");
+    //   throw new Meteor.Error("access-denied", "Access Denied");
     // }
 
     // optional workflow status or default to "new"
@@ -262,7 +262,7 @@ Meteor.methods({
 
     // check basic user permissions
     // if (!Reaction.hasPermission(["guest","anonymous"])) {
-    //   throw new Meteor.Error(403, "Access Denied");
+    //   throw new Meteor.Error("access-denied", "Access Denied");
     // }
 
     // set defaults
@@ -331,7 +331,7 @@ Meteor.methods({
     const calledByServer = (this.connection === null && !Meteor.userId());
 
     if (!calledByServer && !Reaction.hasPermission("createProduct", this.userId, inventoryItem.shopId)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     // this.unblock();
     // TODO: add bulkOp here

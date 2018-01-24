@@ -6,8 +6,8 @@ import { Logger } from "/server/api";
 import { EJSON } from "meteor/ejson";
 
 /**
- * ReactionRegistry.loadSettings
- * @description
+ * @method loadSettings
+ * @summary
  * This basically allows you to "hardcode" all the settings. You can change them
  * via admin etc for the session, but when the server restarts they'll
  * be restored back to the supplied json
@@ -15,7 +15,7 @@ import { EJSON } from "meteor/ejson";
  * All settings are private unless added to `settings.public`
  *
  * Meteor account services can be added in `settings.services`
- * @summary updates package settings, accepts json string
+ * @memberof Core
  * @param {Object} json - json object to insert
  * @return {Boolean} boolean -  returns true on insert
  * @example

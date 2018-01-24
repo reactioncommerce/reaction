@@ -96,7 +96,7 @@ Meteor.methods({
         Logger.fatal(error);
       }
     } else {
-      throw new Meteor.Error("403", "Invalid Transaction Type");
+      throw new Meteor.Error("invalid-transaction-type", "Invalid Transaction Type");
     }
 
     const result =  Promise.await(authResult);
@@ -178,7 +178,7 @@ Meteor.methods({
   },
   "authnet/refund/list": function () {
     check(arguments, [Match.Any]);
-    Meteor.Error("Not Implemented", "Authorize.net does not yet support retrieving a list of refunds.");
+    Meteor.Error("not-implemented", "Authorize.net does not yet support retrieving a list of refunds.");
     return [];
   }
 });

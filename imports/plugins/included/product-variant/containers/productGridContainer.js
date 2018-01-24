@@ -13,12 +13,10 @@ import ProductGrid from "../components/productGrid";
 const wrapComponent = (Comp) => (
   class ProductGridContainer extends Component {
     static propTypes = {
-      canEdit: PropTypes.bool,
       isSearch: PropTypes.bool,
       productIds: PropTypes.array,
       products: PropTypes.array,
-      productsByKey: PropTypes.object,
-      unmountMe: PropTypes.func
+      productsByKey: PropTypes.object
     }
 
     constructor(props) {
@@ -128,7 +126,7 @@ const wrapComponent = (Comp) => (
         Meteor.call("products/updateProductPosition", productId, position, tag, error => {
           if (error) {
             Logger.error(error);
-            throw new Meteor.Error(error);
+            throw new Meteor.Error("error-occurred", error);
           }
         });
       });
@@ -145,12 +143,10 @@ const wrapComponent = (Comp) => (
       return (
         <Components.DragDropProvider>
           <Comp
+            {...this.props}
             products={this.products}
             onMove={this.handleProductDrag}
             itemSelectHandler={this.handleSelectProductItem}
-            canEdit={this.props.canEdit}
-            isSearch={this.props.isSearch}
-            unmountMe={this.props.unmountMe}
           />
         </Components.DragDropProvider>
       );

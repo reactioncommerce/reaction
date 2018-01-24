@@ -11,7 +11,7 @@
         "discountTotal": "Discount Total",
         "orderTotal": "Order Total",
         "fulfilledBy": "Fulfilled by",
-        "quantityTotal": "Quantity Total",
+        "orderItems": "Items in order",
         "orderSubtotal": "Subtotal",
         "orderShipping": "Shipping",
         "orderTax": "Tax",
