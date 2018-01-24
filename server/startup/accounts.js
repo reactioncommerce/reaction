@@ -125,7 +125,7 @@ export default function () {
         additionals.groups = [group._id];
         // also add services with email defined to user.emails[]
         for (const service in user.services) {
-          if (service) {
+          if (user.services.hasOwnProperty(service)) {
             if (user.services[service].email) {
               const email = {
                 provides: "default",
