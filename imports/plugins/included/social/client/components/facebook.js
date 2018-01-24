@@ -19,7 +19,6 @@ export function getOpenGraphMeta(props) {
     { property: "og:description", content: description }
   ];
 
-
   if (props.media) {
     let media;
     if (!/^http(s?):\/\/+/.test(data.media)) {
@@ -37,6 +36,7 @@ export function getOpenGraphMeta(props) {
 
 class FacebookSocialButton extends Component {
   componentDidMount() {
+    /* eslint-disable wrap-iife */
     if (window && document) {
       $('<div id="fb-root"></div>').appendTo("body");
 
@@ -59,6 +59,7 @@ class FacebookSocialButton extends Component {
         fjs.parentNode.insertBefore(js, fjs);
       })(document, "script", "facebook-jssdk");
     }
+    /* eslint-enable wrap-iife */
   }
 
   handleClick = (event) => {

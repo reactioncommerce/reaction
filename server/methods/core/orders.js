@@ -908,13 +908,7 @@ export const methods = {
       throw new Meteor.Error("access-denied", "Access Denied. You are not connected.");
     }
 
-    return Orders.update({
-      cartId: cartId
-    }, {
-      $set: {
-        email: email
-      }
-    });
+    return Orders.update({ cartId }, { $set: { email } });
   },
 
   /**
