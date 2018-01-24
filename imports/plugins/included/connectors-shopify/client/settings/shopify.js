@@ -52,7 +52,7 @@ Template.shopifyImport.events({
     if ($("#shopifyCheckboxCustomers").is(":checked")) {
       Meteor.call("connectors/shopify/import/customers", (err) => {
         $(event.currentTarget).html(`
-            <i class='fa fa-cloud-download'></i> ${i18next.t("admin.shopifyConnectSettings.importCustomers")}`);
+            <i class='fa fa-cloud-download'></i> ${i18next.t("admin.shopifyConnectSettings.startImport")}`);
         event.currentTarget.disabled = false;
 
         if (!err) {
@@ -65,7 +65,7 @@ Template.shopifyImport.events({
     if ($("#shopifyCheckboxProducts").is(":checked")) {
       Meteor.call("connectors/shopify/import/products", (err) => {
         $(event.currentTarget).html(`
-            <i class='fa fa-cloud-download'></i> ${i18next.t("admin.shopifyConnectSettings.importCustomers")}`);
+            <i class='fa fa-cloud-download'></i> ${i18next.t("admin.shopifyConnectSettings.startImport")}`);
         event.currentTarget.disabled = false;
 
         if (!err) {
