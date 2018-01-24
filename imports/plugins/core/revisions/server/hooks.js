@@ -111,7 +111,7 @@ export const ProductRevision = {
       documentId: variantId
     });
 
-    return revision && revision.documentData || product;
+    return (revision && revision.documentData) || product;
   },
 
   getTopVariants(id) {
