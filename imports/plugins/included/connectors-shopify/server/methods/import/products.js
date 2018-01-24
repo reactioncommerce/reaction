@@ -427,7 +427,7 @@ export const methods = {
                           Logger.debug(`Importing ${shopifyProduct.title} ${variant} ${option} options`);
                           shopifyTernaryOptions.forEach((ternaryOption, k) => {
                             // Find the option that nests under our current variant.
-                            const shopifyTernaryOption = shopifyProduct.variants.find((o) => o.option1 === variant && o.option2 === option && o.option3 === ternaryOption);
+                            const shopifyTernaryOption = shopifyProduct.variants.find((o) => o.option1 === variant && o.option2 === option && o.option3 === ternaryOption); // eslint-disable-line max-len
 
                             if (shopifyTernaryOption) {
                               const reactionTernaryOption = createReactionVariantFromShopifyVariant({
