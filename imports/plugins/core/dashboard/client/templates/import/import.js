@@ -8,7 +8,7 @@ function uploadHandler(event) {
   const userId = Meteor.userId();
   const files = event.target.files.files;
 
-  for (let i = 0; i < files.length; i++) {
+  for (let i = 0; i < files.length; i += 1) {
     const parts = files[i].name.split(".");
     let product;
     if (parts[0]) {
