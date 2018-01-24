@@ -334,9 +334,7 @@ export const methods = {
     }
 
     let newRates;
-    const didEveryShippingProviderFail = rates.every((shippingMethod) => {
-      return shippingMethod.requestStatus && shippingMethod.requestStatus === "error";
-    });
+    const didEveryShippingProviderFail = rates.every((shippingMethod) => shippingMethod.requestStatus && shippingMethod.requestStatus === "error");
     if (didEveryShippingProviderFail) {
       newRates = [{
         requestStatus: "error",
@@ -344,9 +342,7 @@ export const methods = {
         message: "All requests for shipping methods failed."
       }];
     } else {
-      newRates = rates.filter((shippingMethod) => {
-        return !(shippingMethod.requestStatus) || shippingMethod.requestStatus !== "error";
-      });
+      newRates = rates.filter((shippingMethod) => !(shippingMethod.requestStatus) || shippingMethod.requestStatus !== "error");
     }
 
     Logger.debug("getShippingRates returning rates", rates);

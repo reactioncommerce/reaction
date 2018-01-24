@@ -4,17 +4,15 @@ import { Cart, Orders } from "/lib/collections";
 import taxCalc from "../methods/taxCalc";
 
 function linesToTaxes(lines) {
-  const taxes = lines.map((line) => {
-    return {
-      lineNumber: line.lineNumber,
-      discountAmount: line.discountAmount,
-      taxable: line.isItemTaxable,
-      tax: line.tax,
-      taxableAmount: line.taxableAmount,
-      taxCode: line.taxCode,
-      details: line.details
-    };
-  });
+  const taxes = lines.map((line) => ({
+    lineNumber: line.lineNumber,
+    discountAmount: line.discountAmount,
+    taxable: line.isItemTaxable,
+    tax: line.tax,
+    taxableAmount: line.taxableAmount,
+    taxCode: line.taxCode,
+    details: line.details
+  }));
   return taxes;
 }
 

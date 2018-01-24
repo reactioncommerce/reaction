@@ -17,6 +17,7 @@ export default function sortUsersIntoGroups({ accounts, groups }) {
       if (acc.groups && acc.groups.indexOf(group._id) > -1) {
         return acc;
       }
+      return;
     });
     group.users = _.compact(matchingAccounts);
     return group;
@@ -50,8 +51,8 @@ export function sortGroups(groups) {
  */
 export function getInvitableGroups(groups) {
   return groups
-    .filter(grp => grp.slug !== "owner")
-    .filter(grp => Reaction.canInviteToGroup({ group: grp }));
+    .filter((grp) => grp.slug !== "owner")
+    .filter((grp) => Reaction.canInviteToGroup({ group: grp }));
 }
 
 /**
@@ -67,14 +68,14 @@ export function getInvitableGroups(groups) {
 export function getDefaultUserInviteGroup(groups) {
   let result;
   const user = Collections.Accounts.findOne({ userId: Meteor.userId() });
-  result = groups.find(grp => user && user.groups.indexOf(grp._id) > -1);
+  result = groups.find((grp) => user && user.groups.indexOf(grp._id) > -1);
 
   if (result && result.slug === "owner") {
-    result = groups.find(grp => grp.slug === "shop manager");
+    result = groups.find((grp) => grp.slug === "shop manager");
   }
 
   if (!result) {
-    result = groups.find(firstGroup => firstGroup);
+    result = groups.find((firstGroup) => firstGroup);
   }
 
   return result;
@@ -131,6 +132,7 @@ export function groupPermissions(packages) {
         permissions: _.uniq(permissions)
       };
     }
+    return;
   });
 }
 

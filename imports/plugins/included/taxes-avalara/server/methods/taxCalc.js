@@ -396,6 +396,7 @@ function cartToSalesOrder(cart) {
           taxCode: item.variants.taxCode
         };
       }
+      return;
     });
     if (cartShipping) {
       lineItems.push({
@@ -500,6 +501,7 @@ function orderToSalesInvoice(order) {
         taxCode: item.variants.taxCode
       };
     }
+    return;
   });
   if (orderShipping) {
     lineItems.push({

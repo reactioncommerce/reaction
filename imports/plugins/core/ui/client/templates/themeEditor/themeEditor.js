@@ -21,9 +21,7 @@ Template.uiThemeEditor.onCreated(function () {
   this.findComponentByName = (name) => {
     const theme = this.state.get("theme");
     if (theme) {
-      return _.find(theme.components, (component) => {
-        return component.name === name;
-      });
+      return _.find(theme.components, (component) => component.name === name);
     }
   };
 
@@ -88,20 +86,16 @@ Template.uiThemeEditor.helpers({
     const stylesObject = instance.state.get("styles");
     const annotations = instance.state.get("annotations") || {};
 
-    const stylesArray = _.map(stylesObject, (declarations, selector) => {
-      return {
-        selector,
-        annotation: annotations[selector] || {
-          label: selector
-        },
-        declarations: _.map(declarations, (value, property) => {
-          return {
-            property,
-            value
-          };
-        })
-      };
-    });
+    const stylesArray = _.map(stylesObject, (declarations, selector) => ({
+      selector,
+      annotation: annotations[selector] || {
+        label: selector
+      },
+      declarations: _.map(declarations, (value, property) => ({
+        property,
+        value
+      }))
+    }));
     return stylesArray;
   },
 
@@ -116,12 +110,10 @@ Template.uiThemeEditor.helpers({
     const theme = instance.state.get("theme");
 
     if (theme) {
-      options = theme.components.map((component) => {
-        return {
-          label: component.label || component.name,
-          value: component.name
-        };
-      });
+      options = theme.components.map((component) => ({
+        label: component.label || component.name,
+        value: component.name
+      }));
     }
 
     return {

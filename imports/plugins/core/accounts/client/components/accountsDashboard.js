@@ -67,18 +67,16 @@ class AccountsDashboard extends Component {
       return (
         <div className="group-container">
           {this.state.loading && <Components.Loading />}
-          {groups.map((group, index) => {
-            return (
-              <Components.GroupsTable
-                {...this.props}
-                key={index}
-                group={group}
-                onMethodLoad={this.handleMethodLoad}
-                onMethodDone={this.handleMethodDone}
-                onGroupSelect={this.handleGroupSelect}
-              />
-            );
-          })}
+          {groups.map((group, index) => (
+            <Components.GroupsTable
+              {...this.props}
+              key={index}
+              group={group}
+              onMethodLoad={this.handleMethodLoad}
+              onMethodDone={this.handleMethodDone}
+              onGroupSelect={this.handleGroupSelect}
+            />
+          ))}
         </div>
       );
     }

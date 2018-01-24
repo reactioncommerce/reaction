@@ -92,9 +92,7 @@ Template.packagesGrid.onCreated(function () {
 
   this.autorun(() => {
     const apps = Reaction.Apps({ provides: "dashboard", enabled: true });
-    const groupedApps = _.groupBy(apps, (app) => {
-      return app.container || "misc";
-    });
+    const groupedApps = _.groupBy(apps, (app) => app.container || "misc");
     this.state.set("apps", apps);
     this.state.set("appsByGroup", groupedApps);
     this.state.set("groups", Object.keys(groupedApps));

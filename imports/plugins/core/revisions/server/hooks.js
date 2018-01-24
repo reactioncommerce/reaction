@@ -29,7 +29,7 @@ export const ProductRevision = {
 
     if (variants.length > 0) {
       const variantPrices = [];
-      variants.forEach(variant => {
+      variants.forEach((variant) => {
         if (variant.isVisible === true) {
           const range = this.getVariantPriceRange(variant._id);
           if (typeof range === "string") {
@@ -64,7 +64,7 @@ export const ProductRevision = {
 
   getVariantPriceRange(variantId) {
     const children = this.getVariants(variantId);
-    const visibleChildren = children.filter(child => child.isVisible && !child.isDeleted);
+    const visibleChildren = children.filter((child) => child.isVisible && !child.isDeleted);
 
     switch (visibleChildren.length) {
       case 0:
@@ -77,13 +77,14 @@ export const ProductRevision = {
         let priceMin = Number.POSITIVE_INFINITY;
         let priceMax = Number.NEGATIVE_INFINITY;
 
-        visibleChildren.map(child => {
+        visibleChildren.map((child) => {
           if (child.price < priceMin) {
             priceMin = child.price;
           }
           if (child.price > priceMax) {
             priceMax = child.price;
           }
+          return;
         });
 
         if (priceMin === priceMax) {
@@ -131,6 +132,8 @@ export const ProductRevision = {
       } else if (!revision && product.isVisible) {
         variants.push(product);
       }
+
+      return;
     });
 
     return variants;

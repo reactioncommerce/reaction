@@ -104,6 +104,7 @@ class MediaGallery extends Component {
             </Measure>
           );
         }
+        return null;
       });
     }
 
@@ -114,21 +115,19 @@ class MediaGallery extends Component {
 
   renderMediaThumbnails() {
     if (this.hasMedia) {
-      return this.props.media.map((media, index) => {
-        return (
-          <Components.MediaItem
-            editable={this.props.editable}
-            index={index}
-            key={index}
-            revision={media.revision}
-            metadata={media.metadata}
-            onMouseEnter={this.props.onMouseEnterMedia}
-            onMove={this.props.onMoveMedia}
-            onRemoveMedia={this.props.onRemoveMedia}
-            source={media}
-          />
-        );
-      });
+      return this.props.media.map((media, index) => (
+        <Components.MediaItem
+          editable={this.props.editable}
+          index={index}
+          key={index}
+          revision={media.revision}
+          metadata={media.metadata}
+          onMouseEnter={this.props.onMouseEnterMedia}
+          onMove={this.props.onMoveMedia}
+          onRemoveMedia={this.props.onRemoveMedia}
+          source={media}
+        />
+      ));
     }
     return null;
   }

@@ -79,7 +79,7 @@ Object.assign(Alerts, {
         if (isConfirm === true && typeof messageOrCallback === "function") {
           messageOrCallback(isConfirm, false);
         }
-      }, dismiss => {
+      }, (dismiss) => {
         if (dismiss === "cancel" || dismiss === "esc" || dismiss === "overlay") {
           messageOrCallback(false, dismiss);
         }

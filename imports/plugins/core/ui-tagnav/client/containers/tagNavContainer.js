@@ -126,6 +126,7 @@ const wrapComponent = (Comp) => (
         if (this.isSelected(tag)) {
           selectedTag = tag;
         }
+        return;
       });
 
       const { tagIds, tagsByKey, isVisible } = nextProps;

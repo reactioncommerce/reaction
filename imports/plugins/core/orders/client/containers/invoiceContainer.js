@@ -70,14 +70,12 @@ class InvoiceContainer extends Component {
       selectedItems.push(lineItem._id);
 
       // Add every quantity in the row to be refunded
-      const isEdited = editedItems.find(item => {
-        return item.id === lineItem._id;
-      });
+      const isEdited = editedItems.find((item) => item.id === lineItem._id);
 
       const adjustedQuantity = lineItem.quantity - this.state.value;
 
       if (isEdited) {
-        editedItems = editedItems.filter(item => item.id !== lineItem._id);
+        editedItems = editedItems.filter((item) => item.id !== lineItem._id);
         isEdited.refundedTotal = lineItem.variants.price * adjustedQuantity;
         isEdited.refundedQuantity = adjustedQuantity;
         editedItems.push(isEdited);
@@ -102,9 +100,10 @@ class InvoiceContainer extends Component {
         if (id !== lineItem._id) {
           return id;
         }
+        return;
       });
       // remove item from edited quantities
-      editedItems = editedItems.filter(item => item.id !== lineItem._id);
+      editedItems = editedItems.filter((item) => item.id !== lineItem._id);
 
       this.setState({
         editedItems,
@@ -152,14 +151,12 @@ class InvoiceContainer extends Component {
   handleInputChange = (event, value, lineItem) => {
     let { editedItems } = this.state;
 
-    const isEdited = editedItems.find(item => {
-      return item.id === lineItem._id;
-    });
+    const isEdited = editedItems.find((item) => item.id === lineItem._id);
 
     const refundedQuantity = lineItem.quantity - value;
 
     if (isEdited) {
-      editedItems = editedItems.filter(item => item.id !== lineItem._id);
+      editedItems = editedItems.filter((item) => item.id !== lineItem._id);
       isEdited.refundedTotal = lineItem.variants.price * refundedQuantity;
       isEdited.refundedQuantity = refundedQuantity;
       if (refundedQuantity !== 0) {
@@ -675,12 +672,11 @@ const composer = (props, onData) => {
 
     uniqueItems = returnItems.map((item) => {
       if (taxes.length !== 0) {
-        const taxDetail = taxes.find((tax) => {
-          return tax.lineNumber === item._id;
-        });
+        const taxDetail = taxes.find((tax) => tax.lineNumber === item._id);
         item.taxDetail = taxDetail;
         return item;
       }
+      return;
     });
   } else {
     uniqueItems = returnItems;

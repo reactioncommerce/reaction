@@ -38,7 +38,7 @@ const shop = {
   name: faker.internet.domainName(),
   description: faker.company.catchPhrase(),
   keywords: faker.company.bsAdjective(),
-  addressBook: [ getAddress() ],
+  addressBook: [getAddress()],
   domains: ["localhost"],
   emails: [
     {

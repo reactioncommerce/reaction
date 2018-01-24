@@ -45,7 +45,7 @@ Template.addressBookAdd.helpers({
 
     // Set default country code based on shop's shipping address
     if (shop && Array.isArray(shop.addressBook) && shop.addressBook.length > 0) {
-      const defaultAddress = shop.addressBook.find(address => address.isShippingDefault);
+      const defaultAddress = shop.addressBook.find((address) => address.isShippingDefault);
       const defaultCountryCode = defaultAddress.country;
       if (defaultCountryCode) {
         thisAddress.country = defaultCountryCode;

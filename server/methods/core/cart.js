@@ -76,7 +76,7 @@ function getSessionCarts(userId, sessionId, shopId) {
   const allowedCarts = [];
 
   // only anonymous user carts allowed
-  carts.forEach(cart => {
+  carts.forEach((cart) => {
     if (Roles.userIsInRole(cart.userId, "anonymous", shopId)) {
       allowedCarts.push(cart);
     }
@@ -94,9 +94,7 @@ function getSessionCarts(userId, sessionId, shopId) {
  */
 function removeShippingAddresses(cart) {
   const cartShipping = cart.shipping;
-  cartShipping.map((sRecord) => {
-    delete sRecord.address;
-  });
+  cartShipping.map((sRecord) => delete sRecord.address);
   Collections.Cart.update({
     _id: cart._id
   }, {
@@ -164,7 +162,7 @@ Meteor.methods({
         sessionId} into: ${currentCart._id}`
     );
     // loop through session carts and merge into user cart
-    sessionCarts.forEach(sessionCart => {
+    sessionCarts.forEach((sessionCart) => {
       Logger.debug(
         `merge cart: merge user userId: ${userId}, sessionCart.userId: ${
           sessionCart.userId}, sessionCart id: ${sessionCart._id}`
@@ -189,7 +187,7 @@ Meteor.methods({
         const cartSum = sessionCart.items.concat(currentCart.items);
         const mergedItems = cartSum.reduce((newItems, item) => {
           if (item) {
-            const existingItem = newItems.find(cartItem => cartItem.variants._id === item.variants._id);
+            const existingItem = newItems.find((cartItem) => cartItem.variants._id === item.variants._id);
             if (existingItem) {
               existingItem.quantity += item.quantity;
             } else {
@@ -295,7 +293,7 @@ Meteor.methods({
     // this needed after submitting order, when user receives new cart
     const account = Collections.Accounts.findOne(userId);
     if (account && account.profile && account.profile.addressBook) {
-      account.profile.addressBook.forEach(address => {
+      account.profile.addressBook.forEach((address) => {
         if (address.isBillingDefault) {
           Meteor.call("cart/setPaymentAddress", currentCartId, address);
         }
@@ -360,7 +358,7 @@ Meteor.methods({
     Collections.Products.find({ _id: { $in: [
       productId,
       variantId
-    ] } }).forEach(doc => {
+    ] } }).forEach((doc) => {
       if (doc.type === "simple") {
         product = doc;
       } else {
@@ -386,7 +384,7 @@ Meteor.methods({
     const quantity = quantityProcessing(product, variant, itemQty);
     // performs search of variant inside cart
     const cartVariantExists = cart.items && cart.items
-      .some(item => item.variants._id === variantId);
+      .some((item) => item.variants._id === variantId);
 
     if (cartVariantExists) {
       let modifier = {};
@@ -615,7 +613,7 @@ Meteor.methods({
       const updatedShipping = [];
       cart.shipping.map((shipRecord) => {
         shipRecord.shipmentMethod = method;
-        updatedShipping.push(shipRecord);
+        return updatedShipping.push(shipRecord);
       });
 
       selector = {
@@ -841,6 +839,8 @@ Meteor.methods({
               }
             }
           };
+
+          return;
         });
       }
     }

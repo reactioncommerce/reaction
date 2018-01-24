@@ -164,15 +164,13 @@ function buildPaymentMethods(options) {
 
   shopIds.forEach((shopId) => {
     if (transactionsByShopId[shopId]) {
-      const cartItems = cartItemsByShop[shopId].map((item) => {
-        return {
-          _id: item._id,
-          productId: item.productId,
-          variantId: item.variants._id,
-          shopId: shopId,
-          quantity: item.quantity
-        };
-      });
+      const cartItems = cartItemsByShop[shopId].map((item) => ({
+        _id: item._id,
+        productId: item.productId,
+        variantId: item.variants._id,
+        shopId: shopId,
+        quantity: item.quantity
+      }));
 
       // we need to grab this per shop to get the API key
       const packageData = Packages.findOne({
