@@ -36,10 +36,12 @@ function createShipmentQuotes(cartId, shopId, rates) {
 
   try {
     Cart.update({ _id: cartId }, update);
-    Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
   } catch (error) {
     Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
+    throw error;
   }
+
+  Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
 
   if (rates.length === 1 && rates[0].requestStatus === "error") {
     const errorDetails = rates[0];
@@ -157,10 +159,12 @@ function updateShipmentQuotes(cartId, rates, selector) {
 
   try {
     Cart.update(selector, update);
-    Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
   } catch (error) {
     Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
+    throw error;
   }
+
+  Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
 
   if (rates.length === 1 && rates[0].requestStatus === "error") {
     const errorDetails = rates[0];
@@ -220,10 +224,12 @@ function updateShippingRecordByShop(cart, rates) {
 
     try {
       Cart.update(selector, update);
-      Logger.debug(`Success updating rates for cart ${cartId}`, rates);
     } catch (error) {
       Logger.warn(`Error updating rates for cart ${cartId}`, error);
+      throw error;
     }
+
+    Logger.debug(`Success updating rates for cart ${cartId}`, rates);
   });
 
   pruneShippingRecordsByShop(cart);
