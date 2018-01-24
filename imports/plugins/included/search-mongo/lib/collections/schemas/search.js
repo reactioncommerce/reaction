@@ -10,6 +10,21 @@ export const SearchPackageConfig = PackageConfig.clone().extend({
     blackbox: false,
     defaultValue: {}
   },
+  "settings.products": {
+    type: Object,
+    optional: true,
+    defaultValue: {}
+  },
+  "settings.products.includes": {
+    type: Object,
+    optional: true,
+    defaultValue: {}
+  },
+  "settings.products.weights": {
+    type: Object,
+    optional: true,
+    defaultValue: {}
+  },
   "settings.products.includes.title": {
     type: Boolean,
     defaultValue: true,

@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Job } from "meteor/vsivsi:job-collection";
 import { Packages, Jobs } from "/lib/collections";
-import { CorePackageConfig } from "/lib/collections/schemas";
+import { SearchPackageConfig } from "../../lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
 function fieldsChanged(changedFields, fieldType = "includes") {
@@ -35,7 +35,7 @@ Meteor.methods({
     const modifier = docId ? details : details.modifier;
 
     check(id, String);
-    CorePackageConfig.validate(modifier, { modifier: true });
+    SearchPackageConfig.validate(modifier, { modifier: true });
 
     const currentSettings = Packages.findOne(id);
     const newSettingsArray = _.keys(modifier.$set);
