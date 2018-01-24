@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -44,6 +44,7 @@
     "deep-equal": "^1.0.1",
     "dnd-core": "^2.5.4",
     "escape-string-regexp": "^1.0.5",
+    "eslint-import-resolver-meteor": "^0.4.0",
     "faker": "^4.1.0",
     "fibers": "^2.0.0",
     "flatten-obj": "^3.1.1",
@@ -131,7 +132,10 @@
     "chai": "^4.1.2",
     "enzyme": "^3.2.0",
     "enzyme-to-json": "^3.2.2",
-    "eslint": "^4.12.0",
+    "eslint": "^4.12.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.5.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.5.1",
     "jest": "^21.2.1",
     "js-yaml": "^3.10.0",
@@ -148,6 +152,7 @@
     }
   },
   "scripts": {
+    "lint": "eslint .",
     "test": "jest",
     "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md"
   },
