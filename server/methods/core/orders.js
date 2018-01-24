@@ -365,7 +365,23 @@ export const methods = {
     }
 
     if (!returnToStock) {
-      ordersInventoryAdjust(order._id);
+      // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
+      // in some instances which causes the order not to cancel
+      order.items.forEach(item => {
+        if (Reaction.hasPermission("orders", Meteor.userId(), item.shopId)) {
+          Products.update({
+            _id: item.variants._id,
+            shopId: item.shopId
+          }, {
+            $inc: {
+              inventoryQuantity: -item.quantity
+            }
+          }, {
+            bypassCollection2: true,
+            publish: true
+          });
+        }
+      });
     }
 
     const billingRecord = order.billing.find(billing => billing.shopId === Reaction.getShopId());
@@ -769,7 +785,7 @@ export const methods = {
             refundTotal * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           total: accounting.formatMoney(
-            (subtotal + shippingCost) * userCurrencyExchangeRate, userCurrencyFormatting
+            (subtotal + shippingCost + taxes - discounts) * userCurrencyExchangeRate, userCurrencyFormatting
           ),
           adjustedTotal: accounting.formatMoney(
             (amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting
