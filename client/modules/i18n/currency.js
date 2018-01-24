@@ -20,7 +20,7 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
     }
   });
 
-  const shopCurrency = shop && shop.currency || "USD";
+  const shopCurrency = (shop && shop.currency) || "USD";
   const user = Accounts.findOne({
     _id: Meteor.userId()
   });
@@ -76,12 +76,12 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
   // for the cases then we have only one price. It is a number.
   const currentPrice = formatPrice.toString();
   let price = 0;
-  const prices = ~currentPrice.indexOf(" - ") ?
+  const prices = currentPrice.indexOf(" - ") >= 0 ?
     currentPrice.split(" - ") : [currentPrice];
 
   // basic "for" is faster then "for ...of" for arrays. We need more speed here
   const len = prices.length;
-  for (let i = 0; i < len; i++) {
+  for (let i = 0; i < len; i += 1) {
     const originalPrice = prices[i];
     try {
       // we know the locale, but we don"t know exchange rate. In that case we
