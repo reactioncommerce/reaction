@@ -501,6 +501,7 @@ function orderToSalesInvoice(order) {
         taxCode: item.variants.taxCode
       };
     }
+    return;
   });
   if (orderShipping) {
     lineItems.push({

@@ -94,9 +94,7 @@ function getSessionCarts(userId, sessionId, shopId) {
  */
 function removeShippingAddresses(cart) {
   const cartShipping = cart.shipping;
-  cartShipping.map((sRecord) => {
-    delete sRecord.address;
-  });
+  cartShipping.map((sRecord) => delete sRecord.address);
   Collections.Cart.update({
     _id: cart._id
   }, {
@@ -615,7 +613,7 @@ Meteor.methods({
       const updatedShipping = [];
       cart.shipping.map((shipRecord) => {
         shipRecord.shipmentMethod = method;
-        updatedShipping.push(shipRecord);
+        return updatedShipping.push(shipRecord);
       });
 
       selector = {
@@ -841,6 +839,8 @@ Meteor.methods({
               }
             }
           };
+
+          return;
         });
       }
     }

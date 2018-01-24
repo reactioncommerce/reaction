@@ -16,7 +16,7 @@ export function getChildVariants() {
           variant.ancestors[1] === current._id &&
           variant.optionTitle &&
           variant.type !== "inventory") {
-          return childVariants.push(variant);
+          childVariants.push(variant);
         }
         return;
       });
@@ -28,7 +28,7 @@ export function getChildVariants() {
           variant.ancestors[1] === current.ancestors[1] &&
           variant.optionTitle
         ) {
-          return childVariants.push(variant);
+          childVariants.push(variant);
         }
         return;
       });

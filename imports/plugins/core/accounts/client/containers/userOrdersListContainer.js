@@ -65,8 +65,9 @@ function composer(props, onData) {
           paymentMethods: order.getUniquePaymentMethods(),
           productImages
         };
-        return allOrdersInfo.push(orderInfo);
+        allOrdersInfo.push(orderInfo);
       }
+      return;
     });
     onData(null, {
       allOrdersInfo,

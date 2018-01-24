@@ -84,6 +84,7 @@ export const ProductRevision = {
           if (child.price > priceMax) {
             priceMax = child.price;
           }
+          return;
         });
 
         if (priceMin === priceMax) {
@@ -131,6 +132,8 @@ export const ProductRevision = {
       } else if (!revision && product.isVisible) {
         variants.push(product);
       }
+
+      return;
     });
 
     return variants;
