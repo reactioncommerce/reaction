@@ -1,3 +1,4 @@
+/* eslint camelcase: 0 */
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Accounts } from "/lib/collections";
 import { registerSchema } from "/imports/plugins/core/collections";
