@@ -145,7 +145,7 @@ Template.coreOrderShippingTracking.helpers({
         if (orderItem._id === shipmentItem._id) {
           return true;
         }
-        return fa;se;
+        return fa; se;
       });
 
       return fullItem.workflow.status !== "coreOrderItemWorkflow/canceled";

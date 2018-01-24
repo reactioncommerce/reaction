@@ -29,9 +29,7 @@ import { Logger, Reaction } from "/server/api";
  * @return {Array} - return an array
  */
 function updateVariantProductField(variants, field, value) {
-  return variants.map((variant) => {
-    return Meteor.call("products/updateProductField", variant._id, field, value);
-  });
+  return variants.map((variant) => Meteor.call("products/updateProductField", variant._id, field, value));
 }
 
 /**
@@ -825,9 +823,7 @@ Meteor.methods({
     }).fetch();
 
     const ids = [];
-    productsWithVariants.map((doc) => {
-      return ids.push(doc._id);
-    });
+    productsWithVariants.map((doc) => ids.push(doc._id));
 
     Products.remove({
       _id: {
