@@ -70,7 +70,7 @@ Meteor.methods({
         cvv2: ValidCVV
       });
     } catch (error) {
-      throw new Meteor.Error(400, "Invalid card details");
+      throw new Meteor.Error("invalid-card-details", "Invalid card details");
     }
     check(paymentInfo, {
       total: String,
@@ -106,7 +106,7 @@ Meteor.methods({
       const result =  Promise.await(authResult);
       return result;
     } catch (error) {
-      throw new Meteor.Error(400, error.message);
+      throw new Meteor.Error("auth-failed", error.message);
     }
   },
 
