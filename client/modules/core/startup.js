@@ -68,7 +68,7 @@ function isLocalStorageAvailable() {
 function readCookie(name) {
   const nameEq = name + "=";
   const ca = document.cookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
+  for (let i = 0; i < ca.length; i += 1) {
     let c = ca[i];
     while (c.charAt(0) === " ") c = c.substring(1, c.length);
     if (c.indexOf(nameEq) === 0) {
