@@ -55,7 +55,7 @@ function getTotalCartweight(cart) {
 
 // converts the Rates List fetched from the Shippo Api to Reaction Shipping Rates form
 function ratesParser(shippoRates, shippoDocs) {
-  return shippoRates.map(rate => {
+  return shippoRates.map((rate) => {
     const rateAmount = parseFloat(rate.amount);
     // const methodLabel = `${rate.provider} - ${rate.servicelevel_name}`;
     const reactionRate = {
@@ -84,7 +84,7 @@ function ratesParser(shippoRates, shippoDocs) {
 function filterActiveCarriers(carrierList) {
   const activeCarriers = [];
   if (carrierList.results && carrierList.count) {
-    carrierList.results.forEach(carrier => {
+    carrierList.results.forEach((carrier) => {
       if (carrier.active) {
         activeCarriers.push({
           carrier: carrier.carrier, // this is a property of the returned result with value the name of the carrier
@@ -115,7 +115,7 @@ function getApiKey(shopId = Reaction.getShopId()) {
 // Adds Shippo carriers in Shipping Collection (one doc per carrier) for the current Shop
 function addShippoProviders(carriers, shopId = Reaction.getShopId()) {
   let result = true;
-  carriers.forEach(carrier => {
+  carriers.forEach((carrier) => {
     const carrierName = carrier.carrier;
     const carrierLabel = formatCarrierLabel(carrierName);
     const currentResult = Shipping.insert({
@@ -166,11 +166,11 @@ function updateShippoProviders(activeCarriers, shopId = Reaction.getShopId()) {
   });
 
   // Ids of Shippo Carriers that exist currently as docs in Shipping Collection
-  const currentCarriersIds = currentShippoProviders.map(doc => doc.provider.shippoProvider.carrierAccountId);
+  const currentCarriersIds = currentShippoProviders.map((doc) => doc.provider.shippoProvider.carrierAccountId);
 
   const newActiveCarriers = [];
   const unchangedActiveCarriersIds = [];
-  activeCarriers.forEach(carrier => {
+  activeCarriers.forEach((carrier) => {
     const carrierId = carrier.carrierAccountId;
     if (!currentCarriersIds.includes(carrierId)) {
       newActiveCarriers.push(carrier);
@@ -305,7 +305,7 @@ export const methods = {
 
     // For each order get from Shippo the transaction item ,check the tracking and if it has been updated
     let updatingResult = true;
-    shippoOrders.forEach(order => {
+    shippoOrders.forEach((order) => {
       const orderShipment = order.shipping[0];
       const transactionId = orderShipment.shippo.transactionId;
       const transaction = ShippoApi.methods.getTransaction.call({ apiKey, transactionId });

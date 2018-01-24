@@ -20,8 +20,8 @@ class InviteOwner extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  removeAlert = oldAlert => this.setState({
-    alertArray: this.state.alertArray.filter(alert => JSON.stringify(alert) === JSON.stringify(oldAlert))
+  removeAlert = (oldAlert) => this.setState({
+    alertArray: this.state.alertArray.filter((alert) => JSON.stringify(alert) === JSON.stringify(oldAlert))
   });
 
   handleSubmit = (event) => {

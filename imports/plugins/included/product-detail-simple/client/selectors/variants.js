@@ -11,7 +11,7 @@ export function getChildVariants() {
     }
 
     if (current.ancestors.length === 1) {
-      variants.map(variant => {
+      variants.map((variant) => {
         if (typeof variant.ancestors[1] === "string" &&
           variant.ancestors[1] === current._id &&
           variant.optionTitle &&
@@ -21,7 +21,7 @@ export function getChildVariants() {
       });
     } else {
       // TODO not sure we need this part...
-      variants.map(variant => {
+      variants.map((variant) => {
         if (typeof variant.ancestors[1] === "string" &&
           variant.ancestors.length === current.ancestors.length &&
           variant.ancestors[1] === current.ancestors[1] &&

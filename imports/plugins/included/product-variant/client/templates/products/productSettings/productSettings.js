@@ -10,7 +10,7 @@ import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/ap
 import { applyProductRevision } from "/lib/api/products";
 
 function updateVariantProductField(variants, field, value) {
-  return variants.map(variant => {
+  return variants.map((variant) => {
     Meteor.call("products/updateProductField", variant._id, field, value);
   });
 }

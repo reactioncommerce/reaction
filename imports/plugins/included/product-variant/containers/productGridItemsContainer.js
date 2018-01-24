@@ -127,7 +127,7 @@ const wrapComponent = (Comp) => (
 
     additionalProductMedia = () => {
       const variants = ReactionProduct.getVariants(this.props.product._id);
-      const variantIds = variants.map(variant => variant._id);
+      const variantIds = variants.map((variant) => variant._id);
       const mediaArray = Media.find({
         "metadata.productId": this.props.product._id,
         "metadata.variantId": {

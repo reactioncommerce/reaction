@@ -36,7 +36,7 @@ class BrowserRouter extends Component {
     if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
   }
 
-  handleLocationChange = location => {
+  handleLocationChange = (location) => {
     // Find all matching paths
     let foundPaths = Router.routes.filter((pathObject) => matchPath(location.pathname, {
       path: pathObject.route,

@@ -265,7 +265,7 @@ Router.go = (path, params, query) => {
 
   // if Router is in a non ready/initialized state yet, wait until it is
   if (!Router.ready()) {
-    Tracker.autorun(routerReadyWaitFor => {
+    Tracker.autorun((routerReadyWaitFor) => {
       if (Router.ready()) {
         routerReadyWaitFor.stop();
         routerGo();
@@ -573,7 +573,7 @@ Router.initPackageRoutes = (options) => {
   // subscription to determine this.
   const shopSub = Meteor.subscribe("shopsCount");
 
-  Tracker.autorun(shopSubWaitFor => {
+  Tracker.autorun((shopSubWaitFor) => {
     if (shopSub.ready()) {
       shopSubWaitFor.stop();
       // using tmeasday:publish-counts

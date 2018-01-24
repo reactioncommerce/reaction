@@ -29,7 +29,7 @@ import { Logger, Reaction } from "/server/api";
  * @return {Array} - return an array
  */
 function updateVariantProductField(variants, field, value) {
-  return variants.map(variant => {
+  return variants.map((variant) => {
     Meteor.call("products/updateProductField", variant._id, field, value);
   });
 }
@@ -252,7 +252,7 @@ function denormalize(id, field) {
  * @return {Boolean} true if summary product quantity is zero.
  */
 function isSoldOut(variants) {
-  return variants.every(variant => {
+  return variants.every((variant) => {
     if (variant.inventoryManagement && variant.inventoryPolicy) {
       return Catalog.getVariantQuantity(variant) <= 0;
     }
@@ -268,7 +268,7 @@ function isSoldOut(variants) {
  * @return {boolean} low quantity or not
  */
 function isLowQuantity(variants) {
-  return variants.some(variant => {
+  return variants.some((variant) => {
     const quantity = Catalog.getVariantQuantity(variant);
     // we need to keep an eye on `inventoryPolicy` too and qty > 0
     if (variant.inventoryManagement && variant.inventoryPolicy && quantity) {
@@ -287,7 +287,7 @@ function isLowQuantity(variants) {
  * @return {boolean} is backorder allowed or not for a product
  */
 function isBackorder(variants) {
-  return variants.every(variant => !variant.inventoryPolicy && variant.inventoryManagement &&
+  return variants.every((variant) => !variant.inventoryPolicy && variant.inventoryManagement &&
       variant.inventoryQuantity === 0);
 }
 
@@ -376,9 +376,9 @@ Meteor.methods({
     // we could use this way in future: http://stackoverflow.com/questions/
     // 9040161/mongo-order-by-length-of-array, by now following are allowed
     // @link https://lodash.com/docs#sortBy
-    const sortedVariants = _.sortBy(variants, doc => doc.ancestors.length);
+    const sortedVariants = _.sortBy(variants, (doc) => doc.ancestors.length);
 
-    return sortedVariants.map(sortedVariant => {
+    return sortedVariants.map((sortedVariant) => {
       const oldId = sortedVariant._id;
       let type = "child";
       const clone = {};
@@ -543,7 +543,7 @@ Meteor.methods({
     // we can't stop after successful denormalization, because we have a
     // case when several fields could be changed in top-level variant
     // before form will be submitted.
-    toDenormalize.forEach(field => {
+    toDenormalize.forEach((field) => {
       if (currentVariant[field] !== variant[field]) {
         denormalize(productId, field);
       }
@@ -594,7 +594,7 @@ Meteor.methods({
     // after variant were removed from product, we need to recalculate all
     // denormalized fields
     const productId = toDelete[0].ancestors[0];
-    toDenormalize.forEach(field => denormalize(productId, field));
+    toDenormalize.forEach((field) => denormalize(productId, field));
 
     return typeof deleted === "number" && deleted > 0;
   },
@@ -620,7 +620,7 @@ Meteor.methods({
 
     if (Array.isArray(productOrArray)) {
       // Reduce to unique shops found among producs in this array
-      const shopIds = productOrArray.map(prod => prod.shopId);
+      const shopIds = productOrArray.map((prod) => prod.shopId);
       const uniqueShopIds = [...new Set(shopIds)];
 
       // For each unique shopId check to make sure that user has permission to clone
@@ -657,7 +657,7 @@ Meteor.methods({
 
     function buildAncestors(ancestors) {
       const newAncestors = [];
-      ancestors.map(oldId => {
+      ancestors.map((oldId) => {
         const pair = getIds(oldId);
         // TODO do we always have newId on this step?
         newAncestors.push(pair[0].newId);
@@ -708,7 +708,7 @@ Meteor.methods({
         type: "variant"
       }).fetch();
       // why we are using `_.sortBy` described in `products/cloneVariant`
-      const sortedVariants = _.sortBy(variants, doc => doc.ancestors.length);
+      const sortedVariants = _.sortBy(variants, (doc) => doc.ancestors.length);
       for (const variant of sortedVariants) {
         const variantNewId = Random.id();
         setId({
@@ -825,7 +825,7 @@ Meteor.methods({
     }).fetch();
 
     const ids = [];
-    productsWithVariants.map(doc => {
+    productsWithVariants.map((doc) => {
       ids.push(doc._id);
     });
 
@@ -1319,7 +1319,7 @@ Meteor.methods({
 
     if (typeof product === "object" && product.title.length > 1) {
       if (variants.length > 0) {
-        variants.forEach(variant => {
+        variants.forEach((variant) => {
           // if this is a top variant with children, we avoid it to check price
           // because we using price of its children
           if (variant.ancestors.length === 1 &&

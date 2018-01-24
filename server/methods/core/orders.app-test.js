@@ -90,7 +90,7 @@ describe("orders test", function () {
   }
 
   function orderCreditMethod(orderData) {
-    const billingRecord = orderData.billing.filter(value => value.paymentMethod.method ===  "credit");
+    const billingRecord = orderData.billing.filter((value) => value.paymentMethod.method ===  "credit");
     const billingObject =  billingRecord.find((billing) => billing.shopId === shopId);
     return billingObject;
   }

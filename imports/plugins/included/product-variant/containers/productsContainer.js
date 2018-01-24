@@ -166,7 +166,7 @@ function composer(props, onData) {
       { "workflow.status": "active" },
       { _id: Reaction.getPrimaryShopId() }
     ]
-  }).fetch().map(activeShop => activeShop._id);
+  }).fetch().map((activeShop) => activeShop._id);
 
   const productCursor = Products.find({
     ancestors: [],

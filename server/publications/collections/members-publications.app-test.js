@@ -68,7 +68,7 @@ describe("Account Publications", function () {
       // verify
       const data = cursor.fetch();
       // we expect services will be clean object
-      expect(data.some(_user =>
+      expect(data.some((_user) =>
         // we expect two users. First will be without services, second with
         // clean services object
         typeof _user.services === "object" &&

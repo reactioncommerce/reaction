@@ -211,7 +211,7 @@ class OrderTable extends Component {
       // Render order list column/row data
       const filteredFields = {
         name: {
-          accessor: row => getShippingInfo(row).address && getShippingInfo(row).address.fullName,
+          accessor: (row) => getShippingInfo(row).address && getShippingInfo(row).address.fullName,
           id: "shippingFullName"
         },
         email: {
@@ -227,11 +227,11 @@ class OrderTable extends Component {
           id: "_id"
         },
         total: {
-          accessor: row => getBillingInfo(row).invoice && getBillingInfo(row).invoice.total,
+          accessor: (row) => getBillingInfo(row).invoice && getBillingInfo(row).invoice.total,
           id: "billingTotal"
         },
         shipping: {
-          accessor: row => getShippingInfo(row).workflow && getShippingInfo(row).workflow.status,
+          accessor: (row) => getShippingInfo(row).workflow && getShippingInfo(row).workflow.status,
           id: "shippingStatus"
         },
         status: {
@@ -300,7 +300,7 @@ class OrderTable extends Component {
           className: classNames.colClassNames[columnName],
           resizable: resizable,
           sortable: sortable,
-          Cell: row => (
+          Cell: (row) => (
             <OrderTableColumn
               row={row}
               handleClick={this.props.handleClick}
@@ -316,7 +316,7 @@ class OrderTable extends Component {
       // Render order detail column/row data
 
       const columnMeta = {
-        Cell: row => (<div>{this.renderOrderCard(row.original)}</div>)
+        Cell: (row) => (<div>{this.renderOrderCard(row.original)}</div>)
       };
 
       customColumnMetadata.push(columnMeta);

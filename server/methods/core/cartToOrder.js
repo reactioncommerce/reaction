@@ -89,7 +89,7 @@ export function copyCartToOrder(cartId) {
     if (order.shipping.length > 0) {
       const shippingRecords = [];
       order.shipping.map((shippingRecord) => {
-        const billingRecord = order.billing.find(billing => billing.shopId === shippingRecord.shopId);
+        const billingRecord = order.billing.find((billing) => billing.shopId === shippingRecord.shopId);
         shippingRecord.paymentId = billingRecord._id;
         shippingRecord.items = [];
         shippingRecord.items.packed = false;
@@ -132,7 +132,7 @@ export function copyCartToOrder(cartId) {
     };
   }
 
-  order.items = order.items.map(item => {
+  order.items = order.items.map((item) => {
     item.shippingMethod = order.shipping[order.shipping.length - 1];
     item.workflow = {
       status: "new",

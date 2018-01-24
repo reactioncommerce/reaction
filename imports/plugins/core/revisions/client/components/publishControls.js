@@ -106,14 +106,14 @@ class PublishControls extends Component {
     const revisions = this.props.revisions;
     if (Array.isArray(revisions) && revisions.length) {
       const primaryDocumentId = this.props.documentIds[0];
-      return revisions.find(revision => revision.documentId === primaryDocumentId);
+      return revisions.find((revision) => revision.documentId === primaryDocumentId);
     }
     return false;
   }
 
   get revisionIds() {
     if (this.hasRevisions) {
-      return this.props.revisions.map(revision => revision._id);
+      return this.props.revisions.map((revision) => revision._id);
     }
     return false;
   }

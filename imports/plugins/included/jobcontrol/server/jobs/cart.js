@@ -47,7 +47,7 @@ export default () => {
       const schedule = (settings.cart.cleanupDurationDays).match(/\d/);// configurable in shop settings
       const olderThan = moment().subtract(Number(schedule[0]), "days")._d;
       const carts = getstaleCarts(olderThan);
-      carts.forEach(cart => {
+      carts.forEach((cart) => {
         const user = Accounts.findOne({ _id: cart.userId });
         if (!user.emails.length) {
           const removeCart = Cart.remove({ userId: user._id });
