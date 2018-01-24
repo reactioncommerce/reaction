@@ -223,7 +223,7 @@ const wrapComponent = (Comp) => (
           } else {
             Meteor.call("orders/updateHistory", order._id, "Shipping state set by bulk operation", status);
           }
-          orderCount++;
+          orderCount += 1;
           if (orderCount === filteredSelectedOrders.length) {
             this.setState({
               shipping: {
@@ -365,18 +365,18 @@ const wrapComponent = (Comp) => (
         // depending on the type of shop or product that a shop is selling.
         if (orderWorkflow) {
           if (orderWorkflow.status === "new") {
-            isNotPicked++;
+            isNotPicked += 1;
           } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
-            isPicked++;
+            isPicked += 1;
           } else {
             // check if the selected order(s) are being regressed back to this state
             if (orderWorkflow.workflow.includes("coreOrderWorkflow/picked")) {
-              ordersToRegress++;
+              ordersToRegress += 1;
             } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/picked") &&
             (orderWorkflow.status === "coreOrderWorkflow/packed" ||
             orderWorkflow.status === "coreOrderWorkflow/labeled" ||
             orderWorkflow.status === "coreOrderWorkflow/shipped")) {
-              ordersToRegress++;
+              ordersToRegress += 1;
             }
           }
         }
@@ -419,19 +419,19 @@ const wrapComponent = (Comp) => (
         // depending on the type of shop or product that a shop is selling.
         if (orderWorkflow) {
           if (orderWorkflow.status === "new") {
-            isNotPicked++;
+            isNotPicked += 1;
           } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
-            isNotPacked++;
+            isNotPacked += 1;
           } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
-            isPacked++;
+            isPacked += 1;
           } else {
             // check if the selected order(s) are being regressed back to this state
             if (orderWorkflow.workflow.includes("coreOrderWorkflow/packed")) {
-              ordersToRegress++;
+              ordersToRegress += 1;
             } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/packed") &&
             (orderWorkflow.status === "coreOrderWorkflow/labeled" ||
             orderWorkflow.status === "coreOrderWorkflow/shipped")) {
-              ordersToRegress++;
+              ordersToRegress += 1;
             }
           }
         }
@@ -480,20 +480,20 @@ const wrapComponent = (Comp) => (
         // depending on the type of shop or product that a shop is selling.
         if (orderWorkflow) {
           if (orderWorkflow.status === "new") {
-            isNotPacked++;
+            isNotPacked += 1;
             whichFalseState = shippingStates.picked;
           } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
-            isNotPacked++;
+            isNotPacked += 1;
             whichFalseState = shippingStates.packed;
           } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
-            isNotLabeled++;
+            isNotLabeled += 1;
           } else if (orderWorkflow.status === "coreOrderWorkflow/labeled") {
-            isLabeled++;
+            isLabeled += 1;
           } else {
             // check if the selected order(s) are being regressed back to this state
             if (orderWorkflow.workflow.includes("coreOrderWorkflow/labeled") ||
             orderWorkflow.status === "coreOrderWorkflow/shipped") {
-              ordersToRegress++;
+              ordersToRegress += 1;
             }
           }
         }
@@ -543,18 +543,18 @@ const wrapComponent = (Comp) => (
         if (orderWorkflow) {
           const orderWorkflowStatus = orderWorkflow.status;
           if (orderWorkflowStatus === "new") {
-            isNotLabeled++;
+            isNotLabeled += 1;
             whichFalseState = shippingStates.picked;
           } else if (orderWorkflowStatus === "coreOrderWorkflow/picked") {
-            isNotLabeled++;
+            isNotLabeled += 1;
             whichFalseState = shippingStates.packed;
           } else if (orderWorkflowStatus === "coreOrderWorkflow/packed") {
-            isNotLabeled++;
+            isNotLabeled += 1;
             whichFalseState = shippingStates.labeled;
           } else if (orderWorkflowStatus === "coreOrderWorkflow/labeled") {
-            isNotShipped++;
+            isNotShipped += 1;
           } else if (orderWorkflowStatus === "coreOrderWorkflow/shipped") {
-            isShipped++;
+            isShipped += 1;
           }
         }
       });
@@ -639,7 +639,7 @@ const wrapComponent = (Comp) => (
                 Alerts.toast(`An error occured while capturing the payment: ${capturePaymentError}`, "error");
               }
 
-              orderCount++;
+              orderCount += 1;
               if (orderCount === selectedOrders.length) {
                 this.setState({
                   isLoading: {
