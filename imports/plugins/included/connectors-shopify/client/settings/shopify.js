@@ -47,7 +47,7 @@ Template.shopifyImport.events({
         $(event.currentTarget).html(`
             <i class='fa fa-cloud-download'></i> ${i18next.t("admin.shopifyConnectSettings.importCustomers")}`);
         event.currentTarget.disabled = false;
-  
+
         if (!err) {
           return Alerts.toast(i18next.t("admin.shopifyConnectSettings.importSuccess"), "success");
         }
@@ -60,14 +60,13 @@ Template.shopifyImport.events({
         $(event.currentTarget).html(`
             <i class='fa fa-cloud-download'></i> ${i18next.t("admin.shopifyConnectSettings.importCustomers")}`);
         event.currentTarget.disabled = false;
-  
+
         if (!err) {
           return Alerts.toast(i18next.t("admin.shopifyConnectSettings.importSuccess"), "success");
         }
         return Alerts.toast(`${i18next.t("admin.shopifyConnectSettings.importFailed")}: ${err}`, "error");
       });
     }
-    
   }
 });
 

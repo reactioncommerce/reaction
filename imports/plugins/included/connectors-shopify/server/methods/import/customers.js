@@ -1,11 +1,10 @@
 /* eslint camelcase: 0 */
 import Shopify from "shopify-api-node";
-import { Job } from "meteor/vsivsi:job-collection";
 import { Meteor } from "meteor/meteor";
 import { Logger } from "/server/api";
 import { check, Match } from "meteor/check";
 import { Reaction } from "/server/api";
-import { Accounts, Address, Emails } from "/lib/collections";
+import { Accounts } from "/lib/collections";
 import { getApiInfo } from "../api/api";
 import { connectorsRoles } from "../../lib/roles";
 
@@ -31,11 +30,11 @@ function createReactionCustomerFromShopifyCustomer(options) {
   const { shopifyCustomer, shopId } = options;
 
   const userId = Random.id();
-  const reactionProfile = {currency: Reaction.getPrimaryShopCurrency()};
+  const reactionProfile = { currency: Reaction.getPrimaryShopCurrency() };
   // shopify is very forgiving so expect plenty of nulls !!
   const fakePhone = "33888888888";
   const fakeZip = "00000";
-  const first_name = shopifyCustomer.first_name  || "no_first_name"; 
+  const first_name = shopifyCustomer.first_name  || "no_first_name";
   const last_name = shopifyCustomer.last_name || "no_last_name";
   const name = `${first_name} ${last_name}`;
 
@@ -48,7 +47,6 @@ function createReactionCustomerFromShopifyCustomer(options) {
     shopId: shopId, // set shopId to active shopId;
     userId: userId,
     shopifyId: shopifyCustomer.id.toString(), // save it here to make sync lookups cheaper
-    note: shopifyCustomer.note,
     tags: shopifyCustomer.tags,
     orders_count: shopifyCustomer.orders_count,
     updatedAt: new Date(),
@@ -61,30 +59,30 @@ function createReactionCustomerFromShopifyCustomer(options) {
 
   // shopify customer import will fail if we add a null email
   if (shopifyCustomer.email !== null) {
-    // we make sure the email from shopify doesn't have typo like commas instead of dots 
+    // we make sure the email from shopify doesn't have typo like commas instead of dots
     // which is a quite common typo
-    shopifyCustomer.email = shopifyCustomer.email.replace(/,/g, '.');
+    shopifyCustomer.email = shopifyCustomer.email.replace(/,/g, ".");
     // we remove any character that is not valid from email address.
     // TODO use Reaction validate methods instead...
-    shopifyCustomer.email = shopifyCustomer.email.replace(/[^a-zA-Z0-9!#$%&'*+-/=?^_`{|}~@]/g, '');
+    shopifyCustomer.email = shopifyCustomer.email.replace(/[^a-zA-Z0-9!#$%&'*+-/=?^_`{|}~@]/g, "");
     try {
-      reactionCustomer.emails = [{address: shopifyCustomer.email }];
+      reactionCustomer.emails = [{ address: shopifyCustomer.email }];
     } catch (error) {
       Logger.error("There was a problem importing your customers email from Shopify", error);
       throw new Meteor.Error("There was a problem importing your customers email from Shopify", error);
     }
-  };
-  // if shopify customer has just registered chances are 
+  }
+  // if shopify customer has just registered chances are
   // that's not even activated and there will no default_address field
   // so I'll have to check against the length of addresses instead.
   if (shopifyCustomer.addresses.length > 0) {
-    // some addresses are spammy and if address1 is empty 
+    // some addresses are spammy and if address1 is empty
     // high chances are that most fields will be missing
     // so might stop here and forget about this addresses
     if (shopifyCustomer.default_address.address1 !== "") {
       // ok we have a default address, and does not look spammy
       const shopifyCustomerAddress = shopifyCustomer.default_address;
-      // Shopify has phone fields with null value 
+      // Shopify has phone fields with null value
       // let's add a fakePhone so reaction validator will not whine about it
       if (shopifyCustomerAddress.phone === "" || shopifyCustomerAddress.phone === null) {
         shopifyCustomerAddress.phone = fakePhone;
@@ -116,13 +114,12 @@ function createReactionCustomerFromShopifyCustomer(options) {
       reactionProfile.addressBook = [reactionAddress];
 
       try {
-        reactionCustomer.profile = reactionProfile; 
+        reactionCustomer.profile = reactionProfile;
       } catch (error) {
         Logger.error("There was a problem importing your customers addresses from Shopify", error);
         throw new Meteor.Error("There was a problem importing your customers addresses from Shopify", error);
       }
-      
-    } 
+    }
   }
 
   return reactionCustomer;
@@ -164,7 +161,6 @@ export const methods = {
         const shopifyCustomers = await shopify.customer.list({ ...opts, page: page });
         for (const shopifyCustomer of shopifyCustomers) {
           if (!Accounts.findOne({ shopifyId: shopifyCustomer.id }, { fields: { _id: 1 } })) {
-            
             // Setup reaction customer
             const reactionCustomer = createReactionCustomerFromShopifyCustomer({ shopifyCustomer, shopId });
 
@@ -173,7 +169,6 @@ export const methods = {
             ids.push(reactionCustomerId);
 
             Accounts.update({ _id: reactionCustomerId }, { publish: true });
-
           } else { // customer already exists check
             Logger.info(`Customer ${shopifyCustomer.last_name} ${shopifyCustomer.id} already exists`);
           }
