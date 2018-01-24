@@ -125,37 +125,39 @@ export default function () {
         additionals.groups = [group._id];
         // also add services with email defined to user.emails[]
         for (const service in user.services) {
-          if (user.services[service].email) {
-            const email = {
-              provides: "default",
-              address: user.services[service].email,
-              verified: true
-            };
-            user.emails.push(email);
-          }
-          if (user.services[service].name) {
-            user.username = user.services[service].name;
-            additionals.profile.name = user.services[service].name;
-          }
-          // TODO: For now we have here instagram, twitter and google avatar cases
-          // need to make complete list
-          if (user.services[service].picture) {
-            additionals.profile.picture = user.services[service].picture;
-          } else if (user.services[service].profile_image_url_https) {
-            additionals.profile.picture = user.services[service].
-              dprofile_image_url_https;
-          } else if (user.services[service].profile_picture) {
-            additionals.profile.picture = user.services[service].profile_picture;
-          }
-          // Correctly map Instagram profile data to Meteor user / Accounts
-          if (user.services.instagram) {
-            user.username = user.services[service].username;
-            user.name = user.services[service].full_name;
-            additionals.name = user.services[service].full_name;
-            additionals.profile.picture = user.services[service].profile_picture;
-            additionals.profile.bio = user.services[service].bio;
-            additionals.profile.name = user.services[service].full_name;
-            additionals.profile.username = user.services[service].username;
+          if (service) {
+            if (user.services[service].email) {
+              const email = {
+                provides: "default",
+                address: user.services[service].email,
+                verified: true
+              };
+              user.emails.push(email);
+            }
+            if (user.services[service].name) {
+              user.username = user.services[service].name;
+              additionals.profile.name = user.services[service].name;
+            }
+            // TODO: For now we have here instagram, twitter and google avatar cases
+            // need to make complete list
+            if (user.services[service].picture) {
+              additionals.profile.picture = user.services[service].picture;
+            } else if (user.services[service].profile_image_url_https) {
+              additionals.profile.picture = user.services[service].
+                dprofile_image_url_https;
+            } else if (user.services[service].profile_picture) {
+              additionals.profile.picture = user.services[service].profile_picture;
+            }
+            // Correctly map Instagram profile data to Meteor user / Accounts
+            if (user.services.instagram) {
+              user.username = user.services[service].username;
+              user.name = user.services[service].full_name;
+              additionals.name = user.services[service].full_name;
+              additionals.profile.picture = user.services[service].profile_picture;
+              additionals.profile.bio = user.services[service].bio;
+              additionals.profile.name = user.services[service].full_name;
+              additionals.profile.username = user.services[service].username;
+            }
           }
         }
       }
