@@ -14,6 +14,7 @@
     "Assets": true, // Meteor global
     "Package": true, // Meteor global
     "FS": true, // gridFS,
+    "gm": true, // cfs:graphicsmagick
     "Alerts": true  // this needs to get cleaned up, but ignoring for now
   },
   "settings": {
