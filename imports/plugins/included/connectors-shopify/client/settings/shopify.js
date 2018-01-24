@@ -183,9 +183,7 @@ Template.shopifySync.events({
     event.preventDefault();
     const form = formEvent.target;
     const optionsNodeList = form.querySelectorAll('input[type="checkbox"]');
-    const optionsList = Array.from(optionsNodeList).map((hook) => {
-      return { name: hook.name, checked: hook.checked };
-    });
+    const optionsList = Array.from(optionsNodeList).map((hook) => ({ name: hook.name, checked: hook.checked }));
     optionsList.forEach((node) => {
       if (node.checked) {
         Meteor.call("synchooks/shopify/addHook", node, (error) => {

@@ -490,5 +490,5 @@ Import.indication("provider", Collections.Shipping, 0.2);
 // Bulk.find.upsert() to equal false
 //
 export const Fixture = Object.assign({}, Import, {
-  _upsert: () => { return false; }
+  _upsert: () => false
 });

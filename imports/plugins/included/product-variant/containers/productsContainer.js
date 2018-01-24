@@ -79,9 +79,7 @@ const wrapComponent = (Comp) => (
       return false;
     }
 
-    loadMoreProducts = () => {
-      return this.props.canLoadMoreProducts === true;
-    }
+    loadMoreProducts = () => this.props.canLoadMoreProducts === true
 
     loadProducts = (event) => {
       event.preventDefault();
@@ -176,9 +174,7 @@ function composer(props, onData) {
     shopId: { $in: activeShopsIds }
   });
 
-  const products = productCursor.map((product) => {
-    return applyProductRevision(product);
-  });
+  const products = productCursor.map((product) => applyProductRevision(product));
 
   const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
 

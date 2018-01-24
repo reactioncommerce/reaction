@@ -52,14 +52,12 @@ Template.uiThemeDetails.helpers({
     let components = [];
 
     if (theme) {
-      components = theme.components.map((component) => {
-        return {
-          label: i18next.t(`reactionUI.components.${component.name}`, {
-            defaultValue: component.label
-          }),
-          name: component.name
-        };
-      });
+      components = theme.components.map((component) => ({
+        label: i18next.t(`reactionUI.components.${component.name}`, {
+          defaultValue: component.label
+        }),
+        name: component.name
+      }));
     }
 
     return components;

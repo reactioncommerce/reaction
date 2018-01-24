@@ -287,11 +287,7 @@ export default {
 
     // Nested find that determines if a user has any of the permissions
     // specified in the `permissions` array for any shop
-    const hasPermissions = Object.keys(user.roles).find((shopId) => {
-      return user.roles[shopId].find((role) => {
-        return permissions.find(permission => permission === role);
-      });
-    });
+    const hasPermissions = Object.keys(user.roles).find((shopId) => user.roles[shopId].find((role) => permissions.find(permission => permission === role)));
 
     // Find returns undefined if nothing is found.
     // This will return true if permissions are found, false otherwise

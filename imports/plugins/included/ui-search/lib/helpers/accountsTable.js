@@ -8,17 +8,13 @@ export default function accountsTable() {
       id: "_id",
       type: DataType.String,
       header: i18next.t("search.accountSearchResults.accountId", { defaultValue: "Account ID" }),
-      value: rowData => {
-        return rowData._id;
-      }
+      value: rowData => rowData._id
     },
     {
       id: "shopId",
       type: DataType.String,
       header: i18next.t("search.accountSearchResults.shopId", { defaultValue: "Shop ID" }),
-      value: rowData => {
-        return rowData.shopId;
-      }
+      value: rowData => rowData.shopId
     },
     {
       id: "firstName",
@@ -57,17 +53,13 @@ export default function accountsTable() {
       id: "email",
       type: DataType.String,
       header: i18next.t("search.accountSearchResults.emails", { defaultValue: "Email" }),
-      value: rowData => {
-        return rowData.emails[0];
-      }
+      value: rowData => rowData.emails[0]
     },
     {
       id: "manageAccount",
       type: DataType.String,
       header: "",
-      value: rowData => {
-        return rowData.emails[0];
-      },
+      value: rowData => rowData.emails[0],
       tdClassName: "account-manage",
       renderer(cellData, { rowData }) {
         return <span data-event-action="manageAccount" data-event-data={rowData._id}>View</span>;

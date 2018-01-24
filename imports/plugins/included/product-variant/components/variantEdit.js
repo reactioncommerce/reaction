@@ -58,17 +58,15 @@ class VariantEdit extends Component {
     const childVariants = this.props.childVariants;
 
     if (Array.isArray(childVariants)) {
-      return childVariants.map((childVariant, index) => {
-        return (
-          <Components.VariantForm
-            key={index}
-            editFocus={this.props.editFocus}
-            countries={this.props.countries}
-            variant={childVariant}
-            type={"option"}
-          />
-        );
-      });
+      return childVariants.map((childVariant, index) => (
+        <Components.VariantForm
+          key={index}
+          editFocus={this.props.editFocus}
+          countries={this.props.countries}
+          variant={childVariant}
+          type={"option"}
+        />
+      ));
     }
 
     return null;

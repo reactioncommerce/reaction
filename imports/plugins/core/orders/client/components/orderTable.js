@@ -119,20 +119,18 @@ class OrderTable extends Component {
         </div>
 
         <div className="order-items">
-          {order.items.map((item, i) => {
-            return (
-              <div className="order-item" key={i}>
-                <div className="order-item-media">
-                  <ProductImage
-                    item={item}
-                    displayMedia={displayMedia}
-                    size="small"
-                    badge={true}
-                  />
-                </div>
+          {order.items.map((item, i) => (
+            <div className="order-item" key={i}>
+              <div className="order-item-media">
+                <ProductImage
+                  item={item}
+                  displayMedia={displayMedia}
+                  size="small"
+                  badge={true}
+                />
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -248,23 +246,17 @@ class OrderTable extends Component {
 
       const columnNames = Object.keys(filteredFields);
 
-      getTheadProps = () => {
-        return {
-          className: "order-table-thead"
-        };
-      };
+      getTheadProps = () => ({
+        className: "order-table-thead"
+      });
 
-      getTrGroupProps = () => {
-        return {
-          className: "order-table-tr-group"
-        };
-      };
+      getTrGroupProps = () => ({
+        className: "order-table-tr-group"
+      });
 
-      getTableProps = () => {
-        return {
-          className: "order-table-list"
-        };
-      };
+      getTableProps = () => ({
+        className: "order-table-list"
+      });
 
       // https://react-table.js.org/#/story/cell-renderers-custom-components
       columnNames.forEach((columnName) => {
@@ -329,29 +321,21 @@ class OrderTable extends Component {
 
       customColumnMetadata.push(columnMeta);
 
-      getTheadProps = () => {
-        return {
-          className: "hidden"
-        };
-      };
+      getTheadProps = () => ({
+        className: "hidden"
+      });
 
-      getTrGroupProps = () => {
-        return {
-          className: "order-table-details-tr-group"
-        };
-      };
+      getTrGroupProps = () => ({
+        className: "order-table-details-tr-group"
+      });
 
-      getTableProps = () => {
-        return {
-          className: "order-table-detail"
-        };
-      };
+      getTableProps = () => ({
+        className: "order-table-detail"
+      });
 
-      getTrProps = () => {
-        return {
-          className: "order-table-detail-tr"
-        };
-      };
+      getTrProps = () => ({
+        className: "order-table-detail-tr"
+      });
     }
 
     return (
@@ -385,11 +369,9 @@ class OrderTable extends Component {
           getTheadProps={getTheadProps}
           getTrProps={getTrProps}
           getTrGroupProps={getTrGroupProps}
-          getPaginationProps={() => {
-            return {
-              className: "order-table-pagination-visible"
-            };
-          }}
+          getPaginationProps={() => ({
+            className: "order-table-pagination-visible"
+          })}
           getTableProps={getTableProps}
           showPaginationTop={this.props.selectedItems.length ? false : true}
         />

@@ -38,21 +38,17 @@ class BrowserRouter extends Component {
 
   handleLocationChange = location => {
     // Find all matching paths
-    let foundPaths = Router.routes.filter((pathObject) => {
-      return matchPath(location.pathname, {
-        path: pathObject.route,
-        exact: true
-      });
-    });
+    let foundPaths = Router.routes.filter((pathObject) => matchPath(location.pathname, {
+      path: pathObject.route,
+      exact: true
+    }));
 
     // If no matching path is found, fetch the not-found route definition
     if (foundPaths.length === 0 && location.pathname !== "not-found") {
-      foundPaths = Router.routes.filter((pathObject) => {
-        return matchPath("/not-found", {
-          path: pathObject.route,
-          exact: true
-        });
-      });
+      foundPaths = Router.routes.filter((pathObject) => matchPath("/not-found", {
+        path: pathObject.route,
+        exact: true
+      }));
     }
 
     // If we have a found path, take the first match

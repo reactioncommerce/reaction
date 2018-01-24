@@ -37,12 +37,10 @@ Template.taxSettingsPanel.helpers({
       value: "CUSTOM USER INPUT"
     }];
 
-    const entityCodes = TaxEntityCodes.find().map((entityCode) => {
-      return Object.assign({}, entityCode, {
-        label: entityCode.name,
-        value: entityCode.code
-      });
-    });
+    const entityCodes = TaxEntityCodes.find().map((entityCode) => Object.assign({}, entityCode, {
+      label: entityCode.name,
+      value: entityCode.code
+    }));
     entityCodeList = (entityCodes || []).map((a) => a.code);
     return (entityCodes || []).concat(customOption);
   }

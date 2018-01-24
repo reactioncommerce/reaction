@@ -143,11 +143,9 @@ class SortableTable extends Component {
     const { columnMetadata } = this.props;
 
     // Add minWidth = undefined to override 100px default set by ReactTable
-    const displayColumns = columnMetadata.map((element) => {
-      return Object.assign({}, element, {
-        minWidth: undefined
-      });
-    });
+    const displayColumns = columnMetadata.map((element) => Object.assign({}, element, {
+      minWidth: undefined
+    }));
 
     return displayColumns;
   }

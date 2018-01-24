@@ -17,13 +17,9 @@ import { Cart } from "/lib/collections";
  * @private
  */
 function uniqObjects(objs) {
-  const jsonBlobs = objs.map((obj) => {
-    return JSON.stringify(obj);
-  });
+  const jsonBlobs = objs.map((obj) => JSON.stringify(obj));
   const uniqueBlobs = _.uniq(jsonBlobs);
-  return uniqueBlobs.map((blob) => {
-    return EJSON.parse(blob);
-  });
+  return uniqueBlobs.map((blob) => EJSON.parse(blob));
 }
 
 // cartShippingQuotes

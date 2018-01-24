@@ -45,14 +45,10 @@ function convertOrderToShopifyOrder(doc, index, shopId, existingCustomer = undef
   shopifyOrder.subtotal_price = order.getSubtotalByShop()[shopId];
   shopifyOrder.token = order._id;
   shopifyOrder.total_discounts = order.getDiscountsByShop()[shopId];
-  shopifyOrder.total_line_item_price = order.getItemsByShop()[shopId].reduce((total, item) => {
-    return total + (item.variants.price * item.quantity);
-  }, 0);
+  shopifyOrder.total_line_item_price = order.getItemsByShop()[shopId].reduce((total, item) => total + (item.variants.price * item.quantity), 0);
   shopifyOrder.total_price = order.getTotalByShop()[shopId];
   shopifyOrder.total_tax = order.getTaxesByShop()[shopId];
-  shopifyOrder.total_weight = shopifyOrder.line_items.reduce((sum, item) => {
-    return sum + (item.grams * item.quantity);
-  }, 0);
+  shopifyOrder.total_weight = shopifyOrder.line_items.reduce((sum, item) => sum + (item.grams * item.quantity), 0);
   return shopifyOrder;
 }
 

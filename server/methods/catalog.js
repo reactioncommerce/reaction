@@ -287,10 +287,8 @@ function isLowQuantity(variants) {
  * @return {boolean} is backorder allowed or not for a product
  */
 function isBackorder(variants) {
-  return variants.every(variant => {
-    return !variant.inventoryPolicy && variant.inventoryManagement &&
-      variant.inventoryQuantity === 0;
-  });
+  return variants.every(variant => !variant.inventoryPolicy && variant.inventoryManagement &&
+      variant.inventoryQuantity === 0);
 }
 
 /**

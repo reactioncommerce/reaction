@@ -108,13 +108,11 @@ class AuthContainer extends Component {
     return false;
   }
 
-  formMessages = () => {
-    return (
-      <Components.LoginFormMessages
-        messages={this.state.formMessages}
-      />
-    );
-  }
+  formMessages = () => (
+    <Components.LoginFormMessages
+      messages={this.state.formMessages}
+    />
+  )
 
   services = () => {
     const serviceHelper = new ServiceConfigHelper();
@@ -131,9 +129,7 @@ class AuthContainer extends Component {
     return !!Package["accounts-password"] && enabledServices.length > 0;
   }
 
-  capitalizeName = (str) => {
-    return LoginFormSharedHelpers.capitalize(str);
-  }
+  capitalizeName = (str) => LoginFormSharedHelpers.capitalize(str)
 
   handleSocialLogin = (value) => {
     let serviceName = value;
@@ -159,9 +155,7 @@ class AuthContainer extends Component {
     });
   }
 
-  hasPasswordService = () => {
-    return !!Package["accounts-password"];
-  }
+  hasPasswordService = () => !!Package["accounts-password"]
 
   renderAuthView() {
     if (this.props.currentView === "loginFormSignInView") {

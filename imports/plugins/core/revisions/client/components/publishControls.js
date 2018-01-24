@@ -169,9 +169,7 @@ class PublishControls extends Component {
       });
 
       // If even one revision has changes we should enable the publish button
-      return diffHasActualChanges.some((element) => {
-        return element === true;
-      });
+      return diffHasActualChanges.some((element) => element === true);
     }
 
     // No revisions, no publishing
@@ -180,9 +178,7 @@ class PublishControls extends Component {
 
   renderChanges() {
     if (this.showDiffs) {
-      const diffs = this.props.revisions.map((revision) => {
-        return <SimpleDiff diff={revision.diff} key={revision._id} />;
-      });
+      const diffs = this.props.revisions.map((revision) => <SimpleDiff diff={revision.diff} key={revision._id} />);
 
       return (
         <div>

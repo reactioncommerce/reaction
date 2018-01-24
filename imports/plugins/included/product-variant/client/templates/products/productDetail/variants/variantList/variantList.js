@@ -46,9 +46,7 @@ Template.variantList.onRendered(function () {
         onUpdate() {
           const positions = instance.$(".variant-list-item")
             .toArray()
-            .map((element) => {
-              return element.getAttribute("data-id");
-            });
+            .map((element) => element.getAttribute("data-id"));
 
           Meteor.defer(function () {
             Meteor.call("products/updateVariantsPosition", positions);

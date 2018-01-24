@@ -350,9 +350,7 @@ describe("core product methods", function () {
         }).fetch();
         expect(cloneVariants.length).to.equal(3);
         for (let i = 0; i < variants.length; i++) {
-          expect(cloneVariants.some(clonedVariant => {
-            return clonedVariant.title === variants[i].title;
-          })).to.be.ok;
+          expect(cloneVariants.some(clonedVariant => clonedVariant.title === variants[i].title)).to.be.ok;
         }
 
         return done();
@@ -716,9 +714,7 @@ describe("core product methods", function () {
   });
 
   describe("setHandle", () => {
-    beforeEach(() => {
-      return Tags.remove({});
-    });
+    beforeEach(() => Tags.remove({}));
 
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);

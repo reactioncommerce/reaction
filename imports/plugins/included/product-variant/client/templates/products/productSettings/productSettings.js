@@ -26,17 +26,13 @@ Template.productSettings.onCreated(function () {
     const currentData = Template.currentData();
 
     if (_.isArray(currentData.products)) {
-      const productIds = currentData.products.map((product) => {
-        return product._id;
-      });
+      const productIds = currentData.products.map((product) => product._id);
 
       const products = Products.find({
         _id: {
           $in: productIds
         }
-      }).map((product) => {
-        return applyProductRevision(product);
-      });
+      }).map((product) => applyProductRevision(product));
 
       this.state.set("productIds", productIds);
       this.state.set("products", products);

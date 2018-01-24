@@ -70,9 +70,7 @@ class InvoiceContainer extends Component {
       selectedItems.push(lineItem._id);
 
       // Add every quantity in the row to be refunded
-      const isEdited = editedItems.find(item => {
-        return item.id === lineItem._id;
-      });
+      const isEdited = editedItems.find(item => item.id === lineItem._id);
 
       const adjustedQuantity = lineItem.quantity - this.state.value;
 
@@ -152,9 +150,7 @@ class InvoiceContainer extends Component {
   handleInputChange = (event, value, lineItem) => {
     let { editedItems } = this.state;
 
-    const isEdited = editedItems.find(item => {
-      return item.id === lineItem._id;
-    });
+    const isEdited = editedItems.find(item => item.id === lineItem._id);
 
     const refundedQuantity = lineItem.quantity - value;
 
@@ -675,9 +671,7 @@ const composer = (props, onData) => {
 
     uniqueItems = returnItems.map((item) => {
       if (taxes.length !== 0) {
-        const taxDetail = taxes.find((tax) => {
-          return tax.lineNumber === item._id;
-        });
+        const taxDetail = taxes.find((tax) => tax.lineNumber === item._id);
         item.taxDetail = taxDetail;
         return item;
       }

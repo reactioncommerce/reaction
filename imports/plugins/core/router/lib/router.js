@@ -699,16 +699,14 @@ Router.initPackageRoutes = (options) => {
       // TODO: In the future, sort by priority
       // TODO: Allow duplicated routes with a prefix / suffix / flag
       const uniqRoutes = uniqBy(routeDefinitions.reverse(), "route");
-      const reactRouterRoutes = uniqRoutes.map((route, index) => {
-        return (
-          <Route
-            key={`${route.name}-${index}`}
-            path={route.route}
-            exact={true}
-            render={route.options.component}
-          />
-        );
-      });
+      const reactRouterRoutes = uniqRoutes.map((route, index) => (
+        <Route
+          key={`${route.name}-${index}`}
+          path={route.route}
+          exact={true}
+          render={route.options.component}
+        />
+      ));
 
       // Last route, if no other route is matched, this one will be the not-found view
       // Note: This is last becuase all other routes must at-least attempt a match

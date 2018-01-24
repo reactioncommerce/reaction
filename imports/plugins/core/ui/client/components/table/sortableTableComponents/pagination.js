@@ -101,13 +101,11 @@ class SortableTablePagination extends Component {
                 onChange={e => onPageSizeChange(Number(e.target.value))}
                 value={pageSize}
               >
-                {pageSizeOptions.map((option, i) => {
-                  return (
-                    <option key={i} value={option}>
-                      {option} {this.props.rowsText}
-                    </option>
-                  );
-                })}
+                {pageSizeOptions.map((option, i) => (
+                  <option key={i} value={option}>
+                    {option} {this.props.rowsText}
+                  </option>
+                ))}
               </select>
             </span>}
         </div>

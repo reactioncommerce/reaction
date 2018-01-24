@@ -27,9 +27,7 @@ import { Logger, Hooks, Reaction } from "/server/api";
  */
 export function orderCreditMethod(order) {
   const creditBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "credit");
-  const billingRecord = creditBillingRecords.find((billing) => {
-    return billing.shopId === Reaction.getShopId();
-  });
+  const billingRecord = creditBillingRecords.find((billing) => billing.shopId === Reaction.getShopId());
   return billingRecord;
 }
 
@@ -43,9 +41,7 @@ export function orderCreditMethod(order) {
  */
 export function orderDebitMethod(order) {
   const debitBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "debit");
-  const billingRecord = debitBillingRecords.find((billing) => {
-    return billing.shopId === Reaction.getShopId();
-  });
+  const billingRecord = debitBillingRecords.find((billing) => billing.shopId === Reaction.getShopId());
   return billingRecord;
 }
 
@@ -171,9 +167,7 @@ export const methods = {
     }
 
     // Set the status of the items as picked
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/picked", order, itemIds);
     if (result === 1) {
@@ -211,9 +205,7 @@ export const methods = {
     }
 
     // Set the status of the items as packed
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
     if (result === 1) {
@@ -249,9 +241,7 @@ export const methods = {
     }
 
     // Set the status of the items as labeled
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/labeled", order, itemIds);
     if (result === 1) {
@@ -391,9 +381,7 @@ export const methods = {
     paymentMethod = Object.assign(paymentMethod, { amount: Number(paymentMethod.amount) });
     const invoiceTotal = billingRecord.invoice.total;
     const shipment = shippingRecord;
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     // refund payment to customer
     const paymentMethodId = paymentMethod && paymentMethod.paymentPackageId;
@@ -458,9 +446,7 @@ export const methods = {
 
         const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
         // Set the status of the items as shipped
-        const itemIds = shippingRecord.items.map((item) => {
-          return item._id;
-        });
+        const itemIds = shippingRecord.items.map((item) => item._id);
 
         Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
@@ -495,9 +481,7 @@ export const methods = {
     let completedItemsResult;
     let completedOrderResult;
 
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     // TODO: In the future, this could be handled by shipping delivery status
     // REVIEW: This hook seems to run before the shipment has been marked as shipped
@@ -569,16 +553,12 @@ export const methods = {
       Logger.warn("No order email found. No notification sent.");
     }
 
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order, itemIds);
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
 
-    const isCompleted = order.items.every((item) => {
-      return item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed");
-    });
+    const isCompleted = order.items.every((item) => item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed"));
 
     Orders.update({
       "_id": order._id,
@@ -963,9 +943,7 @@ export const methods = {
     const order = Orders.findOne(orderId);
     // find the appropriate shipping record by shop
     const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === shopId);
-    const itemIds = shippingRecord.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shippingRecord.items.map((item) => item._id);
 
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
