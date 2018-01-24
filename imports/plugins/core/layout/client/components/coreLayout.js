@@ -17,14 +17,13 @@ const CoreLayout = ({ actionViewIsOpen, structure }) => {
   const footerComponent = layoutFooter && getComponent(layoutFooter);
 
   let mainNode = null;
-  if (Template[template]) {
-    mainNode = <Blaze template={template} />;
-  } else {
-    try {
-      const mainComponent = getComponent(template);
-      mainNode = React.createElement(mainComponent, {});
-    } catch (error) {
-      // no-op
+  try {
+    const mainComponent = getComponent(template);
+    mainNode = React.createElement(mainComponent, {});
+  } catch (error) {
+    //  Probe for Blaze template (legacy)
+    if (Template[template]) {
+      mainNode = <Blaze template={template} />;
     }
   }
 
