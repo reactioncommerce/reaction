@@ -66,7 +66,9 @@ class ProductGridItems extends Component {
       if (this.props.isMediumWeight()) {
         return (
           <div className={`product-additional-images ${this.renderVisible()}`}>
-            {this.props.additionalMedia().map((media) => <span key={media._id} className="product-image" style={{ backgroundImage: `url('${media.url({ store: "medium" })}')` }} />)} // eslint-disable-line max-len
+            {/* eslint-disable max-len */}
+            {this.props.additionalMedia().map((media) => <span key={media._id} className="product-image" style={{ backgroundImage: `url('${media.url({ store: "medium" })}')` }} />)}
+            {/* eslint-enable max-len */}
             {this.renderOverlay()}
           </div>
         );
