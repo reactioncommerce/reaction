@@ -502,7 +502,7 @@ export default {
       _id: this.getShopId()
     });
 
-    return shop && shop.currency || "USD";
+    return (shop && shop.currency) || "USD";
   },
 
   /**
