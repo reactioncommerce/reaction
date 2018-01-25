@@ -56,7 +56,7 @@ analytics.factory = function (method) {
 };
 
 // For each of our methods, generate a queueing stub.
-for (let i = 0; i < analytics.methods.length; i++) {
+for (let i = 0; i < analytics.methods.length; i += 1) {
   const key = analytics.methods[i];
   analytics[key] = analytics.factory(key);
 }
