@@ -20,7 +20,6 @@ import Hooks from "./hooks";
 export const history = Meteor.isClient ? createBrowserHistory() : createMemoryHistory();
 
 // Private vars
-// const currentRoute = new ReactiveVar({});
 let currentRoute = Immutable.Map();
 const routerReadyDependency = new Tracker.Dependency;
 const routerChangeDependency = new Tracker.Dependency;
