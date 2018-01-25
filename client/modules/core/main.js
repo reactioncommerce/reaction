@@ -93,7 +93,9 @@ export default {
     return Tracker.autorun(() => {
       let shop;
       if (this.Subscriptions.MerchantShops.ready()) {
-        const [ domain ] = Meteor.absoluteUrl().split("/")[2].split(":");
+        // get domain (e.g localhost) from absolute url (e.g http://localhost:3000/)
+        const [ , , host ] = Meteor.absoluteUrl().split("/");
+        const [ domain ] = host.split(":");
 
         // if we don't have an active shopId, try to retreive it from the userPreferences object
         // and set the shop from the storedShopId
