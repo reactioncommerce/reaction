@@ -91,7 +91,7 @@ function createTitle(newTitle, productId) {
       title = `${titleString}-${titleNumberSuffix + titleCount}`;
     } else {
       // first copy will be "...-copy", second: "...-copy-2"
-      title = `${titleString}-copy${ titleCount > 1 ? "-" + titleCount : ""}`;
+      title = `${titleString}-copy${titleCount > 1 ? "-" + titleCount : ""}`;
     }
   }
 
@@ -148,7 +148,7 @@ function createHandle(productHandle, productId) {
       handle = `${handleString}-${handleNumberSuffix + handleCount}`;
     } else {
       // first copy will be "...-copy", second: "...-copy-2"
-      handle = `${handleString}-copy${ handleCount > 1
+      handle = `${handleString}-copy${handleCount > 1
         ? '-' + handleCount : ''}`;
     }
   }

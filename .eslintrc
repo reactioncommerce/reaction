@@ -342,6 +342,6 @@
     //   "nonwords": false,
     //   "overrides": {}
     // }],
-    // "template-curly-spacing": "error"
+    "template-curly-spacing": "error"
   }
 }

@@ -347,7 +347,7 @@ Meteor.methods({
 
     const cart = Collections.Cart.findOne({ userId: this.userId });
     if (!cart) {
-      Logger.error(`Cart not found for user: ${ this.userId }`);
+      Logger.error(`Cart not found for user: ${this.userId}`);
       throw new Meteor.Error("invalid-parameter",
         "Cart not found for user with such id");
     }
@@ -373,12 +373,12 @@ Meteor.methods({
     // const product = Collections.Products.findOne(productId);
     // const variant = Collections.Products.findOne(variantId);
     if (!product) {
-      Logger.warn(`Product: ${ productId } was not found in database`);
+      Logger.warn(`Product: ${productId} was not found in database`);
       throw new Meteor.Error("not-found",
         "Product with such id was not found");
     }
     if (!variant) {
-      Logger.warn(`Product variant: ${ variantId } was not found in database`);
+      Logger.warn(`Product variant: ${variantId} was not found in database`);
       throw new Meteor.Error("not-found",
         "ProductVariant with such id was not found");
     }
@@ -601,7 +601,7 @@ Meteor.methods({
       userId: Meteor.userId()
     });
     if (!cart) {
-      Logger.error(`Cart not found for user: ${ this.userId }`);
+      Logger.error(`Cart not found for user: ${this.userId}`);
       throw new Meteor.Error("not-found",
         "Cart not found for user with such id");
     }
@@ -666,7 +666,7 @@ Meteor.methods({
     check(userCurrency, String);
     const cart = Collections.Cart.findOne({ _id: cartId });
     if (!cart) {
-      Logger.error(`Cart not found for user: ${ this.userId }`);
+      Logger.error(`Cart not found for user: ${this.userId}`);
       throw new Meteor.Error("not-found", "Cart not found for user with such id");
     }
 
@@ -753,7 +753,7 @@ Meteor.methods({
       userId: this.userId
     });
     if (!cart) {
-      Logger.error(`Cart not found for user: ${ this.userId }`);
+      Logger.error(`Cart not found for user: ${this.userId}`);
       throw new Meteor.Error("not-found",
         "Cart not found for user with such id");
     }
@@ -899,7 +899,7 @@ Meteor.methods({
     });
 
     if (!cart) {
-      Logger.error(`Cart not found for user: ${ this.userId }`);
+      Logger.error(`Cart not found for user: ${this.userId}`);
       throw new Meteor.Error("not-found",
         "Cart not found for user with such id");
     }
