@@ -31,6 +31,14 @@ class Variant extends Component {
     }
   }
 
+  handleOnKeyUp = (event) => {
+    // keyCode 32 (spacebar)
+    // keyCode 13 (enter/return)
+    if (event.keyCode === 32 || event.keyCode === 13) {
+      this.handleClick(event);
+    }
+  }
+
   get price() {
     return this.props.displayPrice || this.props.variant.price;
   }
@@ -161,25 +169,31 @@ class Variant extends Component {
         className="variant-list-item"
         id="variant-list-item-{variant._id}"
         key={variant._id}
-        onClick={this.handleClick}
       >
-        <div className={classes}>
-          <div className="title">
-            {variantTitleElement}
+        <div
+          onClick={this.handleClick}
+          onKeyUp={this.handleOnKeyUp}
+          role="button"
+          tabIndex={0}
+        >
+          <div className={classes}>
+            <div className="title">
+              {variantTitleElement}
+            </div>
+
+            <div className="actions">
+              <span className="variant-price">
+                <Components.Currency amount={this.price} editable={this.props.editable}/>
+              </span>
+            </div>
           </div>
 
-          <div className="actions">
-            <span className="variant-price">
-              <Components.Currency amount={this.price} editable={this.props.editable}/>
-            </span>
+          <div className="alerts">
+            {this.renderDeletionStatus()}
+            {this.renderInventoryStatus()}
+            {this.renderValidationButton()}
+            {this.props.editButton}
           </div>
-        </div>
-
-        <div className="alerts">
-          {this.renderDeletionStatus()}
-          {this.renderInventoryStatus()}
-          {this.renderValidationButton()}
-          {this.props.editButton}
         </div>
       </li>
     );
