@@ -87,7 +87,7 @@ export default function () {
   Security.defineMethod("ifUserIdMatches", {
     fetch: [],
     deny: function (type, arg, userId, doc) {
-      return userId && doc.userId && doc.userId !== userId || doc.userId && !userId;
+      return (userId && doc.userId && doc.userId !== userId) || (doc.userId && !userId);
     }
   });
 

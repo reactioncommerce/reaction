@@ -103,7 +103,7 @@ export function ReactiveAggregate(pub, collection, pipeline, options) {
         pub.removed(pubOptions.clientCollection, key);
       }
     }
-    pub._iteration++;
+    pub._iteration += 1;
   }
 
   // track any changes on the collection used for the aggregation
