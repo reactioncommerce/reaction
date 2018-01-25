@@ -52,7 +52,7 @@ class NotificationRoute extends Component {
     return (
       <div className="notify-bar">
         { this.renderDropdownHead() }
-        <ul className="dropdown-notify notifications">
+        <div className="dropdown-notify notifications">
           { this.handleNoNotifications(notificationList) }
           { notificationList.map((notify, key) => {
             const timeNow = moment(notify.timeSent).fromNow();
@@ -76,7 +76,7 @@ class NotificationRoute extends Component {
               </li>
             );
           })}
-        </ul>
+        </div>
       </div>
     );
   }
