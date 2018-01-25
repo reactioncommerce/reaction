@@ -178,7 +178,7 @@ class TextField extends Component {
   renderLabel() {
     if (this.props.label) {
       return (
-        <label>
+        <label htmlFor={this.props.id}>
           <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
         </label>
       );
