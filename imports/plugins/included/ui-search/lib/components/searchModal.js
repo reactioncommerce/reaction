@@ -32,7 +32,6 @@ class SearchModal extends Component {
     this.props.handleToggle("accounts");
   }
 
-
   handleOnKeyUpToggleProducts = (event) => {
     if (this.isKeyboardAction(event)) {
       this.handleToggleProducts();
