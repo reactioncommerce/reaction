@@ -16,7 +16,7 @@ function annotateCSS(stylesheet) {
 }
 
 function cssToObject(styles) {
-  check(styles, Match.OneOf(String, null, undefined, void 0));
+  check(styles, Match.OneOf(String, null, undefined, undefined));
 
   const parsedStyle = postcss.parse(styles || baseStyles);
   const styleObject = postcssJS.objectify(parsedStyle);
@@ -51,7 +51,7 @@ function updateStyles(data) {
         "components.name": data.component.name
       }, {
         $set: {
-          ["components.$.styles"]: result.css
+          "components.$.styles": result.css
         }
       });
     }
