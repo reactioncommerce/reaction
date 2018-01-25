@@ -51,8 +51,7 @@ export function registerInventory(product) {
         } new inventory items for ${variant._id}`
       );
 
-      const batch = Inventory.
-        _collection.rawCollection().initializeUnorderedBulkOp();
+      const batch = Inventory._collection.rawCollection().initializeUnorderedBulkOp();
       while (i <= newQty) {
         const id = Inventory._makeNewID();
         batch.insert({

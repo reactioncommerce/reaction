@@ -144,8 +144,7 @@ export default function () {
             if (serviceObj.picture) {
               additionals.profile.picture = user.services[service].picture;
             } else if (serviceObj.profile_image_url_https) {
-              additionals.profile.picture = user.services[service].
-                dprofile_image_url_https;
+              additionals.profile.picture = user.services[service].dprofile_image_url_https;
             } else if (serviceObj.profile_picture) {
               additionals.profile.picture = user.services[service].profile_picture;
             }
