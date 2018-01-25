@@ -80,11 +80,7 @@ const wrapComponent = (Comp) => (
           selectedItems: selectedItemsArray
         });
       } else {
-        const updatedSelectedArray = selectedItemsArray.filter((id) => {
-          if (id !== name) {
-            return id;
-          }
-        });
+        const updatedSelectedArray = selectedItemsArray.filter((id) => id !== name);
         this.setState({
           selectedItems: updatedSelectedArray
         });
