@@ -53,10 +53,10 @@ describe("Account Meteor method ", function () {
   });
 
   function spyOnMethod(method, id) {
-    return sandbox.stub(Meteor.server.method_handlers, `cart/${method}`, function () {
-      check(arguments, [Match.Any]); // to prevent audit_arguments from complaining
+    return sandbox.stub(Meteor.server.method_handlers, `cart/${method}`, function (...args) {
+      check(args, [Match.Any]); // to prevent audit_arguments from complaining
       this.userId = id;
-      return originals[method].apply(this, arguments);
+      return originals[method].apply(this, args);
     });
   }
 
@@ -206,8 +206,8 @@ describe("Account Meteor method ", function () {
     let removeInventoryStub;
 
     before(function () {
-      removeInventoryStub = sinon.stub(Meteor.server.method_handlers, "inventory/remove", function () {
-        check(arguments, [Match.Any]);
+      removeInventoryStub = sinon.stub(Meteor.server.method_handlers, "inventory/remove", function (...args) {
+        check(args, [Match.Any]);
         return true;
       });
     });
