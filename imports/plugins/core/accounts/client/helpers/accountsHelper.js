@@ -85,7 +85,7 @@ export function getDefaultUserInviteGroup(groups) {
  * @return {Object}          [description]
  */
 export function groupPermissions(packages) {
-  return packages.map((pkg) => {
+  return packages.reduce((registeredPackages, pkg) => {
     const permissions = [];
     if (pkg.registry && pkg.enabled) {
       for (const registryItem of pkg.registry) {
@@ -119,15 +119,19 @@ export function groupPermissions(packages) {
       // TODO review this, hardcoded WIP "reaction"
       const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (x) => " " + x[1].toUpperCase());
 
-      return {
+      const newObj = {
         shopId: pkg.shopId,
         icon: pkg.icon,
         name: pkg.name,
         label: label,
         permissions: _.uniq(permissions)
       };
+
+      registeredPackages.push(newObj);
     }
-  });
+
+    return registeredPackages;
+  }, []);
 }
 
 function getPermissionMap(permissions) {
