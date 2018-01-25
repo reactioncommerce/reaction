@@ -51,7 +51,7 @@ class GooglePlusSocialButton extends Component {
   renderText() {
     if (this.props.showText) {
       return (
-        <Translation defaultValue="Share on GooglePlus" i18nKey="social.shareOnGooglePlus" />
+        <Components.Translation defaultValue="Share on GooglePlus" i18nKey="social.shareOnGooglePlus" />
       );
     }
     return null;
