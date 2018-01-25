@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import classnames from "classnames";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components } from "/imports/plugins/core/components/lib";
 
 
 export function getGooglePlusMeta(props) {
@@ -66,15 +66,17 @@ class GooglePlusSocialButton extends Component {
     });
 
     return (
-      <a className="btn btn-flat googleplus-share" aria-label="Share to Google Plus" href="#" onClick={this.handleClick}
-        target="_blank"
+      <Components.Button
+        className="btn btn-flat googleplus-share"
+        aria-label="Share to Google Plus"
+        onClick={this.handleClick}
       >
         <Helmet
           meta={getGooglePlusMeta(this.props)}
         />
         <i className={iconClassNames} />
         {this.renderText()}
-      </a>
+      </Components.Button>
     );
   }
 }
