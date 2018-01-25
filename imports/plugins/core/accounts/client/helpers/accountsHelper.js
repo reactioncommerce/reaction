@@ -13,11 +13,7 @@ import * as Collections from "/lib/collections";
  */
 export default function sortUsersIntoGroups({ accounts, groups }) {
   const newGroups = groups.map((group) => {
-    const matchingAccounts = accounts.map((acc) => {
-      if (acc.groups && acc.groups.indexOf(group._id) > -1) {
-        return acc;
-      }
-    });
+    const matchingAccounts = accounts.filter((acc) => acc.groups && acc.groups.indexOf(group._id) > -1);
     group.users = _.compact(matchingAccounts);
     return group;
   });
