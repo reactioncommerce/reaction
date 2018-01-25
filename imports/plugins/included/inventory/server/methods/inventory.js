@@ -66,7 +66,7 @@ export function registerInventory(product) {
             status: "new" // about SimpleSchema, so `defaultValue` will not
           }
         });
-        i++;
+        i += 1;
       }
 
       // took from: http://guide.meteor.com/collections.html#bulk-data-changes
