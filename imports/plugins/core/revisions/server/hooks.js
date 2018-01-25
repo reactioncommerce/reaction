@@ -131,6 +131,8 @@ export const ProductRevision = {
       } else if (!revision && product.isVisible) {
         variants.push(product);
       }
+
+      return variants;
     });
 
     return variants;

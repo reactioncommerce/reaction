@@ -659,6 +659,7 @@ Meteor.methods({
         const pair = getIds(oldId);
         // TODO do we always have newId on this step?
         newAncestors.push(pair[0].newId);
+        return newAncestors;
       });
       return newAncestors;
     }
@@ -825,6 +826,7 @@ Meteor.methods({
     const ids = [];
     productsWithVariants.map((doc) => {
       ids.push(doc._id);
+      return ids;
     });
 
     Products.remove({

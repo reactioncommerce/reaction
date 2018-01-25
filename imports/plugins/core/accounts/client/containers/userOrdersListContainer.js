@@ -67,6 +67,7 @@ function composer(props, onData) {
         };
         allOrdersInfo.push(orderInfo);
       }
+      return allOrdersInfo;
     });
     onData(null, {
       allOrdersInfo,

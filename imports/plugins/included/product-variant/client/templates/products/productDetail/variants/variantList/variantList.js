@@ -131,6 +131,7 @@ Template.variantList.helpers({
             variant.type !== "inventory") {
             childVariants.push(variant);
           }
+          return childVariants;
         });
       } else {
         // TODO not sure we need this part...
@@ -142,6 +143,7 @@ Template.variantList.helpers({
           ) {
             childVariants.push(variant);
           }
+          return childVariants;
         });
       }
 

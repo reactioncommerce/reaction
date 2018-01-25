@@ -18,6 +18,7 @@ export function getChildVariants() {
           variant.type !== "inventory") {
           childVariants.push(variant);
         }
+        return childVariants;
       });
     } else {
       // TODO not sure we need this part...
@@ -29,6 +30,7 @@ export function getChildVariants() {
         ) {
           childVariants.push(variant);
         }
+        return childVariants;
       });
     }
 

@@ -614,6 +614,7 @@ Meteor.methods({
       cart.shipping.map((shipRecord) => {
         shipRecord.shipmentMethod = method;
         updatedShipping.push(shipRecord);
+        return updatedShipping;
       });
 
       selector = {

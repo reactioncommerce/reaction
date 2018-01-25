@@ -169,6 +169,8 @@ Template.coreOrderShippingTracking.helpers({
       if (Array.isArray(fullItem.workflow.workflow)) {
         return fullItem.workflow.workflow.includes("coreOrderItemWorkflow/completed");
       }
+
+      return false;
     });
 
     return completedItems;
