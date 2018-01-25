@@ -20,6 +20,31 @@ class SearchModal extends Component {
     value: PropTypes.string
   }
 
+  isKeyboardAction(event) {
+    return event.keyCode === 13 || event.keyCode === 32;
+  }
+
+  handleToggleProducts = () => {
+    this.props.handleToggle("products");
+  }
+
+  handleToggleAccounts = () => {
+    this.props.handleToggle("accounts");
+  }
+
+
+  handleOnKeyUpToggleProducts = (event) => {
+    if (this.isKeyboardAction(event)) {
+      this.handleToggleProducts();
+    }
+  }
+
+  handleOnKeyUpToggleAccounts = (event) => {
+    if (this.isKeyboardAction(event)) {
+      this.handleToggleAccounts();
+    }
+  }
+
   renderSearchInput() {
     return (
       <div className="rui search-modal-input">
@@ -46,25 +71,27 @@ class SearchModal extends Component {
     if (Reaction.hasPermission("admin")) {
       return (
         <div className="rui search-type-toggle">
-          <div
+          <button
             className="search-type-option search-type-active"
             data-i18n="search.searchTypeProducts"
             data-event-action="searchCollection"
             data-event-value="products"
-            onClick={() => this.props.handleToggle("products")}
+            onClick={this.handleToggleProducts}
+            onKeyUp={this.handleOnKeyUpToggleProducts}
           >
             Products
-          </div>
+          </button>
           {Reaction.hasPermission("accounts") &&
-            <div
+            <button
               className="search-type-option"
               data-i18n="search.searchTypeAccounts"
               data-event-action="searchCollection"
               data-event-value="accounts"
-              onClick={() => this.props.handleToggle("accounts")}
+              onClick={this.handleToggleProducts}
+              onKeyUp={this.handleOnKeyUpToggleProducts}
             >
               Accounts
-            </div>
+            </button>
           }
         </div>
       );
