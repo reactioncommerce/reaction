@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { Reaction } from "/client/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Link } from "@reactioncommerce/reaction-router";
 
 class NotificationRoute extends Component {
   handleNoNotifications = (notifyArr) => {
@@ -86,6 +87,11 @@ class NotificationRoute extends Component {
             );
           })}
         </div>
+        {this.props.showViewAll &&
+          <div className="dropdown-footer text-center">
+            <Link to="/notifications" data-i18n="notifications.body.viewAll">View All</Link>
+          </div>
+        }
       </div>
     );
   }
@@ -95,6 +101,7 @@ NotificationRoute.propTypes = {
   markAllAsRead: PropTypes.func,
   markOneAsRead: PropTypes.func,
   notificationList: PropTypes.array,
+  showViewAll: PropTypes.bool,
   unread: PropTypes.number
 };
 
