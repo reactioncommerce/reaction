@@ -930,7 +930,7 @@ Meteor.methods({
     check(shopId, String);
     check(newLayout, String);
     const shop = Collections.Shops.findOne(shopId);
-    for (let i = 0; i < shop.layout.length; i++) {
+    for (let i = 0; i < shop.layout.length; i += 1) {
       shop.layout[i].layout = newLayout;
     }
     return Collections.Shops.update(shopId, {
