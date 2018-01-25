@@ -7,7 +7,7 @@ import { Template } from "meteor/templating";
 // Duplicated in variantList/variantList.js
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
-  if (typeof current === "object" && (variantId === current._id || ~current.ancestors.indexOf(variantId))) {
+  if (typeof current === "object" && (variantId === current._id || current.ancestors.indexOf(variantId) >= 0)) {
     return true;
   }
 
