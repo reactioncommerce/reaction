@@ -143,7 +143,7 @@ function sortUniqueArray(multiArray) {
   const uniqueArray = [];
   uniqueArray.push(sorted[0]);
 
-  for (let i = 1; i < sorted.length; i++) {
+  for (let i = 1; i < sorted.length; i += 1) {
     if (JSON.stringify(sorted[i]) !== JSON.stringify(sorted[i - 1])) {
       uniqueArray.push(sorted[i]);
     }
