@@ -109,6 +109,9 @@ Meteor.methods({
     // TODO audience permissions need to be consolidated into [object] and not [string]
     // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
     delete shop.layout;
+    // delete brandAssets object from shop to prevent new shops from carrying over existing shop's
+    // brand image
+    delete shop.brandAssets;
 
     let newShopId;
 
@@ -573,59 +576,57 @@ Meteor.methods({
       name: tagName
     });
 
+    let result;
+
     if (tagId) {
-      return Collections.Tags.update(tagId, {
-        $set: newTag
-      }, function () {
-        Logger.debug(
-          `Changed name of tag ${tagId} to ${tagName}`);
-        return true;
-      });
-    } else if (existingTag) {
+      result = Collections.Tags.update(tagId, { $set: newTag });
+      Logger.debug(`Changed name of tag ${tagId} to ${tagName}`);
+      return result;
+    }
+
+    if (existingTag) {
       // if is currentTag
       if (currentTagId) {
-        return Collections.Tags.update(currentTagId, {
+        result = Collections.Tags.update(currentTagId, {
           $addToSet: {
             relatedTagIds: existingTag._id
           }
-        }, function () {
-          Logger.debug(
-            `Added tag ${existingTag.name} to the related tags list for tag ${currentTagId}`
-          );
-          return true;
         });
+        Logger.debug(
+          `Added tag ${existingTag.name} to the related tags list for tag ${currentTagId}`
+        );
+        return result;
       }
+
       // update existing tag
-      return Collections.Tags.update(existingTag._id, {
+      result = Collections.Tags.update(existingTag._id, {
         $set: {
           isTopLevel: true
         }
-      }, function () {
-        Logger.debug(`Marked tag ${existingTag.name} as a top level tag`);
-        return true;
       });
+      Logger.debug(`Marked tag ${existingTag.name} as a top level tag`);
+      return result;
     }
+
     // create newTags
     newTagId = Meteor.call("shop/createTag", tagName, !currentTagId);
 
     // if result is an Error object, we return it immediately
-    if (typeof newTagId !== "string") {
-      return newTagId;
-    }
+    if (typeof newTagId !== "string") return newTagId;
 
     if (currentTagId) {
-      return Collections.Tags.update(currentTagId, {
+      result = Collections.Tags.update(currentTagId, {
         $addToSet: {
           relatedTagIds: newTagId
         }
-      }, function () {
-        Logger.debug(`Added tag${newTag.name} to the related tags list for tag ${currentTagId}`);
-        return true;
       });
-      // TODO: refactor this. unnecessary check
-    } else if (typeof newTagId === "string" && !currentTagId) {
-      return true;
+      Logger.debug(`Added tag${newTag.name} to the related tags list for tag ${currentTagId}`);
+      return result;
     }
+
+    // TODO: refactor this. unnecessary check
+    if (typeof newTagId === "string" && !currentTagId) return true;
+
     throw new Meteor.Error("access-denied", "Failed to update header tags.");
   },
 

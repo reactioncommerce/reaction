@@ -871,7 +871,7 @@ export default {
       }
     }
 
-    if (!!registryFixtureData) {
+    if (registryFixtureData) {
       const validatedJson = EJSON.parse(registryFixtureData);
 
       if (!Array.isArray(validatedJson[0])) {

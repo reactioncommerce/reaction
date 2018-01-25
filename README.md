@@ -26,7 +26,7 @@ Since anything in our codebase can be extended, overwritten, or installed as a p
 
 ### Requirements
 
-Reaction requires Meteor, Git, MongoDB, OS-specific build tools and optionally, ImageMagick. For step-by-step instructions, check out the [Requirements](https://docs.reactioncommerce.com/reaction-docs/master/requirements).
+Reaction requires Meteor, Git, MongoDB, OS-specific build tools and optionally, ImageMagick. For step-by-step instructions, check out this [page](https://docs.reactioncommerce.com/reaction-docs/master/installation).
 
 ### Install and create your first store
 

@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Components } from "@reactioncommerce/reaction-components";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next } from "/client/api";
-import { VariantList } from "../components";
 import { getChildVariants } from "../selectors/variants";
 import { Products, Media } from "/lib/collections";
 import update from "react/lib/update";
@@ -161,7 +161,7 @@ class VariantListContainer extends Component {
   render() {
     return (
       <DragDropProvider>
-        <VariantList
+        <Components.VariantList
           onEditVariant={this.handleEditVariant}
           onMoveVariant={this.handleMoveVariant}
           onVariantClick={this.handleVariantClick}
