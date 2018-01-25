@@ -169,7 +169,7 @@ export function copyHOCs(sourceComponentName, targetComponent) {
  **/
 export function loadRegisteredComponents() {
   Object.keys(ComponentsTable).map((name) => {
-    Components[name] = getComponent(name);
+    return Components[name] = getComponent(name);
   });
 
   return Components;
