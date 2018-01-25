@@ -89,4 +89,6 @@ NotificationRoute.propTypes = {
   unread: PropTypes.number
 };
 
+registerComponent("NotificationRoute", NotificationRoute);
+
 export default NotificationRoute;
