@@ -283,7 +283,7 @@
     }],
     "import/newline-after-import": "error",
     "import/no-duplicates": "error",
-    // "import/no-mutable-exports": "error",
+    "import/no-mutable-exports": "error",
     // "import/no-named-default": "error",
     // "new-parens": "error",
     // "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 4 }],

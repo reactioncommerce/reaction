@@ -93,15 +93,11 @@ function composer(props, onData) {
   });
 }
 
-// export default composeWithTracker(composer)(DiscountList)
 const options = {
   propsToWatch: ["billing"]
 };
 
-let discountListComponent = DiscountList;
-discountListComponent = composeWithTracker(composer, options)(discountListComponent);
-
+const discountListComponent = composeWithTracker(composer, options)(DiscountList);
 registerComponent("DiscountList", discountListComponent);
-
 
 export default discountListComponent;
