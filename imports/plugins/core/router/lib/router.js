@@ -713,12 +713,12 @@ Router.initPackageRoutes = (options) => {
       // Last route, if no other route is matched, this one will be the not-found view
       // Note: This is last becuase all other routes must at-least attempt a match
       // before falling back to this not-found route.
-      reactRouterRoutes.push(
+      reactRouterRoutes.push((
         <Route
           key="not-found"
           render={notFoundLayout.component}
         />
-      );
+      ));
 
       // Finish initialization
       Router._initialized = true;

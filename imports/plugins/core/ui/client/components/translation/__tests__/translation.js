@@ -29,12 +29,12 @@ afterEach(() => {
  */
 
 test("Translation snapshot test", () => {
-  const component = shallow(
+  const component = shallow((
     <Translation
       defaultValue="Translated Text"
       i18nKey={"path.to.key"}
     />
-  );
+  ));
   const tree = shallowToJSON(component);
   expect(tree).toMatchSnapshot();
 });

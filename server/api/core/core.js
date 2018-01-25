@@ -621,9 +621,8 @@ export default {
         marketplaceSettings.shops &&
         Array.isArray(marketplaceSettings.shops.enabledPackagesByShopTypes)) {
       // Find the correct packages list for this shopType
-      const matchingShopType = marketplaceSettings.shops.enabledPackagesByShopTypes.find(
-        EnabledPackagesByShopType => EnabledPackagesByShopType.shopType === shop.shopType
-      );
+      const matchingShopType = marketplaceSettings.shops.enabledPackagesByShopTypes.find(EnabledPackagesByShopType =>
+        EnabledPackagesByShopType.shopType === shop.shopType);
       if (matchingShopType) {
         enabledPackages = matchingShopType.enabledPackages;
       }
