@@ -125,8 +125,7 @@ Meteor.methods({
       let i = 1;
       while (i < newReservedQty) {
         // updated existing new inventory to be reserved
-        Logger.debug(
-          `updating reservation status ${i} of ${newReservedQty - 1}/${totalRequiredQty} items.`);
+        Logger.debug(`updating reservation status ${i} of ${newReservedQty - 1}/${totalRequiredQty} items.`);
         // we should be updating existing inventory here.
         // backorder process created additional backorder inventory if there
         // wasn't enough.
@@ -145,8 +144,7 @@ Meteor.methods({
         i++;
       }
     }
-    Logger.debug(
-      `finished creating ${reservationCount} new ${reservationStatus} reservations`);
+    Logger.debug(`finished creating ${reservationCount} new ${reservationStatus} reservations`);
     return reservationCount;
   },
 

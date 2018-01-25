@@ -46,10 +46,7 @@ export function registerInventory(product) {
       const newQty = variant.inventoryQuantity || 0;
       let i = inventoryVariantCount + 1;
 
-      Logger.debug(
-        `inserting ${newQty - inventoryVariantCount
-        } new inventory items for ${variant._id}`
-      );
+      Logger.debug(`inserting ${newQty - inventoryVariantCount} new inventory items for ${variant._id}`);
 
       const batch = Inventory._collection.rawCollection().initializeUnorderedBulkOp();
       while (i <= newQty) {
@@ -151,9 +148,7 @@ function adjustInventory(product, userId, context) {
           // we could add handling for the case when aren't enough "new" items
         }
       }
-      Logger.debug(
-        `adjust variant ${variant._id} from ${itemCount} to ${results}`
-      );
+      Logger.debug(`adjust variant ${variant._id} from ${itemCount} to ${results}`);
     }
   }
 }

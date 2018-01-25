@@ -88,7 +88,8 @@ Meteor.methods({
     let authResult;
     if (authnetTransactionFunc) {
       try {
-        authResult = authnetTransactionFunc.call(authnetService,
+        authResult = authnetTransactionFunc.call(
+          authnetService,
           order,
           creditCard
         );
@@ -116,7 +117,8 @@ Meteor.methods({
     let result;
     if (capturedAmount === accounting.toFixed(0, 2)) {
       try {
-        const captureResult = voidTransaction(transactionId,
+        const captureResult = voidTransaction(
+          transactionId,
           authnetService
         );
         if (captureResult.responseCode[0] === "1") {
@@ -140,7 +142,8 @@ Meteor.methods({
       return result;
     }
     try {
-      const captureResult = priorAuthCaptureTransaction(transactionId,
+      const captureResult = priorAuthCaptureTransaction(
+        transactionId,
         roundedAmount,
         authnetService
       );

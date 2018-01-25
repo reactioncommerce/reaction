@@ -91,13 +91,12 @@ Template.coreOrderShippingTracking.events({
     const shipment = currentData.fulfillment;
     const tracking = event.target.trackingNumber.value;
 
-    Meteor.call("orders/updateShipmentTracking", order, shipment, tracking,
-      (error) => {
-        if (!error) {
-          template.orderDep.changed();
-          template.showTrackingEditForm.set(false);
-        }
-      });
+    Meteor.call("orders/updateShipmentTracking", order, shipment, tracking, (error) => {
+      if (!error) {
+        template.orderDep.changed();
+        template.showTrackingEditForm.set(false);
+      }
+    });
   },
   "click [data-event-action=editTracking]": (event, template) => {
     template.showTrackingEditForm.set(true);

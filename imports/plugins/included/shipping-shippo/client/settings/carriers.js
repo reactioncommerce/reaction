@@ -150,13 +150,13 @@ Template.shippoCarriers.events({
 AutoForm.hooks({
   "shipping-carrier-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.shippingSettings.carrierSaved"),
-        "success");
+      return Alerts.toast(
+        i18next.t("admin.shippingSettings.carrierSaved"),
+        "success"
+      );
     },
     onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.shippingSettings.carrierFailed")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.shippingSettings.carrierFailed")} ${error}`, "error");
     }
   }
 });

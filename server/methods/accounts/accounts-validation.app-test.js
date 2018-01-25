@@ -110,15 +110,13 @@ describe("Account Registration Validation ", function () {
       });
     });
 
-    it("should allow a password of 6 characters or more in length uppercase, lower, and symbol characters",
-      function (done)  {
-        const password = "abcABC1234@#$%^";
-        Meteor.call("accounts/validation/password", password, undefined, function (error, result) {
-          expect(result).to.be.true;
-          return done();
-        });
-      }
-    );
+    it("should allow a password of 6 characters or more in length uppercase, lower, and symbol characters", function (done)  {
+      const password = "abcABC1234@#$%^";
+      Meteor.call("accounts/validation/password", password, undefined, function (error, result) {
+        expect(result).to.be.true;
+        return done();
+      });
+    });
   });
 });
 

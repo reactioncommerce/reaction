@@ -33,7 +33,8 @@ export const getResults = {};
 getResults.products = function (searchTerm, facets, maxResults, userId) {
   const searchTags = facets || [];
   const findTerm = getProductFindTerm(searchTerm, searchTags, userId);
-  const productResults = ProductSearch.find(findTerm,
+  const productResults = ProductSearch.find(
+    findTerm,
     {
       fields: {
         score: { $meta: "textScore" },

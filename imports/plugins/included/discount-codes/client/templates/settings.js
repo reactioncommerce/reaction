@@ -194,13 +194,13 @@ Template.customDiscountCodes.events({
 AutoForm.hooks({
   "discount-codes-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"),
-        "success");
+      return Alerts.toast(
+        i18next.t("admin.settings.settingsSaveSuccess"),
+        "success"
+      );
     },
     onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error");
     }
   },
   "discount-codes-insert-form": {
@@ -208,9 +208,7 @@ AutoForm.hooks({
       return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"), "success");
     },
     onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error");
     }
   }
 });

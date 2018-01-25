@@ -151,9 +151,9 @@ Meteor.methods({
     // where you are in the flow and configures `gotoNextWorkflowStep`
 
     if (!gotoNextWorkflowStep && currentWorkflowStatus !== newWorkflowStatus) {
-      Logger.debug(
-        `######## Condition One #########: initialise the ${currentCart._id} ${workflow}: ${defaultPackageWorkflows[0].template}`
-      );
+      Logger.debug(`######## Condition One #########:
+        initialise the ${currentCart._id} ${workflow}:
+        ${defaultPackageWorkflows[0].template}`);
       const result = Cart.update(currentCart._id, {
         $set: {
           "workflow.status": defaultPackageWorkflows[0].template
@@ -169,8 +169,7 @@ Meteor.methods({
     // and you should have already be in the current workflow template
     if (gotoNextWorkflowStep && statusExistsInWorkflow === false &&
       templateProcessedinWorkflow === false) {
-      Logger.debug("######## Condition Two #########: set status to: ",
-        nextWorkflowStep.template);
+      Logger.debug("######## Condition Two #########: set status to: ", nextWorkflowStep.template);
 
       return Cart.update(currentCart._id, {
         $set: {
@@ -187,9 +186,11 @@ Meteor.methods({
     // we're going to do our best to ignore you.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
       templateProcessedinWorkflow === false) {
-      Logger.debug("######## Condition Three #########: complete workflow " +
+      Logger.debug(
+        "######## Condition Three #########: complete workflow " +
         currentWorkflowStatus + " updates and move to: ",
-      nextWorkflowStep.template);
+        nextWorkflowStep.template
+      );
       return Cart.update(currentCart._id, {
         $set: {
           "workflow.status": nextWorkflowStep.template
@@ -207,7 +208,8 @@ Meteor.methods({
       templateProcessedinWorkflow === true) {
       Logger.debug(
         "######## Condition Four #########: previously ran, doing nothing. : ",
-        newWorkflowStatus);
+        newWorkflowStatus
+      );
       return true;
     }
   },

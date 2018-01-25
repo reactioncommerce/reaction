@@ -76,8 +76,10 @@ Meteor.methods({
 
     // Disallow creation of multiple shops, even for marketplace owners
     if (shopAccount.shopId !== Reaction.getPrimaryShopId()) {
-      throw new Meteor.Error("operation-not-permitted",
-        "This user already has a shop. Each user may only have one shop.");
+      throw new Meteor.Error(
+        "operation-not-permitted",
+        "This user already has a shop. Each user may only have one shop."
+      );
     }
 
     // we'll accept a shop object, or clone the current shop
@@ -329,12 +331,16 @@ Meteor.methods({
     // with current rates from Open Exchange Rates
     // warn if we don't have app_id
     if (!shopSettings.settings.openexchangerates) {
-      throw new Meteor.Error("not-configured",
-        "Open Exchange Rates not configured. Configure for current rates.");
+      throw new Meteor.Error(
+        "not-configured",
+        "Open Exchange Rates not configured. Configure for current rates."
+      );
     } else {
       if (!shopSettings.settings.openexchangerates.appId) {
-        throw new Meteor.Error("not-configured",
-          "Open Exchange Rates AppId not configured. Configure for current rates.");
+        throw new Meteor.Error(
+          "not-configured",
+          "Open Exchange Rates AppId not configured. Configure for current rates."
+        );
       } else {
         // shop open exchange rates appId
         const openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
@@ -410,8 +416,10 @@ Meteor.methods({
 
     // if updatedAt is not a Date(), then there is no rates yet
     if (typeof updatedAt !== "object") {
-      throw new Meteor.Error("error-occurred",
-        "[flushCurrencyRates worker]: There is nothing to flush.");
+      throw new Meteor.Error(
+        "error-occurred",
+        "[flushCurrencyRates worker]: There is nothing to flush."
+      );
     }
 
     updatedAt.setHours(updatedAt.getHours() + 48);
@@ -592,9 +600,7 @@ Meteor.methods({
             relatedTagIds: existingTag._id
           }
         });
-        Logger.debug(
-          `Added tag ${existingTag.name} to the related tags list for tag ${currentTagId}`
-        );
+        Logger.debug(`Added tag ${existingTag.name} to the related tags list for tag ${currentTagId}`);
         return result;
       }
 

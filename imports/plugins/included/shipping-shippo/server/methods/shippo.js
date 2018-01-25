@@ -207,8 +207,10 @@ export const methods = {
     check(_id, String);
 
     // Make sure user has proper rights to this package
-    const { shopId } = Packages.findOne({ _id },
-      { field: { shopId: 1 } });
+    const { shopId } = Packages.findOne(
+      { _id },
+      { field: { shopId: 1 } }
+    );
     if (shopId && Roles.userIsInRole(this.userId, shippingRoles, shopId)) {
       // If user wants to delete existing key
       if (modifier.hasOwnProperty("$unset")) {
@@ -380,8 +382,7 @@ export const methods = {
     if (retrialTargets.length > 0) {
       const isNotAmongFailedRequests = retrialTargets.every((target) =>
         target.packageName !== currentMethodInfo.packageName &&
-        target.fileName !== currentMethodInfo.fileName
-      );
+        target.fileName !== currentMethodInfo.fileName);
       if (isNotAmongFailedRequests) {
         return [[], retrialTargets];
       }

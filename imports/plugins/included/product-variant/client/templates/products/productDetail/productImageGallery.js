@@ -196,7 +196,6 @@ Template.productImageGallery.events({
     return $("#files").click();
   },
   "load .img-responsive": function (event, template) {
-    return Session.set("variantImgSrc", template.$(".img-responsive").attr(
-      "src"));
+    return Session.set("variantImgSrc", template.$(".img-responsive").attr("src"));
   }
 });

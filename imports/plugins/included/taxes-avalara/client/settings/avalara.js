@@ -164,13 +164,13 @@ Template.avalaraSettings.events({
 AutoForm.hooks({
   "avalara-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.taxSettings.shopTaxMethodsSaved"),
-        "success");
+      return Alerts.toast(
+        i18next.t("admin.taxSettings.shopTaxMethodsSaved"),
+        "success"
+      );
     },
     onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.taxSettings.shopTaxMethodsFailed")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.taxSettings.shopTaxMethodsFailed")} ${error}`, "error");
     }
   }
 });

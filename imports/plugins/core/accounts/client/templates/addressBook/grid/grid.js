@@ -64,15 +64,13 @@ Template.addressBookGrid.events({
   "click [data-event-action=selectShippingAddress]": function () {
   // update address(make it default) only if wasn't already
     if (!this.isShippingDefault) {
-      return Meteor.call("accounts/addressBookUpdate", this, null,
-        "isShippingDefault");
+      return Meteor.call("accounts/addressBookUpdate", this, null, "isShippingDefault");
     }
   },
   "click [data-event-action=selectBillingAddress]": function () {
     // update address(make it default) only if wasn't already
     if (!this.isBillingDefault) {
-      return Meteor.call("accounts/addressBookUpdate", this, null,
-        "isBillingDefault");
+      return Meteor.call("accounts/addressBookUpdate", this, null, "isBillingDefault");
     }
   }
 });

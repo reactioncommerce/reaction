@@ -190,13 +190,13 @@ Template.customDiscountRates.events({
 AutoForm.hooks({
   "discount-rates-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"),
-        "success");
+      return Alerts.toast(
+        i18next.t("admin.settings.settingsSaveSuccess"),
+        "success"
+      );
     },
     onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error");
     }
   }
 });
@@ -204,13 +204,13 @@ AutoForm.hooks({
 AutoForm.hooks({
   "discount-rates-insert-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"),
-        "success");
+      return Alerts.toast(
+        i18next.t("admin.settings.settingsSaveSuccess"),
+        "success"
+      );
     },
     onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error");
     }
   }
 });

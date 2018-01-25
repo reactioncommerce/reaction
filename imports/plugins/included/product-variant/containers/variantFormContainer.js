@@ -165,7 +165,8 @@ const wrapComponent = (Comp) => (
       if (!productId) {
         return;
       }
-      Meteor.call("products/cloneVariant", productId, variant._id,
+      Meteor.call(
+        "products/cloneVariant", productId, variant._id,
         function (error, result) {
           if (error) {
             Alerts.alert({
@@ -178,7 +179,8 @@ const wrapComponent = (Comp) => (
             ReactionProduct.setCurrentVariant(variantId);
             Session.set("variant-form-" + variantId, true);
           }
-        });
+        }
+      );
     }
 
     handleVariantFieldSave = (variantId, fieldName, value, variant) => {
@@ -278,6 +280,4 @@ const wrapComponent = (Comp) => (
 
 registerComponent("VariantForm", VariantForm, wrapComponent);
 
-export default compose(
-  wrapComponent
-)(VariantForm);
+export default compose(wrapComponent)(VariantForm);

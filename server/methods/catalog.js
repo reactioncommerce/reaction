@@ -429,14 +429,10 @@ Meteor.methods({
       let newId;
       try {
         newId = Products.insert(clone, { validate: false });
-        Logger.debug(
-          `products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
-            clone._id} from ${variantId}`
-        );
+        Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
+          clone._id} from ${variantId}`);
       } catch (error) {
-        Logger.error(
-          `products/cloneVariant: cloning of ${variantId} was failed: ${error}`
-        );
+        Logger.error(`products/cloneVariant: cloning of ${variantId} was failed: ${error}`);
         throw error;
       }
 
@@ -628,15 +624,19 @@ Meteor.methods({
       // For each unique shopId check to make sure that user has permission to clone
       uniqueShopIds.forEach((shopId) => {
         if (!Reaction.hasPermission("createProduct", this.userId, shopId)) {
-          throw new Meteor.Error("access-denied",
-            "Access Denied");
+          throw new Meteor.Error(
+            "access-denied",
+            "Access Denied"
+          );
         }
       });
     } else {
       // Single product was passed in - ensure that user has permission to clone
       if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) {
-        throw new Meteor.Error("access-denied",
-          "Access Denied");
+        throw new Meteor.Error(
+          "access-denied",
+          "Access Denied"
+        );
       }
     }
 
@@ -1120,7 +1120,8 @@ Meteor.methods({
     for (const currentProduct of existingHandles) {
       const currentProductHandle = createHandle(
         Reaction.getSlug(currentProduct.title),
-        currentProduct._id);
+        currentProduct._id
+      );
       Products.update(currentProduct._id, getSet(currentProductHandle));
     }
     Products.update(product._id, getSet(tag.slug));
@@ -1346,8 +1347,10 @@ Meteor.methods({
 
       if (!variantValidator) {
         Logger.debug("invalid product visibility ", productId);
-        throw new Meteor.Error("invalid-parameter",
-          "Some properties are missing.");
+        throw new Meteor.Error(
+          "invalid-parameter",
+          "Some properties are missing."
+        );
       }
 
       // update product visibility

@@ -159,8 +159,10 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
  * @return {String} - returns transformed data
  */
 MethodHooks.before = function (methodName, beforeFunction) {
-  MethodHooks._initializeHook(MethodHooks._beforeHooks,
-    methodName, beforeFunction);
+  MethodHooks._initializeHook(
+    MethodHooks._beforeHooks,
+    methodName, beforeFunction
+  );
 };
 
 /**
@@ -171,8 +173,10 @@ MethodHooks.before = function (methodName, beforeFunction) {
  * @return {String} - returns transformed data
  */
 MethodHooks.after = function (methodName, afterFunction) {
-  MethodHooks._initializeHook(MethodHooks._afterHooks,
-    methodName, afterFunction);
+  MethodHooks._initializeHook(
+    MethodHooks._afterHooks,
+    methodName, afterFunction
+  );
 };
 
 /**

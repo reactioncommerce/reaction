@@ -223,8 +223,7 @@ class LineItems extends Component {
                   <span>{formatPriceString(item.refundedTotal)}</span>
                 </div>
               </div>
-            )
-            )}
+            ))}
             <div className="refund-item return">
               <div>
                 <b><Components.Translation defaultValue="RETURN TOTAL" i18nKey="admin.invoice.refundTotal"/></b>

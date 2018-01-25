@@ -250,13 +250,10 @@ Template.customTaxRates.events({
 AutoForm.hooks({
   "customTaxRates-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.taxSettings.shopCustomTaxRatesSaved"),
-        "success");
+      return Alerts.toast(i18next.t("admin.taxSettings.shopCustomTaxRatesSaved"), "success");
     },
     onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error");
     }
   },
   "customTaxRates-insert-form": {
@@ -264,9 +261,7 @@ AutoForm.hooks({
       return Alerts.toast(i18next.t("admin.taxSettings.shopCustomTaxRatesSaved"), "success");
     },
     onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error");
     }
   }
 });

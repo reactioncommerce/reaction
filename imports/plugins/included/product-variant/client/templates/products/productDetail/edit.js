@@ -30,7 +30,8 @@ Template.productDetailEdit.events({
   "change input,textarea": function (event) {
     const self = this;
     const productId = ReactionProduct.selectedProductId();
-    Meteor.call("products/updateProductField", productId, self.field,
+    Meteor.call(
+      "products/updateProductField", productId, self.field,
       Template.instance().$(event.currentTarget).val(),
       (error, result) => {
         if (error) {
@@ -43,7 +44,8 @@ Template.productDetailEdit.events({
         if (result) {
           // redirect to new url on title change
           if (self.field === "title") {
-            Meteor.call("products/setHandle", productId,
+            Meteor.call(
+              "products/setHandle", productId,
               (err, res) => {
                 Alerts.removeSeen();
                 if (err) {
@@ -70,7 +72,8 @@ Template.productDetailEdit.events({
             backgroundColor: "#fff"
           });
         }
-      });
+      }
+    );
 
     if (this.type === "textarea") {
       autosize(Template.instance().$(event.currentTarget));

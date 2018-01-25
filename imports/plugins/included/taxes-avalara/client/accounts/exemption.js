@@ -77,9 +77,7 @@ Template.taxSettingsPanel.onCreated(function () {
   if (isAvalaraEnabled && !currentCodes.length) {
     Meteor.call("avalara/getEntityCodes", (error, entityCodes) => {
       if (error) {
-        return Alerts.toast(
-          `${i18next.t("settings.apiError")} ${error.message}`, "error"
-        );
+        return Alerts.toast(`${i18next.t("settings.apiError")} ${error.message}`, "error");
       }
       (entityCodes || []).forEach((entityCode) => TaxEntityCodes.insert(entityCode));
     });

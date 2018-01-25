@@ -153,7 +153,8 @@ Meteor.startup(function () {
             "danger", {
               html: true,
               sticky: true
-            });
+            }
+          );
         });
       }
     }
@@ -172,7 +173,8 @@ Meteor.startup(function () {
               type: "analytics-not-configured",
               html: true,
               sticky: true
-            });
+            }
+          );
         });
       }
     }
@@ -191,7 +193,8 @@ Meteor.startup(function () {
               type: "analytics-not-configured",
               html: true,
               sticky: true
-            });
+            }
+          );
         });
       }
     }
@@ -218,8 +221,10 @@ Meteor.startup(function () {
         value: $element.data("event-value")
       };
       if (typeof ga === "function") {
-        ga("send", "event", analyticsEvent.category, analyticsEvent.action, analyticsEvent.label,
-          analyticsEvent.value);
+        ga(
+          "send", "event", analyticsEvent.category, analyticsEvent.action, analyticsEvent.label,
+          analyticsEvent.value
+        );
       }
       if (typeof mixpanel === "object" && mixpanel.length > 0) {
         mixpanel.track(analyticsEvent.action, {

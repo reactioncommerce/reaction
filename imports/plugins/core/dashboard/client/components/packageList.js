@@ -74,13 +74,11 @@ class PackageList extends Component {
             } finally {
               // If one exists, add it to the list of elements
               if (actionComponent) {
-                elements.push(
-                  <Card expandable={true} key={`action-${index}`}>
-                    <CardBody>
-                      {React.createElement(actionComponent)}
-                    </CardBody>
-                  </Card>
-                );
+                elements.push(<Card expandable={true} key={`action-${index}`}>
+                  <CardBody>
+                    {React.createElement(actionComponent)}
+                  </CardBody>
+                </Card>);
               }
             }
 

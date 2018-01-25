@@ -172,7 +172,8 @@ Template.productSettings.events({
       /* eslint no-loop-func: 1 */
       //
       //
-      Meteor.call("products/updateProductPosition", product._id, positions, tag,
+      Meteor.call(
+        "products/updateProductPosition", product._id, positions, tag,
         (error) => { // eslint-disable-line no-loop-func
           if (error) {
             Logger.warn(error);

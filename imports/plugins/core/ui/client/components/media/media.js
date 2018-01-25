@@ -142,11 +142,7 @@ class MediaItem extends Component {
     );
 
     if (this.props.editable) {
-      return this.props.connectDragSource(
-        this.props.connectDropTarget(
-          mediaElement
-        )
-      );
+      return this.props.connectDragSource(this.props.connectDropTarget(mediaElement));
     }
 
     return mediaElement;

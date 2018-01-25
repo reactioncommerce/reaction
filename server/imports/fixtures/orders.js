@@ -179,7 +179,8 @@ export default function () {
    * authorizedApprovedPaypalOrder Factory
    * @summary defines order factory which generates an authorized, apporved, paypal order.
    */
-  Factory.define("authorizedApprovedPaypalOrder", Orders,
+  Factory.define(
+    "authorizedApprovedPaypalOrder", Orders,
     Factory.extend("order", {
       billing: [{
         _id: Random.id(),
@@ -191,5 +192,6 @@ export default function () {
           status: "approved"
         })
       }]
-    }));
+    })
+  );
 }

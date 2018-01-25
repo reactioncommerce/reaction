@@ -389,7 +389,8 @@ const wrapComponent = (Comp) => (
         // set status to 'picked' if order(s) are in the previous state OR
         // display alert if order(s) are already in this state
       } else {
-        this.displayAlert(selectedOrders, status,
+        this.displayAlert(
+          selectedOrders, status,
           { falseCurrentState: isNotPicked,
             trueCurrentState: isPicked
           }
@@ -439,7 +440,8 @@ const wrapComponent = (Comp) => (
 
       // display regression alert if order(s) are being regressed
       if (ordersToRegress) {
-        this.displayRegressionAlert(selectedOrders, ordersToRegress, status,
+        this.displayRegressionAlert(
+          selectedOrders, ordersToRegress, status,
           { whichFalseState,
             falsePreviousStatuses: isNotPicked,
             falseCurrentState: isNotPacked,
@@ -449,7 +451,8 @@ const wrapComponent = (Comp) => (
 
         // display proper alert if the order(s) are in this state already or want to skip the previous states
       } else {
-        this.displayAlert(selectedOrders, status,
+        this.displayAlert(
+          selectedOrders, status,
           { whichFalseState,
             falsePreviousStatuses: isNotPicked,
             falseCurrentState: isNotPacked,
@@ -511,7 +514,8 @@ const wrapComponent = (Comp) => (
 
         // display proper alert if the order(s) are in this state already or want to skip the previous states
       } else {
-        this.displayAlert(selectedOrders, status,
+        this.displayAlert(
+          selectedOrders, status,
           { whichFalseState,
             falsePreviousStatuses: isNotPacked,
             falseCurrentState: isNotLabeled,
@@ -560,7 +564,8 @@ const wrapComponent = (Comp) => (
       });
 
       // display proper alert if the order(s) are in this state already or want to skip the previous states
-      this.displayAlert(selectedOrders, status,
+      this.displayAlert(
+        selectedOrders, status,
         { whichFalseState,
           falsePreviousStatuses: isNotLabeled,
           falseCurrentState: isNotShipped,

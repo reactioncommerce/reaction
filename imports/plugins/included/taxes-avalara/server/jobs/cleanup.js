@@ -45,7 +45,8 @@ Hooks.Events.add("afterCoreInit", () => {
 
 
 export default function () {
-  Jobs.processJobs("logs/removeOldAvalaraLogs",
+  Jobs.processJobs(
+    "logs/removeOldAvalaraLogs",
     {
       pollInterval: 30 * 1000,
       workTimeout: 180 * 1000
