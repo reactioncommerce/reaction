@@ -227,7 +227,7 @@ export async function exportToShopify(doc) {
   const numShopOrders = doc.billing.length; // if we have multiple billing, we have multiple shops
   Logger.debug(`Exporting ${numShopOrders} order(s) to Shopify`);
   const shopifyOrders = [];
-  for (let index = 0; index < numShopOrders; index++) {
+  for (let index = 0; index < numShopOrders; index += 1) {
     // send a shopify order once for each merchant order
     const shopId = doc.billing[index].shopId;
     const apiCreds = getApiInfo(shopId);
@@ -268,4 +268,3 @@ function markExported(exportedOrder, shopId, order) {
     }
   });
 }
-
