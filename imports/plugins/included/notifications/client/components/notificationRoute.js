@@ -35,12 +35,21 @@ class NotificationRoute extends Component {
     return markOneAsRead(notify._id);
   }
 
+  handleMarkAllAsRead = () => {
+    const { notificationList, markAllAsRead } = this.props;
+    markAllAsRead(notificationList);
+  }
+
   renderDropdownHead() {
-    const { notificationList, unread, markAllAsRead } = this.props;
+    const { unread } = this.props;
     return (
       <div className="dropdown-toolbar">
         <div className="dropdown-toolbar-actions">
-          <a onClick={() => { markAllAsRead(notificationList); }} data-i18n="notifications.body.markAllAsRead"> Mark all as read</a>
+          <Components.Button
+            label={"Mark all as read"}
+            i18nKeyLabel={"notifications.body.markAllAsRead"}
+            onClick={this.handleMarkAllAsRead}
+          />
         </div>
         <h3 className="dropdown-toolbar-title"><span data-i18n="notifications.body.recent">Recent</span> ({unread})</h3>
       </div>
