@@ -68,21 +68,21 @@ class NotificationRoute extends Component {
             const read = `notification ${notify.status}`;
             const i18n = `notifications.messages.${notify.type}`;
             return (
-              <li className={read} key={key}>
-                <a onClick={() => {
-                  this.handleClick(notify);
-                }}
-                >
-                  <div className="media">
-                    <div className="media-body">
-                      <strong className="notification-title" data-i18n={i18n}>{notify.message}</strong>
-                      <div className="notification-meta">
-                        <small className="timestamp">{timeNow}</small>
-                      </div>
+              <Components.ListItem
+                key={key}
+                listItemClassName={read}
+                onClick={this.handleClick}
+                value={notify}
+              >
+                <div className="media">
+                  <div className="media-body">
+                    <strong className="notification-title" data-i18n={i18n}>{notify.message}</strong>
+                    <div className="notification-meta">
+                      <small className="timestamp">{timeNow}</small>
                     </div>
                   </div>
-                </a>
-              </li>
+                </div>
+              </Components.ListItem>
             );
           })}
         </div>
