@@ -146,6 +146,7 @@
 
   @media screen and (max-width: @screen-sm-max) {
     .display(flex);
+    justify-content: space-between;
   }
 }
 
@@ -356,7 +357,14 @@
   display: flex;
   justify-content: center;
   padding: 10px 0;
+  @media screen and (max-width: @screen-xs-max) {
+    justify-content: flex-start;
+    .btn{
+      margin-left: 15px;
+    }
+  }
 }
+
 
 .nav-dropbar-content {
   .flex(1 1 auto);

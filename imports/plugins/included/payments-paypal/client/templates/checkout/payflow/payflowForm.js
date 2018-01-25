@@ -94,37 +94,23 @@ AutoForm.addHooks("paypal-payment-form", {
         uiEnd(template, i18next.t("checkout.paymentMethod.resubmit"));
       } else {
         if (transaction.saved === true) {
-          const normalizedStatus = (function () {
-            switch (transaction.response.state) {
-              case "created":
-                return "created";
-              case "approved":
-                return "created";
-              case "failed":
-                return "failed";
-              case "canceled":
-                return "canceled";
-              case "expired":
-                return "expired";
-              case "pending":
-                return "pending";
-              default:
-                return "failed";
-            }
-          })();
+          let normalizedStatus = transaction.response.state;
+          if (normalizedStatus === "approved") normalizedStatus = "created";
 
-          const normalizedMode = (function () {
-            switch (transaction.response.intent) {
-              case "sale":
-                return "capture";
-              case "authorize":
-                return "authorize";
-              case "order":
-                return "capture";
-              default:
-                return "capture";
-            }
-          })();
+          const supportedStatuses = ["created", "failed", "canceled", "expired", "pending"];
+          if (supportedStatuses.indexOf(normalizedStatus) === -1) normalizedStatus = "failed";
+
+          let normalizedMode;
+          switch (transaction.response.intent) {
+            case "authorize":
+              normalizedMode = "authorize";
+              break;
+            case "sale":
+            case "order":
+            default:
+              normalizedMode = "capture";
+              break;
+          }
 
           // just auth, not transaction
           const transactionId = transaction.response.id;
