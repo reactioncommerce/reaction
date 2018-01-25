@@ -5,15 +5,7 @@ import { Reaction } from "/client/api";
 
 
 class NotificationRoute extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleNoNotifications = this.handleNoNotifications.bind(this);
-    this.renderDropdownHead = this.renderDropdownHead.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleNoNotifications(notifyArr) {
+  handleNoNotifications = (notifyArr) => {
     if (notifyArr.length <= 0) {
       return (
         <li className="notification">
@@ -28,7 +20,7 @@ class NotificationRoute extends Component {
     return null;
   }
 
-  handleClick(notify) {
+  handleClick = (event, notify) => {
     if (notify.type === "forAdmin") {
       const actionViewData = Reaction.Apps({
         name: "reaction-orders",
