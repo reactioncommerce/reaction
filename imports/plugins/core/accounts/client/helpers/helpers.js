@@ -56,7 +56,7 @@ export function getUserAvatar(currentUser) {
   const account = Collections.Accounts.findOne(user._id);
   // first we check picture exists. Picture has higher priority to display
   if (account && account.profile && account.profile.picture) {
-    const picture = account.profile.picture;
+    const { picture } = account.profile;
 
     return (
       <Components.ReactionAvatar

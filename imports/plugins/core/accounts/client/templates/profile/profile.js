@@ -102,7 +102,7 @@ Template.accountProfile.helpers({
   ReactionAvatar() {
     const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
     if (account && account.profile && account.profile.picture) {
-      const picture = account.profile.picture;
+      const { picture } = account.profile;
       return {
         component: Components.ReactionAvatar,
         currentUser: true,
