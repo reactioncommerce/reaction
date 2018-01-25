@@ -48,9 +48,11 @@ class SearchModal extends Component {
   renderSearchInput() {
     return (
       <div className="rui search-modal-input">
-        <label data-i18n="search.searchInputLabel">Search {this.props.siteName}</label>
         <i className="fa fa-search search-icon" />
         <TextField
+          id="search-modal-input"
+          label={`Search ${this.props.siteName}`}
+          i18nKeyLabel="search.searchInputLabel"
           className="search-input"
           textFieldStyle={{ marginBottom: 0 }}
           onChange={this.props.handleChange}
