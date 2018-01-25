@@ -74,7 +74,7 @@ MethodHooks.after("taxes/calculate", function (options) {
                   Price: items.variants.price,
                   Qty: items.quantity
                 };
-                index ++;
+                index++;
                 cartItems.push(item);
               }
             }

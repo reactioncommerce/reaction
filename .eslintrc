@@ -337,11 +337,11 @@
     // "prefer-spread": "error",
     // "prefer-template": "error",
     // "rest-spread-spacing": ["error", "never"],
-    // "space-unary-ops": ["error", {
-    //   "words": true,
-    //   "nonwords": false,
-    //   "overrides": {}
-    // }],
+    "space-unary-ops": ["error", {
+      "words": true,
+      "nonwords": false,
+      "overrides": {}
+    }],
     // "template-curly-spacing": "error"
   }
 }
