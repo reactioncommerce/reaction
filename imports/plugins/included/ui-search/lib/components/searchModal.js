@@ -109,6 +109,13 @@ class SearchModal extends Component {
               className="rui search-tag"
               id={tag._id} key={tag._id}
               onClick={() => this.props.handleTagClick(tag._id)}
+              onKeyUp={(event) => {
+                if (this.isKeyboardAction(event)) {
+                  this.props.handleTagClick(tag._id);
+                }
+              }}
+              role="button"
+              tabIndex={0}
             >
               {tag.name}
             </span>
