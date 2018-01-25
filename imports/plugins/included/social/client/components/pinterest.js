@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components } from "/imports/plugins/core/components/lib";
 
 class PinterestSocialButton extends Component {
   handleClick = (event) => {
@@ -49,12 +49,14 @@ class PinterestSocialButton extends Component {
     });
 
     return (
-      <a className="btn btn-flat pinterest-share" aria-label="Share to Pinterest" href={this.url} onClick={this.handleClick}
-        target="_blank"
+      <Components.Button
+        className="btn btn-flat pinterest-share"
+        aria-label="Share to Pinterest"
+        onClick={this.handleClick}
       >
         <i className={iconClassNames} />
         {this.renderText()}
-      </a>
+      </Components.Button>
     );
   }
 }
