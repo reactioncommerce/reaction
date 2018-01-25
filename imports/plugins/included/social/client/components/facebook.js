@@ -5,6 +5,7 @@ import Helmet from "react-helmet";
 import classnames from "classnames";
 import { $ } from "meteor/jquery";
 import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components } from "/imports/plugins/core/components/lib";
 
 export function getOpenGraphMeta(props) {
   const url = props.url || location.origin + location.pathname;
@@ -93,15 +94,17 @@ class FacebookSocialButton extends Component {
     });
 
     return (
-      <a className="btn btn-flat facebook-share" aria-label="Share to Facebook" href="#" onClick={this.handleClick}
-        target="_blank"
+      <Components.Button
+        className="btn btn-flat facebook-share"
+        aria-label="Share to Facebook"
+        onClick={this.handleClick}
       >
         <Helmet
           meta={getOpenGraphMeta(this.props)}
         />
         <i className={iconClassNames} />
         {this.renderText()}
-      </a>
+      </Components.Button>
     );
   }
 }
