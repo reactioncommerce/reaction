@@ -653,29 +653,19 @@ const composer = (props, onData) => {
   // get unique lineItems
   const shipment = props.currentData.fulfillment;
 
-  // returns order items with shipping detail
-  const returnItems = order.items.map((item) => {
+  const uniqueItems = order.items.map((item) => {
     const shipping = shipment && shipment.shipmentMethod;
     item.shipping = shipping;
-    return item;
-  });
+    if (order.taxes !== undefined) {
+      const taxes = order.taxes.slice(0, -1);
 
-  let uniqueItems;
-
-  // if avalara tax has been enabled it adds a "taxDetail" field for every item
-  if (order.taxes !== undefined) {
-    const taxes = order.taxes.slice(0, -1);
-
-    uniqueItems = returnItems.map((item) => {
       if (taxes.length !== 0) {
         const taxDetail = taxes.find((tax) => tax.lineNumber === item._id);
         item.taxDetail = taxDetail;
-        return item;
       }
-    });
-  } else {
-    uniqueItems = returnItems;
-  }
+    }
+    return item;
+  });
 
   // print order
   const printOrder = Reaction.Router.pathFor("dashboard/pdf/orders", {
