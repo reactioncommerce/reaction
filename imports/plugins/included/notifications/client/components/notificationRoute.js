@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { Reaction } from "/client/api";
-
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class NotificationRoute extends Component {
   handleNoNotifications = (notifyArr) => {
