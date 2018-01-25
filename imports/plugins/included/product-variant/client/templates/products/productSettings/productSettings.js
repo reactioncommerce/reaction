@@ -65,7 +65,7 @@ Template.productSettings.helpers({
     const tag = ReactionProduct.getTag();
 
     for (const product of products) {
-      const positions = product.positions && product.positions[tag] || {};
+      const positions = (product.positions && product.positions[tag]) || {};
       const currentWeight = positions.weight || 0;
       if (currentWeight === weight) {
         return "active";
