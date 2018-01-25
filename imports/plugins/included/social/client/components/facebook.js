@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import classnames from "classnames";
 import { $ } from "meteor/jquery";
-import { Translation } from "/imports/plugins/core/ui/client/components";
 import { Components } from "/imports/plugins/core/components/lib";
 
 export function getOpenGraphMeta(props) {
@@ -78,7 +77,7 @@ class FacebookSocialButton extends Component {
   renderText() {
     if (this.props.showText) {
       return (
-        <Translation defaultValue="Share on Facebook" i18nKey="social.shareOnFacebook" />
+        <Components.Translation defaultValue="Share on Facebook" i18nKey="social.shareOnFacebook" />
       );
     }
 
