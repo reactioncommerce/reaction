@@ -96,11 +96,8 @@ class InvoiceContainer extends Component {
       });
     } else {
       // remove item from selected items
-      selectedItems = selectedItems.filter((id) => {
-        if (id !== lineItem._id) {
-          return id;
-        }
-      });
+      selectedItems = selectedItems.filter((id) => id !== lineItem._id);
+
       // remove item from edited quantities
       editedItems = editedItems.filter((item) => item.id !== lineItem._id);
 
