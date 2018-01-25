@@ -10,7 +10,7 @@ Template.coreOrderShippingTracking.onCreated(() => {
   const template = Template.instance();
   const currentData = Template.currentData();
 
-  template.orderDep = new Tracker.Dependency;
+  template.orderDep = new Tracker.Dependency();
   template.showTrackingEditForm = ReactiveVar(false);
 
   function getOrder(orderId, shipmentId) {

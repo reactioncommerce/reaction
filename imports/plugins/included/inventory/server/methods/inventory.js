@@ -60,8 +60,8 @@ export function registerInventory(product) {
           productId: productId,
           variantId: variant._id,
           shopId: product.shopId,
-          createdAt: new Date,
-          updatedAt: new Date,
+          createdAt: new Date(),
+          updatedAt: new Date(),
           workflow: { // we add this line because `batchInsert` doesn't know
             status: "new" // about SimpleSchema, so `defaultValue` will not
           }

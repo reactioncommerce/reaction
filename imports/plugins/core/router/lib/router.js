@@ -21,8 +21,8 @@ export const history = Meteor.isClient ? createBrowserHistory() : createMemoryHi
 
 // Private vars
 let currentRoute = Immutable.Map();
-const routerReadyDependency = new Tracker.Dependency;
-const routerChangeDependency = new Tracker.Dependency;
+const routerReadyDependency = new Tracker.Dependency();
+const routerChangeDependency = new Tracker.Dependency();
 
 /** Class representing a static base router */
 class Router {
