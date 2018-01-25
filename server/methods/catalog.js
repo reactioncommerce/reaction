@@ -935,7 +935,7 @@ Meteor.methods({
     // meaning the update went past revision control,
     // denormalize and attach results to top-level product
     if (result === 1) {
-      if (type === "variant" && ~toDenormalize.indexOf(field)) {
+      if (type === "variant" && toDenormalize.indexOf(field) >= 0) {
         denormalize(doc.ancestors[0], field);
       }
     }
@@ -1322,8 +1322,7 @@ Meteor.methods({
         variants.forEach(variant => {
           // if this is a top variant with children, we avoid it to check price
           // because we using price of its children
-          if (variant.ancestors.length === 1 &&
-            !Catalog.getVariants(variant._id, "variant").length ||
+          if ((variant.ancestors.length === 1 && !Catalog.getVariants(variant._id, "variant").length) ||
             variant.ancestors.length !== 1) {
             if (!(typeof variant.price === "number" && variant.price > 0)) {
               variantValidator = false;
