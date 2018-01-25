@@ -122,11 +122,7 @@ Template.shopifySync.helpers({
     const { synchooks } = settings;
     if (synchooks) {
       const [topic, event, syncType]  = hook.split(":");
-      const matchingHooks = synchooks.map((synchook) => {
-        if (synchook.topic === topic && synchook.event === event && synchook.syncType === syncType) {
-          return synchook;
-        }
-      });
+      const matchingHooks = synchooks.map((synchook) => synchook.topic === topic && synchook.event === event && synchook.syncType === syncType);
       if (matchingHooks.length > 0) {
         return "checked";
       }
