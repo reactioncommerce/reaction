@@ -2,9 +2,8 @@
 import Shopify from "shopify-api-node";
 import { Job } from "meteor/vsivsi:job-collection";
 import { Meteor } from "meteor/meteor";
-import { Logger } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 import { check, Match } from "meteor/check";
-import { Reaction } from "/server/api";
 import { Products, Jobs, Tags } from "/lib/collections";
 import { getApiInfo } from "../api/api";
 import { connectorsRoles } from "../../lib/roles";

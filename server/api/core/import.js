@@ -1,8 +1,7 @@
-import { Mongo } from "meteor/mongo";
+import { Mongo, MongoInternals } from "meteor/mongo";
 import { EJSON } from "meteor/ejson";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
-import { MongoInternals } from "meteor/mongo";
 import * as Collections from "/lib/collections";
 import Hooks from "../hooks";
 import { Logger } from "../logger";

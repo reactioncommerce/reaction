@@ -1,7 +1,6 @@
 import url from "url";
 import packageJson from "/package.json";
-import { merge, uniqWith } from "lodash";
-import _ from "lodash";
+import _, { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
