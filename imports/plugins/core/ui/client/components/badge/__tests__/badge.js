@@ -10,9 +10,9 @@ jest.mock("/imports/plugins/core/ui/client/components", () => {
 });
 
 import React from "react";
-import Badge from "../badge";
 import { shallow } from "enzyme";
 import shallowToJSON from "enzyme-to-json";
+import Badge from "../badge";
 
 /**
  * Badge is a display only component

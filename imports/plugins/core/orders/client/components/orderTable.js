@@ -6,11 +6,12 @@ import classnames from "classnames/dedupe";
 import { i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
+import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo } from "../helpers";
 import OrderTableColumn from "./orderTableColumn";
 import OrderBulkActionsBar from "./orderBulkActionsBar";
 import { formatPriceString } from "/client/api";
 import ProductImage from "./productImage";
-import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo } from "../helpers";
+
 
 const classNames = {
   colClassNames: {

@@ -4,13 +4,13 @@ import { compose } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
+import { Validation } from "@reactioncommerce/reaction-collections";
 import { ReactionProduct } from "/lib/api";
 import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
-import VariantForm from "../components/variantForm";
 import { ProductVariant } from "/lib/collections/schemas/products";
-import { Validation } from "@reactioncommerce/reaction-collections";
+import VariantForm from "../components/variantForm";
 
 const wrapComponent = (Comp) => (
   class VariantFormContainer extends Component {

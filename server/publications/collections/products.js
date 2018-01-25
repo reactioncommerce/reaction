@@ -2,11 +2,11 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 import { Products, Shops, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { findProductMedia } from "./product";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 //
 // define search filters as a schema so we can validate

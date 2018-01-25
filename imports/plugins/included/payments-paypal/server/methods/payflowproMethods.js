@@ -1,8 +1,8 @@
-import { PayflowproApi } from "./payflowproApi";
 import { Logger } from "/server/api";
 import { PaymentMethod } from "/lib/collections/schemas";
 import { check } from "meteor/check";
 import { PayPal } from "../../lib/api"; // PayPal is the reaction api
+import { PayflowproApi } from "./payflowproApi";
 
 
 /**

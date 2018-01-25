@@ -4,8 +4,8 @@ import matchSorter from "match-sorter";
 import ReactTable from "react-table";
 import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
-import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 import { registerComponent } from "@reactioncommerce/reaction-components";
+import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 
 /**
  * @file SortableTable is a React Component wrapper around {@link https://react-table.js.org} ReactTable.

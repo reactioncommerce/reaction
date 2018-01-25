@@ -6,8 +6,8 @@ import { Roles } from "meteor/alanning:roles";
 import { Reaction, Hooks } from "/server/api";
 import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
-import { ShippoApi } from "./shippoapi";
 import { shippingRoles } from "../lib/roles";
+import { ShippoApi } from "./shippoapi";
 
 // Creates an address (for sender or recipient) suitable for Shippo Api Calls given
 // a reaction address an email and a purpose("QUOTE"|"PURCHASE")
