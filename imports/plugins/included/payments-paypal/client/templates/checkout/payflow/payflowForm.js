@@ -43,7 +43,7 @@ function handlePaypalSubmitError(error) {
   if (singleError) {
     return paymentAlert("Oops! " + singleError);
   } else if (errors.length) {
-    for (let i = 0, len = errors.length; i < len; i++) {
+    for (let i = 0, len = errors.length; i < len; i += 1) {
       const thisError = errors[i];
       const formattedError = "Oops! " + thisError.issue + ": " + thisError.field.split(/[. ]+/).pop().replace(/_/g, " ");
       results.push(paymentAlert(formattedError));
