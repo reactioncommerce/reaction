@@ -14,7 +14,7 @@ import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
-  if (current && typeof current === "object" && (variantId === current._id || ~current.ancestors.indexOf(variantId))) {
+  if (current && typeof current === "object" && (variantId === current._id || current.ancestors.indexOf(variantId) >= 0)) {
     return true;
   }
 
@@ -86,7 +86,7 @@ class VariantListContainer extends Component {
 
   get productHandle() {
     const selectedProduct = ReactionProduct.selectedProduct();
-    return selectedProduct.__published && selectedProduct.__published.handle || selectedProduct.handle;
+    return (selectedProduct.__published && selectedProduct.__published.handle) || selectedProduct.handle;
   }
 
   handleCreateVariant = () => {
