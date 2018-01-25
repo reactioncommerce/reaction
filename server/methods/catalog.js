@@ -91,7 +91,7 @@ function createTitle(newTitle, productId) {
       title = `${titleString}-${titleNumberSuffix + titleCount}`;
     } else {
       // first copy will be "...-copy", second: "...-copy-2"
-      title = `${titleString}-copy${ titleCount > 1 ? "-" + titleCount : ""}`;
+      title = `${titleString}-copy${ titleCount > 1 ? `-${titleCount}` : ""}`;
     }
   }
 
@@ -149,7 +149,7 @@ function createHandle(productHandle, productId) {
     } else {
       // first copy will be "...-copy", second: "...-copy-2"
       handle = `${handleString}-copy${ handleCount > 1
-        ? '-' + handleCount : ''}`;
+        ? `-${handleCount}` : ''}`;
     }
   }
 
@@ -486,7 +486,7 @@ Meteor.methods({
 
     if (!newVariant) {
       Object.assign(assembledVariant, {
-        title: product.title + " - Untitled option",
+        title: `${product.title} - Untitled option`,
         price: 0.00
       });
     }
@@ -901,7 +901,7 @@ Meteor.methods({
     // handle booleans with correct typing
     if (value === "false" || value === "true") {
       const booleanValue = (value === "true" || value === true);
-      update = EJSON.parse("{\"" + field + "\":" + booleanValue + "}");
+      update = EJSON.parse(`{"${field}":${booleanValue}}`);
     } else {
       if (field === "handle") {
         update = {
@@ -915,7 +915,7 @@ Meteor.methods({
         };
       } else {
         const stringValue = EJSON.stringify(value);
-        update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
+        update = EJSON.parse(`{"${field}":${stringValue}}`);
       }
     }
 
