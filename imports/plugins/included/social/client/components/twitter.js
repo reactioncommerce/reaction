@@ -63,7 +63,7 @@ class TwitterSocialButton extends Component {
   renderText() {
     if (this.props.showText) {
       return (
-        <Translation defaultValue="Share on Twitter" i18nKey="social.shareOnTwitter" />
+        <Components.Translation defaultValue="Share on Twitter" i18nKey="social.shareOnTwitter" />
       );
     }
     return null;
