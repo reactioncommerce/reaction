@@ -34,13 +34,14 @@ function createShipmentQuotes(cartId, shopId, rates) {
     }
   };
 
-  Cart.update({ _id: cartId }, update, function (error) {
-    if (error) {
-      Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
-      return;
-    }
-    Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
-  });
+  try {
+    Cart.update({ _id: cartId }, update);
+  } catch (error) {
+    Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
+    throw error;
+  }
+
+  Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
 
   if (rates.length === 1 && rates[0].requestStatus === "error") {
     const errorDetails = rates[0];
@@ -155,13 +156,15 @@ function updateShipmentQuotes(cartId, rates, selector) {
       }
     }
   };
-  Cart.update(selector, update, function (error) {
-    if (error) {
-      Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
-      return;
-    }
-    Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
-  });
+
+  try {
+    Cart.update(selector, update);
+  } catch (error) {
+    Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
+    throw error;
+  }
+
+  Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
 
   if (rates.length === 1 && rates[0].requestStatus === "error") {
     const errorDetails = rates[0];
@@ -218,13 +221,14 @@ function updateShippingRecordByShop(cart, rates) {
       update = createShipmentQuotes(cartId, shopId, rates);
     }
 
-    Cart.update(selector, update, function (error) {
-      if (error) {
-        Logger.warn(`Error updating rates for cart ${cartId}`, error);
-        return;
-      }
-      Logger.debug(`Success updating rates for cart ${cartId}`, rates);
-    });
+    try {
+      Cart.update(selector, update);
+    } catch (error) {
+      Logger.warn(`Error updating rates for cart ${cartId}`, error);
+      throw error;
+    }
+
+    Logger.debug(`Success updating rates for cart ${cartId}`, rates);
   });
   pruneShippingRecordsByShop(cart);
   normalizeAddresses(cart);

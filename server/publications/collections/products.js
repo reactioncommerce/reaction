@@ -545,6 +545,27 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   const mediaProductIds = productCursor.fetch().map((p) => p._id);
   const mediaCursor = findProductMedia(this, mediaProductIds);
 
+  const handle = productCursor.observe({
+    added: (product) => {
+      let productId;
+      if (product.type === "variant") {
+        productId = product.ancestors[0];
+      } else {
+        productId = product._id;
+      }
+      const cursor = findProductMedia(this, productId);
+      if (cursor) {
+        cursor.forEach((media) => {
+          this.added("cfs.Media.filerecord", media._id, media);
+        });
+      }
+    }
+  });
+
+  this.onStop(() => {
+    handle.stop();
+  });
+
   return [
     productCursor,
     mediaCursor
