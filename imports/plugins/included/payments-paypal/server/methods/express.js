@@ -351,7 +351,7 @@ function parseResponse(response) {
 function parseRefundReponse(response) {
   const paypalArray = [];
 
-  for (let i = 0; i < 101; i++) {
+  for (let i = 0; i < 101; i += 1) {
     const timeStampKey = "L_TIMESTAMP" + i;
     const timestamp = response[timeStampKey];
     const typeKey = "L_TYPE" + i;
