@@ -122,7 +122,7 @@ const wrapComponent = (Comp) => (
     componentWillReceiveProps(nextProps) {
       let selectedTag = {};
       const previousEdit = this.state.editable;
-      nextProps.tagsAsArray.map((tag) => {
+      nextProps.tagsAsArray.forEach((tag) => {
         if (this.isSelected(tag)) {
           selectedTag = tag;
         }

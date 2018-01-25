@@ -828,7 +828,7 @@ Meteor.methods({
         // if we have items in the cart but we didn't have existing shipping records
         // add a record for each shop that's represented in the items
         const shopIds = Object.keys(cart.getItemsByShop());
-        shopIds.map((shopId) => {
+        shopIds.forEach((shopId) => {
           selector = {
             _id: cartId
           };

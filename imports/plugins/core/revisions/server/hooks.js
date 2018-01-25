@@ -77,7 +77,7 @@ export const ProductRevision = {
         let priceMin = Number.POSITIVE_INFINITY;
         let priceMax = Number.NEGATIVE_INFINITY;
 
-        visibleChildren.map((child) => {
+        visibleChildren.forEach((child) => {
           if (child.price < priceMin) {
             priceMin = child.price;
           }

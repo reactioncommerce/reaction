@@ -182,7 +182,7 @@ class Form extends Component {
     if (this.state.isValid === false) {
       this.state.schema._invalidKeys
         .filter((v) => v.name === field.name)
-        .map((validationError) => {
+        .forEach((validationError) => {
           const message = this.state.schema.keyErrorMessage(validationError.name);
           fieldHasError = true;
 
