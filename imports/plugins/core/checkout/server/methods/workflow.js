@@ -29,7 +29,7 @@ Meteor.methods({
    * @param {String} [cartId] - cart._id
    * @return {Array|Boolean|Number} return
    */
-  "workflow/pushCartWorkflow": function (workflow, newWorkflowStatus, cartId) {
+  "workflow/pushCartWorkflow"(workflow, newWorkflowStatus, cartId) {
     check(workflow, String);
     check(newWorkflowStatus, String);
     check(cartId, Match.Optional(String));
@@ -66,7 +66,7 @@ Meteor.methods({
       // todo fix this hack for not filtering nicely
       if (!reactionPackage.layout.layout) {
         const layouts = _.filter(reactionPackage.layout, {
-          workflow: workflow
+          workflow
         });
         // for every layout, process the associated workflows
         _.each(layouts, function (layout) {
@@ -222,7 +222,7 @@ Meteor.methods({
    * @todo need tests
    * @return {Number|Boolean} cart update results
    */
-  "workflow/revertCartWorkflow": function (newWorkflowStatus) {
+  "workflow/revertCartWorkflow"(newWorkflowStatus) {
     check(newWorkflowStatus, String);
     this.unblock();
 
@@ -266,7 +266,7 @@ Meteor.methods({
    * @param  {Order} order - Schemas.Order, an order object
    * @return {Boolean} true if update was successful
    */
-  "workflow/pushOrderWorkflow": function (workflow, status, order) {
+  "workflow/pushOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
     check(status, String);
     check(order, Object); // TODO: Validatate as Schemas.Order
@@ -301,7 +301,7 @@ Meteor.methods({
    * @param  {Order} order - Schemas.Order, an order object
    * @return {Boolean} true if update was successful
    */
-  "workflow/pullOrderWorkflow": function (workflow, status, order) {
+  "workflow/pullOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
     check(status, String);
     check(order, Object);
@@ -330,7 +330,7 @@ Meteor.methods({
    * @param  {String[]} itemIds Array of item IDs
    * @return {Boolean}         true if update was successful
    */
-  "workflow/pushItemWorkflow": function (status, order, itemIds) {
+  "workflow/pushItemWorkflow"(status, order, itemIds) {
     check(status, String);
     check(order, Object);
     check(itemIds, Array);
@@ -353,7 +353,7 @@ Meteor.methods({
       _id: order._id
     }, {
       $set: {
-        items: items
+        items
       }
     });
 

@@ -90,7 +90,7 @@ function composer(props, onData) {
     collection: props.collection,
     validatedInput: props.validatedInput,
     id: props.id,
-    listItems: listItems
+    listItems
   });
 }
 

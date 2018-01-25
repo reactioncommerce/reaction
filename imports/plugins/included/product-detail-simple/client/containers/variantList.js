@@ -206,7 +206,7 @@ function composer(props, onData) {
     childVariants,
     childVariantMedia,
     displayPrice: ReactionProduct.getVariantPriceRange,
-    isSoldOut: isSoldOut,
+    isSoldOut,
     editable
   });
 }

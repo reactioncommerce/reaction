@@ -537,7 +537,7 @@ export function ReactionLayout(options = {}) {
         // Try to create a React component if defined
         return React.createElement(getComponent(layoutName), {
           ...props,
-          structure: structure
+          structure
         });
       } catch (e) {
         // eslint-disable-next-line

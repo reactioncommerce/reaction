@@ -74,7 +74,7 @@ function composer(props, onData) {
         label: language.label,
         value: language.i18n,
         enabled: (language.i18n === shop.language || language.enabled),
-        i18nKey: i18nKey
+        i18nKey
       });
     }
   }
@@ -133,7 +133,7 @@ function composer(props, onData) {
   const label = i18next.t("app.timezoneOptions", "Choose timezone");
   const timezoneOptions = [{
     value: "",
-    label: label
+    label
   }];
   const timezones = moment.tz.names();
   for (const timezone of timezones) {

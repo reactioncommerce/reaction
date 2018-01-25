@@ -36,7 +36,7 @@ function createReactionProductFromShopifyProduct(options) {
     createdAt: new Date(),
     description: shopifyProduct.body_html.replace(/(<([^>]+)>)/ig, ""), // Strip HTML
     handle: shopifyProduct.handle,
-    hashtags: hashtags,
+    hashtags,
     isDeleted: false,
     isVisible: false,
     isSoldOut: false,
@@ -46,7 +46,7 @@ function createReactionProductFromShopifyProduct(options) {
     pageTitle: shopifyProduct.pageTitle,
     productType: shopifyProduct.product_type,
     requiresShipping: true,
-    shopId: shopId, // set shopId to active shopId;
+    shopId, // set shopId to active shopId;
     shopifyId: shopifyProduct.id.toString(), // save it here to make sync lookups cheaper
     template: "productDetailSimple",
     title: shopifyProduct.title,
@@ -85,12 +85,12 @@ function createReactionProductFromShopifyProduct(options) {
 function createReactionVariantFromShopifyVariant(options) {
   const { shopifyVariant, variant, index, ancestors, shopId } = options;
   const reactionVariant = {
-    ancestors: ancestors,
+    ancestors,
     barcode: shopifyVariant.barcode,
     compareAtPrice: shopifyVariant.compare_at_price,
     createdAt: new Date(),
     height: 0,
-    index: index,
+    index,
     inventoryManagement: true,
     inventoryPolicy: shopifyVariant.inventory_policy === "deny",
     inventoryQuantity: shopifyVariant.inventory_quantity >= 0 ? shopifyVariant.inventory_quantity : 0,
@@ -102,7 +102,7 @@ function createReactionVariantFromShopifyVariant(options) {
     optionTitle: variant,
     price: parseFloat(shopifyVariant.price),
     requiresShipping: shopifyVariant.requires_shipping,
-    shopId: shopId,
+    shopId,
     shopifyId: shopifyVariant.id.toString(), // Save for easy sync lookups
     sku: shopifyVariant.sku,
     taxable: true,
@@ -233,7 +233,7 @@ function normalizeWeight(weight) {
  * @return {undefined}
  */
 function saveImage(url, metadata) {
-  new Job(Jobs, "connectors/shopify/import/image", { url: url, metadata: metadata })
+  new Job(Jobs, "connectors/shopify/import/image", { url, metadata })
     .priority("normal")
     .retry({
       retries: 5,
@@ -265,7 +265,7 @@ export const methods = {
     const ids = [];
     const opts = Object.assign({}, {
       published_status: "published",
-      limit: limit
+      limit
     }, { ... options });
 
     try {
@@ -276,7 +276,7 @@ export const methods = {
 
       for (const page of pages) {
         Logger.debug(`Importing page ${page + 1} of ${numPages} - each page has ${limit} products`);
-        const shopifyProducts = await shopify.product.list({ ...opts, page: page });
+        const shopifyProducts = await shopify.product.list({ ...opts, page });
         for (const shopifyProduct of shopifyProducts) {
           if (!Products.findOne({ shopifyId: shopifyProduct.id }, { fields: { _id: 1 } })) {
             Logger.debug(`Importing ${shopifyProduct.title}`);
@@ -294,7 +294,7 @@ export const methods = {
                 const normalizedTag = {
                   name: tag,
                   slug: Reaction.getSlug(tag),
-                  shopId: shopId,
+                  shopId,
                   isTopLevel: false,
                   updatedAt: new Date(),
                   createdAt: new Date()
@@ -326,7 +326,7 @@ export const methods = {
               ownerId: Meteor.userId(),
               productId: reactionProductId,
               variantId: reactionProductId,
-              shopId: shopId,
+              shopId,
               priority: 0,
               toGrid: 1
             });
@@ -339,7 +339,7 @@ export const methods = {
                   ownerId: Meteor.userId(),
                   productId: reactionProductId,
                   variantId: reactionProductId,
-                  shopId: shopId,
+                  shopId,
                   priority: productImage.position, // Shopify index positions starting at 1.
                   toGrid: 0
                 });
@@ -417,7 +417,7 @@ export const methods = {
                             ownerId: Meteor.userId(),
                             productId: reactionProductId,
                             variantId: reactionOptionId,
-                            shopId: shopId,
+                            shopId,
                             priority: 1,
                             toGrid: index === 0 ? 1 : 0 // We save the first of each variant image to the grid
                           });
@@ -476,7 +476,7 @@ export const methods = {
                                   ownerId: Meteor.userId(),
                                   productId: reactionProductId,
                                   variantId: reactionOptionId,
-                                  shopId: shopId,
+                                  shopId,
                                   priority: 1,
                                   toGrid: index === 0 ? 1 : 0 // We save the first of each variant image to the grid
                                 });
@@ -516,7 +516,7 @@ export const methods = {
                         ownerId: Meteor.userId(),
                         productId: reactionProductId,
                         variantId: reactionVariantId,
-                        shopId: shopId,
+                        shopId,
                         priority: 1,
                         toGrid: index === 0 ? 1 : 0 // We save the first of each variant image to the grid
                       });
@@ -537,9 +537,9 @@ export const methods = {
               _id: reactionProductId
             }, {
               $set: {
-                price: price,
-                isSoldOut: isSoldOut,
-                isBackorder: isBackorder
+                price,
+                isSoldOut,
+                isBackorder
               }
             }, { selector: { type: "simple" }, publish: true });
 

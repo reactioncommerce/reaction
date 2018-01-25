@@ -49,7 +49,7 @@ Template.taxSettingsPanel.helpers({
 });
 
 Template.taxSettingsPanel.events({
-  "change [data-event-action=customType]": function (event) {
+  "change [data-event-action=customType]"(event) {
     event.stopPropagation();
     const formId = $(event.currentTarget.closest("form")).attr("id");
 
@@ -88,7 +88,7 @@ Template.taxSettingsPanel.onCreated(function () {
 
 AutoForm.addHooks(null, {
   before: {
-    update: function (doc) {
+    update(doc) {
       const oldType = _.get(Template.instance(), "data.doc.taxSettings.customerUsageType");
       if (isCustomValue()) {
         const value = $(".customerUsageType input").val();

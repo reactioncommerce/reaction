@@ -84,7 +84,7 @@ describe("stripe/payment/capture", function () {
     const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
-      paymentPackageId: paymentPackageId,
+      paymentPackageId,
       paymentSettingsKey: "reaction-stripe",
       method: "credit",
       transactionId: "ch_17hZ4wBXXkbZQs3xL5JhlSgS",

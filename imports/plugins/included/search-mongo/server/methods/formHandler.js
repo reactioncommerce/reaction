@@ -21,7 +21,7 @@ function weightsChanged(changedFields) {
 }
 
 Meteor.methods({
-  "search/updateSearchSettings": function (modifier, _id) {
+  "search/updateSearchSettings"(modifier, _id) {
     check(modifier, Match.Optional(CorePackageConfig));
     check(_id, String);
     const currentSettings = Packages.findOne(_id);

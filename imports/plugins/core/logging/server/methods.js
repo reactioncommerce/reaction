@@ -26,11 +26,11 @@ export function writeToLog(logType, logLevel, logData, source = "client") {
   check(logData, Object);
 
   const logEntry = {
-    logType: logType,
+    logType,
     shopId: Reaction.getShopId(),
     data: logData,
     level: logLevel,
-    source: source
+    source
   };
   Logs.insert(logEntry);
 }

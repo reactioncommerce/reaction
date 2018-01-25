@@ -14,7 +14,7 @@ Meteor.publish("Inventory", function () {
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "createProduct"],
     shopId)) {
     return Inventory.find({
-      shopId: shopId
+      shopId
     });
   }
   return this.ready();

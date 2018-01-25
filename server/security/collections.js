@@ -58,7 +58,7 @@ export default function () {
   // matches this.shopId
   Security.defineMethod("ifShopIdMatches", {
     fetch: [],
-    deny: function (type, arg, userId, doc) {
+    deny(type, arg, userId, doc) {
       // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
       // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
       return doc.shopId !== Reaction.getShopId(userId);
@@ -68,7 +68,7 @@ export default function () {
   // use ifShopIdMatches for match on this._id
   Security.defineMethod("ifShopIdMatchesThisId", {
     fetch: [],
-    deny: function (type, arg, userId, doc) {
+    deny(type, arg, userId, doc) {
       // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
       // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
       return doc._id !== Reaction.getShopId(userId);
@@ -77,7 +77,7 @@ export default function () {
 
   Security.defineMethod("ifFileBelongsToShop", {
     fetch: [],
-    deny: function (type, arg, userId, doc) {
+    deny(type, arg, userId, doc) {
       // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
       // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
       return doc.metadata.shopId !== Reaction.getShopId(userId);
@@ -86,14 +86,14 @@ export default function () {
 
   Security.defineMethod("ifUserIdMatches", {
     fetch: [],
-    deny: function (type, arg, userId, doc) {
+    deny(type, arg, userId, doc) {
       return userId && doc.userId && doc.userId !== userId || doc.userId && !userId;
     }
   });
 
   Security.defineMethod("ifUserIdMatchesProp", {
     fetch: [],
-    deny: function (type, arg, userId, doc) {
+    deny(type, arg, userId, doc) {
       return doc[arg] !== userId;
     }
   });
@@ -101,7 +101,7 @@ export default function () {
   // todo do we need this?
   Security.defineMethod("ifSessionIdMatches", {
     fetch: [],
-    deny: function (type, arg, userId, doc) {
+    deny(type, arg, userId, doc) {
       return doc.sessionId !== Reaction.sessionId;
     }
   });
@@ -186,7 +186,7 @@ export default function () {
    */
   _.each([Media], function (fsCollection) {
     return fsCollection.allow({
-      download: function () {
+      download() {
         return true;
       }
     });

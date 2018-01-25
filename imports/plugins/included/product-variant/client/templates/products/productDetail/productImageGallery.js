@@ -43,9 +43,9 @@ function uploadHandler(event) {
     const fileObj = new FS.File(file);
     fileObj.metadata = {
       ownerId: userId,
-      productId: productId,
-      variantId: variantId,
-      shopId: shopId,
+      productId,
+      variantId,
+      shopId,
       priority: count,
       toGrid: +toGrid // we need number
     };
@@ -76,7 +76,7 @@ function updateImagePriorities() {
  */
 
 Template.productImageGallery.helpers({
-  media: function () {
+  media() {
     let mediaArray = [];
     const variant = ReactionProduct.selectedVariant();
 
@@ -91,7 +91,7 @@ Template.productImageGallery.helpers({
     }
     return mediaArray;
   },
-  variant: function () {
+  variant() {
     return ReactionProduct.selectedVariant();
   }
 });
@@ -122,7 +122,7 @@ Template.productImageGallery.onRendered(function () {
  */
 
 Template.productImageGallery.events({
-  "mouseenter .gallery > li": function (event) {
+  "mouseenter .gallery > li"(event) {
     event.stopImmediatePropagation();
     // This is a workaround for an issue with FF refiring mouseover when the contents change
     if (event.relatedTarget === null) {
@@ -143,7 +143,7 @@ Template.productImageGallery.events({
     }
     return undefined;
   },
-  "click .remove-image": function () {
+  "click .remove-image"() {
     const imageUrl =
       $(event.target)
         .closest(".gallery-image")
@@ -180,7 +180,7 @@ Template.productImageGallery.events({
  */
 
 Template.imageUploader.events({
-  "click #btn-upload": function () {
+  "click #btn-upload"() {
     return $("#files").click();
   },
   "change #files": uploadHandler,
@@ -192,10 +192,10 @@ Template.imageUploader.events({
  */
 
 Template.productImageGallery.events({
-  "click #img-upload": function () {
+  "click #img-upload"() {
     return $("#files").click();
   },
-  "load .img-responsive": function (event, template) {
+  "load .img-responsive"(event, template) {
     return Session.set("variantImgSrc", template.$(".img-responsive").attr(
       "src"));
   }

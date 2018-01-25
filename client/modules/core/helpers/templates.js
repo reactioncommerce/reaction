@@ -72,7 +72,7 @@ Template.registerHelper("monthOptions", function (showDefaultOption = true) {
   if (showDefaultOption) {
     monthOptions.push({
       value: "",
-      label: label
+      label
     });
   }
 
@@ -104,7 +104,7 @@ Template.registerHelper("yearOptions", function (showDefaultOption = true) {
   if (showDefaultOption) {
     yearOptions.push({
       value: "",
-      label: label
+      label
     });
   }
 
@@ -128,7 +128,7 @@ Template.registerHelper("timezoneOptions", function () {
   const label = i18next.t("app.timezoneOptions", "Choose timezone");
   const timezoneOptions = [{
     value: "",
-    label: label
+    label
   }];
   const timezones = moment.tz.names();
   for (const timezone of timezones) {
@@ -274,8 +274,8 @@ Template.registerHelper("key_value", function (context) {
   const result = [];
   _.each(context, function (value, key) {
     return result.push({
-      key: key,
-      value: value
+      key,
+      value
     });
   });
   return result;
