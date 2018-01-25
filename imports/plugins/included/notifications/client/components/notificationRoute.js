@@ -44,6 +44,7 @@ class NotificationRoute extends Component {
     const { unread } = this.props;
     return (
       <div className="dropdown-toolbar">
+        <h3 className="dropdown-toolbar-title"><span data-i18n="notifications.body.recent">Recent</span> ({unread})</h3>
         <div className="dropdown-toolbar-actions">
           <Components.Button
             label={"Mark all as read"}
@@ -51,7 +52,6 @@ class NotificationRoute extends Component {
             onClick={this.handleMarkAllAsRead}
           />
         </div>
-        <h3 className="dropdown-toolbar-title"><span data-i18n="notifications.body.recent">Recent</span> ({unread})</h3>
       </div>
     );
   }
