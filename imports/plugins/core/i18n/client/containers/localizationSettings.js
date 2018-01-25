@@ -32,6 +32,7 @@ const wrapComponent = (Comp) => (
           timezone: doc.timezone,
           currency: doc.currency,
           baseUOM: doc.baseUOM,
+          baseUOL: doc.baseUOL,
           language: doc.language
         }
       });

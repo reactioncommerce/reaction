@@ -116,7 +116,7 @@ export function groupPermissions(packages) {
             permission: registryItem.name || pkg.name + "/" + registryItem.template,
             icon: registryItem.icon,
             // TODO: Rethink naming convention for permissions list
-            label: registryItem.label || registryItem.provides || registryItem.route
+            label: registryItem.label || registryItem.route
           });
         }
       }
@@ -136,6 +136,8 @@ export function groupPermissions(packages) {
 
 function getPermissionMap(permissions) {
   const permissionMap = {};
-  permissions.forEach((existing) => (permissionMap[existing.permission] = existing.label));
+  permissions.forEach(({ label, permission }) => {
+    permissionMap[permission] = label;
+  });
   return permissionMap;
 }
