@@ -695,7 +695,7 @@ export const methods = {
 
         // Increment the quantity count for the duplicate product variants
         if (foundItem) {
-          foundItem.quantity++;
+          foundItem.quantity += 1;
         } else {
           // Otherwise push the unique item into the combinedItems array
 
