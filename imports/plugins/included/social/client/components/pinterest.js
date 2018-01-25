@@ -34,7 +34,7 @@ class PinterestSocialButton extends Component {
   renderText() {
     if (this.props.showText) {
       return (
-        <Translation defaultValue="Share on Pinterest" i18nKey="social.shareOnPinterest" />
+        <Components.Translation defaultValue="Share on Pinterest" i18nKey="social.shareOnPinterest" />
       );
     }
     return null;
