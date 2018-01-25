@@ -271,16 +271,16 @@
     // "dot-location": ["error", "property"],
     // "function-paren-newline": ["error", "multiline"],
     "import/export": "error",
-    // "import/order": ["error", {
-    //   "groups": [
-    //     "builtin",
-    //     "external",
-    //     "internal",
-    //     "parent",
-    //     "sibling",
-    //     "index"
-    //   ]
-    // }]
+    "import/order": ["error", {
+      "groups": [
+        "builtin",
+        "external",
+        "internal",
+        "parent",
+        "sibling",
+        "index"
+      ]
+    }],
     // "import/newline-after-import": "error",
     // "import/no-duplicates": "error",
     // "import/no-mutable-exports": "error",
