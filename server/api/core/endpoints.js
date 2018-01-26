@@ -39,7 +39,7 @@ Endpoints.routes = [];
 let connectRouter;
 
 // Register as a middleware
-WebApp.connectHandlers.use(Meteor.bindEnvironment(connectRoute(function (router) {
+WebApp.connectHandlers.use(Meteor.bindEnvironment(connectRoute((router) => {
   connectRouter = router;
 })));
 
@@ -69,7 +69,7 @@ Endpoints.ErrorMiddleware = {
   }
 };
 
-Meteor.startup(function () {
+Meteor.startup(() => {
   errorMiddlewares.forEach((errorMiddleware) => {
     const errorMiddlewareFn = errorMiddleware.map((maybeFn) => {
       if (_.isFunction(maybeFn)) {
@@ -114,14 +114,14 @@ Endpoints.add = function (method, path, handler) {
     path: slashedPath
   });
 
-  connectRouter[method.toLowerCase()](path, function (req, res, next) {
+  connectRouter[method.toLowerCase()](path, (req, res, next) => {
     // Set headers on response
     const headerKeys = Object.keys(responseHeaders);
     headerKeys.forEach((key) => {
       res.setHeader(key, responseHeaders[key]);
     });
 
-    Fiber(function () {
+    Fiber(() => {
       try {
         handler(req, res, next);
       } catch (error) {

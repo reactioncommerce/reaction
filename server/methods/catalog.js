@@ -175,7 +175,7 @@ function createHandle(productHandle, productId) {
 function copyMedia(newId, variantOldId, variantNewId) {
   Media.find({
     "metadata.variantId": variantOldId
-  }).forEach(function (fileObj) {
+  }).forEach((fileObj) => {
     // Copy File and insert directly, bypasing revision control
     copyFile(fileObj, {
       productId: newId,

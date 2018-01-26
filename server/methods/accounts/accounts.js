@@ -160,7 +160,7 @@ function getValidator() {
   }
   // If there are two, we default to the one that is not the Reaction one
   if (geoCoders.length === 2) {
-    geoCoder = _.filter(geoCoders, function (coder) {
+    geoCoder = _.filter(geoCoders, (coder) => {
       return !_.includes(coder.name, "reaction");
     })[0];
   }
@@ -435,7 +435,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   const account = Accounts.findOne({
     userId: userId
   });
-  const oldAddress = account.profile.addressBook.find(function (addr) {
+  const oldAddress = account.profile.addressBook.find((addr) => {
     return addr._id === address._id;
   });
 

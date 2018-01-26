@@ -36,7 +36,7 @@ export const methods = {
     dataToSave[setting] = {};
     const currentPackage = Packages.findOne(packageId);
 
-    _.each(fields, function (field) {
+    _.each(fields, (field) => {
       dataToSave[setting][field.property] = field.value;
     });
 

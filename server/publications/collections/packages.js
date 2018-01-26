@@ -125,7 +125,7 @@ Meteor.publish("Packages", function (shopId) {
         }
       });
 
-      self.onStop(function () {
+      self.onStop(() => {
         observer.stop();
       });
     }

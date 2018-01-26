@@ -182,7 +182,7 @@ MethodHooks.after = function (methodName, afterFunction) {
  * @return {String} - returns transformed data
  */
 MethodHooks.beforeMethods = function (dict) {
-  _.each(dict, function (v, k) {
+  _.each(dict, (v, k) => {
     MethodHooks.before(k, v);
   });
 };
@@ -193,7 +193,7 @@ MethodHooks.beforeMethods = function (dict) {
  * @return {String} - returns transformed data
  */
 MethodHooks.afterMethods = function (dict) {
-  _.each(dict, function (v, k) {
+  _.each(dict, (v, k) => {
     MethodHooks.after(k, v);
   });
 };

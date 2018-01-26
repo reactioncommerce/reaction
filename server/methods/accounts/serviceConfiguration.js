@@ -20,7 +20,7 @@ Meteor.methods({
     check(fields, Array);
     const dataToSave = {};
 
-    _.each(fields, function (field) {
+    _.each(fields, (field) => {
       dataToSave[field.property] = field.value;
     });
 

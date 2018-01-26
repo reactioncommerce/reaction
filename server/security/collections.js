@@ -184,7 +184,7 @@ export default function () {
   /*
    * apply download permissions to file collections
    */
-  _.each([Media], function (fsCollection) {
+  _.each([Media], (fsCollection) => {
     return fsCollection.allow({
       download: function () {
         return true;

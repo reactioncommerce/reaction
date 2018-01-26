@@ -220,7 +220,7 @@ Meteor.methods({
     }
 
     // localeCurrency is an array of allowed currencies
-    _.each(localeCurrency, function (currency) {
+    _.each(localeCurrency, (currency) => {
       let exchangeRate;
       if (shop.currencies[currency]) {
         result.currency = shop.currencies[currency];
@@ -362,7 +362,7 @@ Meteor.methods({
 
         const exchangeRates = rateResults.data.rates;
 
-        _.each(shopCurrencies, function (currencyConfig, currencyKey) {
+        _.each(shopCurrencies, (currencyConfig, currencyKey) => {
           if (exchangeRates[currencyKey] !== undefined) {
             const rateUpdate = {
               // this needed for shop/flushCurrencyRates Method
@@ -418,7 +418,7 @@ Meteor.methods({
     const now = new Date();
 
     if (now < updatedAt) { // todo remove this line. its for tests
-      _.each(shop.currencies, function (currencyConfig, currencyKey) {
+      _.each(shop.currencies, (currencyConfig, currencyKey) => {
         const rate = `currencies.${currencyKey}.rate`;
 
         if (typeof currencyConfig.rate === "number") {
