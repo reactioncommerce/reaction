@@ -209,7 +209,7 @@ function fetchMediaRevisions() {
 
 // resort the media in
 function sortMedia(media) {
-  const sortedMedia = _.sortBy(media, function (m) { return m.metadata.priority;});
+  const sortedMedia = _.sortBy(media, (m) => { return m.metadata.priority;});
   return sortedMedia;
 }
 

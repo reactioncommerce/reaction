@@ -91,7 +91,7 @@ export const TagHelpers = {
     }
 
     Meteor.call("shop/updateHeaderTags", tagName, null, parentTagId,
-      function (error) {
+      (error) => {
         if (error) {
           Alerts.toast(i18next.t("productDetail.tagExists"), "error");
         }
@@ -100,7 +100,7 @@ export const TagHelpers = {
 
   updateTag(tagId, tagName, parentTagId) {
     Meteor.call("shop/updateHeaderTags", tagName, tagId, parentTagId,
-      function (error) {
+      (error) => {
         if (error) {
           Alerts.toast(i18next.t("productDetail.tagExists"), "error");
         }

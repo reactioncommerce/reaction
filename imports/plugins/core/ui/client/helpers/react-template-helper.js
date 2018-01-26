@@ -6,7 +6,7 @@ import { Template } from "meteor/templating";
 import { Blaze } from "meteor/blaze";
 
 // Empty template; logic in `onRendered` below
-Template.React = new Template("Template.React", function () {
+Template.React = new Template("Template.React", () => {
   return [];
 });
 

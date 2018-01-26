@@ -38,7 +38,7 @@ Accounts.onEnrollmentLink((token, done) => {
 /**
  * Accounts Event: onEmailVerificationLink When a user uses an verification link
  */
-Accounts.onEmailVerificationLink(function (token, done) {
+Accounts.onEmailVerificationLink((token, done) => {
   Accounts.verifyEmail(token);
   done();
 });

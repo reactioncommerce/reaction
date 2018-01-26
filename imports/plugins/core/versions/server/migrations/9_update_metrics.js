@@ -5,7 +5,7 @@ Migrations.add({
   version: 9,
   up() {
     Shops.find().forEach(
-      function (shop) {
+      (shop) => {
         if (!shop.baseUOM) {
           shop.baseUOM = "oz";
         } else {

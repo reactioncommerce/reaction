@@ -62,14 +62,14 @@ Meteor.methods({
     });
 
     // loop through packages and set the defaultPackageWorkflows
-    packages.forEach(function (reactionPackage) {
+    packages.forEach((reactionPackage) => {
       // todo fix this hack for not filtering nicely
       if (!reactionPackage.layout.layout) {
         const layouts = _.filter(reactionPackage.layout, {
           workflow: workflow
         });
         // for every layout, process the associated workflows
-        _.each(layouts, function (layout) {
+        _.each(layouts, (layout) => {
           // audience is the layout permissions
           if (typeof layout.audience !== "object") {
             const defaultRoles = Groups.findOne({
@@ -110,7 +110,7 @@ Meteor.methods({
     // loop through all shop configured layouts, and their default workflows
     // to determine what the next workflow step should be
     // the cart workflow status while processing is neither true nor false (set to template)
-    _.each(defaultPackageWorkflows, function (workflow, currentStatusIndex) {
+    _.each(defaultPackageWorkflows, (workflow, currentStatusIndex) => {
       if (workflow.template === currentWorkflowStatus) {
         // don't go past the end of the workflow
         if (currentStatusIndex < maxSteps - 1) {

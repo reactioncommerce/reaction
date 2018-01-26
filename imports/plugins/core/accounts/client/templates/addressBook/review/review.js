@@ -85,7 +85,7 @@ Template.addressBookReview.events({
       fieldErrors: {}
     };
     Session.set("addressState", addressState);
-    Meteor.call("accounts/addressBookAdd", address, function (error, result) {
+    Meteor.call("accounts/addressBookAdd", address, (error, result) => {
       if (error) {
         Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
         return false;

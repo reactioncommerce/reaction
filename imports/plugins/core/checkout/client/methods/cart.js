@@ -56,7 +56,7 @@ Meteor.methods({
       };
     }
 
-    Cart.update(selector, update, function (error, result) {
+    Cart.update(selector, update, (error, result) => {
       if (error) {
         Logger.debug(error, "An error occurred saving the order");
         throw new Meteor.Error("An error occurred saving the order", error);

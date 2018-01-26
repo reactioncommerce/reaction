@@ -7,7 +7,7 @@ import * as Collections from "/lib/collections";
 /*
  * registerHelper displayName
  */
-Template.registerHelper("displayName", function (displayUser) {
+Template.registerHelper("displayName", (displayUser) => {
   i18nextDep.depend();
 
   const user = displayUser || Collections.Accounts.findOne(Meteor.userId());
