@@ -226,7 +226,7 @@ export function sendVerificationEmail(userId, email) {
   const subject = "accounts/verifyEmail/subject";
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(subject));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
   return Reaction.Email.send({
     to: address,
@@ -343,7 +343,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
   const subject = "accounts/verifyUpdatedEmail/subject";
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(subject));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
   return Reaction.Email.send({
     to: address,
