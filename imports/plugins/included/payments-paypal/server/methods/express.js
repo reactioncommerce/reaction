@@ -337,7 +337,8 @@ function parseResponse(response) {
   const pieces = response.content.split("&");
   pieces.forEach(function (piece) {
     const subpieces = piece.split("=");
-    const decodedResult = result[subpieces[0]] = decodeURIComponent(subpieces[1]);
+    result[subpieces[0]] = decodeURIComponent(subpieces[1]);
+    const decodedResult = result[subpieces[0]];
     return decodedResult;
   });
   return result;
