@@ -46,28 +46,22 @@ class EditGroup extends Component {
     this.setState({ groups, selectedGroup });
   }
 
-  selectGroup = (grp) => {
-    return (event) => {
-      event.preventDefault();
-      if (this.props.onChangeGroup) {
-        this.props.onChangeGroup(grp);
-      }
-      this.setState({ isEditing: false });
-    };
+  selectGroup = (grp) => (event) => {
+    event.preventDefault();
+    if (this.props.onChangeGroup) {
+      this.props.onChangeGroup(grp);
+    }
+    this.setState({ isEditing: false });
   };
 
-  groupListClass = (grp) => {
-    return classnames({
-      "groups-item-selected": grp._id === this.state.selectedGroup._id,
-      "groups-list": true
-    });
-  };
+  groupListClass = (grp) => classnames({
+    "groups-item-selected": grp._id === this.state.selectedGroup._id,
+    "groups-list": true
+  });
 
-  removeAlert = (oldAlert) => {
-    return this.setState({
-      alertArray: this.state.alertArray.filter((alert) => !_.isEqual(alert, oldAlert))
-    });
-  };
+  removeAlert = (oldAlert) => this.setState({
+    alertArray: this.state.alertArray.filter((alert) => !_.isEqual(alert, oldAlert))
+  });
 
   createGroup = (groupData) => {
     Meteor.call("group/createGroup", groupData, Reaction.getShopId(), (err, res) => {
@@ -117,12 +111,10 @@ class EditGroup extends Component {
     });
   };
 
-  showForm = ((grp) = {}) => {
-    return (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      this.setState({ isEditing: true, selectedGroup: grp });
-    };
+  showForm = ((grp) = {}) => (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({ isEditing: true, selectedGroup: grp });
   };
 
   renderGroupForm = () => {

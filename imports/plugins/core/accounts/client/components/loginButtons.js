@@ -12,9 +12,7 @@ class LoginButtons extends Component {
   }
 
   renderLoginButtons() {
-    const enabledServices = this.props.loginServices().filter((service) => {
-      return service.enabled;
-    });
+    const enabledServices = this.props.loginServices().filter((service) => service.enabled);
 
     return (
       <div>

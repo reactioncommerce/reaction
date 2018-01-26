@@ -64,9 +64,7 @@ const Hooks = {
   run(type, name, constant) {
     const callbacks = this.get(type, name);
     if (typeof callbacks !== "undefined" && !!callbacks.length) {
-      return callbacks.forEach((callback) => {
-        return callback(constant);
-      });
+      return callbacks.forEach((callback) => callback(constant));
     }
     return null;
   }

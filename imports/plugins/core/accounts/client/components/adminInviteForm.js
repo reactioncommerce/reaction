@@ -49,11 +49,9 @@ class AdminInviteForm extends Component {
     this.setState({ group });
   };
 
-  removeAlert = (oldAlert) => {
-    return this.setState({
-      alertArray: this.state.alertArray.filter((alert) => !_.isEqual(alert, oldAlert))
-    });
-  };
+  removeAlert = (oldAlert) => this.setState({
+    alertArray: this.state.alertArray.filter((alert) => !_.isEqual(alert, oldAlert))
+  });
 
   handleSubmit(event) {
     event.preventDefault();

@@ -14,9 +14,7 @@ import { getBillingInfo } from "../../helpers";
 // the first credit paymentMethod on the order
 // returns entire payment method
 function orderCreditMethod(order) {
-  const creditMethods = order.billing && order.billing.filter((value) => {
-    return value && value.paymentMethod && value.paymentMethod.method ===  "credit";
-  });
+  const creditMethods = order.billing && order.billing.filter((value) => value && value.paymentMethod && value.paymentMethod.method ===  "credit");
   const creditMethod = creditMethods && creditMethods.find((billing) => {
     billing && billing.shopId === Reaction.getShopId();
   });
@@ -156,7 +154,7 @@ Template.coreOrderShippingInvoice.events({
       let returnToStock;
       if (isConfirm) {
         returnToStock = false;
-        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
+        return Meteor.call("orders/cancelOrder", order, returnToStock, (err) => {
           if (err) {
             $(".alert").removeClass("hidden").text(err.message);
           }
@@ -164,7 +162,7 @@ Template.coreOrderShippingInvoice.events({
       }
       if (cancel === "cancel") {
         returnToStock = true;
-        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
+        return Meteor.call("orders/cancelOrder", order, returnToStock, (err) => {
           if (err) {
             $(".alert").removeClass("hidden").text(err.message);
           }

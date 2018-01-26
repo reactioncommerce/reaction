@@ -93,11 +93,9 @@ const wrapComponent = (Comp) => (
       });
     }
 
-    formMessages = () => {
-      return (
-        <Components.LoginFormMessages messages={this.state.formMessages} />
-      );
-    }
+    formMessages = () => (
+      <Components.LoginFormMessages messages={this.state.formMessages} />
+    )
 
     hasError = (error) => {
       // True here means the field is valid

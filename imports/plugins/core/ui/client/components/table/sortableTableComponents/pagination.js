@@ -74,7 +74,7 @@ class SortableTablePagination extends Component {
               ? <div className="-pageJump">
                 <input
                   type={this.state.page === "" ? "text" : "number"}
-                  onChange={e => {
+                  onChange={(e) => {
                     const val = e.target.value;
                     const currentPage = val - 1;
                     if (val === "") {
@@ -84,7 +84,7 @@ class SortableTablePagination extends Component {
                   }}
                   value={this.state.page === "" ? "" : this.state.page + 1}
                   onBlur={this.applyPage}
-                  onKeyPress={e => {
+                  onKeyPress={(e) => {
                     if (e.which === 13 || e.keyCode === 13) {
                       this.applyPage();
                     }
@@ -98,16 +98,14 @@ class SortableTablePagination extends Component {
           {showPageSizeOptions &&
             <span className="select-wrap -pageSizeOptions">
               <select
-                onChange={e => onPageSizeChange(Number(e.target.value))}
+                onChange={(e) => onPageSizeChange(Number(e.target.value))}
                 value={pageSize}
               >
-                {pageSizeOptions.map((option, i) => {
-                  return (
-                    <option key={i} value={option}>
-                      {option} {this.props.rowsText}
-                    </option>
-                  );
-                })}
+                {pageSizeOptions.map((option, i) => (
+                  <option key={i} value={option}>
+                    {option} {this.props.rowsText}
+                  </option>
+                ))}
               </select>
             </span>}
         </div>

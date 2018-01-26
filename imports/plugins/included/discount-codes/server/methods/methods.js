@@ -231,7 +231,7 @@ export const methods = {
       if (discount.transactions) {
         const users = Array.from(discount.transactions, (t) => t.userId);
         const transactionCount = new Map([...new Set(users)].map(
-          x => [x, users.filter(y => y === x).length]
+          (x) => [x, users.filter((y) => y === x).length]
         ));
         const orders = Array.from(discount.transactions, (t) => t.cartId);
         userCount = transactionCount.get(Meteor.userId());

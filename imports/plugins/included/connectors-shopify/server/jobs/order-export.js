@@ -34,10 +34,10 @@ export default () => {
     const order = Orders.findOne(orderId);
     try {
       exportToShopify(order)
-        .then(exportedOrders => {
+        .then((exportedOrders) => {
           Logger.debug("exported order(s)", exportedOrders);
         })
-        .catch(error => {
+        .catch((error) => {
           Logger.error("Encountered error when exporting to shopify", error);
           if (error.response && error.response.body) {
             Logger.error(error.response.body);

@@ -106,6 +106,6 @@ const wrapComponent = (Comp) => (
   }
 );
 
-registerComponent("SearchSubscription", SearchSubscription, [ wrapComponent ]);
+registerComponent("SearchSubscription", SearchSubscription, [wrapComponent]);
 
 export default compose(wrapComponent)(SearchSubscription);

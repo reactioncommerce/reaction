@@ -34,9 +34,7 @@ Hooks.Events.add("afterCoreInit", () => {
  * @param {Object} olderThan older than date
  * @return {Object} stale carts
  */
-const getstaleCarts = (olderThan) => {
-  return Cart.find({ updatedAt: { $lte: olderThan } }).fetch();
-};
+const getstaleCarts = (olderThan) => Cart.find({ updatedAt: { $lte: olderThan } }).fetch();
 
 export default () => {
   const removeStaleCart = Jobs.processJobs("cart/removeFromCart", {
@@ -49,7 +47,7 @@ export default () => {
       const schedule = (settings.cart.cleanupDurationDays).match(/\d/);// configurable in shop settings
       const olderThan = moment().subtract(Number(schedule[0]), "days")._d;
       const carts = getstaleCarts(olderThan);
-      carts.forEach(cart => {
+      carts.forEach((cart) => {
         const user = Accounts.findOne({ _id: cart.userId });
         if (!user.emails.length) {
           const removeCart = Cart.remove({ userId: user._id });

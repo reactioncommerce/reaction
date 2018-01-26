@@ -48,9 +48,7 @@ class Form extends Component {
       if (Array.isArray(objectKeys)) {
         // Use the objectKeys from parent fieldset to generate
         // actual form fields
-        const fieldNames = objectKeys.map((fieldName) => {
-          return `${docPath}.${fieldName}`;
-        });
+        const fieldNames = objectKeys.map((fieldName) => `${docPath}.${fieldName}`);
 
         return this.props.schema.pick(fieldNames).newContext();
       }
@@ -105,9 +103,7 @@ class Form extends Component {
   }
 
   handleChange = (event, value, name) => {
-    const newdoc = update(this.state.doc, name, () => {
-      return value;
-    });
+    const newdoc = update(this.state.doc, name, () => value);
 
     this.setState({
       doc: newdoc
@@ -264,9 +260,9 @@ class Form extends Component {
       }
 
       // Render all fields if none of the options are set above
-      return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
-        return this.renderField({ fieldName: key });
-      });
+      return map(this.schema, (field, key) =>  // eslint-disable-line consistent-return
+        this.renderField({ fieldName: key })
+      );
     }
 
     return null;

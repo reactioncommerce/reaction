@@ -134,12 +134,10 @@ function composer(props, onData) {
       provides: "template",
       templateFor: { $in: ["pdp"] },
       enabled: true
-    }).map((template) => {
-      return {
-        label: template.title,
-        value: template.name
-      };
-    });
+    }).map((template) => ({
+      label: template.title,
+      value: template.name
+    }));
 
     const countries = Countries.find({}).fetch();
 

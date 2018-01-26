@@ -40,13 +40,11 @@ class FacebookSocialButton extends Component {
     if (window && document) {
       $('<div id="fb-root"></div>').appendTo("body");
 
-      window.fbAsyncInit = () => {
-        return FB.init({
-          appId: this.props.settings.appId,
-          xfbml: true,
-          version: this.props.settings.version || "v2.7"
-        });
-      };
+      window.fbAsyncInit = () => FB.init({
+        appId: this.props.settings.appId,
+        xfbml: true,
+        version: this.props.settings.version || "v2.7"
+      });
       (function (d, s, id) {
         let js = void 0;
         const fjs = d.getElementsByTagName(s)[0];

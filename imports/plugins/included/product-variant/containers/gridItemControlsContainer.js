@@ -32,13 +32,9 @@ const wrapComponent = (Comp) => (
       this.checkValidation();
     }
 
-    hasCreateProductPermission = () => {
-      return Reaction.hasPermission("createProduct");
-    }
+    hasCreateProductPermission = () => Reaction.hasPermission("createProduct")
 
-    hasChanges = () => {
-      return this.props.product.__draft ? true : false;
-    }
+    hasChanges = () => this.props.product.__draft ? true : false
 
     // This method checks validation of the variants of the all the products on the Products grid to
     // check whether all required fields have been submitted before publishing
@@ -60,9 +56,7 @@ const wrapComponent = (Comp) => (
       }
     }
 
-    checked = () => {
-      return this.props.isSelected === true;
-    }
+    checked = () => this.props.isSelected === true
 
     render() {
       return (

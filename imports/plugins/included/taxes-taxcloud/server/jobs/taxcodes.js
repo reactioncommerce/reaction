@@ -56,7 +56,7 @@ export default function () {
       workTimeout: 180 * 1000
     },
     (job, callback) => {
-      Meteor.call("taxcloud/getTaxCodes", error => {
+      Meteor.call("taxcloud/getTaxCodes", (error) => {
         if (error) {
           if (error.error === "notConfigured") {
             Logger.warn(error.message);

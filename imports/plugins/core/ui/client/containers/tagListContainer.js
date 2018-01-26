@@ -24,11 +24,9 @@ function updateSuggestions(term, { excludeTags }) {
     };
   }
 
-  const tags = Tags.find(selector).map((tag) => {
-    return {
-      label: tag.name
-    };
-  });
+  const tags = Tags.find(selector).map((tag) => ({
+    label: tag.name
+  }));
 
   return tags;
 }
