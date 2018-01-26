@@ -35,13 +35,11 @@ export const AuthNetPackageConfig = PackageConfig.clone().extend({
   },
   "settings.api_id": {
     type: String,
-    label: "API Login ID",
-    min: 60
+    label: "API Login ID"
   },
   "settings.transaction_key": {
     type: String,
-    label: "Transaction Key",
-    min: 60
+    label: "Transaction Key"
   }
 });
 
