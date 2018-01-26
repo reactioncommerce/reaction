@@ -11,7 +11,7 @@ const composer = (props, onData) => {
 
   // If an email is provided via props, use that email
   if (props.email) {
-    email = props.email;
+    ({ email } = props);
   }
 
   // If there is no email provided, no query param provide, and the avatar is for the current user, find their account

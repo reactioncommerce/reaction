@@ -24,7 +24,7 @@ class SortableTablePagination extends Component {
   getSafePage(safePage) {
     let page = safePage;
     if (isNaN(page)) {
-      page = this.props.page;
+      ({ page } = this.props);
     }
     return Math.min(Math.max(page, 0), this.props.pages - 1);
   }
@@ -40,7 +40,7 @@ class SortableTablePagination extends Component {
 
   applyPage(e) {
     e && e.preventDefault();
-    const page = this.state.page;
+    const { page } = this.state;
     this.changePage(page === "" ? this.props.page : page);
   }
 

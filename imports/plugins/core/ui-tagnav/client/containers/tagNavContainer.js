@@ -345,7 +345,7 @@ const wrapComponent = (Comp) => (
       if (TagNavHelpers.isMobile()) {
         const tagId = tag._id;
         const tags = this.props.tagsAsArray;
-        const selectedTag = this.state.selectedTag;
+        const { selectedTag } = this.state;
         const hasSubTags = TagNavHelpers.hasSubTags(tagId, tags);
 
         if (hasSubTags === false) {

@@ -240,7 +240,7 @@ const wrapComponent = (Comp) => (
 );
 
 function composer(props, onData) {
-  let tags = props.tags;
+  let { tags } = props;
 
   if (props.product) {
     if (_.isArray(props.product.hashtags)) {

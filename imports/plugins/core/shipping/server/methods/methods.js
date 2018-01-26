@@ -47,7 +47,7 @@ export const methods = {
     const pkg = Packages.findOne(packageId);
     if (pkg && pkg.settings[provider]) {
       const current = Shipping.findOne({ "provider.name": provider });
-      const enabled = pkg.settings[provider].enabled;
+      const { enabled } = pkg.settings[provider];
       // const enabled = !current.provider.enabled;
       if (current && current.provider) {
         return Shipping.update({

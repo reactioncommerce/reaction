@@ -319,15 +319,13 @@ Router.reload = () => {
  */
 Router.isActiveClassName = (routeName) => {
   const current = Router.current();
-  const group = current.route.group;
-  let prefix = "";
+  const { group } = current.route || {};
+  const defaultPrefix = "";
 
   if (current.route) {
-    const path = current.route.path;
-
-    if (group && group.prefix) {
-      prefix = current.route.group.prefix;
-    }
+    const { path } = current.route;
+    const { prefixArg } = group;
+    const prefix = prefixArg || defaultPrefix;
 
     // Match route
     if (prefix.length && routeName.startsWith(prefix) && path === routeName) {
@@ -384,7 +382,7 @@ function getRegistryRouteName(packageName, registryItem) {
       routeName = packageName;
     }
     // dont include params in the name
-    routeName = routeName.split(":")[0];
+    [routeName] = routeName.split(":");
     return routeName;
   }
   return null;
@@ -519,8 +517,8 @@ export function ReactionLayout(options = {}) {
     theme: layoutTheme,
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
-      const route = Router.current().route;
-      const permissions = options.permissions;
+      const { route } = Router.current();
+      const { permissions } = options;
       const structure = {
         ...layoutStructure
       };

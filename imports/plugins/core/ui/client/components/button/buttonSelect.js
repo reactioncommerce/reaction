@@ -29,13 +29,13 @@ class ButtonSelect extends Component {
   }
 
   handleDefaultState = () => {
-    const props = this.props;
+    const { props } = this;
     let defaultButton = props.buttons.filter(button => {
       if (button.active === true) {
         return button;
       }
     });
-    defaultButton = defaultButton[0];
+    [defaultButton] = defaultButton;
 
     const defaultBgClassNames = classnames({ "button-select": true, [defaultButton.bgColor]: true });
 

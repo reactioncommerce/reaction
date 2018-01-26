@@ -135,7 +135,7 @@ Template.uiThemeEditor.helpers({
 
 Template.uiThemeEditor.events({
   "mouseover [data-rule]"(event) {
-    const selector = event.currentTarget.dataset.selector;
+    const { selector } = event.currentTarget.dataset;
 
     $(selector).css({
       boxShadow: "0 0 5px 2px #00dcdd"
@@ -143,7 +143,7 @@ Template.uiThemeEditor.events({
   },
 
   "mouseout [data-rule]"(event) {
-    const selector = event.currentTarget.dataset.selector;
+    const { selector } = event.currentTarget.dataset;
     $(selector).css({
       boxShadow: "none"
     });
@@ -153,7 +153,7 @@ Template.uiThemeEditor.events({
   "input input"(event, instance) {
     const selector = $(event.target).closest("[data-selector]").attr("data-selector");
     const property = event.target.name;
-    const value = event.target.value;
+    const { value } = event.target;
     const theme = instance.state.get("theme");
     const component = instance.state.get("selectedComponent");
     const styles = instance.state.get("styles");

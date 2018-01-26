@@ -14,7 +14,7 @@ import { MetaData } from "/lib/api/router/metadata";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { Components } from "@reactioncommerce/reaction-components";
 
-const history = Router.history;
+const { history } = Router;
 
 class BrowserRouter extends Component {
   static propTypes = {
@@ -72,7 +72,7 @@ class BrowserRouter extends Component {
     }
 
     // Get serach (query) string from current location
-    let search = location.search;
+    let { search } = location;
 
     // Remove the ? if it exists at the beginning
     if (typeof search === "string" && search.startsWith("?")) {
