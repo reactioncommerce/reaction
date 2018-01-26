@@ -43,7 +43,7 @@ class GooglePlusSocialButton extends Component {
     const props = this.props;
     const preferredUrl = props.url || location.origin + location.pathname;
     const url = encodeURIComponent(preferredUrl);
-    const href = "https://plus.google.com/share?url=" + url;
+    const href = `https://plus.google.com/share?url=${url}`;
 
     return href;
   }
