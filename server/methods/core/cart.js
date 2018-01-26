@@ -788,61 +788,58 @@ Meteor.methods({
           throw new Meteor.Error("An error occurred adding the address", error);
         }
       });
-    } else {
-      // if no items in cart just add or modify one record for the carts shop
-      if (!cart.items) {
-        // add a shipping record if it doesn't exist
-        if (!cart.shipping) {
-          selector = {
-            _id: cartId
-          };
-          update = {
-            $push: {
-              shipping: {
-                address: address,
-                shopId: cart.shopId
-              }
+    } else if (!cart.items) { // if no items in cart just add or modify one record for the carts shop
+      // add a shipping record if it doesn't exist
+      if (!cart.shipping) {
+        selector = {
+          _id: cartId
+        };
+        update = {
+          $push: {
+            shipping: {
+              address: address,
+              shopId: cart.shopId
             }
-          };
-
-          try {
-            Collections.Cart.update(selector, update);
-            updated = true;
-          } catch (error) {
-            Logger.error(error);
-            throw new Meteor.Error("server-error", "An error occurred adding the address");
           }
-        } else {
-          // modify an existing record if we have one already
-          selector = {
-            "_id": cartId,
-            "shipping.shopId": cart.shopId
-          };
+        };
 
-          update = {
-            $set: {
-              "shipping.$.address": address
-            }
-          };
+        try {
+          Collections.Cart.update(selector, update);
+          updated = true;
+        } catch (error) {
+          Logger.error(error);
+          throw new Meteor.Error("server-error", "An error occurred adding the address");
         }
       } else {
-        // if we have items in the cart but we didn't have existing shipping records
-        // add a record for each shop that's represented in the items
-        const shopIds = Object.keys(cart.getItemsByShop());
-        shopIds.map((shopId) => {
-          selector = {
-            _id: cartId
-          };
-          update = {
-            $addToSet: {
-              shipping: {
-                address: address,
-                shopId: shopId
-              }
-            }
-          };
-        });
+        // modify an existing record if we have one already
+        selector = {
+          "_id": cartId,
+          "shipping.shopId": cart.shopId
+        };
+
+        update = {
+          $set: {
+            "shipping.$.address": address
+          }
+        };
       }
+    } else {
+      // if we have items in the cart but we didn't have existing shipping records
+      // add a record for each shop that's represented in the items
+      const shopIds = Object.keys(cart.getItemsByShop());
+      shopIds.map((shopId) => {
+        selector = {
+          _id: cartId
+        };
+        update = {
+          $addToSet: {
+            shipping: {
+              address: address,
+              shopId: shopId
+            }
+          }
+        };
+      });
     }
     if (!updated) {
       // if we didn't do one of the inline updates, then run the update here
