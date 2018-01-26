@@ -881,7 +881,7 @@ export const methods = {
       "shipping._id": shipment._id
     }, {
       $set: {
-        ["shipping.$.tracking"]: tracking
+        "shipping.$.tracking": tracking
       }
     });
   },

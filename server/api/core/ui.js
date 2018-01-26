@@ -51,7 +51,7 @@ function updateStyles(data) {
         "components.name": data.component.name
       }, {
         $set: {
-          ["components.$.styles"]: result.css
+          "components.$.styles": result.css
         }
       });
     }
