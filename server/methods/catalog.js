@@ -229,11 +229,12 @@ function denormalize(id, field) {
         isLowQuantity: isLowQuantity(variants)
       });
       break;
-    default: // "price" is object with range, min, max
+    default: { // "price" is object with range, min, max
       const priceObject = Catalog.getProductPriceRange(id);
       Object.assign(update, {
         price: priceObject
       });
+    }
   }
   Products.update(id, {
     $set: update
@@ -632,12 +633,8 @@ Meteor.methods({
             "Access Denied");
         }
       });
-    } else {
-      // Single product was passed in - ensure that user has permission to clone
-      if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) {
-        throw new Meteor.Error("access-denied",
-          "Access Denied");
-      }
+    } else if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) { // Single product was passed in - ensure that user has permission to clone
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     let result;
