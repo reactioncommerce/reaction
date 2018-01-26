@@ -424,15 +424,12 @@ const wrapComponent = (Comp) => (
             isNotPacked += 1;
           } else if (orderWorkflow.status === "coreOrderWorkflow/packed") {
             isPacked += 1;
-          } else {
-            // check if the selected order(s) are being regressed back to this state
-            if (orderWorkflow.workflow.includes("coreOrderWorkflow/packed")) {
-              ordersToRegress += 1;
-            } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/packed") &&
-            (orderWorkflow.status === "coreOrderWorkflow/labeled" ||
-            orderWorkflow.status === "coreOrderWorkflow/shipped")) {
-              ordersToRegress += 1;
-            }
+          } else if (orderWorkflow.workflow.includes("coreOrderWorkflow/packed")) { // check if the selected order(s) are being regressed back to this state
+            ordersToRegress += 1;
+          } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/packed") &&
+                     (orderWorkflow.status === "coreOrderWorkflow/labeled" ||
+                      orderWorkflow.status === "coreOrderWorkflow/shipped")) {
+            ordersToRegress += 1;
           }
         }
       });
@@ -489,12 +486,9 @@ const wrapComponent = (Comp) => (
             isNotLabeled += 1;
           } else if (orderWorkflow.status === "coreOrderWorkflow/labeled") {
             isLabeled += 1;
-          } else {
-            // check if the selected order(s) are being regressed back to this state
-            if (orderWorkflow.workflow.includes("coreOrderWorkflow/labeled") ||
-            orderWorkflow.status === "coreOrderWorkflow/shipped") {
-              ordersToRegress += 1;
-            }
+          } else if (orderWorkflow.workflow.includes("coreOrderWorkflow/labeled") ||
+                     orderWorkflow.status === "coreOrderWorkflow/shipped") { // check if the selected order(s) are being regressed back to this state
+            ordersToRegress += 1;
           }
         }
       });
