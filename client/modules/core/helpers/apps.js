@@ -109,7 +109,7 @@ export function Apps(optionHash) {
   // For now, the audience checks (after the Package.find call) filters out the registry items based on permissions. But
   // part of the filtering should have been handled by the Package.find call, if the "audience" filter works as it should.
   Packages.find(filter).forEach((app) => {
-    const matchingRegistry = _.filter(app.registry, function (item) {
+    const matchingRegistry = _.filter(app.registry, (item) => {
       const itemFilter = _.cloneDeep(registryFilter);
 
       // check audience permissions only if they exist as part of optionHash and are part of the registry item
