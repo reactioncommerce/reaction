@@ -176,8 +176,8 @@ Meteor.methods({
 
     return result;
   },
-  "authnet/refund/list": function () {
-    check(arguments, [Match.Any]);
+  "authnet/refund/list": function (...args) {
+    check(args, [Match.Any]);
     Meteor.Error("not-implemented", "Authorize.net does not yet support retrieving a list of refunds.");
     return [];
   }

@@ -51,10 +51,10 @@ describe("Group test", function () {
   });
 
   function spyOnMethod(method, id) {
-    return sandbox.stub(Meteor.server.method_handlers, `group/${method}`, function () {
-      check(arguments, [Match.Any]); // to prevent audit_arguments from complaining
+    return sandbox.stub(Meteor.server.method_handlers, `group/${method}`, function (...args) {
+      check(args, [Match.Any]); // to prevent audit_arguments from complaining
       this.userId = id;
-      return methods[method].apply(this, arguments);
+      return methods[method].apply(this, args);
     });
   }
 

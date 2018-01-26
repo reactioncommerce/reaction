@@ -203,12 +203,12 @@ describe("stripe/payment/createCharges", function () {
       return cart.userId;
     });
 
-    sandbox.stub(Meteor.server.method_handlers, "cart/createCart", function () {
-      check(arguments, [Match.Any]);
+    sandbox.stub(Meteor.server.method_handlers, "cart/createCart", function (...args) {
+      check(args, [Match.Any]);
     });
 
-    sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-      check(arguments, [Match.Any]);
+    sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+      check(args, [Match.Any]);
     });
 
     // This stub causes the the charge to go through as the primary shop charge

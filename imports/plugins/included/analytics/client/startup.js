@@ -47,8 +47,7 @@ analytics.methods = [
 // for it to load to actually record data. The `method` is
 // stored as the first argument, so we can replay the data.
 analytics.factory = function (method) {
-  return function () {
-    const args = Array.prototype.slice.call(arguments);
+  return function (...args) {
     args.unshift(method);
     analytics.push(args);
     return analytics;

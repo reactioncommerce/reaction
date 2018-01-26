@@ -64,8 +64,8 @@ function writeJsonToBody(res, json) {
 // That's why we cache them and then add after startup.
 let errorMiddlewares = [];
 Endpoints.ErrorMiddleware = {
-  use: function () {
-    errorMiddlewares.push(arguments);
+  use: function (...args) {
+    errorMiddlewares.push(args);
   }
 };
 
