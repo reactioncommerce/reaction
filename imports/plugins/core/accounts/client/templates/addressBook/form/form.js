@@ -20,11 +20,11 @@ Template.addressBookForm.helpers({
     if (!selectedCountry) {
       return false;
     }
-    if ((shop !== null ? shop.locales.countries[selectedCountry].states : void 0) === null) {
+    if ((shop !== null ? shop.locales.countries[selectedCountry].states : undefined) === null) {
       return false;
     }
     const options = [];
-    const ref = shop !== null ? shop.locales.countries[selectedCountry].states : void 0;
+    const ref = shop !== null ? shop.locales.countries[selectedCountry].states : undefined;
     for (const state in ref) {
       if ({}.hasOwnProperty.call(ref, state)) {
         locale = ref[state];

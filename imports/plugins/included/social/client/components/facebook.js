@@ -48,12 +48,11 @@ class FacebookSocialButton extends Component {
         });
       };
       (function (d, s, id) {
-        let js = void 0;
         const fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {
           return;
         }
-        js = d.createElement(s);
+        const js = d.createElement(s);
         js.id = id;
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);

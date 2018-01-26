@@ -33,7 +33,7 @@ function hidePaymentAlert() {
 }
 
 function handleBraintreeSubmitError(error) {
-  const serverError = error !== null ? error.message : void 0;
+  const serverError = error !== null ? error.message : undefined;
   if (serverError) {
     return paymentAlert(`Server Error ${serverError}`);
   } else if (error) {

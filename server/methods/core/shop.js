@@ -556,8 +556,8 @@ Meteor.methods({
    */
   "shop/updateHeaderTags": function (tagName, tagId, currentTagId) {
     check(tagName, String);
-    check(tagId, Match.OneOf(String, null, void 0));
-    check(currentTagId, Match.OneOf(String, null, void 0));
+    check(tagId, Match.OneOf(String, null, undefined));
+    check(currentTagId, Match.OneOf(String, null, undefined));
 
     let newTagId = {};
     // must have 'core' permissions

@@ -29,7 +29,7 @@ function checkout() {
 
   return Meteor.call("getExpressCheckoutToken", cart._id, function (error, token) {
     if (error) {
-      const msg = (error !== null ? error.error : void 0) || i18next.t("checkoutPayment.processingError", "There was a problem with your payment.");
+      const msg = (error !== null ? error.error : undefined) || i18next.t("checkoutPayment.processingError", "There was a problem with your payment.");
       Alerts.add(msg, "danger", {
         placement: "paymentMethod"
       });
@@ -105,7 +105,7 @@ Template.paypalCheckoutButton.onRendered(function () {
 Template.paypalCheckoutButton.helpers({
   expressCheckoutEnabled: function () {
     const expressCheckoutSettings = Session.get("expressCheckoutSettings");
-    return expressCheckoutSettings !== undefined ? expressCheckoutSettings.enabled : void 0;
+    return expressCheckoutSettings !== undefined ? expressCheckoutSettings.enabled : undefined;
   },
   /**
    * Check for proper configuration of PayPal Express Checkout settings.

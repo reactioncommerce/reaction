@@ -15,7 +15,7 @@ export const PayFlow = {
       enabled: true
     }).settings;
     let mode;
-    if ((settings !== null ? settings.payflow_mode : void 0) === true) {
+    if ((settings !== null ? settings.payflow_mode : undefined) === true) {
       mode = "live";
     } else {
       mode = "sandbox";

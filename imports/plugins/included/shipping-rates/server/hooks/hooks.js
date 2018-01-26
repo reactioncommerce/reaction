@@ -108,7 +108,7 @@ function getShippingRates(previousQueryResults, cart) {
       }
     }
     // if we have multiple shops in cart
-    if ((shops !== null ? shops.length : void 0) > 0) {
+    if ((shops !== null ? shops.length : undefined) > 0) {
       selector = {
         "shopId": {
           $in: shops

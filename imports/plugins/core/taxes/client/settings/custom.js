@@ -132,7 +132,7 @@ Template.customTaxRates.helpers({
     if (!selectedCountry) {
       return false;
     }
-    if ((shop !== null ? shop.locales.countries[selectedCountry].states : void 0) === null) {
+    if ((shop !== null ? shop.locales.countries[selectedCountry].states : undefined) === null) {
       return false;
     }
     const options = [];

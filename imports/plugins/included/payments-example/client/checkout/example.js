@@ -27,7 +27,7 @@ function hidePaymentAlert() {
 }
 
 function handleExampleSubmitError(error) {
-  const serverError = error !== null ? error.message : void 0;
+  const serverError = error !== null ? error.message : undefined;
   if (serverError) {
     return paymentAlert(`Oops! ${serverError}`);
   } else if (error) {
