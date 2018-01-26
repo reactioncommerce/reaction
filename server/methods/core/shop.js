@@ -90,7 +90,7 @@ Meteor.methods({
 
     // ensure unique id and shop name
     seedShop._id = Random.id();
-    seedShop.name = seedShop.name + count;
+    seedShop.name += count;
 
     // We trust the owner's shop clone, check only when shopData is passed as an argument
     if (shopData) {

@@ -110,7 +110,7 @@ class NumericInput extends Component {
     let numberValue = this.unformat(value);
 
     if (this.props.format.scale === 0) {
-      numberValue = numberValue / 100;
+      numberValue /= 100;
     }
 
     this.setState({

@@ -319,7 +319,7 @@
     "object-curly-newline": ["error", { "ObjectExpression": { "multiline": true, "consistent": true }, "ObjectPattern": { "multiline": true, "consistent": true } }],
     "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": true }],
     // "object-shorthand": ["error", "always"],
-    // "operator-assignment": ["error", "always"],
+    "operator-assignment": ["error", "always"],
     // "prefer-arrow-callback": ["error", { "allowNamedFunctions": false, "allowUnboundThis": true }],
     // "prefer-destructuring": ["error", {
     //   "VariableDeclarator": {
