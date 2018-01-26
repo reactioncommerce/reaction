@@ -1,3 +1,4 @@
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Factory } from "meteor/dburles:factory";
