@@ -8,6 +8,7 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import { Button, Handle } from "/imports/plugins/core/ui/client/components";
 import { SortableItem } from "../../containers";
+import { Router } from "@reactioncommerce/reaction-router";
 
 class TagItem extends Component {
   componentWillReceiveProps(nextProps) {
@@ -175,10 +176,16 @@ class TagItem extends Component {
       "full-width": this.props.fullWidth
     });
 
+    const url = Router.pathFor("tag", {
+      hash: {
+        slug: this.props.tag.slug
+      }
+    });
+
     return (
       <a
         className={baseClassName}
-        href="#"
+        href={url}
         onFocus={this.handleTagMouseOver}
         onBlur={this.handleTagMouseOut}
         onMouseOut={this.handleTagMouseOut}
