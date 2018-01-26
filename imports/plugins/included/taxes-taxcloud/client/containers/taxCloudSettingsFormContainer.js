@@ -43,8 +43,8 @@ const handlers = {
 
 const composer = (props, onData) => {
   const shownFields = {
-    ["settings.taxcloud.apiKey"]: TaxCloudPackageConfig._schema["settings.taxcloud.apiKey"],
-    ["settings.taxcloud.apiLoginId"]: TaxCloudPackageConfig._schema["settings.taxcloud.apiLoginId"]
+    "settings.taxcloud.apiKey": TaxCloudPackageConfig._schema["settings.taxcloud.apiKey"],
+    "settings.taxcloud.apiLoginId": TaxCloudPackageConfig._schema["settings.taxcloud.apiLoginId"]
   };
   const hiddenFields = [
     "settings.taxcloud.enabled",

@@ -37,7 +37,7 @@ const wrapComponent = (Comp) => (
     }
 
     hasChanges = () => {
-      return this.props.product.__draft ? true : false;
+      return !!this.props.product.__draft;
     }
 
     // This method checks validation of the variants of the all the products on the Products grid to
