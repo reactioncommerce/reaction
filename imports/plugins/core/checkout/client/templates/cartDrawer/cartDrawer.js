@@ -13,7 +13,7 @@ import { Template } from "meteor/templating";
  */
 
 Template.cartDrawer.helpers({
-  displayCartDrawer: function () {
+  displayCartDrawer() {
     if (!Session.equals("displayCart", true)) {
       return null;
     }

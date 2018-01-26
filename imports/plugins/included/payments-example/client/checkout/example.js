@@ -43,7 +43,7 @@ Template.examplePaymentForm.helpers({
 });
 
 AutoForm.addHooks("example-payment-form", {
-  onSubmit: function (doc) {
+  onSubmit(doc) {
     submitting = true;
     const template = this.template;
     hidePaymentAlert();
@@ -77,7 +77,7 @@ AutoForm.addHooks("example-payment-form", {
             processor: "Example",
             paymentPackageId: packageData._id,
             paymentSettingsKey: packageData.registry[0].settingsKey,
-            storedCard: storedCard,
+            storedCard,
             method: "credit",
             transactionId: transaction.transactionId,
             riskLevel: transaction.riskLevel,
@@ -98,12 +98,12 @@ AutoForm.addHooks("example-payment-form", {
     });
     return false;
   },
-  beginSubmit: function () {
+  beginSubmit() {
     this.template.$(":input").attr("disabled", true);
     this.template.$("#btn-complete-order").text("Submitting ");
     return this.template.$("#btn-processing").removeClass("hidden");
   },
-  endSubmit: function () {
+  endSubmit() {
     if (!submitting) {
       return uiEnd(this.template, "Complete your order");
     }

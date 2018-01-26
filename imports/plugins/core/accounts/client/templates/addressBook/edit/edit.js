@@ -63,7 +63,7 @@ Template.addressBookEdit.onRendered(() => {
  */
 AutoForm.hooks({
   addressBookEditForm: {
-    onSubmit: function (insertDoc) {
+    onSubmit(insertDoc) {
       const that = this;
       this.event.preventDefault();
       const addressBook = $(this.template.firstNode).closest(".address-book");

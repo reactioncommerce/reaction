@@ -50,14 +50,14 @@ MethodHooks.after("cart/copyCartToOrder", (options) => {
   const pkg = taxCalc.getPackageData();
   if (pkg && pkg.settings.avalara.enabled && pkg.settings.avalara.performTaxCalculation) {
     const cartId = options.arguments[0];
-    const order = Orders.findOne({ cartId: cartId });
+    const order = Orders.findOne({ cartId });
     taxCalc.recordOrder(order, (result) => {
       if (result) {
         Logger.info(`Order ${order._id} recorded with Avalara`);
       }
     });
   }
-  return options;
+  return options.result;
 });
 
 MethodHooks.after("orders/refunds/create", (options) => {

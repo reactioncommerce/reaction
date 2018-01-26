@@ -127,7 +127,7 @@ export function groupPermissions(packages) {
         shopId: pkg.shopId,
         icon: pkg.icon,
         name: pkg.name,
-        label: label,
+        label,
         permissions: _.uniq(permissions)
       };
     }

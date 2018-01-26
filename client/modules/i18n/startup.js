@@ -54,7 +54,7 @@ Meteor.startup(() => {
       const packageNamespaces = [];
 
       const packages = Packages.find({
-        shopId: shopId
+        shopId
       }, {
         fields: {
           name: 1
@@ -107,7 +107,7 @@ Meteor.startup(() => {
             fallbackNS: packageNamespaces,
             lng: language, // user session language
             fallbackLng: shop ? shop.language : null, // Shop language
-            resources: resources
+            resources
           }, () => {
             // someday this should work
             // see: https://github.com/aldeed/meteor-simple-schema/issues/494

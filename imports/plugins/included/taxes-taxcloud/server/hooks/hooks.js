@@ -21,7 +21,7 @@ MethodHooks.after("taxes/calculate", (options) => {
     const shop = Shops.findOne(shopId);
     const pkg = Packages.findOne({
       name: "taxes-taxcloud",
-      shopId: shopId,
+      shopId,
       enabled: true
     });
 
@@ -74,7 +74,7 @@ MethodHooks.after("taxes/calculate", (options) => {
                   Price: items.variants.price,
                   Qty: items.quantity
                 };
-                index ++;
+                index++;
                 cartItems.push(item);
               }
             }
@@ -86,12 +86,12 @@ MethodHooks.after("taxes/calculate", (options) => {
                 "content-type": "application/json"
               },
               data: {
-                apiKey: apiKey,
-                apiLoginId: apiLoginId,
+                apiKey,
+                apiLoginId,
                 customerID: cartToCalc.userId,
-                cartItems: cartItems,
-                origin: origin,
-                destination: destination,
+                cartItems,
+                origin,
+                destination,
                 cartID: cartId,
                 deliveredBySeller: false
               }

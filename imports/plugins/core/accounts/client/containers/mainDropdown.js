@@ -1,14 +1,13 @@
 import { compose, withProps } from "recompose";
-import { registerComponent, composeWithTracker, withCurrentAccount } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { Session } from "meteor/session";
-import { Reaction, Logger } from "/client/api";
-import { i18nextDep, i18next } from  "/client/api";
+import { registerComponent, composeWithTracker, withCurrentAccount } from "@reactioncommerce/reaction-components";
+import { i18nextDep, i18next, Reaction, Logger } from "/client/api";
 import { Tags } from "/lib/collections";
-import MainDropdown from "../components/mainDropdown";
 import { getUserAvatar } from "/imports/plugins/core/accounts/client/helpers/helpers";
+import MainDropdown from "../components/mainDropdown";
 
 function displayName(displayUser) {
   i18nextDep.depend();
@@ -26,8 +25,10 @@ function displayName(displayUser) {
 
     // todo: previous check was user.services !== "anonymous", "resume". Is this
     // new check covers previous check?
-    if (Roles.userIsInRole(user._id || user.userId, "account/profile",
-      Reaction.getShopId())) {
+    if (Roles.userIsInRole(
+      user._id || user.userId, "account/profile",
+      Reaction.getShopId()
+    )) {
       return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
     }
   }

@@ -42,14 +42,14 @@ Template.cartCheckout.onCreated(() => {
  * the current step, or has been processed already
  */
 Template.checkoutSteps.helpers({
-  isCompleted: function () {
+  isCompleted() {
     if (this.status === true) {
       return this.status;
     }
     return false;
   },
 
-  isPending: function () {
+  isPending() {
     if (this.status === this.template) {
       return this.status;
     }
@@ -61,7 +61,7 @@ Template.checkoutSteps.helpers({
  * checkoutStepBadge Helpers
  */
 Template.checkoutStepBadge.helpers({
-  checkoutStepBadgeClass: function () {
+  checkoutStepBadgeClass() {
     const workflowStep = Template.instance().data;
     // let currentStatus = Cart.findOne().workflow.status;
     if (workflowStep.status === true || workflowStep.status === this.template) {

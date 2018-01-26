@@ -42,6 +42,27 @@ analytics.methods = [
   "on"
 ];
 
+function buildScript(url) {
+  // Create an async script element based on url.
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = url;
+  script.charset = "utf8";
+  script.type = "text/javascript";
+  // Insert our script next to the first script element.
+  const first = document.getElementsByTagName("script")[0];
+  first.parentNode.insertBefore(script, first);
+  return script;
+}
+
+function loadGoogleAnalyticsScript() {
+  return new Promise((resolve, reject) => {
+    const script = buildScript("https://www.google-analytics.com/analytics.js");
+    script.onload = resolve;
+    script.onerror = reject;
+  });
+}
+
 // Define a factory to create stubs. These are placeholders
 // for methods in Analytics.js so that you never have to wait
 // for it to load to actually record data. The `method` is
@@ -64,15 +85,8 @@ for (let i = 0; i < analytics.methods.length; i++) {
 // Define a method to load Analytics.js from our CDN,
 // and that will be sure to only ever load it once.
 analytics.load = function (key) {
-  // Create an async script element based on your key.
-  const script = document.createElement("script");
-  script.type = "text/javascript";
-  script.async = true;
-  script.src = (document.location.protocol === "https:" ? "https://" : "http://") +
-    "cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";
-  // Insert our script next to the first script element.
-  const first = document.getElementsByTagName("script")[0];
-  first.parentNode.insertBefore(script, first);
+  buildScript((document.location.protocol === "https:" ? "https://" : "http://") +
+    "cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js");
 };
 
 // Add a version to keep track of what"s in the wild.
@@ -153,7 +167,8 @@ Meteor.startup(() => {
             "danger", {
               html: true,
               sticky: true
-            });
+            }
+          );
         });
       }
     }
@@ -163,7 +178,8 @@ Meteor.startup(() => {
     //
     if (googleAnalytics.enabled) {
       if (googleAnalytics.api_key) {
-        ga("create", googleAnalytics.api_key, "auto");
+        loadGoogleAnalyticsScript()
+          .then(() => ga("create", googleAnalytics.api_key, "auto"));
       } else if (!googleAnalytics.api_key && Reaction.hasAdminAccess()) {
         _.defer(() => {
           return Alerts.toast(
@@ -172,7 +188,8 @@ Meteor.startup(() => {
               type: "analytics-not-configured",
               html: true,
               sticky: true
-            });
+            }
+          );
         });
       }
     }
@@ -191,7 +208,8 @@ Meteor.startup(() => {
               type: "analytics-not-configured",
               html: true,
               sticky: true
-            });
+            }
+          );
         });
       }
     }
@@ -218,8 +236,10 @@ Meteor.startup(() => {
         value: $element.data("event-value")
       };
       if (typeof ga === "function") {
-        ga("send", "event", analyticsEvent.category, analyticsEvent.action, analyticsEvent.label,
-          analyticsEvent.value);
+        ga(
+          "send", "event", analyticsEvent.category, analyticsEvent.action, analyticsEvent.label,
+          analyticsEvent.value
+        );
       }
       if (typeof mixpanel === "object" && mixpanel.length > 0) {
         mixpanel.track(analyticsEvent.action, {

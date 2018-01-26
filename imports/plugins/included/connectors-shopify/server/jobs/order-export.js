@@ -16,7 +16,7 @@ function markExportFailed(order) {
           status: "failure",
           dateAttempted: new Date(),
           exportMethod: "reaction-connectors-shopify",
-          shopId: shopId
+          shopId
         }
       }
     });

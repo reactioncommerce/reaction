@@ -36,7 +36,7 @@ Template.inlineAlert.onRendered(function () {
 });
 
 Template.inlineAlerts.helpers({
-  alerts: function (alertPlacement, alertId) {
+  alerts(alertPlacement, alertId) {
     let id = alertId;
     let placement = alertPlacement;
     if (!placement) {
@@ -53,7 +53,7 @@ Template.inlineAlerts.helpers({
 });
 
 Template.inlineAlert.events({
-  "click button.close": function () {
+  "click button.close"() {
     return Alerts.collection_.remove(this._id);
   }
 });

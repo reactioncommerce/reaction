@@ -20,7 +20,7 @@ Meteor.publish("Logs", function (query, options) {
     return this.ready();
   }
 
-  const logType = query.logType;
+  const { logType } = query;
   if (Roles.userIsInRole(this.userId, ["admin", "owner"])) {
     Counts.publish(this, "logs-count", Logs.find({ shopId, logType }));
     return Logs.find({ shopId, logType }, { sort: { date: 1 } });

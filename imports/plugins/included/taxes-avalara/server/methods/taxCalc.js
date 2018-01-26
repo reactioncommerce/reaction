@@ -1,6 +1,6 @@
+import os from "os";
 import _ from "lodash";
 import accounting from "accounting-js";
-import os from "os";
 import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
@@ -410,11 +410,11 @@ function cartToSalesOrder(cart) {
   }
 
   const salesOrder = {
-    companyCode: companyCode,
+    companyCode,
     type: "SalesOrder",
     customerCode: cart.userId,
     date: cartDate,
-    currencyCode: currencyCode,
+    currencyCode,
     addresses: {
       ShipFrom: {
         line1: companyShipping.address1,
@@ -513,13 +513,13 @@ function orderToSalesInvoice(order) {
   }
 
   const salesInvoice = {
-    companyCode: companyCode,
+    companyCode,
     type: documentType,
     commit: commitDocuments,
     code: order._id,
     customerCode: order.userId,
     date: orderDate,
-    currencyCode: currencyCode,
+    currencyCode,
     addresses: {
       ShipFrom: {
         line1: companyShipping.address1,
@@ -602,13 +602,13 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
     description: "refund"
   };
   const returnInvoice = {
-    companyCode: companyCode,
+    companyCode,
     type: "ReturnInvoice",
     code: refundReference,
     commit: true,
     customerCode: order._id,
     date: refundDate,
-    currencyCode: currencyCode,
+    currencyCode,
     addresses: {
       ShipFrom: {
         line1: companyShipping.address1,

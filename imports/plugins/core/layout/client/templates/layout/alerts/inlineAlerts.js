@@ -73,7 +73,7 @@ const Alerts = {
   @param options (Object) Options if required to override some of default ones.
   See Alerts.defaultOptions for all values.
    */
-  add: function (alertMessage, mode, alertOptions) {
+  add(alertMessage, mode, alertOptions) {
     let a;
     let message = alertMessage;
     let options = alertOptions;
@@ -91,9 +91,9 @@ const Alerts = {
       if (a) {
         Alerts.collection_.update(a._id, {
           $set: {
-            message: message,
-            mode: mode,
-            options: options
+            message,
+            mode,
+            options
           }
         });
         return;
@@ -112,9 +112,9 @@ const Alerts = {
       });
     }
     Alerts.collection_.insert({
-      message: message,
-      mode: mode,
-      options: options,
+      message,
+      mode,
+      options,
       seen: false,
       created: +new Date()
     });
@@ -124,7 +124,7 @@ const Alerts = {
   Call this function before loading a new page to clear errors from previous page
   Best way is using Router filtering feature to call this function
    */
-  removeSeen: function () {
+  removeSeen() {
     Alerts.collection_.remove({
       "seen": true,
       "options.sticky": {
@@ -137,7 +137,7 @@ const Alerts = {
   If you provide a `type` option when adding an alert, you can call this function
   to later remove that alert.
    */
-  removeType: function (type) {
+  removeType(type) {
     Alerts.collection_.remove({
       "options.type": type
     });

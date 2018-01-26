@@ -621,7 +621,7 @@ describe("orders test", function () {
       const quantity = originalQuantity - 1;
       const refundItemsInfo = {
         total: 3.99,
-        quantity: quantity,
+        quantity,
         items: [{}, {}]
       };
       Meteor.call("orders/refunds/refundItems", order._id, billing.paymentMethod, refundItemsInfo);

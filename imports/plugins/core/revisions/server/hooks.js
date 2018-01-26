@@ -96,7 +96,7 @@ export const ProductRevision = {
 
   findRevision({ documentId }) {
     return Revisions.findOne({
-      "documentId": documentId,
+      documentId,
       "workflow.status": {
         $nin: [
           "revision/published"

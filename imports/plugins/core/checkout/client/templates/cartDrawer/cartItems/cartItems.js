@@ -9,10 +9,10 @@ import { Media } from "/lib/collections";
  * @returns default product image
  */
 Template.cartDrawerItems.helpers({
-  product: function () {
+  product() {
     return this;
   },
-  media: function () {
+  media() {
     const product = this;
     let defaultImage = Media.findOne({
       "metadata.variantId": this.variants._id

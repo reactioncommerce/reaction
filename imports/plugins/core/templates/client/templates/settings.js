@@ -79,9 +79,9 @@ Template.templateSettings.helpers({
       matchingResultsCount: "templates-count",
       showFilter: true,
       rowMetadata: customRowMetaData,
-      filteredFields: filteredFields,
+      filteredFields,
       columns: filteredFields,
-      noDataMessage: noDataMessage,
+      noDataMessage,
       onRowClick: editRow,
       columnMetadata: customColumnMetadata,
       externalLoadingComponent: Loading
@@ -120,19 +120,19 @@ Template.templateSettings.helpers({
  * template templateSettings events
  */
 Template.templateSettings.events({
-  "click .template-grid-row": function (event) {
+  "click .template-grid-row"(event) {
     // toggle all rows off, then add our active row
     $(".template-grid-row").removeClass("active");
     Template.instance().$(event.currentTarget).addClass("active");
   },
-  "submit #email-template-edit-form": function () {
+  "submit #email-template-edit-form"() {
     const instance = Template.instance();
     instance.state.set({
       isEditing: false,
       editingId: null
     });
   },
-  "click .cancel, .template-grid-row .active": function () {
+  "click .cancel, .template-grid-row .active"() {
     const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
@@ -146,7 +146,7 @@ Template.templateSettings.events({
 
 AutoForm.hooks({
   "email-template-edit-form": {
-    onSubmit: function (insertDoc) {
+    onSubmit(insertDoc) {
       this.event.preventDefault();
 
       const templateId = this.docId;

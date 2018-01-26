@@ -15,7 +15,7 @@ import { Reaction } from "/server/api";
  * @returns {false}
  */
 Meteor.methods({
-  "accounts/updateServiceConfiguration": function (service, fields) {
+  "accounts/updateServiceConfiguration"(service, fields) {
     check(service, String);
     check(fields, Array);
     const dataToSave = {};
@@ -26,7 +26,7 @@ Meteor.methods({
 
     if (Reaction.hasPermission(["dashboard/accounts"])) {
       return ServiceConfiguration.configurations.upsert({
-        service: service
+        service
       }, {
         $set: dataToSave
       });

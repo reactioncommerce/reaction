@@ -1,8 +1,7 @@
-import { Mongo } from "meteor/mongo";
+import { Mongo, MongoInternals } from "meteor/mongo";
 import { EJSON } from "meteor/ejson";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
-import { MongoInternals } from "meteor/mongo";
 import * as Collections from "/lib/collections";
 import Hooks from "../hooks";
 import { Logger } from "../logger";
@@ -102,8 +101,7 @@ Import.identify = function (document) {
   if (name && max > 0.3) {
     return Collections[name];
   }
-  throw new Error(
-    "Couldn't determine the schema associated with this document");
+  throw new Error("Couldn't determine the schema associated with this document");
 };
 
 /**
@@ -268,7 +266,7 @@ Import.package = function (pkg, shopId) {
   check(shopId, String);
   const key = {
     name: pkg.name,
-    shopId: shopId
+    shopId
   };
   return this.object(Collections.Packages, key, pkg);
 };
@@ -339,7 +337,7 @@ Import.layout = function (layout, shopId) {
   };
   return this.object(Collections.Shops, key, {
     _id: shopId,
-    layout: layout
+    layout
   });
 };
 

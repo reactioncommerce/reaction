@@ -65,7 +65,7 @@ Template.addressBookAdd.helpers({
     return thisAddress;
   },
 
-  hasAddressBookEntries: function () {
+  hasAddressBookEntries() {
     const account = Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
@@ -88,7 +88,7 @@ Template.addressBookAdd.helpers({
  */
 AutoForm.hooks({
   addressBookAddForm: {
-    onSubmit: function (insertDoc) {
+    onSubmit(insertDoc) {
       const that = this;
       this.event.preventDefault();
       const addressBook = $(this.template.firstNode).closest(".address-book");

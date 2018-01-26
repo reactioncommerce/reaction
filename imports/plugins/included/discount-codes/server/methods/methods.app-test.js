@@ -79,8 +79,7 @@ describe("discount code methods", function () {
       const cart = Factory.create("cartMultiShop");
 
       expect(() =>
-        Meteor.call("discounts/codes/apply", cart._id, code.code)
-      ).to.throw(Meteor.Error, /multiShopError/);
+        Meteor.call("discounts/codes/apply", cart._id, code.code)).to.throw(Meteor.Error, /multiShopError/);
     });
   });
 });

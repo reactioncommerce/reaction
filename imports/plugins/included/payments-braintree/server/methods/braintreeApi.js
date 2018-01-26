@@ -59,7 +59,7 @@ function getAccountOptions(isPayment) {
 
   const ref = Meteor.settings.braintree;
   const options = {
-    environment: environment,
+    environment,
     merchantId: getSettings(settings, ref, "merchant_id"),
     publicKey: getSettings(settings, ref, "public_key"),
     privateKey: getSettings(settings, ref, "private_key")
@@ -104,7 +104,7 @@ BraintreeApi.apiCall.paymentSubmit = function (paymentSubmitDetails) {
     if (error) {
       fut.return({
         saved: false,
-        error: error
+        error
       });
     } else if (!result.success) {
       fut.return({
@@ -136,7 +136,7 @@ BraintreeApi.apiCall.captureCharge = function (paymentCaptureDetails) {
       if (error) {
         fut.return({
           saved: false,
-          error: error
+          error
         });
       } else {
         fut.return({
@@ -153,7 +153,7 @@ BraintreeApi.apiCall.captureCharge = function (paymentCaptureDetails) {
     if (error) {
       fut.return({
         saved: false,
-        error: error
+        error
       });
     } else {
       fut.return({
@@ -178,7 +178,7 @@ BraintreeApi.apiCall.createRefund = function (refundDetails) {
     if (error) {
       fut.return({
         saved: false,
-        error: error
+        error
       });
     } else if (!result.success) {
       if (result.errors.errorCollections.transaction.validationErrors.base[0].code === "91506") {

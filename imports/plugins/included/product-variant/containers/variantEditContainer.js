@@ -37,7 +37,7 @@ const wrapComponent = (Comp) => (
           Reaction.state.set("edit/focus", cardName);
 
           Reaction.Router.go("product", {
-            handle: handle,
+            handle,
             variantId: newVariantId
           });
         }
@@ -78,7 +78,7 @@ function composer(props, onData) {
     onData(null, {
       countries: Countries.find({}).fetch(),
       editFocus: Reaction.state.get("edit/focus"),
-      childVariants: childVariants,
+      childVariants,
       variant: revisedVariant
     });
   } else {

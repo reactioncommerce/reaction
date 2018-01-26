@@ -43,9 +43,9 @@ describe("ExampleApi", function () {
 
     const transactionType = "authorize";
     const transaction = ExampleApi.methods.authorize.call({
-      transactionType: transactionType,
-      cardData: cardData,
-      paymentData: paymentData
+      transactionType,
+      cardData,
+      paymentData
     });
     expect(transaction).to.not.be.undefined;
   });
@@ -66,9 +66,9 @@ describe("ExampleApi", function () {
 
     const transactionType = "authorize";
     const transaction = ExampleApi.methods.authorize.call({
-      transactionType: transactionType,
-      cardData: cardData,
-      paymentData: paymentData
+      transactionType,
+      cardData,
+      paymentData
     });
 
     expect(transaction.riskStatus).to.be.defined;
@@ -78,8 +78,8 @@ describe("ExampleApi", function () {
     const authorizationId = "abc123";
     const amount = 19.99;
     const results = ExampleApi.methods.capture.call({
-      authorizationId: authorizationId,
-      amount: amount
+      authorizationId,
+      amount
     });
     expect(results).to.not.be.undefined;
     done();
@@ -125,8 +125,8 @@ describe("Submit payment", function () {
     const results = Meteor.call("exampleSubmit", "authorize", cardData, paymentData);
     expect(authorizeStub).to.have.been.calledWith({
       transactionType: "authorize",
-      cardData: cardData,
-      paymentData: paymentData
+      cardData,
+      paymentData
     });
     expect(results.saved).to.be.true;
   });
@@ -146,8 +146,7 @@ describe("Submit payment", function () {
     // Notice how you need to wrap this call in another function
     expect(function () {
       Meteor.call("exampleSubmit", "authorize", badCardData, paymentData);
-    }
-    ).to.throw;
+    }).to.throw;
   });
 });
 
@@ -171,7 +170,7 @@ describe("Capture payment", function () {
     const captureStub = sandbox.stub(ExampleApi.methods.capture, "call", () => captureResults);
     const results = Meteor.call("example/payment/capture", paymentMethod);
     expect(captureStub).to.have.been.calledWith({
-      authorizationId: authorizationId,
+      authorizationId,
       amount: 19.99
     });
     expect(results.saved).to.be.true;
@@ -206,8 +205,8 @@ describe("Refund", function () {
     const refundStub = sandbox.stub(ExampleApi.methods.refund, "call", () => refundResults);
     Meteor.call("example/refund/create", paymentMethod, amount);
     expect(refundStub).to.have.been.calledWith({
-      transactionId: transactionId,
-      amount: amount
+      transactionId,
+      amount
     });
   });
 

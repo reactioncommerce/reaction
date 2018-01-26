@@ -73,7 +73,7 @@ describe("core shop methods", function () {
         };
       });
       const shopId = Random.id();
-      Factory.create("account", { _id: "12345678", shopId: shopId });
+      Factory.create("account", { _id: "12345678", shopId });
 
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Reaction, "getPrimaryShopId", () => shopId);
