@@ -98,7 +98,7 @@ export const methods = {
         if (billing.paymentMethod) {
           const discount = Discounts.findOne(billing.paymentMethod.id);
           if (discount && discount.calculation) {
-            const processor = billing.paymentMethod.processor;
+            const { processor } = billing.paymentMethod;
             const calculation = discount.calculation.method;
             // we're using processor/calculation
             // as a convention that can be easily

@@ -41,7 +41,7 @@ class ReactionLayout extends Component {
           }
 
           if (this.checkElementPermissions(child)) {
-            let component = child.component;
+            let { component } = child;
 
             try {
               if (typeof child.component === "string") {

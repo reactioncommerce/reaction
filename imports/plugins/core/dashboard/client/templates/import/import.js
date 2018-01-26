@@ -6,7 +6,7 @@ import { Media, Products } from "/lib/collections";
 function uploadHandler(event) {
   const shopId = Reaction.getShopId();
   const userId = Meteor.userId();
-  const files = event.target.files.files;
+  const { files } = event.target.files;
 
   for (let i = 0; i < files.length; i++) {
     const parts = files[i].name.split(".");
