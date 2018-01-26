@@ -57,7 +57,7 @@ MethodHooks.after("cart/copyCartToOrder", (options) => {
       }
     });
   }
-  return options;
+  return options.result;
 });
 
 MethodHooks.after("orders/refunds/create", (options) => {
