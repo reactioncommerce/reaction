@@ -439,9 +439,10 @@ Import.object = function (collection, key, object) {
       $setOnInsert: defaultValuesObject
     });
   }
-  if (this._count[this._name(collection)]++ >= this._limit) {
+  if (this._count[this._name(collection)] >= this._limit) {
     this.flush(collection);
   }
+  this._count[this._name(collection)] += 1;
 };
 
 /**

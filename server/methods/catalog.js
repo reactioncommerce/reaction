@@ -398,10 +398,10 @@ Meteor.methods({
             `${variant.compareAtPrice}`
         });
       } else {
-        const parentIndex = sortedVariant.ancestors.indexOf(variantId);
+        const parentIndex = sortedVariant.ancestors.includes(variantId);
         const ancestorsClone = sortedVariant.ancestors.slice(0);
         // if variantId exists in ancestors, we override it by new _id
-        !!~parentIndex && ancestorsClone.splice(parentIndex, 1, variantNewId);
+        parentIndex && ancestorsClone.splice(parentIndex, 1, variantNewId);
         Object.assign(clone, variant, {
           _id: Random.id(),
           ancestors: ancestorsClone,
