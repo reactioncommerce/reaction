@@ -312,7 +312,7 @@
     "no-unneeded-ternary": ["error", { "defaultAssignment": false }],
     "no-unsafe-finally": "error",
     "no-useless-computed-key": "error",
-    // "no-useless-concat": "error",
+    "no-useless-concat": "error",
     // "no-useless-constructor": "error",
     // "no-useless-escape": "error",
     // "no-void": "error",

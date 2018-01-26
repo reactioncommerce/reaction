@@ -289,8 +289,7 @@ Template.registerHelper("key_value", function (context) {
  * @returns {String} returns formatted Spacebars.SafeString
  */
 Template.registerHelper("nl2br", function (text) {
-  const nl2br = (`${text}`).replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" +
-    "<br>" + "$2");
+  const nl2br = (`${text}`).replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2");
   return new Spacebars.SafeString(nl2br);
 });
 
