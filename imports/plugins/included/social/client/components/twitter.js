@@ -51,10 +51,10 @@ class TwitterSocialButton extends Component {
     const text = props.settings.description;
     const username = props.settings.username;
 
-    let href = base + "?url=" + url + "&text=" + text;
+    let href = `${base}?url=${url}&text=${text}`;
 
     if (username) {
-      href += "&via=" + username;
+      href += `&via=${username}`;
     }
 
     return href;
