@@ -21,9 +21,9 @@ class EmailLogs extends Component {
     // add i18n handling to headers
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
-      let colWidth = undefined;
-      let colStyle = undefined;
-      let colClassName = undefined;
+      let colWidth;
+      let colStyle;
+      let colClassName;
 
       if (field === "status") {
         colWidth = 70;

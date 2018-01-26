@@ -202,10 +202,10 @@ class OrderTable extends Component {
   }
 
   render() {
-    let getTrProps = undefined;
-    let getTheadProps = undefined;
-    let getTrGroupProps = undefined;
-    let getTableProps = undefined;
+    let getTrProps;
+    let getTheadProps;
+    let getTrGroupProps;
+    let getTableProps;
 
     const customColumnMetadata = [];
 
@@ -268,7 +268,7 @@ class OrderTable extends Component {
 
       // https://react-table.js.org/#/story/cell-renderers-custom-components
       columnNames.forEach((columnName) => {
-        let colHeader = undefined;
+        let colHeader;
         let resizable = true;
         let sortable = true;
         let columnNameLabel;
