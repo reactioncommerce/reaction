@@ -70,7 +70,8 @@ export default {
   Packages: {},
 
   registerPackage(packageInfo) {
-    const registeredPackage = this.Packages[packageInfo.name] = packageInfo;
+    this.Packages[packageInfo.name] = packageInfo;
+    const registeredPackage = this.Packages[packageInfo.name];
     return registeredPackage;
   },
   defaultCustomerRoles: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
@@ -655,11 +656,8 @@ export default {
         if (enabledPackages && Array.isArray(enabledPackages)) {
           if (enabledPackages.indexOf(pkg.name) === -1) {
             pkg.enabled = false;
-          } else {
-            // Enable "soft switch" for package.
-            if (pkg.settings && pkg.settings[packageName]) {
-              pkg.settings[packageName].enabled = true;
-            }
+          } else if (pkg.settings && pkg.settings[packageName]) { // Enable "soft switch" for package.
+            pkg.settings[packageName].enabled = true;
           }
         }
         Packages.insert(pkg);
