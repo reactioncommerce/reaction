@@ -31,7 +31,7 @@ Template.metaComponent.helpers({
 
 
 Template.metaComponent.events({
-  "change input": function (event) {
+  "change input"(event) {
     const productId = ReactionProduct.selectedProductId();
     const updateMeta = {
       key: Template.instance()

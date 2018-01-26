@@ -128,7 +128,7 @@ const wrapComponent = (Comp) => (
         label: "Order Details",
         i18nKeyLabel: "orderWorkflow.orderDetails",
         data: {
-          order: order
+          order
         },
         props: {
           size: "large"
@@ -236,8 +236,8 @@ const wrapComponent = (Comp) => (
             Alerts.alert({
               text: i18next.t("order.orderSetToState", {
                 orderNumber: filteredSelectedOrders.length,
-                orderText: orderText,
-                status: status
+                orderText,
+                status
               }),
               type: "success",
               allowOutsideClick: false
@@ -271,8 +271,8 @@ const wrapComponent = (Comp) => (
       if (alertOptions.falsePreviousStatuses) {
         Alerts.alert({
           text: i18next.t("order.skippedBulkOrdersAlert", {
-            selectedOrders: selectedOrders.length, orderText: orderText, status: capitalizeStatus,
-            numberOfSkippedOrders: alertOptions.falsePreviousStatuses, skippedOrdersText: skippedOrdersText,
+            selectedOrders: selectedOrders.length, orderText, status: capitalizeStatus,
+            numberOfSkippedOrders: alertOptions.falsePreviousStatuses, skippedOrdersText,
             skippedState: alertOptions.whichFalseState
           }),
           type: "warning",
@@ -297,7 +297,7 @@ const wrapComponent = (Comp) => (
         Alerts.alert({
           text: i18next.t("order.orderAlreadyInState", {
             orderText: orderAlreadyInStateText,
-            status: status
+            status
           })
         });
       }
@@ -318,7 +318,7 @@ const wrapComponent = (Comp) => (
 
       Alerts.alert({
         text: i18next.t("order.bulkOrdersRegressionAlert", {
-          ordersToRegress: ordersToRegress, orderText: orderText, status: capitalizeStatus
+          ordersToRegress, orderText, status: capitalizeStatus
         }),
         type: "warning",
         showCancelButton: true,

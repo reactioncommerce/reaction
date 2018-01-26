@@ -132,7 +132,7 @@ Template.shopSettings.helpers({
         file.metadata = {
           type: "brandAsset",
           ownerId: userId,
-          shopId: shopId
+          shopId
         };
 
         Media.insert(file);
@@ -140,18 +140,18 @@ Template.shopSettings.helpers({
     };
   },
 
-  shop: function () {
+  shop() {
     return Shops.findOne({
       _id: Reaction.getShopId()
     });
   },
-  packageData: function () {
+  packageData() {
     return Packages.findOne({
       name: "core",
       shopId: Reaction.getShopId()
     });
   },
-  addressBook: function () {
+  addressBook() {
     const address = Shops.findOne({
       _id: Reaction.getShopId()
     }).addressBook;
@@ -179,11 +179,11 @@ Template.shopSettings.helpers({
 
 AutoForm.hooks({
   shopEditForm: {
-    onSuccess: function () {
+    onSuccess() {
       return Alerts.toast(i18next.t("admin.alerts.shopGeneralSettingsSaved"),
         "success");
     },
-    onError: function (operation, error) {
+    onError(operation, error) {
       return Alerts.toast(
         `${i18next.t("admin.alerts.shopGeneralSettingsFailed")} ${error}`, "error"
       );
@@ -193,11 +193,11 @@ AutoForm.hooks({
 
 AutoForm.hooks({
   shopEditAddressForm: {
-    onSuccess: function () {
+    onSuccess() {
       return Alerts.toast(i18next.t("admin.alerts.shopAddressSettingsSaved"),
         "success");
     },
-    onError: function (operation, error) {
+    onError(operation, error) {
       return Alerts.toast(
         `${i18next.t("admin.alerts.shopAddressSettingsFailed")} ${error}`, "error"
       );
@@ -207,12 +207,12 @@ AutoForm.hooks({
 
 AutoForm.hooks({
   shopEditExternalServicesForm: {
-    onSuccess: function () {
+    onSuccess() {
       return Alerts.toast(
         i18next.t("admin.alerts.shopExternalServicesSettingsSaved"), "success"
       );
     },
-    onError: function (operation, error) {
+    onError(operation, error) {
       return Alerts.toast(
         `${i18next.t("admin.alerts.shopExternalServicesSettingsFailed")} ${error}`,
         "error"
@@ -223,11 +223,11 @@ AutoForm.hooks({
 
 AutoForm.hooks({
   shopEditOptionsForm: {
-    onSuccess: function () {
+    onSuccess() {
       return Alerts.toast(i18next.t("admin.alerts.shopOptionsSettingsSaved"),
         "success");
     },
-    onError: function (operation, error) {
+    onError(operation, error) {
       return Alerts.toast(
         `${i18next.t("admin.alerts.shopOptionsSettingsFailed")} ${error}`, "error"
       );
@@ -255,7 +255,7 @@ Template.shopSettings.events({
 });
 
 Template.optionsShopSettings.helpers({
-  packageData: function () {
+  packageData() {
     return Packages.findOne({
       name: "core",
       shopId: Reaction.getShopId()

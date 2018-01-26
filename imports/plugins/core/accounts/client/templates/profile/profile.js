@@ -197,7 +197,7 @@ Template.accountProfile.helpers({
    * @return {Boolean} - true if the merchant signup button is to be shown,
    * and false if otherwise.
    */
-  showMerchantSignup: function () {
+  showMerchantSignup() {
     if (Reaction.Subscriptions && Reaction.Subscriptions.Account && Reaction.Subscriptions.Account.ready()) {
       const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
       const marketplaceEnabled = Reaction.marketplace && Reaction.marketplace.enabled === true;

@@ -38,7 +38,7 @@ Meteor.publish("Accounts", function (userId) {
   } else if (Roles.userIsInRole(this.userId, ["admin", "owner", "reaction-accounts"], shopId)) {
     return Collections.Accounts.find({
       groups: { $nin: nonAdminGroups },
-      shopId: shopId
+      shopId
     });
   }
 
@@ -58,7 +58,7 @@ Meteor.publish("UserAccount", function (userId) {
   const shopId = Reaction.getShopId();
   if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
     return Collections.Accounts.find({
-      userId: userId
+      userId
     });
   }
   return this.ready();
@@ -116,13 +116,13 @@ Meteor.publish("UserProfile", function (profileUserId) {
     return Meteor.users.find({
       _id: profileUserId
     }, {
-      fields: fields
+      fields
     });
   }
 
   return Meteor.users.find({
     _id: this.userId
   }, {
-    fields: fields
+    fields
   });
 });

@@ -23,6 +23,6 @@ Cart.after.update((userId, cart, fieldNames) => {
       }
     }
     // Update cart (without triggering more updates.)
-    Cart.direct.update({ _id: cart._id }, { $set: { discount: discount } });
+    Cart.direct.update({ _id: cart._id }, { $set: { discount } });
   }
 });

@@ -69,7 +69,7 @@ Template.registerHelper("reactionTemplate", function (options) {
     layout: {
       $elemMatch: options.hash
     },
-    shopId: shopId
+    shopId
   });
 
   //  we can have multiple packages contributing to the layout / workflow

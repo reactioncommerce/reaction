@@ -31,7 +31,7 @@ Template.coreOrderShippingTracking.onCreated(() => {
  *
  */
 Template.coreOrderShippingTracking.events({
-  "click [data-event-action=refresh-shipping]": function () {
+  "click [data-event-action=refresh-shipping]"() {
     const instance = Template.instance();
     instance.$("#btn-processing").removeClass("hidden");
     const orderId = Template.instance().order._id;
@@ -42,7 +42,7 @@ Template.coreOrderShippingTracking.events({
       }
     });
   },
-  "click [data-event-action=shipmentShipped]": function () {
+  "click [data-event-action=shipmentShipped]"() {
     const template = Template.instance();
     const shipment = getShippingInfo(template.order);
     Meteor.call("orders/shipmentShipped", template.order, shipment, (error) => {
@@ -64,7 +64,7 @@ Template.coreOrderShippingTracking.events({
     // Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "orderShipped", this._id);
   },
 
-  "click [data-event-action=resendNotification]": function () {
+  "click [data-event-action=resendNotification]"() {
     const template = Template.instance();
     Meteor.call("orders/sendNotification", template.order, "shipped", (error) => {
       if (error) {

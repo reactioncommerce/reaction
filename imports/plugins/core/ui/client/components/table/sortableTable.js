@@ -67,8 +67,8 @@ class SortableTable extends Component {
 
     return {
       loading: !pubHandle.ready(),
-      results: results,
-      matchingResults: matchingResults
+      results,
+      matchingResults
     };
   }
 

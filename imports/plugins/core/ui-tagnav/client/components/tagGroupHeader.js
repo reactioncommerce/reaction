@@ -21,7 +21,7 @@ class TagGroupHeader extends Component {
   }
 
   handleTagUpdate = (event, tag) => {
-    this.setState({ tag: tag });
+    this.setState({ tag });
   }
 
   handleTagSave = (event, tag) => {

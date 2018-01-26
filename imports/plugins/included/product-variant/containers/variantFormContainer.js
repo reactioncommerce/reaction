@@ -55,9 +55,9 @@ const wrapComponent = (Comp) => (
       const shopId = Reaction.getShopId();
 
       const provider = Packages.findOne({
-        "shopId": shopId,
+        shopId,
         "registry.provides": "taxCodes",
-        "$where": function () {
+        "$where"() {
           const providerName = this.name.split("-")[1];
           return this.settings[providerName].enabled;
         }
@@ -72,9 +72,9 @@ const wrapComponent = (Comp) => (
     fetchTaxCodes = () => {
       const shopId = Reaction.getShopId();
       const provider = Packages.findOne({
-        "shopId": shopId,
+        shopId,
         "registry.provides": "taxCodes",
-        "$where": function () {
+        "$where"() {
           const providers = this.registry.filter((o) => {
             return o.provides && o.provides.includes("taxCodes");
           });
@@ -86,7 +86,7 @@ const wrapComponent = (Comp) => (
       const taxCodesArray = [];
 
       const codes = TaxCodes.find({
-        shopId: shopId,
+        shopId,
         taxCodeProvider: provider.name
       });
 

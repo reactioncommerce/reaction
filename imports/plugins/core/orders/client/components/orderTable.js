@@ -306,8 +306,8 @@ class OrderTable extends Component {
           Header: colHeader ? colHeader : columnNameLabel,
           headerClassName: classNames.headerClassNames[columnName],
           className: classNames.colClassNames[columnName],
-          resizable: resizable,
-          sortable: sortable,
+          resizable,
+          sortable,
           Cell: row => (
             <OrderTableColumn
               row={row}

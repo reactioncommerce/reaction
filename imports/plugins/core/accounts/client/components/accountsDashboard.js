@@ -17,7 +17,7 @@ class AccountsDashboard extends Component {
     const defaultSelectedGroup = sortedGroups[0];
 
     this.state = {
-      accounts: accounts,
+      accounts,
       groups: sortGroups(groups),
       adminGroups: sortedGroups,
       selectedGroup: defaultSelectedGroup

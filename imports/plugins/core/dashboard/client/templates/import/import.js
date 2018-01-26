@@ -28,7 +28,7 @@ function uploadHandler(event) {
         ownerId: userId,
         productId: product._id,
         variantId: product.variants[0]._id,
-        shopId: shopId,
+        shopId,
         priority: Number(parts[1]) || 0
       };
       Media.insert(fileObj);
@@ -37,7 +37,7 @@ function uploadHandler(event) {
 }
 
 Template.import.events({
-  "submit form#form-import-images": function (event) {
+  "submit form#form-import-images"(event) {
     event.preventDefault();
     uploadHandler(event);
   }

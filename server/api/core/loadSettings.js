@@ -71,7 +71,7 @@ export function loadSettings(json) {
             if ({}.hasOwnProperty.call(services, service)) {
               settings = services[service];
               ServiceConfiguration.configurations.upsert({
-                service: service
+                service
               }, {
                 $set: settings
               });

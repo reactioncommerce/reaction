@@ -34,7 +34,7 @@ Template.upload.helpers({
 });
 
 Template.upload.events({
-  "click #btn-upload": function () {
+  "click #btn-upload"() {
     return $("#files").click();
   },
   "change input[name=files]": uploadHandler,

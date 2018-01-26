@@ -23,7 +23,7 @@ function createShippoAddress(reactionAddress, email, purpose) {
     zip: reactionAddress.postal,
     country: reactionAddress.country,
     phone: reactionAddress.phone,
-    email: email,
+    email,
     is_residential: !reactionAddress.isCommercial
   };
 
@@ -159,7 +159,7 @@ function removeShippoProviders(carriersIds, shopId = Reaction.getShopId()) {
 
 function updateShippoProviders(activeCarriers, shopId = Reaction.getShopId()) {
   const currentShippoProviders = Shipping.find({
-    "shopId": shopId,
+    shopId,
     "provider.shippoProvider": { $exists: true }
   }, {
     fields: { "provider.shippoProvider.carrierAccountId": 1 }

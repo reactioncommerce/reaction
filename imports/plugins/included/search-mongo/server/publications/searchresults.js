@@ -11,7 +11,7 @@ const supportedCollections = ["products", "orders", "accounts"];
 function getProductFindTerm(searchTerm, searchTags, userId) {
   const shopId = Reaction.getShopId();
   const findTerm = {
-    shopId: shopId,
+    shopId,
     $text: { $search: searchTerm }
   };
   if (searchTags.length) {
@@ -59,7 +59,7 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
   const shopId = Reaction.getShopId();
   const findTerm = {
     $and: [
-      { shopId: shopId },
+      { shopId },
       { $or: [
         { _id: {
           $regex: `^${regexSafeSearchTerm}`,
@@ -123,7 +123,7 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
   if (Reaction.hasPermission("reaction-accounts", userId)) {
     const findTerm = {
       $and: [
-        { shopId: shopId },
+        { shopId },
         { $or: [
           { emails: {
             $regex: searchTerm,

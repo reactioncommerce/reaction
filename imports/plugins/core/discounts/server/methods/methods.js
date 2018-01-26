@@ -17,7 +17,7 @@ export const methods = {
    * @param  {String} discountId discount id to delete
    * @return {String} returns update/insert result
    */
-  "discounts/deleteRate": function (discountId) {
+  "discounts/deleteRate"(discountId) {
     check(discountId, String);
 
     // check permissions to delete
@@ -38,14 +38,14 @@ export const methods = {
    * @param  {Object} discounts discounts
    * @return {Number} returns update result
    */
-  "discounts/setRate": function (cartId, discountRate, discounts) {
+  "discounts/setRate"(cartId, discountRate, discounts) {
     check(cartId, String);
     check(discountRate, Number);
     check(discounts, Match.Optional(Array));
 
     return Cart.direct.update(cartId, {
       $set: {
-        discounts: discounts,
+        discounts,
         discount: discountRate
       }
     });
@@ -60,12 +60,12 @@ export const methods = {
    * @param  {String} discountId discountId
    * @return {String} returns update result
    */
-  "discounts/transaction": function (cartId, discountId) {
+  "discounts/transaction"(cartId, discountId) {
     check(cartId, String);
     check(discountId, String);
 
     const transaction = {
-      cartId: cartId,
+      cartId,
       userId: Meteor.userId(),
       appliedAt: new Date()
     };
@@ -85,7 +85,7 @@ export const methods = {
    * @param  {String} cart cartId
    * @return {Object}  returns discount object
    */
-  "discounts/calculate": function (cart) {
+  "discounts/calculate"(cart) {
     check(cart, Object); // Reaction.Schemas.Cart
 
     let currentDiscount = 0;

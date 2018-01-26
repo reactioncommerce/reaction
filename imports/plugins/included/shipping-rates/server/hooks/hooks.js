@@ -141,8 +141,8 @@ function getShippingRates(previousQueryResults, cart) {
       _results.push(
         rates.push({
           carrier: doc.provider.label,
-          method: method,
-          rate: rate,
+          method,
+          rate,
           shopId: doc.shopId
         })
       );

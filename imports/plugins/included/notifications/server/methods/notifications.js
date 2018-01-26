@@ -22,7 +22,7 @@ Meteor.methods({
   * @param {String} details - details of the Notification
   * @return {Object} returns result
   */
-  "notification/send": function (userId, type, url, sms, details) {
+  "notification/send"(userId, type, url, sms, details) {
     check(userId, String);
     check(type, String);
     check(sms, Boolean);

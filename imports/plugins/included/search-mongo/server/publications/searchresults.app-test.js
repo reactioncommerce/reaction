@@ -46,7 +46,7 @@ export function createProduct(isVisible = true, title) {
     ],
     requiresShipping: true,
     hashtags: [],
-    isVisible: isVisible,
+    isVisible,
     handle: productSlug,
     workflow: {
       status: "new"

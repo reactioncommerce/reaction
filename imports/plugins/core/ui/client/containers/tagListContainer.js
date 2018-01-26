@@ -196,7 +196,7 @@ const wrapComponent = (Comp) => (
       );
 
       this.setState({
-        suggestions: suggestions
+        suggestions
       });
     }
 
