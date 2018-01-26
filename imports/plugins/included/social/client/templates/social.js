@@ -19,11 +19,11 @@ Template.reactionSocial.onCreated(function () {
 });
 
 Template.reactionSocial.helpers({
-  settings: function () {
+  settings() {
     const template = Template.instance();
     return template && template.socialSettings;
   },
-  socialTemplates: function () {
+  socialTemplates() {
     const templates = [];
     const template = Template.instance();
 

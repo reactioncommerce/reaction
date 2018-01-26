@@ -75,7 +75,8 @@ Hooks.Events.add("afterCoreInit", () => {
 
 
 export default function () {
-  Jobs.processJobs("product/buildSearchCollection",
+  Jobs.processJobs(
+    "product/buildSearchCollection",
     {
       pollInterval: 30 * 1000,
       workTimeout: 180 * 1000
@@ -96,7 +97,8 @@ export default function () {
     }
   );
 
-  Jobs.processJobs("product/buildSearchIndex",
+  Jobs.processJobs(
+    "product/buildSearchIndex",
     {
       pollInterval: 30 * 1000,
       workTimeout: 180 * 1000
@@ -117,7 +119,8 @@ export default function () {
     }
   );
 
-  Jobs.processJobs("order/buildSearchCollection",
+  Jobs.processJobs(
+    "order/buildSearchCollection",
     {
       pollInterval: 30 * 1000,
       workTimeout: 180 * 1000
@@ -138,7 +141,8 @@ export default function () {
     }
   );
 
-  Jobs.processJobs("account/buildSearchCollection",
+  Jobs.processJobs(
+    "account/buildSearchCollection",
     {
       pollInterval: 30 * 1000,
       workTimeout: 180 * 1000

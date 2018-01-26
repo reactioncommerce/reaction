@@ -98,7 +98,7 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
         result: undefined,
         error: undefined,
         arguments: args,
-        hooksProcessed: hooksProcessed
+        hooksProcessed
       });
 
       if (beforeResult === false) {
@@ -127,7 +127,7 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
         result: methodResult,
         error: methodError,
         arguments: args,
-        hooksProcessed: hooksProcessed
+        hooksProcessed
       });
       // If the after hook did not return a value and the methodResult is not undefined, warn and fix
       if (_.isUndefined(hookResult) && !_.isUndefined(methodResult)) {
@@ -159,8 +159,10 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
  * @return {String} - returns transformed data
  */
 MethodHooks.before = function (methodName, beforeFunction) {
-  MethodHooks._initializeHook(MethodHooks._beforeHooks,
-    methodName, beforeFunction);
+  MethodHooks._initializeHook(
+    MethodHooks._beforeHooks,
+    methodName, beforeFunction
+  );
 };
 
 /**
@@ -171,8 +173,10 @@ MethodHooks.before = function (methodName, beforeFunction) {
  * @return {String} - returns transformed data
  */
 MethodHooks.after = function (methodName, afterFunction) {
-  MethodHooks._initializeHook(MethodHooks._afterHooks,
-    methodName, afterFunction);
+  MethodHooks._initializeHook(
+    MethodHooks._afterHooks,
+    methodName, afterFunction
+  );
 };
 
 /**

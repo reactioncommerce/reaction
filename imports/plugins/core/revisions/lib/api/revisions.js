@@ -6,7 +6,7 @@ export function getPackageSettings() {
 
   const packageInfo = Packages.findOne({
     name: "reaction-revisions",
-    shopId: shopId
+    shopId
   });
 
   if (packageInfo && packageInfo.enabled && packageInfo.settings) {

@@ -17,23 +17,23 @@ Template.addressBookReview.onCreated(function () {
 });
 
 Template.addressBookReview.helpers({
-  address: function () {
+  address() {
     const address = Template.instance().state.get("address");
     return address;
   },
-  validatedAddress: function () {
+  validatedAddress() {
     const validatedAddress = Template.instance().state.get("validatedAddress");
     return validatedAddress;
   },
-  formErrors: function () {
+  formErrors() {
     const formErrors = Template.instance().state.get("formErrors");
     return formErrors;
   },
-  fieldErrors: function () {
+  fieldErrors() {
     const fieldErrors = Template.instance().state.get("fieldErrors");
     return fieldErrors;
   },
-  hasAddress2: function () {
+  hasAddress2() {
     const address = Template.instance().state.get("address");
     const validatedAddress = Template.instance().state.get("validatedAddress");
     return !!address.address2 || !!validatedAddress.address2;
@@ -41,20 +41,20 @@ Template.addressBookReview.helpers({
 });
 
 Template.addressBookReview.events({
-  "mouseover .address-ignore": function (event) {
+  "mouseover .address-ignore"(event) {
     event.stopPropagation();
   },
-  "mouseover .address-invalid-line": function (event) {
+  "mouseover .address-invalid-line"(event) {
     // show checkmark when mousing over
     const addressKey = event.target.getAttribute("data-key");
     $(`div .address-invalid-line [data-key=${addressKey}] .address-line-copyover`).show();
   },
-  "mouseout .address-invalid-line": function (event) {
+  "mouseout .address-invalid-line"(event) {
     // hide checkmark when mousing out
     const addressKey = event.target.getAttribute("data-key");
     $(`div .address-invalid-line [data-key=${addressKey}] .address-line-copyover`).hide();
   },
-  "click .address-ignore": function (event) {
+  "click .address-ignore"(event) {
     // Ignore line but mark it "valid"
     event.stopPropagation();
     const addressKey = event.target.getAttribute("data-key");
@@ -63,7 +63,7 @@ Template.addressBookReview.events({
     $(`div .address-invalid-line [data-key=${addressKey}] .address-ignore`).hide();
     addressLine.removeClass("address-invalid-line");
   },
-  "click .address-invalid-line": function (event) {
+  "click .address-invalid-line"(event) {
     // set address value to be value from validatedAddress and mark it valid
     const addressKey = event.target.getAttribute("data-key");
     const address = Template.instance().state.get("address");
@@ -75,12 +75,12 @@ Template.addressBookReview.events({
     addressLine.removeClass("address-invalid-line");
     addressLine.addClass("address-valid-line");
   },
-  "click [data-event-action=saveAddress]": function () {
+  "click [data-event-action=saveAddress]"() {
     const instance = Template.instance();
     const address = instance.state.get("address");
     const addressState = {
       requiresReview: false,
-      address: address,
+      address,
       formErrors: [],
       fieldErrors: {}
     };
@@ -97,7 +97,7 @@ Template.addressBookReview.events({
       }
     });
   },
-  "click [data-event-action=cancelAddressEdit]": function () {
+  "click [data-event-action=cancelAddressEdit]"() {
     // set address back to original value before edits
     const originalAddress = Template.instance().state.get("originalAddress");
     const addressState = {

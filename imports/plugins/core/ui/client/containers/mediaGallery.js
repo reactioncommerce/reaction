@@ -36,9 +36,9 @@ function uploadHandler(files) {
 
     fileObj.metadata = {
       ownerId: userId,
-      productId: productId,
-      variantId: variantId,
-      shopId: shopId,
+      productId,
+      variantId,
+      shopId,
       priority: count,
       toGrid: 1 // we need number
     };
@@ -209,7 +209,7 @@ function fetchMediaRevisions() {
 
 // resort the media in
 function sortMedia(media) {
-  const sortedMedia = _.sortBy(media, function (m) { return m.metadata.priority;});
+  const sortedMedia = _.sortBy(media, function (m) { return m.metadata.priority; });
   return sortedMedia;
 }
 

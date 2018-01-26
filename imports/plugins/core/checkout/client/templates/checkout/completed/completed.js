@@ -7,7 +7,7 @@ import CompletedOrderContainer from "/imports/plugins/core/checkout/client/conta
  * if order status = new translate submitted message
  */
 Template.cartCompleted.helpers({
-  completedOrder: function () {
+  completedOrder() {
     return { component: CompletedOrderContainer };
   }
 });

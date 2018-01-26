@@ -20,7 +20,7 @@ export const methods = {
    * @param  {String} taxId tax taxId to delete
    * @return {String} returns update/insert result
    */
-  "taxes/deleteRate": function (taxId) {
+  "taxes/deleteRate"(taxId) {
     check(taxId, String);
 
     // check permissions to delete
@@ -39,7 +39,7 @@ export const methods = {
    * @param  {String} docId    tax docId
    * @return {String} returns update/insert result
    */
-  "taxes/addRate": function (modifier, docId) {
+  "taxes/addRate"(modifier, docId) {
     check(modifier, Object);
     check(docId, Match.OneOf(String, null, undefined));
 
@@ -65,14 +65,14 @@ export const methods = {
    * @param  {Object} taxes taxes
    * @return {Number} returns update result
    */
-  "taxes/setRate": function (cartId, taxRate, taxes) {
+  "taxes/setRate"(cartId, taxRate, taxes) {
     check(cartId, String);
     check(taxRate, Number);
     check(taxes, Match.Optional(Array));
 
     return Cart.direct.update(cartId, {
       $set: {
-        taxes: taxes,
+        taxes,
         tax: taxRate
       }
     });
@@ -91,7 +91,7 @@ export const methods = {
    * @param  {Object} options.cartTaxData - Tax data for shop associated with cart.shopId
    * @return {Number} returns update result
    */
-  "taxes/setRateByShopAndItem": function (cartId, options) {
+  "taxes/setRateByShopAndItem"(cartId, options) {
     check(cartId, String);
     check(options, {
       taxRatesByShop: Object,
@@ -107,7 +107,7 @@ export const methods = {
         taxes: cartTaxData,
         tax: cartTaxRate,
         items: itemsWithTax,
-        taxRatesByShop: taxRatesByShop
+        taxRatesByShop
       }
     });
   },
@@ -119,7 +119,7 @@ export const methods = {
    * @param  {String} cartId cartId
    * @return {Object}  returns tax object
    */
-  "taxes/calculate": function (cartId) {
+  "taxes/calculate"(cartId) {
     check(cartId, String);
     const cartToCalc = Cart.findOne(cartId);
     const cartShopId = cartToCalc.shopId;

@@ -14,7 +14,7 @@ Meteor.methods({
    * @summary return server side userId if available
    * @return {String} userId - if available
    */
-  "reaction/getUserId": function () {
+  "reaction/getUserId"() {
     return Meteor.userId();
   }
 });

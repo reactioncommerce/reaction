@@ -60,7 +60,7 @@ const ValidCVV = Match.Where(function (x) {
 });
 
 Meteor.methods({
-  authnetSubmit: function (transactionType = "authorizeTransaction", cardInfo, paymentInfo) {
+  authnetSubmit(transactionType = "authorizeTransaction", cardInfo, paymentInfo) {
     check(transactionType, String);
     check(cardInfo, {
       cardNumber: ValidCardNumber,
@@ -88,7 +88,8 @@ Meteor.methods({
     let authResult;
     if (authnetTransactionFunc) {
       try {
-        authResult = authnetTransactionFunc.call(authnetService,
+        authResult = authnetTransactionFunc.call(
+          authnetService,
           order,
           creditCard
         );
@@ -103,7 +104,7 @@ Meteor.methods({
     return result;
   },
 
-  "authnet/payment/capture": function (paymentMethod) {
+  "authnet/payment/capture"(paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     const {
       transactionId,
@@ -116,7 +117,8 @@ Meteor.methods({
     let result;
     if (capturedAmount === accounting.toFixed(0, 2)) {
       try {
-        const captureResult = voidTransaction(transactionId,
+        const captureResult = voidTransaction(
+          transactionId,
           authnetService
         );
         if (captureResult.responseCode[0] === "1") {
@@ -134,13 +136,14 @@ Meteor.methods({
         Logger.fatal(error);
         result = {
           saved: false,
-          error: error
+          error
         };
       }
       return result;
     }
     try {
-      const captureResult = priorAuthCaptureTransaction(transactionId,
+      const captureResult = priorAuthCaptureTransaction(
+        transactionId,
         roundedAmount,
         authnetService
       );
@@ -159,13 +162,13 @@ Meteor.methods({
       Logger.fatal(error);
       result = {
         saved: false,
-        error: error
+        error
       };
     }
     return result;
   },
 
-  "authnet/refund/create": function (paymentMethod, amount) {
+  "authnet/refund/create"(paymentMethod, amount) {
     check(paymentMethod, PaymentMethod);
     check(amount, Number);
     const result = {
@@ -176,7 +179,7 @@ Meteor.methods({
 
     return result;
   },
-  "authnet/refund/list": function () {
+  "authnet/refund/list"() {
     check(arguments, [Match.Any]);
     Meteor.Error("not-implemented", "Authorize.net does not yet support retrieving a list of refunds.");
     return [];
@@ -200,7 +203,7 @@ function getAuthnetService(accountOptions) {
 function priorAuthCaptureTransaction(transId, amount, service) {
   const body = {
     transactionType: "priorAuthCaptureTransaction",
-    amount: amount,
+    amount,
     refTransId: transId
   };
   // This call returns a Promise to the cb so we need to use Promise.await

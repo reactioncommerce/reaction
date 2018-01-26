@@ -50,9 +50,9 @@ Meteor.publish("Cart", function (sessionId, userId) {
   // select user cart
   const cart = Cart.find({
     userId: this.userId,
-    shopId: shopId
+    shopId
   }, {
-    fields: fields
+    fields
   });
 
   if (cart.count()) {
@@ -76,26 +76,23 @@ Meteor.publish("CartImages", function (cartItems) {
   const variantIds = [...new Set(cartItems.map((item) => item.variants._id))];
 
   // return image for each the top level product or the variant and let the client code decide which to display
-  const productImages = Media.find(
-    {
-      "$or": [
-        {
-          "metadata.productId": {
-            $in: productIds
-          }
-        },
-        {
-          "metadata.productId": {
-            $in: variantIds
-          }
+  const productImages = Media.find({
+    "$or": [
+      {
+        "metadata.productId": {
+          $in: productIds
         }
-      ],
-      "metadata.workflow": {
-        $nin: ["archived", "unpublished"]
+      },
+      {
+        "metadata.productId": {
+          $in: variantIds
+        }
       }
+    ],
+    "metadata.workflow": {
+      $nin: ["archived", "unpublished"]
     }
-
-  );
+  });
 
   return productImages;
 });
