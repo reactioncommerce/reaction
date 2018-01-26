@@ -179,6 +179,8 @@ class TagItem extends Component {
       <a
         className={baseClassName}
         href="#"
+        onFocus={this.handleTagMouseOver}
+        onBlur={this.handleTagMouseOut}
         onMouseOut={this.handleTagMouseOut}
         onMouseOver={this.handleTagMouseOver}
         onClick={this.handleClick}
