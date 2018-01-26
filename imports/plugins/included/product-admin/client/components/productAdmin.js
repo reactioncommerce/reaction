@@ -78,7 +78,7 @@ class ProductAdmin extends Component {
     // If the field is an array of field name
     if (Array.isArray(field) && field.length) {
       // Use the first field name
-      fieldName = field[0];
+      [fieldName] = field;
     } else {
       fieldName = field;
     }
@@ -96,7 +96,7 @@ class ProductAdmin extends Component {
     const fieldRef = this.refs[`${fieldName}Input`];
 
     if (fieldRef) {
-      const input = fieldRef.refs.input;
+      const { input } = fieldRef.refs;
 
       Velocity.RunSequence([
         { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },

@@ -324,7 +324,7 @@ Router.isActiveClassName = (routeName) => {
 
   if (current.route) {
     const { path } = current.route;
-    const { prefixArg } = group;
+    const { prefixArg } = group || {};
     const prefix = prefixArg || defaultPrefix;
 
     // Match route
