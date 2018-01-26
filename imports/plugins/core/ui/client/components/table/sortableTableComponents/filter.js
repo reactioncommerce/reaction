@@ -17,7 +17,7 @@ class SortableTableFilter extends Component {
         name={this.props.name}
         onChange={this.props.onChange}
         placeholder="Filter Data"
-        tabIndex="1"
+        tabIndex={0}
         type="text"
         value={this.props.value}
       />
