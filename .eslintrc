@@ -316,7 +316,7 @@
     // "no-useless-constructor": "error",
     // "no-useless-escape": "error",
     // "no-void": "error",
-    // "object-curly-newline": ["error", { "ObjectExpression": { "multiline": true, "consistent": true }, "ObjectPattern": { "multiline": true, "consistent": true } }],
+    "object-curly-newline": ["error", { "ObjectExpression": { "multiline": true, "consistent": true }, "ObjectPattern": { "multiline": true, "consistent": true } }],
     // "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": true }],
     // "object-shorthand": ["error", "always"],
     // "operator-assignment": ["error", "always"],

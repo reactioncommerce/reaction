@@ -144,8 +144,8 @@ export function orderQuantityAdjust(orderId, refundedItem) {
       Orders.update({
         _id: orderId,
         items: { $elemMatch: { _id: itemId } }
-      }, { $set:
-        { "items.$.quantity": newQuantity }
+      }, {
+        $set: { "items.$.quantity": newQuantity }
       }
       );
     }

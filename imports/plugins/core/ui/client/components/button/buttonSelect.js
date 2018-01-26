@@ -80,14 +80,16 @@ class ButtonSelect extends Component {
 
     if (toggle === "hidden") {
       className = classnames({ "button-dropdown": true, "hidden": false });
-      return this.setState({ toggle: "show",
+      return this.setState({
+        toggle: "show",
         toggleClassNames: className,
         toggleIcon: classnames({ "fa": true, "fa-chevron-up": true, "text-center": true, "fa-icon": true })
       });
     }
 
     className = classnames({ "button-dropdown": true, "hidden": true });
-    return this.setState({ toggle: "hidden",
+    return this.setState({
+      toggle: "hidden",
       toggleClassNames: className,
       toggleIcon: classnames({ "fa": true, "fa-chevron-down": true, "text-center": true, "fa-icon": true })
     });

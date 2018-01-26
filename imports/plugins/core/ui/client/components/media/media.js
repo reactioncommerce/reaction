@@ -128,8 +128,10 @@ class MediaItem extends Component {
   }
 
   render() {
-    const classes = { "gallery-image": true, "no-fade-on-hover": this.props.zoomable && !this.props.editable,
-      "admin-gallery-image": Reaction.hasAdminAccess() };
+    const classes = {
+      "gallery-image": true, "no-fade-on-hover": this.props.zoomable && !this.props.editable,
+      "admin-gallery-image": Reaction.hasAdminAccess()
+    };
     const mediaElement = (
       <div
         className={classnames(classes)}

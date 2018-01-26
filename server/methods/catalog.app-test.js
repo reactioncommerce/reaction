@@ -86,9 +86,11 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       const variant = Products.find({ ancestors: [product._id] }).fetch();
-      let optionCount = Products.find({ ancestors: {
-        $in: [variant[0]._id]
-      } }).count();
+      let optionCount = Products.find({
+        ancestors: {
+          $in: [variant[0]._id]
+        }
+      }).count();
       expect(optionCount).to.equal(2);
 
       Meteor.call("products/cloneVariant", product._id, variant[0]._id);
@@ -280,9 +282,11 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       const variant = Products.find({ ancestors: [product._id] }).fetch()[0];
-      const variants = Products.find({ ancestors: {
-        $in: [variant._id]
-      } }).fetch();
+      const variants = Products.find({
+        ancestors: {
+          $in: [variant._id]
+        }
+      }).fetch();
       expect(variants.length).to.equal(2);
       Meteor.call("products/deleteVariant", variant._id);
     });

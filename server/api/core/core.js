@@ -519,7 +519,8 @@ export default {
     }, {
       fields: {
         language: 1
-      } }
+      }
+    }
     );
     return language;
   },
