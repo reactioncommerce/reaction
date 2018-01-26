@@ -98,10 +98,16 @@ Meteor.methods({
       Logger.debug("choose nexmo");
       Promise.await(lazyLoadNexmo());
       const client = new Nexmo({ apiKey, apiSecret: apiToken });
-      client.message.sendSms(smsPhone, phone, message, {}, (err) => {
+      client.message.sendSms(smsPhone, phone, message, (err, result) => {
         if (err) {
-          return Logger.error(err);
+          Logger.error("Nexmo error", err);
         }
+
+        if (result && Array.isArray(result.messages) && result.messages[0]["error-text"]) {
+          Logger.error("Nexmo error sending sms", result.messages[0]["error-text"]);
+        }
+
+        Logger.debug(JSON.stringify(result));
       });
     }
   }
