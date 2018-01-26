@@ -52,7 +52,7 @@ export default function () {
     },
     (job, callback) => {
       Logger.debug("Avalara log cleanup running");
-      cleanupAvalaraJobs(function (error) {
+      cleanupAvalaraJobs((error) => {
         if (error) {
           job.done(error.toString(), { repeatId: true });
           callback();

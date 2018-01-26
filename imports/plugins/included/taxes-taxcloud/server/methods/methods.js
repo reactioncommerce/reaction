@@ -16,9 +16,9 @@ Meteor.methods({
     const taxCodes = HTTP.get(TAXCODE_SRC);
 
     if (taxCodes) {
-      taxCodes.data.tic_list.forEach(function (code) {
+      taxCodes.data.tic_list.forEach((code) => {
         if (code.tic.children) {
-          code.tic.children.forEach(function (child) {
+          code.tic.children.forEach((child) => {
             taxCodeArray.push(child.tic);
           });
         }

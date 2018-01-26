@@ -78,7 +78,7 @@ Template.shippingRatesSettings.helpers({
 
     // add i18n handling to headers
     const customColumnMetadata = [];
-    filteredFields.forEach(function (field) {
+    filteredFields.forEach((field) => {
       const columnMeta = {
         accessor: field,
         Header: i18next.t(`admin.shippingGrid.${field}`)

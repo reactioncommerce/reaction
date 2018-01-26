@@ -60,7 +60,7 @@ function submitToBrainTree(doc, template) {
   Braintree.authorize(cardData, {
     total: cartTotal,
     currency: currencyCode
-  }, function (error, results) {
+  }, (error, results) => {
     let paymentMethod;
     submitting = false;
     if (error) {

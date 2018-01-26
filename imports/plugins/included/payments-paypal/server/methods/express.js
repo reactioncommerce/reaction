@@ -335,7 +335,7 @@ export const methods = {
 function parseResponse(response) {
   const result = {};
   const pieces = response.content.split("&");
-  pieces.forEach(function (piece) {
+  pieces.forEach((piece) => {
     const subpieces = piece.split("=");
     const decodedResult = result[subpieces[0]] = decodeURIComponent(subpieces[1]);
     return decodedResult;

@@ -21,7 +21,7 @@ const wrapComponent = (Comp) => (
     };
 
     handleCreateNewChildVariant(variant) {
-      Meteor.call("products/createVariant", variant._id, function (error, result) {
+      Meteor.call("products/createVariant", variant._id, (error, result) => {
         if (error) {
           Alerts.alert({
             text: i18next.t("productDetailEdit.addVariantFail", { title: variant.title }),

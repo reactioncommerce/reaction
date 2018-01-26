@@ -66,7 +66,7 @@ Template.taxSettingsPanel.events({
   }
 });
 
-Template.taxSettingsPanel.onCreated(function () {
+Template.taxSettingsPanel.onCreated(() => {
   const avalaraPackage = Packages.findOne({
     name: "taxes-avalara",
     shopId: Reaction.getShopId()

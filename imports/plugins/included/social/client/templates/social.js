@@ -5,7 +5,7 @@ import { Packages } from "/lib/collections";
 
 Template.reactionSocial.onCreated(function () {
   const self = this;
-  return this.autorun(function () {
+  return this.autorun(() => {
     const subscription = Reaction.Subscriptions.Packages;
     if (subscription.ready()) {
       const socialSettings = Packages.findOne({

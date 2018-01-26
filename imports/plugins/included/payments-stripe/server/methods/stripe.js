@@ -279,7 +279,7 @@ export const methods = {
       // and waits for the promise to resolve
       const customer = Promise.await(stripe.customers.create({
         email: customerEmail
-      }).then(function (cust) {
+      }).then((cust) => {
         const customerCard = stripe.customers.createSource(cust.id, { source: { ...card, object: "card" } });
         return customerCard;
       }));

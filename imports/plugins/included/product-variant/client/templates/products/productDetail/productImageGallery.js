@@ -39,7 +39,7 @@ function uploadHandler(event) {
   // will have a chance to be displayed
   const toGrid = variant.ancestors.length >= 1;
 
-  return FS.Utility.eachFile(event, function (file) {
+  return FS.Utility.eachFile(event, (file) => {
     const fileObj = new FS.File(file);
     fileObj.metadata = {
       ownerId: userId,

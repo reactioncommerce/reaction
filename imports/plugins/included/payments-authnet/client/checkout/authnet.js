@@ -74,7 +74,7 @@ AutoForm.addHooks("authnet-payment-form", {
     };
 
     // Submit for processing
-    AuthNet.authorize(cardInfo, paymentInfo, function (error, transaction) {
+    AuthNet.authorize(cardInfo, paymentInfo, (error, transaction) => {
       if (error || !transaction) {
         handleAuthNetSubmitError(error);
         uiEnd(tpl, "Resubmit payment");

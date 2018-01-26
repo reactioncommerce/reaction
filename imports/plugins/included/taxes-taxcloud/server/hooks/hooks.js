@@ -10,7 +10,7 @@ import { Shops, Cart, Packages } from "/lib/collections";
 // tax methods precendence is determined by
 // load order of plugins
 //
-MethodHooks.after("taxes/calculate", function (options) {
+MethodHooks.after("taxes/calculate", (options) => {
   const result = options.result || {};
   let origin = {};
 
@@ -97,7 +97,7 @@ MethodHooks.after("taxes/calculate", function (options) {
               }
             };
 
-            HTTP.post(url, request, function (error, response) {
+            HTTP.post(url, request, (error, response) => {
               let taxRate = 0;
               // ResponseType 3 is a successful call.
               if (!error && response.data.ResponseType === 3) {
