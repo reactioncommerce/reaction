@@ -18,7 +18,8 @@ describe("Add/Create cart methods", function () {
   const user = Factory.create("user");
   const shop = getShop();
   const userId = user._id;
-  const sessionId = Reaction.sessionId = Random.id();
+  Reaction.sessionId = Random.id();
+  const sessionId = Reaction.sessionId;
   let sandbox;
   let originals;
 
