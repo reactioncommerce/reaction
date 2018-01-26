@@ -158,7 +158,7 @@ const wrapComponent = (Comp) => (
      */
     handleDisplayMedia = (item) => {
       const variantId = item.variants._id;
-      const productId = item.productId;
+      const { productId } = item;
 
       const variantImage = Media.findOne({
         "metadata.variantId": variantId,
