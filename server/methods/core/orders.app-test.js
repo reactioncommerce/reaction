@@ -1,3 +1,4 @@
+/* eslint prefer-arrow-callback:0 */
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";

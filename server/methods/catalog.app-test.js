@@ -1,5 +1,6 @@
-/* eslint dot-notation: 0 */
-/* eslint no-loop-func: 0 */
+/* eslint dot-notation:0 */
+/* eslint no-loop-func:0 */
+/* eslint prefer-arrow-callback:0 */
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
