@@ -28,7 +28,8 @@ describe("Cart Publication", function () {
     // user carts merging. We need registered users for here.
     const user = Factory.create("registeredUser");
     const userId = user._id;
-    const sessionId = Reaction.sessionId = Random.id();
+    Reaction.sessionId = Random.id();
+    const sessionId = Reaction.sessionId;
     const thisContext = {
       userId: userId
     };
