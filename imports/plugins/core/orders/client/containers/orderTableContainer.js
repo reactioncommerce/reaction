@@ -271,8 +271,11 @@ const wrapComponent = (Comp) => (
       if (alertOptions.falsePreviousStatuses) {
         Alerts.alert({
           text: i18next.t("order.skippedBulkOrdersAlert", {
-            selectedOrders: selectedOrders.length, orderText: orderText, status: capitalizeStatus,
-            numberOfSkippedOrders: alertOptions.falsePreviousStatuses, skippedOrdersText: skippedOrdersText,
+            selectedOrders: selectedOrders.length,
+            orderText: orderText,
+            status: capitalizeStatus,
+            numberOfSkippedOrders: alertOptions.falsePreviousStatuses,
+            skippedOrdersText: skippedOrdersText,
             skippedState: alertOptions.whichFalseState
           }),
           type: "warning",
