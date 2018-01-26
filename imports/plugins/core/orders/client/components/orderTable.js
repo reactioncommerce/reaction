@@ -303,7 +303,7 @@ class OrderTable extends Component {
         const columnMeta = {
           accessor: filteredFields[columnName].accessor,
           id: filteredFields[columnName].id,
-          Header: colHeader ? colHeader : columnNameLabel,
+          Header: colHeader || columnNameLabel,
           headerClassName: classNames.headerClassNames[columnName],
           className: classNames.colClassNames[columnName],
           resizable: resizable,
@@ -391,7 +391,7 @@ class OrderTable extends Component {
             };
           }}
           getTableProps={getTableProps}
-          showPaginationTop={this.props.selectedItems.length ? false : true}
+          showPaginationTop={!this.props.selectedItems.length}
         />
       </div>
     );

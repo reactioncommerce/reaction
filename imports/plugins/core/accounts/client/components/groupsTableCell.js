@@ -68,7 +68,7 @@ const GroupsTableCell = ({ account, columnName, group, adminGroups, handleRemove
     // Permission check. Remove owner option, if user is not current owner.
     // Also remove groups user does not have roles to manage. This is also checked on the server
     const dropOptions = groups
-      .filter(grp => (grp.slug === "owner" && !hasOwnerAccess) ? false : true)
+      .filter(grp => !((grp.slug === "owner" && !hasOwnerAccess)))
       .filter(grp => Reaction.canInviteToGroup({ group: grp })) || [];
 
     if (dropOptions.length < 2) { return dropDownButton(); } // do not use dropdown if only one option

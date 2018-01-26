@@ -61,7 +61,7 @@ class Validation {
       const hasMessage = messages[fieldName];
 
       fields[fieldName] = {
-        isValid: hasMessage ? false : true,
+        isValid: !hasMessage,
         value: cleanedObject[fieldName]
       };
     }

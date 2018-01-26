@@ -309,7 +309,7 @@
     // "no-prototype-builtins": "error",
     // "no-tabs": "error",
     "no-undef-init": "error",
-    // "no-unneeded-ternary": ["error", { "defaultAssignment": false }],
+    "no-unneeded-ternary": ["error", { "defaultAssignment": false }],
     // "no-unsafe-finally": "error",
     // "no-useless-computed-key": "error",
     // "no-useless-concat": "error",
