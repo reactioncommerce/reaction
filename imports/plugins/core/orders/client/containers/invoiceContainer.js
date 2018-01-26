@@ -517,7 +517,8 @@ function approvePayment(order) {
     paymentMethod.invoice.subtotal
     + paymentMethod.invoice.shipping
     + paymentMethod.invoice.taxes
-    , 2);
+    , 2
+  );
 
   const { discount } = order;
   // TODO: review Discount cannot be greater than original total price

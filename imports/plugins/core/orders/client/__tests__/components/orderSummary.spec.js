@@ -42,7 +42,7 @@ test("OrderSummary snapshot test", () => {
     ]
   };
 
-  const component = shallow(
+  const component = shallow((
     <OrderSummary
       dateFormat={dateFormat}
       tracking={tracking}
@@ -51,7 +51,7 @@ test("OrderSummary snapshot test", () => {
       printableLabels={printableLabels}
       order={order}
     />
-  );
+  ));
   const tree = shallowToJSON(component);
   expect(tree).toMatchSnapshot();
 });

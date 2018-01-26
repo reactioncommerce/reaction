@@ -161,8 +161,7 @@ export function initBrowserRouter() {
           <TranslationProvider>
             <Components.App children={Router.reactComponents} />
           </TranslationProvider>
-        </BrowserRouter>
-      ), getRootNode());
+        </BrowserRouter>), getRootNode());
     }
   });
 }

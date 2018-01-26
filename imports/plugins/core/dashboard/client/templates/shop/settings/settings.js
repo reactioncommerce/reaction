@@ -180,13 +180,10 @@ Template.shopSettings.helpers({
 AutoForm.hooks({
   shopEditForm: {
     onSuccess() {
-      return Alerts.toast(i18next.t("admin.alerts.shopGeneralSettingsSaved"),
-        "success");
+      return Alerts.toast(i18next.t("admin.alerts.shopGeneralSettingsSaved"), "success");
     },
     onError(operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.alerts.shopGeneralSettingsFailed")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.alerts.shopGeneralSettingsFailed")} ${error}`, "error");
     }
   }
 });
@@ -194,13 +191,10 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditAddressForm: {
     onSuccess() {
-      return Alerts.toast(i18next.t("admin.alerts.shopAddressSettingsSaved"),
-        "success");
+      return Alerts.toast(i18next.t("admin.alerts.shopAddressSettingsSaved"), "success");
     },
     onError(operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.alerts.shopAddressSettingsFailed")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.alerts.shopAddressSettingsFailed")} ${error}`, "error");
     }
   }
 });
@@ -208,9 +202,7 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditExternalServicesForm: {
     onSuccess() {
-      return Alerts.toast(
-        i18next.t("admin.alerts.shopExternalServicesSettingsSaved"), "success"
-      );
+      return Alerts.toast(i18next.t("admin.alerts.shopExternalServicesSettingsSaved"), "success");
     },
     onError(operation, error) {
       return Alerts.toast(
@@ -224,13 +216,10 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditOptionsForm: {
     onSuccess() {
-      return Alerts.toast(i18next.t("admin.alerts.shopOptionsSettingsSaved"),
-        "success");
+      return Alerts.toast(i18next.t("admin.alerts.shopOptionsSettingsSaved"), "success");
     },
     onError(operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.alerts.shopOptionsSettingsFailed")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.alerts.shopOptionsSettingsFailed")} ${error}`, "error");
     }
   }
 });

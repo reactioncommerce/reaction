@@ -101,8 +101,7 @@ Import.identify = function (document) {
   if (name && max > 0.3) {
     return Collections[name];
   }
-  throw new Error(
-    "Couldn't determine the schema associated with this document");
+  throw new Error("Couldn't determine the schema associated with this document");
 };
 
 /**

@@ -255,7 +255,7 @@ describe("Publication", function () {
       it("should return products from all shops when multiple shops are provided", function (done) {
         const filters = { shops: [shopId] };
         const productScrollLimit = 24;
-        sandbox.stub(Reaction, "getCurrentShop", function () {return { _id: "123" };});
+        sandbox.stub(Reaction, "getCurrentShop", function () { return { _id: "123" }; });
         sandbox.stub(Roles, "userIsInRole", () => true);
         sandbox.stub(Reaction, "hasPermission", () => true);
         sandbox.stub(Reaction, "getShopsWithRoles", () =>  [shopId]);

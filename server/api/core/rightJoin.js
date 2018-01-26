@@ -37,12 +37,10 @@ const doRightJoinNoIntersection = (leftSet, rightSet) => {
     if (typeof (rightSet[key]) === "object") {
       // subobject or array
       if (leftSet.hasOwnProperty(key) && (typeof (leftSet[key]) !== "object" ||
-           Array.isArray(leftSet[key]) !== Array.isArray(rightSet[ key ]))) {
+           Array.isArray(leftSet[key]) !== Array.isArray(rightSet[key]))) {
         // This is not expected!
-        throw new Error(
-          "Left object and right object's internal structure must be " +
-          "congruent! Offending key: " + key
-        );
+        throw new Error("Left object and right object's internal structure must be " +
+          "congruent! Offending key: " + key);
       }
       const rightSubJoin = doRightJoinNoIntersection(
         leftSet.hasOwnProperty(key) ? leftSet[key] : {},

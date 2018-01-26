@@ -230,8 +230,7 @@ Template.coreCheckoutShipping.events({
     try {
       Meteor.call("cart/setShipmentMethod", cart._id, self.method);
     } catch (error) {
-      throw new Meteor.Error(error,
-        "Cannot change methods while processing.");
+      throw new Meteor.Error(error, "Cannot change methods while processing.");
     }
   },
   "click [data-event-action=configure-shipping]"(event) {

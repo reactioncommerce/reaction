@@ -45,8 +45,10 @@ function GeoCoder(options) {
 }
 
 function gc(address, options, callback) {
-  const g = require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
-    options.extra);
+  const g = require("node-geocoder")(
+    options.geocoderProvider, options.httpAdapter,
+    options.extra
+  );
   g.geocode(address, callback);
 }
 
@@ -65,8 +67,10 @@ GeoCoder.prototype.geocode = function geoCoderGeocode(address, callback) {
 };
 
 function rv(lat, lng, options, callback) {
-  const g = require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
-    options.extra);
+  const g = require("node-geocoder")(
+    options.geocoderProvider, options.httpAdapter,
+    options.extra
+  );
   g.reverse({
     lat,
     lon: lng

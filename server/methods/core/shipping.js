@@ -87,7 +87,8 @@ function pruneShippingRecordsByShop(cart) {
     const itemsByShop = cart.getItemsByShop();
     const shops = Object.keys(itemsByShop);
     if (shops.length > 0 && cart.items.length > 0) {
-      Cart.update({ _id: cartId },
+      Cart.update(
+        { _id: cartId },
         {
           $pull: {
             shipping: { shopId: { $nin: shops } }
@@ -95,7 +96,8 @@ function pruneShippingRecordsByShop(cart) {
         }
       );
     } else {
-      Cart.update({ _id: cartId },
+      Cart.update(
+        { _id: cartId },
         {
           $unset: {
             shipping: ""

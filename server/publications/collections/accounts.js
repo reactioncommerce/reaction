@@ -110,9 +110,11 @@ Meteor.publish("UserProfile", function (profileUserId) {
   // we can see a situation when anonymous user still represented by
   // `profileUserId`, but admin user already could be found by `this.userId`
   // In that case what we should do here?
-  if (profileUserId !== this.userId && Roles.userIsInRole(this.userId,
+  if (profileUserId !== this.userId && Roles.userIsInRole(
+    this.userId,
     permissions, shopId ||
-    Roles.userIsInRole(this.userId, permissions, Roles.GLOBAL_GROUP))) {
+    Roles.userIsInRole(this.userId, permissions, Roles.GLOBAL_GROUP)
+  )) {
     return Meteor.users.find({
       _id: profileUserId
     }, {

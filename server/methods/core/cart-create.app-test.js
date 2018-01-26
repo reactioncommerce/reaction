@@ -300,11 +300,9 @@ describe("Add/Create cart methods", function () {
 
       // https://github.com/aldeed/meteor-simple-schema/issues/522
       expect(function () {
-        return Meteor.call(
-          "accounts/addressBookRemove", () => {
-            expect(true).to.be.true;
-          }
-        );
+        return Meteor.call("accounts/addressBookRemove", () => {
+          expect(true).to.be.true;
+        });
       }).to.not.throw;
 
       expect(accountUpdateStub).to.not.have.been.called;

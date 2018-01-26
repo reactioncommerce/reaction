@@ -28,14 +28,14 @@ afterEach(() => {
  */
 
 test("ClickToCopy snapshot test", () => {
-  const component = shallow(
+  const component = shallow((
     <ClickToCopy
       copyToClipboard="Text to copy to clipboard"
       displayText="Text to display"
       i18nKeyTooltip="path.to.i18n.key"
       tooltip="Tooltip text"
     />
-  );
+  ));
   const tree = shallowToJSON(component);
   expect(tree).toMatchSnapshot();
 });

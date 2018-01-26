@@ -63,13 +63,10 @@ Template.paymentSettings.events({
 AutoForm.hooks({
   shopEditPaymentMethodsForm: {
     onSuccess() {
-      return Alerts.toast(i18next.t("shopSettings.shopPaymentMethodsSaved"),
-        "success");
+      return Alerts.toast(i18next.t("shopSettings.shopPaymentMethodsSaved"), "success");
     },
     onError(operation, error) {
-      return Alerts.toast(
-        `${i18next.t("shopSettings.shopPaymentMethodsFailed")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("shopSettings.shopPaymentMethodsFailed")} ${error}`, "error");
     }
   }
 });

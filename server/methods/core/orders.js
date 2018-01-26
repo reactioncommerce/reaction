@@ -146,8 +146,7 @@ export function orderQuantityAdjust(orderId, refundedItem) {
         items: { $elemMatch: { _id: itemId } }
       }, { $set:
         { "items.$.quantity": newQuantity }
-      }
-      );
+      });
     }
   });
 }
@@ -700,9 +699,7 @@ export const methods = {
           // Otherwise push the unique item into the combinedItems array
 
           // Add displayPrice to match user currency settings
-          orderItem.variants.displayPrice = accounting.formatMoney(
-            orderItem.variants.price * userCurrencyExchangeRate, userCurrencyFormatting
-          );
+          orderItem.variants.displayPrice = accounting.formatMoney(orderItem.variants.price * userCurrencyExchangeRate, userCurrencyFormatting);
 
           combinedItems.push(orderItem);
 
@@ -769,27 +766,13 @@ export const methods = {
             postal: address.postal
           },
           paymentMethod: paymentMethod.storedCard || paymentMethod.processor,
-          subtotal: accounting.formatMoney(
-            subtotal * userCurrencyExchangeRate, userCurrencyFormatting
-          ),
-          shipping: accounting.formatMoney(
-            shippingCost * userCurrencyExchangeRate, userCurrencyFormatting
-          ),
-          taxes: accounting.formatMoney(
-            taxes * userCurrencyExchangeRate, userCurrencyFormatting
-          ),
-          discounts: accounting.formatMoney(
-            discounts * userCurrencyExchangeRate, userCurrencyFormatting
-          ),
-          refunds: accounting.formatMoney(
-            refundTotal * userCurrencyExchangeRate, userCurrencyFormatting
-          ),
-          total: accounting.formatMoney(
-            (subtotal + shippingCost + taxes - discounts) * userCurrencyExchangeRate, userCurrencyFormatting
-          ),
-          adjustedTotal: accounting.formatMoney(
-            (amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting
-          )
+          subtotal: accounting.formatMoney(subtotal * userCurrencyExchangeRate, userCurrencyFormatting),
+          shipping: accounting.formatMoney(shippingCost * userCurrencyExchangeRate, userCurrencyFormatting),
+          taxes: accounting.formatMoney(taxes * userCurrencyExchangeRate, userCurrencyFormatting),
+          discounts: accounting.formatMoney(discounts * userCurrencyExchangeRate, userCurrencyFormatting),
+          refunds: accounting.formatMoney(refundTotal * userCurrencyExchangeRate, userCurrencyFormatting),
+          total: accounting.formatMoney((subtotal + shippingCost + taxes - discounts) * userCurrencyExchangeRate, userCurrencyFormatting),
+          adjustedTotal: accounting.formatMoney((amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting)
         },
         combinedItems,
         orderDate: moment(order.createdAt).format("MM/DD/YYYY"),

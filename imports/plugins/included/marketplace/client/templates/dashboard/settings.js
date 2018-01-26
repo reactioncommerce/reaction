@@ -32,13 +32,13 @@ Template.marketplaceShopSettings.helpers({
 AutoForm.hooks({
   marketplaceOptionsForm: {
     onSuccess() {
-      return Alerts.toast(i18next.t("admin.settings.dashboardMarketplaceSettingsSaved"),
-        "success");
+      return Alerts.toast(
+        i18next.t("admin.settings.dashboardMarketplaceSettingsSaved"),
+        "success"
+      );
     },
     onError(operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.settings.dashboardMarketplaceSettingsFailed")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.settings.dashboardMarketplaceSettingsFailed")} ${error}`, "error");
     }
   }
 });

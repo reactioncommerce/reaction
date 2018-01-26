@@ -56,12 +56,10 @@ export function cartCleanupJob() {
         const user = Accounts.findOne({ _id: cart.userId });
         if (!user.emails.length) {
           const removeCart = Cart.remove({ userId: user._id });
-          const removeAccount = Accounts.remove(
-            {
-              _id: cart.userId,
-              emails: []
-            }
-          );
+          const removeAccount = Accounts.remove({
+            _id: cart.userId,
+            emails: []
+          });
           const destroySession = ServerSessions.remove({ _id: cart.sessionId });
           Meteor.users.remove({ _id: user._id, emails: [] }); // clears out anonymous user
           if (removeCart && removeAccount && destroySession) {

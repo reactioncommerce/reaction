@@ -266,10 +266,10 @@
     // "array-callback-return": ["error", { "allowImplicit": true }],
     // "arrow-body-style": ["error", "as-needed", { "requireReturnForObjectLiteral": false }],
     // "arrow-parens": [ "error", "always", { "requireForBlockBody": true }],
-    // "block-spacing": ["error", "always"],
-    // "computed-property-spacing": ["error", "never"],
-    // "dot-location": ["error", "property"],
-    // "function-paren-newline": ["error", "multiline"],
+    "block-spacing": ["error", "always"],
+    "computed-property-spacing": ["error", "never"],
+    "dot-location": ["error", "property"],
+    "function-paren-newline": ["error", "multiline"],
     "import/export": "error",
     "import/order": ["error", {
       "groups": [

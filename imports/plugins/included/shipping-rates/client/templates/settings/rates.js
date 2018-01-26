@@ -206,13 +206,10 @@ Template.shippingRatesSettings.events({
 AutoForm.hooks({
   "shipping-rates-update-form": {
     onSuccess() {
-      return Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"),
-        "success");
+      return Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
     },
     onError(operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error");
     }
   },
   "shipping-rates-insert-form": {
@@ -220,9 +217,7 @@ AutoForm.hooks({
       return Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
     },
     onError(operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error");
     }
   }
 });

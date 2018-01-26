@@ -11,8 +11,10 @@ Meteor.publish("Inventory", function () {
   if (!shopId) {
     return this.ready();
   }
-  if (Roles.userIsInRole(this.userId, ["admin", "owner", "createProduct"],
-    shopId)) {
+  if (Roles.userIsInRole(
+    this.userId, ["admin", "owner", "createProduct"],
+    shopId
+  )) {
     return Inventory.find({
       shopId
     });
