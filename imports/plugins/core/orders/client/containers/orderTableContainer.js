@@ -368,16 +368,13 @@ const wrapComponent = (Comp) => (
             isNotPicked += 1;
           } else if (orderWorkflow.status === "coreOrderWorkflow/picked") {
             isPicked += 1;
-          } else {
-            // check if the selected order(s) are being regressed back to this state
-            if (orderWorkflow.workflow.includes("coreOrderWorkflow/picked")) {
-              ordersToRegress += 1;
-            } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/picked") &&
-            (orderWorkflow.status === "coreOrderWorkflow/packed" ||
-            orderWorkflow.status === "coreOrderWorkflow/labeled" ||
-            orderWorkflow.status === "coreOrderWorkflow/shipped")) {
-              ordersToRegress += 1;
-            }
+          } else if (orderWorkflow.workflow.includes("coreOrderWorkflow/picked")) {
+            ordersToRegress += 1;
+          } else if (!orderWorkflow.workflow.includes("coreOrderWorkflow/picked") &&
+                     (orderWorkflow.status === "coreOrderWorkflow/packed" ||
+                      orderWorkflow.status === "coreOrderWorkflow/labeled" ||
+                      orderWorkflow.status === "coreOrderWorkflow/shipped")) {
+            ordersToRegress += 1;
           }
         }
       });
