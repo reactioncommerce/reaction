@@ -10,7 +10,7 @@ export const LoginFormSharedHelpers = {
    * @memberof Accounts
    * @return {Object} Message object
    */
-  messages: function () {
+  messages() {
     return Template.instance().formMessages.get();
   },
 
@@ -35,7 +35,7 @@ export const LoginFormSharedHelpers = {
    * @param  {String} str String to capitalize
    * @return {String}     First letter of first word capitalized
    */
-  capitalize: function (str) {
+  capitalize(str) {
     const finalString = str === null ? "" : String(str);
     return finalString.charAt(0).toUpperCase() + finalString.slice(1);
   }

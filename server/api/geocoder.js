@@ -40,7 +40,7 @@ function GeoCoder(options) {
   self.options = _.extend({
     geocoderProvider: "google",
     httpAdapter: "https",
-    extra: extra
+    extra
   }, options || {});
 }
 
@@ -68,7 +68,7 @@ function rv(lat, lng, options, callback) {
   const g = require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
     options.extra);
   g.reverse({
-    lat: lat,
+    lat,
     lon: lng
   }, callback);
 }

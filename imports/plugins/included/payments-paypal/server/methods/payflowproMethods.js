@@ -19,9 +19,9 @@ export function paymentSubmit(transactionType, cardData, paymentData) {
   check(paymentData, Object);
 
   const paymentSubmitDetails = {
-    transactionType: transactionType,
-    cardData: cardData,
-    paymentData: paymentData
+    transactionType,
+    cardData,
+    paymentData
   };
 
   let result;
@@ -89,7 +89,7 @@ export function createRefund(paymentMethod, amount) {
 
   const refundDetails = {
     captureId: paymentMethod.metadata.captureId,
-    amount: amount
+    amount
   };
 
   let result;

@@ -61,7 +61,7 @@ export default function () {
     });
     const loginHandler = {
       type: "anonymous",
-      userId: userId
+      userId
     };
     return loginHandler;
   });

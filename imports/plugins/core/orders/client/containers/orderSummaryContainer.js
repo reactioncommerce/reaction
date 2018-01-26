@@ -150,8 +150,8 @@ const composer = (props, onData) => {
       }
 
       onData(null, {
-        order: order,
-        profileShippingAddress: profileShippingAddress
+        order,
+        profileShippingAddress
       });
     } else {
       onData(null, {

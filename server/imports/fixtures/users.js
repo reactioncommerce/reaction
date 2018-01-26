@@ -14,7 +14,7 @@ export function getUser() {
 
 export function getUsers(limit = 2) {
   const users = [];
-  const existingUsers = Meteor.users.find({}, { limit: limit }).fetch();
+  const existingUsers = Meteor.users.find({}, { limit }).fetch();
   for (let i = 0; i < limit; i = i + 1) {
     const user = existingUsers[i] || Factory.create("user");
     users.push(user);
@@ -28,15 +28,15 @@ export function getUsers(limit = 2) {
  * @summary define user Factory
  */
 const user = {
-  username: function () {
+  username() {
     return faker.internet.userName() + _.random(0, 1000);
   },
 
-  name: function () {
+  name() {
     return faker.name.findName();
   },
 
-  emails: function () {
+  emails() {
     const email = faker.internet.email();
     return [{
       address: email,
@@ -44,7 +44,7 @@ const user = {
     }];
   },
 
-  profile: function () {
+  profile() {
     return {
       name: this.name,
       email: faker.internet.email(),
@@ -52,15 +52,15 @@ const user = {
     };
   },
 
-  gender: function () {
+  gender() {
     return ["Either", "Male", "Female"][_.random(0, 2)];
   },
 
-  description: function () {
+  description() {
     return faker.lorem.paragraphs(3);
   },
 
-  startTime: function () {
+  startTime() {
     // needs moment.js package
     // some date within the next month
     return moment().add(_.random(0, 31), "days").add(_.random(0, 24),

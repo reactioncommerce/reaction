@@ -113,7 +113,7 @@ export default {
    * @summary Registers Templates into the Templates Collection
    * @return {function} Registers template
    */
-  registerTemplate: registerTemplate,
+  registerTemplate,
 
   /**
    * @name hasPermission
@@ -486,7 +486,7 @@ export default {
    * @return {Object}               Shop settings object or empty object
    */
   getShopSettings(name = "core") {
-    const settings = Packages.findOne({ name: name, shopId: this.getShopId() }) || {};
+    const settings = Packages.findOne({ name, shopId: this.getShopId() }) || {};
     return settings.settings || {};
   },
 
@@ -533,7 +533,7 @@ export default {
    * @return {Object|null}      Package setting object or null
    */
   getPackageSettings(name) {
-    return Packages.findOne({ name: name, shopId: this.getShopId() }) || null;
+    return Packages.findOne({ name, shopId: this.getShopId() }) || null;
   },
 
   /**
@@ -639,7 +639,7 @@ export default {
         this.assignOwnerRoles(shopId, packageName, config.registry);
 
         const pkg = Object.assign({}, config, {
-          shopId: shopId
+          shopId
         });
 
         // populate array of layouts that don't already exist (?!)

@@ -35,8 +35,8 @@ function buildPaymentMethod(result, status, mode) {
     method: "credit",
     transactionId: result.TRANSACTIONID,
     amount: parseFloat(result.AMT, 10),
-    status: status,
-    mode: mode,
+    status,
+    mode,
     createdAt: new Date(result.ORDERTIME),
     updatedAt: new Date(result.ORDERTIME),
     transactions: [result]
@@ -49,7 +49,7 @@ Template.paypalDone.onRendered(function () {
 });
 
 Template.paypalDone.helpers({
-  checkoutUrl: function () {
+  checkoutUrl() {
     const template = Template.instance();
     return template.checkoutUrl;
   }

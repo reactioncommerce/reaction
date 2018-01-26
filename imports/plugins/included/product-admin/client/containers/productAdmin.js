@@ -145,7 +145,7 @@ function composer(props, onData) {
 
     onData(null, {
       editFocus: Reaction.state.get("edit/focus") || "productDetails",
-      product: product,
+      product,
       media,
       tags,
       revisonDocumentIds,

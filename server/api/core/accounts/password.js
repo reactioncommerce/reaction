@@ -69,10 +69,10 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
 
   const dataForEmail = {
     // Shop Data
-    shop: shop,
+    shop,
     contactEmail: shop.emails[0].address,
     homepage: Meteor.absoluteUrl(),
-    emailLogo: emailLogo,
+    emailLogo,
     copyrightDate: moment().format("YYYY"),
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -102,7 +102,7 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
     },
     // Account Data
     passwordResetUrl: Accounts.urls.resetPassword(token),
-    user: user
+    user
   };
 
   // Compile Email with SSR
@@ -187,7 +187,7 @@ export function sendVerificationEmail(userId, email) {
       region: "CA",
       postal: "90405"
     },
-    shopName: shopName,
+    shopName,
     socialLinks: {
       facebook: {
         link: "https://www.facebook.com/reactioncommerce"
@@ -304,7 +304,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
       region: "CA",
       postal: "90405"
     },
-    shopName: shopName,
+    shopName,
     socialLinks: {
       facebook: {
         link: "https://www.facebook.com/reactioncommerce"

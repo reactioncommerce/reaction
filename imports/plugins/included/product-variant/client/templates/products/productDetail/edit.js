@@ -12,7 +12,7 @@ import { ReactionProduct } from "/lib/api";
  */
 
 Template.productDetailEdit.helpers({
-  i18nPlaceholder: function () {
+  i18nPlaceholder() {
     const i18nKey = `productDetailEdit.${this.field}`;
     if (i18next.t(i18nKey) === i18nKey) {
       Logger.warn(`returning empty placeholder productDetailEdit: ${i18nKey} no i18n key found.`);
@@ -27,7 +27,7 @@ Template.productDetailEdit.helpers({
  */
 
 Template.productDetailEdit.events({
-  "change input,textarea": function (event) {
+  "change input,textarea"(event) {
     const self = this;
     const productId = ReactionProduct.selectedProductId();
     Meteor.call("products/updateProductField", productId, self.field,
@@ -85,7 +85,7 @@ Template.productDetailEdit.events({
  */
 
 Template.productDetailField.events({
-  "click .product-detail-field": function () {
+  "click .product-detail-field"() {
     if (Reaction.hasPermission("createProduct")) {
       const fieldClass = "editing-" + this.field;
       Session.set(fieldClass, true);

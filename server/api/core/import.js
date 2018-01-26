@@ -268,7 +268,7 @@ Import.package = function (pkg, shopId) {
   check(shopId, String);
   const key = {
     name: pkg.name,
-    shopId: shopId
+    shopId
   };
   return this.object(Collections.Packages, key, pkg);
 };
@@ -339,7 +339,7 @@ Import.layout = function (layout, shopId) {
   };
   return this.object(Collections.Shops, key, {
     _id: shopId,
-    layout: layout
+    layout
   });
 };
 
