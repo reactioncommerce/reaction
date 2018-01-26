@@ -211,7 +211,7 @@ export const methods = {
       { field: { shopId: 1 } });
     if (shopId && Roles.userIsInRole(this.userId, shippingRoles, shopId)) {
       // If user wants to delete existing key
-      if (modifier.hasOwnProperty("$unset")) {
+      if ({}.hasOwnProperty.call(modifier, "$unset")) {
         const customModifier = { $set: { "settings.apiKey": null } };
         Packages.update(_id, customModifier);
         // remove shop's existing Shippo Providers from Shipping Collection
