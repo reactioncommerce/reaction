@@ -159,7 +159,7 @@ export const methods = {
 
       for (const page of pages) {
         Logger.debug(`Importing page ${page + 1} of ${numPages} - each page has ${limit} products`);
-        const shopifyCustomers = await shopify.customer.list({ ...opts, page: page });
+        const shopifyCustomers = await shopify.customer.list({ ...opts, page: page }); // eslint-disable-line no-await-in-loop
         for (const shopifyCustomer of shopifyCustomers) {
           if (!Accounts.findOne({ shopifyId: shopifyCustomer.id }, { fields: { _id: 1 } })) {
             // Setup reaction customer
