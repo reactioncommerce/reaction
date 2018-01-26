@@ -278,7 +278,7 @@
     // "import/no-named-default": "error",
     // "new-parens": "error",
     // "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 4 }],
-     "no-await-in-loop": "error",
+    // "no-await-in-loop": "error",
      "no-bitwise": "error",
      "no-case-declarations": "error",
      "no-confusing-arrow": ["error", { "allowParens": true }],

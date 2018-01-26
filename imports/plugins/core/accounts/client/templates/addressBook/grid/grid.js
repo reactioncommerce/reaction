@@ -18,12 +18,9 @@ Template.addressBookGrid.helpers({
             return "active";
           }
         }
-      } else { // if this is a first checkout review, we need to push default
+      } else if (this.isBillingDefault) { // if this is a first checkout review, we need to push default
         // billing address to cart
-        if (this.isBillingDefault) {
-          Meteor.call("cart/setPaymentAddress", cart._id, this);
-          // return "active";
-        }
+        Meteor.call("cart/setPaymentAddress", cart._id, this);
       }
     }
   },
@@ -40,12 +37,9 @@ Template.addressBookGrid.helpers({
             return "active";
           }
         }
-      } else { // if this is a first checkout review, we need to push default
+      } else if (this.isShippingDefault) { // if this is a first checkout review, we need to push default
         // shipping address to cart
-        if (this.isShippingDefault) {
-          Meteor.call("cart/setShipmentAddress", cart._id, this);
-          // return "active";
-        }
+        Meteor.call("cart/setShipmentAddress", cart._id, this);
       }
     }
   },
