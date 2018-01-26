@@ -2,9 +2,8 @@
 import Shopify from "shopify-api-node";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
-import { Logger } from "/server/api";
 import { check, Match } from "meteor/check";
-import { Reaction } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 import { Accounts } from "/lib/collections";
 import { getApiInfo } from "../api/api";
 import { connectorsRoles } from "../../lib/roles";

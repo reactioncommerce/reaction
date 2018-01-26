@@ -270,10 +270,19 @@
     // "computed-property-spacing": ["error", "never"],
     // "dot-location": ["error", "property"],
     // "function-paren-newline": ["error", "multiline"],
-    // "import/export": "error",
-    // "import/first": ["error", "absolute-first"],
-    // "import/newline-after-import": "error",
-    // "import/no-duplicates": "error",
+    "import/export": "error",
+    "import/order": ["error", {
+      "groups": [
+        "builtin",
+        "external",
+        "internal",
+        "parent",
+        "sibling",
+        "index"
+      ]
+    }],
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
     // "import/no-mutable-exports": "error",
     // "import/no-named-default": "error",
     // "new-parens": "error",

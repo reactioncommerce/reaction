@@ -1,3 +1,4 @@
+import React from "react";
 import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
@@ -6,7 +7,6 @@ import { Shipping } from "/lib/collections";
 import { i18next } from "/client/api";
 import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 import ShippoTableColumn from "./shippoTableColumn";
-import React from "react";
 
 import "./carriers.html";
 

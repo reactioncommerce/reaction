@@ -4,15 +4,15 @@ import ReactDOM from "react-dom";
 import { matchPath } from "react-router";
 import { Router as ReactRouter } from "react-router-dom";
 import equal from "deep-equal";
-import { Reaction } from "/client/api";
 import pathToRegexp from "path-to-regexp";
 import queryParse from "query-parse";
 import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
-import { Router } from "../lib";
-import { MetaData } from "/lib/api/router/metadata";
-import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { Components } from "@reactioncommerce/reaction-components";
+import { Reaction } from "/client/api";
+import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { MetaData } from "/lib/api/router/metadata";
+import { Router } from "../lib";
 
 const history = Router.history;
 

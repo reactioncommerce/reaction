@@ -1,11 +1,10 @@
 import faker from "faker";
 import _ from "lodash";
+import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { Factory } from "meteor/dburles:factory";
-import "./shops";
 import { getShop } from "./shops";
-import moment from "moment";
 
 export function getUser() {
   const existingUser = Meteor.users.findOne();
