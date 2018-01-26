@@ -1,6 +1,5 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { PackageConfig } from "/lib/collections/schemas/registry";
-import { Shop } from "/lib/collections/schemas/shops.js";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 export const ShopTypes = new SimpleSchema({
@@ -28,7 +27,7 @@ export const EnabledPackagesByShopType = new SimpleSchema({
 registerSchema("EnabledPackagesByShopType", EnabledPackagesByShopType);
 
 export const MarketplacePackageConfig = new SimpleSchema([
-  PackageConfig, {
+  Schemas.PackageConfig, {
     "settings.thirdPartyLogistics": {
       type: Object,
       blackbox: true,
@@ -125,7 +124,7 @@ registerSchema("MarketplacePackageConfig", MarketplacePackageConfig);
  * Seller Shop Schema
  */
 export const SellerShop = new SimpleSchema([
-  Shop, {
+  Schemas.Shop, {
     stripeConnectSettings: {
       type: Object,
       optional: true

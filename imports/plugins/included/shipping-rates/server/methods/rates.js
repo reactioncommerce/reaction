@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import { Shipping } from "/lib/collections";
-import { ShippingMethod } from "/lib/collections/schemas";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { Reaction } from "/server/api";
 import { shippingRoles } from "../lib/roles";
 
@@ -67,7 +67,7 @@ export const methods = {
    * @return { Number } update result
    */
   "shipping/rates/update": function (method) {
-    check(method, ShippingMethod);
+    check(method, Schemas.ShippingMethod);
     if (!Reaction.hasPermission(shippingRoles)) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }

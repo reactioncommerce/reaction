@@ -1,5 +1,5 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { PackageConfig } from "/lib/collections/schemas/registry";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { Discounts } from "./discounts";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
@@ -8,7 +8,7 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 */
 
 export const DiscountsPackageConfig = new SimpleSchema([
-  PackageConfig, {
+  Schemas.PackageConfig, {
     "settings.rates": {
       type: Object,
       optional: true

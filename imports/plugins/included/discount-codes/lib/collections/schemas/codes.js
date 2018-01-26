@@ -1,5 +1,5 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { Discounts } from "/imports/plugins/core/discounts/lib/collections/schemas";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 /**
@@ -9,7 +9,7 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 * with properties for discount codes.
 */
 export const DiscountCodes = new SimpleSchema([
-  Discounts, {
+  Schemas.Discounts, {
     "discountMethod": {
       label: "Method",
       type: String,

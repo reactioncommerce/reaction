@@ -6,14 +6,13 @@ import { Validation } from "@reactioncommerce/reaction-collections";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 
 import { ReactionProduct } from "/lib/api";
-
-import { ProductVariant } from "/lib/collections/schemas";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 
 class Variant extends Component {
   constructor(props) {
     super(props);
 
-    this.validation = new Validation(ProductVariant);
+    this.validation = new Validation(Schemas.ProductVariant);
 
     this.state = {
       invalidVariant: [],

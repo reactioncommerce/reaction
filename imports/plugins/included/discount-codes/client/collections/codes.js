@@ -1,10 +1,9 @@
 import { Mongo } from "meteor/mongo";
-import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
-
+import { Schemas } from "@reactioncommerce/reaction-collections";
 
 /**
  * Client side collections
  */
 export const DiscountCodes = new Mongo.Collection("DiscountCodes");
 // attach discount code specific schema
-DiscountCodes.attachSchema(DiscountSchema);
+DiscountCodes.attachSchema(Schemas.DiscountCodes);

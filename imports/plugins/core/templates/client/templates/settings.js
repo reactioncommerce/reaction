@@ -5,10 +5,9 @@ import { Blaze } from "meteor/blaze";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Template } from "meteor/templating";
 import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
-import { EmailTemplates } from "../../lib/collections/schemas";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { i18next } from "/client/api";
 import { Templates } from "/lib/collections";
-
 
 /*
  * template templateSettings onCreated
@@ -111,7 +110,7 @@ Template.templateSettings.helpers({
   },
 
   emailTemplateSchema() {
-    return EmailTemplates;
+    return Schemas.EmailTemplates;
   }
 });
 

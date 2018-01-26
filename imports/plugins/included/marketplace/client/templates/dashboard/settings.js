@@ -2,7 +2,7 @@ import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
-import { MarketplacePackageConfig } from "../../../lib/collections/schemas";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { Components } from "@reactioncommerce/reaction-components";
 
 /**
@@ -11,7 +11,7 @@ import { Components } from "@reactioncommerce/reaction-components";
  */
 Template.marketplaceShopSettings.helpers({
   MarketplacePackageConfig() {
-    return MarketplacePackageConfig;
+    return Schemas.MarketplacePackageConfig;
   },
 
   packageData() {

@@ -9,7 +9,7 @@ import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import VariantForm from "../components/variantForm";
-import { ProductVariant } from "/lib/collections/schemas/products";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 import { Validation } from "@reactioncommerce/reaction-collections";
 
 const wrapComponent = (Comp) => (
@@ -21,7 +21,7 @@ const wrapComponent = (Comp) => (
     constructor(props) {
       super(props);
 
-      this.validation = new Validation(ProductVariant);
+      this.validation = new Validation(Schemas.ProductVariant);
 
       this.state = {
         validationStatus: this.validation.validationStatus,

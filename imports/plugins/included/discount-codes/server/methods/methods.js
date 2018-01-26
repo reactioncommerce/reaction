@@ -4,10 +4,10 @@ import { Random } from "meteor/random";
 import { Reaction } from "/server/api";
 import { Cart } from "/lib/collections";
 import { Discounts } from  "/imports/plugins/core/discounts/lib/collections";
-import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
+import { Schemas } from "@reactioncommerce/reaction-collections";
 
 // attach discount code specific schema
-Discounts.attachSchema(DiscountSchema, { selector: { discountMethod: "code" } });
+Discounts.attachSchema(Schemas.DiscountCodes, { selector: { discountMethod: "code" } });
 
 //
 // make all discount methods available
