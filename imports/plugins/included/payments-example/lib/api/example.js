@@ -3,9 +3,9 @@ import { Packages } from "/lib/collections";
 
 export const Example = {
   accountOptions: function () {
-    const settings = Packages.findOne({
+    const { settings } = Packages.findOne({
       name: "reaction-paymentmethod"
-    }).settings;
+    });
     if (!settings.apiKey) {
       throw new Meteor.Error("invalid-credentials", "Invalid Credentials");
     }

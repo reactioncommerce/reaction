@@ -45,7 +45,7 @@ Template.examplePaymentForm.helpers({
 AutoForm.addHooks("example-payment-form", {
   onSubmit: function (doc) {
     submitting = true;
-    const template = this.template;
+    const { template } = this;
     hidePaymentAlert();
     const form = {
       name: doc.payerName,

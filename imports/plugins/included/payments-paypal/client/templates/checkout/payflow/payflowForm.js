@@ -72,7 +72,7 @@ Template.paypalPayflowForm.helpers({
 AutoForm.addHooks("paypal-payment-form", {
   onSubmit: function (doc) {
     hidePaymentAlert();
-    const template = this.template;
+    const { template } = this;
     const payerNamePieces = doc.payerName.split(" ");
     const form = {
       first_name: payerNamePieces[0],

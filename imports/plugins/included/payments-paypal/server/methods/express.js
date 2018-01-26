@@ -30,7 +30,7 @@ export const methods = {
     }
     const amount = Number(cart.getTotal());
     const description = shop.name + " Ref: " + cartId;
-    const currency = shop.currency;
+    const { currency } = shop;
     const options = PayPal.expressCheckoutAccountOptions();
     let response;
 
@@ -86,7 +86,7 @@ export const methods = {
     }
     const amount = Number(cart.getTotal());
     const shop = Shops.findOne(cart.shopId);
-    const currency = shop.currency;
+    const { currency } = shop;
     const options = PayPal.expressCheckoutAccountOptions();
     const captureAtAuth = getSetting(cart.shopId, "expressAuthAndCapture");
     let paymentAction;
@@ -231,8 +231,7 @@ export const methods = {
 
     const options = PayPal.expressCheckoutAccountOptions();
     const previousTransaction = _.last(paymentMethod.transactions);
-    const transactionId = previousTransaction.transactionId;
-    const currencycode = previousTransaction.currencycode;
+    const { transactionId, currencycode } = previousTransaction.transactionId;
 
     let response;
     try {

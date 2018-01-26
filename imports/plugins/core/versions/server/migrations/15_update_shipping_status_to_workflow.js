@@ -59,7 +59,7 @@ Migrations.add({
   down: function () {
     Orders.find().forEach((order) => {
       const currentShipping = order.shipping[0];
-      const workflow = currentShipping.workflow;
+      const { workflow } = currentShipping;
 
       currentShipping.packed = false;
       currentShipping.shipped = false;

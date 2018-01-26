@@ -114,7 +114,7 @@ Meteor.methods({
   "example/payment/capture": function (paymentData) {
     check(paymentData, Reaction.Schemas.PaymentMethod);
     const authorizationId = paymentData.transactionId;
-    const amount = paymentData.amount;
+    const { amount } = paymentData;
     const response = ExampleApi.methods.capture.call({
       authorizationId: authorizationId,
       amount: amount

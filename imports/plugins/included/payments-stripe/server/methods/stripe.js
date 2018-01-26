@@ -272,7 +272,7 @@ export const methods = {
     // TODO: If there is only one transactionsByShopId and the shopId is primaryShopId -
     // Create a standard charge and bypass creating a customer for this charge
     const primaryShop = Shops.findOne({ _id: primaryShopId });
-    const currency = primaryShop.currency;
+    const { currency } = primaryShop;
 
     try {
       // Creates a customer object, adds a source via the card data

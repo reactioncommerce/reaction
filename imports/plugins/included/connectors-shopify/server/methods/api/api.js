@@ -23,7 +23,7 @@ export function getApiInfo(shopId = Reaction.getShopId()) {
     throw new Meteor.Error("server-error", `No shopify package found for shop ${Reaction.getShopId()}`);
   }
 
-  const settings = shopifyPkg.settings;
+  const { settings } = shopifyPkg;
 
   return {
     apiKey: settings.apiKey,

@@ -39,7 +39,8 @@ Migrations.add({
         // of the array
         const updatedRegistry = pkg.registry.map((entry) => {
           if (Array.isArray(entry.provides)) {
-            entry.provides = entry.provides[0];
+            const [provides] = entry.provides;
+            entry.provides = provides;
           }
           return entry;
         });
