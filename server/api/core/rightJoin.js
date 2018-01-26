@@ -23,7 +23,7 @@ const doRightJoinNoIntersection = (leftSet, rightSet) => {
   }
   const findRightOnlyProperties = () => {
     return Object.keys(rightSet).filter(function (key) {
-      if (typeof(rightSet[key]) === "object" &&
+      if (typeof (rightSet[key]) === "object" &&
         !Array.isArray(rightSet[key])) {
         // Nested objects are always considered
         return true;
@@ -34,9 +34,9 @@ const doRightJoinNoIntersection = (leftSet, rightSet) => {
   };
 
   for (const key of findRightOnlyProperties()) {
-    if (typeof(rightSet[key]) === "object") {
+    if (typeof (rightSet[key]) === "object") {
       // subobject or array
-      if (leftSet.hasOwnProperty(key) && (typeof(leftSet[key]) !== "object" ||
+      if (leftSet.hasOwnProperty(key) && (typeof (leftSet[key]) !== "object" ||
            Array.isArray(leftSet[key]) !== Array.isArray(rightSet[ key ]))) {
         // This is not expected!
         throw new Error(
