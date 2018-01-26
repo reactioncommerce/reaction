@@ -145,7 +145,7 @@ class AuthContainer extends Component {
       serviceName = this.capitalizeName(serviceName);
     }
 
-    const loginWithService = Meteor["loginWith" + serviceName];
+    const loginWithService = Meteor[`loginWith${serviceName}`];
     const options = {}; // use default scope unless specified
 
     loginWithService(options, (error) => {

@@ -682,7 +682,7 @@ Router.initPackageRoutes = (options) => {
             route.group = {};
 
             if (route.route.substring(0, 1) !== "/") {
-              route.route = "/" + route.route;
+              route.route = `/${route.route}`;
               route.group.prefix = "";
             }
 

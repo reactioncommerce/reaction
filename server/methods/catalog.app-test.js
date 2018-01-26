@@ -321,8 +321,8 @@ describe("core product methods", function () {
         },
         type: "simple"
       }).fetch()[0];
-      expect(productCloned.title).to.equal(product.title + "-copy");
-      expect(productCloned.handle).to.equal(product.handle + "-copy");
+      expect(productCloned.title).to.equal(`${product.title}-copy`);
+      expect(productCloned.handle).to.equal(`${product.handle}-copy`);
       expect(productCloned.pageTitle).to.equal(product.pageTitle);
       expect(productCloned.description).to.equal(product.description);
 

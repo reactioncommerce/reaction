@@ -293,7 +293,7 @@ export default {
    * @return {String} Prefix in the format of "/<slug>"
    */
   getPrimaryShopPrefix() {
-    return "/" + this.getSlug(this.getPrimaryShopName().toLowerCase());
+    return `/${this.getSlug(this.getPrimaryShopName().toLowerCase())}`;
   },
 
   /**

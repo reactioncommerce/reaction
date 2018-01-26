@@ -113,7 +113,7 @@ export function groupPermissions(packages) {
         if (!permissionMap[registryItem.route]) {
           permissions.push({
             shopId: pkg.shopId,
-            permission: registryItem.name || pkg.name + "/" + registryItem.template,
+            permission: registryItem.name || `${pkg.name}/${registryItem.template}`,
             icon: registryItem.icon,
             // TODO: Rethink naming convention for permissions list
             label: registryItem.label || registryItem.route
@@ -121,7 +121,7 @@ export function groupPermissions(packages) {
         }
       }
       // TODO review this, hardcoded WIP "reaction"
-      const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (x) => " " + x[1].toUpperCase());
+      const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (x) => ` ${x[1].toUpperCase()}`);
 
       return {
         shopId: pkg.shopId,

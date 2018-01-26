@@ -22,7 +22,7 @@ Template.React.onRendered(function () {
     const comp = data && data.component;
     if (!comp) {
       throw new Error(
-        "In template " + parentTemplate + ", call to `{{> React ... }}` missing " +
+        `In template ${parentTemplate}, call to \`{{> React ... }}\` missing ` +
           "`component` argument.");
     }
 

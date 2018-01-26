@@ -66,7 +66,7 @@ export function loadTranslations(sources) {
  */
 
 export function loadCoreTranslations() {
-  const meteorPath = fs.realpathSync(process.cwd() + "/../");
+  const meteorPath = fs.realpathSync(`${process.cwd()}/../`);
   const i18nFolder = `${meteorPath}/server/assets/app/data/i18n/`;
 
   if (directoryExists(i18nFolder)) {

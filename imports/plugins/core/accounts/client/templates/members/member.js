@@ -97,7 +97,7 @@ Template.memberSettings.helpers({
           if (!permissionMap[registryItem.route]) {
             permissions.push({
               shopId: pkg.shopId,
-              permission: registryItem.name || pkg.name + "/" + registryItem.template, // launchdock-connect/connectDashboard
+              permission: registryItem.name || `${pkg.name}/${registryItem.template}`, // launchdock-connect/connectDashboard
               icon: registryItem.icon,
               label: registryItem.label || registryItem.provides || registryItem.route
             });
@@ -105,7 +105,7 @@ Template.memberSettings.helpers({
         }
         // TODO review this, hardcoded WIP
         const label = pkg.name.replace("reaction", "").replace(/(-.)/g, function (x) {
-          return " " + x[1].toUpperCase();
+          return ` ${x[1].toUpperCase()}`;
         });
 
         return permissionGroups.push({

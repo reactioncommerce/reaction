@@ -75,8 +75,7 @@ export function loadSettings(json) {
               }, {
                 $set: settings
               });
-              Logger.debug("service configuration loaded: " +
-                item.name + " | " + service);
+              Logger.debug(`service configuration loaded: ${item.name} | ${service}`);
             }
           }
         }

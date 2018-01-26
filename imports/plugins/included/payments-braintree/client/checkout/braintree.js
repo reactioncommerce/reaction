@@ -35,7 +35,7 @@ function hidePaymentAlert() {
 function handleBraintreeSubmitError(error) {
   const serverError = error !== null ? error.message : void 0;
   if (serverError) {
-    return paymentAlert("Server Error " + serverError);
+    return paymentAlert(`Server Error ${serverError}`);
   } else if (error) {
     return paymentAlert("Oops! Credit card is invalid. Please check your information and try again.");
   }
@@ -76,7 +76,7 @@ function submitToBrainTree(doc, template) {
           shopId: Reaction.getShopId()
         });
 
-        const storedCard = results.response.transaction.creditCard.cardType.toUpperCase() + " " + results.response.transaction.creditCard.last4;
+        const storedCard = `${results.response.transaction.creditCard.cardType.toUpperCase()} ${results.response.transaction.creditCard.last4}`;
         paymentMethod = {
           processor: "Braintree",
           storedCard: storedCard,

@@ -40,8 +40,7 @@ const doRightJoinNoIntersection = (leftSet, rightSet) => {
            Array.isArray(leftSet[key]) !== Array.isArray(rightSet[ key ]))) {
         // This is not expected!
         throw new Error(
-          "Left object and right object's internal structure must be " +
-          "congruent! Offending key: " + key
+          `${"Left object and right object's internal structure must be congruent! Offending key: "}${key}`
         );
       }
       const rightSubJoin = doRightJoinNoIntersection(

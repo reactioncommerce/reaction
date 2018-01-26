@@ -32,7 +32,7 @@ export function setDomain() {
   // if the server domain changes, update shop
   const domain = getRegistryDomain();
   if (currentDomain && currentDomain !== domain) {
-    Logger.debug("Updating domain to " + domain);
+    Logger.debug(`Updating domain to ${domain}`);
     Shops.update({
       domains: currentDomain
     }, {

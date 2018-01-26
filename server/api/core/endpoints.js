@@ -105,7 +105,7 @@ Endpoints.add = function (method, path, handler) {
   // Make sure path starts with a slash
   let slashedPath = path;
   if (path[0] !== "/") {
-    slashedPath = "/" + path;
+    slashedPath = `/${path}`;
   }
 
   // Add to list of known Endpoints

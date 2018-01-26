@@ -30,7 +30,7 @@ function enableReactionPackage(reactionPackage) {
             { app: i18next.t(self.i18nKeyLabel) }
           ),
           "error", {
-            type: "pkg-enabled-" + self.name
+            type: `pkg-enabled-${self.name}`
           }
         );
         if (self.name || self.route) {

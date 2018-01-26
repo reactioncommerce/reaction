@@ -44,7 +44,7 @@ class Form extends Component {
     const { docPath } = this.props;
 
     if (docPath) {
-      const objectKeys = this.objectKeys[docPath + "."];
+      const objectKeys = this.objectKeys[`${docPath}.`];
       if (Array.isArray(objectKeys)) {
         // Use the objectKeys from parent fieldset to generate
         // actual form fields
@@ -238,7 +238,7 @@ class Form extends Component {
       if (docPath) {
         return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
           if (key.endsWith(docPath)) {
-            const objectKeys = this.objectKeys[docPath + "."];
+            const objectKeys = this.objectKeys[`${docPath}.`];
             if (Array.isArray(objectKeys)) {
               // Use the objectKeys from parent fieldset to generate
               // actual form fields
