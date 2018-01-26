@@ -97,7 +97,7 @@ export function loadCoreTranslations() {
       // inserted using loadTranslation
       // as well.
       Assets.find({ type: "i18n" }).forEach((t) => {
-        Logger.debug(`Importing ${t.name} translation for \"${t.ns}\"`);
+        Logger.debug(`Importing ${t.name} translation for "${t.ns}"`);
         if (t.content) {
           Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
         } else {

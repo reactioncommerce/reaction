@@ -22,7 +22,7 @@ function addBodyClasses(context) {
   } else {
     classes = [
       // push clean route-name
-      `app-${context.route.name.replace(/[\/_]/i, "-")}`
+      `app-${context.route.name.replace(/[/_]/i, "-")}`
     ];
   }
 

@@ -10,7 +10,7 @@ import { Logger } from "/server/api";
  */
 export function getRegistryDomain(requestUrl) {
   const url = requestUrl || process.env.ROOT_URL;
-  const domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
+  const domain = url.match(/^https?:\/\/([^/:?#]+)(?:[/:?#]|$)/i)[1];
   return domain;
 }
 

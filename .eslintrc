@@ -314,7 +314,7 @@
     "no-useless-computed-key": "error",
     "no-useless-concat": "error",
     "no-useless-constructor": "error",
-    // "no-useless-escape": "error",
+    "no-useless-escape": "error",
     // "no-void": "error",
     "object-curly-newline": ["error", { "ObjectExpression": { "multiline": true, "consistent": true }, "ObjectPattern": { "multiline": true, "consistent": true } }],
     // "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": true }],
