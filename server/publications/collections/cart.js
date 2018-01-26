@@ -50,9 +50,9 @@ Meteor.publish("Cart", function (sessionId, userId) {
   // select user cart
   const cart = Cart.find({
     userId: this.userId,
-    shopId: shopId
+    shopId
   }, {
-    fields: fields
+    fields
   });
 
   if (cart.count()) {

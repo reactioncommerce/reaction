@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Radium from "radium";
 import { compose } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { getComponent, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import classnames from "classnames";
-import { getComponent } from "@reactioncommerce/reaction-components";
 import { Templates } from "/lib/collections";
 
 class ReactionLayout extends Component {

@@ -20,7 +20,7 @@ const Endpoints = {};
 WebApp.connectHandlers.use(bodyParser.json({
   limit: "200kb", // Override default request size
   // Attach the raw body which is necessary for doing verifications for some webhooks
-  verify: function (req, res, buf) {
+  verify(req, res, buf) {
     req.rawBody = buf;
   },
   extended: true
@@ -64,7 +64,7 @@ function writeJsonToBody(res, json) {
 // That's why we cache them and then add after startup.
 let errorMiddlewares = [];
 Endpoints.ErrorMiddleware = {
-  use: function () {
+  use() {
     errorMiddlewares.push(arguments);
   }
 };
@@ -110,7 +110,7 @@ Endpoints.add = function (method, path, handler) {
 
   // Add to list of known Endpoints
   Endpoints.routes.push({
-    method: method,
+    method,
     path: slashedPath
   });
 

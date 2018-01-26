@@ -15,20 +15,14 @@ import { Packages, Shops } from "/lib/collections";
 import { getComponent } from "@reactioncommerce/reaction-components/components";
 import Hooks from "./hooks";
 
-export let history;
+
+// Using a ternary operator here to avoid a mutable export - open to suggestions for a better way to do this
+export const history = Meteor.isClient ? createBrowserHistory() : createMemoryHistory();
 
 // Private vars
-// const currentRoute = new ReactiveVar({});
 let currentRoute = Immutable.Map();
-const routerReadyDependency = new Tracker.Dependency;
-const routerChangeDependency = new Tracker.Dependency;
-
-// Create history object depending on if this is client or server
-if (Meteor.isClient) {
-  history = createBrowserHistory();
-} else {
-  history = createMemoryHistory();
-}
+const routerReadyDependency = new Tracker.Dependency();
+const routerChangeDependency = new Tracker.Dependency();
 
 /** Class representing a static base router */
 class Router {
@@ -537,7 +531,7 @@ export function ReactionLayout(options = {}) {
         // Try to create a React component if defined
         return React.createElement(getComponent(layoutName), {
           ...props,
-          structure: structure
+          structure
         });
       } catch (e) {
         // eslint-disable-next-line

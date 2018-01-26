@@ -97,7 +97,7 @@ AutoForm.addHooks("authnet-payment-form", {
           processor: "AuthNet",
           paymentPackageId: packageData._id,
           paymentSettingsKey: packageData.registry[0].settingsKey,
-          storedCard: storedCard,
+          storedCard,
           method: "credit",
           transactionId: transId,
           amount: +paymentInfo.total,

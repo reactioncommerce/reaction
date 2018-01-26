@@ -36,9 +36,9 @@ function uploadHandler(files) {
 
     fileObj.metadata = {
       ownerId: userId,
-      productId: productId,
-      variantId: variantId,
-      shopId: shopId,
+      productId,
+      variantId,
+      shopId,
       priority: count,
       toGrid: 1 // we need number
     };

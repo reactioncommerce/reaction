@@ -4,13 +4,13 @@ import { compose } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
+import { Validation } from "@reactioncommerce/reaction-collections";
 import { ReactionProduct } from "/lib/api";
 import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
-import VariantForm from "../components/variantForm";
 import { ProductVariant } from "/lib/collections/schemas/products";
-import { Validation } from "@reactioncommerce/reaction-collections";
+import VariantForm from "../components/variantForm";
 
 const wrapComponent = (Comp) => (
   class VariantFormContainer extends Component {
@@ -55,9 +55,9 @@ const wrapComponent = (Comp) => (
       const shopId = Reaction.getShopId();
 
       const provider = Packages.findOne({
-        "shopId": shopId,
+        shopId,
         "registry.provides": "taxCodes",
-        "$where": function () {
+        "$where"() {
           const providerName = this.name.split("-")[1];
           return this.settings[providerName].enabled;
         }
@@ -72,9 +72,9 @@ const wrapComponent = (Comp) => (
     fetchTaxCodes = () => {
       const shopId = Reaction.getShopId();
       const provider = Packages.findOne({
-        "shopId": shopId,
+        shopId,
         "registry.provides": "taxCodes",
-        "$where": function () {
+        "$where"() {
           const providers = this.registry.filter((o) => {
             return o.provides && o.provides.includes("taxCodes");
           });
@@ -86,7 +86,7 @@ const wrapComponent = (Comp) => (
       const taxCodesArray = [];
 
       const codes = TaxCodes.find({
-        shopId: shopId,
+        shopId,
         taxCodeProvider: provider.name
       });
 

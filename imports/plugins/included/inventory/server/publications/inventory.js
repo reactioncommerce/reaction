@@ -16,7 +16,7 @@ Meteor.publish("Inventory", function () {
     shopId
   )) {
     return Inventory.find({
-      shopId: shopId
+      shopId
     });
   }
   return this.ready();

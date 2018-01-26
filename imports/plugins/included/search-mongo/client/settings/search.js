@@ -27,14 +27,14 @@ Template.searchSettings.events({
 AutoForm.hooks({
   "search-update-form": {
     /* eslint-disable no-unused-vars*/
-    onSuccess: function () {
+    onSuccess() {
       Alerts.removeSeen();
       return Alerts.toast(
         i18next.t("searchSettings.settingsSaved"),
         "success"
       );
     },
-    onError: function (operation, error) {
+    onError(operation, error) {
       Alerts.removeSeen();
       return Alerts.toast(`${i18next.t("searchSettings.settingsFailed")} ${error}`, "error");
     }

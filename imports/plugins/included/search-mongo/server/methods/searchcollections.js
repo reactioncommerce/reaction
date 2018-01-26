@@ -78,7 +78,7 @@ export function getSearchParameters(collection = "products") {
   const customFields = filterFields(settings[collection].includes);
   const fieldSet = requiredFields[collection].concat(customFields);
   const weightObject = getScores(customFields, settings);
-  return { fieldSet: fieldSet, weightObject: weightObject, customFields: customFields };
+  return { fieldSet, weightObject, customFields };
 }
 
 export function buildProductSearchRecord(productId) {

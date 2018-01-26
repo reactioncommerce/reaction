@@ -1,8 +1,7 @@
 import React from "react";
-import Translation from "../translation";
 import { shallow } from "enzyme";
 import shallowToJSON from "enzyme-to-json";
-
+import Translation from "../translation";
 
 jest.mock("/client/api", () => {
   return {

@@ -124,7 +124,7 @@ Meteor.methods({
    * @todo I think this method should be moved out from methods to a Function Declaration to keep it more secure
    * @return {Object|Boolean} cartId - cartId on success or false
    */
-  "cart/mergeCart": function (cartId, currentSessionId) {
+  "cart/mergeCart"(cartId, currentSessionId) {
     check(cartId, String);
     // TODO: Review this. currentSessionId sometimes come in as false. e.g from Accounts.onLogin
     check(currentSessionId, Match.Optional(String));
@@ -249,7 +249,7 @@ Meteor.methods({
    * @todo I think this method should be moved out from methods to a Function Declaration to keep it more secure
    * @returns {String} cartId - users cartId
    */
-  "cart/createCart": function (userId, sessionId) {
+  "cart/createCart"(userId, sessionId) {
     check(userId, String);
     check(sessionId, String);
 
@@ -274,8 +274,8 @@ Meteor.methods({
     // we need to create a user cart for the new authenticated user or
     // anonymous.
     const currentCartId = Collections.Cart.insert({
-      sessionId: sessionId,
-      userId: userId
+      sessionId,
+      userId
     });
     Logger.debug("create cart: into new user cart. created: " +  currentCartId +
       " for user " + userId);
@@ -328,7 +328,7 @@ Meteor.methods({
    *  @param {Object} [additionalOptions] - object containing additional options and fields for cart item
    *  @return {Number|Object} Mongo insert response
    */
-  "cart/addToCart": function (productId, variantId, itemQty, additionalOptions) {
+  "cart/addToCart"(productId, variantId, itemQty, additionalOptions) {
     check(productId, String);
     check(variantId, String);
     check(itemQty, Match.Optional(Number));
@@ -461,9 +461,9 @@ Meteor.methods({
           items: {
             _id: Random.id(),
             shopId: product.shopId,
-            productId: productId,
-            quantity: quantity,
-            product: product,
+            productId,
+            quantity,
+            product,
             variants: variant,
             metafields: options.metafields,
             title: product.title,
@@ -501,7 +501,7 @@ Meteor.methods({
    * @param {Number} [quantity] - if provided will adjust increment by quantity
    * @returns {Number} returns Mongo update result
    */
-  "cart/removeFromCart": function (itemId, quantity) {
+  "cart/removeFromCart"(itemId, quantity) {
     check(itemId, String);
     check(quantity, Match.Optional(Number));
 
@@ -602,7 +602,7 @@ Meteor.methods({
    * @param {Object} method - shipmentMethod object
    * @return {Number} return Mongo update result
    */
-  "cart/setShipmentMethod": function (cartId, method) {
+  "cart/setShipmentMethod"(cartId, method) {
     check(cartId, String);
     check(method, Object);
     // get current cart
@@ -675,7 +675,7 @@ Meteor.methods({
    * @param {String} userCurrency - userCurrency to set to cart
    * @return {Number} update result
    */
-  "cart/setUserCurrency": function (cartId, userCurrency) {
+  "cart/setUserCurrency"(cartId, userCurrency) {
     check(cartId, String);
     check(userCurrency, String);
     const cart = Collections.Cart.findOne({ _id: cartId });
@@ -685,7 +685,7 @@ Meteor.methods({
     }
 
     const userCurrencyString = {
-      userCurrency: userCurrency
+      userCurrency
     };
 
     let selector;
@@ -732,7 +732,7 @@ Meteor.methods({
    * @param {String} cartId - cart _id
    * @return {Number} update result
    */
-  "cart/resetShipmentMethod": function (cartId) {
+  "cart/resetShipmentMethod"(cartId) {
     check(cartId, String);
 
     const cart = Collections.Cart.findOne({
@@ -760,7 +760,7 @@ Meteor.methods({
    * @param {Object} address - addressBook object
    * @return {Number} update result
    */
-  "cart/setShipmentAddress": function (cartId, address) {
+  "cart/setShipmentAddress"(cartId, address) {
     check(cartId, String);
     check(address, Reaction.Schemas.Address);
 
@@ -817,7 +817,7 @@ Meteor.methods({
           update = {
             $push: {
               shipping: {
-                address: address,
+                address,
                 shopId: cart.shopId
               }
             }
@@ -854,8 +854,8 @@ Meteor.methods({
           update = {
             $addToSet: {
               shipping: {
-                address: address,
-                shopId: shopId
+                address,
+                shopId
               }
             }
           };
@@ -911,7 +911,7 @@ Meteor.methods({
    * @todo maybe we need to rename this method to `cart/setBillingAddress`?
    * @return {Number} return Mongo update result
    */
-  "cart/setPaymentAddress": function (cartId, address) {
+  "cart/setPaymentAddress"(cartId, address) {
     check(cartId, String);
     check(address, Reaction.Schemas.Address);
 
@@ -949,7 +949,7 @@ Meteor.methods({
       update = {
         $addToSet: {
           billing: {
-            address: address
+            address
           }
         }
       };
@@ -970,7 +970,7 @@ Meteor.methods({
    * @return {Number|Object|Boolean} The number of removed documents or
    * error object or `false` if we don't need to update cart
    */
-  "cart/unsetAddresses": function (addressId, userId, type) {
+  "cart/unsetAddresses"(addressId, userId, type) {
     check(addressId, String);
     check(userId, String);
     check(type, Match.Optional(String));
@@ -980,7 +980,7 @@ Meteor.methods({
     // we need to revert the workflow after a "shipping" address was removed
     let isShippingDeleting = false;
     const cart = Collections.Cart.findOne({
-      userId: userId
+      userId
     });
     const selector = {
       _id: cart._id
@@ -1034,7 +1034,7 @@ Meteor.methods({
    * @param {Object|Array} paymentMethods - an array of paymentMethods or (deprecated) a single paymentMethod object
    * @return {String} returns update result
    */
-  "cart/submitPayment": function (paymentMethods) {
+  "cart/submitPayment"(paymentMethods) {
     if (Array.isArray((paymentMethods))) {
       check(paymentMethods, [Reaction.Schemas.PaymentMethod]);
     } else {
@@ -1084,10 +1084,10 @@ Meteor.methods({
         };
 
         payments.push({
-          paymentMethod: paymentMethod,
-          invoice: invoice,
+          paymentMethod,
+          invoice,
           address: paymentAddress,
-          shopId: shopId
+          shopId
         });
       });
     } else {
@@ -1104,7 +1104,7 @@ Meteor.methods({
       // Legacy payment plugins are passing in a single paymentMethod object
       payments.push({
         paymentMethod: paymentMethods,
-        invoice: invoice,
+        invoice,
         address: paymentAddress,
         shopId: Reaction.getPrimaryShopId()
       });
@@ -1138,11 +1138,11 @@ Meteor.methods({
    * @param {String} email - email to set for anonymous user's cart instance
    * @return {Number} returns update result
    */
-  "cart/setAnonymousUserEmail": function (userId, email) {
+  "cart/setAnonymousUserEmail"(userId, email) {
     check(userId, String);
     check(email, String);
 
-    const currentUserCart = Collections.Cart.findOne({ userId: userId });
+    const currentUserCart = Collections.Cart.findOne({ userId });
     const cartId = currentUserCart._id;
     let newEmail = "";
 

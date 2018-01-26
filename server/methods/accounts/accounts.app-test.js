@@ -420,7 +420,7 @@ describe("Account Meteor method ", function () {
 
       Meteor.call("accounts/addressBookUpdate", address, null, "isBillingDefault");
       Meteor.call("accounts/addressBookUpdate", address, null, "isShippingDefault");
-      const cart = Cart.findOne({ userId: userId });
+      const cart = Cart.findOne({ userId });
       expect(cart.billing[0].address._id).to.equal(address._id);
       expect(cart.shipping[0].address._id).to.equal(address._id);
     });

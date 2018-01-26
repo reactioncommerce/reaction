@@ -371,7 +371,7 @@ export default {
     return this.hasDashboardAccessForMultipleShops();
   },
 
-  getSellerShopId: function (userId = Meteor.userId(), noFallback = false) {
+  getSellerShopId(userId = Meteor.userId(), noFallback = false) {
     if (userId) {
       const group = Roles.getGroupsForUser(userId, "admin")[0];
       if (group) {

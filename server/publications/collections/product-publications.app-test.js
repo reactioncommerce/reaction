@@ -47,7 +47,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "My Little Pony",
-        shopId: shopId,
+        shopId,
         type: "simple",
         price: priceRangeA,
         isVisible: false,
@@ -59,7 +59,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "Shopkins - Peachy",
-        shopId: shopId,
+        shopId,
         price: priceRangeB,
         type: "simple",
         isVisible: true,
@@ -71,7 +71,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "Fresh Tomatoes",
-        shopId: shopId,
+        shopId,
         price: priceRangeA,
         type: "simple",
         isVisible: true,

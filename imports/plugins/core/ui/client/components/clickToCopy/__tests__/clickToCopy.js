@@ -10,9 +10,9 @@ jest.mock("/imports/plugins/core/ui/client/components", () => {
 });
 
 import React from "react";
-import ClickToCopy from "../clickToCopy";
 import { shallow } from "enzyme";
 import shallowToJSON from "enzyme-to-json";
+import ClickToCopy from "../clickToCopy";
 
 /**
  * ClickToCopy is a display element that will copy text to your clipboard when clicked

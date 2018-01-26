@@ -86,7 +86,7 @@ Template.paypalCheckoutButton.onRendered(function () {
           environment: expressCheckoutSettings.mode,
           button: element,
           // Blank function to disable default paypal onClick functionality
-          click: function () {}
+          click() {}
         });
         this.state.set("isLoading", false);
       } else {
@@ -103,7 +103,7 @@ Template.paypalCheckoutButton.onRendered(function () {
  * PayPal checkout button helpers
  */
 Template.paypalCheckoutButton.helpers({
-  expressCheckoutEnabled: function () {
+  expressCheckoutEnabled() {
     const expressCheckoutSettings = Session.get("expressCheckoutSettings");
     return expressCheckoutSettings !== undefined ? expressCheckoutSettings.enabled : void 0;
   },

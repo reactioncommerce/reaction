@@ -4,8 +4,7 @@ import { isEmpty } from "lodash";
 import classnames from "classnames";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
-import { Reaction } from "/client/api";
-import { formatPriceString } from "/client/api";
+import { formatPriceString, Reaction } from "/client/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 /**

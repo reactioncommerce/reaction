@@ -23,7 +23,7 @@ class LanguageDropDown extends Component {
   }
   onChange = (event, value) => {
     this.setState({
-      value: value
+      value
     });
 
     this.props.handleChange(value);

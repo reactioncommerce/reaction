@@ -61,7 +61,7 @@ function createTitle(newTitle, productId) {
   // exception product._id needed for cases then double triggering happens
   let title = newTitle || "";
   const titleCount = Products.find({
-    title: title,
+    title,
     _id: {
       $nin: [productId]
     }
@@ -97,7 +97,7 @@ function createTitle(newTitle, productId) {
 
   // we should check again if there are any new matches with DB
   if (Products.find({
-    title: title
+    title
   }).count() !== 0) {
     title = createTitle(title, productId);
   }
@@ -117,7 +117,7 @@ function createHandle(productHandle, productId) {
   let handle = productHandle || "";
   // exception product._id needed for cases then double triggering happens
   const handleCount = Products.find({
-    handle: handle,
+    handle,
     _id: {
       $nin: [productId]
     }
@@ -155,7 +155,7 @@ function createHandle(productHandle, productId) {
 
   // we should check again if there are any new matches with DB
   if (Products.find({
-    handle: handle
+    handle
   }).count() !== 0) {
     handle = createHandle(handle, productId);
   }
@@ -338,7 +338,7 @@ Meteor.methods({
    * @todo rewrite @description
    * @return {Array} - list with cloned variants _ids
    */
-  "products/cloneVariant": function (productId, variantId) {
+  "products/cloneVariant"(productId, variantId) {
     check(productId, String);
     check(variantId, String);
 
@@ -450,7 +450,7 @@ Meteor.methods({
    * @param {Object} [newVariant] - variant object
    * @return {String} new variantId
    */
-  "products/createVariant": function (parentId, newVariant) {
+  "products/createVariant"(parentId, newVariant) {
     check(parentId, String);
     check(newVariant, Match.Optional(Object));
 
@@ -476,7 +476,7 @@ Meteor.methods({
     Array.isArray(ancestors) && ancestors.push(parentId);
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
-      ancestors: ancestors,
+      ancestors,
       type: "variant"
     });
 
@@ -512,7 +512,7 @@ Meteor.methods({
    * updateProductField", but it still used
    * @return {Number} returns update result
    */
-  "products/updateVariant": function (variant) {
+  "products/updateVariant"(variant) {
     check(variant, Object);
 
     // Check first if Variant exists and then if user has the right to clone it
@@ -559,7 +559,7 @@ Meteor.methods({
    * @returns {Boolean} returns update results: `true` - if at least one variant
    * was removed or `false` if nothing was removed
    */
-  "products/deleteVariant": function (variantId) {
+  "products/deleteVariant"(variantId) {
     check(variantId, String);
 
     // Check first if Variant exists and then if user has the right to delete it
@@ -607,7 +607,7 @@ Meteor.methods({
    * @param {Array} productOrArray - products array to clone
    * @returns {Array} returns insert results
    */
-  "products/cloneProduct": function (productOrArray) {
+  "products/cloneProduct"(productOrArray) {
     check(productOrArray, Match.OneOf(Array, Object));
 
     // REVIEW: This check may be unnecessary now - checks that user has permission to clone
@@ -649,7 +649,7 @@ Meteor.methods({
       return pool.filter(function (pair) {
         return pair.oldId === this.id;
       }, {
-        id: id
+        id
       });
     }
 
@@ -720,7 +720,7 @@ Meteor.methods({
         const ancestors = buildAncestors(variant.ancestors);
         const newVariant = Object.assign({}, variant, {
           _id: variantNewId,
-          ancestors: ancestors
+          ancestors
         });
         delete newVariant.updatedAt;
         delete newVariant.createdAt;
@@ -743,7 +743,7 @@ Meteor.methods({
    * @param {Object} [product] - optional product object
    * @return {String} The new product ID
    */
-  "products/createProduct": function (product) {
+  "products/createProduct"(product) {
     check(product, Match.Optional(Object));
 
     // Ensure user has createProduct permission for active shop
@@ -783,7 +783,7 @@ Meteor.methods({
    * @param {String} productId - productId to delete
    * @returns {Number} returns number of removed products
    */
-  "products/archiveProduct": function (productId) {
+  "products/archiveProduct"(productId) {
     check(productId, Match.OneOf(Array, String));
 
     let extractedProductId;
@@ -878,7 +878,7 @@ Meteor.methods({
    * latest changes. its used for products and variants
    * @return {Number} returns update result
    */
-  "products/updateProductField": function (_id, field, value) {
+  "products/updateProductField"(_id, field, value) {
     check(_id, String);
     check(field, String);
     check(value, Match.OneOf(String, Object, Array, Boolean, Number));
@@ -954,7 +954,7 @@ Meteor.methods({
    * @param {String} tagId - tagId
    * @return {Number} return result
    */
-  "products/updateProductTags": function (productId, tagName, tagId) {
+  "products/updateProductTags"(productId, tagName, tagId) {
     check(productId, String);
     check(tagName, String);
     check(tagId, Match.OneOf(String, null));
@@ -1026,7 +1026,7 @@ Meteor.methods({
    * @param {String} tagId - tagId
    * @return {String} return update result
    */
-  "products/removeProductTag": function (productId, tagId) {
+  "products/removeProductTag"(productId, tagId) {
     check(productId, String);
     check(tagId, String);
 
@@ -1055,7 +1055,7 @@ Meteor.methods({
    * @param {String} productId - productId
    * @returns {String} handle - product handle
    */
-  "products/setHandle": function (productId) {
+  "products/setHandle"(productId) {
     check(productId, String);
 
     // Check first if Product exists and then if user has the right to alter it
@@ -1082,7 +1082,7 @@ Meteor.methods({
    * @param {String} tagId - tagId
    * @return {String} return update result
    */
-  "products/setHandleTag": function (productId, tagId) {
+  "products/setHandleTag"(productId, tagId) {
     check(productId, String);
     check(tagId, String);
     // Check first if Product exists and then if user has the right to alter it
@@ -1096,7 +1096,7 @@ Meteor.methods({
     function getSet(handle) {
       return {
         $set: {
-          handle: handle,
+          handle,
           type: "simple"
         }
       };
@@ -1140,7 +1140,7 @@ Meteor.methods({
    * shop name as base `positions` name. Could be useful for multi-shopping.
    * @return {Number} collection update returns
    */
-  "products/updateProductPosition": function (productId, positionData, tag) {
+  "products/updateProductPosition"(productId, positionData, tag) {
     check(productId, String);
     check(positionData, Object);
     check(tag, String);
@@ -1182,7 +1182,7 @@ Meteor.methods({
    * @since 0.11.0
    * @return {Number} Products.update result
    */
-  "products/updateVariantsPosition": function (sortedVariantIds) {
+  "products/updateVariantsPosition"(sortedVariantIds) {
     check(sortedVariantIds, [String]);
 
     // This checks to make sure the user has createProduct permissions for the active shop.
@@ -1213,7 +1213,7 @@ Meteor.methods({
    * @todo should this method works for variants also?
    * @return {Number} collection update result
    */
-  "products/updateMetaFields": function (productId, updatedMeta, meta) {
+  "products/updateMetaFields"(productId, updatedMeta, meta) {
     check(productId, String);
     check(updatedMeta, Object);
     check(meta, Match.OneOf(Object, Number, undefined, null));
@@ -1272,7 +1272,7 @@ Meteor.methods({
    * @param {Object} type - optional product type for schema selection
    * @return {Number} collection update result
    */
-  "products/removeMetaFields": function (productId, metafields, type = "simple") {
+  "products/removeMetaFields"(productId, metafields, type = "simple") {
     check(productId, String);
     check(metafields, Object);
     check(type, String);
@@ -1287,7 +1287,7 @@ Meteor.methods({
 
     return Products.update({
       _id: productId,
-      type: type
+      type
     }, {
       $pull: { metafields }
     });
@@ -1302,7 +1302,7 @@ Meteor.methods({
    * @param {String} productId - productId
    * @return {Boolean} product.isVisible
    */
-  "products/publishProduct": function (productId) {
+  "products/publishProduct"(productId) {
     check(productId, String);
 
     // Check first if Product exists and then if user has the proper rights
@@ -1381,7 +1381,7 @@ Meteor.methods({
    * @param {String} productId - productId
    * @return {Boolean} product.isVisible
    */
-  "products/toggleVisibility": function (productId) {
+  "products/toggleVisibility"(productId) {
     check(productId, String);
 
     // Check first if Product exists and then if user has the proper rights

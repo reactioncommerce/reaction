@@ -34,7 +34,7 @@ export function registerInventory(product) {
   // we'll check each variant to see if it has been fully registered
   for (const variant of variants) {
     const inventory = Inventory.find({
-      productId: productId,
+      productId,
       variantId: variant._id,
       shopId: product.shopId
     });
@@ -53,11 +53,11 @@ export function registerInventory(product) {
         const id = Inventory._makeNewID();
         batch.insert({
           _id: id,
-          productId: productId,
+          productId,
           variantId: variant._id,
           shopId: product.shopId,
-          createdAt: new Date,
-          updatedAt: new Date,
+          createdAt: new Date(),
+          updatedAt: new Date(),
           workflow: { // we add this line because `batchInsert` doesn't know
             status: "new" // about SimpleSchema, so `defaultValue` will not
           }
@@ -154,13 +154,13 @@ function adjustInventory(product, userId, context) {
 }
 
 Meteor.methods({
-  "inventory/register": function (product) {
+  "inventory/register"(product) {
     if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
     registerInventory(product);
   },
-  "inventory/adjust": function (product) { // TODO: this should be variant
+  "inventory/adjust"(product) { // TODO: this should be variant
     const simpleProductSchema = Reaction.collectionSchema("Products", { type: "simple" });
     const variantProductSchema = Reaction.collectionSchema("Products", { type: "variant" });
     check(product, Match.OneOf(simpleProductSchema, variantProductSchema));

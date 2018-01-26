@@ -329,7 +329,7 @@ class InvoiceContainer extends Component {
       });
     } else {
       Alerts.alert({
-        title: i18next.t("order.applyRefundToThisOrder", { refund: refund, currencySymbol: currencySymbol }),
+        title: i18next.t("order.applyRefundToThisOrder", { refund, currencySymbol }),
         showCancelButton: true,
         confirmButtonText: i18next.t("order.applyRefund")
       }, (isConfirm) => {

@@ -269,15 +269,24 @@
     "block-spacing": ["error", "always"],
     "computed-property-spacing": ["error", "never"],
     "dot-location": ["error", "property"],
-    "function-paren-newline": ["error", "multiline"]
-    // "import/export": "error",
-    // "import/first": ["error", "absolute-first"],
-    // "import/newline-after-import": "error",
-    // "import/no-duplicates": "error",
-    // "import/no-mutable-exports": "error",
-    // "import/no-named-default": "error",
-    // "new-parens": "error",
-    // "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 4 }],
+    "function-paren-newline": ["error", "multiline"],
+    "import/export": "error",
+    "import/order": ["error", {
+      "groups": [
+        "builtin",
+        "external",
+        "internal",
+        "parent",
+        "sibling",
+        "index"
+      ]
+    }],
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "import/no-mutable-exports": "error",
+    "import/no-named-default": "error",
+    "new-parens": "error",
+    "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 4 }],
     // "no-await-in-loop": "error",
     // "no-bitwise": "error",
     // "no-case-declarations": "error",
@@ -318,7 +327,7 @@
     // "no-void": "error",
     // "object-curly-newline": ["error", { "ObjectExpression": { "multiline": true, "consistent": true }, "ObjectPattern": { "multiline": true, "consistent": true } }],
     // "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": true }],
-    // "object-shorthand": ["error", "always"],
+    "object-shorthand": ["error", "always"],
     // "operator-assignment": ["error", "always"],
     // "prefer-arrow-callback": ["error", { "allowNamedFunctions": false, "allowUnboundThis": true }],
     // "prefer-destructuring": ["error", {
@@ -337,11 +346,11 @@
     // "prefer-spread": "error",
     // "prefer-template": "error",
     // "rest-spread-spacing": ["error", "never"],
-    // "space-unary-ops": ["error", {
-    //   "words": true,
-    //   "nonwords": false,
-    //   "overrides": {}
-    // }],
+    "space-unary-ops": ["error", {
+      "words": true,
+      "nonwords": false,
+      "overrides": {}
+    }],
     // "template-curly-spacing": "error"
   }
 }
