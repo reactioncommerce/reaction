@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts, Groups } from "/lib/collections";
 import { composeWithTracker } from "./composer";
+import { lifecycle } from "recompose";
 
 let Reaction;
 
@@ -24,6 +25,27 @@ if (Meteor.isClient) {
 export function withCurrentUser(component) {
   return composeWithTracker((props, onData) => {
     onData(null, { currentUser: Meteor.user() });
+  })(component);
+}
+
+
+/**
+ * @name withMoment
+ * @method
+ * @summary A wrapper to reactively inject the moment package into a component
+ * @param {Function|React.Component} component - the component to wrap
+ * @return {Function} the new wrapped component with a "moment" prop
+ * @memberof Components
+ */
+export function withMoment(component) {
+  return lifecycle({
+    componentDidMount() {
+      import("moment").then(moment => {
+        this.setState({
+          moment: moment.default
+        });
+      });
+    }
   })(component);
 }
 
