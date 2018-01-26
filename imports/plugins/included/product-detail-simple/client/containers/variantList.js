@@ -116,7 +116,7 @@ class VariantListContainer extends Component {
     Reaction.state.set("edit/focus", cardName);
 
     ReactionProduct.setCurrentVariant(variant._id);
-    Session.set("variant-form-" + editVariant._id, true);
+    Session.set(`variant-form-${editVariant._id}`, true);
 
     if (Reaction.hasPermission("createProduct") && !Reaction.isPreview()) {
       Reaction.showActionView({
