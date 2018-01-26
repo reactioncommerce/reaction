@@ -115,53 +115,52 @@ export default function () {
    * Permissive security for users with the "admin" role
    */
 
-  Security.permit(["insert", "update", "remove"]).collections([
-    Accounts,
-    Products,
-    Tags,
-    Translations,
-    Shipping,
-    Orders,
-    Packages,
-    Templates,
-    Jobs
-  ]).ifHasRoleForActiveShop({
-    role: "admin"
-  }).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
+  Security.permit(["insert", "update", "remove"])
+    .collections([ Accounts, Products, Tags, Translations, Shipping, Orders, Packages, Templates, Jobs ])
+    .ifHasRoleForActiveShop({ role: "admin" })
+    .ifShopIdMatches()
+    .exceptProps(["shopId"])
+    .allowInClientCode();
 
   /*
    * Permissive security for users with the "admin" role for FS.Collections
    */
 
-  Security.permit(["insert", "update", "remove"]).collections([Media]).ifHasRoleForActiveShop({
-    role: ["admin", "owner", "createProduct"]
-  }).ifFileBelongsToShop().allowInClientCode();
+  Security.permit(["insert", "update", "remove"])
+    .collections([Media])
+    .ifHasRoleForActiveShop({ role: ["admin", "owner", "createProduct"] })
+    .ifFileBelongsToShop()
+    .allowInClientCode();
 
   /*
    * Users with the "admin" or "owner" role may update and
    * remove their shop but may not insert one.
    */
 
-  Shops.permit(["update", "remove"]).ifHasRoleForActiveShop({
-    role: ["admin", "owner", "shopSettings"]
-  }).ifShopIdMatchesThisId().allowInClientCode();
+  Shops.permit(["update", "remove"])
+    .ifHasRoleForActiveShop({ role: ["admin", "owner", "shopSettings"] })
+    .ifShopIdMatchesThisId()
+    .allowInClientCode();
 
   /*
    * Users with the "admin" or "owner" role may update and
    * remove products, but createProduct allows just for just a product editor
    */
 
-  Products.permit(["insert", "update", "remove"]).ifHasRoleForActiveShop({
-    role: ["createProduct"]
-  }).ifShopIdMatches().allowInClientCode();
+  Products.permit(["insert", "update", "remove"])
+    .ifHasRoleForActiveShop({ role: ["createProduct"] })
+    .ifShopIdMatches()
+    .allowInClientCode();
 
   /*
    * Users with the "owner" role may remove orders for their shop
    */
 
-  Orders.permit("remove").ifHasRoleForActiveShop({
-    role: ["admin", "owner"]
-  }).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
+  Orders.permit("remove")
+    .ifHasRoleForActiveShop({ role: ["admin", "owner"] })
+    .ifShopIdMatches()
+    .exceptProps(["shopId"])
+    .allowInClientCode();
 
   /*
    * Can update cart from client. Must insert/remove carts using
@@ -170,16 +169,20 @@ export default function () {
    * XXX should verify session match, but doesn't seem possible? Might have to move all cart updates to server methods, too?
    */
 
-  Cart.permit(["insert", "update", "remove"]).ifHasRoleForActiveShop({
-    role: ["anonymous", "guest"]
-  }).ifShopIdMatches().ifUserIdMatches().ifSessionIdMatches().allowInClientCode();
+  Cart.permit(["insert", "update", "remove"])
+    .ifHasRoleForActiveShop({ role: ["anonymous", "guest"] })
+    .ifShopIdMatches()
+    .ifUserIdMatches()
+    .ifSessionIdMatches()
+    .allowInClientCode();
 
   /*
    * Users may update their own account
    */
-  Collections.Accounts.permit(["insert", "update"]).ifHasRoleForActiveShop({
-    role: ["anonymous", "guest"]
-  }).ifUserIdMatches().allowInClientCode();
+  Collections.Accounts.permit(["insert", "update"])
+    .ifHasRoleForActiveShop({ role: ["anonymous", "guest"] })
+    .ifUserIdMatches()
+    .allowInClientCode();
 
   /*
    * apply download permissions to file collections

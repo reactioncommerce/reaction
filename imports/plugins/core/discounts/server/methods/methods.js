@@ -67,7 +67,7 @@ export const methods = {
     const transaction = {
       cartId,
       userId: Meteor.userId(),
-      appliedAt: new Date
+      appliedAt: new Date()
     };
     // double duty validation, plus we need the method
     const discount = Discounts.findOne(discountId);

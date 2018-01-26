@@ -171,8 +171,8 @@ export default function () {
       }
     }],
     state: "new",
-    createdAt: new Date,
-    updatedAt: new Date
+    createdAt: new Date(),
+    updatedAt: new Date()
   });
 
   /**

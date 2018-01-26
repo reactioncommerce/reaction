@@ -34,8 +34,16 @@ Template.metaComponent.events({
   "change input"(event) {
     const productId = ReactionProduct.selectedProductId();
     const updateMeta = {
-      key: Template.instance().$(event.currentTarget).parent().children(".metafield-key-input").val(),
-      value: Template.instance().$(event.currentTarget).parent().children(".metafield-value-input").val()
+      key: Template.instance()
+        .$(event.currentTarget)
+        .parent()
+        .children(".metafield-key-input")
+        .val(),
+      value: Template.instance()
+        .$(event.currentTarget)
+        .parent()
+        .children(".metafield-value-input")
+        .val()
     };
 
     if (this.key) {
@@ -50,13 +58,27 @@ Template.metaComponent.events({
     }
 
     if (updateMeta.value && !updateMeta.key) {
-      Template.instance().$(event.currentTarget).parent().children(".metafield-key-input").val("").focus();
+      Template.instance()
+        .$(event.currentTarget)
+        .parent()
+        .children(".metafield-key-input")
+        .val("")
+        .focus();
     }
     if (updateMeta.key && updateMeta.value) {
       Meteor.call("products/updateMetaFields", productId, updateMeta);
       Tracker.flush();
-      Template.instance().$(event.currentTarget).parent().children(".metafield-key-input").val("").focus();
-      return Template.instance().$(event.currentTarget).parent().children(".metafield-value-input").val("");
+      Template.instance()
+        .$(event.currentTarget)
+        .parent()
+        .children(".metafield-key-input")
+        .val("")
+        .focus();
+      return Template.instance()
+        .$(event.currentTarget)
+        .parent()
+        .children(".metafield-value-input")
+        .val("");
     }
   }
 });
