@@ -81,7 +81,7 @@ Meteor.startup(function () {
       }
       return maybeFn;
     });
-    WebApp.connectHandlers.use.apply(WebApp.connectHandlers, errorMiddlewareFn);
+    WebApp.connectHandlers.use.apply(WebApp.connectHandlers, ...errorMiddlewareFn);
   });
 
   errorMiddlewares = [];
