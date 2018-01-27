@@ -20,9 +20,20 @@ Meteor.publish("Templates", function (query, options) {
       return this.ready();
     }
 
+    // Check that this user has templates permissions for the active shop
+    if (!Reaction.hasPermission("reaction-templates", Meteor.userId(), shopId)) {
+      return this.ready();
+    }
+
     // append shopId to query
     countSelector.shopId = shopId;
     findSelector.shopId = shopId;
+  } else {
+    // Shop specific templates are not enabled
+    // Check that this user has templates permissions for the primary shop
+    if (!Reaction.hasPermission("reaction-templates", Meteor.userId(), Reaction.getPrimaryShopId())) {
+      return this.ready();
+    }
   }
 
   // If we aren't using merchantTemplates, we'll share templates with the primary shop
