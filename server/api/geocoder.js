@@ -56,7 +56,7 @@ GeoCoder.prototype.geocode = function geoCoderGeocode(address, callback) {
   let geoCallback = callback;
   let geoAddress = address;
   if (geoCallback) {
-    geoCallback = Meteor.bindEnvironment(geoCallback, function (error) {
+    geoCallback = Meteor.bindEnvironment(geoCallback, (error) => {
       if (error) throw error;
     });
     gc(geoAddress, this.options, geoCallback);
@@ -80,7 +80,7 @@ function rv(lat, lng, options, callback) {
 GeoCoder.prototype.reverse = function geoCoderReverse(lat, lng, callback) {
   let geoCallback = callback;
   if (geoCallback) {
-    geoCallback = Meteor.bindEnvironment(geoCallback, function (error) {
+    geoCallback = Meteor.bindEnvironment(geoCallback, (error) => {
       if (error) throw error;
     });
     rv(lat, lng, this.options, geoCallback);
@@ -121,7 +121,7 @@ GeoCoder.prototype.geoip = function geoCoderGeocode(address, callback) {
   let geoCallback = callback;
   let geoAddress = address;
   if (geoCallback) {
-    geoCallback = Meteor.bindEnvironment(geoCallback, function (error) {
+    geoCallback = Meteor.bindEnvironment(geoCallback, (error) => {
       if (error) throw error;
     });
     gi(geoAddress, this.options, geoCallback);

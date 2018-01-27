@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";

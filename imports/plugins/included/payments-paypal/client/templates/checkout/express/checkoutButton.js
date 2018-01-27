@@ -27,7 +27,7 @@ function checkout() {
     return undefined;
   }
 
-  return Meteor.call("getExpressCheckoutToken", cart._id, function (error, token) {
+  return Meteor.call("getExpressCheckoutToken", cart._id, (error, token) => {
     if (error) {
       const msg = (error !== null ? error.error : void 0) || i18next.t("checkoutPayment.processingError", "There was a problem with your payment.");
       Alerts.add(msg, "danger", {
@@ -55,7 +55,7 @@ function expressCheckoutSettingsValid(settings) {
  * @return {undefined} no return value
  */
 Template.paypalCheckoutButton.onCreated(function () {
-  Meteor.call("getExpressCheckoutSettings", function (error, expressCheckoutSettings) {
+  Meteor.call("getExpressCheckoutSettings", (error, expressCheckoutSettings) => {
     if (!error) {
       return Session.set("expressCheckoutSettings", expressCheckoutSettings);
     }

@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";

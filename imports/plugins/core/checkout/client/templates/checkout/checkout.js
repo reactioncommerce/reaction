@@ -26,7 +26,7 @@ Template.cartCheckout.helpers({
 });
 
 
-Template.cartCheckout.onCreated(function () {
+Template.cartCheckout.onCreated(() => {
   if (Reaction.Subscriptions.Cart.ready()) {
     const cart = Cart.findOne();
     if (cart && cart.workflow && cart.workflow.status === "new") {

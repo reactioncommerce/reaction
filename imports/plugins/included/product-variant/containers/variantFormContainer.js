@@ -90,7 +90,7 @@ const wrapComponent = (Comp) => (
         taxCodeProvider: provider.name
       });
 
-      codes.forEach(function (code) {
+      codes.forEach((code) => {
         taxCodesArray.push({
           value: code.taxCode,
           label: `${code.taxCode} | ${code.label}`
@@ -150,7 +150,7 @@ const wrapComponent = (Comp) => (
             isDeleted: !this.state.isDeleted
           });
           const id = variant._id;
-          Meteor.call("products/deleteVariant", id, function (error, result) {
+          Meteor.call("products/deleteVariant", id, (error, result) => {
             if (result && ReactionProduct.selectedVariantId() === id) {
               return ReactionProduct.setCurrentVariant(null);
             }
@@ -165,22 +165,19 @@ const wrapComponent = (Comp) => (
       if (!productId) {
         return;
       }
-      Meteor.call(
-        "products/cloneVariant", productId, variant._id,
-        function (error, result) {
-          if (error) {
-            Alerts.alert({
-              text: i18next.t("productDetailEdit.cloneVariantFail", { title }),
-              confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
-            });
-          } else if (result) {
-            const variantId = result[0];
+      Meteor.call("products/cloneVariant", productId, variant._id, (error, result) => {
+        if (error) {
+          Alerts.alert({
+            text: i18next.t("productDetailEdit.cloneVariantFail", { title }),
+            confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+          });
+        } else if (result) {
+          const variantId = result[0];
 
-            ReactionProduct.setCurrentVariant(variantId);
-            Session.set("variant-form-" + variantId, true);
-          }
+          ReactionProduct.setCurrentVariant(variantId);
+          Session.set("variant-form-" + variantId, true);
         }
-      );
+      });
     }
 
     handleVariantFieldSave = (variantId, fieldName, value, variant) => {

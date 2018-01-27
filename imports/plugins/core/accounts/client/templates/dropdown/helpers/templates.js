@@ -6,7 +6,7 @@ import { Reaction, i18next, i18nextDep } from "/client/api";
 /**
  * registerHelper displayName
  */
-Template.registerHelper("displayName", function (displayUser) {
+Template.registerHelper("displayName", (displayUser) => {
   i18nextDep.depend();
 
   const user = displayUser || Accounts.user();

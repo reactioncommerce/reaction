@@ -68,7 +68,7 @@ Meteor.publish("Cart", function (sessionId, userId) {
 });
 
 
-Meteor.publish("CartImages", function (cartItems) {
+Meteor.publish("CartImages", (cartItems) => {
   check(cartItems, Array);
 
   // Ensure each of these are unique
@@ -97,7 +97,7 @@ Meteor.publish("CartImages", function (cartItems) {
   return productImages;
 });
 
-Meteor.publish("CartItemImage", function (cartItem) {
+Meteor.publish("CartItemImage", (cartItem) => {
   check(cartItem, Match.Optional(Object));
   const productId = cartItem.productId;
 

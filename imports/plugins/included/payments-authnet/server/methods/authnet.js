@@ -43,19 +43,19 @@ function getSettings(settings, ref, valueName) {
   return undefined;
 }
 
-const ValidCardNumber = Match.Where(function (x) {
+const ValidCardNumber = Match.Where((x) => {
   return /^[0-9]{14,16}$/.test(x);
 });
 
-const ValidExpireMonth = Match.Where(function (x) {
+const ValidExpireMonth = Match.Where((x) => {
   return /^[0-9]{1,2}$/.test(x);
 });
 
-const ValidExpireYear = Match.Where(function (x) {
+const ValidExpireYear = Match.Where((x) => {
   return /^[0-9]{4}$/.test(x);
 });
 
-const ValidCVV = Match.Where(function (x) {
+const ValidCVV = Match.Where((x) => {
   return /^[0-9]{3,4}$/.test(x);
 });
 
@@ -207,7 +207,7 @@ function priorAuthCaptureTransaction(transId, amount, service) {
     refTransId: transId
   };
   // This call returns a Promise to the cb so we need to use Promise.await
-  const transactionRequest = service.sendTransactionRequest.call(service, body, function (trans) {
+  const transactionRequest = service.sendTransactionRequest.call(service, body, (trans) => {
     return trans;
   });
   return Promise.await(transactionRequest);
@@ -219,7 +219,7 @@ function voidTransaction(transId, service) {
     refTransId: transId
   };
   // This call returns a Promise to the cb so we need to use Promise.await
-  const transactionRequest = service.sendTransactionRequest.call(service, body, function (trans) {
+  const transactionRequest = service.sendTransactionRequest.call(service, body, (trans) => {
     return trans;
   });
   return Promise.await(transactionRequest);

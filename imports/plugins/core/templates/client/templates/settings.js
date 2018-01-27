@@ -63,7 +63,7 @@ Template.templateSettings.helpers({
 
     // add i18n handling to headers
     const customColumnMetadata = [];
-    filteredFields.forEach(function (field) {
+    filteredFields.forEach((field) => {
       const columnMeta = {
         accessor: field, // name of field
         Header: i18next.t(`templateGrid.columns.${field}`) // name to display

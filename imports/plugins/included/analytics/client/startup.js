@@ -139,8 +139,8 @@ Reaction.Router.triggers.enter([notifySegment, notifyGoogleAnalytics, notifyMixp
 //
 // Initialize analytics event tracking
 //
-Meteor.startup(function () {
-  Tracker.autorun(function () {
+Meteor.startup(() => {
+  Tracker.autorun(() => {
     const coreAnalytics = Packages.findOne({
       name: "reaction-analytics"
     });
@@ -161,7 +161,7 @@ Meteor.startup(function () {
       if (segmentio.api_key && analytics.invoked === true) {
         analytics.load(segmentio.api_key);
       } else if (!segmentio.api_key && Reaction.hasAdminAccess()) {
-        _.defer(function () {
+        _.defer(() => {
           return Alerts.toast(
             `${i18next.t("admin.settings.segmentNotConfigured")}`,
             "danger", {
@@ -181,7 +181,7 @@ Meteor.startup(function () {
         loadGoogleAnalyticsScript()
           .then(() => ga("create", googleAnalytics.api_key, "auto"));
       } else if (!googleAnalytics.api_key && Reaction.hasAdminAccess()) {
-        _.defer(function () {
+        _.defer(() => {
           return Alerts.toast(
             `${i18next.t("admin.settings.googleAnalyticsNotConfigured")}`,
             "error", {
@@ -201,7 +201,7 @@ Meteor.startup(function () {
       if (mixpanel.api_key) {
         mixpanel.init(mixpanel.api_key);
       } else if (!mixpanel.api_key && Reaction.hasAdminAccess()) {
-        _.defer(function () {
+        _.defer(() => {
           return Alerts.toast(
             `${i18next.t("admin.settings.mixpanelNotConfigured")}`,
             "error", {
@@ -223,10 +223,10 @@ Meteor.startup(function () {
   //
   // analytics event processing
   //
-  return $(document.body).click(function (e) {
+  return $(document.body).click((e) => {
     let $targets = $(e.target).closest("*[data-event-action]");
     $targets = $targets.parents("*[data-event-action]").add($targets);
-    return $targets.each(function (index, element) {
+    return $targets.each((index, element) => {
       const $element = $(element);
       const analyticsEvent = {
         eventType: "event",

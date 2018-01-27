@@ -341,7 +341,7 @@ taxCalc.testCredentials = function (credentials, testCredentials = false) {
             Meteor.call("logging/logError", "avalara",  { error });
           }
         } else if (res && Array.isArray(res)) {
-          res.forEach(function (code) {
+          res.forEach((code) => {
             Meteor.call("taxes/insertTaxCodes", Reaction.getShopId(), code, "taxes-avalara", (err) => {
               if (err) {
                 throw new Meteor.Error("error-occurred", "Error populating TaxCodes collection", err);

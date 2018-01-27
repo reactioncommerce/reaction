@@ -119,7 +119,7 @@ function getShippingRates(previousQueryResults, cart) {
 
   const shippingCollection = Shipping.find(selector);
   const initialNumOfRates = rates.length;
-  shippingCollection.forEach(function (doc) {
+  shippingCollection.forEach((doc) => {
     const _results = [];
     for (const method of doc.methods) {
       if (!method.enabled) {

@@ -4,12 +4,19 @@ import { Shops } from "/lib/collections";
 Migrations.add({
   version: 9,
   up() {
-    Shops.find().forEach(function (shop) {
+    Shops.find().forEach((shop) => {
+      // Default baseUOM to oz
       if (!shop.baseUOM) {
         shop.baseUOM = "oz";
       } else {
         shop.baseUOM = shop.baseUOM.toLowerCase();
       }
+
+      // normalize grams to "g"
+      if (shop.baseUOM === "gr") {
+        shop.baseUOM = "g";
+      }
+
       shop.unitsOfMeasure = [{
         uom: "oz",
         label: "Ounces",
@@ -24,10 +31,6 @@ Migrations.add({
         uom: "kg",
         label: "Kilograms"
       }];
-
-      if (shop.baseUOM === "gr") {
-        shop.baseUOM = "g";
-      }
 
       Shops.update({ _id: shop._id }, {
         $set: {

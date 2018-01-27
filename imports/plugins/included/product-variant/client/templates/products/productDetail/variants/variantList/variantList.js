@@ -50,7 +50,7 @@ Template.variantList.onRendered(function () {
               return element.getAttribute("data-id");
             });
 
-          Meteor.defer(function () {
+          Meteor.defer(() => {
             Meteor.call("products/updateVariantsPosition", positions);
           });
 

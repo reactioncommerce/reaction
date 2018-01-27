@@ -107,7 +107,7 @@ const Alerts = {
           created: -1
         },
         skip: options.alertsLimit - 1
-      }).forEach(function (row) {
+      }).forEach((row) => {
         Alerts.collection_.remove(row._id);
       });
     }

@@ -21,7 +21,7 @@ Template.cartDrawerItems.helpers({
     if (defaultImage) {
       return defaultImage;
     } else if (product) {
-      _.some(product.variants, function (variant) {
+      _.some(product.variants, (variant) => {
         if (variant) {
           defaultImage = Media.findOne({
             "metadata.variantId": variant._id

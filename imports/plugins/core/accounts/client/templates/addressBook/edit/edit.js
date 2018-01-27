@@ -50,7 +50,7 @@ function setWorkingAddress(address) {
 }
 
 
-Template.addressBookEdit.onRendered(function () {
+Template.addressBookEdit.onRendered(() => {
   const addressState = Session.get("addressState");
   if (addressState.address) {
     setWorkingAddress(addressState.address);

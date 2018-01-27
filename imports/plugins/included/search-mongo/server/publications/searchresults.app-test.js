@@ -1,3 +1,4 @@
+/* eslint prefer-arrow-callback:0 */
 import faker from "faker";
 import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";

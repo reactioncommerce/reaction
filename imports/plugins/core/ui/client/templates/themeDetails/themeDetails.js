@@ -34,10 +34,6 @@ Template.uiThemeDetails.onCreated(function () {
   });
 });
 
-Template.uiThemeDetails.onRendered(function () {
-
-});
-
 Template.uiThemeDetails.helpers({
   activeClassName(componentName) {
     if (Template.instance().state.equals("selectedComponent", componentName)) {

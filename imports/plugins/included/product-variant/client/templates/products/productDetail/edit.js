@@ -102,6 +102,6 @@ Template.productDetailField.events({
  * productDetailEdit onRendered
  */
 
-Template.productDetailEdit.onRendered(function () {
+Template.productDetailEdit.onRendered(() => {
   return autosize($("textarea"));
 });

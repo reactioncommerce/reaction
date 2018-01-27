@@ -38,7 +38,7 @@ Meteor.startup(() => {
   // use tracker autorun to detect language changes
   // this only runs on initial page loaded
   // and when user.profile.lang updates
-  Tracker.autorun(function () {
+  Tracker.autorun(() => {
     if (Reaction.Subscriptions.PrimaryShop.ready() &&
         Reaction.Subscriptions.MerchantShops.ready() &&
         Meteor.user()) {
@@ -86,7 +86,7 @@ Meteor.startup(() => {
         // into i18next resource format
         //
         let resources = {};
-        translations.forEach(function (translation) {
+        translations.forEach((translation) => {
           const resource = {};
           resource[translation.i18n] = translation.translation;
           resources = mergeDeep(resources, resource);
@@ -142,7 +142,7 @@ Meteor.startup(() => {
   // this only runs on initial page loaded
   // and when user.profile.currency updates
   // although it is also triggered when profile updates ( meaning .lang )
-  Tracker.autorun(function () {
+  Tracker.autorun(() => {
     const user = Meteor.user();
 
     if (Reaction.Subscriptions.PrimaryShop.ready() &&

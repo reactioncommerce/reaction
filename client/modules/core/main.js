@@ -781,7 +781,7 @@ export default {
 
     // valid application
     if (reactionApp) {
-      const settingsData = _.find(reactionApp.registry, function (item) {
+      const settingsData = _.find(reactionApp.registry, (item) => {
         return item.provides && item.provides.includes(provides) && item.template === template;
       });
       return settingsData;
@@ -827,7 +827,7 @@ function createCountryCollection(countries) {
       });
     }
   }
-  countryOptions.sort(function (a, b) {
+  countryOptions.sort((a, b) => {
     if (a.label < b.label) {
       return -1;
     }

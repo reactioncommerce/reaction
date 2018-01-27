@@ -10,7 +10,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 
 const getPermissionMap = (permissions) => {
   const permissionMap = {};
-  _.each(permissions, function (existing) {
+  _.each(permissions, (existing) => {
     permissionMap[existing.permission] = existing.label;
   });
   return permissionMap;
@@ -74,7 +74,7 @@ Template.memberSettings.helpers({
       shopId
     });
 
-    packages.forEach(function (pkg) {
+    packages.forEach((pkg) => {
       const permissions = [];
       if (pkg.registry && pkg.enabled) {
         for (const registryItem of pkg.registry) {
@@ -106,7 +106,7 @@ Template.memberSettings.helpers({
           }
         }
         // TODO review this, hardcoded WIP
-        const label = pkg.name.replace("reaction", "").replace(/(-.)/g, function (x) {
+        const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (x) => {
           return " " + x[1].toUpperCase();
         });
 

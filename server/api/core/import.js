@@ -119,7 +119,7 @@ Import.commit = function (collection) {
 
   // Only commit if the buffer isn't empty (otherwise it'll throw).
   if (this._count[name]) {
-    this.buffer(collection).execute(function (error, result) {
+    this.buffer(collection).execute((error, result) => {
       // Inserted document counts don't affect the modified document count, so we
       // throw everything together.
       const nImported = result.nModified + result.nInserted + result.nUpserted;

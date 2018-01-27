@@ -87,7 +87,7 @@ AutoForm.addHooks("paypal-payment-form", {
     PayPal.authorize(form, {
       total: Cart.findOne().getTotal(),
       currency: Shops.findOne().currency
-    }, function (error, transaction) {
+    }, (error, transaction) => {
       submitting = false; // todo: check scope
       if (error) {
         handlePaypalSubmitError(error);

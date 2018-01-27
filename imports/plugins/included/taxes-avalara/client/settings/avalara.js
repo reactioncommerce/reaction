@@ -89,7 +89,7 @@ Template.avalaraSettings.helpers({
 
     // add i18n handling to headers
     const customColumnMetadata = [];
-    filteredFields.forEach(function (field) {
+    filteredFields.forEach((field) => {
       const columnMeta = {
         accessor: field,
         Header: i18next.t(`logGrid.columns.${field}`)
@@ -147,7 +147,7 @@ Template.avalaraSettings.events({
     const formData = AutoForm.getFormValues(formId);
     const settings = _.get(formData, "insertDoc.settings.avalara");
 
-    Meteor.call("avalara/testCredentials", settings, function (error, result) {
+    Meteor.call("avalara/testCredentials", settings, (error, result) => {
       if (error && error.message) {
         return Alerts.toast(`${i18next.t("settings.testCredentialsFailed")} ${error.message}`, "error");
       }

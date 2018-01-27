@@ -83,7 +83,7 @@ export default function () {
     },
     (job, callback) => {
       Logger.debug("(re)build ProductSearch collection running");
-      buildProductSearch(function (error) {
+      buildProductSearch((error) => {
         if (error) {
           job.done(error.toString(), { repeatId: true });
           callback();
@@ -105,7 +105,7 @@ export default function () {
     },
     (job, callback) => {
       Logger.debug("(re)build ProductSearch index running");
-      rebuildProductSearchIndex(function (error) {
+      rebuildProductSearchIndex((error) => {
         if (error) {
           job.done(error.toString(), { repeatId: true });
           callback();
@@ -127,7 +127,7 @@ export default function () {
     },
     (job, callback) => {
       Logger.debug("(re)build OrderSearch index running");
-      buildOrderSearch(function (error) {
+      buildOrderSearch((error) => {
         if (error) {
           job.done(error.toString(), { repeatId: true });
           callback();
@@ -149,7 +149,7 @@ export default function () {
     },
     (job, callback) => {
       Logger.debug("(re)build AccountSearch index running");
-      buildAccountSearch(function (error) {
+      buildAccountSearch((error) => {
         if (error) {
           job.done(error.toString(), { repeatId: true });
           callback();

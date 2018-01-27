@@ -64,7 +64,7 @@ AutoForm.addHooks("example-payment-form", {
     Example.authorize(form, {
       total: Cart.findOne().getTotal(),
       currency: Shops.findOne().currency
-    }, function (error, transaction) {
+    }, (error, transaction) => {
       submitting = false;
       let paymentMethod;
       if (error) {
