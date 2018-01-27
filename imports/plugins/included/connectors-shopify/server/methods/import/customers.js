@@ -149,7 +149,7 @@ export const methods = {
     const opts = Object.assign({}, {
       published_status: "published",
       limit: limit
-    }, { ... options });
+    }, { ...options });
 
     try {
       const customerCount = await shopify.customer.count();
