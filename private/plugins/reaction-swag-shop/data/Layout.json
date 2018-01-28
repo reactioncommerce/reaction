@@ -1,0 +1,213 @@
+[{
+    "layout" : "coreLayout",
+    "workflow" : "coreAccountsWorkflow",
+    "collection" : "Accounts",
+    "theme" : "default",
+    "enabled" : true,
+    "structure" : {
+      "template" : "accountsDashboard",
+      "layoutHeader" : "NavBar",
+      "notFound" : "notFound",
+      "dashboardHeader" : "dashboardHeader",
+      "adminControlsFooter" : "adminControlsFooter"
+    },
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "coreLayout",
+    "workflow" : "coreCartWorkflow",
+    "collection" : "Cart",
+    "theme" : "default",
+    "enabled" : true,
+    "structure" : {
+      "template" : "cartCheckout",
+      "layoutHeader" : "NavBarCheckout",
+      "notFound" : "notFound",
+      "dashboardControls" : "dashboardControls",
+      "adminControlsFooter" : "adminControlsFooter"
+    },
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "coreLayout",
+    "workflow" : "coreDashboardWorkflow",
+    "theme" : "default",
+    "enabled" : true,
+    "structure" : {
+      "template" : "dashboardPackages",
+      "layoutHeader" : "NavBar",
+      "notFound" : "notFound",
+      "dashboardHeader" : "dashboardHeader",
+      "dashboardControls" : "dashboardControls",
+      "dashboardHeaderControls" : "dashboardHeaderControls",
+      "adminControlsFooter" : "adminControlsFooter"
+    },
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "coreLayout",
+    "workflow" : "coreEmailWorkflow",
+    "theme" : "default",
+    "enabled" : true,
+    "structure" : {
+      "template" : "email",
+      "layoutHeader" : "NavBar",
+      "notFound" : "notFound",
+      "dashboardHeader" : "dashboardHeader",
+      "dashboardControls" : "dashboardControls",
+      "adminControlsFooter" : "adminControlsFooter"
+    },
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "coreLayout",
+    "workflow" : "coreOrderWorkflow",
+    "collection" : "Orders",
+    "theme" : "default",
+    "enabled" : true,
+    "structure" : {
+      "template" : "orders",
+      "layoutHeader" : "NavBar",
+      "layoutFooter" : "Footer",
+      "notFound" : "notFound",
+      "dashboardHeader" : "dashboardHeader",
+      "dashboardHeaderControls" : "orderListFilters",
+      "dashboardControls" : "dashboardControls",
+      "adminControlsFooter" : "adminControlsFooter"
+    },
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "printLayout",
+    "workflow" : "coreOrderPrintWorkflow",
+    "collection" : "Orders",
+    "enabled" : true,
+    "structure" : {
+      "template" : "completedPDFLayout",
+      "layoutHeader" : "NavBar",
+      "layoutFooter" : "Footer"
+    },
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "coreLayout",
+    "workflow" : "coreOrderShipmentWorkflow",
+    "collection" : "Orders",
+    "theme" : "default",
+    "enabled" : true,
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "coreLayout",
+    "workflow" : "coreUIWorkflow",
+    "collection" : "Themes",
+    "theme" : "default",
+    "enabled" : true,
+    "structure" : {
+      "template" : "uiDashboard",
+      "layoutHeader" : "NavBar",
+      "notFound" : "notFound",
+      "dashboardHeader" : "dashboardHeader",
+      "adminControlsFooter" : "adminControlsFooter"
+    },
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "coreLayout",
+    "workflow" : "coreInventoryWorkflow",
+    "collection" : "Inventory",
+    "theme" : "default",
+    "enabled" : true,
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "coreLayout",
+    "workflow" : "coreProductWorkflow",
+    "collection" : "Products",
+    "theme" : "default",
+    "enabled" : true,
+    "structure" : {
+      "template" : "productDetailSimple",
+      "layoutHeader" : "SwagShopHeader",
+      "layoutFooter" : "SwagShopFooter",
+      "notFound" : "productNotFound",
+      "dashboardHeader" : "productDetailSimpleToolbar",
+      "dashboardControls" : "productDetailDashboardControls",
+      "adminControlsFooter" : "adminControlsFooter"
+    },
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "coreLayout",
+    "workflow" : "coreProductWorkflow",
+    "collection" : "Products",
+    "theme" : "default",
+    "enabled" : true,
+    "structure" : {
+      "template" : "productDetail",
+      "layoutHeader" : "NavBar",
+      "notFound" : "productNotFound",
+      "dashboardHeader" : "productDetailSimpleToolbar",
+      "dashboardControls" : "productDetailDashboardControls",
+      "adminControlsFooter" : "adminControlsFooter"
+    },
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "coreLayout",
+    "workflow" : "coreProductGridWorkflow",
+    "collection" : "Products",
+    "theme" : "default",
+    "enabled" : true,
+    "structure" : {
+      "template" : "products",
+      "layoutHeader" : "SwagShopHeader",
+      "layoutFooter" : "SwagShopFooter",
+      "notFound" : "productNotFound",
+      "dashboardHeader" : "gridPublishControls",
+      "dashboardControls" : "productDetailDashboardControls",
+      "adminControlsFooter" : "adminControlsFooter"
+    },
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "coreLayout",
+    "workflow" : "coreWorkflow",
+    "theme" : "default",
+    "enabled" : true,
+    "structure" : {
+      "template" : "products",
+      "layoutHeader" : "NavBar",
+      "layoutFooter" : "Footer",
+      "notFound" : "productNotFound",
+      "dashboardControls" : "dashboardControls",
+      "adminControlsFooter" : "adminControlsFooter"
+    },
+    "priority" : 999,
+    "position" : 1
+  },
+  {
+    "layout" : "coreLayout",
+    "workflow" : "coreWorkflow",
+    "theme" : "default",
+    "enabled" : true,
+    "structure" : {
+      "template" : "unauthorized",
+      "layoutHeader" : "NavBar",
+      "layoutFooter" : "Footer"
+    },
+    "priority" : 999,
+    "position" : 1
+}]
