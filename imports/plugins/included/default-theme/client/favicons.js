@@ -5,7 +5,7 @@
 
 
 // folder path where all assets live
-const basePath = "https://assets.reactioncommerce.com/favicon/";
+const basePath = "/resources/favicon/";
 
 
 // define link tags

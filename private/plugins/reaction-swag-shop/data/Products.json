@@ -1,0 +1,596 @@
+[{
+	"_id": "h2v7MYCXBtjMm7Piv",
+	"type": "simple",
+	"ancestors": [],
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"title": "Acacia Honey",
+	"relatedTag": "acacia-honey-related",
+	"originCountry": "IT",
+	"requiresShipping": true,
+	"handle": "acacia-honey",
+	"isDeleted": false,
+	"isVisible": true,
+	"template": "productDetailSimple",
+	"price": {
+		"range": "10 - 15",
+		"min": 10,
+		"max": 15
+	},
+	"workflow": {
+		"status": "new"
+	},
+	"isLowQuantity": false,
+	"isSoldOut": true,
+	"vendor": "Bluestone Coffee",
+	"description": "A bag of rich Arabica coffee. Great for a fueling up for a night out or for settling in for a night of coding at home",
+	"isBackorder": true,
+	"positions": {
+		"reaction swag shop": {
+			"weight": 1
+		}
+	},
+  "hashtags": [
+    "hZdSevCBP8dDc66Ba"
+  ]
+},
+{
+	"_id": "PH8xNGE8pRHdPo8Qc",
+	"ancestors": [
+		"h2v7MYCXBtjMm7Piv"
+	],
+	"price": 0,
+	"type": "variant",
+	"isVisible": true,
+	"isDeleted": false,
+	"compareAtPrice": 0,
+	"weight": 0,
+	"length": 0,
+	"width": 0,
+	"height": 0,
+	"inventoryManagement": true,
+	"inventoryPolicy": false,
+	"lowInventoryWarningThreshold": 0,
+	"inventoryQuantity": 0,
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"taxable": true,
+	"taxCode": "0000",
+	"title": "Size",
+	"optionTitle": "Untitled Option",
+	"originCountry": "IT",
+	"workflow": {
+		"status": "new"
+	}
+},
+{
+	"_id": "sxW4riWptXTyXN6W7",
+	"ancestors": [
+		"h2v7MYCXBtjMm7Piv",
+		"PH8xNGE8pRHdPo8Qc"
+	],
+	"type": "variant",
+	"title": "500 g Acacia Honey",
+	"price": 12,
+	"isVisible": true,
+	"isDeleted": false,
+	"compareAtPrice": 15,
+	"weight": 2,
+	"length": 2,
+	"width": 2,
+	"height": 2,
+	"inventoryManagement": true,
+	"inventoryPolicy": false,
+	"lowInventoryWarningThreshold": 0,
+	"inventoryQuantity": 1000,
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"taxable": true,
+	"taxCode": "0000",
+	"optionTitle": "500 g",
+	"originCountry": "IT",
+	"workflow": {
+		"status": "new"
+	}
+},
+{
+	"_id": "Nsm4GmyerWC7wnwML",
+	"ancestors": [
+		"h2v7MYCXBtjMm7Piv",
+		"PH8xNGE8pRHdPo8Qc"
+	],
+	"type": "variant",
+	"title": "1 Kg Acacia Honey",
+	"price": 24,
+	"isVisible": true,
+	"isDeleted": false,
+	"compareAtPrice": 28,
+	"weight": 4,
+	"length": 4,
+	"width": 4,
+	"height": 4,
+	"inventoryManagement": true,
+	"inventoryPolicy": false,
+	"lowInventoryWarningThreshold": 0,
+	"inventoryQuantity": 1000,
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"taxable": true,
+	"taxCode": "0000",
+	"optionTitle": "1 Kg",
+	"originCountry": "IT",
+	"workflow": {
+		"status": "new"
+	}
+},
+{
+	"_id": "z6paQqnrGnWBvepyB",
+	"type": "simple",
+	"ancestors": [],
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"title": "Chesnut Honey",
+	"relatedTag": "chesnut-honey-related",
+	"originCountry": "IT",
+	"requiresShipping": true,
+	"handle": "chesnut-honey",
+	"isDeleted": false,
+	"isVisible": true,
+	"template": "productDetailSimple",
+	"price": {
+		"range": "15",
+		"min": 15,
+		"max": 15
+	},
+	"workflow": {
+		"status": "new"
+	},
+	"isLowQuantity": false,
+	"isSoldOut": true,
+	"vendor": "Mugworks",
+	"description": "A sturdy mug to keep your hot drinks hot and your cold drinks cold",
+	"isBackorder": true,
+	"positions": {
+		"reaction swag shop": {
+			"weight": 1
+		}
+	},
+    "hashtags": [
+      "hZdSevCBP8dDc66Ba"
+    ],
+	"featuredProductLabel": "New!"
+},
+{
+	"_id": "oWNyqhaeyw9eKdZKv",
+	"ancestors": [
+		"z6paQqnrGnWBvepyB"
+	],
+	"price": 15,
+	"type": "variant",
+	"isVisible": true,
+	"isDeleted": false,
+	"compareAtPrice": 22,
+	"weight": 1,
+	"length": 1,
+	"width": 1,
+	"height": 1,
+	"inventoryManagement": true,
+	"inventoryPolicy": false,
+	"lowInventoryWarningThreshold": 0,
+	"inventoryQuantity": 999,
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"taxable": true,
+	"taxCode": "0000",
+	"title": "One Kilo",
+	"optionTitle": "Untitled Option",
+	"originCountry": "IT",
+	"workflow": {
+		"status": "new"
+	}
+},
+{
+	"_id": "gygxrADdPPWoCCmS7",
+	"type": "simple",
+	"ancestors": [],
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"title": "Pollen",
+	"relatedTag": "pollen-related",
+	"originCountry": "IT",
+	"requiresShipping": true,
+	"handle": "pollen",
+	"isDeleted": false,
+	"isVisible": true,
+	"template": "productDetailSimple",
+	"price": {
+		"range": "16",
+		"min": 16,
+		"max": 16
+	},
+	"workflow": {
+		"status": "new"
+	},
+	"vendor": "Pouchworks",
+	"description": "Need a small pouch to keep things in? This is your ticket",
+	"isLowQuantity": false,
+	"isSoldOut": false,
+	"isBackorder": false,
+  	"hashtags": [
+  	  "3adSeBCBP4dDcz6Bi"
+  	],
+	"featuredProductLabel": "Sale"
+},
+{
+	"_id": "zhXWhcsisSexE9bg8",
+	"ancestors": [
+		"gygxrADdPPWoCCmS7"
+	],
+	"price": 16,
+	"type": "variant",
+	"isVisible": true,
+	"isDeleted": false,
+	"compareAtPrice": 10,
+	"weight": 1,
+	"length": 1,
+	"width": 1,
+	"height": 1,
+	"inventoryManagement": true,
+	"inventoryPolicy": true,
+	"lowInventoryWarningThreshold": 0,
+	"inventoryQuantity": 1000,
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"taxable": true,
+	"taxCode": "0000",
+	"title": "30 g",
+	"optionTitle": "Untitled Option",
+	"originCountry": "IT",
+	"workflow": {
+		"status": "new"
+	}
+},
+{
+	"_id": "ioKwBYk6Nom9K92cv",
+	"type": "simple",
+	"ancestors": [],
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"title": "Reaction Scout Book",
+	"relatedTag": "reaction-scout-book-related",
+	"originCountry": "IT",
+	"requiresShipping": true,
+	"handle": "reaction-scout-book",
+	"isDeleted": false,
+	"isVisible": false,
+	"template": "productDetailSimple",
+	"price": {
+		"range": "0.00",
+		"min": 0,
+		"max": 0
+	},
+	"workflow": {
+		"status": "new"
+	},
+	"isLowQuantity": false,
+	"isSoldOut": true,
+	"vendor": "Bookworks",
+	"description": "Need to make a quick note? Got a once-in-a-lifetime idea? Write it down in one of these great little notebooks",
+	"isBackorder": true,
+  "hashtags": [
+    "hZdSevCBP8dDc66Ba"
+  ]
+},
+{
+	"_id": "ddzkNjFJ3MjfkzvMg",
+	"ancestors": [
+		"ioKwBYk6Nom9K92cv"
+	],
+	"price": 6,
+	"type": "variant",
+	"isVisible": false,
+	"isDeleted": false,
+	"compareAtPrice": 8,
+	"weight": 1,
+	"length": 1,
+	"width": 1,
+	"height": 1,
+	"inventoryManagement": true,
+	"inventoryPolicy": false,
+	"lowInventoryWarningThreshold": 0,
+	"inventoryQuantity": 1000,
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"taxable": true,
+	"taxCode": "0000",
+	"title": "One Size",
+	"optionTitle": "Untitled Option",
+	"originCountry": "IT",
+	"workflow": {
+		"status": "new"
+	}
+},
+{
+	"_id": "xsudQc3K2EbqCeFBm",
+	"type": "simple",
+	"ancestors": [],
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"title": "Bulbs Crocus Sativus",
+	"relatedTag": "bulbs-related",
+	"originCountry": "IT",
+	"requiresShipping": true,
+	"handle": "bulbs",
+	"isDeleted": false,
+	"isVisible": true,
+	"template": "productDetailSimple",
+	"price": {
+		"range": "120",
+		"min": 120,
+		"max": 120
+	},
+	"workflow": {
+		"status": "new"
+	},
+	"isLowQuantity": false,
+	"isSoldOut": true,
+	"vendor": "Shirtworks",
+	"description": "The same hip Reaction logo in a cut more suitable for the ladies. 100% cotton fabric and double-stitching make this a shirt that will last for years to come",
+	"isBackorder": true,
+	"hashtags": [
+		"dbqmJjXW0tCNk3zaa",
+		"hZdSevCBP8dDc66Bc"
+	],
+	"featuredProductLabel": "New!"
+},
+{
+	"_id": "78zu2u3in4rNrWtKt",
+	"ancestors": [
+		"xsudQc3K2EbqCeFBm"
+	],
+	"price": 120,
+	"type": "variant",
+	"isVisible": true,
+	"isDeleted": false,
+	"compareAtPrice": 24,
+	"weight": 0,
+	"length": 2,
+	"width": 2,
+	"height": 2,
+	"inventoryManagement": true,
+	"inventoryPolicy": false,
+	"lowInventoryWarningThreshold": 0,
+	"inventoryQuantity": 0,
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"taxable": true,
+	"taxCode": "0000",
+	"title": "250 item",
+	"optionTitle": "Untitled Option",
+	"originCountry": "IT",
+	"workflow": {
+		"status": "new"
+	}
+},
+{
+	"_id": "GpZM5v5qQBCdXsoqW",
+	"type": "simple",
+	"ancestors": [],
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"title": "Saffron stigmas",
+	"relatedTag": "saffron-stigmas-related",
+	"originCountry": "IT",
+	"requiresShipping": true,
+	"isDeleted": false,
+	"isVisible": true,
+	"template": "productDetailSimple",
+	"price": {
+		"range": "8 - 28",
+		"min": 8,
+		"max": 28
+	},
+	"workflow": {
+		"status": "new"
+	},
+	"isLowQuantity": false,
+	"isSoldOut": true,
+	"vendor": "Shirtworks",
+	"description": "Get your Reaction together and show it to the world. 100% cotton fabric and double-stitching make this a shirt that will last for years to come",
+	"isBackorder": true,
+	"handle": "saffron-stigmas",
+  "hashtags": [
+    "dhqmJjXWotCNkTzxg",
+	"hZdSevCBP8dDc66Bc"
+  ]
+},
+{
+	"_id": "cxYA8s8qdi8qnYSNw",
+	"ancestors": [
+		"GpZM5v5qQBCdXsoqW"
+	],
+	"price": 8,
+	"type": "variant",
+	"isVisible": true,
+	"isDeleted": false,
+	"compareAtPrice": 24,
+	"weight": 0,
+	"length": 2,
+	"width": 2,
+	"height": 2,
+	"inventoryManagement": true,
+	"inventoryPolicy": false,
+	"lowInventoryWarningThreshold": 0,
+	"inventoryQuantity": 0,
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"taxable": true,
+	"taxCode": "0000",
+	"title": "Weight",
+	"optionTitle": "Untitled Option",
+	"originCountry": "IT",
+	"workflow": {
+		"status": "new"
+	}
+},
+{
+	"_id": "TC9i4PfCEGLGgjxMa",
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"ancestors": [
+		"GpZM5v5qQBCdXsoqW",
+		"cxYA8s8qdi8qnYSNw"
+	],
+	"lowInventoryWarningThreshold": 0,
+	"price": 8,
+	"height": 1,
+	"compareAtPrice": 24,
+	"originCountry": "IT",
+	"weight": 1,
+	"workflow": {
+		"status": "new"
+	},
+	"inventoryPolicy": false,
+	"length": 1,
+	"type": "variant",
+	"taxable": true,
+	"inventoryManagement": true,
+	"taxCode": "0000",
+	"isDeleted": false,
+	"inventoryQuantity": 2200,
+	"isVisible": true,
+	"optionTitle": "0.14 g",
+	"width": 1,
+	"title": "0.14 g"
+},
+{
+	"_id": "u7BcWyqS9WHc4zDfJ",
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"ancestors": [
+		"GpZM5v5qQBCdXsoqW",
+		"cxYA8s8qdi8qnYSNw"
+	],
+	"lowInventoryWarningThreshold": 0,
+	"price": 13,
+	"height": 2,
+	"compareAtPrice": 24,
+	"originCountry": "IT",
+	"weight": 2,
+	"workflow": {
+		"status": "new"
+	},
+	"inventoryPolicy": false,
+	"length": 2,
+	"type": "variant",
+	"taxable": true,
+	"inventoryManagement": true,
+	"taxCode": "0000",
+	"isDeleted": false,
+	"inventoryQuantity": 1000,
+	"isVisible": true,
+	"optionTitle": "0.33 g",
+	"width": 2,
+	"title": "0.33 g"
+},
+{
+	"_id": "eJQdg8nQ3g7LJJXWJ",
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"ancestors": [
+		"GpZM5v5qQBCdXsoqW",
+		"cxYA8s8qdi8qnYSNw"
+	],
+	"lowInventoryWarningThreshold": 0,
+	"price": 18,
+	"height": 1,
+	"compareAtPrice": 24,
+	"originCountry": "IT",
+	"weight": 1,
+	"workflow": {
+		"status": "new"
+	},
+	"inventoryPolicy": true,
+	"length": 1,
+	"type": "variant",
+	"taxable": true,
+	"inventoryManagement": true,
+	"taxCode": "0000",
+	"isDeleted": false,
+	"inventoryQuantity": 1000,
+	"isVisible": true,
+	"optionTitle": "0.52 g",
+	"width": 1,
+	"title": "0.52 g"
+},
+{
+	"_id": "RYqHfoqpQBWc53Apo",
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"ancestors": [
+		"GpZM5v5qQBCdXsoqW",
+		"cxYA8s8qdi8qnYSNw"
+	],
+	"lowInventoryWarningThreshold": 0,
+	"price": 28,
+	"height": 1,
+	"compareAtPrice": 26,
+	"originCountry": "IT",
+	"weight": 1,
+	"workflow": {
+		"status": "new"
+	},
+	"inventoryPolicy": false,
+	"length": 1,
+	"type": "variant",
+	"taxable": true,
+	"inventoryManagement": true,
+	"taxCode": "0000",
+	"isDeleted": false,
+	"inventoryQuantity": 1000,
+	"isVisible": true,
+	"optionTitle": "1 g",
+	"width": 1,
+	"title": "1 g"
+},
+{
+	"_id": "9zxhE27pAvx8vbKr5",
+	"type": "simple",
+	"ancestors": [],
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"title": "Millefiori Honey",
+	"relatedTag": "millefiori-honey-related",
+	"originCountry": "IT",
+	"requiresShipping": true,
+	"handle": "millefiori-honey",
+	"isDeleted": false,
+	"isVisible": true,
+	"template": "productDetailSimple",
+	"price": {
+		"range": "8",
+		"min": 8,
+		"max": 8
+	},
+	"workflow": {
+		"status": "new"
+	},
+	"isLowQuantity": false,
+	"isSoldOut": true,
+	"vendor": "Stickerworks",
+	"description": "Show your pride and affix some Reaction to almost any surface",
+	"isBackorder": true,
+  "hashtags": [
+    "hZdSevCBP8dDc66Ba",
+	"hZdSevCBP8dDc66Bc"
+  ]
+},
+{
+	"_id": "aXsSSpddrPcBWppFK",
+	"ancestors": [
+		"9zxhE27pAvx8vbKr5"
+	],
+	"price": 8,
+	"type": "variant",
+	"isVisible": true,
+	"isDeleted": false,
+	"compareAtPrice": 6,
+	"weight": 1,
+	"length": 1,
+	"width": 1,
+	"height": 1,
+	"inventoryManagement": true,
+	"inventoryPolicy": false,
+	"lowInventoryWarningThreshold": 0,
+	"inventoryQuantity": 1000,
+	"shopId": "J8Bhq3uTtdgwZx3rz",
+	"taxable": true,
+	"taxCode": "0000",
+	"title": "500 g",
+	"optionTitle": "Untitled Option",
+	"originCountry": "IT",
+	"workflow": {
+		"status": "new"
+	}
+}]
