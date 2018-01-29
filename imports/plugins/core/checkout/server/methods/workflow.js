@@ -235,9 +235,9 @@ Meteor.methods({
 
     const { workflow } = cart.workflow;
     // get index of `newWorkflowStatus`
-    const resetToIndex = workflow.includes(newWorkflowStatus);
+    const resetToIndex = workflow.indexOf(newWorkflowStatus);
     // exit if no such step in workflow
-    if (!resetToIndex) return false;
+    if (resetToIndex < 0) return false;
     // remove all steps that further `newWorkflowStatus` and itself
     const resetedWorkflow = workflow.slice(0, resetToIndex);
 
