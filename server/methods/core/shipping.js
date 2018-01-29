@@ -25,7 +25,7 @@ function createShipmentQuotes(cartId, shopId, rates) {
   let update = {
     $push: {
       shipping: {
-        shopId: shopId,
+        shopId,
         shipmentQuotes: [],
         shipmentQuotesQueryStatus: {
           requestStatus: "pending"
@@ -87,7 +87,8 @@ function pruneShippingRecordsByShop(cart) {
     const itemsByShop = cart.getItemsByShop();
     const shops = Object.keys(itemsByShop);
     if (shops.length > 0 && cart.items.length > 0) {
-      Cart.update({ _id: cartId },
+      Cart.update(
+        { _id: cartId },
         {
           $pull: {
             shipping: { shopId: { $nin: shops } }
@@ -95,7 +96,8 @@ function pruneShippingRecordsByShop(cart) {
         }
       );
     } else {
-      Cart.update({ _id: cartId },
+      Cart.update(
+        { _id: cartId },
         {
           $unset: {
             shipping: ""
@@ -266,8 +268,8 @@ function addAddresses(cart) {
       }, {
         $push: {
           shipping: {
-            shopId: shopId,
-            address: address
+            shopId,
+            address
           }
         }
       });
@@ -285,7 +287,7 @@ export const methods = {
    * @param {String} cartId - cartId
    * @return {undefined}
    */
-  "shipping/updateShipmentQuotes": function (cartId) {
+  "shipping/updateShipmentQuotes"(cartId) {
     check(cartId, String);
     if (!cartId) {
       return [];
@@ -312,7 +314,7 @@ export const methods = {
    * @param {Object} cart - cart object
    * @return {Array} return updated rates in cart
    */
-  "shipping/getShippingRates": function (cart) {
+  "shipping/getShippingRates"(cart) {
     check(cart, CartSchema);
     const rates = [];
     const retrialTargets = [];

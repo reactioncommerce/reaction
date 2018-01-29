@@ -39,7 +39,7 @@ Meteor.publish("SellerShops", function (shopIds) {
       }
     });
 
-    this.onStop(function () {
+    this.onStop(() => {
       sellerShopsObserver.stop();
     });
   };
@@ -57,7 +57,7 @@ Meteor.publish("SellerShops", function (shopIds) {
         this.removed("SellerShops", document._id);
       }
     });
-    this.onStop(function () {
+    this.onStop(() => {
       ownedSellerShopObserver.stop();
     });
   };

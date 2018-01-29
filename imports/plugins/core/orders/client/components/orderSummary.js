@@ -15,7 +15,7 @@ class OrderSummary extends Component {
   }
 
   badgeStatus() {
-    const order = this.props.order;
+    const { order } = this.props;
     const orderStatus = order && order.workflow && order.workflow.status;
 
     if (orderStatus === "new") {

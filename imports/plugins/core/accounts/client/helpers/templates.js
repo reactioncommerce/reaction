@@ -7,7 +7,7 @@ import * as Collections from "/lib/collections";
 /*
  * registerHelper displayName
  */
-Template.registerHelper("displayName", function (displayUser) {
+Template.registerHelper("displayName", (displayUser) => {
   i18nextDep.depend();
 
   const user = displayUser || Collections.Accounts.findOne(Meteor.userId());
@@ -20,8 +20,10 @@ Template.registerHelper("displayName", function (displayUser) {
 
     // todo: previous check was user.services !== "anonymous", "resume". Is this
     // new check covers previous check?
-    if (Roles.userIsInRole(user._id || user.userId, "account/profile",
-      Reaction.getShopId())) {
+    if (Roles.userIsInRole(
+      user._id || user.userId, "account/profile",
+      Reaction.getShopId()
+    )) {
       return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
     }
   }

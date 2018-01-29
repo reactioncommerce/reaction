@@ -58,14 +58,14 @@ function composer(props, onData) {
 
     for (const item of registryItems) {
       if (Reaction.hasPermission(item.route, Meteor.userId())) {
-        let icon = item.icon;
+        let { icon } = item;
         if (!item.icon && item.provides && item.provides.includes("settings")) {
           icon = "gear";
         }
 
         packageButtons.push({
           href: item.route,
-          icon: icon,
+          icon,
           tooltip: i18next.t(item.i18nKeyLabel, item.i18n),
           tooltipPosition: "left middle",
           onClick() {
@@ -85,7 +85,7 @@ function composer(props, onData) {
     actionViewIsOpen: Reaction.isActionViewOpen(),
     hasCreateProductAccess: Reaction.hasPermission("createProduct", Meteor.userId(), Reaction.getShopId()),
     shopId: Reaction.getShopId(),
-    shops: shops,
+    shops,
 
     // Callbacks
     onAddProduct: handleAddProduct,

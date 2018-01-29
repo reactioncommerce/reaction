@@ -52,22 +52,22 @@ Template.addressBook.onCreated(function () {
 // });
 
 Template.addressBook.helpers({
-  account: function () {
+  account() {
     const account = Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
     return account;
   },
 
-  data: function () {
+  data() {
     return Template.instance().templateData.get();
   },
 
-  currentView: function () {
+  currentView() {
     return Template.instance().currentViewTemplate.get();
   },
 
-  selectedAddress: function () {
+  selectedAddress() {
     return Template.instance.templateData.get();
   }
 });
@@ -77,7 +77,7 @@ Template.addressBook.events({
   // **************************************************************************
   //
   //
-  "click [data-event-action=addNewAddress]": function (event) {
+  "click [data-event-action=addNewAddress]"(event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -87,7 +87,7 @@ Template.addressBook.events({
   // **************************************************************************
   // Edit an address
   //
-  "click [data-event-action=editAddress]": function (event) {
+  "click [data-event-action=editAddress]"(event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -101,7 +101,7 @@ Template.addressBook.events({
   // **************************************************************************
   // Remove the address from the address book
   //
-  "click [data-event-action=removeAddress]": function (event, template) {
+  "click [data-event-action=removeAddress]"(event, template) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -124,18 +124,18 @@ Template.addressBook.events({
     });
   },
 
-  "click [data-event-action=cancelAddressEdit], form submit, showMainView": function (event) {
+  "click [data-event-action=cancelAddressEdit], form submit, showMainView"(event) {
     event.preventDefault();
     event.stopPropagation();
 
     Template.instance().currentViewTemplate.set("addressBookGrid");
   },
-  "addressRequiresReview": (event) => {
+  addressRequiresReview: (event) => {
     event.preventDefault();
     event.stopPropagation();
     Template.instance().currentViewTemplate.set("addressBookReview");
   },
-  "addressReviewComplete": (event) => {
+  addressReviewComplete: (event) => {
     event.preventDefault();
     event.stopPropagation();
     Template.instance().currentViewTemplate.set("addressBookEdit");

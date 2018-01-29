@@ -1,8 +1,7 @@
 import React from "react";
-import Translation from "../translation";
 import { shallow } from "enzyme";
 import shallowToJSON from "enzyme-to-json";
-
+import Translation from "../translation";
 
 jest.mock("/client/api", () => {
   return {
@@ -29,12 +28,12 @@ afterEach(() => {
  */
 
 test("Translation snapshot test", () => {
-  const component = shallow(
+  const component = shallow((
     <Translation
       defaultValue="Translated Text"
       i18nKey={"path.to.key"}
     />
-  );
+  ));
   const tree = shallowToJSON(component);
   expect(tree).toMatchSnapshot();
 });
