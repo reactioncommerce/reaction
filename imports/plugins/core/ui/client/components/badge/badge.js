@@ -122,7 +122,7 @@ Badge.propTypes = {
   label: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   status: PropTypes.string,
   tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.node]),
-  tooltipAttachment: PropTypes.string,
+  tooltipAttachment: PropTypes.string
 };
 
 Badge.defaultProps = {
