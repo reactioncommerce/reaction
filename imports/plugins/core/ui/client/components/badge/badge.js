@@ -4,16 +4,9 @@ import classnames from "classnames/dedupe";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class Badge extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      tooltipOpen: false
-    };
-
-    this.handleButtonMouseOver = this.handleButtonMouseOver.bind(this);
-    this.handleButtonMouseOut = this.handleButtonMouseOut.bind(this);
-  }
+  state = {
+    tooltipOpen: false
+  };
 
   get isTooltipOpen() {
     return this.state.tooltipOpen;
