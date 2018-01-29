@@ -30,7 +30,7 @@ export const methods = {
 
     // Check that this user has permission to update templates for the active shop
     if (!Reaction.hasPermission("reaction-templates", userId, shopId)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     return Templates.update({
