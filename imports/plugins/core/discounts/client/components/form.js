@@ -112,7 +112,6 @@ export default class DiscountForm extends Component {
         </label>
         <div className="input-group">
           <input
-            autoFocus
             onChange={this.handleChange}
             onKeyDown={this.handleChange}
             className="form-control"
