@@ -33,7 +33,7 @@ class OrderSearch extends Component {
    * @return {null} -
    */
   handleChange = (event) => {
-    const value = event.target.value;
+    const { value } = event.target;
 
     this.setState({
       value

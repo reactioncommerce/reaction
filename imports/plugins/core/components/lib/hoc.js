@@ -2,8 +2,8 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts, Groups } from "/lib/collections";
-import { composeWithTracker } from "./composer";
 import { lifecycle } from "recompose";
+import { composeWithTracker } from "./composer";
 
 let Logger;
 let Reaction;

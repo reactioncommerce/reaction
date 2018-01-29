@@ -15,7 +15,7 @@ import { Reaction } from "/server/api";
  */
 export function getApiInfo(shopId = Reaction.getShopId()) {
   const shopifyPkg = Reaction.getPackageSettingsWithOptions({
-    shopId: shopId,
+    shopId,
     name: "reaction-connectors-shopify"
   });
 

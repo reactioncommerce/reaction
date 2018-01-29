@@ -27,7 +27,7 @@ export function updatePackage(packageName, field, value) {
 
   const updateResult = Packages.update({
     name: packageName,
-    shopId: shopId
+    shopId
   }, {
     $set: {
       [field]: value

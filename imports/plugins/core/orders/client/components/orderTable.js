@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Avatar from "react-avatar";
 import classnames from "classnames/dedupe";
-import { i18next } from "/client/api";
+import { formatPriceString, i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 import { withMoment } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
+import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo } from "../helpers";
 import OrderTableColumn from "./orderTableColumn";
 import OrderBulkActionsBar from "./orderBulkActionsBar";
-import { formatPriceString } from "/client/api";
 import ProductImage from "./productImage";
-import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo } from "../helpers";
+
 
 const classNames = {
   colClassNames: {
@@ -307,8 +307,8 @@ class OrderTable extends Component {
           Header: colHeader ? colHeader : columnNameLabel,
           headerClassName: classNames.headerClassNames[columnName],
           className: classNames.colClassNames[columnName],
-          resizable: resizable,
-          sortable: sortable,
+          resizable,
+          sortable,
           Cell: row => (
             <OrderTableColumn
               row={row}

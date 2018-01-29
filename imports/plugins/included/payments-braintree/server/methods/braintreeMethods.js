@@ -28,9 +28,9 @@ export function paymentSubmit(transactionType, cardData, paymentData) {
   });
 
   const paymentSubmitDetails = {
-    transactionType: transactionType,
-    cardData: cardData,
-    paymentData: paymentData
+    transactionType,
+    cardData,
+    paymentData
   };
 
   let result;
@@ -100,7 +100,7 @@ export function createRefund(paymentMethod, amount) {
 
   const refundDetails = {
     transactionId: paymentMethod.transactionId,
-    amount: amount
+    amount
   };
 
   let result;
