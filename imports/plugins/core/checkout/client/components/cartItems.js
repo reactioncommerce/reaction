@@ -40,8 +40,8 @@ class CartItems extends Component {
             <Components.Translation i18nKey="cartDrawerItems.limitedSupply" defaultValue="Limited supply" />
           </div>
         }
-        <i className="remove-cart-item fa fa-times fa-lg"
-          id={item._id}
+        <Components.IconButton
+          icon="fa fa-times fa-lg remove-cart-item"
           onClick={handleRemoveItem}
         />
         <a href={pdpPath(item)}
