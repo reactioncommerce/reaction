@@ -84,6 +84,8 @@ class Badge extends Component {
     if (tooltip) {
       return (
         <span
+          onFocus={this.handleButtonMouseOver}
+          onBlur={this.handleButtonMouseOut}
           onMouseOut={this.handleButtonMouseOut}
           onMouseOver={this.handleButtonMouseOver}
         >
