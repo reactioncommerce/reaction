@@ -5,11 +5,14 @@ import { Accounts, Groups } from "/lib/collections";
 import { composeWithTracker } from "./composer";
 import { lifecycle } from "recompose";
 
+let Logger;
 let Reaction;
 
 if (Meteor.isClient) {
+  Logger = require("/client/api").Logger;
   Reaction = require("/client/api").Reaction;
 } else {
+  Logger = require("/server/api").Logger;
   Reaction = require("/server/api").Reaction;
 }
 
@@ -40,11 +43,15 @@ export function withCurrentUser(component) {
 export function withMoment(component) {
   return lifecycle({
     componentDidMount() {
-      import("moment").then(moment => {
-        this.setState({
-          moment: moment.default
+      try {
+        import("moment").then(moment => {
+          this.setState({
+            moment: moment.default
+          });
         });
-      });
+      } catch (error) {
+        Logger.debug(error, "moment import error");
+      }
     }
   })(component);
 }
