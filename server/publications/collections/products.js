@@ -549,7 +549,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     added: (product) => {
       let productId;
       if (product.type === "variant") {
-        productId = product.ancestors[0];
+        [productId] = product.ancestors;
       } else {
         productId = product._id;
       }

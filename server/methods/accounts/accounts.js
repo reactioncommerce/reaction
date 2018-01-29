@@ -45,7 +45,7 @@ export function verifyAccount(email, token) {
   }
 
   if (account) {
-    const verified = account.emails[0].verified;
+    const { verified } = account.emails[0];
     if (!verified) {
       Meteor.users.update({
         "_id": account._id,
@@ -156,13 +156,13 @@ function getValidator() {
   let geoCoder;
   // Just one?, use that one
   if (geoCoders.length === 1) {
-    geoCoder = geoCoders[0];
+    [geoCoder] = geoCoders;
   }
   // If there are two, we default to the one that is not the Reaction one
   if (geoCoders.length === 2) {
-    geoCoder = _.filter(geoCoders, function (coder) {
+    [geoCoder] = _.filter(geoCoders, function (coder) {
       return !_.includes(coder.name, "reaction");
-    })[0];
+    });
   }
 
   // check if addressValidation is enabled but the package is disabled, don't do address validation
@@ -280,7 +280,7 @@ export function validateAddress(address) {
   const validator = getValidator();
   if (validator) {
     const validationResult = Meteor.call(validator, address);
-    validatedAddress = validationResult.validatedAddress;
+    ({ validatedAddress } = validationResult);
     formErrors = validationResult.errors;
     if (validatedAddress) {
       validationErrors = compareAddress(address, validatedAddress);

@@ -788,7 +788,7 @@ Meteor.methods({
 
     let extractedProductId;
     if (Array.isArray(productId)) {
-      extractedProductId = productId[0];
+      [extractedProductId] = productId;
     }
 
     // Check first if Product exists and then if user has the right to delete it
@@ -896,7 +896,7 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    const type = doc.type;
+    const { type } = doc;
     let update;
     // handle booleans with correct typing
     if (value === "false" || value === "true") {

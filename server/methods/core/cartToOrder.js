@@ -32,7 +32,7 @@ export function copyCartToOrder(cartId) {
   const order = Object.assign({}, cart);
 
   // get sessionId from cart while cart is fresh
-  const sessionId = cart.sessionId;
+  const { sessionId } = cart;
 
   // If there are no order items, throw an error. We won't create an empty order
   if (!order.items || order.items.length === 0) {

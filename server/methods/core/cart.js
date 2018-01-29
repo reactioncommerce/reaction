@@ -1050,7 +1050,7 @@ Meteor.methods({
     // Payment plugins which have been updated for marketplace are passing an array as paymentMethods
     if (Array.isArray(paymentMethods)) {
       paymentMethods.forEach((paymentMethod) => {
-        const shopId = paymentMethod.shopId;
+        const { shopId } = paymentMethod;
         const invoice = {
           shipping: parseFloat(cartShippingByShop[shopId]),
           subtotal: parseFloat(cartSubtotalByShop[shopId]),

@@ -97,7 +97,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     return this.ready();
   }
 
-  const _id = product._id;
+  const { _id } = product;
 
   const selector = {
     isVisible: true,

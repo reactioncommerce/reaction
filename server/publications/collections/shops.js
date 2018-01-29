@@ -14,8 +14,7 @@ Meteor.publish("PrimaryShop", function () {
 
 Meteor.publish("MerchantShops", function () {
   const domain = Reaction.getDomain();
-  const settings = Reaction.getMarketplaceSettings();
-  const enabled = settings.enabled;
+  const { enabled } = Reaction.getMarketplaceSettings();
 
   // If marketplace is disabled, don't return any merchant shops
   if (!enabled) {

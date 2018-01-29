@@ -390,7 +390,7 @@ describe("Account Meteor method ", function () {
 
     it("should update cart default addresses via `type` argument", function () {
       const account = Factory.create("account");
-      const userId = account.userId;
+      const { userId } = account;
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
       sandbox.stub(Reaction, "getShopId", () => shopId);

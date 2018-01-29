@@ -112,7 +112,7 @@ describe("Server/Core", function () {
       tag = Factory.create("tag");
       Meteor.call("shop/updateHeaderTags", "updated tag", tag._id);
       expect(Tags.find().count()).to.equal(1);
-      tag = Tags.find().fetch()[0];
+      [tag] = Tags.find().fetch();
       expect(tag.name).to.equal("updated tag");
       expect(tag.slug).to.equal("updated-tag");
       return done();
