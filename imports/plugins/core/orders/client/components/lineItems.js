@@ -329,7 +329,17 @@ class LineItems extends Component {
   render() {
     const { uniqueItems } = this.props;
     return (
-      <div className="invoice invoice-line-items" onClick={this.props.handlePopOverOpen}>
+      <Components.Button
+        tagName="div"
+        className={{
+          "btn": false,
+          "btn-default": false,
+          "flat": false,
+          "invoice": true,
+          "invoice-line-items": true
+        }}
+        onClick={this.props.handlePopOverOpen}
+      >
         {uniqueItems.map((uniqueItem) => {
           return (
             <div key={uniqueItem._id}> {this.renderLineItem(uniqueItem)} </div>
@@ -340,7 +350,7 @@ class LineItems extends Component {
           Roles.userIsInRole(Meteor.userId(), ["orders", "dashboard/orders"], Reaction.getShopId()) &&
           this.renderPopOver()
         }
-      </div>
+      </Components.Button>
     );
   }
 }
