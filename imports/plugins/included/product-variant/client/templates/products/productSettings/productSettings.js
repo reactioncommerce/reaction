@@ -59,7 +59,7 @@ Template.productSettings.helpers({
   hasSelectedProducts() {
     return this.products && this.products.length > 0;
   },
-  itemWeightActive: function (weight) {
+  itemWeightActive(weight) {
     const instance = Template.instance();
     const products = instance.state.get("products");
     const tag = ReactionProduct.getTag();
@@ -76,7 +76,7 @@ Template.productSettings.helpers({
 });
 
 Template.productSettingsListItem.events({
-  "click [data-event-action=product-click]": function () {
+  "click [data-event-action=product-click]"() {
     Reaction.Router.go("product", {
       handle: this.handle
     });
@@ -126,7 +126,7 @@ Template.productSettingsListItem.helpers({
  */
 
 Template.productSettings.events({
-  "click [data-event-action=publishProduct]": function () {
+  "click [data-event-action=publishProduct]"() {
     const instance = Template.instance();
     const products = instance.state.get("products") || [];
 
@@ -154,25 +154,26 @@ Template.productSettings.events({
       ReactionProduct.publishProduct(products);
     }
   },
-  "click [data-event-action=cloneProduct]": function () {
+  "click [data-event-action=cloneProduct]"() {
     ReactionProduct.cloneProduct(this.products);
   },
-  "click [data-event-action=archiveProduct]": function () {
+  "click [data-event-action=archiveProduct]"() {
     ReactionProduct.archiveProduct(this.products);
   },
-  "click [data-event-action=changeProductWeight]": function (event) {
+  "click [data-event-action=changeProductWeight]"(event) {
     event.preventDefault();
     const tag = ReactionProduct.getTag();
     for (const product of this.products) {
       const weight = Template.instance().$(event.currentTarget).data("event-data") || 0;
       const positions = {
-        weight: weight,
+        weight,
         updatedAt: new Date()
       };
       /* eslint no-loop-func: 1 */
       //
       //
-      Meteor.call("products/updateProductPosition", product._id, positions, tag,
+      Meteor.call(
+        "products/updateProductPosition", product._id, positions, tag,
         (error) => { // eslint-disable-line no-loop-func
           if (error) {
             Logger.warn(error);

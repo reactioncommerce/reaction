@@ -24,7 +24,7 @@ export const methods = {
    * @todo Name could be optional. Just use package name as default.
    * @return {Boolean}          true on success, false on error
    */
-  "registry/update": function (packageId, name, fields) {
+  "registry/update"(packageId, name, fields) {
     check(packageId, String);
     check(name, String);
     check(fields, Array);
@@ -36,7 +36,7 @@ export const methods = {
     dataToSave[setting] = {};
     const currentPackage = Packages.findOne(packageId);
 
-    _.each(fields, function (field) {
+    _.each(fields, (field) => {
       dataToSave[setting][field.property] = field.value;
     });
 

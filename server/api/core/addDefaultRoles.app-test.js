@@ -1,3 +1,4 @@
+/* eslint prefer-arrow-callback:0 */
 import { Factory } from "meteor/dburles:factory";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { expect } from "meteor/practicalmeteor:chai";

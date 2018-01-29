@@ -6,7 +6,7 @@ import { Template } from "meteor/templating";
  * handles display of addressBook grid
  */
 Template.addressBookGrid.helpers({
-  selectedBilling: function () {
+  selectedBilling() {
     const cart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
@@ -25,7 +25,7 @@ Template.addressBookGrid.helpers({
     }
   },
 
-  selectedShipping: function () {
+  selectedShipping() {
     const cart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
@@ -43,7 +43,7 @@ Template.addressBookGrid.helpers({
       }
     }
   },
-  account: function () {
+  account() {
     return Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
@@ -55,18 +55,16 @@ Template.addressBookGrid.helpers({
  */
 
 Template.addressBookGrid.events({
-  "click [data-event-action=selectShippingAddress]": function () {
+  "click [data-event-action=selectShippingAddress]"() {
   // update address(make it default) only if wasn't already
     if (!this.isShippingDefault) {
-      return Meteor.call("accounts/addressBookUpdate", this, null,
-        "isShippingDefault");
+      return Meteor.call("accounts/addressBookUpdate", this, null, "isShippingDefault");
     }
   },
-  "click [data-event-action=selectBillingAddress]": function () {
+  "click [data-event-action=selectBillingAddress]"() {
     // update address(make it default) only if wasn't already
     if (!this.isBillingDefault) {
-      return Meteor.call("accounts/addressBookUpdate", this, null,
-        "isBillingDefault");
+      return Meteor.call("accounts/addressBookUpdate", this, null, "isBillingDefault");
     }
   }
 });

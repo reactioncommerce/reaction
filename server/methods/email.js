@@ -111,7 +111,7 @@ Meteor.methods({
    * @return {Boolean} - returns true if job is successfully restarted
    */
   "emails/retryFailed"(jobId) {
-    if (!Reaction.hasPermission(["owner", "admin", "dashboard"], this.userId)) {
+    if (!Reaction.hasPermission(["owner", "admin", "reaction-email"], this.userId)) {
       Logger.error("email/retryFailed: Access Denied");
       throw new Meteor.Error("access-denied", "Access Denied");
     }

@@ -21,7 +21,7 @@ const wrapComponent = (Comp) => (
     };
 
     handleCreateNewChildVariant(variant) {
-      Meteor.call("products/createVariant", variant._id, function (error, result) {
+      Meteor.call("products/createVariant", variant._id, (error, result) => {
         if (error) {
           Alerts.alert({
             text: i18next.t("productDetailEdit.addVariantFail", { title: variant.title }),
@@ -37,7 +37,7 @@ const wrapComponent = (Comp) => (
           Reaction.state.set("edit/focus", cardName);
 
           Reaction.Router.go("product", {
-            handle: handle,
+            handle,
             variantId: newVariantId
           });
         }
@@ -78,7 +78,7 @@ function composer(props, onData) {
     onData(null, {
       countries: Countries.find({}).fetch(),
       editFocus: Reaction.state.get("edit/focus"),
-      childVariants: childVariants,
+      childVariants,
       variant: revisedVariant
     });
   } else {

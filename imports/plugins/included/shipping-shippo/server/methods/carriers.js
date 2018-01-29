@@ -11,7 +11,7 @@ export const methods = {
    * @param {String} provider provider object
    * @return {Number} update result
    */
-  "shippo/carrier/update": function (provider) {
+  "shippo/carrier/update"(provider) {
     check(provider, Object); // ShippingProvider
     if (!Reaction.hasPermission(shippingRoles)) {
       throw new Meteor.Error("access-denied", "Access Denied");

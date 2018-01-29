@@ -20,9 +20,7 @@ const menuStyle = {
 class MainDropdown extends Component {
   static propTypes = {
     adminShortcuts: PropTypes.object,
-    currentAccount: PropTypes.oneOfType(
-      [PropTypes.bool, PropTypes.object]
-    ),
+    currentAccount: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     handleChange: PropTypes.func,
     userImage: PropTypes.object,
     userName: PropTypes.string,

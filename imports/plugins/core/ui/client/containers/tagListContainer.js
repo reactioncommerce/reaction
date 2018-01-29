@@ -196,7 +196,7 @@ const wrapComponent = (Comp) => (
       );
 
       this.setState({
-        suggestions: suggestions
+        suggestions
       });
     }
 
@@ -244,7 +244,7 @@ function composer(props, onData) {
 
   if (props.product) {
     if (_.isArray(props.product.hashtags)) {
-      tags = _.map(props.product.hashtags, function (id) {
+      tags = _.map(props.product.hashtags, (id) => {
         return Tags.findOne(id);
       });
     }

@@ -89,7 +89,7 @@ export const localeDep = new Tracker.Dependency();
 export const currencyDep = new Tracker.Dependency();
 
 Meteor.startup(() => {
-  Tracker.autorun(function (c) {
+  Tracker.autorun((c) => {
     let merchantShopsReadyOrSkipped = false;
 
     // Choose shopSubscription based on marketplace settings

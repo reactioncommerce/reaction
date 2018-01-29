@@ -1,3 +1,4 @@
+import React from "react";
 import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
@@ -6,7 +7,6 @@ import { Shipping } from "/lib/collections";
 import { i18next } from "/client/api";
 import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 import ShippoTableColumn from "./shippoTableColumn";
-import React from "react";
 
 import "./carriers.html";
 
@@ -50,7 +50,7 @@ Template.shippoCarriers.helpers({
 
     // add i18n handling to headers
     const customColumnMetadata = [];
-    filteredFields.forEach(function (field) {
+    filteredFields.forEach((field) => {
       let colWidth = undefined;
       let colStyle = undefined;
       let colClassName = undefined;
@@ -91,13 +91,13 @@ Template.shippoCarriers.helpers({
     return {
       component: SortableTable,
       publication: "Shipping",
-      transform: transform,
+      transform,
       collection: Shipping,
       showFilter: true,
       rowMetadata: customRowMetaData,
-      filteredFields: filteredFields,
+      filteredFields,
       columns: filteredFields,
-      noDataMessage: noDataMessage,
+      noDataMessage,
       onRowClick: editRow,
       columnMetadata: customColumnMetadata,
       externalLoadingComponent: Loading
@@ -121,14 +121,14 @@ Template.shippoCarriers.helpers({
 // on submit lets clear the form state
 //
 Template.shippoCarriers.events({
-  "submit #shipping-carrier-insert-form": function () {
+  "submit #shipping-carrier-insert-form"() {
     const instance = Template.instance();
     instance.state.set({
       isEditing: true,
       editingId: null
     });
   },
-  "click .cancel, .shipping-carriers-grid-row .active": function () {
+  "click .cancel, .shipping-carriers-grid-row .active"() {
     const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
@@ -137,7 +137,7 @@ Template.shippoCarriers.events({
     });
     $(".shipping-carriers-grid-row").removeClass("active");
   },
-  "click .shipping-carriers-grid-row": function (event) {
+  "click .shipping-carriers-grid-row"(event) {
     // toggle all rows off, then add our active row
     $(".shipping-carriers-grid-row").removeClass("active");
     Template.instance().$(event.currentTarget).addClass("active");
@@ -149,14 +149,11 @@ Template.shippoCarriers.events({
 //
 AutoForm.hooks({
   "shipping-carrier-update-form": {
-    onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.shippingSettings.carrierSaved"),
-        "success");
+    onSuccess() {
+      return Alerts.toast(i18next.t("admin.shippingSettings.carrierSaved"), "success");
     },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.shippingSettings.carrierFailed")} ${error}`, "error"
-      );
+    onError(operation, error) {
+      return Alerts.toast(`${i18next.t("admin.shippingSettings.carrierFailed")} ${error}`, "error");
     }
   }
 });

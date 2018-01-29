@@ -26,7 +26,7 @@ Meteor.methods({
    * @param {String} shopId - id of the shop the group belongs to
    * @return {Object} - `object.status` of 200 on success or Error object on failure
    */
-  "group/createGroup": function (groupData, shopId) {
+  "group/createGroup"(groupData, shopId) {
     check(groupData, Object);
     check(groupData.name, String);
     check(groupData.description, Match.Optional(String));
@@ -81,7 +81,7 @@ Meteor.methods({
    * @param {String} shopId - id of the shop the group belongs to
    * @return {Object} - `object.status` of 200 on success or Error object on failure
    */
-  "group/updateGroup": function (groupId, newGroupData, shopId) {
+  "group/updateGroup"(groupId, newGroupData, shopId) {
     check(groupId, String);
     check(newGroupData, Object);
     check(shopId, String);
@@ -132,7 +132,7 @@ Meteor.methods({
    * @param {String} groupId - id of the group
    * @return {Object} - `object.status` of 200 on success or Error object on failure
    */
-  "group/addUser": function (userId, groupId) {
+  "group/addUser"(userId, groupId) {
     check(userId, String);
     check(groupId, String);
     const group = Groups.findOne({ _id: groupId }) || {};
@@ -205,7 +205,7 @@ Meteor.methods({
    * @param {String} groupId - name of the group
    * @return {Object} - `object.status` of 200 on success or Error object on failure
    */
-  "group/removeUser": function (userId, groupId) {
+  "group/removeUser"(userId, groupId) {
     check(userId, String);
     check(groupId, String);
 

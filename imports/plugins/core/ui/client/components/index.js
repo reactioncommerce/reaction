@@ -1,5 +1,3 @@
-// export ButtonGroup from "./buttonGroup/buttonGroup";
-
 export { Alerts, Alert } from "./alerts";
 export { App } from "./app";
 export { default as Icon } from "./icon/icon";

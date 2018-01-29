@@ -31,9 +31,9 @@ export default class DiscountForm extends Component {
           // if validationMessage isn't an object with i18n
           // we will display an elliptical that's not
           // actually done here though, just bit of foolery
-          this.timerId = Meteor.setTimeout(function () {
+          this.timerId = Meteor.setTimeout(() => {
             this.setState({ validationMessage: "..." });
-          }.bind(this), 2000);
+          }, 2000);
         }
       });
     }, 800);

@@ -50,7 +50,6 @@ export function Apps(optionHash) {
   let key;
   const reactionApps = [];
   let options = {};
-  let shopType;
 
   // allow for object or option.hash
   if (optionHash) {
@@ -67,11 +66,8 @@ export function Apps(optionHash) {
   }
 
   // Get the shop to determine shopType
-  const shop = Shops.findOne({ _id: options.shopId });
-  if (shop) {
-    shopType = shop.shopType;
-  }
-
+  const shop = Shops.findOne({ _id: options.shopId }) || {};
+  const { shopType } = shop;
 
   // remove audience permissions for owner (still needed here for older/legacy calls)
   if (Reaction.hasOwnerAccess() && options.audience) {
@@ -109,7 +105,7 @@ export function Apps(optionHash) {
   // For now, the audience checks (after the Package.find call) filters out the registry items based on permissions. But
   // part of the filtering should have been handled by the Package.find call, if the "audience" filter works as it should.
   Packages.find(filter).forEach((app) => {
-    const matchingRegistry = _.filter(app.registry, function (item) {
+    const matchingRegistry = _.filter(app.registry, (item) => {
       const itemFilter = _.cloneDeep(registryFilter);
 
       // check audience permissions only if they exist as part of optionHash and are part of the registry item
