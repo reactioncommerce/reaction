@@ -16,7 +16,7 @@ class Brand extends Component {
 
   render() {
     return (
-      <a className="brand" onClick={this.handleClick}>
+      <a className="brand" href="/" onClick={this.handleClick}>
         {this.props.logo &&
           <div className="logo">
             <img src={this.props.logo} />
