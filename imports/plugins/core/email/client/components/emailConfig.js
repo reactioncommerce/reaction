@@ -66,14 +66,21 @@ class EmailConfig extends Component {
           {password ?
             <span>
               {showPassword ? password : "********"}
-              <a onClick={this.togglePassword}>
+              <Components.Button
+                className={{
+                  "btn": false,
+                  "btn-default": false
+                }}
+                tagName="span"
+                onClick={this.togglePassword}
+              >
                 <span style={{ marginLeft: "1rem" }}>
                   <em>{showPassword ?
                     <span data-i18n="admin.settings.passwordHide">Hide</span>
                     : <span data-i18n="admin.settings.passwordShow">Show</span>}
                   </em>
                 </span>
-              </a>
+              </Components.Button>
             </span>
             : <NotSet/>}
         </div>
