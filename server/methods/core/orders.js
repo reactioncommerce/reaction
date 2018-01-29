@@ -321,7 +321,7 @@ export const methods = {
     // that the math all still adds up.
     const shopId = Reaction.getShopId();
     const subTotal = invoice.subtotal;
-    const { shipping, taxes } = invoice.shipping;
+    const { shipping, taxes } = invoice;
     const discount = invoice.discounts;
     const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
     const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
