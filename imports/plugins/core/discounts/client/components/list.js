@@ -33,9 +33,9 @@ class DiscountList extends Component {
 
     if (this.props.collection !== "Orders") {
       TrashCan =
-        <a className="pull-right">
+        <div className="pull-right">
           <IconButton icon="fa fa-remove" onClick={(e) => this.handleClick(e, _id)}/>
-        </a>;
+        </div>
     }
     return (
       <div className="rui list-group-item" key={_id}>
