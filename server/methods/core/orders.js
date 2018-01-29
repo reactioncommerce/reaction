@@ -37,7 +37,7 @@ export function orderCreditMethod(order) {
  * @memberof Methods/Orders
  * @summary Helper to return the order debit object
  * @param  {Object} order order object
- * @return {Pbject} returns entire payment method
+ * @return {Object} returns entire payment method
  */
 export function orderDebitMethod(order) {
   const debitBillingRecords = order.billing.filter((value) => value.paymentMethod.method ===  "debit");
