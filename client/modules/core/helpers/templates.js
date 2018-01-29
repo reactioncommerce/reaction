@@ -1,6 +1,6 @@
 import _ from "lodash";
 import * as tz from "moment-timezone";
-import moment from "moment";
+// import moment from "moment";
 import "moment/min/locales.min.js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
@@ -118,28 +118,6 @@ Template.registerHelper("yearOptions", (showDefaultOption = true) => {
   }
   return yearOptions;
 });
-
-/**
- * timezoneOptions
- * @summary formats moment.js timezones into array for autoform selector
- * @return {Array} returns array of timezones [value:, label:]
- */
-Template.registerHelper("timezoneOptions", () => {
-  const label = i18next.t("app.timezoneOptions", "Choose timezone");
-  const timezoneOptions = [{
-    value: "",
-    label
-  }];
-  const timezones = moment.tz.names();
-  for (const timezone of timezones) {
-    timezoneOptions.push({
-      value: timezone,
-      label: timezone
-    });
-  }
-  return timezoneOptions;
-});
-
 
 /**
  * camelToSpace
