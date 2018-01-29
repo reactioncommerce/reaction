@@ -94,8 +94,8 @@ export default {
       let shop;
       if (this.Subscriptions.MerchantShops.ready()) {
         // get domain (e.g localhost) from absolute url (e.g http://localhost:3000/)
-        const [ , , host ] = Meteor.absoluteUrl().split("/");
-        const [ domain ] = host.split(":");
+        const [, , host] = Meteor.absoluteUrl().split("/");
+        const [domain] = host.split(":");
 
         // if we don't have an active shopId, try to retreive it from the userPreferences object
         // and set the shop from the storedShopId
@@ -777,9 +777,7 @@ export default {
 
     // valid application
     if (reactionApp) {
-      const settingsData = _.find(reactionApp.registry, (item) => {
-        return item.provides && item.provides.includes(provides) && item.template === template;
-      });
+      const settingsData = _.find(reactionApp.registry, (item) => item.provides && item.provides.includes(provides) && item.template === template);
       return settingsData;
     }
     Logger.debug("getRegistryForCurrentRoute not found", template, provides);

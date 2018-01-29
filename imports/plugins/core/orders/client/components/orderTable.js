@@ -300,7 +300,7 @@ class OrderTable extends Component {
           className: classNames.colClassNames[columnName],
           resizable,
           sortable,
-          Cell: row => (
+          Cell: (row) => (
             <OrderTableColumn
               row={row}
               handleClick={this.props.handleClick}

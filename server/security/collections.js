@@ -116,7 +116,7 @@ export default function () {
    */
 
   Security.permit(["insert", "update", "remove"])
-    .collections([ Accounts, Products, Tags, Translations, Shipping, Orders, Packages, Templates, Jobs ])
+    .collections([Accounts, Products, Tags, Translations, Shipping, Orders, Packages, Templates, Jobs])
     .ifHasRoleForActiveShop({ role: "admin" })
     .ifShopIdMatches()
     .exceptProps(["shopId"])
@@ -187,13 +187,11 @@ export default function () {
   /*
    * apply download permissions to file collections
    */
-  _.each([Media], (fsCollection) => {
-    return fsCollection.allow({
-      download() {
-        return true;
-      }
-    });
-  });
+  _.each([Media], (fsCollection) => fsCollection.allow({
+    download() {
+      return true;
+    }
+  }));
 
   /**
    * Emails - Deny all client side ops

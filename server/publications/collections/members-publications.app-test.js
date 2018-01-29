@@ -73,8 +73,7 @@ describe("Account Publications", function () {
         // we expect two users. First will be without services, second with
         // clean services object
         typeof _user.services === "object" &&
-          _.isEqual(_user.services, {})
-      )).to.be.true;
+          _.isEqual(_user.services, {}))).to.be.true;
     });
   });
 });

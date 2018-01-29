@@ -168,7 +168,7 @@ function buildPaymentMethods(options) {
         _id: item._id,
         productId: item.productId,
         variantId: item.variants._id,
-        shopId: shopId,
+        shopId,
         quantity: item.quantity
       }));
 

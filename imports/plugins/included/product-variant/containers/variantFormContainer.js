@@ -74,7 +74,7 @@ const wrapComponent = (Comp) => (
       const provider = Packages.findOne({
         shopId,
         "registry.provides": "taxCodes",
-        "$where": function () {
+        "$where"() {
           const providers = this.registry.filter((o) => o.provides && o.provides.includes("taxCodes"));
           const providerName = providers[0].name.split("/")[2];
 

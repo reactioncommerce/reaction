@@ -261,8 +261,7 @@ class Form extends Component {
 
       // Render all fields if none of the options are set above
       return map(this.schema, (field, key) =>  // eslint-disable-line consistent-return
-        this.renderField({ fieldName: key })
-      );
+        this.renderField({ fieldName: key }));
     }
 
     return null;

@@ -192,14 +192,10 @@ export function buildOrderSearchRecord(orderId) {
     }
   }
   // get the billing object for the current shop on the order (and not hardcoded [0])
-  const shopBilling = order.billing && order.billing.find(
-    (billing) => billing && billing.shopId === Reaction.getShopId()
-  ) || {};
+  const shopBilling = order.billing && order.billing.find((billing) => billing && billing.shopId === Reaction.getShopId()) || {};
 
   // get the shipping object for the current shop on the order (and not hardcoded [0])
-  const shopShipping = order.shipping.find(
-    (shipping) => shipping.shopId === Reaction.getShopId()
-  ) || {};
+  const shopShipping = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId()) || {};
 
   orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
   orderSearch.billingPhone = shopBilling.address && shopBilling.address.phone.replace(/\D/g, "");

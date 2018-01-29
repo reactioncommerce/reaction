@@ -21,8 +21,8 @@ const doRightJoinNoIntersection = (leftSet, rightSet) => {
   } else {
     rightJoin = {};
   }
-  const findRightOnlyProperties = () => Object.keys(rightSet).filter(function (key) {
-    if (typeof(rightSet[key]) === "object" &&
+  const findRightOnlyProperties = () => Object.keys(rightSet).filter((key) => {
+    if (typeof (rightSet[key]) === "object" &&
         !Array.isArray(rightSet[key])) {
       // Nested objects are always considered
       return true;

@@ -161,10 +161,8 @@ Meteor.methods({
       sessionId} into: ${currentCart._id}`);
     // loop through session carts and merge into user cart
     sessionCarts.forEach((sessionCart) => {
-      Logger.debug(
-        `merge cart: merge user userId: ${userId}, sessionCart.userId: ${
-          sessionCart.userId}, sessionCart id: ${sessionCart._id}`
-      );
+      Logger.debug(`merge cart: merge user userId: ${userId}, sessionCart.userId: ${
+        sessionCart.userId}, sessionCart id: ${sessionCart._id}`);
       // really if we have no items, there's nothing to merge
       if (sessionCart.items) {
         // if currentCart already have a cartWorkflow, we don't need to clean it

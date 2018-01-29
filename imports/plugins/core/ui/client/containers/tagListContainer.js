@@ -242,9 +242,7 @@ function composer(props, onData) {
 
   if (props.product) {
     if (_.isArray(props.product.hashtags)) {
-      tags = _.map(props.product.hashtags, (id) => {
-        return Tags.findOne(id);
-      });
+      tags = _.map(props.product.hashtags, (id) => Tags.findOne(id));
     }
   }
 

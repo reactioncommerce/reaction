@@ -330,31 +330,27 @@ describe("core product methods", function () {
       return done();
     });
 
-    it("product should be cloned with all variants and child variants with equal data, but not the same `_id`s",
-      function (done) {
-        sandbox.stub(Reaction, "hasPermission", () => true);
-        sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
-          check(arguments, [Match.Any]);
-        });
-        const product = addProduct();
-        const variants = Products.find({ ancestors: { $in: [product._id] } }).fetch();
-        expect(variants.length).to.equal(3);
-        Meteor.call("products/cloneProduct", product);
-        const clone = Products.find({
-          _id: {
-            $ne: product._id
-          },
-          type: "simple"
-        }).fetch()[0];
-        const cloneVariants = Products.find({
-          ancestors: { $in: [clone._id] }
-        }).fetch();
-        expect(cloneVariants.length).to.equal(3);
-        for (let i = 0; i < variants.length; i++) {
-          expect(cloneVariants.some((clonedVariant) => clonedVariant.title === variants[i].title)).to.be.ok;
-        }
-
-        return done();
+    it("product should be cloned with all variants and child variants with equal data, but not the same `_id`s", function (done) {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
+        check(arguments, [Match.Any]);
+      });
+      const product = addProduct();
+      const variants = Products.find({ ancestors: { $in: [product._id] } }).fetch();
+      expect(variants.length).to.equal(3);
+      Meteor.call("products/cloneProduct", product);
+      const clone = Products.find({
+        _id: {
+          $ne: product._id
+        },
+        type: "simple"
+      }).fetch()[0];
+      const cloneVariants = Products.find({
+        ancestors: { $in: [clone._id] }
+      }).fetch();
+      expect(cloneVariants.length).to.equal(3);
+      for (let i = 0; i < variants.length; i++) {
+        expect(cloneVariants.some((clonedVariant) => clonedVariant.title === variants[i].title)).to.be.ok;
       }
 
       return done();

@@ -37,33 +37,25 @@ Template.registerHelper("hasPermission", (permissions, options) => {
  * @summary check if user has owner access
  * @return {Boolean} return true if owner
  */
-Template.registerHelper("hasOwnerAccess", () => {
-  return Reaction.hasOwnerAccess();
-});
+Template.registerHelper("hasOwnerAccess", () => Reaction.hasOwnerAccess());
 
 /**
  * hasAdminAccess template helper
  * @summary check if user has admin access
  * @return {Boolean} return true if admin
  */
-Template.registerHelper("hasAdminAccess", () => {
-  return Reaction.hasAdminAccess();
-});
+Template.registerHelper("hasAdminAccess", () => Reaction.hasAdminAccess());
 
 /**
  * hasDashboardAccess template helper
  * @summary check if user has dashboard access
  * @return {Boolean} return true if user has dashboard permission
  */
-Template.registerHelper("hasDashboardAccess", () => {
-  return Reaction.hasDashboardAccess();
-});
+Template.registerHelper("hasDashboardAccess", () => Reaction.hasDashboardAccess());
 
 /**
  * allowGuestCheckout template helper
  * @summary check if guest users are allowed to checkout
  * @return {Boolean} return true if shop has guest checkout enabled
  */
-Template.registerHelper("allowGuestCheckout", () => {
-  return Reaction.allowGuestCheckout();
-});
+Template.registerHelper("allowGuestCheckout", () => Reaction.allowGuestCheckout());

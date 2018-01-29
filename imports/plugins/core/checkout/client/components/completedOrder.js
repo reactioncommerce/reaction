@@ -96,9 +96,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
             <div className="order-details-content-title">
               <p><Components.Translation defaultValue="Payment Method" i18nKey={"cartCompleted.paymentMethod"} /></p>
             </div>
-            {paymentMethods.map((paymentMethod) => {
-              return <CompletedOrderPaymentMethod key={paymentMethod.key} paymentMethod={paymentMethod} />;
-            })}
+            {paymentMethods.map((paymentMethod) => <CompletedOrderPaymentMethod key={paymentMethod.key} paymentMethod={paymentMethod} />)}
           </div>
         </div>
         <CompletedOrderSummary shops={shops} orderSummary={orderSummary} isProfilePage={isProfilePage} />

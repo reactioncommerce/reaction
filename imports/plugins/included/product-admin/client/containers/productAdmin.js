@@ -110,9 +110,7 @@ function composer(props, onData) {
 
   if (product) {
     if (_.isArray(product.hashtags)) {
-      tags = _.map(product.hashtags, (id) => {
-        return Tags.findOne(id);
-      });
+      tags = _.map(product.hashtags, (id) => Tags.findOne(id));
     }
 
     const selectedVariant = ReactionProduct.selectedVariant();
