@@ -84,6 +84,7 @@ class App extends Component {
         style={styles.adminApp}
         tabIndex={0}
         onKeyDown={this.handleKeyDown}
+        role="presentation"
       >
         <div className={pageClassName} id="reactionAppContainer" style={styles.adminContentContainer}>
           <div className="reaction-toolbar">
