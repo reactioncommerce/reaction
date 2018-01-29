@@ -130,16 +130,22 @@ class ProductField extends Component {
       return this.renderTextField();
     }
 
+    const classNames = classnames({
+      pdp: true,
+      field: true,
+      [this.fieldName]: this.fieldName
+    });
+
     if (this.props.element) {
       return React.createElement(this.props.element, {
-        className: "pdp field",
+        className: classNames,
         itemProp: this.props.itemProp,
         children: this.value
       });
     }
 
     return (
-      <div className="pdp field">
+      <div className={classNames}>
         {this.value}
       </div>
     );
