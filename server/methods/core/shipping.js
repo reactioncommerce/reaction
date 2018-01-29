@@ -25,7 +25,7 @@ function createShipmentQuotes(cartId, shopId, rates) {
   let update = {
     $push: {
       shipping: {
-        shopId: shopId,
+        shopId,
         shipmentQuotes: [],
         shipmentQuotesQueryStatus: {
           requestStatus: "pending"
@@ -34,13 +34,14 @@ function createShipmentQuotes(cartId, shopId, rates) {
     }
   };
 
-  Cart.update({ _id: cartId }, update, function (error) {
-    if (error) {
-      Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
-      return;
-    }
-    Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
-  });
+  try {
+    Cart.update({ _id: cartId }, update);
+  } catch (error) {
+    Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
+    throw error;
+  }
+
+  Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
 
   if (rates.length === 1 && rates[0].requestStatus === "error") {
     const errorDetails = rates[0];
@@ -86,7 +87,8 @@ function pruneShippingRecordsByShop(cart) {
     const itemsByShop = cart.getItemsByShop();
     const shops = Object.keys(itemsByShop);
     if (shops.length > 0 && cart.items.length > 0) {
-      Cart.update({ _id: cartId },
+      Cart.update(
+        { _id: cartId },
         {
           $pull: {
             shipping: { shopId: { $nin: shops } }
@@ -94,7 +96,8 @@ function pruneShippingRecordsByShop(cart) {
         }
       );
     } else {
-      Cart.update({ _id: cartId },
+      Cart.update(
+        { _id: cartId },
         {
           $unset: {
             shipping: ""
@@ -155,13 +158,15 @@ function updateShipmentQuotes(cartId, rates, selector) {
       }
     }
   };
-  Cart.update(selector, update, function (error) {
-    if (error) {
-      Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
-      return;
-    }
-    Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
-  });
+
+  try {
+    Cart.update(selector, update);
+  } catch (error) {
+    Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
+    throw error;
+  }
+
+  Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
 
   if (rates.length === 1 && rates[0].requestStatus === "error") {
     const errorDetails = rates[0];
@@ -218,13 +223,14 @@ function updateShippingRecordByShop(cart, rates) {
       update = createShipmentQuotes(cartId, shopId, rates);
     }
 
-    Cart.update(selector, update, function (error) {
-      if (error) {
-        Logger.warn(`Error updating rates for cart ${cartId}`, error);
-        return;
-      }
-      Logger.debug(`Success updating rates for cart ${cartId}`, rates);
-    });
+    try {
+      Cart.update(selector, update);
+    } catch (error) {
+      Logger.warn(`Error updating rates for cart ${cartId}`, error);
+      throw error;
+    }
+
+    Logger.debug(`Success updating rates for cart ${cartId}`, rates);
   });
   pruneShippingRecordsByShop(cart);
   normalizeAddresses(cart);
@@ -262,8 +268,8 @@ function addAddresses(cart) {
       }, {
         $push: {
           shipping: {
-            shopId: shopId,
-            address: address
+            shopId,
+            address
           }
         }
       });
@@ -281,7 +287,7 @@ export const methods = {
    * @param {String} cartId - cartId
    * @return {undefined}
    */
-  "shipping/updateShipmentQuotes": function (cartId) {
+  "shipping/updateShipmentQuotes"(cartId) {
     check(cartId, String);
     if (!cartId) {
       return [];
@@ -308,7 +314,7 @@ export const methods = {
    * @param {Object} cart - cart object
    * @return {Array} return updated rates in cart
    */
-  "shipping/getShippingRates": function (cart) {
+  "shipping/getShippingRates"(cart) {
     check(cart, CartSchema);
     const rates = [];
     const retrialTargets = [];

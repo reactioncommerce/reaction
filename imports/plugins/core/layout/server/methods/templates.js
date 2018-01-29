@@ -6,7 +6,7 @@ export function getTemplateByName(name, shopId) {
   check(name, String);
 
   const template = Templates.findOne({
-    name: name,
+    name,
     shopId: shopId || Reaction.getShopId()
   });
 

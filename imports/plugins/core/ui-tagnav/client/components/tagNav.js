@@ -5,6 +5,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { getTagIds } from "/lib/selectors/tags";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
+import ShopSelect from "/imports/plugins/core/dashboard/client/components/shopSelect";
 
 class TagNav extends Component {
   constructor(props) {
@@ -16,6 +17,21 @@ class TagNav extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({ selectedTag: nextProps.selectedTag });
+  }
+
+  /**
+   * onShopSelectChange
+   * @method
+   * @summary Handle change in selected shop
+   * @param {script} event
+   * @param {String} shopId - selected shopId
+   * @since 1.5.8
+   * @return {void}
+  */
+  onShopSelectChange = (event, shopId) => {
+    if (this.props.handleShopSelectChange) {
+      this.props.handleShopSelectChange(event, shopId);
+    }
   }
 
   renderEditButton() {
@@ -33,6 +49,28 @@ class TagNav extends Component {
         />
       </span>
     );
+  }
+
+  /**
+  * renderShopSelect
+  * @method
+  * @summary Handles shop options display on mobile view
+  * @return {JSX} React node containing dropdown menu
+  */
+  renderShopSelect() {
+    if (this.props.handleShopSelectChange) {
+      return (
+        <ShopSelect
+          className={"shop-select"}
+          isTagNav={true}
+          onShopSelectChange={this.onShopSelectChange}
+          shopName={this.props.shop.name}
+          shops={this.props.shops}
+          shopId={this.props.shop._id}
+        />
+      );
+    }
+    return null;
   }
 
   tagGroupProps = (tag) => {
@@ -67,6 +105,7 @@ class TagNav extends Component {
           />
           {this.props.children}
         </div>
+        {this.renderShopSelect()}
         <div className="navbar-items">
           <DragDropProvider>
             <Components.TagList
@@ -101,6 +140,7 @@ TagNav.propTypes = {
   children: PropTypes.node,
   closeNavbar: PropTypes.func,
   editable: PropTypes.bool,
+  handleShopSelectChange: PropTypes.func,
   navButtonStyles: PropTypes.object,
   navbarAnchor: PropTypes.string,
   navbarOrientation: PropTypes.string,
@@ -108,7 +148,9 @@ TagNav.propTypes = {
   navbarVisibility: PropTypes.string,
   onEditButtonClick: PropTypes.func,
   onMoveTag: PropTypes.func,
-  selectedTag: PropTypes.object
+  selectedTag: PropTypes.object,
+  shop: PropTypes.object,
+  shops: PropTypes.array
 };
 
 export default TagNav;
