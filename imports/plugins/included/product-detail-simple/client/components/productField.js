@@ -133,7 +133,7 @@ class ProductField extends Component {
     const classNames = classnames({
       pdp: true,
       field: true,
-      [this.fieldName]: this.fieldName
+      [this.fieldName]: !!this.fieldName
     });
 
     if (this.props.element) {
