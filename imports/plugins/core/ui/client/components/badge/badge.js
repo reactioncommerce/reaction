@@ -12,13 +12,13 @@ class Badge extends Component {
     return this.state.tooltipOpen;
   }
 
-  handleButtonMouseOver = () => {
+  handleMouseOver = () => {
     this.setState({
       tooltipOpen: this.props.tooltip ? true : false
     });
   }
 
-  handleButtonMouseOut = () => {
+  handleMouseOut = () => {
     this.setState({
       tooltipOpen: false
     });
@@ -84,10 +84,10 @@ class Badge extends Component {
     if (tooltip) {
       return (
         <span
-          onFocus={this.handleButtonMouseOver}
-          onBlur={this.handleButtonMouseOut}
-          onMouseOut={this.handleButtonMouseOut}
-          onMouseOver={this.handleButtonMouseOver}
+          onFocus={this.handleMouseOver}
+          onBlur={this.handleMouseOut}
+          onMouseOut={this.handleMouseOut}
+          onMouseOver={this.handleMouseOver}
         >
           <Components.Tooltip
             attachment={tooltipAttachment} tooltipContent={this.renderTooltipContent()}
