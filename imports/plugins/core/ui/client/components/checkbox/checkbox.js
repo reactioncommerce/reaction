@@ -38,6 +38,7 @@ class Checkbox extends Component {
           className={this.props.className}
           ref="checkbox"
           type="checkbox"
+          onBlur={this.props.onMouseOut}
           onMouseOut={this.props.onMouseOut}
         />
         <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
