@@ -904,11 +904,11 @@ export default {
         // Setting from a fixture file, most likely reaction.json
         let settingsFromFixture;
         if (registryFixtureData) {
-          settingsFromFixture = _.find(registryFixtureData[0], (packageSetting) => config.name === packageSetting.name);
+          settingsFromFixture = registryFixtureData[0].find((packageSetting) => config.name === packageSetting.name);
         }
 
         // Setting already imported into the packages collection
-        const settingsFromDB = _.find(packages, (ps) => (config.name === ps.name && shopId === ps.shopId));
+        const settingsFromDB = packages.find((ps) => (config.name === ps.name && shopId === ps.shopId));
 
         const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
 
