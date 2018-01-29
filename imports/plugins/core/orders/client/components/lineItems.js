@@ -62,11 +62,11 @@ class LineItems extends Component {
 
     if (displayMedia(uniqueItem)) {
       return (
-        <img src={displayMedia(uniqueItem).url()}/>
+        <img src={displayMedia(uniqueItem).url()} alt="" />
       );
     }
     return (
-      <img src= "/resources/placeholder.gif" />
+      <img src= "/resources/placeholder.gif" alt="" />
     );
   }
 
