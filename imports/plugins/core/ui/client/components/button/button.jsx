@@ -177,6 +177,8 @@ class Button extends Component {
     const buttonProps = Object.assign({
       "className": classes,
       "data-event-action": eventAction,
+      "onFocus": this.handleButtonMouseOver,
+      "onBlur": this.handleButtonMouseOut,
       "onMouseOut": this.handleButtonMouseOut,
       "onMouseOver": this.handleButtonMouseOver,
       "onClick": this.handleClick,
