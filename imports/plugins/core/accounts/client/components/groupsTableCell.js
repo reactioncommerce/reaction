@@ -20,6 +20,8 @@ const GroupsTableCell = (props) => {
   const email = _.get(account, "emails[0].address");
   const groups = adminGroups;
   const userAvatar = getUserAvatar(account);
+  const createdAt = moment && moment(account.createdAt).format("MMM Do") || account.createdAt.toLocaleString();
+
   if (columnName === "name") {
     // use first part of email, if account has no name
     const name = account.name || email.split("@")[0];
@@ -43,7 +45,7 @@ const GroupsTableCell = (props) => {
     return (
       <div className="table-cell body created-at">
         <span>
-          {moment && moment(account.createdAt).format("MMM Do")}
+          {createdAt}
         </span>
       </div>
     );
