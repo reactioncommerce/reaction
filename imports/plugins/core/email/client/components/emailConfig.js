@@ -39,7 +39,10 @@ class EmailConfig extends Component {
     return (
       <div>
         <div className="pull-right">
-          <a onClick={this.toggleSettings}><Components.Icon icon="gear"/></a>
+          <Components.IconButton
+            icon="fa fa-gear"
+            onClick={this.toggleSettings}
+          />
         </div>
         <div className="email-config-status">
           <strong><Translation defaultValue={"Status"} i18nKey={"admin.settings.status"} /></strong>: {status ?
