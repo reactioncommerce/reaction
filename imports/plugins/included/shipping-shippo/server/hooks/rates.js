@@ -7,7 +7,7 @@ function getShippingRates(previousQueryResults, cart) {
   const marketplaceSettings = Reaction.getMarketplaceSettings();
   let merchantShippingRates = false;
   if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantShippingRates) {
-    merchantShippingRates = marketplaceSettings.public.merchantShippingRates;
+    ({ merchantShippingRates } = marketplaceSettings.public);
   }
 
   const [rates, retrialTargets] = previousQueryResults;

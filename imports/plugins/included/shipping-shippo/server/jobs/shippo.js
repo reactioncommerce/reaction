@@ -24,7 +24,7 @@ function getOwnerUserId() {
 
 Hooks.Events.add("afterCoreInit", () => {
   const config = getJobConfig();
-  const refreshPeriod = config.refreshPeriod;
+  const { refreshPeriod } = config;
 
   if (!config.shippo.enabled || !refreshPeriod) {
     return;

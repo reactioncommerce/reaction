@@ -9,7 +9,7 @@ import { Translation } from "/imports/plugins/core/ui/client/components";
 export function getOpenGraphMeta(props) {
   const url = props.url || location.origin + location.pathname;
   const title = props.title || document.title;
-  const description = props.settings.description;
+  const { description } = props.settings;
 
   const meta = [
     { property: "og:type", content: "article" },

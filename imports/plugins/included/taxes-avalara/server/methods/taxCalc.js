@@ -96,7 +96,7 @@ function parseError(error) {
   }
   const errorDetails = [];
   if (error.response.data.error.details) {
-    const details = error.response.data.error.details;
+    const { details } = error.response.data.error;
     for (const detail of details) {
       if (detail.severity === "Error") {
         errorDetails.push({ message: detail.message, description: detail.description });
@@ -289,7 +289,7 @@ taxCalc.validateAddress = function (address) {
   const result = avaPost(requestUrl, { data: addressToValidate });
   const content = result.data;
   if (content && content.messages) {
-    messages = content.messages;
+    ({ messages } = content);
   }
   if (messages) {
     for (const message of messages) {

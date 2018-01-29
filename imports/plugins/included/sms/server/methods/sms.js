@@ -49,12 +49,13 @@ Meteor.methods({
     check(shopId, String);
 
     const user = Accounts.findOne({ _id: userId });
-    const addressBook = user.profile.addressBook;
+    const { addressBook } = user.profile;
     let phone = false;
     // check for addressBook phone
     if (user && addressBook) {
       if (addressBook[0].phone) {
-        phone = addressBook[0].phone;
+        const [phoneData] = addressBook;
+        ({ phone } = phoneData);
       }
     }
 

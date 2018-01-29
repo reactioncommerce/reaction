@@ -104,7 +104,7 @@ Template.productImageGallery.onRendered(function () {
   this.autorun(function () {
     let $gallery;
     if (Reaction.hasAdminAccess()) {
-      $gallery = $(".gallery")[0];
+      [$gallery] = $(".gallery");
 
       this.sortable = Sortable.create($gallery, {
         group: "gallery",

@@ -34,7 +34,7 @@ const wrapComponent = (Comp) => (
 
     componentWillMount() {
       const selectedProducts = Reaction.getUserPreferences("reaction-product-variant", "selectedGridItems");
-      const products = this.products;
+      const { products } = this;
 
       if (_.isEmpty(selectedProducts)) {
         return Reaction.hideActionView();

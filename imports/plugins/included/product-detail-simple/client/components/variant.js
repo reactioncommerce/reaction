@@ -135,7 +135,7 @@ class Variant extends Component {
   }
 
   render() {
-    const variant = this.props.variant;
+    const { variant } = this.props;
     const classes = classnames({
       "variant-detail": true,
       "variant-button": true,

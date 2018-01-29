@@ -126,7 +126,7 @@ Import.commit = function (collection) {
       // throw everything together.
       const nImported = result.nModified + result.nInserted + result.nUpserted;
       const nTouched = result.nMatched + result.nInserted + result.nUpserted;
-      const nRemoved = result.nRemoved;
+      const { nRemoved } = result;
       // Log some information about the import.
       if (nTouched) {
         let message = "Modified " + nImported + (nImported === 1 ? " document" : " documents");

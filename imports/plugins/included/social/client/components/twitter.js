@@ -9,8 +9,7 @@ export function getTwitterMeta(props) {
   const title = props.title || document.title;
   const preferredUrl = props.url || location.origin + location.pathname;
   const url = encodeURIComponent(preferredUrl);
-  const username = props.settings.username;
-  const description = props.settings.description;
+  const { username, description } = props.settings.username;
 
   const meta = [
     { property: "twitter:card", content: "summary" },
@@ -44,14 +43,13 @@ class TwitterSocialButton extends Component {
   }
 
   get url() {
-    const props = this.props;
+    const { props } = this;
     const preferredUrl = props.url || location.origin + location.pathname;
     const url = encodeURIComponent(preferredUrl);
     const base = "https://twitter.com/intent/tweet";
-    const text = props.settings.description;
-    const username = props.settings.username;
+    const { username, description } = props.settings;
 
-    let href = base + "?url=" + url + "&text=" + text;
+    let href = base + "?url=" + url + "&text=" + description;
 
     if (username) {
       href += "&via=" + username;
@@ -93,6 +91,7 @@ class TwitterSocialButton extends Component {
 
 TwitterSocialButton.propTypes = {
   altIcon: PropTypes.bool,
+  settings: PropTypes.object,
   showText: PropTypes.bool,
   size: PropTypes.string
 };

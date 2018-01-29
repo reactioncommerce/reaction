@@ -9,9 +9,9 @@ import { Template } from "meteor/templating";
 Template.productSocial.helpers({
   customSocialSettings: function () {
     const product = ReactionProduct.selectedProduct();
-    let title = product.title;
+    let { title } = product;
     if (ReactionProduct.selectedVariant()) {
-      title = ReactionProduct.selectedVariant().title;
+      ({ title } = ReactionProduct.selectedVariant());
     }
 
     const settings = {

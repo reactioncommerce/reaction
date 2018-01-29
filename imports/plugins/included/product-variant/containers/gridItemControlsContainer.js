@@ -78,7 +78,7 @@ const wrapComponent = (Comp) => (
 );
 
 function composer(props, onData) {
-  const product = props.product;
+  const { product } = props;
   let isSelected;
 
   if (product) {

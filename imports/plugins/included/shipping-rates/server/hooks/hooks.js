@@ -71,7 +71,7 @@ function getShippingRates(previousQueryResults, cart) {
   let merchantShippingRates = false;
   const marketplaceSettings = Reaction.getMarketplaceSettings();
   if (marketplaceSettings && marketplaceSettings.enabled) {
-    merchantShippingRates = marketplaceSettings.public.merchantShippingRates;
+    ({ merchantShippingRates } = marketplaceSettings.public);
   }
 
   let pkgData;

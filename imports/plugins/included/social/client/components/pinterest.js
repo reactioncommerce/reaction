@@ -13,12 +13,12 @@ class PinterestSocialButton extends Component {
   }
 
   get url() {
-    const props = this.props;
+    const { props } = this;
     const preferredUrl = props.url || location.origin + location.pathname;
     const url = encodeURIComponent(preferredUrl);
-    const description = props.settings.description;
+    const { description } = props.settings;
     const baseUrl = "http://www.pinterest.com/pin/create/button/";
-    let media = props.settings.media;
+    let { media } = props.settings;
 
     if (props.settings.media) {
       if (!/^http(s?):\/\/+/.test(props.settings.media)) {
@@ -61,6 +61,7 @@ class PinterestSocialButton extends Component {
 
 PinterestSocialButton.propTypes = {
   altIcon: PropTypes.bool,
+  settings: PropTypes.object,
   showText: PropTypes.bool,
   size: PropTypes.string
 };
