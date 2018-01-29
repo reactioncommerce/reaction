@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
+import ReactionAlerts from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 import { Reaction } from "/client/api";
 import { groupPermissions } from "../helpers/accountsHelper";
 

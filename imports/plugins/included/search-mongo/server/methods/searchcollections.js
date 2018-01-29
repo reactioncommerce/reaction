@@ -78,7 +78,7 @@ export function getSearchParameters(collection = "products") {
   const customFields = filterFields(settings[collection].includes);
   const fieldSet = requiredFields[collection].concat(customFields);
   const weightObject = getScores(customFields, settings);
-  return { fieldSet: fieldSet, weightObject: weightObject, customFields: customFields };
+  return { fieldSet, weightObject, customFields };
 }
 
 export function buildProductSearchRecord(productId) {
@@ -252,7 +252,9 @@ export function buildOrderSearch(cb) {
   }
   const rawOrderSearchCollection = OrderSearch.rawCollection();
   rawOrderSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
-  rawOrderSearchCollection.createIndex({ shopId: 1, shippingName: 1, billingName: 1, userEmails: 1 }).catch(handleIndexUpdateFailures);
+  rawOrderSearchCollection.createIndex({
+    shopId: 1, shippingName: 1, billingName: 1, userEmails: 1
+  }).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }

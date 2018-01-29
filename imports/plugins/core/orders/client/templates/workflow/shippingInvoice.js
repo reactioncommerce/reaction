@@ -119,7 +119,7 @@ Template.coreOrderShippingInvoice.events({
     const order = instance.state.get("order");
     const invoiceTotal = getBillingInfo(order).invoice && getBillingInfo(order).invoice.total;
     const currencySymbol = instance.state.get("currency").symbol;
-    const paymentMethod = getBillingInfo(order).paymentMethod;
+    const { paymentMethod } = getBillingInfo(order);
 
     Meteor.subscribe("Packages", Reaction.getShopId());
     const packageId = paymentMethod && paymentMethod.paymentPackageId;

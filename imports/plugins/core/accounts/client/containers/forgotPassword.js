@@ -49,7 +49,7 @@ class ForgotPasswordContainer extends Component {
       this.setState({
         isLoading: false,
         formMessages: {
-          errors: errors
+          errors
         }
       });
       return;

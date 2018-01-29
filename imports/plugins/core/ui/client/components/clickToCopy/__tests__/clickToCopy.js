@@ -8,9 +8,9 @@ jest.mock("/imports/plugins/core/ui/client/components", () => ({
 }));
 
 import React from "react";
-import ClickToCopy from "../clickToCopy";
 import { shallow } from "enzyme";
 import shallowToJSON from "enzyme-to-json";
+import ClickToCopy from "../clickToCopy";
 
 /**
  * ClickToCopy is a display element that will copy text to your clipboard when clicked
@@ -26,14 +26,14 @@ afterEach(() => {
  */
 
 test("ClickToCopy snapshot test", () => {
-  const component = shallow(
+  const component = shallow((
     <ClickToCopy
       copyToClipboard="Text to copy to clipboard"
       displayText="Text to display"
       i18nKeyTooltip="path.to.i18n.key"
       tooltip="Tooltip text"
     />
-  );
+  ));
   const tree = shallowToJSON(component);
   expect(tree).toMatchSnapshot();
 });

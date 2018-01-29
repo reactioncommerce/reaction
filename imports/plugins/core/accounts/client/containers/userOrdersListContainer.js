@@ -10,7 +10,7 @@ const handlers = {};
 
 handlers.handleDisplayMedia = (item) => {
   const variantId = item.variants._id;
-  const productId = item.productId;
+  const { productId } = item;
 
   const variantImage = Media.findOne({
     "metadata.variantId": variantId,
@@ -34,7 +34,7 @@ handlers.handleDisplayMedia = (item) => {
 
 function composer(props, onData) {
   // Get user order from props
-  const orders = props.orders;
+  const { orders } = props;
   const allOrdersInfo = [];
   let isProfilePage = false;
 

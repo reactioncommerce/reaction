@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
@@ -47,7 +48,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "My Little Pony",
-        shopId: shopId,
+        shopId,
         type: "simple",
         price: priceRangeA,
         isVisible: false,
@@ -59,7 +60,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "Shopkins - Peachy",
-        shopId: shopId,
+        shopId,
         price: priceRangeB,
         type: "simple",
         isVisible: true,
@@ -71,7 +72,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "Fresh Tomatoes",
-        shopId: shopId,
+        shopId,
         price: priceRangeA,
         type: "simple",
         isVisible: true,
@@ -255,7 +256,7 @@ describe("Publication", function () {
       it("should return products from all shops when multiple shops are provided", function (done) {
         const filters = { shops: [shopId] };
         const productScrollLimit = 24;
-        sandbox.stub(Reaction, "getCurrentShop", function () {return { _id: "123" };});
+        sandbox.stub(Reaction, "getCurrentShop", function () { return { _id: "123" }; });
         sandbox.stub(Roles, "userIsInRole", () => true);
         sandbox.stub(Reaction, "hasPermission", () => true);
         sandbox.stub(Reaction, "getShopsWithRoles", () =>  [shopId]);

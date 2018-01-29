@@ -2,11 +2,11 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 import { Products, Shops, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { findProductMedia } from "./product";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 //
 // define search filters as a schema so we can validate
@@ -291,7 +291,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
     // Get _ids of top-level products
     const productIds = Products.find(selector, {
-      sort: sort,
+      sort,
       limit: productScrollLimit
     }).map((product) => product._id);
 
@@ -438,7 +438,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     }
     // Revision control is disabled, but is admin
     const productCursor = Products.find(newSelector, {
-      sort: sort,
+      sort,
       limit: productScrollLimit
     });
     const mediaProductIds = productCursor.fetch().map((p) => p._id);
@@ -453,7 +453,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   // This is where the publication begins for non-admin users
   // Get _ids of top-level products
   const productIds = Products.find(selector, {
-    sort: sort,
+    sort,
     limit: productScrollLimit
   }).map((product) => product._id);
 
@@ -535,7 +535,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
   // Returning Complete product tree for top level products to avoid sold out warning.
   const productCursor = Products.find(newSelector, {
-    sort: sort
+    sort
     // TODO: REVIEW Limiting final products publication for non-admins
     // I think we shouldn't limit here, otherwise we are limited to 24 total products which
     // could be far less than 24 top-level products

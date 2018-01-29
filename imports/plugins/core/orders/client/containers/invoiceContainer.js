@@ -179,7 +179,7 @@ class InvoiceContainer extends Component {
    */
   handleDisplayMedia = (item) => {
     const variantId = item.variants._id;
-    const productId = item.productId;
+    const { productId } = item;
 
     const variantImage = Media.findOne({
       "metadata.variantId": variantId,
@@ -211,7 +211,7 @@ class InvoiceContainer extends Component {
   }
 
   hasRefundingEnabled() {
-    const order = this.state.order;
+    const { order } = this.state;
     const orderBillingInfo = getBillingInfo(order);
     const paymentMethodId = orderBillingInfo.paymentMethod && orderBillingInfo.paymentMethod.paymentPackageId;
     const paymentMethodName = orderBillingInfo.paymentMethod && orderBillingInfo.paymentMethod.paymentSettingsKey;
@@ -225,7 +225,7 @@ class InvoiceContainer extends Component {
   handleApprove = (event) => {
     event.preventDefault();
 
-    const order = this.state.order;
+    const { order } = this.state;
     approvePayment(order);
   }
 
@@ -236,7 +236,7 @@ class InvoiceContainer extends Component {
       isCapturing: true
     });
 
-    const order = this.state.order;
+    const { order } = this.state;
     capturePayments(order, () => {
       this.setState({
         isCapturing: false
@@ -246,7 +246,7 @@ class InvoiceContainer extends Component {
 
   handleCancelPayment = (event) => {
     event.preventDefault();
-    const order = this.state.order;
+    const { order } = this.state;
     const invoiceTotal = getBillingInfo(order).invoice && getBillingInfo(order).invoice.total;
     const currencySymbol = this.state.currency.symbol;
 
@@ -296,12 +296,12 @@ class InvoiceContainer extends Component {
     event.preventDefault();
 
     const currencySymbol = this.state.currency.symbol;
-    const order = this.state.order;
+    const { order } = this.state;
     const paymentMethod = orderCreditMethod(order) && orderCreditMethod(order).paymentMethod;
     const orderTotal = paymentMethod && paymentMethod.amount;
     const discounts = paymentMethod && paymentMethod.discounts;
     const refund = value;
-    const refunds = this.state.refunds;
+    const { refunds } = this.state;
     const refundTotal = refunds && Array.isArray(refunds) && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
 
     let adjustedTotal;
@@ -322,7 +322,7 @@ class InvoiceContainer extends Component {
       });
     } else {
       Alerts.alert({
-        title: i18next.t("order.applyRefundToThisOrder", { refund: refund, currencySymbol: currencySymbol }),
+        title: i18next.t("order.applyRefundToThisOrder", { refund, currencySymbol }),
         showCancelButton: true,
         confirmButtonText: i18next.t("order.applyRefund")
       }, (isConfirm) => {
@@ -349,7 +349,7 @@ class InvoiceContainer extends Component {
   handleRefundItems = () => {
     const paymentMethod = orderCreditMethod(this.state.order) && orderCreditMethod(this.state.order).paymentMethod;
     const orderMode = paymentMethod && paymentMethod.mode;
-    const order = this.state.order;
+    const { order } = this.state;
 
     // Check if payment is yet to be captured approve and capture first before return
     if (orderMode === "authorize") {
@@ -510,9 +510,10 @@ function approvePayment(order) {
     paymentMethod.invoice.subtotal
     + paymentMethod.invoice.shipping
     + paymentMethod.invoice.taxes
-    , 2);
+    , 2
+  );
 
-  const discount = order.discount;
+  const { discount } = order;
   // TODO: review Discount cannot be greater than original total price
   // logic is probably not valid any more. Discounts aren't valid below 0 order.
   if (discount > orderTotal) {
@@ -600,8 +601,7 @@ function capturePayments(order, onCancel) {
 }
 
 const composer = (props, onData) => {
-  const order = props.order;
-  const refunds = props.refunds;
+  const { order, refunds } = props;
 
   const shopBilling = getBillingInfo(order);
   const creditMethod = orderCreditMethod(order);

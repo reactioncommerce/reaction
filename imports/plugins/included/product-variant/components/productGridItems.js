@@ -152,9 +152,7 @@ class ProductGridItems extends Component {
 
     if (this.props.canEdit) {
       return (
-        this.props.connectDropTarget(
-          this.props.connectDragSource(productItem)
-        )
+        this.props.connectDropTarget(this.props.connectDragSource(productItem))
       );
     }
 

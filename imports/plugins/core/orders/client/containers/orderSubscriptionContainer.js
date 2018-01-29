@@ -15,7 +15,7 @@ class OrderSubscription extends Component {
 function composer(props, onData) {
   const subscription = Meteor.subscribe("SearchResults", "orders", props.searchQuery);
   let orderSearchResultsIds;
-  const query = props.query;
+  const { query } = props;
 
   if (subscription.ready()) {
     const orderSearchResults = OrderSearch.find().fetch();

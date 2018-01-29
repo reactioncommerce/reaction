@@ -204,7 +204,7 @@ Template.shopifySync.events({
 
 AutoForm.hooks({
   "shopify-connect-update-form": {
-    onSuccess: function () {
+    onSuccess() {
       return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
     onError(error) {

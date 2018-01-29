@@ -46,7 +46,7 @@ Template.shippingRatesSettings.helpers({
         $(".shipping-grid-row").removeClass("active");
         return state.set({
           isEditing: !isEditing,
-          editingId: editingId
+          editingId
         });
       }
     };
@@ -76,7 +76,7 @@ Template.shippingRatesSettings.helpers({
 
     // add i18n handling to headers
     const customColumnMetadata = [];
-    filteredFields.forEach(function (field) {
+    filteredFields.forEach((field) => {
       const columnMeta = {
         accessor: field,
         Header: i18next.t(`admin.shippingGrid.${field}`)
@@ -100,14 +100,14 @@ Template.shippingRatesSettings.helpers({
     return {
       component: SortableTable,
       publication: "Shipping",
-      transform: transform,
+      transform,
       collection: Shipping,
       matchingResultsCount: "shipping-count",
       showFilter: true,
       rowMetadata: customRowMetaData,
-      filteredFields: filteredFields,
+      filteredFields,
       columns: filteredFields,
-      noDataMessage: noDataMessage,
+      noDataMessage,
       onRowClick: editRow,
       columnMetadata: customColumnMetadata,
       externalLoadingComponent: Loading
@@ -144,21 +144,21 @@ Template.shippingRatesSettings.helpers({
 // on submit lets clear the form state
 //
 Template.shippingRatesSettings.events({
-  "submit #shipping-rates-update-form": function () {
+  "submit #shipping-rates-update-form"() {
     const instance = Template.instance();
     instance.state.set({
       isEditing: false,
       editingId: null
     });
   },
-  "submit #shipping-rates-insert-form": function () {
+  "submit #shipping-rates-insert-form"() {
     const instance = Template.instance();
     instance.state.set({
       isEditing: true,
       editingId: null
     });
   },
-  "click .cancel, .shipping-grid-row .active": function () {
+  "click .cancel, .shipping-grid-row .active"() {
     const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
@@ -168,7 +168,7 @@ Template.shippingRatesSettings.events({
     // ugly hack
     $(".shipping-grid-row").removeClass("active");
   },
-  "click .delete": function () {
+  "click .delete"() {
     const confirmTitle = i18next.t("admin.shippingSettings.confirmRateDelete");
     const confirmButtonText = i18next.t("app.delete");
     const instance = Template.instance();
@@ -178,7 +178,7 @@ Template.shippingRatesSettings.events({
       title: confirmTitle,
       type: "warning",
       showCancelButton: true,
-      confirmButtonText: confirmButtonText
+      confirmButtonText
     }, (isConfirm) => {
       if (isConfirm) {
         if (id) {
@@ -191,7 +191,7 @@ Template.shippingRatesSettings.events({
       }
     });
   },
-  "click .shipping-grid-row": function (event) {
+  "click .shipping-grid-row"(event) {
     // toggle all rows off, then add our active row
     $(".shipping-grid-row").removeClass("active");
     Template.instance().$(event.currentTarget).addClass("active");
@@ -203,24 +203,19 @@ Template.shippingRatesSettings.events({
 //
 AutoForm.hooks({
   "shipping-rates-update-form": {
-    onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"),
-        "success");
+    onSuccess() {
+      return Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
     },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error"
-      );
+    onError(operation, error) {
+      return Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error");
     }
   },
   "shipping-rates-insert-form": {
-    onSuccess: function () {
+    onSuccess() {
       return Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
     },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error"
-      );
+    onError(operation, error) {
+      return Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error");
     }
   }
 });

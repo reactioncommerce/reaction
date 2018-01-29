@@ -4,63 +4,65 @@ import { Job } from "meteor/vsivsi:job-collection";
 import { Jobs } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
 
-// While we don't necessarily need to wait for anything to add a job
-// in this case we need to have packages loaded so we can check for the OER API key
-Hooks.Events.add("afterCoreInit", () => {
-  const settings = Reaction.getShopSettings();
-  const exchangeConfig = settings.openexchangerates || {};
+export function setupFetchFlushCurrencyHooks() {
+  // While we don't necessarily need to wait for anything to add a job
+  // in this case we need to have packages loaded so we can check for the OER API key
+  Hooks.Events.add("afterCoreInit", () => {
+    const settings = Reaction.getShopSettings();
+    const exchangeConfig = settings.openexchangerates || {};
 
-  if (exchangeConfig.appId) {
-    const refreshPeriod = exchangeConfig.refreshPeriod || "every 4 hours";
-    Logger.debug(`Adding shop/fetchCurrencyRates to JobControl. Refresh ${refreshPeriod}`);
-    new Job(Jobs, "shop/fetchCurrencyRates", {})
-      .priority("normal")
-      .retry({
-        retries: 5,
-        wait: 60000,
-        backoff: "exponential" // delay by twice as long for each subsequent retry
-      })
-      .repeat({
-        schedule: later.parse.text(refreshPeriod)
-      })
-      .save({
-        // Cancel any jobs of the same type,
-        // but only if this job repeats forever.
-        cancelRepeats: true
-      });
-  } else {
-    Logger.warn("OpenExchangeRates API not configured. Not adding fetchRates job");
-  }
-});
+    if (exchangeConfig.appId) {
+      const refreshPeriod = exchangeConfig.refreshPeriod || "every 4 hours";
+      Logger.debug(`Adding shop/fetchCurrencyRates to JobControl. Refresh ${refreshPeriod}`);
+      new Job(Jobs, "shop/fetchCurrencyRates", {})
+        .priority("normal")
+        .retry({
+          retries: 5,
+          wait: 60000,
+          backoff: "exponential" // delay by twice as long for each subsequent retry
+        })
+        .repeat({
+          schedule: later.parse.text(refreshPeriod)
+        })
+        .save({
+          // Cancel any jobs of the same type,
+          // but only if this job repeats forever.
+          cancelRepeats: true
+        });
+    } else {
+      Logger.warn("OpenExchangeRates API not configured. Not adding fetchRates job");
+    }
+  });
 
-Hooks.Events.add("afterCoreInit", () => {
-  const settings = Reaction.getShopSettings();
-  const exchangeConfig = settings.openexchangerates || {};
+  Hooks.Events.add("afterCoreInit", () => {
+    const settings = Reaction.getShopSettings();
+    const exchangeConfig = settings.openexchangerates || {};
 
-  if (exchangeConfig.appId) {
-    Logger.debug("Adding shop/flushCurrencyRates to JobControl");
-    // TODO: Add this as a configurable option
-    const refreshPeriod = "Every 24 hours";
-    new Job(Jobs, "shop/flushCurrencyRates", {})
-      .priority("normal")
-      .retry({
-        retries: 5,
-        wait: 60000,
-        backoff: "exponential"
-      })
-      .repeat({
-        schedule: later.parse.text(refreshPeriod)
-      })
-      .save({
-        cancelRepeats: true
-      });
-  } else {
-    Logger.warn("OpenExchangeRates API not configured. Not adding flushRates job");
-  }
-});
+    if (exchangeConfig.appId) {
+      Logger.debug("Adding shop/flushCurrencyRates to JobControl");
+      // TODO: Add this as a configurable option
+      const refreshPeriod = "Every 24 hours";
+      new Job(Jobs, "shop/flushCurrencyRates", {})
+        .priority("normal")
+        .retry({
+          retries: 5,
+          wait: 60000,
+          backoff: "exponential"
+        })
+        .repeat({
+          schedule: later.parse.text(refreshPeriod)
+        })
+        .save({
+          cancelRepeats: true
+        });
+    } else {
+      Logger.warn("OpenExchangeRates API not configured. Not adding flushRates job");
+    }
+  });
+}
 
 
-export default function () {
+export function fetchRateJobs() {
   const fetchCurrencyRates = Jobs.processJobs("shop/fetchCurrencyRates", {
     pollInterval: 60 * 60 * 1000, // backup polling, see observer below
     workTimeout: 180 * 1000

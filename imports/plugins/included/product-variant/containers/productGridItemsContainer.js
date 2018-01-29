@@ -184,7 +184,7 @@ const wrapComponent = (Comp) => (
       const handle = product.__published && product.__published.handle || product.handle;
 
       Reaction.Router.go("product", {
-        handle: handle
+        handle
       });
 
       // Open actionView to productDetails panel
@@ -213,7 +213,7 @@ const wrapComponent = (Comp) => (
           }
 
           Reaction.Router.go("product", {
-            handle: handle
+            handle
           });
 
           this.props.unmountMe();
@@ -245,7 +245,7 @@ const wrapComponent = (Comp) => (
         const handle = product.__published && product.__published.handle || product.handle;
 
         Reaction.Router.go("product", {
-          handle: handle
+          handle
         });
 
         if (this.props.isSearch) {

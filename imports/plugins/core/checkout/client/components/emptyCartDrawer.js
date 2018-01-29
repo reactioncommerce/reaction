@@ -7,7 +7,7 @@ import { Reaction } from "/client/api";
 function handleKeepShopping(event) {
   event.stopPropagation();
   event.preventDefault();
-  return $("#cart-drawer-container").fadeOut(300, function () {
+  return $("#cart-drawer-container").fadeOut(300, () => {
     return Reaction.toggleSession("displayCart");
   });
 }

@@ -69,7 +69,7 @@ function publishTheme(theme) {
     $set: {
       theme: {
         themeId: theme._id,
-        styles: styles
+        styles
       }
     }
   });

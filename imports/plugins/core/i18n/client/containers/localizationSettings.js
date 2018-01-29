@@ -74,12 +74,12 @@ function composer(props, onData) {
         label: language.label,
         value: language.i18n,
         enabled: (language.i18n === shop.language || language.enabled),
-        i18nKey: i18nKey
+        i18nKey
       });
     }
   }
 
-  const currencies = shop.currencies;
+  const { currencies } = shop;
   const currencyList = [];
   const currencyOptions = [];
   for (const currency in currencies) {
@@ -108,7 +108,7 @@ function composer(props, onData) {
   }
 
 
-  const unitsOfMeasure = Shops.findOne().unitsOfMeasure;
+  const { unitsOfMeasure } = Shops.findOne();
   const uomOptions = [];
   if (Array.isArray(unitsOfMeasure)) {
     for (const measure of unitsOfMeasure) {
@@ -119,7 +119,7 @@ function composer(props, onData) {
     }
   }
 
-  const unitsOfLength = Shops.findOne().unitsOfLength;
+  const { unitsOfLength } = Shops.findOne();
   const uolOptions = [];
   if (Array.isArray(unitsOfLength)) {
     for (const length of unitsOfLength) {
@@ -133,7 +133,7 @@ function composer(props, onData) {
   const label = i18next.t("app.timezoneOptions", "Choose timezone");
   const timezoneOptions = [{
     value: "",
-    label: label
+    label
   }];
   const timezones = moment.tz.names();
   for (const timezone of timezones) {

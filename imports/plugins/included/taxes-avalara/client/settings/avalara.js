@@ -87,7 +87,7 @@ Template.avalaraSettings.helpers({
 
     // add i18n handling to headers
     const customColumnMetadata = [];
-    filteredFields.forEach(function (field) {
+    filteredFields.forEach((field) => {
       const columnMeta = {
         accessor: field,
         Header: i18next.t(`logGrid.columns.${field}`)
@@ -103,9 +103,9 @@ Template.avalaraSettings.helpers({
       matchingResultsCount: "logs-count",
       showFilter: true,
       rowMetadata: customRowMetaData,
-      filteredFields: filteredFields,
+      filteredFields,
       columns: filteredFields,
-      noDataMessage: noDataMessage,
+      noDataMessage,
       onRowClick: editRow,
       columnMetadata: customColumnMetadata,
       externalLoadingComponent: Loading,
@@ -130,12 +130,12 @@ Template.avalaraSettings.helpers({
 });
 
 Template.avalaraSettings.events({
-  "click .template-grid-row": function (event) {
+  "click .template-grid-row"(event) {
     // toggle all rows off, then add our active row
     $(".template-grid-row").removeClass("active");
     Template.instance().$(event.currentTarget).addClass("active");
   },
-  "click [data-event-action=testCredentials]": function (event) {
+  "click [data-event-action=testCredentials]"(event) {
     const formId = "avalara-update-form";
     if (!AutoForm.validateForm(formId)) {
       return null;
@@ -145,7 +145,7 @@ Template.avalaraSettings.events({
     const formData = AutoForm.getFormValues(formId);
     const settings = _.get(formData, "insertDoc.settings.avalara");
 
-    Meteor.call("avalara/testCredentials", settings, function (error, result) {
+    Meteor.call("avalara/testCredentials", settings, (error, result) => {
       if (error && error.message) {
         return Alerts.toast(`${i18next.t("settings.testCredentialsFailed")} ${error.message}`, "error");
       }
@@ -161,14 +161,11 @@ Template.avalaraSettings.events({
 
 AutoForm.hooks({
   "avalara-update-form": {
-    onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.taxSettings.shopTaxMethodsSaved"),
-        "success");
+    onSuccess() {
+      return Alerts.toast(i18next.t("admin.taxSettings.shopTaxMethodsSaved"), "success");
     },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.taxSettings.shopTaxMethodsFailed")} ${error}`, "error"
-      );
+    onError(operation, error) {
+      return Alerts.toast(`${i18next.t("admin.taxSettings.shopTaxMethodsFailed")} ${error}`, "error");
     }
   }
 });

@@ -8,11 +8,11 @@ import { BraintreePackageConfig } from "../../lib/collections/schemas";
 import "./braintree.html";
 
 Template.braintreeSettings.helpers({
-  BraintreePackageConfig: function () {
+  BraintreePackageConfig() {
     return BraintreePackageConfig;
   },
 
-  packageData: function () {
+  packageData() {
     return Packages.findOne({
       name: "reaction-braintree"
     });
@@ -20,7 +20,7 @@ Template.braintreeSettings.helpers({
 });
 
 Template.braintree.helpers({
-  packageData: function () {
+  packageData() {
     const packageData = Packages.findOne({
       name: "reaction-braintree"
     });
@@ -29,17 +29,17 @@ Template.braintree.helpers({
 });
 
 Template.braintree.events({
-  "click [data-event-action=showBraintreeSettings]": function () {
+  "click [data-event-action=showBraintreeSettings]"() {
     Reaction.showActionView();
   }
 });
 
 AutoForm.hooks({
   "braintree-update-form": {
-    onSuccess: function () {
+    onSuccess() {
       return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
-    onError: function (error) {
+    onError(error) {
       return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
     }
   }

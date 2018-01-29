@@ -96,7 +96,7 @@ class ButtonSelect extends Component {
     this.handleToggle();
 
     return this.setState({
-      currentButton: currentButton,
+      currentButton,
       defaultBgClassNames: classnames({ "button-select": true, [button.bgColor]: true }),
       activeButton: button.name
     }, () => {

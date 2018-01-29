@@ -96,18 +96,16 @@ class PermissionsList extends Component {
   renderPermissions(permissions) {
     const jsx = [];
     permissions.forEach((permission, key) => {
-      jsx.push(
-        <div className="permission-item" key={`${permission.name}-${key}`}>
-          <Components.ListItem
-            label={permission.label}
-            actionType="switch"
-            switchOn={this.checked(permission.name)}
-            switchName={permission.name}
-            onSwitchChange={this.togglePermission(permission)}
-          />
-          {this.renderSubPermissions(permission)}
-        </div>
-      );
+      jsx.push(<div className="permission-item" key={`${permission.name}-${key}`}>
+        <Components.ListItem
+          label={permission.label}
+          actionType="switch"
+          switchOn={this.checked(permission.name)}
+          switchName={permission.name}
+          onSwitchChange={this.togglePermission(permission)}
+        />
+        {this.renderSubPermissions(permission)}
+      </div>);
     });
     return jsx;
   }

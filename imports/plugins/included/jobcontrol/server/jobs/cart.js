@@ -7,28 +7,6 @@ import { Hooks, Logger, Reaction } from "/server/api";
 import { ServerSessions } from "/server/publications/collections/sessions";
 
 
-Hooks.Events.add("afterCoreInit", () => {
-  Logger.debug("Adding Job removeStaleCart and Accounts to jobControl");
-  const settings = Reaction.getShopSettings();
-  if (settings.cart) {
-    new Job(Jobs, "cart/removeFromCart", {})
-      .priority("normal")
-      .retry({
-        retries: 5,
-        wait: 60000,
-        backoff: "exponential" // delay by twice as long for each subsequent retry
-      })
-      .repeat({
-        schedule: later.parse.text("every day")
-      })
-      .save({
-        cancelRepeats: true
-      });
-  } else {
-    Logger.debug("No cart cleanup schedule");
-  }
-});
-
 /**
  * {Function} that fetches stale carts
  * @param {Object} olderThan older than date
@@ -36,7 +14,32 @@ Hooks.Events.add("afterCoreInit", () => {
  */
 const getstaleCarts = (olderThan) => Cart.find({ updatedAt: { $lte: olderThan } }).fetch();
 
-export default () => {
+
+export function setupStaleCartHook() {
+  Hooks.Events.add("afterCoreInit", () => {
+    Logger.debug("Adding Job removeStaleCart and Accounts to jobControl");
+    const settings = Reaction.getShopSettings();
+    if (settings.cart) {
+      new Job(Jobs, "cart/removeFromCart", {})
+        .priority("normal")
+        .retry({
+          retries: 5,
+          wait: 60000,
+          backoff: "exponential" // delay by twice as long for each subsequent retry
+        })
+        .repeat({
+          schedule: later.parse.text("every day")
+        })
+        .save({
+          cancelRepeats: true
+        });
+    } else {
+      Logger.debug("No cart cleanup schedule");
+    }
+  });
+}
+
+export function cartCleanupJob() {
   const removeStaleCart = Jobs.processJobs("cart/removeFromCart", {
     pollInterval: 60 * 60 * 1000, // backup polling, see observer below
     workTimeout: 180 * 1000
@@ -51,12 +54,10 @@ export default () => {
         const user = Accounts.findOne({ _id: cart.userId });
         if (!user.emails.length) {
           const removeCart = Cart.remove({ userId: user._id });
-          const removeAccount = Accounts.remove(
-            {
-              _id: cart.userId,
-              emails: []
-            }
-          );
+          const removeAccount = Accounts.remove({
+            _id: cart.userId,
+            emails: []
+          });
           const destroySession = ServerSessions.remove({ _id: cart.sessionId });
           Meteor.users.remove({ _id: user._id, emails: [] }); // clears out anonymous user
           if (removeCart && removeAccount && destroySession) {
@@ -84,4 +85,4 @@ export default () => {
       return removeStaleCart.trigger();
     }
   });
-};
+}
