@@ -51,6 +51,12 @@ class Button extends Component {
     }
   }
 
+  handleKeyUp = (event) => {
+    if (event.keyCode === 32 || event.keyCode === 13) {
+      this.handleClick();
+    }
+  }
+
   renderOnStateIcon() {
     if (this.props.onIcon) {
       return (
@@ -154,6 +160,18 @@ class Button extends Component {
 
     if (tagName === "a") {
       extraProps.href = "#";
+    }
+
+    // If this button is not an anchor, or an actual button, then add
+    // some extra props related to ARIA compliance for interactive components.
+    //
+    // - onKeyUp event handler for keyboard navigation
+    // - role=button, as it's a simulated button
+    // - tabIndex=0 so it obeys the natural tab flow
+    if (tagName !== "button" && tagName !== "a") {
+      extraProps.onKeyUp = this.handleKeyUp;
+      extraProps.role = "button";
+      extraProps.tabIndex = 0;
     }
 
     const buttonProps = Object.assign({
