@@ -8,12 +8,8 @@ class Brand extends Component {
     logo: PropTypes.string,
     title: PropTypes.string
   }
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
 
-  handleClick(event) {
+  handleClick = (event) => {
     event.preventDefault();
     Reaction.Router.go("/");
   }
