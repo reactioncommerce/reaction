@@ -36,7 +36,7 @@ const composer = (props, onData) => {
           language.translation = `languages.${language.label.toLowerCase()}`;
           // appending a helper to let us know this
           // language is currently selected
-          const profile = Meteor.user().profile;
+          const { profile } = Meteor.user();
           if (profile && profile.lang) {
             if (profile.lang === language.i18n) {
               currentLanguage = profile.lang;

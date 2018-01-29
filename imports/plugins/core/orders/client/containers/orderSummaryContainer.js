@@ -36,7 +36,7 @@ class OrderSummaryContainer extends Component {
   }
 
   shipmentStatus = () => {
-    const order = this.props.order;
+    const { order } = this.props;
     const shipment = getShippingInfo(this.props.order);
 
     if (shipment.delivered) {
@@ -150,8 +150,8 @@ const composer = (props, onData) => {
       }
 
       onData(null, {
-        order: order,
-        profileShippingAddress: profileShippingAddress
+        order,
+        profileShippingAddress
       });
     } else {
       onData(null, {

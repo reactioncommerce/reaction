@@ -14,11 +14,11 @@ import * as Schemas from "/lib/collections/schemas";
 import { toCamelCase } from "/lib/api";
 
 
-Template.registerHelper("Collections", function () {
+Template.registerHelper("Collections", () => {
   return Collections;
 });
 
-Template.registerHelper("Schemas", function () {
+Template.registerHelper("Schemas", () => {
   return Schemas;
 });
 
@@ -28,7 +28,7 @@ Template.registerHelper("Schemas", function () {
  * @return {Boolean} returns true/null if user has registered
  */
 
-Template.registerHelper("currentUser", function () {
+Template.registerHelper("currentUser", () => {
   if (typeof Reaction === "object") {
     const shopId = Reaction.getShopId();
     const user = Accounts.user();
@@ -49,7 +49,7 @@ Template.registerHelper("currentUser", function () {
  * @summary formats moment.js months into an array for autoform selector
  * @return {Array} returns array of months [value:, label:]
  */
-Template.registerHelper("monthOptions", function (showDefaultOption = true) {
+Template.registerHelper("monthOptions", (showDefaultOption = true) => {
   const label = i18next.t("app.monthOptions", "Choose month");
   const localLocale = tz;
 
@@ -72,7 +72,7 @@ Template.registerHelper("monthOptions", function (showDefaultOption = true) {
   if (showDefaultOption) {
     monthOptions.push({
       value: "",
-      label: label
+      label
     });
   }
 
@@ -97,14 +97,14 @@ Template.registerHelper("monthOptions", function (showDefaultOption = true) {
  * @summary formats moment.js next 9 years into array for autoform selector
  * @return {Array} returns array of years [value:, label:]
  */
-Template.registerHelper("yearOptions", function (showDefaultOption = true) {
+Template.registerHelper("yearOptions", (showDefaultOption = true) => {
   const label = i18next.t("app.yearOptions", "Choose year");
   const yearOptions = [];
 
   if (showDefaultOption) {
     yearOptions.push({
       value: "",
-      label: label
+      label
     });
   }
 
@@ -124,11 +124,11 @@ Template.registerHelper("yearOptions", function (showDefaultOption = true) {
  * @summary formats moment.js timezones into array for autoform selector
  * @return {Array} returns array of timezones [value:, label:]
  */
-Template.registerHelper("timezoneOptions", function () {
+Template.registerHelper("timezoneOptions", () => {
   const label = i18next.t("app.timezoneOptions", "Choose timezone");
   const timezoneOptions = [{
     value: "",
-    label: label
+    label
   }];
   const timezones = moment.tz.names();
   for (const timezone of timezones) {
@@ -147,7 +147,7 @@ Template.registerHelper("timezoneOptions", function () {
  * @param {String} str - camelcased string
  * @return {String} returns space formatted string
  */
-Template.registerHelper("camelToSpace", function (str) {
+Template.registerHelper("camelToSpace", (str) => {
   const downCamel = str.replace(/\W+/g, "-").replace(/([a-z\d])([A-Z])/g, "$1 $2");
   return downCamel.toLowerCase();
 });
@@ -158,7 +158,7 @@ Template.registerHelper("camelToSpace", function (str) {
  * @param {String} str - string
  * @return {String} returns lowercased string
  */
-Template.registerHelper("toLowerCase", function (str) {
+Template.registerHelper("toLowerCase", (str) => {
   return str.toLowerCase();
 });
 
@@ -168,7 +168,7 @@ Template.registerHelper("toLowerCase", function (str) {
  * @param {String} str - string
  * @return {String} returns uppercased string
  */
-Template.registerHelper("toUpperCase", function (str) {
+Template.registerHelper("toUpperCase", (str) => {
   return str.toUpperCase();
 });
 
@@ -178,7 +178,7 @@ Template.registerHelper("toUpperCase", function (str) {
  * @param {String} str - string
  * @return {String} returns string with first letter capitalized
  */
-Template.registerHelper("capitalize", function (str) {
+Template.registerHelper("capitalize", (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 });
 
@@ -188,7 +188,7 @@ Template.registerHelper("capitalize", function (str) {
  * @param {String} str - string
  * @return {String|undefined} returns camelCased string
  */
-Template.registerHelper("toCamelCase", function (str) {
+Template.registerHelper("toCamelCase", (str) => {
   return !!str && toCamelCase(str);
 });
 
@@ -198,7 +198,7 @@ Template.registerHelper("toCamelCase", function (str) {
  * @summary get the shop name
  * @return {String} returns site name
  */
-Template.registerHelper("siteName", function () {
+Template.registerHelper("siteName", () => {
   const shop = Collections.Shops.findOne();
   return typeof shop === "object" && shop.name ? shop.name : "";
 });
@@ -216,7 +216,7 @@ Template.registerHelper("siteName", function () {
  * @param {String} v2 - second variable to compare
  * @return {Boolean} returns true/false
  */
-Template.registerHelper("condition", function (v1, operator, v2) {
+Template.registerHelper("condition", (v1, operator, v2) => {
   switch (operator) {
     case "==":
     case "eq":
@@ -260,7 +260,7 @@ Template.registerHelper("condition", function (v1, operator, v2) {
  * @param {String} v2 - variable two
  * @return {String} returns v1 || v2
  */
-Template.registerHelper("orElse", function (v1, v2) {
+Template.registerHelper("orElse", (v1, v2) => {
   return v1 || v2;
 });
 
@@ -270,12 +270,12 @@ Template.registerHelper("orElse", function (v1, v2) {
  * @param {Object} context - object to parse into key / value
  * @return {Array} returns array[key:,value:]
  */
-Template.registerHelper("key_value", function (context) {
+Template.registerHelper("key_value", (context) => {
   const result = [];
-  _.each(context, function (value, key) {
+  _.each(context, (value, key) => {
     return result.push({
-      key: key,
-      value: value
+      key,
+      value
     });
   });
   return result;
@@ -288,7 +288,7 @@ Template.registerHelper("key_value", function (context) {
  * @param {String} text - text
  * @returns {String} returns formatted Spacebars.SafeString
  */
-Template.registerHelper("nl2br", function (text) {
+Template.registerHelper("nl2br", (text) => {
   const nl2br = (`${text}`).replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2");
   return new Spacebars.SafeString(nl2br);
 });
@@ -304,7 +304,7 @@ Template.registerHelper("nl2br", function (text) {
  * @param {String} block - hash of moment options, ie: format=""
  * @return {Date} return formatted date
  */
-Template.registerHelper("dateFormat", function (context, block) {
+Template.registerHelper("dateFormat", (context, block) => {
   const f = block.hash.format || "MMM DD, YYYY hh:mm:ss A";
   return moment(context).format(f);
 });
@@ -319,7 +319,7 @@ Template.registerHelper("dateFormat", function (context, block) {
  * @param {String} context - moment context
  * @return {Date} return formatted date
  */
-Template.registerHelper("timeAgo", function (context) {
+Template.registerHelper("timeAgo", (context) => {
   return moment(context).from(new Date());
 });
 
@@ -332,7 +332,7 @@ Template.registerHelper("timeAgo", function (context) {
  * @param {String} pString - plural string ie " thing"
  * @todo adapt to, and use i18next
  */
-Template.registerHelper("pluralize", function (nCount, pString) {
+Template.registerHelper("pluralize", (nCount, pString) => {
   if (nCount === 1) {
     return `1 ${pString}`;
   }

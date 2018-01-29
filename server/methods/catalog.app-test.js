@@ -1,5 +1,6 @@
-/* eslint dot-notation: 0 */
-/* eslint no-loop-func: 0 */
+/* eslint dot-notation:0 */
+/* eslint no-loop-func:0 */
+/* eslint prefer-arrow-callback:0 */
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
@@ -333,35 +334,33 @@ describe("core product methods", function () {
       return done();
     });
 
-    it("product should be cloned with all variants and child variants with equal data, but not the same `_id`s",
-      function (done) {
-        sandbox.stub(Reaction, "hasPermission", () => true);
-        sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
-          check(args, [Match.Any]);
-        });
-        const product = addProduct();
-        const variants = Products.find({ ancestors: { $in: [product._id] } }).fetch();
-        expect(variants.length).to.equal(3);
-        Meteor.call("products/cloneProduct", product);
-        const clone = Products.find({
-          _id: {
-            $ne: product._id
-          },
-          type: "simple"
-        }).fetch()[0];
-        const cloneVariants = Products.find({
-          ancestors: { $in: [clone._id] }
-        }).fetch();
-        expect(cloneVariants.length).to.equal(3);
-        for (let i = 0; i < variants.length; i++) {
-          expect(cloneVariants.some(clonedVariant => {
-            return clonedVariant.title === variants[i].title;
-          })).to.be.ok;
-        }
-
-        return done();
+    it("product should be cloned with all variants and child variants with equal data, but not the same `_id`s", function (done) {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
+        check(args, [Match.Any]);
+      });
+      const product = addProduct();
+      const variants = Products.find({ ancestors: { $in: [product._id] } }).fetch();
+      expect(variants.length).to.equal(3);
+      Meteor.call("products/cloneProduct", product);
+      const clone = Products.find({
+        _id: {
+          $ne: product._id
+        },
+        type: "simple"
+      }).fetch()[0];
+      const cloneVariants = Products.find({
+        ancestors: { $in: [clone._id] }
+      }).fetch();
+      expect(cloneVariants.length).to.equal(3);
+      for (let i = 0; i < variants.length; i++) {
+        expect(cloneVariants.some(clonedVariant => {
+          return clonedVariant.title === variants[i].title;
+        })).to.be.ok;
       }
-    );
+
+      return done();
+    });
 
     it("product group cloning should create the same number of new products", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
@@ -476,8 +475,10 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       sandbox.stub(Products, "remove");
-      expect(() => Meteor.call("products/archiveProduct", product._id)).to.throw(Meteor.Error,
-        /Something went wrong, nothing was deleted/);
+      expect(() => Meteor.call("products/archiveProduct", product._id)).to.throw(
+        Meteor.Error,
+        /Something went wrong, nothing was deleted/
+      );
       expect(Products.find(product._id).count()).to.equal(1);
     });
   });
@@ -487,8 +488,10 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       const product = addProduct();
       const updateProductSpy = sandbox.spy(Products, "update");
-      expect(() => Meteor.call("products/updateProductField",
-        product._id, "title", "Updated Title")).to.throw(Meteor.Error, /Access Denied/);
+      expect(() => Meteor.call(
+        "products/updateProductField",
+        product._id, "title", "Updated Title"
+      )).to.throw(Meteor.Error, /Access Denied/);
       expect(updateProductSpy).to.not.have.been.called;
     });
 
@@ -854,8 +857,10 @@ describe("core product methods", function () {
       const product = addProduct();
       const tag = Factory.create("tag");
       const updateProductSpy = sandbox.spy(Products, "update");
-      expect(() => Meteor.call("products/updateProductPosition",
-        product._id, {}, tag._id)).to.throw(Meteor.Error, /Access Denied/);
+      expect(() => Meteor.call(
+        "products/updateProductPosition",
+        product._id, {}, tag._id
+      )).to.throw(Meteor.Error, /Access Denied/);
       expect(updateProductSpy).to.not.have.been.called;
     });
 
@@ -868,8 +873,10 @@ describe("core product methods", function () {
         weight: 0,
         updatedAt: new Date()
       };
-      expect(() => Meteor.call("products/updateProductPosition",
-        product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
+      expect(() => Meteor.call(
+        "products/updateProductPosition",
+        product._id, position, tag.slug
+      )).to.not.throw(Meteor.Error, /Access Denied/);
       const updatedProduct = Products.findOne(product._id);
       expect(updatedProduct.positions).to.be.undefined;
 
@@ -885,8 +892,10 @@ describe("core product methods", function () {
         weight: 0,
         updatedAt: new Date()
       };
-      expect(() => Meteor.call("products/updateProductPosition",
-        product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
+      expect(() => Meteor.call(
+        "products/updateProductPosition",
+        product._id, position, tag.slug
+      )).to.not.throw(Meteor.Error, /Access Denied/);
       const updatedProductRevision = Revisions.findOne({ documentId: product._id });
       expect(updatedProductRevision.documentData.positions[tag.slug].position).to.equal(0);
 
@@ -902,8 +911,10 @@ describe("core product methods", function () {
         weight: 0,
         updatedAt: new Date()
       };
-      expect(() => Meteor.call("products/updateProductPosition",
-        product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
+      expect(() => Meteor.call(
+        "products/updateProductPosition",
+        product._id, position, tag.slug
+      )).to.not.throw(Meteor.Error, /Access Denied/);
       Meteor.call("revisions/publish", product._id);
       const updatedProduct = Products.findOne(product._id);
       expect(updatedProduct.positions[tag.slug].position).to.equal(0);

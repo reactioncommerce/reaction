@@ -16,13 +16,13 @@ import { Cart } from "/lib/collections";
 Cart.after.update((userId, cart, fieldNames) => {
   const trigger = ["discount", "billing", "shipping"];
   if (cart) {
-    let discount = cart.discount;
+    let { discount } = cart;
     for (const field of fieldNames) {
       if (indexOf(trigger, field) !== -1) {
         discount = Meteor.call("discounts/calculate", cart);
       }
     }
     // Update cart (without triggering more updates.)
-    Cart.direct.update({ _id: cart._id }, { $set: { discount: discount } });
+    Cart.direct.update({ _id: cart._id }, { $set: { discount } });
   }
 });

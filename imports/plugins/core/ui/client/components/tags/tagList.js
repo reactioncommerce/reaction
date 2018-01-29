@@ -117,21 +117,19 @@ class TagList extends Component {
 
       // Render an blank tag for creating new tags
       if (this.props.editable && this.props.enableNewTagForm) {
-        tags.push(
-          <div className={classes()} key="newTagForm">
-            <Components.TagItem
-              {...this.props}
-              blank={true}
-              key="newTagForm"
-              tag={this.props.newTag}
-              inputPlaceholder="Add Tag"
-              i18nKeyInputPlaceholder="tags.addTag"
-              onTagInputBlur={this.handleNewTagSave}
-              onTagSave={this.handleNewTagSave}
-              onTagUpdate={this.handleNewTagUpdate}
-            />
-          </div>
-        );
+        tags.push(<div className={classes()} key="newTagForm">
+          <Components.TagItem
+            {...this.props}
+            blank={true}
+            key="newTagForm"
+            tag={this.props.newTag}
+            inputPlaceholder="Add Tag"
+            i18nKeyInputPlaceholder="tags.addTag"
+            onTagInputBlur={this.handleNewTagSave}
+            onTagSave={this.handleNewTagSave}
+            onTagUpdate={this.handleNewTagUpdate}
+          />
+        </div>);
       }
 
       return tags;

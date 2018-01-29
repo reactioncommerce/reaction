@@ -11,7 +11,7 @@ const supportedCollections = ["products", "orders", "accounts"];
 function getProductFindTerm(searchTerm, searchTags, userId) {
   const shopId = Reaction.getShopId();
   const findTerm = {
-    shopId: shopId,
+    shopId,
     $text: { $search: searchTerm }
   };
   if (searchTags.length) {
@@ -33,7 +33,8 @@ export const getResults = {};
 getResults.products = function (searchTerm, facets, maxResults, userId) {
   const searchTags = facets || [];
   const findTerm = getProductFindTerm(searchTerm, searchTags, userId);
-  const productResults = ProductSearch.find(findTerm,
+  const productResults = ProductSearch.find(
+    findTerm,
     {
       fields: {
         score: { $meta: "textScore" },
@@ -59,7 +60,7 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
   const shopId = Reaction.getShopId();
   const findTerm = {
     $and: [
-      { shopId: shopId },
+      { shopId },
       {
         $or: [
           {
@@ -145,7 +146,7 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
   if (Reaction.hasPermission("reaction-accounts", userId)) {
     const findTerm = {
       $and: [
-        { shopId: shopId },
+        { shopId },
         {
           $or: [
             {

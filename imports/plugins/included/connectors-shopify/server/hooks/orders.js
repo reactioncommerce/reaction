@@ -26,7 +26,7 @@ Orders.after.insert((userId, doc) => {
     // For each shopid check to see if there are synchooks are respond appropriately
     uniqueShopIds.forEach((shopId) => {
       const shopifyPkg = Reaction.getPackageSettingsWithOptions({
-        shopId: shopId,
+        shopId,
         name: "reaction-connectors-shopify"
       });
       if (shopifyPkg) {

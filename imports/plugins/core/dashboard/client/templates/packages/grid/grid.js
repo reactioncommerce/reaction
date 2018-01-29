@@ -21,33 +21,31 @@ function pkgPermissions(pkg) {
 function enableReactionPackage(reactionPackage) {
   const self = reactionPackage;
 
-  Meteor.call("shop/togglePackage", self.packageId, false,
-    (error, result) => {
-      if (result === 1) {
-        Alerts.toast(
-          i18next.t(
-            "gridPackage.pkgEnabled",
-            { app: i18next.t(self.i18nKeyLabel) }
-          ),
-          "error", {
-            type: `pkg-enabled-${self.name}`
-          }
-        );
-        if (self.name || self.route) {
-          const route = self.name || self.route;
-          return Reaction.Router.go(route);
+  Meteor.call("shop/togglePackage", self.packageId, false, (error, result) => {
+    if (result === 1) {
+      Alerts.toast(
+        i18next.t(
+          "gridPackage.pkgEnabled",
+          { app: i18next.t(self.i18nKeyLabel) }
+        ),
+        "error", {
+          type: `pkg-enabled-${self.name}`
         }
-      } else if (error) {
-        return Alerts.toast(
-          i18next.t(
-            "gridPackage.pkgDisabled",
-            { app: i18next.t(self.i18nKeyLabel) }
-          ),
-          "warning"
-        );
+      );
+      if (self.name || self.route) {
+        const route = self.name || self.route;
+        return Reaction.Router.go(route);
       }
+    } else if (error) {
+      return Alerts.toast(
+        i18next.t(
+          "gridPackage.pkgDisabled",
+          { app: i18next.t(self.i18nKeyLabel) }
+        ),
+        "warning"
+      );
     }
-  );
+  });
 }
 
 function disableReactionPackage(reactionPackage) {
@@ -65,21 +63,20 @@ function disableReactionPackage(reactionPackage) {
       showCancelButton: true
     },
     () => {
-      Meteor.call("shop/togglePackage", self.packageId, true,
-        (error, result) => {
-          if (result === 1) {
-            return Alerts.toast(
-              i18next.t("gridPackage.pkgDisabled", {
-                app: i18next.t(self.i18nKeyLabel)
-              }),
-              "success"
-            );
-          } else if (error) {
-            throw new Meteor.Error("error-disabling-package", error);
-          }
+      Meteor.call("shop/togglePackage", self.packageId, true, (error, result) => {
+        if (result === 1) {
+          return Alerts.toast(
+            i18next.t("gridPackage.pkgDisabled", {
+              app: i18next.t(self.i18nKeyLabel)
+            }),
+            "success"
+          );
+        } else if (error) {
+          throw new Meteor.Error("error-disabling-package", error);
         }
-      );
-    });
+      });
+    }
+  );
 }
 
 Template.packagesGrid.onCreated(function () {

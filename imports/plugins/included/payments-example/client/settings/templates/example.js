@@ -1,5 +1,5 @@
-import { ExampleSettingsFormContainer } from "../containers";
 import { Template } from "meteor/templating";
+import { ExampleSettingsFormContainer } from "../containers";
 import "./example.html";
 
 Template.exampleSettings.helpers({

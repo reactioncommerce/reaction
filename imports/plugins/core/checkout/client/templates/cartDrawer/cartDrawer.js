@@ -13,7 +13,7 @@ import { Template } from "meteor/templating";
  */
 
 Template.cartDrawer.helpers({
-  displayCartDrawer: function () {
+  displayCartDrawer() {
     if (!Session.equals("displayCart", true)) {
       return null;
     }
@@ -38,7 +38,7 @@ Template.cartDrawer.helpers({
  * openCartDrawer helpers
  *
  */
-Template.openCartDrawer.onRendered(function () {
+Template.openCartDrawer.onRendered(() => {
   /**
    * Add swiper to openCartDrawer
    *
@@ -70,7 +70,7 @@ Template.openCartDrawer.helpers({
   }
 });
 
-Template.emptyCartDrawer.onRendered(function () {
+Template.emptyCartDrawer.onRendered(() => {
   return $("#cart-drawer-container").fadeIn();
 });
 

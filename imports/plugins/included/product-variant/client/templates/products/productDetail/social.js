@@ -7,7 +7,7 @@ import { Template } from "meteor/templating";
 */
 
 Template.productSocial.helpers({
-  customSocialSettings: function () {
+  customSocialSettings() {
     const product = ReactionProduct.selectedProduct();
     let title = product.title;
     if (ReactionProduct.selectedVariant()) {

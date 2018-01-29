@@ -22,8 +22,10 @@ export default function () {
           updatedAt = new Date();
           if (modifier.$addToSet.positions.$each) {
             for (const position in modifier.$addToSet.positions.$each) {
-              if ({}.hasOwnProperty.call(modifier.$addToSet.positions.$each,
-                position)) {
+              if ({}.hasOwnProperty.call(
+                modifier.$addToSet.positions.$each,
+                position
+              )) {
                 updatedAt = new Date();
               }
             }

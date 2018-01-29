@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Components } from "@reactioncommerce/reaction-components";
+import { composeWithTracker, Components } from "@reactioncommerce/reaction-components";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next } from "/client/api";
 import { getChildVariants } from "../selectors/variants";
@@ -206,7 +205,7 @@ function composer(props, onData) {
     childVariants,
     childVariantMedia,
     displayPrice: ReactionProduct.getVariantPriceRange,
-    isSoldOut: isSoldOut,
+    isSoldOut,
     editable
   });
 }

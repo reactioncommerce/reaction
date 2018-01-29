@@ -1,3 +1,4 @@
+/* eslint prefer-arrow-callback:0 */
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
@@ -620,7 +621,7 @@ describe("orders test", function () {
       const quantity = originalQuantity - 1;
       const refundItemsInfo = {
         total: 3.99,
-        quantity: quantity,
+        quantity,
         items: [{}, {}]
       };
       Meteor.call("orders/refunds/refundItems", order._id, billing.paymentMethod, refundItemsInfo);

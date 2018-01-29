@@ -8,7 +8,7 @@ import Reaction from "/lib/api";
 // to provide normalized PayPal tooling
 
 export const PayFlow = {
-  payflowAccountOptions: function () {
+  payflowAccountOptions() {
     const settings = Packages.findOne({
       name: "reaction-paypal",
       shopId: Reaction.getShopId(),
@@ -22,7 +22,7 @@ export const PayFlow = {
     }
     const ref = Meteor.settings.paypal;
     const options = {
-      mode: mode,
+      mode,
       enabled: getSettings(settings, ref, "payflow_enabled"),
       client_id: getSettings(settings, ref, "client_id"),
       client_secret: getSettings(settings, ref, "client_secret")
@@ -32,10 +32,10 @@ export const PayFlow = {
     }
     return options;
   },
-  authorize: function (cardInfo, paymentInfo, callback) {
+  authorize(cardInfo, paymentInfo, callback) {
     Meteor.call("payflowpro/payment/submit", "authorize", cardInfo, paymentInfo, callback);
   },
-  capture: function (transactionId, amount, callback) {
+  capture(transactionId, amount, callback) {
     const captureDetails = {
       amount: {
         currency: "USD", // todo should this be locale.currency
@@ -45,10 +45,10 @@ export const PayFlow = {
     };
     Meteor.call("payflowpro/payment/capture", transactionId, captureDetails, callback);
   },
-  config: function (options) {
+  config(options) {
     this.accountOptions = options;
   },
-  paymentObj: function () {
+  paymentObj() {
     return {
       intent: "sale",
       payer: {
@@ -58,7 +58,7 @@ export const PayFlow = {
       transactions: []
     };
   },
-  parseCardData: function (data) {
+  parseCardData(data) {
     return {
       credit_card: {
         type: data.type,
@@ -71,7 +71,7 @@ export const PayFlow = {
       }
     };
   },
-  parsePaymentData: function (data) {
+  parsePaymentData(data) {
     return {
       amount: {
         total: parseFloat(data.total, 10),

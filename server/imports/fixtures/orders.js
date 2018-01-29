@@ -81,7 +81,7 @@ export default function () {
     notes: [],
 
     // Schemas.Cart
-    shopId: shopId,
+    shopId,
     userId: getUserId(),
     sessionId: "Session",
     email: faker.internet.email(),
@@ -91,7 +91,7 @@ export default function () {
         "coreOrderWorkflow/created"
       ]
     },
-    items: function () {
+    items() {
       const product = addProduct({ shopId });
       const variant = Products.findOne({ ancestors: [product._id] });
       const childVariants = Products.find({
@@ -114,7 +114,7 @@ export default function () {
         shopId: product.shopId,
         productId: product._id,
         quantity: 1,
-        product: product,
+        product,
         variants: selectedOption,
         workflow: {
           status: "new"
@@ -134,19 +134,19 @@ export default function () {
     },
     requiresShipping: true,
     shipping: [{
-      shopId: shopId,
+      shopId,
       items: [
         {
           _id: itemIdOne,
           productId: Random.id(),
-          shopId: shopId,
+          shopId,
           variantId: Random.id(),
           packed: false
         },
         {
           _id: itemIdTwo,
           productId: Random.id(),
-          shopId: shopId,
+          shopId,
           variantId: Random.id(),
           packed: false
         }
@@ -154,7 +154,7 @@ export default function () {
     }], // Shipping Schema
     billing: [{
       _id: Random.id(),
-      shopId: shopId,
+      shopId,
       address: getAddress({ isBillingDefault: true }),
       paymentMethod: paymentMethod({
         method: "credit",
@@ -175,15 +175,16 @@ export default function () {
       }
     }],
     state: "new",
-    createdAt: new Date,
-    updatedAt: new Date
+    createdAt: new Date(),
+    updatedAt: new Date()
   });
 
   /**
    * authorizedApprovedPaypalOrder Factory
    * @summary defines order factory which generates an authorized, apporved, paypal order.
    */
-  Factory.define("authorizedApprovedPaypalOrder", Orders,
+  Factory.define(
+    "authorizedApprovedPaypalOrder", Orders,
     Factory.extend("order", {
       billing: [{
         _id: Random.id(),
@@ -195,5 +196,6 @@ export default function () {
           status: "approved"
         })
       }]
-    }));
+    })
+  );
 }

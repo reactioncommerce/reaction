@@ -3,7 +3,6 @@ import _ from "lodash";
 import { Factory } from "meteor/dburles:factory";
 import { Random } from "meteor/random";
 import { Cart, Products } from "/lib/collections";
-import "./shops";
 import { getShop } from "./shops";
 import { getAddress } from "./accounts";
 import { addProduct } from "./products";
@@ -33,7 +32,7 @@ export function getCartItem(options = {}) {
     productId: product._id,
     shopId: options.shopId || getShop()._id,
     quantity: _.random(1, selectedOption.inventoryQuantity),
-    product: product,
+    product,
     variants: selectedOption,
     title: product.title
   };
@@ -56,7 +55,7 @@ export function createCart(productId, variantId) {
     productId: product._id,
     shopId: getShop()._id,
     quantity: 1,
-    product: product,
+    product,
     variants: variant,
     title: product.title
   };

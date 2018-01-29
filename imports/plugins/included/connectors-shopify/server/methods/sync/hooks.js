@@ -47,8 +47,10 @@ export const methods = {
     check(hook, { name: String, checked: Boolean });
     const [ topic, event, syncType ] = hook.name.split(":");
     const hookSetting = { topic, event, syncType };
-    return Packages.update({ name: "reaction-connectors-shopify", shopId: Reaction.getShopId() },
-      { $pull: { "settings.synchooks": hookSetting } });
+    return Packages.update(
+      { name: "reaction-connectors-shopify", shopId: Reaction.getShopId() },
+      { $pull: { "settings.synchooks": hookSetting } }
+    );
   }
 };
 
