@@ -19,13 +19,13 @@ class Badge extends Component {
     return this.state.tooltipOpen;
   }
 
-  handleButtonMouseOver() {
+  handleButtonMouseOver = () => {
     this.setState({
       tooltipOpen: this.props.tooltip ? true : false
     });
   }
 
-  handleButtonMouseOut() {
+  handleButtonMouseOut = () => {
     this.setState({
       tooltipOpen: false
     });
