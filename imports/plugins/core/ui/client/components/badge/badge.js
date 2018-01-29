@@ -120,15 +120,9 @@ Badge.propTypes = {
   i18nKeyTooltip: PropTypes.string,
   indicator: PropTypes.bool,
   label: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  onToggle: PropTypes.func,
-  onValue: PropTypes.any,
   status: PropTypes.string,
-  tagName: PropTypes.string,
-  toggle: PropTypes.bool,
-  toggleOn: PropTypes.bool,
   tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.node]),
   tooltipAttachment: PropTypes.string,
-  value: PropTypes.any
 };
 
 Badge.defaultProps = {
