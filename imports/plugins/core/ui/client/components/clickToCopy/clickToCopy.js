@@ -51,22 +51,22 @@ class ClickToCopy extends Component {
 
   render() {
     return (
-      <span
-        className="rui"
-        onClick={this.handleClick}
-        onMouseOver={this.handleCtcMouseOver}
-        onMouseOut={this.handleCtcMouseOut}
-        style={{ display: "inline-flex" }}
+      <CopyToClipboard
+        text={this.props.copyToClipboard}
+        onCopy={() => this.setState({ copied: true })}
       >
-        <Components.Tooltip tooltipContent={this.renderTooltipContent()} attachement={this.props.tooltipPosition}>
-          <CopyToClipboard
-            text={this.props.copyToClipboard}
-            onCopy={() => this.setState({ copied: true })}
-          >
-            <span>{this.props.displayText}</span>
-          </CopyToClipboard>
-        </Components.Tooltip>
-      </span>
+        <Components.Button
+          tagName="span"
+          className={{ btn: false }}
+          onClick={this.handleClick}
+          style={{ display: "inline-flex" }}
+          tooltip={this.props.tooltip}
+          i18nKeyTooltip={this.props.i18nKeyTooltip}
+          tooltipAttachment={this.tooltipAttachment}
+        >
+          {this.props.displayText}
+        </Components.Button>
+      </CopyToClipboard>
     );
   }
 }
