@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Avatar from "react-avatar";
-import moment from "moment";
 import classnames from "classnames/dedupe";
 import { i18next } from "/client/api";
 import { Orders } from "/lib/collections";
+import { withMoment } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
 import OrderTableColumn from "./orderTableColumn";
 import OrderBulkActionsBar from "./orderBulkActionsBar";
@@ -43,6 +43,7 @@ class OrderTable extends Component {
     handleSelect: PropTypes.func,
     isLoading: PropTypes.object,
     isOpen: PropTypes.bool,
+    moment: PropTypes.func,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
     query: PropTypes.object,
@@ -92,7 +93,7 @@ class OrderTable extends Component {
   }
 
   renderOrderInfo(order) {
-    const { displayMedia } = this.props;
+    const { displayMedia, moment } = this.props;
     const invoice = getBillingInfo(order).invoice || {};
 
     return (
@@ -398,4 +399,4 @@ class OrderTable extends Component {
   }
 }
 
-export default OrderTable;
+export default withMoment(OrderTable);
