@@ -51,10 +51,10 @@ class CartItems extends Component {
         >
           {handleImage(item) ?
             <div className="center-cropped" style={{ backgroundImage: `url('${handleImage(item).url({ store: "small" })}')` }}>
-              <img src={handleImage(item).url({ store: "small" })} className="product-grid-item-images img-responsive" />
+              <img src={handleImage(item).url({ store: "small" })} className="product-grid-item-images img-responsive" alt="" />
             </div> :
             <div className="center-cropped" style={{ backgroundImage: "url('/resources/placeholder.gif')" }}>
-              <img src="/resources/placeholder.gif" className="product-grid-item-images img-responsive" />
+              <img src="/resources/placeholder.gif" className="product-grid-item-images img-responsive" alt="" />
             </div>
           }
         </a>
