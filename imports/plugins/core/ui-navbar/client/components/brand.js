@@ -15,11 +15,13 @@ class Brand extends Component {
   }
 
   render() {
+    const { logo, title } = this.props;
+
     return (
       <a className="brand" href="/" onClick={this.handleClick}>
         {this.props.logo &&
           <div className="logo">
-            <img src={this.props.logo} />
+            <img src={logo} alt={title} />
           </div>
         }
         <span className="title">{this.props.title}</span>
