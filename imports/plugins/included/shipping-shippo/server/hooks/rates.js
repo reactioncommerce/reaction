@@ -44,7 +44,7 @@ function getShippingRates(previousQueryResults, cart) {
   Shipping.find({
     "shopId": { $in: shops },
     "provider.enabled": true
-  }).forEach(doc => {
+  }).forEach((doc) => {
     // If provider is from Shippo, put it in an object to get rates dynamically(shippoApi) for all of them after.
     if (doc.provider.shippoProvider) {
       shippoDocs[doc.provider.shippoProvider.carrierAccountId] = doc;

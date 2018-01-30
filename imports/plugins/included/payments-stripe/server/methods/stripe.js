@@ -68,7 +68,7 @@ function stripeCaptureCharge(paymentMethod) {
     Logger.error(error);
     result = {
       saved: false,
-      error: error
+      error
     };
     return { error, result };
   }
@@ -170,7 +170,7 @@ function buildPaymentMethods(options) {
           _id: item._id,
           productId: item.productId,
           variantId: item.variants._id,
-          shopId: shopId,
+          shopId,
           quantity: item.quantity
         };
       });
@@ -178,12 +178,12 @@ function buildPaymentMethods(options) {
       // we need to grab this per shop to get the API key
       const packageData = Packages.findOne({
         name: "reaction-stripe",
-        shopId: shopId
+        shopId
       });
 
       const paymentMethod = {
         processor: "Stripe",
-        storedCard: storedCard,
+        storedCard,
         method: "credit",
         paymentPackageId: packageData._id,
         // TODO: REVIEW WITH AARON - why is paymentSettings key important
@@ -197,7 +197,7 @@ function buildPaymentMethods(options) {
         createdAt: new Date(transactionsByShopId[shopId].created),
         transactions: [],
         items: cartItems,
-        shopId: shopId
+        shopId
       };
       paymentMethod.transactions.push(transactionsByShopId[shopId]);
       paymentMethods.push(paymentMethod);
@@ -208,7 +208,7 @@ function buildPaymentMethods(options) {
 }
 
 export const methods = {
-  "stripe/payment/createCharges": async function (transactionType, cardData, cartId) {
+  async "stripe/payment/createCharges"(transactionType, cardData, cartId) {
     check(transactionType, String);
     check(cardData, {
       name: String,
@@ -280,7 +280,7 @@ export const methods = {
       // and waits for the promise to resolve
       const customer = Promise.await(stripe.customers.create({
         email: customerEmail
-      }).then(function (cust) {
+      }).then((cust) => {
         const customerCard = stripe.customers.createSource(cust.id, { source: { ...card, object: "card" } });
         return customerCard;
       }));
@@ -302,8 +302,8 @@ export const methods = {
         const stripeOptions = {};
         const stripeCharge = {
           amount: formatForStripe(cartTotals[shopId]),
-          capture: capture,
-          currency: currency
+          capture,
+          currency
           // TODO: add product metadata to stripe charge
         };
 
@@ -315,7 +315,7 @@ export const methods = {
           // If this is a merchant shop, we need to tokenize the customer
           // and charge the token with the merchant id
           merchantStripePkg = Reaction.getPackageSettingsWithOptions({
-            shopId: shopId,
+            shopId,
             name: "reaction-stripe"
           });
 
@@ -420,7 +420,7 @@ export const methods = {
    * @param  {Object} paymentMethod A PaymentMethod object
    * @return {Object} results from Stripe normalized
    */
-  "stripe/payment/capture": function (paymentMethod) {
+  "stripe/payment/capture"(paymentMethod) {
     // Call both check and validate because by calling `clean`, the audit pkg
     // thinks that we haven't checked paymentMethod arg
     check(paymentMethod, Object);
@@ -449,7 +449,7 @@ export const methods = {
    * @param  {String} reason refund was issued (currently unused by client)
    * @return {Object} result
    */
-  "stripe/refund/create": function (paymentMethod, amount, reason = "requested_by_customer") {
+  "stripe/refund/create"(paymentMethod, amount, reason = "requested_by_customer") {
     check(amount, Number);
     check(reason, String);
 
@@ -493,7 +493,7 @@ export const methods = {
    * @param  {Object} paymentMethod object
    * @return {Object} result
    */
-  "stripe/refund/list": function (paymentMethod) {
+  "stripe/refund/list"(paymentMethod) {
     // Call both check and validate because by calling `clean`, the audit pkg
     // thinks that we haven't checked paymentMethod arg
     check(paymentMethod, Object);

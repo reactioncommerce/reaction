@@ -12,7 +12,7 @@ import { Reaction } from "/server/api";
 
 export const ServerSessions = new Mongo.Collection("Sessions");
 
-Meteor.publish("Sessions", function (sessionId) {
+Meteor.publish("Sessions", (sessionId) => {
   check(sessionId, Match.OneOf(String, null));
   const created = new Date().getTime();
   let newSessionId;

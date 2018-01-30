@@ -20,7 +20,7 @@ export const methods = {
    * @param  {String} taxId tax taxId to delete
    * @return {String} returns update/insert result
    */
-  "taxes/deleteRate": function (taxId) {
+  "taxes/deleteRate"(taxId) {
     check(taxId, String);
 
     // check permissions to delete
@@ -39,7 +39,7 @@ export const methods = {
    * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use taxes/editRate method instead.
    * @return {String} Insert result
    */
-  "taxes/addRate": function (doc, docId) {
+  "taxes/addRate"(doc, docId) {
     check(doc, Object); // actual schema validation happens during insert below
 
     // Backward compatibility
@@ -57,7 +57,7 @@ export const methods = {
    * @param  {Object} details An object with _id and modifier props
    * @return {String} Update result
    */
-  "taxes/editRate": function (details) {
+  "taxes/editRate"(details) {
     check(details, {
       _id: String,
       modifier: Object // actual schema validation happens during update below
@@ -77,14 +77,14 @@ export const methods = {
    * @param  {Object} taxes taxes
    * @return {Number} returns update result
    */
-  "taxes/setRate": function (cartId, taxRate, taxes) {
+  "taxes/setRate"(cartId, taxRate, taxes) {
     check(cartId, String);
     check(taxRate, Number);
     check(taxes, Match.Optional(Array));
 
     return Cart.direct.update(cartId, {
       $set: {
-        taxes: taxes,
+        taxes,
         tax: taxRate
       }
     });
@@ -103,7 +103,7 @@ export const methods = {
    * @param  {Object} options.cartTaxData - Tax data for shop associated with cart.shopId
    * @return {Number} returns update result
    */
-  "taxes/setRateByShopAndItem": function (cartId, options) {
+  "taxes/setRateByShopAndItem"(cartId, options) {
     check(cartId, String);
     check(options, {
       taxRatesByShop: Object,
@@ -119,7 +119,7 @@ export const methods = {
         taxes: cartTaxData,
         tax: cartTaxRate,
         items: itemsWithTax,
-        taxRatesByShop: taxRatesByShop
+        taxRatesByShop
       }
     });
   },
@@ -131,7 +131,7 @@ export const methods = {
    * @param  {String} cartId cartId
    * @return {Object}  returns tax object
    */
-  "taxes/calculate": function (cartId) {
+  "taxes/calculate"(cartId) {
     check(cartId, String);
     const cartToCalc = Cart.findOne(cartId);
     const cartShopId = cartToCalc.shopId;

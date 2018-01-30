@@ -38,7 +38,7 @@ Meteor.publish("Accounts", function (userId) {
   } else if (Roles.userIsInRole(this.userId, ["admin", "owner", "reaction-accounts"], shopId)) {
     return Collections.Accounts.find({
       groups: { $nin: nonAdminGroups },
-      shopId: shopId
+      shopId
     });
   }
 
@@ -58,7 +58,7 @@ Meteor.publish("UserAccount", function (userId) {
   const shopId = Reaction.getShopId();
   if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
     return Collections.Accounts.find({
-      userId: userId
+      userId
     });
   }
   return this.ready();
@@ -110,19 +110,21 @@ Meteor.publish("UserProfile", function (profileUserId) {
   // we can see a situation when anonymous user still represented by
   // `profileUserId`, but admin user already could be found by `this.userId`
   // In that case what we should do here?
-  if (profileUserId !== this.userId && Roles.userIsInRole(this.userId,
+  if (profileUserId !== this.userId && Roles.userIsInRole(
+    this.userId,
     permissions, shopId ||
-    Roles.userIsInRole(this.userId, permissions, Roles.GLOBAL_GROUP))) {
+    Roles.userIsInRole(this.userId, permissions, Roles.GLOBAL_GROUP)
+  )) {
     return Meteor.users.find({
       _id: profileUserId
     }, {
-      fields: fields
+      fields
     });
   }
 
   return Meteor.users.find({
     _id: this.userId
   }, {
-    fields: fields
+    fields
   });
 });

@@ -26,7 +26,7 @@ Meteor.methods({
    * @param  {Object} details An object with _id and modifier props
    * @param  {String} [docId] DEPRECATED. The _id, if details is the modifier.
    */
-  "search/updateSearchSettings": function (details, docId) {
+  "search/updateSearchSettings"(details, docId) {
     check(details, Object);
 
     // Backward compatibility

@@ -20,7 +20,7 @@ export const methods = {
    * @param { String } connection - connection name
    * @return { Number } update - result
    */
-  "connectors/connection/toggle": function (packageId, connection) {
+  "connectors/connection/toggle"(packageId, connection) {
     check(packageId, String);
     check(connection, String);
     if (!Reaction.hasPermission(connectorsRoles)) {

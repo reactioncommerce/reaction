@@ -10,7 +10,7 @@ Meteor.methods({
   // Not used for stripe connect integration
   // Under consideration for deprecation and migrating other payment Packages
   // to payments-stripe style methods
-  "cart/submitPayment": function (paymentMethod) {
+  "cart/submitPayment"(paymentMethod) {
     check(paymentMethod, Object);
     const checkoutCart = Cart.findOne({
       userId: Meteor.userId()
@@ -56,7 +56,7 @@ Meteor.methods({
       };
     }
 
-    Cart.update(selector, update, function (error, result) {
+    Cart.update(selector, update, (error, result) => {
       if (error) {
         Logger.debug(error, "An error occurred saving the order");
         throw new Meteor.Error("An error occurred saving the order", error);

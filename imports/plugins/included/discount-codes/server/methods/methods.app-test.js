@@ -1,3 +1,4 @@
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Factory } from "meteor/dburles:factory";
@@ -75,8 +76,7 @@ describe("discount code methods", function () {
       const cart = Factory.create("cartMultiShop");
 
       expect(() =>
-        Meteor.call("discounts/codes/apply", cart._id, code.code)
-      ).to.throw(Meteor.Error, /multiShopError/);
+        Meteor.call("discounts/codes/apply", cart._id, code.code)).to.throw(Meteor.Error, /multiShopError/);
     });
   });
 });

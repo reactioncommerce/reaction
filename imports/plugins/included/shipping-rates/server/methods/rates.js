@@ -14,7 +14,7 @@ export const methods = {
    * @param { Object } rate a valid ShippingMethod object
    * @return { Number } insert result
    */
-  "shipping/rates/add": function (rate) {
+  "shipping/rates/add"(rate) {
     check(rate, {
       _id: Match.Optional(String),
       name: String,
@@ -66,7 +66,7 @@ export const methods = {
    * @param { Object } method shipping method object
    * @return { Number } update result
    */
-  "shipping/rates/update": function (method) {
+  "shipping/rates/update"(method) {
     ShippingMethod.validate(method);
     if (!Reaction.hasPermission(shippingRoles)) {
       throw new Meteor.Error("access-denied", "Access Denied");
@@ -88,7 +88,7 @@ export const methods = {
    * @param { String } rateId id of method to delete
    * @return { Number } update result
    */
-  "shipping/rates/delete": function (rateId) {
+  "shipping/rates/delete"(rateId) {
     check(rateId, String);
 
     if (!Reaction.hasPermission(shippingRoles)) {

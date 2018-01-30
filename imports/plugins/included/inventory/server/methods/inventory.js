@@ -22,7 +22,7 @@ export function registerInventory(product) {
   // we'll check each variant to see if it has been fully registered
   for (const variant of variants) {
     const inventory = Inventory.find({
-      productId: productId,
+      productId,
       variantId: variant._id,
       shopId: product.shopId
     });
@@ -34,22 +34,18 @@ export function registerInventory(product) {
       const newQty = variant.inventoryQuantity || 0;
       let i = inventoryVariantCount + 1;
 
-      Logger.debug(
-        `inserting ${newQty - inventoryVariantCount
-        } new inventory items for ${variant._id}`
-      );
+      Logger.debug(`inserting ${newQty - inventoryVariantCount} new inventory items for ${variant._id}`);
 
-      const batch = Inventory.
-        _collection.rawCollection().initializeUnorderedBulkOp();
+      const batch = Inventory._collection.rawCollection().initializeUnorderedBulkOp();
       while (i <= newQty) {
         const id = Inventory._makeNewID();
         batch.insert({
           _id: id,
-          productId: productId,
+          productId,
           variantId: variant._id,
           shopId: product.shopId,
-          createdAt: new Date,
-          updatedAt: new Date,
+          createdAt: new Date(),
+          updatedAt: new Date(),
           workflow: { // we add this line because `batchInsert` doesn't know
             status: "new" // about SimpleSchema, so `defaultValue` will not
           }
@@ -128,21 +124,19 @@ function adjustInventory(product, userId, context) {
           // we could add handling for the case when aren't enough "new" items
         }
       }
-      Logger.debug(
-        `adjust variant ${variant._id} from ${itemCount} to ${results}`
-      );
+      Logger.debug(`adjust variant ${variant._id} from ${itemCount} to ${results}`);
     }
   }
 }
 
 Meteor.methods({
-  "inventory/register": function (product) {
+  "inventory/register"(product) {
     if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
     registerInventory(product);
   },
-  "inventory/adjust": function (product) { // TODO: this should be variant
+  "inventory/adjust"(product) { // TODO: this should be variant
     Products.simpleSchema(product).validate(product);
     adjustInventory(product, this.userId, this);
   }

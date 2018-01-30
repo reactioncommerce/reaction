@@ -5,7 +5,6 @@ import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { i18next } from "/client/api";
 
-
 function setWorkingAddress(address) {
   if (address.fullName) {
     const fullName = $("input[name='fullName']");
@@ -49,8 +48,7 @@ function setWorkingAddress(address) {
   }
 }
 
-
-Template.addressBookEdit.onRendered(function () {
+Template.addressBookEdit.onRendered(() => {
   const addressState = Session.get("addressState");
   if (addressState.address) {
     setWorkingAddress(addressState.address);
@@ -73,7 +71,7 @@ AutoForm.hooks({
         done(error);
       }
 
-      Meteor.call("accounts/validateAddress", insertDoc, function (err, res) {
+      Meteor.call("accounts/validateAddress", insertDoc, (err, res) => {
         if (err) return handleError(err);
 
         // if the address is validated OR the address has already been through the validation process, pass it on

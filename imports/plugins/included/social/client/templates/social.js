@@ -5,7 +5,7 @@ import { Packages } from "/lib/collections";
 
 Template.reactionSocial.onCreated(function () {
   const self = this;
-  return this.autorun(function () {
+  return this.autorun(() => {
     const subscription = Reaction.Subscriptions.Packages;
     if (subscription.ready()) {
       const socialSettings = Packages.findOne({
@@ -19,11 +19,11 @@ Template.reactionSocial.onCreated(function () {
 });
 
 Template.reactionSocial.helpers({
-  settings: function () {
+  settings() {
     const template = Template.instance();
     return template && template.socialSettings;
   },
-  socialTemplates: function () {
+  socialTemplates() {
     const templates = [];
     const template = Template.instance();
 

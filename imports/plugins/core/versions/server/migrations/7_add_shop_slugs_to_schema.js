@@ -40,7 +40,7 @@ Migrations.add({
     if (merchantShops.length > 0) {
       Shops.update({ _id: primaryShop._id }, {
         $set: {
-          merchantShops: merchantShops
+          merchantShops
         }
       }, { bypassCollection2: true });
     }

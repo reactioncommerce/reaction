@@ -39,9 +39,11 @@ export default {
     const save = () => {
       Meteor.call("email/saveSettings", _.pick(settings, ["service", "host", "port", "user", "password"]), (err) => {
         if (err) {
-          return Alert(i18next.t("app.error"),
+          return Alert(
+            i18next.t("app.error"),
             i18next.t("mail.alerts.saveFailed", { error: err.reason }),
-            "error");
+            "error"
+          );
         }
         return Alert({
           title: i18next.t("app.success"),

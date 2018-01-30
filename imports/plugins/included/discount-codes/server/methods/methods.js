@@ -24,7 +24,7 @@ export const methods = {
    * @param  {String} discountId discountId
    * @return {Number} returns discount total
    */
-  "discounts/codes/discount": function (cartId, discountId) {
+  "discounts/codes/discount"(cartId, discountId) {
     check(cartId, String);
     check(discountId, String);
     let discount = 0;
@@ -46,7 +46,7 @@ export const methods = {
    * @param  {String} discountId discountId
    * @return {Number} returns discount total
    */
-  "discounts/codes/credit": function (cartId, discountId) {
+  "discounts/codes/credit"(cartId, discountId) {
     check(cartId, String);
     check(discountId, String);
     let discount = 0;
@@ -61,7 +61,7 @@ export const methods = {
    * @param  {String} discountId discountId
    * @return {Number} returns discount total
    */
-  "discounts/codes/sale": function (cartId, discountId) {
+  "discounts/codes/sale"(cartId, discountId) {
     check(cartId, String);
     check(discountId, String);
     let discount = 0;
@@ -86,7 +86,7 @@ export const methods = {
    * @param  {String} discountId discountId
    * @return {Number} returns discount total
    */
-  "discounts/codes/shipping": function (cartId, discountId) {
+  "discounts/codes/shipping"(cartId, discountId) {
     check(cartId, String);
     check(discountId, String);
     let discount = 0;
@@ -109,7 +109,7 @@ export const methods = {
    * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use discounts/editCode method instead.
    * @return {String} Insert result
    */
-  "discounts/addCode": function (doc, docId) {
+  "discounts/addCode"(doc, docId) {
     check(doc, Object); // actual schema validation happens during insert below
 
     // Backward compatibility
@@ -126,7 +126,7 @@ export const methods = {
    * @param  {Object} details An object with _id and modifier props
    * @return {String} Update result
    */
-  "discounts/editCode": function (details) {
+  "discounts/editCode"(details) {
     check(details, {
       _id: String,
       modifier: Object // actual schema validation happens during update below
@@ -145,7 +145,7 @@ export const methods = {
    * @param  {String} collection collection (either Orders or Cart)
    * @return {String} returns update/insert result
    */
-  "discounts/codes/remove": function (id, codeId, collection = "Cart") {
+  "discounts/codes/remove"(id, codeId, collection = "Cart") {
     check(id, String);
     check(codeId, String);
     check(collection, String);
@@ -194,7 +194,7 @@ export const methods = {
    * @param  {String} collection collection (either Orders or Cart)
    * @return {Boolean} returns true if successfully applied
    */
-  "discounts/codes/apply": function (id, code, collection = "Cart") {
+  "discounts/codes/apply"(id, code, collection = "Cart") {
     check(id, String);
     check(code, String);
     check(collection, String);
@@ -225,7 +225,7 @@ export const methods = {
     }
 
     // TODO: add  conditions: conditions
-    const discount = Discounts.findOne({ code: code });
+    const discount = Discounts.findOne({ code });
 
     // TODO: check usage limit
     // don't apply if cart has exceeded usage limit
@@ -243,9 +243,7 @@ export const methods = {
       // existing usage count
       if (discount.transactions) {
         const users = Array.from(discount.transactions, (t) => t.userId);
-        const transactionCount = new Map([...new Set(users)].map(
-          x => [x, users.filter(y => y === x).length]
-        ));
+        const transactionCount = new Map([...new Set(users)].map(x => [x, users.filter(y => y === x).length]));
         const orders = Array.from(discount.transactions, (t) => t.cartId);
         userCount = transactionCount.get(Meteor.userId());
         orderCount = orders.length;

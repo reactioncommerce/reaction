@@ -65,7 +65,7 @@ Template.addressBookAdd.helpers({
     return thisAddress;
   },
 
-  hasAddressBookEntries: function () {
+  hasAddressBookEntries() {
     const account = Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
@@ -98,12 +98,12 @@ AutoForm.hooks({
         done(error);
       }
 
-      Meteor.call("accounts/validateAddress", insertDoc, function (err, res) {
+      Meteor.call("accounts/validateAddress", insertDoc, (err, res) => {
         if (err) return handleError(err);
 
         // if the address is validated OR the address has already been through the validation process, pass it on
         if (res.validated) {
-          Meteor.call("accounts/addressBookAdd", insertDoc, function (error) {
+          Meteor.call("accounts/addressBookAdd", insertDoc, (error) => {
             if (error) return handleError(error);
             done();
             addressBook.trigger($.Event("showMainView")); // Show the grid

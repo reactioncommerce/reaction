@@ -2,6 +2,7 @@ import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import i18nextLocalStorageCache from "i18next-localstorage-cache";
 import i18nextSprintfPostProcessor from "i18next-sprintf-postprocessor";
 import i18nextJquery from "jquery-i18next";
+import { forOwn } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
@@ -12,7 +13,6 @@ import { Shops, Translations, Packages } from "/lib/collections";
 import { getSchemas } from "@reactioncommerce/reaction-collections";
 import i18next, { getLabelsFor, getValidationErrorMessages, i18nextDep, currencyDep } from "./main";
 import { mergeDeep } from "/lib/api";
-import { forOwn } from "lodash";
 
 //
 // setup options for i18nextBrowserLanguageDetector
@@ -41,7 +41,7 @@ const userProfileLanguage = new ReactiveVar(null);
 Meteor.startup(() => {
   // We need to ensure fine-grained reactivity on only the profile.lang because
   // user.profile changed frequently and causes excessive reruns
-  Tracker.autorun(function () {
+  Tracker.autorun(() => {
     const userId = Meteor.userId();
     const user = userId && Meteor.users.findOne(userId, { fields: { profile: 1 } });
     userProfileLanguage.set(user && user.profile && user.profile.lang || null);
@@ -49,7 +49,7 @@ Meteor.startup(() => {
   // use tracker autorun to detect language changes
   // this only runs on initial page loaded
   // and when user.profile.lang updates
-  Tracker.autorun(function () {
+  Tracker.autorun(() => {
     if (!Reaction.Subscriptions.PrimaryShop.ready() ||
       !Reaction.Subscriptions.MerchantShops.ready()) return;
 
@@ -88,7 +88,7 @@ Meteor.startup(() => {
       // into i18next resource format
       //
       let resources = {};
-      Translations.find({}).forEach(function (translation) {
+      Translations.find({}).forEach((translation) => {
         resources = mergeDeep(resources, {
           [translation.i18n]: translation.translation
         });
@@ -127,7 +127,10 @@ Meteor.startup(() => {
           $("[data-i18n]").localize();
 
           // apply language direction to html
-          return i18next.dir(language) === "rtl" ? $("html").addClass("rtl") : $("html").removeClass("rtl");
+          if (i18next.dir(language) === "rtl") {
+            return $("html").addClass("rtl");
+          }
+          return $("html").removeClass("rtl");
         });
     }); // return
   });
@@ -138,13 +141,13 @@ Meteor.startup(() => {
   // XXX currencyDep is not used by the main app. Maybe can get rid of this
   // if no add-on packages use it?
   const userCurrency = new ReactiveVar();
-  Tracker.autorun(function () {
+  Tracker.autorun(() => {
     // We are using the reactive var only to be sure that currencyDep.changed()
     // is called only when the value is actually changed from the previous value.
     const currency = userCurrency.get();
     if (currency) currencyDep.changed();
   });
-  Tracker.autorun(function () {
+  Tracker.autorun(() => {
     const user = Meteor.user();
     if (Reaction.Subscriptions.PrimaryShop.ready() &&
         Reaction.Subscriptions.MerchantShops.ready() &&

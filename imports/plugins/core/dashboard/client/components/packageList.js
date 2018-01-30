@@ -51,7 +51,7 @@ class PackageList extends Component {
             const elements = [];
 
             // Standard list element
-            elements.push(
+            elements.push((
               <ListItem
                 key={index}
                 i18nKeyLabel={packageData.i18nKeyLabel}
@@ -61,7 +61,7 @@ class PackageList extends Component {
                 actionType="arrow"
                 value={packageData}
               />
-            );
+            ));
 
             // Look for a registered component_ActionDashboard component
 
@@ -74,13 +74,11 @@ class PackageList extends Component {
             } finally {
               // If one exists, add it to the list of elements
               if (actionComponent) {
-                elements.push(
-                  <Card expandable={true} key={`action-${index}`}>
-                    <CardBody>
-                      {React.createElement(actionComponent)}
-                    </CardBody>
-                  </Card>
-                );
+                elements.push(<Card expandable={true} key={`action-${index}`}>
+                  <CardBody>
+                    {React.createElement(actionComponent)}
+                  </CardBody>
+                </Card>);
               }
             }
 

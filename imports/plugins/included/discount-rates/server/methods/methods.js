@@ -18,7 +18,7 @@ export const methods = {
    * @param  {String} rateId rateid
    * @return {Number} returns discount total
    */
-  "discounts/rates/amount": function (cartId, rateId) {
+  "discounts/rates/amount"(cartId, rateId) {
     check(cartId, String);
     check(rateId, String);
     const rate = 0;
@@ -26,7 +26,8 @@ export const methods = {
     // should be pricing rate lookup.
     return rate;
   },
-  "discounts/rates/discount": function (cartId, rateId) {
+
+  "discounts/rates/discount"(cartId, rateId) {
     check(cartId, String);
     check(rateId, String);
     const rate = 0;
@@ -41,7 +42,7 @@ export const methods = {
    * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use discounts/editCode method instead.
    * @return {String} Insert result
    */
-  "discounts/addRate": function (doc, docId) {
+  "discounts/addRate"(doc, docId) {
     check(doc, Object); // actual schema validation happens during insert below
 
     // Backward compatibility
@@ -58,7 +59,7 @@ export const methods = {
    * @param  {Object} details An object with _id and modifier props
    * @return {String} Update result
    */
-  "discounts/editRate": function (details) {
+  "discounts/editRate"(details) {
     check(details, {
       _id: String,
       modifier: Object // actual schema validation happens during update below

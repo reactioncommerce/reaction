@@ -146,7 +146,7 @@ function getValidator() {
   const geoCoders = Packages.find({
     "registry.provides": "addressValidation",
     "settings.addressValidation.enabled": true,
-    "shopId": shopId,
+    shopId,
     "enabled": true
   }).fetch();
 
@@ -160,7 +160,7 @@ function getValidator() {
   }
   // If there are two, we default to the one that is not the Reaction one
   if (geoCoders.length === 2) {
-    geoCoder = _.filter(geoCoders, function (coder) {
+    geoCoder = _.filter(geoCoders, (coder) => {
       return !_.includes(coder.name, "reaction");
     })[0];
   }
@@ -337,7 +337,7 @@ export function addressBookAdd(address, accountUserId) {
 
   const userId = accountUserId || Meteor.userId();
   const account = Accounts.findOne({
-    userId: userId
+    userId
   });
   // required default id
   if (!address._id) {
@@ -346,7 +346,7 @@ export function addressBookAdd(address, accountUserId) {
   // if address got shippment or billing default, we need to update cart
   // addresses accordingly
   if (address.isShippingDefault || address.isBillingDefault) {
-    const cart = Cart.findOne({ userId: userId });
+    const cart = Cart.findOne({ userId });
     // if cart exists
     // First amend the cart,
     if (typeof cart === "object") {
@@ -360,7 +360,7 @@ export function addressBookAdd(address, accountUserId) {
     // then change the address that has been affected
     if (address.isShippingDefault) {
       Accounts.update({
-        "userId": userId,
+        userId,
         "profile.addressBook.isShippingDefault": true
       }, {
         $set: {
@@ -370,7 +370,7 @@ export function addressBookAdd(address, accountUserId) {
     }
     if (address.isBillingDefault) {
       Accounts.update({
-        "userId": userId,
+        userId,
         "profile.addressBook.isBillingDefault": true
       }, {
         $set: {
@@ -387,7 +387,7 @@ export function addressBookAdd(address, accountUserId) {
   };
   const accountsUpdateQuery = {
     $set: {
-      userId: userId
+      userId
     },
     $addToSet: {
       "profile.addressBook": address
@@ -402,7 +402,7 @@ export function addressBookAdd(address, accountUserId) {
   Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
   return Accounts.upsert({
-    userId: userId
+    userId
   }, accountsUpdateQuery);
 }
 
@@ -450,7 +450,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   // This check can be simplified to :
   if (address.isShippingDefault || address.isBillingDefault ||
     oldAddress.isShippingDefault || oldAddress.isBillingDefault) {
-    const cart = Cart.findOne({ userId: userId });
+    const cart = Cart.findOne({ userId });
     // Cart should exist to this moment, so we doesn't need to to verify its
     // existence.
     if (oldAddress.isShippingDefault !== address.isShippingDefault) {
@@ -460,7 +460,7 @@ export function addressBookUpdate(address, accountUserId, type) {
         Meteor.call("cart/setShipmentAddress", cart._id, address);
         // then, if another address was `ShippingDefault`, we need to unset it
         Accounts.update({
-          "userId": userId,
+          userId,
           "profile.addressBook.isShippingDefault": true
         }, {
           $set: {
@@ -482,7 +482,7 @@ export function addressBookUpdate(address, accountUserId, type) {
       if (address.isBillingDefault) {
         Meteor.call("cart/setPaymentAddress", cart._id, address);
         Accounts.update({
-          "userId": userId,
+          userId,
           "profile.addressBook.isBillingDefault": true
         }, {
           $set: {
@@ -518,7 +518,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
   return Accounts.update({
-    "userId": userId,
+    userId,
     "profile.addressBook._id": address._id
   }, accountsUpdateQuery);
 }
@@ -550,7 +550,7 @@ export function addressBookRemove(addressId, accountUserId) {
   Meteor.call("cart/unsetAddresses", addressId, userId);
 
   return Accounts.update({
-    "userId": userId,
+    userId,
     "profile.addressBook._id": addressId
   }, {
     $pull: {
@@ -587,8 +587,8 @@ export function inviteShopOwner(options) {
     userId = user._id;
   } else {
     userId = MeteorAccounts.createUser({
-      email: email,
-      name: name,
+      email,
+      name,
       profile: { invited: true }
     });
   }
@@ -613,7 +613,7 @@ export function inviteShopOwner(options) {
   Meteor.users.update(userId, {
     $set: {
       "services.password.reset": { token, email, when: new Date() },
-      "name": name,
+      name,
       "profile.preferences.reaction.activeShopId": shopId
     }
   });
@@ -771,9 +771,9 @@ export function sendWelcomeEmail(shopId, userId) {
 
   const dataForEmail = {
     // Shop Data
-    shop: shop,
+    shop,
     contactEmail: shop.emails[0].address,
-    emailLogo: emailLogo,
+    emailLogo,
     copyrightDate: moment().format("YYYY"),
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -976,11 +976,11 @@ function getDataForEmail(options) {
   const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
 
   return {
-    primaryShop: primaryShop, // Primary shop data - may or may not be the same as shop
-    shop: shop, // Shop Data
+    primaryShop, // Primary shop data - may or may not be the same as shop
+    shop, // Shop Data
     contactEmail: _.get(shop, "emails[0].address"),
     homepage: Meteor.absoluteUrl(),
-    emailLogo: emailLogo,
+    emailLogo,
     copyrightDate: moment().format("YYYY"),
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {

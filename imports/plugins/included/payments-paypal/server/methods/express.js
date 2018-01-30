@@ -18,7 +18,7 @@ export const methods = {
    * @param  {String} cartId Reference to the Cart object to be processed
    * @return {String} PayPal Token
    */
-  "getExpressCheckoutToken": function (cartId) {
+  "getExpressCheckoutToken"(cartId) {
     check(cartId, String);
     this.unblock();
     const cart = Cart.findOne(cartId);
@@ -76,7 +76,7 @@ export const methods = {
    * @param  {String} payerId Reference to the payer
    * @return {Object} results from PayPal normalized
    */
-  "confirmPaymentAuthorization": function (cartId, token, payerId) {
+  "confirmPaymentAuthorization"(cartId, token, payerId) {
     check(cartId, String);
     check(token, String);
     check(payerId, String);
@@ -133,7 +133,7 @@ export const methods = {
    * Return the settings for the PayPal Express payment Method
    * @return {Object} Express Checkout settings
    */
-  "getExpressCheckoutSettings": function () {
+  "getExpressCheckoutSettings"() {
     const settings = PayPal.expressCheckoutAccountOptions();
     const expressCheckoutSettings = {
       merchantId: settings.merchantId,
@@ -149,7 +149,7 @@ export const methods = {
    * @param  {Object} paymentMethod A PaymentMethod object
    * @return {Object} results from PayPal normalized
    */
-  "paypalexpress/payment/capture": function (paymentMethod) {
+  "paypalexpress/payment/capture"(paymentMethod) {
     // Call both check and validate because by calling `clean`, the audit pkg
     // thinks that we haven't checked paymentMethod arg
     check(paymentMethod, Object);
@@ -213,7 +213,7 @@ export const methods = {
       saved: true,
       authorizationId: parsedResponse.AUTHORIZATIONID,
       transactionId: parsedResponse.TRANSACTIONID,
-      currencycode: currencycode,
+      currencycode,
       metadata: {},
       rawTransaction: parsedResponse
     };
@@ -228,7 +228,7 @@ export const methods = {
    * @param {Number} amount to be refunded
    * @return {Object} Transaction results from PayPal normalized
    */
-  "paypalexpress/refund/create": function (paymentMethod, amount) {
+  "paypalexpress/refund/create"(paymentMethod, amount) {
     check(amount, Number);
 
     // Call both check and validate because by calling `clean`, the audit pkg
@@ -281,7 +281,7 @@ export const methods = {
       saved: true,
       type: "refund",
       created: new Date(),
-      transactionId: transactionId,
+      transactionId,
       refundTransactionId: parsedResponse.REFUNDTRANSACTIONID,
       grossRefundAmount: parsedResponse.GROSSREFUNDAMT,
       netRefundAmount: parsedResponse.NETREFUNDAMT,
@@ -299,7 +299,7 @@ export const methods = {
    * @param  {Object} paymentMethod A PaymentMethod object
    * @return {array}  Refunds from PayPal query, normalized
    */
-  "paypalexpress/refund/list": function (paymentMethod) {
+  "paypalexpress/refund/list"(paymentMethod) {
     // Call both check and validate because by calling `clean`, the audit pkg
     // thinks that we haven't checked paymentMethod arg
     check(paymentMethod, Object);
@@ -346,7 +346,7 @@ export const methods = {
 function parseResponse(response) {
   const result = {};
   const pieces = response.content.split("&");
-  pieces.forEach(function (piece) {
+  pieces.forEach((piece) => {
     const subpieces = piece.split("=");
     const decodedResult = result[subpieces[0]] = decodeURIComponent(subpieces[1]);
     return decodedResult;
@@ -389,7 +389,7 @@ function parseRefundReponse(response) {
 function getSetting(shopId, parameter) {
   const settings = Packages.findOne({
     name: "reaction-paypal",
-    shopId: shopId,
+    shopId,
     enabled: true
   }).settings;
   return settings[parameter];

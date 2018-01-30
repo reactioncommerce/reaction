@@ -28,14 +28,11 @@ AutoForm.hooks({
   "search-update-form": {
     onSuccess() {
       Alerts.removeSeen();
-      return Alerts.toast(i18next.t("searchSettings.settingsSaved"),
-        "success");
+      return Alerts.toast(i18next.t("searchSettings.settingsSaved"), "success");
     },
     onError(operation, error) {
       Alerts.removeSeen();
-      return Alerts.toast(
-        `${i18next.t("searchSettings.settingsFailed")} ${error}`, "error"
-      );
+      return Alerts.toast(`${i18next.t("searchSettings.settingsFailed")} ${error}`, "error");
     }
   }
 });

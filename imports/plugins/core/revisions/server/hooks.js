@@ -109,7 +109,7 @@ export const ProductRevision = {
 
   findRevision({ documentId }) {
     return Revisions.findOne({
-      "documentId": documentId,
+      documentId,
       "workflow.status": {
         $nin: [
           "revision/published"
@@ -628,7 +628,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   return false;
 });
 
-Products.before.remove(function (userId, product) {
+Products.before.remove((userId, product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -678,7 +678,7 @@ Products.before.remove(function (userId, product) {
   return false;
 });
 
-Revisions.after.update(function (userId, revision) {
+Revisions.after.update((userId, revision) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }

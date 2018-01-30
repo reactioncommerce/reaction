@@ -1,6 +1,6 @@
+import { registerSchema } from "@reactioncommerce/reaction-collections";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { Discounts } from "./discounts";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 /**
 * DiscountsPackageConfig Schema
