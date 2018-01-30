@@ -138,14 +138,17 @@ class SignUp extends Component {
           </div>
 
           <div className="form-group">
-            <a
-              href="#"
-              tabIndex="4"
+            <Components.Button
+              tagName="span"
+              className={{
+                "btn": false,
+                "btn-default": false
+              }}
+              label="Sign In"
+              i18nKeLabel="accountsUI.signIn"
               data-event-category="accounts"
               onClick={this.props.onSignInClick}
-            >
-              <Components.Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" />
-            </a>
+            />
           </div>
         </form>
       );
