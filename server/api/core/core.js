@@ -51,7 +51,7 @@ export default {
 
     this.loadPackages();
     // process imports from packages and any hooked imports
-    this.Import.flush();
+    this.Importer.flush();
     this.createGroups();
     // timing is important, packages are rqd for initial permissions configuration.
     if (!Meteor.isAppTest) {
@@ -936,7 +936,7 @@ export default {
           }
         }
         // Import package data
-        this.Import.package(combinedSettings, shopId);
+        this.Importer.package(combinedSettings, shopId);
         return Logger.debug(`Initializing ${shop.name} ${pkgName}`);
       }); // end shops
     });
@@ -945,7 +945,7 @@ export default {
     const uniqLayouts = uniqWith(layouts, _.isEqual);
     // import layouts into Shops
     Shops.find().forEach((shop) => {
-      this.Import.layout(uniqLayouts, shop._id);
+      this.Importer.layout(uniqLayouts, shop._id);
     });
 
     //

@@ -22,7 +22,7 @@ Meteor.methods({
       shopId
     });
     loadCoreTranslations();
-    Reaction.Import.flush();
+    Reaction.Importer.flush();
   },
 
   /**

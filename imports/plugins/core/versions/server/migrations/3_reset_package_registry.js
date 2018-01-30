@@ -14,6 +14,6 @@ Migrations.add({
       { multi: true }
     );
     Reaction.loadPackages();
-    Reaction.Import.flush();
+    Reaction.Importer.flush();
   }
 });
