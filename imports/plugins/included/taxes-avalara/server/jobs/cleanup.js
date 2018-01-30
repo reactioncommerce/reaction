@@ -1,4 +1,3 @@
-import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { Job } from "meteor/vsivsi:job-collection";
 import { Jobs, Logs } from "/lib/collections";
@@ -10,19 +9,24 @@ import taxCalc from "../methods/taxCalc";
  * @param {Function} callback - function to call when process complete
  * @returns {Number} results of remmoval query
  */
-function cleanupAvalaraJobs(callback) {
-  const pkgData = taxCalc.getPackageData();
-  if (pkgData && pkgData.settings.avalara.enabled) {
-    const saveDuration = pkgData.settings.avalara.logRetentionDuration;
-    const olderThan = moment().subtract(saveDuration, "days");
-    const result = Logs.remove({
-      date: {
-        $lt: olderThan
-      }
-    });
-    Logger.debug(`Removed ${result} Avalara log records`);
+async function cleanupAvalaraJobs(callback) {
+  try {
+    const moment = await import("moment");
+    const pkgData = taxCalc.getPackageData();
+    if (pkgData && pkgData.settings.avalara.enabled) {
+      const saveDuration = pkgData.settings.avalara.logRetentionDuration;
+      const olderThan = moment().subtract(saveDuration, "days");
+      const result = Logs.remove({
+        date: {
+          $lt: olderThan
+        }
+      });
+      Logger.debug(`Removed ${result} Avalara log records`);
+    }
+    callback();
+  } catch (error) {
+    Logger.debug(error, "moment.js async import error");
   }
-  callback();
 }
 
 export function setupAvalaraCleanupHook() {
