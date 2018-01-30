@@ -50,7 +50,7 @@ export function withMoment(component) {
           });
         });
       } catch (error) {
-        Logger.debug(error, "moment import error");
+        Logger.debug(error, "moment.js async import error");
       }
     }
   })(component);
