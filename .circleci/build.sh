@@ -19,7 +19,7 @@ docker tag "${DOCKER_NAMESPACE}:${SHA1}" "${DOCKER_NAMESPACE}:${BRANCH}"
 echo "Applying git tags to Docker image ${DOCKER_NAMESPACE}:${SHA1}"
 git show-ref --tags -d | grep "^${SHA1}" | sed -e 's,.* refs/tags/,,' -e 's/\^{}//' 2> /dev/null \
   | xargs -t -I % \
-  echo docker tag "${DOCKER_NAMESPACE}:${SHA1}" "${DOCKER_NAMESPACE}:%"
+  docker tag "${DOCKER_NAMESPACE}:${SHA1}" "${DOCKER_NAMESPACE}:%"
 
 # Special logic for applying latest tag
 # Check to see if we're on the master branch
@@ -41,6 +41,7 @@ if [[ "$BRANCH" == "master" ]]; then
   # 2. The current tag is equal to the highest tag, OR the highest tag does not exist
   if [[ -n "${CURRENT_TAG}" ]]; then
     if [[ "${CURRENT_TAG}" == "${HIGHEST_TAG}" ]] || [[ -z "${HIGHEST_TAG}" ]]; then
+      echo "Applying 'latest' tag to Docker image ${DOCKER_NAMESPACE}:${SHA1}";
       docker tag "${DOCKER_NAMESPACE}:${SHA1}" "${DOCKER_NAMESPACE}:latest"
     fi
   fi
