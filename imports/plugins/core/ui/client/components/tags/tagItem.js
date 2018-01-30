@@ -211,23 +211,21 @@ class TagItem extends Component {
     });
 
     return (
-      this.props.connectDropTarget(
-        <div className="rui item edit draggable">
-          <div
-            className={baseClassName}
-            data-id={this.props.tag._id}
-          >
-            <form onSubmit={this.handleTagFormSubmit}>
-              <Handle connectDragSource={this.props.connectDragSource} />
-              {this.renderAutosuggestInput()}
-              <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
-              {this.props.isTagNav &&
-                <Button icon="chevron-down" onClick={this.handleTagSelect} status="default" />
-              }
-            </form>
-          </div>
+      this.props.connectDropTarget(<div className="rui item edit draggable">
+        <div
+          className={baseClassName}
+          data-id={this.props.tag._id}
+        >
+          <form onSubmit={this.handleTagFormSubmit}>
+            <Handle connectDragSource={this.props.connectDragSource} />
+            {this.renderAutosuggestInput()}
+            <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
+            {this.props.isTagNav &&
+              <Button icon="chevron-down" onClick={this.handleTagSelect} status="default" />
+            }
+          </form>
         </div>
-      )
+      </div>)
     );
   }
 

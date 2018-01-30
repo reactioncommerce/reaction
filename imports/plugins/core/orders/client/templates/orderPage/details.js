@@ -7,19 +7,19 @@ import { Accounts } from "/lib/collections";
 *
 */
 Template.pageOrderDetail.helpers({
-  userProfile: function () {
+  userProfile() {
     if (typeof this.userId === "string") {
       const userProfile = Accounts.findOne(this.userId);
       return userProfile.profile;
     }
   },
-  orderAge: function () {
+  orderAge() {
     return moment(this.createdAt).fromNow();
   },
-  shipmentTracking: function () {
+  shipmentTracking() {
     return this.shipping.shipmentMethod.tracking;
   },
-  paymentMethod: function () {
+  paymentMethod() {
     return this.payment.paymentMethod[0].processor;
   }
 });

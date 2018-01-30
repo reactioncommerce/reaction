@@ -121,7 +121,7 @@ class CardHeader extends Component {
       "panel-heading": true,
       "card-header": true,
       "expandable": this.props.actAsExpander,
-      "validation": validation
+      validation
     });
 
     if (this.props.actAsExpander) {

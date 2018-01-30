@@ -20,7 +20,7 @@ const Endpoints = {};
 WebApp.connectHandlers.use(bodyParser.json({
   limit: "200kb", // Override default request size
   // Attach the raw body which is necessary for doing verifications for some webhooks
-  verify: function (req, res, buf) {
+  verify(req, res, buf) {
     req.rawBody = buf;
   },
   extended: true
@@ -39,7 +39,7 @@ Endpoints.routes = [];
 let connectRouter;
 
 // Register as a middleware
-WebApp.connectHandlers.use(Meteor.bindEnvironment(connectRoute(function (router) {
+WebApp.connectHandlers.use(Meteor.bindEnvironment(connectRoute((router) => {
   connectRouter = router;
 })));
 
@@ -64,12 +64,12 @@ function writeJsonToBody(res, json) {
 // That's why we cache them and then add after startup.
 let errorMiddlewares = [];
 Endpoints.ErrorMiddleware = {
-  use: function () {
+  use() {
     errorMiddlewares.push(arguments);
   }
 };
 
-Meteor.startup(function () {
+Meteor.startup(() => {
   errorMiddlewares.forEach((errorMiddleware) => {
     const errorMiddlewareFn = errorMiddleware.map((maybeFn) => {
       if (_.isFunction(maybeFn)) {
@@ -110,18 +110,18 @@ Endpoints.add = function (method, path, handler) {
 
   // Add to list of known Endpoints
   Endpoints.routes.push({
-    method: method,
+    method,
     path: slashedPath
   });
 
-  connectRouter[method.toLowerCase()](path, function (req, res, next) {
+  connectRouter[method.toLowerCase()](path, (req, res, next) => {
     // Set headers on response
     const headerKeys = Object.keys(responseHeaders);
     headerKeys.forEach((key) => {
       res.setHeader(key, responseHeaders[key]);
     });
 
-    Fiber(function () {
+    Fiber(() => {
       try {
         handler(req, res, next);
       } catch (error) {

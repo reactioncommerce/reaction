@@ -17,7 +17,7 @@ import { Template } from "meteor/templating";
  * in code: Cart.findOne().getTotal()
  * @return {Object} returns inventory helpers
  */
-Template.registerHelper("cart", function () {
+Template.registerHelper("cart", () => {
   const cartHelpers = {
     /**
      * showCartIconWarning
@@ -71,7 +71,7 @@ Template.registerHelper("cart", function () {
  * @summary gets current cart billing address / payment name
  * @return {String} returns cart.billing[0].fullName
  */
-Template.registerHelper("cartPayerName", function () {
+Template.registerHelper("cartPayerName", () => {
   const cart = Cart.findOne();
   if (cart && cart.billing && cart.billing[0] && cart.billing[0].address && cart.billing[0].address.fullName) {
     const name = cart.billing[0].address.fullName;

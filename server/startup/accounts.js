@@ -12,7 +12,7 @@ export default function () {
    * http://docs.meteor.com/#/full/accounts_validateloginattempt
    */
 
-  Accounts.validateLoginAttempt(function (attempt) {
+  Accounts.validateLoginAttempt((attempt) => {
     if (!attempt.allowed) {
       return false;
     }
@@ -31,7 +31,7 @@ export default function () {
 
     if (loginEmail && loginEmail === adminEmail) {
       // filter out the matching login email from any existing emails
-      const userEmail = _.filter(attempt.user.emails, function (email) {
+      const userEmail = _.filter(attempt.user.emails, (email) => {
         return email.address === loginEmail;
       });
 
@@ -49,7 +49,7 @@ export default function () {
    * creates a login type "anonymous"
    * default for all unauthenticated visitors
    */
-  Accounts.registerLoginHandler(function (options) {
+  Accounts.registerLoginHandler((options) => {
     if (!options.anonymous) return {};
 
     const stampedToken = Accounts._generateStampedLoginToken();
@@ -61,7 +61,7 @@ export default function () {
     });
     const loginHandler = {
       type: "anonymous",
-      userId: userId
+      userId
     };
     return loginHandler;
   });
@@ -144,8 +144,7 @@ export default function () {
             if (serviceObj.picture) {
               additionals.profile.picture = user.services[service].picture;
             } else if (serviceObj.profile_image_url_https) {
-              additionals.profile.picture = user.services[service].
-                dprofile_image_url_https;
+              additionals.profile.picture = user.services[service].dprofile_image_url_https;
             } else if (serviceObj.profile_picture) {
               additionals.profile.picture = user.services[service].profile_picture;
             }
