@@ -109,7 +109,6 @@ class SignIn extends Component {
         i18nKeyLabel="accountsUI.signIn"
         label="Sign In"
         type="submit"
-        tabIndex="3"
         eventAction="submitSignInForm"
       />
     );
@@ -144,7 +143,6 @@ class SignIn extends Component {
               label="Email"
               name="email"
               type="email"
-              tabIndex="1"
               id={`email-${this.props.uniqueId}`}
               value={this.state.email}
               onChange={this.handleFieldChange}
