@@ -39,8 +39,7 @@ Migrations.add({
         // of the array
         const updatedRegistry = pkg.registry.map((entry) => {
           if (Array.isArray(entry.provides)) {
-            const [provides] = entry.provides;
-            entry.provides = provides;
+            entry.provides = entry.provides[0]; // eslint-disable-line prefer-destructuring
           }
           return entry;
         });
