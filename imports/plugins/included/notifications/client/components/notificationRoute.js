@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
+import { withMoment } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 
 
@@ -56,14 +56,14 @@ class NotificationRoute extends Component {
   }
 
   render() {
-    const { notificationList } = this.props;
+    const { moment, notificationList } = this.props;
     return (
       <div className="notify-bar">
         { this.renderDropdownHead() }
         <ul className="dropdown-notify notifications">
           { this.handleNoNotifications(notificationList) }
           { notificationList.map((notify, key) => {
-            const timeNow = moment(notify.timeSent).fromNow();
+            const timeNow = moment && moment(notify.timeSent).fromNow() || notify.timeSent.toLocaleString();
             const read = `notification ${notify.status}`;
             const i18n = `notifications.messages.${notify.type}`;
             return (
@@ -93,8 +93,9 @@ class NotificationRoute extends Component {
 NotificationRoute.propTypes = {
   markAllAsRead: PropTypes.func,
   markOneAsRead: PropTypes.func,
+  moment: PropTypes.func,
   notificationList: PropTypes.array,
   unread: PropTypes.number
 };
 
-export default NotificationRoute;
+export default withMoment(NotificationRoute);
