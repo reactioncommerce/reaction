@@ -102,7 +102,7 @@ class PublishControls extends Component {
     return "app.hideChanges";
   }
 
-  get primaryRevisionObj() {
+  get primaryRevision() {
     const { revisions } = this.props;
     if (Array.isArray(revisions) && revisions.length) {
       const primaryDocumentId = this.props.documentIds[0];
@@ -132,9 +132,9 @@ class PublishControls extends Component {
 
   get isVisible() {
     if (Array.isArray(this.props.revisions) && this.props.revisions.length && this.primaryRevision) {
-      const primaryRevision = this.primaryRevisionObj;
+      const primaryRevisionObj = this.primaryRevision;
 
-      if (primaryRevision.documentData.isVisible) {
+      if (primaryRevisionObj.documentData.isVisible) {
         return "public";
       }
     } else if (Array.isArray(this.props.documents) && this.props.documents.length) {
