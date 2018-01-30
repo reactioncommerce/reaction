@@ -8,41 +8,41 @@ import { Logger } from "../logger";
 import doRightJoinNoIntersection from "./rightJoin";
 
 /**
- * @file Exposes the Import object implementing methods for bulk imports.
+ * @file Exposes the Importer object implementing methods for bulk imports.
  * @author Tom De Caluwé
- * @namespace Import
+ * @namespace Importer
  */
 
-export const Import = {};
+export const Importer = {};
 
-Import._buffers = {};
-Import._contexts = {};
-Import._count = {};
-Import._indications = {};
-Import._limit = 1000;
+Importer._buffers = {};
+Importer._contexts = {};
+Importer._count = {};
+Importer._indications = {};
+Importer._limit = 1000;
 
-Import._name = function (collection) {
+Importer._name = function (collection) {
   return collection._name;
 };
 
-Import._upsert = function () {
+Importer._upsert = function () {
   return true;
 };
 
 //
-// TODO Verify if Import.startup is deprecated
+// TODO Verify if Importer.startup is deprecated
 //
-Import.startup = function () {
+Importer.startup = function () {
   return true;
 };
 
-Import.load = function (key, object) {
+Importer.load = function (key, object) {
   check(object, Object);
 
   this.object(this.identify(object), key, object);
 };
 
-Import.indication = function (field, collection, probability) {
+Importer.indication = function (field, collection, probability) {
   check(field, String);
   check(collection, Mongo.Collection);
   check(probability, Number);
@@ -51,10 +51,10 @@ Import.indication = function (field, collection, probability) {
 };
 
 /**
- * Import.identify
+ * Importer.identify
  * @name identify
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Tries to identify the schema associated with a document.
  * @param {Object} document - A document with unknown schema
  * @returns {Mongo.Collection} Returns a MongoDB collection in which the
@@ -68,7 +68,7 @@ Import.indication = function (field, collection, probability) {
  * Afterwards the schema with the maximal probability is selected. An error is
  * thrown if the schema cannot be determined.
  */
-Import.identify = function (document) {
+Importer.identify = function (document) {
   check(document, Object);
 
   const probabilities = {};
@@ -107,12 +107,12 @@ Import.identify = function (document) {
 /**
  * @name commit
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Commit the buffer for a given collection to the database.
  * @param {Mongo.Collection} collection The target collection to be flushed to disk
  * @returns {undefined}
  */
-Import.commit = function (collection) {
+Importer.commit = function (collection) {
   check(collection, Mongo.Collection);
   // Construct a collection identifier.
   const name = this._name(collection);
@@ -124,8 +124,8 @@ Import.commit = function (collection) {
       // throw everything together.
       const nImported = result.nModified + result.nInserted + result.nUpserted;
       const nTouched = result.nMatched + result.nInserted + result.nUpserted;
-      const { nRemoved } = result;
-      // Log some information about the import.
+      const nRemoved = result.nRemoved;
+      // Log some information about theImporter.
       if (nTouched) {
         let message = `Modified ${nImported}${nImported === 1 ? " document" : " documents"}`;
         message += ` while importing ${nTouched} to ${name}`;
@@ -157,12 +157,12 @@ Import.commit = function (collection) {
 /**
  * @name flush
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Process the buffer for a given collection and commit the database.
  * @param {Mongo.Collection} collection optional - supply a Mongo collection, or leave empty to commit all buffer entries
  * @returns {undefined}
  */
-Import.flush = function (collection) {
+Importer.flush = function (collection) {
   if (!collection) {
     for (const name of Object.keys(this._buffers)) {
       this.commit(Collections[name]);
@@ -175,7 +175,7 @@ Import.flush = function (collection) {
 /**
  * @name context
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Get a validation context for a given collection.
  * @param {Mongo.Collection} collection The target collection
  * @param {Object} [selector] A selector object to retrieve the correct schema.
@@ -184,7 +184,7 @@ Import.flush = function (collection) {
  * The validation context is requested from the schema associated with the
  * collection.
  */
-Import.context = function (collection, selector) {
+Importer.context = function (collection, selector) {
   check(collection, Mongo.Collection);
   check(selector, Match.Optional(Object));
 
@@ -204,13 +204,13 @@ Import.context = function (collection, selector) {
 /**
  * @name buffer
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Get an import buffer for a given collection.
  * @param {Object} collection The target collection
  * @returns {Object} return buffer
  * If no buffer is presented, a new one will be constructed.
  */
-Import.buffer = function (collection) {
+Importer.buffer = function (collection) {
   check(collection, Mongo.Collection);
 
   if (!MongoInternals.NpmModule.Collection.prototype.initializeUnorderedBulkOp) {
@@ -232,7 +232,7 @@ Import.buffer = function (collection) {
 /**
  * @name product
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Store a product in the import buffer.
  * @param {Object} key A key to look up the product
  * @param {Object} product The product data to be updated
@@ -243,7 +243,7 @@ Import.buffer = function (collection) {
  * * Push the variant if it doesn't exist.
  * * Update the variant.
  */
-Import.product = function (key, product) {
+Importer.product = function (key, product) {
   // If product has an _id, we use it to look up the product before
   // updating the product so as to avoid trying to change the _id
   // which is immutable.
@@ -256,13 +256,13 @@ Import.product = function (key, product) {
 /**
  * @name package
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Store a package in the import buffer.
  * @param {Object} pkg The package data to be updated
  * @param {String} shopId The package data to be updated
  * @returns {undefined}
  */
-Import.package = function (pkg, shopId) {
+Importer.package = function (pkg, shopId) {
   check(pkg, Object);
   check(shopId, String);
   const key = {
@@ -273,19 +273,19 @@ Import.package = function (pkg, shopId) {
 };
 
 //
-// Import.translation
+// Importer.translation
 // server/startup/i18n.js
 //
 
 /**
  * @name template
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Store a template in the import buffer.
  * @param {Object} templateInfo The template data to be updated
  * @returns {undefined}
  */
-Import.template = function (templateInfo) {
+Importer.template = function (templateInfo) {
   check(templateInfo, Object);
 
   const key = {
@@ -299,13 +299,13 @@ Import.template = function (templateInfo) {
 /**
  * @name translation
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Store a translation in the import buffer.
  * @param {Object} key A key to look up the translation
  * @param {Object} translation The translation data to be updated
  * @returns {Object} updated translation buffer
  */
-Import.translation = function (key, translation) {
+Importer.translation = function (key, translation) {
   const modifiedKey = Object.assign(key, { ns: translation.ns });
   return this.object(Collections.Translations, modifiedKey, translation);
 };
@@ -313,26 +313,26 @@ Import.translation = function (key, translation) {
 /**
  * @name shop
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Store a shop in the import buffer.
  * @param {Object} key A key to look up the shop
  * @param {Object} shop The shop data to be updated
  * @returns {Object} this shop
  */
-Import.shop = function (key, shop) {
+Importer.shop = function (key, shop) {
   return this.object(Collections.Shops, key, shop);
 };
 
 /**
  * @name layout
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary store a shop layout in the import buffer
  * @param {Array} layout - an array of layouts to be added to shop
  * @param {String} shopId shopId
  * @returns {Object} this shop
  */
-Import.layout = function (layout, shopId) {
+Importer.layout = function (layout, shopId) {
   const key = {
     _id: shopId
   };
@@ -345,13 +345,13 @@ Import.layout = function (layout, shopId) {
 /**
  * @name shipping
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Store shipping in the import buffer.
  * @param {Object} key A shipping service key used in combination with provider
  * @param {Object} shipping The shipping data to be updated
  * @returns {Object} this shipping
  */
-Import.shipping = function (key, shipping) {
+Importer.shipping = function (key, shipping) {
   let importKey = {};
   //
   // we have a bit of a strange structure in Shipping
@@ -375,27 +375,27 @@ Import.shipping = function (key, shipping) {
 /**
  * @name tag
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Store a tag in the import buffer.
  * @param {Object} key A key to look up the tag
  * @param {Object} tag The tag data to be updated
  * @returns {Object} this tag
  */
-Import.tag = function (key, tag) {
+Importer.tag = function (key, tag) {
   return this.object(Collections.Tags, key, tag);
 };
 
 /**
  * @name object
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Push a new upsert document to the import buffer.
  * @param {Mongo.Collection} collection The target collection
  * @param {Object} key A key to look up the object
  * @param {Object} object The object data to be updated
  * @returns {undefined}
  */
-Import.object = function (collection, key, object) {
+Importer.object = function (collection, key, object) {
   check(collection, Mongo.Collection);
   check(key, Object);
   check(object, Object);
@@ -447,7 +447,7 @@ Import.object = function (collection, key, object) {
 /**
  * @name process
  * @method
- * @memberof Import
+ * @memberof Importer
  * @summary Process a json array of import documents using a callback.
  * @param {Object[]} json An array containing the import documents
  * @param {string[]} keys Fields that should be used as the import key.
@@ -456,7 +456,7 @@ Import.object = function (collection, key, object) {
  * parameter and an update document as the second parameter.
  * @returns {undefined}
  */
-Import.process = function (json, keys, callback) {
+Importer.process = function (json, keys, callback) {
   check(json, String);
   check(keys, Array);
   check(callback, Function);
@@ -472,23 +472,23 @@ Import.process = function (json, keys, callback) {
   }
 };
 
-Import.indication("i18n", Collections.Translations, 0.2);
-Import.indication("hashtags", Collections.Products, 0.5);
-Import.indication("barcode", Collections.Products, 0.5);
-Import.indication("price", Collections.Products, 0.5);
-Import.indication("ancestors", Collections.Products, 0.5);
-Import.indication("languages", Collections.Shops, 0.5);
-Import.indication("currencies", Collections.Shops, 0.5);
-Import.indication("timezone", Collections.Shops, 0.5);
-Import.indication("isTopLevel", Collections.Tags, 0.4);
-Import.indication("slug", Collections.Tags, 0.5);
-Import.indication("provider", Collections.Shipping, 0.2);
+Importer.indication("i18n", Collections.Translations, 0.2);
+Importer.indication("hashtags", Collections.Products, 0.5);
+Importer.indication("barcode", Collections.Products, 0.5);
+Importer.indication("price", Collections.Products, 0.5);
+Importer.indication("ancestors", Collections.Products, 0.5);
+Importer.indication("languages", Collections.Shops, 0.5);
+Importer.indication("currencies", Collections.Shops, 0.5);
+Importer.indication("timezone", Collections.Shops, 0.5);
+Importer.indication("isTopLevel", Collections.Tags, 0.4);
+Importer.indication("slug", Collections.Tags, 0.5);
+Importer.indication("provider", Collections.Shipping, 0.2);
 
 //
 // exporting Fixture
 // use this instead of Import if you want
 // Bulk.find.upsert() to equal false
 //
-export const Fixture = Object.assign({}, Import, {
-  _upsert: () => false
+export const Fixture = Object.assign({}, Importer, {
+  _upsert: () => { return false; }
 });
