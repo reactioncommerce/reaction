@@ -155,7 +155,7 @@ class EditGroup extends Component {
       <Components.List>
         {this.state.groups.map((grp, index) => (
           <div key={index} className={this.groupListClass(grp)}>
-            <Components.ListItem label={grp.name} onClick={this.selectGroup(grp)}>
+            <Components.ListItem label={grp.name} onClick={this.selectGroup(grp)} listItemClassName="flex flex-justify-spaceBetween">
               <Components.IconButton
                 icon="fa fa-pencil"
                 onClick={this.showForm(grp)}
