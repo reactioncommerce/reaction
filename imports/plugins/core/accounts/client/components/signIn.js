@@ -168,20 +168,28 @@ class SignIn extends Component {
           </div>
 
           <div className="form-group flex flex-justify-spaceBetween">
-            <a
-              href="#"
-              tabIndex="4"
+            <Components.Button
+              tagName="span"
+              className={{
+                "btn": false,
+                "btn-default": false
+              }}
+              label="Reset Password"
+              i18nKeyLabel="accountsUI.forgotPassword"
+              data-event-category="accounts"
               onClick={this.props.onForgotPasswordClick}
-            >
-              <Components.Translation defaultValue="Reset Password" i18nKey="accountsUI.forgotPassword" />
-            </a>
-            <a
-              href="#"
-              tabIndex="5"
+            />
+            <Components.Button
+              tagName="span"
+              className={{
+                "btn": false,
+                "btn-default": false
+              }}
+              label="Register"
+              i18nKeyLabel="accountsUI.signUp"
+              data-event-category="accounts"
               onClick={this.props.onSignUpClick}
-            >
-              <Components.Translation defaultValue="Register" i18nKey="accountsUI.signUp" />
-            </a>
+            />
           </div>
 
         </form>
