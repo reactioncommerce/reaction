@@ -145,7 +145,7 @@ class SignUp extends Component {
                 "btn-default": false
               }}
               label="Sign In"
-              i18nKeLabel="accountsUI.signIn"
+              i18nKeyLabel="accountsUI.signIn"
               data-event-category="accounts"
               onClick={this.props.onSignInClick}
             />
