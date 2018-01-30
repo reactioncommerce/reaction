@@ -1,5 +1,4 @@
 import _ from "lodash";
-import moment from "moment";
 import path from "path";
 import { Random } from "meteor/random";
 import { Meteor } from "meteor/meteor";
@@ -19,7 +18,7 @@ import { Reaction, Logger } from "/server/api";
  *                 Defaults to the first email in the list.
  * @return {Job} - returns a sendEmail Job instance
  */
-export function sendResetPasswordEmail(userId, optionalEmail) {
+export async function sendResetPasswordEmail(userId, optionalEmail) {
   // Make sure the user exists, and email is one of their addresses.
   const user = Meteor.users.findOne(userId);
 
@@ -66,6 +65,9 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
   } else {
     emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
   }
+
+  const mod = await import("moment");
+  const moment = mod.default;
 
   const dataForEmail = {
     // Shop Data
