@@ -4,29 +4,32 @@ import { Jobs, Logs } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import taxCalc from "../methods/taxCalc";
 
+let moment;
+async function lazyLoadMoment() {
+  if (moment) return;
+  const mod = await import("moment");
+  moment = mod.default;
+}
+
 /**
  * @summary Remove logs older than the configured number of days
  * @param {Function} callback - function to call when process complete
  * @returns {Number} results of remmoval query
  */
-async function cleanupAvalaraJobs(callback) {
-  try {
-    const moment = await import("moment");
-    const pkgData = taxCalc.getPackageData();
-    if (pkgData && pkgData.settings.avalara.enabled) {
-      const saveDuration = pkgData.settings.avalara.logRetentionDuration;
-      const olderThan = moment().subtract(saveDuration, "days");
-      const result = Logs.remove({
-        date: {
-          $lt: olderThan
-        }
-      });
-      Logger.debug(`Removed ${result} Avalara log records`);
-    }
-    callback();
-  } catch (error) {
-    Logger.debug(error, "moment.js async import error");
+function cleanupAvalaraJobs(callback) {
+  Promise.await(lazyLoadMoment());
+  const pkgData = taxCalc.getPackageData();
+  if (pkgData && pkgData.settings.avalara.enabled) {
+    const saveDuration = pkgData.settings.avalara.logRetentionDuration;
+    const olderThan = moment().subtract(saveDuration, "days");
+    const result = Logs.remove({
+      date: {
+        $lt: olderThan
+      }
+    });
+    Logger.debug(`Removed ${result} Avalara log records`);
   }
+  callback();
 }
 
 export function setupAvalaraCleanupHook() {
