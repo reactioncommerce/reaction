@@ -39,8 +39,8 @@ if [[ "$BRANCH" == "master" ]]; then
   # We tag :latest only if
   # 1. We have a current tag
   # 2. The current tag is equal to the highest tag, OR the highest tag does not exist
-  if [[ -n "$CURRENT_TAG" ]]; then
-    if [[ "$CURRENT_TAG" == "$HIGHEST_TAG" ]] || [[ -z "$HIGHEST_TAG" ]]; then
+  if [[ -n "${CURRENT_TAG}" ]]; then
+    if [[ "${CURRENT_TAG}" == "${HIGHEST_TAG}" ]] || [[ -z "${HIGHEST_TAG}" ]]; then
       docker tag "${DOCKER_NAMESPACE}:${SHA1}" "${DOCKER_NAMESPACE}:latest"
     fi
   fi
