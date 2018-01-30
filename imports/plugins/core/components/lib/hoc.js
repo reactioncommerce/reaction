@@ -4,12 +4,10 @@ import { Roles } from "meteor/alanning:roles";
 import { Accounts, Groups } from "/lib/collections";
 import { composeWithTracker } from "./composer";
 
-let Reaction;
+let { Reaction } = require("/client/api");
 
-if (Meteor.isClient) {
-  Reaction = require("/client/api").Reaction;
-} else {
-  Reaction = require("/server/api").Reaction;
+if (!Meteor.isClient) {
+  Reaction = require("/server/api");
 }
 
 

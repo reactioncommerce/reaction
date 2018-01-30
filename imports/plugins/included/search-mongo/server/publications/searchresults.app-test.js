@@ -1,3 +1,4 @@
+/* eslint prefer-arrow-callback:0 */
 import faker from "faker";
 import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
@@ -6,9 +7,12 @@ import { Reaction } from "/server/api";
 import { getSlug } from "/lib/api";
 import { Products, OrderSearch } from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
-import { getResults } from "./searchresults";
-import { buildProductSearch, buildProductSearchRecord, buildAccountSearchRecord,
+import {
+  buildProductSearch,
+  buildProductSearchRecord,
+  buildAccountSearchRecord,
   buildAccountSearch } from "../methods/searchcollections";
+import { getResults } from "./searchresults";
 
 Fixtures();
 
@@ -43,7 +47,7 @@ export function createProduct(isVisible = true, title) {
     ],
     requiresShipping: true,
     hashtags: [],
-    isVisible: isVisible,
+    isVisible,
     handle: productSlug,
     workflow: {
       status: "new"

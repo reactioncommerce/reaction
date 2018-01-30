@@ -13,10 +13,10 @@ function markExportFailed(order) {
     Orders.update({ _id: order._id }, {
       $push: {
         exportHistory: {
-          status: "failed",
+          status: "failure",
           dateAttempted: new Date(),
           exportMethod: "reaction-connectors-shopify",
-          shopId: shopId
+          shopId
         }
       }
     });

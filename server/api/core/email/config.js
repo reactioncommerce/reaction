@@ -99,7 +99,7 @@ export function getMailConfig() {
     };
 
     // add user/pass to the config object if they were found
-    if (!!creds) {
+    if (creds) {
       config.auth = {
         user: creds[0],
         pass: creds[1]

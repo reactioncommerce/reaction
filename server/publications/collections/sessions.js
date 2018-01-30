@@ -12,16 +12,14 @@ import { Reaction } from "/server/api";
 
 export const ServerSessions = new Mongo.Collection("Sessions");
 
-Meteor.publish("Sessions", function (sessionId) {
+Meteor.publish("Sessions", (sessionId) => {
   check(sessionId, Match.OneOf(String, null));
   const created = new Date().getTime();
   let newSessionId;
   // if we don"t have a sessionId create a new session
   // REALLY - we should always have a client sessionId
   if (!sessionId) {
-    newSessionId = ServerSessions.insert({
-      created: created
-    });
+    newSessionId = ServerSessions.insert({ created });
   } else {
     newSessionId = sessionId;
   }
@@ -30,10 +28,7 @@ Meteor.publish("Sessions", function (sessionId) {
 
   // if not found, also create a new server session
   if (serverSession.count() === 0) {
-    ServerSessions.insert({
-      _id: newSessionId,
-      created: created
-    });
+    ServerSessions.insert({ _id: newSessionId, created });
   }
 
   // set global sessionId

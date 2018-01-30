@@ -10,15 +10,15 @@ Meteor.methods({
    * use TAXCODE_SRC  to override source url
    * @returns {Array} An array of Tax code objects
    */
-  "taxcloud/getTaxCodes": function () {
+  "taxcloud/getTaxCodes"() {
     const taxCodeArray = [];
     const TAXCODE_SRC = "https://taxcloud.net/tic/?format=json";
     const taxCodes = HTTP.get(TAXCODE_SRC);
 
     if (taxCodes) {
-      taxCodes.data.tic_list.forEach(function (code) {
+      taxCodes.data.tic_list.forEach((code) => {
         if (code.tic.children) {
-          code.tic.children.forEach(function (child) {
+          code.tic.children.forEach((child) => {
             taxCodeArray.push(child.tic);
           });
         }

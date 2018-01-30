@@ -50,7 +50,7 @@ export function createAccountFactory() {
       ]
     },
     metafields: [],
-    createdAt: new Date,
+    createdAt: new Date(),
     updatedAt: new Date()
   });
 }

@@ -23,7 +23,7 @@ const sendNotificationToAdmin = (adminId) => {
   return Meteor.call("notification/send", adminId, type, url, sms);
 };
 
-MethodHooks.after("cart/copyCartToOrder", function (options) {
+MethodHooks.after("cart/copyCartToOrder", (options) => {
   const userId = Meteor.userId();
   const type = "newOrder";
   const prefix = Reaction.getShopPrefix();

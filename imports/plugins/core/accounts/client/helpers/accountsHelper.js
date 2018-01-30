@@ -127,7 +127,7 @@ export function groupPermissions(packages) {
         shopId: pkg.shopId,
         icon: pkg.icon,
         name: pkg.name,
-        label: label,
+        label,
         permissions: _.uniq(permissions)
       };
     }
@@ -136,6 +136,8 @@ export function groupPermissions(packages) {
 
 function getPermissionMap(permissions) {
   const permissionMap = {};
-  permissions.forEach((existing) => (permissionMap[existing.permission] = existing.label));
+  permissions.forEach(({ label, permission }) => {
+    permissionMap[permission] = label;
+  });
   return permissionMap;
 }
