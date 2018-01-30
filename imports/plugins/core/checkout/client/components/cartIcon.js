@@ -4,6 +4,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 
 const CartIcon = ({ handleClick, cart }) => (
   <Components.Button
+    tagName="div"
     className={{
       "btn": false,
       "btn-default": false,
