@@ -43,11 +43,11 @@ if [[ "$BRANCH" == "master" ]]; then
     if [[ "${CURRENT_TAG}" == "${HIGHEST_TAG}" ]] || [[ -z "${HIGHEST_TAG}" ]]; then
       echo "Applying 'latest' tag to Docker image ${DOCKER_NAMESPACE}:${SHA1}";
       docker tag "${DOCKER_NAMESPACE}:${SHA1}" "${DOCKER_NAMESPACE}:latest"
-     else
-       docker rmi "${DOCKER_NAMESPACE}:latest"
+    else
+      docker rmi "${DOCKER_NAMESPACE}:latest"
     fi
-   else
-     docker rmi "${DOCKER_NAMESPACE}:latest"
+  else
+    docker rmi "${DOCKER_NAMESPACE}:latest"
   fi
 else
   docker rmi "${DOCKER_NAMESPACE}:latest"
