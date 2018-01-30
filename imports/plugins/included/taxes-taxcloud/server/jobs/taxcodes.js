@@ -67,7 +67,7 @@ export default function () {
         } else {
           // we should always return "completed" job here, because errors are fine
           const success = "Latest TaxCloud TaxCodes were fetched successfully.";
-          Reaction.Import.flush();
+          Reaction.Importer.flush();
           Logger.debug(success);
 
           job.done(success, { repeatId: true });
