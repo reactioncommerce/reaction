@@ -78,7 +78,6 @@ class Forgot extends Component {
         i18nKeyLabel="accountsUI.resetYourPassword"
         label="Reset Your Password"
         type="submit"
-        tabIndex="2"
         eventAction="reset-password"
         disabled={this.props.isDisabled}
       />
@@ -110,7 +109,6 @@ class Forgot extends Component {
               label="Email"
               name="email"
               type="email"
-              tabIndex="1"
               id={`email-${this.props.uniqueId}`}
               value={this.state.email}
               onChange={this.handleFieldChange}
