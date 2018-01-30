@@ -156,7 +156,10 @@ class EditGroup extends Component {
         {this.state.groups.map((grp, index) => (
           <div key={index} className={this.groupListClass(grp)}>
             <Components.ListItem label={grp.name} onClick={this.selectGroup(grp)}>
-              <a href="" onClick={this.showForm(grp)} className="fa fa-pencil" />
+              <Components.IconButton
+                icon="fa fa-pencil"
+                onClick={this.showForm(grp)}
+              />
             </Components.ListItem>
           </div>
         ))}
