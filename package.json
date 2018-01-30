@@ -131,7 +131,7 @@
     "chai": "^4.1.2",
     "enzyme": "^3.2.0",
     "enzyme-to-json": "^3.2.2",
-    "eslint": "^4.12.1",
+    "eslint": "^4.16.0",
     "eslint-config-react-tools": "^1.1.2",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.5.0",
