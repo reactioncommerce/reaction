@@ -271,8 +271,11 @@ const wrapComponent = (Comp) => (
       if (alertOptions.falsePreviousStatuses) {
         Alerts.alert({
           text: i18next.t("order.skippedBulkOrdersAlert", {
-            selectedOrders: selectedOrders.length, orderText, status: capitalizeStatus,
-            numberOfSkippedOrders: alertOptions.falsePreviousStatuses, skippedOrdersText,
+            selectedOrders: selectedOrders.length,
+            orderText,
+            status: capitalizeStatus,
+            numberOfSkippedOrders: alertOptions.falsePreviousStatuses,
+            skippedOrdersText,
             skippedState: alertOptions.whichFalseState
           }),
           type: "warning",
@@ -391,7 +394,8 @@ const wrapComponent = (Comp) => (
       } else {
         this.displayAlert(
           selectedOrders, status,
-          { falseCurrentState: isNotPicked,
+          {
+            falseCurrentState: isNotPicked,
             trueCurrentState: isPicked
           }
         );
@@ -442,7 +446,8 @@ const wrapComponent = (Comp) => (
       if (ordersToRegress) {
         this.displayRegressionAlert(
           selectedOrders, ordersToRegress, status,
-          { whichFalseState,
+          {
+            whichFalseState,
             falsePreviousStatuses: isNotPicked,
             falseCurrentState: isNotPacked,
             trueCurrentState: isPacked
@@ -453,7 +458,8 @@ const wrapComponent = (Comp) => (
       } else {
         this.displayAlert(
           selectedOrders, status,
-          { whichFalseState,
+          {
+            whichFalseState,
             falsePreviousStatuses: isNotPicked,
             falseCurrentState: isNotPacked,
             trueCurrentState: isPacked
@@ -516,15 +522,10 @@ const wrapComponent = (Comp) => (
 
         // display proper alert if the order(s) are in this state already or want to skip the previous states
       } else {
-<<<<<<< HEAD
-        this.displayAlert(selectedOrders, status,
-          {
-            whichFalseState,
-=======
         this.displayAlert(
           selectedOrders, status,
-          { whichFalseState,
->>>>>>> master
+          {
+            whichFalseState,
             falsePreviousStatuses: isNotPacked,
             falseCurrentState: isNotLabeled,
             trueCurrentState: isLabeled
@@ -572,15 +573,10 @@ const wrapComponent = (Comp) => (
       });
 
       // display proper alert if the order(s) are in this state already or want to skip the previous states
-<<<<<<< HEAD
-      this.displayAlert(selectedOrders, status,
-        {
-          whichFalseState,
-=======
       this.displayAlert(
         selectedOrders, status,
-        { whichFalseState,
->>>>>>> master
+        {
+          whichFalseState,
           falsePreviousStatuses: isNotLabeled,
           falseCurrentState: isNotShipped,
           trueCurrentState: isShipped
