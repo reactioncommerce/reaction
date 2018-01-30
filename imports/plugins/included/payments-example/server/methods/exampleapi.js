@@ -11,7 +11,7 @@ export const RISKY_TEST_CARD = "4000000000009235";
 // like Stripe or Authorize.net usually just included with a NPM.require
 
 const ThirdPartyAPI = {
-  authorize: function (transactionType, cardData, paymentData) {
+  authorize(transactionType, cardData, paymentData) {
     if (transactionType === "authorize") {
       const results = {
         success: true,
@@ -31,23 +31,23 @@ const ThirdPartyAPI = {
       success: false
     };
   },
-  capture: function (authorizationId, amount) {
+  capture(authorizationId, amount) {
     return {
-      authorizationId: authorizationId,
-      amount: amount,
+      authorizationId,
+      amount,
       success: true
     };
   },
-  refund: function (transactionId, amount) {
+  refund(transactionId, amount) {
     return {
       success: true,
-      transactionId: transactionId,
-      amount: amount
+      transactionId,
+      amount
     };
   },
-  listRefunds: function (transactionId) {
+  listRefunds(transactionId) {
     return {
-      transactionId: transactionId,
+      transactionId,
       refunds: [
         {
           type: "refund",

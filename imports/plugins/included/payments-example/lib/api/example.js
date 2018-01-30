@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
 
 export const Example = {
-  accountOptions: function () {
+  accountOptions() {
     const { settings } = Packages.findOne({
       name: "reaction-paymentmethod"
     });
@@ -12,7 +12,7 @@ export const Example = {
     return settings.apiKey;
   },
 
-  authorize: function (cardInfo, paymentInfo, callback) {
+  authorize(cardInfo, paymentInfo, callback) {
     Meteor.call("exampleSubmit", "authorize", cardInfo, paymentInfo, callback);
   }
 };

@@ -57,7 +57,7 @@ Template.button.helpers({
         ...attrs, // Spread the attrs into this object
         // Then override any props from attrs with some better defaults
         class: `rui button btn btn-${status} ${className}`,
-        href: href,
+        href,
         type: () => {
           if (!href) {
             return type || "button";

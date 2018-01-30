@@ -263,7 +263,7 @@ function markExported(exportedOrder, shopId, order) {
         dateAttempted: new Date(),
         exportMethod: "reaction-connectors-shopify",
         destinationIdentifier: exportedOrder.id,
-        shopId: shopId
+        shopId
       }
     }
   });

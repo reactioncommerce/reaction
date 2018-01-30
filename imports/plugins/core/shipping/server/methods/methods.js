@@ -20,7 +20,7 @@ export const methods = {
    * @param  {String} orderId order ID
    * @return {String}         order ID
    */
-  "shipping/status/refresh": function (orderId) {
+  "shipping/status/refresh"(orderId) {
     check(orderId, String);
     // this is a stub for future core processing
     // it also serves as a place for Method Hooks
@@ -38,7 +38,7 @@ export const methods = {
    * @param { String } provider provider name
    * @return { Number } update result
    */
-  "shipping/provider/toggle": function (packageId, provider) {
+  "shipping/provider/toggle"(packageId, provider) {
     check(packageId, String);
     check(provider, String);
     if (!Reaction.hasPermission(shippingRoles)) {

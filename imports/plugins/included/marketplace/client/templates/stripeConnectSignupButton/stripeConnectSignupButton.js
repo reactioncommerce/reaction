@@ -5,7 +5,7 @@ import { i18next } from "/client/api";
 import { Shops } from "/lib/collections";
 
 Template.stripeConnectSignupButton.events({
-  "click [data-event-action='button-click-stripe-signup']": function () {
+  "click [data-event-action='button-click-stripe-signup']"() {
     const shopId = Reaction.getShopId();
     const primaryShopId = Reaction.getPrimaryShopId();
     const primaryStripePackage = Reaction.getPackageSettingsWithOptions({

@@ -122,7 +122,7 @@ class TagGroup extends Component {
     const { slug } = this.state.parentTag;
     const url = Router.pathFor("tag", {
       hash: {
-        slug: slug
+        slug
       }
     });
     return (

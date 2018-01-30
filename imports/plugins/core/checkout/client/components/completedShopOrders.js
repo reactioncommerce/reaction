@@ -30,7 +30,7 @@ const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMeth
         </div>
       </div>
       <div className="order-details-info-box-topless">
-        {items.map(function (item) {
+        {items.map((item) => {
           return <CompletedOrderItem item={item} key={item._id} handleDisplayMedia={handleDisplayMedia} />;
         })}
       </div>

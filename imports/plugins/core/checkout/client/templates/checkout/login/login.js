@@ -11,7 +11,7 @@ import { Cart } from "/lib/collections";
  */
 
 Template.checkoutLogin.helpers({
-  checkoutLoginCompleted: function () {
+  checkoutLoginCompleted() {
     const self = this;
     const cart = Cart.findOne();
     if (cart && cart.workflow) {

@@ -5,7 +5,7 @@ Migrations.add({
   version: 15,
   // Reaction v1.0 had 3 shipping boolean states (packed, shipped, delivered). Shipping workflow is not managed with a
   // workflow object that keeps track of previous state.
-  up: function () {
+  up() {
     Orders.find().forEach((order) => {
       const currentShipping = order.shipping[0];
       currentShipping.workflow = {};
@@ -56,7 +56,7 @@ Migrations.add({
       });
     });
   },
-  down: function () {
+  down() {
     Orders.find().forEach((order) => {
       const currentShipping = order.shipping[0];
       const { workflow } = currentShipping;

@@ -18,11 +18,11 @@ const wrapComponent = (Comp) => (
     loginFormMessages = () => {
       let reasons = "";
       if (this.props.messages.info) {
-        this.props.messages.info.forEach(function (info) {
+        this.props.messages.info.forEach((info) => {
           reasons = info.reason;
         });
       } else if (this.props.messages.alerts) {
-        this.props.messages.alerts.forEach(function (alert) {
+        this.props.messages.alerts.forEach((alert) => {
           reasons = alert.reason;
         });
       }

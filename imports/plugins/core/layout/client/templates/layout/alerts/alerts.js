@@ -16,7 +16,7 @@ Template.inlineAlert.onRendered(function () {
   const alert = this.data;
   const $node = $(this.firstNode);
 
-  Meteor.defer(function () {
+  Meteor.defer(() => {
     Alerts.collection_.update(alert._id, {
       $set: {
         seen: true
@@ -24,10 +24,10 @@ Template.inlineAlert.onRendered(function () {
     });
   });
 
-  $node.removeClass("hide").hide().fadeIn(alert.options.fadeIn, function () {
+  $node.removeClass("hide").hide().fadeIn(alert.options.fadeIn, () => {
     if (alert.options.autoHide) {
-      Meteor.setTimeout(function () {
-        $node.fadeOut(alert.options.fadeOut, function () {
+      Meteor.setTimeout(() => {
+        $node.fadeOut(alert.options.fadeOut, () => {
           return Alerts.collection_.remove(alert._id);
         });
       }, alert.options.autoHide);
@@ -36,7 +36,7 @@ Template.inlineAlert.onRendered(function () {
 });
 
 Template.inlineAlerts.helpers({
-  alerts: function (alertPlacement, alertId) {
+  alerts(alertPlacement, alertId) {
     let id = alertId;
     let placement = alertPlacement;
     if (!placement) {
@@ -53,7 +53,7 @@ Template.inlineAlerts.helpers({
 });
 
 Template.inlineAlert.events({
-  "click button.close": function () {
+  "click button.close"() {
     return Alerts.collection_.remove(this._id);
   }
 });

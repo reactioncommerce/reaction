@@ -256,9 +256,7 @@ export function renderHandlebarsTemplate(templateInfo, data) {
  * @return {Object}          Static markup
  */
 export function renderTemplateToStaticMarkup(template, props) {
-  return ReactDOMServer.renderToStaticMarkup(
-    React.createElement(template, props)
-  );
+  return ReactDOMServer.renderToStaticMarkup(React.createElement(template, props));
 }
 
 /**

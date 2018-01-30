@@ -5,8 +5,8 @@ import { Reaction } from "/server/api/";
 Migrations.add({
   version: 3,
   up() {
-    Packages.update({},
-      {
+    Packages.update(
+      {}, {
         $set: {
           registry: []
         }

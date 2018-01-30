@@ -56,7 +56,7 @@ class DropDownMenu extends Component {
       }
     } else {
       this.setState({
-        isOpen: isOpen
+        isOpen
       });
     }
   }

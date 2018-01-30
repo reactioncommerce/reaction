@@ -61,7 +61,7 @@ function handlePaypalSubmitError(error) {
 // paypal payflow form helpers
 //
 Template.paypalPayflowForm.helpers({
-  PaypalPayment: function () {
+  PaypalPayment() {
     return PaypalPayment;
   }
 });
@@ -70,7 +70,7 @@ Template.paypalPayflowForm.helpers({
 // autoform handling
 //
 AutoForm.addHooks("paypal-payment-form", {
-  onSubmit: function (doc) {
+  onSubmit(doc) {
     hidePaymentAlert();
     const { template } = this;
     const payerNamePieces = doc.payerName.split(" ");
@@ -87,7 +87,7 @@ AutoForm.addHooks("paypal-payment-form", {
     PayPal.authorize(form, {
       total: Cart.findOne().getTotal(),
       currency: Shops.findOne().currency
-    }, function (error, transaction) {
+    }, (error, transaction) => {
       submitting = false; // todo: check scope
       if (error) {
         handlePaypalSubmitError(error);
@@ -129,12 +129,12 @@ AutoForm.addHooks("paypal-payment-form", {
             processor: "PayflowPro",
             paymentPackageId: packageData._id,
             paymentSettingsKey: packageData.registry[0].settingsKey,
-            storedCard: storedCard,
+            storedCard,
             method: "credit",
             authorization: authId,
-            transactionId: transactionId,
+            transactionId,
             metadata: {
-              transactionId: transactionId,
+              transactionId,
               authorizationId: authId
             },
             amount: Number(transaction.response.transactions[0].amount.total),
@@ -154,12 +154,12 @@ AutoForm.addHooks("paypal-payment-form", {
     });
     return false;
   },
-  beginSubmit: function () {
+  beginSubmit() {
     this.template.$(".cart-checkout-step *").attr("disabled", true);
     this.template.$("#btn-complete-order").text(i18next.t("checkout.paymentMethod.submitting"));
     return this.template.$("#btn-processing").removeClass("hidden");
   },
-  endSubmit: function () {
+  endSubmit() {
     if (!submitting) {
       return uiEnd(this.template, i18next.t("checkout.completeYourOrder"));
     }
