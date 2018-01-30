@@ -224,15 +224,11 @@ Template.coreCheckoutShipping.events({
   "click .list-group-item": function (event) {
     event.preventDefault();
     event.stopPropagation();
-    const self = this;
     const cart = Cart.findOne();
 
-    try {
-      Meteor.call("cart/setShipmentMethod", cart._id, self.method);
-    } catch (error) {
-      throw new Meteor.Error(error,
-        "Cannot change methods while processing.");
-    }
+    Meteor.call("cart/setShipmentMethod", cart._id, this.method, (error) => {
+      if (error) throw new Meteor.Error("set-shipment-method-error", error.message);
+    });
   },
   "click [data-event-action=configure-shipping]"(event) {
     event.preventDefault();

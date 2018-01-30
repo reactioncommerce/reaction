@@ -595,7 +595,8 @@ Meteor.methods({
    */
   "cart/setShipmentMethod": function (cartId, method) {
     check(cartId, String);
-    check(method, Object);
+    Reaction.Schemas.ShippingMethod.validate(method);
+
     // get current cart
     const cart = Collections.Cart.findOne({
       _id: cartId,
@@ -609,28 +610,15 @@ Meteor.methods({
 
     // Sets all shipping methods to the one selected
     // TODO: Accept an object of shopId to method map to ship via different methods per shop
-    let selector;
     let update;
     // if we have an existing item update it, otherwise add to set.
     if (cart.shipping) {
-      const updatedShipping = [];
-      cart.shipping.map((shipRecord) => {
-        shipRecord.shipmentMethod = method;
-        updatedShipping.push(shipRecord);
-      });
-
-      selector = {
-        _id: cartId
-      };
-      update = {
-        $set: {
-          shipping: updatedShipping
-        }
-      };
+      const shipping = cart.shipping.map((shipRecord) => ({
+        ...shipRecord,
+        shipmentMethod: method
+      }));
+      update = { $set: { shipping } };
     } else {
-      selector = {
-        _id: cartId
-      };
       update = {
         $addToSet: {
           shipping: {
@@ -643,15 +631,14 @@ Meteor.methods({
 
     // update or insert method
     try {
-      Collections.Cart.update(selector, update);
+      Collections.Cart.update({ _id: cartId }, update);
     } catch (e) {
       Logger.error(e, `Error adding rates to cart ${cartId}`);
       throw new Meteor.Error("server-error", "An error occurred saving the order", e);
     }
 
     // this will transition to review
-    return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-      "coreCheckoutShipping");
+    return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
   },
 
   /**
