@@ -1,5 +1,4 @@
 import later from "later";
-import moment from "moment";
 import { Job } from "meteor/vsivsi:job-collection";
 import { Jobs } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
@@ -23,51 +22,56 @@ export function addCleanupJobControlHook() {
   });
 }
 
-export function cleanupJob() {
-  const removeStaleJobs = Jobs.processJobs("jobControl/removeStaleJobs", {
-    pollInterval: 60 * 60 * 1000, // backup polling, see observer below
-    workTimeout: 60 * 1000
-  }, (job, callback) => {
-    Logger.debug("Processing jobControl/removeStaleJobs...");
+export async function cleanupJob() {
+  try {
+    const moment = await import("moment");
+    const removeStaleJobs = Jobs.processJobs("jobControl/removeStaleJobs", {
+      pollInterval: 60 * 60 * 1000, // backup polling, see observer below
+      workTimeout: 60 * 1000
+    }, (job, callback) => {
+      Logger.debug("Processing jobControl/removeStaleJobs...");
 
-    // TODO: set this interval in the admin UI
-    const olderThan = moment().subtract(3, "days")._d;
+      // TODO: set this interval in the admin UI
+      const olderThan = moment().subtract(3, "days")._d;
 
-    const ids = Jobs.find({
-      type: {
-        $nin: ["sendEmail"]
-      },
-      status: {
-        $in: ["cancelled", "completed", "failed"]
-      },
-      updated: {
-        $lt: olderThan
+      const ids = Jobs.find({
+        type: {
+          $nin: ["sendEmail"]
+        },
+        status: {
+          $in: ["cancelled", "completed", "failed"]
+        },
+        updated: {
+          $lt: olderThan
+        }
+      }, {
+        fields: {
+          _id: 1
+        }
+      }).map((d) => d._id);
+
+      let success;
+      if (ids.length > 0) {
+        Jobs.removeJobs(ids);
+        success = `Removed ${ids.length} stale jobs`;
+        Logger.debug(success);
+      } else {
+        success = "No eligible jobs to cleanup";
+        Logger.debug(success);
       }
-    }, {
-      fields: {
-        _id: 1
+      job.done(success, { repeatId: true });
+      return callback();
+    });
+
+    Jobs.find({
+      type: "jobControl/removeStaleJobs",
+      status: "ready"
+    }).observe({
+      added() {
+        return removeStaleJobs.trigger();
       }
-    }).map((d) => d._id);
-
-    let success;
-    if (ids.length > 0) {
-      Jobs.removeJobs(ids);
-      success = `Removed ${ids.length} stale jobs`;
-      Logger.debug(success);
-    } else {
-      success = "No eligible jobs to cleanup";
-      Logger.debug(success);
-    }
-    job.done(success, { repeatId: true });
-    return callback();
-  });
-
-  Jobs.find({
-    type: "jobControl/removeStaleJobs",
-    status: "ready"
-  }).observe({
-    added() {
-      return removeStaleJobs.trigger();
-    }
-  });
+    });
+  } catch (error) {
+    Logger.debug(error, "moment.js async import error");
+  }
 }
