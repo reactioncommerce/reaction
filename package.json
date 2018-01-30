@@ -19,13 +19,13 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.38",
     "@reactioncommerce/nodemailer": "^5.0.5",
     "accounting-js": "^1.1.1",
     "amplify-store": "^0.1.0",
     "authorize-net": "^1.0.11",
     "autoprefixer": "^7.1.6",
     "autosize": "^4.0.0",
-    "babel-runtime": "^6.26.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
     "braintree": "^2.4.0",
@@ -121,17 +121,18 @@
     "velocity-react": "^1.3.3"
   },
   "devDependencies": {
-    "babel-eslint": "^8.0.2",
+    "@babel/cli": "^7.0.0-beta.38",
+    "@babel/core": "^7.0.0-beta.38",
+    "@babel/preset-react": "^7.0.0-beta.38",
+    "babel-eslint": "^8.2.1",
     "babel-jest": "^21.2.0",
     "babel-plugin-lodash": "^3.3.2",
     "babel-plugin-module-resolver": "^3.0.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
     "chai": "^4.1.2",
     "enzyme": "^3.2.0",
     "enzyme-to-json": "^3.2.2",
     "eslint": "^4.12.1",
+    "eslint-config-react-tools": "^1.1.2",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.5.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
@@ -183,9 +184,8 @@
       ]
     ],
     "presets": [
-      "env",
-      "react",
-      "stage-2"
+      "meteor",
+      "@babel/preset-react"
     ]
   },
   "jest": {
