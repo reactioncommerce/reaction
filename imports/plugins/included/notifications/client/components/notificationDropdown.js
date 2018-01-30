@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, withMoment } from "@reactioncommerce/reaction-components";
 import { Link } from "@reactioncommerce/reaction-router";
 import { Reaction } from "/client/api";
 
@@ -57,14 +56,14 @@ class NotificationDropdown extends Component {
   }
 
   render() {
-    const { notificationList } = this.props;
+    const { moment, notificationList } = this.props;
     return (
       <div className="notify-bar">
         { this.renderDropdownHead() }
         <ul className="dropdown-notify notifications">
           { this.renderNoNotifications(notificationList) }
           { notificationList.map((notify, key) => {
-            const timeNow = moment(notify.timeSent).fromNow();
+            const timeNow = moment && moment(notify.timeSent).fromNow() || notify.timeSent.toLocaleString();
             const read = `notification ${notify.status}`;
             const i18n = `notifications.messages.${notify.type}`;
             return (
@@ -97,10 +96,11 @@ class NotificationDropdown extends Component {
 NotificationDropdown.propTypes = {
   markAllAsRead: PropTypes.func.isRequired,
   markOneAsRead: PropTypes.func.isRequired,
+  moment: PropTypes.func,
   notificationList: PropTypes.array.isRequired,
   unread: PropTypes.number.isRequired
 };
 
-registerComponent("NotificationDropdown", NotificationDropdown);
+registerComponent("NotificationDropdown", NotificationDropdown, withMoment);
 
-export default NotificationDropdown;
+export default withMoment(NotificationDropdown);
