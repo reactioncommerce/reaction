@@ -156,7 +156,6 @@ class SignIn extends Component {
               label="Password"
               name="password"
               type="password"
-              tabIndex="2"
               id={`password-${this.props.uniqueId}`}
               value={this.state.password}
               onChange={this.handleFieldChange}
