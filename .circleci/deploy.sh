@@ -16,4 +16,6 @@ DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
 docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
 
 # Push image and all tags
-docker push "${DOCKER_NAMESPACE}"
+# docker push "${DOCKER_NAMESPACE}"
+echo "Echoing docker images"
+echo docker images
