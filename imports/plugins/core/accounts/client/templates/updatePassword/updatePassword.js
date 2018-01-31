@@ -15,7 +15,7 @@ import { LoginFormValidation } from "/lib/api";
  */
 Accounts.onResetPasswordLink((token, done) => {
   Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
-    token: token,
+    token,
     callback: done,
     isOpen: true,
     type: "updatePassword"
@@ -28,7 +28,7 @@ Accounts.onResetPasswordLink((token, done) => {
 Accounts.onEnrollmentLink((token, done) => {
   Meteor.call("accounts/verifyAccount", "", token);
   Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
-    token: token,
+    token,
     callback: done,
     isOpen: true,
     type: "setPassword"
@@ -38,7 +38,7 @@ Accounts.onEnrollmentLink((token, done) => {
 /**
  * Accounts Event: onEmailVerificationLink When a user uses an verification link
  */
-Accounts.onEmailVerificationLink(function (token, done) {
+Accounts.onEmailVerificationLink((token, done) => {
   Accounts.verifyEmail(token);
   done();
 });
@@ -85,7 +85,7 @@ Template.loginFormChangePassword.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "submit form": function (event, template) {
+  "submit form"(event, template) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -116,7 +116,7 @@ Template.loginFormChangePassword.events({
 
     if ($.isEmptyObject(errors) === false) {
       templateInstance.formMessages.set({
-        errors: errors
+        errors
       });
       // prevent password update
       return;

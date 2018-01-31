@@ -7,7 +7,7 @@ import { Media } from "/lib/collections";
  *
  */
 Template.ordersListItems.helpers({
-  media: function () {
+  media() {
     const cartImagesSub = Meteor.subscribe("CartItemImage", this);
     if (cartImagesSub.ready()) {
       const variantImage = Media.findOne({

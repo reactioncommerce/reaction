@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { default as sortUsersIntoGroups, sortGroups } from "../helpers/accountsHelper";
+import sortUsersIntoGroups, { sortGroups } from "../helpers/accountsHelper";
 
 class AccountsDashboard extends Component {
   static propTypes = {
@@ -17,7 +17,7 @@ class AccountsDashboard extends Component {
     const defaultSelectedGroup = sortedGroups[0];
 
     this.state = {
-      accounts: accounts,
+      accounts,
       groups: sortGroups(groups),
       adminGroups: sortedGroups,
       selectedGroup: defaultSelectedGroup

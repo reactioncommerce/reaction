@@ -56,7 +56,7 @@ Subscriptions.Media = Subscriptions.Manager.subscribe("Media");
 /**
  * Subscriptions that need to reload on new sessions
  */
-Tracker.autorun(function () {
+Tracker.autorun(() => {
   // we are trying to track both amplify and Session.get here, but the problem
   // is - we can't track amplify. It just not tracked. So, to track amplify we
   // are using dirty hack inside Accounts.loginWithAnonymous method.

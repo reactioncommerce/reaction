@@ -17,7 +17,7 @@ const wrapComponent = (Comp) => (
     }
 
     filterDates = (startDate, endDate) => {
-      const query = this.state.query;
+      const { query } = this.state;
 
       if (startDate && endDate) {
         // generate time for start and end of day
@@ -43,7 +43,7 @@ const wrapComponent = (Comp) => (
 
     filterWorkflowStatus = (event, value) => {
       const query = filterWorkflowStatus(value);
-      const shippingFilter = this.state.shippingFilter;
+      const { shippingFilter } = this.state;
       if (this.state.query.createdAt) {
         query.createdAt = this.state.query.createdAt;
       }
@@ -60,7 +60,7 @@ const wrapComponent = (Comp) => (
 
     filterShippingStatus = (event, value) => {
       const query = filterShippingStatus(value);
-      const workflowFilter = this.state.workflowFilter;
+      const { workflowFilter } = this.state;
 
       if (this.state.query.createdAt) {
         query.createdAt = this.state.query.createdAt;
@@ -78,8 +78,7 @@ const wrapComponent = (Comp) => (
 
     clearFilter = (filterString) => {
       let query;
-      let shippingFilter = this.state.shippingFilter;
-      let workflowFilter = this.state.workflowFilter;
+      let { shippingFilter, workflowFilter } = this.state;
 
       if (filterString === "workflow") {
         workflowFilter = "";

@@ -7,7 +7,7 @@ import { Packages } from "/lib/collections";
 export const methods = {
   // separate url into params
   // save params into sellerShop collection
-  "stripe/connect/authorizeMerchant": function (shopId, authCode) {
+  "stripe/connect/authorizeMerchant"(shopId, authCode) {
     check(shopId, String);
     check(authCode, String);
 
@@ -29,7 +29,7 @@ export const methods = {
     }
 
     const merchantStripePkg = Reaction.getPackageSettingsWithOptions({
-      shopId: shopId,
+      shopId,
       name: "reaction-stripe"
     });
 

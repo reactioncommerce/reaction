@@ -27,7 +27,7 @@ function checkout() {
     return undefined;
   }
 
-  return Meteor.call("getExpressCheckoutToken", cart._id, function (error, token) {
+  return Meteor.call("getExpressCheckoutToken", cart._id, (error, token) => {
     if (error) {
       const msg = (error !== null ? error.error : void 0) || i18next.t("checkoutPayment.processingError", "There was a problem with your payment.");
       Alerts.add(msg, "danger", {
@@ -55,7 +55,7 @@ function expressCheckoutSettingsValid(settings) {
  * @return {undefined} no return value
  */
 Template.paypalCheckoutButton.onCreated(function () {
-  Meteor.call("getExpressCheckoutSettings", function (error, expressCheckoutSettings) {
+  Meteor.call("getExpressCheckoutSettings", (error, expressCheckoutSettings) => {
     if (!error) {
       return Session.set("expressCheckoutSettings", expressCheckoutSettings);
     }
@@ -86,7 +86,7 @@ Template.paypalCheckoutButton.onRendered(function () {
           environment: expressCheckoutSettings.mode,
           button: element,
           // Blank function to disable default paypal onClick functionality
-          click: function () {}
+          click() {}
         });
         this.state.set("isLoading", false);
       } else {
@@ -103,7 +103,7 @@ Template.paypalCheckoutButton.onRendered(function () {
  * PayPal checkout button helpers
  */
 Template.paypalCheckoutButton.helpers({
-  expressCheckoutEnabled: function () {
+  expressCheckoutEnabled() {
     const expressCheckoutSettings = Session.get("expressCheckoutSettings");
     return expressCheckoutSettings !== undefined ? expressCheckoutSettings.enabled : void 0;
   },
