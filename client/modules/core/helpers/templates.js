@@ -272,22 +272,6 @@ Template.registerHelper("nl2br", (text) => {
   return new Spacebars.SafeString(nl2br);
 });
 
-/**
- * dateFormat
- * @description
- * format an ISO date using Moment.js
- * http://momentjs.com/
- * moment syntax example: moment(Date("2011-07-18T15:50:52")).format("MMMM YYYY")
- * @example {{dateFormat creation_date format="MMMM YYYY"}}
- * @param {String} context - moment context
- * @param {String} block - hash of moment options, ie: format=""
- * @return {Date} return formatted date
- */
-Template.registerHelper("dateFormat", (context, block) => {
-  const f = block.hash.format || "MMM DD, YYYY hh:mm:ss A";
-  return moment(context).format(f);
-});
-
 
 /**
  * pluralize
