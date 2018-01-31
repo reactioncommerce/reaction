@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { compose } from "recompose";
-import moment from "moment-timezone";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker, withMomentTimezone } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { Countries } from "/client/collections";
@@ -135,12 +134,15 @@ function composer(props, onData) {
     value: "",
     label
   }];
-  const timezones = moment.tz.names();
-  for (const timezone of timezones) {
-    timezoneOptions.push({
-      value: timezone,
-      label: timezone
-    });
+  const moment = props.momentTimezone;
+  if (moment) {
+    const timezones = moment.names();
+    for (const timezone of timezones) {
+      timezoneOptions.push({
+        value: timezone,
+        label: timezone
+      });
+    }
   }
 
   onData(null, {
@@ -158,11 +160,13 @@ function composer(props, onData) {
 }
 
 registerComponent("i18nSettings", LocalizationSettings, [
+  withMomentTimezone,
   composeWithTracker(composer),
   wrapComponent
 ]);
 
 export default compose(
+  withMomentTimezone,
   composeWithTracker(composer),
   wrapComponent
 )(LocalizationSettings);
