@@ -16,7 +16,14 @@ import { toCamelCase } from "/lib/api";
 const monthOptionsVar = new ReactiveVar([]);
 async function lazyLoadMonths() {
   if (monthOptionsVar.get().length) return;
-  const { months } = await import("moment-timezone");
+  const { locale, months } = await import("moment-timezone");
+
+  let lang = i18next.language;
+  if (lang === "zh") {
+    lang = "zh-cn";
+  }
+
+  locale(lang);
 
   const monthOptions = [];
   const monthsList = months();
@@ -68,13 +75,6 @@ Template.registerHelper("currentUser", () => {
 
 Template.registerHelper("monthOptions", (showDefaultOption = true) => {
   const label = i18next.t("app.monthOptions", "Choose month");
-
-  let lang = i18next.language;
-  if (lang === "zh") {
-    lang = "zh-cn";
-  }
-
-  locale(lang);
 
   // Call to get monthOptinosVar ReactiveVar
   lazyLoadMonths();
