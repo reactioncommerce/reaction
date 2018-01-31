@@ -1,3 +1,5 @@
+// eslint-disable react/no-multi-comp to allow Loadable to dynamically load DayPickerRangeController
+/* eslint-disable react/no-multi-comp */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "react-dates/initialize";
@@ -5,7 +7,7 @@ import Loadable from "react-loadable";
 import omit from "lodash/omit";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const DynamicDayPickerRangeController = Loadable({
+const DayPickerRangeController = Loadable({
   loader: () => import("react-dates"),
   loading() {
     return (
@@ -73,7 +75,7 @@ class CalendarPicker extends Component {
     const props = omit(this.props, ["autoFocus", "autoFocusEndDate", "initialStartDate", "initialEndDate"]);
 
     return (
-      <DynamicDayPickerRangeController
+      <DayPickerRangeController
         {...props}
         onDatesChange={this.onDatesChange}
         onFocusChange={this.onFocusChange}
