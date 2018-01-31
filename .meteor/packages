@@ -75,7 +75,7 @@ gadicc:blaze-react-component
 
 # Testing packages
 dburles:factory
-dispatch:mocha
+meteortesting:mocha
 practicalmeteor:chai
 practicalmeteor:sinon
 johanbrook:publication-collector
