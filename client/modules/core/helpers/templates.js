@@ -1,6 +1,6 @@
 import _ from "lodash";
 import * as tz from "moment-timezone";
-// import moment from "moment";
+import moment from "moment";
 import "moment/min/locales.min.js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
