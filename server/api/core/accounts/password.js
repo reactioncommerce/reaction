@@ -66,8 +66,7 @@ export async function sendResetPasswordEmail(userId, optionalEmail) {
     emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
   }
 
-  const mod = await import("moment");
-  const moment = mod.default;
+  const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {
     // Shop Data
@@ -75,7 +74,7 @@ export async function sendResetPasswordEmail(userId, optionalEmail) {
     contactEmail: shop.emails[0].address,
     homepage: Meteor.absoluteUrl(),
     emailLogo,
-    copyrightDate: moment().format("YYYY"),
+    copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
       address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
@@ -175,16 +174,14 @@ export async function sendVerificationEmail(userId, email) {
 
   const shopName = Reaction.getShopName();
   const url = Accounts.urls.verifyEmail(token);
-
-  const mod = await import("moment");
-  const moment = mod.default;
+  const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {
     // Reaction Information
     contactEmail: "hello@reactioncommerce.com",
     homepage: Meteor.absoluteUrl(),
     emailLogo: Meteor.absoluteUrl() + "resources/placeholder.gif",
-    copyrightDate: moment().format("YYYY"),
+    copyrightDate,
     legalName: "Reaction Commerce",
     physicalAddress: {
       address: "2110 Main Street, Suite 207",
@@ -295,16 +292,14 @@ export async function sendUpdatedVerificationEmail(userId, email) {
 
   const shopName = Reaction.getShopName();
   const url = Accounts.urls.verifyEmail(token);
-
-  const mod = await import("moment");
-  const moment = mod.default;
+  const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {
     // Reaction Information
     contactEmail: "hello@reactioncommerce.com",
     homepage: Meteor.absoluteUrl(),
     emailLogo: Meteor.absoluteUrl() + "resources/placeholder.gif",
-    copyrightDate: moment().format("YYYY"),
+    copyrightDate,
     legalName: "Reaction Commerce",
     physicalAddress: {
       address: "2110 Main Street, Suite 207",

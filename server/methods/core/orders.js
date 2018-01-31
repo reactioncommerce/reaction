@@ -729,6 +729,7 @@ export const methods = {
       }
 
       Promise.await(lazyLoadMoment());
+      const copyrightDate = new Date().getFullYear();
 
       // Merge data into single object to pass to email template
       const dataForEmail = {
@@ -737,7 +738,7 @@ export const methods = {
         contactEmail: shop.emails[0].address,
         homepage: Meteor.absoluteUrl(),
         emailLogo,
-        copyrightDate: moment().format("YYYY"),
+        copyrightDate,
         legalName: _.get(shop, "addressBook[0].company"),
         physicalAddress: {
           address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,

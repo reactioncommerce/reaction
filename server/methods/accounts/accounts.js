@@ -1,5 +1,4 @@
 import _ from "lodash";
-import moment from "moment";
 import path from "path";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
@@ -769,13 +768,14 @@ export function sendWelcomeEmail(shopId, userId) {
   } else {
     emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
   }
+  const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {
     // Shop Data
     shop,
     contactEmail: shop.emails[0].address,
     emailLogo,
-    copyrightDate: moment().format("YYYY"),
+    copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
       address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
@@ -975,6 +975,7 @@ function getCurrentUserName(currentUser) {
 function getDataForEmail(options) {
   const { shop, currentUserName, token, emailLogo, name, url } = options;
   const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
+  const copyrightDate = new Date().getFullYear();
 
   return {
     primaryShop, // Primary shop data - may or may not be the same as shop
@@ -982,7 +983,7 @@ function getDataForEmail(options) {
     contactEmail: _.get(shop, "emails[0].address"),
     homepage: Meteor.absoluteUrl(),
     emailLogo,
-    copyrightDate: moment().format("YYYY"),
+    copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
       address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
