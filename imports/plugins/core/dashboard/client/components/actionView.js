@@ -447,7 +447,7 @@ class ActionView extends Component {
 
     if (this.props.actionViewIsOpen) {
       return (
-        <div style={this.styles.base} className={baseClassName}>
+        <div style={this.styles.base} className={baseClassName} role="complementary">
 
           {this.renderMasterView()}
           <Overlay
