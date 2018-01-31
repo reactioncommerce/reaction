@@ -61,7 +61,7 @@ jobs:
 
       - save_cache:
           paths:
-            - ~/node_modules
+            - ~/reaction/node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - save_cache:
