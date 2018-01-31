@@ -1,6 +1,5 @@
 import _ from "lodash";
 import path from "path";
-import moment from "moment";
 import accounting from "accounting-js";
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
@@ -8,6 +7,13 @@ import { check, Match } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Media, Orders, Products, Shops, Packages } from "/lib/collections";
 import { Logger, Hooks, Reaction } from "/server/api";
+
+let moment;
+async function lazyLoadMoment() {
+  if (moment) return;
+  const mod = await import("moment");
+  moment = mod.default;
+}
 
 /**
  * @file Methods for Orders.
@@ -721,6 +727,8 @@ export const methods = {
           }
         }
       }
+
+      Promise.await(lazyLoadMoment());
 
       // Merge data into single object to pass to email template
       const dataForEmail = {
