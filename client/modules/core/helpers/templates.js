@@ -1,18 +1,40 @@
 import _ from "lodash";
-import * as tz from "moment-timezone";
-import moment from "moment";
 import "moment/min/locales.min.js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Accounts } from "meteor/accounts-base";
 import { Spacebars } from "meteor/spacebars";
 import { Roles } from "meteor/alanning:roles";
+import { ReactiveVar } from "meteor/reactive-var";
 import { i18next } from "/client/api";
 import { Reaction } from "../";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { toCamelCase } from "/lib/api";
 
+// Lazyload moment-timezone.months
+const monthOptionsVar = new ReactiveVar([]);
+async function lazyLoadMonths() {
+  if (monthOptionsVar.get().length) return;
+  const { months } = await import("moment-timezone");
+
+  const monthOptions = [];
+  const monthsList = months();
+
+  // parse into autoform array
+  for (const index in monthsList) {
+    if ({}.hasOwnProperty.call(monthsList, index)) {
+      const month = monthsList[index];
+      const mnum = parseInt(index, 10) + 1;
+      monthOptions.push({
+        value: mnum,
+        label: `${mnum} | ${month}`
+      });
+    }
+  }
+
+  monthOptionsVar.set(monthOptions);
+}
 
 Template.registerHelper("Collections", () => {
   return Collections;
@@ -44,30 +66,19 @@ Template.registerHelper("currentUser", () => {
 });
 
 
-/**
- * registerHelper monthOptions
- * @summary formats moment.js months into an array for autoform selector
- * @return {Array} returns array of months [value:, label:]
- */
 Template.registerHelper("monthOptions", (showDefaultOption = true) => {
   const label = i18next.t("app.monthOptions", "Choose month");
-  const localLocale = tz;
 
-  // adding cases where our lang w/o region
-  // isn't predefined in moment.
-  // because using defineLocale throws
-  // ugly deprecation warnings, we aren't doing:
-  //
-  // localLocale.defineLocale("zh", {
-  //   parentLocale: "zh-cn"
-  // });
   let lang = i18next.language;
   if (lang === "zh") {
     lang = "zh-cn";
   }
 
-  localLocale.locale(lang);
-  const monthOptions = [];
+  locale(lang);
+
+  // Call to get monthOptinosVar ReactiveVar
+  lazyLoadMonths();
+  let monthOptions = [];
 
   if (showDefaultOption) {
     monthOptions.push({
@@ -76,18 +87,7 @@ Template.registerHelper("monthOptions", (showDefaultOption = true) => {
     });
   }
 
-  const months = localLocale.months();
-  // parse into autoform array
-  for (const index in months) {
-    if ({}.hasOwnProperty.call(months, index)) {
-      const month = months[index];
-      const mnum = parseInt(index, 10) + 1;
-      monthOptions.push({
-        value: mnum,
-        label: `${mnum} | ${month}`
-      });
-    }
-  }
+  monthOptions = monthOptions.concat(monthOptionsVar.get());
 
   return monthOptions;
 });
