@@ -58,6 +58,31 @@ export function withMoment(component) {
 
 
 /**
+ * @name withMomentTimezone
+ * @method
+ * @summary A wrapper to reactively inject the moment package into a component
+ * @param {Function|React.Component} component - the component to wrap
+ * @return {Function} the new wrapped component with a "moment" prop
+ * @memberof Components
+ */
+export function withMomentTimezone(component) {
+  return lifecycle({
+    componentDidMount() {
+      try {
+        import("moment-timezone").then(moment => {
+          this.setState({
+            momentTimezone: moment.tz
+          });
+        });
+      } catch (error) {
+        Logger.debug(error, "moment-timezone.js async import error");
+      }
+    }
+  })(component);
+}
+
+
+/**
  * @name withCurrentAccount
  * @method
  * @summary A wrapper to reactively inject the current account into a component.
