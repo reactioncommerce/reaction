@@ -1,9 +1,22 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "react-dates/initialize";
-import { DayPickerRangeController } from "react-dates";
+import Loadable from "react-loadable";
 import omit from "lodash/omit";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const DynamicDayPickerRangeController = Loadable({
+  loader: () => import("react-dates"),
+  loading() {
+    return (
+      <Components.Loading />
+    );
+  },
+  render(loaded, props) {
+    const DayPicker = loaded.DayPickerRangeController;
+    return <DayPicker {...props}/>;
+  }
+});
 
 // CalendarPicker is a wrapper around react-dates DayPickerRangeController. Anything that works in react-dates should
 // work in CalendarPicker react-dates docs are available at: https://github.com/airbnb/react-dates
@@ -60,7 +73,7 @@ class CalendarPicker extends Component {
     const props = omit(this.props, ["autoFocus", "autoFocusEndDate", "initialStartDate", "initialEndDate"]);
 
     return (
-      <DayPickerRangeController
+      <DynamicDayPickerRangeController
         {...props}
         onDatesChange={this.onDatesChange}
         onFocusChange={this.onFocusChange}
