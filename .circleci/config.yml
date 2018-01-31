@@ -19,7 +19,7 @@ jobs:
 
       - restore_cache:
           name: Restoring Meteor cache
-          key: meteor-{{ $CIRCLE_BRANCH }}
+          key: meteor-{{ .Branch }}
 
       # Install Meteor
       - run: .circleci/install_meteor.sh
@@ -45,7 +45,7 @@ jobs:
 
       - restore_cache:
           name: Restoring Meteor dev_bundle cache
-          key: dev_bundle-{{ $CIRCLE_BRANCH }}
+          key: dev_bundle-{{ .Branch }}
 
       # install Reaction CLI
       - run: sudo npm install -g reaction-cli
@@ -55,7 +55,7 @@ jobs:
 
       - save_cache:
           name: Saving Meteor dev_bundle to cache
-          key: dev_bundle-{{ $CIRCLE_BRANCH }}
+          key: dev_bundle-{{ .Branch }}
           paths:
             - ~/reaction/.meteor/local
 
@@ -66,7 +66,7 @@ jobs:
 
       - save_cache:
           name: Saving Meteor to cache
-          key: meteor-{{ $CIRCLE_BRANCH }}
+          key: meteor-{{ .Branch }}
           paths:
             - ~/.meteor
 
