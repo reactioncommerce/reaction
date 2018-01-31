@@ -1,7 +1,6 @@
 import os from "os";
 import _ from "lodash";
 import accounting from "accounting-js";
-import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
@@ -9,6 +8,13 @@ import { Shops, Accounts } from "/lib/collections";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import Avalogger from "./avalogger";
+
+let moment;
+async function lazyLoadMoment() {
+  if (moment) return;
+  const mod = await import("moment");
+  moment = mod.default;
+}
 
 const countriesWithRegions = ["US", "CA", "DE", "AU"];
 const requiredFields = ["username", "password", "apiLoginId", "companyCode", "shippingTaxCode"];
@@ -382,6 +388,7 @@ function cartToSalesOrder(cart) {
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const cartShipping = cart.getShippingTotal();
+  Promise.await(lazyLoadMoment());
   const cartDate = moment(cart.createdAt).format();
   let lineItems = [];
   if (cart.items) {
@@ -488,6 +495,7 @@ function orderToSalesInvoice(order) {
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const orderShipping = order.getShippingTotal();
+  Promise.await(lazyLoadMoment());
   const orderDate = moment(order.createdAt).format();
   const lineItems = order.items.map((item) => {
     if (item.variants.taxable) {
@@ -592,6 +600,7 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}transactions/create`;
   const returnAmount = refundAmount * -1;
+  Promise.await(lazyLoadMoment());
   const orderDate = moment(order.createdAt);
   const refundDate = moment();
   const refundReference = `${order.cartId}:${refundDate}`;
