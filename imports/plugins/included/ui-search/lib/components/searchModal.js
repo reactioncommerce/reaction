@@ -44,9 +44,14 @@ class SearchModal extends Component {
     }
   }
 
+  handleSubmit = (event) => {
+    // Ignore submit events from form as search happens on chnage of the TextField
+    event.preventDefault();
+  }
+
   renderSearchInput() {
     return (
-      <div className="rui search-modal-input">
+      <form className="rui search-modal-input" role="search" onSubmit={this.handleSubmit}>
         <i className="fa fa-search search-icon" />
         <TextField
           id="search-modal-input"
@@ -62,9 +67,10 @@ class SearchModal extends Component {
           i18nKeyLabel="search.clearSearch"
           label="Clear"
           containerStyle={{ fontWeight: "normal" }}
+          type="button"
           onClick={this.props.handleClick}
         />
-      </div>
+      </form>
     );
   }
 
