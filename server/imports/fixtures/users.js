@@ -72,7 +72,21 @@ const user = {
   createdAt: new Date()
 };
 
-async function registeredUser() {
+const anonymous = {
+  roles: {
+    [getShop()._id]: [
+      "guest",
+      "anonymous",
+      "product",
+      "tag",
+      "index",
+      "cart/checkout",
+      "cart/completed"
+    ]
+  }
+};
+
+export default async function () {
   const mod = await import("moment");
   const moment = mod.default;
 
@@ -105,28 +119,11 @@ async function registeredUser() {
     }
   };
 
-  return registered;
-}
 
-const anonymous = {
-  roles: {
-    [getShop()._id]: [
-      "guest",
-      "anonymous",
-      "product",
-      "tag",
-      "index",
-      "cart/checkout",
-      "cart/completed"
-    ]
-  }
-};
-
-export default function () {
   Factory.define("user", Meteor.users, user);
   Factory.define(
     "registeredUser", Meteor.users,
-    Object.assign({}, user, registeredUser())
+    Object.assign({}, user, registered)
   );
 
   Factory.define("anonymous", Meteor.users, Object.assign({}, user, anonymous));
