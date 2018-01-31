@@ -132,7 +132,7 @@ export async function sendResetPasswordEmail(userId, optionalEmail) {
  *                 Defaults to the first unverified email in the list.
  * @return {Job} - returns a sendEmail Job instance
  */
-export function sendVerificationEmail(userId, email) {
+export async function sendVerificationEmail(userId, email) {
   // Make sure the user exists, and email is one of their addresses.
   const user = Meteor.users.findOne(userId);
 
@@ -175,6 +175,9 @@ export function sendVerificationEmail(userId, email) {
 
   const shopName = Reaction.getShopName();
   const url = Accounts.urls.verifyEmail(token);
+
+  const mod = await import("moment");
+  const moment = mod.default;
 
   const dataForEmail = {
     // Reaction Information
@@ -249,7 +252,7 @@ export function sendVerificationEmail(userId, email) {
  *                 Defaults to the first unverified email in the list.
  * @return {Job} - returns a sendEmail Job instance
  */
-export function sendUpdatedVerificationEmail(userId, email) {
+export async function sendUpdatedVerificationEmail(userId, email) {
   // Make sure the user exists, and email is one of their addresses.
   const user = Meteor.users.findOne(userId);
 
@@ -292,6 +295,9 @@ export function sendUpdatedVerificationEmail(userId, email) {
 
   const shopName = Reaction.getShopName();
   const url = Accounts.urls.verifyEmail(token);
+
+  const mod = await import("moment");
+  const moment = mod.default;
 
   const dataForEmail = {
     // Reaction Information
