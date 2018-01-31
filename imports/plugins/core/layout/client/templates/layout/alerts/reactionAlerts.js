@@ -1,9 +1,12 @@
-/* global sAlert */
+import React from "react";
+import ReactDOM from "react-dom";
 import _ from "lodash";
 import swal from "sweetalert2";
 import { Meteor } from "meteor/meteor";
 import "sweetalert2/dist/sweetalert2.css";
 import Alerts from "./inlineAlerts";
+import Alert from "react-s-alert";
+import { getRootNode } from "/imports/plugins/core/router/client/browserRouter.js";
 
 /**
  * @file ReactionAlerts - Shows a popup alert, extends Bootstrap Alerts and adds more alert types. See Bootstrap Alert documentation: https://getbootstrap.com/docs/3.3/components/#alerts
@@ -12,35 +15,18 @@ import Alerts from "./inlineAlerts";
  * @module ReactionAlerts
  */
 
-Meteor.startup(function () {
-  sAlert.config({
-    effect: "stackslide",
-    position: "bottom-left",
-    timeout: 5000,
-    html: false,
-    onRouteClose: true,
-    stack: true,
-    // or you can pass an object:
-    // stack: {
-    //     spacing: 10 // in px
-    //     limit: 3 // when fourth alert appears all previous ones are cleared
-    // }
-    offset: 0, // in px - will be added to first alert (bottom or top - depends of the position in config)
-    beep: false
-    // examples:
-    // beep: '/beep.mp3'  // or you can pass an object:
-    // beep: {
-    //     info: '/beep-info.mp3',
-    //     error: '/beep-error.mp3',
-    //     success: '/beep-success.mp3',
-    //     warning: '/beep-warning.mp3'
-    // }
-    // onClose: _.noop //
-    // examples:
-    // onClose: function() {
-    //     /* Code here will be executed once the alert closes. */
-    // }
-  });
+Meteor.startup(() => {
+  ReactDOM.render(
+    <Alert
+      effect="stackslide"
+      position="bottom-left"
+      timeout={5000}
+      html={false}
+      onRouteClose={true}
+      stack={true}
+      offset={0} // in px - will be added to first alert (bottom or top - depends of the position in config)
+      beep={false}
+    />, getRootNode());
 });
 
 Object.assign(Alerts, {
@@ -113,14 +99,29 @@ Object.assign(Alerts, {
   },
 
   toast(message, type, options) {
+    // let config = {
+    //   effect: "stackslide",
+    //   position: "bottom-left",
+    //   timeout: 5000,
+    //   html: false,
+    //   onRouteClose: true,
+    //   stack: true,
+    //   offset: 0, // in px - will be added to first alert (bottom or top - depends of the position in config)
+    //   beep: false
+    // };
+    // console.log("options", options, "alertsConfig", config);
+    // if (options !== undefined) {
+    //   config = { ...options, ...config };
+    //   console.log("merge", config);
+    // }
     switch (type) {
       case "error":
       case "warning":
       case "success":
       case "info":
-        return sAlert[type](message, options);
+        return Alert[type](message, options);
       default:
-        return sAlert.success(message, options);
+        return Alert.success(message, options);
     }
   }
 });
