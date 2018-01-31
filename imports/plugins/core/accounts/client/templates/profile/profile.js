@@ -1,8 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
-import { Reaction } from "/client/api";
-import { i18next } from  "/client/api";
+import { i18next, Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 import { Components } from "@reactioncommerce/reaction-components";
 
@@ -100,6 +99,15 @@ Template.accountProfile.helpers({
    * @return {Object} - contains the component that displays a user's avatar.
    */
   ReactionAvatar() {
+    const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
+    if (account && account.profile && account.profile.picture) {
+      const { picture } = account.profile;
+      return {
+        component: Components.ReactionAvatar,
+        currentUser: true,
+        src: picture
+      };
+    }
     return {
       component: Components.ReactionAvatar,
       currentUser: true
@@ -176,7 +184,7 @@ Template.accountProfile.helpers({
 
       if (account && Array.isArray(account.emails)) {
         const defaultEmail = account.emails.find((email) => email.provides === "default");
-        return defaultEmail.address;
+        return defaultEmail && defaultEmail.address || account.emails[0].address;
       }
     }
   },
@@ -189,7 +197,7 @@ Template.accountProfile.helpers({
    * @return {Boolean} - true if the merchant signup button is to be shown,
    * and false if otherwise.
    */
-  showMerchantSignup: function () {
+  showMerchantSignup() {
     if (Reaction.Subscriptions && Reaction.Subscriptions.Account && Reaction.Subscriptions.Account.ready()) {
       const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
       const marketplaceEnabled = Reaction.marketplace && Reaction.marketplace.enabled === true;

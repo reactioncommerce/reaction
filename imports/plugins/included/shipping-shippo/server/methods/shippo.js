@@ -6,8 +6,8 @@ import { Roles } from "meteor/alanning:roles";
 import { Reaction, Hooks } from "/server/api";
 import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
-import { ShippoApi } from "./shippoapi";
 import { shippingRoles } from "../lib/roles";
+import { ShippoApi } from "./shippoapi";
 
 // Creates an address (for sender or recipient) suitable for Shippo Api Calls given
 // a reaction address an email and a purpose("QUOTE"|"PURCHASE")
@@ -23,7 +23,7 @@ function createShippoAddress(reactionAddress, email, purpose) {
     zip: reactionAddress.postal,
     country: reactionAddress.country,
     phone: reactionAddress.phone,
-    email: email,
+    email,
     is_residential: !reactionAddress.isCommercial
   };
 
@@ -159,7 +159,7 @@ function removeShippoProviders(carriersIds, shopId = Reaction.getShopId()) {
 
 function updateShippoProviders(activeCarriers, shopId = Reaction.getShopId()) {
   const currentShippoProviders = Shipping.find({
-    "shopId": shopId,
+    shopId,
     "provider.shippoProvider": { $exists: true }
   }, {
     fields: { "provider.shippoProvider.carrierAccountId": 1 }
@@ -207,8 +207,10 @@ export const methods = {
     check(_id, String);
 
     // Make sure user has proper rights to this package
-    const { shopId } = Packages.findOne({ _id },
-      { field: { shopId: 1 } });
+    const { shopId } = Packages.findOne(
+      { _id },
+      { field: { shopId: 1 } }
+    );
     if (shopId && Roles.userIsInRole(this.userId, shippingRoles, shopId)) {
       // If user wants to delete existing key
       if (modifier.hasOwnProperty("$unset")) {
@@ -380,8 +382,7 @@ export const methods = {
     if (retrialTargets.length > 0) {
       const isNotAmongFailedRequests = retrialTargets.every((target) =>
         target.packageName !== currentMethodInfo.packageName &&
-        target.fileName !== currentMethodInfo.fileName
-      );
+        target.fileName !== currentMethodInfo.fileName);
       if (isNotAmongFailedRequests) {
         return [[], retrialTargets];
       }
@@ -515,7 +516,7 @@ export const methods = {
         // If for a weird reason Shop hasn't a Shippo Api key anymore you have to throw an error
         // cause the Shippo label purchasing is not gonna happen.
         if (!apiKey) {
-          throw new Meteor.Error("403", "Invalid Shippo Credentials");
+          throw new Meteor.Error("access-denied", "Invalid Shippo Credentials");
         }
         const rateId = orderShipment.shipmentMethod.settings.rateId;
         // make the actual purchase
@@ -541,4 +542,7 @@ export const methods = {
 
 Meteor.methods(methods);
 
-Hooks.Events.add("onOrderPaymentCaptured", methods["shippo/confirmShippingMethodForOrder"]);
+Hooks.Events.add("onOrderPaymentCaptured", (orderId) => {
+  Meteor.call("shippo/confirmShippingMethodForOrder", orderId);
+  return orderId;
+});

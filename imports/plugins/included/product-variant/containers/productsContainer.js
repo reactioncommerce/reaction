@@ -46,7 +46,6 @@ const wrapComponent = (Comp) => (
   class ProductsContainer extends Component {
     static propTypes = {
       canLoadMoreProducts: PropTypes.bool,
-      products: PropTypes.array,
       productsSubscription: PropTypes.object,
       showNotFound: PropTypes.bool
     };
@@ -95,12 +94,10 @@ const wrapComponent = (Comp) => (
     render() {
       return (
         <Comp
+          {...this.props}
           ready={this.ready}
-          products={this.props.products}
-          productsSubscription={this.props.productsSubscription}
           loadMoreProducts={this.loadMoreProducts}
           loadProducts={this.loadProducts}
-          showNotFound={this.props.showNotFound}
         />
       );
     }

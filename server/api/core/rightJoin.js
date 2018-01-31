@@ -5,6 +5,7 @@
  *          nested objects as well. Nested arrays are handled like
  *          primitive values.
  * @author Tom De Caluwé
+ * @memberof Core
  * @param {Object} leftSet An object that can contain nested sub-objects
  * @param {Object} rightSet An object that can contain nested sub-objects
  * @returns {Object} The disjoint object that does only contain properties
@@ -21,8 +22,8 @@ const doRightJoinNoIntersection = (leftSet, rightSet) => {
     rightJoin = {};
   }
   const findRightOnlyProperties = () => {
-    return Object.keys(rightSet).filter(function (key) {
-      if (typeof(rightSet[key]) === "object" &&
+    return Object.keys(rightSet).filter((key) => {
+      if (typeof (rightSet[key]) === "object" &&
         !Array.isArray(rightSet[key])) {
         // Nested objects are always considered
         return true;
@@ -33,15 +34,13 @@ const doRightJoinNoIntersection = (leftSet, rightSet) => {
   };
 
   for (const key of findRightOnlyProperties()) {
-    if (typeof(rightSet[key]) === "object") {
+    if (typeof (rightSet[key]) === "object") {
       // subobject or array
-      if (leftSet.hasOwnProperty(key) && (typeof(leftSet[key]) !== "object" ||
-           Array.isArray(leftSet[key]) !== Array.isArray(rightSet[ key ]))) {
+      if (leftSet.hasOwnProperty(key) && (typeof (leftSet[key]) !== "object" ||
+           Array.isArray(leftSet[key]) !== Array.isArray(rightSet[key]))) {
         // This is not expected!
-        throw new Error(
-          "Left object and right object's internal structure must be " +
-          "congruent! Offending key: " + key
-        );
+        throw new Error("Left object and right object's internal structure must be " +
+          "congruent! Offending key: " + key);
       }
       const rightSubJoin = doRightJoinNoIntersection(
         leftSet.hasOwnProperty(key) ? leftSet[key] : {},

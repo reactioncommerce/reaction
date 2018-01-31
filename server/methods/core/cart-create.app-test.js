@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
@@ -64,7 +65,7 @@ describe("Add/Create cart methods", function () {
       sandbox.stub(Reaction, "getPrimaryShopId", () => shop._id);
       const cartInsertSpy = sandbox.spy(Cart, "insert");
       const cartId = Meteor.call("cart/createCart", userId, sessionId);
-      const cart = Cart.findOne({ userId: userId });
+      const cart = Cart.findOne({ userId });
       expect(cartInsertSpy).to.have.been.called;
       expect(cartId).to.equal(cart._id);
     });
@@ -151,7 +152,7 @@ describe("Add/Create cart methods", function () {
       function addToCartFunc() {
         return Meteor.call("cart/addToCart", "fakeProductId", variantId, quantity);
       }
-      expect(addToCartFunc).to.throw(Meteor.Error, "Product not found [404]");
+      expect(addToCartFunc).to.throw(Meteor.Error, "Product with such id was not found [not-found]");
       return done();
     });
   });
@@ -163,7 +164,7 @@ describe("Add/Create cart methods", function () {
 
     it("should add an email to an anonymous user", function () {
       const cart = Factory.create("cart", {
-        userId: userId,
+        userId,
         email: undefined
       });
 
@@ -300,11 +301,9 @@ describe("Add/Create cart methods", function () {
 
       // https://github.com/aldeed/meteor-simple-schema/issues/522
       expect(function () {
-        return Meteor.call(
-          "accounts/addressBookRemove", () => {
-            expect(true).to.be.true;
-          }
-        );
+        return Meteor.call("accounts/addressBookRemove", () => {
+          expect(true).to.be.true;
+        });
       }).to.not.throw;
 
       expect(accountUpdateStub).to.not.have.been.called;

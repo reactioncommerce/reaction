@@ -10,7 +10,9 @@ import { Reaction, Logger } from "/server/api";
 
 
 /**
- * Send an email with a link that the user can use to reset their password.
+ * @method sendResetPasswordEmail
+ * @memberof Core
+ * @summary Send an email with a link that the user can use to reset their password.
  * @param {String} userId - The id of the user to send email to.
  * @param {String} [optionalEmail] Address to send the email to.
  *                 This address must be in the user's `emails` list.
@@ -23,7 +25,7 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
 
   if (!user) {
     Logger.error("sendResetPasswordEmail - User not found");
-    throw new Meteor.Error("user-not-found", "User not found");
+    throw new Meteor.Error("not-found", "User not found");
   }
 
   let email = optionalEmail;
@@ -36,7 +38,7 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
   // make sure we have a valid email
   if (!email || !user.emails || !user.emails.map((mailInfo) => mailInfo.address).includes(email)) {
     Logger.error("sendResetPasswordEmail - Email not found");
-    throw new Meteor.Error("email-not-found", "Email not found");
+    throw new Meteor.Error("not-found", "Email not found");
   }
 
   // Create token for password reset
@@ -67,17 +69,17 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
 
   const dataForEmail = {
     // Shop Data
-    shop: shop,
+    shop,
     contactEmail: shop.emails[0].address,
     homepage: Meteor.absoluteUrl(),
-    emailLogo: emailLogo,
+    emailLogo,
     copyrightDate: moment().format("YYYY"),
-    legalName: shop.addressBook[0].company,
+    legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
-      address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
-      city: shop.addressBook[0].city,
-      region: shop.addressBook[0].region,
-      postal: shop.addressBook[0].postal
+      address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
+      city: _.get(shop, "addressBook[0].city"),
+      region: _.get(shop, "addressBook[0].region"),
+      postal: _.get(shop, "addressBook[0].postal")
     },
     shopName: shop.name,
     socialLinks: {
@@ -100,7 +102,7 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
     },
     // Account Data
     passwordResetUrl: Accounts.urls.resetPassword(token),
-    user: user
+    user
   };
 
   // Compile Email with SSR
@@ -119,7 +121,9 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
 
 
 /**
- * Send an email with a link the user can use verify their email address.
+ * @method sendVerificationEmail
+ * @memberof Core
+ * @summary Send an email with a link the user can use verify their email address.
  * @param {String} userId - The id of the user to send email to.
  * @param {String} [email] Optional. Address to send the email to.
  *                 This address must be in the user's emails list.
@@ -132,7 +136,7 @@ export function sendVerificationEmail(userId, email) {
 
   if (!user) {
     Logger.error("sendVerificationEmail - User not found");
-    throw new Meteor.Error("user-not-found", "User not found");
+    throw new Meteor.Error("not-found", "User not found");
   }
 
   let address = email;
@@ -146,7 +150,7 @@ export function sendVerificationEmail(userId, email) {
     if (!address) {
       const msg = "No unverified email addresses found.";
       Logger.error(msg);
-      throw new Meteor.Error("no-unverified-address", msg);
+      throw new Meteor.Error("not-found", msg);
     }
   }
 
@@ -154,7 +158,7 @@ export function sendVerificationEmail(userId, email) {
   if (!address || !user.emails || !(user.emails.map((mailInfo) => mailInfo.address).includes(address))) {
     const msg = "Email not found for user";
     Logger.error(msg);
-    throw new Meteor.Error("email-not-found", msg);
+    throw new Meteor.Error("not-found", msg);
   }
 
   const token = Random.secret();
@@ -183,7 +187,7 @@ export function sendVerificationEmail(userId, email) {
       region: "CA",
       postal: "90405"
     },
-    shopName: shopName,
+    shopName,
     socialLinks: {
       facebook: {
         link: "https://www.facebook.com/reactioncommerce"
@@ -222,7 +226,7 @@ export function sendVerificationEmail(userId, email) {
   const subject = "accounts/verifyEmail/subject";
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(subject));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
   return Reaction.Email.send({
     to: address,
@@ -234,7 +238,9 @@ export function sendVerificationEmail(userId, email) {
 
 
 /**
- * Send an email with a link the user can use to verify their updated email address.
+ * @method sendUpdatedVerificationEmail
+ * @memberof Core
+ * @summary Send an email with a link the user can use to verify their updated email address.
  * @param {String} userId - The id of the user to send email to.
  * @param {String} [email] Optional. Address to send the email to.
  *                 This address must be in the user's emails list.
@@ -247,7 +253,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
 
   if (!user) {
     Logger.error("sendVerificationEmail - User not found");
-    throw new Meteor.Error("user-not-found", "User not found");
+    throw new Meteor.Error("not-found", "User not found");
   }
 
   let address = email;
@@ -261,7 +267,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
     if (!address) {
       const msg = "No unverified email addresses found.";
       Logger.error(msg);
-      throw new Meteor.Error("no-unverified-address", msg);
+      throw new Meteor.Error("not-found", msg);
     }
   }
 
@@ -269,7 +275,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
   if (!address || !user.emails || !(user.emails.map((mailInfo) => mailInfo.address).includes(address))) {
     const msg = "Email not found for user";
     Logger.error(msg);
-    throw new Meteor.Error("email-not-found", msg);
+    throw new Meteor.Error("not-found", msg);
   }
 
   const token = Random.secret();
@@ -298,7 +304,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
       region: "CA",
       postal: "90405"
     },
-    shopName: shopName,
+    shopName,
     socialLinks: {
       facebook: {
         link: "https://www.facebook.com/reactioncommerce"
@@ -337,7 +343,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
   const subject = "accounts/verifyUpdatedEmail/subject";
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(subject));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
   return Reaction.Email.send({
     to: address,

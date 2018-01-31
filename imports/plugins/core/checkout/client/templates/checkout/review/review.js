@@ -8,7 +8,7 @@ import CartSubTotals from "../../../containers/cartSubTotalContainer";
 * trigger checkoutPayment step on template checkoutReview render
 */
 
-Template.checkoutReview.onRendered(function () {
+Template.checkoutReview.onRendered(() => {
   Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutReview");
 });
 

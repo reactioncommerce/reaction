@@ -4,10 +4,20 @@ import React, { Component } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
+import ReactionAlerts from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 import { Reaction } from "/client/api";
 import { groupPermissions } from "../helpers/accountsHelper";
 
+/**
+ * @summary React component to display edit group panel
+ * @memberof Accounts
+ * @extends {Component}
+ * @property {Array} accounts
+ * @property {Array} groups
+ * @property {Function} onChangeGroup
+ * @property {Array} packages
+ * @property {Object} selectedGroup
+ */
 class EditGroup extends Component {
   static propTypes = {
     accounts: PropTypes.array,

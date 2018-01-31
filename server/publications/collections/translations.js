@@ -16,7 +16,7 @@ import { Reaction } from "/server/api";
  * @returns { Object } returns Translations
  * @todo like to see the langages validated more with a schema
  */
-Meteor.publish("Translations", function (languages) {
+Meteor.publish("Translations", (languages) => {
   check(languages, Match.OneOf(String, Array));
   const shopId = Reaction.getShopId();
   const shopLanguage = Shops.findOne(shopId).language;

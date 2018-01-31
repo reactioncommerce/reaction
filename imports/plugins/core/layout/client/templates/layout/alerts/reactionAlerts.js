@@ -12,7 +12,7 @@ import Alerts from "./inlineAlerts";
  * @module ReactionAlerts
  */
 
-Meteor.startup(function () {
+Meteor.startup(() => {
   sAlert.config({
     effect: "stackslide",
     position: "bottom-left",
@@ -72,6 +72,7 @@ Object.assign(Alerts, {
   alert(titleOrOptions, messageOrCallback, options, callback) {
     if (_.isObject(titleOrOptions)) {
       return swal({
+        useRejections: true,
         type: "info",
         ...titleOrOptions
       }).then((isConfirm) => {
@@ -82,7 +83,7 @@ Object.assign(Alerts, {
         if (dismiss === "cancel" || dismiss === "esc" || dismiss === "overlay") {
           messageOrCallback(false, dismiss);
         }
-      }).catch(function (err) {
+      }).catch((err) => {
         if (err === "cancel" || err === "overlay" || err === "timer") {
           return undefined; // Silence error
         }
@@ -94,6 +95,7 @@ Object.assign(Alerts, {
     const message = messageOrCallback;
 
     return swal({
+      useRejections: true,
       title,
       text: message,
       type: "info",
@@ -102,7 +104,7 @@ Object.assign(Alerts, {
       if (isConfirm === true && typeof callback === "function") {
         callback(isConfirm);
       }
-    }).catch(function (err) {
+    }).catch((err) => {
       if (err === "cancel" || err === "overlay" || err === "timer") {
         return undefined; // Silence error
       }

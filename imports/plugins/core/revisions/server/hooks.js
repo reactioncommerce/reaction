@@ -96,7 +96,7 @@ export const ProductRevision = {
 
   findRevision({ documentId }) {
     return Revisions.findOne({
-      "documentId": documentId,
+      documentId,
       "workflow.status": {
         $nin: [
           "revision/published"
@@ -316,7 +316,7 @@ Products.before.insert((userId, product) => {
 
     if (archivedCount > 0) {
       Logger.debug(`Cannot create product ${product._id} as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
-      throw new Meteor.Error("Unable to create product variant");
+      throw new Meteor.Error("unable-to-create-variant", "Unable to create product variant");
     }
   }
 
@@ -370,7 +370,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
     if (archivedCount > 0) {
       Logger.debug(`Cannot restore product ${product._id} as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
-      throw new Meteor.Error("Unable to delete product variant");
+      throw new Meteor.Error("unable-to-delete-variant", "Unable to delete product variant");
     }
   }
 
@@ -613,7 +613,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   return false;
 });
 
-Products.before.remove(function (userId, product) {
+Products.before.remove((userId, product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -663,7 +663,7 @@ Products.before.remove(function (userId, product) {
   return false;
 });
 
-Revisions.after.update(function (userId, revision) {
+Revisions.after.update((userId, revision) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }

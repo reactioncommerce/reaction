@@ -38,7 +38,7 @@ Meteor.startup(() => {
   // use tracker autorun to detect language changes
   // this only runs on initial page loaded
   // and when user.profile.lang updates
-  Tracker.autorun(function () {
+  Tracker.autorun(() => {
     if (Reaction.Subscriptions.PrimaryShop.ready() &&
         Reaction.Subscriptions.MerchantShops.ready() &&
         Meteor.user()) {
@@ -54,7 +54,7 @@ Meteor.startup(() => {
       const packageNamespaces = [];
 
       const packages = Packages.find({
-        shopId: shopId
+        shopId
       }, {
         fields: {
           name: 1
@@ -86,7 +86,7 @@ Meteor.startup(() => {
         // into i18next resource format
         //
         let resources = {};
-        translations.forEach(function (translation) {
+        translations.forEach((translation) => {
           const resource = {};
           resource[translation.i18n] = translation.translation;
           resources = mergeDeep(resources, resource);
@@ -107,7 +107,7 @@ Meteor.startup(() => {
             fallbackNS: packageNamespaces,
             lng: language, // user session language
             fallbackLng: shop ? shop.language : null, // Shop language
-            resources: resources
+            resources
           }, () => {
             // someday this should work
             // see: https://github.com/aldeed/meteor-simple-schema/issues/494
@@ -142,7 +142,7 @@ Meteor.startup(() => {
   // this only runs on initial page loaded
   // and when user.profile.currency updates
   // although it is also triggered when profile updates ( meaning .lang )
-  Tracker.autorun(function () {
+  Tracker.autorun(() => {
     const user = Meteor.user();
 
     if (Reaction.Subscriptions.PrimaryShop.ready() &&

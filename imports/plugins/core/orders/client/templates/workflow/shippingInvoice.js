@@ -123,15 +123,14 @@ Template.coreOrderShippingInvoice.events({
     const order = instance.state.get("order");
     const invoiceTotal = getBillingInfo(order).invoice && getBillingInfo(order).invoice.total;
     const currencySymbol = instance.state.get("currency").symbol;
-    const paymentMethod = getBillingInfo(order).paymentMethod;
+    const { paymentMethod } = getBillingInfo(order);
 
     Meteor.subscribe("Packages", Reaction.getShopId());
     const packageId = paymentMethod && paymentMethod.paymentPackageId;
     const settingsKey = paymentMethod && paymentMethod.paymentSettingsKey;
     // check if payment provider supports de-authorize
     const checkSupportedMethods = Packages.findOne({
-      _id: packageId,
-      shopId: Reaction.getShopId()
+      _id: packageId
     }).settings[settingsKey].support;
 
     const orderStatus = paymentMethod && paymentMethod.status;

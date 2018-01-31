@@ -17,12 +17,12 @@ export const methods = {
    * @param  {String} discountId discount id to delete
    * @return {String} returns update/insert result
    */
-  "discounts/deleteRate": function (discountId) {
+  "discounts/deleteRate"(discountId) {
     check(discountId, String);
 
     // check permissions to delete
     if (!Reaction.hasPermission("discounts")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     return Discounts.direct.remove({ _id: discountId });
@@ -38,14 +38,14 @@ export const methods = {
    * @param  {Object} discounts discounts
    * @return {Number} returns update result
    */
-  "discounts/setRate": function (cartId, discountRate, discounts) {
+  "discounts/setRate"(cartId, discountRate, discounts) {
     check(cartId, String);
     check(discountRate, Number);
     check(discounts, Match.Optional(Array));
 
     return Cart.direct.update(cartId, {
       $set: {
-        discounts: discounts,
+        discounts,
         discount: discountRate
       }
     });
@@ -60,14 +60,14 @@ export const methods = {
    * @param  {String} discountId discountId
    * @return {String} returns update result
    */
-  "discounts/transaction": function (cartId, discountId) {
+  "discounts/transaction"(cartId, discountId) {
     check(cartId, String);
     check(discountId, String);
 
     const transaction = {
-      cartId: cartId,
+      cartId,
       userId: Meteor.userId(),
-      appliedAt: new Date
+      appliedAt: new Date()
     };
     // double duty validation, plus we need the method
     const discount = Discounts.findOne(discountId);
@@ -85,7 +85,7 @@ export const methods = {
    * @param  {String} cart cartId
    * @return {Object}  returns discount object
    */
-  "discounts/calculate": function (cart) {
+  "discounts/calculate"(cart) {
     check(cart, Object); // Reaction.Schemas.Cart
 
     let currentDiscount = 0;
@@ -98,7 +98,7 @@ export const methods = {
         if (billing.paymentMethod) {
           const discount = Discounts.findOne(billing.paymentMethod.id);
           if (discount && discount.calculation) {
-            const processor = billing.paymentMethod.processor;
+            const { processor } = billing.paymentMethod;
             const calculation = discount.calculation.method;
             // we're using processor/calculation
             // as a convention that can be easily

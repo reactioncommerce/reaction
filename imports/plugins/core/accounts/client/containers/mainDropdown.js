@@ -1,14 +1,13 @@
 import { compose, withProps } from "recompose";
-import { registerComponent, composeWithTracker, withCurrentAccount } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { Session } from "meteor/session";
-import { Reaction, Logger } from "/client/api";
-import { i18nextDep, i18next } from  "/client/api";
+import { registerComponent, composeWithTracker, withCurrentAccount } from "@reactioncommerce/reaction-components";
+import { i18nextDep, i18next, Reaction, Logger } from "/client/api";
 import { Tags } from "/lib/collections";
-import MainDropdown from "../components/mainDropdown";
 import { getUserAvatar } from "/imports/plugins/core/accounts/client/helpers/helpers";
+import MainDropdown from "../components/mainDropdown";
 
 function displayName(displayUser) {
   i18nextDep.depend();
@@ -26,8 +25,10 @@ function displayName(displayUser) {
 
     // todo: previous check was user.services !== "anonymous", "resume". Is this
     // new check covers previous check?
-    if (Roles.userIsInRole(user._id || user.userId, "account/profile",
-      Reaction.getShopId())) {
+    if (Roles.userIsInRole(
+      user._id || user.userId, "account/profile",
+      Reaction.getShopId()
+    )) {
       return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
     }
   }
@@ -52,6 +53,12 @@ function handleChange(event, value) {
       if (error) {
         Logger.error(error, "Failed to logout.");
       }
+
+      // Resets the app to show the primary shop as the active shop when a user logs out.
+      // When an admin user is switching back and forth between shops, the app will keep the
+      // activeShopId as the last shop visited. If an admin user logs out, the app will stay on that shop
+      // for any new user who uses the same browser, temporarily, until the app is refreshed. This fixes that issue.
+      Reaction.setShopId(Reaction.getPrimaryShopId());
     });
   }
 
@@ -62,7 +69,7 @@ function handleChange(event, value) {
       let currentTagId;
 
       if (error) {
-        throw new Meteor.Error("createProduct error", error);
+        throw new Meteor.Error("create-product-error", error);
       } else if (productId) {
         currentTagId = Session.get("currentTag");
         currentTag = Tags.findOne(currentTagId);

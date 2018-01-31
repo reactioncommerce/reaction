@@ -4,7 +4,6 @@ import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { SortableTable } from "/imports/plugins/core/ui/client/components";
 
-
 const GroupsTable = (props) => {
   const { group } = props;
   const fields = ["name", "email", "createdAt", "dropdown", "button"];
@@ -12,7 +11,7 @@ const GroupsTable = (props) => {
   const tableClass = (length) => {
     return classnames({
       "accounts-group-table": true,
-      "empty-table": !Boolean(length)
+      "empty-table": !length
     });
   };
 

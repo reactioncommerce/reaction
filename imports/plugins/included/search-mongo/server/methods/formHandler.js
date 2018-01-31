@@ -21,7 +21,7 @@ function weightsChanged(changedFields) {
 }
 
 Meteor.methods({
-  "search/updateSearchSettings": function (modifier, _id) {
+  "search/updateSearchSettings"(modifier, _id) {
     check(modifier, Match.Optional(CorePackageConfig));
     check(_id, String);
     const currentSettings = Packages.findOne(_id);
@@ -35,7 +35,7 @@ Meteor.methods({
     }
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
     let rebuildJob;
     if (fieldsChanged(changedSettings)) {

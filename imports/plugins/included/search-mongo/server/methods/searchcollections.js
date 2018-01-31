@@ -54,12 +54,31 @@ function getSearchLanguage() {
   return { default_language: "en" };
 }
 
+/**
+ * handleIndexUpdateFailures
+ * When using Collection.rawCollection() methods that return a Promise,
+ * handle the errors in a catch. However, ignore errors with altering indexes
+ * before a collection exists.
+ * @param  {Error} error an error object returned from a Promise rejection
+ * @return {undefined}   doesn't return anything
+ */
+function handleIndexUpdateFailures(error) {
+  // If we get an error from the Mongo driver because something tried to drop a
+  // collection before it existed, log it out as debug info.
+  // Otherwise, log whatever happened as an error.
+  if (error.name === "MongoError" && error.message === "ns not found") {
+    Logger.debug(error, "Attempted to set or remove indexes in a Mongo collection that doesn't exist yet");
+  } else {
+    Logger.error(error);
+  }
+}
+
 export function getSearchParameters(collection = "products") {
   const settings = utils.getPackageSettings();
   const customFields = filterFields(settings[collection].includes);
   const fieldSet = requiredFields[collection].concat(customFields);
   const weightObject = getScores(customFields, settings);
-  return { fieldSet: fieldSet, weightObject: weightObject, customFields: customFields };
+  return { fieldSet, weightObject, customFields };
 }
 
 export function buildProductSearchRecord(productId) {
@@ -104,8 +123,8 @@ export function buildProductSearch(cb) {
   }
 
   const rawProductSearchCollection = ProductSearch.rawCollection();
-  rawProductSearchCollection.dropIndexes("*");
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage());
+  rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
+  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -119,8 +138,8 @@ export function buildEmptyProductSearch() {
     indexObject[field] = "text";
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
-  rawProductSearchCollection.dropIndexes("*");
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage());
+  rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
+  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
 }
 
 export function rebuildProductSearchIndex(cb) {
@@ -131,8 +150,8 @@ export function rebuildProductSearchIndex(cb) {
     indexObject[field] = "text";
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
-  rawProductSearchCollection.dropIndexes("*");
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage());
+  rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
+  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -146,7 +165,7 @@ export function ensureProductSearchIndex() {
     indexObject[field] = "text";
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage());
+  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
 }
 
 export function buildOrderSearchRecord(orderId) {
@@ -173,14 +192,11 @@ export function buildOrderSearchRecord(orderId) {
     }
   }
   // get the billing object for the current shop on the order (and not hardcoded [0])
-  const shopBilling = order.billing && order.billing.find(
-    billing => billing && billing.shopId === Reaction.getShopId()
-  ) || {};
+  const shopBilling = order.billing &&
+    order.billing.find(billing => billing && billing.shopId === Reaction.getShopId()) || {};
 
   // get the shipping object for the current shop on the order (and not hardcoded [0])
-  const shopShipping = order.shipping.find(
-    shipping => shipping.shopId === Reaction.getShopId()
-  ) || {};
+  const shopShipping = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId()) || {};
 
   orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
   orderSearch.billingPhone = shopBilling.address && shopBilling.address.phone.replace(/\D/g, "");
@@ -232,8 +248,10 @@ export function buildOrderSearch(cb) {
     buildOrderSearchRecord(order._id);
   }
   const rawOrderSearchCollection = OrderSearch.rawCollection();
-  rawOrderSearchCollection.dropIndexes("*");
-  rawOrderSearchCollection.createIndex({ shopId: 1, shippingName: 1, billingName: 1, userEmails: 1 });
+  rawOrderSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
+  rawOrderSearchCollection.createIndex({
+    shopId: 1, shippingName: 1, billingName: 1, userEmails: 1
+  }).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -248,8 +266,8 @@ export function buildAccountSearch(cb) {
     buildAccountSearchRecord(account._id);
   }
   const rawAccountSearchCollection = AccountSearch.rawCollection();
-  rawAccountSearchCollection.dropIndexes("*");
-  rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 });
+  rawAccountSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
+  rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -271,6 +289,6 @@ export function buildAccountSearchRecord(accountId) {
     }
     AccountSearch.insert(accountSearch);
     const rawAccountSearchCollection = AccountSearch.rawCollection();
-    rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 });
+    rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleIndexUpdateFailures);
   }
 }

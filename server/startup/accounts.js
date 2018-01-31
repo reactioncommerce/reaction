@@ -12,7 +12,7 @@ export default function () {
    * http://docs.meteor.com/#/full/accounts_validateloginattempt
    */
 
-  Accounts.validateLoginAttempt(function (attempt) {
+  Accounts.validateLoginAttempt((attempt) => {
     if (!attempt.allowed) {
       return false;
     }
@@ -31,13 +31,13 @@ export default function () {
 
     if (loginEmail && loginEmail === adminEmail) {
       // filter out the matching login email from any existing emails
-      const userEmail = _.filter(attempt.user.emails, function (email) {
+      const userEmail = _.filter(attempt.user.emails, (email) => {
         return email.address === loginEmail;
       });
 
       // check if the email is verified
       if (!userEmail.length || !userEmail[0].verified) {
-        throw new Meteor.Error("403", "Oops! Please validate your email first.");
+        throw new Meteor.Error("access-denied", "Oops! Please validate your email first.");
       }
     }
 
@@ -49,10 +49,9 @@ export default function () {
    * creates a login type "anonymous"
    * default for all unauthenticated visitors
    */
-  Accounts.registerLoginHandler(function (options) {
-    if (!options.anonymous) {
-      return {};
-    }
+  Accounts.registerLoginHandler((options) => {
+    if (!options.anonymous) return {};
+
     const stampedToken = Accounts._generateStampedLoginToken();
     const userId = Accounts.insertUserDoc({
       services: {
@@ -62,7 +61,7 @@ export default function () {
     });
     const loginHandler = {
       type: "anonymous",
-      userId: userId
+      userId
     };
     return loginHandler;
   });
@@ -124,49 +123,51 @@ export default function () {
         roles[shopId] = group.permissions || Reaction.defaultCustomerRoles;
         additionals.groups = [group._id];
         // also add services with email defined to user.emails[]
-        for (const service in user.services) {
-          if (user.services[service].email) {
-            const email = {
-              provides: "default",
-              address: user.services[service].email,
-              verified: true
-            };
-            user.emails.push(email);
-          }
-          if (user.services[service].name) {
-            user.username = user.services[service].name;
-            additionals.profile.name = user.services[service].name;
-          }
-          // TODO: For now we have here instagram, twitter and google avatar cases
-          // need to make complete list
-          if (user.services[service].picture) {
-            additionals.profile.picture = user.services[service].picture;
-          } else if (user.services[service].profile_image_url_https) {
-            additionals.profile.picture = user.services[service].
-              dprofile_image_url_https;
-          } else if (user.services[service].profile_picture) {
-            additionals.profile.picture = user.services[service].profile_picture;
-          }
-          // Correctly map Instagram profile data to Meteor user / Accounts
-          if (user.services.instagram) {
-            user.username = user.services[service].username;
-            user.name = user.services[service].full_name;
-            additionals.name = user.services[service].full_name;
-            additionals.profile.picture = user.services[service].profile_picture;
-            additionals.profile.bio = user.services[service].bio;
-            additionals.profile.name = user.services[service].full_name;
-            additionals.profile.username = user.services[service].username;
+        const userServices = user.services;
+        for (const service in userServices) {
+          if ({}.hasOwnProperty.call(userServices, service)) {
+            const serviceObj = userServices[service];
+            if (serviceObj.email) {
+              const email = {
+                provides: "default",
+                address: serviceObj.email,
+                verified: true
+              };
+              user.emails.push(email);
+            }
+            if (serviceObj.name) {
+              user.username = serviceObj.name;
+              additionals.profile.name = serviceObj.name;
+            }
+            // TODO: For now we have here instagram, twitter and google avatar cases
+            // need to make complete list
+            if (serviceObj.picture) {
+              additionals.profile.picture = user.services[service].picture;
+            } else if (serviceObj.profile_image_url_https) {
+              additionals.profile.picture = user.services[service].dprofile_image_url_https;
+            } else if (serviceObj.profile_picture) {
+              additionals.profile.picture = user.services[service].profile_picture;
+            }
+            // Correctly map Instagram profile data to Meteor user / Accounts
+            if (userServices.instagram) {
+              user.username = serviceObj.username;
+              user.name = serviceObj.full_name;
+              additionals.name = serviceObj.full_name;
+              additionals.profile.picture = serviceObj.profile_picture;
+              additionals.profile.bio = serviceObj.bio;
+              additionals.profile.name = serviceObj.full_name;
+              additionals.profile.username = serviceObj.username;
+            }
           }
         }
       }
+
       // clone before adding roles
       const account = Object.assign({}, user, additionals);
       account.userId = user._id;
       Collections.Accounts.insert(account);
 
-      const userDetails = Collections.Accounts.findOne({
-        _id: user._id
-      });
+      const userDetails = Collections.Accounts.findOne({ _id: user._id });
 
       // send a welcome email to new users,
       // but skip the first default admin user

@@ -2,9 +2,8 @@
 import Shopify from "shopify-api-node";
 import { Job } from "meteor/vsivsi:job-collection";
 import { Meteor } from "meteor/meteor";
-import { Logger } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 import { check, Match } from "meteor/check";
-import { Reaction } from "/server/api";
 import { Products, Jobs, Tags } from "/lib/collections";
 import { getApiInfo } from "../api/api";
 import { connectorsRoles } from "../../lib/roles";
@@ -36,14 +35,17 @@ function createReactionProductFromShopifyProduct(options) {
     createdAt: new Date(),
     description: shopifyProduct.body_html.replace(/(<([^>]+)>)/ig, ""), // Strip HTML
     handle: shopifyProduct.handle,
-    hashtags: hashtags,
+    hashtags,
     isDeleted: false,
     isVisible: false,
+    isSoldOut: false,
+    isLowQuantity: false,
+    isBackorder: false,
     metafields: [],
     pageTitle: shopifyProduct.pageTitle,
     productType: shopifyProduct.product_type,
     requiresShipping: true,
-    shopId: shopId, // set shopId to active shopId;
+    shopId, // set shopId to active shopId;
     shopifyId: shopifyProduct.id.toString(), // save it here to make sync lookups cheaper
     template: "productDetailSimple",
     title: shopifyProduct.title,
@@ -82,12 +84,12 @@ function createReactionProductFromShopifyProduct(options) {
 function createReactionVariantFromShopifyVariant(options) {
   const { shopifyVariant, variant, index, ancestors, shopId } = options;
   const reactionVariant = {
-    ancestors: ancestors,
+    ancestors,
     barcode: shopifyVariant.barcode,
     compareAtPrice: shopifyVariant.compare_at_price,
     createdAt: new Date(),
     height: 0,
-    index: index,
+    index,
     inventoryManagement: true,
     inventoryPolicy: shopifyVariant.inventory_policy === "deny",
     inventoryQuantity: shopifyVariant.inventory_quantity >= 0 ? shopifyVariant.inventory_quantity : 0,
@@ -99,7 +101,7 @@ function createReactionVariantFromShopifyVariant(options) {
     optionTitle: variant,
     price: parseFloat(shopifyVariant.price),
     requiresShipping: shopifyVariant.requires_shipping,
-    shopId: shopId,
+    shopId,
     shopifyId: shopifyVariant.id.toString(), // Save for easy sync lookups
     sku: shopifyVariant.sku,
     taxable: true,
@@ -230,7 +232,7 @@ function normalizeWeight(weight) {
  * @return {undefined}
  */
 function saveImage(url, metadata) {
-  new Job(Jobs, "connectors/shopify/import/image", { url: url, metadata: metadata })
+  new Job(Jobs, "connectors/shopify/import/image", { url, metadata })
     .priority("normal")
     .retry({
       retries: 5,
@@ -251,7 +253,7 @@ export const methods = {
   async "connectors/shopify/import/products"(options) {
     check(options, Match.Maybe(Object));
     if (!Reaction.hasPermission(connectorsRoles)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     const apiCreds = getApiInfo();
@@ -262,7 +264,7 @@ export const methods = {
     const ids = [];
     const opts = Object.assign({}, {
       published_status: "published",
-      limit: limit
+      limit
     }, { ... options });
 
     try {
@@ -273,11 +275,13 @@ export const methods = {
 
       for (const page of pages) {
         Logger.debug(`Importing page ${page + 1} of ${numPages} - each page has ${limit} products`);
-        const shopifyProducts = await shopify.product.list({ ...opts, page: page });
+        const shopifyProducts = await shopify.product.list({ ...opts, page });
         for (const shopifyProduct of shopifyProducts) {
           if (!Products.findOne({ shopifyId: shopifyProduct.id }, { fields: { _id: 1 } })) {
             Logger.debug(`Importing ${shopifyProduct.title}`);
             const price = { min: null, max: null, range: "0.00" };
+            let isSoldOut = true;
+            let isBackorder = false;
 
             // Get tags from shopify and register them if they don't exist.
             // push tag Id's into our hashtags array for use in the product
@@ -289,7 +293,7 @@ export const methods = {
                 const normalizedTag = {
                   name: tag,
                   slug: Reaction.getSlug(tag),
-                  shopId: shopId,
+                  shopId,
                   isTopLevel: false,
                   updatedAt: new Date(),
                   createdAt: new Date()
@@ -321,7 +325,7 @@ export const methods = {
               ownerId: Meteor.userId(),
               productId: reactionProductId,
               variantId: reactionProductId,
-              shopId: shopId,
+              shopId,
               priority: 0,
               toGrid: 1
             });
@@ -334,7 +338,7 @@ export const methods = {
                   ownerId: Meteor.userId(),
                   productId: reactionProductId,
                   variantId: reactionProductId,
-                  shopId: shopId,
+                  shopId,
                   priority: productImage.position, // Shopify index positions starting at 1.
                   toGrid: 0
                 });
@@ -384,26 +388,37 @@ export const methods = {
                         ids.push(reactionOptionId);
                         Logger.debug(`Imported ${shopifyProduct.title} ${variant}/${option}`);
 
-                        // Update Max Price
+                        // Update max price
                         if (price.max === null || price.max < reactionOption.price) {
                           price.max = reactionOption.price;
                         }
 
-                        // Update Min Price
+                        // Update min price
                         if (price.min === null || price.min > reactionOption.price) {
                           price.min = reactionOption.price;
                         }
 
+                        // Update denormalized sold out status
+                        if (isSoldOut && reactionOption.inventoryQuantity > 0) {
+                          isSoldOut = false;
+                        }
+
+                        // Update denormalized backordered status
+                        // if at least one variant has inventoryPolicy = false, then the product isBackorder
+                        if (!isBackorder) {
+                          isBackorder = !reactionOption.inventoryPolicy;
+                        }
+
                         // Save all relevant variant images to our option
                         const optionImages = findVariantImages(shopifyOption.id, shopifyProduct.images);
-                        for (const optionImage of optionImages) {
+                        for (const [index, optionImage] of optionImages.entries()) {
                           saveImage(optionImage.src, {
                             ownerId: Meteor.userId(),
                             productId: reactionProductId,
                             variantId: reactionOptionId,
-                            shopId: shopId,
+                            shopId,
                             priority: 1,
-                            toGrid: 0
+                            toGrid: index === 0 ? 1 : 0 // We save the first of each variant image to the grid
                           });
                         }
 
@@ -432,26 +447,37 @@ export const methods = {
                               ids.push(reactionTernaryOptionId);
                               Logger.debug(`Imported ${shopifyProduct.title} ${variant}/${option}/${ternaryOption}`);
 
-                              // Update Max Price
+                              // Update max price
                               if (price.max === null || price.max < reactionTernaryOption.price) {
                                 price.max = reactionTernaryOption.price;
                               }
 
-                              // Update Min Price
+                              // Update min price
                               if (price.min === null || price.min > reactionTernaryOption.price) {
                                 price.min = reactionTernaryOption.price;
                               }
 
+                              // Update denormalized sold out status
+                              if (isSoldOut && reactionTernaryOption.inventoryQuantity > 0) {
+                                isSoldOut = false;
+                              }
+
+                              // Update denormalized backordered status
+                              // if at least one variant has inventoryPolicy = false, then the product isBackorder
+                              if (!isBackorder) {
+                                isBackorder = !reactionTernaryOption.inventoryPolicy;
+                              }
+
                               // Save all relevant variant images to our option
                               const ternaryOptionImages = findVariantImages(shopifyTernaryOption.id, shopifyProduct.images);
-                              for (const ternaryOptionImage of ternaryOptionImages) {
+                              for (const [index, ternaryOptionImage] of ternaryOptionImages.entries()) {
                                 saveImage(ternaryOptionImage.src, {
                                   ownerId: Meteor.userId(),
                                   productId: reactionProductId,
                                   variantId: reactionOptionId,
-                                  shopId: shopId,
+                                  shopId,
                                   priority: 1,
-                                  toGrid: 0
+                                  toGrid: index === 0 ? 1 : 0 // We save the first of each variant image to the grid
                                 });
                               } // So many close parens and brackets. Don't get lost.
                             }
@@ -461,26 +487,37 @@ export const methods = {
                     }); // End shopifyOptions forEach loop
                   } else {
                     // Product does not have options, just variants
-                    // Update Max Price
+                    // Update max price
                     if (price.max === null || price.max < reactionVariant.price) {
                       price.max = reactionVariant.price;
                     }
 
-                    // Update Min Price
+                    // Update min price
                     if (price.min === null || price.min > reactionVariant.price) {
                       price.min = reactionVariant.price;
                     }
 
+                    // Update denormalized sold out status
+                    if (isSoldOut && reactionVariant.inventoryQuantity > 0) {
+                      isSoldOut = false;
+                    }
+
+                    // Update denormalized backordered status
+                    // if at least one variant has inventoryPolicy = false, then the product isBackorder
+                    if (!isBackorder) {
+                      isBackorder = !reactionVariant.inventoryPolicy;
+                    }
+
                     // Save all relevant variant images to our variant.
                     const variantImages = findVariantImages(shopifyVariant.id, shopifyProduct.images);
-                    for (const variantImage of variantImages) {
+                    for (const [index, variantImage] of variantImages.entries()) {
                       saveImage(variantImage.src, {
                         ownerId: Meteor.userId(),
                         productId: reactionProductId,
                         variantId: reactionVariantId,
-                        shopId: shopId,
+                        shopId,
                         priority: 1,
-                        toGrid: 0
+                        toGrid: index === 0 ? 1 : 0 // We save the first of each variant image to the grid
                       });
                     }
                     Logger.debug(`Imported ${shopifyProduct.title} ${variant}`);
@@ -495,14 +532,23 @@ export const methods = {
             } else {
               price.range = `${price.max}`;
             }
-            Products.update({ _id: reactionProductId }, { $set: { price: price } }, { selector: { type: "simple" }, publish: true });
+            Products.update({
+              _id: reactionProductId
+            }, {
+              $set: {
+                price,
+                isSoldOut,
+                isBackorder
+              }
+            }, { selector: { type: "simple" }, publish: true });
+
             Logger.debug(`Product ${shopifyProduct.title} added`);
           } else { // product already exists check
             Logger.debug(`Product ${shopifyProduct.title} already exists`);
           }
         } // End product loop
       } // End pages loop
-      Logger.info(`Reaction Shopify Connector has finished importing ${ids.length} products`);
+      Logger.info(`Reaction Shopify Connector has finished importing ${ids.length} products and variants`);
 
       // Run jobs to import all queued images;
       importImages();

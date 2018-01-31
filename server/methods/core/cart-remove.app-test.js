@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
@@ -108,7 +109,7 @@ describe("cart methods", function () {
       function removeFromCartFunc() {
         return Meteor.call("cart/removeFromCart", cartItemId);
       }
-      expect(removeFromCartFunc).to.throw(Meteor.Error, /cart-item-not-found/);
+      expect(removeFromCartFunc).to.throw(Meteor.Error, /not-found/);
       return done();
     });
 
@@ -122,7 +123,7 @@ describe("cart methods", function () {
       function removeFromCartFunc() {
         return Meteor.call("cart/removeFromCart", cartItemId);
       }
-      expect(removeFromCartFunc).to.throw(Meteor.Error, /cart-item-not-found/);
+      expect(removeFromCartFunc).to.throw(Meteor.Error, /not-found/);
       return done();
     });
   });

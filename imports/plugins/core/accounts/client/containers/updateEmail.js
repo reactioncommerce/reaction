@@ -31,7 +31,7 @@ const handlers = {
 
 const composer = (props, onData) => {
   const user = Accounts.findOne(Meteor.userId());
-  const email = user.emails[0].address;
+  const email = user.emails.length > 0 ? user.emails[0].address : "";
   onData(null, { email });
 };
 

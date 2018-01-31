@@ -5,31 +5,58 @@ import * as Collections from "/lib/collections";
 import { Components } from "@reactioncommerce/reaction-components";
 
 export const LoginFormSharedHelpers = {
-  messages: function () {
+  /**
+   * @method messages
+   * @memberof Accounts
+   * @return {Object} Message object
+   */
+  messages() {
     return Template.instance().formMessages.get();
   },
 
+  /**
+   * @method hasError
+   * @memberof Accounts
+   * @summary Check to see if there are error or other messages to display
+   * @param  {Object}  error Error
+   * @return {String}       "has-error has-feedback" string
+   */
   hasError(error) {
     // True here means the field is valid
-    // We're checking if theres some other message to display
     if (error !== true && typeof error !== "undefined") {
       return "has-error has-feedback";
     }
   },
-  capitalize: function (str) {
+
+  /**
+   * @method capitalize
+   * @memberof Accounts
+   * @summary Client-side helper to capitalize word
+   * @param  {String} str String to capitalize
+   * @return {String}     First letter of first word capitalized
+   */
+  capitalize(str) {
     const finalString = str === null ? "" : String(str);
     return finalString.charAt(0).toUpperCase() + finalString.slice(1);
   }
 
 };
 
+/**
+ * @method getUserAvatar
+ * @memberof Accounts
+ * @summary ReactionAvatar Component helper to get a user's Avatar
+ * @example const userAvatar = getUserAvatar(account);
+ * @param  {Object} currentUser User
+ * @return {Component}          ReactionAvatar component
+ */
 export function getUserAvatar(currentUser) {
   const user = currentUser || Accounts.user();
 
   const account = Collections.Accounts.findOne(user._id);
   // first we check picture exists. Picture has higher priority to display
   if (account && account.profile && account.profile.picture) {
-    const picture = account.profile.picture;
+    const { picture } = account.profile;
 
     return (
       <Components.ReactionAvatar

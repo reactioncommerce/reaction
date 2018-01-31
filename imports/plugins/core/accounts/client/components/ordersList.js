@@ -4,10 +4,11 @@ import CompletedOrder from "../../../checkout/client/components/completedOrder";
 
 /**
  * @summary React component to display an array of completed orders
- * @class OrdersList
+ * @memberof Accounts
  * @extends {Component}
  * @property {Array} allOrdersInfo - array of orders
  * @property {Function} handeleDisplayMedia - function to display order image
+ * @property {Boolean} isProfilePage - Profile or non-profile page
  */
 class OrdersList extends Component {
   static propTypes = {

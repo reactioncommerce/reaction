@@ -24,7 +24,7 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   const user = Accounts.findOne({
     _id: Meteor.userId()
   });
-  const profileCurrency = user.profile && user.profile.currency;
+  const profileCurrency = user && user.profile && user.profile.currency;
   if (typeof shop === "object" && shop.currencies && profileCurrency) {
     let userCurrency = {};
     if (shop.currencies[profileCurrency]) {
@@ -87,16 +87,20 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
       // we know the locale, but we don"t know exchange rate. In that case we
       // should return to default shop currency
       if (typeof userCurrency.rate !== "number") {
-        throw new Meteor.Error("exchangeRateUndefined");
+        throw new Meteor.Error("invalid-exchange-rate", "Exchange rate is invalid");
       }
       prices[i] *= userCurrency.rate;
 
-      price = _formatPrice(price, originalPrice, prices[i],
-        currentPrice, userCurrency, i, len);
+      price = _formatPrice(
+        price, originalPrice, prices[i],
+        currentPrice, userCurrency, i, len
+      );
     } catch (error) {
       Logger.debug("currency error, fallback to shop currency");
-      price = _formatPrice(price, originalPrice, prices[i],
-        currentPrice, locale.shopCurrency, i, len);
+      price = _formatPrice(
+        price, originalPrice, prices[i],
+        currentPrice, locale.shopCurrency, i, len
+      );
     }
   }
   return price;
@@ -141,8 +145,10 @@ export function formatNumber(currentPrice) {
  * @param  {Number} len           length
  * @return {Number}               formatted price
  */
-function _formatPrice(price, originalPrice, actualPrice, currentPrice, currency,
-  pos, len) {
+function _formatPrice(
+  price, originalPrice, actualPrice, currentPrice, currency,
+  pos, len
+) {
   // this checking for locale.shopCurrency mostly
   if (typeof currency !== "object") {
     return false;

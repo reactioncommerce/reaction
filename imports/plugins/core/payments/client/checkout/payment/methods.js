@@ -9,7 +9,7 @@ Template.corePaymentMethods.helpers({
   }
 });
 
-Template.corePaymentMethods.onCreated(function () {
+Template.corePaymentMethods.onCreated(() => {
   const payments = enabledPayments();
   const paymentsEnabled = payments.length;
   // If no payments enabled, show payments settings dashboard

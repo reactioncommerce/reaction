@@ -146,7 +146,7 @@ function getValidator() {
   const geoCoders = Packages.find({
     "registry.provides": "addressValidation",
     "settings.addressValidation.enabled": true,
-    "shopId": shopId,
+    shopId,
     "enabled": true
   }).fetch();
 
@@ -160,7 +160,7 @@ function getValidator() {
   }
   // If there are two, we default to the one that is not the Reaction one
   if (geoCoders.length === 2) {
-    geoCoder = _.filter(geoCoders, function (coder) {
+    geoCoder = _.filter(geoCoders, (coder) => {
       return !_.includes(coder.name, "reaction");
     })[0];
   }
@@ -286,12 +286,14 @@ export function validateAddress(address) {
       validationErrors = compareAddress(address, validatedAddress);
       if (validationErrors.totalErrors || formErrors.length) {
         validated = false;
-        validatedAddress.failedValidation = false;
+        validatedAddress.failedValidation = true;
       }
     } else {
       // No address, fail validation
       validated = false;
-      validatedAddress.failedValidation = false;
+      validatedAddress = {
+        failedValidation: true
+      };
     }
   }
   const validationResults = { validated, fieldErrors: validationErrors, formErrors, validatedAddress };
@@ -327,14 +329,14 @@ export function addressBookAdd(address, accountUserId) {
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
     if (!Reaction.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
   }
   this.unblock();
 
   const userId = accountUserId || Meteor.userId();
   const account = Accounts.findOne({
-    userId: userId
+    userId
   });
   // required default id
   if (!address._id) {
@@ -343,7 +345,7 @@ export function addressBookAdd(address, accountUserId) {
   // if address got shippment or billing default, we need to update cart
   // addresses accordingly
   if (address.isShippingDefault || address.isBillingDefault) {
-    const cart = Cart.findOne({ userId: userId });
+    const cart = Cart.findOne({ userId });
     // if cart exists
     // First amend the cart,
     if (typeof cart === "object") {
@@ -357,7 +359,7 @@ export function addressBookAdd(address, accountUserId) {
     // then change the address that has been affected
     if (address.isShippingDefault) {
       Accounts.update({
-        "userId": userId,
+        userId,
         "profile.addressBook.isShippingDefault": true
       }, {
         $set: {
@@ -367,7 +369,7 @@ export function addressBookAdd(address, accountUserId) {
     }
     if (address.isBillingDefault) {
       Accounts.update({
-        "userId": userId,
+        userId,
         "profile.addressBook.isBillingDefault": true
       }, {
         $set: {
@@ -384,7 +386,7 @@ export function addressBookAdd(address, accountUserId) {
   };
   const accountsUpdateQuery = {
     $set: {
-      userId: userId
+      userId
     },
     $addToSet: {
       "profile.addressBook": address
@@ -399,7 +401,7 @@ export function addressBookAdd(address, accountUserId) {
   Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
   return Accounts.upsert({
-    userId: userId
+    userId
   }, accountsUpdateQuery);
 }
 
@@ -422,7 +424,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
     if (!Reaction.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
   }
   this.unblock();
@@ -431,9 +433,9 @@ export function addressBookUpdate(address, accountUserId, type) {
   // we need to compare old state of isShippingDefault, isBillingDefault with
   // new state and if it was enabled/disabled reflect this changes in cart
   const account = Accounts.findOne({
-    userId: userId
+    userId
   });
-  const oldAddress = account.profile.addressBook.find(function (addr) {
+  const oldAddress = account.profile.addressBook.find((addr) => {
     return addr._id === address._id;
   });
 
@@ -449,7 +451,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   // This check can be simplified to :
   if (address.isShippingDefault || address.isBillingDefault ||
     oldAddress.isShippingDefault || address.isBillingDefault) {
-    const cart = Cart.findOne({ userId: userId });
+    const cart = Cart.findOne({ userId });
     // Cart should exist to this moment, so we doesn't need to to verify its
     // existence.
     if (oldAddress.isShippingDefault !== address.isShippingDefault) {
@@ -459,7 +461,7 @@ export function addressBookUpdate(address, accountUserId, type) {
         Meteor.call("cart/setShipmentAddress", cart._id, address);
         // then, if another address was `ShippingDefault`, we need to unset it
         Accounts.update({
-          "userId": userId,
+          userId,
           "profile.addressBook.isShippingDefault": true
         }, {
           $set: {
@@ -481,7 +483,7 @@ export function addressBookUpdate(address, accountUserId, type) {
       if (address.isBillingDefault) {
         Meteor.call("cart/setPaymentAddress", cart._id, address);
         Accounts.update({
-          "userId": userId,
+          userId,
           "profile.addressBook.isBillingDefault": true
         }, {
           $set: {
@@ -517,7 +519,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
   return Accounts.update({
-    "userId": userId,
+    userId,
     "profile.addressBook._id": address._id
   }, accountsUpdateQuery);
 }
@@ -539,7 +541,7 @@ export function addressBookRemove(addressId, accountUserId) {
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
     if (!Reaction.hasAdminAccess()) {
-      throw new Meteor.Error(403, "Access denied");
+      throw new Meteor.Error("access-denied", "Access denied");
     }
   }
   this.unblock();
@@ -549,7 +551,7 @@ export function addressBookRemove(addressId, accountUserId) {
   Meteor.call("cart/unsetAddresses", addressId, userId);
 
   return Accounts.update({
-    "userId": userId,
+    userId,
     "profile.addressBook._id": addressId
   }, {
     $pull: {
@@ -586,8 +588,8 @@ export function inviteShopOwner(options) {
     userId = user._id;
   } else {
     userId = MeteorAccounts.createUser({
-      email: email,
-      name: name,
+      email,
+      name,
       profile: { invited: true }
     });
   }
@@ -612,7 +614,7 @@ export function inviteShopOwner(options) {
   Meteor.users.update(userId, {
     $set: {
       "services.password.reset": { token, email, when: new Date() },
-      "name": name,
+      name,
       "profile.preferences.reaction.activeShopId": shopId
     }
   });
@@ -656,7 +658,7 @@ export function inviteShopMember(options) {
   if (!shop) {
     const msg = `accounts/inviteShopMember - Shop ${shopId} not found`;
     Logger.error(msg);
-    throw new Meteor.Error("shop-not-found", msg);
+    throw new Meteor.Error("not-found", msg);
   }
 
   if (!Reaction.hasPermission("reaction-accounts", this.userId, shopId)) {
@@ -668,27 +670,40 @@ export function inviteShopMember(options) {
 
   // check to ensure that invitee has roles required to perform the invitation
   if (!Reaction.canInviteToGroup({ group, user: Meteor.user() })) {
-    throw new Meteor.Error(403, "cannot invite to group");
+    throw new Meteor.Error("access-denied", "Cannot invite to group");
   }
 
   if (group.slug === "owner") {
-    throw new Meteor.Error(400, "cannot directly invite owner");
+    throw new Meteor.Error("bad-request", "Cannot directly invite owner");
   }
 
   const currentUser = Meteor.users.findOne(this.userId);
   const currentUserName = getCurrentUserName(currentUser);
   const emailLogo = getEmailLogo(primaryShop);
-  const token = Random.id();
   const user = Meteor.users.findOne({ "emails.address": email });
+  const token = Random.id();
   let dataForEmail;
   let userId;
+  let tpl;
+  let subject;
 
+  // If the user already has an account, send informative email, not "invite" email
   if (user) {
-    userId = user._id; // since user exists, we promote the account
+    // The user already exists, we promote the account, rather than creating a new one
+    userId = user._id;
     Meteor.call("group/addUser", userId, groupId);
+
+    // do not send token, as no password reset is needed
+    const url = Meteor.absoluteUrl();
+
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
-    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
+    dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, emailLogo, url });
+
+    // Get email template and subject
+    tpl = "accounts/inviteShopMember";
+    subject = "accounts/inviteShopMember/subject";
   } else {
+    // The user does not already exist, we need to create a new account
     userId = MeteorAccounts.createUser({
       profile: { invited: true },
       email,
@@ -701,15 +716,18 @@ export function inviteShopMember(options) {
       name
     };
     Meteor.users.update(userId, { $set: tokenUpdate });
+
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
     dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
+
+    // Get email template and subject
+    tpl = "accounts/inviteNewShopMember";
+    subject = "accounts/inviteNewShopMember/subject";
   }
 
   dataForEmail.groupName = _.startCase(group.name);
 
   // Compile Email with SSR
-  const tpl = "accounts/inviteShopMember";
-  const subject = "accounts/inviteShopMember/subject";
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
@@ -754,16 +772,16 @@ export function sendWelcomeEmail(shopId, userId) {
 
   const dataForEmail = {
     // Shop Data
-    shop: shop,
+    shop,
     contactEmail: shop.emails[0].address,
-    emailLogo: emailLogo,
+    emailLogo,
     copyrightDate: moment().format("YYYY"),
-    legalName: shop.addressBook[0].company,
+    legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
-      address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
-      city: shop.addressBook[0].city,
-      region: shop.addressBook[0].region,
-      postal: shop.addressBook[0].postal
+      address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
+      city: _.get(shop, "addressBook[0].city"),
+      region: _.get(shop, "addressBook[0].region"),
+      postal: _.get(shop, "addressBook[0].postal")
     },
     shopName: shop.name,
     socialLinks: {
@@ -836,7 +854,7 @@ export function sendWelcomeEmail(shopId, userId) {
  */
 export function addUserPermissions(userId, permissions, group) {
   if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
-    throw new Meteor.Error(403, "Access denied");
+    throw new Meteor.Error("access-denied", "Access denied");
   }
   check(userId, Match.OneOf(String, Array));
   check(permissions, Match.OneOf(String, Array));
@@ -861,7 +879,7 @@ export function addUserPermissions(userId, permissions, group) {
  */
 export function removeUserPermissions(userId, permissions, group) {
   if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
-    throw new Meteor.Error(403, "Access denied");
+    throw new Meteor.Error("access-denied", "Access denied");
   }
   check(userId, String);
   check(permissions, Match.OneOf(String, Array));
@@ -871,7 +889,7 @@ export function removeUserPermissions(userId, permissions, group) {
     return Roles.removeUsersFromRoles(userId, permissions, group);
   } catch (error) {
     Logger.error(error);
-    throw new Meteor.Error(403, "Access Denied");
+    throw new Meteor.Error("access-denied", "Access Denied");
   }
 }
 
@@ -886,7 +904,7 @@ export function removeUserPermissions(userId, permissions, group) {
  */
 export function setUserPermissions(userId, permissions, group) {
   if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
-    throw new Meteor.Error(403, "Access denied");
+    throw new Meteor.Error("access-denied", "Access denied");
   }
   check(userId, String);
   check(permissions, Match.OneOf(String, Array));
@@ -955,15 +973,15 @@ function getCurrentUserName(currentUser) {
  * emailLogo, legalName, physicalAddress, shopName, socialLinks, user, invitedUserName, url
  */
 function getDataForEmail(options) {
-  const { shop, currentUserName, token, emailLogo, name } = options;
+  const { shop, currentUserName, token, emailLogo, name, url } = options;
   const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
 
   return {
-    primaryShop: primaryShop, // Primary shop data - may or may not be the same as shop
-    shop: shop, // Shop Data
+    primaryShop, // Primary shop data - may or may not be the same as shop
+    shop, // Shop Data
     contactEmail: _.get(shop, "emails[0].address"),
     homepage: Meteor.absoluteUrl(),
-    emailLogo: emailLogo,
+    emailLogo,
     copyrightDate: moment().format("YYYY"),
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -994,7 +1012,7 @@ function getDataForEmail(options) {
     user: Meteor.user(), // Account Data
     currentUserName,
     invitedUserName: name,
-    url: getEmailUrl(token)
+    url: url || getEmailUrl(token)
   };
 
   function getEmailUrl(userToken) {

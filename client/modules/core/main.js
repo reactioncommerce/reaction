@@ -91,10 +91,11 @@ export default {
 
     // Listen for active shop change
     return Tracker.autorun(() => {
-      let domain;
       let shop;
       if (this.Subscriptions.MerchantShops.ready()) {
-        domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
+        // get domain (e.g localhost) from absolute url (e.g http://localhost:3000/)
+        const [ , , host ] = Meteor.absoluteUrl().split("/");
+        const [ domain ] = host.split(":");
 
         // if we don't have an active shopId, try to retreive it from the userPreferences object
         // and set the shop from the storedShopId
@@ -278,8 +279,7 @@ export default {
    * @return {Boolean} Boolean - true if has dashboard access for any shop
    */
   hasDashboardAccessForAnyShop(options = { user: Meteor.user(), permissions: ["owner", "admin", "dashboard"] }) {
-    const user = options.user;
-    const permissions = options.permissions;
+    const { user, permissions } = options;
 
     if (!user || !user.roles) {
       return false;
@@ -296,6 +296,49 @@ export default {
     // Find returns undefined if nothing is found.
     // This will return true if permissions are found, false otherwise
     return typeof hasPermissions !== "undefined";
+  },
+
+  /**
+   * getShopsForUser -
+   * @summary gets shopIds of shops where user has provided permissions
+   * @param {Array} roles - roles to check if user has
+   * @param {Object} userId - userId to check permissions for (defaults to current user)
+   * @return {Array} - shopIds user has provided permissions for
+   */
+  getShopsForUser(roles, userId = Meteor.userId()) {
+    // Get full user object, and get shopIds of all shops they are attached to
+    const user = Meteor.user(userId);
+    const shopIds = Object.keys(user.roles);
+    // Remove "__global_roles__" from the list of shopIds, as this function will always return true for
+    // marketplace admins if that "id" is left in the check
+    const filteredShopIds = shopIds.filter(shopId => shopId !== "__global_roles__");
+
+    // Reduce shopIds to shopsWithPermission, using the roles passed in to this function
+    const shopIdsWithRoles = filteredShopIds.reduce((shopsWithPermission, shopId) => {
+      // Get list of roles user has for this shop
+      const rolesUserHas = user.roles[shopId];
+
+      // Find first role that is included in the passed in roles array, otherwise hasRole is undefined
+      const hasRole = rolesUserHas.find((roleUserHas) => roles.includes(roleUserHas));
+
+      // if we found the role, then the user has permission for this shop. Add shopId to shopsWithPermission array
+      if (hasRole) {
+        shopsWithPermission.push(shopId);
+      }
+      return shopsWithPermission;
+    }, []);
+
+    return shopIdsWithRoles;
+  },
+
+  /**
+   * hasDashboardAccessForAnyShop - client
+   * @summary - client permission check for any "owner", "admin", or "dashboard" permissions for more than one shop.
+   * @return {Boolean} Boolean - true if has dashboard access for more than one shop
+   */
+  hasDashboardAccessForMultipleShops() {
+    const adminShopIds = this.getShopsForUser(["owner", "admin", "dashboard"]);
+    return Array.isArray(adminShopIds) && adminShopIds.length > 1;
   },
 
   hasOwnerAccess() {
@@ -325,10 +368,10 @@ export default {
   },
 
   hasShopSwitcherAccess() {
-    return this.hasDashboardAccessForAnyShop();
+    return this.hasDashboardAccessForMultipleShops();
   },
 
-  getSellerShopId: function (userId = Meteor.userId(), noFallback = false) {
+  getSellerShopId(userId = Meteor.userId(), noFallback = false) {
     if (userId) {
       const group = Roles.getGroupsForUser(userId, "admin")[0];
       if (group) {
@@ -347,7 +390,7 @@ export default {
     const user = Meteor.user();
 
     if (user) {
-      const profile = Meteor.user().profile;
+      const { profile } = Meteor.user();
       if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
         return profile.preferences[packageName][preference];
       }
@@ -446,8 +489,14 @@ export default {
     }
   },
 
-  getShopName() {
-    const shopId = this.getShopId();
+  /**
+   * getShopName
+   * @summary gets name of shop by provided shopId, or current active shop if shopId is not provided
+   * @param {String} providedShopID - shopId of shop to return name of
+   * @return {String} - shop name
+   */
+  getShopName(providedShopId) {
+    const shopId = providedShopId || this.getShopId();
     const shop = Shops.findOne({
       _id: shopId
     });
@@ -570,8 +619,7 @@ export default {
 
       Session.set("admin/actionView", viewStack);
     } else {
-      const registryItem = this.getRegistryForCurrentRoute(
-        "settings");
+      const registryItem = this.getRegistryForCurrentRoute("settings");
 
       if (registryItem) {
         this.setActionView(registryItem);
@@ -592,8 +640,7 @@ export default {
       actionViewStack.push(viewData);
       Session.set("admin/actionView", actionViewStack);
     } else {
-      const registryItem = this.getRegistryForCurrentRoute(
-        "settings");
+      const registryItem = this.getRegistryForCurrentRoute("settings");
 
       if (registryItem) {
         this.pushActionView(registryItem);
@@ -717,7 +764,7 @@ export default {
     this.Router.watchPathChange();
     const currentRouteName = this.Router.getRouteName();
     const currentRoute = this.Router.current();
-    const template = currentRoute.route.options.template;
+    const { template } = currentRoute.route.options;
     // find registry entries for routeName
     const reactionApp = Packages.findOne({
       "registry.name": currentRouteName,
@@ -734,7 +781,7 @@ export default {
 
     // valid application
     if (reactionApp) {
-      const settingsData = _.find(reactionApp.registry, function (item) {
+      const settingsData = _.find(reactionApp.registry, (item) => {
         return item.provides && item.provides.includes(provides) && item.template === template;
       });
       return settingsData;
@@ -780,7 +827,7 @@ function createCountryCollection(countries) {
       });
     }
   }
-  countryOptions.sort(function (a, b) {
+  countryOptions.sort((a, b) => {
     if (a.label < b.label) {
       return -1;
     }

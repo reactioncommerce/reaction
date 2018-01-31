@@ -10,27 +10,19 @@ import { Meteor } from "meteor/meteor";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
-import { Counts } from "meteor/tmeasday:publish-counts";
 import { Tracker } from "meteor/tracker";
 import { Packages, Shops } from "/lib/collections";
 import { getComponent } from "@reactioncommerce/reaction-components/components";
-import BlazeLayout from "/imports/plugins/core/layout/lib/blazeLayout";
 import Hooks from "./hooks";
 
-export let history;
+
+// Using a ternary operator here to avoid a mutable export - open to suggestions for a better way to do this
+export const history = Meteor.isClient ? createBrowserHistory() : createMemoryHistory();
 
 // Private vars
-// const currentRoute = new ReactiveVar({});
 let currentRoute = Immutable.Map();
-const routerReadyDependency = new Tracker.Dependency;
-const routerChangeDependency = new Tracker.Dependency;
-
-// Create history object depending on if this is client or server
-if (Meteor.isClient) {
-  history = createBrowserHistory();
-} else {
-  history = createMemoryHistory();
-}
+const routerReadyDependency = new Tracker.Dependency();
+const routerChangeDependency = new Tracker.Dependency();
 
 /** Class representing a static base router */
 class Router {
@@ -529,28 +521,22 @@ export function ReactionLayout(options = {}) {
 
       // If the current route is unauthorized, and is not the "not-found" route,
       // then override the template to use the default unauthroized template
-      if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found") {
-        structure.template = "unauthorized";
+      if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found" && !Meteor.user()) {
+        if (!Router.Reaction.hasPermission(route.permissions, Meteor.userId())) {
+          structure.template = "unauthorized";
+        }
+        return false;
       }
-
       try {
         // Try to create a React component if defined
         return React.createElement(getComponent(layoutName), {
           ...props,
-          structure: structure
+          structure
         });
       } catch (e) {
-        // Otherwise fallback to a blaze template
-        if (Template[layoutName]) {
-          return (
-            <BlazeLayout
-              {...structure}
-              blazeTemplate={layoutName}
-            />
-          );
-        }
+        // eslint-disable-next-line
+        console.warn(e, "Failed to create a React layout element");
       }
-
       // If all else fails, render a not found page
       return <Blaze template={structure.notFound} />;
     }
@@ -573,26 +559,6 @@ Router.initPackageRoutes = (options) => {
   Router.routes = [];
 
   const pkgs = Packages.find().fetch();
-  const shops = Shops.find({}, { fields: { _id: 1, name: 1, shopType: 1 } }).fetch();
-
-  const shopPrefixes = shops.reduce((prefixesByShopId, shop) => {
-    const shopName = shop.name;
-    const shopSlug = Router.Reaction.getSlug(shopName.toLowerCase());
-
-    // If this is the primary shop
-    if (shop.shopType === "primary") {
-      // If naked routes is turned off, use the shop slug for our primary shop routes
-      if (Router.Reaction.marketplace && Router.Reaction.marketplace.marketplaceNakedRoutes === false) {
-        prefixesByShopId[shop._id] = `/${shopSlug}`;
-      } else {
-        prefixesByShopId[shop._id] = "";
-      }
-    } else {
-      // If this is not the primary shop, use the shop slug in routes for this shop
-      prefixesByShopId[shop._id] = `/${shopSlug}`;
-    }
-    return prefixesByShopId;
-  }, {});
 
   const routeDefinitions = [];
 
@@ -605,7 +571,6 @@ Router.initPackageRoutes = (options) => {
     if (shopSub.ready()) {
       shopSubWaitFor.stop();
       // using tmeasday:publish-counts
-      const shopCount = Counts.get("shops-count");
 
       // Default layouts
       const indexLayout = ReactionLayout(options.indexRoute);
@@ -713,12 +678,6 @@ Router.initPackageRoutes = (options) => {
             if (route.route.substring(0, 1) !== "/") {
               route.route = "/" + route.route;
               route.group.prefix = "";
-            } else if (shopCount <= 1) {
-              route.group.prefix = "";
-            } else {
-              const prefix = shopPrefixes[pkg.shopId];
-              route.group.prefix = prefix;
-              route.route = `${prefix}${route.route}`;
             }
 
             routeDefinitions.push(route);
@@ -748,12 +707,12 @@ Router.initPackageRoutes = (options) => {
       // Last route, if no other route is matched, this one will be the not-found view
       // Note: This is last becuase all other routes must at-least attempt a match
       // before falling back to this not-found route.
-      reactRouterRoutes.push(
+      reactRouterRoutes.push((
         <Route
           key="not-found"
           render={notFoundLayout.component}
         />
-      );
+      ));
 
       // Finish initialization
       Router._initialized = true;
