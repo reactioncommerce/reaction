@@ -20,7 +20,7 @@ const getAlertWrapper = () => {
   const rootNode =  document.getElementById("react-root");
 
   rootNode.insertAdjacentHTML("beforebegin", "<div id='s-alert-wrapper'></div>");
-  return document.getElementsByTagName("body")[0];
+  return document.getElementById("s-alert-wrapper");
 };
 
 const initAlertWrapper = () => {
@@ -28,7 +28,7 @@ const initAlertWrapper = () => {
     <Alert
       effect="stackslide"
       position="bottom-left"
-      timeout={50000000}
+      timeout={5000}
       html={false}
       onRouteClose={true}
       stack={true}
