@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Components } from "/imports/plugins/core/components/lib";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class PinterestSocialButton extends Component {
   handleClick = (event) => {

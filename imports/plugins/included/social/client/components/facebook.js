@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import classnames from "classnames";
 import { $ } from "meteor/jquery";
-import { Components } from "/imports/plugins/core/components/lib";
+import { Components } from "@reactioncommerce/reaction-components";
 
 export function getOpenGraphMeta(props) {
   const url = props.url || location.origin + location.pathname;

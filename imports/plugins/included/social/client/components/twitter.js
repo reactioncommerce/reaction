@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import classnames from "classnames";
-import { Components } from "/imports/plugins/core/components/lib";
+import { Components } from "@reactioncommerce/reaction-components";
 
 
 export function getTwitterMeta(props) {
