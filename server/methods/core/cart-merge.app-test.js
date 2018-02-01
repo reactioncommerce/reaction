@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { Random } from "meteor/random";
@@ -77,11 +78,7 @@ describe("Merge Cart function ", function () {
     expect(cartCount).to.equal(2);
     spyOnMethod("mergeCart", cart.userId);
     const cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
-    Collections.Cart.update({}, {
-      $set: {
-        sessionId: sessionId
-      }
-    });
+    Collections.Cart.update({}, { $set: { sessionId } });
     const mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
     expect(mergeResult).to.be.ok;
     anonymousCart = Collections.Cart.findOne(anonymousCart._id);
@@ -105,11 +102,7 @@ describe("Merge Cart function ", function () {
     }, { $set: { "items.$.variants._id": cart.items[0].variants_id } });
     spyOnMethod("mergeCart", cart.userId);
     const cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
-    Collections.Cart.update({}, {
-      $set: {
-        sessionId: sessionId
-      }
-    });
+    Collections.Cart.update({}, { $set: { sessionId } });
     const mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
     expect(mergeResult).to.be.ok;
     const anonymousCartAfterMerge = Collections.Cart.findOne(anonymousCart._id);

@@ -56,7 +56,7 @@ class DropDownMenu extends Component {
       }
     } else {
       this.setState({
-        isOpen: isOpen
+        isOpen
       });
     }
   }
@@ -91,6 +91,7 @@ class DropDownMenu extends Component {
             label={this.label}
           />
         }
+        constraints={this.props.constraints}
         isOpen={this.isOpen}
         onClick={this.handleDropdownToggle}
         onRequestOpen={this.handleOpen}
@@ -117,6 +118,7 @@ DropDownMenu.propTypes = {
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   closeOnClick: PropTypes.bool,
+  constraints: PropTypes.array,
   isClickable: PropTypes.bool,
   isEnabled: PropTypes.bool,
   isOpen: PropTypes.bool,

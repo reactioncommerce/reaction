@@ -114,18 +114,18 @@ Meteor.publish("Packages", function (shopId) {
       const observer = Packages.find({
         shopId: myShopId
       }, options).observe({
-        added: function (doc) {
+        added(doc) {
           self.added("Packages", doc._id, transform(doc, self.userId));
         },
-        changed: function (newDoc, origDoc) {
+        changed(newDoc, origDoc) {
           self.changed("Packages", origDoc._id, transform(newDoc, self.userId));
         },
-        removed: function (origDoc) {
+        removed(origDoc) {
           self.removed("Packages", origDoc._id);
         }
       });
 
-      self.onStop(function () {
+      self.onStop(() => {
         observer.stop();
       });
     }

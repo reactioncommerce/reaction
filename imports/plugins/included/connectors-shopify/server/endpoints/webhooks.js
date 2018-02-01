@@ -41,7 +41,7 @@ function verifyWebhook(req) {
   return true;
 }
 
-Reaction.Endpoints.add("post", "/webhooks/shopify/orders-create", function (req, res) {
+Reaction.Endpoints.add("post", "/webhooks/shopify/orders-create", (req, res) => {
   // We'll move the code that's in the orders-updated hook into here once it's functional
   // easier to iterate in that hook for now.
   Reaction.Endpoints.sendResponse(res);

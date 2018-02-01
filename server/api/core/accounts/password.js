@@ -69,17 +69,17 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
 
   const dataForEmail = {
     // Shop Data
-    shop: shop,
+    shop,
     contactEmail: shop.emails[0].address,
     homepage: Meteor.absoluteUrl(),
-    emailLogo: emailLogo,
+    emailLogo,
     copyrightDate: moment().format("YYYY"),
-    legalName: shop.addressBook[0].company,
+    legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
-      address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
-      city: shop.addressBook[0].city,
-      region: shop.addressBook[0].region,
-      postal: shop.addressBook[0].postal
+      address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
+      city: _.get(shop, "addressBook[0].city"),
+      region: _.get(shop, "addressBook[0].region"),
+      postal: _.get(shop, "addressBook[0].postal")
     },
     shopName: shop.name,
     socialLinks: {
@@ -102,7 +102,7 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
     },
     // Account Data
     passwordResetUrl: Accounts.urls.resetPassword(token),
-    user: user
+    user
   };
 
   // Compile Email with SSR
@@ -187,7 +187,7 @@ export function sendVerificationEmail(userId, email) {
       region: "CA",
       postal: "90405"
     },
-    shopName: shopName,
+    shopName,
     socialLinks: {
       facebook: {
         link: "https://www.facebook.com/reactioncommerce"
@@ -226,7 +226,7 @@ export function sendVerificationEmail(userId, email) {
   const subject = "accounts/verifyEmail/subject";
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(subject));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
   return Reaction.Email.send({
     to: address,
@@ -304,7 +304,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
       region: "CA",
       postal: "90405"
     },
-    shopName: shopName,
+    shopName,
     socialLinks: {
       facebook: {
         link: "https://www.facebook.com/reactioncommerce"
@@ -343,7 +343,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
   const subject = "accounts/verifyUpdatedEmail/subject";
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(subject));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
   return Reaction.Email.send({
     to: address,

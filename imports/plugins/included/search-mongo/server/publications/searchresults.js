@@ -11,7 +11,7 @@ const supportedCollections = ["products", "orders", "accounts"];
 function getProductFindTerm(searchTerm, searchTags, userId) {
   const shopId = Reaction.getShopId();
   const findTerm = {
-    shopId: shopId,
+    shopId,
     $text: { $search: searchTerm }
   };
   if (searchTags.length) {
@@ -19,6 +19,11 @@ function getProductFindTerm(searchTerm, searchTags, userId) {
   }
   if (!Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
     findTerm.isVisible = true;
+  }
+  // Deletes the shopId field from "findTerm" for primary shop
+  // thereby allowing users on primary shop to search all products
+  if (shopId === Reaction.getPrimaryShopId()) {
+    delete findTerm.shopId;
   }
   return findTerm;
 }
@@ -28,7 +33,8 @@ export const getResults = {};
 getResults.products = function (searchTerm, facets, maxResults, userId) {
   const searchTags = facets || [];
   const findTerm = getProductFindTerm(searchTerm, searchTags, userId);
-  const productResults = ProductSearch.find(findTerm,
+  const productResults = ProductSearch.find(
+    findTerm,
     {
       fields: {
         score: { $meta: "textScore" },
@@ -54,7 +60,7 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
   const shopId = Reaction.getShopId();
   const findTerm = {
     $and: [
-      { shopId: shopId },
+      { shopId },
       { $or: [
         { _id: {
           $regex: `^${regexSafeSearchTerm}`,
@@ -97,7 +103,13 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
           $options: "i"
         } }
       ] }
-    ] };
+    ]
+  };
+  // Deletes the shopId field from "findTerm" for primary shop
+  // thereby allowing users on primary shop to search all products
+  if (shopId === Reaction.getPrimaryShopId()) {
+    delete findTerm.$and[0].shopId;
+  }
   if (Reaction.hasPermission("orders", userId)) {
     orderResults = OrderSearch.find(findTerm, { limit: maxResults });
     Logger.debug(`Found ${orderResults.count()} orders searching for ${regexSafeSearchTerm}`);
@@ -112,7 +124,7 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
   if (Reaction.hasPermission("reaction-accounts", userId)) {
     const findTerm = {
       $and: [
-        { shopId: shopId },
+        { shopId },
         { $or: [
           { emails: {
             $regex: searchTerm,
@@ -131,7 +143,13 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
             $options: "i"
           } }
         ] }
-      ] };
+      ]
+    };
+    // Deletes the shopId field from "findTerm" for primary shop
+    // thereby allowing users on primary shop to search all products
+    if (shopId === Reaction.getPrimaryShopId()) {
+      delete findTerm.$and[0].shopId;
+    }
     accountResults = AccountSearch.find(findTerm, {
       limit: maxResults
     });
