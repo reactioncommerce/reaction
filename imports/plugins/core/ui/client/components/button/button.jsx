@@ -55,7 +55,7 @@ class Button extends Component {
     // keyCode 32 (spacebar)
     // keyCode 13 (enter/return)
     if (event.keyCode === 32 || event.keyCode === 13) {
-      this.handleClick();
+      this.handleClick(event);
     }
   }
 
