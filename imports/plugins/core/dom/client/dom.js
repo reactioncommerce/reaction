@@ -1,5 +1,3 @@
-// import { Tracker } from "meteor/tracker";
-
 /**
  * @file Exposes the DOM object used to manipulate the document.
  *  NOTE: this functions are only meant to be used on the client.
