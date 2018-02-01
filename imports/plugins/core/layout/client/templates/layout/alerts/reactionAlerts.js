@@ -8,6 +8,24 @@ import Alerts from "./inlineAlerts";
 import Alert from "react-s-alert";
 import { getRootNode } from "/imports/plugins/core/router/client/browserRouter.js";
 
+export function getAlertWrapper() {
+  let rootNode = document.getElementById("react-root");
+  let alertWrapperHtml = "<div id='s-alert'></div>";
+  let alertWrapper;
+
+  if (rootNode) {
+    alertWrapper.insertAdjacentHTML("beforebegin", alertWrapperHtml);
+    return alertWrapper;
+  }
+
+  const body = document.getElementsByTagName("body")[0];
+
+  body.insertAdjacentHTML("beforeend", alertWrapperHtml);
+  alertWrapper = document.getElementById("s-alert");
+
+  return alertWrapper;
+}
+
 /**
  * @file ReactionAlerts - Shows a popup alert, extends Bootstrap Alerts and adds more alert types. See Bootstrap Alert documentation: https://getbootstrap.com/docs/3.3/components/#alerts
  *
@@ -15,19 +33,20 @@ import { getRootNode } from "/imports/plugins/core/router/client/browserRouter.j
  * @module ReactionAlerts
  */
 
-Meteor.startup(() => {
-  ReactDOM.render(
+export const initAlertWrapper = () => {
+  ReactDOM.render((
     <Alert
       effect="stackslide"
       position="bottom-left"
-      timeout={5000}
+      timeout={50000}
       html={false}
       onRouteClose={true}
       stack={true}
       offset={0} // in px - will be added to first alert (bottom or top - depends of the position in config)
       beep={false}
-    />, getRootNode());
-});
+    />
+  ), getAlertWrapper());
+};
 
 Object.assign(Alerts, {
 
@@ -99,21 +118,6 @@ Object.assign(Alerts, {
   },
 
   toast(message, type, options) {
-    // let config = {
-    //   effect: "stackslide",
-    //   position: "bottom-left",
-    //   timeout: 5000,
-    //   html: false,
-    //   onRouteClose: true,
-    //   stack: true,
-    //   offset: 0, // in px - will be added to first alert (bottom or top - depends of the position in config)
-    //   beep: false
-    // };
-    // console.log("options", options, "alertsConfig", config);
-    // if (options !== undefined) {
-    //   config = { ...options, ...config };
-    //   console.log("merge", config);
-    // }
     switch (type) {
       case "error":
       case "warning":
