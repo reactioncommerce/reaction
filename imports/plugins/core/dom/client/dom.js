@@ -10,7 +10,7 @@
 const DOM = {};
 
 /*
- * Adds meta tags to the <head> of the document
+ * Sets/adds a meta tag to the document head
  * @param {Object} attributes - key/value pairs for tag attributes
  * @return {undefined} no return value
   */
@@ -26,6 +26,7 @@ DOM.setMetaTag = (attributes) => {
 
   // Otherwise, create a new meta tag element
   const newMetaTag = document.createElement("meta");
+
   newMetaTag.setAttribute("name", attributes.name);
   newMetaTag.setAttribute("content", attributes.content);
   // This attribute will be used to remove meta tags on route changes.
@@ -33,6 +34,23 @@ DOM.setMetaTag = (attributes) => {
 
   // Append to document head
   document.head.appendChild(newMetaTag);
+};
+
+/*
+ * Adds a link tags to the document head
+ * @param {Object} attributes - key/value pairs for tag attributes
+ * @return {undefined} no return value
+  */
+DOM.addLinkTag = (attributes) => {
+  const newLinkTag = document.createElement("link");
+
+  for (const key in attributes) {
+    if ({}.hasOwnProperty.call(attributes, key)) {
+      newLinkTag.setAttribute(key, attributes[key]);
+    }
+  }
+
+  document.head.appendChild(newLinkTag);
 };
 
 /**
