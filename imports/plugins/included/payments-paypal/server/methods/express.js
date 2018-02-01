@@ -231,7 +231,7 @@ export const methods = {
 
     const options = PayPal.expressCheckoutAccountOptions();
     const previousTransaction = _.last(paymentMethod.transactions);
-    const { transactionId, currencycode } = previousTransaction.transactionId;
+    const { transactionId, currencycode } = previousTransaction;
 
     let response;
     try {

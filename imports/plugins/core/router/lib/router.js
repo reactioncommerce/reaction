@@ -313,13 +313,15 @@ Router.reload = () => {
  */
 Router.isActiveClassName = (routeName) => {
   const current = Router.current();
-  const { group } = current.route || {};
-  const defaultPrefix = "";
+  const { group } = current.route;
+  let prefix = "";
 
   if (current.route) {
     const { path } = current.route;
-    const { prefixArg } = group || {};
-    const prefix = prefixArg || defaultPrefix;
+
+    if (group && group.prefix) {
+      ({ prefix } = current.route.group);
+    }
 
     // Match route
     if (prefix.length && routeName.startsWith(prefix) && path === routeName) {
