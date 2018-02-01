@@ -2,12 +2,10 @@
 # Build and tag docker image with SHA1, branch name, git tag, and latest if necessary
 set -e
 
-# Import function GET_TAGS
-source functions.sh
-
 # Setup variables
 DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
 SHA1=$(git rev-parse --verify "${CIRCLE_SHA1}")
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Build and tag docker image
 # Ensure that we build the docker image and tag with the git SHA1 ref.
@@ -18,7 +16,7 @@ docker build \
   -t "${DOCKER_NAMESPACE}:${SHA1}" .
 
 # Get tags and apply them to our Docker image
-GET_TAGS | xargs -t -I % \
+"${__dir}/docker-tags.sh" "${SHA1}" "${CIRCLE_BRANCH}" | xargs -t -I % \
   docker tag "${DOCKER_NAMESPACE}:${SHA1}" "${DOCKER_NAMESPACE}:%"
 
 # run the container and wait for it to boot

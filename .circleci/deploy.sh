@@ -13,12 +13,10 @@
 
 set -e
 
-# Import function GET_TAGS
-source functions.sh
-
 # Setup variables
 DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
 SHA1=$(git rev-parse --verify "${CIRCLE_SHA1}")
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Login to docker
 docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
@@ -29,6 +27,5 @@ docker push "${DOCKER_NAMESPACE}:${SHA1}"
 
 # Push remaining tags (git tags, branch, "latest" if applicable)
 echo "Pushing remaining tags"
-GET_TAGS | xargs -t -I % \
+"${__dir}/docker-tags.sh" "${SHA1}" "${CIRCLE_BRANCH}" | xargs -t -I % \
   docker push "${DOCKER_NAMESPACE}:${SHA1}" "${DOCKER_NAMESPACE}:%"
-
