@@ -8,24 +8,6 @@ import Alerts from "./inlineAlerts";
 import Alert from "react-s-alert";
 import { getRootNode } from "/imports/plugins/core/router/client/browserRouter.js";
 
-export function getAlertWrapper() {
-  let rootNode = document.getElementById("react-root");
-  let alertWrapperHtml = "<div id='s-alert'></div>";
-  let alertWrapper;
-
-  if (rootNode) {
-    alertWrapper.insertAdjacentHTML("beforebegin", alertWrapperHtml);
-    return alertWrapper;
-  }
-
-  const body = document.getElementsByTagName("body")[0];
-
-  body.insertAdjacentHTML("beforeend", alertWrapperHtml);
-  alertWrapper = document.getElementById("s-alert");
-
-  return alertWrapper;
-}
-
 /**
  * @file ReactionAlerts - Shows a popup alert, extends Bootstrap Alerts and adds more alert types. See Bootstrap Alert documentation: https://getbootstrap.com/docs/3.3/components/#alerts
  *
@@ -33,12 +15,20 @@ export function getAlertWrapper() {
  * @module ReactionAlerts
  */
 
-export const initAlertWrapper = () => {
+const getAlertWrapper = () => {
+  getRootNode();
+  const rootNode =  document.getElementById("react-root");
+
+  rootNode.insertAdjacentHTML("beforebegin", "<div id='s-alert-wrapper'></div>");
+  return document.getElementsByTagName("body")[0];
+};
+
+const initAlertWrapper = () => {
   ReactDOM.render((
     <Alert
       effect="stackslide"
       position="bottom-left"
-      timeout={50000}
+      timeout={50000000}
       html={false}
       onRouteClose={true}
       stack={true}
@@ -47,6 +37,10 @@ export const initAlertWrapper = () => {
     />
   ), getAlertWrapper());
 };
+
+Meteor.startup(function () {
+  initAlertWrapper();
+});
 
 Object.assign(Alerts, {
 

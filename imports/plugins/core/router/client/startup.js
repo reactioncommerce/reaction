@@ -6,7 +6,6 @@ import { Shops } from "/lib/collections";
 import { initBrowserRouter } from "./browserRouter";
 import { Reaction } from "/client/api";
 import { Router } from "../lib";
-import { initAlertWrapper } from "/imports/plugins/core/layout/client/templates/layout/alerts/reactionAlerts";
 
 Meteor.startup(function () {
   loadRegisteredComponents();
@@ -39,7 +38,6 @@ Meteor.startup(function () {
       Tracker.nonreactive(() => {
         // Make sure we have shops before we try to make routes for them
         if (Array.isArray(shops) && shops.length)  {
-          initAlertWrapper();
           initBrowserRouter();
         }
       });
@@ -58,7 +56,6 @@ Meteor.startup(function () {
 
     if (Meteor.loggingIn() === false && Router._routes.length > 0) {
       if (Array.isArray(shops) && shops.length)  {
-        initAlertWrapper();
         initBrowserRouter();
       }
     }
