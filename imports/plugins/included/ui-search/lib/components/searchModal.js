@@ -21,6 +21,8 @@ class SearchModal extends Component {
   }
 
   isKeyboardAction(event) {
+    // keyCode 32 (spacebar)
+    // keyCode 13 (enter/return)
     return event.keyCode === 13 || event.keyCode === 32;
   }
 
