@@ -341,6 +341,9 @@ Meteor.methods({
     // Initially because in a multi-merchant scenario, the order from the client
     // will contain only the items associated with their shop
     // We'll get the order from the db that has all the items
+
+    // TODO: Resolve potential concurrency issue where any writes to the order items
+    // between this read and the Orders.update write below would be lost.
     const dbOrder = Orders.findOne({ _id: order._id });
     const items = dbOrder.items.map((item) => {
       // Don't modify items unless they in our itemIds array
