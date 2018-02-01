@@ -110,7 +110,7 @@ class ProductField extends Component {
     return (
       <div className={baseClassName}>
         <Components.TextField
-          ref={(ref) => { this._input = ref;}}
+          ref={(ref) => { this._input = ref; }}
           className={textFieldClassName}
           multiline={this.props.multiline}
           onBlur={this.handleBlur}

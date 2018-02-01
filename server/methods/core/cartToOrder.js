@@ -128,7 +128,7 @@ export function copyCartToOrder(cartId) {
   if (!order.billing[0].currency) {
     order.billing[0].currency = {
       // userCurrency is shopCurrency unless user has selected a different currency than the shop
-      userCurrency: userCurrency
+      userCurrency
     };
   }
 

@@ -15,6 +15,4 @@ registerComponent("App", App, [
   composeWithTracker(composer)
 ]);
 
-export default compose(
-  composeWithTracker(composer),
-)(App);
+export default compose(composeWithTracker(composer))(App);

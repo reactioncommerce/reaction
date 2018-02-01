@@ -3,7 +3,7 @@ import { Reaction } from "/server/api";
 import { Shops } from "/lib/collections";
 
 // We should be able to publish just the enabled languages/currencies/
-Meteor.publish("PrimaryShop", function () {
+Meteor.publish("PrimaryShop", () => {
   return Shops.find({
     shopType: "primary"
   }, {

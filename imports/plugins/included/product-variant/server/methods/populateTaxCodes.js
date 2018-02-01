@@ -20,7 +20,7 @@ taxCodes.populateTaxCodes = function (shopId, code, providerName) {
   try {
     TaxCodes.insert({
       id: code.id,
-      shopId: shopId,
+      shopId,
       taxCode: code.taxCode || code.id,
       taxCodeProvider: providerName,
       ssuta: code.isSSTCertified,

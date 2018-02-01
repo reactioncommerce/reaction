@@ -53,7 +53,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
         <div className="order-details-content-title">
           <p><Components.Translation defaultValue="Your Items" i18nKey={"cartCompleted.yourItems"} /></p>
         </div>
-        {shops.map(function (shop) {
+        {shops.map((shop) => {
           const shopKey = Object.keys(shop);
           return (
             <CompletedShopOrders
@@ -95,7 +95,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
             <div className="order-details-content-title">
               <p><Components.Translation defaultValue="Payment Method" i18nKey={"cartCompleted.paymentMethod"} /></p>
             </div>
-            {paymentMethods.map(function (paymentMethod) {
+            {paymentMethods.map((paymentMethod) => {
               return <CompletedOrderPaymentMethod key={paymentMethod.key} paymentMethod={paymentMethod} />;
             })}
           </div>

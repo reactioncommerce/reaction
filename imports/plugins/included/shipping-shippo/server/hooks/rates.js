@@ -59,7 +59,7 @@ function getShippingRates(previousQueryResults, cart) {
   const shippingCollection = Shipping.find(selector);
   const shippoDocs = {};
   if (shippingCollection) {
-    shippingCollection.forEach(function (doc) {
+    shippingCollection.forEach((doc) => {
       // If provider is from Shippo, put it in an object to get rates dynamically(shippoApi) for all of them after.
       if (doc.provider.shippoProvider) {
         shippoDocs[doc.provider.shippoProvider.carrierAccountId] = doc;

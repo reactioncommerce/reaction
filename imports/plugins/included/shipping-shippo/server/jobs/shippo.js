@@ -22,33 +22,35 @@ function getOwnerUserId() {
   return false;
 }
 
-Hooks.Events.add("afterCoreInit", () => {
-  const config = getJobConfig();
-  const { refreshPeriod } = config;
+export function setupShippoTrackingStatusHook() {
+  Hooks.Events.add("afterCoreInit", () => {
+    const config = getJobConfig();
+    const { refreshPeriod } = config;
 
-  if (!config.shippo.enabled || !refreshPeriod) {
-    return;
-  }
-  // there might be some validity to this being Logger.info.
-  Logger.debug(`Adding shippo/fetchTrackingStatusForOrders to JobControl. Refresh ${refreshPeriod}`);
-  new Job(Jobs, "shippo/fetchTrackingStatusForOrdersJob", {})
-    .priority("normal")
-    .retry({
-      retries: 5,
-      wait: 60000,
-      backoff: "exponential" // delay by twice as long for each subsequent retry
-    })
-    .repeat({
-      schedule: Jobs.later.parse.text(refreshPeriod)
-    })
-    .save({
-      // Cancel any jobs of the same type,
-      // but only if this job repeats forever.
-      cancelRepeats: true
-    });
-});
+    if (!config.shippo.enabled || !refreshPeriod) {
+      return;
+    }
+    // there might be some validity to this being Logger.info.
+    Logger.debug(`Adding shippo/fetchTrackingStatusForOrders to JobControl. Refresh ${refreshPeriod}`);
+    new Job(Jobs, "shippo/fetchTrackingStatusForOrdersJob", {})
+      .priority("normal")
+      .retry({
+        retries: 5,
+        wait: 60000,
+        backoff: "exponential" // delay by twice as long for each subsequent retry
+      })
+      .repeat({
+        schedule: Jobs.later.parse.text(refreshPeriod)
+      })
+      .save({
+        // Cancel any jobs of the same type,
+        // but only if this job repeats forever.
+        cancelRepeats: true
+      });
+  });
+}
 
-export default function () {
+export function fetchTrackingStatusForOrdersJob() {
   const ownerId = getOwnerUserId();
   if (ownerId) {
     Jobs.processJobs(

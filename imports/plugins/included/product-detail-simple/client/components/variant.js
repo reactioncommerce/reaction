@@ -185,11 +185,7 @@ class Variant extends Component {
     );
 
     if (this.props.editable) {
-      return this.props.connectDragSource(
-        this.props.connectDropTarget(
-          variantElement
-        )
-      );
+      return this.props.connectDragSource(this.props.connectDropTarget(variantElement));
     }
 
     return variantElement;

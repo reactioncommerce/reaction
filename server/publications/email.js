@@ -15,7 +15,7 @@ Meteor.publish("Emails", function (query, options) {
   check(query, Match.Optional(Object));
   check(options, Match.Optional(Object));
 
-  if (Reaction.hasPermission(["owner", "admin", "dashboard"], this.userId)) {
+  if (Reaction.hasPermission(["owner", "admin", "reaction-email"], this.userId)) {
     Counts.publish(this, "emails-count", Jobs.find({ type: "sendEmail" }));
     return Jobs.find({ type: "sendEmail" });
   }

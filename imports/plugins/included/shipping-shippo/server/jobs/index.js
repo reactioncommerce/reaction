@@ -1,5 +1,5 @@
-import "./shippo";
-import fetchTrackingStatusForOrdersJob from "./shippo";
+import { fetchTrackingStatusForOrdersJob, setupShippoTrackingStatusHook } from "./shippo";
 
+setupShippoTrackingStatusHook();
 // start "shippo/fetchTrackingStatusForOrdersJob"
 fetchTrackingStatusForOrdersJob();

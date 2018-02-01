@@ -1,10 +1,5 @@
 import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
-/*
- * Template connector Helpers
- */
-Template.connectorSettings.onCreated(function () {
-});
 
 Template.connectorSettings.helpers({
   checked(enabled) {

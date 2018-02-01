@@ -29,8 +29,7 @@ function getShippingRates(previousQueryResults, cart) {
   if (retrialTargets.length > 0) {
     const isNotAmongFailedRequests = retrialTargets.every((target) =>
       target.packageName !== currentMethodInfo.packageName &&
-      target.fileName !== currentMethodInfo.fileName
-    );
+      target.fileName !== currentMethodInfo.fileName);
     if (isNotAmongFailedRequests) {
       return previousQueryResults;
     }
@@ -120,7 +119,7 @@ function getShippingRates(previousQueryResults, cart) {
 
   const shippingCollection = Shipping.find(selector);
   const initialNumOfRates = rates.length;
-  shippingCollection.forEach(function (doc) {
+  shippingCollection.forEach((doc) => {
     const _results = [];
     for (const method of doc.methods) {
       if (!method.enabled) {
@@ -138,14 +137,12 @@ function getShippingRates(previousQueryResults, cart) {
         method.carrier = doc.provider.label;
       }
       const rate = method.rate + method.handling;
-      _results.push(
-        rates.push({
-          carrier: doc.provider.label,
-          method: method,
-          rate: rate,
-          shopId: doc.shopId
-        })
-      );
+      _results.push(rates.push({
+        carrier: doc.provider.label,
+        method,
+        rate,
+        shopId: doc.shopId
+      }));
     }
     return _results;
   });

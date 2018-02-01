@@ -146,8 +146,7 @@ export function orderQuantityAdjust(orderId, refundedItem) {
         items: { $elemMatch: { _id: itemId } }
       }, { $set:
         { "items.$.quantity": newQuantity }
-      }
-      );
+      });
     }
   });
 }
@@ -162,7 +161,7 @@ export const methods = {
    * @param {Object} shipment - shipment object
    * @return {Object} return workflow result
    */
-  "orders/shipmentPicked": function (order, shipment) {
+  "orders/shipmentPicked"(order, shipment) {
     check(order, Object);
     check(shipment, Object);
 
@@ -200,7 +199,7 @@ export const methods = {
    * @param {Object} shipment - shipment object
    * @return {Object} return workflow result
    */
-  "orders/shipmentPacked": function (order, shipment) {
+  "orders/shipmentPacked"(order, shipment) {
     check(order, Object);
     check(shipment, Object);
 
@@ -240,7 +239,7 @@ export const methods = {
    * @param {Object} shipment - shipment object
    * @return {Object} return workflow result
    */
-  "orders/shipmentLabeled": function (order, shipment) {
+  "orders/shipmentLabeled"(order, shipment) {
     check(order, Object);
     check(shipment, Object);
 
@@ -277,7 +276,7 @@ export const methods = {
    * @param {Object} order - order object
    * @return {Object} Mongo update
    */
-  "orders/makeAdjustmentsToInvoice": function (order) {
+  "orders/makeAdjustmentsToInvoice"(order) {
     check(order, Object);
 
     if (!Reaction.hasPermission("orders")) {
@@ -305,7 +304,7 @@ export const methods = {
    * @param {Object} order - order object
    * @return {Object} return this.processPayment result
    */
-  "orders/approvePayment": function (order) {
+  "orders/approvePayment"(order) {
     check(order, Object);
     const { invoice } = orderCreditMethod(order);
 
@@ -353,7 +352,7 @@ export const methods = {
    * @param {Boolean} returnToStock - condition to return product to stock
    * @return {Object} ret
    */
-  "orders/cancelOrder": function (order, returnToStock) {
+  "orders/cancelOrder"(order, returnToStock) {
     check(order, Object);
     check(returnToStock, Boolean);
 
@@ -440,7 +439,7 @@ export const methods = {
    * @param {Object} order - order object
    * @return {Object} return this.processPayment result
    */
-  "orders/processPayment": function (order) {
+  "orders/processPayment"(order) {
     check(order, Object);
 
     // REVIEW: Who should have access to process payment in marketplace?
@@ -478,7 +477,7 @@ export const methods = {
    * @param {Object} shipment - shipment object
    * @return {Object} return results of several operations
    */
-  "orders/shipmentShipped": function (order, shipment) {
+  "orders/shipmentShipped"(order, shipment) {
     check(order, Object);
     check(shipment, Object);
 
@@ -532,7 +531,7 @@ export const methods = {
     });
 
     return {
-      workflowResult: workflowResult,
+      workflowResult,
       completedItems: completedItemsResult,
       completedOrder: completedOrderResult
     };
@@ -546,7 +545,7 @@ export const methods = {
    * @param {Object} order - order object
    * @return {Object} return workflow result
    */
-  "orders/shipmentDelivered": function (order) {
+  "orders/shipmentDelivered"(order) {
     check(order, Object);
 
     // REVIEW: this should be callable from the server via callback from Shippo or other webhook
@@ -610,7 +609,7 @@ export const methods = {
    * @param {Object} action - send notification action
    * @return {Boolean} email sent or not
    */
-  "orders/sendNotification": function (order, action) {
+  "orders/sendNotification"(order, action) {
     check(order, Object);
     check(action, Match.OneOf(String, undefined));
 
@@ -699,9 +698,7 @@ export const methods = {
           // Otherwise push the unique item into the combinedItems array
 
           // Add displayPrice to match user currency settings
-          orderItem.variants.displayPrice = accounting.formatMoney(
-            orderItem.variants.price * userCurrencyExchangeRate, userCurrencyFormatting
-          );
+          orderItem.variants.displayPrice = accounting.formatMoney(orderItem.variants.price * userCurrencyExchangeRate, userCurrencyFormatting);
 
           combinedItems.push(orderItem);
 
@@ -727,10 +724,10 @@ export const methods = {
       // Merge data into single object to pass to email template
       const dataForEmail = {
         // Shop Data
-        shop: shop,
+        shop,
         contactEmail: shop.emails[0].address,
         homepage: Meteor.absoluteUrl(),
-        emailLogo: emailLogo,
+        emailLogo,
         copyrightDate: moment().format("YYYY"),
         legalName: _.get(shop, "addressBook[0].company"),
         physicalAddress: {
@@ -759,7 +756,7 @@ export const methods = {
           }
         },
         // Order Data
-        order: order,
+        order,
         billing: {
           address: {
             address: address.address1,
@@ -768,34 +765,20 @@ export const methods = {
             postal: address.postal
           },
           paymentMethod: paymentMethod.storedCard || paymentMethod.processor,
-          subtotal: accounting.formatMoney(
-            subtotal * userCurrencyExchangeRate, userCurrencyFormatting
-          ),
-          shipping: accounting.formatMoney(
-            shippingCost * userCurrencyExchangeRate, userCurrencyFormatting
-          ),
-          taxes: accounting.formatMoney(
-            taxes * userCurrencyExchangeRate, userCurrencyFormatting
-          ),
-          discounts: accounting.formatMoney(
-            discounts * userCurrencyExchangeRate, userCurrencyFormatting
-          ),
-          refunds: accounting.formatMoney(
-            refundTotal * userCurrencyExchangeRate, userCurrencyFormatting
-          ),
-          total: accounting.formatMoney(
-            (subtotal + shippingCost + taxes - discounts) * userCurrencyExchangeRate, userCurrencyFormatting
-          ),
-          adjustedTotal: accounting.formatMoney(
-            (amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting
-          )
+          subtotal: accounting.formatMoney(subtotal * userCurrencyExchangeRate, userCurrencyFormatting),
+          shipping: accounting.formatMoney(shippingCost * userCurrencyExchangeRate, userCurrencyFormatting),
+          taxes: accounting.formatMoney(taxes * userCurrencyExchangeRate, userCurrencyFormatting),
+          discounts: accounting.formatMoney(discounts * userCurrencyExchangeRate, userCurrencyFormatting),
+          refunds: accounting.formatMoney(refundTotal * userCurrencyExchangeRate, userCurrencyFormatting),
+          total: accounting.formatMoney((subtotal + shippingCost + taxes - discounts) * userCurrencyExchangeRate, userCurrencyFormatting),
+          adjustedTotal: accounting.formatMoney((amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting)
         },
-        combinedItems: combinedItems,
+        combinedItems,
         orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
         orderUrl: `cart/completed?_id=${order.cartId}`,
         shipping: {
-          tracking: tracking,
-          carrier: carrier,
+          tracking,
+          carrier,
           address: {
             address: shippingAddress.address1,
             city: shippingAddress.city,
@@ -865,7 +848,7 @@ export const methods = {
    * @param {String} tracking - tracking id
    * @return {String} returns order update result
    */
-  "orders/updateShipmentTracking": function (order, shipment, tracking) {
+  "orders/updateShipmentTracking"(order, shipment, tracking) {
     check(order, Object);
     check(shipment, Object);
     check(tracking, String);
@@ -894,7 +877,7 @@ export const methods = {
    * @param {String} email - valid email address
    * @return {String} returns order update result
    */
-  "orders/addOrderEmail": function (cartId, email) {
+  "orders/addOrderEmail"(cartId, email) {
     check(cartId, String);
     check(email, String);
     /**
@@ -920,7 +903,7 @@ export const methods = {
    * @param {String} value - event value
    * @return {String} returns order update result
    */
-  "orders/updateHistory": function (orderId, event, value) {
+  "orders/updateHistory"(orderId, event, value) {
     check(orderId, String);
     check(event, String);
     check(value, Match.Optional(String));
@@ -934,8 +917,8 @@ export const methods = {
     return Orders.update(orderId, {
       $addToSet: {
         history: {
-          event: event,
-          value: value,
+          event,
+          value,
           userId: Meteor.userId(),
           updatedAt: new Date()
         }
@@ -1040,7 +1023,7 @@ export const methods = {
    * @param {Object} order - order object
    * @return {Array} Array contains refund records
    */
-  "orders/refunds/list": function (order) {
+  "orders/refunds/list"(order) {
     check(order, Object);
 
     if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
@@ -1068,7 +1051,7 @@ export const methods = {
    * @param {Bool} sendEmail - Send email confirmation
    * @return {null} no return value
    */
-  "orders/refunds/create": function (orderId, paymentMethod, amount, sendEmail = true) {
+  "orders/refunds/create"(orderId, paymentMethod, amount, sendEmail = true) {
     check(orderId, String);
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
@@ -1150,7 +1133,7 @@ export const methods = {
    * @param {Object} refundItemsInfo - info about refund items
    * @return {Object} refund boolean and result/error value
    */
-  "orders/refunds/refundItems": function (orderId, paymentMethod, refundItemsInfo) {
+  "orders/refunds/refundItems"(orderId, paymentMethod, refundItemsInfo) {
     check(orderId, String);
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(refundItemsInfo, Object);
@@ -1174,7 +1157,7 @@ export const methods = {
         Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, error);
         fut.return({
           refund: false,
-          error: error
+          error
         });
       }
       if (result) {
@@ -1202,7 +1185,7 @@ export const methods = {
 
         fut.return({
           refund: true,
-          result: result
+          result
         });
       }
     });

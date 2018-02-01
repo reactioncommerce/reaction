@@ -8,7 +8,7 @@ import { Orders } from "/lib/collections";
  */
 
 Template.orderPage.helpers({
-  getNote: function () {
+  getNote() {
     let latestNote;
     if (this.notes) {
       latestNote = this.notes.length - 1;
@@ -23,12 +23,12 @@ Template.orderPage.helpers({
  */
 
 Template.orderPage.events({
-  "click .save-label-pdf": function () {},
-  "click .btn-add-note": function (event, template) {
+  "click .save-label-pdf"() {},
+  "click .btn-add-note"(event, template) {
     const date = new Date();
     const content = template.find("textarea[name=note]").value;
     const note = {
-      content: content,
+      content,
       userId: Meteor.userId(),
       updatedAt: date
     };

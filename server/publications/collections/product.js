@@ -103,7 +103,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     isVisible: true,
     isDeleted: { $in: [null, false] },
     $or: [
-      { _id: _id },
+      { _id },
       { ancestors: _id }
     ]
   };
