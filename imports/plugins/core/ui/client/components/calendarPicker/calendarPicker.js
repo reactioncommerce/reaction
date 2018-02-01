@@ -1,28 +1,11 @@
-// eslint-disable react/no-multi-comp to allow Loadable to dynamically load DayPickerRangeController
-/* eslint-disable react/no-multi-comp */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import "react-dates/initialize";
-import Loadable from "react-loadable";
 import omit from "lodash/omit";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-
-const DayPickerRangeController = Loadable({
-  loader: () => import("react-dates"),
-  loading() {
-    return (
-      <Components.Loading />
-    );
-  },
-  render(loaded, props) {
-    const DayPicker = loaded.DayPickerRangeController;
-    return <DayPicker {...props}/>;
-  }
-});
+import { registerComponent } from "@reactioncommerce/reaction-components";
+import DayPickerRangeController from "./dynamicCalendarPicker";
 
 // CalendarPicker is a wrapper around react-dates DayPickerRangeController. Anything that works in react-dates should
 // work in CalendarPicker react-dates docs are available at: https://github.com/airbnb/react-dates
-
 class CalendarPicker extends Component {
   constructor(props) {
     super(props);
