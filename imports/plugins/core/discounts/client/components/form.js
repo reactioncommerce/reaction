@@ -143,7 +143,7 @@ export default class DiscountForm extends Component {
         }}
         tagName="span"
         label="Have a code? Enter it here."
-        i18nKeyLabel="discounts.enterItHer"
+        i18nKeyLabel="discounts.enterItHere"
         onClick={this.handleClick}
       />
     );
