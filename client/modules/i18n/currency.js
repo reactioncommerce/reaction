@@ -91,12 +91,16 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
       }
       prices[i] *= userCurrency.rate;
 
-      price = _formatPrice(price, originalPrice, prices[i],
-        currentPrice, userCurrency, i, len);
+      price = _formatPrice(
+        price, originalPrice, prices[i],
+        currentPrice, userCurrency, i, len
+      );
     } catch (error) {
       Logger.debug("currency error, fallback to shop currency");
-      price = _formatPrice(price, originalPrice, prices[i],
-        currentPrice, locale.shopCurrency, i, len);
+      price = _formatPrice(
+        price, originalPrice, prices[i],
+        currentPrice, locale.shopCurrency, i, len
+      );
     }
   }
   return price;
@@ -141,8 +145,10 @@ export function formatNumber(currentPrice) {
  * @param  {Number} len           length
  * @return {Number}               formatted price
  */
-function _formatPrice(price, originalPrice, actualPrice, currentPrice, currency,
-  pos, len) {
+function _formatPrice(
+  price, originalPrice, actualPrice, currentPrice, currency,
+  pos, len
+) {
   // this checking for locale.shopCurrency mostly
   if (typeof currency !== "object") {
     return false;

@@ -59,7 +59,7 @@ const wrapComponent = (Comp) => (
         this.setState({
           isDisabled: false,
           formMessages: {
-            errors: errors
+            errors
           }
         });
         return;

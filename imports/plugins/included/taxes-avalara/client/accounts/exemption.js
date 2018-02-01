@@ -49,7 +49,7 @@ Template.taxSettingsPanel.helpers({
 });
 
 Template.taxSettingsPanel.events({
-  "change [data-event-action=customType]": function (event) {
+  "change [data-event-action=customType]"(event) {
     event.stopPropagation();
     const formId = $(event.currentTarget.closest("form")).attr("id");
 
@@ -66,7 +66,7 @@ Template.taxSettingsPanel.events({
   }
 });
 
-Template.taxSettingsPanel.onCreated(function () {
+Template.taxSettingsPanel.onCreated(() => {
   const avalaraPackage = Packages.findOne({
     name: "taxes-avalara",
     shopId: Reaction.getShopId()
@@ -77,9 +77,7 @@ Template.taxSettingsPanel.onCreated(function () {
   if (isAvalaraEnabled && !currentCodes.length) {
     Meteor.call("avalara/getEntityCodes", (error, entityCodes) => {
       if (error) {
-        return Alerts.toast(
-          `${i18next.t("settings.apiError")} ${error.message}`, "error"
-        );
+        return Alerts.toast(`${i18next.t("settings.apiError")} ${error.message}`, "error");
       }
       (entityCodes || []).forEach((entityCode) => TaxEntityCodes.insert(entityCode));
     });
@@ -88,7 +86,7 @@ Template.taxSettingsPanel.onCreated(function () {
 
 AutoForm.addHooks(null, {
   before: {
-    update: function (doc) {
+    update(doc) {
       const oldType = _.get(Template.instance(), "data.doc.taxSettings.customerUsageType");
       if (isCustomValue()) {
         const value = $(".customerUsageType input").val();

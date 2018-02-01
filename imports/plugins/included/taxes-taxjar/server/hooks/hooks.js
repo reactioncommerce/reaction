@@ -2,7 +2,7 @@ import { Reaction, Logger, MethodHooks } from "/server/api";
 import { Packages } from "/lib/collections";
 
 // // Meteor.after to call after
-MethodHooks.after("taxes/calculate", function (options) {
+MethodHooks.after("taxes/calculate", (options) => {
   const result = options.result || {};
   const pkg = Packages.findOne({
     name: "taxes-taxjar",

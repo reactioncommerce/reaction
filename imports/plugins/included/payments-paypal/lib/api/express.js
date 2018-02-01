@@ -17,11 +17,11 @@ function getSettings(settings, ref, valueName) {
 // to provide normalized PayPal tooling
 
 export const Express = {
-  expressCheckoutAccountOptions: function () {
+  expressCheckoutAccountOptions() {
     const shopId = Reaction.getShopId();
     const settings = Packages.findOne({
       name: "reaction-paypal",
-      shopId: shopId,
+      shopId,
       enabled: true
     }).settings;
     let mode;
@@ -35,7 +35,7 @@ export const Express = {
 
     const options = {
       enabled: settings !== null ? settings.express.enabled : void 0,
-      mode: mode,
+      mode,
       username: getSettings(settings, ref, "username"),
       password: getSettings(settings, ref, "password"),
       signature: getSettings(settings, ref, "signature"),
@@ -50,7 +50,7 @@ export const Express = {
     }
     return options;
   },
-  config: function (options) {
+  config(options) {
     this.accountOptions = options;
   }
 };

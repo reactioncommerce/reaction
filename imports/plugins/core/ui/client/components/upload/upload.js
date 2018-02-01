@@ -4,6 +4,7 @@
 
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
+
 function uploadHandler(event, instance) {
   const files = [];
 
@@ -33,7 +34,7 @@ Template.upload.helpers({
 });
 
 Template.upload.events({
-  "click #btn-upload": function () {
+  "click #btn-upload"() {
     return $("#files").click();
   },
   "change input[name=files]": uploadHandler,
