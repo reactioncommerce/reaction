@@ -337,7 +337,17 @@ Meteor.methods({
     check(order, Object);
     check(itemIds, Array);
 
-    const items = order.items.map((item) => {
+    // We can't trust the order from the client (for several reasons)
+    // Initially because in a multi-merchant scenario, the order from the client
+    // will contain only the items associated with their shop
+    // We'll get the order from the db that has all the items
+    const dbOrder = Orders.findOne({ _id: order._id });
+    const items = dbOrder.items.map((item) => {
+      // Don't modify items unless they in our itemIds array
+      if (!itemIds.includes(item._id)) {
+        return item;
+      }
+
       // Add the current status to completed workflows
       if (item.workflow.status !== "new") {
         const workflows = item.workflow.workflow || [];
@@ -351,22 +361,13 @@ Meteor.methods({
       return item;
     });
 
-    let result;
-
-    for (const id of itemIds) {
-      const modifiedItem = items.find(item => item._id === id);
-      const { status, workflow } = modifiedItem.workflow;
-
-      result = Orders.update({
-        "_id": order._id,
-        "items._id": id
-      }, {
-        $set: {
-          "items.$.workflow.status": status,
-          "items.$.workflow.workflow": workflow
-        }
-      });
-    }
+    const result = Orders.update({
+      _id: dbOrder._id
+    }, {
+      $set: {
+        items
+      }
+    });
 
     return result;
   }
