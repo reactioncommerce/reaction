@@ -43,15 +43,15 @@ export function withCurrentUser(component) {
 export function withMoment(component) {
   return lifecycle({
     componentDidMount() {
-      try {
-        import("moment").then(moment => {
+      import("moment")
+        .then(moment => {
           this.setState({
             moment: moment.default
           });
+        })
+        .catch((error) => {
+          Logger.debug(error, "moment.js async import error");
         });
-      } catch (error) {
-        Logger.debug(error, "moment.js async import error");
-      }
     }
   })(component);
 }
@@ -68,15 +68,15 @@ export function withMoment(component) {
 export function withMomentTimezone(component) {
   return lifecycle({
     componentDidMount() {
-      try {
-        import("moment-timezone").then(moment => {
+      import("moment-timezone")
+        .then(moment => {
           this.setState({
             momentTimezone: moment.tz
           });
+        })
+        .catch((error) => {
+          Logger.debug(error, "moment.js async import error");
         });
-      } catch (error) {
-        Logger.debug(error, "moment-timezone.js async import error");
-      }
     }
   })(component);
 }
