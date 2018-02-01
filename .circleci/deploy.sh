@@ -28,4 +28,4 @@ docker push "${DOCKER_NAMESPACE}:${SHA1}"
 # Push remaining tags (git tags, branch, "latest" if applicable)
 echo "Pushing remaining tags"
 "${__dir}/docker-tags.sh" "${SHA1}" "${CIRCLE_BRANCH}" | xargs -t -I % \
-  docker push "${DOCKER_NAMESPACE}:${SHA1}" "${DOCKER_NAMESPACE}:%"
+  docker push "${DOCKER_NAMESPACE}:%"
