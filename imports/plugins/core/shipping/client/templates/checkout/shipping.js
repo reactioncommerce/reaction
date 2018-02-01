@@ -133,7 +133,7 @@ Template.coreCheckoutShipping.onCreated(function () {
 Template.coreCheckoutShipping.helpers({
   // retrieves current rates and updates shipping rates
   // in the users cart collection (historical, and prevents repeated rate lookup)
-  shipmentQuotes: function () {
+  shipmentQuotes() {
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
       const cart = Cart.findOne();
@@ -173,7 +173,7 @@ Template.coreCheckoutShipping.helpers({
   },
 
   // helper to display currently selected shipmentMethod
-  isSelected: function () {
+  isSelected() {
     const self = this;
     const shipmentMethods = cartShipmentMethods();
 
@@ -221,7 +221,7 @@ Template.coreCheckoutShipping.helpers({
 // to shipmentMethod (selected rate)
 //
 Template.coreCheckoutShipping.events({
-  "click .list-group-item": function (event) {
+  "click .list-group-item"(event) {
     event.preventDefault();
     event.stopPropagation();
     const self = this;
@@ -230,8 +230,7 @@ Template.coreCheckoutShipping.events({
     try {
       Meteor.call("cart/setShipmentMethod", cart._id, self.method);
     } catch (error) {
-      throw new Meteor.Error(error,
-        "Cannot change methods while processing.");
+      throw new Meteor.Error(error, "Cannot change methods while processing.");
     }
   },
   "click [data-event-action=configure-shipping]"(event) {

@@ -82,7 +82,7 @@ Meteor.publish("Orders", function () {
     ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
   } else {
     return Orders.find({
-      shopId: shopId,
+      shopId,
       userId: this.userId
     });
   }
@@ -114,7 +114,7 @@ Meteor.publish("PaginatedOrders", function (limit) {
     ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
   } else {
     return Orders.find({
-      shopId: shopId,
+      shopId,
       userId: this.userId
     });
   }
@@ -143,7 +143,7 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
     ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
   } else {
     return Orders.find({
-      shopId: shopId,
+      shopId,
       userId: this.userId
     });
   }
@@ -165,7 +165,7 @@ Meteor.publish("AccountOrders", function (userId, currentShopId) {
   }
   return Orders.find({
     userId,
-    shopId: shopId
+    shopId
   });
 });
 
@@ -183,7 +183,7 @@ Meteor.publish("CompletedCartOrder", function (userId, cartId) {
   }
 
   return Orders.find({
-    cartId: cartId,
-    userId: userId
+    cartId,
+    userId
   });
 });

@@ -73,7 +73,7 @@ function composer(props, onData) {
 
   if (subscription.ready()) {
     onData(null, {
-      preferences: preferences,
+      preferences,
       packageData: socialPackage,
       socialSettings: createSocialSettings(props)
     });

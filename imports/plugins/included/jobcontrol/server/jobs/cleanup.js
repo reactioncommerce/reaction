@@ -4,25 +4,26 @@ import { Job } from "meteor/vsivsi:job-collection";
 import { Jobs } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 
-Hooks.Events.add("onJobServerStart", () => {
-  Logger.debug("Adding Job jobControl/removeStaleJobs to JobControl");
+export function addCleanupJobControlHook() {
+  Hooks.Events.add("onJobServerStart", () => {
+    Logger.debug("Adding Job jobControl/removeStaleJobs to JobControl");
 
-  new Job(Jobs, "jobControl/removeStaleJobs", {})
-    .retry({
-      retries: 5,
-      wait: 60000,
-      backoff: "exponential"
-    })
-    .repeat({
-      schedule: later.parse.text("every day")
-    })
-    .save({
-      cancelRepeats: true
-    });
-});
+    new Job(Jobs, "jobControl/removeStaleJobs", {})
+      .retry({
+        retries: 5,
+        wait: 60000,
+        backoff: "exponential"
+      })
+      .repeat({
+        schedule: later.parse.text("every day")
+      })
+      .save({
+        cancelRepeats: true
+      });
+  });
+}
 
-
-export default function () {
+export function cleanupJob() {
   const removeStaleJobs = Jobs.processJobs("jobControl/removeStaleJobs", {
     pollInterval: 60 * 60 * 1000, // backup polling, see observer below
     workTimeout: 60 * 1000

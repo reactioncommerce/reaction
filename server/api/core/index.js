@@ -18,7 +18,8 @@ import * as Schemas from "/lib/collections/schemas";
 
 // Reaction methods (server)
 
-const Reaction = Object.assign({},
+const Reaction = Object.assign(
+  {},
   Core,
   { Accounts },
   AddDefaultRoles,
