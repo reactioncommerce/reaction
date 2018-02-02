@@ -15,8 +15,8 @@
 
 import { eventEmitter } from "events";
 import { Meteor } from "meteor/meteor";
-import JobCollectionBase from "../lib/JobCollectionBase";
-import { Job } from "../lib/job";
+import JobCollectionBase from "./jobCollectionBase";
+import { Job } from "./job";
 
 function userHelper(user, connection) {
   let ret = user !== null ? user : "[UNAUTHENTICATED]";
@@ -28,6 +28,9 @@ function userHelper(user, connection) {
 
 class JobCollection extends JobCollectionBase {
   constructor(root = "queue", options = {}) {
+    // Call super"s constructor
+    super(root, options);
+
     this._onError = this._onError.bind(this);
     this._onCall = this._onCall.bind(this);
     this._toLog = this._toLog.bind(this);
@@ -36,9 +39,6 @@ class JobCollection extends JobCollectionBase {
     if (!(this instanceof JobCollection)) {
       return new JobCollection(root, options);
     }
-
-    // Call super"s constructor
-    super(root, options);
 
     this.events = new eventEmitter();
 
