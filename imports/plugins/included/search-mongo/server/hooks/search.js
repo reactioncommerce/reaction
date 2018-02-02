@@ -3,9 +3,9 @@ import { Meteor } from "meteor/meteor";
 import { Products, ProductSearch, Orders, OrderSearch, Accounts, AccountSearch } from "/lib/collections";
 import { getSearchParameters,
   buildProductSearchRecord, buildOrderSearchRecord, buildAccountSearchRecord } from "../methods/searchcollections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 
-Accounts.after.insert((userId, doc) => {
+Hooks.Events.add("afterAccountsInsert", (userId, doc) => {
   if (AccountSearch && !Meteor.isAppTest) {
     buildAccountSearchRecord(doc._id);
   }

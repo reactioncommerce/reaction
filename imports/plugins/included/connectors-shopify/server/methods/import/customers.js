@@ -3,7 +3,7 @@ import Shopify from "shopify-api-node";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { check, Match } from "meteor/check";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 import { Accounts } from "/lib/collections";
 import { getApiInfo } from "../api/api";
 import { connectorsRoles } from "../../lib/roles";
@@ -166,6 +166,7 @@ export const methods = {
 
             // Insert customer, save id
             const reactionCustomerId = Accounts.insert(reactionCustomer, { publish: true });
+            Hooks.Events.run("afterAccountsInsert", reactionCustomerId, reactionCustomer);
             ids.push(reactionCustomerId);
 
             Accounts.update({ _id: reactionCustomerId }, { publish: true });
