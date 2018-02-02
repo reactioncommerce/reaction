@@ -96,14 +96,14 @@ class Badge extends Component {
       "badge": true,
       "badge-small": (badgeSize === null || badgeSize === undefined || badgeSize === "small"),
       "badge-large": badgeSize === "large",
-      "badge-basic": status ===  "basic",
+      "badge-basic": status === "basic",
       "badge-cta": status === "cta",
       "badge-danger": status === "danger",
       "badge-default": (status === null || status === undefined || status === "default"),
       "badge-info": status === "info",
       "badge-primary": status === "primary",
       "badge-success": status === "success",
-      "badge-warning": status ===  "warning",
+      "badge-warning": status === "warning",
       "badge-indicator": indicator
     }, className);
 

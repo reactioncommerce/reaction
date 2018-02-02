@@ -31,9 +31,7 @@ export default function () {
 
     if (loginEmail && loginEmail === adminEmail) {
       // filter out the matching login email from any existing emails
-      const userEmail = _.filter(attempt.user.emails, (email) => {
-        return email.address === loginEmail;
-      });
+      const userEmail = _.filter(attempt.user.emails, (email) => email.address === loginEmail);
 
       // check if the email is verified
       if (!userEmail.length || !userEmail[0].verified) {

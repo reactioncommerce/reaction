@@ -96,7 +96,7 @@ describe("core product methods", function () {
 
       Meteor.call("products/cloneVariant", product._id, variant[0]._id);
       const variants = Products.find({ ancestors: [product._id] }).fetch();
-      const clonedVariant = variants.filter(v => v._id !== variant[0]._id);
+      const clonedVariant = variants.filter((v) => v._id !== variant[0]._id);
       expect(variant[0]._id).to.not.equal(clonedVariant[0]._id);
       expect(_.isEqual(variant[0].ancestors, clonedVariant[0].ancestors)).to.be.true;
       // expect(variant[0].ancestors).to.equal(clonedVariant[0].ancestors);
@@ -159,7 +159,7 @@ describe("core product methods", function () {
       Meteor.call("products/createVariant", product._id, newVariant);
       Meteor._sleepForMs(500);
       variants = Products.find({ ancestors: [product._id] }).fetch();
-      const createdVariant = variants.filter(v => v._id !== firstVariantId);
+      const createdVariant = variants.filter((v) => v._id !== firstVariantId);
       expect(variants.length).to.equal(2);
       expect(createdVariant[0].title).to.equal("newVariant");
       return done();
@@ -353,12 +353,9 @@ describe("core product methods", function () {
         ancestors: { $in: [clone._id] }
       }).fetch();
       expect(cloneVariants.length).to.equal(3);
-      for (let i = 0; i < variants.length; i++) {
-        expect(cloneVariants.some(clonedVariant => {
-          return clonedVariant.title === variants[i].title;
-        })).to.be.ok;
+      for (let i = 0; i < variants.length; i += 1) {
+        expect(cloneVariants.some((clonedVariant) => clonedVariant.title === variants[i].title)).to.be.ok;
       }
-
       return done();
     });
 
@@ -691,7 +688,7 @@ describe("core product methods", function () {
       Meteor.call("products/removeProductTag", product._id, tag._id);
       const productRevision = Revisions.findOne({
         "documentId": product._id,
-        "workflow.status": { $nin: [ "revision/published" ] }
+        "workflow.status": { $nin: ["revision/published"] }
       });
       expect(productRevision.documentData.hashtags).to.not.contain(tag._id);
       expect(Tags.find().count()).to.equal(1);
@@ -723,9 +720,7 @@ describe("core product methods", function () {
   });
 
   describe("setHandle", () => {
-    beforeEach(() => {
-      return Tags.remove({});
-    });
+    beforeEach(() => Tags.remove({}));
 
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);

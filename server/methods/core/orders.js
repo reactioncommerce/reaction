@@ -26,10 +26,8 @@ import { Logger, Hooks, Reaction } from "/server/api";
  * @return {Object} returns entire payment method
  */
 export function orderCreditMethod(order) {
-  const creditBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "credit");
-  const billingRecord = creditBillingRecords.find((billing) => {
-    return billing.shopId === Reaction.getShopId();
-  });
+  const creditBillingRecords = order.billing.filter((value) => value.paymentMethod.method === "credit");
+  const billingRecord = creditBillingRecords.find((billing) => billing.shopId === Reaction.getShopId());
   return billingRecord;
 }
 
@@ -39,13 +37,11 @@ export function orderCreditMethod(order) {
  * @memberof Methods/Orders
  * @summary Helper to return the order debit object
  * @param  {Object} order order object
- * @return {Pbject} returns entire payment method
+ * @return {Object} returns entire payment method
  */
 export function orderDebitMethod(order) {
-  const debitBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "debit");
-  const billingRecord = debitBillingRecords.find((billing) => {
-    return billing.shopId === Reaction.getShopId();
-  });
+  const debitBillingRecords = order.billing.filter((value) => value.paymentMethod.method === "debit");
+  const billingRecord = debitBillingRecords.find((billing) => billing.shopId === Reaction.getShopId());
   return billingRecord;
 }
 
@@ -67,7 +63,7 @@ export function ordersInventoryAdjust(orderId) {
   }
 
   const order = Orders.findOne(orderId);
-  order.items.forEach(item => {
+  order.items.forEach((item) => {
     Products.update({
       _id: item.variants._id
     }, {
@@ -102,7 +98,7 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
   }
 
   const order = Orders.findOne(orderId);
-  order.items.forEach(item => {
+  order.items.forEach((item) => {
     if (item.shopId === shopId) {
       Products.update({
         _id: item.variants._id
@@ -170,9 +166,7 @@ export const methods = {
     }
 
     // Set the status of the items as picked
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/picked", order, itemIds);
     if (result === 1) {
@@ -211,9 +205,7 @@ export const methods = {
     }
 
     // Set the status of the items as packed
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
     if (result === 1) {
@@ -250,9 +242,7 @@ export const methods = {
     }
 
     // Set the status of the items as labeled
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/labeled", order, itemIds);
     if (result === 1) {
@@ -369,7 +359,7 @@ export const methods = {
     if (!returnToStock) {
       // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
       // in some instances which causes the order not to cancel
-      order.items.forEach(item => {
+      order.items.forEach((item) => {
         if (Reaction.hasPermission("orders", Meteor.userId(), item.shopId)) {
           Products.update({
             _id: item.variants._id,
@@ -386,16 +376,14 @@ export const methods = {
       });
     }
 
-    const billingRecord = order.billing.find(billing => billing.shopId === Reaction.getShopId());
-    const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
+    const billingRecord = order.billing.find((billing) => billing.shopId === Reaction.getShopId());
+    const shippingRecord = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
 
     let paymentMethod = orderCreditMethod(order).paymentMethod;
     paymentMethod = Object.assign(paymentMethod, { amount: Number(paymentMethod.amount) });
     const invoiceTotal = billingRecord.invoice.total;
     const shipment = shippingRecord;
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     // refund payment to customer
     const paymentMethodId = paymentMethod && paymentMethod.paymentPackageId;
@@ -458,11 +446,9 @@ export const methods = {
       if (result) {
         Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", order._id);
 
-        const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
+        const shippingRecord = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
         // Set the status of the items as shipped
-        const itemIds = shippingRecord.items.map((item) => {
-          return item._id;
-        });
+        const itemIds = shippingRecord.items.map((item) => item._id);
 
         Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
@@ -497,9 +483,7 @@ export const methods = {
     let completedItemsResult;
     let completedOrderResult;
 
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     // TODO: In the future, this could be handled by shipping delivery status
     // REVIEW: This hook seems to run before the shipment has been marked as shipped
@@ -560,7 +544,7 @@ export const methods = {
 
     this.unblock();
 
-    const shipment = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
+    const shipment = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
 
     if (order.email) {
       Meteor.call("orders/sendNotification", order, (err) => {
@@ -572,16 +556,12 @@ export const methods = {
       Logger.warn("No order email found. No notification sent.");
     }
 
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order, itemIds);
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
 
-    const isCompleted = order.items.every((item) => {
-      return item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed");
-    });
+    const isCompleted = order.items.every((item) => item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed"));
 
     Orders.update({
       "_id": order._id,
@@ -699,7 +679,7 @@ export const methods = {
 
         // Increment the quantity count for the duplicate product variants
         if (foundItem) {
-          foundItem.quantity++;
+          foundItem.quantity += 1;
         } else {
           // Otherwise push the unique item into the combinedItems array
 
@@ -951,9 +931,7 @@ export const methods = {
     const order = Orders.findOne(orderId);
     // find the appropriate shipping record by shop
     const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === shopId);
-    const itemIds = shippingRecord.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shippingRecord.items.map((item) => item._id);
 
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
@@ -1167,7 +1145,7 @@ export const methods = {
         });
       }
       if (result) {
-        refundItems.forEach(refundItem => {
+        refundItems.forEach((refundItem) => {
           orderQuantityAdjust(orderId, refundItem);
         });
 

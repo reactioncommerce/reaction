@@ -21,28 +21,26 @@ const doRightJoinNoIntersection = (leftSet, rightSet) => {
   } else {
     rightJoin = {};
   }
-  const findRightOnlyProperties = () => {
-    return Object.keys(rightSet).filter((key) => {
-      if (typeof (rightSet[key]) === "object" &&
+  const findRightOnlyProperties = () => Object.keys(rightSet).filter((key) => {
+    if (typeof (rightSet[key]) === "object" &&
         !Array.isArray(rightSet[key])) {
-        // Nested objects are always considered
-        return true;
-      }
-      // Array or primitive value
-      return !leftSet.hasOwnProperty(key);
-    });
-  };
+      // Nested objects are always considered
+      return true;
+    }
+    // Array or primitive value
+    return !{}.hasOwnProperty.call(leftSet, key);
+  });
 
   for (const key of findRightOnlyProperties()) {
     if (typeof (rightSet[key]) === "object") {
       // subobject or array
-      if (leftSet.hasOwnProperty(key) && (typeof (leftSet[key]) !== "object" ||
+      if ({}.hasOwnProperty.call(leftSet, key) && (typeof (leftSet[key]) !== "object" ||
            Array.isArray(leftSet[key]) !== Array.isArray(rightSet[key]))) {
         // This is not expected!
         throw new Error(`${"Left object and right object's internal structure must be congruent! Offending key: "}${key}`);
       }
       const rightSubJoin = doRightJoinNoIntersection(
-        leftSet.hasOwnProperty(key) ? leftSet[key] : {},
+        {}.hasOwnProperty.call(leftSet, key) ? leftSet[key] : {},
         rightSet[key]
       );
 
@@ -55,15 +53,12 @@ const doRightJoinNoIntersection = (leftSet, rightSet) => {
         obj[key] = rightSubJoin;
       }
       rightJoin = Object.assign(rightJoin, obj);
+    } else if (Array.isArray(rightSet)) { // primitive value (or array)
+      rightJoin.push(rightSet[key]);
     } else {
-      // primitive value (or array)
-      if (Array.isArray(rightSet)) {
-        rightJoin.push(rightSet[key]);
-      } else {
-        const obj = {};
-        obj[key] = rightSet[key];
-        rightJoin = Object.assign(rightJoin, obj);
-      }
+      const obj = {};
+      obj[key] = rightSet[key];
+      rightJoin = Object.assign(rightJoin, obj);
     }
   }
   return rightJoin;

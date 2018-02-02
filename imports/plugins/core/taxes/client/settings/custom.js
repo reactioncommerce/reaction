@@ -82,9 +82,7 @@ Template.customTaxRates.helpers({
     // helper adds a class to every grid row
     //
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
-        return "tax-grid-row";
-      }
+      bodyCssClassName: () => "tax-grid-row"
     };
 
     // add i18n handling to headers

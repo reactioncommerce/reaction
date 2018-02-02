@@ -8,7 +8,7 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { Roles } from "meteor/alanning:roles";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
-import { localeDep } from  "/client/modules/i18n";
+import { localeDep } from "/client/modules/i18n";
 import { Packages, Shops } from "/lib/collections";
 import { Router } from "/client/modules/router";
 
@@ -94,8 +94,8 @@ export default {
       let shop;
       if (this.Subscriptions.MerchantShops.ready()) {
         // get domain (e.g localhost) from absolute url (e.g http://localhost:3000/)
-        const [ , , host ] = Meteor.absoluteUrl().split("/");
-        const [ domain ] = host.split(":");
+        const [, , host] = Meteor.absoluteUrl().split("/");
+        const [domain] = host.split(":");
 
         // if we don't have an active shopId, try to retreive it from the userPreferences object
         // and set the shop from the storedShopId
@@ -287,11 +287,7 @@ export default {
 
     // Nested find that determines if a user has any of the permissions
     // specified in the `permissions` array for any shop
-    const hasPermissions = Object.keys(user.roles).find((shopId) => {
-      return user.roles[shopId].find((role) => {
-        return permissions.find(permission => permission === role);
-      });
-    });
+    const hasPermissions = Object.keys(user.roles).find((shopId) => user.roles[shopId].find((role) => permissions.find((permission) => permission === role)));
 
     // Find returns undefined if nothing is found.
     // This will return true if permissions are found, false otherwise
@@ -311,7 +307,7 @@ export default {
     const shopIds = Object.keys(user.roles);
     // Remove "__global_roles__" from the list of shopIds, as this function will always return true for
     // marketplace admins if that "id" is left in the check
-    const filteredShopIds = shopIds.filter(shopId => shopId !== "__global_roles__");
+    const filteredShopIds = shopIds.filter((shopId) => shopId !== "__global_roles__");
 
     // Reduce shopIds to shopsWithPermission, using the roles passed in to this function
     const shopIdsWithRoles = filteredShopIds.reduce((shopsWithPermission, shopId) => {
@@ -464,7 +460,7 @@ export default {
       _id: this.getPrimaryShopId()
     });
 
-    return shop && shop.currency || "USD";
+    return (shop && shop.currency) || "USD";
   },
 
   // shopId refers to the active shop. For most shoppers this will be the same
@@ -523,7 +519,7 @@ export default {
       _id: this.shopId
     });
 
-    return shop && shop.currency || "USD";
+    return (shop && shop.currency) || "USD";
   },
 
   isPreview() {
@@ -781,9 +777,7 @@ export default {
 
     // valid application
     if (reactionApp) {
-      const settingsData = _.find(reactionApp.registry, (item) => {
-        return item.provides && item.provides.includes(provides) && item.template === template;
-      });
+      const settingsData = _.find(reactionApp.registry, (item) => item.provides && item.provides.includes(provides) && item.template === template);
       return settingsData;
     }
     Logger.debug("getRegistryForCurrentRoute not found", template, provides);

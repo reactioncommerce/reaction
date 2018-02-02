@@ -290,7 +290,7 @@ class ActionView extends Component {
 
   get actionViewIsLargeSize() {
     const { meta } = this.props.actionView;
-    const dashboardSize = meta && meta.actionView && meta.actionView.dashboardSize || "sm";
+    const dashboardSize = (meta && meta.actionView && meta.actionView.dashboardSize) || "sm";
     const includesDashboard = this.props.actionView.provides && this.props.actionView.provides.includes("dashboard");
 
     return includesDashboard || dashboardSize !== "sm";

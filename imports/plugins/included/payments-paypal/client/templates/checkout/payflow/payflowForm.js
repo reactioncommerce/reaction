@@ -43,7 +43,7 @@ function handlePaypalSubmitError(error) {
   if (singleError) {
     return paymentAlert(`Oops! ${singleError}`);
   } else if (errors.length) {
-    for (let i = 0, len = errors.length; i < len; i++) {
+    for (let i = 0, len = errors.length; i < len; i += 1) {
       const thisError = errors[i];
       const formattedError = `Oops! ${thisError.issue}: ${thisError.field.split(/[. ]+/).pop().replace(/_/g, " ")}`;
       results.push(paymentAlert(formattedError));
@@ -92,64 +92,61 @@ AutoForm.addHooks("paypal-payment-form", {
       if (error) {
         handlePaypalSubmitError(error);
         uiEnd(template, i18next.t("checkout.paymentMethod.resubmit"));
-      } else {
-        if (transaction.saved === true) {
-          let normalizedStatus = transaction.response.state;
-          if (normalizedStatus === "approved") normalizedStatus = "created";
+      } else if (transaction.saved === true) {
+        let normalizedStatus = transaction.response.state;
+        if (normalizedStatus === "approved") normalizedStatus = "created";
 
-          const supportedStatuses = ["created", "failed", "canceled", "expired", "pending"];
-          if (supportedStatuses.indexOf(normalizedStatus) === -1) normalizedStatus = "failed";
+        const supportedStatuses = ["created", "failed", "canceled", "expired", "pending"];
+        if (supportedStatuses.indexOf(normalizedStatus) === -1) normalizedStatus = "failed";
 
-          let normalizedMode;
-          switch (transaction.response.intent) {
-            case "authorize":
-              normalizedMode = "authorize";
-              break;
-            case "sale":
-            case "order":
-            default:
-              normalizedMode = "capture";
-              break;
-          }
-
-          // just auth, not transaction
-          const transactionId = transaction.response.id;
-          // when auth and transaction
-          let authId;
-          if (typeof transaction.response.transactions[0].related_resources[0] === "object") {
-            authId = transaction.response.transactions[0].related_resources[0].authorization.id;
-          }
-          Meteor.subscribe("Packages", Reaction.getShopId());
-          const packageData = Packages.findOne({
-            name: "reaction-paypal",
-            shopId: Reaction.getShopId()
-          });
-
-          const paymentMethod = {
-            processor: "PayflowPro",
-            paymentPackageId: packageData._id,
-            paymentSettingsKey: packageData.registry[0].settingsKey,
-            storedCard,
-            method: "credit",
-            authorization: authId,
-            transactionId,
-            metadata: {
-              transactionId,
-              authorizationId: authId
-            },
-            amount: Number(transaction.response.transactions[0].amount.total),
-            status: normalizedStatus,
-            mode: normalizedMode,
-            createdAt: new Date(transaction.response.create_time),
-            updatedAt: new Date(transaction.response.update_time),
-            transactions: []
-          };
-          paymentMethod.transactions.push(transaction.response);
-          Meteor.call("cart/submitPayment", paymentMethod);
-        } else {
-          handlePaypalSubmitError(transaction.error);
-          uiEnd(template, i18next.t("checkout.paymentMethod.resubmit"));
+        let normalizedMode;
+        switch (transaction.response.intent) {
+          case "authorize":
+            normalizedMode = "authorize";
+            break;
+          case "sale":
+          case "order":
+          default:
+            normalizedMode = "capture";
+            break;
         }
+
+        // just auth, not transaction
+        const transactionId = transaction.response.id;
+        // when auth and transaction
+        let authId;
+        if (typeof transaction.response.transactions[0].related_resources[0] === "object") {
+          authId = transaction.response.transactions[0].related_resources[0].authorization.id;
+        }
+        Meteor.subscribe("Packages", Reaction.getShopId());
+        const packageData = Packages.findOne({
+          name: "reaction-paypal",
+          shopId: Reaction.getShopId()
+        });
+        const paymentMethod = {
+          processor: "PayflowPro",
+          paymentPackageId: packageData._id,
+          paymentSettingsKey: packageData.registry[0].settingsKey,
+          storedCard,
+          method: "credit",
+          authorization: authId,
+          transactionId,
+          metadata: {
+            transactionId,
+            authorizationId: authId
+          },
+          amount: Number(transaction.response.transactions[0].amount.total),
+          status: normalizedStatus,
+          mode: normalizedMode,
+          createdAt: new Date(transaction.response.create_time),
+          updatedAt: new Date(transaction.response.update_time),
+          transactions: []
+        };
+        paymentMethod.transactions.push(transaction.response);
+        Meteor.call("cart/submitPayment", paymentMethod);
+      } else {
+        handlePaypalSubmitError(transaction.error);
+        uiEnd(template, i18next.t("checkout.paymentMethod.resubmit"));
       }
     });
     return false;

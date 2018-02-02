@@ -29,7 +29,8 @@ WebApp.connectHandlers.use(bodyParser.json({
 // Handler for adding middleware before an endpoint (Endpoints.middleWare
 // is just for legacy reasons). Also serves as a namespace for middleware
 // packages to declare their middleware functions.
-Endpoints.Middleware = Endpoints.middleWare = connect();
+Endpoints.middleWare = connect();
+Endpoints.Middleware = Endpoints.middleWare;
 WebApp.connectHandlers.use(Endpoints.Middleware);
 
 // List of all defined JSON API Endpoints

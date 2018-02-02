@@ -31,9 +31,7 @@ Template.dashboardOrdersList.helpers({
     return moment(this.createdAt).fromNow();
   },
   shipmentTracking() {
-    const shippingObject = this.shipping.find((shipping) => {
-      return shipping.shopId === Reaction.getShopId();
-    });
+    const shippingObject = this.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
     return shippingObject.shipmentMethod.tracking;
   },
   shopName() {

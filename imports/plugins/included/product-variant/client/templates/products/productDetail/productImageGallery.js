@@ -50,7 +50,8 @@ function uploadHandler(event) {
       toGrid: +toGrid // we need number
     };
     Media.insert(fileObj);
-    return count++;
+    count += 1;
+    return count;
   });
 }
 
@@ -63,7 +64,7 @@ function updateImagePriorities() {
     .map((element, index) => {
       const mediaId = element.getAttribute("data-index");
 
-      Media.update(mediaId, {
+      return Media.update(mediaId, {
         $set: {
           "metadata.priority": index
         }

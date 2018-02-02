@@ -75,8 +75,8 @@ function addTag(type, details) {
 
 
 // add the favicon tags to the <head>
-linkTags.forEach(tag => addTag("link", tag));
-metaTags.forEach(tag => addTag("meta", tag));
+linkTags.forEach((tag) => addTag("link", tag));
+metaTags.forEach((tag) => addTag("meta", tag));
 
 
 // HTML output should look like this...

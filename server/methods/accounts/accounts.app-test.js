@@ -1,6 +1,6 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
-import _ from  "lodash";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { check, Match } from "meteor/check";
@@ -8,7 +8,7 @@ import { Random } from "meteor/random";
 import { Accounts as MeteorAccount } from "meteor/accounts-base";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { Accounts, Packages, Orders, Products, Shops, Cart }  from "/lib/collections";
+import { Accounts, Packages, Orders, Products, Shops, Cart } from "/lib/collections";
 import { Reaction } from "/server/api";
 import { getShop, getAddress } from "/server/imports/fixtures/shops";
 import Fixtures from "/server/imports/fixtures";

@@ -8,7 +8,8 @@ import { Reaction, i18next, Logger } from "/client/api";
 import Alerts from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 
 // Create a queue, but don't obliterate an existing one!
-const analytics = window.analytics = window.analytics || [];
+window.analytics = window.analytics || [];
+const analytics = window.analytics;
 
 // If the real analytics.js is already on the page return.
 if (analytics.initialize) return;
@@ -76,7 +77,7 @@ analytics.factory = function (method) {
 };
 
 // For each of our methods, generate a queueing stub.
-for (let i = 0; i < analytics.methods.length; i++) {
+for (let i = 0; i < analytics.methods.length; i += 1) {
   const key = analytics.methods[i];
   analytics[key] = analytics.factory(key);
 }
@@ -160,15 +161,13 @@ Meteor.startup(() => {
       if (segmentio.api_key && analytics.invoked === true) {
         analytics.load(segmentio.api_key);
       } else if (!segmentio.api_key && Reaction.hasAdminAccess()) {
-        _.defer(() => {
-          return Alerts.toast(
-            `${i18next.t("admin.settings.segmentNotConfigured")}`,
-            "danger", {
-              html: true,
-              sticky: true
-            }
-          );
-        });
+        _.defer(() => Alerts.toast(
+          `${i18next.t("admin.settings.segmentNotConfigured")}`,
+          "danger", {
+            html: true,
+            sticky: true
+          }
+        ));
       }
     }
 
@@ -180,16 +179,14 @@ Meteor.startup(() => {
         loadGoogleAnalyticsScript()
           .then(() => ga("create", googleAnalytics.api_key, "auto"));
       } else if (!googleAnalytics.api_key && Reaction.hasAdminAccess()) {
-        _.defer(() => {
-          return Alerts.toast(
-            `${i18next.t("admin.settings.googleAnalyticsNotConfigured")}`,
-            "error", {
-              type: "analytics-not-configured",
-              html: true,
-              sticky: true
-            }
-          );
-        });
+        _.defer(() => Alerts.toast(
+          `${i18next.t("admin.settings.googleAnalyticsNotConfigured")}`,
+          "error", {
+            type: "analytics-not-configured",
+            html: true,
+            sticky: true
+          }
+        ));
       }
     }
 
@@ -200,16 +197,14 @@ Meteor.startup(() => {
       if (mixpanel.api_key) {
         mixpanel.init(mixpanel.api_key);
       } else if (!mixpanel.api_key && Reaction.hasAdminAccess()) {
-        _.defer(() => {
-          return Alerts.toast(
-            `${i18next.t("admin.settings.mixpanelNotConfigured")}`,
-            "error", {
-              type: "analytics-not-configured",
-              html: true,
-              sticky: true
-            }
-          );
-        });
+        _.defer(() => Alerts.toast(
+          `${i18next.t("admin.settings.mixpanelNotConfigured")}`,
+          "error", {
+            type: "analytics-not-configured",
+            html: true,
+            sticky: true
+          }
+        ));
       }
     }
 
