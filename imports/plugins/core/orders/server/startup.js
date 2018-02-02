@@ -1,14 +1,19 @@
 import { Meteor } from "meteor/meteor";
+import { Hooks } from "/server/api";
 import { AnalyticsEvents, Orders } from "/lib/collections";
 
 
-Orders.before.insert((userId, order) => {
+Hooks.Events.add("afterOrderInsert", (order) => {
+  console.log('order_id', order._id);
+  
   const analyticsEvent = {
     eventType: "buy",
     value: order._id,
     label: "bought products"
   };
   AnalyticsEvents.insert(analyticsEvent);
+
+  return order;
 });
 
 /**
