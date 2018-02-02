@@ -94,6 +94,7 @@
     "react-dropzone": "^4.2.3",
     "react-helmet": "^5.2.0",
     "react-image-magnify": "^2.3.2",
+    "react-loadable": "^5.3.1",
     "react-measure": "^2.0.2",
     "react-nouislider": "^2.0.1",
     "react-onclickoutside": "^6.7.0",
