@@ -227,6 +227,7 @@ Media.files.before.update((userId, media, fieldNames, modifier) => {
           documentData: updatedMetadata
         }
       });
+      Hooks.Events.run("afterRevisionsUpdate", userId, existingRevision);
     } else {
       Revisions.insert({
         documentId: media._id,
@@ -420,7 +421,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
         "workflow.status": "revision/published"
       }
     });
-
+    Hooks.Events.run("afterRevisionsUpdate", userId, productRevision);
     return true;
   }
 
@@ -453,6 +454,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
                 "documentData.price": modifier.$set.price
               }
             });
+            Hooks.Events.run("afterRevisionsUpdate", userId, productRevision);
 
             const updateId = product.ancestors[0] || product._id;
             const priceRange = ProductRevision.getProductPriceRange(updateId);
@@ -464,6 +466,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
                 "documentData.isVisible": modifier.$set.isVisible
               }
             });
+            Hooks.Events.run("afterRevisionsUpdate", userId, productRevision);
 
             const updateId = product.ancestors[0] || product._id;
             const priceRange = ProductRevision.getProductPriceRange(updateId);
@@ -537,6 +540,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   }
 
   Revisions.update(revisionSelector, revisionModifier);
+  Hooks.Events.run("afterRevisionsUpdate", userId, productRevision);
 
   Logger.debug(`Revison updated for product ${product._id}.`);
 
@@ -684,7 +688,7 @@ Hooks.Events.add("afterRevisionsUpdate", (userId, revision) => {
     differences = diff(image.metadata, revision.documentData);
   }
 
-  Revisions.direct.update({
+  Revisions.update({
     _id: revision._id
   }, {
     $set: {
