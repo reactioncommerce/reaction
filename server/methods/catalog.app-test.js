@@ -53,7 +53,7 @@ describe("core product methods", function () {
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
     sandbox.stub(RevisionApi, "isRevisionControlEnabled", () => true);
-    Revisions.direct.remove({});
+    Revisions.remove({});
   });
 
   afterEach(function () {
