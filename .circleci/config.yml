@@ -118,7 +118,7 @@ jobs:
           command: .reaction/jsdoc/build.sh
           no_output_timeout: 2m
 
-      # Deploys to S3 for merges on Master branch
+      # deploy the docs if on master branch (based on workflow filter)
       - run:
           command: |
             if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
