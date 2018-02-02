@@ -2,7 +2,7 @@ import _ from "lodash";
 import { diff } from "deep-diff";
 import { Meteor } from "meteor/meteor";
 import { Products, Revisions, Tags, Media } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
 import { getSlug } from "/lib/api";
 
@@ -643,6 +643,7 @@ Products.before.remove((userId, product) => {
       "workflow.status": "revision/remove"
     }
   });
+  Hooks.Events.run("afterRevisionsUpdate", userId, productRevision);
 
   Logger.debug(`Revison updated for product ${product._id}.`);
   Logger.debug(`Product ${product._id} is now marked as deleted.`);
@@ -663,7 +664,7 @@ Products.before.remove((userId, product) => {
   return false;
 });
 
-Revisions.after.update((userId, revision) => {
+Hooks.Events.add("afterRevisionsUpdate", (userId, revision) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
