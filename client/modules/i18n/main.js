@@ -106,9 +106,6 @@ Meteor.startup(() => {
         if (result) {
           const locale = result;
           locale.language = getBrowserLanguage();
-          import("moment").then(moment => {
-            moment.locale(locale.language);
-          });
 
           Reaction.Locale.set(locale);
           localeDep.changed();

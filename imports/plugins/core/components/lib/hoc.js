@@ -45,6 +45,7 @@ export function withMoment(component) {
     componentDidMount() {
       import("moment")
         .then(moment => {
+          moment.locale(Reaction.Locale.get().language);
           this.setState({
             moment: moment.default
           });
