@@ -11,7 +11,7 @@ Hooks.Events.add("afterAccountsInsert", (userId, doc) => {
   }
 });
 
-Accounts.after.remove((userId, doc) => {
+Hooks.Events.add("afterAccountsRemove", (userId, doc) => {
   if (AccountSearch && !Meteor.isAppTest) {
     AccountSearch.remove(doc._id);
   }

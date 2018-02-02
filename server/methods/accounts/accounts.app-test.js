@@ -35,7 +35,7 @@ describe("Account Meteor method ", function () {
   after(() => {
     Packages.direct.remove({});
     Cart.direct.remove({});
-    Accounts.direct.remove({});
+    Accounts.remove({});
     Orders.direct.remove({});
     Products.direct.remove({});
     Shops.direct.remove({});
