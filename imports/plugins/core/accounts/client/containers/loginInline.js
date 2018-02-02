@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import LoginInline from "../components/loginInline";
+import { Cart } from "/lib/collections";
 
 class LoginInlineContainer extends Component {
   static propTypes = {
@@ -32,7 +33,19 @@ class LoginInlineContainer extends Component {
         renderEmailForm: true
       });
     } else {
-      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
+      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin", (error) => {
+        if (error) {
+          // Do not bother to try to advance workflow if we can't go beyond login.
+          return;
+        }
+        const cart = Cart.findOne({
+          userId: Meteor.userId()
+        });
+        // If there's already a billing and shipping address selected, push beyond address book
+        if (cart && cart.billing[0] && cart.shipping[0]) {
+          Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook");
+        }
+      });
     }
   }
 
