@@ -50,8 +50,6 @@ describe("Order Publication", function () {
 
   describe("Orders", () => {
     it("should return shop orders for an admin", function (done) {
-      sandbox.stub(Collections.Orders._hookAspects.insert.before[0], "aspect");
-      sandbox.stub(Collections.Orders._hookAspects.update.before[0], "aspect");
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
         check(arguments, [Match.Any]);
@@ -72,8 +70,6 @@ describe("Order Publication", function () {
     });
 
     it("should not return shop orders for a non-admin", function (done) {
-      sandbox.stub(Collections.Orders._hookAspects.insert.before[0], "aspect");
-      sandbox.stub(Collections.Orders._hookAspects.update.before[0], "aspect");
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
         check(arguments, [Match.Any]);
