@@ -15,7 +15,8 @@ Fixtures();
 
 describe("Merge Cart function ", function () {
   const shop = getShop();
-  const sessionId = Reaction.sessionId = Random.id();
+  Reaction.sessionId = Random.id();
+  const sessionId = Reaction.sessionId;
   let originals;
   let sandbox;
   let pushCartWorkflowStub;

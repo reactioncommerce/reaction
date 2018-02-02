@@ -92,7 +92,7 @@ export function getComponent(name) {
     throw new Error(`Component ${name} not registered.`);
   }
 
-  const hocs = component.hocs.map((hoc) => Array.isArray(hoc) ? hoc[0](hoc[1]) : hoc);
+  const hocs = component.hocs.map((hoc) => (Array.isArray(hoc) ? hoc[0](hoc[1]) : hoc));
 
   return compose(...hocs, setDisplayName(`Reaction(${name})`))(component.rawComponent);
 }

@@ -23,44 +23,44 @@
   "parserOptions": {
     "ecmaVersion": 2017,
     "sourceType": "module",
-     "ecmaFeatures": {
-       "arrowFunctions": true,
-       "blockBindings": true,
-       "classes": true,
-       "defaultParams": true,
-       "destructuring": true,
-       "forOf": true,
-       "generators": false,
-       "modules": true,
-       "objectLiteralComputedProperties": true,
-       "objectLiteralDuplicateProperties": false,
-       "objectLiteralShorthandMethods": true,
-       "objectLiteralShorthandProperties": true,
-       "spread": true,
-       "superInFunctions": true,
-       "templateStrings": true,
-       "jsx": true
-     },
+    "ecmaFeatures": {
+      "arrowFunctions": true,
+      "blockBindings": true,
+      "classes": true,
+      "defaultParams": true,
+      "destructuring": true,
+      "forOf": true,
+      "generators": false,
+      "modules": true,
+      "objectLiteralComputedProperties": true,
+      "objectLiteralDuplicateProperties": false,
+      "objectLiteralShorthandMethods": true,
+      "objectLiteralShorthandProperties": true,
+      "spread": true,
+      "superInFunctions": true,
+      "templateStrings": true,
+      "jsx": true
+    },
     "allowImportExportEverywhere": true
- },
- "plugins": ["import", "jest", "jsx-a11y", "react"],
- "rules": {
+  },
+  "plugins": ["import", "jest", "jsx-a11y", "react"],
+  "rules": {
     /**
-    * Strict mode
-    * babel inserts "use strict"; for us
-    * http://eslint.org/docs/rules/strict
-    */
+     * Strict mode
+     * babel inserts "use strict"; for us
+     * http://eslint.org/docs/rules/strict
+     */
     "strict": 0,
 
     /**
-    * ES6
-    */
+     * ES6
+     */
     "object-curly-spacing": ["error", "always", { "objectsInObjects": true }],
     "no-var": 2, // http://eslint.org/docs/rules/no-var
 
     /**
-    * Variables
-    */
+     * Variables
+     */
     "no-shadow": 2, // http://eslint.org/docs/rules/no-shadow
     "no-shadow-restricted-names": 2, // http://eslint.org/docs/rules/no-shadow-restricted-names
     "no-const-assign": 2, // http://eslint.org/docs/rules/no-const-assign
@@ -73,8 +73,8 @@
     "no-implicit-globals": 2, // http://eslint.org/docs/rules/no-implicit-globals
 
     /**
-    * Possible errors
-    */
+     * Possible errors
+     */
     "comma-dangle": ["error", "never"], // http://eslint.org/docs/rules/comma-dangle
     "no-cond-assign": [2, "always"], // http://eslint.org/docs/rules/no-cond-assign
     "no-console": 2, // http://eslint.org/docs/rules/no-console
@@ -98,8 +98,8 @@
     "block-scoped-var": 0, // http://eslint.org/docs/rules/block-scoped-var
 
     /**
-    * JSX / React
-    */
+     * JSX / React
+     */
     "jsx-quotes": [2, "prefer-double"], // http://eslint.org/docs/rules/jsx-quotes
     "react/no-deprecated": 1,
     "react/display-name": 1,
@@ -134,8 +134,8 @@
     "react/sort-comp": 1,
 
     /**
-    * Best practices
-    */
+     * Best practices
+     */
     "consistent-return": [0, { // http://eslint.org/docs/rules/consistent-return
       "treatUndefinedAsUnspecified": true
     }],
@@ -147,8 +147,8 @@
     "eqeqeq": 2, // http://eslint.org/docs/rules/eqeqeq
     "guard-for-in": 2, // http://eslint.org/docs/rules/guard-for-in
     "prefer-const": [1, {
-        "destructuring": "any",
-        "ignoreReadBeforeAssign": false
+      "destructuring": "any",
+      "ignoreReadBeforeAssign": false
     }],
     "no-caller": 2, // http://eslint.org/docs/rules/no-caller
     "no-else-return": 2, // http://eslint.org/docs/rules/no-else-return
@@ -192,25 +192,25 @@
         "MethodDefinition": false,
         "ClassDeclaration": false,
         "ArrowFunctionExpression": false
-        }
+      }
     }], // https://eslint.org/docs/rules/require-jsdoc
     "valid-jsdoc": [0, {
       "prefer": {
         "arg": "param",
         "argument": "param"
-        }
+      }
     }], // http://eslint.org/docs/rules/valid-jsdoc
     "quote-props": [2, "consistent-as-needed"], // http://eslint.org/docs/rules/quote-props
 
     /**
-    * Style
-    */
+     * Style
+     */
     "indent": [2, 2, {"SwitchCase": 1}], // http://eslint.org/docs/rules/indent
     "brace-style": [2, // http://eslint.org/docs/rules/brace-style
-      "1tbs", {
-        "allowSingleLine": true
-      }
-    ],
+                    "1tbs", {
+                      "allowSingleLine": true
+                    }
+                   ],
     "quotes": ["error", "double", { "avoidEscape": true }], // http://eslint.org/docs/rules/quotes
     "camelcase": [2, { // http://eslint.org/docs/rules/camelcase
       "properties": "always"
@@ -260,8 +260,8 @@
     "arrow-spacing": [2, { "before": true, "after": true }], // https://eslint.org/docs/rules/arrow-spacing
 
     /**
-    * Additional rules to enable one by one
-    */
+     * Additional rules to enable one by one
+     */
     // "array-bracket-spacing": ["error", "never"],
     // "array-callback-return": ["error", { "allowImplicit": true }],
     // "arrow-body-style": ["error", "as-needed", { "requireReturnForObjectLiteral": false }],
@@ -287,36 +287,36 @@
     "import/no-named-default": "error",
     "new-parens": "error",
     "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 4 }],
-    // "no-await-in-loop": "error",
-    // "no-bitwise": "error",
-    // "no-case-declarations": "error",
-    // "no-confusing-arrow": ["error", { "allowParens": true }],
-    // "no-empty-pattern": "error",
-    // "no-lonely-if": "error",
-    // // This rule copied from Airbnb's config
-    // "no-mixed-operators": ["error", {
-    //   "groups": [
-    //     ["%", "**"],
-    //     ["%", "+"],
-    //     ["%", "-"],
-    //     ["%", "*"],
-    //     ["%", "/"],
-    //     ["**", "+"],
-    //     ["**", "-"],
-    //     ["**", "*"],
-    //     ["**", "/"],
-    //     ["&", "|", "^", "~", "<<", ">>", ">>>"],
-    //     ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
-    //     ["&&", "||"],
-    //     ["in", "instanceof"]
-    //   ],
-    //   "allowSamePrecedence": false
-    // }],
-    // "no-multi-assign": ["error"],
-    // "no-multi-spaces": ["error", { "ignoreEOLComments": false }],
-    // "no-plusplus": "error",
-    // "no-prototype-builtins": "error",
-    // "no-tabs": "error",
+    "no-await-in-loop": "error",
+    "no-bitwise": "error",
+    "no-case-declarations": "error",
+    "no-confusing-arrow": ["error", { "allowParens": true }],
+    "no-empty-pattern": "error",
+    "no-lonely-if": "error",
+    //  This rule copied from Airbnb's config
+    "no-mixed-operators": ["error", {
+      "groups": [
+        ["%", "**"],
+        ["%", "+"],
+        ["%", "-"],
+        ["%", "*"],
+        ["%", "/"],
+        ["**", "+"],
+        ["**", "-"],
+        ["**", "*"],
+        ["**", "/"],
+        ["&", "|", "^", "~", "<<", ">>", ">>>"],
+        ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
+        ["&&", "||"],
+        ["in", "instanceof"]
+      ],
+      "allowSamePrecedence": false
+    }],
+    "no-multi-assign": ["error"],
+    "no-multi-spaces": ["error", { "ignoreEOLComments": false }],
+    "no-plusplus": "error",
+    "no-prototype-builtins": "error",
+    "no-tabs": "error",
     // "no-undef-init": "error",
     // "no-unneeded-ternary": ["error", { "defaultAssignment": false }],
     // "no-unsafe-finally": "error",

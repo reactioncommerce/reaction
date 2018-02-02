@@ -500,7 +500,7 @@ class InvoiceContainer extends Component {
 function orderCreditMethod(order) {
   const billingInfo = getBillingInfo(order);
 
-  if (billingInfo.paymentMethod && billingInfo.paymentMethod.method ===  "credit") {
+  if (billingInfo.paymentMethod && billingInfo.paymentMethod.method === "credit") {
     return billingInfo;
   }
 }
@@ -623,7 +623,7 @@ const composer = (props, onData) => {
   const paymentPendingApproval = _.includes(["created", "adjustments", "error"], orderStatus);
 
   // get whether adjustments can be made
-  const canMakeAdjustments =  !_.includes(["approved", "completed", "refunded", "partialRefund"], orderStatus);
+  const canMakeAdjustments = !_.includes(["approved", "completed", "refunded", "partialRefund"], orderStatus);
 
   // get adjusted Total
   let adjustedTotal;

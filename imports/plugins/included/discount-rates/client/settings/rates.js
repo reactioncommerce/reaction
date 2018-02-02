@@ -80,7 +80,7 @@ Template.customDiscountRates.helpers({
     // helper adds a class to every grid row
     //
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
+      bodyCssClassName: () => {
         return "discount-rates-grid-row";
       }
     };

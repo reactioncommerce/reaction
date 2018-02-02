@@ -108,12 +108,12 @@ Template.registerHelper("yearOptions", (showDefaultOption = true) => {
   }
 
   let year = new Date().getFullYear();
-  for (let i = 1; i < 9; i++) {
+  for (let i = 1; i < 9; i += 1) {
     yearOptions.push({
       value: year,
       label: year
     });
-    year++;
+    year += 1;
   }
   return yearOptions;
 });

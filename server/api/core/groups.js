@@ -44,7 +44,7 @@ export function createGroups(options = {}) {
         Groups.insert({
           name: groupKey,
           slug: groupKey,
-          permissions: primaryShopGroup && primaryShopGroup.permissions || roles[groupKey],
+          permissions: (primaryShopGroup && primaryShopGroup.permissions) || roles[groupKey],
           shopId: shop._id
         });
       }

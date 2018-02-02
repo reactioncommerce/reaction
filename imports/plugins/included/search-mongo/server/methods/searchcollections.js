@@ -178,10 +178,8 @@ export function buildOrderSearchRecord(orderId) {
     for (const email of user.emails) {
       userEmails.push(email.address);
     }
-  } else {
-    if (anonymousUserEmail) {
-      userEmails.push(anonymousUserEmail);
-    }
+  } else if (anonymousUserEmail) {
+    userEmails.push(anonymousUserEmail);
   }
   const orderSearch = {};
   for (const field of requiredFields.orders) {
@@ -192,8 +190,7 @@ export function buildOrderSearchRecord(orderId) {
     }
   }
   // get the billing object for the current shop on the order (and not hardcoded [0])
-  const shopBilling = order.billing &&
-    order.billing.find(billing => billing && billing.shopId === Reaction.getShopId()) || {};
+  const shopBilling = (order.billing && order.billing.find(billing => billing && billing.shopId === Reaction.getShopId())) || {};
 
   // get the shipping object for the current shop on the order (and not hardcoded [0])
   const shopShipping = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId()) || {};

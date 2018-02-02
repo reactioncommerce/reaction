@@ -26,7 +26,7 @@ import { Logger, Hooks, Reaction } from "/server/api";
  * @return {Object} returns entire payment method
  */
 export function orderCreditMethod(order) {
-  const creditBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "credit");
+  const creditBillingRecords = order.billing.filter(value => value.paymentMethod.method === "credit");
   const billingRecord = creditBillingRecords.find((billing) => {
     return billing.shopId === Reaction.getShopId();
   });
@@ -42,7 +42,7 @@ export function orderCreditMethod(order) {
  * @return {Pbject} returns entire payment method
  */
 export function orderDebitMethod(order) {
-  const debitBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "debit");
+  const debitBillingRecords = order.billing.filter(value => value.paymentMethod.method === "debit");
   const billingRecord = debitBillingRecords.find((billing) => {
     return billing.shopId === Reaction.getShopId();
   });
@@ -694,7 +694,7 @@ export const methods = {
 
         // Increment the quantity count for the duplicate product variants
         if (foundItem) {
-          foundItem.quantity++;
+          foundItem.quantity += 1;
         } else {
           // Otherwise push the unique item into the combinedItems array
 

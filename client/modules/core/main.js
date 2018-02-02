@@ -8,7 +8,7 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { Roles } from "meteor/alanning:roles";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
-import { localeDep } from  "/client/modules/i18n";
+import { localeDep } from "/client/modules/i18n";
 import { Packages, Shops } from "/lib/collections";
 import { Router } from "/client/modules/router";
 
@@ -464,7 +464,7 @@ export default {
       _id: this.getPrimaryShopId()
     });
 
-    return shop && shop.currency || "USD";
+    return (shop && shop.currency) || "USD";
   },
 
   // shopId refers to the active shop. For most shoppers this will be the same
@@ -523,7 +523,7 @@ export default {
       _id: this.shopId
     });
 
-    return shop && shop.currency || "USD";
+    return (shop && shop.currency) || "USD";
   },
 
   isPreview() {

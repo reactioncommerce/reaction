@@ -43,7 +43,7 @@ Template.shippoCarriers.helpers({
 
     // add shipping-carriers-grid-row class
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
+      bodyCssClassName: () => {
         return "shipping-carriers-grid-row";
       }
     };

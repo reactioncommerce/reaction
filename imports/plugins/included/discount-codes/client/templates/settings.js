@@ -6,7 +6,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { DiscountCodes } from "../collections/codes";
 import { i18next } from "/client/api";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
-import { IconButton, Loading, SortableTable }  from "/imports/plugins/core/ui/client/components";
+import { IconButton, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 import "./settings.html";
 
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
@@ -81,7 +81,7 @@ Template.customDiscountCodes.helpers({
     // helper adds a class to every grid row
     //
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
+      bodyCssClassName: () => {
         return "discount-codes-grid-row";
       }
     };

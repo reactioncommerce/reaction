@@ -95,7 +95,7 @@ export function copyCartToOrder(cartId) {
         shippingRecord.items.packed = false;
         shippingRecord.items.shipped = false;
         shippingRecord.items.delivered = false;
-        shippingRecord.workflow = { status: "new",  workflow: ["coreOrderWorkflow/notStarted"] };
+        shippingRecord.workflow = { status: "new", workflow: ["coreOrderWorkflow/notStarted"] };
         shippingRecords.push(shippingRecord);
       });
       order.shipping = shippingRecords;

@@ -249,7 +249,7 @@ export const methods = {
           CURRENCYCODE: currencycode
         }
       });
-    }  catch (error) {
+    } catch (error) {
       Logger.debug(error, "Failed paypalexpress/refund/create");
       throw new Meteor.Error("refund-create-failed", error.message);
     }
@@ -312,7 +312,7 @@ export const methods = {
           TRANSACTIONCLASS: "Refund"
         }
       });
-    }  catch (error) {
+    } catch (error) {
       throw new Meteor.Error("refund-list-failed", error.message);
     }
 
@@ -337,7 +337,8 @@ function parseResponse(response) {
   const pieces = response.content.split("&");
   pieces.forEach((piece) => {
     const subpieces = piece.split("=");
-    const decodedResult = result[subpieces[0]] = decodeURIComponent(subpieces[1]);
+    result[subpieces[0]] = decodeURIComponent(subpieces[1]);
+    const decodedResult = result[subpieces[0]];
     return decodedResult;
   });
   return result;
@@ -351,7 +352,7 @@ function parseResponse(response) {
 function parseRefundReponse(response) {
   const paypalArray = [];
 
-  for (let i = 0; i < 101; i++) {
+  for (let i = 0; i < 101; i += 1) {
     const timeStampKey = "L_TIMESTAMP" + i;
     const timestamp = response[timeStampKey];
     const typeKey = "L_TYPE" + i;

@@ -50,7 +50,8 @@ function uploadHandler(event) {
       toGrid: +toGrid // we need number
     };
     Media.insert(fileObj);
-    return count++;
+    count += 1;
+    return count;
   });
 }
 

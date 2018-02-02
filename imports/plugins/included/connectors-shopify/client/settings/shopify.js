@@ -121,7 +121,7 @@ Template.shopifySync.helpers({
     const { settings } = Reaction.getPackageSettings("reaction-connectors-shopify");
     const { synchooks } = settings;
     if (synchooks) {
-      const [ topic, event, syncType ]  = hook.split(":");
+      const [ topic, event, syncType ] = hook.split(":");
       const matchingHooks = synchooks.map((synchook) => {
         if (synchook.topic === topic && synchook.event === event && synchook.syncType === syncType) {
           return synchook;

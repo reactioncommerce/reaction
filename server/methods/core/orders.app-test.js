@@ -95,8 +95,8 @@ describe("orders test", function () {
   }
 
   function orderCreditMethod(orderData) {
-    const billingRecord = orderData.billing.filter(value => value.paymentMethod.method ===  "credit");
-    const billingObject =  billingRecord.find((billing) => {
+    const billingRecord = orderData.billing.filter(value => value.paymentMethod.method === "credit");
+    const billingObject = billingRecord.find((billing) => {
       return billing.shopId === shopId;
     });
     return billingObject;
@@ -111,7 +111,7 @@ describe("orders test", function () {
 
     it("should return an error if user is not admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
-      const returnToStock =  false;
+      const returnToStock = false;
       spyOnMethod("cancelOrder", order.userId);
 
       function cancelOrder() {
@@ -553,7 +553,7 @@ describe("orders test", function () {
 
   describe("orders/refunds/list", function () {
     it("should return an array of refunds", function () {
-      sandbox.stub(Reaction, "hasPermission",  () => true);
+      sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("refunds/list", order.userId);
       Meteor.call("orders/refunds/list", order, (err, res) => {
         // refunds would be empty because there isn't any refunds yet

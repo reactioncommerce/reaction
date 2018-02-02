@@ -44,7 +44,7 @@ function uploadHandler(files) {
     };
 
     Media.insert(fileObj);
-    count++;
+    count += 1;
   }
 
   return true;

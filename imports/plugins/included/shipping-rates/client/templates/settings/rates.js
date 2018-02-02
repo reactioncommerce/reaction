@@ -71,7 +71,7 @@ Template.shippingRatesSettings.helpers({
 
     // add shipping-grid-row class
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
+      bodyCssClassName: () => {
         return "shipping-grid-row";
       }
     };

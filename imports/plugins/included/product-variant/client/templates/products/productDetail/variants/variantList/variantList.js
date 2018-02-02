@@ -11,7 +11,7 @@ import { Products, Media } from "/lib/collections";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
-  if (typeof current === "object" && (variantId === current._id || ~current.ancestors.indexOf(variantId))) {
+  if (typeof current === "object" && (variantId === current._id || current.ancestors.indexOf(variantId) >= 0)) {
     return true;
   }
 
