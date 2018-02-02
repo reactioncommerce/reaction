@@ -4,8 +4,6 @@ import { AnalyticsEvents, Orders } from "/lib/collections";
 
 
 Hooks.Events.add("afterOrderInsert", (order) => {
-  console.log('order_id', order._id);
-  
   const analyticsEvent = {
     eventType: "buy",
     value: order._id,
