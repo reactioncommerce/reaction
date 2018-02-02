@@ -43,7 +43,7 @@ Template.shippoCarriers.helpers({
 
     // add shipping-carriers-grid-row class
     const customRowMetaData = {
-      bodyCssClassName: () =>  "shipping-carriers-grid-row"
+      bodyCssClassName: () => "shipping-carriers-grid-row"
     };
 
     // add i18n handling to headers

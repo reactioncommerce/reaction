@@ -32,12 +32,10 @@ MethodHooks.after("taxes/calculate", (options) => {
         const taxAmount = taxes.reduce((totalTaxes, tax) => totalTaxes + tax.tax, 0);
         const taxRate = taxAmount / taxCalc.calcTaxable(cartToCalc);
         Meteor.call("taxes/setRate", cartId, taxRate, taxes);
+      } else if (result.error.errorCode === 503) {
+        Logger.error("timeout error: do nothing here");
       } else {
-        if (result.error.errorCode === 503) {
-          Logger.error("timeout error: do nothing here");
-        } else {
-          Logger.error("Unknown error", result.error.errorCode);
-        }
+        Logger.error("Unknown error", result.error.errorCode);
       }
     });
   }

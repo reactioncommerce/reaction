@@ -71,7 +71,7 @@ Template.shippingRatesSettings.helpers({
 
     // add shipping-grid-row class
     const customRowMetaData = {
-      bodyCssClassName: () =>  "shipping-grid-row"
+      bodyCssClassName: () => "shipping-grid-row"
     };
 
     // add i18n handling to headers

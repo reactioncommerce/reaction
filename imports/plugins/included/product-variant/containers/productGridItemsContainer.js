@@ -91,7 +91,7 @@ const wrapComponent = (Comp) => (
 
     positions = () => {
       const tag = ReactionProduct.getTag();
-      return this.props.product.positions && this.props.product.positions[tag] || {};
+      return (this.props.product.positions && this.props.product.positions[tag]) || {};
     }
 
     weightClass = () => {
@@ -164,24 +164,22 @@ const wrapComponent = (Comp) => (
           Array.prototype.indexOf.call(items, activeItems[0]),
           Array.prototype.indexOf.call(items, activeItems[selected - 1])
         ];
-        for (let i = _.min(indexes); i <= _.max(indexes); i++) {
+        for (let i = _.min(indexes); i <= _.max(indexes); i += 1) {
           checkbox = items[i].querySelector("input[type=checkbox]");
           if (checkbox.checked === false) {
             checkbox.checked = true;
             this.props.itemSelectHandler(checkbox.checked, product._id);
           }
         }
-      } else {
-        if (checkbox) {
-          checkbox.checked = !checkbox.checked;
-          this.props.itemSelectHandler(checkbox.checked, product._id);
-        }
+      } else if (checkbox) {
+        checkbox.checked = !checkbox.checked;
+        this.props.itemSelectHandler(checkbox.checked, product._id);
       }
     }
 
     onDoubleClick = () => {
       const product = this.props.product;
-      const handle = product.__published && product.__published.handle || product.handle;
+      const handle = (product.__published && product.__published.handle) || product.handle;
 
       Reaction.Router.go("product", {
         handle
@@ -229,20 +227,18 @@ const wrapComponent = (Comp) => (
           if (event.metaKey || event.ctrlKey || event.shiftKey) {
             this.handleCheckboxSelect(list, product);
           }
+        } else if (event.metaKey || event.ctrlKey || event.shiftKey) {
+          this.handleCheckboxSelect(list, product);
         } else {
-          if (event.metaKey || event.ctrlKey || event.shiftKey) {
-            this.handleCheckboxSelect(list, product);
-          } else {
-            const checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
-            Session.set("productGrid/selectedProducts", []);
-            if (checkbox) {
-              checkbox.checked = true;
-              this.props.itemSelectHandler(checkbox.checked, product._id);
-            }
+          const checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
+          Session.set("productGrid/selectedProducts", []);
+          if (checkbox) {
+            checkbox.checked = true;
+            this.props.itemSelectHandler(checkbox.checked, product._id);
           }
         }
       } else {
-        const handle = product.__published && product.__published.handle || product.handle;
+        const handle = (product.__published && product.__published.handle) || product.handle;
 
         Reaction.Router.go("product", {
           handle

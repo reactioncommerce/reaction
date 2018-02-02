@@ -67,7 +67,7 @@ class AdminInviteForm extends Component {
       );
     }
 
-    const options = { email, name, shopId: Reaction.getShopId(), groupId: group._id  };
+    const options = { email, name, shopId: Reaction.getShopId(), groupId: group._id };
     return Meteor.call("accounts/inviteShopMember", options, (error, result) => {
       if (error) {
         let messageKey;

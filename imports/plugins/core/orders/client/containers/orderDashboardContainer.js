@@ -48,7 +48,7 @@ const wrapComponent = (Comp) => (
         query.createdAt = this.state.query.createdAt;
       }
 
-      if  (this.state.query._id) {
+      if (this.state.query._id) {
         query._id = this.state.query._id;
       }
 
@@ -66,7 +66,7 @@ const wrapComponent = (Comp) => (
         query.createdAt = this.state.query.createdAt;
       }
 
-      if  (this.state.query._id) {
+      if (this.state.query._id) {
         query._id = this.state.query._id;
       }
 

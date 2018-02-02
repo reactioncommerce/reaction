@@ -7,8 +7,7 @@ import { Template } from "meteor/templating";
 import { Accounts } from "meteor/accounts-base";
 import { Spacebars } from "meteor/spacebars";
 import { Roles } from "meteor/alanning:roles";
-import { i18next } from "/client/api";
-import { Reaction } from "../";
+import { i18next, Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { toCamelCase } from "/lib/api";
@@ -105,12 +104,12 @@ Template.registerHelper("yearOptions", (showDefaultOption = true) => {
   }
 
   let year = new Date().getFullYear();
-  for (let i = 1; i < 9; i++) {
+  for (let i = 1; i < 9; i += 1) {
     yearOptions.push({
       value: year,
       label: year
     });
-    year++;
+    year += 1;
   }
   return yearOptions;
 });

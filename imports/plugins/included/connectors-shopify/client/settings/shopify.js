@@ -121,8 +121,9 @@ Template.shopifySync.helpers({
     const { settings } = Reaction.getPackageSettings("reaction-connectors-shopify");
     const { synchooks } = settings;
     if (synchooks) {
-      const [topic, event, syncType]  = hook.split(":");
-      const matchingHooks = synchooks.map((synchook) => synchook.topic === topic && synchook.event === event && synchook.syncType === syncType);
+      const [topic, event, syncType] = hook.split(":");
+      const matchingHooks = synchooks.filter((synchook) => synchook.topic === topic && synchook.event === event && synchook.syncType === syncType);
+
       if (matchingHooks.length > 0) {
         return "checked";
       }

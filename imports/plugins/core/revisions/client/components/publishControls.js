@@ -160,7 +160,7 @@ class PublishControls extends Component {
         // We probably do have chnages to publish
         // Note: Sometimes "updatedAt" will cause false positives, but just incase, lets
         // enable the publish button anyway.
-        if (Array.isArray(revision.diff) && revision.diff.length || revision.documentType !== "product") {
+        if ((Array.isArray(revision.diff) && revision.diff.length) || revision.documentType !== "product") {
           return true;
         }
 

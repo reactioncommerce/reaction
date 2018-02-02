@@ -349,10 +349,9 @@ describe("core product methods", function () {
         ancestors: { $in: [clone._id] }
       }).fetch();
       expect(cloneVariants.length).to.equal(3);
-      for (let i = 0; i < variants.length; i++) {
+      for (let i = 0; i < variants.length; i += 1) {
         expect(cloneVariants.some((clonedVariant) => clonedVariant.title === variants[i].title)).to.be.ok;
       }
-
       return done();
     });
 

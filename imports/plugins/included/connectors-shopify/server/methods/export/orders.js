@@ -223,12 +223,12 @@ export async function exportToShopify(doc) {
   const numShopOrders = doc.billing.length; // if we have multiple billing, we have multiple shops
   Logger.debug(`Exporting ${numShopOrders} order(s) to Shopify`);
   const shopifyOrders = [];
-  for (let index = 0; index < numShopOrders; index++) {
+  for (let index = 0; index < numShopOrders; index += 1) {
     // send a shopify order once for each merchant order
     const shopId = doc.billing[index].shopId;
     const apiCreds = getApiInfo(shopId);
     const shopify = new Shopify(apiCreds);
-    const existingCustomerQuery = await isExistingCustomer(doc.billing[index].address, doc.email, shopify);
+    const existingCustomerQuery = await isExistingCustomer(doc.billing[index].address, doc.email, shopify); // eslint-disable-line no-await-in-loop
     // this should never happen but I want a meaningful error here in case it does
     if (existingCustomerQuery.length > 1) {
       throw new Meteor.Error("duplicate-customer", "Discovered more than one customer in Shopify. Cannot continue");
@@ -236,7 +236,7 @@ export async function exportToShopify(doc) {
     const existingCustomer = existingCustomerQuery[0];
     const shopifyOrder = convertOrderToShopifyOrder(doc, index, shopId, existingCustomer);
     Logger.debug("sending shopify order", shopifyOrder, doc._id);
-    const newShopifyOrder = await shopify.order.create(shopifyOrder);
+    const newShopifyOrder = await shopify.order.create(shopifyOrder); // eslint-disable-line no-await-in-loop
     markExported(newShopifyOrder, shopId, doc);
     shopifyOrders.push(newShopifyOrder);
   }
@@ -264,4 +264,3 @@ function markExported(exportedOrder, shopId, order) {
     }
   });
 }
-

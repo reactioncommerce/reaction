@@ -34,10 +34,8 @@ function loadMoreProducts() {
         target[0].setAttribute("productScrollLimit", true);
         Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
       }
-    } else {
-      if (target[0].getAttribute("visible")) {
-        target[0].setAttribute("visible", false);
-      }
+    } else if (target[0].getAttribute("visible")) {
+      target[0].setAttribute("visible", false);
     }
   }
 }

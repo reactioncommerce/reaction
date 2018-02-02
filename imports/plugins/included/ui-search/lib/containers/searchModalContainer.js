@@ -76,7 +76,7 @@ const wrapComponent = (Comp) => (
       this.setState({ collection });
     }
 
-    handleChildUnmount = () =>  {
+    handleChildUnmount = () => {
       const body = document.getElementsByTagName("BODY")[0];
       body.removeAttribute("style");
       this.setState({ renderChild: false });

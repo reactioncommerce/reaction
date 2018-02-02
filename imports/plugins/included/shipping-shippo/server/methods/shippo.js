@@ -213,7 +213,7 @@ export const methods = {
     );
     if (shopId && Roles.userIsInRole(this.userId, shippingRoles, shopId)) {
       // If user wants to delete existing key
-      if (modifier.hasOwnProperty("$unset")) {
+      if ({}.hasOwnProperty.call(modifier, "$unset")) {
         const customModifier = { $set: { "settings.apiKey": null } };
         Packages.update(_id, customModifier);
         // remove shop's existing Shippo Providers from Shipping Collection
@@ -324,7 +324,7 @@ export const methods = {
 
       if (trackingStatus &&
         trackingStatus.status_date !== orderShipment.shippo.trackingStatusDate) {
-        // Shippo's tracking_status.status	enum	Indicates the high level status of the shipment:
+        //  Shippo's tracking_status.status enum Indicates the high level status of the shipment:
         // 'UNKNOWN', 'DELIVERED', 'TRANSIT', 'FAILURE', 'RETURNED'.
         if (trackingStatus.status === "DELIVERED") {
           Meteor.call("orders/shipmentDelivered", order);
@@ -418,8 +418,8 @@ export const methods = {
       const shippoAddressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
       // product in the cart has to have parcel property with the dimensions
       if (cart.items && cart.items[0] && cart.items[0].parcel) {
-        const unitOfMeasure = shop && shop.baseUOM || "kg";
-        const unitOfLength = shop && shop.baseUOL || "cm";
+        const unitOfMeasure = (shop && shop.baseUOM) || "kg";
+        const unitOfLength = (shop && shop.baseUOL) || "cm";
         const cartWeight = getTotalCartweight(cart);
         shippoParcel = createShippoParcel(cart.items[0].parcel, cartWeight, unitOfMeasure, unitOfLength);
       } else {

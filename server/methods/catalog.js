@@ -1,4 +1,4 @@
-import _ from  "lodash";
+import _ from "lodash";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import { EJSON } from "meteor/ejson";
@@ -227,11 +227,12 @@ function denormalize(id, field) {
         isLowQuantity: isLowQuantity(variants)
       });
       break;
-    default: // "price" is object with range, min, max
+    default: { // "price" is object with range, min, max
       const priceObject = Catalog.getProductPriceRange(id);
       Object.assign(update, {
         price: priceObject
       });
+    }
   }
   Products.update(id, {
     $set: update
@@ -397,7 +398,7 @@ Meteor.methods({
         const parentIndex = sortedVariant.ancestors.indexOf(variantId);
         const ancestorsClone = sortedVariant.ancestors.slice(0);
         // if variantId exists in ancestors, we override it by new _id
-        !!~parentIndex && ancestorsClone.splice(parentIndex, 1, variantNewId);
+        if (parentIndex >= 0) ancestorsClone.splice(parentIndex, 1, variantNewId);
         Object.assign(clone, variant, {
           _id: Random.id(),
           ancestors: ancestorsClone,
@@ -626,14 +627,8 @@ Meteor.methods({
           );
         }
       });
-    } else {
-      // Single product was passed in - ensure that user has permission to clone
-      if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) {
-        throw new Meteor.Error(
-          "access-denied",
-          "Access Denied"
-        );
-      }
+    } else if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) { // Single product was passed in - ensure that user has permission to clone
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     let result;
@@ -900,21 +895,19 @@ Meteor.methods({
     if (value === "false" || value === "true") {
       const booleanValue = (value === "true" || value === true);
       update = EJSON.parse("{\"" + field + "\":" + booleanValue + "}");
+    } else if (field === "handle") {
+      update = {
+        [field]: createHandle(value, _id) // handle should be unique
+      };
+    } else if (field === "title" && doc.handle === doc._id) { // update handle once title is set
+      const handle = createHandle(Reaction.getSlug(value), _id);
+      update = {
+        [field]: value,
+        handle
+      };
     } else {
-      if (field === "handle") {
-        update = {
-          [field]: createHandle(value, _id) // handle should be unique
-        };
-      } else if (field === "title" && doc.handle === doc._id) { // update handle once title is set
-        const handle = createHandle(Reaction.getSlug(value), _id);
-        update = {
-          [field]: value,
-          handle
-        };
-      } else {
-        const stringValue = EJSON.stringify(value);
-        update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
-      }
+      const stringValue = EJSON.stringify(value);
+      update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
     }
 
 
@@ -935,7 +928,7 @@ Meteor.methods({
     // meaning the update went past revision control,
     // denormalize and attach results to top-level product
     if (result === 1) {
-      if (type === "variant" && ~toDenormalize.indexOf(field)) {
+      if (type === "variant" && toDenormalize.indexOf(field) >= 0) {
         denormalize(doc.ancestors[0], field);
       }
     }
@@ -1323,8 +1316,7 @@ Meteor.methods({
         variants.forEach((variant) => {
           // if this is a top variant with children, we avoid it to check price
           // because we using price of its children
-          if (variant.ancestors.length === 1 &&
-            !Catalog.getVariants(variant._id, "variant").length ||
+          if ((variant.ancestors.length === 1 && !Catalog.getVariants(variant._id, "variant").length) ||
             variant.ancestors.length !== 1) {
             if (!(typeof variant.price === "number" && variant.price > 0)) {
               variantValidator = false;

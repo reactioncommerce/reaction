@@ -73,7 +73,7 @@ export function loadCoreTranslations() {
     fs.readdir(i18nFolder, Meteor.bindEnvironment((err, files) => {
       if (err) throw new Meteor.Error("No translations found for import.", err);
       for (const file of files) {
-        if (~file.indexOf("json")) {
+        if (file.indexOf("json") >= 0) {
           Logger.debug(`Importing Translations from ${file}`);
           const json = fs.readFileSync(i18nFolder + file, "utf8");
           const content = JSON.parse(json);

@@ -7,7 +7,7 @@ import EmailSettings from "../components/emailSettings";
 
 const providers = require("nodemailer-wellknown/services.json");
 
-const composer = ({}, onData) => {
+const composer = (props, onData) => {
   if (Meteor.subscribe("Packages", Reaction.getShopId()).ready()) {
     const settings = Reaction.getShopSettings().mail || {};
 

@@ -187,7 +187,7 @@ Template.coreOrderShippingTracking.helpers({
       const shipment = getShippingInfo(order);
       const editing = template.showTrackingEditForm.get();
       let view = false;
-      if (editing === true || !shipment.tracking && editing === false) {
+      if (editing === true || (!shipment.tracking && editing === false)) {
         view = true;
       }
       // TODO modularize tracking more, editable to settings
@@ -209,7 +209,7 @@ Template.coreOrderShippingTracking.helpers({
     const shipment = getShippingInfo(order);
     const shipmentWorkflow = shipment.workflow;
 
-    return shipmentWorkflow && Array.isArray(shipmentWorkflow.workflow) && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed") && shipment.tracking
-    || shipmentWorkflow && Array.isArray(shipmentWorkflow.workflow) && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed");
+    return (shipmentWorkflow && Array.isArray(shipmentWorkflow.workflow) && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed") && shipment.tracking)
+      || (shipmentWorkflow && Array.isArray(shipmentWorkflow.workflow) && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed"));
   }
 });

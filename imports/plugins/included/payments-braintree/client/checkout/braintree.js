@@ -66,37 +66,35 @@ function submitToBrainTree(doc, template) {
     if (error) {
       handleBraintreeSubmitError(error);
       uiEnd(template, "Resubmit payment");
-    } else {
-      if (results.saved === true) {
-        const normalizedStatus = normalizeState(results.response.transaction.status);
-        const normalizedMode = normalizeMode(results.response.transaction.status);
-        Meteor.subscribe("Packages", Reaction.getShopId());
-        const packageData = Packages.findOne({
-          name: "reaction-braintree",
-          shopId: Reaction.getShopId()
-        });
+    } else if (results.saved === true) {
+      const normalizedStatus = normalizeState(results.response.transaction.status);
+      const normalizedMode = normalizeMode(results.response.transaction.status);
+      Meteor.subscribe("Packages", Reaction.getShopId());
+      const packageData = Packages.findOne({
+        name: "reaction-braintree",
+        shopId: Reaction.getShopId()
+      });
 
-        const storedCard = results.response.transaction.creditCard.cardType.toUpperCase() + " " + results.response.transaction.creditCard.last4;
-        paymentMethod = {
-          processor: "Braintree",
-          storedCard,
-          paymentPackageId: packageData._id,
-          paymentSettingsKey: packageData.registry[0].settingsKey,
-          method: "credit",
-          transactionId: results.response.transaction.id,
-          amount: parseFloat(results.response.transaction.amount),
-          status: normalizedStatus,
-          mode: normalizedMode,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          transactions: []
-        };
-        paymentMethod.transactions.push(results.response);
-        Meteor.call("cart/submitPayment", paymentMethod);
-      } else {
-        handleBraintreeSubmitError(results.response.message);
-        uiEnd(template, "Resubmit payment");
-      }
+      const storedCard = results.response.transaction.creditCard.cardType.toUpperCase() + " " + results.response.transaction.creditCard.last4;
+      paymentMethod = {
+        processor: "Braintree",
+        storedCard,
+        paymentPackageId: packageData._id,
+        paymentSettingsKey: packageData.registry[0].settingsKey,
+        method: "credit",
+        transactionId: results.response.transaction.id,
+        amount: parseFloat(results.response.transaction.amount),
+        status: normalizedStatus,
+        mode: normalizedMode,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        transactions: []
+      };
+      paymentMethod.transactions.push(results.response);
+      Meteor.call("cart/submitPayment", paymentMethod);
+    } else {
+      handleBraintreeSubmitError(results.response.message);
+      uiEnd(template, "Resubmit payment");
     }
   });
 }

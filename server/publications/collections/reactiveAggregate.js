@@ -18,7 +18,7 @@ Mongo.Collection.prototype._getDb = function () {
   if (typeof this._collection._getDb === "function") {
     return this._collection._getDb();
   }
-  const  mongoConn = MongoInternals.defaultRemoteCollectionDriver().mongo;
+  const mongoConn = MongoInternals.defaultRemoteCollectionDriver().mongo;
   return wrapWithDb(mongoConn);
 };
 
@@ -103,7 +103,7 @@ export function ReactiveAggregate(pub, collection, pipeline, options) {
         pub.removed(pubOptions.clientCollection, key);
       }
     }
-    pub._iteration++;
+    pub._iteration += 1;
   }
 
   // track any changes on the collection used for the aggregation
