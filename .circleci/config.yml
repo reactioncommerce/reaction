@@ -112,8 +112,8 @@ jobs:
       - checkout
 
       # install OS dependencies
-      - run: sudo apt-get update
-      - run: sudo apt-get install -y locales
+      - run: apt-get update
+      - run: apt-get install -y locales
       - run:
           command: .reaction/jsdoc/build.sh
           no_output_timeout: 2m
