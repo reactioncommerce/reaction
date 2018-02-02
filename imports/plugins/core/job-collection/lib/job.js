@@ -16,25 +16,29 @@
 //     See included LICENSE file for details.
 // ###########################################################################
 
+import { Meteor } from "meteor/meteor";
+
 // Exports Job object
 
-const methodCall = function (root, method, params, cb, after) {
-  let left;
-  if (after === null) { after = ret => ret; }
-  const apply = (left = (Job._ddp_apply !== null ? Job._ddp_apply[root.root !== null ? root.root : root] : undefined)) !== null ? left : Job._ddp_apply;
+function methodCall(root, method, params, cb, after = ret => ret) {
+  const left = (Job._ddp_apply !== null ? Job._ddp_apply[root.root !== null ? root.root : root] : undefined);
+  const apply = left !== null ? left : Job._ddp_apply;
+
   if (typeof apply !== "function") {
     throw new Error("Job remote method call error, no valid invocation method found.");
   }
+
   const name = `${root.root !== null ? root.root : root}_${method}`;
+
   if (cb && (typeof cb === "function")) {
     return apply(name, params, (err, res) => {
       if (err) { return cb(err); }
       return cb(null, after(res));
     });
-  } else {
-    return after(apply(name, params));
   }
-};
+
+  return after(apply(name, params));
+}
 
 const optionsHelp = function (options, cb) {
   // If cb isn't a function, it's assumed to be options...
@@ -55,17 +59,18 @@ const optionsHelp = function (options, cb) {
   return [options, cb];
 };
 
-const splitLongArray = function (arr, max) {
+function splitLongArray(arr, max) {
   if (!(arr instanceof Array) || !(max > 0)) { throw new Error("splitLongArray: bad params"); }
   return __range__(0, Math.ceil(arr.length / max), false).map((i) => arr.slice((i * max), ((i + 1) * max)));
-};
+}
 
 // This function soaks up num callbacks, by default returning the disjunction of Boolean results
 // or returning on first error.... Reduce function causes different reduce behavior, such as concatenation
-const reduceCallbacks = function (cb, num, reduce, init) {
-  if (reduce === null) { reduce = (a, b) => a || b; }
-  if (init === null) { init = false; }
-  if (cb === null) { return undefined; }
+function reduceCallbacks(cb, num, reduce = (a, b) => a || b, init = false) {
+  if (!cb) {
+    return undefined;
+  }
+
   if ((typeof cb !== "function") || !(num > 0) || (typeof reduce !== "function")) {
     throw new Error("Bad params given to reduceCallbacks");
   }
@@ -77,23 +82,23 @@ const reduceCallbacks = function (cb, num, reduce, init) {
       if (err) {
         cbErr = err;
         return cb(err);
-      } else {
-        cbCount++;
-        cbRetVal = reduce(cbRetVal, res);
-        if (cbCount === num) {
-          return cb(null, cbRetVal);
-        } else if (cbCount > num) {
-          throw new Error(`reduceCallbacks callback invoked more than requested ${num} times`);
-        }
+      }
+
+      cbCount++;
+      cbRetVal = reduce(cbRetVal, res);
+      if (cbCount === num) {
+        return cb(null, cbRetVal);
+      } else if (cbCount > num) {
+        throw new Error(`reduceCallbacks callback invoked more than requested ${num} times`);
       }
     }
   };
-};
+}
 
-const concatReduce = function (a, b) {
+function concatReduce(a, b) {
   if (!(a instanceof Array)) { a = [a]; }
   return a.concat(b);
-};
+}
 
 const isInteger = i => (typeof i === "number") && (Math.floor(i) === i);
 
@@ -104,56 +109,57 @@ const isFunction = f => typeof f === "function";
 const isNonEmptyString = s => (typeof s === "string") && (s.length > 0);
 
 const isNonEmptyStringOrArrayOfNonEmptyStrings = sa =>
-   isNonEmptyString(sa) ||
-      (sa instanceof Array &&
-      (sa.length !== 0) &&
-      (((() => {
-        const result = [];
-        for (const s of Array.from(sa)) {
-          if (isNonEmptyString(s)) {
-            result.push(s);
-          }
+  isNonEmptyString(sa) ||
+    (sa instanceof Array &&
+    (sa.length !== 0) &&
+    (((() => {
+      const result = [];
+      for (const s of Array.from(sa)) {
+        if (isNonEmptyString(s)) {
+          result.push(s);
         }
-        return result;
-      })()).length === sa.length))
+      }
+      return result;
+    })()).length === sa.length))
  ;
 
 // This smooths over the various different implementations...
-const _setImmediate = function (func, ...args) {
+function _setImmediate(func, ...args) {
   if ((typeof Meteor !== "undefined" && Meteor !== null ? Meteor.setTimeout : undefined) !== null) {
     return Meteor.setTimeout(func, 0, ...Array.from(args));
   } else if (typeof setImmediate !== "undefined" && setImmediate !== null) {
     return setImmediate(func, ...Array.from(args));
-  } else {
-    // Browser fallback
-    return setTimeout(func, 0, ...Array.from(args));
   }
-};
 
-const _setInterval = function (func, timeOut, ...args) {
+  // Browser fallback
+  return setTimeout(func, 0, ...Array.from(args));
+}
+
+function _setInterval(func, timeOut, ...args) {
   if ((typeof Meteor !== "undefined" && Meteor !== null ? Meteor.setInterval : undefined) !== null) {
     return Meteor.setInterval(func, timeOut, ...Array.from(args));
-  } else {
-    // Browser / node.js fallback
-    return setInterval(func, timeOut, ...Array.from(args));
   }
-};
 
-const _clearInterval = function (id) {
+  // Browser / node.js fallback
+  return setInterval(func, timeOut, ...Array.from(args));
+}
+
+function _clearInterval(id) {
   if ((typeof Meteor !== "undefined" && Meteor !== null ? Meteor.clearInterval : undefined) !== null) {
     return Meteor.clearInterval(id);
-  } else {
-    // Browser / node.js fallback
-    return clearInterval(id);
   }
-};
+
+  // Browser / node.js fallback
+  return clearInterval(id);
+}
 
 // ##################################################################
 
 class JobQueue {
-
   constructor(root, type, ...rest) {
-    let adjustedLength, options;
+    let adjustedLength;
+    let options;
+
     this.root = root;
     this.type = type;
     adjustedLength = Math.max(rest.length, 1),
@@ -498,7 +504,7 @@ export class Job {
       };
     }());
 
-      // Define convenience getters for some document properties
+    // Define convenience getters for some document properties
     Object.defineProperties(this.prototype, {
       doc: {
         get() { return this._doc; },
@@ -521,16 +527,22 @@ export class Job {
   static _setDDPApply(apply, collectionName) {
     if (typeof apply === "function") {
       if (typeof collectionName === "string") {
-        if (this._ddp_apply === null) { this._ddp_apply = {}; }
+        if (this._ddp_apply === null) {
+          this._ddp_apply = {};
+        }
+
         if (typeof this._ddp_apply === "function") {
           throw new Error("Job.setDDP must specify a collection name each time if called more than once.");
         }
-        return this._ddp_apply[collectionName] = apply;
+
+        this._ddp_apply[collectionName] = apply;
+        return apply;
       } else if (!this._ddp_apply) {
-        return this._ddp_apply = apply;
-      } else {
-        throw new Error("Job.setDDP must specify a collection name each time if called more than once.");
+        this._ddp_apply = apply;
+        return apply;
       }
+
+      throw new Error("Job.setDDP must specify a collection name each time if called more than once.");
     } else {
       throw new Error("Bad function in Job.setDDPApply()");
     }
@@ -571,19 +583,19 @@ export class Job {
               ddp.call(name, params, (err, res) => {
                 if ((cb !== null) && (typeof cb === "function")) {
                   return cb(err, res);
-                } else {
-                  if (err) {
-                    return fib.throwInto(err);
-                  } else {
-                    return fib.run(res);
-                  }
                 }
+
+                if (err) {
+                  return fib.throwInto(err);
+                }
+
+                return fib.run(res);
               });
               if ((cb !== null) && (typeof cb === "function")) {
                 return;
-              } else {
-                return Fiber.yield();
               }
+
+              return Fiber.yield();
             }, collName));
           }
         }
@@ -596,48 +608,56 @@ export class Job {
   // the specified 'type' from the server queue root
   // returns null if no such job exists
   static getWork(root, type, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
-    if (typeof type === "string") { type = [type]; }
+
+    if (typeof type === "string") {
+      type = [type];
+    }
+
     if (options.workTimeout !== null) {
       if (!isInteger(options.workTimeout) || !(options.workTimeout > 0)) {
         throw new Error("getWork: workTimeout must be a positive integer");
       }
     }
+
     return methodCall(root, "getWork", [type, options], cb, res => {
       const jobs = (Array.from(res).map((doc) => new Job(root, doc))) || [];
       if (options.maxJobs !== null) {
         return jobs;
-      } else {
-        return jobs[0];
       }
+
+      return jobs[0];
     });
   }
 
   // Creates a job object by id from the server queue root
   // returns null if no such job exists
   static getJob(root, id, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
     if (options.getLog === null) { options.getLog = false; }
     return methodCall(root, "getJob", [id, options], cb, doc => {
       if (doc) {
         return new Job(root, doc);
-      } else {
-        return undefined;
       }
+
+      return undefined;
     });
   }
 
   // Like the above, but takes an array of ids, returns array of jobs
   static getJobs(root, ids, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
     if (options.getLog === null) { options.getLog = false; }
     let retVal = [];
@@ -647,9 +667,9 @@ export class Job {
       retVal = retVal.concat(methodCall(root, "getJob", [chunkOfIds, options], myCb, doc => {
         if (doc) {
           return (Array.from(doc).map((d) => new Job(root, d.type, d.data, d)));
-        } else {
-          return null;
         }
+
+        return null;
       }));
     }
     return retVal;
@@ -658,9 +678,10 @@ export class Job {
   // Pause this job, only Ready and Waiting jobs can be paused
   // Calling this toggles the paused state. Unpaused jobs go to waiting
   static pauseJobs(root, ids, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
     let retVal = false;
     const chunksOfIds = splitLongArray(ids, 256);
@@ -674,9 +695,10 @@ export class Job {
   // Resume this job, only Paused jobs can be resumed
   // Calling this toggles the paused state. Unpaused jobs go to waiting
   static resumeJobs(root, ids, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
     let retVal = false;
     const chunksOfIds = splitLongArray(ids, 256);
@@ -691,9 +713,10 @@ export class Job {
   // be made ready unless force is used.
   static readyJobs(root, ids, ...rest) {
     if (ids === null) { ids = []; }
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
     if (options.force === null) { options.force = false; }
     let retVal = false;
@@ -708,9 +731,10 @@ export class Job {
 
   // Cancel this job if it is running or able to run (waiting, ready)
   static cancelJobs(root, ids, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
     if (options.antecedents === null) { options.antecedents = true; }
     let retVal = false;
@@ -724,9 +748,10 @@ export class Job {
 
   // Restart a failed or cancelled job
   static restartJobs(root, ids, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
     if (options.retries === null) { options.retries = 1; }
     if (options.dependents === null) { options.dependents = true; }
@@ -741,9 +766,10 @@ export class Job {
 
   // Remove a job that is not able to run (completed, cancelled, failed) from the queue
   static removeJobs(root, ids, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
     let retVal = false;
     const chunksOfIds = splitLongArray(ids, 256);
@@ -757,9 +783,10 @@ export class Job {
   // Start the job queue
   // Deprecated!
   static startJobs(root, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
     return methodCall(root, "startJobs", [options], cb);
   }
@@ -767,9 +794,10 @@ export class Job {
   // Stop the job queue, stop all running jobs
   // Deprecated!
   static stopJobs(root, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
     if (options.timeout === null) { options.timeout = 60 * 1000; }
     return methodCall(root, "stopJobs", [options], cb);
@@ -777,18 +805,20 @@ export class Job {
 
   // Start the job queue
   static startJobServer(root, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
     return methodCall(root, "startJobServer", [options], cb);
   }
 
   // Shutdown the job queue, stop all running jobs
   static shutdownJobServer(root, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    let adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
     if (options.timeout === null) { options.timeout = 60 * 1000; }
     return methodCall(root, "shutdownJobServer", [options], cb);
@@ -1303,10 +1333,6 @@ export class Job {
 }
 Job.initClass();
 
-// Export Job in a npm package
-if ((typeof module !== "undefined" && module !== null ? module.exports : undefined) !== null) {
-  module.exports = Job;
-}
 function __range__(left, right, inclusive) {
   const range = [];
   const ascending = left < right;
