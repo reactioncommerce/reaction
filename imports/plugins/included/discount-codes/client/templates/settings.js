@@ -81,9 +81,7 @@ Template.customDiscountCodes.helpers({
     // helper adds a class to every grid row
     //
     const customRowMetaData = {
-      bodyCssClassName: () => {
-        return "discount-codes-grid-row";
-      }
+      bodyCssClassName: () => "discount-codes-grid-row"
     };
 
     // add i18n handling to headers

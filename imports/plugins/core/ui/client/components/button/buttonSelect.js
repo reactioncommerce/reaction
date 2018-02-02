@@ -30,20 +30,12 @@ class ButtonSelect extends Component {
 
   handleDefaultState = () => {
     const props = this.props;
-    let defaultButton = props.buttons.filter(button => {
-      if (button.active === true) {
-        return button;
-      }
-    });
+    let defaultButton = props.buttons.filter((button) => button.active === true);
     defaultButton = defaultButton[0];
 
     const defaultBgClassNames = classnames({ "button-select": true, [defaultButton.bgColor]: true });
 
-    const defaultNonActiveButtons = props.buttons.filter(button => {
-      if (button.active === false || button.active === undefined) {
-        return button;
-      }
-    });
+    const defaultNonActiveButtons = props.buttons.filter((button) => (button.active === false || button.active === undefined));
     const currentButton = (
       <Button
         eventAction={defaultButton.eventAction}
@@ -66,11 +58,7 @@ class ButtonSelect extends Component {
   filterButtons = () => {
     const { activeButton, buttons } = this.state;
 
-    const nonActiveButtons = buttons.filter(button => {
-      if (button.name !== activeButton) {
-        return button;
-      }
-    });
+    const nonActiveButtons = buttons.filter((button) => button.name !== activeButton);
     return this.setState({ nonActiveButtons });
   }
 
@@ -127,16 +115,14 @@ class ButtonSelect extends Component {
           </div>
         </div>
         <div className={toggleClassNames}>
-          {nonActiveButtons.map((button, key) => {
-            return (
-              <button
-                className="btn button-item" key={key}
-                type="button"
-                onClick={() => this.handleButtonChange(button)}
-              >
-                <Components.Translation defaultValue={button.name} i18nKey={button.i18nKeyLabel} />
-              </button>);
-          })}
+          {nonActiveButtons.map((button, key) => (
+            <button
+              className="btn button-item" key={key}
+              type="button"
+              onClick={() => this.handleButtonChange(button)}
+            >
+              <Components.Translation defaultValue={button.name} i18nKey={button.i18nKeyLabel} />
+            </button>))}
         </div>
       </div>
     );

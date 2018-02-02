@@ -13,11 +13,7 @@ import * as Collections from "/lib/collections";
  */
 export default function sortUsersIntoGroups({ accounts, groups }) {
   const newGroups = groups.map((group) => {
-    const matchingAccounts = accounts.map((acc) => {
-      if (acc.groups && acc.groups.indexOf(group._id) > -1) {
-        return acc;
-      }
-    });
+    const matchingAccounts = accounts.filter((acc) => acc.groups && acc.groups.indexOf(group._id) > -1);
     group.users = _.compact(matchingAccounts);
     return group;
   });
@@ -50,8 +46,8 @@ export function sortGroups(groups) {
  */
 export function getInvitableGroups(groups) {
   return groups
-    .filter(grp => grp.slug !== "owner")
-    .filter(grp => Reaction.canInviteToGroup({ group: grp }));
+    .filter((grp) => grp.slug !== "owner")
+    .filter((grp) => Reaction.canInviteToGroup({ group: grp }));
 }
 
 /**
@@ -67,14 +63,14 @@ export function getInvitableGroups(groups) {
 export function getDefaultUserInviteGroup(groups) {
   let result;
   const user = Collections.Accounts.findOne({ userId: Meteor.userId() });
-  result = groups.find(grp => user && user.groups.indexOf(grp._id) > -1);
+  result = groups.find((grp) => user && user.groups.indexOf(grp._id) > -1);
 
   if (result && result.slug === "owner") {
-    result = groups.find(grp => grp.slug === "shop manager");
+    result = groups.find((grp) => grp.slug === "shop manager");
   }
 
   if (!result) {
-    result = groups.find(firstGroup => firstGroup);
+    result = groups.find((firstGroup) => firstGroup);
   }
 
   return result;
@@ -89,7 +85,7 @@ export function getDefaultUserInviteGroup(groups) {
  * @return {Object}          [description]
  */
 export function groupPermissions(packages) {
-  return packages.map((pkg) => {
+  return packages.reduce((registeredPackages, pkg) => {
     const permissions = [];
     if (pkg.registry && pkg.enabled) {
       for (const registryItem of pkg.registry) {
@@ -123,15 +119,19 @@ export function groupPermissions(packages) {
       // TODO review this, hardcoded WIP "reaction"
       const label = pkg.name.replace("reaction", "").replace(/(-.)/g, (x) => " " + x[1].toUpperCase());
 
-      return {
+      const newObj = {
         shopId: pkg.shopId,
         icon: pkg.icon,
         name: pkg.name,
         label,
         permissions: _.uniq(permissions)
       };
+
+      registeredPackages.push(newObj);
     }
-  });
+
+    return registeredPackages;
+  }, []);
 }
 
 function getPermissionMap(permissions) {

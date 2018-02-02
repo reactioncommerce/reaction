@@ -168,7 +168,7 @@ export function copyHOCs(sourceComponentName, targetComponent) {
  * @memberof Components
  **/
 export function loadRegisteredComponents() {
-  Object.keys(ComponentsTable).map((name) => {
+  Object.keys(ComponentsTable).forEach((name) => {
     Components[name] = getComponent(name);
   });
 

@@ -189,13 +189,9 @@ class VariantForm extends Component {
     }
   }
 
-  handleVariantVisibilityToggle = (variant) => {
-    return this.props.onVisibilityButtonClick(variant);
-  }
+  handleVariantVisibilityToggle = (variant) => this.props.onVisibilityButtonClick(variant)
 
-  isExpanded = (groupName) => {
-    return this.state.expandedCard === groupName;
-  }
+  isExpanded = (groupName) => this.state.expandedCard === groupName
 
   renderTaxCodeField() {
     if (this.props.isProviderEnabled()) {

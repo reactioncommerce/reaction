@@ -136,9 +136,7 @@ function createReactionVariantFromShopifyVariant(options) {
  * @return {array} Returns an array of image objects that match the passed shopifyVariantId
  */
 function findVariantImages(shopifyVariantId, images) {
-  return images.filter((imageObj) => {
-    return imageObj.variant_ids.indexOf(shopifyVariantId) !== -1;
-  });
+  return images.filter((imageObj) => imageObj.variant_ids.indexOf(shopifyVariantId) !== -1);
 }
 
 /**
@@ -371,9 +369,7 @@ export const methods = {
                     Logger.debug(`Importing ${shopifyProduct.title} ${variant} options`);
                     shopifyOptions.forEach((option, j) => {
                       // Find the option that nests under our current variant.
-                      const shopifyOption = shopifyProduct.variants.find((o) => {
-                        return o.option1 === variant && o.option2 === option;
-                      });
+                      const shopifyOption = shopifyProduct.variants.find((o) => o.option1 === variant && o.option2 === option);
 
                       if (shopifyOption) {
                         const reactionOption = createReactionVariantFromShopifyVariant({
@@ -430,9 +426,7 @@ export const methods = {
                           Logger.debug(`Importing ${shopifyProduct.title} ${variant} ${option} options`);
                           shopifyTernaryOptions.forEach((ternaryOption, k) => {
                             // Find the option that nests under our current variant.
-                            const shopifyTernaryOption = shopifyProduct.variants.find((o) => {
-                              return o.option1 === variant && o.option2 === option && o.option3 === ternaryOption;
-                            });
+                            const shopifyTernaryOption = shopifyProduct.variants.find((o) => o.option1 === variant && o.option2 === option && o.option3 === ternaryOption); // eslint-disable-line max-len
 
                             if (shopifyTernaryOption) {
                               const reactionTernaryOption = createReactionVariantFromShopifyVariant({

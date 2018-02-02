@@ -181,6 +181,4 @@ export function Apps(optionHash) {
 }
 
 // Register global template helper
-Template.registerHelper("reactionApps", (optionHash) => {
-  return Reaction.Apps(optionHash);
-});
+Template.registerHelper("reactionApps", (optionHash) => Reaction.Apps(optionHash));

@@ -148,7 +148,7 @@ function composer(props, onData) {
     shop,
     languages,
     currencies: currencyList,
-    enabledLanguages: languages.filter(language => (language.enabled || language.value === shop.language)),
+    enabledLanguages: languages.filter((language) => (language.enabled || language.value === shop.language)),
     countryOptions: countries,
     currencyOptions,
     uomOptions,

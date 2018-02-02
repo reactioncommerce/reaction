@@ -162,15 +162,13 @@ Meteor.startup(() => {
       if (segmentio.api_key && analytics.invoked === true) {
         analytics.load(segmentio.api_key);
       } else if (!segmentio.api_key && Reaction.hasAdminAccess()) {
-        _.defer(() => {
-          return Alerts.toast(
-            `${i18next.t("admin.settings.segmentNotConfigured")}`,
-            "danger", {
-              html: true,
-              sticky: true
-            }
-          );
-        });
+        _.defer(() => Alerts.toast(
+          `${i18next.t("admin.settings.segmentNotConfigured")}`,
+          "danger", {
+            html: true,
+            sticky: true
+          }
+        ));
       }
     }
 
@@ -182,16 +180,14 @@ Meteor.startup(() => {
         loadGoogleAnalyticsScript()
           .then(() => ga("create", googleAnalytics.api_key, "auto"));
       } else if (!googleAnalytics.api_key && Reaction.hasAdminAccess()) {
-        _.defer(() => {
-          return Alerts.toast(
-            `${i18next.t("admin.settings.googleAnalyticsNotConfigured")}`,
-            "error", {
-              type: "analytics-not-configured",
-              html: true,
-              sticky: true
-            }
-          );
-        });
+        _.defer(() => Alerts.toast(
+          `${i18next.t("admin.settings.googleAnalyticsNotConfigured")}`,
+          "error", {
+            type: "analytics-not-configured",
+            html: true,
+            sticky: true
+          }
+        ));
       }
     }
 
@@ -202,16 +198,14 @@ Meteor.startup(() => {
       if (mixpanel.api_key) {
         mixpanel.init(mixpanel.api_key);
       } else if (!mixpanel.api_key && Reaction.hasAdminAccess()) {
-        _.defer(() => {
-          return Alerts.toast(
-            `${i18next.t("admin.settings.mixpanelNotConfigured")}`,
-            "error", {
-              type: "analytics-not-configured",
-              html: true,
-              sticky: true
-            }
-          );
-        });
+        _.defer(() => Alerts.toast(
+          `${i18next.t("admin.settings.mixpanelNotConfigured")}`,
+          "error", {
+            type: "analytics-not-configured",
+            html: true,
+            sticky: true
+          }
+        ));
       }
     }
 

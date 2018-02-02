@@ -119,7 +119,7 @@ describe("Publication", function () {
           const data = products[1];
           const expectedTitles = ["My Little Pony", "Shopkins - Peachy"];
 
-          expect(expectedTitles.some(title => title === data.title)).to.be.ok;
+          expect(expectedTitles.some((title) => title === data.title)).to.be.ok;
 
           if (!isDone) {
             isDone = true;
@@ -141,7 +141,7 @@ describe("Publication", function () {
           const expectedTitles = ["Fresh Tomatoes", "Shopkins - Peachy"];
 
           expect(products.length).to.equal(2);
-          expect(expectedTitles.some(title => title === data.title)).to.be.ok;
+          expect(expectedTitles.some((title) => title === data.title)).to.be.ok;
 
           if (isDone === false) {
             isDone = true;
@@ -269,7 +269,7 @@ describe("Publication", function () {
           expect(products.length).to.equal(3);
 
           const data = products[1];
-          expect(["My Little Pony", "Shopkins - Peachy"].some(title => title === data.title)).to.be.ok;
+          expect(["My Little Pony", "Shopkins - Peachy"].some((title) => title === data.title)).to.be.ok;
 
           if (!isDone) {
             isDone = true;

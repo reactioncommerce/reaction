@@ -80,11 +80,7 @@ const wrapComponent = (Comp) => (
           selectedItems: selectedItemsArray
         });
       } else {
-        const updatedSelectedArray = selectedItemsArray.filter((id) => {
-          if (id !== name) {
-            return id;
-          }
-        });
+        const updatedSelectedArray = selectedItemsArray.filter((id) => id !== name);
         this.setState({
           selectedItems: updatedSelectedArray
         });
@@ -113,9 +109,7 @@ const wrapComponent = (Comp) => (
         // if there are no selected orders, or if there are some orders that have been
         // selected but not all of them, loop through the orders array and return a
         // new array with order ids only, then set the selectedItems array with the orderIds
-        const orderIds = orders.map((order) => {
-          return order._id;
-        });
+        const orderIds = orders.map((order) => order._id);
         this.setState({
           selectedItems: orderIds,
           multipleSelect: true
@@ -189,9 +183,7 @@ const wrapComponent = (Comp) => (
      * @return {null} no return value
      */
     shippingStatusUpdateCall = (selectedOrders, status) => {
-      const filteredSelectedOrders = selectedOrders.filter((order) => {
-        return order.shipping && Object.keys(getShippingInfo(order)).length;
-      });
+      const filteredSelectedOrders = selectedOrders.filter((order) => order.shipping && Object.keys(getShippingInfo(order)).length);
       this.setState({
         isLoading: {
           [status]: true
@@ -578,9 +570,7 @@ const wrapComponent = (Comp) => (
       this.setState({
         renderFlowList: true
       });
-      const selectedOrders = orders.filter((order) => {
-        return selectedOrdersIds.includes(order._id);
-      });
+      const selectedOrders = orders.filter((order) => selectedOrdersIds.includes(order._id));
 
       if (status === "picked") {
         this.pickedShippingStatus(selectedOrders, status);
@@ -605,9 +595,7 @@ const wrapComponent = (Comp) => (
           capturePayment: true
         }
       });
-      const selectedOrders = orders.filter((order) => {
-        return selectedOrdersIds.includes(order._id);
-      });
+      const selectedOrders = orders.filter((order) => selectedOrdersIds.includes(order._id));
 
       let orderCount = 0;
 
@@ -676,6 +664,6 @@ const wrapComponent = (Comp) => (
   }
 );
 
-registerComponent("OrderTable", OrderTable, [ wrapComponent ]);
+registerComponent("OrderTable", OrderTable, [wrapComponent]);
 
 export default compose(wrapComponent)(OrderTable);

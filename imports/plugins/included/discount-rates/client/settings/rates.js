@@ -80,9 +80,7 @@ Template.customDiscountRates.helpers({
     // helper adds a class to every grid row
     //
     const customRowMetaData = {
-      bodyCssClassName: () => {
-        return "discount-rates-grid-row";
-      }
+      bodyCssClassName: () => "discount-rates-grid-row"
     };
 
     // add i18n handling to headers

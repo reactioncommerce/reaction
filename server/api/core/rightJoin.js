@@ -21,17 +21,15 @@ const doRightJoinNoIntersection = (leftSet, rightSet) => {
   } else {
     rightJoin = {};
   }
-  const findRightOnlyProperties = () => {
-    return Object.keys(rightSet).filter((key) => {
-      if (typeof (rightSet[key]) === "object" &&
+  const findRightOnlyProperties = () => Object.keys(rightSet).filter((key) => {
+    if (typeof (rightSet[key]) === "object" &&
         !Array.isArray(rightSet[key])) {
-        // Nested objects are always considered
-        return true;
-      }
-      // Array or primitive value
-      return !{}.hasOwnProperty.call(leftSet, key);
-    });
-  };
+      // Nested objects are always considered
+      return true;
+    }
+    // Array or primitive value
+    return !{}.hasOwnProperty.call(leftSet, key);
+  });
 
   for (const key of findRightOnlyProperties()) {
     if (typeof (rightSet[key]) === "object") {

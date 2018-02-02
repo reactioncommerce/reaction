@@ -385,9 +385,9 @@ function cartToSalesOrder(cart) {
   const cartDate = moment(cart.createdAt).format();
   let lineItems = [];
   if (cart.items) {
-    lineItems = cart.items.map((item) => {
+    lineItems = cart.items.reduce((items, item) => {
       if (item.variants.taxable) {
-        return {
+        const itemObj = {
           number: item._id,
           itemCode: item.productId,
           quantity: item.quantity,
@@ -395,8 +395,10 @@ function cartToSalesOrder(cart) {
           description: item.taxDescription || item.title,
           taxCode: item.variants.taxCode
         };
+        items.push(itemObj);
       }
-    });
+      return items;
+    }, []);
     if (cartShipping) {
       lineItems.push({
         number: "shipping",
@@ -489,9 +491,9 @@ function orderToSalesInvoice(order) {
   const currencyCode = company.currency;
   const orderShipping = order.getShippingTotal();
   const orderDate = moment(order.createdAt).format();
-  const lineItems = order.items.map((item) => {
+  const lineItems = order.items.reduce((items, item) => {
     if (item.variants.taxable) {
-      return {
+      const itemObj = {
         number: item._id,
         itemCode: item.productId,
         quantity: item.quantity,
@@ -499,8 +501,11 @@ function orderToSalesInvoice(order) {
         description: item.taxDescription || item.title,
         taxCode: item.variants.taxCode
       };
+      items.push(itemObj);
     }
-  });
+    return items;
+  }, []);
+
   if (orderShipping) {
     lineItems.push({
       number: "shipping",

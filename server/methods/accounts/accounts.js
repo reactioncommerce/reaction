@@ -160,9 +160,7 @@ function getValidator() {
   }
   // If there are two, we default to the one that is not the Reaction one
   if (geoCoders.length === 2) {
-    geoCoder = _.filter(geoCoders, (coder) => {
-      return !_.includes(coder.name, "reaction");
-    })[0];
+    geoCoder = _.filter(geoCoders, (coder) => !_.includes(coder.name, "reaction"))[0];
   }
 
   // check if addressValidation is enabled but the package is disabled, don't do address validation
@@ -435,9 +433,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   const account = Accounts.findOne({
     userId
   });
-  const oldAddress = account.profile.addressBook.find((addr) => {
-    return addr._id === address._id;
-  });
+  const oldAddress = account.profile.addressBook.find((addr) => addr._id === address._id);
 
   // happens when the user clicked the address in grid. We need to set type
   // to `true`
@@ -811,7 +807,7 @@ export function sendWelcomeEmail(shopId, userId) {
     return true;
   }
 
-  const defaultEmail = user.emails.find(email => email.provides === "default");
+  const defaultEmail = user.emails.find((email) => email.provides === "default");
   // Encode email address for URI
   const encodedEmailAddress = encodeURIComponent(defaultEmail.address);
   // assign verification url

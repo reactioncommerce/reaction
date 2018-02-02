@@ -189,11 +189,12 @@ export function buildOrderSearchRecord(orderId) {
       orderSearch[field] = order[field];
     }
   }
+
   // get the billing object for the current shop on the order (and not hardcoded [0])
-  const shopBilling = (order.billing && order.billing.find(billing => billing && billing.shopId === Reaction.getShopId())) || {};
+  const shopBilling = (order.billing && order.billing.find((billing) => billing && billing.shopId === Reaction.getShopId())) || {};
 
   // get the shipping object for the current shop on the order (and not hardcoded [0])
-  const shopShipping = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId()) || {};
+  const shopShipping = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId()) || {};
 
   orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
   orderSearch.billingPhone = shopBilling.address && shopBilling.address.phone.replace(/\D/g, "");
@@ -231,9 +232,9 @@ export function buildOrderSearchRecord(orderId) {
   }
   orderSearch.product = {};
   orderSearch.variants = {};
-  orderSearch.product.title = order.items.map(item => item.product && item.product.title);
-  orderSearch.variants.title = order.items.map(item => item.variants && item.variants.title);
-  orderSearch.variants.optionTitle = order.items.map(item => item.variants && item.variants.optionTitle);
+  orderSearch.product.title = order.items.map((item) => item.product && item.product.title);
+  orderSearch.variants.title = order.items.map((item) => item.variants && item.variants.title);
+  orderSearch.variants.optionTitle = order.items.map((item) => item.variants && item.variants.optionTitle);
 
   OrderSearch.insert(orderSearch);
 }

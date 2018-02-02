@@ -66,8 +66,8 @@ export function createGroups(options = {}) {
 function getDefaultGroupRoles() {
   let ownerRoles = Roles
     .getAllRoles().fetch()
-    .map(role => role.name)
-    .filter(role => role !== "anonymous"); // see comment above
+    .map((role) => role.name)
+    .filter((role) => role !== "anonymous"); // see comment above
 
   // Join all other roles with package roles for owner. Owner should have all roles
   // this is needed because of default roles defined in the app that are not in Roles.getAllRoles

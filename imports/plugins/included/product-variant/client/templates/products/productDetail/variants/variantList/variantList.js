@@ -46,9 +46,7 @@ Template.variantList.onRendered(function () {
         onUpdate() {
           const positions = instance.$(".variant-list-item")
             .toArray()
-            .map((element) => {
-              return element.getAttribute("data-id");
-            });
+            .map((element) => element.getAttribute("data-id"));
 
           Meteor.defer(() => {
             Meteor.call("products/updateVariantsPosition", positions);
@@ -126,17 +124,18 @@ Template.variantList.helpers({
       }
 
       if (current.ancestors.length === 1) {
-        variants.map(variant => {
+        variants.map((variant) => {
           if (typeof variant.ancestors[1] === "string" &&
             variant.ancestors[1] === current._id &&
             variant.optionTitle &&
             variant.type !== "inventory") {
             childVariants.push(variant);
           }
+          return childVariants;
         });
       } else {
         // TODO not sure we need this part...
-        variants.map(variant => {
+        variants.map((variant) => {
           if (typeof variant.ancestors[1] === "string" &&
             variant.ancestors.length === current.ancestors.length &&
             variant.ancestors[1] === current.ancestors[1] &&
@@ -144,6 +143,7 @@ Template.variantList.helpers({
           ) {
             childVariants.push(variant);
           }
+          return childVariants;
         });
       }
 

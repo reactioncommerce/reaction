@@ -56,9 +56,7 @@ Template.templateSettings.helpers({
 
     // helper adds a class to every grid row
     const customRowMetaData = {
-      bodyCssClassName: () => {
-        return "template-grid-row";
-      }
+      bodyCssClassName: () => "template-grid-row"
     };
 
     // add i18n handling to headers

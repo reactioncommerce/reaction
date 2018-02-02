@@ -73,7 +73,7 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name];
     return registeredPackage;
   },
-  defaultCustomerRoles: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
+  defaultCustomerRoles: ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
   defaultVisitorRoles: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
   createGroups,
 
@@ -621,8 +621,7 @@ export default {
         marketplaceSettings.shops &&
         Array.isArray(marketplaceSettings.shops.enabledPackagesByShopTypes)) {
       // Find the correct packages list for this shopType
-      const matchingShopType = marketplaceSettings.shops.enabledPackagesByShopTypes.find(EnabledPackagesByShopType =>
-        EnabledPackagesByShopType.shopType === shop.shopType);
+      const matchingShopType = marketplaceSettings.shops.enabledPackagesByShopTypes.find((EnabledPackagesByShopType) => EnabledPackagesByShopType.shopType === shop.shopType); // eslint-disable-line max-len
       if (matchingShopType) {
         enabledPackages = matchingShopType.enabledPackages;
       }
@@ -879,8 +878,8 @@ export default {
 
     const layouts = [];
     // for each shop, we're loading packages in a unique registry
-    _.each(this.Packages, (config, pkgName) => {
-      return Shops.find().forEach((shop) => {
+    _.each(this.Packages, (config, pkgName) =>
+      Shops.find().forEach((shop) => {
         const shopId = shop._id;
         if (!shopId) return [];
 
@@ -900,15 +899,11 @@ export default {
         // Setting from a fixture file, most likely reaction.json
         let settingsFromFixture;
         if (registryFixtureData) {
-          settingsFromFixture = _.find(registryFixtureData[0], (packageSetting) => {
-            return config.name === packageSetting.name;
-          });
+          settingsFromFixture = registryFixtureData[0].find((packageSetting) => config.name === packageSetting.name);
         }
 
         // Setting already imported into the packages collection
-        const settingsFromDB = _.find(packages, (ps) => {
-          return (config.name === ps.name && shopId === ps.shopId);
-        });
+        const settingsFromDB = packages.find((ps) => (config.name === ps.name && shopId === ps.shopId));
 
         const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
 
@@ -936,8 +931,7 @@ export default {
         // Import package data
         this.Import.package(combinedSettings, shopId);
         return Logger.debug(`Initializing ${shop.name} ${pkgName}`);
-      }); // end shops
-    });
+      }));
 
     // helper for removing layout duplicates
     const uniqLayouts = uniqWith(layouts, _.isEqual);
@@ -949,16 +943,14 @@ export default {
     //
     // package cleanup
     //
-    Shops.find().forEach((shop) => {
-      return Packages.find().forEach((pkg) => {
-        // delete registry entries for packages that have been removed
-        if (!_.has(this.Packages, pkg.name)) {
-          Logger.debug(`Removing ${pkg.name}`);
-          return Packages.remove({ shopId: shop._id, name: pkg.name });
-        }
-        return false;
-      });
-    });
+    Shops.find().forEach((shop) => Packages.find().forEach((pkg) => {
+      // delete registry entries for packages that have been removed
+      if (!_.has(this.Packages, pkg.name)) {
+        Logger.debug(`Removing ${pkg.name}`);
+        return Packages.remove({ shopId: shop._id, name: pkg.name });
+      }
+      return false;
+    }));
   },
 
   /**
@@ -1003,10 +995,9 @@ export default {
     // if we have `_simpleSchemas` (plural), then this is a selector based schema
     if (c2._simpleSchemas) {
       const selectorKeys = Object.keys(selector);
-      const selectorSchema = c2._simpleSchemas.find((schema) => {
+      const selectorSchema = c2._simpleSchemas.find((schema) =>
         // Make sure that every key:value in our selector matches the key:value in the schema selector
-        return selectorKeys.every((key) => selector[key] === schema.selector[key]);
-      });
+        selectorKeys.every((key) => selector[key] === schema.selector[key]));
 
       if (!selectorSchema) {
         Logger.warn(errMsg);
