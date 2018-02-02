@@ -11,4 +11,3 @@ export {
 
 export * from "/client/modules/i18n";
 export { default as Logger } from "/client/modules/logger";
-export { importMoment } from "./helpers";
