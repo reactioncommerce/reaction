@@ -18,6 +18,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Mongo } from "meteor/mongo";
 import { Job } from "./job";
+import later from "later";
 
 const _validNumGTEZero = v => Match.test(v, Number) && (v >= 0.0);
 
