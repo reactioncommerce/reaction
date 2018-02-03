@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import classnames from "classnames";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 
 export function getTwitterMeta(props) {
@@ -61,7 +61,7 @@ class TwitterSocialButton extends Component {
   renderText() {
     if (this.props.showText) {
       return (
-        <Translation defaultValue="Share on Twitter" i18nKey="social.shareOnTwitter" />
+        <Components.Translation defaultValue="Share on Twitter" i18nKey="social.shareOnTwitter" />
       );
     }
     return null;
@@ -76,15 +76,17 @@ class TwitterSocialButton extends Component {
     });
 
     return (
-      <a className="btn btn-flat twitter-share" aria-label="Share to Twitter" href="#" onClick={this.handleClick}
-        target="_blank"
+      <Components.Button
+        className="btn btn-flat twitter-share"
+        aria-label="Share to Twitter"
+        onClick={this.handleClick}
       >
         <Helmet
           meta={getTwitterMeta(this.props)}
         />
         <i className={iconClassNames} />
         {this.renderText()}
-      </a>
+      </Components.Button>
     );
   }
 }

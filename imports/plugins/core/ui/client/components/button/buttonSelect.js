@@ -110,9 +110,16 @@ class ButtonSelect extends Component {
       <div className={defaultBgClassNames}>
         <div className="button-group">
           {currentButton}
-          <div className="button-toggle" onClick={this.handleToggle}>
+          <Components.Button
+            tagName="div"
+            className={{
+              "btn": false,
+              "button-toggle": true
+            }}
+            onClick={this.handleToggle}
+          >
             <i className={toggleIcon} aria-hidden="true" />
-          </div>
+          </Components.Button>
         </div>
         <div className={toggleClassNames}>
           {nonActiveButtons.map((button, key) => (

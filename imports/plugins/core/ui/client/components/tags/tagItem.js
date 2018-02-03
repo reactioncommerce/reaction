@@ -7,6 +7,7 @@ import "velocity-animate/velocity.ui";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import { Button, Handle } from "/imports/plugins/core/ui/client/components";
+import { Router } from "@reactioncommerce/reaction-router";
 import { SortableItem } from "../../containers";
 
 class TagItem extends Component {
@@ -175,10 +176,18 @@ class TagItem extends Component {
       "full-width": this.props.fullWidth
     });
 
+    const url = Router.pathFor("tag", {
+      hash: {
+        slug: this.props.tag.slug
+      }
+    });
+
     return (
       <a
         className={baseClassName}
-        href="#"
+        href={url}
+        onFocus={this.handleTagMouseOver}
+        onBlur={this.handleTagMouseOut}
         onMouseOut={this.handleTagMouseOut}
         onMouseOver={this.handleTagMouseOver}
         onClick={this.handleClick}

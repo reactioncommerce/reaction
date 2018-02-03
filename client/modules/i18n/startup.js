@@ -128,6 +128,9 @@ Meteor.startup(() => {
             // data-i18n attributes in html/template source.
             $("[data-i18n]").localize();
 
+            // Set language prop on html element
+            $("html").prop("lang", language);
+
             // apply language direction to html
             if (i18next.dir(language) === "rtl") {
               return $("html").addClass("rtl");

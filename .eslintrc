@@ -1,8 +1,8 @@
 {
   "parser": "babel-eslint",
-  // "extends": [
-  //   "plugin:jsx-a11y/recommended"
-  // ],
+  "extends": [
+    "plugin:jsx-a11y/recommended"
+  ],
   "env": {
     "browser": true,
     "es6": true,

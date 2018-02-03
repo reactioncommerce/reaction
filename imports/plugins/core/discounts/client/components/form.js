@@ -4,6 +4,7 @@ import debounce from "lodash/debounce";
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 export default class DiscountForm extends Component {
   constructor(props) {
@@ -49,9 +50,16 @@ export default class DiscountForm extends Component {
   // handle apply
   renderApplied() {
     return (
-      <a onClick={this.handleClick}>
-        <Translation defaultValue="Discount submitted." i18nKey="discounts.submitted"/>
-      </a>
+      <Components.Button
+        className={{
+          "btn": false,
+          "btn-default": false
+        }}
+        tagName="span"
+        label="Discount submitted."
+        i18nKeyLabel="discounts.submitted"
+        onClick={this.handleClick}
+      />
     );
   }
 
@@ -110,7 +118,6 @@ export default class DiscountForm extends Component {
         </label>
         <div className="input-group">
           <input
-            autoFocus
             onChange={this.handleChange}
             onKeyDown={this.handleChange}
             className="form-control"
@@ -127,9 +134,16 @@ export default class DiscountForm extends Component {
   // have a code link
   renderDiscountLink() {
     return (
-      <a onClick={this.handleClick}>
-        <Translation defaultValue="Have a code? Enter it here." i18nKey="discounts.enterItHere"/>
-      </a>
+      <Components.Button
+        className={{
+          "btn": false,
+          "btn-default": false
+        }}
+        tagName="span"
+        label="Have a code? Enter it here."
+        i18nKeyLabel="discounts.enterItHere"
+        onClick={this.handleClick}
+      />
     );
   }
 

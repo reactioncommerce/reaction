@@ -38,6 +38,11 @@ class SortableTablePagination extends Component {
     }
   }
 
+  handlePageSizeChange = (event) => {
+    const { onPageSizeChange } = this.props;
+    onPageSizeChange && onPageSizeChange(Number(event.target.value));
+  }
+
   applyPage(e) {
     e && e.preventDefault();
     const { page } = this.state;
@@ -56,7 +61,6 @@ class SortableTablePagination extends Component {
       showPageJump,
       canPrevious,
       canNext,
-      onPageSizeChange,
       className,
       PreviousComponent = PaginationButtons,
       NextComponent = PaginationButtons
@@ -98,7 +102,8 @@ class SortableTablePagination extends Component {
           {showPageSizeOptions &&
             <span className="select-wrap -pageSizeOptions">
               <select
-                onChange={(e) => onPageSizeChange(Number(e.target.value))}
+                onBlur={this.handlePageSizeChange}
+                onChange={this.handlePageSizeChange}
                 value={pageSize}
               >
                 {pageSizeOptions.map((option, i) => (

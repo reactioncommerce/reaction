@@ -35,18 +35,34 @@ class EmailTableColumn extends Component {
         return (
           <span>
             <Components.Icon icon="fa fa-circle" className="valid" />
-            <span onClick={this.handleAction} title={this.props.data}>
+            <Components.Button
+              className={{
+                "btn": false,
+                "btn-default": false
+              }}
+              tagName="span"
+              onClick={this.handleAction}
+              title={this.props.data}
+            >
               <Components.Icon icon="fa fa-retweet" className="resend-mail" />
-            </span>
+            </Components.Button>
           </span>
         );
       }
       return (
         <span>
           <Components.Icon icon="fa fa-circle" className="error" />
-          <span onClick={this.handleAction} title={this.props.data}>
+          <Components.Button
+            className={{
+              "btn": false,
+              "btn-default": false
+            }}
+            tagName="span"
+            onClick={this.handleAction}
+            title={this.props.data}
+          >
             <Components.Icon icon="fa fa-retweet" className="resend-mail" />
-          </span>
+          </Components.Button>
         </span>
       );
     }

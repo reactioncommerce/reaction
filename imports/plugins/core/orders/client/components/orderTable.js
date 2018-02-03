@@ -188,11 +188,11 @@ class OrderTable extends Component {
   renderOrderCard(order) {
     return (
       <div className="rui card order">
-        <div className="content" onClick={() => this.props.handleClick(order, false)}>
+        <div className="content" onClick={() => this.props.handleClick(order, false)} role="presentation">
           {this.renderShipmentInfo(order)}
           {this.renderOrderInfo(order)}
         </div>
-        <div className="controls" onClick={() => this.props.handleClick(order)}>
+        <div className="controls" onClick={() => this.props.handleClick(order)} role="presentation">
           {this.renderOrderButton(order)}
         </div>
       </div>

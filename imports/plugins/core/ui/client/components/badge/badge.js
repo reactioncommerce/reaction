@@ -4,50 +4,24 @@ import classnames from "classnames/dedupe";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class Badge extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      tooltipOpen: false
-    };
-
-    this.handleButtonMouseOver = this.handleButtonMouseOver.bind(this);
-    this.handleButtonMouseOut = this.handleButtonMouseOut.bind(this);
-  }
+  state = {
+    tooltipOpen: false
+  };
 
   get isTooltipOpen() {
     return this.state.tooltipOpen;
   }
 
-  handleButtonMouseOver() {
+  handleMouseOver = () => {
     this.setState({
       tooltipOpen: !!this.props.tooltip
     });
   }
 
-  handleButtonMouseOut() {
+  handleMouseOut = () => {
     this.setState({
       tooltipOpen: false
     });
-  }
-
-  handleClick = (event) => {
-    if (this.props.tagName === "a") {
-      event.preventDefault();
-    }
-
-    // If this is a toogle button, and has a onToggle callback function
-    if (this.props.toggle && this.props.onToggle) {
-      if (this.props.toggleOn) {
-        // If toggleOn is true, return the toggleOn value, or true
-        this.props.onToggle(event, this.props.onValue || true);
-      } else {
-        // Otherwise return the value prop, or false
-        this.props.onToggle(event, this.props.value || false);
-      }
-    } else if (this.props.onClick) {
-      this.props.onClick(event, this.props.value);
-    }
   }
 
   renderTooltipContent() {
@@ -110,9 +84,10 @@ class Badge extends Component {
     if (tooltip) {
       return (
         <span
-          onMouseOut={this.handleButtonMouseOut}
-          onMouseOver={this.handleButtonMouseOver}
-          onClick={this.handleClick}
+          onFocus={this.handleMouseOver}
+          onBlur={this.handleMouseOut}
+          onMouseOut={this.handleMouseOut}
+          onMouseOver={this.handleMouseOver}
         >
           <Components.Tooltip
             attachment={tooltipAttachment} tooltipContent={this.renderTooltipContent()}
@@ -140,16 +115,9 @@ Badge.propTypes = {
   i18nKeyTooltip: PropTypes.string,
   indicator: PropTypes.bool,
   label: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  onClick: PropTypes.func,
-  onToggle: PropTypes.func,
-  onValue: PropTypes.any,
   status: PropTypes.string,
-  tagName: PropTypes.string,
-  toggle: PropTypes.bool,
-  toggleOn: PropTypes.bool,
   tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.node]),
-  tooltipAttachment: PropTypes.string,
-  value: PropTypes.any
+  tooltipAttachment: PropTypes.string
 };
 
 Badge.defaultProps = {

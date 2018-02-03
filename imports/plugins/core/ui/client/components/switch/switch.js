@@ -15,6 +15,7 @@ class Switch extends Component {
     i18nKeyHelpText: PropTypes.string,
     i18nKeyLabel: PropTypes.string,
     i18nKeyOnLabel: PropTypes.string,
+    id: PropTypes.string,
     label: PropTypes.string,
     name: PropTypes.string,
     onChange: PropTypes.func,
@@ -100,6 +101,8 @@ class Switch extends Component {
   }
 
   render() {
+    const { id } = this.props;
+
     const baseClassName = classnames({
       rui: true,
       switch: true,
@@ -113,8 +116,9 @@ class Switch extends Component {
 
     return (
       <span>
-        <label className={baseClassName}>
+        <label className={baseClassName} htmlFor={id}>
           <input
+            id={id}
             checked={this.props.checked}
             onChange={this.handleChange}
             ref={this.checkboxRef}

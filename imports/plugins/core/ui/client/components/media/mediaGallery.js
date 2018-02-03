@@ -48,8 +48,18 @@ class MediaGallery extends Component {
   renderAddItem() {
     if (this.props.editable) {
       return (
-        <div
-          className="gallery-image add"
+        <Components.Button
+          className={{
+            // Disable default button class names
+            "flat": false,
+            "btn": false,
+            "btn-default": false,
+
+            // Media gallery class names
+            "gallery-image": true,
+            "add": true
+          }}
+          tagName="div"
           onClick={this.handleDropClick}
         >
           <img
@@ -60,7 +70,7 @@ class MediaGallery extends Component {
           <div className="rui badge-container">
             <i className="fa fa-plus fa-2x" />
           </div>
-        </div>
+        </Components.Button>
       );
     }
 
