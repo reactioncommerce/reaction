@@ -490,7 +490,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
             const newHandle = modifier.$set.handle;
 
             // Current revision data
-            const documentId = productRevision.documentId;
+            const { documentId } = productRevision;
             const slugDocId = getSlug(documentId);
             const revisionTitle = productRevision.documentData.title;
             const revisionHandle = productRevision.documentData.handle;

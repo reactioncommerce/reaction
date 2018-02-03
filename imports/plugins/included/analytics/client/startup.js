@@ -150,9 +150,7 @@ Meteor.startup(() => {
       return Alerts.removeType("analytics-not-configured");
     }
 
-    const googleAnalytics = coreAnalytics.settings.public.googleAnalytics;
-    const mixpanel = coreAnalytics.settings.public.mixpanel;
-    const segmentio = coreAnalytics.settings.public.segmentio;
+    const { googleAnalytics, mixpanel, segmentio } = coreAnalytics.settings.public;
 
     //
     // segment.io

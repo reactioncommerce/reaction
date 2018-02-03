@@ -100,7 +100,7 @@ AutoForm.addHooks("stripe-payment-form", {
   onSubmit(doc) {
     submitting = true;
     hidePaymentAlert();
-    const template = this.template;
+    const { template } = this;
     const cart = Cart.findOne({ userId: Meteor.userId() });
 
     // validate card data

@@ -103,7 +103,7 @@ class PublishControls extends Component {
   }
 
   get primaryRevision() {
-    const revisions = this.props.revisions;
+    const { revisions } = this.props;
     if (Array.isArray(revisions) && revisions.length) {
       const primaryDocumentId = this.props.documentIds[0];
       return revisions.find((revision) => revision.documentId === primaryDocumentId);
@@ -132,9 +132,9 @@ class PublishControls extends Component {
 
   get isVisible() {
     if (Array.isArray(this.props.revisions) && this.props.revisions.length && this.primaryRevision) {
-      const primaryRevision = this.primaryRevision;
+      const primaryRevisionObj = this.primaryRevision;
 
-      if (primaryRevision.documentData.isVisible) {
+      if (primaryRevisionObj.documentData.isVisible) {
         return "public";
       }
     } else if (Array.isArray(this.props.documents) && this.props.documents.length) {

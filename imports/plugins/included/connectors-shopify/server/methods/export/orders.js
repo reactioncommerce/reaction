@@ -225,7 +225,7 @@ export async function exportToShopify(doc) {
   const shopifyOrders = [];
   for (let index = 0; index < numShopOrders; index += 1) {
     // send a shopify order once for each merchant order
-    const shopId = doc.billing[index].shopId;
+    const { shopId } = doc.billing[index];
     const apiCreds = getApiInfo(shopId);
     const shopify = new Shopify(apiCreds);
     const existingCustomerQuery = await isExistingCustomer(doc.billing[index].address, doc.email, shopify); // eslint-disable-line no-await-in-loop
