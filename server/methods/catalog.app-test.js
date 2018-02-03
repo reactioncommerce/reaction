@@ -170,7 +170,7 @@ describe("core product methods", function () {
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       const product = addProduct();
-      const variant = Products.find({ ancestors: [product._id] }).fetch()[0];
+      const variant = Products.findOne({ ancestors: [product._id] });
       variant["title"] = "Updated Title";
       variant["price"] = 7;
       const updateProductSpy = sandbox.stub(Products, "update");
@@ -181,11 +181,11 @@ describe("core product methods", function () {
     it("should not update individual variant by admin passing in full object", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
-      let variant = Products.find({ ancestors: [product._id] }).fetch()[0];
+      let variant = Products.findOne({ ancestors: [product._id] });
       variant["title"] = "Updated Title";
       variant["price"] = 7;
       Meteor.call("products/updateVariant", variant);
-      [variant] = Products.find({ ancestors: [product._id] }).fetch();
+      variant = Products.findOne({ ancestors: [product._id] });
       expect(variant.price).to.not.equal(7);
       expect(variant.title).to.not.equal("Updated Title");
 
@@ -209,7 +209,7 @@ describe("core product methods", function () {
     it("should not update individual variant by admin passing in partial object", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
-      const variant = Products.find({ ancestors: [product._id] }).fetch()[0];
+      const variant = Products.findOne({ ancestors: [product._id] });
       Meteor.call("products/updateVariant", {
         _id: variant._id,
         title: "Updated Title",

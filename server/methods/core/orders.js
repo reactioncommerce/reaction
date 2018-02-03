@@ -312,10 +312,8 @@ export const methods = {
     // this is server side check to verify
     // that the math all still adds up.
     const shopId = Reaction.getShopId();
-    const subTotal = invoice.subtotal;
-    const { shipping, taxes } = invoice;
-    const discount = invoice.discounts;
-    const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
+    const { discounts, shipping, subtotal, taxes } = invoice;
+    const discountTotal = Math.max(0, subtotal - discounts); // ensure no discounting below 0.
     const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
 
     // Updates flattened inventory count on variants in Products collection
@@ -330,7 +328,7 @@ export const methods = {
         "billing.$.paymentMethod.amount": total,
         "billing.$.paymentMethod.status": "approved",
         "billing.$.paymentMethod.mode": "capture",
-        "billing.$.invoice.discounts": discount,
+        "billing.$.invoice.discounts": discounts,
         "billing.$.invoice.total": Number(total)
       }
     });

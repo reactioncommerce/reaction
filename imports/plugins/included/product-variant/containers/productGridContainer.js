@@ -80,7 +80,7 @@ const wrapComponent = (Comp) => (
       // Save the selected items to the Session
       Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
-      const products = this.products;
+      const { products } = this;
 
       if (products) {
         const filteredProducts = _.filter(products, (product) => _.includes(selectedProducts, product._id));

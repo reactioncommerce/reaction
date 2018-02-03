@@ -9,7 +9,7 @@ export function getTwitterMeta(props) {
   const title = props.title || document.title;
   const preferredUrl = props.url || location.origin + location.pathname;
   const url = encodeURIComponent(preferredUrl);
-  const { username, description } = props.settings.username;
+  const { username, description } = props.settings;
 
   const meta = [
     { property: "twitter:card", content: "summary" },
