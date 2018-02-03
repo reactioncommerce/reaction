@@ -8,7 +8,8 @@ import { Reaction, i18next, Logger } from "/client/api";
 import Alerts from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 
 // Create a queue, but don't obliterate an existing one!
-const analytics = window.analytics = window.analytics || [];
+window.analytics = window.analytics || [];
+const [analytics] = window;
 
 // If the real analytics.js is already on the page return.
 if (analytics.initialize) return;
@@ -68,8 +69,7 @@ function loadGoogleAnalyticsScript() {
 // for it to load to actually record data. The `method` is
 // stored as the first argument, so we can replay the data.
 analytics.factory = function (method) {
-  return function () {
-    const args = Array.prototype.slice.call(arguments);
+  return function (...args) {
     args.unshift(method);
     analytics.push(args);
     return analytics;
@@ -77,7 +77,7 @@ analytics.factory = function (method) {
 };
 
 // For each of our methods, generate a queueing stub.
-for (let i = 0; i < analytics.methods.length; i++) {
+for (let i = 0; i < analytics.methods.length; i += 1) {
   const key = analytics.methods[i];
   analytics[key] = analytics.factory(key);
 }
@@ -85,8 +85,8 @@ for (let i = 0; i < analytics.methods.length; i++) {
 // Define a method to load Analytics.js from our CDN,
 // and that will be sure to only ever load it once.
 analytics.load = function (key) {
-  buildScript((document.location.protocol === "https:" ? "https://" : "http://") +
-    "cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js");
+  const protocol = document.location.protocol === "https:" ? "https://" : "http://";
+  buildScript(`${protocol}cdn.segment.com/analytics.js/v1/${key}/analytics.min.js`);
 };
 
 // Add a version to keep track of what"s in the wild.
@@ -150,9 +150,7 @@ Meteor.startup(() => {
       return Alerts.removeType("analytics-not-configured");
     }
 
-    const googleAnalytics = coreAnalytics.settings.public.googleAnalytics;
-    const mixpanel = coreAnalytics.settings.public.mixpanel;
-    const segmentio = coreAnalytics.settings.public.segmentio;
+    const { googleAnalytics, mixpanel, segmentio } = coreAnalytics.settings.public;
 
     //
     // segment.io
@@ -161,15 +159,13 @@ Meteor.startup(() => {
       if (segmentio.api_key && analytics.invoked === true) {
         analytics.load(segmentio.api_key);
       } else if (!segmentio.api_key && Reaction.hasAdminAccess()) {
-        _.defer(() => {
-          return Alerts.toast(
-            `${i18next.t("admin.settings.segmentNotConfigured")}`,
-            "danger", {
-              html: true,
-              sticky: true
-            }
-          );
-        });
+        _.defer(() => Alerts.toast(
+          `${i18next.t("admin.settings.segmentNotConfigured")}`,
+          "danger", {
+            html: true,
+            sticky: true
+          }
+        ));
       }
     }
 
@@ -181,16 +177,14 @@ Meteor.startup(() => {
         loadGoogleAnalyticsScript()
           .then(() => ga("create", googleAnalytics.api_key, "auto"));
       } else if (!googleAnalytics.api_key && Reaction.hasAdminAccess()) {
-        _.defer(() => {
-          return Alerts.toast(
-            `${i18next.t("admin.settings.googleAnalyticsNotConfigured")}`,
-            "error", {
-              type: "analytics-not-configured",
-              html: true,
-              sticky: true
-            }
-          );
-        });
+        _.defer(() => Alerts.toast(
+          `${i18next.t("admin.settings.googleAnalyticsNotConfigured")}`,
+          "error", {
+            type: "analytics-not-configured",
+            html: true,
+            sticky: true
+          }
+        ));
       }
     }
 
@@ -201,16 +195,14 @@ Meteor.startup(() => {
       if (mixpanel.api_key) {
         mixpanel.init(mixpanel.api_key);
       } else if (!mixpanel.api_key && Reaction.hasAdminAccess()) {
-        _.defer(() => {
-          return Alerts.toast(
-            `${i18next.t("admin.settings.mixpanelNotConfigured")}`,
-            "error", {
-              type: "analytics-not-configured",
-              html: true,
-              sticky: true
-            }
-          );
-        });
+        _.defer(() => Alerts.toast(
+          `${i18next.t("admin.settings.mixpanelNotConfigured")}`,
+          "error", {
+            type: "analytics-not-configured",
+            html: true,
+            sticky: true
+          }
+        ));
       }
     }
 

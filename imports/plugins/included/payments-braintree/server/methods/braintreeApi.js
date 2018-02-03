@@ -126,7 +126,7 @@ BraintreeApi.apiCall.paymentSubmit = function (paymentSubmitDetails) {
 
 
 BraintreeApi.apiCall.captureCharge = function (paymentCaptureDetails) {
-  const transactionId = paymentCaptureDetails.transactionId;
+  const { transactionId } = paymentCaptureDetails;
   const amount = accounting.toFixed(paymentCaptureDetails.amount, 2);
   const gateway = getGateway();
   const fut = new Future();
@@ -170,8 +170,7 @@ BraintreeApi.apiCall.captureCharge = function (paymentCaptureDetails) {
 
 
 BraintreeApi.apiCall.createRefund = function (refundDetails) {
-  const transactionId = refundDetails.transactionId;
-  const amount = refundDetails.amount;
+  const { amount, transactionId } = refundDetails;
   const gateway = getGateway();
   const fut = new Future();
   gateway.transaction.refund(transactionId, amount, Meteor.bindEnvironment((error, result) => {
@@ -206,7 +205,7 @@ BraintreeApi.apiCall.createRefund = function (refundDetails) {
 
 
 BraintreeApi.apiCall.listRefunds = function (refundListDetails) {
-  const transactionId = refundListDetails.transactionId;
+  const { transactionId } = refundListDetails;
   const gateway = getGateway();
   const braintreeFind = Meteor.wrapAsync(gateway.transaction.find, gateway.transaction);
   const findResults = braintreeFind(transactionId);

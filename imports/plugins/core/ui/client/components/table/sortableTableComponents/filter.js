@@ -4,11 +4,6 @@ import { TextField } from "@reactioncommerce/reaction-ui";
 
 
 class SortableTableFilter extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-
   render() {
     return (
       <TextField

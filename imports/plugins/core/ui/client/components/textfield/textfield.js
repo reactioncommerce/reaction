@@ -194,7 +194,7 @@ class TextField extends Component {
   renderHelpText() {
     const helpMode = this.isHelpMode;
     const message = this.validationMessage;
-    let helpText = this.props.helpText;
+    let { helpText } = this.props;
     let i18nKey = this.props.i18nKeyHelpText;
 
     if (this.isValid === false && message) {

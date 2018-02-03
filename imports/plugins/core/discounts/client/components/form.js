@@ -98,14 +98,12 @@ export default class DiscountForm extends Component {
       loader = <Translation defaultValue={validationMessage.i18nKeyLabel} i18nKey={validationMessage.i18nKey}/>;
     } else if (validationMessage) {
       loader = <i className="fa fa-ellipsis-h fa-fw"/>;
+    } else if (discount && discount.length >= 10 && attempts >= 12) {
+      loader = <i className="fa fa-stop-circle fa-fw"/>;
+    } else if (discount && discount.length >= 2 && attempts >= 2) {
+      loader = <i className="fa fa-circle-o-notch fa-spin fa-fw"/>;
     } else {
-      if (discount && discount.length >= 10 && attempts >= 12) {
-        loader = <i className="fa fa-stop-circle fa-fw"/>;
-      } else if (discount && discount.length >= 2 && attempts >= 2) {
-        loader = <i className="fa fa-circle-o-notch fa-spin fa-fw"/>;
-      } else {
-        loader = <i className="fa fa-search fa-fw"/>;
-      }
+      loader = <i className="fa fa-search fa-fw"/>;
     }
 
     return loader;

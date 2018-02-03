@@ -100,7 +100,7 @@ AutoForm.addHooks("stripe-payment-form", {
   onSubmit(doc) {
     submitting = true;
     hidePaymentAlert();
-    const template = this.template;
+    const { template } = this;
     const cart = Cart.findOne({ userId: Meteor.userId() });
 
     // validate card data
@@ -147,15 +147,13 @@ AutoForm.addHooks("stripe-payment-form", {
         if (error) {
           handleStripeSubmitError(error);
           uiEnd(template, "Resubmit payment");
+        } else if (result.success) {
+          Router.go("cart/completed", {}, {
+            _id: cart._id
+          });
         } else {
-          if (result.success) {
-            Router.go("cart/completed", {}, {
-              _id: cart._id
-            });
-          } else {
-            handleStripeSubmitError(result.error);
-            uiEnd(template, "Resubmit payment");
-          }
+          handleStripeSubmitError(result.error);
+          uiEnd(template, "Resubmit payment");
         }
       }
     });

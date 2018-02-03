@@ -5,6 +5,7 @@ import * as Utils from "./helpers/utils";
 import { Subscriptions } from "./subscriptions";
 
 import Log from "/client/modules/logger";
+import { DOM } from "/imports/plugins/core/dom/client";
 import { Router } from "/client/modules/router";
 
 import * as Collections from "/lib/collections";
@@ -18,6 +19,7 @@ export const Reaction = Object.assign(
   Utils,
   { Subscriptions },
   { Log },
+  { DOM },
   { Router },
   { Collections },
   { Schemas }

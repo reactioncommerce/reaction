@@ -13,7 +13,7 @@ import { SortableItem } from "../../containers";
 class TagItem extends Component {
   componentWillReceiveProps(nextProps) {
     if (this._updated && this._saved && this.refs.autoSuggestInput) {
-      const input = this.refs.autoSuggestInput.input;
+      const { input } = this.refs.autoSuggestInput;
 
       Velocity.RunSequence([
         { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },

@@ -9,7 +9,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 export function getOpenGraphMeta(props) {
   const url = props.url || location.origin + location.pathname;
   const title = props.title || document.title;
-  const description = props.settings.description;
+  const { description } = props.settings;
 
   const meta = [
     { property: "og:type", content: "article" },
@@ -40,20 +40,17 @@ class FacebookSocialButton extends Component {
     if (window && document) {
       $('<div id="fb-root"></div>').appendTo("body");
 
-      window.fbAsyncInit = () => {
-        return FB.init({
-          appId: this.props.settings.appId,
-          xfbml: true,
-          version: this.props.settings.version || "v2.7"
-        });
-      };
+      window.fbAsyncInit = () => FB.init({
+        appId: this.props.settings.appId,
+        xfbml: true,
+        version: this.props.settings.version || "v2.7"
+      });
       (function (d, s, id) {
-        let js = void 0;
         const fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {
           return;
         }
-        js = d.createElement(s);
+        const js = d.createElement(s);
         js.id = id;
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);

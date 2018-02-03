@@ -69,7 +69,7 @@ Meteor.startup(() => {
         _id: shopId
       });
 
-      let language = shop && shop.language || "en";
+      let language = (shop && shop.language) || "en";
 
       if (Meteor.user() && Meteor.user().profile && Meteor.user().profile.lang) {
         language = Meteor.user().profile.lang;

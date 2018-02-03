@@ -114,6 +114,7 @@ class MediaGallery extends Component {
             </Measure>
           );
         }
+        return null;
       });
     }
 
@@ -124,21 +125,19 @@ class MediaGallery extends Component {
 
   renderMediaThumbnails() {
     if (this.hasMedia) {
-      return this.props.media.map((media, index) => {
-        return (
-          <Components.MediaItem
-            editable={this.props.editable}
-            index={index}
-            key={index}
-            revision={media.revision}
-            metadata={media.metadata}
-            onMouseEnter={this.props.onMouseEnterMedia}
-            onMove={this.props.onMoveMedia}
-            onRemoveMedia={this.props.onRemoveMedia}
-            source={media}
-          />
-        );
-      });
+      return this.props.media.map((media, index) => (
+        <Components.MediaItem
+          editable={this.props.editable}
+          index={index}
+          key={index}
+          revision={media.revision}
+          metadata={media.metadata}
+          onMouseEnter={this.props.onMouseEnterMedia}
+          onMove={this.props.onMoveMedia}
+          onRemoveMedia={this.props.onRemoveMedia}
+          source={media}
+        />
+      ));
     }
     return null;
   }
@@ -167,7 +166,7 @@ class MediaGallery extends Component {
           accept="image/jpg, image/png, image/jpeg"
         >
           <div className="rui gallery">
-            <div className={classnames(classes)} style={{ height: containerWidth + "px" }}>
+            <div className={classnames(classes)} style={{ height: `${containerWidth}px` }}>
               {featured}
             </div>
             <div className="rui gallery-thumbnails">
@@ -187,7 +186,7 @@ class MediaGallery extends Component {
     return (
       <div className="rui media-gallery">
         <div className="rui gallery">
-          <div className={classnames(classes)} style={{ height: containerWidth + "px" }}>
+          <div className={classnames(classes)} style={{ height: `${containerWidth}px` }}>
             {this.renderFeaturedMedia()}
           </div>
           <div className="rui gallery-thumbnails">

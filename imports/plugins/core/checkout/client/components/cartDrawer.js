@@ -9,20 +9,18 @@ const CartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, h
         <div className="cart-drawer-swiper-slide">
           <Components.CartSubTotal />
         </div>
-        {productItems.map(item => {
-          return (
-            <div className="cart-drawer-swiper-slide" key={item._id}>
-              <Components.CartItems
-                item={item}
-                pdpPath={pdpPath}
-                handleLowInventory={handleLowInventory}
-                handleImage={handleImage}
-                handleRemoveItem={handleRemoveItem}
-                handleShowProduct={handleShowProduct}
-              />
-            </div>
-          );
-        })}
+        {productItems.map((item) => (
+          <div className="cart-drawer-swiper-slide" key={item._id}>
+            <Components.CartItems
+              item={item}
+              pdpPath={pdpPath}
+              handleLowInventory={handleLowInventory}
+              handleImage={handleImage}
+              handleRemoveItem={handleRemoveItem}
+              handleShowProduct={handleShowProduct}
+            />
+          </div>
+        ))}
       </div>
     </div>
     <div className="cart-drawer-pagination" />

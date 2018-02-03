@@ -44,7 +44,7 @@ Template.accountsDashboard.helpers({
       if (instance.subscriptionsReady()) {
         const shopUsers = Meteor.users.find();
 
-        return shopUsers.map(user => {
+        return shopUsers.map((user) => {
           const member = {};
 
           // Querying the Accounts collection to retrieve user's name because

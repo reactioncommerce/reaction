@@ -8,7 +8,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 export function getGooglePlusMeta(props) {
   const preferredUrl = props.url || location.origin + location.pathname;
   const url = encodeURIComponent(preferredUrl);
-  const description = props.settings.description;
+  const { description } = props.settings;
 
   const meta = [
     { property: "itemprop:name", content: location.hostname },
@@ -40,10 +40,10 @@ class GooglePlusSocialButton extends Component {
   }
 
   get url() {
-    const props = this.props;
+    const { props } = this;
     const preferredUrl = props.url || location.origin + location.pathname;
     const url = encodeURIComponent(preferredUrl);
-    const href = "https://plus.google.com/share?url=" + url;
+    const href = `https://plus.google.com/share?url=${url}`;
 
     return href;
   }

@@ -1,4 +1,4 @@
-import { composeWithTracker, registerComponent } from  "@reactioncommerce/reaction-components";
+import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
 import { Reaction } from "/client/api";

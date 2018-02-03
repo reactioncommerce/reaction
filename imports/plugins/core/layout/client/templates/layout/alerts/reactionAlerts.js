@@ -58,9 +58,9 @@ Object.assign(Alerts, {
    * Alerts.alert("title", "message", {}, callbackFunction);
    * // - OR, for more control -
    * Alerts.alert({
-   * 	title: "Title",
-   * 	text: "Message Text",
-   * 	type: "success|info|warning|error|"
+   *   title: "Title",
+   *   text: "Message Text",
+   *   type: "success|info|warning|error|"
    * }, callbackFunction);
    *
    * @param  {string|object} titleOrOptions Pass a string or an object containing options
@@ -79,7 +79,7 @@ Object.assign(Alerts, {
         if (isConfirm === true && typeof messageOrCallback === "function") {
           messageOrCallback(isConfirm, false);
         }
-      }, dismiss => {
+      }, (dismiss) => {
         if (dismiss === "cancel" || dismiss === "esc" || dismiss === "overlay") {
           messageOrCallback(false, dismiss);
         }

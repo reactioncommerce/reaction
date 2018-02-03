@@ -81,7 +81,7 @@ class Switch extends Component {
    */
   renderHelpText() {
     const helpMode = this.isHelpMode;
-    const helpText = this.props.helpText;
+    const { helpText } = this.props;
     const i18nKey = this.props.i18nKeyHelpText;
 
     // Show if helpMode is true
