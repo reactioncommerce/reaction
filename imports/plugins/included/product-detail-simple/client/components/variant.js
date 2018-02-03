@@ -119,11 +119,9 @@ class Variant extends Component {
     let invalidVariant;
 
     if (variants) {
-      validationStatus = variants.map((variant) => {
-        return this.validation.validate(variant);
-      });
+      validationStatus = variants.map((variant) => this.validation.validate(variant));
 
-      invalidVariant = validationStatus.filter(status => status.isValid === false);
+      invalidVariant = validationStatus.filter((status) => status.isValid === false);
     }
 
     const selfValidation = this.validation.validate(this.props.variant);

@@ -34,7 +34,7 @@ MethodHooks.after("taxes/calculate", (options) => {
       // for multi-vendor/shop orders
       if (shop.addressBook) {
         const shopAddress = shop.addressBook[0];
-        origin =  {
+        origin = {
           Address1: shopAddress.address1,
           City: shopAddress.city,
           State: shopAddress.region,
@@ -73,7 +73,7 @@ MethodHooks.after("taxes/calculate", (options) => {
                   Price: items.variants.price,
                   Qty: items.quantity
                 };
-                index++;
+                index += 1;
                 cartItems.push(item);
               }
             }

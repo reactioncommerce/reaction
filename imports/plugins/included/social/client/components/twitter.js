@@ -49,10 +49,10 @@ class TwitterSocialButton extends Component {
     const base = "https://twitter.com/intent/tweet";
     const { username, description } = props.settings;
 
-    let href = base + "?url=" + url + "&text=" + description;
+    let href = `${base}?url=${url}&text=${description}`;
 
     if (username) {
-      href += "&via=" + username;
+      href += `&via=${username}`;
     }
 
     return href;

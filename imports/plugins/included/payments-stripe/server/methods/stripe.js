@@ -158,21 +158,19 @@ function buildPaymentMethods(options) {
   }
 
   const shopIds = Object.keys(transactionsByShopId);
-  const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + cardData.number.slice(-4);
+  const storedCard = `${cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1)} ${cardData.number.slice(-4)}`;
   const paymentMethods = [];
 
 
   shopIds.forEach((shopId) => {
     if (transactionsByShopId[shopId]) {
-      const cartItems = cartItemsByShop[shopId].map((item) => {
-        return {
-          _id: item._id,
-          productId: item.productId,
-          variantId: item.variants._id,
-          shopId,
-          quantity: item.quantity
-        };
-      });
+      const cartItems = cartItemsByShop[shopId].map((item) => ({
+        _id: item._id,
+        productId: item.productId,
+        variantId: item.variants._id,
+        shopId,
+        quantity: item.quantity
+      }));
 
       // we need to grab this per shop to get the API key
       const packageData = Packages.findOne({
@@ -408,7 +406,7 @@ export const methods = {
         };
       }
       // If we get an unexpected error, log and return a censored error message
-      Logger.error("Received unexpected error type: " + error.rawType);
+      Logger.error(`Received unexpected error type: ${error.rawType}`);
       Logger.error(error);
       throw new Meteor.Error("server-error", "An unexpected error occurred while creating multiple stripe charges");
     }

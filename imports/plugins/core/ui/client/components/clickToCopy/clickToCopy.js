@@ -21,7 +21,7 @@ class ClickToCopy extends Component {
 
   handleCtcMouseOver() {
     this.setState({
-      tooltipOpen: this.props.tooltip ? true : false
+      tooltipOpen: !!this.props.tooltip
     });
   }
 

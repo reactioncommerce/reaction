@@ -106,14 +106,14 @@ class PublishControls extends Component {
     const revisions = this.props.revisions;
     if (Array.isArray(revisions) && revisions.length) {
       const primaryDocumentId = this.props.documentIds[0];
-      return revisions.find(revision => revision.documentId === primaryDocumentId);
+      return revisions.find((revision) => revision.documentId === primaryDocumentId);
     }
     return false;
   }
 
   get revisionIds() {
     if (this.hasRevisions) {
-      return this.props.revisions.map(revision => revision._id);
+      return this.props.revisions.map((revision) => revision._id);
     }
     return false;
   }
@@ -160,7 +160,7 @@ class PublishControls extends Component {
         // We probably do have chnages to publish
         // Note: Sometimes "updatedAt" will cause false positives, but just incase, lets
         // enable the publish button anyway.
-        if (Array.isArray(revision.diff) && revision.diff.length || revision.documentType !== "product") {
+        if ((Array.isArray(revision.diff) && revision.diff.length) || revision.documentType !== "product") {
           return true;
         }
 
@@ -169,9 +169,7 @@ class PublishControls extends Component {
       });
 
       // If even one revision has changes we should enable the publish button
-      return diffHasActualChanges.some((element) => {
-        return element === true;
-      });
+      return diffHasActualChanges.some((element) => element === true);
     }
 
     // No revisions, no publishing
@@ -180,9 +178,7 @@ class PublishControls extends Component {
 
   renderChanges() {
     if (this.showDiffs) {
-      const diffs = this.props.revisions.map((revision) => {
-        return <SimpleDiff diff={revision.diff} key={revision._id} />;
-      });
+      const diffs = this.props.revisions.map((revision) => <SimpleDiff diff={revision.diff} key={revision._id} />);
 
       return (
         <div>

@@ -65,7 +65,7 @@ describe("Server/Core", function () {
       expect(Tags.insert).not.to.have.been.called;
     });
 
-    it("should create new tag", done => {
+    it("should create new tag", (done) => {
       sandbox.stub(Roles, "userIsInRole", () => true);
       sandbox.spy(Tags, "insert");
       expect(Meteor.call("shop/createTag", "testTag", true)).to.be.a("string");

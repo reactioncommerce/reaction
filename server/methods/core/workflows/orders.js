@@ -38,9 +38,7 @@ Meteor.methods({
 
     const { order } = options;
 
-    const result = _.every(order.items, (item) => {
-      return _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed");
-    });
+    const result = _.every(order.items, (item) => _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed"));
 
     return result;
   }

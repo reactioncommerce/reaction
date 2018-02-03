@@ -119,7 +119,7 @@ ExampleApi.methods.refund = new ValidatedMethod({
   name: "ExampleApi.methods.refund",
   validate: new SimpleSchema({
     transactionId: { type: String },
-    amount: { type: Number, decimal: true  }
+    amount: { type: Number, decimal: true }
   }).validator(),
   run(args) {
     const transactionId = args.transactionId;

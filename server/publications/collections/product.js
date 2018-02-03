@@ -117,7 +117,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
 
     if (RevisionApi.isRevisionControlEnabled()) {
       const productCursor = Products.find(selector);
-      const productIds = productCursor.map(p => p._id);
+      const productIds = productCursor.map((p) => p._id);
 
       const handle = productCursor.observeChanges({
         added: (id, fields) => {
@@ -211,7 +211,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
 
     // Revision control is disabled, but is an admin
     const productCursor = Products.find(selector);
-    const productIds = productCursor.map(p => p._id);
+    const productIds = productCursor.map((p) => p._id);
     const mediaCursor = findProductMedia(this, productIds);
 
     return [
@@ -222,7 +222,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
 
   // Everyone else gets the standard, visible products and variants
   const productCursor = Products.find(selector);
-  const productIds = productCursor.map(p => p._id);
+  const productIds = productCursor.map((p) => p._id);
   const mediaCursor = findProductMedia(this, productIds);
 
   return [

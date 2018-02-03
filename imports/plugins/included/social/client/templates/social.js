@@ -34,7 +34,7 @@ Template.reactionSocial.helpers({
       if (socialSettings.appsOrder) {
         const { appsOrder } = socialSettings;
 
-        for (let i = 0; i < appsOrder.length; i++) {
+        for (let i = 0; i < appsOrder.length; i += 1) {
           const app = appsOrder[i];
 
           if (typeof socialSettings.apps[app] === "object" &&

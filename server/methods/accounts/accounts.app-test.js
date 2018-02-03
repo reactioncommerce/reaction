@@ -1,6 +1,6 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
-import _ from  "lodash";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { check, Match } from "meteor/check";
@@ -8,7 +8,7 @@ import { Random } from "meteor/random";
 import { Accounts as MeteorAccount } from "meteor/accounts-base";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { Accounts, Packages, Orders, Products, Shops, Cart }  from "/lib/collections";
+import { Accounts, Packages, Orders, Products, Shops, Cart } from "/lib/collections";
 import { Reaction } from "/server/api";
 import { getShop, getAddress } from "/server/imports/fixtures/shops";
 import Fixtures from "/server/imports/fixtures";
@@ -54,10 +54,10 @@ describe("Account Meteor method ", function () {
   });
 
   function spyOnMethod(method, id) {
-    return sandbox.stub(Meteor.server.method_handlers, `cart/${method}`, function () {
-      check(arguments, [Match.Any]); // to prevent audit_arguments from complaining
+    return sandbox.stub(Meteor.server.method_handlers, `cart/${method}`, function (...args) {
+      check(args, [Match.Any]); // to prevent audit_arguments from complaining
       this.userId = id;
-      return originals[method].apply(this, arguments);
+      return originals[method].apply(this, args);
     });
   }
 
@@ -211,8 +211,8 @@ describe("Account Meteor method ", function () {
     let removeInventoryStub;
 
     before(function () {
-      removeInventoryStub = sinon.stub(Meteor.server.method_handlers, "inventory/remove", function () {
-        check(arguments, [Match.Any]);
+      removeInventoryStub = sinon.stub(Meteor.server.method_handlers, "inventory/remove", function (...args) {
+        check(args, [Match.Any]);
         return true;
       });
     });
