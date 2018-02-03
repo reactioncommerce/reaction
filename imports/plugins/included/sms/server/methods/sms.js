@@ -64,14 +64,8 @@ Meteor.methods({
 
     const user = Accounts.findOne({ _id: userId });
     const addressBook = user && user.profile ? user.profile.addressBook : false;
-    let phone = false;
     // check for addressBook phone
-    if (user && addressBook) {
-      if (addressBook[0].phone) {
-        const [phoneData] = addressBook;
-        ({ phone } = phoneData);
-      }
-    }
+    const phone = (Array.isArray(addressBook) && addressBook[0] && addressBook[0].phone) || false;
 
     if (!phone) return;
 
