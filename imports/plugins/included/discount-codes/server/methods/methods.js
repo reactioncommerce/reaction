@@ -3,7 +3,7 @@ import { Match, check } from "meteor/check";
 import { Random } from "meteor/random";
 import { Reaction } from "/server/api";
 import { Cart } from "/lib/collections";
-import { Discounts } from  "/imports/plugins/core/discounts/lib/collections";
+import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
 
 // attach discount code specific schema
@@ -230,7 +230,7 @@ export const methods = {
       // existing usage count
       if (discount.transactions) {
         const users = Array.from(discount.transactions, (t) => t.userId);
-        const transactionCount = new Map([...new Set(users)].map(x => [x, users.filter(y => y === x).length]));
+        const transactionCount = new Map([...new Set(users)].map((x) => [x, users.filter((y) => y === x).length]));
         const orders = Array.from(discount.transactions, (t) => t.cartId);
         userCount = transactionCount.get(Meteor.userId());
         orderCount = orders.length;

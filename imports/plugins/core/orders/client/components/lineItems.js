@@ -328,11 +328,9 @@ class LineItems extends Component {
     const { uniqueItems } = this.props;
     return (
       <div className="invoice invoice-line-items" onClick={this.props.handlePopOverOpen}>
-        {uniqueItems.map((uniqueItem) => {
-          return (
-            <div key={uniqueItem._id}> {this.renderLineItem(uniqueItem)} </div>
-          );
-        })}
+        {uniqueItems.map((uniqueItem) => (
+          <div key={uniqueItem._id}> {this.renderLineItem(uniqueItem)} </div>
+        ))}
 
         {
           Roles.userIsInRole(Meteor.userId(), ["orders", "dashboard/orders"], Reaction.getShopId()) &&

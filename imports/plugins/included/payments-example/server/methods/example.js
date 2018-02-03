@@ -15,21 +15,13 @@ function luhnValid(x) {
   }, 0) % 10 === 0;
 }
 
-const ValidCardNumber = Match.Where((x) => {
-  return /^[0-9]{13,16}$/.test(x) && luhnValid(x);
-});
+const ValidCardNumber = Match.Where((x) => /^[0-9]{13,16}$/.test(x) && luhnValid(x));
 
-const ValidExpireMonth = Match.Where((x) => {
-  return /^[0-9]{1,2}$/.test(x);
-});
+const ValidExpireMonth = Match.Where((x) => /^[0-9]{1,2}$/.test(x));
 
-const ValidExpireYear = Match.Where((x) => {
-  return /^[0-9]{4}$/.test(x);
-});
+const ValidExpireYear = Match.Where((x) => /^[0-9]{4}$/.test(x));
 
-const ValidCVV = Match.Where((x) => {
-  return /^[0-9]{3,4}$/.test(x);
-});
+const ValidCVV = Match.Where((x) => /^[0-9]{3,4}$/.test(x));
 
 // function chargeObj() {
 //   return {

@@ -89,14 +89,15 @@ export function copyCartToOrder(cartId) {
     if (order.shipping.length > 0) {
       const shippingRecords = [];
       order.shipping.map((shippingRecord) => {
-        const billingRecord = order.billing.find(billing => billing.shopId === shippingRecord.shopId);
+        const billingRecord = order.billing.find((billing) => billing.shopId === shippingRecord.shopId);
         shippingRecord.paymentId = billingRecord._id;
         shippingRecord.items = [];
         shippingRecord.items.packed = false;
         shippingRecord.items.shipped = false;
         shippingRecord.items.delivered = false;
-        shippingRecord.workflow = { status: "new",  workflow: ["coreOrderWorkflow/notStarted"] };
+        shippingRecord.workflow = { status: "new", workflow: ["coreOrderWorkflow/notStarted"] };
         shippingRecords.push(shippingRecord);
+        return shippingRecords;
       });
       order.shipping = shippingRecords;
     }
@@ -132,7 +133,7 @@ export function copyCartToOrder(cartId) {
     };
   }
 
-  order.items = order.items.map(item => {
+  order.items = order.items.map((item) => {
     item.shippingMethod = order.shipping[order.shipping.length - 1];
     item.workflow = {
       status: "new",
@@ -199,7 +200,7 @@ export function copyCartToOrder(cartId) {
       }
     }
 
-    Logger.info("Transitioned cart " + cartId + " to order " + orderId);
+    Logger.info(`Transitioned cart ${cartId} to order ${orderId}`);
     // catch send notification, we don't want
     // to block because of notification errors
 

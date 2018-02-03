@@ -214,9 +214,7 @@ class ProductAdmin extends Component {
     );
   }
 
-  isExpanded = (groupName) => {
-    return this.state.expandedCard === groupName;
-  }
+  isExpanded = (groupName) => this.state.expandedCard === groupName
 
   render() {
     return (

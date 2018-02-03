@@ -44,9 +44,7 @@ const wrapComponent = (Comp) => (
       Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
       if (products) {
-        const filteredProducts = _.filter(products, (product) => {
-          return _.includes(selectedProducts, product._id);
-        });
+        const filteredProducts = _.filter(products, (product) => _.includes(selectedProducts, product._id));
 
         if (Reaction.isPreview() === false) {
           Reaction.showActionView({
@@ -85,9 +83,7 @@ const wrapComponent = (Comp) => (
       const products = this.products;
 
       if (products) {
-        const filteredProducts = _.filter(products, (product) => {
-          return _.includes(selectedProducts, product._id);
-        });
+        const filteredProducts = _.filter(products, (product) => _.includes(selectedProducts, product._id));
 
         Reaction.showActionView({
           label: "Grid Settings",
@@ -123,7 +119,7 @@ const wrapComponent = (Comp) => (
       this.state.productIds.map((productId, index) => {
         const position = { position: index, updatedAt: new Date() };
 
-        Meteor.call("products/updateProductPosition", productId, position, tag, error => {
+        return Meteor.call("products/updateProductPosition", productId, position, tag, (error) => {
           if (error) {
             Logger.error(error);
             throw new Meteor.Error("error-occurred", error);

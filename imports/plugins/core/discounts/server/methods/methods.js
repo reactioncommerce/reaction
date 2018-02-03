@@ -105,7 +105,7 @@ export const methods = {
             // added in external discount methods
             // example: discounts/codes/discount
             // will also not reprocess invoiced orders
-            if (!billing.invoice && processor === "code" || processor === "rate") {
+            if ((!billing.invoice && processor === "code") || processor === "rate") {
               // discounts are additive, if we allow more than one.
               currentDiscount += Meteor.call(`discounts/${processor}s/${calculation}`, cart._id, discount._id);// note the added s.
             }

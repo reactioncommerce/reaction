@@ -40,20 +40,17 @@ class FacebookSocialButton extends Component {
     if (window && document) {
       $('<div id="fb-root"></div>').appendTo("body");
 
-      window.fbAsyncInit = () => {
-        return FB.init({
-          appId: this.props.settings.appId,
-          xfbml: true,
-          version: this.props.settings.version || "v2.7"
-        });
-      };
+      window.fbAsyncInit = () => FB.init({
+        appId: this.props.settings.appId,
+        xfbml: true,
+        version: this.props.settings.version || "v2.7"
+      });
       (function (d, s, id) {
-        let js = void 0;
         const fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {
           return;
         }
-        js = d.createElement(s);
+        const js = d.createElement(s);
         js.id = id;
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);

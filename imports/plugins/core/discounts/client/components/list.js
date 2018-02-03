@@ -18,9 +18,7 @@ class DiscountList extends Component {
   }
   // list items
   renderList() {
-    const listItems = this.props.listItems.map((listItem) => {
-      return this.renderItem(listItem.id, listItem.code);
-    });
+    const listItems = this.props.listItems.map((listItem) => this.renderItem(listItem.id, listItem.code));
 
     return (
       <div className="rui list-group">{listItems}</div>

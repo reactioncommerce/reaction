@@ -53,11 +53,11 @@ describe("Order Publication", function () {
       sandbox.stub(Collections.Orders._hookAspects.insert.before[0], "aspect");
       sandbox.stub(Collections.Orders._hookAspects.update.before[0], "aspect");
       sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
+        check(args, [Match.Any]);
       });
-      sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function (...args) {
+        check(args, [Match.Any]);
       });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Roles, "userIsInRole", () => true);
@@ -75,11 +75,11 @@ describe("Order Publication", function () {
       sandbox.stub(Collections.Orders._hookAspects.insert.before[0], "aspect");
       sandbox.stub(Collections.Orders._hookAspects.update.before[0], "aspect");
       sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
+        check(args, [Match.Any]);
       });
-      sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function (...args) {
+        check(args, [Match.Any]);
       });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Roles, "userIsInRole", () => false);

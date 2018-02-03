@@ -119,7 +119,7 @@ class Router {
   static getRouteName() {
     const current = Router.current();
 
-    return current.route && current.route.name || "";
+    return (current.route && current.route.name) || "";
   }
 
   /**
@@ -131,7 +131,7 @@ class Router {
     routerChangeDependency.depend();
     const current = Router.current();
 
-    return current.params && current.params[name] || undefined;
+    return (current.params && current.params[name]) || undefined;
   }
 
   /**
@@ -143,7 +143,7 @@ class Router {
     routerChangeDependency.depend();
     const current = Router.current();
 
-    return current.query && current.query[name] || undefined;
+    return (current.query && current.query[name]) || undefined;
   }
 
   /**
@@ -206,7 +206,7 @@ Router.pathFor = (path, options = {}) => {
     // This is becuase of Spacebars that we have hash.
     // Spacebars takes all params passed into a template tag and places
     // them into the options.hash object. This will also include any `query` params
-    const hash = options && options.hash || {};
+    const hash = (options && options.hash) || {};
 
     // Create an executable function based on the route regex
     const toPath = pathToRegexp.compile(foundPath.route);
@@ -259,7 +259,7 @@ Router.go = (path, params, query) => {
 
   // if Router is in a non ready/initialized state yet, wait until it is
   if (!Router.ready()) {
-    Tracker.autorun(routerReadyWaitFor => {
+    Tracker.autorun((routerReadyWaitFor) => {
       if (Router.ready()) {
         routerReadyWaitFor.stop();
         routerGo();
@@ -567,7 +567,7 @@ Router.initPackageRoutes = (options) => {
   // subscription to determine this.
   const shopSub = Meteor.subscribe("shopsCount");
 
-  Tracker.autorun(shopSubWaitFor => {
+  Tracker.autorun((shopSubWaitFor) => {
     if (shopSub.ready()) {
       shopSubWaitFor.stop();
       // using tmeasday:publish-counts
@@ -676,7 +676,7 @@ Router.initPackageRoutes = (options) => {
             route.group = {};
 
             if (route.route.substring(0, 1) !== "/") {
-              route.route = "/" + route.route;
+              route.route = `/${route.route}`;
               route.group.prefix = "";
             }
 
@@ -693,16 +693,14 @@ Router.initPackageRoutes = (options) => {
       // TODO: In the future, sort by priority
       // TODO: Allow duplicated routes with a prefix / suffix / flag
       const uniqRoutes = uniqBy(routeDefinitions.reverse(), "route");
-      const reactRouterRoutes = uniqRoutes.map((route, index) => {
-        return (
-          <Route
-            key={`${route.name}-${index}`}
-            path={route.route}
-            exact={true}
-            render={route.options.component}
-          />
-        );
-      });
+      const reactRouterRoutes = uniqRoutes.map((route, index) => (
+        <Route
+          key={`${route.name}-${index}`}
+          path={route.route}
+          exact={true}
+          render={route.options.component}
+        />
+      ));
 
       // Last route, if no other route is matched, this one will be the not-found view
       // Note: This is last becuase all other routes must at-least attempt a match

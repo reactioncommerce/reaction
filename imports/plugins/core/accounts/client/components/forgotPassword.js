@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import {  Button, TextField, Translation } from "/imports/plugins/core/ui/client/components";
+import { Button, TextField, Translation } from "/imports/plugins/core/ui/client/components";
 
 class Forgot extends Component {
   static propTypes = {

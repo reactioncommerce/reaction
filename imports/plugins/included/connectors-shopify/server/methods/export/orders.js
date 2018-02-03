@@ -45,14 +45,10 @@ function convertOrderToShopifyOrder(doc, index, shopId, existingCustomer = undef
   shopifyOrder.subtotal_price = order.getSubtotalByShop()[shopId];
   shopifyOrder.token = order._id;
   shopifyOrder.total_discounts = order.getDiscountsByShop()[shopId];
-  shopifyOrder.total_line_item_price = order.getItemsByShop()[shopId].reduce((total, item) => {
-    return total + (item.variants.price * item.quantity);
-  }, 0);
+  shopifyOrder.total_line_item_price = order.getItemsByShop()[shopId].reduce((total, item) => total + (item.variants.price * item.quantity), 0);
   shopifyOrder.total_price = order.getTotalByShop()[shopId];
   shopifyOrder.total_tax = order.getTaxesByShop()[shopId];
-  shopifyOrder.total_weight = shopifyOrder.line_items.reduce((sum, item) => {
-    return sum + (item.grams * item.quantity);
-  }, 0);
+  shopifyOrder.total_weight = shopifyOrder.line_items.reduce((sum, item) => sum + (item.grams * item.quantity), 0);
   return shopifyOrder;
 }
 
@@ -153,7 +149,7 @@ function convertAddress(address) {
   convertedAddress.country = address.country;
   convertedAddress.country_code = address.country;
   convertedAddress.name = address.fullName;
-  const [ firstName, ...lastName ] = address.fullName.split(" ");
+  const [firstName, ...lastName] = address.fullName.split(" ");
   convertedAddress.first_name = firstName;
   convertedAddress.last_name = lastName.join(" ");
   convertedAddress.phone = address.phone;
@@ -227,12 +223,12 @@ export async function exportToShopify(doc) {
   const numShopOrders = doc.billing.length; // if we have multiple billing, we have multiple shops
   Logger.debug(`Exporting ${numShopOrders} order(s) to Shopify`);
   const shopifyOrders = [];
-  for (let index = 0; index < numShopOrders; index++) {
+  for (let index = 0; index < numShopOrders; index += 1) {
     // send a shopify order once for each merchant order
     const { shopId } = doc.billing[index];
     const apiCreds = getApiInfo(shopId);
     const shopify = new Shopify(apiCreds);
-    const existingCustomerQuery = await isExistingCustomer(doc.billing[index].address, doc.email, shopify);
+    const existingCustomerQuery = await isExistingCustomer(doc.billing[index].address, doc.email, shopify); // eslint-disable-line no-await-in-loop
     // this should never happen but I want a meaningful error here in case it does
     if (existingCustomerQuery.length > 1) {
       throw new Meteor.Error("duplicate-customer", "Discovered more than one customer in Shopify. Cannot continue");
@@ -240,7 +236,7 @@ export async function exportToShopify(doc) {
     const existingCustomer = existingCustomerQuery[0];
     const shopifyOrder = convertOrderToShopifyOrder(doc, index, shopId, existingCustomer);
     Logger.debug("sending shopify order", shopifyOrder, doc._id);
-    const newShopifyOrder = await shopify.order.create(shopifyOrder);
+    const newShopifyOrder = await shopify.order.create(shopifyOrder); // eslint-disable-line no-await-in-loop
     markExported(newShopifyOrder, shopId, doc);
     shopifyOrders.push(newShopifyOrder);
   }
@@ -268,4 +264,3 @@ function markExported(exportedOrder, shopId, order) {
     }
   });
 }
-
