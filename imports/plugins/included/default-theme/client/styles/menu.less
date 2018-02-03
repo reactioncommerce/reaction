@@ -7,10 +7,48 @@
   .margin-right(10px);
 }
 
-.rui.menu-item.disabled {
-  color: @black30;
+.rui.menu-item {
+  display: block;
+  padding: 3px 20px;
 }
 
-.rui.menu-item.disabled:hover {
-  background-color: transparent;
+// Hover/Focus state
+.rui.menu-item {
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: @dropdown-link-hover-color;
+    background-color: @dropdown-link-hover-bg;
+  }
+}
+
+// Active state
+.rui.menu-item.active {
+  &,
+  &:hover,
+  &:focus {
+    color: @dropdown-link-active-color;
+    text-decoration: none;
+    outline: 0;
+    background-color: @dropdown-link-active-bg;
+  }
+}
+
+// Disabled state
+.rui.menu-item.disabled {
+  &,
+  &:hover,
+  &:focus {
+    color: @dropdown-link-disabled-color;
+  }
+
+  // Nuke hover/focus effects
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    background-color: transparent;
+    background-image: none; // Remove CSS gradient
+    .reset-filter();
+    cursor: @cursor-disabled;
+  }
 }

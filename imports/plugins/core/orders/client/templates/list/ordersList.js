@@ -31,13 +31,11 @@ Template.dashboardOrdersList.helpers({
     return moment(this.createdAt).fromNow();
   },
   shipmentTracking() {
-    const shippingObject = this.shipping.find((shipping) => {
-      return shipping.shopId === Reaction.getShopId();
-    });
+    const shippingObject = this.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
     return shippingObject.shipmentMethod.tracking;
   },
   shopName() {
     const shop = Shops.findOne(this.shopId);
-    return shop !== null ? shop.name : void 0;
+    return shop !== null ? shop.name : undefined;
   }
 });

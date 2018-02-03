@@ -1,13 +1,11 @@
 /**
  * Mock Translation component import, as it uses Meteor modules we have a hard time testing with Jest
  */
-jest.mock("/imports/plugins/core/ui/client/components", () => {
-  return {
-    Translation(props) {
+jest.mock("/imports/plugins/core/ui/client/components", () => ({
+  Translation(props) {
       return <span>{props.defaultValue}</span>; // eslint-disable-line
-    }
-  };
-});
+  }
+}));
 
 import React from "react";
 import { shallow } from "enzyme";

@@ -25,7 +25,7 @@ function getOwnerUserId() {
 export function setupShippoTrackingStatusHook() {
   Hooks.Events.add("afterCoreInit", () => {
     const config = getJobConfig();
-    const refreshPeriod = config.refreshPeriod;
+    const { refreshPeriod } = config;
 
     if (!config.shippo.enabled || !refreshPeriod) {
       return;
@@ -65,7 +65,7 @@ export function fetchTrackingStatusForOrdersJob() {
         // which "shippo/fetchTrackingStatusForOrders" need, we use dispatch:run-as-user
         // An alternative way is https://forums.meteor.com/t/cant-set-logged-in-user-for-rest-calls/18656/3
         Meteor.runAsUser(ownerId, () => {
-          Meteor.call("shippo/fetchTrackingStatusForOrders", error => {
+          Meteor.call("shippo/fetchTrackingStatusForOrders", (error) => {
             if (error) {
               job.done(error.toString(), { repeatId: true });
             } else {

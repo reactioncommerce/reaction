@@ -3,15 +3,11 @@ import { shallow } from "enzyme";
 import shallowToJSON from "enzyme-to-json";
 import Translation from "../translation";
 
-jest.mock("/client/api", () => {
-  return {
-    i18next: {
-      t: (key, { defaultValue }) => {
-        return defaultValue || key;
-      }
-    }
-  };
-});
+jest.mock("/client/api", () => ({
+  i18next: {
+    t: (key, { defaultValue }) => defaultValue || key
+  }
+}));
 
 
 /**

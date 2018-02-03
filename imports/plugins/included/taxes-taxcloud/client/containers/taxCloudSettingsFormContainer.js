@@ -1,5 +1,5 @@
 import { compose, withProps } from "recompose";
-import { composeWithTracker, registerComponent } from  "@reactioncommerce/reaction-components";
+import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { TaxCloudPackageConfig } from "../../lib/collections/schemas";
@@ -43,8 +43,8 @@ const handlers = {
 
 const composer = (props, onData) => {
   const shownFields = {
-    ["settings.taxcloud.apiKey"]: TaxCloudPackageConfig._schema["settings.taxcloud.apiKey"],
-    ["settings.taxcloud.apiLoginId"]: TaxCloudPackageConfig._schema["settings.taxcloud.apiLoginId"]
+    "settings.taxcloud.apiKey": TaxCloudPackageConfig._schema["settings.taxcloud.apiKey"],
+    "settings.taxcloud.apiLoginId": TaxCloudPackageConfig._schema["settings.taxcloud.apiLoginId"]
   };
   const hiddenFields = [
     "settings.taxcloud.enabled",

@@ -3,5 +3,5 @@ import { MethodHooks } from "/server/api";
 
 MethodHooks.before("shipping/status/refresh", (options) => {
   const orderId = options.arguments[0];
-  Meteor.call("shippo/confirmShippingMethodForOrder",  orderId);
+  Meteor.call("shippo/confirmShippingMethodForOrder", orderId);
 });

@@ -27,7 +27,7 @@ function getRouteName(packageName, registryItem) {
       routeName = `${packageName}`;
     }
     // dont include params in the name
-    routeName = routeName.split(":")[0];
+    [routeName] = routeName.split(":");
     return routeName;
   }
   return null;

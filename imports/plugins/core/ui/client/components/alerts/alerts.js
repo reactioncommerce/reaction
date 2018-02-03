@@ -5,16 +5,14 @@ import { Components } from "@reactioncommerce/reaction-components";
 const Alerts = ({ alerts, handleAlertRemove, handleAlertSeen }) => (
   Array.isArray(alerts) &&
   <div className="alert-container">
-    {alerts.map((alert) => {
-      return (
-        <Components.Alert
-          alert={alert}
-          key={alert._id}
-          onAlertRemove={handleAlertRemove}
-          onAlertSeen={handleAlertSeen}
-        />
-      );
-    })}
+    {alerts.map((alert) => (
+      <Components.Alert
+        alert={alert}
+        key={alert._id}
+        onAlertRemove={handleAlertRemove}
+        onAlertSeen={handleAlertSeen}
+      />
+    ))}
   </div>
 );
 
