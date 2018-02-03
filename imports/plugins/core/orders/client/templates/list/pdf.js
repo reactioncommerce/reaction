@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import { Router } from "/client/api";
+import { Reaction, Router } from "/client/api";
 import { Orders } from "/lib/collections";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { ReactiveVar } from "meteor/reactive-var";
@@ -50,6 +50,7 @@ Template.completedPDFLayout.helpers({
   },
   dateFormat(context, block) {
     const moment = Template.instance().moment.default;
+    moment.locale(Reaction.Locale.get().language);
     const f = block.hash.format || "MMM DD, YYYY hh:mm:ss A";
     return moment(context).format(f);
   },
