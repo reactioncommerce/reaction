@@ -19,11 +19,11 @@ function getSettings(settings, ref, valueName) {
 export const Express = {
   expressCheckoutAccountOptions() {
     const shopId = Reaction.getShopId();
-    const settings = Packages.findOne({
+    const { settings } = Packages.findOne({
       name: "reaction-paypal",
       shopId,
       enabled: true
-    }).settings;
+    });
     let mode;
 
     if ((settings !== null ? settings.express_mode : undefined) === true) {

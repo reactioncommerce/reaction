@@ -51,7 +51,7 @@ export const methods = {
     check(discountId, String);
     let discount = 0;
     const discountMethod = Discounts.findOne(discountId);
-    discount = discountMethod.discount;
+    ({ discount } = discountMethod);
     return discount;
   },
   /**

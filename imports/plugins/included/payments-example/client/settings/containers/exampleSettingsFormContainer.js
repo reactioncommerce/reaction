@@ -29,7 +29,7 @@ class ExampleSettingsFormContainer extends Component {
     // e.preventDefault();
 
     const packageId = this.props.packageData._id;
-    const settingsKey = this.props.packageData.registry[0].settingsKey;
+    const { settingsKey } = this.props.packageData.registry[0];
 
     const fields = [{
       property: "apiKey",
@@ -52,7 +52,7 @@ class ExampleSettingsFormContainer extends Component {
   }
 
   render() {
-    const settingsKey = this.props.packageData.registry[0].settingsKey;
+    const { settingsKey } = this.props.packageData.registry[0];
     return (
       <TranslationProvider>
         <ExampleSettingsForm

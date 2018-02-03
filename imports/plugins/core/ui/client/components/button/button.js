@@ -74,16 +74,16 @@ Template.button.helpers({
     return "uiButtonElement";
   },
   i18nKeyTitle() {
-    const data = Template.instance().data;
+    const { data } = Template.instance();
     return data.itemKeyTitle || data.i18nKeyLabel;
   },
   title() {
-    const data = Template.instance().data;
+    const { data } = Template.instance();
     return data.title || data.label;
   },
   toggleOn() {
     const instance = Template.instance();
-    const toggleOn = instance.data.toggleOn;
+    const { toggleOn } = instance.data;
 
     if (toggleOn) {
       if (_.isFunction(toggleOn)) {
