@@ -44,7 +44,7 @@ class Form extends Component {
     const { docPath } = this.props;
 
     if (docPath) {
-      const objectKeys = this.objectKeys[docPath + "."];
+      const objectKeys = this.objectKeys[`${docPath}.`];
       if (Array.isArray(objectKeys)) {
         // Use the objectKeys from parent fieldset to generate
         // actual form fields
@@ -234,7 +234,7 @@ class Form extends Component {
       if (docPath) {
         return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
           if (key.endsWith(docPath)) {
-            const objectKeys = this.objectKeys[docPath + "."];
+            const objectKeys = this.objectKeys[`${docPath}.`];
             if (Array.isArray(objectKeys)) {
               // Use the objectKeys from parent fieldset to generate
               // actual form fields
@@ -251,7 +251,7 @@ class Form extends Component {
 
       // Render form by only using desired fields from schema
       if (this.props.fields) {
-        return map(this.props.fields, (fieldData, key) => { // eslint-disable-line consistent-return
+        return map(this.props.fields, (fieldData, key) => {
           const fieldSchema = this.schema[key];
           if (fieldSchema) {
             return this.renderField({ fieldName: key }, fieldData);
@@ -260,8 +260,7 @@ class Form extends Component {
       }
 
       // Render all fields if none of the options are set above
-      return map(this.schema, (field, key) =>  // eslint-disable-line consistent-return
-        this.renderField({ fieldName: key }));
+      return map(this.schema, (field, key) => this.renderField({ fieldName: key }));
     }
 
     return null;

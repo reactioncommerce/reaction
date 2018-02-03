@@ -173,7 +173,7 @@ const wrapComponent = (Comp) => (
           const variantId = result[0];
 
           ReactionProduct.setCurrentVariant(variantId);
-          Session.set("variant-form-" + variantId, true);
+          Session.set(`variant-form-${variantId}`, true);
         }
       });
     }

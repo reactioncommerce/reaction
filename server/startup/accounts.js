@@ -203,7 +203,7 @@ export default function () {
         $pullAll: {}
       };
 
-      update.$pullAll["roles." + Reaction.getShopId()] = ["anonymous"];
+      update.$pullAll[`roles.${Reaction.getShopId()}`] = ["anonymous"];
 
       Meteor.users.update({
         _id: options.user._id
@@ -211,8 +211,7 @@ export default function () {
         multi: true
       });
       // debug info
-      Logger.debug("removed anonymous role from user: " +
-        options.user._id);
+      Logger.debug(`removed anonymous role from user: ${options.user._id}`);
 
       // do not call `cart/mergeCart` on methodName === `createUser`, because
       // in this case `cart/mergeCart` calls from cart publication

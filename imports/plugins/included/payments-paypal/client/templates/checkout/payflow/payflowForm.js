@@ -41,11 +41,11 @@ function handlePaypalSubmitError(error) {
   const serverError = getError(error, "message");
   const errors = getError(error, "response") || [];
   if (singleError) {
-    return paymentAlert("Oops! " + singleError);
+    return paymentAlert(`Oops! ${singleError}`);
   } else if (errors.length) {
     for (let i = 0, len = errors.length; i < len; i += 1) {
       const thisError = errors[i];
-      const formattedError = "Oops! " + thisError.issue + ": " + thisError.field.split(/[. ]+/).pop().replace(/_/g, " ");
+      const formattedError = `Oops! ${thisError.issue}: ${thisError.field.split(/[. ]+/).pop().replace(/_/g, " ")}`;
       results.push(paymentAlert(formattedError));
     }
     return results;
@@ -83,7 +83,7 @@ AutoForm.addHooks("paypal-payment-form", {
       cvv2: doc.cvv,
       type: Reaction.getCardType(doc.cardNumber)
     };
-    const storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
+    const storedCard = `${form.type.charAt(0).toUpperCase() + form.type.slice(1)} ${doc.cardNumber.slice(-4)}`;
     PayPal.authorize(form, {
       total: Cart.findOne().getTotal(),
       currency: Shops.findOne().currency

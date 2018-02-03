@@ -26,7 +26,7 @@ export const Express = {
     }).settings;
     let mode;
 
-    if ((settings !== null ? settings.express_mode : void 0) === true) {
+    if ((settings !== null ? settings.express_mode : undefined) === true) {
       mode = "production";
     } else {
       mode = "sandbox";
@@ -34,7 +34,7 @@ export const Express = {
     const ref = Meteor.settings.paypal;
 
     const options = {
-      enabled: settings !== null ? settings.express.enabled : void 0,
+      enabled: settings !== null ? settings.express.enabled : undefined,
       mode,
       username: getSettings(settings, ref, "username"),
       password: getSettings(settings, ref, "password"),

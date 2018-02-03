@@ -275,13 +275,11 @@ Meteor.methods({
       sessionId,
       userId
     });
-    Logger.debug("create cart: into new user cart. created: " + currentCartId +
-      " for user " + userId);
+    Logger.debug(`create cart: into new user cart. created: ${currentCartId} for user ${userId}`);
 
     // merge session carts into the current cart
     if (sessionCartCount > 0 && !anonymousUser) {
-      Logger.debug("create cart: found existing cart. merge into " + currentCartId
-        + " for user " + userId);
+      Logger.debug(`create cart: found existing cart. merge into ${currentCartId} for user ${userId}`);
       Meteor.call("cart/mergeCart", currentCartId, sessionId);
     }
 
@@ -353,10 +351,14 @@ Meteor.methods({
     // `quantityProcessing`?
     let product;
     let variant;
-    Collections.Products.find({ _id: { $in: [
-      productId,
-      variantId
-    ] } }).forEach((doc) => {
+    Collections.Products.find({
+      _id: {
+        $in: [
+          productId,
+          variantId
+        ]
+      }
+    }).forEach((doc) => {
       if (doc.type === "simple") {
         product = doc;
       } else {

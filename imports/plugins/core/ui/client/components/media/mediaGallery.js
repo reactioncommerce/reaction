@@ -156,7 +156,7 @@ class MediaGallery extends Component {
           accept="image/jpg, image/png, image/jpeg"
         >
           <div className="rui gallery">
-            <div className={classnames(classes)} style={{ height: containerWidth + "px" }}>
+            <div className={classnames(classes)} style={{ height: `${containerWidth}px` }}>
               {featured}
             </div>
             <div className="rui gallery-thumbnails">
@@ -176,7 +176,7 @@ class MediaGallery extends Component {
     return (
       <div className="rui media-gallery">
         <div className="rui gallery">
-          <div className={classnames(classes)} style={{ height: containerWidth + "px" }}>
+          <div className={classnames(classes)} style={{ height: `${containerWidth}px` }}>
             {this.renderFeaturedMedia()}
           </div>
           <div className="rui gallery-thumbnails">

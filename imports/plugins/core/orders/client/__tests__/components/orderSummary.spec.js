@@ -34,7 +34,8 @@ test("OrderSummary snapshot test", () => {
       status: "new"
     },
     billing: [
-      { paymentMethod: {},
+      {
+        paymentMethod: {},
         invoice: {}
       }
     ]

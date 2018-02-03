@@ -158,7 +158,7 @@ function buildPaymentMethods(options) {
   }
 
   const shopIds = Object.keys(transactionsByShopId);
-  const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + cardData.number.slice(-4);
+  const storedCard = `${cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1)} ${cardData.number.slice(-4)}`;
   const paymentMethods = [];
 
 
@@ -406,7 +406,7 @@ export const methods = {
         };
       }
       // If we get an unexpected error, log and return a censored error message
-      Logger.error("Received unexpected error type: " + error.rawType);
+      Logger.error(`Received unexpected error type: ${error.rawType}`);
       Logger.error(error);
       throw new Meteor.Error("server-error", "An unexpected error occurred while creating multiple stripe charges");
     }

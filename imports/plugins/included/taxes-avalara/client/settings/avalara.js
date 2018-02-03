@@ -82,7 +82,7 @@ Template.avalaraSettings.helpers({
 
     // helper adds a class to every grid row
     const customRowMetaData = {
-      bodyCssClassName: () =>  "log-grid-row"
+      bodyCssClassName: () => "log-grid-row"
     };
 
     // add i18n handling to headers

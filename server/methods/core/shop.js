@@ -92,7 +92,7 @@ Meteor.methods({
 
     // ensure unique id and shop name
     seedShop._id = Random.id();
-    seedShop.name = seedShop.name + count;
+    seedShop.name += count;
 
     // We trust the owner's shop clone, check only when shopData is passed as an argument
     if (shopData) {
@@ -562,8 +562,8 @@ Meteor.methods({
    */
   "shop/updateHeaderTags"(tagName, tagId, currentTagId) {
     check(tagName, String);
-    check(tagId, Match.OneOf(String, null, void 0));
-    check(currentTagId, Match.OneOf(String, null, void 0));
+    check(tagId, Match.OneOf(String, null, undefined));
+    check(currentTagId, Match.OneOf(String, null, undefined));
 
     let newTagId = {};
     // must have 'core' permissions

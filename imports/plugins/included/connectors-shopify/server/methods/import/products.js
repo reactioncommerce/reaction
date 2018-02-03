@@ -263,7 +263,7 @@ export const methods = {
     const opts = Object.assign({}, {
       published_status: "published",
       limit
-    }, { ... options });
+    }, { ...options });
 
     try {
       const productCount = await shopify.product.count();

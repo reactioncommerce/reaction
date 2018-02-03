@@ -168,7 +168,7 @@ Template.variantList.helpers({
       toggleOn: variantIsInActionView(variant._id),
       onClick() {
         ReactionProduct.setCurrentVariant(variant._id);
-        Session.set("variant-form-" + parentVariant._id, true);
+        Session.set(`variant-form-${parentVariant._id}`, true);
 
         if (Reaction.hasPermission("createProduct")) {
           Reaction.showActionView({

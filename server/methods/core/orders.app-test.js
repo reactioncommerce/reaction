@@ -51,11 +51,11 @@ describe("orders test", function () {
     // });
     sandbox.stub(Orders._hookAspects.insert.before[0], "aspect");
     sandbox.stub(Orders._hookAspects.update.before[0], "aspect");
-    sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
-      check(arguments, [Match.Any]);
+    sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
+      check(args, [Match.Any]);
     });
-    sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function () {
-      check(arguments, [Match.Any]);
+    sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function (...args) {
+      check(args, [Match.Any]);
     });
 
     order = Factory.create("order");
@@ -72,10 +72,10 @@ describe("orders test", function () {
   });
 
   function spyOnMethod(method, id) {
-    return sandbox.stub(Meteor.server.method_handlers, `orders/${method}`, function () {
-      check(arguments, [Match.Any]); // to prevent audit_arguments from complaining
+    return sandbox.stub(Meteor.server.method_handlers, `orders/${method}`, function (...args) {
+      check(args, [Match.Any]); // to prevent audit_arguments from complaining
       this.userId = id;
-      return methods[method].apply(this, arguments);
+      return methods[method].apply(this, args);
     });
   }
 
@@ -90,15 +90,15 @@ describe("orders test", function () {
   }
 
   function orderCreditMethod(orderData) {
-    const billingRecord = orderData.billing.filter((value) => value.paymentMethod.method ===  "credit");
+    const billingRecord = orderData.billing.filter((value) => value.paymentMethod.method === "credit");
     const billingObject = billingRecord.find((billing) => billing.shopId === shopId);
     return billingObject;
   }
 
   describe("orders/cancelOrder", function () {
     beforeEach(function () {
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
     });
 
@@ -318,8 +318,8 @@ describe("orders test", function () {
     it("should update the order item workflow status to coreOrderItemWorkflow/completed", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const shipment = shippingObjectMethod(order);
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
       spyOnMethod("shipmentShipped", order.userId);
       Meteor.call("orders/shipmentShipped", order, shipment);
@@ -330,8 +330,8 @@ describe("orders test", function () {
     it("should update the order workflow status to completed", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const shipment = shippingObjectMethod(order);
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
       spyOnMethod("shipmentShipped", order.userId);
       Meteor.call("orders/shipmentShipped", order, shipment);
@@ -342,8 +342,8 @@ describe("orders test", function () {
     it("should update the order shipping workflow status to coreOrderWorkflow/shipped", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const shipment = shippingObjectMethod(order);
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
       spyOnMethod("shipmentShipped", order.userId);
       Meteor.call("orders/shipmentShipped", order, shipment);
@@ -354,8 +354,8 @@ describe("orders test", function () {
 
   describe("orders/shipmentDelivered", function () {
     beforeEach(function () {
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
     });
 
@@ -528,8 +528,8 @@ describe("orders test", function () {
     it("should update order payment method status to error if payment processor fails", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("capturePayments", order.userId);
-      sandbox.stub(Meteor.server.method_handlers, "example/payment/capture", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "example/payment/capture", function (...args) {
+        check(args, [Match.Any]);
         return {
           error: "stub error",
           saved: false
@@ -557,8 +557,8 @@ describe("orders test", function () {
 
   describe("orders/refunds/create", function () {
     beforeEach(function () {
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
     });
 
@@ -586,8 +586,8 @@ describe("orders test", function () {
 
   describe("orders/refunds/refundItems", function () {
     beforeEach(function () {
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
     });
 

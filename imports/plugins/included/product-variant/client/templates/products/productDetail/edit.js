@@ -79,7 +79,7 @@ Template.productDetailEdit.events({
       autosize(Template.instance().$(event.currentTarget));
     }
 
-    return Session.set("editing-" + this.field, false);
+    return Session.set(`editing-${this.field}`, false);
   }
 });
 
@@ -90,7 +90,7 @@ Template.productDetailEdit.events({
 Template.productDetailField.events({
   "click .product-detail-field"() {
     if (Reaction.hasPermission("createProduct")) {
-      const fieldClass = "editing-" + this.field;
+      const fieldClass = `editing-${this.field}`;
       Session.set(fieldClass, true);
       // Tracker.flush();
       return $(`.${this.field}-edit-input`).focus();

@@ -26,7 +26,7 @@ import { Logger, Hooks, Reaction } from "/server/api";
  * @return {Object} returns entire payment method
  */
 export function orderCreditMethod(order) {
-  const creditBillingRecords = order.billing.filter((value) => value.paymentMethod.method ===  "credit");
+  const creditBillingRecords = order.billing.filter((value) => value.paymentMethod.method === "credit");
   const billingRecord = creditBillingRecords.find((billing) => billing.shopId === Reaction.getShopId());
   return billingRecord;
 }
@@ -40,7 +40,7 @@ export function orderCreditMethod(order) {
  * @return {Object} returns entire payment method
  */
 export function orderDebitMethod(order) {
-  const debitBillingRecords = order.billing.filter((value) => value.paymentMethod.method ===  "debit");
+  const debitBillingRecords = order.billing.filter((value) => value.paymentMethod.method === "debit");
   const billingRecord = debitBillingRecords.find((billing) => billing.shopId === Reaction.getShopId());
   return billingRecord;
 }
@@ -140,8 +140,8 @@ export function orderQuantityAdjust(orderId, refundedItem) {
       Orders.update({
         _id: orderId,
         items: { $elemMatch: { _id: itemId } }
-      }, { $set:
-        { "items.$.quantity": newQuantity }
+      }, {
+        $set: { "items.$.quantity": newQuantity }
       });
     }
   });
@@ -176,7 +176,8 @@ export const methods = {
       }, {
         $set: {
           "shipping.$.workflow.status": "coreOrderWorkflow/picked"
-        }, $push: {
+        },
+        $push: {
           "shipping.$.workflow.workflow": "coreOrderWorkflow/picked"
         }
       });
@@ -214,7 +215,8 @@ export const methods = {
       }, {
         $set: {
           "shipping.$.workflow.status": "coreOrderWorkflow/packed"
-        }, $push: {
+        },
+        $push: {
           "shipping.$.workflow.workflow": "coreOrderWorkflow/packed"
         }
       });
@@ -250,7 +252,8 @@ export const methods = {
       }, {
         $set: {
           "shipping.$.workflow.status": "coreOrderWorkflow/labeled"
-        }, $push: {
+        },
+        $push: {
           "shipping.$.workflow.workflow": "coreOrderWorkflow/labeled"
         }
       });
@@ -510,7 +513,8 @@ export const methods = {
     }, {
       $set: {
         "shipping.$.workflow.status": "coreOrderWorkflow/shipped"
-      }, $push: {
+      },
+      $push: {
         "shipping.$.workflow.workflow": "coreOrderWorkflow/shipped"
       }
     });
@@ -565,7 +569,8 @@ export const methods = {
     }, {
       $set: {
         "shipping.$.workflow.status": "coreOrderWorkflow/delivered"
-      }, $push: {
+      },
+      $push: {
         "shipping.$.workflow.workflow": "coreOrderWorkflow/delivered"
       }
     });
@@ -612,7 +617,7 @@ export const methods = {
       const mediaId = Media.findOne(brandAsset.mediaId);
       emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
     } else {
-      emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+      emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
     }
 
     let subtotal = 0;
@@ -684,7 +689,7 @@ export const methods = {
           combinedItems.push(orderItem);
 
           // Placeholder image if there is no product image
-          orderItem.placeholderImage = Meteor.absoluteUrl() + "resources/placeholder.gif";
+          orderItem.placeholderImage = `${Meteor.absoluteUrl()}resources/placeholder.gif`;
 
           const variantImage = Media.findOne({
             "metadata.productId": orderItem.productId,
@@ -722,17 +727,17 @@ export const methods = {
           display: true,
           facebook: {
             display: true,
-            icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+            icon: `${Meteor.absoluteUrl()}resources/email-templates/facebook-icon.png`,
             link: "https://www.facebook.com"
           },
           googlePlus: {
             display: true,
-            icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+            icon: `${Meteor.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
             link: "https://plus.google.com"
           },
           twitter: {
             display: true,
-            icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+            icon: `${Meteor.absoluteUrl()}resources/email-templates/twitter-icon.png`,
             link: "https://www.twitter.com"
           }
         },
@@ -844,7 +849,7 @@ export const methods = {
       "shipping._id": shipment._id
     }, {
       $set: {
-        ["shipping.$.tracking"]: tracking
+        "shipping.$.tracking": tracking
       }
     });
   },

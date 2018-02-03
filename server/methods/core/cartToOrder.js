@@ -200,7 +200,7 @@ export function copyCartToOrder(cartId) {
       }
     }
 
-    Logger.info("Transitioned cart " + cartId + " to order " + orderId);
+    Logger.info(`Transitioned cart ${cartId} to order ${orderId}`);
     // catch send notification, we don't want
     // to block because of notification errors
 

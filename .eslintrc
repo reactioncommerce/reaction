@@ -293,7 +293,7 @@
     "no-confusing-arrow": ["error", { "allowParens": true }],
     "no-empty-pattern": "error",
     "no-lonely-if": "error",
-    //  This rule copied from Airbnb's config
+    // This rule copied from Airbnb's config
     "no-mixed-operators": ["error", {
       "groups": [
         ["%", "**"],
@@ -317,18 +317,18 @@
     "no-plusplus": "error",
     "no-prototype-builtins": "error",
     "no-tabs": "error",
-    // "no-undef-init": "error",
-    // "no-unneeded-ternary": ["error", { "defaultAssignment": false }],
-    // "no-unsafe-finally": "error",
-    // "no-useless-computed-key": "error",
-    // "no-useless-concat": "error",
-    // "no-useless-constructor": "error",
-    // "no-useless-escape": "error",
-    // "no-void": "error",
-    // "object-curly-newline": ["error", { "ObjectExpression": { "multiline": true, "consistent": true }, "ObjectPattern": { "multiline": true, "consistent": true } }],
-    // "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": true }],
+    "no-undef-init": "error",
+    "no-unneeded-ternary": ["error", { "defaultAssignment": false }],
+    "no-unsafe-finally": "error",
+    "no-useless-computed-key": "error",
+    "no-useless-concat": "error",
+    "no-useless-constructor": "error",
+    "no-useless-escape": "error",
+    "no-void": "error",
+    "object-curly-newline": ["error", { "ObjectExpression": { "multiline": true, "consistent": true }, "ObjectPattern": { "multiline": true, "consistent": true } }],
+    "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": true }],
     "object-shorthand": ["error", "always"],
-    // "operator-assignment": ["error", "always"],
+    "operator-assignment": ["error", "always"],
     "prefer-arrow-callback": ["error", { "allowNamedFunctions": false, "allowUnboundThis": true }],
     // "prefer-destructuring": ["error", {
     //   "VariableDeclarator": {
@@ -342,6 +342,16 @@
     // }, {
     //   "enforceForRenamedProperties": false
     // }],
+    "prefer-rest-params": "error",
+    "prefer-spread": "error",
+    "prefer-template": "error",
+    "rest-spread-spacing": ["error", "never"],
+    // "space-unary-ops": ["error", {
+    //   "words": true,
+    //   "nonwords": false,
+    //   "overrides": {}
+    // }],
+    // "template-curly-spacing": "error"
     // "prefer-rest-params": "error",
     // "prefer-spread": "error",
     // "prefer-template": "error",

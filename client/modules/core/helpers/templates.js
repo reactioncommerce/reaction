@@ -272,8 +272,7 @@ Template.registerHelper("key_value", (context) => {
  * @returns {String} returns formatted Spacebars.SafeString
  */
 Template.registerHelper("nl2br", (text) => {
-  const nl2br = (text + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" +
-    "<br>" + "$2");
+  const nl2br = (`${text}`).replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2");
   return new Spacebars.SafeString(nl2br);
 });
 
@@ -316,7 +315,7 @@ Template.registerHelper("timeAgo", (context) => moment(context).from(new Date())
  */
 Template.registerHelper("pluralize", (nCount, pString) => {
   if (nCount === 1) {
-    return "1 " + pString;
+    return `1 ${pString}`;
   }
-  return nCount + " " + pString + "s";
+  return `${nCount} ${pString}s`;
 });

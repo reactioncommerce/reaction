@@ -87,9 +87,11 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       const variant = Products.find({ ancestors: [product._id] }).fetch();
-      let optionCount = Products.find({ ancestors: {
-        $in: [variant[0]._id]
-      } }).count();
+      let optionCount = Products.find({
+        ancestors: {
+          $in: [variant[0]._id]
+        }
+      }).count();
       expect(optionCount).to.equal(2);
 
       Meteor.call("products/cloneVariant", product._id, variant[0]._id);
@@ -281,9 +283,11 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       const variant = Products.find({ ancestors: [product._id] }).fetch()[0];
-      const variants = Products.find({ ancestors: {
-        $in: [variant._id]
-      } }).fetch();
+      const variants = Products.find({
+        ancestors: {
+          $in: [variant._id]
+        }
+      }).fetch();
       expect(variants.length).to.equal(2);
       Meteor.call("products/deleteVariant", variant._id);
     });
@@ -299,8 +303,8 @@ describe("core product methods", function () {
 
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
-      sandbox.stub(Meteor.server.method_handlers, "inventory/remove", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "inventory/remove", function (...args) {
+        check(args, [Match.Any]);
       });
       const insertProductSpy = sandbox.spy(Products, "insert");
       expect(() => Meteor.call("products/cloneProduct", {})).to.throw(Meteor.Error, /Access Denied/);
@@ -309,8 +313,8 @@ describe("core product methods", function () {
 
     it("should clone product", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
+        check(args, [Match.Any]);
       });
       const product = addProduct();
       expect(Products.find({ type: "simple" }).count()).to.equal(1);
@@ -322,8 +326,8 @@ describe("core product methods", function () {
         },
         type: "simple"
       }).fetch()[0];
-      expect(productCloned.title).to.equal(product.title + "-copy");
-      expect(productCloned.handle).to.equal(product.handle + "-copy");
+      expect(productCloned.title).to.equal(`${product.title}-copy`);
+      expect(productCloned.handle).to.equal(`${product.handle}-copy`);
       expect(productCloned.pageTitle).to.equal(product.pageTitle);
       expect(productCloned.description).to.equal(product.description);
 
@@ -332,8 +336,8 @@ describe("core product methods", function () {
 
     it("product should be cloned with all variants and child variants with equal data, but not the same `_id`s", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
+        check(args, [Match.Any]);
       });
       const product = addProduct();
       const variants = Products.find({ ancestors: { $in: [product._id] } }).fetch();
@@ -357,8 +361,8 @@ describe("core product methods", function () {
 
     it("product group cloning should create the same number of new products", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
+        check(args, [Match.Any]);
       });
       const product = addProduct();
       const product2 = addProduct();
@@ -376,8 +380,8 @@ describe("core product methods", function () {
 
     it("product group cloning should create the same number of cloned variants", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
+        check(args, [Match.Any]);
       });
       const product = addProduct();
       const product2 = addProduct();

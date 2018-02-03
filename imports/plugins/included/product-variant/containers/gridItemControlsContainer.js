@@ -34,7 +34,7 @@ const wrapComponent = (Comp) => (
 
     hasCreateProductPermission = () => Reaction.hasPermission("createProduct")
 
-    hasChanges = () => this.props.product.__draft ? true : false
+    hasChanges = () => !!this.props.product.__draft
 
     // This method checks validation of the variants of the all the products on the Products grid to
     // check whether all required fields have been submitted before publishing

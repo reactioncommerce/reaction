@@ -65,8 +65,8 @@ function writeJsonToBody(res, json) {
 // That's why we cache them and then add after startup.
 let errorMiddlewares = [];
 Endpoints.ErrorMiddleware = {
-  use() {
-    errorMiddlewares.push(arguments);
+  use(...args) {
+    errorMiddlewares.push(args);
   }
 };
 
@@ -82,7 +82,7 @@ Meteor.startup(() => {
       }
       return maybeFn;
     });
-    WebApp.connectHandlers.use.apply(WebApp.connectHandlers, errorMiddlewareFn);
+    WebApp.connectHandlers.use.apply(WebApp.connectHandlers, ...errorMiddlewareFn);
   });
 
   errorMiddlewares = [];
@@ -106,7 +106,7 @@ Endpoints.add = function (method, path, handler) {
   // Make sure path starts with a slash
   let slashedPath = path;
   if (path[0] !== "/") {
-    slashedPath = "/" + path;
+    slashedPath = `/${path}`;
   }
 
   // Add to list of known Endpoints

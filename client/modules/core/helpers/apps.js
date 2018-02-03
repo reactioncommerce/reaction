@@ -82,7 +82,7 @@ export function Apps(optionHash) {
       const value = options[key];
       if (value) {
         if (!(key === "enabled" || key === "name" || key === "shopId")) {
-          filter["registry." + key] = Array.isArray(options[key]) ? { $in: value } : value;
+          filter[`registry.${key}`] = Array.isArray(options[key]) ? { $in: value } : value;
           registryFilter[key] = value;
         } else {
           // perhaps not the best way to check but lets admin see all packages

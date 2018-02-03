@@ -127,24 +127,25 @@ Import.commit = function (collection) {
       const nRemoved = result.nRemoved;
       // Log some information about the import.
       if (nTouched) {
-        let message = "Modified " + nImported + (nImported === 1 ? " document" : " documents");
-        message += " while importing " + nTouched + " to " + name;
+        let message = `Modified ${nImported}${nImported === 1 ? " document" : " documents"}`;
+        message += ` while importing ${nTouched} to ${name}`;
         Logger.debug(message);
       }
       if (nRemoved) {
-        let message = "Removed " + nRemoved + (nRemoved === 1 ? " document" : " documents");
-        message += " from " + name;
+        let message = `Removed ${nRemoved}${nRemoved === 1 ? " document" : " documents"}`;
+        message += ` from ${name}`;
         Logger.debug(message);
       }
       // Log any errors returned.
-      const message = "Error while importing to " + name;
+      const message = `Error while importing to ${name}`;
       const writeErrors = result.getWriteErrors();
+
       for (let i = 0; i < writeErrors.length; i += 1) {
-        Logger.warn(message + ": " + writeErrors[i].errmsg);
+        Logger.warn(`${message}: ${writeErrors[i].errmsg}`);
       }
       const writeConcernError = result.getWriteConcernError();
       if (writeConcernError) {
-        Logger.warn(message + ": " + writeConcernError.errmsg);
+        Logger.warn(`${message}: ${writeConcernError.errmsg}`);
       }
     });
     // Reset the buffer.

@@ -69,8 +69,7 @@ function loadGoogleAnalyticsScript() {
 // for it to load to actually record data. The `method` is
 // stored as the first argument, so we can replay the data.
 analytics.factory = function (method) {
-  return function () {
-    const args = Array.prototype.slice.call(arguments);
+  return function (...args) {
     args.unshift(method);
     analytics.push(args);
     return analytics;
@@ -86,8 +85,8 @@ for (let i = 0; i < analytics.methods.length; i += 1) {
 // Define a method to load Analytics.js from our CDN,
 // and that will be sure to only ever load it once.
 analytics.load = function (key) {
-  buildScript((document.location.protocol === "https:" ? "https://" : "http://") +
-    "cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js");
+  const protocol = document.location.protocol === "https:" ? "https://" : "http://";
+  buildScript(`${protocol}cdn.segment.com/analytics.js/v1/${key}/analytics.min.js`);
 };
 
 // Add a version to keep track of what"s in the wild.

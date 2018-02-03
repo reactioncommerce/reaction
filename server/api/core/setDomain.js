@@ -10,7 +10,7 @@ import { Logger } from "/server/api";
  */
 export function getRegistryDomain(requestUrl) {
   const url = requestUrl || process.env.ROOT_URL;
-  const domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
+  const domain = url.match(/^https?:\/\/([^/:?#]+)(?:[/:?#]|$)/i)[1];
   return domain;
 }
 
@@ -32,7 +32,7 @@ export function setDomain() {
   // if the server domain changes, update shop
   const domain = getRegistryDomain();
   if (currentDomain && currentDomain !== domain) {
-    Logger.debug("Updating domain to " + domain);
+    Logger.debug(`Updating domain to ${domain}`);
     Shops.update({
       domains: currentDomain
     }, {

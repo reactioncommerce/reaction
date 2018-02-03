@@ -27,11 +27,11 @@ function hidePaymentAlert() {
 }
 
 function handleExampleSubmitError(error) {
-  const serverError = error !== null ? error.message : void 0;
+  const serverError = error !== null ? error.message : undefined;
   if (serverError) {
-    return paymentAlert("Oops! " + serverError);
+    return paymentAlert(`Oops! ${serverError}`);
   } else if (error) {
-    return paymentAlert("Oops! " + error, null, 4);
+    return paymentAlert(`Oops! ${error}`, null, 4);
   }
 }
 
@@ -55,7 +55,7 @@ AutoForm.addHooks("example-payment-form", {
       cvv2: doc.cvv,
       type: Reaction.getCardType(doc.cardNumber)
     };
-    const storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
+    const storedCard = `${form.type.charAt(0).toUpperCase() + form.type.slice(1)} ${doc.cardNumber.slice(-4)}`;
     Meteor.subscribe("Packages", Reaction.getShopId());
     const packageData = Packages.findOne({
       name: "example-paymentmethod",

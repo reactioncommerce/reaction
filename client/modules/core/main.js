@@ -444,7 +444,7 @@ export default {
 
   // Primary Shop should probably not have a prefix (or should it be /shop?)
   getPrimaryShopPrefix() {
-    return "/" + this.getSlug(this.getPrimaryShopName().toLowerCase());
+    return `/${this.getSlug(this.getPrimaryShopName().toLowerCase())}`;
   },
 
   getPrimaryShopSettings() {
@@ -502,7 +502,7 @@ export default {
   getShopPrefix() {
     const shopName = this.getShopName();
     if (shopName) {
-      return "/" + this.getSlug(shopName.toLowerCase());
+      return `/${this.getSlug(shopName.toLowerCase())}`;
     }
   },
 

@@ -49,8 +49,7 @@ export const methods = {
     const hookSetting = { topic, event, syncType };
     return Packages.update(
       { name: "reaction-connectors-shopify", shopId: Reaction.getShopId() },
-      { $pull: { "settings.synchooks": hookSetting }
-      }
+      { $pull: { "settings.synchooks": hookSetting } }
     );
   }
 };

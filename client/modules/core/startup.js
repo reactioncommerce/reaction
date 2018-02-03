@@ -66,7 +66,7 @@ function isLocalStorageAvailable() {
 }
 
 function readCookie(name) {
-  const nameEq = name + "=";
+  const nameEq = `${name}=`;
   const ca = document.cookie.split(";");
   for (let i = 0; i < ca.length; i += 1) {
     let c = ca[i];
@@ -79,5 +79,5 @@ function readCookie(name) {
 }
 
 function createSessionCookie(name, value) {
-  document.cookie = name + "=" + value + "; path=/";
+  document.cookie = `${name}=${value}; path=/`;
 }
