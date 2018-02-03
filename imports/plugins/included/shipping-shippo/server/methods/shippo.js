@@ -309,7 +309,7 @@ export const methods = {
     let updatingResult = true;
     shippoOrders.forEach((order) => {
       const orderShipment = order.shipping[0];
-      const transactionId = orderShipment.shippo.transactionId;
+      const { transactionId } = orderShipment.shippo;
       const transaction = ShippoApi.methods.getTransaction.call({ apiKey, transactionId });
 
       // For Testing:
@@ -518,7 +518,7 @@ export const methods = {
         if (!apiKey) {
           throw new Meteor.Error("access-denied", "Invalid Shippo Credentials");
         }
-        const rateId = orderShipment.shipmentMethod.settings.rateId;
+        const { rateId } = orderShipment.shipmentMethod.settings;
         // make the actual purchase
         const transaction = ShippoApi.methods.createTransaction.call({ rateId, apiKey });
         if (transaction) {

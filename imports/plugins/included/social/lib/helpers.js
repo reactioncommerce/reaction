@@ -14,7 +14,7 @@ export function createSocialSettings(options) {
     const socialButtons = [];
 
     if (socialSettings.appsOrder) {
-      const appsOrder = socialSettings.appsOrder;
+      const { appsOrder } = socialSettings;
       for (let i = 0; i < appsOrder.length; i += 1) {
         const app = appsOrder[i];
 

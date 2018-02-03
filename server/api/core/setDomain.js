@@ -25,7 +25,7 @@ export function setDomain() {
   let currentDomain;
   // we automatically update the shop domain when ROOT_URL changes
   try {
-    currentDomain = Shops.findOne().domains[0];
+    [currentDomain] = Shops.findOne().domains;
   } catch (_error) {
     Logger.error(_error, "Failed to determine default shop.");
   }

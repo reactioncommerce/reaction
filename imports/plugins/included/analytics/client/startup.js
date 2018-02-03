@@ -9,7 +9,7 @@ import Alerts from "/imports/plugins/core/layout/client/templates/layout/alerts/
 
 // Create a queue, but don't obliterate an existing one!
 window.analytics = window.analytics || [];
-const analytics = window.analytics;
+const [analytics] = window;
 
 // If the real analytics.js is already on the page return.
 if (analytics.initialize) return;

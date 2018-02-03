@@ -73,10 +73,10 @@ const wrapComponent = (Comp) => (
 
     productPath = () => {
       if (this.props.product) {
-        let handle = this.props.product.handle;
+        let { handle } = this.props.product;
 
         if (this.props.product.__published) {
-          handle = this.props.product.__published.handle;
+          ({ handle } = this.props.product.__published);
         }
 
         return Reaction.Router.pathFor("product", {
@@ -178,7 +178,7 @@ const wrapComponent = (Comp) => (
     }
 
     onDoubleClick = () => {
-      const product = this.props.product;
+      const { product } = this.props;
       const handle = (product.__published && product.__published.handle) || product.handle;
 
       Reaction.Router.go("product", {
@@ -201,13 +201,13 @@ const wrapComponent = (Comp) => (
 
     onClick = (event) => {
       event.preventDefault();
-      const product = this.props.product;
+      const { product } = this.props;
 
       if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
         if (this.props.isSearch) {
-          let handle = product.handle;
+          let { handle } = product;
           if (product.__published) {
-            handle = product.__published.handle;
+            ({ handle } = product.__published);
           }
 
           Reaction.Router.go("product", {

@@ -174,7 +174,7 @@ Meteor.methods({
     let localeCurrency = "USD";
     // if called from server, ip won't be defined.
     if (this.connection !== null) {
-      clientAddress = this.connection.clientAddress;
+      ({ clientAddress } = this.connection);
     } else {
       clientAddress = "127.0.0.1";
     }
@@ -251,11 +251,11 @@ Meteor.methods({
     });
     let profileCurrency = user.profile && user.profile.currency;
     if (!profileCurrency) {
-      localeCurrency = localeCurrency[0];
+      [localeCurrency] = localeCurrency;
       if (shop.currencies[localeCurrency] && shop.currencies[localeCurrency].enabled) {
         profileCurrency = localeCurrency;
       } else {
-        profileCurrency = shop.currency.split(",")[0];
+        [profileCurrency] = shop.currency.split(",");
       }
 
       Collections.Accounts.update(user._id, { $set: { "profile.currency": profileCurrency } });
@@ -410,7 +410,7 @@ Meteor.methods({
         currencies: 1
       }
     });
-    const updatedAt = shop.currencies.updatedAt;
+    const { updatedAt } = shop.currencies;
 
     // if updatedAt is not a Date(), then there is no rates yet
     if (typeof updatedAt !== "object") {
@@ -503,7 +503,7 @@ Meteor.methods({
 
     // if called from server, ip won't be defined.
     if (this.connection !== null) {
-      clientAddress = this.connection.clientAddress;
+      ({ clientAddress } = this.connection);
     } else {
       clientAddress = "127.0.0.1";
     }

@@ -50,7 +50,7 @@ class Products extends Component {
    * @return {Node} React node containing the `ProductGrid` component.
    */
   renderProductGrid() {
-    const products = this.props.products;
+    const { products } = this.props;
 
     const productsByKey = {};
 

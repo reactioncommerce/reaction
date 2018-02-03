@@ -60,7 +60,7 @@ describe("orders test", function () {
 
     order = Factory.create("order");
     sandbox.stub(Reaction, "getShopId", () => order.shopId);
-    const paymentMethod = billingObjectMethod(order).paymentMethod;
+    const { paymentMethod } = billingObjectMethod(order);
     sandbox.stub(paymentMethod, "paymentPackageId", example._id);
     return done();
   });
@@ -288,10 +288,9 @@ describe("orders test", function () {
     it("should approve payment", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("approvePayment", order.userId);
-      const invoice = orderCreditMethod(order).invoice;
+      const { invoice } = orderCreditMethod(order);
       const subTotal = invoice.subtotal;
-      const shipping = invoice.shipping;
-      const taxes = invoice.taxes;
+      const { shipping, taxes } = invoice;
       const discount = invoice.discounts;
       const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
       const total = accounting.toFixed(discountTotal + shipping + taxes, 2);

@@ -145,7 +145,7 @@ export function sendVerificationEmail(userId, email) {
   if (!email) {
     const unverifiedEmail = _.find(user.emails || [], (e) => !e.verified) || {};
 
-    address = unverifiedEmail.address;
+    ({ address } = unverifiedEmail);
 
     if (!address) {
       const msg = "No unverified email addresses found.";
@@ -262,7 +262,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
   if (!email) {
     const unverifiedEmail = _.find(user.emails || [], (e) => !e.verified) || {};
 
-    address = unverifiedEmail.address;
+    ({ address } = unverifiedEmail);
 
     if (!address) {
       const msg = "No unverified email addresses found.";

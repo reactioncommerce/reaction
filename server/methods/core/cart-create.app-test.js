@@ -20,7 +20,7 @@ describe("Add/Create cart methods", function () {
   const shop = getShop();
   const userId = user._id;
   Reaction.sessionId = Random.id();
-  const sessionId = Reaction.sessionId;
+  const { sessionId } = Reaction;
   let sandbox;
   let originals;
 

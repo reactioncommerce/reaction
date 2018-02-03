@@ -170,7 +170,7 @@ describe("core product methods", function () {
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       const product = addProduct();
-      const variant = Products.find({ ancestors: [product._id] }).fetch()[0];
+      const variant = Products.findOne({ ancestors: [product._id] });
       variant["title"] = "Updated Title";
       variant["price"] = 7;
       const updateProductSpy = sandbox.stub(Products, "update");
@@ -181,11 +181,11 @@ describe("core product methods", function () {
     it("should not update individual variant by admin passing in full object", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
-      let variant = Products.find({ ancestors: [product._id] }).fetch()[0];
+      let variant = Products.findOne({ ancestors: [product._id] });
       variant["title"] = "Updated Title";
       variant["price"] = 7;
       Meteor.call("products/updateVariant", variant);
-      variant = Products.find({ ancestors: [product._id] }).fetch()[0];
+      variant = Products.findOne({ ancestors: [product._id] });
       expect(variant.price).to.not.equal(7);
       expect(variant.title).to.not.equal("Updated Title");
 
@@ -209,7 +209,7 @@ describe("core product methods", function () {
     it("should not update individual variant by admin passing in partial object", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
-      const variant = Products.find({ ancestors: [product._id] }).fetch()[0];
+      const variant = Products.findOne({ ancestors: [product._id] });
       Meteor.call("products/updateVariant", {
         _id: variant._id,
         title: "Updated Title",
@@ -1066,7 +1066,7 @@ describe("core product methods", function () {
     it("should let admin publish product changes", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
-      const isVisible = product.isVisible;
+      const { isVisible } = product;
       expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);
       Meteor.call("revisions/publish", product._id);
       Meteor._sleepForMs(500);
@@ -1078,7 +1078,7 @@ describe("core product methods", function () {
     it("should not let admin toggle product visibility", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
-      const isVisible = product.isVisible;
+      const { isVisible } = product;
       expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);
       product = Products.findOne(product._id);
       expect(product.isVisible).to.equal(isVisible);
@@ -1091,7 +1091,7 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       let productRevision = Revisions.findOne({ documentId: product._id });
-      const isVisible = productRevision.documentData.isVisible;
+      const { isVisible } = productRevision.documentData;
       expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);
       productRevision = Revisions.findOne({ documentId: product._id });
       expect(productRevision.documentData.isVisible).to.equal(!isVisible);
@@ -1103,7 +1103,7 @@ describe("core product methods", function () {
     it("should publish admin toggle product visibility", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
-      const isVisible = product.isVisible; // false
+      const { isVisible } = product; // false
 
       // Toggle visible
       expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);
@@ -1121,7 +1121,7 @@ describe("core product methods", function () {
     it("should not publish product when missing title", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
-      const isVisible = product.isVisible;
+      const { isVisible } = product;
       Products.update(product._id, {
         $set: {
           title: ""
@@ -1138,7 +1138,7 @@ describe("core product methods", function () {
     it("should not publish product when missing even one of child variant price", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
-      const isVisible = product.isVisible;
+      const { isVisible } = product;
       const variant = Products.findOne({ ancestors: [product._id] });
       expect(variant.ancestors[0]).to.equal(product._id);
       const options = Products.find({
@@ -1161,7 +1161,7 @@ describe("core product methods", function () {
 
     it("should not publish product when missing variant", function () {
       let product = addProduct();
-      const isVisible = product.isVisible;
+      const { isVisible } = product;
       sandbox.stub(Roles, "userIsInRole", () => true);
       Products.remove({ ancestors: { $in: [product._id] } });
       product = Products.findOne(product._id);

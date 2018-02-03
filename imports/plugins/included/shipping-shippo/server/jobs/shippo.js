@@ -25,7 +25,7 @@ function getOwnerUserId() {
 export function setupShippoTrackingStatusHook() {
   Hooks.Events.add("afterCoreInit", () => {
     const config = getJobConfig();
-    const refreshPeriod = config.refreshPeriod;
+    const { refreshPeriod } = config;
 
     if (!config.shippo.enabled || !refreshPeriod) {
       return;

@@ -30,7 +30,7 @@ describe("Cart Publication", function () {
     const user = Factory.create("registeredUser");
     const userId = user._id;
     Reaction.sessionId = Random.id();
-    const sessionId = Reaction.sessionId;
+    const { sessionId } = Reaction;
     const thisContext = {
       userId
     };

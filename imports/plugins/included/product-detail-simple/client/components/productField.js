@@ -18,7 +18,7 @@ class ProductField extends Component {
         value: nextProps.product[this.fieldName]
       }, () => {
         if (this._input && this._input.refs.input) {
-          const input = this._input.refs.input;
+          const { input } = this._input.refs;
 
           Velocity.RunSequence([
             { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },

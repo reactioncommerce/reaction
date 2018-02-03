@@ -587,7 +587,7 @@ export default {
     const user = Meteor.users.findOne({ _id: userId });
 
     if (user) {
-      const profile = user.profile;
+      const { profile } = user;
       if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
         return profile.preferences[packageName][preference];
       }
@@ -624,7 +624,7 @@ export default {
       // Find the correct packages list for this shopType
       const matchingShopType = marketplaceSettings.shops.enabledPackagesByShopTypes.find((EnabledPackagesByShopType) => EnabledPackagesByShopType.shopType === shop.shopType); // eslint-disable-line max-len
       if (matchingShopType) {
-        enabledPackages = matchingShopType.enabledPackages;
+        ({ enabledPackages } = matchingShopType);
       }
     }
 
@@ -720,7 +720,7 @@ export default {
     // Process environment variables and Meteor settings for initial user config.
     // If ENV variables are set, they always override Meteor settings (settings.json).
     // This is to allow for testing environments where we don't want to use users configured in a settings file.
-    const env = process.env;
+    const { env } = process;
     let configureEnv = false;
 
     if (env.REACTION_EMAIL && env.REACTION_AUTH) {
@@ -961,7 +961,7 @@ export default {
    * @return {undefined} no return value
    */
   setAppVersion() {
-    const version = packageJson.version;
+    const { version } = packageJson;
     Logger.info(`Reaction Version: ${version}`);
     Shops.update({}, { $set: { appVersion: version } }, { multi: true });
   },

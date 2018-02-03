@@ -292,7 +292,7 @@ export const methods = {
     this.unblock();
 
     const options = PayPal.expressCheckoutAccountOptions();
-    const transactionId = paymentMethod.transactionId;
+    const { transactionId } = paymentMethod;
     let response;
 
     try {
@@ -373,11 +373,11 @@ function parseRefundReponse(response) {
 }
 
 function getSetting(shopId, parameter) {
-  const settings = Packages.findOne({
+  const { settings } = Packages.findOne({
     name: "reaction-paypal",
     shopId,
     enabled: true
-  }).settings;
+  });
   return settings[parameter];
 }
 

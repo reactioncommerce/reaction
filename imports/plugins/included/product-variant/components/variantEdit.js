@@ -18,7 +18,7 @@ class VariantEdit extends Component {
   }
 
   renderVariant() {
-    const variant = this.props.variant;
+    const { variant } = this.props;
 
     return (
       <Components.VariantForm
@@ -55,7 +55,7 @@ class VariantEdit extends Component {
   }
 
   renderChildVariants() {
-    const childVariants = this.props.childVariants;
+    const { childVariants } = this.props;
 
     if (Array.isArray(childVariants)) {
       return childVariants.map((childVariant, index) => (

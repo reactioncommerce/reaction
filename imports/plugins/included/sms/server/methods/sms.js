@@ -68,7 +68,8 @@ Meteor.methods({
     // check for addressBook phone
     if (user && addressBook) {
       if (addressBook[0].phone) {
-        phone = addressBook[0].phone;
+        const [phoneData] = addressBook;
+        ({ phone } = phoneData);
       }
     }
 

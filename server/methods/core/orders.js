@@ -299,7 +299,7 @@ export const methods = {
    */
   "orders/approvePayment"(order) {
     check(order, Object);
-    const invoice = orderCreditMethod(order).invoice;
+    const { invoice } = orderCreditMethod(order);
 
     // REVIEW: Who should have access to do this for a marketplace?
     // Do we have/need a shopId on each order?
@@ -312,11 +312,8 @@ export const methods = {
     // this is server side check to verify
     // that the math all still adds up.
     const shopId = Reaction.getShopId();
-    const subTotal = invoice.subtotal;
-    const shipping = invoice.shipping;
-    const taxes = invoice.taxes;
-    const discount = invoice.discounts;
-    const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
+    const { discounts, shipping, subtotal, taxes } = invoice;
+    const discountTotal = Math.max(0, subtotal - discounts); // ensure no discounting below 0.
     const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
 
     // Updates flattened inventory count on variants in Products collection
@@ -331,7 +328,7 @@ export const methods = {
         "billing.$.paymentMethod.amount": total,
         "billing.$.paymentMethod.status": "approved",
         "billing.$.paymentMethod.mode": "capture",
-        "billing.$.invoice.discounts": discount,
+        "billing.$.invoice.discounts": discounts,
         "billing.$.invoice.total": Number(total)
       }
     });
@@ -379,7 +376,7 @@ export const methods = {
     const billingRecord = order.billing.find((billing) => billing.shopId === Reaction.getShopId());
     const shippingRecord = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
 
-    let paymentMethod = orderCreditMethod(order).paymentMethod;
+    let { paymentMethod } = orderCreditMethod(order);
     paymentMethod = Object.assign(paymentMethod, { amount: Number(paymentMethod.amount) });
     const invoiceTotal = billingRecord.invoice.total;
     const shipment = shippingRecord;
@@ -636,14 +633,14 @@ export const methods = {
       taxes += Number.parseFloat(billingRecord.invoice.taxes);
       discounts += Number.parseFloat(billingRecord.invoice.discounts);
       amount += billingRecord.paymentMethod.amount;
-      address = billingRecord.address;
-      paymentMethod = billingRecord.paymentMethod;
+      ({ address } = billingRecord);
+      ({ paymentMethod } = billingRecord);
     }
 
     for (const shippingRecord of order.shipping) {
       shippingAddress = shippingRecord.address;
-      carrier = shippingRecord.shipmentMethod.carrier;
-      tracking = shippingRecord.tracking;
+      ({ carrier } = shippingRecord.shipmentMethod);
+      ({ tracking } = shippingRecord);
       shippingCost += shippingRecord.shipmentMethod.rate;
     }
 
@@ -943,8 +940,8 @@ export const methods = {
     // find the billing record based on shopId
     const bilingRecord = order.billing.find((bRecord) => bRecord.shopId === shopId);
 
-    const paymentMethod = bilingRecord.paymentMethod;
-    const transactionId = paymentMethod.transactionId;
+    const { paymentMethod } = bilingRecord;
+    const { transactionId } = paymentMethod;
 
     if (paymentMethod.mode === "capture" && paymentMethod.status === "approved" && paymentMethod.processor) {
       // Grab the amount from the shipment, otherwise use the original amount
@@ -1016,7 +1013,7 @@ export const methods = {
 
     const refunds = [];
     for (const billingRecord of order.billing) {
-      const paymentMethod = billingRecord.paymentMethod;
+      const { paymentMethod } = billingRecord;
       const processor = paymentMethod.processor.toLowerCase();
       const shopRefunds = Meteor.call(`${processor}/refund/list`, paymentMethod);
       refunds.push(...shopRefunds);
@@ -1047,7 +1044,7 @@ export const methods = {
     }
     const processor = paymentMethod.processor.toLowerCase();
     const order = Orders.findOne(orderId);
-    const transactionId = paymentMethod.transactionId;
+    const { transactionId } = paymentMethod;
 
     const packageId = paymentMethod.paymentPackageId;
     const settingsKey = paymentMethod.paymentSettingsKey;
@@ -1129,9 +1126,9 @@ export const methods = {
 
     const fut = new Future();
     const order = Orders.findOne(orderId);
-    const transactionId = paymentMethod.transactionId;
+    const { transactionId } = paymentMethod;
     const amount = refundItemsInfo.total;
-    const quantity = refundItemsInfo.quantity;
+    const { quantity } = refundItemsInfo;
     const refundItems = refundItemsInfo.items;
     const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
 

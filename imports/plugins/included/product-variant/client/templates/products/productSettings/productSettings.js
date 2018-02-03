@@ -105,7 +105,7 @@ Template.productSettingsListItem.helpers({
   },
 
   listItemActiveClassName(productId) {
-    const handle = Reaction.Router.current().params.handle;
+    const { handle } = Reaction.Router.current().params;
 
     if (ReactionProduct.equals("productId", productId) && handle) {
       return "active";

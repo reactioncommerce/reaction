@@ -330,32 +330,22 @@
     "object-shorthand": ["error", "always"],
     "operator-assignment": ["error", "always"],
     "prefer-arrow-callback": ["error", { "allowNamedFunctions": false, "allowUnboundThis": true }],
-    // "prefer-destructuring": ["error", {
-    //   "VariableDeclarator": {
-    //     "array": false,
-    //     "object": true
-    //   },
-    //   "AssignmentExpression": {
-    //     "array": true,
-    //     "object": true
-    //   }
-    // }, {
-    //   "enforceForRenamedProperties": false
-    // }],
+    "prefer-destructuring": ["error", {
+      "VariableDeclarator": {
+        "array": false,
+        "object": true
+      },
+      "AssignmentExpression": {
+        "array": true,
+        "object": true
+      }
+    }, {
+      "enforceForRenamedProperties": false
+    }],
     "prefer-rest-params": "error",
     "prefer-spread": "error",
     "prefer-template": "error",
     "rest-spread-spacing": ["error", "never"],
-    // "space-unary-ops": ["error", {
-    //   "words": true,
-    //   "nonwords": false,
-    //   "overrides": {}
-    // }],
-    // "template-curly-spacing": "error"
-    // "prefer-rest-params": "error",
-    // "prefer-spread": "error",
-    // "prefer-template": "error",
-    // "rest-spread-spacing": ["error", "never"],
     "space-unary-ops": ["error", {
       "words": true,
       "nonwords": false,

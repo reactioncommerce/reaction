@@ -28,11 +28,11 @@ Template.reactionSocial.helpers({
     const template = Template.instance();
 
     if (template && template.socialSettings) {
-      let socialSettings = template.socialSettings;
+      let { socialSettings } = template;
       socialSettings = merge({}, socialSettings, Template.currentData());
 
       if (socialSettings.appsOrder) {
-        const appsOrder = socialSettings.appsOrder;
+        const { appsOrder } = socialSettings;
 
         for (let i = 0; i < appsOrder.length; i += 1) {
           const app = appsOrder[i];

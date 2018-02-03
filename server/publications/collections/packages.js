@@ -37,7 +37,7 @@ function transform(doc, userId) {
       registry.packageId = doc._id;
       registry.shopId = doc.shopId;
       registry.packageName = registry.packageName || doc.name;
-      registry.settingsKey = (registry.name || doc.name).split("/").splice(-1)[0];
+      [registry.settingsKey] = (registry.name || doc.name).split("/").splice(-1);
       // check and set package enabled state
       registry.permissions = [...permissions];
       if (registry.route) {
