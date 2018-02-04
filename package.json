@@ -97,6 +97,7 @@
     "react-onclickoutside": "^6.7.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "react-s-alert": "^1.4.1",
     "react-select": "^1.1.0",
     "react-table": "^6.7.4",
     "react-taco-table": "^0.5.1",
