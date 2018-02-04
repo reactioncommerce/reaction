@@ -123,52 +123,6 @@ class JobCollectionBase extends Mongo.Collection {
     this.prototype.ddpMethodPermissions = Job.ddpMethodPermissions;
 
     this.prototype.jobDocPattern = _validJobDoc();
-
-    // Deprecated. Remove in next major version
-    this.prototype.makeJob = (function() {
-      let dep = false;
-      return function(...params) {
-        if (!dep) {
-          dep = true;
-          console.warn("WARNING: jc.makeJob() has been deprecated. Use new Job(jc, doc) instead.");
-        }
-        return new Job(this.root, ...Array.from(params));
-      };
-    })();
-
-    // Deprecated. Remove in next major version
-    this.prototype.createJob = (function() {
-      let dep = false;
-      return function(...params) {
-        if (!dep) {
-          dep = true;
-          console.warn("WARNING: jc.createJob() has been deprecated. Use new Job(jc, type, data) instead.");
-        }
-        return new Job(this.root, ...Array.from(params));
-      };
-    })();
-
-    this.prototype._DDPMethod_startJobs = (() => {
-      let depFlag = false;
-      return function(options) {
-        if (!depFlag) {
-          depFlag = true;
-          console.warn("Deprecation Warning: jc.startJobs() has been renamed to jc.startJobServer()");
-        }
-        return this._DDPMethod_startJobServer(options);
-      };
-    })();
-
-    this.prototype._DDPMethod_stopJobs = (() => {
-      let depFlag = false;
-      return function(options) {
-        if (!depFlag) {
-          depFlag = true;
-          console.warn("Deprecation Warning: jc.stopJobs() has been renamed to jc.shutdownJobServer()");
-        }
-        return this._DDPMethod_shutdownJobServer(options);
-      };
-    })();
   }
 
   constructor(root = "queue", options = {}) {
