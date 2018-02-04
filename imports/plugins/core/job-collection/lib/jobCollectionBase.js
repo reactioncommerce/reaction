@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /*
  * decaffeinate suggestions:
  * DS001: Remove Babel/TypeScript constructor workaround
@@ -17,8 +18,8 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Mongo } from "meteor/mongo";
-import { Job } from "./job";
 import later from "later";
+import { Job } from "./job";
 
 const _validNumGTEZero = v => Match.test(v, Number) && (v >= 0.0);
 
@@ -320,20 +321,7 @@ class JobCollectionBase extends Mongo.Collection {
     return dependsIds;
   }
 
-  _rerun_job(doc, repeats, wait, repeatUntil) {
-    // Repeat? if so, make a new job from the old one
-    if (repeats === null) {
-      repeats = doc.repeats - 1;
-    }
-
-    if (wait === null) {
-      wait = doc.repeatWait;
-    }
-
-    if (repeatUntil === null) {
-      ({ repeatUntil } = doc);
-    }
-
+  _rerun_job(doc, repeats = doc.repeats - 1, wait = doc.repeatWait, repeatUntil = doc.repeatUntil) {
     const id = doc._id;
     const { runId } = doc;
     const time = new Date();
@@ -373,19 +361,18 @@ class JobCollectionBase extends Mongo.Collection {
 
     doc.after = new Date(time.valueOf() + wait);
 
-    const jobId = this.insert(doc)
+    const jobId = this.insert(doc);
 
     if (jobId) {
       this._DDPMethod_jobReady(jobId);
       return jobId;
-    } else {
-      console.warn("Job rerun/repeat failed to reschedule!", id, runId);
     }
+
+    console.warn("Job rerun/repeat failed to reschedule!", id, runId);
     return null;
   }
 
-  _checkDeps(job, dryRun) {
-    if (dryRun === null) { dryRun = true; }
+  _checkDeps(job, dryRun = true) {
     let cancel = false;
     const resolved = [];
     const failed = [];
@@ -393,11 +380,15 @@ class JobCollectionBase extends Mongo.Collection {
     const removed = [];
     const log = [];
     if (job.depends.length > 0) {
-      const deps = this.find({_id: { $in: job.depends }},{ fields: { _id: 1, runId: 1, status: 1 } }).fetch();
+      const deps = this.find({
+        _id: { $in: job.depends }
+      }, {
+        fields: { _id: 1, runId: 1, status: 1 }
+      }).fetch();
 
       if (deps.length !== job.depends.length) {
         const foundIds = deps.map(d => d._id);
-        for (let j of Array.from(job.depends)) {
+        for (const j of Array.from(job.depends)) {
           if (!(Array.from(foundIds).includes(j))) {
             if (!dryRun) { this._DDPMethod_jobLog(job._id, null, `Antecedent job ${j} missing at save`); }
             removed.push(j);
@@ -406,7 +397,7 @@ class JobCollectionBase extends Mongo.Collection {
         cancel = true;
       }
 
-      for (let depJob of Array.from(deps)) {
+      for (const depJob of Array.from(deps)) {
         if (!Array.from(this.jobStatusCancellable).includes(depJob.status)) {
           switch (depJob.status) {
             case "completed":
@@ -485,8 +476,6 @@ class JobCollectionBase extends Mongo.Collection {
   _DDPMethod_startJobServer(options = {}) {
     check(options, Match.Optional({}));
 
-    if (options === null) { options = {}; }
-
     // The client can"t actually do this, so skip it
     if (!this.isSimulation) {
       if (this.stopped && (this.stopped !== true)) { Meteor.clearTimeout(this.stopped); }
@@ -495,13 +484,14 @@ class JobCollectionBase extends Mongo.Collection {
     return true;
   }
 
-  _DDPMethod_shutdownJobServer(options) {
+  _DDPMethod_shutdownJobServer(options = {}) {
     check(options, Match.Optional({
       timeout: Match.Optional(Match.Where(_validIntGTEOne))
     }));
 
-    if (options === null) { options = {}; }
-    if (options.timeout === null) { options.timeout = 60*1000; }
+    if (!options.timeout) {
+      options.timeout = 60 * 1000;
+    }
 
     // The client can"t actually do any of this, so skip it
     if (!this.isSimulation) {
@@ -537,35 +527,40 @@ class JobCollectionBase extends Mongo.Collection {
     return true;
   }
 
-  _DDPMethod_getJob(ids, options) {
+  _DDPMethod_getJob(ids, options = {}) {
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({
       getLog: Match.Optional(Boolean),
       getFailures: Match.Optional(Boolean)
     }));
 
-    if (options === null) { options = {}; }
-    if (options.getLog === null) { options.getLog = false; }
-    if (options.getFailures === null) { options.getFailures = false; }
+    if (!options.getLog) {
+      options.getLog = false;
+    }
+
+    if (!options.getFailures) {
+      options.getFailures = false;
+    }
 
     let single = false;
+    let idArray = ids;
 
     if (_validId(ids)) {
-      ids = [ids];
+      idArray = [ids];
       single = true;
     }
 
-    if (ids.length === 0) {
+    if (idArray.length === 0) {
       return null;
     }
 
-    const fields = { _private:0 };
+    const fields = { _private: 0 };
     if (!options.getLog) { fields.log = 0; }
     if (!options.getFailures) { fields.failures = 0; }
     let docs = this.find(
       {
         _id: {
-          $in: ids
+          $in: idArray
         }
       },
       {
@@ -588,7 +583,7 @@ class JobCollectionBase extends Mongo.Collection {
     return null;
   }
 
-  _DDPMethod_getWork(type, options) {
+  _DDPMethod_getWork(type, options = {}) {
     let d;
     check(type, Match.OneOf(String, [ String ]));
     check(options, Match.Optional({
@@ -601,7 +596,6 @@ class JobCollectionBase extends Mongo.Collection {
       return;
     }
 
-    if (options === null) { options = {}; }
     if (options.maxJobs === null) { options.maxJobs = 1; }
     // Don"t put out any more jobs while shutting down
     if (this.stopped) {
@@ -609,8 +603,10 @@ class JobCollectionBase extends Mongo.Collection {
     }
 
     // Support string types or arrays of string types
+    let typeArray = type;
+
     if (typeof type === "string") {
-      type = [ type ];
+      typeArray = [ type ];
     }
     const time = new Date();
     let docs = [];
@@ -620,7 +616,7 @@ class JobCollectionBase extends Mongo.Collection {
       const ids = this.find(
         {
           type: {
-            $in: type
+            $in: typeArray
           },
           status: "ready",
           runId: null
@@ -636,7 +632,8 @@ class JobCollectionBase extends Mongo.Collection {
             _id: 1
           },
           transform: null
-        }).map(d => d._id);
+        }
+      ).map(doc => doc._id);
 
       if (!((ids !== null ? ids.length : undefined) > 0)) {
         break;  // Don"t keep looping when there"s no available work
