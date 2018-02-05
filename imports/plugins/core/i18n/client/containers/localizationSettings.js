@@ -13,7 +13,6 @@ const wrapComponent = (Comp) => (
     static propTypes = LocalizationSettings.propTypes
 
     handleUpdateLanguageConfiguration = (event, isChecked, name) => {
-      console.log("event", event, isChecked, name);
       const language = this.props.languages.find((l) => l.value === name);
 
       if (language) {
@@ -63,7 +62,6 @@ const wrapComponent = (Comp) => (
 );
 
 function composer(props, onData) {
-  console.log("is this running, container?");
   const languages = [];
   const shop = Shops.findOne();
   const countries = Countries.find().fetch();

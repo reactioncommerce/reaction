@@ -103,8 +103,6 @@ class LocalizationSettings extends Component {
   }
 
   render() {
-    console.log("is this running, component?");
-
     return (
       <Components.CardGroup>
         <Components.SettingsCard

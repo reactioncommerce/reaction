@@ -188,7 +188,6 @@ class PublishControls extends Component {
   }
 
   render() {
-    console.log("Is this running?", this.props);
     return (
       <Components.Toolbar>
         <Components.ToolbarGroup firstChild={true}>
