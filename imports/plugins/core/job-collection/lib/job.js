@@ -1,3 +1,8 @@
+/* eslint-disable no-console */
+/*
+  Original version: https://github.com/vsivsi/meteor-job-collection/
+  License: https://github.com/vsivsi/meteor-job-collection/blob/master/LICENSE
+ */
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -40,24 +45,27 @@ function methodCall(root, method, params, cb, after = ret => ret) {
   return after(apply(name, params));
 }
 
-const optionsHelp = function (options, cb) {
+function optionsHelp(opts, cb) {
+  let options = opts;
+  let callback = cb;
+
   // If cb isn't a function, it's assumed to be options...
-  if ((cb !== null) && (typeof cb !== "function")) {
+  if (!cb && typeof cb !== "function") {
     options = cb;
-    cb = undefined;
+    callback = undefined;
   } else {
     if ((typeof options !== "object") ||
             !(options instanceof Array) ||
             !(options.length < 2)) {
       throw new Error("options... in optionsHelp must be an Array with zero or one elements");
     }
-    options = (options !== null ? options[0] : undefined) !== null ? (options !== null ? options[0] : undefined) : {};
+    options = options && options[0];
   }
   if (typeof options !== "object") {
     throw new Error("in optionsHelp options not an object or bad callback");
   }
-  return [options, cb];
-};
+  return [options, callback];
+}
 
 function splitLongArray(arr, max) {
   if (!(arr instanceof Array) || !(max > 0)) { throw new Error("splitLongArray: bad params"); }
@@ -96,8 +104,10 @@ function reduceCallbacks(cb, num, reduce = (a, b) => a || b, init = false) {
 }
 
 function concatReduce(a, b) {
-  if (!(a instanceof Array)) { a = [a]; }
-  return a.concat(b);
+  let arrayA = a;
+
+  if (!(arrayA instanceof Array)) { arrayA = [arrayA]; }
+  return arrayA.concat(b);
 }
 
 const isInteger = i => (typeof i === "number") && (Math.floor(i) === i);
@@ -157,14 +167,13 @@ function _clearInterval(id) {
 
 class JobQueue {
   constructor(root, type, ...rest) {
-    let adjustedLength;
-    let options;
-
     this.root = root;
     this.type = type;
-    adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      this.worker = rest[adjustedLength - 1];
+
+    const adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    this.worker = rest[adjustedLength - 1];
+
     if (!(this instanceof JobQueue)) {
       return new JobQueue(this.root, this.type, ...Array.from(options), this.worker);
     }
@@ -187,13 +196,6 @@ class JobQueue {
       throw new Error("JobQueue: Invalid errorCallback, must be a function");
     }
 
-    this.pollInterval =
-      (options.pollInterval !== null) && !options.pollInterval ?
-        Job.forever
-      : !((options.pollInterval !== null) && isInteger(options.pollInterval)) ?
-        5000  // ms
-      :
-        options.pollInterval;
 
     if (options && !options.pollInterval) {
       this.pollInterval = Job.forever;
@@ -300,10 +302,9 @@ class JobQueue {
         delete this._workers[job._taskId];
         if ((this._stoppingTasks !== null) && (this.running() === 0) && (this.length() === 0)) {
           return this._stoppingTasks();
-        } else {
-          _setImmediate(this._process.bind(this));
-          return _setImmediate(this._getWork.bind(this));
         }
+        _setImmediate(this._process.bind(this));
+        return _setImmediate(this._getWork.bind(this));
       };
       const cb = this._only_once(next);
       return this.worker(job, cb);
@@ -314,25 +315,25 @@ class JobQueue {
     _clearInterval(this._interval);
     this._interval = null;
     if (this._getWorkOutstanding) {
-      return this._stoppingGetWork = callback;
-    } else {
-      return _setImmediate(callback);  // No Zalgo, thanks
+      this._stoppingGetWork = callback;
+      return this._stoppingGetWork;
     }
+    return _setImmediate(callback);  // No Zalgo, thanks
   }
 
   _waitForTasks(callback) {
     if (this.running() !== 0) {
-      return this._stoppingTasks = callback;
-    } else {
-      return _setImmediate(callback);  // No Zalgo, thanks
+      this._stoppingTasks = callback;
+      return this._stoppingTasks;
     }
+    return _setImmediate(callback);  // No Zalgo, thanks
   }
 
   _failJobs(tasks, callback) {
     if (tasks.length === 0) { _setImmediate(callback); }  // No Zalgo, thanks
     let count = 0;
     return Array.from(tasks).map((job) =>
-      job.fail("Worker shutdown", (err, res) => {
+      job.fail("Worker shutdown", () => {
         count++;
         if (count === tasks.length) {
           return callback();
@@ -346,8 +347,10 @@ class JobQueue {
       let tasks = this._tasks;
       this._tasks = [];
       for (const i in this._workers) {
-        const r = this._workers[i];
-        tasks = tasks.concat(r);
+        if ({}.hasOwnProperty(this._workers[i])) {
+          const r = this._workers[i];
+          tasks = tasks.concat(r);
+        }
       }
       return this._failJobs(tasks, callback);
     });
@@ -408,10 +411,12 @@ class JobQueue {
   }
 
   shutdown(...args) {
-    let adjustedLength = Math.max(args.length, 1),
-      options = args.slice(0, adjustedLength - 1),
-      cb = args[adjustedLength - 1];
+    const adjustedLength = Math.max(args.length, 1);
+    let options = args.slice(0, adjustedLength - 1);
+    let cb = args[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
+
     if (options.level === null) { options.level = "normal"; }
     if (options.quiet === null) { options.quiet = false; }
     if (cb === null) {
@@ -420,6 +425,7 @@ class JobQueue {
         return console.warn("Shutdown complete");
       };
     }
+
     switch (options.level) {
       case "hard":
         if (!options.quiet) { console.warn("Shutting down hard"); }
@@ -527,8 +533,7 @@ export class Job {
         get() { return this._doc.data; },
         set() { return console.warn("Job.data cannot be directly assigned."); }
       }
-    }
-    );
+    });
   }
 
   // Class methods
@@ -617,7 +622,7 @@ export class Job {
   // the specified 'type' from the server queue root
   // returns null if no such job exists
   static getWork(root, type, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -646,7 +651,7 @@ export class Job {
   // Creates a job object by id from the server queue root
   // returns null if no such job exists
   static getJob(root, id, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -663,7 +668,7 @@ export class Job {
 
   // Like the above, but takes an array of ids, returns array of jobs
   static getJobs(root, ids, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -687,7 +692,7 @@ export class Job {
   // Pause this job, only Ready and Waiting jobs can be paused
   // Calling this toggles the paused state. Unpaused jobs go to waiting
   static pauseJobs(root, ids, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -704,7 +709,7 @@ export class Job {
   // Resume this job, only Paused jobs can be resumed
   // Calling this toggles the paused state. Unpaused jobs go to waiting
   static resumeJobs(root, ids, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -721,15 +726,14 @@ export class Job {
   // Move waiting jobs to the ready state, jobs with dependencies will not
   // be made ready unless force is used.
   static readyJobs(root, ids, ...rest) {
-    if (ids === null) { ids = []; }
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
     [options, cb] = Array.from(optionsHelp(options, cb));
     if (options.force === null) { options.force = false; }
     let retVal = false;
-    let chunksOfIds = splitLongArray(ids, 256);
+    let chunksOfIds = splitLongArray(ids || [], 256);
     if (!(chunksOfIds.length > 0)) { chunksOfIds = [[]]; }
     const myCb = reduceCallbacks(cb, chunksOfIds.length);
     for (const chunkOfIds of Array.from(chunksOfIds)) {
@@ -740,7 +744,7 @@ export class Job {
 
   // Cancel this job if it is running or able to run (waiting, ready)
   static cancelJobs(root, ids, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -757,7 +761,7 @@ export class Job {
 
   // Restart a failed or cancelled job
   static restartJobs(root, ids, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -775,7 +779,7 @@ export class Job {
 
   // Remove a job that is not able to run (completed, cancelled, failed) from the queue
   static removeJobs(root, ids, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -792,7 +796,7 @@ export class Job {
   // Start the job queue
   // Deprecated!
   static startJobs(root, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -803,7 +807,7 @@ export class Job {
   // Stop the job queue, stop all running jobs
   // Deprecated!
   static stopJobs(root, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -814,7 +818,7 @@ export class Job {
 
   // Start the job queue
   static startJobServer(root, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -824,7 +828,7 @@ export class Job {
 
   // Shutdown the job queue, stop all running jobs
   static shutdownJobServer(root, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1);
+    const adjustedLength = Math.max(rest.length, 1);
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -880,7 +884,13 @@ export class Job {
         updated: time,
         created: time
       };
-      this.priority().retry().repeat().after().progress().depends().log("Constructed");
+      this.priority()
+        .retry()
+        .repeat()
+        .after()
+        .progress()
+        .depends()
+        .log("Constructed");
     }
 
     return this;
@@ -924,9 +934,9 @@ export class Job {
   }
 
   // Set the run priority of this job
-  priority(level) {
+  priority(level = 0) {
     let priority;
-    if (level === null) { level = 0; }
+
     if (typeof level === "string") {
       priority = Job.jobPriorities[level];
       if (priority === null) {
@@ -945,8 +955,9 @@ export class Job {
   // Sets the number of attempted runs of this job and
   // the time to wait between successive attempts
   // Default, do not retry
-  retry(options) {
-    if (options === null) { options = 0; }
+  retry(opts = 0) {
+    let options = opts;
+
     if (isInteger(options) && (options >= 0)) {
       options = { retries: options };
     }
@@ -995,8 +1006,9 @@ export class Job {
   // Sets the number of times to repeatedly run this job
   // and the time to wait between successive runs
   // Default: repeat every 5 minutes, forever...
-  repeat(options) {
-    if (options === null) { options = 0; }
+  repeat(opts = 0) {
+    let options = opts;
+
     if (isInteger(options) && (options >= 0)) {
       options = { repeats: options };
     }
@@ -1051,8 +1063,7 @@ export class Job {
   }
 
   // Sets the delay before this job can run after it is saved
-  delay(wait) {
-    if (wait === null) { wait = 0; }
+  delay(wait = 0) {
     if (!isInteger(wait) || !(wait >= 0)) {
       throw new Error("Bad parameter, delay requires a non-negative integer.");
     }
@@ -1060,9 +1071,9 @@ export class Job {
   }
 
   // Sets a time after which this job can run once it is saved
-  after(time) {
+  after(time = new Date(0)) {
     let after;
-    if (time === null) { time = new Date(0); }
+
     if ((typeof time === "object") && time instanceof Date) {
       after = time;
     } else {
@@ -1074,10 +1085,12 @@ export class Job {
 
   // Write a message to this job's log.
   log(message, ...rest) {
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+    const adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
+
     if (options.level === null) { options.level = "info"; }
     if (typeof message !== "string") {
       throw new Error("Log message must be a string");
@@ -1093,25 +1106,25 @@ export class Job {
     }
     if (this._doc._id !== null) {
       return methodCall(this._root, "jobLog", [this._doc._id, this._doc.runId, message, options], cb);
-    } else {  // Log can be called on an unsaved job
-      if (this._doc.log === null) { this._doc.log = []; }
-      this._doc.log.push({ time: new Date(), runId: null, level: options.level, message });
-      if ((cb !== null) && (typeof cb === "function")) {
-        _setImmediate(cb, null, true);   // DO NOT release Zalgo
-      }
-      return this;  // Allow call chaining in this case
     }
+    // Log can be called on an unsaved job
+    if (this._doc.log === null) { this._doc.log = []; }
+    this._doc.log.push({ time: new Date(), runId: null, level: options.level, message });
+    if ((cb !== null) && (typeof cb === "function")) {
+      _setImmediate(cb, null, true);   // DO NOT release Zalgo
+    }
+    return this;  // Allow call chaining in this case
   }
 
   // Indicate progress made for a running job. This is important for
   // long running jobs so the scheduler doesn't assume they are dead
-  progress(completed, total, ...rest) {
-    if (completed === null) { completed = 0; }
-    if (total === null) { total = 1; }
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+  progress(completed = 0, total = 1, ...rest) {
+    const adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
+
     if ((typeof completed === "number") &&
         (typeof total === "number") &&
         (completed >= 0) &&
@@ -1149,10 +1162,12 @@ export class Job {
   // Save this job to the server job queue Collection it will also resave a modified job if the
   // job is not running and hasn't completed.
   save(...args) {
-    let adjustedLength = Math.max(args.length, 1),
-      options = args.slice(0, adjustedLength - 1),
-      cb = args[adjustedLength - 1];
+    const adjustedLength = Math.max(args.length, 1);
+    let options = args.slice(0, adjustedLength - 1);
+    let cb = args[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
+
     return methodCall(this._root, "jobSave", [this._doc, options], cb, id => {
       if (id) {
         this._doc._id = id;
@@ -1163,31 +1178,32 @@ export class Job {
 
   // Refresh the local job state with the server job queue's version
   refresh(...args) {
-    let adjustedLength = Math.max(args.length, 1),
-      options = args.slice(0, adjustedLength - 1),
-      cb = args[adjustedLength - 1];
+    const adjustedLength = Math.max(args.length, 1);
+    let options = args.slice(0, adjustedLength - 1);
+    let cb = args[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
+
     if (options.getLog === null) { options.getLog = false; }
     if (this._doc._id !== null) {
       return methodCall(this._root, "getJob", [this._doc._id, options], cb, doc => {
         if (doc !== null) {
           this._doc = doc;
           return this;
-        } else {
-          return false;
         }
+        return false;
       });
-    } else {
-      throw new Error("Can't call .refresh() on an unsaved job");
     }
+    throw new Error("Can't call .refresh() on an unsaved job");
   }
 
   // Indicate to the server that this run has successfully finished.
-  done(result, ...rest) {
-    if (result === null) { result = {}; }
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+  done(resultOrCallback = {}, ...rest) {
+    const adjustedLength = Math.max(rest.length, 1);
+    let result = resultOrCallback;
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     if (typeof result === "function") {
       cb = result;
       result = {};
@@ -1205,11 +1221,13 @@ export class Job {
   }
 
   // Indicate to the server that this run has failed and provide an error message.
-  fail(result, ...rest) {
-    if (result === null) { result = "No error information provided"; }
-    let adjustedLength = Math.max(rest.length, 1),
-      options = rest.slice(0, adjustedLength - 1),
-      cb = rest[adjustedLength - 1];
+  fail(resultOrCallback = "No error information provided", ...rest) {
+    let result = resultOrCallback;
+
+    const adjustedLength = Math.max(rest.length, 1);
+    let options = rest.slice(0, adjustedLength - 1);
+    let cb = rest[adjustedLength - 1];
+
     if (typeof result === "function") {
       cb = result;
       result = "No error information provided";
@@ -1229,115 +1247,121 @@ export class Job {
 
   // Pause this job, only Ready and Waiting jobs can be paused
   pause(...args) {
-    let adjustedLength = Math.max(args.length, 1),
-      options = args.slice(0, adjustedLength - 1),
-      cb = args[adjustedLength - 1];
+    const adjustedLength = Math.max(args.length, 1);
+    let options = args.slice(0, adjustedLength - 1);
+    let cb = args[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
+
     if (this._doc._id !== null) {
       return methodCall(this._root, "jobPause", [this._doc._id, options], cb);
-    } else {
-      this._doc.status = "paused";
-      if ((cb !== null) && (typeof cb === "function")) {
-        _setImmediate(cb, null, true);  // DO NOT release Zalgo
-      }
-      return this;
     }
-    return null;
+
+    this._doc.status = "paused";
+    if ((cb !== null) && (typeof cb === "function")) {
+      _setImmediate(cb, null, true);  // DO NOT release Zalgo
+    }
+    return this;
   }
 
   // Resume this job, only Paused jobs can be resumed
   // Resumed jobs go to waiting
   resume(...args) {
-    let adjustedLength = Math.max(args.length, 1),
-      options = args.slice(0, adjustedLength - 1),
-      cb = args[adjustedLength - 1];
+    const adjustedLength = Math.max(args.length, 1);
+    let options = args.slice(0, adjustedLength - 1);
+    let cb = args[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
+
     if (this._doc._id !== null) {
       return methodCall(this._root, "jobResume", [this._doc._id, options], cb);
-    } else {
-      this._doc.status = "waiting";
-      if ((cb !== null) && (typeof cb === "function")) {
-        _setImmediate(cb, null, true);  // DO NOT release Zalgo
-      }
-      return this;
     }
-    return null;
+    this._doc.status = "waiting";
+    if ((cb !== null) && (typeof cb === "function")) {
+      _setImmediate(cb, null, true);  // DO NOT release Zalgo
+    }
+    return this;
   }
 
   // Make a waiting job ready to run. Jobs with dependencies only when forced
   ready(...args) {
-    let adjustedLength = Math.max(args.length, 1),
-      options = args.slice(0, adjustedLength - 1),
-      cb = args[adjustedLength - 1];
+    const adjustedLength = Math.max(args.length, 1);
+    let options = args.slice(0, adjustedLength - 1);
+    let cb = args[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
+
     if (options.force === null) { options.force = false; }
     if (this._doc._id !== null) {
       return methodCall(this._root, "jobReady", [this._doc._id, options], cb);
-    } else {
-      throw new Error("Can't call .ready() on an unsaved job");
     }
-    return null;
+
+    throw new Error("Can't call .ready() on an unsaved job");
   }
 
   // Cancel this job if it is running or able to run (waiting, ready)
   cancel(...args) {
-    let adjustedLength = Math.max(args.length, 1),
-      options = args.slice(0, adjustedLength - 1),
-      cb = args[adjustedLength - 1];
+    const adjustedLength = Math.max(args.length, 1);
+    let options = args.slice(0, adjustedLength - 1);
+    let cb = args[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
+
     if (options.antecedents === null) { options.antecedents = true; }
     if (this._doc._id !== null) {
       return methodCall(this._root, "jobCancel", [this._doc._id, options], cb);
-    } else {
-      throw new Error("Can't call .cancel() on an unsaved job");
     }
-    return null;
+
+    throw new Error("Can't call .cancel() on an unsaved job");
   }
 
   // Restart a failed or cancelled job
   restart(...args) {
-    let adjustedLength = Math.max(args.length, 1),
-      options = args.slice(0, adjustedLength - 1),
-      cb = args[adjustedLength - 1];
+    const adjustedLength = Math.max(args.length, 1);
+    let options = args.slice(0, adjustedLength - 1);
+    let cb = args[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
+
     if (options.retries === null) { options.retries = 1; }
     if (options.dependents === null) { options.dependents = true; }
     if (this._doc._id !== null) {
       return methodCall(this._root, "jobRestart", [this._doc._id, options], cb);
-    } else {
-      throw new Error("Can't call .restart() on an unsaved job");
     }
-    return null;
+
+    throw new Error("Can't call .restart() on an unsaved job");
   }
 
   // Run a completed job again as a new job, essentially a manual repeat
   rerun(...args) {
-    let adjustedLength = Math.max(args.length, 1),
-      options = args.slice(0, adjustedLength - 1),
-      cb = args[adjustedLength - 1];
+    const adjustedLength = Math.max(args.length, 1);
+    let options = args.slice(0, adjustedLength - 1);
+    let cb = args[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
+
     if (options.repeats === null) { options.repeats = 0; }
     if (options.wait === null) { options.wait = this._doc.repeatWait; }
     if (this._doc._id !== null) {
       return methodCall(this._root, "jobRerun", [this._doc._id, options], cb);
-    } else {
-      throw new Error("Can't call .rerun() on an unsaved job");
     }
-    return null;
+
+    throw new Error("Can't call .rerun() on an unsaved job");
   }
 
   // Remove a job that is not able to run (completed, cancelled, failed) from the queue
   remove(...args) {
-    let adjustedLength = Math.max(args.length, 1),
-      options = args.slice(0, adjustedLength - 1),
-      cb = args[adjustedLength - 1];
+    const adjustedLength = Math.max(args.length, 1);
+    let options = args.slice(0, adjustedLength - 1);
+    let cb = args[adjustedLength - 1];
+
     [options, cb] = Array.from(optionsHelp(options, cb));
+
     if (this._doc._id !== null) {
       return methodCall(this._root, "jobRemove", [this._doc._id, options], cb);
-    } else {
-      throw new Error("Can't call .remove() on an unsaved job");
     }
-    return null;
+
+    throw new Error("Can't call .remove() on an unsaved job");
   }
 }
 Job.initClass();
@@ -1345,7 +1369,7 @@ Job.initClass();
 function __range__(left, right, inclusive) {
   const range = [];
   const ascending = left < right;
-  const end = !inclusive ? right : ascending ? right + 1 : right - 1;
+  let end = !inclusive ? right : ascending ? right + 1 : right - 1;
   for (let i = left; ascending ? i < end : i > end; ascending ? i++ : i--) {
     range.push(i);
   }
