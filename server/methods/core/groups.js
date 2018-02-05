@@ -178,7 +178,7 @@ Meteor.methods({
     try {
       setUserPermissions({ _id: userId }, permissions, shopId);
       Accounts.update({ _id: userId }, { $set: { groups: newGroups } });
-
+      Hooks.Events.run("afterAccountsUpdate", userId, user);
       if (slug === "owner") {
         if (shopId === Reaction.getPrimaryShopId()) {
           changeMarketplaceOwner({ userId, permissions });
@@ -226,6 +226,7 @@ Meteor.methods({
     try {
       setUserPermissions(user, defaultCustomerGroupForShop.permissions, shopId);
       Accounts.update({ _id: userId, groups: groupId }, { $set: { "groups.$": defaultCustomerGroupForShop._id } }); // replace the old id with new id
+      Hooks.Events.run("afterAccountsUpdate", userId, user);
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -272,4 +273,5 @@ function setUserPermissions(users, permissions, shopId) {
 Hooks.Events.add("afterCreateDefaultAdminUser", (user) => {
   const group = Groups.findOne({ slug: "owner", shopId: Reaction.getShopId() });
   Accounts.update({ _id: user._id  }, { $set: { groups: [group._id] } });
+  Hooks.Events.run("afterAccountsUpdate", user._id, user);
 });
