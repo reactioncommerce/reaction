@@ -703,7 +703,7 @@ class JobCollectionBase extends Mongo.Collection {
 
         if ((foundDocs !== null ? foundDocs.length : undefined) > 0) {
           if (this.scrub !== null) {
-            foundDocs = ((() => {
+            foundDocs = ((() => { // eslint-disable-line no-loop-func
               const result = [];
               for (d of Array.from(foundDocs)) {
                 result.push(this.scrub(d));
@@ -720,21 +720,22 @@ class JobCollectionBase extends Mongo.Collection {
     return docs;
   }
 
-  _DDPMethod_jobRemove(ids, options) {
+  _DDPMethod_jobRemove(ids, options = {}) {
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({}));
 
-    if (options === null) { options = {}; }
+    let idArray = ids;
+
     if (_validId(ids)) {
-      ids = [ids];
+      idArray = [ids];
     }
-    if (ids.length === 0) {
+    if (idArray.length === 0) {
       return false;
     }
 
     const num = this.remove({
       _id: {
-        $in: ids
+        $in: idArray
       },
       status: {
         $in: this.jobStatusRemovable
@@ -749,16 +750,17 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
-  _DDPMethod_jobPause(ids, options) {
+  _DDPMethod_jobPause(ids, options = {}) {
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({}));
 
-    if (options === null) { options = {}; }
+    let idArray = ids;
+
     if (_validId(ids)) {
-      ids = [ids];
+      idArray = [ids];
     }
 
-    if (ids.length === 0) { return false; }
+    if (idArray.length === 0) { return false; }
     const time = new Date();
 
     const mods = {
@@ -777,7 +779,7 @@ class JobCollectionBase extends Mongo.Collection {
     const num = this.update(
       {
         _id: {
-          $in: ids
+          $in: idArray
         },
         status: {
           $in: this.jobStatusPausable
@@ -796,15 +798,16 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
-  _DDPMethod_jobResume(ids, options) {
+  _DDPMethod_jobResume(ids, options = {}) {
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({}));
 
-    if (options === null) { options = {}; }
+    let idArray = ids;
+
     if (_validId(ids)) {
-      ids = [ids];
+      idArray = [ids];
     }
-    if (ids.length === 0) { return false; }
+    if (idArray.length === 0) { return false; }
 
     const time = new Date();
     const mods = {
@@ -817,13 +820,13 @@ class JobCollectionBase extends Mongo.Collection {
     const logObj = this._logMessage.resumed();
 
     if (logObj) {
-      mods.$push = { log: logObj};
+      mods.$push = { log: logObj };
     }
 
     const num = this.update(
       {
         _id: {
-          $in: ids
+          $in: idArray
         },
         status: "paused",
         updated: {
@@ -861,12 +864,13 @@ class JobCollectionBase extends Mongo.Collection {
 
     const now = new Date();
 
-    if (options === null) { options = {}; }
     if (options.force === null) { options.force = false; }
     if (options.time === null) { options.time = now; }
 
+    let idArray = ids;
+
     if (_validId(ids)) {
-      ids = [ids];
+      idArray = [ids];
     }
 
     const query = {
@@ -883,9 +887,8 @@ class JobCollectionBase extends Mongo.Collection {
       }
     };
 
-    if (ids.length > 0) {
-      query._id =
-        {$in: ids};
+    if (idArray.length > 0) {
+      query._id = { $in: idArray };
       mods.$set.after = now;
     }
 
@@ -896,8 +899,7 @@ class JobCollectionBase extends Mongo.Collection {
       l = this._logMessage.forced();
       if (l) { logObj.push(l); }
     } else {
-      query.depends =
-        {$size: 0};
+      query.depends = { $size: 0 };
     }
 
     l = this._logMessage.readied();
@@ -926,20 +928,22 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
-  _DDPMethod_jobCancel(ids, options) {
+  _DDPMethod_jobCancel(ids, options = {}) {
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({
       antecedents: Match.Optional(Boolean),
       dependents: Match.Optional(Boolean)
     }));
 
-    if (options === null) { options = {}; }
     if (options.antecedents === null) { options.antecedents = false; }
     if (options.dependents === null) { options.dependents = true; }
+
+    let idArray = ids;
+
     if (_validId(ids)) {
-      ids = [ids];
+      idArray = [idArray];
     }
-    if (ids.length === 0) { return false; }
+    if (idArray.length === 0) { return false; }
     const time = new Date();
 
     const mods = {
@@ -964,7 +968,7 @@ class JobCollectionBase extends Mongo.Collection {
     const num = this.update(
       {
         _id: {
-          $in: ids
+          $in: idArray
         },
         status: {
           $in: this.jobStatusCancellable
@@ -991,29 +995,31 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
-  _DDPMethod_jobRestart(ids, options) {
+  _DDPMethod_jobRestart(ids, options = {}) {
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({
       retries: Match.Optional(Match.Where(_validIntGTEZero)),
       until: Match.Optional(Date),
       antecedents: Match.Optional(Boolean),
       dependents: Match.Optional(Boolean)
-    })
-    );
-    if (options === null) { options = {}; }
+    }));
+
     if (options.retries === null) { options.retries = 1; }
     if (options.retries > this.forever) { options.retries = this.forever; }
     if (options.dependents === null) { options.dependents = false; }
     if (options.antecedents === null) { options.antecedents = true; }
+
+    let idArray = ids;
+
     if (_validId(ids)) {
-      ids = [ids];
+      idArray = [ids];
     }
     if (ids.length === 0) { return false; }
     const time = new Date();
 
     const query = {
       _id: {
-        $in: ids
+        $in: idArray
       },
       status: {
         $in: this.jobStatusRestartable
@@ -1048,7 +1054,7 @@ class JobCollectionBase extends Mongo.Collection {
     const num = this.update(query, mods, { multi: true });
 
     // Restart the entire tree of dependents
-    const restartIds = this._idsOfDeps(ids, options.antecedents, options.dependents, this.jobStatusRestartable);
+    const restartIds = this._idsOfDeps(idArray, options.antecedents, options.dependents, this.jobStatusRestartable);
 
     let depsRestarted = false;
     if (restartIds.length > 0) {
@@ -1056,7 +1062,7 @@ class JobCollectionBase extends Mongo.Collection {
     }
 
     if ((num > 0) || depsRestarted) {
-      this._DDPMethod_jobReady(ids);
+      this._DDPMethod_jobReady(idArray);
       return true;
     }
 
@@ -1066,14 +1072,13 @@ class JobCollectionBase extends Mongo.Collection {
 
   // Job creator methods
 
-  _DDPMethod_jobSave(doc, options) {
+  _DDPMethod_jobSave(doc, options = {}) {
     check(doc, _validJobDoc());
     check(options, Match.Optional({
       cancelRepeats: Match.Optional(Boolean)
     }));
     check(doc.status, Match.Where(v => Match.test(v, String) && [ "waiting", "paused" ].includes(v)));
 
-    if (options === null) { options = {}; }
     if (options.cancelRepeats === null) { options.cancelRepeats = false; }
     if (doc.repeats > this.forever) { doc.repeats = this.forever; }
     if (doc.retries > this.forever) { doc.retries = this.forever; }
