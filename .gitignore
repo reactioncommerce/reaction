@@ -12,7 +12,7 @@
 *.seed
 *.sublime-project
 *.sublime-workspace
-.package-lock.json
+
 lib-cov
 logs
 node_modules

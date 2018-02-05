@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { assign, clone } from "lodash";
+import { inRange } from "lodash";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { Form } from "/imports/plugins/core/ui/client/components";
@@ -65,10 +65,6 @@ class AvalaraSettingsForm extends Component {
     super(props);
 
     this.handleTestCredentials = this.handleTestCredentials.bind(this);
-    // attach the handleChange to all properties.
-    props.fieldsProp.forEach((field) => {
-      field.handleChange = this.handleChange.bind(this);
-    });
 
     this.state = {
       showLogs: props.settings.avalara.enableLogging,
@@ -77,8 +73,7 @@ class AvalaraSettingsForm extends Component {
         "settings.avalara.enableLogging": {
           handleChange: this.handleLogToggle
         }
-      },
-      settings: props.settings
+      }
     };
   }
 
@@ -110,25 +105,14 @@ class AvalaraSettingsForm extends Component {
     });
   }
 
-  handleChange(event, value, name) {
-    this.setState((prevState) => {
-      return {
-        settings: {
-          ...prevState.settings,
-          [name]: value
-        }
-      };
-    });
-  }
-
   handleTestCredentials() {
-    Meteor.call("avalara/testCredentials", this.state.settings.avalara, function (error, result) {
+    Meteor.call("avalara/testCredentials", this.props.settings.avalara, function (error, result) {
       if (error && error.message) {
         return Alerts.toast(`${i18next.t("settings.testCredentialsFailed")} ${error.message}`, "error");
       }
       try {
-        const statusCode = _.get(result, "statusCode");
-        const connectionValid = _.inRange(statusCode, 400);
+        const statusCode = result.statusCode;
+        const connectionValid = inRange(statusCode, 400);
         if (connectionValid) {
           return Alerts.toast(i18next.t("settings.testCredentialsSuccess"), "success");
         }

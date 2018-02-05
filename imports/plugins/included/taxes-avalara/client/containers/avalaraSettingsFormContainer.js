@@ -67,7 +67,7 @@ const formSettings = {
     date: LogSchema._schema.date,
     data: LogSchema._schema.data
   }
-}
+};
 
 const composer = (props, onData) => {
   const shopId = Reaction.getShopId();

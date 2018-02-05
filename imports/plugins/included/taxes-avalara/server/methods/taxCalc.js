@@ -32,7 +32,7 @@ function getUrl() {
   if (!mode) {
     baseUrl = "https://sandbox-rest.avatax.com/api/v2/";
   } else {
-    baseUrl = "https://rest.avatax.com";
+    baseUrl = "https://rest.avatax.com/api/v2/";
   }
   return baseUrl;
 }
