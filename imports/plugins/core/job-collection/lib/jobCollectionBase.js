@@ -145,7 +145,7 @@ class JobCollectionBase extends Mongo.Collection {
 
     this.later = later;  // later object, for convenience
 
-    if (options.noCollectionSuffix === null) { options.noCollectionSuffix = false; }
+    if (!options.noCollectionSuffix) { options.noCollectionSuffix = false; }
 
     let collectionName = this.root;
 
@@ -596,7 +596,7 @@ class JobCollectionBase extends Mongo.Collection {
       return;
     }
 
-    if (options.maxJobs === null) { options.maxJobs = 1; }
+    if (!options.maxJobs) { options.maxJobs = 1; }
     // Don"t put out any more jobs while shutting down
     if (this.stopped) {
       return [];
@@ -661,7 +661,7 @@ class JobCollectionBase extends Mongo.Collection {
         mods.$set.workTimeout = options.workTimeout;
         mods.$set.expiresAfter = new Date(time.valueOf() + options.workTimeout);
       } else {
-        if (mods.$unset === null) {
+        if (!mods.$unset) {
           mods.$unset = {};
         }
 
@@ -864,8 +864,8 @@ class JobCollectionBase extends Mongo.Collection {
 
     const now = new Date();
 
-    if (options.force === null) { options.force = false; }
-    if (options.time === null) { options.time = now; }
+    if (!options.force) { options.force = false; }
+    if (!options.time) { options.time = now; }
 
     let idArray = ids;
 
@@ -935,8 +935,8 @@ class JobCollectionBase extends Mongo.Collection {
       dependents: Match.Optional(Boolean)
     }));
 
-    if (options.antecedents === null) { options.antecedents = false; }
-    if (options.dependents === null) { options.dependents = true; }
+    if (!options.antecedents) { options.antecedents = false; }
+    if (!options.dependents) { options.dependents = true; }
 
     let idArray = ids;
 
@@ -1004,10 +1004,10 @@ class JobCollectionBase extends Mongo.Collection {
       dependents: Match.Optional(Boolean)
     }));
 
-    if (options.retries === null) { options.retries = 1; }
+    if (!options.retries) { options.retries = 1; }
     if (options.retries > this.forever) { options.retries = this.forever; }
-    if (options.dependents === null) { options.dependents = false; }
-    if (options.antecedents === null) { options.antecedents = true; }
+    if (!options.dependent) { options.dependents = false; }
+    if (!options.antecedents) { options.antecedents = true; }
 
     let idArray = ids;
 
@@ -1079,7 +1079,7 @@ class JobCollectionBase extends Mongo.Collection {
     }));
     check(doc.status, Match.Where(v => Match.test(v, String) && [ "waiting", "paused" ].includes(v)));
 
-    if (options.cancelRepeats === null) { options.cancelRepeats = false; }
+    if (!options.cancelRepeats) { options.cancelRepeats = false; }
     if (doc.repeats > this.forever) { doc.repeats = this.forever; }
     if (doc.retries > this.forever) { doc.retries = this.forever; }
 
@@ -1112,7 +1112,7 @@ class JobCollectionBase extends Mongo.Collection {
       }
 
       doc.after = nextDate;
-    } else if ((this.later === null) && (doc.repeatWait !== "number")) {
+    } else if (!this.later && doc.repeatWait !== "number") {
       console.warn("Later.js not loaded...");
       return null;
     }
@@ -1317,10 +1317,10 @@ class JobCollectionBase extends Mongo.Collection {
     );
 
     if (doc !== null) {
-      if (options.repeats === null) { options.repeats = 0; }
+      if (!options.repeats) { options.repeats = 0; }
       if (options.repeats > this.forever) { options.repeats = this.forever; }
-      if (options.until === null) { options.until = doc.repeatUntil; }
-      if (options.wait === null) { options.wait = 0; }
+      if (!options.until) { options.until = doc.repeatUntil; }
+      if (!options.wait) { options.wait = 0; }
       return this._rerun_job(doc, options.repeats, options.wait, options.until);
     }
 
@@ -1356,7 +1356,7 @@ class JobCollectionBase extends Mongo.Collection {
         transform: null
       }
     );
-    if (doc === null) {
+    if (!doc) {
       if (!this.isSimulation) {
         console.warn("Running job not found", id, runId);
       }
@@ -1490,7 +1490,7 @@ class JobCollectionBase extends Mongo.Collection {
       fatal: Match.Optional(Boolean)
     }));
 
-    if (options.fatal === null) { options.fatal = false; }
+    if (!options.fatal) { options.fatal = false; }
 
     const time = new Date();
     const doc = this.findOne(
@@ -1513,7 +1513,7 @@ class JobCollectionBase extends Mongo.Collection {
       }
     );
 
-    if (doc === null) {
+    if (!doc) {
       if (!this.isSimulation) {
         console.warn("Running job not found", id, runId);
       }
