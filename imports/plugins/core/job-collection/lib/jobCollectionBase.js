@@ -1187,14 +1187,12 @@ class JobCollectionBase extends Mongo.Collection {
 
   // Worker methods
 
-  _DDPMethod_jobProgress(id, runId, completed, total, options) {
+  _DDPMethod_jobProgress(id, runId, completed, total, options = {}) {
     check(id, Match.Where(_validId));
     check(runId, Match.Where(_validId));
     check(completed, Match.Where(_validNumGTEZero));
     check(total, Match.Where(_validNumGTZero));
     check(options, Match.Optional({}));
-
-    if (options === null) { options = {}; }
 
     // Notify the worker to stop running if we are shutting down
     if (this.stopped) {
@@ -1207,7 +1205,7 @@ class JobCollectionBase extends Mongo.Collection {
       percent: (100 * completed) / total
     };
 
-    check(progress, Match.Where(v => (v.total >= v.completed) && (0 <= v.percent && v.percent <= 100)));
+    check(progress, Match.Where(v => (v.total >= v.completed) && (v.percent >= 0 && v.percent <= 100)));
 
     const time = new Date();
 
@@ -1241,7 +1239,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
-  _DDPMethod_jobLog(id, runId, message, options) {
+  _DDPMethod_jobLog(id, runId, message, options = {}) {
     check(id, Match.Where(_validId));
     check(runId, Match.OneOf(Match.Where(_validId), null));
     check(message, String);
@@ -1249,8 +1247,6 @@ class JobCollectionBase extends Mongo.Collection {
       level: Match.Optional(Match.Where(_validLogLevel)),
       data: Match.Optional(Object)
     }));
-
-    if (options === null) { options = {}; }
 
     const time = new Date();
     const logObj = {
@@ -1293,7 +1289,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
-  _DDPMethod_jobRerun(id, options) {
+  _DDPMethod_jobRerun(id, options = {}) {
     check(id, Match.Where(_validId));
     check(options, Match.Optional({
       repeats: Match.Optional(Match.Where(_validIntGTEZero)),
@@ -1321,7 +1317,6 @@ class JobCollectionBase extends Mongo.Collection {
     );
 
     if (doc !== null) {
-      if (options === null) { options = {}; }
       if (options.repeats === null) { options.repeats = 0; }
       if (options.repeats > this.forever) { options.repeats = this.forever; }
       if (options.until === null) { options.until = doc.repeatUntil; }
@@ -1332,7 +1327,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
-  _DDPMethod_jobDone(id, runId, result, options) {
+  _DDPMethod_jobDone(id, runId, result, options = {}) {
     check(id, Match.Where(_validId));
     check(runId, Match.Where(_validId));
     check(result, Object);
@@ -1341,7 +1336,7 @@ class JobCollectionBase extends Mongo.Collection {
       delayDeps: Match.Optional(Match.Where(_validIntGTEZero))
     }));
 
-    if (options === null) { options = { repeatId: false }; }
+    if (!options.repeatId) { options.repeatId = false; }
 
     const time = new Date();
     const doc = this.findOne(
@@ -1487,7 +1482,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
-  _DDPMethod_jobFail(id, runId, err, options) {
+  _DDPMethod_jobFail(id, runId, err, options = {}) {
     check(id, Match.Where(_validId));
     check(runId, Match.Where(_validId));
     check(err, Object);
@@ -1495,7 +1490,6 @@ class JobCollectionBase extends Mongo.Collection {
       fatal: Match.Optional(Boolean)
     }));
 
-    if (options === null) { options = {}; }
     if (options.fatal === null) { options.fatal = false; }
 
     const time = new Date();
