@@ -14,15 +14,15 @@ Template.products.helpers({
  */
 
 Template.products.events({
-  "click #productListView": function () {
+  "click #productListView"() {
     $(".product-grid").hide();
     return $(".product-list").show();
   },
-  "click #productGridView": function () {
+  "click #productGridView"() {
     $(".product-list").hide();
     return $(".product-grid").show();
   },
-  "click .product-list-item": function () {
+  "click .product-list-item"() {
     // go to new product
     Reaction.Router.go("product", {
       handle: this._id

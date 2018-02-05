@@ -1,4 +1,5 @@
 /* eslint camelcase: 0 */
+/* eslint prefer-arrow-callback:0 */
 import nock from "nock";
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";

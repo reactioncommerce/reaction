@@ -92,7 +92,7 @@ export default function compose(dataLoader, options = {}) {
       }
 
       render() {
-        const props = this.props;
+        const { props } = this;
         const { data, error } = this.state;
 
         if (error) {

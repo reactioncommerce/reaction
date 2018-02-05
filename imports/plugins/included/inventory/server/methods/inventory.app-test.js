@@ -1,4 +1,5 @@
-/* eslint dot-notation: 0 */
+/* eslint dot-notation:0 */
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Products, Inventory }  from "/lib/collections";

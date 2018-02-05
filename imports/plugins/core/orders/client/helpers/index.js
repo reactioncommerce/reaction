@@ -31,12 +31,9 @@ export function getOrderRiskBadge(riskLevel) {
  * @return {string} label - risklevel value (if risklevel is not normal)
  */
 export function getOrderRiskStatus(order) {
-  let riskLevel;
   const billingForShop = order.billing.find((billing) => billing.shopId === Reaction.getShopId());
-
-  if (billingForShop && billingForShop.paymentMethod && billingForShop.paymentMethod.riskLevel) {
-    riskLevel = billingForShop.paymentMethod.riskLevel;
-  }
+  const paymentMethod = (billingForShop && billingForShop.paymentMethod) || {};
+  const { riskLevel } = paymentMethod;
 
   // normal transactions do not need to be flagged
   if (riskLevel === "normal") {
