@@ -740,6 +740,8 @@ Meteor.methods({
     check(language, String);
     check(enabled, Boolean);
 
+    console.log("language, enabled", language, enabled);
+
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
       throw new Meteor.Error("access-denied", "Access Denied");
@@ -757,6 +759,7 @@ Meteor.methods({
 
       if (Array.isArray(shop.languages)) {
         shop.languages.forEach((languageData, index) => {
+          console.log("test", languageData);
           if (languageData.i18n === defaultLanguage) {
             updateObject[`languages.${index}.enabled`] = true;
           } else {
@@ -770,6 +773,7 @@ Meteor.methods({
         $set: updateObject
       });
     } else if (language === defaultLanguage) {
+      console.log("default Language");
       return Collections.Shops.update({
         "_id": Reaction.getShopId(),
         "languages.i18n": language

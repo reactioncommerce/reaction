@@ -85,9 +85,6 @@ class PublishControls extends Component {
       );
     }
 
-    // If the user is just a shop owner, not a marketplace owner,
-    // make sure the shop is set to their shop and do not show the shop switcher
-    return this.onShopSelectChange(null, Reaction.getSellerShopId());
   }
 
   renderVisibilitySwitch() {
@@ -173,6 +170,7 @@ class PublishControls extends Component {
   }
 
   render() {
+    console.log("Is this running?", this.props);
     return (
       <Components.Toolbar>
         <Components.ToolbarGroup firstChild={true}>
