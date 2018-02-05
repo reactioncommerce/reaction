@@ -946,7 +946,6 @@ export class Job {
       priority = level;
     } else {
       throw new Error("priority must be an integer or valid priority level");
-      priority = 0;
     }
     this._doc.priority = priority;
     return this;
@@ -1214,10 +1213,9 @@ export class Job {
     }
     if ((this._doc._id !== null) && (this._doc.runId !== null)) {
       return methodCall(this._root, "jobDone", [this._doc._id, this._doc.runId, result, options], cb);
-    } else {
-      throw new Error("Can't call .done() on an unsaved or non-running job");
     }
-    return null;
+
+    throw new Error("Can't call .done() on an unsaved or non-running job");
   }
 
   // Indicate to the server that this run has failed and provide an error message.
@@ -1239,10 +1237,9 @@ export class Job {
     if (options.fatal === null) { options.fatal = false; }
     if ((this._doc._id !== null) && (this._doc.runId !== null)) {
       return methodCall(this._root, "jobFail", [this._doc._id, this._doc.runId, result, options], cb);
-    } else {
-      throw new Error("Can't call .fail() on an unsaved or non-running job");
     }
-    return null;
+
+    throw new Error("Can't call .fail() on an unsaved or non-running job");
   }
 
   // Pause this job, only Ready and Waiting jobs can be paused
