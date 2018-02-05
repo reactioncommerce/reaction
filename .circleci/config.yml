@@ -136,13 +136,13 @@ workflows:
       - tests
 
       - publish:
-        requires:
-          - tests
+          requires:
+            - tests
 
       - deployDocs:
-        requires:
-          - tests
-        filters:
-          branches:
-            only:
-              - master
+          requires:
+            - tests
+          filters:
+            branches:
+              only:
+                - master
