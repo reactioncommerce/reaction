@@ -6,7 +6,7 @@ import { Template } from "meteor/templating";
 import { Blaze } from "meteor/blaze";
 
 // Empty template; logic in `onRendered` below
-Template.React = new Template("Template.React", function () {
+Template.React = new Template("Template.React", () => {
   return [];
 });
 
@@ -21,9 +21,8 @@ Template.React.onRendered(function () {
 
     const comp = data && data.component;
     if (!comp) {
-      throw new Error(
-        "In template " + parentTemplate + ", call to `{{> React ... }}` missing " +
-          "`component` argument.");
+      throw new Error("In template " + parentTemplate + ", call to `{{> React ... }}` missing " +
+      "`component` argument.");
     }
 
     const props = _.omit(data, "component");

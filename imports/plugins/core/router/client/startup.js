@@ -2,12 +2,12 @@ import { loadRegisteredComponents } from "@reactioncommerce/reaction-components"
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Accounts } from "meteor/accounts-base";
-import { Shops } from "/lib/collections";
-import { initBrowserRouter } from "./browserRouter";
 import { Reaction } from "/client/api";
+import { Shops } from "/lib/collections";
 import { Router } from "../lib";
+import { initBrowserRouter } from "./browserRouter";
 
-Meteor.startup(function () {
+Meteor.startup(() => {
   loadRegisteredComponents();
 
   // Subscribe to router required publications
@@ -19,7 +19,7 @@ Meteor.startup(function () {
   const merchantShopSub = Meteor.subscribe("MerchantShops");
   const packageSub = Meteor.subscribe("Packages");
 
-  Tracker.autorun(function () {
+  Tracker.autorun(() => {
     // initialize client routing
     if (
       primaryShopSub.ready() &&

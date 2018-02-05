@@ -13,13 +13,13 @@ Meteor.methods({
    * @summary Method to remove all translations, and reload from jsonFiles
    * @return {undefined}
    */
-  "i18n/flushTranslations": function () {
+  "i18n/flushTranslations"() {
     if (!Reaction.hasAdminAccess()) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
     const shopId = Reaction.getShopId();
     Translations.remove({
-      shopId: shopId
+      shopId
     });
     loadCoreTranslations();
     Reaction.Import.flush();
@@ -37,7 +37,7 @@ Meteor.methods({
    * @summary Meteor method to add translations
    * @return {String} insert result
    */
-  "i18n/addTranslation": function (lng, namespace, key, message) {
+  "i18n/addTranslation"(lng, namespace, key, message) {
     check(lng, Match.OneOf(String, Array));
     check(namespace, String);
     check(key, String);

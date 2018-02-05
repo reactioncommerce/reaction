@@ -65,7 +65,7 @@ Template.addressBookAdd.helpers({
     return thisAddress;
   },
 
-  hasAddressBookEntries: function () {
+  hasAddressBookEntries() {
     const account = Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
@@ -88,15 +88,15 @@ Template.addressBookAdd.helpers({
  */
 AutoForm.hooks({
   addressBookAddForm: {
-    onSubmit: function (insertDoc) {
+    onSubmit(insertDoc) {
       const that = this;
       this.event.preventDefault();
       const addressBook = $(this.template.firstNode).closest(".address-book");
 
-      Meteor.call("accounts/validateAddress", insertDoc, function (err, res) {
+      Meteor.call("accounts/validateAddress", insertDoc, (err, res) => {
         // if the address is validated OR the address has already been through the validation process, pass it on
         if (res.validated) {
-          Meteor.call("accounts/addressBookAdd", insertDoc, function (error, result) {
+          Meteor.call("accounts/addressBookAdd", insertDoc, (error, result) => {
             if (error) {
               Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
               that.done(new Error("Failed to add address: ", error));

@@ -10,9 +10,9 @@ jest.mock("/imports/plugins/core/ui/client/components", () => {
 });
 
 import React from "react";
-import Badge from "../badge";
 import { shallow } from "enzyme";
 import shallowToJSON from "enzyme-to-json";
+import Badge from "../badge";
 
 /**
  * Badge is a display only component
@@ -28,7 +28,7 @@ afterEach(() => {
  */
 
 test("Badge snapshot test", () => {
-  const component = shallow(
+  const component = shallow((
     <Badge
       badgeSize="Size of Badge"
       className="Classes to apply to badge"
@@ -36,7 +36,7 @@ test("Badge snapshot test", () => {
       label="Text to display"
       status="Badge status"
     />
-  );
+  ));
   const tree = shallowToJSON(component);
   expect(tree).toMatchSnapshot();
 });

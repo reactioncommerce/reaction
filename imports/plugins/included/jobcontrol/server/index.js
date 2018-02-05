@@ -1,11 +1,13 @@
-import "./jobs/exchangerates";
-import "./jobs/cleanup";
-import "./jobs/cart";
-import cleanupJob from "./jobs/cleanup";
-import fetchRateJobs from "./jobs/exchangerates";
-import cartCleanupJob from "./jobs/cart";
+import { cleanupJob, addCleanupJobControlHook } from "./jobs/cleanup";
+import { fetchRateJobs, setupFetchFlushCurrencyHooks } from "./jobs/exchangerates";
+import { cartCleanupJob, setupStaleCartHook } from "./jobs/cart";
 import "./i18n";
 
+addCleanupJobControlHook();
 cleanupJob();
+
+setupFetchFlushCurrencyHooks();
 fetchRateJobs();
+
+setupStaleCartHook();
 cartCleanupJob();

@@ -60,7 +60,7 @@ function submitToBrainTree(doc, template) {
   Braintree.authorize(cardData, {
     total: cartTotal,
     currency: currencyCode
-  }, function (error, results) {
+  }, (error, results) => {
     let paymentMethod;
     submitting = false;
     if (error) {
@@ -79,7 +79,7 @@ function submitToBrainTree(doc, template) {
         const storedCard = results.response.transaction.creditCard.cardType.toUpperCase() + " " + results.response.transaction.creditCard.last4;
         paymentMethod = {
           processor: "Braintree",
-          storedCard: storedCard,
+          storedCard,
           paymentPackageId: packageData._id,
           paymentSettingsKey: packageData.registry[0].settingsKey,
           method: "credit",
@@ -102,16 +102,16 @@ function submitToBrainTree(doc, template) {
 }
 
 AutoForm.addHooks("braintree-payment-form", {
-  onSubmit: function (doc) {
+  onSubmit(doc) {
     submitToBrainTree(doc, this.template);
     return false;
   },
-  beginSubmit: function () {
+  beginSubmit() {
     this.template.$(":input").attr("disabled", true);
     this.template.$("#btn-complete-order").text("Submitting ");
     return this.template.$("#btn-processing").removeClass("hidden");
   },
-  endSubmit: function () {
+  endSubmit() {
     if (!submitting) {
       return uiEnd(this.template, "Complete your order");
     }
