@@ -16,7 +16,7 @@ const handlers = {
     // UserProfile and ShopMembers publications.
     //
     Accounts.update(Meteor.userId(), { $set: { "profile.currency": currencyName } });
-//    Hooks.Events.run("afterAccountUpdate", Meteor.userId(), Meteor.user());
+    // Hooks.Events.run("afterAccountUpdate", Meteor.userId(), Meteor.user());
 
     const cart = Cart.findOne({ userId: Meteor.userId() });
 
