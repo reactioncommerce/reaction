@@ -1096,8 +1096,8 @@ class JobCollectionBase extends Mongo.Collection {
     if ((this.later !== null) && (typeof doc.repeatWait !== "number")) {
       // Using a workaround to find next time after doc.after.
       // See: https://github.com/vsivsi/meteor-job-collection/issues/217
-      const next = schedule.next(2, schedule.prev(1, doc.after))[1];
       const schedule = this.later !== null ? this.later.schedule(doc.repeatWait) : undefined;
+      const next = schedule.next(2, schedule.prev(1, doc.after))[1];
 
       if (!schedule || !next) {
         console.warn(`No valid available later.js times in schedule after ${doc.after}`);
