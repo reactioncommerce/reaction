@@ -320,6 +320,10 @@ export const methods = {
             Hooks.Events.run("beforeProductInsert", reactionProduct);
             // Insert product, save id
             const reactionProductId = Products.insert(reactionProduct, { selector: { type: "simple" }, publish: true });
+            // Call product insert `after` hook
+            Hooks.Events.run("afterProductInsert", reactionProduct);
+            Hooks.Events.run("afterProductInsertSearch", reactionProduct);
+
             ids.push(reactionProductId);
 
             // Save the primary image to the grid and as priority 0
@@ -367,6 +371,8 @@ export const methods = {
                   Hooks.Events.run("beforeProductInsert", reactionVariant);
                   // insert the Reaction variant
                   const reactionVariantId = Products.insert(reactionVariant, { publish: true });
+                  Hooks.Events.run("afterProductInsert", reactionProduct);
+                  Hooks.Events.run("afterProductInsertSearch", reactionProduct);
                   ids.push(reactionVariantId);
 
                   // If we have shopify options, create reaction options
@@ -389,6 +395,8 @@ export const methods = {
 
                         Hooks.Events.run("beforeProductInsert", reactionOption);
                         const reactionOptionId = Products.insert(reactionOption, { type: "variant" });
+                        Hooks.Events.run("afterProductInsert", reactionProduct);
+                        Hooks.Events.run("afterProductInsertSearch", reactionProduct);
                         ids.push(reactionOptionId);
                         Logger.debug(`Imported ${shopifyProduct.title} ${variant}/${option}`);
 
@@ -449,6 +457,8 @@ export const methods = {
 
                               Hooks.Events.run("beforeProductInsert", reactionTernaryOption);
                               const reactionTernaryOptionId = Products.insert(reactionTernaryOption, { type: "variant" });
+                              Hooks.Events.run("afterProductInsert", reactionProduct);
+                              Hooks.Events.run("afterProductInsertSearch", reactionProduct);
                               ids.push(reactionTernaryOptionId);
                               Logger.debug(`Imported ${shopifyProduct.title} ${variant}/${option}/${ternaryOption}`);
 

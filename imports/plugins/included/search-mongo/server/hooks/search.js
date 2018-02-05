@@ -82,9 +82,9 @@ Products.after.update((userId, doc, fieldNames) => {
  * after insert
  * @summary should fires on create new variants, on clones products/variants
  */
-Products.after.insert((userId, doc) => {
-  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
-    const productId = doc._id;
+Hooks.Events.add("afterProductInsertSearch", (product) => {
+  if (ProductSearch && !Meteor.isAppTest && product.type === "simple") {
+    const productId = product._id;
     buildProductSearchRecord(productId);
     Logger.debug(`Added product ${productId} to ProductSearch`);
   }

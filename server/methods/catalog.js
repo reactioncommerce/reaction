@@ -430,6 +430,8 @@ Meteor.methods({
       try {
         Hooks.Events.run("beforeProductInsert", clone);
         newId = Products.insert(clone, { validate: false });
+        Hooks.Events.run("afterProductInsert", clone);
+        Hooks.Events.run("afterProductInsertSearch", clone);
         Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
           clone._id} from ${variantId}`);
       } catch (error) {
@@ -497,6 +499,8 @@ Meteor.methods({
 
     Hooks.Events.run("beforeProductInsert", assembledVariant);
     Products.insert(assembledVariant);
+    Hooks.Events.run("afterProductInsert", assembledVariant);
+    Hooks.Events.run("afterProductInsertSearch", assembledVariant);
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
     return newVariantId;
@@ -705,6 +709,8 @@ Meteor.methods({
       }
       Hooks.Events.run("beforeProductInsert", newProduct);
       result = Products.insert(newProduct, { validate: false });
+      Hooks.Events.run("afterProductInsert", newProduct);
+      Hooks.Events.run("afterProductInsertSearch", newProduct);
       results.push(result);
 
       // cloning variants
@@ -733,6 +739,8 @@ Meteor.methods({
 
         Hooks.Events.run("beforeProductInsert", newVariant);
         result = Products.insert(newVariant, { validate: false });
+        Hooks.Events.run("afterProductInsert", newVariant);
+        Hooks.Events.run("afterProductInsertSearch", newVariant);
         copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
       }
@@ -763,7 +771,10 @@ Meteor.methods({
         throw new Meteor.Error("invalid-parameter", "Product should have a valid shopId");
       }
       Hooks.Events.run("beforeProductInsert", product);
-      return Products.insert(product);
+      const newProductId = Products.insert(product);
+      Hooks.Events.run("afterProductInsert", product);
+      Hooks.Events.run("afterProductInsertSearch", product);
+      return newProductId;
     }
 
     const newId = Products.insert({
@@ -780,6 +791,8 @@ Meteor.methods({
       type: "variant" // needed for multi-schema
     });
 
+    Hooks.Events.run("afterProductInsert", newId);
+    Hooks.Events.run("afterProductInsertSearch", newId);
     return newId;
   },
 

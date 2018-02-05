@@ -85,11 +85,11 @@ Products.after.update((userId, doc, fieldNames, modifier) => {
  * after insert
  * @summary should fires on create new variants, on clones products/variants
  */
-Products.after.insert((userId, doc) => {
-  if (doc.type !== "variant") {
+Hooks.Events.add("afterProductInsert", (product) => {
+  if (product.type !== "variant") {
     return false;
   }
-  registerInventory(doc);
+  registerInventory(product);
 });
 
 function markInventoryShipped(doc) {
