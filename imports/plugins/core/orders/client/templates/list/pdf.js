@@ -42,7 +42,7 @@ Template.completedPDFLayout.helpers({
   },
   billing() {
     const order = Template.instance().state.get("order");
-    if (order) {
+    if (order && order.length) {
       return order.billing[0];
     }
 
