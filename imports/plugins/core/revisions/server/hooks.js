@@ -611,7 +611,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   return false;
 });
 
-Products.before.remove((userId, product) => {
+Hooks.Events.add("beforeProductRemove", (product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }

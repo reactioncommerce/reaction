@@ -588,7 +588,7 @@ Meteor.methods({
     const toDelete = Products.find(selector).fetch();
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
-
+    Hooks.Events.run("beforeProductRemove", selector);
     const deleted = Products.remove(selector);
 
     // after variant were removed from product, we need to recalculate all
@@ -834,6 +834,7 @@ Meteor.methods({
 
     const ids = [];
     productsWithVariants.map(doc => {
+      Hooks.Events.run("beforeProductRemove", doc);
       ids.push(doc._id);
     });
 
