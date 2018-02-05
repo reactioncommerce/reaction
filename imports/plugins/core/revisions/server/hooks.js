@@ -2,7 +2,7 @@ import _ from "lodash";
 import { diff } from "deep-diff";
 import { Meteor } from "meteor/meteor";
 import { Products, Revisions, Tags, Media } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
 import { getSlug } from "/lib/api";
 
@@ -274,8 +274,7 @@ Media.files.before.remove((userId, media) => {
   return true;
 });
 
-
-Products.before.insert((userId, product) => {
+Hooks.Events.add("beforeProductInsert", (product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -330,7 +329,6 @@ Products.before.insert((userId, product) => {
     });
   }
 });
-
 
 Products.before.update(function (userId, product, fieldNames, modifier, options) {
   if (RevisionApi.isRevisionControlEnabled() === false) {

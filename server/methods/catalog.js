@@ -6,7 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { copyFile, ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
 import { Media, Products, Revisions, Tags } from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
@@ -428,6 +428,7 @@ Meteor.methods({
 
       let newId;
       try {
+        Hooks.Events.run("beforeProductInsert", clone);
         newId = Products.insert(clone, { validate: false });
         Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
           clone._id} from ${variantId}`);
@@ -494,6 +495,7 @@ Meteor.methods({
       flushQuantity(parentId);
     }
 
+    Hooks.Events.run("beforeProductInsert", assembledVariant);
     Products.insert(assembledVariant);
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
@@ -699,6 +701,7 @@ Meteor.methods({
           newProduct._id
         );
       }
+      Hooks.Events.run("beforeProductInsert", newProduct);
       result = Products.insert(newProduct, { validate: false });
       results.push(result);
 
@@ -726,6 +729,7 @@ Meteor.methods({
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
 
+        Hooks.Events.run("beforeProductInsert", newVariant);
         result = Products.insert(newVariant, { validate: false });
         copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
@@ -756,6 +760,7 @@ Meteor.methods({
       if (!product.shopId || !Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
         throw new Meteor.Error("invalid-parameter", "Product should have a valid shopId");
       }
+      Hooks.Events.run("beforeProductInsert", product);
       return Products.insert(product);
     }
 
@@ -765,6 +770,7 @@ Meteor.methods({
       validate: false
     });
 
+    Hooks.Events.run("beforeProductInsert", newId);
     Products.insert({
       ancestors: [newId],
       price: 0.00,

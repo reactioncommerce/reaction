@@ -2,7 +2,7 @@
 import Shopify from "shopify-api-node";
 import { Job } from "meteor/vsivsi:job-collection";
 import { Meteor } from "meteor/meteor";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 import { check, Match } from "meteor/check";
 import { Products, Jobs, Tags } from "/lib/collections";
 import { getApiInfo } from "../api/api";
@@ -316,6 +316,8 @@ export const methods = {
             // Setup reaction product
             const reactionProduct = createReactionProductFromShopifyProduct({ shopifyProduct, shopId, hashtags });
 
+            // Call product insert `before` hook
+            Hooks.Events.run("beforeProductInsert", reactionProduct);
             // Insert product, save id
             const reactionProductId = Products.insert(reactionProduct, { selector: { type: "simple" }, publish: true });
             ids.push(reactionProductId);
@@ -362,6 +364,7 @@ export const methods = {
                     shopId
                   });
 
+                  Hooks.Events.run("beforeProductInsert", reactionVariant);
                   // insert the Reaction variant
                   const reactionVariantId = Products.insert(reactionVariant, { publish: true });
                   ids.push(reactionVariantId);
@@ -384,6 +387,7 @@ export const methods = {
                           shopId
                         });
 
+                        Hooks.Events.run("beforeProductInsert", reactionOption);
                         const reactionOptionId = Products.insert(reactionOption, { type: "variant" });
                         ids.push(reactionOptionId);
                         Logger.debug(`Imported ${shopifyProduct.title} ${variant}/${option}`);
@@ -443,6 +447,7 @@ export const methods = {
                                 shopId
                               });
 
+                              Hooks.Events.run("beforeProductInsert", reactionTernaryOption);
                               const reactionTernaryOptionId = Products.insert(reactionTernaryOption, { type: "variant" });
                               ids.push(reactionTernaryOptionId);
                               Logger.debug(`Imported ${shopifyProduct.title} ${variant}/${option}/${ternaryOption}`);
