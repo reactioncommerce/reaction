@@ -194,6 +194,15 @@ class JobQueue {
         5000  // ms
       :
         options.pollInterval;
+
+    if (options && !options.pollInterval) {
+      this.pollInterval = Job.forever;
+    } else if (options && options.pollInterval !== undefined && !isInteger(options.pollInterval)) {
+      this.pollInterval = 5000;
+    } else {
+      this.pollInterval = options.pollInterval;
+    }
+
     if (!isInteger(this.pollInterval) || !(this.pollInterval >= 0)) {
       throw new Error("JobQueue: Invalid pollInterval, must be a positive integer");
     }
