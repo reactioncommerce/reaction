@@ -26,8 +26,11 @@ import { Meteor } from "meteor/meteor";
 // Exports Job object
 
 function methodCall(root, method, params, cb, after = ret => ret) {
-  const left = (Job._ddp_apply !== null ? Job._ddp_apply[root.root !== null ? root.root : root] : undefined);
-  const apply = left !== null ? left : Job._ddp_apply;
+  let apply = Job._ddp_apply;
+
+  if (!apply) {
+    apply = Job._ddp_apply[root.root || root];
+  }
 
   if (typeof apply !== "function") {
     throw new Error("Job remote method call error, no valid invocation method found.");
@@ -1366,7 +1369,16 @@ Job.initClass();
 function __range__(left, right, inclusive) {
   const range = [];
   const ascending = left < right;
-  let end = !inclusive ? right : ascending ? right + 1 : right - 1;
+  let end;
+
+  if (!inclusive) {
+    end = right;
+  } else if (ascending) {
+    end = right + 1;
+  } else {
+    end = right - 1;
+  }
+
   for (let i = left; ascending ? i < end : i > end; ascending ? i++ : i--) {
     range.push(i);
   }
