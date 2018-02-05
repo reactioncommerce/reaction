@@ -1,44 +1,30 @@
 import { Meteor } from "meteor/meteor";
-import { Cart, Products, Orders } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Products, Orders } from "/lib/collections";
+import { Logger, Hooks } from "/server/api";
 import { registerInventory } from "../methods/inventory";
 
 /**
- * Collection Hooks
- * transform collections based on events
- *
- * See: https://github.com/matb33/meteor-collection-hooks
+ * After cart update add invetory reservations
  */
+Hooks.Events.add("afterAddItemsToCart", (userId, cart) => {
+  // Adding a new product or variant to the cart
+  Logger.debug("after cart update, call inventory/addReserve");
+  Meteor.call("inventory/addReserve", cart.items);
+});
 
-/**
- * After cart update
- */
-Cart.after.update((userId, cart, fieldNames, modifier) => {
-  // if we're adding a new product or variant to the cart
-  if (modifier.$addToSet) {
-    if (modifier.$addToSet.items) {
-      Logger.debug("after cart update, call inventory/addReserve");
-      Meteor.call("inventory/addReserve", cart.items);
-    }
-  }
-  // or we're adding more quantity
-  if (modifier.$inc) {
-    Logger.debug("after variant increment, call inventory/addReserve");
-    Meteor.call("inventory/addReserve", cart.items);
-  }
+Hooks.Events.add("afterModifyQuantityInCart", (userId, cart) => {
+  // Modifying item quantity in cart.
+  Logger.debug("after variant increment, call inventory/addReserve");
+  Meteor.call("inventory/addReserve", cart.items);
 });
 
 /**
  * Before cart update. When Item is removed from Cart, release the inventory reservation.
  */
-Cart.before.update((userId, cart, fieldNames, modifier) => {
+Hooks.Events.add("beforeRemoveItemsFromCart", (userId, cart) => {
   // removing  cart items, clear inventory reserve
-  if (modifier.$pull) {
-    if (modifier.$pull.items) {
-      Logger.debug("remove cart items, call inventory/clearReserve");
-      Meteor.call("inventory/clearReserve", cart.items);
-    }
-  }
+  Logger.debug("remove cart items, call inventory/clearReserve");
+  Meteor.call("inventory/clearReserve", cart.items);
 });
 
 /**

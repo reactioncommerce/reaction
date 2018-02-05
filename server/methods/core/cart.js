@@ -4,7 +4,7 @@ import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 /**
  * @method quantityProcessing
@@ -414,6 +414,11 @@ Meteor.methods({
             "items.$.quantity": quantity
           },
           ...modifier
+        }, (error, response) => {
+          // Update inventory
+          if (response) {
+            Hooks.Events.run("afterModifyQuantityInCart", this.userId, cart);
+          }
         });
       } catch (error) {
         Logger.error("Error adding to cart.", error);
@@ -471,6 +476,11 @@ Meteor.methods({
             parcel
           }
         }
+      }, (error, response) => {
+        if (response) {
+          // Update inventory
+          Hooks.Events.run("afterAddItemsToCart", this.userId, cart);
+        }
       });
     } catch (error) {
       Logger.error("Error adding to cart.", error);
@@ -527,6 +537,7 @@ Meteor.methods({
     if (!quantity || quantity >= cartItem.quantity) {
       let cartResult;
       try {
+        Hooks.Events.run("beforeRemoveItemsFromCart", userId, cart);
         cartResult = Collections.Cart.update({
           _id: cart._id
         }, {

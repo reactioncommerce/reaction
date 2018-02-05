@@ -1,6 +1,7 @@
 import { indexOf } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
+import { Hooks } from "/server/api";
 
 /**
 * Cart Hooks for Discounts
