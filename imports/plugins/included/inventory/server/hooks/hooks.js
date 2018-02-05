@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Cart, Products, Orders } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 import { registerInventory } from "../methods/inventory";
 
 /**
@@ -45,14 +45,14 @@ Cart.before.update((userId, cart, fieldNames, modifier) => {
  * after variant were removed
  * @fires `inventory/remove` Method
  */
-Products.after.remove((userId, doc) => {
-  if (doc.type === "variant") {
+Hooks.Events.add("afterProductVariantRemove", (product) => {
+  if (product.type === "variant") {
     const variantItem = {
-      productId: doc.ancestors[0],
-      variantId: doc._id,
-      shopId: doc.shopId
+      productId: product.ancestors[0],
+      variantId: product._id,
+      shopId: product.shopId
     };
-    Logger.debug(`remove inventory variants for variant: ${doc._id
+    Logger.debug(`remove inventory variants for variant: ${product._id
     }, call inventory/remove`);
     Meteor.call("inventory/remove", variantItem);
   }

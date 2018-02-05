@@ -590,6 +590,8 @@ Meteor.methods({
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
     Hooks.Events.run("beforeProductRemove", selector);
     const deleted = Products.remove(selector);
+    Hooks.Events.run("afterProductRemove", selector);
+    Hooks.Events.run("afterProductVariantRemove", selector);
 
     // after variant were removed from product, we need to recalculate all
     // denormalized fields
@@ -842,6 +844,11 @@ Meteor.methods({
       _id: {
         $in: ids
       }
+    });
+
+    productsWithVariants.map(doc => {
+      Hooks.Events.run("afterProductRemove", doc);
+      Hooks.Events.run("afterProductVariantRemove", doc);
     });
 
     const numRemoved = Revisions.find({

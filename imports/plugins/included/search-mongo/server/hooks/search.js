@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Products, ProductSearch, Orders, OrderSearch, Accounts, AccountSearch } from "/lib/collections";
 import { getSearchParameters,
   buildProductSearchRecord, buildOrderSearchRecord, buildAccountSearchRecord } from "../methods/searchcollections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 
 Accounts.after.insert((userId, doc) => {
   if (AccountSearch && !Meteor.isAppTest) {
@@ -50,9 +50,9 @@ Orders.after.update((userId, doc) => {
 /**
  * if product is removed, remove product search record
  */
-Products.after.remove((userId, doc) => {
-  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
-    const productId = doc._id;
+Hooks.Events.add("afterProductRemove", (product) => {
+  if (ProductSearch && !Meteor.isAppTest && product.type === "simple") {
+    const productId = product._id;
     ProductSearch.remove(productId);
     Logger.debug(`Removed product ${productId} from ProductSearch collection`);
   }
