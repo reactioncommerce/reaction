@@ -88,6 +88,9 @@ jobs:
       - setup_remote_docker
       - checkout
 
+      # Install Docker client & compose
+      - run: .circleci/install.sh
+
       - run:
           command: .circleci/build.sh
           no_output_timeout: 30m
