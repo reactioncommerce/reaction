@@ -64,15 +64,10 @@ Meteor.methods({
 
     const user = Accounts.findOne({ _id: userId });
     if (!user) return;
-    const addressBook = user.profile.addressBook;
-    let phone = false;
-    // check for addressBook phone
-    if (user && addressBook) {
-      if (addressBook[0].phone) {
-        phone = addressBook[0].phone;
-      }
-    }
+    const addressBook = user.profile && user.profile.addressBook;
 
+    // check for addressBook phone
+    const phone = (Array.isArray(addressBook) && addressBook[0] && addressBook[0].phone) || false;
     if (!phone) return;
 
     const smsSettings = Sms.findOne({ shopId });

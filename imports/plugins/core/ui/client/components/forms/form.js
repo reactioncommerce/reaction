@@ -44,13 +44,11 @@ class Form extends Component {
     const { docPath } = this.props;
 
     if (docPath) {
-      const objectKeys = this.objectKeys[docPath + "."];
+      const objectKeys = this.objectKeys[`${docPath}.`];
       if (Array.isArray(objectKeys)) {
         // Use the objectKeys from parent fieldset to generate
         // actual form fields
-        const fieldNames = objectKeys.map((fieldName) => {
-          return `${docPath}.${fieldName}`;
-        });
+        const fieldNames = objectKeys.map((fieldName) => `${docPath}.${fieldName}`);
 
         return this.props.schema.pick(fieldNames).newContext();
       }
@@ -105,9 +103,7 @@ class Form extends Component {
   }
 
   handleChange = (event, value, name) => {
-    const newdoc = update(this.state.doc, name, () => {
-      return value;
-    });
+    const newdoc = update(this.state.doc, name, () => value);
 
     this.setState({
       doc: newdoc
@@ -186,7 +182,7 @@ class Form extends Component {
     if (this.state.isValid === false) {
       this.state.schema.validationErrors()
         .filter((v) => v.name === field.name)
-        .map((validationError) => {
+        .forEach((validationError) => {
           const message = this.state.schema.keyErrorMessage(validationError.name);
           fieldHasError = true;
 
@@ -240,7 +236,7 @@ class Form extends Component {
       if (docPath) {
         return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
           if (key.endsWith(docPath)) {
-            const objectKeys = this.objectKeys[docPath + "."];
+            const objectKeys = this.objectKeys[`${docPath}.`];
             if (Array.isArray(objectKeys)) {
               // Use the objectKeys from parent fieldset to generate
               // actual form fields
@@ -257,7 +253,7 @@ class Form extends Component {
 
       // Render form by only using desired fields from schema
       if (this.props.fields) {
-        return map(this.props.fields, (fieldData, key) => { // eslint-disable-line consistent-return
+        return map(this.props.fields, (fieldData, key) => {
           const fieldSchema = this.schema[key];
           if (fieldSchema) {
             return this.renderField({ fieldName: key }, fieldData);
@@ -266,9 +262,7 @@ class Form extends Component {
       }
 
       // Render all fields if none of the options are set above
-      return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
-        return this.renderField({ fieldName: key });
-      });
+      return map(this.schema, (field, key) => this.renderField({ fieldName: key }));
     }
 
     return null;

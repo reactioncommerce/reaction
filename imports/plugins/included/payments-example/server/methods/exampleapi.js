@@ -108,7 +108,7 @@ ExampleApi.methods.capture = new ValidatedMethod({
   }).validator(),
   run(args) {
     const transactionId = args.authorizationId;
-    const amount = args.amount;
+    const { amount } = args;
     const results = ThirdPartyAPI.capture(transactionId, amount);
     return results;
   }
@@ -122,8 +122,7 @@ ExampleApi.methods.refund = new ValidatedMethod({
     amount: Number
   }).validator(),
   run(args) {
-    const transactionId = args.transactionId;
-    const amount = args.amount;
+    const { transactionId, amount } = args.transactionId;
     const results = ThirdPartyAPI.refund(transactionId, amount);
     return results;
   }

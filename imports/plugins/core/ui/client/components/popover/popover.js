@@ -66,7 +66,7 @@ class Popover extends Component {
 
   renderPopoverChildren() {
     if (this.isOpen) {
-      return  (
+      return (
         <Components.PopoverContent
           children={this.props.children}
           onClickOutside={this.props.onClick}

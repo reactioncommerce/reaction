@@ -10,7 +10,7 @@ import { Logger } from "/server/api";
  */
 export function getRegistryDomain(requestUrl) {
   const url = requestUrl || process.env.ROOT_URL;
-  const domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
+  const domain = url.match(/^https?:\/\/([^/:?#]+)(?:[/:?#]|$)/i)[1];
   return domain;
 }
 
@@ -25,14 +25,14 @@ export function setDomain() {
   let currentDomain;
   // we automatically update the shop domain when ROOT_URL changes
   try {
-    currentDomain = Shops.findOne().domains[0];
+    [currentDomain] = Shops.findOne().domains;
   } catch (_error) {
     Logger.error(_error, "Failed to determine default shop.");
   }
   // if the server domain changes, update shop
   const domain = getRegistryDomain();
   if (currentDomain && currentDomain !== domain) {
-    Logger.debug("Updating domain to " + domain);
+    Logger.debug(`Updating domain to ${domain}`);
     Shops.update({
       domains: currentDomain
     }, {

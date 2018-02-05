@@ -27,10 +27,8 @@ import { PaymentMethodArgument } from "/lib/collections/schemas";
  * @return {Object} returns entire payment method
  */
 export function orderCreditMethod(order) {
-  const creditBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "credit");
-  const billingRecord = creditBillingRecords.find((billing) => {
-    return billing.shopId === Reaction.getShopId();
-  });
+  const creditBillingRecords = order.billing.filter((value) => value.paymentMethod.method === "credit");
+  const billingRecord = creditBillingRecords.find((billing) => billing.shopId === Reaction.getShopId());
   return billingRecord;
 }
 
@@ -40,13 +38,11 @@ export function orderCreditMethod(order) {
  * @memberof Methods/Orders
  * @summary Helper to return the order debit object
  * @param  {Object} order order object
- * @return {Pbject} returns entire payment method
+ * @return {Object} returns entire payment method
  */
 export function orderDebitMethod(order) {
-  const debitBillingRecords = order.billing.filter(value => value.paymentMethod.method ===  "debit");
-  const billingRecord = debitBillingRecords.find((billing) => {
-    return billing.shopId === Reaction.getShopId();
-  });
+  const debitBillingRecords = order.billing.filter((value) => value.paymentMethod.method === "debit");
+  const billingRecord = debitBillingRecords.find((billing) => billing.shopId === Reaction.getShopId());
   return billingRecord;
 }
 
@@ -68,7 +64,7 @@ export function ordersInventoryAdjust(orderId) {
   }
 
   const order = Orders.findOne(orderId);
-  order.items.forEach(item => {
+  order.items.forEach((item) => {
     Products.update({
       _id: item.variants._id
     }, {
@@ -103,7 +99,7 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
   }
 
   const order = Orders.findOne(orderId);
-  order.items.forEach(item => {
+  order.items.forEach((item) => {
     if (item.shopId === shopId) {
       Products.update({
         _id: item.variants._id
@@ -145,8 +141,8 @@ export function orderQuantityAdjust(orderId, refundedItem) {
       Orders.update({
         _id: orderId,
         items: { $elemMatch: { _id: itemId } }
-      }, { $set:
-        { "items.$.quantity": newQuantity }
+      }, {
+        $set: { "items.$.quantity": newQuantity }
       });
     }
   });
@@ -171,9 +167,7 @@ export const methods = {
     }
 
     // Set the status of the items as picked
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/picked", order, itemIds);
     if (result === 1) {
@@ -183,7 +177,8 @@ export const methods = {
       }, {
         $set: {
           "shipping.$.workflow.status": "coreOrderWorkflow/picked"
-        }, $push: {
+        },
+        $push: {
           "shipping.$.workflow.workflow": "coreOrderWorkflow/picked"
         }
       }, { bypassCollection2: true });
@@ -211,9 +206,7 @@ export const methods = {
     }
 
     // Set the status of the items as packed
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
     if (result === 1) {
@@ -223,7 +216,8 @@ export const methods = {
       }, {
         $set: {
           "shipping.$.workflow.status": "coreOrderWorkflow/packed"
-        }, $push: {
+        },
+        $push: {
           "shipping.$.workflow.workflow": "coreOrderWorkflow/packed"
         }
       }, { bypassCollection2: true });
@@ -249,9 +243,7 @@ export const methods = {
     }
 
     // Set the status of the items as labeled
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/labeled", order, itemIds);
     if (result === 1) {
@@ -261,7 +253,8 @@ export const methods = {
       }, {
         $set: {
           "shipping.$.workflow.status": "coreOrderWorkflow/labeled"
-        }, $push: {
+        },
+        $push: {
           "shipping.$.workflow.workflow": "coreOrderWorkflow/labeled"
         }
       }, { bypassCollection2: true });
@@ -307,7 +300,7 @@ export const methods = {
    */
   "orders/approvePayment"(order) {
     check(order, Object);
-    const invoice = orderCreditMethod(order).invoice;
+    const { invoice } = orderCreditMethod(order);
 
     // REVIEW: Who should have access to do this for a marketplace?
     // Do we have/need a shopId on each order?
@@ -320,11 +313,8 @@ export const methods = {
     // this is server side check to verify
     // that the math all still adds up.
     const shopId = Reaction.getShopId();
-    const subTotal = invoice.subtotal;
-    const shipping = invoice.shipping;
-    const taxes = invoice.taxes;
-    const discount = invoice.discounts;
-    const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
+    const { discounts, shipping, subtotal, taxes } = invoice;
+    const discountTotal = Math.max(0, subtotal - discounts); // ensure no discounting below 0.
     const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
 
     // Updates flattened inventory count on variants in Products collection
@@ -339,7 +329,7 @@ export const methods = {
         "billing.$.paymentMethod.amount": total,
         "billing.$.paymentMethod.status": "approved",
         "billing.$.paymentMethod.mode": "capture",
-        "billing.$.invoice.discounts": discount,
+        "billing.$.invoice.discounts": discounts,
         "billing.$.invoice.total": Number(total)
       }
     });
@@ -367,7 +357,7 @@ export const methods = {
     if (!returnToStock) {
       // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
       // in some instances which causes the order not to cancel
-      order.items.forEach(item => {
+      order.items.forEach((item) => {
         if (Reaction.hasPermission("orders", Meteor.userId(), item.shopId)) {
           Products.update({
             _id: item.variants._id,
@@ -384,16 +374,14 @@ export const methods = {
       });
     }
 
-    const billingRecord = order.billing.find(billing => billing.shopId === Reaction.getShopId());
-    const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
+    const billingRecord = order.billing.find((billing) => billing.shopId === Reaction.getShopId());
+    const shippingRecord = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
 
-    let paymentMethod = orderCreditMethod(order).paymentMethod;
+    let { paymentMethod } = orderCreditMethod(order);
     paymentMethod = Object.assign(paymentMethod, { amount: Number(paymentMethod.amount) });
     const invoiceTotal = billingRecord.invoice.total;
     const shipment = shippingRecord;
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     // refund payment to customer
     const paymentMethodId = paymentMethod && paymentMethod.paymentPackageId;
@@ -455,11 +443,9 @@ export const methods = {
       if (result) {
         Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", order._id);
 
-        const shippingRecord = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
+        const shippingRecord = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
         // Set the status of the items as shipped
-        const itemIds = shippingRecord.items.map((item) => {
-          return item._id;
-        });
+        const itemIds = shippingRecord.items.map((item) => item._id);
 
         Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
@@ -494,9 +480,7 @@ export const methods = {
     let completedItemsResult;
     let completedOrderResult;
 
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     // TODO: In the future, this could be handled by shipping delivery status
     // REVIEW: This hook seems to run before the shipment has been marked as shipped
@@ -526,7 +510,8 @@ export const methods = {
     }, {
       $set: {
         "shipping.$.workflow.status": "coreOrderWorkflow/shipped"
-      }, $push: {
+      },
+      $push: {
         "shipping.$.workflow.workflow": "coreOrderWorkflow/shipped"
       }
     }, { bypassCollection2: true });
@@ -556,7 +541,7 @@ export const methods = {
 
     this.unblock();
 
-    const shipment = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId());
+    const shipment = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
 
     if (order.email) {
       Meteor.call("orders/sendNotification", order, (err) => {
@@ -568,16 +553,12 @@ export const methods = {
       Logger.warn("No order email found. No notification sent.");
     }
 
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shipment.items.map((item) => item._id);
 
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order, itemIds);
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
 
-    const isCompleted = order.items.every((item) => {
-      return item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed");
-    });
+    const isCompleted = order.items.every((item) => item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed"));
 
     Orders.update({
       "_id": order._id,
@@ -585,7 +566,8 @@ export const methods = {
     }, {
       $set: {
         "shipping.$.workflow.status": "coreOrderWorkflow/delivered"
-      }, $push: {
+      },
+      $push: {
         "shipping.$.workflow.workflow": "coreOrderWorkflow/delivered"
       }
     }, { bypassCollection2: true });
@@ -632,7 +614,7 @@ export const methods = {
       const mediaId = Media.findOne(brandAsset.mediaId);
       emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
     } else {
-      emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+      emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
     }
 
     let subtotal = 0;
@@ -651,17 +633,18 @@ export const methods = {
       taxes += Number.parseFloat(billingRecord.invoice.taxes);
       discounts += Number.parseFloat(billingRecord.invoice.discounts);
       amount += billingRecord.paymentMethod.amount;
-      address = billingRecord.address;
-      paymentMethod = billingRecord.paymentMethod;
+      ({ address } = billingRecord);
+      ({ paymentMethod } = billingRecord);
     }
 
     for (const shippingRecord of order.shipping) {
       shippingAddress = shippingRecord.address;
-      carrier = shippingRecord.shipmentMethod && shippingRecord.shipmentMethod.carrier;
-      tracking = shippingRecord.tracking;
-      shippingCost += shippingRecord.shipmentMethod && shippingRecord.shipmentMethod.rate || 0;
+      ({ tracking } = shippingRecord);
+      const { shipmentMethod } = shippingRecord;
+      ({ carrier } = shipmentMethod || {});
+      const { rate } = shipmentMethod || {};
+      shippingCost += rate || 0;
     }
-
 
     const refundResult = Meteor.call("orders/refunds/list", order);
     const refundTotal = Array.isArray(refundResult) && refundResult.reduce((acc, refund) => acc + refund.amount, 0);
@@ -694,7 +677,7 @@ export const methods = {
 
         // Increment the quantity count for the duplicate product variants
         if (foundItem) {
-          foundItem.quantity++;
+          foundItem.quantity += 1;
         } else {
           // Otherwise push the unique item into the combinedItems array
 
@@ -704,7 +687,7 @@ export const methods = {
           combinedItems.push(orderItem);
 
           // Placeholder image if there is no product image
-          orderItem.placeholderImage = Meteor.absoluteUrl() + "resources/placeholder.gif";
+          orderItem.placeholderImage = `${Meteor.absoluteUrl()}resources/placeholder.gif`;
 
           const variantImage = Media.findOne({
             "metadata.productId": orderItem.productId,
@@ -742,17 +725,17 @@ export const methods = {
           display: true,
           facebook: {
             display: true,
-            icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+            icon: `${Meteor.absoluteUrl()}resources/email-templates/facebook-icon.png`,
             link: "https://www.facebook.com"
           },
           googlePlus: {
             display: true,
-            icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+            icon: `${Meteor.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
             link: "https://plus.google.com"
           },
           twitter: {
             display: true,
-            icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+            icon: `${Meteor.absoluteUrl()}resources/email-templates/twitter-icon.png`,
             link: "https://www.twitter.com"
           }
         },
@@ -864,7 +847,7 @@ export const methods = {
       "shipping._id": shipment._id
     }, {
       $set: {
-        ["shipping.$.tracking"]: tracking
+        "shipping.$.tracking": tracking
       }
     });
   },
@@ -946,9 +929,7 @@ export const methods = {
     const order = Orders.findOne(orderId);
     // find the appropriate shipping record by shop
     const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === shopId);
-    const itemIds = shippingRecord.items.map((item) => {
-      return item._id;
-    });
+    const itemIds = shippingRecord.items.map((item) => item._id);
 
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
@@ -960,8 +941,8 @@ export const methods = {
     // find the billing record based on shopId
     const bilingRecord = order.billing.find((bRecord) => bRecord.shopId === shopId);
 
-    const paymentMethod = bilingRecord.paymentMethod;
-    const transactionId = paymentMethod.transactionId;
+    const { paymentMethod } = bilingRecord;
+    const { transactionId } = paymentMethod;
 
     if (paymentMethod.mode === "capture" && paymentMethod.status === "approved" && paymentMethod.processor) {
       // Grab the amount from the shipment, otherwise use the original amount
@@ -1039,7 +1020,7 @@ export const methods = {
 
     const refunds = [];
     for (const billingRecord of order.billing) {
-      const paymentMethod = billingRecord.paymentMethod;
+      const { paymentMethod } = billingRecord;
       const processor = paymentMethod.processor.toLowerCase();
       const shopRefunds = Meteor.call(`${processor}/refund/list`, paymentMethod);
       refunds.push(...shopRefunds);
@@ -1074,7 +1055,7 @@ export const methods = {
     }
     const processor = paymentMethod.processor.toLowerCase();
     const order = Orders.findOne(orderId);
-    const transactionId = paymentMethod.transactionId;
+    const { transactionId } = paymentMethod;
 
     const packageId = paymentMethod.paymentPackageId;
     const settingsKey = paymentMethod.paymentSettingsKey;
@@ -1160,9 +1141,9 @@ export const methods = {
 
     const fut = new Future();
     const order = Orders.findOne(orderId);
-    const transactionId = paymentMethod.transactionId;
+    const { transactionId } = paymentMethod;
     const amount = refundItemsInfo.total;
-    const quantity = refundItemsInfo.quantity;
+    const { quantity } = refundItemsInfo;
     const refundItems = refundItemsInfo.items;
     const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -1176,7 +1157,7 @@ export const methods = {
         });
       }
       if (result) {
-        refundItems.forEach(refundItem => {
+        refundItems.forEach((refundItem) => {
           orderQuantityAdjust(orderId, refundItem);
         });
 

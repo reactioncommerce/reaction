@@ -29,10 +29,9 @@ class ProductPublishContainer extends Component {
       }
     }).fetch();
 
-    variants.map(variant => {
+    variants.map((variant) =>
       // update variant
-      Meteor.call("products/updateProductField", variant._id, "isVisible", isProductVisible);
-    });
+      Meteor.call("products/updateProductField", variant._id, "isVisible", isProductVisible));
   }
 
   handlePublishActions = (event, action, documentIds) => {

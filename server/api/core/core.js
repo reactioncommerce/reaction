@@ -69,10 +69,11 @@ export default {
   Packages: {},
 
   registerPackage(packageInfo) {
-    const registeredPackage = this.Packages[packageInfo.name] = packageInfo;
+    this.Packages[packageInfo.name] = packageInfo;
+    const registeredPackage = this.Packages[packageInfo.name];
     return registeredPackage;
   },
-  defaultCustomerRoles: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
+  defaultCustomerRoles: ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
   defaultVisitorRoles: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
   createGroups,
 
@@ -292,7 +293,7 @@ export default {
    * @return {String} Prefix in the format of "/<slug>"
    */
   getPrimaryShopPrefix() {
-    return "/" + this.getSlug(this.getPrimaryShopName().toLowerCase());
+    return `/${this.getSlug(this.getPrimaryShopName().toLowerCase())}`;
   },
 
   /**
@@ -501,7 +502,7 @@ export default {
       _id: this.getShopId()
     });
 
-    return shop && shop.currency || "USD";
+    return (shop && shop.currency) || "USD";
   },
 
   /**
@@ -518,7 +519,8 @@ export default {
     }, {
       fields: {
         language: 1
-      } });
+      }
+    });
     return language;
   },
 
@@ -585,7 +587,7 @@ export default {
     const user = Meteor.users.findOne({ _id: userId });
 
     if (user) {
-      const profile = user.profile;
+      const { profile } = user;
       if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
         return profile.preferences[packageName][preference];
       }
@@ -620,10 +622,9 @@ export default {
         marketplaceSettings.shops &&
         Array.isArray(marketplaceSettings.shops.enabledPackagesByShopTypes)) {
       // Find the correct packages list for this shopType
-      const matchingShopType = marketplaceSettings.shops.enabledPackagesByShopTypes.find(EnabledPackagesByShopType =>
-        EnabledPackagesByShopType.shopType === shop.shopType);
+      const matchingShopType = marketplaceSettings.shops.enabledPackagesByShopTypes.find((EnabledPackagesByShopType) => EnabledPackagesByShopType.shopType === shop.shopType); // eslint-disable-line max-len
       if (matchingShopType) {
-        enabledPackages = matchingShopType.enabledPackages;
+        ({ enabledPackages } = matchingShopType);
       }
     }
 
@@ -653,11 +654,8 @@ export default {
         if (enabledPackages && Array.isArray(enabledPackages)) {
           if (enabledPackages.indexOf(pkg.name) === -1) {
             pkg.enabled = false;
-          } else {
-            // Enable "soft switch" for package.
-            if (pkg.settings && pkg.settings[packageName]) {
-              pkg.settings[packageName].enabled = true;
-            }
+          } else if (pkg.settings && pkg.settings[packageName]) { // Enable "soft switch" for package.
+            pkg.settings[packageName].enabled = true;
           }
         }
         Packages.insert(pkg);
@@ -725,7 +723,7 @@ export default {
     // Process environment variables and Meteor settings for initial user config.
     // If ENV variables are set, they always override Meteor settings (settings.json).
     // This is to allow for testing environments where we don't want to use users configured in a settings file.
-    const env = process.env;
+    const { env } = process;
     let configureEnv = false;
 
     if (env.REACTION_EMAIL && env.REACTION_AUTH) {
@@ -884,8 +882,8 @@ export default {
 
     const layouts = [];
     // for each shop, we're loading packages in a unique registry
-    _.each(this.Packages, (config, pkgName) => {
-      return Shops.find().forEach((shop) => {
+    _.each(this.Packages, (config, pkgName) =>
+      Shops.find().forEach((shop) => {
         const shopId = shop._id;
         if (!shopId) return [];
 
@@ -905,15 +903,11 @@ export default {
         // Setting from a fixture file, most likely reaction.json
         let settingsFromFixture;
         if (registryFixtureData) {
-          settingsFromFixture = _.find(registryFixtureData[0], (packageSetting) => {
-            return config.name === packageSetting.name;
-          });
+          settingsFromFixture = registryFixtureData[0].find((packageSetting) => config.name === packageSetting.name);
         }
 
         // Setting already imported into the packages collection
-        const settingsFromDB = _.find(packages, (ps) => {
-          return (config.name === ps.name && shopId === ps.shopId);
-        });
+        const settingsFromDB = packages.find((ps) => (config.name === ps.name && shopId === ps.shopId));
 
         const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
 
@@ -941,8 +935,7 @@ export default {
         // Import package data
         this.Import.package(combinedSettings, shopId);
         return Logger.debug(`Initializing ${shop.name} ${pkgName}`);
-      }); // end shops
-    });
+      }));
 
     // helper for removing layout duplicates
     const uniqLayouts = uniqWith(layouts, _.isEqual);
@@ -954,16 +947,14 @@ export default {
     //
     // package cleanup
     //
-    Shops.find().forEach((shop) => {
-      return Packages.find().forEach((pkg) => {
-        // delete registry entries for packages that have been removed
-        if (!_.has(this.Packages, pkg.name)) {
-          Logger.debug(`Removing ${pkg.name}`);
-          return Packages.remove({ shopId: shop._id, name: pkg.name });
-        }
-        return false;
-      });
-    });
+    Shops.find().forEach((shop) => Packages.find().forEach((pkg) => {
+      // delete registry entries for packages that have been removed
+      if (!_.has(this.Packages, pkg.name)) {
+        Logger.debug(`Removing ${pkg.name}`);
+        return Packages.remove({ shopId: shop._id, name: pkg.name });
+      }
+      return false;
+    }));
   },
 
   /**
@@ -973,7 +964,7 @@ export default {
    * @return {undefined} no return value
    */
   setAppVersion() {
-    const version = packageJson.version;
+    const { version } = packageJson;
     Logger.info(`Reaction Version: ${version}`);
     Shops.update({}, { $set: { appVersion: version } }, { multi: true });
   },

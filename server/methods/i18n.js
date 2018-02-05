@@ -45,7 +45,7 @@ Meteor.methods({
     // string or first langauge
     let i18n = lng;
     if (typeof lng === "object") {
-      i18n = lng[0];
+      [i18n] = lng;
     }
 
     if (!Reaction.hasAdminAccess()) {

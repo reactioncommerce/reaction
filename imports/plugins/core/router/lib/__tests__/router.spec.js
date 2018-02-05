@@ -1,9 +1,7 @@
-jest.mock("/lib/collections", () => {
-  return {
-    Packages: {},
-    Shops: {}
-  };
-});
+jest.mock("/lib/collections", () => ({
+  Packages: {},
+  Shops: {}
+}));
 
 import Router from "../router.js";
 

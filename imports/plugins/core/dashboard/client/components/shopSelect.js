@@ -49,16 +49,14 @@ class ShopSelect extends Component {
     const { shops } = this.props;
 
     if (Array.isArray(shops)) {
-      menuItems = shops.map((shop, index) => {
-        return (
-          <Components.MenuItem
-            label={shop.name}
-            selectLabel={shop.name}
-            value={shop._id}
-            key={index}
-          />
-        );
-      });
+      menuItems = shops.map((shop, index) => (
+        <Components.MenuItem
+          label={shop.name}
+          selectLabel={shop.name}
+          value={shop._id}
+          key={index}
+        />
+      ));
     }
     return (
       <div className={this.props.className || "hidden-xs"}>

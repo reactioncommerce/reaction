@@ -13,7 +13,7 @@ export function registerInventory(product) {
   // Retrieve schemas
   // TODO: Permit product type registration and iterate through product types and schemas
   Products.simpleSchema(product).validate(product);
-  const type = product.type;
+  const { type } = product;
 
   let totalNewInventory = 0;
   const productId = type === "variant" ? product.ancestors[0] : product._id;
@@ -50,7 +50,7 @@ export function registerInventory(product) {
             status: "new" // about SimpleSchema, so `defaultValue` will not
           }
         });
-        i++;
+        i += 1;
       }
 
       // took from: http://guide.meteor.com/collections.html#bulk-data-changes
@@ -73,7 +73,7 @@ export function registerInventory(product) {
 function adjustInventory(product, userId, context) {
   // TODO: This can fail even if updateVariant succeeds.
   Products.simpleSchema(product).validate(product);
-  const type = product.type;
+  const { type } = product;
   let results;
 
   // calledByServer is only true if this method was triggered by the server, such as from a webhook.

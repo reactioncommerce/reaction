@@ -61,7 +61,7 @@ Meteor.startup(() => {
     const userId = Meteor.userId();
     if (!userId) return;
     const user = Meteor.users.findOne(userId, { fields: { profile: 1 } });
-    userPrefs.set(user && user.profile && user.profile.preferences || undefined);
+    userPrefs.set((user && user.profile && user.profile.preferences) || undefined);
   });
 });
 
@@ -76,9 +76,9 @@ function isLocalStorageAvailable() {
 }
 
 function readCookie(name) {
-  const nameEq = name + "=";
+  const nameEq = `${name}=`;
   const ca = document.cookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
+  for (let i = 0; i < ca.length; i += 1) {
     let c = ca[i];
     while (c.charAt(0) === " ") c = c.substring(1, c.length);
     if (c.indexOf(nameEq) === 0) {
@@ -89,5 +89,5 @@ function readCookie(name) {
 }
 
 function createSessionCookie(name, value) {
-  document.cookie = name + "=" + value + "; path=/";
+  document.cookie = `${name}=${value}; path=/`;
 }

@@ -2,7 +2,6 @@ import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import i18nextLocalStorageCache from "i18next-localstorage-cache";
 import i18nextSprintfPostProcessor from "i18next-sprintf-postprocessor";
 import i18nextJquery from "jquery-i18next";
-import { forOwn } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
@@ -44,7 +43,7 @@ Meteor.startup(() => {
   Tracker.autorun(() => {
     const userId = Meteor.userId();
     const user = userId && Meteor.users.findOne(userId, { fields: { profile: 1 } });
-    userProfileLanguage.set(user && user.profile && user.profile.lang || null);
+    userProfileLanguage.set((user && user.profile && user.profile.lang) || null);
   });
   // use tracker autorun to detect language changes
   // this only runs on initial page loaded
@@ -64,8 +63,8 @@ Meteor.startup(() => {
       shopId = Reaction.getPrimaryShopId();
     }
     // By specifying "fields", we limit reruns to only when that field changes
-    const shop = Shops.findOne(shopId, { fields: { language: 1 }, reactive: false });
-    const shopLanguage = shop && shop.language || null;
+    const shop = Shops.findOne({ _id: shopId }, { fields: { language: 1 }, reactive: false });
+    const shopLanguage = (shop && shop.language) || null;
 
     // Use fallbacks to determine the final language
     const language = userLanguage || shopLanguage || "en";
@@ -81,7 +80,7 @@ Meteor.startup(() => {
         fields: {
           name: 1
         }
-      }).map(pkg => pkg.name);
+      }).map((pkg) => pkg.name);
 
       //
       // reduce and merge translations
@@ -112,13 +111,17 @@ Meteor.startup(() => {
           resources
         }, () => {
           // Loop through registered Schemas to change labels and messages
-          forOwn(getSchemas(), (schemaInstance, schemaName) => {
-            schemaInstance.labels(getLabelsFor(schemaInstance, schemaName));
-            schemaInstance.messageBox.messages({
-              [language]: getValidationErrorMessages()
-            });
-            schemaInstance.messageBox.setLanguage(language);
-          });
+          const Schemas = getSchemas();
+          for (const schemaName in Schemas) {
+            if ({}.hasOwnProperty.call(Schemas, schemaName)) {
+              const schemaInstance = Schemas[schemaName];
+              schemaInstance.labels(getLabelsFor(schemaInstance, schemaName));
+              schemaInstance.messageBox.messages({
+                [language]: getValidationErrorMessages()
+              });
+              schemaInstance.messageBox.setLanguage(language);
+            }
+          }
 
           i18nextDep.changed();
 
@@ -152,7 +155,7 @@ Meteor.startup(() => {
     if (Reaction.Subscriptions.PrimaryShop.ready() &&
         Reaction.Subscriptions.MerchantShops.ready() &&
         user) {
-      userCurrency.set(user.profile && user.profile.currency || undefined);
+      userCurrency.set((user.profile && user.profile.currency) || undefined);
     }
   });
 

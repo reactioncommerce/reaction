@@ -69,7 +69,7 @@ function composer(props, onData) {
 
   if (typeof shop === "object" && shop.languages) {
     for (const language of shop.languages) {
-      const i18nKey = "languages." + language.label.toLowerCase();
+      const i18nKey = `languages.${language.label.toLowerCase()}`;
       languages.push({
         label: language.label,
         value: language.i18n,
@@ -89,8 +89,7 @@ function composer(props, onData) {
       }
 
       const structure = currencies[currency];
-      const label = currency + "  |  " + structure.symbol + "  |  " +
-        structure.format;
+      const label = `${currency}  |  ${structure.symbol}  |  ${structure.format}`;
 
       currencyList.push({
         name: currency,
@@ -148,7 +147,7 @@ function composer(props, onData) {
     shop,
     languages,
     currencies: currencyList,
-    enabledLanguages: languages.filter(language => (language.enabled || language.value === shop.language)),
+    enabledLanguages: languages.filter((language) => (language.enabled || language.value === shop.language)),
     countryOptions: countries,
     currencyOptions,
     uomOptions,

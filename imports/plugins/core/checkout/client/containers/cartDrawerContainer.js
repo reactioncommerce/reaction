@@ -57,9 +57,7 @@ const handlers = {
     event.stopPropagation();
     event.preventDefault();
     const currentCartItemId = event.target.getAttribute("id");
-    $(`#${currentCartItemId}`).fadeOut(500, () => {
-      return Meteor.call("cart/removeFromCart", currentCartItemId);
-    });
+    $(`#${currentCartItemId}`).fadeOut(500, () => Meteor.call("cart/removeFromCart", currentCartItemId));
   },
 
   handleCheckout() {

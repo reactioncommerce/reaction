@@ -21,9 +21,9 @@ import { Reaction } from "/client/api";
  */
 export function getBrowserLanguage() {
   if (typeof navigator.languages !== "undefined") {
-    if (~navigator.languages[0].indexOf("-")) {
+    if (navigator.languages[0].indexOf("-") >= 0) {
       return navigator.languages[0].split("-")[0];
-    } else if (~navigator.languages[0].indexOf("_")) {
+    } else if (navigator.languages[0].indexOf("_") >= 0) {
       return navigator.languages[0].split("_")[0];
     }
     return navigator.languages[0];
@@ -41,12 +41,11 @@ export function getBrowserLanguage() {
  * @return {Object} return schema label object
  */
 export function getLabelsFor(schema, name) {
+  const titleCaseName = name.charAt(0).toLowerCase() + name.slice(1);
   const labels = {};
   // loop through all the rendered form fields and generate i18n keys
   Object.keys(schema.mergedSchema()).forEach((fieldName) => {
-    const i18nKey = name.charAt(0).toLowerCase() + name.slice(1) + "." +
-      fieldName
-        .split(".$").join("");
+    const i18nKey = `${titleCaseName}.${fieldName.split(".$").join("")}`;
     // translate autoform label
     const t = i18next.t(i18nKey);
     if (t && new RegExp("string").test(t) !== true && t !== i18nKey) {
@@ -69,7 +68,7 @@ export function getLabelsFor(schema, name) {
  */
 export function getValidationErrorMessages() {
   const messages = {};
-  values(SimpleSchema.ErrorTypes).forEach(errorType => {
+  values(SimpleSchema.ErrorTypes).forEach((errorType) => {
     const i18nKey = `globalMessages.${errorType}`;
     const message = i18next.t(i18nKey);
     if (new RegExp("string").test(message) !== true && message !== i18nKey) {

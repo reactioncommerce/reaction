@@ -45,7 +45,7 @@ export function verifyAccount(email, token) {
   }
 
   if (account) {
-    const verified = account.emails[0].verified;
+    const { verified } = account.emails[0];
     if (!verified) {
       Meteor.users.update({
         "_id": account._id,
@@ -156,13 +156,11 @@ function getValidator() {
   let geoCoder;
   // Just one?, use that one
   if (geoCoders.length === 1) {
-    geoCoder = geoCoders[0];
+    [geoCoder] = geoCoders;
   }
   // If there are two, we default to the one that is not the Reaction one
   if (geoCoders.length === 2) {
-    geoCoder = _.filter(geoCoders, (coder) => {
-      return !_.includes(coder.name, "reaction");
-    })[0];
+    geoCoder = geoCoders.find((coder) => !coder.name.includes("reaction"));
   }
 
   // check if addressValidation is enabled but the package is disabled, don't do address validation
@@ -172,7 +170,7 @@ function getValidator() {
       registryName = registry.name;
     }
   }
-  const packageKey = registryName.split("/")[2];  // "taxes/addressValidation/{packageKey}"
+  const packageKey = registryName.split("/")[2]; // "taxes/addressValidation/{packageKey}"
   if (!_.get(geoCoder.settings[packageKey], "enabled")) {
     return "";
   }
@@ -203,61 +201,61 @@ function compareAddress(address, validationAddress) {
   // TODO rewrite with just a loop over field names but KISS for now
   if (address.address1 && !validationAddress.address1) {
     errors.address1.push("Address line one did not validate");
-    errors.totalErrors++;
+    errors.totalErrors += 1;
   }
 
   if (address.address2 && validationAddress.address2 && _.trim(_.upperCase(address.address2)) !== _.trim(_.upperCase(validationAddress.address2))) {
     errors.address2.push("Address line 2 did not validate");
-    errors.totalErrors++;
+    errors.totalErrors += 1;
   }
 
   if (!validationAddress.city) {
     errors.city.push("City did not validate");
-    errors.totalErrors++;
+    errors.totalErrors += 1;
   }
   if (address.postal && !validationAddress.postal) {
     errors.postal.push("Postal did not validate");
-    errors.totalErrors++;
+    errors.totalErrors += 1;
   }
 
   if (address.region && !validationAddress.region) {
     errors.region.push("Region did not validate");
-    errors.totalErrors++;
+    errors.totalErrors += 1;
   }
 
   if (address.country && !validationAddress.country) {
     errors.country.push("Country did not validate");
-    errors.totalErrors++;
+    errors.totalErrors += 1;
   }
   // second check if both fields exist, but they don't match (which almost always happen for certain fields on first time)
   if (validationAddress.address1 && address.address1 && _.trim(_.upperCase(address.address1)) !== _.trim(_.upperCase(validationAddress.address1))) {
     errors.address1.push({ address1: "Address line 1 did not match" });
-    errors.totalErrors++;
+    errors.totalErrors += 1;
   }
 
   if (validationAddress.address2 && address.address2 && (_.upperCase(address.address2) !== _.upperCase(validationAddress.address2))) {
     errors.address2.push("Address line 2 did not match");
-    errors.totalErrors++;
+    errors.totalErrors += 1;
   }
 
   if (validationAddress.city && address.city && _.trim(_.upperCase(address.city)) !== _.trim(_.upperCase(validationAddress.city))) {
     errors.city.push("City did not match");
-    errors.totalErrors++;
+    errors.totalErrors += 1;
   }
 
   if (validationAddress.postal && address.postal && _.trim(_.upperCase(address.postal)) !== _.trim(_.upperCase(validationAddress.postal))) {
     errors.postal.push("Postal Code did not match");
-    errors.totalErrors++;
+    errors.totalErrors += 1;
   }
 
   if (validationAddress.region && address.region && _.trim(_.upperCase(address.region)) !== _.trim(_.upperCase(validationAddress.region))) {
     errors.region.push("Region did not match");
-    errors.totalErrors++;
+    errors.totalErrors += 1;
   }
 
   if (validationAddress.country && address.country && _.upperCase(address.country) !== _.upperCase(validationAddress.country)) {
     errors.country.push("Country did not match");
-    errors.totalErrors++;
+    errors.totalErrors += 1;
   }
   return errors;
 }
@@ -281,7 +279,7 @@ export function validateAddress(address) {
   const validator = getValidator();
   if (validator) {
     const validationResult = Meteor.call(validator, address);
-    validatedAddress = validationResult.validatedAddress;
+    ({ validatedAddress } = validationResult);
     formErrors = validationResult.errors;
     if (validatedAddress) {
       validationErrors = compareAddress(address, validatedAddress);
@@ -434,7 +432,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   // we need to compare old state of isShippingDefault, isBillingDefault with
   // new state and if it was enabled/disabled reflect this changes in cart
   const account = Accounts.findOne({ userId });
-  const oldAddress = (account.profile.addressBook || []).find(addr => addr._id === address._id);
+  const oldAddress = (account.profile.addressBook || []).find((addr) => addr._id === address._id);
 
   if (!oldAddress) throw new Meteor.Error("not-found", `No existing address found with ID ${address._id}`);
 
@@ -766,7 +764,7 @@ export function sendWelcomeEmail(shopId, userId) {
     const mediaId = Media.findOne(brandAsset.mediaId);
     emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
   } else {
-    emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+    emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
   }
 
   const dataForEmail = {
@@ -787,17 +785,17 @@ export function sendWelcomeEmail(shopId, userId) {
       display: true,
       facebook: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/facebook-icon.png`,
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/twitter-icon.png`,
         link: "https://www.twitter.com"
       }
     },
@@ -810,7 +808,7 @@ export function sendWelcomeEmail(shopId, userId) {
     return true;
   }
 
-  const defaultEmail = user.emails.find(email => email.provides === "default");
+  const defaultEmail = user.emails.find((email) => email.provides === "default");
   // Encode email address for URI
   const encodedEmailAddress = encodeURIComponent(defaultEmail.address);
   // assign verification url
@@ -933,7 +931,7 @@ function getEmailLogo(shop) {
     const mediaId = Media.findOne(brandAsset.mediaId);
     emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
   } else {
-    emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+    emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
   }
   return emailLogo;
 }
@@ -994,17 +992,17 @@ function getDataForEmail(options) {
       display: true,
       facebook: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/facebook-icon.png`,
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/twitter-icon.png`,
         link: "https://www.twitter.com"
       }
     },

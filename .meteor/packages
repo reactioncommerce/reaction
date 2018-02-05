@@ -60,9 +60,6 @@ cfs:standard-packages
 cfs:storage-adapter
 cfs:ui
 dispatch:run-as-user
-juliancwirko:s-alert
-juliancwirko:s-alert-stackslide
-kadira:dochead
 matb33:collection-hooks
 meteorhacks:ssr
 meteorhacks:subs-manager

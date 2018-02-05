@@ -27,11 +27,11 @@ class ProductSocialContainer extends Component {
 function composer(props, onData) {
   const product = ReactionProduct.selectedProduct() || {};
   const selectedVariant = ReactionProduct.selectedVariant() || {};
-  let title = product.title;
+  let { title } = product;
   let mediaUrl;
 
   if (selectedVariant) {
-    title = selectedVariant.title;
+    ({ title } = selectedVariant);
   }
 
   let description;

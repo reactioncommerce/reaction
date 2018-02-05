@@ -41,7 +41,7 @@ export const methods = {
       throw new Meteor.Error("server-error", `No shopify package found for shop ${Reaction.getShopId()}`);
     }
 
-    const settings = shopifyPkg.settings;
+    const { settings } = shopifyPkg;
     const shopify = new Shopify({
       apiKey: settings.apiKey,
       password: settings.password,
@@ -104,7 +104,7 @@ export const methods = {
       throw new Meteor.Error("server-error", `No shopify package found for shop ${Reaction.getShopId()}`);
     }
 
-    const settings = shopifyPkg.settings;
+    const { settings } = shopifyPkg;
     const shopify = new Shopify({
       apiKey: settings.apiKey,
       password: settings.password,
@@ -158,7 +158,7 @@ export const methods = {
       throw new Meteor.Error("server-error", `No shopify package found for shop ${Reaction.getShopId()}`);
     }
 
-    const settings = shopifyPkg.settings;
+    const { settings } = shopifyPkg;
     const shopify = new Shopify({
       apiKey: settings.apiKey,
       password: settings.password,

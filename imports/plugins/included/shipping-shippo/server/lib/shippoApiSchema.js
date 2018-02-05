@@ -9,7 +9,7 @@ export const addressSchema = new SimpleSchema({
   name: { type: String, optional: true },
   company: { type: String, optional: true },
   street1: { type: String, optional: true },
-  street_no: { type: String, optional: true },   // only needed for DHL , the others get it from street1
+  street_no: { type: String, optional: true }, // only needed for DHL , the others get it from street1
   street2: { type: String, optional: true },
   city: { type: String, optional: true },
   state: { type: String, optional: true },

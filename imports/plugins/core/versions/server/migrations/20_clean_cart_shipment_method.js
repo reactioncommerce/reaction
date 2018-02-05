@@ -4,7 +4,7 @@ import { Cart } from "/lib/collections";
 // aldeed:simple-schema behavior would lead to a dangling incomplete shipmentMethod
 // on new carts, but NPM simpl-schema now complains about that when validating.
 Migrations.add({
-  version: 19,
+  version: 20,
   up() {
     Cart.find().forEach((cart) => {
       const unset = {};
