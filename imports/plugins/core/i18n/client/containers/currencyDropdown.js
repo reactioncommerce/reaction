@@ -2,6 +2,7 @@ import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Match } from "meteor/check";
 import { Reaction } from "/client/api";
+import { Hooks } from "/server/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Cart, Shops, Accounts } from "/lib/collections";
 import CurrencyDropdown from "../components/currencyDropdown";
@@ -16,6 +17,7 @@ const handlers = {
     // UserProfile and ShopMembers publications.
     //
     Accounts.update(Meteor.userId(), { $set: { "profile.currency": currencyName } });
+    Hooks.Events.run("afterAccountUpdate", Meteor.userId(), Meteor.user());
 
     const cart = Cart.findOne({ userId: Meteor.userId() });
 
