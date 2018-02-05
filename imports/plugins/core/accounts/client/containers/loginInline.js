@@ -26,6 +26,22 @@ class LoginInlineContainer extends Component {
     });
   }
 
+  pushCartWorkflow = () => {
+    Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin", (error) => {
+      if (error) {
+        // Do not bother to try to advance workflow if we can't go beyond login.
+        return;
+      }
+      const cart = Cart.findOne({
+        userId: Meteor.userId()
+      });
+      // If there's already a billing and shipping address selected, push beyond address book
+      if (cart && cart.billing[0] && cart.shipping[0]) {
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook");
+      }
+    });
+  }
+
   continueAsGuest = (event) => {
     event.preventDefault();
     if (this.state.isStripeEnabled) {
@@ -33,19 +49,7 @@ class LoginInlineContainer extends Component {
         renderEmailForm: true
       });
     } else {
-      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin", (error) => {
-        if (error) {
-          // Do not bother to try to advance workflow if we can't go beyond login.
-          return;
-        }
-        const cart = Cart.findOne({
-          userId: Meteor.userId()
-        });
-        // If there's already a billing and shipping address selected, push beyond address book
-        if (cart && cart.billing[0] && cart.shipping[0]) {
-          Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook");
-        }
-      });
+      this.pushCartWorkflow();
     }
   }
 
@@ -63,7 +67,7 @@ class LoginInlineContainer extends Component {
       if (error) {
         Alerts.toast(i18next.t("mail.alerts.addCartEmailFailed"), "error");
       } else {
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
+        this.pushCartWorkflow();
       }
     });
   }
