@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { Job } from "meteor/vsivsi:job-collection";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { Jobs, Packages } from "/lib/collections";
 

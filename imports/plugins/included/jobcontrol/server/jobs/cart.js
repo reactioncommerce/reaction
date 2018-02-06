@@ -1,6 +1,6 @@
 import later from "later";
 import moment from "moment";
-import { Job } from "meteor/vsivsi:job-collection";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Cart, Jobs } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";

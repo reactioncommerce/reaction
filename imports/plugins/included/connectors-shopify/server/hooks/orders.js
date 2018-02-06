@@ -1,4 +1,4 @@
-import { Job } from "meteor/vsivsi:job-collection";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Reaction } from "/server/api";
 import { Orders, Jobs } from "/lib/collections";
 
