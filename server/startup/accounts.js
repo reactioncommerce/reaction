@@ -166,7 +166,7 @@ export default function () {
       const account = Object.assign({}, user, additionals);
       account.userId = user._id;
       Collections.Accounts.insert(account);
-      Hooks.Events.run("afterAccountsInsert", account.userId, account);
+      Hooks.Events.run("afterAccountsInsert", account.userId, user._id);
 
       const userDetails = Collections.Accounts.findOne({ _id: user._id });
 
