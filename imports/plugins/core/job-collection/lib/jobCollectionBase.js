@@ -1,27 +1,14 @@
 /* eslint-disable no-console */
 /*
- * decaffeinate suggestions:
- * DS001: Remove Babel/TypeScript constructor workaround
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS206: Consider reworking classes to avoid initClass
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+  Original version: https://github.com/vsivsi/meteor-job-collection/
+  License: https://github.com/vsivsi/meteor-job-collection/blob/master/LICENSE
  */
-//###########################################################################
-//     Copyright (C) 2014-2017 by Vaughn Iverson
-//     job-collection is free software released under the MIT/X11 license.
-//     See included LICENSE file for details.
-//###########################################################################
-
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Mongo } from "meteor/mongo";
-// import later from "later";
 import Job from "./job";
 
-let later
+let later;
 if (Meteor.isServer) {
   later = require("later");
 }
