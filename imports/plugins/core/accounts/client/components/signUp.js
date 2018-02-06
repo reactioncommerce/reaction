@@ -95,7 +95,6 @@ class SignUp extends Component {
         i18nKeyLabel="accountsUI.signUpButton"
         label="Register"
         type="submit"
-        tabIndex="3"
         eventAction="register"
       />
     );
@@ -114,7 +113,6 @@ class SignUp extends Component {
               label="Email"
               name="email"
               type="email"
-              tabIndex="1"
               id={`email-${this.props.uniqueId}`}
               value={this.state.email}
               onChange={this.handleFieldChange}
@@ -128,7 +126,6 @@ class SignUp extends Component {
               label="Password"
               name="password"
               type="password"
-              tabIndex="2"
               id={`password-${this.props.uniqueId}`}
               value={this.state.password}
               onChange={this.handleFieldChange}
@@ -141,14 +138,17 @@ class SignUp extends Component {
           </div>
 
           <div className="form-group">
-            <a
-              href="#"
-              tabIndex="4"
+            <Components.Button
+              tagName="span"
+              className={{
+                "btn": false,
+                "btn-default": false
+              }}
+              label="Sign In"
+              i18nKeyLabel="accountsUI.signIn"
               data-event-category="accounts"
               onClick={this.props.onSignInClick}
-            >
-              <Components.Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" />
-            </a>
+            />
           </div>
         </form>
       );

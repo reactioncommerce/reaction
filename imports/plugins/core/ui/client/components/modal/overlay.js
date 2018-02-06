@@ -48,6 +48,7 @@ class Overlay extends Component {
 
       return (
         <div
+          aria-hidden={true}
           className={baseClassName}
           style={styles.base}
           onClick={this.props.onClick}

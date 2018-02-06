@@ -124,27 +124,28 @@ Import.commit = function (collection) {
       // throw everything together.
       const nImported = result.nModified + result.nInserted + result.nUpserted;
       const nTouched = result.nMatched + result.nInserted + result.nUpserted;
-      const nRemoved = result.nRemoved;
+      const { nRemoved } = result;
       // Log some information about the import.
       if (nTouched) {
-        let message = "Modified " + nImported + (nImported === 1 ? " document" : " documents");
-        message += " while importing " + nTouched + " to " + name;
+        let message = `Modified ${nImported}${nImported === 1 ? " document" : " documents"}`;
+        message += ` while importing ${nTouched} to ${name}`;
         Logger.debug(message);
       }
       if (nRemoved) {
-        let message = "Removed " + nRemoved + (nRemoved === 1 ? " document" : " documents");
-        message += " from " + name;
+        let message = `Removed ${nRemoved}${nRemoved === 1 ? " document" : " documents"}`;
+        message += ` from ${name}`;
         Logger.debug(message);
       }
       // Log any errors returned.
-      const message = "Error while importing to " + name;
+      const message = `Error while importing to ${name}`;
       const writeErrors = result.getWriteErrors();
-      for (let i = 0; i < writeErrors.length; i++) {
-        Logger.warn(message + ": " + writeErrors[i].errmsg);
+
+      for (let i = 0; i < writeErrors.length; i += 1) {
+        Logger.warn(`${message}: ${writeErrors[i].errmsg}`);
       }
       const writeConcernError = result.getWriteConcernError();
       if (writeConcernError) {
-        Logger.warn(message + ": " + writeConcernError.errmsg);
+        Logger.warn(`${message}: ${writeConcernError.errmsg}`);
       }
     });
     // Reset the buffer.
@@ -437,7 +438,8 @@ Import.object = function (collection, key, object) {
       $setOnInsert: defaultValuesObject
     });
   }
-  if (this._count[this._name(collection)]++ >= this._limit) {
+  this._count[this._name(collection)] += 1;
+  if (this._count[this._name(collection)] >= this._limit) {
     this.flush(collection);
   }
 };
@@ -461,9 +463,9 @@ Import.process = function (json, keys, callback) {
 
   const array = EJSON.parse(json);
 
-  for (let i = 0; i < array.length; i++) {
+  for (let i = 0; i < array.length; i += 1) {
     const key = {};
-    for (let j = 0; j < keys.length; j++) {
+    for (let j = 0; j < keys.length; j += 1) {
       key[keys[j]] = array[i][keys[j]];
     }
     callback.call(this, key, array[i]);
@@ -488,5 +490,5 @@ Import.indication("provider", Collections.Shipping, 0.2);
 // Bulk.find.upsert() to equal false
 //
 export const Fixture = Object.assign({}, Import, {
-  _upsert: () => { return false; }
+  _upsert: () => false
 });

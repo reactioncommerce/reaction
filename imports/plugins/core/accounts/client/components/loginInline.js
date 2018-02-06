@@ -62,7 +62,6 @@ class LoginInline extends Component {
               <Components.TextField
                 name="email"
                 type="email"
-                tabIndex="1"
                 value={this.state.email}
                 onChange={this.handleFieldChange}
               />

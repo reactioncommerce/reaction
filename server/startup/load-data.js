@@ -3,7 +3,7 @@ import { Shops } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { Fixture } from "/server/api/core/import";
 
-export default function () {
+export default function loadData() {
   if (!process.env.SKIP_FIXTURES) {
     /**
      * Hook to setup core additional imports during Reaction init (shops process first)
@@ -20,13 +20,12 @@ export default function () {
       } catch (error) {
         Logger.error(error, "Bypassing loading Shop default data");
       }
-    }
 
-
-    // make sure the default shop has been created before going further
-    while (!Reaction.getShopId()) {
-      Logger.debug("Loading default shop, waiting until it's ready before moving on...");
-      Meteor._sleepForMs(1000);
+      // make sure the default shop has been created before going further
+      while (!Reaction.getShopId()) {
+        Logger.debug("Loading default shop, waiting until it's ready before moving on...");
+        Meteor._sleepForMs(1000);
+      }
     }
 
     try {

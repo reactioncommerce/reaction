@@ -11,19 +11,17 @@ class MarketplaceShops extends Component {
   renderShopsTable() {
     const fields = ["name", "emails", "workflow"];
 
-    const columnMetadata = fields.map((field) => {
-      return {
-        Header: <Components.Translation i18nKey={`marketplaceShops.headers.${field}`} defaultValue={field} />,
-        accessor: field,
-        Cell: (data) => (
-          <Components.MarketplaceShopTableCell
-            data={data}
-            field={field}
-            onWorkflowChange={this.props.onWorkflowChange}
-          />
-        )
-      };
-    });
+    const columnMetadata = fields.map((field) => ({
+      Header: <Components.Translation i18nKey={`marketplaceShops.headers.${field}`} defaultValue={field} />,
+      accessor: field,
+      Cell: (data) => (
+        <Components.MarketplaceShopTableCell
+          data={data}
+          field={field}
+          onWorkflowChange={this.props.onWorkflowChange}
+        />
+      )
+    }));
 
     return (
       <Components.SortableTable

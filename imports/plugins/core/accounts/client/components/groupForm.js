@@ -52,7 +52,6 @@ class GroupForm extends Component {
                 name="name"
                 id="add-group-name"
                 type="text"
-                tabIndex="1"
                 value={this.state.name}
                 onChange={this.onChange}
               />
@@ -64,7 +63,6 @@ class GroupForm extends Component {
                 name="description"
                 id="add-group-description"
                 type="text"
-                tabIndex="2"
                 value={this.state.description}
                 onChange={this.onChange}
               />

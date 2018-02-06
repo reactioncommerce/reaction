@@ -66,9 +66,9 @@ class ExampleSettingsForm extends Component {
             value={setting.apiKey}
           />
 
-          <label className="control-label">
+          <span className="control-label">
             <Translation defaultValue="Payment provider supported methods" i18nKey="reaction-payments.paymentSettings.supportedMethodsLabel"/>
-          </label>
+          </span>
           <br/>
 
           <div>

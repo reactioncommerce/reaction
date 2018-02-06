@@ -92,7 +92,7 @@ export function getComponent(name) {
     throw new Error(`Component ${name} not registered.`);
   }
 
-  const hocs = component.hocs.map((hoc) => Array.isArray(hoc) ? hoc[0](hoc[1]) : hoc);
+  const hocs = component.hocs.map((hoc) => (Array.isArray(hoc) ? hoc[0](hoc[1]) : hoc));
 
   return compose(...hocs, setDisplayName(`Reaction(${name})`))(component.rawComponent);
 }
@@ -168,7 +168,7 @@ export function copyHOCs(sourceComponentName, targetComponent) {
  * @memberof Components
  **/
 export function loadRegisteredComponents() {
-  Object.keys(ComponentsTable).map((name) => {
+  Object.keys(ComponentsTable).forEach((name) => {
     Components[name] = getComponent(name);
   });
 

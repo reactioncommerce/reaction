@@ -129,6 +129,9 @@ html:not(.rtl) .dropdown .notify-drop.dropdown-menu {
   display: block;
 }
 .dropdown-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-top: 6px;
   padding-left: 20px;
   padding-right: 20px;

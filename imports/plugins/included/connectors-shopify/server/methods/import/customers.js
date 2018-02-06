@@ -34,7 +34,7 @@ function createReactionCustomerFromShopifyCustomer(options) {
   // shopify is very forgiving so expect plenty of nulls !!
   const fakePhone = "33888888888";
   const fakeZip = "00000";
-  const first_name = shopifyCustomer.first_name  || "no_first_name";
+  const first_name = shopifyCustomer.first_name || "no_first_name";
   const last_name = shopifyCustomer.last_name || "no_last_name";
   const name = `${first_name} ${last_name}`;
 
@@ -148,7 +148,7 @@ export const methods = {
     const opts = Object.assign({}, {
       published_status: "published",
       limit
-    }, { ... options });
+    }, { ...options });
 
     try {
       const customerCount = await shopify.customer.count();
@@ -158,7 +158,7 @@ export const methods = {
 
       for (const page of pages) {
         Logger.debug(`Importing page ${page + 1} of ${numPages} - each page has ${limit} products`);
-        const shopifyCustomers = await shopify.customer.list({ ...opts, page });
+        const shopifyCustomers = await shopify.customer.list({ ...opts, page }); // eslint-disable-line no-await-in-loop
         for (const shopifyCustomer of shopifyCustomers) {
           if (!Accounts.findOne({ shopifyId: shopifyCustomer.id }, { fields: { _id: 1 } })) {
             // Setup reaction customer

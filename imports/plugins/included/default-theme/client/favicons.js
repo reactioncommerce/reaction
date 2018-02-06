@@ -13,32 +13,32 @@ const linkTags = [
   {
     rel: "apple-touch-icon",
     sizes: "180x180",
-    href: basePath + "apple-touch-icon.png"
+    href: `${basePath}apple-touch-icon.png`
   },
   {
     rel: "icon",
     type: "image/png",
     sizes: "32x32",
-    href: basePath + "favicon-32x32.png"
+    href: `${basePath}favicon-32x32.png`
   },
   {
     rel: "icon",
     type: "image/png",
     sizes: "16x16",
-    href: basePath + "favicon-16x16.png"
+    href: `${basePath}favicon-16x16.png`
   },
   {
     rel: "manifest",
-    href: basePath + "manifest.json"
+    href: `${basePath}manifest.json`
   },
   {
     rel: "mask-icon",
     color: "#5bbad5",
-    href: basePath + "safari-pinned-tab.svg"
+    href: `${basePath}safari-pinned-tab.svg`
   },
   {
     rel: "shortcut icon",
-    href: basePath + "favicon.ico"
+    href: `${basePath}favicon.ico`
   }
 ];
 
@@ -47,7 +47,7 @@ const linkTags = [
 const metaTags = [
   {
     name: "msapplication-config",
-    content: basePath + "browserconfig.xml"
+    content: `${basePath}browserconfig.xml`
   },
   {
     name: "theme-color",
@@ -75,8 +75,8 @@ function addTag(type, details) {
 
 
 // add the favicon tags to the <head>
-linkTags.forEach(tag => addTag("link", tag));
-metaTags.forEach(tag => addTag("meta", tag));
+linkTags.forEach((tag) => addTag("link", tag));
+metaTags.forEach((tag) => addTag("meta", tag));
 
 
 // HTML output should look like this...
