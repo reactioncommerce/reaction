@@ -541,10 +541,11 @@ Meteor.methods({
       throw new Meteor.Error("not-found", "Unable to find an item with such id in cart.");
     }
 
+    Hooks.Events.run("beforeRemoveItemsFromCart", userId, cart);
+
     if (!quantity || quantity >= cartItem.quantity) {
       let cartResult;
       try {
-        Hooks.Events.run("beforeRemoveItemsFromCart", userId, cart);
         cartResult = Collections.Cart.update({
           _id: cart._id
         }, {
