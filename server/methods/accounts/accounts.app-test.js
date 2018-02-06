@@ -37,7 +37,7 @@ describe("Account Meteor method ", function () {
     Cart.direct.remove({});
     Accounts.direct.remove({});
     Orders.direct.remove({});
-    Products.direct.remove({});
+    Products.remove({});
     Shops.direct.remove({});
     if (sandbox) {
       sandbox.restore();
