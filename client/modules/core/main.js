@@ -856,6 +856,13 @@ function createCountryCollection(countries) {
   return countryOptions;
 }
 
+/**
+ * getDep
+ * Gets the dependency for the key if available, else creates
+ * a new dependency for the key and returns it.
+ * @param {String} -  The key to get the dependency for
+ * @returns {Tracker.Dependency}
+ */
 function getDep(key) {
   if (!deps.has(key)) {
     deps.set(key, new Tracker.Dependency());

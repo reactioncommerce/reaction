@@ -22,6 +22,8 @@ Meteor.startup(function () {
 
     // Load data from Accounts collection into the localStorage
     Tracker.nonreactive(() => {
+      // Don't load the data from Accounts Collection again when something changes
+      // as we are already storing everything in the localStorage reactively
       try {
         const user = AccountsCollection.findOne(userId);
         if (user && user.profile && user.profile.preferences) {
@@ -34,7 +36,6 @@ Meteor.startup(function () {
         }
       } catch (err) {
         Logger.error("Problem in loading user preferences from Accounts collection");
-        Logger.error(err);
       }
     });
 
