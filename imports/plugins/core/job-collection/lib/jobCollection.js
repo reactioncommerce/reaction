@@ -4,9 +4,9 @@ import { Meteor } from "meteor/meteor";
 let JobCollection;
 
 if (Meteor.isServer) {
-  JobCollection = require("../server/jobCollection");
+  JobCollection = require("../server/jobCollection").default;
 } else {
-  JobCollection = require("../client/jobCollection");
+  JobCollection = require("../client/jobCollection").default;
 }
 
 export default JobCollection;
