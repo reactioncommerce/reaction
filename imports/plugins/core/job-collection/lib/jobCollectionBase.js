@@ -323,6 +323,7 @@ class JobCollectionBase extends Mongo.Collection {
     return dependsIds;
   }
 
+  // eslint-disable-next-line camelcase
   _rerun_job(doc, repeats = doc.repeats - 1, wait = doc.repeatWait, repeatUntil = doc.repeatUntil) {
     const id = doc._id;
     const { runId } = doc;
@@ -475,6 +476,7 @@ class JobCollectionBase extends Mongo.Collection {
     return true;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_startJobServer(options = {}) {
     check(options, Match.Optional({}));
 
@@ -486,6 +488,7 @@ class JobCollectionBase extends Mongo.Collection {
     return true;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_shutdownJobServer(options = {}) {
     check(options, Match.Optional({
       timeout: Match.Optional(Match.Where(_validIntGTEOne))
@@ -529,6 +532,7 @@ class JobCollectionBase extends Mongo.Collection {
     return true;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_getJob(ids, options = {}) {
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({
@@ -585,6 +589,7 @@ class JobCollectionBase extends Mongo.Collection {
     return null;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_getWork(type, options = {}) {
     let d;
     check(type, Match.OneOf(String, [ String ]));
@@ -722,6 +727,7 @@ class JobCollectionBase extends Mongo.Collection {
     return docs;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_jobRemove(ids, options = {}) {
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({}));
@@ -752,6 +758,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_jobPause(ids, options = {}) {
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({}));
@@ -800,6 +807,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_jobResume(ids, options = {}) {
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({}));
@@ -849,6 +857,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_jobReady(ids, options = {}) {
     let l;
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
@@ -930,6 +939,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_jobCancel(ids, options = {}) {
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({
@@ -997,6 +1007,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_jobRestart(ids, options = {}) {
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({
@@ -1074,6 +1085,7 @@ class JobCollectionBase extends Mongo.Collection {
 
   // Job creator methods
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_jobSave(doc, options = {}) {
     check(doc, _validJobDoc());
     check(options, Match.Optional({
@@ -1189,6 +1201,7 @@ class JobCollectionBase extends Mongo.Collection {
 
   // Worker methods
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_jobProgress(id, runId, completed, total, options = {}) {
     check(id, Match.Where(_validId));
     check(runId, Match.Where(_validId));
@@ -1241,6 +1254,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_jobLog(id, runId, message, options = {}) {
     check(id, Match.Where(_validId));
     check(runId, Match.OneOf(Match.Where(_validId), null));
@@ -1291,6 +1305,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_jobRerun(id, options = {}) {
     check(id, Match.Where(_validId));
     check(options, Match.Optional({
@@ -1329,6 +1344,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_jobDone(id, runId, result, options = {}) {
     check(id, Match.Where(_validId));
     check(runId, Match.Where(_validId));
@@ -1484,6 +1500,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
+  // eslint-disable-next-line camelcase
   _DDPMethod_jobFail(id, runId, err, options = {}) {
     check(id, Match.Where(_validId));
     check(runId, Match.Where(_validId));
