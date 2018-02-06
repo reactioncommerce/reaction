@@ -153,7 +153,7 @@ class JobCollectionBase extends Mongo.Collection {
 
     Job.setDDP(options.connection, this.root);
 
-    this._createLogEntry = function (message = "", runId = null, level = "info", time = new Date(), data = null) {
+    this._createLogEntry = function (message = "", runId = null, level = "info", time = new Date()) {
       return { time, runId, message, level };
     };
 
