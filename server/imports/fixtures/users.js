@@ -13,7 +13,7 @@ export function getUser() {
 export function getUsers(limit = 2) {
   const users = [];
   const existingUsers = Meteor.users.find({}, { limit }).fetch();
-  for (let i = 0; i < limit; i = i + 1) {
+  for (let i = 0; i < limit; i += 1) {
     const user = existingUsers[i] || Factory.create("user");
     users.push(user);
   }

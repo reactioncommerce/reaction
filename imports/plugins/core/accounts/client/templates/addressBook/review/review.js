@@ -10,7 +10,7 @@ Template.addressBookReview.onCreated(function () {
   const addressState = Session.get("addressState");
   this.state = new ReactiveDict();
   this.state.set("address", addressState.address);
-  this.state.set("originalAddress", addressState.address);  // use this to "revert" address changes
+  this.state.set("originalAddress", addressState.address); // use this to "revert" address changes
   this.state.set("validatedAddress", addressState.validatedAddress);
   this.state.set("formErrors", addressState.formErrors);
   this.state.set("fieldErrors", addressState.fieldErrors);

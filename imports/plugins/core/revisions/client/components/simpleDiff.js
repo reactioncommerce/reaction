@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 class SimpleDiff extends Component {
   renderDiff() {
-    const diff = this.props.diff;
+    const { diff } = this.props;
 
     return diff.map((change, index) => {
       const rightHandSide = change.rhs && change.rhs.toString();

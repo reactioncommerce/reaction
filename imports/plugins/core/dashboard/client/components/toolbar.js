@@ -146,11 +146,9 @@ class PublishControls extends Component {
 
   renderPackageButons() {
     if (Array.isArray(this.props.packageButtons)) {
-      return this.props.packageButtons.map((packageButton, index) => {
-        return (
-          <FlatButton {...packageButton} key={index} />
-        );
-      });
+      return this.props.packageButtons.map((packageButton, index) => (
+        <FlatButton {...packageButton} key={index} />
+      ));
     }
 
     return null;

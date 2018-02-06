@@ -21,7 +21,7 @@ Orders.after.insert((userId, doc) => {
     const shopIdsInCart = doc.items.map((item) => item.shopId);
 
     // get the unique set of shopIds in this cart
-    const uniqueShopIds = [... new Set(shopIdsInCart)];
+    const uniqueShopIds = [...new Set(shopIdsInCart)];
 
     // For each shopid check to see if there are synchooks are respond appropriately
     uniqueShopIds.forEach((shopId) => {

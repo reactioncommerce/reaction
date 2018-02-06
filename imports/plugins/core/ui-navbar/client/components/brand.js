@@ -8,25 +8,23 @@ class Brand extends Component {
     logo: PropTypes.string,
     title: PropTypes.string
   }
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
 
-  handleClick(event) {
+  handleClick = (event) => {
     event.preventDefault();
     Reaction.Router.go("/");
   }
 
   render() {
+    const { logo, title } = this.props;
+
     return (
-      <a className="brand" onClick={this.handleClick}>
+      <a className="brand" href="/" onClick={this.handleClick}>
         {this.props.logo &&
           <div className="logo">
-            <img src={this.props.logo} />
+            <img src={logo} alt={title} />
           </div>
         }
-        <span className="title">{this.props.title}</span>
+        <span className="title">{title}</span>
       </a>
     );
   }

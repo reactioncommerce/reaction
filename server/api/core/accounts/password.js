@@ -7,7 +7,6 @@ import { SSR } from "meteor/meteorhacks:ssr";
 import { Media, Shops } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
-
 /**
  * @method sendResetPasswordEmail
  * @memberof Core
@@ -63,7 +62,7 @@ export async function sendResetPasswordEmail(userId, optionalEmail) {
     const mediaId = Media.findOne(brandAsset.mediaId);
     emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
   } else {
-    emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+    emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
   }
 
   const copyrightDate = new Date().getFullYear();
@@ -87,17 +86,17 @@ export async function sendResetPasswordEmail(userId, optionalEmail) {
       display: true,
       facebook: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/facebook-icon.png`,
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/twitter-icon.png`,
         link: "https://www.twitter.com"
       }
     },
@@ -146,7 +145,7 @@ export async function sendVerificationEmail(userId, email) {
   if (!email) {
     const unverifiedEmail = _.find(user.emails || [], (e) => !e.verified) || {};
 
-    address = unverifiedEmail.address;
+    ({ address } = unverifiedEmail);
 
     if (!address) {
       const msg = "No unverified email addresses found.";
@@ -180,7 +179,7 @@ export async function sendVerificationEmail(userId, email) {
     // Reaction Information
     contactEmail: "hello@reactioncommerce.com",
     homepage: Meteor.absoluteUrl(),
-    emailLogo: Meteor.absoluteUrl() + "resources/placeholder.gif",
+    emailLogo: `${Meteor.absoluteUrl()}resources/placeholder.gif`,
     copyrightDate,
     legalName: "Reaction Commerce",
     physicalAddress: {
@@ -264,7 +263,7 @@ export async function sendUpdatedVerificationEmail(userId, email) {
   if (!email) {
     const unverifiedEmail = _.find(user.emails || [], (e) => !e.verified) || {};
 
-    address = unverifiedEmail.address;
+    ({ address } = unverifiedEmail);
 
     if (!address) {
       const msg = "No unverified email addresses found.";
@@ -298,7 +297,7 @@ export async function sendUpdatedVerificationEmail(userId, email) {
     // Reaction Information
     contactEmail: "hello@reactioncommerce.com",
     homepage: Meteor.absoluteUrl(),
-    emailLogo: Meteor.absoluteUrl() + "resources/placeholder.gif",
+    emailLogo: `${Meteor.absoluteUrl()}resources/placeholder.gif`,
     copyrightDate,
     legalName: "Reaction Commerce",
     physicalAddress: {

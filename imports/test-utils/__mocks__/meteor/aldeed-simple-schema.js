@@ -1,4 +1,4 @@
-export class SimpleSchema  {
+export class SimpleSchema {
   static RegEx = {
     Email: ""
   }
