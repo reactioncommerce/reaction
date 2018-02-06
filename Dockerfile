@@ -7,7 +7,7 @@ COPY . $APP_SOURCE_DIR
 RUN $BUILD_SCRIPTS_DIR/build-meteor.sh
 
 # create the final production image
-FROM node:8-slim
+FROM node:8.9.4-slim
 
 WORKDIR /app
 
