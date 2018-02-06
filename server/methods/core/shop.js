@@ -141,7 +141,7 @@ Meteor.methods({
         groups: ownerGroup._id
       }
     });
-    Hooks.Events.run("afterAccountsUpdate", shopUser._id, shopUser);
+    Hooks.Events.run("afterAccountsUpdate", currentAccount._id, shopUser._id);
     // Add this shop to the merchant
     Collections.Shops.update({ _id: Reaction.getPrimaryShopId() }, {
       $addToSet: {
@@ -259,7 +259,7 @@ Meteor.methods({
       }
 
       Collections.Accounts.update(user._id, { $set: { "profile.currency": profileCurrency } });
-      Hooks.Events.run("afterAccountsUpdate", user._id, user);
+      Hooks.Events.run("afterAccountsUpdate", user._id, user._id);
     }
 
     // set server side locale
