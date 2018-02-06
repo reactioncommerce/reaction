@@ -13,7 +13,6 @@ WORKDIR /app
 
 # grab the dependencies and built app from the previous builder image
 COPY --from=builder /usr/local/bin/gosu /usr/local/bin/gosu
-COPY --from=builder /usr/bin/gm /usr/bin/gm
 COPY --from=builder /opt/reaction/scripts /tmp/scripts
 COPY --from=builder /opt/reaction/dist/bundle .
 
