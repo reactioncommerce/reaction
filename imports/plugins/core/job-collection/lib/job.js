@@ -3,32 +3,17 @@
   Original version: https://github.com/vsivsi/meteor-job-collection/
   License: https://github.com/vsivsi/meteor-job-collection/blob/master/LICENSE
  */
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS104: Avoid inline assignments
- * DS201: Simplify complex destructure assignments
- * DS202: Simplify dynamic range loops
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS206: Consider reworking classes to avoid initClass
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-// ###########################################################################
-//     Copyright (C) 2014-2017 by Vaughn Iverson
-//     meteor-job-class is free software released under the MIT/X11 license.
-//     See included LICENSE file for details.
-// ###########################################################################
-
 import { Meteor } from "meteor/meteor";
 
-// Exports Job object
-
 function methodCall(root, method, params, cb, after = ret => ret) {
+  // Disable no-use-before-define because while it looks like we're accessing `Job` before it's defined,
+  // it's actually being accessed after it's defined, because this method is called from within a Job class instance.
+  //
+  // eslint-disable-next-line no-use-before-define
   let apply = Job._ddp_apply[root.root || root];
 
   if (!apply) {
+    // eslint-disable-next-line no-use-before-define
     apply = Job._ddp_apply;
   }
 
@@ -201,6 +186,10 @@ class JobQueue {
 
 
     if (options && !options.pollInterval) {
+      // Disable no-use-before-define because while it looks like we're accessing `Job` before it's defined,
+      // it's actually being accessed after it's defined, because this classes is used from within a Job class instance.
+      //
+      // eslint-disable-next-line no-use-before-define
       this.pollInterval = Job.forever;
     } else if (options && options.pollInterval !== undefined && !isInteger(options.pollInterval)) {
       this.pollInterval = 5000;
@@ -256,6 +245,7 @@ class JobQueue {
         this._getWorkOutstanding = true;
         const options = { maxJobs: numJobsToGet };
         if (this.workTimeout) { options.workTimeout = this.workTimeout; }
+        // eslint-disable-next-line no-use-before-define
         return Job.getWork(this.root, this.type, options, (err, jobs) => {
           this._getWorkOutstanding = false;
           if (err) {
@@ -277,6 +267,7 @@ class JobQueue {
     }
   }
 
+  // eslint-disable-next-line camelcase
   _only_once(fn) {
     let called = false;
     return function () {
@@ -386,6 +377,7 @@ class JobQueue {
 
   pause() {
     if (this.paused) { return; }
+    // eslint-disable-next-line no-use-before-define
     if (!(this.pollInterval >= Job.forever)) {
       _clearInterval(this._interval);
       this._interval = null;
@@ -398,6 +390,7 @@ class JobQueue {
     if (!this.paused) { return; }
     this.paused = false;
     _setImmediate(this._getWork.bind(this));
+    // eslint-disable-next-line no-use-before-define
     if (!(this.pollInterval >= Job.forever)) {
       this._interval = _setInterval(this._getWork.bind(this), this.pollInterval);
     }
@@ -504,6 +497,7 @@ export default class Job {
     };
 
     // Automatically work within Meteor, otherwise see @setDDP below
+    // eslint-disable-next-line camelcase
     this._ddp_apply = undefined;
 
     // This is defined above
@@ -545,6 +539,7 @@ export default class Job {
     if (typeof apply === "function") {
       if (typeof collectionName === "string") {
         if (!this._ddp_apply) {
+          // eslint-disable-next-line camelcase
           this._ddp_apply = {};
         }
 
@@ -555,6 +550,7 @@ export default class Job {
         this._ddp_apply[collectionName] = apply;
         return apply;
       } else if (!this._ddp_apply) {
+        // eslint-disable-next-line camelcase
         this._ddp_apply = apply;
         return apply;
       }
@@ -566,7 +562,10 @@ export default class Job {
   }
 
   // This needs to be called when not running in Meteor to use the local DDP connection.
-  static setDDP(ddp = null, collectionNames = null, Fiber = null) {
+  static setDDP(ddp = null, _collectionNames = null, _Fiber = null) {
+    let Fiber = _Fiber;
+    let collectionNames = _collectionNames;
+
     if ((typeof collectionNames !== "string") && (!(collectionNames instanceof Array))) {
       // Handle optional collection string with Fiber present
       Fiber = collectionNames;
@@ -624,8 +623,9 @@ export default class Job {
   // Creates a job object by reserving the next available job of
   // the specified 'type' from the server queue root
   // returns null if no such job exists
-  static getWork(root, type, ...rest) {
+  static getWork(root, typeOrArray, ...rest) {
     const adjustedLength = Math.max(rest.length, 1);
+    let type = typeOrArray;
     let options = rest.slice(0, adjustedLength - 1);
     let cb = rest[adjustedLength - 1];
 
@@ -841,8 +841,11 @@ export default class Job {
   }
 
   // Job class instance constructor. When "new Job(...)" is run
-  constructor(rootVal, type, data) {
+  constructor(rootVal, jobType, jobData) {
+    let type = jobType;
+    let data = jobData;
     let doc;
+
     if (!(this instanceof Job)) {
       return new Job(rootVal, type, data);
     }
@@ -912,11 +915,12 @@ export default class Job {
 
   // Adds a run dependancy on one or more existing jobs to this job
   // Calling with a falsy value resets the dependencies to []
-  depends(jobs) {
+  depends(jobOrArray) {
+    let jobs = jobOrArray;
     let depends;
     if (jobs) {
       if (jobs instanceof Job) {
-        jobs = [ jobs ];
+        jobs = [jobs];
       }
       if (jobs instanceof Array) {
         ({ depends } = this._doc);
