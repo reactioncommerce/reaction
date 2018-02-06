@@ -225,9 +225,6 @@ class JobCollectionBase extends Mongo.Collection {
   _generateMethods() {
     const methodsOut = {};
     const methodPrefix = "_DDPMethod_";
-    console.log("0.", typeof this._DDPMethod_getJob);
-    console.log("0.1. ", Object.getOwnPropertyNames(this));
-
     const methodNames = [
       "_DDPMethod_startJobServer",
       "_DDPMethod_shutdownJobServer",
@@ -287,7 +284,6 @@ class JobCollectionBase extends Mongo.Collection {
           transform: null
         }
       ).forEach((d) => {
-        console.log("d.depends", d.depends);
         for (const i in Array.from(d.depends)) {
           if (!antsArray.includes(i)) {
             antsArray.push(i);
