@@ -1051,6 +1051,19 @@ export function createFallbackLoginToken() {
   }
 }
 
+/**
+ * @name accounts/setProfileCurrency
+ * @memberof Methods/Accounts
+ * @method
+ * @summary Sets users profile currency
+ */
+export function setProfileCurrency(currencyName) {
+  if (this.userId) {
+    Accounts.update(this.userId, { $set: { "profile.currency": currencyName } });
+    Hooks.Events.run("afterAccountsUpdate", this.userId, this.userId);
+  }
+}
+
 Meteor.methods({
   "accounts/verifyAccount": verifyAccount,
   "accounts/validateAddress": validateAddress,
@@ -1066,5 +1079,6 @@ Meteor.methods({
   "accounts/setUserPermissions": setUserPermissions,
   "accounts/createFallbackLoginToken": createFallbackLoginToken,
   "accounts/updateEmailAddress": updateEmailAddress,
-  "accounts/removeEmailAddress": removeEmailAddress
+  "accounts/removeEmailAddress": removeEmailAddress,
+  "accounts/setProfileCurrency": setProfileCurrency
 });
