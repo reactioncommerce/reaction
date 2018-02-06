@@ -63,7 +63,7 @@ export function verifyAccount(email, token) {
           "emails.$.verified": true
         }
       });
-      Hooks.Events.run("afterAccountsUpdate", account._id, account);
+      Hooks.Events.run("afterAccountsUpdate", account._id, account._id);
     }
     return true;
   }
@@ -132,7 +132,7 @@ export function syncUsersAndAccounts() {
       ]
     }
   });
-  Hooks.Events.run("afterAccountsUpdate", user._id, user);
+  Hooks.Events.run("afterAccountsUpdate", user._id, user._id);
 
   return true;
 }
@@ -368,7 +368,7 @@ export function addressBookAdd(address, accountUserId) {
           "profile.addressBook.$.isShippingDefault": false
         }
       });
-      Hooks.Events.run("afterAccountsUpdate", account._id, account);
+      Hooks.Events.run("afterAccountsUpdate", userId, account._id);
     }
     if (address.isBillingDefault) {
       Accounts.update({
@@ -379,7 +379,7 @@ export function addressBookAdd(address, accountUserId) {
           "profile.addressBook.$.isBillingDefault": false
         }
       });
-      Hooks.Events.run("afterAccountsUpdate", account._id, account);
+      Hooks.Events.run("afterAccountsUpdate", userId, account._id);
     }
   }
 
@@ -472,7 +472,7 @@ export function addressBookUpdate(address, accountUserId, type) {
             "profile.addressBook.$.isShippingDefault": false
           }
         });
-        Hooks.Events.run("afterAccountsUpdate", account._id, account);
+        Hooks.Events.run("afterAccountsUpdate", userId, account._id);
       } else {
         // if new `isShippingDefault` state is false, then we need to remove
         // this address from `cart.shipping`
@@ -495,7 +495,7 @@ export function addressBookUpdate(address, accountUserId, type) {
             "profile.addressBook.$.isBillingDefault": false
           }
         });
-        Hooks.Events.run("afterAccountsUpdate", account._id, account);
+        Hooks.Events.run("afterAccountsUpdate", userId, account._id);
       } else {
         Meteor.call("cart/unsetAddresses", address._id, userId, "billing");
       }
@@ -528,7 +528,7 @@ export function addressBookUpdate(address, accountUserId, type) {
     userId,
     "profile.addressBook._id": address._id
   }, accountsUpdateQuery);
-  Hooks.Events.run("afterAccountsUpdate", account._id, account);
+  Hooks.Events.run("afterAccountsUpdate", userId, account._id);
   return updatedAccount;
 }
 
@@ -569,7 +569,7 @@ export function addressBookRemove(addressId, accountUserId) {
       }
     }
   });
-  Hooks.Events.run("afterAccountsUpdate", userId, account);
+  Hooks.Events.run("afterAccountsUpdate", userId, account._id);
   return updatedAccount;
 }
 
