@@ -2,9 +2,8 @@
 import Shopify from "shopify-api-node";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
-import { Logger } from "/server/api";
 import { check, Match } from "meteor/check";
-import { Reaction } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 import { Accounts } from "/lib/collections";
 import { getApiInfo } from "../api/api";
 import { connectorsRoles } from "../../lib/roles";
@@ -41,12 +40,12 @@ function createReactionCustomerFromShopifyCustomer(options) {
 
   const reactionCustomer = {
     createdAt: shopifyCustomer.created_at,
-    name: name,
+    name,
     acceptsMarketing: shopifyCustomer.accepts_marketing,
     note: shopifyCustomer.note,
     metafields: [],
-    shopId: shopId, // set shopId to active shopId;
-    userId: userId,
+    shopId, // set shopId to active shopId;
+    userId,
     shopifyId: shopifyCustomer.id.toString(), // save it here to make sync lookups cheaper
     tags: shopifyCustomer.tags,
     orders_count: shopifyCustomer.orders_count,
@@ -148,7 +147,7 @@ export const methods = {
     const ids = [];
     const opts = Object.assign({}, {
       published_status: "published",
-      limit: limit
+      limit
     }, { ... options });
 
     try {
@@ -159,7 +158,7 @@ export const methods = {
 
       for (const page of pages) {
         Logger.debug(`Importing page ${page + 1} of ${numPages} - each page has ${limit} products`);
-        const shopifyCustomers = await shopify.customer.list({ ...opts, page: page });
+        const shopifyCustomers = await shopify.customer.list({ ...opts, page });
         for (const shopifyCustomer of shopifyCustomers) {
           if (!Accounts.findOne({ shopifyId: shopifyCustomer.id }, { fields: { _id: 1 } })) {
             // Setup reaction customer

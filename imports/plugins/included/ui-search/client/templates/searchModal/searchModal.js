@@ -17,7 +17,7 @@ Template.searchModal.helpers({
  * searchModal events
  */
 Template.searchModal.events({
-  "click [data-event-action=searchCollection]": function (event) {
+  "click [data-event-action=searchCollection]"(event) {
     event.preventDefault();
 
     $(".search-type-option").not(event.target).removeClass("search-type-active");

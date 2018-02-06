@@ -33,9 +33,11 @@ export default {
     const save = () => {
       Meteor.call("sms/saveSettings", settings, (err) => {
         if (err) {
-          return Alert(i18next.t("app.error"),
+          return Alert(
+            i18next.t("app.error"),
             "Your API credentials could not be saved",
-            "error");
+            "error"
+          );
         }
         return Alert({
           title: i18next.t("app.success"),

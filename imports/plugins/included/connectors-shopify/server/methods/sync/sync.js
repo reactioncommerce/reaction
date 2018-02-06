@@ -42,7 +42,7 @@ export const methods = {
     topics.forEach((topic) => {
       Logger.info(`Setting up shopify webhook ${topic} for ${integrationsByTopic[topic]}`);
       Meteor.call("connectors/shopify/webhooks/create", {
-        topic: topic,
+        topic,
         integrations: integrationsByTopic[topic]
       });
     });

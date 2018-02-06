@@ -21,7 +21,7 @@ export const methods = {
    * @param  {String} collection collection (either Orders or Cart)
    * @returns {String} return cart update result
    */
-  "payments/apply": function (id, paymentMethod, collection = "Cart") {
+  "payments/apply"(id, paymentMethod, collection = "Cart") {
     check(id, String);
     check(paymentMethod, Object);
     check(collection, String);
@@ -31,7 +31,7 @@ export const methods = {
       _id: id
     }, {
       $addToSet: {
-        billing: { paymentMethod: paymentMethod }
+        billing: { paymentMethod }
       }
     });
   }

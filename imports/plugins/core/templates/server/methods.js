@@ -21,7 +21,7 @@ export const methods = {
    * @param {Object} doc - data to update
    * @return {Number} remove template
    */
-  "templates/email/update": function (templateId, doc) {
+  "templates/email/update"(templateId, doc) {
     check(templateId, String);
     check(doc, Object);
 

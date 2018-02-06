@@ -110,7 +110,7 @@ function composer(props, onData) {
 
   if (product) {
     if (_.isArray(product.hashtags)) {
-      tags = _.map(product.hashtags, function (id) {
+      tags = _.map(product.hashtags, (id) => {
         return Tags.findOne(id);
       });
     }
@@ -145,7 +145,7 @@ function composer(props, onData) {
 
     onData(null, {
       editFocus: Reaction.state.get("edit/focus") || "productDetails",
-      product: product,
+      product,
       media,
       tags,
       revisonDocumentIds,

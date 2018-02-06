@@ -27,7 +27,7 @@ MethodHooks.after("taxes/calculate", (options) => {
   Logger.debug("Avalara triggered on taxes/calculate for cartId:", cartId);
 
   if (pkg && pkg.settings.avalara.enabled && pkg.settings.avalara.performTaxCalculation) {
-    taxCalc.estimateCart(cartToCalc, function (result) {
+    taxCalc.estimateCart(cartToCalc, (result) => {
       // we don't use totalTax, that just tells us we have a valid tax calculation
       if (result && !result.error && typeof result.totalTax === "number" && result.lines) {
         const taxes = linesToTaxes(result.lines);
@@ -50,14 +50,14 @@ MethodHooks.after("cart/copyCartToOrder", (options) => {
   const pkg = taxCalc.getPackageData();
   if (pkg && pkg.settings.avalara.enabled && pkg.settings.avalara.performTaxCalculation) {
     const cartId = options.arguments[0];
-    const order = Orders.findOne({ cartId: cartId });
-    taxCalc.recordOrder(order, function (result) {
+    const order = Orders.findOne({ cartId });
+    taxCalc.recordOrder(order, (result) => {
       if (result) {
         Logger.info(`Order ${order._id} recorded with Avalara`);
       }
     });
   }
-  return options;
+  return options.result;
 });
 
 MethodHooks.after("orders/refunds/create", (options) => {
@@ -66,7 +66,7 @@ MethodHooks.after("orders/refunds/create", (options) => {
     const orderId = options.arguments[0];
     const order = Orders.findOne(orderId);
     const refundAmount = options.arguments[2];
-    taxCalc.reportRefund(order, refundAmount, function (result) {
+    taxCalc.reportRefund(order, refundAmount, (result) => {
       if (result) {
         Logger.info(`Refund for order ${order._id} recorded with Avalara`);
       }

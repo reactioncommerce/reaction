@@ -5,7 +5,7 @@ import { Logger, MethodHooks } from "/server/api";
 import "../cart";
 
 // // Meteor.after to call after
-MethodHooks.after("cart/submitPayment", function (options) {
+MethodHooks.after("cart/submitPayment", (options) => {
   // TODO: REVIEW WITH AARON - this is too late to fail. We need to copy cart to order either way at this point
   // if cart/submit had an error we won't copy cart to Order
   // and we'll throw an error.
@@ -33,7 +33,8 @@ MethodHooks.after("cart/submitPayment", function (options) {
         // This is done by extending the existing result.
         result.orderId = orderId;
       } else {
-        throw new Meteor.Error("server-error",
+        throw new Meteor.Error(
+          "server-error",
           "An error occurred verifing payment method. Failed to save order."
         );
       }
