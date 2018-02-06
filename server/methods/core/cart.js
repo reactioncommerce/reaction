@@ -210,7 +210,7 @@ Meteor.methods({
         Collections.Accounts.remove({
           userId: sessionCart.userId
         });
-        Hooks.Events.run("afterAccountsRemove", sessionCart.userId, sessionCart);
+        Hooks.Events.run("afterAccountsRemove", this.userId, sessionCart.userId);
         Meteor.users.remove(sessionCart.userId);
         Logger.debug(`merge cart: delete cart ${
           sessionCart._id} and user: ${sessionCart.userId}`);
