@@ -7,20 +7,15 @@ import { Template } from "meteor/templating";
 import { Accounts } from "meteor/accounts-base";
 import { Spacebars } from "meteor/spacebars";
 import { Roles } from "meteor/alanning:roles";
-import { i18next } from "/client/api";
-import { Reaction } from "../";
+import { i18next, Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { toCamelCase } from "/lib/api";
 
 
-Template.registerHelper("Collections", () => {
-  return Collections;
-});
+Template.registerHelper("Collections", () => Collections);
 
-Template.registerHelper("Schemas", () => {
-  return Schemas;
-});
+Template.registerHelper("Schemas", () => Schemas);
 
 /**
  * currentUser
@@ -109,12 +104,12 @@ Template.registerHelper("yearOptions", (showDefaultOption = true) => {
   }
 
   let year = new Date().getFullYear();
-  for (let i = 1; i < 9; i++) {
+  for (let i = 1; i < 9; i += 1) {
     yearOptions.push({
       value: year,
       label: year
     });
-    year++;
+    year += 1;
   }
   return yearOptions;
 });
@@ -158,9 +153,7 @@ Template.registerHelper("camelToSpace", (str) => {
  * @param {String} str - string
  * @return {String} returns lowercased string
  */
-Template.registerHelper("toLowerCase", (str) => {
-  return str.toLowerCase();
-});
+Template.registerHelper("toLowerCase", (str) => str.toLowerCase());
 
 /**
  * toUpperCase
@@ -168,9 +161,7 @@ Template.registerHelper("toLowerCase", (str) => {
  * @param {String} str - string
  * @return {String} returns uppercased string
  */
-Template.registerHelper("toUpperCase", (str) => {
-  return str.toUpperCase();
-});
+Template.registerHelper("toUpperCase", (str) => str.toUpperCase());
 
 /**
  * capitalize
@@ -178,9 +169,7 @@ Template.registerHelper("toUpperCase", (str) => {
  * @param {String} str - string
  * @return {String} returns string with first letter capitalized
  */
-Template.registerHelper("capitalize", (str) => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-});
+Template.registerHelper("capitalize", (str) => str.charAt(0).toUpperCase() + str.slice(1));
 
 /**
  * toCamelCase
@@ -188,9 +177,7 @@ Template.registerHelper("capitalize", (str) => {
  * @param {String} str - string
  * @return {String|undefined} returns camelCased string
  */
-Template.registerHelper("toCamelCase", (str) => {
-  return !!str && toCamelCase(str);
-});
+Template.registerHelper("toCamelCase", (str) => !!str && toCamelCase(str));
 
 
 /**
@@ -260,9 +247,7 @@ Template.registerHelper("condition", (v1, operator, v2) => {
  * @param {String} v2 - variable two
  * @return {String} returns v1 || v2
  */
-Template.registerHelper("orElse", (v1, v2) => {
-  return v1 || v2;
-});
+Template.registerHelper("orElse", (v1, v2) => v1 || v2);
 
 /**
  * key_value
@@ -272,12 +257,10 @@ Template.registerHelper("orElse", (v1, v2) => {
  */
 Template.registerHelper("key_value", (context) => {
   const result = [];
-  _.each(context, (value, key) => {
-    return result.push({
-      key,
-      value
-    });
-  });
+  _.each(context, (value, key) => result.push({
+    key,
+    value
+  }));
   return result;
 });
 
@@ -289,8 +272,7 @@ Template.registerHelper("key_value", (context) => {
  * @returns {String} returns formatted Spacebars.SafeString
  */
 Template.registerHelper("nl2br", (text) => {
-  const nl2br = (text + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" +
-    "<br>" + "$2");
+  const nl2br = (`${text}`).replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2");
   return new Spacebars.SafeString(nl2br);
 });
 
@@ -320,9 +302,7 @@ Template.registerHelper("dateFormat", (context, block) => {
  * @param {String} context - moment context
  * @return {Date} return formatted date
  */
-Template.registerHelper("timeAgo", (context) => {
-  return moment(context).from(new Date());
-});
+Template.registerHelper("timeAgo", (context) => moment(context).from(new Date()));
 
 
 /**
@@ -335,7 +315,7 @@ Template.registerHelper("timeAgo", (context) => {
  */
 Template.registerHelper("pluralize", (nCount, pString) => {
   if (nCount === 1) {
-    return "1 " + pString;
+    return `1 ${pString}`;
   }
-  return nCount + " " + pString + "s";
+  return `${nCount} ${pString}s`;
 });

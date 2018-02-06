@@ -9,14 +9,12 @@ class ProductGrid extends Component {
 
   renderProductGridItems = (products) => {
     if (Array.isArray(products)) {
-      return products.map((product, index) => {
-        return (
-          <Components.ProductGridItems
-            {...this.props}
-            product={product} key={index} index={index}
-          />
-        );
-      });
+      return products.map((product, index) => (
+        <Components.ProductGridItems
+          {...this.props}
+          product={product} key={index} index={index}
+        />
+      ));
     }
     return (
       <div className="row">

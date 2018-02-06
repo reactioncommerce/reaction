@@ -88,7 +88,7 @@ Meteor.methods({
             hasPermission = Roles.userIsInRole(Meteor.userId(), layout.audience, Reaction.getShopId());
           }
 
-          if (hasPermission  && !layout.layout) {
+          if (hasPermission && !layout.layout) {
             defaultPackageWorkflows.push(layout);
           }
         });
@@ -187,8 +187,7 @@ Meteor.methods({
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
       templateProcessedinWorkflow === false) {
       Logger.debug(
-        "######## Condition Three #########: complete workflow " +
-        currentWorkflowStatus + " updates and move to: ",
+        `######## Condition Three #########: complete workflow ${currentWorkflowStatus} updates and move to: `,
         nextWorkflowStep.template
       );
       return Cart.update(currentCart._id, {
@@ -239,7 +238,7 @@ Meteor.methods({
     // get index of `newWorkflowStatus`
     const resetToIndex = workflow.indexOf(newWorkflowStatus);
     // exit if no such step in workflow
-    if (!~resetToIndex) return false;
+    if (resetToIndex < 0) return false;
     // remove all steps that further `newWorkflowStatus` and itself
     const resetedWorkflow = workflow.slice(0, resetToIndex);
 

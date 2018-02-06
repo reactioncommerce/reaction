@@ -29,8 +29,8 @@ export const methods = {
       throw new Meteor.Error("invalid-parameter", "Bad shop ID");
     }
     const amount = Number(cart.getTotal());
-    const description = shop.name + " Ref: " + cartId;
-    const currency = shop.currency;
+    const description = `${shop.name} Ref: ${cartId}`;
+    const { currency } = shop;
     const options = PayPal.expressCheckoutAccountOptions();
     let response;
 
@@ -52,7 +52,7 @@ export const methods = {
           CURRENCYCODE: currency,
           METHOD: "SetExpressCheckout",
           INVNUM: cartId,
-          CUSTOM: cartId + "|" + amount + "|" + currency
+          CUSTOM: `${cartId}|${amount}|${currency}`
         }
       });
     } catch (error) {
@@ -63,7 +63,7 @@ export const methods = {
     }
     const parsedResponse = parseResponse(response);
     if (parsedResponse.ACK !== "Success") {
-      throw new Meteor.Error("ACK " + parsedResponse.ACK + ": " + parsedResponse.L_LONGMESSAGE0);
+      throw new Meteor.Error(`ACK ${parsedResponse.ACK}: ${parsedResponse.L_LONGMESSAGE0}`);
     }
     return parsedResponse.TOKEN;
   },
@@ -86,7 +86,7 @@ export const methods = {
     }
     const amount = Number(cart.getTotal());
     const shop = Shops.findOne(cart.shopId);
-    const currency = shop.currency;
+    const { currency } = shop;
     const options = PayPal.expressCheckoutAccountOptions();
     const captureAtAuth = getSetting(cart.shopId, "expressAuthAndCapture");
     let paymentAction;
@@ -120,10 +120,7 @@ export const methods = {
     const parsedResponse = parseResponse(response);
 
     if (parsedResponse.ACK !== "Success") {
-      throw new Meteor.Error("ACK " +
-        parsedResponse.ACK + ": " +
-        parsedResponse.L_LONGMESSAGE0 + ":" +
-        parsedResponse.L_ERRORCODE0);
+      throw new Meteor.Error(`ACK ${parsedResponse.ACK}: ${parsedResponse.L_LONGMESSAGE0}:${parsedResponse.L_ERRORCODE0}`);
     }
     return parsedResponse;
   },
@@ -202,7 +199,7 @@ export const methods = {
     const parsedResponse = parseResponse(response);
 
     if (parsedResponse.ACK !== "Success") {
-      throw new Meteor.Error("ACK " + parsedResponse.ACK + ": " + parsedResponse.L_LONGMESSAGE0);
+      throw new Meteor.Error(`ACK ${parsedResponse.ACK}: ${parsedResponse.L_LONGMESSAGE0}`);
     }
 
     const result = {
@@ -231,8 +228,7 @@ export const methods = {
 
     const options = PayPal.expressCheckoutAccountOptions();
     const previousTransaction = _.last(paymentMethod.transactions);
-    const transactionId = previousTransaction.transactionId;
-    const currencycode = previousTransaction.currencycode;
+    const { transactionId, currencycode } = previousTransaction;
 
     let response;
     try {
@@ -249,7 +245,7 @@ export const methods = {
           CURRENCYCODE: currencycode
         }
       });
-    }  catch (error) {
+    } catch (error) {
       Logger.debug(error, "Failed paypalexpress/refund/create");
       throw new Meteor.Error("refund-create-failed", error.message);
     }
@@ -261,7 +257,7 @@ export const methods = {
 
     const parsedResponse = parseResponse(response);
     if (parsedResponse.ACK !== "Success") {
-      throw new Meteor.Error("ACK " + parsedResponse.ACK + ": " + parsedResponse.L_LONGMESSAGE0);
+      throw new Meteor.Error(`ACK ${parsedResponse.ACK}: ${parsedResponse.L_LONGMESSAGE0}`);
     }
 
     const amountFormatted = {
@@ -296,7 +292,7 @@ export const methods = {
     this.unblock();
 
     const options = PayPal.expressCheckoutAccountOptions();
-    const transactionId = paymentMethod.transactionId;
+    const { transactionId } = paymentMethod;
     let response;
 
     try {
@@ -312,7 +308,7 @@ export const methods = {
           TRANSACTIONCLASS: "Refund"
         }
       });
-    }  catch (error) {
+    } catch (error) {
       throw new Meteor.Error("refund-list-failed", error.message);
     }
 
@@ -323,7 +319,7 @@ export const methods = {
     const parsedResponse = parseResponse(response);
 
     if (parsedResponse.ACK !== "Success") {
-      throw new Meteor.Error("ACK " + parsedResponse.ACK + ": " + parsedResponse.L_LONGMESSAGE0);
+      throw new Meteor.Error(`ACK ${parsedResponse.ACK}: ${parsedResponse.L_LONGMESSAGE0}`);
     }
     const result = parseRefundReponse(parsedResponse);
     return result;
@@ -337,7 +333,8 @@ function parseResponse(response) {
   const pieces = response.content.split("&");
   pieces.forEach((piece) => {
     const subpieces = piece.split("=");
-    const decodedResult = result[subpieces[0]] = decodeURIComponent(subpieces[1]);
+    result[subpieces[0]] = decodeURIComponent(subpieces[1]);
+    const decodedResult = result[subpieces[0]];
     return decodedResult;
   });
   return result;
@@ -351,14 +348,14 @@ function parseResponse(response) {
 function parseRefundReponse(response) {
   const paypalArray = [];
 
-  for (let i = 0; i < 101; i++) {
-    const timeStampKey = "L_TIMESTAMP" + i;
+  for (let i = 0; i < 101; i += 1) {
+    const timeStampKey = `L_TIMESTAMP${i}`;
     const timestamp = response[timeStampKey];
-    const typeKey = "L_TYPE" + i;
+    const typeKey = `L_TYPE${i}`;
     const transactionType = response[typeKey];
-    const amountKey = "L_AMT" + i;
+    const amountKey = `L_AMT${i}`;
     const amount = response[amountKey];
-    const currencyCodeKey = "L_CURRENCYCODE" + i;
+    const currencyCodeKey = `L_CURRENCYCODE${i}`;
     const currencyCode = response[currencyCodeKey];
 
     if (timestamp !== undefined && transactionType === "Refund") {
@@ -376,11 +373,11 @@ function parseRefundReponse(response) {
 }
 
 function getSetting(shopId, parameter) {
-  const settings = Packages.findOne({
+  const { settings } = Packages.findOne({
     name: "reaction-paypal",
     shopId,
     enabled: true
-  }).settings;
+  });
   return settings[parameter];
 }
 

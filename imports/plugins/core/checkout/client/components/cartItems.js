@@ -40,8 +40,8 @@ class CartItems extends Component {
             <Components.Translation i18nKey="cartDrawerItems.limitedSupply" defaultValue="Limited supply" />
           </div>
         }
-        <i className="remove-cart-item fa fa-times fa-lg"
-          id={item._id}
+        <Components.IconButton
+          icon="fa fa-times fa-lg remove-cart-item"
           onClick={handleRemoveItem}
         />
         <a href={pdpPath(item)}
@@ -51,10 +51,10 @@ class CartItems extends Component {
         >
           {handleImage(item) ?
             <div className="center-cropped" style={{ backgroundImage: `url('${handleImage(item).url({ store: "small" })}')` }}>
-              <img src={handleImage(item).url({ store: "small" })} className="product-grid-item-images img-responsive" />
+              <img src={handleImage(item).url({ store: "small" })} className="product-grid-item-images img-responsive" alt="" />
             </div> :
             <div className="center-cropped" style={{ backgroundImage: "url('/resources/placeholder.gif')" }}>
-              <img src="/resources/placeholder.gif" className="product-grid-item-images img-responsive" />
+              <img src="/resources/placeholder.gif" className="product-grid-item-images img-responsive" alt="" />
             </div>
           }
         </a>
