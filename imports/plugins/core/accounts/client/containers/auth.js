@@ -40,8 +40,8 @@ class AuthContainer extends Component {
       isLoading: true
     });
     const errors = {};
-    const username = email.trim();
-    const pword = password.trim();
+    const username = email ? email.trim() : null;
+    const pword = password ? password.trim() : null;
 
     const validatedEmail = LoginFormValidation.email(username);
     const validatedPassword = LoginFormValidation.password(pword, { validationLevel: "exists" });

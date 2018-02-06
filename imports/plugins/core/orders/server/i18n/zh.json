@@ -14,7 +14,7 @@
       },
       "admin": {
         "shortcut": {
-          "ordersLabel": "命令"
+          "ordersLabel": "订单"
         },
         "orderRisk": {
           "high": "高风险",
@@ -22,8 +22,8 @@
           "riskCaptureWarn": "您即将捕获带有收费风险的订单。继续之前确认。"
         },
         "dashboard": {
-          "ordersLabel": "命令",
-          "ordersTitle": "命令",
+          "ordersLabel": "订单",
+          "ordersTitle": "订单",
           "ordersDescription": "完成订单",
           "clearSearch": "明确"
         },
