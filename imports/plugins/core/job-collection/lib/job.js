@@ -26,19 +26,19 @@ import { Meteor } from "meteor/meteor";
 // Exports Job object
 
 function methodCall(root, method, params, cb, after = ret => ret) {
-  let apply = Job._ddp_apply;
+  let apply = Job._ddp_apply[root.root || root];
 
   if (!apply) {
-    apply = Job._ddp_apply[root.root || root];
+    apply = Job._ddp_apply;
   }
 
   if (typeof apply !== "function") {
     throw new Error("Job remote method call error, no valid invocation method found.");
   }
 
-  const name = `${root.root !== null ? root.root : root}_${method}`;
+  const name = `${root.root || root}_${method}`;
 
-  if (cb && (typeof cb === "function")) {
+  if (typeof cb === "function") {
     return apply(name, params, (err, res) => {
       if (err) { return cb(err); }
       return cb(null, after(res));
@@ -53,7 +53,7 @@ function optionsHelp(opts, cb) {
   let callback = cb;
 
   // If cb isn't a function, it's assumed to be options...
-  if (!cb && typeof cb !== "function") {
+  if (cb && typeof cb !== "function") {
     options = cb;
     callback = undefined;
   } else {
@@ -62,7 +62,7 @@ function optionsHelp(opts, cb) {
             !(options.length < 2)) {
       throw new Error("options... in optionsHelp must be an Array with zero or one elements");
     }
-    options = options && options[0];
+    options = options && options[0] || {};
   }
   if (typeof options !== "object") {
     throw new Error("in optionsHelp options not an object or bad callback");
@@ -194,7 +194,7 @@ class JobQueue {
       throw new Error("JobQueue: Invalid worker, must be a function");
     }
 
-    this.errorCallback = options.errorCallback !== null ? options.errorCallback : e => console.error("JobQueue: ", e);
+    this.errorCallback = options.errorCallback || (e => console.error("JobQueue: ", e));
     if (!isFunction(this.errorCallback)) {
       throw new Error("JobQueue: Invalid errorCallback, must be a function");
     }
@@ -212,28 +212,28 @@ class JobQueue {
       throw new Error("JobQueue: Invalid pollInterval, must be a positive integer");
     }
 
-    this.concurrency = options.concurrency !== null ? options.concurrency : 1;
+    this.concurrency = options.concurrency || 1;
     if (!isInteger(this.concurrency) || !(this.concurrency >= 0)) {
       throw new Error("JobQueue: Invalid concurrency, must be a positive integer");
     }
 
-    this.payload = options.payload !== null ? options.payload : 1;
+    this.payload = options.payload || 1;
     if (!isInteger(this.payload) || !(this.payload >= 0)) {
       throw new Error("JobQueue: Invalid payload, must be a positive integer");
     }
 
-    this.prefetch = options.prefetch !== null ? options.prefetch : 0;
+    this.prefetch = options.prefetch || 0;
     if (!isInteger(this.prefetch) || !(this.prefetch >= 0)) {
       throw new Error("JobQueue: Invalid prefetch, must be a positive integer");
     }
 
     this.workTimeout = options.workTimeout;  // No default
-    if ((this.workTimeout !== null) && !(isInteger(this.workTimeout) && (this.workTimeout >= 0))) {
+    if (this.workTimeout && !(isInteger(this.workTimeout) && (this.workTimeout >= 0))) {
       throw new Error("JobQueue: Invalid workTimeout, must be a positive integer");
     }
 
     this.callbackStrict = options.callbackStrict;
-    if ((this.callbackStrict !== null) && !isBoolean(this.callbackStrict)) {
+    if (this.callbackStrict && !isBoolean(this.callbackStrict)) {
       throw new Error("JobQueue: Invalid callbackStrict, must be a boolean");
     }
 
@@ -255,20 +255,20 @@ class JobQueue {
       if (numJobsToGet > 0) {
         this._getWorkOutstanding = true;
         const options = { maxJobs: numJobsToGet };
-        if (this.workTimeout !== null) { options.workTimeout = this.workTimeout; }
+        if (this.workTimeout) { options.workTimeout = this.workTimeout; }
         return Job.getWork(this.root, this.type, options, (err, jobs) => {
           this._getWorkOutstanding = false;
           if (err) {
             return this.errorCallback(new Error(`Received error from getWork(): ${err}`));
-          } else if ((jobs !== null) && jobs instanceof Array) {
+          } else if (jobs && jobs instanceof Array) {
             if (jobs.length > numJobsToGet) {
               this.errorCallback(new Error(`getWork() returned jobs (${jobs.length}) in excess of maxJobs (${numJobsToGet})`));
             }
             for (const j of Array.from(jobs)) {
               this._tasks.push(j);
-              if (this._stoppingGetWork === null) { _setImmediate(this._process.bind(this)); }
+              if (!this._stoppingGetWork) { _setImmediate(this._process.bind(this)); }
             }
-            if (this._stoppingGetWork !== null) { return this._stoppingGetWork(); }
+            if (this._stoppingGetWork) { return this._stoppingGetWork(); }
           } else {
             return this.errorCallback(new Error("Nonarray response from server from getWork()"));
           }
@@ -303,7 +303,7 @@ class JobQueue {
       this._workers[job._taskId] = job;
       const next = () => {
         delete this._workers[job._taskId];
-        if ((this._stoppingTasks !== null) && (this.running() === 0) && (this.length() === 0)) {
+        if (this._stoppingTasks && (this.running() === 0) && (this.length() === 0)) {
           return this._stoppingTasks();
         }
         _setImmediate(this._process.bind(this));
@@ -420,9 +420,9 @@ class JobQueue {
 
     [options, cb] = Array.from(optionsHelp(options, cb));
 
-    if (options.level === null) { options.level = "normal"; }
-    if (options.quiet === null) { options.quiet = false; }
-    if (cb === null) {
+    if (!options.level) { options.level = "normal"; }
+    if (!options.quiet) { options.quiet = false; }
+    if (!cb) {
       if (!options.quiet) { console.warn("using default shutdown callback!"); }
       cb = () => {
         return console.warn("Shutdown complete");
@@ -445,7 +445,7 @@ class JobQueue {
 
 // ##################################################################
 
-export class Job {
+export default class Job {
   static initClass() {
     // This is the JS max int value = 2^53
     this.forever = 9007199254740992;
@@ -544,7 +544,7 @@ export class Job {
   static _setDDPApply(apply, collectionName) {
     if (typeof apply === "function") {
       if (typeof collectionName === "string") {
-        if (this._ddp_apply === null) {
+        if (!this._ddp_apply) {
           this._ddp_apply = {};
         }
 
@@ -578,19 +578,19 @@ export class Job {
     return (() => {
       const result = [];
       for (const collName of Array.from(collectionNames)) {
-        if ((ddp === null) || (ddp.close === null) || (ddp.subscribe === null)) {
+        if (!ddp || !ddp.close || !ddp.subscribe) {
           // Not the DDP npm package
-          if ((ddp === null) && ((typeof Meteor !== "undefined" && Meteor !== null ? Meteor.apply : undefined) !== null)) {
+          if (!ddp && (typeof Meteor !== "undefined" && Meteor !== null ? Meteor.apply : undefined)) {
             // Meteor local server/client
             result.push(this._setDDPApply(Meteor.apply, collName));
           } else {
             // No other possibilities...
             throw new Error("Bad ddp object in Job.setDDP()");
           }
-        } else if (ddp.observe === null) {  // This is a Meteor DDP connection object
+        } else if (!ddp.observe) {  // This is a Meteor DDP connection object
           result.push(this._setDDPApply(ddp.apply.bind(ddp), collName));
         } else { // This is the npm DDP package
-          if (Fiber === null) {
+          if (!Fiber) {
             result.push(this._setDDPApply(ddp.call.bind(ddp), collName));
           } else {
             // If Fibers in use under pure node.js,
@@ -598,7 +598,7 @@ export class Job {
             result.push(this._setDDPApply((name, params, cb) => {
               const fib = Fiber.current;
               ddp.call(name, params, (err, res) => {
-                if ((cb !== null) && (typeof cb === "function")) {
+                if (typeof cb === "function") {
                   return cb(err, res);
                 }
 
@@ -608,7 +608,7 @@ export class Job {
 
                 return fib.run(res);
               });
-              if ((cb !== null) && (typeof cb === "function")) {
+              if (typeof cb === "function") {
                 return;
               }
 
@@ -635,7 +635,7 @@ export class Job {
       type = [type];
     }
 
-    if (options.workTimeout !== null) {
+    if (options.workTimeout !== null || options.workTimeout !== undefined) {
       if (!isInteger(options.workTimeout) || !(options.workTimeout > 0)) {
         throw new Error("getWork: workTimeout must be a positive integer");
       }
@@ -643,7 +643,7 @@ export class Job {
 
     return methodCall(root, "getWork", [type, options], cb, res => {
       const jobs = (Array.from(res).map((doc) => new Job(root, doc))) || [];
-      if (options.maxJobs !== null) {
+      if (options.maxJobs) {
         return jobs;
       }
 
@@ -659,7 +659,7 @@ export class Job {
     let cb = rest[adjustedLength - 1];
 
     [options, cb] = Array.from(optionsHelp(options, cb));
-    if (options.getLog === null) { options.getLog = false; }
+    if (!options.getLog) { options.getLog = false; }
     return methodCall(root, "getJob", [id, options], cb, doc => {
       if (doc) {
         return new Job(root, doc);
@@ -676,7 +676,7 @@ export class Job {
     let cb = rest[adjustedLength - 1];
 
     [options, cb] = Array.from(optionsHelp(options, cb));
-    if (options.getLog === null) { options.getLog = false; }
+    if (!options.getLog) { options.getLog = false; }
     let retVal = [];
     const chunksOfIds = splitLongArray(ids, 32);
     const myCb = reduceCallbacks(cb, chunksOfIds.length, concatReduce, []);
@@ -734,7 +734,7 @@ export class Job {
     let cb = rest[adjustedLength - 1];
 
     [options, cb] = Array.from(optionsHelp(options, cb));
-    if (options.force === null) { options.force = false; }
+    if (!options.force) { options.force = false; }
     let retVal = false;
     let chunksOfIds = splitLongArray(ids || [], 256);
     if (!(chunksOfIds.length > 0)) { chunksOfIds = [[]]; }
@@ -752,7 +752,7 @@ export class Job {
     let cb = rest[adjustedLength - 1];
 
     [options, cb] = Array.from(optionsHelp(options, cb));
-    if (options.antecedents === null) { options.antecedents = true; }
+    if (!options.antecedents) { options.antecedents = true; }
     let retVal = false;
     const chunksOfIds = splitLongArray(ids, 256);
     const myCb = reduceCallbacks(cb, chunksOfIds.length);
@@ -769,8 +769,8 @@ export class Job {
     let cb = rest[adjustedLength - 1];
 
     [options, cb] = Array.from(optionsHelp(options, cb));
-    if (options.retries === null) { options.retries = 1; }
-    if (options.dependents === null) { options.dependents = true; }
+    if (typeof options.retries !== "number") { options.retries = 1; }
+    if (!options.dependents) { options.dependents = true; }
     let retVal = false;
     const chunksOfIds = splitLongArray(ids, 256);
     const myCb = reduceCallbacks(cb, chunksOfIds.length);
@@ -815,7 +815,7 @@ export class Job {
     let cb = rest[adjustedLength - 1];
 
     [options, cb] = Array.from(optionsHelp(options, cb));
-    if (options.timeout === null) { options.timeout = 60 * 1000; }
+    if (typeof options.timeout !== "number") { options.timeout = 60 * 1000; }
     return methodCall(root, "stopJobs", [options], cb);
   }
 
@@ -836,7 +836,7 @@ export class Job {
     let cb = rest[adjustedLength - 1];
 
     [options, cb] = Array.from(optionsHelp(options, cb));
-    if (options.timeout === null) { options.timeout = 60 * 1000; }
+    if (typeof options.timeout !== "number") { options.timeout = 60 * 1000; }
     return methodCall(root, "shutdownJobServer", [options], cb);
   }
 
@@ -853,12 +853,12 @@ export class Job {
     this._root = rootVal;
 
     // Handle root as object with obj.root attribute
-    if (((this.root !== null ? this.root.root : undefined) !== null) && (typeof this.root.root === "string")) {
+    if (this.root && typeof this.root.root === "string") {
       this.root = this._root.root;
     }
 
     // Handle (root, doc) signature
-    if ((data === null) && ((type !== null ? type.data : undefined) !== null) && ((type !== null ? type.type : undefined) !== null)) {
+    if (!data && (type && type.data && type.type)) {
       if (type instanceof Job) {
         return type;
       }
@@ -874,8 +874,9 @@ export class Job {
            (typeof data !== "object") ||
            (typeof type !== "string") ||
            (typeof this.root !== "string")) {
+      // eslint-disable-next-line max-len
       throw new Error(`new Job: bad parameter(s), ${this.root} (${typeof this.root}), ${type} (${typeof type}), ${data} (${typeof data}), ${doc} (${typeof doc})`);
-    } else if ((doc.type !== null) && (doc.data !== null)) { // This case is used to create local Job objects from DDP calls
+    } else if (doc.type && doc.data) { // This case is used to create local Job objects from DDP calls
       this._doc = doc;
     } else {  // This is the normal "create a new object" case
       const time = new Date();
@@ -920,7 +921,7 @@ export class Job {
       if (jobs instanceof Array) {
         ({ depends } = this._doc);
         for (const j of Array.from(jobs)) {
-          if (!(j instanceof Job) || (j._doc._id === null)) {
+          if (!(j instanceof Job) || !j._doc._id) {
             throw new Error("Each provided object must be a saved Job instance (with an _id)");
           }
           depends.push(j._doc._id);
@@ -942,7 +943,7 @@ export class Job {
 
     if (typeof level === "string") {
       priority = Job.jobPriorities[level];
-      if (priority === null) {
+      if (priority === null || priority === undefined) {
         throw new Error("Invalid string priority level provided");
       }
     } else if (isInteger(level)) {
@@ -974,21 +975,21 @@ export class Job {
     } else {
       options.retries = Job.forever;
     }
-    if (options.until !== null) {
+    if (options.until !== null && options.until !== undefined) {
       if (!(options.until instanceof Date)) {
         throw new Error("bad option: until must be a Date object");
       }
     } else {
       options.until = Job.foreverDate;
     }
-    if (options.wait !== null) {
+    if (options.wait !== null && options.wait !== undefined) {
       if (!isInteger(options.wait) || !(options.wait >= 0)) {
         throw new Error("bad option: wait must be an integer >= 0");
       }
     } else {
       options.wait = 5 * 60 * 1000;
     }
-    if (options.backoff !== null) {
+    if (options.backoff !== null && options.backoff !== undefined) {
       if (!Array.from(Job.jobRetryBackoffMethods).includes(options.backoff)) {
         throw new Error("bad option: invalid retry backoff method");
       }
@@ -999,7 +1000,7 @@ export class Job {
     this._doc.retries = options.retries;
     this._doc.repeatRetries = options.retries;
     this._doc.retryWait = options.wait;
-    if (this._doc.retried === null) { this._doc.retried = 0; }
+    if (this._doc.retried === null || this._doc.retried === undefined) { this._doc.retried = 0; }
     this._doc.retryBackoff = options.backoff;
     this._doc.retryUntil = options.until;
     return this;
@@ -1017,35 +1018,35 @@ export class Job {
     if (typeof options !== "object") {
       throw new Error("bad parameter: accepts either an integer >= 0 or an options object");
     }
-    if ((options.wait !== null) && (options.schedule !== null)) {
+    if (typeof options.wait !== "undefined" && typeof options.schedule !== "undefined") {
       throw new Error("bad options: wait and schedule options are mutually exclusive");
     }
-    if (options.repeats !== null) {
+    if (typeof options.repeats !== "undefined") {
       if (!isInteger(options.repeats) || !(options.repeats >= 0)) {
         throw new Error("bad option: repeats must be an integer >= 0");
       }
     } else {
       options.repeats = Job.forever;
     }
-    if (options.until !== null) {
+    if (typeof options.until !== "undefined") {
       if (!(options.until instanceof Date)) {
         throw new Error("bad option: until must be a Date object");
       }
     } else {
       options.until = Job.foreverDate;
     }
-    if (options.wait !== null) {
+    if (typeof options.wait !== "undefined") {
       if (!isInteger(options.wait) || !(options.wait >= 0)) {
         throw new Error("bad option: wait must be an integer >= 0");
       }
     } else {
       options.wait = 5 * 60 * 1000;
     }
-    if (options.schedule !== null) {
+    if (typeof options.schedule !== "undefined") {
       if (typeof options.schedule !== "object") {
         throw new Error("bad option, schedule option must be an object");
       }
-      if (((options.schedule !== null ? options.schedule.schedules : undefined) === null) || !(options.schedule.schedules instanceof Array)) {
+      if (((typeof options.schedule !== "undefined" ? options.schedule.schedules : undefined) === null) || !(options.schedule.schedules instanceof Array)) {
         throw new Error("bad option, schedule object requires a schedules attribute of type Array.");
       }
       if ((options.schedule.exceptions !== null) && !(options.schedule.exceptions instanceof Array)) {
@@ -1059,7 +1060,7 @@ export class Job {
 
     this._doc.repeats = options.repeats;
     this._doc.repeatWait = options.wait;
-    if (this._doc.repeated === null) { this._doc.repeated = 0; }
+    if (this._doc.repeated === null || this._doc.repeated === undefined) { this._doc.repeated = 0; }
     this._doc.repeatUntil = options.until;
     return this;
   }
@@ -1093,24 +1094,24 @@ export class Job {
 
     [options, cb] = Array.from(optionsHelp(options, cb));
 
-    if (options.level === null) { options.level = "info"; }
+    if (!options.level) { options.level = "info"; }
     if (typeof message !== "string") {
       throw new Error("Log message must be a string");
     }
     if ((typeof options.level !== "string") || !Array.from(Job.jobLogLevels).includes(options.level)) {
       throw new Error("Log level options must be one of Job.jobLogLevels");
     }
-    if (options.echo !== null) {
+    if (typeof options.echo !== "undefined") {
       if (options.echo && (Job.jobLogLevels.indexOf(options.level) >= Job.jobLogLevels.indexOf(options.echo))) {
         this._echo(`LOG: ${options.level}, ${this._doc._id} ${this._doc.runId}: ${message}`, options.level);
       }
       delete options.echo;
     }
-    if (this._doc._id !== null) {
+    if (typeof this._doc._id !== "undefined") {
       return methodCall(this._root, "jobLog", [this._doc._id, this._doc.runId, message, options], cb);
     }
     // Log can be called on an unsaved job
-    if (this._doc.log === null) { this._doc.log = []; }
+    if (this._doc.log === null || this._doc.log === undefined) { this._doc.log = []; }
     this._doc.log.push({ time: new Date(), runId: null, level: options.level, message });
     if ((cb !== null) && (typeof cb === "function")) {
       _setImmediate(cb, null, true);   // DO NOT release Zalgo
@@ -1141,16 +1142,16 @@ export class Job {
         delete options.echo;
         this._echo(`PROGRESS: ${this._doc._id} ${this._doc.runId}: ${progress.completed} out of ${progress.total} (${progress.percent}%)`);
       }
-      if ((this._doc._id !== null) && (this._doc.runId !== null)) {
+      if ((typeof this._doc._id !== "undefined") && (typeof this._doc.runId !== "undefined")) {
         return methodCall(this._root, "jobProgress", [this._doc._id, this._doc.runId, completed, total, options], cb, res => {
           if (res) {
             this._doc.progress = progress;
           }
           return res;
         });
-      } else if (this._doc._id === null) {
+      } else if (this._doc._id === null || this._doc._id === undefined) {
         this._doc.progress = progress;
-        if ((cb !== null) && (typeof cb === "function")) {
+        if (typeof cb === "function") {
           _setImmediate(cb, null, true);   // DO NOT release Zalgo
         }
         return this;
@@ -1186,10 +1187,10 @@ export class Job {
 
     [options, cb] = Array.from(optionsHelp(options, cb));
 
-    if (options.getLog === null) { options.getLog = false; }
-    if (this._doc._id !== null) {
+    if (options.getLog === null || options.getLog === undefined) { options.getLog = false; }
+    if (this._doc._id !== null && this._doc._id !== undefined) {
       return methodCall(this._root, "getJob", [this._doc._id, options], cb, doc => {
-        if (doc !== null) {
+        if (doc) {
           this._doc = doc;
           return this;
         }
@@ -1211,10 +1212,10 @@ export class Job {
       result = {};
     }
     [options, cb] = Array.from(optionsHelp(options, cb));
-    if ((result === null) || (typeof result !== "object")) {
+    if ((result === null || result === undefined) || (typeof result !== "object")) {
       result = { value: result };
     }
-    if ((this._doc._id !== null) && (this._doc.runId !== null)) {
+    if (this._doc._id && this._doc.runId) {
       return methodCall(this._root, "jobDone", [this._doc._id, this._doc.runId, result, options], cb);
     }
 
@@ -1234,11 +1235,11 @@ export class Job {
       result = "No error information provided";
     }
     [options, cb] = Array.from(optionsHelp(options, cb));
-    if ((result === null) || (typeof result !== "object")) {
+    if ((result === null || result === undefined) || (typeof result !== "object")) {
       result = { value: result };
     }
-    if (options.fatal === null) { options.fatal = false; }
-    if ((this._doc._id !== null) && (this._doc.runId !== null)) {
+    if (options.fatal === null || options.fatal === undefined) { options.fatal = false; }
+    if (this._doc._id && this._doc.runId) {
       return methodCall(this._root, "jobFail", [this._doc._id, this._doc.runId, result, options], cb);
     }
 
@@ -1253,12 +1254,12 @@ export class Job {
 
     [options, cb] = Array.from(optionsHelp(options, cb));
 
-    if (this._doc._id !== null) {
+    if (this._doc._id) {
       return methodCall(this._root, "jobPause", [this._doc._id, options], cb);
     }
 
     this._doc.status = "paused";
-    if ((cb !== null) && (typeof cb === "function")) {
+    if (typeof cb === "function") {
       _setImmediate(cb, null, true);  // DO NOT release Zalgo
     }
     return this;
@@ -1273,11 +1274,11 @@ export class Job {
 
     [options, cb] = Array.from(optionsHelp(options, cb));
 
-    if (this._doc._id !== null) {
+    if (this._doc._id) {
       return methodCall(this._root, "jobResume", [this._doc._id, options], cb);
     }
     this._doc.status = "waiting";
-    if ((cb !== null) && (typeof cb === "function")) {
+    if (typeof cb === "function") {
       _setImmediate(cb, null, true);  // DO NOT release Zalgo
     }
     return this;
@@ -1291,8 +1292,8 @@ export class Job {
 
     [options, cb] = Array.from(optionsHelp(options, cb));
 
-    if (options.force === null) { options.force = false; }
-    if (this._doc._id !== null) {
+    if (options.force === null || options.force === undefined) { options.force = false; }
+    if (this._doc._id) {
       return methodCall(this._root, "jobReady", [this._doc._id, options], cb);
     }
 
@@ -1307,8 +1308,8 @@ export class Job {
 
     [options, cb] = Array.from(optionsHelp(options, cb));
 
-    if (options.antecedents === null) { options.antecedents = true; }
-    if (this._doc._id !== null) {
+    if (options.antecedents === null || options.antecedents === undefined) { options.antecedents = true; }
+    if (this._doc._id) {
       return methodCall(this._root, "jobCancel", [this._doc._id, options], cb);
     }
 
@@ -1323,9 +1324,9 @@ export class Job {
 
     [options, cb] = Array.from(optionsHelp(options, cb));
 
-    if (options.retries === null) { options.retries = 1; }
-    if (options.dependents === null) { options.dependents = true; }
-    if (this._doc._id !== null) {
+    if (options.retries === null || options.retries === undefined) { options.retries = 1; }
+    if (options.dependents === null || options.dependents === undefined) { options.dependents = true; }
+    if (this._doc._id) {
       return methodCall(this._root, "jobRestart", [this._doc._id, options], cb);
     }
 
@@ -1340,9 +1341,9 @@ export class Job {
 
     [options, cb] = Array.from(optionsHelp(options, cb));
 
-    if (options.repeats === null) { options.repeats = 0; }
-    if (options.wait === null) { options.wait = this._doc.repeatWait; }
-    if (this._doc._id !== null) {
+    if (options.repeats === null || options.repeats === undefined) { options.repeats = 0; }
+    if (options.wait === null || options.wait === undefined) { options.wait = this._doc.repeatWait; }
+    if (this._doc._id) {
       return methodCall(this._root, "jobRerun", [this._doc._id, options], cb);
     }
 
@@ -1357,7 +1358,7 @@ export class Job {
 
     [options, cb] = Array.from(optionsHelp(options, cb));
 
-    if (this._doc._id !== null) {
+    if (this._doc._id) {
       return methodCall(this._root, "jobRemove", [this._doc._id, options], cb);
     }
 

@@ -18,8 +18,13 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Mongo } from "meteor/mongo";
-import later from "later";
-import { Job } from "./job";
+// import later from "later";
+import Job from "./job";
+
+let later
+if (Meteor.isServer) {
+  later = require("later");
+}
 
 const _validNumGTEZero = v => Match.test(v, Number) && (v >= 0.0);
 
@@ -127,7 +132,14 @@ class JobCollectionBase extends Mongo.Collection {
   }
 
   constructor(root = "queue", options = {}) {
-    super();
+    let collectionName = root;
+
+    if (!options.noCollectionSuffix) {
+      collectionName += ".jobs";
+    }
+
+    // Call super"s constructor
+    super(collectionName, options);
 
     this.root = root;
 
@@ -136,6 +148,7 @@ class JobCollectionBase extends Mongo.Collection {
     }
 
     if (!(this instanceof Mongo.Collection)) {
+      // eslint-disable-next-line max-len
       throw new Meteor.Error("The global definition of Mongo.Collection has changed since the job-collection package was loaded. Please ensure that any packages that redefine Mongo.Collection are loaded before job-collection.");
     }
 
@@ -146,12 +159,6 @@ class JobCollectionBase extends Mongo.Collection {
     this.later = later;  // later object, for convenience
 
     if (!options.noCollectionSuffix) { options.noCollectionSuffix = false; }
-
-    let collectionName = this.root;
-
-    if (!options.noCollectionSuffix) {
-      collectionName += ".jobs";
-    }
 
     // Remove non-standard options before
     // calling Mongo.Collection constructor
@@ -178,14 +185,11 @@ class JobCollectionBase extends Mongo.Collection {
       resolved: (id, runId) => { return this._createLogEntry("Dependency resolved", null, "info", new Date(), { dependency: { id, runId } }); },
       failed: (runId, fatal, err) => {
         const { value } = err;
-        const msg = `Job Failed with${fatal ? " Fatal" : ""} Error${(value !== null) && (typeof value === "string") ? `: ${value}` : ""}.`;
+        const msg = `Job Failed with${fatal ? " Fatal" : ""} Error${(typeof value === "string") ? `: ${value}` : ""}.`;
         const level = fatal ? "danger" : "warning";
         return this._createLogEntry(msg, runId, level);
       }
     };
-
-    // Call super"s constructor
-    super(collectionName, options);
   }
 
   processJobs(...params) { return new Job.processJobs(this.root, ...Array.from(params)); }
@@ -219,10 +223,10 @@ class JobCollectionBase extends Mongo.Collection {
 
   _methodWrapper(method, func) {
     const toLog = this._toLog;
-    const unblockDDPMethods = this._unblockDDPMethods !== null ? this._unblockDDPMethods : false;
+    const unblockDDPMethods = this._unblockDDPMethods || false;
     // Return the wrapper function that the Meteor method will actually invoke
     return function (...params) {
-      const user = this.userId !== null ? this.userId : "[UNAUTHENTICATED]";
+      const user = this.userId || "[UNAUTHENTICATED]";
       toLog(user, method, `params: ${JSON.stringify(params)}`);
       if (unblockDDPMethods) { this.unblock(); }
       const retval = func(...Array.from(params || []));
@@ -234,16 +238,34 @@ class JobCollectionBase extends Mongo.Collection {
   _generateMethods() {
     const methodsOut = {};
     const methodPrefix = "_DDPMethod_";
+    console.log("0.", typeof this._DDPMethod_getJob);
+    console.log("0.1. ", Object.getOwnPropertyNames(this));
 
-    for (const methodName in this) {
-      if ({}.hasOwnProperty(this[methodName])) {
-        const methodFunc = this[methodName];
-        if (methodName.slice(0, methodPrefix.length) === methodPrefix) {
-          const baseMethodName = methodName.slice(methodPrefix.length);
-          methodsOut[`${this.root}_${baseMethodName}`] = this._methodWrapper(baseMethodName, methodFunc.bind(this));
-        }
-      }
+    const methodNames = [
+      "_DDPMethod_startJobServer",
+      "_DDPMethod_shutdownJobServer",
+      "_DDPMethod_getJob",
+      "_DDPMethod_getWork",
+      "_DDPMethod_jobRemove",
+      "_DDPMethod_jobPause",
+      "_DDPMethod_jobResume",
+      "_DDPMethod_jobReady",
+      "_DDPMethod_jobCancel",
+      "_DDPMethod_jobRestart",
+      "_DDPMethod_jobSave",
+      "_DDPMethod_jobProgress",
+      "_DDPMethod_jobLog",
+      "_DDPMethod_jobRerun",
+      "_DDPMethod_jobDone",
+      "_DDPMethod_jobFail"
+    ];
+
+    for (const methodName of methodNames) {
+      const methodFunc = this[methodName];
+      const baseMethodName = methodName.slice(methodPrefix.length);
+      methodsOut[`${this.root}_${baseMethodName}`] = this._methodWrapper(baseMethodName, methodFunc.bind(this));
     }
+
     return methodsOut;
   }
 
@@ -278,18 +300,14 @@ class JobCollectionBase extends Mongo.Collection {
           transform: null
         }
       ).forEach((d) => {
-        if (!Array.from(antsArray).includes(i)) {
-          return (() => {
-            const result = [];
-
-            for (let i of Array.from(d.depends)) {
-              result.push(antsArray.push(i));
-            }
-
-            return result;
-          })();
+        console.log("d.depends", d.depends);
+        for (const i in Array.from(d.depends)) {
+          if (!antsArray.includes(i)) {
+            antsArray.push(i);
+          }
         }
       });
+
       if (antsArray.length > 0) {
         dependsQuery.push({
           _id: {
@@ -298,6 +316,7 @@ class JobCollectionBase extends Mongo.Collection {
         });
       }
     }
+
     if (dependsQuery.length > 0) {
       this.find(
         {
@@ -334,7 +353,7 @@ class JobCollectionBase extends Mongo.Collection {
 
     doc.runId = null;
     doc.status = "waiting";
-    doc.repeatRetries = (doc.repeatRetries !== null) ? doc.repeatRetries : doc.retries + doc.retried;
+    doc.repeatRetries = doc.repeatRetries || (doc.retries + doc.retried);
     doc.retries = doc.repeatRetries;
     if (doc.retries > this.forever) { doc.retries = this.forever; }
     doc.retryUntil = repeatUntil;
@@ -569,8 +588,8 @@ class JobCollectionBase extends Mongo.Collection {
       }
     ).fetch();
 
-    if (docs !== null ? docs.length : undefined) {
-      if (this.scrub !== null) {
+    if (docs && docs.length) {
+      if (this.scrub) {
         docs = (Array.from(docs).map((d) => this.scrub(d)));
       }
       check(docs, [_validJobDoc()]);
@@ -635,7 +654,7 @@ class JobCollectionBase extends Mongo.Collection {
         }
       ).map(doc => doc._id);
 
-      if (!((ids !== null ? ids.length : undefined) > 0)) {
+      if (!(ids && ids.length > 0)) {
         break;  // Don"t keep looping when there"s no available work
       }
 
@@ -657,7 +676,7 @@ class JobCollectionBase extends Mongo.Collection {
         mods.$push = { log: logObj };
       }
 
-      if (options.workTimeout !== null) {
+      if (options.workTimeout) {
         mods.$set.workTimeout = options.workTimeout;
         mods.$set.expiresAfter = new Date(time.valueOf() + options.workTimeout);
       } else {
@@ -701,8 +720,8 @@ class JobCollectionBase extends Mongo.Collection {
           }
         ).fetch();
 
-        if ((foundDocs !== null ? foundDocs.length : undefined) > 0) {
-          if (this.scrub !== null) {
+        if (foundDocs && foundDocs.length > 0) {
+          if (this.scrub) {
             foundDocs = ((() => { // eslint-disable-line no-loop-func
               const result = [];
               for (d of Array.from(foundDocs)) {
@@ -847,7 +866,7 @@ class JobCollectionBase extends Mongo.Collection {
     return false;
   }
 
-  _DDPMethod_jobReady(ids, options) {
+  _DDPMethod_jobReady(ids, options = {}) {
     let l;
     check(ids, Match.OneOf(Match.Where(_validId), [ Match.Where(_validId) ]));
     check(options, Match.Optional({
@@ -941,7 +960,7 @@ class JobCollectionBase extends Mongo.Collection {
     let idArray = ids;
 
     if (_validId(ids)) {
-      idArray = [idArray];
+      idArray = [ids];
     }
     if (idArray.length === 0) { return false; }
     const time = new Date();
@@ -980,7 +999,7 @@ class JobCollectionBase extends Mongo.Collection {
       }
     );
     // Cancel the entire tree of dependents
-    const cancelIds = this._idsOfDeps(ids, options.antecedents, options.dependents, this.jobStatusCancellable);
+    const cancelIds = this._idsOfDeps(idArray, options.antecedents, options.dependents, this.jobStatusCancellable);
 
     let depsCancelled = false;
     if (cancelIds.length > 0) {
@@ -1014,7 +1033,7 @@ class JobCollectionBase extends Mongo.Collection {
     if (_validId(ids)) {
       idArray = [ids];
     }
-    if (ids.length === 0) { return false; }
+    if (idArray.length === 0) { return false; }
     const time = new Date();
 
     const query = {
@@ -1047,7 +1066,7 @@ class JobCollectionBase extends Mongo.Collection {
       mods.$push = { log: logObj };
     }
 
-    if (options.until !== null) {
+    if (options.until) {
       mods.$set.retryUntil = options.until;
     }
 
@@ -1093,10 +1112,10 @@ class JobCollectionBase extends Mongo.Collection {
 
     // If doc.repeatWait is a later.js object, then don"t run before
     // the first valid scheduled time that occurs after doc.after
-    if ((this.later !== null) && (typeof doc.repeatWait !== "number")) {
+    if (this.later && typeof doc.repeatWait !== "number") {
       // Using a workaround to find next time after doc.after.
       // See: https://github.com/vsivsi/meteor-job-collection/issues/217
-      const schedule = this.later !== null ? this.later.schedule(doc.repeatWait) : undefined;
+      const schedule = this.later && this.later.schedule(doc.repeatWait) || undefined;
       const next = schedule.next(2, schedule.prev(1, doc.after))[1];
 
       if (!schedule || !next) {
@@ -1123,7 +1142,7 @@ class JobCollectionBase extends Mongo.Collection {
           status: "waiting",
           data: doc.data,
           retries: doc.retries,
-          repeatRetries: (doc.repeatRetries !== null) ? doc.repeatRetries : doc.retries + doc.retried,
+          repeatRetries: doc.repeatRetries ? doc.repeatRetries : doc.retries + doc.retried,
           retryUntil: doc.retryUntil,
           retryWait: doc.retryWait,
           retryBackoff: doc.retryBackoff,
@@ -1218,7 +1237,7 @@ class JobCollectionBase extends Mongo.Collection {
       }
     };
 
-    if ((job !== null ? job.workTimeout : undefined) !== null) {
+    if (job && job.workTimeout) {
       mods.$set.expiresAfter = new Date(time.valueOf() + job.workTimeout);
     }
 
@@ -1252,11 +1271,11 @@ class JobCollectionBase extends Mongo.Collection {
     const logObj = {
       time,
       runId,
-      level: options.level !== null ? options.level : "info",
+      level: options.level || "info",
       message
     };
 
-    if (options.data !== null) {
+    if (options.data) {
       logObj.data = options.data;
     }
 
@@ -1271,7 +1290,7 @@ class JobCollectionBase extends Mongo.Collection {
       }
     };
 
-    if (((job !== null ? job.workTimeout : undefined) !== null) && (job.status === "running")) {
+    if (job && job.workTimeout && job.status === "running") {
       mods.$set.expiresAfter = new Date(time.valueOf() + job.workTimeout);
     }
 
@@ -1316,7 +1335,7 @@ class JobCollectionBase extends Mongo.Collection {
       }
     );
 
-    if (doc !== null) {
+    if (doc) {
       if (!options.repeats) { options.repeats = 0; }
       if (options.repeats > this.forever) { options.repeats = this.forever; }
       if (!options.until) { options.until = doc.repeatUntil; }
@@ -1400,7 +1419,7 @@ class JobCollectionBase extends Mongo.Collection {
         } else {
           // This code prevents a job that just ran and finished
           // instantly from being immediately rerun on the same occurance
-          const next = this.later !== null ? this.later.schedule(doc.repeatWait).next(2) : undefined;
+          const next = (this.later && this.later.schedule(doc.repeatWait).next(2)) || undefined;
           if (next && (next.length > 0)) {
             let d = new Date(next[0]);
             if (((d - time) > 500) || (next.length > 1)) {
@@ -1441,7 +1460,7 @@ class JobCollectionBase extends Mongo.Collection {
           }
         };
 
-        if (options.delayDeps !== null) {
+        if (options.delayDeps) {
           const after = new Date(time.valueOf() + options.delayDeps);
           mods.$max = { after };
         }
@@ -1471,7 +1490,7 @@ class JobCollectionBase extends Mongo.Collection {
         this._DDPMethod_jobReady(ids);
       }
 
-      if (options.repeatId && (jobId !== null)) {
+      if (options.repeatId && jobId) {
         return jobId;
       }
 

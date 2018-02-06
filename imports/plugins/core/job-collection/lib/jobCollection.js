@@ -3,10 +3,10 @@
   Original version: https://github.com/vsivsi/meteor-job-collection/
   License: https://github.com/vsivsi/meteor-job-collection/blob/master/LICENSE
  */
-import { eventEmitter } from "events";
+import { EventEmitter } from "events";
 import { Meteor } from "meteor/meteor";
 import JobCollectionBase from "./jobCollectionBase";
-import { Job } from "./job";
+import Job from "./job";
 
 function userHelper(user, connection) {
   let ret = user !== null ? user : "[UNAUTHENTICATED]";
@@ -27,10 +27,11 @@ class JobCollection extends JobCollectionBase {
     this._emit = this._emit.bind(this);
 
     if (!(this instanceof JobCollection)) {
+      console.log("ARE WE STOPPING HERE FOR SOEME REASON??");
       return new JobCollection(root, options);
     }
 
-    this.events = new eventEmitter();
+    this.events = new EventEmitter();
 
     this._errorListener = this.events.on("error", this._onError);
 
@@ -49,13 +50,15 @@ class JobCollection extends JobCollectionBase {
     this.stopped = true;
 
     // No client mutators allowed
-    JobCollectionBase.__super__.deny.bind(this)({
-      update: () => true,
-      insert: () => true,
-      remove: () => true
-    });
-
-    this.promote();
+    if (Meteor.isClient) {
+      super.deny.bind(this)({
+        update: () => true,
+        insert: () => true,
+        remove: () => true
+      });
+    } else {
+      this.promote();
+    }
 
     this.logStream = null;
 
@@ -70,7 +73,7 @@ class JobCollection extends JobCollectionBase {
 
     // If a connection option is given, then this JobCollection is actually hosted
     // remotely, so don"t establish local and remotely callable server methods in that case
-    if (options.connection === null) {
+    if (!options.connection) {
       // Default indexes, only when not remotely connected!
       this._ensureIndex({
         type: 1,
@@ -87,18 +90,19 @@ class JobCollection extends JobCollectionBase {
 
       const localMethods = this._generateMethods();
 
-      if (this._localServerMethods === null) {
+      if (!this._localServerMethods) {
         this._localServerMethods = {};
       }
 
       for (const methodName in localMethods) {
-        if ({}.hasOwnProperty(localMethods[methodName])) {
-          const methodFunction = localMethods[methodName]; this._localServerMethods[methodName] = methodFunction;
+        if ({}.hasOwnProperty.call(localMethods, methodName)) {
+          const methodFunction = localMethods[methodName];
+          this._localServerMethods[methodName] = methodFunction;
         }
       }
 
       this._ddpApply = (name, params, cb) => {
-        if (cb !== null) {
+        if (cb) {
           return Meteor.setTimeout(() => {
             let err = null;
             let res = null;
@@ -132,7 +136,7 @@ class JobCollection extends JobCollectionBase {
   }
 
   _toLog(userId, method, message) {
-    return (this.logStream !== null ? this.logStream.write(`${new Date()}, ${userId}, ${method}, ${message}\n`) : undefined);
+    return (this.logStream && this.logStream.write(`${new Date()}, ${userId}, ${method}, ${message}\n`)) || undefined;
   }
 
   _emit(method, connection, userId, err, ret, ...params) {
@@ -219,10 +223,10 @@ class JobCollection extends JobCollectionBase {
       throw new Error("logStream may only be set once per job-collection startup/shutdown cycle");
     }
     this.logStream = writeStream;
-    if (!(this.logStream === null) &&
-           ((this.logStream.write === null) ||
+    if (!(this.logStream === null || this.logStream === undefined) &&
+           ((this.logStream.write === null || this.logStream.write === undefined) ||
            (typeof this.logStream.write !== "function") ||
-           (this.logStream.end === null) ||
+           (this.logStream.end === null || this.logStream.end === undefined) ||
            (typeof this.logStream.end !== "function"))) {
       throw new Error("logStream must be a valid writable node.js Stream");
     }
