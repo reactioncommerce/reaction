@@ -6,11 +6,11 @@ reaction:
   links:
     - mongo
   ports:
-    - "80:3000"
+    - "3000:3000"
   environment:
     ROOT_URL: "http://localhost"
     MONGO_URL: "mongodb://mongo:27017/reaction"
 
 mongo:
-  image: mongo:latest
-  command: mongod --storageEngine=wiredTiger --bind_ip_all
+  image: mongo:3.6
+  command: mongod --bind_ip_all
