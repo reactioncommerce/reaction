@@ -2,12 +2,18 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts, Groups } from "/lib/collections";
+import { lifecycle } from "recompose";
 import { composeWithTracker } from "./composer";
 
-let { Reaction } = require("/client/api");
+let Logger;
+let Reaction;
 
-if (!Meteor.isClient) {
-  Reaction = require("/server/api");
+if (Meteor.isClient) {
+  Logger = require("/client/api").Logger;
+  Reaction = require("/client/api").Reaction;
+} else {
+  Logger = require("/server/api").Logger;
+  Reaction = require("/server/api").Reaction;
 }
 
 
@@ -22,6 +28,57 @@ if (!Meteor.isClient) {
 export function withCurrentUser(component) {
   return composeWithTracker((props, onData) => {
     onData(null, { currentUser: Meteor.user() });
+  })(component);
+}
+
+
+/**
+ * @name withMoment
+ * @method
+ * @summary A wrapper to reactively inject the moment package into a component
+ * @param {Function|React.Component} component - the component to wrap
+ * @return {Function} the new wrapped component with a "moment" prop
+ * @memberof Components
+ */
+export function withMoment(component) {
+  return lifecycle({
+    componentDidMount() {
+      import("moment")
+        .then(moment => {
+          moment.locale(Reaction.Locale.get().language);
+          this.setState({
+            moment: moment.default
+          });
+        })
+        .catch((error) => {
+          Logger.debug(error, "moment.js async import error");
+        });
+    }
+  })(component);
+}
+
+
+/**
+ * @name withMomentTimezone
+ * @method
+ * @summary A wrapper to reactively inject the moment package into a component
+ * @param {Function|React.Component} component - the component to wrap
+ * @return {Function} the new wrapped component with a "moment" prop
+ * @memberof Components
+ */
+export function withMomentTimezone(component) {
+  return lifecycle({
+    componentDidMount() {
+      import("moment-timezone")
+        .then(moment => {
+          this.setState({
+            momentTimezone: moment.tz
+          });
+        })
+        .catch((error) => {
+          Logger.debug(error, "moment.js async import error");
+        });
+    }
   })(component);
 }
 
