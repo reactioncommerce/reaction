@@ -9,10 +9,10 @@ import { Media } from "/lib/collections";
  * @returns default product image
  */
 Template.cartDrawerItems.helpers({
-  product: function () {
+  product() {
     return this;
   },
-  media: function () {
+  media() {
     const product = this;
     let defaultImage = Media.findOne({
       "metadata.variantId": this.variants._id
@@ -21,7 +21,7 @@ Template.cartDrawerItems.helpers({
     if (defaultImage) {
       return defaultImage;
     } else if (product) {
-      _.some(product.variants, function (variant) {
+      _.some(product.variants, (variant) => {
         if (variant) {
           defaultImage = Media.findOne({
             "metadata.variantId": variant._id

@@ -7,10 +7,10 @@ import { PaypalPackageConfig } from "../../../lib/collections/schemas";
 import "./express.html";
 
 Template.paypalExpressSettings.helpers({
-  PaypalPackageConfig: function () {
+  PaypalPackageConfig() {
     return PaypalPackageConfig;
   },
-  packageData: function () {
+  packageData() {
     return Packages.findOne({
       name: "reaction-paypal"
     });
@@ -19,10 +19,10 @@ Template.paypalExpressSettings.helpers({
 
 AutoForm.hooks({
   "paypal-update-form-express": {
-    onSuccess: function () {
+    onSuccess() {
       return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
-    onError: function (operation, error) {
+    onError(operation, error) {
       return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
     }
   }

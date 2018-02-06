@@ -92,10 +92,11 @@ export default {
 
     // Listen for active shop change
     return Tracker.autorun(() => {
-      let domain;
       let shop;
       if (this.Subscriptions.MerchantShops.ready()) {
-        domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
+        // get domain (e.g localhost) from absolute url (e.g http://localhost:3000/)
+        const [ , , host ] = Meteor.absoluteUrl().split("/");
+        const [ domain ] = host.split(":");
 
         // if we don't have an active shopId, try to retreive it from the userPreferences object
         // and set the shop from the storedShopId
@@ -279,8 +280,7 @@ export default {
    * @return {Boolean} Boolean - true if has dashboard access for any shop
    */
   hasDashboardAccessForAnyShop(options = { user: Meteor.user(), permissions: ["owner", "admin", "dashboard"] }) {
-    const user = options.user;
-    const permissions = options.permissions;
+    const { user, permissions } = options;
 
     if (!user || !user.roles) {
       return false;
@@ -372,7 +372,7 @@ export default {
     return this.hasDashboardAccessForMultipleShops();
   },
 
-  getSellerShopId: function (userId = Meteor.userId(), noFallback = false) {
+  getSellerShopId(userId = Meteor.userId(), noFallback = false) {
     if (userId) {
       const group = Roles.getGroupsForUser(userId, "admin")[0];
       if (group) {
@@ -630,8 +630,7 @@ export default {
 
       Session.set("admin/actionView", viewStack);
     } else {
-      const registryItem = this.getRegistryForCurrentRoute(
-        "settings");
+      const registryItem = this.getRegistryForCurrentRoute("settings");
 
       if (registryItem) {
         this.setActionView(registryItem);
@@ -652,8 +651,7 @@ export default {
       actionViewStack.push(viewData);
       Session.set("admin/actionView", actionViewStack);
     } else {
-      const registryItem = this.getRegistryForCurrentRoute(
-        "settings");
+      const registryItem = this.getRegistryForCurrentRoute("settings");
 
       if (registryItem) {
         this.pushActionView(registryItem);
@@ -777,7 +775,7 @@ export default {
     this.Router.watchPathChange();
     const currentRouteName = this.Router.getRouteName();
     const currentRoute = this.Router.current();
-    const template = currentRoute.route.options.template;
+    const { template } = currentRoute.route.options;
     // find registry entries for routeName
     const reactionApp = Packages.findOne({
       "registry.name": currentRouteName,
@@ -794,7 +792,7 @@ export default {
 
     // valid application
     if (reactionApp) {
-      const settingsData = _.find(reactionApp.registry, function (item) {
+      const settingsData = _.find(reactionApp.registry, (item) => {
         return item.provides && item.provides.includes(provides) && item.template === template;
       });
       return settingsData;
@@ -840,7 +838,7 @@ function createCountryCollection(countries) {
       });
     }
   }
-  countryOptions.sort(function (a, b) {
+  countryOptions.sort((a, b) => {
     if (a.label < b.label) {
       return -1;
     }

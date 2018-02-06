@@ -50,7 +50,7 @@ Template.customDiscountRates.helpers({
         $(".discount-rates-grid-row").removeClass("active");
         return state.set({
           isEditing: !isEditing,
-          editingId: editingId
+          editingId
         });
       }
     };
@@ -87,7 +87,7 @@ Template.customDiscountRates.helpers({
 
     // add i18n handling to headers
     const customColumnMetadata = [];
-    filteredFields.forEach(function (field) {
+    filteredFields.forEach((field) => {
       const columnMeta = {
         accessor: field,
         Header: i18next.t(`admin.discountGrid.${field}`)
@@ -103,9 +103,9 @@ Template.customDiscountRates.helpers({
       matchingResultsCount: "discounts-count",
       showFilter: true,
       rowMetadata: customRowMetaData,
-      filteredFields: filteredFields,
+      filteredFields,
       columns: filteredFields,
-      noDataMessage: noDataMessage,
+      noDataMessage,
       onRowClick: editRow,
       columnMetadata: customColumnMetadata,
       externalLoadingComponent: Loading
@@ -132,21 +132,21 @@ Template.customDiscountRates.helpers({
 // on submit lets clear the form state
 //
 Template.customDiscountRates.events({
-  "submit #discount-rates-update-form": function () {
+  "submit #discount-rates-update-form"() {
     const instance = Template.instance();
     instance.state.set({
       isEditing: false,
       editingId: null
     });
   },
-  "submit #discount-rates-insert-form": function () {
+  "submit #discount-rates-insert-form"() {
     const instance = Template.instance();
     instance.state.set({
       isEditing: true,
       editingId: null
     });
   },
-  "click .cancel, .discount-rates-grid-row.active": function () {
+  "click .cancel, .discount-rates-grid-row.active"() {
     const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
@@ -156,7 +156,7 @@ Template.customDiscountRates.events({
     // ugly hack
     $(".discount-rates-grid-row").removeClass("active");
   },
-  "click .delete": function () {
+  "click .delete"() {
     const confirmTitle = i18next.t("admin.settings.confirmRateDelete");
     const confirmButtonText = i18next.t("app.delete");
     const instance = Template.instance();
@@ -166,7 +166,7 @@ Template.customDiscountRates.events({
       title: confirmTitle,
       type: "warning",
       showCancelButton: true,
-      confirmButtonText: confirmButtonText
+      confirmButtonText
     }, (isConfirm) => {
       if (isConfirm) {
         if (id) {
@@ -179,7 +179,7 @@ Template.customDiscountRates.events({
       }
     });
   },
-  "click .discount-rates-grid-row": function (event) {
+  "click .discount-rates-grid-row"(event) {
     // toggle all rows off, then add our active row
     $(".discount-rates-grid-row").removeClass("active");
     Template.instance().$(event.currentTarget).addClass("active");
@@ -189,28 +189,22 @@ Template.customDiscountRates.events({
 
 AutoForm.hooks({
   "discount-rates-update-form": {
-    onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"),
-        "success");
+    onSuccess() {
+      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"), "success");
     },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error"
-      );
+    onError(operation, error) {
+      return Alerts.toast(`${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error");
     }
   }
 });
 
 AutoForm.hooks({
   "discount-rates-insert-form": {
-    onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"),
-        "success");
+    onSuccess() {
+      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"), "success");
     },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error"
-      );
+    onError(operation, error) {
+      return Alerts.toast(`${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error");
     }
   }
 });

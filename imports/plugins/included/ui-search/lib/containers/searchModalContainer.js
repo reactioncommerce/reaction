@@ -26,10 +26,16 @@ const wrapComponent = (Comp) => (
 
     componentDidMount() {
       document.addEventListener("keydown", this.handleKeyDown);
+      window.addEventListener("popstate", this.handleUrlChange);
     }
 
     componentWillUnmount() {
       document.removeEventListener("keydown", this.handleKeyDown);
+      window.removeEventListener("popstate", this.handleUrlChange);
+    }
+
+    handleUrlChange = () => {
+      this.handleChildUnmount();
     }
 
     handleKeyDown = (event) => {

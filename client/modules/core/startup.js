@@ -13,11 +13,11 @@ const cookieName = "_RcFallbackLoginToken";
  *  Startup Reaction
  *  Init Reaction client
  */
-Meteor.startup(function () {
+Meteor.startup(() => {
   // init the core
   Reaction.init();
   // initialize anonymous guest users
-  return Tracker.autorun(function () {
+  return Tracker.autorun(() => {
     const userId = Meteor.userId();
 
     // Load data from Accounts collection into the localStorage
@@ -55,7 +55,7 @@ Meteor.startup(function () {
     // TODO: maybe `visibilityState` will be better here
     let loggingIn;
     let sessionId;
-    Tracker.nonreactive(function () {
+    Tracker.nonreactive(() => {
       loggingIn = Accounts.loggingIn();
       sessionId = store.get("Reaction.session");
     });
