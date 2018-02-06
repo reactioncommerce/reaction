@@ -5,8 +5,8 @@
  */
 import { EventEmitter } from "events";
 import { Meteor } from "meteor/meteor";
-import JobCollectionBase from "./jobCollectionBase";
-import Job from "./job";
+import JobCollectionBase from "../lib/jobCollectionBase";
+import Job from "../lib/job";
 
 function userHelper(user, connection) {
   let ret = user !== null ? user : "[UNAUTHENTICATED]";
