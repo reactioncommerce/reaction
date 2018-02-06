@@ -199,6 +199,9 @@ Meteor.methods({
             items: { $each: mergedItems, $slice: -(mergedItems.length) }
           }
         });
+
+        // Calculate discounts
+        Hooks.Events.run("afterCartUpdateCalculateDiscount", currentCart._id);
       }
 
       // cleanup session Carts after merge.
@@ -429,6 +432,8 @@ Meteor.methods({
         throw error;
       }
 
+      // Calculate discounts
+      Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
       // refresh shipping quotes
       Meteor.call("shipping/updateShipmentQuotes", cart._id);
       // revert workflow to checkout shipping step.
@@ -491,6 +496,8 @@ Meteor.methods({
       throw error;
     }
 
+    // Calculate discounts
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
     // refresh shipping quotes
     Meteor.call("shipping/updateShipmentQuotes", cart._id);
     // revert workflow to checkout shipping step.
@@ -560,6 +567,8 @@ Meteor.methods({
 
       Logger.debug(`cart: deleted cart item variant id ${cartItem.variants._id}`);
 
+      // Calculate discounts
+      Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
       // TODO: HACK: When calling update shipping the changes to the cart have not taken place yet
       // TODO: But calling this findOne seems to force this record to update. Extra weird since we aren't
       // TODO: passing the Cart but just the cartId and regrabbing it so you would think that would work but it does not
@@ -594,8 +603,9 @@ Meteor.methods({
       throw error;
     }
 
+    // Calculate discounts
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
     Logger.debug(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);
-
     // refresh shipping quotes
     Meteor.call("shipping/updateShipmentQuotes", cart._id);
     // revert workflow
@@ -671,6 +681,10 @@ Meteor.methods({
       throw new Meteor.Error("server-error", "An error occurred saving the order", e);
     }
 
+
+    // Calculate discounts
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
+
     // this will transition to review
     return Meteor.call(
       "workflow/pushCartWorkflow", "coreCartWorkflow",
@@ -732,6 +746,9 @@ Meteor.methods({
       Logger.error(e);
       throw new Meteor.Error("server-error", "An error occurred adding the currency");
     }
+
+    // Calculate discounts
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
 
     return true;
   },
@@ -885,6 +902,9 @@ Meteor.methods({
     // refresh shipping quotes
     Meteor.call("shipping/updateShipmentQuotes", cartId);
 
+    // Calculate discounts
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
+
     if (typeof cart.workflow !== "object") {
       throw new Meteor.Error(
         "server-error",
@@ -966,7 +986,12 @@ Meteor.methods({
       };
     }
 
-    return Collections.Cart.update(selector, update);
+    const result = Collections.Cart.update(selector, update);
+
+    // Calculate discounts
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
+
+    return result;
   },
 
   /**
@@ -1027,6 +1052,9 @@ Meteor.methods({
         Logger.error(e);
         throw new Meteor.Error("server-error", "Error updating cart");
       }
+
+      // Calculate discounts
+      Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
 
       if (isShippingDeleting) {
         // if we remove shipping address from cart, we need to revert
@@ -1137,6 +1165,9 @@ Meteor.methods({
       Logger.error(e);
       throw new Meteor.Error("server-error", "An error occurred saving the order");
     }
+
+    // Calculate discounts
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
 
     return Collections.Cart.findOne(selector);
   },
