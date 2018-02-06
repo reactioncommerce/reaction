@@ -14,7 +14,7 @@ export const methods = {
    * @param { Object } rate a valid ShippingMethod object
    * @return { Number } insert result
    */
-  "shipping/rates/add": function (rate) {
+  "shipping/rates/add"(rate) {
     check(rate, {
       _id: Match.Optional(String),
       name: String,
@@ -34,20 +34,17 @@ export const methods = {
     let providerId;
     if (rate._id) {
       providerId = rate._id;
+    } else if (!Shipping.find({}).count()) { // There is no default provider, so add it
+      const defaultProvider = Shipping.insert({
+        name: "Default Shipping Provider",
+        provider: {
+          name: "flatRates",
+          label: "Flat Rate"
+        }
+      });
+      providerId = defaultProvider;
     } else {
-      // There is no default provider, so add it
-      if (!Shipping.find({}).count()) {
-        const defaultProvider = Shipping.insert({
-          name: "Default Shipping Provider",
-          provider: {
-            name: "flatRates",
-            label: "Flat Rate"
-          }
-        });
-        providerId = defaultProvider;
-      } else {
-        throw new Meteor.Error("bad-provider-id", "No Provider ID provided when adding methods");
-      }
+      throw new Meteor.Error("bad-provider-id", "No Provider ID provided when adding methods");
     }
 
     rate._id = Random.id();
@@ -66,7 +63,7 @@ export const methods = {
    * @param { Object } method shipping method object
    * @return { Number } update result
    */
-  "shipping/rates/update": function (method) {
+  "shipping/rates/update"(method) {
     check(method, ShippingMethod);
     if (!Reaction.hasPermission(shippingRoles)) {
       throw new Meteor.Error("access-denied", "Access Denied");
@@ -88,7 +85,7 @@ export const methods = {
    * @param { String } rateId id of method to delete
    * @return { Number } update result
    */
-  "shipping/rates/delete": function (rateId) {
+  "shipping/rates/delete"(rateId) {
     check(rateId, String);
 
     if (!Reaction.hasPermission(shippingRoles)) {

@@ -26,11 +26,11 @@ Meteor.methods({
    * @param {String} shopId - id of the shop the group belongs to
    * @return {Object} - `object.status` of 200 on success or Error object on failure
    */
-  "group/createGroup": function (groupData, shopId) {
+  "group/createGroup"(groupData, shopId) {
     check(groupData, Object);
     check(groupData.name, String);
     check(groupData.description, Match.Optional(String));
-    check(groupData.permissions,  Match.Optional([String]));
+    check(groupData.permissions, Match.Optional([String]));
     check(shopId, String);
     let _id;
 
@@ -81,7 +81,7 @@ Meteor.methods({
    * @param {String} shopId - id of the shop the group belongs to
    * @return {Object} - `object.status` of 200 on success or Error object on failure
    */
-  "group/updateGroup": function (groupId, newGroupData, shopId) {
+  "group/updateGroup"(groupId, newGroupData, shopId) {
     check(groupId, String);
     check(newGroupData, Object);
     check(shopId, String);
@@ -132,7 +132,7 @@ Meteor.methods({
    * @param {String} groupId - id of the group
    * @return {Object} - `object.status` of 200 on success or Error object on failure
    */
-  "group/addUser": function (userId, groupId) {
+  "group/addUser"(userId, groupId) {
     check(userId, String);
     check(groupId, String);
     const group = Groups.findOne({ _id: groupId }) || {};
@@ -205,7 +205,7 @@ Meteor.methods({
    * @param {String} groupId - name of the group
    * @return {Object} - `object.status` of 200 on success or Error object on failure
    */
-  "group/removeUser": function (userId, groupId) {
+  "group/removeUser"(userId, groupId) {
     check(userId, String);
     check(groupId, String);
 
@@ -271,5 +271,5 @@ function setUserPermissions(users, permissions, shopId) {
 // set default admin user's account as "owner"
 Hooks.Events.add("afterCreateDefaultAdminUser", (user) => {
   const group = Groups.findOne({ slug: "owner", shopId: Reaction.getShopId() });
-  Accounts.update({ _id: user._id  }, { $set: { groups: [group._id] } });
+  Accounts.update({ _id: user._id }, { $set: { groups: [group._id] } });
 });

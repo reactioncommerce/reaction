@@ -7,7 +7,7 @@ function getShippingRates(previousQueryResults, cart) {
   const marketplaceSettings = Reaction.getMarketplaceSettings();
   let merchantShippingRates = false;
   if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantShippingRates) {
-    merchantShippingRates = marketplaceSettings.public.merchantShippingRates;
+    ({ merchantShippingRates } = marketplaceSettings.public);
   }
 
   const [rates, retrialTargets] = previousQueryResults;
@@ -59,7 +59,7 @@ function getShippingRates(previousQueryResults, cart) {
   const shippingCollection = Shipping.find(selector);
   const shippoDocs = {};
   if (shippingCollection) {
-    shippingCollection.forEach(function (doc) {
+    shippingCollection.forEach((doc) => {
       // If provider is from Shippo, put it in an object to get rates dynamically(shippoApi) for all of them after.
       if (doc.provider.shippoProvider) {
         shippoDocs[doc.provider.shippoProvider.carrierAccountId] = doc;

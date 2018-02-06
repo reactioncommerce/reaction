@@ -299,9 +299,7 @@ function composer(props, onData) {
     if (product) {
       let tags;
       if (_.isArray(product.hashtags)) {
-        tags = _.map(product.hashtags, function (id) {
-          return Tags.findOne(id);
-        });
+        tags = _.map(product.hashtags, (id) => Tags.findOne(id));
       }
 
       let mediaArray = [];

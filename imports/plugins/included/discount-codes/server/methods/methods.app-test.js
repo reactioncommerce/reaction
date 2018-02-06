@@ -1,3 +1,4 @@
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Factory } from "meteor/dburles:factory";
@@ -63,9 +64,7 @@ describe("discount code methods", function () {
       Meteor.call("discounts/codes/apply", cart._id, code.code);
 
       const updatedCart = Cart.findOne({ _id: cart._id });
-      const discountObj = updatedCart.billing.find((billing) => {
-        return billing.paymentMethod && billing.paymentMethod.method === "discount";
-      });
+      const discountObj = updatedCart.billing.find((billing) => billing.paymentMethod && billing.paymentMethod.method === "discount");
       const discountStatus = discountObj && discountObj.paymentMethod && discountObj.paymentMethod.status;
 
       expect(discountStatus).to.equal("created");
@@ -78,8 +77,7 @@ describe("discount code methods", function () {
       const cart = Factory.create("cartMultiShop");
 
       expect(() =>
-        Meteor.call("discounts/codes/apply", cart._id, code.code)
-      ).to.throw(Meteor.Error, /multiShopError/);
+        Meteor.call("discounts/codes/apply", cart._id, code.code)).to.throw(Meteor.Error, /multiShopError/);
     });
   });
 });

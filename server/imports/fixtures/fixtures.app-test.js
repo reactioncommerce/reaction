@@ -1,3 +1,4 @@
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { check, Match } from "meteor/check";
@@ -71,11 +72,11 @@ describe("Fixtures:", function () {
     sandbox.stub(Collections.Orders._hookAspects.insert.before[0], "aspect");
     sandbox.stub(Collections.Orders._hookAspects.update.before[0], "aspect");
     sandbox.stub(Reaction, "hasPermission", () => true);
-    sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
-      check(arguments, [Match.Any]);
+    sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
+      check(args, [Match.Any]);
     });
-    sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function () {
-      check(arguments, [Match.Any]);
+    sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function (...args) {
+      check(args, [Match.Any]);
     });
     const order = Factory.create("order");
     expect(order).to.not.be.undefined;

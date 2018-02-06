@@ -20,9 +20,9 @@ import { Reaction } from "/client/api";
  */
 export function getBrowserLanguage() {
   if (typeof navigator.languages !== "undefined") {
-    if (~navigator.languages[0].indexOf("-")) {
+    if (navigator.languages[0].indexOf("-") >= 0) {
       return navigator.languages[0].split("-")[0];
-    } else if (~navigator.languages[0].indexOf("_")) {
+    } else if (navigator.languages[0].indexOf("_") >= 0) {
       return navigator.languages[0].split("_")[0];
     }
     return navigator.languages[0];
@@ -43,9 +43,9 @@ export function getLabelsFor(schema, name) {
   const labels = {};
   // loop through all the rendered form fields and generate i18n keys
   for (const fieldName of schema._schemaKeys) {
-    const i18nKey = name.charAt(0).toLowerCase() + name.slice(1) + "." +
+    const i18nKey = `${name.charAt(0).toLowerCase() + name.slice(1)}.${
       fieldName
-        .split(".$").join("");
+        .split(".$").join("")}`;
     // translate autoform label
     const t = i18next.t(i18nKey);
     if (new RegExp("string").test(t) !== true && t !== i18nKey) {
@@ -89,7 +89,7 @@ export const localeDep = new Tracker.Dependency();
 export const currencyDep = new Tracker.Dependency();
 
 Meteor.startup(() => {
-  Tracker.autorun(function (c) {
+  Tracker.autorun((c) => {
     let merchantShopsReadyOrSkipped = false;
 
     // Choose shopSubscription based on marketplace settings
@@ -102,7 +102,7 @@ Meteor.startup(() => {
     // setting local and active packageNamespaces
     // packageNamespaces are used to determine i18n namespace
     if (Reaction.Subscriptions.PrimaryShop.ready() && merchantShopsReadyOrSkipped) {
-      // use i18n detected language to getLocale info and set it clie nt side
+      // use i18n detected language to getLocale info and set it client side
       Meteor.call("shop/getLocale", (error, result) => {
         if (result) {
           const locale = result;

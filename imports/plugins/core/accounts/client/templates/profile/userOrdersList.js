@@ -16,7 +16,8 @@ Template.userOrdersList.helpers({
       orders = [];
     }
 
-    return { component: UserOrdersList,
+    return {
+      component: UserOrdersList,
       orders
     };
   }

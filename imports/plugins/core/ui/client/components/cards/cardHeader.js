@@ -121,16 +121,23 @@ class CardHeader extends Component {
       "panel-heading": true,
       "card-header": true,
       "expandable": this.props.actAsExpander,
-      "validation": validation
+      validation
     });
 
     if (this.props.actAsExpander) {
       return (
         <div className={baseClassName}>
-          <div className="content-view" onClick={this.handleClick}>
+          <Components.Button
+            tagName="div"
+            className={{
+              "btn": false,
+              "content-view": true
+            }}
+            onClick={this.handleClick}
+          >
             {this.renderImage()}
             {this.renderTitle()}
-          </div>
+          </Components.Button>
           <div className="action-view">
             {this.renderChildren()}
           </div>

@@ -15,8 +15,6 @@ Template.cartIcon.helpers({
 
 Template.cartIcon.events({
   "click .cart-icon"() {
-    return $("#cart-drawer-container").fadeOut(300, function () {
-      return Reaction.toggleSession("displayCart");
-    });
+    return $("#cart-drawer-container").fadeOut(300, () => Reaction.toggleSession("displayCart"));
   }
 });

@@ -9,7 +9,7 @@ import { getSlug } from "/lib/api";
 function convertMetadata(modifierObject) {
   const metadata = {};
   for (const prop in modifierObject) {
-    if (modifierObject.hasOwnProperty(prop)) {
+    if ({}.hasOwnProperty.call(modifierObject, prop)) {
       if (prop.indexOf("metadata") !== -1) {
         const splitName = _.split(prop, ".")[1];
         metadata[splitName] = modifierObject[prop];
@@ -29,7 +29,7 @@ export const ProductRevision = {
 
     if (variants.length > 0) {
       const variantPrices = [];
-      variants.forEach(variant => {
+      variants.forEach((variant) => {
         if (variant.isVisible === true) {
           const range = this.getVariantPriceRange(variant._id);
           if (typeof range === "string") {
@@ -64,20 +64,22 @@ export const ProductRevision = {
 
   getVariantPriceRange(variantId) {
     const children = this.getVariants(variantId);
-    const visibleChildren = children.filter(child => child.isVisible && !child.isDeleted);
+    const visibleChildren = children.filter((child) => child.isVisible && !child.isDeleted);
 
     switch (visibleChildren.length) {
-      case 0:
+      case 0: {
         const topVariant = this.getProduct(variantId);
         // topVariant could be undefined when we removing last top variant
         return topVariant && topVariant.price;
-      case 1:
+      }
+      case 1: {
         return visibleChildren[0].price;
-      default:
+      }
+      default: {
         let priceMin = Number.POSITIVE_INFINITY;
         let priceMax = Number.NEGATIVE_INFINITY;
 
-        visibleChildren.map(child => {
+        visibleChildren.forEach((child) => {
           if (child.price < priceMin) {
             priceMin = child.price;
           }
@@ -91,12 +93,13 @@ export const ProductRevision = {
           return priceMin.toString();
         }
         return `${priceMin} - ${priceMax}`;
+      }
     }
   },
 
   findRevision({ documentId }) {
     return Revisions.findOne({
-      "documentId": documentId,
+      documentId,
       "workflow.status": {
         $nin: [
           "revision/published"
@@ -111,7 +114,7 @@ export const ProductRevision = {
       documentId: variantId
     });
 
-    return revision && revision.documentData || product;
+    return (revision && revision.documentData) || product;
   },
 
   getTopVariants(id) {
@@ -131,6 +134,8 @@ export const ProductRevision = {
       } else if (!revision && product.isVisible) {
         variants.push(product);
       }
+
+      return variants;
     });
 
     return variants;
@@ -433,7 +438,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
       }
 
       for (const property in modifier[operation]) {
-        if (modifier[operation].hasOwnProperty(property)) {
+        if ({}.hasOwnProperty.call(modifier[operation], property)) {
           if (operation === "$set" && property === "metafields.$") {
             // Special handling for meta fields with $ operator
             // We need to update the selector otherwise the operation would completly fail.
@@ -485,7 +490,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
             const newHandle = modifier.$set.handle;
 
             // Current revision data
-            const documentId = productRevision.documentId;
+            const { documentId } = productRevision;
             const slugDocId = getSlug(documentId);
             const revisionTitle = productRevision.documentData.title;
             const revisionHandle = productRevision.documentData.handle;
@@ -613,7 +618,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   return false;
 });
 
-Products.before.remove(function (userId, product) {
+Products.before.remove((userId, product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -629,7 +634,7 @@ Products.before.remove(function (userId, product) {
       documentId: product._id,
       documentData: product
     });
-    productRevision =  Revisions.findOne({
+    productRevision = Revisions.findOne({
       documentId: product._id
     });
   }
@@ -663,7 +668,7 @@ Products.before.remove(function (userId, product) {
   return false;
 });
 
-Revisions.after.update(function (userId, revision) {
+Revisions.after.update((userId, revision) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }

@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { Factory } from "meteor/dburles:factory";
@@ -28,9 +29,10 @@ describe("Cart Publication", function () {
     // user carts merging. We need registered users for here.
     const user = Factory.create("registeredUser");
     const userId = user._id;
-    const sessionId = Reaction.sessionId = Random.id();
+    Reaction.sessionId = Random.id();
+    const { sessionId } = Reaction;
     const thisContext = {
-      userId: userId
+      userId
     };
 
     beforeEach(() => {
@@ -49,8 +51,8 @@ describe("Cart Publication", function () {
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Reaction, "getPrimaryShopId", () => shop._id);
       Collections.Cart.insert({
-        sessionId: sessionId,
-        userId: userId,
+        sessionId,
+        userId,
         shopId: shop._id
       });
       const cartPub = Meteor.server.publish_handlers["Cart"];
@@ -65,12 +67,12 @@ describe("Cart Publication", function () {
       sandbox.stub(Meteor, "userId", () => user._id);
       const user2 = Factory.create("registeredUser");
       Collections.Cart.insert({
-        sessionId: sessionId,
-        userId: userId,
+        sessionId,
+        userId,
         shopId: shop._id
       });
       Collections.Cart.insert({
-        sessionId: sessionId,
+        sessionId,
         userId: user2._id,
         shopId: shop._id
       });

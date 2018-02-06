@@ -27,11 +27,11 @@ function hidePaymentAlert() {
 }
 
 function handleExampleSubmitError(error) {
-  const serverError = error !== null ? error.message : void 0;
+  const serverError = error !== null ? error.message : undefined;
   if (serverError) {
-    return paymentAlert("Oops! " + serverError);
+    return paymentAlert(`Oops! ${serverError}`);
   } else if (error) {
-    return paymentAlert("Oops! " + error, null, 4);
+    return paymentAlert(`Oops! ${error}`, null, 4);
   }
 }
 
@@ -43,9 +43,9 @@ Template.examplePaymentForm.helpers({
 });
 
 AutoForm.addHooks("example-payment-form", {
-  onSubmit: function (doc) {
+  onSubmit(doc) {
     submitting = true;
-    const template = this.template;
+    const { template } = this;
     hidePaymentAlert();
     const form = {
       name: doc.payerName,
@@ -55,7 +55,7 @@ AutoForm.addHooks("example-payment-form", {
       cvv2: doc.cvv,
       type: Reaction.getCardType(doc.cardNumber)
     };
-    const storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
+    const storedCard = `${form.type.charAt(0).toUpperCase() + form.type.slice(1)} ${doc.cardNumber.slice(-4)}`;
     Meteor.subscribe("Packages", Reaction.getShopId());
     const packageData = Packages.findOne({
       name: "example-paymentmethod",
@@ -64,46 +64,44 @@ AutoForm.addHooks("example-payment-form", {
     Example.authorize(form, {
       total: Cart.findOne().getTotal(),
       currency: Shops.findOne().currency
-    }, function (error, transaction) {
+    }, (error, transaction) => {
       submitting = false;
       let paymentMethod;
       if (error) {
         handleExampleSubmitError(error);
         uiEnd(template, "Resubmit payment");
+      } else if (transaction.saved === true) {
+        submitting = false;
+        paymentMethod = {
+          processor: "Example",
+          paymentPackageId: packageData._id,
+          paymentSettingsKey: packageData.registry[0].settingsKey,
+          storedCard,
+          method: "credit",
+          transactionId: transaction.transactionId,
+          riskLevel: transaction.riskLevel,
+          currency: transaction.currency,
+          amount: transaction.amount,
+          status: transaction.status,
+          mode: "authorize",
+          createdAt: new Date(),
+          transactions: []
+        };
+        paymentMethod.transactions.push(transaction.response);
+        Meteor.call("cart/submitPayment", paymentMethod);
       } else {
-        if (transaction.saved === true) {
-          submitting = false;
-          paymentMethod = {
-            processor: "Example",
-            paymentPackageId: packageData._id,
-            paymentSettingsKey: packageData.registry[0].settingsKey,
-            storedCard: storedCard,
-            method: "credit",
-            transactionId: transaction.transactionId,
-            riskLevel: transaction.riskLevel,
-            currency: transaction.currency,
-            amount: transaction.amount,
-            status: transaction.status,
-            mode: "authorize",
-            createdAt: new Date(),
-            transactions: []
-          };
-          paymentMethod.transactions.push(transaction.response);
-          Meteor.call("cart/submitPayment", paymentMethod);
-        } else {
-          handleExampleSubmitError(transaction.error);
-          uiEnd(template, "Resubmit payment");
-        }
+        handleExampleSubmitError(transaction.error);
+        uiEnd(template, "Resubmit payment");
       }
     });
     return false;
   },
-  beginSubmit: function () {
+  beginSubmit() {
     this.template.$(":input").attr("disabled", true);
     this.template.$("#btn-complete-order").text("Submitting ");
     return this.template.$("#btn-processing").removeClass("hidden");
   },
-  endSubmit: function () {
+  endSubmit() {
     if (!submitting) {
       return uiEnd(this.template, "Complete your order");
     }

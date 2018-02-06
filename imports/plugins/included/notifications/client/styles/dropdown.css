@@ -39,7 +39,7 @@
 }
 
 html:not(.rtl) .dropdown .notify-drop.dropdown-menu {
-  left: auto !important;
+  left: auto;
   right: 0px;
 }
 
@@ -62,6 +62,9 @@ html:not(.rtl) .dropdown .notify-drop.dropdown-menu {
     .dropdown .notify-drop.dropdown-menu {
         padding:0px;
         left: -20px !important;
+    }
+    html:not(.rtl) .dropdown .notify-drop.dropdown-menu {
+      left: 0px;
     }
 }
 .notify-drop {
@@ -126,6 +129,9 @@ html:not(.rtl) .dropdown .notify-drop.dropdown-menu {
   display: block;
 }
 .dropdown-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-top: 6px;
   padding-left: 20px;
   padding-right: 20px;

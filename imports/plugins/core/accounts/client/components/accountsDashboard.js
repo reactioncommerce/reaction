@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { default as sortUsersIntoGroups, sortGroups } from "../helpers/accountsHelper";
+import sortUsersIntoGroups, { sortGroups } from "../helpers/accountsHelper";
 
 class AccountsDashboard extends Component {
   static propTypes = {
@@ -17,7 +17,7 @@ class AccountsDashboard extends Component {
     const defaultSelectedGroup = sortedGroups[0];
 
     this.state = {
-      accounts: accounts,
+      accounts,
       groups: sortGroups(groups),
       adminGroups: sortedGroups,
       selectedGroup: defaultSelectedGroup
@@ -67,18 +67,16 @@ class AccountsDashboard extends Component {
       return (
         <div className="group-container">
           {this.state.loading && <Components.Loading />}
-          {groups.map((group, index) => {
-            return (
-              <Components.GroupsTable
-                {...this.props}
-                key={index}
-                group={group}
-                onMethodLoad={this.handleMethodLoad}
-                onMethodDone={this.handleMethodDone}
-                onGroupSelect={this.handleGroupSelect}
-              />
-            );
-          })}
+          {groups.map((group, index) => (
+            <Components.GroupsTable
+              {...this.props}
+              key={index}
+              group={group}
+              onMethodLoad={this.handleMethodLoad}
+              onMethodDone={this.handleMethodDone}
+              onGroupSelect={this.handleGroupSelect}
+            />
+          ))}
         </div>
       );
     }

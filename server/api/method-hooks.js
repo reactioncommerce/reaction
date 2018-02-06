@@ -86,9 +86,9 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
   // Get a reference to the original handler
   MethodHooks._originalMethodHandlers[methodName] = method;
 
-  MethodHooks._wrappers[methodName] = function () {
+  MethodHooks._wrappers[methodName] = function (...inputArgs) {
     // Get arguments you can mutate
-    const args = _.toArray(arguments);
+    const args = _.toArray(inputArgs);
     let beforeResult;
     // Call the before hooks
 
@@ -98,7 +98,7 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
         result: undefined,
         error: undefined,
         arguments: args,
-        hooksProcessed: hooksProcessed
+        hooksProcessed
       });
 
       if (beforeResult === false) {
@@ -127,7 +127,7 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
         result: methodResult,
         error: methodError,
         arguments: args,
-        hooksProcessed: hooksProcessed
+        hooksProcessed
       });
       // If the after hook did not return a value and the methodResult is not undefined, warn and fix
       if (_.isUndefined(hookResult) && !_.isUndefined(methodResult)) {
@@ -159,8 +159,10 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
  * @return {String} - returns transformed data
  */
 MethodHooks.before = function (methodName, beforeFunction) {
-  MethodHooks._initializeHook(MethodHooks._beforeHooks,
-    methodName, beforeFunction);
+  MethodHooks._initializeHook(
+    MethodHooks._beforeHooks,
+    methodName, beforeFunction
+  );
 };
 
 /**
@@ -171,8 +173,10 @@ MethodHooks.before = function (methodName, beforeFunction) {
  * @return {String} - returns transformed data
  */
 MethodHooks.after = function (methodName, afterFunction) {
-  MethodHooks._initializeHook(MethodHooks._afterHooks,
-    methodName, afterFunction);
+  MethodHooks._initializeHook(
+    MethodHooks._afterHooks,
+    methodName, afterFunction
+  );
 };
 
 /**
@@ -182,7 +186,7 @@ MethodHooks.after = function (methodName, afterFunction) {
  * @return {String} - returns transformed data
  */
 MethodHooks.beforeMethods = function (dict) {
-  _.each(dict, function (v, k) {
+  _.each(dict, (v, k) => {
     MethodHooks.before(k, v);
   });
 };
@@ -193,7 +197,7 @@ MethodHooks.beforeMethods = function (dict) {
  * @return {String} - returns transformed data
  */
 MethodHooks.afterMethods = function (dict) {
-  _.each(dict, function (v, k) {
+  _.each(dict, (v, k) => {
     MethodHooks.after(k, v);
   });
 };

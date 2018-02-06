@@ -15,19 +15,19 @@ const countryDefaults = ["US", "CA"];
 
 const formSettings = {
   shownFields: {
-    ["settings.avalara.apiLoginId"]: AvalaraPackageConfig._schema["settings.avalara.apiLoginId"],
-    ["settings.avalara.username"]: AvalaraPackageConfig._schema["settings.avalara.username"],
-    ["settings.avalara.password"]: AvalaraPackageConfig._schema["settings.avalara.password"],
-    ["settings.avalara.companyCode"]: AvalaraPackageConfig._schema["settings.avalara.companyCode"],
-    ["settings.avalara.shippingTaxCode"]: AvalaraPackageConfig._schema["settings.avalara.shippingTaxCode"],
-    ["settings.addressValidation.enabled"]: AvalaraPackageConfig._schema["settings.addressValidation.enabled"],
-    ["settings.addressValidation.countryList"]: AvalaraPackageConfig._schema["settings.addressValidation.countryList"],
-    ["settings.avalara.requestTimeout"]: AvalaraPackageConfig._schema["settings.avalara.requestTimeout"],
-    ["settings.avalara.mode"]: AvalaraPackageConfig._schema["settings.avalara.mode"],
-    ["settings.avalara.performTaxCalculation"]: AvalaraPackageConfig._schema["settings.avalara.performTaxCalculation"],
-    ["settings.avalara.enableLogging"]: AvalaraPackageConfig._schema["settings.avalara.enableLogging"],
-    ["settings.avalara.logRetentionDuration"]: AvalaraPackageConfig._schema["settings.avalara.logRetentionDuration"],
-    ["settings.avalara.commitDocuments"]: AvalaraPackageConfig._schema["settings.avalara.commitDocuments"]
+    "settings.avalara.apiLoginId": AvalaraPackageConfig._schema["settings.avalara.apiLoginId"],
+    "settings.avalara.username": AvalaraPackageConfig._schema["settings.avalara.username"],
+    "settings.avalara.password": AvalaraPackageConfig._schema["settings.avalara.password"],
+    "settings.avalara.companyCode": AvalaraPackageConfig._schema["settings.avalara.companyCode"],
+    "settings.avalara.shippingTaxCode": AvalaraPackageConfig._schema["settings.avalara.shippingTaxCode"],
+    "settings.addressValidation.enabled": AvalaraPackageConfig._schema["settings.addressValidation.enabled"],
+    "settings.addressValidation.countryList": AvalaraPackageConfig._schema["settings.addressValidation.countryList"],
+    "settings.avalara.requestTimeout": AvalaraPackageConfig._schema["settings.avalara.requestTimeout"],
+    "settings.avalara.mode": AvalaraPackageConfig._schema["settings.avalara.mode"],
+    "settings.avalara.performTaxCalculation": AvalaraPackageConfig._schema["settings.avalara.performTaxCalculation"],
+    "settings.avalara.enableLogging": AvalaraPackageConfig._schema["settings.avalara.enableLogging"],
+    "settings.avalara.logRetentionDuration": AvalaraPackageConfig._schema["settings.avalara.logRetentionDuration"],
+    "settings.avalara.commitDocuments": AvalaraPackageConfig._schema["settings.avalara.commitDocuments"]
   },
   hiddenFields: [
     "settings.avalara.enabled",
@@ -77,15 +77,17 @@ const composer = (props, onData) => {
   formSettings.fieldsProp["settings.addressValidation.countryList"] = {
     renderComponent: "multiselect",
     options: validCountries,
-    defaultValue: validCountries.map(country => country.value)
+    defaultValue: validCountries.map((country) => country.value)
   };
 
   if (packageSub.ready()) {
     const packageData = Reaction.getPackageSettings("taxes-avalara");
-    onData(null,
+    onData(
+      null,
       {
         settings: packageData.settings
-      });
+      }
+    );
   }
 };
 

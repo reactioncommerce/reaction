@@ -36,9 +36,7 @@ Template.settingsHeader.helpers({
     });
 
     if (reactionApp) {
-      const settingsData = _.find(reactionApp.registry, function (item) {
-        return item.route === Reaction.Router.getRouteName() && item.provides && item.provides.includes("settings");
-      });
+      const settingsData = _.find(reactionApp.registry, (item) => item.route === Reaction.Router.getRouteName() && item.provides && item.provides.includes("settings")); // eslint-disable-line max-len
 
       return settingsData;
     }

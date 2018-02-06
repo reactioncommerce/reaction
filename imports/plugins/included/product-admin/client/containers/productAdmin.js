@@ -110,9 +110,7 @@ function composer(props, onData) {
 
   if (product) {
     if (_.isArray(product.hashtags)) {
-      tags = _.map(product.hashtags, function (id) {
-        return Tags.findOne(id);
-      });
+      tags = _.map(product.hashtags, (id) => Tags.findOne(id));
     }
 
     const selectedVariant = ReactionProduct.selectedVariant();
@@ -134,18 +132,16 @@ function composer(props, onData) {
       provides: "template",
       templateFor: { $in: ["pdp"] },
       enabled: true
-    }).map((template) => {
-      return {
-        label: template.title,
-        value: template.name
-      };
-    });
+    }).map((template) => ({
+      label: template.title,
+      value: template.name
+    }));
 
     const countries = Countries.find({}).fetch();
 
     onData(null, {
       editFocus: Reaction.state.get("edit/focus") || "productDetails",
-      product: product,
+      product,
       media,
       tags,
       revisonDocumentIds,

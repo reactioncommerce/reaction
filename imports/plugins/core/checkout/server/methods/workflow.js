@@ -29,7 +29,7 @@ Meteor.methods({
    * @param {String} [cartId] - cart._id
    * @return {Array|Boolean|Number} return
    */
-  "workflow/pushCartWorkflow": function (workflow, newWorkflowStatus, cartId) {
+  "workflow/pushCartWorkflow"(workflow, newWorkflowStatus, cartId) {
     check(workflow, String);
     check(newWorkflowStatus, String);
     check(cartId, Match.Optional(String));
@@ -62,14 +62,14 @@ Meteor.methods({
     });
 
     // loop through packages and set the defaultPackageWorkflows
-    packages.forEach(function (reactionPackage) {
+    packages.forEach((reactionPackage) => {
       // todo fix this hack for not filtering nicely
       if (!reactionPackage.layout.layout) {
         const layouts = _.filter(reactionPackage.layout, {
-          workflow: workflow
+          workflow
         });
         // for every layout, process the associated workflows
-        _.each(layouts, function (layout) {
+        _.each(layouts, (layout) => {
           // audience is the layout permissions
           if (typeof layout.audience !== "object") {
             const defaultRoles = Groups.findOne({
@@ -88,7 +88,7 @@ Meteor.methods({
             hasPermission = Roles.userIsInRole(Meteor.userId(), layout.audience, Reaction.getShopId());
           }
 
-          if (hasPermission  && !layout.layout) {
+          if (hasPermission && !layout.layout) {
             defaultPackageWorkflows.push(layout);
           }
         });
@@ -110,7 +110,7 @@ Meteor.methods({
     // loop through all shop configured layouts, and their default workflows
     // to determine what the next workflow step should be
     // the cart workflow status while processing is neither true nor false (set to template)
-    _.each(defaultPackageWorkflows, function (workflow, currentStatusIndex) {
+    _.each(defaultPackageWorkflows, (workflow, currentStatusIndex) => {
       if (workflow.template === currentWorkflowStatus) {
         // don't go past the end of the workflow
         if (currentStatusIndex < maxSteps - 1) {
@@ -151,9 +151,9 @@ Meteor.methods({
     // where you are in the flow and configures `gotoNextWorkflowStep`
 
     if (!gotoNextWorkflowStep && currentWorkflowStatus !== newWorkflowStatus) {
-      Logger.debug(
-        `######## Condition One #########: initialise the ${currentCart._id} ${workflow}: ${defaultPackageWorkflows[0].template}`
-      );
+      Logger.debug(`######## Condition One #########:
+        initialise the ${currentCart._id} ${workflow}:
+        ${defaultPackageWorkflows[0].template}`);
       const result = Cart.update(currentCart._id, {
         $set: {
           "workflow.status": defaultPackageWorkflows[0].template
@@ -169,8 +169,7 @@ Meteor.methods({
     // and you should have already be in the current workflow template
     if (gotoNextWorkflowStep && statusExistsInWorkflow === false &&
       templateProcessedinWorkflow === false) {
-      Logger.debug("######## Condition Two #########: set status to: ",
-        nextWorkflowStep.template);
+      Logger.debug("######## Condition Two #########: set status to: ", nextWorkflowStep.template);
 
       return Cart.update(currentCart._id, {
         $set: {
@@ -187,9 +186,10 @@ Meteor.methods({
     // we're going to do our best to ignore you.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
       templateProcessedinWorkflow === false) {
-      Logger.debug("######## Condition Three #########: complete workflow " +
-        currentWorkflowStatus + " updates and move to: ",
-      nextWorkflowStep.template);
+      Logger.debug(
+        `######## Condition Three #########: complete workflow ${currentWorkflowStatus} updates and move to: `,
+        nextWorkflowStep.template
+      );
       return Cart.update(currentCart._id, {
         $set: {
           "workflow.status": nextWorkflowStep.template
@@ -207,7 +207,8 @@ Meteor.methods({
       templateProcessedinWorkflow === true) {
       Logger.debug(
         "######## Condition Four #########: previously ran, doing nothing. : ",
-        newWorkflowStatus);
+        newWorkflowStatus
+      );
       return true;
     }
   },
@@ -222,7 +223,7 @@ Meteor.methods({
    * @todo need tests
    * @return {Number|Boolean} cart update results
    */
-  "workflow/revertCartWorkflow": function (newWorkflowStatus) {
+  "workflow/revertCartWorkflow"(newWorkflowStatus) {
     check(newWorkflowStatus, String);
     this.unblock();
 
@@ -237,7 +238,7 @@ Meteor.methods({
     // get index of `newWorkflowStatus`
     const resetToIndex = workflow.indexOf(newWorkflowStatus);
     // exit if no such step in workflow
-    if (!~resetToIndex) return false;
+    if (resetToIndex < 0) return false;
     // remove all steps that further `newWorkflowStatus` and itself
     const resetedWorkflow = workflow.slice(0, resetToIndex);
 
@@ -266,7 +267,7 @@ Meteor.methods({
    * @param  {Order} order - Schemas.Order, an order object
    * @return {Boolean} true if update was successful
    */
-  "workflow/pushOrderWorkflow": function (workflow, status, order) {
+  "workflow/pushOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
     check(status, String);
     check(order, Object); // TODO: Validatate as Schemas.Order
@@ -301,7 +302,7 @@ Meteor.methods({
    * @param  {Order} order - Schemas.Order, an order object
    * @return {Boolean} true if update was successful
    */
-  "workflow/pullOrderWorkflow": function (workflow, status, order) {
+  "workflow/pullOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
     check(status, String);
     check(order, Object);
@@ -330,7 +331,7 @@ Meteor.methods({
    * @param  {String[]} itemIds Array of item IDs
    * @return {Boolean}         true if update was successful
    */
-  "workflow/pushItemWorkflow": function (status, order, itemIds) {
+  "workflow/pushItemWorkflow"(status, order, itemIds) {
     check(status, String);
     check(order, Object);
     check(itemIds, Array);
@@ -353,7 +354,7 @@ Meteor.methods({
       _id: order._id
     }, {
       $set: {
-        items: items
+        items
       }
     });
 

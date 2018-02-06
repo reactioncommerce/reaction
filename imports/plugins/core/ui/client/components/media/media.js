@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 import ReactImageMagnify from "react-image-magnify";
-import { SortableItem } from "../../containers";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
+import { SortableItem } from "../../containers";
 import Hint from "./hint";
 
 class MediaItem extends Component {
@@ -128,8 +128,11 @@ class MediaItem extends Component {
   }
 
   render() {
-    const classes = { "gallery-image": true, "no-fade-on-hover": this.props.zoomable && !this.props.editable,
-      "admin-gallery-image": Reaction.hasAdminAccess() };
+    const classes = {
+      "gallery-image": true,
+      "no-fade-on-hover": this.props.zoomable && !this.props.editable,
+      "admin-gallery-image": Reaction.hasAdminAccess()
+    };
     const mediaElement = (
       <div
         className={classnames(classes)}
@@ -142,11 +145,7 @@ class MediaItem extends Component {
     );
 
     if (this.props.editable) {
-      return this.props.connectDragSource(
-        this.props.connectDropTarget(
-          mediaElement
-        )
-      );
+      return this.props.connectDragSource(this.props.connectDropTarget(mediaElement));
     }
 
     return mediaElement;

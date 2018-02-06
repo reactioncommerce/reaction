@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
@@ -47,7 +48,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "My Little Pony",
-        shopId: shopId,
+        shopId,
         type: "simple",
         price: priceRangeA,
         isVisible: false,
@@ -59,7 +60,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "Shopkins - Peachy",
-        shopId: shopId,
+        shopId,
         price: priceRangeB,
         type: "simple",
         isVisible: true,
@@ -71,7 +72,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "Fresh Tomatoes",
-        shopId: shopId,
+        shopId,
         price: priceRangeA,
         type: "simple",
         isVisible: true,
@@ -87,7 +88,7 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getShopId", () => shopId);
         sandbox.stub(Roles, "userIsInRole", () => true);
         sandbox.stub(Reaction, "hasPermission", () => true);
-        sandbox.stub(Reaction, "getShopsWithRoles", () =>  [shopId]);
+        sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId]);
 
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;
@@ -108,7 +109,7 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getShopId", () => shopId);
         sandbox.stub(Roles, "userIsInRole", () => true);
         sandbox.stub(Reaction, "hasPermission", () => true);
-        sandbox.stub(Reaction, "getShopsWithRoles", () =>  [shopId]);
+        sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId]);
 
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;
@@ -118,7 +119,7 @@ describe("Publication", function () {
           const data = products[1];
           const expectedTitles = ["My Little Pony", "Shopkins - Peachy"];
 
-          expect(expectedTitles.some(title => title === data.title)).to.be.ok;
+          expect(expectedTitles.some((title) => title === data.title)).to.be.ok;
 
           if (!isDone) {
             isDone = true;
@@ -140,7 +141,7 @@ describe("Publication", function () {
           const expectedTitles = ["Fresh Tomatoes", "Shopkins - Peachy"];
 
           expect(products.length).to.equal(2);
-          expect(expectedTitles.some(title => title === data.title)).to.be.ok;
+          expect(expectedTitles.some((title) => title === data.title)).to.be.ok;
 
           if (isDone === false) {
             isDone = true;
@@ -255,10 +256,10 @@ describe("Publication", function () {
       it("should return products from all shops when multiple shops are provided", function (done) {
         const filters = { shops: [shopId] };
         const productScrollLimit = 24;
-        sandbox.stub(Reaction, "getCurrentShop", function () {return { _id: "123" };});
+        sandbox.stub(Reaction, "getCurrentShop", function () { return { _id: "123" }; });
         sandbox.stub(Roles, "userIsInRole", () => true);
         sandbox.stub(Reaction, "hasPermission", () => true);
-        sandbox.stub(Reaction, "getShopsWithRoles", () =>  [shopId]);
+        sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId]);
 
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;
@@ -268,7 +269,7 @@ describe("Publication", function () {
           expect(products.length).to.equal(3);
 
           const data = products[1];
-          expect(["My Little Pony", "Shopkins - Peachy"].some(title => title === data.title)).to.be.ok;
+          expect(["My Little Pony", "Shopkins - Peachy"].some((title) => title === data.title)).to.be.ok;
 
           if (!isDone) {
             isDone = true;

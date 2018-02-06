@@ -4,13 +4,13 @@ import { compose } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
+import { Validation } from "@reactioncommerce/reaction-collections";
 import { ReactionProduct } from "/lib/api";
 import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
-import VariantForm from "../components/variantForm";
 import { ProductVariant } from "/lib/collections/schemas/products";
-import { Validation } from "@reactioncommerce/reaction-collections";
+import VariantForm from "../components/variantForm";
 
 const wrapComponent = (Comp) => (
   class VariantFormContainer extends Component {
@@ -55,9 +55,9 @@ const wrapComponent = (Comp) => (
       const shopId = Reaction.getShopId();
 
       const provider = Packages.findOne({
-        "shopId": shopId,
+        shopId,
         "registry.provides": "taxCodes",
-        "$where": function () {
+        "$where"() {
           const providerName = this.name.split("-")[1];
           return this.settings[providerName].enabled;
         }
@@ -72,12 +72,10 @@ const wrapComponent = (Comp) => (
     fetchTaxCodes = () => {
       const shopId = Reaction.getShopId();
       const provider = Packages.findOne({
-        "shopId": shopId,
+        shopId,
         "registry.provides": "taxCodes",
-        "$where": function () {
-          const providers = this.registry.filter((o) => {
-            return o.provides && o.provides.includes("taxCodes");
-          });
+        "$where"() {
+          const providers = this.registry.filter((o) => o.provides && o.provides.includes("taxCodes"));
           const providerName = providers[0].name.split("/")[2];
 
           return this.settings[providerName].enabled;
@@ -86,11 +84,11 @@ const wrapComponent = (Comp) => (
       const taxCodesArray = [];
 
       const codes = TaxCodes.find({
-        shopId: shopId,
+        shopId,
         taxCodeProvider: provider.name
       });
 
-      codes.forEach(function (code) {
+      codes.forEach((code) => {
         taxCodesArray.push({
           value: code.taxCode,
           label: `${code.taxCode} | ${code.label}`
@@ -150,7 +148,7 @@ const wrapComponent = (Comp) => (
             isDeleted: !this.state.isDeleted
           });
           const id = variant._id;
-          Meteor.call("products/deleteVariant", id, function (error, result) {
+          Meteor.call("products/deleteVariant", id, (error, result) => {
             if (result && ReactionProduct.selectedVariantId() === id) {
               return ReactionProduct.setCurrentVariant(null);
             }
@@ -165,20 +163,19 @@ const wrapComponent = (Comp) => (
       if (!productId) {
         return;
       }
-      Meteor.call("products/cloneVariant", productId, variant._id,
-        function (error, result) {
-          if (error) {
-            Alerts.alert({
-              text: i18next.t("productDetailEdit.cloneVariantFail", { title }),
-              confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
-            });
-          } else if (result) {
-            const variantId = result[0];
+      Meteor.call("products/cloneVariant", productId, variant._id, (error, result) => {
+        if (error) {
+          Alerts.alert({
+            text: i18next.t("productDetailEdit.cloneVariantFail", { title }),
+            confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+          });
+        } else if (result) {
+          const variantId = result[0];
 
-            ReactionProduct.setCurrentVariant(variantId);
-            Session.set("variant-form-" + variantId, true);
-          }
-        });
+          ReactionProduct.setCurrentVariant(variantId);
+          Session.set(`variant-form-${variantId}`, true);
+        }
+      });
     }
 
     handleVariantFieldSave = (variantId, fieldName, value, variant) => {
@@ -220,9 +217,7 @@ const wrapComponent = (Comp) => (
       // If this is not a top-level variant, update top-level inventory policy as well
       if (parent && options && options.length) {
         // Check to see if every variant option inventory policy is true
-        const inventoryPolicy = options.every((option) => {
-          return option.inventoryPolicy === true;
-        });
+        const inventoryPolicy = options.every((option) => option.inventoryPolicy === true);
 
         // If all inventory policies on children are true, update parent to be true
         if (inventoryPolicy === true) {
@@ -241,7 +236,7 @@ const wrapComponent = (Comp) => (
       }
     }
 
-    updateQuantityIfChildVariants =  (variant) => {
+    updateQuantityIfChildVariants = (variant) => {
       if (this.hasChildVariants(variant)) {
         const variantQuantity = ReactionProduct.getVariantQuantity(variant);
         return variantQuantity;
@@ -278,6 +273,4 @@ const wrapComponent = (Comp) => (
 
 registerComponent("VariantForm", VariantForm, wrapComponent);
 
-export default compose(
-  wrapComponent
-)(VariantForm);
+export default compose(wrapComponent)(VariantForm);

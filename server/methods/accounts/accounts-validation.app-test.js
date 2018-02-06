@@ -1,3 +1,4 @@
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 
@@ -94,7 +95,7 @@ describe("Account Registration Validation ", function () {
       });
     });
 
-    it("should allow a password of 6 characters or more in length with only uppercase characters",  function (done) {
+    it("should allow a password of 6 characters or more in length with only uppercase characters", function (done) {
       const password = "ABC1234";
       Meteor.call("accounts/validation/password", password, undefined, function (error, result) {
         expect(result).to.be.true;
@@ -109,16 +110,12 @@ describe("Account Registration Validation ", function () {
         return done();
       });
     });
-
-    it("should allow a password of 6 characters or more in length uppercase, lower, and symbol characters",
-      function (done)  {
-        const password = "abcABC1234@#$%^";
-        Meteor.call("accounts/validation/password", password, undefined, function (error, result) {
-          expect(result).to.be.true;
-          return done();
-        });
-      }
-    );
+    it("should allow a password of 6 characters or more in length uppercase, lower, and symbol characters", function (done) {
+      const password = "abcABC1234@#$%^";
+      Meteor.call("accounts/validation/password", password, undefined, function (error, result) {
+        expect(result).to.be.true;
+        return done();
+      });
+    });
   });
 });
-

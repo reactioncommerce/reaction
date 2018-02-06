@@ -38,7 +38,7 @@ const shop = {
   name: faker.internet.domainName(),
   description: faker.company.catchPhrase(),
   keywords: faker.company.bsAdjective(),
-  addressBook: [ getAddress() ],
+  addressBook: [getAddress()],
   domains: ["localhost"],
   emails: [
     {
@@ -142,7 +142,7 @@ const shop = {
   // one shop in the marketplace is required as default shop. This is used to control marketplace settings.
   // Not having a primary shop will cause test failures
   shopType: "primary",
-  createdAt: new Date,
+  createdAt: new Date(),
   updatedAt: new Date()
 };
 

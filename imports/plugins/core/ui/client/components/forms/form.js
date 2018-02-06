@@ -63,13 +63,11 @@ class Form extends Component {
     const { docPath } = this.props;
 
     if (docPath) {
-      const objectKeys = this.objectKeys[docPath + "."];
+      const objectKeys = this.objectKeys[`${docPath}.`];
       if (Array.isArray(objectKeys)) {
         // Use the objectKeys from parent fieldset to generate
         // actual form fields
-        const fieldNames = objectKeys.map((fieldName) => {
-          return `${docPath}.${fieldName}`;
-        });
+        const fieldNames = objectKeys.map((fieldName) => `${docPath}.${fieldName}`);
 
         return this.props.schema.pick(fieldNames).newContext();
       }
@@ -124,9 +122,7 @@ class Form extends Component {
   }
 
   handleChange = (event, value, name) => {
-    const newdoc = update(this.state.doc, name, () => {
-      return value;
-    });
+    const newdoc = update(this.state.doc, name, () => value);
     // Calling user defined field specific handleChange function
     if (this.props.fieldsProp[name] && typeof this.props.fieldsProp[name].handleChange === "function") {
       this.props.fieldsProp[name].handleChange(event, value, name);
@@ -148,7 +144,7 @@ class Form extends Component {
   }
 
   handleMultiSelectChange = (value, name) => {
-    this.handleChange(new Event("onMultiSelect"), value.map(v => v.value), name);
+    this.handleChange(new Event("onMultiSelect"), value.map((v) => v.value), name);
   }
 
   handleSubmit = async (event) => {
@@ -231,7 +227,7 @@ class Form extends Component {
     if (this.state.isValid === false) {
       this.state.schema._invalidKeys
         .filter((v) => v.name === field.name)
-        .map((validationError) => {
+        .forEach((validationError) => {
           const message = this.state.schema.keyErrorMessage(validationError.name);
           fieldHasError = true;
 
@@ -283,7 +279,7 @@ class Form extends Component {
       if (!renderFromFields && docPath) {
         return Object.keys(this.schema).map((key) => { // eslint-disable-line consistent-return
           if (key.endsWith(docPath)) {
-            const objectKeys = this.objectKeys[docPath + "."];
+            const objectKeys = this.objectKeys[`${docPath}.`];
             if (Array.isArray(objectKeys)) {
               // Use the objectKeys from parent fieldset to generate
               // actual form fields
@@ -292,9 +288,9 @@ class Form extends Component {
                 return this.renderField({ fieldName: fullFieldName });
               });
             }
-
             return this.renderField({ fieldName: key });
           }
+          return;
         });
       }
 
@@ -312,13 +308,13 @@ class Form extends Component {
             const fieldProp = get(fieldsProp, key, undefined);
             return this.renderField({ fieldName: key }, Object.assign(tempObj, fieldProp));
           }
+          return;
         });
       }
 
       // Render all fields if none of the options are set above
-      return Object.keys(this.schema).map((key) => {// eslint-disable-line consistent-return
-        return this.renderField({ fieldName: key });
-      });
+      return Object.keys(this.schema).map((key) => // eslint-disable-line consistent-return
+        this.renderField({ fieldName: key }));
     }
 
     return null;

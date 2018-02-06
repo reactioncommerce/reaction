@@ -49,7 +49,7 @@ class ForgotPasswordContainer extends Component {
       this.setState({
         isLoading: false,
         formMessages: {
-          errors: errors
+          errors
         }
       });
       return;
@@ -78,13 +78,11 @@ class ForgotPasswordContainer extends Component {
     });
   }
 
-  formMessages = () => {
-    return (
-      <Components.LoginFormMessages
-        messages={this.state.formMessages}
-      />
-    );
-  }
+  formMessages = () => (
+    <Components.LoginFormMessages
+      messages={this.state.formMessages}
+    />
+  )
 
   hasError = (error) => {
     // True here means the field is valid

@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
+import ReactionAlerts from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 import { Reaction } from "/client/api";
 import { groupPermissions } from "../helpers/accountsHelper";
 
@@ -46,28 +46,22 @@ class EditGroup extends Component {
     this.setState({ groups, selectedGroup });
   }
 
-  selectGroup = (grp) => {
-    return (event) => {
-      event.preventDefault();
-      if (this.props.onChangeGroup) {
-        this.props.onChangeGroup(grp);
-      }
-      this.setState({ isEditing: false });
-    };
+  selectGroup = (grp) => (event) => {
+    event.preventDefault();
+    if (this.props.onChangeGroup) {
+      this.props.onChangeGroup(grp);
+    }
+    this.setState({ isEditing: false });
   };
 
-  groupListClass = (grp) => {
-    return classnames({
-      "groups-item-selected": grp._id === this.state.selectedGroup._id,
-      "groups-list": true
-    });
-  };
+  groupListClass = (grp) => classnames({
+    "groups-item-selected": grp._id === this.state.selectedGroup._id,
+    "groups-list": true
+  });
 
-  removeAlert = (oldAlert) => {
-    return this.setState({
-      alertArray: this.state.alertArray.filter((alert) => !_.isEqual(alert, oldAlert))
-    });
-  };
+  removeAlert = (oldAlert) => this.setState({
+    alertArray: this.state.alertArray.filter((alert) => !_.isEqual(alert, oldAlert))
+  });
 
   createGroup = (groupData) => {
     Meteor.call("group/createGroup", groupData, Reaction.getShopId(), (err, res) => {
@@ -117,12 +111,10 @@ class EditGroup extends Component {
     });
   };
 
-  showForm = ((grp) = {}) => {
-    return (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      this.setState({ isEditing: true, selectedGroup: grp });
-    };
+  showForm = ((grp) = {}) => (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({ isEditing: true, selectedGroup: grp });
   };
 
   renderGroupForm = () => {
@@ -155,8 +147,11 @@ class EditGroup extends Component {
       <Components.List>
         {this.state.groups.map((grp, index) => (
           <div key={index} className={this.groupListClass(grp)}>
-            <Components.ListItem label={grp.name} onClick={this.selectGroup(grp)}>
-              <a href="" onClick={this.showForm(grp)} className="fa fa-pencil" />
+            <Components.ListItem label={grp.name} onClick={this.selectGroup(grp)} listItemClassName="flex flex-justify-spaceBetween">
+              <Components.IconButton
+                icon="fa fa-pencil"
+                onClick={this.showForm(grp)}
+              />
             </Components.ListItem>
           </div>
         ))}

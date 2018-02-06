@@ -11,7 +11,7 @@ import { Products, Media } from "/lib/collections";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
-  if (typeof current === "object" && (variantId === current._id || ~current.ancestors.indexOf(variantId))) {
+  if (typeof current === "object" && (variantId === current._id || current.ancestors.indexOf(variantId) >= 0)) {
     return true;
   }
 
@@ -46,11 +46,9 @@ Template.variantList.onRendered(function () {
         onUpdate() {
           const positions = instance.$(".variant-list-item")
             .toArray()
-            .map((element) => {
-              return element.getAttribute("data-id");
-            });
+            .map((element) => element.getAttribute("data-id"));
 
-          Meteor.defer(function () {
+          Meteor.defer(() => {
             Meteor.call("products/updateVariantsPosition", positions);
           });
 
@@ -66,7 +64,7 @@ Template.variantList.onRendered(function () {
  * variantList helpers
  */
 Template.variantList.helpers({
-  media: function () {
+  media() {
     const media = Media.findOne({
       "metadata.variantId": this._id
     }, {
@@ -77,7 +75,7 @@ Template.variantList.helpers({
 
     return media instanceof FS.File ? media : false;
   },
-  variants: function () {
+  variants() {
     let inventoryTotal = 0;
     const variants = ReactionProduct.getTopVariants();
     if (variants.length) {
@@ -115,7 +113,7 @@ Template.variantList.helpers({
     }
     return [];
   },
-  childVariants: function () {
+  childVariants() {
     const childVariants = [];
     const variants = ReactionProduct.getVariants();
     if (variants.length > 0) {
@@ -126,17 +124,18 @@ Template.variantList.helpers({
       }
 
       if (current.ancestors.length === 1) {
-        variants.map(variant => {
+        variants.map((variant) => {
           if (typeof variant.ancestors[1] === "string" &&
             variant.ancestors[1] === current._id &&
             variant.optionTitle &&
             variant.type !== "inventory") {
             childVariants.push(variant);
           }
+          return childVariants;
         });
       } else {
         // TODO not sure we need this part...
-        variants.map(variant => {
+        variants.map((variant) => {
           if (typeof variant.ancestors[1] === "string" &&
             variant.ancestors.length === current.ancestors.length &&
             variant.ancestors[1] === current.ancestors[1] &&
@@ -144,6 +143,7 @@ Template.variantList.helpers({
           ) {
             childVariants.push(variant);
           }
+          return childVariants;
         });
       }
 
@@ -168,7 +168,7 @@ Template.variantList.helpers({
       toggleOn: variantIsInActionView(variant._id),
       onClick() {
         ReactionProduct.setCurrentVariant(variant._id);
-        Session.set("variant-form-" + parentVariant._id, true);
+        Session.set(`variant-form-${parentVariant._id}`, true);
 
         if (Reaction.hasPermission("createProduct")) {
           Reaction.showActionView({
@@ -200,10 +200,10 @@ Template.variantList.helpers({
  */
 
 Template.variantList.events({
-  "click #create-variant": function () {
+  "click #create-variant"() {
     return Meteor.call("products/createVariant", this._id);
   },
-  "click .variant-select-option": function (event, templateInstance) {
+  "click .variant-select-option"(event, templateInstance) {
     templateInstance.$(".variant-select-option").removeClass("active");
     $(event.target).addClass("active");
     Alerts.removeSeen();

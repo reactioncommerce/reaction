@@ -13,17 +13,15 @@ class EmailLogs extends Component {
 
     // helper adds a class to every grid row
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
-        return "email-grid-row";
-      }
+      bodyCssClassName: () => "email-grid-row"
     };
 
     // add i18n handling to headers
     const customColumnMetadata = [];
-    filteredFields.forEach(function (field) {
-      let colWidth = undefined;
-      let colStyle = undefined;
-      let colClassName = undefined;
+    filteredFields.forEach((field) => {
+      let colWidth;
+      let colStyle;
+      let colClassName;
 
       if (field === "status") {
         colWidth = 70;

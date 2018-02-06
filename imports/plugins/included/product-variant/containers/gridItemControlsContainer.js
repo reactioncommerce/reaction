@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
+import { Validation } from "@reactioncommerce/reaction-collections";
 import { Reaction } from "/client/api";
 import GridItemControls from "../components/gridItemControls";
 import { ReactionProduct } from "/lib/api";
 import { ProductVariant } from "/lib/collections/schemas/products";
-import { Validation } from "@reactioncommerce/reaction-collections";
 
 const wrapComponent = (Comp) => (
   class GridItemControlsContainer extends Component {
@@ -32,13 +32,9 @@ const wrapComponent = (Comp) => (
       this.checkValidation();
     }
 
-    hasCreateProductPermission = () => {
-      return Reaction.hasPermission("createProduct");
-    }
+    hasCreateProductPermission = () => Reaction.hasPermission("createProduct")
 
-    hasChanges = () => {
-      return this.props.product.__draft ? true : false;
-    }
+    hasChanges = () => !!this.props.product.__draft
 
     // This method checks validation of the variants of the all the products on the Products grid to
     // check whether all required fields have been submitted before publishing
@@ -60,9 +56,7 @@ const wrapComponent = (Comp) => (
       }
     }
 
-    checked = () => {
-      return this.props.isSelected === true;
-    }
+    checked = () => this.props.isSelected === true
 
     render() {
       return (
@@ -78,7 +72,7 @@ const wrapComponent = (Comp) => (
 );
 
 function composer(props, onData) {
-  const product = props.product;
+  const { product } = props;
   let isSelected;
 
   if (product) {

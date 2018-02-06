@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import { inRange } from "lodash";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
-import { Form } from "/imports/plugins/core/ui/client/components";
+import { Form, Loading } from "/imports/plugins/core/ui/client/components";
 import { Components } from "@reactioncommerce/reaction-components";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
 import { Logs } from "/lib/collections";
 import { Logs as LogSchema } from "/lib/collections/schemas/logs";
 import { i18next } from "/client/api";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 
 /**
  * @file AvalaraSettingsForm is a React Component used to change Avalara
@@ -51,14 +50,12 @@ class AvalaraSettingsForm extends Component {
     shownFields: PropTypes.object,
     shownLogFields: PropTypes.object
   };
-  static filteredFields = [ "data.request.data.date", "data.request.data.type" ];
+  static filteredFields = ["data.request.data.date", "data.request.data.type"];
   static noDataMessage = i18next.t("logGrid.noLogsFound");
 
   // helper adds a class to every grid row
   static customRowMetaData = {
-    bodyCssClassName: () =>  {
-      return "log-grid-row";
-    }
+    bodyCssClassName: () => "log-grid-row"
   };
 
   constructor(props) {
@@ -106,12 +103,12 @@ class AvalaraSettingsForm extends Component {
   }
 
   handleTestCredentials() {
-    Meteor.call("avalara/testCredentials", this.props.settings.avalara, function (error, result) {
+    Meteor.call("avalara/testCredentials", this.props.settings.avalara, (error, result) => {
       if (error && error.message) {
         return Alerts.toast(`${i18next.t("settings.testCredentialsFailed")} ${error.message}`, "error");
       }
       try {
-        const statusCode = result.statusCode;
+        const { statusCode } = result;
         const connectionValid = inRange(statusCode, 400);
         if (connectionValid) {
           return Alerts.toast(i18next.t("settings.testCredentialsSuccess"), "success");
@@ -165,7 +162,7 @@ class AvalaraSettingsForm extends Component {
 
     return (
       <div className="rui avalara-update-form">
-        {!(!!settings.avalara.apiLoginId) &&
+        {!(settings.avalara.apiLoginId) &&
           <div className="alert alert-info">
             <Components.Translation defaultValue="Add API Login ID to enable" i18nKey="admin.taxSettings.avalaraCredentials" />
             <a href="https://admin-development.avalara.net" target="_blank">Avalara</a>

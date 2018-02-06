@@ -2,7 +2,7 @@ import faker from "faker";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
-import { Accounts }  from "/lib/collections";
+import { Accounts } from "/lib/collections";
 import { getShop } from "./shops";
 
 /**
@@ -50,7 +50,7 @@ export function createAccountFactory() {
       ]
     },
     metafields: [],
-    createdAt: new Date,
+    createdAt: new Date(),
     updatedAt: new Date()
   });
 }

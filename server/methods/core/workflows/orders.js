@@ -15,9 +15,9 @@ Meteor.methods({
    * @see packages/reaction-schema/common/hooks/orders.js
    * @see packages/reaction-core/common/methods/workflow.js
    */
-  "workflow/coreOrderWorkflow/coreOrderProcessing": function (options) {
+  "workflow/coreOrderWorkflow/coreOrderProcessing"(options) {
     check(options, Match.OrderHookOptions());
-    const userId = options.userId;
+    const { userId } = options;
 
     return Reaction.hasPermission(["dashboard/orders"], userId);
   },
@@ -33,14 +33,12 @@ Meteor.methods({
    * @see packages/reaction-schema/common/hooks/orders.js
    * @see packages/reaction-core/common/methods/workflow.js
    */
-  "workflow/coreOrderWorkflow/coreOrderCompleted": function (options) {
+  "workflow/coreOrderWorkflow/coreOrderCompleted"(options) {
     check(options, Match.OrderHookOptions());
 
-    const order = options.order;
+    const { order } = options;
 
-    const result = _.every(order.items, (item) => {
-      return _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed");
-    });
+    const result = _.every(order.items, (item) => _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed"));
 
     return result;
   }

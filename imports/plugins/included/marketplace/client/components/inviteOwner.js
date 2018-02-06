@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import { registerComponent, Components } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
-import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
+import ReactionAlerts from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 
 class InviteOwner extends Component {
   constructor() {
@@ -20,11 +20,9 @@ class InviteOwner extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  removeAlert = oldAlert => {
-    return this.setState({
-      alertArray: this.state.alertArray.filter(alert => JSON.stringify(alert) === JSON.stringify(oldAlert))
-    });
-  };
+  removeAlert = (oldAlert) => this.setState({
+    alertArray: this.state.alertArray.filter((alert) => JSON.stringify(alert) === JSON.stringify(oldAlert))
+  });
 
   handleSubmit = (event) => {
     event.preventDefault();

@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { Random } from "meteor/random";
@@ -14,7 +15,8 @@ Fixtures();
 
 describe("Merge Cart function ", function () {
   const shop = getShop();
-  const sessionId = Reaction.sessionId = Random.id();
+  Reaction.sessionId = Random.id();
+  const { sessionId } = Reaction;
   let originals;
   let sandbox;
   let pushCartWorkflowStub;
@@ -39,8 +41,8 @@ describe("Merge Cart function ", function () {
     Collections.Products.remove({});
 
     // mock it. If you want to make full integration test, comment this out
-    pushCartWorkflowStub = sinon.stub(Meteor.server.method_handlers, "workflow/pushCartWorkflow", function () {
-      check(arguments, [Match.Any]);
+    pushCartWorkflowStub = sinon.stub(Meteor.server.method_handlers, "workflow/pushCartWorkflow", function (...args) {
+      check(args, [Match.Any]);
       return true;
     });
   });
@@ -62,10 +64,10 @@ describe("Merge Cart function ", function () {
   });
 
   function spyOnMethod(method, id) {
-    return sandbox.stub(Meteor.server.method_handlers, `cart/${method}`, function () {
-      check(arguments, [Match.Any]); // to prevent audit_arguments from complaining
+    return sandbox.stub(Meteor.server.method_handlers, `cart/${method}`, function (...args) {
+      check(args, [Match.Any]); // to prevent audit_arguments from complaining
       this.userId = id;
-      return originals[method].apply(this, arguments);
+      return originals[method].apply(this, args);
     });
   }
 
@@ -77,11 +79,7 @@ describe("Merge Cart function ", function () {
     expect(cartCount).to.equal(2);
     spyOnMethod("mergeCart", cart.userId);
     const cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
-    Collections.Cart.update({}, {
-      $set: {
-        sessionId: sessionId
-      }
-    });
+    Collections.Cart.update({}, { $set: { sessionId } });
     const mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
     expect(mergeResult).to.be.ok;
     anonymousCart = Collections.Cart.findOne(anonymousCart._id);
@@ -105,11 +103,7 @@ describe("Merge Cart function ", function () {
     }, { $set: { "items.$.variants._id": cart.items[0].variants_id } });
     spyOnMethod("mergeCart", cart.userId);
     const cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
-    Collections.Cart.update({}, {
-      $set: {
-        sessionId: sessionId
-      }
-    });
+    Collections.Cart.update({}, { $set: { sessionId } });
     const mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
     expect(mergeResult).to.be.ok;
     const anonymousCartAfterMerge = Collections.Cart.findOne(anonymousCart._id);

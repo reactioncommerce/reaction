@@ -3,7 +3,7 @@ import { Template } from "meteor/templating";
 import { Reaction, Router, i18next } from "client/api";
 import { Components } from "@reactioncommerce/reaction-components";
 
-Template.stripeConnectAuthorize.onCreated(function () {
+Template.stripeConnectAuthorize.onCreated(() => {
   const shopId = Reaction.Router.getQueryParam("state");
   const authCode = Reaction.Router.getQueryParam("code");
   const error = Reaction.Router.getQueryParam("error");

@@ -7,11 +7,11 @@ import { Template } from "meteor/templating";
 */
 
 Template.productSocial.helpers({
-  customSocialSettings: function () {
+  customSocialSettings() {
     const product = ReactionProduct.selectedProduct();
-    let title = product.title;
+    let { title } = product;
     if (ReactionProduct.selectedVariant()) {
-      title = ReactionProduct.selectedVariant().title;
+      ({ title } = ReactionProduct.selectedVariant());
     }
 
     const settings = {
@@ -21,7 +21,7 @@ Template.productSocial.helpers({
       media: Session.get("variantImgSrc"),
       url: window.location.href,
       title: title || "",
-      description: typeof product.description === "string" ? product.description.substring(0, 254) : void 0,
+      description: typeof product.description === "string" ? product.description.substring(0, 254) : undefined,
       apps: {
         facebook: {
           description: product.facebookMsg

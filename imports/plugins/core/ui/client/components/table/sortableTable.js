@@ -1,11 +1,11 @@
-import React,  { Component } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import matchSorter from "match-sorter";
 import ReactTable from "react-table";
 import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
-import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 import { registerComponent } from "@reactioncommerce/reaction-components";
+import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 
 /**
  * @file SortableTable is a React Component wrapper around {@link https://react-table.js.org} ReactTable.
@@ -67,8 +67,8 @@ class SortableTable extends Component {
 
     return {
       loading: !pubHandle.ready(),
-      results: results,
-      matchingResults: matchingResults
+      results,
+      matchingResults
     };
   }
 
@@ -143,11 +143,9 @@ class SortableTable extends Component {
     const { columnMetadata } = this.props;
 
     // Add minWidth = undefined to override 100px default set by ReactTable
-    const displayColumns = columnMetadata.map((element) => {
-      return Object.assign({}, element, {
-        minWidth: undefined
-      });
-    });
+    const displayColumns = columnMetadata.map((element) => Object.assign({}, element, {
+      minWidth: undefined
+    }));
 
     return displayColumns;
   }
@@ -315,7 +313,7 @@ class SortableTable extends Component {
             }
 
             return {
-              onClick: e => { // eslint-disable-line no-unused-vars
+              onClick: (e) => { // eslint-disable-line no-unused-vars
                 this.handleClick(rowInfo);
               },
               className: this.selectedRowsClassName(rowInfo)

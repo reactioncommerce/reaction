@@ -35,8 +35,8 @@ function buildPaymentMethod(result, status, mode) {
     method: "credit",
     transactionId: result.TRANSACTIONID,
     amount: parseFloat(result.AMT, 10),
-    status: status,
-    mode: mode,
+    status,
+    mode,
     createdAt: new Date(result.ORDERTIME),
     updatedAt: new Date(result.ORDERTIME),
     transactions: [result]
@@ -44,12 +44,12 @@ function buildPaymentMethod(result, status, mode) {
   return paymentMethod;
 }
 
-Template.paypalDone.onRendered(function () {
+Template.paypalDone.onRendered(() => {
   $(".paypal-done-error").hide();
 });
 
 Template.paypalDone.helpers({
-  checkoutUrl: function () {
+  checkoutUrl() {
     const template = Template.instance();
     return template.checkoutUrl;
   }
@@ -61,7 +61,7 @@ Template.paypalDone.onCreated(function () {
   const prefix = Reaction.getShopPrefix();
   this.checkoutUrl = `${prefix}/cart/checkout`;
   // wait for cart to be ready
-  Tracker.autorun(function (c) {
+  Tracker.autorun((c) => {
     if (Reaction.Subscriptions.Cart.ready()) {
       const cart = Cart.findOne();
       if (!cart) {
@@ -71,14 +71,14 @@ Template.paypalDone.onCreated(function () {
       c.stop();
       if (Session.get("expressToken") !== token) {
         Session.set("expressToken", token);
-        Meteor.call("confirmPaymentAuthorization", cart._id, token, payerId, function (error, result) {
+        Meteor.call("confirmPaymentAuthorization", cart._id, token, payerId, (error, result) => {
           if (error) {
             if (isDuplicate(error)) {
               Reaction.Router.go("cart/completed", {}, {
                 _id: cart._id
               });
             }
-            const msg = (error !== null ? error.error : void 0);
+            const msg = (error !== null ? error.error : undefined);
             showError(msg);
           }
 
@@ -96,7 +96,7 @@ Template.paypalDone.onCreated(function () {
             }
             const paymentMethod = buildPaymentMethod(result, status, mode);
 
-            Meteor.call("cart/submitPayment", paymentMethod, function (payError, payResult) {
+            Meteor.call("cart/submitPayment", paymentMethod, (payError, payResult) => {
               if (!payResult && payError) {
                 Logger.warn(payError, "Error received during submitting Payment via Paypal");
                 showError(payError);

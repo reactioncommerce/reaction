@@ -10,32 +10,31 @@ import { Shops, Cart, Packages } from "/lib/collections";
 // tax methods precendence is determined by
 // load order of plugins
 //
-MethodHooks.after("taxes/calculate", function (options) {
+MethodHooks.after("taxes/calculate", (options) => {
   const result = options.result || {};
   let origin = {};
 
   const cartId = options.arguments[0];
   const cartToCalc = Cart.findOne(cartId);
   if (cartToCalc) {
-    const shopId = cartToCalc.shopId;
+    const { shopId } = cartToCalc;
     const shop = Shops.findOne(shopId);
     const pkg = Packages.findOne({
       name: "taxes-taxcloud",
-      shopId: shopId,
+      shopId,
       enabled: true
     });
 
     // check if package is configured
     if (shop && pkg && pkg.settings.taxcloud) {
-      const apiKey = pkg.settings.taxcloud.apiKey;
-      const apiLoginId = pkg.settings.taxcloud.apiLoginId;
+      const { apiKey, apiLoginId } = pkg.settings.taxcloud;
 
       // get shop address
       // this will need some refactoring
       // for multi-vendor/shop orders
       if (shop.addressBook) {
         const shopAddress = shop.addressBook[0];
-        origin =  {
+        origin = {
           Address1: shopAddress.address1,
           City: shopAddress.city,
           State: shopAddress.region,
@@ -74,7 +73,7 @@ MethodHooks.after("taxes/calculate", function (options) {
                   Price: items.variants.price,
                   Qty: items.quantity
                 };
-                index ++;
+                index += 1;
                 cartItems.push(item);
               }
             }
@@ -86,18 +85,18 @@ MethodHooks.after("taxes/calculate", function (options) {
                 "content-type": "application/json"
               },
               data: {
-                apiKey: apiKey,
-                apiLoginId: apiLoginId,
+                apiKey,
+                apiLoginId,
                 customerID: cartToCalc.userId,
-                cartItems: cartItems,
-                origin: origin,
-                destination: destination,
+                cartItems,
+                origin,
+                destination,
                 cartID: cartId,
                 deliveredBySeller: false
               }
             };
 
-            HTTP.post(url, request, function (error, response) {
+            HTTP.post(url, request, (error, response) => {
               let taxRate = 0;
               // ResponseType 3 is a successful call.
               if (!error && response.data.ResponseType === 3) {

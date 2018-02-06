@@ -1,14 +1,12 @@
-jest.mock("/imports/plugins/core/ui/client/components", () => {
-  return {
-    Badge() { return null; },
-    ClickToCopy() { return null; }
-  };
-});
+jest.mock("/imports/plugins/core/ui/client/components", () => ({
+  Badge() { return null; },
+  ClickToCopy() { return null; }
+}));
 
 import React from "react";
-import OrderSummary from "../../components/orderSummary";
 import { shallow } from "enzyme";
 import shallowToJSON from "enzyme-to-json";
+import OrderSummary from "../../components/orderSummary";
 
 /**
  * Order Summary is a display only component
@@ -36,13 +34,14 @@ test("OrderSummary snapshot test", () => {
       status: "new"
     },
     billing: [
-      { paymentMethod: {},
+      {
+        paymentMethod: {},
         invoice: {}
       }
     ]
   };
 
-  const component = shallow(
+  const component = shallow((
     <OrderSummary
       dateFormat={dateFormat}
       tracking={tracking}
@@ -51,7 +50,7 @@ test("OrderSummary snapshot test", () => {
       printableLabels={printableLabels}
       order={order}
     />
-  );
+  ));
   const tree = shallowToJSON(component);
   expect(tree).toMatchSnapshot();
 });

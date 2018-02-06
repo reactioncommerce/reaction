@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
@@ -47,7 +48,7 @@ describe("Account Publications", function () {
       sandbox.stub(Roles, "userIsInRole", () => false);
       const thisContext = {
         userId: "notAdminUser",
-        ready: function () { return "ready"; }
+        ready() { return "ready"; }
       };
       const publication = Meteor.server.publish_handlers["ShopMembers"];
       const cursor = publication.apply(thisContext);
@@ -61,19 +62,18 @@ describe("Account Publications", function () {
       Factory.create("registeredUser");
       const thisContext = {
         userId: user._id,
-        ready: function () { return "ready"; }
+        ready() { return "ready"; }
       };
       const publication = Meteor.server.publish_handlers["ShopMembers"];
       const cursor = publication.apply(thisContext);
       // verify
       const data = cursor.fetch();
       // we expect services will be clean object
-      expect(data.some(_user => {
+      expect(data.some((_user) =>
         // we expect two users. First will be without services, second with
         // clean services object
-        return typeof _user.services === "object" &&
-          _.isEqual(_user.services, {});
-      })).to.be.true;
+        typeof _user.services === "object" &&
+          _.isEqual(_user.services, {}))).to.be.true;
     });
   });
 });

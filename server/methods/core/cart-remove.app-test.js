@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
@@ -40,11 +41,11 @@ describe("cart methods", function () {
       const cartUserId = cart.userId;
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => cartUserId);
-      sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
+        check(args, [Match.Any]);
       });
-      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
+        check(args, [Match.Any]);
       });
       const updateSpy = sandbox.spy(Collections.Cart, "update");
       const cartFromCollection = Collections.Cart.findOne(cart._id);
@@ -59,11 +60,11 @@ describe("cart methods", function () {
     });
 
     it("should decrease the quantity when called with a quantity", function () {
-      sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
+        check(args, [Match.Any]);
       });
-      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
+        check(args, [Match.Any]);
       });
       const cart = Factory.create("cartTwo");
       const cartUserId = cart.userId;
@@ -78,11 +79,11 @@ describe("cart methods", function () {
     });
 
     it("should remove cart item when quantity is decresed to zero", function () {
-      sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
+        check(args, [Match.Any]);
       });
-      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
+        check(args, [Match.Any]);
       });
       const cart = Factory.create("cartOne");
       const cartUserId = cart.userId;

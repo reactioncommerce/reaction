@@ -1,6 +1,6 @@
+import os from "os";
 import _ from "lodash";
 import accounting from "accounting-js";
-import os from "os";
 import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
@@ -96,7 +96,7 @@ function parseError(error) {
   }
   const errorDetails = [];
   if (error.response.data.error.details) {
-    const details = error.response.data.error.details;
+    const { details } = error.response.data.error;
     for (const detail of details) {
       if (detail.severity === "Error") {
         errorDetails.push({ message: detail.message, description: detail.description });
@@ -270,7 +270,7 @@ taxCalc.validateAddress = function (address) {
   let messages;
   let validatedAddress = ""; // set default as falsy value
   const errors = [];
-  const addressToValidate  = {
+  const addressToValidate = {
     line1: address.address1,
     city: address.city,
     postalCode: address.postal,
@@ -289,7 +289,7 @@ taxCalc.validateAddress = function (address) {
   const result = avaPost(requestUrl, { data: addressToValidate });
   const content = result.data;
   if (content && content.messages) {
-    messages = content.messages;
+    ({ messages } = content);
   }
   if (messages) {
     for (const message of messages) {
@@ -336,12 +336,12 @@ taxCalc.testCredentials = function (credentials, testCredentials = false) {
       Meteor.call("avalara/getTaxCodes", (error, res) => {
         if (error) {
           if (typeof error === "object") {
-            Meteor.call("logging/logError", "avalara",  error);
+            Meteor.call("logging/logError", "avalara", error);
           } else {
-            Meteor.call("logging/logError", "avalara",  { error });
+            Meteor.call("logging/logError", "avalara", { error });
           }
         } else if (res && Array.isArray(res)) {
-          res.forEach(function (code) {
+          res.forEach((code) => {
             Meteor.call("taxes/insertTaxCodes", Reaction.getShopId(), code, "taxes-avalara", (err) => {
               if (err) {
                 throw new Meteor.Error("error-occurred", "Error populating TaxCodes collection", err);
@@ -385,9 +385,9 @@ function cartToSalesOrder(cart) {
   const cartDate = moment(cart.createdAt).format();
   let lineItems = [];
   if (cart.items) {
-    lineItems = cart.items.map((item) => {
+    lineItems = cart.items.reduce((items, item) => {
       if (item.variants.taxable) {
-        return {
+        const itemObj = {
           number: item._id,
           itemCode: item.productId,
           quantity: item.quantity,
@@ -395,8 +395,10 @@ function cartToSalesOrder(cart) {
           description: item.taxDescription || item.title,
           taxCode: item.variants.taxCode
         };
+        items.push(itemObj);
       }
-    });
+      return items;
+    }, []);
     if (cartShipping) {
       lineItems.push({
         number: "shipping",
@@ -410,11 +412,11 @@ function cartToSalesOrder(cart) {
   }
 
   const salesOrder = {
-    companyCode: companyCode,
+    companyCode,
     type: "SalesOrder",
     customerCode: cart.userId,
     date: cartDate,
-    currencyCode: currencyCode,
+    currencyCode,
     addresses: {
       ShipFrom: {
         line1: companyShipping.address1,
@@ -437,7 +439,7 @@ function cartToSalesOrder(cart) {
 
   // current "coupon code" discount are based at the cart level, and every iten has it's
   // discounted property set to true.
-  if (cart.discount)  {
+  if (cart.discount) {
     salesOrder.discount = accounting.toFixed(cart.discount, 2);
     for (const line of salesOrder.lines) {
       if (line.itemCode !== "shipping") {
@@ -489,9 +491,9 @@ function orderToSalesInvoice(order) {
   const currencyCode = company.currency;
   const orderShipping = order.getShippingTotal();
   const orderDate = moment(order.createdAt).format();
-  const lineItems = order.items.map((item) => {
+  const lineItems = order.items.reduce((items, item) => {
     if (item.variants.taxable) {
-      return {
+      const itemObj = {
         number: item._id,
         itemCode: item.productId,
         quantity: item.quantity,
@@ -499,8 +501,11 @@ function orderToSalesInvoice(order) {
         description: item.taxDescription || item.title,
         taxCode: item.variants.taxCode
       };
+      items.push(itemObj);
     }
-  });
+    return items;
+  }, []);
+
   if (orderShipping) {
     lineItems.push({
       number: "shipping",
@@ -513,13 +518,13 @@ function orderToSalesInvoice(order) {
   }
 
   const salesInvoice = {
-    companyCode: companyCode,
+    companyCode,
     type: documentType,
     commit: commitDocuments,
     code: order._id,
     customerCode: order.userId,
     date: orderDate,
-    currencyCode: currencyCode,
+    currencyCode,
     addresses: {
       ShipFrom: {
         line1: companyShipping.address1,
@@ -540,7 +545,7 @@ function orderToSalesInvoice(order) {
     lines: lineItems
   };
 
-  if (order.discount)  {
+  if (order.discount) {
     salesInvoice.discount = accounting.toFixed(order.discount, 2);
     for (const line of salesInvoice.lines) {
       if (line.itemCode !== "shipping") {
@@ -595,20 +600,20 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
   const orderDate = moment(order.createdAt);
   const refundDate = moment();
   const refundReference = `${order.cartId}:${refundDate}`;
-  const  lineItems = {
+  const lineItems = {
     number: "01",
     quantity: 1,
     amount: returnAmount,
     description: "refund"
   };
   const returnInvoice = {
-    companyCode: companyCode,
+    companyCode,
     type: "ReturnInvoice",
     code: refundReference,
     commit: true,
     customerCode: order._id,
     date: refundDate,
-    currencyCode: currencyCode,
+    currencyCode,
     addresses: {
       ShipFrom: {
         line1: companyShipping.address1,

@@ -91,47 +91,43 @@ class TagList extends Component {
 
     if (Array.isArray(this.props.tags)) {
       const arrayProps = _.compact(this.props.tags);
-      const tags = arrayProps.map((tag, index) => {
-        return (
-          <div className={classes(tag)} key={index}>
-            <Components.TagItem
-              {...this.props}
-              data-id={tag._id}
-              index={index}
-              key={index}
-              tag={tag}
-              onMove={this.props.onMoveTag}
-              draggable={this.props.draggable}
-              onTagInputBlur={this.handleTagSave}
-              onTagMouseOut={this.handleTagMouseOut}
-              onTagMouseOver={this.handleTagMouseOver}
-              onTagRemove={this.handleTagRemove}
-              onTagSave={this.handleTagSave}
-              onTagUpdate={this.handleTagUpdate}
-              onTagClick={this.handleTagClick}
-            />
-            {this.props.children}
-          </div>
-        );
-      });
+      const tags = arrayProps.map((tag, index) => (
+        <div className={classes(tag)} key={index}>
+          <Components.TagItem
+            {...this.props}
+            data-id={tag._id}
+            index={index}
+            key={index}
+            tag={tag}
+            onMove={this.props.onMoveTag}
+            draggable={this.props.draggable}
+            onTagInputBlur={this.handleTagSave}
+            onTagMouseOut={this.handleTagMouseOut}
+            onTagMouseOver={this.handleTagMouseOver}
+            onTagRemove={this.handleTagRemove}
+            onTagSave={this.handleTagSave}
+            onTagUpdate={this.handleTagUpdate}
+            onTagClick={this.handleTagClick}
+          />
+          {this.props.children}
+        </div>
+      ));
 
       // Render an blank tag for creating new tags
       if (this.props.editable && this.props.enableNewTagForm) {
-        tags.push(
-          <div className={classes()} key="newTagForm">
-            <Components.TagItem
-              {...this.props}
-              blank={true}
-              key="newTagForm"
-              tag={this.props.newTag}
-              inputPlaceholder="Add Tag"
-              i18nKeyInputPlaceholder="tags.addTag"
-              onTagInputBlur={this.handleNewTagSave}
-              onTagSave={this.handleNewTagSave}
-              onTagUpdate={this.handleNewTagUpdate}
-            />
-          </div>
-        );
+        tags.push(<div className={classes()} key="newTagForm">
+          <Components.TagItem
+            {...this.props}
+            blank={true}
+            key="newTagForm"
+            tag={this.props.newTag}
+            inputPlaceholder="Add Tag"
+            i18nKeyInputPlaceholder="tags.addTag"
+            onTagInputBlur={this.handleNewTagSave}
+            onTagSave={this.handleNewTagSave}
+            onTagUpdate={this.handleNewTagUpdate}
+          />
+        </div>);
       }
 
       return tags;

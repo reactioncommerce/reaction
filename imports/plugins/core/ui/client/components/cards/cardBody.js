@@ -35,7 +35,7 @@ class CardBody extends Component {
         <div
           className={baseClassName}
           style={[
-            this.props.padded === false ? styles.noPadding : void 0
+            this.props.padded === false ? styles.noPadding : undefined
           ]}
         >
           {this.props.children}

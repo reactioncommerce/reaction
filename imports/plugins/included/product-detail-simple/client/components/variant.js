@@ -31,6 +31,14 @@ class Variant extends Component {
     }
   }
 
+  handleOnKeyUp = (event) => {
+    // keyCode 32 (spacebar)
+    // keyCode 13 (enter/return)
+    if (event.keyCode === 32 || event.keyCode === 13) {
+      this.handleClick(event);
+    }
+  }
+
   get price() {
     return this.props.displayPrice || this.props.variant.price;
   }
@@ -119,11 +127,9 @@ class Variant extends Component {
     let invalidVariant;
 
     if (variants) {
-      validationStatus = variants.map((variant) => {
-        return this.validation.validate(variant);
-      });
+      validationStatus = variants.map((variant) => this.validation.validate(variant));
 
-      invalidVariant = validationStatus.filter(status => status.isValid === false);
+      invalidVariant = validationStatus.filter((status) => status.isValid === false);
     }
 
     const selfValidation = this.validation.validate(this.props.variant);
@@ -135,7 +141,7 @@ class Variant extends Component {
   }
 
   render() {
-    const variant = this.props.variant;
+    const { variant } = this.props;
     const classes = classnames({
       "variant-detail": true,
       "variant-button": true,
@@ -161,35 +167,37 @@ class Variant extends Component {
         className="variant-list-item"
         id="variant-list-item-{variant._id}"
         key={variant._id}
-        onClick={this.handleClick}
       >
-        <div className={classes}>
-          <div className="title">
-            {variantTitleElement}
+        <div
+          onClick={this.handleClick}
+          onKeyUp={this.handleOnKeyUp}
+          role="button"
+          tabIndex={0}
+        >
+          <div className={classes}>
+            <div className="title">
+              {variantTitleElement}
+            </div>
+
+            <div className="actions">
+              <span className="variant-price">
+                <Components.Currency amount={this.price} editable={this.props.editable}/>
+              </span>
+            </div>
           </div>
 
-          <div className="actions">
-            <span className="variant-price">
-              <Components.Currency amount={this.price} editable={this.props.editable}/>
-            </span>
+          <div className="alerts">
+            {this.renderDeletionStatus()}
+            {this.renderInventoryStatus()}
+            {this.renderValidationButton()}
+            {this.props.editButton}
           </div>
-        </div>
-
-        <div className="alerts">
-          {this.renderDeletionStatus()}
-          {this.renderInventoryStatus()}
-          {this.renderValidationButton()}
-          {this.props.editButton}
         </div>
       </li>
     );
 
     if (this.props.editable) {
-      return this.props.connectDragSource(
-        this.props.connectDropTarget(
-          variantElement
-        )
-      );
+      return this.props.connectDragSource(this.props.connectDropTarget(variantElement));
     }
 
     return variantElement;
