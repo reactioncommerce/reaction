@@ -5,21 +5,20 @@ import { getSearchParameters,
   buildProductSearchRecord, buildOrderSearchRecord, buildAccountSearchRecord } from "../methods/searchcollections";
 import { Hooks, Logger } from "/server/api";
 
-Hooks.Events.add("afterAccountsInsert", (userId, doc) => {
+Hooks.Events.add("afterAccountsInsert", (userId, accountId) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    buildAccountSearchRecord(doc._id);
+    buildAccountSearchRecord(accountId);
   }
 });
 
-Hooks.Events.add("afterAccountsRemove", (userId, doc) => {
+Hooks.Events.add("afterAccountsRemove", (userId, accountId) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    AccountSearch.remove(doc._id);
+    AccountSearch.remove(accountId);
   }
 });
 
-Hooks.Events.add("afterAccountsUpdate", (userId, doc) => {
+Hooks.Events.add("afterAccountsUpdate", (userId, accountId) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    const accountId = doc._id;
     AccountSearch.remove(accountId);
     buildAccountSearchRecord(accountId);
   }
