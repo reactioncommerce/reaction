@@ -11,7 +11,7 @@ import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media, Cart } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
-import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
 const wrapComponent = (Comp) => (
   class ProductDetailContainer extends Component {
@@ -245,24 +245,22 @@ const wrapComponent = (Comp) => (
         );
       }
       return (
-        <TranslationProvider>
-          <DragDropProvider>
-            <StyleRoot>
-              <Comp
-                cartQuantity={this.state.cartQuantity}
-                mediaGalleryComponent={<Components.MediaGallery media={this.props.media} />}
-                onAddToCart={this.handleAddToCart}
-                onCartQuantityChange={this.handleCartQuantityChange}
-                onViewContextChange={this.handleViewContextChange}
-                socialComponent={<SocialContainer />}
-                topVariantComponent={<VariantListContainer />}
-                onDeleteProduct={this.handleDeleteProduct}
-                onProductFieldChange={this.handleProductFieldChange}
-                {...this.props}
-              />
-            </StyleRoot>
-          </DragDropProvider>
-        </TranslationProvider>
+        <DragDropProvider>
+          <StyleRoot>
+            <Comp
+              cartQuantity={this.state.cartQuantity}
+              mediaGalleryComponent={<Components.MediaGallery media={this.props.media} />}
+              onAddToCart={this.handleAddToCart}
+              onCartQuantityChange={this.handleCartQuantityChange}
+              onViewContextChange={this.handleViewContextChange}
+              socialComponent={<SocialContainer />}
+              topVariantComponent={<VariantListContainer />}
+              onDeleteProduct={this.handleDeleteProduct}
+              onProductFieldChange={this.handleProductFieldChange}
+              {...this.props}
+            />
+          </StyleRoot>
+        </DragDropProvider>
       );
     }
   }

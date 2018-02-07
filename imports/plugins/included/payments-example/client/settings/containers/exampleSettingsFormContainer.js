@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
-import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { Reaction, i18next } from "/client/api";
 import { ExampleSettingsForm } from "../components";
 
@@ -54,13 +53,11 @@ class ExampleSettingsFormContainer extends Component {
   render() {
     const settingsKey = this.props.packageData.registry[0].settingsKey;
     return (
-      <TranslationProvider>
-        <ExampleSettingsForm
-          onChange={this.handleChange}
-          onSubmit={this.handleSubmit}
-          settings={this.props.packageData.settings[settingsKey]}
-        />
-      </TranslationProvider>
+      <ExampleSettingsForm
+        onChange={this.handleChange}
+        onSubmit={this.handleSubmit}
+        settings={this.props.packageData.settings[settingsKey]}
+      />
     );
   }
 }
