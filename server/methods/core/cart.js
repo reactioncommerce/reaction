@@ -417,11 +417,6 @@ Meteor.methods({
             "items.$.quantity": quantity
           },
           ...modifier
-        }, (error, response) => {
-          // Update inventory
-          if (response) {
-            Hooks.Events.run("afterModifyQuantityInCart", this.userId, cart);
-          }
         });
       } catch (error) {
         Logger.error("Error adding to cart.", error);
@@ -432,6 +427,8 @@ Meteor.methods({
         throw error;
       }
 
+      // Update inventory
+      Hooks.Events.run("afterModifyQuantityInCart", cart._id);
       // Calculate discounts
       Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
       // refresh shipping quotes
@@ -481,11 +478,6 @@ Meteor.methods({
             parcel
           }
         }
-      }, (error, response) => {
-        if (response) {
-          // Update inventory
-          Hooks.Events.run("afterAddItemsToCart", this.userId, cart);
-        }
       });
     } catch (error) {
       Logger.error("Error adding to cart.", error);
@@ -496,6 +488,8 @@ Meteor.methods({
       throw error;
     }
 
+    // Update add inventory reserve
+    Hooks.Events.run("afterAddItemsToCart", cart._id);
     // Calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
     // refresh shipping quotes
@@ -541,7 +535,7 @@ Meteor.methods({
       throw new Meteor.Error("not-found", "Unable to find an item with such id in cart.");
     }
 
-    Hooks.Events.run("beforeRemoveItemsFromCart", userId, cart);
+    Hooks.Events.run("beforeRemoveItemsFromCart", cart._id);
 
     if (!quantity || quantity >= cartItem.quantity) {
       let cartResult;

@@ -1,29 +1,35 @@
 import { Meteor } from "meteor/meteor";
-import { Products, Orders } from "/lib/collections";
+import { Cart, Products, Orders } from "/lib/collections";
 import { Logger, Hooks } from "/server/api";
 import { registerInventory } from "../methods/inventory";
 
 /**
  * After cart update add invetory reservations
  */
-Hooks.Events.add("afterAddItemsToCart", (userId, cart) => {
+Hooks.Events.add("afterAddItemsToCart", (cartId) => {
   // Adding a new product or variant to the cart
   Logger.debug("after cart update, call inventory/addReserve");
+  // Look up cart to get items that have been added to it
+  const cart = Cart.findOne({ _id: cartId });
   Meteor.call("inventory/addReserve", cart.items);
 });
 
-Hooks.Events.add("afterModifyQuantityInCart", (userId, cart) => {
+Hooks.Events.add("afterModifyQuantityInCart", (cartId) => {
   // Modifying item quantity in cart.
   Logger.debug("after variant increment, call inventory/addReserve");
+  // Look up cart to get items that have been added to it
+  const cart = Cart.findOne({ _id: cartId });
   Meteor.call("inventory/addReserve", cart.items);
 });
 
 /**
  * Before cart update. When Item is removed from Cart, release the inventory reservation.
  */
-Hooks.Events.add("beforeRemoveItemsFromCart", (userId, cart) => {
+Hooks.Events.add("beforeRemoveItemsFromCart", (cartId) => {
   // removing  cart items, clear inventory reserve
   Logger.debug("remove cart items, call inventory/clearReserve");
+  // Look up cart to get items that have been removed from it
+  const cart = Cart.findOne({ _id: cartId });
   Meteor.call("inventory/clearReserve", cart.items);
 });
 
