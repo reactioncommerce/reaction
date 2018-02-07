@@ -1,4 +1,11 @@
-import { slugify } from "transliteration";
+// TODO: better comments for this func
+// TODO: conditional load based on shop lang
+let slugify;
+async function lazyLoadSlugify() {
+  if (slugify) return;
+  const mod = await import("transliteration");
+  slugify = mod.default || mod.slugify;
+}
 
 /**
  * @name getSlug
@@ -11,5 +18,6 @@ import { slugify } from "transliteration";
  * @return {String} slugified string
  */
 export function getSlug(slugString) {
-  return slugString ? slugify(slugString) : "";
+  Promise.await(lazyLoadSlugify());
+  return (slugString && slugify) ? slugify(slugString) : "";
 }
