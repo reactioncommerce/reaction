@@ -249,7 +249,6 @@ function denormalize(id, field) {
   };
 
   Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
-
   Products.update(id, {
     $set: update
   }, {
@@ -257,6 +256,7 @@ function denormalize(id, field) {
       type: "simple"
     }
   });
+  Hooks.Events.run("afterProductUpdate", productUpdateArgs);
 }
 
 /**
@@ -342,7 +342,7 @@ function flushQuantity(id) {
 
   Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
-  return Products.update({
+  const updatedProduct = Products.update({
     _id: id
   }, {
     $set: {
@@ -353,6 +353,9 @@ function flushQuantity(id) {
       type: "variant"
     }
   });
+  Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+
+  return updatedProduct;
 }
 
 Meteor.methods({
@@ -583,6 +586,7 @@ Meteor.methods({
     }, {
       validate: false
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
 
     const productId = currentVariant.ancestors[0];
     // we need manually check is these fields were updated?
@@ -1022,6 +1026,7 @@ Meteor.methods({
     } catch (e) {
       throw new Meteor.Error("server-error", e.message);
     }
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
 
     // If we get a result from the product update,
     // meaning the update went past revision control,
@@ -1093,13 +1098,15 @@ Meteor.methods({
 
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
-      return Products.update(productId, {
+      const updatedProduct = Products.update(productId, {
         $push: {
           hashtags: existingTag._id
         }
       }, {
         selector: { type: "simple" }
       });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      return updatedProduct;
     } else if (tagId) {
       return Tags.update(tagId, { $set: newTag });
     }
@@ -1127,7 +1134,7 @@ Meteor.methods({
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
-    return Products.update(productId, {
+    const updatedProduct = Products.update(productId, {
       $push: {
         hashtags: newTagId
       }
@@ -1136,6 +1143,8 @@ Meteor.methods({
         type: "simple"
       }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    return updatedProduct;
   },
 
   /**
@@ -1180,6 +1189,7 @@ Meteor.methods({
     }, {
       selector: { type: "simple" }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
   },
 
   /**
@@ -1210,7 +1220,7 @@ Meteor.methods({
     };
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
     Products.update(product._id, { $set: { handle, type: "simple" } });
-
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
     return handle;
   },
 
@@ -1253,9 +1263,10 @@ Meteor.methods({
         product,
         modifier: getSet(handle)
       };
-      Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
+      Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
       Products.update(product._id, getSet(handle));
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
 
       return handle;
     }
@@ -1277,6 +1288,7 @@ Meteor.methods({
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
       Products.update(currentProduct._id, getSet(currentProductHandle));
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
     }
     productUpdateArgs = {
       product,
@@ -1284,6 +1296,7 @@ Meteor.methods({
     };
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
     Products.update(product._id, getSet(tag.slug));
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
 
     return tag.slug;
   },
@@ -1332,7 +1345,7 @@ Meteor.methods({
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
-    return Products.update({
+    const updatedProduct = Products.update({
       _id: productId
     }, {
       $set: {
@@ -1343,6 +1356,8 @@ Meteor.methods({
         type: "simple" // for multi-schema
       }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    return updatedProduct;
   },
 
   /**
@@ -1381,6 +1396,7 @@ Meteor.methods({
       }, {
         selector: { type: "variant" }
       });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
       Logger.debug(`Variant ${id} position was updated to index ${index}`);
     });
   },
@@ -1424,7 +1440,7 @@ Meteor.methods({
       };
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
-      return Products.update({
+      const updatedProduct = Products.update({
         _id: productId,
         metafields: meta
       }, {
@@ -1434,6 +1450,8 @@ Meteor.methods({
       }, {
         selector: { type: "simple" }
       });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      return updatedProduct;
     } else if (typeof meta === "number") {
       const productUpdateArgs = {
         product,
@@ -1448,7 +1466,7 @@ Meteor.methods({
       };
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
-      return Products.update({
+      const updatedProduct = Products.update({
         _id: productId
       }, {
         $set: {
@@ -1457,6 +1475,8 @@ Meteor.methods({
       }, {
         selector: { type: "simple" }
       });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      return updatedProduct;
     }
 
     const productUpdateArgs = {
@@ -1473,7 +1493,7 @@ Meteor.methods({
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
     // adds metadata
-    return Products.update({
+    const updatedProduct = Products.update({
       _id: productId
     }, {
       $addToSet: {
@@ -1482,6 +1502,8 @@ Meteor.methods({
     }, {
       selector: { type: "simple" }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    return updatedProduct;
   },
 
   /**
@@ -1514,12 +1536,14 @@ Meteor.methods({
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
-    return Products.update({
+    const updatedProduct = Products.update({
       _id: productId,
       type
     }, {
       $pull: { metafields }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    return updatedProduct;
   },
 
   /**
@@ -1606,6 +1630,8 @@ Meteor.methods({
       }, {
         selector: { type: "simple" }
       });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+
       // update product variants visibility
       updateVariantProductField(variants, "isVisible", !product.isVisible);
       // if collection updated we return new `isVisible` state
@@ -1662,6 +1688,7 @@ Meteor.methods({
         type: product.type
       }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
 
     if (Array.isArray(product.ancestors) && product.ancestors.length) {
       const updateId = product.ancestors[0] || product._id;

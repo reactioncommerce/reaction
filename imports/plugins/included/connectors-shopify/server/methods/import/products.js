@@ -569,6 +569,7 @@ export const methods = {
                 isBackorder
               }
             }, { selector: { type: "simple" }, publish: true });
+            Hooks.Events.run("afterProductUpdate", productUpdateArgs);
 
             Logger.debug(`Product ${shopifyProduct.title} added`);
           } else { // product already exists check

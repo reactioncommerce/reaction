@@ -82,6 +82,7 @@ export const methods = {
           }
         }
       }, { selector: { type: "variant" } });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
     });
   }
 };

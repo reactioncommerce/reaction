@@ -96,6 +96,7 @@ export function ordersInventoryAdjust(orderId) {
         type: "variant"
       }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
   });
 }
 
@@ -148,6 +149,7 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
           type: "variant"
         }
       });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
     }
   });
 }
@@ -425,6 +427,7 @@ export const methods = {
             bypassCollection2: true,
             publish: true
           });
+          Hooks.Events.run("afterProductUpdate", productUpdateArgs);
         }
       });
     }

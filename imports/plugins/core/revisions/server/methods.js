@@ -133,6 +133,7 @@ Meteor.methods({
           }, {
             publish: true
           });
+          Hooks.Events.run("afterProductUpdate", productUpdateArgs);
           updatedDocuments += res;
         } else if (revision.documentType === "image") {
           if (revision.changeType === "insert") {

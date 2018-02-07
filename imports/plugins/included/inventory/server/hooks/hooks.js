@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { Cart, Products, Orders } from "/lib/collections";
+import { Cart, Orders } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import { registerInventory } from "../methods/inventory";
 
@@ -61,11 +61,12 @@ Hooks.Events.add("afterProductVariantRemove", (product) => {
 //
 // after product update
 //
-Products.after.update((userId, doc, fieldNames, modifier) => {
+Hooks.Events.add("afterProductUpdate", (productUpdateArgs) => {
+  const { product, modifier } = { ...productUpdateArgs };
   // product update can't affect on inventory, so we don't manage this cases
   // we should keep in mind that returning false within hook prevents other
   // hooks to be run
-  if (doc.type !== "variant") return false;
+  if (product.type !== "variant") return false;
 
   // check if modifier is set and $pull and $push are undefined. This need
   // because anyway on every create or delete operation we have additionally
@@ -77,7 +78,7 @@ Products.after.update((userId, doc, fieldNames, modifier) => {
     }
     modifier.$set.updatedAt = new Date();
     // triggers inventory adjustment
-    Meteor.call("inventory/adjust", doc);
+    Meteor.call("inventory/adjust", product);
   }
 });
 
