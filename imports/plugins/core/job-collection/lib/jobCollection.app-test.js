@@ -167,65 +167,109 @@ describe.only("JobCollection", function () {
       });
     });
   });
+
+  it("should create an invalid job and see that errors correctly propagate", function (done) {
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { some: "data" });
+
+    delete job.doc.status;
+
+    expect(validJobDoc(job.doc)).to.equal(false);
+
+    if (Meteor.isServer) {
+      let eventFlag = false;
+      let err = null;
+
+      testColl.events.once("jobSave", function (msg) {
+        eventFlag = true;
+        if (!msg.error) {
+          done(new Error("Server error event didn't dispatch"));
+        }
+      });
+
+      try {
+        job.save();
+      } catch (e) {
+        err = e;
+      } finally {
+        assert.ok(eventFlag);
+        if (!err) { done(new Error("Server exception wasn't thrown")); }
+        done();
+      }
+    } else {
+      return job.save(function (err) {
+        if (!err) { done(new Error("Error did not propagate to Client")); }
+        return done();
+      });
+    }
+  });
+
+  it("should create a job and then make a new doc with its document", function (done) {
+    let job;
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job2 = new Job(testColl, jobType, { some: "data" });
+
+    if (Meteor.isServer) {
+      job = new Job("ServerTest", job2.doc);
+    } else {
+      job = new Job("ClientTest", job2.doc);
+    }
+
+    assert.ok(validJobDoc(job.doc));
+
+    job.save(function (err, res) {
+      if (err) { test.fail(err); }
+
+      assert.ok(validId(res), "job.save() failed in callback result");
+
+      const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
+        expect(jobResult._doc._id).to.equal(res);
+        jobResult.done();
+        cb();
+        return q.shutdown({ level: "soft", quiet: true }, () => done());
+      });
+    });
+  });
+
+  it("should should create a repeating job that returns the _id of the next job", function (done) {
+    let counter = 0;
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { some: "data" }).repeat({ repeats: 1, wait: 250 });
+
+    job.save(function (err, res) {
+      if (err) { test.fail(err); }
+      assert.ok(validId(res), "job.save() failed in callback result");
+
+      const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
+        counter++;
+        if (counter === 1) {
+          expect(jobResult.doc._id).to.equal(res);
+
+          jobResult.done("Result1", { repeatId: true }, function (err2, res2) {
+            if (err2) { done(err2); }
+            assert.ok(res2);
+            assert.notEqual(res2).to.not.equal(true);
+
+            testColl.getJob(res2, function (err3, j) {
+              if (err3) { test.fail(err3); }
+              expect(j._doc._id).to.equal(res);
+              cb();
+            });
+          });
+        } else {
+          expect(jobResult.doc._id).to.not.equal(res);
+          jobResult.done("Result2", { repeatId: true }, function (err2, res2) {
+            if (err2) { done(err2); }
+            expect(res2).to.equal(true);
+            cb();
+            q.shutdown({ level: "soft", quiet: true }, () => done());
+          });
+        }
+      });
+    });
+  });
 });
 
-
-//
-// Tinytest.addAsync('Create an invalid job and see that errors correctly propagate', function(test, onComplete) {
-//   console.warn("****************************************************************************************************");
-//   console.warn("***** The following exception dump is a Normal and Expected part of error handling unit tests: *****");
-//   console.warn("****************************************************************************************************");
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, { some: 'data' });
-//   delete job.doc.status;
-//   test.equal(validJobDoc(job.doc), false);
-//   if (Meteor.isServer) {
-//     let eventFlag = false;
-//     let err = null;
-//     const ev = testColl.events.once('jobSave', function(msg) {
-//       eventFlag = true;
-//       if (!msg.error) { return test.fail(new Error("Server error event didn't dispatch")); }
-//     });
-//     try {
-//       return job.save();
-//     } catch (e) {
-//       return err = e;
-//     }
-//     finally {
-//       test.ok(eventFlag);
-//       if (!err) { test.fail(new Error("Server exception wasn't thrown")); }
-//       onComplete();
-//     }
-//   } else {
-//     return job.save(function(err, res) {
-//       if (!err) { test.fail(new Error("Error did not propagate to Client")); }
-//       return onComplete();
-//     });
-//   }
-// });
-//
-// Tinytest.addAsync('Create a job and then make a new doc with its document', function(test, onComplete) {
-//   let job;
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job2 = new Job(testColl, jobType, { some: 'data' });
-//   if (Meteor.isServer) {
-//     job = new Job('ServerTest', job2.doc);
-//   } else {
-//     job = new Job('ClientTest', job2.doc);
-//   }
-//   test.ok(validJobDoc(job.doc));
-//   return job.save(function(err, res) {
-//     let q;
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     return q = testColl.processJobs(jobType, { pollInterval: 250 }, function(job, cb) {
-//       test.equal(job._doc._id, res);
-//       job.done();
-//       cb();
-//       return q.shutdown({ level: 'soft', quiet: true }, () => onComplete());
-//     });
-//   });
-// });
 //
 // Tinytest.addAsync('A repeating job that returns the _id of the next job', function(test, onComplete) {
 //   let counter = 0;
