@@ -45,9 +45,7 @@ const wrapComponent = (Comp) => (
       return true;
     }
 
-    isBackorder = () => {
-      return this.props.product.isBackorder;
-    }
+    isBackorder = () => this.props.product.isBackorder
 
     render() {
       return (
