@@ -317,9 +317,9 @@ export const methods = {
             const reactionProduct = createReactionProductFromShopifyProduct({ shopifyProduct, shopId, hashtags });
 
             // Call product insert `before` hook
-            Hooks.Events.run("beforeProductInsert", reactionProduct);
             // Insert product, save id
             const reactionProductId = Products.insert(reactionProduct, { selector: { type: "simple" }, publish: true });
+            Hooks.Events.run("verifyProductInsert", reactionProduct);
             // Call product insert `after` hook
             Hooks.Events.run("afterProductInsert", reactionProduct);
             Hooks.Events.run("afterProductInsertSearch", reactionProduct);
@@ -368,9 +368,9 @@ export const methods = {
                     shopId
                   });
 
-                  Hooks.Events.run("beforeProductInsert", reactionVariant);
                   // insert the Reaction variant
                   const reactionVariantId = Products.insert(reactionVariant, { publish: true });
+                  Hooks.Events.run("verifyProductInsert", reactionVariant);
                   Hooks.Events.run("afterProductInsert", reactionProduct);
                   Hooks.Events.run("afterProductInsertSearch", reactionProduct);
                   ids.push(reactionVariantId);
@@ -393,8 +393,8 @@ export const methods = {
                           shopId
                         });
 
-                        Hooks.Events.run("beforeProductInsert", reactionOption);
                         const reactionOptionId = Products.insert(reactionOption, { type: "variant" });
+                        Hooks.Events.run("verifyProductInsert", reactionOption);
                         Hooks.Events.run("afterProductInsert", reactionProduct);
                         Hooks.Events.run("afterProductInsertSearch", reactionProduct);
                         ids.push(reactionOptionId);
@@ -455,8 +455,8 @@ export const methods = {
                                 shopId
                               });
 
-                              Hooks.Events.run("beforeProductInsert", reactionTernaryOption);
                               const reactionTernaryOptionId = Products.insert(reactionTernaryOption, { type: "variant" });
+                              Hooks.Events.run("verifyProductInsert", reactionTernaryOption);
                               Hooks.Events.run("afterProductInsert", reactionProduct);
                               Hooks.Events.run("afterProductInsertSearch", reactionProduct);
                               ids.push(reactionTernaryOptionId);

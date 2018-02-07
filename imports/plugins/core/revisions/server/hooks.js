@@ -274,7 +274,7 @@ Media.files.before.remove((userId, media) => {
   return true;
 });
 
-Hooks.Events.add("beforeProductInsert", (product) => {
+Hooks.Events.add("verifyProductInsert", (product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -295,7 +295,7 @@ Hooks.Events.add("beforeProductInsert", (product) => {
 
   // Prevent this product from being created if a parent product / varaint ancestor is deleted.
   //
-  // This will prevent cases where a parent variant hase been deleted and a user tries to create a
+  // This will prevent cases where a parent variant has been deleted and a user tries to create a
   // child variant. You cannot create the child variant becuase the parent will no longer exist when
   // changes have been published; resulting in a broken inheretence and UI
   const productHasAncestors = Array.isArray(product.ancestors);
