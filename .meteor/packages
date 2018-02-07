@@ -69,7 +69,6 @@ meteorhacks:subs-manager
 ongoworks:security
 raix:ui-dropped-event
 tmeasday:publish-counts
-vsivsi:job-collection@=1.4.0
 percolate:migrations
 gadicc:blaze-react-component
 
