@@ -68,16 +68,21 @@ export function ordersInventoryAdjust(orderId) {
 
   const order = Orders.findOne(orderId);
   order.items.forEach(item => {
-    Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(item.variants._id), {
-      $inc: {
-        inventoryQuantity: -item.quantity
+    const productUpdateArgs = {
+      product: Products.findOne(item.variants._id),
+      modifier: {
+        $inc: {
+          inventoryQuantity: -item.quantity
+        }
+      },
+      options: {
+        publish: true,
+        selector: {
+          type: "variant"
+        }
       }
-    }, {
-      publish: true,
-      selector: {
-        type: "variant"
-      }
-    });
+    };
+    Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
     Products.update({
       _id: item.variants._id
@@ -115,16 +120,21 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
   const order = Orders.findOne(orderId);
   order.items.forEach(item => {
     if (item.shopId === shopId) {
-      Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(item.variants._id), {
-        $inc: {
-          inventoryQuantity: -item.quantity
+      const productUpdateArgs = {
+        product: Products.findOne(item.variants._id),
+        modifier: {
+          $inc: {
+            inventoryQuantity: -item.quantity
+          }
+        },
+        options: {
+          publish: true,
+          selector: {
+            type: "variant"
+          }
         }
-      }, {
-        publish: true,
-        selector: {
-          type: "variant"
-        }
-      });
+      };
+      Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
       Products.update({
         _id: item.variants._id
@@ -390,14 +400,19 @@ export const methods = {
       // in some instances which causes the order not to cancel
       order.items.forEach(item => {
         if (Reaction.hasPermission("orders", Meteor.userId(), item.shopId)) {
-          Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(item.variants._id), {
-            $inc: {
-              inventoryQuantity: -item.quantity
+          const productUpdateArgs = {
+            product: Products.findOne(item.variants._id),
+            modifier: {
+              $inc: {
+                inventoryQuantity: -item.quantity
+              }
+            },
+            options: {
+              bypassCollection2: true,
+              publish: true
             }
-          }, {
-            bypassCollection2: true,
-            publish: true
-          });
+          };
+          Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
           Products.update({
             _id: item.variants._id,

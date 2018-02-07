@@ -115,11 +115,17 @@ Meteor.methods({
       for (const revision of revisions) {
         if (!revision.documentType || revision.documentType === "product") {
           previousDocuments.push(Products.findOne(revision.documentId));
-          Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(revision.documentId), {
-            $set: revision.documentData
-          }, {
-            publish: true
-          });
+          const productUpdateArgs = {
+            product: Products.findOne(revision.documentId),
+            modifier: {
+              $set: revision.documentData
+            },
+            options: {
+              publish: true
+            }
+          };
+
+          Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
           const res = Products.update({
             _id: revision.documentId
           }, {

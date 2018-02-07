@@ -330,9 +330,8 @@ Hooks.Events.add("verifyProductInsert", (product) => {
   }
 });
 
-Hooks.Events.add("beforeProductUpdate", (bla) => {
-  const { userId, modifier, options, product } = { ...bla };
-  console.log( "userId", userId, "modifier", modifier, "options", options);
+Hooks.Events.add("beforeProductUpdate", (productUpdateArgs) => {
+  const { product, modifier, options } = { ...productUpdateArgs };
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -373,8 +372,8 @@ Hooks.Events.add("beforeProductUpdate", (bla) => {
       throw new Meteor.Error("unable-to-delete-variant", "Unable to delete product variant");
     }
   }
-  console.log("this.args[0]", this.args[0]);
-  const originalSelector = this.args[0];
+
+  const originalSelector = { _id: product._id };
 
   if (!productRevision) {
     Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
@@ -411,7 +410,7 @@ Hooks.Events.add("beforeProductUpdate", (bla) => {
     }
   };
 
-  if (options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
+  if (options && options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
     // Maybe mark the revision as published
 
     Logger.debug(`Publishing revison for product ${product._id}.`);
