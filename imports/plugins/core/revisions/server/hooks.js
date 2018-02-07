@@ -330,8 +330,9 @@ Hooks.Events.add("verifyProductInsert", (product) => {
   }
 });
 
-Hooks.Events.add("beforeProductUpdate", (userId, product, modifier, options) => {
-  console.log("modifier", modifier);
+Hooks.Events.add("beforeProductUpdate", (bla) => {
+  const { userId, modifier, options, product } = { ...bla };
+  console.log( "userId", userId, "modifier", modifier, "options", options);
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }

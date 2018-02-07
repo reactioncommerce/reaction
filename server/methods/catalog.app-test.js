@@ -176,7 +176,7 @@ describe("core product methods", function () {
       expect(updateProductSpy).to.not.have.been.called;
     });
 
-    it("should not update individual variant by admin passing in full object", function (done) {
+    it.only("should not update individual variant by admin passing in full object", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       let variant = Products.find({ ancestors: [product._id] }).fetch()[0];

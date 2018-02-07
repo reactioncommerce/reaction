@@ -549,12 +549,30 @@ Meteor.methods({
     }
 
     const newVariant = Object.assign({}, currentVariant, variant);
-    Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(variant._id), {
-      $set: newVariant // newVariant already contain `type` property, so we
-      // do not need to pass it explicitly
-    }, {
-      validate: false
-    });
+    // const userId = Meteor.userId();
+    // const modifier = {
+    //   $set: newVariant // newVariant already contain `type` property, so we
+    //   // do not need to pass it explicitly
+    // };
+    // const options = {
+    //   validate: false
+    // };
+
+    const args = {
+      product: newVariant,
+      userId: Meteor.userId(),
+      modifier: {
+        $set: newVariant // newVariant already contain `type` property, so we
+        // do not need to pass it explicitly
+      },
+      options: {
+        validate: false
+      }
+    };
+
+    console.log("in the run", args);
+
+    Hooks.Events.run("beforeProductUpdate", args);
     const variantUpdateResult = Products.update({
       _id: variant._id
     }, {
