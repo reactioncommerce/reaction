@@ -29,10 +29,10 @@ function getUrl() {
   const packageData = taxCalc.getPackageData();
   const { mode } = packageData.settings.avalara;
   let baseUrl;
-  if (!mode) {
-    baseUrl = "https://sandbox-rest.avatax.com/api/v2/";
-  } else {
+  if (mode) {
     baseUrl = "https://rest.avatax.com/api/v2/";
+  } else {
+    baseUrl = "https://sandbox-rest.avatax.com/api/v2/";
   }
   return baseUrl;
 }

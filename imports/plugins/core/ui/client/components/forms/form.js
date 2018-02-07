@@ -274,50 +274,49 @@ class Form extends Component {
   renderWithSchema() {
     const { docPath, fieldsProp, renderFromFields } = this.props;
 
-    if (this.props.schema) {
-      // Render form with a specific docPath
-      if (!renderFromFields && docPath) {
-        return Object.keys(this.schema).map((key) => { // eslint-disable-line consistent-return
-          if (key.endsWith(docPath)) {
-            const objectKeys = this.objectKeys[`${docPath}.`];
-            if (Array.isArray(objectKeys)) {
-              // Use the objectKeys from parent fieldset to generate
-              // actual form fields
-              return objectKeys.map((fieldName) => {
-                const fullFieldName = docPath ? `${docPath}.${fieldName}` : fieldName;
-                return this.renderField({ fieldName: fullFieldName });
-              });
-            }
-            return this.renderField({ fieldName: key });
-          }
+    if (!this.props.schema) {
+      return null;
+    }
+    // Render form with a specific docPath
+    if (!renderFromFields && docPath) {
+      return Object.keys(this.schema).map((key) => {
+        if (!key.endsWith(docPath)) {
           return;
-        });
-      }
-
-      // Render form by only using desired fields from schema
-      if (this.props.fields) {
-        return Object.keys(this.props.fields).map((key) => { // eslint-disable-line consistent-return
-          const fieldData = this.props.fields[key];
-          const fieldSchema = this.schema[key];
-          const tempObj = Object.assign({}, fieldData);
-          if (fieldSchema) {
-            // Remove inherited type() as type is supposed to be string.
-            if (typeof tempObj.type === "function") {
-              delete tempObj.type;
-            }
-            const fieldProp = get(fieldsProp, key, undefined);
-            return this.renderField({ fieldName: key }, Object.assign(tempObj, fieldProp));
-          }
-          return;
-        });
-      }
-
-      // Render all fields if none of the options are set above
-      return Object.keys(this.schema).map((key) => // eslint-disable-line consistent-return
-        this.renderField({ fieldName: key }));
+        }
+        const objectKeys = this.objectKeys[`${docPath}.`];
+        if (Array.isArray(objectKeys)) {
+          // Use the objectKeys from parent fieldset to generate
+          // actual form fields
+          return objectKeys.map((fieldName) => {
+            const fullFieldName = docPath ? `${docPath}.${fieldName}` : fieldName;
+            return this.renderField({ fieldName: fullFieldName });
+          });
+        }
+        return this.renderField({ fieldName: key });
+      });
     }
 
-    return null;
+    // Render form by only using desired fields from schema
+    if (this.props.fields) {
+      return Object.keys(this.props.fields).map((key) => {
+        const fieldData = this.props.fields[key];
+        const fieldSchema = this.schema[key];
+        const tempObj = Object.assign({}, fieldData);
+        if (!fieldSchema) {
+          return;
+        }
+        // Remove inherited type() as type is supposed to be string.
+        if (typeof tempObj.type === "function") {
+          delete tempObj.type;
+        }
+        const fieldProp = get(fieldsProp, key, {});
+        return this.renderField({ fieldName: key }, Object.assign(tempObj, fieldProp));
+      });
+    }
+
+    // Render all fields if none of the options are set above
+    return Object.keys(this.schema).map((key) => // eslint-disable-line consistent-return
+      this.renderField({ fieldName: key }));
   }
 
   renderFormActions() {
