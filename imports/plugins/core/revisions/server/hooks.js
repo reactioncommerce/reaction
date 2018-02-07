@@ -330,7 +330,8 @@ Hooks.Events.add("verifyProductInsert", (product) => {
   }
 });
 
-Products.before.update(function (userId, product, fieldNames, modifier, options) {
+Hooks.Events.add("beforeProductUpdate", (userId, product, modifier, options) => {
+  console.log("modifier", modifier);
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -371,7 +372,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
       throw new Meteor.Error("unable-to-delete-variant", "Unable to delete product variant");
     }
   }
-
+  console.log("this.args[0]", this.args[0]);
   const originalSelector = this.args[0];
 
   if (!productRevision) {

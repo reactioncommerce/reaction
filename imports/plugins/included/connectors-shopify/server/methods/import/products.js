@@ -547,6 +547,14 @@ export const methods = {
             } else {
               price.range = `${price.max}`;
             }
+            Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(reactionProductId), {
+              $set: {
+                price,
+                isSoldOut,
+                isBackorder
+              }
+            }, { selector: { type: "simple" }, publish: true });
+
             Products.update({
               _id: reactionProductId
             }, {

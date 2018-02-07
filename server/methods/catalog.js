@@ -235,6 +235,14 @@ function denormalize(id, field) {
         price: priceObject
       });
   }
+  Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(id), {
+    $set: update
+  }, {
+    selector: {
+      type: "simple"
+    }
+  });
+
   Products.update(id, {
     $set: update
   }, {
@@ -310,6 +318,16 @@ function flushQuantity(id) {
   if (variant.inventoryQuantity === 0) {
     return 1; // let them think that we have one successful operation here
   }
+
+  Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(id), {
+    $set: {
+      inventoryQuantity: 0
+    }
+  }, {
+    selector: {
+      type: "variant"
+    }
+  });
 
   return Products.update({
     _id: id
@@ -429,16 +447,15 @@ Meteor.methods({
       let newId;
       try {
         newId = Products.insert(clone, { validate: false });
-        Hooks.Events.run("verifyProductInsert", clone);
-        Hooks.Events.run("afterProductInsert", clone);
-        Hooks.Events.run("afterProductInsertSearch", clone);
         Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
           clone._id} from ${variantId}`);
       } catch (error) {
         Logger.error(`products/cloneVariant: cloning of ${variantId} was failed: ${error}`);
         throw error;
       }
-
+      Hooks.Events.run("verifyProductInsert", clone);
+      Hooks.Events.run("afterProductInsert", clone);
+      Hooks.Events.run("afterProductInsertSearch", clone);
       return newId;
     });
   },
@@ -532,7 +549,12 @@ Meteor.methods({
     }
 
     const newVariant = Object.assign({}, currentVariant, variant);
-
+    Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(variant._id), {
+      $set: newVariant // newVariant already contain `type` property, so we
+      // do not need to pass it explicitly
+    }, {
+      validate: false
+    });
     const variantUpdateResult = Products.update({
       _id: variant._id
     }, {
@@ -771,9 +793,11 @@ Meteor.methods({
         throw new Meteor.Error("invalid-parameter", "Product should have a valid shopId");
       }
       const newProductId = Products.insert(product);
-      Hooks.Events.run("verifyProductInsert", product);
-      Hooks.Events.run("afterProductInsert", product);
-      Hooks.Events.run("afterProductInsertSearch", product);
+      const newProduct = Products.findOne(newProductId);
+
+      Hooks.Events.run("verifyProductInsert", newProduct);
+      Hooks.Events.run("afterProductInsert", newProduct);
+      Hooks.Events.run("afterProductInsertSearch", newProduct);
       return newProductId;
     }
 
@@ -784,7 +808,6 @@ Meteor.methods({
     });
 
     const newProduct = Products.findOne(newId);
-
     Hooks.Events.run("verifyProductInsert", newProduct);
     Hooks.Events.run("afterProductInsert", newProduct);
     Hooks.Events.run("afterProductInsertSearch", newProduct);
@@ -958,6 +981,12 @@ Meteor.methods({
     // we need to use sync mode here, to return correct error and result to UI
     let result;
 
+    Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(_id), {
+      $set: update
+    }, {
+      selector: { type }
+    });
+
     try {
       result = Products.update(_id, {
         $set: update
@@ -1023,6 +1052,14 @@ Meteor.methods({
       if (productCount > 0) {
         throw new Meteor.Error("server-error", "Existing Tag, Update Denied");
       }
+      Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(productId), {
+        $push: {
+          hashtags: existingTag._id
+        }
+      }, {
+        selector: { type: "simple" }
+      });
+
       return Products.update(productId, {
         $push: {
           hashtags: existingTag._id
@@ -1040,6 +1077,16 @@ Meteor.methods({
     if (typeof newTagId !== "string") {
       return newTagId;
     }
+
+    Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(productId), {
+      $push: {
+        hashtags: newTagId
+      }
+    }, {
+      selector: {
+        type: "simple"
+      }
+    });
 
     return Products.update(productId, {
       $push: {
@@ -1073,6 +1120,14 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
+    Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(productId), {
+      $pull: {
+        hashtags: tagId
+      }
+    }, {
+      selector: { type: "simple" }
+    });
+
     Products.update(productId, {
       $pull: {
         hashtags: tagId
@@ -1103,6 +1158,7 @@ Meteor.methods({
 
     let handle = Reaction.getSlug(product.title);
     handle = createHandle(handle, product._id);
+    Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(product._id), { $set: { handle, type: "simple" } });
     Products.update(product._id, { $set: { handle, type: "simple" } });
 
     return handle;
@@ -1142,6 +1198,8 @@ Meteor.methods({
     if (product.handle === tag.slug) {
       let handle = Reaction.getSlug(product.title);
       handle = createHandle(handle, product._id);
+      Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(product._id), getSet(handle));
+
       Products.update(product._id, getSet(handle));
 
       return handle;
@@ -1157,8 +1215,11 @@ Meteor.methods({
         Reaction.getSlug(currentProduct.title),
         currentProduct._id
       );
+      Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(currentProduct._id), getSet(currentProductHandle));
+
       Products.update(currentProduct._id, getSet(currentProductHandle));
     }
+    Hooks.Events.run("beforeProductUpdate", Products.findOne(product._id), getSet(tag.slug));
     Products.update(product._id, getSet(tag.slug));
 
     return tag.slug;
@@ -1195,6 +1256,15 @@ Meteor.methods({
     const weight = `positions.${tag}.weight`;
     const updatedAt = `positions.${tag}.updatedAt`;
 
+    Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(productId), {
+      $set: {
+        [position]: positionData.position,
+        [pinned]: positionData.pinned,
+        [weight]: positionData.weight,
+        [updatedAt]: new Date(),
+        type: "simple" // for multi-schema
+      }
+    });
     return Products.update({
       _id: productId
     }, {
@@ -1228,6 +1298,11 @@ Meteor.methods({
     }
 
     sortedVariantIds.forEach((id, index) => {
+      Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(id), {
+        $set: { index }
+      }, {
+        selector: { type: "variant" }
+      });
       Products.update(id, {
         $set: { index }
       }, {
@@ -1263,6 +1338,14 @@ Meteor.methods({
 
     // update existing metadata
     if (typeof meta === "object") {
+      Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(productId), {
+        $set: {
+          "metafields.$": updatedMeta
+        }
+      }, {
+        selector: { type: "simple" }
+      });
+
       return Products.update({
         _id: productId,
         metafields: meta
@@ -1274,6 +1357,14 @@ Meteor.methods({
         selector: { type: "simple" }
       });
     } else if (typeof meta === "number") {
+      Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(productId), {
+        $set: {
+          [`metafields.${meta}`]: updatedMeta
+        }
+      }, {
+        selector: { type: "simple" }
+      });
+
       return Products.update({
         _id: productId
       }, {
@@ -1285,6 +1376,13 @@ Meteor.methods({
       });
     }
 
+    Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(productId), {
+      $addToSet: {
+        metafields: updatedMeta
+      }
+    }, {
+      selector: { type: "simple" }
+    });
     // adds metadata
     return Products.update({
       _id: productId
@@ -1319,6 +1417,8 @@ Meteor.methods({
     } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
+
+    Hooks.Events.run("beforeProductUpdate",  Meteor.userId(), Products.findOne(productId), { $pull: { metafields } });
 
     return Products.update({
       _id: productId,
@@ -1391,6 +1491,14 @@ Meteor.methods({
       // update product visibility
       Logger.debug("toggle product visibility ", product._id, !product.isVisible);
 
+      Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(product._id), {
+        $set: {
+          isVisible: !product.isVisible
+        }
+      }, {
+        selector: { type: "simple" }
+      });
+
       const res = Products.update(product._id, {
         $set: {
           isVisible: !product.isVisible
@@ -1428,6 +1536,16 @@ Meteor.methods({
     if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
+
+    Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(productId), {
+      $set: {
+        isVisible: !product.isVisible
+      }
+    }, {
+      selector: {
+        type: product.type
+      }
+    });
 
     const res = Products.update(productId, {
       $set: {

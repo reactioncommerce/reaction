@@ -68,6 +68,17 @@ export function ordersInventoryAdjust(orderId) {
 
   const order = Orders.findOne(orderId);
   order.items.forEach(item => {
+    Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(item.variants._id), {
+      $inc: {
+        inventoryQuantity: -item.quantity
+      }
+    }, {
+      publish: true,
+      selector: {
+        type: "variant"
+      }
+    });
+
     Products.update({
       _id: item.variants._id
     }, {
@@ -104,6 +115,17 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
   const order = Orders.findOne(orderId);
   order.items.forEach(item => {
     if (item.shopId === shopId) {
+      Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(item.variants._id), {
+        $inc: {
+          inventoryQuantity: -item.quantity
+        }
+      }, {
+        publish: true,
+        selector: {
+          type: "variant"
+        }
+      });
+
       Products.update({
         _id: item.variants._id
       }, {
@@ -368,6 +390,15 @@ export const methods = {
       // in some instances which causes the order not to cancel
       order.items.forEach(item => {
         if (Reaction.hasPermission("orders", Meteor.userId(), item.shopId)) {
+          Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(item.variants._id), {
+            $inc: {
+              inventoryQuantity: -item.quantity
+            }
+          }, {
+            bypassCollection2: true,
+            publish: true
+          });
+
           Products.update({
             _id: item.variants._id,
             shopId: item.shopId

@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Products, Media, Revisions, Packages } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 
 export function updateSettings(settings) {
   check(settings, Object);
@@ -115,7 +115,11 @@ Meteor.methods({
       for (const revision of revisions) {
         if (!revision.documentType || revision.documentType === "product") {
           previousDocuments.push(Products.findOne(revision.documentId));
-
+          Hooks.Events.run("beforeProductUpdate", Meteor.userId(), Products.findOne(revision.documentId), {
+            $set: revision.documentData
+          }, {
+            publish: true
+          });
           const res = Products.update({
             _id: revision.documentId
           }, {

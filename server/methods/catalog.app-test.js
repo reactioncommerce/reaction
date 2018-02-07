@@ -1091,6 +1091,7 @@ describe("core product methods", function () {
     it("should let admin toggle product revision visibility", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
+      console.log("product in test", product, "revisions", Revisions.findOne({ documentId: product._id }));
       let productRevision = Revisions.findOne({ documentId: product._id });
       const isVisible = productRevision.documentData.isVisible;
       expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);
