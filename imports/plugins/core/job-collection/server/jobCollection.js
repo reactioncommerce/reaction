@@ -237,7 +237,7 @@ class JobCollection extends JobCollectionBase {
     return (() => {
       const result = [];
       for (const type in allowOptions) {
-        if ({}.hasOwnProperty(allowOptions[type])) {
+        if ({}.hasOwnProperty.call(allowOptions, type)) {
           const func = allowOptions[type];
           if (type in this.allows) {
             result.push(this.allows[type].push(func));
