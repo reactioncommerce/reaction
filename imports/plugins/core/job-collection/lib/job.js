@@ -635,7 +635,7 @@ export default class Job {
       type = [type];
     }
 
-    if (options.workTimeout !== null || options.workTimeout !== undefined) {
+    if (options.workTimeout !== null && options.workTimeout !== undefined) {
       if (!isInteger(options.workTimeout) || !(options.workTimeout > 0)) {
         throw new Error("getWork: workTimeout must be a positive integer");
       }
