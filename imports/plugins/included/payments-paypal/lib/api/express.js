@@ -17,16 +17,16 @@ function getSettings(settings, ref, valueName) {
 // to provide normalized PayPal tooling
 
 export const Express = {
-  expressCheckoutAccountOptions: function () {
+  expressCheckoutAccountOptions() {
     const shopId = Reaction.getShopId();
-    const settings = Packages.findOne({
+    const { settings } = Packages.findOne({
       name: "reaction-paypal",
-      shopId: shopId,
+      shopId,
       enabled: true
-    }).settings;
+    });
     let mode;
 
-    if ((settings !== null ? settings.express_mode : void 0) === true) {
+    if ((settings !== null ? settings.express_mode : undefined) === true) {
       mode = "production";
     } else {
       mode = "sandbox";
@@ -34,8 +34,8 @@ export const Express = {
     const ref = Meteor.settings.paypal;
 
     const options = {
-      enabled: settings !== null ? settings.express.enabled : void 0,
-      mode: mode,
+      enabled: settings !== null ? settings.express.enabled : undefined,
+      mode,
       username: getSettings(settings, ref, "username"),
       password: getSettings(settings, ref, "password"),
       signature: getSettings(settings, ref, "signature"),
@@ -50,7 +50,7 @@ export const Express = {
     }
     return options;
   },
-  config: function (options) {
+  config(options) {
     this.accountOptions = options;
   }
 };

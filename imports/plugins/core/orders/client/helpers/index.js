@@ -31,12 +31,9 @@ export function getOrderRiskBadge(riskLevel) {
  * @return {string} label - risklevel value (if risklevel is not normal)
  */
 export function getOrderRiskStatus(order) {
-  let riskLevel;
   const billingForShop = order.billing.find((billing) => billing.shopId === Reaction.getShopId());
-
-  if (billingForShop && billingForShop.paymentMethod && billingForShop.paymentMethod.riskLevel) {
-    riskLevel = billingForShop.paymentMethod.riskLevel;
-  }
+  const paymentMethod = (billingForShop && billingForShop.paymentMethod) || {};
+  const { riskLevel } = paymentMethod;
 
   // normal transactions do not need to be flagged
   if (riskLevel === "normal") {
@@ -159,9 +156,7 @@ export function filterShippingStatus(filter) {
  * @return {Object} proper billing object to use
  */
 export function getBillingInfo(order) {
-  const billingInfo = order && order.billing && order.billing.find((billing) => {
-    return billing && (billing.shopId === Reaction.getShopId());
-  });
+  const billingInfo = order && order.billing && order.billing.find((billing) => billing && (billing.shopId === Reaction.getShopId()));
   return billingInfo || {};
 }
 
@@ -173,8 +168,6 @@ export function getBillingInfo(order) {
  * @return {Object} proper shipping object to use
  */
 export function getShippingInfo(order) {
-  const shippingInfo = order && order.shipping && order.shipping.find((shipping) => {
-    return shipping && shipping.shopId === Reaction.getShopId();
-  });
+  const shippingInfo = order && order.shipping && order.shipping.find((shipping) => shipping && shipping.shopId === Reaction.getShopId());
   return shippingInfo || {};
 }

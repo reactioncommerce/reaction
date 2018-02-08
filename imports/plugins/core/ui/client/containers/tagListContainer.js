@@ -24,11 +24,9 @@ function updateSuggestions(term, { excludeTags }) {
     };
   }
 
-  const tags = Tags.find(selector).map((tag) => {
-    return {
-      label: tag.name
-    };
-  });
+  const tags = Tags.find(selector).map((tag) => ({
+    label: tag.name
+  }));
 
   return tags;
 }
@@ -196,7 +194,7 @@ const wrapComponent = (Comp) => (
       );
 
       this.setState({
-        suggestions: suggestions
+        suggestions
       });
     }
 
@@ -240,13 +238,11 @@ const wrapComponent = (Comp) => (
 );
 
 function composer(props, onData) {
-  let tags = props.tags;
+  let { tags } = props;
 
   if (props.product) {
     if (_.isArray(props.product.hashtags)) {
-      tags = _.map(props.product.hashtags, function (id) {
-        return Tags.findOne(id);
-      });
+      tags = _.map(props.product.hashtags, (id) => Tags.findOne(id));
     }
   }
 

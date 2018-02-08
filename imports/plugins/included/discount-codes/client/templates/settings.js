@@ -6,7 +6,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { DiscountCodes } from "../collections/codes";
 import { i18next } from "/client/api";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
-import { IconButton, Loading, SortableTable }  from "/imports/plugins/core/ui/client/components";
+import { IconButton, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 import "./settings.html";
 
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
@@ -27,7 +27,7 @@ Template.customDiscountCodes.onCreated(function () {
 Template.customDiscountCodes.helpers({
   editButton() {
     const instance = Template.instance();
-    const state = instance.state;
+    const { state } = instance;
     const isEditing = state.equals("isEditing", true);
     let editingId = state.get("editingId");
     // toggle edit state
@@ -51,7 +51,7 @@ Template.customDiscountCodes.helpers({
         $(".discount-codes-grid-row").removeClass("active");
         return state.set({
           isEditing: !isEditing,
-          editingId: editingId
+          editingId
         });
       }
     };
@@ -81,14 +81,12 @@ Template.customDiscountCodes.helpers({
     // helper adds a class to every grid row
     //
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
-        return "discount-codes-grid-row";
-      }
+      bodyCssClassName: () => "discount-codes-grid-row"
     };
 
     // add i18n handling to headers
     const customColumnMetadata = [];
-    filteredFields.forEach(function (field) {
+    filteredFields.forEach((field) => {
       const columnMeta = {
         accessor: field,
         Header: i18next.t(`admin.discountGrid.${field}`)
@@ -104,9 +102,9 @@ Template.customDiscountCodes.helpers({
       matchingResultsCount: "discounts-count",
       showFilter: true,
       rowMetadata: customRowMetaData,
-      filteredFields: filteredFields,
+      filteredFields,
       columns: filteredFields,
-      noDataMessage: noDataMessage,
+      noDataMessage,
       onRowClick: editRow,
       columnMetadata: customColumnMetadata,
       externalLoadingComponent: Loading
@@ -134,21 +132,21 @@ Template.customDiscountCodes.helpers({
 // on submit lets clear the form state
 //
 Template.customDiscountCodes.events({
-  "submit #discount-codes-update-form": function () {
+  "submit #discount-codes-update-form"() {
     const instance = Template.instance();
     instance.state.set({
       isEditing: false,
       editingId: null
     });
   },
-  "submit #discount-codes-insert-form": function () {
+  "submit #discount-codes-insert-form"() {
     const instance = Template.instance();
     instance.state.set({
       isEditing: true,
       editingId: null
     });
   },
-  "click .cancel, .discount-codes-grid-row .active": function () {
+  "click .cancel, .discount-codes-grid-row .active"() {
     const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
@@ -158,7 +156,7 @@ Template.customDiscountCodes.events({
     // ugly hack
     $(".discount-codes-grid-row").removeClass("active");
   },
-  "click .delete": function () {
+  "click .delete"() {
     const confirmTitle = i18next.t("admin.settings.confirmRateDelete");
     const confirmButtonText = i18next.t("app.delete");
     const instance = Template.instance();
@@ -168,7 +166,7 @@ Template.customDiscountCodes.events({
       title: confirmTitle,
       type: "warning",
       showCancelButton: true,
-      confirmButtonText: confirmButtonText
+      confirmButtonText
     }, (isConfirm) => {
       if (isConfirm) {
         if (id) {
@@ -181,7 +179,7 @@ Template.customDiscountCodes.events({
       }
     });
   },
-  "click .discount-codes-grid-row": function (event) {
+  "click .discount-codes-grid-row"(event) {
     // toggle all rows off, then add our active row
     $(".discount-codes-grid-row").removeClass("active");
     Template.instance().$(event.currentTarget).addClass("active");
@@ -193,24 +191,19 @@ Template.customDiscountCodes.events({
 //
 AutoForm.hooks({
   "discount-codes-update-form": {
-    onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"),
-        "success");
+    onSuccess() {
+      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"), "success");
     },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error"
-      );
+    onError(operation, error) {
+      return Alerts.toast(`${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error");
     }
   },
   "discount-codes-insert-form": {
-    onSuccess: function () {
+    onSuccess() {
       return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"), "success");
     },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error"
-      );
+    onError(operation, error) {
+      return Alerts.toast(`${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error");
     }
   }
 });

@@ -67,7 +67,7 @@ function stripeCaptureCharge(paymentMethod) {
     Logger.error(error);
     result = {
       saved: false,
-      error: error
+      error
     };
     return { error, result };
   }
@@ -158,31 +158,29 @@ function buildPaymentMethods(options) {
   }
 
   const shopIds = Object.keys(transactionsByShopId);
-  const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + cardData.number.slice(-4);
+  const storedCard = `${cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1)} ${cardData.number.slice(-4)}`;
   const paymentMethods = [];
 
 
   shopIds.forEach((shopId) => {
     if (transactionsByShopId[shopId]) {
-      const cartItems = cartItemsByShop[shopId].map((item) => {
-        return {
-          _id: item._id,
-          productId: item.productId,
-          variantId: item.variants._id,
-          shopId: shopId,
-          quantity: item.quantity
-        };
-      });
+      const cartItems = cartItemsByShop[shopId].map((item) => ({
+        _id: item._id,
+        productId: item.productId,
+        variantId: item.variants._id,
+        shopId,
+        quantity: item.quantity
+      }));
 
       // we need to grab this per shop to get the API key
       const packageData = Packages.findOne({
         name: "reaction-stripe",
-        shopId: shopId
+        shopId
       });
 
       const paymentMethod = {
         processor: "Stripe",
-        storedCard: storedCard,
+        storedCard,
         method: "credit",
         paymentPackageId: packageData._id,
         // TODO: REVIEW WITH AARON - why is paymentSettings key important
@@ -196,7 +194,7 @@ function buildPaymentMethods(options) {
         createdAt: new Date(transactionsByShopId[shopId].created),
         transactions: [],
         items: cartItems,
-        shopId: shopId
+        shopId
       };
       paymentMethod.transactions.push(transactionsByShopId[shopId]);
       paymentMethods.push(paymentMethod);
@@ -207,7 +205,7 @@ function buildPaymentMethods(options) {
 }
 
 export const methods = {
-  "stripe/payment/createCharges": async function (transactionType, cardData, cartId) {
+  async "stripe/payment/createCharges"(transactionType, cardData, cartId) {
     check(transactionType, String);
     check(cardData, {
       name: String,
@@ -272,14 +270,14 @@ export const methods = {
     // TODO: If there is only one transactionsByShopId and the shopId is primaryShopId -
     // Create a standard charge and bypass creating a customer for this charge
     const primaryShop = Shops.findOne({ _id: primaryShopId });
-    const currency = primaryShop.currency;
+    const { currency } = primaryShop;
 
     try {
       // Creates a customer object, adds a source via the card data
       // and waits for the promise to resolve
       const customer = Promise.await(stripe.customers.create({
         email: customerEmail
-      }).then(function (cust) {
+      }).then((cust) => {
         const customerCard = stripe.customers.createSource(cust.id, { source: { ...card, object: "card" } });
         return customerCard;
       }));
@@ -301,8 +299,8 @@ export const methods = {
         const stripeOptions = {};
         const stripeCharge = {
           amount: formatForStripe(cartTotals[shopId]),
-          capture: capture,
-          currency: currency
+          capture,
+          currency
           // TODO: add product metadata to stripe charge
         };
 
@@ -314,7 +312,7 @@ export const methods = {
           // If this is a merchant shop, we need to tokenize the customer
           // and charge the token with the merchant id
           merchantStripePkg = Reaction.getPackageSettingsWithOptions({
-            shopId: shopId,
+            shopId,
             name: "reaction-stripe"
           });
 
@@ -408,7 +406,7 @@ export const methods = {
         };
       }
       // If we get an unexpected error, log and return a censored error message
-      Logger.error("Received unexpected error type: " + error.rawType);
+      Logger.error(`Received unexpected error type: ${error.rawType}`);
       Logger.error(error);
       throw new Meteor.Error("server-error", "An unexpected error occurred while creating multiple stripe charges");
     }
@@ -419,7 +417,7 @@ export const methods = {
    * @param  {Object} paymentMethod A PaymentMethod object
    * @return {Object} results from Stripe normalized
    */
-  "stripe/payment/capture": function (paymentMethod) {
+  "stripe/payment/capture"(paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
 
     const captureDetails = {
@@ -445,7 +443,7 @@ export const methods = {
    * @param  {String} reason refund was issued (currently unused by client)
    * @return {Object} result
    */
-  "stripe/refund/create": function (paymentMethod, amount, reason = "requested_by_customer") {
+  "stripe/refund/create"(paymentMethod, amount, reason = "requested_by_customer") {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
     check(reason, String);
@@ -485,7 +483,7 @@ export const methods = {
    * @param  {Object} paymentMethod object
    * @return {Object} result
    */
-  "stripe/refund/list": function (paymentMethod) {
+  "stripe/refund/list"(paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
     const stripe = stripeNpm(stripeKey);

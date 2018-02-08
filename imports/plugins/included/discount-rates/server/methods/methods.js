@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import { Reaction } from "/server/api";
-import { Discounts } from  "/imports/plugins/core/discounts/lib/collections";
+import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { DiscountRates as DiscountSchema } from "../../lib/collections/schemas";
 
 // attach discount code specific schema
@@ -18,7 +18,7 @@ export const methods = {
    * @param  {String} rateId rateid
    * @return {Number} returns discount total
    */
-  "discounts/rates/amount": function (cartId, rateId) {
+  "discounts/rates/amount"(cartId, rateId) {
     check(cartId, String);
     check(rateId, String);
     const rate = 0;
@@ -26,7 +26,7 @@ export const methods = {
     // should be pricing rate lookup.
     return rate;
   },
-  "discounts/rates/discount": function (cartId, rateId) {
+  "discounts/rates/discount"(cartId, rateId) {
     check(cartId, String);
     check(rateId, String);
     const rate = 0;
@@ -39,7 +39,7 @@ export const methods = {
    * @param  {String} docId discount docId
    * @return {String} returns update/insert result
    */
-  "discounts/addRate": function (modifier, docId) {
+  "discounts/addRate"(modifier, docId) {
     check(modifier, Object);
     check(docId, Match.OneOf(String, null, undefined));
 

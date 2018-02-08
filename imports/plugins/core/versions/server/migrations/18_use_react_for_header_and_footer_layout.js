@@ -22,25 +22,17 @@ Migrations.add({
   version: 18,
   up() {
     const packages = Packages.find(query).fetch();
-    packages.forEach(updateHandler(
-      Packages
-    ));
+    packages.forEach(updateHandler(Packages));
 
     const shops = Shops.find().fetch();
-    shops.forEach(updateHandler(
-      Shops
-    ));
+    shops.forEach(updateHandler(Shops));
   },
   down() {
     const packages = Packages.find(query).fetch();
-    packages.forEach(downgradeHandler(
-      Packages
-    ));
+    packages.forEach(downgradeHandler(Packages));
 
     const shops = Shops.find().fetch();
-    shops.forEach(downgradeHandler(
-      Shops
-    ));
+    shops.forEach(downgradeHandler(Shops));
   }
 });
 
@@ -62,10 +54,9 @@ function updateHandler(collection) {
     }
 
     if (changed) {
-      collection.update(
-        { _id: doc._id }, {
-          $set: { layout: doc.layout }
-        });
+      collection.update({ _id: doc._id }, {
+        $set: { layout: doc.layout }
+      });
     }
   };
 }
@@ -85,10 +76,9 @@ function downgradeHandler(collection) {
     }
 
     if (changed) {
-      collection.update(
-        { _id: doc._id }, {
-          $set: { layout: doc.layout }
-        });
+      collection.update({ _id: doc._id }, {
+        $set: { layout: doc.layout }
+      });
     }
   };
 }

@@ -32,7 +32,7 @@ export function copyCartToOrder(cartId) {
   const order = Object.assign({}, cart);
 
   // get sessionId from cart while cart is fresh
-  const sessionId = cart.sessionId;
+  const { sessionId } = cart;
 
   // If there are no order items, throw an error. We won't create an empty order
   if (!order.items || order.items.length === 0) {
@@ -89,14 +89,15 @@ export function copyCartToOrder(cartId) {
     if (order.shipping.length > 0) {
       const shippingRecords = [];
       order.shipping.map((shippingRecord) => {
-        const billingRecord = order.billing.find(billing => billing.shopId === shippingRecord.shopId);
+        const billingRecord = order.billing.find((billing) => billing.shopId === shippingRecord.shopId);
         shippingRecord.paymentId = billingRecord._id;
         shippingRecord.items = [];
         shippingRecord.items.packed = false;
         shippingRecord.items.shipped = false;
         shippingRecord.items.delivered = false;
-        shippingRecord.workflow = { status: "new",  workflow: ["coreOrderWorkflow/notStarted"] };
+        shippingRecord.workflow = { status: "new", workflow: ["coreOrderWorkflow/notStarted"] };
         shippingRecords.push(shippingRecord);
+        return shippingRecords;
       });
       order.shipping = shippingRecords;
     }
@@ -128,11 +129,11 @@ export function copyCartToOrder(cartId) {
   if (!order.billing[0].currency) {
     order.billing[0].currency = {
       // userCurrency is shopCurrency unless user has selected a different currency than the shop
-      userCurrency: userCurrency
+      userCurrency
     };
   }
 
-  order.items = order.items.map(item => {
+  order.items = order.items.map((item) => {
     item.shippingMethod = order.shipping[order.shipping.length - 1];
     item.workflow = {
       status: "new",
@@ -199,7 +200,7 @@ export function copyCartToOrder(cartId) {
       }
     }
 
-    Logger.info("Transitioned cart " + cartId + " to order " + orderId);
+    Logger.info(`Transitioned cart ${cartId} to order ${orderId}`);
     // catch send notification, we don't want
     // to block because of notification errors
 

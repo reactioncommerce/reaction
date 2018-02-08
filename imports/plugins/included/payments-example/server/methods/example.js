@@ -15,21 +15,13 @@ function luhnValid(x) {
   }, 0) % 10 === 0;
 }
 
-const ValidCardNumber = Match.Where(function (x) {
-  return /^[0-9]{13,16}$/.test(x) && luhnValid(x);
-});
+const ValidCardNumber = Match.Where((x) => /^[0-9]{13,16}$/.test(x) && luhnValid(x));
 
-const ValidExpireMonth = Match.Where(function (x) {
-  return /^[0-9]{1,2}$/.test(x);
-});
+const ValidExpireMonth = Match.Where((x) => /^[0-9]{1,2}$/.test(x));
 
-const ValidExpireYear = Match.Where(function (x) {
-  return /^[0-9]{4}$/.test(x);
-});
+const ValidExpireYear = Match.Where((x) => /^[0-9]{4}$/.test(x));
 
-const ValidCVV = Match.Where(function (x) {
-  return /^[0-9]{3,4}$/.test(x);
-});
+const ValidCVV = Match.Where((x) => /^[0-9]{3,4}$/.test(x));
 
 // function chargeObj() {
 //   return {
@@ -59,7 +51,7 @@ Meteor.methods({
    * @param  {Object} paymentData The details of the Payment Needed
    * @return {Object} results normalized
    */
-  "exampleSubmit": function (transactionType, cardData, paymentData) {
+  "exampleSubmit"(transactionType, cardData, paymentData) {
     check(transactionType, String);
     check(cardData, {
       name: String,
@@ -78,9 +70,9 @@ Meteor.methods({
     let result;
     try {
       const transaction = ExampleApi.methods.authorize.call({
-        transactionType: transactionType,
-        cardData: cardData,
-        paymentData: paymentData
+        transactionType,
+        cardData,
+        paymentData
       });
 
       result = {
@@ -100,7 +92,7 @@ Meteor.methods({
       Logger.warn(error);
       result = {
         saved: false,
-        error: error
+        error
       };
     }
     return result;
@@ -111,17 +103,17 @@ Meteor.methods({
    * @param {Object} paymentData Object containing data about the transaction to capture
    * @return {Object} results normalized
    */
-  "example/payment/capture": function (paymentData) {
+  "example/payment/capture"(paymentData) {
     check(paymentData, Reaction.Schemas.PaymentMethod);
     const authorizationId = paymentData.transactionId;
-    const amount = paymentData.amount;
+    const { amount } = paymentData;
     const response = ExampleApi.methods.capture.call({
-      authorizationId: authorizationId,
-      amount: amount
+      authorizationId,
+      amount
     });
     const result = {
       saved: true,
-      response: response
+      response
     };
     return result;
   },
@@ -132,17 +124,17 @@ Meteor.methods({
    * @param  {Number} amount The amount to be refunded
    * @return {Object} result
    */
-  "example/refund/create": function (paymentMethod, amount) {
+  "example/refund/create"(paymentMethod, amount) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
     const { transactionId } = paymentMethod;
     const response = ExampleApi.methods.refund.call({
-      transactionId: transactionId,
-      amount: amount
+      transactionId,
+      amount
     });
     const results = {
       saved: true,
-      response: response
+      response
     };
     return results;
   },
@@ -152,11 +144,11 @@ Meteor.methods({
    * @param  {Object} paymentMethod Object containing the pertinant data
    * @return {Object} result
    */
-  "example/refund/list": function (paymentMethod) {
+  "example/refund/list"(paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     const { transactionId } = paymentMethod;
     const response = ExampleApi.methods.refunds.call({
-      transactionId: transactionId
+      transactionId
     });
     const result = [];
     for (const refund of response.refunds) {

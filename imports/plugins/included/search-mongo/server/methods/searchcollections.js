@@ -78,7 +78,7 @@ export function getSearchParameters(collection = "products") {
   const customFields = filterFields(settings[collection].includes);
   const fieldSet = requiredFields[collection].concat(customFields);
   const weightObject = getScores(customFields, settings);
-  return { fieldSet: fieldSet, weightObject: weightObject, customFields: customFields };
+  return { fieldSet, weightObject, customFields };
 }
 
 export function buildProductSearchRecord(productId) {
@@ -178,10 +178,8 @@ export function buildOrderSearchRecord(orderId) {
     for (const email of user.emails) {
       userEmails.push(email.address);
     }
-  } else {
-    if (anonymousUserEmail) {
-      userEmails.push(anonymousUserEmail);
-    }
+  } else if (anonymousUserEmail) {
+    userEmails.push(anonymousUserEmail);
   }
   const orderSearch = {};
   for (const field of requiredFields.orders) {
@@ -191,15 +189,12 @@ export function buildOrderSearchRecord(orderId) {
       orderSearch[field] = order[field];
     }
   }
+
   // get the billing object for the current shop on the order (and not hardcoded [0])
-  const shopBilling = order.billing && order.billing.find(
-    billing => billing && billing.shopId === Reaction.getShopId()
-  ) || {};
+  const shopBilling = (order.billing && order.billing.find((billing) => billing && billing.shopId === Reaction.getShopId())) || {};
 
   // get the shipping object for the current shop on the order (and not hardcoded [0])
-  const shopShipping = order.shipping.find(
-    shipping => shipping.shopId === Reaction.getShopId()
-  ) || {};
+  const shopShipping = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId()) || {};
 
   orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
   orderSearch.billingPhone = shopBilling.address && shopBilling.address.phone.replace(/\D/g, "");
@@ -237,9 +232,9 @@ export function buildOrderSearchRecord(orderId) {
   }
   orderSearch.product = {};
   orderSearch.variants = {};
-  orderSearch.product.title = order.items.map(item => item.product && item.product.title);
-  orderSearch.variants.title = order.items.map(item => item.variants && item.variants.title);
-  orderSearch.variants.optionTitle = order.items.map(item => item.variants && item.variants.optionTitle);
+  orderSearch.product.title = order.items.map((item) => item.product && item.product.title);
+  orderSearch.variants.title = order.items.map((item) => item.variants && item.variants.title);
+  orderSearch.variants.optionTitle = order.items.map((item) => item.variants && item.variants.optionTitle);
 
   OrderSearch.insert(orderSearch);
 }
@@ -252,7 +247,9 @@ export function buildOrderSearch(cb) {
   }
   const rawOrderSearchCollection = OrderSearch.rawCollection();
   rawOrderSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
-  rawOrderSearchCollection.createIndex({ shopId: 1, shippingName: 1, billingName: 1, userEmails: 1 }).catch(handleIndexUpdateFailures);
+  rawOrderSearchCollection.createIndex({
+    shopId: 1, shippingName: 1, billingName: 1, userEmails: 1
+  }).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }

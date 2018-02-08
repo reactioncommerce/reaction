@@ -1,6 +1,6 @@
 import _ from "lodash";
 import Tooltip from "tether-tooltip";
-import { Template }  from "meteor/templating";
+import { Template } from "meteor/templating";
 import { i18next, i18nextDep } from "/client/api";
 import { Icon } from "/imports/plugins/core/ui/client/components";
 
@@ -57,7 +57,7 @@ Template.button.helpers({
         ...attrs, // Spread the attrs into this object
         // Then override any props from attrs with some better defaults
         class: `rui button btn btn-${status} ${className}`,
-        href: href,
+        href,
         type: () => {
           if (!href) {
             return type || "button";
@@ -74,16 +74,16 @@ Template.button.helpers({
     return "uiButtonElement";
   },
   i18nKeyTitle() {
-    const data = Template.instance().data;
+    const { data } = Template.instance();
     return data.itemKeyTitle || data.i18nKeyLabel;
   },
   title() {
-    const data = Template.instance().data;
+    const { data } = Template.instance();
     return data.title || data.label;
   },
   toggleOn() {
     const instance = Template.instance();
-    const toggleOn = instance.data.toggleOn;
+    const { toggleOn } = instance.data;
 
     if (toggleOn) {
       if (_.isFunction(toggleOn)) {

@@ -10,21 +10,21 @@ Template.addressBookForm.helpers({
   /*
    * TODO: update for i18n
    */
-  countryOptions: function () {
+  countryOptions() {
     return Countries.find().fetch();
   },
-  statesForCountry: function () {
+  statesForCountry() {
     let locale;
     const shop = Collections.Shops.findOne();
     const selectedCountry = Session.get("addressBookCountry") || AutoForm.getFieldValue("country");
     if (!selectedCountry) {
       return false;
     }
-    if ((shop !== null ? shop.locales.countries[selectedCountry].states : void 0) === null) {
+    if ((shop !== null ? shop.locales.countries[selectedCountry].states : undefined) === null) {
       return false;
     }
     const options = [];
-    const ref = shop !== null ? shop.locales.countries[selectedCountry].states : void 0;
+    const ref = shop !== null ? shop.locales.countries[selectedCountry].states : undefined;
     for (const state in ref) {
       if ({}.hasOwnProperty.call(ref, state)) {
         locale = ref[state];
@@ -40,13 +40,13 @@ Template.addressBookForm.helpers({
   /*
    *  Defaults billing/shipping when 1st new address.
    */
-  isBillingDefault: function () {
+  isBillingDefault() {
     return typeof this.address === "object" ? this.address.isBillingDefault : true;
   },
-  isShippingDefault: function () {
+  isShippingDefault() {
     return typeof this.address === "object" ? this.address.isShippingDefault : true;
   },
-  hasAddressBookEntries: function () {
+  hasAddressBookEntries() {
     const account = Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
@@ -63,7 +63,7 @@ Template.addressBookForm.helpers({
 });
 
 Template.addressBookForm.events({
-  "change [name='country']": function () {
+  "change [name='country']"() {
     return Session.set("addressBookCountry", AutoForm.getFieldValue("country"));
   }
 });

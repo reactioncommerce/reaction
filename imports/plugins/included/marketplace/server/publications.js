@@ -16,13 +16,11 @@ Meteor.publish("SellerShops", function (shopIds) {
 
     if (shopIds) {
       if (sellerShopId) {
-        const pubShopIds =  _.without(shopIds, sellerShopId);
+        const pubShopIds = _.without(shopIds, sellerShopId);
         selector._id = { $in: pubShopIds };
       }
-    } else {
-      if (sellerShopId) {
-        selector._id = { $ne: sellerShopId };
-      }
+    } else if (sellerShopId) {
+      selector._id = { $ne: sellerShopId };
     }
 
     const sellerShopsObserver = Shops.find(selector, {
@@ -39,7 +37,7 @@ Meteor.publish("SellerShops", function (shopIds) {
       }
     });
 
-    this.onStop(function () {
+    this.onStop(() => {
       sellerShopsObserver.stop();
     });
   };
@@ -57,7 +55,7 @@ Meteor.publish("SellerShops", function (shopIds) {
         this.removed("SellerShops", document._id);
       }
     });
-    this.onStop(function () {
+    this.onStop(() => {
       ownedSellerShopObserver.stop();
     });
   };

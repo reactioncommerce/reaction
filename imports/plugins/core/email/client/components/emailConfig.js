@@ -39,7 +39,10 @@ class EmailConfig extends Component {
     return (
       <div>
         <div className="pull-right">
-          <a onClick={this.toggleSettings}><Components.Icon icon="gear"/></a>
+          <Components.IconButton
+            icon="fa fa-gear"
+            onClick={this.toggleSettings}
+          />
         </div>
         <div className="email-config-status">
           <strong><Translation defaultValue={"Status"} i18nKey={"admin.settings.status"} /></strong>: {status ?
@@ -63,14 +66,21 @@ class EmailConfig extends Component {
           {password ?
             <span>
               {showPassword ? password : "********"}
-              <a onClick={this.togglePassword}>
+              <Components.Button
+                className={{
+                  "btn": false,
+                  "btn-default": false
+                }}
+                tagName="span"
+                onClick={this.togglePassword}
+              >
                 <span style={{ marginLeft: "1rem" }}>
                   <em>{showPassword ?
                     <span data-i18n="admin.settings.passwordHide">Hide</span>
                     : <span data-i18n="admin.settings.passwordShow">Show</span>}
                   </em>
                 </span>
-              </a>
+              </Components.Button>
             </span>
             : <NotSet/>}
         </div>

@@ -1,46 +1,49 @@
 {
-  "parser": "babel-eslint", // now for the support of allowImportExportEverywhere
+  "parser": "babel-eslint",
+  "extends": [
+    "plugin:jsx-a11y/recommended"
+  ],
   "env": {
     "browser": true,
-    "node": true,
     "es6": true,
-    "mocha": true
+    "jest/globals": true,
+    "mocha": true,
+    "node": true
   },
   "globals": {
-    "browser": true,
     "Assets": true, // Meteor global
     "Package": true, // Meteor global
     "FS": true, // gridFS,
-    "Alerts": true,  // this needs to get cleaned up, but ignoring for now
-    "jest": true,
-    "expect": true,
-    "test": true
+    "gm": true, // cfs:graphicsmagick
+    "Alerts": true  // this needs to get cleaned up, but ignoring for now
+  },
+  "settings": {
+    "import/resolver": "meteor"
   },
   "parserOptions": {
-     "ecmaVersion": 6,
-     "sourceType": "module",
-      "ecmaFeatures": {
-        "arrowFunctions": true,
-        "blockBindings": true,
-        "classes": true,
-        "defaultParams": true,
-        "destructuring": true,
-        "forOf": true,
-        "generators": false,
-        "modules": true,
-        "objectLiteralComputedProperties": true,
-        "objectLiteralDuplicateProperties": false,
-        "objectLiteralShorthandMethods": true,
-        "objectLiteralShorthandProperties": true,
-        "spread": true,
-        "superInFunctions": true,
-        "templateStrings": true,
-        "jsx": true
-      },
-     "allowImportExportEverywhere": true
+    "ecmaVersion": 2017,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "arrowFunctions": true,
+      "blockBindings": true,
+      "classes": true,
+      "defaultParams": true,
+      "destructuring": true,
+      "forOf": true,
+      "generators": false,
+      "modules": true,
+      "objectLiteralComputedProperties": true,
+      "objectLiteralDuplicateProperties": false,
+      "objectLiteralShorthandMethods": true,
+      "objectLiteralShorthandProperties": true,
+      "spread": true,
+      "superInFunctions": true,
+      "templateStrings": true,
+      "jsx": true
+    },
+    "allowImportExportEverywhere": true
   },
-  "plugins": ["react"],
-  // NOTE: We're now using eslint-4
+  "plugins": ["import", "jest", "jsx-a11y", "react"],
   "rules": {
     /**
      * Strict mode
@@ -54,6 +57,7 @@
      */
     "object-curly-spacing": ["error", "always", { "objectsInObjects": true }],
     "no-var": 2, // http://eslint.org/docs/rules/no-var
+
     /**
      * Variables
      */
@@ -61,8 +65,9 @@
     "no-shadow-restricted-names": 2, // http://eslint.org/docs/rules/no-shadow-restricted-names
     "no-const-assign": 2, // http://eslint.org/docs/rules/no-const-assign
     "no-unused-vars": [2, { // http://eslint.org/docs/rules/no-unused-vars
-      "vars": "local",
-      "args": "after-used"
+      "vars": "all",
+      "args": "after-used",
+      "ignoreRestSiblings": true
     }],
     "no-use-before-define": [2, "nofunc"], // http://eslint.org/docs/rules/no-use-before-define
     "no-implicit-globals": 2, // http://eslint.org/docs/rules/no-implicit-globals
@@ -70,7 +75,7 @@
     /**
      * Possible errors
      */
-    "comma-dangle": [2, "never"], // http://eslint.org/docs/rules/comma-dangle
+    "comma-dangle": ["error", "never"], // http://eslint.org/docs/rules/comma-dangle
     "no-cond-assign": [2, "always"], // http://eslint.org/docs/rules/no-cond-assign
     "no-console": 2, // http://eslint.org/docs/rules/no-console
     "no-debugger": 1, // http://eslint.org/docs/rules/no-debugger
@@ -80,7 +85,7 @@
     "no-duplicate-case": 2, // http://eslint.org/docs/rules/no-duplicate-case
     "no-empty": 2, // http://eslint.org/docs/rules/no-empty
     "no-ex-assign": 2, // http://eslint.org/docs/rules/no-ex-assign
-    "no-extra-boolean-cast": 0, // http://eslint.org/docs/rules/no-extra-boolean-cast
+    "no-extra-boolean-cast": 2, // http://eslint.org/docs/rules/no-extra-boolean-cast
     "no-extra-semi": 2, // http://eslint.org/docs/rules/no-extra-semi
     "no-func-assign": 2, // http://eslint.org/docs/rules/no-func-assign
     "no-inner-declarations": 2, // http://eslint.org/docs/rules/no-inner-declarations
@@ -142,8 +147,8 @@
     "eqeqeq": 2, // http://eslint.org/docs/rules/eqeqeq
     "guard-for-in": 2, // http://eslint.org/docs/rules/guard-for-in
     "prefer-const": [1, {
-        "destructuring": "any",
-        "ignoreReadBeforeAssign": false
+      "destructuring": "any",
+      "ignoreReadBeforeAssign": false
     }],
     "no-caller": 2, // http://eslint.org/docs/rules/no-caller
     "no-else-return": 2, // http://eslint.org/docs/rules/no-else-return
@@ -166,7 +171,7 @@
     "no-param-reassign": 2, // http://eslint.org/docs/rules/no-param-reassign
     "no-proto": 2, // http://eslint.org/docs/rules/no-proto
     "no-redeclare": 2, // http://eslint.org/docs/rules/no-redeclare
-    "no-return-assign": 2, // http://eslint.org/docs/rules/no-return-assign
+    "no-return-assign": ["error", "always"], // http://eslint.org/docs/rules/no-return-assign
     "no-script-url": 2, // http://eslint.org/docs/rules/no-script-url
     "no-self-compare": 2, // http://eslint.org/docs/rules/no-self-compare
     "no-sequences": 2, // http://eslint.org/docs/rules/no-sequences
@@ -175,7 +180,7 @@
     "no-undef": 2,
     "radix": 2, // http://eslint.org/docs/rules/radix
     "vars-on-top": 2, // http://eslint.org/docs/rules/vars-on-top
-    "wrap-iife": [2, "any"], // http://eslint.org/docs/rules/wrap-iife
+    "wrap-iife": ["error", "outside", { "functionPrototypeMethods": false }], // http://eslint.org/docs/rules/wrap-iife
     "yoda": 2, // http://eslint.org/docs/rules/yoda
     "max-len": [1, 160, 2, {
       "ignoreComments": true,
@@ -187,27 +192,26 @@
         "MethodDefinition": false,
         "ClassDeclaration": false,
         "ArrowFunctionExpression": false
-        }
+      }
     }], // https://eslint.org/docs/rules/require-jsdoc
     "valid-jsdoc": [0, {
       "prefer": {
         "arg": "param",
         "argument": "param"
-        }
+      }
     }], // http://eslint.org/docs/rules/valid-jsdoc
     "quote-props": [2, "consistent-as-needed"], // http://eslint.org/docs/rules/quote-props
+
     /**
      * Style
      */
     "indent": [2, 2, {"SwitchCase": 1}], // http://eslint.org/docs/rules/indent
     "brace-style": [2, // http://eslint.org/docs/rules/brace-style
-      "1tbs", {
-        "allowSingleLine": true
-      }
-    ],
-    "quotes": [
-      2, "double", "avoid-escape" // http://eslint.org/docs/rules/quotes
-    ],
+                    "1tbs", {
+                      "allowSingleLine": true
+                    }
+                   ],
+    "quotes": ["error", "double", { "avoidEscape": true }], // http://eslint.org/docs/rules/quotes
     "camelcase": [2, { // http://eslint.org/docs/rules/camelcase
       "properties": "always"
     }],
@@ -253,6 +257,100 @@
     "space-infix-ops": 2, // http://eslint.org/docs/rules/space-infix-ops
     "space-in-parens": [2, "never"], // http://eslint.org/docs/rules/space-in-parens
     "spaced-comment": [2, "always"], // http://eslint.org/docs/rules/spaced-comment
-    "arrow-spacing": [2, { "before": true, "after": true }] // https://eslint.org/docs/rules/arrow-spacing
+    "arrow-spacing": [2, { "before": true, "after": true }], // https://eslint.org/docs/rules/arrow-spacing
+
+    /**
+    * Additional rules to enable one by one
+    */
+    "array-bracket-spacing": ["error", "never"],
+    "array-callback-return": ["error", { "allowImplicit": true }],
+    "arrow-body-style": ["error", "as-needed", { "requireReturnForObjectLiteral": false }],
+    "arrow-parens": [ "error", "always", { "requireForBlockBody": true }],
+    "block-spacing": ["error", "always"],
+    "computed-property-spacing": ["error", "never"],
+    "dot-location": ["error", "property"],
+    "function-paren-newline": ["error", "multiline"],
+    "import/export": "error",
+    "import/order": ["error", {
+      "groups": [
+        "builtin",
+        "external",
+        "internal",
+        "parent",
+        "sibling",
+        "index"
+      ]
+    }],
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "import/no-mutable-exports": "error",
+    "import/no-named-default": "error",
+    "new-parens": "error",
+    "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 4 }],
+    "no-await-in-loop": "error",
+    "no-bitwise": "error",
+    "no-case-declarations": "error",
+    "no-confusing-arrow": ["error", { "allowParens": true }],
+    "no-empty-pattern": "error",
+    "no-lonely-if": "error",
+    // This rule copied from Airbnb's config
+    "no-mixed-operators": ["error", {
+      "groups": [
+        ["%", "**"],
+        ["%", "+"],
+        ["%", "-"],
+        ["%", "*"],
+        ["%", "/"],
+        ["**", "+"],
+        ["**", "-"],
+        ["**", "*"],
+        ["**", "/"],
+        ["&", "|", "^", "~", "<<", ">>", ">>>"],
+        ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
+        ["&&", "||"],
+        ["in", "instanceof"]
+      ],
+      "allowSamePrecedence": false
+    }],
+    "no-multi-assign": ["error"],
+    "no-multi-spaces": ["error", { "ignoreEOLComments": false }],
+    "no-plusplus": "error",
+    "no-prototype-builtins": "error",
+    "no-tabs": "error",
+    "no-undef-init": "error",
+    "no-unneeded-ternary": ["error", { "defaultAssignment": false }],
+    "no-unsafe-finally": "error",
+    "no-useless-computed-key": "error",
+    "no-useless-concat": "error",
+    "no-useless-constructor": "error",
+    "no-useless-escape": "error",
+    "no-void": "error",
+    "object-curly-newline": ["error", { "ObjectExpression": { "multiline": true, "consistent": true }, "ObjectPattern": { "multiline": true, "consistent": true } }],
+    "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": true }],
+    "object-shorthand": ["error", "always"],
+    "operator-assignment": ["error", "always"],
+    "prefer-arrow-callback": ["error", { "allowNamedFunctions": false, "allowUnboundThis": true }],
+    "prefer-destructuring": ["error", {
+      "VariableDeclarator": {
+        "array": false,
+        "object": true
+      },
+      "AssignmentExpression": {
+        "array": true,
+        "object": true
+      }
+    }, {
+      "enforceForRenamedProperties": false
+    }],
+    "prefer-rest-params": "error",
+    "prefer-spread": "error",
+    "prefer-template": "error",
+    "rest-spread-spacing": ["error", "never"],
+    "space-unary-ops": ["error", {
+      "words": true,
+      "nonwords": false,
+      "overrides": {}
+    }],
+    "template-curly-spacing": "error"
   }
 }

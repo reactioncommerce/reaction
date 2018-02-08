@@ -4,8 +4,7 @@ import { isEmpty } from "lodash";
 import classnames from "classnames";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
-import { Reaction } from "/client/api";
-import { formatPriceString } from "/client/api";
+import { formatPriceString, Reaction } from "/client/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 /**
@@ -62,11 +61,11 @@ class LineItems extends Component {
 
     if (displayMedia(uniqueItem)) {
       return (
-        <img src={displayMedia(uniqueItem).url()}/>
+        <img src={displayMedia(uniqueItem).url()} alt="" />
       );
     }
     return (
-      <img src= "/resources/placeholder.gif" />
+      <img src= "/resources/placeholder.gif" alt="" />
     );
   }
 
@@ -223,8 +222,7 @@ class LineItems extends Component {
                   <span>{formatPriceString(item.refundedTotal)}</span>
                 </div>
               </div>
-            )
-            )}
+            ))}
             <div className="refund-item return">
               <div>
                 <b><Components.Translation defaultValue="RETURN TOTAL" i18nKey="admin.invoice.refundTotal"/></b>
@@ -329,18 +327,26 @@ class LineItems extends Component {
   render() {
     const { uniqueItems } = this.props;
     return (
-      <div className="invoice invoice-line-items" onClick={this.props.handlePopOverOpen}>
-        {uniqueItems.map((uniqueItem) => {
-          return (
-            <div key={uniqueItem._id}> {this.renderLineItem(uniqueItem)} </div>
-          );
-        })}
+      <Components.Button
+        tagName="div"
+        className={{
+          "btn": false,
+          "btn-default": false,
+          "flat": false,
+          "invoice": true,
+          "invoice-line-items": true
+        }}
+        onClick={this.props.handlePopOverOpen}
+      >
+        {uniqueItems.map((uniqueItem) => (
+          <div key={uniqueItem._id}> {this.renderLineItem(uniqueItem)} </div>
+        ))}
 
         {
           Roles.userIsInRole(Meteor.userId(), ["orders", "dashboard/orders"], Reaction.getShopId()) &&
           this.renderPopOver()
         }
-      </div>
+      </Components.Button>
     );
   }
 }

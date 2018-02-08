@@ -15,11 +15,11 @@ class OrderSubscription extends Component {
 function composer(props, onData) {
   const subscription = Meteor.subscribe("SearchResults", "orders", props.searchQuery);
   let orderSearchResultsIds;
-  const query = props.query;
+  const { query } = props;
 
   if (subscription.ready()) {
     const orderSearchResults = OrderSearch.find().fetch();
-    orderSearchResultsIds = orderSearchResults.map(orderSearch => orderSearch._id);
+    orderSearchResultsIds = orderSearchResults.map((orderSearch) => orderSearch._id);
     // checking to ensure search was made and search results are returned
     if (props.searchQuery && Array.isArray(orderSearchResultsIds)) {
       // add matching results from search to query passed to Sortable

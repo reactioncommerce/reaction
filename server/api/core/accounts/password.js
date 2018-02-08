@@ -64,15 +64,15 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
     const mediaId = Media.findOne(brandAsset.mediaId);
     emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
   } else {
-    emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+    emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
   }
 
   const dataForEmail = {
     // Shop Data
-    shop: shop,
+    shop,
     contactEmail: shop.emails[0].address,
     homepage: Meteor.absoluteUrl(),
-    emailLogo: emailLogo,
+    emailLogo,
     copyrightDate: moment().format("YYYY"),
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -86,23 +86,23 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
       display: true,
       facebook: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/facebook-icon.png`,
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/twitter-icon.png`,
         link: "https://www.twitter.com"
       }
     },
     // Account Data
     passwordResetUrl: Accounts.urls.resetPassword(token),
-    user: user
+    user
   };
 
   // Compile Email with SSR
@@ -145,7 +145,7 @@ export function sendVerificationEmail(userId, email) {
   if (!email) {
     const unverifiedEmail = _.find(user.emails || [], (e) => !e.verified) || {};
 
-    address = unverifiedEmail.address;
+    ({ address } = unverifiedEmail);
 
     if (!address) {
       const msg = "No unverified email addresses found.";
@@ -178,7 +178,7 @@ export function sendVerificationEmail(userId, email) {
     // Reaction Information
     contactEmail: "hello@reactioncommerce.com",
     homepage: Meteor.absoluteUrl(),
-    emailLogo: Meteor.absoluteUrl() + "resources/placeholder.gif",
+    emailLogo: `${Meteor.absoluteUrl()}resources/placeholder.gif`,
     copyrightDate: moment().format("YYYY"),
     legalName: "Reaction Commerce",
     physicalAddress: {
@@ -187,7 +187,7 @@ export function sendVerificationEmail(userId, email) {
       region: "CA",
       postal: "90405"
     },
-    shopName: shopName,
+    shopName,
     socialLinks: {
       facebook: {
         link: "https://www.facebook.com/reactioncommerce"
@@ -226,7 +226,7 @@ export function sendVerificationEmail(userId, email) {
   const subject = "accounts/verifyEmail/subject";
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(subject));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
   return Reaction.Email.send({
     to: address,
@@ -262,7 +262,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
   if (!email) {
     const unverifiedEmail = _.find(user.emails || [], (e) => !e.verified) || {};
 
-    address = unverifiedEmail.address;
+    ({ address } = unverifiedEmail);
 
     if (!address) {
       const msg = "No unverified email addresses found.";
@@ -295,7 +295,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
     // Reaction Information
     contactEmail: "hello@reactioncommerce.com",
     homepage: Meteor.absoluteUrl(),
-    emailLogo: Meteor.absoluteUrl() + "resources/placeholder.gif",
+    emailLogo: `${Meteor.absoluteUrl()}resources/placeholder.gif`,
     copyrightDate: moment().format("YYYY"),
     legalName: "Reaction Commerce",
     physicalAddress: {
@@ -304,7 +304,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
       region: "CA",
       postal: "90405"
     },
-    shopName: shopName,
+    shopName,
     socialLinks: {
       facebook: {
         link: "https://www.facebook.com/reactioncommerce"
@@ -343,7 +343,7 @@ export function sendUpdatedVerificationEmail(userId, email) {
   const subject = "accounts/verifyUpdatedEmail/subject";
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(subject));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
   return Reaction.Email.send({
     to: address,

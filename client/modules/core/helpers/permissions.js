@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Reaction } from "../";
+import { Reaction } from "/client/api";
 
 /*
  * Methods for the reaction permissions
@@ -16,20 +16,20 @@ import { Reaction } from "../";
  * @param  {String} checkUserId - optional Meteor.userId, default to current
  * @return {Boolean}
  */
-Template.registerHelper("hasPermission", function (permissions, options) {
+Template.registerHelper("hasPermission", (permissions, options) => {
   // default to checking this.userId
-  let userId = Meteor.userId();
+  const loggedInUser = Meteor.userId();
   const shopId = Reaction.getShopId();
   // we don't necessarily need to check here
   // as these same checks and defaults are
   // also performed in Reaction.hasPermission
   if (typeof options === "object") {
     if (options.hash.userId) {
-      userId = options.hash.userId;
-      return Reaction.hasPermission(permissions, userId, shopId);
+      const { userId } = options.hash;
+      return Reaction.hasPermission(permissions, userId || loggedInUser, shopId);
     }
   }
-  return Reaction.hasPermission(permissions, userId, shopId);
+  return Reaction.hasPermission(permissions, loggedInUser, shopId);
 });
 
 /**
@@ -37,33 +37,25 @@ Template.registerHelper("hasPermission", function (permissions, options) {
  * @summary check if user has owner access
  * @return {Boolean} return true if owner
  */
-Template.registerHelper("hasOwnerAccess", function () {
-  return Reaction.hasOwnerAccess();
-});
+Template.registerHelper("hasOwnerAccess", () => Reaction.hasOwnerAccess());
 
 /**
  * hasAdminAccess template helper
  * @summary check if user has admin access
  * @return {Boolean} return true if admin
  */
-Template.registerHelper("hasAdminAccess", function () {
-  return Reaction.hasAdminAccess();
-});
+Template.registerHelper("hasAdminAccess", () => Reaction.hasAdminAccess());
 
 /**
  * hasDashboardAccess template helper
  * @summary check if user has dashboard access
  * @return {Boolean} return true if user has dashboard permission
  */
-Template.registerHelper("hasDashboardAccess", function () {
-  return Reaction.hasDashboardAccess();
-});
+Template.registerHelper("hasDashboardAccess", () => Reaction.hasDashboardAccess());
 
 /**
  * allowGuestCheckout template helper
  * @summary check if guest users are allowed to checkout
  * @return {Boolean} return true if shop has guest checkout enabled
  */
-Template.registerHelper("allowGuestCheckout", function () {
-  return Reaction.allowGuestCheckout();
-});
+Template.registerHelper("allowGuestCheckout", () => Reaction.allowGuestCheckout());

@@ -88,7 +88,7 @@ class VariantForm extends Component {
     // If the field is an array of field name
     if (Array.isArray(field) && field.length) {
       // Use the first field name
-      fieldName = field[0];
+      [fieldName] = field;
     } else {
       fieldName = field;
     }
@@ -106,7 +106,7 @@ class VariantForm extends Component {
     const fieldRef = this.refs[`${fieldName}Input`];
 
     if (fieldRef) {
-      const input = fieldRef.refs.input;
+      const { input } = fieldRef.refs;
       const isFieldValid = this.props.validation.isFieldValid(fieldName);
       const flashColor = isFieldValid ? "#f0fff4" : "#ffeeef";
 
@@ -189,13 +189,9 @@ class VariantForm extends Component {
     }
   }
 
-  handleVariantVisibilityToggle = (variant) => {
-    return this.props.onVisibilityButtonClick(variant);
-  }
+  handleVariantVisibilityToggle = (variant) => this.props.onVisibilityButtonClick(variant)
 
-  isExpanded = (groupName) => {
-    return this.state.expandedCard === groupName;
-  }
+  isExpanded = (groupName) => this.state.expandedCard === groupName
 
   renderTaxCodeField() {
     if (this.props.isProviderEnabled()) {

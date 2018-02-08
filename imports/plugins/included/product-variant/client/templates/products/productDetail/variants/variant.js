@@ -7,7 +7,7 @@ import { Template } from "meteor/templating";
 // Duplicated in variantList/variantList.js
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
-  if (typeof current === "object" && (variantId === current._id || ~current.ancestors.indexOf(variantId))) {
+  if (typeof current === "object" && (variantId === current._id || current.ancestors.indexOf(variantId) >= 0)) {
     return true;
   }
 
@@ -31,7 +31,7 @@ function variantIsInActionView(variantId) {
  */
 
 Template.variant.helpers({
-  progressBar: function () {
+  progressBar() {
     if (this.inventoryPercentage <= 10) {
       return "progress-bar-danger";
     } else if (this.inventoryPercentage <= 30) {
@@ -39,20 +39,20 @@ Template.variant.helpers({
     }
     return "progress-bar-success";
   },
-  selectedVariant: function () {
+  selectedVariant() {
     if (variantIsSelected(this._id)) {
       return "variant-detail-selected";
     }
 
     return null;
   },
-  displayQuantity: function () {
+  displayQuantity() {
     return ReactionProduct.getVariantQuantity(this);
   },
-  displayPrice: function () {
+  displayPrice() {
     return ReactionProduct.getVariantPriceRange(this._id);
   },
-  isSoldOut: function () {
+  isSoldOut() {
     return ReactionProduct.getVariantQuantity(this) < 1;
   },
   EditButton() {
@@ -88,7 +88,7 @@ function showVariant(variant) {
   const selectedProduct = ReactionProduct.selectedProduct();
 
   ReactionProduct.setCurrentVariant(variant._id);
-  Session.set("variant-form-" + variant._id, true);
+  Session.set(`variant-form-${variant._id}`, true);
   Reaction.Router.go("product", { handle: selectedProduct.handle, variantId: variant._id });
 
   if (Reaction.hasPermission("createProduct")) {
@@ -102,13 +102,13 @@ function showVariant(variant) {
 }
 
 Template.variant.events({
-  "click .variant-edit": function () {
+  "click .variant-edit"() {
     showVariant(this);
   },
-  "dblclick .variant-detail": function () {
+  "dblclick .variant-detail"() {
     showVariant(this);
   },
-  "click .variant-detail": function () {
+  "click .variant-detail"() {
     Alerts.removeSeen();
 
     ReactionProduct.setCurrentVariant(this._id);

@@ -33,9 +33,9 @@ function hidePaymentAlert() {
 }
 
 function handleBraintreeSubmitError(error) {
-  const serverError = error !== null ? error.message : void 0;
+  const serverError = error !== null ? error.message : undefined;
   if (serverError) {
-    return paymentAlert("Server Error " + serverError);
+    return paymentAlert(`Server Error ${serverError}`);
   } else if (error) {
     return paymentAlert("Oops! Credit card is invalid. Please check your information and try again.");
   }
@@ -60,58 +60,57 @@ function submitToBrainTree(doc, template) {
   Braintree.authorize(cardData, {
     total: cartTotal,
     currency: currencyCode
-  }, function (error, results) {
+  }, (error, results) => {
     let paymentMethod;
     submitting = false;
     if (error) {
       handleBraintreeSubmitError(error);
       uiEnd(template, "Resubmit payment");
-    } else {
-      if (results.saved === true) {
-        const normalizedStatus = normalizeState(results.response.transaction.status);
-        const normalizedMode = normalizeMode(results.response.transaction.status);
-        Meteor.subscribe("Packages", Reaction.getShopId());
-        const packageData = Packages.findOne({
-          name: "reaction-braintree",
-          shopId: Reaction.getShopId()
-        });
+    } else if (results.saved === true) {
+      const tx = results && results.response && results.response.transaction;
+      const normalizedStatus = normalizeState(tx.status);
+      const normalizedMode = normalizeMode(tx.status);
+      Meteor.subscribe("Packages", Reaction.getShopId());
+      const packageData = Packages.findOne({
+        name: "reaction-braintree",
+        shopId: Reaction.getShopId()
+      });
 
-        const storedCard = results.response.transaction.creditCard.cardType.toUpperCase() + " " + results.response.transaction.creditCard.last4;
-        paymentMethod = {
-          processor: "Braintree",
-          storedCard: storedCard,
-          paymentPackageId: packageData._id,
-          paymentSettingsKey: packageData.registry[0].settingsKey,
-          method: "credit",
-          transactionId: results.response.transaction.id,
-          amount: parseFloat(results.response.transaction.amount),
-          status: normalizedStatus,
-          mode: normalizedMode,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          transactions: []
-        };
-        paymentMethod.transactions.push(results.response);
-        Meteor.call("cart/submitPayment", paymentMethod);
-      } else {
-        handleBraintreeSubmitError(results.response.message);
-        uiEnd(template, "Resubmit payment");
-      }
+      const storedCard = `${tx.creditCard.cardType.toUpperCase()} ${tx.creditCard.last4}`;
+      paymentMethod = {
+        processor: "Braintree",
+        storedCard,
+        paymentPackageId: packageData._id,
+        paymentSettingsKey: packageData.registry[0].settingsKey,
+        method: "credit",
+        transactionId: tx.id,
+        amount: parseFloat(tx.amount),
+        status: normalizedStatus,
+        mode: normalizedMode,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        transactions: []
+      };
+      paymentMethod.transactions.push(results.response);
+      Meteor.call("cart/submitPayment", paymentMethod);
+    } else {
+      handleBraintreeSubmitError(results.response.message);
+      uiEnd(template, "Resubmit payment");
     }
   });
 }
 
 AutoForm.addHooks("braintree-payment-form", {
-  onSubmit: function (doc) {
+  onSubmit(doc) {
     submitToBrainTree(doc, this.template);
     return false;
   },
-  beginSubmit: function () {
+  beginSubmit() {
     this.template.$(":input").attr("disabled", true);
     this.template.$("#btn-complete-order").text("Submitting ");
     return this.template.$("#btn-processing").removeClass("hidden");
   },
-  endSubmit: function () {
+  endSubmit() {
     if (!submitting) {
       return uiEnd(this.template, "Complete your order");
     }

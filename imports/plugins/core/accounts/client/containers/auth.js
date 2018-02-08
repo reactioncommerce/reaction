@@ -40,8 +40,8 @@ class AuthContainer extends Component {
       isLoading: true
     });
     const errors = {};
-    const username = email.trim();
-    const pword = password.trim();
+    const username = email ? email.trim() : null;
+    const pword = password ? password.trim() : null;
 
     const validatedEmail = LoginFormValidation.email(username);
     const validatedPassword = LoginFormValidation.password(pword, { validationLevel: "exists" });
@@ -58,7 +58,7 @@ class AuthContainer extends Component {
       this.setState({
         isLoading: false,
         formMessages: {
-          errors: errors
+          errors
         }
       });
       return;
@@ -108,13 +108,11 @@ class AuthContainer extends Component {
     return false;
   }
 
-  formMessages = () => {
-    return (
-      <Components.LoginFormMessages
-        messages={this.state.formMessages}
-      />
-    );
-  }
+  formMessages = () => (
+    <Components.LoginFormMessages
+      messages={this.state.formMessages}
+    />
+  )
 
   services = () => {
     const serviceHelper = new ServiceConfigHelper();
@@ -131,9 +129,7 @@ class AuthContainer extends Component {
     return !!Package["accounts-password"] && enabledServices.length > 0;
   }
 
-  capitalizeName = (str) => {
-    return LoginFormSharedHelpers.capitalize(str);
-  }
+  capitalizeName = (str) => LoginFormSharedHelpers.capitalize(str)
 
   handleSocialLogin = (value) => {
     let serviceName = value;
@@ -145,7 +141,7 @@ class AuthContainer extends Component {
       serviceName = this.capitalizeName(serviceName);
     }
 
-    const loginWithService = Meteor["loginWith" + serviceName];
+    const loginWithService = Meteor[`loginWith${serviceName}`];
     const options = {}; // use default scope unless specified
 
     loginWithService(options, (error) => {
@@ -159,9 +155,7 @@ class AuthContainer extends Component {
     });
   }
 
-  hasPasswordService = () => {
-    return !!Package["accounts-password"];
-  }
+  hasPasswordService = () => !!Package["accounts-password"]
 
   renderAuthView() {
     if (this.props.currentView === "loginFormSignInView") {

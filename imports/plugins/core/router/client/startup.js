@@ -2,12 +2,12 @@ import { loadRegisteredComponents } from "@reactioncommerce/reaction-components"
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Accounts } from "meteor/accounts-base";
-import { Shops } from "/lib/collections";
-import { initBrowserRouter } from "./browserRouter";
 import { Reaction } from "/client/api";
+import { Shops } from "/lib/collections";
 import { Router } from "../lib";
+import { initBrowserRouter } from "./browserRouter";
 
-Meteor.startup(function () {
+Meteor.startup(() => {
   loadRegisteredComponents();
 
   // Subscribe to router required publications
@@ -19,7 +19,7 @@ Meteor.startup(function () {
   const merchantShopSub = Meteor.subscribe("MerchantShops");
   const packageSub = Meteor.subscribe("Packages");
 
-  Tracker.autorun(function () {
+  Tracker.autorun(() => {
     // initialize client routing
     if (
       primaryShopSub.ready() &&
@@ -37,7 +37,7 @@ Meteor.startup(function () {
       //  Otherwise initBrowserRouter is called twice each time a subscription becomes "ready"
       Tracker.nonreactive(() => {
         // Make sure we have shops before we try to make routes for them
-        if (Array.isArray(shops) && shops.length)  {
+        if (Array.isArray(shops) && shops.length) {
           initBrowserRouter();
         }
       });
@@ -55,7 +55,7 @@ Meteor.startup(function () {
     const shops = Shops.find({}).fetch();
 
     if (Meteor.loggingIn() === false && Router._routes.length > 0) {
-      if (Array.isArray(shops) && shops.length)  {
+      if (Array.isArray(shops) && shops.length) {
         initBrowserRouter();
       }
     }

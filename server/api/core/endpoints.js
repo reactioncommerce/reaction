@@ -20,7 +20,7 @@ const Endpoints = {};
 WebApp.connectHandlers.use(bodyParser.json({
   limit: "200kb", // Override default request size
   // Attach the raw body which is necessary for doing verifications for some webhooks
-  verify: function (req, res, buf) {
+  verify(req, res, buf) {
     req.rawBody = buf;
   },
   extended: true
@@ -29,7 +29,8 @@ WebApp.connectHandlers.use(bodyParser.json({
 // Handler for adding middleware before an endpoint (Endpoints.middleWare
 // is just for legacy reasons). Also serves as a namespace for middleware
 // packages to declare their middleware functions.
-Endpoints.Middleware = Endpoints.middleWare = connect();
+Endpoints.middleWare = connect();
+Endpoints.Middleware = Endpoints.middleWare;
 WebApp.connectHandlers.use(Endpoints.Middleware);
 
 // List of all defined JSON API Endpoints
@@ -39,7 +40,7 @@ Endpoints.routes = [];
 let connectRouter;
 
 // Register as a middleware
-WebApp.connectHandlers.use(Meteor.bindEnvironment(connectRoute(function (router) {
+WebApp.connectHandlers.use(Meteor.bindEnvironment(connectRoute((router) => {
   connectRouter = router;
 })));
 
@@ -64,12 +65,12 @@ function writeJsonToBody(res, json) {
 // That's why we cache them and then add after startup.
 let errorMiddlewares = [];
 Endpoints.ErrorMiddleware = {
-  use: function () {
-    errorMiddlewares.push(arguments);
+  use(...args) {
+    errorMiddlewares.push(args);
   }
 };
 
-Meteor.startup(function () {
+Meteor.startup(() => {
   errorMiddlewares.forEach((errorMiddleware) => {
     const errorMiddlewareFn = errorMiddleware.map((maybeFn) => {
       if (_.isFunction(maybeFn)) {
@@ -81,7 +82,7 @@ Meteor.startup(function () {
       }
       return maybeFn;
     });
-    WebApp.connectHandlers.use.apply(WebApp.connectHandlers, errorMiddlewareFn);
+    WebApp.connectHandlers.use.apply(WebApp.connectHandlers, ...errorMiddlewareFn);
   });
 
   errorMiddlewares = [];
@@ -105,23 +106,23 @@ Endpoints.add = function (method, path, handler) {
   // Make sure path starts with a slash
   let slashedPath = path;
   if (path[0] !== "/") {
-    slashedPath = "/" + path;
+    slashedPath = `/${path}`;
   }
 
   // Add to list of known Endpoints
   Endpoints.routes.push({
-    method: method,
+    method,
     path: slashedPath
   });
 
-  connectRouter[method.toLowerCase()](path, function (req, res, next) {
+  connectRouter[method.toLowerCase()](path, (req, res, next) => {
     // Set headers on response
     const headerKeys = Object.keys(responseHeaders);
     headerKeys.forEach((key) => {
       res.setHeader(key, responseHeaders[key]);
     });
 
-    Fiber(function () {
+    Fiber(() => {
       try {
         handler(req, res, next);
       } catch (error) {

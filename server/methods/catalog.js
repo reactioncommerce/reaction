@@ -1,4 +1,4 @@
-import _ from  "lodash";
+import _ from "lodash";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import { EJSON } from "meteor/ejson";
@@ -29,9 +29,7 @@ import { Logger, Reaction } from "/server/api";
  * @return {Array} - return an array
  */
 function updateVariantProductField(variants, field, value) {
-  return variants.map(variant => {
-    Meteor.call("products/updateProductField", variant._id, field, value);
-  });
+  return variants.map((variant) => Meteor.call("products/updateProductField", variant._id, field, value));
 }
 
 /**
@@ -61,7 +59,7 @@ function createTitle(newTitle, productId) {
   // exception product._id needed for cases then double triggering happens
   let title = newTitle || "";
   const titleCount = Products.find({
-    title: title,
+    title,
     _id: {
       $nin: [productId]
     }
@@ -91,13 +89,13 @@ function createTitle(newTitle, productId) {
       title = `${titleString}-${titleNumberSuffix + titleCount}`;
     } else {
       // first copy will be "...-copy", second: "...-copy-2"
-      title = `${titleString}-copy${ titleCount > 1 ? "-" + titleCount : ""}`;
+      title = `${titleString}-copy${titleCount > 1 ? `-${titleCount}` : ""}`;
     }
   }
 
   // we should check again if there are any new matches with DB
   if (Products.find({
-    title: title
+    title
   }).count() !== 0) {
     title = createTitle(title, productId);
   }
@@ -117,7 +115,7 @@ function createHandle(productHandle, productId) {
   let handle = productHandle || "";
   // exception product._id needed for cases then double triggering happens
   const handleCount = Products.find({
-    handle: handle,
+    handle,
     _id: {
       $nin: [productId]
     }
@@ -148,14 +146,13 @@ function createHandle(productHandle, productId) {
       handle = `${handleString}-${handleNumberSuffix + handleCount}`;
     } else {
       // first copy will be "...-copy", second: "...-copy-2"
-      handle = `${handleString}-copy${ handleCount > 1
-        ? '-' + handleCount : ''}`;
+      handle = `${handleString}-copy${handleCount > 1 ? `-${handleCount}` : ''}`;
     }
   }
 
   // we should check again if there are any new matches with DB
   if (Products.find({
-    handle: handle
+    handle
   }).count() !== 0) {
     handle = createHandle(handle, productId);
   }
@@ -175,7 +172,7 @@ function createHandle(productHandle, productId) {
 function copyMedia(newId, variantOldId, variantNewId) {
   Media.find({
     "metadata.variantId": variantOldId
-  }).forEach(function (fileObj) {
+  }).forEach((fileObj) => {
     // Copy File and insert directly, bypasing revision control
     copyFile(fileObj, {
       productId: newId,
@@ -229,11 +226,12 @@ function denormalize(id, field) {
         isLowQuantity: isLowQuantity(variants)
       });
       break;
-    default: // "price" is object with range, min, max
+    default: { // "price" is object with range, min, max
       const priceObject = Catalog.getProductPriceRange(id);
       Object.assign(update, {
         price: priceObject
       });
+    }
   }
   Products.update(id, {
     $set: update
@@ -252,7 +250,7 @@ function denormalize(id, field) {
  * @return {Boolean} true if summary product quantity is zero.
  */
 function isSoldOut(variants) {
-  return variants.every(variant => {
+  return variants.every((variant) => {
     if (variant.inventoryManagement && variant.inventoryPolicy) {
       return Catalog.getVariantQuantity(variant) <= 0;
     }
@@ -268,7 +266,7 @@ function isSoldOut(variants) {
  * @return {boolean} low quantity or not
  */
 function isLowQuantity(variants) {
-  return variants.some(variant => {
+  return variants.some((variant) => {
     const quantity = Catalog.getVariantQuantity(variant);
     // we need to keep an eye on `inventoryPolicy` too and qty > 0
     if (variant.inventoryManagement && variant.inventoryPolicy && quantity) {
@@ -287,10 +285,8 @@ function isLowQuantity(variants) {
  * @return {boolean} is backorder allowed or not for a product
  */
 function isBackorder(variants) {
-  return variants.every(variant => {
-    return !variant.inventoryPolicy && variant.inventoryManagement &&
-      variant.inventoryQuantity === 0;
-  });
+  return variants.every((variant) => !variant.inventoryPolicy && variant.inventoryManagement &&
+      variant.inventoryQuantity === 0);
 }
 
 /**
@@ -338,7 +334,7 @@ Meteor.methods({
    * @todo rewrite @description
    * @return {Array} - list with cloned variants _ids
    */
-  "products/cloneVariant": function (productId, variantId) {
+  "products/cloneVariant"(productId, variantId) {
     check(productId, String);
     check(variantId, String);
 
@@ -378,9 +374,9 @@ Meteor.methods({
     // we could use this way in future: http://stackoverflow.com/questions/
     // 9040161/mongo-order-by-length-of-array, by now following are allowed
     // @link https://lodash.com/docs#sortBy
-    const sortedVariants = _.sortBy(variants, doc => doc.ancestors.length);
+    const sortedVariants = _.sortBy(variants, (doc) => doc.ancestors.length);
 
-    return sortedVariants.map(sortedVariant => {
+    return sortedVariants.map((sortedVariant) => {
       const oldId = sortedVariant._id;
       let type = "child";
       const clone = {};
@@ -401,7 +397,7 @@ Meteor.methods({
         const parentIndex = sortedVariant.ancestors.indexOf(variantId);
         const ancestorsClone = sortedVariant.ancestors.slice(0);
         // if variantId exists in ancestors, we override it by new _id
-        !!~parentIndex && ancestorsClone.splice(parentIndex, 1, variantNewId);
+        if (parentIndex >= 0) ancestorsClone.splice(parentIndex, 1, variantNewId);
         Object.assign(clone, variant, {
           _id: Random.id(),
           ancestors: ancestorsClone,
@@ -425,28 +421,18 @@ Meteor.methods({
       delete clone.lowInventoryWarningThreshold;
 
       copyMedia(productId, oldId, clone._id);
-      return Products.insert(clone, {
-        validate: false
-      }, (error, result) => {
-        if (result) {
-          if (type === "child") {
-            Logger.debug(
-              `products/cloneVariant: created sub child clone: ${
-                clone._id} from ${variantId}`
-            );
-          } else {
-            Logger.debug(
-              `products/cloneVariant: created clone: ${
-                clone._id} from ${variantId}`
-            );
-          }
-        }
-        if (error) {
-          Logger.error(
-            `products/cloneVariant: cloning of ${variantId} was failed: ${error}`
-          );
-        }
-      });
+
+      let newId;
+      try {
+        newId = Products.insert(clone, { validate: false });
+        Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
+          clone._id} from ${variantId}`);
+      } catch (error) {
+        Logger.error(`products/cloneVariant: cloning of ${variantId} was failed: ${error}`);
+        throw error;
+      }
+
+      return newId;
     });
   },
 
@@ -460,7 +446,7 @@ Meteor.methods({
    * @param {Object} [newVariant] - variant object
    * @return {String} new variantId
    */
-  "products/createVariant": function (parentId, newVariant) {
+  "products/createVariant"(parentId, newVariant) {
     check(parentId, String);
     check(newVariant, Match.Optional(Object));
 
@@ -486,13 +472,13 @@ Meteor.methods({
     Array.isArray(ancestors) && ancestors.push(parentId);
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
-      ancestors: ancestors,
+      ancestors,
       type: "variant"
     });
 
     if (!newVariant) {
       Object.assign(assembledVariant, {
-        title: product.title + " - Untitled option",
+        title: `${product.title} - Untitled option`,
         price: 0.00
       });
     }
@@ -504,16 +490,8 @@ Meteor.methods({
       flushQuantity(parentId);
     }
 
-    Products.insert(assembledVariant,
-      (error, result) => {
-        if (result) {
-          Logger.debug(
-            `products/createVariant: created variant: ${
-              newVariantId} for ${parentId}`
-          );
-        }
-      }
-    );
+    Products.insert(assembledVariant);
+    Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
     return newVariantId;
   },
@@ -530,43 +508,42 @@ Meteor.methods({
    * updateProductField", but it still used
    * @return {Number} returns update result
    */
-  "products/updateVariant": function (variant) {
+  "products/updateVariant"(variant) {
     check(variant, Object);
 
     // Check first if Variant exists and then if user has the right to clone it
     const currentVariant = Products.findOne(variant._id);
     if (!currentVariant) {
       throw new Meteor.Error("not-found", "Variant not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, currentVariant.shopId)) {
+    }
+
+    if (!Reaction.hasPermission("createProduct", this.userId, currentVariant.shopId)) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    // update variants
-    if (typeof currentVariant === "object") {
-      const newVariant = Object.assign({}, currentVariant, variant);
+    const newVariant = Object.assign({}, currentVariant, variant);
 
-      return Products.update({
-        _id: variant._id
-      }, {
-        $set: newVariant // newVariant already contain `type` property, so we
-        // do not need to pass it explicitly
-      }, {
-        validate: false
-      }, (error, result) => {
-        if (result) {
-          const productId = currentVariant.ancestors[0];
-          // we need manually check is these fields were updated?
-          // we can't stop after successful denormalization, because we have a
-          // case when several fields could be changed in top-level variant
-          // before form will be submitted.
-          toDenormalize.forEach(field => {
-            if (currentVariant[field] !== variant[field]) {
-              denormalize(productId, field);
-            }
-          });
-        }
-      });
-    }
+    const variantUpdateResult = Products.update({
+      _id: variant._id
+    }, {
+      $set: newVariant // newVariant already contain `type` property, so we
+      // do not need to pass it explicitly
+    }, {
+      validate: false
+    });
+
+    const productId = currentVariant.ancestors[0];
+    // we need manually check is these fields were updated?
+    // we can't stop after successful denormalization, because we have a
+    // case when several fields could be changed in top-level variant
+    // before form will be submitted.
+    toDenormalize.forEach((field) => {
+      if (currentVariant[field] !== variant[field]) {
+        denormalize(productId, field);
+      }
+    });
+
+    return variantUpdateResult;
   },
 
   /**
@@ -578,7 +555,7 @@ Meteor.methods({
    * @returns {Boolean} returns update results: `true` - if at least one variant
    * was removed or `false` if nothing was removed
    */
-  "products/deleteVariant": function (variantId) {
+  "products/deleteVariant"(variantId) {
     check(variantId, String);
 
     // Check first if Variant exists and then if user has the right to delete it
@@ -611,7 +588,7 @@ Meteor.methods({
     // after variant were removed from product, we need to recalculate all
     // denormalized fields
     const productId = toDelete[0].ancestors[0];
-    toDenormalize.forEach(field => denormalize(productId, field));
+    toDenormalize.forEach((field) => denormalize(productId, field));
 
     return typeof deleted === "number" && deleted > 0;
   },
@@ -626,7 +603,7 @@ Meteor.methods({
    * @param {Array} productOrArray - products array to clone
    * @returns {Array} returns insert results
    */
-  "products/cloneProduct": function (productOrArray) {
+  "products/cloneProduct"(productOrArray) {
     check(productOrArray, Match.OneOf(Array, Object));
 
     // REVIEW: This check may be unnecessary now - checks that user has permission to clone
@@ -637,22 +614,20 @@ Meteor.methods({
 
     if (Array.isArray(productOrArray)) {
       // Reduce to unique shops found among producs in this array
-      const shopIds = productOrArray.map(prod => prod.shopId);
+      const shopIds = productOrArray.map((prod) => prod.shopId);
       const uniqueShopIds = [...new Set(shopIds)];
 
       // For each unique shopId check to make sure that user has permission to clone
       uniqueShopIds.forEach((shopId) => {
         if (!Reaction.hasPermission("createProduct", this.userId, shopId)) {
-          throw new Meteor.Error("access-denied",
-            "Access Denied");
+          throw new Meteor.Error(
+            "access-denied",
+            "Access Denied"
+          );
         }
       });
-    } else {
-      // Single product was passed in - ensure that user has permission to clone
-      if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) {
-        throw new Meteor.Error("access-denied",
-          "Access Denied");
-      }
+    } else if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) { // Single product was passed in - ensure that user has permission to clone
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     let result;
@@ -664,7 +639,7 @@ Meteor.methods({
       return pool.filter(function (pair) {
         return pair.oldId === this.id;
       }, {
-        id: id
+        id
       });
     }
 
@@ -674,10 +649,11 @@ Meteor.methods({
 
     function buildAncestors(ancestors) {
       const newAncestors = [];
-      ancestors.map(oldId => {
+      ancestors.map((oldId) => {
         const pair = getIds(oldId);
         // TODO do we always have newId on this step?
         newAncestors.push(pair[0].newId);
+        return newAncestors;
       });
       return newAncestors;
     }
@@ -714,9 +690,7 @@ Meteor.methods({
           newProduct._id
         );
       }
-      result = Products.insert(newProduct, {
-        validate: false
-      });
+      result = Products.insert(newProduct, { validate: false });
       results.push(result);
 
       // cloning variants
@@ -727,7 +701,7 @@ Meteor.methods({
         type: "variant"
       }).fetch();
       // why we are using `_.sortBy` described in `products/cloneVariant`
-      const sortedVariants = _.sortBy(variants, doc => doc.ancestors.length);
+      const sortedVariants = _.sortBy(variants, (doc) => doc.ancestors.length);
       for (const variant of sortedVariants) {
         const variantNewId = Random.id();
         setId({
@@ -737,17 +711,13 @@ Meteor.methods({
         const ancestors = buildAncestors(variant.ancestors);
         const newVariant = Object.assign({}, variant, {
           _id: variantNewId,
-          ancestors: ancestors
+          ancestors
         });
         delete newVariant.updatedAt;
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
 
-        result = Products.insert(
-          newVariant, {
-            validate: false
-          }
-        );
+        result = Products.insert(newVariant, { validate: false });
         copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
       }
@@ -762,9 +732,9 @@ Meteor.methods({
    * @summary when we create a new product, we create it with an empty variant.
    * all products have a variant with pricing and details
    * @param {Object} [product] - optional product object
-   * @return {String} return insert result
+   * @return {String} The new product ID
    */
-  "products/createProduct": function (product) {
+  "products/createProduct"(product) {
     check(product, Match.Optional(Object));
 
     // Ensure user has createProduct permission for active shop
@@ -780,21 +750,20 @@ Meteor.methods({
       return Products.insert(product);
     }
 
-    return Products.insert({
+    const newId = Products.insert({
       type: "simple" // needed for multi-schema
     }, {
       validate: false
-    }, (error, result) => {
-      // additionally, we want to create a variant to a new product
-      if (result) {
-        Products.insert({
-          ancestors: [result],
-          price: 0.00,
-          title: "",
-          type: "variant" // needed for multi-schema
-        });
-      }
     });
+
+    Products.insert({
+      ancestors: [newId],
+      price: 0.00,
+      title: "",
+      type: "variant" // needed for multi-schema
+    });
+
+    return newId;
   },
 
   /**
@@ -805,12 +774,12 @@ Meteor.methods({
    * @param {String} productId - productId to delete
    * @returns {Number} returns number of removed products
    */
-  "products/archiveProduct": function (productId) {
+  "products/archiveProduct"(productId) {
     check(productId, Match.OneOf(Array, String));
 
     let extractedProductId;
     if (Array.isArray(productId)) {
-      extractedProductId = productId[0];
+      [extractedProductId] = productId;
     }
 
     // Check first if Product exists and then if user has the right to delete it
@@ -849,8 +818,9 @@ Meteor.methods({
     }).fetch();
 
     const ids = [];
-    productsWithVariants.map(doc => {
+    productsWithVariants.map((doc) => {
       ids.push(doc._id);
+      return ids;
     });
 
     Products.remove({
@@ -900,7 +870,7 @@ Meteor.methods({
    * latest changes. its used for products and variants
    * @return {Number} returns update result
    */
-  "products/updateProductField": function (_id, field, value) {
+  "products/updateProductField"(_id, field, value) {
     check(_id, String);
     check(field, String);
     check(value, Match.OneOf(String, Object, Array, Boolean, Number));
@@ -918,27 +888,25 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    const type = doc.type;
+    const { type } = doc;
     let update;
     // handle booleans with correct typing
     if (value === "false" || value === "true") {
       const booleanValue = (value === "true" || value === true);
-      update = EJSON.parse("{\"" + field + "\":" + booleanValue + "}");
+      update = EJSON.parse(`{"${field}":${booleanValue}}`);
+    } else if (field === "handle") {
+      update = {
+        [field]: createHandle(value, _id) // handle should be unique
+      };
+    } else if (field === "title" && doc.handle === doc._id) { // update handle once title is set
+      const handle = createHandle(Reaction.getSlug(value), _id);
+      update = {
+        [field]: value,
+        handle
+      };
     } else {
-      if (field === "handle") {
-        update = {
-          [field]: createHandle(value, _id) // handle should be unique
-        };
-      } else if (field === "title" && doc.handle === doc._id) { // update handle once title is set
-        const handle = createHandle(Reaction.getSlug(value), _id);
-        update = {
-          [field]: value,
-          handle
-        };
-      } else {
-        const stringValue = EJSON.stringify(value);
-        update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
-      }
+      const stringValue = EJSON.stringify(value);
+      update = EJSON.parse(`{"${field}":${stringValue}}`);
     }
 
 
@@ -949,9 +917,7 @@ Meteor.methods({
       result = Products.update(_id, {
         $set: update
       }, {
-        selector: {
-          type: type
-        }
+        selector: { type }
       });
     } catch (e) {
       throw new Meteor.Error("server-error", e.message);
@@ -961,7 +927,7 @@ Meteor.methods({
     // meaning the update went past revision control,
     // denormalize and attach results to top-level product
     if (result === 1) {
-      if (type === "variant" && ~toDenormalize.indexOf(field)) {
+      if (type === "variant" && toDenormalize.indexOf(field) >= 0) {
         denormalize(doc.ancestors[0], field);
       }
     }
@@ -978,7 +944,7 @@ Meteor.methods({
    * @param {String} tagId - tagId
    * @return {Number} return result
    */
-  "products/updateProductTags": function (productId, tagName, tagId) {
+  "products/updateProductTags"(productId, tagName, tagId) {
     check(productId, String);
     check(tagName, String);
     check(tagId, Match.OneOf(String, null));
@@ -1017,14 +983,10 @@ Meteor.methods({
           hashtags: existingTag._id
         }
       }, {
-        selector: {
-          type: "simple"
-        }
+        selector: { type: "simple" }
       });
     } else if (tagId) {
-      return Tags.update(tagId, {
-        $set: newTag
-      });
+      return Tags.update(tagId, { $set: newTag });
     }
 
     const newTagId = Meteor.call("shop/createTag", tagName, false);
@@ -1054,7 +1016,7 @@ Meteor.methods({
    * @param {String} tagId - tagId
    * @return {String} return update result
    */
-  "products/removeProductTag": function (productId, tagId) {
+  "products/removeProductTag"(productId, tagId) {
     check(productId, String);
     check(tagId, String);
 
@@ -1071,9 +1033,7 @@ Meteor.methods({
         hashtags: tagId
       }
     }, {
-      selector: {
-        type: "simple"
-      }
+      selector: { type: "simple" }
     });
   },
 
@@ -1085,7 +1045,7 @@ Meteor.methods({
    * @param {String} productId - productId
    * @returns {String} handle - product handle
    */
-  "products/setHandle": function (productId) {
+  "products/setHandle"(productId) {
     check(productId, String);
 
     // Check first if Product exists and then if user has the right to alter it
@@ -1098,12 +1058,7 @@ Meteor.methods({
 
     let handle = Reaction.getSlug(product.title);
     handle = createHandle(handle, product._id);
-    Products.update(product._id, {
-      $set: {
-        handle: handle,
-        type: "simple"
-      }
-    });
+    Products.update(product._id, { $set: { handle, type: "simple" } });
 
     return handle;
   },
@@ -1117,7 +1072,7 @@ Meteor.methods({
    * @param {String} tagId - tagId
    * @return {String} return update result
    */
-  "products/setHandleTag": function (productId, tagId) {
+  "products/setHandleTag"(productId, tagId) {
     check(productId, String);
     check(tagId, String);
     // Check first if Product exists and then if user has the right to alter it
@@ -1131,7 +1086,7 @@ Meteor.methods({
     function getSet(handle) {
       return {
         $set: {
-          handle: handle,
+          handle,
           type: "simple"
         }
       };
@@ -1155,9 +1110,9 @@ Meteor.methods({
     for (const currentProduct of existingHandles) {
       const currentProductHandle = createHandle(
         Reaction.getSlug(currentProduct.title),
-        currentProduct._id);
-      Products.update(currentProduct._id,
-        getSet(currentProductHandle));
+        currentProduct._id
+      );
+      Products.update(currentProduct._id, getSet(currentProductHandle));
     }
     Products.update(product._id, getSet(tag.slug));
 
@@ -1175,7 +1130,7 @@ Meteor.methods({
    * shop name as base `positions` name. Could be useful for multi-shopping.
    * @return {Number} collection update returns
    */
-  "products/updateProductPosition": function (productId, positionData, tag) {
+  "products/updateProductPosition"(productId, positionData, tag) {
     check(productId, String);
     check(positionData, Object);
     check(tag, String);
@@ -1217,7 +1172,7 @@ Meteor.methods({
    * @since 0.11.0
    * @return {Number} Products.update result
    */
-  "products/updateVariantsPosition": function (sortedVariantIds) {
+  "products/updateVariantsPosition"(sortedVariantIds) {
     check(sortedVariantIds, [String]);
 
     // This checks to make sure the user has createProduct permissions for the active shop.
@@ -1229,20 +1184,11 @@ Meteor.methods({
 
     sortedVariantIds.forEach((id, index) => {
       Products.update(id, {
-        $set: {
-          index: index
-        }
+        $set: { index }
       }, {
-        selector: {
-          type: "variant"
-        }
-      }, (error, result) => {
-        if (result) {
-          Logger.debug(
-            `Variant ${id} position was updated to index ${index}`
-          );
-        }
+        selector: { type: "variant" }
       });
+      Logger.debug(`Variant ${id} position was updated to index ${index}`);
     });
   },
 
@@ -1257,7 +1203,7 @@ Meteor.methods({
    * @todo should this method works for variants also?
    * @return {Number} collection update result
    */
-  "products/updateMetaFields": function (productId, updatedMeta, meta) {
+  "products/updateMetaFields"(productId, updatedMeta, meta) {
     check(productId, String);
     check(updatedMeta, Object);
     check(meta, Match.OneOf(Object, Number, undefined, null));
@@ -1280,9 +1226,7 @@ Meteor.methods({
           "metafields.$": updatedMeta
         }
       }, {
-        selector: {
-          type: "simple"
-        }
+        selector: { type: "simple" }
       });
     } else if (typeof meta === "number") {
       return Products.update({
@@ -1292,9 +1236,7 @@ Meteor.methods({
           [`metafields.${meta}`]: updatedMeta
         }
       }, {
-        selector: {
-          type: "simple"
-        }
+        selector: { type: "simple" }
       });
     }
 
@@ -1306,9 +1248,7 @@ Meteor.methods({
         metafields: updatedMeta
       }
     }, {
-      selector: {
-        type: "simple"
-      }
+      selector: { type: "simple" }
     });
   },
 
@@ -1322,7 +1262,7 @@ Meteor.methods({
    * @param {Object} type - optional product type for schema selection
    * @return {Number} collection update result
    */
-  "products/removeMetaFields": function (productId, metafields, type = "simple") {
+  "products/removeMetaFields"(productId, metafields, type = "simple") {
     check(productId, String);
     check(metafields, Object);
     check(type, String);
@@ -1337,11 +1277,9 @@ Meteor.methods({
 
     return Products.update({
       _id: productId,
-      type: type
+      type
     }, {
-      $pull: {
-        metafields: metafields
-      }
+      $pull: { metafields }
     });
   },
 
@@ -1354,7 +1292,7 @@ Meteor.methods({
    * @param {String} productId - productId
    * @return {Boolean} product.isVisible
    */
-  "products/publishProduct": function (productId) {
+  "products/publishProduct"(productId) {
     check(productId, String);
 
     // Check first if Product exists and then if user has the proper rights
@@ -1374,11 +1312,10 @@ Meteor.methods({
 
     if (typeof product === "object" && product.title.length > 1) {
       if (variants.length > 0) {
-        variants.forEach(variant => {
+        variants.forEach((variant) => {
           // if this is a top variant with children, we avoid it to check price
           // because we using price of its children
-          if (variant.ancestors.length === 1 &&
-            !Catalog.getVariants(variant._id, "variant").length ||
+          if ((variant.ancestors.length === 1 && !Catalog.getVariants(variant._id, "variant").length) ||
             variant.ancestors.length !== 1) {
             if (!(typeof variant.price === "number" && variant.price > 0)) {
               variantValidator = false;
@@ -1399,8 +1336,10 @@ Meteor.methods({
 
       if (!variantValidator) {
         Logger.debug("invalid product visibility ", productId);
-        throw new Meteor.Error("invalid-parameter",
-          "Some properties are missing.");
+        throw new Meteor.Error(
+          "invalid-parameter",
+          "Some properties are missing."
+        );
       }
 
       // update product visibility
@@ -1411,9 +1350,7 @@ Meteor.methods({
           isVisible: !product.isVisible
         }
       }, {
-        selector: {
-          type: "simple"
-        }
+        selector: { type: "simple" }
       });
       // update product variants visibility
       updateVariantProductField(variants, "isVisible", !product.isVisible);
@@ -1433,14 +1370,16 @@ Meteor.methods({
    * @param {String} productId - productId
    * @return {Boolean} product.isVisible
    */
-  "products/toggleVisibility": function (productId) {
+  "products/toggleVisibility"(productId) {
     check(productId, String);
 
     // Check first if Product exists and then if user has the proper rights
     const product = Products.findOne(productId);
     if (!product) {
       throw new Meteor.Error("not-found", "Product not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+    }
+
+    if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 

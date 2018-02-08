@@ -28,7 +28,7 @@ Template.customTaxRates.onCreated(function () {
 Template.customTaxRates.helpers({
   editButton() {
     const instance = Template.instance();
-    const state = instance.state;
+    const { state } = instance;
     const isEditing = state.equals("isEditing", true);
     let editingId = state.get("editingId");
     // toggle edit state
@@ -52,7 +52,7 @@ Template.customTaxRates.helpers({
         $(".tax-grid-row").removeClass("active");
         return state.set({
           isEditing: !isEditing,
-          editingId: editingId
+          editingId
         });
       }
     };
@@ -82,14 +82,12 @@ Template.customTaxRates.helpers({
     // helper adds a class to every grid row
     //
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
-        return "tax-grid-row";
-      }
+      bodyCssClassName: () => "tax-grid-row"
     };
 
     // add i18n handling to headers
     const customColumnMetadata = [];
-    filteredFields.forEach(function (field) {
+    filteredFields.forEach((field) => {
       const columnMeta = {
         accessor: field,
         Header: i18next.t(`admin.taxGrid.${field}`)
@@ -105,9 +103,9 @@ Template.customTaxRates.helpers({
       matchingResultsCount: "taxes-count",
       showFilter: true,
       rowMetadata: customRowMetaData,
-      filteredFields: filteredFields,
+      filteredFields,
       columns: filteredFields,
-      noDataMessage: noDataMessage,
+      noDataMessage,
       onRowClick: editRow,
       columnMetadata: customColumnMetadata,
       externalLoadingComponent: Loading
@@ -123,16 +121,16 @@ Template.customTaxRates.helpers({
     return TaxSchema;
   },
   // list of countries for tax input
-  countryOptions: function () {
+  countryOptions() {
     return Countries.find().fetch();
   },
-  statesForCountry: function () {
+  statesForCountry() {
     const shop = Shops.findOne();
     const selectedCountry = AutoForm.getFieldValue("country");
     if (!selectedCountry) {
       return false;
     }
-    if ((shop !== null ? shop.locales.countries[selectedCountry].states : void 0) === null) {
+    if ((shop !== null ? shop.locales.countries[selectedCountry].states : undefined) === null) {
       return false;
     }
     const options = [];
@@ -190,21 +188,21 @@ Template.customTaxRates.helpers({
 // on submit lets clear the form state
 //
 Template.customTaxRates.events({
-  "submit #customTaxRates-update-form": function () {
+  "submit #customTaxRates-update-form"() {
     const instance = Template.instance();
     instance.state.set({
       isEditing: false,
       editingId: null
     });
   },
-  "submit #customTaxRates-insert-form": function () {
+  "submit #customTaxRates-insert-form"() {
     const instance = Template.instance();
     instance.state.set({
       isEditing: true,
       editingId: null
     });
   },
-  "click .cancel, .tax-grid-row .active": function () {
+  "click .cancel, .tax-grid-row .active"() {
     const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
@@ -214,7 +212,7 @@ Template.customTaxRates.events({
     // ugly hack
     $(".tax-grid-row").removeClass("active");
   },
-  "click .delete": function () {
+  "click .delete"() {
     const confirmTitle = i18next.t("admin.taxSettings.confirmRateDelete");
     const confirmButtonText = i18next.t("app.delete");
     const instance = Template.instance();
@@ -224,7 +222,7 @@ Template.customTaxRates.events({
       title: confirmTitle,
       type: "warning",
       showCancelButton: true,
-      confirmButtonText: confirmButtonText
+      confirmButtonText
     }, (isConfirm) => {
       if (isConfirm) {
         if (id) {
@@ -237,7 +235,7 @@ Template.customTaxRates.events({
       }
     });
   },
-  "click .tax-grid-row": function (event) {
+  "click .tax-grid-row"(event) {
     // toggle all rows off, then add our active row
     $(".tax-grid-row").removeClass("active");
     Template.instance().$(event.currentTarget).addClass("active");
@@ -249,24 +247,19 @@ Template.customTaxRates.events({
 //
 AutoForm.hooks({
   "customTaxRates-update-form": {
-    onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.taxSettings.shopCustomTaxRatesSaved"),
-        "success");
+    onSuccess() {
+      return Alerts.toast(i18next.t("admin.taxSettings.shopCustomTaxRatesSaved"), "success");
     },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error"
-      );
+    onError(operation, error) {
+      return Alerts.toast(`${i18next.t("admin.taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error");
     }
   },
   "customTaxRates-insert-form": {
-    onSuccess: function () {
+    onSuccess() {
       return Alerts.toast(i18next.t("admin.taxSettings.shopCustomTaxRatesSaved"), "success");
     },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error"
-      );
+    onError(operation, error) {
+      return Alerts.toast(`${i18next.t("admin.taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error");
     }
   }
 });

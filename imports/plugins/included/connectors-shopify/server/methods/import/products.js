@@ -2,9 +2,8 @@
 import Shopify from "shopify-api-node";
 import { Job } from "meteor/vsivsi:job-collection";
 import { Meteor } from "meteor/meteor";
-import { Logger } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 import { check, Match } from "meteor/check";
-import { Reaction } from "/server/api";
 import { Products, Jobs, Tags } from "/lib/collections";
 import { getApiInfo } from "../api/api";
 import { connectorsRoles } from "../../lib/roles";
@@ -36,7 +35,7 @@ function createReactionProductFromShopifyProduct(options) {
     createdAt: new Date(),
     description: shopifyProduct.body_html.replace(/(<([^>]+)>)/ig, ""), // Strip HTML
     handle: shopifyProduct.handle,
-    hashtags: hashtags,
+    hashtags,
     isDeleted: false,
     isVisible: false,
     isSoldOut: false,
@@ -46,7 +45,7 @@ function createReactionProductFromShopifyProduct(options) {
     pageTitle: shopifyProduct.pageTitle,
     productType: shopifyProduct.product_type,
     requiresShipping: true,
-    shopId: shopId, // set shopId to active shopId;
+    shopId, // set shopId to active shopId;
     shopifyId: shopifyProduct.id.toString(), // save it here to make sync lookups cheaper
     template: "productDetailSimple",
     title: shopifyProduct.title,
@@ -85,12 +84,12 @@ function createReactionProductFromShopifyProduct(options) {
 function createReactionVariantFromShopifyVariant(options) {
   const { shopifyVariant, variant, index, ancestors, shopId } = options;
   const reactionVariant = {
-    ancestors: ancestors,
+    ancestors,
     barcode: shopifyVariant.barcode,
     compareAtPrice: shopifyVariant.compare_at_price,
     createdAt: new Date(),
     height: 0,
-    index: index,
+    index,
     inventoryManagement: true,
     inventoryPolicy: shopifyVariant.inventory_policy === "deny",
     inventoryQuantity: shopifyVariant.inventory_quantity >= 0 ? shopifyVariant.inventory_quantity : 0,
@@ -102,7 +101,7 @@ function createReactionVariantFromShopifyVariant(options) {
     optionTitle: variant,
     price: parseFloat(shopifyVariant.price),
     requiresShipping: shopifyVariant.requires_shipping,
-    shopId: shopId,
+    shopId,
     shopifyId: shopifyVariant.id.toString(), // Save for easy sync lookups
     sku: shopifyVariant.sku,
     taxable: true,
@@ -137,9 +136,7 @@ function createReactionVariantFromShopifyVariant(options) {
  * @return {array} Returns an array of image objects that match the passed shopifyVariantId
  */
 function findVariantImages(shopifyVariantId, images) {
-  return images.filter((imageObj) => {
-    return imageObj.variant_ids.indexOf(shopifyVariantId) !== -1;
-  });
+  return images.filter((imageObj) => imageObj.variant_ids.indexOf(shopifyVariantId) !== -1);
 }
 
 /**
@@ -233,7 +230,7 @@ function normalizeWeight(weight) {
  * @return {undefined}
  */
 function saveImage(url, metadata) {
-  new Job(Jobs, "connectors/shopify/import/image", { url: url, metadata: metadata })
+  new Job(Jobs, "connectors/shopify/import/image", { url, metadata })
     .priority("normal")
     .retry({
       retries: 5,
@@ -265,8 +262,8 @@ export const methods = {
     const ids = [];
     const opts = Object.assign({}, {
       published_status: "published",
-      limit: limit
-    }, { ... options });
+      limit
+    }, { ...options });
 
     try {
       const productCount = await shopify.product.count();
@@ -276,7 +273,7 @@ export const methods = {
 
       for (const page of pages) {
         Logger.debug(`Importing page ${page + 1} of ${numPages} - each page has ${limit} products`);
-        const shopifyProducts = await shopify.product.list({ ...opts, page: page });
+        const shopifyProducts = await shopify.product.list({ ...opts, page }); // eslint-disable-line no-await-in-loop
         for (const shopifyProduct of shopifyProducts) {
           if (!Products.findOne({ shopifyId: shopifyProduct.id }, { fields: { _id: 1 } })) {
             Logger.debug(`Importing ${shopifyProduct.title}`);
@@ -294,7 +291,7 @@ export const methods = {
                 const normalizedTag = {
                   name: tag,
                   slug: Reaction.getSlug(tag),
-                  shopId: shopId,
+                  shopId,
                   isTopLevel: false,
                   updatedAt: new Date(),
                   createdAt: new Date()
@@ -326,7 +323,7 @@ export const methods = {
               ownerId: Meteor.userId(),
               productId: reactionProductId,
               variantId: reactionProductId,
-              shopId: shopId,
+              shopId,
               priority: 0,
               toGrid: 1
             });
@@ -339,7 +336,7 @@ export const methods = {
                   ownerId: Meteor.userId(),
                   productId: reactionProductId,
                   variantId: reactionProductId,
-                  shopId: shopId,
+                  shopId,
                   priority: productImage.position, // Shopify index positions starting at 1.
                   toGrid: 0
                 });
@@ -372,9 +369,7 @@ export const methods = {
                     Logger.debug(`Importing ${shopifyProduct.title} ${variant} options`);
                     shopifyOptions.forEach((option, j) => {
                       // Find the option that nests under our current variant.
-                      const shopifyOption = shopifyProduct.variants.find((o) => {
-                        return o.option1 === variant && o.option2 === option;
-                      });
+                      const shopifyOption = shopifyProduct.variants.find((o) => o.option1 === variant && o.option2 === option);
 
                       if (shopifyOption) {
                         const reactionOption = createReactionVariantFromShopifyVariant({
@@ -417,7 +412,7 @@ export const methods = {
                             ownerId: Meteor.userId(),
                             productId: reactionProductId,
                             variantId: reactionOptionId,
-                            shopId: shopId,
+                            shopId,
                             priority: 1,
                             toGrid: index === 0 ? 1 : 0 // We save the first of each variant image to the grid
                           });
@@ -431,9 +426,7 @@ export const methods = {
                           Logger.debug(`Importing ${shopifyProduct.title} ${variant} ${option} options`);
                           shopifyTernaryOptions.forEach((ternaryOption, k) => {
                             // Find the option that nests under our current variant.
-                            const shopifyTernaryOption = shopifyProduct.variants.find((o) => {
-                              return o.option1 === variant && o.option2 === option && o.option3 === ternaryOption;
-                            });
+                            const shopifyTernaryOption = shopifyProduct.variants.find((o) => o.option1 === variant && o.option2 === option && o.option3 === ternaryOption); // eslint-disable-line max-len
 
                             if (shopifyTernaryOption) {
                               const reactionTernaryOption = createReactionVariantFromShopifyVariant({
@@ -476,7 +469,7 @@ export const methods = {
                                   ownerId: Meteor.userId(),
                                   productId: reactionProductId,
                                   variantId: reactionOptionId,
-                                  shopId: shopId,
+                                  shopId,
                                   priority: 1,
                                   toGrid: index === 0 ? 1 : 0 // We save the first of each variant image to the grid
                                 });
@@ -516,7 +509,7 @@ export const methods = {
                         ownerId: Meteor.userId(),
                         productId: reactionProductId,
                         variantId: reactionVariantId,
-                        shopId: shopId,
+                        shopId,
                         priority: 1,
                         toGrid: index === 0 ? 1 : 0 // We save the first of each variant image to the grid
                       });
@@ -537,9 +530,9 @@ export const methods = {
               _id: reactionProductId
             }, {
               $set: {
-                price: price,
-                isSoldOut: isSoldOut,
-                isBackorder: isBackorder
+                price,
+                isSoldOut,
+                isBackorder
               }
             }, { selector: { type: "simple" }, publish: true });
 

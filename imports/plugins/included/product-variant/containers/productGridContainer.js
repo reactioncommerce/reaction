@@ -13,12 +13,10 @@ import ProductGrid from "../components/productGrid";
 const wrapComponent = (Comp) => (
   class ProductGridContainer extends Component {
     static propTypes = {
-      canEdit: PropTypes.bool,
       isSearch: PropTypes.bool,
       productIds: PropTypes.array,
       products: PropTypes.array,
-      productsByKey: PropTypes.object,
-      unmountMe: PropTypes.func
+      productsByKey: PropTypes.object
     }
 
     constructor(props) {
@@ -36,7 +34,7 @@ const wrapComponent = (Comp) => (
 
     componentWillMount() {
       const selectedProducts = Reaction.getUserPreferences("reaction-product-variant", "selectedGridItems");
-      const products = this.products;
+      const { products } = this;
 
       if (_.isEmpty(selectedProducts)) {
         return Reaction.hideActionView();
@@ -46,9 +44,7 @@ const wrapComponent = (Comp) => (
       Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
       if (products) {
-        const filteredProducts = _.filter(products, (product) => {
-          return _.includes(selectedProducts, product._id);
-        });
+        const filteredProducts = _.filter(products, (product) => _.includes(selectedProducts, product._id));
 
         if (Reaction.isPreview() === false) {
           Reaction.showActionView({
@@ -84,12 +80,10 @@ const wrapComponent = (Comp) => (
       // Save the selected items to the Session
       Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
-      const products = this.products;
+      const { products } = this;
 
       if (products) {
-        const filteredProducts = _.filter(products, (product) => {
-          return _.includes(selectedProducts, product._id);
-        });
+        const filteredProducts = _.filter(products, (product) => _.includes(selectedProducts, product._id));
 
         Reaction.showActionView({
           label: "Grid Settings",
@@ -125,7 +119,7 @@ const wrapComponent = (Comp) => (
       this.state.productIds.map((productId, index) => {
         const position = { position: index, updatedAt: new Date() };
 
-        Meteor.call("products/updateProductPosition", productId, position, tag, error => {
+        return Meteor.call("products/updateProductPosition", productId, position, tag, (error) => {
           if (error) {
             Logger.error(error);
             throw new Meteor.Error("error-occurred", error);
@@ -145,12 +139,10 @@ const wrapComponent = (Comp) => (
       return (
         <Components.DragDropProvider>
           <Comp
+            {...this.props}
             products={this.products}
             onMove={this.handleProductDrag}
             itemSelectHandler={this.handleSelectProductItem}
-            canEdit={this.props.canEdit}
-            isSearch={this.props.isSearch}
-            unmountMe={this.props.unmountMe}
           />
         </Components.DragDropProvider>
       );

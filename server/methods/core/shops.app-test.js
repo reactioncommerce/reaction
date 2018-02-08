@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
@@ -61,18 +62,16 @@ describe("core shop methods", function () {
 
     it("should create new shop for admin for userId and shopObject", function () {
       this.timeout(5000);
-      sandbox.stub(Meteor, "user", () => {
-        return {
-          userId: "12345678",
-          emails: [{
-            address: "user@example.com",
-            provides: "default",
-            verified: true
-          }]
-        };
-      });
+      sandbox.stub(Meteor, "user", () => ({
+        userId: "12345678",
+        emails: [{
+          address: "user@example.com",
+          provides: "default",
+          verified: true
+        }]
+      }));
       const shopId = Random.id();
-      Factory.create("account", { _id: "12345678", shopId: shopId });
+      Factory.create("account", { _id: "12345678", shopId });
 
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Reaction, "getPrimaryShopId", () => shopId);

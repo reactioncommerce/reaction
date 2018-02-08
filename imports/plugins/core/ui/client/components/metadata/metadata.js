@@ -36,14 +36,12 @@ class Metadata extends Component {
    */
   renderMetadata() {
     if (this.props.metafields) {
-      return this.props.metafields.map((metadata, index) => {
-        return (
-          <div className="rui meta-item" key={index}>
-            <div className="rui meta-key">{metadata.key}</div>
-            <div className="rui meta-value">{metadata.value}</div>
-          </div>
-        );
-      });
+      return this.props.metafields.map((metadata, index) => (
+        <div className="rui meta-item" key={index}>
+          <div className="rui meta-key">{metadata.key}</div>
+          <div className="rui meta-value">{metadata.value}</div>
+        </div>
+      ));
     }
 
     return null;
@@ -55,18 +53,16 @@ class Metadata extends Component {
    */
   renderMetadataForm() {
     if (this.props.metafields) {
-      return this.props.metafields.map((metadata, index) => {
-        return (
-          <Components.Metafield
-            index={index}
-            key={index}
-            metafield={metadata}
-            onBlur={this.handleMetaSave}
-            onChange={this.handleMetaChange}
-            onRemove={this.handleMetaRemove}
-          />
-        );
-      });
+      return this.props.metafields.map((metadata, index) => (
+        <Components.Metafield
+          index={index}
+          key={index}
+          metafield={metadata}
+          onBlur={this.handleMetaSave}
+          onChange={this.handleMetaChange}
+          onRemove={this.handleMetaRemove}
+        />
+      ));
     }
 
     return null;

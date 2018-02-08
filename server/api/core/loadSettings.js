@@ -31,8 +31,7 @@ export function loadSettings(json) {
 
   // validate json and error out if not an array
   if (!_.isArray(validatedJson[0])) {
-    Logger.warn(
-      "Load Settings is not an array. Failed to load settings.");
+    Logger.warn("Load Settings is not an array. Failed to load settings.");
     return false;
   }
 
@@ -71,12 +70,11 @@ export function loadSettings(json) {
             if ({}.hasOwnProperty.call(services, service)) {
               settings = services[service];
               ServiceConfiguration.configurations.upsert({
-                service: service
+                service
               }, {
                 $set: settings
               });
-              Logger.debug("service configuration loaded: " +
-                item.name + " | " + service);
+              Logger.debug(`service configuration loaded: ${item.name} | ${service}`);
             }
           }
         }

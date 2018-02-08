@@ -56,14 +56,12 @@ Template.templateSettings.helpers({
 
     // helper adds a class to every grid row
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
-        return "template-grid-row";
-      }
+      bodyCssClassName: () => "template-grid-row"
     };
 
     // add i18n handling to headers
     const customColumnMetadata = [];
-    filteredFields.forEach(function (field) {
+    filteredFields.forEach((field) => {
       const columnMeta = {
         accessor: field, // name of field
         Header: i18next.t(`templateGrid.columns.${field}`) // name to display
@@ -79,9 +77,9 @@ Template.templateSettings.helpers({
       matchingResultsCount: "templates-count",
       showFilter: true,
       rowMetadata: customRowMetaData,
-      filteredFields: filteredFields,
+      filteredFields,
       columns: filteredFields,
-      noDataMessage: noDataMessage,
+      noDataMessage,
       onRowClick: editRow,
       columnMetadata: customColumnMetadata,
       externalLoadingComponent: Loading
@@ -120,19 +118,19 @@ Template.templateSettings.helpers({
  * template templateSettings events
  */
 Template.templateSettings.events({
-  "click .template-grid-row": function (event) {
+  "click .template-grid-row"(event) {
     // toggle all rows off, then add our active row
     $(".template-grid-row").removeClass("active");
     Template.instance().$(event.currentTarget).addClass("active");
   },
-  "submit #email-template-edit-form": function () {
+  "submit #email-template-edit-form"() {
     const instance = Template.instance();
     instance.state.set({
       isEditing: false,
       editingId: null
     });
   },
-  "click .cancel, .template-grid-row .active": function () {
+  "click .cancel, .template-grid-row .active"() {
     const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
@@ -146,7 +144,7 @@ Template.templateSettings.events({
 
 AutoForm.hooks({
   "email-template-edit-form": {
-    onSubmit: function (insertDoc) {
+    onSubmit(insertDoc) {
       this.event.preventDefault();
 
       const templateId = this.docId;
@@ -171,9 +169,10 @@ Blaze.TemplateInstance.prototype.parentTemplate = function (levels = 1) {
   let view = Blaze.currentView;
   let numLevel = levels;
   while (view) {
-    if (view.name.substring(0, 9) === "Template." && !numLevel--) {
+    if (view.name.substring(0, 9) === "Template." && !numLevel) {
       return view.templateInstance();
     }
+    numLevel -= 1;
     view = view.parentView;
   }
 };

@@ -1,9 +1,23 @@
-import Twilio from "twilio";
-import Nexmo from "nexmo";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Sms, Accounts } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
+
+// We lazy load these in order to shave a few seconds off the time
+// it takes Meteor to start/restart the app.
+let Twilio;
+async function lazyLoadTwilio() {
+  if (Twilio) return;
+  const mod = await import("twilio");
+  Twilio = mod.default;
+}
+
+let Nexmo;
+async function lazyLoadNexmo() {
+  if (Nexmo) return;
+  const mod = await import("nexmo");
+  Nexmo = mod.default;
+}
 
 /**
  * @file Meteor methods for SMS. Run these methods using `Meteor.call()`.
@@ -49,47 +63,47 @@ Meteor.methods({
     check(shopId, String);
 
     const user = Accounts.findOne({ _id: userId });
-    const addressBook = user.profile.addressBook;
-    let phone = false;
+    const addressBook = user && user.profile ? user.profile.addressBook : false;
     // check for addressBook phone
-    if (user && addressBook) {
-      if (addressBook[0].phone) {
-        phone = addressBook[0].phone;
-      }
+    const phone = (Array.isArray(addressBook) && addressBook[0] && addressBook[0].phone) || false;
+
+    if (!phone) return;
+
+    const smsSettings = Sms.findOne({ shopId });
+    if (!smsSettings) return;
+
+    const { apiKey, apiToken, smsPhone, smsProvider } = smsSettings;
+    if (smsProvider === "twilio") {
+      Logger.debug("choose twilio");
+      Promise.await(lazyLoadTwilio());
+      const client = new Twilio(apiKey, apiToken);
+      client.messages.create({
+        to: phone,
+        from: smsPhone,
+        body: message
+      }, (err) => {
+        if (err) {
+          return Logger.error(err);
+        }
+      });
+      return;
     }
 
-    if (phone) {
-      const smsSettings = Sms.findOne({ shopId });
+    if (smsProvider === "nexmo") {
+      Logger.debug("choose nexmo");
+      Promise.await(lazyLoadNexmo());
+      const client = new Nexmo({ apiKey, apiSecret: apiToken });
+      client.message.sendSms(smsPhone, phone, message, (err, result) => {
+        if (err) {
+          Logger.error("Nexmo error", err);
+        }
 
-      if (smsSettings) {
-        const { apiKey, apiToken, smsPhone, smsProvider } = smsSettings;
-        if (smsProvider === "twilio") {
-          Logger.debug("choose twilio");
-          const client = new Twilio(apiKey, apiToken);
-          client.messages.create({
-            to: phone,
-            from: smsPhone,
-            body: message
-          }, (err) => {
-            if (err) {
-              return Logger.error(err);
-            }
-          });
-          return;
+        if (result && Array.isArray(result.messages) && result.messages[0]["error-text"]) {
+          Logger.error("Nexmo error sending sms", result.messages[0]["error-text"]);
         }
-        if (smsProvider === "nexmo") {
-          Logger.debug("choose nexmo");
-          const client = new Nexmo({
-            apiKey,
-            apiSecret: apiToken
-          });
-          client.message.sendSms(smsPhone, phone, message, {}, (err) => {
-            if (err) {
-              return Logger.error(err);
-            }
-          });
-        }
-      }
+
+        Logger.debug(JSON.stringify(result));
+      });
     }
   }
 });

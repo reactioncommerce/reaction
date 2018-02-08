@@ -14,9 +14,9 @@ Orders.before.insert((userId, order) => {
 /**
 *  Step 3 of the "workflow/pushOrderWorkflow" flow
 *
-*	The following methods are called from Orders.before.update hook.
-*	@see packages/reaction-schema/common/hooks/orders.js
-  * @see packages/reaction-core/common/methods/workflow.js
+*  The following methods are called from Orders.before.update hook.
+*  @see packages/reaction-schema/common/hooks/orders.js
+*  @see packages/reaction-core/common/methods/workflow.js
 */
 
 /**

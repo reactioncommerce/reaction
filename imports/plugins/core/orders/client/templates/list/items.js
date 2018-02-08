@@ -7,7 +7,7 @@ import { Media } from "/lib/collections";
  *
  */
 Template.ordersListItems.helpers({
-  media: function () {
+  media() {
     const cartImagesSub = Meteor.subscribe("CartItemImage", this);
     if (cartImagesSub.ready()) {
       const variantImage = Media.findOne({
@@ -50,7 +50,7 @@ Template.ordersListItems.helpers({
 
         // Increment the quantity count for the duplicate product variants
         if (foundItem) {
-          foundItem.quantity++;
+          foundItem.quantity += 1;
         } else {
           // Otherwise push the unique item into the combinedItems array
           combinedItems.push(orderItem);

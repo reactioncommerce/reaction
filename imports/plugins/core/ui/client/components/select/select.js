@@ -31,7 +31,7 @@ Template.select.helpers({
       return;
     }
 
-    const type = currentData.type;
+    const { type } = currentData;
     if (type === "radios" || type === "radio") {
       return "selectAsRadioButtons";
     } else if (type === "checkboxes" || type === "checkbox") {
@@ -72,7 +72,7 @@ Template.selectAsRadioButtons.helpers({
 
   templateData(option) {
     const instance = Template.instance();
-    const data = instance.data;
+    const { data } = instance;
 
     return {
       selected: data.selected === option[data.key || "_id"],

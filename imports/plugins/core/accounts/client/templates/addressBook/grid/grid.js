@@ -6,7 +6,7 @@ import { Template } from "meteor/templating";
  * handles display of addressBook grid
  */
 Template.addressBookGrid.helpers({
-  selectedBilling: function () {
+  selectedBilling() {
     const cart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
@@ -18,17 +18,14 @@ Template.addressBookGrid.helpers({
             return "active";
           }
         }
-      } else { // if this is a first checkout review, we need to push default
+      } else if (this.isBillingDefault) { // if this is a first checkout review, we need to push default
         // billing address to cart
-        if (this.isBillingDefault) {
-          Meteor.call("cart/setPaymentAddress", cart._id, this);
-          // return "active";
-        }
+        Meteor.call("cart/setPaymentAddress", cart._id, this);
       }
     }
   },
 
-  selectedShipping: function () {
+  selectedShipping() {
     const cart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
@@ -40,16 +37,13 @@ Template.addressBookGrid.helpers({
             return "active";
           }
         }
-      } else { // if this is a first checkout review, we need to push default
+      } else if (this.isShippingDefault) { // if this is a first checkout review, we need to push default
         // shipping address to cart
-        if (this.isShippingDefault) {
-          Meteor.call("cart/setShipmentAddress", cart._id, this);
-          // return "active";
-        }
+        Meteor.call("cart/setShipmentAddress", cart._id, this);
       }
     }
   },
-  account: function () {
+  account() {
     return Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
@@ -61,18 +55,16 @@ Template.addressBookGrid.helpers({
  */
 
 Template.addressBookGrid.events({
-  "click [data-event-action=selectShippingAddress]": function () {
+  "click [data-event-action=selectShippingAddress]"() {
   // update address(make it default) only if wasn't already
     if (!this.isShippingDefault) {
-      return Meteor.call("accounts/addressBookUpdate", this, null,
-        "isShippingDefault");
+      return Meteor.call("accounts/addressBookUpdate", this, null, "isShippingDefault");
     }
   },
-  "click [data-event-action=selectBillingAddress]": function () {
+  "click [data-event-action=selectBillingAddress]"() {
     // update address(make it default) only if wasn't already
     if (!this.isBillingDefault) {
-      return Meteor.call("accounts/addressBookUpdate", this, null,
-        "isBillingDefault");
+      return Meteor.call("accounts/addressBookUpdate", this, null, "isBillingDefault");
     }
   }
 });
