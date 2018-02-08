@@ -1,9 +1,17 @@
+// latin base chars ISO
+const westernLangs = ["az", "da", "de", "en", "es", "ff", "fr", "ha", "hr", "hu", "ig", "is", "it", "jv", "ku", "ms", "nl", "no", "om", "pl", "pt", "ro", "sv", "sw", "tl", "tr", "uz", "vi", "yo"]; // eslint-disable-line max-len
+
+// client get shop lang
+const shopLang = new Promise((resolve, reject) => Meteor.call("shop/getBaseLanguage", (err, res) => err ? reject(err) : resolve(res)));
+
+
 // TODO: better comments for this func
 // TODO: conditional load based on shop lang
 let slugify;
 async function lazyLoadSlugify() {
   if (slugify) return;
-  const mod = await import("transliteration");
+  const lang = await shopLang;
+  const mod = (westernLangs.indexOf(lang) >= 0) ? await import("slugify") : await import("transliteration");
   slugify = mod.default || mod.slugify;
 }
 

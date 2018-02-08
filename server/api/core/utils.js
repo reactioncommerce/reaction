@@ -3,6 +3,7 @@
 let slugify;
 async function lazyLoadSlugify() {
   if (slugify) return;
+  const lang = Meteor.call("shop/getBaseLanguage");
   const mod = await import("transliteration");
   slugify = mod.default || mod.slugify;
 }
