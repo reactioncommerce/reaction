@@ -125,7 +125,6 @@ Meteor.methods({
             },
             fieldNames: Object.keys(revision.documentData)
           };
-          console.log("productsID", productUpdateArgs.product);
 
           Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
           Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
