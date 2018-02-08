@@ -157,7 +157,7 @@
         "tagsAdd": "Ajouter un tag",
         "tagExists": "Le tag est vide ou existe déjà.",
         "tagInUse": "Le tag est utilisé et ne peut pas être supprimé.",
-        "dropFiles": "Déposer des fichiers à télécharger.",
+        "dropFiles": "Déposer des fichiers à uploader.",
         "addInventory": "Ajouter l'inventaire",
         "barcode": "Code-barres",
         "confirmDeleteBarcode": "Êtes-vous certain de vouloir supprimer le code-barres",
@@ -468,7 +468,7 @@
       "corePackageConfig": {
         "settings": {
           "public": {
-            "allowGuestCheckout": "Autoriser le règlement en tant qu'invité"
+            "allowGuestCheckout": "Autoriser les commandes en tant qu'invité"
           },
           "openexchangerates": {
             "appId": "Ouvrir l'app Id du taux de change",
@@ -497,14 +497,14 @@
           "company": "Entreprise",
           "companyPlaceholder": "Nom de l'entreprise",
           "country": "Pays",
-          "fullName": "Nom complet",
-          "fullNamePlaceholder": "Le nom de votre entreprise",
+          "fullName": "Dénomination sociale",
+          "fullNamePlaceholder": "La dénomination sociale complète de votre entreprise",
           "address1": "Adresse",
           "address1Placeholder": "Adresse de votre entreprise",
           "address1Tooltip": "Cette adresse sera visible par les visiteurs",
           "address2": "Adresse",
           "address2Placeholder": "Adresse supplémentaire",
-          "postal": "Postal",
+          "postal": "Code postal",
           "city": "Ville",
           "region": "Région",
           "phone": "Téléphone",
@@ -532,7 +532,7 @@
         "fullName": "Nom complet",
         "address1": "Adresse",
         "address2": "Adresse",
-        "postal": "Postal",
+        "postal": "Code postal",
         "city": "Ville",
         "region": "Région",
         "phone": "Téléphone",
