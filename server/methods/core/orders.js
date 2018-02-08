@@ -84,6 +84,7 @@ export function ordersInventoryAdjust(orderId) {
       fieldNames: ["inventoryQuantity"]
     };
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
 
     Products.update({
       _id: item.variants._id
@@ -139,6 +140,7 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
         fieldNames: ["inventoryQuantity"]
       };
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
 
       Products.update({
         _id: item.variants._id
@@ -420,6 +422,7 @@ export const methods = {
             fieldNames: ["inventoryQuantity"]
           };
           Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+          Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
 
           Products.update({
             _id: item.variants._id,

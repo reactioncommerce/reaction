@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Products } from "/lib/collections";
+import { Hooks } from "/server/api";
 
 export default function () {
   /**
@@ -13,7 +13,8 @@ export default function () {
    * before product update
    */
   // TODO: review this.  not sure this does what it was intended to
-  Products.before.update((userId, product, fieldNames, modifier) => {
+  Hooks.Events.add("beforeProductUpdatePositions", (productUpdateArgs) => {
+    const { fieldNames, modifier } = productUpdateArgs;
     let updatedAt;
     // handling product positions updates
     if (_.indexOf(fieldNames, "positions") !== -1) {

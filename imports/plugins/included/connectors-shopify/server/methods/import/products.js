@@ -560,6 +560,7 @@ export const methods = {
               fieldNames: ["price", "isSoldOut", "isBackorder"]
             };
             Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+            Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
 
             Products.update({
               _id: reactionProductId

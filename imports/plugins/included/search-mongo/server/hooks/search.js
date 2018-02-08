@@ -68,9 +68,7 @@ Hooks.Events.add("afterProductUpdateSearchRebuild", (productUpdateArgs) => {
   if (ProductSearch && !Meteor.isAppTest && product.type === "simple") {
     const productId = product._id;
     const { fieldSet } = getSearchParameters();
-    console.log("fieldSet", fieldSet);
     const modifiedFields = _.intersection(fieldSet, fieldNames);
-    console.log("modified", modifiedFields);
     if (modifiedFields.length) {
       Logger.debug(`Rewriting search record for ${product.title}`);
       ProductSearch.remove(productId);

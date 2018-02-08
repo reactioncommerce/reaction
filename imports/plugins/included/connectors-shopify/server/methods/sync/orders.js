@@ -70,6 +70,7 @@ export const methods = {
       };
 
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
       // adjust inventory for variant and push an event into the eventLog
       Products.update({
         _id: variant._id

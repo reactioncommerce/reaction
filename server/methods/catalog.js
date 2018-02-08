@@ -250,6 +250,8 @@ function denormalize(id, field) {
   };
 
   Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+  Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
   Products.update(id, {
     $set: update
   }, {
@@ -344,6 +346,7 @@ function flushQuantity(id) {
   };
 
   Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+  Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
 
   const updatedProduct = Products.update({
     _id: id
@@ -583,6 +586,8 @@ Meteor.methods({
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
     const variantUpdateResult = Products.update({
       _id: variant._id
     }, {
@@ -644,10 +649,11 @@ Meteor.methods({
     const toDelete = Products.find(selector).fetch();
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
-    Hooks.Events.run("beforeProductRemove", selector);
+
+    Hooks.Events.run("beforeProductRemove", variant);
     const deleted = Products.remove(selector);
-    Hooks.Events.run("afterProductRemove", selector);
-    Hooks.Events.run("afterProductVariantRemove", selector);
+    Hooks.Events.run("afterProductRemove", variant);
+    Hooks.Events.run("afterProductVariantRemove", variant);
 
     // after variant were removed from product, we need to recalculate all
     // denormalized fields
@@ -910,20 +916,17 @@ Meteor.methods({
 
     const ids = [];
     productsWithVariants.map(doc => {
-      Hooks.Events.run("beforeProductRemove", doc);
       ids.push(doc._id);
     });
 
+    Hooks.Events.run("beforeProductRemove", product);
     Products.remove({
       _id: {
         $in: ids
       }
     });
-
-    productsWithVariants.map(doc => {
-      Hooks.Events.run("afterProductRemove", doc);
-      Hooks.Events.run("afterProductVariantRemove", doc);
-    });
+    Hooks.Events.run("afterProductRemove", product);
+    Hooks.Events.run("afterProductVariantRemove", product);
 
     const numRemoved = Revisions.find({
       "documentId": {
@@ -1024,6 +1027,8 @@ Meteor.methods({
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
     try {
       result = Products.update(_id, {
         $set: update
@@ -1106,6 +1111,7 @@ Meteor.methods({
       };
 
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
 
       const updatedProduct = Products.update(productId, {
         $push: {
@@ -1145,6 +1151,7 @@ Meteor.methods({
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
 
     const updatedProduct = Products.update(productId, {
       $push: {
@@ -1196,6 +1203,7 @@ Meteor.methods({
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
 
     Products.update(productId, {
       $pull: {
@@ -1237,6 +1245,7 @@ Meteor.methods({
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
     Products.update(product._id, { $set: { handle, type: "simple" } });
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
     Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
@@ -1285,6 +1294,7 @@ Meteor.methods({
       };
 
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
       Products.update(product._id, getSet(handle));
       Hooks.Events.run("afterProductUpdate", productUpdateArgs);
       Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
@@ -1307,7 +1317,7 @@ Meteor.methods({
         modifier: getSet(currentProductHandle)
       };
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
-
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
       Products.update(currentProduct._id, getSet(currentProductHandle));
       Hooks.Events.run("afterProductUpdate", productUpdateArgs);
       Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
@@ -1317,6 +1327,7 @@ Meteor.methods({
       modifier: getSet(tag.slug)
     };
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
     Products.update(product._id, getSet(tag.slug));
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
     Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
@@ -1369,6 +1380,7 @@ Meteor.methods({
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
     const updatedProduct = Products.update({
       _id: productId
     }, {
@@ -1418,6 +1430,7 @@ Meteor.methods({
       };
 
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
       Products.update(id, {
         $set: { index }
       }, {
@@ -1469,7 +1482,7 @@ Meteor.methods({
         fieldNames: ["metafields"]
       };
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
-
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
       const updatedProduct = Products.update({
         _id: productId,
         metafields: meta
@@ -1498,7 +1511,7 @@ Meteor.methods({
         fieldNames: ["metafields"]
       };
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
-
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
       const updatedProduct = Products.update({
         _id: productId
       }, {
@@ -1528,6 +1541,7 @@ Meteor.methods({
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
     // adds metadata
     const updatedProduct = Products.update({
       _id: productId
@@ -1574,7 +1588,7 @@ Meteor.methods({
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
-
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
     const updatedProduct = Products.update({
       _id: productId,
       type
@@ -1664,7 +1678,7 @@ Meteor.methods({
       };
 
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
-
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
       const res = Products.update(product._id, {
         $set: {
           isVisible: !product.isVisible
@@ -1722,7 +1736,7 @@ Meteor.methods({
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
-
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
     const res = Products.update(productId, {
       $set: {
         isVisible: !product.isVisible
