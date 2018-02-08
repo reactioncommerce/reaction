@@ -383,7 +383,7 @@ describe.only("JobCollection", function () {
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { order: 1 });
     const job2 = new Job(testColl, jobType, { order: 2 });
-    return job.save(function (err, res) {
+    job.save(function (err, res) {
       if (err) { done(err); }
       assert.ok(validId(res), "job.save() failed in callback result");
       job2.depends([job]);
@@ -403,7 +403,7 @@ describe.only("JobCollection", function () {
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { order: 1 });
     const job2 = new Job(testColl, jobType, { order: 2 });
-    return job.save(function (err, res) {
+    job.save(function (err, res) {
       if (err) { done(err); }
       assert.ok(validId(res), "job.save() failed in callback result");
       job2.depends([job]);
@@ -426,7 +426,7 @@ describe.only("JobCollection", function () {
   it("should cancel succeeds for job without deps, with using option dependents: false", function (done) {
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, {});
-    return job.save(function (err2, res2) {
+    job.save(function (err2, res2) {
       if (err2) { done(err2); }
       assert.ok(validId(res2), "job.save() failed in callback result");
       job.cancel({ dependents: false }, function (err3, res3) {
@@ -442,334 +442,345 @@ describe.only("JobCollection", function () {
     const job = new Job(testColl, jobType, { order: 1 });
     const job2 = new Job(testColl, jobType, { order: 2 });
     job.delay(1000); // Ensure that job2 has the opportunity to run first
-    return job.save(function (err, res) {
+    job.save(function (err, res) {
       if (err) { done(err); }
       assert.ok(validId(res), "job.save() failed in callback result");
       job2.depends([job]);
-      return job2.save(function (err2, res2) {
+      job2.save(function (err2, res2) {
         if (err2) { done(err2); }
         assert.ok(validId(res2), "job.save() failed in callback result");
         let count = 0;
+        let timer;
         const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
           count++;
           expect(count).to.equal(jobResult.data.order);
-          const timer = new Date();
           jobResult.done(null, { delayDeps: 1500 });
           cb();
           if (count === 2) {
-            assert.ok(new Date() > (timer + 1500));
-            return q.shutdown({ level: "soft", quiet: true }, () => done());
+            assert.ok(new Date().getTime() > (timer + 1500));
+            q.shutdown({ level: "soft", quiet: true }, () => done());
           }
+          timer = new Date().getTime();
+        });
+      });
+    });
+  }).timeout(4000);
+
+  it("should be dependent job with delayDeps is delayed", function (done) {
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { order: 1 });
+    const job2 = new Job(testColl, jobType, { order: 2 });
+    job.delay(1000); // Ensure that job2 has the opportunity to run first
+    return job.save(function (err, res) {
+      if (err) { test.fail(err); }
+      assert.ok(validId(res), "job.save() failed in callback result");
+      job2.depends([job]);
+      job2.save(function (err2, res2) {
+        if (err2) { done(err2); }
+        assert.ok(validId(res2), "job.save() failed in callback result");
+        let count = 0;
+        let timer;
+        const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
+          count++;
+          expect(count).to.equal(jobResult.data.order);
+          jobResult.done(null, { delayDeps: 1500 });
+          cb();
+          if (count === 2) {
+            assert.ok(new Date().getTime() > (timer + 1500));
+            q.shutdown({ level: "soft", quiet: true }, () => done());
+          }
+          timer = new Date().getTime();
+        });
+      });
+    });
+  }).timeout(4000);
+
+  it("Job priority is respected", function (done) {
+    let counter = 0;
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const jobs = [];
+    jobs[0] = new Job(testColl, jobType, { count: 3 }).priority("low");
+    jobs[1] = new Job(testColl, jobType, { count: 1 }).priority("high");
+    jobs[2] = new Job(testColl, jobType, { count: 2 });
+
+    jobs[0].save(function (err, res) {
+      if (err) { done(err); }
+      assert.ok(validId(res), "jobs[0].save() failed in callback result");
+      jobs[1].save(function (err2, res2) {
+        if (err2) { done(err2); }
+        assert.ok(validId(res2), "jobs[1].save() failed in callback result");
+        jobs[2].save(function (err3, res3) {
+          if (err3) { done(err3); }
+          assert.ok(validId(res3), "jobs[2].save() failed in callback result");
+          const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (job, cb) {
+            counter++;
+            expect(job.data.count).to.equal(counter);
+            job.done();
+            cb();
+            if (counter === 3) {
+              q.shutdown({ level: "soft", quiet: true }, () => done());
+            }
+          });
         });
       });
     });
   });
+
+  it("Job priority is respected", function (done) {
+    let counter = 0;
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const jobs = [];
+    jobs[0] = new Job(testColl, jobType, { count: 3 }).priority("low");
+    jobs[1] = new Job(testColl, jobType, { count: 1 }).priority("high");
+    jobs[2] = new Job(testColl, jobType, { count: 2 });
+
+    jobs[0].save(function (err, res) {
+      if (err) { done(err); }
+      assert.ok(validId(res), "jobs[0].save() failed in callback result");
+      jobs[1].save(function (err2, res2) {
+        if (err2) { done(err2); }
+        assert.ok(validId(res2), "jobs[1].save() failed in callback result");
+        jobs[2].save(function (err3, res3) {
+          if (err3) { done(err3); }
+          assert.ok(validId(res3), "jobs[2].save() failed in callback result");
+          const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (job, cb) {
+            counter++;
+            expect(job.data.count).to.equal(counter);
+            job.done();
+            cb();
+            if (counter === 3) {
+              q.shutdown({ level: "soft", quiet: true }, () => done());
+            }
+          });
+        });
+      });
+    });
+  });
+
+  it("A forever retrying job can be scheduled and run", function (done) {
+    let counter = 0;
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { some: "data" }).retry({ retries: testColl.forever, wait: 0 });
+    job.save(function (err, res) {
+      if (err) { done(err); }
+      assert.ok(validId(res), "job.save() failed in callback result");
+      const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
+        counter++;
+        expect(jobResult.doc._id).to.equal(res);
+        if (counter < 3) {
+          jobResult.fail("Fail test");
+          cb();
+        } else {
+          jobResult.fail("Fail test", { fatal: true });
+          cb();
+          q.shutdown({ level: "soft", quiet: true }, () => done());
+        }
+      });
+    });
+  });
+
+  it("Retrying job with exponential backoff", function (done) {
+    let counter = 0;
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { some: "data" }).retry({ retries: 2, wait: 200, backoff: "exponential" });
+    job.save(function (err, res) {
+      if (err) { done(err); }
+      assert.ok(validId(res), "job.save() failed in callback result");
+      const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
+        counter++;
+        expect(jobResult.doc._id).to.equal(res);
+        if (counter < 3) {
+          jobResult.fail("Fail test");
+          cb();
+        } else {
+          jobResult.fail("Fail test");
+          cb();
+          q.shutdown({ level: "soft", quiet: true }, () => done());
+        }
+      });
+    });
+  });
+
+  it("should have a forever retrying job with 'until'", function (done) {
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { some: "data" }).retry({ until: new Date(new Date().valueOf() + 1500), wait: 500 });
+    job.save(function (err, res) {
+      if (err) { done(err); }
+      assert.ok(validId(res), "job.save() failed in callback result");
+      const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
+        expect(jobResult.doc._id).to.equal(res);
+        jobResult.fail("Fail test");
+        cb();
+      });
+      Meteor.setTimeout(
+        () =>
+          job.refresh(function () {
+            expect(job._doc.status, "Until didn't cause job to stop retrying").to.equal("failed");
+            q.shutdown({ level: "soft", quiet: true }, () => done());
+          }),
+        2500
+      );
+    });
+  }).timeout(5000);
+
+  it("should autofail and retry a job", function (done) {
+    let counter = 0;
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { some: "data" }).retry({ retries: 2, wait: 0 });
+    job.save(function (err, res) {
+      if (err) { done(err); }
+      assert.ok(validId(res), "job.save() failed in callback result");
+      const q = testColl.processJobs(jobType, { pollInterval: 250, workTimeout: 500 }, function (jobResult, cb) {
+        counter++;
+        expect(jobResult.doc._id).to.equal(res);
+        if (counter === 2) {
+          jobResult.done("Success");
+        }
+        // Will be called without done/fail on first attempt
+        cb();
+      });
+
+      Meteor.setTimeout(
+        () =>
+          job.refresh(function () {
+            expect(job._doc.status, "Job didn't successfully autofail and retry").to.equal("completed");
+            q.shutdown({ level: "soft", quiet: true }, () => done());
+          }),
+        2500
+      );
+    });
+  }).timeout(5000);
+
+  if (Meteor.isServer) {
+    it("should save, cancel, restart, refresh: retries are correct.", function (done) {
+      const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+      const j = new Job(testColl, jobType, { foo: "bar" });
+      j.save();
+      j.cancel();
+      j.restart({ retries: 0 });
+      j.refresh();
+      expect(j._doc.repeatRetries).to.equal(j._doc.retries + j._doc.retried);
+      done();
+    });
+
+    it("should add, cancel and remove a large number of jobs", function (done) {
+      let count;
+      let c = (count = 500);
+      const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+      (() => {
+        const result = [];
+        for (let i = 1, end = count, asc = 1 <= end; asc ? i <= end : i >= end; asc ? i++ : i--) {
+          const j = new Job(testColl, jobType, { idx: i });
+          // eslint-disable-next-line no-loop-func
+          result.push(j.save(function (err, res) {
+            if (err) { done(err); }
+            if (!validId(res)) { done("job.save() Invalid _id value returned"); }
+            c--;
+            if (!c) {
+              let ids = testColl.find({ type: jobType, status: "ready" }).map(d => d._id);
+              expect(count).to.equal(ids.length);
+              testColl.cancelJobs(ids, function (err2, res2) {
+                if (err2) { done(err2); }
+                if (!res2) { done("cancelJobs Failed"); }
+                ids = testColl.find({ type: jobType, status: "cancelled" }).map(d => d._id);
+                expect(count).to.equal(ids.length);
+                testColl.removeJobs(ids, function (err3, res3) {
+                  if (err3) { done(err3); }
+                  if (!res3) { done("removeJobs Failed"); }
+                  ids = testColl.find({ type: jobType });
+                  expect(0).to.equal(ids.count());
+                  done();
+                });
+              });
+            }
+          }));
+        }
+        return result;
+      })();
+    }).timeout(5000);
+
+    it("should have a forever repeating job with 'schedule' and 'until'", function (done) {
+      let counter = 0;
+      const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+      const job = new Job(testColl, jobType, { some: "data" })
+        .repeat({
+          until: new Date(new Date().valueOf() + 3500),
+          schedule: testColl.later.parse.text("every 1 second")
+        })
+        .delay(1000);
+      job.save(function (err, res) {
+        if (err) { test.fail(err); }
+        assert.ok(validId(res), "job.save() failed in callback result");
+        const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
+          counter++;
+          if (counter === 1) {
+            expect(jobResult.doc._id).to.equal(res);
+          } else {
+            expect(jobResult.doc._id).to.not.equal(res);
+          }
+          jobResult.done({}, { repeatId: true });
+          return cb();
+        });
+        let ev; // eslint-disable-line prefer-const
+        const listener = () => {
+          if (counter === 2) {
+            job.refresh(function () {
+              expect(job._doc.status).to.equal("completed");
+              q.shutdown({ level: "soft", quiet: true }, function () {
+                ev.removeListener("jobDone", listener);
+                done();
+              });
+            });
+          }
+        };
+        ev = testColl.events.on("jobDone", listener);
+        return ev;
+      });
+    }).timeout(4000);
+  }
+
+  it("should run shutdownJobServer on the job collection", function (done) {
+    testColl.shutdownJobServer({ timeout: 1 }, function (err, res) {
+      if (err) { done(err); }
+      expect(res, true, "shutdownJobServer failed in callback result");
+      if (Meteor.isServer) {
+        expect(testColl.stopped, "shutdownJobServer didn't stop job collection").to.not.equal(false);
+      }
+      done();
+    });
+  });
+
+  if (Meteor.isClient) {
+    it("should run startJobServer on remote job collection", function (done) {
+      remoteServerTestColl.startJobServer(function (err, res) {
+        if (err) { done(err); }
+        expect(res, "startJobServer failed in callback result").to.equal(true);
+        done();
+      });
+    });
+
+    it("should create a job and see that it is added to a remote server collection and runs", function (done) {
+      const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+      const job = new Job(remoteServerTestColl, jobType, { some: "data" });
+      assert.ok(validJobDoc(job.doc));
+      return job.save(function (err, res) {
+        if (err) { done(err); }
+        assert.ok(validId(res), "job.save() failed in callback result");
+        const q = remoteServerTestColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
+          expect(jobResult._doc._id).to.equal(res);
+          jobResult.done();
+          cb();
+          q.shutdown({ level: "soft", quiet: true }, () => done());
+        });
+      });
+    });
+
+    it("should run shutdownJobServer on remote job collection", function (done) {
+      remoteServerTestColl.shutdownJobServer({ timeout: 1 }, function (err, res) {
+        if (err) { done(err); }
+        expect(res, "shutdownJobServer failed in callback result").to.equal(true);
+        done();
+      });
+    });
+  }
 });
-
-
-
-
-
-
-//
-// Tinytest.addAsync('Dependent job with delayDeps is delayed', function(test, onComplete) {
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, { order: 1 });
-//   const job2 = new Job(testColl, jobType, { order: 2 });
-//   job.delay(1000); // Ensure that job2 has the opportunity to run first
-//   return job.save(function(err, res) {
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     job2.depends([job]);
-//     return job2.save(function(err, res) {
-//       let q;
-//       if (err) { test.fail(err); }
-//       test.ok(validId(res), "job.save() failed in callback result");
-//       let count = 0;
-//       return q = testColl.processJobs(jobType, { pollInterval: 250 }, function(job, cb) {
-//         count++;
-//         test.equal(count, job.data.order);
-//         const timer = new Date();
-//         job.done(null, { delayDeps: 1500 });
-//         cb();
-//         if (count === 2) {
-//           test.ok(new Date() > (timer + 1500));
-//           return q.shutdown({ level: 'soft', quiet: true }, () => onComplete());
-//         }
-//       });
-//     });
-//   });
-// });
-//
-// Tinytest.addAsync('Job priority is respected', function(test, onComplete) {
-//   let counter = 0;
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const jobs = [];
-//   jobs[0] = new Job(testColl, jobType, {count: 3}).priority('low');
-//   jobs[1] = new Job(testColl, jobType, {count: 1}).priority('high');
-//   jobs[2] = new Job(testColl, jobType, {count: 2});
-//
-//   return jobs[0].save(function(err, res) {
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "jobs[0].save() failed in callback result");
-//     return jobs[1].save(function(err, res) {
-//       if (err) { test.fail(err); }
-//       test.ok(validId(res), "jobs[1].save() failed in callback result");
-//       return jobs[2].save(function(err, res) {
-//         let q;
-//         if (err) { test.fail(err); }
-//         test.ok(validId(res), "jobs[2].save() failed in callback result");
-//         return q = testColl.processJobs(jobType, { pollInterval: 250 }, function(job, cb) {
-//           counter++;
-//           test.equal(job.data.count, counter);
-//           job.done();
-//           cb();
-//           if (counter === 3) {
-//             return q.shutdown({ level: 'soft', quiet: true }, () => onComplete());
-//           }
-//         });
-//       });
-//     });
-//   });
-// });
-//
-// Tinytest.addAsync('A forever retrying job can be scheduled and run', function(test, onComplete) {
-//   let counter = 0;
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, {some: 'data'}).retry({retries: testColl.forever, wait: 0});
-//   return job.save(function(err, res) {
-//     let q;
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     return q = testColl.processJobs(jobType, { pollInterval: 250 }, function(job, cb) {
-//       counter++;
-//       test.equal(job.doc._id, res);
-//       if (counter < 3) {
-//         job.fail('Fail test');
-//         return cb();
-//       } else {
-//         job.fail('Fail test', { fatal: true });
-//         cb();
-//         return q.shutdown({ level: 'soft', quiet: true }, () => onComplete());
-//       }
-//     });
-//   });
-// });
-//
-// Tinytest.addAsync('Retrying job with exponential backoff', function(test, onComplete) {
-//   let counter = 0;
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, {some: 'data'}).retry({retries: 2, wait: 200, backoff: 'exponential'});
-//   return job.save(function(err, res) {
-//     let q;
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     return q = testColl.processJobs(jobType, { pollInterval: 250 }, function(job, cb) {
-//       counter++;
-//       test.equal(job.doc._id, res);
-//       if (counter < 3) {
-//         job.fail('Fail test');
-//         return cb();
-//       } else {
-//         job.fail('Fail test');
-//         cb();
-//         return q.shutdown({ level: 'soft', quiet: true }, () => onComplete());
-//       }
-//     });
-//   });
-// });
-//
-// Tinytest.addAsync('A forever retrying job with "until"', function(test, onComplete) {
-//   let counter = 0;
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, {some: 'data'}).retry({until: new Date(new Date().valueOf() + 1500), wait: 500});
-//   return job.save(function(err, res) {
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     const q = testColl.processJobs(jobType, { pollInterval: 250 }, function(job, cb) {
-//       counter++;
-//       test.equal(job.doc._id, res);
-//       job.fail('Fail test');
-//       return cb();
-//     });
-//     return Meteor.setTimeout(() =>
-//       job.refresh(function() {
-//         test.equal(job._doc.status, 'failed', "Until didn't cause job to stop retrying");
-//         return q.shutdown({ level: 'soft', quiet: true }, () => onComplete());
-//       })
-//
-//     ,
-//       2500
-//     );
-//   });
-// });
-//
-// Tinytest.addAsync('Autofail and retry a job', function(test, onComplete) {
-//   let counter = 0;
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, {some: 'data'}).retry({retries: 2, wait: 0});
-//   return job.save(function(err, res) {
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     const q = testColl.processJobs(jobType, { pollInterval: 250, workTimeout: 500 }, function(job, cb) {
-//       counter++;
-//       test.equal(job.doc._id, res);
-//       if (counter === 2) {
-//         job.done('Success');
-//       }
-//       // Will be called without done/fail on first attempt
-//       return cb();
-//     });
-//
-//     return Meteor.setTimeout(() =>
-//       job.refresh(function() {
-//         test.equal(job._doc.status, 'completed', "Job didn't successfully autofail and retry");
-//         return q.shutdown({ level: 'soft', quiet: true }, () => onComplete());
-//       })
-//
-//     ,
-//       2500
-//     );
-//   });
-// });
-//
-// if (Meteor.isServer) {
-//
-//   Tinytest.addAsync('Save, cancel, restart, refresh: retries are correct.', function(test, onComplete) {
-//     const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//     const j = new Job(testColl, jobType, { foo: "bar" });
-//     j.save();
-//     j.cancel();
-//     j.restart({ retries: 0 });
-//     j.refresh();
-//     test.equal(j._doc.repeatRetries, j._doc.retries + j._doc.retried);
-//     return onComplete();
-//   });
-//
-//   Tinytest.addAsync('Add, cancel and remove a large number of jobs', function(test, onComplete) {
-//     let count;
-//     let c = (count = 500);
-//     const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//     return (() => {
-//       const result = [];
-//       for (let i = 1, end = count, asc = 1 <= end; asc ? i <= end : i >= end; asc ? i++ : i--) {
-//         const j = new Job(testColl, jobType, { idx: i });
-//         result.push(j.save(function(err, res) {
-//           if (err) { test.fail(err); }
-//           if (!validId(res)) { test.fail("job.save() Invalid _id value returned"); }
-//           c--;
-//           if (!c) {
-//             let ids = testColl.find({ type: jobType, status: 'ready'}).map(d => d._id);
-//             test.equal(count, ids.length);
-//             return testColl.cancelJobs(ids, function(err, res) {
-//               if (err) { test.fail(err); }
-//               if (!res) { test.fail("cancelJobs Failed"); }
-//               ids = testColl.find({ type: jobType, status: 'cancelled'}).map(d => d._id);
-//               test.equal(count, ids.length);
-//               return testColl.removeJobs(ids, function(err, res) {
-//                 if (err) { test.fail(err); }
-//                 if (!res) { test.fail("removeJobs Failed"); }
-//                 ids = testColl.find({ type: jobType });
-//                 test.equal(0, ids.count());
-//                 return onComplete();
-//               });
-//             });
-//           }
-//         }));
-//       }
-//       return result;
-//     })();
-//   });
-//
-//   Tinytest.addAsync('A forever repeating job with "schedule" and "until"', function(test, onComplete) {
-//     let counter = 0;
-//     const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//     const job = new Job(testColl, jobType, {some: 'data'})
-//       .repeat({
-//         until: new Date(new Date().valueOf() + 3500),
-//         schedule: testColl.later.parse.text("every 1 second")})
-//       .delay(1000);
-//     return job.save(function(err, res) {
-//       let ev;
-//       if (err) { test.fail(err); }
-//       test.ok(validId(res), "job.save() failed in callback result");
-//       const q = testColl.processJobs(jobType, { pollInterval: 250 }, function(job, cb) {
-//         counter++;
-//         if (counter === 1) {
-//           test.equal(job.doc._id, res);
-//         } else {
-//           test.notEqual(job.doc._id, res);
-//         }
-//         job.done({}, { repeatId: true });
-//         return cb();
-//       });
-//       var listener = function(msg) {
-//         if (counter === 2) {
-//           return job.refresh(function() {
-//             test.equal(job._doc.status, 'completed');
-//             return q.shutdown({ level: 'soft', quiet: true }, function() {
-//               ev.removeListener('jobDone', listener);
-//               return onComplete();
-//             });
-//           });
-//         }
-//       };
-//       return ev = testColl.events.on('jobDone', listener);
-//     });
-//   });
-// }
-//
-// // Tinytest.addAsync 'Run stopJobs on the job collection', (test, onComplete) ->
-// //   testColl.stopJobs { timeout: 1 }, (err, res) ->
-// //     test.fail(err) if err
-// //     test.equal res, true, "stopJobs failed in callback result"
-// //     if Meteor.isServer
-// //       test.notEqual testColl.stopped, false, "stopJobs didn't stop job collection"
-// //     onComplete()
-//
-// Tinytest.addAsync('Run shutdownJobServer on the job collection', (test, onComplete) =>
-//   testColl.shutdownJobServer({ timeout: 1 }, function(err, res) {
-//     if (err) { test.fail(err); }
-//     test.equal(res, true, "shutdownJobServer failed in callback result");
-//     if (Meteor.isServer) {
-//       test.notEqual(testColl.stopped, false, "shutdownJobServer didn't stop job collection");
-//     }
-//     return onComplete();
-//   })
-// );
-//
-// if (Meteor.isClient) {
-//
-//   Tinytest.addAsync('Run startJobServer on remote job collection', (test, onComplete) =>
-//     remoteServerTestColl.startJobServer(function(err, res) {
-//       if (err) { test.fail(err); }
-//       test.equal(res, true, "startJobServer failed in callback result");
-//       return onComplete();
-//     })
-//   );
-//
-//   Tinytest.addAsync('Create a job and see that it is added to a remote server collection and runs', function(test, onComplete) {
-//     const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//     const job = new Job(remoteServerTestColl, jobType, { some: 'data' });
-//     test.ok(validJobDoc(job.doc));
-//     return job.save(function(err, res) {
-//       let q;
-//       if (err) { test.fail(err); }
-//       test.ok(validId(res), "job.save() failed in callback result");
-//       return q = remoteServerTestColl.processJobs(jobType, { pollInterval: 250 }, function(job, cb) {
-//         test.equal(job._doc._id, res);
-//         job.done();
-//         cb();
-//         return q.shutdown({ level: 'soft', quiet: true }, () => onComplete());
-//       });
-//     });
-//   });
-//
-//   Tinytest.addAsync('Run shutdownJobServer on remote job collection', (test, onComplete) =>
-//     remoteServerTestColl.shutdownJobServer({ timeout: 1 }, function(err, res) {
-//       if (err) { test.fail(err); }
-//       test.equal(res, true, "shutdownJobServer failed in callback result");
-//       return onComplete();
-//     })
-//   );
-// }
