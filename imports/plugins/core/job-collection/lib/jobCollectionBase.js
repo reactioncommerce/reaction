@@ -1017,7 +1017,7 @@ class JobCollectionBase extends Mongo.Collection {
       dependents: Match.Optional(Boolean)
     }));
 
-    if (!options.retries) { options.retries = 1; }
+    if (options.retries === null || options.retries === undefined) { options.retries = 1; }
     if (options.retries > this.forever) { options.retries = this.forever; }
     if (!options.dependent) { options.dependents = false; }
     if (!options.antecedents) { options.antecedents = true; }
