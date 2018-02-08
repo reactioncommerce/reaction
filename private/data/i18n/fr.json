@@ -38,12 +38,12 @@
           "utilities": "Services"
         },
         "settings": {
-          "accountSettingsLabel": "Paramètres du compte",
-          "accountSettingsTitle": "services de connexion",
-          "accountSettingsDescription": "Authentification par des prestataires sociaux",
+          "accountSettingsLabel": "Comptes externes",
+          "accountSettingsTitle": "Services de connexion",
+          "accountSettingsDescription": "Connexion aux réseaux sociaux",
           "saveSuccess": "Paramètres mis à jour.",
           "saveFailed": "Impossible de mettre à jour les paramètres.",
-          "addShopMemberLabel": "Ajouter un magasin membre",
+          "addShopMemberLabel": "Ajouter un compte employé",
           "permissionsSettingsLabel": "Autorisations",
           "localizationAndI18NLabel": "Localisation et i18n"
         },
@@ -52,13 +52,13 @@
         }
       },
       "accounts": {
-        "addMember": "Ajouter un membre",
-        "shopMembers": "Magasins membres",
+        "addMember": "Ajouter un employé",
+        "shopMembers": "Employés",
         "guests": "Invités"
       },
       "app": {
         "add": "Ajouter",
-        "editMode": "Editer le mode",
+        "editMode": "Mode édition",
         "createContent": "Créer du contenu",
         "auto": "Auto",
         "save": "Enregistrer",
@@ -94,8 +94,8 @@
         "productNotFound": "Ce produit est introuvable.",
         "loadMoreProducts": "Charger plus de produits",
         "noProductsFound": "Aucun produit trouvé.",
-        "private": "Privé",
-        "public": "Publique",
+        "private": "Invisible",
+        "public": "Visible",
         "shortcut": {
           "addProductLabel": "Ajouter le produit",
           "accountsLabel": "Comptes"
@@ -614,7 +614,7 @@
         "currentPassword": "Mot de passe actuel",
         "dontHaveAnAccount": "Vous n'avez pas de compte ?",
         "email": "E-mail",
-        "emailAddress": "Adresse mail",
+        "emailAddress": "Adresse e-mail",
         "emailResetLink": "Lien de réinitialisation du mot de passe",
         "forgotPassword": "Mot de passe oublié",
         "ifYouAlreadyHaveAnAccount": "Si vous possédez déjà un compte",
