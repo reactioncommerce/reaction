@@ -669,7 +669,7 @@ describe.only("JobCollection", function () {
       const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
       (() => {
         const result = [];
-        for (let i = 1, end = count, asc = 1 <= end; asc ? i <= end : i >= end; asc ? i++ : i--) {
+        for (let i = 1, end = count, asc = end >= 1; asc ? i <= end : i >= end; asc ? i++ : i--) {
           const j = new Job(testColl, jobType, { idx: i });
           // eslint-disable-next-line no-loop-func
           result.push(j.save(function (err, res) {
