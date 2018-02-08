@@ -248,11 +248,11 @@ describe.only("JobCollection", function () {
           jobResult.done("Result1", { repeatId: true }, function (err2, res2) {
             if (err2) { done(err2); }
             assert.ok(res2);
-            assert.notEqual(res2).to.not.equal(true);
+            expect(res2).to.not.equal(true);
 
             testColl.getJob(res2, function (err3, j) {
-              if (err3) { test.fail(err3); }
-              expect(j._doc._id).to.equal(res);
+              if (err3) { done(err3); }
+              expect(j._doc._id).to.equal(res2);
               cb();
             });
           });
@@ -268,216 +268,209 @@ describe.only("JobCollection", function () {
       });
     });
   });
+
+  it("should have dependent jobs run in the correct order", function (done) {
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { order: 1 });
+    const job2 = new Job(testColl, jobType, { order: 2 });
+    job.delay(1000); // Ensure that job 1 has the opportunity to run first
+    job.save(function (err, res) {
+      if (err) { done(err); }
+      assert.ok(validId(res), "job.save() failed in callback result");
+      job2.depends([job]);
+      return job2.save(function (err2, res2) {
+        if (err2) { done(err2); }
+        assert.ok(validId(res2), "job.save() failed in callback result");
+        let count = 0;
+        const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
+          count++;
+          expect(count).to.equal(jobResult.data.order);
+          jobResult.done();
+          cb();
+          if (count === 2) {
+            q.shutdown({ level: "soft", quiet: true }, () => done());
+          }
+        });
+      });
+    });
+  });
+
+  if (Meteor.isServer) {
+    it("should dry run of dependency check returns status object", function (done) {
+      const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+      const job = new Job(testColl, jobType, { order: 1 });
+      const job2 = new Job(testColl, jobType, { order: 2 });
+      const job3 = new Job(testColl, jobType, { order: 3 });
+      const job4 = new Job(testColl, jobType, { order: 4 });
+      const job5 = new Job(testColl, jobType, { order: 5 });
+      job.save();
+      job2.save();
+      job3.save();
+      job4.save();
+      job5.depends([job, job2, job3, job4]);
+      return job5.save(function (err, res) {
+        if (err) { done(err); }
+        assert.ok(validId(res), "job2.save() failed in callback result");
+        // This creates an inconsistent state
+        testColl.update({ _id: job.doc._id, status: "ready" }, { $set: { status: "cancelled" } });
+        testColl.update({ _id: job2.doc._id, status: "ready" }, { $set: { status: "failed" } });
+        testColl.update({ _id: job3.doc._id, status: "ready" }, { $set: { status: "completed" } });
+        testColl.remove({ _id: job4.doc._id });
+        const dryRunRes = testColl._checkDeps(job5.doc);
+        expect(dryRunRes.cancelled.length).to.equal(1);
+        expect(dryRunRes.cancelled[0]).to.equal(job.doc._id);
+        expect(dryRunRes.failed.length).to.equal(1);
+        expect(dryRunRes.failed[0]).to.equal(job2.doc._id);
+        expect(dryRunRes.resolved.length).to.equal(1);
+        expect(dryRunRes.resolved[0]).to.equal(job3.doc._id);
+        expect(dryRunRes.removed.length).to.equal(1);
+        expect(dryRunRes.removed[0]).to.equal(job4.doc._id);
+        done();
+      });
+    });
+  }
+
+  it("should have dependent job saved after completion of antecedent still runs", function (done) {
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { order: 1 });
+    const job2 = new Job(testColl, jobType, { order: 2 });
+    return job.save(function (err, res) {
+      if (err) { done(err); }
+      assert.ok(validId(res), "job.save() failed in callback result");
+      job2.depends([job]);
+      const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (j, cb) {
+        j.done(`Job ${j.data.order} Done`, function (err2, res2) {
+          if (err2) { done(err2); }
+          assert.ok(res2);
+          if (j.data.order === 1) {
+            job2.save(function (err3, res3) {
+              if (err3) { done(err3); }
+              assert.ok(validId(res3), "job2.save() failed in callback result");
+            });
+          } else {
+            q.shutdown({ level: "soft", quiet: true }, () => done());
+          }
+        });
+        cb();
+      });
+    });
+  });
+
+  it("should have dependent job saved after failure of antecedent is cancelled", function (done) {
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { order: 1 });
+    const job2 = new Job(testColl, jobType, { order: 2 });
+    return job.save(function (err, res) {
+      if (err) { done(err); }
+      assert.ok(validId(res), "job.save() failed in callback result");
+      job2.depends([job]);
+      const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (j, cb) {
+        j.fail(`Job ${j.data.order} Failed`, function (err2, res2) {
+          if (err2) { done(err2); }
+          assert.ok(res2);
+          return job2.save(function (err3, res3) {
+            if (err3) { done(err3); }
+            assert.isNull(res3, "job2.save() failed in callback result");
+            q.shutdown({ level: "soft", quiet: true }, () => done());
+          });
+        });
+        cb();
+      });
+    });
+  });
+
+  it("should have dependent job saved after cancelled antecedent is also cancelled", function (done) {
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { order: 1 });
+    const job2 = new Job(testColl, jobType, { order: 2 });
+    return job.save(function (err, res) {
+      if (err) { done(err); }
+      assert.ok(validId(res), "job.save() failed in callback result");
+      job2.depends([job]);
+      return job.cancel(function (err2, res2) {
+        if (err2) { done(err2); }
+        assert.ok(res2);
+        return job2.save(function (err3, res3) {
+          if (err3) { assert.ok(err3); }
+          assert.isNull(res3, "job2.save() failed in callback result");
+          done();
+        });
+      });
+    });
+  });
+
+  it("should have dependent job saved after removed antecedent is cancelled", function (done) {
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { order: 1 });
+    const job2 = new Job(testColl, jobType, { order: 2 });
+    return job.save(function (err, res) {
+      if (err) { done(err); }
+      assert.ok(validId(res), "job.save() failed in callback result");
+      job2.depends([job]);
+      return job.cancel(function (err2, res2) {
+        if (err2) { done(err2); }
+        assert.ok(res2);
+        return job.remove(function (err3, res3) {
+          if (err3) { done(err3); }
+          assert.ok(res3);
+          return job2.save(function (err4, res4) {
+            if (err4) { done(err); }
+            assert.isNull(res4, "job2.save() failed in callback result");
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  it("should cancel succeeds for job without deps, with using option dependents: false", function (done) {
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, {});
+    return job.save(function (err2, res2) {
+      if (err2) { done(err2); }
+      assert.ok(validId(res2), "job.save() failed in callback result");
+      job.cancel({ dependents: false }, function (err3, res3) {
+        if (err3) { done(err3); }
+        assert.ok(res3);
+        done();
+      });
+    });
+  });
+
+  it("should have dependent job with delayDeps is delayed", function (done) {
+    const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
+    const job = new Job(testColl, jobType, { order: 1 });
+    const job2 = new Job(testColl, jobType, { order: 2 });
+    job.delay(1000); // Ensure that job2 has the opportunity to run first
+    return job.save(function (err, res) {
+      if (err) { done(err); }
+      assert.ok(validId(res), "job.save() failed in callback result");
+      job2.depends([job]);
+      return job2.save(function (err2, res2) {
+        if (err2) { done(err2); }
+        assert.ok(validId(res2), "job.save() failed in callback result");
+        let count = 0;
+        const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
+          count++;
+          expect(count).to.equal(jobResult.data.order);
+          const timer = new Date();
+          jobResult.done(null, { delayDeps: 1500 });
+          cb();
+          if (count === 2) {
+            assert.ok(new Date() > (timer + 1500));
+            return q.shutdown({ level: "soft", quiet: true }, () => done());
+          }
+        });
+      });
+    });
+  });
 });
 
-//
-// Tinytest.addAsync('A repeating job that returns the _id of the next job', function(test, onComplete) {
-//   let counter = 0;
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, {some: 'data'}).repeat({ repeats: 1, wait: 250 });
-//   return job.save(function(err, res) {
-//     let q;
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     return q = testColl.processJobs(jobType, { pollInterval: 250 }, function(job, cb) {
-//       counter++;
-//       if (counter === 1) {
-//         test.equal(job.doc._id, res);
-//         return job.done("Result1", { repeatId: true }, function(err, res) {
-//           if (err) { test.fail(err); }
-//           test.ok(res != null);
-//           test.notEqual(res, true);
-//           return testColl.getJob(res, function(err, j) {
-//             if (err) { test.fail(err); }
-//             test.equal(j._doc._id, res);
-//             return cb();
-//           });
-//         });
-//       } else {
-//         test.notEqual(job.doc._id, res);
-//         return job.done("Result2", { repeatId: true }, function(err, res) {
-//           if (err) { test.fail(err); }
-//           test.equal(res, true);
-//           cb();
-//           return q.shutdown({ level: 'soft', quiet: true }, () => onComplete());
-//         });
-//       }
-//     });
-//   });
-// });
-//
-// Tinytest.addAsync('Dependent jobs run in the correct order', function(test, onComplete) {
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, { order: 1 });
-//   const job2 = new Job(testColl, jobType, { order: 2 });
-//   job.delay(1000); // Ensure that job 1 has the opportunity to run first
-//   return job.save(function(err, res) {
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     job2.depends([job]);
-//     return job2.save(function(err, res) {
-//       let q;
-//       if (err) { test.fail(err); }
-//       test.ok(validId(res), "job.save() failed in callback result");
-//       let count = 0;
-//       return q = testColl.processJobs(jobType, { pollInterval: 250 }, function(job, cb) {
-//         count++;
-//         test.equal(count, job.data.order);
-//         job.done();
-//         cb();
-//         if (count === 2) {
-//           return q.shutdown({ level: 'soft', quiet: true }, () => onComplete());
-//         }
-//       });
-//     });
-//   });
-// });
-//
-// if (Meteor.isServer) {
-//   Tinytest.addAsync('Dry run of dependency check returns status object', function(test, onComplete) {
-//     const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//     const job = new Job(testColl, jobType, { order: 1 });
-//     const job2 = new Job(testColl, jobType, { order: 2 });
-//     const job3 = new Job(testColl, jobType, { order: 3 });
-//     const job4 = new Job(testColl, jobType, { order: 4 });
-//     const job5 = new Job(testColl, jobType, { order: 5 });
-//     job.save();
-//     job2.save();
-//     job3.save();
-//     job4.save();
-//     job5.depends([job, job2, job3, job4]);
-//     return job5.save(function(err, res) {
-//       if (err) { test.fail(err); }
-//       test.ok(validId(res), "job2.save() failed in callback result");
-//       // This creates an inconsistent state
-//       testColl.update({ _id: job.doc._id, status: 'ready' }, { $set: { status: 'cancelled' }});
-//       testColl.update({ _id: job2.doc._id, status: 'ready' }, { $set: { status: 'failed' }});
-//       testColl.update({ _id: job3.doc._id, status: 'ready' }, { $set: { status: 'completed' }});
-//       testColl.remove({ _id: job4.doc._id });
-//       const dryRunRes = testColl._checkDeps(job5.doc);
-//       test.equal(dryRunRes.cancelled.length, 1);
-//       test.equal(dryRunRes.cancelled[0], job.doc._id);
-//       test.equal(dryRunRes.failed.length, 1);
-//       test.equal(dryRunRes.failed[0], job2.doc._id);
-//       test.equal(dryRunRes.resolved.length, 1);
-//       test.equal(dryRunRes.resolved[0], job3.doc._id);
-//       test.equal(dryRunRes.removed.length, 1);
-//       test.equal(dryRunRes.removed[0], job4.doc._id);
-//       return onComplete();
-//     });
-//   });
-// }
-//
-// Tinytest.addAsync('Dependent job saved after completion of antecedent still runs', function(test, onComplete) {
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, { order: 1 });
-//   const job2 = new Job(testColl, jobType, { order: 2 });
-//   return job.save(function(err, res) {
-//     let q;
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     job2.depends([job]);
-//     let count = 0;
-//     return q = testColl.processJobs(jobType, { pollInterval: 250 }, function(j, cb) {
-//       count++;
-//       j.done(`Job ${j.data.order} Done`, function(err, res) {
-//         if (err) { test.fail(err); }
-//         test.ok(res);
-//         if (j.data.order === 1) {
-//           return job2.save(function(err, res) {
-//             if (err) { test.fail(err); }
-//             return test.ok(validId(res), "job2.save() failed in callback result");
-//           });
-//         } else {
-//           return q.shutdown({ level: 'soft', quiet: true }, () => onComplete());
-//         }
-//       });
-//       return cb();
-//     });
-//   });
-// });
-//
-// Tinytest.addAsync('Dependent job saved after failure of antecedent is cancelled', function(test, onComplete) {
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, { order: 1 });
-//   const job2 = new Job(testColl, jobType, { order: 2 });
-//   return job.save(function(err, res) {
-//     let q;
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     job2.depends([job]);
-//     return q = testColl.processJobs(jobType, { pollInterval: 250 }, function(j, cb) {
-//       j.fail(`Job ${j.data.order} Failed`, function(err, res) {
-//         if (err) { test.fail(err); }
-//         test.ok(res);
-//         return job2.save(function(err, res) {
-//           if (err) { test.fail(err); }
-//           test.isNull(res, "job2.save() failed in callback result");
-//           return q.shutdown({ level: 'soft', quiet: true }, () => onComplete());
-//         });
-//       });
-//       return cb();
-//     });
-//   });
-// });
-//
-// Tinytest.addAsync('Dependent job saved after cancelled antecedent is also cancelled', function(test, onComplete) {
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, { order: 1 });
-//   const job2 = new Job(testColl, jobType, { order: 2 });
-//   return job.save(function(err, res) {
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     job2.depends([job]);
-//     return job.cancel(function(err, res) {
-//       if (err) { test.fail(err); }
-//       test.ok(res);
-//       return job2.save(function(err, res) {
-//         if (err) { test.fail(err); }
-//         test.isNull(res, "job2.save() failed in callback result");
-//         return onComplete();
-//       });
-//     });
-//   });
-// });
-//
-// Tinytest.addAsync('Dependent job saved after removed antecedent is cancelled', function(test, onComplete) {
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, { order: 1 });
-//   const job2 = new Job(testColl, jobType, { order: 2 });
-//   return job.save(function(err, res) {
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     job2.depends([job]);
-//     return job.cancel(function(err, res) {
-//       if (err) { test.fail(err); }
-//       test.ok(res);
-//       return job.remove(function(err, res) {
-//         if (err) { test.fail(err); }
-//         test.ok(res);
-//         return job2.save(function(err, res) {
-//           if (err) { test.fail(err); }
-//           test.isNull(res, "job2.save() failed in callback result");
-//           return onComplete();
-//         });
-//       });
-//     });
-//   });
-// });
-//
-// Tinytest.addAsync('Cancel succeeds for job without deps, with using option dependents: false', function(test, onComplete) {
-//   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
-//   const job = new Job(testColl, jobType, {});
-//   return job.save(function(err, res) {
-//     if (err) { test.fail(err); }
-//     test.ok(validId(res), "job.save() failed in callback result");
-//     return job.cancel({ dependents: false }, function(err, res) {
-//        if (err) { test.fail(err); }
-//        test.ok(res);
-//        return onComplete();
-//     });
-//   });
-// });
+
+
+
+
+
 //
 // Tinytest.addAsync('Dependent job with delayDeps is delayed', function(test, onComplete) {
 //   const jobType = `TestJob_${Math.round(Math.random()*1000000000)}`;
