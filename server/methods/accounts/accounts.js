@@ -1058,6 +1058,7 @@ export function createFallbackLoginToken() {
  * @summary Sets users profile currency
  */
 export function setProfileCurrency(currencyName) {
+  check(currencyName, String);
   if (this.userId) {
     Accounts.update(this.userId, { $set: { "profile.currency": currencyName } });
     Hooks.Events.run("afterAccountsUpdate", this.userId, this.userId);
