@@ -471,13 +471,13 @@
             "allowGuestCheckout": "Autoriser les commandes en tant qu'invité"
           },
           "openexchangerates": {
-            "appId": "Ouvrir l'app Id du taux de change",
-            "refreshPeriod": "Ouvrir la période d'actualisation du taux d'échange",
+            "appId": "App ID Open Exchange Rates",
+            "refreshPeriod": "Période de rafraichissement Open Exchange Rates",
             "refreshPeriodPlaceholder": "par exemple toutes les heures"
           },
           "google": {
             "clientId": "ID client Google",
-            "apiKey": "Clé de l'API Google"
+            "apiKey": "Clé API Google"
           }
         }
       },
