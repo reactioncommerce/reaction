@@ -25,7 +25,7 @@
           "ordersLabel": "Commandes",
           "ordersTitle": "Commandes",
           "ordersDescription": "Accomplissez vos commandes",
-          "clearSearch": "Clair"
+          "clearSearch": "Effacez"
         },
         "orderWorkflow": {
           "ordersList": {
@@ -74,8 +74,8 @@
             "refunded": "Remboursé"
           },
           "search": {
-            "clearSearch": "Clair",
-            "placeholder": "Ordres de recherche"
+            "clearSearch": "Effacer",
+            "placeholder": "Rechercher une commande"
           },
           "data": {
             "status": {
