@@ -1,20 +1,8 @@
 /* eslint prefer-arrow-callback:0 */
-
 /*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS202: Simplify dynamic range loops
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+  Original version: https://github.com/vsivsi/meteor-job-collection/
+  License: https://github.com/vsivsi/meteor-job-collection/blob/master/LICENSE
  */
-//###########################################################################
-//     Copyright (C) 2014-2017 by Vaughn Iverson
-//     job-collection is free software released under the MIT/X11 license.
-//     See included LICENSE file for details.
-//###########################################################################
-
-
 import { Meteor } from "meteor/meteor";
 import { assert, expect } from "meteor/practicalmeteor:chai";
 import { Match } from "meteor/check";
@@ -23,31 +11,6 @@ import JobCollection from "./jobCollection";
 import Job from "./job";
 
 let remoteServerTestColl;
-// function bind_env(func) {
-//   if (Meteor.isServer && (typeof func === "function")) {
-//     return Meteor.bindEnvironment(func, function (err) { throw err; });
-//   }
-//
-//   return func;
-// }
-
-//
-// const subWrapper = (sub, func) =>
-//   function(test, onComplete) {
-//     if (Meteor.isClient) {
-//       return Deps.autorun(function() {
-//         if (sub.ready()) {
-//           return func(test, onComplete);
-//         }
-//       });
-//     } else {
-//       return func(test, onComplete);
-//     }
-//   }
-// ;
-//
-
-
 
 const validId = v => Match.test(v, Match.OneOf(String, Meteor.Collection.ObjectID));
 
