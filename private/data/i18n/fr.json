@@ -443,8 +443,8 @@
       },
       "addressBookGrid": {
         "addAddress": "Ajouter une adresse",
-        "chooseAddress": "Sélectionner un mode de livraison & une adresse de facturation",
-        "createDefault": "Créer votre adresse par défaut",
+        "chooseAddress": "Sélectionner un mode de livraison et une adresse de facturation",
+        "createDefault": "Ajouter votre adresse par défaut",
         "edit": "Editer",
         "removeAddress": "Supprimer l'adresse",
         "selectShippingAddress": "Sélectionner une adresse de livraison",
@@ -453,9 +453,9 @@
       },
       "addressBookAdd": {
         "addAddress": "Ajouter une nouvelle adresse",
-        "createAddress": "Créer votre adresse par défaut",
+        "createAddress": "Ajouter votre adresse par défaut",
         "failedToAddAddress": "Echec lors de l'ajout de l'adresse : {{err}}",
-        "validatedAddress": "Les modifications apportées à votre adresse sur la base lors de la validation. S'il vous plaît assurer cela est correct"
+        "validatedAddress": "Des modifications ont été apportées à votre adresse lors de la validation. Merci de valider cette dernière"
       },
       "addressBookEdit": {
         "editAddress": "Editer cette adresse",
