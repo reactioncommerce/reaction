@@ -48,7 +48,7 @@ export const methods = {
       shopName: settings.shopName
     });
 
-    const host = options.absoluteUrl || Meteor.absoluteUrl();
+    const host = options.webhooksDomain || Meteor.absoluteUrl();
     const webhookAddress = `${host}webhooks/shopify/${options.topic.replace(/\//g, "-")}?shopId=${Reaction.getShopId()}`;
     try {
       // Create webhook on Shopify

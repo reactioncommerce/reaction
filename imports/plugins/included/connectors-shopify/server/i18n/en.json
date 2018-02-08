@@ -22,6 +22,7 @@
           "importSuccess": "Products imported successfully.",
           "keepInventorySynced": "Keep Inventory Synced",
           "noSyncIntegrationsSelected": "Please select at least one option to sync",
+          "noDomainSelected": "Please enter a domain",
           "optionImportProducts": "Products",
           "optionOrdersCreateUpdateInventory": "Update Inventory when new Shopify order is placed",
           "syncSetup": "Setup Sync",
@@ -30,7 +31,8 @@
           "syncStop": "Stop Sync",
           "syncStopSuccess": "Successfully Stopped Shopify sync!",
           "syncStopFailure": "Error stopping Shopify sync!",
-          "startImport": "Start Import"
+          "startImport": "Start Import",
+          "webhooksDomain": "Webhook callback domain"
         }
       },
       "shopifyConnectPackageConfig": {
