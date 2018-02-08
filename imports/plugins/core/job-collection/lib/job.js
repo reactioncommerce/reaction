@@ -971,7 +971,7 @@ export default class Job {
     if (typeof options !== "object") {
       throw new Error("bad parameter: accepts either an integer >= 0 or an options object");
     }
-    if (options.retries !== null) {
+    if (options.retries !== null && options.retries !== undefined) {
       if (!isInteger(options.retries) || !(options.retries >= 0)) {
         throw new Error("bad option: retries must be an integer >= 0");
       }
