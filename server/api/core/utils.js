@@ -1,10 +1,14 @@
-// TODO: better comments for this func
-// TODO: conditional load based on shop lang
+import { latinLangs } from "/lib/api/helpers";
+
+// dynamic import of slugiy/transliteration.slugify
 let slugify;
 async function lazyLoadSlugify() {
   if (slugify) return;
+  // getting the shops base language
   const lang = Meteor.call("shop/getBaseLanguage");
-  const mod = await import("transliteration");
+  // if the shops language use latin based chars load slugify else load transliterations's slugify
+  const mod = (latinLangs.indexOf(lang) >= 0) ? await import("slugify") : await import("transliteration");
+  // slugify is exported to modules.default while transliteration is exported to modules.slugify
   slugify = mod.default || mod.slugify;
 }
 

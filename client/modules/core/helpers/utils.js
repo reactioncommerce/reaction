@@ -1,17 +1,19 @@
-// latin base chars ISO
-const westernLangs = ["az", "da", "de", "en", "es", "ff", "fr", "ha", "hr", "hu", "ig", "is", "it", "jv", "ku", "ms", "nl", "no", "om", "pl", "pt", "ro", "sv", "sw", "tl", "tr", "uz", "vi", "yo"]; // eslint-disable-line max-len
+import { latinLangs } from "/lib/api/helpers";
 
-// client get shop lang
+// Wrapping the server metod/callback with a Promise
+// so the shops base language can be set as a const
+// using await inside the lazyLoadSlugify function
 const shopLang = new Promise((resolve, reject) => Meteor.call("shop/getBaseLanguage", (err, res) => err ? reject(err) : resolve(res)));
 
-
-// TODO: better comments for this func
-// TODO: conditional load based on shop lang
+// dynamic import of slugiy/transliteration.slugify
 let slugify;
 async function lazyLoadSlugify() {
   if (slugify) return;
+  // getting the shops base language
   const lang = await shopLang;
-  const mod = (westernLangs.indexOf(lang) >= 0) ? await import("slugify") : await import("transliteration");
+  // if the shops language use latin based chars load slugify else load transliterations's slugify
+  const mod = (latinLangs.indexOf(lang) >= 0) ? await import("slugify") : await import("transliteration");
+  // slugify is exported to modules.default while transliteration is exported to modules.slugify
   slugify = mod.default || mod.slugify;
 }
 
