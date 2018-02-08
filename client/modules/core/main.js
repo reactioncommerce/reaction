@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { check } from "meteor/check";
@@ -250,7 +251,11 @@ export default {
     // a user logging, as we'll check again
     // when everything is ready
     //
-    if (Meteor.loggingIn() === false) {
+    let loggingIn;
+    Tracker.nonreactive(() => {
+      loggingIn = Accounts.loggingIn();
+    });
+    if (loggingIn === false) {
       //
       // this userId check happens because when logout
       // occurs it takes a few cycles for a new anonymous user
