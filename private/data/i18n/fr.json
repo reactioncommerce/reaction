@@ -436,10 +436,10 @@
         "welcome": "Bienvenue, heureux de vous revoir.",
         "loginCompleted": "Connexion effectuée",
         "createOrLogin": "Créer un compte ou s'identifier",
-        "guestOrLogin": "Identifiez-vous ou réglez en tant qu'invité",
+        "guestOrLogin": "Identifiez-vous ou commandez en tant qu'invité",
         "continueAsGuest": "Poursuivre en tant qu'invité",
-        "guestMessage": "Vous pouvez régler sans créer de compte. Vous aurez l'opportunité de créer un compte ultérieurement.",
-        "addEmail": "Ajouter un courrier électronique"
+        "guestMessage": "Vous pouvez commander sans créer de compte. Vous aurez l'opportunité de créer un compte ultérieurement.",
+        "addEmail": "Ajouter une addresse e-mail"
       },
       "addressBookGrid": {
         "addAddress": "Ajouter une adresse",
