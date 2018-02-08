@@ -948,7 +948,11 @@ Meteor.methods({
 
 
   /**
-   * TODO: method doc
+   * @name shop/getBaseLanguage
+   * @method
+   * @memberof Methods/Shop
+   * @summary Return the shop's base language ISO code
+   * @return {String} ISO lang code
    */
   "shop/getBaseLanguage"() {
     if (!Reaction.hasPermission()) {
