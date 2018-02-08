@@ -80,7 +80,8 @@ export function ordersInventoryAdjust(orderId) {
         selector: {
           type: "variant"
         }
-      }
+      },
+      fieldNames: ["inventoryQuantity"]
     };
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
@@ -97,6 +98,7 @@ export function ordersInventoryAdjust(orderId) {
       }
     });
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
   });
 }
 
@@ -133,7 +135,8 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
           selector: {
             type: "variant"
           }
-        }
+        },
+        fieldNames: ["inventoryQuantity"]
       };
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
@@ -150,6 +153,7 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
         }
       });
       Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
     }
   });
 }
@@ -412,7 +416,8 @@ export const methods = {
             options: {
               bypassCollection2: true,
               publish: true
-            }
+            },
+            fieldNames: ["inventoryQuantity"]
           };
           Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
@@ -428,6 +433,7 @@ export const methods = {
             publish: true
           });
           Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+          Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
         }
       });
     }

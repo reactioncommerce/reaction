@@ -556,7 +556,8 @@ export const methods = {
                   isBackorder
                 }
               },
-              options: { selector: { type: "simple" }, publish: true }
+              options: { selector: { type: "simple" }, publish: true },
+              fieldNames: ["price", "isSoldOut", "isBackorder"]
             };
             Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
@@ -570,6 +571,7 @@ export const methods = {
               }
             }, { selector: { type: "simple" }, publish: true });
             Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+            Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
             Logger.debug(`Product ${shopifyProduct.title} added`);
           } else { // product already exists check

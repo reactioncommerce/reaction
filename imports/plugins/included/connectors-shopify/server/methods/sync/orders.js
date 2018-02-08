@@ -65,7 +65,8 @@ export const methods = {
             }
           }
         },
-        options: { selector: { type: "variant" } }
+        options: { selector: { type: "variant" } },
+        fieldNames: ["inventoryQuantity", "eventLog"]
       };
 
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -83,6 +84,7 @@ export const methods = {
         }
       }, { selector: { type: "variant" } });
       Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
     });
   }
 };

@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Products, ProductSearch, Orders, OrderSearch, Accounts, AccountSearch } from "/lib/collections";
+import { ProductSearch, Orders, OrderSearch, Accounts, AccountSearch } from "/lib/collections";
 import { getSearchParameters,
   buildProductSearchRecord, buildOrderSearchRecord, buildAccountSearchRecord } from "../methods/searchcollections";
 import { Hooks, Logger } from "/server/api";
@@ -61,15 +61,20 @@ Hooks.Events.add("afterProductRemove", (product) => {
 //
 // after product update rebuild product search record
 //
-Products.after.update((userId, doc, fieldNames) => {
-  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
-    const productId = doc._id;
+
+Hooks.Events.add("afterProductUpdateSearchRebuild", (productUpdateArgs) => {
+  const { product, fieldNames } = { ...productUpdateArgs };
+
+  if (ProductSearch && !Meteor.isAppTest && product.type === "simple") {
+    const productId = product._id;
     const { fieldSet } = getSearchParameters();
+    console.log("fieldSet", fieldSet);
     const modifiedFields = _.intersection(fieldSet, fieldNames);
+    console.log("modified", modifiedFields);
     if (modifiedFields.length) {
-      Logger.debug(`Rewriting search record for ${doc.title}`);
+      Logger.debug(`Rewriting search record for ${product.title}`);
       ProductSearch.remove(productId);
-      if (!doc.isDeleted) { // do not create record if product was archived
+      if (!product.isDeleted) { // do not create record if product was archived
         buildProductSearchRecord(productId);
       }
     } else {

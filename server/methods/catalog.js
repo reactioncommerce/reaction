@@ -245,7 +245,8 @@ function denormalize(id, field) {
       selector: {
         type: "simple"
       }
-    }
+    },
+    fieldNames: Object.keys(update)
   };
 
   Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -257,6 +258,7 @@ function denormalize(id, field) {
     }
   });
   Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+  Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 }
 
 /**
@@ -337,7 +339,8 @@ function flushQuantity(id) {
       selector: {
         type: "variant"
       }
-    }
+    },
+    fieldNames: ["inventoryQuantity"]
   };
 
   Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -354,6 +357,7 @@ function flushQuantity(id) {
     }
   });
   Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+  Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
   return updatedProduct;
 }
@@ -574,7 +578,8 @@ Meteor.methods({
       },
       options: {
         validate: false
-      }
+      },
+      fieldNames: Object.keys(newVariant)
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -587,6 +592,7 @@ Meteor.methods({
       validate: false
     });
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
     const productId = currentVariant.ancestors[0];
     // we need manually check is these fields were updated?
@@ -1013,7 +1019,8 @@ Meteor.methods({
       },
       options: {
         selector: { type }
-      }
+      },
+      fieldNames: Object.keys(update)
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -1027,6 +1034,7 @@ Meteor.methods({
       throw new Meteor.Error("server-error", e.message);
     }
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
     // If we get a result from the product update,
     // meaning the update went past revision control,
@@ -1093,7 +1101,8 @@ Meteor.methods({
         },
         options: {
           selector: { type: "simple" }
-        }
+        },
+        fieldNames: ["hashtags"]
       };
 
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -1106,6 +1115,8 @@ Meteor.methods({
         selector: { type: "simple" }
       });
       Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
       return updatedProduct;
     } else if (tagId) {
       return Tags.update(tagId, { $set: newTag });
@@ -1129,7 +1140,8 @@ Meteor.methods({
         selector: {
           type: "simple"
         }
-      }
+      },
+      fieldNames: Object.keys("hashtags")
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -1144,6 +1156,8 @@ Meteor.methods({
       }
     });
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
     return updatedProduct;
   },
 
@@ -1177,7 +1191,8 @@ Meteor.methods({
       },
       options: {
         selector: { type: "simple" }
-      }
+      },
+      fieldNames: ["hashtags"]
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -1190,6 +1205,7 @@ Meteor.methods({
       selector: { type: "simple" }
     });
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
   },
 
   /**
@@ -1216,11 +1232,15 @@ Meteor.methods({
 
     const productUpdateArgs = {
       product,
-      modifier: { $set: { handle, type: "simple" } }
+      modifier: { $set: { handle, type: "simple" } },
+      fieldNames: ["handle", "type"]
     };
+
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
     Products.update(product._id, { $set: { handle, type: "simple" } });
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
     return handle;
   },
 
@@ -1267,6 +1287,7 @@ Meteor.methods({
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
       Products.update(product._id, getSet(handle));
       Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
       return handle;
     }
@@ -1289,6 +1310,7 @@ Meteor.methods({
 
       Products.update(currentProduct._id, getSet(currentProductHandle));
       Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
     }
     productUpdateArgs = {
       product,
@@ -1297,6 +1319,7 @@ Meteor.methods({
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
     Products.update(product._id, getSet(tag.slug));
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
     return tag.slug;
   },
@@ -1341,7 +1364,8 @@ Meteor.methods({
           [updatedAt]: new Date(),
           type: "simple" // for multi-schema
         }
-      }
+      },
+      fieldNames: ["type", position, pinned, weight, updatedAt]
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -1357,6 +1381,8 @@ Meteor.methods({
       }
     });
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
     return updatedProduct;
   },
 
@@ -1387,7 +1413,8 @@ Meteor.methods({
         },
         options: {
           selector: { type: "variant" }
-        }
+        },
+        fieldNames: ["index"]
       };
 
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -1397,6 +1424,8 @@ Meteor.methods({
         selector: { type: "variant" }
       });
       Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
       Logger.debug(`Variant ${id} position was updated to index ${index}`);
     });
   },
@@ -1436,7 +1465,8 @@ Meteor.methods({
         },
         options: {
           selector: { type: "simple" }
-        }
+        },
+        fieldNames: ["metafields"]
       };
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
@@ -1451,6 +1481,8 @@ Meteor.methods({
         selector: { type: "simple" }
       });
       Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
       return updatedProduct;
     } else if (typeof meta === "number") {
       const productUpdateArgs = {
@@ -1462,7 +1494,8 @@ Meteor.methods({
         },
         options: {
           selector: { type: "simple" }
-        }
+        },
+        fieldNames: ["metafields"]
       };
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
 
@@ -1476,6 +1509,8 @@ Meteor.methods({
         selector: { type: "simple" }
       });
       Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
       return updatedProduct;
     }
 
@@ -1488,7 +1523,8 @@ Meteor.methods({
       },
       options: {
         selector: { type: "simple" }
-      }
+      },
+      fieldNames: ["metafields"]
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -1503,6 +1539,8 @@ Meteor.methods({
       selector: { type: "simple" }
     });
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
     return updatedProduct;
   },
 
@@ -1531,7 +1569,8 @@ Meteor.methods({
 
     const productUpdateArgs = {
       product,
-      modifier: { $pull: { metafields } }
+      modifier: { $pull: { metafields } },
+      fieldNames: ["metafields"]
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -1543,6 +1582,8 @@ Meteor.methods({
       $pull: { metafields }
     });
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
     return updatedProduct;
   },
 
@@ -1618,7 +1659,8 @@ Meteor.methods({
         },
         options: {
           selector: { type: "simple" }
-        }
+        },
+        fieldNames: ["isVisible"]
       };
 
       Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -1631,6 +1673,7 @@ Meteor.methods({
         selector: { type: "simple" }
       });
       Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
       // update product variants visibility
       updateVariantProductField(variants, "isVisible", !product.isVisible);
@@ -1674,7 +1717,8 @@ Meteor.methods({
         selector: {
           type: product.type
         }
-      }
+      },
+      fieldNames: ["isVisible"]
     };
 
     Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
@@ -1689,6 +1733,7 @@ Meteor.methods({
       }
     });
     Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
     if (Array.isArray(product.ancestors) && product.ancestors.length) {
       const updateId = product.ancestors[0] || product._id;
