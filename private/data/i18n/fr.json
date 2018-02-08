@@ -581,7 +581,7 @@
       },
       "search": {
         "clearSearch": "Effacer",
-        "searchInputLabel": "Rechercher une réaction ",
+        "searchInputLabel": "Rechercher",
         "suggestedTags": "Tags suggérés",
         "searchTypeProducts": "Produits",
         "searchTypeAccounts": "Comptes",
