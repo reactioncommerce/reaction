@@ -39,7 +39,7 @@
           "apiKey": "Clé API",
           "password": "Mot de passe API",
           "sharedSecret": "Secret partagé API",
-          "shopName": "Identifiant de magasin"
+          "shopName": "Identifiant de boutique"
         }
       }
     }
