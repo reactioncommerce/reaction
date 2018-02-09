@@ -14,12 +14,12 @@
           "catalogDescription": "Catalogue du marché"
         },
         "settings": {
-          "catalogSettingsLabel": "Paramètres du catalogue",
-          "catalogSettingsTitle": "Paramètres du catalogue",
+          "catalogSettingsLabel": "Catalogue",
+          "catalogSettingsTitle": "Paramètres de catalogue",
           "catalogSettingsDescription": "Catalogue du marché"
         },
         "catalogSettings": {
-          "productRevisionsLabel": "Gestion de version des produits"
+          "productRevisionsLabel": "Gestion de versions des produits"
         }
       }
     }

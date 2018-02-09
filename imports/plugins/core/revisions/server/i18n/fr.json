@@ -8,10 +8,10 @@
           "preview": "Aperçu",
           "revisionsLabel": "Versions",
           "revisionsTitle": "Versions",
-          "revisionsDescription": "Gestion de version"
+          "revisionsDescription": "Gestion de versions"
         },
         "catalogSettings": {
-          "productRevisionsLabel": "Gestion de version des produits"
+          "productRevisionsLabel": "Gestion de versions des produits"
         },
         "toolbar": {
           "publishAll": "Tout publier"
