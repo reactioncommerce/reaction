@@ -97,13 +97,13 @@
         "private": "Invisible",
         "public": "Visible",
         "shortcut": {
-          "addProductLabel": "Ajouter le produit",
+          "addProductLabel": "Ajouter un produit",
           "accountsLabel": "Comptes"
         }
       },
       "searchSettings": {
         "productSearchSettings": {
-          "panelTitle": "Recherche de produit",
+          "panelTitle": "Recherche de produits",
           "includeTitle": "Inclure un titre",
           "includeDescription": "Inclure la description",
           "includePageTitle": "Inclure le titre de la page",
@@ -134,8 +134,8 @@
         "body": {
           "noNotifications": "Il n’y pas pas de notifications",
           "markAllAsRead": "Il n'y a pas de notifications",
-          "recent": "Récent",
-          "viewAll": "Voir tous les"
+          "recent": "Récentes",
+          "viewAll": "Tout voir"
         },
         "messages": {
           "orderCanceled": "Votre commande a été annulée.",
@@ -328,7 +328,7 @@
         "invoice": "Facture",
         "ordersNotFound": "Aucune commande trouvée",
         "approveInvoice": "Approuver",
-        "cancelOrderLabel": "annuler la commande",
+        "cancelOrderLabel": "Annuler la commande",
         "makeAdjustments": "Faire des ajustements",
         "capturePayment": "Paiement saisi",
         "paymentCaptured": "Paiement saisi",
