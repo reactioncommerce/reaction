@@ -108,7 +108,7 @@
           "includeDescription": "Inclure la description",
           "includePageTitle": "Inclure le titre de la page",
           "includeDetails": "Inclure une description",
-          "includeVendor": "Inclure le vendeur"
+          "includeVendor": "Inclure la marque"
         },
         "orderSearchSettings": {
           "panelTitle": "Paramètres de recherche de la commande"
