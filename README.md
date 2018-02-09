@@ -72,15 +72,15 @@ Learn more on how to [configure your project](https://docs.reactioncommerce.com/
 
 :star: Star us on GitHub — it helps!
 
-We love your pull requests! Check our our [`Pull Requests Encouraged`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aissue+is%3Aopen+label%3Apull-requests-encouraged) issues tag for good issues to tackle.
+We love your pull requests! Check our our [`Good First Issue`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) and [`Help Wanted`](https://github.com/reactioncommerce/reaction/issues?q=label%3A%22help+wanted%22) tags for good issues to tackle.
 
 Pull requests should:
 
-- Pass linting tests: Run `eslint .` to make sure you're following the [Reaction Commerce coding  guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide).
+- Pass linting tests: Run `npm run lint` to make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide).
 - Pass acceptance and unit tests: Run `reaction test` to confirm both [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction) are passing
 - Have a link to the issue.
 
-Get more details in our [Contributing guide](https://github.com/reactioncommerce/reaction/blob/master/CONTRIBUTING.md).
+Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/reaction-docs/master/contributing-to-reaction).
 
 # Reaction Platform
 
