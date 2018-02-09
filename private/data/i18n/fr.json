@@ -515,7 +515,7 @@
       },
       "revisions": {
         "isDisabled": "La gestion de version est désactivée. Toute modification sera immédiatement publiée.",
-        "isEnabled": "le contrôle de révision est activée pour les produits. Toute modification sera doivent être publiés avant d'être visible pour les clients.",
+        "isEnabled": "La gestion de version est activée pour les produits. Toute modification devra être publiée avant d'être visible pour les clients.",
         "unpublishedChanges": "Modifications non publiées",
         "publishChanges": "Publier les modifications",
         "showChanges": "Afficher les modifications",

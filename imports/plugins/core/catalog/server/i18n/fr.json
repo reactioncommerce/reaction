@@ -19,7 +19,7 @@
           "catalogSettingsDescription": "Catalogue du marché"
         },
         "catalogSettings": {
-          "productRevisionsLabel": "Révisions du produit"
+          "productRevisionsLabel": "Gestion de version des produits"
         }
       }
     }
