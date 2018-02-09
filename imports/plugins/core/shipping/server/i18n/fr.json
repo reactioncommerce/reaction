@@ -5,12 +5,12 @@
     "reaction-shipping": {
       "admin": {
         "dashboard": {
-          "shippingLabel": "livraison",
-          "shippingTitle": "livraison",
-          "shippingDescription": "Fournir les tarifs d'expédition"
+          "shippingLabel": "Livraison",
+          "shippingTitle": "Livraison",
+          "shippingDescription": "Gérer les frais de port"
         },
         "settings": {
-          "shippingLabel": "livraison"
+          "shippingLabel": "Livraison"
         }
       },
       "checkoutShipping": {
@@ -18,7 +18,7 @@
         "noShippingMethods": "Aucune méthode d'expédition sont configurés.",
         "contactAdmin": "Veuillez contacter l'administrateur de la boutique.",
         "configureNow": "Configurer maintenant.",
-        "shipping": "livraison"
+        "shipping": "Livraison"
       },
       "shipping": {
         "addShippingProvider": "Ajouter fournisseur d'expédition",

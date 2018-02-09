@@ -395,7 +395,7 @@
         "noTracking": "Aucun suivi",
         "tracking": "Suivi",
         "printLabels": "impression d'étiquettes",
-        "printShippingLabel": "livraison",
+        "printShippingLabel": "Livraison",
         "printCustomsLabel": "Douane",
         "generateTracking": "Générer le libellé et le suivi",
         "labelError": "Erreur de création d'expédition étiquette {{err}}",

@@ -59,7 +59,7 @@
             "date": "Date",
             "id": "ID",
             "total": "Total",
-            "shipping": "livraison",
+            "shipping": "Livraison",
             "status": "Statut"
           },
           "filter": {
