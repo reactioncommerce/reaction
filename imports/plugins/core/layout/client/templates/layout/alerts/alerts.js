@@ -27,9 +27,7 @@ Template.inlineAlert.onRendered(function () {
   $node.removeClass("hide").hide().fadeIn(alert.options.fadeIn, () => {
     if (alert.options.autoHide) {
       Meteor.setTimeout(() => {
-        $node.fadeOut(alert.options.fadeOut, () => {
-          return Alerts.collection_.remove(alert._id);
-        });
+        $node.fadeOut(alert.options.fadeOut, () => Alerts.collection_.remove(alert._id));
       }, alert.options.autoHide);
     }
   });

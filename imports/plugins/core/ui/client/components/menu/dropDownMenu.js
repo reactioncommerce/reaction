@@ -62,10 +62,10 @@ class DropDownMenu extends Component {
   }
 
   get label() {
-    let label = this.state.label;
+    let { label } = this.state;
     Children.forEach(this.props.children, (element) => {
       if (element.props.value === this.props.value) {
-        label = element.props.label;
+        ({ label } = element.props);
       }
     });
 

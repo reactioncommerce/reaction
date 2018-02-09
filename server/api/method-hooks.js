@@ -86,9 +86,9 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
   // Get a reference to the original handler
   MethodHooks._originalMethodHandlers[methodName] = method;
 
-  MethodHooks._wrappers[methodName] = function () {
+  MethodHooks._wrappers[methodName] = function (...inputArgs) {
     // Get arguments you can mutate
-    const args = _.toArray(arguments);
+    const args = _.toArray(inputArgs);
     let beforeResult;
     // Call the before hooks
 

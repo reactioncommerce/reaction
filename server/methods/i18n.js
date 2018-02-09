@@ -2,14 +2,14 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Translations } from "/lib/collections";
 import { Reaction } from "/server/api";
-import { loadCoreTranslations } from "/server/startup/i18n";
+import { importAllTranslations } from "/server/startup/i18n";
 
 Meteor.methods({
   /**
    * @name i18n/flushTranslations
    * @method
    * @memberof i18n
-   * @example Meteor.call("i18n/flushTranslations"))
+   * @example Meteor.call("i18n/flushTranslations")
    * @summary Method to remove all translations, and reload from jsonFiles
    * @return {undefined}
    */
@@ -18,11 +18,8 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
     const shopId = Reaction.getShopId();
-    Translations.remove({
-      shopId
-    });
-    loadCoreTranslations();
-    Reaction.Import.flush();
+    Translations.remove({ shopId });
+    importAllTranslations();
   },
 
   /**
@@ -45,7 +42,7 @@ Meteor.methods({
     // string or first langauge
     let i18n = lng;
     if (typeof lng === "object") {
-      i18n = lng[0];
+      [i18n] = lng;
     }
 
     if (!Reaction.hasAdminAccess()) {
