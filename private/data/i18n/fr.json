@@ -84,7 +84,7 @@
         "updateSettings": "Paramètres de mise à jour",
         "monthOptions": "Sélectionner un mois",
         "yearOptions": "Sélectionner une année",
-        "shopSettings": "Paramètres du magasin",
+        "shopSettings": "Paramètres de la boutique",
         "dashboard": "Tableau de bord",
         "print": "Imprimer",
         "notFound": "La page est introuvable.",
@@ -125,10 +125,10 @@
         "options": "Options",
         "paymentMethods": "Méthodes de paiement",
         "externalServices": "Services externes",
-        "shopLocalizationSettingsSaved": "Paramètres de localisation du magasin enregistrés.",
-        "shopLocalizationSettingsFailed": "Echec de la mise à jour des paramètres de localisation du magasin.",
-        "shopPaymentMethodsSaved": "Modalités de paiement enregistrées.",
-        "shopPaymentMethodsFailed": "Echec de la mise à jour des paramètres de mode de paiement du magasin."
+        "shopLocalizationSettingsSaved": "Paramètres de localisation de la boutique enregistrés.",
+        "shopLocalizationSettingsFailed": "Echec de la mise à jour des paramètres de localisation de la boutique.",
+        "shopPaymentMethodsSaved": "Moyens de paiement enregistrées.",
+        "shopPaymentMethodsFailed": "Echec de la mise à jour des moyens de paiement de la boutique."
       },
       "notifications": {
         "body": {
@@ -484,10 +484,10 @@
       "shop": {
         "defaultPaymentMethod": "Méthode de paiement par défaut",
         "name": "Nom",
-        "namePlaceholder": "Nom du magasin",
+        "namePlaceholder": "Nom de la boutique",
         "description": "Description",
-        "descriptionPlaceholder": "Décrivez votre magasin en tenant compte du SEO",
-        "descriptionTooltip": "Ce champ est utilisé par une métabalise de description. Les moteurs de recherche sont autorisés à décrire votre magasin",
+        "descriptionPlaceholder": "Décrivez votre boutique en tenant compte du SEO",
+        "descriptionTooltip": "Ce champ est utilisé pour décrire votre boutique auprès des moteurs de recherche",
         "email": "E-mail",
         "emailPlaceholder": "E-mail du contact principal",
         "keywords": "Mots clés",
