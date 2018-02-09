@@ -19,7 +19,7 @@
           "examplePaymentSettingsLabel": "Exemple de passerelle de paiement",
           "exampleCredentials": "Ceci est un exemple de paramètre de plateforme de paiement.",
           "apiClientId": "API ID client",
-          "supportedMethodsLabel": "Moyens de paiements supportés par la passerelle de paiement"
+          "supportedMethodsLabel": "Fonctions supportées par la passerelle de paiement"
         }
       }
     }
