@@ -26,7 +26,7 @@
           "optionOrdersCreateUpdateInventory": "Update Voorraad bij het plaatsen van een nieuwe Shopify-order",
           "syncSetup": "Setup Sync",
           "syncSetupSuccess": "Synchronisatie van Shopify synchroniseren succesvol",
-          "syncSetupFailure": "Fout bij het instellen van Shoify-synchronisatie",
+          "syncSetupFailure": "Fout bij het instellen van Shopify-synchronisatie",
           "syncStop": "Stop synchroniseren",
           "syncStopSuccess": "Succesvol gestopt Shopify sync!",
           "syncStopFailure": "Fout bij het stoppen van Shopify-synchronisatie!",
