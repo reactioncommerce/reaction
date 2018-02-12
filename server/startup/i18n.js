@@ -7,7 +7,7 @@ import { Logger, Reaction } from "/server/api";
 const fs = {
   readdir: util.promisify(fsModule.readdir),
   readFile: util.promisify(fsModule.readFile),
-  realpath: util.promisify(fsModule.stat),
+  realpath: util.promisify(fsModule.realpath),
   stat: util.promisify(fsModule.stat)
 };
 
