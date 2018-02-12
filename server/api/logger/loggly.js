@@ -40,7 +40,7 @@ class Bunyan2Loggly {
     this._buffer = [];
 
     if (content.length === 1) {
-      content = content[0];
+      [content] = content;
     }
 
     this.logglyClient.log(content, (error, result) => {

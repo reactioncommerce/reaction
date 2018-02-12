@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import {  Button, TextField, Translation } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
+import { Button, TextField, Translation } from "/imports/plugins/core/ui/client/components";
 
 class Forgot extends Component {
   static propTypes = {
@@ -78,7 +79,6 @@ class Forgot extends Component {
         i18nKeyLabel="accountsUI.resetYourPassword"
         label="Reset Your Password"
         type="submit"
-        tabIndex="2"
         eventAction="reset-password"
         disabled={this.props.isDisabled}
       />
@@ -110,7 +110,6 @@ class Forgot extends Component {
               label="Email"
               name="email"
               type="email"
-              tabIndex="1"
               id={`email-${this.props.uniqueId}`}
               value={this.state.email}
               onChange={this.handleFieldChange}
@@ -123,14 +122,17 @@ class Forgot extends Component {
           </div>
 
           <div className="form-group">
-            <a
-              href="#"
-              tabIndex="3"
+            <Components.Button
+              tagName="span"
+              className={{
+                "btn": false,
+                "btn-default": false
+              }}
+              label="Sign In"
+              i18nKeyLabel="accountsUI.signIn"
               data-event-category="accounts"
               onClick={this.props.onSignInClick}
-            >
-              <Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" />
-            </a>
+            />
           </div>
 
         </form>

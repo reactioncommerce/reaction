@@ -23,33 +23,29 @@ class LocalizationSettings extends Component {
   }
 
   renderCurrencies() {
-    return this.props.currencies.map((currency, key) => {
-      return (
-        <Components.ListItem
-          actionType={"switch"}
-          key={key}
-          label={currency.label}
-          switchOn={currency.enabled}
-          switchName={currency.name}
-          onSwitchChange={this.props.onUpdateCurrencyConfiguration}
-        />
-      );
-    });
+    return this.props.currencies.map((currency, key) => (
+      <Components.ListItem
+        actionType={"switch"}
+        key={key}
+        label={currency.label}
+        switchOn={currency.enabled}
+        switchName={currency.name}
+        onSwitchChange={this.props.onUpdateCurrencyConfiguration}
+      />
+    ));
   }
 
   renderLanguages() {
-    return this.props.languages.map((language, key) => {
-      return (
-        <Components.ListItem
-          actionType={"switch"}
-          key={key}
-          label={language.label}
-          switchOn={language.enabled}
-          switchName={language.value}
-          onSwitchChange={this.props.onUpdateLanguageConfiguration}
-        />
-      );
-    });
+    return this.props.languages.map((language, key) => (
+      <Components.ListItem
+        actionType={"switch"}
+        key={key}
+        label={language.label}
+        switchOn={language.enabled}
+        switchName={language.value}
+        onSwitchChange={this.props.onUpdateLanguageConfiguration}
+      />
+    ));
   }
 
   handleSubmit = (event, formData) => {
