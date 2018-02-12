@@ -6,6 +6,10 @@ import NavBar from "../components/navbar";
 import { Media, Shops } from "/lib/collections";
 
 export function composer(props, onData) {
+  const shopSub = Meteor.subscribe("MerchantShops", Reaction.getShopsForUser(["admin"]));
+  if (!shopSub.ready()) {
+    return;
+  }
   const shop = Shops.findOne(Reaction.getShopId());
   const searchPackage = Reaction.Apps({ provides: "ui-search" });
   const user = Meteor.user();
