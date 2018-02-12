@@ -61,6 +61,30 @@ class InvoiceContainer extends Component {
     });
   };
 
+  handleDisplayMedia = (item) => {
+    const variantId = item.variants._id;
+    const { productId } = item;
+
+    const variantImage = Media.findOne({
+      "metadata.variantId": variantId,
+      "metadata.productId": productId
+    });
+
+    if (variantImage) {
+      return variantImage;
+    }
+
+    const defaultImage = Media.findOne({
+      "metadata.productId": productId,
+      "metadata.priority": 0
+    });
+
+    if (defaultImage) {
+      return defaultImage;
+    }
+    return false;
+  }
+
   handleItemSelect = (lineItem) => {
     let { selectedItems, editedItems } = this.state;
 
