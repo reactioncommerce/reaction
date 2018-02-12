@@ -75,6 +75,7 @@ export const methods = {
         }
       });
     } catch (error) {
+      Logger.error("server-error", `Shopify API Error creating new webhook: ${error.message}`, error);
       throw new Meteor.Error("server-error", `Shopify API Error creating new webhook: ${error.message}`);
     }
   },
