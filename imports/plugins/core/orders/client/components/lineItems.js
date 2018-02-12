@@ -60,8 +60,12 @@ class LineItems extends Component {
     const { displayMedia } = this.props;
 
     if (displayMedia(uniqueItem)) {
+      // Return thumbnail version of image
+      const rawMedia = displayMedia(uniqueItem).url();
+      const thumbnailMedia = `${rawMedia}?store=thumbnail`;
+
       return (
-        <img src={displayMedia(uniqueItem).url()} alt="" />
+        <img src={thumbnailMedia} alt="" />
       );
     }
     return (
