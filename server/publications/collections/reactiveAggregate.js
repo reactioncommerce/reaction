@@ -88,7 +88,7 @@ export function ReactiveAggregate(pub, collection, pipeline, options) {
     }
 
     // add and update documents on the client
-    collection.aggregate(pipeline).forEach(function (doc) {
+    collection.aggregate(pipeline).forEach((doc) => {
       if (!pub._ids[doc._id]) {
         pub.added(pubOptions.clientCollection, doc._id, doc);
       } else {
@@ -112,7 +112,7 @@ export function ReactiveAggregate(pub, collection, pipeline, options) {
     added: update,
     changed: update,
     removed: update,
-    error: function (error) {
+    error(error) {
       throw new Meteor.Error("server-error", `Encountered an error while observing ${collection._name}`, error);
     }
   });
@@ -125,7 +125,7 @@ export function ReactiveAggregate(pub, collection, pipeline, options) {
   pub.ready();
 
   // stop observing the cursor when the client unsubscribes
-  pub.onStop(function () {
+  pub.onStop(() => {
     handle.stop();
   });
 }

@@ -6,9 +6,9 @@ jest.mock("/imports/plugins/core/ui/client/components", () => {
 });
 
 import React from "react";
-import OrderSummary from "../../components/orderSummary";
 import { shallow } from "enzyme";
 import shallowToJSON from "enzyme-to-json";
+import OrderSummary from "../../components/orderSummary";
 
 /**
  * Order Summary is a display only component
@@ -42,7 +42,7 @@ test("OrderSummary snapshot test", () => {
     ]
   };
 
-  const component = shallow(
+  const component = shallow((
     <OrderSummary
       dateFormat={dateFormat}
       tracking={tracking}
@@ -51,7 +51,7 @@ test("OrderSummary snapshot test", () => {
       printableLabels={printableLabels}
       order={order}
     />
-  );
+  ));
   const tree = shallowToJSON(component);
   expect(tree).toMatchSnapshot();
 });

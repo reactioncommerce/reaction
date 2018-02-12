@@ -12,7 +12,7 @@ import { ReactionProduct } from "/lib/api";
  */
 
 Template.productDetailEdit.helpers({
-  i18nPlaceholder: function () {
+  i18nPlaceholder() {
     const i18nKey = `productDetailEdit.${this.field}`;
     if (i18next.t(i18nKey) === i18nKey) {
       Logger.warn(`returning empty placeholder productDetailEdit: ${i18nKey} no i18n key found.`);
@@ -27,10 +27,11 @@ Template.productDetailEdit.helpers({
  */
 
 Template.productDetailEdit.events({
-  "change input,textarea": function (event) {
+  "change input,textarea"(event) {
     const self = this;
     const productId = ReactionProduct.selectedProductId();
-    Meteor.call("products/updateProductField", productId, self.field,
+    Meteor.call(
+      "products/updateProductField", productId, self.field,
       Template.instance().$(event.currentTarget).val(),
       (error, result) => {
         if (error) {
@@ -43,7 +44,8 @@ Template.productDetailEdit.events({
         if (result) {
           // redirect to new url on title change
           if (self.field === "title") {
-            Meteor.call("products/setHandle", productId,
+            Meteor.call(
+              "products/setHandle", productId,
               (err, res) => {
                 Alerts.removeSeen();
                 if (err) {
@@ -70,7 +72,8 @@ Template.productDetailEdit.events({
             backgroundColor: "#fff"
           });
         }
-      });
+      }
+    );
 
     if (this.type === "textarea") {
       autosize(Template.instance().$(event.currentTarget));
@@ -85,7 +88,7 @@ Template.productDetailEdit.events({
  */
 
 Template.productDetailField.events({
-  "click .product-detail-field": function () {
+  "click .product-detail-field"() {
     if (Reaction.hasPermission("createProduct")) {
       const fieldClass = "editing-" + this.field;
       Session.set(fieldClass, true);
@@ -99,6 +102,6 @@ Template.productDetailField.events({
  * productDetailEdit onRendered
  */
 
-Template.productDetailEdit.onRendered(function () {
+Template.productDetailEdit.onRendered(() => {
   return autosize($("textarea"));
 });

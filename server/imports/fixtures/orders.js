@@ -68,6 +68,7 @@ export function getShopId() {
  */
 
 export default function () {
+  const shopId = getShopId();
   Factory.define("order", Orders, {
     // Schemas.OrderItems
     additionalField: faker.lorem.sentence(),
@@ -80,7 +81,7 @@ export default function () {
     notes: [],
 
     // Schemas.Cart
-    shopId: getShopId(),
+    shopId,
     userId: getUserId(),
     sessionId: "Session",
     email: faker.internet.email(),
@@ -90,14 +91,14 @@ export default function () {
         "coreOrderWorkflow/created"
       ]
     },
-    items: function () {
-      const product = addProduct();
+    items() {
+      const product = addProduct({ shopId });
       const variant = Products.findOne({ ancestors: [product._id] });
       const childVariants = Products.find({ ancestors: [
         product._id, variant._id
       ] }).fetch();
       const selectedOption = Random.choice(childVariants);
-      const product2 = addProduct();
+      const product2 = addProduct({ shopId });
       const variant2 = Products.findOne({ ancestors: [product2._id] });
       const childVariants2 = Products.find({ ancestors: [
         product2._id, variant2._id
@@ -109,7 +110,7 @@ export default function () {
         shopId: product.shopId,
         productId: product._id,
         quantity: 1,
-        product: product,
+        product,
         variants: selectedOption,
         workflow: {
           status: "new"
@@ -129,19 +130,19 @@ export default function () {
     },
     requiresShipping: true,
     shipping: [{
-      shopId: getShopId(),
+      shopId,
       items: [
         {
           _id: itemIdOne,
           productId: Random.id(),
-          shopId: getShopId(),
+          shopId,
           variantId: Random.id(),
           packed: false
         },
         {
           _id: itemIdTwo,
           productId: Random.id(),
-          shopId: getShopId(),
+          shopId,
           variantId: Random.id(),
           packed: false
         }
@@ -149,7 +150,7 @@ export default function () {
     }], // Shipping Schema
     billing: [{
       _id: Random.id(),
-      shopId: getShopId(),
+      shopId,
       address: getAddress({ isBillingDefault: true }),
       paymentMethod: paymentMethod({
         method: "credit",
@@ -170,15 +171,16 @@ export default function () {
       }
     }],
     state: "new",
-    createdAt: new Date,
-    updatedAt: new Date
+    createdAt: new Date(),
+    updatedAt: new Date()
   });
 
   /**
    * authorizedApprovedPaypalOrder Factory
    * @summary defines order factory which generates an authorized, apporved, paypal order.
    */
-  Factory.define("authorizedApprovedPaypalOrder", Orders,
+  Factory.define(
+    "authorizedApprovedPaypalOrder", Orders,
     Factory.extend("order", {
       billing: [{
         _id: Random.id(),
@@ -190,5 +192,6 @@ export default function () {
           status: "approved"
         })
       }]
-    }));
+    })
+  );
 }

@@ -6,7 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Promise } from "meteor/promise";
 
-import AuthNetAPI from "@reactioncommerce/authorize-net";
+import AuthNetAPI from "authorize-net";
 import { Reaction, Logger } from "/server/api";
 import { Packages } from "/lib/collections";
 import { PaymentMethod } from "/lib/collections/schemas";
@@ -43,24 +43,24 @@ function getSettings(settings, ref, valueName) {
   return undefined;
 }
 
-const ValidCardNumber = Match.Where(function (x) {
+const ValidCardNumber = Match.Where((x) => {
   return /^[0-9]{14,16}$/.test(x);
 });
 
-const ValidExpireMonth = Match.Where(function (x) {
+const ValidExpireMonth = Match.Where((x) => {
   return /^[0-9]{1,2}$/.test(x);
 });
 
-const ValidExpireYear = Match.Where(function (x) {
+const ValidExpireYear = Match.Where((x) => {
   return /^[0-9]{4}$/.test(x);
 });
 
-const ValidCVV = Match.Where(function (x) {
+const ValidCVV = Match.Where((x) => {
   return /^[0-9]{3,4}$/.test(x);
 });
 
 Meteor.methods({
-  authnetSubmit: function (transactionType = "authorizeTransaction", cardInfo, paymentInfo) {
+  authnetSubmit(transactionType = "authorizeTransaction", cardInfo, paymentInfo) {
     check(transactionType, String);
     try {
       check(cardInfo, {
@@ -92,7 +92,8 @@ Meteor.methods({
     let authResult;
     if (authnetTransactionFunc) {
       try {
-        authResult = authnetTransactionFunc.call(authnetService,
+        authResult = authnetTransactionFunc.call(
+          authnetService,
           order,
           creditCard
         );
@@ -110,7 +111,7 @@ Meteor.methods({
     }
   },
 
-  "authnet/payment/capture": function (paymentMethod) {
+  "authnet/payment/capture"(paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     const {
       transactionId,
@@ -123,7 +124,8 @@ Meteor.methods({
     let result;
     if (capturedAmount === accounting.toFixed(0, 2)) {
       try {
-        const captureResult = voidTransaction(transactionId,
+        const captureResult = voidTransaction(
+          transactionId,
           authnetService
         );
         if (captureResult.responseCode[0] === "1") {
@@ -141,13 +143,14 @@ Meteor.methods({
         Logger.fatal(error);
         result = {
           saved: false,
-          error: error
+          error
         };
       }
       return result;
     }
     try {
-      const captureResult = priorAuthCaptureTransaction(transactionId,
+      const captureResult = priorAuthCaptureTransaction(
+        transactionId,
         roundedAmount,
         authnetService
       );
@@ -166,13 +169,13 @@ Meteor.methods({
       Logger.fatal(error);
       result = {
         saved: false,
-        error: error
+        error
       };
     }
     return result;
   },
 
-  "authnet/refund/create": function (paymentMethod, amount) {
+  "authnet/refund/create"(paymentMethod, amount) {
     check(paymentMethod, PaymentMethod);
     check(amount, Number);
     const result = {
@@ -183,7 +186,7 @@ Meteor.methods({
 
     return result;
   },
-  "authnet/refund/list": function () {
+  "authnet/refund/list"() {
     check(arguments, [Match.Any]);
     Meteor.Error("not-implemented", "Authorize.net does not yet support retrieving a list of refunds.");
     return [];
@@ -207,11 +210,11 @@ function getAuthnetService(accountOptions) {
 function priorAuthCaptureTransaction(transId, amount, service) {
   const body = {
     transactionType: "priorAuthCaptureTransaction",
-    amount: amount,
+    amount,
     refTransId: transId
   };
   // This call returns a Promise to the cb so we need to use Promise.await
-  const transactionRequest = service.sendTransactionRequest.call(service, body, function (trans) {
+  const transactionRequest = service.sendTransactionRequest.call(service, body, (trans) => {
     return trans;
   });
   return Promise.await(transactionRequest);
@@ -223,7 +226,7 @@ function voidTransaction(transId, service) {
     refTransId: transId
   };
   // This call returns a Promise to the cb so we need to use Promise.await
-  const transactionRequest = service.sendTransactionRequest.call(service, body, function (trans) {
+  const transactionRequest = service.sendTransactionRequest.call(service, body, (trans) => {
     return trans;
   });
   return Promise.await(transactionRequest);

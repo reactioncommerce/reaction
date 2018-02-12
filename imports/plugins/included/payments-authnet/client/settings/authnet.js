@@ -17,10 +17,10 @@ Template.authnetSettings.helpers({
 
 AutoForm.hooks({
   "authnet-update-form": {
-    onSuccess: function () {
+    onSuccess() {
       return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
-    onError: function (error) {
+    onError(error) {
       return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
     }
   }

@@ -1,7 +1,7 @@
 import { Template } from "meteor/templating";
 
 export const LoginFormSharedHelpers = {
-  messages: function () {
+  messages() {
     return Template.instance().formMessages.get();
   },
 
@@ -12,7 +12,7 @@ export const LoginFormSharedHelpers = {
       return "has-error has-feedback";
     }
   },
-  capitalize: function (str) {
+  capitalize(str) {
     const finalString = str === null ? "" : String(str);
     return finalString.charAt(0).toUpperCase() + finalString.slice(1);
   }

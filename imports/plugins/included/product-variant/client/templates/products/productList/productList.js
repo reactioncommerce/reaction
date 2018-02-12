@@ -7,10 +7,10 @@ import { Media } from "/lib/collections";
  */
 
 Template.productList.helpers({
-  products: function () {
+  products() {
     return ReactionProduct.getProductsByTag(this.tag);
   },
-  media: function () {
+  media() {
     let defaultImage;
     const variants = ReactionProduct.getTopVariants();
     if (variants.length > 0) {

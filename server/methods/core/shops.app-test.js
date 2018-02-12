@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+/* eslint prefer-arrow-callback:0 */
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
@@ -72,7 +73,7 @@ describe("core shop methods", function () {
         };
       });
       const shopId = Random.id();
-      Factory.create("account", { _id: "12345678", shopId: shopId });
+      Factory.create("account", { _id: "12345678", shopId });
 
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Reaction, "getPrimaryShopId", () => shopId);
