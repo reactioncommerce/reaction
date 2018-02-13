@@ -138,7 +138,7 @@ class NavBar extends Component {
 
   renderTagNav() {
     return (
-      <div className="menu">
+      <header className="menu" role="banner">
         <Components.TagNav
           isVisible={this.state.navBarVisible}
           closeNavbar={this.handleCloseNavbar}
@@ -149,7 +149,7 @@ class NavBar extends Component {
           {this.renderLanguage()}
           {this.renderCurrency()}
         </Components.TagNav>
-      </div>
+      </header>
     );
   }
 

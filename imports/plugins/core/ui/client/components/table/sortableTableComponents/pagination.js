@@ -24,7 +24,7 @@ class SortableTablePagination extends Component {
   getSafePage(safePage) {
     let page = safePage;
     if (isNaN(page)) {
-      page = this.props.page;
+      ({ page } = this.props);
     }
     return Math.min(Math.max(page, 0), this.props.pages - 1);
   }
@@ -38,9 +38,14 @@ class SortableTablePagination extends Component {
     }
   }
 
+  handlePageSizeChange = (event) => {
+    const { onPageSizeChange } = this.props;
+    onPageSizeChange && onPageSizeChange(Number(event.target.value));
+  }
+
   applyPage(e) {
     e && e.preventDefault();
-    const page = this.state.page;
+    const { page } = this.state;
     this.changePage(page === "" ? this.props.page : page);
   }
 
@@ -56,7 +61,6 @@ class SortableTablePagination extends Component {
       showPageJump,
       canPrevious,
       canNext,
-      onPageSizeChange,
       className,
       PreviousComponent = PaginationButtons,
       NextComponent = PaginationButtons
@@ -74,7 +78,7 @@ class SortableTablePagination extends Component {
               ? <div className="-pageJump">
                 <input
                   type={this.state.page === "" ? "text" : "number"}
-                  onChange={e => {
+                  onChange={(e) => {
                     const val = e.target.value;
                     const currentPage = val - 1;
                     if (val === "") {
@@ -84,7 +88,7 @@ class SortableTablePagination extends Component {
                   }}
                   value={this.state.page === "" ? "" : this.state.page + 1}
                   onBlur={this.applyPage}
-                  onKeyPress={e => {
+                  onKeyPress={(e) => {
                     if (e.which === 13 || e.keyCode === 13) {
                       this.applyPage();
                     }
@@ -98,16 +102,15 @@ class SortableTablePagination extends Component {
           {showPageSizeOptions &&
             <span className="select-wrap -pageSizeOptions">
               <select
-                onChange={e => onPageSizeChange(Number(e.target.value))}
+                onBlur={this.handlePageSizeChange}
+                onChange={this.handlePageSizeChange}
                 value={pageSize}
               >
-                {pageSizeOptions.map((option, i) => {
-                  return (
-                    <option key={i} value={option}>
-                      {option} {this.props.rowsText}
-                    </option>
-                  );
-                })}
+                {pageSizeOptions.map((option, i) => (
+                  <option key={i} value={option}>
+                    {option} {this.props.rowsText}
+                  </option>
+                ))}
               </select>
             </span>}
         </div>

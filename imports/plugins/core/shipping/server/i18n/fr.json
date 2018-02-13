@@ -5,75 +5,75 @@
     "reaction-shipping": {
       "admin": {
         "dashboard": {
-          "shippingLabel": "livraison",
-          "shippingTitle": "livraison",
-          "shippingDescription": "Fournir les tarifs d'expédition"
+          "shippingLabel": "Livraison",
+          "shippingTitle": "Livraison",
+          "shippingDescription": "Gérer les frais de port"
         },
         "settings": {
-          "shippingLabel": "livraison"
+          "shippingLabel": "Livraison"
         }
       },
       "checkoutShipping": {
-        "selectShippingOption": "Sélectionnez l'option d'expédition",
-        "noShippingMethods": "Aucune méthode d'expédition sont configurés.",
-        "contactAdmin": "Veuillez contacter l'administrateur du magasin.",
+        "selectShippingOption": "Sélectionnez une option d'expédition",
+        "noShippingMethods": "Aucune méthode d'expédition n'est configurée.",
+        "contactAdmin": "Veuillez contacter l'administrateur de la boutique.",
         "configureNow": "Configurer maintenant.",
-        "shipping": "livraison"
+        "shipping": "Livraison"
       },
       "shipping": {
-        "addShippingProvider": "Ajouter fournisseur d'expédition",
-        "editShippingProvider": "Modifier fournisseur d'expédition",
-        "addShippingMethod": "Ajouter la méthode d'expédition",
-        "editShippingMethod": "Modifier la méthode d'expédition",
-        "deleteShippingMethod": "Supprimer la méthode d'expédition",
+        "addShippingProvider": "Ajouter un transporteur",
+        "editShippingProvider": "Modifier le transporteur",
+        "addShippingMethod": "Ajouter un mode de livraison",
+        "editShippingMethod": "Modifier le mode de livraison",
+        "deleteShippingMethod": "Supprimer le mode de livraison",
         "noSettingsForThisView": "Pas de paramètres pour cette vue",
-        "noShippingMethods": "Aucune méthode d'expédition sont configurés.",
-        "removeShippingMethodConfirm": "Êtes-vous sûr de vouloir supprimer {{method}}?",
-        "removeShippingMethodTitle": "Supprimer Méthode d'expédition",
-        "shippingMethodDeleted": "Cette méthode d'expédition a été supprimé.",
-        "removeShippingProvider": "Retirer Expédition Fournisseur",
+        "noShippingMethods": "Aucune méthode d'expédition n'est configurée.",
+        "removeShippingMethodConfirm": "Êtes-vous sûr de vouloir supprimer {{method}} ?",
+        "removeShippingMethodTitle": "Supprimer le mode de livraison",
+        "shippingMethodDeleted": "Ce mode de livraison a été supprimé.",
+        "removeShippingProvider": "Supprimer le transporteur",
         "removeShippingProviderConfirm": "Êtes-vous sûr de vouloir supprimer {{provider}}?",
-        "shippingProviderSaved": "Mode de livraison sauvé.",
-        "shippingProviderUpdated": "données du fournisseur de livraison mis à jour.",
-        "shippingMethodRateAdded": "Livraison taux de méthode ajoutée.",
-        "shippingMethodRateUpdated": "Expédition taux de la méthode mise à jour.",
+        "shippingProviderSaved": "Mode de livraison sauvegardé.",
+        "shippingProviderUpdated": "Données du fournisseur de livraison mises à jour.",
+        "shippingMethodRateAdded": "Tarif de livraison ajouté.",
+        "shippingMethodRateUpdated": "Tarif de livraison mis à jour.",
         "name": "Nom",
         "label": "Étiquette",
         "group": "Groupe",
         "cost": "Coût",
-        "handling": "Manipulation",
+        "handling": "Prise en charge",
         "rate": "Taux",
         "enabled": "Activé",
-        "disabled": "Handicapé",
-        "addRate": "Ajouter taux",
-        "updateRate": "Taux de mise à jour {{name}}",
+        "disabled": "Désactivé",
+        "addRate": "Ajouter tarif",
+        "updateRate": "Mettre à jour le tarif {{name}}",
         "addNewCondition": "Ajouter un nouvel état",
-        "deleteCondition": "Supprimer la condition",
+        "deleteCondition": "Supprimer l'état",
         "provider": {
-          "name": "Code de service",
-          "label": "public Étiquette",
+          "name": "Référence interne",
+          "label": "Nom public",
           "enabled": "Activé"
         }
       },
       "shippingMethod": {
-        "name": "Nom de la méthode",
-        "label": "public Étiquette",
+        "name": "Référence interne",
+        "label": "Nom public",
         "group": "Groupe",
         "cost": "Coût",
-        "handling": "Manipulation",
+        "handling": "Prise en charge",
         "rate": "Taux",
         "enabled": "Activé",
-        "matchingCartRanges": "Panier Ranges Matching",
+        "matchingCartRanges": "Fourchette de panier correspondante",
         "validRanges": {
-          "begin": "Commencer",
+          "begin": "Début",
           "end": "Fin"
         },
-        "matchingLocales": "Matching Locales",
+        "matchingLocales": "Localités correspondantes",
         "validLocales": {
-          "origination": "À partir de",
-          "destination": "À",
-          "deliveryBegin": "Frais de port Est.",
-          "deliveryEnd": "Livraison Est."
+          "origination": "Au départ de",
+          "destination": "Vers",
+          "deliveryBegin": "Estimation des frais de port",
+          "deliveryEnd": "Livraison estimée"
         }
       }
     }

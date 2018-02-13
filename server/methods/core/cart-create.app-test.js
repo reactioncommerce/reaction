@@ -19,7 +19,8 @@ describe("Add/Create cart methods", function () {
   const user = Factory.create("user");
   const shop = getShop();
   const userId = user._id;
-  const sessionId = Reaction.sessionId = Random.id();
+  Reaction.sessionId = Random.id();
+  const { sessionId } = Reaction;
   let sandbox;
   let originals;
 
@@ -53,10 +54,10 @@ describe("Add/Create cart methods", function () {
 
 
   function spyOnMethod(method, id) {
-    return sandbox.stub(Meteor.server.method_handlers, `cart/${method}`, function () {
-      check(arguments, [Match.Any]); // to prevent audit_arguments from complaining
+    return sandbox.stub(Meteor.server.method_handlers, `cart/${method}`, function (...args) {
+      check(args, [Match.Any]); // to prevent audit_arguments from complaining
       this.userId = id;
-      return originals[method].apply(this, arguments);
+      return originals[method].apply(this, args);
     });
   }
 
@@ -85,12 +86,12 @@ describe("Add/Create cart methods", function () {
         return true;
       });
 
-      resetShipmentStub = sinon.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function () {
-        check(arguments, [Match.Any]);
+      resetShipmentStub = sinon.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
+        check(args, [Match.Any]);
         return true;
       });
-      updateShipmentQuoteStub = sinon.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
-        check(arguments, [Match.Any]);
+      updateShipmentQuoteStub = sinon.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
+        check(args, [Match.Any]);
         return true;
       });
 
