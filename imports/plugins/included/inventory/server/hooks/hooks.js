@@ -20,8 +20,9 @@ Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
   Logger.debug("after variant increment, call inventory/addReserve");
   // Look up cart to get items that have been added to it
   const items = Cart.findOne({ _id: cartId }).items;
+  
   // Item to increment quantity
-  const item = items.filter(i => i.productId === options.productId && i.variantId === options.variantId);
+  const item = items.filter(i => (i.product._id === options.productId && i.variants._id === options.variantId));
   Meteor.call("inventory/addReserve", item);
 });
 
