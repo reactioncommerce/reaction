@@ -12,18 +12,18 @@
         "dashboard": {
           "braintreeLabel": "Braintree",
           "braintreeTitle": "Braintree",
-          "braintreeDescription": "paiements Braintree"
+          "braintreeDescription": "Paiements Braintree"
         },
         "paymentSettings": {
           "braintreeLabel": "Braintree",
           "braintreeSettingsLabel": "Braintree",
-          "braintreeCredentials": "Ajouter les informations d'identification pour permettre"
+          "braintreeCredentials": "Ajouter identifiants pour activer"
         }
       },
       "order": {
         "paymentProvider": {
           "braintree": {
-            "braintreeSettlementDelay": "Braintree ne permet pas le remboursement jusqu'à ce que les transactions sont réglées. Cela peut prendre jusqu'à 24 heures. Veuillez réessayer plus tard."
+            "braintreeSettlementDelay": "Braintree ne permet pas le remboursement jusqu'à ce que les transactions soient réglées. Cela peut prendre jusqu'à 24 heures. Veuillez réessayer plus tard."
           }
         }
       }
