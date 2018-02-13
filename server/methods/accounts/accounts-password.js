@@ -29,9 +29,7 @@ Meteor.methods({
 
     const emails = _.map(user.emails || [], "address");
 
-    const caseInsensitiveEmail = _.find(emails, (email) => {
-      return email.toLowerCase() === options.email.toLowerCase();
-    });
+    const caseInsensitiveEmail = _.find(emails, (email) => email.toLowerCase() === options.email.toLowerCase());
 
     Reaction.Accounts.sendResetPasswordEmail(user._id, caseInsensitiveEmail);
   }

@@ -56,9 +56,7 @@ Template.templateSettings.helpers({
 
     // helper adds a class to every grid row
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
-        return "template-grid-row";
-      }
+      bodyCssClassName: () => "template-grid-row"
     };
 
     // add i18n handling to headers
@@ -171,9 +169,10 @@ Blaze.TemplateInstance.prototype.parentTemplate = function (levels = 1) {
   let view = Blaze.currentView;
   let numLevel = levels;
   while (view) {
-    if (view.name.substring(0, 9) === "Template." && !numLevel--) {
+    if (view.name.substring(0, 9) === "Template." && !numLevel) {
       return view.templateInstance();
     }
+    numLevel -= 1;
     view = view.parentView;
   }
 };

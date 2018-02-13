@@ -6,20 +6,20 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "examplePaymentProviderLabel": "Exemple Paiement",
-          "examplePaymentProviderTitle": "Exemple Paiement"
+          "examplePaymentProviderLabel": "Exemple de passerelle de paiement",
+          "examplePaymentProviderTitle": "Exemple de passerelle de paiement"
         },
         "dashboard": {
-          "examplePaymentProviderLabel": "Exemple Paiement",
-          "examplePaymentProviderTitle": "Exemple Paiement",
-          "examplePaymentProviderDescription": "Exemple Méthode de paiement"
+          "examplePaymentProviderLabel": "Exemple de passerelle de paiement",
+          "examplePaymentProviderTitle": "Exemple de passerelle de paiement",
+          "examplePaymentProviderDescription": "Exemple de passerelle de paiement"
         },
         "paymentSettings": {
-          "examplePaymentLabel": "Exemple fournisseur",
-          "examplePaymentSettingsLabel": "Exemple Paiement",
-          "exampleCredentials": "Ce paramètre est par exemple de méthode de paiement.",
+          "examplePaymentLabel": "Exemple de passerelle de paiement",
+          "examplePaymentSettingsLabel": "Exemple de passerelle de paiement",
+          "exampleCredentials": "Ceci est un exemple de paramètre de plateforme de paiement.",
           "apiClientId": "API ID client",
-          "supportedMethodsLabel": "Méthodes supportées par le fournisseur de paiement"
+          "supportedMethodsLabel": "Fonctions supportées par la passerelle de paiement"
         }
       }
     }

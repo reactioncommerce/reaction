@@ -69,7 +69,7 @@ Meteor.startup(() => {
         _id: shopId
       });
 
-      let language = shop && shop.language || "en";
+      let language = (shop && shop.language) || "en";
 
       if (Meteor.user() && Meteor.user().profile && Meteor.user().profile.lang) {
         language = Meteor.user().profile.lang;
@@ -127,6 +127,9 @@ Meteor.startup(() => {
             // global first time init event finds and replaces
             // data-i18n attributes in html/template source.
             $("[data-i18n]").localize();
+
+            // Set language prop on html element
+            $("html").prop("lang", language);
 
             // apply language direction to html
             if (i18next.dir(language) === "rtl") {

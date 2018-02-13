@@ -51,6 +51,14 @@ class Button extends Component {
     }
   }
 
+  handleKeyUp = (event) => {
+    // keyCode 32 (spacebar)
+    // keyCode 13 (enter/return)
+    if (event.keyCode === 32 || event.keyCode === 13) {
+      this.handleClick(event);
+    }
+  }
+
   renderOnStateIcon() {
     if (this.props.onIcon) {
       return (
@@ -156,9 +164,23 @@ class Button extends Component {
       extraProps.href = "#";
     }
 
+    // If this button is not an anchor, or an actual button, then add
+    // some extra props related to ARIA compliance for interactive components.
+    //
+    // - onKeyUp event handler for keyboard navigation
+    // - role=button, as it's a simulated button
+    // - tabIndex=0 so it obeys the natural tab flow
+    if (tagName !== "button" && tagName !== "a") {
+      extraProps.onKeyUp = this.handleKeyUp;
+      extraProps.role = "button";
+      extraProps.tabIndex = 0;
+    }
+
     const buttonProps = Object.assign({
       "className": classes,
       "data-event-action": eventAction,
+      "onFocus": this.handleButtonMouseOver,
+      "onBlur": this.handleButtonMouseOut,
       "onMouseOut": this.handleButtonMouseOut,
       "onMouseOver": this.handleButtonMouseOver,
       "onClick": this.handleClick,

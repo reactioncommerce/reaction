@@ -58,7 +58,7 @@ AutoForm.addHooks("authnet-payment-form", {
     };
 
     // Reaction only stores type and 4 digits
-    const storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
+    const storedCard = `${form.type.charAt(0).toUpperCase() + form.type.slice(1)} ${doc.cardNumber.slice(-4)}`;
 
     hidePaymentAlert();
 
