@@ -6,7 +6,6 @@ accounts-password@1.5.0
 accounts-twitter@1.4.1
 alanning:roles@1.2.16
 aldeed:autoform@5.8.1
-aldeed:browser-tests@0.1.1
 aldeed:collection2@2.10.0
 aldeed:collection2-core@1.2.0
 aldeed:schema-deny@1.1.0
@@ -62,7 +61,6 @@ ddp-rate-limiter@1.0.7
 ddp-server@2.1.2
 deps@1.0.12
 diff-sequence@1.1.0
-dispatch:mocha@0.4.1
 dispatch:run-as-user@1.1.1
 dynamic-import@0.3.0
 ecmascript@0.10.0
