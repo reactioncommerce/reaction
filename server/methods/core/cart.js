@@ -428,7 +428,7 @@ Meteor.methods({
       }
 
       // Update inventory
-      Hooks.Events.run("afterModifyQuantityInCart", cart._id);
+      Hooks.Events.run("afterModifyQuantityInCart", cart._id, { productId, variantId });
       // Calculate discounts
       Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
       // refresh shipping quotes
@@ -459,6 +459,7 @@ Meteor.methods({
     }
     // cart variant doesn't exist
     let updateResult;
+    const newItemId = Random.id();
 
     try {
       updateResult = Collections.Cart.update({
@@ -466,7 +467,7 @@ Meteor.methods({
       }, {
         $addToSet: {
           items: {
-            _id: Random.id(),
+            _id: newItemId,
             shopId: product.shopId,
             productId,
             quantity,
@@ -489,7 +490,7 @@ Meteor.methods({
     }
 
     // Update add inventory reserve
-    Hooks.Events.run("afterAddItemsToCart", cart._id);
+    Hooks.Events.run("afterAddItemsToCart", cart._id, { newItemId });
     // Calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
     // refresh shipping quotes
@@ -535,7 +536,7 @@ Meteor.methods({
       throw new Meteor.Error("not-found", "Unable to find an item with such id in cart.");
     }
 
-    Hooks.Events.run("beforeRemoveItemsFromCart", cart._id);
+    Hooks.Events.run("beforeRemoveItemsFromCart", [cartItem]);
 
     if (!quantity || quantity >= cartItem.quantity) {
       let cartResult;
