@@ -1,0 +1,29 @@
+{
+  "name": "reaction-file-collections",
+  "version": "0.0.0-development",
+  "description": "A way to manage file uploads, downloads, and transformed copies in Node/Web apps. Used by Reaction Commerce.",
+  "author": "Reaction Commerce (https://reactioncommerce.com/)",
+  "license": "MIT",
+  "eslintConfig": {
+    "extends": "@reactioncommerce"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@reactioncommerce/eslint-config": "^1.0.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-jest": "^22.0.4",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^4.17.0",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.6.1",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.6.1"
+  }
+}

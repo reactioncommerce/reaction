@@ -1,0 +1,17 @@
+{
+  "name": "reaction-files-example-meteor-blaze-app",
+  "private": true,
+  "scripts": {
+    "start": "DEBUG=reaction-file-collections meteor run"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.36",
+    "@reactioncommerce/file-collections": "../../packages/file-collections",
+    "@reactioncommerce/file-collections-sa-gridfs": "../../packages/file-collections-sa-gridfs",
+    "bootstrap": "^3.3.7",
+    "meteor-node-stubs": "^0.3.2",
+    "node-fetch": "^2.0.0",
+    "sharp": "^0.19.0"
+  },
+  "devDependencies": {}
+}

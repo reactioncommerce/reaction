@@ -1,0 +1,10 @@
+.imageArea {
+  margin-bottom: 70px;
+}
+
+.imageArea .media {
+  margin-top: 0;
+  margin-right: 10px;
+  width: 300px;
+  max-width: 300px;
+}
