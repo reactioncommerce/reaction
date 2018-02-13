@@ -68,6 +68,24 @@ export function ordersInventoryAdjust(orderId) {
 
   const order = Orders.findOne(orderId);
   order.items.forEach(item => {
+    const productUpdateArgs = {
+      product: Products.findOne(item.variants._id),
+      modifier: {
+        $inc: {
+          inventoryQuantity: -item.quantity
+        }
+      },
+      options: {
+        publish: true,
+        selector: {
+          type: "variant"
+        }
+      },
+      fieldNames: ["inventoryQuantity"]
+    };
+    Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
     Products.update({
       _id: item.variants._id
     }, {
@@ -80,6 +98,8 @@ export function ordersInventoryAdjust(orderId) {
         type: "variant"
       }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
   });
 }
 
@@ -104,6 +124,24 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
   const order = Orders.findOne(orderId);
   order.items.forEach(item => {
     if (item.shopId === shopId) {
+      const productUpdateArgs = {
+        product: Products.findOne(item.variants._id),
+        modifier: {
+          $inc: {
+            inventoryQuantity: -item.quantity
+          }
+        },
+        options: {
+          publish: true,
+          selector: {
+            type: "variant"
+          }
+        },
+        fieldNames: ["inventoryQuantity"]
+      };
+      Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
       Products.update({
         _id: item.variants._id
       }, {
@@ -116,6 +154,8 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
           type: "variant"
         }
       });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
     }
   });
 }
@@ -368,6 +408,22 @@ export const methods = {
       // in some instances which causes the order not to cancel
       order.items.forEach(item => {
         if (Reaction.hasPermission("orders", Meteor.userId(), item.shopId)) {
+          const productUpdateArgs = {
+            product: Products.findOne(item.variants._id),
+            modifier: {
+              $inc: {
+                inventoryQuantity: -item.quantity
+              }
+            },
+            options: {
+              bypassCollection2: true,
+              publish: true
+            },
+            fieldNames: ["inventoryQuantity"]
+          };
+          Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+          Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
           Products.update({
             _id: item.variants._id,
             shopId: item.shopId
@@ -379,6 +435,8 @@ export const methods = {
             bypassCollection2: true,
             publish: true
           });
+          Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+          Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
         }
       });
     }

@@ -2,7 +2,7 @@
 import Shopify from "shopify-api-node";
 import { Job } from "meteor/vsivsi:job-collection";
 import { Meteor } from "meteor/meteor";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 import { check, Match } from "meteor/check";
 import { Products, Jobs, Tags } from "/lib/collections";
 import { getApiInfo } from "../api/api";
@@ -316,8 +316,14 @@ export const methods = {
             // Setup reaction product
             const reactionProduct = createReactionProductFromShopifyProduct({ shopifyProduct, shopId, hashtags });
 
+            // Call product insert `before` hook
             // Insert product, save id
             const reactionProductId = Products.insert(reactionProduct, { selector: { type: "simple" }, publish: true });
+            Hooks.Events.run("verifyProductInsert", reactionProduct);
+            // Call product insert `after` hook
+            Hooks.Events.run("afterProductInsert", reactionProduct);
+            Hooks.Events.run("afterProductInsertSearch", reactionProduct);
+
             ids.push(reactionProductId);
 
             // Save the primary image to the grid and as priority 0
@@ -364,6 +370,9 @@ export const methods = {
 
                   // insert the Reaction variant
                   const reactionVariantId = Products.insert(reactionVariant, { publish: true });
+                  Hooks.Events.run("verifyProductInsert", reactionVariant);
+                  Hooks.Events.run("afterProductInsert", reactionProduct);
+                  Hooks.Events.run("afterProductInsertSearch", reactionProduct);
                   ids.push(reactionVariantId);
 
                   // If we have shopify options, create reaction options
@@ -385,6 +394,9 @@ export const methods = {
                         });
 
                         const reactionOptionId = Products.insert(reactionOption, { type: "variant" });
+                        Hooks.Events.run("verifyProductInsert", reactionOption);
+                        Hooks.Events.run("afterProductInsert", reactionProduct);
+                        Hooks.Events.run("afterProductInsertSearch", reactionProduct);
                         ids.push(reactionOptionId);
                         Logger.debug(`Imported ${shopifyProduct.title} ${variant}/${option}`);
 
@@ -444,6 +456,9 @@ export const methods = {
                               });
 
                               const reactionTernaryOptionId = Products.insert(reactionTernaryOption, { type: "variant" });
+                              Hooks.Events.run("verifyProductInsert", reactionTernaryOption);
+                              Hooks.Events.run("afterProductInsert", reactionProduct);
+                              Hooks.Events.run("afterProductInsertSearch", reactionProduct);
                               ids.push(reactionTernaryOptionId);
                               Logger.debug(`Imported ${shopifyProduct.title} ${variant}/${option}/${ternaryOption}`);
 
@@ -532,6 +547,21 @@ export const methods = {
             } else {
               price.range = `${price.max}`;
             }
+            const productUpdateArgs = {
+              product: Products.findOne(reactionProductId),
+              modifier: {
+                $set: {
+                  price,
+                  isSoldOut,
+                  isBackorder
+                }
+              },
+              options: { selector: { type: "simple" }, publish: true },
+              fieldNames: ["price", "isSoldOut", "isBackorder"]
+            };
+            Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+            Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
             Products.update({
               _id: reactionProductId
             }, {
@@ -541,6 +571,8 @@ export const methods = {
                 isBackorder
               }
             }, { selector: { type: "simple" }, publish: true });
+            Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+            Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
             Logger.debug(`Product ${shopifyProduct.title} added`);
           } else { // product already exists check

@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import { Cart, Products, Orders } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Cart, Orders } from "/lib/collections";
+import { Hooks, Logger } from "/server/api";
 import { registerInventory } from "../methods/inventory";
 
 /**
@@ -45,14 +45,14 @@ Cart.before.update((userId, cart, fieldNames, modifier) => {
  * after variant were removed
  * @fires `inventory/remove` Method
  */
-Products.after.remove((userId, doc) => {
-  if (doc.type === "variant") {
+Hooks.Events.add("afterProductVariantRemove", (product) => {
+  if (product.type === "variant") {
     const variantItem = {
-      productId: doc.ancestors[0],
-      variantId: doc._id,
-      shopId: doc.shopId
+      productId: product.ancestors[0],
+      variantId: product._id,
+      shopId: product.shopId
     };
-    Logger.debug(`remove inventory variants for variant: ${doc._id
+    Logger.debug(`remove inventory variants for variant: ${product._id
     }, call inventory/remove`);
     Meteor.call("inventory/remove", variantItem);
   }
@@ -61,11 +61,12 @@ Products.after.remove((userId, doc) => {
 //
 // after product update
 //
-Products.after.update((userId, doc, fieldNames, modifier) => {
+Hooks.Events.add("afterProductUpdate", (productUpdateArgs) => {
+  const { product, modifier } = { ...productUpdateArgs };
   // product update can't affect on inventory, so we don't manage this cases
   // we should keep in mind that returning false within hook prevents other
   // hooks to be run
-  if (doc.type !== "variant") return false;
+  if (product.type !== "variant") return false;
 
   // check if modifier is set and $pull and $push are undefined. This need
   // because anyway on every create or delete operation we have additionally
@@ -77,7 +78,7 @@ Products.after.update((userId, doc, fieldNames, modifier) => {
     }
     modifier.$set.updatedAt = new Date();
     // triggers inventory adjustment
-    Meteor.call("inventory/adjust", doc);
+    Meteor.call("inventory/adjust", product);
   }
 });
 
@@ -85,11 +86,11 @@ Products.after.update((userId, doc, fieldNames, modifier) => {
  * after insert
  * @summary should fires on create new variants, on clones products/variants
  */
-Products.after.insert((userId, doc) => {
-  if (doc.type !== "variant") {
+Hooks.Events.add("afterProductInsert", (product) => {
+  if (product.type !== "variant") {
     return false;
   }
-  registerInventory(doc);
+  registerInventory(product);
 });
 
 function markInventoryShipped(doc) {

@@ -36,7 +36,7 @@ describe("Inventory Hooks", function () {
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
-    Products.direct.remove({});
+    Products.remove({});
     const { product, variant } = addProductSingleVariant();
     cart = createCart(product._id, variant._id);
     resetInventory();

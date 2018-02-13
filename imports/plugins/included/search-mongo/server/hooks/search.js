@@ -1,9 +1,9 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Products, ProductSearch, Orders, OrderSearch, Accounts, AccountSearch } from "/lib/collections";
+import { ProductSearch, Orders, OrderSearch, Accounts, AccountSearch } from "/lib/collections";
 import { getSearchParameters,
   buildProductSearchRecord, buildOrderSearchRecord, buildAccountSearchRecord } from "../methods/searchcollections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 
 Accounts.after.insert((userId, doc) => {
   if (AccountSearch && !Meteor.isAppTest) {
@@ -50,9 +50,9 @@ Orders.after.update((userId, doc) => {
 /**
  * if product is removed, remove product search record
  */
-Products.after.remove((userId, doc) => {
-  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
-    const productId = doc._id;
+Hooks.Events.add("afterProductRemove", (product) => {
+  if (ProductSearch && !Meteor.isAppTest && product.type === "simple") {
+    const productId = product._id;
     ProductSearch.remove(productId);
     Logger.debug(`Removed product ${productId} from ProductSearch collection`);
   }
@@ -61,15 +61,18 @@ Products.after.remove((userId, doc) => {
 //
 // after product update rebuild product search record
 //
-Products.after.update((userId, doc, fieldNames) => {
-  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
-    const productId = doc._id;
+
+Hooks.Events.add("afterProductUpdateSearchRebuild", (productUpdateArgs) => {
+  const { product, fieldNames } = { ...productUpdateArgs };
+
+  if (ProductSearch && !Meteor.isAppTest && product.type === "simple") {
+    const productId = product._id;
     const { fieldSet } = getSearchParameters();
     const modifiedFields = _.intersection(fieldSet, fieldNames);
     if (modifiedFields.length) {
-      Logger.debug(`Rewriting search record for ${doc.title}`);
+      Logger.debug(`Rewriting search record for ${product.title}`);
       ProductSearch.remove(productId);
-      if (!doc.isDeleted) { // do not create record if product was archived
+      if (!product.isDeleted) { // do not create record if product was archived
         buildProductSearchRecord(productId);
       }
     } else {
@@ -82,9 +85,9 @@ Products.after.update((userId, doc, fieldNames) => {
  * after insert
  * @summary should fires on create new variants, on clones products/variants
  */
-Products.after.insert((userId, doc) => {
-  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
-    const productId = doc._id;
+Hooks.Events.add("afterProductInsertSearch", (product) => {
+  if (ProductSearch && !Meteor.isAppTest && product.type === "simple") {
+    const productId = product._id;
     buildProductSearchRecord(productId);
     Logger.debug(`Added product ${productId} to ProductSearch`);
   }

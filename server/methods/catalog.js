@@ -6,7 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { copyFile, ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
 import { Media, Products, Revisions, Tags } from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
@@ -235,6 +235,23 @@ function denormalize(id, field) {
         price: priceObject
       });
   }
+
+  const productUpdateArgs = {
+    product: doc,
+    modifier: {
+      $set: update
+    },
+    options: {
+      selector: {
+        type: "simple"
+      }
+    },
+    fieldNames: Object.keys(update)
+  };
+
+  Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+  Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
   Products.update(id, {
     $set: update
   }, {
@@ -242,6 +259,8 @@ function denormalize(id, field) {
       type: "simple"
     }
   });
+  Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+  Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 }
 
 /**
@@ -311,7 +330,25 @@ function flushQuantity(id) {
     return 1; // let them think that we have one successful operation here
   }
 
-  return Products.update({
+  const productUpdateArgs = {
+    product: variant,
+    modifier: {
+      $set: {
+        inventoryQuantity: 0
+      }
+    },
+    options: {
+      selector: {
+        type: "variant"
+      }
+    },
+    fieldNames: ["inventoryQuantity"]
+  };
+
+  Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+  Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
+  const updatedProduct = Products.update({
     _id: id
   }, {
     $set: {
@@ -322,6 +359,10 @@ function flushQuantity(id) {
       type: "variant"
     }
   });
+  Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+  Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
+  return updatedProduct;
 }
 
 Meteor.methods({
@@ -435,7 +476,9 @@ Meteor.methods({
         Logger.error(`products/cloneVariant: cloning of ${variantId} was failed: ${error}`);
         throw error;
       }
-
+      Hooks.Events.run("verifyProductInsert", clone);
+      Hooks.Events.run("afterProductInsert", clone);
+      Hooks.Events.run("afterProductInsertSearch", clone);
       return newId;
     });
   },
@@ -495,6 +538,9 @@ Meteor.methods({
     }
 
     Products.insert(assembledVariant);
+    Hooks.Events.run("verifyProductInsert", assembledVariant);
+    Hooks.Events.run("afterProductInsert", assembledVariant);
+    Hooks.Events.run("afterProductInsertSearch", assembledVariant);
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
     return newVariantId;
@@ -527,6 +573,21 @@ Meteor.methods({
 
     const newVariant = Object.assign({}, currentVariant, variant);
 
+    const productUpdateArgs = {
+      product: variant,
+      modifier: {
+        $set: newVariant // newVariant already contain `type` property, so we
+        // do not need to pass it explicitly
+      },
+      options: {
+        validate: false
+      },
+      fieldNames: Object.keys(newVariant)
+    };
+
+    Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
     const variantUpdateResult = Products.update({
       _id: variant._id
     }, {
@@ -535,6 +596,8 @@ Meteor.methods({
     }, {
       validate: false
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
     const productId = currentVariant.ancestors[0];
     // we need manually check is these fields were updated?
@@ -587,7 +650,10 @@ Meteor.methods({
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
+    Hooks.Events.run("beforeProductRemove", variant);
     const deleted = Products.remove(selector);
+    Hooks.Events.run("afterProductRemove", variant);
+    Hooks.Events.run("afterProductVariantRemove", variant);
 
     // after variant were removed from product, we need to recalculate all
     // denormalized fields
@@ -700,6 +766,9 @@ Meteor.methods({
         );
       }
       result = Products.insert(newProduct, { validate: false });
+      Hooks.Events.run("verifyProductInsert", newProduct);
+      Hooks.Events.run("afterProductInsert", newProduct);
+      Hooks.Events.run("afterProductInsertSearch", newProduct);
       results.push(result);
 
       // cloning variants
@@ -727,6 +796,9 @@ Meteor.methods({
         delete newVariant.publishedAt; // TODO can variant have this param?
 
         result = Products.insert(newVariant, { validate: false });
+        Hooks.Events.run("verifyProductInsert", newVariant);
+        Hooks.Events.run("afterProductInsert", newVariant);
+        Hooks.Events.run("afterProductInsertSearch", newVariant);
         copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
       }
@@ -756,7 +828,13 @@ Meteor.methods({
       if (!product.shopId || !Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
         throw new Meteor.Error("invalid-parameter", "Product should have a valid shopId");
       }
-      return Products.insert(product);
+      const newProductId = Products.insert(product);
+      const newProduct = Products.findOne(newProductId);
+
+      Hooks.Events.run("verifyProductInsert", newProduct);
+      Hooks.Events.run("afterProductInsert", newProduct);
+      Hooks.Events.run("afterProductInsertSearch", newProduct);
+      return newProductId;
     }
 
     const newId = Products.insert({
@@ -765,13 +843,23 @@ Meteor.methods({
       validate: false
     });
 
-    Products.insert({
+    const newProduct = Products.findOne(newId);
+    Hooks.Events.run("verifyProductInsert", newProduct);
+    Hooks.Events.run("afterProductInsert", newProduct);
+    Hooks.Events.run("afterProductInsertSearch", newProduct);
+
+    const variantId = Products.insert({
       ancestors: [newId],
       price: 0.00,
       title: "",
       type: "variant" // needed for multi-schema
     });
 
+    const variant = Products.findOne(variantId);
+
+    Hooks.Events.run("verifyProductInsert", variant);
+    Hooks.Events.run("afterProductInsert", variant);
+    Hooks.Events.run("afterProductInsertSearch", variant);
     return newId;
   },
 
@@ -831,11 +919,14 @@ Meteor.methods({
       ids.push(doc._id);
     });
 
+    Hooks.Events.run("beforeProductRemove", product);
     Products.remove({
       _id: {
         $in: ids
       }
     });
+    Hooks.Events.run("afterProductRemove", product);
+    Hooks.Events.run("afterProductVariantRemove", product);
 
     const numRemoved = Revisions.find({
       "documentId": {
@@ -923,6 +1014,21 @@ Meteor.methods({
     // we need to use sync mode here, to return correct error and result to UI
     let result;
 
+    const productUpdateArgs = {
+      product: doc,
+      modifier: {
+        $set: update // newVariant already contain `type` property, so we
+        // do not need to pass it explicitly
+      },
+      options: {
+        selector: { type }
+      },
+      fieldNames: Object.keys(update)
+    };
+
+    Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
     try {
       result = Products.update(_id, {
         $set: update
@@ -932,6 +1038,8 @@ Meteor.methods({
     } catch (e) {
       throw new Meteor.Error("server-error", e.message);
     }
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
     // If we get a result from the product update,
     // meaning the update went past revision control,
@@ -988,13 +1096,34 @@ Meteor.methods({
       if (productCount > 0) {
         throw new Meteor.Error("server-error", "Existing Tag, Update Denied");
       }
-      return Products.update(productId, {
+
+      const productUpdateArgs = {
+        product,
+        modifier: {
+          $push: {
+            hashtags: existingTag._id
+          }
+        },
+        options: {
+          selector: { type: "simple" }
+        },
+        fieldNames: ["hashtags"]
+      };
+
+      Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
+      const updatedProduct = Products.update(productId, {
         $push: {
           hashtags: existingTag._id
         }
       }, {
         selector: { type: "simple" }
       });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
+      return updatedProduct;
     } else if (tagId) {
       return Tags.update(tagId, { $set: newTag });
     }
@@ -1006,7 +1135,25 @@ Meteor.methods({
       return newTagId;
     }
 
-    return Products.update(productId, {
+    const productUpdateArgs = {
+      product,
+      modifier: {
+        $push: {
+          hashtags: newTagId
+        }
+      },
+      options: {
+        selector: {
+          type: "simple"
+        }
+      },
+      fieldNames: Object.keys("hashtags")
+    };
+
+    Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
+    const updatedProduct = Products.update(productId, {
       $push: {
         hashtags: newTagId
       }
@@ -1015,6 +1162,10 @@ Meteor.methods({
         type: "simple"
       }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
+    return updatedProduct;
   },
 
   /**
@@ -1038,6 +1189,22 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
+    const productUpdateArgs = {
+      product,
+      modifier: {
+        $pull: {
+          hashtags: tagId
+        }
+      },
+      options: {
+        selector: { type: "simple" }
+      },
+      fieldNames: ["hashtags"]
+    };
+
+    Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+
     Products.update(productId, {
       $pull: {
         hashtags: tagId
@@ -1045,6 +1212,8 @@ Meteor.methods({
     }, {
       selector: { type: "simple" }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
   },
 
   /**
@@ -1068,7 +1237,18 @@ Meteor.methods({
 
     let handle = Reaction.getSlug(product.title);
     handle = createHandle(handle, product._id);
+
+    const productUpdateArgs = {
+      product,
+      modifier: { $set: { handle, type: "simple" } },
+      fieldNames: ["handle", "type"]
+    };
+
+    Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
     Products.update(product._id, { $set: { handle, type: "simple" } });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
     return handle;
   },
@@ -1092,6 +1272,7 @@ Meteor.methods({
     } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
+    let productUpdateArgs;
 
     function getSet(handle) {
       return {
@@ -1107,7 +1288,16 @@ Meteor.methods({
     if (product.handle === tag.slug) {
       let handle = Reaction.getSlug(product.title);
       handle = createHandle(handle, product._id);
+      productUpdateArgs = {
+        product,
+        modifier: getSet(handle)
+      };
+
+      Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
       Products.update(product._id, getSet(handle));
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
       return handle;
     }
@@ -1122,9 +1312,25 @@ Meteor.methods({
         Reaction.getSlug(currentProduct.title),
         currentProduct._id
       );
+      productUpdateArgs = {
+        product: Products.findOne(currentProduct._id),
+        modifier: getSet(currentProductHandle)
+      };
+      Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
       Products.update(currentProduct._id, getSet(currentProductHandle));
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
     }
+    productUpdateArgs = {
+      product,
+      modifier: getSet(tag.slug)
+    };
+    Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
     Products.update(product._id, getSet(tag.slug));
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
     return tag.slug;
   },
@@ -1159,8 +1365,23 @@ Meteor.methods({
     const pinned = `positions.${tag}.pinned`;
     const weight = `positions.${tag}.weight`;
     const updatedAt = `positions.${tag}.updatedAt`;
+    const productUpdateArgs = {
+      product,
+      modifier: {
+        $set: {
+          [position]: positionData.position,
+          [pinned]: positionData.pinned,
+          [weight]: positionData.weight,
+          [updatedAt]: new Date(),
+          type: "simple" // for multi-schema
+        }
+      },
+      fieldNames: ["type", position, pinned, weight, updatedAt]
+    };
 
-    return Products.update({
+    Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+    const updatedProduct = Products.update({
       _id: productId
     }, {
       $set: {
@@ -1171,6 +1392,10 @@ Meteor.methods({
         type: "simple" // for multi-schema
       }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
+    return updatedProduct;
   },
 
   /**
@@ -1193,11 +1418,27 @@ Meteor.methods({
     }
 
     sortedVariantIds.forEach((id, index) => {
+      const productUpdateArgs = {
+        product: Products.findOne(id),
+        modifier: {
+          $set: { index }
+        },
+        options: {
+          selector: { type: "variant" }
+        },
+        fieldNames: ["index"]
+      };
+
+      Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
       Products.update(id, {
         $set: { index }
       }, {
         selector: { type: "variant" }
       });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
       Logger.debug(`Variant ${id} position was updated to index ${index}`);
     });
   },
@@ -1228,7 +1469,21 @@ Meteor.methods({
 
     // update existing metadata
     if (typeof meta === "object") {
-      return Products.update({
+      const productUpdateArgs = {
+        product,
+        modifier: {
+          $set: {
+            "metafields.$": updatedMeta
+          }
+        },
+        options: {
+          selector: { type: "simple" }
+        },
+        fieldNames: ["metafields"]
+      };
+      Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+      const updatedProduct = Products.update({
         _id: productId,
         metafields: meta
       }, {
@@ -1238,8 +1493,26 @@ Meteor.methods({
       }, {
         selector: { type: "simple" }
       });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
+      return updatedProduct;
     } else if (typeof meta === "number") {
-      return Products.update({
+      const productUpdateArgs = {
+        product,
+        modifier: {
+          $set: {
+            [`metafields.${meta}`]: updatedMeta
+          }
+        },
+        options: {
+          selector: { type: "simple" }
+        },
+        fieldNames: ["metafields"]
+      };
+      Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+      const updatedProduct = Products.update({
         _id: productId
       }, {
         $set: {
@@ -1248,10 +1521,29 @@ Meteor.methods({
       }, {
         selector: { type: "simple" }
       });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
+      return updatedProduct;
     }
 
+    const productUpdateArgs = {
+      product,
+      modifier: {
+        $addToSet: {
+          metafields: updatedMeta
+        }
+      },
+      options: {
+        selector: { type: "simple" }
+      },
+      fieldNames: ["metafields"]
+    };
+
+    Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
     // adds metadata
-    return Products.update({
+    const updatedProduct = Products.update({
       _id: productId
     }, {
       $addToSet: {
@@ -1260,6 +1552,10 @@ Meteor.methods({
     }, {
       selector: { type: "simple" }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
+    return updatedProduct;
   },
 
   /**
@@ -1285,12 +1581,24 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    return Products.update({
+    const productUpdateArgs = {
+      product,
+      modifier: { $pull: { metafields } },
+      fieldNames: ["metafields"]
+    };
+
+    Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
+    const updatedProduct = Products.update({
       _id: productId,
       type
     }, {
       $pull: { metafields }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
+    return updatedProduct;
   },
 
   /**
@@ -1356,6 +1664,21 @@ Meteor.methods({
       // update product visibility
       Logger.debug("toggle product visibility ", product._id, !product.isVisible);
 
+      const productUpdateArgs = {
+        product,
+        modifier: {
+          $set: {
+            isVisible: !product.isVisible
+          }
+        },
+        options: {
+          selector: { type: "simple" }
+        },
+        fieldNames: ["isVisible"]
+      };
+
+      Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
       const res = Products.update(product._id, {
         $set: {
           isVisible: !product.isVisible
@@ -1363,6 +1686,9 @@ Meteor.methods({
       }, {
         selector: { type: "simple" }
       });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
+
       // update product variants visibility
       updateVariantProductField(variants, "isVisible", !product.isVisible);
       // if collection updated we return new `isVisible` state
@@ -1394,6 +1720,23 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
+    const productUpdateArgs = {
+      product,
+      modifier: {
+        $set: {
+          isVisible: !product.isVisible
+        }
+      },
+      options: {
+        selector: {
+          type: product.type
+        }
+      },
+      fieldNames: ["isVisible"]
+    };
+
+    Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+    Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
     const res = Products.update(productId, {
       $set: {
         isVisible: !product.isVisible
@@ -1403,6 +1746,8 @@ Meteor.methods({
         type: product.type
       }
     });
+    Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+    Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
 
     if (Array.isArray(product.ancestors) && product.ancestors.length) {
       const updateId = product.ancestors[0] || product._id;

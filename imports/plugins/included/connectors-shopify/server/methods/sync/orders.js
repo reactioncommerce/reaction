@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Reaction } from "/server/api";
+import { Hooks, Reaction } from "/server/api";
 import { Products } from "/lib/collections";
 import { connectorsRoles } from "../../lib/roles";
 
@@ -53,6 +53,24 @@ export const methods = {
       // return the one with the longest list of ancestors
       const variant = findBottomVariant(variantsWithShopifyId);
 
+      const productUpdateArgs = {
+        product: Products.findOne(variant._id),
+        modifier: {
+          $inc: { inventoryQuantity: (lineItem.quantity * -1) },
+          $push: {
+            eventLog: {
+              title: "Product inventory updated by Shopify webhook",
+              type: "update-webhook",
+              description: `Shopify order created which caused inventory to be reduced by ${lineItem.quantity}`
+            }
+          }
+        },
+        options: { selector: { type: "variant" } },
+        fieldNames: ["inventoryQuantity", "eventLog"]
+      };
+
+      Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+      Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
       // adjust inventory for variant and push an event into the eventLog
       Products.update({
         _id: variant._id
@@ -66,6 +84,8 @@ export const methods = {
           }
         }
       }, { selector: { type: "variant" } });
+      Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+      Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
     });
   }
 };

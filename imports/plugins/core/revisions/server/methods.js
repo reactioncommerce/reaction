@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Products, Media, Revisions, Packages } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 
 export function updateSettings(settings) {
   check(settings, Object);
@@ -115,6 +115,19 @@ Meteor.methods({
       for (const revision of revisions) {
         if (!revision.documentType || revision.documentType === "product") {
           previousDocuments.push(Products.findOne(revision.documentId));
+          const productUpdateArgs = {
+            product: Products.findOne(revision.documentId),
+            modifier: {
+              $set: revision.documentData
+            },
+            options: {
+              publish: true
+            },
+            fieldNames: Object.keys(revision.documentData)
+          };
+
+          Hooks.Events.run("beforeProductUpdate", productUpdateArgs);
+          Hooks.Events.run("beforeProductUpdatePositions", productUpdateArgs);
 
           const res = Products.update({
             _id: revision.documentId
@@ -123,6 +136,8 @@ Meteor.methods({
           }, {
             publish: true
           });
+          Hooks.Events.run("afterProductUpdate", productUpdateArgs);
+          Hooks.Events.run("afterProductUpdateSearchRebuild", productUpdateArgs);
           updatedDocuments += res;
         } else if (revision.documentType === "image") {
           if (revision.changeType === "insert") {

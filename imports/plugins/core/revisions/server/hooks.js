@@ -2,7 +2,7 @@ import _ from "lodash";
 import { diff } from "deep-diff";
 import { Meteor } from "meteor/meteor";
 import { Products, Revisions, Tags, Media } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
 import { getSlug } from "/lib/api";
 
@@ -274,8 +274,7 @@ Media.files.before.remove((userId, media) => {
   return true;
 });
 
-
-Products.before.insert((userId, product) => {
+Hooks.Events.add("verifyProductInsert", (product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -296,7 +295,7 @@ Products.before.insert((userId, product) => {
 
   // Prevent this product from being created if a parent product / varaint ancestor is deleted.
   //
-  // This will prevent cases where a parent variant hase been deleted and a user tries to create a
+  // This will prevent cases where a parent variant has been deleted and a user tries to create a
   // child variant. You cannot create the child variant becuase the parent will no longer exist when
   // changes have been published; resulting in a broken inheretence and UI
   const productHasAncestors = Array.isArray(product.ancestors);
@@ -331,8 +330,8 @@ Products.before.insert((userId, product) => {
   }
 });
 
-
-Products.before.update(function (userId, product, fieldNames, modifier, options) {
+Hooks.Events.add("beforeProductUpdate", (productUpdateArgs) => {
+  const { product, modifier, options } = { ...productUpdateArgs };
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -374,7 +373,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
     }
   }
 
-  const originalSelector = this.args[0];
+  const originalSelector = { _id: product._id };
 
   if (!productRevision) {
     Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
@@ -411,7 +410,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
     }
   };
 
-  if (options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
+  if (options && options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
     // Maybe mark the revision as published
 
     Logger.debug(`Publishing revison for product ${product._id}.`);
@@ -613,7 +612,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   return false;
 });
 
-Products.before.remove((userId, product) => {
+Hooks.Events.add("beforeProductRemove", (product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
