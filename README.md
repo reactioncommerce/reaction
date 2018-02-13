@@ -82,15 +82,11 @@ Pull requests should:
 
 Get more details in our [Contributing guide](https://github.com/reactioncommerce/reaction/blob/master/CONTRIBUTING.md).
 
-# Reaction Platform
 
 ## Deploy on Docker
 
 We ensure that all releases are deployable as [Docker](https://hub.docker.com/r/reactioncommerce/reaction/) containers. While we don't regularly test other methods of deployment, our community has documented deployment strategies for AWS, [Digital Ocean](https://gist.github.com/jshimko/745ca66748846551692e24c267a56060), and Galaxy. For an introduction to Docker deployment, the [Reaction deployment guide](https://docs.reactioncommerce.com/reaction-docs/master/deploying) has detailed examples. 
 
-## Reaction Platform
-
-We also offer [Reaction Platform](https://reactioncommerce.com/hosting), a managed deployment platform integrated with the Reaction command line. 
 
 ### License
 
