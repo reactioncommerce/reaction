@@ -65,7 +65,7 @@ Template.avalaraSettings.helpers({
   },
 
   logGrid() {
-    const filteredFields = [ "data.request.data.date", "data.request.data.type"];
+    const filteredFields = ["data.request.data.date", "data.request.data.type"];
     const noDataMessage = i18next.t("logGrid.noLogsFound");
     const instance = Template.instance();
 
@@ -82,9 +82,7 @@ Template.avalaraSettings.helpers({
 
     // helper adds a class to every grid row
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
-        return "log-grid-row";
-      }
+      bodyCssClassName: () => "log-grid-row"
     };
 
     // add i18n handling to headers
