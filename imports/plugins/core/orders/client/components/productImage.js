@@ -31,7 +31,12 @@ class ProductImage extends Component {
     let mediaUrl;
 
     if (displayMedia(item)) {
-      mediaUrl = displayMedia(item).url();
+      const rawMediaUrl = displayMedia(item).url();
+      mediaUrl = rawMediaUrl;
+
+      if (size) {
+        mediaUrl = `${rawMediaUrl}?source=${size}`;
+      }
     } else {
       mediaUrl = "/resources/placeholder.gif";
     }
