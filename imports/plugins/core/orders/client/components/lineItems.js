@@ -6,7 +6,6 @@ import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { formatPriceString, Reaction } from "/client/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import ProductImage from "./productImage";
 
 /**
  * @file LineItems React Component for displaying the actionable data on the invoice section on the orders sideview
@@ -62,7 +61,7 @@ class LineItems extends Component {
 
     if (displayMedia(uniqueItem)) {
       return (
-        <ProductImage
+        <Components.ProductImage
           item={uniqueItem}
           displayMedia={displayMedia}
           size="small"

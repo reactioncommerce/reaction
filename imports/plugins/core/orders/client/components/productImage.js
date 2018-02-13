@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Badge } from "@reactioncommerce/reaction-ui";
 
 
@@ -61,5 +62,7 @@ class ProductImage extends Component {
     );
   }
 }
+
+registerComponent("ProductImage", ProductImage);
 
 export default ProductImage;
