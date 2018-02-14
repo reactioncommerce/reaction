@@ -65,6 +65,7 @@ export function cartCleanupJob() {
             _id: cart.userId,
             emails: []
           });
+          Hooks.Events.run("afterAccountsRemove", null, user._id);
           const destroySession = ServerSessions.remove({ _id: cart.sessionId });
           Meteor.users.remove({ _id: user._id, emails: [] }); // clears out anonymous user
           if (removeCart && removeAccount && destroySession) {

@@ -10,12 +10,8 @@ const handlers = {
   handleChange(value) {
     const currency = value.split(" ");
     const currencyName = currency[0];
-    //
-    // this is a sanctioned use of Meteor.user.update
-    // and only possible because we allow it in the
-    // UserProfile and ShopMembers publications.
-    //
-    Accounts.update(Meteor.userId(), { $set: { "profile.currency": currencyName } });
+    // update Accounts with the selected currency
+    Meteor.call("accounts/setProfileCurrency", currencyName);
 
     const cart = Cart.findOne({ userId: Meteor.userId() });
 
