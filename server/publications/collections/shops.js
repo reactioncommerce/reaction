@@ -15,6 +15,7 @@ Meteor.publish("MerchantShops", function (shopsOfUser = Reaction.getShopsForUser
   check(shopsOfUser, Array);
 
   const domain = Reaction.getDomain();
+  const shopsOfUser = Reaction.getShopsForUser(["admin"], this.userId);
   const { enabled } = Reaction.getMarketplaceSettings();
   // Don't publish currencies, languages, or locales for merchant shops.
   // We'll get that info from the primary shop.
@@ -40,7 +41,6 @@ Meteor.publish("MerchantShops", function (shopsOfUser = Reaction.getShopsForUser
   if (!enabled) {
     return this.ready();
   }
-
 
   const selector = {
     domains: domain,
