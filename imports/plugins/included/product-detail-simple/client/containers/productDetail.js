@@ -12,7 +12,6 @@ import { Tags, Media, Cart } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
-import { Session } from "meteor/session";
 
 const wrapComponent = (Comp) => (
   class ProductDetailContainer extends Component {
