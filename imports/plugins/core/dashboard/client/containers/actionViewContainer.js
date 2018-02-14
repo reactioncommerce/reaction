@@ -51,6 +51,8 @@ function composer(props, onData) {
     tooltipPosition: "left middle"
   });
 
+  // calculated here and not in component, as environment dependent.
+  const viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
   onData(null, {
     isAdminArea: true,
@@ -60,9 +62,9 @@ function composer(props, onData) {
     buttons: items,
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     isDetailViewAtRootView: Reaction.isActionViewDetailAtRootView(),
-
     actionViewIsOpen: Reaction.isActionViewOpen(),
     detailViewIsOpen: Reaction.isActionViewDetailOpen(),
+    viewportWidth,
 
     // Callbacks
     handleActionViewBack,
