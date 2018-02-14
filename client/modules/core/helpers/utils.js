@@ -1,18 +1,22 @@
-import { latinLangs } from "/lib/api/helpers";
-
-// Wrapping the server metod/callback with a Promise
-// so the shops base language can be set as a const
-// using await inside the lazyLoadSlugify function
-const shopLang = new Promise((resolve, reject) => Meteor.call("shop/getBaseLanguage", (err, res) => err ? reject(err) : resolve(res)));
+import { latinLangs, getShopLang } from "/lib/api/helpers";
 
 // dynamic import of slugiy/transliteration.slugify
 let slugify;
 async function lazyLoadSlugify() {
-  if (slugify) return;
+  let mod;
   // getting the shops base language
-  const lang = await shopLang;
-  // if the shops language use latin based chars load slugify else load transliterations's slugify
-  const mod = (latinLangs.indexOf(lang) >= 0) ? await import("slugify") : await import("transliteration");
+  const lang = getShopLang();
+  // if slugify has been loaded but the language has changed
+  // to be a non latin based language then load transliteration
+  if (slugify && slugify.name === "replace" && latinLangs.indexOf(lang) === -1) {
+    mod = await import("transliteration");
+  } else if (slugify) {
+    // if slugify/transliteration is loaded and no lang change
+    return;
+  } else {
+    // if the shops language use latin based chars load slugify else load transliterations's slugify
+    mod = (latinLangs.indexOf(lang) >= 0) ? await import("slugify") : await import("transliteration");
+  }
   // slugify is exported to modules.default while transliteration is exported to modules.slugify
   slugify = mod.default || mod.slugify;
 }
