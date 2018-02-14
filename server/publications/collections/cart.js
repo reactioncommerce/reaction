@@ -99,7 +99,7 @@ Meteor.publish("CartImages", (cartItems) => {
 
 Meteor.publish("CartItemImage", (cartItem) => {
   check(cartItem, Match.Optional(Object));
-  const productId = cartItem.productId;
+  const { productId } = cartItem;
 
   return Media.find({
     "metadata.productId": productId,

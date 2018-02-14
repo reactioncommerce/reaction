@@ -12,9 +12,7 @@ class LoginButtons extends Component {
   }
 
   renderLoginButtons() {
-    const enabledServices = this.props.loginServices().filter((service) => {
-      return service.enabled;
-    });
+    const enabledServices = this.props.loginServices().filter((service) => service.enabled);
 
     return (
       <div>
@@ -34,7 +32,7 @@ class LoginButtons extends Component {
               {this.props.currentView === "loginFormSignInView" &&
                 <span>
                   &nbsp;
-                  <Components.Translation defaultValue="Sign in with"  i18nKey="accountsUI.signInWith" />
+                  <Components.Translation defaultValue="Sign in with" i18nKey="accountsUI.signInWith" />
                 </span>
               }
               {this.props.currentView === "loginFormSignUpView" &&
