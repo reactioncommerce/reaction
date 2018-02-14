@@ -30,9 +30,7 @@ Hooks.Events.add = (name, callback) => {
  * @return {Array} array of remaining callbacks
  */
 Hooks.Events.remove = (name, callbackName) => {
-  Hooks.Events[name] = _.reject(Hooks.Events[name], (callback) => {
-    return callback.name === callbackName;
-  });
+  Hooks.Events[name] = _.reject(Hooks.Events[name], (callback) => callback.name === callbackName);
 
   return Hooks.Events;
 };
@@ -50,9 +48,7 @@ Hooks.Events.run = (name, item, constant) => {
 
   // if the hook exists, and contains callbacks to run
   if (typeof callbacks !== "undefined" && !!callbacks.length) {
-    return callbacks.reduce((result, callback) => {
-      return callback(result, constant);
-    }, item);
+    return callbacks.reduce((result, callback) => callback(result, constant), item);
   }
   return item;
 };

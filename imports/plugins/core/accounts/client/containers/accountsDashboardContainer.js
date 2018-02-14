@@ -13,10 +13,12 @@ const handlers = {
 
       if (groupId === ownerGrpId) {
         return alertConfirm()
-          .then(() => {
-            return updateMethodCall(groupId);
+          .then(({ value }) => {
+            if (value) {
+              return updateMethodCall(groupId);
+            }
           })
-          .catch(() => {
+          .finally(() => {
             if (onMethodDone) { onMethodDone(); }
           });
       }
@@ -55,8 +57,11 @@ const handlers = {
   handleRemoveUserFromGroup(account, groupId) {
     return () => {
       alertConfirm()
-        .then(() => {
-          return removeMethodCall();
+        .then(({ value }) => {
+          if (value) {
+            return removeMethodCall();
+          }
+          return false;
         })
         .catch(() => false);
 

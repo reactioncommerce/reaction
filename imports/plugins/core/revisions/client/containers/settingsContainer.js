@@ -53,9 +53,7 @@ RevisionSettingsContainer.propTypes = {
 
 export function handlePublishClick(revisions) {
   if (Array.isArray(revisions)) {
-    const documentIds = revisions.map((revision) => {
-      return revision.documentId;
-    });
+    const documentIds = revisions.map((revision) => revision.documentId);
     Meteor.call("revisions/publish", documentIds);
   }
 }

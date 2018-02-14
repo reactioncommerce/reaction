@@ -119,9 +119,7 @@ export class ServiceConfigHelper {
    */
   static addProvider(provider, fields) {
     providers[provider] = {
-      fields: () => {
-        return fields;
-      }
+      fields: () => fields
     };
   }
 }

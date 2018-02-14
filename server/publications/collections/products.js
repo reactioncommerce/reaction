@@ -101,7 +101,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       { "workflow.status": "active" },
       { _id: Reaction.getPrimaryShopId() }
     ]
-  }).fetch().map(activeShop => activeShop._id);
+  }).fetch().map((activeShop) => activeShop._id);
 
   // if there are filter/params that don't match the schema
   // validate, catch except but return no results
@@ -293,7 +293,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     const productIds = Products.find(selector, {
       sort,
       limit: productScrollLimit
-    }).map(product => product._id);
+    }).map((product) => product._id);
 
     let newSelector = selector;
 
@@ -455,7 +455,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   const productIds = Products.find(selector, {
     sort,
     limit: productScrollLimit
-  }).map(product => product._id);
+  }).map((product) => product._id);
 
   let newSelector = { ...selector };
 
@@ -549,7 +549,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     added: (product) => {
       let productId;
       if (product.type === "variant") {
-        productId = product.ancestors[0];
+        [productId] = product.ancestors;
       } else {
         productId = product._id;
       }

@@ -41,7 +41,7 @@ class Card extends Component {
   }
 
   render() {
-    const className = this.props.className;
+    const { className } = this.props;
     const elements = Children.map(this.props.children, (child) => {
       const newProps = {};
 
