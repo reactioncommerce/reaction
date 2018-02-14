@@ -33,5 +33,5 @@ async function lazyLoadSlugify() {
  */
 export function getSlug(slugString) {
   Promise.await(lazyLoadSlugify());
-  return (slugString && slugify) ? slugify(slugString) : "";
+  return (slugString && slugify) ? slugify(slugString.toLowerCase()) : "";
 }
