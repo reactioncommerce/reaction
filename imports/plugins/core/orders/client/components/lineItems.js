@@ -64,7 +64,7 @@ class LineItems extends Component {
         <Components.ProductImage
           item={uniqueItem}
           displayMedia={displayMedia}
-          size="small"
+          size="thumbnail"
           badge={false}
         />
       );

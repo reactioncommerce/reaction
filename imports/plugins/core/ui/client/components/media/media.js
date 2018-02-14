@@ -127,7 +127,7 @@ class MediaItem extends Component {
       <img
         alt=""
         className="img-responsive"
-        src={this.renderSource("small")}
+        src={this.renderSource("large")}
       />
     );
   }

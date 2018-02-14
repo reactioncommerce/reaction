@@ -125,7 +125,7 @@ class OrderTable extends Component {
                 <Components.ProductImage
                   item={item}
                   displayMedia={displayMedia}
-                  size="small"
+                  size="thumbnail"
                   badge={true}
                 />
               </div>

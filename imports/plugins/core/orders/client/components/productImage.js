@@ -36,7 +36,7 @@ class ProductImage extends Component {
       mediaUrl = rawMediaUrl;
 
       if (size) {
-        mediaUrl = `${rawMediaUrl}?store=${size}`;
+        mediaUrl = `${rawMediaUrl}&store=${size}`;
       }
     } else {
       mediaUrl = "/resources/placeholder.gif";
