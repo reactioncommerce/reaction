@@ -38,27 +38,10 @@ class ProductPublishContainer extends Component {
     }
   }
 
-  handlePublishSuccess = (result) => {
-    if (result && result.status === "success" && this.props.product) {
-      const productDocument = result.previousDocuments.find((product) => this.props.product._id === product._id);
-
-      if (productDocument && this.props.product.handle !== productDocument.handle) {
-        const newProductPath = Router.pathFor("product", {
-          hash: {
-            handle: this.props.product.handle
-          }
-        });
-
-        window.location.href = newProductPath;
-      }
-    }
-  }
-
   render() {
     return (
       <PublishContainer
         onAction={this.handlePublishActions}
-        onPublishSuccess={this.handlePublishSuccess}
         onVisibilityChange={this.handleVisibilityChange}
         {...this.props}
       />
@@ -70,10 +53,8 @@ class ProductPublishContainer extends Component {
 function composer(props, onData) {
   const product = ReactionProduct.selectedProduct();
   let revisonDocumentIds;
-
   if (product) {
     revisonDocumentIds = [product._id];
-
     onData(null, {
       product,
       documentIds: revisonDocumentIds,

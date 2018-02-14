@@ -12,6 +12,7 @@ import { Tags, Media, Cart } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { Session } from "meteor/session";
 
 const wrapComponent = (Comp) => (
   class ProductDetailContainer extends Component {
@@ -277,15 +278,16 @@ function composer(props, onData) {
   const viewProductAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
   let productSub;
-
+  let productsSub;
   if (productId) {
     productSub = Meteor.subscribe("Product", productId, shopIdOrSlug);
+    productsSub = Meteor.subscribe("Products");
   }
 
-  if (productSub && productSub.ready() && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {
-    // Get the product
+  if (productsSub && productsSub.ready()
+    && productSub && productSub.ready()
+    && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {
     const product = ReactionProduct.setProduct(productId, variantId);
-
     if (Reaction.hasPermission("createProduct")) {
       if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
         Reaction.setActionView({
