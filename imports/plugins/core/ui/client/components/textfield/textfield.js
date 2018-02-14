@@ -122,6 +122,7 @@ class TextField extends Component {
         value={this.value}
         style={this.props.style}
         disabled={this.props.disabled}
+        maxRows={this.props.maxRows}
         id={this.props.id}
       />
     );
@@ -264,6 +265,7 @@ TextField.propTypes = {
   id: PropTypes.string,
   isValid: PropTypes.bool,
   label: PropTypes.string,
+  maxRows: PropTypes.number,
   multiline: PropTypes.bool,
   name: PropTypes.string,
   onBlur: PropTypes.func,
