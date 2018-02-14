@@ -19,18 +19,52 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "packages/file-collections/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "packages/file-collections-sa-base/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "packages/file-collections-sa-gridfs/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
       - run: npm install
+      - run: npm run bootstrap
       - run: npm run lint
-      - run: npm test
+      # - run: npm test
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+
+      - save_cache:
+          paths:
+            - packages/file-collections/node_modules
+          key: v1-dependencies-{{ checksum "packages/file-collections/package.json" }}
+
+      - save_cache:
+          paths:
+            - packages/file-collections-sa-base/node_modules
+          key: v1-dependencies-{{ checksum "packages/file-collections-sa-base/package.json" }}
+
+      - save_cache:
+          paths:
+            - packages/file-collections-sa-gridfs/node_modules
+          key: v1-dependencies-{{ checksum "packages/file-collections-sa-gridfs/package.json" }}
 
   deploy:
     docker:
@@ -43,12 +77,32 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
-      # - run: npx semantic-release
-      - run: echo "Fake deploy..."
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "packages/file-collections/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "packages/file-collections-sa-base/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "packages/file-collections-sa-gridfs/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: npx lerna-semantic-release pre # Set up the versions, tags and commits
+      - run: npx lerna-semantic-release perform # Publishes to npm
+      - run: npx lerna-semantic-release post # Generates a changelog in each package in a file named CHANGELOG.md
+      - run: 'git add CHANGELOG.md && git commit -m "chore: Updated CHANGELOG [skip release]" && git push'
 
 workflows:
   version: 2

@@ -342,3 +342,11 @@ Refer to the `GridFSStore` class definition as a model.
 ## Debugging
 
 When dealing with streams, trying to debug with `inspect` and breakpoints isn't always possible. All of the file-collections packages log plenty of information for debugging in the `reaction-file-collections` namespace. Run your Node or Meteor app with `DEBUG=reaction-file-collections` or `DEBUG=reaction*` to see it.
+
+## Releases
+
+This NPM package is published automatically on every push to the `master` branch. Be sure to use proper Git commit messages so that the version will be bumped properly and release notes can be automatically generated.
+
+- Refer to https://github.com/semantic-release/semantic-release#commit-message-format
+- Do not update the CHANGELOG.md files. They are generated automatically.
+- To avoid triggering a release, such as for a README-only change, include `[skip release]` in your commit message.

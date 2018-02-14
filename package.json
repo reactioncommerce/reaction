@@ -8,9 +8,10 @@
     "extends": "@reactioncommerce"
   },
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "bootstrap": "lerna run build && lerna bootstrap",
+    "start": "cd example-apps/meteor-blaze-app && npm i && npm start"
   },
-  "dependencies": {},
   "devDependencies": {
     "@reactioncommerce/eslint-config": "^1.0.1",
     "babel-cli": "^6.26.0",
@@ -24,6 +25,8 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.6.1",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.6.1"
+    "eslint-plugin-react": "^7.6.1",
+    "lerna": "^2.8.0",
+    "lerna-semantic-release": "^9.1.0"
   }
 }

@@ -43,7 +43,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@reactioncommerce/file-collections-sa-base": "../file-collections-sa-base",
+    "@reactioncommerce/file-collections-sa-base": "^0.0.0-development",
     "babel-runtime": "^6.26.0",
     "debug": "^3.1.0",
     "gridfs-stream": "^1.1.1"
@@ -56,5 +56,8 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
