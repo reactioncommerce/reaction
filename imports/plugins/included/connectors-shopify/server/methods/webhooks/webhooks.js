@@ -41,14 +41,14 @@ export const methods = {
       throw new Meteor.Error("server-error", `No shopify package found for shop ${Reaction.getShopId()}`);
     }
 
-    const settings = shopifyPkg.settings;
+    const { settings } = shopifyPkg;
     const shopify = new Shopify({
       apiKey: settings.apiKey,
       password: settings.password,
       shopName: settings.shopName
     });
 
-    const host = options.absoluteUrl || Meteor.absoluteUrl();
+    const host = options.webhooksDomain || Meteor.absoluteUrl();
     const webhookAddress = `${host}webhooks/shopify/${options.topic.replace(/\//g, "-")}?shopId=${Reaction.getShopId()}`;
     try {
       // Create webhook on Shopify
@@ -75,6 +75,7 @@ export const methods = {
         }
       });
     } catch (error) {
+      Logger.error("server-error", `Shopify API Error creating new webhook: ${error.message}`, error);
       throw new Meteor.Error("server-error", `Shopify API Error creating new webhook: ${error.message}`);
     }
   },
@@ -104,7 +105,7 @@ export const methods = {
       throw new Meteor.Error("server-error", `No shopify package found for shop ${Reaction.getShopId()}`);
     }
 
-    const settings = shopifyPkg.settings;
+    const { settings } = shopifyPkg;
     const shopify = new Shopify({
       apiKey: settings.apiKey,
       password: settings.password,
@@ -158,7 +159,7 @@ export const methods = {
       throw new Meteor.Error("server-error", `No shopify package found for shop ${Reaction.getShopId()}`);
     }
 
-    const settings = shopifyPkg.settings;
+    const { settings } = shopifyPkg;
     const shopify = new Shopify({
       apiKey: settings.apiKey,
       password: settings.password,

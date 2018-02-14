@@ -5,9 +5,9 @@
     "reaction-social": {
       "admin": {
         "dashboard": {
-          "socialLabel": "Social",
-          "socialTitle": "Social",
-          "socialDescription": "configuration Canal social"
+          "socialLabel": "Réseaux sociaux",
+          "socialTitle": "Réseaux sociaux",
+          "socialDescription": "Configuration réseaux sociaux"
         },
         "settings": {
           "public": {
@@ -16,25 +16,25 @@
                 "title": "Facebook",
                 "appId": "ID de l'application",
                 "appSecret": "App secret",
-                "profilePage": "Page de profil"
+                "profilePage": "URL du profil"
               },
               "googleplus": {
                 "title": "Google+",
-                "profilePage": "Page de profil"
+                "profilePage": "URL du profil"
               },
               "pinterest": {
                 "title": "Pinterest",
-                "profilePage": "Page de profil"
+                "profilePage": "URL du profil"
               },
               "twitter": {
                 "title": "Twitter",
                 "username": "Nom d'utilisateur",
-                "profilePage": "Page de profil"
+                "profilePage": "URL du profil"
               }
             }
           },
-          "socialSettingsLabel": "Paramètres sociaux",
-          "socialSettingsSaved": "paramètres sociaux enregistrés"
+          "socialSettingsLabel": "Réseaux sociaux",
+          "socialSettingsSaved": "Paramètres de réseaux sociaux enregistrés"
         }
       }
     }
