@@ -7,7 +7,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 class Metafield extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.metafield.key !== this.props.metafield.key) {
-      const input = this.refs.keyInput.refs.input;
+      const { input } = this.refs.keyInput.refs;
 
       Velocity.RunSequence([
         { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
@@ -16,7 +16,7 @@ class Metafield extends Component {
     }
 
     if (nextProps.metafield.value !== this.props.metafield.value) {
-      const input = this.refs.valueInput.refs.input;
+      const { input } = this.refs.valueInput.refs;
 
       Velocity.RunSequence([
         { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },

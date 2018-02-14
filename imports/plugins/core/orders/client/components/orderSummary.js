@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
+import { withMoment } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
 import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo } from "../helpers";
 
 class OrderSummary extends Component {
   static propTypes = {
     dateFormat: PropTypes.func,
+    moment: PropTypes.func,
     order: PropTypes.object,
     printableLabels: PropTypes.func,
     profileShippingAddress: PropTypes.object,
@@ -44,7 +45,7 @@ class OrderSummary extends Component {
   }
 
   render() {
-    const { dateFormat, tracking, order, profileShippingAddress, printableLabels } = this.props;
+    const { dateFormat, moment, order, profileShippingAddress, printableLabels, tracking } = this.props;
     const paymentMethod = getBillingInfo(order).paymentMethod || {};
     const invoice = getBillingInfo(order).invoice || {};
     const shipmentMethod = getShippingInfo(order).shipmentMethod || {};
@@ -97,7 +98,7 @@ class OrderSummary extends Component {
             <div className="order-summary-form-group">
               <strong data-i18n="order.created">Created</strong>
               <div className="invoice-details">
-                {moment(order.createdAt).fromNow()} | {dateFormat(order.createdAt, "MM/D/YYYY")}
+                {moment && moment(order.createdAt).fromNow()} | {dateFormat(order.createdAt, "MM/D/YYYY")}
               </div>
             </div>
 
@@ -175,4 +176,4 @@ class OrderSummary extends Component {
   }
 }
 
-export default OrderSummary;
+export default withMoment(OrderSummary);

@@ -5,7 +5,7 @@ import { i18next } from "/client/api";
 import EmailLogs from "../components/emailLogs";
 import { Jobs } from "/lib/collections";
 
-const composer = ({}, onData) => {
+const composer = (props, onData) => {
   if (Meteor.subscribe("Emails").ready()) {
     const emails = Jobs.find().fetch();
     onData(null, { emails });

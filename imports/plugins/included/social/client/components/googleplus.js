@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import classnames from "classnames";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 
 export function getGooglePlusMeta(props) {
   const preferredUrl = props.url || location.origin + location.pathname;
   const url = encodeURIComponent(preferredUrl);
-  const description = props.settings.description;
+  const { description } = props.settings;
 
   const meta = [
     { property: "itemprop:name", content: location.hostname },
@@ -40,10 +40,10 @@ class GooglePlusSocialButton extends Component {
   }
 
   get url() {
-    const props = this.props;
+    const { props } = this;
     const preferredUrl = props.url || location.origin + location.pathname;
     const url = encodeURIComponent(preferredUrl);
-    const href = "https://plus.google.com/share?url=" + url;
+    const href = `https://plus.google.com/share?url=${url}`;
 
     return href;
   }
@@ -51,7 +51,7 @@ class GooglePlusSocialButton extends Component {
   renderText() {
     if (this.props.showText) {
       return (
-        <Translation defaultValue="Share on GooglePlus" i18nKey="social.shareOnGooglePlus" />
+        <Components.Translation defaultValue="Share on GooglePlus" i18nKey="social.shareOnGooglePlus" />
       );
     }
     return null;
@@ -66,15 +66,17 @@ class GooglePlusSocialButton extends Component {
     });
 
     return (
-      <a className="btn btn-flat googleplus-share" aria-label="Share to Google Plus" href="#" onClick={this.handleClick}
-        target="_blank"
+      <Components.Button
+        className="btn btn-flat googleplus-share"
+        aria-label="Share to Google Plus"
+        onClick={this.handleClick}
       >
         <Helmet
           meta={getGooglePlusMeta(this.props)}
         />
         <i className={iconClassNames} />
         {this.renderText()}
-      </a>
+      </Components.Button>
     );
   }
 }

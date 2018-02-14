@@ -16,6 +16,17 @@ const CoreLayout = ({ actionViewIsOpen, structure }) => {
   const headerComponent = layoutHeader && getComponent(layoutHeader);
   const footerComponent = layoutFooter && getComponent(layoutFooter);
 
+  let mainNode = null;
+  try {
+    const mainComponent = getComponent(template);
+    mainNode = React.createElement(mainComponent, {});
+  } catch (error) {
+    //  Probe for Blaze template (legacy)
+    if (Template[template]) {
+      mainNode = <Blaze template={template} />;
+    }
+  }
+
   return (
     <div className={pageClassName} id="reactionAppContainer">
 
@@ -23,10 +34,9 @@ const CoreLayout = ({ actionViewIsOpen, structure }) => {
 
       <Blaze template="cartDrawer" className="reaction-cart-drawer" />
 
-      {Template[template] &&
-        <main>
-          <Blaze template={template} />
-        </main>}
+      <main>
+        {mainNode}
+      </main>
 
       {footerComponent && React.createElement(footerComponent, {})}
     </div>

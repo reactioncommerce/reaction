@@ -21,9 +21,11 @@ import { addProduct } from "./products";
 export function getCartItem(options = {}) {
   const product = addProduct();
   const variant = Products.findOne({ ancestors: [product._id] });
-  const childVariants = Products.find({ ancestors: [
-    product._id, variant._id
-  ] }).fetch();
+  const childVariants = Products.find({
+    ancestors: [
+      product._id, variant._id
+    ]
+  }).fetch();
   const selectedOption = Random.choice(childVariants);
   const defaults = {
     _id: Random.id(),

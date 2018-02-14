@@ -1,28 +1,21 @@
 import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import { Reaction } from "/server/api";
 import { Shops } from "/lib/collections";
 
 // We should be able to publish just the enabled languages/currencies/
-Meteor.publish("PrimaryShop", () => {
-  return Shops.find({
-    shopType: "primary"
-  }, {
-    fields: {},
-    limit: 1
-  });
-});
+Meteor.publish("PrimaryShop", () => Shops.find({
+  shopType: "primary"
+}, {
+  fields: {},
+  limit: 1
+}));
 
-Meteor.publish("MerchantShops", function () {
+Meteor.publish("MerchantShops", function (shopsOfUser = Reaction.getShopsForUser(["admin"], this.userId)) {
+  check(shopsOfUser, Array);
+
   const domain = Reaction.getDomain();
-  const settings = Reaction.getMarketplaceSettings();
-  const enabled = settings.enabled;
-  const shopsOfUser = Reaction.getShopsForUser(["admin"], this.userId);
-
-  // If marketplace is disabled, don't return any merchant shops
-  if (!enabled) {
-    return this.ready();
-  }
-
+  const { enabled } = Reaction.getMarketplaceSettings();
   // Don't publish currencies, languages, or locales for merchant shops.
   // We'll get that info from the primary shop.
   const fields = {
@@ -42,6 +35,12 @@ Meteor.publish("MerchantShops", function () {
   if (Reaction.marketplaceLocales) {
     delete fields.locales;
   }
+
+  // If marketplace is disabled, don't return any merchant shops
+  if (!enabled) {
+    return this.ready();
+  }
+
 
   const selector = {
     domains: domain,
