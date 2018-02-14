@@ -41,6 +41,8 @@
           "syncStop": "Stop Sync",
           "syncStopSuccess": "Successfully Stopped Shopify sync!",
           "syncStopFailure": "Error stopping Shopify sync!",
+          "invalidCredentials": "Invalid API key/password",
+          "validCredentials": "Valid API key and password",
           "startImport": "Start Import",
           "webhooksDomain": "Webhook callback domain"
         }
