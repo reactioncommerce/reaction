@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
-import moment from "moment";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent, withMoment } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 
 class EmailTableColumn extends Component {
   static propTypes = {
     data: PropTypes.object,
+    moment: PropTypes.func,
     row: PropTypes.object
   }
 
@@ -67,7 +67,8 @@ class EmailTableColumn extends Component {
       );
     }
     if (renderColumn === "updated") {
-      const createdDate = moment(row.value).format("LLL");
+      const { moment } = this.props;
+      const createdDate = moment && moment(row.value).format("LLL") || row.value.toLocaleString();
       return (
         <span>{createdDate}</span>
       );
@@ -78,6 +79,6 @@ class EmailTableColumn extends Component {
   }
 }
 
-registerComponent("EmailTableColumn", EmailTableColumn);
+registerComponent("EmailTableColumn", EmailTableColumn, withMoment);
 
-export default EmailTableColumn;
+export default withMoment(EmailTableColumn);

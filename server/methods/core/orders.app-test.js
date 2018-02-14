@@ -48,9 +48,6 @@ describe("orders test", function () {
 
   beforeEach(function (done) {
     sandbox = sinon.sandbox.create();
-    // });
-    sandbox.stub(Orders._hookAspects.insert.before[0], "aspect");
-    sandbox.stub(Orders._hookAspects.update.before[0], "aspect");
     sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
       check(args, [Match.Any]);
     });

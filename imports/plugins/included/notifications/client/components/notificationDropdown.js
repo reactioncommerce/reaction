@@ -12,6 +12,7 @@ const NotificationDropdown = (props) => (
 NotificationDropdown.propTypes = {
   markAllAsRead: PropTypes.func.isRequired,
   markOneAsRead: PropTypes.func.isRequired,
+  moment: PropTypes.func,
   notificationList: PropTypes.array.isRequired,
   unread: PropTypes.number.isRequired
 };

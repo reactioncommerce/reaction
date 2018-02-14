@@ -82,7 +82,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
                   <div className="order-details-info-box-content">
                     <p>
                       {shipment.address.fullName}<br/>
-                      {shipment.address.address1}<br/>
+                      {shipment.address.address1} {shipment.address.address2}<br/>
                       {shipment.address.city}, {shipment.address.region} {shipment.address.postal} {shipment.address.country}
                     </p>
                   </div>

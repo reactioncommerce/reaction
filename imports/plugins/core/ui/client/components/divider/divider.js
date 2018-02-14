@@ -6,6 +6,11 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 const Divider = (props) => {
   const { label, i18nKeyLabel } = props;
 
+  const dividerStyle = {
+    height: "auto",
+    background: "none"
+  };
+
   const classes = classnames({
     rui: true,
     separator: true,
@@ -15,7 +20,7 @@ const Divider = (props) => {
 
   if (label) {
     return (
-      <div className={classes} id={props.id}>
+      <div className={classes} id={props.id} style={dividerStyle}>
         <hr />
         <span className="label">
           <Components.Translation defaultValue={label} i18nKey={i18nKeyLabel} />

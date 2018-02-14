@@ -2,15 +2,26 @@ import { Meteor } from "meteor/meteor";
 import React from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
-import moment from "moment";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent, withMoment } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { getUserAvatar } from "/imports/plugins/core/accounts/client/helpers/helpers";
 
-const GroupsTableCell = ({ account, columnName, group, adminGroups, handleRemoveUserFromGroup, handleUserGroupChange, ...props }) => {
+const GroupsTableCell = (props) => {
+  const {
+    account,
+    columnName,
+    group,
+    adminGroups,
+    handleRemoveUserFromGroup,
+    handleUserGroupChange,
+    moment
+  } = props;
+
   const email = _.get(account, "emails[0].address");
   const groups = adminGroups;
   const userAvatar = getUserAvatar(account);
+  const createdAt = moment && moment(account.createdAt).format("MMM Do") || account.createdAt.toLocaleString();
+
   if (columnName === "name") {
     // use first part of email, if account has no name
     const name = account.name || email.split("@")[0];
@@ -34,7 +45,7 @@ const GroupsTableCell = ({ account, columnName, group, adminGroups, handleRemove
     return (
       <div className="table-cell body created-at">
         <span>
-          {moment(account.createdAt).format("MMM Do")}
+          {createdAt}
         </span>
       </div>
     );
@@ -110,10 +121,11 @@ GroupsTableCell.propTypes = {
   group: PropTypes.object, // current group in interation
   handleRemoveUserFromGroup: PropTypes.func,
   handleUserGroupChange: PropTypes.func,
+  moment: PropTypes.func,
   onMethodDone: PropTypes.func,
   onMethodLoad: PropTypes.func
 };
 
-registerComponent("GroupsTableCell", GroupsTableCell);
+registerComponent("GroupsTableCell", GroupsTableCell, withMoment);
 
-export default GroupsTableCell;
+export default withMoment(GroupsTableCell);

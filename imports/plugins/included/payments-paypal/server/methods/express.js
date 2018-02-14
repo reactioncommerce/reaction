@@ -1,4 +1,3 @@
-import moment from "moment";
 import _ from "lodash";
 import accounting from "accounting-js";
 import { HTTP } from "meteor/http";
@@ -7,6 +6,13 @@ import { check } from "meteor/check";
 import { PayPal } from "../../lib/api";
 import { Shops, Cart, Packages } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
+
+let moment;
+async function lazyLoadMoment() {
+  if (moment) return;
+  const mod = await import("moment");
+  moment = mod.default;
+}
 
 const nvpVersion = "52.0";
 
@@ -347,6 +353,8 @@ function parseResponse(response) {
  */
 function parseRefundReponse(response) {
   const paypalArray = [];
+
+  Promise.await(lazyLoadMoment());
 
   for (let i = 0; i < 101; i += 1) {
     const timeStampKey = `L_TIMESTAMP${i}`;
