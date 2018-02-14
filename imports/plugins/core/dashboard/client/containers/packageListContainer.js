@@ -4,7 +4,6 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
-import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 
 /**
  * handleShowPackage - Push package into action view navigation stack
@@ -72,9 +71,7 @@ function composer(props, onData) {
 export default function PackageListContainer(Comp) {
   function CompositeComponent(props) {
     return (
-      <TranslationProvider>
-        <Comp {...props} />
-      </TranslationProvider>
+      <Comp {...props} />
     );
   }
 

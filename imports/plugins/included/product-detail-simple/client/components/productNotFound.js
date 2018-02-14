@@ -1,9 +1,8 @@
 import React from "react";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 
-const ProductNotFound = () => (
-  <TranslationProvider>
+const ProductNotFound = () => {
+  return (
     <div className="container-fluid-sm">
       <div className="empty-view-message">
         <i className="fa fa-barcode" />
@@ -11,8 +10,8 @@ const ProductNotFound = () => (
         <Components.Translation defaultValue="Product Not Found" i18nKey="productDetail.notFoundError" />
       </div>
     </div>
-  </TranslationProvider>
-);
+  );
+};
 
 registerComponent("ProductNotFound", ProductNotFound);
 
