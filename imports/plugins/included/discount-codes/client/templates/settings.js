@@ -6,7 +6,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { DiscountCodes } from "../collections/codes";
 import { i18next } from "/client/api";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
-import { IconButton, Loading, SortableTable }  from "/imports/plugins/core/ui/client/components";
+import { IconButton, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 import "./settings.html";
 
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
@@ -27,7 +27,7 @@ Template.customDiscountCodes.onCreated(function () {
 Template.customDiscountCodes.helpers({
   editButton() {
     const instance = Template.instance();
-    const state = instance.state;
+    const { state } = instance;
     const isEditing = state.equals("isEditing", true);
     let editingId = state.get("editingId");
     // toggle edit state
@@ -81,9 +81,7 @@ Template.customDiscountCodes.helpers({
     // helper adds a class to every grid row
     //
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
-        return "discount-codes-grid-row";
-      }
+      bodyCssClassName: () => "discount-codes-grid-row"
     };
 
     // add i18n handling to headers

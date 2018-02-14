@@ -1,6 +1,5 @@
 import faker from "faker";
 import _ from "lodash";
-import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { Factory } from "meteor/dburles:factory";
@@ -14,7 +13,7 @@ export function getUser() {
 export function getUsers(limit = 2) {
   const users = [];
   const existingUsers = Meteor.users.find({}, { limit }).fetch();
-  for (let i = 0; i < limit; i = i + 1) {
+  for (let i = 0; i < limit; i += 1) {
     const user = existingUsers[i] || Factory.create("user");
     users.push(user);
   }
@@ -59,9 +58,11 @@ const user = {
     return faker.lorem.paragraphs(3);
   },
 
-  startTime() {
+  async startTime() {
     // needs moment.js package
     // some date within the next month
+    const mod = await import("moment");
+    const moment = mod.default;
     return moment().add(_.random(0, 31), "days").add(
       _.random(0, 24),
       "hours"
@@ -69,35 +70,6 @@ const user = {
   },
 
   createdAt: new Date()
-};
-
-const registered = {
-  roles: {
-    [getShop()._id]: [
-      "account/profile",
-      "guest",
-      "product",
-      "tag",
-      "index",
-      "cart/checkout",
-      "cart/completed"
-    ]
-  },
-  services: {
-    password: {
-      bcrypt: Random.id(29)
-    },
-    resume: {
-      loginTokens: [
-        {
-          when: moment().add(_.random(0, 31), "days").add(
-            _.random(0, 24),
-            "hours"
-          ).toDate()
-        }
-      ]
-    }
-  }
 };
 
 const anonymous = {
@@ -114,7 +86,40 @@ const anonymous = {
   }
 };
 
-export default function () {
+export default async function () {
+  const mod = await import("moment");
+  const moment = mod.default;
+
+  const registered = {
+    roles: {
+      [getShop()._id]: [
+        "account/profile",
+        "guest",
+        "product",
+        "tag",
+        "index",
+        "cart/checkout",
+        "cart/completed"
+      ]
+    },
+    services: {
+      password: {
+        bcrypt: Random.id(29)
+      },
+      resume: {
+        loginTokens: [
+          {
+            when: moment().add(_.random(0, 31), "days").add(
+              _.random(0, 24),
+              "hours"
+            ).toDate()
+          }
+        ]
+      }
+    }
+  };
+
+
   Factory.define("user", Meteor.users, user);
   Factory.define(
     "registeredUser", Meteor.users,

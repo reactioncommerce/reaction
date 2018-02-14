@@ -18,9 +18,7 @@ class DiscountList extends Component {
   }
   // list items
   renderList() {
-    const listItems = this.props.listItems.map((listItem) => {
-      return this.renderItem(listItem.id, listItem.code);
-    });
+    const listItems = this.props.listItems.map((listItem) => this.renderItem(listItem.id, listItem.code));
 
     return (
       <div className="rui list-group">{listItems}</div>
@@ -31,10 +29,11 @@ class DiscountList extends Component {
     let TrashCan;
 
     if (this.props.collection !== "Orders") {
-      TrashCan =
-        <a className="pull-right">
+      TrashCan = (
+        <div className="pull-right">
           <IconButton icon="fa fa-remove" onClick={(e) => this.handleClick(e, _id)}/>
-        </a>;
+        </div>
+      );
     }
     return (
       <div className="rui list-group-item" key={_id}>

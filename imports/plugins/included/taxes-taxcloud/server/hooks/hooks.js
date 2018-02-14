@@ -17,7 +17,7 @@ MethodHooks.after("taxes/calculate", (options) => {
   const cartId = options.arguments[0];
   const cartToCalc = Cart.findOne(cartId);
   if (cartToCalc) {
-    const shopId = cartToCalc.shopId;
+    const { shopId } = cartToCalc;
     const shop = Shops.findOne(shopId);
     const pkg = Packages.findOne({
       name: "taxes-taxcloud",
@@ -27,15 +27,14 @@ MethodHooks.after("taxes/calculate", (options) => {
 
     // check if package is configured
     if (shop && pkg && pkg.settings.taxcloud) {
-      const apiKey = pkg.settings.taxcloud.apiKey;
-      const apiLoginId = pkg.settings.taxcloud.apiLoginId;
+      const { apiKey, apiLoginId } = pkg.settings.taxcloud;
 
       // get shop address
       // this will need some refactoring
       // for multi-vendor/shop orders
       if (shop.addressBook) {
         const shopAddress = shop.addressBook[0];
-        origin =  {
+        origin = {
           Address1: shopAddress.address1,
           City: shopAddress.city,
           State: shopAddress.region,
@@ -74,7 +73,7 @@ MethodHooks.after("taxes/calculate", (options) => {
                   Price: items.variants.price,
                   Qty: items.quantity
                 };
-                index++;
+                index += 1;
                 cartItems.push(item);
               }
             }

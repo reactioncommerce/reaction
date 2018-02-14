@@ -31,9 +31,7 @@ export default function () {
 
     if (loginEmail && loginEmail === adminEmail) {
       // filter out the matching login email from any existing emails
-      const userEmail = _.filter(attempt.user.emails, (email) => {
-        return email.address === loginEmail;
-      });
+      const userEmail = _.filter(attempt.user.emails, (email) => email.address === loginEmail);
 
       // check if the email is verified
       if (!userEmail.length || !userEmail[0].verified) {
@@ -206,7 +204,7 @@ export default function () {
         $pullAll: {}
       };
 
-      update.$pullAll["roles." + Reaction.getShopId()] = ["anonymous"];
+      update.$pullAll[`roles.${Reaction.getShopId()}`] = ["anonymous"];
 
       Meteor.users.update({
         _id: options.user._id
@@ -214,8 +212,7 @@ export default function () {
         multi: true
       });
       // debug info
-      Logger.debug("removed anonymous role from user: " +
-        options.user._id);
+      Logger.debug(`removed anonymous role from user: ${options.user._id}`);
 
       // do not call `cart/mergeCart` on methodName === `createUser`, because
       // in this case `cart/mergeCart` calls from cart publication

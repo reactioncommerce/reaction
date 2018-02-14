@@ -30,7 +30,7 @@ Meteor.methods({
     check(groupData, Object);
     check(groupData.name, String);
     check(groupData.description, Match.Optional(String));
-    check(groupData.permissions,  Match.Optional([String]));
+    check(groupData.permissions, Match.Optional([String]));
     check(shopId, String);
     let _id;
 
@@ -272,6 +272,6 @@ function setUserPermissions(users, permissions, shopId) {
 // set default admin user's account as "owner"
 Hooks.Events.add("afterCreateDefaultAdminUser", (user) => {
   const group = Groups.findOne({ slug: "owner", shopId: Reaction.getShopId() });
-  Accounts.update({ _id: user._id  }, { $set: { groups: [group._id] } });
+  Accounts.update({ _id: user._id }, { $set: { groups: [group._id] } });
   Hooks.Events.run("afterAccountsUpdate", null, user._id);
 });

@@ -7,4 +7,4 @@ import en from "./en.json";
 // imports for easier handling by
 // automated translation software
 //
-loadTranslations([ en ]);
+loadTranslations([en]);

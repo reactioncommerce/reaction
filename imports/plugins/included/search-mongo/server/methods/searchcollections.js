@@ -1,5 +1,4 @@
 /* eslint camelcase: 0 */
-import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
@@ -7,6 +6,12 @@ import { ProductSearch, OrderSearch, AccountSearch, Orders, Products, Accounts, 
 import utils from "./common";
 import { transformations } from "./transformations";
 
+let moment;
+async function lazyLoadMoment() {
+  if (moment) return;
+  const mod = await import("moment");
+  moment = mod.default;
+}
 
 const requiredFields = {};
 requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible", "isSoldOut", "isLowQuantity", "isBackorder"];
@@ -178,10 +183,8 @@ export function buildOrderSearchRecord(orderId) {
     for (const email of user.emails) {
       userEmails.push(email.address);
     }
-  } else {
-    if (anonymousUserEmail) {
-      userEmails.push(anonymousUserEmail);
-    }
+  } else if (anonymousUserEmail) {
+    userEmails.push(anonymousUserEmail);
   }
   const orderSearch = {};
   for (const field of requiredFields.orders) {
@@ -191,12 +194,14 @@ export function buildOrderSearchRecord(orderId) {
       orderSearch[field] = order[field];
     }
   }
+
   // get the billing object for the current shop on the order (and not hardcoded [0])
-  const shopBilling = order.billing &&
-    order.billing.find(billing => billing && billing.shopId === Reaction.getShopId()) || {};
+  const shopBilling = (order.billing && order.billing.find((billing) => billing && billing.shopId === Reaction.getShopId())) || {};
 
   // get the shipping object for the current shop on the order (and not hardcoded [0])
-  const shopShipping = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId()) || {};
+  const shopShipping = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId()) || {};
+
+  Promise.await(lazyLoadMoment());
 
   orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
   orderSearch.billingPhone = shopBilling.address && shopBilling.address.phone.replace(/\D/g, "");
@@ -221,7 +226,7 @@ export function buildOrderSearchRecord(orderId) {
   };
   orderSearch.userEmails = userEmails;
   orderSearch.orderTotal = shopBilling.invoice && shopBilling.invoice.total;
-  orderSearch.orderDate = moment(order.createdAt).format("YYYY/MM/DD");
+  orderSearch.orderDate = moment && moment(order.createdAt).format("YYYY/MM/DD");
   orderSearch.billingStatus = shopBilling.paymentMethod && shopBilling.paymentMethod.status;
   orderSearch.billingCard = shopBilling.paymentMethod && shopBilling.paymentMethod.storedCard;
   orderSearch.currentWorkflowStatus = order.workflow.status;
@@ -234,9 +239,9 @@ export function buildOrderSearchRecord(orderId) {
   }
   orderSearch.product = {};
   orderSearch.variants = {};
-  orderSearch.product.title = order.items.map(item => item.product && item.product.title);
-  orderSearch.variants.title = order.items.map(item => item.variants && item.variants.title);
-  orderSearch.variants.optionTitle = order.items.map(item => item.variants && item.variants.optionTitle);
+  orderSearch.product.title = order.items.map((item) => item.product && item.product.title);
+  orderSearch.variants.title = order.items.map((item) => item.variants && item.variants.title);
+  orderSearch.variants.optionTitle = order.items.map((item) => item.variants && item.variants.optionTitle);
 
   OrderSearch.insert(orderSearch);
 }

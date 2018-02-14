@@ -12,21 +12,21 @@
         "dashboard": {
           "paymentsLabel": "Paiements",
           "paymentsTitle": "Paiements",
-          "paymentsDescription": "configuration des paiements"
+          "paymentsDescription": "Configuration des paiements"
         },
         "settings": {
           "paymentSettingsLabel": "Paramètres de paiement"
         },
         "paymentSettings": {
-          "paymentMethod": "fournisseur par défaut"
+          "paymentMethod": "Fournisseur par défaut"
         }
       },
       "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Ajouter le paiement à terminer la commande",
-        "processingError": "Il y avait un problème avec votre paiement.",
+        "addPaymentToCompleteOrder": "Ajouter une méthode de paiement pour terminer la commande",
+        "processingError": "Un problème est survenu concernant votre paiement.",
         "completeYourOrder": "Complétez votre commande",
-        "noPaymentMethods": "Aucun mode de paiement sont configurés.",
-        "contactAdmin": "Veuillez contacter l'administrateur du magasin.",
+        "noPaymentMethods": "Aucun mode de paiement n'est configuré.",
+        "contactAdmin": "Veuillez contacter l'administrateur de la boutique.",
         "configureNow": "Configurer maintenant.",
         "failedToPlaceOrder": "Impossible de passer commande."
       }

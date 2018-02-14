@@ -6,15 +6,15 @@
       "admin": {
         "shippingSettings": {
           "flatRateLabel": "Forfait",
-          "confirmRateDelete": "Supprimer taux?",
-          "rateSaved": "Tarif forfaitaire sauvé.",
-          "rateFailed": "Appartement mise à jour de taux a échoué.",
+          "confirmRateDelete": "Supprimer le tarif ?",
+          "rateSaved": "Tarif forfaitaire sauvegardé.",
+          "rateFailed": "La mise à jour du tarif forfaitaire a échouée.",
           "noRatesFound": "Pas de prix trouvés."
         },
         "shippingGrid": {
           "name": "Nom",
           "group": "Groupe",
-          "rate": "Taux",
+          "rate": "Tarif",
           "label": "Étiquette"
         }
       }

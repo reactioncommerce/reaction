@@ -92,7 +92,7 @@ Meteor.methods({
 
     // ensure unique id and shop name
     seedShop._id = Random.id();
-    seedShop.name = seedShop.name + count;
+    seedShop.name += count;
 
     // We trust the owner's shop clone, check only when shopData is passed as an argument
     if (shopData) {
@@ -174,7 +174,7 @@ Meteor.methods({
     let localeCurrency = "USD";
     // if called from server, ip won't be defined.
     if (this.connection !== null) {
-      clientAddress = this.connection.clientAddress;
+      ({ clientAddress } = this.connection);
     } else {
       clientAddress = "127.0.0.1";
     }
@@ -251,11 +251,11 @@ Meteor.methods({
     });
     let profileCurrency = user.profile && user.profile.currency;
     if (!profileCurrency) {
-      localeCurrency = localeCurrency[0];
+      [localeCurrency] = localeCurrency;
       if (shop.currencies[localeCurrency] && shop.currencies[localeCurrency].enabled) {
         profileCurrency = localeCurrency;
       } else {
-        profileCurrency = shop.currency.split(",")[0];
+        [profileCurrency] = shop.currency.split(",");
       }
 
       Meteor.call("accounts/setProfileCurrency", profileCurrency);
@@ -335,53 +335,51 @@ Meteor.methods({
         "not-configured",
         "Open Exchange Rates not configured. Configure for current rates."
       );
+    } else if (!shopSettings.settings.openexchangerates.appId) {
+      throw new Meteor.Error(
+        "not-configured",
+        "Open Exchange Rates AppId not configured. Configure for current rates."
+      );
     } else {
-      if (!shopSettings.settings.openexchangerates.appId) {
-        throw new Meteor.Error(
-          "not-configured",
-          "Open Exchange Rates AppId not configured. Configure for current rates."
-        );
-      } else {
-        // shop open exchange rates appId
-        const openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
+      // shop open exchange rates appId
+      const openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
 
-        // we'll update all the available rates in Shops.currencies whenever we
-        // get a rate request, using base currency
-        const rateUrl =
-          `https://openexchangerates.org/api/latest.json?base=${
-            baseCurrency}&app_id=${openexchangeratesAppId}`;
-        let rateResults;
+      // we'll update all the available rates in Shops.currencies whenever we
+      // get a rate request, using base currency
+      const rateUrl =
+              `https://openexchangerates.org/api/latest.json?base=${
+                baseCurrency}&app_id=${openexchangeratesAppId}`;
+      let rateResults;
 
-        // We can get an error if we try to change the base currency with a simple
-        // account
-        try {
-          rateResults = HTTP.get(rateUrl);
-        } catch (error) {
-          if (error.error) {
-            Logger.error(error.message);
-            throw new Meteor.Error("server-error", error.message);
-          } else {
-            // https://openexchangerates.org/documentation#errors
-            throw new Meteor.Error("server-error", error.response.data.description);
-          }
+      // We can get an error if we try to change the base currency with a simple
+      // account
+      try {
+        rateResults = HTTP.get(rateUrl);
+      } catch (error) {
+        if (error.error) {
+          Logger.error(error.message);
+          throw new Meteor.Error("server-error", error.message);
+        } else {
+          // https://openexchangerates.org/documentation#errors
+          throw new Meteor.Error("server-error", error.response.data.description);
         }
-
-        const exchangeRates = rateResults.data.rates;
-
-        _.each(shopCurrencies, (currencyConfig, currencyKey) => {
-          if (exchangeRates[currencyKey] !== undefined) {
-            const rateUpdate = {
-              // this needed for shop/flushCurrencyRates Method
-              "currencies.updatedAt": new Date(rateResults.data.timestamp * 1000)
-            };
-            const collectionKey = `currencies.${currencyKey}.rate`;
-            rateUpdate[collectionKey] = exchangeRates[currencyKey];
-            Collections.Shops.update(shopId, {
-              $set: rateUpdate
-            });
-          }
-        });
       }
+
+      const exchangeRates = rateResults.data.rates;
+
+      _.each(shopCurrencies, (currencyConfig, currencyKey) => {
+        if (exchangeRates[currencyKey] !== undefined) {
+          const rateUpdate = {
+            // this needed for shop/flushCurrencyRates Method
+            "currencies.updatedAt": new Date(rateResults.data.timestamp * 1000)
+          };
+          const collectionKey = `currencies.${currencyKey}.rate`;
+          rateUpdate[collectionKey] = exchangeRates[currencyKey];
+          Collections.Shops.update(shopId, {
+            $set: rateUpdate
+          });
+        }
+      });
     }
   },
 
@@ -412,7 +410,7 @@ Meteor.methods({
         currencies: 1
       }
     });
-    const updatedAt = shop.currencies.updatedAt;
+    const { updatedAt } = shop.currencies;
 
     // if updatedAt is not a Date(), then there is no rates yet
     if (typeof updatedAt !== "object") {
@@ -505,7 +503,7 @@ Meteor.methods({
 
     // if called from server, ip won't be defined.
     if (this.connection !== null) {
-      clientAddress = this.connection.clientAddress;
+      ({ clientAddress } = this.connection);
     } else {
       clientAddress = "127.0.0.1";
     }
@@ -564,8 +562,8 @@ Meteor.methods({
    */
   "shop/updateHeaderTags"(tagName, tagId, currentTagId) {
     check(tagName, String);
-    check(tagId, Match.OneOf(String, null, void 0));
-    check(currentTagId, Match.OneOf(String, null, void 0));
+    check(tagId, Match.OneOf(String, null, undefined));
+    check(currentTagId, Match.OneOf(String, null, undefined));
 
     let newTagId = {};
     // must have 'core' permissions
@@ -938,7 +936,7 @@ Meteor.methods({
     check(shopId, String);
     check(newLayout, String);
     const shop = Collections.Shops.findOne(shopId);
-    for (let i = 0; i < shop.layout.length; i++) {
+    for (let i = 0; i < shop.layout.length; i += 1) {
       shop.layout[i].layout = newLayout;
     }
     return Collections.Shops.update(shopId, {
