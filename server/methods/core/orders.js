@@ -359,7 +359,7 @@ export const methods = {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    if (!returnToStock) {
+    if (returnToStock) {
       // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
       // in some instances which causes the order not to cancel
       order.items.forEach((item) => {
@@ -369,7 +369,7 @@ export const methods = {
             shopId: item.shopId
           }, {
             $inc: {
-              inventoryQuantity: -item.quantity
+              inventoryQuantity: +item.quantity
             }
           }, {
             bypassCollection2: true,
