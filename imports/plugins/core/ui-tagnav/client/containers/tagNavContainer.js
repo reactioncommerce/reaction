@@ -340,7 +340,6 @@ const wrapComponent = (Comp) => (
     }
 
     handleTagClick = (event, tag) => {
-      console.log("tagNavContainer click");
       if (TagNavHelpers.isMobile()) {
         const tagId = tag._id;
         const tags = this.props.tagsAsArray;
