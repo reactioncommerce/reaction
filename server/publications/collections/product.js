@@ -63,8 +63,6 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
   }
 
   const selector = {
-    isVisible: true,
-    isDeleted: { $in: [null, false] },
     $or: [{
       _id: productIdOrHandle
     }, {
@@ -73,7 +71,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
         $options: "i"
       }
     }, {
-      ancestors: productIdOrHandle
+      ancestors: productIdOrHandle // Works only equivalent as before when productIdOrHandle is a productId
     }]
   };
 
@@ -94,21 +92,25 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
   }
 
   // TODO review for REGEX / DOS vulnerabilities.
-  const product = Products.find(selector);
-
-  if (!product.count()) {
+  // Need to peek into product to get associated shop. This is important to check permissions.
+  const product = Products.findOne(selector);
+  if (!product) {
     // Product not found, return empty subscription.
     return this.ready();
   }
 
+  selector.isVisible = true;
+  selector.isDeleted = { $in: [null, false] };
+
   // Authorized content curators for the shop get special publication of the product
   // all all relevant revisions all is one package
-  if (Reaction.hasPermission(["owner", "createProduct"], this.userId, selector.shopId)) {
+  if (Reaction.hasPermission(["owner", "createProduct"], this.userId, product.shopId)) {
     selector.isVisible = {
       $in: [true, false, undefined]
     };
 
     if (RevisionApi.isRevisionControlEnabled()) {
+      // TODO review for REGEX / DOS vulnerabilities.
       const productCursor = Products.find(selector);
       const handle = productCursor.observeChanges({
         added: (id, fields) => {
