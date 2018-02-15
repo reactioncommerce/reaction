@@ -53,13 +53,11 @@ const handlers = {
     }
   },
 
-  handleRemoveItem(event) {
+  handleRemoveItem(event, item) {
     event.stopPropagation();
     event.preventDefault();
-    const currentCartItemId = event.target.getAttribute("id");
-    $(`#${currentCartItemId}`).fadeOut(500, () => {
-      return Meteor.call("cart/removeFromCart", currentCartItemId);
-    });
+    const cartItemElement = $(event.target).closest(".cart-drawer-swiper-slide");
+    cartItemElement.fadeOut(500, () => Meteor.call("cart/removeFromCart", item._id));
   },
 
   handleCheckout() {

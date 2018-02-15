@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class PinterestSocialButton extends Component {
   handleClick = (event) => {
@@ -13,12 +13,12 @@ class PinterestSocialButton extends Component {
   }
 
   get url() {
-    const props = this.props;
+    const { props } = this;
     const preferredUrl = props.url || location.origin + location.pathname;
     const url = encodeURIComponent(preferredUrl);
-    const description = props.settings.description;
+    const { description } = props.settings;
     const baseUrl = "http://www.pinterest.com/pin/create/button/";
-    let media = props.settings.media;
+    let { media } = props.settings;
 
     if (props.settings.media) {
       if (!/^http(s?):\/\/+/.test(props.settings.media)) {
@@ -34,7 +34,7 @@ class PinterestSocialButton extends Component {
   renderText() {
     if (this.props.showText) {
       return (
-        <Translation defaultValue="Share on Pinterest" i18nKey="social.shareOnPinterest" />
+        <Components.Translation defaultValue="Share on Pinterest" i18nKey="social.shareOnPinterest" />
       );
     }
     return null;
@@ -49,18 +49,21 @@ class PinterestSocialButton extends Component {
     });
 
     return (
-      <a className="btn btn-flat pinterest-share" aria-label="Share to Pinterest" href={this.url} onClick={this.handleClick}
-        target="_blank"
+      <Components.Button
+        className="btn btn-flat pinterest-share"
+        aria-label="Share to Pinterest"
+        onClick={this.handleClick}
       >
         <i className={iconClassNames} />
         {this.renderText()}
-      </a>
+      </Components.Button>
     );
   }
 }
 
 PinterestSocialButton.propTypes = {
   altIcon: PropTypes.bool,
+  settings: PropTypes.object,
   showText: PropTypes.bool,
   size: PropTypes.string
 };

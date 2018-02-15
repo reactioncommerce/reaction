@@ -25,11 +25,7 @@ export const TagHelpers = {
         }
       }).fetch();
 
-      const subTags = parentTag.relatedTagIds.map((tagId) => {
-        return _.find(tags, (tagObject) => {
-          return tagObject._id === tagId;
-        });
-      });
+      const subTags = parentTag.relatedTagIds.map((tagId) => _.find(tags, (tagObject) => tagObject._id === tagId));
 
       return subTags;
     }
@@ -183,11 +179,9 @@ export const TagHelpers = {
       };
     }
 
-    const tags = Tags.find(selector).map((tag) => {
-      return {
-        label: tag.name
-      };
-    });
+    const tags = Tags.find(selector).map((tag) => ({
+      label: tag.name
+    }));
 
     return tags;
   }

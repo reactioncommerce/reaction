@@ -34,10 +34,8 @@ function loadMoreProducts() {
         target[0].setAttribute("productScrollLimit", true);
         Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
       }
-    } else {
-      if (target[0].getAttribute("visible")) {
-        target[0].setAttribute("visible", false);
-      }
+    } else if (target[0].getAttribute("visible")) {
+      target[0].setAttribute("visible", false);
     }
   }
 }
@@ -79,9 +77,7 @@ const wrapComponent = (Comp) => (
       return false;
     }
 
-    loadMoreProducts = () => {
-      return this.props.canLoadMoreProducts === true;
-    }
+    loadMoreProducts = () => this.props.canLoadMoreProducts === true
 
     loadProducts = (event) => {
       event.preventDefault();
@@ -152,7 +148,7 @@ function composer(props, onData) {
     editMode = false;
   }
 
-  const queryParams = Object.assign({}, tags, Reaction.Router.current().queryParams, shopIds);
+  const queryParams = Object.assign({}, tags, Reaction.Router.current().query, shopIds);
   const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
 
   if (productsSubscription.ready()) {
@@ -164,7 +160,7 @@ function composer(props, onData) {
       { "workflow.status": "active" },
       { _id: Reaction.getPrimaryShopId() }
     ]
-  }).fetch().map(activeShop => activeShop._id);
+  }).fetch().map((activeShop) => activeShop._id);
 
   const productCursor = Products.find({
     ancestors: [],
@@ -172,9 +168,7 @@ function composer(props, onData) {
     shopId: { $in: activeShopsIds }
   });
 
-  const products = productCursor.map((product) => {
-    return applyProductRevision(product);
-  });
+  const products = productCursor.map((product) => applyProductRevision(product));
 
   const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
 

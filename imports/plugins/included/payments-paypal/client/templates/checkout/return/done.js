@@ -78,7 +78,7 @@ Template.paypalDone.onCreated(function () {
                 _id: cart._id
               });
             }
-            const msg = (error !== null ? error.error : void 0);
+            const msg = (error !== null ? error.error : undefined);
             showError(msg);
           }
 

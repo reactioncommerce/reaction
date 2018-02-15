@@ -11,18 +11,18 @@
         },
         "settings": {
           "smsSettingsLabel": "Réglages SMS",
-          "smsProvider": "SMS Provider",
+          "smsProvider": "Fournisseur SMS",
           "providerName": "Nom du fournisseur",
-          "selectProvider": "Sélectionnez un fournisseur de SMS",
-          "phoneNumber": "SMS Numéro de téléphone",
+          "selectProvider": "Sélectionnez un fournisseur SMS",
+          "phoneNumber": "Numéro de téléphone SMS",
           "apiKey": "Clé API",
-          "apiToken": "API Token / secret"
+          "apiToken": "Token/secret API"
         },
         "alerts": {
-          "noApiKey": "S'il vous plaît ajouter une clé API",
-          "noApiToken": "S'il vous plaît ajouter une API TOKEN / secret",
-          "noSmsProvider": "S'il vous plaît choisir un fournisseur de SMS",
-          "noSmsPhone": "S'il vous plaît ajouter le numéro de téléphone qui vous est donné par votre fournisseur de SMS",
+          "noApiKey": "Merci d'ajouter une clé API",
+          "noApiToken": "Merci d'ajouter un token/secret API",
+          "noSmsProvider": "Merci de choisir un fournisseur SMS",
+          "noSmsPhone": "Merci d'ajouter le numéro de téléphone donné par votre fournisseur SMS",
           "saveSuccess": "Paramètres SMS enregistrés"
         }
       }

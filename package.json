@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -19,12 +19,12 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
+    "@babel/runtime": "7.0.0-beta.38",
     "@reactioncommerce/nodemailer": "^5.0.5",
     "accounting-js": "^1.1.1",
     "authorize-net": "^1.0.11",
     "autoprefixer": "^7.1.6",
     "autosize": "^4.0.0",
-    "babel-runtime": "^6.26.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
     "braintree": "^2.4.0",
@@ -37,7 +37,6 @@
     "copy-to-clipboard": "^3.0.8",
     "core-js": "^2.5.1",
     "country-data": "^0.0.31",
-    "css-annotation": "^0.6.2",
     "deep-diff": "^0.3.8",
     "deep-equal": "^1.0.1",
     "dnd-core": "^2.5.4",
@@ -62,7 +61,7 @@
     "lodash.pick": "^4.4.0",
     "match-sorter": "^2.2.0",
     "meteor-node-stubs": "^0.3.2",
-    "moment": "^2.19.3",
+    "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
     "nexmo": "^2.2.0",
     "nock": "^9.1.3",
@@ -72,8 +71,6 @@
     "nouislider-algolia-fork": "^10.0.0",
     "path-to-regexp": "^2.1.0",
     "paypal-rest-sdk": "^1.7.1",
-    "postcss": "^6.0.14",
-    "postcss-js": "^1.0.1",
     "prerender-node": "^2.7.4",
     "prop-types": "^15.6.0",
     "query-parse": "^2.0.0",
@@ -93,11 +90,13 @@
     "react-dropzone": "^4.2.3",
     "react-helmet": "^5.2.0",
     "react-image-magnify": "^2.3.2",
+    "react-loadable": "^5.3.1",
     "react-measure": "^2.0.2",
     "react-nouislider": "^2.0.1",
     "react-onclickoutside": "^6.7.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "react-s-alert": "^1.4.1",
     "react-select": "^1.1.0",
     "react-table": "^6.7.4",
     "react-taco-table": "^0.5.1",
@@ -105,6 +104,7 @@
     "react-textarea-autosize": "^5.2.1",
     "recompose": "^0.26.0",
     "shallowequal": "^1.0.2",
+    "sharp": "^0.19.0",
     "shippo": "^1.3.1",
     "shopify-api-node": "^2.9.0",
     "sortablejs": "^1.7.0",
@@ -121,20 +121,24 @@
     "velocity-react": "^1.3.3"
   },
   "devDependencies": {
-    "babel-eslint": "^8.0.2",
+    "@babel/cli": "7.0.0-beta.38",
+    "@babel/core": "7.0.0-beta.38",
+    "@babel/preset-react": "7.0.0-beta.38",
+    "babel-eslint": "^8.2.1",
     "babel-jest": "^21.2.0",
+    "babel-plugin-dynamic-import-node": "^1.2.0",
     "babel-plugin-lodash": "^3.3.2",
     "babel-plugin-module-resolver": "^3.0.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-meteor": "7.0.0-beta.38-1",
     "chai": "^4.1.2",
     "enzyme": "^3.2.0",
     "enzyme-to-json": "^3.2.2",
-    "eslint": "^4.12.1",
+    "eslint": "^4.16.0",
+    "eslint-config-react-tools": "^1.1.2",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.5.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.5.1",
     "jest": "^21.2.1",
     "js-yaml": "^3.10.0",
@@ -157,6 +161,8 @@
   },
   "babel": {
     "plugins": [
+      "transform-class-properties",
+      "dynamic-import-node",
       [
         "lodash",
         {
@@ -183,9 +189,8 @@
       ]
     ],
     "presets": [
-      "env",
-      "react",
-      "stage-2"
+      "meteor",
+      "@babel/preset-react"
     ]
   },
   "jest": {
