@@ -57,7 +57,7 @@
     "immutable": "^3.8.2",
     "jquery-i18next": "^1.2.1",
     "later": "^1.2.0",
-    "libphonenumber-js": "^0.4.49",
+    "libphonenumber-js": "^0.4.52",
     "lodash": "^4.17.4",
     "lodash.pick": "^4.4.0",
     "match-sorter": "^2.2.0",
