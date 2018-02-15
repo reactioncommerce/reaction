@@ -16,7 +16,7 @@ docker build \
   -t "${DOCKER_NAMESPACE}:${SHA1}" .
 
 # Get tags and apply them to our Docker image
-"${__dir}/docker-tags.sh" "${SHA1}" "${CIRCLE_BRANCH}" | xargs -t -I % \
+"${__dir}/docker-tags.sh" "${SHA1}" "${CIRCLE_BRANCH}" | sed 's/\//-/g' | xargs -t -I % \
   docker tag "${DOCKER_NAMESPACE}:${SHA1}" "${DOCKER_NAMESPACE}:%"
 
 # run the container and wait for it to boot

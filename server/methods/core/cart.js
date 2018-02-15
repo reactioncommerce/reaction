@@ -4,7 +4,7 @@ import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 /**
  * @method quantityProcessing
@@ -208,6 +208,7 @@ Meteor.methods({
         Collections.Accounts.remove({
           userId: sessionCart.userId
         });
+        Hooks.Events.run("afterAccountsRemove", this.userId, sessionCart.userId);
         Meteor.users.remove(sessionCart.userId);
         Logger.debug(`merge cart: delete cart ${
           sessionCart._id} and user: ${sessionCart.userId}`);
