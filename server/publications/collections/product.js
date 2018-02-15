@@ -159,6 +159,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
         }
       }).observe({
         added: (revision) => {
+          // TODO: Review from here. I think it's not necessary to use observeProduct
           let observedProduct;
           if (!revision.parentDocument) {
             observedProduct = Products.findOne(revision.documentId);
@@ -166,25 +167,33 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
             observedProduct = Products.findOne(revision.parentDocument);
           }
           if (observedProduct) {
-            this.added("Products", observedProduct._id, observedProduct);
             this.added("Revisions", revision._id, revision);
+          }
+          // End of review
+
+          if (revision.documentType === "product") {
+            this.changed("Products", revision.documentId, { __revisions: [revision] });
           }
         },
         changed: (revision) => {
+          // TODO: Review from here. I think it's not necessary to use observeProduct
           let observedProduct;
           if (!revision.parentDocument) {
             observedProduct = Products.findOne(revision.documentId);
           } else {
             observedProduct = Products.findOne(revision.parentDocument);
           }
-
           if (observedProduct) {
-            observedProduct.__revisions = [revision];
-            this.changed("Products", observedProduct._id, observedProduct);
             this.changed("Revisions", revision._id, revision);
+          }
+          // End of review
+
+          if (revision.documentType === "product") {
+            this.changed("Products", revision.documentId, { __revisions: [revision] });
           }
         },
         removed: (revision) => {
+          // TODO: Review from here. I think it's not necessary to use observeProduct
           let observedProduct;
           if (!revision.parentDocument) {
             observedProduct = Products.findOne(revision.documentId);
@@ -192,9 +201,12 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
             observedProduct = Products.findOne(revision.parentDocument);
           }
           if (observedProduct) {
-            observedProduct.__revisions = [];
-            this.changed("Products", observedProduct._id, observedProduct);
             this.removed("Revisions", revision._id, revision);
+          }
+          // End of review
+
+          if (revision.documentType === "product") {
+            this.changed("Products", revision.documentId, { __revisions: [] });
           }
         }
       });
