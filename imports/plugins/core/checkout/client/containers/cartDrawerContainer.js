@@ -41,7 +41,6 @@ const handlers = {
       });
 
       ReactionProduct.setCurrentVariant(productItem.variants._id);
-      Session.set(`variant-form-${productItem.variants._id}`, true);
     }
   },
 
