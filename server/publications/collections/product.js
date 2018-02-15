@@ -103,8 +103,11 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
   selector.isDeleted = { $in: [null, false] };
   selector.$or = [
     { _id },
-    { ancestors: _id },
-    { handle: productIdOrHandle }];
+    { ancestors: _id }, {
+      handle: {
+        $regex: productIdOrHandle,
+        $options: "i" }
+    }];
 
   // Authorized content curators for the shop get special publication of the product
   // all all relevant revisions all is one package
@@ -114,6 +117,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     };
 
     if (RevisionApi.isRevisionControlEnabled()) {
+      // TODO review for REGEX / DOS vulnerabilities.
       const productCursor = Products.find(selector);
       const handle = productCursor.observeChanges({
         added: (id, fields) => {
