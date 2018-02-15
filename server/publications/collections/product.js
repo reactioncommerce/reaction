@@ -62,7 +62,9 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     return this.ready();
   }
 
-  const preSelector = {
+  const selector = {
+    isVisible: true,
+    isDeleted: { $in: [null, false] },
     $or: [{
       _id: productIdOrHandle
     }, {
@@ -70,6 +72,8 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
         $regex: productIdOrHandle,
         $options: "i"
       }
+    }, {
+      ancestors: productIdOrHandle
     }]
   };
 
@@ -83,67 +87,34 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     });
 
     if (shop) {
-      preSelector.shopId = shop._id;
+      selector.shopId = shop._id;
     } else {
       return this.ready();
     }
   }
 
   // TODO review for REGEX / DOS vulnerabilities.
-  const product = Products.findOne(preSelector);
+  const product = Products.find(selector);
 
-  if (!product) {
+  if (!product.count()) {
     // Product not found, return empty subscription.
     return this.ready();
   }
 
-  const _id = product._id;
-
-  const selector = {
-    isVisible: true,
-    isDeleted: { $in: [null, false] },
-    $or: [
-      { _id },
-      { ancestors: _id }
-    ]
-  };
-
   // Authorized content curators for the shop get special publication of the product
   // all all relevant revisions all is one package
-  if (Reaction.hasPermission(["owner", "createProduct"], this.userId, product.shopId)) {
+  if (Reaction.hasPermission(["owner", "createProduct"], this.userId, selector.shopId)) {
     selector.isVisible = {
       $in: [true, false, undefined]
     };
 
     if (RevisionApi.isRevisionControlEnabled()) {
       const productCursor = Products.find(selector);
-      const productIds = productCursor.map(p => p._id);
-
       const handle = productCursor.observeChanges({
         added: (id, fields) => {
-          const revisions = Revisions.find({
-            "documentId": id,
-            "workflow.status": {
-              $nin: [
-                "revision/published"
-              ]
-            }
-          }).fetch();
-          fields.__revisions = revisions;
-
           this.added("Products", id, fields);
         },
         changed: (id, fields) => {
-          const revisions = Revisions.find({
-            "documentId": id,
-            "workflow.status": {
-              $nin: [
-                "revision/published"
-              ]
-            }
-          }).fetch();
-
-          fields.__revisions = revisions;
           this.changed("Products", id, fields);
         },
         removed: (id) => {
@@ -159,7 +130,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
         }
       }).observe({
         added: (revision) => {
-          // TODO: Review from here. I think it's not necessary to use observeProduct
+          // TODO: Review. I think it's not necessary to use observeProduct
           let observedProduct;
           if (!revision.parentDocument) {
             observedProduct = Products.findOne(revision.documentId);
@@ -168,15 +139,13 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
           }
           if (observedProduct) {
             this.added("Revisions", revision._id, revision);
-          }
-          // End of review
-
-          if (revision.documentType === "product") {
-            this.changed("Products", revision.documentId, { __revisions: [revision] });
+            if (revision.documentType === "product") {
+              this.added("Products", revision.documentId, { __revisions: [revision] });
+            }
           }
         },
         changed: (revision) => {
-          // TODO: Review from here. I think it's not necessary to use observeProduct
+          // TODO: Review. I think it's not necessary to use observeProduct
           let observedProduct;
           if (!revision.parentDocument) {
             observedProduct = Products.findOne(revision.documentId);
@@ -185,15 +154,13 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
           }
           if (observedProduct) {
             this.changed("Revisions", revision._id, revision);
-          }
-          // End of review
-
-          if (revision.documentType === "product") {
-            this.changed("Products", revision.documentId, { __revisions: [revision] });
+            if (revision.documentType === "product") {
+              this.changed("Products", revision.documentId, { __revisions: [revision] });
+            }
           }
         },
         removed: (revision) => {
-          // TODO: Review from here. I think it's not necessary to use observeProduct
+          // TODO: Review. I think it's not necessary to use observeProduct
           let observedProduct;
           if (!revision.parentDocument) {
             observedProduct = Products.findOne(revision.documentId);
@@ -202,11 +169,9 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
           }
           if (observedProduct) {
             this.removed("Revisions", revision._id, revision);
-          }
-          // End of review
-
-          if (revision.documentType === "product") {
-            this.changed("Products", revision.documentId, { __revisions: [] });
+            if (revision.documentType === "product") {
+              this.changed("Products", revision.documentId, { __revisions: [] });
+            }
           }
         }
       });
@@ -216,6 +181,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
         handle2.stop();
       });
 
+      const productIds = productCursor.fetch().map(p => p._id);
       return [
         findProductMedia(this, productIds)
       ];
