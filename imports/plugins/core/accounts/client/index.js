@@ -25,6 +25,7 @@ export { default as AuthContainer } from "./containers/auth";
 export { default as EditGroupContainer } from "./containers/editGroupContainer";
 export { default as ForgotPasswordContainer } from "./containers/forgotPassword";
 export { default as MainDropdownContainer } from "./containers/mainDropdown";
+export { default as ManageGroupsContainer } from "./containers/manageGroupsContainer";
 export { default as MessagesContainer } from "./containers/messages";
 export { default as UpdatePasswordOverlayContainer } from "./containers/passwordOverlay";
 export { default as LoginInlineContainer } from "./containers/loginInline";

@@ -31,7 +31,6 @@ function removePermissions(current, old) {
 
 class PermissionsList extends Component {
   static propTypes = {
-    canEdit: PropTypes.bool,
     createGroup: PropTypes.func,
     group: PropTypes.object,
     permissions: PropTypes.array,
@@ -88,7 +87,7 @@ class PermissionsList extends Component {
                 label={childPermission.label}
                 switchOn={this.checked(childPermission.permission)}
                 switchName={childPermission.permission}
-                onSwitchChange={this.props.canEdit && this.togglePermission(childPermission)}
+                onSwitchChange={this.togglePermission(childPermission)}
               />
             );
           })}
@@ -107,7 +106,7 @@ class PermissionsList extends Component {
           actionType="switch"
           switchOn={this.checked(permission.name)}
           switchName={permission.name}
-          onSwitchChange={this.props.canEdit && this.togglePermission(permission)}
+          onSwitchChange={this.togglePermission(permission)}
         />
         {this.renderSubPermissions(permission)}
       </div>);

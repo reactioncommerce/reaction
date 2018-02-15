@@ -21,7 +21,6 @@ import { groupPermissions } from "../helpers/accountsHelper";
 class EditGroup extends Component {
   static propTypes = {
     accounts: PropTypes.array,
-    canEdit: PropTypes.bool,
     groups: PropTypes.array,
     onChangeGroup: PropTypes.func,
     packages: PropTypes.array,
@@ -157,14 +156,13 @@ class EditGroup extends Component {
         {this.state.groups.map((grp, index) => (
           <div key={index} className={this.groupListClass(grp)}>
             <Components.ListItem label={grp.name} onClick={this.selectGroup(grp)}>
-              {this.props.canEdit && <a href="" onClick={this.showForm(grp)} className="fa fa-pencil" />}
+              <a href="" onClick={this.showForm(grp)} className="fa fa-pencil" />
             </Components.ListItem>
           </div>
         ))}
-        {this.props.canEdit &&
-          <Components.ListItem label="New Group" i18nKeyLabel="admin.groups.newGroup" onClick={this.showForm()}>
-            <i className="fa fa-plus" />
-          </Components.ListItem>}
+        <Components.ListItem label="New Group" i18nKeyLabel="admin.groups.newGroup" onClick={this.showForm()}>
+          <i className="fa fa-plus" />
+        </Components.ListItem>
       </Components.List>
     );
   }
@@ -178,7 +176,6 @@ class EditGroup extends Component {
         permissions={groupPermissions(this.props.packages)}
         group={this.state.selectedGroup}
         updateGroup={this.updateGroup}
-        canEdit={this.props.canEdit}
       />
     );
   };
