@@ -7,8 +7,7 @@ import { Meteor } from "meteor/meteor";
 import { assert, expect } from "meteor/practicalmeteor:chai";
 import { Match } from "meteor/check";
 import { DDP } from "meteor/ddp";
-import JobCollection from "./jobCollection";
-import Job from "./job";
+import { Job, JobCollection } from "./";
 
 let remoteServerTestColl;
 
@@ -36,13 +35,10 @@ describe("JobCollection default constructor", function () {
   });
 });
 
-describe.only("JobCollection", function () {
+describe("JobCollection", function () {
   let clientTestColl;
   let serverTestColl;
   let testColl;
-
-  // The line below is a regression test for issue #51
-  const dummyTestColl = new JobCollection("DummyTest", { idGeneration: "STRING" });
 
   before(function () {
     clientTestColl = new JobCollection("ClientTest", { idGeneration: "MONGO" });
