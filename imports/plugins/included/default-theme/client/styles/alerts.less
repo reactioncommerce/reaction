@@ -21,44 +21,23 @@
   }
 }
 
-.rui.alert {
+.s-alert-wrapper .s-alert-box {
   display: flex;
   padding: 0;
   border-radius: 0;
   z-index: 9999;
 }
 
-.rui.alert > .content {
+.s-alert-wrapper .s-alert-box-inner {
   flex: 1 1 auto;
   padding: 20px;
   .padding-right(10px);
 }
 
-.rui.alert > .controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.rui.alert > .controls .control {
-  flex: 0 0 auto;
-  width: 44px;
-  min-height: 44px;
-}
-
-.rui.alert .s-alert-close {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: static;
-  text-indent: 0;
-  height: auto;
-  transform: none;
-  &:before, &:after {
-    content: none;
-  }
-}
-
 .swal2-modal > button:focus {
   outline: none;
+}
+
+.swal2-container .swal2-popup {
+  font-size: 1.6rem;
 }

@@ -20,10 +20,10 @@ export function getComponent(name) {
   try {
     component = newGetComponent(name);
   } catch (e) {
-    component = null;
-  } finally {
-    return component;
+    console.log("Component not found");
   }
+
+  return component;
 }
 
 export function getAllComponents() {

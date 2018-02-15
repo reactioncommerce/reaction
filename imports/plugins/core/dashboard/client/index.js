@@ -12,6 +12,7 @@ import "./templates/settings/settings.html";
 import "./templates/settings/settings.js";
 
 import "./templates/shop/settings/settings.html";
+import "./templates/shop/settings/settings.less";
 import "./templates/shop/settings/settings.js";
 
 import "./templates/dashboard.html";

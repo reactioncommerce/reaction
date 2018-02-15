@@ -44,7 +44,7 @@ export function createGroups(options = {}) {
         Groups.insert({
           name: groupKey,
           slug: groupKey,
-          permissions: primaryShopGroup && primaryShopGroup.permissions || roles[groupKey],
+          permissions: (primaryShopGroup && primaryShopGroup.permissions) || roles[groupKey],
           shopId: shop._id
         });
       }
@@ -66,8 +66,8 @@ export function createGroups(options = {}) {
 function getDefaultGroupRoles() {
   let ownerRoles = Roles
     .getAllRoles().fetch()
-    .map(role => role.name)
-    .filter(role => role !== "anonymous"); // see comment above
+    .map((role) => role.name)
+    .filter((role) => role !== "anonymous"); // see comment above
 
   // Join all other roles with package roles for owner. Owner should have all roles
   // this is needed because of default roles defined in the app that are not in Roles.getAllRoles
@@ -75,7 +75,7 @@ function getDefaultGroupRoles() {
   ownerRoles = _.uniq(ownerRoles);
 
   // we're making a Shop Manager default group that have all roles except the owner role
-  const shopManagerRoles = ownerRoles.filter((role) => role !== "owner");
+  const shopManagerRoles = ownerRoles.filter((role) => role !== "owner" && role !== "admin");
 
   const roles = {
     "shop manager": shopManagerRoles,

@@ -3,7 +3,7 @@ import { Template } from "meteor/templating";
 import { check, Match } from "meteor/check";
 import { Reaction, Logger, i18next } from "/client/api";
 import { Shops, Accounts } from "/lib/collections";
-import { localeDep, i18nextDep } from  "./main";
+import { localeDep, i18nextDep } from "./main";
 import { formatPriceString } from "./currency";
 
 /**

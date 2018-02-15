@@ -26,7 +26,7 @@
           "optionOrdersCreateUpdateInventory": "Ažuriraj oglasni prostor kada se stavlja nova narudžba Shopify",
           "syncSetup": "Postavi sinkronizaciju",
           "syncSetupSuccess": "Uspješno postavite sinkronizaciju Shopify",
-          "syncSetupFailure": "Pogreška pri postavljanju sinkronizacije Shoify",
+          "syncSetupFailure": "Pogreška pri postavljanju sinkronizacije Shopify",
           "syncStop": "Zaustavi sinkronizaciju",
           "syncStopSuccess": "Uspješno je zaustavljen Sync Shopify!",
           "syncStopFailure": "Pogreška pri zaustavljanju sinkronizacije Shopify!",

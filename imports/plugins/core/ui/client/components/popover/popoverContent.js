@@ -11,7 +11,7 @@ class PopoverContent extends Component {
   }
 
   render() {
-    return  (
+    return (
       <div className="rui popover-content">
         {this.props.children}
       </div>

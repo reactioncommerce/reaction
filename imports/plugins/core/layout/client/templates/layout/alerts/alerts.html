@@ -1,27 +1,3 @@
-<body>
-  {{> sAlert template="reactionToastAlert"}}
-</body>
-
-<template name="reactionToastAlert">
-  <div class="rui alert s-alert-box s-alert-{{this.condition}} s-alert-{{position}} s-alert-effect-{{effect}} s-alert-show" id="{{_id}}" style="{{boxPosition}}">
-    <div class="content">
-      {{#if sAlertTitle}}
-        <div class="header">
-          <h1><i class="fa fa-{{sAlertIcon}}"></i> {{sAlertTitle}}</h1>
-        </div>
-      {{/if}}
-      <div class="message">
-        {{message}}
-      </div>
-    </div>
-    <div class="controls">
-      <span class="control s-alert-close">
-        <i class="fa fa-times"></i>
-      </span>
-    </div>
-  </div>
-</template>
-
 <template name="inlineAlerts">
   {{#each alerts placement id}}
     {{> inlineAlert}}
