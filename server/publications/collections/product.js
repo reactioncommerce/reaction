@@ -70,8 +70,6 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
         $regex: productIdOrHandle,
         $options: "i"
       }
-    }, {
-      ancestors: productIdOrHandle // Works only equivalent as before when productIdOrHandle is a productId
     }]
   };
 
@@ -99,8 +97,17 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     return this.ready();
   }
 
+  const _id = product._id;
+
   selector.isVisible = true;
   selector.isDeleted = { $in: [null, false] };
+  selector.$or = [
+    { _id },
+    { ancestors: _id },
+    { handle: {
+      $regex: productIdOrHandle,
+      $options: "i"
+    } }];
 
   // Authorized content curators for the shop get special publication of the product
   // all all relevant revisions all is one package
