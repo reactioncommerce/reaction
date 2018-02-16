@@ -11,27 +11,21 @@
 #
 # $DOCKER_NAMESPACE     - the image name for production deployments [Default]: reactioncommerce/reaction
 
-if [[ "$CIRCLE_BRANCH" != "master" ]]; then
-  echo "Not running a deployment branch."
-  exit 0
-fi
+set -e
 
-# Master branch deployment (only runs when a version git tag exists - syntax: "v1.2.3")
-if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-  VERSION=$(git describe --tags | grep "^v[0-9]\+\.[0-9]\+\.[0-9]\+$")
+# Setup variables
+DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
+SHA1=$(git rev-parse --verify "${CIRCLE_SHA1}")
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-  if [[ "$VERSION" ]]; then
-    set -e
+# Login to docker
+docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
 
-    DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
+# Push image and SHA1 tag
+echo "Pushing docker image with SHA1 tag ${DOCKER_NAMESPACE}:${SHA1}"
+docker push "${DOCKER_NAMESPACE}:${SHA1}"
 
-    docker tag $DOCKER_NAMESPACE:latest $DOCKER_NAMESPACE:$VERSION
-
-    docker login -u $DOCKER_USER -p $DOCKER_PASS
-
-    docker push $DOCKER_NAMESPACE:$VERSION
-    docker push $DOCKER_NAMESPACE:latest
-  else
-    echo "On the master branch, but no version tag was found. Skipping image deployment."
-  fi
-fi
+# Push remaining tags (git tags, branch, "latest" if applicable)
+echo "Pushing remaining tags"
+"${__dir}/docker-tags.sh" "${SHA1}" "${CIRCLE_BRANCH}" | sed 's/\//-/g' | xargs -t -I % \
+  docker push "${DOCKER_NAMESPACE}:%"

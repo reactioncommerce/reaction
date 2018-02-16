@@ -52,7 +52,7 @@ class NumericInput extends Component {
   }
 
   get displayValue() {
-    const value = this.state.value;
+    const { value } = this.state;
 
     if (typeof value === "number") {
       if (this.props.format && this.props.format.scale === 0) {
@@ -106,11 +106,11 @@ class NumericInput extends Component {
    */
   handleChange(event) {
     const input = event.currentTarget;
-    const value = event.currentTarget.value;
+    const { value } = event.currentTarget;
     let numberValue = this.unformat(value);
 
     if (this.props.format.scale === 0) {
-      numberValue = numberValue / 100;
+      numberValue /= 100;
     }
 
     this.setState({

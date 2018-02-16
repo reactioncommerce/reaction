@@ -35,9 +35,9 @@ const Hooks = {
     }
   },
 
-  onEnter(routeName, callback) {
+  onEnter(routeName, callback, ...args) {
     // global onEnter callback
-    if (arguments.length === 1 && typeof arguments[0] === "function") {
+    if (arguments.length === 1 && typeof args[0] === "function") {
       const cb = routeName;
       return this._addHook("onEnter", "GLOBAL", cb);
     }
@@ -45,9 +45,9 @@ const Hooks = {
     return this._addHook("onEnter", routeName, callback);
   },
 
-  onExit(routeName, callback) {
+  onExit(routeName, callback, ...args) {
     // global onExit callback
-    if (arguments.length === 1 && typeof arguments[0] === "function") {
+    if (arguments.length === 1 && typeof args[0] === "function") {
       const cb = routeName;
       return this._addHook("onExit", "GLOBAL", cb);
     }
@@ -64,9 +64,7 @@ const Hooks = {
   run(type, name, constant) {
     const callbacks = this.get(type, name);
     if (typeof callbacks !== "undefined" && !!callbacks.length) {
-      return callbacks.forEach((callback) => {
-        return callback(constant);
-      });
+      return callbacks.forEach((callback) => callback(constant));
     }
     return null;
   }

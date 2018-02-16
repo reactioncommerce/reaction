@@ -12,12 +12,12 @@
         "dashboard": {
           "taxcloudLabel": "TaxCloud",
           "taxcloudTitle": "TaxCloud",
-          "taxcloudDescription": "taxes TaxCloud"
+          "taxcloudDescription": "Taxes TaxCloud"
         },
         "taxSettings": {
           "taxcloudLabel": "TaxCloud",
           "taxcloudSettingsLabel": "TaxCloud",
-          "taxcloudCredentials": "Ajouter les informations d'identification pour permettre",
+          "taxcloudCredentials": "Ajouter les identifiants pour activer",
           "taxcloudGetCredentialsURL": "Obtenez-les ici"
         }
       }

@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import "react-dates/initialize";
-import { DayPickerRangeController } from "react-dates";
 import omit from "lodash/omit";
 import { registerComponent } from "@reactioncommerce/reaction-components";
+import DayPickerRangeController from "./dayPickerRangeController";
 
 // CalendarPicker is a wrapper around react-dates DayPickerRangeController. Anything that works in react-dates should
 // work in CalendarPicker react-dates docs are available at: https://github.com/airbnb/react-dates
-
 class CalendarPicker extends Component {
   constructor(props) {
     super(props);

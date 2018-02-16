@@ -1,8 +1,14 @@
 import later from "later";
-import moment from "moment";
 import { Job } from "meteor/vsivsi:job-collection";
 import { Jobs } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
+
+let moment;
+async function lazyLoadMoment() {
+  if (moment) return;
+  const mod = await import("moment");
+  moment = mod.default;
+}
 
 export function addCleanupJobControlHook() {
   Hooks.Events.add("onJobServerStart", () => {
@@ -31,6 +37,7 @@ export function cleanupJob() {
     Logger.debug("Processing jobControl/removeStaleJobs...");
 
     // TODO: set this interval in the admin UI
+    Promise.await(lazyLoadMoment());
     const olderThan = moment().subtract(3, "days")._d;
 
     const ids = Jobs.find({
