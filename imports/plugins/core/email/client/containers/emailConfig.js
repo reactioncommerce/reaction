@@ -40,6 +40,8 @@ const wrapComponent = (Comp) => (
       this.checkEmailStatus();
     }
 
+    // checking email settings
+    // and updating status
     checkEmailStatus() {
       const { settings } = this.props;
       const { service, host, port, user, password } = settings;
