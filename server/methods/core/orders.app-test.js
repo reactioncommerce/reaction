@@ -110,15 +110,44 @@ describe("orders test", function () {
       expect(cancelOrder).to.throw(Meteor.Error, /Access Denied/);
     });
 
-    it("should return the product to stock ", function () {
-      // Mock user permissions
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      const returnToStock = true;
-      const previousProduct = Products.findOne({ _id: order.items[0].variants._id });
+    it("should increase inventory with number of items canceled when returnToStock option is selected", function () {
+      const orderItemId = order.items[0].variants._id;
+      sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
+
+      const { inventoryQuantity } = Products.findOne({ _id: orderItemId }) || {};
+
+      // approve the order (inventory decreases)
+      spyOnMethod("approvePayment", order.userId);
+      Meteor.call("orders/approvePayment", order);
+
+      // cancel order with returnToStock option (which should increment inventory)
       spyOnMethod("cancelOrder", order.userId);
-      Meteor.call("orders/cancelOrder", order, returnToStock);
-      const product = Products.findOne({ _id: order.items[0].variants._id });
-      expect(previousProduct.inventoryQuantity).to.equal(product.inventoryQuantity);
+      Meteor.call("orders/cancelOrder", order, true); // returnToStock = true;
+
+      const product = Products.findOne({ _id: orderItemId });
+      const inventoryAfterRestock = product.inventoryQuantity;
+
+      expect(inventoryQuantity).to.equal(inventoryAfterRestock);
+    });
+
+    it("should NOT increase/decrease inventory when returnToStock option is false", function () {
+      const orderItemId = order.items[0].variants._id;
+      sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
+
+      // approve the order (inventory decreases)
+      spyOnMethod("approvePayment", order.userId);
+      Meteor.call("orders/approvePayment", order);
+
+      const { inventoryQuantity } = Products.findOne({ _id: orderItemId }) || {};
+
+      // cancel order with NO returnToStock option (which should leave inventory untouched)
+      spyOnMethod("cancelOrder", order.userId);
+      Meteor.call("orders/cancelOrder", order, false); // returnToStock = false;
+
+      const product = Products.findOne({ _id: orderItemId });
+      const inventoryAfterNoRestock = product.inventoryQuantity;
+
+      expect(inventoryQuantity).to.equal(inventoryAfterNoRestock);
     });
 
     it("should notify owner of the order, if the order is canceled", function () {
@@ -128,16 +157,6 @@ describe("orders test", function () {
       Meteor.call("orders/cancelOrder", order, returnToStock);
       const notify = Notifications.findOne({ to: order.userId, type: "orderCanceled" });
       expect(notify.message).to.equal("Your order was canceled.");
-    });
-
-    it("should not return the product to stock", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      const returnToStock = false;
-      const previousProduct = Products.findOne({ _id: order.items[0].variants._id });
-      spyOnMethod("cancelOrder", order.userId);
-      Meteor.call("orders/cancelOrder", order, returnToStock);
-      const product = Products.findOne({ _id: order.items[0].variants._id });
-      expect(previousProduct.inventoryQuantity).to.equal(product.inventoryQuantity + 1);
     });
 
     it("should update the payment method status and mode to refunded and canceled respectively ", function () {
