@@ -536,8 +536,6 @@ Meteor.methods({
       throw new Meteor.Error("not-found", "Unable to find an item with such id in cart.");
     }
 
-    Hooks.Events.run("beforeRemoveItemsFromCart", [cartItem]);
-
     if (!quantity || quantity >= cartItem.quantity) {
       let cartResult;
       try {
@@ -563,6 +561,8 @@ Meteor.methods({
 
       Logger.debug(`cart: deleted cart item variant id ${cartItem.variants._id}`);
 
+      // Clear inventory reservation
+      Meteor.call("inventory/clearReserve", [cartItem]);
       // Calculate discounts
       Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
       // TODO: HACK: When calling update shipping the changes to the cart have not taken place yet
@@ -580,6 +580,7 @@ Meteor.methods({
 
     // if quantity lets convert to negative and increment
     const removeQuantity = Math.abs(quantity) * -1;
+
     let cartResult;
     try {
       cartResult = Collections.Cart.update({
@@ -599,6 +600,11 @@ Meteor.methods({
       throw error;
     }
 
+    // Clear inventory status for multiple instances of this item
+    // If quantity is provided, then set cartItem to it, so that quantity
+    // provided will be cleared in the inventory.
+    cartItem.quantity = quantity;
+    Meteor.call("inventory/clearReserve", [cartItem]);
     // Calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
     Logger.debug(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);
