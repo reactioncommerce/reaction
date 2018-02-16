@@ -58,7 +58,7 @@ const toDenormalize = [
  * @return {String} title - modified `title`
  */
 function createTitle(newTitle, productId) {
-  // exception product._id needed for cases then double triggering happens3
+  // exception product._id needed for cases then double triggering happens
   let title = newTitle || "";
   const titleCount = Products.find({
     title,
