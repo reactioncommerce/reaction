@@ -3,7 +3,8 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
-import { Cart, Media } from "/lib/collections";
+import { Cart } from "/lib/collections";
+import { getPrimaryMediaForOrderItem } from "/lib/api";
 import { Reaction } from "/client/api";
 import CartDrawer from "../components/cartDrawer";
 import { ReactionProduct } from "/lib/api";
@@ -12,10 +13,7 @@ import { ReactionProduct } from "/lib/api";
 const handlers = {
   handleImage(item) {
     const { defaultImage } = item;
-    if (defaultImage && defaultImage.url({ store: "small" })) {
-      return defaultImage;
-    }
-    return false;
+    return defaultImage && defaultImage.url({ store: "small" });
   },
 
   /**
@@ -77,22 +75,11 @@ function composer(props, onData) {
   if (Reaction.marketplace.merchantCarts) {
     shopId = Reaction.getShopId();
   }
-  let productItems = Cart.findOne({ userId, shopId }).items;
-  let defaultImage;
 
-  productItems = productItems.map((item) => {
-    Meteor.subscribe("CartItemImage", item);
-    defaultImage = Media.findOne({
-      "metadata.variantId": item.variants._id
-    });
-    if (defaultImage) {
-      return Object.assign({}, item, { defaultImage });
-    }
-    defaultImage = Media.findOne({
-      "metadata.productId": item.productId
-    });
-    return Object.assign({}, item, { defaultImage });
-  });
+  const cart = Cart.findOne({ userId, shopId });
+  Meteor.subscribe("CartImages", cart._id);
+
+  const productItems = cart && cart.items.map((item) => ({ ...item, defaultImage: getPrimaryMediaForOrderItem(item) }));
   onData(null, {
     productItems
   });

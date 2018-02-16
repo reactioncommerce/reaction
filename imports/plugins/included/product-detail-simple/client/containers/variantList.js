@@ -6,10 +6,11 @@ import { composeWithTracker, Components } from "@reactioncommerce/reaction-compo
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next } from "/client/api";
 import { getChildVariants } from "../selectors/variants";
-import { Products, Media } from "/lib/collections";
+import { Products } from "/lib/collections";
 import update from "react/lib/update";
 import { getVariantIds } from "/lib/selectors/variants";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
+import { Media } from "/imports/plugins/core/files/client";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
@@ -179,7 +180,7 @@ function composer(props, onData) {
   const childVariants = getChildVariants();
 
   if (Array.isArray(childVariants)) {
-    childVariantMedia = Media.find({
+    childVariantMedia = Media.findLocal({
       "metadata.variantId": {
         $in: getVariantIds(childVariants)
       }
@@ -187,7 +188,7 @@ function composer(props, onData) {
       sort: {
         "metadata.priority": 1
       }
-    }).fetch();
+    });
   }
 
   let editable;

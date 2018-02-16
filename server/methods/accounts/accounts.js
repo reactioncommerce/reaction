@@ -1,12 +1,11 @@
 import _ from "lodash";
-import path from "path";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { Accounts, Cart, Groups, Media, Shops, Packages } from "/lib/collections";
+import { Accounts, Cart, Groups, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { sendUpdatedVerificationEmail } from "/server/api/core/accounts";
@@ -610,7 +609,7 @@ export function inviteShopOwner(options) {
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
-  const emailLogo = getEmailLogo(primaryShop);
+  const emailLogo = Reaction.Email.getShopLogo(primaryShop);
   const token = Random.id();
   const currentUser = Meteor.users.findOne(this.userId);
   const currentUserName = getCurrentUserName(currentUser);
@@ -685,7 +684,7 @@ export function inviteShopMember(options) {
 
   const currentUser = Meteor.users.findOne(this.userId);
   const currentUserName = getCurrentUserName(currentUser);
-  const emailLogo = getEmailLogo(primaryShop);
+  const emailLogo = Reaction.Email.getShopLogo(primaryShop);
   const user = Meteor.users.findOne({ "emails.address": email });
   const token = Random.id();
   let dataForEmail;
@@ -767,14 +766,7 @@ export function sendWelcomeEmail(shopId, userId) {
   const shop = Shops.findOne(shopId);
 
   // Get shop logo, if available. If not, use default logo from file-system
-  let emailLogo;
-  if (Array.isArray(shop.brandAssets)) {
-    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-    const mediaId = Media.findOne(brandAsset.mediaId);
-    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
-  } else {
-    emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
-  }
+  const emailLogo = Reaction.Email.getShopLogo(shop);
   const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {
@@ -923,27 +915,6 @@ export function setUserPermissions(userId, permissions, group) {
     Logger.error(error);
     return error;
   }
-}
-
-/**
- * @name getEmailLogo
- * @memberof Methods/Accounts
- * @summary Get shop logo, if available. If not, use default logo from file-system
- * @method
- * @private
- * @param  {Object} shop - shop
- * @return {String} Email logo path
- */
-function getEmailLogo(shop) {
-  let emailLogo;
-  if (Array.isArray(shop.brandAssets)) {
-    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-    const mediaId = Media.findOne(brandAsset.mediaId);
-    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
-  } else {
-    emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
-  }
-  return emailLogo;
 }
 
 /**

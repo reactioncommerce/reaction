@@ -1,10 +1,9 @@
 import _ from "lodash";
-import path from "path";
 import { Random } from "meteor/random";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { Media, Shops } from "/lib/collections";
+import { Shops } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
 /**
@@ -54,17 +53,7 @@ export async function sendResetPasswordEmail(userId, optionalEmail) {
 
   // Get shop data for email display
   const shop = Shops.findOne(Reaction.getShopId());
-
-  // Get shop logo, if available. If not, use default logo from file-system
-  let emailLogo;
-  if (Array.isArray(shop.brandAssets)) {
-    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-    const mediaId = Media.findOne(brandAsset.mediaId);
-    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
-  } else {
-    emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
-  }
-
+  const emailLogo = Reaction.Email.getShopLogo(shop);
   const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {

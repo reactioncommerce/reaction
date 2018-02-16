@@ -36,6 +36,8 @@ class CartItems extends Component {
       item
     } = this.props;
 
+    const fileRecord = handleImage(item);
+
     return (
       <div
         className="cart-items"
@@ -57,9 +59,9 @@ class CartItems extends Component {
           data-event-value={item.productId}
           onClick={this.handleClick}
         >
-          {handleImage(item) ?
-            <div className="center-cropped" style={{ backgroundImage: `url('${handleImage(item).url({ store: "small" })}')` }}>
-              <img src={handleImage(item).url({ store: "small" })} className="product-grid-item-images img-responsive" alt="" />
+          {fileRecord ?
+            <div className="center-cropped" style={{ backgroundImage: `url('${fileRecord.url({ store: "small" })}')` }}>
+              <img src={fileRecord.url({ store: "small" })} className="product-grid-item-images img-responsive" alt="" />
             </div> :
             <div className="center-cropped" style={{ backgroundImage: "url('/resources/placeholder.gif')" }}>
               <img src="/resources/placeholder.gif" className="product-grid-item-images img-responsive" alt="" />

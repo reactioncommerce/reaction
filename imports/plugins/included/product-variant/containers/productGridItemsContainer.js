@@ -6,7 +6,7 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { Media } from "/lib/collections";
+import { Media } from "/imports/plugins/core/files/client";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import ProductGridItems from "../components/productGridItems";
 
@@ -114,21 +114,19 @@ const wrapComponent = (Comp) => (
       return false;
     }
 
-    productMedia = () => {
-      const media = Media.findOne({
+    productMedia = () => (
+      Media.findOneLocal({
         "metadata.productId": this.props.product._id,
         "metadata.toGrid": 1
       }, {
         sort: { "metadata.priority": 1, "uploadedAt": 1 }
-      });
-
-      return media instanceof FS.File ? media : false;
-    }
+      })
+    )
 
     additionalProductMedia = () => {
       const variants = ReactionProduct.getVariants(this.props.product._id);
       const variantIds = variants.map((variant) => variant._id);
-      const mediaArray = Media.find({
+      const mediaArray = Media.findLocal({
         "metadata.productId": this.props.product._id,
         "metadata.variantId": {
           $in: variantIds
@@ -136,7 +134,7 @@ const wrapComponent = (Comp) => (
         "metadata.workflow": { $nin: ["archived", "unpublished"] }
       }, { limit: 3 });
 
-      return mediaArray.count() > 1 ? mediaArray : false;
+      return mediaArray.limit > 1 ? mediaArray : false;
     }
 
     isMediumWeight = () => {

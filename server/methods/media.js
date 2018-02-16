@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
-import { Media } from "/lib/collections";
+import { Media } from "/imports/plugins/core/files/server";
 import { Reaction } from "/server/api";
 
 /**
@@ -40,15 +40,15 @@ export const updateMediaPriorities = new ValidatedMethod({
     if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
-    const results = [];
-    sortedMedias.forEach((image, index) => {
-      results.push(Media.update(image.mediaId, {
+
+    const promises = sortedMedias.map((image, index) => (
+      Media.update(image.mediaId, {
         $set: {
           "metadata.priority": index
         }
-      }));
-    });
+      })
+    ));
 
-    return results;
+    return Promise.all(promises);
   }
 });

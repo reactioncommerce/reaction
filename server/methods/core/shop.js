@@ -876,7 +876,7 @@ Meteor.methods({
     if (shopWithBrandAsset) {
       return Collections.Shops.update({
         "_id": Reaction.getShopId(),
-        "brandAssets.type": "navbarBrandImage"
+        "brandAssets.type": asset.type
       }, {
         $set: {
           "brandAssets.$": {

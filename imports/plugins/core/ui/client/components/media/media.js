@@ -8,121 +8,132 @@ import { SortableItem } from "../../containers";
 import Hint from "./hint";
 
 class MediaItem extends Component {
+  static propTypes = {
+    connectDragSource: PropTypes.func,
+    connectDropTarget: PropTypes.func,
+    defaultSource: PropTypes.string,
+    editable: PropTypes.bool,
+    mediaHeight: PropTypes.number,
+    mediaWidth: PropTypes.number,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    onRemoveMedia: PropTypes.func,
+    size: PropTypes.string,
+    source: PropTypes.object,
+    zoomable: PropTypes.bool
+  };
+
+  static defaultProps = {
+    connectDragSource: (item) => item,
+    connectDropTarget: (item) => item,
+    defaultSource: "/resources/placeholder.gif",
+    editable: false,
+    onMouseEnter() {},
+    onMouseLeave() {},
+    onRemoveMedia() {},
+    size: "large",
+    zoomable: false
+  };
+
   handleMouseEnter = (event) => {
-    if (this.props.onMouseEnter) {
-      this.props.onMouseEnter(event, this.props.source);
-    }
+    const { onMouseEnter, source } = this.props;
+    onMouseEnter(event, source);
   }
 
   handleMouseLeave = (event) => {
-    if (this.props.onMouseLeave) {
-      this.props.onMouseLeave(event, this.props.source);
-    }
+    const { onMouseLeave, source } = this.props;
+    onMouseLeave(event, source);
   }
 
   handleRemoveMedia = (event) => {
-    event.stopPropagation();
+    const { onRemoveMedia, source } = this.props;
 
-    if (this.props.onRemoveMedia) {
-      this.props.onRemoveMedia(this.props.source);
-    }
+    event.stopPropagation();
+    onRemoveMedia(source);
   }
 
   renderRevision() {
-    if (this.props.revision) {
-      if (this.props.revision.changeType === "remove") {
-        return (
-          <Components.IconButton
-            icon="fa"
-            status="danger"
-            i18nKeyTooltip="admin.mediaGallery.removedImage"
-            tooltip="Image has been deleted. Publish to save changes."
-            kind="mediaGalleryStatus"
-          />
-        );
-      }
+    const { source } = this.props;
+    const { revision } = source || {};
+
+    if (!revision) return null;
+
+    if (revision.changeType === "remove") {
       return (
         <Components.IconButton
           icon="fa"
-          status="info"
-          i18nKeyTooltip="admin.mediaGallery.addedImage"
-          tooltip="This is a new image. Publish to save changes."
+          status="danger"
+          i18nKeyTooltip="admin.mediaGallery.removedImage"
+          tooltip="Image has been deleted. Publish to save changes."
           kind="mediaGalleryStatus"
         />
       );
     }
-    return undefined;
+
+    return (
+      <Components.IconButton
+        icon="fa"
+        status="info"
+        i18nKeyTooltip="admin.mediaGallery.addedImage"
+        tooltip="This is a new image. Publish to save changes."
+        kind="mediaGalleryStatus"
+      />
+    );
   }
 
   renderControls() {
-    if (this.props.editable) {
-      // If we have a pending remove, don't show the remove button
-      if (!this.props.revision || this.props.revision.changeType !== "remove") {
-        return (
-          <div className="rui badge-container">
-            {this.renderRevision()}
-            <Components.IconButton
-              icon="fa fa-times"
-              onClick={this.handleRemoveMedia}
-              i18nKeyTooltip="admin.mediaGallery.deleteImage"
-              tooltip="Click to remove image"
-            />
-          </div>
-        );
-      }
-      return (
-        <div className="rui badge-container">
-          {this.renderRevision()}
-        </div>
+    const { editable, source } = this.props;
+
+    if (!editable) return null;
+
+    const { revision } = source || {};
+
+    // If we have a pending remove, don't show the remove button
+    let removeButton = null;
+    if (!revision || revision.changeType !== "remove") {
+      removeButton = (
+        <Components.IconButton
+          icon="fa fa-times"
+          onClick={this.handleRemoveMedia}
+          i18nKeyTooltip="admin.mediaGallery.deleteImage"
+          tooltip="Click to remove image"
+        />
       );
     }
-    return null;
+
+    return (
+      <div className="rui badge-container">
+        {this.renderRevision()}
+        {removeButton}
+      </div>
+    );
   }
 
-  get defaultSource() {
-    return this.props.defaultSource || "/resources/placeholder.gif";
-  }
+  getSource = (size) => {
+    const { defaultSource, source } = this.props;
 
-  renderSource = (size) => {
-    // Set source to be default image
-    let source = this.defaultSource;
-
-    // Set default source size to `large`
-    let sourceSize = "&store=large";
-    // If size is provided, set that sourse to that size
-    if (size) {
-      sourceSize = `&store=${size}`;
-    }
-
-    // If a source was provided, use it
-    if (this.props.source) {
-      if (typeof this.props.source === "object" && this.props.source.url()) {
-        source = `${this.props.source.url()}${sourceSize}`;
-      } else {
-        source = `${this.props.source}${sourceSize}`;
-      }
-    }
-
-    return source;
-  }
+    return (source && source.url({ store: size })) || defaultSource;
+  };
 
   renderImage() {
-    if (this.props.zoomable && !this.props.editable) {
+    const { editable, mediaHeight, mediaWidth, size, zoomable } = this.props;
+
+    if (zoomable && !editable) {
       return (
         <ReactImageMagnify {...{
           smallImage: {
-            width: this.props.mediaWidth,
-            height: this.props.mediaHeight,
-            src: this.renderSource("large")
+            width: mediaWidth,
+            height: mediaHeight,
+            src: this.getSource(size)
           },
           imageClassName: "img-responsive",
           fadeDurationInMs: 150,
           hoverDelayInMs: 200,
           pressDuration: 300,
           largeImage: {
-            src: this.renderSource("large"),
-            width: this.props.mediaWidth * 2,
-            height: this.props.mediaHeight * 2
+            src: this.getSource("image"),
+            width: mediaWidth * 2,
+            height: mediaHeight * 2
           },
           isHintEnabled: true,
           enlargedImageContainerClassName: "zoomed-image-container",
@@ -133,21 +144,25 @@ class MediaItem extends Component {
         />
       );
     }
+
     return (
       <img
         alt=""
         className="img-responsive"
-        src={this.renderSource("large")}
+        src={this.getSource(size)}
       />
     );
   }
 
   render() {
+    const { connectDragSource, connectDropTarget, editable, zoomable } = this.props;
+
     const classes = {
       "gallery-image": true,
-      "no-fade-on-hover": this.props.zoomable && !this.props.editable,
+      "no-fade-on-hover": zoomable && !editable,
       "admin-gallery-image": Reaction.hasAdminAccess()
     };
+
     const mediaElement = (
       <div
         className={classnames(classes)}
@@ -159,30 +174,13 @@ class MediaItem extends Component {
       </div>
     );
 
-    if (this.props.editable) {
-      return this.props.connectDragSource(this.props.connectDropTarget(mediaElement));
+    if (editable) {
+      return connectDragSource(connectDropTarget(mediaElement));
     }
 
     return mediaElement;
   }
 }
-
-MediaItem.propTypes = {
-  connectDragSource: PropTypes.func,
-  connectDropTarget: PropTypes.func,
-  defaultSource: PropTypes.string,
-  editable: PropTypes.bool,
-  isFeatured: PropTypes.bool,
-  mediaHeight: PropTypes.number,
-  mediaWidth: PropTypes.number,
-  metadata: PropTypes.object,
-  onMouseEnter: PropTypes.func,
-  onMouseLeave: PropTypes.func,
-  onRemoveMedia: PropTypes.func,
-  revision: PropTypes.object,
-  source: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  zoomable: PropTypes.bool
-};
 
 registerComponent("MediaItem", MediaItem, SortableItem("media"));
 

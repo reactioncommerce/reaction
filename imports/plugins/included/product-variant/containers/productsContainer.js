@@ -160,7 +160,7 @@ function composer(props, onData) {
       { "workflow.status": "active" },
       { _id: Reaction.getPrimaryShopId() }
     ]
-  }).fetch().map((activeShop) => activeShop._id);
+  }).map((activeShop) => activeShop._id);
 
   const productCursor = Products.find({
     ancestors: [],
@@ -174,6 +174,8 @@ function composer(props, onData) {
 
   canLoadMoreProducts = productCursor.count() >= Session.get("productScrollLimit");
   const stateProducts = sortedProducts;
+
+  Meteor.subscribe("ProductGridMedia", sortedProducts.map((product) => product._id));
 
   Session.set("productGrid/products", sortedProducts);
 

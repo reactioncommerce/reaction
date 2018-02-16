@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
-import { Media } from "/lib/collections";
+import { getPrimaryMediaForOrderItem } from "/lib/api";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { getShippingInfo } from "../helpers";
 import {
@@ -143,35 +143,6 @@ const wrapComponent = (Comp) => (
        And if it should, why not the existing, modal orders panel?
       */
       Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
-    }
-
-    /**
-     * Media - find media based on a product/variant
-     * @param  {Object} item object containing a product and variant id
-     * @return {Object|false} An object contianing the media or false
-     */
-    handleDisplayMedia = (item) => {
-      const variantId = item.variants._id;
-      const { productId } = item;
-
-      const variantImage = Media.findOne({
-        "metadata.variantId": variantId,
-        "metadata.productId": productId
-      });
-
-      if (variantImage) {
-        return variantImage;
-      }
-
-      const defaultImage = Media.findOne({
-        "metadata.productId": productId,
-        "metadata.priority": 0
-      });
-
-      if (defaultImage) {
-        return defaultImage;
-      }
-      return false;
     }
 
     /**
@@ -658,7 +629,7 @@ const wrapComponent = (Comp) => (
           {...this.props}
           handleSelect={this.handleSelect}
           handleClick={this.handleClick}
-          displayMedia={this.handleDisplayMedia}
+          displayMedia={getPrimaryMediaForOrderItem}
           selectedItems={this.state.selectedItems}
           selectAllOrders={this.selectAllOrders}
           multipleSelect={this.state.multipleSelect}
