@@ -98,7 +98,7 @@ class OrderSummary extends Component {
             <div className="order-summary-form-group">
               <strong data-i18n="order.created">Created</strong>
               <div className="invoice-details">
-                {moment && moment(order.createdAt).fromNow()} | {dateFormat(order.createdAt, "MM/D/YYYY")}
+                {(moment && moment(order.createdAt).fromNow()) || dateFormat(order.createdAt, "MM/D/YYYY")}
               </div>
             </div>
 
