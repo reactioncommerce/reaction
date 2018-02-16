@@ -262,6 +262,7 @@ Then set the default upload and download URLs:
 import { FileRecord } from "@reactioncommerce/file-collections";
 
 // These need to be set in only one client-side file
+FileRecord.absoluteUrlPrefix = "https://my.app.com";
 FileRecord.downloadEndpointPrefix = "/files";
 FileRecord.uploadEndpoint = "/uploads";
 ```
