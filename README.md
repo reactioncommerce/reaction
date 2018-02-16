@@ -89,7 +89,7 @@ const imagesStore = new GridFSStore({
   db,
   mongodb,
   name: "images",
-  async transformWrite(fileRecord) {
+  transformWrite(fileRecord) {
     // Need to update the content type and extension of the file info, too.
     // The new size gets set correctly automatically.
     fileRecord.type("image/jpeg", { store: "images" });
