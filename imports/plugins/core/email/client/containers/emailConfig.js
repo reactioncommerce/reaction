@@ -33,6 +33,14 @@ const wrapComponent = (Comp) => (
     }
 
     componentWillMount() {
+      this.checkEmailStatus();
+    }
+
+    componentWillUpdate() {
+      this.checkEmailStatus();
+    }
+
+    checkEmailStatus() {
       const { settings } = this.props;
       const { service, host, port, user, password } = settings;
 
@@ -40,8 +48,9 @@ const wrapComponent = (Comp) => (
         Meteor.call("email/verifySettings", (error) => {
           if (error) {
             this.setState({ status: "error" });
+          } else {
+            this.setState({ status: "valid" });
           }
-          this.setState({ status: "valid" });
         });
       } else {
         this.setState({ status: "error" });
