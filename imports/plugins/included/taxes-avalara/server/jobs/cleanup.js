@@ -7,8 +7,7 @@ import taxCalc from "../methods/taxCalc";
 let moment;
 async function lazyLoadMoment() {
   if (moment) return;
-  const mod = await import("moment");
-  moment = mod.default;
+  moment = await import("moment");
 }
 
 /**
