@@ -92,10 +92,10 @@ export default class MeteorFileCollection extends FileCollection {
   }
 
   _findOneLocal() {
-    throw new Error("findOneLocal not supported in Node variation");
+    throw new Error("MeteorFileCollection does not support findOneLocal in Node code. Use findOne");
   }
 
   _findLocal() {
-    throw new Error("findOneLocal not supported in Node variation");
+    throw new Error("MeteorFileCollection does not support findLocal in Node code. Use find");
   }
 }
