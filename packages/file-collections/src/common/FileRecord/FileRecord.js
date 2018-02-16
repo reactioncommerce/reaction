@@ -2,7 +2,7 @@
 
 import { EventEmitter } from "events";
 import tus from "tus-js-client";
-import getUrlForFileRecord from "./getUrlForFileRecord";
+import getUrlForFileRecord from "./url";
 
 function getFileExtensionFromFileName(name) {
   // Seekout the last '.' if found
@@ -65,8 +65,10 @@ export default class FileRecord extends EventEmitter {
 
   static set uploadEndpoint(value) {
     let endpoint = value;
-    if (!endpoint.startsWith("/")) endpoint = `/${endpoint}`;
-    if (!endpoint.endsWith("/")) endpoint = `${endpoint}/`;
+    if (typeof endpoint === "string") {
+      if (!endpoint.startsWith("/")) endpoint = `/${endpoint}`;
+      if (!endpoint.endsWith("/")) endpoint = `${endpoint}/`;
+    }
     this._uploadEndpoint = endpoint;
   }
 
@@ -76,9 +78,21 @@ export default class FileRecord extends EventEmitter {
 
   static set downloadEndpointPrefix(value) {
     let endpoint = value;
-    if (!endpoint.startsWith("/")) endpoint = `/${endpoint}`;
-    if (endpoint.endsWith("/")) endpoint = endpoint.slice(0, -1);
+    if (typeof endpoint === "string") {
+      if (!endpoint.startsWith("/")) endpoint = `/${endpoint}`;
+      if (endpoint.endsWith("/")) endpoint = endpoint.slice(0, -1);
+    }
     this._downloadEndpointPrefix = endpoint;
+  }
+
+  static get absoluteUrlPrefix() {
+    return this._absoluteUrlPrefix;
+  }
+
+  static set absoluteUrlPrefix(value) {
+    let endpoint = value;
+    if (typeof endpoint === "string" && endpoint.endsWith("/")) endpoint = endpoint.slice(0, -1);
+    this._absoluteUrlPrefix = endpoint;
   }
 
   attachCollection(collection) {
@@ -256,7 +270,11 @@ export default class FileRecord extends EventEmitter {
   }
 
   url(options) {
-    return getUrlForFileRecord(this, { prefix: FileRecord.downloadEndpointPrefix, ...options });
+    return getUrlForFileRecord(this, {
+      absoluteUrlPrefix: FileRecord.absoluteUrlPrefix,
+      prefix: FileRecord.downloadEndpointPrefix,
+      ...options
+    });
   }
 
   remove() {

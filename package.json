@@ -10,7 +10,9 @@
   "scripts": {
     "lint": "eslint .",
     "bootstrap": "lerna run build && lerna bootstrap",
-    "start": "cd example-apps/meteor-blaze-app && npm i && npm start"
+    "start": "cd example-apps/meteor-blaze-app && npm i && npm start",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "@reactioncommerce/eslint-config": "^1.0.1",
@@ -27,6 +29,8 @@
     "eslint-plugin-jest": "^21.6.1",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.6.1",
+    "jest": "^22.3.0",
+    "jest-cli": "^22.3.0",
     "lerna": "^2.8.0",
     "lerna-semantic-release": "^9.1.0"
   }
