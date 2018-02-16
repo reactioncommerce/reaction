@@ -5,15 +5,15 @@
     "reaction-i18n": {
       "admin": {
         "i18nSettings": {
-          "shopLocalization": "Localisation des magasins",
+          "shopLocalization": "Localisation de la boutique",
           "enabledCurrencies": "Devises",
           "enabledLanguages": "Langues",
-          "allOn": "Tous Sur",
-          "allOff": "All Off"
+          "allOn": "Tous activés",
+          "allOff": "Tous désactivés"
         },
         "baseUOM": "Unité de mesure de base",
         "currency": "Devise de référence",
-        "currencyTooltip": "Devise par défaut du magasin.",
+        "currencyTooltip": "Devise par défaut de la boutique.",
         "language": "Langue de référence",
         "languageTooltip": "Cette langue sera utilisée en cas d'échec de la détection automatique de la langue.",
         "timezone": "Fuseau horaire",

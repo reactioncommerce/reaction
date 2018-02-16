@@ -57,7 +57,7 @@ const wrapComponent = (Comp) => (
   }
 );
 
-const composer = ({}, onData) => {
+const composer = (props, onData) => {
   if (Meteor.subscribe("Packages").ready()) {
     const shopSettings = Reaction.getShopSettings();
     const settings = shopSettings.mail || {};

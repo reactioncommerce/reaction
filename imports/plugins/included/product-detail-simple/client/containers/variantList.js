@@ -13,7 +13,7 @@ import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
-  if (current && typeof current === "object" && (variantId === current._id || ~current.ancestors.indexOf(variantId))) {
+  if (current && typeof current === "object" && (variantId === current._id || current.ancestors.indexOf(variantId) >= 0)) {
     return true;
   }
 
@@ -85,11 +85,11 @@ class VariantListContainer extends Component {
 
   get productHandle() {
     const selectedProduct = ReactionProduct.selectedProduct();
-    return selectedProduct.__published && selectedProduct.__published.handle || selectedProduct.handle;
+    return (selectedProduct.__published && selectedProduct.__published.handle) || selectedProduct.handle;
   }
 
   handleCreateVariant = () => {
-    const selectedProduct =  ReactionProduct.selectedProduct();
+    const selectedProduct = ReactionProduct.selectedProduct();
 
     Meteor.call("products/createVariant", selectedProduct._id, (error) => {
       if (error) {
@@ -115,7 +115,7 @@ class VariantListContainer extends Component {
     Reaction.state.set("edit/focus", cardName);
 
     ReactionProduct.setCurrentVariant(variant._id);
-    Session.set("variant-form-" + editVariant._id, true);
+    Session.set(`variant-form-${editVariant._id}`, true);
 
     if (Reaction.hasPermission("createProduct") && !Reaction.isPreview()) {
       Reaction.showActionView({

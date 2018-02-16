@@ -122,7 +122,7 @@ const wrapComponent = (Comp) => (
     componentWillReceiveProps(nextProps) {
       let selectedTag = {};
       const previousEdit = this.state.editable;
-      nextProps.tagsAsArray.map((tag) => {
+      nextProps.tagsAsArray.forEach((tag) => {
         if (this.isSelected(tag)) {
           selectedTag = tag;
         }
@@ -272,10 +272,8 @@ const wrapComponent = (Comp) => (
           this.setState({ selectedTag: null });
           this.detachhBodyListener();
         }, 500);
-      } else {
-        if (this.closeDropdownTimeout) {
-          clearTimeout(this.closeDropdownTimeout);
-        }
+      } else if (this.closeDropdownTimeout) {
+        clearTimeout(this.closeDropdownTimeout);
       }
     }
 
@@ -345,7 +343,7 @@ const wrapComponent = (Comp) => (
       if (TagNavHelpers.isMobile()) {
         const tagId = tag._id;
         const tags = this.props.tagsAsArray;
-        const selectedTag = this.state.selectedTag;
+        const { selectedTag } = this.state;
         const hasSubTags = TagNavHelpers.hasSubTags(tagId, tags);
 
         if (hasSubTags === false) {

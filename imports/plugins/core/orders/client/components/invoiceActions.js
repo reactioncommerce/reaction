@@ -58,7 +58,7 @@ class InvoiceActions extends Component {
 
     return (
       <div className="invoice-summary">
-        <span  className="invoice-label captured-total">
+        <span className="invoice-label captured-total">
           <strong><Components.Translation defaultValue="Captured Total" i18nKey="admin.invoice.capturedTotal"/></strong>
         </span>
 

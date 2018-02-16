@@ -75,15 +75,15 @@ class App extends Component {
       "show-settings": this.props.isActionViewOpen
     });
 
-    const currentRoute = this.props.currentRoute;
-    const routeOptions = currentRoute.route && currentRoute.route.options || {};
-    const routeData = routeOptions && routeOptions.structure || {};
+    const { currentRoute } = this.props;
+    const routeOptions = (currentRoute.route && currentRoute.route.options) || {};
+    const routeData = (routeOptions && routeOptions.structure) || {};
 
     return (
       <div
         style={styles.adminApp}
-        tabIndex={0}
         onKeyDown={this.handleKeyDown}
+        role="presentation"
       >
         <div className={pageClassName} id="reactionAppContainer" style={styles.adminContentContainer}>
           <div className="reaction-toolbar">
@@ -107,8 +107,8 @@ class App extends Component {
       "show-settings": this.props.isActionViewOpen
     });
 
-    const currentRoute = this.props.currentRoute;
-    const layout = currentRoute && currentRoute.route && currentRoute.route.options &&  currentRoute.route.options.layout;
+    const { currentRoute } = this.props;
+    const layout = currentRoute && currentRoute.route && currentRoute.route.options && currentRoute.route.options.layout;
 
     if (this.isAdminApp && layout !== "printLayout") {
       return this.renderAdminApp();
