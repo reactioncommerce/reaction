@@ -65,7 +65,9 @@ class TagList extends Component {
   }
 
   handleTagClick = (event, tag) => {
-    Router.go("tag", { slug: tag.slug });
+    if (this.props.onTagClick) {
+      this.props.onTagClick(event, tag);
+    }
   }
 
   hasDropdownClassName = (tag) => {
