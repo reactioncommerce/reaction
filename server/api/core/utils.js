@@ -15,7 +15,11 @@ async function lazyLoadSlugify() {
     return;
   } else {
     // if the shops language use latin based chars load slugify else load transliterations's slugify
-    mod = (latinLangs.indexOf(lang) >= 0) ? await import("slugify") : await import("transliteration");
+    if (latinLangs.indexOf(lang) >= 0) {
+      mod = await import("slugify");
+    } else {
+      mod = await import("transliteration");
+    }
   }
   // slugify is exported to modules.default while transliteration is exported to modules.slugify
   slugify = mod.default || mod.slugify;
@@ -32,6 +36,12 @@ async function lazyLoadSlugify() {
  * @return {String} slugified string
  */
 export function getSlug(slugString) {
+  let slug;
   Promise.await(lazyLoadSlugify());
-  return (slugString && slugify) ? slugify(slugString.toLowerCase()) : "";
+  if (slugString && slugify) {
+    slug = slugify(slugString.toLowerCase());
+  } else {
+    slug = "";
+  }
+  return slug;
 }
