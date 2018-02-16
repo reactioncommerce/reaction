@@ -100,7 +100,9 @@ class OrderTable extends Component {
         <div className="order-totals">
           <span className="order-data order-data-date">
             <strong>Date: </strong>
-            {moment(order.createdAt).fromNow()} | {moment(order.createdAt).format("MM/D/YYYY")}
+            {(moment && moment(order.createdAt).fromNow()) || order.createdAt.toLocaleString()}
+            &nbsp;|&nbsp;
+            {(moment && moment(order.createdAt).format("MM/D/YYYY")) || order.createdAt.toLocaleString()}
           </span>
 
           <span className="order-data order-data-id">
