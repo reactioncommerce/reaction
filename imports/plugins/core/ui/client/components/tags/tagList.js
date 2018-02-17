@@ -65,7 +65,9 @@ class TagList extends Component {
   }
 
   handleTagClick = (event, tag) => {
-    Router.go("tag", { slug: tag.slug });
+    if (this.props.onTagClick) {
+      this.props.onTagClick(event, tag);
+    }
   }
 
   hasDropdownClassName = (tag) => {
@@ -91,29 +93,27 @@ class TagList extends Component {
 
     if (Array.isArray(this.props.tags)) {
       const arrayProps = _.compact(this.props.tags);
-      const tags = arrayProps.map((tag, index) => {
-        return (
-          <div className={classes(tag)} key={index}>
-            <Components.TagItem
-              {...this.props}
-              data-id={tag._id}
-              index={index}
-              key={index}
-              tag={tag}
-              onMove={this.props.onMoveTag}
-              draggable={this.props.draggable}
-              onTagInputBlur={this.handleTagSave}
-              onTagMouseOut={this.handleTagMouseOut}
-              onTagMouseOver={this.handleTagMouseOver}
-              onTagRemove={this.handleTagRemove}
-              onTagSave={this.handleTagSave}
-              onTagUpdate={this.handleTagUpdate}
-              onTagClick={this.handleTagClick}
-            />
-            {this.props.children}
-          </div>
-        );
-      });
+      const tags = arrayProps.map((tag, index) => (
+        <div className={classes(tag)} key={index}>
+          <Components.TagItem
+            {...this.props}
+            data-id={tag._id}
+            index={index}
+            key={index}
+            tag={tag}
+            onMove={this.props.onMoveTag}
+            draggable={this.props.draggable}
+            onTagInputBlur={this.handleTagSave}
+            onTagMouseOut={this.handleTagMouseOut}
+            onTagMouseOver={this.handleTagMouseOver}
+            onTagRemove={this.handleTagRemove}
+            onTagSave={this.handleTagSave}
+            onTagUpdate={this.handleTagUpdate}
+            onTagClick={this.handleTagClick}
+          />
+          {this.props.children}
+        </div>
+      ));
 
       // Render an blank tag for creating new tags
       if (this.props.editable && this.props.enableNewTagForm) {

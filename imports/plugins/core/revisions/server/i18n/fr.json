@@ -5,16 +5,16 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
-          "preview": "Avant-première",
-          "revisionsLabel": "Révisions",
-          "revisionsTitle": "Révisions",
-          "revisionsDescription": "contrôle de la révision"
+          "preview": "Aperçu",
+          "revisionsLabel": "Versions",
+          "revisionsTitle": "Versions",
+          "revisionsDescription": "Gestion de versions"
         },
         "catalogSettings": {
-          "productRevisionsLabel": "Révisions du produit"
+          "productRevisionsLabel": "Gestion de versions des produits"
         },
         "toolbar": {
-          "publishAll": "Publier All"
+          "publishAll": "Tout publier"
         }
       }
     }

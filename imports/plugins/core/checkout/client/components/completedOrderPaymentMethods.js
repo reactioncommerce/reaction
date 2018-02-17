@@ -17,7 +17,7 @@ const creditCardClasses = {
  */
 const CompletedOrderPaymentMethod = ({ paymentMethod }) => {
   // allow i18n override for "processor" label
-  const i18nKey = "checkout.paymentMethod." + paymentMethod.processor;
+  const i18nKey = `checkout.paymentMethod.${paymentMethod.processor}`;
   // display stored card methods
   if (paymentMethod.method === "credit" && paymentMethod.storedCard) {
     const creditCardType = paymentMethod.storedCard.substring(0, 4).toUpperCase();

@@ -5,10 +5,6 @@ import { i18next } from "/client/api";
 
 
 class PaginationButtons extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   renderIcon() {
     const { children } = this.props;
 

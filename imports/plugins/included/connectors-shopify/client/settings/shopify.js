@@ -5,6 +5,7 @@ import { $ } from "meteor/jquery";
 import { Reaction, Router, i18next } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { ShopifyConnectPackageConfig } from "../../lib/collections/schemas";
+import "./shopify.less";
 import "./shopify.html";
 
 Template.shopifyConnectSettings.helpers({
@@ -117,16 +118,18 @@ Template.shopifySync.helpers({
     return "";
   },
 
+  currentDomain() {
+    const { settings } = Reaction.getPackageSettings("reaction-connectors-shopify");
+    return settings.webhooksDomain || Meteor.absoluteUrl();
+  },
+
   hookIsActive(hook) {
     const { settings } = Reaction.getPackageSettings("reaction-connectors-shopify");
     const { synchooks } = settings;
     if (synchooks) {
-      const [ topic, event, syncType ]  = hook.split(":");
-      const matchingHooks = synchooks.map((synchook) => {
-        if (synchook.topic === topic && synchook.event === event && synchook.syncType === syncType) {
-          return synchook;
-        }
-      });
+      const [topic, event, syncType] = hook.split(":");
+      const matchingHooks = synchooks.filter((synchook) => synchook.topic === topic && synchook.event === event && synchook.syncType === syncType);
+
       if (matchingHooks.length > 0) {
         return "checked";
       }
@@ -139,11 +142,23 @@ Template.shopifySync.events({
   "submit [data-event-action=setupShopifySync]"(event) {
     event.preventDefault(); // Don't permit default form submission behavior
 
+    const { settings } = Reaction.getPackageSettings("reaction-connectors-shopify");
+
     // Our event target is the form we submitted
     const form = event.target;
 
     // Get all selected options
     const selectedOptionsNodeList = form.querySelectorAll('input[type="checkbox"]:checked');
+    const webhooksDomain = document.getElementsByName("webhooksDomain")[0].value;
+
+    if (!webhooksDomain) {
+      return Alerts.toast(`${i18next.t("admin.shopifyConnectSettings.noDomainSelected")}`, "warning");
+    }
+
+    if (settings.webhooksDomain !== webhooksDomain) {
+      settings.webhooksDomain = webhooksDomain;
+      Meteor.call("package/update", "reaction-connectors-shopify", "settings", settings);
+    }
 
     // Create options array
     // - create an array from the nodelist of checkboxes
@@ -154,7 +169,7 @@ Template.shopifySync.events({
     // If there's at least one option
     if (integrations && Array.isArray(integrations) && integrations.length > 0) {
       // setup sync with provided integrations
-      return Meteor.call("connectors/shopify/sync/setup", integrations, (err) => {
+      return Meteor.call("connectors/shopify/sync/setup", integrations, webhooksDomain, (err) => {
         if (!err) {
           // If there is no error, notify of success
           return Alerts.toast(i18next.t("admin.shopifyConnectSettings.syncSetupSuccess"), "success");
@@ -183,9 +198,7 @@ Template.shopifySync.events({
     event.preventDefault();
     const form = formEvent.target;
     const optionsNodeList = form.querySelectorAll('input[type="checkbox"]');
-    const optionsList = Array.from(optionsNodeList).map((hook) => {
-      return { name: hook.name, checked: hook.checked };
-    });
+    const optionsList = Array.from(optionsNodeList).map((hook) => ({ name: hook.name, checked: hook.checked }));
     optionsList.forEach((node) => {
       if (node.checked) {
         Meteor.call("synchooks/shopify/addHook", node, (error) => {
@@ -210,8 +223,13 @@ Template.shopifySync.events({
 
 AutoForm.hooks({
   "shopify-connect-update-form": {
-    onSuccess() {
-      return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
+    onSuccess: function () {
+      Meteor.call("connectors/shopify/api/credentials/test", (err, isValid) => {
+        if (isValid) {
+          return Alerts.toast(i18next.t("admin.shopifyConnectSettings.validCredentials"), "Valid API key and password");
+        }
+        return Alerts.toast(i18next.t("admin.shopifyConnectSettings.invalidCredentials", "Invalid API key/password"), "error");
+      });
     },
     onError(error) {
       return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");

@@ -26,7 +26,7 @@
           "optionOrdersCreateUpdateInventory": "新的Shopify订单放置时更新库存",
           "syncSetup": "安装同步",
           "syncSetupSuccess": "成功设置Shopify同步",
-          "syncSetupFailure": "设置错误Shoify同步",
+          "syncSetupFailure": "设置错误Shopify同步",
           "syncStop": "停止同步",
           "syncStopSuccess": "成功停止Shopify同步！",
           "syncStopFailure": "停止Shopify同步错误！",
