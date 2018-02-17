@@ -51,7 +51,7 @@ class AccountsDashboard extends Component {
   renderGroupDetail = () => {
     const { groups, adminGroups, accounts } = this.state;
     return (
-      <Components.ManageGroupsContainer
+      <Components.ManageGroups
         {...this.props}
         group={this.state.selectedGroup}
         groups={groups}

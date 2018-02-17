@@ -1,6 +1,6 @@
 import { compose, withProps } from "recompose";
 import Alert from "sweetalert2";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker, withIsAdmin } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Groups } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
@@ -114,11 +114,13 @@ const composer = (props, onData) => {
 };
 
 registerComponent("AccountsDashboard", AccountsDashboard, [
+  withIsAdmin,
   composeWithTracker(composer),
   withProps(handlers)
 ]);
 
 export default compose(
+  withIsAdmin,
   composeWithTracker(composer),
   withProps(handlers)
 )(AccountsDashboard);

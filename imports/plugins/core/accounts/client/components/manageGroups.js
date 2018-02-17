@@ -7,9 +7,9 @@ class ManageGroups extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     adminGroups: PropTypes.array,
-    canEdit: PropTypes.bool,
     group: PropTypes.object,
     groups: PropTypes.array,
+    isAdmin: PropTypes.bool,
     onChangeGroup: PropTypes.func
   };
 
@@ -41,7 +41,7 @@ class ManageGroups extends Component {
             groups={groupsInvitable}
           />
         }
-        {this.props.canEdit &&
+        {this.props.isAdmin &&
           <Components.EditGroup
             // filter out owner group from editable groups.
             // The edit group meteor method also prevents editing owner group
