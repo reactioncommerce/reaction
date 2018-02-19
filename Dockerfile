@@ -1,10 +1,12 @@
 FROM reactioncommerce/base:v4.0.0 as builder
 
+MAINTAINER Reaction Commerce <architecture@reactioncommerce.com>
+
 # copy the app into the build container
 COPY . $APP_SOURCE_DIR
 
 # build the app with Meteor
-RUN $BUILD_SCRIPTS_DIR/build-meteor.sh
+RUN ${BUILD_SCRIPTS_DIR}/build-meteor.sh
 
 # create the final production image
 FROM node:8.9.4-slim
