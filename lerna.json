@@ -1,4 +1,10 @@
 {
+  "commands": {
+    "publish": {
+      "allowBranch": ["master"],
+      "message": "chore(release): publish %s"
+    }
+  },
   "lerna": "2.8.0",
   "packages": [
     "packages/*"
