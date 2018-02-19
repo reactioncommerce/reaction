@@ -172,7 +172,9 @@ export function sendVerificationEmail(userId, email) {
   });
 
   const shopName = Reaction.getShopName();
-  const url = Accounts.urls.verifyEmail(token);
+
+  const encodedEmailAddress = encodeURIComponent(address);
+  const url = `${Meteor.absoluteUrl()}account/profile/verify?email=${encodedEmailAddress}`;
 
   const dataForEmail = {
     // Reaction Information
@@ -289,7 +291,9 @@ export function sendUpdatedVerificationEmail(userId, email) {
   });
 
   const shopName = Reaction.getShopName();
-  const url = Accounts.urls.verifyEmail(token);
+
+  const encodedEmailAddress = encodeURIComponent(address);
+  const url = `${Meteor.absoluteUrl()}account/profile/verify?email=${encodedEmailAddress}`;
 
   const dataForEmail = {
     // Reaction Information
