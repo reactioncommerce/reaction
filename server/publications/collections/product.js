@@ -118,6 +118,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
       const handle = productCursor.observeChanges({
         added: (id, fields) => {
           this.added("Products", id, fields);
+          console.log(`Products.added - product added. ${id}`);
         },
         changed: (id, fields) => {
           this.changed("Products", id, fields);
@@ -135,48 +136,48 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
         }
       }).observe({
         added: (revision) => {
-          // TODO: Review. I think it's not necessary to use observeProduct
-          let observedProduct;
-          if (!revision.parentDocument) {
-            observedProduct = Products.findOne(revision.documentId);
-          } else {
-            observedProduct = Products.findOne(revision.parentDocument);
-          }
-          if (observedProduct) {
-            this.added("Revisions", revision._id, revision);
-            if (revision.documentType === "product") {
+          this.added("Revisions", revision._id, revision);
+          if (revision.documentType === "product") {
+           /* console.log("this "+ JSON.stringify(this));
+            console.log("userId " + this.userId);
+            debugger;
+            if (Meteor.server.sessions) {
+              const ref = Meteor.server.sessions;
+              for (sessionId in ref) {
+                session = ref[sessionId];
+                const collectionView = session.getCollectionView("Products");
+                console.log("collectionView " + JSON.stringify(collectionView));
+              }
+            }*/
+            // Check merge box (session collection view), if product if already in cache.
+            // If yes, we send a `changed`, otherwise a `added` message.
+            if (this._documents.Products[revision.documentId]) {
+              this.changed("Products", revision.documentId, { __revisions: [revision] });
+              console.log(`Products.added - product changed. ${revision.documentId}`);
+            } else {
               this.added("Products", revision.documentId, { __revisions: [revision] });
+              console.log(`Products.added - product added. ${revision.documentId}`);
             }
+
+            /*const observedProduct = Products.findOne(revision.documentId);
+            if (observedProduct) {
+              // observedProduct.__revisions = [revision];
+              // this.added("Products", revision.documentId, observedProduct);
+              console.log(`Revisions.added - product added. ${revision.documentId}`);
+              this.changed("Products", revision.documentId, { __revisions: [revision] });
+            }*/
           }
         },
         changed: (revision) => {
-          // TODO: Review. I think it's not necessary to use observeProduct
-          let observedProduct;
-          if (!revision.parentDocument) {
-            observedProduct = Products.findOne(revision.documentId);
-          } else {
-            observedProduct = Products.findOne(revision.parentDocument);
-          }
-          if (observedProduct) {
-            this.changed("Revisions", revision._id, revision);
-            if (revision.documentType === "product") {
-              this.changed("Products", revision.documentId, { __revisions: [revision] });
-            }
+          this.changed("Revisions", revision._id, revision);
+          if (revision.documentType === "product") {
+            this.changed("Products", revision.documentId, { __revisions: [revision] });
           }
         },
         removed: (revision) => {
-          // TODO: Review. I think it's not necessary to use observeProduct
-          let observedProduct;
-          if (!revision.parentDocument) {
-            observedProduct = Products.findOne(revision.documentId);
-          } else {
-            observedProduct = Products.findOne(revision.parentDocument);
-          }
-          if (observedProduct) {
-            this.removed("Revisions", revision._id, revision);
-            if (revision.documentType === "product") {
-              this.changed("Products", revision.documentId, { __revisions: [] });
-            }
+          this.removed("Revisions", revision._id, revision);
+          if (revision.documentType === "product") {
+            this.changed("Products", revision.documentId, { __revisions: [] });
           }
         }
       });
