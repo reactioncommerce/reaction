@@ -69,7 +69,7 @@ export default class FileCollection extends EventEmitter {
     return (error, fileRecord) => {
       // When a file has an error while being stored into the temp store, we emit an "error" event on the FS.Collection only if the file belongs to this collection
       if (fileRecord.collectionName === this.name) {
-        const storeError = new Error(`Error storing file to the ${storeName} store: ${error.message}`);
+        const storeError = new Error(`Error from ${storeName} store: ${error.message}`);
         this.emit("error", storeError, fileRecord, storeName);
       }
     };
