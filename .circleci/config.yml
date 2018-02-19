@@ -99,10 +99,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: npx lerna-semantic-release pre # Set up the versions, tags and commits
-      - run: npx lerna-semantic-release perform # Publishes to npm
-      - run: npx lerna-semantic-release post # Generates a changelog in each package in a file named CHANGELOG.md
-      - run: 'git add CHANGELOG.md && git commit -m "chore: Updated CHANGELOG [skip release]" && git push'
+      - run: npx lerna publish --conventional-commits --yes
 
 workflows:
   version: 2

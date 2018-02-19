@@ -31,7 +31,6 @@
     "eslint-plugin-react": "^7.6.1",
     "jest": "^22.3.0",
     "jest-cli": "^22.3.0",
-    "lerna": "^2.8.0",
-    "lerna-semantic-release": "^9.1.0"
+    "lerna": "^2.8.0"
   }
 }
