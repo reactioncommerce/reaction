@@ -154,6 +154,17 @@ export default class FileRecord extends EventEmitter {
     this.document._id = value || null;
   }
 
+  get metadata() {
+    if (!this.document) this.document = {};
+    if (!this.document.metadata) this.document.metadata = {};
+    return this.document.metadata;
+  }
+
+  set metadata(value) {
+    if (!this.document) this.document = {};
+    this.document.metadata = value || null;
+  }
+
   async syncDocumentFromDB() {
     if (!this.collection) {
       throw new Error("Cannot syncDocumentFromDB for a file that is not associated with a collection");
