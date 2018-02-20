@@ -6,13 +6,39 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
+import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
 import { Shops, Translations, Packages } from "/lib/collections";
 import { getSchemas } from "@reactioncommerce/reaction-collections";
 import i18next, { getLabelsFor, getMessagesFor, i18nextDep, currencyDep } from "./main";
 import { mergeDeep } from "/lib/api";
 
-//
+
+SimpleSchema.addValidator(function () {
+  let expireMonth;
+  let expireYear;
+  if (this.key === "expireMonth") {
+    expireMonth = this.value;
+    expireYear = this.field("expireYear").value;
+  }
+  if (this.key === "expireYear") {
+    expireYear = this.value;
+    expireMonth = this.field("expireMonth").value;
+  }
+  if (expireYear && expireMonth) {
+    const now = new Date();
+    const expire = new Date(expireYear, expireMonth);
+    if (now > expire) {
+      return "dateBeforeNow";
+    }
+  }
+});
+
+SimpleSchema.messages({
+  dateBeforeNow: "Dates in the past are not allowed."
+});
+
+
 // setup options for i18nextBrowserLanguageDetector
 // note: this isn't fully operational yet
 // language is set by user currently
