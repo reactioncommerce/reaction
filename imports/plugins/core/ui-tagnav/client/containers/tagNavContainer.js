@@ -1,5 +1,5 @@
 import _ from "lodash";
-import update from "react/lib/update";
+import update from "immutability-helper";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";

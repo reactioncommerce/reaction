@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import update from "react/lib/update";
+import update from "immutability-helper";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
