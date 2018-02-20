@@ -468,7 +468,6 @@ export function addressBookUpdate(address, accountUserId, type) {
             "profile.addressBook.$.isShippingDefault": false
           }
         });
-        // Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
       } else {
         // If the new address is not the shipping default, remove it from the cart
         Meteor.call("cart/unsetAddresses", address._id, userId, "shipping");
@@ -492,7 +491,6 @@ export function addressBookUpdate(address, accountUserId, type) {
             "profile.addressBook.$.isBillingDefault": false
           }
         });
-        // Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
       } else {
         // If the new address is not the shipping default, remove it from the cart
         Meteor.call("cart/unsetAddresses", address._id, userId, "billing");
@@ -530,7 +528,8 @@ export function addressBookUpdate(address, accountUserId, type) {
   }, accountsUpdateQuery);
 
   // Run afterAccountsUpdate hook to update Accounts Search
-  // Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
+  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
+
   return updatedAccount;
 }
 
