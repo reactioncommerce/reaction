@@ -455,7 +455,7 @@ export default {
     const shopName = this.getShopName();
     const lowerCaseShopName = shopName.toLowerCase();
     const slug = this.getSlug(lowerCaseShopName);
-    return `/${slug}`;
+    return `/shop/${slug}`;
   },
 
   /**

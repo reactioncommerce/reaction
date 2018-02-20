@@ -474,7 +474,7 @@ export default {
   getShopPrefix() {
     const shopName = this.getShopName();
     if (shopName) {
-      return `/${this.getSlug(shopName.toLowerCase())}`;
+      return `/shop/${this.getSlug(shopName.toLowerCase())}`;
     }
   },
 
