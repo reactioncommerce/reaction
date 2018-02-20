@@ -1,16 +1,25 @@
-For bugs, please fill out the three following sections completely. For the ticket to be resolved, you'll want to provide as much information as possible.
+Issue tracker is **ONLY** used for reporting bugs. NO NEW FEATURE REQUESTS ACCEPTED. For new feature navigate to [Request new feature](https://github.com/reactioncommerce/reaction-feature-requests).
 
-Are you looking for help with getting started on Reaction? Please go
-to our [Gitter room](https://gitter.im/reactioncommerce/reaction) instead.
+Are you looking for help with getting started on Reaction? Please visit
+to our [Reaction documentation](https://docs.reactioncommerce.com/reaction-docs/master/getting-started-developing-with-reaction).
 
-### Expected behavior
+## Prerequisites
+* [ ] Are you running the latest version?
+* [ ] Are you able to consistently reproduce the issue?
+* [ ] Did you search the issue queue for existing issue? [Search issues](https://github.com/reactioncommerce/reaction/issues)
 
-### Actual behavior
+## Issue Description
+Providing a clear description of the issue will enable a developer to quickly reproduce and understand the issue. Please provide a detailed description including images, animation and/or videos. For client issues, include browser console errors, for server issues please add terminal output and stack traces.
 
-### Steps to reproduce the behavior
+## Steps to Reproduce
+Please provide starting context, i.e. logged in as a user, configure a particular payment method.
+1.
+2.
+3.
+
+## Possible Solution
+Not obligatory, but suggest a fix/reason for the bug
+
 
 ### Versions
 (run `reaction -v` from your reaction directory)
-
-For enhancements or other issues, please describe, in as much detail as
-possible, how the app should be changed, and how this would benefit other users and developers.
