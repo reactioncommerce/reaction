@@ -1,20 +1,21 @@
-.cart-drawer {
-  .cart-items {
-    // border: 3px solid @body-bg
-  }
-
+.cart-items {
+  
   .table {
     background-color: transparent;
   }
-
+  
+  .table.loading {
+    opacity: 0.5;
+  }
+  
   .cart-totals {
     .text-align(left);
-    padding: 15px;
-    font-size: 16px;
-    height: 100%;
-    width: 225px;
-    height: 225px;
-    color: contrast(@cart-drawer-bg, black, white);
+
+    .spinner-container {
+      position: absolute;
+      width: 100%;
+    }
+
   }
   
   thead {
