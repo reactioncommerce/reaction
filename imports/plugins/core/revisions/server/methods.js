@@ -113,14 +113,13 @@ Meteor.methods({
       for (const revision of revisions) {
         if (!revision.documentType || revision.documentType === "product") {
           const oldDocument = Products.findOne(revision.documentId);
-          const newDocument = revision.documentData;
-          if (oldDocument && newDocument.handle !== oldDocument.handle) {
-            newDocument.changedHandleWas = oldDocument.handle;
+          if (oldDocument && revision.documentData.handle !== oldDocument.handle) {
+            revision.documentData.changedHandleWas = oldDocument.handle;
           }
           const res = Products.update({
             _id: revision.documentId
           }, {
-            $set: newDocument
+            $set: revision.documentData
           }, {
             publish: true
           });

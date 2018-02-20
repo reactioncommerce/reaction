@@ -114,21 +114,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     };
 
     if (RevisionApi.isRevisionControlEnabled()) {
-      const productCursor = Products.find(selector);
-      const handle = productCursor.observeChanges({
-        added: (id, fields) => {
-          this.added("Products", id, fields);
-          console.log(`Products.added - product added. ${id}`);
-        },
-        changed: (id, fields) => {
-          this.changed("Products", id, fields);
-        },
-        removed: (id) => {
-          this.removed("Products", id);
-        }
-      });
-
-      const handle2 = Revisions.find({
+      const handle = Revisions.find({
         "workflow.status": {
           $nin: [
             "revision/published"
@@ -138,58 +124,47 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
         added: (revision) => {
           this.added("Revisions", revision._id, revision);
           if (revision.documentType === "product") {
-           /* console.log("this "+ JSON.stringify(this));
-            console.log("userId " + this.userId);
-            debugger;
-            if (Meteor.server.sessions) {
-              const ref = Meteor.server.sessions;
-              for (sessionId in ref) {
-                session = ref[sessionId];
-                const collectionView = session.getCollectionView("Products");
-                console.log("collectionView " + JSON.stringify(collectionView));
+            // Check merge box (session collection view), if product is already in cache.
+            // If yes, we send a `changed`, otherwise ignore it. I'm assuming
+            // that this._documents.Products is somewhat equivalent to
+            // the merge box Meteor.server.sessions[sessionId].getCollectionView("Products").documents
+            if (this._documents.Products && this._documents.Products[revision.documentId]) {
+              if (revision.workflow.status !== "revision/published") {
+                this.changed("Products", revision.documentId, { __revisions: [revision] });
+              } else {
+                this.changed("Products", revision.documentId, { __revisions: [] });
               }
-            }*/
-            // Check merge box (session collection view), if product if already in cache.
-            // If yes, we send a `changed`, otherwise a `added` message.
-            if (this._documents.Products[revision.documentId]) {
-              this.changed("Products", revision.documentId, { __revisions: [revision] });
-              console.log(`Products.added - product changed. ${revision.documentId}`);
-            } else {
-              this.added("Products", revision.documentId, { __revisions: [revision] });
-              console.log(`Products.added - product added. ${revision.documentId}`);
             }
-
-            /*const observedProduct = Products.findOne(revision.documentId);
-            if (observedProduct) {
-              // observedProduct.__revisions = [revision];
-              // this.added("Products", revision.documentId, observedProduct);
-              console.log(`Revisions.added - product added. ${revision.documentId}`);
-              this.changed("Products", revision.documentId, { __revisions: [revision] });
-            }*/
           }
         },
         changed: (revision) => {
           this.changed("Revisions", revision._id, revision);
           if (revision.documentType === "product") {
-            this.changed("Products", revision.documentId, { __revisions: [revision] });
+            if (this._documents.Products && this._documents.Products[revision.documentId]) {
+              this.changed("Products", revision.documentId, { __revisions: [revision] });
+            }
           }
         },
         removed: (revision) => {
           this.removed("Revisions", revision._id, revision);
           if (revision.documentType === "product") {
-            this.changed("Products", revision.documentId, { __revisions: [] });
+            if (this._documents.Products && this._documents.Products[revision.documentId]) {
+              this.changed("Products", revision.documentId, { __revisions: [] });
+            }
           }
         }
       });
 
       this.onStop(() => {
         handle.stop();
-        handle2.stop();
       });
 
+      const productCursor = Products.find(selector);
       const productIds = productCursor.map(p => p._id);
+      const mediaCursor = findProductMedia(this, productIds);
       return [
-        findProductMedia(this, productIds)
+        productCursor,
+        mediaCursor
       ];
     }
 
@@ -197,7 +172,6 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     const productCursor = Products.find(selector);
     const productIds = productCursor.map(p => p._id);
     const mediaCursor = findProductMedia(this, productIds);
-
     return [
       productCursor,
       mediaCursor
@@ -208,7 +182,6 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
   const productCursor = Products.find(selector);
   const productIds = productCursor.map(p => p._id);
   const mediaCursor = findProductMedia(this, productIds);
-
   return [
     productCursor,
     mediaCursor

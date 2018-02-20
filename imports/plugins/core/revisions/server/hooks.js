@@ -376,7 +376,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
   const originalSelector = this.args[0];
 
-  if (!productRevision) {
+  if (!productRevision && options.publish !== true) {
     Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
 
     // Create a new revision
