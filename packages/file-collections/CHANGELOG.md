@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.1.1"></a>
+## [0.1.1](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.1.0...@reactioncommerce/file-collections@0.1.1) (2018-02-20)
+
+
+### Bug Fixes
+
+* Improve FileCollection error message passed on from store ([2178344](https://github.com/reactioncommerce/reaction-file-collections/commit/2178344))
+* **FileRecord:** Support calling upload() with no options ([f379890](https://github.com/reactioncommerce/reaction-file-collections/commit/f379890))
+* **MeteorFileCollection:** Make find and findOne work in browser ([447e58c](https://github.com/reactioncommerce/reaction-file-collections/commit/447e58c))
+
+
+
+
 <a name="0.1.0"></a>
 # 0.1.0 (2018-02-19)
 
