@@ -199,7 +199,7 @@ export default class FileRecord extends EventEmitter {
     // tus-js-client defaults chunkSize to Infinity but we do 5MB
     chunkSize = 5 * 1024 * 1024,
     endpoint = FileRecord.uploadEndpoint
-  }) {
+  } = {}) {
     return new Promise((resolve, reject) => {
       if (!endpoint) {
         reject(new Error("Cannot upload file. You must pass \"endpoint\" option to FileRecord.upload or set FileRecord.uploadEndpoint"));
