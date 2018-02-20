@@ -200,8 +200,7 @@ Meteor.methods({
           }
         });
 
-        clearCount--;
-
+        clearCount -= 1;
       }
     }
     Logger.debug("inventory/clearReserve", newStatus);
