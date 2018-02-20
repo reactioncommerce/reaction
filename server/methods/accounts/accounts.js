@@ -430,16 +430,16 @@ export function addressBookUpdate(address, accountUserId, type) {
   }
   this.unblock();
 
+  // If no userId is provided, use the current user
   const userId = accountUserId || Meteor.userId();
-  // we need to compare old state of isShippingDefault, isBillingDefault with
-  // new state and if it was enabled/disabled reflect this changes in cart
+
+  // Find old state of isShippingDefault & isBillingDefault to compare and reflect in cart
   const account = Accounts.findOne({
     userId
   });
   const oldAddress = account.profile.addressBook.find((addr) => addr._id === address._id);
 
-  // happens when the user clicked the address in grid. We need to set type
-  // to `true`
+  // Set new address to be default for `type`
   if (typeof type === "string") {
     Object.assign(address, { [type]: true });
   }
@@ -449,16 +449,17 @@ export function addressBookUpdate(address, accountUserId, type) {
   // when the current default address(ship or bill) gets edited(so Current and Previous default are the same).
   // This check can be simplified to :
   if (address.isShippingDefault || address.isBillingDefault ||
-    oldAddress.isShippingDefault || address.isBillingDefault) {
+    oldAddress.isShippingDefault || oldAddress.isBillingDefault) {
+    // Find user cart
+    // Cart should exist to this moment, so we don't need to to verify its existence.
     const cart = Cart.findOne({ userId });
-    // Cart should exist to this moment, so we doesn't need to to verify its
-    // existence.
+
+    // If isShippingDefault address has changed
     if (oldAddress.isShippingDefault !== address.isShippingDefault) {
-      // if isShippingDefault was changed and now it is `true`
+      // Update the cart to use new default shipping address
       if (address.isShippingDefault) {
-        // we need to add this address to cart
         Meteor.call("cart/setShipmentAddress", cart._id, address);
-        // then, if another address was `ShippingDefault`, we need to unset it
+        // Then, unset old address so it is no longer the default shipping address
         Accounts.update({
           userId,
           "profile.addressBook.isShippingDefault": true
@@ -467,21 +468,22 @@ export function addressBookUpdate(address, accountUserId, type) {
             "profile.addressBook.$.isShippingDefault": false
           }
         });
-        Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
+        // Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
       } else {
-        // if new `isShippingDefault` state is false, then we need to remove
-        // this address from `cart.shipping`
+        // If the new address is not the shipping default, remove it from the cart
         Meteor.call("cart/unsetAddresses", address._id, userId, "shipping");
       }
     } else if (address.isShippingDefault && oldAddress.isShippingDefault) {
-      // If current Shipping Address was edited but not changed update it to cart too
+      // If shipping address was edited, but isShippingDefault status not changed, update the cart address
       Meteor.call("cart/setShipmentAddress", cart._id, address);
     }
 
-    // the same logic used for billing
+    // If isBillingDefault address has changed
     if (oldAddress.isBillingDefault !== address.isBillingDefault) {
+      // Update the cart to use new default billing address
       if (address.isBillingDefault) {
         Meteor.call("cart/setPaymentAddress", cart._id, address);
+        // Then, unset old address so it is no longer the default billing address
         Accounts.update({
           userId,
           "profile.addressBook.isBillingDefault": true
@@ -490,12 +492,13 @@ export function addressBookUpdate(address, accountUserId, type) {
             "profile.addressBook.$.isBillingDefault": false
           }
         });
-        Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
+        // Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
       } else {
+        // If the new address is not the shipping default, remove it from the cart
         Meteor.call("cart/unsetAddresses", address._id, userId, "billing");
       }
     } else if (address.isBillingDefault && oldAddress.isBillingDefault) {
-      // If current Billing Address was edited but not changed update it to cart too
+      // If shipping address was edited, but isShippingDefault status not changed, update the cart address
       Meteor.call("cart/setPaymentAddress", cart._id, address);
     }
   }
@@ -517,13 +520,17 @@ export function addressBookUpdate(address, accountUserId, type) {
     accountsUpdateQuery.$set.name = address.fullName;
   }
 
+  // Update the Meteor.users collection with new address info
   Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
+  // Update the Reaction Accounts collection with new address info
   const updatedAccount = Accounts.update({
     userId,
     "profile.addressBook._id": address._id
   }, accountsUpdateQuery);
-  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
+
+  // Run afterAccountsUpdate hook to update Accounts Search
+  // Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
   return updatedAccount;
 }
 
