@@ -1,27 +1,21 @@
 import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import { Reaction } from "/server/api";
 import { Shops } from "/lib/collections";
 
 // We should be able to publish just the enabled languages/currencies/
-Meteor.publish("PrimaryShop", () => {
-  return Shops.find({
-    shopType: "primary"
-  }, {
-    fields: {},
-    limit: 1
-  });
-});
+Meteor.publish("PrimaryShop", () => Shops.find({
+  shopType: "primary"
+}, {
+  fields: {},
+  limit: 1
+}));
 
-Meteor.publish("MerchantShops", function () {
+Meteor.publish("MerchantShops", function (shopsOfUser = Reaction.getShopsForUser(["admin"], this.userId)) {
+  check(shopsOfUser, Array);
+
   const domain = Reaction.getDomain();
-  const settings = Reaction.getMarketplaceSettings();
-  const enabled = settings.enabled;
-
-  // If marketplace is disabled, don't return any merchant shops
-  if (!enabled) {
-    return this.ready();
-  }
-
+  const { enabled } = Reaction.getMarketplaceSettings();
   // Don't publish currencies, languages, or locales for merchant shops.
   // We'll get that info from the primary shop.
   const fields = {
@@ -42,20 +36,30 @@ Meteor.publish("MerchantShops", function () {
     delete fields.locales;
   }
 
-  let selector = {
+  // If marketplace is disabled, don't return any merchant shops
+  if (!enabled) {
+    return this.ready();
+  }
+
+
+  const selector = {
     domains: domain,
     shopType: {
       $ne: "primary"
-    }
+    },
+    $or: [
+      {
+        _id: {
+          $in: shopsOfUser
+        }
+      },
+      {
+        "workflow.status": "active"
+      }
+    ]
   };
 
-  if (!Reaction.hasPermission("admin", this.userId, Reaction.getPrimaryShopId())) {
-    selector = {
-      ...selector,
-      "workflow.status": "active"
-    };
-  }
-
-  // Return all non-primary shops for this domain that are active
+  // Return all non-primary shops for this domain that belong to the user
+  // or are active
   return Shops.find(selector, { fields });
 });

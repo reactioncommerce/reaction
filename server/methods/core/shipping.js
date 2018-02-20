@@ -123,12 +123,12 @@ function pruneShippingRecordsByShop(cart) {
  */
 function normalizeAddresses(cart) {
   if (cart.shipping && cart.shipping.length > 0) {
-    const shipping = cart.shipping;
+    const { shipping } = cart;
     const cartId = cart._id;
     let address; // we can only have one address so whatever was the last assigned
     shipping.forEach((shippingRecord) => {
       if (shippingRecord.address) {
-        address = shippingRecord.address;
+        ({ address } = shippingRecord);
       }
     });
     const shopIds = Object.keys(cart.getItemsByShop());
@@ -257,7 +257,7 @@ function updateShippingRecordByShop(cart, rates) {
  * @private
  */
 function getDefaultAddress(cart) {
-  const userId = cart.userId;
+  const { userId } = cart;
   const account = Accounts.findOne(userId);
   if (account && account.profile && account.profile.addressBook) {
     const address = account.profile.addressBook.find((addressEntry) => addressEntry.isShippingDefault === true);
@@ -350,9 +350,7 @@ export const methods = {
     }
 
     let newRates;
-    const didEveryShippingProviderFail = rates.every((shippingMethod) => {
-      return shippingMethod.requestStatus && shippingMethod.requestStatus === "error";
-    });
+    const didEveryShippingProviderFail = rates.every((shippingMethod) => shippingMethod.requestStatus && shippingMethod.requestStatus === "error");
     if (didEveryShippingProviderFail) {
       newRates = [{
         requestStatus: "error",
@@ -360,9 +358,7 @@ export const methods = {
         message: "All requests for shipping methods failed."
       }];
     } else {
-      newRates = rates.filter((shippingMethod) => {
-        return !(shippingMethod.requestStatus) || shippingMethod.requestStatus !== "error";
-      });
+      newRates = rates.filter((shippingMethod) => !(shippingMethod.requestStatus) || shippingMethod.requestStatus !== "error");
     }
 
     Logger.debug("getShippingRates returning rates", rates);

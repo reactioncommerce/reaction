@@ -32,7 +32,7 @@ import { Registry } from "/lib/collections/schemas/registry";
  *
  *  @return {optionHash} returns an array of filtered, structure reactionApps
  *  [{
- *  	enabled: true
+ *   enabled: true
  *   label: "Stripe"
  *   name: "reaction-stripe"
  *   packageId: "QqkGsQCDRhg2LSn8J"
@@ -82,7 +82,7 @@ export function Apps(optionHash) {
       const value = options[key];
       if (value) {
         if (!(key === "enabled" || key === "name" || key === "shopId")) {
-          filter["registry." + key] = Array.isArray(options[key]) ? { $in: value } : value;
+          filter[`registry.${key}`] = Array.isArray(options[key]) ? { $in: value } : value;
           registryFilter[key] = value;
         } else {
           // perhaps not the best way to check but lets admin see all packages
@@ -181,6 +181,4 @@ export function Apps(optionHash) {
 }
 
 // Register global template helper
-Template.registerHelper("reactionApps", (optionHash) => {
-  return Reaction.Apps(optionHash);
-});
+Template.registerHelper("reactionApps", (optionHash) => Reaction.Apps(optionHash));

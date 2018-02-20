@@ -7,7 +7,7 @@ Meteor.startup(() => {
   let i = 0;
 
   const handle = Meteor.setInterval(() => {
-    i++;
+    i += 1;
     const shopId = Reaction.getShopId();
 
     if (shopId) {

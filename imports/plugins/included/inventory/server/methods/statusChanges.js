@@ -140,8 +140,8 @@ Meteor.methods({
             "workflow.status": reservationStatus
           }
         });
-        reservationCount++;
-        i++;
+        reservationCount += 1;
+        i += 1;
       }
     }
     Logger.debug(`finished creating ${reservationCount} new ${reservationStatus} reservations`);
@@ -199,7 +199,9 @@ Meteor.methods({
             "workflow.status": newStatus // reset status
           }
         });
+
         clearCount--;
+
       }
     }
     Logger.debug("inventory/clearReserve", newStatus);
@@ -279,7 +281,7 @@ Meteor.methods({
       while (i < backOrderQty) {
         const id = Inventory._makeNewID();
         batch.insert(Object.assign({ _id: id }, newReservation));
-        i++;
+        i += 1;
       }
 
       const execute = Meteor.wrapAsync(batch.execute, batch);
