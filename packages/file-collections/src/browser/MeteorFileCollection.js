@@ -49,12 +49,12 @@ export default class MeteorFileCollection extends FileCollection {
     });
   }
 
-  _findOne() {
-    throw new Error("MeteorFileCollection does not support findOne in browser code. Use findOneLocal");
+  _findOne(...args) {
+    return Promise.resolve(this._findOneLocal(...args));
   }
 
-  _find() {
-    throw new Error("MeteorFileCollection does not support find in browser code. Use findLocal");
+  _find(...args) {
+    return Promise.resolve(this._findLocal(...args));
   }
 
   _findOneLocal(id, options) {
