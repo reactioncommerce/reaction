@@ -942,5 +942,21 @@ Meteor.methods({
     return Collections.Shops.update(shopId, {
       $set: { layout: shop.layout }
     });
+  },
+
+
+  /**
+   * @name shop/getBaseLanguage
+   * @method
+   * @memberof Methods/Shop
+   * @summary Return the shop's base language ISO code
+   * @return {String} ISO lang code
+   */
+  "shop/getBaseLanguage"() {
+    if (!Reaction.hasPermission()) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+    const shopId = Reaction.getShopId();
+    return Collections.Shops.findOne(shopId).language;
   }
 });
