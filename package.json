@@ -55,6 +55,7 @@
     "i18next-browser-languagedetector": "^2.1.0",
     "i18next-localstorage-cache": "^1.1.1",
     "i18next-sprintf-postprocessor": "^0.2.2",
+    "immutability-helper": "^2.6.5",
     "immutable": "^3.8.2",
     "jquery-i18next": "^1.2.1",
     "later": "^1.2.0",
