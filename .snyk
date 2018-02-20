@@ -1,0 +1,120 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.10.1
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  'npm:hoek:20180212':
+    - nexmo > jsonwebtoken > joi > hoek:
+        reason: No patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - nexmo > jsonwebtoken > joi > topo > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - prerender-node > request > hawk > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - prerender-node > request > hawk > boom > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - prerender-node > request > hawk > sntp > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - prerender-node > request > hawk > cryptiles > boom > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > boom > hoek:
+        reason: no patch availalbe
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > boom > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-runner > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-runner > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > boom > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-runner > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-runner > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > boom > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+    - nexmo > request > hawk > hoek:
+        reason: None given
+        expires: '2018-03-22T04:38:08.806Z'
+    - nexmo > request > hawk > boom > hoek:
+        reason: None given
+        expires: '2018-03-22T04:38:08.806Z'
+    - nexmo > request > hawk > sntp > hoek:
+        reason: None given
+        expires: '2018-03-22T04:38:08.806Z'
+    - nexmo > request > hawk > cryptiles > boom > hoek:
+        reason: None given
+        expires: '2018-03-22T04:38:08.806Z'
+  'npm:shelljs:20140723':
+    - eslint-config-react-tools > eslint-plugin-class-property > eslint > shelljs:
+        reason: no patch available
+        expires: '2018-03-22T04:22:44.834Z'
+  'npm:bootstrap:20160627':
+    - bootstrap:
+        reason: We're not going to update to Bootstrap 4 any time soon
+        expires: '2018-03-22T04:38:08.806Z'
+  'npm:lodash:20180130':
+    - eslint-config-react-tools > babel-eslint > babel-types > lodash:
+        reason: no patch available
+        expires: '2018-03-22T04:49:05.875Z'
+    - eslint-config-react-tools > eslint-plugin-class-property > eslint > table > lodash:
+        reason: no patch available
+        expires: '2018-03-22T04:49:05.875Z'
+    - eslint-config-react-tools > eslint-plugin-class-property > eslint > lodash:
+        reason: no patch available
+        expires: '2018-03-22T04:49:05.875Z'
+    - eslint-config-react-tools > eslint > table > lodash:
+        reason: no patch available
+        expires: '2018-03-22T04:49:05.875Z'
+    - eslint-config-react-tools > eslint > inquirer > lodash:
+        reason: no patch available
+        expires: '2018-03-22T04:49:05.875Z'
+    - eslint-config-react-tools > eslint > lodash:
+        reason: no patch available
+        expires: '2018-03-22T04:49:05.875Z'
+    - eslint-config-react-tools > babel-eslint > babel-traverse > babel-types > lodash:
+        reason: no patch available
+        expires: '2018-03-22T04:49:05.875Z'
+    - eslint-config-react-tools > babel-eslint > babel-traverse > lodash:
+        reason: no patch available
+        expires: '2018-03-22T04:49:05.875Z'
+    - eslint-config-react-tools > eslint-plugin-class-property > eslint > inquirer > lodash:
+        reason: no patch available
+        expires: '2018-03-22T04:49:05.875Z'
+patch: {}
