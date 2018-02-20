@@ -117,6 +117,51 @@ ignore:
     - eslint-config-react-tools > eslint-plugin-class-property > eslint > inquirer > lodash:
         reason: no patch available
         expires: '2018-03-22T04:49:05.875Z'
+    - babel-core > babel-template > babel-traverse > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-template > babel-traverse > babel-types > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-helpers > babel-template > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-helpers > babel-template > babel-types > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-helpers > babel-template > babel-traverse > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-helpers > babel-template > babel-traverse > babel-types > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-register > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-types > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-generator > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-generator > babel-types > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-traverse > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-traverse > babel-types > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-template > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
+    - babel-core > babel-template > babel-types > lodash:
+        reason: no patch available
+        expires: '2018-03-22T08:11:26.281Z'
   'npm:braces:20180219':
     - babel-jest > babel-plugin-istanbul > test-exclude > micromatch > braces:
         reason: no patch available
@@ -253,6 +298,9 @@ ignore:
     - jest > jest-cli > jest-runner > jest-runtime > jest-haste-map > sane > anymatch > micromatch > braces:
         reason: no patch available
         expires: '2018-03-22T05:01:38.647Z'
+    - expect > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T06:03:17.788Z'
   'npm:content-type-parser:20170905':
     - content-type-parser:
         reason: no patch available
@@ -272,4 +320,8 @@ ignore:
     - jest > jest-cli > jest-runner > jest-runtime > jest-config > jest-environment-jsdom > jsdom > content-type-parser:
         reason: no patch available
         expires: '2018-03-22T05:01:38.647Z'
+  'npm:is-my-json-valid:20180214':
+    - '*':
+        reason: no patch available and dev dependency
+        expires: 2018-03-22T08:23:02.718Z
 patch: {}
