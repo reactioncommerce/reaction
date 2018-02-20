@@ -117,4 +117,159 @@ ignore:
     - eslint-config-react-tools > eslint-plugin-class-property > eslint > inquirer > lodash:
         reason: no patch available
         expires: '2018-03-22T04:49:05.875Z'
+  'npm:braces:20180219':
+    - babel-jest > babel-plugin-istanbul > test-exclude > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.645Z'
+    - jest > jest-cli > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.645Z'
+    - jest > jest-cli > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.645Z'
+    - jest > jest-cli > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.645Z'
+    - jest > jest-cli > jest-environment-jsdom > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.645Z'
+    - jest > jest-cli > jest-config > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.645Z'
+    - jest > jest-cli > jest-config > jest-environment-jsdom > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-config > jest-environment-node > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-config > jest-jasmine2 > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-config > jest-jasmine2 > expect > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-haste-map > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-haste-map > sane > anymatch > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runtime > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runtime > babel-plugin-istanbul > test-exclude > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runtime > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runtime > babel-jest > babel-plugin-istanbul > test-exclude > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runtime > jest-config > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runtime > jest-config > jest-environment-jsdom > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runtime > jest-config > jest-environment-node > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runtime > jest-config > jest-jasmine2 > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runtime > jest-config > jest-jasmine2 > expect > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runtime > jest-haste-map > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runtime > jest-haste-map > sane > anymatch > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-jasmine2 > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-jasmine2 > expect > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-config > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-config > jest-environment-jsdom > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-config > jest-environment-node > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-config > jest-jasmine2 > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-config > jest-jasmine2 > expect > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-haste-map > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-haste-map > sane > anymatch > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-runtime > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-runtime > babel-plugin-istanbul > test-exclude > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-runtime > babel-jest > babel-plugin-istanbul > test-exclude > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-config > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.646Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-config > jest-environment-jsdom > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.647Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-config > jest-environment-node > jest-util > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.647Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-config > jest-jasmine2 > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.647Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-config > jest-jasmine2 > expect > jest-message-util > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.647Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-haste-map > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.647Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-haste-map > sane > anymatch > micromatch > braces:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.647Z'
+  'npm:content-type-parser:20170905':
+    - content-type-parser:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.647Z'
+    - jest > jest-cli > jest-environment-jsdom > jsdom > content-type-parser:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.647Z'
+    - jest > jest-cli > jest-config > jest-environment-jsdom > jsdom > content-type-parser:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.647Z'
+    - jest > jest-cli > jest-runtime > jest-config > jest-environment-jsdom > jsdom > content-type-parser:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.647Z'
+    - jest > jest-cli > jest-runner > jest-config > jest-environment-jsdom > jsdom > content-type-parser:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.647Z'
+    - jest > jest-cli > jest-runner > jest-runtime > jest-config > jest-environment-jsdom > jsdom > content-type-parser:
+        reason: no patch available
+        expires: '2018-03-22T05:01:38.647Z'
 patch: {}
