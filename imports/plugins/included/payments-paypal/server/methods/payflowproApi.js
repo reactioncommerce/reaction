@@ -9,8 +9,7 @@ import { PayPal } from "../../lib/api"; // PayPal is the reaction api
 let moment;
 async function lazyLoadMoment() {
   if (moment) return;
-  const mod = await import("moment");
-  moment = mod.default;
+  moment = await import("moment");
 }
 
 export const PayflowproApi = {};
