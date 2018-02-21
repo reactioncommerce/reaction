@@ -4,7 +4,7 @@ import { Roles } from "meteor/alanning:roles";
 import { Random } from "meteor/random";
 import { check, Match } from "meteor/check";
 import { HTTP } from "meteor/http";
-import { Job } from "meteor/vsivsi:job-collection";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 import { GeoCoder, Hooks, Logger } from "/server/api";
 import { Reaction } from "/lib/api";
 import * as Collections from "/lib/collections";
@@ -942,5 +942,21 @@ Meteor.methods({
     return Collections.Shops.update(shopId, {
       $set: { layout: shop.layout }
     });
+  },
+
+
+  /**
+   * @name shop/getBaseLanguage
+   * @method
+   * @memberof Methods/Shop
+   * @summary Return the shop's base language ISO code
+   * @return {String} ISO lang code
+   */
+  "shop/getBaseLanguage"() {
+    if (!Reaction.hasPermission()) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+    const shopId = Reaction.getShopId();
+    return Collections.Shops.findOne(shopId).language;
   }
 });
