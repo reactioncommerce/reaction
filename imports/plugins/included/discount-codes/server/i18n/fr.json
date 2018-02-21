@@ -6,15 +6,15 @@
     "reaction-discounts": {
       "checkoutPayment": {
         "applyDiscount": "Appliquer",
-        "discountError": "Désolé, une erreur d'appliquer une réduction."
+        "discountError": "Désolé, l'application de la réduction a échouée."
       },
       "discounts": {
-        "enterItHere": "Avoir un code? Entrez ici.",
+        "enterItHere": "Vous avez un code promo ? Entrez-le ici.",
         "discountLabel": "Code promo",
-        "submitted": "Remise sauvegardé et appliqué",
+        "submitted": "Remise sauvegardée et appliquée",
         "applied": "appliqué",
         "code": "code",
-        "codeIsExpired": "Code est expiré",
+        "codeIsExpired": "Le code a expiré",
         "codeIsInvalid": "Le code est invalide",
         "multiShopError": "Les rabais ne peuvent pas être appliqués à un panier ou une commande multi-boutique"
       },
@@ -24,7 +24,7 @@
         },
         "settings": {
           "codesLabel": "Codes",
-          "noCustomDiscountCodesFound": "Aucun code d'escompte trouvé."
+          "noCustomDiscountCodesFound": "Aucun code de réduction trouvé."
         },
         "discountGrid": {
           "code": "Code",

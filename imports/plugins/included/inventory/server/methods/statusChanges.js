@@ -140,8 +140,8 @@ Meteor.methods({
             "workflow.status": reservationStatus
           }
         });
-        reservationCount++;
-        i++;
+        reservationCount += 1;
+        i += 1;
       }
     }
     Logger.debug(`finished creating ${reservationCount} new ${reservationStatus} reservations`);
@@ -183,9 +183,10 @@ Meteor.methods({
         "orderItemId": item._id,
         "workflow.status": oldStatus
       });
-      let i = existingReservations.count();
+      const reservationsCount = existingReservations.count();
+      let clearCount = item.quantity;
       // reset existing cartItem reservations
-      while (i <= item.quantity) {
+      while (clearCount && reservationsCount) {
         Inventory.update({
           "productId": item.productId,
           "variantId": item.variants._id,
@@ -198,7 +199,8 @@ Meteor.methods({
             "workflow.status": newStatus // reset status
           }
         });
-        i++;
+
+        clearCount -= 1;
       }
     }
     Logger.debug("inventory/clearReserve", newStatus);
@@ -278,7 +280,7 @@ Meteor.methods({
       while (i < backOrderQty) {
         const id = Inventory._makeNewID();
         batch.insert(Object.assign({ _id: id }, newReservation));
-        i++;
+        i += 1;
       }
 
       const execute = Meteor.wrapAsync(batch.execute, batch);

@@ -1,4 +1,29 @@
-import { slugify } from "transliteration";
+import { latinLangs, getShopLang } from "/lib/api/helpers";
+
+// dynamic import of slugiy/transliteration.slugify
+let slugify;
+async function lazyLoadSlugify() {
+  let mod;
+  // getting the shops base language
+  const lang = getShopLang();
+  // if slugify has been loaded but the language has changed
+  // to be a non latin based language then load transliteration
+  if (slugify && slugify.name === "replace" && latinLangs.indexOf(lang) === -1) {
+    mod = await import("transliteration");
+  } else if (slugify) {
+    // if slugify/transliteration is loaded and no lang change
+    return;
+  } else {
+    // if the shops language use latin based chars load slugify else load transliterations's slugify
+    if (latinLangs.indexOf(lang) >= 0) {
+      mod = await import("slugify");
+    } else {
+      mod = await import("transliteration");
+    }
+  }
+  // slugify is exported to modules.default while transliteration is exported to modules.slugify
+  slugify = mod.default || mod.slugify;
+}
 
 /**
  * @name getSlug
@@ -11,5 +36,12 @@ import { slugify } from "transliteration";
  * @return {String} slugified string
  */
 export function getSlug(slugString) {
-  return slugString ? slugify(slugString) : "";
+  let slug;
+  Promise.await(lazyLoadSlugify());
+  if (slugString && slugify) {
+    slug = slugify(slugString.toLowerCase());
+  } else {
+    slug = "";
+  }
+  return slug;
 }
