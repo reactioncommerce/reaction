@@ -191,10 +191,7 @@
         }
       ]
     ],
-    "presets": [
-      "meteor",
-      "@babel/preset-react"
-    ]
+    "presets": []
   },
   "jest": {
     "moduleNameMapper": {
