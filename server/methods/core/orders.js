@@ -764,7 +764,7 @@ export const methods = {
         order,
         billing: {
           address: {
-            address: `${address.address1}${address.address2 ? " " + address.address2 : ""}`,
+            address: `${address.address1}${address.address2 ? ` ${address.address2}` : ""}`,
             city: address.city,
             region: address.region,
             postal: address.postal
@@ -785,7 +785,7 @@ export const methods = {
           tracking,
           carrier,
           address: {
-            address: `${shippingAddress.address1}${shippingAddress.address2 ? " " + shippingAddress.address2 : ""}`,
+            address: `${shippingAddress.address1}${shippingAddress.address2 ? ` ${shippingAddress.address2}` : ""}`,
             city: shippingAddress.city,
             region: shippingAddress.region,
             postal: shippingAddress.postal
