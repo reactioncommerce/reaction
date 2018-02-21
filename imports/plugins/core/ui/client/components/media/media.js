@@ -106,15 +106,6 @@ class MediaItem extends Component {
     return source;
   }
 
-
-
-
-
-
-
-
-
-
   renderImage() {
     if (this.props.zoomable && !this.props.editable) {
       return (
