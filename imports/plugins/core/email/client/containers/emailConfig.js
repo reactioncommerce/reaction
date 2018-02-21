@@ -36,8 +36,15 @@ const wrapComponent = (Comp) => (
       this.checkEmailStatus();
     }
 
-    componentWillUpdate() {
-      this.checkEmailStatus();
+    componentWillReceiveProps(nextProps) {
+      const { settings } = this.props;
+      const { settings: nextSettings } = nextProps;
+      // if the email settings do not match check the email status
+      if (JSON.stringify(settings) !== JSON.stringify(nextSettings)) {
+        this.checkEmailStatus();
+      } else {
+        return;
+      }
     }
 
     // checking email settings
