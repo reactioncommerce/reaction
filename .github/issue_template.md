@@ -1,4 +1,4 @@
-Issue tracker is **ONLY** used for reporting bugs. NO NEW FEATURE REQUESTS ACCEPTED. For new features navigate to [Request new feature](https://github.com/reactioncommerce/reaction-feature-requests).
+Issue tracker is **ONLY** used for reporting bugs. NO NEW FEATURE REQUESTS ACCEPTED. For new features, add an issue in our [Request Feature Request](https://github.com/reactioncommerce/reaction-feature-requests) repository.
 
 Are you looking for help with getting started on Reaction? Please visit our [Reaction documentation](https://docs.reactioncommerce.com/reaction-docs/master/getting-started-developing-with-reaction).
 
