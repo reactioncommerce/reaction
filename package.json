@@ -42,7 +42,6 @@
     "deep-equal": "^1.0.1",
     "dnd-core": "^2.5.4",
     "escape-string-regexp": "^1.0.5",
-    "eslint-config-react-tools": "^1.1.2",
     "eslint-import-resolver-meteor": "^0.4.0",
     "faker": "^4.1.0",
     "fibers": "^2.0.0",
