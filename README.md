@@ -49,7 +49,6 @@ Learn more on how to [configure your project](https://docs.reactioncommerce.com/
 ## Documentation and tools
 - [Developer documentation](https://docs.reactioncommerce.com)
 - [API documentation](http://api.docs.reactioncommerce.com) 
-- [Reaction component style guide](https://styleguide.reactioncommerce.com/)
 - [Reaction GraphQL API server base](https://github.com/reactioncommerce/reaction-api-base)
 - [Reaction sample data](https://github.com/reactioncommerce/reaction-sample-data)
 
