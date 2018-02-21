@@ -84,29 +84,36 @@ class MediaItem extends Component {
   }
 
   renderSource = (size) => {
+    // Set source to be default image
+    let source = this.defaultSource;
+
+    // Set default source size to `large`
     let sourceSize = "&store=large";
-    let source;
+    // If size is provided, set that sourse to that size
     if (size) {
       sourceSize = `&store=${size}`;
     }
 
-    if (typeof this.props.source === "object" && this.props.source) {
-      if (this.props.source.url()) {
+    // If a source was provided, use it
+    if (this.props.source) {
+      if (typeof this.props.source == "object" && this.props.source.url()) {
         source = `${this.props.source.url()}${sourceSize}`;
       } else {
-        source = `${this.defaultSource}`;
+        source = `${this.props.source}${sourceSize}`;
       }
-      return source;
-    }
-
-    if (this.props.source) {
-      source = `${this.props.source}${sourceSize}`;
-    } else {
-      source = `${this.defaultSource}`;
     }
 
     return source;
   }
+
+
+
+
+
+
+
+
+
 
   renderImage() {
     if (this.props.zoomable && !this.props.editable) {
