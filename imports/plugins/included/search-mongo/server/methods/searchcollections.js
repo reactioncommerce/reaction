@@ -268,7 +268,9 @@ export function buildAccountSearch(cb) {
   AccountSearch.remove({});
   const accounts = Accounts.find({}).fetch();
   for (const account of accounts) {
-    buildAccountSearchRecord(account._id);
+    // Passing forceIndex will run account search index even if
+    // updated fields don't match a searchable field
+    buildAccountSearchRecord(account._id, ["forceIndex"]);
   }
   const rawAccountSearchCollection = AccountSearch.rawCollection();
   rawAccountSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
@@ -278,22 +280,36 @@ export function buildAccountSearch(cb) {
   }
 }
 
-export function buildAccountSearchRecord(accountId) {
+export function buildAccountSearchRecord(accountId, updatedFields) {
   Logger.debug("building account search record");
   check(accountId, String);
+  check(updatedFields, Array);
+
   const account = Accounts.findOne(accountId);
   // let's ignore anonymous accounts
   if (account && account.emails && account.emails.length) {
     const accountSearch = {};
-    for (const field of requiredFields.accounts) {
-      if (transformations.accounts[field]) {
-        accountSearch[field] = transformations.accounts[field](account[field]);
-      } else {
-        accountSearch[field] = account[field];
+
+    // Not all required fields are used in search
+    // We need to filter through fields that are used,
+    // and only update the search index if one of those fields were updated
+    // forceIndex is included to forceIndexing on startup, or when manually added
+    const searchableFields = ["forceIndex", "emails", "firstName", "lastName", "phone"];
+
+    const shouldRunIndex = updatedFields && updatedFields.some((r) => searchableFields.includes(r));
+
+    // If updatedField contains one of the searchableFields, run the indexing
+    if (shouldRunIndex) {
+      for (const field of requiredFields.accounts) {
+        if (transformations.accounts[field]) {
+          accountSearch[field] = transformations.accounts[field](account[field]);
+        } else {
+          accountSearch[field] = account[field];
+        }
       }
+      AccountSearch.insert(accountSearch);
+      const rawAccountSearchCollection = AccountSearch.rawCollection();
+      rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleIndexUpdateFailures);
     }
-    AccountSearch.insert(accountSearch);
-    const rawAccountSearchCollection = AccountSearch.rawCollection();
-    rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleIndexUpdateFailures);
   }
 }

@@ -1,13 +1,14 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Products, ProductSearch, Orders, OrderSearch, AccountSearch } from "/lib/collections";
-import { getSearchParameters,
-  buildProductSearchRecord, buildOrderSearchRecord, buildAccountSearchRecord } from "../methods/searchcollections";
+import { getSearchParameters, buildProductSearchRecord, buildOrderSearchRecord, buildAccountSearchRecord } from "../methods/searchcollections";
 import { Hooks, Logger } from "/server/api";
 
 Hooks.Events.add("afterAccountsInsert", (userId, accountId) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    buildAccountSearchRecord(accountId);
+    // Passing forceIndex will run account search index even if
+    // updated fields don't match a searchable field
+    buildAccountSearchRecord(accountId, ["forceIndex"]);
   }
 });
 
@@ -17,10 +18,20 @@ Hooks.Events.add("afterAccountsRemove", (userId, accountId) => {
   }
 });
 
-Hooks.Events.add("afterAccountsUpdate", (userId, accountId) => {
+Hooks.Events.add("afterAccountsUpdate", (userId, updateData) => {
+  let accountId;
+  let updatedFields;
+
+  if (typeof updateData === "object") {
+    ({ accountId, updatedFields } = updateData);
+  } else {
+    accountId = updateData; //TODO: this should probably be removed to require an object
+  }
+
+  console.log("---------- afterAccountsUpdate hook is running - userId, accountId, updatedFields", userId, accountId, updatedFields);
   if (AccountSearch && !Meteor.isAppTest) {
     AccountSearch.remove(accountId);
-    buildAccountSearchRecord(accountId);
+    buildAccountSearchRecord(accountId, updatedFields);
   }
 });
 

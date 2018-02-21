@@ -527,8 +527,20 @@ export function addressBookUpdate(address, accountUserId, type) {
     "profile.addressBook._id": address._id
   }, accountsUpdateQuery);
 
+  // Create an array which contains all fields that has changed
+  // This is used for search, to determine if we need to re-index
+  const updatedFields = [];
+  Object.keys(address).forEach((key) => {
+    if (address[key] !== oldAddress[key]) {
+      updatedFields.push(key);
+    }
+  });
+
   // Run afterAccountsUpdate hook to update Accounts Search
-  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
+  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+    accountId: account._id,
+    updatedFields
+  });
 
   return updatedAccount;
 }

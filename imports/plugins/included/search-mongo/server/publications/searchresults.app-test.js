@@ -128,7 +128,9 @@ describe("Account Search results", function () {
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
     account = createAccount();
-    buildAccountSearchRecord(account._id);
+    // Passing forceIndex will run account search index even if
+    // updated fields don't match a searchable field
+    buildAccountSearchRecord(account._id, ["forceIndex"]);
   });
 
   afterEach(function () {
