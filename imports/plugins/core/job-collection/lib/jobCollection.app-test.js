@@ -11,11 +11,11 @@ import { Job, JobCollection } from "./";
 
 let remoteServerTestColl;
 
-const validId = v => Match.test(v, Match.OneOf(String, Meteor.Collection.ObjectID));
+const validId = (v) => Match.test(v, Match.OneOf(String, Meteor.Collection.ObjectID));
 
 const defaultColl = new JobCollection();
 
-const validJobDoc = d => Match.test(d, defaultColl.jobDocPattern);
+const validJobDoc = (d) => Match.test(d, defaultColl.jobDocPattern);
 
 describe("JobCollection default constructor", function () {
   it("should be an instance of JobCollection", function () {
@@ -200,7 +200,7 @@ describe("JobCollection", function () {
       assert.ok(validId(res), "job.save() failed in callback result");
 
       const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
-        counter++;
+        counter += 1;
         if (counter === 1) {
           expect(jobResult.doc._id).to.equal(res);
 
@@ -242,7 +242,7 @@ describe("JobCollection", function () {
         assert.ok(validId(res2), "job.save() failed in callback result");
         let count = 0;
         const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
-          count++;
+          count += 1;
           expect(count).to.equal(jobResult.data.order);
           jobResult.done();
           cb();
@@ -411,7 +411,7 @@ describe("JobCollection", function () {
         let count = 0;
         let timer;
         const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
-          count++;
+          count += 1;
           expect(count).to.equal(jobResult.data.order);
           jobResult.done(null, { delayDeps: 1500 });
           cb();
@@ -440,7 +440,7 @@ describe("JobCollection", function () {
         let count = 0;
         let timer;
         const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
-          count++;
+          count += 1;
           expect(count).to.equal(jobResult.data.order);
           jobResult.done(null, { delayDeps: 1500 });
           cb();
@@ -472,7 +472,7 @@ describe("JobCollection", function () {
           if (err3) { done(err3); }
           assert.ok(validId(res3), "jobs[2].save() failed in callback result");
           const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (job, cb) {
-            counter++;
+            counter += 1;
             expect(job.data.count).to.equal(counter);
             job.done();
             cb();
@@ -503,7 +503,7 @@ describe("JobCollection", function () {
           if (err3) { done(err3); }
           assert.ok(validId(res3), "jobs[2].save() failed in callback result");
           const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (job, cb) {
-            counter++;
+            counter += 1;
             expect(job.data.count).to.equal(counter);
             job.done();
             cb();
@@ -524,7 +524,7 @@ describe("JobCollection", function () {
       if (err) { done(err); }
       assert.ok(validId(res), "job.save() failed in callback result");
       const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
-        counter++;
+        counter += 1;
         expect(jobResult.doc._id).to.equal(res);
         if (counter < 3) {
           jobResult.fail("Fail test");
@@ -546,7 +546,7 @@ describe("JobCollection", function () {
       if (err) { done(err); }
       assert.ok(validId(res), "job.save() failed in callback result");
       const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
-        counter++;
+        counter += 1;
         expect(jobResult.doc._id).to.equal(res);
         if (counter < 3) {
           jobResult.fail("Fail test");
@@ -590,7 +590,7 @@ describe("JobCollection", function () {
       if (err) { done(err); }
       assert.ok(validId(res), "job.save() failed in callback result");
       const q = testColl.processJobs(jobType, { pollInterval: 250, workTimeout: 500 }, function (jobResult, cb) {
-        counter++;
+        counter += 1;
         expect(jobResult.doc._id).to.equal(res);
         if (counter === 2) {
           jobResult.done("Success");
@@ -623,25 +623,25 @@ describe("JobCollection", function () {
     });
 
     it("should add, cancel and remove a large number of jobs", function (done) {
-      let count;
-      let c = (count = 500);
+      const count = 500;
+      let c = count;
       const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
       (() => {
         const result = [];
-        for (let i = 1, end = count, asc = end >= 1; asc ? i <= end : i >= end; asc ? i++ : i--) {
+        for (let i = 1, end = count, asc = end >= 1; asc ? i <= end : i >= end; asc ? i += 1 : i -= 1) {
           const j = new Job(testColl, jobType, { idx: i });
           // eslint-disable-next-line no-loop-func
           result.push(j.save(function (err, res) {
             if (err) { done(err); }
             if (!validId(res)) { done("job.save() Invalid _id value returned"); }
-            c--;
+            c -= 1;
             if (!c) {
-              let ids = testColl.find({ type: jobType, status: "ready" }).map(d => d._id);
+              let ids = testColl.find({ type: jobType, status: "ready" }).map((d) => d._id);
               expect(count).to.equal(ids.length);
               testColl.cancelJobs(ids, function (err2, res2) {
                 if (err2) { done(err2); }
                 if (!res2) { done("cancelJobs Failed"); }
-                ids = testColl.find({ type: jobType, status: "cancelled" }).map(d => d._id);
+                ids = testColl.find({ type: jobType, status: "cancelled" }).map((d) => d._id);
                 expect(count).to.equal(ids.length);
                 testColl.removeJobs(ids, function (err3, res3) {
                   if (err3) { done(err3); }
@@ -671,7 +671,7 @@ describe("JobCollection", function () {
         if (err) { test.fail(err); }
         assert.ok(validId(res), "job.save() failed in callback result");
         const q = testColl.processJobs(jobType, { pollInterval: 250 }, function (jobResult, cb) {
-          counter++;
+          counter += 1;
           if (counter === 1) {
             expect(jobResult.doc._id).to.equal(res);
           } else {

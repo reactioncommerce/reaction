@@ -10,9 +10,9 @@ Hooks.Events.add("afterAddItemsToCart", (cartId, options) => {
   // Adding a new product or variant to the cart
   Logger.debug("after cart update, call inventory/addReserve");
   // Look up cart to get items added to it
-  const items = Cart.findOne({ _id: cartId }).items;
+  const { items } = Cart.findOne({ _id: cartId }) || {};
   // Reserve item
-  Meteor.call("inventory/addReserve", items.filter(item => item._id === options.newItemId));
+  Meteor.call("inventory/addReserve", items.filter((item) => item._id === options.newItemId));
 });
 
 Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
@@ -20,10 +20,10 @@ Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
   Logger.debug("after variant increment, call inventory/addReserve");
 
   // Look up cart to get items that have been added to it
-  const items = Cart.findOne({ _id: cartId }).items;
+  const { items } = Cart.findOne({ _id: cartId }) || {};
 
   // Item to increment quantity
-  const item = items.filter(i => (i.product._id === options.productId && i.variants._id === options.variantId));
+  const item = items.filter((i) => (i.product._id === options.productId && i.variants._id === options.variantId));
   Meteor.call("inventory/addReserve", item);
 });
 

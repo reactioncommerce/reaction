@@ -9,11 +9,11 @@ let Logger;
 let Reaction;
 
 if (Meteor.isClient) {
-  Logger = require("/client/api").Logger;
-  Reaction = require("/client/api").Reaction;
+  ({ Logger } = require("/client/api"));
+  ({ Reaction } = require("/client/api"));
 } else {
-  Logger = require("/server/api").Logger;
-  Reaction = require("/server/api").Reaction;
+  ({ Logger } = require("/server/api"));
+  ({ Reaction } = require("/server/api"));
 }
 
 
