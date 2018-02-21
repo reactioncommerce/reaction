@@ -46,7 +46,6 @@ const IconButton = ({ icon, onIcon, ...otherProps }) => {
       icon={iconClassName}
       onIcon={onIconClassName}
       containerStyle={{ display: "flex", width: "100%", justifyContent: "center" }}
-      kind
       {...otherProps}
     />
   );
