@@ -36,7 +36,7 @@ describe("i18n methods", function () {
       sandbox.stub(Meteor, "userId", () => "0123456789");
       sandbox.stub(Roles, "userIsInRole", () => true);
       const removeTranslationSpy = sandbox.spy(Translations, "remove");
-      const importTranslationSpy = sandbox.spy(Reaction.Import, "translation");
+      const importTranslationSpy = sandbox.spy(Reaction.Importer, "translation");
       Factory.create("shop");
       Meteor.call("i18n/flushTranslations");
       expect(removeTranslationSpy).to.have.been.called;
