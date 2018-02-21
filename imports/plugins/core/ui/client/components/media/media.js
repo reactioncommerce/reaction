@@ -85,15 +85,27 @@ class MediaItem extends Component {
 
   renderSource = (size) => {
     let sourceSize = "&store=large";
+    let source;
     if (size) {
       sourceSize = `&store=${size}`;
     }
 
     if (typeof this.props.source === "object" && this.props.source) {
-      return `${this.props.source.url()}${sourceSize}` || `${this.defaultSource}${sourceSize}`;
+      if (this.props.source.url()) {
+        source = `${this.props.source.url()}${sourceSize}`;
+      } else {
+        source = `${this.defaultSource}`;
+      }
+      return source;
     }
 
-    return `${this.props.source}${sourceSize}` || `${this.defaultSource}${sourceSize}`;
+    if (this.props.source) {
+      source = `${this.props.source}${sourceSize}`;
+    } else {
+      source = `${this.defaultSource}`;
+    }
+
+    return source;
   }
 
   renderImage() {
