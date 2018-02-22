@@ -261,24 +261,6 @@ export function buildOrderSearch(cb) {
   }
 }
 
-
-export function buildAccountSearch(cb) {
-  check(cb, Match.Optional(Function));
-  AccountSearch.remove({});
-  const accounts = Accounts.find({}).fetch();
-  for (const account of accounts) {
-    // Passing forceIndex will run account search index even if
-    // updated fields don't match a searchable field
-    buildAccountSearchRecord(account._id, ["forceIndex"]);
-  }
-  const rawAccountSearchCollection = AccountSearch.rawCollection();
-  rawAccountSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
-  rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleIndexUpdateFailures);
-  if (cb) {
-    cb();
-  }
-}
-
 export function buildAccountSearchRecord(accountId, updatedFields) {
   Logger.debug("building account search record");
   check(accountId, String);
@@ -310,5 +292,22 @@ export function buildAccountSearchRecord(accountId, updatedFields) {
       const rawAccountSearchCollection = AccountSearch.rawCollection();
       rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleIndexUpdateFailures);
     }
+  }
+}
+
+export function buildAccountSearch(cb) {
+  check(cb, Match.Optional(Function));
+  AccountSearch.remove({});
+  const accounts = Accounts.find({}).fetch();
+  for (const account of accounts) {
+    // Passing forceIndex will run account search index even if
+    // updated fields don't match a searchable field
+    buildAccountSearchRecord(account._id, ["forceIndex"]);
+  }
+  const rawAccountSearchCollection = AccountSearch.rawCollection();
+  rawAccountSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
+  rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleIndexUpdateFailures);
+  if (cb) {
+    cb();
   }
 }
