@@ -96,7 +96,7 @@ class MediaItem extends Component {
 
     // If a source was provided, use it
     if (this.props.source) {
-      if (typeof this.props.source == "object" && this.props.source.url()) {
+      if (typeof this.props.source === "object" && this.props.source.url()) {
         source = `${this.props.source.url()}${sourceSize}`;
       } else {
         source = `${this.props.source}${sourceSize}`;
