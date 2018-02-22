@@ -20,7 +20,7 @@ const GroupsTableCell = (props) => {
   const email = _.get(account, "emails[0].address");
   const groups = adminGroups;
   const userAvatar = getUserAvatar(account);
-  const createdAt = moment && moment(account.createdAt).format("MMM Do") || account.createdAt.toLocaleString();
+  const createdAt = (moment && moment(account.createdAt).format("MMM Do")) || account.createdAt.toLocaleString();
 
   if (columnName === "name") {
     // use first part of email, if account has no name

@@ -11,7 +11,8 @@ import {
   buildProductSearch,
   buildProductSearchRecord,
   buildAccountSearchRecord,
-  buildAccountSearch } from "../methods/searchcollections";
+  buildAccountSearch
+} from "../methods/searchcollections";
 import { getResults } from "./searchresults";
 
 Fixtures();

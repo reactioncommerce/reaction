@@ -197,6 +197,7 @@ There are potentially breaking changes you should be aware of in this release.
   - (fix): update action view size handling to fix shipping settings cutoff (#3759) .. Resolves #3396
   - (fix): Audit Product Images and update to always use optimized versions (#3730) .. Resolves #3637
   - (fix): Product url should open product detail page when user clicks on an item in the cart drawer (#3758) .. Resolves #3660
+  - (fix): moment is not a function (#3780) .. Resolves #3778, Resolves #3780, Resolves #3757
 
 ### Chores
   - (chore): Build Docker image, tag, and push for every branch (#3629) .. Part of #2858
@@ -213,6 +214,7 @@ There are potentially breaking changes you should be aware of in this release.
   - (perf): flatten startup code and speed up translation import (#3592)
   - (perf): Don't rerender on failed sign in, (#3664)
   - (perf): User prefs stored in Accounts (#3463) .. Resolves #3404
+  - (perf): dynamically load transliteration (#3749) .. Resolves #2634
 
 ### I18n
  - (i18n): Updated French translations (#3713)
