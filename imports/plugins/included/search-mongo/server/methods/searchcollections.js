@@ -275,7 +275,7 @@ export function buildAccountSearchRecord(accountId, updatedFields) {
     // We need to filter through fields that are used,
     // and only update the search index if one of those fields were updated
     // forceIndex is included to forceIndexing on startup, or when manually added
-    const searchableFields = ["forceIndex", "emails", "firstName", "lastName", "phone"];
+    const searchableFields = ["forceIndex", "shopId", "emails", "firstName", "lastName", "phone"];
 
     const shouldRunIndex = updatedFields && updatedFields.some((r) => searchableFields.includes(r));
 
