@@ -21,10 +21,6 @@ class NumberTypeInput extends Component {
       maxValue: props.maxValue || undefined,
       className: {}
     };
-
-    this.handleIncrementButton = this.handleIncrementButton.bind(this);
-    this.handleDecrementButton = this.handleDecrementButton.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
   handleIncrementButton = (event) => {
