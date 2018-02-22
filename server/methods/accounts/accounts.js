@@ -471,15 +471,6 @@ export function addressBookUpdate(address, accountUserId, type) {
       // Update the cart to use new default shipping address
       if (address.isShippingDefault) {
         Meteor.call("cart/setShipmentAddress", cart._id, address);
-        // Then, unset old address so it is no longer the default shipping address
-        Accounts.update({
-          userId,
-          "profile.addressBook.isShippingDefault": true
-        }, {
-          $set: {
-            "profile.addressBook.$.isShippingDefault": false
-          }
-        });
       } else {
         // If the new address is not the shipping default, remove it from the cart
         Meteor.call("cart/unsetAddresses", address._id, userId, "shipping");
@@ -494,15 +485,6 @@ export function addressBookUpdate(address, accountUserId, type) {
       // Update the cart to use new default billing address
       if (address.isBillingDefault) {
         Meteor.call("cart/setPaymentAddress", cart._id, address);
-        // Then, unset old address so it is no longer the default billing address
-        Accounts.update({
-          userId,
-          "profile.addressBook.isBillingDefault": true
-        }, {
-          $set: {
-            "profile.addressBook.$.isBillingDefault": false
-          }
-        });
       } else {
         // If the new address is not the shipping default, remove it from the cart
         Meteor.call("cart/unsetAddresses", address._id, userId, "billing");
@@ -513,6 +495,15 @@ export function addressBookUpdate(address, accountUserId, type) {
     }
   }
 
+  // Update all addresses to set new default address to true, and the rest to false
+  account.profile.addressBook.forEach((addr) => {
+    if (addr._id === address._id) {
+      Object.assign(addr, { [type]: true });
+    } else {
+      Object.assign(addr, { [type]: false });
+    }
+  });
+
   const userUpdateQuery = {
     $set: {
       "profile.addressBook": address
@@ -521,7 +512,7 @@ export function addressBookUpdate(address, accountUserId, type) {
 
   const accountsUpdateQuery = {
     $set: {
-      "profile.addressBook.$": address
+      "profile.addressBook": account.profile.addressBook
     }
   };
   // update the name when there is no name or the user updated his only shipping address
@@ -535,8 +526,7 @@ export function addressBookUpdate(address, accountUserId, type) {
 
   // Update the Reaction Accounts collection with new address info
   const updatedAccount = Accounts.update({
-    userId,
-    "profile.addressBook._id": address._id
+    userId
   }, accountsUpdateQuery);
 
   // Create an array which contains all fields that have changed
