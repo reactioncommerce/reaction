@@ -504,7 +504,9 @@ export function addressBookUpdate(address, accountUserId, type) {
     }
   });
 
-
+  // TODO: revisit why we update Meteor.users differently than accounts
+  // We could possibly remove the whole `userUpdateQuery` variable
+  // and update Meteor.users with the accountsUpdateQuery data
   const userUpdateQuery = {
     $set: {
       "profile.addressBook": address
