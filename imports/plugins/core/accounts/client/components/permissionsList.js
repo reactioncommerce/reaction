@@ -49,23 +49,21 @@ class PermissionsList extends Component {
     this.setState({ group: nextProps.group });
   }
 
-  togglePermission = (toggledPermission) => {
-    return (event, checked) => {
-      const groupData = Object.assign({}, this.state.group);
-      const permissions = resolvePermissions(toggledPermission);
-      if (!groupData.permissions) {
-        groupData.permissions = [];
-      }
-      if (checked) {
-        groupData.permissions = _.uniq([...groupData.permissions, ...permissions]);
-      } else {
-        groupData.permissions = removePermissions(groupData.permissions, permissions);
-      }
+  togglePermission = (toggledPermission) => (event, checked) => {
+    const groupData = Object.assign({}, this.state.group);
+    const permissions = resolvePermissions(toggledPermission);
+    if (!groupData.permissions) {
+      groupData.permissions = [];
+    }
+    if (checked) {
+      groupData.permissions = _.uniq([...groupData.permissions, ...permissions]);
+    } else {
+      groupData.permissions = removePermissions(groupData.permissions, permissions);
+    }
 
-      if (this.props.updateGroup) {
-        return this.props.updateGroup(this.state.group._id, groupData);
-      }
-    };
+    if (this.props.updateGroup) {
+      return this.props.updateGroup(this.state.group._id, groupData);
+    }
   };
 
   checked = (permission) => {
@@ -79,18 +77,16 @@ class PermissionsList extends Component {
     if (permission.permissions.length) {
       return (
         <div className="child-item">
-          {permission.permissions.map((childPermission, index) => {
-            return (
-              <Components.ListItem
-                key={`${childPermission.name}-${index}`}
-                actionType="switch"
-                label={childPermission.label}
-                switchOn={this.checked(childPermission.permission)}
-                switchName={childPermission.permission}
-                onSwitchChange={this.togglePermission(childPermission)}
-              />
-            );
-          })}
+          {permission.permissions.map((childPermission, index) => (
+            <Components.ListItem
+              key={`${childPermission.name}-${index}`}
+              actionType="switch"
+              label={childPermission.label}
+              switchOn={this.checked(childPermission.permission)}
+              switchName={childPermission.permission}
+              onSwitchChange={this.togglePermission(childPermission)}
+            />
+          ))}
         </div>
       );
     }

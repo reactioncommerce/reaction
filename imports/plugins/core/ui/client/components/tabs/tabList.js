@@ -34,7 +34,7 @@ class TabList extends Component {
     });
 
     return (
-      <ul {...otherProps} className={baseClassName} role="tabList">
+      <ul {...otherProps} className={baseClassName} role="tablist">
         {elements}
       </ul>
     );

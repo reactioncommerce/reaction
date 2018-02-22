@@ -7,7 +7,7 @@ import { Template } from "meteor/templating";
 // Duplicated in variantList/variantList.js
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
-  if (typeof current === "object" && (variantId === current._id || ~current.ancestors.indexOf(variantId))) {
+  if (typeof current === "object" && (variantId === current._id || current.ancestors.indexOf(variantId) >= 0)) {
     return true;
   }
 
@@ -88,7 +88,7 @@ function showVariant(variant) {
   const selectedProduct = ReactionProduct.selectedProduct();
 
   ReactionProduct.setCurrentVariant(variant._id);
-  Session.set("variant-form-" + variant._id, true);
+  Session.set(`variant-form-${variant._id}`, true);
   Reaction.Router.go("product", { handle: selectedProduct.handle, variantId: variant._id });
 
   if (Reaction.hasPermission("createProduct")) {

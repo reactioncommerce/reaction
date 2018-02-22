@@ -70,9 +70,7 @@ Template.openCartDrawer.helpers({
   }
 });
 
-Template.emptyCartDrawer.onRendered(() => {
-  return $("#cart-drawer-container").fadeIn();
-});
+Template.emptyCartDrawer.onRendered(() => $("#cart-drawer-container").fadeIn());
 
 Template.emptyCartDrawer.helpers({
   EmptyCartDrawer() {

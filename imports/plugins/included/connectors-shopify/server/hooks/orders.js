@@ -1,4 +1,4 @@
-import { Job } from "meteor/vsivsi:job-collection";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Reaction } from "/server/api";
 import { Orders, Jobs } from "/lib/collections";
 
@@ -21,7 +21,7 @@ Orders.after.insert((userId, doc) => {
     const shopIdsInCart = doc.items.map((item) => item.shopId);
 
     // get the unique set of shopIds in this cart
-    const uniqueShopIds = [... new Set(shopIdsInCart)];
+    const uniqueShopIds = [...new Set(shopIdsInCart)];
 
     // For each shopid check to see if there are synchooks are respond appropriately
     uniqueShopIds.forEach((shopId) => {

@@ -14,6 +14,7 @@ class MultiSelect extends Component {
   static propTypes = {
     i18nKeyLabel: PropTypes.string,
     i18nKeyPlaceholder: PropTypes.string,
+    id: PropTypes.string,
     label: PropTypes.string,
     name: PropTypes.string,
     onChange: PropTypes.func,
@@ -24,8 +25,10 @@ class MultiSelect extends Component {
 
   renderLabel() {
     if (this.props.label) {
+      const { id } = this.props;
+
       return (
-        <label>
+        <label htmlFor={id}>
           <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
         </label>
       );

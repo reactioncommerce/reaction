@@ -1,10 +1,15 @@
 import later from "later";
-import moment from "moment";
-import { Job } from "meteor/vsivsi:job-collection";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Cart, Jobs } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { ServerSessions } from "/server/publications/collections/sessions";
+
+let moment;
+async function lazyLoadMoment() {
+  if (moment) return;
+  moment = await import("moment");
+}
 
 
 /**
@@ -12,9 +17,7 @@ import { ServerSessions } from "/server/publications/collections/sessions";
  * @param {Object} olderThan older than date
  * @return {Object} stale carts
  */
-const getstaleCarts = (olderThan) => {
-  return Cart.find({ updatedAt: { $lte: olderThan } }).fetch();
-};
+const getstaleCarts = (olderThan) => Cart.find({ updatedAt: { $lte: olderThan } }).fetch();
 
 
 export function setupStaleCartHook() {
@@ -49,10 +52,11 @@ export function cartCleanupJob() {
     Logger.debug("Processing cart/removeFromCart");
     const settings = Reaction.getShopSettings();
     if (settings.cart) {
+      Promise.await(lazyLoadMoment());
       const schedule = (settings.cart.cleanupDurationDays).match(/\d/);// configurable in shop settings
       const olderThan = moment().subtract(Number(schedule[0]), "days")._d;
       const carts = getstaleCarts(olderThan);
-      carts.forEach(cart => {
+      carts.forEach((cart) => {
         const user = Accounts.findOne({ _id: cart.userId });
         if (!user.emails.length) {
           const removeCart = Cart.remove({ userId: user._id });
@@ -60,6 +64,7 @@ export function cartCleanupJob() {
             _id: cart.userId,
             emails: []
           });
+          Hooks.Events.run("afterAccountsRemove", null, user._id);
           const destroySession = ServerSessions.remove({ _id: cart.sessionId });
           Meteor.users.remove({ _id: user._id, emails: [] }); // clears out anonymous user
           if (removeCart && removeAccount && destroySession) {

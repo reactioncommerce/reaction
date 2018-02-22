@@ -1,6 +1,6 @@
 import later from "later";
 import { Meteor } from "meteor/meteor";
-import { Job } from "meteor/vsivsi:job-collection";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
 
@@ -106,7 +106,7 @@ export function fetchRateJobs() {
       workTimeout: 180 * 1000
     },
     (job, callback) => {
-      Meteor.call("shop/flushCurrencyRate", error => {
+      Meteor.call("shop/flushCurrencyRate", (error) => {
         if (error) {
           if (error.error === "notExists") {
             Logger.error(error.message);

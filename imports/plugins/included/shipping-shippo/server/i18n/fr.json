@@ -7,22 +7,22 @@
         "dashboard": {
           "shippoLabel": "Shippo",
           "shippoTitle": "Shippo",
-          "shippoDescription": "Les étiquettes d'expédition et le suivi des colis"
+          "shippoDescription": "Étiquettes d'expédition et suivi des colis"
         },
         "shippingGrid": {
           "carrier": "Transporteur",
           "enabled": "Activé"
         },
         "shippingSettings": {
-          "noCarriersFound": "Aucun des transporteurs maritimes configurés.",
-          "editApiKey": "Modifier API Key",
-          "carrierSaved": "Transporteur sauvé avec succès.",
-          "carrierFailed": "Erreur de mise à jour porte.",
-          "refresh": "méthodes d'actualisation"
+          "noCarriersFound": "Aucun transporteur configuré.",
+          "editApiKey": "Modifier la clé API",
+          "carrierSaved": "Transporteur sauvegardé avec succès.",
+          "carrierFailed": "Mise à jour du transporteur échouée.",
+          "refresh": "Rafraichir les modes de livraison"
         }
       },
       "shippo": {
-        "connectedAndSaved": "Paramètres sauvegardés! API Shippo est maintenant activé."
+        "connectedAndSaved": "Paramètres sauvegardés ! L'API Shippo est maintenant activée."
       }
     }
   }

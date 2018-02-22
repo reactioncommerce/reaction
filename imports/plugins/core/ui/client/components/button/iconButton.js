@@ -19,6 +19,12 @@ const IconButton = ({ icon, onIcon, ...otherProps }) => {
       "icon-only": true,
       "status-badge": true
     });
+  } else if (otherProps.kind === "removeItem") {
+    buttonClassName = classnames({
+      "icon-only": true,
+      "variant-edit": true,
+      "remove-item-aria-container": true
+    });
   } else {
     buttonClassName = classnames({
       "icon-only": true,

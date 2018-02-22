@@ -44,7 +44,7 @@ function uploadHandler(files) {
     };
 
     Media.insert(fileObj);
-    count++;
+    count += 1;
   }
 
   return true;
@@ -209,7 +209,7 @@ function fetchMediaRevisions() {
 
 // resort the media in
 function sortMedia(media) {
-  const sortedMedia = _.sortBy(media, (m) => { return m.metadata.priority; });
+  const sortedMedia = _.sortBy(media, (m) => m.metadata.priority);
   return sortedMedia;
 }
 
