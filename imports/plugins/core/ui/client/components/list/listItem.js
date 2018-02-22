@@ -28,6 +28,14 @@ class ListItem extends Component {
     }
   }
 
+  handleOnKeyUp = (event) => {
+    // keyCode 32 (spacebar)
+    // keyCode 13 (enter/return)
+    if (event.keyCode === 32 || event.keyCode === 13) {
+      this.handleClick(event);
+    }
+  }
+
   handleSwitchChange = (event, isChecked, name) => {
     event.preventDefault();
     event.stopPropagation();
@@ -144,7 +152,13 @@ class ListItem extends Component {
     }, this.props.listItemClassName);
 
     return (
-      <div className={listItemClassName} onClick={this.handleClick}>
+      <div
+        className={listItemClassName}
+        onClick={this.handleClick}
+        onKeyUp={this.handleOnKeyUp}
+        role="button"
+        tabIndex={0}
+      >
         {this.renderIcon()}
         {this.renderContent()}
         {this.renderAction()}

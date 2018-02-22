@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Meteor } from "meteor/meteor";
 import SettingsComponent from "../components/settings";
 import { Packages } from "/lib/collections";
-import { Meteor } from "meteor/meteor";
-import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
-
 
 class RevisionSettingsContainer extends Component {
   constructor(props) {
@@ -39,12 +37,10 @@ class RevisionSettingsContainer extends Component {
   render() {
     return (
       <div>
-        <TranslationProvider>
-          <SettingsComponent
-            onUpdateSettings={this.handleUpdateSettings}
-            settings={this.settings}
-          />
-        </TranslationProvider>
+        <SettingsComponent
+          onUpdateSettings={this.handleUpdateSettings}
+          settings={this.settings}
+        />
       </div>
     );
   }
@@ -56,9 +52,7 @@ RevisionSettingsContainer.propTypes = {
 
 export function handlePublishClick(revisions) {
   if (Array.isArray(revisions)) {
-    const documentIds = revisions.map((revision) => {
-      return revision.documentId;
-    });
+    const documentIds = revisions.map((revision) => revision.documentId);
     Meteor.call("revisions/publish", documentIds);
   }
 }

@@ -1,44 +1,30 @@
 import { Meteor } from "meteor/meteor";
 import { Cart, Products, Orders } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Logger, Hooks } from "/server/api";
 import { registerInventory } from "../methods/inventory";
 
 /**
- * Collection Hooks
- * transform collections based on events
- *
- * See: https://github.com/matb33/meteor-collection-hooks
+ * After cart update add invetory reservations
  */
-
-/**
- * After cart update
- */
-Cart.after.update((userId, cart, fieldNames, modifier) => {
-  // if we're adding a new product or variant to the cart
-  if (modifier.$addToSet) {
-    if (modifier.$addToSet.items) {
-      Logger.debug("after cart update, call inventory/addReserve");
-      Meteor.call("inventory/addReserve", cart.items);
-    }
-  }
-  // or we're adding more quantity
-  if (modifier.$inc) {
-    Logger.debug("after variant increment, call inventory/addReserve");
-    Meteor.call("inventory/addReserve", cart.items);
-  }
+Hooks.Events.add("afterAddItemsToCart", (cartId, options) => {
+  // Adding a new product or variant to the cart
+  Logger.debug("after cart update, call inventory/addReserve");
+  // Look up cart to get items added to it
+  const { items } = Cart.findOne({ _id: cartId }) || {};
+  // Reserve item
+  Meteor.call("inventory/addReserve", items.filter((item) => item._id === options.newItemId));
 });
 
-/**
- * Before cart update. When Item is removed from Cart, release the inventory reservation.
- */
-Cart.before.update((userId, cart, fieldNames, modifier) => {
-  // removing  cart items, clear inventory reserve
-  if (modifier.$pull) {
-    if (modifier.$pull.items) {
-      Logger.debug("remove cart items, call inventory/clearReserve");
-      Meteor.call("inventory/clearReserve", cart.items);
-    }
-  }
+Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
+  // Modifying item quantity in cart.
+  Logger.debug("after variant increment, call inventory/addReserve");
+
+  // Look up cart to get items that have been added to it
+  const { items } = Cart.findOne({ _id: cartId }) || {};
+
+  // Item to increment quantity
+  const item = items.filter((i) => (i.product._id === options.productId && i.variants._id === options.variantId));
+  Meteor.call("inventory/addReserve", item);
 });
 
 /**

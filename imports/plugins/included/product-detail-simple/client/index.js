@@ -13,9 +13,7 @@ import {
   VariantList
 } from "./components";
 
-import {
-  Divider
-} from "/imports/plugins/core/ui/client/components";
+import { Divider } from "/imports/plugins/core/ui/client/components";
 
 import {
   SocialContainer,

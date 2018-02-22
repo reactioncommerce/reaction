@@ -1,4 +1,4 @@
-import React,  { Component } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import matchSorter from "match-sorter";
 import ReactTable from "react-table";
@@ -143,11 +143,9 @@ class SortableTable extends Component {
     const { columnMetadata } = this.props;
 
     // Add minWidth = undefined to override 100px default set by ReactTable
-    const displayColumns = columnMetadata.map((element) => {
-      return Object.assign({}, element, {
-        minWidth: undefined
-      });
-    });
+    const displayColumns = columnMetadata.map((element) => Object.assign({}, element, {
+      minWidth: undefined
+    }));
 
     return displayColumns;
   }
@@ -315,7 +313,7 @@ class SortableTable extends Component {
             }
 
             return {
-              onClick: e => { // eslint-disable-line no-unused-vars
+              onClick: (e) => { // eslint-disable-line no-unused-vars
                 this.handleClick(rowInfo);
               },
               className: this.selectedRowsClassName(rowInfo)
