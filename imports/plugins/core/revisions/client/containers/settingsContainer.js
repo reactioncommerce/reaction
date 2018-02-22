@@ -5,7 +5,6 @@ import { Meteor } from "meteor/meteor";
 import SettingsComponent from "../components/settings";
 import { Packages } from "/lib/collections";
 
-
 class RevisionSettingsContainer extends Component {
   constructor(props) {
     super(props);
