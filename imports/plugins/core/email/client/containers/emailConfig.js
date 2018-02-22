@@ -25,15 +25,19 @@ const wrapComponent = (Comp) => (
 
     constructor(props) {
       super(props);
-
       this.state = {
         status: null,
         error: null
       };
     }
 
-    componentWillMount() {
+    componentDidMount() {
+      this._isMounted = true;
       this.checkEmailStatus();
+    }
+
+    componentWillUnmount() {
+      this._isMounted = false;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -50,6 +54,7 @@ const wrapComponent = (Comp) => (
     // checking email settings
     // and updating status
     checkEmailStatus() {
+      if (!this._isMounted) return;
       const { settings } = this.props;
       const { service, host, port, user, password } = settings;
 
