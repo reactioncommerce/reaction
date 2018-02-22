@@ -264,6 +264,47 @@ export default class FileRecord extends EventEmitter {
     this.tusUploadInstance.start();
   }
 
+  async clone(newMetaData) {
+    const fileCollection = this.collection;
+    if (!fileCollection) throw new Error("Cannot clone a file that is not associated with a collection");
+
+    if ((fileCollection.options.stores || []).length === 0) {
+      throw new Error("Cannot clone a file that is associated with a collection that has no linked stores. Cloning only available in Node.");
+    }
+
+    const clonedFileRecord = new FileRecord({
+      original: this.document.original,
+      metadata: {
+        ...(this.metadata || {}),
+        ...(newMetaData || {})
+      }
+    });
+
+    const cloneRecord = await fileCollection.insert(clonedFileRecord);
+
+    // Copy underlying files in all stores
+    const storeNames = Object.keys(this.document.copies || {});
+    const copyingPromises = storeNames.map(async (storeName) => {
+      const store = fileCollection.getStore(storeName);
+
+      // Get the readStream to read the currently stored file out. We use createReadStreamForFileKey
+      // rather than createReadStream in order to bypass any potential transformRead function
+      const readStream = await store.createReadStreamForFileKey(store.fileKey(this));
+
+      // Get the writeStream to write back in for the clone. We use createWriteStreamForFileKey
+      // rather than createWriteStream in order to bypass any potential transformWrite function
+      const writeStream = await store.createWriteStreamForFileKey(store.fileKey(cloneRecord));
+
+      return new Promise((resolve, reject) => {
+        writeStream.once("error", reject);
+        writeStream.once("stored", resolve);
+        readStream.pipe(writeStream);
+      });
+    });
+
+    return Promise.all(copyingPromises);
+  }
+
   update(modifier, options) {
     return new Promise((resolve, reject) => {
       if (!this.collection) {
