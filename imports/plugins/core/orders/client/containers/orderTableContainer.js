@@ -619,10 +619,28 @@ const wrapComponent = (Comp) => (
       });
 
       let orderCount = 0;
-
+      const done = () => {
+        if (++orderCount === selectedOrders.length) {
+          this.setState({
+            isLoading: {
+              capturePayment: false
+            }
+          });
+          Alerts.alert({
+            text: i18next.t("order.paymentCaptureSuccess"),
+            type: "success",
+            allowOutsideClick: false
+          });
+        }
+      }
       // TODO: send these orders in batch as an array. This would entail re-writing the
       // "orders/approvePayment" method to receive an array of orders as a param.
       selectedOrders.forEach((order) => {
+        // Only capture orders which are not captured yet (but possibly are already approved)
+        if (order.billing[0].paymentMethod.mode === "capture" && order.billing[0].paymentMethod.status === "completed") {
+          done();
+          return;
+        }
         Meteor.call("orders/approvePayment", order, (approvePaymentError) => {
           if (approvePaymentError) {
             this.setState({
@@ -643,20 +661,7 @@ const wrapComponent = (Comp) => (
                 });
                 Alerts.toast(`An error occured while capturing the payment: ${capturePaymentError}`, "error");
               }
-
-              orderCount++;
-              if (orderCount === selectedOrders.length) {
-                this.setState({
-                  isLoading: {
-                    capturePayment: false
-                  }
-                });
-                Alerts.alert({
-                  text: i18next.t("order.paymentCaptureSuccess"),
-                  type: "success",
-                  allowOutsideClick: false
-                });
-              }
+              done();
             });
           }
         });
