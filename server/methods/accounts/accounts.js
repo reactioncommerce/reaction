@@ -1094,7 +1094,7 @@ export function setProfileCurrency(currencyName) {
     Accounts.update(this.userId, { $set: { "profile.currency": currencyName } });
     Hooks.Events.run("afterAccountsUpdate", this.userId, {
       accountId: this.userId,
-      updatedFields: ["profile.currency"]
+      updatedFields: ["currency"]
     });
   }
 }
