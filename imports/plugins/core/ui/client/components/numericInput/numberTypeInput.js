@@ -52,6 +52,19 @@ class NumberTypeInput extends Component {
   }
 
   handleChange = (event, value) => {
+    // if not value is passed to handler
+    // grab the value from the input's event.target
+    // this will account for any number entry via the keyboard
+    if (!value) {
+      // grabbing value from the event target
+      // & coverting it from a string to number
+      value = parseInt(event.target.value);
+      this.setState({
+        value,
+        className: { edited: true }
+      });
+    }
+
     if (this.props.onChange) {
       this.props.onChange(event, value);
     }
