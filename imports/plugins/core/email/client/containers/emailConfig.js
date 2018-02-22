@@ -36,10 +36,6 @@ const wrapComponent = (Comp) => (
       this.checkEmailStatus();
     }
 
-    componentWillUnmount() {
-      this._isMounted = false;
-    }
-
     componentWillReceiveProps(nextProps) {
       const { settings } = this.props;
       const { settings: nextSettings } = nextProps;
@@ -49,6 +45,10 @@ const wrapComponent = (Comp) => (
       } else {
         return;
       }
+    }
+
+    componentWillUnmount() {
+      this._isMounted = false;
     }
 
     // checking email settings
