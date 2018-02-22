@@ -289,8 +289,6 @@ export function buildAccountSearchRecord(accountId, updatedFields) {
         }
       }
       AccountSearch.insert(accountSearch);
-      const rawAccountSearchCollection = AccountSearch.rawCollection();
-      rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleIndexUpdateFailures);
     }
   }
 }
