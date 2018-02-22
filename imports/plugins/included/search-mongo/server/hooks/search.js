@@ -1,8 +1,12 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Products, ProductSearch, Orders, OrderSearch, AccountSearch } from "/lib/collections";
-import { getSearchParameters,
-  buildProductSearchRecord, buildOrderSearchRecord, buildAccountSearchRecord } from "../methods/searchcollections";
+import {
+  getSearchParameters,
+  buildAccountSearchRecord,
+  buildOrderSearchRecord,
+  buildProductSearchRecord
+} from "../methods/searchcollections";
 import { Hooks, Logger } from "/server/api";
 
 Hooks.Events.add("afterAccountsInsert", (userId, accountId) => {

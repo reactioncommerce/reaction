@@ -7,7 +7,8 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 class Form extends Component {
   static defaultProps = {
     autoSave: false,
-    renderFromFields: false
+    renderFromFields: false,
+    fieldsProp: {}
   }
 
   /**

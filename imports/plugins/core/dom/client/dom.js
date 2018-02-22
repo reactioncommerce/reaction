@@ -57,7 +57,7 @@ DOM.addLinkTag = (attributes) => {
  * @returns {undefined} no return value
  */
 DOM.removeDocHeadAddedTags = () => {
-  const elements = document.querySelectorAll('[data-metatag="1"]');
+  const elements = document.querySelectorAll("[data-metatag='1']");
   for (const element of elements) {
     element.parentNode.removeChild(element);
   }
