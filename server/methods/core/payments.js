@@ -27,14 +27,16 @@ export const methods = {
     check(collection, String);
     const Collection = Reaction.Collections[collection];
 
+    const cart = Collection.findOne(id);
+    // The first record holds the selected billing address
+    const billing = cart.billing[0];
     const result = Collection.update({
       _id: id
     }, {
       $addToSet: {
-        billing: { paymentMethod }
+        billing: { ...billing, paymentMethod }
       }
     });
-
     // calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", id);
 
