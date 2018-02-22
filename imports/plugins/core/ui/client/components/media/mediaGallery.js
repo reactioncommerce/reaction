@@ -119,7 +119,11 @@ class MediaGallery extends Component {
     }
 
     return (
-      <Components.MediaItem />
+      <Components.MediaItem
+        source={"/resources/placeholder.gif"}
+        mediaHeight={height}
+        mediaWidth={width}
+      />
     );
   }
 
