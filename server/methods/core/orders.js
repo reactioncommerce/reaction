@@ -359,7 +359,12 @@ export const methods = {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    if (returnToStock) {
+    // Inventory is removed from stock only once an order has been approved
+    // This is indicated by order.billing.$.paymentMethod.status being anything other than `created`
+    // We need to check to make sure the inventory has been removed before we return it to stock
+    const orderIsApproved = order.billing.find((status) => status.paymentMethod.status !== "created");
+
+    if (returnToStock && orderIsApproved) {
       // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
       // in some instances which causes the order not to cancel
       order.items.forEach((item) => {
