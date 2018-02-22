@@ -62,7 +62,10 @@ export function verifyAccount(email, token) {
           "emails.$.verified": true
         }
       });
-      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
+      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+        accountId: account._id,
+        updatedFields: ["emails"]
+      });
     }
     return true;
   }
@@ -131,7 +134,10 @@ export function syncUsersAndAccounts() {
       ]
     }
   });
-  Hooks.Events.run("afterAccountsUpdate", user._id, user._id);
+  Hooks.Events.run("afterAccountsUpdate", user._id, {
+    accountId: user._id,
+    updatedFields: ["emails"]
+  });
 
   return true;
 }
@@ -365,7 +371,10 @@ export function addressBookAdd(address, accountUserId) {
           "profile.addressBook.$.isShippingDefault": false
         }
       });
-      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
+      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+        accountId: account._id,
+        updatedFields: ["isShippingDefault"]
+      });
     }
     if (address.isBillingDefault) {
       Accounts.update({
@@ -376,7 +385,10 @@ export function addressBookAdd(address, accountUserId) {
           "profile.addressBook.$.isBillingDefault": false
         }
       });
-      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
+      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+        accountId: account._id,
+        updatedFields: ["isBillingDefault"]
+      });
     }
   }
 
@@ -582,7 +594,11 @@ export function addressBookRemove(addressId, accountUserId) {
       }
     }
   });
-  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
+  // forceIndex when removing an address
+  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+    accountId: account._id,
+    updatedFields: ["forceIndex"]
+  });
   return updatedAccount;
 }
 
@@ -1076,7 +1092,10 @@ export function setProfileCurrency(currencyName) {
   check(currencyName, String);
   if (this.userId) {
     Accounts.update(this.userId, { $set: { "profile.currency": currencyName } });
-    Hooks.Events.run("afterAccountsUpdate", this.userId, this.userId);
+    Hooks.Events.run("afterAccountsUpdate", this.userId, {
+      accountId: this.userId,
+      updatedFields: ["profile.currency"]
+    });
   }
 }
 
