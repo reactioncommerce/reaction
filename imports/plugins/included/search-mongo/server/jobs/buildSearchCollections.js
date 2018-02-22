@@ -2,8 +2,10 @@ import { Meteor } from "meteor/meteor";
 import { Job } from "meteor/vsivsi:job-collection";
 import { Jobs, ProductSearch, Orders, OrderSearch, AccountSearch } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
-import { buildProductSearch, buildOrderSearch, buildAccountSearch,
-  rebuildProductSearchIndex, buildEmptyProductSearch } from "../methods/";
+import {
+  buildProductSearch, buildOrderSearch, buildAccountSearch,
+  rebuildProductSearchIndex, buildEmptyProductSearch
+} from "../methods/";
 
 
 function addBuildProductSearchCollection() {

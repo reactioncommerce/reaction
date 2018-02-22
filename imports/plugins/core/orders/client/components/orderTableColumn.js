@@ -77,7 +77,7 @@ class OrderTableColumn extends Component {
       );
     }
     if (columnAccessor === "createdAt") {
-      const createdDate = moment && moment(this.props.row.value).format("MM/D/YYYY") || this.props.row.value.toLocaleString();
+      const createdDate = (moment && moment(this.props.row.value).format("MM/D/YYYY")) || this.props.row.value.toLocaleString();
       return (
         <div style={{ marginTop: 7 }}>{createdDate}</div>
       );
