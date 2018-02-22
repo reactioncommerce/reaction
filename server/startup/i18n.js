@@ -51,7 +51,7 @@ export function loadTranslation(source) {
  * @return {Boolean} false if assets weren't loaded
  */
 export function loadTranslations(sources) {
-  sources.forEach(function (source) {
+  sources.forEach((source) => {
     loadTranslation(source);
   });
 }
@@ -70,7 +70,7 @@ export function loadCoreTranslations() {
   const i18nFolder = `${meteorPath}/server/assets/app/data/i18n/`;
 
   if (directoryExists(i18nFolder)) {
-    fs.readdir(i18nFolder, Meteor.bindEnvironment(function (err, files) {
+    fs.readdir(i18nFolder, Meteor.bindEnvironment((err, files) => {
       if (err) throw new Meteor.Error("No translations found for import.", err);
       for (const file of files) {
         if (~file.indexOf("json")) {

@@ -15,8 +15,8 @@ Template.coreOrderWorkflow.helpers({
    */
   orderFulfillmentData(orderId, fulfillment) {
     return {
-      orderId: orderId,
-      fulfillment: fulfillment
+      orderId,
+      fulfillment
     };
   },
 

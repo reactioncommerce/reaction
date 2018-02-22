@@ -81,7 +81,7 @@ Meteor.methods({
    * @param {Object} shopData - optionally provide shop object to customize
    * @return {String} return shopId
    */
-  "shop/createShop": function (shopAdminUserId, shopData) {
+  "shop/createShop"(shopAdminUserId, shopData) {
     check(shopAdminUserId, Match.Optional(String));
     check(shopData, Match.Optional(Schemas.Shop));
 
@@ -132,8 +132,10 @@ Meteor.methods({
 
     // Disallow creation of multiple shops, even for marketplace owners
     if (shopAccount.shopId !== Reaction.getPrimaryShopId()) {
-      throw new Meteor.Error("operation-not-permitted",
-        "This user already has a shop. Each user may only have one shop.");
+      throw new Meteor.Error(
+        "operation-not-permitted",
+        "This user already has a shop. Each user may only have one shop."
+      );
     }
 
     // we'll accept a shop object, or clone the current shop
@@ -219,7 +221,7 @@ Meteor.methods({
    * determine local currency and conversion rate from shop currency
    * @return {Object} returns user location and locale
    */
-  "shop/getLocale": function () {
+  "shop/getLocale"() {
     this.unblock();
     let clientAddress;
     const geo = new GeoCoder();
@@ -276,7 +278,7 @@ Meteor.methods({
     }
 
     // localeCurrency is an array of allowed currencies
-    _.each(localeCurrency, function (currency) {
+    _.each(localeCurrency, (currency) => {
       let exchangeRate;
       if (shop.currencies[currency]) {
         result.currency = shop.currencies[currency];
@@ -331,7 +333,7 @@ Meteor.methods({
    * @param {String} currency code
    * @return {Number|Object} currency conversion rate
    */
-  "shop/getCurrencyRates": function (currency) {
+  "shop/getCurrencyRates"(currency) {
     check(currency, String);
     this.unblock();
 
@@ -356,7 +358,7 @@ Meteor.methods({
    * @fires Collections.Shops#update
    * @returns {undefined}
    */
-  "shop/fetchCurrencyRate": function () {
+  "shop/fetchCurrencyRate"() {
     this.unblock();
 
     const shopId = Reaction.getShopId();
@@ -373,7 +375,7 @@ Meteor.methods({
 
     // fetch shop settings for api auth credentials
     const shopSettings = Collections.Packages.findOne({
-      shopId: shopId,
+      shopId,
       name: "core"
     }, {
       fields: {
@@ -385,12 +387,16 @@ Meteor.methods({
     // with current rates from Open Exchange Rates
     // warn if we don't have app_id
     if (!shopSettings.settings.openexchangerates) {
-      throw new Meteor.Error("not-configured",
-        "Open Exchange Rates not configured. Configure for current rates.");
+      throw new Meteor.Error(
+        "not-configured",
+        "Open Exchange Rates not configured. Configure for current rates."
+      );
     } else {
       if (!shopSettings.settings.openexchangerates.appId) {
-        throw new Meteor.Error("not-configured",
-          "Open Exchange Rates AppId not configured. Configure for current rates.");
+        throw new Meteor.Error(
+          "not-configured",
+          "Open Exchange Rates AppId not configured. Configure for current rates."
+        );
       } else {
         // shop open exchange rates appId
         const openexchangeratesAppId = shopSettings.settings.openexchangerates.appId;
@@ -418,7 +424,7 @@ Meteor.methods({
 
         const exchangeRates = rateResults.data.rates;
 
-        _.each(shopCurrencies, function (currencyConfig, currencyKey) {
+        _.each(shopCurrencies, (currencyConfig, currencyKey) => {
           if (exchangeRates[currencyKey] !== undefined) {
             const rateUpdate = {
               // this needed for shop/flushCurrencyRates Method
@@ -445,7 +451,7 @@ Meteor.methods({
    * @fires Collections.Shops#update
    * @returns {undefined}
    */
-  "shop/flushCurrencyRate": function () {
+  "shop/flushCurrencyRate"() {
     this.unblock();
 
     let shopId;
@@ -466,15 +472,17 @@ Meteor.methods({
 
     // if updatedAt is not a Date(), then there is no rates yet
     if (typeof updatedAt !== "object") {
-      throw new Meteor.Error("error-occurred",
-        "[flushCurrencyRates worker]: There is nothing to flush.");
+      throw new Meteor.Error(
+        "error-occurred",
+        "[flushCurrencyRates worker]: There is nothing to flush."
+      );
     }
 
     updatedAt.setHours(updatedAt.getHours() + 48);
     const now = new Date();
 
     if (now < updatedAt) { // todo remove this line. its for tests
-      _.each(shop.currencies, function (currencyConfig, currencyKey) {
+      _.each(shop.currencies, (currencyConfig, currencyKey) => {
         const rate = `currencies.${currencyKey}.rate`;
 
         if (typeof currencyConfig.rate === "number") {
@@ -502,7 +510,7 @@ Meteor.methods({
    * @returns {undefined}
    * moved to another file
    */
-  "shop/updateShopExternalServices": function (modifier, _id) {
+  "shop/updateShopExternalServices"(modifier, _id) {
     check(modifier, Match.Optional(Schemas.CorePackageConfig));
     check(_id, String);
 
@@ -545,7 +553,7 @@ Meteor.methods({
    * @param {Number} longitude - longitude
    * @return {Object} returns address
    */
-  "shop/locateAddress": function (latitude, longitude) {
+  "shop/locateAddress"(latitude, longitude) {
     check(latitude, Match.Optional(Number));
     check(longitude, Match.Optional(Number));
     let clientAddress;
@@ -580,7 +588,7 @@ Meteor.methods({
    * @hooks after method
    * @return {String} with created tag _id
    */
-  "shop/createTag": function (tagName, isTopLevel) {
+  "shop/createTag"(tagName, isTopLevel) {
     check(tagName, String);
     check(isTopLevel, Boolean);
 
@@ -592,7 +600,7 @@ Meteor.methods({
     const tag = {
       name: tagName,
       slug: Reaction.getSlug(tagName),
-      isTopLevel: isTopLevel,
+      isTopLevel,
       updatedAt: new Date(),
       createdAt: new Date()
     };
@@ -610,7 +618,7 @@ Meteor.methods({
    * @param {String} currentTagId - currentTagId will update related/hierarchy
    * @return {Boolean} return true/false after insert
    */
-  "shop/updateHeaderTags": function (tagName, tagId, currentTagId) {
+  "shop/updateHeaderTags"(tagName, tagId, currentTagId) {
     check(tagName, String);
     check(tagId, Match.OneOf(String, null, void 0));
     check(currentTagId, Match.OneOf(String, null, void 0));
@@ -648,9 +656,7 @@ Meteor.methods({
             relatedTagIds: existingTag._id
           }
         });
-        Logger.debug(
-          `Added tag ${existingTag.name} to the related tags list for tag ${currentTagId}`
-        );
+        Logger.debug(`Added tag ${existingTag.name} to the related tags list for tag ${currentTagId}`);
         return result;
       }
 
@@ -694,7 +700,7 @@ Meteor.methods({
    * @param {String} currentTagId - currentTagId
    * @return {String} returns remove result
    */
-  "shop/removeHeaderTag": function (tagId, currentTagId) {
+  "shop/removeHeaderTag"(tagId, currentTagId) {
     check(tagId, String);
     check(currentTagId, String);
     // must have core permissions
@@ -735,7 +741,7 @@ Meteor.methods({
    * @param {String} tagId - method to remove tag navigation tags
    * @return {String} returns remove result
    */
-  "shop/hideHeaderTag": function (tagId) {
+  "shop/hideHeaderTag"(tagId) {
     check(tagId, String);
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
@@ -760,7 +766,7 @@ Meteor.methods({
    * @param {String} name - workflow name
    * @return {Array} returns workflow array
    */
-  "shop/getWorkflow": function (name) {
+  "shop/getWorkflow"(name) {
     check(name, String);
 
     const shopWorkflows = Collections.Shops.findOne({
@@ -786,7 +792,7 @@ Meteor.methods({
    * @param {Boolean} enabled - true / false
    * @return {Array} returns workflow array
    */
-  "shop/updateLanguageConfiguration": function (language, enabled) {
+  "shop/updateLanguageConfiguration"(language, enabled) {
     check(language, String);
     check(enabled, Boolean);
 
@@ -849,7 +855,7 @@ Meteor.methods({
    * @param {Boolean} enabled - true / false
    * @return {Number} returns mongo update result
    */
-  "shop/updateCurrencyConfiguration": function (currency, enabled) {
+  "shop/updateCurrencyConfiguration"(currency, enabled) {
     check(currency, String);
     check(enabled, Boolean);
     // must have core permissions
@@ -907,7 +913,7 @@ Meteor.methods({
    * @param {Object} asset - brand asset {mediaId: "", type, ""}
    * @return {Int} returns update result
    */
-  "shop/updateBrandAssets": function (asset) {
+  "shop/updateBrandAssets"(asset) {
     check(asset, {
       mediaId: String,
       type: String
@@ -927,7 +933,7 @@ Meteor.methods({
    * @param {Boolean} enabled - current package `enabled` state
    * @return {Number} mongo update result
    */
-  "shop/togglePackage": function (packageId, enabled) {
+  "shop/togglePackage"(packageId, enabled) {
     check(packageId, String);
     check(enabled, Boolean);
     if (!Reaction.hasAdminAccess()) {
@@ -950,7 +956,7 @@ Meteor.methods({
    * @param {String} newLayout - new layout to use
    * @return {Number} mongo update result
    */
-  "shop/changeLayouts": function (shopId, newLayout) {
+  "shop/changeLayouts"(shopId, newLayout) {
     check(shopId, String);
     check(newLayout, String);
     const shop = Collections.Shops.findOne(shopId);

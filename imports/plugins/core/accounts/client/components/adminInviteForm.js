@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
+import ReactionAlerts from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 import { Reaction, i18next } from "/client/api";
 import { getDefaultUserInviteGroup } from "../helpers/accountsHelper";
 

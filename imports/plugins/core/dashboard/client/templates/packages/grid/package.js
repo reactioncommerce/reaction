@@ -13,7 +13,7 @@ Template.gridPackage.helpers({
    */
   cardProps() {
     const instance = Template.instance();
-    const data = instance.data;
+    const { data } = instance;
     const apps = Reaction.Apps({
       provides: "settings",
       name: data.package.packageName

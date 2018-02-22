@@ -29,7 +29,7 @@ PayflowproApi.apiCall.paymentSubmit = function (paymentSubmitDetails) {
     Logger.warn(error);
     result = {
       saved: false,
-      error: error
+      error
     };
   }
   return result;
@@ -70,7 +70,7 @@ PayflowproApi.apiCall.captureCharge = function (paymentCaptureDetails) {
       Logger.warn(error);
       result = {
         saved: false,
-        error: error
+        error
       };
     }
     return result;
@@ -90,7 +90,7 @@ PayflowproApi.apiCall.captureCharge = function (paymentCaptureDetails) {
     Logger.warn(error);
     result = {
       saved: false,
-      error: error
+      error
     };
   }
   return result;
@@ -123,7 +123,7 @@ PayflowproApi.apiCall.createRefund = function (refundDetails) {
   } catch (error) {
     result = {
       saved: false,
-      error: error
+      error
     };
   }
   return result;
@@ -163,7 +163,7 @@ PayflowproApi.apiCall.listRefunds = function (refundListDetails) {
     } catch (error) {
       Logger.warn("Failed payflowpro/refund/list", error);
       result = {
-        error: error
+        error
       };
     }
   }

@@ -6,7 +6,7 @@ import { Media, Products } from "/lib/collections";
 function uploadHandler(event) {
   const shopId = Reaction.getShopId();
   const userId = Meteor.userId();
-  const files = event.target.files.files;
+  const { files } = event.target.files;
 
   for (let i = 0; i < files.length; i++) {
     const parts = files[i].name.split(".");
@@ -28,7 +28,7 @@ function uploadHandler(event) {
         ownerId: userId,
         productId: product._id,
         variantId: product.variants[0]._id,
-        shopId: shopId,
+        shopId,
         priority: Number(parts[1]) || 0
       };
       Media.insert(fileObj);
@@ -37,7 +37,7 @@ function uploadHandler(event) {
 }
 
 Template.import.events({
-  "submit form#form-import-images": function (event) {
+  "submit form#form-import-images"(event) {
     event.preventDefault();
     uploadHandler(event);
   }
