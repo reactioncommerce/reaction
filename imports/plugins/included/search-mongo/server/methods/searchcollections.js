@@ -279,7 +279,7 @@ export function buildAccountSearchRecord(accountId, updatedFields) {
 
     const shouldRunIndex = updatedFields && updatedFields.some((field) => searchableFields.includes(field));
 
-    // If updatedField contains one of the searchableFields, run the indexing
+    // If updatedFields contains one of the searchableFields, run the indexing
     if (shouldRunIndex) {
       AccountSearch.remove(accountId);
       for (const field of requiredFields.accounts) {
