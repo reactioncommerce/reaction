@@ -5,6 +5,7 @@ import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { copyFile, ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
+import { createRevision } from "/imports/plugins/core/revisions/server/functions";
 import { Media, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
@@ -318,6 +319,25 @@ function flushQuantity(id) {
       type: "variant"
     }
   });
+}
+
+/**
+ * @function createProductObject
+ * @private
+ * @description creates a product Object with a generated _id 
+ * and with initialProps if provided
+ * @return {Object} productObject - new product object
+ */
+function createProductObject(initialProps = null) {
+  const productObject = Products.findOne({});
+  // Assing _id to prevent insert error that would be casued otherwise.
+  productObject._id = Random.id();
+
+  if (initialProps) {
+    return Object.assign({}, productObject, initialProps);
+  }
+
+  return productObject;
 }
 
 Meteor.methods({
@@ -747,21 +767,29 @@ Meteor.methods({
       if (!product.shopId || !Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
         throw new Meteor.Error("invalid-parameter", "Product should have a valid shopId");
       }
+
+      // Create product revision
+      createRevision(product);
+
       return Products.insert(product);
     }
 
-    const newId = Products.insert({
-      type: "simple" // needed for multi-schema
-    }, {
-      validate: false
-    });
+    const newSimpleProduct = createProductObject();
+    // Create simple product revision
+    createRevision(newSimpleProduct);
+    const newId = Products.insert(newSimpleProduct, { validate: false });
 
-    Products.insert({
+    const newVariant = createProductObject({
       ancestors: [newId],
       price: 0.00,
       title: "",
       type: "variant" // needed for multi-schema
     });
+
+    // Create variant revision
+    createRevision(newVariant);
+
+    Products.insert(newVariant);
 
     return newId;
   },
