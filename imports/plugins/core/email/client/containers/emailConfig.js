@@ -54,12 +54,12 @@ const wrapComponent = (Comp) => (
     // checking email settings
     // and updating status
     checkEmailStatus() {
-      if (!this._isMounted) return;
       const { settings } = this.props;
       const { service, host, port, user, password } = settings;
 
       if (service && host && port && user && password) {
         Meteor.call("email/verifySettings", (error) => {
+          if (!this._isMounted) return;
           if (error) {
             this.setState({ status: "error" });
           } else {
