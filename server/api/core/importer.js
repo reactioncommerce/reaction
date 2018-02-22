@@ -125,7 +125,7 @@ Importer.commit = function (collection) {
       const nImported = result.nModified + result.nInserted + result.nUpserted;
       const nTouched = result.nMatched + result.nInserted + result.nUpserted;
       const { nRemoved } = result;
-      // Log some information about theImporter.
+      // Log some information about the Importer.
       if (nTouched) {
         let message = `Modified ${nImported}${nImported === 1 ? " document" : " documents"}`;
         message += ` while importing ${nTouched} to ${name}`;
