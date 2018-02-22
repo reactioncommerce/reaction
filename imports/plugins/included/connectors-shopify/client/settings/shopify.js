@@ -223,7 +223,7 @@ Template.shopifySync.events({
 
 AutoForm.hooks({
   "shopify-connect-update-form": {
-    onSuccess: function () {
+    onSuccess() {
       Meteor.call("connectors/shopify/api/credentials/test", (err, isValid) => {
         if (isValid) {
           return Alerts.toast(i18next.t("admin.shopifyConnectSettings.validCredentials"), "Valid API key and password");

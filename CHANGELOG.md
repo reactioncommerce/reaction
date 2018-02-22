@@ -22,10 +22,7 @@ and in our `dev-dependencies`
 
 Our babel presets now looks like this:
 ```
-"presets": [
-  "meteor",
-  "@babel/preset-react"
-]
+"presets": []
 ```
 Yes, we've removed `stage-2` and `env` from our presets. That's recommended as meteor now includes `babel-preset-meteor`
 
@@ -172,6 +169,11 @@ There are potentially breaking changes you should be aware of in this release.
   - (refactor): Converting Avalara Setting page to React (#3348)
   - (refactor): Dynamically import moment.js (#3602)
   - (refactor): replace imagemagick with Sharp (#3631) .. Resolves #3482
+  - (refactor): removed analytics plugin (#3814) .. Resolves #2301
+  - (refactor): use Events.Hooks instead of meteor collection hooks for cart events that trigger discount calculations (#3647)
+  - (refactor): replace vsivsi:job-collection for npm module @reactioncommerce/job-queue (#3641) .. Resolves #3551
+  - (refactor): nnnnat dynamic transliteration (#3749) .. Resolves #2634
+
 
 ### Style
   - Add CSS class to generic product fields (#3609) .. Resolves #3608
@@ -197,7 +199,27 @@ There are potentially breaking changes you should be aware of in this release.
   - (fix): update action view size handling to fix shipping settings cutoff (#3759) .. Resolves #3396
   - (fix): Audit Product Images and update to always use optimized versions (#3730) .. Resolves #3637
   - (fix): Product url should open product detail page when user clicks on an item in the cart drawer (#3758) .. Resolves #3660
-  - (fix): moment is not a function (#3780) .. Resolves #3778, Resolves #3780, Resolves #3757
+  - (fix): error when creating/update groups and/or group permissions for non-admin user (#3665) .. Resolves #3638
+  - (fix): PDP placeholde image display (#3812)
+  - (fix): handle invalid card details with Authorize.net (#3538) .. Resolves #3519
+  - (fix): can't change localization values (#3817) .. Resolves #3811
+  - (fix): shippo calculation error (#3774)
+  - (fix): Add permission checks to template method and publication (#3606)
+  - (fix): added currency formatting (#3808) .. Resolves #2286
+  - (fix): PDP placeholde image display (#3812)
+  - (fix): Sending the text to G+ (#3790) .. Resolves #2292
+  - (fix): Edit address when already present (#3788) .. Resolves #3784
+  - (fix): NavBar made only once (#3779) .. Resolves #3761
+  - (fix): Add css to truncate (#3746) .. Resolves 3499:
+  - (fix): Checking for shipping address and billing address (#3771) .. Resolves #3766
+  - (fix): remove spinner before mounting (#3806) .. Resolves #3805
+  - (fix): Don't use `default` for moment in invoice (#3816) .. Resolves #3815
+  - (fix): Remove methods deprecated in 1.5 (#3744) .. Resolves #2882
+  - (fix): handle invalid card details with Authorize.net (#3538) .. Resolves #3519
+  - (fix): error when creating/update groups and/or group permissions for non-admin user (#3665)
+  - (fix): Product url should open product detail page when user clicks on an item in the cart drawer (#3758)
+  - (fix): error when switching table layout in order dashboard (#3773)
+  - (fix): mobile subnav (#3775) .. Resolves #3679
 
 ### Chores
   - (chore): Build Docker image, tag, and push for every branch (#3629) .. Part of #2858
@@ -207,6 +229,10 @@ There are potentially breaking changes you should be aware of in this release.
   - (chore): Update pull request template (#3687)
   - (chore): update node dependencies (#3630)
   - (chore): New build step "Asset Provisioning" (#3335)
+  - (chore): Remove methods deprecated in 1.5 (#3744)
+  - (chore): update README.md links to issue tags and Contributing Guide (#3700)
+  - (chore): add link to Contributing Guide in docs (#3688)
+
 
 ### Performance
   - (perf): dynamically import DayPickerRangeController (#3622) .. Part of #3621
@@ -215,10 +241,12 @@ There are potentially breaking changes you should be aware of in this release.
   - (perf): Don't rerender on failed sign in, (#3664)
   - (perf): User prefs stored in Accounts (#3463) .. Resolves #3404
   - (perf): dynamically load transliteration (#3749) .. Resolves #2634
+  - (perf): remove meteor and babel-preset-react from babel presets (#3800)
 
 ### I18n
- - (i18n): Updated French translations (#3713)
- - (i18n): Changed all instances of 'shoify' to Shopify (#3723) .. Resolves #3712
+  - (i18n): Updated French translations (#3713)
+  - (i18n): Changed all instances of 'shoify' to Shopify (#3723) .. Resolves #3712
+  - (i18n): Update en.json (#3787)
 
 ## Contributors
-Thanks to @loanlaux, @wackywombaat12 and @codejockie for contributing to this release
+Thanks to @thetre97, @loanlaux, @wackywombaat12 and @codejockie for contributing to this release

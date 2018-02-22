@@ -7,5 +7,4 @@ const later = Meteor.isServer && require("later");
 
 const classes = createJobCollection({ Mongo, Meteor, check, Match, later });
 
-export const Job = classes.Job;
-export const JobCollection = classes.JobCollection;
+export const { Job, JobCollection } = classes;
