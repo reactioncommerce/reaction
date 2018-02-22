@@ -45,10 +45,9 @@ The overall steps are:
 1. Create an instance of TempFileStore, which defines where multi-part browser uploads will be stored temporarily while the upload is in progress. You can create multiple, but usually one is enough even if you have multiple FileCollections and/or multiple stores.
 1. Create one or more FileCollection (or MeteorFileCollection) instances, where information about files will be stored. The backing store for these is MongoDB, and each document is known as a FileRecord. You must link one or more of the stores created in the previous step with your FileCollection.
 1. Create a FileDownloadManager instance, which you will use to register an HTTP endpoint for file downloads. Usually one is enough, even if you have multiple FileCollections and/or multiple stores, but you could create multiple if you need different response headers for different FileCollections.
-1. Create a FileWorker instance, which handles one or both of the following tasks:
-    - Triggering final storage after an upload from a browser is complete.
-    - Triggering final storage streaming from a remote URL, after you've inserted a FileRecord that you created using `FileRecord.fromUrl`.
-1. Register endpoints and start the file worker.
+1. Create and start a RemoteUrlWorker instance, which triggers final storage streaming from a remote URL, after you've inserted a FileRecord that you created using `FileRecord.fromUrl`.
+1. Create and start a TempFileStoreWorker instance, which triggers final storage after an upload from a browser is complete.
+1. Register endpoints for upload and download.
 
 What follows is more detail for each of these steps. Check out [server/main.js in the example Meteor app](example-apps/meteor-blaze-app/server/main.js) to see it all put together.
 
@@ -211,27 +210,35 @@ WebApp.connectHandlers.use("/files", downloadManager.connectHandler);
 
 This means that all files in the Images file collection will have URLs that begin with `/files`. The full URL will be `/files/:collectionName/:fileId/:storeName/:filename`.
 
-### Set Up a File Worker
+### Set Up a Worker for Browser Uploads
 
-A `FileWorker` instance observes one or more MeteorFileCollections and does one or both of the following tasks:
+A `TempFileStoreWorker` instance observes one or more MeteorFileCollections and triggers final storage after an upload from a browser is complete and all the chunks have been assembled into a single file in the temp store.
 
-- Triggers final storage after an upload from a browser is complete.
-- Triggers final storage streaming from a remote URL, after you've inserted a FileRecord that you created using `FileRecord.fromUrl`.
+Example:
 
-If you are going to have it download and store remote URLs, you'll need to pass in a reference to a `fetch` implementation.
+```js
+import { TempFileStoreWorker } from "@reactioncommerce/file-collections";
+
+const worker = new TempFileStoreWorker({ fileCollections: [Images] });
+worker.start();
+```
+
+Keep in mind that a worker can run in a separate service from your main app, and you may wish to do it this way for scalability. However, there is not yet support for running multiple workers. (They will all try to work the same file record.) This could be solved easily enough if you are interested in submitting a pull request to add record locking.
+
+Also, a `TempFileStoreWorker` must be running on the same machine (or container) where the related TempFileStore is running.
+
+### Set Up a Worker for Streaming Remote URLs to Storage
+
+A `RemoteUrlWorker` instance observes one or more MeteorFileCollections and triggers final storage streaming from a remote URL, after you've inserted a FileRecord that you created using `FileRecord.fromUrl`. You'll need to pass in a reference to a `fetch` implementation.
 
 Example:
 
 ```js
 import fetch from "node-fetch";
-import { FileWorker } from "@reactioncommerce/file-collections";
+import { RemoteUrlWorker } from "@reactioncommerce/file-collections";
 
-const fileWorker = new FileWorker({
-  fetch,
-  fileCollections: [Images]
-});
-fileWorker.startProcessingRemoteURLs();
-fileWorker.startProcessingUploads();
+const worker = new RemoteUrlWorker({ fetch, fileCollections: [Images] });
+worker.start();
 ```
 
 Keep in mind that a worker can run in a separate service from your main app, and you may wish to do it this way for scalability. However, there is not yet support for running multiple workers. (They will all try to work the same file record.) This could be solved easily enough if you are interested in submitting a pull request to add record locking.
@@ -312,7 +319,7 @@ Uploading from Node should also work (for example a Blob), but this hasn't been 
 
 Either in a browser or in Node code, you can also store and insert a file record from a remote URL.
 
-Make sure you have a file worker set up and you have run `fileWorker.startProcessingRemoteURLs()`.
+Make sure you have a file worker set up somewhere to do the actual download, transformation, and storage.
 
 ```js
 import fetch from "node-fetch";

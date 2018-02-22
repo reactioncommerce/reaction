@@ -139,7 +139,7 @@ export default class FileRecord extends EventEmitter {
         type: headers["content-type"] || null,
         size: Number(headers["content-length"]),
         updatedAt: new Date(headers["last-modified"]),
-        remoteURL: url // This triggers the FileWorker to download and store copies
+        remoteURL: url // This triggers the RemoteUrlWorker to download and store copies
       }
     };
     return new FileRecord(doc, options);

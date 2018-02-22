@@ -4,7 +4,7 @@ import { FileRecord, MeteorFileCollection } from "@reactioncommerce/file-collect
 
 // These need to be set in only one client-side file
 FileRecord.downloadEndpointPrefix = "/files/";
-FileRecord.uploadEndpoint = "/uploads/";
+FileRecord.uploadEndpoint = "/juicy/uploads/";
 
 export const Images = new MeteorFileCollection("Images", {
   // The backing Meteor Mongo collection, which you must make sure is published to clients as necessary

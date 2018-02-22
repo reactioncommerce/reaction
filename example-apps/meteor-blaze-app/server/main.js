@@ -3,7 +3,14 @@ import { Mongo, MongoInternals } from "meteor/mongo";
 import { WebApp } from "meteor/webapp";
 import { check } from "meteor/check";
 import fetch from "node-fetch";
-import { FileDownloadManager, FileRecord, FileWorker, MeteorFileCollection, TempFileStore } from "@reactioncommerce/file-collections";
+import {
+  FileDownloadManager,
+  FileRecord,
+  RemoteUrlWorker,
+  MeteorFileCollection,
+  TempFileStore,
+  TempFileStoreWorker
+} from "@reactioncommerce/file-collections";
 import GridFSStore from "@reactioncommerce/file-collections-sa-gridfs";
 
 // handle any unhandled Promise rejections
@@ -109,12 +116,15 @@ const downloadManager = new FileDownloadManager({
   }
 });
 
-const fileWorker = new FileWorker({
-  fetch,
-  fileCollections: [Images]
-});
-fileWorker.startProcessingRemoteURLs();
-fileWorker.startProcessingUploads();
+const remoteUrlWorker = new RemoteUrlWorker({ fetch, fileCollections: [Images] });
+remoteUrlWorker.start();
 
-WebApp.connectHandlers.use("/uploads", tempStore.connectHandler);
+const uploadWorker = new TempFileStoreWorker({ fileCollections: [Images] });
+uploadWorker.start();
+
+WebApp.connectHandlers.use("/juicy/uploads", (req, res) => {
+  req.baseUrl = "/juicy/uploads"; // tus relies on this being set
+  tempStore.connectHandler(req, res);
+});
+
 WebApp.connectHandlers.use("/files", downloadManager.connectHandler);
