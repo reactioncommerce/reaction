@@ -495,14 +495,15 @@ export function addressBookUpdate(address, accountUserId, type) {
     }
   }
 
-  // Update all addresses to set new default address to true, and the rest to false
+  // Update all other to set the default type to false
   account.profile.addressBook.forEach((addr) => {
     if (addr._id === address._id) {
-      Object.assign(addr, { [type]: true });
-    } else {
+      Object.assign(addr, address);
+    } else if (typeof type === "string") {
       Object.assign(addr, { [type]: false });
     }
   });
+
 
   const userUpdateQuery = {
     $set: {
