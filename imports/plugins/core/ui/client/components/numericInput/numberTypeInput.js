@@ -93,6 +93,7 @@ class NumberTypeInput extends Component {
           <Components.Button
             className="button"
             icon="fa fa-chevron-down"
+            disabled={this.state.minValue === this.state.value}
             onClick={this.handleDecrementButton}
           />
         </div>
