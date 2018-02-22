@@ -19,16 +19,8 @@ Hooks.Events.add("afterAccountsRemove", (userId, accountId) => {
 });
 
 Hooks.Events.add("afterAccountsUpdate", (userId, updateData) => {
-  let accountId;
-  let updatedFields;
+  const { accountId, updatedFields } = updateData;
 
-  if (typeof updateData === "object") {
-    ({ accountId, updatedFields } = updateData);
-  } else {
-    accountId = updateData; //TODO: this should probably be removed to require an object
-  }
-
-  console.log("---------- afterAccountsUpdate hook is running - userId, accountId, updatedFields", userId, accountId, updatedFields);
   if (AccountSearch && !Meteor.isAppTest) {
     AccountSearch.remove(accountId);
     buildAccountSearchRecord(accountId, updatedFields);
