@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.1.1...@reactioncommerce/file-collections@0.2.0) (2018-02-22)
+
+
+### Features
+
+* **workers:** Split FileWorker into two different classes ([4c96fba](https://github.com/reactioncommerce/reaction-file-collections/commit/4c96fba))
+
+
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.1.0...@reactioncommerce/file-collections@0.1.1) (2018-02-20)
 
