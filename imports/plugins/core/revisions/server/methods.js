@@ -155,7 +155,7 @@ Meteor.methods({
             Logger.debug(`setting metadata for ${revision.documentId} to ${JSON.stringify(revision.documentData, null, 4)}`);
           }
           // mark revision published whether we are publishing the image or not
-          Revisions.direct.update({
+          Revisions.update({
             _id: revision._id
           }, {
             $set: {

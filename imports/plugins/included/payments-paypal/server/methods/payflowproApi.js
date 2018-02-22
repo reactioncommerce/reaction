@@ -1,11 +1,16 @@
 import PayFlow from "paypal-rest-sdk"; // PayFlow is PayPal PayFlow lib
-import moment from "moment";
 import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Reaction, Logger } from "/server/api";
 import { Shops } from "/lib/collections";
 import { PayPal } from "../../lib/api"; // PayPal is the reaction api
+
+let moment;
+async function lazyLoadMoment() {
+  if (moment) return;
+  moment = await import("moment");
+}
 
 export const PayflowproApi = {};
 PayflowproApi.apiCall = {};
@@ -149,6 +154,7 @@ PayflowproApi.apiCall.listRefunds = function (refundListDetails) {
         for (const resource of transaction.related_resources) {
           if (_.isObject(resource.refund)) {
             if (resource.refund.state === "completed") {
+              Promise.await(lazyLoadMoment());
               result.push({
                 type: "refund",
                 created: moment(resource.refund.create_time).unix() * 1000,

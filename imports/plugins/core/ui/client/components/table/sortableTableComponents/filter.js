@@ -4,11 +4,6 @@ import { TextField } from "@reactioncommerce/reaction-ui";
 
 
 class SortableTableFilter extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-
   render() {
     return (
       <TextField
@@ -17,7 +12,7 @@ class SortableTableFilter extends Component {
         name={this.props.name}
         onChange={this.props.onChange}
         placeholder="Filter Data"
-        tabIndex="1"
+        tabIndex={0}
         type="text"
         value={this.props.value}
       />

@@ -122,6 +122,7 @@ class TextField extends Component {
         value={this.value}
         style={this.props.style}
         disabled={this.props.disabled}
+        maxRows={this.props.maxRows}
         id={this.props.id}
       />
     );
@@ -178,7 +179,7 @@ class TextField extends Component {
   renderLabel() {
     if (this.props.label) {
       return (
-        <label>
+        <label htmlFor={this.props.id}>
           <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
         </label>
       );
@@ -194,7 +195,7 @@ class TextField extends Component {
   renderHelpText() {
     const helpMode = this.isHelpMode;
     const message = this.validationMessage;
-    let helpText = this.props.helpText;
+    let { helpText } = this.props;
     let i18nKey = this.props.i18nKeyHelpText;
 
     if (this.isValid === false && message) {
@@ -264,6 +265,7 @@ TextField.propTypes = {
   id: PropTypes.string,
   isValid: PropTypes.bool,
   label: PropTypes.string,
+  maxRows: PropTypes.number,
   multiline: PropTypes.bool,
   name: PropTypes.string,
   onBlur: PropTypes.func,

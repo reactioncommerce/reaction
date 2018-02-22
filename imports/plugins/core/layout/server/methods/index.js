@@ -7,6 +7,4 @@ export function registerMethods() {
   });
 }
 
-export {
-  getTemplateByName
-};
+export { getTemplateByName };

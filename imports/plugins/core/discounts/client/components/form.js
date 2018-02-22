@@ -4,6 +4,7 @@ import debounce from "lodash/debounce";
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 export default class DiscountForm extends Component {
   constructor(props) {
@@ -49,9 +50,16 @@ export default class DiscountForm extends Component {
   // handle apply
   renderApplied() {
     return (
-      <a onClick={this.handleClick}>
-        <Translation defaultValue="Discount submitted." i18nKey="discounts.submitted"/>
-      </a>
+      <Components.Button
+        className={{
+          "btn": false,
+          "btn-default": false
+        }}
+        tagName="span"
+        label="Discount submitted."
+        i18nKeyLabel="discounts.submitted"
+        onClick={this.handleClick}
+      />
     );
   }
 
@@ -90,14 +98,12 @@ export default class DiscountForm extends Component {
       loader = <Translation defaultValue={validationMessage.i18nKeyLabel} i18nKey={validationMessage.i18nKey}/>;
     } else if (validationMessage) {
       loader = <i className="fa fa-ellipsis-h fa-fw"/>;
+    } else if (discount && discount.length >= 10 && attempts >= 12) {
+      loader = <i className="fa fa-stop-circle fa-fw"/>;
+    } else if (discount && discount.length >= 2 && attempts >= 2) {
+      loader = <i className="fa fa-circle-o-notch fa-spin fa-fw"/>;
     } else {
-      if (discount && discount.length >= 10 && attempts >= 12) {
-        loader = <i className="fa fa-stop-circle fa-fw"/>;
-      } else if (discount && discount.length >= 2 && attempts >= 2) {
-        loader = <i className="fa fa-circle-o-notch fa-spin fa-fw"/>;
-      } else {
-        loader = <i className="fa fa-search fa-fw"/>;
-      }
+      loader = <i className="fa fa-search fa-fw"/>;
     }
 
     return loader;
@@ -112,7 +118,6 @@ export default class DiscountForm extends Component {
         </label>
         <div className="input-group">
           <input
-            autoFocus
             onChange={this.handleChange}
             onKeyDown={this.handleChange}
             className="form-control"
@@ -129,9 +134,16 @@ export default class DiscountForm extends Component {
   // have a code link
   renderDiscountLink() {
     return (
-      <a onClick={this.handleClick}>
-        <Translation defaultValue="Have a code? Enter it here." i18nKey="discounts.enterItHere"/>
-      </a>
+      <Components.Button
+        className={{
+          "btn": false,
+          "btn-default": false
+        }}
+        tagName="span"
+        label="Have a code? Enter it here."
+        i18nKeyLabel="discounts.enterItHere"
+        onClick={this.handleClick}
+      />
     );
   }
 

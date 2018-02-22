@@ -65,7 +65,7 @@ describe("Server/Core", function () {
       expect(Tags.insert).not.to.have.been.called;
     });
 
-    it("should create new tag", done => {
+    it("should create new tag", (done) => {
       sandbox.stub(Roles, "userIsInRole", () => true);
       sandbox.spy(Tags, "insert");
       expect(Meteor.call("shop/createTag", "testTag", true)).to.be.a("string");
@@ -113,7 +113,7 @@ describe("Server/Core", function () {
       tag = Factory.create("tag");
       Meteor.call("shop/updateHeaderTags", "updated tag", tag._id);
       expect(Tags.find().count()).to.equal(1);
-      tag = Tags.find().fetch()[0];
+      tag = Tags.findOne();
       expect(tag.name).to.equal("updated tag");
       expect(tag.slug).to.equal("updated-tag");
       return done();

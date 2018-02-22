@@ -122,7 +122,7 @@ const wrapComponent = (Comp) => (
     componentWillReceiveProps(nextProps) {
       let selectedTag = {};
       const previousEdit = this.state.editable;
-      nextProps.tagsAsArray.map((tag) => {
+      nextProps.tagsAsArray.forEach((tag) => {
         if (this.isSelected(tag)) {
           selectedTag = tag;
         }
@@ -272,10 +272,8 @@ const wrapComponent = (Comp) => (
           this.setState({ selectedTag: null });
           this.detachhBodyListener();
         }, 500);
-      } else {
-        if (this.closeDropdownTimeout) {
-          clearTimeout(this.closeDropdownTimeout);
-        }
+      } else if (this.closeDropdownTimeout) {
+        clearTimeout(this.closeDropdownTimeout);
       }
     }
 
@@ -345,12 +343,13 @@ const wrapComponent = (Comp) => (
       if (TagNavHelpers.isMobile()) {
         const tagId = tag._id;
         const tags = this.props.tagsAsArray;
-        const selectedTag = this.state.selectedTag;
+        const { selectedTag } = this.state;
         const hasSubTags = TagNavHelpers.hasSubTags(tagId, tags);
 
         if (hasSubTags === false) {
           // click close button to make navbar left disappear
           this.props.closeNavbar();
+          Router.go("tag", { slug: tag.slug });
         } else {
           event.preventDefault();
         }
@@ -360,8 +359,9 @@ const wrapComponent = (Comp) => (
         } else if (hasSubTags) {
           this.setState({ selectedTag: TagNavHelpers.tagById(tagId, tags) });
         }
+      } else {
+        Router.go("tag", { slug: tag.slug });
       }
-      Router.go("tag", { slug: tag.slug });
     }
 
     handleEditButtonClick = () => {

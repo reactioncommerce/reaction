@@ -44,12 +44,14 @@
         <div class="col-xs-3 col-sm-5 col-md-7 col-lg-8"><h1><a>{{siteName}}</a></h1></div>
         <div class="col-md-4 col-lg-4 col-xs-4 col-xs-offset-1 col-md-offset-0" style="text-align: left;"><h2>Order Invoice</h2></div>
       </div>
+      {{#if ready}}
       <div class="row">
         <div style="font-family:monospace; text-align: left;" class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
           <h3>DATE:{{dateFormat order.createdAt format="MM/D/YY"}}</h3>
         </div>
         <div style="font-family:monospace;" class="col-xs-6 col-xs-offset-3 col-sm-4 col-md-3 col-lg-3 col-md-offset-5">ORDER:{{order._id}}</div>
       </div>
+      {{/if}}
     </div>
   </header>
   <div class="container">
