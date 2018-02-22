@@ -539,7 +539,7 @@ export function addressBookUpdate(address, accountUserId, type) {
     "profile.addressBook._id": address._id
   }, accountsUpdateQuery);
 
-  // Create an array which contains all fields that has changed
+  // Create an array which contains all fields that have changed
   // This is used for search, to determine if we need to re-index
   const updatedFields = [];
   Object.keys(address).forEach((key) => {
