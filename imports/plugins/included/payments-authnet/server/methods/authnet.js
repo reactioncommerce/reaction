@@ -96,7 +96,7 @@ Meteor.methods({
       throw new Meteor.Error("invalid-transaction-type", "Invalid Transaction Type");
     }
     try {
-      const result =  Promise.await(authResult);
+      const result = Promise.await(authResult);
       return result;
     } catch (error) {
       throw new Meteor.Error("auth-failed", error.message);

@@ -36,7 +36,7 @@ export const methods = {
     return Templates.update({
       _id: templateId,
       type: "email",
-      shopId: shopId // Ensure that the template we're attempting to update is owned by the active shop.
+      shopId // Ensure that the template we're attempting to update is owned by the active shop.
     }, {
       $set: {
         title: doc.title,
