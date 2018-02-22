@@ -27,7 +27,6 @@ Hooks.Events.add("afterAccountsUpdate", (userId, updateData) => {
   const { accountId, updatedFields } = updateData;
 
   if (AccountSearch && !Meteor.isAppTest) {
-    AccountSearch.remove(accountId);
     buildAccountSearchRecord(accountId, updatedFields);
   }
 });

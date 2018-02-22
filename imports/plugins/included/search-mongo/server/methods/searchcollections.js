@@ -281,6 +281,7 @@ export function buildAccountSearchRecord(accountId, updatedFields) {
 
     // If updatedField contains one of the searchableFields, run the indexing
     if (shouldRunIndex) {
+      AccountSearch.remove(accountId);
       for (const field of requiredFields.accounts) {
         if (transformations.accounts[field]) {
           accountSearch[field] = transformations.accounts[field](account[field]);
