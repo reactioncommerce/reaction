@@ -1,10 +1,11 @@
-FROM reactioncommerce/base:v4.0.0 as builder
-
+FROM reactioncommerce/base:v4.0.0 as startup
 MAINTAINER Reaction Commerce <architecture@reactioncommerce.com>
-
 # copy the app into the build container
 COPY . $APP_SOURCE_DIR
+WORKDIR $APP_SOURCE_DIR
 
+
+FROM startup as builder
 # build the app with Meteor
 # builds a production meteor bundle directory
 # Fix permissions warning in Meteor >=1.4.2.1 without breaking
@@ -23,6 +24,7 @@ RUN export METEOR_ALLOW_SUPERUSER=true \
  && cd $APP_BUNDLE_DIR/bundle/programs/server/ \
  && meteor npm install --production \
  && mv $BUILD_SCRIPTS_DIR/entrypoint.sh $APP_BUNDLE_DIR/bundle/entrypoint.sh
+
 
 # create the final production image
 FROM node:8.9.4-slim

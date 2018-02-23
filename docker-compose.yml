@@ -1,16 +1,23 @@
 # Usage:
 # docker-compose up -d
 
-reaction:
-  image: reactioncommerce/reaction:latest
-  links:
-    - mongo
-  ports:
-    - "3000:3000"
-  environment:
-    ROOT_URL: "http://localhost"
-    MONGO_URL: "mongodb://mongo:27017/reaction"
+version: '3.4'
 
-mongo:
-  image: mongo:3.6
-  command: mongod --bind_ip_all
+services:
+  reaction:
+    build:
+      context: .
+      target: startup
+    command: "reaction"
+    depends_on:
+      - mongo
+    environment:
+      ROOT_URL: "http://localhost"
+      MONGO_URL: "mongodb://mongo:27017/reaction"
+    ports:
+      - "3000:3000"
+
+  mongo:
+    image: mongo:3.6
+    command: mongod --bind_ip_all
+
