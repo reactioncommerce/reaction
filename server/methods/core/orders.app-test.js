@@ -400,13 +400,10 @@ describe("orders test", function () {
 
     it("should send email notification", function () {
       spyOnMethod("sendNotification", order.userId);
-      sandbox.stub(Media, "findOne", () => {
-        // stub url method for media file
-        const url = () => "/stub/url";
-        return {
-          url
-        };
-      });
+      // stub url method for media file
+      sandbox.stub(Media, "findOne", () => Promise.resolve({
+        url: () => "/stub/url"
+      }));
       sandbox.stub(Shops, "findOne", () => shop);
       const result = Meteor.call("orders/sendNotification", order);
       expect(result).to.be.true;

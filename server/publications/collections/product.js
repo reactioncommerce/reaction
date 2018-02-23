@@ -159,7 +159,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
         handle2.stop();
       });
 
-      return [];
+      return this.ready();
     }
 
     // Revision control is disabled, but is an admin
