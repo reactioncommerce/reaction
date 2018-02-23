@@ -96,11 +96,34 @@ function parseError(error) {
   let errorData;
   // The Avalara API constantly times out, so handle this special case first
   if (error.code === "ETIMEDOUT") {
-    errorData = { errorCode: 503, errorDetails: { message: "ETIMEDOUT", description: "The request timeod out" } };
+    errorData = {
+      errorCode: 503,
+      type: "apiFailure",
+      errorDetails: {
+        message: "ETIMEDOUT",
+        description: "The request timed out"
+      }
+    };
+    Logger.info("Caught timeout error");
     return errorData;
   }
-  const errorDetails = [];
-  if (error.response.data.error.details) {
+  console.log("error.response.statusCode", error.response.statusCode);
+  console.log("typeof error.response.statusCode", typeof error.response.statusCode);
+  if (error.response && error.response.statusCode === 401) {
+    errorData = {
+      errorCode: 401,
+      type: "apiFailure",
+      errorDetails: {
+        message: error.message,
+        description: error.description
+      }
+    };
+    Logger.info("Caught Authentification error");
+    return errorData;
+  }
+
+  if (error.response && error.response.data && error.response.data.error.details) {
+    const errorDetails = [];
     const { details } = error.response.data.error;
     for (const detail of details) {
       if (detail.severity === "Error") {
@@ -292,6 +315,19 @@ taxCalc.validateAddress = function (address) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}addresses/resolve`;
   const result = avaPost(requestUrl, { data: addressToValidate });
+  console.log("result in validateAddress", result);
+  if (result.error) {
+    if (result.error.type === "apiError") {
+      // If we have a problem with the API there's no reason to tell the customer
+      // so let's consider this unvalidated but move along
+      Logger.info("API error, ignoring address validation");
+    }
+
+    if (result.error.type === "validationError") {
+      // We received a validation error so we need somehow pass this up to the client
+      Logger.info("Address Validation Error");
+    }
+  }
   const content = result.data;
   if (content && content.messages) {
     ({ messages } = content);
@@ -471,6 +507,7 @@ taxCalc.estimateCart = function (cart, callback) {
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}transactions/create`;
     const result = avaPost(requestUrl, { data: salesOrder });
+    console.log("result in estimateCart", result);
     if (!result.error) {
       return callback(result.data);
     }
