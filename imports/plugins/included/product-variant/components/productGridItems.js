@@ -58,7 +58,7 @@ class ProductGridItems extends Component {
 
   renderAdditionalMedia() {
     const { isMediumWeight, product } = this.props;
-    if (isMediumWeight()) return null;
+    if (!isMediumWeight()) return null;
 
     const mediaArray = product.additionalMedia;
     if (!mediaArray || mediaArray.length === 0) return null;

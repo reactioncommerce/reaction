@@ -1,0 +1,31 @@
+<template name="productList">
+  <div class="product-list">
+    <table class="table table-hover">
+      <tbody>
+        {{#each products}}
+        <tr class="product-list-item">
+          <td>
+            <a href="{{pathFor 'product' handle=handle}}" data-event-category="grid" data-event-action="product-click" data-event-label="Grid product click" data-event-value="{{_id}}">
+            {{#with media}}
+              <img src="{{url}}" class="product-grid-item-images img-responsive">
+            {{else}}
+              <img src= "/resources/placeholder.gif" class="product-grid-item-images img-responsive">
+            {{/with}}
+            </a>
+          </td>
+          <td>
+            <div><h3>{{title}}</h3></div>
+            <div>{{{description}}}</div>
+          </td>
+          <td>
+            <div><h3>{{formatPrice variants.[0].price}}</h3></div>
+            {{#if cart.showItemLowInventoryWarning variants.[0]}}
+            <div class="badge badge-low-inv-warning">{{variants.[0].inventoryQuantity}} Left!</div>
+            {{/if}}
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>

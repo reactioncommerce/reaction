@@ -109,11 +109,7 @@
       data-event-value="{{_id}}"
     >
       <div class="order-item-media">
-        {{#with media}}
-          <img src="{{url store='thumbnail'}}">
-        {{else}}
-          <img src="/resources/placeholder.gif">
-        {{/with}}
+        <img src="{{mediaUrl}}">
       </div>
 
       <div class="order-item-details">
