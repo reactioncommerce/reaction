@@ -27,10 +27,6 @@ class NumberTypeInput extends Component {
     const value = this.state.value + 1;
 
     if (this.state.maxValue && value <= this.state.maxValue) {
-      this.setState({
-        value,
-        className: { edited: true }
-      });
       this.handleChange(event, value);
     }
   }
@@ -39,34 +35,26 @@ class NumberTypeInput extends Component {
     const value = this.state.value - 1;
 
     if (value >= this.state.minValue) {
-      this.setState({
-        value,
-        className: { edited: true }
-      });
       this.handleChange(event, value);
     }
   }
 
   handleChange = (event, value) => {
-    // if no value is passed to handler
-    // grab the value from the input's event.target
-    // this will account for any number entry via the keyboard
-    if (value === undefined) {
-      // grabbing value from the event target
-      // & coverting it from a string to number
-      value = parseInt(event.target.value);
-      this.setState({
-        value,
-        className: { edited: true }
-      });
-    }
+    console.log("handle change", event, value)
+    console.log("typeof value", typeof value)
+    // TODO: comment on this handler
+    this.setState({
+      value: parseInt(value, 10),
+      className: { edited: true }
+    });
 
-    if (this.props.onChange) {
+    if (this.props.onChange && !isNaN(value)) {
       this.props.onChange(event, value);
     }
   }
 
   render() {
+    console.log("state value", this.state.value)
     const fieldClassName = classnames({
       "number-input-field": true,
       ...(this.state.className)
@@ -74,13 +62,11 @@ class NumberTypeInput extends Component {
 
     return (
       <div className="rui number-input">
-        <input
+        <Components.TextField
           className={fieldClassName}
-          min={this.state.minValue}
-          max={this.state.maxValue}
-          value={this.state.value}
-          onChange={this.handleChange}
           type="number"
+          onChange={this.handleChange}
+          value={this.state.value}
         />
         <div className="stacked-buttons">
           <Components.Button
@@ -105,3 +91,12 @@ class NumberTypeInput extends Component {
 registerComponent("NumberTypeInput", NumberTypeInput);
 
 export default NumberTypeInput;
+
+//   <input
+// className={fieldClassName}
+// min={this.state.minValue}
+// max={this.state.maxValue}
+// value={this.state.value}
+// onChange={this.handleChange}
+// type="number"
+//   />
