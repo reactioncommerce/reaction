@@ -13,6 +13,7 @@ import { Roles } from "meteor/alanning:roles";
 import { addProduct, addProductSingleVariant } from "/server/imports/fixtures/products";
 import Fixtures from "/server/imports/fixtures";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
+import { createRevision } from "/imports/plugins/core/revisions/server/functions";
 
 Fixtures();
 
@@ -1090,6 +1091,7 @@ describe("core product methods", function () {
     it("should let admin toggle product revision visibility", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
+      createRevision(product);
       let productRevision = Revisions.findOne({ documentId: product._id });
       const { isVisible } = productRevision.documentData;
       expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);
