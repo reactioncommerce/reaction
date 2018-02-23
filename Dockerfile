@@ -31,18 +31,7 @@ WORKDIR /app
 
 # grab the dependencies and built app from the previous builder image
 COPY --from=builder /usr/local/bin/gosu /usr/local/bin/gosu
-COPY --from=builder /opt/reaction/scripts /tmp/scripts
 COPY --from=builder /opt/reaction/dist/bundle .
-
-# define all optional build arg's
-
-# PhantomJS
-ARG INSTALL_PHANTOMJS
-ENV INSTALL_PHANTOMJS $INSTALL_PHANTOMJS
-ENV PHANTOM_VERSION 2.1.1
-
-# install optional dependencies if an above --build-arg is supplied
-RUN /tmp/scripts/install-phantom.sh
 
 # make sure "node" user can run the app
 RUN chown -R node:node /app
