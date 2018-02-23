@@ -1,11 +1,11 @@
-FROM reactioncommerce/base:v4.0.0 as startup
+FROM reactioncommerce/base:v4.0.0 as meteor-dev
 MAINTAINER Reaction Commerce <architecture@reactioncommerce.com>
 # copy the app into the build container
 COPY . $APP_SOURCE_DIR
 WORKDIR $APP_SOURCE_DIR
 
 
-FROM startup as builder
+FROM meteor-dev as builder
 # build the app with Meteor
 # builds a production meteor bundle directory
 # Fix permissions warning in Meteor >=1.4.2.1 without breaking

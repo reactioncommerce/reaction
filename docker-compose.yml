@@ -1,3 +1,4 @@
+# @todo: Write coments about what this file is for
 # Usage:
 # docker-compose up -d
 
@@ -7,7 +8,7 @@ services:
   reaction:
     build:
       context: .
-      target: startup
+      target: meteor-dev
     command: "reaction"
     depends_on:
       - mongo
