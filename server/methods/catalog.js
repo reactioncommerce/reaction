@@ -5,7 +5,7 @@ import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
-import { Products, Revisions, Tags } from "/lib/collections";
+import { MediaRecords, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { Media } from "/imports/plugins/core/files/server";
 
@@ -173,15 +173,21 @@ function createHandle(productHandle, productId) {
 function copyMedia(newId, variantOldId, variantNewId) {
   Media.find({
     "metadata.variantId": variantOldId
-  }).forEach((fileObj) => {
-    // Copy File and insert directly, bypasing revision control
-    fileObj.fullClone({
-      productId: newId,
-      variantId: variantNewId
-    }).catch((error) => {
+  })
+    .then((fileRecords) => {
+      fileRecords.forEach((fileRecord) => {
+        // Copy File and insert directly, bypasing revision control
+        fileRecord.fullClone({
+          productId: newId,
+          variantId: variantNewId
+        }).catch((error) => {
+          Logger.error(`Error in copyMedia for product ${newId}`, error);
+        });
+      });
+    })
+    .catch((error) => {
       Logger.error(`Error in copyMedia for product ${newId}`, error);
     });
-  });
 }
 
 /**
@@ -841,7 +847,7 @@ Meteor.methods({
 
     if (numRemoved > 0) {
       // we can get removes results only in async way
-      Media.update({
+      MediaRecords.update({
         "metadata.productId": {
           $in: ids
         },
