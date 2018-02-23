@@ -324,7 +324,7 @@ function flushQuantity(id) {
 /**
  * @function createProductObject
  * @private
- * @description creates a product Object with a generated _id 
+ * @description creates a product Object with a generated _id
  * and with initialProps if provided
  * @return {Object} productObject - new product object
  */
@@ -444,6 +444,7 @@ Meteor.methods({
 
       let newId;
       try {
+        createRevision(clone);
         newId = Products.insert(clone, { validate: false });
         Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
           clone._id} from ${variantId}`);
@@ -510,6 +511,7 @@ Meteor.methods({
       flushQuantity(parentId);
     }
 
+    createRevision(assembledVariant);
     Products.insert(assembledVariant);
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
@@ -710,6 +712,7 @@ Meteor.methods({
           newProduct._id
         );
       }
+      createRevision(newProduct);
       result = Products.insert(newProduct, { validate: false });
       results.push(result);
 
@@ -737,6 +740,7 @@ Meteor.methods({
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
 
+        createRevision(newVariant);
         result = Products.insert(newVariant, { validate: false });
         copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
