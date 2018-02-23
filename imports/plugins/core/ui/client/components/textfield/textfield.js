@@ -187,6 +187,8 @@ class TextField extends Component {
         placeholder={placeholder}
         ref="input"
         type={this.props.type || "text"}
+        min={this.props.minValue}
+        max={this.props.maxValue}
         value={this.value}
         style={this.props.style}
         disabled={this.props.disabled}
@@ -302,6 +304,8 @@ TextField.propTypes = {
   isValid: PropTypes.bool,
   label: PropTypes.string,
   maxRows: PropTypes.number,
+  maxValue: PropTypes.any,
+  minValue: PropTypes.number,
   multiline: PropTypes.bool,
   name: PropTypes.string,
   onBlur: PropTypes.func,

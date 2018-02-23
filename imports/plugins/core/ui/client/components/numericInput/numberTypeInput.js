@@ -40,16 +40,32 @@ class NumberTypeInput extends Component {
   }
 
   handleChange = (event, value) => {
+    const { maxValue, minValue } = this.state;
     console.log("handle change", event, value)
-    console.log("typeof value", typeof value)
+
+    let newValue = parseInt(value, 10);
+    console.log("new val", newValue)
+    if (newValue > maxValue) newValue = maxValue;
+    if (newValue < minValue) newValue = minValue;
+
+
     // TODO: comment on this handler
     this.setState({
-      value: parseInt(value, 10),
-      className: { edited: true }
+      value: newValue,
+      className: { edited: (newValue !== maxValue) }
     });
 
-    if (this.props.onChange && !isNaN(value)) {
-      this.props.onChange(event, value);
+    if (this.props.onChange && !isNaN(newValue)) {
+      console.log("passing back value", newValue)
+      this.props.onChange(event, newValue);
+    }
+  }
+
+  handleBlur = () => {
+    if (isNaN(this.state.value)) {
+      this.setState({
+        value: this.state.maxValue
+      });
     }
   }
 
@@ -65,7 +81,10 @@ class NumberTypeInput extends Component {
         <Components.TextField
           className={fieldClassName}
           type="number"
+          onBlur={this.handleBlur}
           onChange={this.handleChange}
+          maxValue={this.state.maxValue}
+          minValue={this.state.minValue}
           value={this.state.value}
         />
         <div className="stacked-buttons">
@@ -91,12 +110,3 @@ class NumberTypeInput extends Component {
 registerComponent("NumberTypeInput", NumberTypeInput);
 
 export default NumberTypeInput;
-
-//   <input
-// className={fieldClassName}
-// min={this.state.minValue}
-// max={this.state.maxValue}
-// value={this.state.value}
-// onChange={this.handleChange}
-// type="number"
-//   />
