@@ -20,8 +20,7 @@ import { MediaRecords } from "/lib/collections";
 let sharp;
 async function lazyLoadSharp() {
   if (sharp) return;
-  const mod = await import("sharp");
-  sharp = mod.default;
+  sharp = await import("sharp");
 }
 
 FileRecord.absoluteUrlPrefix = Meteor.absoluteUrl();
@@ -81,7 +80,10 @@ const buildGFS = ({ name, transform }) => (
         Logger.warn("Problem lazy loading Sharp lib in image transformWrite", error.message);
       }
 
-      if (!sharp) return;
+      if (!sharp) {
+        Logger.warn("In transformWrite, sharp does not seem to be available");
+        return;
+      }
 
       const { size, mod, format, type } = transform;
       // Need to update the content type and extension of the file info, too.
