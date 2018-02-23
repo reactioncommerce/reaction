@@ -175,7 +175,7 @@ function copyMedia(newId, variantOldId, variantNewId) {
     "metadata.variantId": variantOldId
   }).forEach((fileObj) => {
     // Copy File and insert directly, bypasing revision control
-    fileObj.clone({
+    fileObj.fullClone({
       productId: newId,
       variantId: variantNewId
     }).catch((error) => {
