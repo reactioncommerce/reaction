@@ -4,7 +4,23 @@ import FileRecord from "./FileRecord";
 // https://stackoverflow.com/a/35813135/1669674
 const isNode = (typeof process !== "undefined") && process.release && (process.release.name === "node");
 
+/**
+ * @class FileCollection
+ * @extends EventEmitter
+ *
+ * A generic FileCollection class. This must be extended to add specific
+ * handling for a certain type of backing storage.
+ */
 export default class FileCollection extends EventEmitter {
+  /**
+   * @constructor FileCollection
+   * @param {String} name The name you want to use to refer to the FileCollection.
+   *   Be sure to use the same name in Node and browser code.
+   * @param {Object} options
+   * @param {Function} options.allowGet A function that returns `true` if a GET request for a file should be allowed
+   * @param {StorageAdapter[]} options.stores An array of instances of classes that extend StorageAdapter
+   * @param {TempFileStore} options.tempStore A temporary store to support chunked file uploads from browsers.
+   */
   constructor(name, options) {
     super();
 
@@ -75,6 +91,19 @@ export default class FileCollection extends EventEmitter {
     };
   }
 
+  /**
+   * @method insert
+   * @param {FileRecord} fileRecord
+   * @param {Object} options
+   * @param {Boolean} [options.raw] True to get back the raw inserted document rather than a FileRecord
+   * @returns {Promise<FileRecord|Object>} The inserted FileRecord or a plain object if `raw` option was `true`
+   *
+   * The actual behavior depends on how the specific class implements the _insert
+   * method, which will also vary in browser code vs. Node. In general, the document
+   * attached to the FileRecord will be inserted into a database somehow.
+   *
+   * Options are passed along to _insert
+   */
   async insert(fileRecord, options = {}) {
     if (!(fileRecord instanceof FileRecord)) throw new Error("Argument to FileCollection.insert must be a FileRecord instance");
     if (!fileRecord.collection) {
@@ -88,6 +117,20 @@ export default class FileCollection extends EventEmitter {
     return new FileRecord(insertedDoc, { collection: this });
   }
 
+  /**
+   * @method update
+   * @param {String} id FileRecord ID
+   * @param {Object} doc Updated document, modifier, or whatever _update expects
+   * @param {Object} options
+   * @param {Boolean} [options.raw] True to get back the raw updated document rather than a FileRecord
+   * @returns {Promise<FileRecord|Object>} The updated FileRecord or a plain object if `raw` option was `true`
+   *
+   * The actual behavior depends on how the specific class implements the _update
+   * method, which will also vary in browser code vs. Node. In general, the doc argument
+   * will be used to update what is stored in a database somehow.
+   *
+   * Options are passed along to _update
+   */
   async update(id, doc, options = {}) {
     if (!id) throw new Error("FileCollection update requires a FileRecord ID.");
     if (typeof id !== "string") throw new Error(`FileCollection update requires a single ID and updated document. Multiple not supported. Received: ${id}`);
@@ -96,6 +139,21 @@ export default class FileCollection extends EventEmitter {
     return new FileRecord(updatedDoc, { collection: this });
   }
 
+  /**
+   * @method remove
+   * @param {String|FileRecord} id FileRecord ID or a FileRecord instance
+   * @param {Object} options
+   * @returns {Promise<Boolean>} True if removed
+   *
+   * The actual behavior depends on how the specific class implements the _remove
+   * method, which will also vary in browser code vs. Node. In general, the FileRecord
+   * with the given ID will be removed from a database somehow.
+   *
+   * In Node (whenever `stores` array was passed), the FileRecord will first
+   * be removed from all stores as well.
+   *
+   * Options are passed along to _remove
+   */
   async remove(id, options = {}) {
     let fileRecord;
     let ID;
@@ -118,37 +176,92 @@ export default class FileCollection extends EventEmitter {
     return this._remove(ID, options);
   }
 
+  /**
+   * @method findOne
+   * @param {String} id FileRecord ID
+   * @param {Object} options
+   * @param {Boolean} [options.raw] True to get back the raw document rather than a FileRecord
+   * @returns {Promise<FileRecord|Object>} The document or FileRecord instance
+   *
+   * The actual behavior depends on how the specific class implements the _findOne
+   * method, which will also vary in browser code vs. Node. In general, the FileRecord
+   * with the given ID will be returned.
+   *
+   * Options are passed along to _findOne
+   */
   async findOne(id, options = {}) {
     const doc = await this._findOne(id, options);
     if (!doc || options.raw) return doc || undefined;
     return new FileRecord(doc, { collection: this });
   }
 
+  /**
+   * @method find
+   * @param {Object} selector A selector understood by the specific subclass
+   * @param {Object} options
+   * @param {Boolean} [options.raw] True to get back the raw document rather than a FileRecord
+   * @returns {Promise<FileRecord[]|any>} An array of FileRecords, or whatever _find returns if raw option is `true`
+   *
+   * The actual behavior depends on how the specific class implements the _find
+   * method, which will also vary in browser code vs. Node. In general, an array of
+   * FileRecords that match the given selector will be returned.
+   *
+   * Options are passed along to _find
+   */
   async find(selector, options = {}) {
     const docs = await this._find(selector, options);
     if (options.raw) return docs;
     return docs.map((doc) => new FileRecord(doc, { collection: this }));
   }
 
+  /**
+   * @method findOneLocal
+   *
+   * Similar to findOne, except that it calls _findOneLocal and
+   * synchronously return a FileRecord or raw document.
+   */
   findOneLocal(id, options = {}) {
     const doc = this._findOneLocal(id, options);
     if (!doc || options.raw) return doc || undefined;
     return new FileRecord(doc, { collection: this });
   }
 
+  /**
+   * @method findLocal
+   *
+   * Similar to find, except that it calls _findLocal and
+   * synchronously returns an array of FileRecords or the result.
+   */
   findLocal(selector, options = {}) {
     const docs = this._findLocal(selector, options);
     if (options.raw) return docs;
     return docs.map((doc) => new FileRecord(doc, { collection: this }));
   }
 
+  /**
+   * @method shouldAllowGet
+   * @param {FileRecord} fileRecord
+   * @param {Request} req An incoming request
+   * @param {String} storeName The store from which a file in this collection is being requested.
+   * @returns {Promise<Boolean>} Returns whatever the allowGet function passed as a constructor option
+   *   returns, which should be `true` to allow or `false` to send a Forbidden response.
+   */
   async shouldAllowGet(fileRecord, req, storeName) {
     return Promise.resolve(this.options.allowGet(fileRecord, req, storeName));
   }
 
+  /**
+   * @method getStore
+   * @param {String} storeName
+   * @returns {StorageAdapter} Returns a store instance from its name
+   */
   getStore(storeName) {
     return this.storesLookup[storeName];
   }
+
+  /**
+   * The remaining methods must be overridden when subclassing
+   */
 
   // Must insert doc into a database and then return a Promise that resolves with the inserted doc
   _insert() {
@@ -175,12 +288,12 @@ export default class FileCollection extends EventEmitter {
     throw new Error(`${this.constructor.name} does not properly override the _find method`);
   }
 
-  // In browser code only, may provide a function that returns the document from a local store
+  // May provide a function that returns the document from a local store
   _findOneLocal() {
     throw new Error(`${this.constructor.name} does not properly override the _findOne method`);
   }
 
-  // In browser code only, may provide a function that returns an array of documents or cursor from a local store
+  // May provide a function that returns an array of documents or cursor from a local store
   _findLocal() {
     throw new Error(`${this.constructor.name} does not properly override the _find method`);
   }

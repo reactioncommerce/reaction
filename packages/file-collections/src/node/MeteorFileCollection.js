@@ -1,7 +1,32 @@
 import util from "util"; // Built-in Node package
 import FileCollection from "../common/FileCollection";
 
+/**
+ * @class MeteorFileCollection
+ * @extends FileCollection
+ *
+ * A type of FileCollection that uses a Meteor Mongo.Collection as its
+ * backing storage and uses Meteor DDP to get browser-initiated ops
+ */
 export default class MeteorFileCollection extends FileCollection {
+  /**
+   * @constructor MeteorFileCollection
+   * @param {String} name The name you want to use to refer to the FileCollection.
+   *   Be sure to use the same name in Node and browser code so that they can
+   *   communicate over DDP.
+   * @param {Object} options
+   * @param {Function} options.allowInsert A function that should return `true` if
+   *   an insert should be allowed. Receives args (userId, doc)
+   * @param {Function} options.allowUpdate A function that should return `true` if
+   *   an update should be allowed. Receives args (userId, id, modifier)
+   * @param {Function} options.allowRemove A function that should return `true` if
+   *   a remove should be allowed. Receives args (userId, id)
+   * @param {Function} options.check The `check` object from Meteor
+   * @param {Mongo.Collection} options.collection The collection to use
+   * @param {DDPConnection} options.DDP The DDP connection to use
+   *
+   * Additional options documented in FileCollection class
+   */
   constructor(name, options) {
     const { allowInsert, allowUpdate, allowRemove, check, collection, DDP, ...opts } = options;
 
@@ -73,6 +98,11 @@ export default class MeteorFileCollection extends FileCollection {
     });
   }
 
+  /**
+   * @method _insert
+   * @param {Object} doc An object to be inserted.
+   * @returns {Promise<Object>} A Promise that resolves with the inserted object.
+   */
   async _insert(doc) {
     // Generate string ID to avoid getting a Mongo ObjectID
     if (!doc._id) doc._id = this.mongoCollection._makeNewID();
@@ -80,16 +110,34 @@ export default class MeteorFileCollection extends FileCollection {
     return this._findOne(id);
   }
 
+  /**
+   * @method _update
+   * @param {String} id A FileRecord ID
+   * @param {Object} modifier An object to be used as the update modifier.
+   * @returns {Promise<Object>} A Promise that resolves with the updated object.
+   */
   async _update(id, modifier, options) {
     await this.updatePromise({ _id: id }, modifier, options);
     return this._findOne(id);
   }
 
+  /**
+   * @method _remove
+   * @param {String} id A FileRecord ID
+   * @param {Object} [options]
+   * @returns {Promise<Number>} A Promise that resolves with 1 if success.
+   */
   async _remove(id, options) {
     await this.removePromise({ _id: id }, options);
     return 1;
   }
 
+  /**
+   * @method _findOne
+   * @param {String} id A FileRecord ID
+   * @param {Object} options Options object to be passed through to Meteor's findOne
+   * @returns {Promise<Object|undefined>} A Promise that resolves with the document or undefined
+   */
   _findOne(id, options) {
     return new Promise((resolve, reject) => {
       let doc;
@@ -104,6 +152,12 @@ export default class MeteorFileCollection extends FileCollection {
     });
   }
 
+  /**
+   * @method _find
+   * @param {Object|String} selector A FileRecord ID or MongoDB selector
+   * @param {Object} options Options object to be passed through to Meteor's findOne
+   * @returns {Promise<Cursor>} A Promise that resolves with the Meteor find cursor
+   */
   _find(selector, options) {
     return new Promise((resolve, reject) => {
       let docs;
