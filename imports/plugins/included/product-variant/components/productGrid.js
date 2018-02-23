@@ -12,7 +12,9 @@ class ProductGrid extends Component {
       return products.map((product, index) => (
         <Components.ProductGridItems
           {...this.props}
-          product={product} key={index} index={index}
+          product={product}
+          key={index}
+          index={index}
         />
       ));
     }

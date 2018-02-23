@@ -44,7 +44,7 @@ const wrapComponent = (Comp) => (
       Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
       if (products) {
-        const filteredProducts = _.filter(products, (product) => _.includes(selectedProducts, product._id));
+        const filteredProducts = products.filter((product) => selectedProducts.includes(product._id));
 
         if (Reaction.isPreview() === false) {
           Reaction.showActionView({
@@ -83,7 +83,7 @@ const wrapComponent = (Comp) => (
       const { products } = this;
 
       if (products) {
-        const filteredProducts = _.filter(products, (product) => _.includes(selectedProducts, product._id));
+        const filteredProducts = products.filter((product) => selectedProducts.includes(product._id));
 
         Reaction.showActionView({
           label: "Grid Settings",

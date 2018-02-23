@@ -4,16 +4,15 @@ import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
-import { getPrimaryMediaForOrderItem } from "/lib/api";
+import { getPrimaryMediaForOrderItem, ReactionProduct } from "/lib/api";
 import { Reaction } from "/client/api";
 import CartDrawer from "../components/cartDrawer";
-import { ReactionProduct } from "/lib/api";
 
 // event handlers to pass in as props
 const handlers = {
   handleImage(item) {
-    const { defaultImage } = item;
-    return defaultImage && defaultImage.url({ store: "small" });
+    const media = getPrimaryMediaForOrderItem(item);
+    return media && media.url({ store: "small" });
   },
 
   /**
@@ -79,7 +78,7 @@ function composer(props, onData) {
   const cart = Cart.findOne({ userId, shopId });
   Meteor.subscribe("CartImages", cart._id);
 
-  const productItems = cart && cart.items.map((item) => ({ ...item, defaultImage: getPrimaryMediaForOrderItem(item) }));
+  const productItems = cart && cart.items;
   onData(null, {
     productItems
   });

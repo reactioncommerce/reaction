@@ -16,7 +16,7 @@ function composer(props, onData) {
 
   if (orders.length > 0) {
     orders.map((order) => {
-      const imageSub = Meteor.subscribe("Orders", order._id);
+      const imageSub = Meteor.subscribe("OrderImages", order._id);
       const orderSummary = {
         quantityTotal: order.getCount(),
         subtotal: order.getSubTotal(),

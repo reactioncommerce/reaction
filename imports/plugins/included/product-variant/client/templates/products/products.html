@@ -1,0 +1,16 @@
+<template name="products">
+  <div>
+    {{>React component=component}}
+  </div>
+</template>
+
+<template name="productListGrid">
+  <div class="row">
+    <div>
+      {{>React component=component}}
+    </div>
+    {{#if hasPermission "createProduct"}}
+      {{>productList}}
+    {{/if}}
+  </div>
+</template>

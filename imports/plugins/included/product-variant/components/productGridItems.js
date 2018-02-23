@@ -5,7 +5,6 @@ import { formatPriceString } from "/client/api";
 
 class ProductGridItems extends Component {
   static propTypes = {
-    additionalMedia: PropTypes.func,
     canEdit: PropTypes.bool,
     connectDragSource: PropTypes.func,
     connectDropTarget: PropTypes.func,
@@ -13,7 +12,6 @@ class ProductGridItems extends Component {
     isMediumWeight: PropTypes.func,
     isSearch: PropTypes.bool,
     isSelected: PropTypes.func,
-    media: PropTypes.func,
     onClick: PropTypes.func,
     onDoubleClick: PropTypes.func,
     pdpPath: PropTypes.func,
@@ -51,18 +49,18 @@ class ProductGridItems extends Component {
   }
 
   renderMedia() {
-    const { media, product } = this.props;
+    const { product } = this.props;
 
     return (
-      <Components.ProductImage displayMedia={media} item={product} size="large" mode="span" />
+      <Components.ProductImage displayMedia={() => product.primaryMedia} item={product} size="large" mode="span" />
     );
   }
 
   renderAdditionalMedia() {
-    const { additionalMedia, isMediumWeight } = this.props;
+    const { isMediumWeight, product } = this.props;
     if (isMediumWeight()) return null;
 
-    const mediaArray = additionalMedia();
+    const mediaArray = product.additionalMedia;
     if (!mediaArray || mediaArray.length === 0) return null;
 
     return (

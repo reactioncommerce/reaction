@@ -3,13 +3,24 @@ import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
+import { ReactiveVar } from "meteor/reactive-var";
 import { Session } from "meteor/session";
+import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Products, Tags, Shops } from "/lib/collections";
+import { Media } from "/imports/plugins/core/files/client";
 import ProductsComponent from "../components/products";
+
+const reactiveProductIds = new ReactiveVar([], (oldVal, newVal) => JSON.stringify(oldVal.sort()) === JSON.stringify(newVal.sort()));
+
+// Isolated resubscribe to product grid images, only when the list of product IDs changes
+Tracker.autorun(() => {
+  Meteor.subscribe("ProductGridMedia", reactiveProductIds.get());
+});
+
 
 /**
  * loadMoreProducts
@@ -168,16 +179,43 @@ function composer(props, onData) {
     shopId: { $in: activeShopsIds }
   });
 
-  const products = productCursor.map((product) => applyProductRevision(product));
+  const sortedProducts = ReactionProduct.sortProducts(productCursor.fetch(), currentTag);
+  Session.set("productGrid/products", sortedProducts);
 
-  const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
+  const productIds = [];
+  const stateProducts = sortedProducts.map((product) => {
+    productIds.push(product._id);
+
+    const primaryMedia = Media.findOneLocal({
+      "metadata.productId": product._id,
+      "metadata.toGrid": 1,
+      "metadata.workflow": { $nin: ["archived", "unpublished"] }
+    }, {
+      sort: { "metadata.priority": 1, "uploadedAt": 1 }
+    });
+
+    const variantIds = ReactionProduct.getVariants(product._id).map((variant) => variant._id);
+    let additionalMedia = Media.findLocal({
+      "metadata.productId": product._id,
+      "metadata.variantId": { $in: variantIds },
+      "metadata.workflow": { $nin: ["archived", "unpublished"] }
+    }, {
+      limit: 3,
+      sort: { "metadata.priority": 1, "uploadedAt": 1 }
+    });
+
+    if (additionalMedia.length < 2) additionalMedia = null;
+
+    return {
+      ...applyProductRevision(product),
+      additionalMedia,
+      primaryMedia
+    };
+  });
+
+  reactiveProductIds.set(productIds);
 
   canLoadMoreProducts = productCursor.count() >= Session.get("productScrollLimit");
-  const stateProducts = sortedProducts;
-
-  Meteor.subscribe("ProductGridMedia", sortedProducts.map((product) => product._id));
-
-  Session.set("productGrid/products", sortedProducts);
 
   const isActionViewOpen = Reaction.isActionViewOpen();
   if (isActionViewOpen === false) {

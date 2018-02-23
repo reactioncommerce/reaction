@@ -21,22 +21,6 @@ const wrapComponent = (Comp) => (
       unmountMe: PropTypes.func
     }
 
-    constructor() {
-      super();
-
-      this.productPath = this.productPath.bind(this);
-      this.positions = this.positions.bind(this);
-      this.weightClass = this.weightClass.bind(this);
-      this.isSelected = this.isSelected.bind(this);
-      this.productMedia = this.productMedia.bind(this);
-      this.additionalProductMedia = this.additionalProductMedia.bind(this);
-      this.isMediumWeight = this.isMediumWeight.bind(this);
-      this.displayPrice = this.displayPrice.bind(this);
-      this.onDoubleClick = this.onDoubleClick.bind(this);
-      this.onClick = this.onClick.bind(this);
-      this.onPageClick = this.onPageClick.bind(this);
-    }
-
     componentDidMount() {
       document.querySelector(".page > main").addEventListener("click", this.onPageClick);
     }
@@ -112,29 +96,6 @@ const wrapComponent = (Comp) => (
         return _.includes(Session.get("productGrid/selectedProducts"), this.props.product._id) ? "active" : "";
       }
       return false;
-    }
-
-    productMedia = () => (
-      Media.findOneLocal({
-        "metadata.productId": this.props.product._id,
-        "metadata.toGrid": 1
-      }, {
-        sort: { "metadata.priority": 1, "uploadedAt": 1 }
-      })
-    )
-
-    additionalProductMedia = () => {
-      const variants = ReactionProduct.getVariants(this.props.product._id);
-      const variantIds = variants.map((variant) => variant._id);
-      const mediaArray = Media.findLocal({
-        "metadata.productId": this.props.product._id,
-        "metadata.variantId": {
-          $in: variantIds
-        },
-        "metadata.workflow": { $nin: ["archived", "unpublished"] }
-      }, { limit: 3 });
-
-      return mediaArray.limit > 1 ? mediaArray : false;
     }
 
     isMediumWeight = () => {
@@ -256,8 +217,6 @@ const wrapComponent = (Comp) => (
           positions={this.positions}
           weightClass={this.weightClass}
           isSelected={this.isSelected}
-          media={this.productMedia}
-          additionalMedia={this.additionalProductMedia}
           isMediumWeight={this.isMediumWeight}
           displayPrice={this.displayPrice}
           onDoubleClick={this.onDoubleClick}

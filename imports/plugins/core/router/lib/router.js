@@ -344,18 +344,14 @@ Router.isActiveClassName = (routeName) => {
  * check if user has route permissions
  * @access private
  * @param  {Object} route - route context
- * @return {Boolean} returns `true` if route is autoriized, `false` otherwise
+ * @return {Boolean} returns `true` if user is allowed to see route, `false` otherwise
  */
 function hasRoutePermission(route) {
   const routeName = route.name;
 
-  if (routeName === "index" || routeName === "not-found") {
-    return true;
-  } else if (Router.Reaction.hasPermission(route.permissions, Meteor.userId())) {
-    return true;
-  }
-
-  return false;
+  return routeName === "index" ||
+    routeName === "not-found" ||
+    Router.Reaction.hasPermission(route.permissions, Meteor.userId());
 }
 
 
@@ -520,7 +516,7 @@ export function ReactionLayout(options = {}) {
       };
 
       // If the current route is unauthorized, and is not the "not-found" route,
-      // then override the template to use the default unauthroized template
+      // then override the template to use the default unauthorized template
       if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found" && !Meteor.user()) {
         if (!Router.Reaction.hasPermission(route.permissions, Meteor.userId())) {
           structure.template = "unauthorized";

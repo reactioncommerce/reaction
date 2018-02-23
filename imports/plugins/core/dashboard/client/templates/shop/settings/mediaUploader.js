@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import { FileRecord } from "@reactioncommerce/file-collections";
 import { Components } from "@reactioncommerce/reaction-components";
-import { i18next, Logger } from "/client/api";
+import { Logger } from "/client/api";
 import { Media } from "/imports/plugins/core/files/client";
 
 class MediaUploader extends Component {
@@ -58,7 +58,6 @@ class MediaUploader extends Component {
 
   render() {
     const { isUploading } = this.state;
-    const title = i18next.t("mediaUploader.dropFiles", { defaultValue: "Click or drop images here to upload media" });
 
     return (
       <Dropzone
@@ -67,10 +66,12 @@ class MediaUploader extends Component {
         disabled={!!isUploading}
         onDrop={this.uploadFiles}
       >
-        {!!isUploading && <div style={{ marginLeft: "auto", marginRight: "auto" }}><Components.CircularProgress indeterminate={true} /></div>}
-        {!isUploading && <div className="contents">
-          <span className="title">{title}</span>
-        </div>}
+        <div className="contents">
+          {!!isUploading && <div style={{ marginLeft: "auto", marginRight: "auto" }}><Components.CircularProgress indeterminate={true} /></div>}
+          {!isUploading && <span className="title">
+            <Components.Translation defaultValue="Click or drop images here to upload media" i18nKey="mediaUploader.dropFiles" />
+          </span>}
+        </div>
       </Dropzone>
     );
   }
