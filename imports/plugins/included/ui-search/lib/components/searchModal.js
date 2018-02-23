@@ -96,8 +96,8 @@ class SearchModal extends Component {
               data-i18n="search.searchTypeAccounts"
               data-event-action="searchCollection"
               data-event-value="accounts"
-              onClick={this.handleToggleProducts}
-              onKeyUp={this.handleOnKeyUpToggleProducts}
+              onClick={this.handleToggleAccounts}
+              onKeyUp={this.handleOnKeyUpToggleAccounts}
             >
               Accounts
             </button>
