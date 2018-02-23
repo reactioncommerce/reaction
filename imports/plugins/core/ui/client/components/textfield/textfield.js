@@ -28,7 +28,12 @@ class TextField extends Component {
     if (this.props.isCurrency && !this.state.isEditing) {
       return (this.state && this.state.value) || this.props.value || "";
     }
-    return this.props.value || "";
+    // if the props.value is not a number
+    // return ether the value or and empty string
+    if (isNaN(this.props.value)) {
+      return this.props.value || "";
+    }
+    return this.props.value;
   }
 
   /**
