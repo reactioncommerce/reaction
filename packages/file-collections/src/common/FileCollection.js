@@ -178,7 +178,7 @@ export default class FileCollection extends EventEmitter {
 
   /**
    * @method findOne
-   * @param {String} id FileRecord ID
+   * @param {Object|String} selector FileRecord ID or query selector of some sort
    * @param {Object} options
    * @param {Boolean} [options.raw] True to get back the raw document rather than a FileRecord
    * @returns {Promise<FileRecord|Object>} The document or FileRecord instance
@@ -189,8 +189,8 @@ export default class FileCollection extends EventEmitter {
    *
    * Options are passed along to _findOne
    */
-  async findOne(id, options = {}) {
-    const doc = await this._findOne(id, options);
+  async findOne(selector, options = {}) {
+    const doc = await this._findOne(selector, options);
     if (!doc || options.raw) return doc || undefined;
     return new FileRecord(doc, { collection: this });
   }
@@ -220,8 +220,8 @@ export default class FileCollection extends EventEmitter {
    * Similar to findOne, except that it calls _findOneLocal and
    * synchronously return a FileRecord or raw document.
    */
-  findOneLocal(id, options = {}) {
-    const doc = this._findOneLocal(id, options);
+  findOneLocal(selector, options = {}) {
+    const doc = this._findOneLocal(selector, options);
     if (!doc || options.raw) return doc || undefined;
     return new FileRecord(doc, { collection: this });
   }

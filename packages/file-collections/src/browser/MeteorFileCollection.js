@@ -85,7 +85,7 @@ export default class MeteorFileCollection extends FileCollection {
 
   /**
    * @method _findOne
-   * @param {String} id A FileRecord ID
+   * @param {Object|String} id A FileRecord ID or MongoDB selector
    * @param {Object} options Options object to be passed through to Meteor's findOne
    * @returns {Promise<Object|undefined>} A Promise that resolves with the document or undefined
    */
@@ -105,12 +105,12 @@ export default class MeteorFileCollection extends FileCollection {
 
   /**
    * @method _findOneLocal
-   * @param {String} id A FileRecord ID
+   * @param {Object|String} id A FileRecord ID or MongoDB selector
    * @param {Object} options Options object to be passed through to Meteor's findOne
    * @returns {Object|undefined} The document or undefined
    */
-  _findOneLocal(id, options) {
-    return this.mongoCollection.findOne({ _id: id }, options || {});
+  _findOneLocal(selector, options) {
+    return this.mongoCollection.findOne(selector || {}, options || {});
   }
 
   /**
