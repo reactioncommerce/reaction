@@ -12,7 +12,7 @@ export default class FileCollection extends EventEmitter {
     this.storesLookup = {};
 
     this.options = {
-      shouldAllowGet: () => false,
+      allowGet: () => false,
       stores: [],
       tempStore: null,
       ...(options || {})
@@ -143,7 +143,7 @@ export default class FileCollection extends EventEmitter {
   }
 
   async shouldAllowGet(fileRecord, req, storeName) {
-    return Promise.resolve(this.options.shouldAllowGet(fileRecord, req, storeName));
+    return Promise.resolve(this.options.allowGet(fileRecord, req, storeName));
   }
 
   getStore(storeName) {

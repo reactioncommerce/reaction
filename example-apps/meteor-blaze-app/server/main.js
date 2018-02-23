@@ -80,10 +80,15 @@ const tempStore = new TempFileStore({
 });
 
 const Images = new MeteorFileCollection("Images", {
+  // add more security depending on who should be able to manipulate the file records
+  allowInsert: () => true,
+  allowUpdate: () => true,
+  allowRemove: () => true,
+  // add more security here if the files should not be public
+  allowGet: () => true,
   check,
   collection: new Mongo.Collection("ImagesFileCollection"),
   DDP: Meteor,
-  shouldAllowGet: () => true, // add more security here if the files should not be public
   stores,
   tempStore
 });

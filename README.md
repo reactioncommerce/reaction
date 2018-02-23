@@ -174,8 +174,13 @@ const Images = new MeteorFileCollection("Images", {
   // for browser instances of MeteorFileCollection to call.
   DDP: Meteor,
 
+  // add more security depending on who should be able to manipulate the file records
+  allowInsert: () => true,
+  allowUpdate: () => true,
+  allowRemove: () => true,
+
   // add more security here if the files should not be public
-  shouldAllowGet: () => true,
+  allowGet: () => true,
 
   // See previous sections in the documentation for the definitions of imagesStore and tempStore
   stores: [imagesStore],

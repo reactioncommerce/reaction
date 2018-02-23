@@ -3,7 +3,7 @@ import FileCollection from "../common/FileCollection";
 
 export default class MeteorFileCollection extends FileCollection {
   constructor(name, options) {
-    const { check, collection, DDP, ...opts } = options;
+    const { allowInsert, allowUpdate, allowRemove, check, collection, DDP, ...opts } = options;
 
     super(name, opts);
 
@@ -26,6 +26,15 @@ export default class MeteorFileCollection extends FileCollection {
           doc: Object
         });
         const { doc } = data;
+
+        if (typeof allowInsert !== "function" || !allowInsert(this.userId, doc)) {
+          const error = new Error(`You are not allowed to insert to the ${name} FileCollection`);
+          error.error = "forbidden";
+          // Tell DDP it's OK to send this error to client. Equivalent to a `Meteor.Error`
+          error.isClientSafe = true;
+          throw error;
+        }
+
         return self._insert(doc);
       },
       [`FileCollection/UPDATE/${name}`](data) {
@@ -34,6 +43,15 @@ export default class MeteorFileCollection extends FileCollection {
           modifier: Object
         });
         const { _id, modifier } = data;
+
+        if (typeof allowUpdate !== "function" || !allowUpdate(this.userId, _id, modifier)) {
+          const error = new Error(`You are not allowed to update to the ${name} FileCollection`);
+          error.error = "forbidden";
+          // Tell DDP it's OK to send this error to client. Equivalent to a `Meteor.Error`
+          error.isClientSafe = true;
+          throw error;
+        }
+
         return self._update(_id, modifier);
       },
       [`FileCollection/REMOVE/${name}`](data) {
@@ -41,6 +59,15 @@ export default class MeteorFileCollection extends FileCollection {
           _id: String
         });
         const { _id } = data;
+
+        if (typeof allowRemove !== "function" || !allowRemove(this.userId, _id)) {
+          const error = new Error(`You are not allowed to remove from the ${name} FileCollection`);
+          error.error = "forbidden";
+          // Tell DDP it's OK to send this error to client. Equivalent to a `Meteor.Error`
+          error.isClientSafe = true;
+          throw error;
+        }
+
         return self._remove(_id);
       }
     });
