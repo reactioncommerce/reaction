@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.38",
-    "@reactioncommerce/file-collections": "0.4.2",
-    "@reactioncommerce/file-collections-sa-gridfs": "0.0.0",
+    "@reactioncommerce/file-collections": "^0.4.3",
+    "@reactioncommerce/file-collections-sa-gridfs": "0.0.1",
     "@reactioncommerce/job-queue": "^1.0.4",
     "@reactioncommerce/nodemailer": "^5.0.5",
     "accounting-js": "^1.1.1",
