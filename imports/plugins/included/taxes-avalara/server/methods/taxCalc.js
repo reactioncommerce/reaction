@@ -59,7 +59,6 @@ function checkConfiguration(packageData = taxCalc.getPackageData()) {
     }
   }
   if (!isValid) {
-    // throw new Meteor.Error("bad-configuration", "The Avalara package is not configured correctly. Cannot continue");
     Logger.error("The Avalara package is not configured correctly. Cannot continue");
   }
   return isValid;
