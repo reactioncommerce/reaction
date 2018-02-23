@@ -40,28 +40,30 @@ class NumberTypeInput extends Component {
   }
 
   handleChange = (event, value) => {
-    const { maxValue, minValue } = this.state;
-    console.log("handle change", event, value)
-
     let newValue = parseInt(value, 10);
-    console.log("new val", newValue)
+    const { maxValue, minValue } = this.state;
+    // prevent the new value from being
+    // greater or less than the min and max values
     if (newValue > maxValue) newValue = maxValue;
     if (newValue < minValue) newValue = minValue;
 
 
-    // TODO: comment on this handler
+    // setting the value state
+    // if a new value set edited css class
     this.setState({
       value: newValue,
       className: { edited: (newValue !== maxValue) }
     });
 
+    // if props.onChange and the new value is a number
     if (this.props.onChange && !isNaN(newValue)) {
-      console.log("passing back value", newValue)
       this.props.onChange(event, newValue);
     }
   }
 
   handleBlur = () => {
+    // if input is left empty reset
+    // it's value to be the max value
     if (isNaN(this.state.value)) {
       this.setState({
         value: this.state.maxValue
@@ -70,7 +72,6 @@ class NumberTypeInput extends Component {
   }
 
   render() {
-    console.log("state value", this.state.value)
     const fieldClassName = classnames({
       "number-input-field": true,
       ...(this.state.className)
