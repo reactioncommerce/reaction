@@ -728,16 +728,16 @@ export const methods = {
           orderItem.placeholderImage = `${Meteor.absoluteUrl()}resources/placeholder.gif`;
 
           // variant image
-          const variantImage = getPrimaryMediaForItem({
+          const variantImage = Promise.await(getPrimaryMediaForItem({
             productId: orderItem.productId,
             variantId: orderItem.variants && orderItem.variants._id
-          });
+          }));
           if (variantImage) {
             orderItem.variantImage = variantImage.url({ absolute: true, store: "large" });
           }
 
           // find a default image
-          const productImage = getPrimaryMediaForItem({ productId: orderItem.productId });
+          const productImage = Promise.await(getPrimaryMediaForItem({ productId: orderItem.productId }));
           if (productImage) {
             orderItem.productImage = productImage.url({ absolute: true, store: "large" });
           }

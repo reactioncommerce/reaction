@@ -4,11 +4,10 @@ import { Meteor } from "meteor/meteor";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
-import { ReactionProduct } from "/lib/api";
+import { getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 import { applyProductRevision } from "/lib/api/products";
-import { Media } from "/imports/plugins/core/files/client";
 
 function updateVariantProductField(variants, field, value) {
   return variants.map((variant) => Meteor.call("products/updateProductField", variant._id, field, value));
@@ -96,12 +95,9 @@ Template.productSettingsListItem.helpers({
   },
 
   mediaUrl() {
-    const media = Media.findOneLocal({
-      "metadata.productId": this._id,
-      "metadata.workflow": { $nin: ["archived"] },
-      "metadata.toGrid": 1
-    }, { sort: { uploadedAt: 1 } });
-
+    const variants = ReactionProduct.getTopVariants();
+    if (!variants || variants.length === 0) return "/resources/placeholder.gif";
+    const media = getPrimaryMediaForItem({ productId: this._id, variantId: variants[0]._id });
     if (!media) return "/resources/placeholder.gif";
     return media.url({ store: "thumbnail" });
   },

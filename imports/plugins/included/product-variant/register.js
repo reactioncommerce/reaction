@@ -51,7 +51,7 @@ Reaction.registerPackage({
       layoutHeader: "NavBar",
       layoutFooter: "",
       notFound: "productNotFound",
-      dashboardHeader: "publishControls",
+      dashboardHeader: "gridPublishControls",
       dashboardControls: "productDetailDashboardControls",
       dashboardHeaderControls: "",
       adminControlsFooter: "adminControlsFooter"
