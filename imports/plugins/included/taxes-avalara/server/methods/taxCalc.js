@@ -59,7 +59,8 @@ function checkConfiguration(packageData = taxCalc.getPackageData()) {
     }
   }
   if (!isValid) {
-    throw new Meteor.Error("bad-configuration", "The Avalara package is not configured correctly. Cannot continue");
+    // throw new Meteor.Error("bad-configuration", "The Avalara package is not configured correctly. Cannot continue");
+    Logger.error("The Avalara package is not configured correctly. Cannot continue");
   }
   return isValid;
 }
@@ -104,11 +105,9 @@ function parseError(error) {
         description: "The request timed out"
       }
     };
-    Logger.info("Caught timeout error");
     return errorData;
   }
-  console.log("error.response.statusCode", error.response.statusCode);
-  console.log("typeof error.response.statusCode", typeof error.response.statusCode);
+
   if (error.response && error.response.statusCode === 401) {
     errorData = {
       errorCode: 401,
@@ -118,7 +117,6 @@ function parseError(error) {
         description: error.description
       }
     };
-    Logger.info("Caught Authentification error");
     return errorData;
   }
 
@@ -133,7 +131,6 @@ function parseError(error) {
     errorData = { errorCode: details[0].number, errorDetails };
   } else {
     Avalogger.error("Unknown error or error format");
-    throw new Meteor.Error("bad-error", "Unknown error or error format");
   }
   return errorData;
 }
@@ -203,6 +200,18 @@ function avaGet(requestUrl, options = {}, testCredentials = true) {
 function avaPost(requestUrl, options) {
   const logObject = {};
   const pkgData = taxCalc.getPackageData();
+  // If package is not configured don't bother making an API call
+  if (!checkConfiguration(pkgData)) {
+    return {
+      error: {
+        errorCode: 400,
+        type: "apiFailure",
+        errorDetails: {
+          message: "API is not configured"
+        }
+      }
+    };
+  }
   const appVersion = Reaction.getAppVersion();
   const meteorVersion = _.split(Meteor.release, "@")[1];
   const machineName = os.hostname();
@@ -315,7 +324,6 @@ taxCalc.validateAddress = function (address) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}addresses/resolve`;
   const result = avaPost(requestUrl, { data: addressToValidate });
-  console.log("result in validateAddress", result);
   if (result.error) {
     if (result.error.type === "apiError") {
       // If we have a problem with the API there's no reason to tell the customer
@@ -507,7 +515,6 @@ taxCalc.estimateCart = function (cart, callback) {
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}transactions/create`;
     const result = avaPost(requestUrl, { data: salesOrder });
-    console.log("result in estimateCart", result);
     if (!result.error) {
       return callback(result.data);
     }
