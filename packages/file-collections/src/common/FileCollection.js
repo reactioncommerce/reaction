@@ -247,7 +247,7 @@ export default class FileCollection extends EventEmitter {
    *   returns, which should be `true` to allow or `false` to send a Forbidden response.
    */
   async shouldAllowGet(fileRecord, req, storeName) {
-    return Promise.resolve(this.options.allowGet(fileRecord, req, storeName));
+    return this.options.allowGet(fileRecord, req, storeName);
   }
 
   /**

@@ -89,8 +89,8 @@ export default class MeteorFileCollection extends FileCollection {
    * @param {Object} options Options object to be passed through to Meteor's findOne
    * @returns {Promise<Object|undefined>} A Promise that resolves with the document or undefined
    */
-  _findOne(...args) {
-    return Promise.resolve(this._findOneLocal(...args));
+  async _findOne(...args) {
+    return this._findOneLocal(...args);
   }
 
   /**
@@ -99,8 +99,8 @@ export default class MeteorFileCollection extends FileCollection {
    * @param {Object} options Options object to be passed through to Meteor's findOne
    * @returns {Promise<Cursor>} A Promise that resolves with the Meteor find cursor
    */
-  _find(...args) {
-    return Promise.resolve(this._findLocal(...args));
+  async _find(...args) {
+    return this._findLocal(...args);
   }
 
   /**

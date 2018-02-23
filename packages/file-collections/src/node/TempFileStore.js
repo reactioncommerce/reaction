@@ -55,7 +55,7 @@ export default class TempFileStore extends EventEmitter {
       let allowed;
       try {
         addUploadMetadataToRequest(req);
-        allowed = await Promise.resolve(this.shouldAllowRequest(req));
+        allowed = await this.shouldAllowRequest(req);
         debug(`shouldAllowRequest returned ${allowed}`);
       } catch (error) {
         debug("shouldAllowRequest threw an error", error);

@@ -55,7 +55,7 @@ export default class StorageAdapter extends EventEmitter {
     // uses the potentially modified file info.
     let transform;
     if (typeof this.transformRead === "function") {
-      transform = await Promise.resolve(this.transformRead(fileRecord));
+      transform = await this.transformRead(fileRecord);
     }
 
     debug("After transformRead file info is", fileRecord.infoForCopy(store));
@@ -92,8 +92,8 @@ export default class StorageAdapter extends EventEmitter {
    * @param {Object} [options] Any options supported by the specific storage adapter
    * @returns {Promise} A promise that resolves with the stream.Readable
    */
-  createReadStreamForFileKey(fileKey, options) {
-    return Promise.resolve(this._getReadStream(fileKey, options));
+  async createReadStreamForFileKey(fileKey, options) {
+    return this._getReadStream(fileKey, options);
   }
 
   /**
@@ -120,7 +120,7 @@ export default class StorageAdapter extends EventEmitter {
     // uses the potentially modified file info.
     let transform;
     if (typeof this.transformWrite === "function") {
-      transform = await Promise.resolve(this.transformWrite(fileRecord));
+      transform = await this.transformWrite(fileRecord);
     }
 
     debug("After transformWrite file info is", fileRecord.infoForCopy(store));
@@ -202,7 +202,7 @@ export default class StorageAdapter extends EventEmitter {
    */
   async createWriteStreamForFileKey(fileKey, options) {
     if (!fileKey) throw new Error("createWriteStreamForFileKey requires fileKey argument");
-    return Promise.resolve(this._getWriteStream(fileKey, options));
+    return this._getWriteStream(fileKey, options);
   }
 
   fileKey(fileRecord) {
