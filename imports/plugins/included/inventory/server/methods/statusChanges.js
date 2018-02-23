@@ -183,9 +183,10 @@ Meteor.methods({
         "orderItemId": item._id,
         "workflow.status": oldStatus
       });
-      let i = existingReservations.count();
+      const reservationsCount = existingReservations.count();
+      let clearCount = item.quantity;
       // reset existing cartItem reservations
-      while (i <= item.quantity) {
+      while (clearCount && reservationsCount) {
         Inventory.update({
           "productId": item.productId,
           "variantId": item.variants._id,
@@ -198,7 +199,8 @@ Meteor.methods({
             "workflow.status": newStatus // reset status
           }
         });
-        i += 1;
+
+        clearCount -= 1;
       }
     }
     Logger.debug("inventory/clearReserve", newStatus);

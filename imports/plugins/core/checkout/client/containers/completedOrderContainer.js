@@ -40,13 +40,13 @@ function composer(props, onData) {
   // I think this is a bug in SubscriptionManager but that should be revisited later
   const sessionId = Session.get("sessionId");
   Reaction.Subscriptions.Cart = Reaction.Subscriptions.Manager.subscribe("Cart", sessionId, Meteor.userId());
-  const orderId = Reaction.Router.getQueryParam("_id");
-  const orderSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), orderId);
+  const cartId = Reaction.Router.getQueryParam("_id");
+  const orderSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), cartId);
 
   if (orderSub.ready()) {
     const order = Orders.findOne({
       userId: Meteor.userId(),
-      cartId: orderId
+      cartId
     });
 
     if (order) {
@@ -69,7 +69,6 @@ function composer(props, onData) {
           isProfilePage: false,
           shops: order.getShopSummary(),
           order,
-          orderId,
           orderSummary,
           paymentMethods: order.getUniquePaymentMethods(),
           productImages

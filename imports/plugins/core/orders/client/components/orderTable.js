@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Avatar from "react-avatar";
-import moment from "moment";
 import classnames from "classnames/dedupe";
 import { formatPriceString, i18next } from "/client/api";
 import { Orders } from "/lib/collections";
+import { Components, withMoment } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
 import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo } from "../helpers";
 import OrderTableColumn from "./orderTableColumn";
 import OrderBulkActionsBar from "./orderBulkActionsBar";
-import ProductImage from "./productImage";
 
 
 const classNames = {
@@ -43,6 +42,7 @@ class OrderTable extends Component {
     handleSelect: PropTypes.func,
     isLoading: PropTypes.object,
     isOpen: PropTypes.bool,
+    moment: PropTypes.func,
     multipleSelect: PropTypes.bool,
     orders: PropTypes.array,
     query: PropTypes.object,
@@ -92,7 +92,7 @@ class OrderTable extends Component {
   }
 
   renderOrderInfo(order) {
-    const { displayMedia } = this.props;
+    const { displayMedia, moment } = this.props;
     const invoice = getBillingInfo(order).invoice || {};
 
     return (
@@ -100,7 +100,9 @@ class OrderTable extends Component {
         <div className="order-totals">
           <span className="order-data order-data-date">
             <strong>Date: </strong>
-            {moment(order.createdAt).fromNow()} | {moment(order.createdAt).format("MM/D/YYYY")}
+            {(moment && moment(order.createdAt).fromNow()) || order.createdAt.toLocaleString()}
+            &nbsp;|&nbsp;
+            {(moment && moment(order.createdAt).format("MM/D/YYYY")) || order.createdAt.toLocaleString()}
           </span>
 
           <span className="order-data order-data-id">
@@ -122,10 +124,10 @@ class OrderTable extends Component {
           {order.items.map((item, i) => (
             <div className="order-item" key={i}>
               <div className="order-item-media">
-                <ProductImage
+                <Components.ProductImage
                   item={item}
                   displayMedia={displayMedia}
-                  size="small"
+                  size="thumbnail"
                   badge={true}
                 />
               </div>
@@ -380,4 +382,4 @@ class OrderTable extends Component {
   }
 }
 
-export default OrderTable;
+export default withMoment(OrderTable);

@@ -1,6 +1,5 @@
 import faker from "faker";
 import _ from "lodash";
-import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { Factory } from "meteor/dburles:factory";
@@ -60,44 +59,17 @@ const user = {
   },
 
   startTime() {
-    // needs moment.js package
-    // some date within the next month
-    return moment().add(_.random(0, 31), "days").add(
-      _.random(0, 24),
-      "hours"
-    ).toDate();
+    const numDaysToAdd = Math.floor(Math.random() * 32); // random number of days between 0 and 31
+    const numHoursToAdd = Math.floor(Math.random() * 25); // random number of hours between 0 and 24
+    const secondsInDay = 24 * 60 * 60 * 1000;
+    const secondsInHour = 24 * 60 * 60 * 1000;
+
+    const calculatedStartTime = Date.now() + (numDaysToAdd * secondsInDay) + (numHoursToAdd + secondsInHour);
+
+    return new Date(calculatedStartTime);
   },
 
   createdAt: new Date()
-};
-
-const registered = {
-  roles: {
-    [getShop()._id]: [
-      "account/profile",
-      "guest",
-      "product",
-      "tag",
-      "index",
-      "cart/checkout",
-      "cart/completed"
-    ]
-  },
-  services: {
-    password: {
-      bcrypt: Random.id(29)
-    },
-    resume: {
-      loginTokens: [
-        {
-          when: moment().add(_.random(0, 31), "days").add(
-            _.random(0, 24),
-            "hours"
-          ).toDate()
-        }
-      ]
-    }
-  }
 };
 
 const anonymous = {
@@ -115,6 +87,40 @@ const anonymous = {
 };
 
 export default function () {
+  const numDaysToAdd = Math.floor(Math.random() * 32); // random number of days between 0 and 31
+  const numHoursToAdd = Math.floor(Math.random() * 25); // random number of hours between 0 and 24
+  const secondsInDay = 24 * 60 * 60 * 1000;
+  const secondsInHour = 24 * 60 * 60 * 1000;
+
+  const timeOffset = Date.now() + (numDaysToAdd * secondsInDay) + (numHoursToAdd + secondsInHour);
+
+  const registered = {
+    roles: {
+      [getShop()._id]: [
+        "account/profile",
+        "guest",
+        "product",
+        "tag",
+        "index",
+        "cart/checkout",
+        "cart/completed"
+      ]
+    },
+    services: {
+      password: {
+        bcrypt: Random.id(29)
+      },
+      resume: {
+        loginTokens: [
+          {
+            when: timeOffset
+          }
+        ]
+      }
+    }
+  };
+
+
   Factory.define("user", Meteor.users, user);
   Factory.define(
     "registeredUser", Meteor.users,

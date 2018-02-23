@@ -1,5 +1,4 @@
 import _ from "lodash";
-import moment from "moment";
 import path from "path";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
@@ -9,7 +8,7 @@ import { Roles } from "meteor/alanning:roles";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts, Cart, Groups, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 import { sendUpdatedVerificationEmail } from "/server/api/core/accounts";
 
 /**
@@ -63,6 +62,7 @@ export function verifyAccount(email, token) {
           "emails.$.verified": true
         }
       });
+      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
     }
     return true;
   }
@@ -131,6 +131,7 @@ export function syncUsersAndAccounts() {
       ]
     }
   });
+  Hooks.Events.run("afterAccountsUpdate", user._id, user._id);
 
   return true;
 }
@@ -365,6 +366,7 @@ export function addressBookAdd(address, accountUserId) {
           "profile.addressBook.$.isShippingDefault": false
         }
       });
+      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
     }
     if (address.isBillingDefault) {
       Accounts.update({
@@ -375,6 +377,7 @@ export function addressBookAdd(address, accountUserId) {
           "profile.addressBook.$.isBillingDefault": false
         }
       });
+      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
     }
   }
 
@@ -465,6 +468,7 @@ export function addressBookUpdate(address, accountUserId, type) {
             "profile.addressBook.$.isShippingDefault": false
           }
         });
+        Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
       } else {
         // if new `isShippingDefault` state is false, then we need to remove
         // this address from `cart.shipping`
@@ -487,6 +491,7 @@ export function addressBookUpdate(address, accountUserId, type) {
             "profile.addressBook.$.isBillingDefault": false
           }
         });
+        Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
       } else {
         Meteor.call("cart/unsetAddresses", address._id, userId, "billing");
       }
@@ -515,10 +520,12 @@ export function addressBookUpdate(address, accountUserId, type) {
 
   Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
-  return Accounts.update({
+  const updatedAccount = Accounts.update({
     userId,
     "profile.addressBook._id": address._id
   }, accountsUpdateQuery);
+  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
+  return updatedAccount;
 }
 
 /**
@@ -544,10 +551,11 @@ export function addressBookRemove(addressId, accountUserId) {
   this.unblock();
 
   const userId = accountUserId || Meteor.userId();
+  const account = Accounts.findOne({ userId });
   // remove this address in cart, if used, before completely removing
   Meteor.call("cart/unsetAddresses", addressId, userId);
 
-  return Accounts.update({
+  const updatedAccount = Accounts.update({
     userId,
     "profile.addressBook._id": addressId
   }, {
@@ -557,6 +565,8 @@ export function addressBookRemove(addressId, accountUserId) {
       }
     }
   }, { bypassCollection2: true });
+  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), account._id);
+  return updatedAccount;
 }
 
 /**
@@ -766,13 +776,14 @@ export function sendWelcomeEmail(shopId, userId) {
   } else {
     emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
   }
+  const copyrightDate = new Date().getFullYear();
 
   const dataForEmail = {
     // Shop Data
     shop,
     contactEmail: shop.emails[0].address,
     emailLogo,
-    copyrightDate: moment().format("YYYY"),
+    copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
       address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
@@ -972,6 +983,7 @@ function getCurrentUserName(currentUser) {
 function getDataForEmail(options) {
   const { shop, currentUserName, token, emailLogo, name, url } = options;
   const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
+  const copyrightDate = new Date().getFullYear();
 
   return {
     primaryShop, // Primary shop data - may or may not be the same as shop
@@ -979,7 +991,7 @@ function getDataForEmail(options) {
     contactEmail: _.get(shop, "emails[0].address"),
     homepage: Meteor.absoluteUrl(),
     emailLogo,
-    copyrightDate: moment().format("YYYY"),
+    copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
       address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
@@ -1037,6 +1049,20 @@ export function createFallbackLoginToken() {
   }
 }
 
+/**
+ * @name accounts/setProfileCurrency
+ * @memberof Methods/Accounts
+ * @method
+ * @summary Sets users profile currency
+ */
+export function setProfileCurrency(currencyName) {
+  check(currencyName, String);
+  if (this.userId) {
+    Accounts.update(this.userId, { $set: { "profile.currency": currencyName } });
+    Hooks.Events.run("afterAccountsUpdate", this.userId, this.userId);
+  }
+}
+
 Meteor.methods({
   "accounts/verifyAccount": verifyAccount,
   "accounts/validateAddress": validateAddress,
@@ -1052,5 +1078,6 @@ Meteor.methods({
   "accounts/setUserPermissions": setUserPermissions,
   "accounts/createFallbackLoginToken": createFallbackLoginToken,
   "accounts/updateEmailAddress": updateEmailAddress,
-  "accounts/removeEmailAddress": removeEmailAddress
+  "accounts/removeEmailAddress": removeEmailAddress,
+  "accounts/setProfileCurrency": setProfileCurrency
 });

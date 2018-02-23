@@ -1,7 +1,6 @@
 import os from "os";
 import _ from "lodash";
 import accounting from "accounting-js";
-import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
@@ -9,6 +8,12 @@ import { Shops, Accounts } from "/lib/collections";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import Avalogger from "./avalogger";
+
+let moment;
+async function lazyLoadMoment() {
+  if (moment) return;
+  moment = await import("moment");
+}
 
 const countriesWithRegions = ["US", "CA", "DE", "AU"];
 const requiredFields = ["username", "password", "apiLoginId", "companyCode", "shippingTaxCode"];
@@ -27,12 +32,12 @@ taxCalc.getPackageData = function () {
  */
 function getUrl() {
   const packageData = taxCalc.getPackageData();
-  const { productionMode } = packageData.settings.avalara;
+  const { mode } = packageData.settings.avalara;
   let baseUrl;
-  if (!productionMode) {
-    baseUrl = "https://sandbox-rest.avatax.com/api/v2/";
+  if (mode) {
+    baseUrl = "https://rest.avatax.com/api/v2/";
   } else {
-    baseUrl = "https://rest.avatax.com";
+    baseUrl = "https://sandbox-rest.avatax.com/api/v2/";
   }
   return baseUrl;
 }
@@ -382,6 +387,7 @@ function cartToSalesOrder(cart) {
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const cartShipping = cart.getShippingTotal();
+  Promise.await(lazyLoadMoment());
   const cartDate = moment(cart.createdAt).format();
   let lineItems = [];
   if (cart.items) {
@@ -490,6 +496,7 @@ function orderToSalesInvoice(order) {
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const orderShipping = order.getShippingTotal();
+  Promise.await(lazyLoadMoment());
   const orderDate = moment(order.createdAt).format();
   const lineItems = order.items.reduce((items, item) => {
     if (item.variants.taxable) {
@@ -597,6 +604,7 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}transactions/create`;
   const returnAmount = refundAmount * -1;
+  Promise.await(lazyLoadMoment());
   const orderDate = moment(order.createdAt);
   const refundDate = moment();
   const refundReference = `${order.cartId}:${refundDate}`;

@@ -1,6 +1,5 @@
 import i18next from "i18next";
 import { values } from "lodash";
-import moment from "moment";
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
@@ -103,7 +102,6 @@ Meteor.startup(() => {
         if (result) {
           const locale = result;
           locale.language = getBrowserLanguage();
-          moment.locale(locale.language);
 
           Reaction.Locale.set(locale);
           localeDep.changed();

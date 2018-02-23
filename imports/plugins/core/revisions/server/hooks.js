@@ -2,7 +2,7 @@ import _ from "lodash";
 import { diff } from "deep-diff";
 import { Meteor } from "meteor/meteor";
 import { Products, Revisions, Tags, Media } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
 import { getSlug } from "/lib/api";
 
@@ -247,6 +247,10 @@ Media.files.before.update((userId, media, fieldNames, modifier) => {
           documentData: updatedMetadata
         }
       });
+      Hooks.Events.run("afterRevisionsUpdate", userId, {
+        ...existingRevision,
+        documentData: updatedMetadata
+      });
     } else {
       Revisions.insert({
         documentId: media._id,
@@ -440,7 +444,10 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
         "workflow.status": "revision/published"
       }
     });
-
+    Hooks.Events.run("afterRevisionsUpdate", userId, {
+      ...productRevision,
+      workflow: { ...productRevision.workflow, status: "revisions/published" }
+    });
     return true;
   }
 
@@ -473,6 +480,10 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
                 "documentData.price": modifier.$set.price
               }
             });
+            Hooks.Events.run("afterRevisionsUpdate", userId, {
+              ...productRevision,
+              documentData: { ...productRevision.documentData, price: modifier.$set.price }
+            });
 
             const updateId = product.ancestors[0] || product._id;
             const priceRange = ProductRevision.getProductPriceRange(updateId);
@@ -483,6 +494,10 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
               $set: {
                 "documentData.isVisible": modifier.$set.isVisible
               }
+            });
+            Hooks.Events.run("afterRevisionsUpdate", userId, {
+              ...productRevision,
+              documentData: { ...productRevision.documentData, isVisible: modifier.$set.isVisible }
             });
 
             const updateId = product.ancestors[0] || product._id;
@@ -557,6 +572,8 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   }
 
   Revisions.update(revisionSelector, revisionModifier);
+  const updatedRevision = Revisions.findOne({ documentId: product._id });
+  Hooks.Events.run("afterRevisionsUpdate", userId, updatedRevision);
 
   Logger.debug(`Revison updated for product ${product._id}.`);
 
@@ -663,6 +680,11 @@ Products.before.remove((userId, product) => {
       "workflow.status": "revision/remove"
     }
   });
+  Hooks.Events.run("afterRevisionsUpdate", userId, {
+    ...productRevision,
+    documentData: { ...productRevision.documentData, isDeleted: true },
+    workflow: { ...productRevision.workflow, workflow: "revision/remove" }
+  });
 
   Logger.debug(`Revison updated for product ${product._id}.`);
   Logger.debug(`Product ${product._id} is now marked as deleted.`);
@@ -683,7 +705,7 @@ Products.before.remove((userId, product) => {
   return false;
 });
 
-Revisions.after.update((userId, revision) => {
+Hooks.Events.add("afterRevisionsUpdate", (userId, revision) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -703,7 +725,7 @@ Revisions.after.update((userId, revision) => {
     differences = diff(image.metadata, revision.documentData);
   }
 
-  Revisions.direct.update({
+  Revisions.update({
     _id: revision._id
   }, {
     $set: {

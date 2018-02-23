@@ -1,12 +1,17 @@
 /* eslint camelcase: 0 */
 import Braintree from "braintree";
 import accounting from "accounting-js";
-import moment from "moment";
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Packages } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
+
+let moment;
+async function lazyLoadMoment() {
+  if (moment) return;
+  moment = await import("moment");
+}
 
 
 export const BraintreeApi = {};
@@ -211,6 +216,7 @@ BraintreeApi.apiCall.listRefunds = function (refundListDetails) {
   const findResults = braintreeFind(transactionId);
   const result = [];
   if (findResults.refundIds.length > 0) {
+    Promise.await(lazyLoadMoment());
     for (const refund of findResults.refundIds) {
       const refundDetails = getRefundDetails(refund);
       result.push({

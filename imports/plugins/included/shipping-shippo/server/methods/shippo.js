@@ -34,9 +34,9 @@ function createShippoAddress(reactionAddress, email, purpose) {
 // a reaction product's parcel and units of measure for mass and distance
 function createShippoParcel(reactionParcel, cartWeight, reactionMassUnit, reactionDistanceUnit) {
   const shippoParcel = {
-    width: reactionParcel.width || "",
-    length: reactionParcel.length || "",
-    height: reactionParcel.height || "",
+    width: reactionParcel.width || 1,
+    length: reactionParcel.length || 1,
+    height: reactionParcel.height || 1,
     weight: cartWeight,
     distance_unit: reactionDistanceUnit,
     mass_unit: reactionMassUnit

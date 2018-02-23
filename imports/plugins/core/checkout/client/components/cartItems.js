@@ -20,12 +20,19 @@ class CartItems extends Component {
     }
   }
 
+  removalClick = (event) => {
+    event.preventDefault();
+
+    if (typeof this.props.handleRemoveItem === "function") {
+      this.props.handleRemoveItem(event, this.props.item);
+    }
+  }
+
   render() {
     const {
       handleLowInventory,
       pdpPath,
       handleImage,
-      handleRemoveItem,
       item
     } = this.props;
 
@@ -42,7 +49,8 @@ class CartItems extends Component {
         }
         <Components.IconButton
           icon="fa fa-times fa-lg remove-cart-item"
-          onClick={handleRemoveItem}
+          onClick={this.removalClick}
+          kind="removeItem"
         />
         <a href={pdpPath(item)}
           data-event-action="product-click"

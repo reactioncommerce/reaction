@@ -28,7 +28,8 @@ export const AvalaraPackageConfig = TaxPackageConfig.clone().extend({
     type: String
   },
   "settings.avalara.companyId": {
-    type: String
+    type: String,
+    optional: true
   },
   "settings.avalara.password": {
     type: String
@@ -75,7 +76,8 @@ export const AvalaraPackageConfig = TaxPackageConfig.clone().extend({
   "settings.addressValidation.countryList": {
     label: "Enable Address Validation by Country",
     type: Array,
-    optional: true
+    optional: true,
+    defaultValue: ["US", "CA"]
   },
   "settings.addressValidation.countryList.$": {
     type: String

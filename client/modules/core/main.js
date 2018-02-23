@@ -1,4 +1,6 @@
 import _ from "lodash";
+import store from "store";
+import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { check } from "meteor/check";
@@ -9,7 +11,7 @@ import { Roles } from "meteor/alanning:roles";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
 import { localeDep } from "/client/modules/i18n";
-import { Packages, Shops } from "/lib/collections";
+import { Packages, Shops, Accounts } from "/lib/collections";
 import { Router } from "/client/modules/router";
 
 // Global, private state object for client side
@@ -19,6 +21,7 @@ const reactionState = new ReactiveDict();
 
 export const userPrefs = new ReactiveVar(undefined, (val, newVal) => JSON.stringify(val) === JSON.stringify(newVal));
 
+const deps = new Map();
 /**
  * Reaction namespace
  * Global reaction shop permissions methods and shop initialization
@@ -252,7 +255,11 @@ export default {
     // a user logging, as we'll check again
     // when everything is ready
     //
-    if (Meteor.loggingIn() === false) {
+    let loggingIn;
+    Tracker.nonreactive(() => {
+      loggingIn = MeteorAccounts.loggingIn();
+    });
+    if (loggingIn === false) {
       //
       // this userId check happens because when logout
       // occurs it takes a few cycles for a new anonymous user
@@ -294,39 +301,6 @@ export default {
     // Find returns undefined if nothing is found.
     // This will return true if permissions are found, false otherwise
     return typeof hasPermissions !== "undefined";
-  },
-
-  /**
-   * getShopsForUser -
-   * @summary gets shopIds of shops where user has provided permissions
-   * @param {Array} roles - roles to check if user has
-   * @param {Object} userId - userId to check permissions for (defaults to current user)
-   * @return {Array} - shopIds user has provided permissions for
-   */
-  getShopsForUser(roles, userId = Meteor.userId()) {
-    // Get full user object, and get shopIds of all shops they are attached to
-    const user = Meteor.user(userId);
-    const shopIds = Object.keys(user.roles);
-    // Remove "__global_roles__" from the list of shopIds, as this function will always return true for
-    // marketplace admins if that "id" is left in the check
-    const filteredShopIds = shopIds.filter((shopId) => shopId !== "__global_roles__");
-
-    // Reduce shopIds to shopsWithPermission, using the roles passed in to this function
-    const shopIdsWithRoles = filteredShopIds.reduce((shopsWithPermission, shopId) => {
-      // Get list of roles user has for this shop
-      const rolesUserHas = user.roles[shopId];
-
-      // Find first role that is included in the passed in roles array, otherwise hasRole is undefined
-      const hasRole = rolesUserHas.find((roleUserHas) => roles.includes(roleUserHas));
-
-      // if we found the role, then the user has permission for this shop. Add shopId to shopsWithPermission array
-      if (hasRole) {
-        shopsWithPermission.push(shopId);
-      }
-      return shopsWithPermission;
-    }, []);
-
-    return shopIdsWithRoles;
   },
 
   /**
@@ -385,18 +359,37 @@ export default {
   },
 
   getUserPreferences(packageName, preference, defaultValue) {
-    const prefs = userPrefs.get();
-    return (prefs && prefs[packageName] && prefs[packageName][preference]) || defaultValue || undefined;
+    getDep(`${packageName}.${preference}`).depend();
+    if (Meteor.user()) {
+      const packageSettings = store.get(packageName);
+      // packageSettings[preference] should not be undefined or null.
+      if (packageSettings && typeof packageSettings[preference] !== "undefined" && packageSettings[preference] !== null) {
+        return packageSettings[preference];
+      }
+    }
+
+    return defaultValue || undefined;
   },
 
   setUserPreferences(packageName, preference, value) {
-    const userId = Meteor.userId();
-    if (!userId) return false;
-    return Meteor.users.update(userId, {
-      $set: {
-        [`profile.preferences.${packageName}.${preference}`]: value
+    getDep(`${packageName}.${preference}`).changed();
+    // User preferences are not stored in Meteor.user().profile
+    // to prevent all autorun() with dependency on Meteor.user() to run again.
+    if (Meteor.user()) {
+      // "reaction" package settings should be synced to
+      // the Accounts collection.
+      if (packageName in ["reaction"]) {
+        Accounts.update(Meteor.userId(), {
+          $set: {
+            [`profile.preferences.${packageName}.${preference}`]: value
+          }
+        });
       }
-    });
+      const packageSettings = store.get(packageName) || {};
+      packageSettings[preference] = value;
+      return store.set(packageName, packageSettings);
+    }
+    return false;
   },
 
   updateUserPreferences(packageName, preference, values) {
@@ -472,7 +465,7 @@ export default {
   },
 
   setShopId(id) {
-    if (id) {
+    if (id && this.shopId !== id) {
       this.shopId = id;
       this.setUserPreferences("reaction", "activeShopId", id);
     }
@@ -824,4 +817,18 @@ function createCountryCollection(countries) {
     Countries.insert(country);
   }
   return countryOptions;
+}
+
+/**
+ * getDep
+ * Gets the dependency for the key if available, else creates
+ * a new dependency for the key and returns it.
+ * @param {String} -  The key to get the dependency for
+ * @returns {Tracker.Dependency}
+ */
+function getDep(key) {
+  if (!deps.has(key)) {
+    deps.set(key, new Tracker.Dependency());
+  }
+  return deps.get(key);
 }

@@ -1,6 +1,5 @@
 import _ from "lodash";
 import path from "path";
-import moment from "moment";
 import accounting from "accounting-js";
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
@@ -9,6 +8,27 @@ import { SSR } from "meteor/meteorhacks:ssr";
 import { Media, Orders, Products, Shops, Packages } from "/lib/collections";
 import { Logger, Hooks, Reaction } from "/server/api";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
+
+/**
+ * @name formatDateForEmail
+ * @method
+ * @private
+ * @summary helper to generate the order date as a string for emails
+ * @param {Date} date
+ * @return {String} return date formatted as a MM/DD/YYYY string
+ */
+function formatDateForEmail(date) {
+  const emailDate = new Date(date); // Clone date
+  const year = emailDate.getFullYear(); // get year
+  const month = emailDate.getMonth() + 1; // get month number + 1 (js has 0 indexed months)
+  const day = emailDate.getDate(); // get day number (js has 1 indexed days)
+
+  const paddedMonth = month > 9 ? `${month}` : `0${month}`; // generate padded month if necessary
+  const paddedDay = day > 9 ? `${day}` : `0${day}`; // generate padded days if necessary
+
+  return `${paddedMonth}/${paddedDay}/${year}`; // return MM/DD/YYYY formatted string
+}
+
 
 /**
  * @file Methods for Orders.
@@ -705,6 +725,8 @@ export const methods = {
         }
       }
 
+      const copyrightDate = new Date().getFullYear();
+
       // Merge data into single object to pass to email template
       const dataForEmail = {
         // Shop Data
@@ -712,7 +734,7 @@ export const methods = {
         contactEmail: shop.emails[0].address,
         homepage: Meteor.absoluteUrl(),
         emailLogo,
-        copyrightDate: moment().format("YYYY"),
+        copyrightDate,
         legalName: _.get(shop, "addressBook[0].company"),
         physicalAddress: {
           address: `${_.get(shop, "addressBook[0].address1")} ${_.get(shop, "addressBook[0].address2")}`,
@@ -743,7 +765,7 @@ export const methods = {
         order,
         billing: {
           address: {
-            address: address.address1,
+            address: `${address.address1}${address.address2 ? ` ${address.address2}` : ""}`,
             city: address.city,
             region: address.region,
             postal: address.postal
@@ -758,13 +780,13 @@ export const methods = {
           adjustedTotal: accounting.formatMoney((amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting)
         },
         combinedItems,
-        orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
+        orderDate: formatDateForEmail(order.createdAt),
         orderUrl: `cart/completed?_id=${order.cartId}`,
         shipping: {
           tracking,
           carrier,
           address: {
-            address: shippingAddress.address1,
+            address: `${shippingAddress.address1}${shippingAddress.address2 ? ` ${shippingAddress.address2}` : ""}`,
             city: shippingAddress.city,
             region: shippingAddress.region,
             postal: shippingAddress.postal

@@ -18,7 +18,7 @@
           "rate": "Taux",
           "country": "Pays",
           "region": "Région",
-          "postal": "Postal"
+          "postal": "Code postal"
         },
         "settings": {
           "taxSettingsLabel": "Paramètres de taxe"
