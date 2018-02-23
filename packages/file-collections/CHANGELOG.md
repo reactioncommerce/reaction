@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.3"></a>
+## [0.4.3](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.4.2...@reactioncommerce/file-collections@0.4.3) (2018-02-23)
+
+
+### Bug Fixes
+
+* Don't swallow errors thrown in some functions ([4413556](https://github.com/reactioncommerce/reaction-file-collections/commit/4413556))
+
+
+
+
 <a name="0.4.2"></a>
 ## [0.4.2](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.4.1...@reactioncommerce/file-collections@0.4.2) (2018-02-23)
 

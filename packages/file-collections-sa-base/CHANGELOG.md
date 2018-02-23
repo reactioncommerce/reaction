@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.1"></a>
+## [0.0.1](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections-sa-base@0.0.0...@reactioncommerce/file-collections-sa-base@0.0.1) (2018-02-23)
+
+
+### Bug Fixes
+
+* Don't swallow errors thrown in some functions ([4413556](https://github.com/reactioncommerce/reaction-file-collections/commit/4413556))
+
+
+
+
 <a name="0.0.0"></a>
 # 0.0.0 (2018-02-19)
 
