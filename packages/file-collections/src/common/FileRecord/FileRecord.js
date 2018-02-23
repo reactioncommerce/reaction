@@ -264,7 +264,13 @@ export default class FileRecord extends EventEmitter {
     this.tusUploadInstance.start();
   }
 
-  async clone(newMetaData) {
+  /**
+   * @method fullClone
+   * @param {Object} [newMetaData] Object to be extended on top of existing metadata object
+   * @returns {FileRecord} A clone of this file record, already saved to database. All file
+   *   data is also copied in the attached stores.
+   */
+  async fullClone(newMetaData) {
     const fileCollection = this.collection;
     if (!fileCollection) throw new Error("Cannot clone a file that is not associated with a collection");
 
