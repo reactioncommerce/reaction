@@ -1,3 +1,9 @@
+# v1.8.1
+
+## Fixes
+ - (fix): email status (#3781) .. Resolves #3701
+ - (fix): cannot search accounts in search modal (#3829)
+
 # v1.8.0
 
 ## Meteor 1.6.1
