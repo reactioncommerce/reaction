@@ -42,11 +42,15 @@ class NumberTypeInput extends Component {
   handleChange = (event, value) => {
     let newValue = parseInt(value, 10);
     const { maxValue, minValue } = this.state;
+
     // prevent the new value from being
     // greater or less than the min and max values
-    if (newValue > maxValue) newValue = maxValue;
-    if (newValue < minValue) newValue = minValue;
-
+    if (newValue > maxValue) {
+      newValue = maxValue;
+    }
+    if (newValue < minValue) {
+      newValue = minValue;
+    }
 
     // setting the value state
     // if a new value set edited css class
