@@ -61,13 +61,15 @@ class NumberTypeInput extends Component {
     }
   }
 
-  handleBlur = () => {
+  handleBlur = (event) => {
+    const { maxValue } = this.state;
     // if input is left empty reset
     // it's value to be the max value
     if (isNaN(this.state.value)) {
       this.setState({
-        value: this.state.maxValue
+        value: maxValue
       });
+      this.props.onChange(event, maxValue);
     }
   }
 
