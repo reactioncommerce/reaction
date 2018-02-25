@@ -9,7 +9,7 @@ services:
     build:
       context: .
       target: meteor-dev
-    command: "reaction"
+    command: "reaction --allow-superuser"
     depends_on:
       - mongo
     environment:
@@ -17,8 +17,15 @@ services:
       MONGO_URL: "mongodb://mongo:27017/reaction"
     ports:
       - "3000:3000"
+    volumes:
+      - .:/opt/reaction/src
 
   mongo:
     image: mongo:3.6
     command: mongod --bind_ip_all
+    volumes:
+      - mongo-db:/data/db
+
+volumes:
+  mongo-db:
 
