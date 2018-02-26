@@ -117,7 +117,7 @@ export function importAllTranslations() {
 
   // Then loop through those I18N assets and import them
   Assets.find({ type: "i18n" }).forEach((t) => {
-    Logger.debug(`Importing ${t.name} translation for \"${t.ns}\"`);
+    Logger.debug(`Importing ${t.name} translation for "${t.ns}"`);
     if (t.content) {
       Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
     } else {

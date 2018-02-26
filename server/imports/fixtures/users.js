@@ -58,15 +58,15 @@ const user = {
     return faker.lorem.paragraphs(3);
   },
 
-  async startTime() {
-    // needs moment.js package
-    // some date within the next month
-    const mod = await import("moment");
-    const moment = mod.default;
-    return moment().add(_.random(0, 31), "days").add(
-      _.random(0, 24),
-      "hours"
-    ).toDate();
+  startTime() {
+    const numDaysToAdd = Math.floor(Math.random() * 32); // random number of days between 0 and 31
+    const numHoursToAdd = Math.floor(Math.random() * 25); // random number of hours between 0 and 24
+    const secondsInDay = 24 * 60 * 60 * 1000;
+    const secondsInHour = 24 * 60 * 60 * 1000;
+
+    const calculatedStartTime = Date.now() + (numDaysToAdd * secondsInDay) + (numHoursToAdd + secondsInHour);
+
+    return new Date(calculatedStartTime);
   },
 
   createdAt: new Date()
@@ -86,9 +86,13 @@ const anonymous = {
   }
 };
 
-export default async function () {
-  const mod = await import("moment");
-  const moment = mod.default;
+export default function () {
+  const numDaysToAdd = Math.floor(Math.random() * 32); // random number of days between 0 and 31
+  const numHoursToAdd = Math.floor(Math.random() * 25); // random number of hours between 0 and 24
+  const secondsInDay = 24 * 60 * 60 * 1000;
+  const secondsInHour = 24 * 60 * 60 * 1000;
+
+  const timeOffset = Date.now() + (numDaysToAdd * secondsInDay) + (numHoursToAdd + secondsInHour);
 
   const registered = {
     roles: {
@@ -109,10 +113,7 @@ export default async function () {
       resume: {
         loginTokens: [
           {
-            when: moment().add(_.random(0, 31), "days").add(
-              _.random(0, 24),
-              "hours"
-            ).toDate()
+            when: timeOffset
           }
         ]
       }
