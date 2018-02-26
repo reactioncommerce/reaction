@@ -152,8 +152,6 @@ export function reloadTranslationsForShop(shopId) {
 }
 
 export function importAllTranslations() {
-  Promise.await(loadCoreTranslations());
-
   // Get count of all i18n assets
   const i18nAssetCount = Assets.find({ type: "i18n" }).count();
 
@@ -161,6 +159,9 @@ export function importAllTranslations() {
   // the i18n assets were cleared. In either case, allow i18n translations
   // to be loaded into Assets collection and subsequently into the Translation collection
   if (i18nAssetCount === 0) {
+    // Import core translations
+    Promise.await(loadCoreTranslations());
+
     // Flush all the bulk Assets upserts created by calls to loadTranslations
     Promise.await(flushTranslationLoad());
 
