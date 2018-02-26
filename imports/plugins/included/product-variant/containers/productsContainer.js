@@ -183,6 +183,8 @@ function composer(props, onData) {
   Session.set("productGrid/products", sortedProducts);
 
   const productIds = [];
+  // Instantiate an object for use as a map. This object does not inherit prototype or methods from `Object`
+  const productMediaById = Object.create(null);
   const stateProducts = sortedProducts.map((product) => {
     productIds.push(product._id);
 
@@ -206,10 +208,15 @@ function composer(props, onData) {
 
     if (additionalMedia.length < 2) additionalMedia = null;
 
-    return {
-      ...applyProductRevision(product),
+    productMediaById[product._id] = {
       additionalMedia,
       primaryMedia
+    };
+
+    return {
+      ...applyProductRevision(product),
+      // additionalMedia,
+      // primaryMedia
     };
   });
 
@@ -223,9 +230,10 @@ function composer(props, onData) {
   }
 
   onData(null, {
-    productsSubscription,
+    canLoadMoreProducts,
+    productMediaById,
     products: stateProducts,
-    canLoadMoreProducts
+    productsSubscription
   });
 }
 

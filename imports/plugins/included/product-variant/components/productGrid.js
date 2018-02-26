@@ -4,6 +4,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 
 class ProductGrid extends Component {
   static propTypes = {
+    productMediaById: PropTypes.object,
     products: PropTypes.array
   }
 
@@ -13,6 +14,7 @@ class ProductGrid extends Component {
         <Components.ProductGridItems
           {...this.props}
           product={product}
+          productMedia={this.props.productMediaById[product._id]}
           key={index}
           index={index}
         />

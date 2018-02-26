@@ -17,6 +17,7 @@ class ProductGridItems extends Component {
     pdpPath: PropTypes.func,
     positions: PropTypes.func,
     product: PropTypes.object,
+    productMedia: PropTypes.object,
     weightClass: PropTypes.func
   }
 
@@ -49,18 +50,18 @@ class ProductGridItems extends Component {
   }
 
   renderMedia() {
-    const { product } = this.props;
+    const { product, productMedia } = this.props;
 
     return (
-      <Components.ProductImage displayMedia={() => product.primaryMedia} item={product} size="large" mode="span" />
+      <Components.ProductImage displayMedia={() => productMedia.primaryMedia} item={product} size="large" mode="span" />
     );
   }
 
   renderAdditionalMedia() {
-    const { isMediumWeight, product } = this.props;
+    const { isMediumWeight, productMedia } = this.props;
     if (!isMediumWeight()) return null;
 
-    const mediaArray = product.additionalMedia;
+    const mediaArray = productMedia.additionalMedia;
     if (!mediaArray || mediaArray.length === 0) return null;
 
     return (
