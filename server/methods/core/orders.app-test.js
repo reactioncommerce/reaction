@@ -120,9 +120,13 @@ describe("orders test", function () {
       spyOnMethod("approvePayment", order.userId);
       Meteor.call("orders/approvePayment", order);
 
+      // Since we update Order info inside the `orders/approvePayment` Meteor call,
+      // we need to re-find the order with the updated info
+      const updatedOrder = Orders.findOne({ _id: order._id });
+
       // cancel order with returnToStock option (which should increment inventory)
-      spyOnMethod("cancelOrder", order.userId);
-      Meteor.call("orders/cancelOrder", order, true); // returnToStock = true;
+      spyOnMethod("cancelOrder", updatedOrder.userId);
+      Meteor.call("orders/cancelOrder", updatedOrder, true); // returnToStock = true;
 
       const product = Products.findOne({ _id: orderItemId });
       const inventoryAfterRestock = product.inventoryQuantity;
