@@ -20,12 +20,19 @@ class CartItems extends Component {
     }
   }
 
+  removalClick = (event) => {
+    event.preventDefault();
+
+    if (typeof this.props.handleRemoveItem === "function") {
+      this.props.handleRemoveItem(event, this.props.item);
+    }
+  }
+
   render() {
     const {
       handleLowInventory,
       pdpPath,
       handleImage,
-      handleRemoveItem,
       item
     } = this.props;
 
@@ -40,9 +47,10 @@ class CartItems extends Component {
             <Components.Translation i18nKey="cartDrawerItems.limitedSupply" defaultValue="Limited supply" />
           </div>
         }
-        <i className="remove-cart-item fa fa-times fa-lg"
-          id={item._id}
-          onClick={handleRemoveItem}
+        <Components.IconButton
+          icon="fa fa-times fa-lg remove-cart-item"
+          onClick={this.removalClick}
+          kind="removeItem"
         />
         <a href={pdpPath(item)}
           data-event-action="product-click"
@@ -51,10 +59,10 @@ class CartItems extends Component {
         >
           {handleImage(item) ?
             <div className="center-cropped" style={{ backgroundImage: `url('${handleImage(item).url({ store: "small" })}')` }}>
-              <img src={handleImage(item).url({ store: "small" })} className="product-grid-item-images img-responsive" />
+              <img src={handleImage(item).url({ store: "small" })} className="product-grid-item-images img-responsive" alt="" />
             </div> :
             <div className="center-cropped" style={{ backgroundImage: "url('/resources/placeholder.gif')" }}>
-              <img src="/resources/placeholder.gif" className="product-grid-item-images img-responsive" />
+              <img src="/resources/placeholder.gif" className="product-grid-item-images img-responsive" alt="" />
             </div>
           }
         </a>

@@ -2,15 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import classnames from "classnames";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 
 export function getTwitterMeta(props) {
   const title = props.title || document.title;
   const preferredUrl = props.url || location.origin + location.pathname;
   const url = encodeURIComponent(preferredUrl);
-  const username = props.settings.username;
-  const description = props.settings.description;
+  const { username, description } = props.settings;
 
   const meta = [
     { property: "twitter:card", content: "summary" },
@@ -44,17 +43,16 @@ class TwitterSocialButton extends Component {
   }
 
   get url() {
-    const props = this.props;
+    const { props } = this;
     const preferredUrl = props.url || location.origin + location.pathname;
     const url = encodeURIComponent(preferredUrl);
     const base = "https://twitter.com/intent/tweet";
-    const text = props.settings.description;
-    const username = props.settings.username;
+    const { username, description } = props.settings;
 
-    let href = base + "?url=" + url + "&text=" + text;
+    let href = `${base}?url=${url}&text=${description}`;
 
     if (username) {
-      href += "&via=" + username;
+      href += `&via=${username}`;
     }
 
     return href;
@@ -63,7 +61,7 @@ class TwitterSocialButton extends Component {
   renderText() {
     if (this.props.showText) {
       return (
-        <Translation defaultValue="Share on Twitter" i18nKey="social.shareOnTwitter" />
+        <Components.Translation defaultValue="Share on Twitter" i18nKey="social.shareOnTwitter" />
       );
     }
     return null;
@@ -78,21 +76,24 @@ class TwitterSocialButton extends Component {
     });
 
     return (
-      <a className="btn btn-flat twitter-share" aria-label="Share to Twitter" href="#" onClick={this.handleClick}
-        target="_blank"
+      <Components.Button
+        className="btn btn-flat twitter-share"
+        aria-label="Share to Twitter"
+        onClick={this.handleClick}
       >
         <Helmet
           meta={getTwitterMeta(this.props)}
         />
         <i className={iconClassNames} />
         {this.renderText()}
-      </a>
+      </Components.Button>
     );
   }
 }
 
 TwitterSocialButton.propTypes = {
   altIcon: PropTypes.bool,
+  settings: PropTypes.object,
   showText: PropTypes.bool,
   size: PropTypes.string
 };

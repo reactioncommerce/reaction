@@ -12,13 +12,13 @@
         "dashboard": {
           "authorizenetLabel": "Authorize.net",
           "authorizenetTitle": "Authorize.net",
-          "authorizenetDescription": "paiements Authorize.net"
+          "authorizenetDescription": "Paiements Authorize.net"
         },
         "paymentSettings": {
           "authorizenetLabel": "Authorize.net",
           "authorizenetSettingsLabel": "Authorize.net",
-          "authorizenetCredentials": "Ne pas avoir un ID de connexion et Transaction Key?",
-          "authorizenetCredentialURL": "Obtenez un de Authorize.net"
+          "authorizenetCredentials": "Vous n'avez pas d'ID de connexion ni de Transaction Key ?",
+          "authorizenetCredentialURL": "Obtenez-les sur Authorize.net"
         }
       }
     }

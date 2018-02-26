@@ -49,11 +49,9 @@ class AdminInviteForm extends Component {
     this.setState({ group });
   };
 
-  removeAlert = (oldAlert) => {
-    return this.setState({
-      alertArray: this.state.alertArray.filter((alert) => !_.isEqual(alert, oldAlert))
-    });
-  };
+  removeAlert = (oldAlert) => this.setState({
+    alertArray: this.state.alertArray.filter((alert) => !_.isEqual(alert, oldAlert))
+  });
 
   handleSubmit(event) {
     event.preventDefault();
@@ -69,7 +67,7 @@ class AdminInviteForm extends Component {
       );
     }
 
-    const options = { email, name, shopId: Reaction.getShopId(), groupId: group._id  };
+    const options = { email, name, shopId: Reaction.getShopId(), groupId: group._id };
     return Meteor.call("accounts/inviteShopMember", options, (error, result) => {
       if (error) {
         let messageKey;

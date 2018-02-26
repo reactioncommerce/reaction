@@ -9,6 +9,7 @@ class ManageGroups extends Component {
     adminGroups: PropTypes.array,
     group: PropTypes.object,
     groups: PropTypes.array,
+    isAdmin: PropTypes.bool,
     onChangeGroup: PropTypes.func
   };
 
@@ -32,7 +33,6 @@ class ManageGroups extends Component {
     // this gets a list of groups the user can invite to, we show only those in the dropdown
     // see doc for getInvitableGroups in helpers/accountsHelper.js
     const groupsInvitable = getInvitableGroups(this.state.adminGroups);
-
     return (
       <div className="groups-form">
         { groupsInvitable && groupsInvitable.length &&
@@ -41,13 +41,15 @@ class ManageGroups extends Component {
             groups={groupsInvitable}
           />
         }
-        <Components.EditGroup
-          // filter out owner group from editable groups.
-          // The edit group meteor method also prevents editing owner group
-          groups={this.state.groups.filter(grp => grp.slug !== "owner")}
-          selectedGroup={this.state.group}
-          onChangeGroup={this.props.onChangeGroup}
-        />
+        {this.props.isAdmin &&
+          <Components.EditGroup
+            // filter out owner group from editable groups.
+            // The edit group meteor method also prevents editing owner group
+            groups={this.state.groups.filter((grp) => grp.slug !== "owner")}
+            selectedGroup={this.state.group}
+            onChangeGroup={this.props.onChangeGroup}
+          />
+        }
       </div>
     );
   }

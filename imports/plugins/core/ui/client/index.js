@@ -5,13 +5,6 @@ export * from "./providers";
 
 import "./helpers/react-template-helper";
 
-import "./templates/dashboard/dashboard.html";
-import "./templates/dashboard/dashboard.js";
-import "./templates/themeDetails/themeDetails.html";
-import "./templates/themeDetails/themeDetails.js";
-import "./templates/themeEditor/themeEditor.html";
-import "./templates/themeEditor/themeEditor.js";
-
 // Import blaze components
 import "./components/button/button.html";
 import "./components/button/button.js";

@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import classnames from "classnames";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components } from "@reactioncommerce/reaction-components";
 
 
 export function getGooglePlusMeta(props) {
   const preferredUrl = props.url || location.origin + location.pathname;
   const url = encodeURIComponent(preferredUrl);
-  const description = props.settings.description;
+  const { description } = props.settings;
 
   const meta = [
     { property: "itemprop:name", content: location.hostname },
@@ -28,6 +28,7 @@ export function getGooglePlusMeta(props) {
       content: media
     });
   }
+  return meta;
 }
 
 class GooglePlusSocialButton extends Component {
@@ -40,18 +41,21 @@ class GooglePlusSocialButton extends Component {
   }
 
   get url() {
-    const props = this.props;
-    const preferredUrl = props.url || location.origin + location.pathname;
-    const url = encodeURIComponent(preferredUrl);
-    const href = "https://plus.google.com/share?url=" + url;
-
+    const { url, settings } = this.props;
+    const { description } = this.props.settings;
+    const preferredUrl = url || location.origin + location.pathname;
+    const encodedUrl = encodeURIComponent(preferredUrl);
+    let href = `https://plus.google.com/share?url=${encodedUrl}`;
+    if (settings.description) {
+      href += `&text=${description}`;
+    }
     return href;
   }
 
   renderText() {
     if (this.props.showText) {
       return (
-        <Translation defaultValue="Share on GooglePlus" i18nKey="social.shareOnGooglePlus" />
+        <Components.Translation defaultValue="Share on GooglePlus" i18nKey="social.shareOnGooglePlus" />
       );
     }
     return null;
@@ -66,23 +70,27 @@ class GooglePlusSocialButton extends Component {
     });
 
     return (
-      <a className="btn btn-flat googleplus-share" aria-label="Share to Google Plus" href="#" onClick={this.handleClick}
-        target="_blank"
+      <Components.Button
+        className="btn btn-flat googleplus-share"
+        aria-label="Share to Google Plus"
+        onClick={this.handleClick}
       >
         <Helmet
           meta={getGooglePlusMeta(this.props)}
         />
         <i className={iconClassNames} />
         {this.renderText()}
-      </a>
+      </Components.Button>
     );
   }
 }
 
 GooglePlusSocialButton.propTypes = {
   altIcon: PropTypes.bool,
+  settings: PropTypes.object,
   showText: PropTypes.bool,
-  size: PropTypes.string
+  size: PropTypes.string,
+  url: PropTypes.string
 };
 
 export default GooglePlusSocialButton;
