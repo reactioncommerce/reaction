@@ -6,6 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { Cart, Media } from "/lib/collections";
 import { Reaction } from "/client/api";
 import CartDrawer from "../components/cartDrawer";
+import { ReactionProduct } from "/lib/api";
 
 // event handlers to pass in as props
 const handlers = {
@@ -38,6 +39,8 @@ const handlers = {
         handle: productItem.productId,
         variantId: productItem.variants._id
       });
+
+      ReactionProduct.setCurrentVariant(productItem.variants._id);
     }
   },
 

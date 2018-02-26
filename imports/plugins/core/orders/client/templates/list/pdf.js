@@ -49,7 +49,7 @@ Template.completedPDFLayout.helpers({
     return null;
   },
   dateFormat(context, block) {
-    const moment = Template.instance().moment.default;
+    const { moment } = Template.instance();
     moment.locale(Reaction.Locale.get().language);
     const f = block.hash.format || "MMM DD, YYYY hh:mm:ss A";
     return moment(context).format(f);

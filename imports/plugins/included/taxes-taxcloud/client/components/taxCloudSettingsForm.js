@@ -29,7 +29,8 @@ const TaxCloudSettingsForm = (props) => {
         <div className="alert alert-info">
           <Components.Translation
             defaultValue="Add API Login ID to enable"
-            i18nKey="admin.taxSettings.taxcloudCredentials" />&nbsp;
+            i18nKey="admin.taxSettings.taxcloudCredentials"
+          />&nbsp;
           <a href="https://www.taxcloud.com/" target="_blank">TaxCloud</a>
         </div>
       }

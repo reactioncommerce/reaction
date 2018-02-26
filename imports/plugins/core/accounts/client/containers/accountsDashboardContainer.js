@@ -1,6 +1,6 @@
 import { compose, withProps } from "recompose";
 import Alert from "sweetalert2";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker, withIsAdmin } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Groups } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
@@ -13,8 +13,12 @@ const handlers = {
 
       if (groupId === ownerGrpId) {
         return alertConfirm()
-          .then(() => updateMethodCall(groupId))
-          .catch(() => {
+          .then(({ value }) => {
+            if (value) {
+              return updateMethodCall(groupId);
+            }
+          })
+          .finally(() => {
             if (onMethodDone) { onMethodDone(); }
           });
       }
@@ -53,7 +57,12 @@ const handlers = {
   handleRemoveUserFromGroup(account, groupId) {
     return () => {
       alertConfirm()
-        .then(() => removeMethodCall())
+        .then(({ value }) => {
+          if (value) {
+            return removeMethodCall();
+          }
+          return false;
+        })
         .catch(() => false);
 
       function removeMethodCall() {
@@ -110,11 +119,13 @@ const composer = (props, onData) => {
 };
 
 registerComponent("AccountsDashboard", AccountsDashboard, [
+  withIsAdmin,
   composeWithTracker(composer),
   withProps(handlers)
 ]);
 
 export default compose(
+  withIsAdmin,
   composeWithTracker(composer),
   withProps(handlers)
 )(AccountsDashboard);

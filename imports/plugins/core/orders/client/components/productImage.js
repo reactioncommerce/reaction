@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Badge } from "@reactioncommerce/reaction-ui";
 
 
@@ -31,7 +32,12 @@ class ProductImage extends Component {
     let mediaUrl;
 
     if (displayMedia(item)) {
-      mediaUrl = displayMedia(item).url();
+      const rawMediaUrl = displayMedia(item).url();
+      mediaUrl = rawMediaUrl;
+
+      if (size) {
+        mediaUrl = `${rawMediaUrl}&store=${size}`;
+      }
     } else {
       mediaUrl = "/resources/placeholder.gif";
     }
@@ -56,5 +62,7 @@ class ProductImage extends Component {
     );
   }
 }
+
+registerComponent("ProductImage", ProductImage);
 
 export default ProductImage;

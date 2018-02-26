@@ -36,7 +36,8 @@ class LoginInlineContainer extends Component {
         userId: Meteor.userId()
       });
       // If there's already a billing and shipping address selected, push beyond address book
-      if (cart && cart.billing[0] && cart.shipping[0]) {
+      if (cart && cart.billing[0] && cart.billing[0].address
+        && cart.shipping[0] && cart.shipping[0].address) {
         Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook");
       }
     });
