@@ -52,7 +52,9 @@ describe("cart methods", function () {
       const cartItemId = cartFromCollection.items[0]._id;
       assert.equal(cartFromCollection.items.length, 2);
       Meteor.call("cart/removeFromCart", cartItemId);
-      assert.equal(updateSpy.callCount, 1, "update should be called one time");
+      // Expect Cart.update to be called twice, because cart/removeFromCart
+      // triggers a Hooks.Events which calls Cart.update.
+      assert.equal(updateSpy.callCount, 2, "update should be called one time");
       Meteor._sleepForMs(1000);
       const updatedCart = Collections.Cart.findOne(cart._id);
       assert.equal(updatedCart.items.length, 1, "there should be one item left in cart");

@@ -1,6 +1,7 @@
-import store from "amplify-store";
+import store from "store";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
+import { Accounts as AccountsCollection } from "/lib/collections";
 import { Accounts } from "meteor/accounts-base";
 
 import { Reaction, Logger } from "/client/api";
@@ -18,6 +19,25 @@ Meteor.startup(() => {
   // initialize anonymous guest users
   return Tracker.autorun(() => {
     const userId = Meteor.userId();
+
+    // Load data from Accounts collection into the localStorage
+    Tracker.nonreactive(() => {
+      // Don't load the data from Accounts Collection again when something changes
+      // as we are already storing everything in the localStorage reactively
+      try {
+        const user = AccountsCollection.findOne(userId);
+        if (user && user.profile && user.profile.preferences) {
+          Object.keys(user.profile.preferences).forEach((packageName) => {
+            const packageSettings = user.profile.preferences[packageName];
+            Object.keys(packageSettings).forEach((preference) => {
+              Reaction.setUserPreferences(packageName, preference, packageSettings[preference]);
+            });
+          });
+        }
+      } catch (err) {
+        Logger.error("Problem in loading user preferences from Accounts collection");
+      }
+    });
 
     if (userId && !isLocalStorageAvailable() && !readCookie(cookieName)) {
       Logger.debug("No local storage available. About to set up fallback login " +
@@ -37,7 +57,7 @@ Meteor.startup(() => {
     let sessionId;
     Tracker.nonreactive(() => {
       loggingIn = Accounts.loggingIn();
-      sessionId = store("Reaction.session");
+      sessionId = store.get("Reaction.session");
     });
 
     if (!userId) {

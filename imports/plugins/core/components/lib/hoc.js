@@ -9,11 +9,11 @@ let Logger;
 let Reaction;
 
 if (Meteor.isClient) {
-  Logger = require("/client/api").Logger;
-  Reaction = require("/client/api").Reaction;
+  ({ Logger } = require("/client/api"));
+  ({ Reaction } = require("/client/api"));
 } else {
-  Logger = require("/server/api").Logger;
-  Reaction = require("/server/api").Reaction;
+  ({ Logger } = require("/server/api"));
+  ({ Reaction } = require("/server/api"));
 }
 
 
@@ -44,10 +44,10 @@ export function withMoment(component) {
   return lifecycle({
     componentDidMount() {
       import("moment")
-        .then(moment => {
+        .then((moment) => {
           moment.locale(Reaction.Locale.get().language);
           this.setState({
-            moment: moment.default
+            moment
           });
         })
         .catch((error) => {
@@ -70,7 +70,7 @@ export function withMomentTimezone(component) {
   return lifecycle({
     componentDidMount() {
       import("moment-timezone")
-        .then(moment => {
+        .then((moment) => {
           this.setState({
             momentTimezone: moment.tz
           });

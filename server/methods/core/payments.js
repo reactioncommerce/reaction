@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Reaction } from "/server/api";
+import { Reaction, Hooks } from "/server/api";
 
 /**
  * @file Methods for Payments. Run these methods using `Meteor.call()`.
@@ -27,13 +27,18 @@ export const methods = {
     check(collection, String);
     const Collection = Reaction.Collections[collection];
 
-    return Collection.update({
+    const result = Collection.update({
       _id: id
     }, {
       $addToSet: {
         billing: { paymentMethod }
       }
     });
+
+    // calculate discounts
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", id);
+
+    return result;
   }
 };
 
