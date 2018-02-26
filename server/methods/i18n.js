@@ -31,7 +31,7 @@ Meteor.methods({
  * @return {undefined}
  */
   "i18n/flushAllTranslations"() {
-    if (!Reaction.hasAdminAccess()) {
+    if (!Reaction.hasPermission("admin", Meteor.userId(), Reaction.getPrimaryShopId())) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
