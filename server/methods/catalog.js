@@ -5,7 +5,7 @@ import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { copyFile, ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
-import { createRevision } from "/imports/plugins/core/revisions/server/functions";
+import { insertRevision, updateRevision } from "/imports/plugins/core/revisions/server/functions";
 import { Media, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
@@ -444,7 +444,7 @@ Meteor.methods({
 
       let newId;
       try {
-        createRevision(clone);
+        insertRevision(clone);
         newId = Products.insert(clone, { validate: false });
         Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
           clone._id} from ${variantId}`);
@@ -511,7 +511,7 @@ Meteor.methods({
       flushQuantity(parentId);
     }
 
-    createRevision(assembledVariant);
+    insertRevision(assembledVariant);
     Products.insert(assembledVariant);
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
@@ -712,7 +712,7 @@ Meteor.methods({
           newProduct._id
         );
       }
-      createRevision(newProduct);
+      insertRevision(newProduct);
       result = Products.insert(newProduct, { validate: false });
       results.push(result);
 
@@ -740,7 +740,7 @@ Meteor.methods({
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
 
-        createRevision(newVariant);
+        insertRevision(newVariant);
         result = Products.insert(newVariant, { validate: false });
         copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
@@ -773,14 +773,14 @@ Meteor.methods({
       }
 
       // Create product revision
-      createRevision(product);
+      insertRevision(product);
 
       return Products.insert(product);
     }
 
     const newSimpleProduct = createProductObject();
     // Create simple product revision
-    createRevision(newSimpleProduct);
+    insertRevision(newSimpleProduct);
     const newId = Products.insert(newSimpleProduct, { validate: false });
 
     const newVariant = createProductObject({
@@ -791,7 +791,7 @@ Meteor.methods({
     });
 
     // Create variant revision
-    createRevision(newVariant);
+    insertRevision(newVariant);
 
     Products.insert(newVariant);
 
@@ -946,11 +946,11 @@ Meteor.methods({
     let result;
 
     try {
-      result = Products.update(_id, {
-        $set: update
-      }, {
-        selector: { type }
-      });
+      const modifier = { $set: update };
+      const selector = { selector: { type } };
+      const product = Products.findOne(_id);
+      updateRevision(Meteor.userId(), product, modifier, selector);
+      result = Products.update(_id, modifier, selector);
     } catch (e) {
       throw new Meteor.Error("server-error", e.message);
     }
