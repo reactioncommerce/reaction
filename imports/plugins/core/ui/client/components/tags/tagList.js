@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import classnames from "classnames";
 import { Components } from "@reactioncommerce/reaction-components";
-import { Router } from "/client/api";
 import { PropTypes as ReactionPropTypes } from "/lib/api";
 
 class TagList extends Component {
@@ -65,7 +64,9 @@ class TagList extends Component {
   }
 
   handleTagClick = (event, tag) => {
-    Router.go("tag", { slug: tag.slug });
+    if (this.props.onTagClick) {
+      this.props.onTagClick(event, tag);
+    }
   }
 
   hasDropdownClassName = (tag) => {

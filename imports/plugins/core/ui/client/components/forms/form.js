@@ -1,22 +1,42 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { map, update, set, at, isEqual } from "lodash";
+import { at, get, isEqual, set, update } from "lodash";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class Form extends Component {
   static defaultProps = {
-    autoSave: false
+    autoSave: false,
+    renderFromFields: false,
+    fieldsProp: {}
   }
 
+  /**
+  * @name Form propTypes
+  * @type {propTypes}
+  * @param {Object} props - React PropTypes
+  * @property {Boolean} autoSave - controls autoSave and rendering of Submit button.
+  * @property {Object} doc - the object that will have the form state.
+  * @property {String} docPath - the path in the schema which will be used for validation or to render fields.
+  * @property {Array} fields - fields to render.
+  * @property {Object} fieldsProps - map of field specific properties passed to underlying components.
+  * @property {Array} hideFields - fields to hide.
+  * @property {String} name
+  * @property {Func} onSubmit
+  * @property {Boolean} renderFromFields - this controls whether form is rendered from schema or from fields.
+  * @property {Object} schema - the schema used for validation and rendering.
+  * @return {Array} React propTypes
+  */
   static propTypes = {
     autoSave: PropTypes.bool,
     doc: PropTypes.object,
     docPath: PropTypes.string,
     fields: PropTypes.object,
+    fieldsProp: PropTypes.object,
     hideFields: PropTypes.arrayOf(PropTypes.string),
     name: PropTypes.string,
     onSubmit: PropTypes.func,
+    renderFromFields: PropTypes.bool,
     schema: PropTypes.object
   }
 
@@ -87,11 +107,11 @@ class Form extends Component {
 
     // Clean any fields not in schame to avoid needless validation errors
     const cleanedObject = this.state.schema._simpleSchema.clean(docToValidate);
-
+    const isValid = this.state.schema.validate(cleanedObject);
     // Finally validate the document
-    this.setState({
-      isValid: this.state.schema.validate(cleanedObject)
-    });
+    this.setState({ isValid });
+
+    return { isValid };
   }
 
   isFieldHidden(fieldName) {
@@ -104,31 +124,41 @@ class Form extends Component {
 
   handleChange = (event, value, name) => {
     const newdoc = update(this.state.doc, name, () => value);
+    // Calling user defined field specific handleChange function
+    if (this.props.fieldsProp[name] && typeof this.props.fieldsProp[name].handleChange === "function") {
+      this.props.fieldsProp[name].handleChange(event, value, name);
+    }
 
     this.setState({
       doc: newdoc
     }, () => {
-      this.validate();
+      if (this.props.autoSave === true) {
+        this.handleSubmit(event);
+      } else {
+        this.validate();
+      }
     });
-
-    if (this.props.autoSave === true) {
-      this.handleSubmit(event);
-    }
   }
 
   handleSelectChange = (value, name) => {
     this.handleChange(new Event("onSelect"), value, name);
   }
 
-  handleSubmit = (event) => {
+  handleMultiSelectChange = (value, name) => {
+    this.handleChange(new Event("onMultiSelect"), value.map((v) => v.value), name);
+  }
+
+  handleSubmit = async (event) => {
     event.preventDefault();
 
-    this.validate();
+    // Need to wait for this before using this.state.isValid
+    // as validate() changes state.
+    const isValid = this.validate();
 
     if (this.props.onSubmit) {
       this.props.onSubmit(event, {
         doc: this.state.doc,
-        isValid: this.state.isValid
+        isValid
       }, this.props.name);
     }
   }
@@ -143,8 +173,8 @@ class Form extends Component {
 
     let fieldElement;
     let helpText;
-
-    switch (field.type) {
+    // Checking for user defined render style else using what is best according to the type.
+    switch (field.renderComponent || field.type) {
       case "boolean":
         fieldElement = (
           <Components.Switch
@@ -160,6 +190,10 @@ class Form extends Component {
             {...sharedProps}
             onChange={this.handleChange}
             value={this.valueForField(field.name)}
+            multiline={field.multiline}
+            maxRows={field.maxRows}
+            disabled={field.disabled}
+            type={field.inputType}
           />
         );
         break;
@@ -170,6 +204,18 @@ class Form extends Component {
             onChange={this.handleSelectChange}
             options={field.options}
             value={this.valueForField(field.name)}
+          />
+        );
+        break;
+      case "multiselect":
+        fieldElement = (
+          <Components.MultiSelect
+            {...sharedProps}
+            multi={true}
+            onChange={this.handleMultiSelectChange}
+            options={field.options}
+            value={this.valueForField(field.name)}
+            simpleValue={false}
           />
         );
         break;
@@ -227,43 +273,51 @@ class Form extends Component {
   }
 
   renderWithSchema() {
-    const { docPath } = this.props;
+    const { docPath, fieldsProp, renderFromFields } = this.props;
 
-    if (this.props.schema) {
-      // Render form with a specific docPath
-      if (docPath) {
-        return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
-          if (key.endsWith(docPath)) {
-            const objectKeys = this.objectKeys[`${docPath}.`];
-            if (Array.isArray(objectKeys)) {
-              // Use the objectKeys from parent fieldset to generate
-              // actual form fields
-              return objectKeys.map((fieldName) => {
-                const fullFieldName = docPath ? `${docPath}.${fieldName}` : fieldName;
-                return this.renderField({ fieldName: fullFieldName });
-              });
-            }
-
-            return this.renderField({ fieldName: key });
-          }
-        });
-      }
-
-      // Render form by only using desired fields from schema
-      if (this.props.fields) {
-        return map(this.props.fields, (fieldData, key) => {
-          const fieldSchema = this.schema[key];
-          if (fieldSchema) {
-            return this.renderField({ fieldName: key }, fieldData);
-          }
-        });
-      }
-
-      // Render all fields if none of the options are set above
-      return map(this.schema, (field, key) => this.renderField({ fieldName: key }));
+    if (!this.props.schema) {
+      return null;
+    }
+    // Render form with a specific docPath
+    if (!renderFromFields && docPath) {
+      return Object.keys(this.schema).map((key) => {
+        if (!key.endsWith(docPath)) {
+          return;
+        }
+        const objectKeys = this.objectKeys[`${docPath}.`];
+        if (Array.isArray(objectKeys)) {
+          // Use the objectKeys from parent fieldset to generate
+          // actual form fields
+          return objectKeys.map((fieldName) => {
+            const fullFieldName = docPath ? `${docPath}.${fieldName}` : fieldName;
+            return this.renderField({ fieldName: fullFieldName });
+          });
+        }
+        return this.renderField({ fieldName: key });
+      });
     }
 
-    return null;
+    // Render form by only using desired fields from schema
+    if (this.props.fields) {
+      return Object.keys(this.props.fields).map((key) => {
+        const fieldData = this.props.fields[key];
+        const fieldSchema = this.schema[key];
+        const tempObj = Object.assign({}, fieldData);
+        if (!fieldSchema) {
+          return;
+        }
+        // Remove inherited type() as type is supposed to be string.
+        if (typeof tempObj.type === "function") {
+          delete tempObj.type;
+        }
+        const fieldProp = get(fieldsProp, key, {});
+        return this.renderField({ fieldName: key }, Object.assign(tempObj, fieldProp));
+      });
+    }
+
+    // Render all fields if none of the options are set above
+    return Object.keys(this.schema).map((key) => // eslint-disable-line consistent-return
+      this.renderField({ fieldName: key }));
   }
 
   renderFormActions() {

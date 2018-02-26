@@ -1,13 +1,12 @@
 import later from "later";
-import { Job } from "meteor/vsivsi:job-collection";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 
 let moment;
 async function lazyLoadMoment() {
   if (moment) return;
-  const mod = await import("moment");
-  moment = mod.default;
+  moment = await import("moment");
 }
 
 export function addCleanupJobControlHook() {

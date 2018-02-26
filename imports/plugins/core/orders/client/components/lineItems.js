@@ -61,7 +61,12 @@ class LineItems extends Component {
 
     if (displayMedia(uniqueItem)) {
       return (
-        <img src={displayMedia(uniqueItem).url()} alt="" />
+        <Components.ProductImage
+          item={uniqueItem}
+          displayMedia={displayMedia}
+          size="thumbnail"
+          badge={false}
+        />
       );
     }
     return (

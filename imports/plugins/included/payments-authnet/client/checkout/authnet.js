@@ -9,13 +9,16 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { AuthNetPayment } from "../../lib/collections/schemas";
 import { AuthNet } from "../api";
 
-
 import "./authnet.html";
+
+// used to track asynchronous submitting for UI changes
+let submitting = false;
 
 function uiEnd(tpl, buttonText) {
   tpl.$(":input").removeAttr("disabled");
   tpl.$("#btn-complete-order").text(buttonText);
   tpl.$("#btn-processing").addClass("hidden");
+  submitting = false;
 }
 
 function paymentAlert(errorMessage) {
@@ -31,9 +34,6 @@ function handleAuthNetSubmitError(error) {
   paymentAlert(error);
   Logger.fatal(error);
 }
-
-// used to track asynchronous submitting for UI changes
-let submitting = false;
 
 Template.authnetPaymentForm.helpers({
   AuthNetPayment() {

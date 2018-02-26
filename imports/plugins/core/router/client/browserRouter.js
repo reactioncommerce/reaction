@@ -118,6 +118,7 @@ class BrowserRouter extends Component {
       Router.Hooks.run("onEnter", "GLOBAL", routeData);
       Router.Hooks.run("onEnter", currentRoute.name, routeData);
     }
+    MetaData.init(routeData);
   }
 
   render() {

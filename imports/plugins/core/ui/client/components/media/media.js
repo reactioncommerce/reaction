@@ -83,12 +83,27 @@ class MediaItem extends Component {
     return this.props.defaultSource || "/resources/placeholder.gif";
   }
 
-  get source() {
-    if (typeof this.props.source === "object" && this.props.source) {
-      return this.props.source.url() || this.defaultSource;
+  renderSource = (size) => {
+    // Set source to be default image
+    let source = this.defaultSource;
+
+    // Set default source size to `large`
+    let sourceSize = "&store=large";
+    // If size is provided, set that sourse to that size
+    if (size) {
+      sourceSize = `&store=${size}`;
     }
 
-    return this.props.source || this.defaultSource;
+    // If a source was provided, use it
+    if (this.props.source) {
+      if (typeof this.props.source === "object" && this.props.source.url()) {
+        source = `${this.props.source.url()}${sourceSize}`;
+      } else {
+        source = `${this.props.source}${sourceSize}`;
+      }
+    }
+
+    return source;
   }
 
   renderImage() {
@@ -98,14 +113,14 @@ class MediaItem extends Component {
           smallImage: {
             width: this.props.mediaWidth,
             height: this.props.mediaHeight,
-            src: this.source
+            src: this.renderSource("large")
           },
           imageClassName: "img-responsive",
           fadeDurationInMs: 150,
           hoverDelayInMs: 200,
           pressDuration: 300,
           largeImage: {
-            src: this.source,
+            src: this.renderSource("large"),
             width: this.props.mediaWidth * 2,
             height: this.props.mediaHeight * 2
           },
@@ -122,7 +137,7 @@ class MediaItem extends Component {
       <img
         alt=""
         className="img-responsive"
-        src={this.source}
+        src={this.renderSource("large")}
       />
     );
   }

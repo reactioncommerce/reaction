@@ -1,5 +1,5 @@
 import later from "later";
-import { Job } from "meteor/vsivsi:job-collection";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Cart, Jobs } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
@@ -8,8 +8,7 @@ import { ServerSessions } from "/server/publications/collections/sessions";
 let moment;
 async function lazyLoadMoment() {
   if (moment) return;
-  const mod = await import("moment");
-  moment = mod.default;
+  moment = await import("moment");
 }
 
 
@@ -65,6 +64,7 @@ export function cartCleanupJob() {
             _id: cart.userId,
             emails: []
           });
+          Hooks.Events.run("afterAccountsRemove", null, user._id);
           const destroySession = ServerSessions.remove({ _id: cart.sessionId });
           Meteor.users.remove({ _id: user._id, emails: [] }); // clears out anonymous user
           if (removeCart && removeAccount && destroySession) {

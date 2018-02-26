@@ -26,7 +26,7 @@
           "optionOrdersCreateUpdateInventory": "အသစ်က Shopify အလို့ငှာထားရှိသောအခါ Inventory ကိုအပ်ဒိတ်လုပ်",
           "syncSetup": "Setup ကို Sync ကို",
           "syncSetupSuccess": "အောင်မြင်စွာ setup ကို Shopify ထပ်တူပြုခြင်း",
-          "syncSetupFailure": "Shoify ထပ်တူပြုခြင်းကိုတက် setting မှားယွင်းနေသည်",
+          "syncSetupFailure": "Shopify ထပ်တူပြုခြင်းကိုတက် setting မှားယွင်းနေသည်",
           "syncStop": "stop Sync ကို",
           "syncStopSuccess": "အောင်မြင်စွာ Shopify ထပ်တူပြုခြင်းရပ်သွား!",
           "syncStopFailure": "မှားယွင်းနေသည် Shopify ထပ်တူပြုခြင်းရပ်တန့်!",

@@ -28,6 +28,7 @@ export function getGooglePlusMeta(props) {
       content: media
     });
   }
+  return meta;
 }
 
 class GooglePlusSocialButton extends Component {
@@ -40,11 +41,14 @@ class GooglePlusSocialButton extends Component {
   }
 
   get url() {
-    const { props } = this;
-    const preferredUrl = props.url || location.origin + location.pathname;
-    const url = encodeURIComponent(preferredUrl);
-    const href = `https://plus.google.com/share?url=${url}`;
-
+    const { url, settings } = this.props;
+    const { description } = this.props.settings;
+    const preferredUrl = url || location.origin + location.pathname;
+    const encodedUrl = encodeURIComponent(preferredUrl);
+    let href = `https://plus.google.com/share?url=${encodedUrl}`;
+    if (settings.description) {
+      href += `&text=${description}`;
+    }
     return href;
   }
 
@@ -83,8 +87,10 @@ class GooglePlusSocialButton extends Component {
 
 GooglePlusSocialButton.propTypes = {
   altIcon: PropTypes.bool,
+  settings: PropTypes.object,
   showText: PropTypes.bool,
-  size: PropTypes.string
+  size: PropTypes.string,
+  url: PropTypes.string
 };
 
 export default GooglePlusSocialButton;
