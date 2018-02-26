@@ -15,7 +15,6 @@ export function setupFetchFlushCurrencyHooks() {
       const refreshPeriod = exchangeConfig.refreshPeriod || "every 4 hours";
       Logger.debug(`Adding shop/fetchCurrencyRates to JobControl. Refresh ${refreshPeriod}`);
       new Job(Jobs, "shop/fetchCurrencyRates", {})
-        .priority("normal")
         .retry({
           retries: 5,
           wait: 60000,
@@ -33,7 +32,6 @@ export function setupFetchFlushCurrencyHooks() {
       // Run the first time immediately after server start. The repeat({schedule}) option via
       // later.js scheduling won't run before the first scheduled time, even with delay() or after()
       new Job(Jobs, "shop/fetchCurrencyRates", {})
-        .priority("normal")
         .retry({
           retries: 5,
           wait: 10000
@@ -53,7 +51,6 @@ export function setupFetchFlushCurrencyHooks() {
       // TODO: Add this as a configurable option
       const refreshPeriod = "Every 24 hours";
       new Job(Jobs, "shop/flushCurrencyRates", {})
-        .priority("normal")
         .retry({
           retries: 5,
           wait: 60000,
