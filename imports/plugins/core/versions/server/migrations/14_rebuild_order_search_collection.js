@@ -2,14 +2,14 @@ import { Migrations } from "meteor/percolate:migrations";
 import { OrderSearch } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
-const searchPackage = Reaction.getPackageSettingsWithOptions("reaction-search");
-
-Logger.info("searchPackage:", searchPackage);
-
 let buildOrderSearch;
 
 async function loadSearchRecordBuilderIfItExists() {
+  const searchPackage = Reaction.getPackageSettings("reaction-search");
+
   if (typeof searchPackage === "object") {
+    Logger.debug("Found stock search-mongo (reaction-search) plugin.");
+
     ({ buildOrderSearch } = await import("/imports/plugins/included/search-mongo/server/methods/searchcollections"));
   } else {
     Logger.warn("Failed to load reaction-search plugin. Skipping building order search records on version migration " +

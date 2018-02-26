@@ -1,17 +1,16 @@
 import { Migrations } from "meteor/percolate:migrations";
-import { OrderSearch, AccountSearch, Packages } from "/lib/collections";
+import { OrderSearch, AccountSearch } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
-
-const searchPackage = Reaction.getPackageSettingsWithOptions("reaction-search");
-
-Logger.info("searchPackage:", searchPackage);
-Logger.info("WHERE U AT, PACKAGES?!?!?!", Packages.find().fetch());
 
 let buildOrderSearch;
 let buildAccountSearch;
 
 async function loadSearchRecordBuilderIfItExists() {
+  const searchPackage = Reaction.getPackageSettings("reaction-search");
+
   if (typeof searchPackage === "object") {
+    Logger.debug("Found stock search-mongo (reaction-search) plugin.");
+
     ({
       buildOrderSearch,
       buildAccountSearch
