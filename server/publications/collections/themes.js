@@ -6,6 +6,4 @@ import { Themes } from "/lib/collections";
  * @returns {Object} thtmes - themes cursor
  */
 
-Meteor.publish("Themes", () => {
-  return Themes.find({});
-});
+Meteor.publish("Themes", () => Themes.find({}));

@@ -41,6 +41,9 @@ function createShipmentQuotes(cartId, shopId, rates) {
     throw error;
   }
 
+  // Calculate discounts
+  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
+
   Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
 
   if (rates.length === 1 && rates[0].requestStatus === "error") {
@@ -105,6 +108,9 @@ function pruneShippingRecordsByShop(cart) {
         }
       );
     }
+
+    // Calculate discounts
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
   }
 }
 
@@ -117,12 +123,12 @@ function pruneShippingRecordsByShop(cart) {
  */
 function normalizeAddresses(cart) {
   if (cart.shipping && cart.shipping.length > 0) {
-    const shipping = cart.shipping;
+    const { shipping } = cart;
     const cartId = cart._id;
     let address; // we can only have one address so whatever was the last assigned
     shipping.forEach((shippingRecord) => {
       if (shippingRecord.address) {
-        address = shippingRecord.address;
+        ({ address } = shippingRecord);
       }
     });
     const shopIds = Object.keys(cart.getItemsByShop());
@@ -138,6 +144,8 @@ function normalizeAddresses(cart) {
         }
       };
       Cart.update(selector, update);
+      // Calculate discounts
+      Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
     });
   }
 }
@@ -165,6 +173,9 @@ function updateShipmentQuotes(cartId, rates, selector) {
     Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
     throw error;
   }
+
+  // Calculate discounts
+  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
 
   Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
 
@@ -230,6 +241,9 @@ function updateShippingRecordByShop(cart, rates) {
       throw error;
     }
 
+    // Calculate discounts
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
+
     Logger.debug(`Success updating rates for cart ${cartId}`, rates);
   });
   pruneShippingRecordsByShop(cart);
@@ -243,7 +257,7 @@ function updateShippingRecordByShop(cart, rates) {
  * @private
  */
 function getDefaultAddress(cart) {
-  const userId = cart.userId;
+  const { userId } = cart;
   const account = Accounts.findOne(userId);
   if (account && account.profile && account.profile.addressBook) {
     const address = account.profile.addressBook.find((addressEntry) => addressEntry.isShippingDefault === true);
@@ -336,9 +350,7 @@ export const methods = {
     }
 
     let newRates;
-    const didEveryShippingProviderFail = rates.every((shippingMethod) => {
-      return shippingMethod.requestStatus && shippingMethod.requestStatus === "error";
-    });
+    const didEveryShippingProviderFail = rates.every((shippingMethod) => shippingMethod.requestStatus && shippingMethod.requestStatus === "error");
     if (didEveryShippingProviderFail) {
       newRates = [{
         requestStatus: "error",
@@ -346,9 +358,7 @@ export const methods = {
         message: "All requests for shipping methods failed."
       }];
     } else {
-      newRates = rates.filter((shippingMethod) => {
-        return !(shippingMethod.requestStatus) || shippingMethod.requestStatus !== "error";
-      });
+      newRates = rates.filter((shippingMethod) => !(shippingMethod.requestStatus) || shippingMethod.requestStatus !== "error");
     }
 
     Logger.debug("getShippingRates returning rates", rates);

@@ -4,17 +4,15 @@ import { Cart, Orders } from "/lib/collections";
 import taxCalc from "../methods/taxCalc";
 
 function linesToTaxes(lines) {
-  const taxes = lines.map((line) => {
-    return {
-      lineNumber: line.lineNumber,
-      discountAmount: line.discountAmount,
-      taxable: line.isItemTaxable,
-      tax: line.tax,
-      taxableAmount: line.taxableAmount,
-      taxCode: line.taxCode,
-      details: line.details
-    };
-  });
+  const taxes = lines.map((line) => ({
+    lineNumber: line.lineNumber,
+    discountAmount: line.discountAmount,
+    taxable: line.isItemTaxable,
+    tax: line.tax,
+    taxableAmount: line.taxableAmount,
+    taxCode: line.taxCode,
+    details: line.details
+  }));
   return taxes;
 }
 
@@ -34,12 +32,10 @@ MethodHooks.after("taxes/calculate", (options) => {
         const taxAmount = taxes.reduce((totalTaxes, tax) => totalTaxes + tax.tax, 0);
         const taxRate = taxAmount / taxCalc.calcTaxable(cartToCalc);
         Meteor.call("taxes/setRate", cartId, taxRate, taxes);
+      } else if (result.error.errorCode === 503) {
+        Logger.error("timeout error: do nothing here");
       } else {
-        if (result.error.errorCode === 503) {
-          Logger.error("timeout error: do nothing here");
-        } else {
-          Logger.error("Unknown error", result.error.errorCode);
-        }
+        Logger.error("Unknown error", result.error.errorCode);
       }
     });
   }

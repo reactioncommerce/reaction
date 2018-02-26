@@ -15,7 +15,7 @@ export const methods = {
     if (!Reaction.hasPermission(connectorsRoles)) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
-    const [ topic, event, syncType ] = hook.name.split(":");
+    const [topic, event, syncType] = hook.name.split(":");
     const hookSetting = { topic, event, syncType };
     return Packages.update({
       "name": "reaction-connectors-shopify",
@@ -45,12 +45,11 @@ export const methods = {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
     check(hook, { name: String, checked: Boolean });
-    const [ topic, event, syncType ] = hook.name.split(":");
+    const [topic, event, syncType] = hook.name.split(":");
     const hookSetting = { topic, event, syncType };
     return Packages.update(
       { name: "reaction-connectors-shopify", shopId: Reaction.getShopId() },
-      { $pull: { "settings.synchooks": hookSetting }
-      }
+      { $pull: { "settings.synchooks": hookSetting } }
     );
   }
 };
