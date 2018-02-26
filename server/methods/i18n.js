@@ -10,7 +10,7 @@ Meteor.methods({
    * @method
    * @memberof i18n
    * @example Meteor.call("i18n/flushTranslations")
-   * @summary Method to remove all translations, and reload from jsonFiles
+   * @summary Method to remove all translations for the current shop, and reload from jsonFiles
    * @return {undefined}
    */
   "i18n/flushTranslations"() {
@@ -23,11 +23,11 @@ Meteor.methods({
   },
 
   /**
- * @name i18n/flushTranslations
+ * @name i18n/flushAllTranslations
  * @method
  * @memberof i18n
- * @example Meteor.call("i18n/flushTranslations")
- * @summary Method to remove all translations, and reload from jsonFiles
+ * @example Meteor.call("i18n/flushAllTranslations")
+ * @summary Method to remove all translations for all shops, and reload from jsonFiles
  * @return {undefined}
  */
   "i18n/flushAllTranslations"() {
