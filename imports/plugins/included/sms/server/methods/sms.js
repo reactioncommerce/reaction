@@ -20,9 +20,16 @@ async function lazyLoadNexmo() {
   Nexmo = mod.default;
 }
 
+/**
+ * formatPhoneNo
+ * @summary prepends country code to phone no. if required
+ * @param  {String} phone the original phone no.
+ * @param  {String} country the country code of the phone no.
+ * @return {String} the phone no. with country extension.
+ */
 function formatPhoneNo(phone, country) {
   try {
-    // Phone no. already has the country code attached
+    // phone no. already has the country code attached
     if (isValidNumber(phone)) {
       return phone;
     }
