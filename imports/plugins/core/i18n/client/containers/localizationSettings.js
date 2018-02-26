@@ -58,7 +58,7 @@ const wrapComponent = (Comp) => (
         });
       } else {
         Alerts.toast(i18next.t("admin.i18nSettings.reloadStarted", { defaultValue: "Reloading translations for the current shop." }), "info");
-        
+
         Meteor.call("i18n/flushTranslations", (error) => {
           if (!error) {
             Alerts.toast(i18next.t("admin.i18nSettings.reloadSuccess", { defaultValue: "Translations have been reloaded for the current shop." }), "success");
