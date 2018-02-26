@@ -64,7 +64,7 @@ class NotificationRoute extends Component {
         <div className="dropdown-notify notifications">
           { this.handleNoNotifications(notificationList) }
           { notificationList.map((notify, key) => {
-            const timeNow = moment && moment(notify.timeSent).fromNow() || notify.timeSent.toLocaleString();
+            const timeNow = (moment && moment(notify.timeSent).fromNow()) || notify.timeSent.toLocaleString();
             const read = `notification ${notify.status}`;
             const i18n = `notifications.messages.${notify.type}`;
             return (

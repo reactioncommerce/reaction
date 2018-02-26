@@ -13,14 +13,13 @@ async function lazyLoadSlugify() {
   } else if (slugify) {
     // if slugify/transliteration is loaded and no lang change
     return;
-  } else {
+  } else if (latinLangs.indexOf(lang) >= 0) {
     // if the shops language use latin based chars load slugify else load transliterations's slugify
-    if (latinLangs.indexOf(lang) >= 0) {
-      mod = await import("slugify");
-    } else {
-      mod = await import("transliteration");
-    }
+    mod = await import("slugify");
+  } else {
+    mod = await import("transliteration");
   }
+
   // slugify is exported to modules.default while transliteration is exported to modules.slugify
   slugify = mod.default || mod.slugify;
 }

@@ -110,7 +110,6 @@ mongo@1.4.3
 mongo-dev-server@1.1.0
 mongo-id@1.0.6
 mongo-livedata@1.0.12
-mrt:later@1.6.1
 npm-bcrypt@0.9.3
 npm-mongo@2.2.34
 oauth@1.2.1
@@ -156,6 +155,5 @@ twitter-oauth@1.2.0
 ui@1.0.13
 underscore@1.0.10
 url@1.2.0
-vsivsi:job-collection@1.4.0
 webapp@1.5.0
 webapp-hashing@1.0.9

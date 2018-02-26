@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Meteor } from "meteor/meteor";
 import SettingsComponent from "../components/settings";
 import { Packages } from "/lib/collections";
-import { Meteor } from "meteor/meteor";
-
 
 class RevisionSettingsContainer extends Component {
   constructor(props) {

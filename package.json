@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -19,6 +19,7 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
+    "@reactioncommerce/job-queue": "^1.0.4",
     "@babel/runtime": "7.0.0-beta.38",
     "@reactioncommerce/nodemailer": "^5.0.5",
     "accounting-js": "^1.1.1",
@@ -125,6 +126,7 @@
     "@babel/cli": "7.0.0-beta.38",
     "@babel/core": "7.0.0-beta.38",
     "@babel/preset-react": "7.0.0-beta.38",
+    "@reactioncommerce/eslint-config": "^1.0.1",
     "babel-eslint": "^8.2.1",
     "babel-jest": "^22.2.2",
     "babel-plugin-dynamic-import-node": "^1.2.0",
@@ -135,12 +137,12 @@
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
     "enzyme-to-json": "^3.3.1",
-    "eslint": "^4.17.0",
+    "eslint": "^4.18.1",
     "eslint-config-react-tools": "^1.1.2",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.12.1",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.6.1",
+    "eslint-plugin-react": "^7.7.0",
     "jest": "^22.3.0",
     "js-yaml": "^3.10.0",
     "jsdoc": "^3.5.5",
@@ -189,10 +191,7 @@
         }
       ]
     ],
-    "presets": [
-      "meteor",
-      "@babel/preset-react"
-    ]
+    "presets": []
   },
   "jest": {
     "moduleNameMapper": {
@@ -202,6 +201,18 @@
       "^meteor/aldeed:simple-schema": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
       "^meteor/tmeasday:publish-counts": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
       "^meteor/(.*)": "<rootDir>/imports/test-utils/__mocks__/meteor/$1"
+    }
+  },
+  "eslintConfig": {
+    "extends": "@reactioncommerce",
+    "globals": {
+      "Assets": true,
+      "Package": true,
+      "FS": true,
+      "Alerts": true
+    },
+    "settings": {
+      "import/resolver": "meteor"
     }
   }
 }

@@ -25,7 +25,7 @@ class OrderSummaryContainer extends Component {
   dateFormat = (context, block) => {
     const { moment } = this.props;
     const f = block || "MMM DD, YYYY hh:mm:ss A";
-    return moment && moment(context).format(f) || context.toLocaleString();
+    return (moment && moment(context).format(f)) || context.toLocaleString();
   }
 
   tracking = () => {

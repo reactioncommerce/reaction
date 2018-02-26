@@ -5,43 +5,61 @@ import { getComponent, registerComponent } from "@reactioncommerce/reaction-comp
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Template } from "meteor/templating";
 
-const CoreLayout = ({ actionViewIsOpen, structure }) => {
-  const { layoutHeader, layoutFooter, template } = structure || {};
+class CoreLayout extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const pageClassName = classnames({
-    "page": true,
-    "show-settings": actionViewIsOpen
-  });
+    const { structure } = this.props;
+    const { layoutHeader, layoutFooter } = structure || {};
 
-  const headerComponent = layoutHeader && getComponent(layoutHeader);
-  const footerComponent = layoutFooter && getComponent(layoutFooter);
+    const headerComponent = layoutHeader && getComponent(layoutHeader);
+    const footerComponent = layoutFooter && getComponent(layoutFooter);
 
-  let mainNode = null;
-  try {
-    const mainComponent = getComponent(template);
-    mainNode = React.createElement(mainComponent, {});
-  } catch (error) {
-    //  Probe for Blaze template (legacy)
-    if (Template[template]) {
-      mainNode = <Blaze template={template} />;
+    if (headerComponent) {
+      this.headerComponent = React.createElement(headerComponent, {});
+    }
+
+    if (footerComponent) {
+      this.footerComponent = React.createElement(footerComponent, {});
     }
   }
 
-  return (
-    <div className={pageClassName} id="reactionAppContainer">
+  render() {
+    const { actionViewIsOpen, structure } = this.props;
+    const { template } = structure || {};
 
-      {headerComponent && React.createElement(headerComponent, {})}
+    const pageClassName = classnames({
+      "page": true,
+      "show-settings": actionViewIsOpen
+    });
 
-      <Blaze template="cartDrawer" className="reaction-cart-drawer" />
+    let mainNode = null;
+    try {
+      const mainComponent = getComponent(template);
+      mainNode = React.createElement(mainComponent, {});
+    } catch (error) {
+    //  Probe for Blaze template (legacy)
+      if (Template[template]) {
+        mainNode = <Blaze template={template} />;
+      }
+    }
 
-      <main>
-        {mainNode}
-      </main>
+    return (
+      <div className={pageClassName} id="reactionAppContainer">
 
-      {footerComponent && React.createElement(footerComponent, {})}
-    </div>
-  );
-};
+        {this.headerComponent}
+
+        <Blaze template="cartDrawer" className="reaction-cart-drawer" />
+
+        <main>
+          {mainNode}
+        </main>
+
+        {this.footerComponent}
+      </div>
+    );
+  }
+}
 
 CoreLayout.propTypes = {
   actionViewIsOpen: PropTypes.bool,

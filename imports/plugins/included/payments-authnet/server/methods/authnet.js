@@ -54,12 +54,16 @@ const ValidCVV = Match.Where((x) => /^[0-9]{3,4}$/.test(x));
 Meteor.methods({
   authnetSubmit(transactionType = "authorizeTransaction", cardInfo, paymentInfo) {
     check(transactionType, String);
-    check(cardInfo, {
-      cardNumber: ValidCardNumber,
-      expirationYear: ValidExpireYear,
-      expirationMonth: ValidExpireMonth,
-      cvv2: ValidCVV
-    });
+    try {
+      check(cardInfo, {
+        cardNumber: ValidCardNumber,
+        expirationYear: ValidExpireYear,
+        expirationMonth: ValidExpireMonth,
+        cvv2: ValidCVV
+      });
+    } catch (error) {
+      throw new Meteor.Error("invalid-card-details", "Invalid card details");
+    }
     check(paymentInfo, {
       total: String,
       currency: String
@@ -91,9 +95,12 @@ Meteor.methods({
     } else {
       throw new Meteor.Error("invalid-transaction-type", "Invalid Transaction Type");
     }
-
-    const result = Promise.await(authResult);
-    return result;
+    try {
+      const result = Promise.await(authResult);
+      return result;
+    } catch (error) {
+      throw new Meteor.Error("auth-failed", error.message);
+    }
   },
 
   "authnet/payment/capture"(paymentMethod) {
