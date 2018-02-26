@@ -428,7 +428,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         handle2.stop();
       });
 
-      return [];
+      return this.ready();
     }
     // Revision control is disabled, but is admin
     return Products.find(newSelector, {
