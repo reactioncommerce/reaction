@@ -1,8 +1,8 @@
-import later from "later";
 import { Meteor } from "meteor/meteor";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
+
 
 export function setupFetchFlushCurrencyHooks() {
   // While we don't necessarily need to wait for anything to add a job
@@ -22,13 +22,23 @@ export function setupFetchFlushCurrencyHooks() {
           backoff: "exponential" // delay by twice as long for each subsequent retry
         })
         .repeat({
-          schedule: later.parse.text(refreshPeriod)
+          schedule: Jobs.later.parse.text(refreshPeriod)
         })
         .save({
           // Cancel any jobs of the same type,
           // but only if this job repeats forever.
           cancelRepeats: true
         });
+
+      // Run the first time immediately after server start. The repeat({schedule}) option via
+      // later.js scheduling won't run before the first scheduled time, even with delay() or after()
+      new Job(Jobs, "shop/fetchCurrencyRates", {})
+        .priority("normal")
+        .retry({
+          retries: 5,
+          wait: 10000
+        })
+        .save();
     } else {
       Logger.warn("OpenExchangeRates API not configured. Not adding fetchRates job");
     }
@@ -50,7 +60,7 @@ export function setupFetchFlushCurrencyHooks() {
           backoff: "exponential"
         })
         .repeat({
-          schedule: later.parse.text(refreshPeriod)
+          schedule: Jobs.later.parse.text(refreshPeriod)
         })
         .save({
           cancelRepeats: true
