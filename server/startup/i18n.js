@@ -1,7 +1,7 @@
 import fsModule from "fs";
 import path from "path";
 import util from "util";
-import { Assets } from "/lib/collections";
+import { Assets, Translations } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
 const fs = {
@@ -11,6 +11,7 @@ const fs = {
   stat: util.promisify(fsModule.stat)
 };
 
+const translationSources = [];
 const rawAssetsCollection = Assets.rawCollection();
 let bulkAssetOp;
 
@@ -41,14 +42,18 @@ export function loadTranslation(source) {
     const json = typeof source === "object" ? JSON.stringify(source) : source;
     const { i18n, ns } = content[0];
 
+    // Keep a record of all available translations for import later at a later time if using the
+    // reload translations icon button from the Internationalization settings panel
+    translationSources.push(source);
+
     bulkAssetOp
       .find({ type: "i18n", name: i18n, ns })
       .upsert()
       .update({ $set: { content: json } });
 
-    Logger.debug("Translation assets updated for ", ns);
+    Logger.debug("Translation assets bulk update prepared for ", ns);
   } catch (error) {
-    Logger.error("Failed to upsert translation asset", error);
+    Logger.error("Failed to prepare bulk upsert for translation assets", error);
   }
 }
 
@@ -109,20 +114,72 @@ export async function loadCoreTranslations() {
   }
 }
 
+/**
+ * Reload translations for all shops
+ * @return {undefined}
+*/
+export function reloadAllTranslations() {
+  // Clear assets for i18n
+  Assets.remove({ type: "i18n" });
+
+  // Remove translations for all shops
+  Translations.remove();
+
+  // Load translations from translation sources and prepare bulk op
+  loadTranslations(translationSources);
+
+  // Load translations
+  importAllTranslations();
+}
+
+/**
+ * Reload translations for specified shop
+ * @param {string} shopId - Shop Id to reset translations for
+ * @return {undefined}
+*/
+export function reloadTranslationsForShop(shopId) {
+  // Clear assets for i18n
+  Assets.remove({ type: "i18n" });
+
+  // Remove translations for the current shop
+  Translations.remove({ shopId });
+
+  // Load translations from translation sources and prepare bulk op
+  loadTranslations(translationSources);
+
+  // Load translations
+  importAllTranslations();
+}
+
 export function importAllTranslations() {
   Promise.await(loadCoreTranslations());
 
-  // Flush all the bulk Assets upserts created by calls to loadTranslations
-  Promise.await(flushTranslationLoad());
+  // Get count of all i18n assets
+  const i18nAssetCount = Assets.find({ type: "i18n" }).count();
 
-  // Then loop through those I18N assets and import them
-  Assets.find({ type: "i18n" }).forEach((t) => {
-    Logger.debug(`Importing ${t.name} translation for "${t.ns}"`);
-    if (t.content) {
-      Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
-    } else {
-      Logger.debug(`No translation content found for ${t.name} - ${t.ns} asset`);
-    }
-  });
-  Reaction.Import.flush();
+  // If we have no assets, then this is either a fresh start or
+  // the i18n assets were cleared. In either case, allow i18n translations
+  // to be loaded into Assets collection and subsequently into the Translation collection
+  if (i18nAssetCount === 0) {
+    // Flush all the bulk Assets upserts created by calls to loadTranslations
+    Promise.await(flushTranslationLoad());
+
+    Logger.debug("All translation assets updated");
+
+    // Then loop through those I18N assets and import them
+    Assets.find({ type: "i18n" }).forEach((t) => {
+      Logger.debug(`Importing ${t.name} translation for "${t.ns}"`);
+      if (t.content) {
+        Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
+      } else {
+        Logger.debug(`No translation content found for ${t.name} - ${t.ns} asset`);
+      }
+    });
+    Reaction.Import.flush();
+
+    Logger.debug("All translation imported into translations collection from Assets.");
+  } else {
+    bulkAssetOp = null;
+    Logger.debug("Cancel translation update. Translations have a already been imported.");
+  }
 }
