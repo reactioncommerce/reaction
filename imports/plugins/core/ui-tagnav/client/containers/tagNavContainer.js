@@ -349,6 +349,7 @@ const wrapComponent = (Comp) => (
         if (hasSubTags === false) {
           // click close button to make navbar left disappear
           this.props.closeNavbar();
+          Router.go("tag", { slug: tag.slug });
         } else {
           event.preventDefault();
         }
@@ -358,8 +359,9 @@ const wrapComponent = (Comp) => (
         } else if (hasSubTags) {
           this.setState({ selectedTag: TagNavHelpers.tagById(tagId, tags) });
         }
+      } else {
+        Router.go("tag", { slug: tag.slug });
       }
-      Router.go("tag", { slug: tag.slug });
     }
 
     handleEditButtonClick = () => {

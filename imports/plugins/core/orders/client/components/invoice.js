@@ -53,7 +53,7 @@ class Invoice extends Component {
   formatDate(context, block) {
     const { moment } = this.props;
     const dateFormat = block || "MMM DD, YYYY hh:mm:ss A";
-    return moment && moment(context).format(dateFormat) || context.toLocaleString();
+    return (moment && moment(context).format(dateFormat)) || context.toLocaleString();
   }
 
   /**

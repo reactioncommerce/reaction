@@ -68,7 +68,7 @@ class EmailTableColumn extends Component {
     }
     if (renderColumn === "updated") {
       const { moment } = this.props;
-      const createdDate = moment && moment(row.value).format("LLL") || row.value.toLocaleString();
+      const createdDate = (moment && moment(row.value).format("LLL")) || row.value.toLocaleString();
       return (
         <span>{createdDate}</span>
       );
