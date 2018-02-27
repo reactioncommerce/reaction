@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
 import { Reaction } from "/client/api";
 import { TextField, Button, IconButton, SortableTableLegacy } from "@reactioncommerce/reaction-ui";
 import ProductGridContainer from "/imports/plugins/included/product-variant/containers/productGridContainer";
@@ -20,6 +21,10 @@ class SearchModal extends Component {
     value: PropTypes.string
   }
 
+  state = {
+    activeTab: "products"
+  }
+
   isKeyboardAction(event) {
     // keyCode 32 (spacebar)
     // keyCode 13 (enter/return)
@@ -28,10 +33,12 @@ class SearchModal extends Component {
 
   handleToggleProducts = () => {
     this.props.handleToggle("products");
+    this.setState({ activeTab: "products" });
   }
 
   handleToggleAccounts = () => {
     this.props.handleToggle("accounts");
+    this.setState({ activeTab: "accounts" });
   }
 
   handleOnKeyUpToggleProducts = (event) => {
@@ -78,10 +85,20 @@ class SearchModal extends Component {
 
   renderSearchTypeToggle() {
     if (Reaction.hasPermission("admin")) {
+      const productTabClassName = classnames({
+        "search-type-option": true,
+        "search-type-active": this.state.activeTab === "products"
+      });
+
+      const accountsTabClassName = classnames({
+        "search-type-option": true,
+        "search-type-active": this.state.activeTab === "accounts"
+      });
+
       return (
         <div className="rui search-type-toggle">
           <button
-            className="search-type-option search-type-active"
+            className={productTabClassName}
             data-i18n="search.searchTypeProducts"
             data-event-action="searchCollection"
             data-event-value="products"
@@ -92,7 +109,7 @@ class SearchModal extends Component {
           </button>
           {Reaction.hasPermission("accounts") &&
             <button
-              className="search-type-option"
+              className={accountsTabClassName}
               data-i18n="search.searchTypeAccounts"
               data-event-action="searchCollection"
               data-event-value="accounts"
