@@ -44,7 +44,7 @@ class NavBar extends Component {
   }
 
   handleCloseSearchModal = () => {
-    this.setState({ searchModalOpen: false });    
+    this.setState({ searchModalOpen: false });
   }
 
   renderLanguage() {
