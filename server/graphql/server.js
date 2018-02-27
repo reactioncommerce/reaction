@@ -1,15 +1,5 @@
-const { GraphQLServer } = require("graphql-yoga");
+import { GraphQLServer } from "graphql-yoga";
+import { resolvers } from "./resolvers";
+import { typeDefs } from "./schemas";
 
-const typeDefs = `
-  type Query {
-    hello(name: String): String!
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: (_, { name }) => `Hello ${name || "World"}`
-  }
-};
-
-export const server = new GraphQLServer({ typeDefs, resolvers });
+export const server = new GraphQLServer({ resolvers, typeDefs });
