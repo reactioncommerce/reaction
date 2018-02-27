@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
 import { check } from "meteor/check";
 import { Reaction, Hooks } from "/server/api";
 
@@ -30,11 +31,16 @@ export const methods = {
     const cart = Collection.findOne(id);
     // The first record holds the selected billing address
     const billing = cart.billing[0];
+    const billingId = Random.id();
     const result = Collection.update({
       _id: id
     }, {
       $addToSet: {
-        billing: { ...billing, paymentMethod }
+        billing: {
+           ...billing,
+          _id: billingId,
+          paymentMethod
+        }
       }
     });
     // calculate discounts

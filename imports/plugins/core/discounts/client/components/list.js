@@ -81,6 +81,9 @@ function composer(props, onData) {
         code: billing.paymentMethod.code,
         discount: billing.paymentMethod.amount
       });
+      // Found discount payment method. break here for good measure, just in case there's another "code" payment method.
+      // Which I think can happen only if "cart/submitPayment" is executed multiple times, e.g. if DDP connection broke.
+      break;
     }
   }
 
