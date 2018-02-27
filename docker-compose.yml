@@ -1,7 +1,5 @@
 # This docker-compose file is used to run the reaction app in docker for development
 # The local files are mounted into the created container.
-# The `--allow-superuser` flag in the start `command` is required to allow Meteor run the app
-# in the container (as root user).
 # Usage: docker-compose up [-d]
 
 version: '3.4'
