@@ -28,7 +28,7 @@ Template.customTaxRates.onCreated(function () {
 Template.customTaxRates.helpers({
   editButton() {
     const instance = Template.instance();
-    const state = instance.state;
+    const { state } = instance;
     const isEditing = state.equals("isEditing", true);
     let editingId = state.get("editingId");
     // toggle edit state
@@ -82,9 +82,7 @@ Template.customTaxRates.helpers({
     // helper adds a class to every grid row
     //
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
-        return "tax-grid-row";
-      }
+      bodyCssClassName: () => "tax-grid-row"
     };
 
     // add i18n handling to headers
@@ -132,7 +130,7 @@ Template.customTaxRates.helpers({
     if (!selectedCountry) {
       return false;
     }
-    if ((shop !== null ? shop.locales.countries[selectedCountry].states : void 0) === null) {
+    if ((shop !== null ? shop.locales.countries[selectedCountry].states : undefined) === null) {
       return false;
     }
     const options = [];

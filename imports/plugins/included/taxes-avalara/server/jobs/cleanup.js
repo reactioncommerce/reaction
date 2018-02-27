@@ -1,9 +1,14 @@
-import moment from "moment";
 import { Meteor } from "meteor/meteor";
-import { Job } from "meteor/vsivsi:job-collection";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs, Logs } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import taxCalc from "../methods/taxCalc";
+
+let moment;
+async function lazyLoadMoment() {
+  if (moment) return;
+  moment = await import("moment");
+}
 
 /**
  * @summary Remove logs older than the configured number of days
@@ -11,6 +16,7 @@ import taxCalc from "../methods/taxCalc";
  * @returns {Number} results of remmoval query
  */
 function cleanupAvalaraJobs(callback) {
+  Promise.await(lazyLoadMoment());
   const pkgData = taxCalc.getPackageData();
   if (pkgData && pkgData.settings.avalara.enabled) {
     const saveDuration = pkgData.settings.avalara.logRetentionDuration;

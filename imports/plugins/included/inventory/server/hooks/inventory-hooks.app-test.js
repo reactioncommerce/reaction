@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { Inventory, Orders, Products }  from "/lib/collections";
+import { Inventory, Orders, Products } from "/lib/collections";
 import { Reaction } from "/server/api";
 import Fixtures from "/server/imports/fixtures";
 import { createCart } from "/server/imports/fixtures/cart";
@@ -47,16 +47,16 @@ describe("Inventory Hooks", function () {
   });
 
   function spyOnMethod(method, id) {
-    return sandbox.stub(Meteor.server.method_handlers, `cart/${method}`, function () {
-      check(arguments, [Match.Any]); // to prevent audit_arguments from complaining
+    return sandbox.stub(Meteor.server.method_handlers, `cart/${method}`, function (...args) {
+      check(args, [Match.Any]); // to prevent audit_arguments from complaining
       this.userId = id;
-      return originals[method].apply(this, arguments);
+      return originals[method].apply(this, args);
     });
   }
 
   it("should move allocated inventory to 'sold' when an order is created", function () {
-    sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-      check(arguments, [Match.Any]);
+    sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+      check(args, [Match.Any]);
       return true;
     });
     sandbox.stub(Reaction, "hasPermission", () => true);
@@ -92,8 +92,8 @@ describe("Inventory Hooks", function () {
   });
 
   it("should move allocated inventory to 'shipped' when an order is shipped", function (done) {
-    sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-      check(arguments, [Match.Any]);
+    sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+      check(args, [Match.Any]);
       return true;
     });
     sandbox.stub(Reaction, "hasPermission", () => true);

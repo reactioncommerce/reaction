@@ -57,7 +57,7 @@
         },
         "logs": {
           "headers": {
-            "emailLogs": "Registres de messagerie",
+            "emailLogs": "Historique de messagerie",
             "email": "Paramètres de messagerie",
             "subject": "Sujet",
             "sent": "Envoyé",
@@ -76,13 +76,13 @@
           "allFieldsRequired": "Tous les champs sont requis pour assurer un service personnalisé !",
           "portNaN": "Le port doit être un chiffre !",
           "connectionFailed": "La connexion a échoué !",
-          "saveAnyway": "Voulez-vous enregistrer les paramètres de toute façon ?",
+          "saveAnyway": "Voulez-vous enregistrer les paramètres quand même ?",
           "saveSuccess": "Paramètres de messagerie enregistrés.",
           "saveFailed": "Impossible de sauvegarder les paramètres de messagerie. {{error}}",
           "cantSendEmail": "Erreur de serveur: Vous ne pouvez pas envoyer une notification par e-mail.",
           "emailSent": "notification par courrier électronique envoyé.",
-          "addOrderEmailFailed": "L'ajout de courrier électronique à l'ordre a échoué",
-          "addCartEmailFailed": "Ajout d'un e-mail au panier échoué"
+          "addOrderEmailFailed": "L'ajout d'un e-mail à la commande a échoué",
+          "addCartEmailFailed": "L'ajout d'un e-mail au panier a échoué"
         }
       }
     }

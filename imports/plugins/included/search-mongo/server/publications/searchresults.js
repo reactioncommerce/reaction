@@ -61,48 +61,70 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
   const findTerm = {
     $and: [
       { shopId },
-      { $or: [
-        { _id: {
-          $regex: `^${regexSafeSearchTerm}`,
-          $options: "i"
-        } },
-        { userEmails: {
-          $regex: regexSafeSearchTerm,
-          $options: "i"
-        } },
-        { shippingName: {
-          $regex: regexSafeSearchTerm,
-          $options: "i"
-        } },
-        { billingName: {
-          $regex: regexSafeSearchTerm,
-          $options: "i"
-        } },
-        { billingCard: {
-          $regex: regexSafeSearchTerm,
-          $options: "i"
-        } },
-        { billingPhone: {
-          $regex: regexSafeSearchTerm,
-          $options: "i"
-        } },
-        { shippingPhone: {
-          $regex: regexSafeSearchTerm,
-          $options: "i"
-        } },
-        { "product.title": {
-          $regex: regexSafeSearchTerm,
-          $options: "i"
-        } },
-        { "variants.title": {
-          $regex: regexSafeSearchTerm,
-          $options: "i"
-        } },
-        { "variants.optionTitle": {
-          $regex: regexSafeSearchTerm,
-          $options: "i"
-        } }
-      ] }
+      {
+        $or: [
+          {
+            _id: {
+              $regex: `^${regexSafeSearchTerm}`,
+              $options: "i"
+            }
+          },
+          {
+            userEmails: {
+              $regex: regexSafeSearchTerm,
+              $options: "i"
+            }
+          },
+          {
+            shippingName: {
+              $regex: regexSafeSearchTerm,
+              $options: "i"
+            }
+          },
+          {
+            billingName: {
+              $regex: regexSafeSearchTerm,
+              $options: "i"
+            }
+          },
+          {
+            billingCard: {
+              $regex: regexSafeSearchTerm,
+              $options: "i"
+            }
+          },
+          {
+            billingPhone: {
+              $regex: regexSafeSearchTerm,
+              $options: "i"
+            }
+          },
+          {
+            shippingPhone: {
+              $regex: regexSafeSearchTerm,
+              $options: "i"
+            }
+          },
+          {
+            "product.title": {
+              $regex: regexSafeSearchTerm,
+              $options: "i"
+            }
+          },
+          {
+            "variants.title": {
+              $regex: regexSafeSearchTerm,
+              $options: "i"
+            }
+          },
+          {
+            "variants.optionTitle": {
+              $regex: regexSafeSearchTerm,
+              $options: "i"
+            }
+          }
+        ]
+      }
     ]
   };
   // Deletes the shopId field from "findTerm" for primary shop
@@ -125,24 +147,34 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
     const findTerm = {
       $and: [
         { shopId },
-        { $or: [
-          { emails: {
-            $regex: searchTerm,
-            $options: "i"
-          } },
-          { "profile.firstName": {
-            $regex: "^" + searchTerm + "$",
-            $options: "i"
-          } },
-          { "profile.lastName": {
-            $regex: "^" + searchTerm + "$",
-            $options: "i"
-          } },
-          { "profile.phone": {
-            $regex: "^" + searchPhone + "$",
-            $options: "i"
-          } }
-        ] }
+        {
+          $or: [
+            {
+              emails: {
+                $regex: searchTerm,
+                $options: "i"
+              }
+            },
+            {
+              "profile.firstName": {
+                $regex: `^${searchTerm}$`,
+                $options: "i"
+              }
+            },
+            {
+              "profile.lastName": {
+                $regex: `^${searchTerm}$`,
+                $options: "i"
+              }
+            },
+            {
+              "profile.phone": {
+                $regex: `^${searchPhone}$`,
+                $options: "i"
+              }
+            }
+          ]
+        }
       ]
     };
     // Deletes the shopId field from "findTerm" for primary shop
@@ -160,9 +192,7 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
 
 Meteor.publish("SearchResults", function (collection, searchTerm, facets, maxResults = 99) {
   check(collection, String);
-  check(collection, Match.Where((coll) => {
-    return _.includes(supportedCollections, coll);
-  }));
+  check(collection, Match.Where((coll) => _.includes(supportedCollections, coll)));
   check(searchTerm, Match.Optional(String));
   check(facets, Match.OneOf(Array, undefined));
   Logger.debug(`Returning search results on ${collection}. SearchTerm: |${searchTerm}|. Facets: |${facets}|.`);
