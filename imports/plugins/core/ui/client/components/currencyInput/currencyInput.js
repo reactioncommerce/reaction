@@ -10,7 +10,7 @@ class CurrencyInput extends TextField {
     super(props);
 
     this.state = {
-      value: formatPriceString(this.props.value),
+      value: formatPriceString(this.props.value, true),
       isEditing: false
     };
   }
@@ -33,10 +33,9 @@ class CurrencyInput extends TextField {
    * @return {void}
    */
   onChange = (event) => {
-    if (isNaN(event.target.value)) {
-      return;
+    if (!isNaN(event.target.value)) {
+      TextField.prototype.onChange.call(this, event);
     }
-    TextField.prototype.onChange.call(this, event);
   }
 
   /**
@@ -47,7 +46,7 @@ class CurrencyInput extends TextField {
    */
   onBlur = (event) => {
     this.setState({
-      value: formatPriceString(event.target.value),
+      value: formatPriceString(event.target.value, true),
       isEditing: false
     });
     TextField.prototype.onBlur.call(this, event);
