@@ -137,7 +137,7 @@ Meteor.methods({
     Reaction.setUserPreferences("reaction", "activeShopId", shopUser._id, shopUser._id);
     Collections.Accounts.update({ _id: shopUser._id }, {
       $set: {
-        shopId: shop._id,
+        shopId: shop._id
       },
       $addToSet: {
         groups: ownerGroup._id
