@@ -19,7 +19,7 @@ class CurrencyInput extends TextField {
    * @return {String} value for text input
    */
   get value() {
-    if (!this.state.isEditing && this.state && this.state.value) {
+    if (this.state && !this.state.isEditing && this.state.value) {
       return this.state.value;
     }
     return this.props.value || "";
