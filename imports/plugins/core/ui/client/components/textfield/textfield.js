@@ -10,6 +10,7 @@ class TextField extends Component {
   constructor(props) {
     super(props);
 
+    // will be used by the child class.
     this.onBlur = this.onBlur.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.onChange = this.onChange.bind(this);
