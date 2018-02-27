@@ -600,7 +600,7 @@ export function inviteShopOwner(options) {
     });
   }
 
-  const { shopId } = Meteor.call("shop/createShop", userId) || {};
+  Meteor.call("shop/createShop", userId);
   const primaryShop = Reaction.getPrimaryShop();
 
   // Compile Email with SSR
@@ -616,14 +616,6 @@ export function inviteShopOwner(options) {
   const currentUserName = getCurrentUserName(currentUser);
   // uses primaryShop's data (name, address etc) in email copy sent to new merchant
   const dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
-
-  Meteor.users.update(userId, {
-    $set: {
-      "services.password.reset": { token, email, when: new Date() },
-      name,
-      "profile.preferences.reaction.activeShopId": shopId
-    }
-  });
 
   Reaction.Email.send({
     to: email,
