@@ -6,7 +6,7 @@ import { Reaction } from "/client/api";
 
 class EditContainer extends Component {
   handleEditButtonClick = (event) => {
-    const props = this.props;
+    const { props } = this;
 
     if (this.props.onEditButtonClick) {
       const returnValue = this.props.onEditButtonClick(event, props);
@@ -34,7 +34,7 @@ class EditContainer extends Component {
   }
 
   handleVisibilityButtonClick = (event) => {
-    const props = this.props;
+    const { props } = this;
 
     if (this.props.onVisibilityButtonClick) {
       const returnValue = this.props.onVisibilityButtonClick(event, props);

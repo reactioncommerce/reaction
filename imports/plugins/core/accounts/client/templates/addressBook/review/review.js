@@ -10,7 +10,7 @@ Template.addressBookReview.onCreated(function () {
   const addressState = Session.get("addressState");
   this.state = new ReactiveDict();
   this.state.set("address", addressState.address);
-  this.state.set("originalAddress", addressState.address);  // use this to "revert" address changes
+  this.state.set("originalAddress", addressState.address); // use this to "revert" address changes
   this.state.set("validatedAddress", addressState.validatedAddress);
   this.state.set("formErrors", addressState.formErrors);
   this.state.set("fieldErrors", addressState.fieldErrors);
@@ -85,17 +85,31 @@ Template.addressBookReview.events({
       fieldErrors: {}
     };
     Session.set("addressState", addressState);
-    Meteor.call("accounts/addressBookAdd", address, (error, result) => {
-      if (error) {
-        Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
-        return false;
-      }
-      if (result) {
-        const addressBook = $(instance.firstNode).closest(".address-book");
-        addressBook.trigger($.Event("showMainView"));
-        return true;
-      }
-    });
+    if (address._id) {
+      Meteor.call("accounts/addressBookUpdate", address, (error, result) => {
+        if (error) {
+          Alerts.toast(i18next.t("addressBookEdit.somethingWentWrong", { err: error.message }), "error");
+          return false;
+        }
+        if (result) {
+          const addressBook = $(instance.firstNode).closest(".address-book");
+          addressBook.trigger($.Event("showMainView"));
+          return true;
+        }
+      });
+    } else {
+      Meteor.call("accounts/addressBookAdd", address, (error, result) => {
+        if (error) {
+          Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
+          return false;
+        }
+        if (result) {
+          const addressBook = $(instance.firstNode).closest(".address-book");
+          addressBook.trigger($.Event("showMainView"));
+          return true;
+        }
+      });
+    }
   },
   "click [data-event-action=cancelAddressEdit]"() {
     // set address back to original value before edits

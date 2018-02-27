@@ -11,35 +11,35 @@
         "dashboard": {
           "paypalLabel": "PayPal",
           "paypalTitle": "PayPal",
-          "paypalDescription": "paiements PayPal"
+          "paypalDescription": "Paiements PayPal"
         },
         "paymentMethod": {
           "expressLabel": "Express",
-          "creditCardLabel": "Carte de crédit"
+          "creditCardLabel": "Carte bancaire"
         },
         "paymentSettings": {
           "paypalLabel": "PayPal",
           "paypalSettingsLabel": "PayPal",
-          "paypalExpressCredentials": "Ne pas avoir un nom d'utilisateur PayPal, mot de passe et signature?",
-          "paypalExpressGetCredentialsHere": "Obtenez un ici.",
-          "paypalPayflowCredentials": "Ne pas avoir un ID client PayPal et secret",
+          "paypalExpressCredentials": "Vous n'avez pas de nom d'utilisateur PayPal, de mot de passe ni de signature ?",
+          "paypalExpressGetCredentialsHere": "Obtenez-les ici.",
+          "paypalPayflowCredentials": "Vous n'avez pas d'ID client ni de secret",
           "paypalPayflowGetCredentialsHere": "Obtenez-les ici."
         },
         "settings": {
           "saveSuccess": "Vos réglages ont été sauvegardés",
-          "saveFailed": "Il y a eu un problème lors de l'enregistrement de vos paramètres"
+          "saveFailed": "Un problème est survenu lors de l'enregistrement de vos paramètres"
         }
       },
       "checkout": {
         "completeYourOrder": "Complétez votre commande",
         "paymentMethod": {
           "expressButtonLabel": "Payer avec PayPal",
-          "expressNotConfigured": "Paypal Express n'a pas configuré.",
+          "expressNotConfigured": "Paypal Express n'est pas configuré.",
           "expressNotAvailable": "Paypal Express non disponible",
-          "submitting": "Soumission",
-          "invalidCard": "Oops! numéro de carte de crédit est invalide.",
-          "unknownError": "Oops! Une erreur inconnue s'est produite",
-          "resubmit": "Relancez paiement"
+          "submitting": "En cours de traitement",
+          "invalidCard": "Oups ! Le numéro de carte bancaire est invalide.",
+          "unknownError": "Oups ! Une erreur inconnue s'est produite",
+          "resubmit": "Retenter le paiement"
         }
       }
     }

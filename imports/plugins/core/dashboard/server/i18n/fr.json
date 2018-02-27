@@ -29,14 +29,14 @@
           }
         },
         "alerts": {
-          "shopGeneralSettingsSaved": "Paramètres généraux du magasin enregistrés.",
-          "shopGeneralSettingsFailed": "Echec de la mise à jour des paramètres généraux du magasin.",
-          "shopAddressSettingsSaved": "Les paramètres de l'adresse du magasin sont enregistrés.",
-          "shopAddressSettingsFailed": "Echec de la mise à jour des paramètres de l'adresse du magasin.",
-          "shopExternalServicesSettingsSaved": "Paramètres des services externes du magasin enregistrés.",
-          "shopExternalServicesSettingsFailed": "Echec de la mise à jour des paramètres des services externes du magasin.",
-          "shopOptionsSettingsSaved": "Options du magasin enregistrées.",
-          "shopOptionsSettingsFailed": "Echec de la mise à jour des options du magasin."
+          "shopGeneralSettingsSaved": "Paramètres généraux de la boutique enregistrés.",
+          "shopGeneralSettingsFailed": "Echec de la mise à jour des paramètres généraux de la boutique.",
+          "shopAddressSettingsSaved": "Les paramètres de l'adresse de la boutique sont enregistrés.",
+          "shopAddressSettingsFailed": "Echec de la mise à jour de l'adresse de la boutique.",
+          "shopExternalServicesSettingsSaved": "Paramètres des services externes de la boutique enregistrés.",
+          "shopExternalServicesSettingsFailed": "Echec de la mise à jour des paramètres des services externes de la boutique.",
+          "shopOptionsSettingsSaved": "Options de la boutique enregistrées.",
+          "shopOptionsSettingsFailed": "Echec de la mise à jour des options de la boutique."
         }
       }
     }

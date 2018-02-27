@@ -5,7 +5,6 @@ import _ from "lodash";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
 import { Components } from "@reactioncommerce/reaction-components";
-import { formatPriceString } from "/client/api";
 
 const fieldNames = [
   "title",
@@ -88,7 +87,7 @@ class VariantForm extends Component {
     // If the field is an array of field name
     if (Array.isArray(field) && field.length) {
       // Use the first field name
-      fieldName = field[0];
+      [fieldName] = field;
     } else {
       fieldName = field;
     }
@@ -106,7 +105,7 @@ class VariantForm extends Component {
     const fieldRef = this.refs[`${fieldName}Input`];
 
     if (fieldRef) {
-      const input = fieldRef.refs.input;
+      const { input } = fieldRef.refs;
       const isFieldValid = this.props.validation.isFieldValid(fieldName);
       const flashColor = isFieldValid ? "#f0fff4" : "#ffeeef";
 
@@ -189,13 +188,9 @@ class VariantForm extends Component {
     }
   }
 
-  handleVariantVisibilityToggle = (variant) => {
-    return this.props.onVisibilityButtonClick(variant);
-  }
+  handleVariantVisibilityToggle = (variant) => this.props.onVisibilityButtonClick(variant)
 
-  isExpanded = (groupName) => {
-    return this.state.expandedCard === groupName;
-  }
+  isExpanded = (groupName) => this.state.expandedCard === groupName
 
   renderTaxCodeField() {
     if (this.props.isProviderEnabled()) {
@@ -410,8 +405,8 @@ class VariantForm extends Component {
               <div className="col-sm-6">
                 <Components.TextField
                   i18nKeyLabel="productVariant.price"
-                  i18nKeyPlaceholder={formatPriceString("0.00")}
-                  placeholder={formatPriceString("0.00")}
+                  i18nKeyPlaceholder="0.00"
+                  placeholder="0.00"
                   label="Price"
                   name="price"
                   ref="priceInput"
@@ -422,13 +417,14 @@ class VariantForm extends Component {
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
                   validation={this.props.validation}
+                  isCurrency
                 />
               </div>
               <div className="col-sm-6">
                 <Components.TextField
                   i18nKeyLabel="productVariant.compareAtPrice"
-                  i18nKeyPlaceholder={formatPriceString("0.00")}
-                  placeholder={formatPriceString("0.00")}
+                  i18nKeyPlaceholder="0.00"
+                  placeholder="0.00"
                   label="Compare At Price"
                   name="compareAtPrice"
                   ref="compareAtPriceInput"
@@ -437,6 +433,7 @@ class VariantForm extends Component {
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
                   validation={this.props.validation}
+                  isCurrency
                 />
               </div>
             </div>
@@ -646,8 +643,8 @@ class VariantForm extends Component {
               <div className="col-sm-6">
                 <Components.TextField
                   i18nKeyLabel="productVariant.price"
-                  i18nKeyPlaceholder={formatPriceString("0.00")}
-                  placeholder={formatPriceString("0.00")}
+                  i18nKeyPlaceholder="0.00"
+                  placeholder="0.00"
                   label="Price"
                   name="price"
                   ref="priceInput"
@@ -660,13 +657,14 @@ class VariantForm extends Component {
                   validation={this.props.validation}
                   helpText={"Purchase price"}
                   i18nKeyHelpText={"admin.helpText.price"}
+                  isCurrency
                 />
               </div>
               <div className="col-sm-6">
                 <Components.TextField
                   i18nKeyLabel="productVariant.compareAtPrice"
-                  i18nKeyPlaceholder={formatPriceString("0.00")}
-                  placeholder={formatPriceString("0.00")}
+                  i18nKeyPlaceholder="0.00"
+                  placeholder="0.00"
                   label="Compare At Price"
                   name="compareAtPrice"
                   ref="compareAtPriceInput"
@@ -677,6 +675,7 @@ class VariantForm extends Component {
                   validation={this.props.validation}
                   helpText={"Original price or MSRP"}
                   i18nKeyHelpText={"admin.helpText.compareAtPrice"}
+                  isCurrency
                 />
               </div>
             </div>

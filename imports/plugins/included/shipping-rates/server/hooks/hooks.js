@@ -70,7 +70,7 @@ function getShippingRates(previousQueryResults, cart) {
   let merchantShippingRates = false;
   const marketplaceSettings = Reaction.getMarketplaceSettings();
   if (marketplaceSettings && marketplaceSettings.enabled) {
-    merchantShippingRates = marketplaceSettings.public.merchantShippingRates;
+    ({ merchantShippingRates } = marketplaceSettings.public);
   }
 
   let pkgData;
@@ -107,7 +107,7 @@ function getShippingRates(previousQueryResults, cart) {
       }
     }
     // if we have multiple shops in cart
-    if ((shops !== null ? shops.length : void 0) > 0) {
+    if ((shops !== null ? shops.length : undefined) > 0) {
       selector = {
         "shopId": {
           $in: shops

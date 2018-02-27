@@ -100,7 +100,7 @@ export function getProduct() {
 export function getProducts(limit = 2) {
   const products = [];
   const existingProducts = Products.find({}, { limit }).fetch();
-  for (let i = 0; i < limit; i = i + 1) {
+  for (let i = 0; i < limit; i += 1) {
     const product = existingProducts[i] || Factory.create("product");
     products.push(product);
   }

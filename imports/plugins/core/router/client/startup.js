@@ -37,7 +37,7 @@ Meteor.startup(() => {
       //  Otherwise initBrowserRouter is called twice each time a subscription becomes "ready"
       Tracker.nonreactive(() => {
         // Make sure we have shops before we try to make routes for them
-        if (Array.isArray(shops) && shops.length)  {
+        if (Array.isArray(shops) && shops.length) {
           initBrowserRouter();
         }
       });
@@ -55,7 +55,7 @@ Meteor.startup(() => {
     const shops = Shops.find({}).fetch();
 
     if (Meteor.loggingIn() === false && Router._routes.length > 0) {
-      if (Array.isArray(shops) && shops.length)  {
+      if (Array.isArray(shops) && shops.length) {
         initBrowserRouter();
       }
     }

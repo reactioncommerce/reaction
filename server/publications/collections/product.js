@@ -97,7 +97,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     return this.ready();
   }
 
-  const _id = product._id;
+  const { _id } = product;
 
   selector.isVisible = true;
   selector.isDeleted = { $in: [null, false] };
@@ -170,7 +170,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
 
     // Revision control is disabled, but is an admin
     const productCursor = Products.find(selector);
-    const productIds = productCursor.map(p => p._id);
+    const productIds = productCursor.map((p) => p._id);
     const mediaCursor = findProductMedia(this, productIds);
     return [
       productCursor,
@@ -180,7 +180,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
 
   // Everyone else gets the standard, visible products and variants
   const productCursor = Products.find(selector);
-  const productIds = productCursor.map(p => p._id);
+  const productIds = productCursor.map((p) => p._id);
   const mediaCursor = findProductMedia(this, productIds);
   return [
     productCursor,

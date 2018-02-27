@@ -14,7 +14,7 @@ import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { MetaData } from "/lib/api/router/metadata";
 import { Router } from "../lib";
 
-const history = Router.history;
+const { history } = Router;
 
 class BrowserRouter extends Component {
   static propTypes = {
@@ -36,23 +36,19 @@ class BrowserRouter extends Component {
     if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
   }
 
-  handleLocationChange = location => {
+  handleLocationChange = (location) => {
     // Find all matching paths
-    let foundPaths = Router.routes.filter((pathObject) => {
-      return matchPath(location.pathname, {
-        path: pathObject.route,
-        exact: true
-      });
-    });
+    let foundPaths = Router.routes.filter((pathObject) => matchPath(location.pathname, {
+      path: pathObject.route,
+      exact: true
+    }));
 
     // If no matching path is found, fetch the not-found route definition
     if (foundPaths.length === 0 && location.pathname !== "not-found") {
-      foundPaths = Router.routes.filter((pathObject) => {
-        return matchPath("/not-found", {
-          path: pathObject.route,
-          exact: true
-        });
-      });
+      foundPaths = Router.routes.filter((pathObject) => matchPath("/not-found", {
+        path: pathObject.route,
+        exact: true
+      }));
     }
 
     // If we have a found path, take the first match
@@ -72,7 +68,7 @@ class BrowserRouter extends Component {
     }
 
     // Get serach (query) string from current location
-    let search = location.search;
+    let { search } = location;
 
     // Remove the ? if it exists at the beginning
     if (typeof search === "string" && search.startsWith("?")) {
@@ -122,6 +118,7 @@ class BrowserRouter extends Component {
       Router.Hooks.run("onEnter", "GLOBAL", routeData);
       Router.Hooks.run("onEnter", currentRoute.name, routeData);
     }
+    MetaData.init(routeData);
   }
 
   render() {

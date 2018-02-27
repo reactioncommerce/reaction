@@ -129,7 +129,7 @@ function composer(props, onData) {
         documentIds: props.documentIds,
         documents: props.documents,
         revisions,
-        isPreview: viewAs === "customer" ? true : false
+        isPreview: viewAs === "customer"
       });
 
       return;
@@ -138,7 +138,7 @@ function composer(props, onData) {
 
   onData(null, {
     isEnabled: isRevisionControlEnabled(),
-    isPreview: viewAs === "customer" ? true : false
+    isPreview: viewAs === "customer"
   });
 }
 

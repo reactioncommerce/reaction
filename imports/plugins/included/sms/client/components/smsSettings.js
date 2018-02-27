@@ -48,8 +48,7 @@ class SmsSettings extends Component {
 
 
   render() {
-    const settings = this.state.settings;
-    const isSaving = this.state.isSaving;
+    const { settings, isSaving } = this.state;
 
     const smsProviders = [{
       label: "Twilio", value: "twilio"
