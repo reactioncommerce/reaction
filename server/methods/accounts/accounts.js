@@ -617,6 +617,13 @@ export function inviteShopOwner(options) {
   // uses primaryShop's data (name, address etc) in email copy sent to new merchant
   const dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
 
+  Meteor.users.update(userId, {
+    $set: {
+      "services.password.reset": { token, email, when: new Date() },
+      name,
+    }
+  });
+
   Reaction.Email.send({
     to: email,
     from: `${_.get(dataForEmail, "primaryShop.name")} <${_.get(dataForEmail, "primaryShop.emails[0].address")}>`,
