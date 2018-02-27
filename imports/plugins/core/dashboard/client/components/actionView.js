@@ -19,6 +19,7 @@ import { getComponent } from "@reactioncommerce/reaction-components";
 const getStyles = (props) => {
   const minWidth = Math.min(props.viewportWidth, 400);
   let viewSize = minWidth;
+  let viewMaxSize = "400px";
   const actionView = props.actionView || {};
   const provides = actionView.provides || [];
   // legacy provides could be a string, is an array since 1.5.0, check for either.
@@ -27,6 +28,7 @@ const getStyles = (props) => {
                     (provides.includes("shortcut") && actionView.container === "dashboard");
   if (isBigView) {
     viewSize = "90vw";
+    viewMaxSize = "100%";
   }
 
   if (actionView.meta && actionView.meta.actionView) {
@@ -36,12 +38,15 @@ const getStyles = (props) => {
 
     if (isSmView) {
       viewSize = `${minWidth}px`;
+      viewMaxSize = `${minWidth}px`;
     }
     if (isMdView) {
       viewSize = "50vw";
+      viewMaxSize = "50vw";
     }
     if (isLgView) {
       viewSize = "90vw";
+      viewMaxSize = "90vw";
     }
   }
 
@@ -51,17 +56,25 @@ const getStyles = (props) => {
 
   return {
     base: {
-      display: "flex",
-      flexDirection: "row",
-      height: "100vh",
-      position: "relative",
-      width: viewSize,
-      boxShadow: isBigView ? "0 0 40px rgba(0,0,0,.1)" : "",
-      flex: "0 0 auto",
-      backgroundColor: "white",
-      overflow: "hidden",
-      transition: "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
-      zIndex: 1050
+      "display": "flex",
+      "flexDirection": "row",
+      "height": "100vh",
+      "position": "relative",
+      "width": viewSize,
+      "maxWidth": viewMaxSize,
+      "boxShadow": isBigView ? "0 0 40px rgba(0,0,0,.1)" : "",
+      "flex": "0 0 auto",
+      "backgroundColor": "white",
+      "overflow": "hidden",
+      "transition": "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
+      "zIndex": 1050,
+      "@media only screen and (max-width: 949px)": {
+        width: "auto",
+        maxWidth: "100%"
+      },
+      "@media only screen and (max-width: 767px)": {
+        maxWidth: "100%"
+      }
     },
     header: {
       display: "flex",
@@ -86,9 +99,14 @@ const getStyles = (props) => {
       WebkitOverflowScrolling: "touch"
     },
     masterViewPanel: {
-      display: "flex",
-      flexDirection: "column",
-      flex: "1 1 auto"
+      "display": "flex",
+      "flexDirection": "column",
+      "flex": "1 1 auto",
+      "maxWidth": viewMaxSize,
+      "@media only screen and (max-width: 949px)": {
+        width: "100vw",
+        maxWidth: "100%"
+      }
     },
     masterView: {
       flex: "1 1 auto",
@@ -100,7 +118,7 @@ const getStyles = (props) => {
       "display": "flex",
       "flexDirection": "column",
       "flex": "1 1 auto",
-      "maxWidth": "400px",
+      "maxWidth": viewMaxSize,
       "height": "100vh",
       "backgroundColor": "white",
       "borderRight": "1px solid #ccc",

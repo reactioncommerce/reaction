@@ -26,7 +26,7 @@
           "optionOrdersCreateUpdateInventory": "Atualize inventário quando o novo pedido Shopify for colocado",
           "syncSetup": "Sincronização de instalação",
           "syncSetupSuccess": "Configurar com sucesso Shopify sync",
-          "syncSetupFailure": "Configuração do erro Shoify sync",
+          "syncSetupFailure": "Configuração do erro Shopify sync",
           "syncStop": "Parar sincronização",
           "syncStopSuccess": "Acerta com êxito Shopify sync!",
           "syncStopFailure": "Parada de erro Shopify sync!",

@@ -19,3 +19,5 @@ import "./templates/workflow/workflow.js";
 
 import "./templates/orders.html";
 import "./templates/orders.js";
+
+export { ProductImage } from "./components/productImage";

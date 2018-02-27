@@ -6,7 +6,6 @@ import { Accounts } from "meteor/accounts-base";
 import { Random } from "meteor/random";
 import { Reaction } from "/client/api";
 import UpdatePasswordOverlay from "../components/updatePasswordOverlay";
-import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { LoginFormValidation } from "/lib/api";
 
 const wrapComponent = (Comp) => (
@@ -109,19 +108,17 @@ const wrapComponent = (Comp) => (
 
     render() {
       return (
-        <TranslationProvider>
-          <Comp
-            uniqueId={this.props.uniqueId}
-            loginFormMessages={this.formMessages}
-            onError={this.hasError}
-            messages={this.state.formMessages}
-            onFormSubmit={this.handleFormSubmit}
-            onCancel={this.handleFormCancel}
-            isOpen={this.state.isOpen}
-            isDisabled={this.state.isDisabled}
-            type={this.props.type}
-          />
-        </TranslationProvider>
+        <Comp
+          uniqueId={this.props.uniqueId}
+          loginFormMessages={this.formMessages}
+          onError={this.hasError}
+          messages={this.state.formMessages}
+          onFormSubmit={this.handleFormSubmit}
+          onCancel={this.handleFormCancel}
+          isOpen={this.state.isOpen}
+          isDisabled={this.state.isDisabled}
+          type={this.props.type}
+        />
       );
     }
   }

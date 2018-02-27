@@ -25,23 +25,46 @@ const wrapComponent = (Comp) => (
 
     constructor(props) {
       super(props);
-
       this.state = {
         status: null,
         error: null
       };
     }
 
-    componentWillMount() {
+    componentDidMount() {
+      this._isMounted = true;
+      this.checkEmailStatus();
+    }
+
+    componentWillReceiveProps(nextProps) {
+      const { settings } = this.props;
+      const { settings: nextSettings } = nextProps;
+      // if the email settings do not match check the email status
+      if (JSON.stringify(settings) !== JSON.stringify(nextSettings)) {
+        this.checkEmailStatus();
+      } else {
+        return;
+      }
+    }
+
+    componentWillUnmount() {
+      this._isMounted = false;
+    }
+
+    // checking email settings
+    // and updating status
+    checkEmailStatus() {
       const { settings } = this.props;
       const { service, host, port, user, password } = settings;
 
       if (service && host && port && user && password) {
         Meteor.call("email/verifySettings", (error) => {
+          if (!this._isMounted) return;
           if (error) {
             this.setState({ status: "error" });
+          } else {
+            this.setState({ status: "valid" });
           }
-          this.setState({ status: "valid" });
         });
       } else {
         this.setState({ status: "error" });
