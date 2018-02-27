@@ -30,7 +30,6 @@ class OrdersList extends Component {
                 key={orderKey}
                 shops={order.shops}
                 order={order.order}
-                orderId={order.orderId}
                 orderSummary={order.orderSummary}
                 paymentMethods={order.paymentMethods}
                 productImages={order.productImages}

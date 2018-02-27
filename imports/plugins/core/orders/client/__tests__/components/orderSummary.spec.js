@@ -1,9 +1,7 @@
-jest.mock("/imports/plugins/core/ui/client/components", () => {
-  return {
-    Badge() { return null; },
-    ClickToCopy() { return null; }
-  };
-});
+jest.mock("/imports/plugins/core/ui/client/components", () => ({
+  Badge() { return null; },
+  ClickToCopy() { return null; }
+}));
 
 import React from "react";
 import { shallow } from "enzyme";
@@ -36,7 +34,8 @@ test("OrderSummary snapshot test", () => {
       status: "new"
     },
     billing: [
-      { paymentMethod: {},
+      {
+        paymentMethod: {},
         invoice: {}
       }
     ]

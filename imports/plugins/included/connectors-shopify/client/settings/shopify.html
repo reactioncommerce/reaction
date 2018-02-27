@@ -46,13 +46,21 @@
     {{else}}
       <form data-event-action="setupShopifySync">
         <div>
-          <input type="checkbox" name="webhooks:orders/create:updateInventory" {{integrationIsActive
+          <input type="checkbox" name="orders/create:updateInventory" {{integrationIsActive
             "orders/create:updateInventory"}}/>
           <label for="optionOrdersCreateUpdateInventory">
             <span data-i18n="admin.shopifyConnectSettings.optionOrdersCreateUpdateInventory">
               Update Inventory on Shopify Order
             </span>
           </label>
+        </div>
+        <div>
+          <label for="webhooksDomain" id="webhooksDomainLabel" data-i18n="admin.shopifyConnectSettings.webhooksDomain">
+              Webhook callback domain
+          </label>
+          <div>
+            <input type="text" name="webhooksDomain" id="webhooksDomain" value= {{ currentDomain }} />
+          </div>
         </div>
         <button type="submit" class="btn btn-default" data-event-action="setupShopifySync">
           <i class="fa fa-exchange"></i> <span data-i18n="admin.shopifyConnectSettings.syncSetup">Setup Sync</span>

@@ -26,7 +26,7 @@
           "optionOrdersCreateUpdateInventory": "Frissítse a készletet, amikor új Shopify megrendelést helyeznek el",
           "syncSetup": "Beállítás szinkronizálása",
           "syncSetupSuccess": "A Shopify szinkronizálás sikeres beállítása",
-          "syncSetupFailure": "Hiba történt a Shoify szinkronizálás beállításakor",
+          "syncSetupFailure": "Hiba történt a Shopify szinkronizálás beállításakor",
           "syncStop": "Stop szinkronizálás",
           "syncStopSuccess": "Sikeresen leállt Shopify szinkron!",
           "syncStopFailure": "Hiba történt a Shopify szinkronizálás megállításában!",

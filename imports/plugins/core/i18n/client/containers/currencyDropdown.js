@@ -10,12 +10,8 @@ const handlers = {
   handleChange(value) {
     const currency = value.split(" ");
     const currencyName = currency[0];
-    //
-    // this is a sanctioned use of Meteor.user.update
-    // and only possible because we allow it in the
-    // UserProfile and ShopMembers publications.
-    //
-    Accounts.update(Meteor.userId(), { $set: { "profile.currency": currencyName } });
+    // update Accounts with the selected currency
+    Meteor.call("accounts/setProfileCurrency", currencyName);
 
     const cart = Cart.findOne({ userId: Meteor.userId() });
 
@@ -54,11 +50,11 @@ const composer = (props, onData) => {
       const locale = Reaction.Locale.get();
 
       if (profileCurrency && shop.currencies[profileCurrency] && shop.currencies[profileCurrency].symbol) {
-        currentCurrency = profileCurrency + " " + shop.currencies[profileCurrency].symbol;
+        currentCurrency = `${profileCurrency} ${shop.currencies[profileCurrency].symbol}`;
       } else if (locale && locale.currency && locale.currency.enabled) {
-        currentCurrency = locale.locale.currency.split(",")[0] + " " + locale.currency.symbol;
+        currentCurrency = `${locale.locale.currency.split(",")[0]} ${locale.currency.symbol}`;
       } else {
-        currentCurrency = shop.currency.split(",")[0] + " " + shop.currencies[shop.currency].symbol;
+        currentCurrency = `${shop.currency.split(",")[0]} ${shop.currencies[shop.currency].symbol}`;
       }
     }
 

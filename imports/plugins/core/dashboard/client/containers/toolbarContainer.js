@@ -4,7 +4,7 @@ import { Session } from "meteor/session";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
 import { Tags, Shops } from "/lib/collections";
-import { TranslationProvider, AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
+import { AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 
 const handleAddProduct = () => {
@@ -97,11 +97,9 @@ function composer(props, onData) {
 export default function ToolbarContainer(Comp) {
   function CompositeComponent(props) {
     return (
-      <TranslationProvider>
-        <AdminContextProvider>
-          <Comp {...props} />
-        </AdminContextProvider>
-      </TranslationProvider>
+      <AdminContextProvider>
+        <Comp {...props} />
+      </AdminContextProvider>
     );
   }
 

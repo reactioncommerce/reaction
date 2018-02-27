@@ -26,7 +26,7 @@
           "optionOrdersCreateUpdateInventory": "Cập nhật Hàng tồn kho khi đặt hàng Shopify mới",
           "syncSetup": "Đồng bộ hóa cài đặt",
           "syncSetupSuccess": "Thiết lập Shopify sync thành công",
-          "syncSetupFailure": "Lỗi cài đặt đồng bộ hóa Shoify",
+          "syncSetupFailure": "Lỗi cài đặt đồng bộ hóa Shopify",
           "syncStop": "Ngừng đồng bộ hóa",
           "syncStopSuccess": "Đã dừng đồng bộ hóa Shopify thành công!",
           "syncStopFailure": "Lỗi khi dừng Shopify sync!",

@@ -10,7 +10,8 @@ Reaction.registerPackage({
     password: "",
     sharedSecret: "",
     shopName: "",
-    webhooks: []
+    webhooks: [],
+    webhooksDomain: ""
   },
   registry: [{
     label: "Shopify Connect Settings",

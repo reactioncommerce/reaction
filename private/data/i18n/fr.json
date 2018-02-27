@@ -8,7 +8,7 @@
         "select": "Sélectionner la langue"
       },
       "currencies": {
-        "select": "Sélectionnez la devise"
+        "select": "Sélectionner la devise"
       },
       "admin": {
         "shortcut": {
@@ -38,12 +38,12 @@
           "utilities": "Services"
         },
         "settings": {
-          "accountSettingsLabel": "Paramètres du compte",
-          "accountSettingsTitle": "services de connexion",
-          "accountSettingsDescription": "Authentification par des prestataires sociaux",
+          "accountSettingsLabel": "Comptes externes",
+          "accountSettingsTitle": "Services de connexion",
+          "accountSettingsDescription": "Connexion aux réseaux sociaux",
           "saveSuccess": "Paramètres mis à jour.",
           "saveFailed": "Impossible de mettre à jour les paramètres.",
-          "addShopMemberLabel": "Ajouter un magasin membre",
+          "addShopMemberLabel": "Ajouter un compte employé",
           "permissionsSettingsLabel": "Autorisations",
           "localizationAndI18NLabel": "Localisation et i18n"
         },
@@ -52,13 +52,13 @@
         }
       },
       "accounts": {
-        "addMember": "Ajouter un membre",
-        "shopMembers": "Magasins membres",
+        "addMember": "Ajouter un employé",
+        "shopMembers": "Employés",
         "guests": "Invités"
       },
       "app": {
         "add": "Ajouter",
-        "editMode": "Editer le mode",
+        "editMode": "Mode édition",
         "createContent": "Créer du contenu",
         "auto": "Auto",
         "save": "Enregistrer",
@@ -84,7 +84,7 @@
         "updateSettings": "Paramètres de mise à jour",
         "monthOptions": "Sélectionner un mois",
         "yearOptions": "Sélectionner une année",
-        "shopSettings": "Paramètres du magasin",
+        "shopSettings": "Paramètres de la boutique",
         "dashboard": "Tableau de bord",
         "print": "Imprimer",
         "notFound": "La page est introuvable.",
@@ -94,21 +94,21 @@
         "productNotFound": "Ce produit est introuvable.",
         "loadMoreProducts": "Charger plus de produits",
         "noProductsFound": "Aucun produit trouvé.",
-        "private": "Privé",
-        "public": "Publique",
+        "private": "Invisible",
+        "public": "Visible",
         "shortcut": {
-          "addProductLabel": "Ajouter le produit",
+          "addProductLabel": "Ajouter un produit",
           "accountsLabel": "Comptes"
         }
       },
       "searchSettings": {
         "productSearchSettings": {
-          "panelTitle": "Recherche de produit",
+          "panelTitle": "Recherche de produits",
           "includeTitle": "Inclure un titre",
           "includeDescription": "Inclure la description",
           "includePageTitle": "Inclure le titre de la page",
           "includeDetails": "Inclure une description",
-          "includeVendor": "Inclure le vendeur"
+          "includeVendor": "Inclure la marque"
         },
         "orderSearchSettings": {
           "panelTitle": "Paramètres de recherche de la commande"
@@ -125,17 +125,17 @@
         "options": "Options",
         "paymentMethods": "Méthodes de paiement",
         "externalServices": "Services externes",
-        "shopLocalizationSettingsSaved": "Paramètres de localisation du magasin enregistrés.",
-        "shopLocalizationSettingsFailed": "Echec de la mise à jour des paramètres de localisation du magasin.",
-        "shopPaymentMethodsSaved": "Modalités de paiement enregistrées.",
-        "shopPaymentMethodsFailed": "Echec de la mise à jour des paramètres de mode de paiement du magasin."
+        "shopLocalizationSettingsSaved": "Paramètres de localisation de la boutique enregistrés.",
+        "shopLocalizationSettingsFailed": "Echec de la mise à jour des paramètres de localisation de la boutique.",
+        "shopPaymentMethodsSaved": "Moyens de paiement enregistrées.",
+        "shopPaymentMethodsFailed": "Echec de la mise à jour des moyens de paiement de la boutique."
       },
       "notifications": {
         "body": {
           "noNotifications": "Il n’y pas pas de notifications",
           "markAllAsRead": "Il n'y a pas de notifications",
-          "recent": "Récent",
-          "viewAll": "Voir tous les"
+          "recent": "Récentes",
+          "viewAll": "Tout voir"
         },
         "messages": {
           "orderCanceled": "Votre commande a été annulée.",
@@ -157,7 +157,7 @@
         "tagsAdd": "Ajouter un tag",
         "tagExists": "Le tag est vide ou existe déjà.",
         "tagInUse": "Le tag est utilisé et ne peut pas être supprimé.",
-        "dropFiles": "Déposer des fichiers à télécharger.",
+        "dropFiles": "Déposer des fichiers à uploader.",
         "addInventory": "Ajouter l'inventaire",
         "barcode": "Code-barres",
         "confirmDeleteBarcode": "Êtes-vous certain de vouloir supprimer le code-barres",
@@ -296,12 +296,12 @@
         "selected": "Choisi"
       },
       "cartDrawer": {
-        "empty": "Nous sommes désolés. Votre panier est vide.",
-        "keepShopping": "Poursuivre les achats",
-        "checkout": "Payer maintenant",
+        "empty": "Quel dommage ! Votre panier est vide.",
+        "keepShopping": "Continuer les achats",
+        "checkout": "Passer commande",
         "new": "Nouveau",
         "coreOrderWorkflow/created": "Créé",
-        "coreOrderWorkflow/processing": "Traitement",
+        "coreOrderWorkflow/processing": "En cours de traitement",
         "coreOrderWorkflow/completed": "Complété",
         "coreOrderWorkflow/canceled": "Annulé",
         "coreOrderWorkflow/picked": "Choisi",
@@ -328,8 +328,8 @@
         "invoice": "Facture",
         "ordersNotFound": "Aucune commande trouvée",
         "approveInvoice": "Approuver",
-        "cancelOrderLabel": "annuler la commande",
-        "makeAdjustments": "Faire les ajustements",
+        "cancelOrderLabel": "Annuler la commande",
+        "makeAdjustments": "Faire des ajustements",
         "capturePayment": "Paiement saisi",
         "paymentCaptured": "Paiement saisi",
         "capturedTotal": "Total saisi",
@@ -338,16 +338,16 @@
         "cancelOrder": "Voulez-vous annuler cette commande?",
         "applyRefundToThisOrder": "Appliquer la réduction de {{currencySymbol}}{{refund}} à cette commande ?",
         "applyRefundDuringCancelOrder": "Cela remboursera le total de la commande de {{currencySymbol}}{{invoiceTotal}}",
-        "cancelOrderThenRestock": "Oui, et réapprovisionnez",
-        "cancelOrderNoRestock": "Oui, mais pas de réapprovisionnement",
+        "cancelOrderThenRestock": "Oui, et réapprovisionner",
+        "cancelOrderNoRestock": "Oui, mais ne pas réapprovisionner",
         "applyRefund": "Procéder au remboursement",
         "refunding": "remboursant",
         "applyDiscount": "Appliquer la réduction",
         "adjustedTotal": "Total ajusté",
         "invalidDiscount": "La réduction ne peut être supérieure au prix total initial",
-        "fullDiscountWarning": "Appliquer une réduction de 100 % invalidera/annulera cette commande avec votre prestataire de paiement",
-        "invalidRefund": "Le montant du remboursement ne peut excéder le total révisé",
-        "processor": "Processeur",
+        "fullDiscountWarning": "Appliquer une réduction de 100% invalidera/annulera cette commande avec votre passerelle de paiement",
+        "invalidRefund": "Le montant du remboursement ne peut excéder le total ajusté",
+        "processor": "Passerelle",
         "placed": "Passé",
         "on": "le",
         "status": "Statut",
@@ -361,7 +361,7 @@
           "processing": "Traitement",
           "status": "Statut",
           "dateRange": "Période",
-          "shippingStatus": "Statut d'envoi",
+          "shippingStatus": "État de la livraison",
           "new": "Nouveau",
           "captured": "Paiement saisi",
           "shipped": "Expédié",
@@ -395,7 +395,7 @@
         "noTracking": "Aucun suivi",
         "tracking": "Suivi",
         "printLabels": "impression d'étiquettes",
-        "printShippingLabel": "livraison",
+        "printShippingLabel": "Livraison",
         "printCustomsLabel": "Douane",
         "generateTracking": "Générer le libellé et le suivi",
         "labelError": "Erreur de création d'expédition étiquette {{err}}",
@@ -422,11 +422,11 @@
       "cartCompleted": {
         "thankYou": "Merci !",
         "itemsFrom": "article(s) de",
-        "yourOrderIsNow": "Votre commande est  désormais",
+        "yourOrderIsNow": "Votre commande est désormais",
         "summaryMessage": "Merci pour votre commande.",
-        "submitted": "soumis",
+        "submitted": "soumise",
         "processing": "En traitement",
-        "completed": "terminé",
+        "completed": "terminée",
         "registerGuest": "Bonjour ! Saisir un e-mail pour recevoir les mises à jour de la commande.",
         "trackYourDelivery": "Les mises à jour concernant la commande seront envoyées à",
         "noOrdersFound": "Aucun commande trouvée.",
@@ -434,17 +434,17 @@
       },
       "checkoutLogin": {
         "welcome": "Bienvenue, heureux de vous revoir.",
-        "loginCompleted": "Compte complété",
+        "loginCompleted": "Connexion effectuée",
         "createOrLogin": "Créer un compte ou s'identifier",
-        "guestOrLogin": "Identifiez-vous ou réglez en tant qu'invité",
+        "guestOrLogin": "Identifiez-vous ou commandez en tant qu'invité",
         "continueAsGuest": "Poursuivre en tant qu'invité",
-        "guestMessage": "Vous pouvez régler sans créer de compte. Vous aurez l'opportunité de créer un compte ultérieurement.",
-        "addEmail": "Ajouter un courrier électronique"
+        "guestMessage": "Vous pouvez commander sans créer de compte. Vous aurez l'opportunité de créer un compte ultérieurement.",
+        "addEmail": "Ajouter une addresse e-mail"
       },
       "addressBookGrid": {
         "addAddress": "Ajouter une adresse",
-        "chooseAddress": "Sélectionner un mode de livraison & une adresse de facturation",
-        "createDefault": "Créer votre adresse par défaut",
+        "chooseAddress": "Sélectionner un mode de livraison et une adresse de facturation",
+        "createDefault": "Ajouter votre adresse par défaut",
         "edit": "Editer",
         "removeAddress": "Supprimer l'adresse",
         "selectShippingAddress": "Sélectionner une adresse de livraison",
@@ -453,9 +453,9 @@
       },
       "addressBookAdd": {
         "addAddress": "Ajouter une nouvelle adresse",
-        "createAddress": "Créer votre adresse par défaut",
+        "createAddress": "Ajouter votre adresse par défaut",
         "failedToAddAddress": "Echec lors de l'ajout de l'adresse : {{err}}",
-        "validatedAddress": "Les modifications apportées à votre adresse sur la base lors de la validation. S'il vous plaît assurer cela est correct"
+        "validatedAddress": "Des modifications ont été apportées à votre adresse lors de la validation. Merci de valider cette dernière"
       },
       "addressBookEdit": {
         "editAddress": "Editer cette adresse",
@@ -468,26 +468,26 @@
       "corePackageConfig": {
         "settings": {
           "public": {
-            "allowGuestCheckout": "Autoriser le règlement en tant qu'invité"
+            "allowGuestCheckout": "Autoriser les commandes en tant qu'invité"
           },
           "openexchangerates": {
-            "appId": "Ouvrir l'app Id du taux de change",
-            "refreshPeriod": "Ouvrir la période d'actualisation du taux d'échange",
+            "appId": "App ID Open Exchange Rates",
+            "refreshPeriod": "Période de rafraichissement Open Exchange Rates",
             "refreshPeriodPlaceholder": "par exemple toutes les heures"
           },
           "google": {
             "clientId": "ID client Google",
-            "apiKey": "Clé de l'API Google"
+            "apiKey": "Clé API Google"
           }
         }
       },
       "shop": {
         "defaultPaymentMethod": "Méthode de paiement par défaut",
         "name": "Nom",
-        "namePlaceholder": "Nom du magasin",
+        "namePlaceholder": "Nom de la boutique",
         "description": "Description",
-        "descriptionPlaceholder": "Décrivez votre magasin en tenant compte du SEO",
-        "descriptionTooltip": "Ce champ est utilisé par une métabalise de description. Les moteurs de recherche sont autorisés à décrire votre magasin",
+        "descriptionPlaceholder": "Décrivez votre boutique en tenant compte du SEO",
+        "descriptionTooltip": "Ce champ est utilisé pour décrire votre boutique auprès des moteurs de recherche",
         "email": "E-mail",
         "emailPlaceholder": "E-mail du contact principal",
         "keywords": "Mots clés",
@@ -497,14 +497,14 @@
           "company": "Entreprise",
           "companyPlaceholder": "Nom de l'entreprise",
           "country": "Pays",
-          "fullName": "Nom complet",
-          "fullNamePlaceholder": "Le nom de votre entreprise",
+          "fullName": "Dénomination sociale",
+          "fullNamePlaceholder": "La dénomination sociale complète de votre entreprise",
           "address1": "Adresse",
           "address1Placeholder": "Adresse de votre entreprise",
           "address1Tooltip": "Cette adresse sera visible par les visiteurs",
           "address2": "Adresse",
           "address2Placeholder": "Adresse supplémentaire",
-          "postal": "Postal",
+          "postal": "Code postal",
           "city": "Ville",
           "region": "Région",
           "phone": "Téléphone",
@@ -514,8 +514,8 @@
         }
       },
       "revisions": {
-        "isDisabled": "La gestion de version est désactivée. Toute modification sera immédiatement publiée.",
-        "isEnabled": "le contrôle de révision est activée pour les produits. Toute modification sera doivent être publiés avant d'être visible pour les clients.",
+        "isDisabled": "La gestion de versions est désactivée. Toute modification sera immédiatement publiée.",
+        "isEnabled": "La gestion de versions est activée pour les produits. Toute modification devra être publiée avant d'être visible pour les clients.",
         "unpublishedChanges": "Modifications non publiées",
         "publishChanges": "Publier les modifications",
         "showChanges": "Afficher les modifications",
@@ -532,7 +532,7 @@
         "fullName": "Nom complet",
         "address1": "Adresse",
         "address2": "Adresse",
-        "postal": "Postal",
+        "postal": "Code postal",
         "city": "Ville",
         "region": "Région",
         "phone": "Téléphone",
@@ -581,7 +581,7 @@
       },
       "search": {
         "clearSearch": "Effacer",
-        "searchInputLabel": "Rechercher une réaction ",
+        "searchInputLabel": "Rechercher",
         "suggestedTags": "Tags suggérés",
         "searchTypeProducts": "Produits",
         "searchTypeAccounts": "Comptes",
@@ -608,15 +608,15 @@
         "back": "retour",
         "changePassword": "Modifier le mot de passe",
         "choosePassword": "Sélectionner un mot de passe",
-        "clickAgree": "En cliquant sur S'inscrire, vous acceptez nos",
+        "clickAgree": "En cliquant sur Créer un compte, vous acceptez nos",
         "configure": "Configurer",
         "createAccount": "Créer un compte",
         "currentPassword": "Mot de passe actuel",
         "dontHaveAnAccount": "Vous n'avez pas de compte ?",
         "email": "E-mail",
-        "emailAddress": "Adresse mail",
+        "emailAddress": "Adresse e-mail",
         "emailResetLink": "Lien de réinitialisation du mot de passe",
-        "forgotPassword": "Réinitialiser le mot de passe",
+        "forgotPassword": "Mot de passe oublié",
         "ifYouAlreadyHaveAnAccount": "Si vous possédez déjà un compte",
         "name": "Nom",
         "newPassword": "Nouveau mot de passe",
@@ -627,18 +627,18 @@
         "passwordAgain": "Mot de passe (encore)",
         "privacyPolicy": "Politique de confidentialité",
         "remove": "supprimer",
-        "resetYourPassword": "Réinitialiser le mot de passe",
+        "resetYourPassword": "Réinitialisez votre mot de passe",
         "setPassword": "Définir le mot de passe",
         "sign": "Inscription",
-        "signIn": "S'identifier",
-        "signInService": "{{service}} S'identifier",
+        "signIn": "Connexion",
+        "signInService": "Connexion {{service}}",
         "signin": "identification",
-        "signInWith": "Se connecter avec",
-        "signUpWith": "S'inscrire avec",
+        "signInWith": "Connexion avec",
+        "signUpWith": "Créer un compte avec",
         "signedIn": "Vous êtes connecté.",
         "signOut": "Se déconnecter",
-        "signUp": "Enregistrer",
-        "signUpButton": "S'inscrire",
+        "signUp": "Créer un compte",
+        "signUpButton": "Créer un compte",
         "signupCode": "Code d'enregistrement",
         "signUpWithYourEmailAddress": "Inscrivez-vous avec votre adresse mail",
         "terms": "Conditions d'utilisation",
@@ -656,7 +656,7 @@
           "emailSent": "E-mail envoyé",
           "emailVerified": "E-mail vérifié",
           "passwordChanged": "Mot de passe modifié",
-          "passwordReset": "Réinitialiser le mot de passe",
+          "passwordReset": "Mot de passe oublié",
           "passwordResetSend": "Un e-mail contenant un lien de réinitialisation du mot de passe a été envoyé.",
           "invitationSent": "Invitation envoyée",
           "sendInvitation": "Envoyer l'invitation"
