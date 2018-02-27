@@ -25,6 +25,13 @@ class SearchModal extends Component {
     activeTab: "products"
   }
 
+  componentDidMount() {
+    // Focus and select all text in the search input
+    const { input } = this.textField.refs;
+    input.select();
+  }
+
+
   isKeyboardAction(event) {
     // keyCode 32 (spacebar)
     // keyCode 13 (enter/return)
@@ -64,6 +71,7 @@ class SearchModal extends Component {
         <i className="fa fa-search search-icon" />
         <TextField
           id="search-modal-input"
+          ref={(input) => { this.textField = input; }}
           label={`Search ${this.props.siteName}`}
           i18nKeyLabel="search.searchInputLabel"
           className="search-input"
