@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { Meteor } from "meteor/meteor";
 
 class NavBar extends Component {
   static propTypes = {
