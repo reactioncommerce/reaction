@@ -1,30 +1,45 @@
+# meteor-dev stage - builds image for dev and used with docker-compose.yml
 FROM reactioncommerce/base:v4.0.0 as meteor-dev
 LABEL maintainer="Reaction Commerce <architecture@reactioncommerce.com>"
-# copy the app into the build container
-COPY . $APP_SOURCE_DIR
+ENV PATH $PATH:/home/node/.meteor
 WORKDIR $APP_SOURCE_DIR
 
+USER root
+RUN chown -R node $APP_SOURCE_DIR
 
+USER node
+COPY --chown=node package.json $APP_SOURCE_DIR/
+RUN meteor npm install
+COPY --chown=node . $APP_SOURCE_DIR
+
+USER root
+RUN chown -R node $APP_SOURCE_DIR
+
+USER node
+
+# builder stage - builds the production bundle
 FROM meteor-dev as builder
+USER root
+RUN mkdir -p "$APP_BUNDLE_DIR" \
+ && chown -R node "$APP_BUNDLE_DIR"
+USER node
+
 # build a production meteor bundle directory
-# Fix permissions warning in Meteor >=1.4.2.1 without breaking
-# earlier versions of Meteor with --unsafe-perm or --allow-superuser
-# https://github.com/meteor/meteor/issues/7959
 WORKDIR $APP_SOURCE_DIR
 RUN printf "\\n[-] Running Reaction plugin loader...\\n" \
  && reaction plugins load
 RUN printf "\\n[-] Running npm install in app directory...\\n" \
  && meteor npm install
 RUN printf "\\n[-] Building Meteor application...\\n" \
- && mkdir -p "$APP_BUNDLE_DIR" \
- && export "METEOR_ALLOW_SUPERUSER=true" \
  && meteor build --server-only --architecture os.linux.x86_64 --directory "$APP_BUNDLE_DIR"
 WORKDIR $APP_BUNDLE_DIR/bundle/programs/server/
-RUN meteor npm install --production \
- && mv "$BUILD_SCRIPTS_DIR/entrypoint.sh" "$APP_BUNDLE_DIR/bundle/entrypoint.sh"
+RUN meteor npm install --production
 
+USER root
+RUN mv "$BUILD_SCRIPTS_DIR/entrypoint.sh" "$APP_BUNDLE_DIR/bundle/entrypoint.sh"
+USER node
 
-# create the final production image
+# final build stage - create the final production image
 FROM node:8.9.4-slim
 
 WORKDIR /app
