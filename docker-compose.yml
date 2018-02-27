@@ -11,7 +11,7 @@ services:
     build:
       context: .
       target: meteor-dev
-    command: "reaction --allow-superuser"
+    command: "reaction"
     depends_on:
       - mongo
     environment:

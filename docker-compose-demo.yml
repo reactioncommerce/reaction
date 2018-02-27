@@ -1,5 +1,5 @@
-# This is the production docker-compose file.
-# Usage: docker-compose up [-d]
+# This is a demo docker-compose file.
+# Usage: docker-compose up -f docker-compose-demo.yml [-d]
 
 version: '3.4'
 
