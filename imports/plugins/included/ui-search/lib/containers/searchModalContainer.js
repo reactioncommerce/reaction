@@ -76,7 +76,7 @@ const wrapComponent = (Comp) => (
       this.setState({ collection });
     }
 
-    handleChildUnmount = () =>  {
+    handleChildUnmount = () => {
       const body = document.getElementsByTagName("BODY")[0];
       body.removeAttribute("style");
       this.setState({ renderChild: false });
@@ -106,6 +106,6 @@ const wrapComponent = (Comp) => (
   }
 );
 
-registerComponent("SearchSubscription", SearchSubscription, [ wrapComponent ]);
+registerComponent("SearchSubscription", SearchSubscription, [wrapComponent]);
 
 export default compose(wrapComponent)(SearchSubscription);
