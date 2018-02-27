@@ -19,8 +19,8 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
-    "@reactioncommerce/job-queue": "^1.0.4",
     "@babel/runtime": "7.0.0-beta.38",
+    "@reactioncommerce/job-queue": "^1.0.4",
     "@reactioncommerce/nodemailer": "^5.0.5",
     "accounting-js": "^1.1.1",
     "authorize-net": "^1.1.1",
@@ -47,6 +47,7 @@
     "fibers": "^2.0.0",
     "flatten-obj": "^3.1.1",
     "font-awesome": "^4.7.0",
+    "graphql-yoga": "^1.4.3",
     "handlebars": "^4.0.11",
     "history": "^4.7.2",
     "hoist-non-react-statics": "^2.3.1",
