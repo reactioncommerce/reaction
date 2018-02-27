@@ -10,8 +10,7 @@ import { Reaction, Logger } from "/server/api";
 let moment;
 async function lazyLoadMoment() {
   if (moment) return;
-  const mod = await import("moment");
-  moment = mod.default;
+  moment = await import("moment");
 }
 
 

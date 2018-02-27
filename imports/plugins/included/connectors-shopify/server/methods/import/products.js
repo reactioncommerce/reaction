@@ -1,6 +1,6 @@
 /* eslint camelcase: 0 */
 import Shopify from "shopify-api-node";
-import { Job } from "meteor/vsivsi:job-collection";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Meteor } from "meteor/meteor";
 import { Logger, Reaction } from "/server/api";
 import { check, Match } from "meteor/check";

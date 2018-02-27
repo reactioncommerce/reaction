@@ -1,5 +1,6 @@
 import _ from "lodash";
-import { Accounts } from "meteor/accounts-base";
+import store from "store";
+import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { check } from "meteor/check";
@@ -10,14 +11,14 @@ import { Roles } from "meteor/alanning:roles";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
 import { localeDep } from "/client/modules/i18n";
-import { Packages, Shops } from "/lib/collections";
+import { Packages, Shops, Accounts } from "/lib/collections";
 import { Router } from "/client/modules/router";
 
 // Global, private state object for client side
 // This is placed outside the main object to make it a private variable.
 // access using `Reaction.state`
 const reactionState = new ReactiveDict();
-
+const deps = new Map();
 /**
  * Reaction namespace
  * Global reaction shop permissions methods and shop initialization
@@ -253,7 +254,7 @@ export default {
     //
     let loggingIn;
     Tracker.nonreactive(() => {
-      loggingIn = Accounts.loggingIn();
+      loggingIn = MeteorAccounts.loggingIn();
     });
     if (loggingIn === false) {
       //
@@ -355,12 +356,12 @@ export default {
   },
 
   getUserPreferences(packageName, preference, defaultValue) {
-    const user = Meteor.user();
-
-    if (user) {
-      const { profile } = Meteor.user();
-      if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
-        return profile.preferences[packageName][preference];
+    getDep(`${packageName}.${preference}`).depend();
+    if (Meteor.user()) {
+      const packageSettings = store.get(packageName);
+      // packageSettings[preference] should not be undefined or null.
+      if (packageSettings && typeof packageSettings[preference] !== "undefined" && packageSettings[preference] !== null) {
+        return packageSettings[preference];
       }
     }
 
@@ -368,12 +369,22 @@ export default {
   },
 
   setUserPreferences(packageName, preference, value) {
+    getDep(`${packageName}.${preference}`).changed();
+    // User preferences are not stored in Meteor.user().profile
+    // to prevent all autorun() with dependency on Meteor.user() to run again.
     if (Meteor.user()) {
-      return Meteor.users.update(Meteor.userId(), {
-        $set: {
-          [`profile.preferences.${packageName}.${preference}`]: value
-        }
-      });
+      // "reaction" package settings should be synced to
+      // the Accounts collection.
+      if (packageName in ["reaction"]) {
+        Accounts.update(Meteor.userId(), {
+          $set: {
+            [`profile.preferences.${packageName}.${preference}`]: value
+          }
+        });
+      }
+      const packageSettings = store.get(packageName) || {};
+      packageSettings[preference] = value;
+      return store.set(packageName, packageSettings);
     }
     return false;
   },
@@ -451,7 +462,7 @@ export default {
   },
 
   setShopId(id) {
-    if (id) {
+    if (id && this.shopId !== id) {
       this.shopId = id;
       this.setUserPreferences("reaction", "activeShopId", id);
     }
@@ -807,4 +818,18 @@ function createCountryCollection(countries) {
     Countries.insert(country);
   }
   return countryOptions;
+}
+
+/**
+ * getDep
+ * Gets the dependency for the key if available, else creates
+ * a new dependency for the key and returns it.
+ * @param {String} -  The key to get the dependency for
+ * @returns {Tracker.Dependency}
+ */
+function getDep(key) {
+  if (!deps.has(key)) {
+    deps.set(key, new Tracker.Dependency());
+  }
+  return deps.get(key);
 }

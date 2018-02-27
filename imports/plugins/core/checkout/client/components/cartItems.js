@@ -50,6 +50,7 @@ class CartItems extends Component {
         <Components.IconButton
           icon="fa fa-times fa-lg remove-cart-item"
           onClick={this.removalClick}
+          kind="removeItem"
         />
         <a href={pdpPath(item)}
           data-event-action="product-click"

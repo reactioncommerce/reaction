@@ -3,7 +3,7 @@ import { StyleRoot } from "radium";
 import _ from "lodash";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import { TranslationProvider, AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
+import { AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 
 
 function handleActionViewBack() {
@@ -77,13 +77,11 @@ function composer(props, onData) {
 export default function ActionViewContainer(Comp) {
   function CompositeComponent(props) {
     return (
-      <TranslationProvider>
-        <AdminContextProvider>
-          <StyleRoot>
-            <Comp {...props} />
-          </StyleRoot>
-        </AdminContextProvider>
-      </TranslationProvider>
+      <AdminContextProvider>
+        <StyleRoot>
+          <Comp {...props} />
+        </StyleRoot>
+      </AdminContextProvider>
     );
   }
 

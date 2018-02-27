@@ -224,7 +224,12 @@ Template.shopifySync.events({
 AutoForm.hooks({
   "shopify-connect-update-form": {
     onSuccess() {
-      return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
+      Meteor.call("connectors/shopify/api/credentials/test", (err, isValid) => {
+        if (isValid) {
+          return Alerts.toast(i18next.t("admin.shopifyConnectSettings.validCredentials"), "Valid API key and password");
+        }
+        return Alerts.toast(i18next.t("admin.shopifyConnectSettings.invalidCredentials", "Invalid API key/password"), "error");
+      });
     },
     onError(error) {
       return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
