@@ -160,7 +160,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
       });
 
       const productCursor = Products.find(selector);
-      const productIds = productCursor.map(p => p._id);
+      const productIds = productCursor.map((p) => p._id);
       const mediaCursor = findProductMedia(this, productIds);
       return [
         productCursor,
