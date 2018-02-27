@@ -2,32 +2,24 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import TextareaAutosize from "react-textarea-autosize";
-import { unformat } from "accounting-js";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { i18next, formatPriceString } from "/client/api";
+import { i18next } from "/client/api";
 
 
 class TextField extends Component {
   constructor(props) {
     super(props);
-    if (props.isCurrency) {
-      this.state = {
-        value: formatPriceString(props.value),
-        isEditing: false
-      };
-    } else {
-      this.state = {};
-    }
-  }
 
+    this.onBlur = this.onBlur.bind(this);
+    this.onFocus = this.onFocus.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
+  }
   /**
    * Getter: value
    * @return {String} value for text input
    */
   get value() {
-    if (this.props.isCurrency && !this.state.isEditing) {
-      return (this.state && this.state.value) || this.props.value || "";
-    }
     return this.props.value || "";
   }
 
@@ -73,7 +65,7 @@ class TextField extends Component {
    * @param  {Event} event Event object
    * @return {void}
    */
-  onChange = (event) => {
+  onChange(event) {
     if (this.props.onChange) {
       this.props.onChange(event, event.target.value, this.props.name);
     }
@@ -85,13 +77,7 @@ class TextField extends Component {
    * @param  {Event} event Event object
    * @return {void}
    */
-  onBlur = (event) => {
-    if (this.props.isCurrency) {
-      this.setState({
-        value: formatPriceString(event.target.value),
-        isEditing: false
-      });
-    }
+  onBlur(event) {
     if (this.props.onBlur) {
       this.props.onBlur(event, event.target.value, this.props.name);
     }
@@ -103,14 +89,7 @@ class TextField extends Component {
    * @param  {Event} event Event object
    * @return {void}
    */
-  onFocus = (event) => {
-    if (this.props.isCurrency) {
-      event.target.value = unformat(event.target.value);
-      this.setState({
-        value: event.target.value,
-        isEditing: true
-      });
-    }
+  onFocus(event) {
     if (this.props.onFocus) {
       this.props.onFocus(event, event.target.value, this.props.name);
     }
@@ -122,7 +101,7 @@ class TextField extends Component {
    * @param  {Event} event Event object
    * @return {void}
    */
-  onKeyDown = (event) => {
+  onKeyDown(event) {
     if (this.props.onKeyDown) {
       this.props.onKeyDown(event, this.props.name);
     }
@@ -293,7 +272,6 @@ TextField.propTypes = {
   i18nKeyLabel: PropTypes.string,
   i18nKeyPlaceholder: PropTypes.string,
   id: PropTypes.string,
-  isCurrency: PropTypes.bool,
   isValid: PropTypes.bool,
   label: PropTypes.string,
   maxRows: PropTypes.number,
