@@ -95,7 +95,7 @@ Template.productSettingsListItem.helpers({
   },
 
   mediaUrl() {
-    const variants = ReactionProduct.getTopVariants();
+    const variants = ReactionProduct.getTopVariants(this._id);
     if (!variants || variants.length === 0) return "/resources/placeholder.gif";
     const media = getPrimaryMediaForItem({ productId: this._id, variantId: variants[0]._id });
     if (!media) return "/resources/placeholder.gif";
