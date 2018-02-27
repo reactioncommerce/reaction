@@ -175,6 +175,50 @@ const wrapComponent = (Comp) => (
     }
 
     /**
+     * updateBulkStatusHelper
+     *
+     * @summary return formatted shipping object to update state
+     * @param {String} status - the shipping status to be set
+     * @return {Object} the formatted shipping object
+     */
+    updateBulkStatusHelper = (status) => {
+      const statusIndex = shippingStrings.indexOf(status);
+      return shippingStrings.reduce((shipping, state) => ({
+        ...shipping,
+        [state]: shippingStrings.indexOf(state) <= statusIndex
+      }), {});
+    }
+
+    /**
+     * updateBulkLoadingHelper
+     *
+     * @summary return formatted isLoading object to update state
+     * @param {String} status - the shipping status to be set
+     * @return {Object} the formatted isLoading object
+     */
+    updateBulkLoadingHelper = (status) => {
+      const statusIndex = shippingStrings.indexOf(status);
+      const prevStatusIndex = Object.keys(this.state.shipping).reduce((maxIndex, state) => {
+        if (this.state.shipping[state]) {
+          return Math.max(shippingStrings.indexOf(state), maxIndex);
+        }
+        return maxIndex;
+      }, -1);
+      return shippingStrings.reduce((shipping, state) => {
+        if (prevStatusIndex < statusIndex) {
+          return {
+            ...shipping,
+            [state]: shippingStrings.indexOf(state) <= statusIndex && shippingStrings.indexOf(state) > prevStatusIndex
+          };
+        }
+        return {
+          ...shipping,
+          [state]: shippingStrings.indexOf(state) >= statusIndex && shippingStrings.indexOf(state) <= prevStatusIndex
+        };
+      }, {});
+    }
+
+    /**
      * shippingStatusUpdateCall
      *
      * @summary set selected order(s) to the provided shipping state
@@ -185,9 +229,7 @@ const wrapComponent = (Comp) => (
     shippingStatusUpdateCall = (selectedOrders, status) => {
       const filteredSelectedOrders = selectedOrders.filter((order) => order.shipping && Object.keys(getShippingInfo(order)).length);
       this.setState({
-        isLoading: {
-          [status]: true
-        }
+        isLoading: this.updateBulkLoadingHelper(status)
       });
       let orderText = "order";
 
@@ -218,9 +260,7 @@ const wrapComponent = (Comp) => (
           orderCount += 1;
           if (orderCount === filteredSelectedOrders.length) {
             this.setState({
-              shipping: {
-                [status]: true
-              },
+              shipping: this.updateBulkStatusHelper(status),
               isLoading: {
                 [status]: false
               }

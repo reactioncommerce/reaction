@@ -371,7 +371,7 @@ export default {
    * @summary Get shop ID
    * @todo This should intelligently find the correct default shop Probably whatever the main shop is or marketplace
    * @param  {String} userId User ID String
-   * @return {StringId}        active shop ID
+   * @return {String} active shop ID
    */
   getShopId(userId) {
     check(userId, Match.Maybe(String));
@@ -595,6 +595,24 @@ export default {
     return defaultValue || undefined;
   },
 
+  /**
+   * @name setUserPreferences
+   * @method
+   * @summary save user preferences in the Accounts collection
+   * @param {String} packageName
+   * @param {String} preference
+   * @param {String} value
+   * @param {String} userId
+   * @return {Number} setPreferenceResult
+   */
+  setUserPreferences(packageName, preference, value, userId) {
+    const setPreferenceResult = AccountsCollection.update(userId, {
+      $set: {
+        [`profile.preferences.${packageName}.${preference}`]: value
+      }
+    });
+    return setPreferenceResult;
+  },
   /**
    *  @name insertPackagesForShop
    *  @method
