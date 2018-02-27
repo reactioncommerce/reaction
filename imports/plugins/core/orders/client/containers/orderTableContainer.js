@@ -637,8 +637,8 @@ const wrapComponent = (Comp) => (
       // "orders/approvePayment" method to receive an array of orders as a param.
       selectedOrders.forEach((order) => {
         // Only capture orders which are not captured yet (but possibly are already approved)
-        const paymentRecord = this.orderCreditMethod(order);
-        if (paymentRecord.paymentMethod.mode === "capture" && paymentRecord.paymentMethod.status === "completed") {
+        const billingRecord = this.orderCreditMethod(order);
+        if (billingRecord.paymentMethod.mode === "capture" && billingRecord.paymentMethod.status === "completed") {
           done();
           return;
         }
