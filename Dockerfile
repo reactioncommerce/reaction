@@ -34,9 +34,6 @@ RUN printf "\\n[-] Building Meteor application...\\n" \
  && meteor build --server-only --architecture os.linux.x86_64 --directory "$APP_BUNDLE_DIR"
 WORKDIR $APP_BUNDLE_DIR/bundle/programs/server/
 RUN meteor npm install --production
-
-USER root
-RUN mv "$BUILD_SCRIPTS_DIR/entrypoint.sh" "$APP_BUNDLE_DIR/bundle/entrypoint.sh"
 USER node
 
 # final build stage - create the final production image
@@ -45,7 +42,6 @@ FROM node:8.9.4-slim
 WORKDIR /app
 
 # grab the dependencies and built app from the previous builder image
-COPY --from=builder /usr/local/bin/gosu /usr/local/bin/gosu
 COPY --from=builder /opt/reaction/dist/bundle .
 
 # make sure "node" user can run the app
@@ -58,6 +54,4 @@ ENV PORT 3000
 
 EXPOSE 3000
 
-# start the app
-ENTRYPOINT ["./entrypoint.sh"]
 CMD ["node", "main.js"]
