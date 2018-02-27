@@ -10,7 +10,7 @@ import { formatPriceString } from "./currency";
  * @name i18n
  * @see http://i18next.com/
  * @summary Pass the translation key as the first argument and the default message as the second argument
- * @memberof i18n
+ * @memberof Templates
  * @method
  * @param {String} i18nKey - i18nKey
  * @param {String} i18nMessage - message text
@@ -33,7 +33,7 @@ Template.registerHelper("i18n", (i18nKey, i18nMessage) => {
 
 /**
  * @name currencySymbol
- * @memberof i18n
+ * @memberof Templates
  * @method
  * @summary Eeturn shop /locale specific currency format (ie: $)
  * @returns {String} return current locale currency symbol
@@ -55,7 +55,7 @@ Template.registerHelper("currencySymbol", () => {
 
 /**
  * @name formatPrice
- * @memberof i18n
+ * @memberof Templates
  * @method
  * @summary Return shop /locale specific formatted price. Also accepts a range formatted with " - "
  * @example {{formatPrice displayPrice}}

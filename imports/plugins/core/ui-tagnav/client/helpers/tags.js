@@ -187,4 +187,11 @@ export const TagHelpers = {
   }
 };
 
+/**
+ * @method reactionSubTags
+ * @summary Template method to return subTags
+ * @param parentTag {Object} Tag
+ * @return {Array} Array of subtags or empty Array
+ * @memberof Templates
+ */
 Template.registerHelper("reactionSubTags", TagHelpers.subTags);
