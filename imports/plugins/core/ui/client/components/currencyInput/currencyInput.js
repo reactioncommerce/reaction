@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { unformat } from "accounting-js";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import TextField from "../textfield/textfield";

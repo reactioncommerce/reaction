@@ -655,7 +655,6 @@ class VariantForm extends Component {
                   validation={this.props.validation}
                   helpText={"Purchase price"}
                   i18nKeyHelpText={"admin.helpText.price"}
-                  isCurrency
                 />
               </div>
               <div className="col-sm-6">
@@ -673,7 +672,6 @@ class VariantForm extends Component {
                   validation={this.props.validation}
                   helpText={"Original price or MSRP"}
                   i18nKeyHelpText={"admin.helpText.compareAtPrice"}
-                  isCurrency
                 />
               </div>
             </div>
