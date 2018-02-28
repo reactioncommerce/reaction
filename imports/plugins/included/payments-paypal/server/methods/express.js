@@ -34,6 +34,9 @@ export const methods = {
       throw new Meteor.Error("invalid-parameter", "Bad shop ID");
     }
     const amount = Number(cart.getTotal());
+    const shippingAmt = Number(cart.getShippingTotal());
+    const taxAmt = Number(cart.getTaxTotal());
+    const itemAmt = Number(cart.getSubtotal() - cart.getDiscounts());
     const description = `${shop.name} Ref: ${cartId}`;
     const { currency } = shop;
     const options = PayPal.expressCheckoutAccountOptions();
@@ -49,6 +52,9 @@ export const methods = {
           VERSION: nvpVersion,
           PAYMENTACTION: "Authorization",
           AMT: amount,
+          ITEMAMT: itemAmt,
+          SHIPPINGAMT: shippingAmt,
+          TAXAMT: taxAmt,
           RETURNURL: options.return_url,
           CANCELURL: options.cancel_url,
           DESC: description,
@@ -90,6 +96,9 @@ export const methods = {
       throw new Meteor.Error("invalid-parameter", "Bad cart ID");
     }
     const amount = Number(cart.getTotal());
+    const shippingAmt = Number(cart.getShippingTotal());
+    const taxAmt = Number(cart.getTaxTotal());
+    const itemAmt = Number(cart.getSubtotal() - cart.getDiscounts());
     const shop = Shops.findOne(cart.shopId);
     const { currency } = shop;
     const options = PayPal.expressCheckoutAccountOptions();
@@ -110,6 +119,9 @@ export const methods = {
           VERSION: nvpVersion,
           PAYMENTACTION: paymentAction,
           AMT: amount,
+          ITEMAMT: itemAmt,
+          SHIPPINGAMT: shippingAmt,
+          TAXAMT: taxAmt,
           METHOD: "DoExpressCheckoutPayment",
           CURRENCYCODE: currency,
           TOKEN: token,
