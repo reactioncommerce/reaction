@@ -1,4 +1,3 @@
-import later from "later";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
@@ -20,7 +19,7 @@ export function addCleanupJobControlHook() {
         backoff: "exponential"
       })
       .repeat({
-        schedule: later.parse.text("every day")
+        schedule: Jobs.later.parse.text("every day")
       })
       .save({
         cancelRepeats: true
