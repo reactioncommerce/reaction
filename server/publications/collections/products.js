@@ -346,7 +346,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           this.added("Revisions", revision._id, revision);
           if (revision.documentType === "product") {
             // Check merge box (session collection view), if product is already in cache.
-            // If yes, we send a `changed`, otherwise ignore it. I'm assuming
+            // If yes, we send a `changed`, otherwise `added`. I'm assuming
             // that this._documents.Products is somewhat equivalent to
             // the merge box Meteor.server.sessions[sessionId].getCollectionView("Products").documents
             if (this._documents.Products && this._documents.Products[revision.documentId]) {
@@ -354,6 +354,12 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
                 this.changed("Products", revision.documentId, { __revisions: [revision] });
               } else {
                 this.changed("Products", revision.documentId, { __revisions: [] });
+              }
+            } else {
+              if (revision.workflow.status !== "revision/published") {
+                this.added("Products", revision.documentId, { __revisions: [revision] });
+              } else {
+                this.added("Products", revision.documentId, { __revisions: [] });
               }
             }
           }
