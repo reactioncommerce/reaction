@@ -21,20 +21,12 @@ class NumberTypeInput extends Component {
       maxValue: props.maxValue || undefined,
       className: {}
     };
-
-    this.handleIncrementButton = this.handleIncrementButton.bind(this);
-    this.handleDecrementButton = this.handleDecrementButton.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
   handleIncrementButton = (event) => {
     const value = this.state.value + 1;
 
     if (this.state.maxValue && value <= this.state.maxValue) {
-      this.setState({
-        value,
-        className: { edited: true }
-      });
       this.handleChange(event, value);
     }
   }
@@ -43,17 +35,45 @@ class NumberTypeInput extends Component {
     const value = this.state.value - 1;
 
     if (value >= this.state.minValue) {
-      this.setState({
-        value,
-        className: { edited: true }
-      });
       this.handleChange(event, value);
     }
   }
 
   handleChange = (event, value) => {
-    if (this.props.onChange) {
-      this.props.onChange(event, value);
+    let newValue = parseInt(value, 10);
+    const { maxValue, minValue } = this.state;
+
+    // prevent the new value from being
+    // greater or less than the min and max values
+    if (newValue > maxValue) {
+      newValue = maxValue;
+    }
+    if (newValue < minValue) {
+      newValue = minValue;
+    }
+
+    // setting the value state
+    // if a new value set edited css class
+    this.setState({
+      value: newValue,
+      className: { edited: (newValue !== maxValue) }
+    });
+
+    // if props.onChange and the new value is a number
+    if (this.props.onChange && !isNaN(newValue)) {
+      this.props.onChange(event, newValue);
+    }
+  }
+
+  handleBlur = (event) => {
+    const { maxValue } = this.state;
+    // if input is left empty reset
+    // it's value to be the max value
+    if (isNaN(this.state.value)) {
+      this.setState({
+        value: maxValue
+      });
+      this.props.onChange(event, maxValue);
     }
   }
 
@@ -65,13 +85,14 @@ class NumberTypeInput extends Component {
 
     return (
       <div className="rui number-input">
-        <input
+        <Components.TextField
           className={fieldClassName}
-          min={this.state.minValue}
-          max={this.state.maxValue}
-          value={this.state.value}
-          onChange={this.handleChange}
           type="number"
+          onBlur={this.handleBlur}
+          onChange={this.handleChange}
+          maxValue={this.state.maxValue}
+          minValue={this.state.minValue}
+          value={this.state.value}
         />
         <div className="stacked-buttons">
           <Components.Button
@@ -84,6 +105,7 @@ class NumberTypeInput extends Component {
           <Components.Button
             className="button"
             icon="fa fa-chevron-down"
+            disabled={this.state.minValue === this.state.value}
             onClick={this.handleDecrementButton}
           />
         </div>
