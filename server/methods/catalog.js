@@ -234,6 +234,8 @@ function denormalize(id, field) {
       });
     }
   }
+
+  // TODO: Determine if product revision needs to be updated as well.
   Products.update(id, {
     $set: update
   }, {
@@ -339,6 +341,22 @@ function createProductObject(initialProps = null) {
 
   return productObject;
 }
+/**
+ * @description Updates revision and product documents.
+ *
+ * @param {String} userId - currently logged in user
+ * @param {Object} selector - selector for product to update
+ * @param {Object} modifier - Object describing what parts of the document to update.
+ * @param {Object} options
+ * @return {String} _id of updated document
+ */
+function updateRevisionAndProduct(userId, selector, modifier, options) {
+  const product = Products.findOne(selector);
+  updateRevision(userId, product, modifier, options);
+
+  return Products.update(selector, modifier, options);
+}
+
 
 Meteor.methods({
   /**
@@ -545,14 +563,20 @@ Meteor.methods({
 
     const newVariant = Object.assign({}, currentVariant, variant);
 
-    const variantUpdateResult = Products.update({
-      _id: variant._id
-    }, {
-      $set: newVariant // newVariant already contain `type` property, so we
-      // do not need to pass it explicitly
-    }, {
-      validate: false
-    });
+    const variantUpdateResult = updateRevisionAndProduct(
+      this.userId,
+      {
+        _id: variant._id
+      },
+      {
+        $set: newVariant // newVariant already contain `type` property, so we
+        // do not need to pass it explicitly
+      },
+      {
+        validate: false
+      }
+
+    );
 
     const productId = currentVariant.ancestors[0];
     // we need manually check is these fields were updated?
@@ -928,6 +952,8 @@ Meteor.methods({
       update = EJSON.parse(`{"${field}":${booleanValue}}`);
     } else if (field === "handle") {
       update = {
+        // TODO: write function to ensure new handle is unique.
+        // Should be a call similar to the line below.
         [field]: createHandle(value, _id) // handle should be unique
       };
     } else if (field === "title" && doc.handle === doc._id) { // update handle once title is set
@@ -946,11 +972,18 @@ Meteor.methods({
     let result;
 
     try {
-      const modifier = { $set: update };
-      const selector = { selector: { type } };
-      const product = Products.findOne(_id);
-      updateRevision(Meteor.userId(), product, modifier, selector);
-      result = Products.update(_id, modifier, selector);
+      result = updateRevisionAndProduct(
+        this.userId,
+        {
+          _id
+        },
+        {
+          $set: update
+        },
+        {
+          selector: { type }
+        }
+      );
     } catch (e) {
       throw new Meteor.Error("server-error", e.message);
     }
@@ -1010,13 +1043,20 @@ Meteor.methods({
       if (productCount > 0) {
         throw new Meteor.Error("server-error", "Existing Tag, Update Denied");
       }
-      return Products.update(productId, {
-        $push: {
-          hashtags: existingTag._id
+      return updateRevisionAndProduct(
+        this.userId,
+        {
+          _id: productId
+        },
+        {
+          $push: {
+            hashtags: existingTag._id
+          }
+        },
+        {
+          selector: { type: "simple" }
         }
-      }, {
-        selector: { type: "simple" }
-      });
+      );
     } else if (tagId) {
       return Tags.update(tagId, { $set: newTag });
     }
@@ -1028,15 +1068,20 @@ Meteor.methods({
       return newTagId;
     }
 
-    return Products.update(productId, {
-      $push: {
-        hashtags: newTagId
+    return updateRevisionAndProduct(
+      this.userId,
+      {
+        _id: productId
+      },
+      {
+        $push: {
+          hashtags: newTagId
+        }
+      },
+      {
+        selector: { type: "simple" }
       }
-    }, {
-      selector: {
-        type: "simple"
-      }
-    });
+    );
   },
 
   /**
@@ -1060,13 +1105,20 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    Products.update(productId, {
-      $pull: {
-        hashtags: tagId
+    updateRevisionAndProduct(
+      this.userId,
+      {
+        _id: productId
+      },
+      {
+        $pull: {
+          hashtags: tagId
+        }
+      },
+      {
+        selector: { type: "simple" }
       }
-    }, {
-      selector: { type: "simple" }
-    });
+    );
   },
 
   /**
@@ -1090,7 +1142,15 @@ Meteor.methods({
 
     let handle = Reaction.getSlug(product.title);
     handle = createHandle(handle, product._id);
-    Products.update(product._id, { $set: { handle, type: "simple" } });
+    updateRevisionAndProduct(
+      this.userId,
+      {
+        _id: product._id
+      },
+      {
+        $set: { handle, type: "simple" }
+      },
+    );
 
     return handle;
   },
@@ -1144,9 +1204,22 @@ Meteor.methods({
         Reaction.getSlug(currentProduct.title),
         currentProduct._id
       );
-      Products.update(currentProduct._id, getSet(currentProductHandle));
+      updateRevisionAndProduct(
+        this.userId,
+        {
+          _id: currentProduct._id
+        },
+        getSet(currentProductHandle)
+      );
     }
-    Products.update(product._id, getSet(tag.slug));
+
+    updateRevisionAndProduct(
+      this.userId,
+      {
+        _id: product._id
+      },
+      getSet(tag.slug)
+    );
 
     return tag.slug;
   },
@@ -1215,11 +1288,18 @@ Meteor.methods({
     }
 
     sortedVariantIds.forEach((id, index) => {
-      Products.update(id, {
-        $set: { index }
-      }, {
-        selector: { type: "variant" }
-      });
+      updateRevisionAndProduct(
+        this.userId,
+        {
+          _id: id
+        },
+        {
+          $set: { index }
+        },
+        {
+          selector: { type: "variant" }
+        }
+      );
       Logger.debug(`Variant ${id} position was updated to index ${index}`);
     });
   },
@@ -1250,38 +1330,51 @@ Meteor.methods({
 
     // update existing metadata
     if (typeof meta === "object") {
-      return Products.update({
-        _id: productId,
-        metafields: meta
-      }, {
-        $set: {
-          "metafields.$": updatedMeta
+      return updateRevisionAndProduct(
+        this.userId,
+        {
+          _id: productId,
+          metafields: meta
+        }, {
+          $set: {
+            "metafields.$": updatedMeta
+          }
+        }, {
+          selector: { type: "simple", metafields: meta }
         }
-      }, {
-        selector: { type: "simple" }
-      });
+      );
     } else if (typeof meta === "number") {
-      return Products.update({
-        _id: productId
-      }, {
-        $set: {
-          [`metafields.${meta}`]: updatedMeta
+      return updateRevisionAndProduct(
+        this.userId,
+        {
+          _id: productId
+        },
+        {
+          $set: {
+            [`metafields.${meta}`]: updatedMeta
+          }
+        },
+        {
+          selector: { type: "simple", metafields: meta }
         }
-      }, {
-        selector: { type: "simple" }
-      });
+      );
     }
 
     // adds metadata
-    return Products.update({
-      _id: productId
-    }, {
-      $addToSet: {
-        metafields: updatedMeta
+    return updateRevisionAndProduct(
+      this.userId,
+      {
+        _id: productId
+      },
+      {
+        $addToSet: {
+          metafields: updatedMeta
+        }
+      },
+      {
+        selector: { type: "simple" }
       }
-    }, {
-      selector: { type: "simple" }
-    });
+    );
   },
 
   /**
@@ -1307,12 +1400,16 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    return Products.update({
-      _id: productId,
-      type
-    }, {
-      $pull: { metafields }
-    });
+    return updateRevisionAndProduct(
+      this.userId,
+      {
+        _id: productId,
+        type
+      },
+      {
+        $pull: { metafields }
+      }
+    );
   },
 
   /**
@@ -1377,13 +1474,22 @@ Meteor.methods({
       // update product visibility
       Logger.debug("toggle product visibility ", product._id, !product.isVisible);
 
-      const res = Products.update(product._id, {
-        $set: {
-          isVisible: !product.isVisible
+      const res = updateRevisionAndProduct(
+        this.userId,
+        {
+          _id: product._id
+        },
+        {
+          $set: {
+            isVisible: !product.isVisible
+          }
+        },
+        {
+
+          selector: { type: "simple" }
         }
-      }, {
-        selector: { type: "simple" }
-      });
+      );
+
       // update product variants visibility
       updateVariantProductField(variants, "isVisible", !product.isVisible);
       // if collection updated we return new `isVisible` state
@@ -1415,15 +1521,22 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    const res = Products.update(productId, {
-      $set: {
-        isVisible: !product.isVisible
+    const res = updateRevisionAndProduct(
+      this.userId,
+      {
+        _id: productId
+      },
+      {
+        $set: {
+          isVisible: !product.isVisible
+        }
+      },
+      {
+        selector: {
+          type: product.type
+        }
       }
-    }, {
-      selector: {
-        type: product.type
-      }
-    });
+    );
 
     if (Array.isArray(product.ancestors) && product.ancestors.length) {
       const updateId = product.ancestors[0] || product._id;

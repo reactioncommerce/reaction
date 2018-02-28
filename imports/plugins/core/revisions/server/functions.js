@@ -77,7 +77,7 @@ export function insertRevision(product) {
  * @param {Object} options
  * @returns {Boolean} true if revision was updadted successfully, false otherwise
  */
-export function updateRevision(userId, product, modifier, options) {
+export function updateRevision(userId, product, modifier, options = {}) {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -118,7 +118,6 @@ export function updateRevision(userId, product, modifier, options) {
     }
   }
 
-  const originalSelector = this.args[0];
 
   if (!productRevision) {
     Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
@@ -153,7 +152,12 @@ export function updateRevision(userId, product, modifier, options) {
     }
   };
 
-  if (options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
+  let publish = false;
+  if (Object.prototype.hasOwnProperty.call(options, "publish")) {
+    ({ publish } = options);
+  }
+
+  if (publish === true || (product.workflow && product.workflow.status === "product/publish")) {
     // Maybe mark the revision as published
 
     Logger.debug(`Publishing revison for product ${product._id}.`);
@@ -185,7 +189,9 @@ export function updateRevision(userId, product, modifier, options) {
             //
             // This does NOT apply to metafield.0, metafield.1, metafield.n operations
             // where 0, 1, n represent an array index.
-            revisionSelector["documentData.metafields"] = originalSelector.metafields;
+
+            // const originalSelector = options.selector;
+            revisionSelector["documentData.metafields"] = options.metafields;
             revisionModifier.$set[`documentData.${property}`] = modifier.$set[property];
           } else if (operation === "$push" && property === "hashtags") {
             if (!revisionModifier.$addToSet) {

@@ -283,299 +283,299 @@ Media.files.before.remove((userId, media) => {
   return true;
 });
 
-Products.before.update(function (userId, product, fieldNames, modifier, options) {
-  if (RevisionApi.isRevisionControlEnabled() === false) {
-    return true;
-  }
+// Products.before.update(function (userId, product, fieldNames, modifier, options) {
+//   if (RevisionApi.isRevisionControlEnabled() === false) {
+//     return true;
+//   }
 
-  let productRevision = Revisions.findOne({
-    "documentId": product._id,
-    "workflow.status": {
-      $nin: [
-        "revision/published"
-      ]
-    }
-  });
+//   let productRevision = Revisions.findOne({
+//     "documentId": product._id,
+//     "workflow.status": {
+//       $nin: [
+//         "revision/published"
+//       ]
+//     }
+//   });
 
-  // Prevent this product revision from beign restored from isDeleted state if a product / varaint
-  // ancestor is also deleted.
-  //
-  // This will prevent cases where a parent variant hase been deleted and a user tries to undeleted a
-  // child variant. You cannot undeleted the child variant, becuase the parent will no longer exist when
-  // changes have been published; resulting in a broken inheretence and UI
-  const revisionHasAncestors = productRevision && productRevision.documentData && Array.isArray(productRevision.documentData.ancestors);
-  const modiferContainsIsDeleted = modifier.$set && modifier.$set.isDeleted === false;
+//   // Prevent this product revision from beign restored from isDeleted state if a product / varaint
+//   // ancestor is also deleted.
+//   //
+//   // This will prevent cases where a parent variant hase been deleted and a user tries to undeleted a
+//   // child variant. You cannot undeleted the child variant, becuase the parent will no longer exist when
+//   // changes have been published; resulting in a broken inheretence and UI
+//   const revisionHasAncestors = productRevision && productRevision.documentData && Array.isArray(productRevision.documentData.ancestors);
+//   const modiferContainsIsDeleted = modifier.$set && modifier.$set.isDeleted === false;
 
-  if (revisionHasAncestors && modiferContainsIsDeleted) {
-    // Verify there are no deleted ancestors,
-    // Variants cannot be restored if their parent product / variant is deleted
-    const archivedCount = Revisions.find({
-      "documentId": { $in: productRevision.documentData.ancestors },
-      "documentData.isDeleted": true,
-      "workflow.status": {
-        $nin: [
-          "revision/published"
-        ]
-      }
-    }).count();
+//   if (revisionHasAncestors && modiferContainsIsDeleted) {
+//     // Verify there are no deleted ancestors,
+//     // Variants cannot be restored if their parent product / variant is deleted
+//     const archivedCount = Revisions.find({
+//       "documentId": { $in: productRevision.documentData.ancestors },
+//       "documentData.isDeleted": true,
+//       "workflow.status": {
+//         $nin: [
+//           "revision/published"
+//         ]
+//       }
+//     }).count();
 
-    if (archivedCount > 0) {
-      Logger.debug(`Cannot restore product ${product._id} as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
-      throw new Meteor.Error("unable-to-delete-variant", "Unable to delete product variant");
-    }
-  }
+//     if (archivedCount > 0) {
+//       Logger.debug(`Cannot restore product ${product._id} as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
+//       throw new Meteor.Error("unable-to-delete-variant", "Unable to delete product variant");
+//     }
+//   }
 
-  const originalSelector = this.args[0];
+//   const originalSelector = this.args[0];
 
-  if (!productRevision) {
-    Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
+//   if (!productRevision) {
+//     Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
 
-    // Create a new revision
-    Revisions.insert({
-      documentId: product._id,
-      documentData: product
-    });
+//     // Create a new revision
+//     Revisions.insert({
+//       documentId: product._id,
+//       documentData: product
+//     });
 
-    // Fetch newly created revision
-    productRevision = Revisions.findOne({
-      documentId: product._id
-    });
-  }
+//     // Fetch newly created revision
+//     productRevision = Revisions.findOne({
+//       documentId: product._id
+//     });
+//   }
 
-  // Create a new selector for the revision
-  //
-  // This is especially important since we may need to update some fields
-  // like metadata, and the selector is very important to that.
-  const revisionSelector = {
-    "documentId": product._id,
-    "workflow.status": {
-      $nin: [
-        "revision/published"
-      ]
-    }
-  };
+//   // Create a new selector for the revision
+//   //
+//   // This is especially important since we may need to update some fields
+//   // like metadata, and the selector is very important to that.
+//   const revisionSelector = {
+//     "documentId": product._id,
+//     "workflow.status": {
+//       $nin: [
+//         "revision/published"
+//       ]
+//     }
+//   };
 
-  // Create a new modifier for the revision
-  const revisionModifier = {
-    $set: {
-      "workflow.status": "revision/update"
-    }
-  };
+//   // Create a new modifier for the revision
+//   const revisionModifier = {
+//     $set: {
+//       "workflow.status": "revision/update"
+//     }
+//   };
 
-  if (options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
-    // Maybe mark the revision as published
+//   if (options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
+//     // Maybe mark the revision as published
 
-    Logger.debug(`Publishing revison for product ${product._id}.`);
-    Revisions.update(revisionSelector, {
-      $set: {
-        "workflow.status": "revision/published"
-      }
-    });
-    Hooks.Events.run("afterRevisionsUpdate", userId, {
-      ...productRevision,
-      workflow: { ...productRevision.workflow, status: "revisions/published" }
-    });
-    return true;
-  }
+//     Logger.debug(`Publishing revison for product ${product._id}.`);
+//     Revisions.update(revisionSelector, {
+//       $set: {
+//         "workflow.status": "revision/published"
+//       }
+//     });
+//     Hooks.Events.run("afterRevisionsUpdate", userId, {
+//       ...productRevision,
+//       workflow: { ...productRevision.workflow, status: "revisions/published" }
+//     });
+//     return true;
+//   }
 
-  const hasAncestors = Array.isArray(product.ancestors) && product.ancestors.length > 0;
+//   const hasAncestors = Array.isArray(product.ancestors) && product.ancestors.length > 0;
 
-  for (const operation in modifier) {
-    if (Object.hasOwnProperty.call(modifier, operation)) {
-      if (!revisionModifier[operation]) {
-        revisionModifier[operation] = {};
-      }
+//   for (const operation in modifier) {
+//     if (Object.hasOwnProperty.call(modifier, operation)) {
+//       if (!revisionModifier[operation]) {
+//         revisionModifier[operation] = {};
+//       }
 
-      for (const property in modifier[operation]) {
-        if ({}.hasOwnProperty.call(modifier[operation], property)) {
-          if (operation === "$set" && property === "metafields.$") {
-            // Special handling for meta fields with $ operator
-            // We need to update the selector otherwise the operation would completly fail.
-            //
-            // This does NOT apply to metafield.0, metafield.1, metafield.n operations
-            // where 0, 1, n represent an array index.
-            revisionSelector["documentData.metafields"] = originalSelector.metafields;
-            revisionModifier.$set[`documentData.${property}`] = modifier.$set[property];
-          } else if (operation === "$push" && property === "hashtags") {
-            if (!revisionModifier.$addToSet) {
-              revisionModifier.$addToSet = {};
-            }
-            revisionModifier.$addToSet[`documentData.${property}`] = modifier.$push[property];
-          } else if (operation === "$set" && property === "price" && hasAncestors) {
-            Revisions.update(revisionSelector, {
-              $set: {
-                "documentData.price": modifier.$set.price
-              }
-            });
-            Hooks.Events.run("afterRevisionsUpdate", userId, {
-              ...productRevision,
-              documentData: { ...productRevision.documentData, price: modifier.$set.price }
-            });
+//       for (const property in modifier[operation]) {
+//         if ({}.hasOwnProperty.call(modifier[operation], property)) {
+//           if (operation === "$set" && property === "metafields.$") {
+//             // Special handling for meta fields with $ operator
+//             // We need to update the selector otherwise the operation would completly fail.
+//             //
+//             // This does NOT apply to metafield.0, metafield.1, metafield.n operations
+//             // where 0, 1, n represent an array index.
+//             revisionSelector["documentData.metafields"] = originalSelector.metafields;
+//             revisionModifier.$set[`documentData.${property}`] = modifier.$set[property];
+//           } else if (operation === "$push" && property === "hashtags") {
+//             if (!revisionModifier.$addToSet) {
+//               revisionModifier.$addToSet = {};
+//             }
+//             revisionModifier.$addToSet[`documentData.${property}`] = modifier.$push[property];
+//           } else if (operation === "$set" && property === "price" && hasAncestors) {
+//             Revisions.update(revisionSelector, {
+//               $set: {
+//                 "documentData.price": modifier.$set.price
+//               }
+//             });
+//             Hooks.Events.run("afterRevisionsUpdate", userId, {
+//               ...productRevision,
+//               documentData: { ...productRevision.documentData, price: modifier.$set.price }
+//             });
 
-            const updateId = product.ancestors[0] || product._id;
-            const priceRange = ProductRevision.getProductPriceRange(updateId);
+//             const updateId = product.ancestors[0] || product._id;
+//             const priceRange = ProductRevision.getProductPriceRange(updateId);
 
-            Meteor.call("products/updateProductField", updateId, "price", priceRange);
-          } else if (operation === "$set" && property === "isVisible" && hasAncestors) {
-            Revisions.update(revisionSelector, {
-              $set: {
-                "documentData.isVisible": modifier.$set.isVisible
-              }
-            });
-            Hooks.Events.run("afterRevisionsUpdate", userId, {
-              ...productRevision,
-              documentData: { ...productRevision.documentData, isVisible: modifier.$set.isVisible }
-            });
+//             Meteor.call("products/updateProductField", updateId, "price", priceRange);
+//           } else if (operation === "$set" && property === "isVisible" && hasAncestors) {
+//             Revisions.update(revisionSelector, {
+//               $set: {
+//                 "documentData.isVisible": modifier.$set.isVisible
+//               }
+//             });
+//             Hooks.Events.run("afterRevisionsUpdate", userId, {
+//               ...productRevision,
+//               documentData: { ...productRevision.documentData, isVisible: modifier.$set.isVisible }
+//             });
 
-            const updateId = product.ancestors[0] || product._id;
-            const priceRange = ProductRevision.getProductPriceRange(updateId);
+//             const updateId = product.ancestors[0] || product._id;
+//             const priceRange = ProductRevision.getProductPriceRange(updateId);
 
-            Meteor.call("products/updateProductField", updateId, "price", priceRange);
-          } else if (operation === "$set" && (property === "title" || property === "handle") && hasAncestors === false) {
-            // Special handling for product title and handle
-            //
-            // Summary:
-            // When a user updates the product title, if the handle matches the product id,
-            // then update the handle to be a sligified version of the title
-            //
-            // This block ensures that the handle is either a custom slug, slug of the title, or
-            // the _id of the product, but is never blank
+//             Meteor.call("products/updateProductField", updateId, "price", priceRange);
+//           } else if (operation === "$set" && (property === "title" || property === "handle") && hasAncestors === false) {
+//             // Special handling for product title and handle
+//             //
+//             // Summary:
+//             // When a user updates the product title, if the handle matches the product id,
+//             // then update the handle to be a sligified version of the title
+//             //
+//             // This block ensures that the handle is either a custom slug, slug of the title, or
+//             // the _id of the product, but is never blank
 
-            // New data
-            const newValue = modifier.$set[property];
-            const newTitle = modifier.$set.title;
-            const newHandle = modifier.$set.handle;
+//             // New data
+//             const newValue = modifier.$set[property];
+//             const newTitle = modifier.$set.title;
+//             const newHandle = modifier.$set.handle;
 
-            // Current revision data
-            const { documentId } = productRevision;
-            const slugDocId = getSlug(documentId);
-            const revisionTitle = productRevision.documentData.title;
-            const revisionHandle = productRevision.documentData.handle;
+//             // Current revision data
+//             const { documentId } = productRevision;
+//             const slugDocId = getSlug(documentId);
+//             const revisionTitle = productRevision.documentData.title;
+//             const revisionHandle = productRevision.documentData.handle;
 
-            // Checks
-            const hasNewHandle = _.isEmpty(newHandle) === false;
-            const hasExistingTitle = _.isEmpty(revisionTitle) === false;
-            const hasNewTitle = _.isEmpty(newTitle) === false;
-            const hasHandle = _.isEmpty(revisionHandle) === false;
-            const handleMatchesId = revisionHandle === documentId || revisionHandle === slugDocId || newValue === documentId || newValue === slugDocId;
+//             // Checks
+//             const hasNewHandle = _.isEmpty(newHandle) === false;
+//             const hasExistingTitle = _.isEmpty(revisionTitle) === false;
+//             const hasNewTitle = _.isEmpty(newTitle) === false;
+//             const hasHandle = _.isEmpty(revisionHandle) === false;
+//             const handleMatchesId = revisionHandle === documentId || revisionHandle === slugDocId || newValue === documentId || newValue === slugDocId;
 
-            // Continue to set the title / handle as origionally requested
-            // Handle will get changed if conditions are met in the below if block
-            revisionModifier.$set[`documentData.${property}`] = newValue;
+//             // Continue to set the title / handle as origionally requested
+//             // Handle will get changed if conditions are met in the below if block
+//             revisionModifier.$set[`documentData.${property}`] = newValue;
 
-            if ((handleMatchesId || hasHandle === false) && (hasExistingTitle || hasNewTitle) && hasNewHandle === false) {
-              // Set the handle to be the slug of the product.title
-              // when documentId (product._id) matches the handle, then handle is enpty, and a title exists
-              revisionModifier.$set["documentData.handle"] = getSlug(newTitle || revisionTitle);
-            } else if (hasHandle === false && hasExistingTitle === false && hasNewHandle === false) {
-              // If the handle & title is empty, the handle becomes the product id
-              revisionModifier.$set["documentData.handle"] = documentId;
-            } else if (hasNewHandle === false && property === "handle") {
-              // If the handle is empty, the handle becomes the sligified product title, or document id if title does not exist.
-              // const newTitle = modifier.$set["title"];
-              revisionModifier.$set["documentData.handle"] = hasExistingTitle ? getSlug(newTitle || revisionTitle) : documentId;
-            }
-          } else if (operation === "$unset" && property === "handle" && hasAncestors === false) {
-            // Special handling for product handle when it is going to be unset
-            //
-            // Summary:
-            // When a user updates the handle to a black string e.g. deltes all text in field in UI and saves,
-            // the handle will be adjusted so it will not be blank
-            const newValue = modifier.$unset[property];
-            const revisionTitle = productRevision.documentData.title;
-            const hasExistingTitle = _.isEmpty(revisionTitle) === false;
+//             if ((handleMatchesId || hasHandle === false) && (hasExistingTitle || hasNewTitle) && hasNewHandle === false) {
+//               // Set the handle to be the slug of the product.title
+//               // when documentId (product._id) matches the handle, then handle is enpty, and a title exists
+//               revisionModifier.$set["documentData.handle"] = getSlug(newTitle || revisionTitle);
+//             } else if (hasHandle === false && hasExistingTitle === false && hasNewHandle === false) {
+//               // If the handle & title is empty, the handle becomes the product id
+//               revisionModifier.$set["documentData.handle"] = documentId;
+//             } else if (hasNewHandle === false && property === "handle") {
+//               // If the handle is empty, the handle becomes the sligified product title, or document id if title does not exist.
+//               // const newTitle = modifier.$set["title"];
+//               revisionModifier.$set["documentData.handle"] = hasExistingTitle ? getSlug(newTitle || revisionTitle) : documentId;
+//             }
+//           } else if (operation === "$unset" && property === "handle" && hasAncestors === false) {
+//             // Special handling for product handle when it is going to be unset
+//             //
+//             // Summary:
+//             // When a user updates the handle to a black string e.g. deltes all text in field in UI and saves,
+//             // the handle will be adjusted so it will not be blank
+//             const newValue = modifier.$unset[property];
+//             const revisionTitle = productRevision.documentData.title;
+//             const hasExistingTitle = _.isEmpty(revisionTitle) === false;
 
-            // If the new handle is going to be empty, the handle becomes the sligified product title, or document id if title does not exist.
-            if (_.isEmpty(newValue)) {
-              revisionModifier.$set["documentData.handle"] = hasExistingTitle ? getSlug(revisionTitle) : productRevision.documentId;
-            }
-          } else {
-            // Let everything else through
-            revisionModifier[operation][`documentData.${property}`] = modifier[operation][property];
-          }
-        }
-      }
-    }
-  }
+//             // If the new handle is going to be empty, the handle becomes the sligified product title, or document id if title does not exist.
+//             if (_.isEmpty(newValue)) {
+//               revisionModifier.$set["documentData.handle"] = hasExistingTitle ? getSlug(revisionTitle) : productRevision.documentId;
+//             }
+//           } else {
+//             // Let everything else through
+//             revisionModifier[operation][`documentData.${property}`] = modifier[operation][property];
+//           }
+//         }
+//       }
+//     }
+//   }
 
-  Revisions.update(revisionSelector, revisionModifier);
-  const updatedRevision = Revisions.findOne({ documentId: product._id });
-  Hooks.Events.run("afterRevisionsUpdate", userId, updatedRevision);
+//   Revisions.update(revisionSelector, revisionModifier);
+//   const updatedRevision = Revisions.findOne({ documentId: product._id });
+//   Hooks.Events.run("afterRevisionsUpdate", userId, updatedRevision);
 
-  Logger.debug(`Revison updated for product ${product._id}.`);
+//   Logger.debug(`Revison updated for product ${product._id}.`);
 
-  if (modifier.$pull && modifier.$pull.hashtags) {
-    const tagId = modifier.$pull.hashtags;
+//   if (modifier.$pull && modifier.$pull.hashtags) {
+//     const tagId = modifier.$pull.hashtags;
 
-    const productCount = Products.find({
-      hashtags: {
-        $in: [tagId]
-      }
-    }).count();
+//     const productCount = Products.find({
+//       hashtags: {
+//         $in: [tagId]
+//       }
+//     }).count();
 
-    const relatedTagsCount = Tags.find({
-      relatedTagIds: {
-        $in: [tagId]
-      }
-    }).count();
+//     const relatedTagsCount = Tags.find({
+//       relatedTagIds: {
+//         $in: [tagId]
+//       }
+//     }).count();
 
-    if (productCount === 0 && relatedTagsCount === 0) {
-      // Mark tag as deleted
-      Tags.update({
-        _id: tagId
-      }, {
-        $set: {
-          isDeleted: true
-        }
-      });
-    } else {
-      Tags.update({
-        _id: tagId
-      }, {
-        $set: {
-          isDeleted: false
-        }
-      });
-    }
-  }
+//     if (productCount === 0 && relatedTagsCount === 0) {
+//       // Mark tag as deleted
+//       Tags.update({
+//         _id: tagId
+//       }, {
+//         $set: {
+//           isDeleted: true
+//         }
+//       });
+//     } else {
+//       Tags.update({
+//         _id: tagId
+//       }, {
+//         $set: {
+//           isDeleted: false
+//         }
+//       });
+//     }
+//   }
 
-  // If we are using $set or $inc, and the fields are one of the ignoredFields,
-  // allow product to be updated without going through revision control
-  if ((modifier.$set || modifier.$inc) && !modifier.$pull && !modifier.$push) {
-    const newSet = {};
-    const newInc = {};
-    let hasIgnoredFields = false;
-    const ignoredFields = [
-      "isLowQuantity",
-      "isSoldOut",
-      "inventoryQuantity"
-    ];
+//   // If we are using $set or $inc, and the fields are one of the ignoredFields,
+//   // allow product to be updated without going through revision control
+//   if ((modifier.$set || modifier.$inc) && !modifier.$pull && !modifier.$push) {
+//     const newSet = {};
+//     const newInc = {};
+//     let hasIgnoredFields = false;
+//     const ignoredFields = [
+//       "isLowQuantity",
+//       "isSoldOut",
+//       "inventoryQuantity"
+//     ];
 
-    for (const field of ignoredFields) {
-      if (modifier.$set && (typeof modifier.$set[field] === "number" || typeof modifier.$set[field] === "boolean")) {
-        newSet[field] = modifier.$set[field];
-        hasIgnoredFields = true;
-      }
+//     for (const field of ignoredFields) {
+//       if (modifier.$set && (typeof modifier.$set[field] === "number" || typeof modifier.$set[field] === "boolean")) {
+//         newSet[field] = modifier.$set[field];
+//         hasIgnoredFields = true;
+//       }
 
-      if (modifier.$inc && (typeof modifier.$inc[field] === "number" || typeof modifier.$inc[field] === "boolean")) {
-        newInc[field] = modifier.$inc[field];
-        hasIgnoredFields = true;
-      }
-    }
-    if (_.isEmpty(newSet) === false) {
-      modifier.$set = newSet;
-    }
+//       if (modifier.$inc && (typeof modifier.$inc[field] === "number" || typeof modifier.$inc[field] === "boolean")) {
+//         newInc[field] = modifier.$inc[field];
+//         hasIgnoredFields = true;
+//       }
+//     }
+//     if (_.isEmpty(newSet) === false) {
+//       modifier.$set = newSet;
+//     }
 
-    if (_.isEmpty(newInc) === false) {
-      modifier.$inc = newInc;
-    }
+//     if (_.isEmpty(newInc) === false) {
+//       modifier.$inc = newInc;
+//     }
 
-    return hasIgnoredFields === true;
-  }
+//     return hasIgnoredFields === true;
+//   }
 
-  // prevent the underlying document from being modified as it is in draft mode
-  return false;
-});
+//   // prevent the underlying document from being modified as it is in draft mode
+//   return false;
+// });
 
 Products.before.remove((userId, product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
