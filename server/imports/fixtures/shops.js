@@ -34,8 +34,9 @@ export function getAddress(options = {}) {
   return _.defaults(options, defaults);
 }
 
+// shop name should be unique for the slug to be unique
 const shop = {
-  name: faker.internet.domainName(),
+  name: () => faker.internet.domainName(),
   description: faker.company.catchPhrase(),
   keywords: faker.company.bsAdjective(),
   addressBook: [getAddress()],

@@ -1,4 +1,3 @@
-import later from "later";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Cart, Jobs } from "/lib/collections";
@@ -33,7 +32,7 @@ export function setupStaleCartHook() {
           backoff: "exponential" // delay by twice as long for each subsequent retry
         })
         .repeat({
-          schedule: later.parse.text("every day")
+          schedule: Jobs.later.parse.text("every day")
         })
         .save({
           cancelRepeats: true

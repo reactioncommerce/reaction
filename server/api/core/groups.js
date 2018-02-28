@@ -76,6 +76,7 @@ function getDefaultGroupRoles() {
 
   // we're making a Shop Manager default group that have all roles except the owner role
   const shopManagerRoles = ownerRoles.filter((role) => role !== "owner" && role !== "admin");
+  shopManagerRoles.push("shopSettings");
 
   const roles = {
     "shop manager": shopManagerRoles,

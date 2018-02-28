@@ -600,7 +600,7 @@ export function inviteShopOwner(options) {
     });
   }
 
-  const { shopId } = Meteor.call("shop/createShop", userId) || {};
+  Meteor.call("shop/createShop", userId);
   const primaryShop = Reaction.getPrimaryShop();
 
   // Compile Email with SSR
@@ -620,8 +620,7 @@ export function inviteShopOwner(options) {
   Meteor.users.update(userId, {
     $set: {
       "services.password.reset": { token, email, when: new Date() },
-      name,
-      "profile.preferences.reaction.activeShopId": shopId
+      name
     }
   });
 
