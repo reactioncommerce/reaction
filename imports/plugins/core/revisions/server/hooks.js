@@ -557,7 +557,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   }
 
   Revisions.update(revisionSelector, revisionModifier);
-  const updatedRevision = Revisions.findOne(revisionSelector);
+  const updatedRevision = Revisions.findOne({ documentId: product._id });
   Hooks.Events.run("afterRevisionsUpdate", userId, updatedRevision);
 
   Logger.debug(`Revison updated for product ${product._id}.`);
