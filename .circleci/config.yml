@@ -1,11 +1,82 @@
 version: 2
 
 jobs:
-  build:
-    working_directory: /home/reaction
+  # run automated tests
+  tests:
+    working_directory: ~/reaction
 
     docker:
-      - image: node:8
+      - image: circleci/node:8.9.3-browsers
+
+    environment:
+      - DOCKER_VERSION: 17.05.0-ce
+      - DOCKER_COMPOSE_VERSION: 1.15.0
+      - METEOR_ALLOW_SUPERUSER: true
+      - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          name: Restoring Meteor cache
+          key: meteor-{{ .Branch }}
+
+      # Install Meteor
+      - run: .circleci/install_meteor.sh
+
+      # install OS dependencies
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y locales
+
+      # fix Meteor/Mongo locale issue on Debian
+      # https://github.com/meteor/meteor/issues/4019
+      - run: sudo locale-gen en_US.UTF-8
+      - run: sudo localedef -i en_GB -f UTF-8 en_US.UTF-8
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}-{{ .Branch }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-{{ .Branch }}
+
+      # Install dependencies
+      - run: meteor npm install
+
+      - restore_cache:
+          name: Restoring Meteor dev_bundle cache
+          key: dev_bundle-{{ .Branch }}
+
+      # install Reaction CLI
+      - run: sudo npm install -g reaction-cli
+
+      # run reaction tests
+      - run: .circleci/tests.sh
+
+      - save_cache:
+          name: Saving Meteor dev_bundle to cache
+          key: dev_bundle-{{ .Branch }}
+          paths:
+            - ~/reaction/.meteor/local
+
+      - save_cache:
+          paths:
+            - ~/reaction/node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - save_cache:
+          name: Saving Meteor to cache
+          key: meteor-{{ .Branch }}
+          paths:
+            - ~/.meteor
+
+
+  # build a Reaction image and publish to DockerHub
+  publish:
+    working_directory: ~/reaction
+
+    docker:
+      - image: node:8.9.3
 
     environment:
       - DOCKER_VERSION: 17.05.0-ce
@@ -17,59 +88,64 @@ jobs:
       - setup_remote_docker
       - checkout
 
-      # install OS dependencies
-      - restore_cache:
-          name: Restoring Meteor cache
-          key: meteor
-
+      # Install Docker client & compose
       - run: .circleci/install.sh
-
-      - save_cache:
-          name: Saving Meteor to cache
-          key: meteor
-          paths:
-            - ~/.meteor
-
-      # install app dependencies
-
-      - run: meteor npm install
-
-      # run tests
-      - restore_cache:
-          name: Restoring Meteor dev_bundle cache
-          key: dev_bundle
-
-      # run reaction tests
-      - run: .circleci/tests.sh
-
-      - save_cache:
-          name: Saving Meteor dev_bundle to cache
-          key: dev_bundle
-          paths:
-            - /home/reaction/.meteor/local
 
       - run:
           command: .circleci/build.sh
           no_output_timeout: 30m
 
+      - run: .circleci/deploy.sh
+
+
+  # deploy reaction docs
+  deployDocs:
+    working_directory: ~/reaction
+
+    docker:
+      - image: node:8.9.3
+
+    environment:
+      - DOCKER_VERSION: 17.05.0-ce
+      - DOCKER_COMPOSE_VERSION: 1.15.0
+      - METEOR_ALLOW_SUPERUSER: true
+      - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
+
+    steps:
+      - checkout
+
+      # install OS dependencies
+      - run: apt-get update
+      - run: apt-get install -y locales
       - run:
           command: .reaction/jsdoc/build.sh
           no_output_timeout: 2m
 
-      # deploy the docs if on master branch
-      - deploy:
-          name: Deploy to S3 if tests pass and branch is Master
+      # deploy the docs if on master branch (based on workflow filter)
+      - run:
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
-                aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
-              else
-                echo "S3 bucket configuration not found for jsdocs"
-                echo "Set API_DOC_BUCKET and API_DOC_BUCKET_REGION to build and deploy jsdocs to S3"
-              fi
+            if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
+              aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
             else
-              echo "Not master branch so not deploying"
+              echo "S3 bucket configuration not found for jsdocs"
+              echo "Set API_DOC_BUCKET and API_DOC_BUCKET_REGION to build and deploy jsdocs to S3"
             fi
-      - deploy:
-          name: Docker Image Deploment
-          command: .circleci/deploy.sh
+
+workflows:
+  version: 2
+
+  test_publish_deploy:
+    jobs:
+      - tests
+
+      - publish:
+          requires:
+            - tests
+
+      - deployDocs:
+          requires:
+            - tests
+          filters:
+            branches:
+              only:
+                - master
