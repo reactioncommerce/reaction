@@ -9,7 +9,14 @@
           "enabledCurrencies": "Currencies",
           "enabledLanguages": "Languages",
           "allOn": "All On",
-          "allOff": "All Off"
+          "allOff": "All Off",
+          "reloadTranslations": "Reload translations",
+          "reloadStarted": "Reloading translations for the current shop.",
+          "reloadAllStarted": "Reloading translations for all shops.",
+          "reloadSuccess": "Translations have been reloaded for the current shop.",
+          "reloadAllSuccess": "Translations have been reloaded for all shops.",
+          "reloadError": "Translations could not be reloaded for the current shop.",
+          "reloadAllError": "Translations could not be reloaded for all shops."
         },
         "baseUOM": "Base Unit of Measure",
         "currency": "Base Currency",
