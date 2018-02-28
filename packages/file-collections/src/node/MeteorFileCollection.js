@@ -134,15 +134,21 @@ export default class MeteorFileCollection extends FileCollection {
 
   /**
    * @method _findOne
-   * @param {String} id A FileRecord ID
+   * @param {String|Object} selector A FileRecord ID or MongoDB Selector
    * @param {Object} options Options object to be passed through to Meteor's findOne
    * @returns {Promise<Object|undefined>} A Promise that resolves with the document or undefined
    */
-  _findOne(id, options) {
+  _findOne(selector, options) {
+    let mongoSelector;
+    if (typeof selector === "string") {
+      mongoSelector = { _id: selector };
+    } else {
+      mongoSelector = selector || {};
+    }
     return new Promise((resolve, reject) => {
       let doc;
       try {
-        doc = this.mongoCollection.findOne({ _id: id }, options);
+        doc = this.mongoCollection.findOne(mongoSelector, options);
       } catch (error) {
         reject(error);
         return;
