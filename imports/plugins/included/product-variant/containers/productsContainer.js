@@ -237,7 +237,7 @@ function composer(props, onData) {
   });
 }
 
-registerComponent("Products", ProductsComponent, [
+registerComponent("ProductsAdmin", ProductsComponent, [
   composeWithTracker(composer),
   wrapComponent
 ]);
