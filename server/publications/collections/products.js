@@ -531,7 +531,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 });
 
 
-Meteor.publish("Products/grid", (productScrollLimit = 24, productFilters, sort = {}, editMode = true) => {
+Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilters, sort = {}, editMode = true) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, Object));
   check(sort, Match.OneOf(undefined, Object));
@@ -544,5 +544,47 @@ Meteor.publish("Products/grid", (productScrollLimit = 24, productFilters, sort =
     isDeleted: { $in: [null, false] }, // by default, we don't publish deleted products
     isVisible: true // by default, only lookup visible products
   };
-  return Products.find(selector, { sort });
+
+  const productCursor = Products.find(selector, { sort });
+
+  const handle = productCursor.observeChanges({
+    added: (id, fields) => {
+      const variants = Products.find({
+        ancestors: {
+          $in: [id]
+        }
+      }).fetch();
+
+      // const media = Media.find().map((media) => {
+      //   return media.url()
+      // })
+
+      fields.varaints = variants;
+      fields.isSoldOut = true;
+      // fields.media = media;
+
+      this.added("Products", id, fields);
+    },
+    changed: (id, fields) => {
+      const variants = Products.find({
+        ancestors: {
+          $in: [id]
+        }
+      }).fetch();
+
+      fields.varaints = variants;
+      fields.isSoldOut = true;
+
+      this.changed("Products", id, fields);
+    },
+    removed: (id) => {
+      this.removed("Products", id);
+    }
+  });
+
+  this.onStop(() => {
+    handle.stop();
+  });
+
+  return this.ready();
 });
