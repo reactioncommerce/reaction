@@ -358,9 +358,9 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
                 }
               } else {
                 if (revision.workflow.status !== "revision/published") {
-                  this.changed("Products", revision.documentId, { __revisions: [revision] });
+                  this.added("Products", revision.documentId, { __revisions: [revision] });
                 } else {
-                  this.changed("Products", revision.documentId, { __revisions: [] });
+                  this.added("Products", revision.documentId, { __revisions: [] });
                 }
               }
             }
