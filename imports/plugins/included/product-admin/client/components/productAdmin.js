@@ -5,7 +5,7 @@ import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Router } from "/client/api";
-import update from "react/lib/update";
+import update from "immutability-helper";
 
 const fieldNames = [
   "title",

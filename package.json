@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -54,6 +54,7 @@
     "i18next-browser-languagedetector": "^2.1.0",
     "i18next-localstorage-cache": "^1.1.1",
     "i18next-sprintf-postprocessor": "^0.2.2",
+    "immutability-helper": "^2.6.5",
     "immutable": "^3.8.2",
     "jquery-i18next": "^1.2.1",
     "later": "^1.2.0",
@@ -76,7 +77,7 @@
     "prop-types": "^15.6.0",
     "query-parse": "^2.0.0",
     "radium": "^0.22.0",
-    "react": "15.6.2",
+    "react": "16.2.0",
     "react-addons-create-fragment": "15.6.2",
     "react-addons-pure-render-mixin": "15.6.2",
     "react-addons-shallow-compare": "^15.6.2",
@@ -87,7 +88,7 @@
     "react-dates": "^15.5.3",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
-    "react-dom": "15.6.2",
+    "react-dom": "16.2.0",
     "react-dropzone": "^4.2.7",
     "react-helmet": "^5.2.0",
     "react-image-magnify": "^2.4.1",
