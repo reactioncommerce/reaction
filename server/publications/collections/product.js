@@ -128,17 +128,19 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
             // If yes, we send a `changed`, otherwise `added`. I'm assuming
             // that this._documents.Products is somewhat equivalent to
             // the merge box Meteor.server.sessions[sessionId].getCollectionView("Products").documents
-            if (this._documents.Products && this._documents.Products[revision.documentId]) {
-              if (revision.workflow.status !== "revision/published") {
-                this.changed("Products", revision.documentId, { __revisions: [revision] });
+            if (this._documents.Products) {
+              if (this._documents.Products[revision.documentId]) {
+                if (revision.workflow.status !== "revision/published") {
+                  this.changed("Products", revision.documentId, { __revisions: [revision] });
+                } else {
+                  this.changed("Products", revision.documentId, { __revisions: [] });
+                }
               } else {
-                this.changed("Products", revision.documentId, { __revisions: [] });
-              }
-            } else {
-              if (revision.workflow.status !== "revision/published") {
-                this.added("Products", revision.documentId, { __revisions: [revision] });
-              } else {
-                this.added("Products", revision.documentId, { __revisions: [] });
+                if (revision.workflow.status !== "revision/published") {
+                  this.added("Products", revision.documentId, { __revisions: [revision] });
+                } else {
+                  this.added("Products", revision.documentId, { __revisions: [] });
+                }
               }
             }
           }
