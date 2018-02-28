@@ -620,7 +620,7 @@ export function inviteShopOwner(options) {
   Meteor.users.update(userId, {
     $set: {
       "services.password.reset": { token, email, when: new Date() },
-      name
+      name,
     }
   });
 
