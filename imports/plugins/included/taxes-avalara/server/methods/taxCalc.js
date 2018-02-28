@@ -108,6 +108,7 @@ function parseError(error) {
   }
 
   if (error.response && error.response.statusCode === 401) {
+    // authentification error
     errorData = {
       errorCode: 401,
       type: "apiFailure",
