@@ -485,7 +485,11 @@ export default {
   getShopPrefix() {
     const shopName = this.getShopName();
     if (shopName) {
-      return `/shop/${this.getSlug(shopName.toLowerCase())}`;
+      return Router.pathFor("index", {
+        hash: {
+          shopSlug: this.getSlug(shopName.toLowerCase())
+        }
+      });
     }
   },
 

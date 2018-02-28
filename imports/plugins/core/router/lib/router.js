@@ -13,6 +13,7 @@ import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
 import { Packages, Shops } from "/lib/collections";
 import { getComponent } from "@reactioncommerce/reaction-components/components";
+import { Reaction } from "/lib/api";
 import Hooks from "./hooks";
 
 
@@ -558,6 +559,19 @@ Router.initPackageRoutes = (options) => {
   Router.Reaction = options.reactionContext;
   Router.routes = [];
 
+  let marketplaceSettings = {
+    shopPrefix: "/shop" // default value
+  };
+
+  const marketplace = Packages.findOne({
+    name: "reaction-marketplace",
+    shopId: Router.Reaction.getPrimaryShopId()
+  });
+
+  if (marketplace && marketplace.settings && marketplace.settings.public) {
+    marketplaceSettings = marketplace.settings.public;
+  }
+
   const pkgs = Packages.find().fetch();
 
   const routeDefinitions = [];
@@ -590,7 +604,7 @@ Router.initPackageRoutes = (options) => {
       });
 
       routeDefinitions.push({
-        route: "/shop/:shopSlug",
+        route: `${marketplaceSettings.shopPrefix}/:shopSlug`,
         name: "index",
         options: {
           name: "index",
