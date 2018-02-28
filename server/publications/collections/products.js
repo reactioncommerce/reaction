@@ -6,6 +6,7 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 import { Products, Shops, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
+import { Media } from "/imports/plugins/core/files/server";
 
 //
 // define search filters as a schema so we can validate
@@ -545,35 +546,53 @@ Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilter
     isVisible: true // by default, only lookup visible products
   };
 
-  const productCursor = Products.find(selector, { sort });
+  const productCursor = Products.find(selector, {
+    sort,
+    limit: productScrollLimit
+  });
 
   const handle = productCursor.observeChanges({
-    added: (id, fields) => {
+    added: async (id, fields) => {
       const variants = Products.find({
         ancestors: {
           $in: [id]
         }
       }).fetch();
 
-      // const media = Media.find().map((media) => {
-      //   return media.url()
-      // })
+      const mediaArray = await Media.find({
+        "metadata.productId": id
+      });
+
+      const productMedia = mediaArray.map((media) => ({
+        url: `/assets${media.url({ store: "medium" })}`
+      }));
+
+      console.log("mediaArray", productMedia);
 
       fields.varaints = variants;
       fields.isSoldOut = true;
-      // fields.media = media;
+      fields.media = productMedia;
 
       this.added("Products", id, fields);
     },
-    changed: (id, fields) => {
+    changed: async (id, fields) => {
       const variants = Products.find({
         ancestors: {
           $in: [id]
         }
       }).fetch();
 
+      const mediaArray = await Media.find({
+        "metadata.productId": id
+      });
+
+      const productMedia = mediaArray.map((media) => ({
+        url: `/assets${media.url({ store: "medium" })}`
+      }));
+
       fields.varaints = variants;
       fields.isSoldOut = true;
+      fields.media = productMedia;
 
       this.changed("Products", id, fields);
     },
