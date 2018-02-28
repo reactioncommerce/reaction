@@ -529,3 +529,20 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     // limit: productScrollLimit
   });
 });
+
+
+Meteor.publish("Products/grid", (productScrollLimit = 24, productFilters, sort = {}, editMode = true) => {
+  check(productScrollLimit, Number);
+  check(productFilters, Match.OneOf(undefined, Object));
+  check(sort, Match.OneOf(undefined, Object));
+  check(editMode, Match.Maybe(Boolean));
+
+  console.log("new prod grid publication")
+
+  const selector = {
+    ancestors: [], // Lookup top-level products
+    isDeleted: { $in: [null, false] }, // by default, we don't publish deleted products
+    isVisible: true // by default, only lookup visible products
+  };
+  return Products.find(selector, { sort });
+});
