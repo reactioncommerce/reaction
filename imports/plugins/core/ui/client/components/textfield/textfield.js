@@ -28,7 +28,12 @@ class TextField extends Component {
     if (this.props.isCurrency && !this.state.isEditing) {
       return (this.state && this.state.value) || this.props.value || "";
     }
-    return this.props.value || "";
+    // if the props.value is not a number
+    // return ether the value or and empty string
+    if (isNaN(this.props.value)) {
+      return this.props.value || "";
+    }
+    return this.props.value;
   }
 
   /**
@@ -182,6 +187,8 @@ class TextField extends Component {
         placeholder={placeholder}
         ref="input"
         type={this.props.type || "text"}
+        min={this.props.minValue}
+        max={this.props.maxValue}
         value={this.value}
         style={this.props.style}
         disabled={this.props.disabled}
@@ -297,6 +304,8 @@ TextField.propTypes = {
   isValid: PropTypes.bool,
   label: PropTypes.string,
   maxRows: PropTypes.number,
+  maxValue: PropTypes.any,
+  minValue: PropTypes.number,
   multiline: PropTypes.bool,
   name: PropTypes.string,
   onBlur: PropTypes.func,
