@@ -21,8 +21,8 @@ services:
       - .:/opt/reaction/src
 
   mongo:
-    image: mongo:3.6
-    command: mongod --bind_ip_all
+    image: mongo:3.4
+    command: mongod --storageEngine=wiredTiger
     volumes:
       - mongo-db:/data/db
 
