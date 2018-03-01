@@ -4,19 +4,13 @@ import { formatPriceString, Reaction } from "/client/api";
 
 class ProductGridItems extends Component {
   static propTypes = {
-    canEdit: PropTypes.bool,
-    connectDragSource: PropTypes.func,
-    connectDropTarget: PropTypes.func,
     displayPrice: PropTypes.func,
     isMediumWeight: PropTypes.func,
     isSearch: PropTypes.bool,
-    isSelected: PropTypes.func,
     onClick: PropTypes.func,
     onDoubleClick: PropTypes.func,
-    pdpPath: PropTypes.func,
     positions: PropTypes.func,
     product: PropTypes.object,
-    productMedia: PropTypes.object,
     weightClass: PropTypes.func
   }
 
@@ -57,7 +51,7 @@ class ProductGridItems extends Component {
 
   // notice
   renderNotices() {
-    return null
+    return null;
     // return (
     //   <div className="grid-alerts">
     //     <GridItemNotice isSoldOut={() => this.props.product.isSoldOut} />
@@ -81,11 +75,6 @@ class ProductGridItems extends Component {
 
   // render product image
   renderMedia() {
-    // const { product, productMedia } = this.props;
-
-    // return (
-    //   <Components.ProductImage displayMedia={() => productMedia.primaryMedia} item={product} size="large" mode="span" />
-    // );
     const { product } = this.props;
     const MEDIA_PLACEHOLDER = "/resources/placeholder.gif";
     const { large } = (Array.isArray(product.media) && product.media[0]) || { large: MEDIA_PLACEHOLDER };
@@ -100,24 +89,24 @@ class ProductGridItems extends Component {
 
 
   renderAdditionalMedia() {
-    const { isMediumWeight, productMedia } = this.props;
-    if (!isMediumWeight()) return null;
+    // const { isMediumWeight, productMedia } = this.props;
+    // if (!isMediumWeight()) return null;
 
-    const mediaArray = productMedia.additionalMedia;
-    if (!mediaArray || mediaArray.length === 0) return null;
+    // const mediaArray = productMedia.additionalMedia;
+    // if (!mediaArray || mediaArray.length === 0) return null;
 
-    return (
-      <div className={`product-additional-images ${this.renderVisible()}`}>
-        {mediaArray.map((media) => (
-          <span
-            key={media._id}
-            className="product-image"
-            style={{ backgroundImage: `url('${media.url({ store: "medium" })}')` }}
-          />
-        ))}
-        {this.renderOverlay()}
-      </div>
-    );
+    // return (
+    //   <div className={`product-additional-images ${this.renderVisible()}`}>
+    //     {mediaArray.map((media) => (
+    //       <span
+    //         key={media._id}
+    //         className="product-image"
+    //         style={{ backgroundImage: `url('${media.url({ store: "medium" })}')` }}
+    //       />
+    //     ))}
+    //     {this.renderOverlay()}
+    //   </div>
+    // );
   }
 
   renderGridContent() {
@@ -126,7 +115,6 @@ class ProductGridItems extends Component {
     return (
       <div className="grid-content">
         <a
-          // href={this.props.pdpPath()}
           href={this.productURL}
           data-event-category="grid"
           data-event-action="product-click"
@@ -171,7 +159,7 @@ class ProductGridItems extends Component {
             onDoubleClick={this.handleDoubleClick}
             onClick={this.handleClick}
           >
-            <div className={`product-primary-images`}>
+            <div className="product-primary-images">
               {this.renderMedia()}
             </div>
 
