@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
-import { formatPriceString } from "/client/api";
+import { formatPriceString, Reaction } from "/client/api";
 
 class ProductGridItems extends Component {
   static propTypes = {
@@ -21,6 +20,7 @@ class ProductGridItems extends Component {
     weightClass: PropTypes.func
   }
 
+  // action event handlers
   handleDoubleClick = (event) => {
     if (this.props.onDoubleClick) {
       this.props.onDoubleClick(event);
@@ -33,12 +33,18 @@ class ProductGridItems extends Component {
     }
   }
 
+  // modifiers
   renderPinned() {
     return this.props.positions().pinned ? "pinned" : "";
   }
 
   renderVisible() {
     return this.props.product.isVisible ? "" : "not-visible";
+  }
+
+   // render class names
+  renderHoverClassName() {
+    return this.props.isSearch ? "item-content" : "";
   }
 
   renderOverlay() {
@@ -49,13 +55,49 @@ class ProductGridItems extends Component {
     }
   }
 
+  // notice
+  renderNotices() {
+    return null
+    // return (
+    //   <div className="grid-alerts">
+    //     <GridItemNotice isSoldOut={() => this.props.product.isSoldOut} />
+
+    //   </div>
+
+    // );
+  }
+
+  // getters
+
+  // get product detail page URL
+  get productURL() {
+    const { product: { handle } } = this.props;
+    return Reaction.Router.pathFor("product", {
+      hash: {
+        handle
+      }
+    });
+  }
+
+  // render product image
   renderMedia() {
-    const { product, productMedia } = this.props;
+    // const { product, productMedia } = this.props;
+
+    // return (
+    //   <Components.ProductImage displayMedia={() => productMedia.primaryMedia} item={product} size="large" mode="span" />
+    // );
+    const { product } = this.props;
+    const MEDIA_PLACEHOLDER = "/resources/placeholder.gif";
+    const { url } = (Array.isArray(product.media) && product.media[0]) || { url: MEDIA_PLACEHOLDER };
 
     return (
-      <Components.ProductImage displayMedia={() => productMedia.primaryMedia} item={product} size="large" mode="span" />
+      <span
+        className="product-image"
+        style={{ backgroundImage: `url(${ url })` }}
+      />
     );
   }
+
 
   renderAdditionalMedia() {
     const { isMediumWeight, productMedia } = this.props;
@@ -78,17 +120,6 @@ class ProductGridItems extends Component {
     );
   }
 
-  renderNotices() {
-    return null
-    // return (
-    //   <div className="grid-alerts">
-    //     <GridItemNotice isSoldOut={() => this.props.product.isSoldOut} />
-
-    //   </div>
-
-    // );
-  }
-
   renderGridContent() {
     const { product } = this.props;
 
@@ -96,7 +127,7 @@ class ProductGridItems extends Component {
       <div className="grid-content">
         <a
           // href={this.props.pdpPath()}
-          href={`product/${product._id}`}
+          href={this.productURL}
           data-event-category="grid"
           data-event-action="product-click"
           data-event-label="grid product click"
@@ -116,25 +147,13 @@ class ProductGridItems extends Component {
     );
   }
 
-  renderHoverClassName() {
-    return this.props.isSearch ? "item-content" : "";
-  }
-
   render() {
     const { product } = this.props;
-    const MEDIA_PLACEHOLDER = "/resources/placeholder.gif";
-
-    // TODO: use this to get product url
-    // Reaction.Router.pathFor("product", {
-    //   hash: {
-    //     handle
-    //   }
-    // });
 
     // TODO: isSelected is not needed. Others may not need to be functions
     // ${this.renderPinned()} ${this.props.weightClass()} ${this.props.isSelected()}
 
-    const { url } = (Array.isArray(product.media) && product.media[0]) || { url: MEDIA_PLACEHOLDER };
+
     return (
       <li
         className={`product-grid-item `}
@@ -145,7 +164,7 @@ class ProductGridItems extends Component {
           <span className="product-grid-item-alerts" />
 
           <a className="product-grid-item-images"
-            href={`product/${product._id}`}
+            href={this.productURL}
             data-event-category="grid"
             data-event-label="grid product click"
             data-event-value={this.props.product._id}
@@ -153,12 +172,7 @@ class ProductGridItems extends Component {
             onClick={this.handleClick}
           >
             <div className={`product-primary-images`}>
-              <span
-                className="product-image"
-                style={{ backgroundImage: `url('${url}')` }}
-              />
-              {/* {this.renderMedia()} */}
-              {/* {this.renderOverlay()} */}
+              {this.renderMedia()}
             </div>
 
             {/* {this.renderAdditionalMedia()} */}
