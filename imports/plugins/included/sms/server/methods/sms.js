@@ -1,8 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Sms, Accounts } from "/lib/collections";
+import { Sms } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
-import { parse, isValidNumber, getPhoneCode } from "libphonenumber-js";
+import { formatPhoneNo } from "/lib/api";
 
 // We lazy load these in order to shave a few seconds off the time
 // it takes Meteor to start/restart the app.
@@ -20,25 +20,6 @@ async function lazyLoadNexmo() {
   Nexmo = mod.default;
 }
 
-/**
- * formatPhoneNo
- * @summary prepends country code to phone no. if required
- * @param  {String} phone the original phone no.
- * @param  {String} country the country code of the phone no.
- * @return {String} the phone no. with country extension.
- */
-function formatPhoneNo(phone, country) {
-  try {
-    // phone no. already has the country code attached
-    if (isValidNumber(phone)) {
-      return phone;
-    }
-    // try attaching the country code to phone no.
-    return getPhoneCode(country) + parse(phone, country).phone;
-  } catch (error) {
-    return phone;
-  }
-}
 /**
  * @file Meteor methods for SMS. Run these methods using `Meteor.call()`.
  *
@@ -82,13 +63,15 @@ Meteor.methods({
     check(userId, String);
     check(shopId, String);
 
-    const user = Accounts.findOne({ _id: userId });
+    const user = Meteor.users.findOne(userId);
     const addressBook = user && user.profile ? user.profile.addressBook : false;
     // check for addressBook phone
-    const phone = (Array.isArray(addressBook) && addressBook[0] && addressBook[0].phone) || false;
-    const country = (Array.isArray(addressBook) && addressBook[0] && addressBook[0].country) || false;
+    const phone = addressBook && addressBook.phone;
+    const country = addressBook && addressBook.country;
 
-    if (!phone || !country) return;
+    if (!phone || !country) {
+      return;
+    }
 
     const formattedPhone = formatPhoneNo(phone, country);
 
