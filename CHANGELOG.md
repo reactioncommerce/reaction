@@ -1,3 +1,22 @@
+# v1.9.0
+
+## Dockerfile Updates
+- Base image updated to `reactioncommerce/base:v4.0.1` which has:
+  - `node:8.9.4` as base image (same Debian base as before, but with Node 8 preinstalled)
+  - Meteor 1.6.1 preinstalled
+- [Multi-stage build support](https://docs.docker.com/develop/develop-images/multistage-build/).
+  This helped reduce the size of the production image by removing un-required dependencies.
+- Final production bundle uses `node:8.9.4-slim`
+
+## Docker Compose changes
+- Updated existing `docker-compose.yml` to serve as the config for running a local development environment.
+- Added  a new `docker-compose-demo.yml` for testing out production builds (this is the replacement for the previous `docker-compose.yml`).
+
+## Potentially Breaking Changes
+- Removed MongoDB installation from base image. Use `mongo` as a service in docker-compose, see example in README.
+- Removed PhantomJS installation from base image. If this is required in your fork, you can include the step in your custom Dockerfile.
+
+
 # v1.8.2
 ## Fixes
  - fix: added unique to slug (#3745) .. Resolves #2736
