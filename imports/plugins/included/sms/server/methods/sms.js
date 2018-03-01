@@ -76,7 +76,9 @@ Meteor.methods({
     const formattedPhone = formatPhoneNo(phone, country);
 
     const smsSettings = Sms.findOne({ shopId });
-    if (!smsSettings) return;
+    if (!smsSettings) {
+      return;
+    }
 
     const { apiKey, apiToken, smsPhone, smsProvider } = smsSettings;
     if (smsProvider === "twilio") {
