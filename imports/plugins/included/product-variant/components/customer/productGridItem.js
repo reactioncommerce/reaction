@@ -2,15 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { formatPriceString, Router } from "/client/api";
+import { Components } from "@reactioncommerce/reaction-components";
 
 class ProductGridItem extends Component {
   static propTypes = {
-    displayPrice: PropTypes.func,
-    isMediumWeight: PropTypes.func,
     isSearch: PropTypes.bool,
     position: PropTypes.object,
-    product: PropTypes.object,
-    weightClass: PropTypes.func
+    product: PropTypes.object
   }
 
   // getters
@@ -48,14 +46,6 @@ class ProductGridItem extends Component {
     });
   }
 
-  renderOverlay() {
-    if (this.props.product.isVisible === false) {
-      return (
-        <div className="product-grid-overlay" />
-      );
-    }
-  }
-
   handleClick = (event) => {
     event.preventDefault();
     Router.go(this.productURL);
@@ -63,14 +53,38 @@ class ProductGridItem extends Component {
 
   // notice
   renderNotices() {
-    return null;
-    // return (
-    //   <div className="grid-alerts">
-    //     <GridItemNotice isSoldOut={() => this.props.product.isSoldOut} />
+    const { isSoldOut, isLowQuantity, isBackorder } = this.props.product;
+    let noticeEl;
+    // TODO: revisit this if
+    if (isSoldOut) {
+      if (isBackorder) {
+        noticeEl = (
+          <span className="variant-qty-sold-out badge">
+            <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
+          </span>
+        );
+      } else {
+        noticeEl = (
+          <span className="variant-qty-sold-out badge badge-danger">
+            <Components.Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
+          </span>
+        );
+      }
+    } else if (isLowQuantity) {
+      noticeEl = (
+        <span className="badge badge-low-inv-warning">
+          <Components.Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
+        </span>
+      );
+    }
 
-    //   </div>
-
-    // );
+    return (
+      <div className="grid-alerts">
+        <div className="product-grid-badges">
+          {noticeEl}
+        </div>
+      </div>
+    );
   }
 
   // render product image
@@ -82,7 +96,7 @@ class ProductGridItem extends Component {
     return (
       <span
         className="product-image"
-        style={{ backgroundImage: `url(${large})` }}
+        style={{ backgroundImage: `url("${large}")` }}
       />
     );
   }
@@ -120,7 +134,6 @@ class ProductGridItem extends Component {
           data-event-action="product-click"
           data-event-label="grid product click"
           data-event-value={product._id}
-          onDoubleClick={this.handleDoubleClick}
           onClick={this.handleClick}
         >
           <div className="overlay">
@@ -151,7 +164,6 @@ class ProductGridItem extends Component {
             data-event-category="grid"
             data-event-label="grid product click"
             data-event-value={product._id}
-            onDoubleClick={this.handleDoubleClick}
             onClick={this.handleClick}
           >
             <div className="product-primary-images">
@@ -161,7 +173,7 @@ class ProductGridItem extends Component {
             {/* {this.renderAdditionalMedia()} */}
           </a>
 
-          {/* {!this.props.isSearch && this.renderNotices()} */}
+          {!isSearch && this.renderNotices()}
           {this.renderGridContent()}
         </div>
       </li>
