@@ -17,10 +17,8 @@ class ProductGrid extends Component {
     if (Array.isArray(products)) {
       return products.map((product, index) => (
         <ProductGridItem
-          {...this.props}
           product={product}
           position={product.positions && product.positions[currentTag]}
-          // productMedia={this.props.productMediaById[product._id]}
           key={index}
           index={index}
         />
