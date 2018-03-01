@@ -12,6 +12,10 @@ const ProductsContainer = ({ isAdmin }) => {
   return (isAdmin) ? <ProductsContainerAdmin /> : <ProductsContainerCustomer />;
 };
 
+ProductsContainer.propTypes = {
+  isAdmin: PropTypes.bool
+};
+
 function composer(props, onData) {
   const isAdmin = Reaction.hasPermission("createProduct", Meteor.userId());
 

@@ -160,7 +160,7 @@ function composer(props, onData) {
   }
 
   const queryParams = Object.assign({}, tags, Reaction.Router.current().query, shopIds);
-  const productsSubscription = Meteor.subscribe("Products/grid", scrollLimit, queryParams, sort, editMode);
+  const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
