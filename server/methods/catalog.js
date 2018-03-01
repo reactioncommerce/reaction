@@ -361,13 +361,31 @@ function createProductObject(props = null) {
  */
 function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
-  Hooks.Events.run("beforeUpdateCatalogProduct", product, {
+
+
+  // const updateCatalogHookResult = Hooks.Events.run("beforeUpdateCatalogProduct", product, {
+  //   userId,
+  //   modifier,
+  //   validation
+  // });
+
+  /**
+   * @description shouldCatalogProductUpdate - hook that returns true or false depending on whether a plugin wants to stop the
+   * Products.update method from running.
+  */
+  // TODO: Maybe have an option of bypassing hook
+  const shouldCatalogProductUpdate = Hooks.Events.run("shouldCatalogProductUpdate", product, {
     userId,
     modifier,
     validation
   });
 
-  return Products.update(selector, modifier, validation);
+  if (shouldCatalogProductUpdate) {
+    return Products.update(selector, modifier, validation);
+  }
+
+  Logger.debug(`shouldCatalogProductUpdate returned falsy, not updating catalog product`)
+  return false;
 }
 
 
