@@ -88,12 +88,12 @@ class ProductGridItems extends Component {
     // );
     const { product } = this.props;
     const MEDIA_PLACEHOLDER = "/resources/placeholder.gif";
-    const { url } = (Array.isArray(product.media) && product.media[0]) || { url: MEDIA_PLACEHOLDER };
+    const { large } = (Array.isArray(product.media) && product.media[0]) || { large: MEDIA_PLACEHOLDER };
 
     return (
       <span
         className="product-image"
-        style={{ backgroundImage: `url(${ url })` }}
+        style={{ backgroundImage: `url(${large})` }}
       />
     );
   }
@@ -131,7 +131,7 @@ class ProductGridItems extends Component {
           data-event-category="grid"
           data-event-action="product-click"
           data-event-label="grid product click"
-          data-event-value={this.props.product._id}
+          data-event-value={product._id}
           onDoubleClick={this.handleDoubleClick}
           onClick={this.handleClick}
         >
@@ -139,7 +139,7 @@ class ProductGridItems extends Component {
             <div className="overlay-title">{product.title}</div>
             <div className="currency-symbol">{formatPriceString(product.price.range)}</div>
             {this.props.isSearch &&
-                <div className="overlay-description">{this.props.product.description}</div>
+                <div className="overlay-description">{product.description}</div>
             }
           </div>
         </a>
@@ -157,8 +157,8 @@ class ProductGridItems extends Component {
     return (
       <li
         className={`product-grid-item `}
-        data-id={this.props.product._id}
-        id={this.props.product._id}
+        data-id={product._id}
+        id={product._id}
       >
         <div className={this.renderHoverClassName()}>
           <span className="product-grid-item-alerts" />
@@ -167,7 +167,7 @@ class ProductGridItems extends Component {
             href={this.productURL}
             data-event-category="grid"
             data-event-label="grid product click"
-            data-event-value={this.props.product._id}
+            data-event-value={product._id}
             onDoubleClick={this.handleDoubleClick}
             onClick={this.handleClick}
           >
