@@ -564,7 +564,10 @@ Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilter
       });
 
       const productMedia = mediaArray.map((media) => ({
-        url: `/assets${media.url({ store: "medium" })}`
+        thumbnail: `${media.url({ store: "thumbnail" })}`,
+        small: `${media.url({ store: "small" })}`,
+        medium: `${media.url({ store: "medium" })}`,
+        large: `${media.url({ store: "large" })}`
       }));
 
       console.log("mediaArray", productMedia);
@@ -587,7 +590,10 @@ Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilter
       });
 
       const productMedia = mediaArray.map((media) => ({
-        url: `/assets${media.url({ store: "medium" })}`
+        thumbnail: `${media.url({ store: "thumbnail" })}`,
+        small: `${media.url({ store: "small" })}`,
+        medium: `${media.url({ store: "medium" })}`,
+        large: `${media.url({ store: "large" })}`
       }));
 
       fields.varaints = variants;
