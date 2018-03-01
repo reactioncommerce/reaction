@@ -45,6 +45,30 @@ const wrapComponent = (Comp) => (
       Meteor.call("shop/updateCurrencyConfiguration", "all", isEnabled);
     }
 
+    handleTranslationReload = (flushAll) => {
+      if (flushAll === true) {
+        Alerts.toast(i18next.t("admin.i18nSettings.reloadAllStarted", { defaultValue: "Reloading translations for all shops." }), "info");
+
+        Meteor.call("i18n/flushTranslations", (error) => {
+          if (!error) {
+            Alerts.toast(i18next.t("admin.i18nSettings.reloadAllSuccess", { defaultValue: "Translations have been reloaded for all shops." }), "success");
+          } else {
+            Alerts.toast(i18next.t("admin.i18nSettings.reloadAllFail", { defaultValue: "Translations could not be reloaded for all shops." }), "error");
+          }
+        });
+      } else {
+        Alerts.toast(i18next.t("admin.i18nSettings.reloadStarted", { defaultValue: "Reloading translations for the current shop." }), "info");
+
+        Meteor.call("i18n/flushTranslations", (error) => {
+          if (!error) {
+            Alerts.toast(i18next.t("admin.i18nSettings.reloadSuccess", { defaultValue: "Translations have been reloaded for the current shop." }), "success");
+          } else {
+            Alerts.toast(i18next.t("admin.i18nSettings.reloadFail", { defaultValue: "Translations could not be reloaded for the current shop." }), "error");
+          }
+        });
+      }
+    }
+
     render() {
       return (
         <Comp
@@ -54,6 +78,7 @@ const wrapComponent = (Comp) => (
           onUpdateCurrencyConfiguration={this.handleUpdateCurrencyConfiguration}
           onUpdateLanguageConfiguration={this.handleUpdateLanguageConfiguration}
           onUpdateLocalization={this.handleSubmit}
+          onReloadTranslations={this.handleTranslationReload}
         />
       );
     }
