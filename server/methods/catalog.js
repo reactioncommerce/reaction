@@ -326,35 +326,30 @@ function flushQuantity(id) {
  * @function createProductObject
  * @private
  * @description creates a product Object with a generated _id
- * and with initialProps if provided
+ * and with props if provided
  * @return {Object} productObject - new product object
  */
-function createProductObject(initialProps = null) {
-  let productObject = Products.findOne({});
+function createProductObject(props = null) {
+  const _id = Products.insert({
+    type: "simple"
+  }, {
+    validate: false
+  });
 
-  // If all products have been deleted, create a new one.
-  // TODO: Find a better way to this:
-  if (!productObject) {
-    const _id = Products.insert({
-      type: "simple"
-    }, {
-      validate: false
-    });
-
-    productObject = Products.findOne({ _id });
-    // Only the product object instance is needed
-    Products.remove({ _id });
-  }
+  const productObject = Products.findOne({ _id });
+  // Only the product object instance is needed
+  Products.remove({ _id });
 
   // Assing _id to prevent insert error that would be caused otherwise.
   productObject._id = Random.id();
 
-  if (initialProps) {
-    return Object.assign({}, productObject, initialProps);
+  if (props) {
+    return Object.assign({}, productObject, props);
   }
 
   return productObject;
 }
+
 /**
  * @description Updates revision and product documents.
  *
