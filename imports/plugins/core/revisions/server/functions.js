@@ -394,3 +394,65 @@ export function updateRevision(product, options = {}) {
   // prevent the underlying document from being modified as it is in draft mode
   return false;
 }
+/**
+ * Flag a product's revision as deleted
+ * @export
+ * @param {Object} product - the product whose revision will be flagged as deleted.
+ * @param {Object} options
+ * @returns {undefined}
+ */
+export function markRevisionAsDeleted(product, options) {
+  if (RevisionApi.isRevisionControlEnabled() === false) {
+    return;
+  }
+
+  const { userId } = options;
+
+  let productRevision = Revisions.findOne({
+    documentId: product._id
+  });
+
+  if (!productRevision) {
+    Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
+
+    Revisions.insert({
+      documentId: product._id,
+      documentData: product
+    });
+    productRevision = Revisions.findOne({
+      documentId: product._id
+    });
+  }
+
+  // Set the revision as deleted "isDeleted: true"
+  Revisions.update({
+    documentId: product._id
+  }, {
+    $set: {
+      "documentData.isDeleted": true,
+      "workflow.status": "revision/remove"
+    }
+  });
+  Hooks.Events.run("afterRevisionsUpdate", userId, {
+    ...productRevision,
+    documentData: { ...productRevision.documentData, isDeleted: true },
+    workflow: { ...productRevision.workflow, workflow: "revision/remove" }
+  });
+
+  Logger.debug(`Revision updated for product ${product._id}.`);
+  Logger.debug(`Product ${product._id} is now marked as deleted.`);
+
+  // If the original product is deleted, and the user is trying to delete it again,
+  // then actually remove it completely.
+  //
+  // This acts like a trash. Where the product is sent to trash before it can actually
+  // be deleted permanently.
+  // TODO: Determine if this code is still needed?
+  // if (product.isDeleted === true) {
+  //   Logger.debug(`Allowing write to product ${product._id} for Collection.remove().`);
+
+  //   return true;
+  // }
+
+  // Logger.debug(`Preventing write to product ${product._id} for Collection.remove().`);
+}

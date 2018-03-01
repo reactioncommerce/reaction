@@ -5,7 +5,7 @@ import { Products, Revisions, Tags, Media } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
 import { getSlug } from "/lib/api";
-import { insertRevision, updateRevision } from "./functions";
+import { insertRevision, updateRevision, markRevisionAsDeleted } from "./functions";
 
 function convertMetadata(modifierObject) {
   const metadata = {};
@@ -284,61 +284,6 @@ Media.files.before.remove((userId, media) => {
   return true;
 });
 
-Products.before.remove((userId, product) => {
-  if (RevisionApi.isRevisionControlEnabled() === false) {
-    return true;
-  }
-
-  let productRevision = Revisions.findOne({
-    documentId: product._id
-  });
-
-  if (!productRevision) {
-    Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
-
-    Revisions.insert({
-      documentId: product._id,
-      documentData: product
-    });
-    productRevision = Revisions.findOne({
-      documentId: product._id
-    });
-  }
-
-  // Set the revision as deleted "isDeleted: true"
-  Revisions.update({
-    documentId: product._id
-  }, {
-    $set: {
-      "documentData.isDeleted": true,
-      "workflow.status": "revision/remove"
-    }
-  });
-  Hooks.Events.run("afterRevisionsUpdate", userId, {
-    ...productRevision,
-    documentData: { ...productRevision.documentData, isDeleted: true },
-    workflow: { ...productRevision.workflow, workflow: "revision/remove" }
-  });
-
-  Logger.debug(`Revison updated for product ${product._id}.`);
-  Logger.debug(`Product ${product._id} is now marked as deleted.`);
-
-  // If the original product is deleted, and the user is trying to delete it again,
-  // then actually remove it completly.
-  //
-  // This acts like a trash. Where the product is sent to trash before it can actually
-  // be deleted perminately.
-  if (product.isDeleted === true) {
-    Logger.debug(`Allowing write to product ${product._id} for Collection.remove().`);
-
-    return true;
-  }
-
-  Logger.debug(`Preventing write to product ${product._id} for Collection.remove().`);
-
-  return false;
-});
-
 Hooks.Events.add("beforeInsertCatalogProduct", (product) => {
   insertRevision(product);
 
@@ -347,6 +292,12 @@ Hooks.Events.add("beforeInsertCatalogProduct", (product) => {
 
 Hooks.Events.add("beforeUpdateCatalogProduct", (product, options) => {
   updateRevision(product, options);
+
+  return product;
+});
+
+Hooks.Events.add("beforeRemoveCatalogProduct", (product, options) => {
+  markRevisionAsDeleted(product, options);
 
   return product;
 });

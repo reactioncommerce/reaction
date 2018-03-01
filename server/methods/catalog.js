@@ -330,8 +330,23 @@ function flushQuantity(id) {
  * @return {Object} productObject - new product object
  */
 function createProductObject(initialProps = null) {
-  const productObject = Products.findOne({});
-  // Assing _id to prevent insert error that would be casued otherwise.
+  let productObject = Products.findOne({});
+
+  // If all products have been deleted, create a new one.
+  // TODO: Find a better way to this:
+  if (!productObject) {
+    const _id = Products.insert({
+      type: "simple"
+    }, {
+      validate: false
+    });
+
+    productObject = Products.findOne({ _id });
+    // Only the product object instance is needed
+    Products.remove({ _id });
+  }
+
+  // Assing _id to prevent insert error that would be caused otherwise.
   productObject._id = Random.id();
 
   if (initialProps) {
@@ -632,6 +647,11 @@ Meteor.methods({
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
+    const options = { userId: this.userId };
+    toDelete.forEach((product) => {
+      Hooks.Events.run("beforeRemoveCatalogProduct", product, options);
+    });
+
     const deleted = Products.remove(selector);
 
     // after variant were removed from product, we need to recalculate all
@@ -806,8 +826,8 @@ Meteor.methods({
     }
 
     const newSimpleProduct = createProductObject();
-    // Create simple product revision
     Hooks.Events.run("beforeInsertCatalogProduct", newSimpleProduct);
+
     const newId = Products.insert(newSimpleProduct, { validate: false });
 
     const newVariant = createProductObject({
@@ -880,6 +900,11 @@ Meteor.methods({
     productsWithVariants.map((doc) => {
       ids.push(doc._id);
       return ids;
+    });
+
+    const options = { userId: this.userId };
+    ids.forEach((_id) => {
+      Hooks.Events.run("beforeRemoveCatalogProduct", Products.findOne({ _id }), options);
     });
 
     Products.remove({
