@@ -3,10 +3,9 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
-import { Products, Shops, Revisions } from "/lib/collections";
+import { Products, Shops, Revisions, Catalog } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
-import { Media } from "/imports/plugins/core/files/server";
 
 //
 // define search filters as a schema so we can validate
@@ -532,13 +531,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 });
 
 
-Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilters, sort = {}, editMode = true) {
+Meteor.publish("Products/grid", (productScrollLimit = 24, productFilters, sort = {}, editMode = true) => {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, Object));
   check(sort, Match.OneOf(undefined, Object));
   check(editMode, Match.Maybe(Boolean));
-
-  console.log("new prod grid publication")
 
   const selector = {
     ancestors: [], // Lookup top-level products
@@ -546,70 +543,10 @@ Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilter
     isVisible: true // by default, only lookup visible products
   };
 
-  const productCursor = Products.find(selector, {
+  const productCursor = Catalog.find(selector, {
     sort,
     limit: productScrollLimit
   });
 
-  const handle = productCursor.observeChanges({
-    added: async (id, fields) => {
-      const variants = Products.find({
-        ancestors: {
-          $in: [id]
-        }
-      }).fetch();
-
-      const mediaArray = await Media.find({
-        "metadata.productId": id
-      });
-
-      const productMedia = mediaArray.map((media) => ({
-        thumbnail: `${media.url({ store: "thumbnail" })}`,
-        small: `${media.url({ store: "small" })}`,
-        medium: `${media.url({ store: "medium" })}`,
-        large: `${media.url({ store: "large" })}`
-      }));
-
-      console.log("mediaArray", productMedia);
-
-      fields.varaints = variants;
-      fields.isSoldOut = true;
-      fields.media = productMedia;
-
-      this.added("Products", id, fields);
-    },
-    changed: async (id, fields) => {
-      const variants = Products.find({
-        ancestors: {
-          $in: [id]
-        }
-      }).fetch();
-
-      const mediaArray = await Media.find({
-        "metadata.productId": id
-      });
-
-      const productMedia = mediaArray.map((media) => ({
-        thumbnail: `${media.url({ store: "thumbnail" })}`,
-        small: `${media.url({ store: "small" })}`,
-        medium: `${media.url({ store: "medium" })}`,
-        large: `${media.url({ store: "large" })}`
-      }));
-
-      fields.varaints = variants;
-      fields.isSoldOut = true;
-      fields.media = productMedia;
-
-      this.changed("Products", id, fields);
-    },
-    removed: (id) => {
-      this.removed("Products", id);
-    }
-  });
-
-  this.onStop(() => {
-    handle.stop();
-  });
-
-  return this.ready();
+  return productCursor;
 });
