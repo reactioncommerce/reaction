@@ -1,8 +1,9 @@
 import { unformat } from "accounting-js";
-import { registerComponent } from "@reactioncommerce/reaction-components";
-import TextField from "../textfield/textfield";
+import { registerComponent, getRawComponent } from "@reactioncommerce/reaction-components";
 import { formatPriceString } from "/client/api";
 
+
+const TextField = getRawComponent("TextField");
 
 class CurrencyInput extends TextField {
   constructor(props) {
@@ -12,6 +13,14 @@ class CurrencyInput extends TextField {
       value: formatPriceString(this.props.value, true),
       isEditing: false
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.state.isEditing) {
+      this.setState({
+        value: formatPriceString(nextProps.value, true)
+      });
+    }
   }
 
   /**
@@ -44,10 +53,17 @@ class CurrencyInput extends TextField {
    * @return {void}
    */
   onBlur = (event) => {
-    this.setState({
-      value: formatPriceString(event.target.value, true),
-      isEditing: false
-    });
+    if (event.target.value === "") {
+      // remove the stored valued from state
+      this.setState({
+        value: undefined
+      });
+    } else {
+      this.setState({
+        value: formatPriceString(event.target.value, true),
+        isEditing: false
+      });
+    }
     TextField.prototype.onBlur.call(this, event);
   }
 
