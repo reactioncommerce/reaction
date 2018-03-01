@@ -79,7 +79,12 @@ export async function publishProductToCatalog(productId) {
   }).fetch();
 
   const mediaArray = await Media.find({
-    "metadata.productId": productId
+    "metadata.productId": productId,
+    "metadata.toGrid": 1,
+    "metadata.workflow": { $nin: ["archived", "unpublished"] }
+  }, {
+    limit: 4,
+    sort: { "metadata.priority": 1, "uploadedAt": 1 }
   });
 
   const productMedia = mediaArray.map((media) => ({
