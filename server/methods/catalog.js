@@ -5,9 +5,8 @@ import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { copyFile, ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
-import { insertRevision, updateRevision } from "/imports/plugins/core/revisions/server/functions";
 import { Media, Products, Revisions, Tags } from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
@@ -350,11 +349,15 @@ function createProductObject(initialProps = null) {
  * @param {Object} options
  * @return {String} _id of updated document
  */
-function updateRevisionAndProduct(userId, selector, modifier, options) {
+function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
-  updateRevision(userId, product, modifier, options);
+  Hooks.Events.run("beforeUpdateCatalogProduct", product, {
+    userId,
+    modifier,
+    validation
+  });
 
-  return Products.update(selector, modifier, options);
+  return Products.update(selector, modifier, validation);
 }
 
 
@@ -462,7 +465,7 @@ Meteor.methods({
 
       let newId;
       try {
-        insertRevision(clone);
+        Hooks.Events.run("beforeInsertCatalogProduct", clone);
         newId = Products.insert(clone, { validate: false });
         Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
           clone._id} from ${variantId}`);
@@ -529,7 +532,7 @@ Meteor.methods({
       flushQuantity(parentId);
     }
 
-    insertRevision(assembledVariant);
+    Hooks.Events.run("beforeInsertCatalogProduct", assembledVariant);
     Products.insert(assembledVariant);
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
@@ -563,7 +566,7 @@ Meteor.methods({
 
     const newVariant = Object.assign({}, currentVariant, variant);
 
-    const variantUpdateResult = updateRevisionAndProduct(
+    const variantUpdateResult = updateCatalogProduct(
       this.userId,
       {
         _id: variant._id
@@ -736,7 +739,7 @@ Meteor.methods({
           newProduct._id
         );
       }
-      insertRevision(newProduct);
+      Hooks.Events.run("beforeInsertCatalogProduct", newProduct);
       result = Products.insert(newProduct, { validate: false });
       results.push(result);
 
@@ -764,7 +767,7 @@ Meteor.methods({
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
 
-        insertRevision(newVariant);
+        Hooks.Events.run("beforeInsertCatalogProduct", newVariant);
         result = Products.insert(newVariant, { validate: false });
         copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
@@ -797,14 +800,14 @@ Meteor.methods({
       }
 
       // Create product revision
-      insertRevision(product);
+      Hooks.Events.run("beforeInsertCatalogProduct", product);
 
       return Products.insert(product);
     }
 
     const newSimpleProduct = createProductObject();
     // Create simple product revision
-    insertRevision(newSimpleProduct);
+    Hooks.Events.run("beforeInsertCatalogProduct", newSimpleProduct);
     const newId = Products.insert(newSimpleProduct, { validate: false });
 
     const newVariant = createProductObject({
@@ -815,7 +818,7 @@ Meteor.methods({
     });
 
     // Create variant revision
-    insertRevision(newVariant);
+    Hooks.Events.run("beforeInsertCatalogProduct", newVariant);
 
     Products.insert(newVariant);
 
@@ -972,7 +975,7 @@ Meteor.methods({
     let result;
 
     try {
-      result = updateRevisionAndProduct(
+      result = updateCatalogProduct(
         this.userId,
         {
           _id
@@ -1043,7 +1046,7 @@ Meteor.methods({
       if (productCount > 0) {
         throw new Meteor.Error("server-error", "Existing Tag, Update Denied");
       }
-      return updateRevisionAndProduct(
+      return updateCatalogProduct(
         this.userId,
         {
           _id: productId
@@ -1068,7 +1071,7 @@ Meteor.methods({
       return newTagId;
     }
 
-    return updateRevisionAndProduct(
+    return updateCatalogProduct(
       this.userId,
       {
         _id: productId
@@ -1105,7 +1108,7 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    updateRevisionAndProduct(
+    updateCatalogProduct(
       this.userId,
       {
         _id: productId
@@ -1142,7 +1145,7 @@ Meteor.methods({
 
     let handle = Reaction.getSlug(product.title);
     handle = createHandle(handle, product._id);
-    updateRevisionAndProduct(
+    updateCatalogProduct(
       this.userId,
       {
         _id: product._id
@@ -1204,7 +1207,7 @@ Meteor.methods({
         Reaction.getSlug(currentProduct.title),
         currentProduct._id
       );
-      updateRevisionAndProduct(
+      updateCatalogProduct(
         this.userId,
         {
           _id: currentProduct._id
@@ -1213,7 +1216,7 @@ Meteor.methods({
       );
     }
 
-    updateRevisionAndProduct(
+    updateCatalogProduct(
       this.userId,
       {
         _id: product._id
@@ -1288,7 +1291,7 @@ Meteor.methods({
     }
 
     sortedVariantIds.forEach((id, index) => {
-      updateRevisionAndProduct(
+      updateCatalogProduct(
         this.userId,
         {
           _id: id
@@ -1330,7 +1333,7 @@ Meteor.methods({
 
     // update existing metadata
     if (typeof meta === "object") {
-      return updateRevisionAndProduct(
+      return updateCatalogProduct(
         this.userId,
         {
           _id: productId,
@@ -1344,7 +1347,7 @@ Meteor.methods({
         }
       );
     } else if (typeof meta === "number") {
-      return updateRevisionAndProduct(
+      return updateCatalogProduct(
         this.userId,
         {
           _id: productId
@@ -1361,7 +1364,7 @@ Meteor.methods({
     }
 
     // adds metadata
-    return updateRevisionAndProduct(
+    return updateCatalogProduct(
       this.userId,
       {
         _id: productId
@@ -1400,7 +1403,7 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    return updateRevisionAndProduct(
+    return updateCatalogProduct(
       this.userId,
       {
         _id: productId,
@@ -1474,7 +1477,7 @@ Meteor.methods({
       // update product visibility
       Logger.debug("toggle product visibility ", product._id, !product.isVisible);
 
-      const res = updateRevisionAndProduct(
+      const res = updateCatalogProduct(
         this.userId,
         {
           _id: product._id
@@ -1521,7 +1524,7 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    const res = updateRevisionAndProduct(
+    const res = updateCatalogProduct(
       this.userId,
       {
         _id: productId

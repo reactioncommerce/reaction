@@ -5,6 +5,7 @@ import { Products, Revisions, Tags, Media } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
 import { getSlug } from "/lib/api";
+import { insertRevision, updateRevision } from "./functions";
 
 function convertMetadata(modifierObject) {
   const metadata = {};
@@ -336,6 +337,18 @@ Products.before.remove((userId, product) => {
   Logger.debug(`Preventing write to product ${product._id} for Collection.remove().`);
 
   return false;
+});
+
+Hooks.Events.add("beforeInsertCatalogProduct", (product) => {
+  insertRevision(product);
+
+  return product;
+});
+
+Hooks.Events.add("beforeUpdateCatalogProduct", (product, options) => {
+  updateRevision(product, options);
+
+  return product;
 });
 
 Hooks.Events.add("afterRevisionsUpdate", (userId, revision) => {

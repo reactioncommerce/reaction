@@ -7,6 +7,7 @@ import { RevisionApi } from "../lib/api";
 import { ProductRevision } from "./hooks";
 import { getSlug } from "/lib/api";
 
+
 /**
  * Inserts a new revision for the given product
  * @param {Object} product
@@ -77,10 +78,12 @@ export function insertRevision(product) {
  * @param {Object} options
  * @returns {Boolean} true if revision was updadted successfully, false otherwise
  */
-export function updateRevision(userId, product, modifier, options = {}) {
+export function updateRevision(product, options = {}) {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
+
+  const { userId, modifier } = options;
 
   let productRevision = Revisions.findOne({
     "documentId": product._id,
