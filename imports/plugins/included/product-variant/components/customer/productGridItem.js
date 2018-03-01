@@ -11,8 +11,6 @@ class ProductGridItem extends Component {
     product: PropTypes.object
   }
 
-  // getters
-
   // get product detail page URL
   get productURL() {
     const { product: { handle } } = this.props;
@@ -46,6 +44,7 @@ class ProductGridItem extends Component {
     });
   }
 
+  // handle click event
   handleClick = (event) => {
     event.preventDefault();
     Router.go(this.productURL);
@@ -55,7 +54,7 @@ class ProductGridItem extends Component {
   renderNotices() {
     const { isSoldOut, isLowQuantity, isBackorder } = this.props.product;
     let noticeEl;
-    // TODO: revisit this if
+    // TODO: revisit this if statement and jsx
     if (isSoldOut) {
       if (isBackorder) {
         noticeEl = (
@@ -103,24 +102,27 @@ class ProductGridItem extends Component {
 
 
   renderAdditionalMedia() {
-    // const { isMediumWeight, productMedia } = this.props;
-    // if (!isMediumWeight()) return null;
+    const { product: { media }, position: { weight } } = this.props;
 
-    // const mediaArray = productMedia.additionalMedia;
-    // if (!mediaArray || mediaArray.length === 0) return null;
+    // if product is not medium weight
+    // or the media object is empty exit
+    if (weight !== 1 || (!media || media.length === 0)) return;
 
-    // return (
-    //   <div className={`product-additional-images ${this.renderVisible()}`}>
-    //     {mediaArray.map((media) => (
-    //       <span
-    //         key={media._id}
-    //         className="product-image"
-    //         style={{ backgroundImage: `url('${media.url({ store: "medium" })}')` }}
-    //       />
-    //     ))}
-    //     {this.renderOverlay()}
-    //   </div>
-    // );
+    // removing the first image in the media array
+    // since it's being used as the primary product image
+    const additionalMedia = [...media.slice(1)];
+
+    return (
+      <div className="product-additional-images">
+        {additionalMedia.map((img) => (
+          <span
+            key={img.small}
+            className="product-image"
+            style={{ backgroundImage: `url("${img.medium}")` }}
+          />
+        ))}
+      </div>
+    );
   }
 
   renderGridContent() {
@@ -170,7 +172,7 @@ class ProductGridItem extends Component {
               {this.renderMedia()}
             </div>
 
-            {/* {this.renderAdditionalMedia()} */}
+            {this.renderAdditionalMedia()}
           </a>
 
           {!isSearch && this.renderNotices()}
