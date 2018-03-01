@@ -23,6 +23,7 @@ async function lazyLoadSharp() {
   sharp = await import("sharp");
 }
 
+FileRecord.downloadEndpointPrefix = "/assets/files";
 FileRecord.absoluteUrlPrefix = Meteor.absoluteUrl();
 
 // 1024*1024*2 is the GridFSStore default chunk size, and 256k is default GridFS chunk size, but performs terribly
