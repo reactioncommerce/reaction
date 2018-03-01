@@ -403,7 +403,7 @@ class VariantForm extends Component {
             />
             <div className="row">
               <div className="col-sm-6">
-                <Components.TextField
+                <Components.CurrencyInput
                   i18nKeyLabel="productVariant.price"
                   i18nKeyPlaceholder="0.00"
                   placeholder="0.00"
@@ -417,11 +417,10 @@ class VariantForm extends Component {
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
                   validation={this.props.validation}
-                  isCurrency
                 />
               </div>
               <div className="col-sm-6">
-                <Components.TextField
+                <Components.CurrencyInput
                   i18nKeyLabel="productVariant.compareAtPrice"
                   i18nKeyPlaceholder="0.00"
                   placeholder="0.00"
@@ -433,7 +432,6 @@ class VariantForm extends Component {
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
                   validation={this.props.validation}
-                  isCurrency
                 />
               </div>
             </div>
@@ -641,7 +639,7 @@ class VariantForm extends Component {
             />
             <div className="row">
               <div className="col-sm-6">
-                <Components.TextField
+                <Components.CurrencyInput
                   i18nKeyLabel="productVariant.price"
                   i18nKeyPlaceholder="0.00"
                   placeholder="0.00"
@@ -657,11 +655,10 @@ class VariantForm extends Component {
                   validation={this.props.validation}
                   helpText={"Purchase price"}
                   i18nKeyHelpText={"admin.helpText.price"}
-                  isCurrency
                 />
               </div>
               <div className="col-sm-6">
-                <Components.TextField
+                <Components.CurrencyInput
                   i18nKeyLabel="productVariant.compareAtPrice"
                   i18nKeyPlaceholder="0.00"
                   placeholder="0.00"
@@ -675,7 +672,6 @@ class VariantForm extends Component {
                   validation={this.props.validation}
                   helpText={"Original price or MSRP"}
                   i18nKeyHelpText={"admin.helpText.compareAtPrice"}
-                  isCurrency
                 />
               </div>
             </div>
