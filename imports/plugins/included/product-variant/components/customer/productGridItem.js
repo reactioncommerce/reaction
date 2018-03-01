@@ -1,44 +1,51 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { formatPriceString, Reaction } from "/client/api";
+import classnames from "classnames";
+import { formatPriceString, Router } from "/client/api";
 
-class ProductGridItems extends Component {
+class ProductGridItem extends Component {
   static propTypes = {
     displayPrice: PropTypes.func,
     isMediumWeight: PropTypes.func,
     isSearch: PropTypes.bool,
-    onClick: PropTypes.func,
-    onDoubleClick: PropTypes.func,
-    positions: PropTypes.func,
+    position: PropTypes.object,
     product: PropTypes.object,
     weightClass: PropTypes.func
   }
 
-  // action event handlers
-  handleDoubleClick = (event) => {
-    if (this.props.onDoubleClick) {
-      this.props.onDoubleClick(event);
+  // getters
+
+  // get product detail page URL
+  get productURL() {
+    const { product: { handle } } = this.props;
+    return Router.pathFor("product", {
+      hash: {
+        handle
+      }
+    });
+  }
+
+  // get weight class name
+  get weightClass() {
+    const { weight } = this.props.position || { weight: 0 };
+    switch (weight) {
+    case 1:
+      return "product-medium";
+    case 2:
+      return "product-large";
+    default:
+      return "product-small";
     }
   }
 
-  handleClick = (event) => {
-    if (this.props.onClick) {
-      this.props.onClick(event);
-    }
-  }
-
-  // modifiers
-  renderPinned() {
-    return this.props.positions().pinned ? "pinned" : "";
-  }
-
-  renderVisible() {
-    return this.props.product.isVisible ? "" : "not-visible";
-  }
-
-   // render class names
-  renderHoverClassName() {
-    return this.props.isSearch ? "item-content" : "";
+  // get product item class names
+  get productClassNames() {
+    const { position } = this.props;
+    return classnames({
+      "product-grid-item": true,
+      [this.weightClass]: true,
+      "pinned": position.pinned
+    });
   }
 
   renderOverlay() {
@@ -47,6 +54,11 @@ class ProductGridItems extends Component {
         <div className="product-grid-overlay" />
       );
     }
+  }
+
+  handleClick = (event) => {
+    event.preventDefault();
+    Router.go(this.productURL);
   }
 
   // notice
@@ -59,18 +71,6 @@ class ProductGridItems extends Component {
     //   </div>
 
     // );
-  }
-
-  // getters
-
-  // get product detail page URL
-  get productURL() {
-    const { product: { handle } } = this.props;
-    return Reaction.Router.pathFor("product", {
-      hash: {
-        handle
-      }
-    });
   }
 
   // render product image
@@ -136,19 +136,14 @@ class ProductGridItems extends Component {
   }
 
   render() {
-    const { product } = this.props;
-
-    // TODO: isSelected is not needed. Others may not need to be functions
-    // ${this.renderPinned()} ${this.props.weightClass()} ${this.props.isSelected()}
-
-
+    const { product, isSearch } = this.props;
     return (
       <li
-        className={`product-grid-item `}
+        className={this.productClassNames}
         data-id={product._id}
         id={product._id}
       >
-        <div className={this.renderHoverClassName()}>
+        <div className={(isSearch) ? "item-content" : ""}>
           <span className="product-grid-item-alerts" />
 
           <a className="product-grid-item-images"
@@ -174,4 +169,4 @@ class ProductGridItems extends Component {
   }
 }
 
-export default ProductGridItems;
+export default ProductGridItem;

@@ -18,7 +18,7 @@ class ProductGrid extends Component {
       return products.map((product, index) => (
         <ProductGridItem
           product={product}
-          position={product.positions && product.positions[currentTag]}
+          position={(product.positions && product.positions[currentTag]) || {}}
           key={index}
           index={index}
         />
