@@ -27,27 +27,32 @@ class LocalizationSettings extends Component {
     super(props);
 
     this.state = {
+      currencies: props.currencies,
       languages: props.languages
     };
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
+      currencies: nextProps.currencies,
       languages: nextProps.languages
     });
   }
 
-  renderCurrencies() {
-    return this.props.currencies.map((currency, key) => (
-      <Components.ListItem
-        actionType={"switch"}
-        key={key}
-        label={currency.label}
-        switchOn={currency.enabled}
-        switchName={currency.name}
-        onSwitchChange={this.props.onUpdateCurrencyConfiguration}
-      />
-    ));
+  handleUpdateCurrencyConfiguration = (event, isChecked, name) => {
+    const currencyIndex = this.state.currencies.findIndex((currency) => currency.name === name);
+
+    this.setState((state) => {
+      const newStateCurrencies = state.currencies;
+      newStateCurrencies[currencyIndex].enabled = isChecked;
+      return { currencies: newStateCurrencies };
+    }, () => {
+      // Delaying to allow animation before sending data to server
+      // If animation is not delayed, it twitches when actual update happens
+      setTimeout(() => {
+        this.props.onUpdateCurrencyConfiguration(event, isChecked, name);
+      }, 200);
+    });
   }
 
   handleUpdateLangaugeConfiguration = (event, isChecked, name) => {
@@ -64,6 +69,19 @@ class LocalizationSettings extends Component {
         this.props.onUpdateLanguageConfiguration(event, isChecked, name);
       }, 200);
     });
+  }
+
+  renderCurrencies() {
+    return this.props.currencies.map((currency, key) => (
+      <Components.ListItem
+        actionType={"switch"}
+        key={key}
+        label={currency.label}
+        switchOn={currency.enabled}
+        switchName={currency.name}
+        onSwitchChange={this.handleUpdateCurrencyConfiguration}
+      />
+    ));
   }
 
   renderLanguages() {
