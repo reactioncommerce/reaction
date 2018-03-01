@@ -1,10 +1,8 @@
 import _ from "lodash";
 import { diff } from "deep-diff";
-import { Meteor } from "meteor/meteor";
-import { Products, Revisions, Tags, Media } from "/lib/collections";
-import { Hooks, Logger } from "/server/api";
+import { Products, Revisions, Media } from "/lib/collections";
+import { Hooks } from "/server/api";
 import { RevisionApi } from "../lib/api";
-import { getSlug } from "/lib/api";
 import { insertRevision, updateRevision, markRevisionAsDeleted } from "./functions";
 
 function convertMetadata(modifierObject) {
