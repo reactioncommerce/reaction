@@ -218,7 +218,6 @@ class PublishControls extends Component {
       <div className="hidden-xs">
         <Button
           bezelStyle="outline"
-          disabled={this.hasChanges === false}
           label="Publish"
           onClick={this.handlePublishClick}
           status="success"
