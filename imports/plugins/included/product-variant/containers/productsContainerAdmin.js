@@ -12,14 +12,14 @@ import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Products, Tags, Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";
-import ProductsComponent from "../components/customer/productGrid";
+import ProductsComponent from "../components/products";
 
 const reactiveProductIds = new ReactiveVar([], (oldVal, newVal) => JSON.stringify(oldVal.sort()) === JSON.stringify(newVal.sort()));
 
 // Isolated resubscribe to product grid images, only when the list of product IDs changes
-// Tracker.autorun(() => {
-//   Meteor.subscribe("ProductGridMedia", reactiveProductIds.get());
-// });
+Tracker.autorun(() => {
+  Meteor.subscribe("ProductGridMedia", reactiveProductIds.get());
+});
 
 
 /**
@@ -149,21 +149,18 @@ function composer(props, onData) {
     createdAt: 1
   };
 
-  // TODO: Remove
-  // const viewAsPref = Reaction.getUserPreferences("reaction-dashboard", "viewAs");
+  const viewAsPref = Reaction.getUserPreferences("reaction-dashboard", "viewAs");
 
-  // TODO: Remove
   // Edit mode is true by default
-  // let editMode = true;
+  let editMode = true;
 
-  // TODO: Remove
   // if we have a "viewAs" preference and the preference is not set to "administrator", then edit mode is false
-  // if (viewAsPref && viewAsPref !== "administrator") {
-  //   editMode = false;
-  // }
+  if (viewAsPref && viewAsPref !== "administrator") {
+    editMode = false;
+  }
 
   const queryParams = Object.assign({}, tags, Reaction.Router.current().query, shopIds);
-  const productsSubscription = Meteor.subscribe("Products/grid", scrollLimit, queryParams, sort, false);
+  const productsSubscription = Meteor.subscribe("Products/grid", scrollLimit, queryParams, sort, editMode);
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
@@ -180,74 +177,69 @@ function composer(props, onData) {
     ancestors: [],
     type: { $in: ["simple"] },
     shopId: { $in: activeShopsIds }
-  }, {
-    $sort: sort
   });
 
-  // TODO: Remove
-  // const sortedProducts = ReactionProduct.sortProducts(productCursor.fetch(), currentTag);
-  // Session.set("productGrid/products", sortedProducts);
+  const sortedProducts = ReactionProduct.sortProducts(productCursor.fetch(), currentTag);
+  Session.set("productGrid/products", sortedProducts);
 
-  // TODO: Remove
-  // const productIds = [];
-  // // Instantiate an object for use as a map. This object does not inherit prototype or methods from `Object`
-  // const productMediaById = Object.create(null);
-  // const stateProducts = sortedProducts.map((product) => {
-  //   productIds.push(product._id);
+  const productIds = [];
+  // Instantiate an object for use as a map. This object does not inherit prototype or methods from `Object`
+  const productMediaById = Object.create(null);
+  const stateProducts = sortedProducts.map((product) => {
+    productIds.push(product._id);
 
-  //   const primaryMedia = Media.findOneLocal({
-  //     "metadata.productId": product._id,
-  //     "metadata.toGrid": 1,
-  //     "metadata.workflow": { $nin: ["archived", "unpublished"] }
-  //   }, {
-  //     sort: { "metadata.priority": 1, "uploadedAt": 1 }
-  //   });
+    const primaryMedia = Media.findOneLocal({
+      "metadata.productId": product._id,
+      "metadata.toGrid": 1,
+      "metadata.workflow": { $nin: ["archived", "unpublished"] }
+    }, {
+      sort: { "metadata.priority": 1, "uploadedAt": 1 }
+    });
 
-  //   const variantIds = ReactionProduct.getVariants(product._id).map((variant) => variant._id);
-  //   let additionalMedia = Media.findLocal({
-  //     "metadata.productId": product._id,
-  //     "metadata.variantId": { $in: variantIds },
-  //     "metadata.workflow": { $nin: ["archived", "unpublished"] }
-  //   }, {
-  //     limit: 3,
-  //     sort: { "metadata.priority": 1, "uploadedAt": 1 }
-  //   });
+    const variantIds = ReactionProduct.getVariants(product._id).map((variant) => variant._id);
+    let additionalMedia = Media.findLocal({
+      "metadata.productId": product._id,
+      "metadata.variantId": { $in: variantIds },
+      "metadata.workflow": { $nin: ["archived", "unpublished"] }
+    }, {
+      limit: 3,
+      sort: { "metadata.priority": 1, "uploadedAt": 1 }
+    });
 
-  //   if (additionalMedia.length < 2) additionalMedia = null;
+    if (additionalMedia.length < 2) additionalMedia = null;
 
-  //   productMediaById[product._id] = {
-  //     additionalMedia,
-  //     primaryMedia
-  //   };
+    productMediaById[product._id] = {
+      additionalMedia,
+      primaryMedia
+    };
 
-  //   return {
-  //     // ...applyProductRevision(product),
-  //     // additionalMedia,
-  //     // primaryMedia
-  //   };
-  // });
+    return {
+      ...applyProductRevision(product),
+      // additionalMedia,
+      // primaryMedia
+    };
+  });
 
-  // reactiveProductIds.set(productIds);
+  reactiveProductIds.set(productIds);
 
   canLoadMoreProducts = productCursor.count() >= Session.get("productScrollLimit");
 
-  // const isActionViewOpen = Reaction.isActionViewOpen();
-  // if (isActionViewOpen === false) {
-  //   Session.set("productGrid/selectedProducts", []);
-  // }
-  const products = productCursor.fetch();
+  const isActionViewOpen = Reaction.isActionViewOpen();
+  if (isActionViewOpen === false) {
+    Session.set("productGrid/selectedProducts", []);
+  }
+
   onData(null, {
     canLoadMoreProducts,
-    products
-    // productMediaById,
-    // products: stateProducts,
-    // productsSubscription
+    productMediaById,
+    products: stateProducts,
+    productsSubscription
   });
 }
 
-registerComponent("ProductsCustomer", ProductsComponent, [
-  composeWithTracker(composer)
-  // wrapComponent
+registerComponent("ProductsAdmin", ProductsComponent, [
+  composeWithTracker(composer),
+  wrapComponent
 ]);
 
 export default compose(
