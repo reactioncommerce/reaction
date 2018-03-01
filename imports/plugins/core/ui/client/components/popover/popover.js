@@ -103,7 +103,7 @@ class Popover extends Component {
       <TetherComponent
         style={{
           maxHeight: "100vh",
-          overflowY: "scroll"
+          overflowY: "auto"
         }}
         attachment={this.attachment}
         classPrefix="popover"
