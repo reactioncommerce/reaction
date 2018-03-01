@@ -15,18 +15,17 @@ function tagToggle(arr, val) {
 }
 
 function getModalRootNode() {
-  let rootNode = document.getElementById("search-modal-root");
+  let modalNode = document.getElementById("search-modal-root");
 
-  if (rootNode) {
-    return rootNode;
+  if (modalNode) {
+    return modalNode;
   }
-  const rootNodeHtml = "<div id='search-modal-root'></div>";
-  const body = document.getElementsByTagName("body")[0];
 
-  body.insertAdjacentHTML("beforeend", rootNodeHtml);
-  rootNode = document.getElementById("search-modal-root");
+  modalNode = document.createElement("div");
+  modalNode.setAttribute("id", "search-modal-root");
+  document.body.appendChild(modalNode);
 
-  return rootNode;
+  return modalNode;
 }
 
 const wrapComponent = (Comp) => (
