@@ -23,6 +23,20 @@ class LocalizationSettings extends Component {
     uomOptions: PropTypes.array
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      languages: props.languages
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      languages: nextProps.languages
+    });
+  }
+
   renderCurrencies() {
     return this.props.currencies.map((currency, key) => (
       <Components.ListItem
@@ -36,15 +50,31 @@ class LocalizationSettings extends Component {
     ));
   }
 
+  handleUpdateLangaugeConfiguration = (event, isChecked, name) => {
+    const languageIndex = this.state.languages.findIndex((language) => language.value === name);
+
+    this.setState((state) => {
+      const newStateLanguages = state.languages;
+      newStateLanguages[languageIndex].enabled = isChecked;
+      return { languages: newStateLanguages };
+    }, () => {
+      // Delaying to allow animation before sending data to server
+      // If animation is not delayed, it twitches when actual update happens
+      setTimeout(() => {
+        this.props.onUpdateLanguageConfiguration(event, isChecked, name);
+      }, 200);
+    });
+  }
+
   renderLanguages() {
-    return this.props.languages.map((language, key) => (
+    return this.state.languages.map((language, key) => (
       <Components.ListItem
         actionType={"switch"}
         key={key}
         label={language.label}
         switchOn={language.enabled}
         switchName={language.value}
-        onSwitchChange={this.props.onUpdateLanguageConfiguration}
+        onSwitchChange={this.handleUpdateLangaugeConfiguration}
       />
     ));
   }
