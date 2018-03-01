@@ -10,7 +10,7 @@ import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
-import { Products, Tags, Shops } from "/lib/collections";
+import { Catalog, Products, Tags, Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";
 import ProductsComponent from "../components/customer/productGrid";
 
@@ -176,7 +176,7 @@ function composer(props, onData) {
     ]
   }).map((activeShop) => activeShop._id);
 
-  const productCursor = Products.find({
+  const productCursor = Catalog.find({
     ancestors: [],
     type: { $in: ["simple"] },
     shopId: { $in: activeShopsIds }
