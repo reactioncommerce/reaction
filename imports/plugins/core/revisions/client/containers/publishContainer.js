@@ -13,6 +13,14 @@ import { Reaction, i18next } from "/client/api";
  */
 class PublishContainer extends Component {
   handlePublishClick = (revisions) => {
+    Meteor.call("catalog/publishProduct", this.props.product._id, (error, result) => {
+      if (result) {
+        Alerts.toast(i18next("catalog.productPublishSuccess", { defaultValue: "Product published to catalog" }), "success");
+      } else {
+        Alerts.toast(error.message, "error");
+      }
+    });
+
     if (Array.isArray(revisions)) {
       let documentIds = revisions.map((revision) => {
         if (revision.parentDocument && revision.documentType !== "product") {
@@ -95,6 +103,7 @@ PublishContainer.propTypes = {
   onAction: PropTypes.func,
   onPublishSuccess: PropTypes.func,
   onVisibilityChange: PropTypes.func,
+  product: PropTypes.object,
   revisions: PropTypes.arrayOf(PropTypes.object)
 };
 
