@@ -178,7 +178,7 @@ function composer(props, onData) {
 
   const productCursor = Catalog.find({
     ancestors: [],
-    type: { $in: ["simple"] },
+    type: { $in: ["product-simple"] },
     shopId: { $in: activeShopsIds }
   }, {
     $sort: sort
