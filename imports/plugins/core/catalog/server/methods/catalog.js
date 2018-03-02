@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Products, Catalog as CatalogCollection } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 import { Media } from "/imports/plugins/core/files/server";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
 
@@ -60,7 +60,7 @@ export async function publishProductsToCatalog(productIds) {
     ids = [productIds];
   }
 
-  ids.forEach(async (productId) => {
+  return ids.every(async (productId) => {
     let product = Products.findOne({
       $or: [
         { _id: productId },
@@ -115,18 +115,54 @@ export async function publishProductsToCatalog(productIds) {
     // delete product.isLowQuantity;
     // delete product.isBackorder;
 
-    return CatalogCollection.upsert({
+    const result = CatalogCollection.upsert({
       _id: productId
     }, {
       $set: product
-    }, {
-      multi: true,
-      upsert: true,
-      validate: false
     });
+
+    return result && result.numberAffected === 1;
   });
 }
 
 Meteor.methods({
-  "catalog/publish/products": publishProductsToCatalog
+  "catalog/publish/products": (productIds) => {
+    check(productIds, Match.OneOf(String, Array));
+
+    // Ensure user has createProduct permission for active shop
+    if (!Reaction.hasPermission("createProduct")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    // Convert productIds if it's a string
+    let ids = productIds;
+    if (typeof ids === "string") {
+      ids = [productIds];
+    }
+
+    // Find all products
+    const productsToPublish = Products.find({
+      _id: { $in: ids }
+    }).fetch();
+
+    if (Array.isArray(productsToPublish)) {
+      const canUpdatePrimaryShopProducts = Reaction.hasPermission("createProduct", this.userId, Reaction.getPrimaryShopId());
+
+      const publisableProductIds = productsToPublish
+        // Only allow users to publish products for shops they permissions to createProductsFor
+        // If the user can createProducts on the main shop, they can publish products for all shops to the catalog.
+        .filter((product) => Reaction.hasPermission("createProduct", this.userId, product.shopId) || canUpdatePrimaryShopProducts)
+        .map((product) => product._id);
+
+      const success = publishProductsToCatalog(publisableProductIds);
+
+      if (!success) {
+        throw new Meteor.Error("server-error", "Some Products could not be published to the Catalog.");
+      }
+
+      return true;
+    }
+
+    return false;
+  }
 });
