@@ -68,47 +68,14 @@ const filters = new SimpleSchema({
 
 registerSchema("filters", filters);
 
-/**
- * products publication
- * @param {Number} [productScrollLimit] - optional, defaults to 24
- * @param {Array} shops - array of shopId to retrieve product from.
- * @return {Object} return product cursor
- */
-Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, editMode = true) {
-  check(productScrollLimit, Number);
-  check(productFilters, Match.OneOf(undefined, Object));
-  check(sort, Match.OneOf(undefined, Object));
-  check(editMode, Match.Maybe(Boolean));
-
-  // TODO: Consider publishing the non-admin publication if a user is not in "edit mode" to see what is published
-
-  // Active shop
-  const shopId = Reaction.getShopId();
-  const primaryShopId = Reaction.getPrimaryShopId();
-
-  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
-  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId);
-
-  // Don't publish if we're missing an active or primary shopId
-  if (!shopId || !primaryShopId) {
-    return this.ready();
-  }
-
-  // Get active shop id's to use for filtering
-  const activeShopsIds = Shops.find({
-    $or: [
-      { "workflow.status": "active" },
-      { _id: Reaction.getPrimaryShopId() }
-    ]
-  }).fetch().map((activeShop) => activeShop._id);
-
+function filterProducts(productFilters) {
   // if there are filter/params that don't match the schema
   // validate, catch except but return no results
   try {
     check(productFilters, Match.OneOf(undefined, filters));
   } catch (e) {
     Logger.debug(e, "Invalid Product Filters");
-    return this.ready();
+    return false;
   }
 
   const shopIdsOrSlugs = productFilters && productFilters.shops;
@@ -117,13 +84,9 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     // Get all shopIds associated with the slug or Id
     const shopIds = Shops.find({
       $or: [{
-        _id: {
-          $in: shopIdsOrSlugs
-        }
+        _id: { $in: shopIdsOrSlugs }
       }, {
-        slug: {
-          $in: shopIdsOrSlugs
-        }
+        slug: { $in: shopIdsOrSlugs }
       }]
     }).map((shop) => shop._id);
 
@@ -131,7 +94,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     if (shopIds) {
       productFilters.shops = shopIds;
     } else {
-      return this.ready();
+      return false;
     }
   }
 
@@ -147,11 +110,13 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     if (productFilters.shops) {
       _.extend(selector, {
         $or: [{
-          shopId: {
+          "workflow.status": "active",
+          "shopId": {
             $in: productFilters.shops
           }
         }, {
-          slug: {
+          "workflow.status": "active",
+          "slug": {
             $in: productFilters.shops
           }
         }]
@@ -275,6 +240,48 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     }
   } // end if productFilters
 
+  return selector;
+}
+
+/**
+ * products publication
+ * @param {Number} [productScrollLimit] - optional, defaults to 24
+ * @param {Array} shops - array of shopId to retrieve product from.
+ * @return {Object} return product cursor
+ */
+Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, editMode = true) {
+  check(productScrollLimit, Number);
+  check(productFilters, Match.OneOf(undefined, Object));
+  check(sort, Match.OneOf(undefined, Object));
+  check(editMode, Match.Maybe(Boolean));
+
+  // TODO: Consider publishing the non-admin publication if a user is not in "edit mode" to see what is published
+
+  // Active shop
+  const shopId = Reaction.getShopId();
+  const primaryShopId = Reaction.getPrimaryShopId();
+
+  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
+  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId);
+
+  // Don't publish if we're missing an active or primary shopId
+  if (!shopId || !primaryShopId) {
+    return this.ready();
+  }
+
+  // Get active shop id's to use for filtering
+  const activeShopsIds = Shops.find({
+    $or: [
+      { "workflow.status": "active" },
+      { _id: Reaction.getPrimaryShopId() }
+    ]
+  }).fetch().map((activeShop) => activeShop._id);
+
+  const selector = filterProducts(productFilters);
+
+  if (selector === false) {
+    return this.ready();
+  }
 
   // We publish an admin version of this publication to admins of products who are in "Edit Mode"
   // Authorized content curators for shops get special publication of the product
@@ -537,13 +544,13 @@ Meteor.publish("Products/grid", (productScrollLimit = 24, productFilters, sort =
   check(sort, Match.OneOf(undefined, Object));
   check(editMode, Match.Maybe(Boolean));
 
-  const selector = {
-    ancestors: [], // Lookup top-level products
-    isDeleted: { $in: [null, false] }, // by default, we don't publish deleted products
-    isVisible: true // by default, only lookup visible products
-  };
+  const newSelector = filterProducts(productFilters);
 
-  const productCursor = Catalog.find(selector, {
+  if (newSelector === false) {
+    return this.ready();
+  }
+
+  const productCursor = Catalog.find(newSelector, {
     sort,
     limit: productScrollLimit
   });
