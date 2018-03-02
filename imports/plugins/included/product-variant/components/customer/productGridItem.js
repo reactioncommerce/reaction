@@ -25,12 +25,12 @@ class ProductGridItem extends Component {
   get weightClass() {
     const { weight } = this.props.position || { weight: 0 };
     switch (weight) {
-    case 1:
-      return "product-medium";
-    case 2:
-      return "product-large";
-    default:
-      return "product-small";
+      case 1:
+        return "product-medium";
+      case 2:
+        return "product-large";
+      default:
+        return "product-small";
     }
   }
 
@@ -108,9 +108,10 @@ class ProductGridItem extends Component {
     // or the media object is empty exit
     if (weight !== 1 || (!media || media.length === 0)) return;
 
-    // removing the first image in the media array
-    // since it's being used as the primary product image
-    const additionalMedia = [...media.slice(1)];
+    // creating an additional madia array with
+    // the 2nd, 3rd and 4th images returned
+    // in the media array
+    const additionalMedia = [...media.slice(1, 4)];
 
     return (
       <div className="product-additional-images">
