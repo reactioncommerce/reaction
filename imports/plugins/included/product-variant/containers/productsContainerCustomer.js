@@ -120,7 +120,7 @@ function composer(props, onData) {
   const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
 
   const tag = Tags.findOne({ slug }) || Tags.findOne(slug);
-  const scrollLimit = Session.get("productScrollLimit");
+  const scrollLimit = 4; //Session.get("productScrollLimit");
   let tags = {}; // this could be shop default implementation needed
   let shopIds = {};
 
@@ -229,7 +229,7 @@ function composer(props, onData) {
 
   // reactiveProductIds.set(productIds);
 
-  canLoadMoreProducts = productCursor.count() >= Session.get("productScrollLimit");
+  canLoadMoreProducts = productCursor.count() >= 4; //Session.get("productScrollLimit");
 
   // const isActionViewOpen = Reaction.isActionViewOpen();
   // if (isActionViewOpen === false) {

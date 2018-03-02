@@ -6,9 +6,17 @@ import { ReactionProduct } from "/lib/api";
 
 class ProductGrid extends Component {
   static propTypes = {
-    productMediaById: PropTypes.object,
+    canLoadMoreProducts: PropTypes.bool,
+    loadMoreProducts: PropTypes.func,
     products: PropTypes.array
   }
+
+  loadMoreProducts = () => {
+    console.log("loading more products");
+    this.props.loadMoreProducts();
+  }
+
+  // render functions
 
   renderProductGridItems() {
     const { products } = this.props;
@@ -45,6 +53,7 @@ class ProductGrid extends Component {
           <ul className="product-grid-list list-unstyled" id="product-grid-list">
             {this.renderProductGridItems()}
           </ul>
+          <button id="productScrollLimitLoader" onClick={this.loadMoreProducts}>Load More Prods</button>
         </div>
       </div>
     );
