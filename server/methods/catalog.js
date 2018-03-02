@@ -1273,17 +1273,21 @@ Meteor.methods({
     const weight = `positions.${tag}.weight`;
     const updatedAt = `positions.${tag}.updatedAt`;
 
-    return Products.update({
-      _id: productId
-    }, {
-      $set: {
-        [position]: positionData.position,
-        [pinned]: positionData.pinned,
-        [weight]: positionData.weight,
-        [updatedAt]: new Date(),
-        type: "simple" // for multi-schema
+    return updateCatalogProduct(
+      this.userId,
+      {
+        _id: productId
+      },
+      {
+        $set: {
+          [position]: positionData.position,
+          [pinned]: positionData.pinned,
+          [weight]: positionData.weight,
+          [updatedAt]: new Date(),
+          type: "simple" // for multi-schema
+        }
       }
-    });
+    );
   },
 
   /**
