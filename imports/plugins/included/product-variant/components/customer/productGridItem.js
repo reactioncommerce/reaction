@@ -34,6 +34,16 @@ class ProductGridItem extends Component {
     }
   }
 
+  // get notice class names
+  get noticeClassNames() {
+    const { product: { isSoldOut, isLowQuantity, isBackorder } } = this.props;
+    return classnames({
+      "variant-qty-sold-out": (isSoldOut || (isSoldOut && isBackorder)),
+      "badge-danger": (isSoldOut && !isBackorder),
+      "badge-low-inv-warning": (isLowQuantity && !isSoldOut)
+    });
+  }
+
   // get product item class names
   get productClassNames() {
     const { position } = this.props;
@@ -52,35 +62,28 @@ class ProductGridItem extends Component {
 
   // notice
   renderNotices() {
-    const { isSoldOut, isLowQuantity, isBackorder } = this.props.product;
-    let noticeEl;
-    // TODO: revisit this if statement and jsx
+    const { product: { isSoldOut, isLowQuantity, isBackorder } } = this.props;
+    const noticeContent = { classNames: this.noticeClassNames };
+
     if (isSoldOut) {
       if (isBackorder) {
-        noticeEl = (
-          <span className="variant-qty-sold-out badge">
-            <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
-          </span>
-        );
+        noticeContent.defaultValue = "Backorder";
+        noticeContent.i18nKey = "productDetail.backOrder";
       } else {
-        noticeEl = (
-          <span className="variant-qty-sold-out badge badge-danger">
-            <Components.Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
-          </span>
-        );
+        noticeContent.defaultValue = "Sold Out!";
+        noticeContent.i18nKey = "productDetail.soldOut";
       }
     } else if (isLowQuantity) {
-      noticeEl = (
-        <span className="badge badge-low-inv-warning">
-          <Components.Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
-        </span>
-      );
+      noticeContent.defaultValue = "Limited Supply";
+      noticeContent.i18nKey = "productDetail.limitedSupply";
     }
 
     return (
       <div className="grid-alerts">
         <div className="product-grid-badges">
-          {noticeEl}
+          <span className={`badge ${noticeContent.classNames}`}>
+            <Components.Translation defaultValue={noticeContent.defaultValue} i18nKey={noticeContent.i18nKey} />
+          </span>
         </div>
       </div>
     );
