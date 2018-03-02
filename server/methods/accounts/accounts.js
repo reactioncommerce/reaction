@@ -739,7 +739,7 @@ export function inviteShopMember(options) {
  * @param {String} shopId - shopId of new User
  * @param {String} userId - new userId to welcome
  * @param {String} token - the token for the verification URL
- * @returns {object} returns verify token
+ * @returns {Boolean} returns true on success
  */
 export function sendWelcomeEmail(shopId, userId, token) {
   check(shopId, String);
@@ -749,9 +749,13 @@ export function sendWelcomeEmail(shopId, userId, token) {
   this.unblock();
 
   const account = Accounts.findOne(userId);
-  const shop = Shops.findOne(shopId);
+  // anonymous users arent welcome here
+  if (!account.emails || !account.emails.length > 0) {
+    return false;
+  }
 
   // Get shop logo, if available. If not, use default logo from file-system
+  const shop = Shops.findOne(shopId);
   let emailLogo;
   if (Array.isArray(shop.brandAssets)) {
     const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
@@ -796,11 +800,6 @@ export function sendWelcomeEmail(shopId, userId, token) {
     },
     user
   };
-
-  // anonymous users arent welcome here
-  if (!account.emails || !account.emails.length > 0) {
-    return true;
-  }
 
   dataForEmail.verificationUrl = MeteorAccounts.urls.verifyEmail(token);
 

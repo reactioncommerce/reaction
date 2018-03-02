@@ -6,7 +6,7 @@ import VerifyAccount from "../components/verifyAccount";
 import { Reaction } from "/client/api";
 
 
-const verified = ReactiveVar(null);
+const verified = new ReactiveVar(null);
 
 Accounts.onEmailVerificationLink((token, done) => {
   Accounts.verifyEmail(token, (error) => {
