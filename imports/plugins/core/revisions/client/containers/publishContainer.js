@@ -12,16 +12,22 @@ import { Reaction, i18next } from "/client/api";
  * PublishContainer is a container component connected to Meteor data source.
  */
 class PublishContainer extends Component {
-  handlePublishClick = (revisions) => {
-    Meteor.call("catalog/publishProduct", this.props.product._id, (error, result) => {
+  publishToCatalog(collection, documentIds) {
+    Meteor.call(`catalog/publish/${collection}`, documentIds, (error, result) => {
       if (result) {
         Alerts.toast(i18next("catalog.productPublishSuccess", { defaultValue: "Product published to catalog" }), "success");
-      } else {
+      } else if (error) {
         Alerts.toast(error.message, "error");
       }
     });
+  }
 
-    if (Array.isArray(revisions)) {
+  handlePublishClick = (revisions) => {
+    const productIds = this.props.documents
+      .filter((doc) => doc.type === "simple")
+      .map((doc) => doc._id);
+
+    if (Array.isArray(revisions) && revisions.length) {
       let documentIds = revisions.map((revision) => {
         if (revision.parentDocument && revision.documentType !== "product") {
           return revision.parentDocument;
@@ -41,11 +47,17 @@ class PublishContainer extends Component {
 
           if (this.props.onPublishSuccess) {
             this.props.onPublishSuccess(result);
+
+            // Publish to catalog after revisions have been published
+            this.publishToCatalog("products", productIds);
           }
         } else {
           Alerts.toast(error.message, "error");
         }
       });
+    } else {
+      // Publish to catalog immediately if there are no revisions to publish beforehand
+      this.publishToCatalog("products", productIds);
     }
   }
 
