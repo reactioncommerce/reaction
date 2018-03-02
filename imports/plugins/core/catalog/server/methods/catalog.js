@@ -52,66 +52,78 @@ export function isBackorder(variants) {
 }
 
 
-export async function publishProductsToCatalog(productId) {
-  check(productId, String);
+export async function publishProductsToCatalog(productIds) {
+  check(productIds, Match.OneOf(String, Array));
 
-  let product = Products.findOne({
-    $or: [
-      { _id: productId },
-      { ancestors: { $in: [productId] } }
-    ]
-  });
-
-  if (!product) {
-    throw new Meteor.error("error", "Cannot publish product");
+  let ids = productIds;
+  if (typeof ids === "string") {
+    ids = [productIds];
   }
 
-  if (Array.isArray(product.ancestors) && product.ancestors.length) {
-    product = Products.findOne({
-      _id: product.ancestors[0]
+  ids.forEach(async (productId) => {
+    let product = Products.findOne({
+      $or: [
+        { _id: productId },
+        { ancestors: { $in: [productId] } }
+      ]
     });
-  }
 
-  const variants = Products.find({
-    ancestors: {
-      $in: [productId]
+    if (!product) {
+      throw new Meteor.error("error", "Cannot publish product");
     }
-  }).fetch();
 
-  const mediaArray = await Media.find({
-    "metadata.productId": productId,
-    "metadata.toGrid": 1,
-    "metadata.workflow": { $nin: ["archived", "unpublished"] }
-  }, {
-    sort: { "metadata.priority": 1, "uploadedAt": 1 }
-  });
+    if (Array.isArray(product.ancestors) && product.ancestors.length) {
+      product = Products.findOne({
+        _id: product.ancestors[0]
+      });
+    }
 
-  const productMedia = mediaArray.map((media) => ({
-    thumbnail: `${media.url({ store: "thumbnail" })}`,
-    small: `${media.url({ store: "small" })}`,
-    medium: `${media.url({ store: "medium" })}`,
-    large: `${media.url({ store: "large" })}`,
-    image: `${media.url({ store: "image" })}`
-  }));
+    const variants = Products.find({
+      ancestors: {
+        $in: [productId]
+      }
+    }).fetch();
 
-  product.variants = variants;
-  product.media = productMedia;
-  product.type = "simple-product";
+    const mediaArray = await Media.find({
+      "metadata.productId": productId,
+      "metadata.toGrid": 1,
+      "metadata.workflow": { $nin: ["archived", "unpublished"] }
+    }, {
+      sort: { "metadata.priority": 1, "uploadedAt": 1 }
+    });
 
-  // Remove inventory fields
-  delete product.price;
-  delete product.isSoldOut;
-  delete product.isLowQuantity;
-  delete product.isBackorder;
+    const productMedia = mediaArray.map((media) => ({
+      thumbnail: `${media.url({ store: "thumbnail" })}`,
+      small: `${media.url({ store: "small" })}`,
+      medium: `${media.url({ store: "medium" })}`,
+      large: `${media.url({ store: "large" })}`,
+      image: `${media.url({ store: "image" })}`
+    }));
 
-  return CatalogCollection.upsert({
-    _id: productId
-  }, {
-    $set: product
-  }, {
-    multi: true,
-    upsert: true,
-    validate: false
+    product.variants = variants;
+    product.media = productMedia;
+    product.type = "product-simple";
+
+    // TODO: Remove these fields in favor of inventory/pricing collection
+    product.isSoldOut = isSoldOut(variants);
+    product.isBackorder = isBackorder(variants);
+    product.isLowQuantity = isLowQuantity(variants);
+
+    // Remove inventory fields
+    // delete product.price;
+    // delete product.isSoldOut;
+    // delete product.isLowQuantity;
+    // delete product.isBackorder;
+
+    return CatalogCollection.upsert({
+      _id: productId
+    }, {
+      $set: product
+    }, {
+      multi: true,
+      upsert: true,
+      validate: false
+    });
   });
 }
 
