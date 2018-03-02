@@ -478,6 +478,8 @@ Meteor.methods({
       try {
         Hooks.Events.run("beforeInsertCatalogProduct", clone);
         newId = Products.insert(clone, { validate: false });
+        const newProduct = Products.findOne(newId);
+        Hooks.Events.run("afterInsertCatalogProduct", Meteor.userId(), newProduct);
         Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
           clone._id} from ${variantId}`);
       } catch (error) {
