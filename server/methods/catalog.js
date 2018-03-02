@@ -323,31 +323,21 @@ function flushQuantity(id) {
 }
 
 /**
- * @function createProductObject
+ * @function createProduct
  * @private
- * @description creates a product Object with a generated _id
- * and with props if provided
- * @return {Object} productObject - new product object
+ * @description creates a product
+ * @param {Object} props - initial product properties
+ * @return {Object} product - new product
  */
-function createProductObject(props = null) {
+function createProduct(props = null) {
   const _id = Products.insert({
-    type: "simple"
+    type: "simple",
+    ...props
   }, {
     validate: false
   });
 
-  const productObject = Products.findOne({ _id });
-  // Only the product object instance is needed
-  Products.remove({ _id });
-
-  // Assing _id to prevent insert error that would be caused otherwise.
-  productObject._id = Random.id();
-
-  if (props) {
-    return Object.assign({}, productObject, props);
-  }
-
-  return productObject;
+  return Products.findOne({ _id });
 }
 
 /**
@@ -820,13 +810,13 @@ Meteor.methods({
       return Products.insert(product);
     }
 
-    const newSimpleProduct = createProductObject();
+    const newSimpleProduct = createProduct();
+
+    // Create simple product revision
     Hooks.Events.run("beforeInsertCatalogProduct", newSimpleProduct);
 
-    const newId = Products.insert(newSimpleProduct, { validate: false });
-
-    const newVariant = createProductObject({
-      ancestors: [newId],
+    const newVariant = createProduct({
+      ancestors: [newSimpleProduct._id],
       price: 0.00,
       title: "",
       type: "variant" // needed for multi-schema
@@ -835,9 +825,7 @@ Meteor.methods({
     // Create variant revision
     Hooks.Events.run("beforeInsertCatalogProduct", newVariant);
 
-    Products.insert(newVariant);
-
-    return newId;
+    return newSimpleProduct._id;
   },
 
   /**
