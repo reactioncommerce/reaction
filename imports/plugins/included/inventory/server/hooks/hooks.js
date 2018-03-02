@@ -29,9 +29,11 @@ Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
 
 
 /**
-* Inventory Hooks for product updates
-* @type {Object}
-* @desc After product deletion / archive, update inventory of parent(s).
+* @method
+* @summary updates product inventory after variant is removed
+* @param {String} userId - userId of user making the call
+* @param {Object} doc - product document
+* @return {undefined}
 */
 Hooks.Events.add("afterRemoveCatalogProduct", (userId, doc) => {
   if (doc.type === "variant") {
