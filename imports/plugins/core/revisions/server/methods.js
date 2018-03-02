@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Products, Media, Revisions, Packages } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 
 export function updateSettings(settings) {
   check(settings, Object);
@@ -13,6 +13,27 @@ export function updateSettings(settings) {
       settings
     }
   });
+}
+
+/**
+ * @description Updates revision and product documents.
+ *
+ * @param {String} userId - currently logged in user
+ * @param {Object} selector - selector for product to update
+ * @param {Object} modifier - Object describing what parts of the document to update.
+ * @param {Object} options
+ * @return {String} _id of updated document
+ */
+function updateCatalogProduct(userId, selector, modifier, validation) {
+  const product = Products.findOne(selector);
+  Hooks.Events.run("beforeUpdateCatalogProduct", product, {
+    userId,
+    modifier,
+    validation,
+    publish: true
+  });
+
+  return Products.update(selector, modifier, validation);
 }
 
 export function discardDrafts(documentIds) {
@@ -116,13 +137,15 @@ Meteor.methods({
         if (!revision.documentType || revision.documentType === "product") {
           previousDocuments.push(Products.findOne(revision.documentId));
 
-          const res = Products.update({
-            _id: revision.documentId
-          }, {
-            $set: revision.documentData
-          }, {
-            publish: true
-          });
+          const res = updateCatalogProduct(
+            this.userId,
+            {
+              _id: revision.documentId
+            },
+            {
+              $set: revision.documentData
+            }
+          );
           updatedDocuments += res;
         } else if (revision.documentType === "image") {
           if (revision.changeType === "insert") {

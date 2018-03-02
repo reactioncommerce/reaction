@@ -289,9 +289,9 @@ Hooks.Events.add("beforeInsertCatalogProduct", (product) => {
 });
 
 Hooks.Events.add("beforeUpdateCatalogProduct", (product, options) => {
-  updateRevision(product, options);
+  return updateRevision(product, options);
 
-  return product;
+  // return product;
 });
 
 Hooks.Events.add("beforeRemoveCatalogProduct", (product, options) => {
