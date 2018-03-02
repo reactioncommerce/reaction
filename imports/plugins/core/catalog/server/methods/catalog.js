@@ -90,7 +90,8 @@ export async function publishProductToCatalog(productId) {
     thumbnail: `${media.url({ store: "thumbnail" })}`,
     small: `${media.url({ store: "small" })}`,
     medium: `${media.url({ store: "medium" })}`,
-    large: `${media.url({ store: "large" })}`
+    large: `${media.url({ store: "large" })}`,
+    image: `${media.url({ store: "image" })}`
   }));
 
   console.log("mediaArray", productMedia);
