@@ -12,7 +12,7 @@ import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/serv
  * @param {Array} variants - Array with top-level variants
  * @return {Boolean} true if summary product quantity is zero.
  */
-function isSoldOut(variants) {
+export function isSoldOut(variants) {
   return variants.every((variant) => {
     if (variant.inventoryManagement) {
       return Catalog.getVariantQuantity(variant) <= 0;
@@ -28,7 +28,7 @@ function isSoldOut(variants) {
  * @param {Array} variants - array of child variants
  * @return {boolean} low quantity or not
  */
-function isLowQuantity(variants) {
+export function isLowQuantity(variants) {
   return variants.some((variant) => {
     const quantity = Catalog.getVariantQuantity(variant);
     // we need to keep an eye on `inventoryPolicy` too and qty > 0
@@ -46,7 +46,7 @@ function isLowQuantity(variants) {
  * @param {Array} variants - array with variant objects
  * @return {boolean} is backorder allowed or not for a product
  */
-function isBackorder(variants) {
+export function isBackorder(variants) {
   return variants.every((variant) => variant.inventoryPolicy && variant.inventoryManagement &&
     variant.inventoryQuantity === 0);
 }
@@ -94,13 +94,14 @@ export async function publishProductToCatalog(productId) {
     image: `${media.url({ store: "image" })}`
   }));
 
-  console.log("mediaArray", productMedia);
-
-  product.varaints = variants;
-  product.isSoldOut = isSoldOut(variants);
-  product.isBackorder = isBackorder(variants);
-  product.isLowQuantity = isLowQuantity(variants);
+  product.variants = variants;
   product.media = productMedia;
+
+  // Remove inventory fields
+  delete product.price;
+  delete product.isSoldOut;
+  delete product.isLowQuantity;
+  delete product.isBackorder;
 
   return CatalogCollection.upsert({
     _id: productId
