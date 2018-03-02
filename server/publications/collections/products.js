@@ -545,6 +545,7 @@ Meteor.publish("Products/grid", (productScrollLimit = 24, productFilters, sort =
   check(editMode, Match.Maybe(Boolean));
 
   const newSelector = filterProducts(productFilters);
+console.log("newSelector", newSelector);
 
   if (newSelector === false) {
     return this.ready();

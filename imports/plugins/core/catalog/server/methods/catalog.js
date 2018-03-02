@@ -96,6 +96,7 @@ export async function publishProductToCatalog(productId) {
 
   product.variants = variants;
   product.media = productMedia;
+  product.type = "simple-product";
 
   // Remove inventory fields
   delete product.price;
