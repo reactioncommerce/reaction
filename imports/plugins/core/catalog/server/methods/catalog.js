@@ -83,7 +83,6 @@ export async function publishProductToCatalog(productId) {
     "metadata.toGrid": 1,
     "metadata.workflow": { $nin: ["archived", "unpublished"] }
   }, {
-    limit: 4,
     sort: { "metadata.priority": 1, "uploadedAt": 1 }
   });
 
