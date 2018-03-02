@@ -38,7 +38,7 @@ function wrapper(props, onData) {
         Reaction.Router.go("/");
       }, 2000);
     }
-  }, 7000);
+  }, 5000);
 
   const user = Meteor.user();
   if (user && verified.get() === true) {

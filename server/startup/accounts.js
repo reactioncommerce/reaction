@@ -170,9 +170,10 @@ export default function () {
       const userDetails = Collections.Accounts.findOne({ _id: user._id });
 
       // send a welcome email to new users,
-      // but skip the first default admin user
+      // but skip the first default admin user and anonymous users
       // (default admins already get a verification email)
-      if (!(Meteor.users.find().count() === 0) && !userDetails.profile.invited) {
+      if (userDetails.emails && userDetails.emails.length > 0
+        && (!(Meteor.users.find().count() === 0) && !userDetails.profile.invited)) {
         const token = Random.secret();
         Meteor.call("accounts/sendWelcomeEmail", shopId, user._id, token);
         const defaultEmail = userDetails.emails.find((email) => email.provides === "default");

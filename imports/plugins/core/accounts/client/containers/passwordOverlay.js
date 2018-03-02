@@ -7,6 +7,7 @@ import { Random } from "meteor/random";
 import { Reaction } from "/client/api";
 import UpdatePasswordOverlay from "../components/updatePasswordOverlay";
 import { LoginFormValidation } from "/lib/api";
+import {Meteor} from "meteor/meteor";
 
 const wrapComponent = (Comp) => (
   class UpdatePasswordOverlayContainer extends Component {
@@ -73,6 +74,9 @@ const wrapComponent = (Comp) => (
             }
           });
         } else {
+          // Now that Meteor.users is verified, we should do the same with the Accounts collection
+          Meteor.call("accounts/verifyAccount");
+
           this.props.callback();
 
           this.setState({

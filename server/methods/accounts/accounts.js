@@ -27,13 +27,16 @@ import { sendUpdatedVerificationEmail } from "/server/api/core/accounts";
  * @returns {Boolean} - returns true on success
  */
 export function verifyAccount() {
+  if (!this.userId) {
+    // not logged in
+    return;
+  }
   const user = Meteor.user();
-  const userId = Meteor.userId();
   const addresses = user.emails
     .filter((email) => email.verified)
     .map((email) => email.address);
   const result = Accounts.update({
-    "userId": userId,
+    "userId": this.userId,
     "emails.address": { $in: addresses }
   }, {
     $set: {
@@ -43,8 +46,8 @@ export function verifyAccount() {
   if (result) {
     Hooks.Events.run(
       "afterAccountsUpdate",
-      userId,
-      Accounts.findOne({ userId: userId })._id
+      this.userId,
+      Accounts.findOne({ userId: this.userId })._id
     );
   }
   return result;
