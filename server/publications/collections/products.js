@@ -537,7 +537,16 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   });
 });
 
-
+/**
+ * @name Products/grid
+ * @method
+ * @memberof Core
+ * @summary Publication method for a customer facing product grid
+ * @param {number} productScrollLimit - product find limit
+ * @param {object} productFilters - filters to be applied to the product find
+ * @param {object} sort - sorting to be applied to the product find
+ * @return {MongoCursor} Mongo cursor object of found products
+ */
 Meteor.publish("Products/grid", (productScrollLimit = 24, productFilters, sort = {}, editMode = true) => {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, Object));
