@@ -3,6 +3,7 @@ import _ from "lodash";
 import { Factory } from "meteor/dburles:factory";
 import { Products, Tags } from "/lib/collections";
 import { getShop } from "./shops";
+import { Hooks } from "/server/api";
 
 
 /**
@@ -77,8 +78,10 @@ export function productVariant(options = {}) {
 
 export function addProduct(options = {}) {
   const product = Factory.create("product", options);
+  Hooks.Events.run("afterInsertCatalogProduct", product);
   // top level variant
   const variant = Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id] }));
+  Hooks.Events.run("afterInsertCatalogProduct", variant);
   Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
   Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
   return product;

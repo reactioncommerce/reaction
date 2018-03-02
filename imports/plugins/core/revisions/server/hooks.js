@@ -288,6 +288,14 @@ Hooks.Events.add("beforeInsertCatalogProduct", (product) => {
   return product;
 });
 
+// For tests, it's more convinient to insert a products revision after the product is inserted.
+// TODO: Discuss whether this would be also better for catalog methods.
+Hooks.Events.add("afterInsertCatalogProduct", (product) => {
+  insertRevision(product);
+
+  return product;
+});
+
 Hooks.Events.add("shouldCatalogProductUpdate", (product, options) => {
   const result = updateRevision(product, options);
 
