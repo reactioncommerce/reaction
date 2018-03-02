@@ -763,6 +763,7 @@ Meteor.methods({
       }
       Hooks.Events.run("beforeInsertCatalogProduct", newProduct);
       result = Products.insert(newProduct, { validate: false });
+      Hooks.Events.run("afterInsertCatalogProduct", Meteor.userId(), newProduct);
       results.push(result);
 
       // cloning variants
