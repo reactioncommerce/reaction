@@ -288,10 +288,10 @@ Hooks.Events.add("beforeInsertCatalogProduct", (product) => {
   return product;
 });
 
-Hooks.Events.add("beforeUpdateCatalogProduct", (product, options) => {
-  return updateRevision(product, options);
+Hooks.Events.add("shouldCatalogProductUpdate", (product, options) => {
+  const result = updateRevision(product, options);
 
-  // return product;
+  return result;
 });
 
 Hooks.Events.add("beforeRemoveCatalogProduct", (product, options) => {

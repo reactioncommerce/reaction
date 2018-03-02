@@ -351,13 +351,20 @@ function createProduct(props = null) {
  */
 function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
-  Hooks.Events.run("beforeUpdateCatalogProduct", product, {
+
+  const shouldCatalogProductUpdate = Hooks.Events.run("shouldCatalogProductUpdate", product, {
     userId,
     modifier,
     validation
   });
 
-  return Products.update(selector, modifier, validation);
+  if (shouldCatalogProductUpdate) {
+    return Products.update(selector, modifier, validation);
+  }
+
+  Logger.debug(`shouldCatalogProductUpdate returned falsy, not updating catalog product`);
+
+  return false;
 }
 
 

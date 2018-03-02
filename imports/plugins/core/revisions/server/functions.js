@@ -76,7 +76,7 @@ export function insertRevision(product) {
  * @param {Object} product - product to update
  * @param {Object} modifier - properties to updated
  * @param {Object} options
- * @returns {Boolean} true if revision was updadted successfully, false otherwise
+ * @returns {Boolean} true if upderlying product should be updated, otherwise false.
  */
 export function updateRevision(product, options = {}) {
   if (RevisionApi.isRevisionControlEnabled() === false) {
