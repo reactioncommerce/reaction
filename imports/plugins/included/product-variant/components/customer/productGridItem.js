@@ -38,6 +38,7 @@ class ProductGridItem extends Component {
   get noticeClassNames() {
     const { product: { isSoldOut, isLowQuantity, isBackorder } } = this.props;
     return classnames({
+      "badge": (isSoldOut || isLowQuantity),
       "variant-qty-sold-out": (isSoldOut || (isSoldOut && isBackorder)),
       "badge-danger": (isSoldOut && !isBackorder),
       "badge-low-inv-warning": (isLowQuantity && !isSoldOut)
@@ -81,7 +82,7 @@ class ProductGridItem extends Component {
     return (
       <div className="grid-alerts">
         <div className="product-grid-badges">
-          <span className={`badge ${noticeContent.classNames}`}>
+          <span className={noticeContent.classNames}>
             <Components.Translation defaultValue={noticeContent.defaultValue} i18nKey={noticeContent.i18nKey} />
           </span>
         </div>
@@ -108,7 +109,7 @@ class ProductGridItem extends Component {
     const { product: { media }, position: { weight } } = this.props;
 
     // if product is not medium weight
-    // or the media object is empty exit
+    // or the media array is empty exit
     if (weight !== 1 || (!media || media.length === 0)) return;
 
     // creating an additional madia array with
