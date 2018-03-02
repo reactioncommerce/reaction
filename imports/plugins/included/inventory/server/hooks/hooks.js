@@ -27,7 +27,6 @@ Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
   Meteor.call("inventory/addReserve", item);
 });
 
-
 /**
 * @method
 * @summary updates product inventory after variant is removed
@@ -72,10 +71,13 @@ Products.after.update((userId, doc, fieldNames, modifier) => {
 });
 
 /**
- * after insert
- * @summary should fires on create new variants, on clones products/variants
- */
-Products.after.insert((userId, doc) => {
+* @method
+* @summary adds product inventory when new product is created
+* @param {String} userId - userId of user making the call
+* @param {Object} doc - product document
+* @return {undefined}
+*/
+Hooks.Events.add("afterInsertCatalogProduct", (userId, doc) => {
   if (doc.type !== "variant") {
     return false;
   }
