@@ -15,7 +15,7 @@ class PublishContainer extends Component {
   publishToCatalog(collection, documentIds) {
     Meteor.call(`catalog/publish/${collection}`, documentIds, (error, result) => {
       if (result) {
-        Alerts.toast(i18next("catalog.productPublishSuccess", { defaultValue: "Product published to catalog" }), "success");
+        Alerts.toast(i18next.t("catalog.productPublishSuccess", { defaultValue: "Product published to catalog" }), "success");
       } else if (error) {
         Alerts.toast(error.message, "error");
       }
