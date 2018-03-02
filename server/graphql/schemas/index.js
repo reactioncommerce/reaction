@@ -1,4 +1,5 @@
 import { typeDefs as hello } from "./hello";
+import { typeDefs as metafield } from "./metafield";
 import { typeDefs as scalars } from "./scalars";
 import { typeDefs as users } from "./users";
 
@@ -17,4 +18,4 @@ const base = [
   `
 ];
 
-export const typeDefs = base.concat([hello, scalars, users]);
+export const typeDefs = base.concat([hello, metafield, scalars, users]);
