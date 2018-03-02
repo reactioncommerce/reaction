@@ -646,6 +646,10 @@ Meteor.methods({
 
     const deleted = Products.remove(selector);
 
+    toDelete.forEach((product) => {
+      Hooks.Events.run("afterRemoveCatalogProduct", Meteor.userId(), product);
+    });
+
     // after variant were removed from product, we need to recalculate all
     // denormalized fields
     const productId = toDelete[0].ancestors[0];
