@@ -707,6 +707,8 @@
           "userNotFound": "Ismeretlen felhasználó",
           "verifyEmailLinkExpired": "Az email cím ellenőzésére szolgáló link lejárt",
           "verifyEmailLinkIsForUnknownAddress": "Az email cím ellenőzésére szolgáló link ismeretlen címre szól",
+          "verifyTimeout": "",
+          "verifyEmailAddressNotFound": "",
           "matchFailed": "Nincs találat",
           "unknownError": "Ismeretlen hiba"
         }

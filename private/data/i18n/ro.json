@@ -707,6 +707,8 @@
           "userNotFound": "Utilizatorul nu a fost găsit",
           "verifyEmailLinkExpired": "Link-ul de verificare a expirat",
           "verifyEmailLinkIsForUnknownAddress": "Link-ul de verificare a e-mail-ului este pentru adresă necunoscută",
+          "verifyTimeout": "",
+          "verifyEmailAddressNotFound": "",
           "matchFailed": "potrivirea nu a reușit",
           "unknownError": "Eroare necunoscută"
         }

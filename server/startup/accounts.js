@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
 import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
@@ -172,7 +173,19 @@ export default function () {
       // but skip the first default admin user
       // (default admins already get a verification email)
       if (!(Meteor.users.find().count() === 0) && !userDetails.profile.invited) {
-        Meteor.call("accounts/sendWelcomeEmail", shopId, user._id);
+        const token = Random.secret();
+        Meteor.call("accounts/sendWelcomeEmail", shopId, user._id, token);
+        const defaultEmail = userDetails.emails.find((email) => email.provides === "default");
+        const when = new Date();
+        const tokenObj = {
+          address: defaultEmail.address,
+          token,
+          when
+        };
+        _.set(user, "services.email.verificationTokens", [
+          tokenObj,
+          ...(_.get(user, "services.email.verificationTokens") || [])
+        ]);
       }
 
       // assign default user roles

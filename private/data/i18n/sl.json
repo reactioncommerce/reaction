@@ -707,6 +707,8 @@
           "userNotFound": "Uporabnik ne obstaja",
           "verifyEmailLinkExpired": "Povezava za potrditev je potekla",
           "verifyEmailLinkIsForUnknownAddress": "Povezava za potrditev vsebuje neznan naslov",
+          "verifyTimeout": "",
+          "verifyEmailAddressNotFound": "",
           "matchFailed": "Prijava neuspešna",
           "unknownError": "Neznana napaka"
         }

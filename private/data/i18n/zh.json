@@ -707,6 +707,8 @@
           "userNotFound": "没有此用户。",
           "verifyEmailLinkExpired": "用于验证邮箱的链接已经失效。",
           "verifyEmailLinkIsForUnknownAddress": "用于验证邮箱的链接指向了未知地址。",
+          "verifyTimeout": "",
+          "verifyEmailAddressNotFound": "",
           "matchFailed": "匹配失败。",
           "unknownError": "未知错误。"
         }

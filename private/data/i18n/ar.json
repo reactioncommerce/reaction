@@ -707,6 +707,8 @@
           "userNotFound": "اسم المستخدم غير موجود",
           "verifyEmailLinkExpired": "انتهى زمن رابط تأكيد البريد الالكترونى",
           "verifyEmailLinkIsForUnknownAddress": "رابط تأكيد البريد الالكترونى ينتمى الى بريد الكترونى غير معروف",
+          "verifyTimeout": "",
+          "verifyEmailAddressNotFound": "",
           "matchFailed": "المطابقة فشلت",
           "unknownError": "خطأ غير معروف"
         }

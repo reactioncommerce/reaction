@@ -707,6 +707,8 @@
           "userNotFound": "Няма намерен потребител.",
           "verifyEmailLinkExpired": "Линкът в имейла за потвърждение е с изтекъл срок.",
           "verifyEmailLinkIsForUnknownAddress": "Не сте задали имейл адрес.",
+          "verifyTimeout": "",
+          "verifyEmailAddressNotFound": "",
           "matchFailed": "Не съвпада",
           "unknownError": "Неизвестна грешка"
         }

@@ -707,6 +707,8 @@
           "userNotFound": "Ο χρήστης δεν βρέθηκε",
           "verifyEmailLinkExpired": "Η Επαλήθευση email έληξε",
           "verifyEmailLinkIsForUnknownAddress": "Η Επαλήθευση email είναι για άγνωστη διεύθυνση",
+          "verifyTimeout": "",
+          "verifyEmailAddressNotFound": "",
           "matchFailed": "Δεν ταιριάζει",
           "unknownError": "Αγνωστο σφάλμα"
         }

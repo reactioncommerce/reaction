@@ -707,6 +707,8 @@
           "userNotFound": "ဤနာမည်နှင့် ပတ်သတ်သောအကောင့် ရှာမတွေ့ပါ",
           "verifyEmailLinkExpired": "မှတ်ပုံတင်ရန် လင့်ခ်မှာ သက်တမ်းကုန်သွားပါသည်",
           "verifyEmailLinkIsForUnknownAddress": "မှတ်ပုံတင်ရန် လင့်ခ်မှာ အမည်မသိသော လိပ်စာဖြစ်နေပါသည်",
+          "verifyTimeout": "",
+          "verifyEmailAddressNotFound": "",
           "matchFailed": "တိုက်ဆိုင်စစ်ဆေးချက် မအောင်မြင်ပါ",
           "unknownError": "အမျိုးအမည်မသိသော error"
         }

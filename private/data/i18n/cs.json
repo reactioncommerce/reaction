@@ -707,6 +707,8 @@
           "userNotFound": "Uživatel nenalezen",
           "verifyEmailLinkExpired": "Odkaz pro ověření emailu vypršel",
           "verifyEmailLinkIsForUnknownAddress": "Odkaz pro ověření emailu má neznámou adresu",
+          "verifyTimeout": "",
+          "verifyEmailAddressNotFound": "",
           "matchFailed": "Nesouhlasí",
           "unknownError": "Neznámá chyba"
         }

@@ -707,6 +707,8 @@
           "userNotFound": "Пользователь не найден",
           "verifyEmailLinkExpired": "Ссылка подтверждения email устарела",
           "verifyEmailLinkIsForUnknownAddress": "Ссылка подтверждения email для неизвестного адреса",
+          "verifyTimeout": "",
+          "verifyEmailAddressNotFound": "",
           "matchFailed": "Не совпадают",
           "unknownError": "Неизвестная ошибка"
         }

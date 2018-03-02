@@ -369,6 +369,8 @@
           "userNotFound": "Finner ikke brukeren",
           "verifyEmailLinkExpired": "Lenke for å verifisere epost har utløpt",
           "verifyEmailLinkIsForUnknownAddress": "Lenke for å verifisere epost har en ukjent epost adresse",
+          "verifyTimeout": "",
+          "verifyEmailAddressNotFound": "",
           "matchFailed": "Match feilet",
           "unknownError": "Ukjent feil"
         }
