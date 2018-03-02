@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Sms } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
-import { formatPhoneNo } from "/lib/api";
+import { formatPhoneNumber } from "/lib/api";
 
 // We lazy load these in order to shave a few seconds off the time
 // it takes Meteor to start/restart the app.
@@ -73,7 +73,7 @@ Meteor.methods({
       return;
     }
 
-    const formattedPhone = formatPhoneNo(phone, country);
+    const formattedPhone = formatPhoneNumber(phone, country);
 
     const smsSettings = Sms.findOne({ shopId });
     if (!smsSettings) {
