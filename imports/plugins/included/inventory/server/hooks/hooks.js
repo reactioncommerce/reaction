@@ -27,11 +27,13 @@ Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
   Meteor.call("inventory/addReserve", item);
 });
 
+
 /**
- * after variant were removed
- * @fires `inventory/remove` Method
- */
-Products.after.remove((userId, doc) => {
+* Inventory Hooks for product updates
+* @type {Object}
+* @desc After product deletion / archive, update inventory of parent(s).
+*/
+Hooks.Events.add("afterRemoveCatalogProduct", (userId, doc) => {
   if (doc.type === "variant") {
     const variantItem = {
       productId: doc.ancestors[0],
