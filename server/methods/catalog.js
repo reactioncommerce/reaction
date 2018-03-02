@@ -337,7 +337,11 @@ function createProduct(props = null) {
     validate: false
   });
 
-  return Products.findOne({ _id });
+  const newProduct = Products.findOne({ _id });
+
+  Hooks.Events.run("afterInsertCatalogProduct", Meteor.userId(), newProduct);
+
+  return newProduct;
 }
 
 /**
