@@ -32,7 +32,7 @@ const reactiveProductIds = new ReactiveVar([], (oldVal, newVal) => JSON.stringif
 function loadMoreProducts() {
   let threshold;
   const target = document.querySelectorAll("#productScrollLimitLoader");
-  let scrollContainer = document.querySelectorAll("#container-main");
+  let scrollContainer = document.querySelectorAll(".container-main");
   if (scrollContainer.length === 0) {
     scrollContainer = window;
   }
@@ -120,7 +120,7 @@ function composer(props, onData) {
   const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
 
   const tag = Tags.findOne({ slug }) || Tags.findOne(slug);
-  const scrollLimit = 4; //Session.get("productScrollLimit");
+  const scrollLimit = Session.get("productScrollLimit");
   let tags = {}; // this could be shop default implementation needed
   let shopIds = {};
 
@@ -229,7 +229,7 @@ function composer(props, onData) {
 
   // reactiveProductIds.set(productIds);
 
-  canLoadMoreProducts = productCursor.count() >= 4; //Session.get("productScrollLimit");
+  canLoadMoreProducts = productCursor.count() >= Session.get("productScrollLimit");
 
   // const isActionViewOpen = Reaction.isActionViewOpen();
   // if (isActionViewOpen === false) {
@@ -238,10 +238,10 @@ function composer(props, onData) {
   const products = productCursor.fetch();
   onData(null, {
     canLoadMoreProducts,
-    products
+    products,
     // productMediaById,
     // products: stateProducts,
-    // productsSubscription
+    productsSubscription
   });
 }
 

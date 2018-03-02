@@ -7,39 +7,45 @@ import { ReactionProduct } from "/lib/api";
 class ProductGrid extends Component {
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
-    loadMoreProducts: PropTypes.func,
-    products: PropTypes.array
+    loadProducts: PropTypes.func,
+    products: PropTypes.array,
+    ready: PropTypes.func
   }
 
-  loadMoreProducts = () => {
+  // events
+
+  // load more products to the grid
+  loadMoreProducts = (event) => {
     console.log("loading more products");
-    this.props.loadMoreProducts();
+    this.props.loadProducts(event);
   }
 
-  // render functions
+  // render the laoding spinner
+  renderLoadingSpinner() {
+    return <Components.Loading />;
+  }
 
-  renderProductGridItems() {
+  // render the No Products Found message
+  renderNotFound() {
+    return <Components.NotFound i18nKeyTitle="productGrid.noProductsFound" icon="fa fa-barcode" title="No Products Found" />;
+  }
+
+  // render the product grid
+  renderProductGrid() {
     const { products } = this.props;
     const currentTag = ReactionProduct.getTag();
 
-    if (Array.isArray(products)) {
-      return products.map((product, index) => (
-        <ProductGridItem
-          product={product}
-          position={(product.positions && product.positions[currentTag]) || {}}
-          key={index}
-          index={index}
-        />
-      ));
-    }
-
     return (
-      <div className="row">
-        <div className="text-center">
-          <h3>
-            <Components.Translation defaultValue="No Products Found" i18nKey="app.noProductsFound" />
-          </h3>
-        </div>
+      <div className="product-grid">
+        <ul className="product-grid-list list-unstyled" id="product-grid-list">
+          {products.map((product) => (
+            <ProductGridItem
+              product={product}
+              position={(product.positions && product.positions[currentTag]) || {}}
+              key={product._id}
+            />
+          ))}
+        </ul>
       </div>
     );
   }
@@ -47,14 +53,14 @@ class ProductGrid extends Component {
   render() {
     console.log("this.props", this.props);
 
+    const { products, ready } = this.props;
+    if (!ready()) return this.renderLoadingSpinner();
+    if (!Array.isArray(products) || !products.length) return this.renderNotFound();
+
     return (
       <div className="container-main">
-        <div className="product-grid">
-          <ul className="product-grid-list list-unstyled" id="product-grid-list">
-            {this.renderProductGridItems()}
-          </ul>
-          <button id="productScrollLimitLoader" onClick={this.loadMoreProducts}>Load More Prods</button>
-        </div>
+        {this.renderProductGrid()}
+        <button id="productScrollLimitLoader" onClick={this.loadMoreProducts}>Load More Prods</button>
       </div>
     );
   }
