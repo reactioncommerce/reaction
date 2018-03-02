@@ -791,6 +791,7 @@ Meteor.methods({
 
         Hooks.Events.run("beforeInsertCatalogProduct", newVariant);
         result = Products.insert(newVariant, { validate: false });
+        Hooks.Events.run("afterInsertCatalogProduct", Meteor.userId(), newVariant);
         copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
       }
