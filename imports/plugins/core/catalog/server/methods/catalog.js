@@ -52,7 +52,7 @@ export function isBackorder(variants) {
 }
 
 
-export async function publishProductToCatalog(productId) {
+export async function publishProductsToCatalog(productId) {
   check(productId, String);
 
   let product = Products.findOne({
@@ -116,5 +116,5 @@ export async function publishProductToCatalog(productId) {
 }
 
 Meteor.methods({
-  "catalog/publishProduct": publishProductToCatalog
+  "catalog/publish/products": publishProductsToCatalog
 });
