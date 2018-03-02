@@ -4,8 +4,12 @@ import { Logger, Hooks } from "/server/api";
 import { registerInventory } from "../methods/inventory";
 
 /**
- * After cart update add invetory reservations
- */
+* @method
+* @summary reserves inventory when item is added to cart
+* @param {String} cartId - current cartId
+* @param {Object} options - product document
+* @return {undefined}
+*/
 Hooks.Events.add("afterAddItemsToCart", (cartId, options) => {
   // Adding a new product or variant to the cart
   Logger.debug("after cart update, call inventory/addReserve");
@@ -15,6 +19,13 @@ Hooks.Events.add("afterAddItemsToCart", (cartId, options) => {
   Meteor.call("inventory/addReserve", items.filter((item) => item._id === options.newItemId));
 });
 
+/**
+* @method
+* @summary reserves inventory when cart quantity is updated
+* @param {String} cartId - current cartId
+* @param {Object} options - product document
+* @return {undefined}
+*/
 Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
   // Modifying item quantity in cart.
   Logger.debug("after variant increment, call inventory/addReserve");
