@@ -13,8 +13,9 @@
 - Added  a new `docker-compose-demo.yml` for testing out production builds (this is the replacement for the previous `docker-compose.yml`).
 
 ## Potentially Breaking Changes
-- Removed MongoDB installation from base image. Use `mongo` as a service in docker-compose, see example in README.
-- Removed PhantomJS installation from base image. If this is required in your fork, you can include the step in your custom Dockerfile.
+- reactioncommerce/base:v4.0.1 removed the following:
+  - Removed the conditional MongoDB installation (via $INSTALL_MONGO env). Use `mongo` as a service in docker-compose, see example in README.
+  - Removed the conditional PhantomJS installation (via $INSTALL_PHANTOMJS env). If PhantomJS is required in your build, you can include it in your custom Dockerfile.
 
 
 # v1.8.2
