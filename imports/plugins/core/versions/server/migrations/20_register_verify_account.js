@@ -9,6 +9,7 @@ Migrations.add({
     const pkg = Packages.findOne({ name: "reaction-accounts" });
     for (const route of pkg.registry) {
       if (route.route === "/account/profile/verify:email?") {
+        route.route = "/account/profile/verify";
         route.template = "VerifyAccount";
         Packages.update(
           { _id: pkg._id },
@@ -21,7 +22,8 @@ Migrations.add({
   down() {
     const pkg = Packages.findOne({ name: "reaction-accounts" });
     for (const route of pkg.registry) {
-      if (route.route === "/account/profile/verify:email?") {
+      if (route.route === "/account/profile/verify") {
+        route.route = "/account/profile/verify:email?";
         route.template = "verifyAccount";
         Packages.update(
           { _id: pkg._id },
