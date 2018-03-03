@@ -296,17 +296,11 @@ Hooks.Events.add("afterInsertCatalogProduct", (product) => {
   return product;
 });
 
-Hooks.Events.add("shouldCatalogProductUpdate", (product, options) => {
-  const result = updateRevision(product, options);
+Hooks.Events.add("shouldCatalogProductUpdate", (product, options) => updateRevision(product, options));
 
-  return result;
-});
+Hooks.Events.add("beforeUpdateCatalogProduct", (product, options) => updateRevision(product, options));
 
-Hooks.Events.add("beforeRemoveCatalogProduct", (product, options) => {
-  markRevisionAsDeleted(product, options);
-
-  return product;
-});
+Hooks.Events.add("beforeRemoveCatalogProduct", (product, options) => markRevisionAsDeleted(product, options));
 
 Hooks.Events.add("afterRevisionsUpdate", (userId, revision) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {

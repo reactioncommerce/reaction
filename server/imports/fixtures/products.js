@@ -82,15 +82,19 @@ export function addProduct(options = {}) {
   // top level variant
   const variant = Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id] }));
   Hooks.Events.run("afterInsertCatalogProduct", variant);
-  Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
-  Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
+  const variant2 = Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
+  Hooks.Events.run("afterInsertCatalogProduct", variant2);
+  const variant3 = Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
+  Hooks.Events.run("afterInsertCatalogProduct", variant3);
   return product;
 }
 
 export function addProductSingleVariant() {
   const product = Factory.create("product");
+  Hooks.Events.run("afterInsertCatalogProduct", product);
   // top level variant
   const variant = Factory.create("variant", Object.assign({}, productVariant(), { ancestors: [product._id] }));
+  Hooks.Events.run("afterInsertCatalogProduct", variant);
   return { product, variant };
 }
 

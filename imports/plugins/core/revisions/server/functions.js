@@ -447,12 +447,12 @@ export function markRevisionAsDeleted(product, options) {
   //
   // This acts like a trash. Where the product is sent to trash before it can actually
   // be deleted permanently.
-  // TODO: Determine if this code is still needed?
-  // if (product.isDeleted === true) {
-  //   Logger.debug(`Allowing write to product ${product._id} for Collection.remove().`);
+  if (product.isDeleted === true) {
+    Logger.debug(`Allowing write to product ${product._id} for Collection.remove().`);
 
-  //   return true;
-  // }
+    return true;
+  }
 
-  // Logger.debug(`Preventing write to product ${product._id} for Collection.remove().`);
+  Logger.debug(`Preventing write to product ${product._id} for Collection.remove().`);
+  return false;
 }

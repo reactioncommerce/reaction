@@ -897,12 +897,8 @@ Meteor.methods({
       Hooks.Events.run("beforeRemoveCatalogProduct", Products.findOne({ _id }), options);
     });
 
-    Products.remove({
-      _id: {
-        $in: ids
-      }
-    });
-
+    // Product documents are not removed from the Products collection,
+    // they are just flagged as deleted.
     const numRemoved = Revisions.find({
       "documentId": {
         $in: ids
