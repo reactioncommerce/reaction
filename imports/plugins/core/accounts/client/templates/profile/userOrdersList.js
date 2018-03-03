@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import UserOrdersList from "/imports/plugins/core/accounts/client/containers/userOrdersListContainer";
+import { Components } from "@reactioncommerce/reaction-components";
 
 /**
  * userOrdersList helpers
@@ -16,7 +16,8 @@ Template.userOrdersList.helpers({
       orders = [];
     }
 
-    return { component: UserOrdersList,
+    return {
+      component: Components.OrdersList,
       orders
     };
   }

@@ -42,11 +42,11 @@ Template.stripeConnectSignupButton.events({
       return Alerts.toast(`${i18next.t("admin.connect.shopAddressNotConfigured")}`, "error");
     }
 
-    const country = shop.addressBook[0].country;
+    const { country } = shop.addressBook[0];
     const phoneNumber = shop.addressBook[0].phone;
     const businessName = shop.addressBook[0].company;
     const streetAddress = shop.addressBook[0].address1;
-    const city = shop.addressBook[0].city;
+    const { city } = shop.addressBook[0];
     const state = shop.addressBook[0].region;
     const zip = shop.addressBook[0].postal;
 

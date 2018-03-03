@@ -13,6 +13,7 @@ class LocalizationSettings extends Component {
     languages: PropTypes.array,
     onEnableAllCurrencies: PropTypes.func,
     onEnableAllLanguages: PropTypes.func,
+    onReloadTranslations: PropTypes.func,
     onUpdateCurrencyConfiguration: PropTypes.func,
     onUpdateLanguageConfiguration: PropTypes.func,
     onUpdateLocalization: PropTypes.func,
@@ -23,33 +24,29 @@ class LocalizationSettings extends Component {
   }
 
   renderCurrencies() {
-    return this.props.currencies.map((currency, key) => {
-      return (
-        <Components.ListItem
-          actionType={"switch"}
-          key={key}
-          label={currency.label}
-          switchOn={currency.enabled}
-          switchName={currency.name}
-          onSwitchChange={this.props.onUpdateCurrencyConfiguration}
-        />
-      );
-    });
+    return this.props.currencies.map((currency, key) => (
+      <Components.ListItem
+        actionType={"switch"}
+        key={key}
+        label={currency.label}
+        switchOn={currency.enabled}
+        switchName={currency.name}
+        onSwitchChange={this.props.onUpdateCurrencyConfiguration}
+      />
+    ));
   }
 
   renderLanguages() {
-    return this.props.languages.map((language, key) => {
-      return (
-        <Components.ListItem
-          actionType={"switch"}
-          key={key}
-          label={language.label}
-          switchOn={language.enabled}
-          switchName={language.value}
-          onSwitchChange={this.props.onUpdateLanguageConfiguration}
-        />
-      );
-    });
+    return this.props.languages.map((language, key) => (
+      <Components.ListItem
+        actionType={"switch"}
+        key={key}
+        label={language.label}
+        switchOn={language.enabled}
+        switchName={language.value}
+        onSwitchChange={this.props.onUpdateLanguageConfiguration}
+      />
+    ));
   }
 
   handleSubmit = (event, formData) => {
@@ -82,6 +79,12 @@ class LocalizationSettings extends Component {
     }
   }
 
+  handleReloadTranslations = (event) => {
+    if (typeof this.props.onReloadTranslations === "function") {
+      this.props.onReloadTranslations(event.altKey);
+    }
+  }
+
   renderListControls(name) {
     return (
       <Components.CardToolbar>
@@ -98,6 +101,16 @@ class LocalizationSettings extends Component {
           value={name}
           onClick={this.handleAllOff}
         />
+        {name === "language" && "|"}
+        {name === "language" &&
+          <Components.FlatButton
+            i18nKeyTooltip={"admin.i18nSettings.reloadTranslations"}
+            tooltip={"Reload translations asdasdasdasdasd"}
+            tooltipAttachment="middle left"
+            icon="fa fa-refresh"
+            onClick={this.handleReloadTranslations}
+          />
+        }
       </Components.CardToolbar>
     );
   }

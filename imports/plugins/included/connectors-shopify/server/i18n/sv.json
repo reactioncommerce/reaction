@@ -26,7 +26,7 @@
           "optionOrdersCreateUpdateInventory": "Uppdatera Inventory när ny Shopify-order är placerad",
           "syncSetup": "Setup Sync",
           "syncSetupSuccess": "Konfigurera Shopify synkronisering med framgång",
-          "syncSetupFailure": "Ett fel uppstod vid Shoify-synkronisering",
+          "syncSetupFailure": "Ett fel uppstod vid Shopify-synkronisering",
           "syncStop": "Sluta synkronisera",
           "syncStopSuccess": "Stoppade successivt Shopify sync!",
           "syncStopFailure": "Ett fel på att stoppa Shopify-synkronisering!",

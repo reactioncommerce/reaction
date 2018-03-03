@@ -29,6 +29,10 @@ class UpdatePasswordOverlay extends Component {
     this.handleCancel = this.handleCancel.bind(this);
   }
 
+  async componentWillMount() {
+    await this.setState({ showSpinner: false });
+  }
+
   componentWillReceiveProps() {
     this.setState({ showSpinner: false });
   }

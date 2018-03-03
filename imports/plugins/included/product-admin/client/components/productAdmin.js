@@ -5,7 +5,7 @@ import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Router } from "/client/api";
-import update from "react/lib/update";
+import update from "immutability-helper";
 
 const fieldNames = [
   "title",
@@ -78,7 +78,7 @@ class ProductAdmin extends Component {
     // If the field is an array of field name
     if (Array.isArray(field) && field.length) {
       // Use the first field name
-      fieldName = field[0];
+      [fieldName] = field;
     } else {
       fieldName = field;
     }
@@ -96,7 +96,7 @@ class ProductAdmin extends Component {
     const fieldRef = this.refs[`${fieldName}Input`];
 
     if (fieldRef) {
-      const input = fieldRef.refs.input;
+      const { input } = fieldRef.refs;
 
       Velocity.RunSequence([
         { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
@@ -214,9 +214,7 @@ class ProductAdmin extends Component {
     );
   }
 
-  isExpanded = (groupName) => {
-    return this.state.expandedCard === groupName;
-  }
+  isExpanded = (groupName) => this.state.expandedCard === groupName
 
   render() {
     return (

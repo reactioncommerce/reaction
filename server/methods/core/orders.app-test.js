@@ -12,7 +12,6 @@ import { Orders, Media, Notifications, Products, Shops } from "/lib/collections"
 
 
 Fixtures();
-// examplePaymentMethod();
 
 describe("orders test", function () {
   const shop = getShop();
@@ -49,19 +48,16 @@ describe("orders test", function () {
 
   beforeEach(function (done) {
     sandbox = sinon.sandbox.create();
-    // });
-    sandbox.stub(Orders._hookAspects.insert.before[0], "aspect");
-    sandbox.stub(Orders._hookAspects.update.before[0], "aspect");
-    sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
-      check(arguments, [Match.Any]);
+    sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
+      check(args, [Match.Any]);
     });
-    sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function () {
-      check(arguments, [Match.Any]);
+    sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function (...args) {
+      check(args, [Match.Any]);
     });
 
     order = Factory.create("order");
     sandbox.stub(Reaction, "getShopId", () => order.shopId);
-    const paymentMethod = billingObjectMethod(order).paymentMethod;
+    const { paymentMethod } = billingObjectMethod(order);
     sandbox.stub(paymentMethod, "paymentPackageId", example._id);
     return done();
   });
@@ -73,45 +69,39 @@ describe("orders test", function () {
   });
 
   function spyOnMethod(method, id) {
-    return sandbox.stub(Meteor.server.method_handlers, `orders/${method}`, function () {
-      check(arguments, [Match.Any]); // to prevent audit_arguments from complaining
+    return sandbox.stub(Meteor.server.method_handlers, `orders/${method}`, function (...args) {
+      check(args, [Match.Any]); // to prevent audit_arguments from complaining
       this.userId = id;
-      return methods[method].apply(this, arguments);
+      return methods[method].apply(this, args);
     });
   }
 
   function billingObjectMethod(orderObject) {
-    const billingObject = orderObject.billing.find((billing) => {
-      return billing.shopId === shopId;
-    });
+    const billingObject = orderObject.billing.find((billing) => billing.shopId === shopId);
     return billingObject;
   }
 
   function shippingObjectMethod(orderObject) {
-    const shippingObject = orderObject.shipping.find((shipping) => {
-      return shipping.shopId === shopId;
-    });
+    const shippingObject = orderObject.shipping.find((shipping) => shipping.shopId === shopId);
     return shippingObject;
   }
 
   function orderCreditMethod(orderData) {
-    const billingRecord = orderData.billing.filter(value => value.paymentMethod.method ===  "credit");
-    const billingObject =  billingRecord.find((billing) => {
-      return billing.shopId === shopId;
-    });
+    const billingRecord = orderData.billing.filter((value) => value.paymentMethod.method === "credit");
+    const billingObject = billingRecord.find((billing) => billing.shopId === shopId);
     return billingObject;
   }
 
   describe("orders/cancelOrder", function () {
     beforeEach(function () {
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
     });
 
     it("should return an error if user is not admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
-      const returnToStock =  false;
+      const returnToStock = false;
       spyOnMethod("cancelOrder", order.userId);
 
       function cancelOrder() {
@@ -120,15 +110,48 @@ describe("orders test", function () {
       expect(cancelOrder).to.throw(Meteor.Error, /Access Denied/);
     });
 
-    it("should return the product to stock ", function () {
-      // Mock user permissions
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      const returnToStock = true;
-      const previousProduct = Products.findOne({ _id: order.items[0].variants._id });
+    it("should increase inventory with number of items canceled when returnToStock option is selected", function () {
+      const orderItemId = order.items[0].variants._id;
+      sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
+
+      const { inventoryQuantity } = Products.findOne({ _id: orderItemId }) || {};
+
+      // approve the order (inventory decreases)
+      spyOnMethod("approvePayment", order.userId);
+      Meteor.call("orders/approvePayment", order);
+
+      // Since we update Order info inside the `orders/approvePayment` Meteor call,
+      // we need to re-find the order with the updated info
+      const updatedOrder = Orders.findOne({ _id: order._id });
+
+      // cancel order with returnToStock option (which should increment inventory)
+      spyOnMethod("cancelOrder", updatedOrder.userId);
+      Meteor.call("orders/cancelOrder", updatedOrder, true); // returnToStock = true;
+
+      const product = Products.findOne({ _id: orderItemId });
+      const inventoryAfterRestock = product.inventoryQuantity;
+
+      expect(inventoryQuantity).to.equal(inventoryAfterRestock);
+    });
+
+    it("should NOT increase/decrease inventory when returnToStock option is false", function () {
+      const orderItemId = order.items[0].variants._id;
+      sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
+
+      // approve the order (inventory decreases)
+      spyOnMethod("approvePayment", order.userId);
+      Meteor.call("orders/approvePayment", order);
+
+      const { inventoryQuantity } = Products.findOne({ _id: orderItemId }) || {};
+
+      // cancel order with NO returnToStock option (which should leave inventory untouched)
       spyOnMethod("cancelOrder", order.userId);
-      Meteor.call("orders/cancelOrder", order, returnToStock);
-      const product = Products.findOne({ _id: order.items[0].variants._id });
-      expect(previousProduct.inventoryQuantity).to.equal(product.inventoryQuantity);
+      Meteor.call("orders/cancelOrder", order, false); // returnToStock = false;
+
+      const product = Products.findOne({ _id: orderItemId });
+      const inventoryAfterNoRestock = product.inventoryQuantity;
+
+      expect(inventoryQuantity).to.equal(inventoryAfterNoRestock);
     });
 
     it("should notify owner of the order, if the order is canceled", function () {
@@ -138,16 +161,6 @@ describe("orders test", function () {
       Meteor.call("orders/cancelOrder", order, returnToStock);
       const notify = Notifications.findOne({ to: order.userId, type: "orderCanceled" });
       expect(notify.message).to.equal("Your order was canceled.");
-    });
-
-    it("should not return the product to stock", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      const returnToStock = false;
-      const previousProduct = Products.findOne({ _id: order.items[0].variants._id });
-      spyOnMethod("cancelOrder", order.userId);
-      Meteor.call("orders/cancelOrder", order, returnToStock);
-      const product = Products.findOne({ _id: order.items[0].variants._id });
-      expect(previousProduct.inventoryQuantity).to.equal(product.inventoryQuantity + 1);
     });
 
     it("should update the payment method status and mode to refunded and canceled respectively ", function () {
@@ -295,10 +308,9 @@ describe("orders test", function () {
     it("should approve payment", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("approvePayment", order.userId);
-      const invoice = orderCreditMethod(order).invoice;
+      const { invoice } = orderCreditMethod(order);
       const subTotal = invoice.subtotal;
-      const shipping = invoice.shipping;
-      const taxes = invoice.taxes;
+      const { shipping, taxes } = invoice;
       const discount = invoice.discounts;
       const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
       const total = accounting.toFixed(discountTotal + shipping + taxes, 2);
@@ -325,8 +337,8 @@ describe("orders test", function () {
     it("should update the order item workflow status to coreOrderItemWorkflow/completed", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const shipment = shippingObjectMethod(order);
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
       spyOnMethod("shipmentShipped", order.userId);
       Meteor.call("orders/shipmentShipped", order, shipment);
@@ -337,8 +349,8 @@ describe("orders test", function () {
     it("should update the order workflow status to completed", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const shipment = shippingObjectMethod(order);
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
       spyOnMethod("shipmentShipped", order.userId);
       Meteor.call("orders/shipmentShipped", order, shipment);
@@ -349,8 +361,8 @@ describe("orders test", function () {
     it("should update the order shipping workflow status to coreOrderWorkflow/shipped", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const shipment = shippingObjectMethod(order);
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
       spyOnMethod("shipmentShipped", order.userId);
       Meteor.call("orders/shipmentShipped", order, shipment);
@@ -361,8 +373,8 @@ describe("orders test", function () {
 
   describe("orders/shipmentDelivered", function () {
     beforeEach(function () {
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
     });
 
@@ -535,8 +547,8 @@ describe("orders test", function () {
     it("should update order payment method status to error if payment processor fails", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("capturePayments", order.userId);
-      sandbox.stub(Meteor.server.method_handlers, "example/payment/capture", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "example/payment/capture", function (...args) {
+        check(args, [Match.Any]);
         return {
           error: "stub error",
           saved: false
@@ -553,7 +565,7 @@ describe("orders test", function () {
 
   describe("orders/refunds/list", function () {
     it("should return an array of refunds", function () {
-      sandbox.stub(Reaction, "hasPermission",  () => true);
+      sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("refunds/list", order.userId);
       Meteor.call("orders/refunds/list", order, (err, res) => {
         // refunds would be empty because there isn't any refunds yet
@@ -564,8 +576,8 @@ describe("orders test", function () {
 
   describe("orders/refunds/create", function () {
     beforeEach(function () {
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
     });
 
@@ -593,8 +605,8 @@ describe("orders test", function () {
 
   describe("orders/refunds/refundItems", function () {
     beforeEach(function () {
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+        check(args, [Match.Any]);
       });
     });
 

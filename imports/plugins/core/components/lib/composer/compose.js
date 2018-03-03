@@ -108,12 +108,8 @@ export default function compose(dataLoader, options = {}) {
           ...data
         };
 
-        const setChildRef = (c) => {
-          this.child = c;
-        };
-
         return (
-          <Child ref={setChildRef} {...finalProps} />
+          <Child {...finalProps} />
         );
       }
     }
