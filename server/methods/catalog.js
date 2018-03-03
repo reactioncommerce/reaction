@@ -636,20 +636,28 @@ Meteor.methods({
       }]
     };
     const toDelete = Products.find(selector).fetch();
+
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
+
     const options = { userId: this.userId };
+    let shouldRemoveProduct;
     toDelete.forEach((product) => {
-      Hooks.Events.run("beforeRemoveCatalogProduct", product, options);
+      shouldRemoveProduct = Hooks.Events.run("shouldRemoveCatalogProduct", product, options);
     });
 
-    const deleted = Products.remove(selector);
+    let deleted = 0;
+    if (shouldRemoveProduct) {
+      deleted = Products.remove(selector);
 
-    // after variant were removed from product, we need to recalculate all
-    // denormalized fields
-    const productId = toDelete[0].ancestors[0];
-    toDenormalize.forEach((field) => denormalize(productId, field));
+      // after variant were removed from product, we need to recalculate all
+      // denormalized fields
+      const productId = toDelete[0].ancestors[0];
+      toDenormalize.forEach((field) => denormalize(productId, field));
+    }
+
+    Logger.debug(`shouldCatalogProductUpdate returned falsy, not updating catalog product`);
 
     return typeof deleted === "number" && deleted > 0;
   },
@@ -893,12 +901,19 @@ Meteor.methods({
     });
 
     const options = { userId: this.userId };
+    let shouldRemoveProduct;
     ids.forEach((_id) => {
-      Hooks.Events.run("beforeRemoveCatalogProduct", Products.findOne({ _id }), options);
+      shouldRemoveProduct = Hooks.Events.run("shouldRemoveCatalogProduct", Products.findOne({ _id }), options);
     });
 
-    // Product documents are not removed from the Products collection,
-    // they are just flagged as deleted.
+    if (shouldRemoveProduct) {
+      Products.remove({
+        _id: {
+          $in: ids
+        }
+      });
+    }
+
     const numRemoved = Revisions.find({
       "documentId": {
         $in: ids

@@ -403,7 +403,7 @@ export function updateRevision(product, options = {}) {
  */
 export function markRevisionAsDeleted(product, options) {
   if (RevisionApi.isRevisionControlEnabled() === false) {
-    return;
+    return true;
   }
 
   const { userId } = options;
