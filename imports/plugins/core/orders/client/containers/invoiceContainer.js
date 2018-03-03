@@ -182,7 +182,7 @@ class InvoiceContainer extends Component {
       if (refundedQuantity !== 0) {
         editedItems.push(isEdited);
       }
-    } else {
+    } else if (refundedQuantity !== 0) {
       editedItems.push({
         id: lineItem._id,
         title: lineItem.title,
