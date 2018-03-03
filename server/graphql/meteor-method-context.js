@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { DDPCommon } from "meteor/ddp-common";
 
 /**
- * Applies args to a Meteor method with a GrapQL context.
+ * Applies args to a Meteor method with a GraphQL context.
  * @param {Object} context - A GraphQL context.
  * @param {String} name - The Meteor method name.
  * @param {Array} args - an array of Meteor method args.
