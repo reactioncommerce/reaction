@@ -48,7 +48,12 @@ export function isBackorder(variants) {
     variant.inventoryQuantity === 0);
 }
 
-
+/**
+ * publishProductsToCatalog
+ * @description Publish one or more products to the Catalog
+ * @param {string|array} productIds - A string product id or an array of product ids
+ * @return {boolean} true on successful publish for all documents, false if one ore more fail to publish
+ */
 export async function publishProductsToCatalog(productIds) {
   check(productIds, Match.OneOf(String, Array));
 
@@ -117,6 +122,12 @@ export async function publishProductsToCatalog(productIds) {
   });
 }
 
+/**
+ * publishProductInventoryAdjustments
+ * @description Publish inventory updates for a single product to the Catalog
+ * @param {string} productId - A string product id
+ * @return {boolean} true on success, false on failure
+ */
 export function publishProductInventoryAdjustments(productId) {
   check(productId, Match.OneOf(String, Array));
 
