@@ -47,7 +47,7 @@ export function isLowQuantity(variants) {
  * @return {boolean} is backorder allowed or not for a product
  */
 export function isBackorder(variants) {
-  return variants.every((variant) => variant.inventoryPolicy && variant.inventoryManagement &&
+  return variants.every((variant) => !variant.inventoryPolicy && variant.inventoryManagement &&
     variant.inventoryQuantity === 0);
 }
 
@@ -100,20 +100,15 @@ export async function publishProductsToCatalog(productIds) {
       image: `${media.url({ store: "image" })}`
     }));
 
-    product.variants = variants;
     product.media = productMedia;
     product.type = "product-simple";
-
-    // TODO: Remove these fields in favor of inventory/pricing collection
     product.isSoldOut = isSoldOut(variants);
     product.isBackorder = isBackorder(variants);
     product.isLowQuantity = isLowQuantity(variants);
-
-    // Remove inventory fields
-    // delete product.price;
-    // delete product.isSoldOut;
-    // delete product.isLowQuantity;
-    // delete product.isBackorder;
+    product.variants = variants.map((variant) => {
+      const { inventoryQuantity, ...v } = variant;
+      return v;
+    });
 
     const result = CatalogCollection.upsert({
       _id: productId
@@ -123,6 +118,47 @@ export async function publishProductsToCatalog(productIds) {
 
     return result && result.numberAffected === 1;
   });
+}
+
+export function publishProductInventoryAdjustments(productId) {
+  check(productId, Match.OneOf(String, Array));
+
+  const catalogProduct = CatalogCollection.findOne({
+    _id: productId
+  });
+
+  if (!catalogProduct) {
+    throw new Meteor.error("error", "Cannot publish inventory changes to catalog product");
+  }
+
+  const variants = Products.find({
+    ancestors: {
+      $in: [productId]
+    }
+  }).fetch();
+
+  const update = {
+    isSoldOut: isSoldOut(variants),
+    isBackorder: isBackorder(variants),
+    isLowQuantity: isLowQuantity(variants)
+  };
+
+  // Only apply changes of one these fields have changed
+  if (
+    update.isSoldOut !== catalogProduct.isSoldOut ||
+    update.isBackorder !== catalogProduct.isBackorder ||
+    update.isLowQuantity !== catalogProduct.isLowQuantity
+  ) {
+    const result = CatalogCollection.update({
+      _id: productId
+    }, {
+      $set: update
+    });
+
+    return result;
+  }
+
+  return false;
 }
 
 Meteor.methods({
