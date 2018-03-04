@@ -7,7 +7,6 @@ import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/serv
 
 /**
  * isSoldOut
- * @private
  * @summary We are stop accepting new orders if product marked as `isSoldOut`.
  * @param {Array} variants - Array with top-level variants
  * @return {Boolean} true if summary product quantity is zero.
@@ -23,7 +22,6 @@ export function isSoldOut(variants) {
 
 /**
  * isLowQuantity
- * @private
  * @summary If at least one of the variants is less than the threshold, then function returns `true`
  * @param {Array} variants - array of child variants
  * @return {boolean} low quantity or not
@@ -41,7 +39,6 @@ export function isLowQuantity(variants) {
 
 /**
  * isBackorder
- * @private
  * @description Is products variants is still available to be ordered after summary variants quantity is zero
  * @param {Array} variants - array with variant objects
  * @return {boolean} is backorder allowed or not for a product
