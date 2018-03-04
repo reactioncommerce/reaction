@@ -343,26 +343,26 @@ function createProduct(props = null) {
 /**
  * @description Updates revision and product documents.
  *
- * @param {String} userId - currently logged in user
+ * @param {String} uId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
  * @param {Object} options
  * @return {String} _id of updated document
  */
-function updateCatalogProduct(userId, selector, modifier, validation) {
+function updateCatalogProduct(uId, selector, modifier, validation) {
   const product = Products.findOne(selector);
 
-  const shouldCatalogProductUpdate = Hooks.Events.run("shouldCatalogProductUpdate", product, {
-    userId,
+  const shouldUpdateProduct = Hooks.Events.run("shouldCatalogProductUpdate", product, {
+    userId: uId,
     modifier,
     validation
   });
 
-  if (shouldCatalogProductUpdate) {
+  if (shouldUpdateProduct) {
     return Products.update(selector, modifier, validation);
   }
 
-  Logger.debug(`shouldCatalogProductUpdate returned falsy, not updating catalog product`);
+  Logger.debug(`shouldCatalogProductUpdate hook returned falsy, not updating catalog product`);
 
   return false;
 }
@@ -585,7 +585,6 @@ Meteor.methods({
       {
         validate: false
       }
-
     );
 
     const productId = currentVariant.ancestors[0];
@@ -657,7 +656,7 @@ Meteor.methods({
       toDenormalize.forEach((field) => denormalize(productId, field));
     }
 
-    Logger.debug(`shouldCatalogProductUpdate returned falsy, not updating catalog product`);
+    Logger.debug(`shouldRemoveCatalogProduct hook returned falsy, not updating catalog product`);
 
     return typeof deleted === "number" && deleted > 0;
   },
