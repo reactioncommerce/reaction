@@ -560,7 +560,10 @@ Meteor.publish("Products/grid", (productScrollLimit = 24, productFilters, sort =
 
   const productCursor = Catalog.find(newSelector, {
     sort,
-    limit: productScrollLimit
+    limit: productScrollLimit,
+    fields: {
+      variants: 0
+    }
   });
 
   return productCursor;
