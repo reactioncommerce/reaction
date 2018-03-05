@@ -347,26 +347,26 @@ function createProduct(props = null) {
 /**
  * @description Updates revision and product documents.
  *
- * @param {String} userId - currently logged in user
+ * @param {String} uId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
  * @param {Object} options
  * @return {String} _id of updated document
  */
-function updateCatalogProduct(userId, selector, modifier, validation) {
+function updateCatalogProduct(uId, selector, modifier, validation) {
   const product = Products.findOne(selector);
 
-  const shouldCatalogProductUpdate = Hooks.Events.run("shouldCatalogProductUpdate", product, {
-    userId,
+  const shouldUpdateProduct = Hooks.Events.run("shouldCatalogProductUpdate", product, {
+    userId: uId,
     modifier,
     validation
   });
 
-  if (shouldCatalogProductUpdate) {
+  if (shouldUpdateProduct) {
     return Products.update(selector, modifier, validation);
   }
 
-  Logger.debug(`shouldCatalogProductUpdate returned falsy, not updating catalog product`);
+  Logger.debug(`shouldCatalogProductUpdate hook returned falsy, not updating catalog product`);
 
   return false;
 }
@@ -592,7 +592,6 @@ Meteor.methods({
       {
         validate: false
       }
-
     );
 
     const productId = currentVariant.ancestors[0];
@@ -643,24 +642,30 @@ Meteor.methods({
       }]
     };
     const toDelete = Products.find(selector).fetch();
+
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
+
     const options = { userId: this.userId };
+    let shouldRemoveProduct;
     toDelete.forEach((product) => {
-      Hooks.Events.run("beforeRemoveCatalogProduct", product, options);
+      shouldRemoveProduct = Hooks.Events.run("shouldRemoveCatalogProduct", product, options);
     });
 
-    const deleted = Products.remove(selector);
+    let deleted = 0;
+    if (shouldRemoveProduct) {
+      deleted = Products.remove(selector);
 
-    toDelete.forEach((product) => {
-      Hooks.Events.run("afterRemoveCatalogProduct", Meteor.userId(), product);
-    });
+      toDelete.forEach((product) => {
+        Hooks.Events.run("afterRemoveCatalogProduct", Meteor.userId(), product);
+      });
 
-    // after variant were removed from product, we need to recalculate all
-    // denormalized fields
-    const productId = toDelete[0].ancestors[0];
-    toDenormalize.forEach((field) => denormalize(productId, field));
+      // after variant were removed from product, we need to recalculate all
+      // denormalized fields
+      const productId = toDelete[0].ancestors[0];
+      toDenormalize.forEach((field) => denormalize(productId, field));
+    }
 
     return typeof deleted === "number" && deleted > 0;
   },
@@ -906,15 +911,18 @@ Meteor.methods({
     });
 
     const options = { userId: this.userId };
+    let shouldRemoveProduct;
     ids.forEach((_id) => {
-      Hooks.Events.run("beforeRemoveCatalogProduct", Products.findOne({ _id }), options);
+      shouldRemoveProduct = Hooks.Events.run("shouldRemoveCatalogProduct", Products.findOne({ _id }), options);
     });
 
-    Products.remove({
-      _id: {
-        $in: ids
-      }
-    });
+    if (shouldRemoveProduct) {
+      Products.remove({
+        _id: {
+          $in: ids
+        }
+      });
+    }
 
     const numRemoved = Revisions.find({
       "documentId": {
@@ -1286,17 +1294,21 @@ Meteor.methods({
     const weight = `positions.${tag}.weight`;
     const updatedAt = `positions.${tag}.updatedAt`;
 
-    return Products.update({
-      _id: productId
-    }, {
-      $set: {
-        [position]: positionData.position,
-        [pinned]: positionData.pinned,
-        [weight]: positionData.weight,
-        [updatedAt]: new Date(),
-        type: "simple" // for multi-schema
+    return updateCatalogProduct(
+      this.userId,
+      {
+        _id: productId
+      },
+      {
+        $set: {
+          [position]: positionData.position,
+          [pinned]: positionData.pinned,
+          [weight]: positionData.weight,
+          [updatedAt]: new Date(),
+          type: "simple" // for multi-schema
+        }
       }
-    });
+    );
   },
 
   /**

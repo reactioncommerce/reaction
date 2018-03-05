@@ -13,7 +13,6 @@ import { Roles } from "meteor/alanning:roles";
 import { addProduct, addProductSingleVariant } from "/server/imports/fixtures/products";
 import Fixtures from "/server/imports/fixtures";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
-import { insertRevision } from "/imports/plugins/core/revisions/server/functions";
 
 Fixtures();
 
@@ -416,9 +415,11 @@ describe("core product methods", function () {
 
     it("should create new product", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      const insertProductSpy = sandbox.stub(Products, "insert", () => 1);
-      expect(Meteor.call("products/createProduct")).to.equal(1);
-      expect(insertProductSpy).to.have.been.called;
+      Meteor.call("products/createProduct", (error, result) => {
+        if (result) {
+          expect(Products.find({ _id: result })).count().to.equal(1);
+        }
+      });
     });
 
     it("should create variant with new product", function (done) {
@@ -467,17 +468,6 @@ describe("core product methods", function () {
       Meteor.call("revisions/publish", product._id);
       product = Products.findOne(product._id);
       expect(product.isDeleted).to.equal(true);
-    });
-
-    it("should throw error if removal fails", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      const product = addProduct();
-      sandbox.stub(Products, "remove");
-      expect(() => Meteor.call("products/archiveProduct", product._id)).to.throw(
-        Meteor.Error,
-        /Something went wrong, nothing was deleted/
-      );
-      expect(Products.find(product._id).count()).to.equal(1);
     });
   });
 
@@ -1091,7 +1081,6 @@ describe("core product methods", function () {
     it("should let admin toggle product revision visibility", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
-      insertRevision(product);
       let productRevision = Revisions.findOne({ documentId: product._id });
       const { isVisible } = productRevision.documentData;
       expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);

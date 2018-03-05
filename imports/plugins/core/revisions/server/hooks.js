@@ -288,17 +288,19 @@ Hooks.Events.add("beforeInsertCatalogProduct", (product) => {
   return product;
 });
 
-Hooks.Events.add("shouldCatalogProductUpdate", (product, options) => {
-  const result = updateRevision(product, options);
-
-  return result;
-});
-
-Hooks.Events.add("beforeRemoveCatalogProduct", (product, options) => {
-  markRevisionAsDeleted(product, options);
+// For tests, it's more convinient to insert a products revision after the product is inserted.
+// TODO: Discuss whether this would be also better for catalog methods.
+Hooks.Events.add("afterInsertCatalogProduct", (product) => {
+  insertRevision(product);
 
   return product;
 });
+
+Hooks.Events.add("shouldCatalogProductUpdate", (product, options) => updateRevision(product, options));
+
+Hooks.Events.add("beforeUpdateCatalogProduct", (product, options) => updateRevision(product, options));
+
+Hooks.Events.add("shouldRemoveCatalogProduct", (product, options) => markRevisionAsDeleted(product, options));
 
 Hooks.Events.add("afterRevisionsUpdate", (userId, revision) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
