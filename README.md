@@ -1,7 +1,8 @@
 # Reaction Commerce
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/109d73d4962f4280a49be8fa62347158)](https://www.codacy.com/app/reactioncommerce/reaction?utm_source=github.com&utm_medium=referral&utm_content=reactioncommerce/reaction&utm_campaign=Badge_Grade)
 [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Open Source Helpers](https://www.codetriage.com/reactioncommerce/reaction/badges/users.svg)](https://www.codetriage.com/reactioncommerce/reaction)
+
 
 [Reaction](http://reactioncommerce.com) is an event-driven, real-time reactive commerce platform built with JavaScript (ES6). It plays nicely with npm, Docker, and React.
 
