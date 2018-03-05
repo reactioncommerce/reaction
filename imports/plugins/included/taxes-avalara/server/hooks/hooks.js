@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Logger, MethodHooks } from "/server/api";
 import { Cart, Orders } from "/lib/collections";
@@ -34,7 +33,7 @@ MethodHooks.after("taxes/calculate", (options) => {
         const taxRate = taxAmount / taxCalc.calcTaxable(cartToCalc);
         Meteor.call("taxes/setRate", cartId, taxRate, taxes);
         // for bad auth, timeout, or misconfiguration there's nothing we can do so keep moving
-      } else if (_.includes([503, 400, 401], result.error.errorCode)) {
+      } else if ([503, 400, 401].includes(result.error.errorCode)) {
         Logger.error("Timeout, Authentification, or Misconfiguration error: Not trying to estimate cart");
       } else {
         Logger.error("Unknown error", result.error.errorCode);

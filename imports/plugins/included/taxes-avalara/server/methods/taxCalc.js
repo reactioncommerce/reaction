@@ -213,7 +213,7 @@ function avaPost(requestUrl, options) {
     };
   }
   const appVersion = Reaction.getAppVersion();
-  const meteorVersion = _.split(Meteor.release, "@")[1];
+  const meteorVersion = Meteor.release.split("@")[1];
   const machineName = os.hostname();
   const avaClient = `Reaction; ${appVersion}; Meteor HTTP; ${meteorVersion}; ${machineName}`;
   const headers = {
@@ -328,12 +328,12 @@ taxCalc.validateAddress = function (address) {
     if (result.error.type === "apiError") {
       // If we have a problem with the API there's no reason to tell the customer
       // so let's consider this unvalidated but move along
-      Logger.info("API error, ignoring address validation");
+      Logger.error("API error, ignoring address validation");
     }
 
     if (result.error.type === "validationError") {
       // We received a validation error so we need somehow pass this up to the client
-      Logger.info("Address Validation Error");
+      Logger.error("Address Validation Error");
     }
   }
   const content = result.data;
