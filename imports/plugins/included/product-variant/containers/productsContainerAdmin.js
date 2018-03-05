@@ -214,7 +214,7 @@ function composer(props, onData) {
     };
 
     return {
-      ...applyProductRevision(product),
+      ...applyProductRevision(product)
       // additionalMedia,
       // primaryMedia
     };
