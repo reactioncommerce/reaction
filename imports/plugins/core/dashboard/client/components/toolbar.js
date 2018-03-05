@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Blaze from "meteor/gadicc:blaze-react-component";
+import { Tracker } from "meteor/tracker";
 import { Components } from "@reactioncommerce/reaction-components";
 import {
   FlatButton,
@@ -35,6 +36,22 @@ class PublishControls extends Component {
 
   static defaultProps = {
     showViewAsControls: true
+  }
+
+  componentDidMount() {
+    // Tracker is used to determine if a user has `hasShopSwitcherAccess` permission
+    // If they do not, set the shop one time, and then not again
+    // If the user does have hasShopSwitcherAccess` permission, shop is set by this.renderShopSelect()
+    this.tracker = Tracker.autorun(() => {
+      if (!Reaction.hasShopSwitcherAccess()) {
+        this.onShopSelectChange(null, Reaction.getSellerShopId());
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    // Unmount the tracker that is checking for `hasShopSwitcherAccess` permission
+    this.tracker.stop();
   }
 
   onViewContextChange = (event, isChecked) => {
@@ -85,9 +102,7 @@ class PublishControls extends Component {
       );
     }
 
-    // If the user is just a shop owner, not a marketplace owner,
-    // make sure the shop is set to their shop and do not show the shop switcher
-    return this.onShopSelectChange(null, Reaction.getSellerShopId());
+    return null;
   }
 
   renderVisibilitySwitch() {
