@@ -95,6 +95,12 @@ Hooks.Events.add("afterInsertCatalogProduct", (userId, doc) => {
   registerInventory(doc);
 });
 
+/**
+ * markInventoryShipped
+ * @summary check a product and update Inventory collection with inventory documents.
+ * @param {Object} product - valid Schemas.Product object
+ * @return {Number} - returns the total amount of new inventory created
+ */
 function markInventoryShipped(doc) {
   const order = Orders.findOne(doc._id);
   const orderItems = order.items;
@@ -114,6 +120,12 @@ function markInventoryShipped(doc) {
   Meteor.call("inventory/shipped", cartItems);
 }
 
+/**
+ * markInventorySold
+ * @summary check a product and update Inventory collection with inventory documents.
+ * @param {Object} doc - valid Schemas.Product object
+ * @return {Number} - returns the total amount of new inventory created
+ */
 function markInventorySold(doc) {
   const orderItems = doc.items;
   const cartItems = [];
