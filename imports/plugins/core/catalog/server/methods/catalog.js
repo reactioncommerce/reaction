@@ -71,8 +71,8 @@ export async function publishProductsToCatalog(productIds) {
     });
 
     if (!product) {
-      Logger.error("Cannot publish product to catalog");
-      throw new Meteor.Error("error", "Cannot publish product to catalog");
+      Logger.info("Cannot publish product to catalog");
+      return false;
     }
 
     if (Array.isArray(product.ancestors) && product.ancestors.length) {
@@ -137,8 +137,8 @@ export function publishProductInventoryAdjustments(productId) {
   });
 
   if (!catalogProduct) {
-    Logger.error("Cannot publish inventory changes to catalog product");
-    throw new Meteor.Error("error", "Cannot publish inventory changes to catalog product");
+    Logger.info("Cannot publish inventory changes to catalog product");
+    return false;
   }
 
   const variants = Products.find({
