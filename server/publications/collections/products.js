@@ -547,7 +547,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
  * @param {object} sort - sorting to be applied to the product find
  * @return {MongoCursor} Mongo cursor object of found products
  */
-Meteor.publish("Products/grid", (productScrollLimit = 24, productFilters, sort = {}) => {
+Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilters, sort = {}) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, Object));
   check(sort, Match.OneOf(undefined, Object));
@@ -560,7 +560,10 @@ Meteor.publish("Products/grid", (productScrollLimit = 24, productFilters, sort =
 
   const productCursor = Catalog.find(newSelector, {
     sort,
-    limit: productScrollLimit
+    limit: productScrollLimit,
+    fields: {
+      variants: 0
+    }
   });
 
   return productCursor;

@@ -7,7 +7,6 @@ import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/serv
 
 /**
  * isSoldOut
- * @private
  * @summary We are stop accepting new orders if product marked as `isSoldOut`.
  * @param {Array} variants - Array with top-level variants
  * @return {Boolean} true if summary product quantity is zero.
@@ -23,7 +22,6 @@ export function isSoldOut(variants) {
 
 /**
  * isLowQuantity
- * @private
  * @summary If at least one of the variants is less than the threshold, then function returns `true`
  * @param {Array} variants - array of child variants
  * @return {boolean} low quantity or not
@@ -41,17 +39,21 @@ export function isLowQuantity(variants) {
 
 /**
  * isBackorder
- * @private
  * @description Is products variants is still available to be ordered after summary variants quantity is zero
  * @param {Array} variants - array with variant objects
  * @return {boolean} is backorder allowed or not for a product
  */
 export function isBackorder(variants) {
-  return variants.every((variant) => variant.inventoryPolicy && variant.inventoryManagement &&
+  return variants.every((variant) => !variant.inventoryPolicy && variant.inventoryManagement &&
     variant.inventoryQuantity === 0);
 }
 
-
+/**
+ * publishProductsToCatalog
+ * @description Publish one or more products to the Catalog
+ * @param {string|array} productIds - A string product id or an array of product ids
+ * @return {boolean} true on successful publish for all documents, false if one ore more fail to publish
+ */
 export async function publishProductsToCatalog(productIds) {
   check(productIds, Match.OneOf(String, Array));
 
@@ -69,7 +71,8 @@ export async function publishProductsToCatalog(productIds) {
     });
 
     if (!product) {
-      throw new Meteor.error("error", "Cannot publish product");
+      Logger.info("Cannot publish product to catalog");
+      return false;
     }
 
     if (Array.isArray(product.ancestors) && product.ancestors.length) {
@@ -100,20 +103,15 @@ export async function publishProductsToCatalog(productIds) {
       image: `${media.url({ store: "image" })}`
     }));
 
-    product.variants = variants;
     product.media = productMedia;
     product.type = "product-simple";
-
-    // TODO: Remove these fields in favor of inventory/pricing collection
     product.isSoldOut = isSoldOut(variants);
     product.isBackorder = isBackorder(variants);
     product.isLowQuantity = isLowQuantity(variants);
-
-    // Remove inventory fields
-    // delete product.price;
-    // delete product.isSoldOut;
-    // delete product.isLowQuantity;
-    // delete product.isBackorder;
+    product.variants = variants.map((variant) => {
+      const { inventoryQuantity, ...v } = variant;
+      return v;
+    });
 
     const result = CatalogCollection.upsert({
       _id: productId
@@ -125,12 +123,61 @@ export async function publishProductsToCatalog(productIds) {
   });
 }
 
+/**
+ * publishProductInventoryAdjustments
+ * @description Publish inventory updates for a single product to the Catalog
+ * @param {string} productId - A string product id
+ * @return {boolean} true on success, false on failure
+ */
+export function publishProductInventoryAdjustments(productId) {
+  check(productId, Match.OneOf(String, Array));
+
+  const catalogProduct = CatalogCollection.findOne({
+    _id: productId
+  });
+
+  if (!catalogProduct) {
+    Logger.info("Cannot publish inventory changes to catalog product");
+    return false;
+  }
+
+  const variants = Products.find({
+    ancestors: {
+      $in: [productId]
+    }
+  }).fetch();
+
+  const update = {
+    isSoldOut: isSoldOut(variants),
+    isBackorder: isBackorder(variants),
+    isLowQuantity: isLowQuantity(variants)
+  };
+
+  // Only apply changes of one these fields have changed
+  if (
+    update.isSoldOut !== catalogProduct.isSoldOut ||
+    update.isBackorder !== catalogProduct.isBackorder ||
+    update.isLowQuantity !== catalogProduct.isLowQuantity
+  ) {
+    const result = CatalogCollection.update({
+      _id: productId
+    }, {
+      $set: update
+    });
+
+    return result;
+  }
+
+  return false;
+}
+
 Meteor.methods({
   "catalog/publish/products": (productIds) => {
     check(productIds, Match.OneOf(String, Array));
 
     // Ensure user has createProduct permission for active shop
     if (!Reaction.hasPermission("createProduct")) {
+      Logger.error("Access Denied");
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
@@ -157,6 +204,7 @@ Meteor.methods({
       const success = publishProductsToCatalog(publisableProductIds);
 
       if (!success) {
+        Logger.error("Some Products could not be published to the Catalog.");
         throw new Meteor.Error("server-error", "Some Products could not be published to the Catalog.");
       }
 
