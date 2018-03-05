@@ -33,7 +33,11 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
     publish: true
   });
 
-  return Products.update(selector, modifier, validation);
+  const result = Products.update(selector, modifier, validation);
+
+  Hooks.Events.run("afterUpdateProductUpdateSearchRecord", product);
+
+  return result;
 }
 
 export function discardDrafts(documentIds) {
