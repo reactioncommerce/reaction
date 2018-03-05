@@ -4,31 +4,14 @@ import classnames from "classnames";
 import accounting from "accounting-js";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
-function setCaretPosition(ctrl, pos) {
-  if (ctrl.setSelectionRange) {
-    ctrl.focus();
-    ctrl.setSelectionRange(pos, pos);
-  } else if (ctrl.createTextRange) {
-    const range = ctrl.createTextRange();
-
-    range.collapse(true);
-    range.moveEnd("character", pos);
-    range.moveStart("character", pos);
-    range.select();
-  }
-}
 
 class NumericInput extends Component {
   constructor(props) {
     super(props);
-
-    // Set default state
     this.state = {
-      value: this.props.value
+      value: this.props.value,
+      isEditing: false
     };
-
-    // Bind event handlers
-    this.handleChange = this.handleChange.bind(this);
   }
 
   /**
@@ -37,66 +20,95 @@ class NumericInput extends Component {
    * @return {undefined}
    */
   componentWillReceiveProps(nextProps) {
+    if (nextProps.value !== undefined && !this.state.isEditing) {
+      const value = this.format(nextProps.value);
+      this.setState({
+        value
+      });
+    }
+  }
+
+  /**
+   * Gets the displayed value. If in edit mode,
+   * the field's value is not formatted. If not in
+   * edit mode, the field gets formatted according to chosen locale.
+   * @returns {*}
+   */
+  get displayValue() {
+    const { value } = this.state;
+    if (this.state.isEditing) {
+      return value;
+    }
+    return this.format(value);
+  }
+
+  /**
+   * Format this inputs value to a numeric string
+   * @return {String} Formatted numeric string
+   */
+  format(value) {
+    const moneyFormat = Object.assign({}, this.props.format);
+    if (this.state.isEditing) {
+      moneyFormat.symbol = ""; // No currency sign in edit mode
+    }
+    const unformattedValue = this.unformat(value);
+    const formatted = accounting.formatMoney(unformattedValue, moneyFormat).trim();
+    return formatted;
+  }
+
+  /**
+   * Get the field's value as rational number
+   * @param { Number } the field's value
+   */
+  unformat(value) {
+    const unformattedValue = accounting.unformat(value, this.props.format.decimal);
+    return unformattedValue;
+  }
+
+  /**
+   * onBlur
+   * @summary set the state when the value of the input is changed
+   * @param  {Event} event Event object
+   * @return {void}
+   */
+  onBlur = () => {
+    let { value } = this.state;
+    if (value > this.props.maxValue) {
+      value = this.props.maxValue;
+    }
     this.setState({
-      value: nextProps.value
+      isEditing: false,
+      value
     });
   }
 
-  get moneyFormat() {
-    const moneyFormat = this.props.format || {};
-    // precision is mis-represented in accounting.js. Precision in this case is actually scale
-    // so we add the property for precision based on scale.
-    moneyFormat.precision = moneyFormat.scale !== undefined ? moneyFormat.scale : 2;
-
-    return moneyFormat;
-  }
-
-  get displayValue() {
-    const { value } = this.state;
-
-    if (typeof value === "number") {
-      if (this.props.format && this.props.format.scale === 0) {
-        return this.format(value * 100);
-      }
-      return this.format(value);
+  /**
+   * Selects the text of the passed input field
+   * @param ctrl
+   */
+  selectAll(ctrl) {
+    if (ctrl.setSelectionRange) {
+      ctrl.setSelectionRange(0, ctrl.value.length);
     }
-
-    return 0;
-  }
-
-  get scale() {
-    const parts = this.state.value.split(".");
-
-    if (parts.length === 2) {
-      return parts[1].length;
-    }
-
-    return 0;
   }
 
   /**
-   * format a numeric string
-   * @param  {String} value Value to format
-   * @param  {Object} format Object containing settings for formatting value
-   * @return {String} Foramtted numeric string
+   * onFocus
+   * @summary set the state when the input is focused
+   * @param  {Event} event Event object
+   * @return {void}
    */
-  format(value, format) {
-    const moneyFormat = format || this.moneyFormat;
-
-    const decimal = moneyFormat.decimal || undefined;
-    const unformatedValue = this.unformat(value, decimal);
-
-    return accounting.formatMoney(unformatedValue, moneyFormat);
-  }
-
-  /**
-   * unformat numeric string
-   * @param  {String} value String value to unformat
-   * @param  {String} decimal String representing the decimal place
-   * @return {String} unformatted numeric string
-   */
-  unformat(value, decimal) {
-    return accounting.unformat(value, decimal);
+  onFocus = (event) => {
+    const { currentTarget } = event;
+    this.setState({
+      isEditing: true
+    }, () => {
+      this.setState({
+        value: this.format(this.state.value)
+      }, () => {
+        this.selectAll(currentTarget);
+      });
+    });
   }
 
   /**
@@ -104,25 +116,16 @@ class NumericInput extends Component {
    * @param  {SyntheticEvent} event Change event
    * @return {undefined}
    */
-  handleChange(event) {
-    const input = event.currentTarget;
+  handleChange = (event) => {
     const { value } = event.currentTarget;
-    let numberValue = this.unformat(value);
-
-    if (this.props.format.scale === 0) {
-      numberValue /= 100;
-    }
-
     this.setState({
-      value: numberValue,
-      caretPosition: input.selectionStart
-    }, () => {
-      setCaretPosition(input, Math.max(this.state.caretPosition, 0));
-
-      if (this.props.onChange) {
-        this.props.onChange(event, { value, numberValue });
-      }
+      value
     });
+
+    if (this.props.onChange) {
+      const numberValue = this.unformat(value);
+      this.props.onChange(event, { value, numberValue });
+    }
   }
 
   /**
@@ -131,7 +134,6 @@ class NumericInput extends Component {
    */
   render() {
     const { classNames } = this.props;
-
 
     if (this.props.isEditing === false) {
       const textValueClassName = classnames({
@@ -157,6 +159,8 @@ class NumericInput extends Component {
         <input
           className={fieldClassName}
           disabled={this.props.disabled}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
           onChange={this.handleChange}
           value={this.displayValue}
         />
@@ -175,9 +179,10 @@ NumericInput.propTypes = {
   classNames: PropTypes.shape({}),
   disabled: PropTypes.bool,
   format: PropTypes.shape({
-    scale: PropTypes.number
+    decimal: PropTypes.number
   }),
   isEditing: PropTypes.bool,
+  maxValue: PropTypes.number,
   onChange: PropTypes.func,
   value: PropTypes.number
 };
