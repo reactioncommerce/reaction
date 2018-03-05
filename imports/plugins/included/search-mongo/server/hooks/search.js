@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Products, ProductSearch, Orders, OrderSearch, AccountSearch } from "/lib/collections";
+import { Products, ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
 import {
   getSearchParameters,
   buildAccountSearchRecord,
@@ -29,22 +29,25 @@ Hooks.Events.add("afterAccountsUpdate", (userId, accountId) => {
 });
 
 
-Orders.after.remove((userId, doc) => {
-  if (OrderSearch && !Meteor.isAppTest) {
-    OrderSearch.remove(doc._id);
-  }
-});
+// NOTE: this hooks does not seemed to get fired, are there is no way 
+// to delete an order, only cancel.
+// TODO: Verify the assumption above.
+// Orders.after.remove((userId, doc) => {
+//   if (OrderSearch && !Meteor.isAppTest) {
+//     OrderSearch.remove(doc._id);
+//   }
+// });
 
-Orders.after.insert((userId, doc) => {
+Hooks.Events.add("afterOrderInsert", (doc) => {
   if (OrderSearch && !Meteor.isAppTest) {
     const orderId = doc._id;
     buildOrderSearchRecord(orderId);
   }
 });
 
-Orders.after.update((userId, doc) => {
+Hooks.Events.add("afterUpdateOrderUpdateSearchRecord", (order) => {
   if (OrderSearch && !Meteor.isAppTest) {
-    const orderId = doc._id;
+    const orderId = order._id;
     OrderSearch.remove(orderId);
     buildOrderSearchRecord(orderId);
   }
@@ -61,9 +64,10 @@ Products.after.remove((userId, doc) => {
   }
 });
 
-//
-// after product update rebuild product search record
-//
+/**
+* after product update rebuild product search record
+*/
+// Hooks.Events.add("afterUpdateProductUpdateSearchRecord", (doc) => {
 Products.after.update((userId, doc, fieldNames) => {
   if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
