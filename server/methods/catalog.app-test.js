@@ -417,7 +417,7 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       Meteor.call("products/createProduct", (error, result) => {
         if (result) {
-          expect(Products.find({ _id: result })).count().to.equal(1);
+          expect(Products.find({ _id: result }).count()).to.equal(1);
         }
       });
     });
