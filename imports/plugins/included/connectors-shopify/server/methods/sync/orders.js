@@ -39,12 +39,8 @@ export const methods = {
    * @param {object} lineItems array of line items from a Shopify order
    * @returns {undefined}
    */
-  "connectors/shopify/sync/orders/created": (lineItems) => {
+  adjustInventory: (lineItems) => {
     check(lineItems, [Object]);
-
-    if (!Reaction.hasPermission(connectorsRoles)) {
-      throw new Meteor.Error("access-denied", "Access Denied");
-    }
 
     lineItems.forEach((lineItem) => {
       const variantsWithShopifyId = Products.find({ shopifyId: lineItem.variant_id }).fetch();
@@ -62,12 +58,11 @@ export const methods = {
           eventLog: {
             title: "Product inventory updated by Shopify webhook",
             type: "update-webhook",
-            description: `Shopify order created which caused inventory to be reduced by ${lineItem.quantity}`
+            description: `Shopify order created which caused inventory to be reduced by ${lineItem.quantity}`,
+            createdAt: new Date()
           }
         }
       }, { selector: { type: "variant" } });
     });
   }
 };
-
-Meteor.methods(methods);
