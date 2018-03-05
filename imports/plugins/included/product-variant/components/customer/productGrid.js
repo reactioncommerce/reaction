@@ -9,25 +9,51 @@ class ProductGrid extends Component {
     canLoadMoreProducts: PropTypes.bool,
     loadProducts: PropTypes.func,
     products: PropTypes.array,
-    ready: PropTypes.func
+    productsSubscription: PropTypes.object
   }
 
-  // events
+  componentDidMount() {
+    window.addEventListener("scroll", this.loadMoreProducts);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.loadMoreProducts);
+  }
 
   // load more products to the grid
   loadMoreProducts = (event) => {
-    console.log("loading more products");
-    this.props.loadProducts(event);
+    const { canLoadMoreProducts, loadProducts } = this.props;
+    const { scrollY, innerHeight } = window;
+    const { body: { scrollHeight } } = document;
+    const atBottom = (innerHeight + scrollY === scrollHeight);
+
+    if (canLoadMoreProducts && atBottom) {
+      loadProducts(event);
+    }
   }
 
   // render the laoding spinner
   renderLoadingSpinner() {
-    return <Components.Loading />;
+    const { productsSubscription: { ready } } = this.props;
+    // if the products catalog is not ready
+    // show the loading spinner
+    if (!ready()) return <Components.Loading />;
   }
 
   // render the No Products Found message
   renderNotFound() {
-    return <Components.NotFound i18nKeyTitle="productGrid.noProductsFound" icon="fa fa-barcode" title="No Products Found" />;
+    const { products, productsSubscription: { ready } } = this.props;
+    // if the products subscription is ready & the products array is undefined or empty
+    // show the Not Found message
+    if (ready() && (!Array.isArray(products) || !products.length)) {
+      return (
+        <Components.NotFound
+          i18nKeyTitle="productGrid.noProductsFound"
+          icon="fa fa-barcode"
+          title="No Products Found"
+        />
+      );
+    }
   }
 
   // render the product grid
@@ -51,16 +77,11 @@ class ProductGrid extends Component {
   }
 
   render() {
-    console.log("this.props", this.props);
-
-    const { products, ready } = this.props;
-    if (!ready()) return this.renderLoadingSpinner();
-    if (!Array.isArray(products) || !products.length) return this.renderNotFound();
-
     return (
       <div className="container-main">
         {this.renderProductGrid()}
-        <button id="productScrollLimitLoader" onClick={this.loadMoreProducts}>Load More Prods</button>
+        {this.renderLoadingSpinner()}
+        {this.renderNotFound()}
       </div>
     );
   }

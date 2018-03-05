@@ -30,25 +30,31 @@ const reactiveProductIds = new ReactiveVar([], (oldVal, newVal) => JSON.stringif
  * @return {undefined}
  */
 function loadMoreProducts() {
-  let threshold;
-  const target = document.querySelectorAll("#productScrollLimitLoader");
-  let scrollContainer = document.querySelectorAll(".container-main");
-  if (scrollContainer.length === 0) {
-    scrollContainer = window;
-  }
+  // let threshold;
+  // const target = document.querySelectorAll("#productScrollLimitLoader");
+  // let scrollContainer = document.querySelectorAll(".container-main");
+  // if (scrollContainer.length === 0) {
+  //   scrollContainer = window;
+  // }
 
-  if (target.length) {
-    threshold = scrollContainer[0].scrollHeight - scrollContainer[0].scrollTop === scrollContainer[0].clientHeight;
+  // console.log("target scroll containter", target, scrollContainer);
 
-    if (threshold) {
-      if (!target[0].getAttribute("visible")) {
-        target[0].setAttribute("productScrollLimit", true);
-        Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
-      }
-    } else if (target[0].getAttribute("visible")) {
-      target[0].setAttribute("visible", false);
-    }
-  }
+  // if (target.length) {
+  //   threshold = scrollContainer[0].scrollHeight - scrollContainer[0].scrollTop === scrollContainer[0].clientHeight;
+
+  //   console.log("load more", threshold);
+
+  //   if (threshold) {
+  //     if (!target[0].getAttribute("visible")) {
+  //       target[0].setAttribute("productScrollLimit", true);
+
+  //     }
+  //   } else if (target[0].getAttribute("visible")) {
+  //     target[0].setAttribute("visible", false);
+  //   }
+  // }
+
+  Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
 }
 
 const wrapComponent = (Comp) => (
@@ -64,34 +70,32 @@ const wrapComponent = (Comp) => (
       this.state = {
         initialLoad: true
       };
-
-      this.ready = this.ready.bind(this);
-      this.loadMoreProducts = this.loadMoreProducts.bind(this);
     }
 
-    ready = () => {
-      if (this.props.showNotFound === true) {
-        return false;
-      }
+    // ready = () => {
+    //   // if (this.props.showNotFound === true) {
+    //   //   return false;
+    //   // }
 
-      const isInitialLoad = this.state.initialLoad === true;
-      const isReady = this.props.productsSubscription.ready();
+    //   // const isInitialLoad = this.state.initialLoad === true;
+    //   // const isReady = this.props.productsSubscription.ready();
 
-      if (isInitialLoad === false) {
-        return true;
-      }
+    //   // if (isInitialLoad === false) {
+    //   //   return true;
+    //   // }
 
-      if (isReady) {
-        return true;
-      }
+    //   // if (isReady) {
+    //   //   return true;
+    //   // }
 
-      return false;
-    }
+    //   // return false;
+    // }
 
-    loadMoreProducts = () => this.props.canLoadMoreProducts === true
+    // ready = () => this.props.productsSubscription.ready();
 
-    loadProducts = (event) => {
-      event.preventDefault();
+    // loadMoreProducts = () => this.props.canLoadMoreProducts === true;
+
+    loadProducts = () => {
       this.setState({
         initialLoad: false
       });
@@ -102,8 +106,6 @@ const wrapComponent = (Comp) => (
       return (
         <Comp
           {...this.props}
-          ready={this.ready}
-          loadMoreProducts={this.loadMoreProducts}
           loadProducts={this.loadProducts}
         />
       );
