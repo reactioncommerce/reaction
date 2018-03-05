@@ -38,6 +38,7 @@ Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
   Meteor.call("inventory/addReserve", item);
 });
 
+
 /**
 * @method
 * @summary updates product inventory after variant is removed
