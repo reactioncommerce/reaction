@@ -95,6 +95,7 @@ Hooks.Events.add("afterInsertCatalogProduct", (userId, doc) => {
   registerInventory(doc);
 });
 
+
 /**
  * markInventoryShipped
  * @summary check a product and update Inventory collection with inventory documents.
@@ -145,7 +146,13 @@ function markInventorySold(doc) {
   Meteor.call("inventory/sold", cartItems);
 }
 
-Orders.after.insert((userId, doc) => {
+/**
+* @method
+* @summary marks inventory as sold when order is created
+* @param {Object} doc - order document
+* @return {undefined}
+*/
+Hooks.Events.add("afterOrderInsert", (doc) => {
   Logger.debug("Inventory module handling Order insert");
   markInventorySold(doc);
 });
