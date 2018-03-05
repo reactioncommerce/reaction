@@ -157,11 +157,13 @@ Hooks.Events.add("afterOrderInsert", (doc) => {
   markInventorySold(doc);
 });
 
-Orders.after.update((userId, doc, fieldnames, modifier) => {
+/**
+* @method
+* @summary marks inventory as shipped when order workflow is completed
+* @param {Object} doc - order document
+* @return {undefined}
+*/
+Hooks.Events.add("onOrderShipmentShipped", (doc) => {
   Logger.debug("Inventory module handling Order update");
-  if (modifier.$addToSet) {
-    if (modifier.$addToSet["workflow.workflow"] === "coreOrderWorkflow/completed") {
-      markInventoryShipped(doc);
-    }
-  }
+  markInventoryShipped(doc);
 });
