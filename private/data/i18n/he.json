@@ -634,8 +634,6 @@
           "userNotFound": "המשתמש לא נמצא",
           "verifyEmailLinkExpired": "קישור וידוי הדוא\"ל פג תוקף",
           "verifyEmailLinkIsForUnknownAddress": "קישור וידוי הדוא\"ל הוא לכתובת לא ידועה",
-          "verifyTimeout": "",
-          "verifyEmailAddressNotFound": "",
           "matchFailed": "ההתאמה נכשלה",
           "unknownError": "שגיאה לא ידועה"
         }

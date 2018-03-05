@@ -707,8 +707,6 @@
           "userNotFound": "Không tìm thấy người dùng",
           "verifyEmailLinkExpired": "Đường dẫn xác nhận email đã hết hạn",
           "verifyEmailLinkIsForUnknownAddress": "Đường dẫn xác nhận email là cho địa chỉ chưa xác định",
-          "verifyTimeout": "",
-          "verifyEmailAddressNotFound": "",
           "matchFailed": "Không đúng",
           "unknownError": "Lỗi không rõ"
         }

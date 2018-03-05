@@ -707,8 +707,6 @@
           "userNotFound": "Utilisateur introuvable",
           "verifyEmailLinkExpired": "Le lien de vérification de l'e-mail a expiré",
           "verifyEmailLinkIsForUnknownAddress": "Le lien de vérification de l'e-mail correspond à une adresse inconnue",
-          "verifyTimeout": "",
-          "verifyEmailAddressNotFound": "",
           "matchFailed": "Echec de la correspondance",
           "unknownError": "Erreur inconnue"
         }

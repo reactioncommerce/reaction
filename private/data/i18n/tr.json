@@ -707,8 +707,6 @@
           "userNotFound": "Kullanıcı bulunamadı",
           "verifyEmailLinkExpired": "E-posta doğrulama bağlantısının süresi geçmiş",
           "verifyEmailLinkIsForUnknownAddress": "E-posta doğrulama bağlantısı bilinmeyen bir adres içermekte",
-          "verifyTimeout": "",
-          "verifyEmailAddressNotFound": "",
           "matchFailed": "Eşleştirme başarısız",
           "unknownError": "Bilinmeyen Hata"
         }

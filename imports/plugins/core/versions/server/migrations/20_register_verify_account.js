@@ -2,7 +2,6 @@ import { Migrations } from "meteor/percolate:migrations";
 import { Packages } from "/lib/collections";
 
 
-// Migration file created for removing the admin role from shop manager group, and users in the group
 Migrations.add({
   version: 20,
   up() {

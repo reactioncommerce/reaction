@@ -707,8 +707,6 @@
           "userNotFound": "Korisnik nije pronađen",
           "verifyEmailLinkExpired": "Link za provjeru Emaila je istekao",
           "verifyEmailLinkIsForUnknownAddress": "Nepoznata adresa linka za provjeru",
-          "verifyTimeout": "",
-          "verifyEmailAddressNotFound": "",
           "matchFailed": "Neuspjela provjera",
           "unknownError": "Nepoznata greška"
         }

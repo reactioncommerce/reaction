@@ -707,8 +707,6 @@
           "userNotFound": "Användaren hittades inte",
           "verifyEmailLinkExpired": "Länken för att verifera e-postadress har gått ut",
           "verifyEmailLinkIsForUnknownAddress": "Länken för att verifiera e-postadress är för en okänd adress.",
-          "verifyTimeout": "",
-          "verifyEmailAddressNotFound": "",
           "matchFailed": "Matchning misslyckades",
           "unknownError": "Okänt fel"
         }

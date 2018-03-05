@@ -817,7 +817,7 @@ export default {
         }
       });
       Collections.Accounts.update({
-        _id: accountId,
+        "_id": accountId,
         "emails.address": options.email
       }, {
         $set: {

@@ -1,13 +1,13 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Accounts } from "meteor/accounts-base";
+import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import UpdatePasswordOverlay from "../components/updatePasswordOverlay";
 import { LoginFormValidation } from "/lib/api";
-import {Meteor} from "meteor/meteor";
+import UpdatePasswordOverlay from "../components/updatePasswordOverlay";
 
 const wrapComponent = (Comp) => (
   class UpdatePasswordOverlayContainer extends Component {

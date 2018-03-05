@@ -707,8 +707,6 @@
           "userNotFound": "Gebruiker niet gevonden",
           "verifyEmailLinkExpired": "Link in verificatie e-mail is verlopen",
           "verifyEmailLinkIsForUnknownAddress": "Link in verificatie e-mail is voor een onbekend adres",
-          "verifyTimeout": "",
-          "verifyEmailAddressNotFound": "",
           "matchFailed": "Geen match gevonden",
           "unknownError": "Onbekende fout"
         }

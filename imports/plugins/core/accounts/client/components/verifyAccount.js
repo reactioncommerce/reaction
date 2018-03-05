@@ -14,15 +14,11 @@ class VerifyAccount extends React.Component {
       "fa-times-circle-o": !!this.props.error,
       "fa-check-circle-o": !this.props.error
     });
-    const style = {
-      color: this.props.error ? "#f33" : "#49da49",
-      fontSize: "8rem"
-    };
 
     return (
-      <div className="container-fluid-sm">
+      <div className="container-fluid-sm verify-account">
         <div className="rui empty-view-message">
-          <i className={classNames} style={style}/>
+          <i className={classNames}/>
           <p className="message">
             {this.props.error ?
               <Components.Translation
