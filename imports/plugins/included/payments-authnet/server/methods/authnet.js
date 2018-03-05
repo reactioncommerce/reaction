@@ -10,6 +10,7 @@ import AuthNetAPI from "authorize-net";
 import { Reaction, Logger } from "/server/api";
 import { Packages } from "/lib/collections";
 import { PaymentMethod } from "/lib/collections/schemas";
+import { ValidCardNumber, ValidExpireMonth, ValidExpireYear, ValidCVV } from "/lib/api";
 
 function getAccountOptions(isPayment) {
   const queryConditions = {
@@ -42,14 +43,6 @@ function getSettings(settings, ref, valueName) {
   }
   return undefined;
 }
-
-const ValidCardNumber = Match.Where((x) => /^[0-9]{14,16}$/.test(x));
-
-const ValidExpireMonth = Match.Where((x) => /^[0-9]{1,2}$/.test(x));
-
-const ValidExpireYear = Match.Where((x) => /^[0-9]{4}$/.test(x));
-
-const ValidCVV = Match.Where((x) => /^[0-9]{3,4}$/.test(x));
 
 Meteor.methods({
   authnetSubmit(transactionType = "authorizeTransaction", cardInfo, paymentInfo) {
