@@ -139,16 +139,10 @@ export default class MeteorFileCollection extends FileCollection {
    * @returns {Promise<Object|undefined>} A Promise that resolves with the document or undefined
    */
   _findOne(selector, options) {
-    let mongoSelector;
-    if (typeof selector === "string") {
-      mongoSelector = { _id: selector };
-    } else {
-      mongoSelector = selector || {};
-    }
     return new Promise((resolve, reject) => {
       let doc;
       try {
-        doc = this.mongoCollection.findOne(mongoSelector, options);
+        doc = this.mongoCollection.findOne(selector, options);
       } catch (error) {
         reject(error);
         return;
