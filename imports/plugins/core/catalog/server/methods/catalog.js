@@ -6,8 +6,9 @@ import { Media } from "/imports/plugins/core/files/server";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
 
 /**
- * isSoldOut
+ * @method isSoldOut
  * @summary We are stop accepting new orders if product marked as `isSoldOut`.
+ * @memberof Catalog
  * @param {Array} variants - Array with top-level variants
  * @return {Boolean} true if summary product quantity is zero.
  */
@@ -21,8 +22,9 @@ export function isSoldOut(variants) {
 }
 
 /**
- * isLowQuantity
+ * @method isLowQuantity
  * @summary If at least one of the variants is less than the threshold, then function returns `true`
+ * @memberof Catalog
  * @param {Array} variants - array of child variants
  * @return {boolean} low quantity or not
  */
@@ -38,8 +40,9 @@ export function isLowQuantity(variants) {
 }
 
 /**
- * isBackorder
- * @description Is products variants is still available to be ordered after summary variants quantity is zero
+ * @method isBackorder
+ * @summary Is products variants is still available to be ordered after summary variants quantity is zero
+ * @memberof Catalog
  * @param {Array} variants - array with variant objects
  * @return {boolean} is backorder allowed or not for a product
  */
@@ -49,8 +52,9 @@ export function isBackorder(variants) {
 }
 
 /**
- * publishProductsToCatalog
- * @description Publish one or more products to the Catalog
+ * @method publishProductsToCatalog
+ * @summary Publish one or more products to the Catalog
+ * @memberof Catalog
  * @param {string|array} productIds - A string product id or an array of product ids
  * @return {boolean} true on successful publish for all documents, false if one ore more fail to publish
  */
@@ -124,8 +128,9 @@ export async function publishProductsToCatalog(productIds) {
 }
 
 /**
- * publishProductInventoryAdjustments
- * @description Publish inventory updates for a single product to the Catalog
+ * @method publishProductInventoryAdjustments
+ * @summary Publish inventory updates for a single product to the Catalog
+ * @memberof Catalog
  * @param {string} productId - A string product id
  * @return {boolean} true on success, false on failure
  */
