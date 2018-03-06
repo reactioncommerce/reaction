@@ -89,7 +89,7 @@ Products.after.update((userId, doc, fieldNames, modifier) => {
 * @param {Object} doc - product document
 * @return {undefined}
 */
-Hooks.Events.add("afterInsertCatalogProduct", (userId, doc) => {
+Hooks.Events.add("afterInsertCatalogProduct", (doc) => {
   if (doc.type !== "variant") {
     return false;
   }
