@@ -590,6 +590,7 @@ Meteor.methods({
         // do not need to pass it explicitly
       },
       {
+        selector: { type: currentVariant.type },
         validate: false
       }
     );
