@@ -309,7 +309,7 @@ function flushQuantity(id) {
     return 1; // let them think that we have one successful operation here
   }
 
-  return Products.update({
+  const productUpdate = Products.update({
     _id: id
   }, {
     $set: {
@@ -320,6 +320,10 @@ function flushQuantity(id) {
       type: "variant"
     }
   });
+
+  Hooks.Events.run("afterUpdateCatalogProduct", variant);
+
+  return productUpdate;
 }
 
 /**
