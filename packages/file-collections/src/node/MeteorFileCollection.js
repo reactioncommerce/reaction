@@ -106,8 +106,8 @@ export default class MeteorFileCollection extends FileCollection {
   async _insert(doc) {
     // Generate string ID to avoid getting a Mongo ObjectID
     if (!doc._id) doc._id = this.mongoCollection._makeNewID();
-    const id = await this.insertPromise(doc);
-    return this._findOne(id);
+    await this.insertPromise(doc);
+    return this._findOne(doc._id);
   }
 
   /**
