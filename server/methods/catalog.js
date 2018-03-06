@@ -339,7 +339,7 @@ function createProduct(props = null) {
 
   const newProduct = Products.findOne({ _id });
 
-  Hooks.Events.run("afterInsertCatalogProduct", Meteor.userId(), newProduct);
+  Hooks.Events.run("afterInsertCatalogProduct", newProduct);
 
   return newProduct;
 }
@@ -479,7 +479,7 @@ Meteor.methods({
         Hooks.Events.run("beforeInsertCatalogProduct", clone);
         newId = Products.insert(clone, { validate: false });
         const newProduct = Products.findOne(newId);
-        Hooks.Events.run("afterInsertCatalogProduct", Meteor.userId(), newProduct);
+        Hooks.Events.run("afterInsertCatalogProduct", newProduct);
         Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
           clone._id} from ${variantId}`);
       } catch (error) {
@@ -547,7 +547,7 @@ Meteor.methods({
 
     Hooks.Events.run("beforeInsertCatalogProduct", assembledVariant);
     Products.insert(assembledVariant);
-    Hooks.Events.run("afterInsertCatalogProduct", Meteor.userId(), assembledVariant);
+    Hooks.Events.run("afterInsertCatalogProduct", assembledVariant);
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
     return newVariantId;
@@ -770,7 +770,7 @@ Meteor.methods({
       }
       Hooks.Events.run("beforeInsertCatalogProduct", newProduct);
       result = Products.insert(newProduct, { validate: false });
-      Hooks.Events.run("afterInsertCatalogProduct", Meteor.userId(), newProduct);
+      Hooks.Events.run("afterInsertCatalogProduct", newProduct);
       results.push(result);
 
       // cloning variants
@@ -799,7 +799,7 @@ Meteor.methods({
 
         Hooks.Events.run("beforeInsertCatalogProduct", newVariant);
         result = Products.insert(newVariant, { validate: false });
-        Hooks.Events.run("afterInsertCatalogProduct", Meteor.userId(), newVariant);
+        Hooks.Events.run("afterInsertCatalogProduct", newVariant);
         copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
       }
