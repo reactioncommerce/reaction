@@ -5,6 +5,7 @@ import { registerInventory } from "../methods/inventory";
 
 /**
 * @method
+* @method afterAddItemsToCart
 * @summary reserves inventory when item is added to cart
 * @param {String} cartId - current cartId
 * @param {Object} options - product document
@@ -21,6 +22,7 @@ Hooks.Events.add("afterAddItemsToCart", (cartId, options) => {
 
 /**
 * @method
+* @method afterModifyQuantityInCart
 * @summary reserves inventory when cart quantity is updated
 * @param {String} cartId - current cartId
 * @param {Object} options - product document
@@ -41,6 +43,7 @@ Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
 
 /**
 * @method
+* @method afterRemoveCatalogProduct
 * @summary updates product inventory after variant is removed
 * @param {String} userId - userId of user making the call
 * @param {Object} doc - product document
@@ -84,6 +87,7 @@ Products.after.update((userId, doc, fieldNames, modifier) => {
 
 /**
 * @method
+* @method afterInsertCatalogProduct
 * @summary adds product inventory when new product is created
 * @param {String} userId - userId of user making the call
 * @param {Object} doc - product document
@@ -149,6 +153,7 @@ function markInventorySold(doc) {
 
 /**
 * @method
+* @method afterOrderInsert
 * @summary marks inventory as sold when order is created
 * @param {Object} order - order document
 * @return {Object} order - order document
@@ -162,6 +167,7 @@ Hooks.Events.add("afterOrderInsert", (order) => {
 
 /**
 * @method
+* @method onOrderShipmentShipped
 * @summary marks inventory as shipped when order workflow is completed
 * @param {Object} doc - order document
 * @return {undefined}
