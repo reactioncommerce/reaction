@@ -396,6 +396,7 @@ export const methods = {
             bypassCollection2: true,
             publish: true
           });
+          Hooks.Events.run("afterUpdateCatalogProduct", item.variants);
         }
       });
     }
