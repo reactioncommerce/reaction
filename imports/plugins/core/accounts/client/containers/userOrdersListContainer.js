@@ -1,4 +1,4 @@
-import { compose, withProps } from "recompose";
+import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Router } from "/client/modules/router/";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";

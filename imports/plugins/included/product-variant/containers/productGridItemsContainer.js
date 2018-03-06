@@ -6,7 +6,6 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { Media } from "/imports/plugins/core/files/client";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import ProductGridItems from "../components/productGridItems";
 
