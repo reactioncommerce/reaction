@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.5"></a>
+## [0.4.5](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.4.4...@reactioncommerce/file-collections@0.4.5) (2018-03-06)
+
+
+### Bug Fixes
+
+* **FileRecord:** fullClone does store write correctly now ([ea1eb5a](https://github.com/reactioncommerce/reaction-file-collections/commit/ea1eb5a))
+* **MeteorFileCollection:** Return inserted doc from _insert in Node ([ac6644a](https://github.com/reactioncommerce/reaction-file-collections/commit/ac6644a))
+
+
+
+
 <a name="0.4.4"></a>
 ## [0.4.4](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.4.3...@reactioncommerce/file-collections@0.4.4) (2018-03-06)
 
