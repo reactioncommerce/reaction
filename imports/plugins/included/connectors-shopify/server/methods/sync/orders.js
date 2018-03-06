@@ -62,7 +62,7 @@ export const methods = {
             createdAt: new Date()
           }
         }
-      }, { selector: { type: "variant" } });
+      }, { selector: { type: "variant" }, publish: true });
     });
   }
 };
