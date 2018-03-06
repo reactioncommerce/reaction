@@ -296,7 +296,7 @@ Hooks.Events.add("afterInsertCatalogProductInsertRevision", (product) => {
 
 Hooks.Events.add("beforeUpdateCatalogProduct", (product, options) => updateRevision(product, options));
 
-Hooks.Events.add("shouldRemoveCatalogProduct", (product, options) => markRevisionAsDeleted(product, options));
+Hooks.Events.add("beforeRemoveCatalogProduct", (product, options) => markRevisionAsDeleted(product, options));
 
 Hooks.Events.add("afterRevisionsUpdate", (userId, revision) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {

@@ -644,7 +644,7 @@ Meteor.methods({
     const options = { userId: this.userId };
     let shouldRemoveProduct;
     toDelete.forEach((product) => {
-      shouldRemoveProduct = Hooks.Events.run("shouldRemoveCatalogProduct", product, options);
+      shouldRemoveProduct = Hooks.Events.run("beforeRemoveCatalogProduct", product, options);
     });
 
     let deleted = 0;
@@ -657,7 +657,7 @@ Meteor.methods({
       toDenormalize.forEach((field) => denormalize(productId, field));
     }
 
-    Logger.debug(`shouldRemoveCatalogProduct hook returned falsy, not updating catalog product`);
+    Logger.debug(`beforeRemoveCatalogProduct hook returned falsy, not updating catalog product`);
 
     return typeof deleted === "number" && deleted > 0;
   },
@@ -903,7 +903,7 @@ Meteor.methods({
     const options = { userId: this.userId };
     let shouldRemoveProduct;
     ids.forEach((_id) => {
-      shouldRemoveProduct = Hooks.Events.run("shouldRemoveCatalogProduct", Products.findOne({ _id }), options);
+      shouldRemoveProduct = Hooks.Events.run("beforeRemoveCatalogProduct", Products.findOne({ _id }), options);
     });
 
     if (shouldRemoveProduct) {
@@ -913,6 +913,8 @@ Meteor.methods({
         }
       });
     }
+
+    Logger.debug(`beforeRemoveCatalogProduct hook returned falsy, not updating catalog product`);
 
     const numRemoved = Revisions.find({
       "documentId": {
