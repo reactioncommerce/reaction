@@ -294,8 +294,6 @@ Hooks.Events.add("afterInsertCatalogProductInsertRevision", (product) => {
   return product;
 });
 
-Hooks.Events.add("shouldCatalogProductUpdate", (product, options) => updateRevision(product, options));
-
 Hooks.Events.add("beforeUpdateCatalogProduct", (product, options) => updateRevision(product, options));
 
 Hooks.Events.add("shouldRemoveCatalogProduct", (product, options) => markRevisionAsDeleted(product, options));

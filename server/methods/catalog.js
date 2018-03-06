@@ -352,7 +352,7 @@ function createProduct(props = null) {
 function updateCatalogProduct(uId, selector, modifier, validation) {
   const product = Products.findOne(selector);
 
-  const shouldUpdateProduct = Hooks.Events.run("shouldCatalogProductUpdate", product, {
+  const shouldUpdateProduct = Hooks.Events.run("beforeUpdateCatalogProduct", product, {
     userId: uId,
     modifier,
     validation
@@ -362,7 +362,7 @@ function updateCatalogProduct(uId, selector, modifier, validation) {
     return Products.update(selector, modifier, validation);
   }
 
-  Logger.debug(`shouldCatalogProductUpdate hook returned falsy, not updating catalog product`);
+  Logger.debug(`beforeUpdateCatalogProduct hook returned falsy, not updating catalog product`);
 
   return false;
 }
