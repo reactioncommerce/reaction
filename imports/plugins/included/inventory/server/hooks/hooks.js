@@ -150,12 +150,14 @@ function markInventorySold(doc) {
 /**
 * @method
 * @summary marks inventory as sold when order is created
-* @param {Object} doc - order document
-* @return {undefined}
+* @param {Object} order - order document
+* @return {Object} order - order document
 */
-Hooks.Events.add("afterOrderInsert", (doc) => {
+Hooks.Events.add("afterOrderInsert", (order) => {
   Logger.debug("Inventory module handling Order insert");
-  markInventorySold(doc);
+  markInventorySold(order);
+
+  return order;
 });
 
 /**
