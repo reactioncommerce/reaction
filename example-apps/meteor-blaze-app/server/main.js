@@ -109,6 +109,14 @@ Meteor.methods({
     const images = Promise.await(Images.find());
     const result = Promise.await(Promise.all(images.map((fileRecord) => Images.remove(fileRecord))));
     return result;
+  },
+  cloneImage(id) {
+    const fileRecord = Promise.await(Images.findOne(id));
+    if (!fileRecord) throw new Meteor.Error("not-found", `No FileRecord has ID ${id}`);
+
+    // The side effect of this call should be that a new file record now
+    // exists with data in both stores, and will be autopublished to the client.
+    Promise.await(fileRecord.fullClone());
   }
 });
 

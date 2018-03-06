@@ -297,9 +297,9 @@ export default class FileRecord extends EventEmitter {
       // rather than createReadStream in order to bypass any potential transformRead function
       const readStream = await store.createReadStreamForFileKey(store.fileKey(this));
 
-      // Get the writeStream to write back in for the clone. We use createWriteStreamForFileKey
-      // rather than createWriteStream in order to bypass any potential transformWrite function
-      const writeStream = await store.createWriteStreamForFileKey(store.fileKey(cloneRecord));
+      // Get the writeStream to write back in for the clone. Skip transforms because we are writing
+      // file data that was already transformed when originally saved.
+      const writeStream = await store.createWriteStream(cloneRecord, { skipTransform: true });
 
       return new Promise((resolve, reject) => {
         writeStream.once("error", reject);

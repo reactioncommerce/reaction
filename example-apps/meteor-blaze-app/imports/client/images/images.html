@@ -27,8 +27,11 @@
       <p><em>Original upload: {{this.name}}, {{this.type}}, {{this.size}} bytes</em></p>
       <p><em>File saved to "images" store: {{nameForStore 'images'}}, {{typeForStore 'images'}}, {{sizeForStore 'images'}} bytes</em></p>
       <p><em>File saved to "thumbs" store: {{nameForStore 'thumbs'}}, {{typeForStore 'thumbs'}}, {{sizeForStore 'thumbs'}} bytes</em></p>
-      <a href="{{downloadUrlForStore 'images'}}" class="btn btn-default btn-xs" role="button" target="_blank">Download</a>
-      <button type="button" class="js-deleteFile btn btn-danger btn-xs">Delete</button>
+      <div class="btn-row">
+        <a href="{{downloadUrlForStore 'images'}}" class="btn btn-default btn-xs" role="button" target="_blank">Download</a>
+        <button type="button" class="js-cloneFile btn btn-default btn-xs">Clone</button>
+        <button type="button" class="js-deleteFile btn btn-danger btn-xs">Delete</button>
+      </div>
     </div>
   </div>
 </template>

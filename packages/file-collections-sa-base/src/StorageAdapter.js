@@ -99,10 +99,13 @@ export default class StorageAdapter extends EventEmitter {
   /**
    * @param {FileRecord} fileRecord A FileRecord instance. This is passed to this.fileKey to
    *   get the file key and to any `transformWrite` functions defined for the store.
-   * @param {Object} [options] Any options supported by the specific storage adapter
+   * @param {Object} [options] Any options supported by the specific storage adapter, plus...
+   * @param {Boolean} [options.skipTransform] Set to false to skip applying the transformWrite function
    * @returns {Promise} A promise that resolves with the stream.Writable
    */
-  async createWriteStream(fileRecord) {
+  async createWriteStream(fileRecord, options) {
+    const { skipTransform, ...adapterOptions } = options || {};
+
     // If we haven't set name, type, or size for this store yet,
     // set it to same values as the original upload. We don't save
     // these to the DB right away because they might be changed
@@ -119,7 +122,7 @@ export default class StorageAdapter extends EventEmitter {
     // Make sure this stays before the `createWriteStreamForFileKey` call, which then
     // uses the potentially modified file info.
     let transform;
-    if (typeof this.transformWrite === "function") {
+    if (!skipTransform && typeof this.transformWrite === "function") {
       transform = await this.transformWrite(fileRecord);
     }
 
@@ -131,7 +134,8 @@ export default class StorageAdapter extends EventEmitter {
     try {
       finalDestinationStream = await this.createWriteStreamForFileKey(this.fileKey(fileRecord), {
         // Some storage adapters need this
-        content_type: fileRecord.type({ store }) // eslint-disable-line camelcase
+        content_type: fileRecord.type({ store }), // eslint-disable-line camelcase
+        ...adapterOptions
       });
       logEventsForStream(finalDestinationStream, store, fileRecord._id);
 

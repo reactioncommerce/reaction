@@ -8,3 +8,11 @@
   width: 300px;
   max-width: 300px;
 }
+
+.btn-row {
+  margin: -2px 0;
+}
+
+.btn-row > .btn {
+  margin: 2px 0;
+}
