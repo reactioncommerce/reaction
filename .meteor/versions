@@ -7,8 +7,7 @@ accounts-twitter@1.4.1
 alanning:roles@1.2.16
 aldeed:autoform@6.2.0
 aldeed:collection2@3.0.0
-aldeed:collection2-core@2.1.0
-aldeed:schema-index@2.0.0
+aldeed:schema-index@3.0.0
 aldeed:template-extension@4.1.0
 allow-deny@1.1.0
 audit-argument-checks@1.0.7
