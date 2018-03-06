@@ -58,7 +58,7 @@ export function isBackorder(variants) {
  * @param {string|array} productIds - A string product id or an array of product ids
  * @return {boolean} true on successful publish for all documents, false if one ore more fail to publish
  */
-export async function publishProductsToCatalog(productIds) {
+export function publishProductsToCatalog(productIds) {
   check(productIds, Match.OneOf(String, Array));
 
   let ids = productIds;
