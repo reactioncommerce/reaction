@@ -96,6 +96,7 @@ export function ordersInventoryAdjust(orderId) {
         type: "variant"
       }
     });
+    Hooks.Events.run("afterUpdateCatalogProduct", item.variant);
   });
 }
 
