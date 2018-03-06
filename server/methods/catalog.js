@@ -472,7 +472,7 @@ Meteor.methods({
 
       let newId;
       try {
-        Hooks.Events.run("beforeInsertCatalogProduct", clone);
+        Hooks.Events.run("beforeInsertCatalogProductInsertRevision", clone);
         newId = Products.insert(clone, { validate: false });
         Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
           clone._id} from ${variantId}`);
@@ -539,7 +539,7 @@ Meteor.methods({
       flushQuantity(parentId);
     }
 
-    Hooks.Events.run("beforeInsertCatalogProduct", assembledVariant);
+    Hooks.Events.run("beforeInsertCatalogProductInsertRevision", assembledVariant);
     Products.insert(assembledVariant);
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
@@ -759,7 +759,7 @@ Meteor.methods({
           newProduct._id
         );
       }
-      Hooks.Events.run("beforeInsertCatalogProduct", newProduct);
+      Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newProduct);
       result = Products.insert(newProduct, { validate: false });
       results.push(result);
 
@@ -787,7 +787,7 @@ Meteor.methods({
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
 
-        Hooks.Events.run("beforeInsertCatalogProduct", newVariant);
+        Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newVariant);
         result = Products.insert(newVariant, { validate: false });
         copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
@@ -820,7 +820,7 @@ Meteor.methods({
       }
 
       // Create product revision
-      Hooks.Events.run("beforeInsertCatalogProduct", product);
+      Hooks.Events.run("beforeInsertCatalogProductInsertRevision", product);
 
       return Products.insert(product);
     }
@@ -828,7 +828,7 @@ Meteor.methods({
     const newSimpleProduct = createProduct();
 
     // Create simple product revision
-    Hooks.Events.run("beforeInsertCatalogProduct", newSimpleProduct);
+    Hooks.Events.run("afterInsertCatalogProductInsertRevision", newSimpleProduct);
 
     const newVariant = createProduct({
       ancestors: [newSimpleProduct._id],
@@ -838,7 +838,7 @@ Meteor.methods({
     });
 
     // Create variant revision
-    Hooks.Events.run("beforeInsertCatalogProduct", newVariant);
+    Hooks.Events.run("afterInsertCatalogProductInsertRevision", newVariant);
 
     return newSimpleProduct._id;
   },

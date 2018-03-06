@@ -282,15 +282,13 @@ Media.files.before.remove((userId, media) => {
   return true;
 });
 
-Hooks.Events.add("beforeInsertCatalogProduct", (product) => {
+Hooks.Events.add("beforeInsertCatalogProductInsertRevision", (product) => {
   insertRevision(product);
 
   return product;
 });
 
-// For tests, it's more convinient to insert a products revision after the product is inserted.
-// TODO: Discuss whether this would be also better for catalog methods.
-Hooks.Events.add("afterInsertCatalogProduct", (product) => {
+Hooks.Events.add("afterInsertCatalogProductInsertRevision", (product) => {
   insertRevision(product);
 
   return product;
