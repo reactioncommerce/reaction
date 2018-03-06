@@ -1151,8 +1151,8 @@ Meteor.methods({
     }
 
     // e.g. discount records would be already present on the billing array. Add to the end of the array.
-    const dicsountRecords = cart.billing.filter((billingInfo) => billingInfo.paymentMethod);
-    payments.push(...dicsountRecords);
+    const discountRecords = cart.billing.filter((billingInfo) => billingInfo.paymentMethod);
+    payments.push(...discountRecords);
 
     const selector = {
       _id: cartId
