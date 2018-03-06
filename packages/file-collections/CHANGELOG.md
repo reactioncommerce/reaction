@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.4"></a>
+## [0.4.4](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.4.3...@reactioncommerce/file-collections@0.4.4) (2018-03-06)
+
+
+### Bug Fixes
+
+* **MeteorFileCollection:** Support selectors in findOne for server/node ([c5482aa](https://github.com/reactioncommerce/reaction-file-collections/commit/c5482aa))
+* findOne doesn't need selector switch ([ca40ca7](https://github.com/reactioncommerce/reaction-file-collections/commit/ca40ca7))
+
+
+
+
 <a name="0.4.3"></a>
 ## [0.4.3](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.4.2...@reactioncommerce/file-collections@0.4.3) (2018-02-23)
 
