@@ -37,7 +37,7 @@ export const methods = {
     }, {
       $addToSet: {
         billing: {
-           ...billing,
+          ...billing,
           _id: billingId,
           paymentMethod
         }
