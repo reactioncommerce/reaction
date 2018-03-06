@@ -85,5 +85,8 @@ Template.images.events({
   },
   "click .js-deleteFile"() {
     Meteor.call("removeImage", this._id);
+  },
+  "click .js-cloneFile"() {
+    Meteor.call("cloneImage", this._id);
   }
 });
