@@ -10,8 +10,12 @@ import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 
 /**
- * Returns an existing shop object, with some values removed or changed such
- * that it is suitable for inserting as a new shop.
+ * @name cloneShop
+ * @summary Returns an existing shop object, with some values removed or changed such
+ *   that it is suitable for inserting as a new shop.
+ * @method
+ * @param {String} shopId - the ID of the shop to clone
+ * @return {Object|null} The cloned shop object or null if a shop with that ID can't be found
  */
 function cloneShop(shopId) {
   const shop = Collections.Shops.findOne(shopId);
@@ -36,6 +40,62 @@ function cloneShop(shopId) {
   // brand image
   delete shop.brandAssets;
   return shop;
+}
+
+/**
+ * @name updateShopBrandAssets
+ * @method
+ * @param {Object} asset - brand asset {mediaId: "", type, ""}
+ * @param {String} shopId - the shop id coresponding to the shop for which
+ *                 the asset should be applied (defaults to Reaction.getShopId())
+ * @param {String} userId - the user id on whose behalf we are performing this
+ *                 action (defaults to Meteor.userId())
+ * @return {Int} returns update result
+ */
+export function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), userId = Meteor.userId()) {
+  check(asset, {
+    mediaId: String,
+    type: String
+  });
+  check(shopId, String);
+
+  // must have core permissions
+  if (!Reaction.hasPermission("core", userId, shopId)) {
+    throw new Meteor.Error("access-denied", "Access Denied");
+  }
+
+  // Does our shop contain the brandasset we're tring to add
+  const shopWithBrandAsset = Collections.Shops.findOne({
+    "_id": shopId,
+    "brandAssets.type": asset.type
+  });
+
+  // If it does, then we update it with the new asset reference
+  if (shopWithBrandAsset) {
+    return Collections.Shops.update({
+      "_id": shopId,
+      "brandAssets.type": "navbarBrandImage"
+    }, {
+      $set: {
+        "brandAssets.$": {
+          mediaId: asset.mediaId,
+          type: asset.type
+        }
+      }
+    });
+  }
+
+  // Otherwise we insert a new brand asset reference
+  return Collections.Shops.update({
+    _id: shopId
+  }, {
+    $push: {
+      brandAssets: {
+        mediaId: asset.mediaId,
+        type: asset.type
+      }
+    }
+  });
 }
 
 /**
@@ -138,6 +198,8 @@ Meteor.methods({
     Reaction.createGroups({ shopId: newShopId });
     const ownerGroup = Collections.Groups.findOne({ slug: "owner", shopId: newShopId });
     Roles.addUsersToRoles([currentUser, shopUser._id], ownerGroup.permissions, newShopId);
+    // Set the active shopId for this user
+    Reaction.setUserPreferences("reaction", "activeShopId", newShopId, shopUser._id);
     Collections.Accounts.update({ _id: shopUser._id }, {
       $set: {
         shopId: newShopId
@@ -868,44 +930,10 @@ Meteor.methods({
       mediaId: String,
       type: String
     });
-    // must have core permissions
-    if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
-    }
+
     this.unblock();
 
-    // Does our shop contain the brandasset we're tring to add
-    const shopWithBrandAsset = Collections.Shops.findOne({
-      "_id": Reaction.getShopId(),
-      "brandAssets.type": asset.type
-    });
-
-    // If it does, then we update it with the new asset reference
-    if (shopWithBrandAsset) {
-      return Collections.Shops.update({
-        "_id": Reaction.getShopId(),
-        "brandAssets.type": "navbarBrandImage"
-      }, {
-        $set: {
-          "brandAssets.$": {
-            mediaId: asset.mediaId,
-            type: asset.type
-          }
-        }
-      });
-    }
-
-    // Otherwise we insert a new brand asset reference
-    return Collections.Shops.update({
-      _id: Reaction.getShopId()
-    }, {
-      $push: {
-        brandAssets: {
-          mediaId: asset.mediaId,
-          type: asset.type
-        }
-      }
-    });
+    return updateShopBrandAssets(asset);
   },
 
   /**

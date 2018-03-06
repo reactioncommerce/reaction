@@ -5,7 +5,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 import Button from "./button.jsx";
 
 class ButtonSelect extends Component {
-  static PropTypes = {
+  static propTypes = {
     buttons: PropTypes.array,
     currentButton: PropTypes.node,
     defaultButton: PropTypes.object,
