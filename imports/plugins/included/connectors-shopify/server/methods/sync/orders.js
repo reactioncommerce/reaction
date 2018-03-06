@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Reaction } from "/server/api";
+import { Hooks, Reaction } from "/server/api";
 import { Products } from "/lib/collections";
 import { connectorsRoles } from "../../lib/roles";
 
@@ -66,6 +66,7 @@ export const methods = {
           }
         }
       }, { selector: { type: "variant" } });
+      Hooks.Events.run("afterUpdateCatalogProduct", variant);
     });
   }
 };
