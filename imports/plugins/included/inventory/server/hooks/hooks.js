@@ -4,7 +4,6 @@ import { Logger, Hooks } from "/server/api";
 import { registerInventory } from "../methods/inventory";
 
 /**
-* @method
 * @method afterAddItemsToCart
 * @summary reserves inventory when item is added to cart
 * @param {String} cartId - current cartId
@@ -21,7 +20,6 @@ Hooks.Events.add("afterAddItemsToCart", (cartId, options) => {
 });
 
 /**
-* @method
 * @method afterModifyQuantityInCart
 * @summary reserves inventory when cart quantity is updated
 * @param {String} cartId - current cartId
@@ -42,7 +40,6 @@ Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
 
 
 /**
-* @method
 * @method afterRemoveCatalogProduct
 * @summary updates product inventory after variant is removed
 * @param {String} userId - userId of user making the call
@@ -62,31 +59,20 @@ Hooks.Events.add("afterRemoveCatalogProduct", (userId, doc) => {
   }
 });
 
-//
-// after product update
-//
-Products.after.update((userId, doc, fieldNames, modifier) => {
-  // product update can't affect on inventory, so we don't manage this cases
-  // we should keep in mind that returning false within hook prevents other
-  // hooks to be run
-  if (doc.type !== "variant") return false;
-
-  // check if modifier is set and $pull and $push are undefined. This need
-  // because anyway on every create or delete operation we have additionally
-  // $set modifier because of auto-updating of `shopId` and `updateAt` schema
-  // properties
-  if ((modifier.$set || modifier.$inc) && !modifier.$pull && !modifier.$push) {
-    if (!modifier.$set) {
-      modifier.$set = {};
-    }
-    modifier.$set.updatedAt = new Date();
-    // triggers inventory adjustment
+/**
+* @method afterUpdateCatalogProduct
+* @summary adjust inventory of variants after an update
+* @param {String} userId - userId of user making the call
+* @param {Object} doc - product document
+* @return {undefined}
+*/
+Hooks.Events.add("afterUpdateCatalogProduct", (doc) => {
+  if (doc.type === "variant") {
     Meteor.call("inventory/adjust", doc);
   }
 });
 
 /**
-* @method
 * @method afterInsertCatalogProduct
 * @summary adds product inventory when new product is created
 * @param {String} userId - userId of user making the call
@@ -99,7 +85,6 @@ Hooks.Events.add("afterInsertCatalogProduct", (doc) => {
   }
   registerInventory(doc);
 });
-
 
 /**
  * markInventoryShipped
@@ -152,7 +137,6 @@ function markInventorySold(doc) {
 }
 
 /**
-* @method
 * @method afterOrderInsert
 * @summary marks inventory as sold when order is created
 * @param {Object} order - order document
@@ -166,7 +150,6 @@ Hooks.Events.add("afterOrderInsert", (order) => {
 });
 
 /**
-* @method
 * @method onOrderShipmentShipped
 * @summary marks inventory as shipped when order workflow is completed
 * @param {Object} doc - order document
