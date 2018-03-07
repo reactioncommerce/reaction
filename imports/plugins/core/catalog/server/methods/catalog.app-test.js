@@ -43,8 +43,6 @@ describe("Catalog", function () {
     };
 
     beforeEach(function (done) {
-      this.timeout(10000);
-
       Collections.Products.direct.remove({});
       Collections.Catalog.remove({});
 
