@@ -43,7 +43,8 @@ class LoginInline extends Component {
    */
   handleFieldChange = (event, value, field) => {
     this.setState({
-      [field]: value
+      [field]: value,
+      isValid: true
     });
   };
 
