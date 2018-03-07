@@ -42,4 +42,6 @@ Hooks.Events.add("afterOrderInsert", (doc) => {
       }
     });
   }
+
+  return doc;
 });
