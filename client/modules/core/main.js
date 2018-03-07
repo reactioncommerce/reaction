@@ -385,11 +385,11 @@ export default {
           }
         });
       }
-      const packageSettings = store.get(packageName) || {};
-      packageSettings[preference] = value;
-      return store.set(packageName, packageSettings);
     }
-    return false;
+    // set local storage even when we don't have a Meteor.user
+    const packageSettings = store.get(packageName) || {};
+    packageSettings[preference] = value;
+    return store.set(packageName, packageSettings);
   },
 
   updateUserPreferences(packageName, preference, values) {
@@ -488,7 +488,11 @@ export default {
   getShopPrefix() {
     const shopName = this.getShopName();
     if (shopName) {
-      return `/${this.getSlug(shopName.toLowerCase())}`;
+      return Router.pathFor("index", {
+        hash: {
+          shopSlug: this.getSlug(shopName.toLowerCase())
+        }
+      });
     }
   },
 

@@ -54,7 +54,6 @@ aldeed:schema-index@3.0.0
 aldeed:template-extension
 bozhao:accounts-instagram
 cfs:filesystem
-cfs:graphicsmagick
 cfs:gridfs
 cfs:standard-packages
 cfs:storage-adapter

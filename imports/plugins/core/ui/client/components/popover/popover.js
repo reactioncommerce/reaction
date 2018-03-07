@@ -101,6 +101,10 @@ class Popover extends Component {
   render() {
     return (
       <TetherComponent
+        style={{
+          maxHeight: "100vh",
+          overflowY: "auto"
+        }}
         attachment={this.attachment}
         classPrefix="popover"
         className={classnames({
@@ -111,7 +115,8 @@ class Popover extends Component {
         })}
         constraints={this.props.constraints || [{
           to: "scrollParent",
-          attachment: "together"
+          attachment: "together",
+          pin: true
         }]}
         targetAttachment={this.props.targetAttachment}
       >

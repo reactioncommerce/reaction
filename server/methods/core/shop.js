@@ -208,7 +208,10 @@ Meteor.methods({
         groups: ownerGroup._id
       }
     });
-    Hooks.Events.run("afterAccountsUpdate", currentUser._id, shopUser._id);
+    Hooks.Events.run("afterAccountsUpdate", currentUser._id, {
+      accountId: shopUser._id,
+      updatedFields: ["groups"]
+    });
     // Add this shop to the merchant
     Collections.Shops.update({ _id: primaryShopId }, {
       $addToSet: {

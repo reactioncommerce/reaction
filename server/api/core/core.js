@@ -51,7 +51,7 @@ export default {
 
     this.loadPackages();
     // process imports from packages and any hooked imports
-    this.Import.flush();
+    this.Importer.flush();
     this.createGroups();
     // timing is important, packages are rqd for initial permissions configuration.
     if (!Meteor.isAppTest) {
@@ -449,12 +449,20 @@ export default {
    * @method
    * @memberof Core
    * @summary Get shop prefix for URL
-   * @return {String} String int he format of "/slug"
+   * @return {String} String in the format of "/shop/slug"
    */
   getShopPrefix() {
     const shopName = this.getShopName();
     const lowerCaseShopName = shopName.toLowerCase();
     const slug = this.getSlug(lowerCaseShopName);
+    const marketplace = Packages.findOne({
+      name: "reaction-marketplace",
+      shopId: this.getPrimaryShopId()
+    });
+
+    if (marketplace && marketplace.settings && marketplace.settings.public) {
+      return `${marketplace.settings.public.shopPrefix}/${slug}`;
+    }
     return `/${slug}`;
   },
 
@@ -951,7 +959,7 @@ export default {
           }
         }
         // Import package data
-        this.Import.package(combinedSettings, shopId);
+        this.Importer.package(combinedSettings, shopId);
         return Logger.debug(`Initializing ${shop.name} ${pkgName}`);
       }));
 
@@ -959,7 +967,7 @@ export default {
     const uniqLayouts = uniqWith(layouts, _.isEqual);
     // import layouts into Shops
     Shops.find().forEach((shop) => {
-      this.Import.layout(uniqLayouts, shop._id);
+      this.Importer.layout(uniqLayouts, shop._id);
     });
 
     //

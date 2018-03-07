@@ -1082,14 +1082,14 @@ Meteor.methods({
     // we'll just update the workflow and billing data where
     // method-hooks can process the workflow update.
 
-    const payments = [];
-    let paymentAddress;
-
     // Find the payment address associated that the user input during the
     // checkout process
+    let paymentAddress;
     if (Array.isArray(cart.billing) && cart.billing[0]) {
       paymentAddress = cart.billing[0].address;
     }
+
+    const payments = [];
 
     // Payment plugins which have been updated for marketplace are passing an array as paymentMethods
     if (Array.isArray(paymentMethods)) {
@@ -1129,6 +1129,10 @@ Meteor.methods({
         shopId: Reaction.getPrimaryShopId()
       });
     }
+
+    // e.g. discount records would be already present on the billing array. Add to the end of the array.
+    const discountRecords = cart.billing.filter((billingInfo) => billingInfo.paymentMethod);
+    payments.push(...discountRecords);
 
     const selector = {
       _id: cartId

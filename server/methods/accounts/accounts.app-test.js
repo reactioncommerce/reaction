@@ -386,7 +386,9 @@ describe("Account Meteor method ", function () {
           isShippingDefault: true,
           isBillingDefault: true
         });
-        Meteor.call("accounts/addressBookUpdate", address);
+
+        Meteor.call("accounts/addressBookUpdate", address, null, "isBillingDefault");
+        Meteor.call("accounts/addressBookUpdate", address, null, "isShippingDefault");
         account = Accounts.findOne(account._id);
 
         expect(account.profile.addressBook[0].isBillingDefault).to.be.false;

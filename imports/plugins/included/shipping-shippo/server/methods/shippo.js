@@ -333,7 +333,7 @@ export const methods = {
           Meteor.call("orders/shipmentDelivered", order);
         }
 
-        // A batch update might be better option. Unfortunately Reaction.import doesn't support
+        // A batch update might be better option. Unfortunately Reaction.importer doesn't support
         // .. Orders currently
         const orderUpdating = Orders.update({
           _id: order._id
