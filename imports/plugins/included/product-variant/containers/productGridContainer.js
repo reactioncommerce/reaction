@@ -96,26 +96,46 @@ const wrapComponent = (Comp) => (
     }
 
     handleProductDrag = (dragIndex, hoverIndex) => {
-      const newState = this.changeProductOrderOnState(dragIndex, hoverIndex);
-      this.setState(newState, this.callUpdateMethod);
-    }
+      const tag = ReactionProduct.getTag();
+      const dragProductId = this.state.productIds[dragIndex];
+      const hoverProductId = this.state.productIds[hoverIndex];
+      const dragProductWeight = this.state.productsByKey[dragProductId].positions[tag].weight || 0;
+      const dropProductWeight = this.state.productsByKey[hoverProductId].positions[tag].weight || 0;
 
-    changeProductOrderOnState(dragIndex, hoverIndex) {
-      const product = this.state.productIds[dragIndex];
-
-      return update(this.state, {
+      const newState = update(this.state, {
+        productsByKey: {
+          [dragProductId]: {
+            positions: {
+              [tag]: {
+                $merge: {
+                  weight: dropProductWeight
+                }
+              }
+            }
+          },
+          [hoverProductId]: {
+            positions: {
+              [tag]: {
+                $merge: {
+                  weight: dragProductWeight
+                }
+              }
+            }
+          }
+        },
         productIds: {
           $splice: [
             [dragIndex, 1],
-            [hoverIndex, 0, product]
+            [hoverIndex, 0, dragProductId]
           ]
         }
       });
+
+      this.setState(newState);
     }
 
-    callUpdateMethod() {
+    handleProductDrop = () => {
       const tag = ReactionProduct.getTag();
-
       this.state.productIds.map((productId, index) => {
         const position = { position: index, updatedAt: new Date() };
 
@@ -142,6 +162,7 @@ const wrapComponent = (Comp) => (
             {...this.props}
             products={this.products}
             onMove={this.handleProductDrag}
+            onDrop={this.handleProductDrop}
             itemSelectHandler={this.handleSelectProductItem}
           />
         </Components.DragDropProvider>
