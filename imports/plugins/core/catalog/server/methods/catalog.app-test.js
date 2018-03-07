@@ -19,7 +19,6 @@ describe("Catalog", function () {
   let sandbox;
 
   beforeEach(function () {
-    Collections.Shops.remove({});
     createActiveShop({ _id: shopId });
     sandbox = sinon.sandbox.create();
     sandbox.stub(RevisionApi, "isRevisionControlEnabled", () => true);
