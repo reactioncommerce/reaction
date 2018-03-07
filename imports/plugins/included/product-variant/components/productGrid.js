@@ -4,15 +4,22 @@ import { Components } from "@reactioncommerce/reaction-components";
 
 class ProductGrid extends Component {
   static propTypes = {
+    canEdit: PropTypes.bool,
+    itemSelectHandler: PropTypes.func,
+    onMove: PropTypes.func,
     products: PropTypes.array
   }
 
-  renderProductGridItems = (products) => {
+  renderProductGridItems() {
+    const { canEdit, itemSelectHandler, onMove, products } = this.props;
     if (Array.isArray(products)) {
-      return products.map((product, index) => (
+      return products.map((product) => (
         <Components.ProductGridItems
-          {...this.props}
-          product={product} key={index} index={index}
+          key={product._id}
+          canEdit={canEdit}
+          itemSelectHandler={itemSelectHandler}
+          onMove={onMove}
+          product={product}
         />
       ));
     }
@@ -33,7 +40,7 @@ class ProductGrid extends Component {
         <div className="product-grid">
           <Components.DragDropProvider>
             <ul className="product-grid-list list-unstyled" id="product-grid-list">
-              {this.renderProductGridItems(this.props.products)}
+              {this.renderProductGridItems()}
             </ul>
           </Components.DragDropProvider>
         </div>
