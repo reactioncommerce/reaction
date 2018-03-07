@@ -260,11 +260,21 @@ class Form extends Component {
 
     if (this.isFieldHidden(fieldName) === false) {
       const fieldSchema = schema.getDefinition(fieldName);
+
+      // Get the type from the schema, as a typeof string
+      const fieldType = fieldSchema.type[0].type;
+      let fieldTypeString;
+      if (fieldType === "SimpleSchema.Integer") {
+        fieldTypeString = "number";
+      } else {
+        // This assumes that oneOf is not used for any schema types
+        fieldTypeString = typeof fieldType();
+      }
+
       const fieldProps = {
         ...fieldSchema,
         name: fieldName,
-        // This assumes that oneOf is not used for any schema types
-        type: typeof fieldSchema.type[0].type(),
+        type: fieldTypeString,
         ...additionalFieldProps
       };
 
