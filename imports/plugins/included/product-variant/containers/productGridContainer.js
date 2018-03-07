@@ -99,24 +99,24 @@ const wrapComponent = (Comp) => (
       const tag = ReactionProduct.getTag();
       const dragProductId = this.state.productIds[dragIndex];
       const hoverProductId = this.state.productIds[hoverIndex];
-      const dragProductWeight = this.state.productsByKey[dragProductId].positions[tag].weight || 0;
-      const dropProductWeight = this.state.productsByKey[hoverProductId].positions[tag].weight || 0;
+      const dragProductWeight = _.get(this, `state.productsByKey[${dragProductId}].positions[${tag}].weight`, 0);
+      const dropProductWeight = _.get(this ,`state.productsByKey[${hoverProductId}].positions[${tag}].weight`, 0);
 
       const newState = update(this.state, {
         productsByKey: {
           [dragProductId]: {
-            positions: {
-              [tag]: {
-                $merge: {
+            $merge: {
+              positions: {
+                [tag]: {
                   weight: dropProductWeight
                 }
               }
             }
           },
           [hoverProductId]: {
-            positions: {
-              [tag]: {
-                $merge: {
+            $merge: {
+              positions: {
+                [tag]: {
                   weight: dragProductWeight
                 }
               }
