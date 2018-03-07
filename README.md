@@ -363,3 +363,35 @@ This NPM package is published automatically on every push to the `master` branch
 - Refer to https://github.com/semantic-release/semantic-release#commit-message-format
 - Do not update the CHANGELOG.md files. They are generated automatically.
 - To avoid triggering a release, such as for a README-only change, include `[skip release]` in your commit message.
+
+## Working In This Repo
+
+### Run the Example Meteor Blaze App
+
+Install [Meteor](https://www.meteor.com/), and then run the following commands:
+
+```bash
+npm install
+npm run bootstrap
+cd example-apps/meteor-blaze-app
+meteor npm install
+npm start
+```
+
+#### Make Changes to the Packages While Running Example App
+
+1. Change some files.
+2. Run `npm run bootstrap` in project root.
+3. Meteor app will automatically restart and pull in your package changes.
+
+### Run Tests
+
+```bash
+npm install
+npm run bootstrap
+npm test
+```
+
+### Publish
+
+CircleCI should publish all package changes to NPM automatically. If you need to publish manually and you have write access to the NPM packages, do so by running `npx lerna publish --conventional-commits`. It will determine appropriate version bumps automatically.
