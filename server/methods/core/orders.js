@@ -301,7 +301,7 @@ export const methods = {
 
     return Orders.update({
       "_id": order._id,
-      "billing.shopId": Reaction.getShopId,
+      "billing.shopId": Reaction.getShopId(),
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
@@ -432,7 +432,7 @@ export const methods = {
 
     return Orders.update({
       "_id": order._id,
-      "billing.shopId": Reaction.getShopId,
+      "billing.shopId": Reaction.getShopId(),
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
