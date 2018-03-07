@@ -3,7 +3,7 @@ import Shopify from "shopify-api-node";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { check, Match } from "meteor/check";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 import { Accounts } from "/lib/collections";
 import { getApiInfo } from "../api/api";
 import { connectorsRoles } from "../../lib/roles";
@@ -34,7 +34,7 @@ function createReactionCustomerFromShopifyCustomer(options) {
   // shopify is very forgiving so expect plenty of nulls !!
   const fakePhone = "33888888888";
   const fakeZip = "00000";
-  const first_name = shopifyCustomer.first_name  || "no_first_name";
+  const first_name = shopifyCustomer.first_name || "no_first_name";
   const last_name = shopifyCustomer.last_name || "no_last_name";
   const name = `${first_name} ${last_name}`;
 
@@ -148,7 +148,7 @@ export const methods = {
     const opts = Object.assign({}, {
       published_status: "published",
       limit
-    }, { ... options });
+    }, { ...options });
 
     try {
       const customerCount = await shopify.customer.count();
@@ -158,7 +158,7 @@ export const methods = {
 
       for (const page of pages) {
         Logger.debug(`Importing page ${page + 1} of ${numPages} - each page has ${limit} products`);
-        const shopifyCustomers = await shopify.customer.list({ ...opts, page });
+        const shopifyCustomers = await shopify.customer.list({ ...opts, page }); // eslint-disable-line no-await-in-loop
         for (const shopifyCustomer of shopifyCustomers) {
           if (!Accounts.findOne({ shopifyId: shopifyCustomer.id }, { fields: { _id: 1 } })) {
             // Setup reaction customer
@@ -166,9 +166,14 @@ export const methods = {
 
             // Insert customer, save id
             const reactionCustomerId = Accounts.insert(reactionCustomer, { publish: true });
+            Hooks.Events.run("afterAccountsInsert", Meteor.userId(), reactionCustomerId);
             ids.push(reactionCustomerId);
 
             Accounts.update({ _id: reactionCustomerId }, { publish: true });
+            Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+              accountId: reactionCustomerId,
+              updatedFields: ["forceIndex"]
+            });
           } else { // customer already exists check
             Logger.info(`Customer ${shopifyCustomer.last_name} ${shopifyCustomer.id} already exists`);
           }

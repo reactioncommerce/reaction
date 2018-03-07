@@ -1,9 +1,9 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import { Random } from "meteor/random";
-import { Reaction } from "/server/api";
+import { Reaction, Hooks } from "/server/api";
 import { Cart } from "/lib/collections";
-import { Discounts } from  "/imports/plugins/core/discounts/lib/collections";
+import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
 
 // attach discount code specific schema
@@ -51,7 +51,7 @@ export const methods = {
     check(discountId, String);
     let discount = 0;
     const discountMethod = Discounts.findOne(discountId);
-    discount = discountMethod.discount;
+    ({ discount } = discountMethod);
     return discount;
   },
   /**
@@ -101,28 +101,41 @@ export const methods = {
 
     return discount;
   },
-  /**
-   * discounts/addCode
-   * @param  {String} modifier update statement
-   * @param  {String} docId discount docId
-   * @param  {String} qty create this many additional codes
-   * @return {String} returns update/insert result
-   */
-  "discounts/addCode"(modifier, docId) {
-    check(modifier, Object);
-    check(docId, Match.OneOf(String, null, undefined));
 
-    // check permissions to add
-    if (!Reaction.hasPermission("discount-codes")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
-    }
-    // if no doc, insert
-    if (!docId) {
-      return Discounts.insert(modifier);
-    }
-    // else update and return
-    return Discounts.update(docId, modifier);
+  /**
+   * @name discounts/addCode
+   * @method
+   * @param  {Object} doc A Discounts document to be inserted
+   * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use discounts/editCode method instead.
+   * @return {String} Insert result
+   */
+  "discounts/addCode"(doc, docId) {
+    check(doc, Object); // actual schema validation happens during insert below
+
+    // Backward compatibility
+    check(docId, Match.Optional(String));
+    if (docId) return Meteor.call("discounts/editCode", { _id: docId, modifier: doc });
+
+    if (!Reaction.hasPermission("discount-codes")) throw new Meteor.Error("access-denied", "Access Denied");
+    return Discounts.insert(doc);
   },
+
+  /**
+   * @name discounts/editCode
+   * @method
+   * @param  {Object} details An object with _id and modifier props
+   * @return {String} Update result
+   */
+  "discounts/editCode"(details) {
+    check(details, {
+      _id: String,
+      modifier: Object // actual schema validation happens during update below
+    });
+    if (!Reaction.hasPermission("discount-codes")) throw new Meteor.Error("access-denied", "Access Denied");
+    const { _id, modifier } = details;
+    return Discounts.update(_id, modifier);
+  },
+
   /**
    * discounts/codes/remove
    * removes discounts that have been previously applied
@@ -165,12 +178,16 @@ export const methods = {
       Collection.update(selector, update);
     }
     // TODO: update a history record of transaction
-    // TODO: recalculate cart discounts (not simply 0)
-    return Collection.update(
+    const result = Collection.update(
       { _id: id },
       { $set: { discount: currentDiscount }, $pull: { billing: { _id: codeId } } },
       { multi: true }
     );
+
+    // calculate discounts
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", id);
+
+    return result;
   },
   /**
    * discounts/codes/apply
@@ -230,7 +247,7 @@ export const methods = {
       // existing usage count
       if (discount.transactions) {
         const users = Array.from(discount.transactions, (t) => t.userId);
-        const transactionCount = new Map([...new Set(users)].map(x => [x, users.filter(y => y === x).length]));
+        const transactionCount = new Map([...new Set(users)].map((x) => [x, users.filter((y) => y === x).length]));
         const orders = Array.from(discount.transactions, (t) => t.cartId);
         userCount = transactionCount.get(Meteor.userId());
         orderCount = orders.length;

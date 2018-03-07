@@ -1,7 +1,8 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
-
 
 /**
  *  Meteor.settings.braintree =
@@ -12,38 +13,42 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
  *  see: https://developers.braintreepayments.com/javascript+node/reference
  */
 
-export const BraintreePackageConfig = new SimpleSchema([
-  PackageConfig,
-  {
-    "settings.mode": {
-      type: Boolean,
-      defaultValue: false
-    },
-    "settings.merchant_id": {
-      type: String,
-      label: "Merchant ID",
-      optional: false
-    },
-    "settings.public_key": {
-      type: String,
-      label: "Public Key",
-      optional: false
-    },
-    "settings.private_key": {
-      type: String,
-      label: "Private Key",
-      optional: false
-    },
-    "settings.reaction-braintree.support": {
-      type: Array,
-      label: "Payment provider supported methods"
-    },
-    "settings.reaction-braintree.support.$": {
-      type: String,
-      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
-    }
+export const BraintreePackageConfig = PackageConfig.clone().extend({
+  // Remove blackbox: true from settings obj
+  "settings": {
+    type: Object,
+    optional: true,
+    blackbox: false,
+    defaultValue: {}
+  },
+  "settings.mode": {
+    type: Boolean,
+    defaultValue: false
+  },
+  "settings.merchant_id": {
+    type: String,
+    label: "Merchant ID",
+    optional: false
+  },
+  "settings.public_key": {
+    type: String,
+    label: "Public Key",
+    optional: false
+  },
+  "settings.private_key": {
+    type: String,
+    label: "Private Key",
+    optional: false
+  },
+  "settings.reaction-braintree.support": {
+    type: Array,
+    label: "Payment provider supported methods"
+  },
+  "settings.reaction-braintree.support.$": {
+    type: String,
+    allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
   }
-]);
+});
 
 registerSchema("BraintreePackageConfig", BraintreePackageConfig);
 
@@ -73,6 +78,6 @@ export const BraintreePayment = new SimpleSchema({
     max: 4,
     label: "CVV"
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("BraintreePayment", BraintreePayment);

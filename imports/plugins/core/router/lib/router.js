@@ -15,7 +15,6 @@ import { Packages, Shops } from "/lib/collections";
 import { getComponent } from "@reactioncommerce/reaction-components/components";
 import Hooks from "./hooks";
 
-
 // Using a ternary operator here to avoid a mutable export - open to suggestions for a better way to do this
 export const history = Meteor.isClient ? createBrowserHistory() : createMemoryHistory();
 
@@ -119,7 +118,7 @@ class Router {
   static getRouteName() {
     const current = Router.current();
 
-    return current.route && current.route.name || "";
+    return (current.route && current.route.name) || "";
   }
 
   /**
@@ -131,7 +130,7 @@ class Router {
     routerChangeDependency.depend();
     const current = Router.current();
 
-    return current.params && current.params[name] || undefined;
+    return (current.params && current.params[name]) || undefined;
   }
 
   /**
@@ -143,7 +142,7 @@ class Router {
     routerChangeDependency.depend();
     const current = Router.current();
 
-    return current.query && current.query[name] || undefined;
+    return (current.query && current.query[name]) || undefined;
   }
 
   /**
@@ -206,7 +205,7 @@ Router.pathFor = (path, options = {}) => {
     // This is becuase of Spacebars that we have hash.
     // Spacebars takes all params passed into a template tag and places
     // them into the options.hash object. This will also include any `query` params
-    const hash = options && options.hash || {};
+    const hash = (options && options.hash) || {};
 
     // Create an executable function based on the route regex
     const toPath = pathToRegexp.compile(foundPath.route);
@@ -259,7 +258,7 @@ Router.go = (path, params, query) => {
 
   // if Router is in a non ready/initialized state yet, wait until it is
   if (!Router.ready()) {
-    Tracker.autorun(routerReadyWaitFor => {
+    Tracker.autorun((routerReadyWaitFor) => {
       if (Router.ready()) {
         routerReadyWaitFor.stop();
         routerGo();
@@ -313,14 +312,14 @@ Router.reload = () => {
  */
 Router.isActiveClassName = (routeName) => {
   const current = Router.current();
-  const group = current.route.group;
+  const { group } = current.route;
   let prefix = "";
 
   if (current.route) {
-    const path = current.route.path;
+    const { path } = current.route;
 
     if (group && group.prefix) {
-      prefix = current.route.group.prefix;
+      ({ prefix } = current.route.group);
     }
 
     // Match route
@@ -378,7 +377,7 @@ function getRegistryRouteName(packageName, registryItem) {
       routeName = packageName;
     }
     // dont include params in the name
-    routeName = routeName.split(":")[0];
+    [routeName] = routeName.split(":");
     return routeName;
   }
   return null;
@@ -513,8 +512,8 @@ export function ReactionLayout(options = {}) {
     theme: layoutTheme,
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
-      const route = Router.current().route;
-      const permissions = options.permissions;
+      const { route } = Router.current();
+      const { permissions } = options;
       const structure = {
         ...layoutStructure
       };
@@ -558,6 +557,19 @@ Router.initPackageRoutes = (options) => {
   Router.Reaction = options.reactionContext;
   Router.routes = [];
 
+  let marketplaceSettings = {
+    shopPrefix: "/shop" // default value
+  };
+
+  const marketplace = Packages.findOne({
+    name: "reaction-marketplace",
+    shopId: Router.Reaction.getPrimaryShopId()
+  });
+
+  if (marketplace && marketplace.settings && marketplace.settings.public) {
+    marketplaceSettings = marketplace.settings.public;
+  }
+
   const pkgs = Packages.find().fetch();
 
   const routeDefinitions = [];
@@ -567,7 +579,7 @@ Router.initPackageRoutes = (options) => {
   // subscription to determine this.
   const shopSub = Meteor.subscribe("shopsCount");
 
-  Tracker.autorun(shopSubWaitFor => {
+  Tracker.autorun((shopSubWaitFor) => {
     if (shopSub.ready()) {
       shopSubWaitFor.stop();
       // using tmeasday:publish-counts
@@ -590,7 +602,7 @@ Router.initPackageRoutes = (options) => {
       });
 
       routeDefinitions.push({
-        route: "/shop/:shopSlug",
+        route: `${marketplaceSettings.shopPrefix}/:shopSlug`,
         name: "index",
         options: {
           name: "index",
@@ -676,7 +688,7 @@ Router.initPackageRoutes = (options) => {
             route.group = {};
 
             if (route.route.substring(0, 1) !== "/") {
-              route.route = "/" + route.route;
+              route.route = `/${route.route}`;
               route.group.prefix = "";
             }
 
@@ -693,16 +705,14 @@ Router.initPackageRoutes = (options) => {
       // TODO: In the future, sort by priority
       // TODO: Allow duplicated routes with a prefix / suffix / flag
       const uniqRoutes = uniqBy(routeDefinitions.reverse(), "route");
-      const reactRouterRoutes = uniqRoutes.map((route, index) => {
-        return (
-          <Route
-            key={`${route.name}-${index}`}
-            path={route.route}
-            exact={true}
-            render={route.options.component}
-          />
-        );
-      });
+      const reactRouterRoutes = uniqRoutes.map((route, index) => (
+        <Route
+          key={`${route.name}-${index}`}
+          path={route.route}
+          exact={true}
+          render={route.options.component}
+        />
+      ));
 
       // Last route, if no other route is matched, this one will be the not-found view
       // Note: This is last becuase all other routes must at-least attempt a match

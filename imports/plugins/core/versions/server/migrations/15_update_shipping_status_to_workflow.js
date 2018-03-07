@@ -53,13 +53,13 @@ Migrations.add({
 
       Orders.update({ _id: order._id }, {
         $set: { "shipping.0": currentShipping }
-      });
+      }, { bypassCollection2: true });
     });
   },
   down() {
     Orders.find().forEach((order) => {
       const currentShipping = order.shipping[0];
-      const workflow = currentShipping.workflow;
+      const { workflow } = currentShipping;
 
       currentShipping.packed = false;
       currentShipping.shipped = false;
@@ -81,7 +81,7 @@ Migrations.add({
 
       Orders.update({ _id: order._id }, {
         $set: { "shipping.0": currentShipping }
-      });
+      }, { bypassCollection2: true });
     });
   }
 });

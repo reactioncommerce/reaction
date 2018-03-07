@@ -10,9 +10,7 @@ import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/ap
 import { applyProductRevision } from "/lib/api/products";
 
 function updateVariantProductField(variants, field, value) {
-  return variants.map(variant => {
-    Meteor.call("products/updateProductField", variant._id, field, value);
-  });
+  return variants.map((variant) => Meteor.call("products/updateProductField", variant._id, field, value));
 }
 
 Template.productSettings.onCreated(function () {
@@ -26,17 +24,13 @@ Template.productSettings.onCreated(function () {
     const currentData = Template.currentData();
 
     if (_.isArray(currentData.products)) {
-      const productIds = currentData.products.map((product) => {
-        return product._id;
-      });
+      const productIds = currentData.products.map((product) => product._id);
 
       const products = Products.find({
         _id: {
           $in: productIds
         }
-      }).map((product) => {
-        return applyProductRevision(product);
-      });
+      }).map((product) => applyProductRevision(product));
 
       this.state.set("productIds", productIds);
       this.state.set("products", products);
@@ -65,7 +59,7 @@ Template.productSettings.helpers({
     const tag = ReactionProduct.getTag();
 
     for (const product of products) {
-      const positions = product.positions && product.positions[tag] || {};
+      const positions = (product.positions && product.positions[tag]) || {};
       const currentWeight = positions.weight || 0;
       if (currentWeight === weight) {
         return "active";
@@ -78,7 +72,7 @@ Template.productSettings.helpers({
 Template.productSettingsListItem.events({
   "click [data-event-action=product-click]"() {
     Reaction.Router.go("product", {
-      handle: this.handle
+      handle: (this.__published && this.__published.handle) || this.handle
     });
 
     Reaction.state.set("edit/focus", "productDetails");
@@ -111,7 +105,7 @@ Template.productSettingsListItem.helpers({
   },
 
   listItemActiveClassName(productId) {
-    const handle = Reaction.Router.current().params.handle;
+    const { handle } = Reaction.Router.current().params;
 
     if (ReactionProduct.equals("productId", productId) && handle) {
       return "active";

@@ -1,27 +1,33 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Products, ProductSearch, Orders, OrderSearch, Accounts, AccountSearch } from "/lib/collections";
-import { getSearchParameters,
-  buildProductSearchRecord, buildOrderSearchRecord, buildAccountSearchRecord } from "../methods/searchcollections";
-import { Logger } from "/server/api";
+import { Products, ProductSearch, Orders, OrderSearch, AccountSearch } from "/lib/collections";
+import {
+  getSearchParameters,
+  buildAccountSearchRecord,
+  buildOrderSearchRecord,
+  buildProductSearchRecord
+} from "../methods/searchcollections";
+import { Hooks, Logger } from "/server/api";
 
-Accounts.after.insert((userId, doc) => {
+Hooks.Events.add("afterAccountsInsert", (userId, accountId) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    buildAccountSearchRecord(doc._id);
+    // Passing forceIndex will run account search index even if
+    // updated fields don't match a searchable field
+    buildAccountSearchRecord(accountId, ["forceIndex"]);
   }
 });
 
-Accounts.after.remove((userId, doc) => {
+Hooks.Events.add("afterAccountsRemove", (userId, accountId) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    AccountSearch.remove(doc._id);
-  }
-});
-
-Accounts.after.update((userId, doc) => {
-  if (AccountSearch && !Meteor.isAppTest) {
-    const accountId = doc._id;
     AccountSearch.remove(accountId);
-    buildAccountSearchRecord(accountId);
+  }
+});
+
+Hooks.Events.add("afterAccountsUpdate", (userId, updateData) => {
+  const { accountId, updatedFields } = updateData;
+
+  if (AccountSearch && !Meteor.isAppTest) {
+    buildAccountSearchRecord(accountId, updatedFields);
   }
 });
 

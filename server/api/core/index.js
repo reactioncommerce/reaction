@@ -4,13 +4,12 @@ import * as AddDefaultRoles from "./addDefaultRoles";
 import * as AssignRoles from "./assignRoles";
 import * as Email from "./email";
 import Endpoints from "./endpoints";
-import * as Import from "./import";
+import * as Importer from "./importer";
 import * as LoadSettings from "./loadSettings";
 import Log from "../logger";
 import Router from "../router";
 import * as SetDomain from "./setDomain";
 import * as ShopName from "./shopName";
-import * as UI from "./ui";
 import * as Utils from "./utils";
 
 import * as Collections from "/lib/collections";
@@ -27,14 +26,13 @@ const Reaction = Object.assign(
   { Collections },
   { Email },
   { Endpoints },
-  Import,
+  Importer,
   LoadSettings,
   { Log },
   { Router },
   { Schemas },
   SetDomain,
   ShopName,
-  UI,
   Utils
 );
 

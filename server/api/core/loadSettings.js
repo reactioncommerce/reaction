@@ -43,8 +43,8 @@ export function loadSettings(json) {
         name: item.name
       });
       //
-      // TODO migrate functionality to Reaction.Import
-      // Reaction.Import.package(item, shopId);
+      // TODO migrate functionality to Reaction.Importer
+      // Reaction.Importer.package(item, shopId);
       //
       // insert into the Packages collection
       if (exists) {
@@ -74,8 +74,7 @@ export function loadSettings(json) {
               }, {
                 $set: settings
               });
-              Logger.debug("service configuration loaded: " +
-                item.name + " | " + service);
+              Logger.debug(`service configuration loaded: ${item.name} | ${service}`);
             }
           }
         }

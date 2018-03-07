@@ -22,7 +22,7 @@ Template.shippingRatesSettings.onCreated(function () {
 Template.shippingRatesSettings.helpers({
   editButton() {
     const instance = Template.instance();
-    const state = instance.state;
+    const { state } = instance;
     const isEditing = state.equals("isEditing", true);
     let editingId = state.get("editingId");
     // toggle edit state
@@ -71,9 +71,7 @@ Template.shippingRatesSettings.helpers({
 
     // add shipping-grid-row class
     const customRowMetaData = {
-      bodyCssClassName: () =>  {
-        return "shipping-grid-row";
-      }
+      bodyCssClassName: () => "shipping-grid-row"
     };
 
     // add i18n handling to headers

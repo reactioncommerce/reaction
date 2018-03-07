@@ -18,7 +18,7 @@ Migrations.add({
 
     // needed to ensure restart in case of a migration that failed before finishing
     Groups.remove({});
-    Accounts.update({}, { $set: { groups: [] } }, { multi: true });
+    Accounts.update({}, { $set: { groups: [] } }, { bypassCollection2: true, multi: true });
 
     if (shops && shops.length) {
       shops.forEach((shop) => {
@@ -27,7 +27,7 @@ Migrations.add({
         const customPermissions = Meteor.users
           .find({ _id: { $nin: defaultGroupAccounts } })
           .fetch()
-          .map(user => user.roles && user.roles[shop._id]);
+          .map((user) => user.roles && user.roles[shop._id]);
         // sorts the array of permission sets to contain only unique sets to avoid creating groups with same permissions
         const permissionsArray = sortUniqueArray(customPermissions);
         permissionsArray.forEach((permissions, index) => {
@@ -38,7 +38,7 @@ Migrations.add({
             slug: `custom${index + 1}`,
             permissions,
             shopId: shop._id
-          });
+          }, { bypassCollection2: true });
           updateAccountsInGroup({
             shopId: shop._id,
             permissions,
@@ -51,13 +51,13 @@ Migrations.add({
     function createDefaultGroupsForShop(shop) {
       let defaultGroupAccounts = [];
       const { defaultRoles, defaultVisitorRole } = shop;
-      let ownerRoles = Roles.getAllRoles().fetch().map(role => role.name);
+      let ownerRoles = Roles.getAllRoles().fetch().map((role) => role.name);
 
       // See detailed comment in `/server/api/core/groups.js`. The code here follows similar pattern.
       ownerRoles = ownerRoles.concat(Reaction.defaultCustomerRoles);
       ownerRoles = _.uniq(ownerRoles);
 
-      const shopManagerRoles = ownerRoles.filter(role => role !== "owner");
+      const shopManagerRoles = ownerRoles.filter((role) => role !== "owner");
       const roles = {
         "shop manager": shopManagerRoles,
         "customer": defaultRoles || Reaction.defaultCustomerRoles,
@@ -95,7 +95,7 @@ Migrations.add({
       Accounts.update(
         { _id: { $in: matchingUserIds }, shopId },
         { $addToSet: { groups: groupId } },
-        { multi: true }
+        { bypassCollection2: true, multi: true }
       );
       return matchingUserIds;
     }
@@ -117,7 +117,7 @@ Migrations.add({
       shopGroups.forEach((group) => {
         const shopkey = keys[group.slug];
         Shops.update({ _id: shop._id }, { $set: { [shopkey]: group.permissions } });
-        Accounts.update({ shopId: shop._id }, { $unset: { groups: "" } }, { multi: true });
+        Accounts.update({ shopId: shop._id }, { $unset: { groups: "" } }, { bypassCollection2: true, multi: true });
       });
     }
   }
@@ -136,14 +136,14 @@ Migrations.add({
  * and returns this: [["product", "tag"], ["product", "shop", "tag"], ["shop", "tag"]]
  */
 function sortUniqueArray(multiArray) {
-  const sorted = multiArray.map(x => {
+  const sorted = multiArray.map((x) => {
     if (!x) { return []; }
     return x.sort();
   }).sort();
   const uniqueArray = [];
   uniqueArray.push(sorted[0]);
 
-  for (let i = 1; i < sorted.length; i++) {
+  for (let i = 1; i < sorted.length; i += 1) {
     if (JSON.stringify(sorted[i]) !== JSON.stringify(sorted[i - 1])) {
       uniqueArray.push(sorted[i]);
     }

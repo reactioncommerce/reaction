@@ -6,6 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { Cart, Media } from "/lib/collections";
 import { Reaction } from "/client/api";
 import CartDrawer from "../components/cartDrawer";
+import { ReactionProduct } from "/lib/api";
 
 // event handlers to pass in as props
 const handlers = {
@@ -38,6 +39,8 @@ const handlers = {
         handle: productItem.productId,
         variantId: productItem.variants._id
       });
+
+      ReactionProduct.setCurrentVariant(productItem.variants._id);
     }
   },
 
@@ -53,13 +56,11 @@ const handlers = {
     }
   },
 
-  handleRemoveItem(event) {
+  handleRemoveItem(event, item) {
     event.stopPropagation();
     event.preventDefault();
-    const currentCartItemId = event.target.getAttribute("id");
-    $(`#${currentCartItemId}`).fadeOut(500, () => {
-      return Meteor.call("cart/removeFromCart", currentCartItemId);
-    });
+    const cartItemElement = $(event.target).closest(".cart-drawer-swiper-slide");
+    cartItemElement.fadeOut(500, () => Meteor.call("cart/removeFromCart", item._id));
   },
 
   handleCheckout() {
@@ -72,25 +73,15 @@ const handlers = {
 // reactive Tracker wrapped function
 function composer(props, onData) {
   const userId = Meteor.userId();
-  let shopId = Reaction.getPrimaryShopId();
-  if (Reaction.marketplace.merchantCarts) {
-    shopId = Reaction.getShopId();
-  }
-  let productItems = Cart.findOne({ userId, shopId }).items;
-  let defaultImage;
+  const shopId = Reaction.marketplace.merchantCarts ? Reaction.getShopId() : Reaction.getPrimaryShopId();
+  const cart = Cart.findOne({ userId, shopId });
+  if (!cart) return;
 
-  productItems = productItems.map((item) => {
+  const productItems = (cart.items || []).map((item) => {
     Meteor.subscribe("CartItemImage", item);
-    defaultImage = Media.findOne({
-      "metadata.variantId": item.variants._id
-    });
-    if (defaultImage) {
-      return Object.assign({}, item, { defaultImage });
-    }
-    defaultImage = Media.findOne({
-      "metadata.productId": item.productId
-    });
-    return Object.assign({}, item, { defaultImage });
+    const variantImage = Media.findOne({ "metadata.variantId": item.variants._id });
+    const defaultImage = variantImage || Media.findOne({ "metadata.productId": item.productId });
+    return { ...item, defaultImage };
   });
   onData(null, {
     productItems

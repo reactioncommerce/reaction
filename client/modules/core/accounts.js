@@ -1,4 +1,4 @@
-import store from "amplify-store";
+import store from "store";
 import { Accounts } from "meteor/accounts-base";
 import { Session } from "meteor/session";
 import { Random } from "meteor/random";
@@ -14,13 +14,13 @@ Accounts.loginWithAnonymous = function (anonymous, callback) {
   // that case we need to take care about creating new session before new
   // user or anonymous will be created/logged in.
   // The problem here - looks like where is no way to track localStorage:
-  // `amplify.store("Reaction.session")` itself. That's why we need to use
+  // `store.get("Reaction.session")` itself. That's why we need to use
   // another way: `accounts` package uses `setTimeout` for monitoring connection
   // Accounts.callLoginMethod will be called after clearing cache. We could
   // latch on this computations by running extra check here.
-  if (typeof store("Reaction.session") !== "string") {
+  if (typeof store.get("Reaction.session") !== "string") {
     const newSession = Random.id();
-    store("Reaction.session", newSession);
+    store.set("Reaction.session", newSession);
     Session.set("sessionId", newSession);
   }
   Accounts.callLoginMethod({

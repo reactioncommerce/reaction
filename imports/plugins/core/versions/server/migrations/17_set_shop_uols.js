@@ -23,7 +23,7 @@ Migrations.add({
           label: "Feet"
         }]
       }
-    }, { multi: true });
+    }, { bypassCollection2: true, multi: true });
   },
   down() {
     Shops.update({
@@ -34,6 +34,6 @@ Migrations.add({
         baseUOL: "",
         unitsOfLength: ""
       }
-    }, { multi: true });
+    }, { bypassCollection2: true, multi: true });
   }
 });

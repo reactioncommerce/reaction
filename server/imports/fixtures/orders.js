@@ -9,7 +9,6 @@ import { getPkgData } from "./packages";
 import { getAddress } from "./accounts";
 import { addProduct } from "./products";
 
-
 /**
  * order factory methods
  * @type {Object}
@@ -94,15 +93,19 @@ export default function () {
     items() {
       const product = addProduct({ shopId });
       const variant = Products.findOne({ ancestors: [product._id] });
-      const childVariants = Products.find({ ancestors: [
-        product._id, variant._id
-      ] }).fetch();
+      const childVariants = Products.find({
+        ancestors: [
+          product._id, variant._id
+        ]
+      }).fetch();
       const selectedOption = Random.choice(childVariants);
       const product2 = addProduct({ shopId });
       const variant2 = Products.findOne({ ancestors: [product2._id] });
-      const childVariants2 = Products.find({ ancestors: [
-        product2._id, variant2._id
-      ] }).fetch();
+      const childVariants2 = Products.find({
+        ancestors: [
+          product2._id, variant2._id
+        ]
+      }).fetch();
       const selectedOption2 = Random.choice(childVariants2);
       return [{
         _id: itemIdOne,
@@ -131,10 +134,12 @@ export default function () {
     requiresShipping: true,
     shipping: [{
       shopId,
+      address: getAddress({ isShippingDefault: true }),
       items: [
         {
           _id: itemIdOne,
           productId: Random.id(),
+          quantity: 1,
           shopId,
           variantId: Random.id(),
           packed: false
@@ -142,6 +147,7 @@ export default function () {
         {
           _id: itemIdTwo,
           productId: Random.id(),
+          quantity: 1,
           shopId,
           variantId: Random.id(),
           packed: false

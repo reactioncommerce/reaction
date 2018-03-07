@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
 import { check } from "meteor/check";
-import { Reaction } from "/server/api";
+import { Reaction, Hooks } from "/server/api";
 
 /**
  * @file Methods for Payments. Run these methods using `Meteor.call()`.
@@ -27,13 +28,25 @@ export const methods = {
     check(collection, String);
     const Collection = Reaction.Collections[collection];
 
-    return Collection.update({
+    const cart = Collection.findOne(id);
+    // The first record holds the selected billing address
+    const billing = cart.billing[0];
+    const billingId = Random.id();
+    const result = Collection.update({
       _id: id
     }, {
       $addToSet: {
-        billing: { paymentMethod }
+        billing: {
+          ...billing,
+          _id: billingId,
+          paymentMethod
+        }
       }
     });
+    // calculate discounts
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", id);
+
+    return result;
   }
 };
 

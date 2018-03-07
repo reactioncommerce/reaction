@@ -1,5 +1,4 @@
 /* eslint camelcase: 0 */
-import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
@@ -7,6 +6,11 @@ import { ProductSearch, OrderSearch, AccountSearch, Orders, Products, Accounts, 
 import utils from "./common";
 import { transformations } from "./transformations";
 
+let moment;
+async function lazyLoadMoment() {
+  if (moment) return;
+  moment = await import("moment");
+}
 
 const requiredFields = {};
 requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible", "isSoldOut", "isLowQuantity", "isBackorder"];
@@ -178,10 +182,8 @@ export function buildOrderSearchRecord(orderId) {
     for (const email of user.emails) {
       userEmails.push(email.address);
     }
-  } else {
-    if (anonymousUserEmail) {
-      userEmails.push(anonymousUserEmail);
-    }
+  } else if (anonymousUserEmail) {
+    userEmails.push(anonymousUserEmail);
   }
   const orderSearch = {};
   for (const field of requiredFields.orders) {
@@ -191,12 +193,14 @@ export function buildOrderSearchRecord(orderId) {
       orderSearch[field] = order[field];
     }
   }
+
   // get the billing object for the current shop on the order (and not hardcoded [0])
-  const shopBilling = order.billing &&
-    order.billing.find(billing => billing && billing.shopId === Reaction.getShopId()) || {};
+  const shopBilling = (order.billing && order.billing.find((billing) => billing && billing.shopId === Reaction.getShopId())) || {};
 
   // get the shipping object for the current shop on the order (and not hardcoded [0])
-  const shopShipping = order.shipping.find(shipping => shipping.shopId === Reaction.getShopId()) || {};
+  const shopShipping = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId()) || {};
+
+  Promise.await(lazyLoadMoment());
 
   orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
   orderSearch.billingPhone = shopBilling.address && shopBilling.address.phone.replace(/\D/g, "");
@@ -221,7 +225,7 @@ export function buildOrderSearchRecord(orderId) {
   };
   orderSearch.userEmails = userEmails;
   orderSearch.orderTotal = shopBilling.invoice && shopBilling.invoice.total;
-  orderSearch.orderDate = moment(order.createdAt).format("YYYY/MM/DD");
+  orderSearch.orderDate = moment && moment(order.createdAt).format("YYYY/MM/DD");
   orderSearch.billingStatus = shopBilling.paymentMethod && shopBilling.paymentMethod.status;
   orderSearch.billingCard = shopBilling.paymentMethod && shopBilling.paymentMethod.storedCard;
   orderSearch.currentWorkflowStatus = order.workflow.status;
@@ -234,9 +238,9 @@ export function buildOrderSearchRecord(orderId) {
   }
   orderSearch.product = {};
   orderSearch.variants = {};
-  orderSearch.product.title = order.items.map(item => item.product && item.product.title);
-  orderSearch.variants.title = order.items.map(item => item.variants && item.variants.title);
-  orderSearch.variants.optionTitle = order.items.map(item => item.variants && item.variants.optionTitle);
+  orderSearch.product.title = order.items.map((item) => item.product && item.product.title);
+  orderSearch.variants.title = order.items.map((item) => item.variants && item.variants.title);
+  orderSearch.variants.optionTitle = order.items.map((item) => item.variants && item.variants.optionTitle);
 
   OrderSearch.insert(orderSearch);
 }
@@ -257,38 +261,52 @@ export function buildOrderSearch(cb) {
   }
 }
 
+export function buildAccountSearchRecord(accountId, updatedFields) {
+  Logger.debug("building account search record");
+  check(accountId, String);
+  check(updatedFields, Array);
+
+  const account = Accounts.findOne(accountId);
+  // let's ignore anonymous accounts
+  if (account && account.emails && account.emails.length) {
+    const accountSearch = {};
+
+    // Not all required fields are used in search
+    // We need to filter through fields that are used,
+    // and only update the search index if one of those fields were updated
+    // forceIndex is included to forceIndexing on startup, or when manually added
+    const searchableFields = ["forceIndex", "shopId", "emails", "firstName", "lastName", "phone"];
+
+    const shouldRunIndex = updatedFields && updatedFields.some((field) => searchableFields.includes(field));
+
+    // If updatedFields contains one of the searchableFields, run the indexing
+    if (shouldRunIndex) {
+      AccountSearch.remove(accountId);
+      for (const field of requiredFields.accounts) {
+        if (transformations.accounts[field]) {
+          accountSearch[field] = transformations.accounts[field](account[field]);
+        } else {
+          accountSearch[field] = account[field];
+        }
+      }
+      AccountSearch.insert(accountSearch);
+    }
+  }
+}
 
 export function buildAccountSearch(cb) {
   check(cb, Match.Optional(Function));
   AccountSearch.remove({});
   const accounts = Accounts.find({}).fetch();
   for (const account of accounts) {
-    buildAccountSearchRecord(account._id);
+    // Passing forceIndex will run account search index even if
+    // updated fields don't match a searchable field
+    buildAccountSearchRecord(account._id, ["forceIndex"]);
   }
   const rawAccountSearchCollection = AccountSearch.rawCollection();
   rawAccountSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
   rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
-  }
-}
-
-export function buildAccountSearchRecord(accountId) {
-  Logger.debug("building account search record");
-  check(accountId, String);
-  const account = Accounts.findOne(accountId);
-  // let's ignore anonymous accounts
-  if (account && account.emails && account.emails.length) {
-    const accountSearch = {};
-    for (const field of requiredFields.accounts) {
-      if (transformations.accounts[field]) {
-        accountSearch[field] = transformations.accounts[field](account[field]);
-      } else {
-        accountSearch[field] = account[field];
-      }
-    }
-    AccountSearch.insert(accountSearch);
-    const rawAccountSearchCollection = AccountSearch.rawCollection();
-    rawAccountSearchCollection.createIndex({ shopId: 1, emails: 1 }).catch(handleIndexUpdateFailures);
   }
 }

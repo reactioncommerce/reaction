@@ -1,9 +1,9 @@
 import { Reaction } from "/server/api";
-import { Import } from "/server/api/core/import";
+import { Importer } from "/server/api/core/importer";
 import * as Collections from "../../lib/collections";
 
 // plugin Import helpers
-const DiscountImport = Import;
+const DiscountImport = Importer;
 
 // Import helper to store a discountRate in the import buffer.
 DiscountImport.discountRate = function (key, discountRate) {
@@ -14,7 +14,7 @@ DiscountImport.discountRate = function (key, discountRate) {
 DiscountImport.indication("discount", Collections.Discounts, 0.5);
 
 // should assign to global
-Object.assign(Reaction.Import, DiscountImport);
+Object.assign(Reaction.Importer, DiscountImport);
 
-// exports Reaction.Import with new discount helper
+// exports Reaction.Importer with new discount helper
 export default Reaction;

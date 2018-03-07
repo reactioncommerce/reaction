@@ -4,8 +4,6 @@ import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
-import { Registry } from "/lib/collections/schemas/registry";
-
 
 /**
  *
@@ -32,7 +30,7 @@ import { Registry } from "/lib/collections/schemas/registry";
  *
  *  @return {optionHash} returns an array of filtered, structure reactionApps
  *  [{
- *  	enabled: true
+ *   enabled: true
  *   label: "Stripe"
  *   name: "reaction-stripe"
  *   packageId: "QqkGsQCDRhg2LSn8J"
@@ -82,7 +80,7 @@ export function Apps(optionHash) {
       const value = options[key];
       if (value) {
         if (!(key === "enabled" || key === "name" || key === "shopId")) {
-          filter["registry." + key] = Array.isArray(options[key]) ? { $in: value } : value;
+          filter[`registry.${key}`] = Array.isArray(options[key]) ? { $in: value } : value;
           registryFilter[key] = value;
         } else {
           // perhaps not the best way to check but lets admin see all packages
@@ -149,23 +147,17 @@ export function Apps(optionHash) {
         return false;
       }
 
-      const filterKeys = Object.keys(itemFilter);
       // Loop through all keys in the itemFilter
       // each filter item should match exactly with the property in the registry or
       // should be included in the array if that property is an array
-      return filterKeys.every((property) => {
-        // Check to see if the schema for this property is an array
-        // if so, we want to make sure that this item is included in the array
-        if (Array.isArray(Registry._schema[property].type())) {
-          // Check to see if the registry entry is an array.
-          // Legacy registry entries could exist that use a string even when the schema requires an array.
-          if (Array.isArray(item[property])) {
-            return item[property].includes(itemFilter[property]);
-          }
-        }
+      return Object.keys(itemFilter).every((property) => {
+        const filterVal = itemFilter[property];
+        const itemVal = item[property];
 
+        // Check to see if the registry entry is an array.
+        // Legacy registry entries could exist that use a string even when the schema requires an array.
         // If it's not an array, the filter should match exactly
-        return item[property] === itemFilter[property];
+        return Array.isArray(itemVal) ? itemVal.includes(filterVal) : itemVal === filterVal;
       });
     });
 
@@ -175,12 +167,8 @@ export function Apps(optionHash) {
   });
 
   // Sort apps by priority (registry.priority)
-  const sortedApps = reactionApps.sort((a, b) => a.priority - b.priority).slice();
-
-  return sortedApps;
+  return reactionApps.sort((a, b) => a.priority - b.priority).slice();
 }
 
 // Register global template helper
-Template.registerHelper("reactionApps", (optionHash) => {
-  return Reaction.Apps(optionHash);
-});
+Template.registerHelper("reactionApps", (optionHash) => Reaction.Apps(optionHash));

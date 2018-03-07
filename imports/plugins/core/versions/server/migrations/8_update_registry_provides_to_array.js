@@ -22,7 +22,7 @@ Migrations.add({
           $set: {
             registry: updatedRegistry
           }
-        });
+        }, { bypassCollection2: true });
       }
     });
   },
@@ -39,7 +39,7 @@ Migrations.add({
         // of the array
         const updatedRegistry = pkg.registry.map((entry) => {
           if (Array.isArray(entry.provides)) {
-            entry.provides = entry.provides[0];
+            entry.provides = entry.provides[0]; // eslint-disable-line prefer-destructuring
           }
           return entry;
         });
@@ -49,7 +49,7 @@ Migrations.add({
           $set: {
             registry: updatedRegistry
           }
-        });
+        }, { bypassCollection2: true });
       }
     });
   }

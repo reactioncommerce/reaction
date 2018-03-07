@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import update from "react/lib/update";
+import update from "immutability-helper";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
@@ -101,33 +101,31 @@ class TagGroupBody extends Component {
 
   genTagsList(tags, parentTag) {
     if (Array.isArray(tags)) {
-      return tags.map((tag, index) => {
-        return (
-          <Components.TagItem
-            tag={tag}
-            index={index}
-            key={index}
-            data-id={tag._id}
-            editable={this.props.editable}
-            isSelected={this.isSelected}
-            parentTag={parentTag}
-            draggable={true}
-            selectable={true}
-            suggestions={this.state.suggestions}
-            onClearSuggestions={this.handleClearSuggestions}
-            onGetSuggestions={this.handleGetSuggestions}
-            onMove={this.handleMoveTag}
-            onTagInputBlur={this.handleTagSave}
-            onTagMouseOut={this.handleTagMouseOut}
-            onTagMouseOver={this.handleTagMouseOver}
-            onTagRemove={this.props.onTagRemove}
-            onTagSave={this.handleTagSave}
-            onTagSelect={this.onTagSelect}
-            onTagUpdate={this.handleTagUpdate}
-            onTagClick={this.props.onTagClick}
-          />
-        );
-      });
+      return tags.map((tag, index) => (
+        <Components.TagItem
+          tag={tag}
+          index={index}
+          key={index}
+          data-id={tag._id}
+          editable={this.props.editable}
+          isSelected={this.isSelected}
+          parentTag={parentTag}
+          draggable={true}
+          selectable={true}
+          suggestions={this.state.suggestions}
+          onClearSuggestions={this.handleClearSuggestions}
+          onGetSuggestions={this.handleGetSuggestions}
+          onMove={this.handleMoveTag}
+          onTagInputBlur={this.handleTagSave}
+          onTagMouseOut={this.handleTagMouseOut}
+          onTagMouseOver={this.handleTagMouseOver}
+          onTagRemove={this.props.onTagRemove}
+          onTagSave={this.handleTagSave}
+          onTagSelect={this.onTagSelect}
+          onTagUpdate={this.handleTagUpdate}
+          onTagClick={this.props.onTagClick}
+        />
+      ));
     }
   }
 

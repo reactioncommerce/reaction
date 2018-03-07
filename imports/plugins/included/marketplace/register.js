@@ -57,7 +57,8 @@ Reaction.registerPackage({
       // merchantLanguage: false, // Language comes from active merchant shop
       // merchantCurrency: false, // Currency comes from active merchant shop
       merchantTheme: false, // Theme comes from active merchant shop
-      merchantShippingRates: false // Each merchant defines their own shipping rates
+      merchantShippingRates: false, // Each merchant defines their own shipping rates
+      shopPrefix: "/shop" // The prefix for the shop URL
     }
   },
   registry: [{

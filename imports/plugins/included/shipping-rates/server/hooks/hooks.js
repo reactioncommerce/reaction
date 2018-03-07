@@ -1,4 +1,3 @@
-import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { Shipping, Packages } from "/lib/collections";
 import { Logger, Reaction, Hooks } from "/server/api";
@@ -17,7 +16,7 @@ import { Cart as CartSchema } from "/lib/collections/schemas";
  * shipping rates.
  */
 function getShippingRates(previousQueryResults, cart) {
-  check(cart, CartSchema);
+  CartSchema.validate(cart);
   const [rates, retrialTargets] = previousQueryResults;
   const shops = [];
   const products = cart.items;
@@ -70,7 +69,7 @@ function getShippingRates(previousQueryResults, cart) {
   let merchantShippingRates = false;
   const marketplaceSettings = Reaction.getMarketplaceSettings();
   if (marketplaceSettings && marketplaceSettings.enabled) {
-    merchantShippingRates = marketplaceSettings.public.merchantShippingRates;
+    ({ merchantShippingRates } = marketplaceSettings.public);
   }
 
   let pkgData;
@@ -107,7 +106,7 @@ function getShippingRates(previousQueryResults, cart) {
       }
     }
     // if we have multiple shops in cart
-    if ((shops !== null ? shops.length : void 0) > 0) {
+    if ((shops !== null ? shops.length : undefined) > 0) {
       selector = {
         "shopId": {
           $in: shops

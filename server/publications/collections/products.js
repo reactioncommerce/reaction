@@ -1,7 +1,8 @@
 import _ from "lodash";
+import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
 import { check, Match } from "meteor/check";
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 import { Products, Shops, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
@@ -14,13 +15,15 @@ import { findProductMedia } from "./product";
 //
 const filters = new SimpleSchema({
   "shops": {
-    type: [String],
+    type: Array,
     optional: true
   },
+  "shops.$": String,
   "tags": {
-    type: [String],
+    type: Array,
     optional: true
   },
+  "tags.$": String,
   "query": {
     type: String,
     optional: true
@@ -65,7 +68,7 @@ const filters = new SimpleSchema({
     type: String,
     optional: true
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("filters", filters);
 
@@ -101,12 +104,12 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       { "workflow.status": "active" },
       { _id: Reaction.getPrimaryShopId() }
     ]
-  }).fetch().map(activeShop => activeShop._id);
+  }).fetch().map((activeShop) => activeShop._id);
 
   // if there are filter/params that don't match the schema
   // validate, catch except but return no results
   try {
-    check(productFilters, Match.OneOf(undefined, filters));
+    if (productFilters) filters.validate(productFilters);
   } catch (e) {
     Logger.debug(e, "Invalid Product Filters");
     return this.ready();
@@ -293,7 +296,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     const productIds = Products.find(selector, {
       sort,
       limit: productScrollLimit
-    }).map(product => product._id);
+    }).map((product) => product._id);
 
     let newSelector = selector;
 
@@ -455,7 +458,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   const productIds = Products.find(selector, {
     sort,
     limit: productScrollLimit
-  }).map(product => product._id);
+  }).map((product) => product._id);
 
   let newSelector = { ...selector };
 
@@ -549,7 +552,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     added: (product) => {
       let productId;
       if (product.type === "variant") {
-        productId = product.ancestors[0];
+        [productId] = product.ancestors;
       } else {
         productId = product._id;
       }

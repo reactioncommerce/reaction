@@ -88,7 +88,7 @@ Meteor.methods({
             hasPermission = Roles.userIsInRole(Meteor.userId(), layout.audience, Reaction.getShopId());
           }
 
-          if (hasPermission  && !layout.layout) {
+          if (hasPermission && !layout.layout) {
             defaultPackageWorkflows.push(layout);
           }
         });
@@ -187,8 +187,7 @@ Meteor.methods({
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
       templateProcessedinWorkflow === false) {
       Logger.debug(
-        "######## Condition Three #########: complete workflow " +
-        currentWorkflowStatus + " updates and move to: ",
+        `######## Condition Three #########: complete workflow ${currentWorkflowStatus} updates and move to: `,
         nextWorkflowStep.template
       );
       return Cart.update(currentCart._id, {
@@ -239,7 +238,7 @@ Meteor.methods({
     // get index of `newWorkflowStatus`
     const resetToIndex = workflow.indexOf(newWorkflowStatus);
     // exit if no such step in workflow
-    if (!~resetToIndex) return false;
+    if (resetToIndex < 0) return false;
     // remove all steps that further `newWorkflowStatus` and itself
     const resetedWorkflow = workflow.slice(0, resetToIndex);
 
@@ -271,7 +270,9 @@ Meteor.methods({
   "workflow/pushOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    check(order, Object); // TODO: Validatate as Schemas.Order
+    check(order, Match.ObjectIncluding({
+      _id: String
+    }));
     this.unblock();
 
     const workflowStatus = `${workflow}/${status}`;
@@ -306,7 +307,12 @@ Meteor.methods({
   "workflow/pullOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    check(order, Object);
+    check(order, Match.ObjectIncluding({
+      _id: String,
+      workflow: Match.ObjectIncluding({
+        status: String
+      })
+    }));
     this.unblock();
 
     const result = Orders.update({
@@ -334,10 +340,26 @@ Meteor.methods({
    */
   "workflow/pushItemWorkflow"(status, order, itemIds) {
     check(status, String);
-    check(order, Object);
+    check(order, Match.ObjectIncluding({
+      _id: String,
+      items: [Object]
+    }));
     check(itemIds, Array);
 
-    const items = order.items.map((item) => {
+    // We can't trust the order from the client (for several reasons)
+    // Initially because in a multi-merchant scenario, the order from the client
+    // will contain only the items associated with their shop
+    // We'll get the order from the db that has all the items
+
+    // TODO: Resolve potential concurrency issue where any writes to the order items
+    // between this read and the Orders.update write below would be lost.
+    const dbOrder = Orders.findOne({ _id: order._id });
+    const items = dbOrder.items.map((item) => {
+      // Don't modify items unless they in our itemIds array
+      if (!itemIds.includes(item._id)) {
+        return item;
+      }
+
       // Add the current status to completed workflows
       if (item.workflow.status !== "new") {
         const workflows = item.workflow.workflow || [];
@@ -352,7 +374,7 @@ Meteor.methods({
     });
 
     const result = Orders.update({
-      _id: order._id
+      _id: dbOrder._id
     }, {
       $set: {
         items

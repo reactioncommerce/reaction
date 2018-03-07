@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { Job } from "meteor/vsivsi:job-collection";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs, Packages } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
 
@@ -56,7 +56,7 @@ export default function () {
       workTimeout: 180 * 1000
     },
     (job, callback) => {
-      Meteor.call("taxcloud/getTaxCodes", error => {
+      Meteor.call("taxcloud/getTaxCodes", (error) => {
         if (error) {
           if (error.error === "notConfigured") {
             Logger.warn(error.message);
@@ -67,7 +67,7 @@ export default function () {
         } else {
           // we should always return "completed" job here, because errors are fine
           const success = "Latest TaxCloud TaxCodes were fetched successfully.";
-          Reaction.Import.flush();
+          Reaction.Importer.flush();
           Logger.debug(success);
 
           job.done(success, { repeatId: true });

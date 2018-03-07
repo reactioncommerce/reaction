@@ -5,6 +5,7 @@ import { check } from "meteor/check";
 import { Random } from "meteor/random";
 import { Reaction, Logger, Hooks } from "/server/api";
 import { Cart, Shops, Accounts, Packages } from "/lib/collections";
+import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 function parseCardData(data) {
   return {
@@ -158,21 +159,19 @@ function buildPaymentMethods(options) {
   }
 
   const shopIds = Object.keys(transactionsByShopId);
-  const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + cardData.number.slice(-4);
+  const storedCard = `${cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1)} ${cardData.number.slice(-4)}`;
   const paymentMethods = [];
 
 
   shopIds.forEach((shopId) => {
     if (transactionsByShopId[shopId]) {
-      const cartItems = cartItemsByShop[shopId].map((item) => {
-        return {
-          _id: item._id,
-          productId: item.productId,
-          variantId: item.variants._id,
-          shopId,
-          quantity: item.quantity
-        };
-      });
+      const cartItems = cartItemsByShop[shopId].map((item) => ({
+        _id: item._id,
+        productId: item.productId,
+        variantId: item.variants._id,
+        shopId,
+        quantity: item.quantity
+      }));
 
       // we need to grab this per shop to get the API key
       const packageData = Packages.findOne({
@@ -272,7 +271,7 @@ export const methods = {
     // TODO: If there is only one transactionsByShopId and the shopId is primaryShopId -
     // Create a standard charge and bypass creating a customer for this charge
     const primaryShop = Shops.findOne({ _id: primaryShopId });
-    const currency = primaryShop.currency;
+    const { currency } = primaryShop;
 
     try {
       // Creates a customer object, adds a source via the card data
@@ -408,7 +407,7 @@ export const methods = {
         };
       }
       // If we get an unexpected error, log and return a censored error message
-      Logger.error("Received unexpected error type: " + error.rawType);
+      Logger.error(`Received unexpected error type: ${error.rawType}`);
       Logger.error(error);
       throw new Meteor.Error("server-error", "An unexpected error occurred while creating multiple stripe charges");
     }
@@ -420,7 +419,10 @@ export const methods = {
    * @return {Object} results from Stripe normalized
    */
   "stripe/payment/capture"(paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     const captureDetails = {
       amount: formatForStripe(paymentMethod.amount)
@@ -446,9 +448,13 @@ export const methods = {
    * @return {Object} result
    */
   "stripe/refund/create"(paymentMethod, amount, reason = "requested_by_customer") {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
     check(reason, String);
+
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     let result;
     try {
@@ -486,7 +492,11 @@ export const methods = {
    * @return {Object} result
    */
   "stripe/refund/list"(paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
+
     const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
     const stripe = stripeNpm(stripeKey);
     let refundListResults;

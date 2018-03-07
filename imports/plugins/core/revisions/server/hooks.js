@@ -2,14 +2,14 @@ import _ from "lodash";
 import { diff } from "deep-diff";
 import { Meteor } from "meteor/meteor";
 import { Products, Revisions, Tags, Media } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
 import { getSlug } from "/lib/api";
 
 function convertMetadata(modifierObject) {
   const metadata = {};
   for (const prop in modifierObject) {
-    if (modifierObject.hasOwnProperty(prop)) {
+    if ({}.hasOwnProperty.call(modifierObject, prop)) {
       if (prop.indexOf("metadata") !== -1) {
         const splitName = _.split(prop, ".")[1];
         metadata[splitName] = modifierObject[prop];
@@ -23,13 +23,17 @@ export const ProductRevision = {
   getProductPriceRange(productId) {
     const product = Products.findOne(productId);
     if (!product) {
-      return "";
+      return {
+        range: "0",
+        min: 0,
+        max: 0
+      };
     }
-    const variants = this.getTopVariants(product._id);
 
+    const variants = this.getTopVariants(product._id);
     if (variants.length > 0) {
       const variantPrices = [];
-      variants.forEach(variant => {
+      variants.forEach((variant) => {
         if (variant.isVisible === true) {
           const range = this.getVariantPriceRange(variant._id);
           if (typeof range === "string") {
@@ -57,6 +61,15 @@ export const ProductRevision = {
       };
       return priceObject;
     }
+
+    if (!product.price) {
+      return {
+        range: "0",
+        min: 0,
+        max: 0
+      };
+    }
+
     // if we have no variants subscribed to (client)
     // we'll get the price object previously from the product
     return product.price;
@@ -64,20 +77,22 @@ export const ProductRevision = {
 
   getVariantPriceRange(variantId) {
     const children = this.getVariants(variantId);
-    const visibleChildren = children.filter(child => child.isVisible && !child.isDeleted);
+    const visibleChildren = children.filter((child) => child.isVisible && !child.isDeleted);
 
     switch (visibleChildren.length) {
-      case 0:
+      case 0: {
         const topVariant = this.getProduct(variantId);
         // topVariant could be undefined when we removing last top variant
         return topVariant && topVariant.price;
-      case 1:
+      }
+      case 1: {
         return visibleChildren[0].price;
-      default:
+      }
+      default: {
         let priceMin = Number.POSITIVE_INFINITY;
         let priceMax = Number.NEGATIVE_INFINITY;
 
-        visibleChildren.map(child => {
+        visibleChildren.forEach((child) => {
           if (child.price < priceMin) {
             priceMin = child.price;
           }
@@ -91,6 +106,7 @@ export const ProductRevision = {
           return priceMin.toString();
         }
         return `${priceMin} - ${priceMax}`;
+      }
     }
   },
 
@@ -111,7 +127,7 @@ export const ProductRevision = {
       documentId: variantId
     });
 
-    return revision && revision.documentData || product;
+    return (revision && revision.documentData) || product;
   },
 
   getTopVariants(id) {
@@ -121,7 +137,7 @@ export const ProductRevision = {
       ancestors: [id],
       type: "variant",
       isDeleted: false
-    }).map((product) => {
+    }).forEach((product) => {
       const revision = this.findRevision({
         documentId: product._id
       });
@@ -131,6 +147,8 @@ export const ProductRevision = {
       } else if (!revision && product.isVisible) {
         variants.push(product);
       }
+
+      return variants;
     });
 
     return variants;
@@ -154,8 +172,10 @@ export const ProductRevision = {
         variants.push(product);
       }
     });
+
     return variants;
   },
+
   getVariantQuantity(variant) {
     const options = this.getVariants(variant._id);
     if (options && options.length) {
@@ -226,6 +246,10 @@ Media.files.before.update((userId, media, fieldNames, modifier) => {
         $set: {
           documentData: updatedMetadata
         }
+      });
+      Hooks.Events.run("afterRevisionsUpdate", userId, {
+        ...existingRevision,
+        documentData: updatedMetadata
       });
     } else {
       Revisions.insert({
@@ -420,7 +444,10 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
         "workflow.status": "revision/published"
       }
     });
-
+    Hooks.Events.run("afterRevisionsUpdate", userId, {
+      ...productRevision,
+      workflow: { ...productRevision.workflow, status: "revisions/published" }
+    });
     return true;
   }
 
@@ -433,7 +460,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
       }
 
       for (const property in modifier[operation]) {
-        if (modifier[operation].hasOwnProperty(property)) {
+        if ({}.hasOwnProperty.call(modifier[operation], property)) {
           if (operation === "$set" && property === "metafields.$") {
             // Special handling for meta fields with $ operator
             // We need to update the selector otherwise the operation would completly fail.
@@ -453,6 +480,10 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
                 "documentData.price": modifier.$set.price
               }
             });
+            Hooks.Events.run("afterRevisionsUpdate", userId, {
+              ...productRevision,
+              documentData: { ...productRevision.documentData, price: modifier.$set.price }
+            });
 
             const updateId = product.ancestors[0] || product._id;
             const priceRange = ProductRevision.getProductPriceRange(updateId);
@@ -463,6 +494,10 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
               $set: {
                 "documentData.isVisible": modifier.$set.isVisible
               }
+            });
+            Hooks.Events.run("afterRevisionsUpdate", userId, {
+              ...productRevision,
+              documentData: { ...productRevision.documentData, isVisible: modifier.$set.isVisible }
             });
 
             const updateId = product.ancestors[0] || product._id;
@@ -485,7 +520,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
             const newHandle = modifier.$set.handle;
 
             // Current revision data
-            const documentId = productRevision.documentId;
+            const { documentId } = productRevision;
             const slugDocId = getSlug(documentId);
             const revisionTitle = productRevision.documentData.title;
             const revisionHandle = productRevision.documentData.handle;
@@ -537,6 +572,8 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   }
 
   Revisions.update(revisionSelector, revisionModifier);
+  const updatedRevision = Revisions.findOne({ documentId: product._id });
+  Hooks.Events.run("afterRevisionsUpdate", userId, updatedRevision);
 
   Logger.debug(`Revison updated for product ${product._id}.`);
 
@@ -629,7 +666,7 @@ Products.before.remove((userId, product) => {
       documentId: product._id,
       documentData: product
     });
-    productRevision =  Revisions.findOne({
+    productRevision = Revisions.findOne({
       documentId: product._id
     });
   }
@@ -642,6 +679,11 @@ Products.before.remove((userId, product) => {
       "documentData.isDeleted": true,
       "workflow.status": "revision/remove"
     }
+  });
+  Hooks.Events.run("afterRevisionsUpdate", userId, {
+    ...productRevision,
+    documentData: { ...productRevision.documentData, isDeleted: true },
+    workflow: { ...productRevision.workflow, workflow: "revision/remove" }
   });
 
   Logger.debug(`Revison updated for product ${product._id}.`);
@@ -663,7 +705,7 @@ Products.before.remove((userId, product) => {
   return false;
 });
 
-Revisions.after.update((userId, revision) => {
+Hooks.Events.add("afterRevisionsUpdate", (userId, revision) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -683,7 +725,7 @@ Revisions.after.update((userId, revision) => {
     differences = diff(image.metadata, revision.documentData);
   }
 
-  Revisions.direct.update({
+  Revisions.update({
     _id: revision._id
   }, {
     $set: {
