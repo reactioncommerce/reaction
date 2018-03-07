@@ -100,6 +100,7 @@ export async function publishProductToCatalog(productId) {
 
   // Denormalize media
   const productMedia = mediaArray.map((media) => ({
+    metadata: media.metadata,
     thumbnail: `${media.url({ store: "thumbnail" })}`,
     small: `${media.url({ store: "small" })}`,
     medium: `${media.url({ store: "medium" })}`,
