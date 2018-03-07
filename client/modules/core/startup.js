@@ -5,7 +5,7 @@ import { Accounts as AccountsCollection } from "/lib/collections";
 import { Accounts } from "meteor/accounts-base";
 
 import { Reaction, Logger } from "/client/api";
-
+import { userPrefs } from "./main";
 
 const cookieName = "_RcFallbackLoginToken";
 
@@ -16,8 +16,9 @@ const cookieName = "_RcFallbackLoginToken";
 Meteor.startup(() => {
   // init the core
   Reaction.init();
+
   // initialize anonymous guest users
-  return Tracker.autorun(() => {
+  Tracker.autorun(() => {
     const userId = Meteor.userId();
 
     // Load data from Accounts collection into the localStorage
@@ -72,6 +73,15 @@ Meteor.startup(() => {
         }
       }
     }
+  });
+
+  // Set up an autorun to get fine-grained reactivity on only the
+  // user preferences
+  Tracker.autorun(() => {
+    const userId = Meteor.userId();
+    if (!userId) return;
+    const user = Meteor.users.findOne(userId, { fields: { profile: 1 } });
+    userPrefs.set((user && user.profile && user.profile.preferences) || undefined);
   });
 });
 

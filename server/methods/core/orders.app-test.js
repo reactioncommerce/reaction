@@ -540,8 +540,8 @@ describe("orders test", function () {
         const orderPaymentMethod = billingObjectMethod(Orders.findOne({ _id: order._id })).paymentMethod;
         expect(orderPaymentMethod.mode).to.equal("capture");
         expect(orderPaymentMethod.status).to.equal("completed");
+        done();
       });
-      return done();
     });
 
     it("should update order payment method status to error if payment processor fails", function (done) {
@@ -558,8 +558,8 @@ describe("orders test", function () {
         const orderPaymentMethod = billingObjectMethod(Orders.findOne({ _id: order._id })).paymentMethod;
         expect(orderPaymentMethod.mode).to.equal("capture");
         expect(orderPaymentMethod.status).to.equal("error");
+        done();
       });
-      return done();
     });
   });
 

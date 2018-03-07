@@ -35,24 +35,36 @@ export const methods = {
    * @name taxes/addRate
    * @method
    * @memberof Methods/Taxes
-   * @param  {String} modifier update statement
-   * @param  {String} docId    tax docId
-   * @return {String} returns update/insert result
+   * @param  {Object} doc A Taxes document to be inserted
+   * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use taxes/editRate method instead.
+   * @return {String} Insert result
    */
-  "taxes/addRate"(modifier, docId) {
-    check(modifier, Object);
-    check(docId, Match.OneOf(String, null, undefined));
+  "taxes/addRate"(doc, docId) {
+    check(doc, Object); // actual schema validation happens during insert below
 
-    // check permissions to add
-    if (!Reaction.hasPermission("taxes")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
-    }
-    // if no doc, insert
-    if (!docId) {
-      return Taxes.insert(modifier);
-    }
-    // else update and return
-    return Taxes.update(docId, modifier);
+    // Backward compatibility
+    check(docId, Match.Optional(String));
+    if (docId) return Meteor.call("taxes/editRate", { _id: docId, modifier: doc });
+
+    if (!Reaction.hasPermission("taxes")) throw new Meteor.Error("access-denied", "Access Denied");
+    return Taxes.insert(doc);
+  },
+
+  /**
+   * @name taxes/editRate
+   * @method
+   * @memberof Methods/Taxes
+   * @param  {Object} details An object with _id and modifier props
+   * @return {String} Update result
+   */
+  "taxes/editRate"(details) {
+    check(details, {
+      _id: String,
+      modifier: Object // actual schema validation happens during update below
+    });
+    if (!Reaction.hasPermission("taxes")) throw new Meteor.Error("access-denied", "Access Denied");
+    const { _id, modifier } = details;
+    return Taxes.update(_id, modifier);
   },
 
   /**

@@ -128,7 +128,7 @@ describe("stripe/payment/capture", function () {
     sandbox.restore();
   });
 
-  it("should should return a match error if transactionId is not available", function (done) {
+  it("should should return an error if transactionId is not available", function (done) {
     const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
@@ -150,13 +150,9 @@ describe("stripe/payment/capture", function () {
       return "sk_fake_fake";
     });
 
-    let captureResult = null;
-    let captureError = null;
     Meteor.call("stripe/payment/capture", paymentMethod, function (error, result) {
-      captureResult = result;
-      captureError = error;
-      expect(captureError.message).to.equal("Match error: Match error: Transaction id is required");
-      expect(captureResult).to.be.undefined;
+      expect(error.message).to.equal("[Transaction ID is required]");
+      expect(result).to.be.undefined;
       done();
     });
   });

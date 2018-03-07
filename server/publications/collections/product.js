@@ -130,12 +130,16 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
             // the merge box Meteor.server.sessions[sessionId].getCollectionView("Products").documents
             if (this._documents.Products) {
               if (this._documents.Products[revision.documentId]) {
+                // I find it much clearer without `else if`
+                // eslint-disable-next-line no-lonely-if
                 if (revision.workflow.status !== "revision/published") {
                   this.changed("Products", revision.documentId, { __revisions: [revision] });
                 } else {
                   this.changed("Products", revision.documentId, { __revisions: [] });
                 }
               } else {
+                // I find it much clearer without `else if`
+                // eslint-disable-next-line no-lonely-if
                 if (revision.workflow.status !== "revision/published") {
                   this.added("Products", revision.documentId, { __revisions: [revision] });
                 } else {

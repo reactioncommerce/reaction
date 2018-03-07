@@ -48,13 +48,12 @@ twitter-config-ui@1.0.0
 
 # Community Packages
 alanning:roles
-aldeed:autoform
-aldeed:collection2
-aldeed:schema-index
+aldeed:autoform@6.2.0
+aldeed:collection2@3.0.0
+aldeed:schema-index@3.0.0
 aldeed:template-extension
 bozhao:accounts-instagram
 cfs:filesystem
-cfs:graphicsmagick
 cfs:gridfs
 cfs:standard-packages
 cfs:storage-adapter

@@ -49,7 +49,7 @@ Meteor.methods({
    * @return {Number} returns reservationCount
    */
   "inventory/setStatus"(cartItems, status, currentStatus, notFoundStatus) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     check(status, Match.Optional(String));
     check(currentStatus, Match.Optional(String));
     check(notFoundStatus, Match.Optional(String));
@@ -159,7 +159,7 @@ Meteor.methods({
    * @return {undefined} undefined
    */
   "inventory/clearStatus"(cartItems, status, currentStatus) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     check(status, Match.Optional(String)); // workflow status
     check(currentStatus, Match.Optional(String));
     this.unblock();
@@ -216,7 +216,7 @@ Meteor.methods({
    * @return {undefined}
    */
   "inventory/clearReserve"(cartItems) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     return Meteor.call("inventory/clearStatus", cartItems);
   },
 
@@ -230,7 +230,7 @@ Meteor.methods({
    * @return {undefined}
    */
   "inventory/addReserve"(cartItems) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     return Meteor.call("inventory/setStatus", cartItems);
   },
 
@@ -246,7 +246,7 @@ Meteor.methods({
    * @returns {Number} number of inserted backorder documents
    */
   "inventory/backorder"(reservation, backOrderQty) {
-    check(reservation, Schemas.Inventory);
+    Schemas.Inventory.validate(reservation);
     check(backOrderQty, Number);
     this.unblock();
 
@@ -308,7 +308,7 @@ Meteor.methods({
    * @todo implement inventory/lowstock calculations
    */
   "inventory/lowStock"(product) {
-    check(product, Schemas.Product);
+    Schemas.Product.validate(product);
     // placeholder is here to give plugins a place to hook into
     Logger.debug("inventory/lowStock");
   },
@@ -322,7 +322,7 @@ Meteor.methods({
    * @return {String} return remove result
    */
   "inventory/remove"(inventoryItem) {
-    check(inventoryItem, Schemas.Inventory);
+    Schemas.Inventory.validate(inventoryItem);
     // user needs createProduct permission to adjust inventory
     // REVIEW: Should this be checking against shop permissions instead?
 
@@ -349,7 +349,7 @@ Meteor.methods({
    * @return {undefined}
    */
   "inventory/shipped"(cartItems) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     return Meteor.call("inventory/setStatus", cartItems, "shipped", "sold");
   },
 
@@ -362,7 +362,7 @@ Meteor.methods({
    * @return {undefined}
    */
   "inventory/sold"(cartItems) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     return Meteor.call("inventory/setStatus", cartItems, "sold", "reserved");
   },
 
@@ -375,7 +375,7 @@ Meteor.methods({
    * @return {undefined}
    */
   "inventory/return"(cartItems) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     return Meteor.call("inventory/setStatus", cartItems, "return");
   },
 
@@ -388,7 +388,7 @@ Meteor.methods({
    * @return {undefined}
    */
   "inventory/returnToStock"(cartItems) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     return Meteor.call("inventory/clearStatus", cartItems, "new", "return");
   }
 });

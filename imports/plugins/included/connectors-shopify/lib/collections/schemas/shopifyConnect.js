@@ -1,4 +1,6 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "/imports/plugins/core/collections";
 
@@ -19,35 +21,37 @@ import { registerSchema } from "/imports/plugins/core/collections";
  * @property {String} description Shopify webhook description, currently unused
  */
 const Webhook = new SimpleSchema({
-  shopifyId: {
-    type: Number,
-    label: "Shopify webhook ID",
-    decimal: false
+  "shopifyId": {
+    type: SimpleSchema.Integer,
+    label: "Shopify webhook ID"
   },
-  topic: {
+  "topic": {
     type: String,
     label: "Shopify webhook topic"
   },
-  address: {
+  "address": {
     type: String,
     label: "URL webhook will POST to"
   },
-  format: {
+  "format": {
     type: String,
     label: "Format of webhook data"
   },
-  integrations: {
-    type: [String],
+  "integrations": {
+    type: Array,
     label: "Integrations currently using this webhook",
     optional: true
   },
+  "integrations.$": {
+    type: String
+  },
   // Currently unused, might want it later
-  description: {
+  "description": {
     type: String,
     label: "Shopify webhook description",
     optional: true
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("Webhook", Webhook);
 
@@ -72,7 +76,7 @@ export const Synchook = new SimpleSchema({
     type: String,
     label: "Exactly what to sync in this topic"
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("Synchook", Synchook);
 
@@ -85,39 +89,50 @@ registerSchema("Synchook", Synchook);
  * @property {String} settings.shopName Shop slug
  * @property {Array} settings.webhooks Array of registered Shopify webhooks
  */
-export const ShopifyConnectPackageConfig = new SimpleSchema([
-  PackageConfig, {
-    "settings.apiKey": {
-      type: String,
-      label: "API key",
-      optional: true
-    },
-    "settings.password": {
-      type: String,
-      label: "API password",
-      optional: true
-    },
-    "settings.sharedSecret": {
-      type: String,
-      label: "API shared secret",
-      optional: true
-    },
-    "settings.shopName": {
-      type: String,
-      label: "Shop slug",
-      optional: true
-    },
-    "settings.webhooks": {
-      type: [Webhook],
-      label: "Registered Shopify webhooks",
-      optional: true
-    },
-    "settings.synchooks": {
-      type: [Synchook],
-      label: "Hooks being used to sync outbound with Shopify",
-      optional: true
-    }
+export const ShopifyConnectPackageConfig = PackageConfig.clone().extend({
+  // Remove blackbox: true from settings obj
+  "settings": {
+    type: Object,
+    optional: true,
+    blackbox: false,
+    defaultValue: {}
+  },
+  "settings.apiKey": {
+    type: String,
+    label: "API key",
+    optional: true
+  },
+  "settings.password": {
+    type: String,
+    label: "API password",
+    optional: true
+  },
+  "settings.sharedSecret": {
+    type: String,
+    label: "API shared secret",
+    optional: true
+  },
+  "settings.shopName": {
+    type: String,
+    label: "Shop slug",
+    optional: true
+  },
+  "settings.synchooks": {
+    type: Array,
+    label: "Hooks being used to sync outbound with Shopify",
+    optional: true
+  },
+  "settings.synchooks.$": {
+    type: Synchook
+  },
+  "settings.webhooks": {
+    type: Array,
+    label: "Registered Shopify webhooks",
+    optional: true
+  },
+  "settings.webhooks.$": {
+    type: Webhook
   }
-]);
+});
 
 registerSchema("ShopifyConnectPackageConfig", ShopifyConnectPackageConfig);

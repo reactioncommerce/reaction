@@ -19,6 +19,8 @@ Meteor.startup(() => {
   const merchantShopSub = Meteor.subscribe("MerchantShops");
   const packageSub = Meteor.subscribe("Packages");
 
+  let isLoaded = false;
+
   Tracker.autorun(() => {
     // initialize client routing
     if (
@@ -38,7 +40,10 @@ Meteor.startup(() => {
       Tracker.nonreactive(() => {
         // Make sure we have shops before we try to make routes for them
         if (Array.isArray(shops) && shops.length) {
-          initBrowserRouter();
+          if (!isLoaded) {
+            isLoaded = true;
+            initBrowserRouter();
+          }
         }
       });
     }

@@ -1,7 +1,8 @@
 import _ from "lodash";
+import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
 import { check, Match } from "meteor/check";
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 import { Products, Shops, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
@@ -14,13 +15,15 @@ import { findProductMedia } from "./product";
 //
 const filters = new SimpleSchema({
   "shops": {
-    type: [String],
+    type: Array,
     optional: true
   },
+  "shops.$": String,
   "tags": {
-    type: [String],
+    type: Array,
     optional: true
   },
+  "tags.$": String,
   "query": {
     type: String,
     optional: true
@@ -65,7 +68,7 @@ const filters = new SimpleSchema({
     type: String,
     optional: true
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("filters", filters);
 
@@ -106,7 +109,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   // if there are filter/params that don't match the schema
   // validate, catch except but return no results
   try {
-    check(productFilters, Match.OneOf(undefined, filters));
+    if (productFilters) filters.validate(productFilters);
   } catch (e) {
     Logger.debug(e, "Invalid Product Filters");
     return this.ready();
@@ -351,12 +354,16 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             // the merge box Meteor.server.sessions[sessionId].getCollectionView("Products").documents
             if (this._documents.Products) {
               if (this._documents.Products[revision.documentId]) {
+                // I find it much clearer without `else if`
+                // eslint-disable-next-line no-lonely-if
                 if (revision.workflow.status !== "revision/published") {
                   this.changed("Products", revision.documentId, { __revisions: [revision] });
                 } else {
                   this.changed("Products", revision.documentId, { __revisions: [] });
                 }
               } else {
+                // I find it much clearer without `else if`
+                // eslint-disable-next-line no-lonely-if
                 if (revision.workflow.status !== "revision/published") {
                   this.added("Products", revision.documentId, { __revisions: [revision] });
                 } else {
