@@ -218,16 +218,17 @@ function updateShipmentQuotes(cartId, rates, selector) {
 function updateShippingRecordByShop(cart, rates) {
   const cartId = cart._id;
   const itemsByShop = cart.getItemsByShop();
+
   const shops = Object.keys(itemsByShop);
-  let update;
-  let selector;
   shops.forEach((shopId) => {
-    selector = {
+    const selector = {
       "_id": cartId,
       "shipping.shopId": shopId
     };
     const cartForShipping = Cart.findOne(selector);
+
     // we may have added a new shop since the last time we did this, if so we need to add a new record
+    let update;
     if (cartForShipping) {
       update = updateShipmentQuotes(cartId, rates, selector);
     } else {
@@ -246,6 +247,7 @@ function updateShippingRecordByShop(cart, rates) {
 
     Logger.debug(`Success updating rates for cart ${cartId}`, rates);
   });
+
   pruneShippingRecordsByShop(cart);
   normalizeAddresses(cart);
 }
@@ -308,7 +310,7 @@ export const methods = {
     }
     this.unblock();
     let cart = Cart.findOne(cartId);
-    check(cart, CartSchema);
+    CartSchema.validate(cart);
 
     if (cart) {
       if (!cart.shipping || cart.shipping.length === 0) {
@@ -329,7 +331,7 @@ export const methods = {
    * @return {Array} return updated rates in cart
    */
   "shipping/getShippingRates"(cart) {
-    check(cart, CartSchema);
+    CartSchema.validate(cart);
     const rates = [];
     const retrialTargets = [];
     // must have items to calculate shipping
@@ -349,16 +351,13 @@ export const methods = {
       }
     }
 
-    let newRates;
-    const didEveryShippingProviderFail = rates.every((shippingMethod) => shippingMethod.requestStatus && shippingMethod.requestStatus === "error");
-    if (didEveryShippingProviderFail) {
+    let newRates = rates.filter(({ requestStatus }) => requestStatus !== "error");
+    if (newRates.length === 0) {
       newRates = [{
         requestStatus: "error",
         shippingProvider: "all",
         message: "All requests for shipping methods failed."
       }];
-    } else {
-      newRates = rates.filter((shippingMethod) => !(shippingMethod.requestStatus) || shippingMethod.requestStatus !== "error");
     }
 
     Logger.debug("getShippingRates returning rates", rates);

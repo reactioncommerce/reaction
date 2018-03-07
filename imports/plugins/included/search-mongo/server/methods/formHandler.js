@@ -3,9 +3,8 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Packages, Jobs } from "/lib/collections";
-import { CorePackageConfig } from "/lib/collections/schemas";
+import { SearchPackageConfig } from "../../lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
-
 
 function fieldsChanged(changedFields, fieldType = "includes") {
   for (const field of changedFields) {
@@ -21,10 +20,24 @@ function weightsChanged(changedFields) {
 }
 
 Meteor.methods({
-  "search/updateSearchSettings"(modifier, _id) {
-    check(modifier, Match.Optional(CorePackageConfig));
-    check(_id, String);
-    const currentSettings = Packages.findOne(_id);
+  /**
+   * @name search/updateSearchSettings
+   * @method
+   * @param  {Object} details An object with _id and modifier props
+   * @param  {String} [docId] DEPRECATED. The _id, if details is the modifier.
+   */
+  "search/updateSearchSettings"(details, docId) {
+    check(details, Object);
+
+    // Backward compatibility
+    check(docId, Match.Optional(String));
+    const id = docId || details._id;
+    const modifier = docId ? details : details.modifier;
+
+    check(id, String);
+    SearchPackageConfig.validate(modifier, { modifier: true });
+
+    const currentSettings = Packages.findOne(id);
     const newSettingsArray = _.keys(modifier.$set);
     const changedSettings = [];
     for (const setting of newSettingsArray) {
@@ -69,7 +82,7 @@ Meteor.methods({
           cancelRepeats: true
         });
     }
-    Packages.update(_id, modifier);
+    Packages.update(id, modifier);
     return rebuildJob;
   }
 });

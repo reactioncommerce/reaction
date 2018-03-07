@@ -7,6 +7,7 @@ import { check, Match } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Media, Orders, Products, Shops, Packages } from "/lib/collections";
 import { Logger, Hooks, Reaction } from "/server/api";
+import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 /**
  * @name formatDateForEmail
@@ -200,7 +201,7 @@ export const methods = {
         $push: {
           "shipping.$.workflow.workflow": "coreOrderWorkflow/picked"
         }
-      });
+      }, { bypassCollection2: true });
     }
     return result;
   },
@@ -239,7 +240,7 @@ export const methods = {
         $push: {
           "shipping.$.workflow.workflow": "coreOrderWorkflow/packed"
         }
-      });
+      }, { bypassCollection2: true });
     }
     return result;
   },
@@ -276,7 +277,7 @@ export const methods = {
         $push: {
           "shipping.$.workflow.workflow": "coreOrderWorkflow/labeled"
         }
-      });
+      }, { bypassCollection2: true });
     }
     return result;
   },
@@ -418,7 +419,6 @@ export const methods = {
       Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal));
     }
 
-
     // send notification to user
     const prefix = Reaction.getShopPrefix();
     const url = `${prefix}/notifications`;
@@ -539,7 +539,7 @@ export const methods = {
       $push: {
         "shipping.$.workflow.workflow": "coreOrderWorkflow/shipped"
       }
-    });
+    }, { bypassCollection2: true });
 
     return {
       workflowResult,
@@ -595,7 +595,7 @@ export const methods = {
       $push: {
         "shipping.$.workflow.workflow": "coreOrderWorkflow/delivered"
       }
-    });
+    }, { bypassCollection2: true });
 
     if (isCompleted === true) {
       Hooks.Events.run("onOrderShipmentDelivered", order._id);
@@ -664,11 +664,12 @@ export const methods = {
 
     for (const shippingRecord of order.shipping) {
       shippingAddress = shippingRecord.address;
-      ({ carrier } = shippingRecord.shipmentMethod);
       ({ tracking } = shippingRecord);
-      shippingCost += shippingRecord.shipmentMethod.rate;
+      const { shipmentMethod } = shippingRecord;
+      ({ carrier } = shipmentMethod || {});
+      const { rate } = shipmentMethod || {};
+      shippingCost += rate || 0;
     }
-
 
     const refundResult = Meteor.call("orders/refunds/list", order);
     const refundTotal = Array.isArray(refundResult) && refundResult.reduce((acc, refund) => acc + refund.amount, 0);
@@ -974,51 +975,57 @@ export const methods = {
       // Grab the amount from the shipment, otherwise use the original amount
       const processor = paymentMethod.processor.toLowerCase();
 
-      Meteor.call(`${processor}/payment/capture`, paymentMethod, (error, result) => {
-        if (result && result.saved === true) {
-          const metadata = Object.assign(bilingRecord.paymentMethod.metadata || {}, result.metadata || {});
+      let result;
+      let error;
+      try {
+        result = Meteor.call(`${processor}/payment/capture`, paymentMethod);
+      } catch (e) {
+        error = e;
+      }
 
-          Orders.update({
-            "_id": orderId,
-            "billing.paymentMethod.transactionId": transactionId
-          }, {
-            $set: {
-              "billing.$.paymentMethod.mode": "capture",
-              "billing.$.paymentMethod.status": "completed",
-              "billing.$.paymentMethod.metadata": metadata
-            },
-            $push: {
-              "billing.$.paymentMethod.transactions": result
-            }
-          });
+      if (result && result.saved === true) {
+        const metadata = Object.assign(bilingRecord.paymentMethod.metadata || {}, result.metadata || {});
 
-          // event onOrderPaymentCaptured used for confirmation hooks
-          // ie: confirmShippingMethodForOrder is triggered here
-          Hooks.Events.run("onOrderPaymentCaptured", orderId);
-        } else {
-          if (result && result.error) {
-            Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
-          } else {
-            Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, error);
+        Orders.update({
+          "_id": orderId,
+          "billing.paymentMethod.transactionId": transactionId
+        }, {
+          $set: {
+            "billing.$.paymentMethod.mode": "capture",
+            "billing.$.paymentMethod.status": "completed",
+            "billing.$.paymentMethod.metadata": metadata
+          },
+          $push: {
+            "billing.$.paymentMethod.transactions": result
           }
+        });
 
-          Orders.update({
-            "_id": orderId,
-            "billing.paymentMethod.transactionId": transactionId
-          }, {
-            $set: {
-              "billing.$.paymentMethod.mode": "capture",
-              "billing.$.paymentMethod.status": "error"
-            },
-            $push: {
-              "billing.$.paymentMethod.transactions": result
-            }
-          });
-
-          return { error: "orders/capturePayments: Failed to capture transaction" };
-        }
+        // event onOrderPaymentCaptured used for confirmation hooks
+        // ie: confirmShippingMethodForOrder is triggered here
+        Hooks.Events.run("onOrderPaymentCaptured", orderId);
         return { error, result };
+      }
+
+      if (result && result.error) {
+        Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
+      } else {
+        Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, error);
+      }
+
+      Orders.update({
+        "_id": orderId,
+        "billing.paymentMethod.transactionId": transactionId
+      }, {
+        $set: {
+          "billing.$.paymentMethod.mode": "capture",
+          "billing.$.paymentMethod.status": "error"
+        },
+        $push: {
+          "billing.$.paymentMethod.transactions": result
+        }
       });
+
+      return { error: "orders/capturePayments: Failed to capture transaction" };
     }
   },
 
@@ -1061,9 +1068,13 @@ export const methods = {
    */
   "orders/refunds/create"(orderId, paymentMethod, amount, sendEmail = true) {
     check(orderId, String);
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
     check(sendEmail, Match.Optional(Boolean));
+
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
     if (!Reaction.hasPermission("orders")) {
@@ -1143,8 +1154,12 @@ export const methods = {
    */
   "orders/refunds/refundItems"(orderId, paymentMethod, refundItemsInfo) {
     check(orderId, String);
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(refundItemsInfo, Object);
+
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
     if (!Reaction.hasPermission("orders")) {

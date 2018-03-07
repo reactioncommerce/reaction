@@ -86,7 +86,7 @@ export const methods = {
    * @return {Object}  returns discount object
    */
   "discounts/calculate"(cart) {
-    check(cart, Object); // Reaction.Schemas.Cart
+    Reaction.Schemas.Cart.validate(cart);
 
     let currentDiscount = 0;
     // what's going on here?
