@@ -52,6 +52,83 @@ export function isBackorder(variants) {
 }
 
 /**
+ * @method publishProductToCatalog
+ * @summary Publish a product to the Catalog
+ * @memberof Catalog
+ * @param {string} productId - A string product id
+ * @return {boolean} true on successful publish, false if publish was unsuccessful
+ */
+export async function publishProductToCatalog(productId) {
+  check(productId, String);
+
+  // Find the product by id
+  let product = Products.findOne({
+    $or: [
+      { _id: productId },
+      { ancestors: { $in: [productId] } }
+    ]
+  });
+
+  // Stop of a product could not be found
+  if (!product) {
+    Logger.info("Cannot publish product to catalog");
+    return false;
+  }
+
+  // If the product has ancestors, then find to top product document
+  if (Array.isArray(product.ancestors) && product.ancestors.length) {
+    product = Products.findOne({
+      _id: product.ancestors[0]
+    });
+  }
+
+  // Get variants of the product
+  const variants = Products.find({
+    ancestors: {
+      $in: [productId]
+    }
+  }).fetch();
+
+  // Get Media for the product
+  const mediaArray = await Media.find({
+    "metadata.productId": productId,
+    "metadata.toGrid": 1,
+    "metadata.workflow": { $nin: ["archived", "unpublished"] }
+  }, {
+    sort: { "metadata.priority": 1, "uploadedAt": 1 }
+  });
+
+  // Denormalize media
+  const productMedia = mediaArray.map((media) => ({
+    thumbnail: `${media.url({ store: "thumbnail" })}`,
+    small: `${media.url({ store: "small" })}`,
+    medium: `${media.url({ store: "medium" })}`,
+    large: `${media.url({ store: "large" })}`,
+    image: `${media.url({ store: "image" })}`
+  }));
+
+  // Denormalize product fields
+  product.media = productMedia;
+  product.type = "product-simple";
+  product.isSoldOut = isSoldOut(variants);
+  product.isBackorder = isBackorder(variants);
+  product.isLowQuantity = isLowQuantity(variants);
+  product.variants = variants.map((variant) => {
+    const { inventoryQuantity, ...v } = variant;
+    return v;
+  });
+
+  // Insert/update catalog document
+  const result = CatalogCollection.upsert({
+    _id: productId
+  }, {
+    $set: product
+  });
+
+  return result && result.numberAffected === 1;
+}
+
+/**
  * @method publishProductsToCatalog
  * @summary Publish one or more products to the Catalog
  * @memberof Catalog
@@ -66,65 +143,7 @@ export function publishProductsToCatalog(productIds) {
     ids = [productIds];
   }
 
-  return ids.every(async (productId) => {
-    let product = Products.findOne({
-      $or: [
-        { _id: productId },
-        { ancestors: { $in: [productId] } }
-      ]
-    });
-
-    if (!product) {
-      Logger.info("Cannot publish product to catalog");
-      return false;
-    }
-
-    if (Array.isArray(product.ancestors) && product.ancestors.length) {
-      product = Products.findOne({
-        _id: product.ancestors[0]
-      });
-    }
-
-    const variants = Products.find({
-      ancestors: {
-        $in: [productId]
-      }
-    }).fetch();
-
-    const mediaArray = await Media.find({
-      "metadata.productId": productId,
-      "metadata.toGrid": 1,
-      "metadata.workflow": { $nin: ["archived", "unpublished"] }
-    }, {
-      sort: { "metadata.priority": 1, "uploadedAt": 1 }
-    });
-
-    const productMedia = mediaArray.map((media) => ({
-      thumbnail: `${media.url({ store: "thumbnail" })}`,
-      small: `${media.url({ store: "small" })}`,
-      medium: `${media.url({ store: "medium" })}`,
-      large: `${media.url({ store: "large" })}`,
-      image: `${media.url({ store: "image" })}`
-    }));
-
-    product.media = productMedia;
-    product.type = "product-simple";
-    product.isSoldOut = isSoldOut(variants);
-    product.isBackorder = isBackorder(variants);
-    product.isLowQuantity = isLowQuantity(variants);
-    product.variants = variants.map((variant) => {
-      const { inventoryQuantity, ...v } = variant;
-      return v;
-    });
-
-    const result = CatalogCollection.upsert({
-      _id: productId
-    }, {
-      $set: product
-    });
-
-    return result && result.numberAffected === 1;
-  });
+  return ids.every(async (productId) => await publishProductToCatalog(productId));
 }
 
 /**
