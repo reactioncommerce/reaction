@@ -716,6 +716,9 @@ export default {
    */
   createDefaultAdminUser() {
     const shopId = this.getPrimaryShopId();
+    if (!shopId) {
+      throw new Error(`createDefaultAdminUser: getPrimaryShopId returned ${shopId}`);
+    }
 
     // if an admin user has already been created, we'll exit
     if (Roles.getUsersInRole("owner", shopId).count() !== 0) {
@@ -996,7 +999,6 @@ export default {
    * @summary Method for getting all schemas attached to a given collection
    * @deprecated by simpl-schema
    * @private
-   * @todo TODO: Remove collectionSchema method in favor of simpl-schema
    * @name collectionSchema
    * @param  {string} collection The mongo collection to get schemas for
    * @param  {Object} [selector] Optional selector for multi schema collections
@@ -1005,37 +1007,26 @@ export default {
    *                  the collection or schema could not be found
    */
   collectionSchema(collection, selector) {
-    let selectorErrMsg = "";
-    if (selector) {
-      selectorErrMsg = `and selector ${selector}`;
-    }
+    Logger.warn("Reaction.collectionSchema is deprecated and will be removed" +
+      " in a future release. Use collection.simpleSchema(selector).");
+
+    const selectorErrMsg = selector ? `and selector ${selector}` : "";
     const errMsg = `Reaction.collectionSchema could not find schemas for ${collection} collection ${selectorErrMsg}`;
 
-    if (!Collections[collection] || !Collections[collection]._c2) {
+    const col = Collections[collection];
+    if (!col) {
       Logger.warn(errMsg);
       // Return false so we don't pass a check that uses a non-existant schema
       return false;
     }
 
-    const c2 = Collections[collection]._c2;
-
-    // if we have `_simpleSchemas` (plural), then this is a selector based schema
-    if (c2._simpleSchemas) {
-      const selectorKeys = Object.keys(selector);
-      const selectorSchema = c2._simpleSchemas.find((schema) =>
-        // Make sure that every key:value in our selector matches the key:value in the schema selector
-        selectorKeys.every((key) => selector[key] === schema.selector[key]));
-
-      if (!selectorSchema) {
-        Logger.warn(errMsg);
-        // Return false so we don't pass a check that uses a non-existant schema
-        return false;
-      }
-
-      // return a copy of the selector schema we found
-      return selectorSchema.schema;
+    const schema = col.simpleSchema(selector);
+    if (!schema) {
+      Logger.warn(errMsg);
+      // Return false so we don't pass a check that uses a non-existant schema
+      return false;
     }
 
-    return c2._simpleSchema;
+    return schema;
   }
 };

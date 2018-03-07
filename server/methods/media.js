@@ -1,5 +1,5 @@
+import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
 import { Media } from "/lib/collections";
 import { Reaction } from "/server/api";
@@ -14,7 +14,7 @@ import { Reaction } from "/server/api";
 export const removeMedia = new ValidatedMethod({
   name: "removeMedia",
   validate: new SimpleSchema({
-    mediaId: { type: String }
+    mediaId: String
   }).validator(),
   run({ mediaId }) {
     if (!Reaction.hasPermission("createProduct")) {
@@ -34,7 +34,9 @@ export const removeMedia = new ValidatedMethod({
 export const updateMediaPriorities = new ValidatedMethod({
   name: "updateMediaPriorities",
   validate: new SimpleSchema({
-    sortedMedias: { type: [new SimpleSchema({ mediaId: { type: String } })] }
+    "sortedMedias": Array,
+    "sortedMedias.$": Object,
+    "sortedMedias.$.mediaId": String
   }).validator(),
   run({ sortedMedias }) {
     if (!Reaction.hasPermission("createProduct")) {
