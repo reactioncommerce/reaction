@@ -4,7 +4,7 @@ import { MongoInternals } from "meteor/mongo";
 const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
 
 Migrations.add({
-  version: 22,
+  version: 23,
   up() {
     try {
       Promise.await(db.dropCollection("cfs._tempstore.chunks"));
