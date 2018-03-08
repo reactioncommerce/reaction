@@ -276,12 +276,13 @@ function compareAddress(address, validationAddress) {
  * @returns {{validated: boolean, address: *}} - The results of the validation
  */
 export function validateAddress(address) {
-  check(address, Object);
+  Schemas.Address.clean(address, { mutate: true });
+  Schemas.Address.validate(address);
+
   let validated = true;
   let validationErrors;
   let validatedAddress = address;
   let formErrors;
-  Schemas.Address.clean(address);
   const validator = getValidator();
   if (validator) {
     const validationResult = Meteor.call(validator, address);
@@ -327,7 +328,7 @@ function currentUserHasPassword() {
  * @return {Object} with keys `numberAffected` and `insertedId` if doc was inserted
  */
 export function addressBookAdd(address, accountUserId) {
-  check(address, Schemas.Address);
+  Schemas.Address.validate(address);
   check(accountUserId, Match.Optional(String));
   // security, check for admin access. We don't need to check every user call
   // here because we are calling `Meteor.userId` from within this Method.
@@ -429,7 +430,7 @@ export function addressBookAdd(address, accountUserId) {
  * @return {Number} The number of affected documents
  */
 export function addressBookUpdate(address, accountUserId, type) {
-  check(address, Schemas.Address);
+  Schemas.Address.validate(address);
   check(accountUserId, Match.OneOf(String, null, undefined));
   check(type, Match.Optional(String));
   // security, check for admin access. We don't need to check every user call
@@ -444,12 +445,11 @@ export function addressBookUpdate(address, accountUserId, type) {
 
   // If no userId is provided, use the current user
   const userId = accountUserId || Meteor.userId();
-
   // Find old state of isShippingDefault & isBillingDefault to compare and reflect in cart
-  const account = Accounts.findOne({
-    userId
-  });
-  const oldAddress = account.profile.addressBook.find((addr) => addr._id === address._id);
+  const account = Accounts.findOne({ userId });
+  const oldAddress = (account.profile.addressBook || []).find((addr) => addr._id === address._id);
+
+  if (!oldAddress) throw new Meteor.Error("not-found", `No existing address found with ID ${address._id}`);
 
   // Set new address to be default for `type`
   if (typeof type === "string") {
@@ -586,12 +586,14 @@ export function addressBookRemove(addressId, accountUserId) {
         _id: addressId
       }
     }
-  });
+  }, { bypassCollection2: true });
+
   // forceIndex when removing an address
   Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
     accountId: account._id,
     updatedFields: ["forceIndex"]
   });
+
   return updatedAccount;
 }
 

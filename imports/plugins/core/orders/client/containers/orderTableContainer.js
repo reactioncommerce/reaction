@@ -660,7 +660,8 @@ const wrapComponent = (Comp) => (
 
       let orderCount = 0;
       const done = () => {
-        if (++orderCount === selectedOrders.length) {
+        orderCount += 1;
+        if (orderCount === selectedOrders.length) {
           this.setState({
             isLoading: {
               capturePayment: false
@@ -672,7 +673,8 @@ const wrapComponent = (Comp) => (
             allowOutsideClick: false
           });
         }
-      }
+      };
+
       // TODO: send these orders in batch as an array. This would entail re-writing the
       // "orders/approvePayment" method to receive an array of orders as a param.
       selectedOrders.forEach((order) => {

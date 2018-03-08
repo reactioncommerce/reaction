@@ -13,9 +13,7 @@ import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
 import { Packages, Shops } from "/lib/collections";
 import { getComponent } from "@reactioncommerce/reaction-components/components";
-import { Reaction } from "/lib/api";
 import Hooks from "./hooks";
-
 
 // Using a ternary operator here to avoid a mutable export - open to suggestions for a better way to do this
 export const history = Meteor.isClient ? createBrowserHistory() : createMemoryHistory();

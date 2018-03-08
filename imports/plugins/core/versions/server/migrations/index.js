@@ -18,3 +18,4 @@ import "./17_set_shop_uols";
 import "./18_use_react_for_header_and_footer_layout";
 import "./19_remove_admin_from_shop_manager";
 import "./20_add_shop_to_marketplace";
+import "./21_clean_cart_shipment_method";

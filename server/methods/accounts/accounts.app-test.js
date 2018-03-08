@@ -105,6 +105,7 @@ describe("Account Meteor method ", function () {
       const newAddress = account.profile.addressBook[
         account.profile.addressBook.length - 1];
       delete newAddress._id;
+      delete newAddress.failedValidation;
       expect(_.isEqual(address, newAddress)).to.be.true;
       return done();
     });
