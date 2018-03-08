@@ -1,4 +1,4 @@
-import { compose, withProps } from "recompose";
+import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Orders } from "/lib/collections";

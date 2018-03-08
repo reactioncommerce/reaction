@@ -8,7 +8,6 @@ import { Reaction } from "/client/api";
 
 class MediaGallery extends Component {
   static propTypes = {
-    allowFeaturedMediaHover: PropTypes.bool,
     editable: PropTypes.bool,
     featuredMedia: PropTypes.object,
     media: PropTypes.arrayOf(PropTypes.object),
@@ -49,14 +48,6 @@ class MediaGallery extends Component {
     const { media } = this.props;
 
     return Array.isArray(media) && media.length > 0;
-  }
-
-  get allowFeaturedMediaHover() {
-    if (this.props.allowFeaturedMediaHover && this.props.featuredMedia) {
-      return true;
-    }
-
-    return false;
   }
 
   get featuredMedia() {
@@ -143,6 +134,7 @@ class MediaGallery extends Component {
           <div ref={measureRef}>
             <Components.MediaItem
               editable={editable}
+              index={0} // index prop is required for SortableItem HOC to work
               mediaHeight={height}
               mediaWidth={width}
               onMouseEnter={onMouseEnterMedia}
@@ -160,10 +152,11 @@ class MediaGallery extends Component {
   renderMediaThumbnails() {
     const { editable, media: mediaList, onMouseEnterMedia, onMoveMedia, onRemoveMedia } = this.props;
 
-    return (mediaList || []).map((media) => (
+    return (mediaList || []).map((media, index) => (
       <Components.MediaItem
         editable={editable}
         key={media._id}
+        index={index} // index prop is required for SortableItem HOC to work
         onMouseEnter={onMouseEnterMedia}
         onMove={onMoveMedia}
         onRemoveMedia={onRemoveMedia}
@@ -222,11 +215,22 @@ class MediaGallery extends Component {
   }
 
   render() {
-    if (this.props.editable) {
-      return this.renderMediaGalleryUploader();
+    const { editable } = this.props;
+
+    let gallery;
+    if (editable) {
+      gallery = this.renderMediaGalleryUploader();
+    } else {
+      gallery = this.renderMediaGallery();
     }
 
-    return this.renderMediaGallery();
+    // Note that only editable mode actually uses drag-drop, but since both views render
+    // MediaItems, which are SortableItems, there is an error if it isn't in the ancester tree
+    return (
+      <Components.DragDropProvider>
+        {gallery}
+      </Components.DragDropProvider>
+    );
   }
 }
 

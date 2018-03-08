@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import ReactImageMagnify from "react-image-magnify";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import { SortableItem } from "../../containers";
+import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import Hint from "./hint";
 
 class MediaItem extends Component {
@@ -24,8 +24,6 @@ class MediaItem extends Component {
   };
 
   static defaultProps = {
-    connectDragSource: (item) => item,
-    connectDropTarget: (item) => item,
     defaultSource: "/resources/placeholder.gif",
     editable: false,
     onMouseEnter() {},

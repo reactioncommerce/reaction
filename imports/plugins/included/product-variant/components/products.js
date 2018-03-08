@@ -51,7 +51,7 @@ class Products extends Component {
    * @return {Node} React node containing the `ProductGrid` component.
    */
   renderProductGrid() {
-    const { products } = this.props;
+    const { products, productMediaById } = this.props;
 
     const productsByKey = {};
 
@@ -63,7 +63,7 @@ class Products extends Component {
 
     return (
       <Components.ProductGrid
-        productMediaById={this.props.productMediaById}
+        productMediaById={productMediaById}
         productsByKey={productsByKey || {}}
         productIds={getIds({ tags: products })}
         canEdit={Reaction.hasPermission("createProduct")}

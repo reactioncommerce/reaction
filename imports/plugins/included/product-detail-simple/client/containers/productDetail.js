@@ -11,7 +11,6 @@ import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Cart } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
-import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { Media } from "/imports/plugins/core/files/client";
 
 const wrapComponent = (Comp) => (
@@ -249,22 +248,20 @@ const wrapComponent = (Comp) => (
       }
 
       return (
-        <DragDropProvider>
-          <StyleRoot>
-            <Comp
-              cartQuantity={this.state.cartQuantity}
-              mediaGalleryComponent={<Components.MediaGallery media={media} />}
-              onAddToCart={this.handleAddToCart}
-              onCartQuantityChange={this.handleCartQuantityChange}
-              onViewContextChange={this.handleViewContextChange}
-              socialComponent={<SocialContainer />}
-              topVariantComponent={<VariantListContainer />}
-              onDeleteProduct={this.handleDeleteProduct}
-              onProductFieldChange={this.handleProductFieldChange}
-              {...this.props}
-            />
-          </StyleRoot>
-        </DragDropProvider>
+        <StyleRoot>
+          <Comp
+            cartQuantity={this.state.cartQuantity}
+            mediaGalleryComponent={<Components.MediaGallery media={media} />}
+            onAddToCart={this.handleAddToCart}
+            onCartQuantityChange={this.handleCartQuantityChange}
+            onViewContextChange={this.handleViewContextChange}
+            socialComponent={<SocialContainer />}
+            topVariantComponent={<VariantListContainer />}
+            onDeleteProduct={this.handleDeleteProduct}
+            onProductFieldChange={this.handleProductFieldChange}
+            {...this.props}
+          />
+        </StyleRoot>
       );
     }
   }

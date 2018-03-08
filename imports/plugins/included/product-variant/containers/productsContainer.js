@@ -214,9 +214,7 @@ function composer(props, onData) {
     };
 
     return {
-      ...applyProductRevision(product),
-      // additionalMedia,
-      // primaryMedia
+      ...applyProductRevision(product)
     };
   });
 

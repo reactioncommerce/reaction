@@ -41,7 +41,6 @@ class ProductImage extends Component {
     const { displayMedia, item, mode, size } = this.props;
 
     const fileRecord = displayMedia(item);
-    
 
     let mediaUrl;
     if (fileRecord) {
