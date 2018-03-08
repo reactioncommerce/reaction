@@ -1,21 +1,30 @@
-// TODO: Conform this schema to Reaction Metafield spec.
-// See /lib/collections/schemas/metafield.js
 export const typeDefs = `
-  type Metafield {
-    key: String
+  input CreateMetafieldInput {
+    description: String
+    key: String!
     namespace: String
     scope: String
     value: String
     valueType: String
-    description: String
   }
 
-  input MetafieldInput {
+  input UpdateMetafieldInput {
+    description: String
+    key: String!
+    namespace: String
+    scope: String
+    value: String
+    valueType: String
+  }
+
+  # User defined attributes.
+  # NOTE: key attribute is modified to be required.
+  type Metafield {
+    description: String
     key: String
     namespace: String
     scope: String
     value: String
     valueType: String
-    description: String
   }
 `;

@@ -1,7 +1,15 @@
+import { typeDefs as account } from "./account";
 import { typeDefs as address } from "./address";
+import { typeDefs as currency } from "./currency";
+import { typeDefs as datetime } from "./datetime";
+import { typeDefs as email } from "./email";
+import { typeDefs as group } from "./group";
 import { typeDefs as hello } from "./hello";
+import { typeDefs as jsonObject } from "./json-object";
 import { typeDefs as metafield } from "./metafield";
-import { typeDefs as scalars } from "./scalars";
+import { typeDefs as node } from "./node";
+import { typeDefs as role } from "./role";
+import { typeDefs as shop } from "./shop";
 import { typeDefs as users } from "./users";
 
 // Define base GraphQL schema maps that can be extended by the schema modules
@@ -9,14 +17,28 @@ import { typeDefs as users } from "./users";
 // See https://www.apollographql.com/docs/graphql-tools/generate-schema.html#extend-types
 const base = [
   `
-  type Query {
-    ping: String!
-  }
-
   type Mutation {
     echo(str: String): String
+  }
+
+  type Query {
+    ping: String!
   }
   `
 ];
 
-export const typeDefs = base.concat([address, hello, metafield, scalars, users]);
+export const typeDefs = base.concat([
+  account,
+  address,
+  currency,
+  datetime,
+  email,
+  group,
+  hello,
+  jsonObject,
+  metafield,
+  node,
+  role,
+  shop,
+  users
+]);
