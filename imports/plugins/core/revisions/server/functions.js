@@ -100,9 +100,9 @@ export function updateRevision(product, options = {}) {
   // changes have been published; resulting in a broken inheretence and UI
   const revisionHasAncestors =
     productRevision && productRevision.documentData && Array.isArray(productRevision.documentData.ancestors);
-  const modiferContainsIsDeleted = modifier.$set && modifier.$set.isDeleted === false;
+  const modifierContainsIsDeleted = modifier.$set && modifier.$set.isDeleted === false;
 
-  if (revisionHasAncestors && modiferContainsIsDeleted) {
+  if (revisionHasAncestors && modifierContainsIsDeleted) {
     // Verify there are no deleted ancestors,
     // Variants cannot be restored if their parent product / variant is deleted
     const archivedCount = Revisions.find({
