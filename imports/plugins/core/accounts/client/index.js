@@ -1,4 +1,5 @@
 export { default as AccountsDashboard } from "./components/accountsDashboard";
+export { default as AddressBook } from "./components/addressBook.js";
 export { default as AdminInviteForm } from "./components/adminInviteForm";
 export { default as EditGroup } from "./components/editGroup";
 export { default as ForgotPassword } from "./components/forgotPassword";
