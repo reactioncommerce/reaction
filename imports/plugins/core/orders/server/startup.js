@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Hooks } from "/server/api";
-import { AnalyticsEvents, Orders } from "/lib/collections";
+import { AnalyticsEvents } from "/lib/collections";
 
 
 Hooks.Events.add("afterOrderInsert", (order) => {
