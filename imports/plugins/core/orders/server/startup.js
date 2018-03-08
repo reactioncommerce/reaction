@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Hooks } from "/server/api";
-import { AnalyticsEvents, Orders } from "/lib/collections";
+import { AnalyticsEvents } from "/lib/collections";
 
 
 Hooks.Events.add("afterOrderInsert", (order) => {
@@ -31,7 +31,7 @@ Hooks.Events.add("afterOrderInsert", (order) => {
  * @return {Boolean} true if document should be updated, false otherwise
 */
 // NOTE: The workflow method ends up being set to 'workflow/coreOrderWorkflow/processing'
-// Which does not exist as a meteor server handler. This methods does hooks as it 
+// Which does not exist as a meteor server handler. This methods does hooks as it
 // is does not accomplish anything, perhaps it could be removed.
 Hooks.Events.add("beforeUpdateOrderWorkflow", (order, options) => {
   const { userId, modifier } = options;
