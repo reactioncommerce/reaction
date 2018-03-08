@@ -26,16 +26,25 @@ export function updateSettings(settings) {
  */
 function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
-  Hooks.Events.run("beforeUpdateCatalogProduct", product, {
+  const options = {
     userId,
     modifier,
     validation,
     publish: true
-  });
+  };
+
+  Hooks.Events.run("beforeUpdateCatalogProduct", product, options);
 
   const result = Products.update(selector, modifier, validation);
 
-  Hooks.Events.run("afterUpdateProductUpdateSearchRecord", product);
+  Hooks.Events.run("afterUpdateCatalogProduct", product, options);
+
+  // Records are not remove from the Products collection, they are only flagged as deleted.
+  // Run Hook to remove search record, if a product is being published as deleted
+  // Which is the equivalent to removing a product.
+  if (modifier.$set.isDeleted === true) {
+    Hooks.Events.run("afterRemoveProduct", product);
+  }
 
   return result;
 }
