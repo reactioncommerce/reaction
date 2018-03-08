@@ -359,7 +359,11 @@ function updateCatalogProduct(uId, selector, modifier, validation) {
   });
 
   if (shouldUpdateProduct) {
-    return Products.update(selector, modifier, validation);
+    const result = Products.update(selector, modifier, validation);
+
+    Hooks.Events.run("afterUpdateCatalogProduct", product, { modifier });
+
+    return result;
   }
 
   Logger.debug(`beforeUpdateCatalogProduct hook returned falsy, not updating catalog product`);
@@ -481,6 +485,8 @@ Meteor.methods({
         throw error;
       }
 
+      Hooks.Events.run("afterInsertProduct", clone);
+
       return newId;
     });
   },
@@ -541,6 +547,8 @@ Meteor.methods({
 
     Hooks.Events.run("beforeInsertCatalogProductInsertRevision", assembledVariant);
     Products.insert(assembledVariant);
+
+    Hooks.Events.run("afterInsertProduct", assembledVariant);
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
     return newVariantId;
@@ -579,8 +587,7 @@ Meteor.methods({
         _id: variant._id
       },
       {
-        $set: newVariant // newVariant already contain `type` property, so we
-        // do not need to pass it explicitly
+        $set: newVariant
       },
       {
         selector: { type: currentVariant.type },
@@ -650,6 +657,10 @@ Meteor.methods({
     let deleted = 0;
     if (shouldRemoveProduct) {
       deleted = Products.remove(selector);
+
+      toDelete.forEach((product) => {
+        Hooks.Events.run("afterRemoveProduct", product);
+      });
 
       // after variant were removed from product, we need to recalculate all
       // denormalized fields
@@ -902,8 +913,10 @@ Meteor.methods({
 
     const options = { userId: this.userId };
     let shouldRemoveProduct;
+    const toDeleteCache = {};
     ids.forEach((_id) => {
-      shouldRemoveProduct = Hooks.Events.run("beforeRemoveCatalogProduct", Products.findOne({ _id }), options);
+      toDeleteCache[_id] = Products.findOne({ _id });
+      shouldRemoveProduct = Hooks.Events.run("beforeRemoveCatalogProduct", toDeleteCache[_id], options);
     });
 
     if (shouldRemoveProduct) {
@@ -911,6 +924,9 @@ Meteor.methods({
         _id: {
           $in: ids
         }
+      });
+      ids.forEach((_id) => {
+        Hooks.Events.run("afterRemoveProduct", toDeleteCache[_id]);
       });
     }
 

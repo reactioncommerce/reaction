@@ -29,7 +29,7 @@ Hooks.Events.add("afterAccountsUpdate", (userId, accountId) => {
 });
 
 
-// NOTE: this hooks does not seemed to get fired, are there is no way 
+// NOTE: this hooks does not seemed to get fired, are there is no way
 // to delete an order, only cancel.
 // TODO: Verify the assumption above.
 // Orders.after.remove((userId, doc) => {
@@ -43,6 +43,8 @@ Hooks.Events.add("afterOrderInsert", (doc) => {
     const orderId = doc._id;
     buildOrderSearchRecord(orderId);
   }
+
+  return doc;
 });
 
 Hooks.Events.add("afterUpdateOrderUpdateSearchRecord", (order) => {
@@ -56,23 +58,27 @@ Hooks.Events.add("afterUpdateOrderUpdateSearchRecord", (order) => {
 /**
  * if product is removed, remove product search record
  */
-Products.after.remove((userId, doc) => {
+Hooks.Events.add("afterRemoveProduct", (doc) => {
   if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
     ProductSearch.remove(productId);
     Logger.debug(`Removed product ${productId} from ProductSearch collection`);
   }
+
+  return doc;
 });
 
 /**
 * after product update rebuild product search record
 */
-// Hooks.Events.add("afterUpdateProductUpdateSearchRecord", (doc) => {
-Products.after.update((userId, doc, fieldNames) => {
+Hooks.Events.add("afterUpdateCatalogProduct", (doc, options) => {
+  const { modifier: { $set: allProps } } = options;
+  const topLevelFieldNames = Object.getOwnPropertyNames(allProps);
+
   if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
     const { fieldSet } = getSearchParameters();
-    const modifiedFields = _.intersection(fieldSet, fieldNames);
+    const modifiedFields = _.intersection(fieldSet, topLevelFieldNames);
     if (modifiedFields.length) {
       Logger.debug(`Rewriting search record for ${doc.title}`);
       ProductSearch.remove(productId);
@@ -83,16 +89,20 @@ Products.after.update((userId, doc, fieldNames) => {
       Logger.debug("No watched fields modified, skipping");
     }
   }
+
+  return doc;
 });
 
 /**
  * after insert
  * @summary should fires on create new variants, on clones products/variants
  */
-Products.after.insert((userId, doc) => {
+Hooks.Events.add("afterInsertProduct", (doc) => {
   if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
     buildProductSearchRecord(productId);
     Logger.debug(`Added product ${productId} to ProductSearch`);
   }
+
+  return doc;
 });
