@@ -133,7 +133,6 @@ Meteor.methods({
     if (revisions) {
       for (const revision of revisions) {
         if (!revision.documentType || revision.documentType === "product") {
-          previousDocuments.push(Products.findOne(revision.documentId));
 
           const res = updateCatalogProduct(
             this.userId,
