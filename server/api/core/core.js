@@ -827,6 +827,14 @@ export default {
           "emails.$.verified": true
         }
       });
+      Collections.Accounts.update({
+        "_id": accountId,
+        "emails.address": options.email
+      }, {
+        $set: {
+          "emails.$.verified": true
+        }
+      });
     } else {
       // send verification email to admin
       sendVerificationEmail(accountId);

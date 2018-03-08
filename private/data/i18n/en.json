@@ -712,6 +712,8 @@
           "userNotFound": "User not found",
           "verifyEmailLinkExpired": "Verify email link expired",
           "verifyEmailLinkIsForUnknownAddress": "Verify email link is for unknown address",
+          "verifyTimeout": "Verification timed out. Probably you've already been verified successfully.",
+          "verifyEmailAddressNotFound": "Couldn't verify email address.",
           "matchFailed": "Match failed",
           "unknownError": "Unknown error"
         }
