@@ -3,7 +3,7 @@ import { Packages } from "/lib/collections";
 
 
 Migrations.add({
-  version: 20,
+  version: 22,
   up() {
     const pkg = Packages.findOne({ name: "reaction-accounts" });
     for (const route of pkg.registry) {

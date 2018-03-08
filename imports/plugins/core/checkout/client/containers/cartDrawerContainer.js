@@ -73,25 +73,15 @@ const handlers = {
 // reactive Tracker wrapped function
 function composer(props, onData) {
   const userId = Meteor.userId();
-  let shopId = Reaction.getPrimaryShopId();
-  if (Reaction.marketplace.merchantCarts) {
-    shopId = Reaction.getShopId();
-  }
-  let productItems = Cart.findOne({ userId, shopId }).items;
-  let defaultImage;
+  const shopId = Reaction.marketplace.merchantCarts ? Reaction.getShopId() : Reaction.getPrimaryShopId();
+  const cart = Cart.findOne({ userId, shopId });
+  if (!cart) return;
 
-  productItems = productItems.map((item) => {
+  const productItems = (cart.items || []).map((item) => {
     Meteor.subscribe("CartItemImage", item);
-    defaultImage = Media.findOne({
-      "metadata.variantId": item.variants._id
-    });
-    if (defaultImage) {
-      return Object.assign({}, item, { defaultImage });
-    }
-    defaultImage = Media.findOne({
-      "metadata.productId": item.productId
-    });
-    return Object.assign({}, item, { defaultImage });
+    const variantImage = Media.findOne({ "metadata.variantId": item.variants._id });
+    const defaultImage = variantImage || Media.findOne({ "metadata.productId": item.productId });
+    return { ...item, defaultImage };
   });
   onData(null, {
     productItems

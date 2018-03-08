@@ -18,7 +18,7 @@ Migrations.add({
 
     // needed to ensure restart in case of a migration that failed before finishing
     Groups.remove({});
-    Accounts.update({}, { $set: { groups: [] } }, { multi: true });
+    Accounts.update({}, { $set: { groups: [] } }, { bypassCollection2: true, multi: true });
 
     if (shops && shops.length) {
       shops.forEach((shop) => {
@@ -38,7 +38,7 @@ Migrations.add({
             slug: `custom${index + 1}`,
             permissions,
             shopId: shop._id
-          });
+          }, { bypassCollection2: true });
           updateAccountsInGroup({
             shopId: shop._id,
             permissions,
@@ -95,7 +95,7 @@ Migrations.add({
       Accounts.update(
         { _id: { $in: matchingUserIds }, shopId },
         { $addToSet: { groups: groupId } },
-        { multi: true }
+        { bypassCollection2: true, multi: true }
       );
       return matchingUserIds;
     }
@@ -117,7 +117,7 @@ Migrations.add({
       shopGroups.forEach((group) => {
         const shopkey = keys[group.slug];
         Shops.update({ _id: shop._id }, { $set: { [shopkey]: group.permissions } });
-        Accounts.update({ shopId: shop._id }, { $unset: { groups: "" } }, { multi: true });
+        Accounts.update({ shopId: shop._id }, { $unset: { groups: "" } }, { bypassCollection2: true, multi: true });
       });
     }
   }

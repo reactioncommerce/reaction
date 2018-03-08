@@ -64,7 +64,7 @@ export const methods = {
    * @return { Number } update result
    */
   "shipping/rates/update"(method) {
-    check(method, ShippingMethod);
+    ShippingMethod.validate(method);
     if (!Reaction.hasPermission(shippingRoles)) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }

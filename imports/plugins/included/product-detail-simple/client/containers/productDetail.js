@@ -275,15 +275,12 @@ function composer(props, onData) {
   const viewProductAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
   let productSub;
-
   if (productId) {
     productSub = Meteor.subscribe("Product", productId, shopIdOrSlug);
   }
-
-  if (productSub && productSub.ready() && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {
-    // Get the product
+  if (productSub && productSub.ready()
+    && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {
     const product = ReactionProduct.setProduct(productId, variantId);
-
     if (Reaction.hasPermission("createProduct")) {
       if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
         Reaction.setActionView({

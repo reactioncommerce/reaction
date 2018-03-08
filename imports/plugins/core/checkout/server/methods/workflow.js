@@ -270,7 +270,9 @@ Meteor.methods({
   "workflow/pushOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    check(order, Object); // TODO: Validatate as Schemas.Order
+    check(order, Match.ObjectIncluding({
+      _id: String
+    }));
     this.unblock();
 
     const workflowStatus = `${workflow}/${status}`;
@@ -305,7 +307,12 @@ Meteor.methods({
   "workflow/pullOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    check(order, Object);
+    check(order, Match.ObjectIncluding({
+      _id: String,
+      workflow: Match.ObjectIncluding({
+        status: String
+      })
+    }));
     this.unblock();
 
     const result = Orders.update({
@@ -333,7 +340,10 @@ Meteor.methods({
    */
   "workflow/pushItemWorkflow"(status, order, itemIds) {
     check(status, String);
-    check(order, Object);
+    check(order, Match.ObjectIncluding({
+      _id: String,
+      items: [Object]
+    }));
     check(itemIds, Array);
 
     // We can't trust the order from the client (for several reasons)
