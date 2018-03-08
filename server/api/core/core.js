@@ -739,10 +739,8 @@ export default {
     // If ENV variables are set, they always override Meteor settings (settings.json).
     // This is to allow for testing environments where we don't want to use users configured in a settings file.
     const { env } = process;
-    let configureEnv = false;
 
     if (env.REACTION_EMAIL && env.REACTION_AUTH) {
-      configureEnv = true;
       Logger.info("Using environment variables to create admin user");
     }
 
@@ -751,17 +749,6 @@ export default {
     options.password = env.REACTION_AUTH || defaultPassword;
     options.username = env.REACTION_USER_NAME || defaultUsername;
     options.name = env.REACTION_USER || defaultName;
-
-    // or use `meteor --settings`
-    if (Meteor.settings && !configureEnv) {
-      if (Meteor.settings.reaction) {
-        options.email = Meteor.settings.reaction.REACTION_EMAIL || defaultEmail;
-        options.password = Meteor.settings.reaction.REACTION_AUTH || defaultPassword;
-        options.username = Meteor.settings.reaction.REACTION_USER || defaultUsername;
-        options.name = Meteor.settings.reaction.REACTION_USER_NAME || defaultName;
-        Logger.info("Using meteor --settings to create admin user");
-      }
-    }
 
     // set the default shop email to the default admin email
     Shops.update(shopId, {
