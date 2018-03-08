@@ -3,4 +3,8 @@ export const typeDefs = `
   type Shop implements Node {
     _id: ID!
   }
+
+  extend type Mutation {
+    inviteShopMember(shopId: ID!, email: String!, name: String!, groupId: ID!): Account
+  }
 `;

@@ -22,4 +22,8 @@ export const typeDefs = `
     cursor: String!
     node: [Role]
   }
+
+  extend type Query {
+    roles(shopId: ID!): [String]
+  }
 `;

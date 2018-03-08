@@ -1,5 +1,12 @@
 export const typeDefs = `
-  input GroupInput {
+  input CreateGroupInput {
+    description: String
+    name: String!
+    permissions: [String]
+    slug: String!
+  }
+
+  input UpdateGroupInput {
     description: String
     name: String!
     permissions: [String]
@@ -28,5 +35,15 @@ export const typeDefs = `
   type GroupEdge implements NodeEdge {
     cursor: String!
     node: [Group]
+  }
+
+  extend type Mutation {
+    createGroup(shopId: ID!, input: CreateGroupInput!): Group
+    updateGroup(id: ID!, modifier: UpdateGroupInput!, shopId: ID!): Group
+  }
+
+  extend type Query {
+    group(id: ID!): Group
+    groups(shopId: ID!): GroupConnection
   }
 `;

@@ -36,6 +36,7 @@ export const typeDefs = `
     phone: String!
     postal: String!
     region: String!
+    type: AddressType
   }
 
   type Address implements Node {
@@ -66,9 +67,5 @@ export const typeDefs = `
   type AddressEdge implements NodeEdge {
     cursor: String!
     node: [Address]
-  }
-
-  extend type Mutation {
-    addressBookAdd(address: CreateAddressInput! accountUserId: ID, type: String): Boolean
   }
 `;

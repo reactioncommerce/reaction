@@ -1,6 +1,6 @@
 export const typeDefs = `
   input UpdateAccountInput {
-    currency: String!
+    currencyCode: String!
   }
 
   # Account.
@@ -39,5 +39,22 @@ export const typeDefs = `
   type AccountEdge implements NodeEdge {
     cursor: String!
     node: [Account]
+  }
+
+  extend type Mutation {
+    addAccountAddressBookEntry(accountId: ID, input: CreateAddressInput!): Address
+    addAccountEmailRecord(email: Email!): EmailRecord
+    addAccountToGroup(accountId: ID!, groupId: ID!): Group
+    removeAccountAddressBookEntry(accountId: ID, addressId: ID!): Address
+    removeAccountEmailRecord(email: Email!): EmailRecord
+    removeAccountFromGroup(accountId: ID!, groupId: ID!): Group
+    updateAccount(accountId: ID!, modifier: UpdateAccountInput!): Account
+    updateAccountAddressBookEntry(accountId: ID, addressId: ID!, modifier: UpdateAddressInput!): Address
+  }
+
+  extend type Query {
+    viewer: Account
+    account(id: ID!): Account
+    administrators(shopId: ID): AccountConnection
   }
 `;

@@ -1,8 +1,8 @@
 import { merge } from "lodash";
-import { resolvers as address } from "./address";
-import { resolvers as hello } from "./hello";
+import { resolvers as account } from "./account";
+import { resolvers as datetime } from "./datetime";
+import { resolvers as group } from "./group";
 import { resolvers as ping } from "./ping";
-import { resolvers as scalars } from "./scalars";
-import { resolvers as users } from "./users";
+import { resolvers as role } from "./role";
 
-export const resolvers = merge(address, hello, ping, scalars, users);
+export const resolvers = merge(account, datetime, group, ping, role);
