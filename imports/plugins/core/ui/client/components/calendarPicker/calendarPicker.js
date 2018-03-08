@@ -52,14 +52,21 @@ class CalendarPicker extends Component {
     });
   }
 
+  renderDayContents(day) {
+    return (
+      <span className="CalendarDay__contents">{day.format("D")}</span>
+    );
+  }
+
   render() {
-    const { focusedInput, startDate, endDate } = this.state;
+    const { focusedInput, startDate, endDate, renderDayContents } = this.state;
 
     const props = omit(this.props, ["autoFocus", "autoFocusEndDate", "initialStartDate", "initialEndDate"]);
 
     return (
       <DayPickerRangeController
         {...props}
+        renderDayContents={renderDayContents || this.renderDayContents}
         onDatesChange={this.onDatesChange}
         onFocusChange={this.onFocusChange}
         focusedInput={focusedInput}
