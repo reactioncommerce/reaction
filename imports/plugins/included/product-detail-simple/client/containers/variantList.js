@@ -7,7 +7,7 @@ import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next } from "/client/api";
 import { getChildVariants } from "../selectors/variants";
 import { Products } from "/lib/collections";
-import update from "react/lib/update";
+import update from "immutability-helper";
 import { getVariantIds } from "/lib/selectors/variants";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { Media } from "/imports/plugins/core/files/client";

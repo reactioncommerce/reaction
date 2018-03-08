@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Measure from "react-measure";
-import update from "react/lib/update";
+import update from "immutability-helper";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import _ from "lodash";

@@ -118,6 +118,7 @@ class BrowserRouter extends Component {
       Router.Hooks.run("onEnter", "GLOBAL", routeData);
       Router.Hooks.run("onEnter", currentRoute.name, routeData);
     }
+    MetaData.init(routeData);
   }
 
   render() {
@@ -150,7 +151,7 @@ export function initBrowserRouter() {
 
   Router.Hooks.onEnter(MetaData.init);
 
-  Tracker.autorun(() => {
+  Tracker.autorun((computation) => {
     if (Router.ready()) {
       ReactDOM.render((
         <BrowserRouter history={history}>
@@ -158,6 +159,8 @@ export function initBrowserRouter() {
             <Components.App children={Router.reactComponents} />
           </TranslationProvider>
         </BrowserRouter>), getRootNode());
+
+      computation.stop();
     }
   });
 }

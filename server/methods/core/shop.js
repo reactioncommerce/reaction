@@ -1,7 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
-import { Random } from "meteor/random";
 import { check, Match } from "meteor/check";
 import { HTTP } from "meteor/http";
 import { Job } from "/imports/plugins/core/job-collection/lib";
@@ -9,6 +8,95 @@ import { GeoCoder, Hooks, Logger } from "/server/api";
 import { Reaction } from "/lib/api";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
+
+/**
+ * @name cloneShop
+ * @summary Returns an existing shop object, with some values removed or changed such
+ *   that it is suitable for inserting as a new shop.
+ * @method
+ * @param {String} shopId - the ID of the shop to clone
+ * @return {Object|null} The cloned shop object or null if a shop with that ID can't be found
+ */
+function cloneShop(shopId) {
+  const shop = Collections.Shops.findOne(shopId);
+  if (!shop) return null;
+
+  // Never create a second primary shop
+  if (shop.shopType === "primary") shop.shopType = "merchant";
+
+  // Ensure unique id and shop name
+  const count = Collections.Shops.find().count() || "";
+  shop.name += count;
+
+  // Clean up values that get automatically added
+  delete shop._id;
+  delete shop.createdAt;
+  delete shop.updatedAt;
+  delete shop.slug;
+  // TODO audience permissions need to be consolidated into [object] and not [string]
+  // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
+  delete shop.layout;
+  // delete brandAssets object from shop to prevent new shops from carrying over existing shop's
+  // brand image
+  delete shop.brandAssets;
+  return shop;
+}
+
+/**
+ * @name updateShopBrandAssets
+ * @method
+ * @param {Object} asset - brand asset {mediaId: "", type, ""}
+ * @param {String} shopId - the shop id coresponding to the shop for which
+ *                 the asset should be applied (defaults to Reaction.getShopId())
+ * @param {String} userId - the user id on whose behalf we are performing this
+ *                 action (defaults to Meteor.userId())
+ * @return {Int} returns update result
+ */
+export function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), userId = Meteor.userId()) {
+  check(asset, {
+    mediaId: String,
+    type: String
+  });
+  check(shopId, String);
+
+  // must have core permissions
+  if (!Reaction.hasPermission("core", userId, shopId)) {
+    throw new Meteor.Error("access-denied", "Access Denied");
+  }
+
+  // Does our shop contain the brandasset we're tring to add
+  const shopWithBrandAsset = Collections.Shops.findOne({
+    "_id": shopId,
+    "brandAssets.type": asset.type
+  });
+
+  // If it does, then we update it with the new asset reference
+  if (shopWithBrandAsset) {
+    return Collections.Shops.update({
+      "_id": shopId,
+      "brandAssets.type": asset.type
+    }, {
+      $set: {
+        "brandAssets.$": {
+          mediaId: asset.mediaId,
+          type: asset.type
+        }
+      }
+    });
+  }
+
+  // Otherwise we insert a new brand asset reference
+  return Collections.Shops.update({
+    _id: shopId
+  }, {
+    $push: {
+      brandAssets: {
+        mediaId: asset.mediaId,
+        type: asset.type
+      }
+    }
+  });
+}
 
 /**
  * @file Meteor methods for Shop
@@ -27,7 +115,11 @@ Meteor.methods({
    */
   "shop/createShop"(shopAdminUserId, shopData) {
     check(shopAdminUserId, Match.Optional(String));
-    check(shopData, Match.Optional(Schemas.Shop));
+    if (shopData) {
+      Collections.Shops.simpleSchema(shopData).validate(shopData);
+      // Never create a second primary shop
+      if (shopData.shopType === "primary") shopData.shopType = "merchant";
+    }
 
     // Get the current marketplace settings
     const marketplace = Reaction.getMarketplaceSettings();
@@ -57,7 +149,6 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    const count = Collections.Shops.find().count() || "";
     const currentUser = Meteor.user();
     const currentAccount = Collections.Accounts.findOne({ _id: currentUser._id });
     if (!currentUser) {
@@ -74,8 +165,10 @@ Meteor.methods({
       shopAccount = Collections.Accounts.findOne({ _id: shopAdminUserId }) || currentAccount;
     }
 
+    const primaryShopId = Reaction.getPrimaryShopId();
+
     // Disallow creation of multiple shops, even for marketplace owners
-    if (shopAccount.shopId !== Reaction.getPrimaryShopId()) {
+    if (shopAccount.shopId !== primaryShopId) {
       throw new Meteor.Error(
         "operation-not-permitted",
         "This user already has a shop. Each user may only have one shop."
@@ -83,37 +176,9 @@ Meteor.methods({
     }
 
     // we'll accept a shop object, or clone the current shop
-    const seedShop = shopData || Collections.Shops.findOne(Reaction.getPrimaryShopId());
-
-    // Never create a second primary shop
-    if (seedShop.shopType === "primary") {
-      seedShop.shopType = "merchant";
-    }
-
-    // ensure unique id and shop name
-    seedShop._id = Random.id();
-    seedShop.name += count;
-
-    // We trust the owner's shop clone, check only when shopData is passed as an argument
-    if (shopData) {
-      check(seedShop, Schemas.Shop);
-    }
-
-    const shop = Object.assign({}, seedShop, {
-      emails: shopUser.emails,
-      addressBook: shopAccount.addressBook
-    });
-
-    // Clean up values that get automatically added
-    delete shop.createdAt;
-    delete shop.updatedAt;
-    delete shop.slug;
-    // TODO audience permissions need to be consolidated into [object] and not [string]
-    // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
-    delete shop.layout;
-    // delete brandAssets object from shop to prevent new shops from carrying over existing shop's
-    // brand image
-    delete shop.brandAssets;
+    const shop = shopData || cloneShop(primaryShopId);
+    shop.emails = shopUser.emails;
+    shop.addressBook = shopAccount.addressBook;
 
     let newShopId;
 
@@ -126,24 +191,29 @@ Meteor.methods({
     const newShop = Collections.Shops.findOne({ _id: newShopId });
 
     // we should have created new shop, or errored
-    Logger.info("Created shop: ", shop._id);
+    Logger.info("Created shop: ", newShopId);
 
     // update user
-    Reaction.insertPackagesForShop(shop._id);
-    Reaction.createGroups({ shopId: shop._id });
-    const ownerGroup = Collections.Groups.findOne({ slug: "owner", shopId: shop._id });
-    Roles.addUsersToRoles([currentUser, shopUser._id], ownerGroup.permissions, shop._id);
+    Reaction.insertPackagesForShop(newShopId);
+    Reaction.createGroups({ shopId: newShopId });
+    const ownerGroup = Collections.Groups.findOne({ slug: "owner", shopId: newShopId });
+    Roles.addUsersToRoles([currentUser, shopUser._id], ownerGroup.permissions, newShopId);
+    // Set the active shopId for this user
+    Reaction.setUserPreferences("reaction", "activeShopId", newShopId, shopUser._id);
     Collections.Accounts.update({ _id: shopUser._id }, {
       $set: {
-        shopId: shop._id
+        shopId: newShopId
       },
       $addToSet: {
         groups: ownerGroup._id
       }
     });
-    Hooks.Events.run("afterAccountsUpdate", currentUser._id, shopUser._id);
+    Hooks.Events.run("afterAccountsUpdate", currentUser._id, {
+      accountId: shopUser._id,
+      updatedFields: ["groups"]
+    });
     // Add this shop to the merchant
-    Collections.Shops.update({ _id: Reaction.getPrimaryShopId() }, {
+    Collections.Shops.update({ _id: primaryShopId }, {
       $addToSet: {
         merchantShops: {
           _id: newShop._id,
@@ -154,7 +224,7 @@ Meteor.methods({
     });
 
     // Set active shop to new shop.
-    return { shopId: shop._id };
+    return { shopId: newShopId };
   },
 
   /**
@@ -445,16 +515,19 @@ Meteor.methods({
    * @description On submit OpenExchangeRatesForm handler
    * @summary we need to rerun fetch exchange rates job on every form submit,
    * that's why we update autoform type to "method-update"
-   * @param {Object} modifier - the modifier object generated from the form values
-   * @param {String} _id - the _id of the document being updated
+   * @param {Object} details An object with _id and modifier props
    * @fires Collections.Packages#update
-   * @todo This method fires Packages collection, so maybe someday it could be
+   * @todo This method fires Packages collection, so maybe someday it could be moved to another file
    * @returns {undefined}
-   * moved to another file
    */
-  "shop/updateShopExternalServices"(modifier, _id) {
-    check(modifier, Match.Optional(Schemas.CorePackageConfig));
-    check(_id, String);
+  "shop/updateShopExternalServices"(details) {
+    check(details, {
+      _id: String,
+      modifier: Object // actual schema validation happens below
+    });
+
+    const { _id, modifier } = details;
+    Schemas.CorePackageConfig.validate(modifier, { modifier: true });
 
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
@@ -860,44 +933,10 @@ Meteor.methods({
       mediaId: String,
       type: String
     });
-    // must have core permissions
-    if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
-    }
+
     this.unblock();
 
-    // Does our shop contain the brandasset we're tring to add
-    const shopWithBrandAsset = Collections.Shops.findOne({
-      "_id": Reaction.getShopId(),
-      "brandAssets.type": asset.type
-    });
-
-    // If it does, then we update it with the new asset reference
-    if (shopWithBrandAsset) {
-      return Collections.Shops.update({
-        "_id": Reaction.getShopId(),
-        "brandAssets.type": asset.type
-      }, {
-        $set: {
-          "brandAssets.$": {
-            mediaId: asset.mediaId,
-            type: asset.type
-          }
-        }
-      });
-    }
-
-    // Otherwise we insert a new brand asset reference
-    return Collections.Shops.update({
-      _id: Reaction.getShopId()
-    }, {
-      $push: {
-        brandAssets: {
-          mediaId: asset.mediaId,
-          type: asset.type
-        }
-      }
-    });
+    return updateShopBrandAssets(asset);
   },
 
   /**

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import update from "react/lib/update";
+import update from "immutability-helper";
 import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
@@ -96,26 +96,46 @@ const wrapComponent = (Comp) => (
     }
 
     handleProductDrag = (dragIndex, hoverIndex) => {
-      const newState = this.changeProductOrderOnState(dragIndex, hoverIndex);
-      this.setState(newState, this.callUpdateMethod);
-    }
+      const tag = ReactionProduct.getTag();
+      const dragProductId = this.state.productIds[dragIndex];
+      const hoverProductId = this.state.productIds[hoverIndex];
+      const dragProductWeight = _.get(this, `state.productsByKey[${dragProductId}].positions[${tag}].weight`, 0);
+      const dropProductWeight = _.get(this ,`state.productsByKey[${hoverProductId}].positions[${tag}].weight`, 0);
 
-    changeProductOrderOnState(dragIndex, hoverIndex) {
-      const product = this.state.productIds[dragIndex];
-
-      return update(this.state, {
+      const newState = update(this.state, {
+        productsByKey: {
+          [dragProductId]: {
+            $merge: {
+              positions: {
+                [tag]: {
+                  weight: dropProductWeight
+                }
+              }
+            }
+          },
+          [hoverProductId]: {
+            $merge: {
+              positions: {
+                [tag]: {
+                  weight: dragProductWeight
+                }
+              }
+            }
+          }
+        },
         productIds: {
           $splice: [
             [dragIndex, 1],
-            [hoverIndex, 0, product]
+            [hoverIndex, 0, dragProductId]
           ]
         }
       });
+
+      this.setState(newState);
     }
 
-    callUpdateMethod() {
+    handleProductDrop = () => {
       const tag = ReactionProduct.getTag();
-
       this.state.productIds.map((productId, index) => {
         const position = { position: index, updatedAt: new Date() };
 
@@ -142,6 +162,7 @@ const wrapComponent = (Comp) => (
             {...this.props}
             products={this.products}
             onMove={this.handleProductDrag}
+            onDrop={this.handleProductDrop}
             itemSelectHandler={this.handleSelectProductItem}
           />
         </Components.DragDropProvider>
