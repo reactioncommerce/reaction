@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Reaction } from "/client/api";
 import { Components } from "@reactioncommerce/reaction-components";
+import { ValidEmail } from "/lib/api";
 
 /**
  * @summary React component to log in form in line
@@ -27,7 +28,8 @@ class LoginInline extends Component {
     super(props);
 
     this.state = {
-      email: ""
+      email: "",
+      isValid: true
     };
   }
 
@@ -41,16 +43,36 @@ class LoginInline extends Component {
    */
   handleFieldChange = (event, value, field) => {
     this.setState({
-      [field]: value
+      [field]: value,
+      isValid: true
     });
   };
 
   handleSubmit = (event) => {
-    this.props.handleEmailSubmit(event, this.state.email);
+    event.preventDefault();
+
+    if (!ValidEmail(this.state.email)) {
+      this.setState({
+        isValid: false
+      });
+    } else {
+      this.setState({
+        isValid: true
+      });
+      this.props.handleEmailSubmit(event, this.state.email);
+    }
   }
 
   render() {
     if (this.props.renderEmailForm) {
+      const validation = {
+        messages: {
+          email: {
+            message: "Email is not valid",
+            i18nKeyMessage: "checkoutLogin.invalidEmail"
+          }
+        }
+      };
       return (
         <div className="accounts-dialog accounts-inline">
           <form onSubmit={this.handleSubmit} className="add-email-input">
@@ -64,6 +86,8 @@ class LoginInline extends Component {
                 type="email"
                 value={this.state.email}
                 onChange={this.handleFieldChange}
+                isValid={this.state.isValid}
+                validation={validation}
               />
               <Components.Button
                 type="submit"

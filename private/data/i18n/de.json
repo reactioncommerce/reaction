@@ -707,6 +707,8 @@
           "userNotFound": "Benutzer nicht gefunden",
           "verifyEmailLinkExpired": "Das Token zur Verifizierung der E-Mail ist abgelaufen",
           "verifyEmailLinkIsForUnknownAddress": "Verifizierung des Tokens fehlgeschlagen. (Das Token gehört zu einer unbekannten E-Mail-Adresse.)",
+          "verifyTimeout": "Zeitüberschreitung! Möglicherweise wurde Ihre E-Mail-Adresse bereits erfolgreich verifiziert.",
+          "verifyEmailAddressNotFound": "Ihre E-Mail-Adresse konnte nicht verifiziert werden.",
           "matchFailed": "Abgleich fehlgeschlagen",
           "unknownError": "Unbekannter Fehler"
         }

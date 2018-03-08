@@ -109,13 +109,13 @@ Meteor.methods({
     }
 
     let updatedDocuments = 0;
-    const previousDocuments = [];
-
     if (revisions) {
       for (const revision of revisions) {
         if (!revision.documentType || revision.documentType === "product") {
-          previousDocuments.push(Products.findOne(revision.documentId));
-
+          const oldDocument = Products.findOne(revision.documentId);
+          if (oldDocument && revision.documentData.handle !== oldDocument.handle) {
+            revision.documentData.changedHandleWas = oldDocument.handle;
+          }
           const res = Products.update({
             _id: revision.documentId
           }, {
@@ -168,8 +168,7 @@ Meteor.methods({
 
     if (updatedDocuments > 0) {
       return {
-        status: "success",
-        previousDocuments
+        status: "success"
       };
     }
 

@@ -1,4 +1,6 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
@@ -22,7 +24,7 @@ export const Transactions = new SimpleSchema({
     type: Date,
     optional: true
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("Transactions", Transactions);
 
@@ -58,13 +60,17 @@ export const Discounts = new SimpleSchema({
     optional: true
   },
   "transactions": {
-    type: [Transactions],
+    type: Array,
     optional: true
+  },
+  "transactions.$": {
+    type: Transactions
   },
   "calculation": {
     type: Object,
     optional: true,
-    label: "Calculation"
+    label: "Calculation",
+    defaultValue: {}
   },
   "calculation.method": {
     type: String,
@@ -75,21 +81,21 @@ export const Discounts = new SimpleSchema({
   "conditions": {
     type: Object,
     optional: true,
-    label: "Conditions"
+    label: "Conditions",
+    defaultValue: {}
   },
   "conditions.order": {
-    type: Object
+    type: Object,
+    defaultValue: {}
   },
   "conditions.order.min": {
     type: Number,
     label: "Mininum",
-    decimal: true,
     defaultValue: 0.00
   },
   "conditions.order.max": {
     type: Number,
     label: "Maximum",
-    decimal: true,
     optional: true
   },
   "conditions.order.startDate": {
@@ -109,25 +115,45 @@ export const Discounts = new SimpleSchema({
     optional: true
   },
   "conditions.audience": {
-    type: [String],
+    type: Array,
+    optional: true,
+    label: "Audience"
+  },
+  "conditions.audience.$": {
+    type: String,
     optional: true,
     label: "Audience"
   },
   "conditions.permissions": {
-    type: [String],
+    type: Array,
     optional: true,
     label: "Permissions"
   },
+  "conditions.permissions.$": {
+    type: String,
+    optional: true,
+    label: "Permission"
+  },
   "conditions.products": {
-    type: [String],
+    type: Array,
     optional: true,
     label: "Products"
   },
+  "conditions.products.$": {
+    type: String,
+    optional: true,
+    label: "Product"
+  },
   "conditions.tags": {
-    type: [String],
+    type: Array,
     optional: true,
     label: "Tags"
+  },
+  "conditions.tags.$": {
+    type: String,
+    optional: true,
+    label: "Tag"
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("Discounts", Discounts);
