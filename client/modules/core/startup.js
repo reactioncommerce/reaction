@@ -30,7 +30,12 @@ Meteor.startup(() => {
           Object.keys(user.profile.preferences).forEach((packageName) => {
             const packageSettings = user.profile.preferences[packageName];
             Object.keys(packageSettings).forEach((preference) => {
-              Reaction.setUserPreferences(packageName, preference, packageSettings[preference]);
+              if (packageName === "reaction" && preference === "activeShopId") {
+                // Because activeShopId is cached on client side.
+                Reaction.setShopId(packageSettings[preference]);
+              } else {
+                Reaction.setUserPreferences(packageName, preference, packageSettings[preference]);
+              }
             });
           });
         }
