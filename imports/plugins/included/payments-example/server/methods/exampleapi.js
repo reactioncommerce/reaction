@@ -1,5 +1,5 @@
+import SimpleSchema from "simpl-schema";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Random } from "meteor/random";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
@@ -68,19 +68,19 @@ export const ExampleApi = {};
 ExampleApi.methods = {};
 
 export const cardSchema = new SimpleSchema({
-  number: { type: String },
-  name: { type: String },
-  cvv2: { type: String },
-  expireMonth: { type: String },
-  expireYear: { type: String },
-  type: { type: String }
+  number: String,
+  name: String,
+  cvv2: String,
+  expireMonth: String,
+  expireYear: String,
+  type: String
 });
 
 registerSchema("cardSchema", cardSchema);
 
 export const paymentDataSchema = new SimpleSchema({
-  total: { type: String },
-  currency: { type: String }
+  total: String,
+  currency: String
 });
 
 registerSchema("paymentDataSchema", paymentDataSchema);
@@ -89,7 +89,7 @@ registerSchema("paymentDataSchema", paymentDataSchema);
 ExampleApi.methods.authorize = new ValidatedMethod({
   name: "ExampleApi.methods.authorize",
   validate: new SimpleSchema({
-    transactionType: { type: String },
+    transactionType: String,
     cardData: { type: cardSchema },
     paymentData: { type: paymentDataSchema }
   }).validator(),
@@ -103,8 +103,8 @@ ExampleApi.methods.authorize = new ValidatedMethod({
 ExampleApi.methods.capture = new ValidatedMethod({
   name: "ExampleApi.methods.capture",
   validate: new SimpleSchema({
-    authorizationId: { type: String },
-    amount: { type: Number, decimal: true }
+    authorizationId: String,
+    amount: Number
   }).validator(),
   run(args) {
     const transactionId = args.authorizationId;
@@ -118,8 +118,8 @@ ExampleApi.methods.capture = new ValidatedMethod({
 ExampleApi.methods.refund = new ValidatedMethod({
   name: "ExampleApi.methods.refund",
   validate: new SimpleSchema({
-    transactionId: { type: String },
-    amount: { type: Number, decimal: true }
+    transactionId: String,
+    amount: Number
   }).validator(),
   run(args) {
     const { transactionId, amount } = args.transactionId;
@@ -132,7 +132,7 @@ ExampleApi.methods.refund = new ValidatedMethod({
 ExampleApi.methods.refunds = new ValidatedMethod({
   name: "ExampleApi.methods.refunds",
   validate: new SimpleSchema({
-    transactionId: { type: String }
+    transactionId: String
   }).validator(),
   run(args) {
     const { transactionId } = args;

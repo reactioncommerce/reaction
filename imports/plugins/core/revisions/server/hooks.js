@@ -22,10 +22,14 @@ export const ProductRevision = {
   getProductPriceRange(productId) {
     const product = Products.findOne(productId);
     if (!product) {
-      return "";
+      return {
+        range: "0",
+        min: 0,
+        max: 0
+      };
     }
-    const variants = this.getTopVariants(product._id);
 
+    const variants = this.getTopVariants(product._id);
     if (variants.length > 0) {
       const variantPrices = [];
       variants.forEach((variant) => {
@@ -56,6 +60,15 @@ export const ProductRevision = {
       };
       return priceObject;
     }
+
+    if (!product.price) {
+      return {
+        range: "0",
+        min: 0,
+        max: 0
+      };
+    }
+
     // if we have no variants subscribed to (client)
     // we'll get the price object previously from the product
     return product.price;
@@ -123,7 +136,7 @@ export const ProductRevision = {
       ancestors: [id],
       type: "variant",
       isDeleted: false
-    }).map((product) => {
+    }).forEach((product) => {
       const revision = this.findRevision({
         documentId: product._id
       });
@@ -158,8 +171,10 @@ export const ProductRevision = {
         variants.push(product);
       }
     });
+
     return variants;
   },
+
   getVariantQuantity(variant) {
     const options = this.getVariants(variant._id);
     if (options && options.length) {

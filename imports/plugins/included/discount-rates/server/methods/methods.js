@@ -26,6 +26,7 @@ export const methods = {
     // should be pricing rate lookup.
     return rate;
   },
+
   "discounts/rates/discount"(cartId, rateId) {
     check(cartId, String);
     check(rateId, String);
@@ -33,26 +34,39 @@ export const methods = {
     // TODO: discounts/rates/discount
     return rate;
   },
-  /**
-   * discounts/addRate
-   * @param  {String} modifier update statement
-   * @param  {String} docId discount docId
-   * @return {String} returns update/insert result
-   */
-  "discounts/addRate"(modifier, docId) {
-    check(modifier, Object);
-    check(docId, Match.OneOf(String, null, undefined));
 
-    // check permissions to add
-    if (!Reaction.hasPermission("discount-rates")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
-    }
-    // if no doc, insert
-    if (!docId) {
-      return Discounts.insert(modifier);
-    }
-    // else update and return
-    return Discounts.update(docId, modifier);
+  /**
+   * @name discounts/addRate
+   * @method
+   * @param  {Object} doc A Discounts document to be inserted
+   * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use discounts/editCode method instead.
+   * @return {String} Insert result
+   */
+  "discounts/addRate"(doc, docId) {
+    check(doc, Object); // actual schema validation happens during insert below
+
+    // Backward compatibility
+    check(docId, Match.Optional(String));
+    if (docId) return Meteor.call("discounts/editRate", { _id: docId, modifier: doc });
+
+    if (!Reaction.hasPermission("discount-rates")) throw new Meteor.Error("access-denied", "Access Denied");
+    return Discounts.insert(doc);
+  },
+
+  /**
+   * @name discounts/editRate
+   * @method
+   * @param  {Object} details An object with _id and modifier props
+   * @return {String} Update result
+   */
+  "discounts/editRate"(details) {
+    check(details, {
+      _id: String,
+      modifier: Object // actual schema validation happens during update below
+    });
+    if (!Reaction.hasPermission("discount-rates")) throw new Meteor.Error("access-denied", "Access Denied");
+    const { _id, modifier } = details;
+    return Discounts.update(_id, modifier);
   }
 };
 

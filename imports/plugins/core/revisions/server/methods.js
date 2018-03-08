@@ -130,8 +130,6 @@ Meteor.methods({
     }
 
     let updatedDocuments = 0;
-    const previousDocuments = [];
-
     if (revisions) {
       for (const revision of revisions) {
         if (!revision.documentType || revision.documentType === "product") {
@@ -191,8 +189,7 @@ Meteor.methods({
 
     if (updatedDocuments > 0) {
       return {
-        status: "success",
-        previousDocuments
+        status: "success"
       };
     }
 

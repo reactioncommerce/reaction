@@ -22,7 +22,7 @@ Migrations.add({
           $set: {
             registry: updatedRegistry
           }
-        });
+        }, { bypassCollection2: true });
       }
     });
   },
@@ -49,7 +49,7 @@ Migrations.add({
           $set: {
             registry: updatedRegistry
           }
-        });
+        }, { bypassCollection2: true });
       }
     });
   }

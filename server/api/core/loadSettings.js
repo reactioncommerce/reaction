@@ -43,8 +43,8 @@ export function loadSettings(json) {
         name: item.name
       });
       //
-      // TODO migrate functionality to Reaction.Import
-      // Reaction.Import.package(item, shopId);
+      // TODO migrate functionality to Reaction.Importer
+      // Reaction.Importer.package(item, shopId);
       //
       // insert into the Packages collection
       if (exists) {
