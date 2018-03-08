@@ -122,7 +122,11 @@ Template.accountProfile.helpers({
    */
   AddressBook() {
     return {
-      component: Components.AddressBook
+      component: Components.AddressBook,
+      headingContent: {
+        defaultValue: "Address Book",
+        i18nKey: "accountsUI.addressBook"
+      }
     };
   },
 
