@@ -183,10 +183,7 @@ export default function () {
           token,
           when
         };
-        _.set(user, "services.email.verificationTokens", [
-          tokenObj,
-          ...(_.get(user, "services.email.verificationTokens") || [])
-        ]);
+        _.set(user, "services.email.verificationTokens", [tokenObj]);
       }
 
       // assign default user roles

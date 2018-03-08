@@ -3,38 +3,35 @@ import PropType from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import classnames from "classnames";
 
-class VerifyAccount extends React.Component {
-  static propTypes = {
-    error: PropType.object
-  }
+const VerifyAccount = ({ error }) => {
+  const classNames = classnames({
+    "fa": true,
+    "fa-times-circle-o": !!error,
+    "fa-check-circle-o": !error
+  });
 
-  render() {
-    const classNames = classnames({
-      "fa": true,
-      "fa-times-circle-o": !!this.props.error,
-      "fa-check-circle-o": !this.props.error
-    });
+  const style = {
+    color: error ? "#f33" : "#49da49",
+    fontSize: "8rem"
+  };
 
-    return (
-      <div className="container-fluid-sm verify-account">
-        <div className="rui empty-view-message">
-          <i className={classNames}/>
-          <p className="message">
-            {this.props.error ?
-              <Components.Translation
-                defaultValue={this.props.error.reason}
-                i18nKey={this.props.error.i18nKey}
-              /> :
-              <Components.Translation
-                defaultValue="Email verified"
-                i18nKey="accountsUI.info.emailVerified"
-              />
-            }
-          </p>
-        </div>
+  return (
+    <div className="container-fluid-sm">
+      <div className="rui empty-view-message">
+        <i className={classNames} style={style}/>
+        <p className="message">
+          <Components.Translation
+            defaultValue={error ? error.reason : "Email verified"}
+            i18nKey={error ? error.i18nKey : "accountsUI.info.emailVerified"}
+          />
+        </p>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+VerifyAccount.propTypes = {
+  error: PropType.object
+};
 
 export default VerifyAccount;
