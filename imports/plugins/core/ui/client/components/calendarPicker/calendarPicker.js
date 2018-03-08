@@ -80,7 +80,7 @@ CalendarPicker.defaultProps = {
   initialEndDate: null,
 
   // day presentation and interaction related props
-  renderDay: null,
+  renderDayContents: null,
   minimumNights: 1,
   isDayBlocked: () => false,
   isDayHighlighted: () => false,
@@ -126,7 +126,7 @@ CalendarPicker.propTypes = {
   onOutsideClick: PropTypes.func,
   onPrevMonthClick: PropTypes.func,
   renderCalendarInfo: PropTypes.func,
-  renderDay: PropTypes.func,
+  renderDayContents: PropTypes.func,
   withPortal: PropTypes.bool
 };
 
