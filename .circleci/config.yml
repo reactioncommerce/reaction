@@ -73,3 +73,107 @@ jobs:
             - docker-image.tar
             - docker-tags.txt
 
+  docker-push:
+    <<: *defaults
+    steps:
+      - setup_remote_docker
+      - attach_workspace:
+          at: docker-cache
+      - run:
+          name: Load Docker Image
+          command: |
+            docker load < docker-cache/docker-image.tar
+      - run:
+          name: Tag Docker Image
+          command: |
+            cat docker-cache/docker-tags.txt \
+              | xargs -t -I % \
+                docker tag \
+                  "$DOCKER_REPOSITORY:$CIRCLE_SHA1" \
+                  "$DOCKER_REPOSITORY:%"
+      - run:
+          name: Docker Push
+          command: |
+            docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+            docker push "$DOCKER_REPOSITORY:$CIRCLE_SHA1"
+            cat docker-cache/docker-tags.txt \
+              | xargs -t -I % \
+                docker push "$DOCKER_REPOSITORY:%"
+
+  deploy-docs:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Build JSDoc files
+          command: .reaction/jsdoc/build.sh
+      - run:
+          name: Deploy Doc files to S3 if on Master
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
+                aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
+              else
+                echo "S3 bucket configuration not found for jsdocs"
+                echo "Set API_DOC_BUCKET and API_DOC_BUCKET_REGION to build and deploy jsdocs to S3"
+              fi
+            else
+              echo "Not master branch so not deploying"
+            fi
+
+  eslint:
+    <<: *defaults
+    steps:
+      - setup_remote_docker
+      - attach_workspace:
+          at: docker-cache
+      - run:
+          name: Load Test Docker Image
+          command: |
+            docker load < docker-cache/docker-dev-image.tar
+      - run:
+          name: Run tests
+          command: |
+            docker run -i \
+              "$DOCKER_REPOSITORY:$CIRCLE_SHA1-dev" \
+              npm run lint
+  test:
+    <<: *defaults
+    steps:
+      - setup_remote_docker
+      - attach_workspace:
+          at: docker-cache
+      - run:
+          name: Load Test Docker Image
+          command: |
+            docker load < docker-cache/docker-dev-image.tar
+      - run:
+          name: Run tests
+          command: |
+            docker run -i \
+              "$DOCKER_REPOSITORY:$CIRCLE_SHA1-dev" \
+              reaction test
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - docker-test-build
+      - test:
+          context: reaction-validation
+          requires:
+            - docker-test-build
+      - eslint:
+          requires:
+            - docker-test-build
+      - docker-build:
+          context: reaction-build-read
+      - docker-push:
+          context: reaction-publish-docker
+          requires:
+            - docker-build
+      - deploy-docs:
+          context: reaction-build-read
+          requires:
+            - test
+            - docker-build
