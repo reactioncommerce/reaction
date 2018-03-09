@@ -149,10 +149,19 @@ function composer(props, onData) {
   }
 
   const queryParams = Object.assign({}, tags, Reaction.Router.current().query, shopIds);
-  const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
+  let productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
+
+    const product = Products.findOne({
+      __resubscribe: true
+    });
+    if (product) {
+      // Resubscribe
+      productsSubscription.stop();
+      productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
+    }
   }
 
   const activeShopsIds = Shops.find({
