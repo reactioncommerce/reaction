@@ -11,10 +11,7 @@ class ShopBrandImageOption extends Component {
     media: PropTypes.object.isRequired
   };
 
-  handleClick = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  handleClick = () => {
     const { isSelected, media } = this.props;
 
     if (isSelected) return;
@@ -30,14 +27,7 @@ class ShopBrandImageOption extends Component {
     });
   };
 
-  handleKeyPress = (event) => {
-    if (event.keyCode === 13) this.handleClick(event);
-  };
-
-  handleRemoveClick = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  handleRemoveClick = () => {
     const { media } = this.props;
 
     Alerts.alert({
@@ -54,23 +44,13 @@ class ShopBrandImageOption extends Component {
     const { media } = this.props;
 
     return (
-      <div
-        className="rui media-gallery"
+      <Components.MediaItem
+        editable
         onClick={this.handleClick}
-        onKeyPress={this.handleKeyPress}
-        role="button"
-        tabIndex={0}
-      >
-        <img alt="" className="img-responsive" src={media.url({ store: "thumbnail" })} />
-        <div className="rui badge-container">
-          <Components.IconButton
-            icon="fa fa-times"
-            onClick={this.handleRemoveClick}
-            i18nKeyTooltip="admin.mediaGallery.deleteImage"
-            tooltip="Click to remove image"
-          />
-        </div>
-      </div>
+        onRemoveMedia={this.handleRemoveClick}
+        size="small"
+        source={media}
+      />
     );
   }
 }
