@@ -29,7 +29,7 @@ const wrapComponent = (Comp) => (
       this.setState({
         initialLoad: false
       });
-      // laod in the next set of products
+      // load in the next set of products
       Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
     }
 
