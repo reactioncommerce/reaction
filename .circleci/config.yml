@@ -150,9 +150,10 @@ jobs:
       - run:
           name: Run tests
           command: |
-            docker run -i \
+            docker run \
+              -e "TOOL_NODE_FLAGS=--max-old-space-size=4096" \
               "$DOCKER_REPOSITORY:$CIRCLE_SHA1-dev" \
-              reaction test
+              sh -c "reaction test"
 
 workflows:
   version: 2
