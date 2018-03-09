@@ -1,8 +1,5 @@
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Reaction } from "/server/api";
 import { Products } from "/lib/collections";
-import { connectorsRoles } from "../../lib/roles";
 
 /**
  * @file Methods for syncing Shopify orders
