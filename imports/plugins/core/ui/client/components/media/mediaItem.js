@@ -15,6 +15,7 @@ class MediaItem extends Component {
     editable: PropTypes.bool,
     mediaHeight: PropTypes.number,
     mediaWidth: PropTypes.number,
+    onClick: PropTypes.func,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     onRemoveMedia: PropTypes.func,
@@ -26,11 +27,23 @@ class MediaItem extends Component {
   static defaultProps = {
     defaultSource: "/resources/placeholder.gif",
     editable: false,
+    onClick() {},
     onMouseEnter() {},
     onMouseLeave() {},
     onRemoveMedia() {},
     size: "large",
     zoomable: false
+  };
+
+  handleClick = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.props.onClick();
+  };
+
+  handleKeyPress = (event) => {
+    if (event.keyCode === 13) this.handleClick(event);
   };
 
   handleMouseEnter = (event) => {
@@ -164,8 +177,12 @@ class MediaItem extends Component {
     const mediaElement = (
       <div
         className={classnames(classes)}
+        onClick={this.handleClick}
+        onKeyPress={this.handleKeyPress}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
+        role="button"
+        tabIndex={0}
       >
         {this.renderImage()}
         {this.renderControls()}

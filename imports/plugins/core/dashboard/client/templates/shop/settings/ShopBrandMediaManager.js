@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import MediaUploader from "./mediaUploader";
+import { Components } from "@reactioncommerce/reaction-components";
 import ShopBrandImageOption from "./shopBrandImageOption";
-
-const styles = {};
 
 class ShopBrandMediaManager extends Component {
   static propTypes = {
@@ -25,10 +23,10 @@ class ShopBrandMediaManager extends Component {
 
     return (
       <div>
-        <div style={styles}>
+        <div>
           {this.renderBrandImages()}
         </div>
-        <MediaUploader metadata={metadata} />
+        <Components.MediaUploader metadata={metadata} />
       </div>
     );
   }
