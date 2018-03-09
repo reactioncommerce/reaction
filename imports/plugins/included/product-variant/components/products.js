@@ -18,7 +18,6 @@ class Products extends Component {
   static propTypes = {
     loadMoreProducts: PropTypes.func,
     loadProducts: PropTypes.func,
-    productMediaById: PropTypes.object,
     products: PropTypes.array,
     productsSubscription: PropTypes.object,
     ready: PropTypes.func,
@@ -63,7 +62,6 @@ class Products extends Component {
 
     return (
       <Components.ProductGrid
-        productMediaById={this.props.productMediaById}
         productsByKey={productsByKey || {}}
         productIds={getIds({ tags: products })}
         canEdit={Reaction.hasPermission("createProduct")}

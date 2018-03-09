@@ -72,7 +72,7 @@ Template.productSettings.helpers({
 Template.productSettingsListItem.events({
   "click [data-event-action=product-click]"() {
     Reaction.Router.go("product", {
-      handle: this.handle
+      handle: (this.__published && this.__published.handle) || this.handle
     });
 
     Reaction.state.set("edit/focus", "productDetails");

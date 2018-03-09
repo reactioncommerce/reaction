@@ -42,17 +42,16 @@ class PublishContainer extends Component {
           const message = i18next.t("revisions.changedPublished", {
             defaultValue: "Changes published successfully"
           });
-
           Alerts.toast(message, "success");
 
           if (this.props.onPublishSuccess) {
             this.props.onPublishSuccess(result);
-
-            // Publish to catalog after revisions have been published
-            this.publishToCatalog("products", productIds);
           }
+
+          // Publish to catalog after revisions have been published
+          this.publishToCatalog("products", productIds);
         } else {
-          Alerts.toast(error.message, "error");
+          Alerts.toast((error && error.message) || (result && result.status) || i18next.t("app.error"), "error");
         }
       });
     } else {
@@ -113,7 +112,6 @@ PublishContainer.propTypes = {
   isEnabled: PropTypes.bool,
   isPreview: PropTypes.bool,
   onAction: PropTypes.func,
-  onPublishSuccess: PropTypes.func,
   onVisibilityChange: PropTypes.func,
   product: PropTypes.object,
   revisions: PropTypes.arrayOf(PropTypes.object)

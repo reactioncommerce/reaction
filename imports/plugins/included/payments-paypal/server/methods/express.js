@@ -5,7 +5,8 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { PayPal } from "../../lib/api";
 import { Shops, Cart, Packages } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import { Logger } from "/server/api";
+import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 let moment;
 async function lazyLoadMoment() {
@@ -151,7 +152,10 @@ export const methods = {
    * @return {Object} results from PayPal normalized
    */
   "paypalexpress/payment/capture"(paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
     this.unblock();
     const options = PayPal.expressCheckoutAccountOptions();
     const amount = accounting.toFixed(paymentMethod.amount, 2);
@@ -227,8 +231,12 @@ export const methods = {
    * @return {Object} Transaction results from PayPal normalized
    */
   "paypalexpress/refund/create"(paymentMethod, amount) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
+
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
     this.unblock();
 
     const options = PayPal.expressCheckoutAccountOptions();
@@ -293,7 +301,10 @@ export const methods = {
    * @return {array}  Refunds from PayPal query, normalized
    */
   "paypalexpress/refund/list"(paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
     this.unblock();
 
     const options = PayPal.expressCheckoutAccountOptions();

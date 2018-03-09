@@ -1,7 +1,8 @@
 import i18next from "i18next";
+import { values } from "lodash";
+import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
 
 /**
@@ -39,25 +40,22 @@ export function getBrowserLanguage() {
  * @return {Object} return schema label object
  */
 export function getLabelsFor(schema, name) {
+  const titleCaseName = name.charAt(0).toLowerCase() + name.slice(1);
   const labels = {};
   // loop through all the rendered form fields and generate i18n keys
-  for (const fieldName of schema._schemaKeys) {
-    const i18nKey = `${name.charAt(0).toLowerCase() + name.slice(1)}.${
-      fieldName
-        .split(".$").join("")}`;
+  Object.keys(schema.mergedSchema()).forEach((fieldName) => {
+    const i18nKey = `${titleCaseName}.${fieldName.split(".$").join("")}`;
     // translate autoform label
     const t = i18next.t(i18nKey);
-    if (new RegExp("string").test(t) !== true && t !== i18nKey) {
-      if (t) {
-        labels[fieldName] = t;
-      }
+    if (t && new RegExp("string").test(t) !== true && t !== i18nKey) {
+      labels[fieldName] = t;
     }
-  }
+  });
   return labels;
 }
 
 /**
- * @name getMessagesFor
+ * @name getValidationErrorMessages
  * @method
  * @memberof i18n
  * @summary Get i18n messages for autoform messages. Currently using a globalMessage namespace only.
@@ -67,17 +65,15 @@ export function getLabelsFor(schema, name) {
  * @todo Implement messaging hierarchy from simple-schema
  * @return {Object} returns i18n translated message for schema labels
  */
-export function getMessagesFor() {
+export function getValidationErrorMessages() {
   const messages = {};
-  for (const message in SimpleSchema._globalMessages) {
-    if ({}.hasOwnProperty.call(SimpleSchema._globalMessages, message)) {
-      const i18nKey = `globalMessages.${message}`;
-      const t = i18next.t(i18nKey);
-      if (new RegExp("string").test(t) !== true && t !== i18nKey) {
-        messages[message] = t;
-      }
+  values(SimpleSchema.ErrorTypes).forEach((errorType) => {
+    const i18nKey = `globalMessages.${errorType}`;
+    const message = i18next.t(i18nKey);
+    if (new RegExp("string").test(message) !== true && message !== i18nKey) {
+      messages[errorType] = message;
     }
-  }
+  });
   return messages;
 }
 

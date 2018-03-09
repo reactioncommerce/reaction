@@ -1,4 +1,6 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { Products } from "/lib/collections";
 import { registerSchema } from "/imports/plugins/core/collections";
 
@@ -16,11 +18,10 @@ import { registerSchema } from "/imports/plugins/core/collections";
  */
 export const ShopifyProduct = new SimpleSchema({
   shopifyId: {
-    type: Number,
-    optional: true,
-    decimal: false
+    type: SimpleSchema.Integer,
+    optional: true
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("ShopifyProduct", ShopifyProduct);
 

@@ -70,12 +70,10 @@ const handlers = {
 // reactive Tracker wrapped function
 function composer(props, onData) {
   const userId = Meteor.userId();
-  let shopId = Reaction.getPrimaryShopId();
-  if (Reaction.marketplace.merchantCarts) {
-    shopId = Reaction.getShopId();
-  }
-
+  const shopId = Reaction.marketplace.merchantCarts ? Reaction.getShopId() : Reaction.getPrimaryShopId();
   const cart = Cart.findOne({ userId, shopId });
+  if (!cart) return;
+
   Meteor.subscribe("CartImages", cart._id);
 
   const productItems = cart && cart.items;

@@ -11,7 +11,6 @@ import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Cart } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
-import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { Media } from "/imports/plugins/core/files/client";
 
 const wrapComponent = (Comp) => (
@@ -249,22 +248,20 @@ const wrapComponent = (Comp) => (
       }
 
       return (
-        <DragDropProvider>
-          <StyleRoot>
-            <Comp
-              cartQuantity={this.state.cartQuantity}
-              mediaGalleryComponent={<Components.MediaGallery media={media} />}
-              onAddToCart={this.handleAddToCart}
-              onCartQuantityChange={this.handleCartQuantityChange}
-              onViewContextChange={this.handleViewContextChange}
-              socialComponent={<SocialContainer />}
-              topVariantComponent={<VariantListContainer />}
-              onDeleteProduct={this.handleDeleteProduct}
-              onProductFieldChange={this.handleProductFieldChange}
-              {...this.props}
-            />
-          </StyleRoot>
-        </DragDropProvider>
+        <StyleRoot>
+          <Comp
+            cartQuantity={this.state.cartQuantity}
+            mediaGalleryComponent={<Components.MediaGallery media={media} />}
+            onAddToCart={this.handleAddToCart}
+            onCartQuantityChange={this.handleCartQuantityChange}
+            onViewContextChange={this.handleViewContextChange}
+            socialComponent={<SocialContainer />}
+            topVariantComponent={<VariantListContainer />}
+            onDeleteProduct={this.handleDeleteProduct}
+            onProductFieldChange={this.handleProductFieldChange}
+            {...this.props}
+          />
+        </StyleRoot>
       );
     }
   }
@@ -279,15 +276,12 @@ function composer(props, onData) {
   const viewProductAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
   let productSub;
-
   if (productId) {
     productSub = Meteor.subscribe("Product", productId, shopIdOrSlug);
   }
-
-  if (productSub && productSub.ready() && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {
-    // Get the product
+  if (productSub && productSub.ready()
+    && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {
     const product = ReactionProduct.setProduct(productId, variantId);
-
     if (Reaction.hasPermission("createProduct")) {
       if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
         Reaction.setActionView({

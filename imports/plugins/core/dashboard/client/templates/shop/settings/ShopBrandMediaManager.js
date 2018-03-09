@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import MediaUploader from "./mediaUploader";
+import { Components } from "@reactioncommerce/reaction-components";
 import ShopBrandImageOption from "./shopBrandImageOption";
-
-const styles = {};
 
 class ShopBrandMediaManager extends Component {
   static propTypes = {
@@ -25,10 +23,13 @@ class ShopBrandMediaManager extends Component {
 
     return (
       <div>
-        <div style={styles}>
-          {this.renderBrandImages()}
-        </div>
-        <MediaUploader metadata={metadata} />
+        {/* DragDropProvider is needed to avoid errors but we don't currently support dragging */}
+        <Components.DragDropProvider>
+          <div className="rui gallery-thumbnails">
+            {this.renderBrandImages()}
+          </div>
+        </Components.DragDropProvider>
+        <Components.MediaUploader metadata={metadata} />
       </div>
     );
   }

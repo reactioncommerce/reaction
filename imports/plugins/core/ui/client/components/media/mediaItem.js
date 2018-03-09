@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import ReactImageMagnify from "react-image-magnify";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import { SortableItem } from "../../containers";
+import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import Hint from "./hint";
 
 class MediaItem extends Component {
@@ -15,6 +15,7 @@ class MediaItem extends Component {
     editable: PropTypes.bool,
     mediaHeight: PropTypes.number,
     mediaWidth: PropTypes.number,
+    onClick: PropTypes.func,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     onRemoveMedia: PropTypes.func,
@@ -24,15 +25,25 @@ class MediaItem extends Component {
   };
 
   static defaultProps = {
-    connectDragSource: (item) => item,
-    connectDropTarget: (item) => item,
     defaultSource: "/resources/placeholder.gif",
     editable: false,
+    onClick() {},
     onMouseEnter() {},
     onMouseLeave() {},
     onRemoveMedia() {},
     size: "large",
     zoomable: false
+  };
+
+  handleClick = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.props.onClick();
+  };
+
+  handleKeyPress = (event) => {
+    if (event.keyCode === 13) this.handleClick(event);
   };
 
   handleMouseEnter = (event) => {
@@ -166,8 +177,12 @@ class MediaItem extends Component {
     const mediaElement = (
       <div
         className={classnames(classes)}
+        onClick={this.handleClick}
+        onKeyPress={this.handleKeyPress}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
+        role="button"
+        tabIndex={0}
       >
         {this.renderImage()}
         {this.renderControls()}

@@ -1,4 +1,3 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections/schemas/discounts";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
@@ -8,14 +7,12 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 * @desc schema that extends discount schema
 * with properties for discount codes.
 */
-export const DiscountRates = new SimpleSchema([
-  Discounts, {
-    discountMethod: {
-      label: "Calculation Method",
-      type: String,
-      defaultValue: "rate"
-    }
+export const DiscountRates = Discounts.clone().extend({
+  discountMethod: {
+    label: "Calculation Method",
+    type: String,
+    defaultValue: "rate"
   }
-]);
+});
 
 registerSchema("DiscountRates", DiscountRates);

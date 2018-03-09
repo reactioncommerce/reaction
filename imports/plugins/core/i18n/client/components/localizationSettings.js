@@ -13,6 +13,7 @@ class LocalizationSettings extends Component {
     languages: PropTypes.array,
     onEnableAllCurrencies: PropTypes.func,
     onEnableAllLanguages: PropTypes.func,
+    onReloadTranslations: PropTypes.func,
     onUpdateCurrencyConfiguration: PropTypes.func,
     onUpdateLanguageConfiguration: PropTypes.func,
     onUpdateLocalization: PropTypes.func,
@@ -20,6 +21,54 @@ class LocalizationSettings extends Component {
     timezoneOptions: PropTypes.array,
     uolOptions: PropTypes.array,
     uomOptions: PropTypes.array
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      currencies: props.currencies,
+      languages: props.languages
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      currencies: nextProps.currencies,
+      languages: nextProps.languages
+    });
+  }
+
+  handleUpdateCurrencyConfiguration = (event, isChecked, name) => {
+    const currencyIndex = this.state.currencies.findIndex((currency) => currency.name === name);
+
+    this.setState((state) => {
+      const newStateCurrencies = state.currencies;
+      newStateCurrencies[currencyIndex].enabled = isChecked;
+      return { currencies: newStateCurrencies };
+    }, () => {
+      // Delaying to allow animation before sending data to server
+      // If animation is not delayed, it twitches when actual update happens
+      setTimeout(() => {
+        this.props.onUpdateCurrencyConfiguration(event, isChecked, name);
+      }, 200);
+    });
+  }
+
+  handleUpdateLangaugeConfiguration = (event, isChecked, name) => {
+    const languageIndex = this.state.languages.findIndex((language) => language.value === name);
+
+    this.setState((state) => {
+      const newStateLanguages = state.languages;
+      newStateLanguages[languageIndex].enabled = isChecked;
+      return { languages: newStateLanguages };
+    }, () => {
+      // Delaying to allow animation before sending data to server
+      // If animation is not delayed, it twitches when actual update happens
+      setTimeout(() => {
+        this.props.onUpdateLanguageConfiguration(event, isChecked, name);
+      }, 200);
+    });
   }
 
   renderCurrencies() {
@@ -30,20 +79,20 @@ class LocalizationSettings extends Component {
         label={currency.label}
         switchOn={currency.enabled}
         switchName={currency.name}
-        onSwitchChange={this.props.onUpdateCurrencyConfiguration}
+        onSwitchChange={this.handleUpdateCurrencyConfiguration}
       />
     ));
   }
 
   renderLanguages() {
-    return this.props.languages.map((language, key) => (
+    return this.state.languages.map((language, key) => (
       <Components.ListItem
         actionType={"switch"}
         key={key}
         label={language.label}
         switchOn={language.enabled}
         switchName={language.value}
-        onSwitchChange={this.props.onUpdateLanguageConfiguration}
+        onSwitchChange={this.handleUpdateLangaugeConfiguration}
       />
     ));
   }
@@ -78,6 +127,12 @@ class LocalizationSettings extends Component {
     }
   }
 
+  handleReloadTranslations = (event) => {
+    if (typeof this.props.onReloadTranslations === "function") {
+      this.props.onReloadTranslations(event.altKey);
+    }
+  }
+
   renderListControls(name) {
     return (
       <Components.CardToolbar>
@@ -94,6 +149,16 @@ class LocalizationSettings extends Component {
           value={name}
           onClick={this.handleAllOff}
         />
+        {name === "language" && "|"}
+        {name === "language" &&
+          <Components.FlatButton
+            i18nKeyTooltip={"admin.i18nSettings.reloadTranslations"}
+            tooltip={"Reload translations asdasdasdasdasd"}
+            tooltipAttachment="middle left"
+            icon="fa fa-refresh"
+            onClick={this.handleReloadTranslations}
+          />
+        }
       </Components.CardToolbar>
     );
   }

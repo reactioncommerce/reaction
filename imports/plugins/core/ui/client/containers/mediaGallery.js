@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Measure from "react-measure";
-import update from "react/lib/update";
+import update from "immutability-helper";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import _ from "lodash";
@@ -11,6 +11,7 @@ import MediaGallery from "../components/media/mediaGallery";
 import { Logger, Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Revisions } from "/lib/collections";
+import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 import { Media } from "/imports/plugins/core/files/client";
 
 const wrapComponent = (Comp) => (
@@ -27,19 +28,28 @@ const wrapComponent = (Comp) => (
       super(props);
 
       this.state = {
-        featuredMedia: props.media[0],
         dimensions: {
           width: -1,
           height: -1
-        }
+        },
+        featuredMedia: null,
+        media: null,
+        uploadProgress: null
       };
     }
 
     componentWillReceiveProps(nextProps) {
-      this.setState({
-        featuredMedia: nextProps.media[0],
-        media: nextProps.media
-      });
+      // We need to do this logic only if we've temporarily set media in state for latency compensation
+      if (!this.state.media) return;
+
+      const previousMediaIds = (this.props.media || []).map(({ _id }) => _id);
+      const nextMediaIds = (nextProps.media || []).map(({ _id }) => _id);
+
+      // If added, moved, or reordered media items since last render, then we can assume
+      // we got updated data in subscription, clear state, and go back to using the prop
+      if (JSON.stringify(previousMediaIds) !== JSON.stringify(nextMediaIds)) {
+        this.setState({ media: null });
+      }
     }
 
     handleRemoveMedia = (media) => {
@@ -60,42 +70,42 @@ const wrapComponent = (Comp) => (
                 autoHide: 10000
               });
             }
-
-            // updateImagePriorities();
           });
         }
         // show media as removed (since it will not disappear until changes are published
       });
-    }
-
-    get allowFeaturedMediaHover() {
-      if (this.state.featuredMedia) {
-        return true;
-      }
-      return false;
-    }
+    };
 
     get media() {
-      return (this.state && this.state.media) || this.props.media;
+      return this.state.media || this.props.media;
     }
 
     handleMouseEnterMedia = (event, media) => {
-      this.setState({
-        featuredMedia: media
-      });
-    }
+      const { editable } = this.props;
+
+      // It is confusing for an admin to know what the actual featured media is if it
+      // changes on hover of the other media.
+      if (!editable) {
+        this.setState({ featuredMedia: media });
+      }
+    };
 
     handleMouseLeaveMedia = () => {
-      this.setState({
-        featuredMedia: undefined
-      });
-    }
+      const { editable } = this.props;
+
+      // It is confusing for an admin to know what the actual featured media is if it
+      // changes on hover of the other media.
+      if (!editable) {
+        this.setState({ featuredMedia: null });
+      }
+    };
 
     handleMoveMedia = (dragIndex, hoverIndex) => {
-      const media = this.props.media[dragIndex];
+      const mediaList = this.media;
+      const media = mediaList[dragIndex];
 
       // Apply new sort order to variant list
-      const newMediaOrder = update(this.props.media, {
+      const newMediaOrder = update(mediaList, {
         $splice: [
           [dragIndex, 1],
           [hoverIndex, 0, media]
@@ -104,21 +114,21 @@ const wrapComponent = (Comp) => (
 
       // Set local state so the component does't have to wait for a round-trip
       // to the server to get the updated list of variants
-      this.setState({
-        media: newMediaOrder
-      });
+      this.setState({ media: newMediaOrder });
 
       // Save the updated positions
-      Meteor.defer(() => {
-        newMediaOrder.forEach((mediaItem, index) => {
-          Media.update(mediaItem._id, {
-            $set: {
-              "metadata.priority": index
-            }
+      const sortedMediaIDs = newMediaOrder.map(({ _id }) => _id);
+      Meteor.call("media/updatePriorities", sortedMediaIDs, (error) => {
+        if (error) {
+          // Go back to using media prop instead of media state so that it doesn't appear successful
+          this.setState({ media: null });
+
+          Alerts.toast(error.reason, "warning", {
+            autoHide: 10000
           });
-        });
+        }
       });
-    }
+    };
 
     handleUpload = (files) => {
       const productId = ReactionProduct.selectedProductId();
@@ -181,7 +191,6 @@ const wrapComponent = (Comp) => (
           {({ measureRef }) =>
             <div ref={measureRef}>
               <Comp
-                allowFeaturedMediaHover={this.allowFeaturedMediaHover}
                 featuredMedia={this.state.featuredMedia}
                 onDrop={this.handleUpload}
                 onMouseEnterMedia={this.handleMouseEnterMedia}
@@ -222,7 +231,7 @@ function sortMedia(media) {
 
 // Search through revisions and if we find one for the image, stick it on the object
 function appendRevisionsToMedia(props, media) {
-  if (!Reaction.hasPermission(props.permission || ["createProduct"])) {
+  if (!isRevisionControlEnabled() || !Reaction.hasPermission(props.permission || ["createProduct"])) {
     return media;
   }
   const mediaRevisions = fetchMediaRevisions();
@@ -245,9 +254,7 @@ function composer(props, onData) {
   let editable;
   const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
-  if (!props.media) {
-    // Fetch media based on props
-  } else {
+  if (props.media) {
     media = appendRevisionsToMedia(props, props.media);
   }
 

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import { FileRecord } from "@reactioncommerce/file-collections";
-import { Components } from "@reactioncommerce/reaction-components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Logger } from "/client/api";
 import { Media } from "/imports/plugins/core/files/client";
 
@@ -76,5 +76,7 @@ class MediaUploader extends Component {
     );
   }
 }
+
+registerComponent("MediaUploader", MediaUploader);
 
 export default MediaUploader;
