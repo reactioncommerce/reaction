@@ -104,20 +104,27 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install AWS CLI
+          command: sudo apt-get -y -qq install awscli
+      - run:
+          name: NPM Install JSDoc
+          command: sudo npm install -g jsdoc
+      - run:
           name: Build JSDoc files
-          command: .reaction/jsdoc/build.sh
+          command: |
+            jsdoc .
+              --verbose \
+              --configure .reaction/jsdoc/jsdoc.json \
+              --readme .reaction/jsdoc/templates/static/README.md
       - run:
           name: Deploy Doc files to S3 if on Master
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
-                aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
-              else
-                echo "S3 bucket configuration not found for jsdocs"
-                echo "Set API_DOC_BUCKET and API_DOC_BUCKET_REGION to build and deploy jsdocs to S3"
-              fi
+            if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
+              echo "Deploying..."
             else
-              echo "Not master branch so not deploying"
+              echo "S3 bucket configuration not found for jsdocs"
+              echo "Set API_DOC_BUCKET and API_DOC_BUCKET_REGION to build and deploy jsdocs to S3"
+              exit 1;
             fi
 
   eslint:
