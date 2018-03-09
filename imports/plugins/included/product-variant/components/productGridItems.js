@@ -21,16 +21,21 @@ class ProductGridItems extends Component {
     weightClass: PropTypes.func
   }
 
-  handleDoubleClick = (event) => {
-    if (this.props.onDoubleClick) {
-      this.props.onDoubleClick(event);
+  static defaultProps = {
+    onClick() {},
+    onDoubleClick() {},
+    productMedia: {
+      additionalMedia: null,
+      primaryMedia: null
     }
+  };
+
+  handleDoubleClick = (event) => {
+    this.props.onDoubleClick(event);
   }
 
   handleClick = (event) => {
-    if (this.props.onClick) {
-      this.props.onClick(event);
-    }
+    this.props.onClick(event);
   }
 
   renderPinned() {
