@@ -32,7 +32,7 @@ class ProductGrid extends Component {
     }
   }
 
-  // render the laoding spinner
+  // render the loading spinner
   renderLoadingSpinner() {
     const { productsSubscription: { ready } } = this.props;
     // if the products catalog is not ready
