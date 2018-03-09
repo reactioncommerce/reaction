@@ -8,20 +8,20 @@ import { Hooks, Logger, Reaction } from "/server/api";
 /* eslint no-shadow: 0 */
 
 /**
- * @description Updates a hook to update orders status before
- * updating an order.
+ * @method updateOrderWorkflow
+ * @summary Updates a hook to update orders status before updating an order.
  *
- * @param {String} uId - currently logged in user
+ * @param {String} userId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
  * @param {Object} validation
  * @return {String} _id of updated document
  */
-function updateOrderWorkflow(uId, selector, modifier, validation) {
+function updateOrderWorkflow(userId, selector, modifier, validation) {
   const order = Orders.findOne(selector);
 
   Hooks.Events.run("beforeUpdateOrderWorkflow", order, {
-    userId: uId,
+    userId,
     modifier,
     validation
   });
