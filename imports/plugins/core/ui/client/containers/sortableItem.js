@@ -50,7 +50,7 @@ const cardTarget = {
     monitor.getItem().index = hoverIndex;
   },
   drop(props) {
-    props.onDrop();
+    if (typeof props.onDrop === "function") props.onDrop();
   }
 };
 

@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs, Templates } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
+import { Media } from "/imports/plugins/core/files/server";
 
 /**
  * @file `Reaction.Email` methods for creating e-mail jobs, fetching e-mail templates and e-mail subject lines
@@ -119,4 +120,22 @@ export function getTemplateFile(file) {
     Logger.warn(`Template not found: ${file}. Falling back to coreDefault.html`);
     return Assets.getText("email/templates/coreDefault.html");
   }
+}
+
+
+/**
+ * @method getShopLogo
+ * @summary Get absolute URL for shop logo, if available. If not, use default logo URL.
+ * @memberof Email
+ * @param  {Object} shop - shop
+ * @return {String} Absolute image URL
+ */
+export function getShopLogo(shop) {
+  let emailLogo;
+  if (Array.isArray(shop.brandAssets)) {
+    const brandAsset = shop.brandAssets.find((asset) => asset.type === "navbarBrandImage");
+    const fileRecord = brandAsset && Promise.await(Media.findOne(brandAsset.mediaId));
+    emailLogo = fileRecord && fileRecord.url({ absolute: true, store: "medium" });
+  }
+  return emailLogo || `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
 }
