@@ -112,6 +112,7 @@ PublishContainer.propTypes = {
   isEnabled: PropTypes.bool,
   isPreview: PropTypes.bool,
   onAction: PropTypes.func,
+  onPublishSuccess: PropTypes.func,
   onVisibilityChange: PropTypes.func,
   product: PropTypes.object,
   revisions: PropTypes.arrayOf(PropTypes.object)
