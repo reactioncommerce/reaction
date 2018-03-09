@@ -16,17 +16,19 @@ export function updateSettings(settings) {
 }
 
 /**
- * @description Updates revision and product documents.
+ * @function
+ * @name publishCatalogProduct
+ * @description Updates revision and publishes a product.
  *
  * @param {String} userId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
- * @param {Object} options
+ * @param {Object} validation - simple schema validation
  * @return {String} _id of updated document
  */
-function updateCatalogProduct(userId, selector, modifier, validation) {
+function publishCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
-  Hooks.Events.run("beforeUpdateCatalogProduct", product, {
+  Hooks.Events.run("beforepublishCatalogProduct", product, {
     userId,
     modifier,
     validation,
@@ -134,7 +136,7 @@ Meteor.methods({
       for (const revision of revisions) {
         if (!revision.documentType || revision.documentType === "product") {
 
-          const res = updateCatalogProduct(
+          const res = publishCatalogProduct(
             this.userId,
             {
               _id: revision.documentId

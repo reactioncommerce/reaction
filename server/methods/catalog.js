@@ -347,19 +347,22 @@ function createProduct(props = null) {
 }
 
 /**
- * @description Updates revision and product documents.
+ * @function
+ * @name updateCatalogProduct
+ * @summary Updates a product's revision and conditionally updates
+ * the underlying product.
  *
- * @param {String} uId - currently logged in user
+ * @param {String} userId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
- * @param {Object} options
+ * @param {Object} validation - simple schema validation options
  * @return {String} _id of updated document
  */
-function updateCatalogProduct(uId, selector, modifier, validation) {
+function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
 
   const shouldUpdateProduct = Hooks.Events.run("beforeUpdateCatalogProduct", product, {
-    userId: uId,
+    userId,
     modifier,
     validation
   });
@@ -657,7 +660,7 @@ Meteor.methods({
     if (shouldRemoveProduct) {
       deleted = Products.remove(selector);
 
-      // after variant were removed from product, we need to recalculate all
+      // After variant was removed from product, we need to recalculate all
       // denormalized fields
       const productId = toDelete[0].ancestors[0];
       toDenormalize.forEach((field) => denormalize(productId, field));
