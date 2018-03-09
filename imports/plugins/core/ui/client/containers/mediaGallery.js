@@ -225,7 +225,13 @@ function fetchMediaRevisions() {
 
 // resort the media in
 function sortMedia(media) {
-  const sortedMedia = _.sortBy(media, (m) => (m.metadata && m.metadata.priority) || 1000);
+  const sortedMedia = _.sortBy(media, (m) => {
+    const { priority } = (m && m.metadata) || {};
+    if (!priority && priority !== 0) {
+      return 1000;
+    }
+    return priority;
+  });
   return sortedMedia;
 }
 
