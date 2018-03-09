@@ -1,3 +1,32 @@
+# v1.8.2
+## Fixes
+ - fix: added unique to slug (#3745) .. Resolves #2736
+ - fix: Correct Inventory updates when canceling an order (#3776)
+ - fix: bulk order status corrected (#3807) .. Resolves #3692
+ - fix: order refunding number input (#3826) .. Resolves #3702
+ - fix: Changing user currency does not update prices (#3835)
+ - fix: Fix invite shop owner (#3845) .. Resolves #3836
+
+## Performance
+ - perf: performance upgrades by refactoring shopSelectDropdown Trackers (#3651)
+ - perf: Improve unnecessary translation loading (#3838)
+
+## Features
+ - feat: Allow for ShopId when adding Brand Assets (#3529)
+
+## Refactor
+ - refactor: Call OrdersList as a Component (#3848)
+
+## Chore
+ - chore: Add CodeTriage badge to reactioncommerce/reaction (#3666)
+ - chore: Update React to 16.2.0 (#3801)
+
+## Docs
+ - docs(jsdoc): Namespace Hooks.Events methods and add examples (#3843) .. Resolves #3840
+
+## Contributors
+Thanks to @pmn4 and @willmoss1000 for contributing to this release
+
 # v1.8.1
 
 ## Fixes
