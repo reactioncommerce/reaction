@@ -21,26 +21,27 @@ defaults: &defaults
     - image: circleci/node:8-stretch
 
 jobs:
-  docker-test-build:
+  install_dep:
     <<: *defaults
     steps:
       - checkout
       - setup_remote_docker
       - attach_workspace:
-          at: docker-cache
+          at: dev-cache
       - run:
-          name: Build Meteor-Dev Stage
+          name: Install Meteor
           command: |
-            docker build --target meteor-dev \
-              -t "$DOCKER_REPOSITORY:$CIRCLE_SHA1-dev" .
-            mkdir -p docker-cache
-            docker save \
-              -o docker-cache/docker-dev-image.tar \
-              "$DOCKER_REPOSITORY:$CIRCLE_SHA1-dev"
+            curl https://install.meteor.com | /bin/sh
+      - run:
+          name: Meteor NPM Install
+          command: meteor npm install
+      - run:
+          name: Save Installed Packages
+          command: cp -R node_modules dev-cache/node_modules
       - persist_to_workspace:
-          root: docker-cache
+          root: node_modules
           paths:
-            - docker-dev-image.tar
+            - *
 
   docker-build:
     <<: *defaults
@@ -130,19 +131,13 @@ jobs:
   eslint:
     <<: *defaults
     steps:
-      - setup_remote_docker
+      - checkout
       - attach_workspace:
-          at: docker-cache
+          at: node_modules
       - run:
-          name: Load Test Docker Image
+          name: Run Lint
           command: |
-            docker load < docker-cache/docker-dev-image.tar
-      - run:
-          name: Run tests
-          command: |
-            docker run -i \
-              "$DOCKER_REPOSITORY:$CIRCLE_SHA1-dev" \
-              npm run lint
+            npm run lint
 
   test:
     <<: *defaults
@@ -157,23 +152,20 @@ jobs:
       - run:
           name: Run tests
           command: |
-            docker run \
-              -e "TOOL_NODE_FLAGS=--max-old-space-size=4096" \
-              "$DOCKER_REPOSITORY:$CIRCLE_SHA1-dev" \
-              sh -c "reaction test"
+            reaction test
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - docker-test-build
-      - test:
-          context: reaction-validation
-          requires:
-            - docker-test-build
+      - install_dep
+      # - test:
+      #     context: reaction-validation
+      #     requires:
+      #       - docker-test-build
       - eslint:
           requires:
-            - docker-test-build
+            - install_dep
       - docker-build:
           context: reaction-build-read
       - docker-push:
