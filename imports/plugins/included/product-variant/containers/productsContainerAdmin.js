@@ -213,11 +213,7 @@ function composer(props, onData) {
       primaryMedia
     };
 
-    return {
-      ...applyProductRevision(product)
-      // additionalMedia,
-      // primaryMedia
-    };
+    return applyProductRevision(product);
   });
 
   reactiveProductIds.set(productIds);
