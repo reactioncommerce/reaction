@@ -136,6 +136,7 @@ jobs:
             docker run -i \
               "$DOCKER_REPOSITORY:$CIRCLE_SHA1-dev" \
               npm run lint
+
   test:
     <<: *defaults
     steps:
@@ -148,7 +149,6 @@ jobs:
             docker load < docker-cache/docker-dev-image.tar
       - run:
           name: Run tests
-          no_output_timeout: 30m
           command: |
             docker run -i \
               "$DOCKER_REPOSITORY:$CIRCLE_SHA1-dev" \
