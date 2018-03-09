@@ -8,9 +8,10 @@ function getErrorFormatter(context) {
     // Generate an ID that can be used to correlate client errors with this server error
     err.errorId = Random.id();
 
+    let type = "unknown";
     if (originalError) {
       const eventObj = {
-        errorId: err.error_id,
+        errorId: err.errorId,
         path: err.path,
         userId: (context.user && context.user.id) || null,
         ...(originalError.eventObj || {})
@@ -18,9 +19,11 @@ function getErrorFormatter(context) {
 
       Logger.error(eventObj);
 
-      // Add a `type` prop to our `errors` response object for client parsing
-      if (originalError.error) err.type = originalError.error;
+      if (typeof originalError.error === "string") type = originalError.error;
     }
+
+    // Add a `type` prop to our `errors` response object for client parsing
+    err.type = type;
 
     return err;
   };

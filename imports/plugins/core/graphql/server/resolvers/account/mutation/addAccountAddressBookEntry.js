@@ -1,4 +1,4 @@
-import { namespaces, runMeteorMethodWithContext, transformIdFromBase64, transformIdToBase64 } from "../util";
+import { namespaces, runMeteorMethodWithContext, transformIdFromBase64, transformIdToBase64 } from "../../util";
 
 export default function addAccountAddressBookEntry(_, { accountId, input }, context) {
   const dbAccountId = transformIdFromBase64(accountId);
