@@ -107,7 +107,7 @@ Meteor.methods({
     // Call both check and validate because by calling `clean`, the audit pkg
     // thinks that we haven't checked paymentMethod arg
     check(paymentMethod, Object);
-    PaymentMethodArgument.validate(paymentMethod);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     const {
       transactionId,
@@ -177,7 +177,7 @@ Meteor.methods({
     // Call both check and validate because by calling `clean`, the audit pkg
     // thinks that we haven't checked paymentMethod arg
     check(paymentMethod, Object);
-    PaymentMethodArgument.validate(paymentMethod);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     const result = {
       saved: false,
