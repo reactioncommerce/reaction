@@ -53,8 +53,7 @@ jobs:
           name: Discover Docker Tags
           command: |
             mkdir -p docker-cache
-            SHA1=$(git rev-parse --verify "${CIRCLE_SHA1}")
-            .circleci/bin/docker-tags "$SHA1" "$CIRCLE_BRANCH" | sed 's/\//-/g' | xargs -t -I % \
+            .circleci/bin/docker-tags "$CIRCLE_SHA1" "$CIRCLE_BRANCH" | sed 's/\//-/g' \
               > docker-cache/docker-tags.txt
       - run:
           name: Docker build
@@ -149,6 +148,7 @@ jobs:
             docker load < docker-cache/docker-dev-image.tar
       - run:
           name: Run tests
+          no_output_timeout: 30m
           command: |
             docker run -i \
               "$DOCKER_REPOSITORY:$CIRCLE_SHA1-dev" \
