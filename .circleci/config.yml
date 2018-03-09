@@ -170,6 +170,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
+      - dockerfile-lint
       - test:
           context: reaction-validation
       - docker-build:
