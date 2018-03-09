@@ -19,8 +19,8 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
-    "@reactioncommerce/job-queue": "^1.0.4",
     "@babel/runtime": "7.0.0-beta.38",
+    "@reactioncommerce/job-queue": "^1.0.4",
     "@reactioncommerce/nodemailer": "^5.0.5",
     "accounting-js": "^1.1.1",
     "authorize-net": "^1.1.1",
@@ -85,7 +85,7 @@
     "react-avatar": "^2.5.1",
     "react-color": "^2.13.8",
     "react-copy-to-clipboard": "^5.0.1",
-    "react-dates": "^15.5.3",
+    "react-dates": "^16.3.6",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
     "react-dom": "16.2.0",
