@@ -64,13 +64,15 @@ class NavBar extends Component {
   }
 
   renderBrand() {
-    const shop = this.props.shop || { name: "" };
-    const logo = this.props.brandMedia && this.props.brandMedia.url();
+    const { brandMedia, shop } = this.props;
+
+    const { name } = shop || {};
+    const logo = brandMedia && brandMedia.url({ store: "large" });
 
     return (
       <Components.Brand
         logo={logo}
-        title={shop.name}
+        title={name || ""}
       />
     );
   }

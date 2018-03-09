@@ -385,11 +385,10 @@ export default {
           }
         });
       }
-      const packageSettings = store.get(packageName) || {};
-      packageSettings[preference] = value;
-      return store.set(packageName, packageSettings);
     }
-    return false;
+    const packageSettings = store.get(packageName) || {};
+    packageSettings[preference] = value;
+    return store.set(packageName, packageSettings);
   },
 
   updateUserPreferences(packageName, preference, values) {

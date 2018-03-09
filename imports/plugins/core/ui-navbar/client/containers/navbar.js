@@ -1,9 +1,9 @@
-import _ from "lodash";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import NavBar from "../components/navbar";
-import { Media, Shops } from "/lib/collections";
+import { Shops } from "/lib/collections";
+import { Media } from "/imports/plugins/core/files/client";
 
 export function composer(props, onData) {
   const shopSub = Meteor.subscribe("MerchantShops", Reaction.getShopsForUser(["admin"]));
@@ -50,8 +50,8 @@ export function composer(props, onData) {
   }
 
   if (shop && Array.isArray(shop.brandAssets)) {
-    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-    brandMedia = Media.findOne(brandAsset.mediaId);
+    const brandAsset = shop.brandAssets.find((asset) => asset.type === "navbarBrandImage");
+    brandMedia = brandAsset && Media.findOneLocal(brandAsset.mediaId);
   }
 
   const hasProperPermission = Reaction.hasPermission("account/profile");

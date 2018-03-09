@@ -1,52 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Media, Products, Revisions, Shops } from "/lib/collections";
+import { Products, Revisions, Shops } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
-
-
-/**
- * Helper function that creates and returns a Cursor of Media for relevant
- * products to a publication
- * @method findProductMedia
- * @param {Object} publicationInstance instance of the publication that invokes this method
- * @param {array} productIds array of productIds
- * @return {Object} Media Cursor containing the product media that matches the selector
- */
-export function findProductMedia(publicationInstance, productIds) {
-  const selector = {};
-
-  if (Array.isArray(productIds)) {
-    selector["metadata.productId"] = {
-      $in: productIds
-    };
-  } else {
-    selector["metadata.productId"] = productIds;
-  }
-
-  // No one needs to see archived images on products
-  selector["metadata.workflow"] = {
-    $nin: ["archived"]
-  };
-
-  // Product editors can see both published and unpublished images
-  // There is an implied shopId in Reaction.hasPermission that defaults to
-  // the active shopId via Reaction.getShopId
-  if (!Reaction.hasPermission(["createProduct"], publicationInstance.userId)) {
-    selector["metadata.workflow"].$in = [null, "published"];
-  }
-
-
-  // TODO: We should differentiate between the media selector for the product grid and PDP
-  // The grid shouldn't need more than one Media document per product, while the PDP will need
-  // all the images associated with the
-  return Media.find(selector, {
-    sort: {
-      "metadata.priority": 1
-    }
-  });
-}
-
 
 /**
  * product detail publication
@@ -170,32 +126,8 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
       this.onStop(() => {
         handle.stop();
       });
-
-      const productCursor = Products.find(selector);
-      const productIds = productCursor.map((p) => p._id);
-      const mediaCursor = findProductMedia(this, productIds);
-      return [
-        productCursor,
-        mediaCursor
-      ];
     }
-
-    // Revision control is disabled, but is an admin
-    const productCursor = Products.find(selector);
-    const productIds = productCursor.map((p) => p._id);
-    const mediaCursor = findProductMedia(this, productIds);
-    return [
-      productCursor,
-      mediaCursor
-    ];
   }
 
-  // Everyone else gets the standard, visible products and variants
-  const productCursor = Products.find(selector);
-  const productIds = productCursor.map((p) => p._id);
-  const mediaCursor = findProductMedia(this, productIds);
-  return [
-    productCursor,
-    mediaCursor
-  ];
+  return Products.find(selector);
 });

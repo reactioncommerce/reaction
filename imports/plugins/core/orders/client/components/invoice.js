@@ -29,6 +29,7 @@ class Invoice extends Component {
   static propTypes = {
     canMakeAdjustments: PropTypes.bool,
     discounts: PropTypes.bool,
+    displayMedia: PropTypes.func,
     hasRefundingEnabled: PropTypes.bool,
     invoice: PropTypes.object,
     isFetching: PropTypes.bool,

@@ -28,6 +28,7 @@ export { default as MainDropdownContainer } from "./containers/mainDropdown";
 export { default as MessagesContainer } from "./containers/messages";
 export { default as UpdatePasswordOverlayContainer } from "./containers/passwordOverlay";
 export { default as LoginInlineContainer } from "./containers/loginInline";
+export { default as VerifyAccount } from "./containers/verifyAccount";
 
 import "./templates/accounts.html";
 
@@ -58,5 +59,3 @@ import "./templates/profile/userOrdersList.html";
 import "./templates/profile/userOrdersList.js";
 import "./templates/updatePassword/updatePassword.html";
 import "./templates/updatePassword/updatePassword.js";
-import "./templates/verify/verifyAccount.html";
-import "./templates/verify/verifyAccount.js";

@@ -74,7 +74,7 @@ export function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), user
   if (shopWithBrandAsset) {
     return Collections.Shops.update({
       "_id": shopId,
-      "brandAssets.type": "navbarBrandImage"
+      "brandAssets.type": asset.type
     }, {
       $set: {
         "brandAssets.$": {

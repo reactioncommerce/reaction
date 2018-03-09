@@ -52,7 +52,7 @@ jobs:
           command: sudo npm install -g reaction-cli
       - run:
           name: Reaction Test
-          command: reaction test
+          command: .circleci/tests.sh
       - run:
           name: ESLint
           command: npm run lint

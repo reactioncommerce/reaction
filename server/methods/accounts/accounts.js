@@ -1,12 +1,11 @@
 import _ from "lodash";
-import path from "path";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { Accounts, Cart, Groups, Media, Shops, Packages } from "/lib/collections";
+import { Accounts, Cart, Groups, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { sendUpdatedVerificationEmail } from "/server/api/core/accounts";
@@ -22,54 +21,39 @@ import { sendUpdatedVerificationEmail } from "/server/api/core/accounts";
  * @name accounts/verifyAccount
  * @memberof Methods/Accounts
  * @method
- * @summary Verify registered user account
- * @example Meteor.call("accounts/verifyAccount", email, token)
- * @param {String} email - user email
- * @param {String} token - user token, if the user is invited
- * @returns {Boolean} - return True on success
+ * @summary Verifies the email address in account document (if user verification in users collection was successful already)
+ * @example Meteor.call("accounts/verifyAccount")
+ * @returns {Boolean} - returns true on success
  */
-export function verifyAccount(email, token) {
-  check(email, String);
-  check(token, Match.Optional(String));
-
-  let account;
-  if (token) {
-    account = Meteor.users.findOne({
-      "services.password.reset.token": token
-    });
-  } else {
-    account = Accounts.findOne({
-      "emails.address": email
-    });
+export function verifyAccount() {
+  if (!this.userId) {
+    // not logged in
+    return;
   }
 
-  if (account) {
-    const { verified } = account.emails[0];
-    if (!verified) {
-      Meteor.users.update({
-        "_id": account._id,
-        "emails.address": account.emails[0].address
-      }, {
-        $set: {
-          "emails.$.verified": true
-        }
-      });
-      Accounts.update({
-        "userId": account._id,
-        "emails.address": account.emails[0].address
-      }, {
-        $set: {
-          "emails.$.verified": true
-        }
-      });
-      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
-        accountId: account._id,
-        updatedFields: ["emails"]
-      });
+  const user = Meteor.user();
+  const addresses = user.emails
+    .filter((email) => email.verified)
+    .map((email) => email.address);
+  const result = Accounts.update({
+    "userId": this.userId,
+    "emails.address": { $in: addresses }
+  }, {
+    $set: {
+      "emails.$.verified": true
     }
-    return true;
+  });
+
+  if (result) {
+    Hooks.Events.run(
+      "afterAccountsUpdate",
+      this.userId, {
+        accountId: Accounts.findOne({ userId: this.userId })._id,
+        updatedFields: ["emails"]
+      }
+    );
   }
-  return false;
+  return result;
 }
 
 /**
@@ -639,7 +623,7 @@ export function inviteShopOwner(options) {
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
-  const emailLogo = getEmailLogo(primaryShop);
+  const emailLogo = Reaction.Email.getShopLogo(primaryShop);
   const token = Random.id();
   const currentUser = Meteor.users.findOne(this.userId);
   const currentUserName = getCurrentUserName(currentUser);
@@ -713,7 +697,7 @@ export function inviteShopMember(options) {
 
   const currentUser = Meteor.users.findOne(this.userId);
   const currentUserName = getCurrentUserName(currentUser);
-  const emailLogo = getEmailLogo(primaryShop);
+  const emailLogo = Reaction.Email.getShopLogo(primaryShop);
   const user = Meteor.users.findOne({ "emails.address": email });
   const token = Random.id();
   let dataForEmail;
@@ -783,28 +767,28 @@ export function inviteShopMember(options) {
  * @method
  * @param {String} shopId - shopId of new User
  * @param {String} userId - new userId to welcome
- * @returns {Boolean} returns boolean
+ * @param {String} token - the token for the verification URL
+ * @returns {Boolean} returns true on success
  */
-export function sendWelcomeEmail(shopId, userId) {
+export function sendWelcomeEmail(shopId, userId, token) {
   check(shopId, String);
   check(userId, String);
+  check(token, String);
 
   this.unblock();
 
-  const user = Accounts.findOne(userId);
+  const account = Accounts.findOne(userId);
+  // anonymous users arent welcome here
+  if (!account.emails || !account.emails.length > 0) {
+    return false;
+  }
+
   const shop = Shops.findOne(shopId);
 
   // Get shop logo, if available. If not, use default logo from file-system
-  let emailLogo;
-  if (Array.isArray(shop.brandAssets)) {
-    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-    const mediaId = Media.findOne(brandAsset.mediaId);
-    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
-  } else {
-    emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
-  }
+  const emailLogo = Reaction.Email.getShopLogo(shop);
   const copyrightDate = new Date().getFullYear();
-
+  const user = Meteor.user();
   const dataForEmail = {
     // Shop Data
     shop,
@@ -837,22 +821,12 @@ export function sendWelcomeEmail(shopId, userId) {
         link: "https://www.twitter.com"
       }
     },
-    // Account Data
-    user: Meteor.user()
+    user
   };
 
-  // anonymous users arent welcome here
-  if (!user.emails || !user.emails.length > 0) {
-    return true;
-  }
+  dataForEmail.verificationUrl = MeteorAccounts.urls.verifyEmail(token);
 
-  const defaultEmail = user.emails.find((email) => email.provides === "default");
-  // Encode email address for URI
-  const encodedEmailAddress = encodeURIComponent(defaultEmail.address);
-  // assign verification url
-  dataForEmail.verificationUrl = `${Meteor.absoluteUrl()}account/profile/verify?email=${encodedEmailAddress}`;
-  const userEmail = user.emails[0].address;
-
+  const userEmail = account.emails[0].address;
   let shopEmail;
   // provide some defaults for missing shop email.
   if (!shop.emails) {
@@ -951,27 +925,6 @@ export function setUserPermissions(userId, permissions, group) {
     Logger.error(error);
     return error;
   }
-}
-
-/**
- * @name getEmailLogo
- * @memberof Methods/Accounts
- * @summary Get shop logo, if available. If not, use default logo from file-system
- * @method
- * @private
- * @param  {Object} shop - shop
- * @return {String} Email logo path
- */
-function getEmailLogo(shop) {
-  let emailLogo;
-  if (Array.isArray(shop.brandAssets)) {
-    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-    const mediaId = Media.findOne(brandAsset.mediaId);
-    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
-  } else {
-    emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
-  }
-  return emailLogo;
 }
 
 /**
