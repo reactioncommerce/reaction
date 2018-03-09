@@ -1,75 +1,75 @@
+# This CircleCI configuration uses workflows to fan-out to multiple jobs.  The
+# workflow is Dockerized. The first job builds the Docker image which is used
+# in all future steps.
+#
+#  Assumes that the Docker image is published to Docker Hub.
+
+
 version: 2
 
+# The following stanza defines a map named defaults with a variable that may be
+# inserted using the YAML merge (<<: *) key later in the file to save some
+# typing. See http://yaml.org/type/merge.html for details.
+defaults: &defaults
+  environment:
+    - DOCKER_REPOSITORY: "reactioncommerce/reaction"
+    - DOCKER_NAMESPACE: "reactioncommerce"
+    - DOCKER_NAME: "reaction"
+    - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
+  working_directory: ~/reaction-app
+  docker:
+    - image: circleci/node:8-stretch
+
 jobs:
-  build:
-    working_directory: /home/reaction
-
-    docker:
-      - image: node:8
-
-    environment:
-      - DOCKER_VERSION: 17.05.0-ce
-      - DOCKER_COMPOSE_VERSION: 1.15.0
-      - METEOR_ALLOW_SUPERUSER: true
-      - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
-
+  docker-test-build:
+    <<: *defaults
     steps:
-      - setup_remote_docker
       - checkout
-
-      # install OS dependencies
-      - restore_cache:
-          name: Restoring Meteor cache
-          key: meteor
-
-      - run: .circleci/install.sh
-
-      - save_cache:
-          name: Saving Meteor to cache
-          key: meteor
-          paths:
-            - ~/.meteor
-
-      # install app dependencies
-
-      - run: meteor npm install
-
-      # run tests
-      - restore_cache:
-          name: Restoring Meteor dev_bundle cache
-          key: dev_bundle
-
-      # run reaction tests
-      - run: .circleci/tests.sh
-
-      - save_cache:
-          name: Saving Meteor dev_bundle to cache
-          key: dev_bundle
-          paths:
-            - /home/reaction/.meteor/local
-
+      - setup_remote_docker
+      - attach_workspace:
+          at: docker-cache
       - run:
-          command: .circleci/build.sh
-          no_output_timeout: 30m
-
-      - run:
-          command: .reaction/jsdoc/build.sh
-          no_output_timeout: 2m
-
-      # deploy the docs if on master branch
-      - deploy:
-          name: Deploy to S3 if tests pass and branch is Master
+          name: Build Meteor-Dev Stage
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
-                aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
-              else
-                echo "S3 bucket configuration not found for jsdocs"
-                echo "Set API_DOC_BUCKET and API_DOC_BUCKET_REGION to build and deploy jsdocs to S3"
-              fi
-            else
-              echo "Not master branch so not deploying"
-            fi
-      - deploy:
-          name: Docker Image Deploment
-          command: .circleci/deploy.sh
+            docker build --target meteor-dev \
+              -t "$DOCKER_REPOSITORY:$CIRCLE_SHA1-dev" .
+            mkdir -p docker-cache
+            docker save \
+              -o docker-cache/docker-dev-image.tar \
+              "$DOCKER_REPOSITORY:$CIRCLE_SHA1-dev"
+      - persist_to_workspace:
+          root: docker-cache
+          paths:
+            - docker-dev-image.tar
+
+  docker-build:
+    <<: *defaults
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: docker-cache
+      - run:
+          name: Discover Docker Tags
+          command: |
+            mkdir -p docker-cache
+            SHA1=$(git rev-parse --verify "${CIRCLE_SHA1}")
+            .circleci/bin/docker-tags "$SHA1" "$CIRCLE_BRANCH" | sed 's/\//-/g' | xargs -t -I % \
+              > docker-cache/docker-tags.txt
+      - run:
+          name: Docker build
+          command: |
+            docker build \
+              --build-arg TOOL_NODE_FLAGS="--max-old-space-size=4096" \
+              -t "$DOCKER_REPOSITORY:$CIRCLE_SHA1" .
+            mkdir -p docker-cache
+            docker save \
+              -o docker-cache/docker-image.tar \
+              "$DOCKER_REPOSITORY:$CIRCLE_SHA1"
+          no_output_timeout: 30m
+      - persist_to_workspace:
+          root: docker-cache
+          paths:
+            - docker-image.tar
+            - docker-tags.txt
+
