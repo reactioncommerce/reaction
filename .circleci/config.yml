@@ -21,27 +21,42 @@ defaults: &defaults
     - image: circleci/node:8-stretch
 
 jobs:
-  install_dep:
+  test:
     <<: *defaults
     steps:
       - checkout
       - setup_remote_docker
-      - attach_workspace:
-          at: dev-cache
+      - restore_cache:
+          name: Restoring Meteor cache
+          key: meteor
       - run:
           name: Install Meteor
           command: |
-            curl https://install.meteor.com | /bin/sh
+            if [[ -f ~/.meteor/meteor ]]; then \
+              printf "\nMeteor already installed. Creating symlink.\n"
+              sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor;
+            else
+              printf "\Installing Meteor\n"
+              curl https://install.meteor.com | /bin/sh
+            fi
+      - save_cache:
+          name: Saving Meteor to cache
+          key: meteor
+          paths:
+            - ~/.meteor
       - run:
           name: Meteor NPM Install
           command: meteor npm install
       - run:
-          name: Save Installed Packages
-          command: cp -R node_modules dev-cache/node_modules
-      - persist_to_workspace:
-          root: node_modules
-          paths:
-            - *
+          name: Install Reaction CLI
+          command: sudo npm install -g reaction-cli
+      - run:
+          name: Reaction Test
+          command: reaction test
+      - run:
+          name: ESLint
+          command: npm run lint
+
 
   docker-build:
     <<: *defaults
@@ -139,33 +154,12 @@ jobs:
           command: |
             npm run lint
 
-  test:
-    <<: *defaults
-    steps:
-      - setup_remote_docker
-      - attach_workspace:
-          at: docker-cache
-      - run:
-          name: Load Test Docker Image
-          command: |
-            docker load < docker-cache/docker-dev-image.tar
-      - run:
-          name: Run tests
-          command: |
-            reaction test
-
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - install_dep
-      # - test:
-      #     context: reaction-validation
-      #     requires:
-      #       - docker-test-build
-      - eslint:
-          requires:
-            - install_dep
+      - test:
+          context: reaction-validation
       - docker-build:
           context: reaction-build-read
       - docker-push:
