@@ -1,4 +1,4 @@
-export const resolvers = {
+export default {
   Query: {
     ping: () => "pong"
   },

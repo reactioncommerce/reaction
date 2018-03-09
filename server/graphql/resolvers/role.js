@@ -1,1 +1,1 @@
-export const resolvers = {};
+export default {};

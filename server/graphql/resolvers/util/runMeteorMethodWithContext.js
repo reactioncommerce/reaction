@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { DDP } from "meteor/ddp";
 import { DDPCommon } from "meteor/ddp-common";
 
 /**
@@ -6,11 +7,10 @@ import { DDPCommon } from "meteor/ddp-common";
  * @param {Object} context - A GraphQL context.
  * @param {String} name - The Meteor method name.
  * @param {Array} args - an array of Meteor method args.
- * @param {Function} asynCallback - An async callback for the Meteor method.
- * @return {Object} The result of the Meteor method call.
+ * @return {any} The result of the Meteor method call.
  */
-export const applyWithContext = (context, name, args, asyncCallback) => {
-  const userId = context.user._id;
+export default function runMeteorMethodWithContext(context, name, args) {
+  const userId = context && context.user && context.user._id;
 
   const invocation = new DDPCommon.MethodInvocation({
     isSimulation: false,
@@ -21,11 +21,5 @@ export const applyWithContext = (context, name, args, asyncCallback) => {
     randomSeed: null
   });
 
-  DDP._CurrentInvocation.withValue(invocation, () => {
-    if (asyncCallback) {
-      Meteor.apply(name, args, {}, asyncCallback);
-    } else {
-      return Meteor.apply(name, args);
-    }
-  });
-};
+  DDP._CurrentInvocation.withValue(invocation, () => Meteor.apply(name, args));
+}

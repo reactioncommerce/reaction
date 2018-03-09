@@ -27,7 +27,7 @@ const base = [
   `
 ];
 
-export const typeDefs = base.concat([
+export default base.concat([
   account,
   address,
   currency,
