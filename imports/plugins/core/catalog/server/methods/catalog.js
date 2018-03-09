@@ -7,7 +7,7 @@ import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/serv
 
 /**
  * @method isSoldOut
- * @summary We are stop accepting new orders if product marked as `isSoldOut`.
+ * @summary We are to stop accepting new orders if product is marked as `isSoldOut`.
  * @memberof Catalog
  * @param {Array} variants - Array with top-level variants
  * @return {Boolean} true if summary product quantity is zero.
@@ -69,7 +69,7 @@ export async function publishProductToCatalog(productId) {
     ]
   });
 
-  // Stop of a product could not be found
+  // Stop if a product could not be found
   if (!product) {
     Logger.info("Cannot publish product to catalog");
     return false;
