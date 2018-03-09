@@ -112,7 +112,7 @@ jobs:
       - run:
           name: Build JSDoc files
           command: |
-            jsdoc .
+            jsdoc . \
               --verbose \
               --configure .reaction/jsdoc/jsdoc.json \
               --readme .reaction/jsdoc/templates/static/README.md
@@ -120,7 +120,7 @@ jobs:
           name: Deploy Doc files to S3 if on Master
           command: |
             if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
-              echo "Deploying..."
+              aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
             else
               echo "S3 bucket configuration not found for jsdocs"
               echo "Set API_DOC_BUCKET and API_DOC_BUCKET_REGION to build and deploy jsdocs to S3"
@@ -181,7 +181,9 @@ workflows:
           requires:
             - docker-build
       - deploy-docs:
-          context: reaction-build-read
           requires:
             - test
             - docker-build
+          filters:
+            branches:
+              only: /^master$/
