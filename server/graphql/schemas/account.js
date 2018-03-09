@@ -55,6 +55,6 @@ export const typeDefs = `
   extend type Query {
     viewer: Account
     account(id: ID!): Account
-    administrators(shopId: ID): AccountConnection
+    administrators(shopId: ID!): AccountConnection
   }
 `;
