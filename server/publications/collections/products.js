@@ -366,7 +366,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
                 // because additionally all other product fields should be pushed as well. But this will not happen
                 // because the productCursor observer is not reactive and therefore isn't executed if a new product
                 // is in db that matches the first selector (top-level products)
-                // Solution is to push a special notification to the client that tells him to re-subscribe to the
+                // Solution is to push a special notification to the client that tells it to re-subscribe to the
                 // publication.
                 this.added("Products", revision.documentId, { __resubscribe: true });
               }
