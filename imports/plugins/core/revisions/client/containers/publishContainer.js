@@ -30,7 +30,7 @@ class PublishContainer extends Component {
           });
           Alerts.toast(message, "success");
         } else {
-          Alerts.toast(error.message, "error");
+          Alerts.toast((error && error.message) || (result && result.status) || i18next.t("app.error"), "error");
         }
       });
     }

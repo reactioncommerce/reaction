@@ -7,7 +7,6 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 import { Products, Shops, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
-import { findProductMedia } from "./product";
 
 //
 // define search filters as a schema so we can validate
@@ -395,27 +394,14 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         handle.stop();
       });
 
-      const productCursor = Products.find(newSelector);
-      const mediaProductIds = productCursor.fetch().map((p) => p._id);
-      const mediaCursor = findProductMedia(this, mediaProductIds);
-
-      return [
-        productCursor,
-        mediaCursor
-      ];
+      return Products.find(newSelector);
     }
+
     // Revision control is disabled, but is admin
-    const productCursor = Products.find(newSelector, {
+    return Products.find(newSelector, {
       sort,
       limit: productScrollLimit
     });
-    const mediaProductIds = productCursor.fetch().map((p) => p._id);
-    const mediaCursor = findProductMedia(this, mediaProductIds);
-
-    return [
-      productCursor,
-      mediaCursor
-    ];
   }
 
   // This is where the publication begins for non-admin users
@@ -502,40 +488,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   };
 
   // Returning Complete product tree for top level products to avoid sold out warning.
-  const productCursor = Products.find(newSelector, {
+  return Products.find(newSelector, {
     sort
     // TODO: REVIEW Limiting final products publication for non-admins
     // I think we shouldn't limit here, otherwise we are limited to 24 total products which
     // could be far less than 24 top-level products
     // limit: productScrollLimit
   });
-
-  const mediaProductIds = productCursor.fetch().map((p) => p._id);
-  const mediaCursor = findProductMedia(this, mediaProductIds);
-
-  const handle = productCursor.observe({
-    added: (product) => {
-      let productId;
-      if (product.type === "variant") {
-        [productId] = product.ancestors;
-      } else {
-        productId = product._id;
-      }
-      const cursor = findProductMedia(this, productId);
-      if (cursor) {
-        cursor.forEach((media) => {
-          this.added("cfs.Media.filerecord", media._id, media);
-        });
-      }
-    }
-  });
-
-  this.onStop(() => {
-    handle.stop();
-  });
-
-  return [
-    productCursor,
-    mediaCursor
-  ];
 });

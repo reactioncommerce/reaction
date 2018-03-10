@@ -1,5 +1,6 @@
 import { setTimeout } from "timers";
-import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { compose } from "recompose";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Cart } from "/lib/collections";
 import CartSubTotal from "../components/cartSubTotal";
 
@@ -7,7 +8,10 @@ function composer(props, onData) {
   onData(null, {
     isLoading: true
   });
+
+  let stopped = false;
   setTimeout(() => {
+    if (stopped) return;
     const cart = Cart.findOne();
     if (cart) {
       onData(null, {
@@ -21,8 +25,16 @@ function composer(props, onData) {
       });
     }
   }, 200);
+
+  return () => {
+    stopped = true;
+  };
 }
 
-registerComponent("CartSubTotal", CartSubTotal, composeWithTracker(composer));
+const hocs = [
+  composeWithTracker(composer)
+];
 
-export default composeWithTracker(composer, Components.Loading)(CartSubTotal);
+registerComponent("CartSubTotal", CartSubTotal, hocs);
+
+export default compose(...hocs)(CartSubTotal);

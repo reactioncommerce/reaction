@@ -5,8 +5,8 @@ import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
-import { ReactionProduct } from "/lib/api";
-import { Tags, Media, Templates } from "/lib/collections";
+import { getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
+import { Tags, Templates } from "/lib/collections";
 import { Countries } from "/client/collections";
 import { ProductAdmin } from "../components";
 
@@ -116,12 +116,9 @@ function composer(props, onData) {
     const selectedVariant = ReactionProduct.selectedVariant();
 
     if (selectedVariant) {
-      media = Media.find({
-        "metadata.variantId": selectedVariant._id
-      }, {
-        sort: {
-          "metadata.priority": 1
-        }
+      media = getPrimaryMediaForItem({
+        productId: product._id,
+        variantId: selectedVariant._id
       });
     }
 

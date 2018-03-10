@@ -3,19 +3,16 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
-import { Cart, Media } from "/lib/collections";
+import { Cart } from "/lib/collections";
+import { getPrimaryMediaForOrderItem, ReactionProduct } from "/lib/api";
 import { Reaction } from "/client/api";
 import CartDrawer from "../components/cartDrawer";
-import { ReactionProduct } from "/lib/api";
 
 // event handlers to pass in as props
 const handlers = {
   handleImage(item) {
-    const { defaultImage } = item;
-    if (defaultImage && defaultImage.url({ store: "small" })) {
-      return defaultImage;
-    }
-    return false;
+    const media = getPrimaryMediaForOrderItem(item);
+    return media && media.url({ store: "small" });
   },
 
   /**
@@ -77,12 +74,9 @@ function composer(props, onData) {
   const cart = Cart.findOne({ userId, shopId });
   if (!cart) return;
 
-  const productItems = (cart.items || []).map((item) => {
-    Meteor.subscribe("CartItemImage", item);
-    const variantImage = Media.findOne({ "metadata.variantId": item.variants._id });
-    const defaultImage = variantImage || Media.findOne({ "metadata.productId": item.productId });
-    return { ...item, defaultImage };
-  });
+  Meteor.subscribe("CartImages", cart._id);
+
+  const productItems = cart && cart.items;
   onData(null, {
     productItems
   });

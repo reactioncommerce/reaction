@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { Security } from "meteor/ongoworks:security";
 import { Roles } from "meteor/alanning:roles";
 import * as Collections from "/lib/collections";
@@ -10,7 +9,7 @@ const {
   Packages,
   Emails,
   Jobs,
-  Media,
+  MediaRecords,
   Orders,
   Products,
   Shipping,
@@ -127,10 +126,9 @@ export default function () {
    */
 
   Security.permit(["insert", "update", "remove"])
-    .collections([Media])
+    .collections([MediaRecords])
     .ifHasRoleForActiveShop({ role: ["admin", "owner", "createProduct"] })
-    .ifFileBelongsToShop()
-    .allowInClientCode();
+    .ifFileBelongsToShop();
 
   /*
    * Users with the "admin" or "owner" role may update and
@@ -183,15 +181,6 @@ export default function () {
     .ifHasRoleForActiveShop({ role: ["anonymous", "guest"] })
     .ifUserIdMatches()
     .allowInClientCode();
-
-  /*
-   * apply download permissions to file collections
-   */
-  _.each([Media], (fsCollection) => fsCollection.allow({
-    download() {
-      return true;
-    }
-  }));
 
   /**
    * Emails - Deny all client side ops
