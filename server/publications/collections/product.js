@@ -75,7 +75,14 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
           $nin: [
             "revision/published"
           ]
-        }
+        },
+        "documentData.isDeleted": { $in: [null, false] },
+        "documentData.isVisible": { $in: [true, false, undefined] },
+        "$or": [
+          { "documentData._id": _id },
+          { "documentData.ancestors": _id },
+          { "documentData.handle": productIdOrHandle }
+        ]
       }).observe({
         added: (revision) => {
           this.added("Revisions", revision._id, revision);
@@ -91,6 +98,10 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
                 if (revision.workflow.status !== "revision/published") {
                   this.changed("Products", revision.documentId, { __revisions: [revision] });
                 } else {
+                  // TODO Review: I think this branch will never be executed, because if
+                  // revision.workflow.status === "revision/published" the `added` observe callback
+                  // shouldn't have been called in the first place (because the cursor that's observed
+                  // only fetches documents where revision.workflow.status !== "revision/published")
                   this.changed("Products", revision.documentId, { __revisions: [] });
                 }
               } else {
@@ -99,9 +110,12 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
                 if (revision.workflow.status !== "revision/published") {
                   this.added("Products", revision.documentId, { __revisions: [revision] });
                 } else {
+                  // TODO: See above
                   this.added("Products", revision.documentId, { __revisions: [] });
                 }
               }
+            } else {
+              this.added("Products", revision.documentId, { __revisions: [revision] });
             }
           }
         },
@@ -114,7 +128,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
           }
         },
         removed: (revision) => {
-          this.removed("Revisions", revision._id, revision);
+          this.removed("Revisions", revision._id);
           if (revision.documentType === "product") {
             if (this._documents.Products && this._documents.Products[revision.documentId]) {
               this.changed("Products", revision.documentId, { __revisions: [] });
@@ -122,7 +136,6 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
           }
         }
       });
-
       this.onStop(() => {
         handle.stop();
       });

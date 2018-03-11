@@ -381,7 +381,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           }
         },
         removed: (revision) => {
-          this.removed("Revisions", revision._id, revision);
+          this.removed("Revisions", revision._id);
           if (revision.documentType === "product") {
             if (this._documents.Products && this._documents.Products[revision.documentId]) {
               this.changed("Products", revision.documentId, { __revisions: [] });
