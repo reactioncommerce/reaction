@@ -918,31 +918,20 @@ Meteor.methods({
       return ids;
     });
 
-    const options = { userId: this.userId };
-    let shouldRemoveProduct;
+    // Flag the product and all its variants as deleted in the Revisions collection.
     ids.forEach((_id) => {
-      shouldRemoveProduct = Hooks.Events.run("beforeRemoveCatalogProduct", Products.findOne({ _id }), options);
+      Hooks.Events.run("beforeRemoveCatalogProduct", Products.findOne({ _id }), { userId: this.userId });
     });
 
-    if (shouldRemoveProduct) {
-      Products.remove({
-        _id: {
-          $in: ids
-        }
-      });
-    }
-
-    Logger.debug(`beforeRemoveCatalogProduct hook returned falsy, not updating catalog product`);
-
-    const numRemoved = Revisions.find({
+    const numFlaggedAsDeleted = Revisions.find({
       "documentId": {
         $in: ids
       },
       "documentData.isDeleted": true
     }).count();
 
-    if (numRemoved > 0) {
-      // we can get removes results only in async way
+    if (numFlaggedAsDeleted > 0) {
+      // Flag associated MediaRecords as deleted.
       MediaRecords.update({
         "metadata.productId": {
           $in: ids
@@ -955,9 +944,10 @@ Meteor.methods({
           "metadata.isDeleted": true
         }
       });
-      return numRemoved;
+      return numFlaggedAsDeleted;
     }
-    throw new Meteor.Error("server-error", "Something went wrong, nothing was deleted");
+
+    Logger.debug(`${numFlaggedAsDeleted} products have been flagged as deleted`);
   },
 
   /**
