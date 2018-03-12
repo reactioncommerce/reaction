@@ -78,7 +78,7 @@ registerSchema("filters", filters);
  * @param collectionName {string} - "Revisions" or "Products"
  * @param selector {object} - the selector that should be extended
  * @param productFilters { object } - the product filter (e.g. orginating from query parameters)
- * @param productIds {array of strings} - the top-level productIds we want to get the variants of.
+ * @param productIds {[string]} - the top-level productIds we want to get the variants of.
  */
 function extendSelectorWithVariants(collectionName, selector, productFilters, productIds) {
   let prefix = "";
