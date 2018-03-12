@@ -75,10 +75,10 @@ registerSchema("filters", filters);
  * Broadens an existing selector to include all variants of the given top-level productIds
  * Additionally considers the tags product filter, if given
  * Can operate on the "Revisions" and the "Products" collection
- * @param collectionName {string} - "Revisions" or "Products"
+ * @param collectionName {String} - "Revisions" or "Products"
  * @param selector {object} - the selector that should be extended
  * @param productFilters { object } - the product filter (e.g. orginating from query parameters)
- * @param productIds {[string]} - the top-level productIds we want to get the variants of.
+ * @param productIds {String[]} - the top-level productIds we want to get the variants of.
  */
 function extendSelectorWithVariants(collectionName, selector, productFilters, productIds) {
   let prefix = "";
