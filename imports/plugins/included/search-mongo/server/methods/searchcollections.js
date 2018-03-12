@@ -242,7 +242,7 @@ export function buildOrderSearchRecord(orderId) {
   orderSearch.variants.title = order.items.map((item) => item.variants && item.variants.title);
   orderSearch.variants.optionTitle = order.items.map((item) => item.variants && item.variants.optionTitle);
 
-  OrderSearch.insert(orderSearch);
+  OrderSearch.upsert(orderId, { $set: { ...orderSearch } });
 }
 
 export function buildOrderSearch(cb) {
