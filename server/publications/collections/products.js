@@ -392,7 +392,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
                 if (revision.workflow.status !== "revision/published") {
                   this.added("Products", revision.documentId, { __revisions: [revision] });
                 } else {
-                  // TODO: See above
+                  // TODO: See above.
                   this.added("Products", revision.documentId, { __revisions: [] });
                 }
               }
