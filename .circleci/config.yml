@@ -163,6 +163,9 @@ jobs:
       - restore_cache:
           name: Restoring Meteor cache
           key: meteor
+      - run:
+          name: Link Restored Meteor
+          command: sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor
       - restore_cache:
           # Fall back to less specific caches
           key: v1-node-modules-{{ checksum "package.json" }}
