@@ -12,11 +12,16 @@ Template.checkoutAddressBook.helpers({
    * @return {Object} - contains the component for updating a user's address.
    */
   AddressBook() {
+    const { status, position } = Template.instance().data;
     return {
       component: Components.AddressBook,
-      headingContent: {
+      heading: {
         defaultValue: "Choose shipping & billing address",
-        i18nKey: "addressBookGrid.chooseAddress"
+        i18nKey: "addressBookGrid.chooseAddress",
+        checkout: {
+          icon: (status === true || status === this.template) ? "active" : "",
+          position
+        }
       }
     };
   }

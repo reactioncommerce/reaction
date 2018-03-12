@@ -123,7 +123,7 @@ Template.accountProfile.helpers({
   AddressBook() {
     return {
       component: Components.AddressBook,
-      headingContent: {
+      heading: {
         defaultValue: "Address Book",
         i18nKey: "accountsUI.addressBook"
       }
