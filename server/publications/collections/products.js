@@ -86,7 +86,8 @@ function filterProducts(productFilters) {
   if (shopIdsOrSlugs) {
     // Get all shopIds associated with the slug or Id
     const shopIds = Shops.find({
-      $or: [{
+      "workflow.status": "active",
+      "$or": [{
         _id: { $in: shopIdsOrSlugs }
       }, {
         slug: { $in: shopIdsOrSlugs }
@@ -112,17 +113,9 @@ function filterProducts(productFilters) {
     // handle multiple shops
     if (productFilters.shops) {
       _.extend(selector, {
-        $or: [{
-          "workflow.status": "active",
-          "shopId": {
-            $in: productFilters.shops
-          }
-        }, {
-          "workflow.status": "active",
-          "slug": {
-            $in: productFilters.shops
-          }
-        }]
+        shopId: {
+          $in: productFilters.shops
+        }
       });
     }
 
