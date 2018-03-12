@@ -5,7 +5,6 @@ Reaction.registerPackage({
   name: "reaction-ui",
   icon: "fa fa-html5",
   autoEnable: true,
-  settings: "",
   registry: [],
   layout: []
 });

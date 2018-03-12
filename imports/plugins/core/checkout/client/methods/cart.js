@@ -11,7 +11,7 @@ Meteor.methods({
   // Under consideration for deprecation and migrating other payment Packages
   // to payments-stripe style methods
   "cart/submitPayment"(paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    check(paymentMethod, Object);
     const checkoutCart = Cart.findOne({
       userId: Meteor.userId()
     });

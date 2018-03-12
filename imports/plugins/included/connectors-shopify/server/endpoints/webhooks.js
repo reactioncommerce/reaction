@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/server/api";
+import { methods } from "../methods/sync/orders";
 
 /**
  * verifies that the request coming from a webhook is from the connected Shopify shop
@@ -48,6 +49,6 @@ Reaction.Endpoints.add("post", "/webhooks/shopify/orders-create", (req, res) => 
 
   // If we can verify that this request is legitimate, call our shopify/sync/orders/created
   if (verifyWebhook(req)) {
-    Meteor.call("connectors/shopify/sync/orders/created", req.body.line_items);
+    methods.adjustInventory(req.body.line_items);
   }
 });

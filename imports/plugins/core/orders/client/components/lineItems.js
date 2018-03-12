@@ -59,18 +59,13 @@ class LineItems extends Component {
   displayMedia(uniqueItem) {
     const { displayMedia } = this.props;
 
-    if (displayMedia(uniqueItem)) {
-      return (
-        <Components.ProductImage
-          item={uniqueItem}
-          displayMedia={displayMedia}
-          size="thumbnail"
-          badge={false}
-        />
-      );
-    }
     return (
-      <img src= "/resources/placeholder.gif" alt="" />
+      <Components.ProductImage
+        item={uniqueItem}
+        displayMedia={displayMedia}
+        size="thumbnail"
+        badge={false}
+      />
     );
   }
 

@@ -43,7 +43,7 @@ class SocialSettings extends Component {
   }
 
   getSchemaForField(provider, field) {
-    return SocialPackageConfig._schema[`settings.public.apps.${provider}.${field}`];
+    return SocialPackageConfig.getDefinition(`settings.public.apps.${provider}.${field}`);
   }
 
   handleSettingChange = (event, value, name) => {

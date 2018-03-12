@@ -8,7 +8,6 @@ import OrderSearch from "./orderSearch";
 class OrderDashboard extends Component {
   static propTypes = {
     clearFilter: PropTypes.func,
-    displayMedia: PropTypes.func,
     filterDates: PropTypes.func,
     filterShippingStatus: PropTypes.func,
     filterWorkflowStatus: PropTypes.func,

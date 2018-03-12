@@ -1,68 +1,128 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.10.1
+version: v1.10.2
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   'npm:hoek:20180212':
     - nexmo > jsonwebtoken > joi > hoek:
         reason: No patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > request > hawk > hoek:
+        reason: no patch available
+        expires: '2018-04-05T17:36:16.541Z'
     - nexmo > jsonwebtoken > joi > topo > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > request > hawk > boom > hoek:
+        reason: no patch available
+        expires: '2018-04-05T17:36:16.541Z'
     - prerender-node > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > request > hawk > sntp > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - prerender-node > request > hawk > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > request > hawk > cryptiles > boom > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - prerender-node > request > hawk > sntp > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > npm-registry-client > request > hawk > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - prerender-node > request > hawk > cryptiles > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > npm-registry-client > request > hawk > boom > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > npm-registry-client > request > hawk > sntp > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > boom > hoek:
         reason: no patch availalbe
         expires: '2018-03-22T04:22:44.834Z'
+      npm > npm-registry-client > request > hawk > cryptiles > boom > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > npm-lifecycle > node-gyp > request > hawk > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > npm-lifecycle > node-gyp > request > hawk > boom > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - jest > jest-cli > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > npm-lifecycle > node-gyp > request > hawk > sntp > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - jest > jest-cli > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > npm-lifecycle > node-gyp > request > hawk > cryptiles > boom > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - jest > jest-cli > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > libcipm > npm-lifecycle > node-gyp > request > hawk > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - jest > jest-cli > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > libcipm > npm-lifecycle > node-gyp > request > hawk > boom > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - jest > jest-cli > jest-runner > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > libcipm > npm-lifecycle > node-gyp > request > hawk > sntp > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - jest > jest-cli > jest-runner > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      npm > libcipm > npm-lifecycle > node-gyp > request > hawk > cryptiles > boom > hoek:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.541Z'
     - jest > jest-cli > jest-runner > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > gcp-metadata > retry-request > request > hawk > hoek':
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
     - jest > jest-cli > jest-runner > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > gcp-metadata > retry-request > request > hawk > boom > hoek':
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
     - jest > jest-cli > jest-runner > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > gcp-metadata > retry-request > request > hawk > sntp > hoek':
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
     - jest > jest-cli > jest-runner > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > gcp-metadata > retry-request > request > hawk > cryptiles > boom > hoek':
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
     - jest > jest-cli > jest-runner > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
@@ -93,15 +153,27 @@ ignore:
     - eslint-config-react-tools > babel-eslint > babel-types > lodash:
         reason: no patch available
         expires: '2018-03-22T04:49:05.875Z'
+      authorize-net > 42-cent-base > lodash:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
     - eslint-config-react-tools > eslint-plugin-class-property > eslint > table > lodash:
         reason: no patch available
         expires: '2018-03-22T04:49:05.875Z'
+      twilio > lodash:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
     - eslint-config-react-tools > eslint-plugin-class-property > eslint > lodash:
         reason: no patch available
         expires: '2018-03-22T04:49:05.875Z'
+      velocity-react > lodash:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
     - eslint-config-react-tools > eslint > table > lodash:
         reason: no patch available
         expires: '2018-03-22T04:49:05.875Z'
+      npm > cli-table2 > lodash:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
     - eslint-config-react-tools > eslint > inquirer > lodash:
         reason: no patch available
         expires: '2018-03-22T04:49:05.875Z'
@@ -324,4 +396,22 @@ ignore:
     - '*':
         reason: no patch available and dev dependency
         expires: 2018-03-22T08:23:02.718Z
+  'npm:node-forge:20180226':
+    - '@reactioncommerce/file-collections > tus-node-server > google-auto-auth > google-auth-library > gtoken > google-p12-pem > node-forge':
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > @google-cloud/common > google-auto-auth > google-auth-library > gtoken > google-p12-pem > node-forge':
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > google-auth-library > gtoken > google-p12-pem > node-forge':
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
+  'npm:ssri:20180214':
+    - npm > npm-registry-client > ssri:
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
+  'npm:tunnel-agent:20170305':
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > gcp-metadata > retry-request > request > tunnel-agent':
+        reason: no patch
+        expires: '2018-04-05T17:36:16.542Z'
 patch: {}

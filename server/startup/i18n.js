@@ -82,7 +82,7 @@ export async function flushTranslationLoad() {
  * loadCoreTranslations imports i18n json
  * files from private/data/i18n
  * into the Assets collection
- * Assets collection is processed with Reaction.Import
+ * Assets collection is processed with Reaction.Importer
  * after all assets have been loaded.
  */
 
@@ -171,12 +171,12 @@ export function importAllTranslations() {
     Assets.find({ type: "i18n" }).forEach((t) => {
       Logger.debug(`Importing ${t.name} translation for "${t.ns}"`);
       if (t.content) {
-        Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
+        Reaction.Importer.process(t.content, ["i18n"], Reaction.Importer.translation);
       } else {
         Logger.debug(`No translation content found for ${t.name} - ${t.ns} asset`);
       }
     });
-    Reaction.Import.flush();
+    Reaction.Importer.flush();
 
     Logger.debug("All translation imported into translations collection from Assets.");
   } else {

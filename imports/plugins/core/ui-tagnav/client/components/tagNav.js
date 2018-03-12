@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { Components } from "@reactioncommerce/reaction-components";
 import { getTagIds } from "/lib/selectors/tags";
-import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import ShopSelect from "/imports/plugins/core/dashboard/client/components/shopSelect";
 
@@ -107,7 +106,7 @@ class TagNav extends Component {
         </div>
         {this.renderShopSelect()}
         <div className="navbar-items">
-          <DragDropProvider>
+          <Components.DragDropProvider>
             <Components.TagList
               {...this.props}
               isTagNav={true}
@@ -127,7 +126,7 @@ class TagNav extends Component {
                 />
               </div>
             </Components.TagList>
-          </DragDropProvider>
+          </Components.DragDropProvider>
           {this.props.canEdit && this.renderEditButton()}
         </div>
       </div>

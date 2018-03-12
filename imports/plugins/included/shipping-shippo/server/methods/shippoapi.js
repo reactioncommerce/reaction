@@ -1,8 +1,8 @@
 /* eslint camelcase: 0 */
 import Shippo from "shippo";
+import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Logger } from "/server/api";
 import { purchaseAddressSchema, parcelSchema } from "../lib/shippoApiSchema";
 
@@ -108,12 +108,13 @@ ShippoApi.methods.getCarrierAccountsList = new ValidatedMethod({
 ShippoApi.methods.createShipment = new ValidatedMethod({
   name: "ShippoApi.methods.createShipment",
   validate: new SimpleSchema({
-    shippoAddressFrom: { type: purchaseAddressSchema },
-    shippoAddressTo: { type: purchaseAddressSchema },
-    shippoParcel: { type: parcelSchema },
-    purpose: { type: String, allowedValues: ["QUOTE", "PURCHASE"] },
-    apiKey: { type: String },
-    carrierAccounts: { type: [String], optional: true }
+    "shippoAddressFrom": purchaseAddressSchema,
+    "shippoAddressTo": purchaseAddressSchema,
+    "shippoParcel": parcelSchema,
+    "purpose": { type: String, allowedValues: ["QUOTE", "PURCHASE"] },
+    "apiKey": String,
+    "carrierAccounts": { type: Array, optional: true },
+    "carrierAccounts.$": String
   }).validator(),
   run({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose, apiKey, carrierAccounts }) {
     const shippoObj = new Shippo(apiKey);
