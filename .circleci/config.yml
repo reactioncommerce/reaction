@@ -147,10 +147,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          # Fall back to less specific caches
-          key: v1-node-modules-{{ checksum "package.json" }}
-          key: v1-node-modules-{{ .Branch }}
-          key: v1-node-modules-master
+          keys:
+            - v1-node-modules-{{ checksum "package.json" }}
+            - v1-node-modules-{{ .Branch }}
+            - v1-node-modules-master
       - run:
           name: Run Lint
           command: |
@@ -168,9 +168,10 @@ jobs:
           command: sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor
       - restore_cache:
           # Fall back to less specific caches
-          key: v1-node-modules-{{ checksum "package.json" }}
-          key: v1-node-modules-{{ .Branch }}
-          key: v1-node-modules-master
+          keys:
+            - v1-node-modules-{{ checksum "package.json" }}
+            - v1-node-modules-{{ .Branch }}
+            - v1-node-modules-master
       - run:
           name: Install Reaction CLI
           command: sudo npm install -g reaction-cli
