@@ -658,26 +658,19 @@ Meteor.methods({
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
-
-    const options = { userId: this.userId };
-    let shouldRemoveProduct;
+    // Flag the variant and all its children as deleted in Revisions collection.
     toDelete.forEach((product) => {
-      shouldRemoveProduct = Hooks.Events.run("beforeRemoveCatalogProduct", product, options);
+      Hooks.Events.run("beforeRemoveCatalogProduct", product, { userId: this.userId });
     });
 
-    let deleted = 0;
-    if (shouldRemoveProduct) {
-      deleted = Products.remove(selector);
+    // After variant was removed from product, we need to recalculate all
+    // denormalized fields
+    const productId = toDelete[0].ancestors[0];
+    toDenormalize.forEach((field) => denormalize(productId, field));
 
-      // After variant was removed from product, we need to recalculate all
-      // denormalized fields
-      const productId = toDelete[0].ancestors[0];
-      toDenormalize.forEach((field) => denormalize(productId, field));
-    }
+    Logger.debug(`Flagged variant and all its children as deleted.`);
 
-    Logger.debug(`beforeRemoveCatalogProduct hook returned falsy, not updating catalog product`);
-
-    return typeof deleted === "number" && deleted > 0;
+    return true;
   },
 
   /**
