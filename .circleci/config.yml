@@ -21,7 +21,7 @@ defaults: &defaults
     - image: circleci/node:8-stretch
 
 jobs:
-  test:
+  build:
     <<: *defaults
     steps:
       - checkout
@@ -47,16 +47,16 @@ jobs:
       - run:
           name: Meteor NPM Install
           command: meteor npm install
-      - run:
-          name: Install Reaction CLI
-          command: sudo npm install -g reaction-cli
-      - run:
-          name: Reaction Test
-          command: .circleci/tests.sh
-      - run:
-          name: ESLint
-          command: npm run lint
-
+      # Store node_modules dependency cache.
+      # Saved with package.json checksum and timestamped branch name keys.
+      - save_cache:
+          key: v1-node-modules-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - save_cache:
+          key: v1-node-modules-{{ .Branch }}-{{ epoch }}
+          paths:
+            - node_modules
 
   docker-build:
     <<: *defaults
@@ -133,7 +133,7 @@ jobs:
               --configure .reaction/jsdoc/jsdoc.json \
               --readme .reaction/jsdoc/templates/static/README.md
       - run:
-          name: Deploy Doc files to S3 if on Master
+          name: Deploy Doc files to S3 (Master only)
           command: |
             if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
               aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
@@ -147,12 +147,32 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - attach_workspace:
-          at: node_modules
+      - restore_cache:
+          # Fall back to less specific caches
+          key: v1-node-modules-{{ checksum "package.json" }}
+          key: v1-node-modules-{{ .Branch }}
+          key: v1-node-modules-master
       - run:
           name: Run Lint
           command: |
             npm run lint
+
+  test:
+    - checkout
+    - restore_cache:
+        name: Restoring Meteor cache
+        key: meteor
+    - restore_cache:
+        # Fall back to less specific caches
+        key: v1-node-modules-{{ checksum "package.json" }}
+        key: v1-node-modules-{{ .Branch }}
+        key: v1-node-modules-master
+    - run:
+        name: Install Reaction CLI
+        command: sudo npm install -g reaction-cli
+    - run:
+        name: Reaction Test
+        command: .circleci/tests.sh
 
   dockerfile-lint:
     <<: *defaults
