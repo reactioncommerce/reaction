@@ -1,19 +1,19 @@
-import { Logger } from "/server/api";
-import { Random } from "meteor/random";
+import cuid from "cuid";
+import { Logger } from "./meteor";
 
-function getErrorFormatter(context) {
+function getErrorFormatter(context = {}) {
   return (err) => {
     const { originalError } = err;
 
     // Generate an ID that can be used to correlate client errors with this server error
-    err.errorId = Random.id();
+    err.errorId = cuid();
 
     let type = "unknown";
     if (originalError) {
       const eventObj = {
         errorId: err.errorId,
         path: err.path,
-        userId: (context.user && context.user.id) || null,
+        userId: (context.user && context.user._id) || null,
         ...(originalError.eventObj || {})
       };
 

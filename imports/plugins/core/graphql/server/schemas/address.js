@@ -4,7 +4,7 @@ export const typeDefs = `
     shipping
   }
 
-  input CreateAddressInput {
+  input NewAddress {
     address1: String!
     address2: String
     city: String!
@@ -21,7 +21,7 @@ export const typeDefs = `
     region: String!
   }
 
-  input UpdateAddressInput {
+  input UpdatedAddress {
     address1: String!
     address2: String
     city: String!
