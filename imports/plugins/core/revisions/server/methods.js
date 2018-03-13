@@ -71,7 +71,7 @@ export function updateSettings(settings) {
  */
 function publishCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
-  Hooks.Events.run("beforepublishCatalogProduct", product, {
+  Hooks.Events.run("beforeUpdateCatalogProduct", product, {
     userId,
     modifier,
     validation,
