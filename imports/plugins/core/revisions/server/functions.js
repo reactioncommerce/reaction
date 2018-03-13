@@ -399,7 +399,7 @@ export function updateRevision(product, options = {}) {
 /**
  * @method markRevisionAsDeleted
  * @summary Flag a product's revision as deleted
- * 
+ *
  * @param {Object} product - The product whose revision will be flagged as deleted.
  * @param {Object} options - Contains userId
  * @returns {undefined}
