@@ -6,11 +6,43 @@ class AddressBook extends Component {
   static propTypes = {
     account: PropTypes.object, // might only need the accountId
     addressBook: PropTypes.array,
-    heading: PropTypes.object // { defaultValue: String, i18nKey: String, checkout: Object }
+    heading: PropTypes.object, // { defaultValue: String, i18nKey: String, checkout: Object }
+    removeAddress: PropTypes.func,
+    updateAddress: PropTypes.func
   }
 
   state = {
     entryMode: false
+  }
+
+  findAddress(_id) {
+    const { addressBook } = this.props;
+    return addressBook.find((addy) => addy._id === _id);
+  }
+
+  // Address Book Actions
+
+  // on select
+  // update an address in the address book
+  // that's been selected as the default shipping or billing address
+  onSelect = (_id, method) => {
+    const { updateAddress } = this.props;
+    const address = this.findAddress(_id);
+    switch (method) {
+      case "shipping":
+        updateAddress(address, "isShippingDefault");
+        break;
+      case "billing":
+        updateAddress(address, "isBillingDefault");
+        break;
+      default:
+        return;
+    }
+  }
+
+  onRemove = (_id) => {
+    const { removeAddress } = this.props;
+    removeAddress(_id);
   }
 
   // rendering the checkout step icon
@@ -49,7 +81,7 @@ class AddressBook extends Component {
     const { entryMode } = this.state;
     return (
       <div className="panel-body panel-content">
-        {(entryMode) ? <Components.AddressBookForm /> : <Components.AddressBookGrid addressBook={addressBook} />}
+        {(entryMode) ? <Components.AddressBookForm /> : <Components.AddressBookGrid addressBook={addressBook} select={this.onSelect} remove={this.onRemove} />}
       </div>
     );
   }

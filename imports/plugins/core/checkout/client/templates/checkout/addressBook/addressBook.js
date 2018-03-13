@@ -1,7 +1,28 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 import { Components } from "@reactioncommerce/reaction-components";
+
+let entryMode = false;
+
+const getAccount = () => Collections.Accounts.findOne({ _id: Meteor.userId() });
+
+function updateAddress(address, property) {
+  Meteor.call("accounts/addressBookUpdate", address, null, property);
+}
+
+function removeAddress(_id) {
+  Meteor.call("accounts/addressBookRemove", _id, (error, result) => {
+    if (error) {
+      Alerts.toast(i18next.t("addressBookGrid.cantRemoveThisAddress", { err: error.message }), "error");
+    }
+    if (result) {
+      console.log("address removed!");
+    }
+  });
+}
+
 
 /**
  * Helpers: Checkout Address Book
@@ -15,9 +36,9 @@ Template.checkoutAddressBook.helpers({
    */
   AddressBook() {
     const { status, position } = Template.instance().data;
-    const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
+    const account = getAccount();
     const { addressBook } = account.profile;
-    console.log("Address book checkout data", Template.instance().data);
+
     return {
       component: Components.AddressBook,
       account,
@@ -29,7 +50,9 @@ Template.checkoutAddressBook.helpers({
           icon: (status === true || status === this.template) ? "active" : "",
           position
         }
-      }
+      },
+      updateAddress,
+      removeAddress
     };
   }
 });

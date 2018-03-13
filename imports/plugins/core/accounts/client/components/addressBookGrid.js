@@ -4,10 +4,17 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 
 class AddressBookGrid extends Component {
   static propTypes = {
-    addressBook: PropTypes.array
+    addressBook: PropTypes.array,
+    remove: PropTypes.func,
+    select: PropTypes.func
+  }
+
+  onSelect = () => {
+
   }
 
   // render the address book grid heading
+  // TODO: replace h4 copy with translation component
   renderHeading() {
     return (
       <div className="address-list-header">
@@ -22,6 +29,7 @@ class AddressBookGrid extends Component {
     );
   }
 
+  // rendering individual address
   renderAddress({ address1, address2, city, region, postal, country, phone }) {
     return (
       <address>
@@ -34,25 +42,25 @@ class AddressBookGrid extends Component {
   }
 
   renderAddressGrid() {
-    const { addressBook } = this.props;
+    const { addressBook, select, remove } = this.props;
     return addressBook.map((address) => {
-      const { fullName, _id } = address;
+      const { _id, fullName, isBillingDefault, isShippingDefault } = address;
       return (
         <div className="address-list-item" key={_id}>
-          <div className="address">
+          <div className={`address ${isShippingDefault ? "active" : ""}`} onClick={() => { select(_id, "shipping"); }}>
             <strong>{fullName}</strong>
             {this.renderAddress(address)}
           </div>
-          <div className="address">
+          <div className={`address ${isBillingDefault ? "active" : ""}`} onClick={() => { select(_id, "billing"); }}>
             <strong>{fullName}</strong>
             {this.renderAddress(address)}
           </div>
           <div className="controls">
-            <button type="button" className="btn btn-default" data-id="{{_id}}" data-event-action="editAddress" title="{{i18n 'addressBookGrid.edit' 'Edit'}}">
-              <i className="fa fa-pencil"></i>
+            <button className="btn btn-default" title="{{i18n 'addressBookGrid.edit' 'Edit'}}">
+              <i className="fa fa-pencil" />
             </button>
-            <button type="button" className="btn btn-default danger-action" data-id="{{_id}}" data-event-action="removeAddress" title="{{i18n 'addressBookGrid.removeAddress' 'Remove Address'}}">
-              <i className="fa fa-trash-o"></i>
+            <button className="btn btn-default danger-action" title="{{i18n 'addressBookGrid.removeAddress' 'Remove Address'}}" onClick={() => { remove(_id); }}>
+              <i className="fa fa-trash-o" />
             </button>
           </div>
         </div>
