@@ -7,6 +7,8 @@ class AddressBook extends Component {
     heading: PropTypes.object // { defaultValue: String, i18nKey: String, checkout: Object }
   }
 
+  state = {}
+
   // rendering the checkout step icon
   renderCheckoutIcon() {
     const { checkout: { icon, position } } = this.props.heading;
@@ -29,15 +31,21 @@ class AddressBook extends Component {
   }
 
   render() {
-    console.log("React AddressBook", this.props);
+    console.log("React AddressBookContainer", this.props, this.state);
     return (
       <div className="panel panel-default panel-address-book">
         {this.renderHeading()}
         <div className="address-book">
-          Address Book!
+          <div className="panel-control-bar">
+            control bar
+          </div>
+          <div className="panel-body panel-content">
+            {<Components.AddressBookForm />}
+          </div>
         </div>
       </div>
     );
+
   }
 }
 
