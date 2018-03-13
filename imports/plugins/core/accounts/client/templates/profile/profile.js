@@ -122,9 +122,11 @@ Template.accountProfile.helpers({
    */
   AddressBook() {
     const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
+    const { addressBook } = account.profile;
     return {
       component: Components.AddressBook,
       account,
+      addressBook,
       heading: {
         defaultValue: "Address Book",
         i18nKey: "accountsUI.addressBook"

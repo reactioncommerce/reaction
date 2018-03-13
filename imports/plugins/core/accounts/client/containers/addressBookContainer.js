@@ -4,7 +4,8 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 
 class AddressBook extends Component {
   static propTypes = {
-    account: PropTypes.object,
+    account: PropTypes.object, // might only need the accountId
+    addressBook: PropTypes.array,
     heading: PropTypes.object // { defaultValue: String, i18nKey: String, checkout: Object }
   }
 
@@ -44,10 +45,11 @@ class AddressBook extends Component {
 
   // render address book content
   renderContent() {
+    const { addressBook } = this.props;
     const { entryMode } = this.state;
     return (
       <div className="panel-body panel-content">
-        {(entryMode) ? <Components.AddressBookForm /> : <Components.AddressBookGrid />}
+        {(entryMode) ? <Components.AddressBookForm /> : <Components.AddressBookGrid addressBook={addressBook} />}
       </div>
     );
   }

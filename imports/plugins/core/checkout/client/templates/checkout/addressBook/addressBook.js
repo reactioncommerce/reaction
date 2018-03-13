@@ -15,8 +15,13 @@ Template.checkoutAddressBook.helpers({
    */
   AddressBook() {
     const { status, position } = Template.instance().data;
+    const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
+    const { addressBook } = account.profile;
+    console.log("Address book checkout data", Template.instance().data);
     return {
       component: Components.AddressBook,
+      account,
+      addressBook,
       heading: {
         defaultValue: "Choose shipping & billing address",
         i18nKey: "addressBookGrid.chooseAddress",

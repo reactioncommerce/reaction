@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class AddressBookGrid extends Component {
+  static propTypes = {
+    addressBook: PropTypes.array
+  }
 
   // render the address book grid heading
   renderHeading() {
@@ -19,37 +22,42 @@ class AddressBookGrid extends Component {
     );
   }
 
-  renderAddress() {
-    const { fullName, address1, address2, city, region, postal, country, phone } = this.props;
+  renderAddress({ address1, address2, city, region, postal, country, phone }) {
     return (
-      <div className="address selectedShipping">
-        <strong>{fullName}</strong>
-        <address>
-          {address1}
-          {address2},<br/>
-          {city}, {region} {postal} {country}<br/>
-          {phone}
-        </address>
-      </div>
+      <address>
+        {address1}
+        {address2},<br/>
+        {city}, {region} {postal} {country}<br/>
+        {phone}
+      </address>
     );
   }
 
   renderAddressGrid() {
-    return (
-      <div className="address-list-item">
-        <div className="address active" data-event-action="selectBillingAddress">
-          address! yay
+    const { addressBook } = this.props;
+    return addressBook.map((address) => {
+      const { fullName, _id } = address;
+      return (
+        <div className="address-list-item" key={_id}>
+          <div className="address">
+            <strong>{fullName}</strong>
+            {this.renderAddress(address)}
+          </div>
+          <div className="address">
+            <strong>{fullName}</strong>
+            {this.renderAddress(address)}
+          </div>
+          <div className="controls">
+            <button type="button" className="btn btn-default" data-id="{{_id}}" data-event-action="editAddress" title="{{i18n 'addressBookGrid.edit' 'Edit'}}">
+              <i className="fa fa-pencil"></i>
+            </button>
+            <button type="button" className="btn btn-default danger-action" data-id="{{_id}}" data-event-action="removeAddress" title="{{i18n 'addressBookGrid.removeAddress' 'Remove Address'}}">
+              <i className="fa fa-trash-o"></i>
+            </button>
+          </div>
         </div>
-        <div className="controls">
-          <button type="button" className="btn btn-default" data-id="{{_id}}" data-event-action="editAddress" title="{{i18n 'addressBookGrid.edit' 'Edit'}}">
-            <i className="fa fa-pencil"></i>
-          </button>
-          <button type="button" className="btn btn-default danger-action" data-id="{{_id}}" data-event-action="removeAddress" title="{{i18n 'addressBookGrid.removeAddress' 'Remove Address'}}">
-            <i className="fa fa-trash-o"></i>
-          </button>
-        </div>
-      </div>
-    );
+      );
+    });
   }
 
   render() {
@@ -66,35 +74,3 @@ class AddressBookGrid extends Component {
 registerComponent("AddressBookGrid", AddressBookGrid);
 
 export default AddressBookGrid;
-
-
-// {{#each addressBook}}
-//   <div className="address-list-item">
-//   <div className="address {{selectedShipping}}" data-event-action="selectShippingAddress">
-//   <strong>{{fullName}}</strong>
-//   <address>
-//   {{address1}}
-// {{address2}},<br>
-//   {{city}}, {{region}} {{postal}} {{country}}<br>
-//   {{phone}}
-// </address>
-//   </div>
-//   <div className="address {{selectedBilling}}" data-event-action="selectBillingAddress">
-//   <strong>{{fullName}}</strong>
-//   <address>
-//   {{address1}}
-// {{address2}},<br>
-//   {{city}}, {{region}} {{postal}} {{country}}<br>
-//   {{phone}}
-// </address>
-//   </div>
-//   <div className="controls">
-//   <button type="button" className="btn btn-default" data-id="{{_id}}" data-event-action="editAddress" title="{{i18n 'addressBookGrid.edit' 'Edit'}}">
-//   <i className="fa fa-pencil"></i>
-//   </button>
-//   <button type="button" className="btn btn-default danger-action" data-id="{{_id}}" data-event-action="removeAddress" title="{{i18n 'addressBookGrid.removeAddress' 'Remove Address'}}">
-//   <i className="fa fa-trash-o"></i>
-//   </button>
-//   </div>
-//   </div>
-//   {{/each}}
