@@ -4,6 +4,7 @@
   "translation": {
     "reaction-catalog": {
       "admin": {
+        "catalogProductPublishSuccess": "Product published to catalog",
         "shortcut": {
           "catalogLabel": "Catalog",
           "catalogTitle": "Catalog"
