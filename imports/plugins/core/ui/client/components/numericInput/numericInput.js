@@ -80,6 +80,27 @@ class NumericInput extends Component {
       isEditing: false,
       value
     });
+    if (this.props.onBlur) {
+      const numberValue = this.unformat(value);
+      this.props.onBlur(event, numberValue, this.props.name);
+    }
+  }
+
+  /**
+   * onKeyDown
+   * @summary set the state when the value of the input is changed
+   * @param  {Event} event Event object
+   * @return {void}
+   */
+  onKeyDown(event) {
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(event, this.props.name);
+    }
+
+    if (this.props.onReturnKeyDown && event.keyCode === 13) {
+      const numberValue = this.unformat(event.target.value);
+      this.props.onReturnKeyDown(event, numberValue, this.props.name);
+    }
   }
 
   /**
@@ -124,7 +145,7 @@ class NumericInput extends Component {
 
     if (this.props.onChange) {
       const numberValue = this.unformat(value);
-      this.props.onChange(event, { value, numberValue });
+      this.props.onChange(event, numberValue, this.props.name);
     }
   }
 
@@ -183,7 +204,11 @@ NumericInput.propTypes = {
   }),
   isEditing: PropTypes.bool,
   maxValue: PropTypes.number,
+  name: PropTypes.string,
+  onBlur: PropTypes.func,
   onChange: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  onReturnKeyDown: PropTypes.func,
   value: PropTypes.number
 };
 
