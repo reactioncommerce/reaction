@@ -4,10 +4,13 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 
 class AddressBook extends Component {
   static propTypes = {
+    account: PropTypes.object,
     heading: PropTypes.object // { defaultValue: String, i18nKey: String, checkout: Object }
   }
 
-  state = {}
+  state = {
+    entryMode: false
+  }
 
   // rendering the checkout step icon
   renderCheckoutIcon() {
@@ -30,22 +33,36 @@ class AddressBook extends Component {
     );
   }
 
+  renderControlBar() {
+    const { entryMode } = this.state;
+    return (
+      <div className="panel-control-bar">
+        {(entryMode) ? "Adding New Address" : "Add Address"}
+      </div>
+    );
+  }
+
+  // render address book content
+  renderContent() {
+    const { entryMode } = this.state;
+    return (
+      <div className="panel-body panel-content">
+        {(entryMode) ? <Components.AddressBookForm /> : <Components.AddressBookGrid />}
+      </div>
+    );
+  }
+
   render() {
     console.log("React AddressBookContainer", this.props, this.state);
     return (
       <div className="panel panel-default panel-address-book">
         {this.renderHeading()}
         <div className="address-book">
-          <div className="panel-control-bar">
-            control bar
-          </div>
-          <div className="panel-body panel-content">
-            {<Components.AddressBookForm />}
-          </div>
+          {this.renderControlBar()}
+          {this.renderContent()}
         </div>
       </div>
     );
-
   }
 }
 

@@ -1,4 +1,6 @@
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import * as Collections from "/lib/collections";
 import { Components } from "@reactioncommerce/reaction-components";
 
 /**
