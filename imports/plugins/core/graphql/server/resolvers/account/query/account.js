@@ -1,8 +1,5 @@
 import { transformIdFromBase64 } from "@reactioncommerce/reaction-graphql-utils";
-import { userAccountQuery } from "/imports/accounts/server/methods/userAccountQuery";
-
-export default function account(_, { id }) {
-  // search for user from the Accounts collection via provided Account ID
+import { userAccountQuery } from "/imports/plugins/core/accounts/server/methods/userAccountQuery";
 
 /**
  * @name account
@@ -20,7 +17,7 @@ export default function account(_, { id }, context) {
   const idFromBase64 = transformIdFromBase64(id);
 
   // Pass Id into userAccountQuery function
-  const userAccount = userAccountQuery(idFromBase64.id);
+  const userAccount = userAccountQuery(context, idFromBase64.id);
 
   // Return result of userAccountQuery()
   return userAccount;
