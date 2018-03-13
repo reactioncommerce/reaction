@@ -79,15 +79,6 @@ function getAuthData(packageData = taxCalc.getPackageData()) {
 }
 
 /**
- * @summary Get exempt tax settings to pass to REST API
- * @param {String} userId id of user to find settings
- * @returns {Object} containing exemptCode and customerUsageType
- */
-function getTaxSettings(userId) {
-  return _.get(Accounts.findOne({ _id: userId }), "taxSettings");
-}
-
-/**
  * @summary: Break Avalara error object into consistent format
  * @param {Object} error The error result from Avalara
  * @returns {Object} Error object with code and errorDetails
@@ -511,7 +502,7 @@ taxCalc.estimateCart = function (cart, callback) {
   check(callback, Function);
 
   if (cart.items && cart.shipping && cart.shipping[0].address) {
-    const salesOrder = Object.assign({}, cartToSalesOrder(cart), getTaxSettings(cart.userId));
+    const salesOrder = Object.assign({}, cartToSalesOrder(cart));
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}transactions/create`;
     const result = avaPost(requestUrl, { data: salesOrder });
@@ -617,7 +608,7 @@ taxCalc.recordOrder = function (order, callback) {
   check(callback, Function);
   // unlike the other functions, we expect this to always be called asynchronously
   if (order && order.shipping && order.shipping[0].address) {
-    const salesOrder = Object.assign({}, orderToSalesInvoice(order), getTaxSettings(order.userId));
+    const salesOrder = Object.assign({}, orderToSalesInvoice(order));
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}transactions/create`;
     try {
