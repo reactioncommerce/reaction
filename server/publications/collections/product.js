@@ -76,12 +76,9 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
             "revision/published"
           ]
         },
-        "documentData.isDeleted": { $in: [null, false] },
-        "documentData.isVisible": { $in: [true, false, undefined] },
         "$or": [
           { "documentData._id": _id },
-          { "documentData.ancestors": _id },
-          { "documentData.handle": productIdOrHandle }
+          { "documentData.ancestors": _id }
         ]
       }).observe({
         added: (revision) => {
