@@ -6,7 +6,7 @@ import { userAccountQuery } from "/imports/plugins/core/accounts/server/methods/
  * @method
  * @summary query the Accounts collection and return user account data
  * @param {Object} _ - an object containing the result returned from the resolver
- * @param {Object} args - an object containing Meteor context
+ * @param {Object} args - an object of arguments to pass to the function
  * @param {String} args.id - id of user to query
  * @param {Object} context - an object containing the per-request state
  * @return {Object} user account object
