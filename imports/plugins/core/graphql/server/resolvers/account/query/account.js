@@ -1,5 +1,5 @@
-import { Accounts } from "/lib/collections";
 import { transformIdFromBase64 } from "@reactioncommerce/reaction-graphql-utils";
+import { userAccountQuery } from "/imports/accounts/server/methods/userAccountQuery";
 
 export default function account(_, { id }) {
   // search for user from the Accounts collection via provided Account ID
@@ -8,11 +8,9 @@ export default function account(_, { id }) {
   // Returns an object. Use `.id` to get ID
   const idFromBase64 = transformIdFromBase64(id);
 
-  const userAccount = Accounts.findOne({
-    _id: idFromBase64.id
-  });
+  // Pass Id into userAccountQuery function
+  const userAccount = userAccountQuery(idFromBase64.id);
 
-  if (!userAccount) throw new Error("No account found");
-
+  // Return result of userAccountQuery()
   return userAccount;
 }
