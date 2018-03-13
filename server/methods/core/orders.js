@@ -8,6 +8,7 @@ import { Orders, Products, Shops, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 import { Logger, Hooks, Reaction } from "/server/api";
 import { Media } from "/imports/plugins/core/files/server";
+import { publishProductInventoryAdjustments } from "/imports/plugins/core/catalog/server/methods/catalog";
 
 /**
  * @name getPrimaryMediaForItem
@@ -123,6 +124,9 @@ export function ordersInventoryAdjust(orderId) {
         type: "variant"
       }
     });
+
+    // Publish inventory updates to the Catalog
+    publishProductInventoryAdjustments(item.productId);
   });
 }
 
@@ -159,6 +163,9 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
           type: "variant"
         }
       });
+
+      // Publish inventory updates to the Catalog
+      publishProductInventoryAdjustments(item.productId);
     }
   });
 }
@@ -421,6 +428,9 @@ export const methods = {
             bypassCollection2: true,
             publish: true
           });
+
+          // Publish inventory updates to the Catalog
+          publishProductInventoryAdjustments(item.productId);
         }
       });
     }

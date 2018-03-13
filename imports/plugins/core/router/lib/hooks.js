@@ -50,12 +50,11 @@ function logSomeStuff() {
 Router.Hooks.onEnter("product", logSomeStuff);
    * @param  {String}   routeName Name of route
    * @param  {Function} callback  Callback method
-   * @param  {Object}   args      Object
    * @return {undefined}
    */
-  onEnter(routeName, callback, ...args) {
-    // global onEnter callback
-    if (arguments.length === 1 && typeof args[0] === "function") {
+  onEnter(routeName, callback) {
+    // if first argument is a function it's a global callback
+    if (arguments.length === 1 && typeof routeName === "function") {
       const cb = routeName;
       return this._addHook("onEnter", "GLOBAL", cb);
     }
@@ -70,12 +69,11 @@ Router.Hooks.onEnter("product", logSomeStuff);
    * Can be called as many times as needed to add more than one callback
    * @param  {String}   routeName Name of route
    * @param  {Function} callback  Callback method
-   * @param  {Object}   args      Object
    * @return {undefined}
    */
-  onExit(routeName, callback, ...args) {
-    // global onExit callback
-    if (arguments.length === 1 && typeof args[0] === "function") {
+  onExit(routeName, callback) {
+    // if first argument is a function it's a global callback
+    if (arguments.length === 1 && typeof routeName === "function") {
       const cb = routeName;
       return this._addHook("onExit", "GLOBAL", cb);
     }
@@ -106,10 +104,10 @@ Router.Hooks.onEnter("product", logSomeStuff);
    * @param  {Object} [context] Context object, optional, or `routeName`
    * @return {Array}  Array of hooks
    */
-  run(type, name, constant) {
+  run(type, name, context) {
     const callbacks = this.get(type, name);
     if (typeof callbacks !== "undefined" && !!callbacks.length) {
-      return callbacks.forEach((callback) => callback(constant));
+      return callbacks.forEach((callback) => callback(context));
     }
     return null;
   }
