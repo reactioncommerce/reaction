@@ -35,24 +35,24 @@ const Hooks = {
     }
   },
 
-  onEnter(routeName, callback, ...args) {
+  onEnter(routeNameOrGlobalCallback, callback) {
     // global onEnter callback
-    if (arguments.length === 1 && typeof args[0] === "function") {
-      const cb = routeName;
+    if (arguments.length === 1 && typeof routeNameOrGlobalCallback === "function") {
+      const cb = routeNameOrGlobalCallback;
       return this._addHook("onEnter", "GLOBAL", cb);
     }
     // route-specific onEnter callback
-    return this._addHook("onEnter", routeName, callback);
+    return this._addHook("onEnter", routeNameOrGlobalCallback, callback);
   },
 
-  onExit(routeName, callback, ...args) {
+  onExit(routeNameOrGlobalCallback, callback) {
     // global onExit callback
-    if (arguments.length === 1 && typeof args[0] === "function") {
-      const cb = routeName;
+    if (arguments.length === 1 && typeof routeNameOrGlobalCallback === "function") {
+      const cb = routeNameOrGlobalCallback;
       return this._addHook("onExit", "GLOBAL", cb);
     }
     // route-specific onExit callback
-    return this._addHook("onExit", routeName, callback);
+    return this._addHook("onExit", routeNameOrGlobalCallback, callback);
   },
 
   get(type, name) {
