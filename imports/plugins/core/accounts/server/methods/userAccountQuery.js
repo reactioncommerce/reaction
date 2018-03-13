@@ -14,7 +14,7 @@ export function userAccountQuery(context, id) {
   const userId = context.user._id;
 
   // Check to make sure current user has permissions to view queried user
-  if (!Reaction.hasPermission("reaction-accounts", userId)) throw new Meteor.Error("User does not have permission");
+  if (!Reaction.hasPermission("reaction-accounts", userId)) throw new Meteor.Error("access-denied", "User does not have permission");
 
   // Query the accounts collection to find user by `id`
   const userAccount = Accounts.findOne({
@@ -22,7 +22,7 @@ export function userAccountQuery(context, id) {
   });
 
   // If user is not found, throw an error
-  if (!userAccount) throw new Meteor.Error("No account found");
+  if (!userAccount) throw new Meteor.Error("not-found", "No account found");
 
   // If account is found, return userAccount
   return userAccount;
