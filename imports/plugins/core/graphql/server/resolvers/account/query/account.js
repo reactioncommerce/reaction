@@ -19,6 +19,5 @@ export default function account(_, { id }, context) {
   // Pass decoded id (idFromBase64.id) and context into userAccountQuery function
   const userAccount = userAccountQuery(context, idFromBase64.id);
 
-  // Return result of userAccountQuery()
   return userAccount;
 }
