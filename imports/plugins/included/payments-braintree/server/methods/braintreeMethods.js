@@ -1,7 +1,7 @@
 import { check } from "meteor/check";
 import { BraintreeApi } from "./braintreeApi";
 import { Logger } from "/server/api";
-import { PaymentMethod } from "/lib/collections/schemas";
+import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 /**
  * braintreeSubmit
@@ -60,7 +60,10 @@ export function paymentSubmit(transactionType, cardData, paymentData) {
  * @return {Object} results - Object containing the results of the transaction
  */
 export function paymentCapture(paymentMethod) {
-  check(paymentMethod, PaymentMethod);
+  // Call both check and validate because by calling `clean`, the audit pkg
+  // thinks that we haven't checked paymentMethod arg
+  check(paymentMethod, Object);
+  PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
   const paymentCaptureDetails = {
     transactionId: paymentMethod.transactionId,
@@ -95,8 +98,12 @@ export function paymentCapture(paymentMethod) {
  * @return {Object} results - Object containing the results of the transaction
  */
 export function createRefund(paymentMethod, amount) {
-  check(paymentMethod, PaymentMethod);
   check(amount, Number);
+
+  // Call both check and validate because by calling `clean`, the audit pkg
+  // thinks that we haven't checked paymentMethod arg
+  check(paymentMethod, Object);
+  PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
   const refundDetails = {
     transactionId: paymentMethod.transactionId,

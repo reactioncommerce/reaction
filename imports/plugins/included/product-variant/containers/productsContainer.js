@@ -3,13 +3,23 @@ import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
+import { ReactiveVar } from "meteor/reactive-var";
 import { Session } from "meteor/session";
+import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Products, Tags, Shops } from "/lib/collections";
 import ProductsComponent from "../components/products";
+
+const reactiveProductIds = new ReactiveVar([], (oldVal, newVal) => JSON.stringify(oldVal.sort()) === JSON.stringify(newVal.sort()));
+
+// Isolated resubscribe to product grid images, only when the list of product IDs changes
+Tracker.autorun(() => {
+  Meteor.subscribe("ProductGridMedia", reactiveProductIds.get());
+});
+
 
 /**
  * loadMoreProducts
@@ -160,7 +170,7 @@ function composer(props, onData) {
       { "workflow.status": "active" },
       { _id: Reaction.getPrimaryShopId() }
     ]
-  }).fetch().map((activeShop) => activeShop._id);
+  }).map((activeShop) => activeShop._id);
 
   const productCursor = Products.find({
     ancestors: [],
@@ -168,14 +178,21 @@ function composer(props, onData) {
     shopId: { $in: activeShopsIds }
   });
 
-  const products = productCursor.map((product) => applyProductRevision(product));
+  const sortedProducts = ReactionProduct.sortProducts(productCursor.fetch(), currentTag);
+  Session.set("productGrid/products", sortedProducts);
 
-  const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
+  const productIds = [];
+  const stateProducts = sortedProducts.map((product) => {
+    productIds.push(product._id);
+
+    return {
+      ...applyProductRevision(product)
+    };
+  });
+
+  reactiveProductIds.set(productIds);
 
   canLoadMoreProducts = productCursor.count() >= Session.get("productScrollLimit");
-  const stateProducts = sortedProducts;
-
-  Session.set("productGrid/products", sortedProducts);
 
   const isActionViewOpen = Reaction.isActionViewOpen();
   if (isActionViewOpen === false) {
@@ -183,9 +200,9 @@ function composer(props, onData) {
   }
 
   onData(null, {
-    productsSubscription,
+    canLoadMoreProducts,
     products: stateProducts,
-    canLoadMoreProducts
+    productsSubscription
   });
 }
 

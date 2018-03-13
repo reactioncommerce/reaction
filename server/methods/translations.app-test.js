@@ -25,7 +25,7 @@ describe("i18n methods", function () {
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Roles, "userIsInRole", () => false);
       const removeTranslationSpy = sandbox.spy(Translations, "remove");
-      const importTranslationSpy = sandbox.spy(Reaction.Import, "translation");
+      const importTranslationSpy = sandbox.spy(Reaction.Importer, "translation");
       expect(() => Meteor.call("i18n/flushTranslations")).to.throw(Meteor.Error, /Access Denied/);
       expect(removeTranslationSpy).to.not.have.been.called;
       expect(importTranslationSpy).to.not.have.been.called;
@@ -36,7 +36,7 @@ describe("i18n methods", function () {
       sandbox.stub(Meteor, "userId", () => "0123456789");
       sandbox.stub(Roles, "userIsInRole", () => true);
       const removeTranslationSpy = sandbox.spy(Translations, "remove");
-      const importTranslationSpy = sandbox.spy(Reaction.Import, "translation");
+      const importTranslationSpy = sandbox.spy(Reaction.Importer, "translation");
       Factory.create("shop");
       Meteor.call("i18n/flushTranslations");
       expect(removeTranslationSpy).to.have.been.called;

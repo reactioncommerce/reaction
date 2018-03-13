@@ -50,7 +50,40 @@ const formSettings = {
       inputType: "number"
     },
     "settings.avalara.password": {
+      renderComponent: "string",
       inputType: "password"
+    },
+    "settings.avalara.apiLoginId": {
+      renderComponent: "string",
+      inputType: "text"
+    },
+    "settings.avalara.username": {
+      renderComponent: "string",
+      inputType: "text"
+    },
+    "settings.avalara.companyCode": {
+      renderComponent: "string",
+      inputType: "text"
+    },
+    "settings.avalara.shippingTaxCode": {
+      renderComponent: "string",
+      inputType: "text"
+    },
+    "settings.addressValidation.enabled": {
+      renderComponent: "boolean",
+      inputType: "checkbox"
+    },
+    "settings.avalara.performTaxCalculation": {
+      renderComponent: "boolean",
+      inputType: "checkbox"
+    },
+    "settings.avalara.enableLogging": {
+      renderComponent: "boolean",
+      inputType: "checkbox"
+    },
+    "settings.avalara.commitDocuments": {
+      renderComponent: "boolean",
+      inputType: "checkbox"
     }
   },
   logFieldsProp: {

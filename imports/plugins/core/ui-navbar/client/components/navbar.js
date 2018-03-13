@@ -1,23 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { Meteor } from "meteor/meteor";
-
-// TODO: Delete this, and do it the react way - Mike M.
-async function openSearchModalLegacy(props) {
-  if (Meteor.isClient) {
-    const { Blaze } = await import("meteor/blaze");
-    const { Template } = await import("meteor/templating");
-    const { $ } = await import("meteor/jquery");
-
-    const searchTemplate = Template[props.searchTemplate];
-
-    Blaze.renderWithData(searchTemplate, {}, $("html").get(0));
-
-    $("body").css("overflow", "hidden");
-    $("#search-input").focus();
-  }
-}
 
 class NavBar extends Component {
   static propTypes = {
@@ -43,7 +26,8 @@ class NavBar extends Component {
   };
 
   state = {
-    navBarVisible: false
+    navBarVisible: false,
+    searchModalOpen: false
   }
 
   toggleNavbarVisibility = () => {
@@ -56,7 +40,11 @@ class NavBar extends Component {
   }
 
   handleOpenSearchModal = () => {
-    openSearchModalLegacy(this.props);
+    this.setState({ searchModalOpen: true });
+  }
+
+  handleCloseSearchModal = () => {
+    this.setState({ searchModalOpen: false });
   }
 
   renderLanguage() {
@@ -76,13 +64,15 @@ class NavBar extends Component {
   }
 
   renderBrand() {
-    const shop = this.props.shop || { name: "" };
-    const logo = this.props.brandMedia && this.props.brandMedia.url();
+    const { brandMedia, shop } = this.props;
+
+    const { name } = shop || {};
+    const logo = brandMedia && brandMedia.url({ store: "large" });
 
     return (
       <Components.Brand
         logo={logo}
-        title={shop.name}
+        title={name || ""}
       />
     );
   }
@@ -95,6 +85,10 @@ class NavBar extends Component {
             icon="fa fa-search"
             kind="flat"
             onClick={this.handleOpenSearchModal}
+          />
+          <Components.SearchSubscription
+            open={this.state.searchModalOpen}
+            onClose={this.handleCloseSearchModal}
           />
         </div>
       );

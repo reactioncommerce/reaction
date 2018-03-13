@@ -91,7 +91,7 @@ const handlers = {
 const composer = (props, onData) => {
   const shopId = Reaction.getShopId();
   const adminUserSub = Meteor.subscribe("Accounts", null);
-  const grpSub = Meteor.subscribe("Groups");
+  const grpSub = Meteor.subscribe("Groups", { shopId });
 
   if (adminUserSub.ready() && grpSub.ready()) {
     const groups = Groups.find({

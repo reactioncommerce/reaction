@@ -1,12 +1,12 @@
 import _ from "lodash";
+import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
 import { check, Match } from "meteor/check";
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 import { Products, Shops, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
-import { findProductMedia } from "./product";
 
 //
 // define search filters as a schema so we can validate
@@ -14,13 +14,15 @@ import { findProductMedia } from "./product";
 //
 const filters = new SimpleSchema({
   "shops": {
-    type: [String],
+    type: Array,
     optional: true
   },
+  "shops.$": String,
   "tags": {
-    type: [String],
+    type: Array,
     optional: true
   },
+  "tags.$": String,
   "query": {
     type: String,
     optional: true
@@ -65,7 +67,7 @@ const filters = new SimpleSchema({
     type: String,
     optional: true
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("filters", filters);
 
@@ -106,7 +108,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   // if there are filter/params that don't match the schema
   // validate, catch except but return no results
   try {
-    check(productFilters, Match.OneOf(undefined, filters));
+    if (productFilters) filters.validate(productFilters);
   } catch (e) {
     Logger.debug(e, "Invalid Product Filters");
     return this.ready();
@@ -335,46 +337,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     }
 
     if (RevisionApi.isRevisionControlEnabled()) {
-      const productCursor = Products.find(newSelector);
-      const handle = productCursor.observeChanges({
-        added: (id, fields) => {
-          const revisions = Revisions.find({
-            "$or": [
-              { documentId: id },
-              { parentDocument: id }
-            ],
-            "workflow.status": {
-              $nin: [
-                "revision/published"
-              ]
-            }
-          }).fetch();
-          fields.__revisions = revisions;
-
-          this.added("Products", id, fields);
-        },
-        changed: (id, fields) => {
-          const revisions = Revisions.find({
-            "$or": [
-              { documentId: id },
-              { parentDocument: id }
-            ],
-            "workflow.status": {
-              $nin: [
-                "revision/published"
-              ]
-            }
-          }).fetch();
-
-          fields.__revisions = revisions;
-          this.changed("Products", id, fields);
-        },
-        removed: (id) => {
-          this.removed("Products", id);
-        }
-      });
-
-      const handle2 = Revisions.find({
+      const handle = Revisions.find({
         "workflow.status": {
           $nin: [
             "revision/published"
@@ -382,72 +345,63 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         }
       }).observe({
         added: (revision) => {
-          let product;
-          if (!revision.documentType || revision.documentType === "product") {
-            product = Products.findOne(revision.documentId);
-          } else if (revision.documentType === "image" || revision.documentType === "tag") {
-            product = Products.findOne(revision.parentDocument);
-          }
-
-          if (product) {
-            this.added("Products", product._id, product);
-            this.added("Revisions", revision._id, revision);
+          this.added("Revisions", revision._id, revision);
+          if (revision.documentType === "product") {
+            // Check merge box (session collection view), if product is already in cache.
+            // If yes, we send a `changed`, otherwise `added`. I'm assuming
+            // that this._documents.Products is somewhat equivalent to
+            // the merge box Meteor.server.sessions[sessionId].getCollectionView("Products").documents
+            if (this._documents.Products) {
+              if (this._documents.Products[revision.documentId]) {
+                // I find it much clearer without `else if`
+                // eslint-disable-next-line no-lonely-if
+                if (revision.workflow.status !== "revision/published") {
+                  this.changed("Products", revision.documentId, { __revisions: [revision] });
+                } else {
+                  this.changed("Products", revision.documentId, { __revisions: [] });
+                }
+              } else {
+                // I find it much clearer without `else if`
+                // eslint-disable-next-line no-lonely-if
+                if (revision.workflow.status !== "revision/published") {
+                  this.added("Products", revision.documentId, { __revisions: [revision] });
+                } else {
+                  this.added("Products", revision.documentId, { __revisions: [] });
+                }
+              }
+            }
           }
         },
         changed: (revision) => {
-          let product;
-          if (!revision.documentType || revision.documentType === "product") {
-            product = Products.findOne(revision.documentId);
-          } else if (revision.documentType === "image" || revision.documentType === "tag") {
-            product = Products.findOne(revision.parentDocument);
-          }
-          if (product) {
-            product.__revisions = [revision];
-            this.changed("Products", product._id, product);
-            this.changed("Revisions", revision._id, revision);
+          this.changed("Revisions", revision._id, revision);
+          if (revision.documentType === "product") {
+            if (this._documents.Products && this._documents.Products[revision.documentId]) {
+              this.changed("Products", revision.documentId, { __revisions: [revision] });
+            }
           }
         },
         removed: (revision) => {
-          let product;
-
-          if (!revision.documentType || revision.documentType === "product") {
-            product = Products.findOne(revision.documentId);
-          } else if (revision.docuentType === "image" || revision.documentType === "tag") {
-            product = Products.findOne(revision.parentDocument);
-          }
-          if (product) {
-            product.__revisions = [];
-            this.changed("Products", product._id, product);
-            this.removed("Revisions", revision._id, revision);
+          this.removed("Revisions", revision._id, revision);
+          if (revision.documentType === "product") {
+            if (this._documents.Products && this._documents.Products[revision.documentId]) {
+              this.changed("Products", revision.documentId, { __revisions: [] });
+            }
           }
         }
       });
 
-
       this.onStop(() => {
         handle.stop();
-        handle2.stop();
       });
 
-      const mediaProductIds = productCursor.fetch().map((p) => p._id);
-      const mediaCursor = findProductMedia(this, mediaProductIds);
-
-      return [
-        mediaCursor
-      ];
+      return Products.find(newSelector);
     }
+
     // Revision control is disabled, but is admin
-    const productCursor = Products.find(newSelector, {
+    return Products.find(newSelector, {
       sort,
       limit: productScrollLimit
     });
-    const mediaProductIds = productCursor.fetch().map((p) => p._id);
-    const mediaCursor = findProductMedia(this, mediaProductIds);
-
-    return [
-      productCursor,
-      mediaCursor
-    ];
   }
 
   // This is where the publication begins for non-admin users
@@ -534,40 +488,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   };
 
   // Returning Complete product tree for top level products to avoid sold out warning.
-  const productCursor = Products.find(newSelector, {
+  return Products.find(newSelector, {
     sort
     // TODO: REVIEW Limiting final products publication for non-admins
     // I think we shouldn't limit here, otherwise we are limited to 24 total products which
     // could be far less than 24 top-level products
     // limit: productScrollLimit
   });
-
-  const mediaProductIds = productCursor.fetch().map((p) => p._id);
-  const mediaCursor = findProductMedia(this, mediaProductIds);
-
-  const handle = productCursor.observe({
-    added: (product) => {
-      let productId;
-      if (product.type === "variant") {
-        [productId] = product.ancestors;
-      } else {
-        productId = product._id;
-      }
-      const cursor = findProductMedia(this, productId);
-      if (cursor) {
-        cursor.forEach((media) => {
-          this.added("cfs.Media.filerecord", media._id, media);
-        });
-      }
-    }
-  });
-
-  this.onStop(() => {
-    handle.stop();
-  });
-
-  return [
-    productCursor,
-    mediaCursor
-  ];
 });

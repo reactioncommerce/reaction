@@ -1,16 +1,31 @@
-# Usage:
-# docker-compose up -d
+# This docker-compose file is used to run the reaction app in docker for development
+# The local files are mounted into the created container.
+# Usage: docker-compose up [-d]
 
-reaction:
-  image: reactioncommerce/reaction:latest
-  links:
-    - mongo
-  ports:
-    - "80:3000"
-  environment:
-    ROOT_URL: "http://localhost"
-    MONGO_URL: "mongodb://mongo:27017/reaction"
+version: '3.4'
 
-mongo:
-  image: mongo:latest
-  command: mongod --storageEngine=wiredTiger --bind_ip_all
+services:
+  reaction:
+    build:
+      context: .
+      target: meteor-dev
+    command: "reaction"
+    depends_on:
+      - mongo
+    environment:
+      ROOT_URL: "http://localhost"
+      MONGO_URL: "mongodb://mongo:27017/reaction"
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/opt/reaction/src
+
+  mongo:
+    image: mongo:3.4
+    command: mongod --storageEngine=wiredTiger
+    volumes:
+      - mongo-db:/data/db
+
+volumes:
+  mongo-db:
+

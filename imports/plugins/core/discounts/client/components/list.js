@@ -74,14 +74,13 @@ function composer(props, onData) {
   });
 
   const listItems = [];
-  for (const billing of currentCart.billing) {
-    if (billing.paymentMethod && billing.paymentMethod.processor === "code") {
-      listItems.push({
-        id: billing._id,
-        code: billing.paymentMethod.code,
-        discount: billing.paymentMethod.amount
-      });
-    }
+  const listItem = currentCart.billing.find((element) => element.paymentMethod && element.paymentMethod.processor === "code");
+  if (listItem) {
+    listItems.push({
+      id: listItem._id,
+      code: listItem.paymentMethod.code,
+      discount: listItem.paymentMethod.amount
+    });
   }
 
   onData(null, {

@@ -6,10 +6,11 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
+import { ReactiveVar } from "meteor/reactive-var";
 import { Reaction } from "/client/api";
 import { Shops, Translations, Packages } from "/lib/collections";
 import { getSchemas } from "@reactioncommerce/reaction-collections";
-import i18next, { getLabelsFor, getMessagesFor, i18nextDep, currencyDep } from "./main";
+import i18next, { getLabelsFor, getValidationErrorMessages, i18nextDep, currencyDep } from "./main";
 import { mergeDeep } from "/lib/api";
 
 //
@@ -34,127 +35,130 @@ const options = {
   htmlTag: document.documentElement
 };
 
+const userProfileLanguage = new ReactiveVar(null);
+
 Meteor.startup(() => {
+  // We need to ensure fine-grained reactivity on only the profile.lang because
+  // user.profile changed frequently and causes excessive reruns
+  Tracker.autorun(() => {
+    const userId = Meteor.userId();
+    const user = userId && Meteor.users.findOne(userId, { fields: { profile: 1 } });
+    userProfileLanguage.set((user && user.profile && user.profile.lang) || null);
+  });
   // use tracker autorun to detect language changes
   // this only runs on initial page loaded
   // and when user.profile.lang updates
   Tracker.autorun(() => {
-    if (Reaction.Subscriptions.PrimaryShop.ready() &&
-        Reaction.Subscriptions.MerchantShops.ready() &&
-        Meteor.user()) {
-      let shopId;
+    if (!Reaction.Subscriptions.PrimaryShop.ready() ||
+      !Reaction.Subscriptions.MerchantShops.ready()) return;
 
-      // Choose shop to get language from
-      if (Reaction.marketplaceEnabled && Reaction.merchantLanguage) {
-        shopId = Reaction.getShopId();
-      } else {
-        shopId = Reaction.getPrimaryShopId();
-      }
+    // Depend on user.profile.language reactively
+    const userLanguage = userProfileLanguage.get();
 
-      const packageNamespaces = [];
+    // Choose shop to get language from
+    let shopId;
+    if (Reaction.marketplaceEnabled && Reaction.merchantLanguage) {
+      shopId = Reaction.getShopId();
+    } else {
+      shopId = Reaction.getPrimaryShopId();
+    }
+    // By specifying "fields", we limit reruns to only when that field changes
+    const shop = Shops.findOne({ _id: shopId }, { fields: { language: 1 }, reactive: false });
+    const shopLanguage = (shop && shop.language) || null;
 
-      const packages = Packages.find({
+    // Use fallbacks to determine the final language
+    const language = userLanguage || shopLanguage || "en";
+
+    //
+    // subscribe to user + shop Translations
+    //
+    return Meteor.subscribe("Translations", language, () => {
+      // Get the list of packages for that shop
+      const packageNamespaces = Packages.find({
         shopId
       }, {
         fields: {
           name: 1
         }
-      }).fetch();
-      for (const pkg of packages) {
-        packageNamespaces.push(pkg.name);
-      }
+      }).map((pkg) => pkg.name);
 
-
-      const shop = Shops.findOne({
-        _id: shopId
+      //
+      // reduce and merge translations
+      // into i18next resource format
+      //
+      let resources = {};
+      Translations.find({}).forEach((translation) => {
+        resources = mergeDeep(resources, {
+          [translation.i18n]: translation.translation
+        });
       });
 
-      let language = (shop && shop.language) || "en";
-
-      if (Meteor.user() && Meteor.user().profile && Meteor.user().profile.lang) {
-        language = Meteor.user().profile.lang;
-      }
       //
-      // subscribe to user + shop Translations
+      // initialize i18next
       //
-      return Meteor.subscribe("Translations", language, () => {
-        // fetch reaction translations
-        const translations = Translations.find({}).fetch();
+      i18next
+        .use(i18nextBrowserLanguageDetector)
+        .use(i18nextLocalStorageCache)
+        .use(i18nextSprintfPostProcessor)
+        .init({
+          detection: options,
+          debug: false,
+          ns: packageNamespaces, // translation namespace for every package
+          defaultNS: "core", // reaction "core" is the default namespace
+          fallbackNS: packageNamespaces,
+          lng: language,
+          fallbackLng: shopLanguage,
+          resources
+        }, () => {
+          // Loop through registered Schemas to change labels and messages
+          const Schemas = getSchemas();
+          for (const schemaName in Schemas) {
+            if ({}.hasOwnProperty.call(Schemas, schemaName)) {
+              const schemaInstance = Schemas[schemaName];
+              schemaInstance.labels(getLabelsFor(schemaInstance, schemaName));
+              schemaInstance.messageBox.messages({
+                [language]: getValidationErrorMessages()
+              });
+              schemaInstance.messageBox.setLanguage(language);
+            }
+          }
 
-        //
-        // reduce and merge translations
-        // into i18next resource format
-        //
-        let resources = {};
-        translations.forEach((translation) => {
-          const resource = {};
-          resource[translation.i18n] = translation.translation;
-          resources = mergeDeep(resources, resource);
+          i18nextDep.changed();
+
+          // global first time init event finds and replaces
+          // data-i18n attributes in html/template source.
+          $("[data-i18n]").localize();
+
+          // apply language direction to html
+          if (i18next.dir(language) === "rtl") {
+            return $("html").addClass("rtl");
+          }
+          return $("html").removeClass("rtl");
         });
-
-        //
-        // initialize i18next
-        //
-        i18next
-          .use(i18nextBrowserLanguageDetector)
-          .use(i18nextLocalStorageCache)
-          .use(i18nextSprintfPostProcessor)
-          .init({
-            detection: options,
-            debug: false,
-            ns: packageNamespaces, // translation namespace for every package
-            defaultNS: "core", // reaction "core" is the default namespace
-            fallbackNS: packageNamespaces,
-            lng: language, // user session language
-            fallbackLng: shop ? shop.language : null, // Shop language
-            resources
-          }, () => {
-            // someday this should work
-            // see: https://github.com/aldeed/meteor-simple-schema/issues/494
-
-            // Loop through registered Schemas
-            const Schemas = getSchemas();
-            for (const schema in Schemas) {
-              if ({}.hasOwnProperty.call(Schemas, schema)) {
-                const ss = Schemas[schema];
-                ss.labels(getLabelsFor(ss, schema));
-                ss.messages(getMessagesFor(ss, schema));
-              }
-            }
-
-            i18nextDep.changed();
-
-            // global first time init event finds and replaces
-            // data-i18n attributes in html/template source.
-            $("[data-i18n]").localize();
-
-            // Set language prop on html element
-            $("html").prop("lang", language);
-
-            // apply language direction to html
-            if (i18next.dir(language) === "rtl") {
-              return $("html").addClass("rtl");
-            }
-            return $("html").removeClass("rtl");
-          });
-      }); // return
-    }
+    }); // return
   });
 
-  // use tracker autorun to detect currency changes
-  // this only runs on initial page loaded
-  // and when user.profile.currency updates
-  // although it is also triggered when profile updates ( meaning .lang )
+  // Detect user currency changes.
+  // These two autoruns work together to ensure currencyDep is only considered
+  // to be changed when it should be.
+  // XXX currencyDep is not used by the main app. Maybe can get rid of this
+  // if no add-on packages use it?
+  const userCurrency = new ReactiveVar();
+  Tracker.autorun(() => {
+    // We are using the reactive var only to be sure that currencyDep.changed()
+    // is called only when the value is actually changed from the previous value.
+    const currency = userCurrency.get();
+    if (currency) currencyDep.changed();
+  });
   Tracker.autorun(() => {
     const user = Meteor.user();
-
     if (Reaction.Subscriptions.PrimaryShop.ready() &&
-        Reaction.Subscriptions.MerchantShops.ready() && user) {
-      if (user.profile && user.profile.currency) {
-        currencyDep.changed();
-      }
+        Reaction.Subscriptions.MerchantShops.ready() &&
+        user) {
+      userCurrency.set((user.profile && user.profile.currency) || undefined);
     }
   });
+
   //
   // init i18nextJquery
   //

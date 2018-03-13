@@ -5,7 +5,6 @@ import { formatPriceString } from "/client/api";
 
 class ProductGridItems extends Component {
   static propTypes = {
-    additionalMedia: PropTypes.func,
     canEdit: PropTypes.bool,
     connectDragSource: PropTypes.func,
     connectDropTarget: PropTypes.func,
@@ -13,25 +12,30 @@ class ProductGridItems extends Component {
     isMediumWeight: PropTypes.func,
     isSearch: PropTypes.bool,
     isSelected: PropTypes.func,
-    media: PropTypes.func,
     onClick: PropTypes.func,
     onDoubleClick: PropTypes.func,
     pdpPath: PropTypes.func,
     positions: PropTypes.func,
     product: PropTypes.object,
+    productMedia: PropTypes.object,
     weightClass: PropTypes.func
   }
 
-  handleDoubleClick = (event) => {
-    if (this.props.onDoubleClick) {
-      this.props.onDoubleClick(event);
+  static defaultProps = {
+    onClick() {},
+    onDoubleClick() {},
+    productMedia: {
+      additionalMedia: null,
+      primaryMedia: null
     }
+  };
+
+  handleDoubleClick = (event) => {
+    this.props.onDoubleClick(event);
   }
 
   handleClick = (event) => {
-    if (this.props.onClick) {
-      this.props.onClick(event);
-    }
+    this.props.onClick(event);
   }
 
   renderPinned() {
@@ -51,33 +55,32 @@ class ProductGridItems extends Component {
   }
 
   renderMedia() {
-    if (this.props.media() === false) {
-      return (
-        <span className="product-image" style={{ backgroundImage: "url('/resources/placeholder.gif')" }} />
-      );
-    }
+    const { product, productMedia } = this.props;
+
     return (
-      <span className="product-image" style={{ backgroundImage: `url('${this.props.media().url({ store: "large" })}')` }}/>
+      <Components.ProductImage displayMedia={() => productMedia.primaryMedia} item={product} size="large" mode="span" />
     );
   }
 
   renderAdditionalMedia() {
-    if (this.props.additionalMedia() !== false) {
-      if (this.props.isMediumWeight()) {
-        return (
-          <div className={`product-additional-images ${this.renderVisible()}`}>
-            {this.props.additionalMedia().map((media) => (
-              <span
-                key={media._id}
-                className="product-image"
-                style={{ backgroundImage: `url('${media.url({ store: "medium" })}')` }}
-              />
-            ))}
-            {this.renderOverlay()}
-          </div>
-        );
-      }
-    }
+    const { isMediumWeight, productMedia } = this.props;
+    if (!isMediumWeight()) return null;
+
+    const mediaArray = productMedia.additionalMedia;
+    if (!mediaArray || mediaArray.length === 0) return null;
+
+    return (
+      <div className={`product-additional-images ${this.renderVisible()}`}>
+        {mediaArray.map((media) => (
+          <span
+            key={media._id}
+            className="product-image"
+            style={{ backgroundImage: `url('${media.url({ store: "medium" })}')` }}
+          />
+        ))}
+        {this.renderOverlay()}
+      </div>
+    );
   }
 
   renderNotices() {

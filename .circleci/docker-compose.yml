@@ -13,5 +13,5 @@ reaction:
     MONGO_URL: "mongodb://mongo:27017/reaction"
 
 mongo:
-  image: mongo:latest
-  command: mongod --storageEngine=wiredTiger --bind_ip_all
+  image: mongo:3.4
+  command: mongod --storageEngine=wiredTiger

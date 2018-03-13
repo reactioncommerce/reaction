@@ -8,10 +8,10 @@ import { $ } from "meteor/jquery";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
-import { Tags, Media, Cart } from "/lib/collections";
+import { Tags, Cart } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
-import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
+import { Media } from "/imports/plugins/core/files/client";
 
 const wrapComponent = (Comp) => (
   class ProductDetailContainer extends Component {
@@ -239,28 +239,29 @@ const wrapComponent = (Comp) => (
     }
 
     render() {
-      if (_.isEmpty(this.props.product)) {
+      const { media, product } = this.props;
+
+      if (_.isEmpty(product)) {
         return (
           <Components.ProductNotFound />
         );
       }
+
       return (
-        <DragDropProvider>
-          <StyleRoot>
-            <Comp
-              cartQuantity={this.state.cartQuantity}
-              mediaGalleryComponent={<Components.MediaGallery media={this.props.media} />}
-              onAddToCart={this.handleAddToCart}
-              onCartQuantityChange={this.handleCartQuantityChange}
-              onViewContextChange={this.handleViewContextChange}
-              socialComponent={<SocialContainer />}
-              topVariantComponent={<VariantListContainer />}
-              onDeleteProduct={this.handleDeleteProduct}
-              onProductFieldChange={this.handleProductFieldChange}
-              {...this.props}
-            />
-          </StyleRoot>
-        </DragDropProvider>
+        <StyleRoot>
+          <Comp
+            cartQuantity={this.state.cartQuantity}
+            mediaGalleryComponent={<Components.MediaGallery media={media} />}
+            onAddToCart={this.handleAddToCart}
+            onCartQuantityChange={this.handleCartQuantityChange}
+            onViewContextChange={this.handleViewContextChange}
+            socialComponent={<SocialContainer />}
+            topVariantComponent={<VariantListContainer />}
+            onDeleteProduct={this.handleDeleteProduct}
+            onProductFieldChange={this.handleProductFieldChange}
+            {...this.props}
+          />
+        </StyleRoot>
       );
     }
   }
@@ -275,15 +276,12 @@ function composer(props, onData) {
   const viewProductAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
   let productSub;
-
   if (productId) {
     productSub = Meteor.subscribe("Product", productId, shopIdOrSlug);
   }
-
-  if (productSub && productSub.ready() && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {
-    // Get the product
+  if (productSub && productSub.ready()
+    && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {
     const product = ReactionProduct.setProduct(productId, variantId);
-
     if (Reaction.hasPermission("createProduct")) {
       if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
         Reaction.setActionView({
@@ -300,30 +298,32 @@ function composer(props, onData) {
         tags = _.map(product.hashtags, (id) => Tags.findOne(id));
       }
 
+      Meteor.subscribe("ProductMedia", product._id);
+
       let mediaArray = [];
       const selectedVariant = ReactionProduct.selectedVariant();
 
       if (selectedVariant) {
         // Find the media for the selected variant
-        mediaArray = Media.find({
+        mediaArray = Media.findLocal({
           "metadata.variantId": selectedVariant._id
         }, {
           sort: {
             "metadata.priority": 1
           }
-        }).fetch();
+        });
 
         // If no media found, broaden the search to include other media from parents
         if (Array.isArray(mediaArray) && mediaArray.length === 0 && selectedVariant.ancestors) {
           // Loop through ancestors in reverse to find a variant that has media to use
           for (const ancestor of selectedVariant.ancestors.reverse()) {
-            const media = Media.find({
+            const media = Media.findLocal({
               "metadata.variantId": ancestor
             }, {
               sort: {
                 "metadata.priority": 1
               }
-            }).fetch();
+            });
 
             // If we found some media, then stop here
             if (Array.isArray(media) && media.length) {
