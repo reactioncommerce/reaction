@@ -1,10 +1,3 @@
-# This CircleCI configuration uses workflows to fan-out to multiple jobs.  The
-# workflow is Dockerized. The first job builds the Docker image which is used
-# in all future steps.
-#
-#  Assumes that the Docker image is published to Docker Hub.
-
-
 version: 2
 
 # The following stanza defines a map named defaults with a variable that may be
@@ -109,11 +102,16 @@ jobs:
       - run:
           name: Docker Push
           command: |
-            docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-            docker push "$DOCKER_REPOSITORY:$CIRCLE_SHA1"
-            cat docker-cache/docker-tags.txt \
-              | xargs -t -I % \
-                docker push "$DOCKER_REPOSITORY:%"
+            if [ -z "$CIRCLE_PR_USERNAME" ]; then \
+              docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+              docker push "$DOCKER_REPOSITORY:$CIRCLE_SHA1"
+              cat docker-cache/docker-tags.txt \
+                | xargs -t -I % \
+                  docker push "$DOCKER_REPOSITORY:%"
+            else
+              echo "No deploy for forks"
+            fi
+
   deploy-docs:
     <<: *defaults
     steps:
@@ -132,7 +130,7 @@ jobs:
               --configure .reaction/jsdoc/jsdoc.json \
               --readme .reaction/jsdoc/templates/static/README.md
       - run:
-          name: Deploy Doc files to S3 if on Master
+          name: Deploy Doc files to S3
           command: |
             if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
               aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
