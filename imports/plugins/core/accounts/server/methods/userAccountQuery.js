@@ -1,6 +1,13 @@
 import { Accounts } from "/lib/collections";
 import { Reaction } from "/lib/api";
 
+/**
+ * @name userAccountQuery
+ * @method
+ * @summary query the Accounts collection and return user account data
+ * @param {String} id - id of user to query
+ * @return {Object} user account object
+ */
 export default function userAccountQuery(id) {
   // Check to make sure current user has permissions to view queried user
   if (!Reaction.hasPermission("reaction-accounts")) throw new Error("User does not have permission");
